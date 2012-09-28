@@ -23,7 +23,7 @@
 
 #include <KConfigDialogManager>
 #include <KStandardDirs>
-#include <KFileDialog>
+#include <KLineEdit>
 
 ConfigDialog::ConfigDialog( QWidget *parent )
    : KDialog( parent )
@@ -33,48 +33,28 @@ ConfigDialog::ConfigDialog( QWidget *parent )
     m_manager = new KConfigDialogManager( this, Settings::self() );
     m_manager->updateWidgets();
     
-    ui.linePath->setText( Settings::self()->path() );
-    connect( ui.browseButton, SIGNAL( clicked() ), SLOT( getPath() ) );
-    connect( this, SIGNAL( okClicked() ), SLOT( save() ) );
+    ui.urlPath->lineEdit()->setText( Settings::self()->path() );
+    connect( this, SIGNAL(okClicked()), SLOT(slotSave()) );
     
     ui.kcfg_AutoFetchInterval->setSuffix(ki18np(" minute", "minutes"));
-    connect( ui.kcfg_UseIntervalFetch, SIGNAL( toggled( bool ) ),
-             ui.kcfg_AutoFetchInterval, SLOT( setEnabled( bool ) ) );
-    connect( ui.kcfg_UseIntervalFetch, SIGNAL( toggled( bool ) ),
-             ui.autoFetchIntervalLabel, SLOT( setEnabled( bool ) ) );
+    connect( ui.kcfg_UseIntervalFetch, SIGNAL(toggled(bool)),
+             ui.kcfg_AutoFetchInterval, SLOT(setEnabled(bool)) );
+    connect( ui.kcfg_UseIntervalFetch, SIGNAL(toggled(bool)),
+             ui.autoFetchIntervalLabel, SLOT(setEnabled(bool)) );
+
     if ( ui.kcfg_UseIntervalFetch->isChecked() ) {
         ui.kcfg_AutoFetchInterval->setEnabled( true );
-	ui.autoFetchIntervalLabel->setEnabled( true );
+        ui.autoFetchIntervalLabel->setEnabled( true );
     }
     
 }
  
-void ConfigDialog::getPath()
-{
-    const QString oldPath = ui.linePath->text();
-
-    KUrl startUrl;
-    if ( oldPath.isEmpty() )
-        startUrl = KUrl( QDir::homePath() );
-    else
-        startUrl = KUrl( oldPath );
-
-    const QString title = i18nc("@title:window", "Select an OPML Document");
-    QString newPath = KFileDialog::getOpenFileName( startUrl, QLatin1String("*.opml|") + i18n("OPML Document (*.opml)"),
-                                              this, title );
-   
-    if(!newPath.isEmpty())
-      ui.linePath->setText( newPath );
-    
-}
-
-void ConfigDialog::save()
+void ConfigDialog::slotSave()
 { 
     m_manager->updateSettings();
 
-    const QString path = ui.linePath->text();
+    const QString path = ui.urlPath->lineEdit()->text();
     Settings::self()->setPath( path );
-    
 }
 
 #include "configdialog.moc"

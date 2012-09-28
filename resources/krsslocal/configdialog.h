@@ -34,8 +34,7 @@ class ConfigDialog : public KDialog
     explicit ConfigDialog( QWidget *parent = 0 );
 
   private slots:
-    void getPath();
-    void save();
+    void slotSave();
   
   private:
     Ui::ConfigDialog ui;

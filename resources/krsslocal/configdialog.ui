@@ -28,14 +28,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="linePath"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="browseButton">
-          <property name="text">
-           <string>Browse</string>
-          </property>
-         </widget>
+         <widget class="KUrlRequester" name="urlPath"/>
         </item>
         <item>
          <widget class="QWidget" name="widget_3" native="true">
@@ -133,6 +126,11 @@
    <class>KIntSpinBox</class>
    <extends>QSpinBox</extends>
    <header>knuminput.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KUrlRequester</class>
+   <extends>QFrame</extends>
+   <header>kurlrequester.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

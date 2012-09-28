@@ -187,8 +187,8 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
 void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
 {   
     Syndication::Loader * const loader = Syndication::Loader::create();
-    connect( loader, SIGNAL( loadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ),
-             this, SLOT( slotLoadingComplete( Syndication::Loader*, Syndication::FeedPtr, Syndication::ErrorCode ) ) );
+    connect( loader, SIGNAL(loadingComplete(Syndication::Loader*,Syndication::FeedPtr,Syndication::ErrorCode)),
+             this, SLOT(slotLoadingComplete(Syndication::Loader*,Syndication::FeedPtr,Syndication::ErrorCode)) );
     const KRss::FeedCollection fc( collection );
     const KUrl xmlUrl = fc.xmlUrl();
     m_collectionByLoader.insert( loader, collection );
@@ -321,20 +321,19 @@ void KRssLocalResource::aboutToQuit()
 
 void KRssLocalResource::configure( WId windowId )
 {
-    
     QPointer<ConfigDialog> dlg( new ConfigDialog );
     if ( windowId )
       KWindowSystem::setMainWindow( dlg, windowId );
     if ( dlg->exec() == KDialog::Accepted ) {
-      emit configurationDialogAccepted();
+        Settings::self()->writeConfig();
+
+        emit configurationDialogAccepted();
+        synchronizeCollectionTree();
     } else {
       emit configurationDialogRejected();
     }
     delete dlg;
     
-    Settings::self()->writeConfig();
-    
-    synchronizeCollectionTree();
 }
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
