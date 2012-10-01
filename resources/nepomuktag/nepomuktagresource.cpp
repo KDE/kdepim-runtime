@@ -202,6 +202,7 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
     Q_UNUSED( parent );
     QString s = collection.name();
     Collection newCollection = collection;
+    newCollection.setVirtual( true );
 
     // taken from kdelibs/nepomuk/core/ui/kmetadatatagwidget.cpp
     // Copyright (C) 2006-2007 Sebastian Trueg <trueg@kde.org>
@@ -299,6 +300,7 @@ Collection NepomukTagResource::collectionFromTag(const Nepomuk::Tag& tag)
   c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
   c.setParentCollection( m_root );
   c.setContentMimeTypes( QStringList() << "message/rfc822" );
+  c.setVirtual( true );
   if ( !tag.symbols().isEmpty() ) {
     const QString icon = tag.symbols().first();
     EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
