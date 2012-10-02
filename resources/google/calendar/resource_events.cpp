@@ -154,8 +154,21 @@ void CalendarResource::eventsReceived( KJob *job )
   QMap< QString, Objects::Event * > recurrentEvents;
 
   QList< Object *> allData = fetchJob->items();
-  Q_FOREACH ( Object * replyData, allData ) {
 
+  /* Step 1: Find all recurrent events and move them to a separate map */
+  int i = 0;
+  while (i < allData.length()) {
+    Objects::Event *event = static_cast< Objects::Event * >( allData.at(i) );
+    if ( event->recurs() && !event->deleted() ) {
+      recurrentEvents.insert( event->uid(), event );
+      allData.removeAt(i);
+    } else {
+      i++;
+    }
+  }
+
+  /* Step 2: Process all remaining events */
+  Q_FOREACH( Object *replyData, allData ) {
     Objects::Event *event = static_cast< Objects::Event * >( replyData );
 
     if ( event->useDefaultReminders() && attr ) {
@@ -165,22 +178,13 @@ void CalendarResource::eventsReceived( KJob *job )
       }
     }
 
-    /* If this is a recurrent event then put it to map and continue with
-     * next event. We will return to this later... */
-    if ( event->recurs() && !event->deleted() ) {
-      recurrentEvents.insert( event->uid(), event );
-      continue;
-    }
-
-    /* If the event is deleted, but it has same ID as some of the recurrent
-     * events stored in the map, then take the original recurrent event from the map
-     * and set date of this particular instance as an exception date and continue.
-     * We will process content of the map later */
-    if ( event->deleted() && recurrentEvents.contains( event->uid() ) ) {
+    /* If current event is related to a recurrent event stored in the map then
+     * take the original recurrent event, set date of the current event as an
+     * exception and continue. We will process content of the map later. */
+    if ( recurrentEvents.contains( event->uid() ) ) {
       Objects::Event *rEvent = recurrentEvents.value( event->uid() );
 
       rEvent->recurrence()->addExDate( event->dtStart().date() );
-      continue;
     }
 
     Item item;
@@ -197,7 +201,7 @@ void CalendarResource::eventsReceived( KJob *job )
     }
   }
 
-  /* Now process the recurrent events */
+  /* Step 3: Now process the recurrent events */
   Q_FOREACH ( Objects::Event * event, recurrentEvents.values() ) {
 
     Item item;
