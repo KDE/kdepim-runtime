@@ -578,7 +578,7 @@ void SetupServer::slotShowServerInfo()
 {
   KDialog *dialog = new KDialog( this );
   dialog->setCaption(
-    i18nc( "@title:caption Dialog title for dialog showing information about a server",
+    i18nc( "@title:window Dialog title for dialog showing information about a server",
            "Server Info" ) );
   dialog->setButtons( KDialog::Close );
   dialog->setAttribute( Qt::WA_DeleteOnClose );

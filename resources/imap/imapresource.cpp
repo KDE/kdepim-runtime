@@ -104,7 +104,7 @@ ImapResource::ImapResource( const QString &id )
                                   QString::fromLatin1( "InstanceCounters/%1/InstanceCounter" ).arg( agentType ),
                                   -1 ).toInt();
 
-    if ( instanceCounter>0 ) {
+    if ( instanceCounter > 0 ) {
       setName( i18n( "IMAP Account %1", instanceCounter ) );
     } else {
       setName( i18n( "IMAP Account" ) );
@@ -229,7 +229,7 @@ int ImapResource::configureSubscription()
      return -1;
 
   QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
-  subscriptions->setCaption( i18n( "Serverside Subscription" ) );
+  subscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
   subscriptions->setWindowIcon( KIcon( "network-server" ) );
   subscriptions->connectAccount( *m_pool->account(), password );
   subscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
