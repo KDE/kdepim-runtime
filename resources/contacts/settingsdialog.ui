@@ -56,7 +56,7 @@
       <item>
        <widget class="QCheckBox" name="kcfg_ReadOnly">
         <property name="text">
-         <string>Read only</string>
+         <string comment="if the access is limited to read-only">Read only</string>
         </property>
        </widget>
       </item>
