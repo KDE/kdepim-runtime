@@ -18,13 +18,12 @@
 */
 
 #include "settingsdialog.h"
-
 #include "settings.h"
 
 #include <KConfigDialogManager>
 #include <KWindowSystem>
 
-#include <QtCore/QTimer>
+#include <QTimer>
 
 using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
@@ -34,6 +33,7 @@ SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId
   mSettings( settings )
 {
   ui.setupUi( mainWidget() );
+  setWindowIcon( KIcon( "text-directory" ) );
   ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
   setButtons( Ok | Cancel );
 
