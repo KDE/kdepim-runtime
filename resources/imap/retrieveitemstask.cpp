@@ -240,10 +240,16 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+    connect( fetch, SIGNAL(headersReceived(QString,
+                                           QMap<qint64,qint64>,
+                                           QMap<qint64,qint64>,
+                                           QMap<qint64,KIMAP::MessageFlags>,
+                                           QMap<qint64,KIMAP::MessagePtr>)),
+             this, SLOT(onHeadersReceived(QString,
+                                          QMap<qint64,qint64>,
+                                          QMap<qint64,qint64>,
+                                          QMap<qint64,KIMAP::MessageFlags>,
+                                          QMap<qint64,KIMAP::MessagePtr>)) );
     connect( fetch, SIGNAL(result(KJob*)),
              this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
@@ -255,10 +261,16 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( realMessageCount+1, messageCount ) );
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+    connect( fetch, SIGNAL(headersReceived(QString,
+                                           QMap<qint64,qint64>,
+                                           QMap<qint64,qint64>,
+                                           QMap<qint64,KIMAP::MessageFlags>,
+                                           QMap<qint64,KIMAP::MessagePtr>)),
+             this, SLOT(onHeadersReceived(QString,
+                                          QMap<qint64,qint64>,
+                                          QMap<qint64,qint64>,
+                                          QMap<qint64,KIMAP::MessageFlags>,
+                                          QMap<qint64,KIMAP::MessagePtr>)) );
     connect( fetch, SIGNAL(result(KJob*)),
              this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
@@ -281,10 +293,16 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( startIndex, messageCount ) );
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+    connect( fetch, SIGNAL(headersReceived(QString,
+                                           QMap<qint64,qint64>,
+                                           QMap<qint64,qint64>,
+                                           QMap<qint64,KIMAP::MessageFlags>,
+                                           QMap<qint64,KIMAP::MessagePtr>)),
+             this, SLOT(onHeadersReceived(QString,
+                                          QMap<qint64,qint64>,
+                                          QMap<qint64,qint64>,
+                                          QMap<qint64,KIMAP::MessageFlags>,
+                                          QMap<qint64,KIMAP::MessagePtr>)) );
     connect( fetch, SIGNAL(result(KJob*)),
              this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
@@ -313,16 +331,23 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
   KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_session );
   fetch->setSequenceSet( set );
   fetch->setScope( scope );
-  connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                           QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-           this, SLOT( onFlagsReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                        QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+  connect( fetch, SIGNAL(headersReceived(QString,
+                                         QMap<qint64,qint64>,
+                                         QMap<qint64,qint64>,
+                                         QMap<qint64,KIMAP::MessageFlags>,
+                                         QMap<qint64,KIMAP::MessagePtr>)),
+           this, SLOT(onFlagsReceived(QString,
+                                      QMap<qint64,qint64>,
+                                      QMap<qint64,qint64>,
+                                      QMap<qint64,KIMAP::MessageFlags>,
+                                      QMap<qint64,KIMAP::MessagePtr>)) );
   connect( fetch, SIGNAL(result(KJob*)),
            this, SLOT(onFlagsFetchDone(KJob*)) );
   fetch->start();
 }
 
-void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+void RetrieveItemsTask::onHeadersReceived( const QString &mailBox,
+                                           const QMap<qint64, qint64> &uids,
                                            const QMap<qint64, qint64> &sizes,
                                            const QMap<qint64, KIMAP::MessageFlags> &flags,
                                            const QMap<qint64, KIMAP::MessagePtr> &messages )
@@ -331,7 +356,7 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
 
   Akonadi::Item::List addedItems;
 
-  foreach ( qint64 number, uids.keys() ) {
+  foreach ( qint64 number, uids ) {
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
     i.setMimeType( KMime::Message::mimeType() );
@@ -393,7 +418,8 @@ void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
   listFlagsForImapSet( set );
 }
 
-void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+void RetrieveItemsTask::onFlagsReceived( const QString &mailBox,
+                                         const QMap<qint64, qint64> &uids,
                                          const QMap<qint64, qint64> &sizes,
                                          const QMap<qint64, KIMAP::MessageFlags> &flags,
                                          const QMap<qint64, KIMAP::MessagePtr> &messages )
@@ -404,7 +430,7 @@ void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint
 
   Akonadi::Item::List changedItems;
 
-  foreach ( qint64 number, uids.keys() ) {
+  foreach ( qint64 number, uids ) {
     Akonadi::Item i;
     i.setRemoteId( QString::number( uids[number] ) );
     i.setMimeType( KMime::Message::mimeType() );
