@@ -228,7 +228,8 @@ int ImapResource::configureSubscription()
      return -1;
 
   SubscriptionDialog *subscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
-  subscriptions->setCaption( i18n( "Serverside Subscription..." ) );
+  subscriptions->setCaption( i18n( "Serverside Subscription" ) );
+  subscriptions->setWindowIcon( KIcon( "network-server" ) );
   subscriptions->connectAccount( *m_pool->account(), password );
   subscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
 
