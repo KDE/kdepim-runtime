@@ -170,21 +170,22 @@ bool ImapResource::isFastSyncEnabled() const
 
 int ImapResource::configureDialog( WId windowId )
 {
-  SetupServer dlg( this, windowId );
-  KWindowSystem::setMainWindow( &dlg, windowId );
+  QPointer<SetupServer> dlg = new SetupServer( this, windowId );
+  KWindowSystem::setMainWindow( dlg, windowId );
 
-  dlg.exec();
-  if ( dlg.shouldClearCache() ) {
+  dlg->exec();
+  if ( dlg->shouldClearCache() ) {
     clearCache();
   }
 
-  int result = dlg.result();
+  int result = dlg->result();
+  delete dlg;
 
-  if ( result==QDialog::Accepted ) {
+  if ( result == QDialog::Accepted ) {
     Settings::self()->writeConfig();
   }
 
-  return dlg.result();
+  return result;
 }
 
 void ImapResource::configure( WId windowId )
@@ -227,7 +228,7 @@ int ImapResource::configureSubscription()
   if ( password.isEmpty() )
      return -1;
 
-  SubscriptionDialog *subscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
+  QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
   subscriptions->setCaption( i18n( "Serverside Subscription" ) );
   subscriptions->setWindowIcon( KIcon( "network-server" ) );
   subscriptions->connectAccount( *m_pool->account(), password );
