@@ -112,7 +112,7 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
 
   const QMap<QByteArray, QByteArray> annotations = attribute->annotations();
 
-  foreach ( const QByteArray &entry, annotations.keys() ) {
+  foreach ( const QByteArray &entry, annotations ) {
     KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob( m_session );
     if ( serverCapabilities().contains( "METADATA" ) ) {
       job->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
