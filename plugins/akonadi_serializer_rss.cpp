@@ -19,7 +19,6 @@
 #include "akonadi_serializer_rss.h"
 
 #include <krss/item.h>
-#include <krss/rssitem.h>
 
 #include <akonadi/item.h>
 
@@ -35,9 +34,9 @@ bool SerializerPluginRss::deserialize( Akonadi::Item& item, const QByteArray& la
          label != KRss::Item::ContentPart )
         return false;
 
-    RssItem rssItem;
-    if ( item.hasPayload<RssItem>() ) {
-        rssItem = item.payload<RssItem>();
+    Item rssItem;
+    if ( item.hasPayload<Item>() ) {
+        rssItem = item.payload<Item>();
     }
 
     bool success = false;
@@ -54,7 +53,7 @@ bool SerializerPluginRss::deserialize( Akonadi::Item& item, const QByteArray& la
     if ( !success )
         return false;
 
-    item.setPayload<RssItem>( rssItem );
+    item.setPayload<Item>( rssItem );
     return true;
 }
 
@@ -66,10 +65,10 @@ void SerializerPluginRss::serialize( const Akonadi::Item& item, const QByteArray
          label != KRss::Item::ContentPart )
         return;
 
-    if ( item.mimeType() != Item::mimeType() || !item.hasPayload<RssItem>() )
+    if ( item.mimeType() != Item::mimeType() || !item.hasPayload<Item>() )
         return;
 
-    const RssItem rssItem = item.payload<RssItem>();
+    const Item rssItem = item.payload<Item>();
     QByteArray array;
 
     if ( label == Akonadi::Item::FullPayload ) {
@@ -89,8 +88,8 @@ QSet<QByteArray> SerializerPluginRss::parts( const Akonadi::Item& item ) const
 {
     QSet<QByteArray> partIdentifiers;
 
-    if ( item.hasPayload<RssItem>() ) {
-        const RssItem rssItem = item.payload<RssItem>();
+    if ( item.hasPayload<Item>() ) {
+        const Item rssItem = item.payload<Item>();
 
         if ( rssItem.headersLoaded() ) {
             partIdentifiers << KRss::Item::HeadersPart ;

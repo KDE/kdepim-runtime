@@ -20,10 +20,10 @@
 
 #include <akonadi/itemsync.h>
 
-class RssItemSync : public Akonadi::ItemSync
+class ItemSync : public Akonadi::ItemSync
 {
 public:
-    explicit RssItemSync( const Akonadi::Collection& collection, QObject *parent = 0 );
+    explicit ItemSync( const Akonadi::Collection& collection, QObject *parent = 0 );
 
     void setSynchronizeFlags( bool synchronizeFlags );
     bool synchronizeFlags() const;

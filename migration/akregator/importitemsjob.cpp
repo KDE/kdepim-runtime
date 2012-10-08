@@ -16,7 +16,7 @@
 */
 
 #include "importitemsjob.h"
-#include <krss/rssitem.h>
+#include <krss/item.h>
 #include <krss/feedcollection.h>
 #include "itemsync.h"
 
@@ -54,7 +54,7 @@ static QString generateTmpFileName() {
     return file.fileName();
 }
 
-using KRss::RssItem;
+using KRss::Item;
 
 ImportItemsJob::ImportItemsJob( const Akonadi::Collection& collection, QObject *parent )
     : KJob( parent )
@@ -262,7 +262,7 @@ void ImportItemsJob::syncItems( const Akonadi::Item::List& items_ ) {
         job->start();
     }
 #endif
-    RssItemSync * const syncer = new RssItemSync( m_collection );
+    ItemSync * const syncer = new ItemSync( m_collection );
     syncer->setIncrementalSyncItems( items_, Akonadi::Item::List() );
     syncer->setSynchronizeFlags( false );
     connect( syncer, SIGNAL(result(KJob*)), this, SLOT(syncDone(KJob*)) );

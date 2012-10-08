@@ -19,7 +19,6 @@
 #include "util.h"
 
 #include <krss/item.h>
-#include <krss/rssitem.h>
 #include <krss/person.h>
 #include <krss/category.h>
 #include <krss/enclosure.h>
@@ -46,9 +45,9 @@ static inline int calcHash( const QString& str )
     return qChecksum( array.constData(), array.size() );
 }
 
-KRss::RssItem Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem, KDateTime* fetchDate)
+KRss::Item Util::fromSyndicationItem(const Syndication::ItemPtr& syndItem, KDateTime* fetchDate)
 {
-    KRss::RssItem rssItem;
+    KRss::Item rssItem;
     rssItem.setHeadersLoaded( true );
     rssItem.setContentLoaded( true );
 

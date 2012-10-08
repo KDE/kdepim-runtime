@@ -17,7 +17,6 @@
 
 #include "rssitemsync.h"
 
-#include <krss/rssitem.h>
 #include <krss/item.h>
 
 #include <KDebug>
@@ -52,29 +51,29 @@ bool RssItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &ne
         return false;
     }
 
-    const KRss::RssItem newRssItem = newItem.payload<KRss::RssItem>();
+    const KRss::Item newRssItem = newItem.payload<KRss::Item>();
     const int newHash = newRssItem.hash();
-    const int storedHash = storedItem.payload<KRss::RssItem>().hash();
+    const int storedHash = storedItem.payload<KRss::Item>().hash();
 
     if ( !newRssItem.guidIsHash() && storedHash != newHash ) {
         kDebug() << "The article's content is updated:" << newItem.remoteId();
 
 	Akonadi::Item::Flags flags = storedItem.flags();
-	if (storedItem.hasFlag( KRss::RssItem::flagRead() ) && 
-	      !storedItem.hasFlag( KRss::RssItem::flagUpdated() )) {
+	if (storedItem.hasFlag( KRss::Item::flagRead() ) &&
+	      !storedItem.hasFlag( KRss::Item::flagUpdated() )) {
 	    // case when an item was marked as read by a client 
 	    // and the content changes on the server
-	    flags.insert( KRss::RssItem::flagUpdated() );
+	    flags.insert( KRss::Item::flagUpdated() );
 	}
 	newItem.setFlags( flags );
         return true;
     }
 
     if ( m_synchronizeFlags ) {
-        const bool readFlagsDiffer = storedItem.hasFlag( KRss::RssItem::flagRead() ) !=
-                                     newItem.hasFlag( KRss::RssItem::flagRead() );
-        const bool importantFlagsDiffer = storedItem.hasFlag( KRss::RssItem::flagImportant() ) !=
-                                          newItem.hasFlag( KRss::RssItem::flagImportant() );
+        const bool readFlagsDiffer = storedItem.hasFlag( KRss::Item::flagRead() ) !=
+                                     newItem.hasFlag( KRss::Item::flagRead() );
+        const bool importantFlagsDiffer = storedItem.hasFlag( KRss::Item::flagImportant() ) !=
+                                          newItem.hasFlag( KRss::Item::flagImportant() );
 
         // either 'Seen' or 'Important' was changed in the backend
         // push the item to Akonadi clearing 'New'

@@ -28,7 +28,7 @@ class QByteArray;
 namespace KRss
 {
 
-class RssItem;
+class Item;
 
 class RssItemSerializer
 {
@@ -40,8 +40,8 @@ public:
         Full=Headers|Content
     };
 
-    static void serialize( const KRss::RssItem& item, QByteArray& array, ItemPart part = Full );
-    static bool deserialize( KRss::RssItem& item, const QByteArray& array, ItemPart part = Full );
+    static void serialize( const KRss::Item& item, QByteArray& array, ItemPart part = Full );
+    static bool deserialize( KRss::Item& item, const QByteArray& array, ItemPart part = Full );
 };
 
 }

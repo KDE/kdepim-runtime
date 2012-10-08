@@ -21,7 +21,7 @@
  */
 
 #include "rssitemserializer.h"
-#include "rssitem.h"
+#include "item.h"
 #include "category.h"
 #include "enclosure.h"
 #include "person.h"
@@ -119,7 +119,7 @@ static QList<Enclosure> deserializeEnclosures( const QVariantList& h ) {
     return l;
 }
 
-void RssItemSerializer::serialize( const RssItem& item, QByteArray& ba, ItemPart part ) {
+void RssItemSerializer::serialize( const Item& item, QByteArray& ba, ItemPart part ) {
     QVariantMap hash;
     //hash.insert( QLatin1String( "hash" ), QVariant::fromValue( item.hash() ) );
     hash.insert( QLatin1String( "guidIsHash" ), item.guidIsHash() );
@@ -149,7 +149,7 @@ void RssItemSerializer::serialize( const RssItem& item, QByteArray& ba, ItemPart
     qDebug() << ba;
 }
 
-bool RssItemSerializer::deserialize( RssItem& item, const QByteArray& ba, ItemPart part ) {
+bool RssItemSerializer::deserialize( Item& item, const QByteArray& ba, ItemPart part ) {
     QJSon::Parser parser;
     bool ok;
     QVariantMap hash = parser.parse( ba, &ok ).toMap();

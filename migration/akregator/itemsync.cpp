@@ -17,27 +17,26 @@
 
 #include "itemsync.h"
 
-#include <krss/rssitem.h>
 #include <krss/item.h>
 
 #include <KDebug>
 
-RssItemSync::RssItemSync( const Akonadi::Collection &collection, QObject *parent )
-    : ItemSync( collection, parent ), m_synchronizeFlags( false )
+ItemSync::ItemSync( const Akonadi::Collection &collection, QObject *parent )
+    : Akonadi::ItemSync( collection, parent ), m_synchronizeFlags( false )
 {
 }
 
-void RssItemSync::setSynchronizeFlags( bool synchronizeFlags )
+void ItemSync::setSynchronizeFlags( bool synchronizeFlags )
 {
     m_synchronizeFlags = synchronizeFlags;
 }
 
-bool RssItemSync::synchronizeFlags() const
+bool ItemSync::synchronizeFlags() const
 {
     return m_synchronizeFlags;
 }
 
-bool RssItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &newItem )
+bool ItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &newItem )
 {
     if ( storedItem.mimeType() != KRss::Item::mimeType() ||
         newItem.mimeType() != KRss::Item::mimeType() ) {
@@ -52,9 +51,9 @@ bool RssItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &ne
         return false;
     }
 
-    const KRss::RssItem newRssItem = newItem.payload<KRss::RssItem>();
+    const KRss::Item newRssItem = newItem.payload<KRss::Item>();
     const int newHash = newRssItem.hash();
-    const int storedHash = storedItem.payload<KRss::RssItem>().hash();
+    const int storedHash = storedItem.payload<KRss::Item>().hash();
 
     if ( !newRssItem.guidIsHash() && storedHash != newHash ) {
         // dont overwrite the existing flags
@@ -64,10 +63,10 @@ bool RssItemSync::updateItem( const Akonadi::Item &storedItem, Akonadi::Item &ne
     }
 
     if ( m_synchronizeFlags ) {
-        const bool readFlagsDiffer = storedItem.hasFlag( KRss::RssItem::flagRead() ) !=
-                                     newItem.hasFlag( KRss::RssItem::flagRead() );
-        const bool importantFlagsDiffer = storedItem.hasFlag( KRss::RssItem::flagImportant() ) !=
-                                          newItem.hasFlag( KRss::RssItem::flagImportant() );
+        const bool readFlagsDiffer = storedItem.hasFlag( KRss::Item::flagRead() ) !=
+                                     newItem.hasFlag( KRss::Item::flagRead() );
+        const bool importantFlagsDiffer = storedItem.hasFlag( KRss::Item::flagImportant() ) !=
+                                          newItem.hasFlag( KRss::Item::flagImportant() );
 
         // either 'Seen' or 'Important' was changed in the backend
         // push the item to Akonadi clearing 'New'

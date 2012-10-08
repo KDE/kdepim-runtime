@@ -36,7 +36,7 @@ public:
 
 private:
 #ifdef KRSS_ENABLE_PROTOBUF_SERIALIZER
-    KRss::ProtobufRssItemSerializerImpl m_serializer;
+    KRss::ProtobufItemSerializerImpl m_serializer;
 #else
     KRss::RssItemSerializer m_serializer;
 #endif

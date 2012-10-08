@@ -26,7 +26,6 @@
 #include <krss/person.h>
 #include <krss/category.h>
 #include <krss/item.h>
-#include <krss/rssitem.h>
 #include "rssitemserializer.h"
 
 #include <KDateTime>
@@ -41,20 +40,20 @@ using namespace KRss;
 
 namespace {
 
-void printItem( const RssItem& item )
+void printItem( const Item& item )
 {
     QByteArray ba;
     RssItemSerializer::serialize( item, ba );
     qDebug() << ba.size() << ba;
 }
 
-void testItem( const RssItem& item )
+void testItem( const Item& item )
 {
     const bool headersLoaded = item.headersLoaded();
     const bool contentLoaded = item.contentLoaded();
     QByteArray ba;
     RssItemSerializer::serialize( item, ba );
-    RssItem deserialized;
+    Item deserialized;
     const bool success = RssItemSerializer::deserialize( deserialized, ba );
     QVERIFY2( success, "Deserialization failed" );
     deserialized.setContentLoaded( contentLoaded );
@@ -71,12 +70,12 @@ void testItem( const RssItem& item )
 
 void TestXmlItemSerializer::testEmptyItem()
 {
-    ::testItem( RssItem() );
+    ::testItem( Item() );
 }
 
 void TestXmlItemSerializer::testDates()
 {
-    RssItem item;
+    Item item;
     const KDateTime updated = KDateTime::currentLocalDateTime();
     const KDateTime published = updated.addDays( -4 );
     item.setDatePublished( published );
@@ -86,7 +85,7 @@ void TestXmlItemSerializer::testDates()
 
 void TestXmlItemSerializer::testSimpleItems()
 {
-    RssItem item;
+    Item item;
     item.setTitle( QLatin1String("Some title") );
     item.setDescription( QLatin1String("Some description") );
     item.setLink( QLatin1String("http://akregator.kde.org") );
@@ -103,7 +102,7 @@ void TestXmlItemSerializer::testSimpleItems()
 void TestXmlItemSerializer::testStatus()
 {
 #if 0
-    RssItem item;
+    Item item;
     item.setStatus( Read );
     ::testItem( item );
     item.setStatus( New );
@@ -117,7 +116,7 @@ void TestXmlItemSerializer::testStatus()
 
 void TestXmlItemSerializer::testCustomProperties()
 {
-    RssItem item;
+    Item item;
     item.setGuid( QLatin1String("http://uniqueid") );
     item.setTitle( QLatin1String("Some title") );
     item.setDescription( QLatin1String("Some description") );
@@ -130,7 +129,7 @@ void TestXmlItemSerializer::testCustomProperties()
 
 void TestXmlItemSerializer::testEnclosures()
 {
-    RssItem item;
+    Item item;
     item.setLink( QLatin1String("http://akregator.kde.org") );
     Enclosure enc;
     enc.setUrl( QLatin1String("http://akregator.kde.org/some.mp3") );
@@ -159,7 +158,7 @@ void TestXmlItemSerializer::testCategories()
     cats.append( cat );
     cats.append( cat2 );
     cats.append( Category() );
-    RssItem item;
+    Item item;
     item.setCategories( cats );
     ::testItem( item );
 }
@@ -177,14 +176,14 @@ void TestXmlItemSerializer::testAuthors()
     authors.append( a1 );
     authors.append( a2 );
     authors.append( a3 );
-    RssItem item;
+    Item item;
     item.setAuthors( authors );
     ::testItem( item );
 }
 
 void TestXmlItemSerializer::testComments()
 {
-    RssItem item;
+    Item item;
     item.setCommentsCount( 10 );
     item.setCommentsLink( QLatin1String("http://heyho#comment") );
     item.setCommentsFeed( QLatin1String("http://heyho/comments.rss") );

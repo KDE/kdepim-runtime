@@ -21,7 +21,7 @@
  */
 
 #include "rssitemserializer.h"
-#include "rssitem.h"
+#include "item.h"
 #include "category.h"
 #include "enclosure.h"
 #include "person.h"
@@ -32,7 +32,7 @@
 
 using namespace KRss;
 
-void RssItemSerializer::serialize( const RssItem& item, QByteArray& ba, ItemPart part ) {
+void RssItemSerializer::serialize( const Item& item, QByteArray& ba, ItemPart part ) {
     QDataStream stream( &ba, QIODevice::WriteOnly );
     const bool writeHeaders = ( part & Headers ) != 0;
     const bool writeContent = ( part & Content ) != 0;
@@ -76,12 +76,12 @@ void RssItemSerializer::serialize( const RssItem& item, QByteArray& ba, ItemPart
 #define READ2(type,name,target) type name; stream >> name; target.set##name( name );
 #define READDATE(name) QString name; stream >> name; item.set##name( KDateTime::fromString( name ) );
 
-bool RssItemSerializer::deserialize( RssItem& itemOut, const QByteArray& ba, ItemPart part ) {
+bool RssItemSerializer::deserialize( Item& itemOut, const QByteArray& ba, ItemPart part ) {
     const bool readHeaders = ( part & Headers ) != 0;
     const bool readContent = ( part & Content ) != 0;
 
     QDataStream stream( ba );
-    RssItem item;
+    Item item;
     if ( readHeaders ) {
         READ(qint64,Hash)
         READ(bool,GuidIsHash)

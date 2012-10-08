@@ -23,7 +23,7 @@
 #include "rssitemserializer.h"
 #include <krss/category.h>
 #include <krss/enclosure.h>
-#include <krss/rssitem.h>
+#include <krss/item.h>
 #include <krss/person.h>
 
 #include <syndication/atom/constants.h>
@@ -217,7 +217,7 @@ static void writeEnclosure( const KRss::Enclosure& enclosure, QXmlStreamWriter& 
     writer.writeEndElement();
 }
 
-static void writeItemHeaders( const KRss::RssItem& item, QXmlStreamWriter& writer )
+static void writeItemHeaders( const KRss::Item& item, QXmlStreamWriter& writer )
 {
     Elements::instance.title.write( item.title(), writer, Html );
     writeLink( item.link(), writer );
@@ -244,7 +244,7 @@ static void writeItemHeaders( const KRss::RssItem& item, QXmlStreamWriter& write
 
 }
 
-static void writeItemContent( const KRss::RssItem& item, QXmlStreamWriter& writer )
+static void writeItemContent( const KRss::Item& item, QXmlStreamWriter& writer )
 {
     const QString description = item.description();
     Elements::instance.summary.write( description, writer, Html );
@@ -268,7 +268,7 @@ static void writeItemContent( const KRss::RssItem& item, QXmlStreamWriter& write
     }
 }
 
-static void writeItem( const KRss::RssItem& item, QXmlStreamWriter& writer, KRss::RssItemSerializer::ItemPart part )
+static void writeItem( const KRss::Item& item, QXmlStreamWriter& writer, KRss::RssItemSerializer::ItemPart part )
 {
     const QString atomNS = Syndication::Atom::atom1Namespace();
     const QString commentNS = Syndication::commentApiNamespace();
@@ -287,7 +287,7 @@ static void writeItem( const KRss::RssItem& item, QXmlStreamWriter& writer, KRss
     writer.writeEndElement();   // Entry
 }
 
-static void readLink( KRss::RssItem& item, QXmlStreamReader& reader )
+static void readLink( KRss::Item& item, QXmlStreamReader& reader )
 {
     const QXmlStreamAttributes attrs = reader.attributes();
     const QString rel = attrs.value( QString(), QLatin1String("rel") ).toString();
@@ -314,7 +314,7 @@ static void readLink( KRss::RssItem& item, QXmlStreamReader& reader )
     }
 }
 
-static void readAuthor( KRss::RssItem& item, QXmlStreamReader& reader )
+static void readAuthor( KRss::Item& item, QXmlStreamReader& reader )
 {
     KRss::Person author;
     int depth = 1;
@@ -339,7 +339,7 @@ static void readAuthor( KRss::RssItem& item, QXmlStreamReader& reader )
     item.setAuthors( authors );
 }
 
-static void readCategory( KRss::RssItem& item, QXmlStreamReader& reader )
+static void readCategory( KRss::Item& item, QXmlStreamReader& reader )
 {
     const QXmlStreamAttributes attrs = reader.attributes();
     KRss::Category cat;
@@ -351,7 +351,7 @@ static void readCategory( KRss::RssItem& item, QXmlStreamReader& reader )
     item.setCategories( cats );
 }
 
-static void readCustomProperty( KRss::RssItem& item, QXmlStreamReader& reader )
+static void readCustomProperty( KRss::Item& item, QXmlStreamReader& reader )
 {
     QString key;
     QString value;
@@ -374,7 +374,7 @@ static void readCustomProperty( KRss::RssItem& item, QXmlStreamReader& reader )
 
 } // namespace
 
-void KRss::RssItemSerializer::serialize( const KRss::RssItem& item, QByteArray& array, ItemPart part )
+void KRss::RssItemSerializer::serialize( const KRss::Item& item, QByteArray& array, ItemPart part )
 {
     QXmlStreamWriter writer( &array );
     writer.writeStartDocument();
@@ -382,7 +382,7 @@ void KRss::RssItemSerializer::serialize( const KRss::RssItem& item, QByteArray& 
     writer.writeEndDocument();
 }
 
-bool KRss::RssItemSerializer::deserialize( KRss::RssItem& item, const QByteArray& array, ItemPart part )
+bool KRss::RssItemSerializer::deserialize( KRss::Item& item, const QByteArray& array, ItemPart part )
 {
     QXmlStreamReader reader( array );
     reader.setNamespaceProcessing( true );

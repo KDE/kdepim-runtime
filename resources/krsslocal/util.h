@@ -19,14 +19,14 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <krss/rssitem.h>
+#include <krss/item.h>
 #include <Syndication/Item>
 
 class KDateTime;
 
 namespace Util {
   
-    KRss::RssItem fromSyndicationItem( const Syndication::ItemPtr& syndItem, KDateTime* fetchDate );
+    KRss::Item fromSyndicationItem( const Syndication::ItemPtr& syndItem, KDateTime* fetchDate );
 }
 
 #endif // UTIL_H

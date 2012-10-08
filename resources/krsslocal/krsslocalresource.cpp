@@ -50,7 +50,7 @@
 #include <KRss/FeedCollection>
 #include <KRss/FeedPropertiesCollectionAttribute>
 #include <KRss/ImportFromOpmlJob>
-#include <KRss/RssItem>
+#include <KRss/Item>
 
 using namespace Akonadi;
 using namespace boost;
@@ -276,7 +276,7 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
     foreach ( const Syndication::ItemPtr& syndItem, syndItems ) {
         Akonadi::Item item( mimeType() );
         item.setRemoteId( syndItem->id() );
-        item.setPayload<KRss::RssItem>( Util::fromSyndicationItem( syndItem, &now ) );
+        item.setPayload<KRss::Item>( Util::fromSyndicationItem( syndItem, &now ) );
         items << item;
     }
 

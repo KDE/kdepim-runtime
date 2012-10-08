@@ -19,7 +19,6 @@
 
 #include <krss/category.h>
 #include <krss/enclosure.h>
-#include <krss/rssitem.h>
 #include <krss/item.h>
 #include <krss/person.h>
 
@@ -123,7 +122,7 @@ struct Elements
 
 const Elements Elements::instance;
 
-static void readLink( KRss::RssItem& item, QXmlStreamReader& reader )
+static void readLink( KRss::Item& item, QXmlStreamReader& reader )
 {
     const QXmlStreamAttributes attrs = reader.attributes();
     const QString rel = attrs.value( QString(), QLatin1String("rel") ).toString();
@@ -150,7 +149,7 @@ static void readLink( KRss::RssItem& item, QXmlStreamReader& reader )
     }
 }
 
-static void readAuthor( KRss::RssItem& item, QXmlStreamReader& reader )
+static void readAuthor( KRss::Item& item, QXmlStreamReader& reader )
 {
     KRss::Person author;
     int depth = 1;
@@ -175,7 +174,7 @@ static void readAuthor( KRss::RssItem& item, QXmlStreamReader& reader )
     item.setAuthors( authors );
 }
 
-static void readCategory( KRss::RssItem& item, QXmlStreamReader& reader )
+static void readCategory( KRss::Item& item, QXmlStreamReader& reader )
 {
     const QXmlStreamAttributes attrs = reader.attributes();
     KRss::Category cat;
@@ -193,8 +192,8 @@ static bool readItem( Akonadi::Item& akonadiItem, QXmlStreamReader& reader ) {
         reader.readNext();
 
     Akonadi::Item::Flags flags;
-    flags.insert( KRss::RssItem::flagRead() );
-    KRss::RssItem item;
+    flags.insert( KRss::Item::flagRead() );
+    KRss::Item item;
     item.setHeadersLoaded( true );
     item.setContentLoaded( true );
 
@@ -239,14 +238,14 @@ static bool readItem( Akonadi::Item& akonadiItem, QXmlStreamReader& reader ) {
             else if ( el.readStatus.isNextIn( reader ) ) {
                 const QString statusStr = reader.readElementText();
                 if ( statusStr == QLatin1String("new") || statusStr == QLatin1String("unread") )
-                    flags.remove( KRss::RssItem::flagRead() );
+                    flags.remove( KRss::Item::flagRead() );
             } else if ( el.important.isNextIn( reader ) ) {
                 if ( reader.readElementText() == QLatin1String("true") )
-                    flags.insert( KRss::RssItem::flagImportant() );
+                    flags.insert( KRss::Item::flagImportant() );
             } else if ( el.deleted.isNextIn( reader ) ) {
                 if ( reader.readElementText() == QLatin1String("true") ) {
-                    flags.insert( KRss::RssItem::flagDeleted() );
-                    flags.insert( KRss::RssItem::flagRead() );
+                    flags.insert( KRss::Item::flagDeleted() );
+                    flags.insert( KRss::Item::flagRead() );
                 }
             }
 
@@ -255,7 +254,7 @@ static bool readItem( Akonadi::Item& akonadiItem, QXmlStreamReader& reader ) {
         reader.readNext();
     }
 
-    akonadiItem.setPayload<KRss::RssItem>( item );
+    akonadiItem.setPayload<KRss::Item>( item );
     akonadiItem.setMimeType( KRss::Item::mimeType() );
     akonadiItem.setRemoteId( item.guid() );
     akonadiItem.setFlags( flags );
