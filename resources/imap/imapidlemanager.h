@@ -23,14 +23,15 @@
     02110-1301, USA.
 */
 
-#ifndef __IMAP_IDLEMANAGER_H__
-#define __IMAP_IDLEMANAGER_H__
-
-#include <akonadi/collection.h>
-#include <QtCore/QObject>
-#include <QPointer>
+#ifndef RESOURCES_IMAP_IMAPIDLEMANAGER_H
+#define RESOURCES_IMAP_IMAPIDLEMANAGER_H
 
 #include "resourcestateinterface.h"
+
+#include <akonadi/collection.h>
+
+#include <QObject>
+#include <QPointer>
 
 namespace KIMAP
 {

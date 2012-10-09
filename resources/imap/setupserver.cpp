@@ -562,8 +562,9 @@ void SetupServer::slotManageSubscriptions()
 
   account.setAuthenticationMode( Settings::mapTransportAuthToKimap( getCurrentAuthMode( m_ui->authenticationCombo ) ) );
 
-  SubscriptionDialog *subscriptions = new SubscriptionDialog( this );
-  subscriptions->setCaption(  i18n( "Serverside Subscription..." ) );
+  QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( this );
+  subscriptions->setCaption(  i18n( "Serverside Subscription" ) );
+  subscriptions->setWindowIcon( KIcon( "network-server" ) );
   subscriptions->connectAccount( account, m_ui->password->text() );
   m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 
@@ -576,14 +577,18 @@ void SetupServer::slotManageSubscriptions()
 void SetupServer::slotShowServerInfo()
 {
   KDialog *dialog = new KDialog( this );
-  dialog->setCaption( i18nc( "Dialog title for dialog showing information about a server", "Server Info" ) );
+  dialog->setCaption(
+    i18nc( "@title:window Dialog title for dialog showing information about a server",
+           "Server Info" ) );
   dialog->setButtons( KDialog::Close );
   dialog->setAttribute( Qt::WA_DeleteOnClose );
 
   Ui::ServerInfo *serverInfoWidget = new Ui::ServerInfo();
   serverInfoWidget->setupUi( dialog );
   dialog->setMainWidget( serverInfoWidget->serverInfo );
-  serverInfoWidget->serverInfo->setPlainText( m_parentResource->serverCapabilities().join( QLatin1String( "\n" ) ) );
+  serverInfoWidget->serverInfo->setPlainText(
+    m_parentResource->serverCapabilities().join( QLatin1String( "\n" ) ) );
+
   dialog->show();
 }
 

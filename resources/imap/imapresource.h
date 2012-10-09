@@ -23,8 +23,8 @@
     02110-1301, USA.
 */
 
-#ifndef __IMAP_RESOURCE_H__
-#define __IMAP_RESOURCE_H__
+#ifndef RESOURCES_IMAP_IMAPRESOURCE_H
+#define RESOURCES_IMAP_IMAPRESOURCE_H
 
 #include <akonadi/resourcebase.h>
 

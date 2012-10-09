@@ -159,11 +159,11 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
 
   QMap<QByteArray, QByteArray> annotations;
   QByteArray attribute = "";
-  if ( meta->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
+  if ( meta->serverCapability() == KIMAP::MetaDataJobBase::Annotatemore ) {
     attribute = "value.shared";
   }
 
-  foreach ( const QByteArray &entry, rawAnnotations.keys() ) {
+  foreach ( const QByteArray &entry, rawAnnotations.keys() ) { //krazy:exclude=foreach
     annotations[entry] = rawAnnotations[entry][attribute];
   }
 

@@ -78,7 +78,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   setModal( true );
   setButtons( Ok | Cancel | User1 );
 
-  setButtonText( User1, i18n( "Reload &List" ) );
+  setButtonText( User1, i18nc( "@action:button", "Reload &List" ) );
   enableButton( User1, false );
   connect( this, SIGNAL(user1Clicked()),
           this, SLOT(onReloadRequested()) );
@@ -88,14 +88,16 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   mainWidget->setLayout( mainLayout );
   setMainWidget( mainWidget );
 
-  m_enableSubscription = new QCheckBox( i18n( "Enable server-side subscriptions" ) );
+  m_enableSubscription = new QCheckBox( i18nc( "@option:check",
+                                               "Enable server-side subscriptions" ) );
   mainLayout->addWidget( m_enableSubscription );
 
   QHBoxLayout *filterBarLayout = new QHBoxLayout;
   mainLayout->addLayout( filterBarLayout );
 
 #ifndef KDEPIM_MOBILE_UI
-  filterBarLayout->addWidget( new QLabel( i18n( "Search:" ) ) );
+  filterBarLayout->addWidget( new QLabel( i18nc( "@label search for a subscription",
+                                                 "Search:" ) ) );
 #endif
 
   m_lineEdit = new KLineEdit( mainWidget );
@@ -106,7 +108,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   m_lineEdit->setFocus();
 
 #ifndef KDEPIM_MOBILE_UI
-  QCheckBox *checkBox = new QCheckBox( i18n( "Subscribed only" ), mainWidget );
+  QCheckBox *checkBox = new QCheckBox( i18nc( "@option:check", "Subscribed only" ), mainWidget );
   connect( checkBox, SIGNAL(stateChanged(int)),
            m_filter, SLOT(setIncludeCheckedOnly(int)) );
   filterBarLayout->addWidget( checkBox );
@@ -165,7 +167,7 @@ void SubscriptionDialog::setSubscriptionEnabled( bool enabled )
   m_treeView->setEnabled( enabled );
 #else
   m_listView->setEnabled( enabled );
-#endif	
+#endif
 }
 
 bool SubscriptionDialog::subscriptionEnabled() const

@@ -76,8 +76,8 @@ void ContactsResource::aboutToQuit()
 
 void ContactsResource::configure( WId windowId )
 {
-  SettingsDialog dlg( mSettings, windowId );
-  if ( dlg.exec() ) {
+  QPointer<SettingsDialog> dlg = new SettingsDialog( mSettings, windowId );
+  if ( dlg->exec() ) {
     mSettings->setIsConfigured( true );
     mSettings->writeConfig();
 
@@ -90,6 +90,7 @@ void ContactsResource::configure( WId windowId )
   } else {
     emit configurationDialogRejected();
   }
+  delete dlg;
 }
 
 Collection::List ContactsResource::createCollectionsForDirectory( const QDir &parentDirectory, const Collection &parentCollection ) const
@@ -403,8 +404,10 @@ void ContactsResource::collectionChanged( const Akonadi::Collection &collection 
  */
 static bool removeDirectory( const QDir &directory )
 {
-  const QFileInfoList infos = directory.entryInfoList( QDir::Files|QDir::Dirs|QDir::NoDotAndDotDot );
-  foreach ( const QFileInfo &info, infos ) {
+  const QFileInfoList infoList =
+    directory.entryInfoList( QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot );
+
+  foreach ( const QFileInfo &info, infoList ) {
     if ( info.isDir() ) {
       if ( !removeDirectory( QDir( info.absoluteFilePath() ) ) )
         return false;
