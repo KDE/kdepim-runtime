@@ -146,13 +146,7 @@ void FeederQueue::processNextCollection()
   // we check if the collection already has been indexed with the following values
   // - nie:url needs to be set
   // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
-  if ( !mReIndex &&
-        Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
-                                                                        .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
-                                                                              Soprano::Node::resourceToN3( mCurrentCollection.url() ),
-                                                                              Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
-                                                                              Soprano::Node::literalToN3( NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL ) ),
-                                                                              Soprano::Query::QueryLanguageSparql ).boolValue() ) {
+  if ( !mReIndex && !NepomukHelpers::isIndexed(mCurrentCollection) ) {
     kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
     mCurrentCollection = Collection();
     QTimer::singleShot(0, this, SLOT(processNextCollection()));
@@ -181,17 +175,7 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
     // - aneo:akonadiItemId needs to be set
     // - nie:lastModified needs to match the item's modification time
     // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
-    if ( mReIndex ||
-         !Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }" )
-                                                                           .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
-                                                                                 Soprano::Node::resourceToN3( item.url() ),
-                                                                                 Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiItemId() ),
-                                                                                 Soprano::Node::literalToN3( QString::number( item.id() ) ),
-                                                                                 Soprano::Node::resourceToN3( Vocabulary::NIE::lastModified() ),
-                                                                                 Soprano::Node::literalToN3( item.modificationTime() ),
-                                                                                 Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
-                                                                                 Soprano::Node::literalToN3( NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL ) ),
-                                                                                 Soprano::Query::QueryLanguageSparql ).boolValue() ) {
+    if ( mReIndex || !NepomukHelpers::isIndexed(item)) {
       itemsToUpdate.append( item );
     }
   }
@@ -368,14 +352,9 @@ bool ItemQueue::processItem()
   Q_ASSERT( mRunningJobs == 0 );
   mRunningJobs = 0;
   //kDebug() << "------------------------procItem";
-  static bool processing = false; // guard against sub-eventloop reentrancy
-  if ( processing )
-    return false;
-  processing = true;
   if ( !mItemPipeline.isEmpty() ) {
     mItemFetchList.append( Akonadi::Item( mItemPipeline.dequeue() ) );
   }
-  processing = false;
 
   if ( mItemFetchList.size() >= mFetchSize || mItemPipeline.isEmpty() ) {
     //kDebug() << QString( "Fetching %1 items" ).arg( mItemFetchList.size() );
