@@ -50,6 +50,8 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     model->setItemPopulationStrategy(Akonadi::EntityTreeModel::LazyPopulation);
     
     m_ui.treeView->setModel(model);
+    
+    m_ui.treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     KActionCollection *actionCollection = this->actionCollection();
     KAction *action;
@@ -93,16 +95,18 @@ NepomukPIMindexerUtility::~NepomukPIMindexerUtility()
 void NepomukPIMindexerUtility::indexCurrentlySelected()
 {
     mTime.start();
-    const QModelIndex &index = m_ui.treeView->currentIndex();
-    Akonadi::Item item = index.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
-    if (item.isValid()) {
-        statusBar()->showMessage(QString::fromLatin1("Indexing item: ").append(item.url().url()));
-        mFeederQueue->addItem(item);
-    } else {
-        Akonadi::Collection collection = index.data(Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-        if (collection.isValid() && !collection.isVirtual() ) {
-            statusBar()->showMessage(QString::fromLatin1("Indexing collection: ").append(collection.url().url()));
-            mFeederQueue->addCollection(collection);
+    const QModelIndexList &indexList = m_ui.treeView->selectionModel()->selectedRows(0);
+    foreach (const QModelIndex &index, indexList) {
+        Akonadi::Item item = index.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
+        if (item.isValid()) {
+            statusBar()->showMessage(QString::fromLatin1("Indexing item: ").append(item.url().url()));
+            mFeederQueue->addItem(item);
+        } else {
+            Akonadi::Collection collection = index.data(Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            if (collection.isValid() && !collection.isVirtual() ) {
+                statusBar()->showMessage(QString::fromLatin1("Indexing collection: ").append(collection.url().url()));
+                mFeederQueue->addCollection(collection);
+            }
         }
     }
 }
