@@ -146,7 +146,7 @@ void FeederQueue::processNextCollection()
   // we check if the collection already has been indexed with the following values
   // - nie:url needs to be set
   // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
-  if ( !mReIndex && !NepomukHelpers::isIndexed(mCurrentCollection) ) {
+  if ( !mReIndex && NepomukHelpers::isIndexed(mCurrentCollection) ) {
     kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
     mCurrentCollection = Collection();
     QTimer::singleShot(0, this, SLOT(processNextCollection()));
