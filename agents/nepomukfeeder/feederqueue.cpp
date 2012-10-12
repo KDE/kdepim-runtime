@@ -274,8 +274,12 @@ void FeederQueue::processItemQueue()
 
 void FeederQueue::prioQueueFinished()
 {
-  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && ( mPendingJobs == 0 ) && mCurrentCollection.isValid() ) {
-    collectionFullyIndexed();
+  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && ( mPendingJobs == 0 )) {
+    if (mCurrentCollection.isValid()) {
+      collectionFullyIndexed();
+    } else {
+      emit fullyIndexed();
+    }
   }
 }
 
