@@ -223,45 +223,46 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
   if ( job->error() ) {
     kWarning( ) << "Error on item fetch:" << job->errorText();
     cancelTask();
-  } else {
-    const bool resultCanBeEmpty = job->property( "resultCanBeEmpty" ).isValid();
+    return;
+  }
+  const bool resultCanBeEmpty = job->property( "resultCanBeEmpty" ).isValid();
 
-    Akonadi::Item::Id collectionId = -1;
-    const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
-    if ( items.size() < 1 ) {
-      if ( resultCanBeEmpty ) {
-        itemsRetrieved( Akonadi::Item::List() );
-      } else {
-        kWarning() << "Items is emtpy";
-        cancelTask();
-      }
-      return;
-    }
-    collectionId = items[0].storageCollectionId();
-    KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
-    if ( handler ) {
-      if ( m_retrieveState == DeleteItem ) {
-        kDebug() << "m_retrieveState = DeleteItem";
-        handler->itemDeleted( items[0] );
-      } else {
-        Akonadi::Item::List newItems = handler->translateItems( items );
-        if ( m_retrieveState == RetrieveItems ) {
-          itemsRetrieved( newItems );
-        } else { //RetrieveItem
-          if ( !newItems.isEmpty() ) {
-            itemRetrieved( newItems[0] );
-          } else {
-            kWarning() << "Could not translate item";
-            cancelTask();
-            return;
-          }
-        }
-      }
-      kDebug() << "RETRIEVEITEM DONE";
+  Akonadi::Item::Id collectionId = -1;
+  const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
+  if ( items.size() < 1 ) {
+    if ( resultCanBeEmpty ) {
+      itemsRetrieved( Akonadi::Item::List() );
     } else {
+      kWarning() << "Items is emtpy";
       cancelTask();
     }
+    return;
   }
+  collectionId = items[0].storageCollectionId();
+  KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
+  if ( !handler ) {
+    kWarning() << "No handler for collection available: " << collectionId;
+    cancelTask();
+    return;
+  }
+  if ( m_retrieveState == DeleteItem ) {
+    kDebug() << "m_retrieveState = DeleteItem";
+    handler->itemDeleted( items[0] );
+    return;
+  }
+  Akonadi::Item::List newItems = handler->translateItems( items );
+  if ( m_retrieveState == RetrieveItems ) {
+    itemsRetrieved( newItems );
+  } else { //RetrieveItem
+    if ( !newItems.isEmpty() ) {
+      itemRetrieved( newItems[0] );
+    } else {
+      kWarning() << "Could not translate item";
+      cancelTask();
+      return;
+    }
+  }
+  kDebug() << "RETRIEVEITEM DONE";
 }
 
 void KolabProxyResource::aboutToQuit()
