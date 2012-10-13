@@ -18,12 +18,6 @@
 
 #include "feederqueue.h"
 
-#include <nepomuk2/datamanagement.h>
-#include <nepomuk2/simpleresourcegraph.h>
-#include <nepomuk2/simpleresource.h>
-#include <Nepomuk2/ResourceManager>
-#include <Soprano/Model>
-#include <Soprano/QueryResultIterator>
 #include <nie.h>
 
 #include <Akonadi/ItemFetchJob>
