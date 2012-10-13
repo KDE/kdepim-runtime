@@ -48,7 +48,6 @@ endif()
 
 target_link_libraries(akonadi_googlecalendar_resource
   ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KCAL_LIBS}
   ${KDEPIMLIBS_KCALCORE_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${QT_QTCORE_LIBRARY}

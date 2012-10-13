@@ -369,7 +369,7 @@ class MaildirContext
     }
 
     bool isValidEntry( const QString &entry ) const {
-      return mMaildir.entryList().contains( entry );
+      return !mMaildir.findRealKey( entry ).isEmpty();
     }
 
     void readIndexData();
