@@ -204,7 +204,16 @@ void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, 
 
 void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
 {
-  Q_UNUSED( partIdentifiers );
+  QSet<QByteArray> parts = partIdentifiers;
+  QMutableSetIterator<QByteArray> it( parts );
+  while ( it.hasNext() ) {
+      const QByteArray part = it.next();
+      if ( part == "REMOTEID" ) {
+        it.remove();
+      }
+  }
+  if ( parts.isEmpty() )
+    return;
   if ( indexingDisabled( collection ) )
     return;
   NepomukHelpers::addCollectionToNepomuk( collection );
