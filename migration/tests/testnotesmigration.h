@@ -23,8 +23,10 @@
 #include <QtCore/QObject>
 
 #include <Akonadi/Collection>
-#include <akonadi/qtest_akonadi.h>
 #include <QtTest/qtestcase.h>
+#include <QModelIndex>
+#include <QHash>
+#include <QStringList>
 
 namespace Akonadi
 {
