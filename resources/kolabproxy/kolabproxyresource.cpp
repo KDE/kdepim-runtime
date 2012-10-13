@@ -214,6 +214,7 @@ bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QBy
   m_retrieveState = RetrieveItem;
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( item ) );
   job->fetchScope().fetchFullPayload();
+  job->setProperty( "itemId", item.id() );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
   return true;
 }
@@ -255,7 +256,9 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
     itemsRetrieved( newItems );
   } else { //RetrieveItem
     if ( !newItems.isEmpty() ) {
-      itemRetrieved( newItems[0] );
+      Akonadi::Item item = newItems[0];
+      item.setId(job->property("itemId").value<Akonadi::Item::Id>());
+      itemRetrieved( item );
     } else {
       kWarning() << "Could not translate item";
       cancelTask();
