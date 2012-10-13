@@ -169,11 +169,22 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
-  kDebug() << item.id();
-  Q_UNUSED( partIdentifiers );
+  QSet<QByteArray> parts = partIdentifiers;
+  // Remove parts that we don't use in nepomuk, to avoid unnecessary re-indexing
+  // We care for FLAGS, and PLD (headers, body), possibly for modification time
+  QMutableSetIterator<QByteArray> it( parts );
+  while ( it.hasNext() ) {
+      const QByteArray part = it.next();
+      if ( part == "REMOTEID" || part.startsWith( "ATR:" ) ) {
+        it.remove();
+      }
+  }
+  // Nothing to re-index if only the flags have changed, or only the remote ID
+  if ( parts.isEmpty() )
+    return;
   if ( indexingDisabled( item.parentCollection() ) )
     return;
-  // TODO: check part identfiers if anything interesting changed at all
+  //kDebug() << item.id() << partIdentifiers;
   mQueue.addItem( item );
 }
 
