@@ -204,7 +204,16 @@ void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, 
 
 void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
 {
-  Q_UNUSED( partIdentifiers );
+  QSet<QByteArray> parts = partIdentifiers;
+  QMutableSetIterator<QByteArray> it( parts );
+  while ( it.hasNext() ) {
+      const QByteArray part = it.next();
+      if ( part == "REMOTEID" ) {
+        it.remove();
+      }
+  }
+  if ( parts.isEmpty() )
+    return;
   if ( indexingDisabled( collection ) )
     return;
   NepomukHelpers::addCollectionToNepomuk( collection );
@@ -296,9 +305,8 @@ void NepomukFeederAgent::selfTest()
     mNepomukStartupTimeout.stop();
     checkOnline();
     const KConfigGroup grp( componentData().config(), "InitialIndexing" );
-    const bool initialUpdateComplete = grp.readEntry( "InitialIndexingComplete", false );
     const int indexCompatLevelIncreased = grp.readEntry( "IndexCompatLevel", 0 ) < NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL;
-    if ( !mInitialUpdateDone && ( !initialUpdateComplete || indexCompatLevelIncreased ) ) {
+    if ( !mInitialUpdateDone && indexCompatLevelIncreased ) {
       mInitialUpdateDone = true;
       // we actually never need to reindex everything in normal operation
       // we leave the setting in anyway in case we ever introduce a manual override or whatever
@@ -327,7 +335,6 @@ void NepomukFeederAgent::disableIdleDetection( bool value )
 void NepomukFeederAgent::slotFullyIndexed()
 {
   KConfigGroup grp( componentData().config(), "InitialIndexing" );
-  grp.writeEntry( "InitialIndexingComplete", true );
   grp.writeEntry( "IndexCompatLevel", NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
   grp.sync();
 }
