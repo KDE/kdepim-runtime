@@ -384,8 +384,9 @@ void ItemQueue::fetchJobResult(KJob* job)
   mFetchedItemList.append( fetchJob->items() );
   if ( fetchJob->items().size() != numberOfItems ) {
     kWarning() << "Not all items were fetched: " << fetchJob->items().size() << numberOfItems;
+  if ( processBatch() && mBatch.isEmpty() ) { //Can happen if only items without payload were fetched
+    emit batchFinished();
   }
-  processBatch();
 }
 
 bool ItemQueue::processBatch()
@@ -394,8 +395,8 @@ bool ItemQueue::processBatch()
   for ( int i = 0; i < mFetchedItemList.size() && i < mBatchSize; i++ ) {
     const Akonadi::Item &item = mFetchedItemList.takeFirst();
     //kDebug() << item.id();
-    if ( !item.hasPayload() ) { //can happen due to deserialization error
-      kWarning() << "failed to fetch item: " << item.id();
+    if ( !item.hasPayload() ) { //can happen due to deserialization error or with items that actually don't have a local payload
+      kWarning() << "failed to fetch item or item without payload: " << item.id();
       continue;
     }
     Q_ASSERT( item.hasPayload() );
