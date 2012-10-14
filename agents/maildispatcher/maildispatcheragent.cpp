@@ -164,11 +164,10 @@ void MailDispatcherAgent::Private::dispatch()
         emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
 
         if ( !errorOccurred ) {
-          const QPixmap pixmap = KIcon( "mail-folder-outbox" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
           KNotification *notify = new KNotification( "emailsent" );
           notify->setComponentData( q->componentData() );
-          notify->setPixmap( pixmap );
-          notify->setText( i18nc( "Notification when the email was sent", "E-mail successfully sent" ) );
+          notify->setTitle( i18nc( "Notification title when email was sent", "E-Mail Successfully Sent" ) );
+          notify->setText( i18nc( "Notification when the email was sent", "Your E-Mail has successfully been sent." ) );
           notify->sendEvent();
         }
       } else {
@@ -338,11 +337,10 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     // do anything.
     kDebug() << "Sending failed. error:" << job->errorString();
 
-    const QPixmap pixmap = KIcon( "dialog-error" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
     KNotification *notify = new KNotification( "sendingfailed" );
     notify->setComponentData( q->componentData() );
-    notify->setPixmap( pixmap );
-    notify->setText( i18nc( "Notification when email sending failed", "E-mail sending failed: %1", job->errorString() ) );
+    notify->setTitle( i18nc( "Notification title when email sending failed", "E-Mail Sending Failed" ) );
+    notify->setText( job->errorString() );
     notify->sendEvent();
 
     errorOccurred = true;
