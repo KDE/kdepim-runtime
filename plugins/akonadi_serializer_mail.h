@@ -22,10 +22,31 @@
 #define __AKONADI_SERIALIZER_MAIL_H__
 
 #include <QtCore/QObject>
+#include <QtCore/QMutex>
 
 #include <akonadi/itemserializerplugin.h>
 
 namespace Akonadi {
+
+/**
+ * Levare QString implicit sharing to decrease memory consumption.
+ *
+ * This class is thread safe. Apparenlty required for usage in
+ * legacy KRes compat bridges.
+ */
+class StringPool
+{
+public:
+    /**
+     * Lookup @p value in the pool and return the known value
+     * to reuse it and leverage the implicit sharing. Otherwise
+     * add the value to the pool and return it again.
+     */
+    QString sharedValue(const QString& value);
+private:
+    QMutex m_mutex;
+    QSet<QString> m_pool;
+};
 
 class SerializerPluginMail : public QObject, public ItemSerializerPlugin
 {
@@ -36,6 +57,8 @@ public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
     QSet<QByteArray> parts( const Item &item ) const;
+private:
+    StringPool m_stringPool;
 };
 
 
