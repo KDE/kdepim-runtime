@@ -177,7 +177,32 @@ void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk2
   if ( status.isToAct() )
     addTranslatedTag( "todo", i18n( "To Do" ), "mail-mark-task", res, graph );
   if ( status.isWatched() )
-    addTranslatedTag( "watched", i18n( "Watched" ), QString(), res, graph );
+    addTranslatedTag( "watched", i18n( "Watched" ), "mail-thread-watch" , res, graph );
+  if ( status.isDeleted() ) {
+    addTranslatedTag( "deleted", i18n( "Deleted" ), "mail-deleted" , res, graph );
+  }
+  if ( status.isSpam() ) {
+    addTranslatedTag( "spam", i18n( "Spam" ), "mail-mark-junk" , res, graph );
+  }
+  if ( status.isReplied() ) {
+    addTranslatedTag( "replied", i18n( "Replied" ), "mail-replied" , res, graph );
+  }
+  if ( status.isIgnored() ) {
+    addTranslatedTag( "ignored", i18n( "Ignored" ), "mail-thread-ignored" , res, graph );
+  }
+  if ( status.isForwarded() ) {
+    addTranslatedTag( "forwarded", i18n( "Forwarded" ), "mail-forwarded" , res, graph );
+  }
+  if ( status.isSent() ) {
+    addTranslatedTag( "sent", i18n( "Sent" ), "mail-sent" , res, graph );
+  }
+  if ( status.isQueued() ) {
+    addTranslatedTag( "queued", i18n( "Queued" ), "mail-queued" , res, graph );
+  }
+  if ( status.isHam() ) {
+    addTranslatedTag( "ham", i18n( "Ham" ), "mail-mark-notjunk" , res, graph );
+  }
+
 }
 
 
