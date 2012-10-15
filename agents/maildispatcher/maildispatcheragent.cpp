@@ -167,7 +167,7 @@ void MailDispatcherAgent::Private::dispatch()
           KNotification *notify = new KNotification( "emailsent" );
           notify->setComponentData( q->componentData() );
           notify->setTitle( i18nc( "Notification title when email was sent", "E-Mail Successfully Sent" ) );
-          notify->setText( i18nc( "Notification when the email was sent", "Your E-Mail has successfully been sent." ) );
+          notify->setText( i18nc( "Notification when the email was sent", "Your E-Mail has been sent successfully." ) );
           notify->sendEvent();
         }
       } else {
