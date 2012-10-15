@@ -202,7 +202,6 @@ void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk2
   if ( status.isHam() ) {
     addTranslatedTag( "ham", i18n( "Ham" ), "mail-mark-notjunk" , res, graph );
   }
-
 }
 
 
