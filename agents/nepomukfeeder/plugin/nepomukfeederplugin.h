@@ -35,7 +35,7 @@ class NepomukFeederPlugin: public QObject
 {
   Q_OBJECT
   public:
-    explicit NepomukFeederPlugin(QObject* parent = 0): QObject(parent){};
+    explicit NepomukFeederPlugin(QObject* parent = 0): QObject(parent){}
     virtual ~NepomukFeederPlugin() {}
     /** Reimplement to do the actual work. 
      *  
@@ -54,7 +54,7 @@ class NepomukFeederPlugin: public QObject
      *
      * Collections are not supposed to have subresources, so they would not be removed on an update.
      */
-    virtual void updateCollection( const Akonadi::Collection &collection, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph ){ Q_UNUSED( collection ); Q_UNUSED( res ); Q_UNUSED( graph ) };
+    virtual void updateCollection( const Akonadi::Collection &collection, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph ){ Q_UNUSED( collection ); Q_UNUSED( res ); Q_UNUSED( graph ) }
 };
 
 }
