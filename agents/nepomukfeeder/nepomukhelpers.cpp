@@ -21,11 +21,16 @@
 #include <nepomuk2/simpleresourcegraph.h>
 #include <nepomuk2/datamanagement.h>
 #include <nepomuk2/storeresourcesjob.h>
+#include <nepomuk2/resourcemanager.h>
+#include <nepomuk2/resource.h>
+#include <nepomuk2/variant.h>
 
 #include <Soprano/Vocabulary/NAO>
 #include <Soprano/Vocabulary/RDF>
 #include <Soprano/Vocabulary/NRL>
-#include <Nepomuk/Vocabulary/NIE>
+#include <Soprano/Model>
+#include <soprano/queryresultiterator.h>
+#include <Nepomuk2/Vocabulary/NIE>
 #include <aneo.h>
 
 #include <Akonadi/Item>
@@ -42,7 +47,7 @@
 #include "pluginloader.h"
 #include "nepomukfeeder-config.h"
 
-using namespace Nepomuk::Vocabulary;
+using namespace Nepomuk2::Vocabulary;
 
 namespace  NepomukHelpers {
 
@@ -142,6 +147,30 @@ KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph )
   additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
   //FIXME sometimes there are warning about the cardinality, maybe the old values are not always removed before the new ones are (although there is no failing removejob)?
   return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
+}
+
+bool isIndexed(const Akonadi::Item& item)
+{
+    return Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }" )
+                                                                    .arg( Soprano::Node::resourceToN3( NIE::url() ),
+                                                                            Soprano::Node::resourceToN3( item.url() ),
+                                                                            Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiItemId() ),
+                                                                            Soprano::Node::literalToN3( QString::number( item.id() ) ),
+                                                                            Soprano::Node::resourceToN3( NIE::lastModified() ),
+                                                                            Soprano::Node::literalToN3( item.modificationTime() ),
+                                                                            Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
+                                                                            Soprano::Node::literalToN3( NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL ) ),
+                                                                            Soprano::Query::QueryLanguageSparql ).boolValue();
+}
+
+bool isIndexed(const Akonadi::Collection& collection)
+{
+    return Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
+                                                                    .arg( Soprano::Node::resourceToN3( NIE::url() ),
+                                                                            Soprano::Node::resourceToN3( collection.url() ),
+                                                                            Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
+                                                                            Soprano::Node::literalToN3( NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL ) ),
+                                                                            Soprano::Query::QueryLanguageSparql ).boolValue();
 }
 
 

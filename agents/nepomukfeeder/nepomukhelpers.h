@@ -42,6 +42,8 @@ void addItemToGraph( const Akonadi::Item &item, Nepomuk2::SimpleResourceGraph &g
 /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */
 KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph );
 
+bool isIndexed(const Akonadi::Item &item);
+bool isIndexed(const Akonadi::Collection &item);
 
 }
 
