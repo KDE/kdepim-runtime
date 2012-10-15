@@ -118,7 +118,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
   KConfigGroup cfgGrp( componentData().config(), identifier() );
   KIdleTime::instance()->addIdleTimeout( 1000 * cfgGrp.readEntry( "IdleTimeout", 120 ) );
-  disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", false ) );
+  disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", true ) );
 
   checkOnline();
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
