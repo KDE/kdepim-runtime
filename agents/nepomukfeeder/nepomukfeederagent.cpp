@@ -93,7 +93,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mInitialUpdateDone( false ),
   mSelfTestPassed( false ),
   mSystemIsIdle( false ),
-  mIdleDetectionDisabled( false )
+  mIdleDetectionDisabled( true )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
