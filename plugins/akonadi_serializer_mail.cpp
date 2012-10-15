@@ -32,7 +32,18 @@
 using namespace Akonadi;
 using namespace KMime;
 
-template <typename T> static void parseAddrList( const QVarLengthArray<QByteArray, 16> &addrList, T *hdr, int version )
+QString StringPool::sharedValue( const QString &value )
+{
+    QMutexLocker lock(&m_mutex);
+    QSet<QString>::const_iterator it = m_pool.constFind(value);
+    if ( it != m_pool.constEnd() )
+        return *it;
+    m_pool.insert(value);
+    return value;
+}
+
+template <typename T> static void parseAddrList( const QVarLengthArray<QByteArray, 16> &addrList, T *hdr,
+                                                 int version, StringPool& pool )
 {
   hdr->clear();
   const int count = addrList.count();
@@ -47,10 +58,10 @@ template <typename T> static void parseAddrList( const QVarLengthArray<QByteArra
     if ( version == 0 )
       addrField.setNameFrom7Bit( addr[0] );
     else if ( version == 1 )
-      addrField.setName( QString::fromUtf8( addr[0] ) );
+      addrField.setName( pool.sharedValue( QString::fromUtf8( addr[0] ) ) );
     KMime::Types::AddrSpec addrSpec;
-    addrSpec.localPart = QString::fromUtf8( addr[2] );
-    addrSpec.domain = QString::fromUtf8( addr[3] );
+    addrSpec.localPart = pool.sharedValue( QString::fromUtf8( addr[2] ) );
+    addrSpec.domain = pool.sharedValue( QString::fromUtf8( addr[3] ) );
     addrField.setAddress( addrSpec );
     hdr->addAddress( addrField );
   }
@@ -98,27 +109,27 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         QVarLengthArray<QByteArray, 16> addrList;
         ImapParser::parseParenthesizedList( env[2], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->from(), version );
+          parseAddrList( addrList, msg->from(), version, m_stringPool );
         // sender
         ImapParser::parseParenthesizedList( env[2], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->sender(), version );
+          parseAddrList( addrList, msg->sender(), version, m_stringPool );
         // reply-to
         ImapParser::parseParenthesizedList( env[4], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->replyTo(), version );
+          parseAddrList( addrList, msg->replyTo(), version, m_stringPool );
         // to
         ImapParser::parseParenthesizedList( env[5], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->to(), version );
+          parseAddrList( addrList, msg->to(), version, m_stringPool );
         // cc
         ImapParser::parseParenthesizedList( env[6], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->cc(), version );
+          parseAddrList( addrList, msg->cc(), version, m_stringPool );
         // bcc
         ImapParser::parseParenthesizedList( env[7], addrList );
         if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->bcc(), version );
+          parseAddrList( addrList, msg->bcc(), version, m_stringPool );
         // in-reply-to
         msg->inReplyTo()->from7BitString( env[8] );
         // message id
