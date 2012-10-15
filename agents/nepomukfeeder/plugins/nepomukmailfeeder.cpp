@@ -177,7 +177,7 @@ void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk:
   if ( status.isToAct() )
     addTranslatedTag( "todo", i18n( "To Do" ), "mail-mark-task", res, graph );
   if ( status.isWatched() )
-    addTranslatedTag( "watched", i18n( "Watched" ), QString(), res, graph );
+    addTranslatedTag( "watched", i18n( "Watched" ), "mail-thread-watch" , res, graph );
 }
 
 
