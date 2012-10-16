@@ -83,7 +83,7 @@ class SendJob::Private
     void doPostJob( bool transportSuccess, const QString &transportMessage );
     void storeResult( bool success, const QString &message = QString() );
     void abortPostJob();
-    void filterItem( int filterset );
+    bool filterItem( int filterset );
 
     // slots
     void doTransport();
@@ -122,6 +122,9 @@ void SendJob::Private::doTransport()
     storeResult( false, i18n( "Could not send message. Invalid transport." ) );
     return;
   }
+
+  if ( !filterItem( 8 ) ) //BeforeOutbound
+    return;
 
   if ( type.type() == Transport::EnumType::Akonadi ) {
     // Send the item directly to the resource that will send it.
@@ -162,7 +165,6 @@ void SendJob::Private::doAkonadiTransport()
     storeResult( false, i18n( "Invalid D-Bus reply from resource %1.", resourceId ) );
     return;
   }
-  filterItem( 2 ); //Outbound
 }
 
 void SendJob::Private::doTraditionalTransport()
@@ -174,7 +176,6 @@ void SendJob::Private::doTraditionalTransport()
   Q_ASSERT( currentJob == 0 );
 
   currentJob = job;
-  filterItem( 8 ); //BeforeOutbound
 
   // Message.
   Q_ASSERT( item.hasPayload<Message::Ptr>() );
@@ -301,7 +302,6 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         if ( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
           currentJob = new ItemMoveJob( item, SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::SentMail ) , q );
           QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
-	  filterItem( 2 ); //Outbound
         } else {
           abortPostJob();
         }
@@ -311,16 +311,16 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
         QObject::connect( currentJob, SIGNAL(result(KJob*)),
                           q, SLOT(slotSentMailCollectionFetched(KJob*)) );
 
-	filterItem( 2 ); //Outbound
       }
     }
   }
 }
 
-void SendJob::Private::filterItem(int filterset )
+bool SendJob::Private::filterItem( int filterset )
 {
   Q_ASSERT( mailfilterInterface == 0 );
 
+  // TODO: create on stack
   mailfilterInterface = new QDBusInterface(
       QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent" ),
       QLatin1String( "/MailFilterAgent" ), QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent" ),
@@ -331,7 +331,7 @@ void SendJob::Private::filterItem(int filterset )
     storeResult( false, i18n( "Failed to get D-Bus interface of mailfilteragent." ) );
     delete mailfilterInterface;
     mailfilterInterface = 0;
-    return;
+    return false;
   }
 
   //Outbound = 0x2
@@ -340,11 +340,12 @@ void SendJob::Private::filterItem(int filterset )
     storeResult( false, i18n( "Invalid D-Bus reply from mailfilteragent" ) );
     delete mailfilterInterface;
     mailfilterInterface = 0;
-    return;
+    return false;
   }
 
   delete mailfilterInterface;
   mailfilterInterface = 0;
+  return true;
 }
 
 void SendJob::Private::slotSentMailCollectionFetched(KJob* job)
@@ -396,6 +397,8 @@ void SendJob::Private::postJobResult( KJob *job )
     storeResult( false, q->errorString() );
   } else {
     kDebug() << "Success deleting or moving to sent-mail.";
+    if ( !filterItem( 2 ) ) //Outbound
+      return;
     storeResult( true );
   }
 }
@@ -421,6 +424,11 @@ void SendJob::Private::doEmitResult( KJob *job )
   } else {
     kDebug() << "Success storing result.";
     // It is still possible that the transport failed.
+    StoreResultJob* srJob = static_cast<StoreResultJob *>( job );
+    if ( !srJob->success() ) {
+      q->setError( UserDefinedError );
+      q->setErrorText( srJob->message() );
+    }
   }
 
   q->emitResult();

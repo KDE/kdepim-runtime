@@ -127,4 +127,14 @@ void StoreResultJob::doStart()
   connect( job, SIGNAL(result(KJob*)), this, SLOT(fetchDone(KJob*)) );
 }
 
+bool StoreResultJob::success() const
+{
+  return d->success;
+}
+
+QString StoreResultJob::message() const
+{
+  return d->message;
+}
+
 #include "storeresultjob.moc"

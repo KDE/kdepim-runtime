@@ -54,6 +54,9 @@ class StoreResultJob : public Akonadi::TransactionSequence
      */
     virtual ~StoreResultJob();
 
+    bool success() const;
+    QString message() const;
+
   protected:
     // reimpl from TransactionSequence
     virtual void doStart();
