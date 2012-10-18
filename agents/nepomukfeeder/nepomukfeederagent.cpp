@@ -103,7 +103,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
   changeRecorder()->setAllMonitored( true );
-  changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->itemFetchScope().setCacheOnly( true );
 
   mNepomukStartupTimeout.setInterval( 300 * 1000 );
