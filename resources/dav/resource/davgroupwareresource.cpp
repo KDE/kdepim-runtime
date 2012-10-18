@@ -267,8 +267,8 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
 
   if ( !davUrl.url().isValid() ) {
     kError() << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
-    // TODO: make this string translatable
-    cancelTask( "Items requested for an unknown collection" );
+    // Just return an empty list
+    itemsRetrieved( Akonadi::Item::List() );
     //Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
     return;
   }
