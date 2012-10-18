@@ -93,7 +93,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mInitialUpdateDone( false ),
   mSelfTestPassed( false ),
   mSystemIsIdle( false ),
-  mIdleDetectionDisabled( true )
+  mIdleDetectionDisabled( true ),
+  mQueue( true )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
@@ -102,7 +103,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
   changeRecorder()->setAllMonitored( true );
-  changeRecorder()->itemFetchScope().fetchFullPayload();
   changeRecorder()->itemFetchScope().setCacheOnly( true );
 
   mNepomukStartupTimeout.setInterval( 300 * 1000 );
