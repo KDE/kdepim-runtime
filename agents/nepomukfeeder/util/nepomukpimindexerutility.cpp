@@ -37,7 +37,7 @@
 
 NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     : KXmlGuiWindow(),
-    mFeederQueue(new FeederQueue(this))
+    mFeederQueue(new FeederQueue(false, this))
 {
     // tell the KXmlGuiWindow that this is indeed the main widget
     QWidget* w = new QWidget(this);
