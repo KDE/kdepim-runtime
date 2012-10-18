@@ -1,0 +1,159 @@
+Return-Path: <kde-pim-bounces@kde.org>
+Received: from compute4.internal (compute4.nyi.mail.srv.osa [10.202.2.44])
+     by slots3a1p1 (Cyrus git2.5+0-git-fastmail-8213) with LMTPA;
+     Fri, 22 Jun 2012 13:08:36 -0400
+X-Sieve: CMU Sieve 2.4
+X-Spam-score: 0.0
+X-Spam-hits: BAYES_00 -1.9, RCVD_IN_DNSWL_MED -2.3, T_RP_MATCHES_RCVD -0.01,
+  BAYES_USED global, SA_VERSION 3.3.1
+X-Spam-source: IP='46.4.96.248', Host='postbox.kde.org', Country='DE', FromHeader='com',
+  MailFrom='org'
+X-Spam-charsets: plain='us-ascii', plain='us-ascii'
+X-Attached: signature.asc
+X-Resolved-to: chrigi_1@fastmail.fm
+X-Delivered-to: chrigi_1@fastmail.fm
+X-Mail-from: kde-pim-bounces@kde.org
+Received: from mx2.nyi.mail.srv.osa ([10.202.2.201])
+  by compute4.internal (LMTPProxy); Fri, 22 Jun 2012 13:08:36 -0400
+Received: from postbox.kde.org (postbox.kde.org [46.4.96.248])
+    by mx2.messagingengine.com (Postfix) with ESMTP id C27017601B4
+    for <chrigi_1@fastmail.fm>; Fri, 22 Jun 2012 13:08:35 -0400 (EDT)
+Received: from postbox.kde.org (localhost [IPv6:::1])
+    by postbox.kde.org (Postfix) with ESMTP id BD852B3732F;
+    Fri, 22 Jun 2012 17:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=kde.org; s=default;
+    t=1340384914; bh=6xcrdtmBJZEp/6CFzHndw0bmCAeoNqXWQi79IvuRT9w=;
+    h=From:To:Date:Message-ID:MIME-Version:Cc:Subject:Reply-To:List-Id:
+     List-Unsubscribe:List-Post:List-Help:List-Subscribe:Content-Type:
+     Sender; b=jfAeaggT/1e0vHNduiiXqVSHkDjiUYOFsstXGbAjxKbC08LoWjm1W6Qd
+    QjtLCW8bQOvu2DusEwZ8yTbSsWCBXJVC6m+66JEQQ6iIWlkkn7EANg32+o3pu4K+kKX
+    KOicPBp/+0sKDjdzCS34mNsJ9ZjWjQQGMi562BSQ2Xqnxxog=
+X-Original-To: kde-pim@kde.org
+X-Remote-Delivered-To: kde-pim@localhost.kde.org
+Received: from kolab.kolabsys.com (kolab.kolabsys.com [78.46.32.248])
+ by postbox.kde.org (Postfix) with ESMTP id 3C7CAB3732F
+ for <kde-pim@kde.org>; Fri, 22 Jun 2012 17:08:07 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by kolab.kolabsys.com (Postfix) with ESMTP id 40EBA2626F83
+ for <kde-pim@kde.org>; Fri, 22 Jun 2012 19:08:06 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new at kolabsys.com
+Received: from kolab.kolabsys.com ([127.0.0.1])
+ by localhost (kolab.kolabsys.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id SGDGZjl4ESbl for <kde-pim@kde.org>;
+ Fri, 22 Jun 2012 19:07:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by kolab.kolabsys.com (Postfix) with ESMTP id CD9AF2627A61
+ for <kde-pim@kde.org>; Fri, 22 Jun 2012 19:07:22 +0200 (CEST)
+From: Christian Mollekopf <mollekopf@kolabsys.com>
+To: kde-pim@kde.org
+Date: Fri, 22 Jun 2012 19:07:15 +0200
+Message-ID: <1778093.n7Qmzlrvop@myhost2>
+Organization: Kolab Systems AG
+User-Agent: KMail/4.9 pre (Linux/3.3.7-1-ARCH; KDE/4.8.3; x86_64; git-3b25a7b;
+ 2012-03-25)
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.71 on 46.4.96.248
+Cc: vanmeeuwen@kolabsys.com
+Subject: [Kde-pim] Kolab usage of kdepimlibs, kdepimlibs split
+X-BeenThere: kde-pim@kde.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: KDE PIM <kde-pim@kde.org>
+List-Id: KDE PIM <kde-pim.kde.org>
+List-Unsubscribe: <https://mail.kde.org/mailman/options/kde-pim>,
+ <mailto:kde-pim-request@kde.org?subject=unsubscribe>
+List-Post: <mailto:kde-pim@kde.org>
+List-Help: <mailto:kde-pim-request@kde.org?subject=help>
+List-Subscribe: <https://mail.kde.org/mailman/listinfo/kde-pim>,
+ <mailto:kde-pim-request@kde.org?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============5976582697228578672=="
+Errors-To: kde-pim-bounces@kde.org
+Sender: kde-pim-bounces@kde.org
+X-Truedomain-Domain: kde.org
+X-Truedomain-SPF: No Record
+X-Truedomain-DKIM: Pass
+X-Truedomain-ID: 164A9F2DD35C0579F5F828658254278F
+X-Truedomain: Neutral
+
+
+--===============5976582697228578672==
+Content-Type: multipart/signed; boundary="nextPart23133746.Pd6aMzRTfK"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7Bit
+
+
+--nextPart23133746.Pd6aMzRTfK
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+
+Hey,
+
+For Kolab 3.0, we're trying to reuse some of the relevant kdepim 
+infrastructure also on the server, specifically:
+- kcalcore
+- kimap
+- kmime
+- kabc
+
+We do have the problem though of the huge dependency chain pulled in by 
+kdepimlibs + kdelibs, as well as the problem of not being able to make new 
+releases of said (sub-) libraries.
+
+Especially now in the beginning I have to add some fixes/new functionality, and 
+we need a way to get that on the server in the end.
+
+The preferred way forward is pulling those libraries out of kdepimlibs, along 
+the lines of what is happending for frameworks, with only the dependencies 
+which are really required.
+
+That would allow us to package & ship the packages we require for our target 
+platforms (which is eg Enterprise Linux 6 currently on kde 4.3 and qt 4.6).
+
+Now I can imagine that this is something which is generally planned to be done 
+after frameworks is released (as we'd also rather have the strapped down 
+frameworks dependencies), but I'd be interested to learn how we can speed-up 
+that process and maybe have an intermediate solution, without it being a 
+completely separate effort.
+
+After all we really don't want a fork or alike and want to work as much as 
+possible upstream.
+
+So are there already plans, or suggestions in what direction such a task could 
+be tackled?
+
+I'm at akademy with Jeroen van Meeuwen, who is our Systems Architect with 
+Release-Engineering skills, so it would be a good occasion to have a chat on 
+how to continue in that respect, and what we can do already now. If you're 
+interested/willing to help, tell me.
+
+Cheers,
+Christian
+
+PS: I'm the same as chrigi_1@fastmail.fm =)
+--nextPart23133746.Pd6aMzRTfK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iEYEABECAAYFAk/kpkMACgkQF4TVOOpldACuLwCg1p0apYCk5q8aI+ssxQmxK7Y/
+RVAAoJq55GK+e0Xe1/4/Xc8wMcazx7n5
+=v9bJ
+-----END PGP SIGNATURE-----
+
+--nextPart23133746.Pd6aMzRTfK--
+
+
+--===============5976582697228578672==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+KDE PIM mailing list kde-pim@kde.org
+https://mail.kde.org/mailman/listinfo/kde-pim
+KDE PIM home page at http://pim.kde.org/
+--===============5976582697228578672==--
+
+
