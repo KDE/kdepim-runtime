@@ -38,6 +38,7 @@
 
 #include <QBuffer>
 #include <QStringList>
+#include <QTimer>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 
@@ -71,6 +72,13 @@ ContactsResource::ContactsResource( const QString &id ):
 
   m_gam = new KGAPI::AccessManager();
   m_photoNam = new KIO::Integration::AccessManager( this );
+
+  m_fetchPhotoScheduler = new QTimer( this );
+  m_fetchPhotoScheduler->setSingleShot( true );
+  m_fetchPhotoScheduleInterval = 5000;
+  m_fetchPhotoBatchSize = 20;
+  connect( m_fetchPhotoScheduler, SIGNAL(timeout()),
+	   this, SLOT(execFetchPhotoQueue()) );
 
   connect( m_gam, SIGNAL(replyReceived(KGAPI::Reply*)),
            this, SLOT(replyReceived(KGAPI::Reply*)) );
@@ -536,6 +544,7 @@ void ContactsResource::contactListReceived( KJob *job )
     }
   }
 
+  kDebug() << "Fetched" << changed.length() << "contacts";
   itemsRetrievedIncremental( changed, removed );
 
   collection.setRemoteRevision( QString::number( KDateTime::currentUtcDateTime().toTime_t() ) );
@@ -647,18 +656,35 @@ void ContactsResource::photoRequestFinished( QNetworkReply *reply )
   if ( reply->operation() == QNetworkAccessManager::GetOperation ) {
     QImage image;
 
-    if ( !image.loadFromData( reply->readAll(), "JPG" ) ) {
+    Item item = reply->request().attribute( QNetworkRequest::User, QVariant() ).value< Item >();
+    KABC::Addressee addressee = item.payload< KABC::Addressee >();
+
+    QByteArray data = reply->readAll();
+
+    if ( data.startsWith( QByteArray( "Temporary problem" ) ) ) {
+      m_fetchPhotoQueue.enqueue( reply->request() );
+      m_fetchPhotoScheduleInterval = 30000;
+      m_fetchPhotoBatchSize = 10;
+      if ( !m_fetchPhotoScheduler->isActive() ) {
+	m_fetchPhotoScheduler->start( m_fetchPhotoScheduleInterval );
+      }
       return;
     }
 
-    Item item = reply->request().attribute( QNetworkRequest::User, QVariant() ).value< Item >();
+    if ( data.startsWith( QByteArray( "Photo not found" ) ) ) {
+      return;
+    }
 
-    KABC::Addressee addressee = item.payload< KABC::Addressee >();
+    if ( !image.loadFromData( data, "JPG" ) ) {
+      return;
+    }
+
     addressee.setPhoto( KABC::Picture( image ) );
     item.setPayload< KABC::Addressee >( addressee );
 
     ItemModifyJob *modifyJob = new ItemModifyJob( item );
     modifyJob->setAutoDelete( true );
+    modifyJob->start();
   }
 }
 
@@ -676,9 +702,40 @@ void ContactsResource::fetchPhoto( Akonadi::Item &item )
   request.setUrl( Services::Contacts::photoUrl( account->accountName(), id ) );
   request.setRawHeader( "Authorization", "OAuth " + account->accessToken().toLatin1() );
   request.setRawHeader( "GData-Version", "3.0" );
-
   request.setAttribute( QNetworkRequest::User, qVariantFromValue( item ) );
-  m_photoNam->get( request );
+
+  m_fetchPhotoQueue.enqueue( request );
+  if ( !m_fetchPhotoScheduler->isActive() ) {
+    /* Schedule the batch or 20 or so requests after 5 seconds.
+     * Google has a limit on maximum amount of requests per second/minute and
+     * requesting pictures for all contacts can easily get over the limit. */
+    m_fetchPhotoScheduler->setSingleShot( true );
+    m_fetchPhotoScheduler->start( m_fetchPhotoScheduleInterval );
+    kDebug() << "Scheduled initial photo fetch";
+  }
+}
+
+void ContactsResource::execFetchPhotoQueue()
+{
+  int cnt = 0;
+
+  while ( !m_fetchPhotoQueue.isEmpty() ) {
+    cnt++;
+
+    QNetworkRequest request = m_fetchPhotoQueue.dequeue();
+    m_photoNam->get( request );
+
+    if ( cnt == m_fetchPhotoBatchSize ) {
+      /* Schedule next batch in X seconds */
+      m_fetchPhotoScheduler->setSingleShot( true );
+      m_fetchPhotoScheduler->start( m_fetchPhotoScheduleInterval );
+      kDebug() << "Scheduled another photo fetching in" << m_fetchPhotoScheduleInterval << "seconds";
+
+      m_fetchPhotoScheduleInterval = 5000;
+      break;
+    }
+  }
+  kDebug() << cnt << "photos fetched," << m_fetchPhotoQueue.length() << "still in queue";
 }
 
 void ContactsResource::updatePhoto( Item &item )
