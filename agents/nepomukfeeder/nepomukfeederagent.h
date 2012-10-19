@@ -118,6 +118,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   private:
     void checkOnline();
     void setRunning( bool running );
+    void processNextNotification();
 
   private slots:
     void selfTest();
@@ -129,6 +130,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void idle(const QString &);
     void running(const QString &);
     void configure( WId windowId );
+    void changesRecorded();
 
   private:
     QTimer mNepomukStartupTimeout;
@@ -138,6 +140,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     bool mSelfTestPassed;
     bool mSystemIsIdle;
     bool mIdleDetectionDisabled;
+    bool mShouldProcessNotifications;
 
     FeederQueue mQueue;
 };

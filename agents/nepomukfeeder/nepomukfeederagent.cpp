@@ -94,7 +94,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mSelfTestPassed( false ),
   mSystemIsIdle( false ),
   mIdleDetectionDisabled( true ),
-  mQueue( true )
+  mQueue( true ),
+  mShouldProcessNotifications( true )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
@@ -104,6 +105,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
   changeRecorder()->setAllMonitored( true );
   changeRecorder()->itemFetchScope().setCacheOnly( true );
+  connect(changeRecorder(), SIGNAL(changesAdded()), this, SLOT(changesRecorded()));
 
   mNepomukStartupTimeout.setInterval( 300 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
@@ -130,6 +132,9 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(idle(QString)));
   connect(&mQueue, SIGNAL(running(QString)), this, SLOT(running(QString)));
   connect(&mQueue, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
+
+  if ( !changeRecorder()->isEmpty() )
+     QMetaObject::invokeMethod(changeRecorder(), "replayNext");
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -157,14 +162,29 @@ void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
   connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)));
 }
 
+void NepomukFeederAgent::changesRecorded()
+{
+  if ( !changeRecorder()->isEmpty() && mShouldProcessNotifications )
+    changeRecorder()->replayNext();
+}
+
+void NepomukFeederAgent::processNextNotification()
+{
+  //check if still running otherwise stop
+  if ( mShouldProcessNotifications ) {
+    changeProcessed();
+  }
+}
+
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
   kDebug() << item.id();
   if ( indexingDisabled( collection ) )
-    return;
+    return processNextNotification();
 
   Q_ASSERT( item.parentCollection() == collection );
   mQueue.addItem( item );
+  processNextNotification();
 }
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
@@ -181,25 +201,28 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
   }
   // Nothing to re-index if only the flags have changed, or only the remote ID
   if ( parts.isEmpty() )
-    return;
+    return processNextNotification();
   if ( indexingDisabled( item.parentCollection() ) )
-    return;
+    return processNextNotification();
   //kDebug() << item.id() << partIdentifiers;
   mQueue.addItem( item );
+  processNextNotification();
 }
 
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
   //kDebug() << item.url();
   Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
+  processNextNotification();
 }
 
 void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
   Q_UNUSED( parent );
   if ( indexingDisabled( collection ) )
-    return;
+    return processNextNotification();
   NepomukHelpers::addCollectionToNepomuk( collection );
+  processNextNotification();
 }
 
 void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
@@ -213,15 +236,17 @@ void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection
       }
   }
   if ( parts.isEmpty() )
-    return;
+    return processNextNotification();
   if ( indexingDisabled( collection ) )
-    return;
+    return processNextNotification();
   NepomukHelpers::addCollectionToNepomuk( collection );
+  processNextNotification();
 }
 
 void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
 {
   Nepomuk2::removeResources( QList <QUrl>() << collection.url() );
+  processNextNotification();
 }
 
 void NepomukFeederAgent::updateAll()
@@ -357,7 +382,7 @@ void NepomukFeederAgent::setRunning( bool running )
   if ( running && ( !isOnline() || ( !mIdleDetectionDisabled && !mSystemIsIdle ) ) ) {
     return;
   }
-  changeRecorder()->setChangeRecordingEnabled( !running );
+  mShouldProcessNotifications = running;
   mQueue.setOnline( running );
   if ( running && !mQueue.isEmpty() ) {
     if ( mQueue.currentCollection().isValid() ) {
