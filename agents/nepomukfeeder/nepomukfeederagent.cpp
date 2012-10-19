@@ -107,6 +107,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   changeRecorder()->itemFetchScope().setCacheOnly( true );
   connect(changeRecorder(), SIGNAL(changesAdded()), this, SLOT(changesRecorded()));
 
+  Nepomuk2::ResourceManager::instance()->init();
   mNepomukStartupTimeout.setInterval( 300 * 1000 );
   mNepomukStartupTimeout.setSingleShot( true );
   connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
