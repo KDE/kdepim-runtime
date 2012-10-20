@@ -34,6 +34,7 @@ SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId
   mSettings( settings )
 {
   ui.setupUi( mainWidget() );
+  setWindowIcon( KIcon( "text-directory" ) );
   ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
   setButtons( Ok | Cancel );
 
