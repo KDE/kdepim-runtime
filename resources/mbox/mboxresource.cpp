@@ -83,6 +83,7 @@ MboxResource::~MboxResource()
 
 void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
+  dlg->setWindowIcon( KIcon( "message-rfc822" ) );
   dlg->addPage( i18n( "Compact frequency" ), new CompactPage( mSettings->path() ) );
   dlg->addPage( i18n( "Lock method" ), new LockMethodPage() );
   dlg->setCaption( i18n( "Select MBox file" ) );

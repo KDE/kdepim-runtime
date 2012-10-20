@@ -72,6 +72,7 @@ void VCardResource::aboutToQuit()
 
 void VCardResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
+  dlg->setWindowIcon( KIcon( "text-directory" ) );
   dlg->setFilter( "*.vcf|" + i18nc("Filedialog filter for *.vcf", "vCard Address Book File" ) );
   dlg->setCaption( i18n("Select Address Book") );
 }

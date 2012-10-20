@@ -290,6 +290,7 @@ void KolabProxyResource::configure( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( kolabConfigDialog, windowId );
 
+  kolabConfigDialog->setWindowIcon( KIcon( "kolab" ) );
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
 

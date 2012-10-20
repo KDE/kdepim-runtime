@@ -65,6 +65,7 @@ bool KDEAccountsResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
 
 void KDEAccountsResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
+  dlg->setWindowIcon( KIcon( "kde" ) );
   dlg->setCaption( i18n( "Select KDE Accounts File" ) );
 }
 

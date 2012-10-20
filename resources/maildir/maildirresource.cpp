@@ -239,6 +239,7 @@ void MaildirResource::configure( WId windowId )
   ConfigDialog dlg( mSettings );
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
+  dlg.setWindowIcon( KIcon( "message-rfc822" ) );
   if ( dlg.exec() ) {
     // if we have no name, or the default one,
     // better use the name of the top level collection

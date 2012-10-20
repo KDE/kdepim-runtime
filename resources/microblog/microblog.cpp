@@ -191,6 +191,7 @@ void MicroblogResource::configure( WId windowId )
     ConfigDialog dlg;
     if ( windowId )
         KWindowSystem::setMainWindow( &dlg, windowId );
+    dlg.setWindowIcon( KIcon( "view-pim-journal" ) );
     if ( dlg.exec() ) {
       emit configurationDialogAccepted();
     } else {

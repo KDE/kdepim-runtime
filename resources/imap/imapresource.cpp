@@ -174,6 +174,7 @@ int ImapResource::configureDialog( WId windowId )
   KWindowSystem::setMainWindow( &dlg, windowId );
 
   dlg.exec();
+  dlg.setWindowIcon( KIcon( "network-server" ) );
   if ( dlg.shouldClearCache() ) {
     clearCache();
   }
