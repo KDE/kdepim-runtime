@@ -322,6 +322,7 @@ void OpenXchangeResource::configure( WId windowId )
   const bool useIncrementalUpdates = Settings::self()->useIncrementalUpdates();
 
   ConfigDialog dlg( windowId );
+  dlg.setWindowIcon( KIcon( "ox" ) );
   if ( dlg.exec() ) { //krazy:exclude=crashy
 
     // if the user has changed the incremental update settings we have to do

@@ -27,7 +27,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
   : KDialog( parent )
 {
   ui.setupUi( mainWidget() );
-  setWindowIcon( KIcon( "preferences-web-browser-cookies" ) );
+  setWindowIcon( KIcon( "view-calendar-birthday" ) );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.kcfg_AlarmDays->setSuffix( ki18np( " day", " days" ) );

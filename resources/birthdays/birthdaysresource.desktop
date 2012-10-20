@@ -90,7 +90,7 @@ Comment[zh_CN]=提供对存储在 KDE 地址簿文件夹中的联系人生日和
 Comment[zh_TW]=提供存取儲存通訊錄中的生日與紀念日日期，做為行事曆的事件
 Type=AkonadiResource
 Exec=akonadi_birthdays_resource
-Icon=preferences-web-browser-cookies
+Icon=view-calendar-birthday
 
 X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event
 X-Akonadi-Capabilities=Resource,Unique
