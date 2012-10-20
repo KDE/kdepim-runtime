@@ -49,6 +49,7 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 
 #include <kabc/addressee.h>
@@ -74,6 +75,7 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   mDavCollectionRoot.setName( identifier() );
   mDavCollectionRoot.setRemoteId( identifier() );
   mDavCollectionRoot.setContentMimeTypes( QStringList() << Collection::mimeType() );
+  mDavCollectionRoot.setRights( Collection::CanCreateCollection | Collection::CanDeleteCollection | Collection::CanChangeCollection );
 
   EntityDisplayAttribute *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   attribute->setIconName( QLatin1String( "folder-remote" ) );
@@ -259,7 +261,11 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
   }
 
   if ( mCollectionsWithTemporaryError.contains( collection.remoteId() ) ) {
-    cancelTask();
+    // Just serve the items from Akonadi
+    kWarning() << "Serving items from Akonadi for" << collection.remoteId();
+    ItemFetchJob *job = new ItemFetchJob( collection );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(onRetrieveAkonadiItemsFinished(KJob*)) );
+    job->start();
     return;
   }
 
@@ -630,6 +636,17 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   } else {
     itemsRetrieved( items );
   }
+}
+
+void DavGroupwareResource::onRetrieveAkonadiItemsFinished( KJob *job )
+{
+  if ( job->error() ) {
+    itemsRetrieved( Akonadi::Item::List() );
+    return;
+  }
+
+  const ItemFetchJob *j = qobject_cast<ItemFetchJob*>( job );
+  itemsRetrieved( j->items() );
 }
 
 void DavGroupwareResource::onMultigetFinished( KJob *job )

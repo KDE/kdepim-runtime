@@ -22,7 +22,8 @@
 #include <Akonadi/AgentBase>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
-#include <KDateTime>
+
+#include <QQueue>
 
 #include <libkgapi/common.h>
 #include <libkgapi/account.h>
@@ -33,8 +34,10 @@ namespace KGAPI {
   class Request;
 };
 
+class QTimer;
 class QNetworkAccessManager;
 class QNetworkReply;
+class QNetworkRequest;
 
 using namespace KGAPI;
 
@@ -78,6 +81,7 @@ class ContactsResource: public Akonadi::ResourceBase,
     void initialItemsFetchJobFinished( KJob *job );
     void contactListReceived( KJob *job );
 
+    void execFetchPhotoQueue();
     void photoRequestFinished( QNetworkReply *reply );
 
     void replyReceived( KGAPI::Reply *reply );
@@ -100,9 +104,14 @@ class ContactsResource: public Akonadi::ResourceBase,
     KGAPI::Account::Ptr m_account;
 
     KGAPI::AccessManager *m_gam;
-    QNetworkAccessManager *m_photoNam;
 
     QMap< QString, Akonadi::Collection > m_collections;
+
+    QNetworkAccessManager *m_photoNam;
+    QQueue< QNetworkRequest > m_fetchPhotoQueue;
+    QTimer *m_fetchPhotoScheduler;
+    int m_fetchPhotoScheduleInterval;
+    int m_fetchPhotoBatchSize;
 };
 
 #endif // CONTACTSRESOURCE_H
