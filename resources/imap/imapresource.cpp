@@ -173,8 +173,8 @@ int ImapResource::configureDialog( WId windowId )
   QPointer<SetupServer> dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
 
-  dlg->exec();
   dlg->setWindowIcon( KIcon( "network-server" ) );
+  dlg->exec();
   if ( dlg->shouldClearCache() ) {
     clearCache();
   }

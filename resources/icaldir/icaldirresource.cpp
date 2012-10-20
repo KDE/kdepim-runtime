@@ -99,6 +99,7 @@ void ICalDirResource::aboutToQuit()
 void ICalDirResource::configure( WId windowId )
 {
   SettingsDialog dlg( windowId );
+  dlg.setWindowIcon( KIcon( "text-calendar" ) );
   if ( dlg.exec() ) {
     clearCache();
     initializeICalDirectory();
