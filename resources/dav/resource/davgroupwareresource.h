@@ -71,6 +71,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
     void onRetrieveCollectionsFinished( KJob* );
     void onRetrieveItemsFinished( KJob* );
+    void onRetrieveAkonadiItemsFinished( KJob* );
     void onMultigetFinished( KJob* );
     void onRetrieveItemFinished( KJob* );
     /**
