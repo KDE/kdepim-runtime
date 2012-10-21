@@ -96,7 +96,7 @@ endif(NOT KDEPIM_NO_NEPOMUK)
 find_package(Strigi)
 macro_log_feature(STRIGI_FOUND "Strigi" "Strigi desktop search engine" "http://strigi.sourceforge.net" FALSE "" "")
 
-set(LibKGAPI_MIN_VERSION 0.4.0)
+set(LibKGAPI_MIN_VERSION 0.4.3)
 find_package(LibKGAPI QUIET NO_MODULE)
 macro_log_feature(LibKGAPI_FOUND "LibKGAPI" "A library to access Google services" "http://projects.kde.org/libkgapi" FALSE "${LibKGAPI_MIN_VERSION}" "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
 

@@ -65,9 +65,13 @@ void CalendarResource::calendarsReceived( KJob *job )
     collection.setParentCollection( m_collections.first() );
     collection.setContentMimeTypes( QStringList() << Event::eventMimeType() );
     collection.setName( calendar->title() );
-    collection.setRights( Collection::CanCreateItem |
-                          Collection::CanChangeItem |
-                          Collection::CanDeleteItem );
+    if ( calendar->editable() ) {
+      collection.setRights( Collection::CanCreateItem |
+			    Collection::CanChangeItem |
+			    Collection::CanDeleteItem );
+    } else {
+      collection.setRights( 0 );
+    }
 
     EntityDisplayAttribute *attr = new EntityDisplayAttribute;
     attr->setDisplayName( calendar->title() );
