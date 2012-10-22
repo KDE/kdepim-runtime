@@ -48,6 +48,11 @@ void CalendarResource::taskDoUpdate( Reply *reply )
   }
 
   Item item = reply->request()->property( "Item" ).value< Item >();
+  if ( !item.hasPayload< Todo::Ptr >() ) {
+      cancelTask();
+      return;
+  }
+
   Todo::Ptr todo = item.payload< TodoPtr >();
   Objects::Task ktodo( *todo );
 
