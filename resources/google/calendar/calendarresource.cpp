@@ -330,7 +330,7 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     return;
   }
 
-  if ( item.mimeType() == Event::eventMimeType() ) {
+  if ( item.hasPayload< Event::Ptr >() ) {
 
     Event::Ptr event = item.payload< Event::Ptr >();
     Objects::Event kevent( *event );
@@ -342,7 +342,7 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     kevent.setUid( "" );
     data = service.objectToJSON( static_cast< KGAPI::Object * >( &kevent ) );
 
-  } else if ( item.mimeType() == Todo::todoMimeType() ) {
+  } else if ( item.hasPayload< Todo::Ptr >() ) {
 
     Todo::Ptr todo = item.payload< Todo::Ptr >();
     todo->setUid( "" );
@@ -382,7 +382,7 @@ void CalendarResource::itemChanged( const Akonadi::Item &item,
     return;
   }
 
-  if ( item.mimeType() == Event::eventMimeType() ) {
+  if ( item.hasPayload< Event::Ptr >() ) {
 
     Event::Ptr event = item.payload< Event::Ptr >();
     Objects::Event kevent( *event );
@@ -407,7 +407,7 @@ void CalendarResource::itemChanged( const Akonadi::Item &item,
 
     m_gam->sendRequest( request );
 
-  } else if ( item.mimeType() == Todo::todoMimeType() ) {
+  } else if ( item.hasPayload< Todo::Ptr >() ) {
 
     Todo::Ptr todo = item.payload< Todo::Ptr >();
     Objects::Task ktodo( *todo );
