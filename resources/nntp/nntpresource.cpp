@@ -277,8 +277,10 @@ void NntpResource::fetchArticleResult(KJob * job)
 void NntpResource::configure( WId windowId )
 {
   ConfigDialog dlg;
-  if ( windowId )
+  if ( windowId ) {
     KWindowSystem::setMainWindow( &dlg, windowId );
+  }
+  dlg.setWindowIcon( KIcon( "message-news" ) );
   if ( dlg.exec() ) {
     emit configurationDialogAccepted();
   } else {

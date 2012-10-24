@@ -135,6 +135,7 @@ SetupWizard::SetupWizard( QWidget *parent )
   : QWizard( parent )
 {
   setWindowTitle( i18n( "DAV groupware configuration wizard" ) );
+  setWindowIcon( KIcon( "folder-remote" ) );
   setPage( W_CredentialsPage, new CredentialsPage );
   setPage( W_PredefinedProviderPage, new PredefinedProviderPage );
   setPage( W_ServerTypePage, new ServerTypePage );

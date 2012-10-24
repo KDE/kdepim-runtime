@@ -182,7 +182,7 @@ bool DavUtils::httpRequestRetryable( int statusCode )
 {
   if ( statusCode == 400 )
     return false;
-  else if ( statusCode >= 404 && statusCode <= 406 )
+  else if ( statusCode == 405 || statusCode == 406 )
     return false;
   else if ( statusCode >= 409 && statusCode <= 418 )
     return false;

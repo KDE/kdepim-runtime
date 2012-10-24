@@ -36,6 +36,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   : KDialog( parent )
 {
   mUi.setupUi( mainWidget() );
+  setWindowIcon( KIcon( "folder-remote" ) );
 
   mModel = new QStandardItemModel();
   QStringList headers;

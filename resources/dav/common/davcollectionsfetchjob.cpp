@@ -316,30 +316,36 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       QDomElement privElement = DavUtils::firstChildElementNS( currentPrivsElement, "DAV:", "privilege" );
       DavCollection::Privileges privileges = DavCollection::None;
       while ( !privElement.isNull() ) {
-        const QString privname = privElement.firstChildElement().localName();
+        QDomElement child = privElement.firstChildElement();
 
-        if ( privname == "read" )
-          privileges |= DavCollection::Read;
-        else if ( privname == "write" )
-          privileges |= DavCollection::Write;
-        else if ( privname == "write-properties" )
-          privileges |= DavCollection::WriteProperties;
-        else if ( privname == "write-content" )
-          privileges |= DavCollection::WriteContent;
-        else if ( privname == "unlock" )
-          privileges |= DavCollection::Unlock;
-        else if ( privname == "read-acl" )
-          privileges |= DavCollection::ReadAcl;
-        else if ( privname == "read-current-user-privilege-set" )
-          privileges |= DavCollection::ReadCurrentUserPrivilegeSet;
-        else if ( privname == "write-acl" )
-          privileges |= DavCollection::WriteAcl;
-        else if ( privname == "bind" )
-          privileges |= DavCollection::Bind;
-        else if ( privname == "unbind" )
-          privileges |= DavCollection::Unbind;
-        else if ( privname == "all" )
-          privileges |= DavCollection::All;
+        while ( !child.isNull() ) {
+          const QString privname = child.localName();
+
+          if ( privname == "read" )
+            privileges |= DavCollection::Read;
+          else if ( privname == "write" )
+            privileges |= DavCollection::Write;
+          else if ( privname == "write-properties" )
+            privileges |= DavCollection::WriteProperties;
+          else if ( privname == "write-content" )
+            privileges |= DavCollection::WriteContent;
+          else if ( privname == "unlock" )
+            privileges |= DavCollection::Unlock;
+          else if ( privname == "read-acl" )
+            privileges |= DavCollection::ReadAcl;
+          else if ( privname == "read-current-user-privilege-set" )
+            privileges |= DavCollection::ReadCurrentUserPrivilegeSet;
+          else if ( privname == "write-acl" )
+            privileges |= DavCollection::WriteAcl;
+          else if ( privname == "bind" )
+            privileges |= DavCollection::Bind;
+          else if ( privname == "unbind" )
+            privileges |= DavCollection::Unbind;
+          else if ( privname == "all" )
+            privileges |= DavCollection::All;
+
+          child = child.nextSiblingElement();
+        }
 
         privElement = DavUtils::nextSiblingElementNS( privElement, "DAV:", "privilege" );
       }

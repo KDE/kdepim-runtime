@@ -58,6 +58,7 @@ void VCardDirResource::aboutToQuit()
 void VCardDirResource::configure( WId windowId )
 {
   SettingsDialog dlg( windowId );
+  dlg.setWindowIcon( KIcon( "text-directory" ) );
   if ( dlg.exec() ) {
     clearCache();
     initializeVCardDirectory();
