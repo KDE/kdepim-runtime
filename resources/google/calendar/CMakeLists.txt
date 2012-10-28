@@ -58,6 +58,7 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${KDE4_KDEWEBKIT_LIBS}
   ${QJSON_LIBRARIES}
   ${QJSON_LIBRARY} # for Mac OSX
+  ${qjson_LIBRARY} # for Debian
   ${LibKGAPI_LIBRARY}
 )
 
