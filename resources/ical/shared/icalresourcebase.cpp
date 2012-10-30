@@ -61,6 +61,7 @@ bool ICalResourceBase::retrieveItem( const Akonadi::Item &item,
   kDebug( 5251 ) << "Item:" << item.url();
 
   if ( !mCalendar ) {
+    kError() << "akonadi_ical_resource: Calendar not loaded";
     emit error( i18n( "Calendar not loaded.") );
     return false;
   }
@@ -93,7 +94,7 @@ bool ICalResourceBase::readFromFile( const QString &fileName )
                                                                         new KCalCore::ICalFormat() ) );
   const bool result = mFileStorage->load();
   if ( !result ) {
-    kError() << "Error loading file " << fileName;
+    kError() << "akonadi_ical_resource: Error loading file " << fileName;
   }
 
   return result;
@@ -102,7 +103,7 @@ bool ICalResourceBase::readFromFile( const QString &fileName )
 void ICalResourceBase::itemRemoved( const Akonadi::Item &item )
 {
   if ( !mCalendar ) {
-    kError() << "mCalendar is 0!";
+    kError() << "akonadi_ical_resource: mCalendar is 0!";
     cancelTask( i18n( "Calendar not loaded." ) );
     return;
   }
@@ -110,14 +111,14 @@ void ICalResourceBase::itemRemoved( const Akonadi::Item &item )
   Incidence::Ptr i = mCalendar->incidence( item.remoteId() );
   if ( i ) {
     if ( !mCalendar->deleteIncidence( i ) ) {
-      kError() << "Can't delete incidence with uid " << item.remoteId()
-               << "; item.id() = " << item.id();
+      kError() << "akonadi_ical_resource: Can't delete incidence with uid "
+               << item.remoteId() << "; item.id() = " << item.id();
       cancelTask();
       return;
     }
   } else {
-    kError() << "Can't find incidence with uid " << item.remoteId()
-             << "; item.id() = " << item.id();
+    kError() << "akonadi_ical_resource: itemRemoved(): Can't find incidence with uid "
+             << item.remoteId() << "; item.id() = " << item.id();
   }
   scheduleWrite();
   changeProcessed();
@@ -129,14 +130,14 @@ void ICalResourceBase::retrieveItems( const Akonadi::Collection &col )
   if ( mCalendar ) {
     doRetrieveItems( col );
   } else {
-    kError() << "mCalendar is 0!";
+    kError() << "akonadi_ical_resource: retrieveItems(): mCalendar is 0!";
   }
 }
 
 bool ICalResourceBase::writeToFile( const QString &fileName )
 {
   if ( !mCalendar ) {
-    kError() << "mCalendar is 0!";
+    kError() << "akonadi_ical_resource: writeToFile() mCalendar is 0!";
     return false;
   }
 
@@ -149,7 +150,7 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
 
   bool success = true;
   if ( !fileStorage->save() ) {
-    kError() << "Failed to save calendar to file " + fileName;
+    kError() << "akonadi_ical_resource: Failed to save calendar to file " + fileName;
     emit error( i18n( "Failed to save calendar file to %1", fileName ) );
     success = false;
   }
