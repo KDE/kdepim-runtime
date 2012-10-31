@@ -54,7 +54,8 @@ bool ICalResource::doRetrieveItem( const Akonadi::Item &item, const QSet<QByteAr
   const QString rid = item.remoteId();
   Incidence::Ptr incidence = calendar()->incidence( rid );
   if ( !incidence ) {
-    kError() << "Can't find incidence with uid " << rid << "; item.id() = " << item.id();
+    kError() << "akonadi_ical_resource: Can't find incidence with uid "
+             << rid << "; item.id() = " << item.id();
     emit error( i18n( "Incidence with uid '%1' not found.", rid ) );
     return false;
   }
@@ -76,7 +77,8 @@ void ICalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
   Incidence::Ptr i = item.payload<Incidence::Ptr>();
   if ( !calendar()->addIncidence( Incidence::Ptr( i->clone() ) ) ) {
-    kError() << "Error adding incidence with uid " << i->uid() << "; item.id() " << item.id();
+    kError() << "akonadi_ical_resource: Error adding incidence with uid "
+             << i->uid() << "; item.id() " << item.id();
     cancelTask();
     return;
   }
@@ -112,7 +114,7 @@ void ICalResource::itemChanged( const Akonadi::Item &item,
       incidence->endUpdates();
     } else {
       incidence->endUpdates();
-      kWarning() << "Item changed incidence type. Replacing it.";
+      kWarning() << "akonadi_ical_resource: Item changed incidence type. Replacing it.";
 
       calendar()->deleteIncidence( incidence );
       calendar()->addIncidence( Incidence::Ptr( payload->clone() ) );

@@ -39,7 +39,8 @@ using namespace Akonadi;
 
 //// ItemSerializerPlugin interface
 
-bool SerializerPluginKCalCore::deserialize(Item & item, const QByteArray & label, QIODevice & data, int version)
+bool SerializerPluginKCalCore::deserialize( Item &item, const QByteArray &label,
+                                            QIODevice &data, int version )
 {
   Q_UNUSED( version );
 
@@ -60,7 +61,9 @@ bool SerializerPluginKCalCore::deserialize(Item & item, const QByteArray & label
   return true;
 }
 
-void SerializerPluginKCalCore::serialize(const Item & item, const QByteArray & label, QIODevice & data, int &version)
+void SerializerPluginKCalCore::serialize( const Item &item,
+                                          const QByteArray &label,
+                                          QIODevice &data, int &version )
 {
   Q_UNUSED( version );
 
