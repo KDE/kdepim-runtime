@@ -589,6 +589,11 @@ void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &i
     return; // disabled by user
   }
 
+  Kolab::Version v = readKolabVersion( imapCollection.resource() );
+  if (v != Kolab::KolabV2) {
+    return;
+  }
+
   const QString path = mailBoxForImapCollection( imapCollection, true );
   if ( path.isEmpty() ) {
     return;
