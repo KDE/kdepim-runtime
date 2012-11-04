@@ -42,6 +42,7 @@ class ConfigFile : public SetupObject
     void create();
     void destroy();
   public slots:
+    Q_SCRIPTABLE void write();
     Q_SCRIPTABLE void setName( const QString & name );
     Q_SCRIPTABLE void setConfig( const QString &group, const QString &key, const QString &value );
     Q_SCRIPTABLE void setPassword( const QString &group, const QString &key, const QString &value );

@@ -152,4 +152,10 @@ void Resource::destroy()
   }
 }
 
+QString Resource::identifier()
+{
+    return m_instance.identifier();
+}
+
+
 #include "resource.moc"

@@ -36,6 +36,11 @@ ConfigFile::~ConfigFile()
   delete m_config;
 }
 
+void ConfigFile::write()
+{
+    create();
+}
+
 void ConfigFile::create()
 {
   emit info( i18n( "Writing config file for %1...",m_name ) );
