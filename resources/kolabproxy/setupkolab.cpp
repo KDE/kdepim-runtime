@@ -89,6 +89,7 @@ void SetupKolab::slotShowUpgradeDialog()
   } else {
     m_versionUi->formatVersion->setCurrentIndex( 1 );
   }
+  m_versionUi->upgradeGroupBox->setEnabled( grp.readEntry<bool>("UpgradeEnabled", false) );
   dialog->exec();
   grp.writeEntry(
     "KolabFormatVersion" + instanceSelected.identifier(),

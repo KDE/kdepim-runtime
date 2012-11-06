@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
-    <height>306</height>
+    <width>515</width>
+    <height>327</height>
    </rect>
   </property>
   <layout class="QFormLayout" name="formLayout">
@@ -17,27 +17,27 @@
    <property name="fieldGrowthPolicy">
     <enum>QFormLayout::ExpandingFieldsGrow</enum>
    </property>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Attention: Changing the Format-Version will rewrite all Kolab objects. Make sure you have a backup of your data.</string>
+      <string>Please select the format which should be used to write new Kolab objects according to your Kolab Groupware Server's version. You may close this window after selecting your version.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="KComboBox" name="formatVersion"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="pushButton">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Change Format Version</string>
+      <string>Kolab Format Version:</string>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
+    <widget class="KComboBox" name="formatVersion"/>
+   </item>
+   <item row="3" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -53,30 +53,74 @@
      </property>
     </spacer>
    </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QProgressBar" name="progressBar">
-     <property name="value">
-      <number>0</number>
+   <item row="5" column="0" colspan="2">
+    <widget class="QGroupBox" name="upgradeGroupBox">
+     <property name="enabled">
+      <bool>false</bool>
      </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="statusLabel">
-     <property name="text">
-      <string>Not Started</string>
+     <property name="title">
+      <string>Change Format Version</string>
      </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Status:</string>
+     <property name="checkable">
+      <bool>false</bool>
      </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>This allows you to upgrade your Kolab account to a different format version. This is normally not required and you should contact your administrator before doing so.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Status:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="statusLabel">
+        <property name="text">
+         <string>Not Started</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Attention: Changing the format version will rewrite all Kolab objects. Make sure you have a backup of your data, and the account is fully synchronized and connected to the server.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Change Format Version</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
  <customwidgets>
   <customwidget>
    <class>KComboBox</class>
@@ -84,5 +128,6 @@
    <header>kcombobox.h</header>
   </customwidget>
  </customwidgets>
+ <resources/>
  <connections/>
 </ui>
