@@ -173,20 +173,23 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict(
   return Duplicate;
 }
 
-void IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
+bool IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
 {
 //   kDebug() << "toKolabFormat";
   KCalCore::Incidence::Ptr incidencePtr;
   if ( item.hasPayload<KCalCore::Incidence::Ptr>() ) {
     incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
+  } else {
+    kWarning() << "item is not an incidence";
+    return false;
   }
 //   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem( incidencePtr, imapItem );
   if ( checkForErrors( item.id() ) ) {
     imapItem.setPayloadFromData( "" );
-    //TODO clear mimetype?
-    return;
+    return false;
   }
+  return true;
 }
 
 void IncidenceHandler::incidenceToItem( const KCalCore::Incidence::Ptr &incidencePtr,

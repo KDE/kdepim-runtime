@@ -325,7 +325,11 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &item,
     return;
   }
   Akonadi::Item imapItem( handler->contentMimeTypes()[0] );
-  handler->toKolabFormat( kolabItem, imapItem );
+  if (!handler->toKolabFormat( kolabItem, imapItem )) {
+    kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
+    cancelTask();
+    return;
+  }
   imapItem.setFlag( Akonadi::MessageFlags::Seen );
 
   Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( imapItem, imapCollection );
@@ -390,7 +394,11 @@ void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
       return;
     }
 
-    handler->toKolabFormat( kolabItem, imapItem );
+    if (!handler->toKolabFormat( kolabItem, imapItem )) {
+      kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
+      cancelTask();
+      return;
+    }
     Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob( imapItem );
     mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
     connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
@@ -423,7 +431,11 @@ void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob *job )
     return;
   }
   Akonadi::Item imapItem( handler->contentMimeTypes()[0] );
-  handler->toKolabFormat( kolabItem, imapItem );
+  if (!handler->toKolabFormat( kolabItem, imapItem )) {
+    kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
+    cancelTask();
+    return;
+  }
   imapItem.setFlag( Akonadi::MessageFlags::Seen );
 
   Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( imapItem, imapCollection );
