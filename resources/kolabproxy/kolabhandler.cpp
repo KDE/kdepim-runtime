@@ -131,10 +131,11 @@ bool KolabHandler::checkForErrors( Akonadi::Item::Id affectedItem )
   }
 
   kWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
-  KPassivePopup::message(
+  KPassivePopup *popup = KPassivePopup::message(
     i18n( "An error occurred while reading/writing a Kolab-Groupware-Object(akonadi id %1): \n%2",
           affectedItem, errorMsg ),
     (QWidget*) 0 );
+  popup->setTimeout(120000);
   Kolab::ErrorHandler::instance().clear();
   return true;
 }
