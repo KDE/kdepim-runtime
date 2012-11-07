@@ -64,7 +64,7 @@ Akonadi::Item::List AddressBookHandler::translateItems( const Akonadi::Item::Lis
   return newItems;
 }
 
-void AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
+bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
 {
   if ( item.hasPayload<KABC::Addressee>() ) {
     const KABC::Addressee &addressee = item.payload<KABC::Addressee>();
@@ -73,7 +73,7 @@ void AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
       Kolab::KolabObjectWriter::writeContact( addressee, m_formatVersion, PRODUCT_ID );
 
     if ( checkForErrors( item.id() ) ) {
-      return;
+      return false;
     }
     imapItem.setMimeType( "message/rfc822" );
     imapItem.setPayload( message );
@@ -115,14 +115,15 @@ void AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
       Kolab::KolabObjectWriter::writeDistlist( contactGroup, m_formatVersion, PRODUCT_ID );
 
     if ( checkForErrors( item.id() ) ) {
-      return;
+      return false;
     }
     imapItem.setMimeType( "message/rfc822" );
     imapItem.setPayload( message );
   } else {
     kWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";
-    return;
+    return false;
   }
+  return true;
 }
 
 QStringList AddressBookHandler::contentMimeTypes()

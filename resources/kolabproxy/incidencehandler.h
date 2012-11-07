@@ -40,7 +40,7 @@ class IncidenceHandler : public KolabHandler
     virtual void itemAdded( const Akonadi::Item &item );
     virtual void itemDeleted( const Akonadi::Item &item );
     virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &addrs );
-    virtual void toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
+    virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
 
     /**reimp*/
     void reset();

@@ -31,20 +31,21 @@ QStringList NotesHandler::contentMimeTypes()
   return QStringList() << QLatin1String( "text/x-vnd.akonadi.note" );
 }
 
-void NotesHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
+bool NotesHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
 {
   if ( item.hasPayload<KMime::Message::Ptr>() ) {
     KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeNote( note, m_formatVersion );
     if ( checkForErrors( item.id() ) ) {
-      return;
+      return false;
     }
     imapItem.setMimeType( "message/rfc822" );
     imapItem.setPayload( msg );
   } else {
     kWarning() << "Payload is not a note!";
-    return;
+    return false;
   }
+  return true;
 }
 
 Akonadi::Item::List NotesHandler::translateItems( const Akonadi::Item::List &kolabItems )

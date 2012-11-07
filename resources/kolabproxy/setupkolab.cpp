@@ -43,14 +43,6 @@ SetupKolab::SetupKolab( KolabProxyResource *parentResource )
   setButtons( Close );
   initConnection();
   updateCombobox();
-
-  KConfigGroup grp( KGlobal::mainComponent().config(), "KolabProxyResourceSettings" );
-  if ( !grp.readEntry( "enableKolabV3", false ) ) {
-    m_ui->upgradeLabel->hide();
-    m_ui->upgradeFormatButton->hide();
-    grp.writeEntry( "enableKolabV3", false );
-    grp.sync();
-  }
 }
 
 SetupKolab::~SetupKolab()
@@ -97,6 +89,7 @@ void SetupKolab::slotShowUpgradeDialog()
   } else {
     m_versionUi->formatVersion->setCurrentIndex( 1 );
   }
+  m_versionUi->upgradeGroupBox->setEnabled( grp.readEntry<bool>("UpgradeEnabled", false) );
   dialog->exec();
   grp.writeEntry(
     "KolabFormatVersion" + instanceSelected.identifier(),

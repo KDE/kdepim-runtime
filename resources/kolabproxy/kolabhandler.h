@@ -68,8 +68,9 @@ class KolabHandler : public QObject
      * Translates an item into Kolab format.
      * @param item the item to be translated
      * @param imapItem the item that will hold the Kolab format payload data.
+     * @return false if the conversion failed
      */
-    virtual void toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem ) = 0;
+    virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem ) = 0;
 
     /**
      * Return the mimetypes for the collections managed by the handler.

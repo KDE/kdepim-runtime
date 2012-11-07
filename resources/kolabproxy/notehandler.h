@@ -29,7 +29,7 @@ class NotesHandler : public JournalHandler
     explicit NotesHandler( const Akonadi::Collection &imapCollection );
 
     virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &kolabItems );
-    virtual void toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
+    virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
 
