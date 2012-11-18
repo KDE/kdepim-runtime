@@ -32,7 +32,7 @@ namespace KGAPI {
   class AccessManager;
   class Reply;
   class Request;
-};
+}
 
 class QTimer;
 class QNetworkAccessManager;
