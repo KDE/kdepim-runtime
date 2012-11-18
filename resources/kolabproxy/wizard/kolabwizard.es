@@ -127,10 +127,11 @@ function testResultFail()
   testOk( -1 );
 }
 
+var imapRes;
 function testOk( arg )
 {
     print("testOk arg =", arg);
-    var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
+    imapRes = SetupManager.createResource( "akonadi_imap_resource" );
     imapRes.setName( page.widget().serverAddress.text.trim() );
     imapRes.setOption( "ImapServer", page.widget().serverAddress.text.trim() );
     imapRes.setOption( "UserName", page.widget().emailEdit.text.trim() );
@@ -157,8 +158,23 @@ function testOk( arg )
       imapRes.setOption( "Safety", "STARTTLS" );
       imapRes.setOption( "ImapPort", 143 );
     }
+    imapRes.finished.connect(configureKolabVersion);
     stage = 2;
     setup();
+}
+
+function configureKolabVersion( arg )
+{
+    var kolabVersion = page.widget().versionComboBox.currentIndex;
+    var kolabproxyConfig = SetupManager.createConfigFile( "akonadi_kolabproxy_resourcerc" );
+    kolabproxyConfig.setName("kolabproxy");
+    if (kolabVersion == 0) {
+        kolabproxyConfig.setConfig( "KolabProxyResourceSettings", "KolabFormatVersion" + imapRes.identifier(), "0");
+    } else {
+        kolabproxyConfig.setConfig( "KolabProxyResourceSettings", "KolabFormatVersion" + imapRes.identifier(), "1");
+    }
+    //We have to write to the config file manually as the setup process has already finished
+    kolabproxyConfig.write();
 }
 
 try {

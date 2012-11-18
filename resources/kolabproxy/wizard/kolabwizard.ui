@@ -70,6 +70,30 @@
    <item row="3" column="1">
     <widget class="KLineEdit" name="serverAddress"/>
    </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Kolab Version:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="versionComboBox">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>v2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>v3</string>
+      </property>
+     </item>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
