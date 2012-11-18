@@ -94,8 +94,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mSelfTestPassed( false ),
   mSystemIsIdle( false ),
   mIdleDetectionDisabled( true ),
-  mQueue( true ),
-  mShouldProcessNotifications( true )
+  mShouldProcessNotifications( true ),
+  mQueue( true )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
