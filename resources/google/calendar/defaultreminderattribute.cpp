@@ -79,7 +79,11 @@ QByteArray DefaultReminderAttribute::serialized() const
   }
 
   QJson::Serializer serializer;
+  #if !defined( USE_QJSON_0_8 )
   return serializer.serialize( list );
+  #else
+  return serializer.serialize( list, 0 );
+  #endif
 }
 
 Alarm::List DefaultReminderAttribute::alarms( Incidence *incidence ) const

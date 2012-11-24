@@ -1,5 +1,10 @@
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
+# QJson 0.8.0 is BIC
+if(QJSON_VERSION VERSION_GREATER 0.7.1)
+  add_definitions(-DUSE_QJSON_0_8)
+endif()
+
 set(calendarresource_SRCS
   calendareditor.cpp
   calendarresource.cpp
