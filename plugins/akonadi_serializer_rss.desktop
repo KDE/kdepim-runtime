@@ -38,6 +38,6 @@ Comment[x-test]=xxAn Akonadi serializer plugin for RSS articlesxx
 
 [Plugin]
 Type=application/rss+xml
-X-Akonadi-Class=KRss::RssItem;
+X-Akonadi-Class=default;KRss::Item;
 X-KDE-Library=akonadi_serializer_rss
 X-KDE-ClassName=SerializerPluginRss
