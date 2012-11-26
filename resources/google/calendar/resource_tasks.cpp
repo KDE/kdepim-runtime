@@ -93,7 +93,9 @@ void CalendarResource::taskListReceived( KJob *job )
     collection.setParentCollection( m_collections.first() );
     collection.setContentMimeTypes( QStringList() << Todo::todoMimeType() );
     collection.setName( taskList->title() );
-    collection.setRights( Collection::AllRights );
+    collection.setRights( Collection::CanCreateItem |
+                          Collection::CanChangeItem |
+                          Collection::CanDeleteItem );
 
     EntityDisplayAttribute *attr = new EntityDisplayAttribute;
     attr->setDisplayName( taskList->title() );
