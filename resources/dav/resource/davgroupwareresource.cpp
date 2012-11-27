@@ -844,22 +844,11 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
 void DavGroupwareResource::onItemRemovedFinished( KJob *job )
 {
   if ( job->error() ) {
-    kError() << "Error when deleting item:" << job->error() << job->errorString();
-    Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
-    int errorCode = job->error();
-    if ( errorCode > KJob::UserDefinedError )
-      errorCode -= KJob::UserDefinedError;
-
-    if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
-      cancelTask( i18n( "Unable to remove item: %1", job->errorString() ) );
-      return;
-    }
-    else {
-      mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemRemoved, item );
-    }
+    cancelTask( i18n( "Unable to remove item: %1", job->errorString() ) );
   }
-
-  changeProcessed();
+  else {
+    changeProcessed();
+  }
 }
 
 void DavGroupwareResource::onCollectionDiscovered( int protocol, const QString &collection, const QString &config )
