@@ -33,7 +33,7 @@
 KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )
   : m_imapCollection( imapCollection ),
     m_formatVersion ( Kolab::KolabV3 ),
-    m_warningDisplayLevel( Kolab::ErrorHandler::Warning )
+    m_warningDisplayLevel( Kolab::ErrorHandler::Error )
 {
 }
 
