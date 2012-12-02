@@ -135,9 +135,7 @@ void FeederQueue::processNextCollection()
   mTotalAmount = 0;
   mProcessedAmount = 0;
   if ( mCollectionQueue.isEmpty() ) {
-    //kDebug() << "fully indexed";
-    mReIndex = false;
-    emit fullyIndexed();
+    indexingComplete();
     return;
   }
   mCurrentCollection = mCollectionQueue.takeFirst();
@@ -242,6 +240,13 @@ void FeederQueue::collectionFullyIndexed()
     processNextCollection();
 }
 
+void FeederQueue::indexingComplete()
+{
+  //kDebug() << "fully indexed";
+  mReIndex = false;
+  emit fullyIndexed();
+}
+
 void FeederQueue::processItemQueue()
 {
   //kDebug();
@@ -280,7 +285,7 @@ void FeederQueue::prioQueueFinished()
     if (mCurrentCollection.isValid()) {
       collectionFullyIndexed();
     } else {
-      emit fullyIndexed();
+      indexingComplete();
     }
   }
 }
