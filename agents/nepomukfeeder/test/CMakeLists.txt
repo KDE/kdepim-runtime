@@ -19,3 +19,12 @@ target_link_libraries( performancetest
   ${KDEPIMLIBS_KMIME_LIBS}
   nepomukfeederpluginlib
 )
+
+kde4_add_executable(querytest querytest.cpp ../nepomukhelpers.cpp ../pluginloader.cpp)
+target_link_libraries( querytest 
+  ${QT_QTTEST_LIBRARY}
+  ${NEPOMUKFEEDER_SHARED_LIBS}
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  nepomukfeederpluginlib
+)
