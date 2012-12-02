@@ -91,7 +91,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
-  mSelfTestPassed( false ),
   mSystemIsIdle( false ),
   mIdleDetectionDisabled( true ),
   mShouldProcessNotifications( true ),
@@ -123,7 +122,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   KIdleTime::instance()->addIdleTimeout( 1000 * cfgGrp.readEntry( "IdleTimeout", 120 ) );
   disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", true ) );
 
-  checkOnline();
+  setOnline( false );
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
   QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
 
@@ -285,14 +284,14 @@ void NepomukFeederAgent::checkMigration()
 void NepomukFeederAgent::selfTest()
 {
   QStringList errorMessages;
-  mSelfTestPassed = false;
+  bool selfTestPassed = false;
 
   // check if we have been disabled explicitly
   {
     KConfig config( "akonadi_nepomuk_feederrc" );
     KConfigGroup cfgGrp( &config, "akonadi_nepomuk_email_feeder" );
     if ( !cfgGrp.readEntry( "Enabled", true ) ) {
-      checkOnline();
+      setOnline(false);
       emit status( Broken, i18n( "Indexing has been disabled by you." ) );
       return;
     }
@@ -308,7 +307,7 @@ void NepomukFeederAgent::selfTest()
       mNepomukStartupAttempted = true;
       mNepomukStartupTimeout.start();
       // wait for Nepomuk to start
-      checkOnline();
+      setOnline( false );
       emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
       return;
     }
@@ -326,10 +325,10 @@ void NepomukFeederAgent::selfTest()
   }
 
   if ( errorMessages.isEmpty() ) {
-    mSelfTestPassed = true;
+    selfTestPassed = true;
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
     mNepomukStartupTimeout.stop();
-    checkOnline();
+    setOnline( true );
     const KConfigGroup grp( componentData().config(), "InitialIndexing" );
     const int indexCompatLevelIncreased = grp.readEntry( "IndexCompatLevel", 0 ) < NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL;
     if ( !mInitialUpdateDone && indexCompatLevelIncreased ) {
@@ -344,7 +343,7 @@ void NepomukFeederAgent::selfTest()
     return;
   }
 
-  checkOnline();
+  setOnline( selfTestPassed );
   emit status( Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
 }
 
@@ -369,11 +368,6 @@ void NepomukFeederAgent::doSetOnline(bool online)
 {
   setRunning( online );
   Akonadi::AgentBase::doSetOnline( online );
-}
-
-void NepomukFeederAgent::checkOnline()
-{
-  setOnline( mSelfTestPassed );
 }
 
 void NepomukFeederAgent::setRunning( bool running )

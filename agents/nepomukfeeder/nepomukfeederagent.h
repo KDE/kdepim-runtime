@@ -116,7 +116,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void doSetOnline(bool online);
 
   private:
-    void checkOnline();
     void setRunning( bool running );
     void processNextNotification();
 
@@ -137,7 +136,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
-    bool mSelfTestPassed;
     bool mSystemIsIdle;
     bool mIdleDetectionDisabled;
     bool mShouldProcessNotifications;
