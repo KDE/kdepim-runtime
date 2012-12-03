@@ -11,7 +11,7 @@ target_link_libraries( akonadinepomukfeeder_indexer
   nepomukfeederpluginlib
 )
 
-kde4_add_executable(performancetest performancetest.cpp ../nepomukhelpers.cpp ../pluginloader.cpp)
+kde4_add_executable(performancetest performancetest.cpp ../nepomukhelpers.cpp ../propertycache.cpp ../pluginloader.cpp)
 target_link_libraries( performancetest 
   ${QT_QTTEST_LIBRARY}
   ${NEPOMUKFEEDER_SHARED_LIBS}
@@ -22,6 +22,15 @@ target_link_libraries( performancetest
 
 kde4_add_executable(querytest querytest.cpp ../nepomukhelpers.cpp ../pluginloader.cpp)
 target_link_libraries( querytest 
+  ${QT_QTTEST_LIBRARY}
+  ${NEPOMUKFEEDER_SHARED_LIBS}
+  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  ${KDEPIMLIBS_KMIME_LIBS}
+  nepomukfeederpluginlib
+)
+
+kde4_add_executable(cachetest cachetest.cpp ../propertycache.cpp)
+target_link_libraries( cachetest 
   ${QT_QTTEST_LIBRARY}
   ${NEPOMUKFEEDER_SHARED_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
