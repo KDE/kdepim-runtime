@@ -35,7 +35,7 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set( KDEPIM_RUNTIME_DEV_VERSION "beta1" )
+    set( KDEPIM_RUNTIME_DEV_VERSION "beta2" )
 endif ()
 
 set( KDEPIM_RUNTIME_VERSION "4.10${KDEPIM_RUNTIME_DEV_VERSION}" )
@@ -54,7 +54,7 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
 
-find_package(KdepimLibs 4.9.2 REQUIRED)
+find_package(KdepimLibs 4.9.4 REQUIRED)
 
 find_package(Boost 1.34.0)
 macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
