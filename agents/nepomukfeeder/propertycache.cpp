@@ -128,7 +128,7 @@ QHash<QUrl, uint> PropertyCache::findCachedResources(const Nepomuk2::SimpleResou
     return tempHashMap;
 }
 
-/**
+/*
  * Go through graph, and replace every temporary uri with the hash of the referenced resource (so the hashing process gives always the same result)
  * We cannot hash the temporary uri as it wouldn't be guaranteed to be always the same.
  * In the end return a mapping of the temporary uri to the corresponding resources hash.
@@ -149,7 +149,7 @@ QMap<uint, QUrl> PropertyCache::hashResources(const Nepomuk2::SimpleResourceGrap
     return waitingForUri;
 }
 
-/**
+/*
  * Fill the cache once we have the definitive mapping from the storeresourcesjob.
  * Note that we cannot replace the temporary uris right away, as the whole point of the cache is that we can identify equivalent resources before storage (so the cache results in less data to store).
  */

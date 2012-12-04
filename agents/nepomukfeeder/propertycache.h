@@ -22,14 +22,42 @@
 #include <nepomuk2/simpleresource.h>
 #include <nepomuk2/simpleresourcegraph.h>
 
-
+/**
+ * A cache for nepomuk resources which are being stored using a SimpleResourceGraph.
+ * The basic idea is to avoid repeatedly storing the same subresources of resources,
+ * such as i.e. the email headers which are part of nearly every email.
+ * To achieve this, all stored resouces are hashed, and the cache maintains hash-resourceUri pairs.
+ * If a new graph is passed to the cache, equivalent resources can be identified based the hash,
+ * which allows to insert the final resourceUri right away and avoids storing the same resource again.
+ */
 class PropertyCache
 {
 public:
     PropertyCache();
+    
+    /**
+     * Fill the cache using the stored graph (which contains temporary uris), and the mapping to the final uris
+     * which is returned by Nepomuk2::StoreResourceJob.
+     * This will fill the cache with resource of the cached types.
+     */
     void fillCache(const Nepomuk2::SimpleResourceGraph &graph, const QHash<QUrl, QUrl> &mappings);
+    
+    /**
+     * Apply the cache to the graph, and return a graph with all already cached resources removed and the corresponding references
+     * replaced by a final resource-uri.
+     */
     Nepomuk2::SimpleResourceGraph applyCache(const Nepomuk2::SimpleResourceGraph &) const;
+    
+    /**
+     * Sets the RDF:Types which should be cached.
+     * Nothin is cached by default.
+     */
     void setCachedTypes(const QList<QUrl> &);
+    
+    /**
+     * Sets the maximum cache size.
+     * The default is 100 items
+     */
     void setSize(int);
 
 private:
