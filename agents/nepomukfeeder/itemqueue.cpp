@@ -22,6 +22,9 @@
 #include <KDebug>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
+#include <nepomuk2/storeresourcesjob.h>
+
+Q_DECLARE_METATYPE(Nepomuk2::SimpleResourceGraph);
 
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
@@ -30,6 +33,12 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mRunningJobs( 0 ),
   mProcessingDelay( 0 )
 {
+  mPropertyCache.setCachedTypes(QList<QUrl>()
+     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
+     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact")
+     << QUrl("http://www.semanticdesktop.org/ontologies/2007/08/15/nao#FreeDesktopIcon")
+     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#MessageHeader")
+  );
   if ( fetchSize < batchSize )  {
     kWarning() << "fetchSize must be >= batchsize";
     fetchSize = batchSize;
@@ -179,7 +188,8 @@ bool ItemQueue::processBatch()
   }
   if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
-    KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mResourceGraph );
+    KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( mResourceGraph ) );
+    addGraphJob->setProperty("graph", QVariant::fromValue(mResourceGraph));
     connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
     mRunningJobs++;
     foreach (Akonadi::Item::Id id, mBatch) {
@@ -205,6 +215,11 @@ void ItemQueue::batchJobResult(KJob* job)
         kWarning() << res;
     }*/
     kWarning() << job->errorString();
+  } else {
+    Nepomuk2::StoreResourcesJob *storeResourcesJob = static_cast<Nepomuk2::StoreResourcesJob*>(job);
+    Q_ASSERT(storeResourcesJob);
+    Nepomuk2::SimpleResourceGraph graph = storeResourcesJob->property("graph").value<Nepomuk2::SimpleResourceGraph>();
+    mPropertyCache.fillCache(graph, storeResourcesJob->mappings());
   }
   QTimer::singleShot(mProcessingDelay, this, SLOT(continueProcessing()));
   mRunningJobs++;

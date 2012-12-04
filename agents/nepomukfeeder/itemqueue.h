@@ -23,6 +23,7 @@
 #include <QQueue>
 #include <QString>
 #include <nepomuk2/simpleresourcegraph.h>
+#include "propertycache.h"
 
 class KJob;
 
@@ -68,7 +69,6 @@ private:
   QQueue<Akonadi::Item::Id> mItemPipelineBackup;
   QQueue<Akonadi::Item::Id> mItemPipeline;
   Nepomuk2::SimpleResourceGraph mResourceGraph;
-  //Nepomuk::SimpleResourceGraph m_debugGraph;
   QList<Akonadi::Item::Id> mBatch;
   QList<Akonadi::Item::Id> mTempFetchList;
   Akonadi::Item::List mItemFetchList;
@@ -79,5 +79,6 @@ private:
   int mRunningJobs;
 
   int mProcessingDelay;
+  PropertyCache mPropertyCache;
 };
 #endif // ITEMQUEUE_H
