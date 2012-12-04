@@ -41,13 +41,19 @@ void PropertyCache::setSize(int size)
     mCache.setMaxCost(size);
 }
 
+/*
+ * This hash function uses XOR to combine the individual hashes of each property.
+ * Due to this:
+ * * the order of the hashes is not preseved in the hash (XOR is commutative)
+ * * XOR of two equal values results in 0, but that shouldn't be a problem in this specific case.
+ */
 uint PropertyCache::hashProperties(const Nepomuk2::PropertyHash &properties) const
 {
     uint hash = 0;
     QHashIterator<QUrl, QVariant> it( properties );
     while( it.hasNext() ) {
         it.next();
-        hash ^= qHash( it.key() ) & qHash( it.value().toString() );
+        hash ^= qHash( it.key() ) ^ qHash( it.value().toString() );
     }
     return hash;
 }
