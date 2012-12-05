@@ -86,7 +86,6 @@ class ContactsResource: public Akonadi::ResourceBase,
 
     void replyReceived( KGAPI::Reply *reply );
 
-    void contactReceived( KGAPI::Reply *reply );
     void contactUpdated( KGAPI::Reply *reply );
     void contactCreated( KGAPI::Reply *reply );
     void contactRemoved( KGAPI::Reply *reply );
