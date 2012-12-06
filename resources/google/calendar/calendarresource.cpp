@@ -125,6 +125,7 @@ void CalendarResource::error( const KGAPI::Error errCode, const QString &msg )
 void CalendarResource::configure( WId windowId )
 {
   SettingsDialog *settingsDialog = new SettingsDialog( windowId );
+  settingsDialog->setWindowIcon( KIcon( "im-google" ) );
 
   if ( settingsDialog->exec() == KDialog::Accepted ) {
     Q_EMIT configurationDialogAccepted();

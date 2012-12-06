@@ -124,6 +124,7 @@ void KABCResource::configure( WId windowId )
     KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
     if ( windowId )
       KWindowSystem::setMainWindow( &dlg, windowId );
+    dlg.setWindowIcon( KIcon( "text-directory" ) );
     if ( dlg.exec() ) {
       setName( mBaseResource->resourceName() );
       manager->writeConfig( KGlobal::config().data() );

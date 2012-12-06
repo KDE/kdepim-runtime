@@ -331,6 +331,7 @@ KResourceAssistant::KResourceAssistant( const QString& resourceFamily, QWidget *
 
   setModal( true );
   setCaption( i18nc( "@title:window", "KDE Compatibility Assistant" ) );
+  setWindowIcon( KIcon( "text-directory" ) );
 
   QWidget *introPage = new CompatibilityIntroductionLabel( this );
   addPage( introPage, QLatin1String( " " ) );
