@@ -121,14 +121,17 @@ void KABCResource::configure( WId windowId )
   if ( mBaseResource != 0 ) {
     emit status( Running,
                  i18nc( "@info:status", "Changing address book plugin configuration" ) );
-    KRES::ConfigDialog dlg( 0, QLatin1String( "contact" ), mBaseResource );
-    if ( windowId )
-      KWindowSystem::setMainWindow( &dlg, windowId );
-    dlg.setWindowIcon( KIcon( "text-directory" ) );
-    if ( dlg.exec() ) {
+    QPointer<KRES::ConfigDialog> dlg = new KRES::ConfigDialog( 0, QLatin1String( "contact" ), mBaseResource );
+    if ( windowId ) {
+      KWindowSystem::setMainWindow( dlg, windowId );
+    }
+    dlg->setWindowIcon( KIcon( "text-directory" ) );
+    int stat = dlg->exec();
+    delete dlg;
+
+    if ( stat == QDialog::Accepted ) {
       setName( mBaseResource->resourceName() );
       manager->writeConfig( KGlobal::config().data() );
-
       emit configurationDialogAccepted();
     } else {
       emit configurationDialogRejected();
@@ -143,22 +146,25 @@ void KABCResource::configure( WId windowId )
 
   emit status( Running,
                i18nc( "@info:status", "Acquiring address book plugin configuration" ) );
-  KResourceAssistant kresAssistant( QLatin1String( "Contact" ) );
-  KWindowSystem::setMainWindow( &kresAssistant, windowId );
+  QPointer<KResourceAssistant> kresAssistant = new KResourceAssistant( QLatin1String( "Contact" ) );
+  KWindowSystem::setMainWindow( kresAssistant, windowId );
 
-  connect( &kresAssistant, SIGNAL(error(QString)),
+  connect( kresAssistant, SIGNAL(error(QString)),
            this, SIGNAL(error(QString)) );
 
-  if ( kresAssistant.exec() != QDialog::Accepted ) {
+  int stat =  kresAssistant->exec();
+  if ( stat != QDialog::Accepted ) {
     emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     emit configurationDialogRejected();
+    delete kresAssistant;
     return;
   }
 
   emit configurationDialogAccepted();
-  KABC::Resource *resource = dynamic_cast<KABC::Resource*>( kresAssistant.resource() );
+  KABC::Resource *resource = dynamic_cast<KABC::Resource*>( kresAssistant->resource() );
   Q_ASSERT( resource != 0 );
 
+  delete kresAssistant;
   setResourcePointers( resource );
 
   mBaseResource->setAddressBook( mAddressBook );
@@ -168,7 +174,9 @@ void KABCResource::configure( WId windowId )
   mAddressBook->addResource( mBaseResource );
 
   if ( !openConfiguration() ) {
-    const QString message = i18nc( "@info:status", "Initialization based on newly created configuration failed." );
+    const QString message =
+      i18nc( "@info:status",
+             "Initialization based on newly created configuration failed." );
     emit error( message );
     emit status( Broken, message );
     return;
