@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=ICal Calendar Folder
+Name[ca]=Carpeta de calendari ICal
 Name[cs]=Složka iCal kalendáře
 Name[de]=ICal-Kalenderordner
 Name[el]=Φάκελος ημερολογίου ICal
@@ -24,6 +25,7 @@ Name[uk]=Тека календаря ICal
 Name[x-test]=xxICal Calendar Folderxx
 Name[zh_TW]=ICal 行事曆資料夾
 Comment=Provides access to calendar items, each stored in a single file, in a given directory
+Comment[ca]=Proporciona l'accés als elements d'un calendari, cada un emmagatzemat en un fitxer individual, en un directori proporcionat
 Comment[cs]=Poskytuje přístup k položkám kalendáře, každé uložené v jednom souboru v daném adresáři
 Comment[de]=Ermöglicht Zugriff auf Kalender, die jeweils in einzelnen Dateien in einem vorgegebenen Ordner gespeichert sind
 Comment[el]=Παρέχει πρόσβαση σε αντικείμενα ημερολογίου, καθένα αποθηκευμένο σε ένα αρχείο, σε δοσμένο κατάλογο

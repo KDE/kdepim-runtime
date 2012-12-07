@@ -136,6 +136,7 @@ void ContactsResource::error( Error errCode, const QString &msg )
 void ContactsResource::configure( WId windowId )
 {
   SettingsDialog *settingsDialog = new SettingsDialog( windowId );
+  settingsDialog->setWindowIcon( KIcon( "im-google" ) );
 
   if ( settingsDialog->exec() == KDialog::Accepted ) {
     Q_EMIT configurationDialogAccepted();
@@ -201,23 +202,8 @@ bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet< QByt
 {
   Q_UNUSED( parts );
 
-  if ( item.mimeType() != KABC::Addressee::mimeType() ) {
-    return false;
-  }
-
-  Account::Ptr account = getAccount();
-  if ( account.isNull() ) {
-    deferTask();
-    return true;
-  }
-
-  QUrl url( Services::Contacts::fetchContactUrl( account->accountName(), item.remoteId() ) );
-
-  KGAPI::Request *request;
-  request = new KGAPI::Request( url, KGAPI::Request::Fetch, "Contacts", account );
-  request->setProperty( "Item", QVariant::fromValue( item ) );
-
-  m_gam->sendRequest( request );
+  /* We don't support fetching parts, the item is already fully stored. */
+  itemRetrieved( item );
 
   return true;
 }
@@ -470,10 +456,6 @@ void ContactsResource::itemRemoved( const Akonadi::Item &item )
 void ContactsResource::replyReceived( KGAPI::Reply *reply )
 {
   switch ( reply->requestType() ) {
-  case Request::Fetch:
-    contactReceived( reply );
-    break;
-
   case Request::Create:
     contactCreated( reply );
     break;
@@ -486,6 +468,7 @@ void ContactsResource::replyReceived( KGAPI::Reply *reply )
     contactRemoved( reply );
     break;
 
+  case Request::Fetch:
   case Request::FetchAll:
   case Request::Move:
   case Request::Patch:
@@ -550,38 +533,6 @@ void ContactsResource::contactListReceived( KJob *job )
   collection.setRemoteRevision( QString::number( KDateTime::currentUtcDateTime().toTime_t() ) );
   CollectionModifyJob *modifyJob = new CollectionModifyJob( collection, this );
   modifyJob->setAutoDelete( true );
-}
-
-void ContactsResource::contactReceived( KGAPI::Reply *reply )
-{
-  if ( reply->error() != KGAPI::OK ) {
-    cancelTask( i18n( "Failed to fetch contact" ) );
-    return;
-  }
-
-  QList< KGAPI::Object * > data = reply->replyData();
-  if ( data.length() != 1 ) {
-    kWarning() << "Server send " << data.length() << "items, which is not OK";
-    cancelTask( i18n( "Failed to create a contact" ) );
-    return;
-  }
-
-  Objects::Contact *contact = static_cast< Objects::Contact * >( data.first() );
-
-  Item item = reply->request()->property( "Item" ).value< Item >();
-  item.setRemoteId( contact->uid() );
-  item.setRemoteRevision( contact->etag() );
-
-  if ( contact->deleted() ) {
-    itemsRetrievedIncremental( Item::List(), Item::List() << item );
-  } else {
-    item.setPayload< KABC::Addressee >( KABC::Addressee( *contact ) );
-    item.setMimeType( contact->mimeType() );
-
-    itemsRetrieved( Item::List() << item );
-
-    fetchPhoto( item );
-  }
 }
 
 void ContactsResource::contactCreated( KGAPI::Reply *reply )
