@@ -774,21 +774,7 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
 
   if ( createJob->error() ) {
     kError() << "Error when uploading item:" << createJob->error() << createJob->errorString();
-    int errorCode = createJob->error();
-    if ( errorCode > KJob::UserDefinedError )
-      errorCode -= KJob::UserDefinedError;
-
-    // We only bail out for errors that are unlikely to be recoverable
-    if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
-      cancelTask( i18n( "Unable to add item: %1", job->errorString() ) );
-    } else {
-      mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemAdded, item );
-      // We must set the remote id here. If it's changed by the server then a new item
-      // will be created and this one deleted.
-      Akonadi::Item newItem( item );
-      newItem.setRemoteId( davItem.url() );
-      changeCommitted( newItem );
-    }
+    cancelTask( i18n( "Unable to add item: %1", createJob->errorString() ) );
     return;
   }
 
@@ -813,18 +799,7 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
 
   if ( modifyJob->error() ) {
     kError() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
-    int errorCode = modifyJob->error();
-    if ( errorCode > KJob::UserDefinedError )
-      errorCode -= KJob::UserDefinedError;
-
-    // We only bail out for errors that are unlikely to be recoverable
-    if ( !DavUtils::httpRequestRetryable( errorCode ) ) {
-      cancelTask( i18n( "Unable to change item: %1", job->errorString() ) );
-    } else {
-      mReplayCache.addReplayEntry( item.parentCollection().remoteId(), ReplayCache::ItemChanged, item );
-      Akonadi::Item newItem( item );
-      changeCommitted( newItem );
-    }
+    cancelTask( i18n( "Unable to change item: %1", modifyJob->errorString() ) );
     return;
   }
 
