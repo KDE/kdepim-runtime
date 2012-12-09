@@ -126,9 +126,6 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       setError( davJob->error() );
       setErrorText( davJob->errorText() );
     } else {
-      if ( DavUtils::httpRequestRetryable( responseCode ) )
-        mHasTemporaryError = true;
-
       if ( davJob->url() != mUrl.url() ) {
         // Retry as if the initial URL was a calendar URL.
         // We can end up here when retrieving a homeset on
@@ -136,6 +133,9 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
         doCollectionsFetch( mUrl.url() );
         return;
       }
+
+      if ( DavUtils::httpRequestRetryable( responseCode ) )
+        mHasTemporaryError = true;
 
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request.\n"
