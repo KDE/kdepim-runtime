@@ -1,4 +1,5 @@
 [Global]
+IconName=nepomuk
 Comment=Nepomuk Feeder Agent
 Comment[ca]=Agent alimentador del Nepomuk
 Comment[el]=Πράκτορας Τροφοδότης του Nepomuk

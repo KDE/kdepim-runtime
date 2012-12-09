@@ -150,6 +150,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
   if ( !mSubJobSuccessful ) {
     setError( 0 ); // nope, everything went fine if we're here
     mSubJobSuccessful = true;
+    mHasTemporaryError = false;
   }
 
   // For use in the collectionDiscovered() signal
