@@ -47,20 +47,24 @@ FeederQueue::FeederQueue( bool persistQueue, QObject* parent )
   mReIndex( false ),
   mOnline( true ),
   lowPrioQueue(1, 100, this),
-  highPrioQueue(1, 100, this)
+  highPrioQueue(1, 100, this),
+  unindexedItemQueue(1, 100, this)
 {
   if (persistQueue) {
     lowPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/lowPrioQueue"), true));
     highPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/highPrioQueue"), true));
   }
+  unindexedItemQueue.setItemsAreNotIndexed( true );
   mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
   connect( &mProcessItemQueueTimer, SIGNAL(timeout()), SLOT(processItemQueue()) );
 
   connect( &lowPrioQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
   connect( &highPrioQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
+  connect( &unindexedItemQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
   connect( &lowPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
   connect( &highPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
+  connect( &unindexedItemQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
 }
 
 FeederQueue::~FeederQueue()
@@ -94,9 +98,11 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     if ( speed == FullSpeed ) {
         lowPrioQueue.setProcessingDelay( 0 );
         highPrioQueue.setProcessingDelay( 0 );
+        unindexedItemQueue.setProcessingDelay( 0 );
     } else {
         lowPrioQueue.setProcessingDelay( s_snailPaceDelay );
         highPrioQueue.setProcessingDelay( s_reducedSpeedDelay );
+        unindexedItemQueue.setProcessingDelay( s_snailPaceDelay );
     }
 }
 
@@ -206,9 +212,16 @@ void FeederQueue::addItem( const Akonadi::Item &item )
   mProcessItemQueueTimer.start();
 }
 
+void FeederQueue::addUnindexedItem(const Item &item )
+{
+  kDebug() << item.id();
+  unindexedItemQueue.addItem( item );
+  mProcessItemQueueTimer.start();
+}
+
 bool FeederQueue::isEmpty()
 {
-  return highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && mCollectionQueue.isEmpty();
+  return allQueuesEmpty() && mCollectionQueue.isEmpty();
 }
 
 void FeederQueue::continueIndexing()
@@ -263,12 +276,16 @@ void FeederQueue::processItemQueue()
     if ( !lowPrioQueue.processItem() ) {
       return;
     }
+  } else if ( !unindexedItemQueue.isEmpty() ) {
+    if ( !unindexedItemQueue.processItem() ) {
+      return;
+    }
   } else {
     //kDebug() << "idle";
     emit idle( i18n( "Ready to index data." ) );
   }
 
-  if ( !highPrioQueue.isEmpty() || ( !lowPrioQueue.isEmpty() && mOnline ) ) {
+  if ( !allQueuesEmpty() ) {
     //kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();
@@ -277,7 +294,7 @@ void FeederQueue::processItemQueue()
 
 void FeederQueue::prioQueueFinished()
 {
-  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && ( mPendingJobs == 0 )) {
+  if ( allQueuesEmpty() && ( mPendingJobs == 0 )) {
     if (mCurrentCollection.isValid()) {
       collectionFullyIndexed();
     } else {
@@ -286,13 +303,22 @@ void FeederQueue::prioQueueFinished()
   }
 }
 
+bool FeederQueue::allQueuesEmpty() const
+{
+  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && unindexedItemQueue.isEmpty() ) {
+    return true;
+  }
+  return false;
+}
+
+
 void FeederQueue::batchFinished()
 {
   /*if ( sender() == &highPrioQueue )
     kDebug() << "high prio batch finished--------------------";
   if ( sender() == &lowPrioQueue )
     kDebug() << "low prio batch finished--------------------";*/
-  if ( !highPrioQueue.isEmpty() || !lowPrioQueue.isEmpty() ) {
+  if ( !allQueuesEmpty() ) {
     //kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();

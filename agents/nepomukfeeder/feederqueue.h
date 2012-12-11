@@ -59,6 +59,7 @@ public:
   void addCollection(const Akonadi::Collection &);
   ///adds the item to the highPrioQueue
   void addItem(const Akonadi::Item &);
+  void addUnindexedItem(const Akonadi::Item &);
   /**
    * If enabled all items will be reindexed
    * The flag will be reset once all collections/items have been indexed
@@ -108,6 +109,7 @@ private slots:
   void batchFinished();
   void jobResult( KJob* job );
 private:
+  bool allQueuesEmpty() const;
   void itemHeadersReceived( const Akonadi::Item::List &items );
   void continueIndexing(); //start the indexing if work is to be done
   void collectionFullyIndexed();
@@ -122,6 +124,7 @@ private:
 
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
+  ItemQueue unindexedItemQueue;
 };
 
 

@@ -42,12 +42,15 @@ public:
   /** process one item @return returns false if currently blocked */
   bool processItem();
   /** queue is empty */
-  bool isEmpty();
+  bool isEmpty() const;
 
   /** the delay between two batches */
   void setProcessingDelay(int ms);
 
   void setSaveFile(const QString &saveFile);
+
+  /** Enable optimizations if we know all items of this queue are not yet indexed (all checks are skipped) */
+  void setItemsAreNotIndexed(bool);
 
 signals:
   /** all items processed */
@@ -80,5 +83,6 @@ private:
 
   int mProcessingDelay;
   PropertyCache mPropertyCache;
+  bool mItemsAreNotIndexed;
 };
 #endif // ITEMQUEUE_H

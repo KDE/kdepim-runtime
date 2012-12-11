@@ -132,7 +132,7 @@ void addItemToGraph( const Akonadi::Item &item, Nepomuk2::SimpleResourceGraph &g
 }
 
 /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */
-KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph )
+KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph, bool itemsAreNew )
 {
   /*kDebug() << "--------------------------------";
   foreach ( const Nepomuk2::SimpleResource &res, graph.toList() ) {
@@ -145,7 +145,9 @@ KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph )
   kDebug() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
   additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
-  //FIXME sometimes there are warning about the cardinality, maybe the old values are not always removed before the new ones are (although there is no failing removejob)?
+  if ( itemsAreNew ) {
+    return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent() );
+  }
   return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
 }
 
