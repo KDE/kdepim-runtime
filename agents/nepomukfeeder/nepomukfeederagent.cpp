@@ -329,9 +329,7 @@ void NepomukFeederAgent::selfTest()
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
     mNepomukStartupTimeout.stop();
     setOnline( true );
-    const KConfigGroup grp( componentData().config(), "InitialIndexing" );
-    const int indexCompatLevelIncreased = grp.readEntry( "IndexCompatLevel", 0 ) < NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL;
-    if ( !mInitialUpdateDone && indexCompatLevelIncreased ) {
+    if ( !mInitialUpdateDone ) {
       mInitialUpdateDone = true;
       // we actually never need to reindex everything in normal operation
       // we leave the setting in anyway in case we ever introduce a manual override or whatever
@@ -359,9 +357,6 @@ void NepomukFeederAgent::disableIdleDetection( bool value )
 
 void NepomukFeederAgent::slotFullyIndexed()
 {
-  KConfigGroup grp( componentData().config(), "InitialIndexing" );
-  grp.writeEntry( "IndexCompatLevel", NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
-  grp.sync();
 }
 
 void NepomukFeederAgent::doSetOnline(bool online)
