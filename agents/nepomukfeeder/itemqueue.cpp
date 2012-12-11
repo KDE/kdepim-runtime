@@ -32,7 +32,9 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mFetchSize( fetchSize ),
   mRunningJobs( 0 ),
   mProcessingDelay( 0 ),
-  mItemsAreNotIndexed( false )
+  mItemsAreNotIndexed( false ),
+  mAverageIndexingTime(0),
+  mNumberOfIndexedItems(0)
 {
   mPropertyCache.setCachedTypes(QList<QUrl>()
      << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
@@ -194,6 +196,7 @@ bool ItemQueue::processBatch()
   }
   if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
+    mTimer.start();
     KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( mResourceGraph ), mItemsAreNotIndexed );
     addGraphJob->setProperty("graph", QVariant::fromValue(mResourceGraph));
     connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
@@ -215,6 +218,11 @@ void ItemQueue::batchJobResult(KJob* job)
   //kDebug() << "------------------------------------------";
   //kDebug() << "pipline size: " << mItemPipeline.size();
   //kDebug() << "fetchedItemList : " << mFetchedItemList.size();
+
+  kDebug() << "Indexing took(ms): " << mTimer.elapsed();
+  mNumberOfIndexedItems++;
+  mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
+  kDebug() << "Average (ms): " << mAverageIndexingTime;
   Q_ASSERT( mBatch.isEmpty() );
   if ( job->error() ) {
     /*foreach( const Nepomuk::SimpleResource &res, m_debugGraph.toList() ) {

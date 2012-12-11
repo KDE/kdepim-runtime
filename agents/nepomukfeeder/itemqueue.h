@@ -22,6 +22,7 @@
 #include <Akonadi/Item>
 #include <QQueue>
 #include <QString>
+#include <QTime>
 #include <nepomuk2/simpleresourcegraph.h>
 #include "propertycache.h"
 
@@ -84,5 +85,9 @@ private:
   int mProcessingDelay;
   PropertyCache mPropertyCache;
   bool mItemsAreNotIndexed;
+
+  QTime mTimer;
+  double mAverageIndexingTime;
+  qint64 mNumberOfIndexedItems;
 };
 #endif // ITEMQUEUE_H
