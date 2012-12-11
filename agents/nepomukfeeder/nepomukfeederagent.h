@@ -130,6 +130,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void running(const QString &);
     void configure( WId windowId );
     void changesRecorded();
+    void foundUnindexedItems(KJob *job);
 
   private:
     QTimer mNepomukStartupTimeout;

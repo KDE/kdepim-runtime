@@ -59,6 +59,7 @@
 #include <nepomukfeederutils.h>
 #include "pluginloader.h"
 #include "nepomukhelpers.h"
+#include "findunindexeditemsjob.h"
 #include "nepomukfeeder-config.h"
 #include "nepomukfeederadaptor.h"
 
@@ -260,6 +261,8 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
   foreach ( const Collection &collection, collections ) {
     if ( indexingDisabled( collection ) )
       continue;
+    if ( collection.contentMimeTypes().contains("message/rfc822") ) //Skip emails during initial indexing
+      continue;
     mQueue.addCollection( collection );
   }
 }
@@ -335,6 +338,8 @@ void NepomukFeederAgent::selfTest()
       // we leave the setting in anyway in case we ever introduce a manual override or whatever
       mQueue.setReindexing( false );
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
+      FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
+      connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
     }
@@ -343,6 +348,17 @@ void NepomukFeederAgent::selfTest()
 
   setOnline( selfTestPassed );
   emit status( Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
+}
+
+void NepomukFeederAgent::foundUnindexedItems(KJob* job)
+{
+    FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
+    foreach (const Akonadi::Item &item, findJob->getUnindexed()) {
+        Q_ASSERT(item.parentCollection().isValid());
+        if (indexingDisabled(item.parentCollection()))
+            continue;
+        mQueue.addUnindexedItem(item);
+    }
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )

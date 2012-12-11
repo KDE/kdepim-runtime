@@ -24,6 +24,7 @@
 #include <nepomuk2/resourcemanager.h>
 #include <KDebug>
 #include <aneo.h>
+#include <findunindexeditemsjob.h>
 #include <akonadi/qtest_akonadi.h>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/Collection>
@@ -85,6 +86,16 @@ private slots:
         itemFetchJob->exec();
         kDebug() << "Query took(ms): " << time.elapsed();
         kDebug() << "items " << itemFetchJob->items().size();
+    }
+
+    void testFindJob()
+    {
+        QTime time;
+        time.start();
+        FindUnindexedItemsJob *job = new FindUnindexedItemsJob(this);
+        job->exec();
+        kDebug() << job->getUnindexed().size();
+        kDebug() << "Query took(ms): " << time.elapsed();
     }
 };
 
