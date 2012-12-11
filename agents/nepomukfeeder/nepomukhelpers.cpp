@@ -153,7 +153,12 @@ KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph, bool itemsA
 
 bool isIndexed(const Akonadi::Item& item)
 {
-    return Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }" )
+  // we check if the item already exists with the following values:
+  // - nie:url needs to be set
+  // - aneo:akonadiItemId needs to be set
+  // - nie:lastModified needs to match the item's modification time
+  // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
+  return Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 ; %5 %6 ; %7 %8 . }" )
                                                                     .arg( Soprano::Node::resourceToN3( NIE::url() ),
                                                                             Soprano::Node::resourceToN3( item.url() ),
                                                                             Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiItemId() ),
@@ -167,7 +172,10 @@ bool isIndexed(const Akonadi::Item& item)
 
 bool isIndexed(const Akonadi::Collection& collection)
 {
-    return Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
+  // we check if the collection already has been indexed with the following values
+  // - nie:url needs to be set
+  // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
+  return Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
                                                                     .arg( Soprano::Node::resourceToN3( NIE::url() ),
                                                                             Soprano::Node::resourceToN3( collection.url() ),
                                                                             Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),

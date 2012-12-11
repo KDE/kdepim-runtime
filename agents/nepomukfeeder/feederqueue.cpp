@@ -145,9 +145,6 @@ void FeederQueue::processNextCollection()
   kDebug() << "Indexing collection " << mCurrentCollection.name() << mCurrentCollection.id();
 
   // process the collection only if it has not already been indexed
-  // we check if the collection already has been indexed with the following values
-  // - nie:url needs to be set
-  // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
   if ( !mReIndex && NepomukHelpers::isIndexed(mCurrentCollection) ) {
     kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
     mCurrentCollection = Collection();
@@ -172,11 +169,6 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
       continue; // stay away from links
 
     // update item if it does not exist or does not have a proper id
-    // we check if the item already exists with the following values:
-    // - nie:url needs to be set
-    // - aneo:akonadiItemId needs to be set
-    // - nie:lastModified needs to match the item's modification time
-    // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
     if ( mReIndex || !NepomukHelpers::isIndexed(item)) {
       itemsToUpdate.append( item );
     }
