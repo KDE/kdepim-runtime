@@ -1,6 +1,6 @@
 ########### next target ###############
 
-include_directories( ${SOPRANO_INCLUDE_DIR} )
+include_directories( ${SOPRANO_INCLUDE_DIR} ${NEPOMUK_CORE_INCLUDE_DIR} )
 
 set( nepomuktagresource_SRCS
   nepomuktagresource.cpp
