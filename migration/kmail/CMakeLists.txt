@@ -18,7 +18,7 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/filestore
-  ${NEPOMUK_INCLUDES}
+  ${NEPOMUK_CORE_INCLUDE_DIR}
   ${SOPRANO_INCLUDE_DIR}
 )
 
@@ -42,14 +42,12 @@ add_resource_iface( maildir/maildirresource.kcfg
 add_resource_iface( mixedmaildir/mixedmaildirresource.kcfg
                     org.kde.Akonadi.MixedMaildir.Settings MixedMaildirSettings )
 
-if ( NOT KDEPIM_NO_NEPOMUK )
 soprano_add_ontology(kmail-migrator_srcs
   ${CMAKE_CURRENT_SOURCE_DIR}/messagetag.trig
   "MessageTag"
   "Vocabulary"
   "trig"
 )
-endif ( NOT KDEPIM_NO_NEPOMUK )
 
 kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
 kde4_add_executable(kmail-migrator ${kmail-migrator_srcs} )
@@ -64,7 +62,7 @@ target_link_libraries(kmail-migrator
   akonadi-filestore
   maildir
   kmindexreader
-  ${NEPOMUK_LIBRARIES}
+  ${NEPOMUK_CORE_LIBRARY}
   ${SOPRANO_LIBRARIES}
 )
 

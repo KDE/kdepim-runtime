@@ -24,13 +24,11 @@
 #include "kmailmigrator.h"
 
 
-#ifndef KDEPIM_NO_NEPOMUK
 #include "messagetag.h"
 // avoid metatype.h from interfering
-#include <Nepomuk/Variant>
+#include <Nepomuk2/Variant>
 #define POP3_METATYPE_H
-#include <Nepomuk/Tag>
-#endif
+#include <Nepomuk2/Tag>
 
 #include "imapsettings.h"
 #include "pop3settings.h"
@@ -264,8 +262,7 @@ void KMailMigrator::migrateTags()
 
     const QString shortcut = group.readEntry( QLatin1String( "shortcut" ), QString() );
 
-#ifndef KDEPIM_NO_NEPOMUK
-    Nepomuk::Tag nepomukTag( label );
+    Nepomuk2::Tag nepomukTag( label );
     nepomukTag.setLabel( name );
     nepomukTag.setSymbols( QStringList( iconName ) );
     nepomukTag.setProperty( Vocabulary::MessageTag::inToolbar(), inToolbar );
@@ -293,7 +290,6 @@ void KMailMigrator::migrateTags()
              << "shortcut=" << shortcut;
 
     newlyMigratedTags << groupName;
-#endif
   }
 
   //Cleanup migrated group

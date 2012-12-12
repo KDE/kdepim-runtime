@@ -42,9 +42,7 @@
 #include <akonadi/session.h>
 #include <akonadi/kmime/messagestatus.h>
 
-#ifndef KDEPIM_NO_NEPOMUK
-#include <Nepomuk/Tag>
-#endif
+#include <Nepomuk2/Tag>
 
 #include <KConfigGroup>
 #include <KLocale>
@@ -360,19 +358,17 @@ void ImapCacheCollectionMigrator::Private::itemCreateResult( KJob *job )
     const QStringList tagList = mTagListHash[ storeRemoteId ].value<QStringList>();
     if ( !tagList.isEmpty() ) {
       kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Tagging item" << item.url() << "with" << tagList;
-#ifndef KDEPIM_NO_NEPOMUK
-      QList<Nepomuk::Tag> nepomukTags;
+      QList<Nepomuk2::Tag> nepomukTags;
       Q_FOREACH ( const QString &tag, tagList ) {
         if ( tag.isEmpty() ) {
           kWarning() << "TagList for item" << item.url() << "contains an empty tag";
         } else {
-          nepomukTags << Nepomuk::Tag( tag );
+          nepomukTags << Nepomuk2::Tag( tag );
         }
       }
 
-      Nepomuk::Resource nepomukResource( item.url() );
+      Nepomuk2::Resource nepomukResource( item.url() );
       nepomukResource.setTags( nepomukTags );
-#endif      
     }
 
     const Collection storeCollection = job->property( "storeParentCollection" ).value<Collection>();

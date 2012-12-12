@@ -60,9 +60,7 @@ if( LibKGAPI_FOUND )
 endif()
 
 if (NOT WINCE)
-if ( NEPOMUK_FOUND )
   add_subdirectory( nepomuktag )
-endif ( NEPOMUK_FOUND )
 endif (NOT WINCE)
 
 add_subdirectory( shared )

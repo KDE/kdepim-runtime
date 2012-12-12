@@ -54,10 +54,8 @@
 
 #include <kmime/kmime_message.h>
 
-#ifndef KDEPIM_NO_NEPOMUK
-#include <Nepomuk/Tag>
-#include <Nepomuk/Resource>
-#endif
+#include <Nepomuk2/Tag>
+#include <Nepomuk2/Resource>
 
 #include <KDebug>
 #include <KLocale>
@@ -804,22 +802,20 @@ void MixedMaildirResource::tagFetchJobResult( KJob *job )
   Q_ASSERT( !fetchJob->items().isEmpty() );
 
   const Item item = fetchJob->items()[ 0 ];
-#ifndef KDEPIM_NO_NEPOMUK
   const QStringList tagList = job->property( "tagList" ).value<QStringList>();
   kDebug() << "Tagging item" << item.url() << "with" << tagList;
 
-  QList<Nepomuk::Tag> nepomukTags;
+  QList<Nepomuk2::Tag> nepomukTags;
   Q_FOREACH( const QString &tag, tagList ) {
     if ( tag.isEmpty() ) {
       kWarning() << "TagList for item" << item.url() << "contains an empty tag";
     } else {
-      nepomukTags << Nepomuk::Tag( tag );
+      nepomukTags << Nepomuk2::Tag( tag );
     }
   }
 
-  Nepomuk::Resource nepomukResource( item.url() );
+  Nepomuk2::Resource nepomukResource( item.url() );
   nepomukResource.setTags( nepomukTags );
-#endif
 
   processNextTagContext();
 }
