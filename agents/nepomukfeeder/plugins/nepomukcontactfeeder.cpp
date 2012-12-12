@@ -72,7 +72,7 @@
 #include <kexportplugin.h>
 #include <kpluginfactory.h>
 
-using namespace Nepomuk;
+using namespace Nepomuk2;
 
 
 namespace Akonadi {

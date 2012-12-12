@@ -20,9 +20,9 @@
 #include "nepomuknotefeeder.h"
 
 // ontology includes
-#include <nepomuk/nfo.h>
+#include <nepomuk2/nfo.h>
 #include <Soprano/Vocabulary/NAO>
-#include <Nepomuk/Vocabulary/NIE>
+#include <Nepomuk2/Vocabulary/NIE>
 
 #include <KDebug>
 #include <KMime/Message>
@@ -33,7 +33,7 @@
 #include <kexportplugin.h>
 #include <kpluginfactory.h>
 
-using namespace Nepomuk;
+using namespace Nepomuk2;
 
 
 namespace Akonadi {
@@ -44,7 +44,7 @@ void NepomukNoteFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRe
     Q_ASSERT( item.hasPayload() );
     if ( item.hasPayload<KMime::Message::Ptr>() ) {
         Akonadi::NoteUtils::NoteMessageWrapper note( item.payload<KMime::Message::Ptr>() );
-        res.addType( Nepomuk::Vocabulary::NFO::HtmlDocument() );
+        res.addType( Nepomuk2::Vocabulary::NFO::HtmlDocument() );
 
         NepomukFeederUtils::setIcon( Akonadi::NoteUtils::noteIconName(), res, graph );
 
