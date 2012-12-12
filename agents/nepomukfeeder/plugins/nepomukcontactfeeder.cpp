@@ -26,8 +26,8 @@
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>
 
-#include <Nepomuk/Vocabulary/NCO>
-#include <Nepomuk/Vocabulary/NIE>
+#include <Nepomuk2/Vocabulary/NCO>
+#include <Nepomuk2/Vocabulary/NIE>
 #include <Soprano/Vocabulary/NAO>
 
 #include <KUrl>
@@ -101,7 +101,7 @@ void NepomukContactFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::Simpl
 
 void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk2::SimpleResource &res, Nepomuk2::SimpleResourceGraph &graph )
 {
-    res.addType( Nepomuk::Vocabulary::NCO::Contact() );
+    res.addType( Nepomuk2::Vocabulary::NCO::Contact() );
 
     //NepomukFeederUtils::setIcon( "view-pim-contacts", res, graph );
 
@@ -125,7 +125,7 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
             KUrl fileUrl( filePath );
             fileUrl.setProtocol( "file" );
 
-            res.addProperty( Nepomuk::Vocabulary::NCO::photo(), fileUrl.url() );
+            res.addProperty( Nepomuk2::Vocabulary::NCO::photo(), fileUrl.url() );
         }
     }
 

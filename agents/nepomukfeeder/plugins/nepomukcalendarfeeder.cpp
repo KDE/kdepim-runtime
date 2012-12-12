@@ -24,9 +24,9 @@
 #include <KMime/Message>
 
 // ontology includes
-#include <nepomuk/nfo.h>
+#include <nepomuk2/nfo.h>
 #include <Soprano/Vocabulary/NAO>
-#include <Nepomuk/Vocabulary/NIE>
+#include <Nepomuk2/Vocabulary/NIE>
 
 #include <KDebug>
 
@@ -35,14 +35,14 @@
 
 #include <kexportplugin.h>
 #include <kpluginfactory.h>
-#include <nepomuk/ncal.h>
+#include <nepomuk2/ncal.h>
 #include <Soprano/Vocabulary/RDF>
 #include <ncal/event.h>
 #include <ncal/journal.h>
 #include <ncal/todo.h>
 #include <ncal/attendee.h>
 
-using namespace Nepomuk;
+using namespace Nepomuk2;
 
 
 namespace Akonadi {
