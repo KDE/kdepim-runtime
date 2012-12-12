@@ -25,7 +25,7 @@
 #include <nepomuk2/datamanagement.h>
 #include <KJob>
 #include <KUrl>
-#include <Nepomuk/ResourceManager>
+#include <Nepomuk2/ResourceManager>
 #include <Soprano/Node>
 #include <Soprano/Model>
 #include <Soprano/QueryResultIterator>
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         QObject::connect(feederq, SIGNAL(running(QString)), tester, SLOT(running(QString)));
     } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "check-collection" ) ) {
         int indexerLevel = 3;
-        kDebug() << "Already indexed: " << Nepomuk::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
+        kDebug() << "Already indexed: " << Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery( QString::fromLatin1( "ask where { ?r %1 %2 ; %3 %4 . }" )
         .arg( Soprano::Node::resourceToN3( Vocabulary::NIE::url() ),
               Soprano::Node::resourceToN3( Akonadi::Collection( id ).url() ),
               Soprano::Node::resourceToN3( Vocabulary::ANEO::akonadiIndexCompatLevel() ),
