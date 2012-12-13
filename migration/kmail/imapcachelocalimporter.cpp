@@ -177,7 +177,7 @@ void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
   AgentInstanceCreateJob *createJob = qobject_cast<AgentInstanceCreateJob*>( job );
   mResource = createJob->instance();
 
-  mHiddenSession = new Session( mResource.identifier().toAscii() );
+  mHiddenSession = new Session( mResource.identifier().toLatin1() );
 
   Collection topLevelCollection;
   topLevelCollection.setRemoteId( mTopLevelFolder );

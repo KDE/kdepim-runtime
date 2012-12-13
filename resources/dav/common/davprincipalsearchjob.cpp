@@ -167,7 +167,7 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
     KUrl url = mUrl.url();
     if ( href.startsWith( '/' ) ) {
       // href is only a path, use request url to complete
-      url.setEncodedPath( href.toAscii() );
+      url.setEncodedPath( href.toLatin1() );
     } else {
       // href is a complete url
       KUrl tmpUrl( href );

@@ -662,7 +662,7 @@ AbstractCollectionMigrator::AbstractCollectionMigrator( const AgentInstance &res
 {
   Q_ASSERT( store != 0 );
 
-  d->mHiddenSession = new Session( resource.identifier().toAscii() );
+  d->mHiddenSession = new Session( resource.identifier().toLatin1() );
 }
 
 AbstractCollectionMigrator::~AbstractCollectionMigrator()

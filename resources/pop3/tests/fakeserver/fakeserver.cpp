@@ -241,8 +241,8 @@ void FakeServer::setNextConversation( const QString& conversation,
   enum Mode { Client, Server };
   Mode mode = Client;
 
-  const QByteArray mailSizeMarker = QString( "%MAILSIZE%" ).toAscii();
-  const QByteArray mailMarker = QString( "%MAIL%" ).toAscii();
+  const QByteArray mailSizeMarker = QString( "%MAILSIZE%" ).toLatin1();
+  const QByteArray mailMarker = QString( "%MAIL%" ).toLatin1();
   int sizeIndex = 0;
   int mailIndex = 0;
 
@@ -253,7 +253,7 @@ void FakeServer::setNextConversation( const QString& conversation,
     if ( lineData.contains( mailSizeMarker ) ) {
       Q_ASSERT( mMails.size() > sizeIndex );
       lineData.replace( mailSizeMarker,
-                        QString::number( mMails[sizeIndex++].size() ).toAscii() );
+                        QString::number( mMails[sizeIndex++].size() ).toLatin1() );
     }
     if ( lineData.contains( mailMarker ) ) {
       while( exceptions.contains( mailIndex + 1 ) )
