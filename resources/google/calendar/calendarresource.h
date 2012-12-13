@@ -39,7 +39,7 @@ class CalendarResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
 {
   Q_OBJECT
   public:
-    CalendarResource( const QString &id );
+    explicit CalendarResource( const QString &id );
     ~CalendarResource();
 
     void configure( WId windowId );

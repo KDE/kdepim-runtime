@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_SETTINGSDIALOG_H
-#define AKONADI_SETTINGSDIALOG_H
+#ifndef DIRSETTINGSDIALOG_H
+#define DIRSETTINGSDIALOG_H
 
 #include "ui_settingsdialog.h"
 

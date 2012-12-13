@@ -32,7 +32,7 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
   Q_OBJECT
 
   public:
-    MboxResource( const QString &id );
+    explicit MboxResource( const QString &id );
     ~MboxResource();
 
   protected Q_SLOTS:

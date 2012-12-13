@@ -227,8 +227,8 @@ void ConfigDialog::onEditButtonClicked()
 
 void ConfigDialog::onOkClicked()
 {
-  QPair<QString, DavUtils::Protocol> url;
-  foreach ( url, mRemovedUrls )
+  typedef QPair<QString, DavUtils::Protocol> UrlPair;
+  foreach ( const UrlPair &url, mRemovedUrls )
     Settings::self()->removeUrlConfiguration( url.second, url.first );
 
   mManager->updateSettings();
@@ -239,8 +239,8 @@ void ConfigDialog::onCancelClicked()
 {
   mRemovedUrls.clear();
 
-  QPair<QString, DavUtils::Protocol> url;
-  foreach ( url, mAddedUrls )
+  typedef QPair<QString, DavUtils::Protocol> UrlPair;
+  foreach ( const UrlPair &url, mAddedUrls )
     Settings::self()->removeUrlConfiguration( url.second, url.first );
 }
 

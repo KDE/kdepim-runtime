@@ -34,7 +34,7 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
   Q_OBJECT
 
   public:
-    MixedMaildirResource( const QString &id );
+    explicit MixedMaildirResource( const QString &id );
     ~MixedMaildirResource();
 
   public Q_SLOTS:

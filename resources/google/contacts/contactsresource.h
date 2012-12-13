@@ -47,7 +47,7 @@ class ContactsResource: public Akonadi::ResourceBase,
   Q_OBJECT
 
   public:
-    ContactsResource( const QString &id );
+    explicit ContactsResource( const QString &id );
 
     ~ContactsResource();
 
