@@ -39,7 +39,7 @@ class KABCResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   Q_OBJECT
 
   public:
-    KABCResource( const QString &id );
+    explicit KABCResource( const QString &id );
     virtual ~KABCResource();
 
   public Q_SLOTS:

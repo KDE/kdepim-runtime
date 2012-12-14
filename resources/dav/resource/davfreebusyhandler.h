@@ -39,7 +39,7 @@ class DavFreeBusyHandler : public QObject
     /**
      * Constructs a new DavFreeBusyHandler
      */
-    DavFreeBusyHandler( QObject *parent = 0 );
+    explicit DavFreeBusyHandler( QObject *parent = 0 );
 
     /**
      * Checks if the free-busy info for @p email can be handled

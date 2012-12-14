@@ -37,7 +37,7 @@ class FreeBusyUpdateHandler : public QObject
   Q_OBJECT
 
   public:
-    FreeBusyUpdateHandler( QObject *parent = 0 );
+    explicit FreeBusyUpdateHandler( QObject *parent = 0 );
     ~FreeBusyUpdateHandler();
 
     void updateFolder( const QString &path, const QString &userName,

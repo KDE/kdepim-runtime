@@ -33,7 +33,7 @@ class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::
   Q_OBJECT
 
   public:
-    ICalResourceBase( const QString &id );
+    explicit ICalResourceBase( const QString &id );
     ~ICalResourceBase();
 
   protected Q_SLOTS:

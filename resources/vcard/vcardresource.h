@@ -31,7 +31,7 @@ class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource:
   Q_OBJECT
 
   public:
-    VCardResource( const QString &id );
+    explicit VCardResource( const QString &id );
     ~VCardResource();
 
   protected Q_SLOTS:

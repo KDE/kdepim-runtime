@@ -30,7 +30,7 @@ class LocalBookmarksResource : public Akonadi::ResourceBase, public Akonadi::Age
   Q_OBJECT
 
   public:
-    LocalBookmarksResource( const QString &id );
+    explicit LocalBookmarksResource( const QString &id );
     ~LocalBookmarksResource();
 
   public Q_SLOTS:

@@ -34,7 +34,7 @@ class KAlarmDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
 {
         Q_OBJECT
     public:
-        KAlarmDirResource(const QString& id);
+        explicit KAlarmDirResource(const QString& id);
         ~KAlarmDirResource();
 
     public Q_SLOTS:

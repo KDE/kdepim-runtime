@@ -26,7 +26,7 @@
 class DavProtocolAttribute : public Akonadi::Attribute
 {
   public:
-    DavProtocolAttribute( int protocol = 0 );
+    explicit DavProtocolAttribute( int protocol = 0 );
 
     void setDavProtocol( int protocol );
     int davProtocol() const;

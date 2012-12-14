@@ -36,7 +36,7 @@ class Settings : public SettingsBase
 public:
     static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
 
-    Settings( WId = 0 );
+    explicit Settings( WId = 0 );
     static Settings *self();
     void setWinId( WId );
 

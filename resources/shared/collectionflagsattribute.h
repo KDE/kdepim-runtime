@@ -27,7 +27,7 @@ namespace Akonadi {
 class CollectionFlagsAttribute : public Akonadi::Attribute
 {
   public:
-    CollectionFlagsAttribute( const QList<QByteArray> &flags = QList<QByteArray>() );
+    explicit CollectionFlagsAttribute( const QList<QByteArray> &flags = QList<QByteArray>() );
     void setFlags( const QList<QByteArray> &flags );
     QList<QByteArray> flags() const;
     virtual QByteArray type() const;

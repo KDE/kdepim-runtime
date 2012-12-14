@@ -30,7 +30,7 @@ class NntpResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   Q_OBJECT
 
   public:
-    NntpResource( const QString &id );
+    explicit NntpResource( const QString &id );
     ~NntpResource();
 
   public Q_SLOTS:
