@@ -31,12 +31,18 @@
 SetupManager::SetupManager( QWidget* parent) :
   QObject(parent),
   m_page( 0 ),
+  m_wallet( 0 ),
   m_personalDataAvailable( false ),
   m_rollbackRequested( false )
 {
   KEMailSettings e;
   m_name = e.getSetting( KEMailSettings::RealName );
   m_email = e.getSetting( KEMailSettings::EmailAddress );
+}
+
+SetupManager::~SetupManager()
+{
+  delete m_wallet;
 }
 
 void SetupManager::setSetupPage(SetupPage* page)
@@ -92,8 +98,10 @@ void SetupManager::setupSucceeded(const QString& msg)
 {
   Q_ASSERT( m_page );
   m_page->addMessage( SetupPage::Success, msg );
-  m_setupObjects.append( m_currentSetupObject );
-  m_currentSetupObject = 0;
+  if(m_currentSetupObject) {
+    m_setupObjects.append( m_currentSetupObject );
+    m_currentSetupObject = 0;
+  }
   setupNext();
 }
 
@@ -101,8 +109,10 @@ void SetupManager::setupFailed(const QString& msg)
 {
   Q_ASSERT( m_page );
   m_page->addMessage( SetupPage::Error, msg );
-  m_setupObjects.append( m_currentSetupObject );
-  m_currentSetupObject = 0;
+  if( m_currentSetupObject ) {
+    m_setupObjects.append( m_currentSetupObject );
+    m_currentSetupObject = 0;
+  }
   rollback();
 }
 
@@ -140,8 +150,10 @@ void SetupManager::rollback()
   int remainingObjectCount = m_setupObjects.size();
   foreach ( SetupObject* obj, m_setupObjects ) {
     m_page->setProgress( ( remainingObjectCount * 100 ) / setupObjectCount );
-    obj->destroy();
-    m_objectToSetup.prepend( obj );
+    if( obj ) {
+      obj->destroy();
+      m_objectToSetup.prepend( obj );
+    }
   }
   m_setupObjects.clear();
   m_page->setProgress( 0 );
@@ -202,9 +214,9 @@ void SetupManager::openWallet()
     return;
 
   Q_ASSERT( parent()->isWidgetType() );
-  Wallet *w = Wallet::openWallet( Wallet::NetworkWallet(), qobject_cast<QWidget*>( parent() )->effectiveWinId(), Wallet::Asynchronous );
+  m_wallet = Wallet::openWallet( Wallet::NetworkWallet(), qobject_cast<QWidget*>( parent() )->effectiveWinId(), Wallet::Asynchronous );
   QEventLoop loop;
-  connect( w, SIGNAL(walletOpened(bool)), &loop, SLOT(quit()) );
+  connect( m_wallet, SIGNAL(walletOpened(bool)), &loop, SLOT(quit()) );
   loop.exec();
 }
 

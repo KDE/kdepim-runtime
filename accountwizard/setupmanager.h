@@ -22,6 +22,10 @@
 
 #include <QtCore/QObject>
 
+namespace KWallet {
+  class Wallet;
+}
+
 class SetupObject;
 class SetupPage;
 
@@ -30,6 +34,7 @@ class SetupManager : public QObject
   Q_OBJECT
   public:
     explicit SetupManager( QWidget *parent );
+    ~SetupManager();
     void setSetupPage( SetupPage* page );
 
     void setName( const QString& );
@@ -73,6 +78,7 @@ class SetupManager : public QObject
     QList<SetupObject*> m_setupObjects;
     SetupObject* m_currentSetupObject;
     SetupPage* m_page;
+    KWallet::Wallet *m_wallet;
     bool m_personalDataAvailable;
     bool m_rollbackRequested;
 };
