@@ -27,8 +27,6 @@
 #include <kabc/contactgroup.h>
 
 #include <Nepomuk2/Vocabulary/NCO>
-#include <Nepomuk2/Vocabulary/NIE>
-#include <Soprano/Vocabulary/NAO>
 
 #include <KUrl>
 #include <KStandardDirs>

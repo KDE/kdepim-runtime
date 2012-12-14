@@ -79,7 +79,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   Q_OBJECT
 
   public:
-    NepomukFeederAgent(const QString& id);
+    explicit NepomukFeederAgent(const QString& id);
     ~NepomukFeederAgent();
 
     /**

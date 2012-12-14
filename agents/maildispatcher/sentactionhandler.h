@@ -33,7 +33,7 @@ class SentActionHandler : public QObject
   Q_OBJECT
 
   public:
-    SentActionHandler( QObject *parent = 0 );
+    explicit SentActionHandler( QObject *parent = 0 );
 
     void runAction( const MailTransport::SentActionAttribute::Action &action );
 

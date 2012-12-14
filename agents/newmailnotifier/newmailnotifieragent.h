@@ -30,7 +30,7 @@ class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBas
   Q_OBJECT
 
   public:
-    NewMailNotifierAgent( const QString &id );
+    explicit NewMailNotifierAgent( const QString &id );
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
 
   private slots:

@@ -26,7 +26,7 @@ class SetupObject : public QObject
 {
   Q_OBJECT
   public:
-    SetupObject( QObject *parent );
+    explicit SetupObject( QObject *parent );
 
     virtual void create() = 0;
     virtual void destroy() = 0;

@@ -43,7 +43,7 @@ class StrigiFeeder : public AgentBase, public AgentBase::ObserverV2
   Q_OBJECT
 
   public:
-    StrigiFeeder( const QString &id );
+    explicit StrigiFeeder( const QString &id );
     ~StrigiFeeder();
 
     void configure( WId windowId );

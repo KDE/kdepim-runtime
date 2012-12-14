@@ -41,7 +41,7 @@ class XmlOperations : public QObject
   Q_ENUMS( CollectionField ItemField )
 
   public:
-    XmlOperations( QObject *parent = 0 );
+    explicit XmlOperations( QObject *parent = 0 );
     ~XmlOperations();
 
     enum CollectionField {

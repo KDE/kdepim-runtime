@@ -34,7 +34,6 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
-#include <akonadi/entityhiddenattribute.h>
 
 #include <nepomuk2/simpleresource.h>
 #include <nepomuk2/simpleresourcegraph.h>

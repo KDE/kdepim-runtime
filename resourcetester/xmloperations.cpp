@@ -134,7 +134,7 @@ void XmlOperations::setItemKey(XmlOperations::ItemField field)
 void XmlOperations::setItemKey(const QString& _fieldName)
 {
   QString fieldName = _fieldName;
-  if ( !fieldName.startsWith( "Item" ) )
+  if ( !fieldName.startsWith( QLatin1String ( "Item" ) ) )
     fieldName.prepend( "Item" );
   const QMetaEnum me = metaObject()->enumerator( metaObject()->indexOfEnumerator( "ItemField" ) );
   setItemKey( static_cast<ItemField>( me.keyToValue( fieldName.toLatin1() ) ) );

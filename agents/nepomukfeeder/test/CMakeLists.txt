@@ -19,3 +19,4 @@ target_link_libraries( performancetest
   ${KDEPIMLIBS_KMIME_LIBS}
   nepomukfeederpluginlib
 )
+
