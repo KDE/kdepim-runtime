@@ -10,7 +10,6 @@ set(kdepim-copy_LIB_SRCS
     calendardiffalgo.cpp
     diffalgo.cpp
     htmldiffalgodisplay.cpp
-    kdatepickerpopup.cpp
     kincidencechooser.cpp
 )
 
