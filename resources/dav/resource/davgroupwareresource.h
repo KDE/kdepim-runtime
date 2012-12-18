@@ -38,7 +38,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
   Q_OBJECT
 
   public:
-    DavGroupwareResource( const QString &id );
+    explicit DavGroupwareResource( const QString &id );
     ~DavGroupwareResource();
 
     virtual void collectionRemoved( const Akonadi::Collection &collection );

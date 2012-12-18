@@ -41,7 +41,7 @@ class SetupWizard : public QWizard
   Q_OBJECT
 
   public:
-    SetupWizard( QWidget *parent = 0 );
+    explicit SetupWizard( QWidget *parent = 0 );
 
     enum {
       W_CredentialsPage,

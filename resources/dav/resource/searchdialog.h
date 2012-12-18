@@ -31,7 +31,7 @@ class SearchDialog : public KDialog
   Q_OBJECT
 
   public:
-    SearchDialog( QWidget *parent = 0 );
+    explicit SearchDialog( QWidget *parent = 0 );
     virtual ~SearchDialog();
 
     bool useDefaultCredentials() const;

@@ -29,7 +29,7 @@ class Page : public QWidget
 {
   Q_OBJECT
   public:
-    Page( KAssistantDialog *parent );
+    explicit Page( KAssistantDialog *parent );
 
     void setPageWidgetItem( KPageWidgetItem *item );
 

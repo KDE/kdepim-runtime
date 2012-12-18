@@ -30,7 +30,7 @@ class ServerTest : public QObject
 {
   Q_OBJECT
   public:
-    ServerTest( QObject *parent );
+    explicit ServerTest( QObject *parent );
     ~ServerTest();
 
   public slots:

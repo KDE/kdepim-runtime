@@ -28,7 +28,7 @@ class LockMethodPage : public QWidget
 {
   Q_OBJECT
   public:
-    LockMethodPage( QWidget *parent = 0 );
+    explicit LockMethodPage( QWidget *parent = 0 );
 
   private:
     void checkAvailableLockMethods();

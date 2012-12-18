@@ -99,7 +99,7 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
 
     if ( homeSet.startsWith( '/' ) ) {
       // homeSet is only a path, use request url to complete
-      url.setEncodedPath( homeSet.toAscii() );
+      url.setEncodedPath( homeSet.toLatin1() );
     } else {
       // homeSet is a complete url
       KUrl tmpUrl( homeSet );
@@ -126,9 +126,6 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       setError( davJob->error() );
       setErrorText( davJob->errorText() );
     } else {
-      if ( DavUtils::httpRequestRetryable( responseCode ) )
-        mHasTemporaryError = true;
-
       if ( davJob->url() != mUrl.url() ) {
         // Retry as if the initial URL was a calendar URL.
         // We can end up here when retrieving a homeset on
@@ -136,6 +133,9 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
         doCollectionsFetch( mUrl.url() );
         return;
       }
+
+      if ( DavUtils::httpRequestRetryable( responseCode ) )
+        mHasTemporaryError = true;
 
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request.\n"
@@ -268,7 +268,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     url.setUser( QString() );
     if ( href.startsWith( '/' ) ) {
       // href is only a path, use request url to complete
-      url.setEncodedPath( href.toAscii() );
+      url.setEncodedPath( href.toLatin1() );
     } else {
       // href is a complete url
       KUrl tmpUrl( href );

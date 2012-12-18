@@ -199,7 +199,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished( KJob *job )
 
     if ( nextRoundHref.startsWith( '/' ) ) {
       // nextRoundHref is only a path, use request url to complete
-      nextRoundUrl.setEncodedPath( nextRoundHref.toAscii() );
+      nextRoundUrl.setEncodedPath( nextRoundHref.toLatin1() );
     } else {
       // href is a complete url
       KUrl tmpUrl( nextRoundHref );

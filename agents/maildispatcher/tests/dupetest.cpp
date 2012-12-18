@@ -42,8 +42,8 @@
 #include <boost/shared_ptr.hpp>
 
 
-#define TIMEOUT_SECONDS 60
-#define MAXCOUNT 99 // must be 2-digit!
+static const int TIMEOUT_SECONDS = 60;
+static const int MAXCOUNT = 99; // must be 2-digit!
 
 using namespace Akonadi;
 using namespace KMime;

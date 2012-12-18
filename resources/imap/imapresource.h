@@ -47,7 +47,7 @@ class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
   using Akonadi::AgentBase::Observer::collectionChanged;
 
 public:
-  ImapResource( const QString &id );
+  explicit ImapResource( const QString &id );
   ~ImapResource();
 
 

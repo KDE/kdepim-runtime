@@ -37,7 +37,7 @@ class MailDispatcherAgent : public Akonadi::AgentBase
   Q_CLASSINFO( "D-Bus Interface", "org.freedesktop.Akonadi.MailDispatcherAgent" )
 
   public:
-    MailDispatcherAgent( const QString &id );
+    explicit MailDispatcherAgent( const QString &id );
     ~MailDispatcherAgent();
 
   public Q_SLOTS:

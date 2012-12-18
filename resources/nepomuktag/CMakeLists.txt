@@ -1,6 +1,6 @@
 ########### next target ###############
 
-include_directories( ${SOPRANO_INCLUDE_DIR} )
+include_directories( ${SOPRANO_INCLUDE_DIR} ${NEPOMUK_CORE_INCLUDE_DIR} )
 
 set( nepomuktagresource_SRCS
   nepomuktagresource.cpp
@@ -28,7 +28,7 @@ target_link_libraries(akonadi_nepomuktag_resource
   ${QT_QTDBUS_LIBRARY}
   ${QT_QTCORE_LIBRARY}
   ${SOPRANO_LIBRARIES}
-  ${NEPOMUK_LIBRARIES}
+  ${NEPOMUK_CORE_LIBRARY}
 )
 
 install(TARGETS akonadi_nepomuktag_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

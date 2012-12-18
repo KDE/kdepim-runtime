@@ -26,7 +26,7 @@ class System : public QObject
 {
   Q_OBJECT
   public:
-    System( QObject *parent = 0 );
+    explicit System( QObject *parent = 0 );
 
   public slots:
     void exec( const QString& program, const QStringList& args );

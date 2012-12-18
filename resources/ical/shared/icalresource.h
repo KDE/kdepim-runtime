@@ -30,7 +30,7 @@ class ICalResource : public ICalResourceBase
   Q_OBJECT
 
   public:
-    ICalResource( const QString &id );
+    explicit ICalResource( const QString &id );
     ~ICalResource();
 
   protected:

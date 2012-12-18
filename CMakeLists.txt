@@ -35,10 +35,10 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set( KDEPIM_RUNTIME_DEV_VERSION "beta2" )
+    set( KDEPIM_RUNTIME_DEV_VERSION "prealpha" )
 endif ()
 
-set( KDEPIM_RUNTIME_VERSION "4.10${KDEPIM_RUNTIME_DEV_VERSION}" )
+set( KDEPIM_RUNTIME_VERSION "4.11${KDEPIM_RUNTIME_DEV_VERSION}" )
 
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
@@ -81,9 +81,6 @@ macro_log_feature(SHAREDDESKTOPONTOLOGIES_FOUND "Shared desktop ontologies" "Des
 find_package(Soprano)
 macro_log_feature(Soprano_FOUND "Soprano" "Semantic Desktop Storing" "http://soprano.sourceforge.net" TRUE "${SOPRANO_MIN_VERSION}" "Soprano is needed for Nepomuk")
 
-find_package(Nepomuk)
-macro_log_feature(Nepomuk_FOUND "Nepomuk" "The Nepomuk libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
-
 find_package(NepomukCore)
 macro_log_feature(NepomukCore_FOUND "NepomukCore" "The NepomukCore libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
 
@@ -119,10 +116,10 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
 )
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "Strigi Qt D-Bus client library" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
 
-find_package(Libkolab NO_MODULE 0.2)
+find_package(Libkolab NO_MODULE 0.2 QUIET)
 macro_log_feature(Libkolab_FOUND "KolabLibraries" "The Kolab Format libraries" "http://mirror.kolabsys.com/pub/releases/" FALSE "0.2" "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
-find_package(Libkolabxml NO_MODULE)
+find_package(Libkolabxml NO_MODULE QUIET)
 macro_log_feature(Libkolabxml_FOUND "Kolabxml" "The Kolab XML Format Schema Definitions Library" "http://mirror.kolabsys.com/pub/releases/" FALSE "" "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 ############### Load the CTest options ###############

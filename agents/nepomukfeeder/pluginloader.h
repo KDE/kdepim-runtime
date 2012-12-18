@@ -30,7 +30,7 @@ class FeederPluginloader
 {
 private:
   FeederPluginloader(){};
-  FeederPluginloader(FeederPluginloader const&); // Don't Implement
+  explicit FeederPluginloader(FeederPluginloader const&); // Don't Implement
   void operator=(FeederPluginloader const&); // Don't implement
 public:
   static FeederPluginloader &instance()

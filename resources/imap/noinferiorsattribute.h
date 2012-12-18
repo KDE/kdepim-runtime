@@ -25,7 +25,7 @@
 class NoInferiorsAttribute : public Akonadi::Attribute
 {
 public:
-    NoInferiorsAttribute( bool noInferiors = false );
+    explicit NoInferiorsAttribute( bool noInferiors = false );
     void setNoInferiors( bool noInferiors );
     bool noInferiors() const;
     virtual QByteArray type() const;

@@ -36,7 +36,7 @@ class KAlarmResource : public ICalResourceBase
 {
         Q_OBJECT
     public:
-        KAlarmResource(const QString& id);
+        explicit KAlarmResource(const QString& id);
         virtual ~KAlarmResource();
 
     protected:

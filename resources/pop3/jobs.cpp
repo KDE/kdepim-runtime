@@ -342,7 +342,7 @@ void ListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
     QByteArray idString = cleanData.left( space );
 
     bool idIsNumber;
-    int id = QString::fromAscii( idString ).toInt( &idIsNumber );
+    int id = QString::fromLatin1( idString ).toInt( &idIsNumber );
     if ( idIsNumber )
       mIdList.insert( id, length );
     else
@@ -388,9 +388,9 @@ void UIDListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
     QByteArray idString = cleanData.left( space );
     QByteArray uidString = cleanData.mid( space + 1 );
     bool idIsNumber;
-    int id = QString::fromAscii( idString ).toInt( &idIsNumber );
+    int id = QString::fromLatin1( idString ).toInt( &idIsNumber );
     if ( idIsNumber ) {
-      const QString uidQString = QString::fromAscii( uidString );
+      const QString uidQString = QString::fromLatin1( uidString );
       if ( !uidQString.isEmpty() ) {
         mUidList.insert( id, uidQString );
         mIdList.insert( uidQString, id );

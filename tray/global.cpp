@@ -61,7 +61,12 @@ void Global::init()
         else {
             const QString options = settings.value( "Options", "" ).toString();
             const QStringList list = options.split( '=' );
-            m_dboptions.append( "--socket=" + list.at( 1 ) );
+	    if( list.count() == 2 )
+              m_dboptions.append( "--socket=" + list.at( 1 ) );
+	    else {
+	      m_parsed = false;
+	      return;
+	    }
         }
 
         settings.endGroup();
@@ -69,7 +74,8 @@ void Global::init()
     }
 
     else {
-      m_parsed = false; }
+      m_parsed = false; 
+    }
 }
 
 const QString Global::dbdriver()

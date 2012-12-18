@@ -31,7 +31,7 @@ using namespace KGAPI;
 class DefaultReminderAttribute : public Akonadi::Attribute
 {
   public:
-    DefaultReminderAttribute(
+    explicit DefaultReminderAttribute(
       const Objects::Reminder::List &reminders = Objects::Reminder::List() );
 
     Attribute *clone() const;

@@ -32,7 +32,7 @@ class LoadPage : public Page
 {
   Q_OBJECT
   public:
-    LoadPage( KAssistantDialog *parent );
+    explicit LoadPage( KAssistantDialog *parent );
 
     virtual void enterPageNext();
     virtual void enterPageBack();

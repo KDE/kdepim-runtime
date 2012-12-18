@@ -29,7 +29,7 @@ class ItemTest : public QObject, protected WrappedObject
 {
   Q_OBJECT
   public:
-    ItemTest( QObject *parent = 0 );
+    explicit ItemTest( QObject *parent = 0 );
 
     void setParentCollection( const Akonadi::Collection &parent );
 

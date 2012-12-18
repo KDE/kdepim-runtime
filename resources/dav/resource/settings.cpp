@@ -320,7 +320,7 @@ void Settings::loadMappings()
       collectionsMappingsCache.close();
     }
   } else if ( !collectionsUrlsMappings().isEmpty() ) {
-    QByteArray rawMappings = QByteArray::fromBase64( collectionsUrlsMappings().toAscii() );
+    QByteArray rawMappings = QByteArray::fromBase64( collectionsUrlsMappings().toLatin1() );
     QDataStream stream( &rawMappings, QIODevice::ReadOnly );
     stream >> mCollectionsUrlsMapping;
     setCollectionsUrlsMappings( QString() );

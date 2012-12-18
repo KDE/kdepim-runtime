@@ -167,7 +167,7 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
     KUrl url = mUrl.url();
     if ( href.startsWith( '/' ) ) {
       // href is only a path, use request url to complete
-      url.setEncodedPath( href.toAscii() );
+      url.setEncodedPath( href.toLatin1() );
     } else {
       // href is a complete url
       KUrl tmpUrl( href );
@@ -286,8 +286,8 @@ void DavPrincipalSearchJob::principalPropertySearchFinished( KJob* job )
   }
 
   // All requested properties are now under propElement, so let's find them
-  QPair<QString, QString> fetchProperty;
-  foreach ( fetchProperty, mFetchProperties ) {
+  typedef QPair<QString, QString> PropertyPair;
+  foreach ( const PropertyPair &fetchProperty, mFetchProperties ) {
     QDomNodeList fetchNodes = propElement.elementsByTagNameNS( fetchProperty.first, fetchProperty.second );
     for ( int i = 0; i < fetchNodes.size(); ++i ) {
       QDomElement fetchElement = fetchNodes.at( i ).toElement();
@@ -357,8 +357,8 @@ void DavPrincipalSearchJob::buildReportQuery( QDomDocument& query )
   prop = query.createElementNS( "DAV:", "prop" );
   principalPropertySearch.appendChild( prop );
 
-  QPair<QString, QString> fetchProperty;
-  foreach ( fetchProperty, mFetchProperties ) {
+  typedef QPair<QString, QString> PropertyPair;
+  foreach ( const PropertyPair &fetchProperty, mFetchProperties ) {
     QDomElement elem = query.createElementNS( fetchProperty.first, fetchProperty.second );
     prop.appendChild( elem );
   }

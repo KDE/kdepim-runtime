@@ -31,7 +31,7 @@ class ConfigDialog : public KDialog
   Q_OBJECT
 
   public:
-    ConfigDialog( WId windowId );
+    explicit ConfigDialog( WId windowId );
 
   private Q_SLOTS:
     void save();

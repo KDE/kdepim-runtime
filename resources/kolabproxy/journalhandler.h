@@ -30,7 +30,7 @@
 class JournalHandler : public IncidenceHandler
 {
   public:
-    JournalHandler( const Akonadi::Collection &imapCollection );
+    explicit JournalHandler( const Akonadi::Collection &imapCollection );
     virtual ~JournalHandler();
 
     virtual QStringList contentMimeTypes();

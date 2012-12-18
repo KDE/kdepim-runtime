@@ -101,3 +101,4 @@ private slots:
 QTEST_AKONADIMAIN( PerformanceTest, NoGUI )
 
 #include "performancetest.moc"
+

@@ -26,7 +26,7 @@
 #include <QTimer>
 #include <QScopedPointer>
 
-namespace Nepomuk {
+namespace Nepomuk2 {
 class Tag;
 }
 
@@ -65,7 +65,7 @@ protected:
     virtual void collectionRemoved( const Akonadi::Collection& collection );
 
   private:
-    Akonadi::Collection collectionFromTag( const Nepomuk::Tag &tag );
+    Akonadi::Collection collectionFromTag( const Nepomuk2::Tag &tag );
 
   private Q_SLOTS:
     void slotLocalListResult( KJob* job );

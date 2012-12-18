@@ -120,7 +120,7 @@ class SingleFileValidatingWidget : public QWidget
 {
     Q_OBJECT
   public:
-    SingleFileValidatingWidget( QWidget* parent = 0 );
+    explicit SingleFileValidatingWidget( QWidget* parent = 0 );
 
     /**
      * Return whether the widget's value is valid when the dialog is

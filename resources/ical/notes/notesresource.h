@@ -27,7 +27,7 @@ class NotesResource : public ICalResource
   Q_OBJECT
 
   public:
-    NotesResource( const QString &id );
+    explicit NotesResource( const QString &id );
     ~NotesResource();
 
   protected:

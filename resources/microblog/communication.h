@@ -28,7 +28,7 @@ class Communication : public QObject
     Q_OBJECT
 
 public:
-    Communication( QObject *parent );
+    explicit Communication( QObject *parent );
     ~Communication();
     enum Service { Identi, Twitter };
     void setService( int );

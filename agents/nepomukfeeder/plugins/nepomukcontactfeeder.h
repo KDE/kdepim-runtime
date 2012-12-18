@@ -21,8 +21,8 @@
 */
 
 
-#ifndef NEPOMUKNOTEFEEDER_H
-#define NEPOMUKNOTEFEEDER_H
+#ifndef NEPOMUKCONTACTFEEDER_H
+#define NEPOMUKCONTACTFEEDER_H
 
 #include <nepomukfeederplugin.h>
 

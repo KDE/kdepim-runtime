@@ -608,7 +608,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
     QString finalKey = key.left( key.indexOf( rx ) );
 
     QStringList mailDirFlags;
-    Q_FOREACH ( const Akonadi::Item::Flag flag, flags ) {
+    Q_FOREACH ( const Akonadi::Item::Flag &flag, flags ) {
       if ( flag == Akonadi::MessageFlags::Forwarded )
         mailDirFlags << QLatin1String( "P" );
       if ( flag == Akonadi::MessageFlags::Replied )
@@ -656,7 +656,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
          int i = 1;
          while ( QFile::exists( d->path + QString::fromLatin1( "/cur/" ) + newFinalKey ) ) {
            i++;
-           newFinalKey = QString::number( i ) + "-" + newUniqueKey;
+           newFinalKey = QString::number( i ) + '-' + newUniqueKey;
          }
          finalKey = d->path + QString::fromLatin1( "/cur/" ) + newFinalKey;
       } else {

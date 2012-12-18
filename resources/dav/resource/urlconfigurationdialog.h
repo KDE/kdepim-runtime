@@ -34,7 +34,7 @@ class UrlConfigurationDialog : public KDialog
   Q_OBJECT
 
   public:
-    UrlConfigurationDialog( QWidget *parent = 0 );
+    explicit UrlConfigurationDialog( QWidget *parent = 0 );
     ~UrlConfigurationDialog();
 
     DavUtils::Protocol protocol() const;

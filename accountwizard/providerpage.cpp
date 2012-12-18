@@ -138,7 +138,7 @@ void ProviderPage::findDesktopAndSetAssistant( const QStringList& list )
 {
   foreach ( const QString& file, list ) {
     kDebug() << file;
-    if ( file.endsWith( ".desktop" ) ) {
+    if ( file.endsWith( QLatin1String ( ".desktop" ) ) ) {
       kDebug() << "Yay, a desktop file!" << file;
       Global::setAssistant( file );
       m_newPageReady = true;

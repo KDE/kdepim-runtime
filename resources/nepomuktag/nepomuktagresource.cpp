@@ -31,12 +31,12 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/collectioncreatejob.h>
 
-#include <Nepomuk/Resource>
-#include <Nepomuk/Vocabulary/NIE>
-#include <Nepomuk/Variant>
+#include <Nepomuk2/Resource>
+#include <Nepomuk2/Vocabulary/NIE>
+#include <Nepomuk2/Variant>
 
-#include <nepomuk/tag.h>
-#include <nepomuk/resourcemanager.h>
+#include <nepomuk2/tag.h>
+#include <nepomuk2/resourcemanager.h>
 #include <soprano/signalcachemodel.h>
 #include <soprano/nao.h>
 #include <soprano/rdf.h>
@@ -49,9 +49,9 @@ using namespace Akonadi;
 
 NepomukTagResource::NepomukTagResource( const QString &id )
         : ResourceBase( id ),
-        mModel( new Soprano::Util::SignalCacheModel( Nepomuk::ResourceManager::instance()->mainModel() ) )
+        mModel( new Soprano::Util::SignalCacheModel( Nepomuk2::ResourceManager::instance()->mainModel() ) )
 {
-    Nepomuk::ResourceManager::instance()->init();
+    Nepomuk2::ResourceManager::instance()->init();
     changeRecorder()->fetchCollection( true );
     setName( i18n( "Tags" ) );
 
@@ -95,8 +95,8 @@ void NepomukTagResource::retrieveCollections()
 
     collections[ "rootfolderunique" ] = m_root;
 
-    QList<Nepomuk::Tag> tags = Nepomuk::Tag::allTags();
-    foreach( const Nepomuk::Tag& tag, tags ) {
+    QList<Nepomuk2::Tag> tags = Nepomuk2::Tag::allTags();
+    foreach( const Nepomuk2::Tag& tag, tags ) {
         kDebug() << "Found Nepomuk Tag:" << tag.genericLabel();
         if ( collections.contains( tag.genericLabel() ) )
             continue;
@@ -118,13 +118,13 @@ void NepomukTagResource::slotLocalListResult( KJob *job )
     Item::List existingMessages = qobject_cast<ItemFetchJob*>( job )->items();
 
     Item::List taggedMessages;
-    const Nepomuk::Tag tag( currentCollection().remoteId() );
-    QList<Nepomuk::Resource> list = tag.tagOf();
-    foreach( const Nepomuk::Resource& resource, list ) {
-        if ( !resource.resourceUri().toString().startsWith( QLatin1String( "akonadi:" ) ) )
+    const Nepomuk2::Tag tag( currentCollection().remoteId() );
+    QList<Nepomuk2::Resource> list = tag.tagOf();
+    foreach( const Nepomuk2::Resource& resource, list ) {
+        if ( !resource.uri().toString().startsWith( QLatin1String( "akonadi:" ) ) )
             continue;
-        kDebug() << "Found message: " << resource.resourceUri();
-        taggedMessages << Item::fromUrl( KUrl( resource.resourceUri() ) );
+        kDebug() << "Found message: " << resource.uri();
+        taggedMessages << Item::fromUrl( KUrl( resource.uri() ) );
     }
 
     std::sort( existingMessages.begin(), existingMessages.end(), boost::bind( &Item::id, _1 ) < boost::bind( &Item::id, _2 ) );
@@ -181,17 +181,17 @@ void NepomukTagResource::configure( WId )
 
 void NepomukTagResource::itemLinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-    Nepomuk::Resource res( item.url() );
-    const Nepomuk::Tag tag( collection.remoteId() );
+    Nepomuk2::Resource res( item.url() );
+    const Nepomuk2::Tag tag( collection.remoteId() );
     res.addTag( tag );
     changeProcessed();
 }
 
 void NepomukTagResource::itemUnlinked(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-    Nepomuk::Resource res( item.url() );
-    QList<Nepomuk::Tag> allTags = res.tags();
-    const Nepomuk::Tag tag( collection.remoteId() );
+    Nepomuk2::Resource res( item.url() );
+    QList<Nepomuk2::Tag> allTags = res.tags();
+    const Nepomuk2::Tag tag( collection.remoteId() );
     allTags.removeAll( tag );
     res.setTags( allTags );
     changeProcessed();
@@ -210,20 +210,20 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
     bool exists = false;
     if ( !s.isEmpty() ) {
         // see if the tag exists
-        QList<Nepomuk::Tag> l = Nepomuk::Tag::allTags();
-        QListIterator<Nepomuk::Tag> tagIt( l );
+        QList<Nepomuk2::Tag> l = Nepomuk2::Tag::allTags();
+        QListIterator<Nepomuk2::Tag> tagIt( l );
         while ( tagIt.hasNext() ) {
-            const Nepomuk::Tag& tag = tagIt.next();
+            const Nepomuk2::Tag& tag = tagIt.next();
             if ( tag.label() == s || tag.identifiers().contains( s ) ) {
                 emit warning( i18n( "The tag %1 already exists", s ) );
-                newCollection.setRemoteId( tag.resourceUri().toString() );
+                newCollection.setRemoteId( tag.uri().toString() );
                 exists = true;
             }
         }
         if ( !exists ) {
-            Nepomuk::Tag tag( s );
+            Nepomuk2::Tag tag( s );
             tag.setLabel( s );
-            newCollection.setRemoteId( tag.resourceUri().toString() );
+            newCollection.setRemoteId( tag.uri().toString() );
         }
     }
     // ---
@@ -235,7 +235,7 @@ void NepomukTagResource::collectionAdded( const Collection & collection, const C
 void NepomukTagResource::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
 {
   Q_UNUSED( partIdentifiers );
-  Nepomuk::Tag tag( collection.remoteId() );
+  Nepomuk2::Tag tag( collection.remoteId() );
   EntityDisplayAttribute* attr = collection.attribute<EntityDisplayAttribute>();
   if ( attr && !attr->displayName().isEmpty() )
     tag.setLabel( attr->displayName() );
@@ -248,7 +248,7 @@ void NepomukTagResource::collectionChanged(const Akonadi::Collection& collection
 
 void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection)
 {
-    Nepomuk::Tag tag( collection.remoteId() );
+    Nepomuk2::Tag tag( collection.remoteId() );
     tag.remove();
     changeCommitted( collection );
 }
@@ -257,8 +257,8 @@ void NepomukTagResource::collectionRemoved(const Akonadi::Collection& collection
 void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
 {
   if ( statement.predicate() == Soprano::Vocabulary::NAO::hasTag() ) {
-    Nepomuk::Resource resource(statement.subject().uri());
-    const Akonadi::Item item = Item::fromUrl( resource.property(Nepomuk::Vocabulary::NIE::url()).toUrl() );
+    Nepomuk2::Resource resource(statement.subject().uri());
+    const Akonadi::Item item = Item::fromUrl( resource.property(Nepomuk2::Vocabulary::NIE::url()).toUrl() );
     if ( !item.isValid() )
       return;
 
@@ -278,8 +278,8 @@ void NepomukTagResource::statementAdded(const Soprano::Statement& statement)
 void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
 {
   if ( statement.predicate() == Soprano::Vocabulary::NAO::hasTag() ) {
-    Nepomuk::Resource resource(statement.subject().uri());
-    const Akonadi::Item item = Item::fromUrl( resource.property(Nepomuk::Vocabulary::NIE::url()).toUrl() );
+    Nepomuk2::Resource resource(statement.subject().uri());
+    const Akonadi::Item item = Item::fromUrl( resource.property(Nepomuk2::Vocabulary::NIE::url()).toUrl() );
 
     if ( !item.isValid() )
       return;
@@ -292,11 +292,11 @@ void NepomukTagResource::statementRemoved(const Soprano::Statement& statement)
   }
 }
 
-Collection NepomukTagResource::collectionFromTag(const Nepomuk::Tag& tag)
+Collection NepomukTagResource::collectionFromTag(const Nepomuk2::Tag& tag)
 {
   Collection c;
   c.setName( tag.genericLabel() );
-  c.setRemoteId( tag.resourceUri().toString() );
+  c.setRemoteId( tag.uri().toString() );
   c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
   c.setParentCollection( m_root );
   c.setContentMimeTypes( QStringList() << "message/rfc822" );
@@ -313,7 +313,7 @@ void NepomukTagResource::createPendingTagCollections()
 {
   QList<QUrl> stillPendingTagUris;
   foreach ( const QUrl &tagUri, m_pendingTagUris ) {
-    const Nepomuk::Tag tag( tagUri );
+    const Nepomuk2::Tag tag( tagUri );
     kDebug() << tagUri << tag.label();
     if ( tag.label().isEmpty() ) {
       stillPendingTagUris.append( tagUri );

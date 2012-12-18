@@ -454,7 +454,7 @@ void Pop3Test::testBigFetch()
   QString allowedRetrs;
   for( int i = 0; i < 1000; i++ ) {
     QByteArray newMail = simpleMail1;
-    newMail.append( QString::number( i + 1 ).toAscii() );
+    newMail.append( QString::number( i + 1 ).toLatin1() );
     mails << newMail;
     uids << QString( "UID%1" ).arg( i + 1 );
     allowedRetrs += QString::number( i + 1 ) + ',';
@@ -836,7 +836,7 @@ void Pop3Test::testMixedLeaveRules()
   QString allowedRetrs;
   for( int i = 0; i < 10; i++ ) {
     QByteArray newMail = simpleMail1;
-    newMail.append( QString::number( i + 1 ).toAscii() );
+    newMail.append( QString::number( i + 1 ).toLatin1() );
     mails << newMail;
     uids << QString( "UID%1" ).arg( i + 1 );
     allowedRetrs += QString::number( i + 1 ) + ',';

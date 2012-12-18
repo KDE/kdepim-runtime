@@ -240,12 +240,10 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>
-                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    connect( fetch, SIGNAL(result(KJob*)),
-             this, SLOT(onHeadersFetchDone(KJob*)) );
+    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
+           this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
+  connect( fetch, SIGNAL(result(KJob*)),
+           this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( messageCount > realMessageCount && messageCount > 0 ) {
     // The amount on the server is bigger than that we have in the cache
@@ -255,12 +253,10 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( realMessageCount+1, messageCount ) );
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    connect( fetch, SIGNAL(result(KJob*)),
-             this, SLOT(onHeadersFetchDone(KJob*)) );
+    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
+           this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
+  connect( fetch, SIGNAL(result(KJob*)),
+           this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
            && oldNextUid != 0 && !firstTime && messageCount > 0 ) {
@@ -281,12 +277,10 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
     fetch->setSequenceSet( KIMAP::ImapSet( startIndex, messageCount ) );
     fetch->setScope( scope );
-    connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                             QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-             this, SLOT( onHeadersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                            QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
-    connect( fetch, SIGNAL(result(KJob*)),
-             this, SLOT(onHeadersFetchDone(KJob*)) );
+    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
+           this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
+  connect( fetch, SIGNAL(result(KJob*)),
+           this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( m_fastSync ) {
     kDebug( 5327 ) << "No new messages, and fast sync enabled so we're done already";
@@ -313,10 +307,8 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
   KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_session );
   fetch->setSequenceSet( set );
   fetch->setScope( scope );
-  connect( fetch, SIGNAL( headersReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                           QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ),
-           this, SLOT( onFlagsReceived( QString, QMap<qint64, qint64>, QMap<qint64, qint64>,
-                                        QMap<qint64, KIMAP::MessageFlags>, QMap<qint64, KIMAP::MessagePtr> ) ) );
+  connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
+           this, SLOT(onFlagsReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
   connect( fetch, SIGNAL(result(KJob*)),
            this, SLOT(onFlagsFetchDone(KJob*)) );
   fetch->start();

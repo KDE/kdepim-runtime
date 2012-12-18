@@ -27,7 +27,7 @@ class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentB
   Q_OBJECT
 
   public:
-    OpenXchangeResource( const QString &id );
+    explicit OpenXchangeResource( const QString &id );
     ~OpenXchangeResource();
 
     virtual void cleanup();

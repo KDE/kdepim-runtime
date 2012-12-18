@@ -30,7 +30,7 @@ class MicroblogResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
     Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Microblog.Resource" )
 
 public:
-    MicroblogResource( const QString &id );
+    explicit MicroblogResource( const QString &id );
     ~MicroblogResource();
 
 public Q_SLOTS:

@@ -30,7 +30,7 @@ class MTDummyResource : public Akonadi::ResourceBase, public Akonadi::TransportR
   Q_OBJECT
 
   public:
-    MTDummyResource( const QString &id );
+    explicit MTDummyResource( const QString &id );
     ~MTDummyResource();
 
   public:

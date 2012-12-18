@@ -32,7 +32,7 @@ class Resource: public QObject, protected WrappedObject
 {
   Q_OBJECT
   public:
-    Resource( QObject *parent );
+    explicit Resource( QObject *parent );
     ~Resource();
 
   public slots:

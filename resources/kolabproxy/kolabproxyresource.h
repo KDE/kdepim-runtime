@@ -37,7 +37,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
   Q_OBJECT
 
   public:
-    KolabProxyResource( const QString &id );
+    explicit KolabProxyResource( const QString &id );
     ~KolabProxyResource();
 
     /**

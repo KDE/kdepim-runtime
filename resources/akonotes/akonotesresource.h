@@ -27,7 +27,7 @@ class AkonotesResource : public MaildirResource
   Q_OBJECT
 
   public:
-    AkonotesResource( const QString &id );
+    explicit AkonotesResource( const QString &id );
     ~AkonotesResource();
 
   public Q_SLOTS:

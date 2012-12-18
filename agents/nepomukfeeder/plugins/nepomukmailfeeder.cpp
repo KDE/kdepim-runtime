@@ -31,14 +31,14 @@
 #include <KMime/Message>
 
 // ontology includes
-#include <nepomuk/nfo.h>
-#include <nepomuk/nmo.h>
+#include <nepomuk2/nfo.h>
+#include <nepomuk2/nmo.h>
 #include <nmo/email.h>
 #include <nmo/messageheader.h>
 #include <nao/tag.h>
-#include <Nepomuk/Vocabulary/NFO>
+#include <Nepomuk2/Vocabulary/NFO>
 #include <Soprano/Vocabulary/NAO>
-#include <Nepomuk/Vocabulary/NIE>
+#include <Nepomuk2/Vocabulary/NIE>
 
 #include <qplugin.h>
 #include <kexportplugin.h>
@@ -48,7 +48,7 @@
 #include <nepomukfeederutils.h>
 
 
-using namespace Nepomuk;
+using namespace Nepomuk2;
 
 namespace Akonadi {
 

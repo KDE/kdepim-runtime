@@ -71,7 +71,7 @@ typedef boost::shared_ptr<KMIndexData> KMIndexDataPtr;
  */
 class KMINDEXREADER_EXPORT KMIndexReader {
 public:
-    KMIndexReader ( const QString &indexFile );
+    explicit KMIndexReader ( const QString &indexFile );
    ~KMIndexReader();
 
     bool error() const;
