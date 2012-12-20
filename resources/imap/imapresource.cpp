@@ -221,7 +221,7 @@ void ImapResource::startConnect( const QVariant& )
   Q_UNUSED( result );
 }
 
-int ImapResource::configureSubscription()
+int ImapResource::configureSubscription(qlonglong windowId)
 {
   if ( !m_pool->account() )
      return -2;
@@ -230,6 +230,13 @@ int ImapResource::configureSubscription()
      return -1;
 
   QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
+  if(windowId) {
+#ifndef Q_WS_WIN
+    KWindowSystem::setMainWindow( subscriptions, windowId );
+#else
+    KWindowSystem::setMainWindow( subscriptions, (HWND)windowId );
+#endif
+  }
   subscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
   subscriptions->setWindowIcon( KIcon( "network-server" ) );
   subscriptions->connectAccount( *m_pool->account(), password );
