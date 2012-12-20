@@ -174,17 +174,15 @@ int ImapResource::configureDialog( WId windowId )
   KWindowSystem::setMainWindow( dlg, windowId );
 
   dlg->setWindowIcon( KIcon( "network-server" ) );
-  dlg->exec();
-  if ( dlg->shouldClearCache() ) {
-    clearCache();
-  }
-
-  int result = dlg->result();
-  delete dlg;
-
-  if ( result == QDialog::Accepted ) {
+  int result = QDialog::Rejected;
+  if( dlg->exec() ) {
+    if ( dlg->shouldClearCache() ) {
+      clearCache();
+    }
     Settings::self()->writeConfig();
+    result = QDialog::Accepted;
   }
+  delete dlg;
 
   return result;
 }
