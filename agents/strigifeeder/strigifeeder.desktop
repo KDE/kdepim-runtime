@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Strigi Feeder
+Name[bs]=Strigi dovod
 Name[ca]=Alimentador de l'Strigi
 Name[ca@valencia]=Alimentador de l'Strigi
 Name[cs]=Podavač strigi
@@ -44,6 +45,7 @@ Name[x-test]=xxStrigi Feederxx
 Name[zh_CN]=Strigi 采集器
 Name[zh_TW]=Strigi Feeder
 Comment=Strigi-based fulltext search
+Comment[bs]=Strigi-bazirana puna pretraga teksta
 Comment[ca]=Cerca de text complet basada en Strigi
 Comment[ca@valencia]=Cerca de text complert basada en Strigi
 Comment[cs]=Plnotextové vyhledávání založené na Strigi
