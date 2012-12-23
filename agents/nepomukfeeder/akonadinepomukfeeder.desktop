@@ -2,7 +2,6 @@
 Type=ServiceType
 X-KDE-ServiceType=AkonadiNepomukFeeder
 Name=Akonadi NepomukFeeder Plugin
-Name[bs]=Akonadi Nepomuk napajač  plugin
 Name[ca]=Connector de l'alimentador Nepomuk per l'Akonadi
 Name[cs]=Modul Akonadi NepomukFeeder
 Name[da]=Akonadi NepomukFeeder-plugin

@@ -1,7 +1,6 @@
 [Desktop Entry]
 Name=MailBox
 Name[bg]=MailBox
-Name[bs]=MailBox
 Name[ca]=Bústia
 Name[ca@valencia]=Bústia
 Name[cs]=Poštovní schránka
@@ -48,7 +47,6 @@ Name[zh_CN]=MailBox
 Name[zh_TW]=信箱格式（Mailbox）
 Icon=message-rfc822
 Comment=Mailbox account
-Comment[bs]=Mailbox nalog
 Comment[ca]=Compte de bústia
 Comment[ca@valencia]=Compte de bústia
 Comment[da]=Mailbox-konto

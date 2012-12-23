@@ -2,7 +2,6 @@
 Id=defaultcalendar
 Type=akonadi_ical_resource
 Name=Personal Calendar
-Name[bs]=Lični kalendar
 Name[ca]=Calendari personal
 Name[ca@valencia]=Calendari personal
 Name[cs]=Osobní kalendář

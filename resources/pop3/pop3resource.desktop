@@ -1,7 +1,6 @@
 [Desktop Entry]
 Name=POP3 E-Mail Server
 Name[bg]=Пощенски сървър POP3
-Name[bs]=POP3 E-Mail Server
 Name[ca]=Servidor de correu POP3
 Name[ca@valencia]=Servidor de correu POP3
 Name[cs]=E-mailový POP3 server
@@ -47,7 +46,6 @@ Name[zh_CN]=POP3 电子邮件服务器
 Name[zh_TW]=POP3 信件伺服器
 Comment=Connects to a POP3 e-mail server
 Comment[bg]=Свързване с пощенски сървър POP3
-Comment[bs]=POvezuje se na POP3 e-mail server
 Comment[ca]=Connecta a un servidor de correu POP3
 Comment[ca@valencia]=Connecta a un servidor de correu POP3
 Comment[cs]=Připojí se na e-mailový POP3 server

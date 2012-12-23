@@ -5,7 +5,6 @@ X-KDE-ServiceTypes=AkonadiNepomukFeeder
 X-KDE-Library=akonadi_nepomuk_calendar_feeder
 X-KDE-ClassName=Akonadi::NepomukCalendarFeeder
 Name=Nepomuk Calendar Feeder
-Name[bs]=Nepomuk dovod kalendara
 Name[ca]=Alimentador de calendaris del Nepomuk
 Name[ca@valencia]=Alimentador de calendaris del Nepomuk
 Name[cs]=Nepomuk podavač kalendáře

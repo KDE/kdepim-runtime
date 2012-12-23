@@ -3,7 +3,6 @@ Id=defaultaddressbook
 Type=akonadi_contacts_resource
 Name=Personal Contacts
 Name[bg]=Лични контакти
-Name[bs]=Lični kontakti
 Name[ca]=Contactes personals
 Name[ca@valencia]=Contactes personals
 Name[cs]=Osobní kontakty
