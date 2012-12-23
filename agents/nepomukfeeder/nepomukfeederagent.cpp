@@ -340,6 +340,7 @@ void NepomukFeederAgent::selfTest()
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
       FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
       connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
+      findUnindexeditemsJob->start();
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
     }
@@ -353,12 +354,15 @@ void NepomukFeederAgent::selfTest()
 void NepomukFeederAgent::foundUnindexedItems(KJob* job)
 {
     FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
+    int count = 0;
     foreach (const Akonadi::Item &item, findJob->getUnindexed()) {
         Q_ASSERT(item.parentCollection().isValid());
         if (indexingDisabled(item.parentCollection()))
             continue;
+        count++;
         mQueue.addUnindexedItem(item);
     }
+    kDebug() << "Found " << count << " unindexed items which need to be indexed (out of " << findJob->getUnindexed().size() << ")";
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )
