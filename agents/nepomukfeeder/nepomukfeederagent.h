@@ -131,6 +131,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void configure( WId windowId );
     void changesRecorded();
     void foundUnindexedItems(KJob *job);
+    void batchTimerElapsed();
 
   private:
     QTimer mNepomukStartupTimeout;
@@ -142,6 +143,10 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     bool mShouldProcessNotifications;
 
     FeederQueue mQueue;
+    bool skipBatch(const Akonadi::Item &item);
+    QTimer mItemBatchTimer;
+    int mItemBatchCounter;
+    bool mBatchDetected;
 };
 
 }

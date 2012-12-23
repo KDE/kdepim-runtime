@@ -88,6 +88,11 @@ static inline bool indexingDisabled( const Collection &collection )
   return true;
 }
 
+static inline QString emailMimetype()
+{
+    return QLatin1String("message/rfc822");
+}
+
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
   mNepomukStartupAttempted( false ),
@@ -95,7 +100,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mSystemIsIdle( false ),
   mIdleDetectionDisabled( true ),
   mShouldProcessNotifications( true ),
-  mQueue( true )
+  mQueue( true ),
+  mItemBatchCounter( 0 )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
@@ -133,7 +139,10 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(idle(QString)));
   connect(&mQueue, SIGNAL(running(QString)), this, SLOT(running(QString)));
   connect(&mQueue, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
-
+  
+  mItemBatchTimer.setSingleShot( true );
+  connect( &mItemBatchTimer, SIGNAL(timeout()), SLOT(batchTimerElapsed()) );
+  
   if ( !changeRecorder()->isEmpty() )
      QMetaObject::invokeMethod(changeRecorder(), "replayNext");
 }
@@ -177,11 +186,44 @@ void NepomukFeederAgent::processNextNotification()
   }
 }
 
+static int maxItemsWithinTimeframe = 10;
+void NepomukFeederAgent::batchTimerElapsed()
+{
+  if (mItemBatchCounter <= maxItemsWithinTimeframe) {
+    kDebug() << "end of batch";
+    mBatchDetected = false;
+  } else {
+    mItemBatchTimer.start(10 * 1000);
+  }
+  mItemBatchCounter = 0;
+}
+
+bool NepomukFeederAgent::skipBatch(const Item& item)
+{
+  if ( item.mimeType() != emailMimetype() ) {
+    return false;
+  }
+  mItemBatchCounter++;
+  if (!mBatchDetected && mItemBatchCounter > maxItemsWithinTimeframe) {
+    kDebug() << "batch detected, skipping";
+    mBatchDetected = true;
+  }
+  
+  if (!mItemBatchTimer.isActive()) {
+    mItemBatchTimer.start(10 * 1000);
+  }
+  return mBatchDetected;
+}
+
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
   kDebug() << item.id();
   if ( indexingDisabled( collection ) )
     return processNextNotification();
+  if ( skipBatch( item ) ) {
+    kDebug() << "skipping item";
+    return processNextNotification();
+  }
 
   Q_ASSERT( item.parentCollection() == collection );
   mQueue.addItem( item );
@@ -205,6 +247,9 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
     return processNextNotification();
   if ( indexingDisabled( item.parentCollection() ) )
     return processNextNotification();
+  if ( skipBatch( item ) ) {
+    return processNextNotification();
+  }
   //kDebug() << item.id() << partIdentifiers;
   mQueue.addItem( item );
   processNextNotification();
@@ -261,7 +306,8 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
   foreach ( const Collection &collection, collections ) {
     if ( indexingDisabled( collection ) )
       continue;
-    if ( collection.contentMimeTypes().contains("message/rfc822") ) //Skip emails during initial indexing
+    //FIXME don't do this check if the reindexing was forced (no initial indexing)
+    if ( collection.contentMimeTypes().contains(emailMimetype()) ) //Skip emails during initial indexing
       continue;
     mQueue.addCollection( collection );
   }
@@ -334,9 +380,7 @@ void NepomukFeederAgent::selfTest()
     setOnline( true );
     if ( !mInitialUpdateDone ) {
       mInitialUpdateDone = true;
-      // we actually never need to reindex everything in normal operation
-      // we leave the setting in anyway in case we ever introduce a manual override or whatever
-      mQueue.setReindexing( false );
+      //TODO postpone this until the computer is idle?
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
       FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
       connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
