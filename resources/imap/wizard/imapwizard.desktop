@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Generic IMAP Email Server
+Name[bs]=Generički IMAP Email Server
 Name[ca]=Servidor de correu IMAP genèric
 Name[ca@valencia]=Servidor de correu IMAP genèric
 Name[cs]=Obecný e-mailový IMAP server
@@ -45,6 +46,7 @@ Name[zh_TW]=一般 IMAP 信件伺服器
 Icon=network-server
 Comment=Imap account
 Comment[bg]=Сметка IMAP
+Comment[bs]=Imap nalog
 Comment[ca]=Compte Imap
 Comment[ca@valencia]=Compte Imap
 Comment[cs]=Imap účet

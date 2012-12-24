@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KDE Accounts
+Name[bs]=KDE nalozi
 Name[ca]=Comptes del KDE
 Name[ca@valencia]=Comptes del KDE
 Name[cs]=Účty KDE
@@ -45,6 +46,7 @@ Name[x-test]=xxKDE Accountsxx
 Name[zh_CN]=KDE 账户
 Name[zh_TW]=KDE 帳號
 Comment=Loads contacts from the KDE accounts file
+Comment[bs]=Učitava kontakte s KDE datoteke naloga
 Comment[ca]=Carrega contactes des d'un fitxer de comptes del KDE
 Comment[ca@valencia]=Carrega contactes des d'un fitxer de comptes del KDE
 Comment[da]=Indlæser kontakter fra KDE-konti-filen

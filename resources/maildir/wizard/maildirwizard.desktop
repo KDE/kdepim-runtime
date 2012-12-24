@@ -2,6 +2,7 @@
 Name=Maildir
 Name[ar]=Maildir
 Name[bg]=Maildir
+Name[bs]=Maildir
 Name[ca]=Maildir
 Name[ca@valencia]=Maildir
 Name[cs]=Maildir
@@ -50,6 +51,7 @@ Name[zh_CN]=邮件目录
 Name[zh_TW]=Maildir
 Icon=message-rfc822
 Comment=Maildir account
+Comment[bs]=Maildir nalog
 Comment[ca]=Compte Maildir
 Comment[ca@valencia]=Compte Maildir
 Comment[cs]=Maildir účet
