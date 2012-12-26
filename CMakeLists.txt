@@ -94,6 +94,7 @@ endif()
 find_package(Strigi)
 set_package_properties(Strigi PROPERTIES DESCRIPTION "Strigi" URL "https://projects.kde.org/strigi" TYPE OPTIONAL)
 
+# Libkgapi
 find_package(LibKGAPI 0.4.3 QUIET CONFIG)
 set_package_properties(LibKGAPI PROPERTIES DESCRIPTION "KDE-based library for accessing various Google services" URL "https://projects.kde.org/libkgapi" TYPE OPTIONAL PURPOSE "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks")
 
@@ -102,14 +103,11 @@ if(LibKGAPI_FOUND)
   set_package_properties(QJSON PROPERTIES DESCRIPTION "QJSON" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Qt library for handling JSON data")
 endif()
 
+# Xsltproc
+find_package(Xsltproc)
+set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
+
 ############### search programs & libraries used by kdepim-runtime ###############
-
-# FIXME: Write a cmake module instead
-find_program(XSLTPROC_EXECUTABLE xsltproc)
-add_feature_info(Xsltproc XSLTPROC_EXECUTABLE "The command line XSLT processor from libxslt. Required to build kdepim-runtime")
-mark_as_advanced(XSLTPROC_EXECUTABLE)
-# macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
-
 if(Strigi_FOUND)
   find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
     PATHS
@@ -183,18 +181,7 @@ configure_file(akonadi-version.h.cmake "${kdepim-runtime_BINARY_DIR}/akonadi-ver
 
 ############### Macros ###############
 
-# generates a D-Bus interface description from a KConfigXT file
-macro(kcfg_generate_dbus_interface _kcfg _name)
-  add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
-    COMMAND ${XSLTPROC_EXECUTABLE} --stringparam interfaceName ${_name}
-    ${KDEPIMLIBS_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
-    ${_kcfg}
-    > ${CMAKE_CURRENT_BINARY_DIR}/${_name}.xml
-    DEPENDS ${KDEPIMLIBS_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
-    ${_kcfg}
-    )
-endmacro(kcfg_generate_dbus_interface)
+
 
 # resource tests
 macro( akonadi_add_resourcetest _testname _script )
