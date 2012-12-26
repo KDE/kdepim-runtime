@@ -118,6 +118,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   private:
     void setRunning( bool running );
     void processNextNotification();
+    void enableChangeRecording( bool enable );
 
   private slots:
     void selfTest();
@@ -140,6 +141,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     bool mInitialUpdateDone;
     bool mIdleDetectionDisabled;
     bool mShouldProcessNotifications;
+    bool mShouldRecordNotifications;
 
     FeederQueue mQueue;
     bool skipBatch(const Akonadi::Item &item);

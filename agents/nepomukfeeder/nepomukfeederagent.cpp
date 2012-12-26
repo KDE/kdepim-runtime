@@ -99,6 +99,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mInitialUpdateDone( false ),
   mIdleDetectionDisabled( true ),
   mShouldProcessNotifications( true ),
+  mShouldRecordNotifications( true ),
   mQueue( true ),
   mItemBatchCounter( 0 )
 {
@@ -217,6 +218,8 @@ bool NepomukFeederAgent::skipBatch(const Item& item)
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
   kDebug() << item.id();
+  if ( !mShouldRecordNotifications )
+    return;
   if ( indexingDisabled( collection ) )
     return processNextNotification();
   if ( skipBatch( item ) ) {
@@ -231,6 +234,9 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
+  if ( !mShouldRecordNotifications )
+    return;
+  
   QSet<QByteArray> parts = partIdentifiers;
   // Remove parts that we don't use in nepomuk, to avoid unnecessary re-indexing
   // We care for FLAGS, and PLD (headers, body), possibly for modification time
@@ -332,6 +338,12 @@ void NepomukFeederAgent::checkMigration()
   }
 }
 
+void NepomukFeederAgent::enableChangeRecording(bool enable)
+{
+  changeRecorder()->setChangeRecordingEnabled( enable );
+  mShouldRecordNotifications = enable;
+}
+
 void NepomukFeederAgent::selfTest()
 {
   QStringList errorMessages;
@@ -343,6 +355,8 @@ void NepomukFeederAgent::selfTest()
     KConfigGroup cfgGrp( &config, "akonadi_nepomuk_email_feeder" );
     if ( !cfgGrp.readEntry( "Enabled", true ) ) {
       setOnline(false);
+      enableChangeRecording( false );
+      kDebug() << "Indexing has been disabled by you.";
       emit status( Broken, i18n( "Indexing has been disabled by you." ) );
       return;
     }
@@ -359,6 +373,7 @@ void NepomukFeederAgent::selfTest()
       mNepomukStartupTimeout.start();
       // wait for Nepomuk to start
       setOnline( false );
+      enableChangeRecording( false );
       emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
       return;
     }
@@ -368,6 +383,7 @@ void NepomukFeederAgent::selfTest()
     if ( mNepomukStartupAttempted && mNepomukStartupTimeout.isActive() ) {
       // still waiting for Nepomuk to start
       setOnline( false );
+      enableChangeRecording( false );
       emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
       return;
     } else {
@@ -380,6 +396,7 @@ void NepomukFeederAgent::selfTest()
     mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
     mNepomukStartupTimeout.stop();
     setOnline( true );
+    enableChangeRecording( true );
     if ( !mInitialUpdateDone ) {
       mInitialUpdateDone = true;
       //TODO postpone this until the computer is idle?
@@ -432,6 +449,7 @@ void NepomukFeederAgent::setRunning( bool running )
 {
   mShouldProcessNotifications = running;
   mQueue.setOnline( running );
+  changesRecorded();
   if ( running && !mQueue.isEmpty() ) {
     if ( mQueue.currentCollection().isValid() ) {
       const QString summary = i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() );
