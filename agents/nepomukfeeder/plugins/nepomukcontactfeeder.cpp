@@ -179,15 +179,16 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
     if ( addressee.birthday().date().isValid() )
         contact.setBirthDate( addressee.birthday().date() );
 
-    if ( addressee.url().isValid() ) {
-        KUrl url = addressee.url();
-
-        // Nepomuk doesn't like URLs without a protocol
-        if ( url.protocol().isEmpty() )
-            url.setProtocol( "http" );
-
-        contact.addWebsiteUrl( url.url() );
-    }
+//FIXME nco:websiteUrl has a range of rdfs:resource and not xsd:string. Maybe use rdfs:literal?
+//     if ( addressee.url().isValid() ) {
+//         KUrl url = addressee.url();
+// 
+//         // Nepomuk doesn't like URLs without a protocol
+//         if ( url.protocol().isEmpty() )
+//             url.setProtocol( "http" );
+// 
+//         contact.addWebsiteUrl( url.url() );
+//     }
 
     Nepomuk2::SimpleResource affiliationRes;
     Nepomuk2::NCO::Affiliation affiliation( &affiliationRes );
