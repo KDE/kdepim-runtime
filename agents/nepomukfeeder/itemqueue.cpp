@@ -24,7 +24,7 @@
 #include <Akonadi/ItemFetchScope>
 #include <nepomuk2/storeresourcesjob.h>
 
-Q_DECLARE_METATYPE(Nepomuk2::SimpleResourceGraph);
+Q_DECLARE_METATYPE(Nepomuk2::SimpleResourceGraph)
 
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
@@ -215,24 +215,25 @@ bool ItemQueue::processBatch()
 void ItemQueue::batchJobResult(KJob* job)
 {
   mRunningJobs--;
-  //kDebug() << "------------------------------------------";
-  //kDebug() << "pipline size: " << mItemPipeline.size();
-  //kDebug() << "fetchedItemList : " << mFetchedItemList.size();
+//   kDebug() << "------------------------------------------";
+//   kDebug() << "pipline size: " << mItemPipeline.size();
+//   kDebug() << "fetchedItemList : " << mFetchedItemList.size();
 
-  kDebug() << "Indexing took(ms): " << mTimer.elapsed();
-  mNumberOfIndexedItems++;
-  mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
-  kDebug() << "Average (ms): " << mAverageIndexingTime;
+//   kDebug() << "Indexing took(ms): " << mTimer.elapsed();
+//   mNumberOfIndexedItems++;
+//   mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
+//   kDebug() << "Average (ms): " << mAverageIndexingTime;
   Q_ASSERT( mBatch.isEmpty() );
+  const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
   if ( job->error() ) {
-    /*foreach( const Nepomuk::SimpleResource &res, m_debugGraph.toList() ) {
+    kWarning() << "Error while storing graph";
+    foreach( const Nepomuk2::SimpleResource &res, graph.toList() ) {
         kWarning() << res;
-    }*/
+    }
     kWarning() << job->errorString();
   } else {
     Nepomuk2::StoreResourcesJob *storeResourcesJob = static_cast<Nepomuk2::StoreResourcesJob*>(job);
     Q_ASSERT(storeResourcesJob);
-    Nepomuk2::SimpleResourceGraph graph = storeResourcesJob->property("graph").value<Nepomuk2::SimpleResourceGraph>();
     mPropertyCache.fillCache(graph, storeResourcesJob->mappings());
   }
   QTimer::singleShot(mProcessingDelay, this, SLOT(continueProcessing()));

@@ -31,12 +31,6 @@
 #include "feederqueue.h"
 
 class FeederPluginloader;
-namespace Nepomuk
-{
-  class SimpleResource;
-  class SimpleResourceGraph;
-}
-
 class KJob;
 
 namespace Akonadi

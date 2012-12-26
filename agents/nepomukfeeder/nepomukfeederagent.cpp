@@ -101,6 +101,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mShouldProcessNotifications( true ),
   mShouldRecordNotifications( true ),
   mLostChanges( false ),
+  mInitialIndexingDisabled( false ),
   mQueue( true ),
   mItemBatchCounter( 0 )
 {
@@ -192,13 +193,14 @@ void NepomukFeederAgent::processNextNotification()
 }
 
 static int maxItemsWithinTimeframe = 10;
+static int timeframeSeconds = 10;
 void NepomukFeederAgent::batchTimerElapsed()
 {
   if (mItemBatchCounter <= maxItemsWithinTimeframe) {
     kDebug() << "end of batch";
     mBatchDetected = false;
   } else {
-    mItemBatchTimer.start(10 * 1000);
+    mItemBatchTimer.start( timeframeSeconds * 1000 );
   }
   mItemBatchCounter = 0;
 }
@@ -215,7 +217,7 @@ bool NepomukFeederAgent::skipBatch(const Item& item)
   }
   
   if (!mItemBatchTimer.isActive()) {
-    mItemBatchTimer.start(10 * 1000);
+    mItemBatchTimer.start( timeframeSeconds * 1000 );
   }
   return mBatchDetected;
 }
