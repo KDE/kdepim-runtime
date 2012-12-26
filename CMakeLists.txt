@@ -95,13 +95,21 @@ if(AKONADI_USE_STRIGI_SEARCH)
   set_package_properties(Strigi PROPERTIES DESCRIPTION "Strigi" URL "https://projects.kde.org/strigi" TYPE REQUIRED)
 endif()
 
+# Libkolab
+find_package(Libkolab 0.2 QUIET CONFIG)
+set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
+
+# Libkolabxml
+find_package(Libkolabxml QUIET CONFIG)
+set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
+
 # Libkgapi
 find_package(LibKGAPI 0.4.3 QUIET CONFIG)
 set_package_properties(LibKGAPI PROPERTIES DESCRIPTION "KDE-based library for accessing various Google services" URL "https://projects.kde.org/libkgapi" TYPE OPTIONAL PURPOSE "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks")
 
 if(LibKGAPI_FOUND)
   find_package(QJSON)
-  set_package_properties(QJSON PROPERTIES DESCRIPTION "QJSON" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Qt library for handling JSON data")
+  set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google resource")
 endif()
 
 # Xsltproc
@@ -122,12 +130,6 @@ if(Strigi_FOUND)
   endif()
   mark_as_advanced(STRIGIQTDBUSCLIENT_LIBRARY)
 endif()
-
-find_package(Libkolab 0.2 QUIET CONFIG)
-set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
-
-find_package(Libkolabxml QUIET CONFIG)
-set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 ############### Load the CTest options ###############
 
