@@ -32,6 +32,7 @@ IndexHelperModel::IndexHelperModel(Akonadi::ChangeRecorder* monitor, QObject* pa
 
 int IndexHelperModel::compatLevel(Akonadi::Entity::Id id, const KUrl &url, int indexerLevel) const
 {
+    Q_UNUSED( indexerLevel );
     if (!mCompatLevels.contains(id)) {
         Soprano::QueryResultIterator result = Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery(QString::fromLatin1("select ?compatLevel where { ?r %1 %2 . ?r %3 ?compatLevel . }")
                 .arg(Soprano::Node::resourceToN3(Vocabulary::NIE::url()),

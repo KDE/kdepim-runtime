@@ -111,7 +111,7 @@ QString DavUtils::protocolName( DavUtils::Protocol protocol )
 
 DavUtils::Protocol DavUtils::protocolByName( const QString &name )
 {
-  DavUtils::Protocol protocol;
+  DavUtils::Protocol protocol = DavUtils::CalDav;
 
   if ( name == "CalDav" ) {
     protocol = DavUtils::CalDav;
@@ -119,6 +119,8 @@ DavUtils::Protocol DavUtils::protocolByName( const QString &name )
     protocol = DavUtils::CardDav;
   } else if ( name == "GroupDav" ) {
     protocol = DavUtils::GroupDav;
+  } else {
+    kError() << "Unexpected protocol name : " << name;
   }
 
   return protocol;

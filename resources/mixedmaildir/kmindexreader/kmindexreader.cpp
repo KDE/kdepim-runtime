@@ -40,6 +40,7 @@ using Akonadi::MessageStatus;
 #endif
 
 static const int INDEX_VERSION = 1506;
+const size_t readCount = 1;
 #ifndef MAX_LINE
   static const int MAX_LINE = 4096;
 #endif
@@ -255,7 +256,10 @@ bool KMIndexReader::readHeader( int *version )
 
       quint32 header_length = 0;
       KDE_fseek( mFp, sizeof( char ), SEEK_CUR );
-      fread( &header_length, sizeof( header_length ), 1, mFp );
+      if ( fread( &header_length, sizeof( header_length ), readCount, mFp ) != readCount ) {
+         kWarning() << "Failed to read header_length";
+         return false;
+      }
       if ( header_length > 0xFFFF )
          header_length = kmail_swap_32( header_length );
 
@@ -264,12 +268,18 @@ bool KMIndexReader::readHeader( int *version )
       bool needs_update = true;
       // Process available header parts
       if ( header_length >= sizeof( byteOrder ) ) {
-         fread( &byteOrder, sizeof( byteOrder ), 1, mFp );
+         if ( fread( &byteOrder, sizeof( byteOrder ), readCount, mFp ) != readCount ) {
+             kWarning() << "Failed to read byteOrder";
+             return false;
+         }
          mIndexSwapByteOrder = ( byteOrder == 0x78563412 );
          header_length -= sizeof( byteOrder );
 
          if ( header_length >= sizeof( sizeOfLong ) ) {
-            fread( &sizeOfLong, sizeof( sizeOfLong ), 1, mFp );
+            if ( fread( &sizeOfLong, sizeof( sizeOfLong ), readCount, mFp ) != readCount ) {
+                kWarning() << "Failed to read sizeOfLong";
+                return false;
+            }
             if ( mIndexSwapByteOrder )
                sizeOfLong = kmail_swap_32( sizeOfLong );
             mIndexSizeOfLong = sizeOfLong;
@@ -341,7 +351,7 @@ bool KMIndexReader::readIndex()
       //////////////////////
       //parse verions < 1505
       QByteArray line( MAX_LINE, '\0' );
-      fgets( line.data(), MAX_LINE, mFp );
+      if ( fgets( line.data(), MAX_LINE, mFp ) == NULL ) break;
       if ( feof( mFp ) ) break;
       if ( *line.data() == '\0' ) {
         // really, i have no idea when or how this would occur
@@ -469,7 +479,10 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
 
   off_t first_off = KDE_ftell( mFp );
   KDE_fseek( mFp, indexOff, SEEK_SET );
-  fread( g_chunk, indexLen, 1, mFp );
+  if ( fread( g_chunk, indexLen, readCount, mFp ) != readCount ) {
+      kWarning() << "Failed to read index";
+      return false;
+  }
   KDE_fseek( mFp, first_off, SEEK_SET );
 
   MsgPartType type;

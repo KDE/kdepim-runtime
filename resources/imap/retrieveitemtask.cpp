@@ -100,6 +100,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
   Q_ASSERT( fetch!=0 );
   Q_ASSERT( uids.size()==1 );
   Q_ASSERT( messages.size()==1 );
+  Q_UNUSED( fetch );
 
   Akonadi::Item i = item();
 
