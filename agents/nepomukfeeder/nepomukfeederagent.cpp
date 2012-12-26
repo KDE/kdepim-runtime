@@ -428,6 +428,9 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
 void NepomukFeederAgent::disableIdleDetection( bool value )
 {
   mIdleDetectionDisabled = value;
+  if ( value ) {
+    mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
+  }
   if ( KIdleTime::instance()->idleTime() ) {
     systemIdle();
   } else {
