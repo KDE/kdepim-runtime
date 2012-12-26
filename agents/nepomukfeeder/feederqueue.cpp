@@ -144,13 +144,6 @@ void FeederQueue::processNextCollection()
   emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
   kDebug() << "Indexing collection " << mCurrentCollection.name() << mCurrentCollection.id();
 
-  // process the collection only if it has not already been indexed
-  if ( !mReIndex && NepomukHelpers::isIndexed(mCurrentCollection) ) {
-    kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
-    mCurrentCollection = Collection();
-    QTimer::singleShot(0, this, SLOT(processNextCollection()));
-    return;
-  }
   KJob *job = NepomukHelpers::addCollectionToNepomuk( mCurrentCollection );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
 
