@@ -35,10 +35,10 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set( KDEPIM_RUNTIME_DEV_VERSION "pre" )
-endif ()
+    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
+endif()
 
-set( KDEPIM_RUNTIME_VERSION "4.11${KDEPIM_RUNTIME_DEV_VERSION}" )
+set(KDEPIM_RUNTIME_VERSION "4.11${KDEPIM_RUNTIME_DEV_VERSION}")
 
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
@@ -46,81 +46,86 @@ option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
 if(KDEPIM_NO_NEPOMUK)
   add_definitions(-DKDEPIM_NO_NEPOMUK)
 endif(KDEPIM_NO_NEPOMUK)
-add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
+add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
 ############### search packages used by KDE ###############
 
+# Kdelibs
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
 
-find_package(KdepimLibs 4.9.4 REQUIRED)
+# KdepimLibs
+find_package(KdepimLibs 4.9.4)
+set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
+#Boost
+# Don't use BoostConfig.cmake
+set(Boost_NO_BOOST_CMAKE TRUE)
 find_package(Boost 1.34.0)
-macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
+set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "http://www.boost.org" TYPE REQUIRED PURPOSE "Boost is required by Akonadi")
 
-set(AKONADI_MIN_VERSION 1.8.0)
-find_package(Akonadi)
-macro_log_feature(Akonadi_FOUND "Akonadi" "Akonadi server libraries" "http://pim.kde.org/akonadi" TRUE "${AKONADI_MIN_VERSION}" "Akonadi is required to build kdepim-runtime.")
+# Akonadi
+find_package(Akonadi 1.8.0 QUIET CONFIG)
+set_package_properties(Akonadi PROPERTIES DESCRIPTION "Akonadi server libraries" URL "http://pim.kde.org/akonadi" TYPE REQUIRED PURPOSE "Access to PIM storage and services")
 
-set(SHARED_MIME_INFO_MINIMUM_VERSION "0.30")
-find_package(SharedMimeInfo)
-macro_log_feature(SHARED_MIME_INFO_FOUND "SMI" "SharedMimeInfo" "http://freedesktop.org/wiki/Software/shared-mime-info" TRUE "0.30" "SharedMimeInfo is required.")
+# shared-mime-info
+find_package(SharedMimeInfo 0.30)
+set_package_properties(SharedMimeInfo PROPERTIES DESCRIPTION "The shared-mime-info utility" URL "http://freedesktop.org/wiki/Software/shared-mime-info" TYPE REQUIRED PURPOSE "Information about filetypes")
 
+# libxml
 find_package(LibXml2)
-macro_log_feature(LIBXML2_FOUND "LibXML2" "Libraries used to develop XML applications" "http://xmlsoft.org" FALSE "" "Needed for building the knut Akonadi resource.")
-
-set(SDO_MIN_VERSION 0.10)
-set(SOPRANO_MIN_VERSION 2.7.56)
+set_package_properties(LibXml2 PROPERTIES DESCRIPTION "The LibXML2 library" URL "http://xmlsoft.org" TYPE OPTIONAL PURPOSE "Needed for building the knut Akonadi resource.")
 
 if(NOT KDEPIM_NO_NEPOMUK)
+  find_package(SharedDesktopOntologies 0.10)
+  set_package_properties(SharedDesktopOntologies PROPERTIES DESCRIPTION "Shared Desktop Ontologies" URL "http://oscaf.sourceforge.net" TYPE REQUIRED PURPOSE "Ontologies necessary for the Nepomuk semantic desktop")
 
-find_package(SharedDesktopOntologies ${SDO_MIN_VERSION})
-macro_log_feature(SHAREDDESKTOPONTOLOGIES_FOUND "Shared desktop ontologies" "Desktop ontologies" "http://oscaf.sourceforge.net" TRUE "${SDO_MIN_VERSION}" "Ontologies necessary for the Nepomuk semantic desktop.")
+  find_package(Soprano 2.7.56)
+  set_package_properties(Soprano PROPERTIES DESCRIPTION "C++/Qt4 framework for RDF data" URL "http://soprano.sourceforge.net" TYPE REQUIRED PURPOSE "Storage of semantic data")
 
-find_package(Soprano)
-macro_log_feature(Soprano_FOUND "Soprano" "Semantic Desktop Storing" "http://soprano.sourceforge.net" TRUE "${SOPRANO_MIN_VERSION}" "Soprano is needed for Nepomuk")
+  find_package(NepomukCore QUIET CONFIG)
+  set_package_properties(NepomukCore PROPERTIES DESCRIPTION "Nepomuk core libraries"  URL "http://www.kde.org" TYPE REQUIRED PURPOSE "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
+else()
+  message(STATUS "Skipping detection of Nepomuk dependencies, feature is disabled.")
+endif()
 
-find_package(NepomukCore)
-macro_log_feature(NepomukCore_FOUND "NepomukCore" "The NepomukCore libraries" "http://www.kde.org" TRUE "" "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
-
-else( NOT KDEPIM_NO_NEPOMUK )
-
-message( STATUS "Skipping detection of Nepomuk dependencies, feature is disabled." )
-
-endif(NOT KDEPIM_NO_NEPOMUK)
-
+# FIXME: strigi & STRIGIQTDBUSCLIENT_LIBRARY are only useful if AKONADI_USE_STRIGI_SEARCH is set
 find_package(Strigi)
-macro_log_feature(STRIGI_FOUND "Strigi" "Strigi desktop search engine" "http://strigi.sourceforge.net" FALSE "" "")
+set_package_properties(Strigi PROPERTIES DESCRIPTION "Strigi" URL "https://projects.kde.org/strigi" TYPE OPTIONAL)
 
-set(LibKGAPI_MIN_VERSION 0.4.3)
-find_package(LibKGAPI QUIET NO_MODULE)
-macro_log_feature(LibKGAPI_FOUND "LibKGAPI" "A library to access Google services" "http://projects.kde.org/libkgapi" FALSE "${LibKGAPI_MIN_VERSION}" "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
+find_package(LibKGAPI 0.4.3 QUIET CONFIG)
+set_package_properties(LibKGAPI PROPERTIES DESCRIPTION "KDE-based library for accessing various Google services" URL "https://projects.kde.org/libkgapi" TYPE OPTIONAL PURPOSE "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks")
 
 if(LibKGAPI_FOUND)
   find_package(QJSON)
-  macro_log_feature(QJSON_FOUND "QJSON" "Qt library for handling JSON data" "http://qjson.sourceforge.net/" TRUE)
+  set_package_properties(QJSON PROPERTIES DESCRIPTION "QJSON" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Qt library for handling JSON data")
 endif()
 
 ############### search programs & libraries used by kdepim-runtime ###############
 
+# FIXME: Write a cmake module instead
 find_program(XSLTPROC_EXECUTABLE xsltproc)
-macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
+add_feature_info(Xsltproc XSLTPROC_EXECUTABLE "The command line XSLT processor from libxslt. Required to build kdepim-runtime")
+mark_as_advanced(XSLTPROC_EXECUTABLE)
+# macro_log_feature(XSLTPROC_EXECUTABLE "xsltproc" "The command line XSLT processor from libxslt" "http://xmlsoft.org/XSLT/" TRUE "" "Required for building Akonadi.")
 
-find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
-  PATHS
-  /usr/lib
-  /usr/local/lib
-  ${LIB_INSTALL_DIR}
-  $ENV{STRIGI_HOME}/lib
-)
-macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "Strigi Qt D-Bus client library" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
+if(Strigi_FOUND)
+  find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
+    PATHS
+    /usr/lib
+    /usr/local/lib
+    ${LIB_INSTALL_DIR}
+    $ENV{STRIGI_HOME}/lib
+  )
+  add_feature_info(Strigiqtdbusclient_library STRIGIQTDBUSCLIENT_LIBRARY "Strigi Qt D-Bus client library. For Akonadi tools such as the message searchprovider")
+endif()
 
-find_package(Libkolab NO_MODULE 0.2 QUIET)
-macro_log_feature(Libkolab_FOUND "KolabLibraries" "The Kolab Format libraries" "http://mirror.kolabsys.com/pub/releases/" FALSE "0.2" "The Kolab Format libraries are required to build the Kolab Groupware Resource")
+find_package(Libkolab 0.2 QUIET CONFIG)
+set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
-find_package(Libkolabxml NO_MODULE QUIET)
-macro_log_feature(Libkolabxml_FOUND "Kolabxml" "The Kolab XML Format Schema Definitions Library" "http://mirror.kolabsys.com/pub/releases/" FALSE "" "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
+find_package(Libkolabxml QUIET CONFIG)
+set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 ############### Load the CTest options ###############
 
@@ -244,5 +249,4 @@ endif (QT_QTDECLARATIVE_FOUND)
 install(FILES kdepim-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
-macro_display_feature_log()
-
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
