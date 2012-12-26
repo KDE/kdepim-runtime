@@ -220,7 +220,6 @@ void FeederQueue::collectionFullyIndexed()
     NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
     const QString summary = i18n( "Indexing collection '%1' completed.", mCurrentCollection.name() );
     mCurrentCollection = Collection();
-    emit idle( i18n( "Indexing completed." ) );
     const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
     KNotification::event( QLatin1String("indexingcollectioncompleted"),
                             summary,
@@ -238,6 +237,7 @@ void FeederQueue::indexingComplete()
 {
   //kDebug() << "fully indexed";
   mReIndex = false;
+  emit idle( i18n( "Indexing completed." ) );
   emit fullyIndexed();
 }
 
