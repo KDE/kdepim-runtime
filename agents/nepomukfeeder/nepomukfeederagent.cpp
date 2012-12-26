@@ -297,6 +297,9 @@ void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::updateAll()
 {
+  FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
+  connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
+  findUnindexeditemsJob->start();
   CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
 }
@@ -382,9 +385,6 @@ void NepomukFeederAgent::selfTest()
       mInitialUpdateDone = true;
       //TODO postpone this until the computer is idle?
       QTimer::singleShot( 0, this, SLOT(updateAll()) );
-      FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
-      connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
-      findUnindexeditemsJob->start();
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
     }
