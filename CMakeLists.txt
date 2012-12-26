@@ -90,9 +90,10 @@ else()
   message(STATUS "Skipping detection of Nepomuk dependencies, feature is disabled.")
 endif()
 
-# FIXME: strigi & STRIGIQTDBUSCLIENT_LIBRARY are only useful if AKONADI_USE_STRIGI_SEARCH is set
-find_package(Strigi)
-set_package_properties(Strigi PROPERTIES DESCRIPTION "Strigi" URL "https://projects.kde.org/strigi" TYPE OPTIONAL)
+if(AKONADI_USE_STRIGI_SEARCH)
+  find_package(Strigi)
+  set_package_properties(Strigi PROPERTIES DESCRIPTION "Strigi" URL "https://projects.kde.org/strigi" TYPE REQUIRED)
+endif()
 
 # Libkgapi
 find_package(LibKGAPI 0.4.3 QUIET CONFIG)
@@ -116,7 +117,10 @@ if(Strigi_FOUND)
     ${LIB_INSTALL_DIR}
     $ENV{STRIGI_HOME}/lib
   )
-  add_feature_info(Strigiqtdbusclient_library STRIGIQTDBUSCLIENT_LIBRARY "Strigi Qt D-Bus client library. For Akonadi tools such as the message searchprovider")
+  if(STRIGIQTDBUSCLIENT_LIBRARY)
+    message(STATUS "Found the strigiqtdbusclient library.")
+  endif()
+  mark_as_advanced(STRIGIQTDBUSCLIENT_LIBRARY)
 endif()
 
 find_package(Libkolab 0.2 QUIET CONFIG)
