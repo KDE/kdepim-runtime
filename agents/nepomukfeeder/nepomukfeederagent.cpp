@@ -97,7 +97,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
   mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
-  mSystemIsIdle( false ),
   mIdleDetectionDisabled( true ),
   mShouldProcessNotifications( true ),
   mQueue( true ),
@@ -431,11 +430,6 @@ void NepomukFeederAgent::doSetOnline(bool online)
 
 void NepomukFeederAgent::setRunning( bool running )
 {
-  //If the agent was taken offline manually the idle detection shouldn't bring it online again,
-  //and the online state shouldn't start the feeder if the system is not idle
-  if ( running && ( !isOnline() || ( !mIdleDetectionDisabled && !mSystemIsIdle ) ) ) {
-    return;
-  }
   mShouldProcessNotifications = running;
   mQueue.setOnline( running );
   if ( running && !mQueue.isEmpty() ) {
@@ -470,7 +464,6 @@ void NepomukFeederAgent::systemIdle()
                           KGlobal::mainComponent());
 
   emit status( Idle, summary );
-  mSystemIsIdle = true;
   KIdleTime::instance()->catchNextResumeEvent();
   mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
 }
@@ -490,7 +483,6 @@ void NepomukFeederAgent::systemResumed()
                           KGlobal::mainComponent());
 
   emit status( Idle, summary );
-  mSystemIsIdle = false;
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 

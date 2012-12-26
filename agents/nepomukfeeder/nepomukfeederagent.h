@@ -138,7 +138,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
-    bool mSystemIsIdle;
     bool mIdleDetectionDisabled;
     bool mShouldProcessNotifications;
 
