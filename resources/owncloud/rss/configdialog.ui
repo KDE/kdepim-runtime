@@ -12,17 +12,20 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="owncloudServerLineEdit">
+      <widget class="QLabel" name="label">
        <property name="text">
         <string>Owncloud server:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="linePath"/>
+      <widget class="QLineEdit" name="owncloudServerLineEdit"/>
      </item>
     </layout>
    </item>
