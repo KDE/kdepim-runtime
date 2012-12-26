@@ -100,6 +100,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mIdleDetectionDisabled( true ),
   mShouldProcessNotifications( true ),
   mShouldRecordNotifications( true ),
+  mLostChanges( false ),
   mQueue( true ),
   mItemBatchCounter( 0 )
 {
@@ -142,6 +143,10 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   
   mItemBatchTimer.setSingleShot( true );
   connect( &mItemBatchTimer, SIGNAL(timeout()), SLOT(batchTimerElapsed()) );
+
+  mItemBatchTimer.setSingleShot( true );
+  connect( &mItemBatchTimer, SIGNAL(timeout()), SLOT(checkForLostChanges()) );
+  mInitialIndexingTimer.start( 3600 * 1000 );
   
   if ( !changeRecorder()->isEmpty() )
      QMetaObject::invokeMethod(changeRecorder(), "replayNext");
@@ -224,6 +229,8 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
     return processNextNotification();
   if ( skipBatch( item ) ) {
     kDebug() << "skipping item";
+    //Mark that we skipped some changes which we should retrieve again using FindUnindexedItemsJob
+    mLostChanges = true;
     return processNextNotification();
   }
 
@@ -300,11 +307,28 @@ void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection
   processNextNotification();
 }
 
-void NepomukFeederAgent::updateAll()
+void NepomukFeederAgent::findUnindexed()
 {
   FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
   connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
   findUnindexeditemsJob->start();
+}
+
+void NepomukFeederAgent::checkForLostChanges()
+{
+  //Check every hour if we should pick up some unindexed new emails, if currently busy come back a bit later
+  if ( isOnline() && mLostChanges && mQueue.isEmpty() ) {
+    findUnindexed();
+    mLostChanges = false;
+    mInitialIndexingTimer.start( 1800 * 1000 );
+  } else {
+    mInitialIndexingTimer.start( 60 * 1000 );
+  }
+}
+
+void NepomukFeederAgent::updateAll()
+{
+  findUnindexed();
   CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
 }

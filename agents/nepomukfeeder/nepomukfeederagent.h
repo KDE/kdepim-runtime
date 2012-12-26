@@ -119,6 +119,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void setRunning( bool running );
     void processNextNotification();
     void enableChangeRecording( bool enable );
+    void findUnindexed();
 
   private slots:
     void selfTest();
@@ -133,6 +134,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void changesRecorded();
     void foundUnindexedItems(KJob *job);
     void batchTimerElapsed();
+    void checkForLostChanges();
 
   private:
     QTimer mNepomukStartupTimeout;
@@ -142,12 +144,14 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     bool mIdleDetectionDisabled;
     bool mShouldProcessNotifications;
     bool mShouldRecordNotifications;
+    bool mLostChanges;
 
     FeederQueue mQueue;
     bool skipBatch(const Akonadi::Item &item);
     QTimer mItemBatchTimer;
     int mItemBatchCounter;
     bool mBatchDetected;
+    QTimer mInitialIndexingTimer;
 };
 
 }
