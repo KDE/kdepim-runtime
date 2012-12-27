@@ -24,6 +24,8 @@
 
 
 #include <QtDBus/QDBusConnection>
+#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 #include <KWindowSystem>
 #include <KDebug>
 #include <KLocale>
@@ -103,15 +105,25 @@ KRssLocalResource::~KRssLocalResource()
 {
 }
 
-static bool ensureOpmlCreated( const QString& path, QString* errorString ) {
+static bool ensureOpmlCreated( const QString& filePath, QString* errorString ) {
     Q_ASSERT( errorString );
     errorString->clear();
-    if ( QFile::exists( path ) )
+
+    QFileInfo fi( filePath );
+    if ( fi.exists() )
         return true;
 
-    KSaveFile out( path );
+    QDir dir;
+    if ( !dir.exists( fi.absolutePath() ) ) {
+        if ( !dir.mkpath( fi.absolutePath() ) ) {
+            *errorString = i18n("Could not create OPML file %1: Can't create parent folder", filePath);
+            return false;
+        }
+    }
+
+    KSaveFile out( filePath );
     if ( !out.open( QIODevice::WriteOnly ) ) {
-        *errorString = i18n("Could not create OPML file %1: %2", path, out.errorString() );
+        *errorString = i18n("Could not create OPML file %1: %2", filePath, out.errorString() );
         return false;
     }
 
@@ -128,7 +140,7 @@ static bool ensureOpmlCreated( const QString& path, QString* errorString ) {
     writer.writeEndDocument();
 
     if ( writer.hasError() || !out.finalize() ) {
-        *errorString = i18n("Could not finish writing to OPML file %1: %2", path, out.errorString() );
+        *errorString = i18n("Could not finish writing to OPML file %1: %2", filePath, out.errorString() );
         return false;
     }
 
