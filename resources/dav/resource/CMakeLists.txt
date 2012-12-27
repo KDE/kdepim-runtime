@@ -91,6 +91,6 @@ if (QT_QTXMLPATTERNS_LIBRARY)
 
   install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 else()
-  macro_log_feature(QT_QTXMLPATTERNS_LIBRARY "QtXmlPatterns" "The Qt module QtXmlPatterns (included with Qt)" "http://qt.nokia.com/downloads" FALSE "" "Needed for building Akonadi resources. STRONGLY RECOMMENDED. Remove -no-exceptions from the Qt configure line if you are missing this library.")
+  add_feature_info("Davgroupware resource" QT_QTXMLPATTERNS_LIBRARY "The QtXmlPatterns library was not found. It is needed for building the davgroupware resource.")
 endif()
 
