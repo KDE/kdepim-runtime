@@ -101,7 +101,7 @@ bool OwncloudRssResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
 void OwncloudRssResource::configure( WId windowId )
 {
 
-    QPointer<ConfigDialog> dlg( new ConfigDialog );
+    QPointer<ConfigDialog> dlg( new ConfigDialog( identifier() ) );
     if ( windowId )
       KWindowSystem::setMainWindow( dlg, windowId );
     if ( dlg->exec() == KDialog::Accepted ) {

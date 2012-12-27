@@ -24,20 +24,42 @@
 
 #include "ui_configdialog.h"
 
+namespace KWallet {
+    class Wallet;
+}
+
 class KConfigDialogManager;
+
+class QTextBrowser;
+
+class TestLoginDialog : public KDialog
+{
+    Q_OBJECT
+public:
+    explicit TestLoginDialog( QWidget* parent=0 );
+    void startTest( const KUrl& url, const QString& password );
+
+private:
+    QTextBrowser* m_textBrowser;
+};
 
 class ConfigDialog : public KDialog
 {
   Q_OBJECT
 public:
-    explicit ConfigDialog( QWidget *parent = 0 );
+    explicit ConfigDialog( const QString& resourceId, QWidget *parent = 0 );
+    ~ConfigDialog();
 
 private Q_SLOTS:
     void save();
+    void testLogin();
+    void walletOpened( bool success );
 
 private:
     Ui::ConfigDialog ui;
     KConfigDialogManager* m_manager;
+    KWallet::Wallet* m_wallet;
+    QString m_resourceId;
 };
 
 #endif

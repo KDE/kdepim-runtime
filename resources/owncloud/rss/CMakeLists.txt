@@ -3,7 +3,7 @@ project(owncloudrssresource)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 set(owncloudrssresource_SRCS
-  configdialog.cpp owncloudrssresource.cpp
+  configdialog.cpp owncloudrssresource.cpp jobs.cpp
 )
 
 kde4_add_ui_files(owncloudrssresource_SRCS
