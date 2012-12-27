@@ -152,8 +152,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BIN
 
 option(KDEPIM_MOBILE_UI "Build UI for mobile devices instead of for desktops" FALSE)
 if (KDEPIM_MOBILE_UI)
-  macro_log_feature(QT_QTDECLARATIVE_FOUND "QtDeclarative" "Qt Declarative (QML) module" "http://qt.nokia.com" TRUE "4.7" "Required for building mobile UI")
   add_definitions( -DKDEPIM_MOBILE_UI )
+  if(NOT QT_QTDECLARATIVE_FOUND)
+    message(FATAL_ERROR "The QtDeclarative library is required for building the mobile UI")
+  endif()
 endif (KDEPIM_MOBILE_UI)
 
 if(WINCE)
@@ -186,8 +188,6 @@ configure_file(akonadi-version.h.cmake "${kdepim-runtime_BINARY_DIR}/akonadi-ver
 
 
 ############### Macros ###############
-
-
 
 # resource tests
 macro( akonadi_add_resourcetest _testname _script )
