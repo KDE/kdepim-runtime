@@ -60,10 +60,6 @@ using namespace boost;
 static const int CacheTimeout = -1, IntervalCheckTime = 5;
 static const int WriteBackTimeout = 30000; // in milliseconds
 
-static QString mimeType() {
-    return QLatin1String("application/rss+xml");
-}
-
 KRssLocalResource::KRssLocalResource( const QString &id )
     : ResourceBase( id )
     , m_writeBackTimer( new QTimer( this ) )
@@ -158,7 +154,7 @@ void KRssLocalResource::retrieveCollections()
     top.setIsFolder( true );
     top.setName( i18n("Local Feeds") );
     top.setTitle( i18n("Local Feeds") );
-    top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
+    top.setContentMimeTypes( QStringList() << Collection::mimeType() << KRss::Item::mimeType() );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( m_titleOpml );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
     //TODO: modify CMakeLists.txt so that it installs the icon
@@ -286,7 +282,7 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
     Akonadi::Item::List items;
     KDateTime now = KDateTime::currentLocalDateTime();
     foreach ( const Syndication::ItemPtr& syndItem, syndItems ) {
-        Akonadi::Item item( mimeType() );
+        Akonadi::Item item( KRss::Item::mimeType() );
         item.setRemoteId( syndItem->id() );
         item.setPayload<KRss::Item>( Util::fromSyndicationItem( syndItem, &now ) );
         items << item;
