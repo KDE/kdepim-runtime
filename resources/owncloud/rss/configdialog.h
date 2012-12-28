@@ -28,8 +28,7 @@ namespace KWallet {
     class Wallet;
 }
 
-class KConfigDialogManager;
-
+class KJob;
 class QTextBrowser;
 
 class TestLoginDialog : public KDialog
@@ -37,7 +36,10 @@ class TestLoginDialog : public KDialog
     Q_OBJECT
 public:
     explicit TestLoginDialog( QWidget* parent=0 );
-    void startTest( const KUrl& url, const QString& password );
+    void startTest( const KUrl& url, const QString& username, const QString& password );
+
+private Q_SLOTS:
+    void jobCompleted( KJob* );
 
 private:
     QTextBrowser* m_textBrowser;
@@ -50,15 +52,15 @@ public:
     explicit ConfigDialog( const QString& resourceId, QWidget *parent = 0 );
     ~ConfigDialog();
 
+    void setPassword( const QString& password );
+    QString password() const;
+
 private Q_SLOTS:
     void save();
     void testLogin();
-    void walletOpened( bool success );
 
 private:
     Ui::ConfigDialog ui;
-    KConfigDialogManager* m_manager;
-    KWallet::Wallet* m_wallet;
     QString m_resourceId;
 };
 

@@ -10,5 +10,10 @@
       <whatsthis>URL of the Owncloud server</whatsthis>
       <default></default>
     </entry>
+    <entry name="username" type="String">
+      <label>Username on the Owncloud server</label>
+      <whatsthis>Username on the Owncloud server</whatsthis>
+      <default></default>
+    </entry>
     </group>
 </kcfg>

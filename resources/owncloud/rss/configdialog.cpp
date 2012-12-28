@@ -18,18 +18,17 @@
 */
 
 #include "configdialog.h"
+#include "jobs.h"
 #include "settings.h"
 
-#include <KConfigDialogManager>
 #include <KWallet/Wallet>
+#include <KMessageBox>
 
 #include <QPointer>
 #include <QTextBrowser>
 #include <QVBoxLayout>
 
 using namespace KWallet;
-
-const char * const folderName = "Akonadi Owncloud";
 
 TestLoginDialog::TestLoginDialog( QWidget* parent )
     : KDialog( parent )
@@ -40,77 +39,64 @@ TestLoginDialog::TestLoginDialog( QWidget* parent )
     setButtons( KDialog::Ok|KDialog::Cancel );
 }
 
-void TestLoginDialog::startTest( const KUrl& url, const QString& password )
+void TestLoginDialog::startTest( const KUrl& url, const QString& username, const QString& password )
 {
+    ListNodeJob* job = new ListNodeJob( this );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(jobCompleted(KJob*)) );
+    job->setUrl( url );
+    job->setUsername( username );
+    job->setPassword( password );
+    job->start();
+}
+
+void TestLoginDialog::jobCompleted( KJob* j )
+{
+    ListNodeJob* job = qobject_cast<ListNodeJob*>( j );
+    Q_ASSERT( job );
+
+    if ( job->error() == KJob::NoError ) {
+        m_textBrowser->append( i18n("Test successful") );
+    } else {
+        m_textBrowser->append( i18n("Error: %1", job->errorString() ) );
+    }
 }
 
 ConfigDialog::ConfigDialog( const QString& resourceId, QWidget *parent )
     : KDialog( parent )
-    , m_manager( new KConfigDialogManager( this, Settings::self() ) )
-    , m_wallet( Wallet::openWallet( QString(), winId(), Wallet::Asynchronous ) )
     , m_resourceId( resourceId )
 {
-    Q_ASSERT( m_wallet );
-    connect( m_wallet, SIGNAL(walletOpened(bool)), this, SLOT(walletOpened(bool)) );
     ui.setupUi( mainWidget() );
-    m_manager->updateWidgets();
     connect( ui.testButton, SIGNAL(clicked()), this, SLOT(testLogin()) );
-    ui.owncloudServerLineEdit->setText( Settings::self()->owncloudServerUrl() );
+    ui.owncloudServerLineEdit->setText( Settings::owncloudServerUrl() );
+    ui.usernameLineEdit->setText( Settings::username() );
+    connect( this, SIGNAL(okClicked()), SLOT(save()) );
 }
 
 ConfigDialog::~ConfigDialog()
 {
-    delete m_wallet;
 }
 
-void ConfigDialog::walletOpened( bool success )
+void ConfigDialog::setPassword( const QString& password )
 {
-    if ( !success ) {
-        //TODO show error
-        return;
-    }
+    ui.passwordLineEdit->setText( password );
+}
 
-    if ( !m_wallet->hasFolder( QLatin1String(folderName) ) )
-        return;
-
-    m_wallet->setFolder( QLatin1String(folderName) );
-    QString password;
-    const int ret = m_wallet->readPassword( m_resourceId, /*out*/ password );
-    if ( ret == 0 ) {
-        ui.passwordLineEdit->setText( password );
-    } else {
-        //TODO handle error
-    }
+QString ConfigDialog::password() const
+{
+    return ui.passwordLineEdit->text();
 }
 
 void ConfigDialog::save()
 {
-    m_manager->updateSettings();
-    if ( !m_wallet->isOpen() )
-        return;
-
-    if ( !m_wallet->hasFolder( QLatin1String(folderName) ) ) {
-        const bool created = m_wallet->createFolder( QLatin1String(folderName) ); //TODO possible race condition?
-        if ( !created ) {
-            //TODO handle error
-            return;
-        }
-    }
-    if ( !m_wallet->setFolder( QLatin1String(folderName) ) ) {
-        //TODO handle error
-        return;
-    }
-    const int ret = m_wallet->writePassword( m_resourceId, ui.passwordLineEdit->text() );
-    if ( ret != 0 ) {
-        //TODO show error
-    }
+    Settings::setOwncloudServerUrl( ui.owncloudServerLineEdit->text() );
+    Settings::setUsername( ui.usernameLineEdit->text() );
 }
 
 void ConfigDialog::testLogin()
 {
     QPointer<TestLoginDialog> testLoginDialog( new TestLoginDialog( this ) );
     testLoginDialog->setAttribute( Qt::WA_DeleteOnClose );
-    testLoginDialog->startTest( ui.owncloudServerLineEdit->text(), ui.passwordLineEdit->text()  );
+    testLoginDialog->startTest( ui.owncloudServerLineEdit->text(), ui.usernameLineEdit->text(), ui.passwordLineEdit->text()  );
     testLoginDialog->exec();
 }
 

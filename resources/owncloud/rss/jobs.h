@@ -23,6 +23,21 @@
 #include <KJob>
 #include <KUrl>
 
+#include <KIO/JobClasses>
+
+#include <QXmlStreamReader>
+
+#include <stdexcept>
+
+class ParseException : public std::runtime_error {
+public:
+    explicit ParseException( const QString& message );
+    ~ParseException() throw();
+    QString message() const;
+private:
+    QString m_message;
+};
+
 class Job : public KJob {
     Q_OBJECT
 public:
@@ -33,23 +48,60 @@ public:
     KUrl url() const;
     void setUrl( const KUrl& );
 
+    QString username() const;
+    void setUsername( const QString& username );
+
     QString password() const;
     void setPassword( const QString& password );
 
+    enum Error {
+        IOError=KJob::UserDefinedError,
+        XmlError,
+        ParseError,
+        OwncloudUserDefinedError
+    };
+
 protected:
-    Q_INVOKABLE virtual void doStart() = 0;
+    void setPath( const QString& );
+    virtual void parseChunk( QXmlStreamReader* reader ) = 0;
+
+private:
+    Q_INVOKABLE void doStart();
+    KUrl assembleUrl( const QString& relpath ) const;
+
+private Q_SLOTS:
+    void data( KIO::Job* job, const QByteArray& data );
+    void jobFinished( KJob* job );
+
 private:
     KUrl m_url;
+    QString m_path;
+    QString m_username;
     QString m_password;
+    QXmlStreamReader m_reader;
 };
 
-class ListSubscriptionsJob : public Job {
+
+class ListNodeJob : public Job {
     Q_OBJECT
 public:
-    explicit ListSubscriptionsJob( QObject* parent );
+    explicit ListNodeJob( QObject* parent );
+
+    void setNodePath( const QString& nodePath );
+
+    struct Node {
+        QString title;
+        QString id;
+    };
+
+    QVector<Node> children() const;
 
 protected:
-    void doStart();
+    void parseChunk( QXmlStreamReader* reader );
+
+private:
+    QString m_nodePath;
+    QVector<Node> m_children;
 };
 
 #endif

@@ -18,8 +18,15 @@
 #ifndef OWNCLOUDRSSRESOURCE_H
 #define OWNCLOUDRSSRESOURCE_H
 
+#include "jobs.h"
+
 #include <Akonadi/ResourceBase>
 
+#include <QPointer>
+
+namespace KWallet {
+    class Wallet;
+}
 class OwncloudRssResource : public Akonadi::ResourceBase,
                             public Akonadi::AgentBase::Observer
 {
@@ -39,6 +46,24 @@ protected:
     void collectionChanged( const Akonadi::Collection& collection );
     void collectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent );
     void collectionRemoved( const Akonadi::Collection& collection );
+
+private Q_SLOTS:
+    void nodesListed( KJob* );
+    void walletOpened( bool success );
+
+private:
+    void waitForWalletAndStart( Job* );
+
+private:
+    void reallyConfigure( WId windowId );
+
+private:
+    KWallet::Wallet* m_wallet;
+    bool m_walletOpenedReceived;
+    QString m_password;
+    QVector<Job*> m_pendingJobsWaitingForWallet;
+    QVector<WId> m_configDialogsWaitingForWallet;
+    QPointer<ListNodeJob> m_listJob;
 };
 
 #endif
