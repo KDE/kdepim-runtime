@@ -258,6 +258,18 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
 
     bool fcChanged = false;
 
+    const Syndication::ImagePtr image = feed->image();
+    const QString imageUrl = image ? image->url() : QString();
+    const QString imageTitle = image ? image->title() : QString();
+    const QString imageLink = image ? image->link() : QString();
+    fcChanged = fcChanged || imageUrl != fc.imageUrl();
+    fcChanged = fcChanged || imageTitle != fc.imageTitle();
+    fcChanged = fcChanged || imageLink != fc.imageLink();
+
+    fc.setImageUrl( imageUrl );
+    fc.setImageTitle( imageTitle );
+    fc.setImageLink( imageLink );
+
     // if no HTML URL is set, we assume that the feed was previously added by the user (URL only) and we now add the metadata from the fetched feed
     if ( fc.htmlUrl().isEmpty() ) {
         fc.setName( feed->title() );
