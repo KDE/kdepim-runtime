@@ -20,11 +20,11 @@ if(NOT WINCE)
 add_subdirectory( invitations )
 #add_subdirectory( calendarsearch )
 
-if( NOT KDEPIM_NO_NEPOMUK AND STRIGI_FOUND )
-    include_directories( ${CMAKE_CURRENT_BINARY_DIR}/ontologies ontologies ${SOPRANO_INCLUDE_DIR} ${STRIGI_INCLUDE_DIR} )
+if( NOT KDEPIM_NO_NEPOMUK )
+    include_directories( ${CMAKE_CURRENT_BINARY_DIR}/ontologies ontologies ${SOPRANO_INCLUDE_DIR} )
 
     add_subdirectory( nepomukfeeder )
     add_subdirectory( ontologies )
 
-endif( NOT KDEPIM_NO_NEPOMUK AND STRIGI_FOUND )
-endif(NOT WINCE)
+endif()
+endif()
