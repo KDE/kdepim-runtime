@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=VCard File
+Name=vCard File
 Name[ar]=ملف vCard
 Name[bg]=Файл VCard
 Name[bs]=VCard datoteka
@@ -47,7 +47,7 @@ Name[uk]=Файл VCard
 Name[x-test]=xxVCard Filexx
 Name[zh_CN]=VCard 文件
 Name[zh_TW]=VCard 檔案
-Comment=Loads data from a VCard file
+Comment=Loads data from a vCard file
 Comment[ar]=تحمل البيانات من ملف VCards
 Comment[bg]=Зареждане на данни от файл VCard
 Comment[bs]=Učitava podatke iz VCard datoteke
