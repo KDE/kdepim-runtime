@@ -56,7 +56,7 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 ############### search packages used by KDE ###############
 
 # Kdelibs
-find_package(KDE4 REQUIRED)
+find_package(KDE4 4.9.4 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
