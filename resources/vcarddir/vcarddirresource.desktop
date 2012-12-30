@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=VCard Directory
+Name=vCard Directory
 Name[ar]=دليل VCard
 Name[bg]=Папка с VCard
 Name[bs]=VCard direktorij
@@ -48,7 +48,7 @@ Name[uk]=Каталог VCard
 Name[x-test]=xxVCard Directoryxx
 Name[zh_CN]=VCard 目录
 Name[zh_TW]=VCard 目錄
-Comment=Loads data from a directory with VCards
+Comment=Loads data from a directory with vCards
 Comment[ar]=تحمل البيانات من الدليل مع VCards
 Comment[bg]=Зареждане на данни от папка с VCard
 Comment[bs]=Učitava podakte iz direktorija sa VCards
