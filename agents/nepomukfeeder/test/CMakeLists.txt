@@ -1,8 +1,8 @@
 include_directories(
-        ../
+        ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-add_definitions(-DTEST_DATA_PATH=\\"${CMAKE_CURRENT_SOURCE_DIR}\\")
+add_definitions(-DTEST_DATA_PATH="\\"${CMAKE_CURRENT_SOURCE_DIR}\\"")
 
 kde4_add_executable(akonadinepomukfeeder_indexer akonadinepomukfeeder_indexer.cpp ../feederqueue.cpp ../nepomukhelpers.cpp ../pluginloader.cpp)
 target_link_libraries( akonadinepomukfeeder_indexer 
