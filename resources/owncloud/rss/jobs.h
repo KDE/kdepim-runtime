@@ -63,7 +63,10 @@ public:
 
 protected:
     void setPath( const QString& );
-    virtual void parseChunk( QXmlStreamReader* reader ) = 0;
+    /**
+     * @throws ParseException
+     */
+    virtual void parse( QXmlStreamReader* reader ) = 0;
 
 private:
     Q_INVOKABLE void doStart();
@@ -78,7 +81,7 @@ private:
     QString m_path;
     QString m_username;
     QString m_password;
-    QXmlStreamReader m_reader;
+    QByteArray m_buffer;
 };
 
 
@@ -97,7 +100,7 @@ public:
     QVector<Node> children() const;
 
 protected:
-    void parseChunk( QXmlStreamReader* reader );
+    void parse( QXmlStreamReader* reader );
 
 private:
     QString m_nodePath;

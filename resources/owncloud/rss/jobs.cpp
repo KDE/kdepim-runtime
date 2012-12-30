@@ -106,30 +106,13 @@ void Job::setPath( const QString& path )
 
 void Job::data( KIO::Job *job, const QByteArray &data )
 {
-    m_reader.addData( data );
-    try {
-        parseChunk( &m_reader );
-    } catch ( const ParseException& e ) {
-        job->disconnect( this );
-        setError( ParseError );
-        setErrorText( e.message() );
-        emitResult();
-        return;
-    }
-
-    if ( m_reader.hasError() && m_reader.error() != QXmlStreamReader::PrematureEndOfDocumentError ) {
-        const QString errorString = i18n("Error parsing XML [%1:%2]: %3", QString::number( m_reader.lineNumber() ), QString::number( m_reader.columnNumber() ), m_reader.errorString() );
-        job->disconnect( this );
-        setError( XmlError );
-        setErrorText( errorString );
-        emitResult();
-        return;
-    }
+    m_buffer.append( data );
 }
 
 void Job::jobFinished( KJob *j )
 {
     KIO::TransferJob* job = qobject_cast<KIO::TransferJob*>( j );
+
     if ( job->error() != KJob::NoError ) {
         setError( IOError );
         setErrorText( job->errorText() );
@@ -144,6 +127,26 @@ void Job::jobFinished( KJob *j )
         return;
     }
 
+    QXmlStreamReader reader( m_buffer );
+    reader.setNamespaceProcessing( true );
+
+    try {
+        parse( &reader );
+    } catch ( const ParseException& e ) {
+        setError( ParseError );
+        setErrorText( e.message() );
+        emitResult();
+        return;
+    }
+
+    if ( reader.hasError() ) {
+        const QString errorString = i18n("Error parsing XML [%1:%2]: %3", QString::number( reader.lineNumber() ), QString::number( reader.columnNumber() ), reader.errorString() );
+        setError( XmlError );
+        setErrorText( errorString );
+        emitResult();
+        return;
+    }
+
     emitResult();
 }
 
@@ -153,7 +156,7 @@ ListNodeJob::ListNodeJob( QObject* parent )
     setPath( QLatin1String("cloud/users") );
 }
 
-void ListNodeJob::parseChunk( QXmlStreamReader* reader )
+void ListNodeJob::parse( QXmlStreamReader* reader )
 {
     while ( !reader->atEnd() && !reader->hasError() ) {
         reader->readNext();
