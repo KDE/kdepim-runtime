@@ -2,6 +2,7 @@
 IconName=mail-folder-outbox
 Comment=KDE e-mail client
 Comment[bg]=Пощенски клиент за KDE
+Comment[bs]=KDE klijent elektronske pošte
 Comment[ca]=Client de correu electrònic del KDE
 Comment[ca@valencia]=Client de correu electrònic del KDE
 Comment[cs]=Klient KDE pro čtení elektronické pošty
@@ -30,7 +31,7 @@ Comment[pa]=KDE ਈ-ਮੇਲ ਕਲਾਇਟ
 Comment[pl]=Program pocztowy KDE
 Comment[pt]=Cliente de e-mail do KDE
 Comment[pt_BR]=Cliente de e-mail do KDE
-Comment[ro]=Program KDE de poștă electronică
+Comment[ro]=Program de poștă electronică pentru KDE
 Comment[ru]=Почтовый клиент KDE
 Comment[sk]=KDE poštový klient
 Comment[sl]=KDE-jev poštni odjemalec
@@ -46,6 +47,7 @@ Comment[zh_CN]=KDE 邮件客户端
 Comment[zh_TW]=KDE 收發信軟體
 Name=KDE Mail
 Name[bg]=KDE поща
+Name[bs]=KDE Mail
 Name[ca]=Correu del KDE
 Name[ca@valencia]=Correu del KDE
 Name[cs]=Pošta v KDE
@@ -92,6 +94,7 @@ Name[zh_TW]=KDE 郵件軟體
 
 [Event/emailsent]
 Name=E-mail successfully sent
+Name[bs]=E-mail uspješno poslan
 Name[ca]=Correu electrònic enviat correctament
 Name[ca@valencia]=Correu electrònic enviat correctament
 Name[cs]=E-mail úspěšně odeslán
@@ -139,6 +142,7 @@ IconName=mail-folder-outbox
 
 [Event/sendingfailed]
 Name=E-mail sending failed
+Name[bs]=Slanje elektronske pošte neuspjelo
 Name[ca]=Ha fallat en enviar el correu electrònic
 Name[ca@valencia]=Ha fallat en enviar el correu electrònic
 Name[cs]=Odesílání e-mailu selhalo

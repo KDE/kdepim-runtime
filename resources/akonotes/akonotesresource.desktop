@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=AkoNotes
 Name[bg]=AkoNotes
+Name[bs]=AkoNotes
 Name[ca]=AkoNotes
 Name[ca@valencia]=AkoNotes
 Name[cs]=AkoNotes
@@ -43,6 +44,7 @@ Name[x-test]=xxAkoNotesxx
 Name[zh_CN]=AkoNotes
 Name[zh_TW]=AkoNotes
 Comment=Loads a notes hierarchy from a local maildir folder
+Comment[bs]=Učitava hijerarhiju napomena iz loklnog maildir direktorija
 Comment[ca]=Carrega una jerarquia de notes des d'una carpeta maildir local
 Comment[ca@valencia]=Carrega una jerarquia de notes des d'una carpeta maildir local
 Comment[da]=Indlæser et hierarki af noter fra en lokal maildir-mappe

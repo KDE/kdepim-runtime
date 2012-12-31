@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Account Wizard
 Name[bg]=Помощник за сметки
+Name[bs]=Čarobnjak naloga
 Name[ca]=Assistent de comptes
 Name[ca@valencia]=Assistent de comptes
 Name[cs]=Průvodce nastavením účtu
@@ -49,6 +50,7 @@ Exec=accountwizard --package %u
 Type=Application
 NoDisplay=true
 Comment=Launch the account wizard to configure PIM accounts.
+Comment[bs]=Pokreni čarobnjaka za naloge za konfigurisanje PIM naloga.
 Comment[ca]=Llança l'assistent de comptes per configurar comptes de PIM.
 Comment[ca@valencia]=Llança l'assistent de comptes per configurar comptes de PIM.
 Comment[cs]=Spustit průvodce nastavením PIM účtů.
