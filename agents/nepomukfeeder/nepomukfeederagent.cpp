@@ -130,6 +130,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   KConfigGroup cfgGrp( componentData().config(), identifier() );
   KIdleTime::instance()->addIdleTimeout( 1000 * cfgGrp.readEntry( "IdleTimeout", 120 ) );
   disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", true ) );
+  mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
 
   setOnline( false );
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
@@ -145,9 +146,13 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mItemBatchTimer.setSingleShot( true );
   connect( &mItemBatchTimer, SIGNAL(timeout()), SLOT(batchTimerElapsed()) );
 
-  mItemBatchTimer.setSingleShot( true );
-  connect( &mItemBatchTimer, SIGNAL(timeout()), SLOT(checkForLostChanges()) );
-  mInitialIndexingTimer.start( 3600 * 1000 );
+  mInitialIndexingTimer.setSingleShot( true );
+  connect( &mInitialIndexingTimer, SIGNAL(timeout()), SLOT(checkForLostChanges()) );
+  if ( !mInitialIndexingDisabled ) {
+    mInitialIndexingTimer.start( 3600 * 1000 );
+  } else {
+    kDebug() << "Initial indexing was disabled in the configuration.";
+  }
   
   if ( !changeRecorder()->isEmpty() )
      QMetaObject::invokeMethod(changeRecorder(), "replayNext");
@@ -319,6 +324,7 @@ void NepomukFeederAgent::findUnindexed()
 void NepomukFeederAgent::checkForLostChanges()
 {
   //Check every hour if we should pick up some unindexed new emails, if currently busy come back a bit later
+  //Since we only skip emails, we don't re-run the full check regulary.
   if ( isOnline() && mLostChanges && mQueue.isEmpty() ) {
     findUnindexed();
     mLostChanges = false;
@@ -426,7 +432,11 @@ void NepomukFeederAgent::selfTest()
     if ( !mInitialUpdateDone ) {
       mInitialUpdateDone = true;
       //TODO postpone this until the computer is idle?
-      QTimer::singleShot( 0, this, SLOT(updateAll()) );
+      if ( !mInitialIndexingDisabled ) {
+        QTimer::singleShot( 0, this, SLOT(updateAll()) );
+      } else {
+        kDebug() << "Initial indexing was disabled in the configuration.";
+      }
     } else {
       emit status( Idle, i18n( "Ready to index data." ) );
     }

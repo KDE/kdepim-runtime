@@ -139,6 +139,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     bool mShouldProcessNotifications;
     bool mShouldRecordNotifications;
     bool mLostChanges;
+    bool mInitialIndexingDisabled;
 
     FeederQueue mQueue;
     bool skipBatch(const Akonadi::Item &item);
