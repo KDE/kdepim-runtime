@@ -23,72 +23,10 @@
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 #include <QTimer>
-#include <QQueue>
-#include <QUrl>
-#include <nepomuk2/simpleresourcegraph.h>
+#include "itemqueue.h"
 
 class FeederPluginloader;
 class KJob;
-namespace Nepomuk {
-class SimpleResourceGraph;
-}
-
-
-
-/** 
- * adds items to the internal queue, until the limit is passed, then the items are stored
- */
-class ItemQueue : public QObject {
-  Q_OBJECT
-public:
-    explicit ItemQueue(int batchSize, int fetchSize, QObject* parent = 0);
-    ~ItemQueue();
-
-  /** add item to queue */
-  void addItem(const Akonadi::Item &);
-  void addItems(const Akonadi::Item::List &);
-  /** process one item @return returns false if currently blocked */
-  bool processItem();
-  /** queue is empty */
-  bool isEmpty();
-
-  /** the delay between two batches */
-  void setProcessingDelay(int ms);
-
-  void setSaveFile(const QString &saveFile);
-
-signals:
-  /** all items processed */
-  void finished();
-  /** current batch has been processed and new Items can be added */
-  void batchFinished();
-
-private slots:
-  void batchJobResult( KJob* job );
-  void fetchJobResult( KJob* job );
-  void continueProcessing();
-
-private:
-  bool processBatch();
-  void saveState();
-  void loadState();
-
-  QString mSaveFile;
-  QQueue<Akonadi::Item::Id> mItemPipelineBackup;
-  QQueue<Akonadi::Item::Id> mItemPipeline;
-  Nepomuk2::SimpleResourceGraph mResourceGraph;
-  //Nepomuk::SimpleResourceGraph m_debugGraph;
-  QList<Akonadi::Item::Id> mBatch;
-  QList<Akonadi::Item::Id> mTempFetchList;
-  Akonadi::Item::List mItemFetchList;
-  Akonadi::Item::List mFetchedItemList;
-
-  int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk
-  int mFetchSize; //Maximum number of items fetched with full payload (defines ram usage of feeder), must be >= mBatchSize, ideally a multiple of it
-  int mRunningJobs;
-
-  int mProcessingDelay;
-};
 
 /**
  * The queue takes collections and items and indexes them
@@ -121,6 +59,7 @@ public:
   void addCollection(const Akonadi::Collection &);
   ///adds the item to the highPrioQueue
   void addItem(const Akonadi::Item &);
+  void addUnindexedItem(const Akonadi::Item &);
   /**
    * If enabled all items will be reindexed
    * The flag will be reset once all collections/items have been indexed
@@ -170,9 +109,11 @@ private slots:
   void batchFinished();
   void jobResult( KJob* job );
 private:
+  bool allQueuesEmpty() const;
   void itemHeadersReceived( const Akonadi::Item::List &items );
   void continueIndexing(); //start the indexing if work is to be done
   void collectionFullyIndexed();
+  void indexingComplete();
   int mTotalAmount, mProcessedAmount, mPendingJobs;
 
   Akonadi::Collection::List mCollectionQueue;
@@ -183,6 +124,7 @@ private:
 
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
+  ItemQueue unindexedItemQueue;
 };
 
 

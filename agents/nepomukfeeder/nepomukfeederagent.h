@@ -31,12 +31,6 @@
 #include "feederqueue.h"
 
 class FeederPluginloader;
-namespace Nepomuk
-{
-  class SimpleResource;
-  class SimpleResourceGraph;
-}
-
 class KJob;
 
 namespace Akonadi
@@ -116,9 +110,10 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void doSetOnline(bool online);
 
   private:
-    void checkOnline();
     void setRunning( bool running );
     void processNextNotification();
+    void enableChangeRecording( bool enable );
+    void findUnindexed();
 
   private slots:
     void selfTest();
@@ -131,18 +126,27 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void running(const QString &);
     void configure( WId windowId );
     void changesRecorded();
+    void foundUnindexedItems(KJob *job);
+    void batchTimerElapsed();
+    void checkForLostChanges();
 
   private:
     QTimer mNepomukStartupTimeout;
 
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
-    bool mSelfTestPassed;
-    bool mSystemIsIdle;
     bool mIdleDetectionDisabled;
     bool mShouldProcessNotifications;
+    bool mShouldRecordNotifications;
+    bool mLostChanges;
+    bool mInitialIndexingDisabled;
 
     FeederQueue mQueue;
+    bool skipBatch(const Akonadi::Item &item);
+    QTimer mItemBatchTimer;
+    int mItemBatchCounter;
+    bool mBatchDetected;
+    QTimer mInitialIndexingTimer;
 };
 
 }
