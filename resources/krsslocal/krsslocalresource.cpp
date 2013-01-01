@@ -194,11 +194,16 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
 }
 
 void KRssLocalResource::retrieveItems( const Akonadi::Collection &collection )
-{   
+{
+    const KRss::FeedCollection fc( collection );
+    if ( fc.isFolder() ) {
+        itemsRetrievalDone();
+        return;
+    }
+
     Syndication::Loader * const loader = Syndication::Loader::create();
     connect( loader, SIGNAL(loadingComplete(Syndication::Loader*,Syndication::FeedPtr,Syndication::ErrorCode)),
              this, SLOT(slotLoadingComplete(Syndication::Loader*,Syndication::FeedPtr,Syndication::ErrorCode)) );
-    const KRss::FeedCollection fc( collection );
     const KUrl xmlUrl = fc.xmlUrl();
     m_collectionByLoader.insert( loader, collection );
     loader->loadFrom( xmlUrl );
