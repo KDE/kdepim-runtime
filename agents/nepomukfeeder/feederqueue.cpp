@@ -33,10 +33,6 @@
 #include <KStandardDirs>
 
 #include <QDateTime>
-#include <QQueue>
-#include <QFile>
-
-#include <aneo.h>
 
 #include "nepomukhelpers.h"
 #include "nepomukfeeder-config.h"
@@ -51,20 +47,24 @@ FeederQueue::FeederQueue( bool persistQueue, QObject* parent )
   mReIndex( false ),
   mOnline( true ),
   lowPrioQueue(1, 100, this),
-  highPrioQueue(1, 100, this)
+  highPrioQueue(1, 100, this),
+  unindexedItemQueue(1, 100, this)
 {
   if (persistQueue) {
     lowPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/lowPrioQueue"), true));
     highPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/highPrioQueue"), true));
   }
+  unindexedItemQueue.setItemsAreNotIndexed( true );
   mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
   connect( &mProcessItemQueueTimer, SIGNAL(timeout()), SLOT(processItemQueue()) );
 
   connect( &lowPrioQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
   connect( &highPrioQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
+  connect( &unindexedItemQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
   connect( &lowPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
   connect( &highPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
+  connect( &unindexedItemQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
 }
 
 FeederQueue::~FeederQueue()
@@ -98,9 +98,11 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     if ( speed == FullSpeed ) {
         lowPrioQueue.setProcessingDelay( 0 );
         highPrioQueue.setProcessingDelay( 0 );
+        unindexedItemQueue.setProcessingDelay( 0 );
     } else {
         lowPrioQueue.setProcessingDelay( s_snailPaceDelay );
         highPrioQueue.setProcessingDelay( s_reducedSpeedDelay );
+        unindexedItemQueue.setProcessingDelay( s_snailPaceDelay );
     }
 }
 
@@ -135,25 +137,13 @@ void FeederQueue::processNextCollection()
   mTotalAmount = 0;
   mProcessedAmount = 0;
   if ( mCollectionQueue.isEmpty() ) {
-    //kDebug() << "fully indexed";
-    mReIndex = false;
-    emit fullyIndexed();
+    indexingComplete();
     return;
   }
   mCurrentCollection = mCollectionQueue.takeFirst();
   emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
   kDebug() << "Indexing collection " << mCurrentCollection.name() << mCurrentCollection.id();
 
-  // process the collection only if it has not already been indexed
-  // we check if the collection already has been indexed with the following values
-  // - nie:url needs to be set
-  // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
-  if ( !mReIndex && NepomukHelpers::isIndexed(mCurrentCollection) ) {
-    kDebug() << "already indexed collection: " << mCurrentCollection.id() << " skipping";
-    mCurrentCollection = Collection();
-    QTimer::singleShot(0, this, SLOT(processNextCollection()));
-    return;
-  }
   KJob *job = NepomukHelpers::addCollectionToNepomuk( mCurrentCollection );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
 
@@ -172,11 +162,6 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
       continue; // stay away from links
 
     // update item if it does not exist or does not have a proper id
-    // we check if the item already exists with the following values:
-    // - nie:url needs to be set
-    // - aneo:akonadiItemId needs to be set
-    // - nie:lastModified needs to match the item's modification time
-    // - aneo:akonadiIndexCompatLevel needs to match the indexer's level
     if ( mReIndex || !NepomukHelpers::isIndexed(item)) {
       itemsToUpdate.append( item );
     }
@@ -212,9 +197,16 @@ void FeederQueue::addItem( const Akonadi::Item &item )
   mProcessItemQueueTimer.start();
 }
 
+void FeederQueue::addUnindexedItem(const Item &item )
+{
+  kDebug() << item.id();
+  unindexedItemQueue.addItem( item );
+  mProcessItemQueueTimer.start();
+}
+
 bool FeederQueue::isEmpty()
 {
-  return highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && mCollectionQueue.isEmpty();
+  return allQueuesEmpty() && mCollectionQueue.isEmpty();
 }
 
 void FeederQueue::continueIndexing()
@@ -228,7 +220,6 @@ void FeederQueue::collectionFullyIndexed()
     NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
     const QString summary = i18n( "Indexing collection '%1' completed.", mCurrentCollection.name() );
     mCurrentCollection = Collection();
-    emit idle( i18n( "Indexing completed." ) );
     const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
     KNotification::event( QLatin1String("indexingcollectioncompleted"),
                             summary,
@@ -240,6 +231,14 @@ void FeederQueue::collectionFullyIndexed()
 
     //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
     processNextCollection();
+}
+
+void FeederQueue::indexingComplete()
+{
+  //kDebug() << "fully indexed";
+  mReIndex = false;
+  emit idle( i18n( "Indexing completed." ) );
+  emit fullyIndexed();
 }
 
 void FeederQueue::processItemQueue()
@@ -262,12 +261,16 @@ void FeederQueue::processItemQueue()
     if ( !lowPrioQueue.processItem() ) {
       return;
     }
+  } else if ( !unindexedItemQueue.isEmpty() ) {
+    if ( !unindexedItemQueue.processItem() ) {
+      return;
+    }
   } else {
     //kDebug() << "idle";
     emit idle( i18n( "Ready to index data." ) );
   }
 
-  if ( !highPrioQueue.isEmpty() || ( !lowPrioQueue.isEmpty() && mOnline ) ) {
+  if ( !allQueuesEmpty() ) {
     //kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();
@@ -276,14 +279,23 @@ void FeederQueue::processItemQueue()
 
 void FeederQueue::prioQueueFinished()
 {
-  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && ( mPendingJobs == 0 )) {
+  if ( allQueuesEmpty() && ( mPendingJobs == 0 )) {
     if (mCurrentCollection.isValid()) {
       collectionFullyIndexed();
     } else {
-      emit fullyIndexed();
+      indexingComplete();
     }
   }
 }
+
+bool FeederQueue::allQueuesEmpty() const
+{
+  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && unindexedItemQueue.isEmpty() ) {
+    return true;
+  }
+  return false;
+}
+
 
 void FeederQueue::batchFinished()
 {
@@ -291,7 +303,7 @@ void FeederQueue::batchFinished()
     kDebug() << "high prio batch finished--------------------";
   if ( sender() == &lowPrioQueue )
     kDebug() << "low prio batch finished--------------------";*/
-  if ( !highPrioQueue.isEmpty() || !lowPrioQueue.isEmpty() ) {
+  if ( !allQueuesEmpty() ) {
     //kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();
@@ -313,227 +325,5 @@ Akonadi::Collection::List FeederQueue::listOfCollection() const
 {
   return mCollectionQueue;
 }
-
-
-ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
-: QObject(parent),
-  mBatchSize( batchSize ),
-  mFetchSize( fetchSize ),
-  mRunningJobs( 0 ),
-  mProcessingDelay( 0 )
-{
-  if ( fetchSize < batchSize )  {
-    kWarning() << "fetchSize must be >= batchsize";
-    fetchSize = batchSize;
-  }
-}
-
-ItemQueue::~ItemQueue()
-{
-
-}
-
-void ItemQueue::setSaveFile(const QString& saveFile)
-{
-  mSaveFile = saveFile;
-  loadState();
-}
-
-void ItemQueue::saveState()
-{
-  if (mSaveFile.isEmpty())
-    return;
-  QFile file( mSaveFile );
-  if ( !file.open( QIODevice::WriteOnly ) ) {
-    qWarning() << "could not save item pipeline to file " << file.fileName();
-    return;
-  }
-  
-  QDataStream stream( &file );
-  stream.setVersion( QDataStream::Qt_4_7 );
-
-  stream << (qulonglong)(mItemPipelineBackup.size());
-  for ( int i = 0; i < mItemPipelineBackup.size(); ++i ) {
-    stream << mItemPipelineBackup.at(i);
-  }
-}
-
-void ItemQueue::loadState()
-{
-  QFile file( mSaveFile );
-  if ( !file.open( QIODevice::ReadOnly ) )
-    return;
-  QDataStream stream( &file );
-  stream.setVersion( QDataStream::Qt_4_7 );
-
-  qulonglong size;
-  Akonadi::Item::Id id;
-
-  stream >> size;
-  for ( qulonglong i = 0; i < size && !stream.atEnd(); ++i ) {
-    stream >> id;
-    mItemPipelineBackup.enqueue(id);
-  }
-  mItemPipeline = mItemPipelineBackup;
-}
-
-
-
-void ItemQueue::addItem(const Akonadi::Item &item)
-{
-  //kDebug() << "pipline size: " << mItemPipeline.size();
-  mItemPipeline.enqueue( item.id() ); //TODO if payload is available add directly to
-  mItemPipelineBackup.enqueue( item.id() );
-  saveState();
-}
-
-void ItemQueue::addItems(const Akonadi::Item::List &list )
-{
-  foreach ( const Akonadi::Item &item, list ) {
-    addItem( item );
-  }
-}
-
-
-bool ItemQueue::processItem()
-{
-  //kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
-  if ( mRunningJobs > 0 ) {//wait until the old graph has been saved
-    //kDebug() << "blocked: " << mRunningJobs;
-    return false;
-  }
-  Q_ASSERT( mRunningJobs == 0 );
-  mRunningJobs = 0;
-  //kDebug() << "------------------------procItem";
-  if ( !mItemPipeline.isEmpty() ) {
-    mItemFetchList.append( Akonadi::Item( mItemPipeline.dequeue() ) );
-  }
-
-  if ( mItemFetchList.size() >= mFetchSize || mItemPipeline.isEmpty() ) {
-    //kDebug() << QString( "Fetching %1 items" ).arg( mItemFetchList.size() );
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItemFetchList, this );
-    job->fetchScope().fetchFullPayload();
-    job->fetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
-    job->fetchScope().setCacheOnly( true );
-    foreach(const Akonadi::Item &it, mItemFetchList) {
-      mTempFetchList.append(it.id());
-    }
-    job->setProperty( "numberOfItems", mItemFetchList.size() );
-    connect( job, SIGNAL(result(KJob*)), SLOT(fetchJobResult(KJob*)) );
-    mRunningJobs++;
-    mItemFetchList.clear();
-    return false;
-  } else { //In case there is nothing in the itemFetchList, but still in the fetchedItemList
-    return processBatch();
-  }
-  return true;
-}
-
-void ItemQueue::fetchJobResult(KJob* job)
-{
-  mRunningJobs--;
-  if ( job->error() ) {
-    kWarning() << job->errorString();
-    emit batchFinished();
-  }
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob );
-  int numberOfItems = fetchJob->property( "numberOfItems" ).toInt();
-  mFetchedItemList.append( fetchJob->items() );
-  if ( fetchJob->items().size() != numberOfItems ) {
-    kWarning() << "Not all items were fetched: " << fetchJob->items().size() << numberOfItems;
-    foreach(const Akonadi::Item &it, mItemFetchList) {
-      mTempFetchList.removeOne(it.id());
-    }
-    foreach(Akonadi::Item::Id id, mTempFetchList) {
-      mItemPipelineBackup.removeOne(id);
-    }
-  }
-  mTempFetchList.clear();
-  
-  if ( processBatch() && mBatch.isEmpty() ) { //Can happen if only items without payload were fetched
-    emit batchFinished();
-  }
-}
-
-bool ItemQueue::processBatch()
-{
-  //kDebug() << size;
-  for ( int i = 0; i < mFetchedItemList.size() && i < mBatchSize; i++ ) {
-    const Akonadi::Item &item = mFetchedItemList.takeFirst();
-    //kDebug() << item.id();
-    if ( !item.hasPayload() ) { //can happen due to deserialization error or with items that actually don't have a local payload
-      kWarning() << "failed to fetch item or item without payload: " << item.id();
-      mItemPipelineBackup.removeOne(item.id());
-      continue;
-    }
-    Q_ASSERT( item.hasPayload() );
-    Q_ASSERT( mBatch.size() == 0 ? mResourceGraph.isEmpty() : true ); //otherwise we havent reached addGraphToNepomuk yet, and therefore mustn't overwrite mResourceGraph
-    NepomukHelpers::addItemToGraph( item, mResourceGraph );
-    mBatch.append( item.id() );
-  }
-  if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
-    //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
-    KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mResourceGraph );
-    connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
-    mRunningJobs++;
-    foreach (Akonadi::Item::Id id, mBatch) {
-      mItemPipelineBackup.removeOne(id);
-    }
-    saveState();
-    mBatch.clear();
-    mResourceGraph.clear();
-    return false;
-  }
-  return true;
-}
-
-void ItemQueue::batchJobResult(KJob* job)
-{
-  mRunningJobs--;
-  //kDebug() << "------------------------------------------";
-  //kDebug() << "pipline size: " << mItemPipeline.size();
-  //kDebug() << "fetchedItemList : " << mFetchedItemList.size();
-  Q_ASSERT( mBatch.isEmpty() );
-  if ( job->error() ) {
-    /*foreach( const Nepomuk::SimpleResource &res, m_debugGraph.toList() ) {
-        kWarning() << res;
-    }*/
-    kWarning() << job->errorString();
-  }
-  QTimer::singleShot(mProcessingDelay, this, SLOT(continueProcessing()));
-  mRunningJobs++;
-}
-
-void ItemQueue::continueProcessing()
-{
-  mRunningJobs--;
-  if ( processBatch() ) { //Go back for more
-    //kDebug() << "batch finished";
-    emit batchFinished();
-  } else {
-      //kDebug() << "there was more...";
-      return;
-  }
-  if ( mItemPipeline.isEmpty() && mFetchedItemList.isEmpty() ) {
-    kDebug() << "indexing completed";
-    if (!mItemPipelineBackup.isEmpty()) {
-      kWarning() << mItemPipelineBackup;
-    }
-    Q_ASSERT(mItemPipelineBackup.isEmpty());
-    emit finished();
-  }
-}
-
-bool ItemQueue::isEmpty()
-{
-    return mItemPipeline.isEmpty() && mFetchedItemList.isEmpty();
-}
-
-void ItemQueue::setProcessingDelay(int ms)
-{
-    mProcessingDelay = ms;
-}
-
 
 #include "feederqueue.moc"

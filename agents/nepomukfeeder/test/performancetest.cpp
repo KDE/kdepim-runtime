@@ -18,11 +18,14 @@
 #include <KDE/KJob>
 #include <nepomuk2/simpleresourcegraph.h>
 #include <nepomuk2/datamanagement.h>
+#include <nepomuk2/storeresourcesjob.h>
+#include <nepomuk2/simpleresource.h>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/item.h>
 #include <kmime/kmime_message.h>
 #include <limits>
 #include "../nepomukhelpers.h"
+#include <propertycache.h>
 #define TESTFILEDIR QString::fromLatin1(TEST_DATA_PATH "/testfiles/")
 
 /**
@@ -56,8 +59,8 @@ private slots:
     {
         QTest::addColumn<QString>("file");
         QTest::newRow("simpleMail") << TESTFILEDIR.append(QString::fromLatin1("simplemail.mime"));
-        QTest::newRow("realworldmail") << TESTFILEDIR.append(QString::fromLatin1("realworldmail.mime"));
-        QTest::newRow("mailWithCoupleOfCCs") << TESTFILEDIR.append(QString::fromLatin1("mailWithACoupleOfCCs.mime"));
+//         QTest::newRow("realworldmail") << TESTFILEDIR.append(QString::fromLatin1("realworldmail.mime"));
+//         QTest::newRow("mailWithCoupleOfCCs") << TESTFILEDIR.append(QString::fromLatin1("mailWithACoupleOfCCs.mime"));
         //FIXME That's to much so far for nepomuk
 //         QTest::newRow("mailWithLoadsOfCCs") << TESTFILEDIR.append(QString::fromLatin1("mailWithLoadsOfCCs.mime"));
     }
@@ -89,6 +92,69 @@ private slots:
         kDebug() << "Storing the graph took(ms): " << time.elapsed();
         time.start();
         KJob *removeJob = Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
+        connect(removeJob, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
+        removeJob->exec();
+        kDebug() << "Removing the data took(ms): " << time.elapsed();
+    }
+    
+    void testMailCached_data()
+    {
+        QTest::addColumn<QString>("file");
+        QTest::newRow("simpleMail") << TESTFILEDIR.append(QString::fromLatin1("simplemail.mime"));
+    }
+
+        
+    
+    void testMailCached()
+    {
+        QTime time;
+        time.start();
+        Akonadi::Item item(std::numeric_limits < Akonadi::Entity::Id >::max());
+        item.setModificationTime(QDateTime(QDate(2012, 01, 02)));
+        QFETCH(QString, file);
+        KMime::Message::Ptr  msg = readMimeFile(file);
+        QVERIFY(msg);
+        item.setPayload(msg);
+        item.setMimeType(KMime::Message::mimeType());
+        
+        Nepomuk2::SimpleResourceGraph graph;
+        NepomukHelpers::addItemToGraph( item, graph );
+        
+        KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( graph );
+        connect(addGraphJob, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
+        addGraphJob->exec();
+        kDebug() << "Storing the graph took(ms): " << time.elapsed();
+
+        Nepomuk2::StoreResourcesJob *storeJob = static_cast<Nepomuk2::StoreResourcesJob*>(addGraphJob);
+        const QHash<QUrl, QUrl> mappings = storeJob->mappings();
+        qDebug() << mappings;
+
+        PropertyCache propertyCache;
+        propertyCache.setCachedTypes(QList<QUrl>()
+           << QUrl("http://www.semanticdesktop.org/ontologies/2007/08/15/nao#FreeDesktopIcon")
+           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
+           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact")
+        );
+        propertyCache.fillCache(graph, mappings);
+        
+        time.start();
+        KJob *removeJob = Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
+        connect(removeJob, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
+        removeJob->exec();
+        kDebug() << "Removing the data took(ms): " << time.elapsed();
+        
+        Nepomuk2::SimpleResourceGraph graph2;
+        NepomukHelpers::addItemToGraph( item, graph2 );
+        
+        const Nepomuk2::SimpleResourceGraph resultGraph = propertyCache.applyCache(graph2);
+
+        addGraphJob = NepomukHelpers::addGraphToNepomuk( resultGraph );
+        connect(addGraphJob, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
+        addGraphJob->exec();
+        kDebug() << "Storing the graph again took(ms): " << time.elapsed();
+
+        time.start();
+        removeJob = Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
         connect(removeJob, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
         removeJob->exec();
         kDebug() << "Removing the data took(ms): " << time.elapsed();

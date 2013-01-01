@@ -40,7 +40,7 @@ KJob *markCollectionAsIndexed( const Akonadi::Collection &collection );
 void addItemToGraph( const Akonadi::Item &item, Nepomuk2::SimpleResourceGraph &graph );
 
 /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */
-KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph );
+KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph, bool itemsAreNew = false );
 
 bool isIndexed(const Akonadi::Item &item);
 bool isIndexed(const Akonadi::Collection &item);
