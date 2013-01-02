@@ -80,6 +80,7 @@ void ItemQueue::saveState()
 
 void ItemQueue::loadState()
 {
+  mItemPipeline.clear();
   QFile file( mSaveFile );
   if ( !file.open( QIODevice::ReadOnly ) )
     return;
@@ -90,6 +91,7 @@ void ItemQueue::loadState()
   Akonadi::Item::Id id;
 
   stream >> size;
+  mItemPipeline.reserve(size);
   for ( qulonglong i = 0; i < size && !stream.atEnd(); ++i ) {
     stream >> id;
     mItemPipelineBackup.enqueue(id);
@@ -102,19 +104,25 @@ void ItemQueue::setItemsAreNotIndexed(bool enable)
   mItemsAreNotIndexed = enable;
 }
 
+void ItemQueue::addToQueue(Akonadi::Entity::Id id)
+{
+  mItemPipeline.enqueue( id );
+  mItemPipelineBackup.enqueue( id );
+}
+
 void ItemQueue::addItem(const Akonadi::Item &item)
 {
   //kDebug() << "pipline size: " << mItemPipeline.size();
-  mItemPipeline.enqueue( item.id() ); //TODO if payload is available add directly to
-  mItemPipelineBackup.enqueue( item.id() );
+  addToQueue(item.id());
   saveState();
 }
 
 void ItemQueue::addItems(const Akonadi::Item::List &list )
 {
   foreach ( const Akonadi::Item &item, list ) {
-    addItem( item );
+    addToQueue( item.id() );
   }
+  saveState();
 }
 
 bool ItemQueue::processItem()
