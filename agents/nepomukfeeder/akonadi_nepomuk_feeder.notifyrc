@@ -2,6 +2,7 @@
 IconName=nepomuk
 Comment=Nepomuk Feeder Agent
 Comment[ca]=Agent alimentador del Nepomuk
+Comment[da]=Nepomuk Feeder Agent
 Comment[el]=Πράκτορας Τροφοδότης του Nepomuk
 Comment[es]=Agente proveedor de Nepomuk
 Comment[et]=Nepomuki sööturi agent
@@ -27,6 +28,7 @@ Comment[x-test]=xxNepomuk Feeder Agentxx
 Comment[zh_TW]=Nepomuk Feeder 代理程式
 Name=Nepomuk Feeder Agent
 Name[ca]=Agent alimentador del Nepomuk
+Name[da]=Nepomuk Feeder Agent
 Name[el]=Nepomuk Feeder Agent
 Name[es]=Agente proveedor de Nepomuk
 Name[et]=Nepomuki sööturi agent
@@ -54,6 +56,7 @@ Name[zh_TW]=Nepomuk Feeder 代理程式
 [Event/startindexingcollection]
 Name=Starting to index collection
 Name[ca]=Inici de la indexació de col·lecció
+Name[da]=Påbegynder indeksering af samling
 Name[el]=Έναρξη δεικτοδότησης συλλογής
 Name[es]=Comienzo de indexado de colección
 Name[et]=Alustatakse kogu indekseerimist
@@ -83,6 +86,7 @@ Action=None
 [Event/indexingcollectioncompleted]
 Name=Indexing completed
 Name[ca]=S'ha completat la indexació
+Name[da]=Indeksering gennemført
 Name[de]=Indizierung abgeschlossen
 Name[el]=Η δεικτοδότηση ολοκληρώθηκε
 Name[es]=Indexado completado
@@ -113,6 +117,7 @@ Action=None
 [Event/statusindexing]
 Name=Indexing status
 Name[ca]=Estat de la indexació
+Name[da]=Indekseringsstatus
 Name[el]=Κατάσταση δεικτοδότησης
 Name[es]=Estado del indexado
 Name[et]=Indekseerimise olek
