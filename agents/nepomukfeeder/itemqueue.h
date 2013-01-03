@@ -68,6 +68,7 @@ private:
   bool processBatch();
   void saveState();
   void loadState();
+  void addToQueue(Akonadi::Entity::Id);
 
   QString mSaveFile;
   QQueue<Akonadi::Item::Id> mItemPipelineBackup;
