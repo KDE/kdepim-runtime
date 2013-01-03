@@ -168,6 +168,7 @@ void KRssLocalResource::retrieveCollections()
     }
 
     KRss::ImportFromOpmlJob* job = new KRss::ImportFromOpmlJob( this );
+    job->setCreateCollections( false );
     job->setParentFolder( top );
     job->setInputFile( opmlPath );
     connect( job, SIGNAL(result(KJob*)), this, SLOT(opmlImportFinished(KJob*)) );
