@@ -57,7 +57,6 @@
 using namespace Akonadi;
 using namespace boost;
 
-static const int CacheTimeout = -1, IntervalCheckTime = 5;
 static const int WriteBackTimeout = 30000; // in milliseconds
 
 KRssLocalResource::KRssLocalResource( const QString &id )
@@ -73,14 +72,23 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
+    connect( Settings::self(), SIGNAL(configChanged()), this, SLOT(configChanged()) );
     //policy.setCacheTimeout( CacheTimeout );
     //policy.setIntervalCheckTime( IntervalCheckTime );
 
     AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
 
-    m_policy.setInheritFromParent( false );
-    m_policy.setSyncOnDemand( false );
-    m_policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
+    const QStringList localParts = QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload;
+
+    m_defaultPolicy.setInheritFromParent( true );
+    m_defaultPolicy.setSyncOnDemand( false );
+    m_defaultPolicy.setLocalParts( localParts );
+
+    m_topPolicy.setInheritFromParent( false );
+    m_topPolicy.setSyncOnDemand( false );
+    m_topPolicy.setCacheTimeout( -1 );
+    m_topPolicy.setIntervalCheckTime( Settings::useIntervalFetch() ? Settings::autoFetchInterval() : -1 );
+    m_topPolicy.setLocalParts( localParts );
 
     // Change recording makes the resource unusable for hours here
     // after migrating 130000 items, so disable it, as we don't write back item changes anyway.
@@ -94,11 +102,19 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     m_writeBackTimer->setSingleShot( true );
     m_writeBackTimer->setInterval( WriteBackTimeout );
     connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(startOpmlExport()));
-    
 }
 
 KRssLocalResource::~KRssLocalResource()
 {
+}
+
+void KRssLocalResource::configChanged()
+{
+    const int checkTime = Settings::useIntervalFetch() ? Settings::autoFetchInterval() : -1;
+    if ( m_topPolicy.intervalCheckTime() == checkTime )
+        return;
+    m_topPolicy.setIntervalCheckTime( checkTime );
+    synchronizeCollectionTree(); // forces topPolicy to be reapplied
 }
 
 static bool ensureOpmlCreated( const QString& filePath, QString* errorString ) {
@@ -147,8 +163,10 @@ void KRssLocalResource::retrieveCollections()
 {
     const QString opmlPath = Settings::self()->path();
 
+
     // create a top-level collection
     KRss::FeedCollection top;
+    top.setCachePolicy( m_topPolicy );
     top.setParent( Collection::root() );
     top.setRemoteId( opmlPath );
     top.setIsFolder( true );
@@ -188,8 +206,10 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
     m_titleOpml = job->opmlTitle();
 
     Collection::List collections = job->collections();
+    Q_ASSERT( !collections.isEmpty() );
+    collections[0].setCachePolicy( m_topPolicy );
     for ( int i = 0; i < collections.size(); ++i )
-        collections[i].setCachePolicy( m_policy );
+        collections[i].setCachePolicy( m_defaultPolicy );
 
     collectionsRetrieved( collections );
 }

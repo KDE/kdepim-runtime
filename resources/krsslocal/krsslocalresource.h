@@ -59,9 +59,11 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     void opmlExportFinished( KJob *job );
     void opmlImportFinished( KJob *job );
     void slotItemSyncDone( KJob *job );
+    void configChanged();
 
 private:
-    Akonadi::CachePolicy m_policy;
+    Akonadi::CachePolicy m_defaultPolicy;
+    Akonadi::CachePolicy m_topPolicy;
     QHash<Syndication::Loader*, Akonadi::Collection> m_collectionByLoader;
     QTimer *m_writeBackTimer;
     QString m_titleOpml;
