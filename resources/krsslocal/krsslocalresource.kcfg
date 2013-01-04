@@ -17,7 +17,7 @@
     <entry name="UseIntervalFetch" type="Bool" >
       <label>Use interval fetching</label>
       <whatsthis>Fetch all feeds every %1 minutes.</whatsthis>
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="AutoFetchInterval" type="Int" >
       <label>Interval for autofetching</label>
