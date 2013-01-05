@@ -73,8 +73,6 @@ KRssLocalResource::KRssLocalResource( const QString &id )
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
     connect( Settings::self(), SIGNAL(configChanged()), this, SLOT(configChanged()) );
-    //policy.setCacheTimeout( CacheTimeout );
-    //policy.setIntervalCheckTime( IntervalCheckTime );
 
     AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
 
@@ -211,6 +209,23 @@ void KRssLocalResource::retrieveCollections()
     }
 }
 
+static CachePolicy applyAutoFetch( const Collection& c, CachePolicy p ) {
+    const KRss::FeedCollection fc = c;
+    const int customInterval = fc.fetchInterval();
+    switch ( customInterval ) {
+    case -1: //use default
+        break;
+    case 0: //fetch never
+        p.setIntervalCheckTime( -1 );
+        break;
+    default:
+        p.setIntervalCheckTime( customInterval );
+        break;
+    }
+
+    return p;
+}
+
 void KRssLocalResource::opmlImportFinished( KJob* j ) {
     KRss::ImportFromOpmlJob* job = qobject_cast<KRss::ImportFromOpmlJob*>( j );
     Q_ASSERT( job );
@@ -229,18 +244,7 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
     collections[0].setCachePolicy( m_defaultPolicy );
     for ( int i = 0; i < collections.size(); ++i ) {
         CachePolicy policy = m_defaultPolicy;
-        const KRss::FeedCollection fc = collections[i];
-        const int customInterval = fc.fetchInterval();
-        switch ( customInterval ) {
-        case -1: //use default
-            break;
-        case 0: //fetch never
-            policy.setIntervalCheckTime( -1 );
-            break;
-        default:
-            policy.setIntervalCheckTime( customInterval );
-            break;
-        }
+        policy = applyAutoFetch( collections[i], policy );
         collections[i].setCachePolicy( policy );
     }
     collectionsRetrieved( collections );
@@ -413,8 +417,14 @@ void KRssLocalResource::configure( WId windowId )
     delete dlg;
 }
 
-void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
+void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection_)
 {
+    Akonadi::Collection collection = collection_;
+
+    CachePolicy policy = m_defaultPolicy;
+    policy = applyAutoFetch( collection, policy );
+    collection.setCachePolicy( policy );
+
     changeCommitted( collection );
 
     if ( !m_writeBackTimer->isActive() )
