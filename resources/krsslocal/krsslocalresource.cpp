@@ -89,7 +89,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     // after migrating 130000 items, so disable it, as we don't write back item changes anyway.
     changeRecorder()->setChangeRecordingEnabled( false );
     changeRecorder()->fetchCollection( true );
-    changeRecorder()->fetchChangedOnly( true );
+    changeRecorder()->fetchChangedOnly( false );
     changeRecorder()->setItemFetchScope( ItemFetchScope() );
 
     //This timer handles the situation in which at least one collection is changed
@@ -154,10 +154,26 @@ static bool ensureOpmlCreated( const QString& filePath, QString* errorString ) {
     return true;
 }
 
-void KRssLocalResource::retrieveCollections()
+void KRssLocalResource::retrieveCollectionsSynced( KJob* exportJob )
 {
+    m_runningExportJob = 0;
+    if ( exportJob && exportJob->error() ) {
+        const QString errorString = i18n("Could not write back local changes before retrieving collections: %1", exportJob->errorString() );
+        kDebug() << errorString;
+        error( errorString );
+        collectionsRetrieved( Collection::List() );
+        return;
+    }
+
     const QString opmlPath = Settings::self()->path();
 
+    QString errorString;
+    if ( !ensureOpmlCreated( opmlPath, &errorString ) ) {
+        kDebug() << errorString;
+        error( errorString );
+        collectionsRetrieved( Collection::List() );
+        return;
+    }
 
     // create a top-level collection
     KRss::FeedCollection top;
@@ -173,20 +189,26 @@ void KRssLocalResource::retrieveCollections()
     top.setRights( Collection::CanCreateCollection );
     //TODO: modify CMakeLists.txt so that it installs the icon
 
-
-    QString errorString;
-    if ( !ensureOpmlCreated( opmlPath, &errorString ) ) {
-        error( errorString );
-        return;
-    }
-
     KRss::ImportFromOpmlJob* job = new KRss::ImportFromOpmlJob( this );
     job->setCreateCollections( false );
     job->setParentFolder( top );
     job->setInputFile( opmlPath );
     connect( job, SIGNAL(result(KJob*)), this, SLOT(opmlImportFinished(KJob*)) );
     job->start();
+}
 
+void KRssLocalResource::retrieveCollections()
+{
+    //before retrieving, first make sure local changes are written back to the opml file
+    if ( m_writeBackTimer->isActive() || m_runningExportJob ) {
+        m_writeBackTimer->stop();
+        if ( !m_runningExportJob )
+            startExportJob();
+        Q_ASSERT( m_runningExportJob );
+        connect( m_runningExportJob, SIGNAL(result(KJob*)), this, SLOT(retrieveCollectionsSynced(KJob*)), Qt::UniqueConnection );
+    } else {
+        retrieveCollectionsSynced( 0 );
+    }
 }
 
 void KRssLocalResource::opmlImportFinished( KJob* j ) {
@@ -194,7 +216,9 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
     Q_ASSERT( job );
 
     if ( job->error() ) {
+        kDebug() << job->errorString();
         error( job->errorString() );
+        collectionsRetrieved( Collection::List() );
         return;
     }
 
@@ -261,7 +285,6 @@ static QString errorCodeToString( Syndication::ErrorCode err )
             break;
     }
     return QString();
-
 }
 
 void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
@@ -378,17 +401,16 @@ void KRssLocalResource::configure( WId windowId )
 {
     QPointer<ConfigDialog> dlg( new ConfigDialog );
     if ( windowId )
-      KWindowSystem::setMainWindow( dlg, windowId );
+        KWindowSystem::setMainWindow( dlg, windowId );
     if ( dlg->exec() == KDialog::Accepted ) {
         Settings::self()->writeConfig();
 
         emit configurationDialogAccepted();
         synchronizeCollectionTree();
     } else {
-      emit configurationDialogRejected();
+        emit configurationDialogRejected();
     }
     delete dlg;
-    
 }
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
@@ -415,25 +437,35 @@ void KRssLocalResource::collectionRemoved( const Collection &collection )
         m_writeBackTimer->start();
 }
 
-void KRssLocalResource::startOpmlExport()
+KRss::ExportToOpmlJob* KRssLocalResource::startExportJob()
 {
+    if ( m_runningExportJob )
+        return m_runningExportJob;
     KRss::ExportToOpmlJob* job = new KRss::ExportToOpmlJob( this );
     job->setResource( identifier() );
     job->setOutputFile( Settings::self()->path() );
     job->setIncludeCustomProperties( true );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(opmlExportFinished(KJob*)) );
+    job->start();
+    m_runningExportJob = job;
+    return job;
+}
+
+void KRssLocalResource::startOpmlExport()
+{
+    KRss::ExportToOpmlJob* job = startExportJob();
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(opmlExportFinished(KJob*)), Qt::UniqueConnection );
 }
 
 void KRssLocalResource::opmlExportFinished( KJob *job )
 {
+    m_runningExportJob = 0;
     if ( job->error() )
         kDebug() << "Error occurred" << job->errorString();
-
+    else
+        kDebug() << "OPML written back";
     if ( m_quitLoop )
         m_quitLoop->quit();
 }
-
-
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )
 
