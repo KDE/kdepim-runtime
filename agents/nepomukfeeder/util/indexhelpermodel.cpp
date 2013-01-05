@@ -72,6 +72,7 @@ QVariant IndexHelperModel::entityData(const Akonadi::Item& item, int column, int
                 }
             }
         }
+        break;
         case Qt::ToolTipRole: {
             QString d;
             d.append(QString::fromLatin1("Akonadi: %1\n").arg(item.url().url()));
