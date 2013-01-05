@@ -118,6 +118,7 @@ Action=None
 Name=Indexing status
 Name[ca]=Estat de la indexació
 Name[da]=Indekseringsstatus
+Name[de]=Indizierungsstatus
 Name[el]=Κατάσταση δεικτοδότησης
 Name[es]=Estado del indexado
 Name[et]=Indekseerimise olek
