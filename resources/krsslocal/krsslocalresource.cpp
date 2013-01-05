@@ -80,7 +80,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
 
     const QStringList localParts = QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload;
 
-    m_defaultPolicy.setInheritFromParent( true );
+    m_defaultPolicy.setInheritFromParent( false );
     m_defaultPolicy.setSyncOnDemand( false );
     m_defaultPolicy.setLocalParts( localParts );
 
