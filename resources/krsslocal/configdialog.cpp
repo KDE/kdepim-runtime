@@ -36,7 +36,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
     ui.urlPath->lineEdit()->setText( Settings::self()->path() );
     connect( this, SIGNAL(okClicked()), SLOT(slotSave()) );
     
-    ui.kcfg_AutoFetchInterval->setSuffix(ki18np(" minute", "minutes"));
+    ui.kcfg_AutoFetchInterval->setSuffix(ki18np(" minute", " minutes"));
     connect( ui.kcfg_UseIntervalFetch, SIGNAL(toggled(bool)),
              ui.kcfg_AutoFetchInterval, SLOT(setEnabled(bool)) );
     connect( ui.kcfg_UseIntervalFetch, SIGNAL(toggled(bool)),
