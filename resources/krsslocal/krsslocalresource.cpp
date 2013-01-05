@@ -83,12 +83,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     m_defaultPolicy.setInheritFromParent( false );
     m_defaultPolicy.setSyncOnDemand( false );
     m_defaultPolicy.setLocalParts( localParts );
-
-    m_topPolicy.setInheritFromParent( false );
-    m_topPolicy.setSyncOnDemand( false );
-    m_topPolicy.setCacheTimeout( -1 );
-    m_topPolicy.setIntervalCheckTime( Settings::useIntervalFetch() ? Settings::autoFetchInterval() : -1 );
-    m_topPolicy.setLocalParts( localParts );
+    m_defaultPolicy.setIntervalCheckTime( Settings::useIntervalFetch() ? Settings::autoFetchInterval() : -1 );
 
     // Change recording makes the resource unusable for hours here
     // after migrating 130000 items, so disable it, as we don't write back item changes anyway.
@@ -111,10 +106,10 @@ KRssLocalResource::~KRssLocalResource()
 void KRssLocalResource::configChanged()
 {
     const int checkTime = Settings::useIntervalFetch() ? Settings::autoFetchInterval() : -1;
-    if ( m_topPolicy.intervalCheckTime() == checkTime )
+    if ( m_defaultPolicy.intervalCheckTime() == checkTime )
         return;
-    m_topPolicy.setIntervalCheckTime( checkTime );
-    synchronizeCollectionTree(); // forces topPolicy to be reapplied
+    m_defaultPolicy.setIntervalCheckTime( checkTime );
+    synchronizeCollectionTree(); // forces policies to be reapplied
 }
 
 static bool ensureOpmlCreated( const QString& filePath, QString* errorString ) {
@@ -166,7 +161,7 @@ void KRssLocalResource::retrieveCollections()
 
     // create a top-level collection
     KRss::FeedCollection top;
-    top.setCachePolicy( m_topPolicy );
+    top.setCachePolicy( m_defaultPolicy );
     top.setParent( Collection::root() );
     top.setRemoteId( opmlPath );
     top.setIsFolder( true );
@@ -207,10 +202,23 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
 
     Collection::List collections = job->collections();
     Q_ASSERT( !collections.isEmpty() );
-    collections[0].setCachePolicy( m_topPolicy );
-    for ( int i = 0; i < collections.size(); ++i )
-        collections[i].setCachePolicy( m_defaultPolicy );
-
+    collections[0].setCachePolicy( m_defaultPolicy );
+    for ( int i = 0; i < collections.size(); ++i ) {
+        CachePolicy policy = m_defaultPolicy;
+        const KRss::FeedCollection fc = collections[i];
+        const int customInterval = fc.fetchInterval();
+        switch ( customInterval ) {
+        case -1: //use default
+            break;
+        case 0: //fetch never
+            policy.setIntervalCheckTime( -1 );
+            break;
+        default:
+            policy.setIntervalCheckTime( customInterval );
+            break;
+        }
+        collections[i].setCachePolicy( policy );
+    }
     collectionsRetrieved( collections );
 }
 
@@ -384,7 +392,7 @@ void KRssLocalResource::configure( WId windowId )
 }
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection)
-{  
+{
     changeCommitted( collection );
 
     if ( !m_writeBackTimer->isActive() )

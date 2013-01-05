@@ -63,7 +63,6 @@ class KRssLocalResource : public Akonadi::ResourceBase,
 
 private:
     Akonadi::CachePolicy m_defaultPolicy;
-    Akonadi::CachePolicy m_topPolicy;
     QHash<Syndication::Loader*, Akonadi::Collection> m_collectionByLoader;
     QTimer *m_writeBackTimer;
     QString m_titleOpml;
