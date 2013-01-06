@@ -179,6 +179,7 @@ void NepomukFeederAgent::configure( WId windowId )
 
 void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
 {
+  mReindexingEnforcedCollections << id;
   CollectionFetchJob *job = new CollectionFetchJob( Collection(id), Akonadi::CollectionFetchJob::Base, this );
   connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)));
 }
@@ -346,8 +347,9 @@ void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& co
   foreach ( const Collection &collection, collections ) {
     if ( indexingDisabled( collection ) )
       continue;
-    //FIXME don't do this check if the reindexing was forced (no initial indexing)
-    if ( collection.contentMimeTypes().contains(emailMimetype()) ) //Skip emails during initial indexing
+    if ( mReindexingEnforcedCollections.contains(collection.id()) )
+        mReindexingEnforcedCollections.removeAll(collection.id());
+    else if ( collection.contentMimeTypes().contains(emailMimetype()) ) //Skip emails during initial indexing
       continue;
     mQueue.addCollection( collection );
   }
