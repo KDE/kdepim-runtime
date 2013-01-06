@@ -22,12 +22,9 @@
 #include <Akonadi/ResourceBase>
 #include <boost/shared_ptr.hpp>
 
-#include <KRss/ExportToOpmlJob>
 #include <Syndication/Syndication>
 
-#include <QTimer>
 #include <QHash>
-#include <QPointer>
 
 #include "rssitemsync.h"
 
@@ -53,21 +50,17 @@ class KRssLocalResource : public Akonadi::ResourceBase,
     void retrieveItems( const Akonadi::Collection &col );
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
-    virtual void aboutToQuit();
-
     void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     void collectionChanged( const Akonadi::Collection &collection );
     void collectionRemoved( const Akonadi::Collection &collection );
 
   private:
-    KRss::ExportToOpmlJob* startExportJob();
+    bool writeOpml( QString* errorString );
+    void handleChange( const Akonadi::Collection& );
 
   private Q_SLOTS:
-    void retrieveCollectionsSynced( KJob* exportJob );
     void slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
 			Syndication::ErrorCode status );
-    void startOpmlExport();
-    void opmlExportFinished( KJob *job );
     void opmlImportFinished( KJob *job );
     void slotItemSyncDone( KJob *job );
     void configChanged();
@@ -75,11 +68,8 @@ class KRssLocalResource : public Akonadi::ResourceBase,
 private:
     Akonadi::CachePolicy m_defaultPolicy;
     QHash<Syndication::Loader*, Akonadi::Collection> m_collectionByLoader;
-    QPointer<KRss::ExportToOpmlJob> m_runningExportJob;
-    QTimer *m_writeBackTimer;
     QString m_titleOpml;
     RssItemSync *m_syncer;
-    QEventLoop* m_quitLoop;
 };
 
 #endif

@@ -57,13 +57,10 @@
 using namespace Akonadi;
 using namespace boost;
 
-static const int WriteBackTimeout = 30000; // in milliseconds
 
 KRssLocalResource::KRssLocalResource( const QString &id )
     : ResourceBase( id )
-    , m_writeBackTimer( new QTimer( this ) )
     , m_syncer( 0 )
-    , m_quitLoop( 0 )
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
@@ -89,12 +86,6 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     changeRecorder()->fetchCollection( true );
     changeRecorder()->fetchChangedOnly( false );
     changeRecorder()->setItemFetchScope( ItemFetchScope() );
-
-    //This timer handles the situation in which at least one collection is changed
-    //and the modifications must be written back on the opml file.
-    m_writeBackTimer->setSingleShot( true );
-    m_writeBackTimer->setInterval( WriteBackTimeout );
-    connect(m_writeBackTimer, SIGNAL(timeout()), this, SLOT(startOpmlExport()));
 }
 
 KRssLocalResource::~KRssLocalResource()
@@ -107,7 +98,7 @@ void KRssLocalResource::configChanged()
     if ( m_defaultPolicy.intervalCheckTime() == checkTime )
         return;
     m_defaultPolicy.setIntervalCheckTime( checkTime );
-    synchronizeCollectionTree(); // forces policies to be reapplied
+    synchronizeCollectionTree();
 }
 
 static bool ensureOpmlCreated( const QString& filePath, QString* errorString ) {
@@ -152,22 +143,15 @@ static bool ensureOpmlCreated( const QString& filePath, QString* errorString ) {
     return true;
 }
 
-void KRssLocalResource::retrieveCollectionsSynced( KJob* exportJob )
+void KRssLocalResource::retrieveCollections()
 {
-    m_runningExportJob = 0;
-    if ( exportJob && exportJob->error() ) {
-        const QString errorString = i18n("Could not write back local changes before retrieving collections: %1", exportJob->errorString() );
-        kDebug() << errorString;
-        error( errorString );
-        return;
-    }
-
     const QString opmlPath = Settings::self()->path();
 
     QString errorString;
     if ( !ensureOpmlCreated( opmlPath, &errorString ) ) {
         kDebug() << errorString;
-        error( errorString );
+        status( Broken, errorString );
+        cancelTask( errorString );
         return;
     }
 
@@ -193,20 +177,6 @@ void KRssLocalResource::retrieveCollectionsSynced( KJob* exportJob )
     job->start();
 }
 
-void KRssLocalResource::retrieveCollections()
-{
-    //before retrieving, first make sure local changes are written back to the opml file
-    if ( m_writeBackTimer->isActive() || m_runningExportJob ) {
-        m_writeBackTimer->stop();
-        if ( !m_runningExportJob )
-            startExportJob();
-        Q_ASSERT( m_runningExportJob );
-        connect( m_runningExportJob, SIGNAL(result(KJob*)), this, SLOT(retrieveCollectionsSynced(KJob*)), Qt::UniqueConnection );
-    } else {
-        retrieveCollectionsSynced( 0 );
-    }
-}
-
 static CachePolicy applyAutoFetch( const Collection& c, CachePolicy p ) {
     const KRss::FeedCollection fc = c;
     const int customInterval = fc.fetchInterval();
@@ -229,8 +199,10 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
     Q_ASSERT( job );
 
     if ( job->error() ) {
-        kDebug() << job->errorString();
-        error( job->errorString() );
+        const QString errorString = job->errorString();
+        kDebug() << errorString;
+        status( Broken, errorString );
+        cancelTask( errorString );
         return;
     }
 
@@ -383,35 +355,22 @@ bool KRssLocalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByt
     return true;
 }
 
-void KRssLocalResource::aboutToQuit()
-{
-    // any cleanup you need to do while there is still an active
-    // event loop. The resource will terminate after this method returns
-
-    if ( !m_writeBackTimer->isActive() )
-        return;
-    m_writeBackTimer->stop();
-    startOpmlExport();
-    QEventLoop loop;
-    m_quitLoop = &loop;
-    loop.exec();
-    m_quitLoop = 0;
-}
 
 void KRssLocalResource::configure( WId windowId )
 {
+    Settings::self()->disconnect( this );
     QPointer<ConfigDialog> dlg( new ConfigDialog );
     if ( windowId )
         KWindowSystem::setMainWindow( dlg, windowId );
     if ( dlg->exec() == KDialog::Accepted ) {
         Settings::self()->writeConfig();
-
         emit configurationDialogAccepted();
-        synchronizeCollectionTree();
+        //synchronizeCollectionTree();
     } else {
         emit configurationDialogRejected();
     }
     delete dlg;
+    connect( Settings::self(), SIGNAL(configChanged()), this, SLOT(configChanged()) );
 }
 
 void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection_)
@@ -422,57 +381,45 @@ void KRssLocalResource::collectionChanged(const Akonadi::Collection& collection_
     policy = applyAutoFetch( collection, policy );
     collection.setCachePolicy( policy );
 
-    changeCommitted( collection );
-
-    if ( !m_writeBackTimer->isActive() )
-        m_writeBackTimer->start();
+    handleChange( collection );
 }
 
-void KRssLocalResource::collectionAdded( const Collection &collection, const Collection &parent )
+void KRssLocalResource::collectionAdded( const Collection &collection_, const Collection &parent )
 {
     Q_UNUSED( parent )
-    changeCommitted( collection );
+    Akonadi::Collection collection = collection_;
 
-    if ( !m_writeBackTimer->isActive() )
-        m_writeBackTimer->start();
+    CachePolicy policy = m_defaultPolicy;
+    policy = applyAutoFetch( collection, policy );
+    collection.setCachePolicy( policy );
+
+    handleChange( collection );
 }
 
 void KRssLocalResource::collectionRemoved( const Collection &collection )
 {
-    changeCommitted( collection );
-    if ( !m_writeBackTimer->isActive() )
-        m_writeBackTimer->start();
+    handleChange( collection );
 }
 
-KRss::ExportToOpmlJob* KRssLocalResource::startExportJob()
+void KRssLocalResource::handleChange( const Collection& collection ) {
+    QString errorString;
+    if ( writeOpml( &errorString ) )
+        changeCommitted( collection );
+    else
+        cancelTask( errorString );
+}
+
+bool KRssLocalResource::writeOpml( QString* errorString )
 {
-    if ( m_runningExportJob )
-        return m_runningExportJob;
     KRss::ExportToOpmlJob* job = new KRss::ExportToOpmlJob( this );
     job->setResource( identifier() );
     job->setOutputFile( Settings::self()->path() );
     job->setIncludeCustomProperties( true );
-    job->start();
-    m_runningExportJob = job;
-    return job;
+    job->exec(); //TODO is this safe (reentrancy)?
+    *errorString = job->errorString();
+    return job->error() == KJob::NoError;
 }
 
-void KRssLocalResource::startOpmlExport()
-{
-    KRss::ExportToOpmlJob* job = startExportJob();
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(opmlExportFinished(KJob*)), Qt::UniqueConnection );
-}
-
-void KRssLocalResource::opmlExportFinished( KJob *job )
-{
-    m_runningExportJob = 0;
-    if ( job->error() )
-        kDebug() << "Error occurred" << job->errorString();
-    else
-        kDebug() << "OPML written back";
-    if ( m_quitLoop )
-        m_quitLoop->quit();
-}
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )
 
