@@ -365,7 +365,7 @@ void KRssLocalResource::configure( WId windowId )
     if ( dlg->exec() == KDialog::Accepted ) {
         Settings::self()->writeConfig();
         emit configurationDialogAccepted();
-        //synchronizeCollectionTree();
+        synchronizeCollectionTree();
     } else {
         emit configurationDialogRejected();
     }
