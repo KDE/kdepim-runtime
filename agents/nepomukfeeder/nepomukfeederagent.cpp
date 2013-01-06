@@ -454,7 +454,11 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     int count = 0;
     foreach (const Akonadi::Item &item, findJob->getUnindexed()) {
         Q_ASSERT(item.parentCollection().isValid());
-        if (indexingDisabled(item.parentCollection()))
+        Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( item.parentCollection(), Akonadi::CollectionFetchJob::Base );
+        job->exec();
+        if ( job->collections().isEmpty() )
+            continue;
+        if ( indexingDisabled( job->collections().first() ) )
             continue;
         count++;
         mQueue.addUnindexedItem(item);
