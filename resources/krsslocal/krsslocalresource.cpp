@@ -159,7 +159,6 @@ void KRssLocalResource::retrieveCollectionsSynced( KJob* exportJob )
         const QString errorString = i18n("Could not write back local changes before retrieving collections: %1", exportJob->errorString() );
         kDebug() << errorString;
         error( errorString );
-        collectionsRetrieved( Collection::List() );
         return;
     }
 
@@ -169,7 +168,6 @@ void KRssLocalResource::retrieveCollectionsSynced( KJob* exportJob )
     if ( !ensureOpmlCreated( opmlPath, &errorString ) ) {
         kDebug() << errorString;
         error( errorString );
-        collectionsRetrieved( Collection::List() );
         return;
     }
 
@@ -233,7 +231,6 @@ void KRssLocalResource::opmlImportFinished( KJob* j ) {
     if ( job->error() ) {
         kDebug() << job->errorString();
         error( job->errorString() );
-        collectionsRetrieved( Collection::List() );
         return;
     }
 
