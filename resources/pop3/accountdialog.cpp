@@ -251,14 +251,13 @@ void AccountDialog::walletOpenedForLoading( bool success )
       passwordEdit->setEnabled( true );
       passwordLabel->setEnabled( true );
     }
-    if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
+    if ( mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
       QString password;
       mWallet->setFolder( "pop3" );
       mWallet->readPassword( mParentResource->identifier(), password );
       passwordEdit->setText( password );
       mInitalPassword = password;
-    }
-    else {
+    } else {
       kWarning() << "Wallet not open or doesn't have pop3 folder.";
     }
   }

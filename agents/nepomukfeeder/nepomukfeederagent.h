@@ -133,6 +133,8 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   private:
     QTimer mNepomukStartupTimeout;
 
+    QList<qlonglong> mReindexingEnforcedCollections;
+
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
     bool mIdleDetectionDisabled;
