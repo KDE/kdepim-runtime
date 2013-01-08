@@ -31,6 +31,7 @@
 #include "setupserver.h"
 #include "settings.h"
 #include "imapresource.h"
+#include "serverinfodialog.h"
 
 #include <QButtonGroup>
 #include <QGridLayout>
@@ -576,19 +577,7 @@ void SetupServer::slotManageSubscriptions()
 
 void SetupServer::slotShowServerInfo()
 {
-  KDialog *dialog = new KDialog( this );
-  dialog->setCaption(
-    i18nc( "@title:window Dialog title for dialog showing information about a server",
-           "Server Info" ) );
-  dialog->setButtons( KDialog::Close );
-  dialog->setAttribute( Qt::WA_DeleteOnClose );
-
-  Ui::ServerInfo *serverInfoWidget = new Ui::ServerInfo();
-  serverInfoWidget->setupUi( dialog );
-  dialog->setMainWidget( serverInfoWidget->serverInfo );
-  serverInfoWidget->serverInfo->setPlainText(
-    m_parentResource->serverCapabilities().join( QLatin1String( "\n" ) ) );
-
+  ServerInfoDialog *dialog = new ServerInfoDialog(m_parentResource, this);
   dialog->show();
 }
 

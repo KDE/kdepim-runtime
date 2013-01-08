@@ -59,6 +59,7 @@ set( akonadi_imap_resource_SRCS
   settings.cpp
   settingspasswordrequester.cpp
   setupserver.cpp
+  serverinfodialog.cpp
   subscriptiondialog.cpp
 )
 
