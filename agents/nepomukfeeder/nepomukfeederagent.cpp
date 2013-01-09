@@ -62,6 +62,9 @@
 #include "nepomukfeeder-config.h"
 #include "nepomukfeederadaptor.h"
 
+typedef QSharedPointer< QMultiHash< typename Akonadi::Collection::Id,  typename Akonadi::Item::Id> > MultiHashPointer;
+Q_DECLARE_METATYPE(MultiHashPointer)
+
 namespace Akonadi {
 
 static inline bool indexingDisabled( const Collection &collection )
@@ -316,7 +319,11 @@ void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::findUnindexed()
 {
-  FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
+  if ( !Nepomuk2::ResourceManager::instance()->initialized() ) {
+    kWarning() << "Nepomuk is not ready, we can't find unindexed items";
+    return;
+  }
+  FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
   connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
   findUnindexeditemsJob->start();
 }
@@ -448,22 +455,38 @@ void NepomukFeederAgent::selfTest()
   emit status( Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
 }
 
+
+void NepomukFeederAgent::unindexedCollectionsReceived(const Collection::List &collections)
+{
+    MultiHashPointer mapping = static_cast<Akonadi::CollectionFetchJob*>(sender())->property("mapping").value<MultiHashPointer>();
+    int count = 0;
+    foreach (const Akonadi::Collection &col, collections) {
+       if ( indexingDisabled( col ) )
+         continue;
+       foreach (Akonadi::Item::Id id, mapping->values(col.id())) {
+         count++;
+         mQueue.addUnindexedItem(Akonadi::Item(id));
+       }
+    }
+    kDebug() << "Found " << count << " unindexed items which need to be indexed (out of " << mapping->size() << ")";
+}
+
 void NepomukFeederAgent::foundUnindexedItems(KJob* job)
 {
     FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
-    int count = 0;
-    foreach (const Akonadi::Item &item, findJob->getUnindexed()) {
-        Q_ASSERT(item.parentCollection().isValid());
-        Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( item.parentCollection(), Akonadi::CollectionFetchJob::Base );
-        job->exec();
-        if ( job->collections().isEmpty() )
-            continue;
-        if ( indexingDisabled( job->collections().first() ) )
-            continue;
-        count++;
-        mQueue.addUnindexedItem(item);
+    MultiHashPointer collectionMap(new QMultiHash<Akonadi::Collection::Id, Akonadi::Item::Id>());
+    QHash<Akonadi::Item::Id, Akonadi::Collection::Id>::const_iterator it = findJob->getUnindexed().begin();
+    for (;it != findJob->getUnindexed().constEnd(); it++) {
+        collectionMap->insert(it.value(), it.key());
     }
-    kDebug() << "Found " << count << " unindexed items which need to be indexed (out of " << findJob->getUnindexed().size() << ")";
+    Akonadi::Collection::List collections;
+    foreach (Akonadi::Collection::Id colId, collectionMap->uniqueKeys()) {
+        collections << Akonadi::Collection(colId);
+    }
+    Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collections, this);
+    fetchJob->setProperty("mapping", QVariant::fromValue(collectionMap));
+    connect(fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), this, SLOT(unindexedCollectionsReceived(Akonadi::Collection::List)));
+    fetchJob->start();
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )

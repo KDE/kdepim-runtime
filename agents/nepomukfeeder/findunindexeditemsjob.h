@@ -20,23 +20,23 @@
 #include <KJob>
 #include <QTime>
 #include <akonadi/item.h>
+#include <Akonadi/Collection>
 
 class FindUnindexedItemsJob: public KJob
 {
     Q_OBJECT
 public:
-    explicit FindUnindexedItemsJob(QObject* parent = 0);
+    explicit FindUnindexedItemsJob(int compatLevel, QObject* parent = 0);
     virtual void start();
-    Akonadi::Item::List getUnindexed() const;
+    const QHash<Akonadi::Item::Id, Akonadi::Collection::Id> &getUnindexed() const;
 private slots:
     void itemsRetrieved(KJob*);
-private:
-    void findUnindexed();
-    void retrieveAkonadiItems();
     void retrieveIndexedNepomukResources();
-    QHash<Akonadi::Item::Id, Akonadi::Item> mAkonadiItems;
-    Akonadi::Item::List mNepomukItems;
+private:
+    void retrieveAkonadiItems();
+    QHash<Akonadi::Item::Id, Akonadi::Collection::Id> mAkonadiItems;
     QTime mTime;
+    const int mCompatLevel;
 };
 
 #endif // FINDUNINDEXEDITEMSJOB_H
