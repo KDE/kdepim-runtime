@@ -74,6 +74,7 @@ void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
 {
     kDebug();
     mTime.start();
+    Q_ASSERT(Nepomuk2::ResourceManager::instance()->initialized());
     Soprano::QueryResultIterator result = Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery(
         QString::fromLatin1("SELECT ?id WHERE { ?r %2 %3 . ?r %4 ?id }")
             .arg(

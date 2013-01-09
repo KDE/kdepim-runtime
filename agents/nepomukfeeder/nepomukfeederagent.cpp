@@ -320,6 +320,10 @@ void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::findUnindexed()
 {
+  if ( !Nepomuk2::ResourceManager::instance()->initialized() ) {
+    kWarning() << "Nepomuk is not ready, we can't find unindexed items";
+    return;
+  }
   FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
   connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
   findUnindexeditemsJob->start();
