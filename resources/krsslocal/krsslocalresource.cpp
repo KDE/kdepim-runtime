@@ -54,6 +54,8 @@
 #include <KRss/ImportFromOpmlJob>
 #include <KRss/Item>
 
+#include <cerrno>
+
 using namespace Akonadi;
 using namespace boost;
 
@@ -111,8 +113,9 @@ static bool ensureOpmlCreated( const QString& filePath, QString* errorString ) {
 
     QDir dir;
     if ( !dir.exists( fi.absolutePath() ) ) {
+        errno = 0;
         if ( !dir.mkpath( fi.absolutePath() ) ) {
-            *errorString = i18n("Could not create OPML file %1: Can't create parent folder", filePath);
+            *errorString = i18n("Could not create OPML file %1: Can't create parent folder: %2", filePath, QLatin1String(strerror(errno)));
             return false;
         }
     }
