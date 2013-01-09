@@ -317,7 +317,7 @@ void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::findUnindexed()
 {
-  FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(this);
+  FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
   connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
   findUnindexeditemsJob->start();
 }
@@ -453,16 +453,16 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
 {
     FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
     int count = 0;
-    foreach (const Akonadi::Item &item, findJob->getUnindexed()) {
-        Q_ASSERT(item.parentCollection().isValid());
-        Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( item.parentCollection(), Akonadi::CollectionFetchJob::Base );
+    QHash<Akonadi::Item::Id, Akonadi::Collection::Id>::const_iterator it = findJob->getUnindexed().begin();
+    for (;it != findJob->getUnindexed().constEnd(); it++) {
+        Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob( Akonadi::Collection( it.value() ), Akonadi::CollectionFetchJob::Base );
         job->exec();
         if ( job->collections().isEmpty() )
             continue;
         if ( indexingDisabled( job->collections().first() ) )
             continue;
         count++;
-        mQueue.addUnindexedItem(item);
+        mQueue.addUnindexedItem(Akonadi::Item(it.key()));
     }
     kDebug() << "Found " << count << " unindexed items which need to be indexed (out of " << findJob->getUnindexed().size() << ")";
 }

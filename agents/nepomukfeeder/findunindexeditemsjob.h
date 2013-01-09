@@ -26,7 +26,7 @@ class FindUnindexedItemsJob: public KJob
 {
     Q_OBJECT
 public:
-    explicit FindUnindexedItemsJob(QObject* parent = 0);
+    explicit FindUnindexedItemsJob(int compatLevel, QObject* parent = 0);
     virtual void start();
     const QHash<Akonadi::Item::Id, Akonadi::Collection::Id> &getUnindexed() const;
 private slots:
@@ -36,6 +36,7 @@ private:
     void retrieveAkonadiItems();
     QHash<Akonadi::Item::Id, Akonadi::Collection::Id> mAkonadiItems;
     QTime mTime;
+    const int mCompatLevel;
 };
 
 #endif // FINDUNINDEXEDITEMSJOB_H

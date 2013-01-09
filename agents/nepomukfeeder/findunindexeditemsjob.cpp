@@ -26,8 +26,9 @@
 #include <QTime>
 
 
-FindUnindexedItemsJob::FindUnindexedItemsJob(QObject* parent)
-: KJob(parent)
+FindUnindexedItemsJob::FindUnindexedItemsJob(int compatLevel, QObject* parent)
+: KJob(parent),
+  mCompatLevel(compatLevel)
 {
 
 }
@@ -73,12 +74,11 @@ void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
 {
     kDebug();
     mTime.start();
-    int compatLevel = 3;
     Soprano::QueryResultIterator result = Nepomuk2::ResourceManager::instance()->mainModel()->executeQuery(
         QString::fromLatin1("SELECT ?id WHERE { ?r %2 %3 . ?r %4 ?id }")
             .arg(
             Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiIndexCompatLevel()),
-            Soprano::Node::literalToN3(compatLevel),
+            Soprano::Node::literalToN3(mCompatLevel),
             Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId())
             ),
             Soprano::Query::QueryLanguageSparql);
