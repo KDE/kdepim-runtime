@@ -1,11 +1,19 @@
 [Desktop Entry]
 Name=vCard Directory
+Name[el]=VCard Κατάλογος
+Name[ga]=Comhadlann v-Chártaí
+Name[pt]=Pasta de vCard's
 Name[pt_BR]=Pasta de VCards
+Name[sk]=Adresár VCard
 Name[sv]=vCard-katalog
 Name[uk]=Каталог vCard
 Name[x-test]=xxvCard Directoryxx
 Comment=Loads data from a directory with vCards
+Comment[el]=Φορτώνει δεδομένα από έναν κατάλογο που περιέχει κάρτες VCard
+Comment[ga]=Luchtaíonn sé seo sonraí ó chomhadlann ina bhfuil v-Chártaí
+Comment[pt]=Carrega os dados de uma pasta com ficheiros vCard
 Comment[pt_BR]=Carrega os dados de uma pasta com vCards
+Comment[sk]=Načíta dáta z adresára s vCards
 Comment[sv]=Laddar data från en katalog med vCard-filer
 Comment[uk]=Завантажує дані з каталогу з vCard
 Comment[x-test]=xxLoads data from a directory with vCardsxx
