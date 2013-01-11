@@ -340,7 +340,7 @@ void FacebookResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
       KFbAPI::NoteAddJob * const addJob = new KFbAPI::NoteAddJob( subject, message, Settings::self()->accessToken(), this );
       mCurrentJobs << addJob;
       addJob->setProperty( "Item", QVariant::fromValue( item ) );
-      connect( addJob, SIGNAL(result(KJob *)), this, SLOT(noteAddJobFinished(KJob *)) );
+      connect( addJob, SIGNAL(result(KJob*)), this, SLOT(noteAddJobFinished(KJob*)) );
       addJob->start();
     } else {
       Q_ASSERT( !"Note has wrong mimetype." );
@@ -360,7 +360,7 @@ void FacebookResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     KFbAPI::PostAddJob * const addJob = new KFbAPI::PostAddJob( message, Settings::self()->accessToken(), this );
     mCurrentJobs << addJob;
     addJob->setProperty( "Item", QVariant::fromValue( item ) );
-    connect( addJob, SIGNAL(result(KJob*)), this, SLOT(postAddJobFinished(KJob*) ) );
+    connect( addJob, SIGNAL(result(KJob*)), this, SLOT(postAddJobFinished(KJob*)) );
     addJob->start();
 
   } else {
