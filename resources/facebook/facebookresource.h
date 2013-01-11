@@ -19,8 +19,8 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef FACEBOOKRESOURCE_H
-#define FACEBOOKRESOURCE_H
+#ifndef FACEBOOK_FACEBOOKRESOURCE_H
+#define FACEBOOK_FACEBOOKRESOURCE_H
 
 #include <libkfbapi/userinfo.h>
 #include <libkfbapi/postinfo.h>

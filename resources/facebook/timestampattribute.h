@@ -17,8 +17,8 @@
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02110-1301, USA.
 */
-#ifndef TIMESTAMPATTRIBUTE_H
-#define TIMESTAMPATTRIBUTE_H
+#ifndef FACEBOOK_TIMESTAMPATTRIBUTE_H
+#define FACEBOOK_TIMESTAMPATTRIBUTE_H
 
 #include <Akonadi/Attribute>
 #include <KDateTime>
