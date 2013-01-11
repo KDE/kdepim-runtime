@@ -117,7 +117,7 @@ set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Fac
 
 if(LibKGAPI_FOUND OR LibKFbAPI_FOUND)
   find_package(QJSON)
-  set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google resource")
+  set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google and Facebook resources")
 endif()
 
 # Xsltproc
