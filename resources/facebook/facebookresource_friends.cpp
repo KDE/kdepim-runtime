@@ -96,7 +96,7 @@ void FacebookResource::friendListJobFinished( KJob *job )
 
     // Delete items that are in the Akonadi DB but no on FB
     Item::List removedItems;
-    foreach( const QString &friendId, mExistingFriends.keys() ) {
+    foreach( const QString &friendId, mExistingFriends.keys() ) { //krazy:exclude=foreach
       bool found = false;
       foreach( const KFbAPI::UserInfo &user, friendListJob->friends() ) {
         if ( user.id() == friendId ) {
