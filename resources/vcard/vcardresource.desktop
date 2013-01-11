@@ -1,7 +1,10 @@
 [Desktop Entry]
 Name=vCard File
+Name[cs]=Soubor s vizitkou
+Name[de]=vCard-Datei
 Name[el]=VCard αρχείο
 Name[ga]=Comhad v-Chárta
+Name[nl]=vCard-bestand
 Name[pt]=Ficheiro vCard
 Name[pt_BR]=Arquivo vCard
 Name[sk]=Súbor VCard
@@ -9,8 +12,11 @@ Name[sv]=vCard-fil
 Name[uk]=Файл vCard
 Name[x-test]=xxvCard Filexx
 Comment=Loads data from a vCard file
+Comment[cs]=Načítá data ze souboru vizitek (vCard)
+Comment[de]=Daten werden aus einer vCard-Datei geladen
 Comment[el]=Φορτώνει δεδομένα από ένα αρχείο VCard
 Comment[ga]=Breiseán a luchtaíonn sonraí ó chomhad v-Chárta
+Comment[nl]=Laadt gegevens van een vCard-bestand
 Comment[pt]=Carrega os dados de um ficheiro vCard
 Comment[pt_BR]=Carrega os dados de um arquivo vCard
 Comment[sk]=Načíta dáta zo súboru vCard
