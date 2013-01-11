@@ -1,23 +1,25 @@
-/* Copyright 2010, 2011 Thomas McGuire <mcguire@kde.org>
-   Copyright 2011 Roeland Jago Douma <unix@rullzer.com>
-   Copyright 2012 Martin Klapetek <martin.klapetek@gmail.com>
+/*
+  Copyright 2010, 2011 Thomas McGuire <mcguire@kde.org>
+  Copyright 2011 Roeland Jago Douma <unix@rullzer.com>
+  Copyright 2012 Martin Klapetek <martin.klapetek@gmail.com>
 
-   This library is free software; you can redistribute it and/or modify
-   it under the terms of the GNU Library General Public License as published
-   by the Free Software Foundation; either version 2 of the License or
-   ( at your option ) version 3 or, at the discretion of KDE e.V.
-   ( which shall act as a proxy as in section 14 of the GPLv3 ), any later version.
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Library General Public License as published
+  by the Free Software Foundation; either version 2 of the License or
+  ( at your option ) version 3 or, at the discretion of KDE e.V.
+  ( which shall act as a proxy as in section 14 of the GPLv3 ), any later version.
 
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
+
 #include "facebookresource.h"
 #include "settings.h"
 #include "settingsdialog.h"
@@ -134,8 +136,7 @@ void FacebookResource::configure( WId windowId )
   const QPointer<SettingsDialog> settingsDialog( new SettingsDialog( this, windowId ) );
   if ( settingsDialog->exec() == QDialog::Accepted ) {
     emit configurationDialogAccepted();
-  }
-  else {
+  } else {
     emit configurationDialogRejected();
   }
 
@@ -159,7 +160,8 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     mIdle = false;
     emit status( Running, i18n( "Preparing sync of events list." ) );
     emit percent( 0 );
-    KFbAPI::AllEventsListJob * const listJob = new KFbAPI::AllEventsListJob( Settings::self()->accessToken(), this );
+    KFbAPI::AllEventsListJob * const listJob =
+      new KFbAPI::AllEventsListJob( Settings::self()->accessToken(), this );
     listJob->setLowerLimit( KDateTime::fromString( Settings::self()->lowerLimit(), "%Y-%m-%d" ) );
     mCurrentJobs << listJob;
     connect( listJob, SIGNAL(result(KJob*)), this, SLOT(eventListFetched(KJob*)) );
@@ -168,7 +170,8 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     mIdle = false;
     emit status( Running, i18n( "Preparing sync of notes list." ) );
     emit percent( 0 );
-    KFbAPI::AllNotesListJob * const notesJob = new KFbAPI::AllNotesListJob( Settings::self()->accessToken(), this );
+    KFbAPI::AllNotesListJob * const notesJob =
+      new KFbAPI::AllNotesListJob( Settings::self()->accessToken(), this );
     notesJob->setLowerLimit( KDateTime::fromString( Settings::self()->lowerLimit(), "%Y-%m-%d" ) );
     mCurrentJobs << notesJob;
     connect( notesJob, SIGNAL(result(KJob*)), this, SLOT(noteListFetched(KJob*)) );
@@ -177,8 +180,11 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     mIdle = false;
     emit status( Running, i18n( "Preparing sync of posts." ) );
     emit percent( 0 );
-    KFbAPI::AllPostsListJob * const postsJob = new KFbAPI::AllPostsListJob( Settings::self()->accessToken(), this );
-    postsJob->setLowerLimit( KDateTime::fromString( KDateTime::currentLocalDateTime().addDays( -3 ).toString(), "%Y-%m-%d" ) );
+    KFbAPI::AllPostsListJob * const postsJob =
+      new KFbAPI::AllPostsListJob( Settings::self()->accessToken(), this );
+    postsJob->setLowerLimit(
+      KDateTime::fromString(
+        KDateTime::currentLocalDateTime().addDays( -3 ).toString(), "%Y-%m-%d" ) );
     mCurrentJobs << postsJob;
     connect( postsJob, SIGNAL(result(KJob*)), this, SLOT(postsListFetched(KJob*)) );
     postsJob->start();
@@ -186,7 +192,8 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     mIdle = false;
     emit status( Running, i18n( "Preparing sync of notifications." ) );
     emit percent( 0 );
-    KFbAPI::NotificationsListJob * const notificationsJob = new KFbAPI::NotificationsListJob( Settings::self()->accessToken(), this );
+    KFbAPI::NotificationsListJob * const notificationsJob =
+      new KFbAPI::NotificationsListJob( Settings::self()->accessToken(), this );
     mCurrentJobs << notificationsJob;
     connect( notificationsJob, SIGNAL(result(KJob*)), this, SLOT(notificationsListFetched(KJob*)) );
     notificationsJob->start();
@@ -206,23 +213,24 @@ bool FacebookResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
   if ( item.mimeType() == KABC::Addressee::mimeType() ) {
     // TODO: Is this ever called??
     mIdle = false;
-    KFbAPI::FriendJob * const friendJob = new KFbAPI::FriendJob( item.remoteId(),
-                                                                       Settings::self()->accessToken(),
-                                                                       this );
+    KFbAPI::FriendJob * const friendJob =
+      new KFbAPI::FriendJob( item.remoteId(), Settings::self()->accessToken(), this );
     mCurrentJobs << friendJob;
     friendJob->setProperty( "Item", QVariant::fromValue( item ) );
     connect( friendJob, SIGNAL(result(KJob*)), this, SLOT(friendJobFinished(KJob*)) );
     friendJob->start();
   } else if ( item.mimeType() == Akonadi::NoteUtils::noteMimeType() ) {
     mIdle = false;
-    KFbAPI::NoteJob * const noteJob = new KFbAPI::NoteJob( item.remoteId(), Settings::self()->accessToken(), this );
+    KFbAPI::NoteJob * const noteJob =
+      new KFbAPI::NoteJob( item.remoteId(), Settings::self()->accessToken(), this );
     mCurrentJobs << noteJob;
     noteJob->setProperty( "Item", QVariant::fromValue( item ) );
     connect( noteJob, SIGNAL(result(KJob*)), this, SLOT(noteJobFinished(KJob*)) );
     noteJob->start();
   } else if( item.mimeType() == "text/x-vnd.akonadi.socialfeeditem" ) {
     mIdle = false;
-    KFbAPI::PostJob * const postJob = new KFbAPI::PostJob( item.remoteId(), Settings::self()->accessToken(), this );
+    KFbAPI::PostJob * const postJob =
+      new KFbAPI::PostJob( item.remoteId(), Settings::self()->accessToken(), this );
     mCurrentJobs << postJob;
     postJob->setProperty( "Item", QVariant::fromValue( item ) );
     connect( postJob, SIGNAL(result(KJob*)), this, SLOT(postJobFinished(KJob*)) );
@@ -276,10 +284,11 @@ void FacebookResource::retrieveCollections()
   postsDisplayAttribute->setIconName( "facebookresource" );
   //facebook's max post length is 63206 as of September 2012
   //(Facebook ... Face Boo K ... hex(FACE) – K ... 64206 – 1000 = 63206)...don't ask me.
-  SocialNetworkAttributes * const socialAttributes = new SocialNetworkAttributes( Settings::self()->userName(),
-                                                                                  QLatin1String( "Facebook" ),
-                                                                                  true,
-                                                                                  63206 );
+  SocialNetworkAttributes * const socialAttributes =
+    new SocialNetworkAttributes( Settings::self()->userName(),
+                                 QLatin1String( "Facebook" ),
+                                 true,
+                                 63206 );
   posts.addAttribute( postsDisplayAttribute );
   posts.addAttribute( socialAttributes );
 
@@ -293,16 +302,21 @@ void FacebookResource::retrieveCollections()
   notificationsDisplayAttribute->setIconName( "facebookresource" );
   notifications.addAttribute( notificationsDisplayAttribute );
 
-  collectionsRetrieved( Collection::List() << friends << events << notes << posts << notifications );
+  collectionsRetrieved( Collection::List() << friends
+                                           << events
+                                           << notes
+                                           << posts
+                                           << notifications );
 }
 
 void FacebookResource::itemRemoved( const Akonadi::Item &item )
 {
   if ( item.mimeType() == "text/x-vnd.akonadi.note" ) {
     mIdle = false;
-    KFbAPI::FacebookDeleteJob * const deleteJob = new KFbAPI::FacebookDeleteJob( item.remoteId(),
-                                                                                       Settings::self()->accessToken(),
-                                                                                       this );
+    KFbAPI::FacebookDeleteJob * const deleteJob =
+      new KFbAPI::FacebookDeleteJob( item.remoteId(),
+                                     Settings::self()->accessToken(),
+                                     this );
     mCurrentJobs << deleteJob;
     deleteJob->setProperty( "Item", QVariant::fromValue( item ) );
     connect( deleteJob, SIGNAL(result(KJob*)), this, SLOT(deleteJobFinished(KJob*)) );
@@ -337,7 +351,8 @@ void FacebookResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
       const QString message = note->body();
 
       mIdle = false;
-      KFbAPI::NoteAddJob * const addJob = new KFbAPI::NoteAddJob( subject, message, Settings::self()->accessToken(), this );
+      KFbAPI::NoteAddJob * const addJob =
+        new KFbAPI::NoteAddJob( subject, message, Settings::self()->accessToken(), this );
       mCurrentJobs << addJob;
       addJob->setProperty( "Item", QVariant::fromValue( item ) );
       connect( addJob, SIGNAL(result(KJob*)), this, SLOT(noteAddJobFinished(KJob*)) );
@@ -357,7 +372,8 @@ void FacebookResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
       mIdle = false;
     }
 
-    KFbAPI::PostAddJob * const addJob = new KFbAPI::PostAddJob( message, Settings::self()->accessToken(), this );
+    KFbAPI::PostAddJob * const addJob =
+      new KFbAPI::PostAddJob( message, Settings::self()->accessToken(), this );
     mCurrentJobs << addJob;
     addJob->setProperty( "Item", QVariant::fromValue( item ) );
     connect( addJob, SIGNAL(result(KJob*)), this, SLOT(postAddJobFinished(KJob*)) );

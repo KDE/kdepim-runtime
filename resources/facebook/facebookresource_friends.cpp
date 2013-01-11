@@ -1,22 +1,24 @@
-/* Copyright 2010, 2011 Thomas McGuire <mcguire@kde.org>
-   Copyright 2011 Roeland Jago Douma <unix@rullzer.com>
+/*
+  Copyright 2010, 2011 Thomas McGuire <mcguire@kde.org>
+  Copyright 2011 Roeland Jago Douma <unix@rullzer.com>
 
-   This library is free software; you can redistribute it and/or modify
-   it under the terms of the GNU Library General Public License as published
-   by the Free Software Foundation; either version 2 of the License or
-   ( at your option ) version 3 or, at the discretion of KDE e.V.
-   ( which shall act as a proxy as in section 14 of the GPLv3 ), any later version.
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Library General Public License as published
+  by the Free Software Foundation; either version 2 of the License or
+  ( at your option ) version 3 or, at the discretion of KDE e.V.
+  ( which shall act as a proxy as in section 14 of the GPLv3 ), any later version.
 
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
+
 #include "facebookresource.h"
 #include "settings.h"
 #include "settingsdialog.h"
@@ -43,15 +45,19 @@ void FacebookResource::initialItemFetchFinished( KJob *job )
   mCurrentJobs.removeAll( job );
 
   if ( itemFetchJob->error() ) {
-    abortWithError( i18n( "Unable to get list of existing friends from the Akonadi server: %1", itemFetchJob->errorString() ) );
+    abortWithError( i18n( "Unable to get list of existing friends from the Akonadi server: %1",
+                          itemFetchJob->errorString() ) );
   } else {
-    foreach( const Item &item, itemFetchJob->items() ) {
-      if ( item.hasAttribute<TimeStampAttribute>() )
-        mExistingFriends.insert( item.remoteId(), item.attribute<TimeStampAttribute>()->timeStamp() );
+    foreach ( const Item &item, itemFetchJob->items() ) {
+      if ( item.hasAttribute<TimeStampAttribute>() ) {
+        mExistingFriends.insert( item.remoteId(),
+                                 item.attribute<TimeStampAttribute>()->timeStamp() );
+      }
     }
 
     setItemStreamingEnabled( true );
-    KFbAPI::FriendListJob * const friendListJob = new KFbAPI::FriendListJob( Settings::self()->accessToken(), this );
+    KFbAPI::FriendListJob * const friendListJob =
+      new KFbAPI::FriendListJob( Settings::self()->accessToken(), this );
     mCurrentJobs << friendListJob;
     connect( friendListJob, SIGNAL(result(KJob*)), this, SLOT(friendListJobFinished(KJob*)) );
     emit status( Running, i18n( "Retrieving friends list." ) );
@@ -71,12 +77,13 @@ void FacebookResource::friendListJobFinished( KJob *job )
   mCurrentJobs.removeAll( job );
 
   if ( friendListJob->error() ) {
-    abortWithError( i18n( "Unable to get list of friends from server: %1", friendListJob->errorText() ),
+    abortWithError( i18n( "Unable to get list of friends from server: %1",
+                          friendListJob->errorText() ),
                     friendListJob->error() == KFbAPI::FacebookJob::AuthenticationProblem );
   } else {
 
     // Figure out which items are new or changed
-    foreach( const KFbAPI::UserInfo &user, friendListJob->friends() ) {
+    foreach ( const KFbAPI::UserInfo &user, friendListJob->friends() ) {
 #if 0 // Bah, Facebook's timestamp doesn't seem to get updated when a user's profile changes :(
       // See http://bugs.developers.facebook.net/show_bug.cgi?id=15475
       const KDateTime stampOfExisting = mExistingFriends.value( user->id(), KDateTime() );
@@ -96,9 +103,9 @@ void FacebookResource::friendListJobFinished( KJob *job )
 
     // Delete items that are in the Akonadi DB but no on FB
     Item::List removedItems;
-    foreach( const QString &friendId, mExistingFriends.keys() ) { //krazy:exclude=foreach
+    foreach ( const QString &friendId, mExistingFriends.keys() ) { //krazy:exclude=foreach
       bool found = false;
-      foreach( const KFbAPI::UserInfo &user, friendListJob->friends() ) {
+      foreach ( const KFbAPI::UserInfo &user, friendListJob->friends() ) {
         if ( user.id() == friendId ) {
           found = true;
           break;
@@ -131,7 +138,8 @@ void FacebookResource::fetchNewOrChangedFriends()
   Q_FOREACH ( const KFbAPI::UserInfo &user, mNewOrChangedFriends ) {
     mewOrChangedFriendIds.append( user.id() );
   }
-  KFbAPI::FriendJob * const friendJob = new KFbAPI::FriendJob( mewOrChangedFriendIds, Settings::self()->accessToken(), this );
+  KFbAPI::FriendJob * const friendJob =
+    new KFbAPI::FriendJob( mewOrChangedFriendIds, Settings::self()->accessToken(), this );
   mCurrentJobs << friendJob;
   connect( friendJob, SIGNAL(result(KJob*)), this, SLOT(detailedFriendListJobFinished(KJob*)) );
   friendJob->start();
@@ -146,7 +154,8 @@ void FacebookResource::detailedFriendListJobFinished( KJob *job )
   mCurrentJobs.removeAll( job );
 
   if ( friendJob->error() ) {
-    abortWithError( i18n( "Unable to retrieve friends' information from server: %1", friendJob->errorText() ) );
+    abortWithError( i18n( "Unable to retrieve friends' information from server: %1",
+                          friendJob->errorText() ) );
   } else {
     mPendingFriends = friendJob->friendInfo();
     mNumFriends = mPendingFriends.size();
@@ -163,10 +172,11 @@ void FacebookResource::fetchPhotos()
   mIdle = false;
   mNumPhotosFetched = 0;
   Q_FOREACH ( const KFbAPI::UserInfo &f, mPendingFriends ) {
-    KFbAPI::PhotoJob * const photoJob = new KFbAPI::PhotoJob( f.id(), Settings::self()->accessToken(), this );
+    KFbAPI::PhotoJob * const photoJob =
+      new KFbAPI::PhotoJob( f.id(), Settings::self()->accessToken(), this );
     mCurrentJobs << photoJob;
     photoJob->setProperty( "friend", QVariant::fromValue( f ) );
-    connect(photoJob, SIGNAL(result(KJob*)), this, SLOT(photoJobFinished(KJob*)));
+    connect( photoJob, SIGNAL(result(KJob*)), this, SLOT(photoJobFinished(KJob*)) );
     photoJob->start();
   }
 }
@@ -196,7 +206,8 @@ void FacebookResource::photoJobFinished( KJob *job )
   mCurrentJobs.removeOne( job );
 
   if ( photoJob->error() ) {
-    abortWithError( i18n( "Unable to retrieve friends' photo from server: %1", photoJob->errorText() ) );
+    abortWithError( i18n( "Unable to retrieve friends' photo from server: %1",
+                          photoJob->errorText() ) );
   } else {
     // Create Item
     KABC::Addressee addressee = user.toAddressee();
@@ -235,7 +246,8 @@ void FacebookResource::friendJobFinished( KJob *job )
   mCurrentJobs.removeAll( job );
 
   if ( friendJob->error() ) {
-    abortWithError( i18n( "Unable to get information about friend from server: %1", friendJob->errorText() ) );
+    abortWithError( i18n( "Unable to get information about friend from server: %1",
+                          friendJob->errorText() ) );
   } else {
     Item user = friendJob->property( "Item" ).value<Item>();
     user.setPayload<KABC::Addressee>( friendJob->friendInfo().first().toAddressee() );

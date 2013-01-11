@@ -20,8 +20,10 @@
 #include "facebookresource.h"
 #include "settings.h"
 #include "akonadi-version.h"
+
 #include <libkfbapi/authenticationdialog.h>
 #include <libkfbapi/userinfojob.h>
+
 #include <KAboutApplicationDialog>
 #include <KAboutData>
 #include <KWindowSystem>
@@ -111,7 +113,8 @@ void SettingsDialog::updateAuthenticationWidgets()
     if ( Settings::self()->userName().isEmpty() ) {
       authenticationLabel->setText( i18n( "Authenticated." ) );
     } else {
-      authenticationLabel->setText( i18n( "Authenticated as <b>%1</b>.", Settings::self()->userName() ) );
+      authenticationLabel->setText( i18n( "Authenticated as <b>%1</b>.",
+                                          Settings::self()->userName() ) );
     }
   }
 }
@@ -126,7 +129,8 @@ void SettingsDialog::resetAuthentication()
 void SettingsDialog::updateUserName()
 {
   if ( Settings::self()->userName().isEmpty() && ! Settings::self()->accessToken().isEmpty() ) {
-    KFbAPI::UserInfoJob * const job = new KFbAPI::UserInfoJob( Settings::self()->accessToken(), this );
+    KFbAPI::UserInfoJob * const job =
+      new KFbAPI::UserInfoJob( Settings::self()->accessToken(), this );
     connect( job, SIGNAL(result(KJob*)), this, SLOT(userInfoJobDone(KJob*)) );
     job->start();
   }
@@ -146,8 +150,9 @@ void SettingsDialog::userInfoJobDone( KJob *job )
 
 void SettingsDialog::loadSettings()
 {
-  if ( mParentResource->name() == mParentResource->identifier() )
+  if ( mParentResource->name() == mParentResource->identifier() ) {
     mParentResource->setName( i18n( "Facebook" ) );
+  }
 
   nameEdit->setText( mParentResource->name() );
   nameEdit->setFocus();
@@ -162,33 +167,46 @@ void SettingsDialog::saveSettings()
 void SettingsDialog::slotButtonClicked( int button )
 {
   switch( button ) {
-    case Ok:
-      saveSettings();
-      accept();
-      break;
-    case Cancel:
-      reject();
-      return;
-    case User1: {
-      KAboutData aboutData( QByteArray( "akonadi_facebook_resource" ),
-                            QByteArray(),
-                            ki18n( "Akonadi Facebook Resource" ),
-                            QByteArray( AKONADI_VERSION ),
-                            ki18n( "Makes your friends, events, notes, posts and messages on Facebook available in KDE via Akonadi." ),
-                            KAboutData::License_GPL_V2,
-                            ki18n( "Copyright (C) 2010,2011,2012,2013 Akonadi Facebook Resource Developers" ) );
-      aboutData.addAuthor( ki18n( "Martin Klapetek" ), ki18n( "Developer" ), "mklapetek@kde.org" );
-      aboutData.addAuthor( ki18n( "Thomas McGuire" ), ki18n( "Past Maintainer" ), "mcguire@kde.org" );
-      aboutData.addAuthor( ki18n( "Roeland Jago Douma" ), ki18n( "Past Developer" ), "unix@rullzer.com" );
-      aboutData.addCredit( ki18n( "Till Adam" ), ki18n( "MacOS Support" ), "adam@kde.org" );
-      aboutData.setProgramIconName( "facebookresource" );
-      aboutData.setTranslator( ki18nc( "NAME OF TRANSLATORS", "Your names" ),
-                            ki18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
-      KAboutApplicationDialog *dialog = new KAboutApplicationDialog( &aboutData, this );
-      dialog->setAttribute( Qt::WA_DeleteOnClose, true );
-      dialog->show();
-      break;
-    }
+  case Ok:
+    saveSettings();
+    accept();
+    break;
+  case Cancel:
+    reject();
+    return;
+  case User1:
+  {
+    KAboutData aboutData(
+      QByteArray( "akonadi_facebook_resource" ),
+      QByteArray(),
+      ki18n( "Akonadi Facebook Resource" ),
+      QByteArray( AKONADI_VERSION ),
+      ki18n( "Makes your friends, events, notes, posts and messages on Facebook "
+             "available in KDE via Akonadi." ),
+      KAboutData::License_GPL_V2,
+      ki18n( "Copyright (C) 2010,2011,2012,2013 Akonadi Facebook Resource Developers" ) );
+
+    aboutData.addAuthor( ki18n( "Martin Klapetek" ),
+                         ki18n( "Developer" ), "mklapetek@kde.org" );
+
+    aboutData.addAuthor( ki18n( "Thomas McGuire" ),
+                         ki18n( "Past Maintainer" ), "mcguire@kde.org" );
+
+    aboutData.addAuthor( ki18n( "Roeland Jago Douma" ),
+                         ki18n( "Past Developer" ), "unix@rullzer.com" );
+
+    aboutData.addCredit( ki18n( "Till Adam" ),
+                         ki18n( "MacOS Support" ), "adam@kde.org" );
+
+    aboutData.setProgramIconName( "facebookresource" );
+    aboutData.setTranslator( ki18nc( "NAME OF TRANSLATORS", "Your names" ),
+                             ki18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
+
+    KAboutApplicationDialog *dialog = new KAboutApplicationDialog( &aboutData, this );
+    dialog->setAttribute( Qt::WA_DeleteOnClose, true );
+    dialog->show();
+    break;
+  }
   }
 }
 
