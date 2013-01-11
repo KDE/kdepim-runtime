@@ -97,7 +97,11 @@ set(LibKGAPI_MIN_VERSION 0.4.3)
 find_package(LibKGAPI QUIET NO_MODULE)
 macro_log_feature(LibKGAPI_FOUND "LibKGAPI" "A library to access Google services" "http://projects.kde.org/libkgapi" FALSE "${LibKGAPI_MIN_VERSION}" "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks" )
 
-if(LibKGAPI_FOUND)
+# Libkfbapi
+find_package(LibKFbAPI 1.0 QUIET CONFIG)
+set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
+
+if(LibKGAPI_FOUND OR LibKFbAPI_FOUND)
   find_package(QJSON)
   macro_log_feature(QJSON_FOUND "QJSON" "Qt library for handling JSON data" "http://qjson.sourceforge.net/" TRUE)
 endif()
