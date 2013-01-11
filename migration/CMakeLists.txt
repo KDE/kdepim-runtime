@@ -22,5 +22,5 @@ add_subdirectory( kjots )
 if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory( kres )
   add_subdirectory( tests )
-endif (KDEPIMLIBS_KRESOURCES_LIBS)
+endif ()
 

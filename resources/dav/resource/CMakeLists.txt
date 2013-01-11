@@ -6,7 +6,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
                           RUNTIME DESTINATION ${BIN_INSTALL_DIR}
                           LIBRARY DESTINATION ${LIB_INSTALL_DIR}
                           ARCHIVE DESTINATION ${LIB_INSTALL_DIR} )
-  endif(WIN32)
+  endif()
 
   include_directories(
       ${KDE4_INCLUDES}
@@ -75,7 +75,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template)
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.davGroupware")
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi davGroupware Resource")
-  endif (Q_WS_MAC)
+  endif ()
 
   target_link_libraries(akonadi_davgroupware_resource
                         ${QT_QTCORE_LIBRARY}

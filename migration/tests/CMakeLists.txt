@@ -22,7 +22,7 @@ macro(add_resource_iface _kcfgFile _ifaceName _className)
   qt4_add_dbus_interface(_srcList
     ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml ${_codeFile} ${_className}
   )
-endmacro(add_resource_iface)
+endmacro()
 
 add_resource_iface( maildir/maildirresource.kcfg
                     org.kde.Akonadi.Maildir.Settings MaildirSettings )
@@ -50,12 +50,12 @@ target_link_libraries(testnotesmigration
 if (WIN32)
   get_target_property( _loc testnotesmigration LOCATION )
   set(_executable ${_loc}.bat)
-else (WIN32)
+else ()
   set(_executable ${EXECUTABLE_OUTPUT_PATH}/testnotesmigration)
-endif (WIN32)
+endif ()
 if (UNIX)
   set(_executable ${_executable}.shell)
-endif (UNIX)
+endif ()
 
 find_program(_testrunner akonaditest)
 

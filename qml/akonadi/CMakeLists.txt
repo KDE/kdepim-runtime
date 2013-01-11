@@ -13,6 +13,6 @@ install(FILES
 
 if(NOT WINCE)
 add_subdirectory( tests )
-endif(NOT WINCE)
+endif()
 
-endif (QT_QTDECLARATIVE_FOUND)
+endif ()

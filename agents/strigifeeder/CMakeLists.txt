@@ -22,9 +22,9 @@ kde4_add_ui_files(strigi_feeder_SRCS configdialog.ui)
 
 if (NOT WINCE)
   kde4_add_plugin(akonadi_strigi_feeder ${strigi_feeder_SRCS})
-else(NOT WINCE)
+else()
   kde4_add_plugin(akonadi_strigi_feeder STATIC ${strigi_feeder_SRCS})
-endif(NOT WINCE)
+endif()
 target_link_libraries(akonadi_strigi_feeder
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
@@ -38,4 +38,4 @@ target_link_libraries(akonadi_strigi_feeder
 install(TARGETS akonadi_strigi_feeder DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES strigifeeder.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
-endif ( STRIGIQTDBUSCLIENT_LIBRARY )
+endif ()

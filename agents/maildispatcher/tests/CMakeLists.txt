@@ -22,17 +22,17 @@ macro(add_akonadi_isolated_test _source)
   if (WIN32)
     get_target_property( _loc ${_targetName} LOCATION )
     set(_executable ${_loc}.bat)
-  else (WIN32)
+  else ()
     set(_executable ${EXECUTABLE_OUTPUT_PATH}/${_targetName})
-  endif (WIN32)
+  endif ()
   if (UNIX)
     set(_executable ${_executable}.shell)
-  endif (UNIX)
+  endif ()
 
   find_program(_testrunner akonaditest)
 
   add_test( maildispatcheragent-${_targetName} ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
-endmacro(add_akonadi_isolated_test)
+endmacro()
 
 
 
