@@ -93,6 +93,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();
+    void unindexedCollectionsReceived(const Akonadi::Collection::List &);
 
   signals:
     void fullyIndexed();

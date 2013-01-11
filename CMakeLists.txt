@@ -111,9 +111,13 @@ set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http:/
 find_package(LibKGAPI 0.4.3 QUIET CONFIG)
 set_package_properties(LibKGAPI PROPERTIES DESCRIPTION "KDE-based library for accessing various Google services" URL "https://projects.kde.org/libkgapi" TYPE OPTIONAL PURPOSE "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks")
 
-if(LibKGAPI_FOUND)
+# Libkfbapi
+find_package(LibKFbAPI 1.0 QUIET CONFIG)
+set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
+
+if(LibKGAPI_FOUND OR LibKFbAPI_FOUND)
   find_package(QJSON)
-  set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google resource")
+  set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google and Facebook resources")
 endif()
 
 # Xsltproc

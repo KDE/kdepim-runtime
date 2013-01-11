@@ -30,6 +30,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/RecursiveItemFetchJob>
+#include "nepomukfeeder-config.h"
 
 /**
  */
@@ -92,7 +93,7 @@ private slots:
     {
         QTime time;
         time.start();
-        FindUnindexedItemsJob *job = new FindUnindexedItemsJob(this);
+        FindUnindexedItemsJob *job = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
         job->exec();
         kDebug() << job->getUnindexed().size();
         kDebug() << "Query took(ms): " << time.elapsed();

@@ -60,6 +60,10 @@ if( LibKGAPI_FOUND )
   add_subdirectory( google )
 endif()
 
+if( LibKFbAPI_FOUND )
+  add_subdirectory( facebook )
+endif()
+
 if (NOT WINCE)
   add_subdirectory( nepomuktag )
 endif (NOT WINCE)
