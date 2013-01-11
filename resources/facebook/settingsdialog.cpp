@@ -19,7 +19,7 @@
 #include "settingsdialog.h"
 #include "facebookresource.h"
 #include "settings.h"
-
+#include "akonadi-version.h"
 #include <libkfbapi/authenticationdialog.h>
 #include <libkfbapi/userinfojob.h>
 #include <KAboutApplicationDialog>
@@ -173,7 +173,7 @@ void SettingsDialog::slotButtonClicked( int button )
       KAboutData aboutData( QByteArray( "akonadi_facebook_resource" ),
                             QByteArray(),
                             ki18n( "Akonadi Facebook Resource" ),
-                            QByteArray( RESOURCE_VERSION ),
+                            QByteArray( AKONADI_VERSION ),
                             ki18n( "Makes your friends, events, notes, posts and messages on Facebook available in KDE via Akonadi." ),
                             KAboutData::License_GPL_V2,
                             ki18n( "Copyright (C) 2010,2011,2012,2013 Akonadi Facebook Resource Developers" ) );
