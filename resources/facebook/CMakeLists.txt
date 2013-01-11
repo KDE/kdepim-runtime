@@ -1,5 +1,5 @@
 project(facebookresource)
-
+include_directories(${LibKFbAPI_INCLUDE_DIR})
 add_definitions(-DRESOURCE_VERSION=\\"${RESOURCE_VERSION}\\")
 
 set( facebookresource_SRCS
