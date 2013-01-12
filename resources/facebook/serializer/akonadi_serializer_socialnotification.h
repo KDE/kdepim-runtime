@@ -21,8 +21,8 @@
 #ifndef AKONADI_SERIALIZER_SOCIALNOTIFICATION_H
 #define AKONADI_SERIALIZER_SOCIALNOTIFICATION_H
 
-#include <QtCore/QObject>
-#include <akonadi/itemserializerplugin.h>
+#include <Akonadi/ItemSerializerPlugin>
+#include <QObject>
 
 namespace Akonadi {
 

@@ -32,7 +32,7 @@
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <akonadi/changerecorder.h>
+#include <Akonadi/ChangeRecorder>
 
 using namespace Akonadi;
 

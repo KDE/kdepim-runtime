@@ -45,7 +45,7 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ChangeRecorder>
-#include <akonadi/notes/noteutils.h>
+#include <akonadi/notes/noteutils.h> //krazy:exclude=camelcase wait for kdepimlibs 4.11
 
 #include <Akonadi/SocialUtils/SocialNetworkAttributes>
 

@@ -22,7 +22,6 @@
 #include "settingsadaptor.h"
 
 #include <KGlobal>
-#include <kwallet.h>
 
 class SettingsHelper
 {
@@ -52,8 +51,10 @@ Settings::Settings()
   s_globalSettings->q = this;
 
   new SettingsAdaptor( this );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
-                      QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+  QDBusConnection::sessionBus().registerObject(
+    QLatin1String( "/Settings" ),
+    this,
+    QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
 }
 
 void Settings::setWindowId( WId id )
