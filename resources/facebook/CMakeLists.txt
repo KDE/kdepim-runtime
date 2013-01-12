@@ -1,5 +1,6 @@
 project(facebookresource)
 include_directories(${LibKFbAPI_INCLUDE_DIR})
+include_directories(${QJSON_INCLUDE_DIR} ${qjson_INCLUDE_DIR})
 
 set(facebookresource_SRCS
   facebookresource.cpp
