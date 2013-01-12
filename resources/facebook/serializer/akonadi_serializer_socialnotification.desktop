@@ -1,28 +1,6 @@
 [Misc]
 Name=Facebook Notification Serializer
-Name[da]=Serialisering af Facebook-notifikationer
-Name[es]=Serializador de notificaciones de Facebook
-Name[et]=Facebooki märguannete jadasti
-Name[hu]=Facebook értesítés sorosító
-Name[km]=កា​រជូន​ដំណឹង Facebook
-Name[nl]=Serialisator van Facebook-meldingen
-Name[pt]=Serialização das Notificações do Facebook
-Name[pt_BR]=Serialização das notificações do Facebook
-Name[sv]=Serialisering av underrättelser från Facebook
-Name[uk]=Серіалізатор сповіщень Facebook
-Name[x-test]=xxFacebook Notification Serializerxx
 Comment=An Akonadi serializer plugin for Facebook notifications
-Comment[da]=Et Akonadi serialiseringsplugin til Facebook-notifikationer
-Comment[es]=Un complemento serializador de Akonadi para las notificaciones de Facebook
-Comment[et]=Akonadi Facebooki märguannete jadastamisplugin
-Comment[hu]=Egy Akonadi sorosító bővítmény a Facebook értesítésekhez
-Comment[km]=កម្មវិធី​ជំនួយ Akonadi serializer សម្រាប់​ការ​ជូន​ដំណឹង​សម្រាប់ Facebook
-Comment[nl]=Een Akonadi serialisatorplug-in voor Facebook-meldingen
-Comment[pt]=Um 'plugin' de serialização do Akonadi para as notificações do Facebook
-Comment[pt_BR]=Um plugin de serialização do Akonadi para as notificações do Facebook
-Comment[sv]=Ett Akonadi serialiseringsinsticksprogram för underrättelser från Facebook
-Comment[uk]=Додаток серіалізації даних Akonadi для сповіщень Facebook
-Comment[x-test]=xxAn Akonadi serializer plugin for Facebook notificationsxx
 
 [Plugin]
 Type=text/x-vnd.akonadi.socialnotification

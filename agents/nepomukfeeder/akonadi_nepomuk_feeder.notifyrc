@@ -1,7 +1,6 @@
 [Global]
 IconName=nepomuk
 Comment=Nepomuk Feeder Agent
-Comment[bs]=Agent za Nepomuk dovod
 Comment[ca]=Agent alimentador del Nepomuk
 Comment[da]=Nepomuk Feeder Agent
 Comment[el]=Πράκτορας Τροφοδότης του Nepomuk
@@ -28,7 +27,6 @@ Comment[uk]=Агент передавання даних Nepomuk
 Comment[x-test]=xxNepomuk Feeder Agentxx
 Comment[zh_TW]=Nepomuk Feeder 代理程式
 Name=Nepomuk Feeder Agent
-Name[bs]=Agent za Nepomuk dovod
 Name[ca]=Agent alimentador del Nepomuk
 Name[da]=Nepomuk Feeder Agent
 Name[el]=Nepomuk Feeder Agent
