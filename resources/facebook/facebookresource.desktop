@@ -1,6 +1,18 @@
 [Desktop Entry]
 Name=Facebook
+Name[nl]=Facebook
+Name[pt]=Facebook
+Name[pt_BR]=Facebook
+Name[sk]=Facebook
+Name[uk]=Facebook
+Name[x-test]=xxFacebookxx
 Comment=Makes your Facebook data available in KDE
+Comment[nl]=Maakt uw Facebook gegevens beschikbaar in KDE
+Comment[pt]=Disponibiliza os seus dados do Facebook no KDE
+Comment[pt_BR]=Disponibiliza os seus dados do Facebook no KDE
+Comment[sk]=Sprístupní vaše Facebook dáta v KDE
+Comment[uk]=Робить доступними дані Facebook у KDE
+Comment[x-test]=xxMakes your Facebook data available in KDExx
 Type=AkonadiResource
 Exec=akonadi_facebook_resource
 Icon=facebookresource
