@@ -19,6 +19,7 @@ Comment[pt]=Agente de Fontes do Nepomuk
 Comment[pt_BR]=Agente de fontes do Nepomuk
 Comment[ru]=Nepomuk Feeder Agent
 Comment[sk]=Agent podávača Nepomuk
+Comment[sl]=Podajalnik za Nepomuk
 Comment[sr]=Непомуков агент уводника
 Comment[sr@ijekavian]=Непомуков агент уводника
 Comment[sr@ijekavianlatin]=Nepomukov agent uvodnika
@@ -46,6 +47,7 @@ Name[pt]=Agente de Fontes do Nepomuk
 Name[pt_BR]=Agente de fontes do Nepomuk
 Name[ru]=Nepomuk Feeder Agent
 Name[sk]=Agent podávača Nepomuk
+Name[sl]=Podajalnik za Nepomuk
 Name[sr]=Непомуков агент уводника
 Name[sr@ijekavian]=Непомуков агент уводника
 Name[sr@ijekavianlatin]=Nepomukov agent uvodnika
@@ -57,6 +59,7 @@ Name[zh_TW]=Nepomuk Feeder 代理程式
 
 [Event/startindexingcollection]
 Name=Starting to index collection
+Name[bs]=Započinjem skupljanje indeksa
 Name[ca]=Inici de la indexació de col·lecció
 Name[da]=Påbegynder indeksering af samling
 Name[de]=Indizierung der Collection starten
@@ -88,6 +91,7 @@ Action=None
 
 [Event/indexingcollectioncompleted]
 Name=Indexing completed
+Name[bs]=Završeno indeksiranje
 Name[ca]=S'ha completat la indexació
 Name[da]=Indeksering gennemført
 Name[de]=Indizierung abgeschlossen
@@ -119,6 +123,7 @@ Action=None
 
 [Event/statusindexing]
 Name=Indexing status
+Name[bs]=Status indeksiranja
 Name[ca]=Estat de la indexació
 Name[da]=Indekseringsstatus
 Name[de]=Indizierungsstatus
