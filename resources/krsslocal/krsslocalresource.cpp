@@ -67,7 +67,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
     if ( Settings::self()->path().isEmpty() )
-        Settings::self()->setPath( KGlobal::dirs()->localxdgdatadir() + "/feeds/" + identifier() + QLatin1String("/feeds.opml") );
+        Settings::self()->setPath( KGlobal::dirs()->localxdgdatadir() + "feeds/" + identifier() + QLatin1String("/feeds.opml") );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );
 
@@ -263,7 +263,7 @@ static QString errorCodeToString( Syndication::ErrorCode err )
     return QString();
 }
 
-void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed, 
+void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndication::FeedPtr feed,
 					    Syndication::ErrorCode status)
 {
     const Collection c = m_collectionByLoader.take( loader );
