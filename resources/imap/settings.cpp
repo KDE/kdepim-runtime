@@ -149,6 +149,7 @@ void Settings::onWalletOpened( bool success )
 void Settings::requestManualAuth()
 {
   KPasswordDialog *dlg = new KPasswordDialog( 0 );
+  dlg->setModal( true );
   dlg->setPrompt( i18n( "Please enter password for user '%1' on IMAP server '%2'.",
                         userName(), imapServer() ) );
   dlg->setAttribute( Qt::WA_DeleteOnClose );

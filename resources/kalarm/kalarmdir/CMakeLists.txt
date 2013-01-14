@@ -27,15 +27,15 @@ add_custom_target(kalarmdir_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}
 
 if (NOT WINCE)
     kde4_add_plugin(akonadi_kalarm_dir_resource ${kalarmdirresource_SRCS})
-else(NOT WINCE)
+else()
     kde4_add_plugin(akonadi_kalarm_dir_resource STATIC ${kalarmdirresource_SRCS})
-endif(NOT WINCE)
+endif()
 
 if (Q_WS_MAC)
     set_target_properties(akonadi_kalarm_dir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
     set_target_properties(akonadi_kalarm_dir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.KAlarmDir")
     set_target_properties(akonadi_kalarm_dir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi KAlarm Directory Resource")
-endif (Q_WS_MAC)
+endif ()
 
 target_link_libraries(akonadi_kalarm_dir_resource
                       ${KDEPIMLIBS_KALARMCAL_LIBS}

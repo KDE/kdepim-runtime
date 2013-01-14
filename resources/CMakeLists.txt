@@ -15,12 +15,12 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_mobile.ui
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
 )
-else (KDEPIM_MOBILE_UI)
+else ()
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_desktop.ui
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
 )
-endif (KDEPIM_MOBILE_UI)
+endif ()
 
 set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionannotationsattribute.cpp
@@ -66,7 +66,7 @@ endif()
 
 if (NOT WINCE)
   add_subdirectory( nepomuktag )
-endif (NOT WINCE)
+endif ()
 
 add_subdirectory( shared )
 
@@ -79,9 +79,9 @@ if (NOT WINCE)
   add_subdirectory( nntp )
   add_subdirectory( vcarddir )
   add_subdirectory( icaldir )
-else (NOT WINCE)
+else ()
   add_subdirectory( agentserver )
-endif (NOT WINCE)
+endif ()
 
 add_subdirectory( krsslocal) 
 add_subdirectory( vcard )

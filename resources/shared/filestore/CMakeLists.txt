@@ -48,5 +48,5 @@ install(TARGETS akonadi-filestore ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 if (KDE4_BUILD_TESTS)
   add_subdirectory( tests )
-endif (KDE4_BUILD_TESTS)
+endif ()
 

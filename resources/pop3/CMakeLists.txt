@@ -12,8 +12,8 @@ if (XSLTPROC_EXECUTABLE)
       DEPENDS ${KDEPIMLIBS_DATA_DIR}/akonadi-kde/kcfg2dbus.xsl
               ${_kcfg}
     )
-  endmacro( kcfg_generate_dbus_interface )
-endif (XSLTPROC_EXECUTABLE)
+  endmacro()
+endif ()
 
 include_directories(
     ${KDE4_INCLUDES}
@@ -49,7 +49,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_pop3_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_pop3_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.POP3")
   set_target_properties(akonadi_pop3_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi POP3 Resource")
-endif (Q_WS_MAC)
+endif ()
 
 
 target_link_libraries( akonadi_pop3_resource

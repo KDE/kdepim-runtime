@@ -195,6 +195,7 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
     new KPasswordDialog(
       0,
       KPasswordDialog::ShowUsernameLine );
+  dlg->setModal( true );
   dlg->setUsername( Settings::self()->login() );
   dlg->setPassword( mPassword );
   dlg->setPrompt( queryText );

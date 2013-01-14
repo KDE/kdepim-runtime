@@ -24,15 +24,15 @@ qt4_add_dbus_adaptor(vcardresource_SRCS
 
 if (NOT WINCE)
 kde4_add_plugin(akonadi_vcard_resource ${vcardresource_SRCS})
-else(NOT WINCE)
+else()
 kde4_add_plugin(akonadi_vcard_resource STATIC ${vcardresource_SRCS})
-endif (NOT WINCE)
+endif ()
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.VCard")
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCard Resource")
-endif (Q_WS_MAC)
+endif ()
 
 target_link_libraries(akonadi_vcard_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDE4_KIO_LIBS})
 

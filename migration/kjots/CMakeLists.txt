@@ -16,7 +16,7 @@ macro(add_resource_iface _kcfgFile _ifaceName _className)
   qt4_add_dbus_interface(kjotsmigrator_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml ${_codeFile} ${_className}
   )
-endmacro(add_resource_iface)
+endmacro()
 
 add_resource_iface( maildir/maildirresource.kcfg
                     org.kde.Akonadi.Maildir.Settings MaildirSettings )

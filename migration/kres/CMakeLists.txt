@@ -13,7 +13,7 @@ macro(add_resource_iface _kcfgFile _ifaceName _className)
   qt4_add_dbus_interface(kres-migrator_srcs
     ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml ${_codeFile} ${_className}
   )
-endmacro(add_resource_iface)
+endmacro()
 
 add_resource_iface( vcard/vcardresource.kcfg org.kde.Akonadi.VCard.Settings VCardSettings )
 add_resource_iface( ical/icalresource.kcfg org.kde.Akonadi.ICal.Settings ICalSettings )

@@ -36,9 +36,9 @@ install( FILES akonotesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sha
 
 if (NOT WINCE)
   kde4_add_plugin(akonadi_akonotes_resource ${akonotesresource_SRCS})
-else(NOT WINCE)
+else()
   kde4_add_plugin(akonadi_akonotes_resource STATIC ${akonotesresource_SRCS})
-endif(NOT WINCE)
+endif()
 
 
 target_link_libraries(akonadi_akonotes_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})

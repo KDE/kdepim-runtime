@@ -483,10 +483,13 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     foreach (Akonadi::Collection::Id colId, collectionMap->uniqueKeys()) {
         collections << Akonadi::Collection(colId);
     }
-    Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collections, this);
-    fetchJob->setProperty("mapping", QVariant::fromValue(collectionMap));
-    connect(fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), this, SLOT(unindexedCollectionsReceived(Akonadi::Collection::List)));
-    fetchJob->start();
+
+    if (!collections.isEmpty()) {
+        Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collections, this);
+        fetchJob->setProperty("mapping", QVariant::fromValue(collectionMap));
+        connect(fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), this, SLOT(unindexedCollectionsReceived(Akonadi::Collection::List)));
+        fetchJob->start();
+    }
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )
