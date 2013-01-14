@@ -57,7 +57,6 @@ Name[zh_TW]=Nepomuk Feeder 代理程式
 
 [Event/startindexingcollection]
 Name=Starting to index collection
-Name[bs]=Započinjem skupljanje indeksa
 Name[ca]=Inici de la indexació de col·lecció
 Name[da]=Påbegynder indeksering af samling
 Name[de]=Indizierung der Collection starten
@@ -89,7 +88,6 @@ Action=None
 
 [Event/indexingcollectioncompleted]
 Name=Indexing completed
-Name[bs]=Završeno indeksiranje
 Name[ca]=S'ha completat la indexació
 Name[da]=Indeksering gennemført
 Name[de]=Indizierung abgeschlossen
@@ -121,7 +119,6 @@ Action=None
 
 [Event/statusindexing]
 Name=Indexing status
-Name[bs]=Status indeksiranja
 Name[ca]=Estat de la indexació
 Name[da]=Indekseringsstatus
 Name[de]=Indizierungsstatus

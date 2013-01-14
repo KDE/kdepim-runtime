@@ -44,7 +44,6 @@ Name[x-test]=xxMail Dispatcher Agentxx
 Name[zh_CN]=邮件签发代理
 Name[zh_TW]=郵件配送代理程式
 Comment=Dispatches email messages
-Comment[bs]=Raspoređuje E-mail poruke
 Comment[ca]=Distribueix missatges de correu electrònic
 Comment[cs]=Odesílá e-mailové zprávy
 Comment[da]=Udsender e-mails
