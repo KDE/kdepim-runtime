@@ -210,7 +210,7 @@ static Collection::List buildCollections( const Collection& top,
         feed.setParentRemoteId( node.parentId );
         feed.setContentMimeTypes( QStringList() << mimeType() );
         feed.setName( node.title + KRandom::randomString( 8 ) );
-        feed.setHtmlUrl( node.link );
+        feed.setXmlUrl( node.link );
         feed.setImageUrl( node.icon );
         feed.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( node.title );
         feed.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
