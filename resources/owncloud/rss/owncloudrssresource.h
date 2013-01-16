@@ -48,7 +48,8 @@ protected:
     void collectionRemoved( const Akonadi::Collection& collection );
 
 private Q_SLOTS:
-    void nodesListed( KJob* );
+    void foldersListed( KJob* );
+    void feedsListed( KJob* );
     void walletOpened( bool success );
 
 private:
@@ -64,6 +65,7 @@ private:
     QVector<Job*> m_pendingJobsWaitingForWallet;
     QVector<WId> m_configDialogsWaitingForWallet;
     QPointer<ListNodeJob> m_listJob;
+    QVector<ListNodeJob::Node> m_folders;
 };
 
 #endif

@@ -41,7 +41,7 @@ TestLoginDialog::TestLoginDialog( QWidget* parent )
 
 void TestLoginDialog::startTest( const KUrl& url, const QString& username, const QString& password )
 {
-    ListNodeJob* job = new ListNodeJob( this );
+    ListNodeJob* job = new ListNodeJob( ListNodeJob::Folders, this );
     connect( job, SIGNAL(result(KJob*)), this, SLOT(jobCompleted(KJob*)) );
     job->setUrl( url );
     job->setUsername( username );

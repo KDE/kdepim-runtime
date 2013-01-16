@@ -23,6 +23,7 @@
 
 #include <QtDBus/QDBusConnection>
 
+#include <KRandom>
 #include <KWindowSystem>
 
 #include <Akonadi/EntityDisplayAttribute>
@@ -37,6 +38,7 @@
 
 #include <KWallet/Wallet>
 
+#include <KRss/FeedCollection>
 #include <KRss/Item>
 
 using namespace Akonadi;
@@ -142,7 +144,7 @@ void OwncloudRssResource::waitForWalletAndStart( ::Job* job ) {
     }
 }
 
-void OwncloudRssResource::nodesListed( KJob* j )
+void OwncloudRssResource::foldersListed( KJob* j )
 {
     ListNodeJob* job = qobject_cast<ListNodeJob*>( j );
     Q_ASSERT( job );
@@ -152,31 +154,95 @@ void OwncloudRssResource::nodesListed( KJob* j )
         return;
     }
 
+    m_folders = job->children();
+
+    ListNodeJob* feedsJob = new ListNodeJob( ListNodeJob::Feeds, this );
+    feedsJob->setUrl( Settings::owncloudServerUrl() );
+    feedsJob->setUsername( Settings::username() );
+    feedsJob->setPassword( m_password );
+    connect( feedsJob, SIGNAL(result(KJob*)), this, SLOT(feedsListed(KJob*)) );
+    m_listJob = feedsJob;
+    feedsJob->start();
+}
+
+struct IdLessThan {
+    bool operator()( const ListNodeJob::Node& lhs, const ListNodeJob::Node& rhs ) const {
+        if ( lhs.id != rhs.id )
+            return lhs.id < rhs.id;
+        if ( lhs.title != rhs.title )
+            return lhs.title < rhs.title;
+        if ( lhs.parentId != rhs.parentId )
+            return lhs.parentId < rhs.parentId;
+        if ( lhs.icon != rhs.icon )
+            return lhs.icon < rhs.icon;
+        return lhs.link < rhs.link;
+    }
+};
+
+static Collection::List buildCollections( const Collection& top,
+                                          QVector<ListNodeJob::Node> folders,
+                                          QVector<ListNodeJob::Node> feeds ) {
+    qSort( folders.begin(), folders.end(), IdLessThan() );
+    qSort( feeds.begin(), feeds.end(), IdLessThan() );
+
+    Collection::List folderCollections, feedCollections;
+    folderCollections.reserve( folders.size() );
+    feedCollections.reserve( feeds.size() );
+
+    for ( int i = 0; i < folders.size(); ++i ) {
+        const ListNodeJob::Node node = folders[i];
+        KRss::FeedCollection folder;
+        folder.setParentCollection( top );
+        folder.setRemoteId( node.id );
+        folder.setIsFolder( true );
+        folder.setParentRemoteId( node.parentId );
+        folder.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
+        folder.setName( node.title + KRandom::randomString( 8 ) );
+        folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( node.title );
+        folderCollections.append( folder );
+    }
+
+    for ( int i = 0; i < feeds.size(); ++i ) {
+        const ListNodeJob::Node node = feeds[i];
+        KRss::FeedCollection feed;
+        feed.setParentCollection( top );
+        feed.setRemoteId( node.id );
+        feed.setParentRemoteId( node.parentId );
+        feed.setContentMimeTypes( QStringList() << mimeType() );
+        feed.setName( node.title + KRandom::randomString( 8 ) );
+        feed.setHtmlUrl( node.link );
+        feed.setImageUrl( node.icon );
+        feed.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( node.title );
+        feed.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
+        feedCollections.append( feed );
+    }
+
+    return Collection::List() << top << folderCollections << feedCollections;
+}
+
+void OwncloudRssResource::feedsListed( KJob * j ) {
+    ListNodeJob* job = qobject_cast<ListNodeJob*>( j );
+    Q_ASSERT( job );
+
+    if ( job->error() != KJob::NoError ) {
+        error( job->errorString() );
+        return;
+    }
+
+    const QVector<ListNodeJob::Node> feeds = job->children();
+
     Collection::List collections;
 
     // create a top-level collection
     Collection top;
     top.setParent( Collection::root() );
-    top.setRemoteId( QLatin1String("/") );
+    top.setRemoteId( QLatin1String("0") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
     top.setName( i18n("Owncloud News") );
     top.setRights( Collection::CanCreateCollection );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( i18n("Owncloud News") );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
-    collections << top;
-
-    QVector<ListNodeJob::Node> nodes = job->children();
-    Q_FOREACH( const ListNodeJob::Node& i, nodes ) {
-        Collection child;
-        child.setParent( top );
-        child.setRemoteId( i.id );
-        child.setContentMimeTypes( QStringList() << mimeType() );
-        child.setName( i.id );
-        child.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( i.title );
-        child.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
-        collections.append( child );
-    }
-
+    collections << buildCollections( top, m_folders, feeds );
     collectionsRetrieved( collections );
 }
 
@@ -184,10 +250,11 @@ void OwncloudRssResource::retrieveCollections()
 {
     if ( m_listJob )
         return;
-    ListNodeJob* job = new ListNodeJob( this );
+    m_folders.clear();
+    ListNodeJob* job = new ListNodeJob( ListNodeJob::Folders, this );
     job->setUrl( Settings::owncloudServerUrl() );
     job->setUsername( Settings::username() );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(nodesListed(KJob*)) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(foldersListed(KJob*)) );
     waitForWalletAndStart( job );
     m_listJob = job;
 }

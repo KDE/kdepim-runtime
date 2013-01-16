@@ -76,7 +76,7 @@ QString Job::password() const
     return m_password;
 }
 
-static const QString prefix = QLatin1String("ocs/v1.php/");
+static const QString prefix = QLatin1String("ocs/v1.php/news/");
 
 KUrl Job::assembleUrl( const QString& path ) const
 {
@@ -150,10 +150,44 @@ void Job::jobFinished( KJob *j )
     emitResult();
 }
 
-ListNodeJob::ListNodeJob( QObject* parent )
+ListNodeJob::ListNodeJob( Type type, QObject* parent )
     : Job( parent )
+    , m_type( type )
 {
-    setPath( QLatin1String("cloud/users") );
+    setPath( type == Feeds ? QLatin1String("feeds") : QLatin1String("folders") );
+}
+
+static ListNodeJob::Node readElement( QXmlStreamReader* reader ) {
+    ListNodeJob::Node node;
+    while ( !reader->atEnd() && !reader->hasError() ) {
+        reader->readNext();
+        if ( reader->isEndElement() ) {
+            return node;
+        }
+
+        if ( reader->isStartElement() ) {
+            if ( reader->name() == QLatin1String("id") ) {
+                node.id = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("title") ) {
+                node.title = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("name") ) {
+                node.title = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("folderId") ) {
+                node.parentId = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("parentId") ) {
+                node.parentId = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("icon") ) {
+                node.icon = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("url") ) {
+                node.link = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("opened") ) {
+                //Ignore?
+            } else {
+                reader->raiseError( i18n("Unexpected element %1 in <element>", reader->name().toString() ) );
+            }
+        }
+    }
+    return ListNodeJob::Node();
 }
 
 void ListNodeJob::parse( QXmlStreamReader* reader )
@@ -162,10 +196,7 @@ void ListNodeJob::parse( QXmlStreamReader* reader )
         reader->readNext();
         if ( reader->isStartElement() ) {
             if ( reader->name() == QLatin1String("element") ) {
-                const QString name = reader->readElementText( QXmlStreamReader::ErrorOnUnexpectedElement );
-                Node n;
-                n.id = m_nodePath + QLatin1Char('/') + name;
-                n.title = name;
+                const Node n = readElement( reader );
                 m_children += n;
             }
         }
@@ -177,9 +208,5 @@ QVector<ListNodeJob::Node> ListNodeJob::children() const
     return m_children;
 }
 
-void ListNodeJob::setNodePath( const QString& nodePath )
-{
-    m_nodePath = nodePath;
-}
 
 #include "jobs.moc"

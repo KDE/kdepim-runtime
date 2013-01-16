@@ -88,13 +88,19 @@ private:
 class ListNodeJob : public Job {
     Q_OBJECT
 public:
-    explicit ListNodeJob( QObject* parent );
+    enum Type {
+        Folders,
+        Feeds
+    };
 
-    void setNodePath( const QString& nodePath );
+    explicit ListNodeJob( Type type, QObject* parent=0 );
 
     struct Node {
         QString title;
         QString id;
+        QString parentId;
+        QString icon;
+        QString link;
     };
 
     QVector<Node> children() const;
@@ -103,8 +109,8 @@ protected:
     void parse( QXmlStreamReader* reader );
 
 private:
-    QString m_nodePath;
     QVector<Node> m_children;
+    Type m_type;
 };
 
 #endif
