@@ -122,35 +122,20 @@ void OwncloudRssResource::walletOpened( bool success )
     else
         m_password.clear();
 
-    Q_FOREACH( ::Job* const job, m_pendingJobsWaitingForWallet ) {
-        job->setPassword( m_password );
-        job->start();
-    }
-    m_pendingJobsWaitingForWallet.clear();
-
     Q_FOREACH( const WId windowId, m_configDialogsWaitingForWallet )
         reallyConfigure( windowId );
     m_configDialogsWaitingForWallet.clear();
 }
 
-void OwncloudRssResource::waitForWalletAndStart( ::Job* job ) {
-    if ( m_walletOpenedReceived ) {
-        Q_ASSERT( m_pendingJobsWaitingForWallet.isEmpty() );
-        job->setPassword( m_password );
-        job->start();
-        return;
-    } else {
-        m_pendingJobsWaitingForWallet.append( job );
-    }
-}
-
 void OwncloudRssResource::foldersListed( KJob* j )
 {
+    Q_ASSERT( m_listJob == j );
+    m_listJob = 0;
     ListNodeJob* job = qobject_cast<ListNodeJob*>( j );
     Q_ASSERT( job );
 
     if ( job->error() != KJob::NoError ) {
-        error( job->errorString() );
+        cancelTask( job->errorString() );
         return;
     }
 
@@ -221,11 +206,13 @@ static Collection::List buildCollections( const Collection& top,
 }
 
 void OwncloudRssResource::feedsListed( KJob * j ) {
+    Q_ASSERT( m_listJob == j );
+    m_listJob = 0;
     ListNodeJob* job = qobject_cast<ListNodeJob*>( j );
     Q_ASSERT( job );
 
     if ( job->error() != KJob::NoError ) {
-        error( job->errorString() );
+        cancelTask( job->errorString() );
         return;
     }
 
@@ -247,15 +234,21 @@ void OwncloudRssResource::feedsListed( KJob * j ) {
 
 void OwncloudRssResource::retrieveCollections()
 {
-    if ( m_listJob )
-        return;
+    Q_ASSERT( !m_listJob );
     m_folders.clear();
+
+    if ( !m_walletOpenedReceived ) {
+        deferTask();
+        return;
+    }
+
     ListNodeJob* job = new ListNodeJob( ListNodeJob::Folders, this );
     job->setUrl( Settings::owncloudServerUrl() );
     job->setUsername( Settings::username() );
+    job->setPassword( m_password );
     connect( job, SIGNAL(result(KJob*)), this, SLOT(foldersListed(KJob*)) );
-    waitForWalletAndStart( job );
     m_listJob = job;
+    job->start();
 }
 
 

@@ -53,16 +53,12 @@ private Q_SLOTS:
     void walletOpened( bool success );
 
 private:
-    void waitForWalletAndStart( Job* );
-
-private:
     void reallyConfigure( WId windowId );
 
 private:
     KWallet::Wallet* m_wallet;
     bool m_walletOpenedReceived;
     QString m_password;
-    QVector<Job*> m_pendingJobsWaitingForWallet;
     QVector<WId> m_configDialogsWaitingForWallet;
     QPointer<ListNodeJob> m_listJob;
     QVector<ListNodeJob::Node> m_folders;
