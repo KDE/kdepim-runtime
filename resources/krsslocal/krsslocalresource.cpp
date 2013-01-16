@@ -168,7 +168,6 @@ void KRssLocalResource::retrieveCollections()
     top.setTitle( i18n("Local Feeds") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << KRss::Item::mimeType() );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( m_titleOpml );
-    top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
     top.setRights( Collection::CanCreateCollection );
     //TODO: modify CMakeLists.txt so that it installs the icon
 

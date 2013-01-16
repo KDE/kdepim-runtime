@@ -213,7 +213,7 @@ static Collection::List buildCollections( const Collection& top,
         feed.setXmlUrl( node.link );
         feed.setImageUrl( node.icon );
         feed.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( node.title );
-        feed.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
+        feed.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-rss+xml") );
         feedCollections.append( feed );
     }
 
@@ -241,7 +241,6 @@ void OwncloudRssResource::feedsListed( KJob * j ) {
     top.setName( i18n("Owncloud News") );
     top.setRights( Collection::CanCreateCollection );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( i18n("Owncloud News") );
-    top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setIconName( QString("application-opml+xml") );
     collections << buildCollections( top, m_folders, feeds );
     collectionsRetrieved( collections );
 }
