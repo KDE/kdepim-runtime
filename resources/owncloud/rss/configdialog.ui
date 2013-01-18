@@ -72,6 +72,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>owncloudServerLineEdit</tabstop>
+  <tabstop>usernameLineEdit</tabstop>
+  <tabstop>passwordLineEdit</tabstop>
+  <tabstop>testButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
