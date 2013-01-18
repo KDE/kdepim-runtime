@@ -103,6 +103,12 @@ public:
         QString link;
     };
 
+    struct Meta {
+        QString status;
+        int statuscode;
+        QString message;
+    };
+
     QVector<Node> children() const;
 
 protected:

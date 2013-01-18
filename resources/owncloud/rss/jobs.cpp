@@ -190,6 +190,34 @@ static ListNodeJob::Node readElement( QXmlStreamReader* reader ) {
     return ListNodeJob::Node();
 }
 
+static ListNodeJob::Meta readMeta( QXmlStreamReader* reader ) {
+    ListNodeJob::Meta meta;
+    meta.statuscode = 0;
+    while ( !reader->atEnd() && !reader->hasError() ) {
+        reader->readNext();
+        if ( reader->isEndElement() ) {
+            return meta;
+        }
+
+        if ( reader->isStartElement() ) {
+            if ( reader->name() == QLatin1String("status") ) {
+                meta.status = reader->readElementText();
+            } else if ( reader->name() == QLatin1String("statuscode") ) {
+                bool ok = false;
+                meta.statuscode = reader->readElementText().toInt( &ok );
+                if ( !ok )
+                    reader->raiseError( i18n("Could not parse status code") );
+            } else if ( reader->name() == QLatin1String("message") ) {
+                meta.message = reader->readElementText();
+            } else {
+                reader->raiseError( i18n("Unexpected element %1 in <meta>", reader->name().toString() ) );
+            }
+        }
+    }
+    return ListNodeJob::Meta();
+
+}
+
 void ListNodeJob::parse( QXmlStreamReader* reader )
 {
     while ( !reader->atEnd() && !reader->hasError() ) {
@@ -198,6 +226,10 @@ void ListNodeJob::parse( QXmlStreamReader* reader )
             if ( reader->name() == QLatin1String("element") ) {
                 const Node n = readElement( reader );
                 m_children += n;
+            } else if ( reader->name() == QLatin1String("meta") ) {
+                const Meta meta = readMeta( reader );
+                if ( meta.statuscode != 100 )
+                    throw ParseException( meta.message );
             }
         }
     }
