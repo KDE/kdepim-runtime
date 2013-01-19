@@ -44,8 +44,6 @@ target_link_libraries(akonadi_owncloudrss_resource
   ${QT_QTNETWORK_LIBRARY}
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEWEBKIT_LIBS}
-  ${QJSON_LIBRARIES}
-  ${QJSON_LIBRARY} # for Mac OSX
 )
 
 install(TARGETS akonadi_owncloudrss_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
