@@ -27,7 +27,7 @@
 #define RESOURCES_IMAP_IMAPRESOURCE_H
 
 #include <akonadi/resourcebase.h>
-
+#include <QPointer>
 class ResourceTask;
 namespace KIMAP
 {
@@ -38,6 +38,7 @@ class ImapAccount;
 class ImapIdleManager;
 class SessionPool;
 class ResourceState;
+class SubscriptionDialog;
 
 class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
@@ -126,6 +127,7 @@ private:
 
   SessionPool *m_pool;
   QList<ResourceTask*> m_taskList;
+  QPointer<SubscriptionDialog> mSubscriptions;
   ImapIdleManager *m_idle;
   bool m_fastSync;
 };
