@@ -225,7 +225,7 @@ void OwncloudRssResource::feedsListed( KJob * j ) {
     top.setParent( Collection::root() );
     top.setRemoteId( QLatin1String("0") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
-    top.setName( i18n("Owncloud News") );
+    top.setName( i18n("Owncloud Feeds") );
     top.setRights( Collection::CanCreateCollection );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( i18n("Owncloud News") );
     collections << buildCollections( top, m_folders, feeds );
