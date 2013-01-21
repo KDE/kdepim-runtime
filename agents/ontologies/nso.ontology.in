@@ -1,0 +1,8 @@
+[Ontology]
+Version=1.0
+Name=Nepomuk Syndication Ontology
+Comment=Model for syndicated web feeds and articles
+Namespace=http://www.kde.org/ontologies/nso#
+Path=${CMAKE_INSTALL_PREFIX}/share/ontology/kde/nso.trig
+MimeType=application/x-trig
+Type=Data

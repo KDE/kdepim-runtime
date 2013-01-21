@@ -69,5 +69,18 @@ install(
   TARGETS akonadi_nepomuk_email_feeder
   DESTINATION ${PLUGIN_INSTALL_DIR})
 
+kde4_add_plugin( akonadi_nepomuk_rss_feeder nepomukrssfeeder.cpp )
+target_link_libraries( akonadi_nepomuk_rss_feeder 
+  ${NEPOMUKFEEDER_SHARED_LIBS}
+  ${KDEPIMLIBS_KRSS_LIBS}
+  nepomukfeederpluginlib
+)
 
+install(
+  FILES nepomukrssfeeder.desktop
+  DESTINATION ${SERVICES_INSTALL_DIR})
+
+install(
+  TARGETS akonadi_nepomuk_rss_feeder
+  DESTINATION ${PLUGIN_INSTALL_DIR})
 
