@@ -73,6 +73,7 @@ Comment[sr@latin]=Resurs za upravljanje DAV kalendarima i adresarima (CalDAV, Gr
 Comment[sv]=Resurs för att hantera DAV-kalendrar och adressböcker (CalDAV, GroupDAV)
 Comment[uk]=Ресурс для керування календарями і адресними книгами DAV (CalDAV, GroupDAV)
 Comment[x-test]=xxResource to manage DAV calendars and address books (CalDAV, GroupDAV)xx
+Comment[zh_CN]=管理 DAV 日历和地址簿的资源 (CalDAV、GroupDAV)
 Comment[zh_TW]=管理 DAV 行事曆與通訊錄的資源（CalDAV, GroupDAV）
 Type=AkonadiResource
 Exec=akonadi_davgroupware_resource

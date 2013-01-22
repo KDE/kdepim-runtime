@@ -76,6 +76,7 @@ Comment[sr@latin]=Otprema e‑poštanske poruke
 Comment[sv]=Skickar brev med e-post
 Comment[uk]=Розповсюджує повідомлення електронної пошти
 Comment[x-test]=xxDispatches email messagesxx
+Comment[zh_CN]=发送电子邮件消息
 Comment[zh_TW]=分配電子郵件訊息
 Type=AkonadiAgent
 Exec=akonadi_maildispatcher_agent
