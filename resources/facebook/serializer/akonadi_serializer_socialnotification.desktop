@@ -11,6 +11,7 @@ Name[sr@latin]=Serijalizator obaveštenja sa Facebooka
 Name[sv]=Serialisering av underrättelser från Facebook
 Name[uk]=Серіалізатор сповіщень Facebook
 Name[x-test]=xxFacebook Notification Serializerxx
+Name[zh_CN]=Facebook 通知序列化器
 Name[zh_TW]=Facebook 通知序列器
 Comment=An Akonadi serializer plugin for Facebook notifications
 Comment[de]=Akonadi-Modul zur Serialisierung von Facebook-Benachrichtigungen
@@ -25,6 +26,7 @@ Comment[sr@latin]=Akonadijev priključak serijalizatora za obaveštenja sa Faceb
 Comment[sv]=Ett Akonadi serialiseringsinsticksprogram för underrättelser från Facebook
 Comment[uk]=Додаток серіалізації даних Akonadi для сповіщень Facebook
 Comment[x-test]=xxAn Akonadi serializer plugin for Facebook notificationsxx
+Comment[zh_CN]=对 Facebook 提醒进行序列转换的 Akonadi 插件
 Comment[zh_TW]=Facebook 通知的 Akonadi 序列器外掛程式
 
 [Plugin]
