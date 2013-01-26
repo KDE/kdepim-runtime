@@ -30,7 +30,7 @@
 using namespace Akonadi;
 
 LocalBookmarksResource::LocalBookmarksResource( const QString &id )
-  : ResourceBase( id )
+  : ResourceBase( id ), mBookmarkManager( 0 )
 {
   new SettingsAdaptor( Settings::self() );
 }

@@ -31,7 +31,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavCollectionsFetchJob::DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mHasTemporaryError( false )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mSubJobSuccessful( false), mHasTemporaryError( false )
 {
 }
 
