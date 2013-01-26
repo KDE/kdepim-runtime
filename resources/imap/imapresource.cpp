@@ -92,6 +92,7 @@ using namespace Akonadi;
 ImapResource::ImapResource( const QString &id )
   : ResourceBase( id ),
     m_pool( new SessionPool( 2, this ) ),
+    mSubscriptions( 0 ),
     m_idle( 0 ),
     m_fastSync( false )
 {
@@ -221,32 +222,36 @@ void ImapResource::startConnect( const QVariant& )
 
 int ImapResource::configureSubscription(qlonglong windowId)
 {
+  if (mSubscriptions)
+     return 0;
+
   if ( !m_pool->account() )
      return -2;
   const QString password = Settings::self()->password();
   if ( password.isEmpty() )
      return -1;
 
-  QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
+  mSubscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
   if(windowId) {
 #ifndef Q_WS_WIN
-    KWindowSystem::setMainWindow( subscriptions, windowId );
+    KWindowSystem::setMainWindow( mSubscriptions, windowId );
 #else
-    KWindowSystem::setMainWindow( subscriptions, (HWND)windowId );
+    KWindowSystem::setMainWindow( mSubscriptions, (HWND)windowId );
 #endif
   }
-  subscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
-  subscriptions->setWindowIcon( KIcon( "network-server" ) );
-  subscriptions->connectAccount( *m_pool->account(), password );
-  subscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
+  mSubscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
+  mSubscriptions->setWindowIcon( KIcon( "network-server" ) );
+  mSubscriptions->connectAccount( *m_pool->account(), password );
+  mSubscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
 
-  if ( subscriptions->exec() ) {
-    Settings::self()->setSubscriptionEnabled( subscriptions->subscriptionEnabled() );
+  if ( mSubscriptions->exec() ) {
+    Settings::self()->setSubscriptionEnabled( mSubscriptions->subscriptionEnabled() );
     Settings::self()->writeConfig();
     emit configurationDialogAccepted();
     reconnect();
   }
-  delete subscriptions;
+  delete mSubscriptions;
+
   return 0;
 }
 
