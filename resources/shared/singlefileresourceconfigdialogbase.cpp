@@ -33,6 +33,7 @@ using namespace Akonadi;
 
 SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId windowId ) :
     KDialog(),
+    mManager( 0 ),
     mStatJob( 0 ),
     mAppendedWidget( 0 ),
     mDirUrlChecked( false ),
