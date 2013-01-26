@@ -38,7 +38,7 @@ class StoreResultJob::Private
 {
   public:
     Private( StoreResultJob *qq )
-      : q( qq )
+      : q( qq ), success( false )
     {
     }
 
