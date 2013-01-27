@@ -29,7 +29,7 @@
 #include <KLocale>
 #include <KVBox>
 
-BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
+BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent ), m_selectFileButton( 0 )
 {
     m_backup = new Backup( this );
     connect( m_backup, SIGNAL(completed(bool)), SLOT(slotBackupComplete(bool)) );
