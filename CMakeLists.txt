@@ -38,7 +38,7 @@ if (NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
     set( KDEPIM_RUNTIME_DEV_VERSION "rc3" )
 endif ()
 
-set( KDEPIM_RUNTIME_VERSION "4.10${KDEPIM_RUNTIME_DEV_VERSION}" )
+set( KDEPIM_RUNTIME_VERSION "4.10" )
 
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
@@ -54,7 +54,7 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
 
-find_package(KdepimLibs 4.9.4 REQUIRED)
+find_package(KdepimLibs 4.10 REQUIRED)
 
 find_package(Boost 1.34.0)
 macro_log_feature(Boost_FOUND "Boost" "Boost C++ Libraries" "http://www.boost.org" TRUE "1.34.0" "Required by Akonadi.")
