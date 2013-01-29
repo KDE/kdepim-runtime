@@ -48,7 +48,7 @@
 using namespace Akonadi;
 
 KJotsMigrator::KJotsMigrator()
-  : KMigratorBase()
+  : KMigratorBase(), unicode( false )
 {
   m_dataDir = QDir( KStandardDirs::locateLocal( "data", "kjots" ) );
   m_dataDir.setNameFilters( QStringList( "*.book" ) );

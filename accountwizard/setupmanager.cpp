@@ -30,6 +30,7 @@
 
 SetupManager::SetupManager( QWidget* parent) :
   QObject(parent),
+  m_currentSetupObject( 0 ),
   m_page( 0 ),
   m_wallet( 0 ),
   m_personalDataAvailable( false ),

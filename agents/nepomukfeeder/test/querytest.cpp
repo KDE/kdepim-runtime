@@ -104,3 +104,4 @@ private slots:
 QTEST_AKONADIMAIN( QueryTest, NoGUI )
 
 #include "querytest.moc"
+

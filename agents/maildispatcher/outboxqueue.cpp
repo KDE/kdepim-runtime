@@ -58,7 +58,9 @@ class OutboxQueue::Private
     Private( OutboxQueue *qq )
       : q( qq ),
         outbox( -1 ),
+        monitor( 0 ),
         futureTimer( 0 ),
+        totalSize( 0 ),
         outboxDiscoveryRetries( 0 )
     {
     }

@@ -28,7 +28,7 @@
 #include <KLocale>
 #include <KVBox>
 
-RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent )
+RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent ), m_selectFileButton(0)
 {
     m_restore = new Restore( this );
     connect( m_restore, SIGNAL(completed(bool)), SLOT(slotRestoreComplete(bool)) );

@@ -115,7 +115,6 @@ private:
   KLineEdit *m_lineEdit;
   QCheckBox *m_enableSubscription;
   SubscriptionFilterProxyModel *m_filter;
-  KDescendantsProxyModel *m_flatModel;
   QStandardItemModel *m_model;
   QMap<QString, QStandardItem*> m_itemsMap;
 };
