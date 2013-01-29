@@ -119,3 +119,4 @@ private slots:
 QTEST_AKONADIMAIN( CacheTest, NoGUI )
 
 #include "cachetest.moc"
+
