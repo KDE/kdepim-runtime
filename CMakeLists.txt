@@ -1,9 +1,5 @@
 project(kdepim-runtime)
 
-# set_package_properties appeared in cmake 2.8.6
-# TODO: Remove when kdelibs >= 4.10 will be required
-cmake_minimum_required(VERSION 2.8.6 FATAL_ERROR)
-
 # where to look first for cmake modules. This line must be the first one or cmake will use the system's FindFoo.cmake
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
