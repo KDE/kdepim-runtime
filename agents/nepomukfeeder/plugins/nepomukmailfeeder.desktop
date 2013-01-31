@@ -7,6 +7,7 @@ X-KDE-ClassName=Akonadi::NepomukMailFeeder
 Name=Nepomuk Mail Feeder
 Name[bs]=Nepomuk dovod pošte
 Name[ca]=Alimentador de correu del Nepomuk
+Name[ca@valencia]=Alimentador de correu del Nepomuk
 Name[cs]=Nepomuk podavač e-mailů
 Name[da]=Nepomuk mail-feeder
 Name[de]=E-Mail-Modul für Nepomuk

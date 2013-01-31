@@ -2,6 +2,7 @@
 Name=KAlarm Directory
 Name[bs]=KAlarm direktorij
 Name[ca]=Directori del KAlarm
+Name[ca@valencia]=Directori del KAlarm
 Name[cs]=Adresář KAlarmu
 Name[da]=KAlarm-mappe
 Name[de]=KAlarm-Ordner
@@ -42,6 +43,7 @@ Name[zh_TW]=KAlarm 目錄
 Comment=Loads data from a local KAlarm folder
 Comment[bs]=Čita podatke iz lokalnog KAlarm direktorija
 Comment[ca]=Carrega dades des d'una carpeta KAlarm local
+Comment[ca@valencia]=Carrega dades des d'una carpeta KAlarm local
 Comment[cs]=Načítá data z místní složky KAlarmu
 Comment[da]=Indlæser data fra en lokal KAlarm-mappe
 Comment[de]=Laden von Daten aus einem lokalen KAlarm-Ordner

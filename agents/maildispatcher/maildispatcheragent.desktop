@@ -46,6 +46,7 @@ Name[zh_CN]=邮件签发代理
 Name[zh_TW]=郵件配送代理程式
 Comment=Dispatches email messages
 Comment[ca]=Distribueix missatges de correu electrònic
+Comment[ca@valencia]=Distribueix missatges de correu electrònic
 Comment[cs]=Odesílá e-mailové zprávy
 Comment[da]=Udsender e-mails
 Comment[de]=Verteilt E-Mail-Nachrichten

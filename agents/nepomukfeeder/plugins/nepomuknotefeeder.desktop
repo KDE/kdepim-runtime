@@ -7,6 +7,7 @@ X-KDE-ClassName=Akonadi::NepomukNoteFeeder
 Name=Nepomuk Note Feeder
 Name[bs]=Nepomuk dovod bilješki
 Name[ca]=Alimentador de notes del Nepomuk
+Name[ca@valencia]=Alimentador de notes del Nepomuk
 Name[cs]=Nepomuk podavač poznámek
 Name[da]=Nepomuk note-feeder
 Name[de]=Notizen-Modul für Nepomuk
