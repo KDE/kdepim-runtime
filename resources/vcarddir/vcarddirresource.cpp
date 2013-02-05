@@ -81,13 +81,16 @@ bool VCardDirResource::loadAddressees()
     it.next();
     if ( it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt" ) {
       QFile file( it.filePath() );
-      file.open( QIODevice::ReadOnly );
-      const QByteArray data = file.readAll();
-      file.close();
+      if (file.open( QIODevice::ReadOnly )) {
+        const QByteArray data = file.readAll();
+        file.close();
 
-      const KABC::Addressee addr = mConverter.parseVCard( data );
-      if ( !addr.isEmpty() ) {
-        mAddressees.insert( addr.uid(), addr );
+        const KABC::Addressee addr = mConverter.parseVCard( data );
+        if ( !addr.isEmpty() ) {
+          mAddressees.insert( addr.uid(), addr );
+        }
+      } else {
+	kDebug()<<" file can't be load "<<it.filePath();
       }
     }
   }
@@ -166,13 +169,16 @@ void VCardDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
     const QByteArray data = mConverter.createVCard( addressee );
 
     QFile file( vCardDirectoryFileName( addressee.uid() ) );
-    file.open( QIODevice::WriteOnly );
-    file.write( data );
-    file.close();
+    if (file.open( QIODevice::WriteOnly )) {
+      file.write( data );
+      file.close();
 
-    Item newItem( item );
-    newItem.setRemoteId( addressee.uid() );
-    changeCommitted( newItem );
+      Item newItem( item );
+      newItem.setRemoteId( addressee.uid() );
+      changeCommitted( newItem );
+    } else {
+      kDebug()<<" We can't write in file "<<file.fileName();
+    }
 
   } else {
     changeProcessed();
