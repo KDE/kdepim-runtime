@@ -33,6 +33,9 @@ LocalBookmarksResource::LocalBookmarksResource( const QString &id )
   : ResourceBase( id ), mBookmarkManager( 0 )
 {
   new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                            Settings::self(), QDBusConnection::ExportAdaptors );
+
   const QString fileName = Settings::self()->path();
   if (!fileName.isEmpty() ) {
      mBookmarkManager = KBookmarkManager::managerForFile( fileName, name() );
