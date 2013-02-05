@@ -33,6 +33,13 @@ LocalBookmarksResource::LocalBookmarksResource( const QString &id )
   : ResourceBase( id ), mBookmarkManager( 0 )
 {
   new SettingsAdaptor( Settings::self() );
+  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
+                            Settings::self(), QDBusConnection::ExportAdaptors );
+
+  const QString fileName = Settings::self()->path();
+  if (!fileName.isEmpty() ) {
+     mBookmarkManager = KBookmarkManager::managerForFile( fileName, name() );
+  }
 }
 
 LocalBookmarksResource::~LocalBookmarksResource()
@@ -74,6 +81,7 @@ void LocalBookmarksResource::configure( WId windowId )
 
   mBookmarkManager = KBookmarkManager::managerForFile( newFile, name() );
 
+  Settings::self()->writeConfig();
   synchronize();
 
   emit configurationDialogAccepted();
@@ -127,7 +135,7 @@ void LocalBookmarksResource::itemRemoved( const Akonadi::Item &item )
 
 static Collection::List listRecursive( const KBookmarkGroup &parentGroup, const Collection &parentCollection )
 {
-  const QStringList mimeTypes = QStringList() << "message/rfc822" << Collection::mimeType();
+  const QStringList mimeTypes = QStringList() << "application/x-xbel" << Collection::mimeType();
 
   Collection::List collections;
 
@@ -159,6 +167,11 @@ void LocalBookmarksResource::retrieveCollections()
   QStringList mimeTypes;
   mimeTypes << "application/x-xbel" << Collection::mimeType();
   root.setContentMimeTypes( mimeTypes );
+
+
+  if (!mBookmarkManager) {
+     mBookmarkManager = KBookmarkManager::managerForFile( Settings::self()->path(), name() );
+  }
 
   Collection::List list;
   list << root;
