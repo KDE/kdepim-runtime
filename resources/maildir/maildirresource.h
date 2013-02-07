@@ -87,10 +87,12 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     /** Creates a collection object for the given maildir @p md. */
     Akonadi::Collection collectionForMaildir( const KPIM::Maildir &md ) const;
 
-  private:
+    QString maildirPathForCollection( const Akonadi::Collection &collection) const;
+
+private:
     Akonadi_Maildir_Resource::MaildirSettings *mSettings;
     KDirWatch *mFsWatcher;
-    QHash<Akonadi::Collection::Id, KPIM::Maildir> mMaildirsForCollection;
+    QHash<QString, KPIM::Maildir> mMaildirsForCollection;
 
 };
 

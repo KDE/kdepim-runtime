@@ -54,8 +54,9 @@ using namespace Akonadi_Maildir_Resource;
 
 Maildir MaildirResource::maildirForCollection( const Collection& col )
 {
-  if ( mMaildirsForCollection.contains( col.id() ) ) {
-      return mMaildirsForCollection.value( col.id() );
+  const QString path = maildirPathForCollection( col );
+  if ( mMaildirsForCollection.contains( path ) ) {
+      return mMaildirsForCollection.value( path );
   }
 
   if ( col.remoteId().isEmpty() ) {
@@ -66,12 +67,12 @@ Maildir MaildirResource::maildirForCollection( const Collection& col )
   if ( col.parentCollection() == Collection::root() ) {
     kWarning( col.remoteId() != mSettings->path() ) << "RID mismatch, is " << col.remoteId() << " expected " << mSettings->path();
     Maildir maildir( col.remoteId(), mSettings->topLevelIsContainer() );
-        mMaildirsForCollection.insert( col.id(), maildir );
+    mMaildirsForCollection.insert( path, maildir );
     return maildir;
   }
   Maildir parentMd = maildirForCollection( col.parentCollection() );
   Maildir maildir = parentMd.subFolder( col.remoteId() );
-    mMaildirsForCollection.insert( col.id(), maildir );
+  mMaildirsForCollection.insert( path, maildir );
   return maildir;
 }
 
@@ -663,7 +664,8 @@ void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
     emit error( i18n( "Failed to delete sub-folder '%1'.", collection.remoteId() ) );
   }
 
-    mMaildirsForCollection.remove( collection.id() );
+  const QString path = maildirPathForCollection( collection );
+  mMaildirsForCollection.remove( path );
 
   changeProcessed();
 }
@@ -817,6 +819,18 @@ void MaildirResource::fsWatchFileModifyResult(KJob* job)
     kDebug() << job->errorString();
     return;
   }
+}
+
+QString MaildirResource::maildirPathForCollection(const Collection& collection) const
+{
+  QString path = collection.remoteId();
+  Akonadi::Collection parent = collection.parentCollection();
+  while ( !parent.remoteId().isEmpty() ) {
+    path.prepend( parent.remoteId() + QLatin1Char('/') );
+    parent = parent.parentCollection();
+  }
+
+  return path;
 }
 
 
