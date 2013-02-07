@@ -19,7 +19,7 @@
 
 #include "nepomukrssfeeder.h"
 
-#include <nso.h>
+#include <nrss.h>
 #include <nao/tag.h>
 #include <nco/contact.h>
 #include <nco/emailaddress.h>
@@ -27,6 +27,10 @@
 #include <Soprano/Vocabulary/NAO>
 #include <Nepomuk2/Vocabulary/NIE>
 #include <Nepomuk2/Vocabulary/NCO>
+#include <Nepomuk2/Vocabulary/NMM>
+#include <Nepomuk2/Vocabulary/NFO>
+#include <QFile>
+#include <QTemporaryFile>
 
 #include <krss/item.h>
 #include <krss/enclosure.h>
@@ -61,8 +65,8 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
 
     KRss::Item rssItem = item.payload<KRss::Item>();
     res.addType( Nepomuk2::Vocabulary::NIE::InformationElement() );
-    res.addType( Vocabulary::NSO::Element() );
-    res.addType( Vocabulary::NSO::Article() );
+    res.addType( Vocabulary::NRSS::Element() );
+    res.addType( Vocabulary::NRSS::Article() );
 
     NepomukFeederUtils::setIcon( "application-rss+xml", res, graph );
 
@@ -73,20 +77,29 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
     if ( KRss::Item::isDeleted( item ) ) {
         addTag( "deleted", i18n( "Deleted" ), "mail-deleted", res, graph );
     }
-    res.setProperty( Vocabulary::NSO::isRead(), KRss::Item::isRead( item ) );
+    res.setProperty( Vocabulary::NRSS::isRead(), KRss::Item::isRead( item ) );
 
     /* Content */
-    res.setProperty( Vocabulary::NSO::title(), rssItem.titleAsPlainText() );
+    res.setProperty( Nepomuk2::Vocabulary::NIE::title(), rssItem.titleAsPlainText() );
     res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), rssItem.titleAsPlainText() );
     if ( !rssItem.description().isEmpty() ) {
-        res.setProperty( Vocabulary::NSO::description(), rssItem.description() );
+        res.setProperty( Nepomuk2::Vocabulary::NIE::description(), rssItem.description() );
     }
     if ( !rssItem.content().isEmpty() ) {
-        res.setProperty( Vocabulary::NSO::content(), rssItem.content() );
+        res.setProperty( Nepomuk2::Vocabulary::NIE::htmlContent(), rssItem.content() );
     }
-    res.setProperty( Vocabulary::NSO::sourceUrl(), rssItem.link() );
-    res.setProperty( Vocabulary::NSO::publishTime(), QVariant::fromValue( rssItem.datePublished().dateTime() ) );
-    res.setProperty( Vocabulary::NSO::updateTime(), QVariant::fromValue( rssItem.dateUpdated().dateTime() ) );
+
+    Nepomuk2::SimpleResource websiteRes;
+    websiteRes.addType( Nepomuk2::Vocabulary::NIE::InformationElement() );
+    websiteRes.addType( Nepomuk2::Vocabulary::NIE::DataObject() );
+    websiteRes.addType( Nepomuk2::Vocabulary::NFO::Website() );
+    websiteRes.setProperty( Nepomuk2::Vocabulary::NIE::url(), rssItem.link() );
+    websiteRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), rssItem.title() );
+    graph << websiteRes;
+    res.addProperty( Vocabulary::NRSS::articleUrl(), websiteRes.uri() );
+
+    res.setProperty( Vocabulary::NRSS::publishTime(), QVariant::fromValue( rssItem.datePublished().dateTime() ) );
+    res.setProperty( Vocabulary::NRSS::updateTime(), QVariant::fromValue( rssItem.dateUpdated().dateTime() ) );
 
     /* Authors */
     Q_FOREACH(const KRss::Person &author, rssItem.authors()) {
@@ -120,22 +133,41 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
 
         graph << contactRes;
 
-        res.addProperty( Vocabulary::NSO::author(), contactRes.uri() );
+        res.addProperty( Nepomuk2::Vocabulary::NCO::creator(), contactRes.uri() );
     }
-
 
     /* Enclosures */
     Q_FOREACH(const KRss::Enclosure &rssEnclosure, rssItem.enclosures()) {
         Nepomuk2::SimpleResource enclosureRes;
-        enclosureRes.addType( Vocabulary::NSO::Element() );
-        enclosureRes.addType( Vocabulary::NSO::Enclosure() );
+        enclosureRes.addType( Vocabulary::NRSS::Element() );
+        // rssEnclosure.type() is a mimetype of the enclosure */
+        if ( rssEnclosure.type().startsWith( "image", Qt::CaseInsensitive ) ) {
+            enclosureRes.addType( Vocabulary::NRSS::ImageEnclosure() );
+        } else if ( rssEnclosure.type().startsWith( "audio", Qt::CaseInsensitive ) ) {
+            enclosureRes.addType( Vocabulary::NRSS::AudioEnclosure() );
+            enclosureRes.setProperty( Nepomuk2::Vocabulary::NFO::duration(), rssEnclosure.length() );
+        } else if ( rssEnclosure.type().startsWith( "video", Qt::CaseInsensitive ) ) {
+            enclosureRes.addType( Vocabulary::NRSS::VideoEnclosure() );
+            enclosureRes.setProperty( Nepomuk2::Vocabulary::NFO::duration(), rssEnclosure.length() );
+        } else {
+            enclosureRes.addType( Vocabulary::NRSS::Enclosure() );
+        }
 
-        enclosureRes.setProperty( Vocabulary::NSO::title(), rssEnclosure.title() );
-        enclosureRes.setProperty( Vocabulary::NSO::sourceUrl(), rssEnclosure.url() );
-        enclosureRes.setProperty( Vocabulary::NSO::type(), rssEnclosure.type() );
+        enclosureRes.setProperty( Nepomuk2::Vocabulary::NIE::title(), rssEnclosure.title() );
+        enclosureRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), rssEnclosure.title() );
+
+        Nepomuk2::SimpleResource websiteRes;
+        websiteRes.addType( Nepomuk2::Vocabulary::NIE::InformationElement() );
+        websiteRes.addType( Nepomuk2::Vocabulary::NIE::DataObject() );
+        websiteRes.addType( Nepomuk2::Vocabulary::NFO::WebDataObject() );
+        websiteRes.setProperty( Nepomuk2::Vocabulary::NIE::url(), rssEnclosure.url() );
+        websiteRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), rssEnclosure.title() );
+        graph << websiteRes;
+        enclosureRes.addProperty( Vocabulary::NRSS::enclosureUrl(), websiteRes.uri() );
+
 
         graph << enclosureRes;
-        res.addProperty( Vocabulary::NSO::enclosure(), enclosureRes.uri() );
+        res.addProperty( Vocabulary::NRSS::enclosure(), enclosureRes.uri() );
     }
 }
 

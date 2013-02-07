@@ -7,7 +7,7 @@
 #  * to Remix - to adapt the work
 # Under the following conditions:
 #  * Attribution - You must attribute the work in the manner specified by the author
-#    or licensor (but not in any way that suggests that they endorse you or your use 
+#    or licenrssr (but not in any way that suggests that they endorse you or your use 
 #    of the work).
 #
 # Redistribution and use in source and binary forms, with or without modification, 
@@ -39,136 +39,104 @@
 @prefix nrl:     <http://www.semanticdesktop.org/ontologies/2007/08/15/nrl#> .
 @prefix nie:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nie#> .
 @prefix nmo:     <http://www.semanticdesktop.org/ontologies/2007/01/19/nmo#> .
+@prefix nfo:     <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dc:      <http://purl.org/dc/elements/1.1/> .
-@prefix nso:     <http://www.kde.org/ontologies/nso#> .
+@prefix nrss:    <http://www.kde.org/ontologies/nrss#> .
 
-nso: {
+nrss: {
 
-    nso:Element a rdfs:Class ;
+    nrss:Element a rdfs:Class ;
         rdfs:label "Feed Element" ;
         rdfs:comment "Superclass for all elements related to RSS feeds" ;
         rdfs:subClassOf nie:InformationElement .
 
-    nso:Feed a rdfs:Class ;
+    nrss:Feed a rdfs:Class ;
         rdfs:comment "Represents an RSS Feed" ;
         rdfs:label "RSS Feed" ;
-        rdfs:subClassOf nso:Element .
+        rdfs:subClassOf nrss:Element .
 
-    nso:Article a rdfs:Class ;
+    nrss:Article a rdfs:Class ;
         rdfs:label "RSS Article" ;
         rdfs:comment "Represents a single article within an RSS Feed" ;
-        rdfs:subClassOf nso:Element .
+        rdfs:subClassOf nrss:Element .
 
-    nso:Enclosure a rdfs:Class ;
+    nrss:Enclosure a rdfs:Class ;
         rdfs:label "RSS Enclosure" ;
-        rdfs:subClassOf nso:Element .
+        rdfs:subClassOf nrss:Element .
 
-# Properties of nso:Element
+    nrss:ImageEnclosure a rdfs:Class ;
+        rdfs:label "RSS Image Enclosure" ;
+        rdfs:subClassOf nrss:Enclosure .
 
-    nso:sourceUrl a rdf:Property ;
-        rdfs:label "Source URL" ;
-        rdfs:comment "URL of the source" ;
-        rdfs:subPropertyOf dc:source ;
-        rdfs:range xsd:string ;
-        rdfs:domain nso:Element .
+    nrss:VideoEnclosure a rdfs:Class ;
+        rdfs:label "RSS Video Enclosure" ;
+        rdfs:subClassOf nrss:Enclosure .
 
-    nso:title a rdf:Property ;
-        rdfs:label "Title" ;
-        rdfs:comment "Title of the element" ;
-        rdfs:subPropertyOf nie:title ;
-        rdfs:range xsd:string ;
-        rdfs:domain nso:Element .
+    nrss:AudioEnclosure a rdfs:Class ;
+        rdfs:label "RSS Audio Enclosure" ;
+        rdfs:subClassOf nrss:Enclosure .
 
-# Properties of nso:Feed
+# Properties of nrss:Article
 
-    nso:publisher a rdf:Property ;
-        rdfs:label "Publisher" ;
-        rdfs:comment "Publisher of the feed" ;
-        rdfs:range nco:Contact ;
-        rdfs:domain nso:Feed .
+    nrss:articleUrl a rdf:Property ;
+        nrl:maxCardinality 1 ;
+        rdfs:label "Article URL" ;
+        rdfs:comment "URL of the article" ;
+        rdfs:range nfo:Website ;
+        rdfs:domain nrss:Element .
 
-# Properties of nso:Article
-
-    nso:content a rdf:Property ;
-        rdfs:label "Content" ;
-        rdfs:comment "Content of the article" ;
-        rdfs:subPropertyOf nie:htmlContent ;
-        rdfs:range xsd:stirng ;
-        rdfs:domain nso:Article .
-
-    nso:description a rdf:Property ;
-        rdfs:label "Description" ;
-        rdfs:comment "Description of article content" ;
-        rdfs:subPropertyOf nie:description ;
-        rdfs:range xsd:string ;
-        rdfs:domain nso:Article .
-
-    nso:publishTime a rdf:Property ;
+    # change to nie:publicationDate once available
+    nrss:publishTime a rdf:Property ;
         rdfs:label "Publish Time" ;
         rdfs:comment "Date when the article was first published in the feed" ;
         rdfs:subPropertyOf dc:date ;
         rdfs:range xsd:dateTime ;
-        rdfs:domain nso:Article .
+        rdfs:domain nrss:Article .
 
-    nso:updateTime a rdf:Property ;
+    nrss:updateTime a rdf:Property ;
         rdfs:label "Update Time" ;
         rdfs:comment "Date when the article was last updated in the feed" ;
         rdfs:subPropertyOf dc:date ;
         rdfs:range xsd:dateTime ;
-        rdfs:domain nso:Article .
+        rdfs:domain nrss:Article .
 
-    nso:author a rdf:Property ;
-        rdfs:label "Author" ;
-        rdfs:comment "Author of the article" ;
-        rdfs:range nco:Contact ;
-        rdfs:domain nso:Article .
-
-    nso:enclosure a rdf:Property ;
+    nrss:enclosure a rdf:Property ;
         rdfs:label "Enclosure" ;
         rdfs:comment "Enclosure related to the article" ;
-        rdfs:range nso:Enclosure ;
-        rdfs:domain nso:Article .
+        rdfs:range nrss:Enclosure ;
+        rdfs:domain nrss:Article .
 
-    nso:isRead a rdf:Property ;
+    nrss:isRead a rdf:Property ;
         nrl:maxCardinality 1 ;
         rdfs:label "Is Read" ;
         rdfs:comment "A flag that state whether the item has been read" ;
         rdfs:range xsd:boolean ;
-        rdfs:domain nso:Article .
+        rdfs:domain nrss:Article .
 
-# Properties of nso:Enclosure
+# Properties of nrss:Enclosure
 
-    nso:type a rdf:Property ;
-        nrl:maxCardinality "1" ;
-        rdfs:label "Enclosure type" ;
-        rdfs:comment "Describes type of the enclosure" ;
-        rdfs:range xsd:string ;
-        rdfs:domain nso:Enclosure .
-
-    nso:length a rdf:Property ;
-        nrl:maxCardinality "1" ;
-        rdfs:label "Length" ;
-        rdfs:comment "Length of audio enclosure (podcast)" ;
-        rdfs:range xsd:integer ;
-        rdfs:domain nso:Enclosure .
-
+    nrss:enclosureUrl a rdf:Property ;
+        nrl:maxCardinality 1 ;
+        rdfs:label "Enclosure URL" ;
+        rdfs:comment "URL of the enclosure object" ;
+        rdfs:range nfo:WebDataObject ;
+        rdfs:domain nrss:Enclosure .
 }
 
-<http://www.kde.org/ontologies/nso_metadata#> {
-    <http://www.kde.org/ontologies/nso_metadata#> a nrl:GraphMetadata ;
-          nrl:coreGraphMetadataFor nso: .
+<http://www.kde.org/ontologies/nrss_metadata#> {
+    <http://www.kde.org/ontologies/nrss_metadata#> a nrl:GraphMetadata ;
+          nrl:coreGraphMetadataFor nrss: .
 
-    nso:  a nrl:Ontology ;
-        nao:hasDefaultNamespace "http://www.kde.org/ontologies/nso#" ;
-        nao:hasDefaultNamespaceAbbreviation "nso" ;
+    nrss:  a nrl:Ontology ;
+        nao:hasDefaultNamespace "http://www.kde.org/ontologies/nrss#" ;
+        nao:hasDefaultNamespaceAbbreviation "nrss" ;
         nao:lastModified "2013-01-20T22:57:45.656Z" ;
         nao:serializationLanguage "TriG" ;
         nao:status "Unstable" ;
         nao:updatable "0 " ;
         nao:version "2" ;
-        nao:prefLabel "Nepomuk Syndication Ontology" ;
-        nao:description "The Nepomuk Syndication Ontology extends the Nepomuk Information Element framework into the domain of Web Syndication" .
+        nao:prefLabel "Nepomuk RSS Ontology" ;
+        nao:description "The Nepomuk RSS Ontology extends the Nepomuk Information Element framework into the domain of RSS" .
 }
-

@@ -7,13 +7,13 @@ include_directories(${SOPRANO_INCLUDE_DIR} ${NEPOMUK_CORE_INCLUDE_DIR})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 configure_file(aneo.ontology.in ${CMAKE_CURRENT_BINARY_DIR}/aneo.ontology)
-configure_file(nso.ontology.in ${CMAKE_CURRENT_BINARY_DIR}/nso.ontology)
+configure_file(nrss.ontology.in ${CMAKE_CURRENT_BINARY_DIR}/nrss.ontology)
 
 install(FILES aneo.trig ${CMAKE_CURRENT_BINARY_DIR}/aneo.ontology DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ontology/kde)
-install(FILES nso.trig ${CMAKE_CURRENT_BINARY_DIR}/nso.ontology DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ontology/kde)
+install(FILES nrss.trig ${CMAKE_CURRENT_BINARY_DIR}/nrss.ontology DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ontology/kde)
 
 soprano_add_ontology(nie_SRCS ${akonadi_ontologies_SOURCE_DIR}/aneo.trig "ANEO" "Vocabulary" "trig")
-soprano_add_ontology(nie_SRCS ${akonadi_ontologies_SOURCE_DIR}/nso.trig "NSO" "Vocabulary" "trig")
+soprano_add_ontology(nie_SRCS ${akonadi_ontologies_SOURCE_DIR}/nrss.trig "NRSS" "Vocabulary" "trig")
 soprano_add_ontology(nie_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nie.trig "NIE" "Vocabulary" "trig")
 soprano_add_ontology(nie_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nco.trig "NCO" "Vocabulary" "trig")
 soprano_add_ontology(nie_SRCS ${SHAREDDESKTOPONTOLOGIES_ROOT_DIR}/nie/nmo.trig "NMO" "Vocabulary" "trig")

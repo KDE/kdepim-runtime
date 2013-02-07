@@ -1,0 +1,8 @@
+[Ontology]
+Version=1.0
+Name=Nepomuk RSS Ontology
+Comment=Model for RSS feeds and articles
+Namespace=http://www.kde.org/ontologies/nrss#
+Path=${CMAKE_INSTALL_PREFIX}/share/ontology/kde/nrss.trig
+MimeType=application/x-trig
+Type=Data
