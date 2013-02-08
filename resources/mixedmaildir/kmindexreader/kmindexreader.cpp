@@ -357,11 +357,12 @@ bool KMIndexReader::readIndex()
         mMsgByOffset.clear();
         return false;
       }
-      msg = new KMIndexData;
-      fromOldIndexString( msg, line, mConvertToUtf8 );
       off_t offs = KDE_ftell( mFp );
       if ( KDE_fseek( mFp, len, SEEK_CUR ) )
         break;
+      msg = new KMIndexData;
+      fromOldIndexString( msg, line, mConvertToUtf8 );
+
       fillPartsCache( msg, offs, len );
       //////////////////////
       //END UNTESTED CODE
