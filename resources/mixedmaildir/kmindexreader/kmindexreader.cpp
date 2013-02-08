@@ -195,6 +195,8 @@ KMIndexReader::KMIndexReader(const QString& indexFile)
 
 KMIndexReader::~KMIndexReader()
 {
+  if (mFp)
+    fclose(mFp);
 }
 
 bool KMIndexReader::error() const
