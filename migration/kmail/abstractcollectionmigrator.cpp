@@ -75,7 +75,7 @@ class AbstractCollectionMigrator::Private
   public:
     Private( AbstractCollectionMigrator *parent, const AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store )
       : q( parent ), mResource( resource ),  mResourceName( resourceName ), mStore( store ), mHiddenSession( 0 ), mKMailConfig( 0 ),
-        mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ),
+        mEmailIdentityConfig( 0 ), mKcmKmailSummaryConfig( 0 ), mTemplatesConfig( 0 ), mOverallCollectionsCount( 0 ),
         mProcessedCollectionsCount( 0 ), mNeedModifyJob( false )
     {
     }
