@@ -64,11 +64,14 @@ class MailDispatcherAgent::Private
   public:
     Private( MailDispatcherAgent *parent )
       : q( parent ),
+        queue( 0 ),
         currentJob( 0 ),
         aborting( false ),
         sendingInProgress( false ),
         sentAnything( false ),
         errorOccurred( false ),
+        sentItemsSize( 0 ),
+        sentActionHandler( 0 ),
         networkAccessHelper( new KPIMUtils::NetworkAccessHelper( parent ) )
     {
     }
