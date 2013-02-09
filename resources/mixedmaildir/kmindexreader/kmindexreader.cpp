@@ -359,8 +359,8 @@ bool KMIndexReader::readIndex()
         // really, i have no idea when or how this would occur
         // but we probably want to know if it does - Casey
         kWarning() << "Unknowable bad occurred";
-        fclose( mFp );
         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fclose(mFp = " << mFp << ")";
+        fclose( mFp );
         mFp = 0;
         mMsgList.clear();
         mMsgByFileName.clear();
