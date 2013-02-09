@@ -33,7 +33,9 @@ RetrieveItemsJob::RetrieveItemsJob ( const Akonadi::Collection& collection, cons
   m_collection( collection ),
   m_maildir( md ),
   m_mimeType( KMime::Message::mimeType() ),
-  m_transaction( 0 )
+  m_transaction( 0 ),
+  m_previousMtime( 0 ),
+  m_highestMtime( 0 )
 {
   Q_ASSERT( m_collection.isValid() );
   Q_ASSERT( m_maildir.isValid() );
