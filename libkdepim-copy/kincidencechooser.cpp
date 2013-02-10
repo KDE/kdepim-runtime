@@ -248,6 +248,7 @@ KIncidenceChooser::KIncidenceChooser( QWidget *parent )
     mTbN =  0;
     mDisplayDiff = 0;
     mSelIncidence = Incidence::Ptr();
+    diff = 0;
 }
 
 KIncidenceChooser::~KIncidenceChooser()
