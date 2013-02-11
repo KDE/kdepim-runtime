@@ -639,6 +639,8 @@ void MaildirResource::collectionMoved( const Collection &collection, const Colle
     emit error( i18n( "Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId() ) );
     changeProcessed();
   } else {
+    const QString path = maildirPathForCollection( c );
+    mMaildirsForCollection.remove( path );
     changeCommitted( collection );
   }
 }
@@ -832,6 +834,5 @@ QString MaildirResource::maildirPathForCollection(const Collection& collection) 
 
   return path;
 }
-
 
 #include "maildirresource.moc"
