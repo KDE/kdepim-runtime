@@ -65,7 +65,6 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
 
     KRss::Item rssItem = item.payload<KRss::Item>();
     res.addType( Nepomuk2::Vocabulary::NIE::InformationElement() );
-    res.addType( Vocabulary::NRSS::Element() );
     res.addType( Vocabulary::NRSS::Article() );
 
     NepomukFeederUtils::setIcon( "application-rss+xml", res, graph );
@@ -139,15 +138,19 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
     /* Enclosures */
     Q_FOREACH(const KRss::Enclosure &rssEnclosure, rssItem.enclosures()) {
         Nepomuk2::SimpleResource enclosureRes;
-        enclosureRes.addType( Vocabulary::NRSS::Element() );
+        enclosureRes.addType( Nepomuk2::Vocabulary::NIE::InformationElement() );
+        enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Attachment() );
         // rssEnclosure.type() is a mimetype of the enclosure */
         if ( rssEnclosure.type().startsWith( "image", Qt::CaseInsensitive ) ) {
             enclosureRes.addType( Vocabulary::NRSS::ImageEnclosure() );
+            enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Image() );
         } else if ( rssEnclosure.type().startsWith( "audio", Qt::CaseInsensitive ) ) {
             enclosureRes.addType( Vocabulary::NRSS::AudioEnclosure() );
+            enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Audio() );
             enclosureRes.setProperty( Nepomuk2::Vocabulary::NFO::duration(), rssEnclosure.length() );
         } else if ( rssEnclosure.type().startsWith( "video", Qt::CaseInsensitive ) ) {
             enclosureRes.addType( Vocabulary::NRSS::VideoEnclosure() );
+            enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Video() );
             enclosureRes.setProperty( Nepomuk2::Vocabulary::NFO::duration(), rssEnclosure.length() );
         } else {
             enclosureRes.addType( Vocabulary::NRSS::Enclosure() );
@@ -164,6 +167,7 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
         websiteRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), rssEnclosure.title() );
         graph << websiteRes;
         enclosureRes.addProperty( Vocabulary::NRSS::enclosureUrl(), websiteRes.uri() );
+        enclosureRes.addProperty( Nepomuk2::Vocabulary::NIE::isPartOf(), res.uri() );
 
 
         graph << enclosureRes;

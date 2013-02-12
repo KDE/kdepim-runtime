@@ -47,36 +47,31 @@
 
 nrss: {
 
-    nrss:Element a rdfs:Class ;
-        rdfs:label "Feed Element" ;
-        rdfs:comment "Superclass for all elements related to RSS feeds" ;
-        rdfs:subClassOf nie:InformationElement .
-
     nrss:Feed a rdfs:Class ;
         rdfs:comment "Represents an RSS Feed" ;
         rdfs:label "RSS Feed" ;
-        rdfs:subClassOf nrss:Element .
+        rdfs:subClassOf nie:informationElement .
 
     nrss:Article a rdfs:Class ;
         rdfs:label "RSS Article" ;
         rdfs:comment "Represents a single article within an RSS Feed" ;
-        rdfs:subClassOf nrss:Element .
+        rdfs:subClassOf nfo:TextDocument .
 
     nrss:Enclosure a rdfs:Class ;
         rdfs:label "RSS Enclosure" ;
-        rdfs:subClassOf nrss:Element .
+        rdfs:subClassOf nfo:Attachment .
 
     nrss:ImageEnclosure a rdfs:Class ;
         rdfs:label "RSS Image Enclosure" ;
-        rdfs:subClassOf nrss:Enclosure .
+        rdfs:subClassOf nrss:Enclosure, nfo:Image .
 
     nrss:VideoEnclosure a rdfs:Class ;
         rdfs:label "RSS Video Enclosure" ;
-        rdfs:subClassOf nrss:Enclosure .
+        rdfs:subClassOf nrss:Enclosure, nfo:Video .
 
     nrss:AudioEnclosure a rdfs:Class ;
         rdfs:label "RSS Audio Enclosure" ;
-        rdfs:subClassOf nrss:Enclosure .
+        rdfs:subClassOf nrss:Enclosure, nfo:Audio .
 
 # Properties of nrss:Article
 
@@ -85,7 +80,8 @@ nrss: {
         rdfs:label "Article URL" ;
         rdfs:comment "URL of the article" ;
         rdfs:range nfo:Website ;
-        rdfs:domain nrss:Element .
+        rdfs:domain nrss:Article ;
+        rdfs:subPropertyOf nie:url .
 
     # change to nie:publicationDate once available
     nrss:publishTime a rdf:Property ;
@@ -106,7 +102,8 @@ nrss: {
         rdfs:label "Enclosure" ;
         rdfs:comment "Enclosure related to the article" ;
         rdfs:range nrss:Enclosure ;
-        rdfs:domain nrss:Article .
+        rdfs:domain nrss:Article ;
+        rdfs:subPropertyOf nie:hasPart .
 
     nrss:isRead a rdf:Property ;
         nrl:maxCardinality 1 ;
@@ -121,8 +118,9 @@ nrss: {
         nrl:maxCardinality 1 ;
         rdfs:label "Enclosure URL" ;
         rdfs:comment "URL of the enclosure object" ;
-        rdfs:range nfo:WebDataObject ;
-        rdfs:domain nrss:Enclosure .
+        rdfs:range nfo:RemoteDataObject ;
+        rdfs:domain nrss:Enclosure ;
+        rdfs:subPropertyOf nie:url .
 }
 
 <http://www.kde.org/ontologies/nrss_metadata#> {
