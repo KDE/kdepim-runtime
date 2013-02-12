@@ -196,6 +196,8 @@ KMIndexReader::KMIndexReader(const QString& indexFile)
 
 KMIndexReader::~KMIndexReader()
 {
+  if (mFp)
+    fclose(mFp);
 }
 
 bool KMIndexReader::error() const
@@ -357,19 +359,20 @@ bool KMIndexReader::readIndex()
         // really, i have no idea when or how this would occur
         // but we probably want to know if it does - Casey
         kWarning() << "Unknowable bad occurred";
-        fclose( mFp );
         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fclose(mFp = " << mFp << ")";
+        fclose( mFp );
         mFp = 0;
         mMsgList.clear();
         mMsgByFileName.clear();
         mMsgByOffset.clear();
         return false;
       }
-      msg = new KMIndexData;
-      fromOldIndexString( msg, line, mConvertToUtf8 );
       off_t offs = KDE_ftell( mFp );
       if ( KDE_fseek( mFp, len, SEEK_CUR ) )
         break;
+      msg = new KMIndexData;
+      fromOldIndexString( msg, line, mConvertToUtf8 );
+
       fillPartsCache( msg, offs, len );
       //////////////////////
       //END UNTESTED CODE

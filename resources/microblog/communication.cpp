@@ -30,7 +30,7 @@
 using namespace KIO;
 
 Communication::Communication( QObject* parent )
-        : QObject( parent )
+        : QObject( parent ), m_service(-1)
 {
 }
 

@@ -1,7 +1,9 @@
 [Misc]
 Name=Facebook Notification Serializer
 Name[de]=Facebook-Benachrichtigungs-Serialisierung
+Name[es]=Serializador de notificaciones de Facebook
 Name[fr]=Sérialiseur de notifications Facebook
+Name[nb]=Facebook varslings-serialisator
 Name[nl]=Serialisator van Facebook-meldingen
 Name[pt]=Serialização das Notificações do Facebook
 Name[pt_BR]=Serialização das notificações do Facebook
@@ -18,7 +20,9 @@ Name[zh_CN]=Facebook 通知序列化器
 Name[zh_TW]=Facebook 通知序列器
 Comment=An Akonadi serializer plugin for Facebook notifications
 Comment[de]=Akonadi-Modul zur Serialisierung von Facebook-Benachrichtigungen
+Comment[es]=Un complemento serializador de Akonadi para notificaciones de Facebook
 Comment[fr]=Un module externe Akonadi pour la sérialisation des notifications Facebook
+Comment[nb]=Et Akonadi programtillegg for serialisering av  Facebook-varslinger
 Comment[nl]=Een Akonadi serialisatorplug-in voor Facebook-meldingen
 Comment[pt]=Um 'plugin' de serialização do Akonadi para as notificações do Facebook
 Comment[pt_BR]=Plugin de serialização do Akonadi para as notificações do Facebook
