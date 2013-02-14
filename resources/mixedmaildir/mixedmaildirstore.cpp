@@ -307,7 +307,7 @@ class MaildirContext
     }
 
     MaildirContext( const Maildir &md )
-      : mMaildir( md ), mIndexDataLoaded( false )
+      : mMaildir( md ), mIndexDataLoaded( false ), mHasIndexData( false )
     {
     }
 
