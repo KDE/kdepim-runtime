@@ -119,6 +119,7 @@ void SessionPool::disconnect( SessionTermination termination )
   m_unusedPool.clear();
   m_reservedPool.clear();
   m_connectingPool.clear();
+  m_pendingInitialSession = 0;
 
   delete m_account;
   m_account = 0;
