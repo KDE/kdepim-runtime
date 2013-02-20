@@ -307,7 +307,7 @@ class MaildirContext
     }
 
     MaildirContext( const Maildir &md )
-      : mMaildir( md ), mIndexDataLoaded( false )
+      : mMaildir( md ), mIndexDataLoaded( false ), mHasIndexData( false )
     {
     }
 
@@ -1803,7 +1803,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
     }
 
     qint64 newOffset = mbox->appendEntry( item.payload<KMime::Message::Ptr>() );
-    if ( offset < 0 ) {
+    if ( newOffset < 0 ) {
       errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
                           collection.name() );
       kError() << errorText << "FolderType=" << folderType;

@@ -119,6 +119,7 @@ void SessionPool::disconnect( SessionTermination termination )
   m_unusedPool.clear();
   m_reservedPool.clear();
   m_connectingPool.clear();
+  m_pendingInitialSession = 0;
 
   delete m_account;
   m_account = 0;
@@ -149,7 +150,7 @@ qint64 SessionPool::requestSession()
 
 void SessionPool::releaseSession( KIMAP::Session *session )
 {
-  if ( !m_reservedPool.isEmpty() && m_reservedPool.contains( session ) ) {
+  if ( m_reservedPool.contains( session ) ) {
     m_reservedPool.removeAll( session );
     m_unusedPool << session;
   }
@@ -229,8 +230,7 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
   }
 
   if ( !m_initialConnectDone ) {
-    disconnect();
-    killSession( session, LogoutSession );
+    disconnect(); // kills all sessions, including \a session
   } else {
     killSession( session, LogoutSession );
     if ( !m_pendingRequests.isEmpty() ) {
