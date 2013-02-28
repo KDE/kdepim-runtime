@@ -15,33 +15,29 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FINDUNINDEXEDITEMSJOB_H
-#define FINDUNINDEXEDITEMSJOB_H
+#ifndef REMOVEITEMSJOB_H
+#define REMOVEITEMSJOB_H
 #include <KJob>
 #include <QTime>
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 
-class FindUnindexedItemsJob: public KJob
+
+/**
+ * Job that removes the passed in list of stale items from nepomuk
+ */
+class NepomukCleanerJob: public KJob
 {
     Q_OBJECT
 public:
-    explicit FindUnindexedItemsJob(int compatLevel, QObject* parent = 0);
+    explicit NepomukCleanerJob(const QList<Akonadi::Item::Id> &staleItems, QObject* parent = 0);
     virtual void start();
-    /// Returns all items which were found in akonadi but not in nepomuk (meaning they should be indexed)
-    const QHash<Akonadi::Item::Id, Akonadi::Collection::Id> &getUnindexed() const;
-    /// Returns all items which were found in nepomuk but not in akonadi (meaning they can be removed from nepomuk)
-    const QList<Akonadi::Item::Id> &getItemsToRemove() const;
 private slots:
-    void itemsRetrieved(KJob*);
-    void retrieveIndexedNepomukResources();
+    void removedItem(KJob*);
 private:
-    void retrieveAkonadiItems();
-    QHash<Akonadi::Item::Id, Akonadi::Collection::Id> mAkonadiItems;
-    QSet<Akonadi::Item::Id> mAllAkonadiItems;
     QList<Akonadi::Item::Id> mStaleItems;
-    QTime mTime;
-    const int mCompatLevel;
+    void remove();
+    int mBatchSize;
 };
 
 #endif // FINDUNINDEXEDITEMSJOB_H

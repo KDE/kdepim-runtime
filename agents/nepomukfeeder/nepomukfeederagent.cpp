@@ -60,6 +60,7 @@
 #include "pluginloader.h"
 #include "nepomukhelpers.h"
 #include "findunindexeditemsjob.h"
+#include "nepomukcleanerjob.h"
 #include "nepomukfeeder-config.h"
 #include "nepomukfeederadaptor.h"
 
@@ -491,6 +492,9 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
         connect(fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), this, SLOT(unindexedCollectionsReceived(Akonadi::Collection::List)));
         fetchJob->start();
     }
+
+    NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->getItemsToRemove(), this);
+    cleanerJob->start();
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )

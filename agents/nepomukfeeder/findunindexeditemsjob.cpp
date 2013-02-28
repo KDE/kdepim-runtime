@@ -55,10 +55,17 @@ void FindUnindexedItemsJob::retrieveAkonadiItems()
 void FindUnindexedItemsJob::itemsRetrieved(KJob *job)
 {
     kDebug() << "Akonadi Query took(ms): " << mTime.elapsed();
+    if (job->error()) {
+        setError(KJob::UserDefinedError);
+        setErrorText("Retrieving items failed");
+        emitResult();
+        return;
+    }
     mTime.start();
     Akonadi::RecursiveItemFetchJob *itemFetchJob = static_cast<Akonadi::RecursiveItemFetchJob*>(job);
     Q_ASSERT(job);
     foreach (const Akonadi::Item &item, itemFetchJob->items()) {
+        mAllAkonadiItems.insert(item.id());
         if (item.mimeType() != QLatin1String("message/rfc822"))
             continue;
         mAkonadiItems.insert(item.id(), item.parentCollection().id());
@@ -83,11 +90,27 @@ void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
             Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId())
             ),
             Soprano::Query::QueryLanguageSparql);
+    if (!result.isValid()) {
+        mAllAkonadiItems.clear();
+        mAkonadiItems.clear();
+        kWarning() << result.lastError();
+        setError(KJob::UserDefinedError);
+        setErrorText("Nepomuk query failed");
+        emitResult();
+        return;
+    }
     while (result.next()) {
-        mAkonadiItems.remove(result[0].literal().toInt64());
+        const Akonadi::Item::Id &id = result[0].literal().toInt64();
+        QSet<Akonadi::Item::Id>::iterator it = mAllAkonadiItems.find(id);
+        if (it == mAllAkonadiItems.end()) {
+            mStaleItems.append(id);
+        }
+        mAllAkonadiItems.erase(it);
+        mAkonadiItems.remove(id);
     }
     kDebug() << "Nepomuk Query took(ms): " << mTime.elapsed();
     kDebug() << "Found " << getUnindexed().size() << " unindexed items.";
+    kDebug() << "Found " << mStaleItems.size() << " items which can be removed from nepomuk.";
     emitResult();
 }
 
@@ -96,4 +119,10 @@ const QHash<Akonadi::Entity::Id, Akonadi::Entity::Id > &FindUnindexedItemsJob::g
     return mAkonadiItems;
 }
 
+const QList<Akonadi::Item::Id> &FindUnindexedItemsJob::getItemsToRemove() const
+{
+    return mStaleItems;
+}
+
 #include "findunindexeditemsjob.moc"
+
