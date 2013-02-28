@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011, 2012  Dan Vratil <dan@progdan.cz>
+    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,37 +18,19 @@
 #ifndef GOOGLE_CONTACTS_SETTINGSDIALOG_H
 #define GOOGLE_CONTACTS_SETTINGSDIALOG_H
 
-#include <KDialog>
+#include "common/googlesettingsdialog.h"
 
-#include <libkgapi/common.h>
+class GoogleAccountManager;
 
-namespace Ui {
-  class SettingsDialog;
-}
-
-class QTreeWidgetItem;
-
-class SettingsDialog : public KDialog
+class SettingsDialog : public GoogleSettingsDialog
 {
   Q_OBJECT
   public:
-    explicit SettingsDialog( WId windowId, QWidget *parent = 0 );
+    explicit SettingsDialog( GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent );
     ~SettingsDialog();
 
   private Q_SLOTS:
-    void addAccountClicked();
-    void removeAccountClicked();
-    void reloadAccounts();
-
-    void error( KGAPI::Error errCode, const QString &msg );
     void saveSettings();
-
-  private:
-    void updateButtons();
-    Ui::SettingsDialog *m_ui;
-    QWidget *m_mainWidget;
-
-    WId m_windowId;
 
 };
 

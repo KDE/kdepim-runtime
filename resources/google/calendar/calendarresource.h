@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011, 2012  Dan Vratil <dan@progdan.cz>
+    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,97 +18,54 @@
 #ifndef GOOGLE_CALENDAR_CALENDARRESOURCE_H
 #define GOOGLE_CALENDAR_CALENDARRESOURCE_H
 
-#include <Akonadi/AgentBase>
-#include <Akonadi/ResourceBase>
+#include "common/googleresource.h"
+
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 
-#include <libkgapi/common.h>
-#include <libkgapi/account.h>
-
-namespace KGAPI {
-  class AccessManager;
-  class Account;
-  class Reply;
-  class Request;
-}
-
-using namespace KGAPI;
-
-class CalendarResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
+class CalendarResource : public GoogleResource
 {
   Q_OBJECT
   public:
     explicit CalendarResource( const QString &id );
     ~CalendarResource();
 
-    void configure( WId windowId );
+  public:
+    virtual GoogleSettings *settings() const;
+    virtual QList< QUrl > scopes() const;
 
-  public Q_SLOTS:
-    void reloadConfig();
-    void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &collection );
-    bool retrieveItem( const Akonadi::Item &item, const QSet< QByteArray >& parts );
+  protected Q_SLOTS:
+    virtual void retrieveCollections();
+    virtual void retrieveItems( const Akonadi::Collection &collection );
 
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers );
-    void itemRemoved( const Akonadi::Item &item );
-    void itemMoved( const Akonadi::Item &item,
-                    const Akonadi::Collection &collectionSource,
-                    const Akonadi::Collection &collectionDestination );
+    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    virtual void itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers );
+    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemMoved( const Akonadi::Item &item,
+                            const Akonadi::Collection &collectionSource,
+                            const Akonadi::Collection &collectionDestination );
+
+    virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
+    virtual void collectionChanged( const Akonadi::Collection &collection );
+    virtual void collectionRemoved( const Akonadi::Collection &collection );
+
+    void slotItemsRetrieved( KGAPI2::Job *job );
+    void slotCollectionsRetrieved( KGAPI2::Job *job );
+    void slotCalendarsRetrieved( KGAPI2::Job *job );
+    void slotRemoveTaskFetchJobFinished( KJob *job );
+    void slotDoRemoveTask( KJob *job );
+    void slotModifyTaskReparentFinished( KGAPI2::Job *job );
+    void slotTaskAddedSearchFinished( KJob * );
+    void slotCreateJobFinished( KGAPI2::Job *job );
 
   protected:
-    void aboutToQuit();
-
-  private Q_SLOTS:
-    void error( const KGAPI::Error, const QString & );
-    void slotAbortRequested();
-
-    void cachedItemsRetrieved( KJob *job );
-    void replyReceived( KGAPI::Reply *reply );
-
-    void itemsReceived( KJob *job );
-    void itemReceived( KGAPI::Reply *reply );
-    void itemCreated( KGAPI::Reply *reply );
-    void itemUpdated( KGAPI::Reply *reply );
-    void itemRemoved( KGAPI::Reply *reply );
-    void itemMoved( KGAPI::Reply *reply );
-
-    void taskListReceived( KJob *job );
-    void calendarsReceived( KJob *job );
-
-    /* The actual update of task */
-    void taskDoUpdate( KGAPI::Reply *reply );
-
-    void taskReceived( KGAPI::Reply *reply );
-    void tasksReceived( KJob *job );
-    void taskCreated( KGAPI::Reply *reply );
-    void taskUpdated( KGAPI::Reply *reply );
-    void taskRemoved( KGAPI::Reply *reply );
-
-    void removeTaskFetchJobFinished( KJob *job );
-    void doRemoveTask( KJob *job );
-
-    void eventReceived( KGAPI::Reply *reply );
-    void eventsReceived( KJob *job );
-    void eventCreated( KGAPI::Reply *reply );
-    void eventUpdated( KGAPI::Reply *reply );
-    void eventRemoved( KGAPI::Reply *reply );
-    void eventMoved( KGAPI::Reply *reply );
-
-    void emitPercent( KJob *job, ulong percent );
+    virtual int runConfigurationDialog( WId windowId );
+    virtual void updateResourceName();
 
   private:
-    void abort();
-    Account::Ptr getAccount();
+    QMap<QString, Akonadi::Collection> m_collections;
+    Akonadi::Collection m_rootCollection;
 
-    AccessManager *m_gam;
-
-    Account::Ptr m_account;
-
-    Akonadi::Collection::List m_collections;
-    bool m_fetchedCalendars;
-    bool m_fetchedTaskLists;
 };
 
 #endif // CALENDARRESOURCE_H

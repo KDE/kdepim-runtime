@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011, 2012  Dan Vratil <dan@progdan.cz>
+    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,11 +16,9 @@
 */
 
 #include "settings.h"
-#include "settingsbase.h"
 #include "settingsadaptor.h"
 
 #include <KGlobal>
-#include <KWallet/Wallet>
 
 #include <QDBusConnection>
 
@@ -42,7 +40,8 @@ class SettingsHelper
 
 K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
-Settings::Settings()
+Settings::Settings():
+    GoogleSettings()
 {
   Q_ASSERT( !s_globalSettings->q );
   s_globalSettings->q = this;
@@ -61,24 +60,4 @@ Settings *Settings::self()
 
   return s_globalSettings->q;
 
-}
-
-QString Settings::clientId() const
-{
-  return "554041944266.apps.googleusercontent.com";
-}
-
-QString Settings::clientSecret() const
-{
-  return "mdT1DjzohxN3npUUzkENT0gO";
-}
-
-void Settings::setWindowId( WId id )
-{
-  m_winId = id;
-}
-
-void Settings::setResourceId( const QString &resourceIdentificator )
-{
-  m_resourceId = resourceIdentificator;
 }

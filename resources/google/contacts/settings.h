@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011, 2012  Dan Vratil <dan@progdan.cz>
+    Copyright (C) 2011-2012  Daniel Vrátil <dvratil@redhat.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,35 +18,15 @@
 #ifndef GOOGLE_CONTACTS_SETTINGS_H
 #define GOOGLE_CONTACTS_SETTINGS_H
 
-#include "settingsbase.h"
+#include "common/googlesettings.h"
 
-#include <qwindowdefs.h>
-
-/**
- * @brief Settings object
- *
- * Provides read-only access to application clientId and
- * clientSecret and read-write access to accessToken and
- * refreshToken.
- */
-class Settings: public SettingsBase
+class Settings: public GoogleSettings
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.GoogleContacts.ExtendedSettings" )
   public:
     Settings();
-    void setWindowId( WId id );
-    void setResourceId( const QString &resourceIdentifier );
     static Settings *self();
-
-    QString appId() const;
-
-    QString clientId() const;
-    QString clientSecret() const;
-
-  private:
-    WId m_winId;
-    QString m_resourceId;
 
 };
 

@@ -104,7 +104,7 @@ find_package(Libkolabxml QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 # Libkgapi
-find_package(LibKGAPI 0.4.3 QUIET CONFIG)
+find_package(LibKGAPI 1.9.80 QUIET CONFIG)
 set_package_properties(LibKGAPI PROPERTIES DESCRIPTION "KDE-based library for accessing various Google services" URL "https://projects.kde.org/libkgapi" TYPE OPTIONAL PURPOSE "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks")
 
 # Libkfbapi

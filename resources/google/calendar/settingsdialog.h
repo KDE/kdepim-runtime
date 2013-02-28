@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011, 2012  Dan Vratil <dan@progdan.cz>
+    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,69 +18,36 @@
 #ifndef GOOGLE_CALENDAR_SETTINGSDIALOG_H
 #define GOOGLE_CALENDAR_SETTINGSDIALOG_H
 
-#include <KDialog>
-#include <KJob>
-#include <Akonadi/ResourceBase>
+#include "common/googlesettingsdialog.h"
 
-#include <libkgapi/common.h>
+class KListWidget;
 
-namespace Ui {
-  class SettingsDialog;
-}
-
-namespace KGAPI {
-  class Reply;
-  class AccessManager;
-
-namespace Objects {
-  class Calendar;
-  class TaskList;
-}
-}
-
-class QListWidgetItem;
-
-using namespace KGAPI;
-
-class SettingsDialog : public KDialog
+class SettingsDialog : public GoogleSettingsDialog
 {
   Q_OBJECT
   public:
-    explicit SettingsDialog( WId windowId, QWidget *parent = 0 );
+    explicit SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent );
     ~SettingsDialog();
 
   private Q_SLOTS:
-    void reloadAccounts();
-    void addAccountClicked();
-    void removeAccountClicked();
-    void accountChanged();
-    void addCalendarClicked();
-    void editCalendarClicked();
-    void removeCalendarClicked();
-    void reloadCalendarsClicked();
-    void addTaskListClicked();
-    void editTaskListClicked();
-    void removeTaskListClicked();
-    void reloadTaskListsClicked();
+    void slotReloadCalendars();
+    void slotReloadTaskLists();
+    void slotCurrentAccountChanged( const QString &accountName );
 
-    void gam_objectsListReceived( KGAPI::Reply *reply );
-    void gam_objectCreated( KGAPI::Reply *reply );
-    void gam_objectModified( KGAPI::Reply *reply );
-
-    void addCalendar( KGAPI::Objects::Calendar *calendar );
-    void editCalendar( KGAPI::Objects::Calendar *calendar );
-
-    void addTaskList( KGAPI::Objects::TaskList *taskList );
-    void editTaskList( KGAPI::Objects::TaskList *taskList );
+    void slotTaskListsRetrieved( KGAPI2::Job *job );
+    void slotCalendarsRetrieved( KGAPI2::Job *job );
 
     void saveSettings();
 
-    void error( KGAPI::Error code, const QString &msg );
-
   private:
-    Ui::SettingsDialog *m_ui;
-    WId m_windowId;
-    AccessManager *m_gam;
+    QGroupBox *m_calendarsBox;
+    KListWidget *m_calendarsList;
+    KPushButton *m_reloadCalendarsBtn;
+
+    QGroupBox *m_taskListsBox;
+    KListWidget *m_taskListsList;
+    KPushButton *m_reloadTaskListsBtn;
+
 };
 
 #endif // SETTINGSDIALOG_H
