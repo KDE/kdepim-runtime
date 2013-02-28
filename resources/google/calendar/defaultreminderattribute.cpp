@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2011, 2012  Dan Vratil <dan@progdan.cz>
+    Copyright (C) 2011-2013 Daniel Vrátil <dvratil@redhat.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,89 +19,96 @@
 
 #include <QVariant>
 
-#include <libkgapi/objects/calendar.h>
-
 #include <qjson/parser.h>
 #include <qjson/serializer.h>
 
-using namespace KCalCore;
-using namespace KGAPI::Objects;
+#include <LibKGAPI2/Calendar/Reminder>
 
-DefaultReminderAttribute::DefaultReminderAttribute( const Reminder::List &reminders )
-  : m_reminders( reminders )
+using namespace KGAPI2;
+
+DefaultReminderAttribute::DefaultReminderAttribute()
 {
 }
 
 Akonadi::Attribute *DefaultReminderAttribute::clone() const
 {
-  return new DefaultReminderAttribute( m_reminders );
+    DefaultReminderAttribute *attr = new DefaultReminderAttribute();
+    attr->setReminders( m_reminders );
+
+    return attr;
+}
+
+void DefaultReminderAttribute::setReminders( const RemindersList &reminders )
+{
+    m_reminders = reminders;
 }
 
 void DefaultReminderAttribute::deserialize( const QByteArray &data )
 {
-  QJson::Parser parser;
-  QVariantList list;
+    QJson::Parser parser;
+    QVariantList list;
 
-  list = parser.parse( data ).toList();
-  Q_FOREACH ( const QVariant & l, list ) {
-    QVariantMap reminder = l.toMap();
+    list = parser.parse( data ).toList();
+    Q_FOREACH( const QVariant & l, list ) {
+        QVariantMap reminder = l.toMap();
 
-    Reminder::Ptr rem( new Reminder );
-    if ( reminder["type"].toString() == "display" ) {
-      rem->setType( Alarm::Display );
-    } else if ( reminder["type"].toString() == "email" ) {
-      rem->setType( Alarm::Email );
+        KGAPI2::ReminderPtr rem( new KGAPI2::Reminder );
+
+        if ( reminder["type"].toString() == "display" ) {
+            rem->setType( KCalCore::Alarm::Display );
+        } else if ( reminder["type"].toString() == "email" ) {
+            rem->setType( KCalCore::Alarm::Email );
+        }
+
+        KCalCore::Duration offset( reminder["time"].toInt(), KCalCore::Duration::Seconds );
+        rem->setStartOffset( offset );
+
+        m_reminders << rem;
     }
-
-    Duration offset( reminder["time"].toInt(), Duration::Seconds );
-    rem->setStartOffset( offset );
-
-    m_reminders << rem;
-  }
 }
 
 QByteArray DefaultReminderAttribute::serialized() const
 {
-  QVariantList list;
+    QVariantList list;
 
-  Q_FOREACH ( Reminder::Ptr rem, m_reminders ) {
-    QVariantMap reminder;
+    Q_FOREACH( const ReminderPtr & rem, m_reminders ) {
+        QVariantMap reminder;
 
-    if ( rem->type() == Alarm::Display ) {
-      reminder["type"] = "display";
-    } else if ( rem->type() == Alarm::Email ) {
-      reminder["type"] = "email";
+        if ( rem->type() == KCalCore::Alarm::Display ) {
+            reminder["type"] = "display";
+        } else if ( rem->type() == KCalCore::Alarm::Email ) {
+            reminder["type"] = "email";
+        }
+
+        reminder["time"] = rem->startOffset().asSeconds();
+
+        list << reminder;
     }
 
-    reminder["time"] = rem->startOffset().asSeconds();
-
-    list << reminder;
-  }
-
-  QJson::Serializer serializer;
-  return serializer.serialize( list );
+    QJson::Serializer serializer;
+    return serializer.serialize( list );
 }
 
-Alarm::List DefaultReminderAttribute::alarms( Incidence *incidence ) const
+KCalCore::Alarm::List DefaultReminderAttribute::alarms( KCalCore::Incidence *incidence ) const
 {
-  Alarm::List alarms;
+    KCalCore::Alarm::List alarms;
 
-  Q_FOREACH ( const Reminder::Ptr & reminder, m_reminders ) {
-    AlarmPtr alarm( new Alarm( incidence ) );
+    Q_FOREACH( const ReminderPtr & reminder, m_reminders ) {
+        KCalCore::Alarm::Ptr alarm( new KCalCore::Alarm( incidence ) );
 
-    alarm->setType( reminder->type() );
-    alarm->setTime( incidence->dtStart() );
-    alarm->setStartOffset( reminder->startOffset() );
-    alarm->setEnabled( true );
+        alarm->setType( reminder->type() );
+        alarm->setTime( incidence->dtStart() );
+        alarm->setStartOffset( reminder->startOffset() );
+        alarm->setEnabled( true );
 
-    alarms << alarm;
-  }
+        alarms << alarm;
+    }
 
-  return alarms;
+    return alarms;
 }
 
 QByteArray DefaultReminderAttribute::type() const
 {
-  return "defaultReminders";
+    return "defaultReminders";
 }
 

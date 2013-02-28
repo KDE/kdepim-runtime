@@ -278,14 +278,11 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     }
     const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
 
-    QString path = dir.path();
-    mFsWatcher->removeDir( path + QLatin1Literal( "/new" ) );
-    mFsWatcher->removeDir( path + QLatin1Literal( "/cur" ) );
+    stopMaildirScan( dir );
 
     const QString rid = dir.addEntry( mail->encodedContent() );
 
-    mFsWatcher->addDir( path + QLatin1Literal( "/new" ) );
-    mFsWatcher->addDir( path + QLatin1Literal( "/cur" ) );
+    restartMaildirScan( dir );
 
     Item i( item );
     i.setRemoteId( rid );
@@ -329,13 +326,12 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     Item newItem( item );
 
     if ( flagsChanged || bodyChanged || headChanged ) { //something has changed that we can deal with
-      const QString path = dir.path();
-        mFsWatcher->removeDir( path + QLatin1Literal( "/new" ) );
-        mFsWatcher->removeDir( path + QLatin1Literal( "/cur" ) );
+      stopMaildirScan( dir );
 
       if ( flagsChanged ) { //flags changed, store in file name and get back the new filename (id)
         const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
         if ( newKey.isEmpty() ) {
+          restartMaildirScan( dir );
           cancelTask( i18n( "Failed to change the flags for the mail." ) );
           return;
         }
@@ -361,8 +357,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         }
       }
 
-        mFsWatcher->addDir( path + QLatin1Literal( "/new" ) );
-        mFsWatcher->addDir( path + QLatin1Literal( "/cur" ) );
+      restartMaildirScan( dir );
 
       changeCommitted( newItem );
     } else {
@@ -395,19 +390,13 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
     return;
   }
 
-  QString sourceDirPath = sourceDir.path();
-  QString destDirPath = destDir.path();
-    mFsWatcher->removeDir( sourceDirPath + QLatin1Literal( "/new" ) );
-    mFsWatcher->removeDir( sourceDirPath + QLatin1Literal( "/cur" ) );
-    mFsWatcher->removeDir( destDirPath + QLatin1Literal( "/new" ) );
-    mFsWatcher->removeDir( destDirPath + QLatin1Literal( "/cur" ) );
+  stopMaildirScan( sourceDir );
+  stopMaildirScan( destDir );
 
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
 
-    mFsWatcher->addDir( sourceDirPath + QLatin1Literal( "/new" ) );
-    mFsWatcher->addDir( sourceDirPath + QLatin1Literal( "/cur" ) );
-    mFsWatcher->addDir( destDirPath + QLatin1Literal( "/new" ) );
-    mFsWatcher->addDir( destDirPath + QLatin1Literal( "/cur" ) );
+  restartMaildirScan( sourceDir );
+  restartMaildirScan( destDir );
 
   if ( newRid.isEmpty() ) {
     cancelTask( i18n( "Could not move message '%1'.", item.remoteId() ) );
@@ -430,14 +419,11 @@ void MaildirResource::itemRemoved(const Akonadi::Item & item)
     Maildir dir = maildirForCollection( item.parentCollection() );
     // !dir.isValid() means that our parent folder has been deleted already,
     // so we don't care at all as that one will be recursive anyway
-    QString dirPath = dir.path();
-        mFsWatcher->removeDir( dirPath + QLatin1Literal( "/new" ) );
-        mFsWatcher->removeDir( dirPath + QLatin1Literal( "/cur" ) );
+    stopMaildirScan( dir );
     if ( dir.isValid() && !dir.removeEntry( item.remoteId() ) ) {
       emit error( i18n( "Failed to delete message: %1", item.remoteId() ) );
     }
-        mFsWatcher->addDir( dirPath + QLatin1Literal( "/new" ) );
-        mFsWatcher->addDir( dirPath + QLatin1Literal( "/cur" ) );
+    restartMaildirScan( dir );
   }
   kDebug() << "Item removed" << item.id() << " in collection :" << item.parentCollection().id();
   changeProcessed();
@@ -833,6 +819,20 @@ QString MaildirResource::maildirPathForCollection(const Collection& collection) 
   }
 
   return path;
+}
+
+void MaildirResource::stopMaildirScan(const Maildir &maildir)
+{
+    const QString path = maildir.path();
+    mFsWatcher->stopDirScan( path + QLatin1Literal( "/new" ) );
+    mFsWatcher->stopDirScan( path + QLatin1Literal( "/cur" ) );
+}
+
+void MaildirResource::restartMaildirScan(const Maildir &maildir)
+{
+    const QString path = maildir.path();
+    mFsWatcher->restartDirScan( path + QLatin1Literal( "/new" ) );
+    mFsWatcher->restartDirScan( path + QLatin1Literal( "/cur" ) );
 }
 
 #include "maildirresource.moc"

@@ -18,99 +18,61 @@
 #ifndef GOOGLE_CONTACTS_CONTACTSRESOURCE_H
 #define GOOGLE_CONTACTS_CONTACTSRESOURCE_H
 
-#include <Akonadi/ResourceBase>
-#include <Akonadi/AgentBase>
+#include "common/googleresource.h"
+
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
-#include <QQueue>
-
-#include <libkgapi/common.h>
-#include <libkgapi/account.h>
-
-namespace KGAPI {
-  class AccessManager;
-  class Reply;
-  class Request;
-}
-
-class QTimer;
-class QNetworkAccessManager;
-class QNetworkReply;
-class QNetworkRequest;
-
-using namespace KGAPI;
-
-class ContactsResource: public Akonadi::ResourceBase,
-                        public Akonadi::AgentBase::ObserverV2
+class GoogleSettings;
+namespace KGAPI2
 {
-  Q_OBJECT
+class Job;
+}
+class KJob;
+
+class ContactsResource: public GoogleResource
+{
+    Q_OBJECT
 
   public:
     explicit ContactsResource( const QString &id );
 
     ~ContactsResource();
 
-    using ResourceBase::synchronize;
-
-  public Q_SLOTS:
-    virtual void configure( WId windowID );
-
-    void reloadConfig();
-
   protected Q_SLOTS:
-    void retrieveCollections();
+    virtual void retrieveCollections();
 
-    void retrieveItems( const Akonadi::Collection &collection );
-    bool retrieveItem( const Akonadi::Item &item, const QSet< QByteArray >& parts );
+    virtual void retrieveItems( const Akonadi::Collection &collection );
+    virtual void retrieveContactsPhotos( const QVariant &argument );
 
-    void itemRemoved( const Akonadi::Item &item );
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers );
-    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                    const Akonadi::Collection &collectionDestination );
+    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    virtual void itemChanged( const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers );
+    virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                            const Akonadi::Collection &collectionDestination );
 
-  protected:
-    void aboutToQuit();
+    virtual void collectionChanged( const Akonadi::Collection &collection );
+    virtual void collectionRemoved( const Akonadi::Collection &collection );
 
-  private Q_SLOTS:
-    void error( KGAPI::Error errCode, const QString &msg );
+    virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    virtual void itemUnlinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
 
-    void slotAbortRequested();
+    void slotItemsRetrieved( KGAPI2::Job *job );
+    void slotCollectionsRetrieved( KGAPI2::Job *job );
 
-    void initialItemsFetchJobFinished( KJob *job );
-    void contactListReceived( KJob *job );
+    void slotUpdatePhotosItemsRetrieved( KJob *job );
+    void slotUpdatePhotoFinished( KGAPI2::Job *job, const KGAPI2::ContactPtr &contact );
 
-    void execFetchPhotoQueue();
-    void photoRequestFinished( QNetworkReply *reply );
-
-    void replyReceived( KGAPI::Reply *reply );
-
-    void contactUpdated( KGAPI::Reply *reply );
-    void contactCreated( KGAPI::Reply *reply );
-    void contactRemoved( KGAPI::Reply *reply );
-
-    void emitPercent( KJob *job, ulong progress );
+    virtual GoogleSettings *settings() const;
+    virtual int runConfigurationDialog( WId windowId );
+    virtual void updateResourceName();
+    virtual QList< QUrl > scopes() const;
 
   private:
-    void abort();
 
-    void updatePhoto( Akonadi::Item &item );
-    void fetchPhoto( Akonadi::Item &item );
+    QMap<QString, Akonadi::Collection> m_collections;
+    Akonadi::Collection m_rootCollection;
 
-    Account::Ptr getAccount();
-
-    KGAPI::Account::Ptr m_account;
-
-    KGAPI::AccessManager *m_gam;
-
-    QMap< QString, Akonadi::Collection > m_collections;
-
-    QNetworkAccessManager *m_photoNam;
-    QQueue< QNetworkRequest > m_fetchPhotoQueue;
-    QTimer *m_fetchPhotoScheduler;
-    int m_fetchPhotoScheduleInterval;
-    int m_fetchPhotoBatchSize;
 };
 
 #endif // CONTACTSRESOURCE_H

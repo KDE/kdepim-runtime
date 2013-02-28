@@ -88,6 +88,8 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     Akonadi::Collection collectionForMaildir( const KPIM::Maildir &md ) const;
 
     QString maildirPathForCollection( const Akonadi::Collection &collection) const;
+    void stopMaildirScan(const KPIM::Maildir &maildir);
+    void restartMaildirScan(const KPIM::Maildir &maildir);
 
 private:
     Akonadi_Maildir_Resource::MaildirSettings *mSettings;

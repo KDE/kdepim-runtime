@@ -1,3 +1,3 @@
 #! /bin/sh
 
-$XGETTEXT *.cpp -o $podir/akonadi_nepomuk_feeder.pot
+$XGETTEXT `find . -name '*.cpp' | grep -v '/test/' | grep -v '/util' ` -o $podir/akonadi_nepomuk_feeder.pot

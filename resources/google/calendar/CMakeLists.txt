@@ -1,22 +1,20 @@
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
-include_directories(${QJSON_INCLUDE_DIR} ${qjson_INCLUDE_DIR})
-
-set(calendarresource_SRCS
-  calendareditor.cpp
-  calendarresource.cpp
-  defaultreminderattribute.cpp
-  resource_tasks.cpp
-  resource_events.cpp
-  settings.cpp
-  settingsdialog.cpp
-  tasklisteditor.cpp
+include_directories(${QJSON_INCLUDE_DIR}
+                    ${qjson_INCLUDE_DIR}
+                    ${NEPOMUK_CORE_INCLUDE_DIR}
+                    ${SOPRANO_INCLUDE_DIR}
 )
 
-kde4_add_ui_files(calendarresource_SRCS
-  ui/settingsdialog.ui
-  ui/calendar_editor.ui
-  ui/tasklist_editor.ui
+set(calendarresource_SRCS
+  calendarresource.cpp
+  defaultreminderattribute.cpp
+  settings.cpp
+  settingsdialog.cpp
+  ../common/googleresource.cpp
+  ../common/googleaccountmanager.cpp
+  ../common/googlesettings.cpp
+  ../common/googlesettingsdialog.cpp
 )
 
 kde4_add_kcfg_files(calendarresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
@@ -58,6 +56,8 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${QT_QTNETWORK_LIBRARY}
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEWEBKIT_LIBS}
+  ${NEPOMUK_CORE_LIBRARY}
+  ${SOPRANO_LIBRARIES}
   ${QJSON_LIBRARIES}
   ${QJSON_LIBRARY} # for Mac OSX
   ${qjson_LIBRARY} # for Debian

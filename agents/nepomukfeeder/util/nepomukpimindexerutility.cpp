@@ -39,6 +39,7 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     : KXmlGuiWindow(),
     mFeederQueue(new FeederQueue(false, this))
 {
+    KGlobal::locale()->insertCatalog( "akonadi_nepomuk_feeder" );
     // tell the KXmlGuiWindow that this is indeed the main widget
     QWidget* w = new QWidget(this);
     setCentralWidget(w);

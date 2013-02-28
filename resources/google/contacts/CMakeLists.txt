@@ -4,9 +4,11 @@ set(contactsresource_SRCS
   contactsresource.cpp
   settings.cpp
   settingsdialog.cpp
+  ../common/googlesettings.cpp
+  ../common/googleresource.cpp
+  ../common/googleaccountmanager.cpp
+  ../common/googlesettingsdialog.cpp
 )
-
-kde4_add_ui_files(contactsresource_SRCS ui/settingsdialog.ui ui/groupeditor.ui)
 
 kde4_add_kcfg_files(contactsresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
 

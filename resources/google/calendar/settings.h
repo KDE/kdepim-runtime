@@ -18,35 +18,15 @@
 #ifndef GOOGLE_CALENDAR_SETTINGS_H
 #define GOOGLE_CALENDAR_SETTINGS_H
 
-#include "settingsbase.h"
+#include "common/googlesettings.h"
 
-#include <qwindowdefs.h>
-
-/**
- * @brief Settings object
- *
- * Provides read-only access to application clientId and
- * clientSecret and read-write access to accessToken and
- * refreshToken.
- */
-class Settings: public SettingsBase
+class Settings: public GoogleSettings
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.GoogleCalendar.ExtendedSettings" )
   public:
     Settings();
-    void setWindowId( WId id );
-    void setResourceId( const QString &resourceIdentifier );
     static Settings *self();
-
-    QString appId() const;
-
-    QString clientId() const;
-    QString clientSecret() const;
-
-  private:
-    WId m_winId;
-    QString m_resourceId;
 
 };
 
