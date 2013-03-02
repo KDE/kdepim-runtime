@@ -124,6 +124,9 @@ void ReaderResource::retrieveItems(const Collection& collection)
     }
 
     Reader::ItemFetchJob *fetchJob = new Reader::ItemFetchJob( collection.remoteId(), account(), this );
+    if ( !collection.remoteRevision().isEmpty() ) {
+        fetchJob->setOldestItem( collection.remoteRevision().toLong() );
+    }
     fetchJob->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
     connect( fetchJob, SIGNAL(progress(KGAPI2::Job*,int,int)),
              this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
