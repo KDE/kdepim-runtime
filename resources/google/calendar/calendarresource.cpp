@@ -743,15 +743,17 @@ void CalendarResource::slotCreateJobFinished( KGAPI2::Job *job )
         EventPtr event = objects.first().dynamicCast<Event>();
         item.setRemoteId( event->uid() );
         item.setRemoteRevision( event->etag() );
+        changeCommitted( item );
+        item.setPayload<KCalCore::Event::Ptr>( event.dynamicCast<KCalCore::Event>() );
+        new ItemModifyJob( item, this );
     } else if ( item.mimeType() == KCalCore::Todo::todoMimeType() ) {
         TaskPtr task = objects.first().dynamicCast<Task>();
         item.setRemoteId( task->uid() );
         item.setRemoteRevision( task->etag() );
+        changeCommitted( item );
+        item.setPayload<KCalCore::Todo::Ptr>( task.dynamicCast<KCalCore::Todo>() );
+        new ItemModifyJob( item, this );
     }
-
-    changeCommitted( item );
 }
-
-
 
 AKONADI_RESOURCE_MAIN( CalendarResource );
