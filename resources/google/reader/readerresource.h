@@ -66,7 +66,6 @@ class ReaderResource : public GoogleResource
     void slotItemsRetrieved( KGAPI2::Job *job );
     void slotRenameFolderFetchDone( KJob *job );
     void slotEditTokenRetrieved( KGAPI2::Job *job );
-    void slotFaviconRetrieved( QDBusPendingCallWatcher *callWatcher );
     void iconChanged( bool success, const QString &host, const QString &iconName );
 
   private:

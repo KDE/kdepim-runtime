@@ -418,8 +418,12 @@ void ReaderResource::slotCacheTimeout()
 
 void ReaderResource::fetchFavicon( KRss::FeedCollection& collection )
 {
-    const QString iconUrl = collection.url().url();
-    QDBusReply<QString> reply =  m_favicons->call( "iconForUrl", iconUrl );
+    QString url = collection.remoteId();
+    url = url.mid( 5 ); // remove the "feed/" prefix from URL
+
+    // an evil blocking dbus call. Should not take long though and does not
+    // impact any user visible part, so I gues it's fine....
+    QDBusReply<QString> reply =  m_favicons->call( "iconForUrl", url );
 
     kDebug() << reply.isValid();
     if ( !reply.isValid() ) {
@@ -429,10 +433,9 @@ void ReaderResource::fetchFavicon( KRss::FeedCollection& collection )
     const QString iconName = reply;
     kDebug() << collection.url().url() << iconName;
     if ( iconName.isEmpty() ) {
-        const QString iconUrl = collection.url().url();
-        const QString host = collection.url().host();
-        m_pendingIcons.insert( host, collection );
-        m_favicons->call( "downloadHostIcon", iconUrl );
+        const QString host = QUrl( url ).host();
+        m_pendingIcons.insertMulti( host, collection );
+        m_favicons->call( "downloadHostIcon", url );
         return;
     }
 
@@ -444,15 +447,12 @@ void ReaderResource::fetchFavicon( KRss::FeedCollection& collection )
     new CollectionModifyJob( collection, this );
 }
 
-void ReaderResource::slotFaviconRetrieved( QDBusPendingCallWatcher *callWatcher )
-{
-}
-
 void ReaderResource::iconChanged(bool success, const QString& host, const QString& iconName)
 {
     kDebug() << host << iconName;
     if ( !success || !m_pendingIcons.contains( host ) ) {
-        m_pendingIcons.remove( host );
+        // remove only one ocurrance of host, there could be more
+        m_pendingIcons.take( host );
         return;
     }
 
