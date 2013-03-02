@@ -23,6 +23,7 @@
 
 #include <QtCore/QTimer>
 #include <QtCore/QVarLengthArray>
+#include <QtCore/qdir.h>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusPendingReply>
@@ -33,9 +34,11 @@
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/AttributeFactory>
 
 #include <KRss/Item>
 #include <KRss/FeedCollection>
+#include <KRss/FeedPropertiesCollectionAttribute>
 
 #include <KDE/KLocalizedString>
 #include <KDE/KDateTime>
@@ -63,6 +66,8 @@ Q_DECLARE_METATYPE(KRss::FeedCollection)
 ReaderResource::ReaderResource( const QString& id ):
     GoogleResource( id )
 {
+    AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
+
     setNeedsNetwork( true );
     setOnline( true );
 
@@ -178,17 +183,25 @@ void ReaderResource::itemChanged( const Akonadi::Item& item, const QSet< QByteAr
 
 void ReaderResource::collectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent )
 {
+    KRss::FeedCollection feedCollection = collection;
+    kDebug() << feedCollection.name() << feedCollection.isFolder();
+
+    /* An empty folder is not stored on server */ 
+    if ( feedCollection.isFolder() ) {
+        feedCollection.setRights( Collection::CanCreateCollection |
+                    Collection::CanChangeCollection |
+                    Collection::CanDeleteCollection );
+        feedCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
+        feedCollection.setAllowSubfolders( false );
+        changeCommitted( feedCollection );
+        return;
+    }
+
     if ( !canPerformTask( true ) ) {
         return;
     }
 
-    KRss::FeedCollection feedCollection = collection;
-
-    /* An empty folder is not stored on server */ 
-    if ( feedCollection.isFolder() ) {
-        changeCommitted( collection );
-        return;
-    }
+    fetchFavicon( feedCollection );
 
     Reader::StreamSubscribeJob *subscribeJob =
         new Reader::StreamSubscribeJob( feedCollection.url(), m_editToken,
@@ -292,12 +305,15 @@ void ReaderResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     Reader::StreamFetchJob *fetchJob = qobject_cast<Reader::StreamFetchJob*>( job );
     ObjectsList objects = fetchJob->items();
 
-    m_rootCollection = Collection();
-    m_rootCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
-    m_rootCollection.setRemoteId( account()->accountName() );
-    m_rootCollection.setName( account()->accountName() );
-    m_rootCollection.setParent( Collection::root() );
-    m_rootCollection.setRights( Collection::CanCreateCollection );
+    KRss::FeedCollection rootCollection;
+    rootCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
+    rootCollection.setRemoteId( account()->accountName() );
+    rootCollection.setName( account()->accountName() );
+    rootCollection.setParent( Collection::root() );
+    rootCollection.setRights( Collection::CanCreateCollection );
+    rootCollection.setIsFolder( true );
+    rootCollection.setAllowSubfolders( true );
+    m_rootCollection = rootCollection;
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
     attr->setDisplayName( account()->accountName() );
@@ -336,6 +352,7 @@ void ReaderResource::slotCollectionsRetrieved( KGAPI2::Job *job )
                 parent.setContentMimeTypes( QStringList() << Collection::mimeType() );
                 parent.setParent( m_rootCollection );
                 parent.setIsFolder( true );
+                parent.setAllowSubfolders( false );
 
                 attr = parent.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
                 attr->setDisplayName( stream->categories().value( category ) );

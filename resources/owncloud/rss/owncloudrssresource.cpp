@@ -195,6 +195,7 @@ static Collection::List buildCollections( const Collection& top,
         folder.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
         folder.setName( node.title + KRandom::randomString( 8 ) );
         folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( node.title );
+        folder.setAllowSubfolders( false );
         folderCollections.append( folder );
     }
 
