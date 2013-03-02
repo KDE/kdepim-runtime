@@ -54,10 +54,14 @@ OwncloudRssResource::OwncloudRssResource( const QString &id )
     , m_wallet( Wallet::openWallet( Wallet::NetworkWallet(), 0, Wallet::Asynchronous ) )
     , m_walletOpenedReceived( false )
 {
-    Q_ASSERT( m_wallet );
-    connect( m_wallet, SIGNAL(walletOpened(bool)), this, SLOT(walletOpened(bool)) );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
+                                                  Settings::self(), QDBusConnection::ExportAdaptors );
+
+    if ( m_wallet ) {
+        connect( m_wallet, SIGNAL(walletOpened(bool)), this, SLOT(walletOpened(bool)) );
+    } else {
+        walletOpened( false );
+    }
 
 #if 0
     m_policy.setInheritFromParent( false );
@@ -81,6 +85,8 @@ OwncloudRssResource::~OwncloudRssResource()
 static const QString walletFolderName = QLatin1String("Akonadi Owncloud");
 
 static QString getPassword( Wallet* wallet, const QString& identifier ) {
+    if ( !wallet )
+        return QString();
     if ( !wallet->hasFolder( walletFolderName ) )
         return QString();
 
@@ -98,6 +104,8 @@ static QString getPassword( Wallet* wallet, const QString& identifier ) {
 static void writePassword( Wallet* wallet, const QString& identifier, const QString& password )
 {
     //report errors?
+    if ( !wallet )
+        return;
     if ( !wallet->isOpen() )
         return;
     if ( !wallet->hasFolder( walletFolderName ) ) {
@@ -119,8 +127,11 @@ void OwncloudRssResource::walletOpened( bool success )
 
     if ( success )
         m_password = getPassword( m_wallet, identifier() );
-    else
+    else {
+        setOnline( false );
+        emit status( Broken, i18n("KWallet not available") );
         m_password.clear();
+    }
 
     Q_FOREACH( const WId windowId, m_configDialogsWaitingForWallet )
         reallyConfigure( windowId );
