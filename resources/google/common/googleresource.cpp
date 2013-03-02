@@ -164,7 +164,7 @@ void GoogleResource::slotAccountChanged( const AccountPtr &account )
 
 void GoogleResource::slotAccountRemoved( const QString &accountName )
 {
-    if ( m_account->accountName() != accountName ) {
+    if ( m_account && m_account->accountName() != accountName ) {
         return;
     }
 
