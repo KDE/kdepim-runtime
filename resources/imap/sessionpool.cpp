@@ -485,6 +485,8 @@ void SessionPool::onConnectionLost()
   emit connectionLost( session );
 
   session->deleteLater();
+  if ( session == m_pendingInitialSession )
+      m_pendingInitialSession = 0;
 }
 
 #include "sessionpool.moc"
