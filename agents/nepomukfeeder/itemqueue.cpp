@@ -23,6 +23,7 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <nepomuk2/storeresourcesjob.h>
+#include <KUrl>
 
 Q_DECLARE_METATYPE(Nepomuk2::SimpleResourceGraph)
 
@@ -205,9 +206,15 @@ bool ItemQueue::processBatch()
   if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
     mTimer.start();
-    KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( mResourceGraph ), mItemsAreNotIndexed );
-    addGraphJob->setProperty("graph", QVariant::fromValue(mResourceGraph));
-    connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
+    
+    QList<QUrl> batch;
+    foreach (Akonadi::Item::Id id, mBatch) {
+        batch << Akonadi::Item(id).url().url();
+    }
+
+    KJob *job = Nepomuk2::removeDataByApplication( batch, Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
+    job->setProperty("graph", QVariant::fromValue(mResourceGraph));
+    connect( job, SIGNAL(finished(KJob*)), this, SLOT(removeDataResult(KJob*)) );
     mRunningJobs++;
     foreach (Akonadi::Item::Id id, mBatch) {
       mItemPipelineBackup.removeOne(id);
@@ -218,6 +225,20 @@ bool ItemQueue::processBatch()
     return false;
   }
   return true;
+}
+
+void ItemQueue::removeDataResult(KJob* job)
+{
+  mRunningJobs--;
+  if ( job->error() )
+    kWarning() << job->errorString();
+
+  //All old items have been removed, so we can now store the new items
+  const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
+  KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( graph ) );
+  addGraphJob->setProperty("graph", QVariant::fromValue( graph ));
+  connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
+  mRunningJobs++;
 }
 
 void ItemQueue::batchJobResult(KJob* job)

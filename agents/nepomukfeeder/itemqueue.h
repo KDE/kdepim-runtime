@@ -62,6 +62,7 @@ signals:
 private slots:
   void batchJobResult( KJob* job );
   void fetchJobResult( KJob* job );
+  void removeDataResult( KJob* job );
   void continueProcessing();
 
 private:
