@@ -510,7 +510,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( taskList->title() );
-        attr->setIconName( "text-calendar" );
+        attr->setIconName( "view-pim-tasks" );
 
         m_collections[ collection.remoteId() ] = collection;
     }
