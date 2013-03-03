@@ -54,6 +54,8 @@ OwncloudRssResource::OwncloudRssResource( const QString &id )
     , m_wallet( Wallet::openWallet( Wallet::NetworkWallet(), 0, Wallet::Asynchronous ) )
     , m_walletOpenedReceived( false )
 {
+    KRss::FeedCollection::registerAttributes();
+
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                                                   Settings::self(), QDBusConnection::ExportAdaptors );
 
@@ -191,7 +193,7 @@ static Collection::List buildCollections( const Collection& top,
         folder.setParentCollection( top );
         folder.setRemoteId( node.id );
         folder.setIsFolder( true );
-        folder.setParentRemoteId( node.parentId );
+        folder.setParentRemoteId( !node.parentId.isEmpty() ? node.parentId : QString::fromLatin1("0") );
         folder.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
         folder.setName( node.title + KRandom::randomString( 8 ) );
         folder.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( node.title );
@@ -204,7 +206,7 @@ static Collection::List buildCollections( const Collection& top,
         KRss::FeedCollection feed;
         feed.setParentCollection( top );
         feed.setRemoteId( node.id );
-        feed.setParentRemoteId( node.parentId );
+        feed.setParentRemoteId( !node.parentId.isEmpty() ? node.parentId : QString::fromLatin1("0") );
         feed.setContentMimeTypes( QStringList() << mimeType() );
         feed.setName( node.title + KRandom::randomString( 8 ) );
         feed.setXmlUrl( node.link );
@@ -312,10 +314,62 @@ void OwncloudRssResource::collectionChanged(const Akonadi::Collection& collectio
     changeCommitted( collection );
 }
 
+void OwncloudRssResource::feedCreated( KJob * j )
+{
+    PostJob* job = qobject_cast<PostJob*>( j );
+    Q_ASSERT( job );
+
+    if ( job->error() == KJob::NoError ) {
+        changeCommitted( job->collection() );
+    } else {
+        cancelTask( job->errorString() );
+    }
+}
+
+void OwncloudRssResource::folderCreated( KJob * j )
+{
+    PostJob* job = qobject_cast<PostJob*>( j );
+    Q_ASSERT( job );
+
+    if ( job->error() == KJob::NoError ) {
+        changeCommitted( job->collection() );
+    } else {
+        cancelTask( job->errorString() );
+    }
+}
+
+void OwncloudRssResource::setupJob( ::Job * job )
+{
+    job->setUrl( Settings::owncloudServerUrl() );
+    job->setUsername( Settings::username() );
+    job->setPassword( m_password );
+}
+
 void OwncloudRssResource::collectionAdded( const Collection &collection, const Collection &parent )
 {
-    Q_UNUSED( parent )
-    changeCommitted( collection );
+    if ( !m_walletOpenedReceived ) {
+        deferTask();
+        return;
+    }
+
+    const KRss::FeedCollection fc ( collection );
+    if ( fc.isFolder() ) {
+        PostJob* job = new PostJob( QLatin1String("folders/create"), this );
+        connect( job, SIGNAL(result(KJob*)), this, SLOT(folderCreated(KJob*)) );
+        setupJob( job );
+        job->setCollection( collection );
+        job->insertData( QLatin1String("name"), fc.title() );
+        job->insertData( QLatin1String("parentid"), parent.remoteId() );
+        job->start();
+    } else {
+        PostJob* job = new PostJob( QLatin1String("feeds/create"), this );
+        connect( job, SIGNAL(result(KJob*)), this, SLOT(feedCreated(KJob*)) );
+        setupJob( job );
+        job->setCollection( collection );
+        job->insertData( QLatin1String("url"), fc.xmlUrl() );
+        job->insertData( QLatin1String("folderid"), parent.remoteId() );
+        job->start();
+    }
 }
 
 void OwncloudRssResource::collectionRemoved( const Collection &collection )

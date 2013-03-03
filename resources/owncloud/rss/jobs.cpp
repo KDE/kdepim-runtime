@@ -24,6 +24,10 @@
 #include <KDebug>
 #include <KLocalizedString>
 
+#include <QUrl>
+
+static const QString prefix = QLatin1String("ocs/v1.php/news/");
+
 ParseException::ParseException( const QString& message )
     : std::runtime_error( message.toStdString() )
     , m_message( message )
@@ -39,6 +43,16 @@ QString ParseException::message() const {
 Job::Job( QObject* parent )
     : KJob( parent )
 {
+}
+
+void Job::setCollection( const Akonadi::Collection& c )
+{
+    m_collection = c;
+}
+
+Akonadi::Collection Job::collection() const
+{
+    return m_collection;
 }
 
 void Job::start()
@@ -76,12 +90,54 @@ QString Job::password() const
     return m_password;
 }
 
-static const QString prefix = QLatin1String("ocs/v1.php/news/");
-
-KUrl Job::assembleUrl( const QString& path ) const
+PostJob::PostJob( const QString& path, QObject* parent )
+    : Job( parent )
 {
-    KUrl u = m_url;
-    QString basepath = m_url.path();
+    setPath( path );
+}
+
+KUrl PostJob::assembleUrl( const QString& path ) const
+{
+    KUrl u = url();
+    QString basepath = u.path();
+    if ( !basepath.endsWith( QLatin1Char('/') ) )
+        basepath += QLatin1Char('/');
+    u.setPath( basepath + prefix + path );
+    return u;
+}
+
+void PostJob::insertData( const QString& key, const QString& value )
+{
+    m_postData.insert( key, value );
+}
+
+void PostJob::doStart()
+{
+    QUrl enc;
+    QMap<QString, QString>::ConstIterator it = m_postData.constBegin();
+    for ( ; it != m_postData.constEnd(); ++it )
+        enc.addQueryItem( it.key(), it.value() );
+
+
+    const QByteArray postData = enc.encodedQuery();
+    qDebug() << postData;
+
+    const KUrl url = assembleUrl( path() );
+
+    KIO::TransferJob* transfer = KIO::http_post( url, postData, KIO::HideProgressInfo );
+    transfer->addMetaData ( QLatin1String("customHTTPHeader"), "Authorization: Basic " + QString( username() + QLatin1Char(':') + password() ).toUtf8().toBase64() );
+    connect( transfer, SIGNAL(result(KJob*)), this, SLOT(jobFinished(KJob*)) );
+}
+
+GetJob::GetJob( QObject* parent )
+    : Job( parent )
+{
+}
+
+KUrl GetJob::assembleUrl( const QString& path ) const
+{
+    KUrl u = url();
+    QString basepath = u.path();
     if ( !basepath.endsWith( QLatin1Char('/') ) )
         basepath += QLatin1Char('/');
     u.setPath( basepath + prefix + path );
@@ -89,11 +145,11 @@ KUrl Job::assembleUrl( const QString& path ) const
     return u;
 }
 
-void Job::doStart()
+void GetJob::doStart()
 {
-    const KUrl url = assembleUrl( m_path );
+    const KUrl url = assembleUrl( path() );
     KIO::TransferJob* transfer = KIO::get( url, KIO::Reload, KIO::HideProgressInfo );
-    transfer->addMetaData ( QLatin1String("customHTTPHeader"), "Authorization: Basic " + QString( m_username + QLatin1Char(':') + m_password ).toUtf8().toBase64() );
+    transfer->addMetaData ( QLatin1String("customHTTPHeader"), "Authorization: Basic " + QString( username() + QLatin1Char(':') + password() ).toUtf8().toBase64() );
     connect( transfer, SIGNAL(data(KIO::Job*,QByteArray)),
              this, SLOT(data(KIO::Job*,QByteArray)) );
     connect( transfer, SIGNAL(result(KJob*)), this, SLOT(jobFinished(KJob*)) );
@@ -104,12 +160,18 @@ void Job::setPath( const QString& path )
     m_path = path;
 }
 
-void Job::data( KIO::Job *job, const QByteArray &data )
+QString Job::path() const
 {
+    return m_path;
+}
+
+void GetJob::data( KIO::Job *job, const QByteArray &data )
+{
+    Q_UNUSED( job )
     m_buffer.append( data );
 }
 
-void Job::jobFinished( KJob *j )
+void GetJob::jobFinished( KJob *j )
 {
     KIO::TransferJob* job = qobject_cast<KIO::TransferJob*>( j );
 
@@ -151,7 +213,7 @@ void Job::jobFinished( KJob *j )
 }
 
 ListNodeJob::ListNodeJob( Type type, QObject* parent )
-    : Job( parent )
+    : GetJob( parent )
     , m_type( type )
 {
     setPath( type == Feeds ? QLatin1String("feeds") : QLatin1String("folders") );

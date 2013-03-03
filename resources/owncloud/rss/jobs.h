@@ -27,6 +27,8 @@
 
 #include <QXmlStreamReader>
 
+#include <Akonadi/Collection>
+
 #include <stdexcept>
 
 class ParseException : public std::runtime_error {
@@ -39,11 +41,9 @@ private:
 };
 
 class Job : public KJob {
-    Q_OBJECT
-public:
-    explicit Job( QObject* parent );
 
-    void start();
+public:
+    explicit Job( QObject* parent=0 );
 
     KUrl url() const;
     void setUrl( const KUrl& );
@@ -54,6 +54,32 @@ public:
     QString password() const;
     void setPassword( const QString& password );
 
+    Akonadi::Collection collection() const;
+    void setCollection( const Akonadi::Collection& collection );
+
+    void start();
+
+protected:
+    void setPath( const QString& );
+    QString path() const;
+
+private:
+    Q_INVOKABLE virtual void doStart() = 0;
+
+private:
+    KUrl m_url;
+    QString m_path;
+    QString m_username;
+    QString m_password;
+    Akonadi::Collection m_collection;
+};
+
+class GetJob : public Job {
+    Q_OBJECT
+public:
+    explicit GetJob( QObject* parent );
+
+
     enum Error {
         IOError=KJob::UserDefinedError,
         XmlError,
@@ -61,8 +87,6 @@ public:
         OwncloudUserDefinedError
     };
 
-protected:
-    void setPath( const QString& );
     /**
      * @throws ParseException
      */
@@ -77,15 +101,26 @@ private Q_SLOTS:
     void jobFinished( KJob* job );
 
 private:
-    KUrl m_url;
-    QString m_path;
-    QString m_username;
-    QString m_password;
     QByteArray m_buffer;
 };
 
 
-class ListNodeJob : public Job {
+class PostJob : public Job {
+    Q_OBJECT
+public:
+    explicit PostJob( const QString& path, QObject* parent=0 );
+
+    void insertData( const QString& key, const QString& value );
+
+private:
+     Q_INVOKABLE void doStart();
+     KUrl assembleUrl( const QString& path ) const;
+
+private:
+     QMap<QString,QString> m_postData;
+};
+
+class ListNodeJob : public GetJob {
     Q_OBJECT
 public:
     enum Type {
