@@ -33,7 +33,6 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mFetchSize( fetchSize ),
   mRunningJobs( 0 ),
   mProcessingDelay( 0 ),
-  mItemsAreNotIndexed( false ),
   mAverageIndexingTime(0),
   mNumberOfIndexedItems(0)
 {
@@ -98,11 +97,6 @@ void ItemQueue::loadState()
     mItemPipelineBackup.enqueue(id);
   }
   mItemPipeline = mItemPipelineBackup;
-}
-
-void ItemQueue::setItemsAreNotIndexed(bool enable)
-{
-  mItemsAreNotIndexed = enable;
 }
 
 void ItemQueue::addToQueue(Akonadi::Entity::Id id)
