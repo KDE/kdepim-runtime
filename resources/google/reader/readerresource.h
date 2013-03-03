@@ -44,7 +44,7 @@ class ReaderResource : public GoogleResource
     virtual void retrieveCollections();
     virtual bool retrieveItem( const Akonadi::Item& item, const QSet< QByteArray >& parts );
     virtual void retrieveItems( const Akonadi::Collection& collection );
-    void slotCacheTimeout();
+    void slotAccountInfoRetrieved(KGAPI2::Job*);
 
   protected Q_SLOTS:
     virtual void collectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent );
@@ -60,6 +60,7 @@ class ReaderResource : public GoogleResource
     virtual QList< QUrl > scopes() const;
     virtual GoogleSettings* settings() const;
     virtual void updateResourceName();
+    virtual bool handleError( KGAPI2::Job *job );
 
   private Q_SLOTS:
     void slotCollectionsRetrieved( KGAPI2::Job *job );
@@ -68,8 +69,11 @@ class ReaderResource : public GoogleResource
     void slotEditTokenRetrieved( KGAPI2::Job *job );
     void iconChanged( bool success, const QString &host, const QString &iconName );
 
+    void slotCacheTimeout();
+    void slotConfigurationProbablyChanged();
+
   private:
-    void fetchEditToken();
+    void fetchEditToken( KGAPI2::Job *job  = 0 );
     void fetchFavicon( KRss::FeedCollection &collection );
 
 

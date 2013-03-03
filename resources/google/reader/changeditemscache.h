@@ -29,34 +29,22 @@ class ChangedItemsCache : public QObject
 {
   Q_OBJECT
   public:
-    struct CacheItem {
-        Akonadi::Item::Id id;
-        QString itemId;
-        QString feedId;
-
-        typedef QList< CacheItem > List;
-    };
-
     explicit ChangedItemsCache( const QString &resourceName, QObject *parent = 0 );
     virtual ~ChangedItemsCache();
 
     void addItem( const Akonadi::Item &item );
-    void addItem( const CacheItem &item );
-    void removeItem( const Akonadi::Item::Id &id );
     void clear();
 
     bool isEmpty() const;
-    CacheItem::List items() const;
+    QStringList readItems() const;
+    QStringList unreadItems() const;
 
   private:
     void write();
 
-    QMap< Akonadi::Item::Id, CacheItem > m_cache;
+    QStringList m_readItems;
+    QStringList m_unreadItems;
     QString m_cacheFile;
 };
-
-QDataStream& operator<< ( QDataStream &out, const ChangedItemsCache::CacheItem &item );
-
-QDataStream& operator>> ( QDataStream &in, ChangedItemsCache::CacheItem &item );
 
 #endif // CHANGEDITEMSCACHE_H

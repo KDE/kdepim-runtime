@@ -23,6 +23,8 @@
 #include <KDE/KApplication>
 #include <KDE/KStandardDirs>
 
+#include <KRss/Item>
+
 #include <QtCore/QFile>
 #include <Akonadi/Collection>
 
@@ -36,7 +38,18 @@ ChangedItemsCache::ChangedItemsCache( const QString &resourceName, QObject *pare
     if ( cacheFile.exists() ) {
         if (cacheFile.open( QIODevice::ReadOnly ) ) {
             QDataStream cache( &cacheFile );
-            cache >> m_cache;
+            QString id;
+            bool isRead;
+            while ( !cache.atEnd() ) {
+                cache >> id;
+                cache >> isRead;
+
+                if (isRead) {
+                    m_readItems << id;
+                } else {
+                    m_unreadItems << id;
+                }
+            }
             cacheFile.close();
         }
     }
@@ -49,40 +62,32 @@ ChangedItemsCache::~ChangedItemsCache()
 
 void ChangedItemsCache::addItem( const Akonadi::Item &item )
 {
-    CacheItem cacheItem = {
-        item.id(),
-        item.remoteId(),
-        item.parentCollection().remoteId()
-    };
-
-    m_cache.insert( cacheItem.id, cacheItem );
-}
-
-void ChangedItemsCache::addItem( const ChangedItemsCache::CacheItem& item )
-{
-    m_cache.insert( item.id, item );
-}
-
-
-void ChangedItemsCache::removeItem( const Akonadi::Entity::Id &id )
-{
-    m_cache.remove( id );
+    if ( KRss::Item::isRead( item ) ) {
+        m_readItems << item.remoteId();
+    } else if ( KRss::Item::isUnread( item ) ) {
+        m_unreadItems << item.remoteId();
+    }
 }
 
 void ChangedItemsCache::clear()
 {
-    m_cache.clear();
+    m_readItems.clear();
+    m_unreadItems.clear();
 }
 
+QStringList ChangedItemsCache::readItems() const
+{
+    return m_readItems;
+}
+
+QStringList ChangedItemsCache::unreadItems() const
+{
+    return m_unreadItems;
+}
 
 bool ChangedItemsCache::isEmpty() const
 {
-    return m_cache.isEmpty();
-}
-
-ChangedItemsCache::CacheItem::List ChangedItemsCache::items() const
-{
-    return m_cache.values();
+    return m_readItems.isEmpty() && m_unreadItems.isEmpty();
 }
 
 void ChangedItemsCache::write()
@@ -92,28 +97,14 @@ void ChangedItemsCache::write()
     if ( cacheFile.open( QIODevice::WriteOnly ) ) {
         QDataStream cache( &cacheFile );
         cache.setVersion( QDataStream::Qt_4_7 );
-        cache << m_cache;
+        Q_FOREACH( const QString &id, m_readItems ) {
+            cache << m_readItems;
+            cache << true;
+        }
+        Q_FOREACH( const QString &id, m_unreadItems ) {
+            cache << m_unreadItems;
+            cache << false;
+        }
         cacheFile.close();
     }
 }
-
-QDataStream &operator<<( QDataStream &out, const ChangedItemsCache::CacheItem &item )
-{
-    out << item.id;
-    out << item.itemId;
-    out << item.feedId;
-
-    return out;
-}
-
-QDataStream &operator>>( QDataStream &in, ChangedItemsCache::CacheItem &item )
-{
-    in >> item.id;
-    in >> item.itemId;
-    in >> item.feedId;
-
-    return in;
-}
-
-
-

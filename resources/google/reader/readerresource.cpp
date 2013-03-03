@@ -46,9 +46,13 @@
 #include <KDE/KStandardDirs>
 
 #include <LibKGAPI2/Account>
+#include <LibKGAPI2/AccountInfo/AccountInfo>
+#include <LibKGAPI2/Reader/AccountInfoFetchJob>
 #include <LibKGAPI2/Reader/ReaderService>
 #include <LibKGAPI2/Reader/EditTokenFetchJob>
 #include <LibKGAPI2/Reader/ItemFetchJob>
+#include <LibKGAPI2/Reader/ItemModifyFlagsJob>
+#include <LibKGAPI2/Reader/StateChangingJob>
 #include <LibKGAPI2/Reader/StreamFetchJob>
 #include <LibKGAPI2/Reader/StreamMoveJob>
 #include <LibKGAPI2/Reader/StreamRenameJob>
@@ -58,10 +62,13 @@
 #include <LibKGAPI2/Reader/Item>
 #include <LibKGAPI2/Object>
 
+#define JOB_PROPERTY "_KGAPI2Job"
+
 using namespace Akonadi;
 using namespace KGAPI2;
 
 Q_DECLARE_METATYPE(KRss::FeedCollection)
+Q_DECLARE_METATYPE(KGAPI2::Job*)
 
 ReaderResource::ReaderResource( const QString& id ):
     GoogleResource( id )
@@ -81,6 +88,8 @@ ReaderResource::ReaderResource( const QString& id ):
     m_favicons = new QDBusInterface( "org.kde.kded", "/modules/favicons", "org.kde.FavIcon" );
     connect( m_favicons, SIGNAL(iconChanged(bool,QString,QString)),
              this, SLOT(iconChanged(bool,QString,QString)) );
+    connect( this, SIGNAL(configurationDialogAccepted()),
+             this, SLOT(slotConfigurationProbablyChanged()) );
 }
 
 ReaderResource::~ReaderResource()
@@ -116,6 +125,8 @@ void ReaderResource::updateResourceName()
 bool ReaderResource::canPerformTask(bool needsToken)
 {
     if ( needsToken && m_editToken.isEmpty() ) {
+        fetchEditToken();
+        deferTask();
         return false;
     }
 
@@ -186,13 +197,15 @@ void ReaderResource::collectionAdded( const Akonadi::Collection& collection, con
     KRss::FeedCollection feedCollection = collection;
     kDebug() << feedCollection.name() << feedCollection.isFolder();
 
-    /* An empty folder is not stored on server */ 
+    /* An empty folder is not stored on server */
     if ( feedCollection.isFolder() ) {
         feedCollection.setRights( Collection::CanCreateCollection |
-                    Collection::CanChangeCollection |
-                    Collection::CanDeleteCollection );
+                                  Collection::CanChangeCollection |
+                                  Collection::CanDeleteCollection );
         feedCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
         feedCollection.setAllowSubfolders( false );
+        const QString remoteId = QLatin1String("user/-/label/") + feedCollection.name();
+        feedCollection.setRemoteId( remoteId  );
         changeCommitted( feedCollection );
         return;
     }
@@ -279,21 +292,35 @@ void ReaderResource::collectionRemoved( const Akonadi::Collection& collection )
              this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
 }
 
-void ReaderResource::fetchEditToken()
+void ReaderResource::fetchEditToken( KGAPI2::Job *job )
 {
-    if ( !canPerformTask() ) {
+    // Don't use our implementation, we are not interested in state of edit token,
+    // we are trying to fetch it :)
+    if ( !GoogleResource::canPerformTask() ) {
         return;
     }
 
     Reader::EditTokenFetchJob *fetchJob = new Reader::EditTokenFetchJob( account(), this );
+    fetchJob->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
     connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
              this, SLOT(slotEditTokenRetrieved(KGAPI2::Job*)) );
 }
 
 void ReaderResource::slotEditTokenRetrieved( KGAPI2::Job* job )
 {
+    if ( !handleError( job ) ) {
+        return;
+    }
+
     Reader::EditTokenFetchJob *fetchJob = qobject_cast<Reader::EditTokenFetchJob*>( job );
     m_editToken = fetchJob->editToken();
+
+    KGAPI2::Job *aJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job*>();
+    if ( aJob ) {
+        Reader::StateChangingJob *changeJob = dynamic_cast<Reader::StateChangingJob*>( aJob );
+        changeJob->setEditToken( m_editToken );
+        aJob->restart();
+    }
 }
 
 void ReaderResource::slotCollectionsRetrieved( KGAPI2::Job *job )
@@ -433,7 +460,40 @@ void ReaderResource::slotRenameFolderFetchDone( KJob *job )
 
 void ReaderResource::slotCacheTimeout()
 {
+    if ( !canPerformTask( true ) ) {
+        return;
+    }
 
+    if ( Settings::self()->accountId().isEmpty() ) {
+        slotConfigurationProbablyChanged();
+        deferTask();
+        return;
+    }
+
+
+    QStringList readTags;
+    readTags << Reader::ReaderService::readTag( Settings::self()->accountId() );
+
+    QStringList unreadTags;
+    unreadTags << Reader::ReaderService::unreadTag( Settings::self()->accountId() );
+
+    if ( !m_cache->readItems().isEmpty() ) {
+        Reader::ItemModifyFlagsJob *job =
+            new Reader::ItemModifyFlagsJob( m_cache->readItems(), readTags, unreadTags,
+                                            m_editToken, account(), this );
+        connect( job, SIGNAL(finished(KGAPI2::Job*)),
+                 job, SLOT(deleteLater()) );
+    }
+
+    if ( !m_cache->unreadItems().isEmpty() ) {
+        Reader::ItemModifyFlagsJob *job =
+            new Reader::ItemModifyFlagsJob( m_cache->unreadItems(), unreadTags, readTags,
+                                            m_editToken, account(), this );
+        connect( job, SIGNAL(finished(KGAPI2::Job*)),
+                 job, SLOT(deleteLater()) );
+    }
+
+    m_cache->clear();
 }
 
 void ReaderResource::fetchFavicon( KRss::FeedCollection& collection )
@@ -486,6 +546,56 @@ void ReaderResource::iconChanged(bool success, const QString& host, const QStrin
     new CollectionModifyJob( collection, this );
 
 }
+
+void ReaderResource::slotConfigurationProbablyChanged()
+{
+    if ( !canPerformTask() ) {
+        return;
+    }
+
+    m_editToken.clear();
+    Settings::self()->setAccountId( QLatin1String( "" ) );
+
+    Reader::AccountInfoFetchJob *fetchJob = 
+        new Reader::AccountInfoFetchJob( account(), this );
+    connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotAccountInfoRetrieved(KGAPI2::Job*)) );
+}
+
+void ReaderResource::slotAccountInfoRetrieved( KGAPI2::Job *job )
+{
+    if ( !handleError( job ) ) {
+        return;
+    }
+
+    Reader::AccountInfoFetchJob *fetchJob =
+        qobject_cast<Reader::AccountInfoFetchJob*>( job );
+
+    Q_ASSERT( fetchJob->items().count() == 1 );
+    AccountInfoPtr accInfo = fetchJob->items().first().dynamicCast<AccountInfo>();
+    Settings::self()->setAccountId( accInfo->id() );
+
+    job->deleteLater();
+}
+
+bool ReaderResource::handleError( KGAPI2::Job* job )
+{
+    if (( job->error() == KGAPI2::NoError ) || ( job->error() == KGAPI2::OK )) {
+        return true;
+    }
+
+    // When EditTokenFetchJob fails with 401, the problem is in OAuth token
+    if ( ( job->error() == KGAPI2::Unauthorized ) &&
+         ( qobject_cast<Reader::EditTokenFetchJob*>( job ) == 0) &&
+         ( dynamic_cast<Reader::StateChangingJob*>( job ) != 0 ) ) {
+        fetchEditToken( job );
+        return false;
+    }
+
+
+    return GoogleResource::handleError( job );
+}
+
 
 
 AKONADI_RESOURCE_MAIN( ReaderResource )

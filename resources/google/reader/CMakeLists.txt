@@ -41,17 +41,3 @@ install(
   FILES googlereaderresource.desktop
   DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents"
 )
-
-######## Cache test utility ############
-
-set(chancheditemscachetest_SRCS
-  changeditemscache.cpp
-  changeditemscachetest.cpp
-)
-
-kde4_add_executable(changeditemscachetest ${chancheditemscachetest_SRCS})
-
-target_link_libraries(changeditemscachetest
-  ${QT_QTCORE_LIBRARY}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-)
