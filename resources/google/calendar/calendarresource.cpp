@@ -482,7 +482,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( calendar->title() );
-        attr->setIconName( "text-calendar" );
+        attr->setIconName( "view-calendar" );
 
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>( Entity::AddIfMissing );
         reminderAttr->setReminders( calendar->defaultReminders() );
