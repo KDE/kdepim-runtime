@@ -22,7 +22,8 @@
 #include <KDebug>
 
 RssItemSync::RssItemSync( const Akonadi::Collection &collection, QObject *parent )
-    : ItemSync( collection, parent ), m_synchronizeFlags( false )
+    : ItemSync( collection, parent )
+    , m_synchronizeFlags( false )
 {
 }
 

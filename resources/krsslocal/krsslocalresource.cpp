@@ -17,6 +17,7 @@
 */
 
 #include "krsslocalresource.h"
+#include "rsscollectionattribute.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "util.h"
@@ -74,6 +75,7 @@ KRssLocalResource::KRssLocalResource( const QString &id )
     connect( Settings::self(), SIGNAL(configChanged()), this, SLOT(configChanged()) );
 
     AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
+    AttributeFactory::registerAttribute<RssCollectionAttribute>();
 
     const QStringList localParts = QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload;
 
@@ -288,15 +290,10 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
 
     KRss::FeedCollection fc( c );
 
-    bool fcChanged = false;
-
     const Syndication::ImagePtr image = feed->image();
     const QString imageUrl = image ? image->url() : QString();
     const QString imageTitle = image ? image->title() : QString();
     const QString imageLink = image ? image->link() : QString();
-    fcChanged = fcChanged || imageUrl != fc.imageUrl();
-    fcChanged = fcChanged || imageTitle != fc.imageTitle();
-    fcChanged = fcChanged || imageLink != fc.imageLink();
 
     fc.setImageUrl( imageUrl );
     fc.setImageTitle( imageTitle );
@@ -308,20 +305,20 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
         fc.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( feed->title() );
         fc.setDescription( feed->description() );
         fc.setHtmlUrl( feed->link() );
-        fcChanged = true;
     }
+
+    const int fetchCounter = fc.attribute<RssCollectionAttribute>( Entity::AddIfMissing )->fetchCounter() + 1;
+    fc.attribute<RssCollectionAttribute>( Entity::AddIfMissing )->setFetchCounter( fetchCounter );
+    const QString fetchCounterString = QString::number( fetchCounter );
 
     // clear previous fetch error
     if ( fc.fetchError() ) {
         fc.setFetchError( false );
         fc.setFetchErrorString( QString() );
-        fcChanged = true;
     }
 
-    if ( fcChanged ) {
-        Akonadi::CollectionModifyJob* job = new Akonadi::CollectionModifyJob( fc );
-        job->start();
-    }
+    Akonadi::CollectionModifyJob* job = new Akonadi::CollectionModifyJob( fc );
+    job->start();
 
     QList<Syndication::ItemPtr> syndItems = feed->items();
     Akonadi::Item::List items;
@@ -330,6 +327,7 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
         Akonadi::Item item( KRss::Item::mimeType() );
         item.setRemoteId( syndItem->id() );
         item.setPayload<KRss::Item>( Util::fromSyndicationItem( syndItem, &now ) );
+        item.setRemoteRevision( fetchCounterString );
         items << item;
     }
 
@@ -338,6 +336,7 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
         m_syncer = new RssItemSync( fc );
         connect( m_syncer, SIGNAL(result(KJob*)), this, SLOT(slotItemSyncDone(KJob*)) );
     }
+
     m_syncer->setIncrementalSyncItems( items, Item::List() );
 }
 
