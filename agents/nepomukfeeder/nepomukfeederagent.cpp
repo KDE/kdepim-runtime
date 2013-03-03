@@ -368,7 +368,7 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
   for (;it != items.constEnd(); it++) {
     Akonadi::Item item( it.key() );
     item.setMimeType( it.value().second );
-    mQueue.addItem( item );
+    mQueue.addLowPrioItem( item );
   }
 
   NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->getItemsToRemove(), this);

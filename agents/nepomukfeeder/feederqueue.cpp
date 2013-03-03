@@ -197,10 +197,17 @@ static inline QString emailMimetype()
 void FeederQueue::addItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
+  highPrioQueue.addItem( item );
+  mProcessItemQueueTimer.start();
+}
+
+void FeederQueue::addLowPrioItem( const Akonadi::Item &item )
+{
+  kDebug() << item.id();
   if (item.mimeType() == emailMimetype()) {
     emailItemQueue.addItem( item );
   } else {
-    highPrioQueue.addItem( item );
+    lowPrioQueue.addItem( item );
   }
   mProcessItemQueueTimer.start();
 }

@@ -59,6 +59,7 @@ public:
   void addCollection(const Akonadi::Collection &);
   ///adds the item to the highPrioQueue or emailQueue
   void addItem(const Akonadi::Item &);
+  void addLowPrioItem(const Akonadi::Item &);
   /**
    * If enabled all items will be reindexed
    * The flag will be reset once all collections/items have been indexed
