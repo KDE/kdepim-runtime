@@ -26,18 +26,23 @@
 
 #include "resourcetask.h"
 
+namespace Akonadi {
+  class Session;
+}
+
 class RetrieveItemsTask : public ResourceTask
 {
   Q_OBJECT
 
 public:
-  explicit RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit RetrieveItemsTask( ResourceStateInterface::Ptr resource, Akonadi::Session *session = 0, QObject *parent = 0 );
   virtual ~RetrieveItemsTask();
 
   void setFastSyncEnabled( bool fastSync );
   bool isFastSyncEnabled() const;
 
 private slots:
+  void onFetchForBodyCheckDone( KJob *job );
   void onPreExpungeSelectDone( KJob *job );
   void onExpungeDone( KJob *job );
 
@@ -55,12 +60,12 @@ private slots:
                         const QMap<qint64, KIMAP::MessagePtr> &messages );
   void onFlagsFetchDone( KJob *job );
 
-
-
 protected:
   virtual void doStart( KIMAP::Session *session );
 
 private:
+  void checkForMissingBodies();
+  void startRetrievalTasks();
   void triggerPreExpungeSelect( const QString &mailBox );
   void triggerExpunge( const QString &mailBox );
   void triggerFinalSelect( const QString &mailBox );
@@ -68,7 +73,10 @@ private:
   void listFlagsForImapSet( const KIMAP::ImapSet& set );
 
   KIMAP::Session *m_session;
+  Akonadi::Session *m_akonadiSession;
   bool m_fastSync;
+  QList<qint64> m_messageUidsMissingBody;
+  int m_fetchedMissingBodies;
 };
 
 #endif

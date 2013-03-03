@@ -461,12 +461,7 @@ void KCalResource::collectionChanged( const Akonadi::Collection &collection )
 
   // currently only changing the top level collection's name supported
   if ( collection.parentCollection() == Collection::root() ) {
-    QString newName = collection.name();
-    if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
-      EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-      if ( !attr->displayName().isEmpty() )
-        newName = attr->displayName();
-    }
+    const QString newName = collection.displayName();
 
     if ( newName != mResource->resourceName() ) {
       mResource->setResourceName( newName );

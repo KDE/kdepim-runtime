@@ -266,9 +266,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
        !(newRights & Akonadi::Collection::CanCreateItem) &&
        !isNewCollection ) {
     // write access revoked
-    const QString collectionName = m_collection.hasAttribute<Akonadi::EntityDisplayAttribute>() ?
-                                     m_collection.attribute<Akonadi::EntityDisplayAttribute>()->displayName() :
-                                     m_collection.name();
+    const QString collectionName = m_collection.displayName();
 
     showInformationDialog( i18n( "<p>Your access rights to folder <b>%1</b> have been restricted, "
                                  "it will no longer be possible to add messages to this folder.</p>",

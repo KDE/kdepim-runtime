@@ -45,7 +45,7 @@ target_link_libraries(akonadi_googlecontacts_resource
   ${QT_QTNETWORK_LIBRARY}
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KIO_LIBS}
-  ${LibKGAPI_LIBRARY}
+  ${LibKGAPI2_LIBRARY}
 )
 
 install(TARGETS akonadi_googlecontacts_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

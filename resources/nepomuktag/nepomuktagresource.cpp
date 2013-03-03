@@ -236,11 +236,8 @@ void NepomukTagResource::collectionChanged(const Akonadi::Collection& collection
 {
   Q_UNUSED( partIdentifiers );
   Nepomuk2::Tag tag( collection.remoteId() );
+  tag.setLabel( collection.displayName() );
   EntityDisplayAttribute* attr = collection.attribute<EntityDisplayAttribute>();
-  if ( attr && !attr->displayName().isEmpty() )
-    tag.setLabel( attr->displayName() );
-  else
-    tag.setLabel( collection.name() );
   if ( attr && !attr->iconName().isEmpty() )
     tag.setSymbols( QStringList() << attr->iconName() );
   changeCommitted( collection );

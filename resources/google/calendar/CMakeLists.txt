@@ -61,7 +61,7 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${QJSON_LIBRARIES}
   ${QJSON_LIBRARY} # for Mac OSX
   ${qjson_LIBRARY} # for Debian
-  ${LibKGAPI_LIBRARY}
+  ${LibKGAPI2_LIBRARY}
 )
 
 install(TARGETS akonadi_googlecalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

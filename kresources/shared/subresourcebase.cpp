@@ -210,15 +210,7 @@ void SubResourceBase::collectionChanged( const Akonadi::Collection &collection )
 
 QString SubResourceBase::label( const Akonadi::Collection &collection )
 {
-  // if the collection has a display attribute and has a name stored in it
-  // take that, otherwise take the collection's name
-  if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
-    EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>();
-    if ( !attribute->displayName().isEmpty() )
-      return collection.attribute<EntityDisplayAttribute>()->displayName();
-  }
-
-  return collection.name();
+  return collection.displayName();
 }
 
 bool SubResourceBase::isWritable( const Akonadi::Collection &collection )

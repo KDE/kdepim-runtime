@@ -43,6 +43,7 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/session.h>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
@@ -151,10 +152,13 @@ ImapResource::ImapResource( const QString &id )
   Settings::self(); // make sure the D-Bus settings interface is up
   new ResourceAdaptor( this );
   setNeedsNetwork( needsNetwork() );
+
+  m_bodyCheckSession = new Akonadi::Session( identifier().toLatin1() + "_body_checker");
 }
 
 ImapResource::~ImapResource()
 {
+  delete m_bodyCheckSession;
 }
 
 void ImapResource::setFastSyncEnabled( bool fastSync )
@@ -414,7 +418,8 @@ void ImapResource::retrieveItems( const Collection &col )
   setItemStreamingEnabled( true );
 
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
-  RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
+  RetrieveItemsTask *task = new RetrieveItemsTask( state, m_bodyCheckSession, this );
+  connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
   task->setFastSyncEnabled( m_fastSync );
   task->start( m_pool );
   queueTask( task );

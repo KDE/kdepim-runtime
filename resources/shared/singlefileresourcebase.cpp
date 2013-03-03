@@ -162,11 +162,9 @@ void SingleFileResourceBase::setSupportedMimetypes( const QStringList & mimeType
 
 void SingleFileResourceBase::collectionChanged( const Akonadi::Collection & collection )
 {
-  QString newName = collection.name();
+  const QString newName = collection.displayName();
   if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
     EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-    if ( !attr->displayName().isEmpty() )
-      newName = attr->displayName();
     if ( !attr->iconName().isEmpty() )
       mCollectionIcon = attr->iconName();
   }

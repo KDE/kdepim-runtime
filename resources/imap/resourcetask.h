@@ -56,6 +56,9 @@ public:
 
   void kill();
 
+Q_SIGNALS:
+  void status( int status, const QString &message = QString() );
+
 protected:
   virtual void doStart( KIMAP::Session *session ) = 0;
 
@@ -109,7 +112,7 @@ protected:
   void emitPercent( int percent );
   void emitError( const QString &message );
   void emitWarning( const QString &message );
-  
+
 
   void synchronizeCollectionTree();
 

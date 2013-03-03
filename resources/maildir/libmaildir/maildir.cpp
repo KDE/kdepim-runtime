@@ -247,8 +247,11 @@ bool Maildir::Private::accessIsPossible( QString& error ) const
 
     Q_FOREACH ( const QString &p, paths ) {
         if ( !QFile::exists( p ) ) {
-            error = i18n( "Error opening %1; this folder is missing.", p );
-            return false;
+            QDir().mkpath( p );
+            if ( !QFile::exists( p ) ) {
+              error = i18n( "Error opening %1; this folder is missing.", p );
+              return false;
+            }
         }
         if ( !canAccess( p ) ) {
             error = i18n( "Error opening %1; either this is not a valid "

@@ -323,26 +323,16 @@ void CalendarResource::collectionAdded( const Collection &collection, const Coll
         return;
     }
 
-    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-
     KGAPI2::Job *job;
     if ( collection.contentMimeTypes().contains( KCalCore::Event::eventMimeType() ) ) {
         CalendarPtr calendar( new Calendar() );
-        if ( attr ) {
-            calendar->setTitle( attr->displayName() );
-        } else {
-            calendar->setTitle( collection.name() );
-        }
+        calendar->setTitle( collection.displayName() );
         calendar->setEditable( true );
         job = new CalendarCreateJob( calendar, account(), this );
 
     } if ( collection.contentMimeTypes().contains( KCalCore::Todo::todoMimeType() ) ) {
         TaskListPtr taskList( new TaskList() );
-        if ( attr ) {
-            taskList->setTitle( attr->displayName() );
-        } else {
-            taskList->setTitle( collection.name() );
-        }
+        taskList->setTitle( collection.displayName() );
 
         job = new TaskListCreateJob( taskList, account(), this );
     } else {
@@ -482,7 +472,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( calendar->title() );
-        attr->setIconName( "text-calendar" );
+        attr->setIconName( "view-calendar" );
 
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>( Entity::AddIfMissing );
         reminderAttr->setReminders( calendar->defaultReminders() );
@@ -510,7 +500,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( taskList->title() );
-        attr->setIconName( "text-calendar" );
+        attr->setIconName( "view-pim-tasks" );
 
         m_collections[ collection.remoteId() ] = collection;
     }
@@ -743,15 +733,17 @@ void CalendarResource::slotCreateJobFinished( KGAPI2::Job *job )
         EventPtr event = objects.first().dynamicCast<Event>();
         item.setRemoteId( event->uid() );
         item.setRemoteRevision( event->etag() );
+        changeCommitted( item );
+        item.setPayload<KCalCore::Event::Ptr>( event.dynamicCast<KCalCore::Event>() );
+        new ItemModifyJob( item, this );
     } else if ( item.mimeType() == KCalCore::Todo::todoMimeType() ) {
         TaskPtr task = objects.first().dynamicCast<Task>();
         item.setRemoteId( task->uid() );
         item.setRemoteRevision( task->etag() );
+        changeCommitted( item );
+        item.setPayload<KCalCore::Todo::Ptr>( task.dynamicCast<KCalCore::Todo>() );
+        new ItemModifyJob( item, this );
     }
-
-    changeCommitted( item );
 }
-
-
 
 AKONADI_RESOURCE_MAIN( CalendarResource );

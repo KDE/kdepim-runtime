@@ -130,6 +130,7 @@ private:
   QPointer<SubscriptionDialog> mSubscriptions;
   ImapIdleManager *m_idle;
   bool m_fastSync;
+  Akonadi::Session *m_bodyCheckSession;
 };
 
 #endif
