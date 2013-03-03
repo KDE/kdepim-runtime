@@ -169,7 +169,7 @@ public:
         kDebug() << "Destination does not exist";
         return false;
       }
-      if ( dest.exists( newName ) || dest.exists( QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
+      if ( dest.exists( newName ) || dest.exists( subDirNameForFolderName( newName ) ) ) {
         kDebug() << "New name already in use";
         return false;
       }
@@ -179,7 +179,7 @@ public:
         return false;
       }
       const QDir subDirs( Maildir::subDirPathForFolderPath( path ) );
-      if ( subDirs.exists() && !dest.rename( subDirs.path(), QString::fromLatin1( ".%1.directory" ).arg( newName ) ) ) {
+      if ( subDirs.exists() && !dest.rename( subDirs.path(), subDirNameForFolderName( newName ) ) ) {
         kDebug() << "Failed to rename subfolders";
         return false;
       }
@@ -348,7 +348,11 @@ bool Maildir::removeSubFolder( const QString& folderName )
     if ( !dir.exists( folderName ) ) return false;
 
     // remove it recursively
-    return KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + QLatin1Char( '/' ) + folderName );
+    bool result = KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + QLatin1Char( '/' ) + folderName );
+    QString subfolderName = subDirNameForFolderName(folderName);
+    if ( dir.exists( subfolderName ) )
+      result &= KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + QLatin1Char( '/' ) + subfolderName );
+    return result;
 }
 
 Maildir Maildir::subFolder( const QString& subFolder ) const
