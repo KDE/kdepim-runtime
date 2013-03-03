@@ -74,11 +74,8 @@ KJob *addCollectionToNepomuk( const Akonadi::Collection &collection)
 
   const Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
 
-  if ( attr && !attr->displayName().isEmpty() ) {
-      res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), attr->displayName() );
-  } else {
-      res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), collection.name() );
-  }
+  res.setProperty( Soprano::Vocabulary::NAO::prefLabel(), collection.displayName() );
+
   if ( attr && !attr->iconName().isEmpty() )
       NepomukFeederUtils::setIcon( attr->iconName(), res, graph );
 

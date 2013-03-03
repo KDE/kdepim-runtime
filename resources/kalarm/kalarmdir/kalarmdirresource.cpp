@@ -835,14 +835,7 @@ void KAlarmDirResource::collectionChanged(const Akonadi::Collection& collection)
     kDebug();
     // If the collection has a new display name, set the resource's display
     // name the same, and save to the settings.
-    QString newName = collection.name();
-    EntityDisplayAttribute* attr = 0;
-    if (collection.hasAttribute<EntityDisplayAttribute>())
-    {
-        attr = collection.attribute<EntityDisplayAttribute>();
-        if (!attr->displayName().isEmpty())
-            newName = attr->displayName();
-    }
+    const QString newName = collection.displayName();
     if (!newName.isEmpty()  &&  newName != name())
         setName(newName);
     if (newName != mSettings->displayName())

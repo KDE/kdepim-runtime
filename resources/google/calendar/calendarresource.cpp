@@ -323,26 +323,16 @@ void CalendarResource::collectionAdded( const Collection &collection, const Coll
         return;
     }
 
-    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-
     KGAPI2::Job *job;
     if ( collection.contentMimeTypes().contains( KCalCore::Event::eventMimeType() ) ) {
         CalendarPtr calendar( new Calendar() );
-        if ( attr ) {
-            calendar->setTitle( attr->displayName() );
-        } else {
-            calendar->setTitle( collection.name() );
-        }
+        calendar->setTitle( collection.displayName() );
         calendar->setEditable( true );
         job = new CalendarCreateJob( calendar, account(), this );
 
     } if ( collection.contentMimeTypes().contains( KCalCore::Todo::todoMimeType() ) ) {
         TaskListPtr taskList( new TaskList() );
-        if ( attr ) {
-            taskList->setTitle( attr->displayName() );
-        } else {
-            taskList->setTitle( collection.name() );
-        }
+        taskList->setTitle( collection.displayName() );
 
         job = new TaskListCreateJob( taskList, account(), this );
     } else {

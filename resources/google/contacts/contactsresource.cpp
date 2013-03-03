@@ -311,12 +311,7 @@ void ContactsResource::collectionChanged( const Akonadi::Collection &collection 
     ContactsGroupPtr group( new ContactsGroup() );
     group->setId( collection.remoteId() );
 
-    if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-        group->setTitle( attr->displayName() );
-    } else {
-        group->setTitle( collection.name() );
-    }
+    group->setTitle( collection.displayName() );
 
     ContactsGroupModifyJob *modifyJob = new ContactsGroupModifyJob( group, account(), this );
     modifyJob->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
