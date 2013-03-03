@@ -51,6 +51,7 @@ class ContactsResource: public GoogleResource
     virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
                             const Akonadi::Collection &collectionDestination );
 
+    virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
     virtual void collectionChanged( const Akonadi::Collection &collection );
     virtual void collectionRemoved( const Akonadi::Collection &collection );
 
@@ -62,6 +63,8 @@ class ContactsResource: public GoogleResource
 
     void slotUpdatePhotosItemsRetrieved( KJob *job );
     void slotUpdatePhotoFinished( KGAPI2::Job *job, const KGAPI2::ContactPtr &contact );
+
+    void slotCreateJobFinished( KGAPI2::Job *job );
 
     virtual GoogleSettings *settings() const;
     virtual int runConfigurationDialog( WId windowId );

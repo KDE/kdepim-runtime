@@ -176,7 +176,7 @@ void ContactsResource::itemAdded( const Item &item, const Collection &collection
     connect( createJob, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
              this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
     connect( createJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotGenericJobFinished( KGAPI2::Job * ) ) );
+             this, SLOT( slotCreateJobFinished( KGAPI2::Job * ) ) );
 }
 
 void ContactsResource::itemChanged( const Item &item, const QSet< QByteArray > &partIdentifiers )
@@ -283,6 +283,24 @@ void ContactsResource::itemUnlinked( const Item &item, const Collection &collect
              this, SLOT( slotGenericJobFinished( KGAPI2::Job * ) ) );
 }
 
+void ContactsResource::collectionAdded( const Akonadi::Collection &collection,
+                                        const Akonadi::Collection &parent )
+{
+    Q_UNUSED( parent );
+
+    if ( !canPerformTask() ) {
+        return;
+    }
+
+    ContactsGroupPtr group( new ContactsGroup );
+    group->setTitle( collection.name() );
+    group->setIsSystemGroup( false );
+
+    ContactsGroupCreateJob *createJob = new ContactsGroupCreateJob( group, account(), this );
+    createJob->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
+    connect( createJob, SIGNAL(finished( KGAPI2::Job* )),
+             this, SLOT( slotCreateJobFinished( KGAPI2::Job* ) ) );
+}
 
 void ContactsResource::collectionChanged( const Akonadi::Collection &collection )
 {
@@ -329,12 +347,13 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     const ObjectsList objects = fetchJob->items();
 
     m_rootCollection = Collection();
-    m_rootCollection.setContentMimeTypes( QStringList() << Collection::mimeType()
+    m_rootCollection.setContentMimeTypes( QStringList() << Collection::virtualMimeType()
                                                         << KABC::Addressee::mimeType() );
     m_rootCollection.setRemoteId( MYCONTACTS_REMOTEID );
     m_rootCollection.setName( account()->accountName() );
     m_rootCollection.setParent( Collection::root() );
-    m_rootCollection.setRights( Collection::CanCreateItem |
+    m_rootCollection.setRights( Collection::CanCreateCollection |
+                                Collection::CanCreateItem |
                                 Collection::CanChangeItem |
                                 Collection::CanDeleteItem);
 
@@ -383,6 +402,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( realName );
+        attr->setIconName( "view-pim-contacts" );
 
         m_collections[ collection.remoteId() ] = collection;
     }
@@ -398,6 +418,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
     attr = otherCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
     attr->setDisplayName( i18n( "Other Contacts" ) );
+    attr->setIconName( "view-pim-contacts" );
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
     collectionsRetrieved( m_collections.values() );
@@ -506,5 +527,38 @@ void ContactsResource::slotUpdatePhotoFinished( KGAPI2::Job *job, const ContactP
         }
     }
 }
+
+void ContactsResource::slotCreateJobFinished( KGAPI2::Job* job )
+{
+    Item item = job->property( ITEM_PROPERTY ).value<Item>();
+    Collection collection = job->property( COLLECTION_PROPERTY ).value<Collection>();
+    if ( item.isValid() ) {
+        ContactCreateJob *createJob = qobject_cast<ContactCreateJob*>( job );
+        Q_ASSERT( createJob->items().count() == 1);
+        ContactPtr contact = createJob->items().first().dynamicCast<Contact>();
+
+        item.setRemoteId( contact->uid() );
+        item.setRemoteRevision( contact->etag() );
+        changeCommitted( item );
+    } else if ( collection.isValid() ) {
+        ContactsGroupCreateJob *createJob = qobject_cast<ContactsGroupCreateJob*>( job );
+        Q_ASSERT( createJob->items().count() == 1);
+        ContactsGroupPtr group = createJob->items().first().dynamicCast<ContactsGroup>();
+
+        collection.setRemoteId( group->id() );
+        collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
+
+        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
+        attr->setDisplayName( group->title() );
+        attr->setIconName( "view-pim-contacts" );
+
+        m_collections[ collection.remoteId() ] = collection;
+
+        changeCommitted( collection );
+    }
+
+    job->deleteLater();
+}
+
 
 AKONADI_RESOURCE_MAIN( ContactsResource )
