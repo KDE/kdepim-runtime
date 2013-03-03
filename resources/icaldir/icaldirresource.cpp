@@ -101,7 +101,6 @@ void ICalDirResource::configure( WId windowId )
   SettingsDialog dlg( windowId );
   dlg.setWindowIcon( KIcon( "text-calendar" ) );
   if ( dlg.exec() ) {
-    clearCache();
     initializeICalDirectory();
     loadIncidences();
 
@@ -233,7 +232,7 @@ void ICalDirResource::retrieveCollections()
   Collection c;
   c.setParentCollection( Collection::root() );
   c.setRemoteId( iCalDirectoryName() );
-  c.setName( i18n( "Calendar Folder" ) );
+  c.setName( name() );
   c.setContentMimeTypes( QStringList() << "text/calendar" );
   if ( Settings::self()->readOnly() ) {
     c.setRights( Collection::CanChangeCollection );
@@ -247,6 +246,7 @@ void ICalDirResource::retrieveCollections()
   }
 
   EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attr->setDisplayName( i18n( "Calendar Folder" ) );
   attr->setIconName( "office-calendar" );
 
   Collection::List list;

@@ -60,7 +60,6 @@ void VCardDirResource::configure( WId windowId )
   SettingsDialog dlg( windowId );
   dlg.setWindowIcon( KIcon( "text-directory" ) );
   if ( dlg.exec() ) {
-    clearCache();
     initializeVCardDirectory();
     loadAddressees();
 
@@ -90,7 +89,7 @@ bool VCardDirResource::loadAddressees()
           mAddressees.insert( addr.uid(), addr );
         }
       } else {
-	kDebug()<<" file can't be load "<<it.filePath();
+        kDebug()<<" file can't be load "<<it.filePath();
       }
     }
   }
@@ -224,6 +223,7 @@ void VCardDirResource::retrieveCollections()
   }
 
   EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+  attr->setDisplayName( i18n( "Contacts Folder" ) );
   attr->setIconName( "x-office-address-book" );
 
   Collection::List list;
