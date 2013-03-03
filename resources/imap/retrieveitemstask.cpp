@@ -30,6 +30,10 @@
 #include <akonadi/collectionstatistics.h>
 #include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/messageparts.h>
+#include <akonadi/agentbase.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
+#include <akonadi/session.h>
 
 #include <KDE/KDebug>
 #include <KDE/KLocale>
@@ -39,8 +43,8 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
-RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_fastSync( false )
+RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, Akonadi::Session *session, QObject *parent )
+  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_akonadiSession(session), m_fastSync( false ), m_fetchedMissingBodies(-1)
 {
 
 }
@@ -74,6 +78,49 @@ void RetrieveItemsTask::doStart( KIMAP::Session *session )
 
   m_session = session;
 
+  Akonadi::Collection col = collection();
+  if ( col.cachePolicy()
+       .localParts().contains( Akonadi::MessagePart::Body ) ) { //disconnected mode, make sure we really have the body cached
+     checkForMissingBodies();
+  } else {
+     startRetrievalTasks();
+  }
+}
+
+void RetrieveItemsTask::checkForMissingBodies()
+{
+  m_messageUidsMissingBody.clear();
+  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection(), m_akonadiSession);
+  job->fetchScope().setCheckForCachedPayloadPartsOnly();
+  job->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(onFetchForBodyCheckDone(KJob*)));
+}
+
+void RetrieveItemsTask::onFetchForBodyCheckDone(KJob* job)
+{
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+  } else {
+    const Akonadi::Item::List items = dynamic_cast<Akonadi::ItemFetchJob*>(job)->items();
+    int i = 0;
+    Q_FOREACH( const Akonadi::Item &item, items)  {
+      if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
+          kDebug() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
+          m_messageUidsMissingBody.append(item.remoteId().toInt());
+          i++;
+      }
+    }
+    if (i > 0) {
+      kDebug() << "Number of items missing the body: " << i;
+    }
+  }
+
+  startRetrievalTasks();
+}
+
+
+void RetrieveItemsTask::startRetrievalTasks()
+{
   const QString mailBox = mailBoxForCollection( collection() );
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
@@ -228,6 +275,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   }
 
   const qint64 realMessageCount = col.statistics().count();
+  m_fetchedMissingBodies = -1;
 
   // First check the uidvalidity, if this has changed, it means the folder
   // has been deleted and recreated. So we wipe out the messages and
@@ -242,7 +290,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     fetch->setScope( scope );
     connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
            this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-  connect( fetch, SIGNAL(result(KJob*)),
+    connect( fetch, SIGNAL(result(KJob*)),
            this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( messageCount > realMessageCount && messageCount > 0 ) {
@@ -255,7 +303,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     fetch->setScope( scope );
     connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
            this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-  connect( fetch, SIGNAL(result(KJob*)),
+    connect( fetch, SIGNAL(result(KJob*)),
            this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
@@ -279,7 +327,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     fetch->setScope( scope );
     connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
            this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-  connect( fetch, SIGNAL(result(KJob*)),
+    connect( fetch, SIGNAL(result(KJob*)),
            this, SLOT(onHeadersFetchDone(KJob*)) );
     fetch->start();
   } else if ( m_fastSync ) {
@@ -289,6 +337,20 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     itemsRetrievedIncremental( Akonadi::Item::List(), Akonadi::Item::List() );
     itemsRetrievalDone();
     return;
+  } else if (!m_messageUidsMissingBody.isEmpty() ) {
+    m_fetchedMissingBodies = 0;
+    //fetch missing uids
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    KIMAP::ImapSet imapSet;
+    imapSet.add( m_messageUidsMissingBody );
+    fetch->setSequenceSet( imapSet );
+    fetch->setScope( scope );
+    fetch->setUidBased(true);
+    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
+             this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
+    connect( fetch, SIGNAL(result(KJob*)),
+             this, SLOT(onHeadersFetchDone(KJob*)) );
+    fetch->start();
   } else if ( messageCount > 0 ) {
     kDebug( 5327 ) << "All fine, asking for all message flags looking for changes";
     listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ) );
@@ -319,8 +381,6 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
                                            const QMap<qint64, KIMAP::MessageFlags> &flags,
                                            const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
-  Q_UNUSED( mailBox );
-
   Akonadi::Item::List addedItems;
 
   foreach ( qint64 number, uids.keys() ) { //krazy:exclude=foreach
@@ -353,10 +413,19 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
   } else {
     itemsRetrieved( addedItems );
   }
+
+  //m_fetchedMissingBodies is -1 if we fetch for other reason, but missing bodies
+  if ( m_fetchedMissingBodies != -1 ) {
+    m_fetchedMissingBodies += addedItems.count();
+    emit status(Akonadi::AgentBase::Running,
+                i18nc( "@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
+  }
 }
 
 void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
 {
+  m_fetchedMissingBodies = -1;
+
   if ( job->error() ) {
       cancelTask( job->errorString() );
       return;
