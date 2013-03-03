@@ -128,7 +128,7 @@ void ItemQueue::addItems(const Akonadi::Item::List &list )
 
 bool ItemQueue::processItem()
 {
-  //kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
+  kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
   if ( mRunningJobs > 0 ) {//wait until the old graph has been saved
     //kDebug() << "blocked: " << mRunningJobs;
     return false;
@@ -244,16 +244,16 @@ void ItemQueue::removeDataResult(KJob* job)
 void ItemQueue::batchJobResult(KJob* job)
 {
   mRunningJobs--;
-//   kDebug() << "------------------------------------------";
-//   kDebug() << "pipline size: " << mItemPipeline.size();
-//   kDebug() << "fetchedItemList : " << mFetchedItemList.size();
+  kDebug() << "------------------------------------------";
+  kDebug() << "pipline size: " << mItemPipeline.size();
+  kDebug() << "fetchedItemList : " << mFetchedItemList.size();
 
-//   kDebug() << "Indexing took(ms): " << mTimer.elapsed();
-//   mNumberOfIndexedItems++;
-//   mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
-//   kDebug() << "Average (ms): " << mAverageIndexingTime;
-  Q_ASSERT( mBatch.isEmpty() );
+  kDebug() << "Indexing took(ms): " << mTimer.elapsed();
+  mNumberOfIndexedItems++;
+  mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
+  kDebug() << "Average (ms): " << mAverageIndexingTime;
   const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
+  Q_ASSERT( mBatch.isEmpty() );
   if ( job->error() ) {
     kWarning() << "Error while storing graph";
     foreach( const Nepomuk2::SimpleResource &res, graph.toList() ) {
