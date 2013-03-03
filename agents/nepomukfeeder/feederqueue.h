@@ -57,9 +57,8 @@ public:
 
   ///add the collection to the queue, all items of it will be fetched and indexed
   void addCollection(const Akonadi::Collection &);
-  ///adds the item to the highPrioQueue
+  ///adds the item to the highPrioQueue or emailQueue
   void addItem(const Akonadi::Item &);
-  void addUnindexedItem(const Akonadi::Item &);
   /**
    * If enabled all items will be reindexed
    * The flag will be reset once all collections/items have been indexed
@@ -124,7 +123,7 @@ private:
 
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
-  ItemQueue unindexedItemQueue;
+  ItemQueue emailItemQueue;
 };
 
 
