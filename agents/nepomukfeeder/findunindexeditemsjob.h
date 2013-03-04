@@ -22,26 +22,42 @@
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 
+namespace Soprano {
+    namespace Util {
+        class AsyncQuery;
+    }
+}
+
 class FindUnindexedItemsJob: public KJob
 {
     Q_OBJECT
 public:
+
+    typedef QHash< Akonadi::Item::Id, QPair< QDateTime, QString > > ItemHash;
+
     explicit FindUnindexedItemsJob(int compatLevel, QObject* parent = 0);
+    ~FindUnindexedItemsJob();
     virtual void start();
     /// Returns all items which were found in akonadi but not in nepomuk (meaning they should be indexed)
-    const QHash<Akonadi::Item::Id, Akonadi::Collection::Id> &getUnindexed() const;
+    const ItemHash &getUnindexed() const;
     /// Returns all items which were found in nepomuk but not in akonadi (meaning they can be removed from nepomuk)
     const QList<Akonadi::Item::Id> &getItemsToRemove() const;
+    /// Filter the searched items by indexed collections 
+    void setIndexedCollections(const Akonadi::Collection::List &);
 private slots:
     void itemsRetrieved(KJob*);
     void retrieveIndexedNepomukResources();
+    void queryFinished(Soprano::Util::AsyncQuery *);
+    void processResult(Soprano::Util::AsyncQuery *);
 private:
     void retrieveAkonadiItems();
-    QHash<Akonadi::Item::Id, Akonadi::Collection::Id> mAkonadiItems;
-    QSet<Akonadi::Item::Id> mAllAkonadiItems;
+    ItemHash mAkonadiItems;
     QList<Akonadi::Item::Id> mStaleItems;
     QTime mTime;
     const int mCompatLevel;
+    Akonadi::Collection::List mIndexedCollections;
+    int mTotalNumberOfItems;
+    QSharedPointer<Soprano::Util::AsyncQuery> mQuery;
 };
 
 #endif // FINDUNINDEXEDITEMSJOB_H

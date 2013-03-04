@@ -93,7 +93,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();
-    void unindexedCollectionsReceived(const Akonadi::Collection::List &);
 
   signals:
     void fullyIndexed();
@@ -123,6 +122,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void systemIdle();
     void systemResumed();
     void collectionsReceived( const Akonadi::Collection::List &collections );
+    void collectionListReceived( KJob* );
     void idle(const QString &);
     void running(const QString &);
     void configure( WId windowId );
@@ -133,8 +133,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
   private:
     QTimer mNepomukStartupTimeout;
-
-    QList<qlonglong> mReindexingEnforcedCollections;
 
     bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
