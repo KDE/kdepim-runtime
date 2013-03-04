@@ -140,6 +140,7 @@ bool ItemQueue::processItem()
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
     job->fetchScope().setCacheOnly( true );
+    job->fetchScope().setIgnoreRetrievalErrors( true );
     foreach(const Akonadi::Item &it, mItemFetchList) {
       mTempFetchList.append(it.id());
     }

@@ -148,6 +148,7 @@ void FeederQueue::processNextCollection()
 
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
   itemFetch->fetchScope().setCacheOnly( true );
+  itemFetch->fetchScope().setIgnoreRetrievalErrors( true );
   connect( itemFetch, SIGNAL(finished(KJob*)), SLOT(itemFetchResult(KJob*)) );
   ++mPendingJobs;
 }
