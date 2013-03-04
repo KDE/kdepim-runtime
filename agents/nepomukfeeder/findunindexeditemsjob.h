@@ -47,12 +47,13 @@ public:
     int indexedCount() const;
     int totalCount() const;
 private slots:
-    void itemsRetrieved(KJob*);
+    void jobDone(KJob*);
     void retrieveIndexedNepomukResources();
     void queryFinished(Soprano::Util::AsyncQuery *);
     void processResult(Soprano::Util::AsyncQuery *);
+    void itemsReceived(const Akonadi::Item::List &);
 private:
-    void retrieveAkonadiItems();
+    void fetchItemsFromCollection();
     ItemHash mAkonadiItems;
     QList<Akonadi::Item::Id> mStaleItems;
     QTime mTime;

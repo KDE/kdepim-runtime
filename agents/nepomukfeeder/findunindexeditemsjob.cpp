@@ -17,9 +17,9 @@
 
 #include "findunindexeditemsjob.h"
 #include <aneo.h>
-#include <Akonadi/RecursiveItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Collection>
+#include <Akonadi/ItemFetchJob>
 #include <Nepomuk2/ResourceManager>
 #include <Soprano/Util/AsyncQuery>
 #include <Soprano/Node>
@@ -32,7 +32,8 @@
 
 FindUnindexedItemsJob::FindUnindexedItemsJob(int compatLevel, QObject* parent)
 : KJob(parent),
-  mCompatLevel(compatLevel)
+  mCompatLevel(compatLevel),
+  mTotalNumberOfItems(0)
 {
 
 }
@@ -54,47 +55,43 @@ void FindUnindexedItemsJob::setIndexedCollections(const Akonadi::Collection::Lis
 
 void FindUnindexedItemsJob::start()
 {
-    retrieveAkonadiItems();
-}
-
-void FindUnindexedItemsJob::retrieveAkonadiItems()
-{
-    kDebug();
     mTime.start();
-    Akonadi::RecursiveItemFetchJob *itemFetchJob = new Akonadi::RecursiveItemFetchJob(Akonadi::Collection::root(), QStringList(), this);
-    itemFetchJob->fetchScope().fetchAllAttributes(false);
-    itemFetchJob->fetchScope().fetchFullPayload(false);
-    itemFetchJob->fetchScope().setFetchModificationTime(true);
-    itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
-    itemFetchJob->setAutoDelete(false);
-    connect(itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(itemsRetrieved(KJob*)));
-    itemFetchJob->start();
+    fetchItemsFromCollection();
 }
 
-void FindUnindexedItemsJob::itemsRetrieved(KJob *job)
+void FindUnindexedItemsJob::fetchItemsFromCollection()
 {
-    kDebug() << "Akonadi Query took(ms): " << mTime.elapsed();
+    if (mIndexedCollections.isEmpty()) {
+        kDebug() << "Akonadi Query took(ms): " << mTime.elapsed();
+        QMetaObject::invokeMethod(this, "retrieveIndexedNepomukResources", Qt::QueuedConnection);
+        return;
+    }
+    const Akonadi::Collection col = mIndexedCollections.takeLast();
+    Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(col, this);
+    fetchJob->fetchScope().fetchAllAttributes(false);
+    fetchJob->fetchScope().fetchFullPayload(false);
+    fetchJob->fetchScope().setFetchModificationTime(true);
+    connect(fetchJob, SIGNAL(itemsReceived(Akonadi::Item::List)), this, SLOT(itemsReceived(Akonadi::Item::List)));
+    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(jobDone(KJob*)));
+}
+
+void FindUnindexedItemsJob::itemsReceived(const Akonadi::Item::List &items)
+{
+    mTotalNumberOfItems += items.size();
+    foreach (const Akonadi::Item &item, items) {
+        mAkonadiItems.insert(item.id(), qMakePair(item.modificationTime(), item.mimeType()));
+    }
+}
+
+void FindUnindexedItemsJob::jobDone(KJob *job)
+{
     if (job->error()) {
         setError(KJob::UserDefinedError);
         setErrorText("Retrieving items failed");
         emitResult();
         return;
     }
-    mTime.start();
-    Akonadi::RecursiveItemFetchJob *itemFetchJob = static_cast<Akonadi::RecursiveItemFetchJob*>(job);
-    Q_ASSERT(job);
-    mTotalNumberOfItems = itemFetchJob->items().size();
-    foreach (const Akonadi::Item &item, itemFetchJob->items()) {
-        if (!mIndexedCollections.isEmpty() && !mIndexedCollections.contains(item.parentCollection())) {
-            continue;
-        }
-        mAkonadiItems.insert(item.id(), qMakePair(item.modificationTime(), item.mimeType()));
-    }
-    //Make sure the job is immediately deleted when entering the eventloop the next time.
-    itemFetchJob->deleteLater();
-    kDebug() << "copy took(ms): " << mTime.elapsed();
-    //Allow the above job to delete itself
-    QMetaObject::invokeMethod(this, "retrieveIndexedNepomukResources", Qt::QueuedConnection);
+    fetchItemsFromCollection();
 }
 
 void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
@@ -164,4 +161,3 @@ int FindUnindexedItemsJob::totalCount() const
 }
 
 #include "findunindexeditemsjob.moc"
-
