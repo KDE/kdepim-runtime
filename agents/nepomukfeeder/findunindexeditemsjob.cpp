@@ -86,6 +86,7 @@ void FindUnindexedItemsJob::itemsReceived(const Akonadi::Item::List &items)
 void FindUnindexedItemsJob::jobDone(KJob *job)
 {
     if (job->error()) {
+        mAkonadiItems.clear();
         setError(KJob::UserDefinedError);
         setErrorText("Retrieving items failed");
         emitResult();
@@ -127,6 +128,7 @@ void FindUnindexedItemsJob::queryFinished(Soprano::Util::AsyncQuery *query)
 {
     if (query->lastError()) {
         mAkonadiItems.clear();
+        mStaleItems.clear();
         kWarning() << query->lastError();
         setError(KJob::UserDefinedError);
         setErrorText("Nepomuk query failed");
