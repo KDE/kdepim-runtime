@@ -26,7 +26,9 @@
 #include <Nepomuk2/Vocabulary/NIE>
 #include <QTime>
 #include <QStringList>
-
+#ifdef HAVE_MALLOC_H
+    #include <malloc.h>
+#endif
 
 FindUnindexedItemsJob::FindUnindexedItemsJob(int compatLevel, QObject* parent)
 : KJob(parent),
@@ -40,6 +42,9 @@ FindUnindexedItemsJob::~FindUnindexedItemsJob()
     //Free the memory we used
     mAkonadiItems.clear();
     mStaleItems.clear();
+#ifdef HAVE_MALLOC_TRIM
+    malloc_trim(0);
+#endif
 }
 
 void FindUnindexedItemsJob::setIndexedCollections(const Akonadi::Collection::List &collections)
@@ -94,6 +99,9 @@ void FindUnindexedItemsJob::itemsRetrieved(KJob *job)
 
 void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
 {
+#ifdef HAVE_MALLOC_TRIM
+    malloc_trim(0);
+#endif
     kDebug();
     mTime.start();
     Q_ASSERT(Nepomuk2::ResourceManager::instance()->initialized());

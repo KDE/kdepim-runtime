@@ -9,6 +9,11 @@ include_directories(
 
 include( SopranoAddOntology )
 
+INCLUDE (CheckIncludeFiles)
+CHECK_INCLUDE_FILES(malloc.h HAVE_MALLOC_H)
+INCLUDE (CheckFunctionExists)
+CHECK_FUNCTION_EXISTS(malloc_trim  HAVE_MALLOC_TRIM)
+
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 
 add_subdirectory( plugin )
