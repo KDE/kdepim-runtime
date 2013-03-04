@@ -103,7 +103,9 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mLostChanges( false ),
   mInitialIndexingDisabled( false ),
   mQueue( true ),
-  mItemBatchCounter( 0 )
+  mItemBatchCounter( 0 ),
+  mTotalItems(0),
+  mIndexedItems(0)
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
@@ -181,6 +183,11 @@ void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
 {
   CollectionFetchJob *job = new CollectionFetchJob( Collection(id), Akonadi::CollectionFetchJob::Base, this );
   connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)));
+}
+
+void NepomukFeederAgent::forceReindexItem(const qlonglong id)
+{
+  mQueue.addItem( Akonadi::Item(id) );
 }
 
 void NepomukFeederAgent::changesRecorded()
@@ -354,6 +361,8 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     return;
   }
   FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
+  mTotalItems = findJob->totalCount();
+  mIndexedItems = findJob->indexedCount();
   const FindUnindexedItemsJob::ItemHash items = findJob->getUnindexed();
   FindUnindexedItemsJob::ItemHash::const_iterator it = items.constBegin();
   for (;it != items.constEnd(); it++) {
@@ -604,6 +613,21 @@ QStringList NepomukFeederAgent::listOfCollection() const
     names << collection.name();
   }
   return names;
+}
+
+qlonglong NepomukFeederAgent::totalitems() const
+{
+  return mTotalItems;
+}
+
+qlonglong NepomukFeederAgent::indexeditems() const
+{
+  return mIndexedItems;
+}
+
+bool NepomukFeederAgent::isIndexing() const
+{
+  return (status() != Idle);
 }
 
 }

@@ -153,5 +153,15 @@ const QList<Akonadi::Item::Id> &FindUnindexedItemsJob::getItemsToRemove() const
     return mStaleItems;
 }
 
+int FindUnindexedItemsJob::indexedCount() const
+{
+    return (mTotalNumberOfItems - getUnindexed().size());
+}
+
+int FindUnindexedItemsJob::totalCount() const
+{
+    return mTotalNumberOfItems;
+}
+
 #include "findunindexeditemsjob.moc"
 

@@ -44,6 +44,8 @@ public:
     const QList<Akonadi::Item::Id> &getItemsToRemove() const;
     /// Filter the searched items by indexed collections 
     void setIndexedCollections(const Akonadi::Collection::List &);
+    int indexedCount() const;
+    int totalCount() const;
 private slots:
     void itemsRetrieved(KJob*);
     void retrieveIndexedNepomukResources();

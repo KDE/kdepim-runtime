@@ -5,6 +5,9 @@
     <method name="forceReindexCollection" >
       <arg name="item" type="x" direction="in"/>
     </method>
+    <method name="forceReindexItem" >
+      <arg name="item" type="x" direction="in"/>
+    </method>
     <method name="disableIdleDetection" >
       <arg name="disable" type="b" direction="in"/>
     </method>
@@ -19,6 +22,15 @@
     </method>
     <method name="listOfCollection" >
       <arg type="as" direction="out"/>
+    </method>
+    <method name="totalitems" >
+      <arg type="x" direction="out"/>
+    </method>
+    <method name="indexeditems" >
+      <arg type="x" direction="out"/>
+    </method>
+    <method name="isIndexing" >
+      <arg type="b" direction="out"/>
     </method>
   </interface>
 </node>

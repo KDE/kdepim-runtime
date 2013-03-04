@@ -85,11 +85,16 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     void forceReindexCollection(const qlonglong id);
 
+    void forceReindexItem(const qlonglong id);
+
     bool queueIsEmpty();
 
     QString currentCollectionName();
 
     QStringList listOfCollection() const;
+    qlonglong totalitems() const;
+    qlonglong indexeditems() const;
+    bool isIndexing() const;
   public slots:
     /** Trigger a complete update of all items. */
     void updateAll();
@@ -148,6 +153,8 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     int mItemBatchCounter;
     bool mBatchDetected;
     QTimer mInitialIndexingTimer;
+    qlonglong mTotalItems;
+    qlonglong mIndexedItems;
 };
 
 }
