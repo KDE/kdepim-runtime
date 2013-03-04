@@ -32,7 +32,7 @@ target_link_libraries(akonadi_googlereader_resource
   ${QT_QTDBUS_LIBRARY}
   ${QT_QTNETWORK_LIBRARY}
   ${KDE4_KDECORE_LIBS}
-  ${LibKGAPI_LIBRARY}
+  ${LibKGAPI2_LIBRARY}
 )
 
 install(TARGETS akonadi_googlereader_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
