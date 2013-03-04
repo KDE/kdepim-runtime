@@ -23,6 +23,7 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <nepomuk2/storeresourcesjob.h>
+#include <KUrl>
 
 Q_DECLARE_METATYPE(Nepomuk2::SimpleResourceGraph)
 
@@ -32,7 +33,6 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mFetchSize( fetchSize ),
   mRunningJobs( 0 ),
   mProcessingDelay( 0 ),
-  mItemsAreNotIndexed( false ),
   mAverageIndexingTime(0),
   mNumberOfIndexedItems(0)
 {
@@ -99,11 +99,6 @@ void ItemQueue::loadState()
   mItemPipeline = mItemPipelineBackup;
 }
 
-void ItemQueue::setItemsAreNotIndexed(bool enable)
-{
-  mItemsAreNotIndexed = enable;
-}
-
 void ItemQueue::addToQueue(Akonadi::Entity::Id id)
 {
   mItemPipeline.enqueue( id );
@@ -127,7 +122,7 @@ void ItemQueue::addItems(const Akonadi::Item::List &list )
 
 bool ItemQueue::processItem()
 {
-  //kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
+  kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
   if ( mRunningJobs > 0 ) {//wait until the old graph has been saved
     //kDebug() << "blocked: " << mRunningJobs;
     return false;
@@ -145,6 +140,7 @@ bool ItemQueue::processItem()
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
     job->fetchScope().setCacheOnly( true );
+    job->fetchScope().setIgnoreRetrievalErrors( true );
     foreach(const Akonadi::Item &it, mItemFetchList) {
       mTempFetchList.append(it.id());
     }
@@ -205,9 +201,15 @@ bool ItemQueue::processBatch()
   if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
     //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
     mTimer.start();
-    KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( mResourceGraph ), mItemsAreNotIndexed );
-    addGraphJob->setProperty("graph", QVariant::fromValue(mResourceGraph));
-    connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
+    
+    QList<QUrl> batch;
+    foreach (Akonadi::Item::Id id, mBatch) {
+        batch << Akonadi::Item(id).url().url();
+    }
+
+    KJob *job = Nepomuk2::removeDataByApplication( batch, Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
+    job->setProperty("graph", QVariant::fromValue(mResourceGraph));
+    connect( job, SIGNAL(finished(KJob*)), this, SLOT(removeDataResult(KJob*)) );
     mRunningJobs++;
     foreach (Akonadi::Item::Id id, mBatch) {
       mItemPipelineBackup.removeOne(id);
@@ -220,19 +222,33 @@ bool ItemQueue::processBatch()
   return true;
 }
 
+void ItemQueue::removeDataResult(KJob* job)
+{
+  mRunningJobs--;
+  if ( job->error() )
+    kWarning() << job->errorString();
+
+  //All old items have been removed, so we can now store the new items
+  const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
+  KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( graph ) );
+  addGraphJob->setProperty("graph", QVariant::fromValue( graph ));
+  connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
+  mRunningJobs++;
+}
+
 void ItemQueue::batchJobResult(KJob* job)
 {
   mRunningJobs--;
-//   kDebug() << "------------------------------------------";
-//   kDebug() << "pipline size: " << mItemPipeline.size();
-//   kDebug() << "fetchedItemList : " << mFetchedItemList.size();
+  kDebug() << "------------------------------------------";
+  kDebug() << "pipline size: " << mItemPipeline.size();
+  kDebug() << "fetchedItemList : " << mFetchedItemList.size();
 
-//   kDebug() << "Indexing took(ms): " << mTimer.elapsed();
-//   mNumberOfIndexedItems++;
-//   mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
-//   kDebug() << "Average (ms): " << mAverageIndexingTime;
-  Q_ASSERT( mBatch.isEmpty() );
+  kDebug() << "Indexing took(ms): " << mTimer.elapsed();
+  mNumberOfIndexedItems++;
+  mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
+  kDebug() << "Average (ms): " << mAverageIndexingTime;
   const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
+  Q_ASSERT( mBatch.isEmpty() );
   if ( job->error() ) {
     kWarning() << "Error while storing graph";
     foreach( const Nepomuk2::SimpleResource &res, graph.toList() ) {

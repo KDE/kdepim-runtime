@@ -7,6 +7,11 @@ include_directories(
 
 include( SopranoAddOntology )
 
+INCLUDE (CheckIncludeFiles)
+CHECK_INCLUDE_FILES(malloc.h HAVE_MALLOC_H)
+INCLUDE (CheckFunctionExists)
+CHECK_FUNCTION_EXISTS(malloc_trim  HAVE_MALLOC_TRIM)
+
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC" )
 
 add_subdirectory( plugin )
@@ -17,7 +22,7 @@ add_subdirectory( util )
 set(CMAKE_NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL 3)
 configure_file(nepomukfeeder-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/nepomukfeeder-config.h)
 
-set(akonadi_nepomuk_feeder_SRCS nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp itemqueue.cpp nepomukhelpers.cpp propertycache.cpp findunindexeditemsjob.cpp nepomukfeederagentdialog.cpp)
+set(akonadi_nepomuk_feeder_SRCS nepomukfeederagent.cpp pluginloader.cpp feederqueue.cpp itemqueue.cpp nepomukhelpers.cpp propertycache.cpp findunindexeditemsjob.cpp nepomukcleanerjob.cpp nepomukfeederagentdialog.cpp)
 
 qt4_add_dbus_adaptor(akonadi_nepomuk_feeder_SRCS org.freedesktop.Akonadi.NepomukFeeder.xml nepomukfeederagent.h Akonadi::NepomukFeederAgent)
 
