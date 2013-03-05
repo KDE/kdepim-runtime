@@ -43,6 +43,7 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/specialcollections.h>
 #include <akonadi/session.h>
 
 #include "collectionannotationsattribute.h"
@@ -152,6 +153,16 @@ ImapResource::ImapResource( const QString &id )
   Settings::self(); // make sure the D-Bus settings interface is up
   new ResourceAdaptor( this );
   setNeedsNetwork( needsNetwork() );
+
+  // Migration issue: trash folder had ID in config, but didn't have SpecialCollections attribute, fix that.
+  if (!Settings::self()->trashCollectionMigrated()) {
+    const Akonadi::Collection::Id trashCollection = Settings::self()->trashCollection();
+    if (trashCollection != -1) {
+      Collection attributeCollection(trashCollection);
+      SpecialCollections::setSpecialCollectionType("trash", attributeCollection);
+    }
+    Settings::self()->setTrashCollectionMigrated(true);
+  }
 
   m_bodyCheckSession = new Akonadi::Session( identifier().toLatin1() + "_body_checker");
 }

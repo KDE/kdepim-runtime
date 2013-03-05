@@ -59,6 +59,10 @@
        <label>Define which folder is used for trash</label>
        <default>-1</default>
     </entry>
+    <entry name="TrashCollectionMigrated" type="Bool">
+       <label>Define if the trash collection received the special attribute</label>
+       <default>false</default>
+    </entry>
     <entry name="UseDefaultIdentity" type="Bool">
        <label>Define if account uses the default identity</label>
        <default>true</default>
