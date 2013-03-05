@@ -71,7 +71,9 @@ Q_DECLARE_METATYPE(KRss::FeedCollection)
 Q_DECLARE_METATYPE(KGAPI2::Job*)
 
 ReaderResource::ReaderResource( const QString& id ):
-    GoogleResource( id )
+    GoogleResource( id ),
+    m_editTokenFetchInProgress( false ),
+    m_accountIdFetchInProgress( false )
 {
     AttributeFactory::registerAttribute<KRss::FeedPropertiesCollectionAttribute>();
 
@@ -126,6 +128,12 @@ bool ReaderResource::canPerformTask(bool needsToken)
 {
     if ( needsToken && m_editToken.isEmpty() ) {
         fetchEditToken();
+        deferTask();
+        return false;
+    }
+
+    if ( Settings::self()->accountId().isEmpty() ) {
+        fetchAccountInfo();
         deferTask();
         return false;
     }
@@ -226,6 +234,8 @@ void ReaderResource::collectionAdded( const Akonadi::Collection& collection, con
 
 void ReaderResource::collectionChanged( const Akonadi::Collection& collection, const QSet< QByteArray >& changedAttributes )
 {
+    Q_UNUSED( changedAttributes )
+
     if ( !canPerformTask( true ) ) {
         return;
     }
@@ -300,6 +310,11 @@ void ReaderResource::fetchEditToken( KGAPI2::Job *job )
         return;
     }
 
+    if ( m_editTokenFetchInProgress ) {
+        return;
+    }
+
+    m_editTokenFetchInProgress = true;
     Reader::EditTokenFetchJob *fetchJob = new Reader::EditTokenFetchJob( account(), this );
     fetchJob->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
     connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
@@ -308,6 +323,8 @@ void ReaderResource::fetchEditToken( KGAPI2::Job *job )
 
 void ReaderResource::slotEditTokenRetrieved( KGAPI2::Job* job )
 {
+    m_editTokenFetchInProgress = false;
+
     if ( !handleError( job ) ) {
         return;
     }
@@ -425,6 +442,10 @@ void ReaderResource::slotItemsRetrieved( KGAPI2::Job *job )
     Q_FOREACH( const ObjectPtr &obj, objects ) {
         Reader::ItemPtr rdItem = obj.dynamicCast<Reader::Item>();
         Akonadi::Item akItem;
+
+        if ( rdItem->tags().contains( Reader::ReaderService::readTag( Settings::self()->accountId() ) ) ) {
+            akItem.setFlag( rdItem->flagRead() );
+        }
 
         akItem.setRemoteId( rdItem->id() );
         akItem.setRemoteRevision( rdItem->etag());
@@ -555,6 +576,21 @@ void ReaderResource::slotConfigurationProbablyChanged()
 
     m_editToken.clear();
     Settings::self()->setAccountId( QLatin1String( "" ) );
+    fetchEditToken();
+    fetchAccountInfo();
+}
+
+void ReaderResource::fetchAccountInfo()
+{
+    if ( !GoogleResource::canPerformTask() ) {
+        return;
+    }
+
+    if ( m_accountIdFetchInProgress ) {
+        return;
+    }
+
+    m_accountIdFetchInProgress = true;
 
     Reader::AccountInfoFetchJob *fetchJob = 
         new Reader::AccountInfoFetchJob( account(), this );
@@ -564,6 +600,8 @@ void ReaderResource::slotConfigurationProbablyChanged()
 
 void ReaderResource::slotAccountInfoRetrieved( KGAPI2::Job *job )
 {
+    m_accountIdFetchInProgress = false;
+
     if ( !handleError( job ) ) {
         return;
     }

@@ -44,7 +44,6 @@ class ReaderResource : public GoogleResource
     virtual void retrieveCollections();
     virtual bool retrieveItem( const Akonadi::Item& item, const QSet< QByteArray >& parts );
     virtual void retrieveItems( const Akonadi::Collection& collection );
-    void slotAccountInfoRetrieved(KGAPI2::Job*);
 
   protected Q_SLOTS:
     virtual void collectionAdded( const Akonadi::Collection& collection, const Akonadi::Collection& parent );
@@ -67,12 +66,14 @@ class ReaderResource : public GoogleResource
     void slotItemsRetrieved( KGAPI2::Job *job );
     void slotRenameFolderFetchDone( KJob *job );
     void slotEditTokenRetrieved( KGAPI2::Job *job );
+    void slotAccountInfoRetrieved(KGAPI2::Job*);
     void iconChanged( bool success, const QString &host, const QString &iconName );
 
     void slotCacheTimeout();
     void slotConfigurationProbablyChanged();
 
   private:
+    void fetchAccountInfo();
     void fetchEditToken( KGAPI2::Job *job  = 0 );
     void fetchFavicon( KRss::FeedCollection &collection );
 
@@ -82,6 +83,8 @@ class ReaderResource : public GoogleResource
     QMap<QString, Akonadi::Collection> m_pendingIcons;
 
     QString m_editToken;
+    bool m_editTokenFetchInProgress;
+    bool m_accountIdFetchInProgress;
 
     ChangedItemsCache *m_cache;
     QTimer *m_cacheTimer;
