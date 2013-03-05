@@ -134,8 +134,8 @@ void GoogleSettingsDialog::slotRemoveAccountClicked()
                       "<p>This will revoke access to all resources using this account!</p>",
                       account->accountName() ),
                 i18n( "Revoke Access?" ),
-                KStandardGuiItem::yes(),
-                KStandardGuiItem::no(),
+                KGuiItem( i18n( "Revoke Access" ) ),
+                KStandardGuiItem::cancel(),
                 QString(),
                 KMessageBox::Dangerous ) != KMessageBox::Yes ) {
 
