@@ -24,10 +24,13 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entityhiddenattribute.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/messagestatus.h>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
+
+using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
   : AgentBase( id )
@@ -47,13 +50,8 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 {
   if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
     return;
-  const Akonadi::EntityDisplayAttribute* attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
-  if ( attr && ( attr->iconName() == "mail-folder-outbox"
-              || attr->iconName() == "document-properties" /*drafts*/
-              || attr->iconName() == "mail-folder-sent"
-              || attr->iconName() == "user-trash"
-              || attr->iconName() == "document-new" /*templates*/) ) {
-    return;
+  if ( SpecialMailCollections::self()->specialCollectionType(collection) != SpecialMailCollections::Inbox ) {
+    return; // outbox, sent-mail, trash, drafts or templates.
   }
 
   Akonadi::MessageStatus status;
