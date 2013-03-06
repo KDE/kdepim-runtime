@@ -125,6 +125,7 @@ void PostJob::doStart()
     const KUrl url = assembleUrl( path() );
 
     KIO::TransferJob* transfer = KIO::http_post( url, postData, KIO::HideProgressInfo );
+    transfer->addMetaData( QLatin1String("content-type"), QLatin1String("Content-type: application/x-www-form-urlencoded") );
     transfer->addMetaData ( QLatin1String("customHTTPHeader"), "Authorization: Basic " + QString( username() + QLatin1Char(':') + password() ).toUtf8().toBase64() );
     connect( transfer, SIGNAL(result(KJob*)), this, SLOT(jobFinished(KJob*)) );
 }
