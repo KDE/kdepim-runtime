@@ -57,26 +57,22 @@ OwncloudRssResource::OwncloudRssResource( const QString &id )
     KRss::FeedCollection::registerAttributes();
 
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                                                  Settings::self(), QDBusConnection::ExportAdaptors );
+                                                  Settings::self(),
+                                                  QDBusConnection::ExportAdaptors );
+
+
+    changeRecorder()->itemFetchScope().fetchFullPayload( true );
+    changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
+    changeRecorder()->fetchCollection( true );
+    changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+
+    emit status( NotConfigured, i18n( "Waiting for KWallet..." ) );
 
     if ( m_wallet ) {
         connect( m_wallet, SIGNAL(walletOpened(bool)), this, SLOT(walletOpened(bool)) );
     } else {
         walletOpened( false );
     }
-
-#if 0
-    m_policy.setInheritFromParent( false );
-    m_policy.setSyncOnDemand( false );
-    m_policy.setLocalParts( QStringList() << KRss::Item::HeadersPart << KRss::Item::ContentPart << Akonadi::Item::FullPayload );
-
-    // Change recording makes the resource unusable for hours here
-    // after migrating 130000 items, so disable it, as we don't write back item changes anyway.
-    changeRecorder()->setChangeRecordingEnabled( false );
-    changeRecorder()->fetchCollection( true );
-    changeRecorder()->fetchChangedOnly( true );
-    changeRecorder()->setItemFetchScope( ItemFetchScope() );
-#endif
 }
 
 OwncloudRssResource::~OwncloudRssResource()
@@ -179,7 +175,8 @@ struct IdLessThan {
 
 static Collection::List buildCollections( const Collection& top,
                                           QVector<ListNodeJob::Node> folders,
-                                          QVector<ListNodeJob::Node> feeds ) {
+                                          QVector<ListNodeJob::Node> feeds )
+{
     qSort( folders.begin(), folders.end(), IdLessThan() );
     qSort( feeds.begin(), feeds.end(), IdLessThan() );
 
@@ -219,7 +216,8 @@ static Collection::List buildCollections( const Collection& top,
     return Collection::List() << top << folderCollections << feedCollections;
 }
 
-void OwncloudRssResource::feedsListed( KJob * j ) {
+void OwncloudRssResource::feedsListed( KJob * j )
+{
     Q_ASSERT( m_listJob == j );
     m_listJob = 0;
     ListNodeJob* job = qobject_cast<ListNodeJob*>( j );

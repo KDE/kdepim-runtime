@@ -45,6 +45,13 @@ class Job : public KJob {
 public:
     explicit Job( QObject* parent=0 );
 
+    enum Error {
+        IOError=KJob::UserDefinedError,
+        XmlError,
+        ParseError,
+        OwncloudUserDefinedError
+    };
+
     KUrl url() const;
     void setUrl( const KUrl& );
 
@@ -79,14 +86,6 @@ class GetJob : public Job {
 public:
     explicit GetJob( QObject* parent );
 
-
-    enum Error {
-        IOError=KJob::UserDefinedError,
-        XmlError,
-        ParseError,
-        OwncloudUserDefinedError
-    };
-
     /**
      * @throws ParseException
      */
@@ -115,6 +114,9 @@ public:
 private:
      Q_INVOKABLE void doStart();
      KUrl assembleUrl( const QString& path ) const;
+
+private Q_SLOTS:
+     void jobFinished( KJob* job );
 
 private:
      QMap<QString,QString> m_postData;

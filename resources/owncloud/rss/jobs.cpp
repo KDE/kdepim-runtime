@@ -129,6 +129,22 @@ void PostJob::doStart()
     connect( transfer, SIGNAL(result(KJob*)), this, SLOT(jobFinished(KJob*)) );
 }
 
+void PostJob::jobFinished( KJob* j )
+{
+    KIO::TransferJob* job = qobject_cast<KIO::TransferJob*>( j );
+    Q_ASSERT( job );
+
+    qDebug() << Q_FUNC_INFO << job->error() << job->errorString() << job->isErrorPage();
+
+    if ( job->error() != KJob::NoError ) {
+        setError( IOError );
+        setErrorText( job->errorText() );
+        return;
+    }
+
+    emitResult();
+}
+
 GetJob::GetJob( QObject* parent )
     : Job( parent )
 {
@@ -276,8 +292,8 @@ static ListNodeJob::Meta readMeta( QXmlStreamReader* reader ) {
             }
         }
     }
-    return ListNodeJob::Meta();
 
+    return ListNodeJob::Meta();
 }
 
 void ListNodeJob::parse( QXmlStreamReader* reader )
