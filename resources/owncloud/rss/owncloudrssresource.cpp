@@ -233,13 +233,15 @@ void OwncloudRssResource::feedsListed( KJob * j )
     Collection::List collections;
 
     // create a top-level collection
-    Collection top;
+    KRss::FeedCollection top;
     top.setParent( Collection::root() );
     top.setRemoteId( QLatin1String("0") );
     top.setContentMimeTypes( QStringList() << Collection::mimeType() << mimeType() );
     top.setName( i18n("Owncloud Feeds") );
     top.setRights( Collection::CanCreateCollection );
     top.attribute<Akonadi::EntityDisplayAttribute>( Collection::AddIfMissing )->setDisplayName( i18n("Owncloud News") );
+    top.setAllowSubfolders( true );
+    top.setIsFolder( true );
     collections << buildCollections( top, m_folders, feeds );
     collectionsRetrieved( collections );
 }
