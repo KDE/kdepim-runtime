@@ -48,8 +48,6 @@ public:
   /** the delay between two batches */
   void setProcessingDelay(int ms);
 
-  void setSaveFile(const QString &saveFile);
-
 signals:
   /** all items processed */
   void finished();
@@ -64,12 +62,8 @@ private slots:
 
 private:
   bool processBatch();
-  void saveState();
-  void loadState();
   void addToQueue(Akonadi::Entity::Id);
 
-  QString mSaveFile;
-  QQueue<Akonadi::Item::Id> mItemPipelineBackup;
   QQueue<Akonadi::Item::Id> mItemPipeline;
   Nepomuk2::SimpleResourceGraph mResourceGraph;
   QList<Akonadi::Item::Id> mBatch;

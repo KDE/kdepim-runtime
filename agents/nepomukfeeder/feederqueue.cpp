@@ -30,7 +30,6 @@
 #include <KIcon>
 #include <KNotification>
 #include <KIconLoader>
-#include <KStandardDirs>
 
 #include <QDateTime>
 
@@ -39,7 +38,7 @@
 
 using namespace Akonadi;
 
-FeederQueue::FeederQueue( bool persistQueue, QObject* parent )
+FeederQueue::FeederQueue( QObject* parent )
 : QObject( parent ),
   mTotalAmount( 0 ),
   mProcessedAmount( 0 ),
@@ -50,10 +49,6 @@ FeederQueue::FeederQueue( bool persistQueue, QObject* parent )
   highPrioQueue(1, 100, this),
   emailItemQueue(1, 100, this)
 {
-  if (persistQueue) {
-    lowPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/lowPrioQueue"), true));
-    highPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/highPrioQueue"), true));
-  }
   mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
   connect( &mProcessItemQueueTimer, SIGNAL(timeout()), SLOT(processItemQueue()) );

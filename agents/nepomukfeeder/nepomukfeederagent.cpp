@@ -102,7 +102,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mShouldRecordNotifications( true ),
   mLostChanges( false ),
   mInitialIndexingDisabled( false ),
-  mQueue( true ),
   mItemBatchCounter( 0 ),
   mTotalItems(0),
   mIndexedItems(0),
