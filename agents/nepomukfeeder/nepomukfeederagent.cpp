@@ -51,14 +51,12 @@
 #include <KIcon>
 #include <KWindowSystem>
 
-#include <Soprano/Vocabulary/NAO>
-#include <Soprano/Vocabulary/RDF>
-
 #include <QtCore/QTimer>
 #include <nepomukfeederutils.h>
 #include "pluginloader.h"
 #include "nepomukhelpers.h"
 #include "findunindexeditemsjob.h"
+#include "nepomukcleanerjob.h"
 #include "nepomukfeeder-config.h"
 #include "nepomukfeederadaptor.h"
 
@@ -105,7 +103,10 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mLostChanges( false ),
   mInitialIndexingDisabled( false ),
   mQueue( true ),
-  mItemBatchCounter( 0 )
+  mItemBatchCounter( 0 ),
+  mTotalItems(0),
+  mIndexedItems(0),
+  mBatchDetected( false )
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
@@ -181,9 +182,13 @@ void NepomukFeederAgent::configure( WId windowId )
 
 void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
 {
-  mReindexingEnforcedCollections << id;
   CollectionFetchJob *job = new CollectionFetchJob( Collection(id), Akonadi::CollectionFetchJob::Base, this );
   connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)));
+}
+
+void NepomukFeederAgent::forceReindexItem(const qlonglong id)
+{
+  mQueue.addItem( Akonadi::Item(id) );
 }
 
 void NepomukFeederAgent::changesRecorded()
@@ -323,9 +328,52 @@ void NepomukFeederAgent::findUnindexed()
     kWarning() << "Nepomuk is not ready, we can't find unindexed items";
     return;
   }
+
+  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
+  connect(fetchJob, SIGNAL(finished(KJob*)), this, SLOT(collectionListReceived(KJob*)));
+  fetchJob->start();
+}
+
+void NepomukFeederAgent::collectionListReceived(KJob *job)
+{
+  if (job->error()) {
+    kWarning() << "Failed to fetch collections";
+    return;
+  }
+  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
+
+  Akonadi::Collection::List indexedCollections;
+  foreach (const Akonadi::Collection &col, fetchJob->collections()) {
+    if (!indexingDisabled(col)) {
+      kDebug() << "collection is indexed: " << col.id();
+      indexedCollections << col;
+    }
+  }
   FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
+  findUnindexeditemsJob->setIndexedCollections( indexedCollections );
   connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
   findUnindexeditemsJob->start();
+}
+
+void NepomukFeederAgent::foundUnindexedItems(KJob* job)
+{
+  if (job->error()) {
+    kWarning() << "FindUnindexedItemsJob failed";
+    return;
+  }
+  FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
+  mTotalItems = findJob->totalCount();
+  mIndexedItems = findJob->indexedCount();
+  const FindUnindexedItemsJob::ItemHash items = findJob->getUnindexed();
+  FindUnindexedItemsJob::ItemHash::const_iterator it = items.constBegin();
+  for (;it != items.constEnd(); it++) {
+    Akonadi::Item item( it.key() );
+    item.setMimeType( it.value().second );
+    mQueue.addLowPrioItem( item );
+  }
+
+  NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->getItemsToRemove(), this);
+  cleanerJob->start();
 }
 
 void NepomukFeederAgent::checkForLostChanges()
@@ -344,19 +392,11 @@ void NepomukFeederAgent::checkForLostChanges()
 void NepomukFeederAgent::updateAll()
 {
   findUnindexed();
-  CollectionFetchJob *collectionFetch = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
-  connect( collectionFetch, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(collectionsReceived(Akonadi::Collection::List)) );
 }
 
 void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& collections)
 {
   foreach ( const Collection &collection, collections ) {
-    if ( indexingDisabled( collection ) )
-      continue;
-    if ( mReindexingEnforcedCollections.contains(collection.id()) )
-        mReindexingEnforcedCollections.removeAll(collection.id());
-    else if ( collection.contentMimeTypes().contains(emailMimetype()) ) //Skip emails during initial indexing
-      continue;
     mQueue.addCollection( collection );
   }
 }
@@ -453,43 +493,6 @@ void NepomukFeederAgent::selfTest()
 
   setOnline( selfTestPassed );
   emit status( Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
-}
-
-
-void NepomukFeederAgent::unindexedCollectionsReceived(const Collection::List &collections)
-{
-    MultiHashPointer mapping = static_cast<Akonadi::CollectionFetchJob*>(sender())->property("mapping").value<MultiHashPointer>();
-    int count = 0;
-    foreach (const Akonadi::Collection &col, collections) {
-       if ( indexingDisabled( col ) )
-         continue;
-       foreach (Akonadi::Item::Id id, mapping->values(col.id())) {
-         count++;
-         mQueue.addUnindexedItem(Akonadi::Item(id));
-       }
-    }
-    kDebug() << "Found " << count << " unindexed items which need to be indexed (out of " << mapping->size() << ")";
-}
-
-void NepomukFeederAgent::foundUnindexedItems(KJob* job)
-{
-    FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
-    MultiHashPointer collectionMap(new QMultiHash<Akonadi::Collection::Id, Akonadi::Item::Id>());
-    QHash<Akonadi::Item::Id, Akonadi::Collection::Id>::const_iterator it = findJob->getUnindexed().begin();
-    for (;it != findJob->getUnindexed().constEnd(); it++) {
-        collectionMap->insert(it.value(), it.key());
-    }
-    Akonadi::Collection::List collections;
-    foreach (Akonadi::Collection::Id colId, collectionMap->uniqueKeys()) {
-        collections << Akonadi::Collection(colId);
-    }
-
-    if (!collections.isEmpty()) {
-        Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collections, this);
-        fetchJob->setProperty("mapping", QVariant::fromValue(collectionMap));
-        connect(fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), this, SLOT(unindexedCollectionsReceived(Akonadi::Collection::List)));
-        fetchJob->start();
-    }
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )
@@ -611,6 +614,21 @@ QStringList NepomukFeederAgent::listOfCollection() const
     names << collection.name();
   }
   return names;
+}
+
+qlonglong NepomukFeederAgent::totalitems() const
+{
+  return mTotalItems;
+}
+
+qlonglong NepomukFeederAgent::indexeditems() const
+{
+  return mIndexedItems;
+}
+
+bool NepomukFeederAgent::isIndexing() const
+{
+  return (status() != Idle);
 }
 
 }

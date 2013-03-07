@@ -281,10 +281,10 @@ void SetupServer::applySettings()
 
   Settings::self()->setTrashCollection( m_ui->folderRequester->collection().id() );
   Akonadi::Collection trash = m_ui->folderRequester->collection();
+  Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
   Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
   attribute->setIconName( QLatin1String( "user-trash" ) );
   new Akonadi::CollectionModifyJob( trash );
-
 
 
   Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );

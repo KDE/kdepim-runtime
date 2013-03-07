@@ -48,23 +48,22 @@ FeederQueue::FeederQueue( bool persistQueue, QObject* parent )
   mOnline( true ),
   lowPrioQueue(1, 100, this),
   highPrioQueue(1, 100, this),
-  unindexedItemQueue(1, 100, this)
+  emailItemQueue(1, 100, this)
 {
   if (persistQueue) {
     lowPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/lowPrioQueue"), true));
     highPrioQueue.setSaveFile(KStandardDirs::locateLocal("data", QLatin1String("akonadi_nepomuk_feeder/highPrioQueue"), true));
   }
-  unindexedItemQueue.setItemsAreNotIndexed( true );
   mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
   connect( &mProcessItemQueueTimer, SIGNAL(timeout()), SLOT(processItemQueue()) );
 
   connect( &lowPrioQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
   connect( &highPrioQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
-  connect( &unindexedItemQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
+  connect( &emailItemQueue, SIGNAL(finished()), SLOT(prioQueueFinished()));
   connect( &lowPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
   connect( &highPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
-  connect( &unindexedItemQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
+  connect( &emailItemQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
 }
 
 FeederQueue::~FeederQueue()
@@ -98,11 +97,11 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     if ( speed == FullSpeed ) {
         lowPrioQueue.setProcessingDelay( 0 );
         highPrioQueue.setProcessingDelay( 0 );
-        unindexedItemQueue.setProcessingDelay( 0 );
+        emailItemQueue.setProcessingDelay( 0 );
     } else {
         lowPrioQueue.setProcessingDelay( s_snailPaceDelay );
         highPrioQueue.setProcessingDelay( s_reducedSpeedDelay );
-        unindexedItemQueue.setProcessingDelay( s_snailPaceDelay );
+        emailItemQueue.setProcessingDelay( s_snailPaceDelay );
     }
 }
 
@@ -149,6 +148,7 @@ void FeederQueue::processNextCollection()
 
   ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
   itemFetch->fetchScope().setCacheOnly( true );
+  itemFetch->fetchScope().setIgnoreRetrievalErrors( true );
   connect( itemFetch, SIGNAL(finished(KJob*)), SLOT(itemFetchResult(KJob*)) );
   ++mPendingJobs;
 }
@@ -190,6 +190,11 @@ void FeederQueue::itemFetchResult(KJob* job)
   }
 }
 
+static inline QString emailMimetype()
+{
+  return QLatin1String("message/rfc822");
+}
+
 void FeederQueue::addItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
@@ -197,10 +202,14 @@ void FeederQueue::addItem( const Akonadi::Item &item )
   mProcessItemQueueTimer.start();
 }
 
-void FeederQueue::addUnindexedItem(const Item &item )
+void FeederQueue::addLowPrioItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
-  unindexedItemQueue.addItem( item );
+  if (item.mimeType() == emailMimetype()) {
+    emailItemQueue.addItem( item );
+  } else {
+    lowPrioQueue.addItem( item );
+  }
   mProcessItemQueueTimer.start();
 }
 
@@ -261,8 +270,8 @@ void FeederQueue::processItemQueue()
     if ( !lowPrioQueue.processItem() ) {
       return;
     }
-  } else if ( !unindexedItemQueue.isEmpty() ) {
-    if ( !unindexedItemQueue.processItem() ) {
+  } else if ( !emailItemQueue.isEmpty() ) {
+    if ( !emailItemQueue.processItem() ) {
       return;
     }
   } else {
@@ -290,7 +299,7 @@ void FeederQueue::prioQueueFinished()
 
 bool FeederQueue::allQueuesEmpty() const
 {
-  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && unindexedItemQueue.isEmpty() ) {
+  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && emailItemQueue.isEmpty() ) {
     return true;
   }
   return false;

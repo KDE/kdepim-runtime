@@ -50,9 +50,6 @@ public:
 
   void setSaveFile(const QString &saveFile);
 
-  /** Enable optimizations if we know all items of this queue are not yet indexed (all checks are skipped) */
-  void setItemsAreNotIndexed(bool);
-
 signals:
   /** all items processed */
   void finished();
@@ -62,6 +59,7 @@ signals:
 private slots:
   void batchJobResult( KJob* job );
   void fetchJobResult( KJob* job );
+  void removeDataResult( KJob* job );
   void continueProcessing();
 
 private:
@@ -85,7 +83,6 @@ private:
 
   int mProcessingDelay;
   PropertyCache mPropertyCache;
-  bool mItemsAreNotIndexed;
 
   QTime mTimer;
   double mAverageIndexingTime;

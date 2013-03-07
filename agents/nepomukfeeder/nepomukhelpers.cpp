@@ -129,7 +129,7 @@ void addItemToGraph( const Akonadi::Item &item, Nepomuk2::SimpleResourceGraph &g
 }
 
 /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */
-KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph, bool itemsAreNew )
+KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph )
 {
   /*kDebug() << "--------------------------------";
   foreach ( const Nepomuk2::SimpleResource &res, graph.toList() ) {
@@ -142,10 +142,7 @@ KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph, bool itemsA
   kDebug() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
   additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
-  if ( itemsAreNew ) {
-    return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent() );
-  }
-  return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
+  return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent() );
 }
 
 bool isIndexed(const Akonadi::Item& item)
