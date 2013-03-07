@@ -52,7 +52,7 @@ class FeederQueue: public QObject
 {
   Q_OBJECT
 public:
-  explicit FeederQueue( bool persistQueue = true, QObject* parent = 0 );
+  explicit FeederQueue( QObject* parent = 0 );
   virtual ~FeederQueue();
 
   ///add the collection to the queue, all items of it will be fetched and indexed

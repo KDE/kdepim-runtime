@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
         KJob *job = Nepomuk2::removeDataByApplication( QList<QUrl>() << Akonadi::Item( id ).url().url(), Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
         QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "collection" ) ) {
-        FeederQueue *feederq = new FeederQueue( false, &app );
+        FeederQueue *feederq = new FeederQueue( &app );
         kDebug() << "indexing collection: " << id;
         feederq->setReindexing( true );
         feederq->setOnline( true );

@@ -18,7 +18,6 @@
 #include "itemqueue.h"
 #include "nepomukhelpers.h"
 #include <QTimer>
-#include <QFile>
 #include <KDebug>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
@@ -53,63 +52,15 @@ ItemQueue::~ItemQueue()
 
 }
 
-void ItemQueue::setSaveFile(const QString& saveFile)
-{
-  mSaveFile = saveFile;
-  loadState();
-}
-
-void ItemQueue::saveState()
-{
-  if (mSaveFile.isEmpty())
-    return;
-  QFile file( mSaveFile );
-  if ( !file.open( QIODevice::WriteOnly ) ) {
-    qWarning() << "could not save item pipeline to file " << file.fileName();
-    return;
-  }
-  
-  QDataStream stream( &file );
-  stream.setVersion( QDataStream::Qt_4_7 );
-
-  stream << (qulonglong)(mItemPipelineBackup.size());
-  for ( int i = 0; i < mItemPipelineBackup.size(); ++i ) {
-    stream << mItemPipelineBackup.at(i);
-  }
-}
-
-void ItemQueue::loadState()
-{
-  mItemPipeline.clear();
-  QFile file( mSaveFile );
-  if ( !file.open( QIODevice::ReadOnly ) )
-    return;
-  QDataStream stream( &file );
-  stream.setVersion( QDataStream::Qt_4_7 );
-
-  qulonglong size;
-  Akonadi::Item::Id id;
-
-  stream >> size;
-  mItemPipeline.reserve(size);
-  for ( qulonglong i = 0; i < size && !stream.atEnd(); ++i ) {
-    stream >> id;
-    mItemPipelineBackup.enqueue(id);
-  }
-  mItemPipeline = mItemPipelineBackup;
-}
-
 void ItemQueue::addToQueue(Akonadi::Entity::Id id)
 {
   mItemPipeline.enqueue( id );
-  mItemPipelineBackup.enqueue( id );
 }
 
 void ItemQueue::addItem(const Akonadi::Item &item)
 {
   //kDebug() << "pipline size: " << mItemPipeline.size();
   addToQueue(item.id());
-  saveState();
 }
 
 void ItemQueue::addItems(const Akonadi::Item::List &list )
@@ -117,7 +68,6 @@ void ItemQueue::addItems(const Akonadi::Item::List &list )
   foreach ( const Akonadi::Item &item, list ) {
     addToQueue( item.id() );
   }
-  saveState();
 }
 
 bool ItemQueue::processItem()
@@ -171,9 +121,6 @@ void ItemQueue::fetchJobResult(KJob* job)
     foreach(const Akonadi::Item &it, mItemFetchList) {
       mTempFetchList.removeOne(it.id());
     }
-    foreach(Akonadi::Item::Id id, mTempFetchList) {
-      mItemPipelineBackup.removeOne(id);
-    }
   }
   mTempFetchList.clear();
   
@@ -190,7 +137,6 @@ bool ItemQueue::processBatch()
     //kDebug() << item.id();
     if ( !item.hasPayload() ) { //can happen due to deserialization error or with items that actually don't have a local payload
       kWarning() << "failed to fetch item or item without payload: " << item.id();
-      mItemPipelineBackup.removeOne(item.id());
       continue;
     }
     Q_ASSERT( item.hasPayload() );
@@ -211,10 +157,6 @@ bool ItemQueue::processBatch()
     job->setProperty("graph", QVariant::fromValue(mResourceGraph));
     connect( job, SIGNAL(finished(KJob*)), this, SLOT(removeDataResult(KJob*)) );
     mRunningJobs++;
-    foreach (Akonadi::Item::Id id, mBatch) {
-      mItemPipelineBackup.removeOne(id);
-    }
-    saveState();
     mBatch.clear();
     mResourceGraph.clear();
     return false;
@@ -276,10 +218,6 @@ void ItemQueue::continueProcessing()
   }
   if ( mItemPipeline.isEmpty() && mFetchedItemList.isEmpty() ) {
     kDebug() << "indexing completed";
-    if (!mItemPipelineBackup.isEmpty()) {
-      kWarning() << mItemPipelineBackup;
-    }
-    Q_ASSERT(mItemPipelineBackup.isEmpty());
     emit finished();
   }
 }
