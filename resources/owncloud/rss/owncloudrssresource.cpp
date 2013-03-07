@@ -338,6 +338,18 @@ void OwncloudRssResource::folderCreated( KJob * j )
     }
 }
 
+void OwncloudRssResource::collectionDeleted( KJob * j )
+{
+    PostJob* job = qobject_cast<PostJob*>( j );
+    Q_ASSERT( job );
+
+    if ( job->error() == KJob::NoError ) {
+        changeCommitted( job->collection() );
+    } else {
+        cancelTask( job->errorString() );
+    }
+}
+
 void OwncloudRssResource::setupJob( ::Job * job )
 {
     job->setUrl( Settings::owncloudServerUrl() );
@@ -374,7 +386,18 @@ void OwncloudRssResource::collectionAdded( const Collection &collection, const C
 
 void OwncloudRssResource::collectionRemoved( const Collection &collection )
 {
-    changeCommitted( collection );
+    if ( !m_walletOpenedReceived ) {
+        deferTask();
+        return;
+    }
+
+    const KRss::FeedCollection fc ( collection );
+    const QString type = fc.isFolder() ? QLatin1String("folders") : QLatin1String("feeds");
+    PostJob* job = new PostJob( QString::fromLatin1("%1/%2/delete").arg( type, fc.remoteId() ), this );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionDeleted(KJob*)) );
+    setupJob( job );
+    job->setCollection( collection );
+    job->start();
 }
 
 

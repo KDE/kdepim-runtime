@@ -50,6 +50,7 @@ protected:
 private Q_SLOTS:
     void foldersListed( KJob* );
     void feedCreated( KJob* );
+    void collectionDeleted( KJob* );
     void folderCreated( KJob* );
     void feedsListed( KJob* );
     void walletOpened( bool success );
