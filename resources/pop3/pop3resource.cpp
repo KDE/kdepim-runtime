@@ -1014,6 +1014,9 @@ void POP3Resource::doSetOnline( bool online )
       cancelSync( i18n( "Mail check aborted after going offline." ), false /* no error */ );
     }
     emit status( Idle, i18n("Offline") );
+    delete mWallet;
+    mWallet = 0;
+    clearCachedPassword();
   }
 }
 
