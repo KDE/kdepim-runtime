@@ -48,6 +48,8 @@ public:
     QString rootRemoteId() const;
     void renameRootCollection( const QString &newName );
 
+    void clearCachedPassword();
+
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );
 

@@ -107,6 +107,11 @@ void Settings::setWinId( WId winId )
     m_winId = winId;
 }
 
+void Settings::clearCachedPassword()
+{
+    m_password.clear();
+}
+
 void Settings::requestPassword()
 {
   if ( !m_password.isEmpty() ||
