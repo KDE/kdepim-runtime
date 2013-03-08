@@ -111,7 +111,7 @@ set_package_properties(LibKGAPI2 PROPERTIES DESCRIPTION "KDE-based library for a
 find_package(LibKFbAPI 1.0 QUIET CONFIG)
 set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
 
-if(LibKGAPI_FOUND OR LibKFbAPI_FOUND)
+if(LibKGAPI2_FOUND OR LibKFbAPI_FOUND)
   find_package(QJSON)
   set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google and Facebook resources")
 endif()
