@@ -60,7 +60,7 @@
 #include "nepomukfeeder-config.h"
 #include "nepomukfeederadaptor.h"
 
-typedef QSharedPointer< QMultiHash< typename Akonadi::Collection::Id,  typename Akonadi::Item::Id> > MultiHashPointer;
+typedef QSharedPointer< QMultiHash< Akonadi::Collection::Id,  Akonadi::Item::Id> > MultiHashPointer;
 Q_DECLARE_METATYPE(MultiHashPointer)
 
 namespace Akonadi {
@@ -102,7 +102,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mShouldRecordNotifications( true ),
   mLostChanges( false ),
   mInitialIndexingDisabled( false ),
-  mQueue( true ),
   mItemBatchCounter( 0 ),
   mTotalItems(0),
   mIndexedItems(0),
