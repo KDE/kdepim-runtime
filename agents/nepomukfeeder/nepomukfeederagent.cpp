@@ -60,7 +60,7 @@
 #include "nepomukfeeder-config.h"
 #include "nepomukfeederadaptor.h"
 
-typedef QSharedPointer< QMultiHash< typename Akonadi::Collection::Id,  typename Akonadi::Item::Id> > MultiHashPointer;
+typedef QSharedPointer< QMultiHash< Akonadi::Collection::Id,  Akonadi::Item::Id> > MultiHashPointer;
 Q_DECLARE_METATYPE(MultiHashPointer)
 
 namespace Akonadi {
