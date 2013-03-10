@@ -93,6 +93,7 @@ void RetrieveItemsTask::checkForMissingBodies()
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection(), m_akonadiSession);
   job->fetchScope().setCheckForCachedPayloadPartsOnly();
   job->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
+  job->fetchScope().setFetchModificationTime( false );
   connect(job, SIGNAL(result(KJob*)), this, SLOT(onFetchForBodyCheckDone(KJob*)));
 }
 
