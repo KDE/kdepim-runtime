@@ -525,6 +525,10 @@ void ContactsResource::slotUpdatePhotoFinished( KGAPI2::Job *job, const ContactP
 
 void ContactsResource::slotCreateJobFinished( KGAPI2::Job* job )
 {
+    if ( !handleError( job ) ) {
+        return;
+    }
+
     Item item = job->property( ITEM_PROPERTY ).value<Item>();
     Collection collection = job->property( COLLECTION_PROPERTY ).value<Collection>();
     if ( item.isValid() ) {
