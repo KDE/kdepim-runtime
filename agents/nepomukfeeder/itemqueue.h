@@ -29,19 +29,46 @@
 class KJob;
 
 /** 
- * adds items to the internal queue, until the limit is passed, then the items are stored
+ * The ItemQueue contains a list of Aknoadi items to be indexed
+ *
+ * During each iteration it first fetchs all the items it can from
+ * Akonadi, and then indexes all of them one batch at a time.
  */
 class ItemQueue : public QObject {
   Q_OBJECT
 public:
-    explicit ItemQueue(int batchSize, int fetchSize, QObject* parent = 0);
-    ~ItemQueue();
+  /**
+   * Create an ItemQueue
+   *
+   * \param batchSize describes the number of items that will be pushed
+   *                  into Nepomuk in one go
+   * \param fetchSize describes the number of items that will be fetched
+   *                  from akonadi for pushing
+   */
+  explicit ItemQueue(int batchSize, int fetchSize, QObject* parent = 0);
+  ~ItemQueue();
 
   /** add item to queue */
   void addItem(const Akonadi::Item &);
   void addItems(const Akonadi::Item::List &);
-  /** process one item @return returns false if currently blocked */
+
+  /**
+   * Process one batch of items.
+   *
+   * This fetches <= fetchSize items from Akonadi and then sends all of them
+   * to be indexed, one batch at a time, unitll all the fetched items have
+   * been indexdd.
+   *
+   * This entire operation is asynchronous and this function returns almost
+   * instantly.
+   *
+   * \return \c true if it succeeded in sending one batch of items for indexing
+   * \return \c false if the previous batch is still being processed
+   *
+   * \sa batchFinished
+   */
   bool processItem();
+
   /** queue is empty */
   bool isEmpty() const;
 
@@ -61,7 +88,14 @@ private slots:
   void continueProcessing();
 
 private:
+  /**
+   * Processes one batch of items
+   *
+   * \return \c true if nothing left to process
+   * \return \c false sent one batch for processing
+   */
   bool processBatch();
+
   void addToQueue(Akonadi::Entity::Id);
 
   QQueue<Akonadi::Item::Id> mItemPipeline;
