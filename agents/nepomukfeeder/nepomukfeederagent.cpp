@@ -103,9 +103,9 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mLostChanges( false ),
   mInitialIndexingDisabled( false ),
   mItemBatchCounter( 0 ),
+  mBatchDetected( false ),
   mTotalItems(0),
-  mIndexedItems(0),
-  mBatchDetected( false )
+  mIndexedItems(0)
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
