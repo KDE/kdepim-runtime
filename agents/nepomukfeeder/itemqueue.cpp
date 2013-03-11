@@ -24,6 +24,13 @@
 #include <nepomuk2/storeresourcesjob.h>
 #include <KUrl>
 
+#include <Nepomuk2/Vocabulary/NCO>
+#include <Nepomuk2/Vocabulary/NMO>
+#include <Soprano/Vocabulary/NAO>
+
+using namespace Nepomuk2::Vocabulary;
+using namespace Soprano::Vocabulary;
+
 Q_DECLARE_METATYPE(Nepomuk2::SimpleResourceGraph)
 
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
@@ -36,10 +43,10 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mNumberOfIndexedItems(0)
 {
   mPropertyCache.setCachedTypes(QList<QUrl>()
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact")
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/08/15/nao#FreeDesktopIcon")
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#MessageHeader")
+     << NCO::EmailAddress()
+     << NCO::Contact()
+     << NAO::FreeDesktopIcon()
+     << NMO::MessageHeader()
   );
   if ( fetchSize < batchSize )  {
     kWarning() << "fetchSize must be >= batchsize";
