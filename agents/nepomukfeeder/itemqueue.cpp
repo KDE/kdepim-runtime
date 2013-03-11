@@ -157,7 +157,7 @@ bool ItemQueue::processBatch()
     
     QList<QUrl> batch;
     foreach (Akonadi::Item::Id id, mBatch) {
-        batch << Akonadi::Item(id).url().url();
+        batch << Akonadi::Item(id).url();
     }
 
     KJob *job = Nepomuk2::removeDataByApplication( batch, Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
