@@ -23,6 +23,7 @@
 #include <Akonadi/CollectionFetchScope>
 
 #include <KDE/KDialog>
+#include <KDE/KLocale>
 
 #include <LibKGAPI2/Account>
 #include <LibKGAPI2/AuthJob>
@@ -36,6 +37,7 @@ GoogleResource::GoogleResource( const QString &id ):
     ResourceBase( id ),
     AgentBase::ObserverV2()
 {
+    KGlobal::locale()->insertCatalog( "akonadi_google_resource" );
     connect( this, SIGNAL(abortRequested()),
             this, SLOT(slotAbortRequested()) );
     connect( this, SIGNAL(reloadConfiguration()),
