@@ -1,5 +1,5 @@
 [Desktop Entry]
-MimeType=application/rss+xml
+MimeType=application/rss+xml;
 Type=Service
 X-KDE-ServiceTypes=AkonadiNepomukFeeder
 X-KDE-Library=akonadi_nepomuk_rss_feeder
