@@ -49,7 +49,8 @@ FeederQueue::FeederQueue( QObject* parent )
   highPrioQueue(1, 100, this),
   emailItemQueue(1, 100, this)
 {
-  mProcessItemQueueTimer.setInterval( 0 );
+  // FIXME: Change this internal!
+  mProcessItemQueueTimer.setInterval( 500 );
   mProcessItemQueueTimer.setSingleShot( true );
   connect( &mProcessItemQueueTimer, SIGNAL(timeout()), SLOT(processItemQueue()) );
 
@@ -89,7 +90,8 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     //
     // The low prio queue is always throttled a little more than the high prio one
     //
-    if ( speed == FullSpeed ) {
+    // FIXME: Enable indexing speeds again?
+    /*if ( speed == FullSpeed ) {
         lowPrioQueue.setProcessingDelay( 0 );
         highPrioQueue.setProcessingDelay( 0 );
         emailItemQueue.setProcessingDelay( 0 );
@@ -97,7 +99,7 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
         lowPrioQueue.setProcessingDelay( s_snailPaceDelay );
         highPrioQueue.setProcessingDelay( s_reducedSpeedDelay );
         emailItemQueue.setProcessingDelay( s_snailPaceDelay );
-    }
+    }*/
 }
 
 void FeederQueue::addCollection( const Akonadi::Collection &collection )
@@ -255,30 +257,23 @@ void FeederQueue::processItemQueue()
   if ( !mOnline ) {
     kDebug() << "not Online, stopping processing";
     return;
-  } else if ( !highPrioQueue.isEmpty() ) {
-    //kDebug() << "high";
-    if ( !highPrioQueue.processItem() ) {
-      return;
-    }
-  } else if ( !lowPrioQueue.isEmpty() ) {
-    //kDebug() << "low";
-    if ( !lowPrioQueue.processItem() ) {
-      return;
-    }
-  } else if ( !emailItemQueue.isEmpty() ) {
-    if ( !emailItemQueue.processItem() ) {
-      return;
-    }
-  } else {
-    //kDebug() << "idle";
-    emit idle( i18n( "Ready to index data." ) );
   }
 
-  if ( !allQueuesEmpty() ) {
-    //kDebug() << "continue";
-    // go to eventloop before processing the next one, otherwise we miss the idle status change
-    mProcessItemQueueTimer.start();
+  if ( !highPrioQueue.isEmpty() ) {
+    if ( highPrioQueue.processBatch() )
+        return;
   }
+  else if ( !lowPrioQueue.isEmpty() ) {
+    if ( lowPrioQueue.processBatch() )
+        return;
+  }
+  else if ( !emailItemQueue.isEmpty() ) {
+    if ( emailItemQueue.processBatch() )
+      return;
+  }
+
+  //kDebug() << "idle";
+  emit idle( i18n( "Ready to index data." ) );
 }
 
 void FeederQueue::prioQueueFinished()

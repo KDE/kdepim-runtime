@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
+ * Copyright (C) 2013  Vishesh Handa <me@vhanda.in>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -31,8 +32,11 @@ class KJob;
 /** 
  * The ItemQueue contains a list of Aknoadi items to be indexed
  *
- * During each iteration it first fetchs all the items it can from
- * Akonadi, and then indexes all of them one batch at a time.
+ * This class internally consists of 2 queues - one contains a list
+ * of akonadi items to fetch and the other contain the fetched akonadi items.
+ *
+ * During each iteration it will fill up the fetched item queue if required
+ * and send one batch for indexing.
  */
 class ItemQueue : public QObject {
   Q_OBJECT
@@ -53,27 +57,23 @@ public:
   void addItems(const Akonadi::Item::List &);
 
   /**
-   * Process one batch of items.
+   * Index one batch of items.
    *
-   * This fetches <= fetchSize items from Akonadi and then sends all of them
-   * to be indexed, one batch at a time, unitll all the fetched items have
-   * been indexdd.
+   * This sends one batch of items from its internal list to Nepomuk for indexing.
    *
-   * This entire operation is asynchronous and this function returns almost
-   * instantly.
+   * If it does not contain the required number of item, it will fetch them
+   * one fetchSize at a time. This entire operation is asynchronous and this
+   * function returns almost instantly.
    *
-   * \return \c true if it succeeded in sending one batch of items for indexing
-   * \return \c false if the previous batch is still being processed
-   *
+   * \return \c true if succeeded in sending one batch for processing
+   * \return \c false if the previous operation is still executing or there is
+   *                  nothing to process
    * \sa batchFinished
    */
-  bool processItem();
+  bool processBatch();
 
   /** queue is empty */
   bool isEmpty() const;
-
-  /** the delay between two batches */
-  void setProcessingDelay(int ms);
 
 signals:
   /** all items processed */
@@ -85,31 +85,25 @@ private slots:
   void batchJobResult( KJob* job );
   void fetchJobResult( KJob* job );
   void removeDataResult( KJob* job );
-  void continueProcessing();
 
 private:
   /**
-   * Processes one batch of items
+   * Index one batch of items
    *
-   * \return \c true if nothing left to process
-   * \return \c false sent one batch for processing
+   * \return \c false if nothing left to process
+   * \return \c true sent one batch for processing
    */
-  bool processBatch();
+  bool indexBatch();
 
   void addToQueue(Akonadi::Entity::Id);
 
   QQueue<Akonadi::Item::Id> mItemPipeline;
-  Nepomuk2::SimpleResourceGraph mResourceGraph;
-  QList<Akonadi::Item::Id> mBatch;
-  QList<Akonadi::Item::Id> mTempFetchList;
-  Akonadi::Item::List mItemFetchList;
   Akonadi::Item::List mFetchedItemList;
 
   int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk
   int mFetchSize; //Maximum number of items fetched with full payload (defines ram usage of feeder), must be >= mBatchSize, ideally a multiple of it
   int mRunningJobs;
 
-  int mProcessingDelay;
   PropertyCache mPropertyCache;
 
   QTime mTimer;
