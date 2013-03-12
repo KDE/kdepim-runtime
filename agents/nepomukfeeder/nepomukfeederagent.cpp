@@ -370,7 +370,7 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     mQueue.addLowPrioItem( item );
   }
 
-  NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->getItemsToRemove(), this);
+  NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->staleUris(), this);
   cleanerJob->start();
 }
 

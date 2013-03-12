@@ -40,8 +40,13 @@ public:
     virtual void start();
     /// Returns all items which were found in akonadi but not in nepomuk (meaning they should be indexed)
     const ItemHash &getUnindexed() const;
-    /// Returns all items which were found in nepomuk but not in akonadi (meaning they can be removed from nepomuk)
-    const QList<Akonadi::Item::Id> &getItemsToRemove() const;
+
+    /**
+     * Returns a list of Nepomuk URIs which are Akonadi DataObjects
+     * but are no longer present in Akonadi i.e they can now be removed
+     */
+    const QList<QUrl> &staleUris() const;
+
     /// Filter the searched items by indexed collections 
     void setIndexedCollections(const Akonadi::Collection::List &);
     int indexedCount() const;
@@ -55,7 +60,9 @@ private slots:
 private:
     void fetchItemsFromCollection();
     ItemHash mAkonadiItems;
-    QList<Akonadi::Item::Id> mStaleItems;
+
+    /// Contain a list of Nepomuk Uri which are now invalid
+    QList<QUrl> mStaleUris;
     QTime mTime;
     const int mCompatLevel;
     Akonadi::Collection::List mIndexedCollections;
