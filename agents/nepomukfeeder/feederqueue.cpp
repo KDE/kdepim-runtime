@@ -41,7 +41,6 @@ using namespace Akonadi;
 FeederQueue::FeederQueue( QObject* parent )
 : QObject( parent ),
   mTotalAmount( 0 ),
-  mProcessedAmount( 0 ),
   mPendingJobs( 0 ),
   mReIndex( false ),
   mOnline( true ),
@@ -69,6 +68,8 @@ FeederQueue::~FeederQueue()
 
 void FeederQueue::setReindexing( bool reindex )
 {
+  // FIXME: This doesn't seem like it will do anything?
+  //        Shouldn't it call some kind of signal?
   mReIndex = reindex;
 }
 
@@ -130,8 +131,6 @@ void FeederQueue::processNextCollection()
   //kDebug();
   if ( mCurrentCollection.isValid() )
     return;
-  mTotalAmount = 0;
-  mProcessedAmount = 0;
   if ( mCollectionQueue.isEmpty() ) {
     indexingComplete();
     return;
@@ -196,6 +195,7 @@ void FeederQueue::addItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
   highPrioQueue.addItem( item );
+  mTotalAmount++;
   mProcessItemQueueTimer.start();
 }
 
@@ -207,6 +207,7 @@ void FeederQueue::addLowPrioItem( const Akonadi::Item &item )
   } else {
     lowPrioQueue.addItem( item );
   }
+  mTotalAmount++;
   mProcessItemQueueTimer.start();
 }
 
@@ -243,16 +244,18 @@ void FeederQueue::indexingComplete()
 {
   //kDebug() << "fully indexed";
   mReIndex = false;
+  emit progress( 100 );
   emit idle( i18n( "Indexing completed." ) );
   emit fullyIndexed();
 }
 
 void FeederQueue::processItemQueue()
 {
-  //kDebug();
-  ++mProcessedAmount;
-  if ( ( mProcessedAmount % 100 ) == 0 && mTotalAmount > 0 && mProcessedAmount <= mTotalAmount )
-    emit progress( ( mProcessedAmount * 100 ) / mTotalAmount );
+  if ( mTotalAmount ) {
+    int percent = ( mTotalAmount - size() ) * 100.0 / mTotalAmount;
+    kDebug() << "Progress:" << percent << "%" << size() << mTotalAmount;
+    emit progress( percent );
+  }
 
   if ( !mOnline ) {
     kDebug() << "not Online, stopping processing";
@@ -260,19 +263,28 @@ void FeederQueue::processItemQueue()
   }
 
   if ( !highPrioQueue.isEmpty() ) {
-    if ( highPrioQueue.processBatch() )
+    kDebug() << "high";
+    if ( highPrioQueue.processBatch() ) {
+        emit running( i18n( "Indexing" ) );
         return;
+    }
   }
   else if ( !lowPrioQueue.isEmpty() ) {
-    if ( lowPrioQueue.processBatch() )
+    kDebug() << "low";
+    if ( lowPrioQueue.processBatch() ) {
+        emit running( i18n( "Indexing" ) );
         return;
+    }
   }
   else if ( !emailItemQueue.isEmpty() ) {
-    if ( emailItemQueue.processBatch() )
-      return;
+    kDebug() << "email";
+    if ( emailItemQueue.processBatch() ) {
+        emit running( i18n( "Indexing Email" ) );
+        return;
+    }
   }
 
-  //kDebug() << "idle";
+  kDebug() << "idle";
   emit idle( i18n( "Ready to index data." ) );
 }
 
@@ -284,6 +296,7 @@ void FeederQueue::prioQueueFinished()
     } else {
       indexingComplete();
     }
+    mTotalAmount = 0;
   }
 }
 
@@ -324,5 +337,11 @@ Akonadi::Collection::List FeederQueue::listOfCollection() const
 {
   return mCollectionQueue;
 }
+
+int FeederQueue::size()
+{
+  return lowPrioQueue.size() + highPrioQueue.size() + emailItemQueue.size();
+}
+
 
 #include "feederqueue.moc"

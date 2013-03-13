@@ -75,6 +75,11 @@ public:
   /** queue is empty */
   bool isEmpty() const;
 
+  /**
+   * Returns the total number of Akonadi Items in the queue
+   */
+  int size() const;
+
 signals:
   /** all items processed */
   void finished();
