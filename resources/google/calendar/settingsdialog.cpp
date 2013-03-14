@@ -21,12 +21,14 @@
 #include <KDE/KLocalizedString>
 #include <KDE/KListWidget>
 #include <KDE/KPushButton>
+#include <KDE/KDateComboBox>
 
 #include <QtGui/QPixmap>
 #include <QtGui/QIcon>
 #include <QtGui/QListWidget>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLayout>
+#include <QtGui/QLabel>
 #include <QtCore/QPointer>
 
 #include <LibKGAPI2/Account>
@@ -61,6 +63,25 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
     connect( m_reloadCalendarsBtn, SIGNAL(clicked(bool)),
              this, SLOT(slotReloadCalendars()) );
 
+    QHBoxLayout *hbox = new QHBoxLayout;
+    vbox->addLayout( hbox );
+
+    m_eventsLimitLabel = new QLabel( i18nc( "Followed by a date picker widget", "&Fetch only new events since" ), this );
+    hbox->addWidget( m_eventsLimitLabel );
+
+    m_eventsLimitCombo = new KDateComboBox( this );
+    m_eventsLimitLabel->setBuddy( m_eventsLimitCombo );
+    m_eventsLimitCombo->setMaximumDate( QDate::currentDate() );
+    m_eventsLimitCombo->setMinimumDate( QDate::fromString( QLatin1String( "2000-01-01" ), Qt::ISODate ) );
+    m_eventsLimitCombo->setOptions( KDateComboBox::EditDate | KDateComboBox::SelectDate |
+                                    KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid );
+    if( Settings::self()->eventsSince().isEmpty() ) {
+        const QString ds = QString::fromLatin1( "%1-01-01" ).arg( QString::number( QDate::currentDate().year() - 3 ) );
+        m_eventsLimitCombo->setDate( QDate::fromString( ds, Qt::ISODate ) );
+    } else {
+        m_eventsLimitCombo->setDate( QDate::fromString( Settings::self()->eventsSince(), Qt::ISODate ) );
+    }
+    hbox->addWidget( m_eventsLimitCombo );
 
     m_taskListsBox = new QGroupBox( i18n( "Tasklists" ), this );
     mainWidget()->layout()->addWidget( m_taskListsBox );
@@ -88,6 +109,7 @@ void SettingsDialog::saveSettings()
         Settings::self()->setAccount( QString() );
         Settings::self()->setCalendars( QStringList() );
         Settings::self()->setTaskLists( QStringList() );
+        Settings::self()->setEventsSince( QString() );
         Settings::self()->writeConfig();
         return;
     }
@@ -103,6 +125,9 @@ void SettingsDialog::saveSettings()
         }
     }
     Settings::self()->setCalendars( calendars );
+    if ( m_eventsLimitCombo->isValid() ) {
+        Settings::self()->setEventsSince( m_eventsLimitCombo->date().toString( Qt::ISODate ) );
+    }
 
     QStringList taskLists;
     for ( int i = 0; i < m_taskListsList->count(); i++ ) {
