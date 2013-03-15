@@ -590,19 +590,26 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     Akonadi::Item item;
     item.setRemoteId( davItem.url() );
 
-    const QStringList contentMimeTypes = collection.contentMimeTypes();
-    if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) )
-      item.setMimeType( KABC::Addressee::mimeType() );
-    else if ( contentMimeTypes.contains( QLatin1String( "text/calendar" ) ) )
-      item.setMimeType( QLatin1String( "text/calendar" ) );
-    else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) )
-      item.setMimeType( KCalCore::Event::eventMimeType() );
-    else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )
-      item.setMimeType( KCalCore::Todo::todoMimeType() );
-    else if ( contentMimeTypes.contains( KCalCore::FreeBusy::freeBusyMimeType() ) )
-      item.setMimeType( KCalCore::FreeBusy::freeBusyMimeType() );
-    else if ( contentMimeTypes.contains( KCalCore::Journal::journalMimeType() ) )
-      item.setMimeType( KCalCore::Journal::journalMimeType() );
+    if ( !mEtagCache.contains( item.remoteId() ) ) {
+      // This is the first time this item is seen, and we can't
+      // know its mime type until content has been fetched, so
+      // set one that looks plausible now. The final mime type
+      // will be set either in onMultiGetFinished() or
+      // onItemFetched()
+      const QStringList contentMimeTypes = collection.contentMimeTypes();
+      if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) )
+        item.setMimeType( KABC::Addressee::mimeType() );
+      else if ( contentMimeTypes.contains( QLatin1String( "text/calendar" ) ) )
+        item.setMimeType( QLatin1String( "text/calendar" ) );
+      else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) )
+        item.setMimeType( KCalCore::Event::eventMimeType() );
+      else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )
+        item.setMimeType( KCalCore::Todo::todoMimeType() );
+      else if ( contentMimeTypes.contains( KCalCore::FreeBusy::freeBusyMimeType() ) )
+        item.setMimeType( KCalCore::FreeBusy::freeBusyMimeType() );
+      else if ( contentMimeTypes.contains( KCalCore::Journal::journalMimeType() ) )
+        item.setMimeType( KCalCore::Journal::journalMimeType() );
+    }
 
     if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
       mEtagCache.markAsChanged( item.remoteId() );
@@ -664,7 +671,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     const DavItem davItem = davJob->item( item.remoteId() );
 
     // No data was retrieved for this item, maybe because it is not out of date
-    if ( davItem.data().isEmpty() && mEtagCache.contains( item.remoteId() ) ) {
+    if ( davItem.data().isEmpty() && !mEtagCache.isOutOfDate( item.remoteId() ) ) {
       items << item;
       continue;
     }
