@@ -103,7 +103,6 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     EtagCache mEtagCache;
     QStringList mCollectionsWithTemporaryError;
     DavFreeBusyHandler *mFreeBusyHandler;
-    QSet<QString> mSeenCollectionsNames;
     QSet<QString> mSeenCollectionsUrls;
     ReplayCache mReplayCache;
 };

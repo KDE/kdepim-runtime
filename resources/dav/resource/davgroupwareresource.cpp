@@ -240,7 +240,6 @@ void DavGroupwareResource::retrieveCollections()
   }
 
   emit status( Running, i18n( "Fetching collections" ) );
-  mSeenCollectionsNames.clear();
   mSeenCollectionsUrls.clear();
 
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
@@ -501,12 +500,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     if ( davCollection.displayName().isEmpty() ) {
       collection.setName( name() + " (" + davCollection.url() + ')' );
     } else {
-      if ( mSeenCollectionsNames.contains( davCollection.displayName() ) ) {
-        collection.setName( davCollection.displayName() + " (" + davCollection.url() + ')' );
-      } else {
-        collection.setName( davCollection.displayName() );
-        mSeenCollectionsNames.insert( davCollection.displayName() );
-      }
+      collection.setName( davCollection.displayName() );
     }
 
     QStringList mimeTypes;
