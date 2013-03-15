@@ -69,7 +69,6 @@ private:
     Akonadi::CachePolicy m_defaultPolicy;
     QHash<Syndication::Loader*, Akonadi::Collection> m_collectionByLoader;
     QString m_titleOpml;
-    RssItemSync *m_syncer;
 };
 
 #endif

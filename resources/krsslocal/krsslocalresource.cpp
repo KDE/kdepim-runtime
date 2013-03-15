@@ -63,7 +63,6 @@ using namespace boost;
 
 KRssLocalResource::KRssLocalResource( const QString &id )
     : ResourceBase( id )
-    , m_syncer( 0 )
 {
     qsrand(QDateTime::currentDateTime().toTime_t());
     new SettingsAdaptor( Settings::self() );
@@ -332,17 +331,13 @@ void KRssLocalResource::slotLoadingComplete(Syndication::Loader* loader, Syndica
     }
 
     //--- a replacement of itemsRetrieved that uses a custom ItemSync---
-    if (!m_syncer) {
-        m_syncer = new RssItemSync( fc );
-        connect( m_syncer, SIGNAL(result(KJob*)), this, SLOT(slotItemSyncDone(KJob*)) );
-    }
-
-    m_syncer->setIncrementalSyncItems( items, Item::List() );
+    RssItemSync* sync = new RssItemSync( fc );
+    connect( sync, SIGNAL(result(KJob*)), this, SLOT(slotItemSyncDone(KJob*)) );
+    sync->setIncrementalSyncItems( items, Item::List() );
 }
 
 void KRssLocalResource::slotItemSyncDone( KJob *job )
 {
-    m_syncer = 0;
     if ( job->error() && job->error() != Job::UserCanceled )
         emit error( job->errorString() );
     itemsRetrievalDone();
