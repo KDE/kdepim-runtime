@@ -120,27 +120,20 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
-    if ( davJob->queryMetaData( "responsecode" ).isEmpty() ) {
-      // If in doubt just consider this a temporary error
-      mHasTemporaryError = true;
-      setError( davJob->error() );
-      setErrorText( davJob->errorText() );
-    } else {
-      if ( davJob->url() != mUrl.url() ) {
-        // Retry as if the initial URL was a calendar URL.
-        // We can end up here when retrieving a homeset on
-        // which a PROPFIND resulted in an error
-        doCollectionsFetch( mUrl.url() );
-        return;
-      }
-
-      if ( DavUtils::httpRequestRetryable( responseCode ) )
-        mHasTemporaryError = true;
-
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request.\n"
-                          "%1 (%2).", davJob->errorString(), responseCode ) );
+    if ( davJob->url() != mUrl.url() ) {
+      // Retry as if the initial URL was a calendar URL.
+      // We can end up here when retrieving a homeset on
+      // which a PROPFIND resulted in an error
+      doCollectionsFetch( mUrl.url() );
+      return;
     }
+
+    if ( DavUtils::httpRequestRetryable( responseCode ) )
+      mHasTemporaryError = true;
+
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request.\n"
+                        "%1 (%2).", davJob->errorString(), responseCode ) );
 
     if ( mSubJobCount == 0 )
       emitResult();
