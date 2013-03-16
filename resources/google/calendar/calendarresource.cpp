@@ -134,6 +134,11 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
         if ( !collection.remoteRevision().isEmpty() ) {
             fetchJob->setFetchOnlyUpdated( collection.remoteRevision().toULongLong() );
         }
+        if ( !Settings::self()->eventsSince().isEmpty() ) {
+            const QDate date = QDate::fromString( Settings::self()->eventsSince(), Qt::ISODate );
+            kDebug() << date << QDateTime(date) << QDateTime(date).toTime_t();
+            fetchJob->setTimeMin( QDateTime( date ).toTime_t() );
+        }
         job = fetchJob;
     } else if ( collection.contentMimeTypes().contains( KCalCore::Todo::todoMimeType() ) ) {
         TaskFetchJob *fetchJob = new TaskFetchJob( collection.remoteId(), account(), this );

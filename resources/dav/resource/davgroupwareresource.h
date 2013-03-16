@@ -20,7 +20,6 @@
 #define DAVGROUPWARERESOURCE_H
 
 #include "etagcache.h"
-#include "replaycache.h"
 
 #include <akonadi/resourcebase.h>
 #include <akonadi/calendar/freebusyproviderbase.h>
@@ -71,7 +70,6 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
     void onRetrieveCollectionsFinished( KJob* );
     void onRetrieveItemsFinished( KJob* );
-    void onRetrieveAkonadiItemsFinished( KJob* );
     void onMultigetFinished( KJob* );
     void onRetrieveItemFinished( KJob* );
     /**
@@ -103,9 +101,8 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     EtagCache mEtagCache;
     QStringList mCollectionsWithTemporaryError;
     DavFreeBusyHandler *mFreeBusyHandler;
-    QSet<QString> mSeenCollectionsNames;
     QSet<QString> mSeenCollectionsUrls;
-    ReplayCache mReplayCache;
+    QMap< QString, QSet<QString> > mItemsRidCache;
 };
 
 #endif

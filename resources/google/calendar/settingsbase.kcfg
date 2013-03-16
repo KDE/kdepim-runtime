@@ -16,12 +16,8 @@
       <default></default>
       <label>IDs of task lists in collection</label>
     </entry>
-    <entry name="RefreshInterval" type="Int">
-      <default>30</default>
-      <label>Refresh interval in minutes.</label>
-    </entry>
-    <entry name="RefreshEnabled" type="Bool">
-      <default>true</default>
+    <entry name="EventsSince" type="String">
+        <default></default>
     </entry>
   </group>
 </kcfg>

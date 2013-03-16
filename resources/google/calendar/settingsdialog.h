@@ -21,6 +21,8 @@
 #include "common/googlesettingsdialog.h"
 
 class KListWidget;
+class QLabel;
+class KDateComboBox;
 
 class SettingsDialog : public GoogleSettingsDialog
 {
@@ -43,6 +45,8 @@ class SettingsDialog : public GoogleSettingsDialog
     QGroupBox *m_calendarsBox;
     KListWidget *m_calendarsList;
     KPushButton *m_reloadCalendarsBtn;
+    QLabel *m_eventsLimitLabel;
+    KDateComboBox *m_eventsLimitCombo;
 
     QGroupBox *m_taskListsBox;
     KListWidget *m_taskListsList;
