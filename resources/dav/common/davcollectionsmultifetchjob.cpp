@@ -21,7 +21,7 @@
 #include "davcollectionsfetchjob.h"
 
 DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent )
-  : KJob( parent ), mUrls( urls ), mSubJobCount( 0 ), mSubJobSuccessful( false )
+  : KJob( parent ), mUrls( urls ), mSubJobCount( urls.size() ), mSubJobSuccessful( false )
 {
 }
 
@@ -36,8 +36,6 @@ void DavCollectionsMultiFetchJob::start()
     connect( job, SIGNAL(collectionDiscovered(int,QString,QString)),
              SIGNAL(collectionDiscovered(int,QString,QString)) );
     job->start();
-
-    ++mSubJobCount;
   }
 }
 
@@ -53,7 +51,6 @@ DavUtils::DavUrl::List DavCollectionsMultiFetchJob::urlsWithTemporaryError() con
 
 void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
 {
-  --mSubJobCount;
   DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob*>( job );
   if ( fetchJob->hasTemporaryError() )
     mUrlsWithTemporaryError << fetchJob->davUrl();
@@ -63,19 +60,17 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
       setError( job->error() );
       setErrorText( job->errorText() );
     }
-    if ( mSubJobCount == 0 )
-      emitResult();
-    return;
+  }
+  else {
+    if ( !mSubJobSuccessful ) {
+      setError( 0 ); // nope, everything went fine if we're here
+      mSubJobSuccessful = true;
+    }
+
+    mCollections << fetchJob->collections();
   }
 
-  if ( !mSubJobSuccessful ) {
-    setError( 0 ); // nope, everything went fine if we're here
-    mSubJobSuccessful = true;
-  }
-
-  mCollections << fetchJob->collections();
-
-  if ( mSubJobCount == 0 )
+  if ( --mSubJobCount == 0 )
     emitResult();
 }
 
