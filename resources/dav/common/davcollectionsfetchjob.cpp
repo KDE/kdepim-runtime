@@ -114,7 +114,6 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
 
 void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 {
-  --mSubJobCount;
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
   const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
@@ -344,7 +343,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     }
   }
 
-  if ( mSubJobCount == 0 )
+  if ( --mSubJobCount == 0 )
     emitResult();
 }
 

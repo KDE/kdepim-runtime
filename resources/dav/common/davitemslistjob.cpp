@@ -64,7 +64,6 @@ DavItem::List DavItemsListJob::items() const
 
 void DavItemsListJob::davJobFinished( KJob *job )
 {
-  --mSubJobCount;
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
   const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
 
@@ -182,7 +181,7 @@ void DavItemsListJob::davJobFinished( KJob *job )
     }
   }
 
-  if ( mSubJobCount == 0 )
+  if ( --mSubJobCount == 0 )
     emitResult();
 }
 

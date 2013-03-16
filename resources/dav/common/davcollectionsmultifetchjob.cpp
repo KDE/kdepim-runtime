@@ -51,7 +51,6 @@ DavUtils::DavUrl::List DavCollectionsMultiFetchJob::urlsWithTemporaryError() con
 
 void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
 {
-  --mSubJobCount;
   DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob*>( job );
   if ( fetchJob->hasTemporaryError() )
     mUrlsWithTemporaryError << fetchJob->davUrl();
@@ -71,7 +70,7 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
     mCollections << fetchJob->collections();
   }
 
-  if ( mSubJobCount == 0 )
+  if ( --mSubJobCount == 0 )
     emitResult();
 }
 
