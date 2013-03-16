@@ -21,7 +21,7 @@
 #include "davcollectionsfetchjob.h"
 
 DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent )
-  : KJob( parent ), mUrls( urls ), mSubJobCount( 0 ), mSubJobSuccessful( false )
+  : KJob( parent ), mUrls( urls ), mSubJobCount( urls.size() ), mSubJobSuccessful( false )
 {
 }
 
@@ -36,8 +36,6 @@ void DavCollectionsMultiFetchJob::start()
     connect( job, SIGNAL(collectionDiscovered(int,QString,QString)),
              SIGNAL(collectionDiscovered(int,QString,QString)) );
     job->start();
-
-    ++mSubJobCount;
   }
 }
 
