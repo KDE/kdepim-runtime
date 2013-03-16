@@ -65,7 +65,6 @@ set( davgroupwareresource_SRCS
   davfreebusyhandler.cpp
   davgroupwareresource.cpp
   davprotocolattribute.cpp
-  replaycache.cpp
   searchdialog.cpp
   setupwizard.cpp
   settings.cpp
