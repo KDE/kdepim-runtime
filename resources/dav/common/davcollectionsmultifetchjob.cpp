@@ -61,17 +61,15 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
       setError( job->error() );
       setErrorText( job->errorText() );
     }
-    if ( mSubJobCount == 0 )
-      emitResult();
-    return;
   }
+  else {
+    if ( !mSubJobSuccessful ) {
+      setError( 0 ); // nope, everything went fine if we're here
+      mSubJobSuccessful = true;
+    }
 
-  if ( !mSubJobSuccessful ) {
-    setError( 0 ); // nope, everything went fine if we're here
-    mSubJobSuccessful = true;
+    mCollections << fetchJob->collections();
   }
-
-  mCollections << fetchJob->collections();
 
   if ( mSubJobCount == 0 )
     emitResult();
