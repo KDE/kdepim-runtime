@@ -71,7 +71,6 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
     void onRetrieveCollectionsFinished( KJob* );
     void onRetrieveItemsFinished( KJob* );
-    void onRetrieveAkonadiItemsFinished( KJob* );
     void onMultigetFinished( KJob* );
     void onRetrieveItemFinished( KJob* );
     /**
@@ -105,6 +104,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     DavFreeBusyHandler *mFreeBusyHandler;
     QSet<QString> mSeenCollectionsUrls;
     ReplayCache mReplayCache;
+    QMap< QString, QSet<QString> > mItemsRidCache;
 };
 
 #endif
