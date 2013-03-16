@@ -40,6 +40,7 @@ void DavItemsListJob::start()
   QListIterator<QDomDocument> it( protocol->itemsQueries() );
 
   while ( it.hasNext() ) {
+    ++mSubJobCount;
     const QDomDocument props = it.next();
 
     if ( DavManager::self()->davProtocol( mUrl.protocol() )->useReport() ) {
@@ -53,8 +54,6 @@ void DavItemsListJob::start()
       job->setProperty( "davType", "propFind" );
       connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
     }
-
-    ++mSubJobCount;
   }
 }
 
@@ -71,121 +70,116 @@ void DavItemsListJob::davJobFinished( KJob *job )
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
-    if ( davJob->queryMetaData( "responsecode" ).isEmpty() ) {
-      setError( davJob->error() );
-      setErrorText( davJob->errorText() );
-    } else {
+    if ( !mSubJobSuccessful ) {
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request.\n"
                           "%1 (%2).", davJob->errorString(), responseCode ) );
     }
-    if ( mSubJobCount == 0 )
-      emitResult();
-    return;
   }
+  else {
+    if ( !mSubJobSuccessful ) {
+      setError( 0 ); // nope, everything went fine
+      mSubJobSuccessful = true;
+    }
 
-  if ( !mSubJobSuccessful ) {
-    setError( 0 ); // nope, everything went fine
-    mSubJobSuccessful = true;
-  }
+    /*
+     * Extract data from a document like the following:
+     *
+     * <multistatus xmlns="DAV:">
+     *   <response xmlns="DAV:">
+     *     <href xmlns="DAV:">/caldav.php/test1.user/home/KOrganizer-166749289.780.ics</href>
+     *     <propstat xmlns="DAV:">
+     *       <prop xmlns="DAV:">
+     *         <getetag xmlns="DAV:">"b4bbea0278f4f63854c4167a7656024a"</getetag>
+     *       </prop>
+     *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
+     *     </propstat>
+     *   </response>
+     *   <response xmlns="DAV:">
+     *     <href xmlns="DAV:">/caldav.php/test1.user/home/KOrganizer-399416366.464.ics</href>
+     *     <propstat xmlns="DAV:">
+     *       <prop xmlns="DAV:">
+     *         <getetag xmlns="DAV:">"52eb129018398a7da4f435b2bc4c6cd5"</getetag>
+     *       </prop>
+     *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
+     *     </propstat>
+     *   </response>
+     * </multistatus>
+     */
 
-  /*
-   * Extract data from a document like the following:
-   *
-   * <multistatus xmlns="DAV:">
-   *   <response xmlns="DAV:">
-   *     <href xmlns="DAV:">/caldav.php/test1.user/home/KOrganizer-166749289.780.ics</href>
-   *     <propstat xmlns="DAV:">
-   *       <prop xmlns="DAV:">
-   *         <getetag xmlns="DAV:">"b4bbea0278f4f63854c4167a7656024a"</getetag>
-   *       </prop>
-   *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
-   *     </propstat>
-   *   </response>
-   *   <response xmlns="DAV:">
-   *     <href xmlns="DAV:">/caldav.php/test1.user/home/KOrganizer-399416366.464.ics</href>
-   *     <propstat xmlns="DAV:">
-   *       <prop xmlns="DAV:">
-   *         <getetag xmlns="DAV:">"52eb129018398a7da4f435b2bc4c6cd5"</getetag>
-   *       </prop>
-   *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
-   *     </propstat>
-   *   </response>
-   * </multistatus>
-   */
+    const QDomDocument document = davJob->response();
+    const QDomElement documentElement = document.documentElement();
 
-  const QDomDocument document = davJob->response();
-  const QDomElement documentElement = document.documentElement();
+    QDomElement responseElement = DavUtils::firstChildElementNS( documentElement, "DAV:", "response" );
+    while ( !responseElement.isNull() ) {
 
-  QDomElement responseElement = DavUtils::firstChildElementNS( documentElement, "DAV:", "response" );
-  while ( !responseElement.isNull() ) {
+      QDomElement propstatElement;
 
-    QDomElement propstatElement;
-
-    // check for the valid propstat, without giving up on first error
-    {
-      const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
-      for ( uint i = 0; i < propstats.length(); ++i ) {
-        const QDomElement propstatCandidate = propstats.item( i ).toElement();
-        const QDomElement statusElement = DavUtils::firstChildElementNS( propstatCandidate, "DAV:", "status" );
-        if ( statusElement.text().contains( "200" ) ) {
-          propstatElement = propstatCandidate;
+      // check for the valid propstat, without giving up on first error
+      {
+        const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
+        for ( uint i = 0; i < propstats.length(); ++i ) {
+          const QDomElement propstatCandidate = propstats.item( i ).toElement();
+          const QDomElement statusElement = DavUtils::firstChildElementNS( propstatCandidate, "DAV:", "status" );
+          if ( statusElement.text().contains( "200" ) ) {
+            propstatElement = propstatCandidate;
+          }
         }
       }
-    }
 
-    if ( propstatElement.isNull() ) {
-      responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
-      continue;
-    }
-
-    const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
-
-    // check whether it is a dav collection ...
-    const QDomElement resourcetypeElement = DavUtils::firstChildElementNS( propElement, "DAV:", "resourcetype" );
-    if ( !responseElement.isNull() ) {
-      const QDomElement collectionElement = DavUtils::firstChildElementNS( resourcetypeElement, "DAV:", "collection" );
-      if ( !collectionElement.isNull() ) {
+      if ( propstatElement.isNull() ) {
         responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
         continue;
       }
-    }
 
-    // ... if not it is an item
-    DavItem item;
+      const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
 
-    // extract path
-    const QDomElement hrefElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "href" );
-    const QString href = hrefElement.text();
+      // check whether it is a dav collection ...
+      const QDomElement resourcetypeElement = DavUtils::firstChildElementNS( propElement, "DAV:", "resourcetype" );
+      if ( !responseElement.isNull() ) {
+        const QDomElement collectionElement = DavUtils::firstChildElementNS( resourcetypeElement, "DAV:", "collection" );
+        if ( !collectionElement.isNull() ) {
+          responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
+          continue;
+        }
+      }
 
-    KUrl url = davJob->url();
-    url.setUser( QString() );
-    if ( href.startsWith( '/' ) ) {
-      // href is only a path, use request url to complete
-      url.setEncodedPath( href.toLatin1() );
-    } else {
-      // href is a complete url
-      KUrl tmpUrl( href );
-      url = tmpUrl;
-    }
+      // ... if not it is an item
+      DavItem item;
 
-    QString itemUrl = url.prettyUrl();
-    if ( mSeenUrls.contains( itemUrl ) ) {
+      // extract path
+      const QDomElement hrefElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "href" );
+      const QString href = hrefElement.text();
+
+      KUrl url = davJob->url();
+      url.setUser( QString() );
+      if ( href.startsWith( '/' ) ) {
+        // href is only a path, use request url to complete
+        url.setEncodedPath( href.toLatin1() );
+      } else {
+        // href is a complete url
+        KUrl tmpUrl( href );
+        url = tmpUrl;
+      }
+
+      QString itemUrl = url.prettyUrl();
+      if ( mSeenUrls.contains( itemUrl ) ) {
+        responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
+        continue;
+      }
+
+      mSeenUrls << itemUrl;
+      item.setUrl( itemUrl );
+
+      // extract etag
+      const QDomElement getetagElement = DavUtils::firstChildElementNS( propElement, "DAV:", "getetag" );
+
+      item.setEtag( getetagElement.text() );
+
+      mItems << item;
+
       responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
-      continue;
     }
-
-    mSeenUrls << itemUrl;
-    item.setUrl( itemUrl );
-
-    // extract etag
-    const QDomElement getetagElement = DavUtils::firstChildElementNS( propElement, "DAV:", "getetag" );
-
-    item.setEtag( getetagElement.text() );
-
-    mItems << item;
-
-    responseElement = DavUtils::nextSiblingElementNS( responseElement, "DAV:", "response" );
   }
 
   if ( mSubJobCount == 0 )
