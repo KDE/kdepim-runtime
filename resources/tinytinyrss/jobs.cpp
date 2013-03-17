@@ -157,10 +157,13 @@ bool TransferJob::checkForError( const QVariant& jsonObject )
         setErrorText( i18n("Not logged in") );
     } else if ( errorEnum == QLatin1String("API_DISABLED") ) {
         setError( ApiDisabledError );
-        setErrorText( i18n("The Tiny Tiny installation has its API disabled. You must enable the API to access the RSS feeds.") );
+        setErrorText( i18n("The Tiny Tiny RSS installation has its external API disabled. Check the \"Enable external API\" option in Tiny Tiny RSS' preferences to enable it.") );
     } else if ( errorEnum == QLatin1String("LOGIN_ERROR") ) {
         setError( AuthenticationFailedError );
-        setErrorText( i18n("Login failed. Wrong username and/or password?") );
+        setErrorText( i18n("Login failed. Ensure username and password are correct.") );
+    } else if ( errorEnum == QLatin1String("INCORRECT_USAGE") ) {
+        setError( OtherError );
+        setErrorText( i18n("Incorrect usage") );
     } else {
         setError( OtherError );
         setErrorText( errorEnum );
