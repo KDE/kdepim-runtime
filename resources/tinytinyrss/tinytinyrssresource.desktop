@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Tiny Tiny RSS
+Comment=Access Tiny Tiny RSS reader
+Type=AkonadiResource
+Exec=akonadi_tinytinyrss_resource
+Icon=akregator
+
+X-Akonadi-MimeTypes=application/rss+xml
+X-Akonadi-Capabilities=Resource,RssResource
+X-Akonadi-Identifier=akonadi_tinytinyss_resource

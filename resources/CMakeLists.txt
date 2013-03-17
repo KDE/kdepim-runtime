@@ -85,4 +85,4 @@ endif ()
 
 add_subdirectory( krsslocal) 
 add_subdirectory( vcard )
-
+add_subdirectory( tinytinyrss )
