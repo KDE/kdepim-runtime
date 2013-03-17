@@ -475,8 +475,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 
   const DavCollection::List davCollections = fetchJob->collections();
 
-  QSet<QString> parentMimeTypes = QSet<QString>::fromList( mDavCollectionRoot.contentMimeTypes() );
-
   foreach ( const DavCollection &davCollection, davCollections ) {
     if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) ) {
       kWarning() << davCollection.url() << "is now available";
@@ -521,7 +519,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     if ( contentTypes & DavCollection::Journal )
       mimeTypes << KCalCore::Journal::journalMimeType();
 
-    parentMimeTypes += QSet<QString>::fromList( mimeTypes );
     collection.setContentMimeTypes( mimeTypes );
     setCollectionIcon( collection /*by-ref*/ );
 
@@ -551,12 +548,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     mEtagCache.sync( collection );
     collections << collection;
   }
-
-  // Set the list of possible mimetypes on the root collection to be the union
-  // of all the possible mimetypes on all the child collections. This is
-  // necessary in order for the root collection to be displayed in certain
-  // views.
-  collections[0].setContentMimeTypes( parentMimeTypes.values() );
 
   collectionsRetrieved( collections );
 }
