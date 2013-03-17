@@ -40,6 +40,7 @@
 
 #include <KWallet/Wallet>
 
+#include <KRss/Enclosure>
 #include <KRss/FeedCollection>
 #include <KRss/Item>
 
@@ -203,6 +204,8 @@ void TinyTinyRssResource::retrieveItems( const Akonadi::Collection& collection )
     job->setOperation( QLatin1String("getHeadlines") );
     job->setCollection( collection );
     job->insertData( QLatin1String("feed_id"), feedId );
+    job->insertData( QLatin1String("show_content"), true );
+    job->insertData( QLatin1String("include_attachments"), true );
     job->insertData( QLatin1String("view_mode"), QLatin1String("all_articles") );
     job->start();
 }
@@ -227,7 +230,27 @@ static void itemFromJson( Akonadi::Item& item, const QVariantMap& map, bool hasC
     rssItem.setContent( content );
     rssItem.setCommentsCount( commentsCount );
     rssItem.setCommentsLink( commentsLink );
-    //TODO author, enclosures
+    const QVariantList attachments = map.value( QLatin1String("attachments") ).toList();
+    QList<KRss::Enclosure> enclosures;
+    enclosures.reserve( attachments.size() );
+    Q_FOREACH( const QVariant& i, attachments ) {
+        const QVariantMap encMap = i.toMap();
+        const QString url = encMap.value( QLatin1String("content_url") ).toString();
+        const QString type = encMap.value( QLatin1String("content_type") ).toString();
+        const QString title = encMap.value( QLatin1String("title") ).toString();
+        //no file size (length)?
+        bool durationOk;
+        const int duration = encMap.value( QLatin1String("duration") ).toString().toInt( &durationOk );
+        KRss::Enclosure enclosure;
+        enclosure.setTitle( title );
+        enclosure.setType( type );
+        enclosure.setUrl( url );
+        if ( durationOk )
+            enclosure.setDuration( duration );
+        enclosures << enclosure;
+    }
+    rssItem.setEnclosures( enclosures );
+    //TODO author
 
     if ( updatedOk ) {
         KDateTime dt;
@@ -269,7 +292,7 @@ void TinyTinyRssResource::retrieveItemsDone( KJob* j )
         const QVariantMap map = jsonItem.toMap();
         Akonadi::Item item;
         item.setMimeType( KRss::Item::mimeType() );
-        itemFromJson( item, map, /*hasContent=*/false );
+        itemFromJson( item, map, /*hasContent=*/true );
         items << item;
     }
     qDebug() << "Retrieved" << job->collection().displayName() << items.count();
