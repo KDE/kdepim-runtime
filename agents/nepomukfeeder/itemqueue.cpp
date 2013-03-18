@@ -39,6 +39,7 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mBatchSize( batchSize ),
   mFetchSize( fetchSize ),
   mRunningJobs( 0 ),
+  mDelay( 0 ),
   mAverageIndexingTime(0),
   mNumberOfIndexedItems(0)
 {
@@ -58,6 +59,12 @@ ItemQueue::~ItemQueue()
 {
 
 }
+
+void ItemQueue::setProcessingDelay(int delay)
+{
+  mDelay = delay;
+}
+
 
 void ItemQueue::addToQueue(Akonadi::Entity::Id id)
 {
@@ -132,9 +139,7 @@ void ItemQueue::fetchJobResult(KJob* job)
   }
   
   if ( !indexBatch() ) { //Can happen if only items without payload were fetched
-    emit batchFinished();
-    if( isEmpty() )
-        emit finished();
+    QTimer::singleShot( mDelay, this, SLOT(slotEmitFinished()) );
   }
 }
 
@@ -215,19 +220,25 @@ void ItemQueue::batchJobResult(KJob* job)
     mPropertyCache.fillCache(graph, storeResourcesJob->mappings());
   }
 
+  QTimer::singleShot( mDelay, this, SLOT(slotEmitFinished()) );
+}
+
+bool ItemQueue::isEmpty() const
+{
+  return mItemPipeline.isEmpty() && mFetchedItemList.isEmpty();
+}
+
+int ItemQueue::size() const
+{
+  return mItemPipeline.size() + mFetchedItemList.size();
+}
+
+void ItemQueue::slotEmitFinished()
+{
   emit batchFinished();
   if ( isEmpty() )
       emit finished();
 }
 
-bool ItemQueue::isEmpty() const
-{
-    return mItemPipeline.isEmpty() && mFetchedItemList.isEmpty();
-}
-
-int ItemQueue::size() const
-{
-    return mItemPipeline.size() + mFetchedItemList.size();
-}
 
 #include "itemqueue.moc"

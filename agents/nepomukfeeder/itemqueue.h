@@ -80,6 +80,11 @@ public:
    */
   int size() const;
 
+  /**
+   * Sets the articifical delay that is introduced when processing one batch
+   */
+  void setProcessingDelay(int delay);
+
 signals:
   /** all items processed */
   void finished();
@@ -90,6 +95,7 @@ private slots:
   void batchJobResult( KJob* job );
   void fetchJobResult( KJob* job );
   void removeDataResult( KJob* job );
+  void slotEmitFinished();
 
 private:
   /**
@@ -108,6 +114,7 @@ private:
   int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk
   int mFetchSize; //Maximum number of items fetched with full payload (defines ram usage of feeder), must be >= mBatchSize, ideally a multiple of it
   int mRunningJobs;
+  int mDelay;
 
   PropertyCache mPropertyCache;
 

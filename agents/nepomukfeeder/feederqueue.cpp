@@ -48,8 +48,7 @@ FeederQueue::FeederQueue( QObject* parent )
   highPrioQueue(1, 100, this),
   emailItemQueue(1, 100, this)
 {
-  // FIXME: Change this internal!
-  mProcessItemQueueTimer.setInterval( 500 );
+  mProcessItemQueueTimer.setInterval( 0 );
   mProcessItemQueueTimer.setSingleShot( true );
   connect( &mProcessItemQueueTimer, SIGNAL(timeout()), SLOT(processItemQueue()) );
 
@@ -91,8 +90,7 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     //
     // The low prio queue is always throttled a little more than the high prio one
     //
-    // FIXME: Enable indexing speeds again?
-    /*if ( speed == FullSpeed ) {
+    if ( speed == FullSpeed ) {
         lowPrioQueue.setProcessingDelay( 0 );
         highPrioQueue.setProcessingDelay( 0 );
         emailItemQueue.setProcessingDelay( 0 );
@@ -100,7 +98,7 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
         lowPrioQueue.setProcessingDelay( s_snailPaceDelay );
         highPrioQueue.setProcessingDelay( s_reducedSpeedDelay );
         emailItemQueue.setProcessingDelay( s_snailPaceDelay );
-    }*/
+    }
 }
 
 void FeederQueue::addCollection( const Akonadi::Collection &collection )
