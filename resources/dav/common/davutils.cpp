@@ -153,7 +153,9 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
     }
 
     KABC::VCardConverter converter;
-    rawData = converter.createVCard( contact );
+    QByteArray localData = converter.exportVCard( contact, KABC::VCardConverter::v3_0 );
+    // Convert to UTF-8
+    rawData = QString::fromLocal8Bit( localData.data() ).toUtf8();
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
 
