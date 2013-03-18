@@ -507,16 +507,6 @@ void NepomukFeederAgent::systemIdle()
   if ( mIdleDetectionDisabled || !isOnline() )
     return;
 
-  const QString summary = i18n( "System idle, ready to index data." );
-  const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-  KNotification::event( QLatin1String("statusindexing"),
-                          summary,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
-
-  emit status( Idle, summary );
   KIdleTime::instance()->catchNextResumeEvent();
   mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
 }
@@ -526,16 +516,6 @@ void NepomukFeederAgent::systemResumed()
   if ( mIdleDetectionDisabled || !isOnline() )
     return;
 
-  const QString summary = i18n( "System busy, indexing suspended." );
-  const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-  KNotification::event( QLatin1String("statusindexing"),
-                          summary,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
-
-  emit status( Idle, summary );
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 
