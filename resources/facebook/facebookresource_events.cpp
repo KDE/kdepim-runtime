@@ -83,6 +83,10 @@ void FacebookResource::detailedEventListJobFinished( KJob *job )
 
     Item::List eventItems;
     foreach ( const KFbAPI::EventInfo &eventInfo, eventJob->eventInfo() ) {
+      if (eventInfo.id().isEmpty()) {
+        //skip invalid events
+        continue;
+      }
       Item event;
       event.setRemoteId( eventInfo.id() );
       event.setPayload<KFbAPI::IncidencePtr>( eventInfo.asEvent() );
