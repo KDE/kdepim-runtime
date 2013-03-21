@@ -106,6 +106,9 @@ if(LibKGAPI_FOUND OR LibKFbAPI_FOUND)
   macro_log_feature(QJSON_FOUND "QJSON" "Qt library for handling JSON data" "http://qjson.sourceforge.net/" TRUE)
 endif()
 
+find_package(AccountsQt REQUIRED)
+find_package(SignOnQt REQUIRED)
+
 ############### search programs & libraries used by kdepim-runtime ###############
 
 find_program(XSLTPROC_EXECUTABLE xsltproc)
