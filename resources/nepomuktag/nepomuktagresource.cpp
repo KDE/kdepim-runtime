@@ -33,6 +33,7 @@
 
 #include <Nepomuk2/Resource>
 #include <Nepomuk2/Vocabulary/NIE>
+#include <Nepomuk2/Vocabulary/NMO>
 #include <Nepomuk2/Variant>
 
 #include <nepomuk2/tag.h>
@@ -46,6 +47,7 @@
 #include <iterator>
 
 using namespace Akonadi;
+using namespace Nepomuk2::Vocabulary;
 
 NepomukTagResource::NepomukTagResource( const QString &id )
         : ResourceBase( id ),
@@ -121,10 +123,12 @@ void NepomukTagResource::slotLocalListResult( KJob *job )
     const Nepomuk2::Tag tag( currentCollection().remoteId() );
     QList<Nepomuk2::Resource> list = tag.tagOf();
     foreach( const Nepomuk2::Resource& resource, list ) {
-        if ( !resource.uri().toString().startsWith( QLatin1String( "akonadi:" ) ) )
+        if ( !resource.hasType( NMO::Email() ) )
             continue;
-        kDebug() << "Found message: " << resource.uri();
-        taggedMessages << Item::fromUrl( KUrl( resource.uri() ) );
+
+        KUrl url = resource.property( NIE::url() ).toUrl();
+        kDebug() << "Found message: " << url;
+        taggedMessages << Item::fromUrl( url );
     }
 
     std::sort( existingMessages.begin(), existingMessages.end(), boost::bind( &Item::id, _1 ) < boost::bind( &Item::id, _2 ) );
