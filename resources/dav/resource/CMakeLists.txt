@@ -27,6 +27,8 @@ endif(WIN32)
 include_directories(
     ${KDE4_INCLUDES}
     ${KDEPIMLIBS_INCLUDE_DIRS}
+    ${ACCOUNTSQT_INCLUDE_DIRS}
+    ${SIGNONQT_INCLUDE_DIRS}
     ../common/
     ../protocols/
 )
@@ -69,6 +71,7 @@ set( davgroupwareresource_SRCS
   setupwizard.cpp
   settings.cpp
   urlconfigurationdialog.cpp
+  getcredentialsjob.cpp
 )
 
 install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -102,7 +105,9 @@ target_link_libraries(akonadi_davgroupware_resource
                       ${KDEPIMLIBS_AKONADI_LIBS}
 		      ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
                       ${KDEPIMLIBS_KABC_LIBS}
-                      ${KDEPIMLIBS_KCALCORE_LIBS})
+                      ${KDEPIMLIBS_KCALCORE_LIBS}
+                      ${ACCOUNTSQT_LIBRARIES}
+                      ${SIGNONQT_LIBRARIES})
 
 install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

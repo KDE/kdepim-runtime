@@ -28,6 +28,12 @@
 
 #include <QtCore/QMap>
 
+namespace Accounts {
+    class Service;
+    class Account;
+    class Manager;
+};
+
 class Settings : public SettingsBase
 {
   Q_OBJECT
@@ -109,16 +115,23 @@ class Settings : public SettingsBase
     QString password( DavUtils::Protocol protocol, const QString &url );
 
   private:
+    void addAccountsEnabledServices();
+    void removeAccountsDisabledServices();
+    void configureAccountService(Accounts::Account *acc, const Accounts::Service &service);
+    void importFromAccounts();
     void buildUrlsList();
     void loadMappings();
     void updateRemoteUrls();
     void savePassword( const QString &key, const QString &user, const QString &password );
     QString loadPassword( const QString &key, const QString &user );
+    QString loadPasswordFromAccounts();
+    QString accountsUsername() const;
     QString promptForPassword( const QString &user );
 
     void updateToV2();
 
     WId mWinId;
+    Accounts::Manager *m_manager;
     QString mResourceIdentifier;
     QMap<QString, UrlConfiguration*> mUrls;
     QMap<QString, QString> mPasswordsCache;
