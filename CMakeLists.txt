@@ -120,6 +120,9 @@ endif()
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 
+find_package(AccountsQt REQUIRED)
+find_package(SignOnQt REQUIRED)
+
 ############### search programs & libraries used by kdepim-runtime ###############
 if(Strigi_FOUND)
   find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
