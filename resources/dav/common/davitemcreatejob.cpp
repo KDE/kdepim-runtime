@@ -72,15 +72,20 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
 
   if ( storedJob->error() ) {
-    if ( storedJob->queryMetaData( "responsecode" ).isEmpty() ) {
-      setError( storedJob->error() );
-      setErrorText( storedJob->errorText() );
-    } else {
-      const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request. The item has not been created on the server.\n"
-                          "%1 (%2).", storedJob->errorString(), responseCode ) );
-    }
+    const int responseCode = storedJob->queryMetaData( "responsecode" ).isEmpty() ?
+                              0 :
+                              storedJob->queryMetaData( "responsecode" ).toInt();
+
+    QString err;
+    if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
+    else
+      err = storedJob->errorText();
+
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request. The item has not been created on the server.\n"
+                        "%1 (%2).", err, responseCode ) );
+
     emitResult();
     return;
   }
