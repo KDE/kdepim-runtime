@@ -81,6 +81,6 @@ Type=AkonadiResource
 Exec=akonadi_davgroupware_resource
 Icon=folder-remote
 
-X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo,application/x-vnd.akonadi.calendar.journal,application/x-vnd.akonadi.calendar.freebusy,text/directory
+X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo,application/x-vnd.akonadi.calendar.journal,application/x-vnd.akonadi.calendar.freebusy,text/directory,text/x-vnd.accounts.dav-calendar,text/x-vnd.accounts.dav-contacts
 X-Akonadi-Capabilities=Resource,FreeBusyProvider
 X-Akonadi-Identifier=akonadi_davgroupware_resource

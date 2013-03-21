@@ -34,5 +34,12 @@
       <label>Do not change the actual backend data.</label>
       <default>false</default>
     </entry>
+    <entry name="AccountId" type="UInt">
+        <label>The account id in WebAccouts framework.</label>
+    </entry>
+    <entry name="AccountServices" type="StringList">
+        <label>Account enabled services</label>
+        <default></default>
+    </entry>
   </group>
 </kcfg>
