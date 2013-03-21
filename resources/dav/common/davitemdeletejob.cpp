@@ -44,15 +44,19 @@ void DavItemDeleteJob::davJobFinished( KJob *job )
   KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
 
   if ( deleteJob->error() && deleteJob->error() != KIO::ERR_NO_CONTENT ) {
-    if ( deleteJob->queryMetaData( "responsecode" ).isEmpty() ) {
-      setError( deleteJob->error() );
-      setErrorText( deleteJob->errorText() );
-    } else {
-      const int responseCode = deleteJob->queryMetaData( "responsecode" ).toInt();
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server.\n"
-                          "%1 (%2).", deleteJob->errorString(), responseCode ) );
-    }
+    const int responseCode = deleteJob->queryMetaData( "responsecode" ).isEmpty() ?
+                              0 :
+                              deleteJob->queryMetaData( "responsecode" ).toInt();
+
+    QString err;
+    if ( deleteJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( deleteJob->error(), deleteJob->errorText() );
+    else
+      err = deleteJob->errorText();
+
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server.\n"
+                        "%1 (%2).", err, responseCode ) );
   }
 
   emitResult();
