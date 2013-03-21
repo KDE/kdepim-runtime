@@ -13,6 +13,8 @@ if (QT_QTXMLPATTERNS_LIBRARY)
       ${KDEPIMLIBS_INCLUDE_DIRS}
       ../common/
       ../protocols/
+      ${ACCOUNTSQT_INCLUDE_DIRS}
+      ${SIGNONQT_INCLUDE_DIRS}
   )
 
   set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
@@ -53,6 +55,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
     setupwizard.cpp
     settings.cpp
     urlconfigurationdialog.cpp
+    getcredentialsjob.cpp
   )
 
   install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -86,7 +89,9 @@ if (QT_QTXMLPATTERNS_LIBRARY)
                         ${KDEPIMLIBS_AKONADI_LIBS}
                         ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
                         ${KDEPIMLIBS_KABC_LIBS}
-                        ${KDEPIMLIBS_KCALCORE_LIBS})
+                        ${KDEPIMLIBS_KCALCORE_LIBS}
+                        ${ACCOUNTSQT_LIBRARIES}
+                        ${SIGNONQT_LIBRARIES})
 
   install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 else()
