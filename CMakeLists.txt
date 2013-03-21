@@ -106,8 +106,11 @@ if(LibKGAPI_FOUND OR LibKFbAPI_FOUND)
   macro_log_feature(QJSON_FOUND "QJSON" "Qt library for handling JSON data" "http://qjson.sourceforge.net/" TRUE)
 endif()
 
-find_package(AccountsQt REQUIRED)
-find_package(SignOnQt REQUIRED)
+find_package(AccountsQt)
+set_package_properties(AccountsQt PROPERTIES DESCRIPTION "Qt bindings for accounts-sso" TYPE REQUIRED PURPOSE "Required to support AccountsQt in different resources")
+
+find_package(SignOnQt)
+set_package_properties(SignOnQt PROPERTIES DESCRIPTION "SigOn Qt bindings for accounts-sso" TYPE REQUIRED PURPOSE "Required to support SigOn in different resources")
 
 ############### search programs & libraries used by kdepim-runtime ###############
 
