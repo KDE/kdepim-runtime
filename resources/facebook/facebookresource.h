@@ -44,6 +44,7 @@ class FacebookResource : public Akonadi::ResourceBase,
 
   public Q_SLOTS:
     void configure( WId windowId );
+    Q_SCRIPTABLE void configureByAccount( int accountId );
 
   protected Q_SLOTS:
     void retrieveCollections();
