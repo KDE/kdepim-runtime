@@ -302,42 +302,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
           // Assume that we have all privileges
           collection.setPrivileges( DavUtils::All );
         } else {
-          QDomElement privElement = DavUtils::firstChildElementNS( currentPrivsElement, "DAV:", "privilege" );
-          DavUtils::Privileges privileges = DavUtils::None;
-          while ( !privElement.isNull() ) {
-            QDomElement child = privElement.firstChildElement();
-
-            while ( !child.isNull() ) {
-              const QString privname = child.localName();
-
-              if ( privname == "read" )
-                privileges |= DavUtils::Read;
-              else if ( privname == "write" )
-                privileges |= DavUtils::Write;
-              else if ( privname == "write-properties" )
-                privileges |= DavUtils::WriteProperties;
-              else if ( privname == "write-content" )
-                privileges |= DavUtils::WriteContent;
-              else if ( privname == "unlock" )
-                privileges |= DavUtils::Unlock;
-              else if ( privname == "read-acl" )
-                privileges |= DavUtils::ReadAcl;
-              else if ( privname == "read-current-user-privilege-set" )
-                privileges |= DavUtils::ReadCurrentUserPrivilegeSet;
-              else if ( privname == "write-acl" )
-                privileges |= DavUtils::WriteAcl;
-              else if ( privname == "bind" )
-                privileges |= DavUtils::Bind;
-              else if ( privname == "unbind" )
-                privileges |= DavUtils::Unbind;
-              else if ( privname == "all" )
-                privileges |= DavUtils::All;
-
-              child = child.nextSiblingElement();
-            }
-
-            privElement = DavUtils::nextSiblingElementNS( privElement, "DAV:", "privilege" );
-          }
+          DavUtils::Privileges privileges = DavUtils::extractPrivileges( currentPrivsElement );
           collection.setPrivileges( privileges );
         }
 

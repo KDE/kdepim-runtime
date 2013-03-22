@@ -135,6 +135,16 @@ namespace DavUtils
   QDomElement nextSiblingElementNS( const QDomElement &element, const QString &namespaceUri, const QString &tagName );
 
   /**
+   * Extracts privileges from @p element. The <privilege/> tags are expected to be first level children of @p element.
+   */
+  Privileges extractPrivileges( const QDomElement &element );
+
+  /**
+   * Parses a single <privilege/> tag and returns the final Privileges.
+   */
+  Privileges parsePrivilege( const QDomElement &element );
+
+  /**
    * Creates a new DavItem from the Akonadi::Item @p item.
    *
    * The returned item will have no payload (DavItem::data() will return an empty
