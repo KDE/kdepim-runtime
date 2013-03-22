@@ -45,6 +45,26 @@ namespace DavUtils
   };
 
   /**
+   * Describes the DAV privileges on a resource (see RFC3744)
+   */
+  enum Privilege {
+    None = 0x0,
+    Read = 0x1,
+    Write = 0x2,
+    WriteProperties = 0x4,
+    WriteContent = 0x8,
+    Unlock = 0x10,
+    ReadAcl = 0x20,
+    ReadCurrentUserPrivilegeSet = 0x40,
+    WriteAcl = 0x80,
+    Bind = 0x100,
+    Unbind = 0x200,
+    All = 0x400
+  };
+  Q_DECLARE_FLAGS( Privileges, Privilege )
+  Q_DECLARE_OPERATORS_FOR_FLAGS( Privileges )
+
+  /**
    * Returns the i18n'ed name of the given DAV @p protocol dialect.
    */
   QString protocolName( Protocol protocol );

@@ -526,22 +526,22 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
     protoAttr->setDavProtocol( davCollection.protocol() );
 
-    DavCollection::Privileges privileges = davCollection.privileges();
+    DavUtils::Privileges privileges = davCollection.privileges();
     Akonadi::Collection::Rights rights;
 
-    if ( privileges & DavCollection::All || privileges & DavCollection::Write )
+    if ( privileges & DavUtils::All || privileges & DavUtils::Write )
       rights |= Akonadi::Collection::AllRights;
 
-    if ( privileges & DavCollection::WriteContent )
+    if ( privileges & DavUtils::WriteContent )
       rights |= Akonadi::Collection::CanChangeItem;
 
-    if ( privileges & DavCollection::Bind )
+    if ( privileges & DavUtils::Bind )
       rights |= Akonadi::Collection::CanCreateItem;
 
-    if ( privileges & DavCollection::Unbind )
+    if ( privileges & DavUtils::Unbind )
       rights |= Akonadi::Collection::CanDeleteItem;
 
-    if ( privileges == DavCollection::Read )
+    if ( privileges == DavUtils::Read )
       rights |= Akonadi::Collection::ReadOnly;
 
 
