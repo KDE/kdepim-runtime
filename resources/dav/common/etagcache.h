@@ -82,6 +82,11 @@ class EtagCache : public QObject
     bool isOutOfDate( const QString &remoteId ) const;
 
     /**
+     * Removes the entry for item with remote ID @p remoteId.
+     */
+    void removeEtag( const QString &remoteId );
+
+    /**
      * Returns the list of remote ids of items that have been changed
      * in the backend but not been refetched.
      */

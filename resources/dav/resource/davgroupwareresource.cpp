@@ -566,11 +566,11 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
   Akonadi::Item::List items;
+  QSet<QString> seenRids;
 
   const DavItem::List davItems = listJob->items();
   foreach ( const DavItem &davItem, davItems ) {
-    if ( !mItemsRidCache[collection.remoteId()].contains( davItem.url() ) )
-      mItemsRidCache[collection.remoteId()].insert( davItem.url() );
+    seenRids.insert( davItem.url() );
 
     Akonadi::Item item;
     item.setRemoteId( davItem.url() );
@@ -612,6 +612,12 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
 
     items << item;
   }
+
+  QSet<QString> removedRids = mItemsRidCache[collection.remoteId()];
+  mItemsRidCache[collection.remoteId()] = seenRids;
+  removedRids.subtract( seenRids );
+  foreach ( const QString &rmd, removedRids )
+    mEtagCache.removeEtag( rmd );
 
   // If the protocol supports multiget then deviate from the expected behavior
   // and fetch all items with payload now instead of waiting for Akonadi to
