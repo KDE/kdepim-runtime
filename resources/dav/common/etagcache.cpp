@@ -65,6 +65,12 @@ bool EtagCache::isOutOfDate( const QString &remoteId ) const
   return mChangedRemoteIds.contains( remoteId );
 }
 
+void EtagCache::removeEtag( const QString &remoteId )
+{
+  mChangedRemoteIds.remove( remoteId );
+  mCache.remove( remoteId );
+}
+
 QStringList EtagCache::changedRemoteIds() const
 {
   return mChangedRemoteIds.toList();
