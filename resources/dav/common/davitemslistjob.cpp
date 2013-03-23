@@ -65,14 +65,22 @@ DavItem::List DavItemsListJob::items() const
 void DavItemsListJob::davJobFinished( KJob *job )
 {
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-  const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
+  const int responseCode = davJob->queryMetaData( "responsecode" ).isEmpty() ?
+                            0 :
+                            davJob->queryMetaData( "responsecode" ).toInt();
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
     if ( !mSubJobSuccessful ) {
+      QString err;
+      if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
+        err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
+      else
+        err = davJob->errorText();
+
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request.\n"
-                          "%1 (%2).", davJob->errorString(), responseCode ) );
+                          "%1 (%2).", err, responseCode ) );
     }
   }
   else {

@@ -115,7 +115,9 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
 void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
 {
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-  const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
+  const int responseCode = davJob->queryMetaData( "responsecode" ).isEmpty() ?
+                            0 :
+                            davJob->queryMetaData( "responsecode" ).toInt();
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
@@ -130,9 +132,15 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       if ( DavUtils::httpRequestRetryable( responseCode ) )
         mHasTemporaryError = true;
 
+      QString err;
+      if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
+        err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
+      else
+        err = davJob->errorText();
+
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request.\n"
-                          "%1 (%2).", davJob->errorString(), responseCode ) );
+                          "%1 (%2).", err, responseCode ) );
     }
   }
   else {
@@ -259,7 +267,6 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
         // don't add this resource if it has already been detected
         bool alreadySeen = false;
         foreach ( const DavCollection &seen, mCollections ) {
-          kDebug() << seen.url() << url.prettyUrl();
           if ( seen.url() == url.prettyUrl() )
             alreadySeen = true;
         }
@@ -293,44 +300,9 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
         const QDomElement currentPrivsElement = DavUtils::firstChildElementNS( propElement, "DAV:", "current-user-privilege-set" );
         if ( currentPrivsElement.isNull() ) {
           // Assume that we have all privileges
-          collection.setPrivileges( DavCollection::All );
+          collection.setPrivileges( DavUtils::All );
         } else {
-          QDomElement privElement = DavUtils::firstChildElementNS( currentPrivsElement, "DAV:", "privilege" );
-          DavCollection::Privileges privileges = DavCollection::None;
-          while ( !privElement.isNull() ) {
-            QDomElement child = privElement.firstChildElement();
-
-            while ( !child.isNull() ) {
-              const QString privname = child.localName();
-
-              if ( privname == "read" )
-                privileges |= DavCollection::Read;
-              else if ( privname == "write" )
-                privileges |= DavCollection::Write;
-              else if ( privname == "write-properties" )
-                privileges |= DavCollection::WriteProperties;
-              else if ( privname == "write-content" )
-                privileges |= DavCollection::WriteContent;
-              else if ( privname == "unlock" )
-                privileges |= DavCollection::Unlock;
-              else if ( privname == "read-acl" )
-                privileges |= DavCollection::ReadAcl;
-              else if ( privname == "read-current-user-privilege-set" )
-                privileges |= DavCollection::ReadCurrentUserPrivilegeSet;
-              else if ( privname == "write-acl" )
-                privileges |= DavCollection::WriteAcl;
-              else if ( privname == "bind" )
-                privileges |= DavCollection::Bind;
-              else if ( privname == "unbind" )
-                privileges |= DavCollection::Unbind;
-              else if ( privname == "all" )
-                privileges |= DavCollection::All;
-
-              child = child.nextSiblingElement();
-            }
-
-            privElement = DavUtils::nextSiblingElementNS( privElement, "DAV:", "privilege" );
-          }
+          DavUtils::Privileges privileges = DavUtils::extractPrivileges( currentPrivsElement );
           collection.setPrivileges( privileges );
         }
 

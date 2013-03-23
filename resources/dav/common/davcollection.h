@@ -53,25 +53,6 @@ class DavCollection
     Q_DECLARE_FLAGS( ContentTypes, ContentType )
 
     /**
-     * Describes the DAV privileges on the collection (see RFC3744)
-     */
-    enum Privilege {
-      None = 0x0,
-      Read = 0x1,
-      Write = 0x2,
-      WriteProperties = 0x4,
-      WriteContent = 0x8,
-      Unlock = 0x10,
-      ReadAcl = 0x20,
-      ReadCurrentUserPrivilegeSet = 0x40,
-      WriteAcl = 0x80,
-      Bind = 0x100,
-      Unbind = 0x200,
-      All = 0x400
-    };
-    Q_DECLARE_FLAGS( Privileges, Privilege )
-
-    /**
      * Creates an empty DAV collection.
      */
     DavCollection();
@@ -140,12 +121,12 @@ class DavCollection
     /**
      * Sets the privileges on this collection.
      */
-    void setPrivileges( Privileges privs );
+    void setPrivileges( DavUtils::Privileges privs );
 
     /**
      * Returns the privileges on this collection.
      */
-    Privileges privileges() const;
+    DavUtils::Privileges privileges() const;
 
   private:
     DavUtils::Protocol mProtocol;
@@ -153,10 +134,9 @@ class DavCollection
     QString mDisplayName;
     QColor mColor;
     ContentTypes mContentTypes;
-    Privileges mPrivileges;
+    DavUtils::Privileges mPrivileges;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( DavCollection::ContentTypes )
-Q_DECLARE_OPERATORS_FOR_FLAGS( DavCollection::Privileges )
 
 #endif
