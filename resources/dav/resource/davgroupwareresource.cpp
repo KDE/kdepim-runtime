@@ -88,6 +88,7 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   cachePolicy.setSyncOnDemand( false );
   cachePolicy.setCacheTimeout( -1 );
   cachePolicy.setIntervalCheckTime( refreshInterval );
+  cachePolicy.setLocalParts( QStringList() << QLatin1String( "ALL" ) );
   mDavCollectionRoot.setCachePolicy( cachePolicy );
 
   changeRecorder()->fetchCollection( true );
