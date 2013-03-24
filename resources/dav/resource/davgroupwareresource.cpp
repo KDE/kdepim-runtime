@@ -442,7 +442,12 @@ void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
   }
 
   Akonadi::Collection collection = job->property( "collection" ).value<Akonadi::Collection>();
-  mItemsRidCache.remove( collection.remoteId() );
+  if ( mItemsRidCache.contains( collection.remoteId() ) ) {
+    foreach ( const QString &rid, mItemsRidCache.value( collection.remoteId() ) ) {
+      mEtagCache.removeEtag( rid );
+    }
+    mItemsRidCache.remove( collection.remoteId() );
+  }
   changeProcessed();
 }
 
@@ -817,6 +822,7 @@ void DavGroupwareResource::onItemRemovedFinished( KJob *job )
     Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
     Akonadi::Collection collection = job->property( "collection" ).value<Akonadi::Collection>();
     mItemsRidCache[collection.remoteId()].remove( item.remoteId() );
+    mEtagCache.removeEtag( item.remoteId() );
     changeProcessed();
   }
 }
