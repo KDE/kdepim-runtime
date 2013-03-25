@@ -383,7 +383,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
-        collection.setName( realName );
+        collection.setName( group->title() );
         collection.setParent( m_rootCollection );
         collection.setRights( Collection::CanLinkItem |
                               Collection::CanUnlinkItem |
