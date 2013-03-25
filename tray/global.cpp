@@ -61,12 +61,12 @@ void Global::init()
         else {
             const QString options = settings.value( "Options", "" ).toString();
             const QStringList list = options.split( '=' );
-	    if( list.count() == 2 )
+            if( list.count() == 2 )
               m_dboptions.append( "--socket=" + list.at( 1 ) );
-	    else {
-	      m_parsed = false;
-	      return;
-	    }
+            else {
+              m_parsed = false;
+              return;
+            }
         }
 
         settings.endGroup();

@@ -129,7 +129,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       return;
     }
     else if ( !mSubJobSuccessful ) {
-      if ( DavUtils::httpRequestRetryable( responseCode ) )
+      if ( !responseCode || DavUtils::httpRequestRetryable( responseCode ) )
         mHasTemporaryError = true;
 
       QString err;
