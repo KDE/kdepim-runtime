@@ -123,6 +123,55 @@ CaldavProtocol::CaldavProtocol()
 
     mItemsQueries << document;
   }
+
+  /*
+   * Create a document like the following:
+   *
+   * <calendar-query>
+   *   <prop>
+   *     <getetag/>
+   *     <resourcetype/>
+   *   </prop>
+   *   <filter>
+   *     <comp-filter name="VCALENDAR">
+   *       <comp-filter name="VJOURNAL">
+   *     </comp-filter>
+   *   </filter>
+   * </calendar-query>
+   */
+  {
+    QDomDocument document;
+
+    QDomElement queryElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
+    document.appendChild( queryElement );
+
+    QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+    queryElement.appendChild( propElement );
+
+    QDomElement getetagElement = document.createElementNS( "DAV:", "getetag" );
+    propElement.appendChild( getetagElement );
+
+    QDomElement getRTypeElement = document.createElementNS( "DAV:", "resourcetype" );
+    propElement.appendChild( getRTypeElement );
+
+    QDomElement filterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
+    queryElement.appendChild( filterElement );
+
+    QDomElement compfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+
+    QDomAttr nameAttribute = document.createAttribute( "name" );
+    nameAttribute.setValue( "VCALENDAR" );
+    compfilterElement.setAttributeNode( nameAttribute );
+    filterElement.appendChild( compfilterElement );
+
+    QDomElement subcompfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+    nameAttribute = document.createAttribute( "name" );
+    nameAttribute.setValue( "VJOURNAL" );
+    subcompfilterElement.setAttributeNode( nameAttribute );
+    compfilterElement.appendChild( subcompfilterElement );
+
+    mItemsQueries << document;
+  }
 }
 
 bool CaldavProtocol::supportsPrincipals() const
