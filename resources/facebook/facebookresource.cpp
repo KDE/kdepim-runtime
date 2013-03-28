@@ -24,6 +24,7 @@
 #include "settings.h"
 #include "settingsdialog.h"
 #include "timestampattribute.h"
+#include "getcredentialsjob.h"
 
 #include <libkfbapi/friendlistjob.h>
 #include <libkfbapi/friendjob.h>
@@ -48,6 +49,7 @@
 #include <akonadi/notes/noteutils.h> //krazy:exclude=camelcase wait for kdepimlibs 4.11
 
 #include <Akonadi/SocialUtils/SocialNetworkAttributes>
+#include <accounts-qt/Accounts/Manager>
 
 using namespace Akonadi;
 
@@ -84,6 +86,10 @@ FacebookResource::~FacebookResource()
 
 void FacebookResource::configurationChanged()
 {
+  if ( Settings::self()->accountId() ) {
+    configureByAccount( Settings::self()->accountId() );
+  }
+
   Settings::self()->writeConfig();
 }
 
@@ -141,6 +147,23 @@ void FacebookResource::configure( WId windowId )
   }
 
   delete settingsDialog;
+}
+
+void FacebookResource::configureByAccount( int accountId )
+{
+    kDebug() << "Starting credentials job";
+    GetCredentialsJob *gc = new GetCredentialsJob( accountId, this );
+    connect(gc, SIGNAL(result(KJob*)),
+            this, SLOT(receivedAccountCredentials(KJob*)));
+    gc->exec();
+
+    QVariantMap data = gc->credentialsData();
+
+    Accounts::Manager *m = new Accounts::Manager(this);
+    QString accessToken = data.value("AccessToken").toString();
+    Settings::self()->setAccessToken(accessToken);
+
+    synchronize();
 }
 
 void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
@@ -244,69 +267,82 @@ bool FacebookResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
 
 void FacebookResource::retrieveCollections()
 {
-  Collection friends;
-  friends.setRemoteId( friendsRID );
-  friends.setName( i18nc( "@title: addressbook name", "Friends on Facebook" ) );
-  friends.setParentCollection( Akonadi::Collection::root() );
-  friends.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
-  friends.setRights( Collection::ReadOnly );
-  EntityDisplayAttribute * const friendsDisplayAttribute = new EntityDisplayAttribute();
-  friendsDisplayAttribute->setIconName( "facebookresource" );
-  friends.addAttribute( friendsDisplayAttribute );
+    Collection::List collections;
+    kDebug() << Settings::self()->accountServices();
+    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-contacts"))) {
+        Collection friends;
+        friends.setRemoteId( friendsRID );
+        friends.setName( i18nc( "@title: addressbook name", "Friends on Facebook" ) );
+        friends.setParentCollection( Akonadi::Collection::root() );
+        friends.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
+        friends.setRights( Collection::ReadOnly );
+        EntityDisplayAttribute * const friendsDisplayAttribute = new EntityDisplayAttribute();
+        friendsDisplayAttribute->setIconName( "facebookresource" );
+        friends.addAttribute( friendsDisplayAttribute );
+        collections << friends;
+    }
 
-  Collection events;
-  events.setRemoteId( eventsRID );
-  events.setName( i18nc( "@title: events collection title", "Events on Facebook" ) );
-  events.setParentCollection( Akonadi::Collection::root() );
-  events.setContentMimeTypes( QStringList() << "text/calendar" << eventMimeType );
-  events.setRights( Collection::ReadOnly );
-  EntityDisplayAttribute * const evendDisplayAttribute = new EntityDisplayAttribute();
-  evendDisplayAttribute->setIconName( "facebookresource" );
-  events.addAttribute( evendDisplayAttribute );
+    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-events"))) {
+        Collection events;
+        events.setRemoteId( eventsRID );
+        events.setName( i18nc( "@title: events collection title", "Events on Facebook" ) );
+        events.setParentCollection( Akonadi::Collection::root() );
+        events.setContentMimeTypes( QStringList() << "text/calendar" << eventMimeType );
+        events.setRights( Collection::ReadOnly );
+        EntityDisplayAttribute * const evendDisplayAttribute = new EntityDisplayAttribute();
+        evendDisplayAttribute->setIconName( "facebookresource" );
+        events.addAttribute( evendDisplayAttribute );
+        collections << events;
+    }
 
-  Collection notes;
-  notes.setRemoteId( notesRID );
-  notes.setName( i18nc( "@title: notes collection", "Notes on Facebook" ) );
-  notes.setParentCollection( Akonadi::Collection::root() );
-  notes.setContentMimeTypes( QStringList() << Akonadi::NoteUtils::noteMimeType() );
-  notes.setRights( Collection::ReadOnly );
-  EntityDisplayAttribute * const notesDisplayAttribute = new EntityDisplayAttribute();
-  notesDisplayAttribute->setIconName( "facebookresource" );
-  notes.addAttribute( notesDisplayAttribute );
+    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-notes"))) {
+        Collection notes;
+        notes.setRemoteId( notesRID );
+        notes.setName( i18nc( "@title: notes collection", "Notes on Facebook" ) );
+        notes.setParentCollection( Akonadi::Collection::root() );
+        notes.setContentMimeTypes( QStringList() << Akonadi::NoteUtils::noteMimeType() );
+        notes.setRights( Collection::ReadOnly );
+        EntityDisplayAttribute * const notesDisplayAttribute = new EntityDisplayAttribute();
+        notesDisplayAttribute->setIconName( "facebookresource" );
+        notes.addAttribute( notesDisplayAttribute );
+        collections << notes;
+    }
 
-  Collection posts;
-  posts.setRemoteId( postsRID );
-  posts.setName( i18nc( "@title: posts collection", "Posts on Facebook" ) );
-  posts.setParentCollection( Akonadi::Collection::root() );
-  posts.setContentMimeTypes( QStringList() << "text/x-vnd.akonadi.socialfeeditem" );
-  posts.setRights( Collection::CanCreateItem );
-  EntityDisplayAttribute * const postsDisplayAttribute = new EntityDisplayAttribute();
-  postsDisplayAttribute->setIconName( "facebookresource" );
-  //facebook's max post length is 63206 as of September 2012
-  //(Facebook ... Face Boo K ... hex(FACE) – K ... 64206 – 1000 = 63206)...don't ask me.
-  SocialNetworkAttributes * const socialAttributes =
-    new SocialNetworkAttributes( Settings::self()->userName(),
-                                 QLatin1String( "Facebook" ),
-                                 true,
-                                 63206 );
-  posts.addAttribute( postsDisplayAttribute );
-  posts.addAttribute( socialAttributes );
+    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-feed"))) {
+        Collection posts;
+        posts.setRemoteId( postsRID );
+        posts.setName( i18nc( "@title: posts collection", "Posts on Facebook" ) );
+        posts.setParentCollection( Akonadi::Collection::root() );
+        posts.setContentMimeTypes( QStringList() << "text/x-vnd.akonadi.socialfeeditem" );
+        posts.setRights( Collection::CanCreateItem );
+        EntityDisplayAttribute * const postsDisplayAttribute = new EntityDisplayAttribute();
+        postsDisplayAttribute->setIconName( "facebookresource" );
+        //facebook's max post length is 63206 as of September 2012
+        //(Facebook ... Face Boo K ... hex(FACE) – K ... 64206 – 1000 = 63206)...don't ask me.
+        SocialNetworkAttributes * const socialAttributes =
+            new SocialNetworkAttributes( Settings::self()->userName(),
+                                        QLatin1String( "Facebook" ),
+                                        true,
+                                        63206 );
+        posts.addAttribute( postsDisplayAttribute );
+        posts.addAttribute( socialAttributes );
+        collections << posts;
+    }
 
-  Collection notifications;
-  notifications.setRemoteId( notificationsRID );
-  notifications.setName( i18nc( "@title: notifications collection", "Notifications on Facebook" ) );
-  notifications.setParentCollection( Akonadi::Collection::root() );
-  notifications.setContentMimeTypes( QStringList() << "text/x-vnd.akonadi.socialnotification" );
-  notifications.setRights( Collection::ReadOnly );
-  EntityDisplayAttribute * const notificationsDisplayAttribute = new EntityDisplayAttribute();
-  notificationsDisplayAttribute->setIconName( "facebookresource" );
-  notifications.addAttribute( notificationsDisplayAttribute );
+    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-notifications"))) {
+        Collection notifications;
+        notifications.setRemoteId( notificationsRID );
+        notifications.setName( i18nc( "@title: notifications collection", "Notifications on Facebook" ) );
+        notifications.setParentCollection( Akonadi::Collection::root() );
+        notifications.setContentMimeTypes( QStringList() << "text/x-vnd.akonadi.socialnotification" );
+        notifications.setRights( Collection::ReadOnly );
+        EntityDisplayAttribute * const notificationsDisplayAttribute = new EntityDisplayAttribute();
+        notificationsDisplayAttribute->setIconName( "facebookresource" );
+        notifications.addAttribute( notificationsDisplayAttribute );
+        collections << notifications;
+    }
 
-  collectionsRetrieved( Collection::List() << friends
-                                           << events
-                                           << notes
-                                           << posts
-                                           << notifications );
+  collectionsRetrieved(collections);
 }
 
 void FacebookResource::itemRemoved( const Akonadi::Item &item )

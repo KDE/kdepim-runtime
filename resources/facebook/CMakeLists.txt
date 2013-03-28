@@ -1,8 +1,13 @@
 project(facebookresource)
 include_directories(${LibKFbAPI_INCLUDE_DIR})
 include_directories(${QJSON_INCLUDE_DIR} ${qjson_INCLUDE_DIR})
+include_directories(
+    ${ACCOUNTSQT_INCLUDE_DIRS}
+    ${SIGNONQT_INCLUDE_DIRS}
+)
 
 set(facebookresource_SRCS
+  getcredentialsjob.cpp
   facebookresource.cpp
   facebookresource_events.cpp
   facebookresource_friends.cpp
@@ -62,6 +67,8 @@ target_link_libraries(akonadi_facebook_resource
   ${KDE4_KDECORE_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${LibKFbAPI_LIBRARY}
+  ${ACCOUNTSQT_LIBRARIES}
+  ${SIGNONQT_LIBRARIES}
 )
 
 add_subdirectory(icons)

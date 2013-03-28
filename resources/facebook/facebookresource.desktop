@@ -47,6 +47,6 @@ Comment[zh_TW]=透過 Akonadi 將您在 Facebook 上的資料與 KDE 同步。
 Type=AkonadiResource
 Exec=akonadi_facebook_resource
 Icon=facebookresource
-X-Akonadi-MimeTypes=text/directory,text/calendar,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.note,text/x-vnd.akonadi.socialfeeditem,text/x-vnd.akonadi.socialnotification
+X-Akonadi-MimeTypes=text/directory,text/calendar,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.note,text/x-vnd.akonadi.socialfeeditem,text/x-vnd.akonadi.socialnotification,text/x-vnd.accounts.facebook-contacts,text/x-vnd.accounts.facebook-feed,text/x-vnd.accounts.facebook-events,text/x-vnd.accounts.facebook-notes,text/x-vnd.accounts.facebook-notifications
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_facebook_resource
