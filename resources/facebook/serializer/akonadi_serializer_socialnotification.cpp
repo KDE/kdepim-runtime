@@ -1,20 +1,21 @@
-/*  Copyright (C) 2012  Martin Klapetek <martin.klapetek@gmail.com>
+/*
+  Copyright (C) 2012  Martin Klapetek <martin.klapetek@gmail.com>
 
-    This library is free software; you can redistribute it and/or modify
-    it under the terms of the GNU Library General Public License as published
-    by the Free Software Foundation; either version 2 of the License or
-    ( at your option ) version 3 or, at the discretion of KDE e.V.
-    ( which shall act as a proxy as in section 14 of the GPLv3 ), any later version.
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Library General Public License as published
+  by the Free Software Foundation; either version 2 of the License or
+  ( at your option ) version 3 or, at the discretion of KDE e.V.
+  ( which shall act as a proxy as in section 14 of the GPLv3 ), any later version.
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+  You should have received a copy of the GNU Library General Public License
+  along with this library; see the file COPYING.LIB.  If not, write to
+  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  Boston, MA 02110-1301, USA.
 */
 
 #include "akonadi_serializer_socialnotification.h"
@@ -33,7 +34,8 @@
 
 using namespace Akonadi;
 
-bool SerializerPluginSocialNotification::deserialize( Item &item, const QByteArray &label, QIODevice &data, int version )
+bool SerializerPluginSocialNotification::deserialize( Item &item, const QByteArray &label,
+                                                      QIODevice &data, int version )
 {
   Q_UNUSED( version )
 
@@ -64,7 +66,8 @@ bool SerializerPluginSocialNotification::deserialize( Item &item, const QByteArr
   return true;
 }
 
-void SerializerPluginSocialNotification::serialize( const Item &item, const QByteArray &label, QIODevice &data, int &version )
+void SerializerPluginSocialNotification::serialize( const Item &item, const QByteArray &label,
+                                                    QIODevice &data, int &version )
 {
   Q_UNUSED( label )
   Q_UNUSED( version )
@@ -114,4 +117,5 @@ void SerializerPluginSocialNotification::serialize( const Item &item, const QByt
   data.write( serializer.serialize( map ) );
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_socialnotification, Akonadi::SerializerPluginSocialNotification )
+Q_EXPORT_PLUGIN2( akonadi_serializer_socialnotification,
+                  Akonadi::SerializerPluginSocialNotification )
