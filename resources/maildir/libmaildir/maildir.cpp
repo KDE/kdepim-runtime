@@ -91,7 +91,7 @@ public:
     {
         return path == rhs.path;
     }
-    bool accessIsPossible( QString& error ) const;
+    bool accessIsPossible( QString& error, bool createMissingFolders = true ) const;
     bool canAccess( const QString& path ) const;
 
     QStringList subPaths() const
@@ -240,13 +240,18 @@ bool Maildir::Private::canAccess( const QString& path ) const
     return d.isReadable() && d.isWritable();
 }
 
-bool Maildir::Private::accessIsPossible( QString& error ) const
+bool Maildir::Private::accessIsPossible( QString& error, bool createMissingFolders ) const
 {
     QStringList paths = subPaths();
+    
     paths.prepend( path );
 
     Q_FOREACH ( const QString &p, paths ) {
         if ( !QFile::exists( p ) ) {
+            if ( !createMissingFolders ) {
+              error = i18n( "Error opening %1; this folder is missing.", p );
+              return false;
+            }
             QDir().mkpath( p );
             if ( !QFile::exists( p ) ) {
               error = i18n( "Error opening %1; this folder is missing.", p );
@@ -262,16 +267,16 @@ bool Maildir::Private::accessIsPossible( QString& error ) const
     return true;
 }
 
-bool Maildir::isValid() const
+bool Maildir::isValid( bool createMissingFolders ) const
 {
     QString error;
-    return isValid( error );
+    return isValid( error, createMissingFolders );
 }
 
-bool Maildir::isValid( QString &error ) const
+bool Maildir::isValid( QString &error, bool createMissingFolders ) const
 {
     if ( !d->isRoot ) {
-      if ( d->accessIsPossible( error ) ) {
+      if ( d->accessIsPossible( error, createMissingFolders ) ) {
           return true;
       }
     } else {

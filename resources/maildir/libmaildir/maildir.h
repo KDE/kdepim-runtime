@@ -53,15 +53,20 @@ public:
     ~Maildir();
 
     /** Returns whether the maildir has all the necessary subdirectories,
-     * that they are readable, etc.  */
-    bool isValid() const;
+     * that they are readable, etc.
+     * @param createMissingFolders if true (the default), the cur/new/tmp folders are created if they are missing
+     */
+    bool isValid( bool createMissingFolders = true ) const;
 
     /**
      * Returns whether the maildir is valid, and sets the error out-parameter
      * so it can be used to signal the kind of error to the user.
      * @see isValid
+     *
+     * @param error will contain the error message
+     * @param createMissingFolders if true (the default), the cur/new/tmp folders are created if they are missing
      */
-    bool isValid( QString &error ) const;
+    bool isValid( QString &error, bool createMissingFolders = true ) const;
 
     /**
      * Returns whether this is a normal maildir or a container containing maildirs.
