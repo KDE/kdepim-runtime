@@ -342,18 +342,17 @@ void Settings::removeAccountsDisabledServices()
 {
   kDebug();
   QStringList urls = remoteUrls();
-
   for (int i = 0; i < urls.size(); ++i) {
     if ( !urls.at( i ).startsWith( "$accounts$" ) ) {
       continue;
     }
 
     if (urls.at( i ).contains( "carddav" )
-      && accountServices().contains( "text/x-vnd.accounts.dav-contacts" )) {
+      && accountServices().contains( "dav-contacts" )) {
       continue;
     }
     if (urls.at( i ).contains( "caldav" )
-      && accountServices().contains( "text/x-vnd.accounts.dav-calendar" )) {
+      && accountServices().contains( "dav-calendar" )) {
       continue;
     }
 
