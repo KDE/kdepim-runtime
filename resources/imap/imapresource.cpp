@@ -151,6 +151,11 @@ ImapResource::ImapResource( const QString &id )
   Settings::self(); // make sure the D-Bus settings interface is up
   new ResourceAdaptor( this );
   setNeedsNetwork( needsNetwork() );
+
+  m_statusMessageTimer = new QTimer( this );
+  m_statusMessageTimer->setSingleShot( true );
+  connect( m_statusMessageTimer, SIGNAL(timeout()), SLOT(clearStatusMessage()) );
+  connect( this, SIGNAL(error(QString)), SLOT(showError(QString)) );
 }
 
 ImapResource::~ImapResource()
@@ -680,6 +685,17 @@ QString ImapResource::dumpResourceToString() const
     ret += task->metaObject()->className();
   }
   return QLatin1String("IMAP tasks: ") + ret;
+}
+
+void ImapResource::showError( const QString &message )
+{
+  emit status( Akonadi::AgentBase::Idle, message );
+  m_statusMessageTimer->start( 1000*10 );
+}
+
+void ImapResource::clearStatusMessage()
+{
+  emit status( Akonadi::AgentBase::Idle, "" );
 }
 
 // ----------------------------------------------------------------------------------
