@@ -468,10 +468,13 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     KUrl url = davUrl.url();
     url.setUser( QString() );
     QStringList urls = Settings::self()->mappedCollections( davUrl.protocol(), url.prettyUrl() );
-    mCollectionsWithTemporaryError << urls;
 
     foreach ( const QString &url, urls ) {
       kWarning() << "Temporary error with collection" << url;
+
+      if ( !mCollectionsWithTemporaryError.contains( url ) )
+        mCollectionsWithTemporaryError << url;
+
       Akonadi::Collection collection;
       collection.setParentCollection( mDavCollectionRoot );
       collection.setRemoteId( url );

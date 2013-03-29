@@ -46,6 +46,7 @@ protected:
 private:
   KIMAP::Session *mSession;
   uint mRunningDeleteJobs;
+  bool mFolderFound;
 };
 
 #endif

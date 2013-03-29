@@ -129,7 +129,7 @@ private slots:
              << "S: * LSUB ( \\HasChildren ) / INBOX/test1"
              << "S: * LSUB ( ) / INBOX/test1/test2"
              << "S: A000003 OK Completed ( 0.000 secs 26 calls )"
-             << "C: A000004 SELECT \"INBOX/test1/test2\""
+             << "C: A000004 SELECT \"INBOX/test1\""
              << "S: * FLAGS ( \\Answered \\Flagged \\Draft \\Deleted \\Seen )"
              << "S: * OK [ PERMANENTFLAGS ( \\Answered \\Flagged \\Draft \\Deleted \\Seen \\* )  ]"
              << "S: * 1 EXISTS"
@@ -146,11 +146,11 @@ private slots:
              << "S: * 0 EXISTS"
              << "S: * 0 RECENT"
              << "S: A000006 OK Completed"
-             << "C: A000007 DELETE \"INBOX/test1/test2\""
+             << "C: A000007 DELETE \"INBOX/test1\""
              << "S: * 0 EXISTS"
              << "S: * 0 RECENT"
              << "S: A000007 OK Completed"
-             << "C: A000008 SELECT \"INBOX/test1\""
+             << "C: A000008 SELECT \"INBOX/test1/test2\""
              << "S: * FLAGS ( \\Answered \\Flagged \\Draft \\Deleted \\Seen )"
              << "S: * OK [ PERMANENTFLAGS ( \\Answered \\Flagged \\Draft \\Deleted \\Seen \\* )  ]"
              << "S: * 1 EXISTS"
@@ -166,7 +166,7 @@ private slots:
              << "S: * 0 EXISTS"
              << "S: * 0 RECENT"
              << "S: A000010 OK Completed"
-             << "C: A000011 DELETE \"INBOX/test1\""
+             << "C: A000011 DELETE \"INBOX/test1/test2\""
              << "S: * 0 EXISTS"
              << "S: * 0 RECENT"
              << "S: A000011 OK Completed";
@@ -208,7 +208,9 @@ private slots:
     state->setCollection( collection );
     RemoveCollectionRecursiveTask *task = new RemoveCollectionRecursiveTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
+    QEventLoop loop;
+    connect( task, SIGNAL(destroyed(QObject*)), &loop, SLOT(quit()) );
+    loop.exec();
 
     QCOMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {

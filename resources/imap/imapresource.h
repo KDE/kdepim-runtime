@@ -28,6 +28,9 @@
 
 #include <akonadi/resourcebase.h>
 #include <QPointer>
+
+class QTimer;
+
 class ResourceTask;
 namespace KIMAP
 {
@@ -117,6 +120,9 @@ private Q_SLOTS:
 
   void taskDestroyed( QObject *task );
 
+  void showError( const QString &message );
+  void clearStatusMessage();
+
 private:
   friend class ResourceState;
 
@@ -131,6 +137,7 @@ private:
   ImapIdleManager *m_idle;
   bool m_fastSync;
   Akonadi::Session *m_bodyCheckSession;
+  QTimer *m_statusMessageTimer;
 };
 
 #endif

@@ -180,7 +180,10 @@ QString DummyResourceState::rootRemoteId() const
 
 QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool ) const
 {
-  return collection.remoteId().mid( 1 );
+  if ( collection.remoteId().startsWith('/') )
+    return collection.remoteId().mid( 1 );
+  else
+    return collection.remoteId();
 }
 
 void DummyResourceState::setIdleCollection( const Akonadi::Collection &collection )
