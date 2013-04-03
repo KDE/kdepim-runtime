@@ -117,10 +117,10 @@ void ContactsResource::retrieveItems( const Collection &collection )
     if ( !collection.remoteRevision().isEmpty() ) {
         fetchJob->setFetchOnlyUpdated( collection.remoteRevision().toLongLong() );
     }
-    connect( fetchJob, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
-             this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
-    connect( fetchJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotItemsRetrieved( KGAPI2::Job * ) ) );
+    connect( fetchJob, SIGNAL(progress(KGAPI2::Job*,int,int)),
+             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotItemsRetrieved(KGAPI2::Job*)) );
 }
 
 void ContactsResource::retrieveContactsPhotos( const QVariant &arguments )
@@ -146,10 +146,10 @@ void ContactsResource::retrieveCollections()
     }
 
     ContactsGroupFetchJob *fetchJob = new ContactsGroupFetchJob( account(), this );
-    connect( fetchJob, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
-             this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
-    connect( fetchJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotCollectionsRetrieved( KGAPI2::Job * ) ) );
+    connect( fetchJob, SIGNAL(progress(KGAPI2::Job*,int,int)),
+             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotCollectionsRetrieved(KGAPI2::Job*)) );
 }
 
 void ContactsResource::itemAdded( const Item &item, const Collection &collection )
@@ -173,10 +173,10 @@ void ContactsResource::itemAdded( const Item &item, const Collection &collection
 
     ContactCreateJob *createJob = new ContactCreateJob( contact, account(), this );
     createJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( createJob, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
-             this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
-    connect( createJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotCreateJobFinished( KGAPI2::Job * ) ) );
+    connect( createJob, SIGNAL(progress(KGAPI2::Job*,int,int)),
+             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( createJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotCreateJobFinished(KGAPI2::Job*)) );
 }
 
 void ContactsResource::itemChanged( const Item &item, const QSet< QByteArray > &partIdentifiers )
@@ -196,10 +196,10 @@ void ContactsResource::itemChanged( const Item &item, const QSet< QByteArray > &
 
     ContactModifyJob *modifyJob = new ContactModifyJob( contact, account(), this );
     modifyJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( modifyJob, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
-             this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
-    connect( modifyJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotGenericJobFinished( KGAPI2::Job * ) ) );
+    connect( modifyJob, SIGNAL(progress(KGAPI2::Job*,int,int)),
+             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( modifyJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
 }
 
 void ContactsResource::itemMoved( const Item &item, const Collection &collectionSource,
@@ -229,10 +229,10 @@ void ContactsResource::itemMoved( const Item &item, const Collection &collection
 
     ContactModifyJob *modifyJob = new ContactModifyJob( contact, account(), this );
     modifyJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( modifyJob, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
-             this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
-    connect( modifyJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotGenericJobFinished( KGAPI2::Job * ) ) );
+    connect( modifyJob, SIGNAL(progress(KGAPI2::Job*,int,int)),
+             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( modifyJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
 }
 
 void ContactsResource::itemRemoved( const Item &item )
@@ -243,10 +243,10 @@ void ContactsResource::itemRemoved( const Item &item )
 
     ContactDeleteJob *deleteJob = new ContactDeleteJob( item.remoteId(), account(), this );
     deleteJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( deleteJob, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
-             this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
-    connect( deleteJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotGenericJobFinished( KGAPI2::Job * ) ) );
+    connect( deleteJob, SIGNAL(progress(KGAPI2::Job*,int,int)),
+             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( deleteJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
 
     emit status( Running, i18nc( "@info:status", "Removing contact" ) );
 }
@@ -263,8 +263,8 @@ void ContactsResource::itemLinked( const Item &item, const Collection &collectio
     contact->addGroup( collection.remoteId() );
 
     ContactModifyJob *modifyJob = new ContactModifyJob( contact, account(), this );
-    connect( modifyJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotGenericJobFinished( KGAPI2::Job * ) ) );
+    connect( modifyJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
 }
 
 void ContactsResource::itemUnlinked( const Item &item, const Collection &collection )
@@ -280,8 +280,8 @@ void ContactsResource::itemUnlinked( const Item &item, const Collection &collect
 
     ContactModifyJob *modifyJob = new ContactModifyJob( contact, account(), this );
     modifyJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( modifyJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotGenericJobFinished( KGAPI2::Job * ) ) );
+    connect( modifyJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
 }
 
 void ContactsResource::collectionAdded( const Akonadi::Collection &collection,
@@ -299,8 +299,8 @@ void ContactsResource::collectionAdded( const Akonadi::Collection &collection,
 
     ContactsGroupCreateJob *createJob = new ContactsGroupCreateJob( group, account(), this );
     createJob->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
-    connect( createJob, SIGNAL(finished( KGAPI2::Job* )),
-             this, SLOT( slotCreateJobFinished( KGAPI2::Job* ) ) );
+    connect( createJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotCreateJobFinished(KGAPI2::Job*)) );
 }
 
 void ContactsResource::collectionChanged( const Akonadi::Collection &collection )

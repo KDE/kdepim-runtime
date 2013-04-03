@@ -117,8 +117,8 @@ void GoogleSettingsDialog::slotAddAccountClicked()
     AuthJob *authJob = new AuthJob( account,
                                     m_parentResource->settings()->clientId(),
                                     m_parentResource->settings()->clientSecret() );
-    connect( authJob, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotAccountAuthenticated( KGAPI2::Job * ) ) );
+    connect( authJob, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotAccountAuthenticated(KGAPI2::Job*)) );
 }
 
 void GoogleSettingsDialog::slotRemoveAccountClicked()
@@ -177,8 +177,8 @@ bool GoogleSettingsDialog::handleError( Job *job )
         AuthJob *authJob = new AuthJob( account, m_parentResource->settings()->clientId(), 
                                         m_parentResource->settings()->clientSecret(), this );
         authJob->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
-        connect( authJob, SIGNAL( finished( KGAPI2::Job * ) ),
-                 this, SLOT( slotAuthJobFinished( KGAPI2::Job * ) ) );
+        connect( authJob, SIGNAL(finished(KGAPI2::Job*)),
+                 this, SLOT(slotAuthJobFinished(KGAPI2::Job*)) );
 
         return false;
     }

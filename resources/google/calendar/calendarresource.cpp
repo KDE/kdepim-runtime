@@ -85,7 +85,7 @@ CalendarResource::CalendarResource( const QString &id ):
     GoogleResource( id )
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
-
+    KGlobal::locale()->insertCatalog( "akonadi_google_resource" );
     updateResourceName();
 }
 
@@ -152,10 +152,10 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
     }
 
     job->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
-    connect( job, SIGNAL( progress( KGAPI2::Job *, int, int ) ),
-             this, SLOT( emitPercent( KGAPI2::Job *, int, int ) ) );
-    connect( job, SIGNAL( finished( KGAPI2::Job * ) ),
-             this, SLOT( slotItemsRetrieved( KGAPI2::Job * ) ) );
+    connect( job, SIGNAL(progress(KGAPI2::Job*,int,int)),
+             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( job, SIGNAL(finished(KGAPI2::Job*)),
+             this, SLOT(slotItemsRetrieved(KGAPI2::Job*)) );
 }
 
 void CalendarResource::retrieveCollections()
@@ -285,8 +285,8 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
         fetchJob->setAutoDelete( true );
         fetchJob->fetchScope().fetchFullPayload( true );
         fetchJob->setProperty( ITEM_PROPERTY, qVariantFromValue( item ) );
-        connect( fetchJob, SIGNAL( finished( KJob * ) ),
-                 this, SLOT( slotRemoveTaskFetchJobFinished( KJob * ) ) );
+        connect( fetchJob, SIGNAL(finished(KJob*)),
+                 this, SLOT(slotRemoveTaskFetchJobFinished(KJob*)) );
         fetchJob->start();
 
     } else {
