@@ -52,12 +52,12 @@ GoogleResource::GoogleResource( const QString &id ):
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
     m_accountMgr = new GoogleAccountManager( this );
-    connect( m_accountMgr, SIGNAL( accountChanged( KGAPI2::AccountPtr ) ),
-             this, SLOT( slotAccountChanged( KGAPI2::AccountPtr ) ) );
-    connect( m_accountMgr, SIGNAL( accountRemoved( QString ) ),
-             this, SLOT( slotAccountRemoved( QString ) ) );
-    connect( m_accountMgr, SIGNAL( managerReady( bool ) ),
-             this, SLOT( slotAccountManagerReady( bool ) ) );
+    connect( m_accountMgr, SIGNAL(accountChanged(KGAPI2::AccountPtr)),
+             this, SLOT(slotAccountChanged(KGAPI2::AccountPtr)) );
+    connect( m_accountMgr, SIGNAL(accountRemoved(QString)),
+             this, SLOT(slotAccountRemoved(QString)) );
+    connect( m_accountMgr, SIGNAL(managerReady(bool)),
+             this, SLOT(slotAccountManagerReady(bool)) );
 
     emit status( NotConfigured, i18n( "Waiting for KWallet..." ) );
 }
@@ -191,8 +191,8 @@ bool GoogleResource::handleError( KGAPI2::Job *job )
         }
         AuthJob *authJob = new AuthJob( m_account, settings()->clientId(), settings()->clientSecret(), this );
         authJob->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
-        connect( authJob, SIGNAL( finished( KGAPI2::Job * ) ),
-                 this, SLOT( slotAuthJobFinished( KGAPI2::Job * ) ) );
+        connect( authJob, SIGNAL(finished(KGAPI2::Job*)),
+                 this, SLOT(slotAuthJobFinished(KGAPI2::Job*)) );
 
         return false;
     }
