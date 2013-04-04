@@ -25,7 +25,7 @@
 #include "incidencehandler.h"
 
 /**
-	@author Andras Mantia <amantia@kde.org>
+        @author Andras Mantia <amantia@kde.org>
 */
 class JournalHandler : public IncidenceHandler
 {

@@ -44,8 +44,8 @@ class SettingsDialog : public KDialog
         Q_OBJECT
     public:
         SettingsDialog(WId windowId, Settings*);
-	void setAlarmTypes(CalEvent::Types);
-	CalEvent::Types alarmTypes() const;
+        void setAlarmTypes(CalEvent::Types);
+        CalEvent::Types alarmTypes() const;
 
     private Q_SLOTS:
         void save();
