@@ -107,6 +107,12 @@ class DavProtocolBase
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const = 0;
 
     /**
+     * Returns the default mimetype for items returned by this protocol.
+     * Note that this may need to be refined as CalDAV can use more than one.
+     */
+    virtual QString defaultMimeType() const = 0;
+
+    /**
      * Returns the mimetype that shall be used for contact DAV resources.
      */
     virtual QString contactsMimeType() const = 0;

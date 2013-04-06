@@ -18,6 +18,8 @@
 
 #include "carddavprotocol.h"
 
+#include <kabc/addressee.h>
+
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
 
@@ -132,6 +134,11 @@ QString CarddavProtocol::dataTagName() const
 DavCollection::ContentTypes CarddavProtocol::collectionContentTypes( const QDomElement& ) const
 {
   return DavCollection::Contacts;
+}
+
+QString CarddavProtocol::defaultMimeType() const
+{
+  return KABC::Addressee::mimeType();
 }
 
 QString CarddavProtocol::contactsMimeType() const

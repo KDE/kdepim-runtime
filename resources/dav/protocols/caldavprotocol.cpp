@@ -331,6 +331,11 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
   return contentTypes;
 }
 
+QString CaldavProtocol::defaultMimeType() const
+{
+  return QString( "text/calendar" );
+}
+
 QString CaldavProtocol::contactsMimeType() const
 {
   return QString(); // will never be called for this protocol

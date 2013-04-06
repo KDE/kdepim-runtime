@@ -671,14 +671,14 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     // convert dav data into payload
     const QString data = QString::fromUtf8( davItem.data() );
 
-    if ( item.mimeType() == KABC::Addressee::mimeType() ) {
+    if ( davItem.contentType() == KABC::Addressee::mimeType() ) {
       KABC::VCardConverter converter;
       const KABC::Addressee contact = converter.parseVCard( davItem.data() );
 
       if ( contact.isEmpty() )
         continue;
 
-      item.setPayload<KABC::Addressee>( contact );
+      item.setPayloadFromData( davItem.data() );
     } else {
       KCalCore::ICalFormat formatter;
       const IncidencePtr ptr( formatter.fromString( data ) );

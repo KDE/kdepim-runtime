@@ -38,6 +38,7 @@ class CaldavProtocol : public DavMultigetProtocol
     virtual QString dataTagName() const;
 
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const;
+    virtual QString defaultMimeType() const;
     virtual QString contactsMimeType() const;
 
   private:
