@@ -52,10 +52,11 @@ DavUtils::DavUrl::List DavCollectionsMultiFetchJob::urlsWithTemporaryError() con
 void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
 {
   DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob*>( job );
-  if ( fetchJob->hasTemporaryError() )
-    mUrlsWithTemporaryError << fetchJob->davUrl();
 
-  if ( job->error() ) {
+  if ( fetchJob->hasTemporaryError() ) {
+    mUrlsWithTemporaryError << fetchJob->davUrl();
+  }
+  else if ( job->error() ) {
     if ( !mSubJobSuccessful ) {
       setError( job->error() );
       setErrorText( job->errorText() );

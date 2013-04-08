@@ -465,24 +465,6 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   Akonadi::Collection::List collections;
   collections << mDavCollectionRoot;
 
-  foreach ( const DavUtils::DavUrl &davUrl, fetchJob->urlsWithTemporaryError() ) {
-    KUrl url = davUrl.url();
-    url.setUser( QString() );
-    QStringList urls = Settings::self()->mappedCollections( davUrl.protocol(), url.prettyUrl() );
-
-    foreach ( const QString &url, urls ) {
-      kWarning() << "Temporary error with collection" << url;
-
-      if ( !mCollectionsWithTemporaryError.contains( url ) )
-        mCollectionsWithTemporaryError << url;
-
-      Akonadi::Collection collection;
-      collection.setParentCollection( mDavCollectionRoot );
-      collection.setRemoteId( url );
-      collections << collection;
-    }
-  }
-
   const DavCollection::List davCollections = fetchJob->collections();
 
   foreach ( const DavCollection &davCollection, davCollections ) {
@@ -557,6 +539,35 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     collection.setRights( rights );
     mEtagCache.sync( collection );
     collections << collection;
+  }
+
+  foreach ( const DavUtils::DavUrl &davUrl, fetchJob->urlsWithTemporaryError() ) {
+    KUrl url = davUrl.url();
+    url.setUser( QString() );
+    QStringList urls = Settings::self()->mappedCollections( davUrl.protocol(), url.prettyUrl() );
+
+    foreach ( const QString &url, urls ) {
+      if ( mSeenCollectionsUrls.contains( url ) )
+        continue;
+      else
+        mSeenCollectionsUrls.insert( url );
+
+      kWarning() << "Temporary error with collection" << url;
+
+      if ( !mCollectionsWithTemporaryError.contains( url ) )
+        mCollectionsWithTemporaryError << url;
+
+      Akonadi::Collection collection;
+      collection.setParentCollection( mDavCollectionRoot );
+      collection.setRemoteId( url );
+      collections << collection;
+    }
+  }
+
+  foreach ( const QString &rid, mItemsRidCache.keys() ) {
+    if ( !mSeenCollectionsUrls.contains( rid ) ) {
+      mItemsRidCache.remove( rid );
+    }
   }
 
   collectionsRetrieved( collections );

@@ -128,26 +128,24 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       doCollectionsFetch( mUrl.url() );
       return;
     }
-    else if ( !mSubJobSuccessful ) {
-      if ( !responseCode || DavUtils::httpRequestRetryable( responseCode ) )
-        mHasTemporaryError = true;
 
-      QString err;
-      if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
-        err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
-      else
-        err = davJob->errorText();
+    if ( !responseCode || DavUtils::httpRequestRetryable( responseCode ) )
+      mHasTemporaryError = true;
 
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request.\n"
-                          "%1 (%2).", err, responseCode ) );
-    }
+    QString err;
+    if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
+    else
+      err = davJob->errorText();
+
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request.\n"
+                        "%1 (%2).", err, responseCode ) );
   }
   else {
     if ( !mSubJobSuccessful ) {
       setError( 0 ); // nope, everything went fine if we're here
       mSubJobSuccessful = true;
-      mHasTemporaryError = false;
     }
 
     // For use in the collectionDiscovered() signal
