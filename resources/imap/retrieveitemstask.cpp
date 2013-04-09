@@ -409,7 +409,10 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
     addedItems << i;
   }
 
-  if ( m_fastSync ) {
+  // Fetch missing bodies incrementally, so that we don't have to fetch flags of
+  // all other emails in the folder after that. That is out of scope of this task
+  // and is performed only during regular item fetch
+  if ( m_fastSync || m_fetchedMissingBodies != -1 ) {
     itemsRetrievedIncremental( addedItems, Akonadi::Item::List() );
   } else {
     itemsRetrieved( addedItems );
@@ -425,15 +428,22 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
 
 void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
 {
-  m_fetchedMissingBodies = -1;
-
   if ( job->error() ) {
       cancelTask( job->errorString() );
+      m_fetchedMissingBodies = -1;
       return;
   }
 
   KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
   KIMAP::ImapSet alreadyFetched = fetch->sequenceSet();
+
+  if ( m_fetchedMissingBodies > -1 ) {
+      itemsRetrievalDone();
+      m_fetchedMissingBodies = -1;
+      return;
+  }
+
+  m_fetchedMissingBodies = -1;
 
   // If this is the first fetch of a folder, skip getting flags, we
   // already have them all from the previous full fetch. This is not
@@ -451,6 +461,8 @@ void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
     return;
   }
 
+  // Fetch flags of all items that were not fetched by the fetchJob. After
+  // that /all/ items in the folder are synced.
   KIMAP::ImapSet set( 1, alreadyFetched.intervals().first().begin()-1 );
   listFlagsForImapSet( set );
 }
