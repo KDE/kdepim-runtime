@@ -491,6 +491,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     }
 
     QStringList mimeTypes;
+    mimeTypes << Collection::mimeType();
 
     const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
     if ( contentTypes & DavCollection::Calendar )
@@ -558,6 +559,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
         mCollectionsWithTemporaryError << url;
 
       Akonadi::Collection collection;
+      collection.setContentMimeTypes( QStringList() << Collection::mimeType() );
       collection.setParentCollection( mDavCollectionRoot );
       collection.setRemoteId( url );
       collections << collection;
