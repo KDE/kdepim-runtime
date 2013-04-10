@@ -75,6 +75,7 @@ protected:
 
   Akonadi::Collection collection() const;
   Akonadi::Item item() const;
+  Akonadi::Item::List items() const;
 
   Akonadi::Collection parentCollection() const;
 
@@ -82,6 +83,8 @@ protected:
   Akonadi::Collection targetCollection() const;
 
   QSet<QByteArray> parts() const;
+  QSet<QByteArray> addedFlags() const;
+  QSet<QByteArray> removedFlags() const;
 
   QString rootRemoteId() const;
   QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
@@ -99,6 +102,7 @@ protected:
   void itemsRetrievalDone();
 
   void changeCommitted( const Akonadi::Item &item );
+  void changesCommitted( const Akonadi::Item::List &items );
 
   void collectionsRetrieved( const Akonadi::Collection::List &collections );
 

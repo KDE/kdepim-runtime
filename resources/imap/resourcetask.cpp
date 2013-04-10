@@ -186,6 +186,11 @@ Akonadi::Item ResourceTask::item() const
   return m_resource->item();
 }
 
+Akonadi::Item::List ResourceTask::items() const
+{
+  return m_resource->items();
+}
+
 Akonadi::Collection ResourceTask::parentCollection() const
 {
   return m_resource->parentCollection();
@@ -204,6 +209,16 @@ Akonadi::Collection ResourceTask::targetCollection() const
 QSet<QByteArray> ResourceTask::parts() const
 {
   return m_resource->parts();
+}
+
+QSet< QByteArray > ResourceTask::addedFlags() const
+{
+  return m_resource->addedFlags();
+}
+
+QSet< QByteArray > ResourceTask::removedFlags() const
+{
+  return m_resource->removedFlags();
 }
 
 QString ResourceTask::rootRemoteId() const
@@ -259,6 +274,12 @@ void ResourceTask::itemsRetrievalDone()
 void ResourceTask::changeCommitted( const Akonadi::Item &item )
 {
   m_resource->itemChangeCommitted( item );
+  deleteLater();
+}
+
+void ResourceTask::changesCommitted(const Akonadi::Item::List& items)
+{
+  m_resource->itemsChangesCommitted( items );
   deleteLater();
 }
 

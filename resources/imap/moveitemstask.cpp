@@ -19,7 +19,7 @@
     02110-1301, USA.
 */
 
-#include "moveitemtask.h"
+#include "moveitemstask.h"
 
 #include <QtCore/QUuid>
 
@@ -37,17 +37,17 @@
 #include "imapflags.h"
 #include "uidnextattribute.h"
 
-MoveItemTask::MoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( DeferIfNoSession, resource, parent ), m_newUid( 0 )
+MoveItemsTask::MoveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
+  : ResourceTask( DeferIfNoSession, resource, parent )
 {
 
 }
 
-MoveItemTask::~MoveItemTask()
+MoveItemsTask::~MoveItemsTask()
 {
 }
 
-void MoveItemTask::doStart( KIMAP::Session *session )
+void MoveItemsTask::doStart( KIMAP::Session *session )
 {
   if ( item().remoteId().isEmpty() ) {
     emitError( i18n( "Cannot move message, it does not exist on the server." ) );
@@ -90,7 +90,7 @@ void MoveItemTask::doStart( KIMAP::Session *session )
   }
 }
 
-void MoveItemTask::onSelectDone( KJob *job )
+void MoveItemsTask::onSelectDone( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( job->errorString() );
@@ -101,34 +101,41 @@ void MoveItemTask::onSelectDone( KJob *job )
   }
 }
 
-void MoveItemTask::triggerCopyJob( KIMAP::Session *session )
+void MoveItemsTask::triggerCopyJob( KIMAP::Session *session )
 {
-  const qint64 uid = item().remoteId().toLongLong();
   const QString newMailBox = mailBoxForCollection( targetCollection() );
+
+  KIMAP::ImapSet set;
 
   // save message id, might be needed later to search for the
   // resulting message uid.
-  try {
-    KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
-    m_messageId = msg->messageID()->asUnicodeString().toUtf8();
-  } catch ( Akonadi::PayloadException e ) {
-    cancelTask( i18n( "Failed to copy item, it has no message payload. Remote id: %1", uid ) );
-    return;
+  foreach ( const Akonadi::Item &item, items() ) {
+    try {
+        KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+        m_messageIds.insert( item.id(), msg->messageID()->asUnicodeString().toUtf8() );
+
+        set.add( item.remoteId().toLong() );
+    } catch ( Akonadi::PayloadException e ) {
+        cancelTask( i18n( "Failed to copy item, it has no message payload. Remote id: %1", item.remoteId() ) );
+        return;
+    }
   }
 
   KIMAP::CopyJob *copy = new KIMAP::CopyJob( session );
 
   copy->setUidBased( true );
-  copy->setSequenceSet( KIMAP::ImapSet( uid ) );
+  copy->setSequenceSet( set );
   copy->setMailBox( newMailBox );
 
   connect( copy, SIGNAL(result(KJob*)),
            this, SLOT(onCopyDone(KJob*)) );
 
   copy->start();
+
+  m_oldSet = set;
 }
 
-void MoveItemTask::onCopyDone( KJob *job )
+void MoveItemsTask::onCopyDone( KJob *job )
 {
   if ( job->error()  ) {
     cancelTask( job->errorString() );
@@ -136,18 +143,13 @@ void MoveItemTask::onCopyDone( KJob *job )
   } else {
     KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob*>( job );
 
-    const qint64 oldUid = item().remoteId().toLongLong();
-
-    if ( !copy->resultingUids().isEmpty() ) {
-      // Go ahead, UIDPLUS seems to be supported and we copied a single message
-      m_newUid = copy->resultingUids().intervals().first().begin();
-    }
+    m_newUids = imapSetToList( copy->resultingUids() );
 
     // Mark the old one ready for deletion
     KIMAP::StoreJob *store = new KIMAP::StoreJob( copy->session() );
 
     store->setUidBased( true );
-    store->setSequenceSet( KIMAP::ImapSet( oldUid ) );
+    store->setSequenceSet( m_oldSet );
     store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
     store->setMode( KIMAP::StoreJob::AppendFlags );
 
@@ -158,7 +160,7 @@ void MoveItemTask::onCopyDone( KJob *job )
   }
 }
 
-void MoveItemTask::onStoreFlagsDone( KJob *job )
+void MoveItemsTask::onStoreFlagsDone( KJob *job )
 {
   if ( job->error() ) {
     emitWarning( i18n( "Failed to mark the message from '%1' for deletion on the IMAP server. "
@@ -166,7 +168,7 @@ void MoveItemTask::onStoreFlagsDone( KJob *job )
                        sourceCollection().name() ) );
   }
 
-  if ( m_newUid ) {
+  if ( !m_newUids.isEmpty() ) {
     recordNewUid();
   } else {
     // Let's go for a search to find the new UID :-)
@@ -183,7 +185,7 @@ void MoveItemTask::onStoreFlagsDone( KJob *job )
   }
 }
 
-void MoveItemTask::onPreSearchSelectDone( KJob *job )
+void MoveItemsTask::onPreSearchSelectDone( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( job->errorString() );
@@ -194,14 +196,17 @@ void MoveItemTask::onPreSearchSelectDone( KJob *job )
   KIMAP::SearchJob *search = new KIMAP::SearchJob( select->session() );
 
   search->setUidBased( true );
-  search->setSearchLogic( KIMAP::SearchJob::And );
 
-  if ( !m_messageId.isEmpty() ) {
-    QByteArray header = "Message-ID ";
-    header+= m_messageId;
+  if ( !m_messageIds.isEmpty() ) {
+    search->setSearchLogic( KIMAP::SearchJob::Or );
 
-    search->addSearchCriteria( KIMAP::SearchJob::Header, header );
+    foreach ( const QByteArray &messageId, m_messageIds ) {
+        QByteArray header = "Message-ID ";
+        header+= messageId;
+        search->addSearchCriteria( KIMAP::SearchJob::Header, header );
+    }
   } else {
+    search->setSearchLogic( KIMAP::SearchJob::And );
     search->addSearchCriteria( KIMAP::SearchJob::New );
 
     UidNextAttribute *uidNext = targetCollection().attribute<UidNextAttribute>();
@@ -221,7 +226,7 @@ void MoveItemTask::onPreSearchSelectDone( KJob *job )
   search->start();
 }
 
-void MoveItemTask::onSearchDone( KJob *job )
+void MoveItemsTask::onSearchDone( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( job->errorString() );
@@ -231,26 +236,35 @@ void MoveItemTask::onSearchDone( KJob *job )
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
 
   if ( search->results().count() == 1 )
-    m_newUid = search->results().first();
+    m_newUids = search->results();
 
   recordNewUid();
 }
 
-void MoveItemTask::recordNewUid()
+void MoveItemsTask::recordNewUid()
 {
   // Create the item resulting of the operation, since at that point
   // the first part of the move succeeded
-  Akonadi::Item i = item();
+  QList<qint64> oldUids = imapSetToList( m_oldSet );
 
-  // Update the item content with the new UID from the copy
-  // if we didn't manage to get a valid UID from the server, use a random RID instead
-  // this will make ItemSync clean up the mess during the next sync (while empty RIDs are protected as not yet existing on the server)
-  if ( m_newUid > 0 )
-    i.setRemoteId( QString::number( m_newUid ) );
-  else
-    i.setRemoteId( QUuid::createUuid() );
+  const Akonadi::Item::SmartList list = items();
+  Akonadi::Item::List newItems;
+  for (int i = 0; i < oldUids.count(); ++i) {
+    Akonadi::Item item = list.findByRemoteId( QString::number( oldUids.at( i ) ) );
+    Q_ASSERT ( item.isValid() );
 
-  changeCommitted( i );
+    // Update the item content with the new UID from the copy
+    // if we didn't manage to get a valid UID from the server, use a random RID instead
+    // this will make ItemSync clean up the mess during the next sync (while empty RIDs are protected as not yet existing on the server)
+    if ( m_newUids.count() <= i ) {
+        item.setRemoteId( QUuid::createUuid() );
+    } else {
+        item.setRemoteId( QString::number( m_newUids.at( i ) ) );
+    }
+    newItems << item;
+  }
+
+  changesCommitted( newItems );
 
   Akonadi::Collection c = targetCollection();
 
@@ -266,18 +280,31 @@ void MoveItemTask::recordNewUid()
   // then update the property to the probable next uid to keep the cache in sync.
   // If not something happened in our back, so we don't update and a refetch will
   // happen at some point.
-  if ( m_newUid == oldNextUid ) {
+  if ( m_newUids.last() == oldNextUid ) {
     if ( uidAttr == 0 ) {
-      uidAttr = new UidNextAttribute( m_newUid + 1 );
+      uidAttr = new UidNextAttribute( m_newUids.last() + 1 );
       c.addAttribute( uidAttr );
     } else {
-      uidAttr->setUidNext( m_newUid + 1 );
+      uidAttr->setUidNext( m_newUids.last() + 1 );
     }
 
     applyCollectionChanges( c );
   }
 }
 
-#include "moveitemtask.moc"
+QList< qint64 > MoveItemsTask::imapSetToList(const KIMAP::ImapSet& set)
+{
+    QList<qint64> list;
+    foreach ( const KIMAP::ImapInterval &interval, set.intervals() ) {
+        for (qint64 i = interval.begin(); i <= interval.end(); ++i) {
+            list << i;
+        }
+    }
+
+    return list;
+}
+
+
+#include "moveitemstask.moc"
 
 
