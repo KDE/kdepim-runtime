@@ -80,7 +80,6 @@ class DavCollectionsMultiFetchJob : public KJob
     DavCollection::List mCollections;
     DavUtils::DavUrl::List mUrlsWithTemporaryError;
     uint mSubJobCount;
-    bool mSubJobSuccessful;
 };
 
 #endif

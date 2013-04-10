@@ -29,7 +29,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavItemsListJob::DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mSubJobSuccessful( false )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
 {
 }
 
@@ -71,24 +71,17 @@ void DavItemsListJob::davJobFinished( KJob *job )
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
-    if ( !mSubJobSuccessful ) {
-      QString err;
-      if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
-        err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
-      else
-        err = davJob->errorText();
+    QString err;
+    if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
+    else
+      err = davJob->errorText();
 
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request.\n"
-                          "%1 (%2).", err, responseCode ) );
-    }
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request.\n"
+                        "%1 (%2).", err, responseCode ) );
   }
   else {
-    if ( !mSubJobSuccessful ) {
-      setError( 0 ); // nope, everything went fine
-      mSubJobSuccessful = true;
-    }
-
     /*
      * Extract data from a document like the following:
      *

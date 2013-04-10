@@ -31,7 +31,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavCollectionsFetchJob::DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mSubJobSuccessful( false), mHasTemporaryError( false )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mHasTemporaryError( false )
 {
 }
 
@@ -143,11 +143,6 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
                         "%1 (%2).", err, responseCode ) );
   }
   else {
-    if ( !mSubJobSuccessful ) {
-      setError( 0 ); // nope, everything went fine if we're here
-      mSubJobSuccessful = true;
-    }
-
     // For use in the collectionDiscovered() signal
     KUrl _jobUrl = mUrl.url();
     _jobUrl.setUser( QString() );
