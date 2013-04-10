@@ -25,7 +25,7 @@
 #include "kolabhandler.h"
 
 /**
-	@author Andras Mantia <amantia@kde.org>
+        @author Andras Mantia <amantia@kde.org>
 */
 class AddressBookHandler : public KolabHandler
 {

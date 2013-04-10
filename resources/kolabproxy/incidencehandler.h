@@ -27,7 +27,7 @@
 #include <KCalCore/MemoryCalendar>
 
 /**
-	@author Andras Mantia <amantia@kde.org>
+        @author Andras Mantia <amantia@kde.org>
 */
 class IncidenceHandler : public KolabHandler
 {

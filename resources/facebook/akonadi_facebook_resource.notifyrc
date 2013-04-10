@@ -1,0 +1,14 @@
+[Global]
+Comment=Akonadi's Facebook integration
+Name=Facebook Resource
+IconName=kde
+
+[Context/Application]
+Name=Facebook
+Comment=Notification coming from Facebook
+
+[Event/facebookNotification]
+Name=New Facebook notification
+Comment=You have new Facebook notification
+Contexts=Application
+Action=Popup

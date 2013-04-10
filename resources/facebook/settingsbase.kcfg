@@ -13,5 +13,8 @@
     <entry name="LowerLimit" type="String">
       <default>2000-01-01</default>
     </entry>
+    <entry name="DisplayNotifications" type="Bool">
+      <default>true</default>
+    </entry>
   </group>
 </kcfg>

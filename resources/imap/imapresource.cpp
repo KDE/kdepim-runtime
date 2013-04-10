@@ -540,7 +540,7 @@ void ImapResource::reconnect()
 
   setOnline( !needsNetwork()
 #ifndef IMAPRESOURCE_NO_SOLID
-			 ||
+                         ||
              Solid::Networking::status() == Solid::Networking::Unknown ||
              Solid::Networking::status() == Solid::Networking::Connected
 #endif
