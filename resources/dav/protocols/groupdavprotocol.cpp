@@ -82,6 +82,11 @@ QList<QDomDocument> GroupdavProtocol::itemsQueries() const
   return mItemsQueries;
 }
 
+QString GroupdavProtocol::mimeTypeForQuery( int index ) const
+{
+  return QString();
+}
+
 DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const
 {
   /*
