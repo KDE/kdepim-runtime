@@ -54,12 +54,6 @@ class DavCollectionsFetchJob : public KJob
     DavCollection::List collections() const;
 
     /**
-     * Returns true if a temporary error was encountered. Any error but
-     * HTTP 4xx codes are temporary.
-     */
-    bool hasTemporaryError() const;
-
-    /**
      * Return the DavUrl used by this job
      */
     DavUtils::DavUrl davUrl() const;
@@ -83,7 +77,6 @@ class DavCollectionsFetchJob : public KJob
     DavUtils::DavUrl mUrl;
     DavCollection::List mCollections;
     uint mSubJobCount;
-    bool mHasTemporaryError;
 };
 
 #endif

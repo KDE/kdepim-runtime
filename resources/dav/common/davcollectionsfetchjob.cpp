@@ -31,7 +31,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavCollectionsFetchJob::DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mHasTemporaryError( false )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
 {
 }
 
@@ -49,11 +49,6 @@ void DavCollectionsFetchJob::start()
 DavCollection::List DavCollectionsFetchJob::collections() const
 {
   return mCollections;
-}
-
-bool DavCollectionsFetchJob::hasTemporaryError() const
-{
-  return mHasTemporaryError;
 }
 
 DavUtils::DavUrl DavCollectionsFetchJob::davUrl() const
@@ -128,9 +123,6 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       doCollectionsFetch( mUrl.url() );
       return;
     }
-
-    if ( !responseCode || DavUtils::httpRequestRetryable( responseCode ) )
-      mHasTemporaryError = true;
 
     QString err;
     if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
