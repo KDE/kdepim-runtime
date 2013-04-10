@@ -25,7 +25,7 @@ using namespace Akonadi;
 
 typedef QMap<QByteArray, KIMAP::Acl::Rights> ImapAcl;
 
-Q_DECLARE_METATYPE( ImapAcl );
+Q_DECLARE_METATYPE( ImapAcl )
 
 class ImapAclAttributeTest : public QObject
 {

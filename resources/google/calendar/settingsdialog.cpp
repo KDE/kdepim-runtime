@@ -44,8 +44,8 @@ using namespace KGAPI2;
 SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent ):
     GoogleSettingsDialog( accountManager, windowId, parent )
 {
-    connect( this, SIGNAL( accepted() ),
-             this, SLOT( saveSettings() ) );
+    connect( this, SIGNAL(accepted()),
+             this, SLOT(saveSettings()) );
     connect( this, SIGNAL(currentAccountChanged(QString)),
              this, SLOT(slotCurrentAccountChanged(QString)) );
 

@@ -57,7 +57,7 @@ class RetrieveItemsJob::Private
     {
       if ( !mTransaction ) {
         mTransaction = new TransactionSequence( q );
-	mTransaction->setAutomaticCommittingEnabled( false );
+        mTransaction->setAutomaticCommittingEnabled( false );
         connect( mTransaction, SIGNAL(result(KJob*)),
                  q, SLOT(transactionResult(KJob*)) );
       }
