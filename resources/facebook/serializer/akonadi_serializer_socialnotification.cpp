@@ -98,7 +98,7 @@ void SerializerPluginSocialNotification::serialize( const Item &item, const QByt
 
   map["to"] = toMap;
   map["created_time"] = notificationInfo.createdTimeString();
-  map["update_time"] = notificationInfo.updatedTimeString();
+  map["updated_time"] = notificationInfo.updatedTimeString();
   map["title"] = notificationInfo.title();
   map["message"] = notificationInfo.message();
   map["link"] = notificationInfo.link();
