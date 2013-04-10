@@ -35,8 +35,6 @@
 
 using namespace Akonadi;
 
-static const char * eventMimeType = "application/x-vnd.akonadi.calendar.event";
-
 void FacebookResource::eventListFetched( KJob *job )
 {
   Q_ASSERT( !mIdle );

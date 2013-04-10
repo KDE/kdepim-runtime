@@ -15,6 +15,7 @@ set(facebookresource_SRCS
 )
 
 install(FILES facebookresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES akonadi_facebook_resource.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_facebook_resource")
 
 kde4_add_ui_files(facebookresource_SRCS settingsdialog.ui)
 kde4_add_kcfg_files(facebookresource_SRCS settingsbase.kcfgc)
