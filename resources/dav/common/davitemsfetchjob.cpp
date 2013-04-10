@@ -143,7 +143,6 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
       continue;
     }
 
-    item.setContentType( protocol->defaultMimeType() );
     item.setData( data );
 
     mItems.insert( item.url(), item );

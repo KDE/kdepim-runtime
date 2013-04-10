@@ -101,16 +101,16 @@ class DavProtocolBase
     virtual QList<QDomDocument> itemsQueries() const = 0;
 
     /**
+     * Returns the mime type of items fetched by query at index @p index
+     * in the list return by @ref itemsQueries().
+     */
+    virtual QString mimeTypeForQuery( int index ) const = 0;
+
+    /**
      * Returns the possible content types for the collection that
      * is described by the passed @p propstat element of a PROPFIND result.
      */
     virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const = 0;
-
-    /**
-     * Returns the default mimetype for items returned by this protocol.
-     * Note that this may need to be refined as CalDAV can use more than one.
-     */
-    virtual QString defaultMimeType() const = 0;
 
     /**
      * Returns the mimetype that shall be used for contact DAV resources.

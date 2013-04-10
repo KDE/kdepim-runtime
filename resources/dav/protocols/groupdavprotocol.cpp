@@ -82,6 +82,11 @@ QList<QDomDocument> GroupdavProtocol::itemsQueries() const
   return mItemsQueries;
 }
 
+QString GroupdavProtocol::mimeTypeForQuery( int index ) const
+{
+  return QString();
+}
+
 DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const
 {
   /*
@@ -117,11 +122,6 @@ DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes( const QDom
   return contentTypes;
 }
 
-
-QString GroupdavProtocol::defaultMimeType() const
-{
-  return QString(); // No useful default for this one
-}
 QString GroupdavProtocol::contactsMimeType() const
 {
   return QLatin1String( "text/x-vcard" );

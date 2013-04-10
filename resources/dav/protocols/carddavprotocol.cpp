@@ -38,6 +38,7 @@ CarddavProtocol::CarddavProtocol()
   propElement.appendChild( document.createElementNS( "DAV:", "getetag" ) );
 
   mItemsQueries << document;
+  mItemsMimeTypes << KABC::Addressee::mimeType();
 }
 
 bool CarddavProtocol::supportsPrincipals() const
@@ -93,6 +94,11 @@ QList<QDomDocument> CarddavProtocol::itemsQueries() const
   return mItemsQueries;
 }
 
+QString CarddavProtocol::mimeTypeForQuery( int index ) const
+{
+  return mItemsMimeTypes.at( index );
+}
+
 QDomDocument CarddavProtocol::itemsReportQuery( const QStringList &urls ) const
 {
   QDomDocument document;
@@ -134,11 +140,6 @@ QString CarddavProtocol::dataTagName() const
 DavCollection::ContentTypes CarddavProtocol::collectionContentTypes( const QDomElement& ) const
 {
   return DavCollection::Contacts;
-}
-
-QString CarddavProtocol::defaultMimeType() const
-{
-  return KABC::Addressee::mimeType();
 }
 
 QString CarddavProtocol::contactsMimeType() const

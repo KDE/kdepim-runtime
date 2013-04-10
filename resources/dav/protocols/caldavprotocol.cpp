@@ -20,6 +20,9 @@
 #include "davutils.h"
 
 #include <kurl.h>
+#include <kcalcore/event.h>
+#include <kcalcore/journal.h>
+#include <kcalcore/todo.h>
 
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
@@ -73,6 +76,7 @@ CaldavProtocol::CaldavProtocol()
     compfilterElement.appendChild( subcompfilterElement );
 
     mItemsQueries << document;
+    mItemsMimeTypes << KCalCore::Event::eventMimeType();
   }
 
   /*
@@ -122,6 +126,7 @@ CaldavProtocol::CaldavProtocol()
     compfilterElement.appendChild( subcompfilterElement );
 
     mItemsQueries << document;
+    mItemsMimeTypes << KCalCore::Todo::todoMimeType();
   }
 
   /*
@@ -171,6 +176,7 @@ CaldavProtocol::CaldavProtocol()
     compfilterElement.appendChild( subcompfilterElement );
 
     mItemsQueries << document;
+    mItemsMimeTypes << KCalCore::Journal::journalMimeType();
   }
 }
 
@@ -229,6 +235,11 @@ QString CaldavProtocol::collectionsXQuery() const
 QList<QDomDocument> CaldavProtocol::itemsQueries() const
 {
   return mItemsQueries;
+}
+
+QString CaldavProtocol::mimeTypeForQuery( int index ) const
+{
+  return mItemsMimeTypes.at( index );
 }
 
 QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
@@ -329,11 +340,6 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
   }
 
   return contentTypes;
-}
-
-QString CaldavProtocol::defaultMimeType() const
-{
-  return QString( "text/calendar" );
 }
 
 QString CaldavProtocol::contactsMimeType() const

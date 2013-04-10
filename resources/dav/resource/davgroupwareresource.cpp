@@ -597,6 +597,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
 
     Akonadi::Item item;
     item.setRemoteId( davItem.url() );
+    item.setMimeType( davItem.contentType() );
 
     if ( !mEtagCache.contains( item.remoteId() ) ) {
       // This is the first time this item is seen, and we can't
