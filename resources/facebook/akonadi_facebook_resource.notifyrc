@@ -5,6 +5,30 @@ IconName=kde
 
 [Context/Application]
 Name=Facebook
+Name[cs]=Facebook
+Name[de]=Facebook
+Name[el]=Facebook
+Name[es]=Facebook
+Name[fi]=Facebook
+Name[fr]=Facebook
+Name[hu]=Facebook
+Name[ia]=Facebook
+Name[nb]=Facebook
+Name[nl]=Facebook
+Name[nn]=Facebook
+Name[pt]=Facebook
+Name[pt_BR]=Facebook
+Name[sk]=Facebook
+Name[sr]=Фејсбук
+Name[sr@ijekavian]=Фејсбук
+Name[sr@ijekavianlatin]=Facebook
+Name[sr@latin]=Facebook
+Name[sv]=Facebook
+Name[tr]=Facebook
+Name[uk]=Facebook
+Name[x-test]=xxFacebookxx
+Name[zh_CN]=Facebook
+Name[zh_TW]=Facebook
 Comment=Notification coming from Facebook
 
 [Event/facebookNotification]
