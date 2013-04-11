@@ -20,9 +20,10 @@
 #include <nepomuk2/datamanagement.h>
 #include <KUrl>
 
-NepomukCleanerJob::NepomukCleanerJob(const QList<Akonadi::Item::Id> &staleItems, QObject* parent)
+
+NepomukCleanerJob::NepomukCleanerJob(const QList<QUrl> &uriList, QObject* parent)
     : KJob(parent),
-    mStaleItems(staleItems),
+    mStaleUris(uriList),
     mBatchSize(10)
 {
 
@@ -35,17 +36,17 @@ void NepomukCleanerJob::start()
 
 void NepomukCleanerJob::remove()
 {
-    if (mStaleItems.isEmpty()) {
+    if (mStaleUris.isEmpty()) {
         emitResult();
         return;
     }
-    QList <QUrl> items;
-    for (int i = 0; !mStaleItems.isEmpty() && i < mBatchSize; i++) {
-        const Akonadi::Item::Id id = mStaleItems.takeLast();
-        kDebug() << "removing item " << id;
-        items << Akonadi::Item(id).url();
+    QList <QUrl> uriList;
+    for (int i = 0; !mStaleUris.isEmpty() && i < mBatchSize; i++) {
+        const QUrl uri = mStaleUris.takeLast();
+        uriList << uri;
     }
-    KJob *removeJob = Nepomuk2::removeResources( items, Nepomuk2::RemoveSubResoures );
+    kDebug() << "Removing items:" << uriList;
+    KJob *removeJob = Nepomuk2::removeResources( uriList, Nepomuk2::RemoveSubResoures );
     connect(removeJob, SIGNAL(finished(KJob*)), this, SLOT(removedItem(KJob*)));
     removeJob->start();
 }

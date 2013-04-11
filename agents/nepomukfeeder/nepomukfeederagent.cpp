@@ -95,7 +95,6 @@ static inline QString emailMimetype()
 
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
-  mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
   mIdleDetectionDisabled( true ),
   mShouldProcessNotifications( true ),
@@ -117,9 +116,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect(changeRecorder(), SIGNAL(changesAdded()), this, SLOT(changesRecorded()));
 
   Nepomuk2::ResourceManager::instance()->init();
-  mNepomukStartupTimeout.setInterval( 300 * 1000 );
-  mNepomukStartupTimeout.setSingleShot( true );
-  connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(selfTest()) );
@@ -370,7 +366,7 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     mQueue.addLowPrioItem( item );
   }
 
-  NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->getItemsToRemove(), this);
+  NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->staleUris(), this);
   cleanerJob->start();
 }
 
@@ -424,9 +420,6 @@ void NepomukFeederAgent::enableChangeRecording(bool enable)
 
 void NepomukFeederAgent::selfTest()
 {
-  QStringList errorMessages;
-  bool selfTestPassed = false;
-
   // check if we have been disabled explicitly
   {
     KConfig config( "akonadi_nepomuk_feederrc" );
@@ -441,40 +434,17 @@ void NepomukFeederAgent::selfTest()
   }
 
   // if Nepomuk is not running, try to start it
-  if ( !mNepomukStartupAttempted && !Nepomuk2::ResourceManager::instance()->initialized() ) {
-    KProcess process;
-    const QString nepomukserver = KStandardDirs::findExe( QLatin1String( "nepomukserver" ) );
-    if ( process.startDetached( nepomukserver ) == 0 ) {
-      errorMessages.append( i18n( "Unable to start the Nepomuk server." ) );
-    } else {
-      mNepomukStartupAttempted = true;
-      mNepomukStartupTimeout.start();
-      // wait for Nepomuk to start
-      setOnline( false );
-      enableChangeRecording( false );
-      emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
-      return;
-    }
-  }
-
   if ( !Nepomuk2::ResourceManager::instance()->initialized() ) {
-    if ( mNepomukStartupAttempted && mNepomukStartupTimeout.isActive() ) {
-      // still waiting for Nepomuk to start
-      setOnline( false );
-      enableChangeRecording( false );
-      emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
-      return;
-    } else {
-      errorMessages.append( i18n( "Nepomuk is not running." ) );
-    }
+    // wait for Nepomuk to start
+    setOnline( false );
+    enableChangeRecording( false );
+    emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
   }
-
-  if ( errorMessages.isEmpty() ) {
-    selfTestPassed = true;
-    mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
-    mNepomukStartupTimeout.stop();
+  else {
     setOnline( true );
     enableChangeRecording( true );
+    emit status( Idle, i18n( "Ready to index data." ) );
+
     if ( !mInitialUpdateDone ) {
       mInitialUpdateDone = true;
       //TODO postpone this until the computer is idle?
@@ -483,14 +453,8 @@ void NepomukFeederAgent::selfTest()
       } else {
         kDebug() << "Initial indexing was disabled in the configuration.";
       }
-    } else {
-      emit status( Idle, i18n( "Ready to index data." ) );
     }
-    return;
   }
-
-  setOnline( selfTestPassed );
-  emit status( Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )
@@ -540,38 +504,18 @@ void NepomukFeederAgent::setRunning( bool running )
 
 void NepomukFeederAgent::systemIdle()
 {
-  if ( mIdleDetectionDisabled )
+  if ( mIdleDetectionDisabled || !isOnline() )
     return;
 
-  const QString summary = i18n( "System idle, ready to index data." );
-  const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-  KNotification::event( QLatin1String("statusindexing"),
-                          summary,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
-
-  emit status( Idle, summary );
   KIdleTime::instance()->catchNextResumeEvent();
   mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
 }
 
 void NepomukFeederAgent::systemResumed()
 {
-  if ( mIdleDetectionDisabled )
+  if ( mIdleDetectionDisabled || !isOnline() )
     return;
 
-  const QString summary = i18n( "System busy, indexing suspended." );
-  const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-  KNotification::event( QLatin1String("statusindexing"),
-                          summary,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
-
-  emit status( Idle, summary );
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 
