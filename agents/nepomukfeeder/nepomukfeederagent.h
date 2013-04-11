@@ -137,9 +137,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void checkForLostChanges();
 
   private:
-    QTimer mNepomukStartupTimeout;
-
-    bool mNepomukStartupAttempted;
     bool mInitialUpdateDone;
     bool mIdleDetectionDisabled;
     bool mShouldProcessNotifications;

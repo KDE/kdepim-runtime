@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
         ItemQueue *queue = new ItemQueue( 1, 1, &app );
         kDebug() << "indexing item: " << id;
         queue->addItem( Akonadi::Item( id ) );
-        queue->processItem();
+        queue->processBatch();
         QObject::connect( queue, SIGNAL(finished()), &app, SLOT(quit()));
     } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "rm-item" ) ) {
         kDebug() << "removing item: " << Akonadi::Item( id ).url().url();

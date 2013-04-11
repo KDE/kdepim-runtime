@@ -74,6 +74,8 @@ public:
   /** start/stop indexing */
   void setOnline(bool);
 
+  int size();
+
   enum IndexingSpeed {
       /**
        * Index at full speed, i.e. do not use any artificial
@@ -114,7 +116,7 @@ private:
   void continueIndexing(); //start the indexing if work is to be done
   void collectionFullyIndexed();
   void indexingComplete();
-  int mTotalAmount, mProcessedAmount, mPendingJobs;
+  int mTotalAmount, mPendingJobs;
 
   Akonadi::Collection::List mCollectionQueue;
   Akonadi::Collection mCurrentCollection;
