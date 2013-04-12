@@ -243,11 +243,3 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
 
   return davItem;
 }
-
-bool DavUtils::httpRequestRetryable( int statusCode )
-{
-  if ( statusCode == 410 )
-    return false;
-  else
-    return true;
-}

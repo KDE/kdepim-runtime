@@ -29,7 +29,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavItemsListJob::DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mSubJobSuccessful( false )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
 {
 }
 
@@ -38,22 +38,27 @@ void DavItemsListJob::start()
   const DavProtocolBase *protocol = DavManager::self()->davProtocol( mUrl.protocol() );
   Q_ASSERT( protocol );
   QListIterator<QDomDocument> it( protocol->itemsQueries() );
+  int queryIndex = 0;
 
   while ( it.hasNext() ) {
     ++mSubJobCount;
     const QDomDocument props = it.next();
 
-    if ( DavManager::self()->davProtocol( mUrl.protocol() )->useReport() ) {
+    if ( protocol->useReport() ) {
       KIO::DavJob *job = DavManager::self()->createReportJob( mUrl.url(), props );
       job->addMetaData( "PropagateHttpHeader", "true" );
       job->setProperty( "davType", "report" );
+      job->setProperty( "itemsMimeType", protocol->mimeTypeForQuery( queryIndex ) );
       connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
     } else {
       KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), props );
       job->addMetaData( "PropagateHttpHeader", "true" );
       job->setProperty( "davType", "propFind" );
+      job->setProperty( "itemsMimeType", protocol->mimeTypeForQuery( queryIndex ) );
       connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
     }
+
+    ++queryIndex;
   }
 }
 
@@ -71,24 +76,17 @@ void DavItemsListJob::davJobFinished( KJob *job )
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
-    if ( !mSubJobSuccessful ) {
-      QString err;
-      if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
-        err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
-      else
-        err = davJob->errorText();
+    QString err;
+    if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
+    else
+      err = davJob->errorText();
 
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request.\n"
-                          "%1 (%2).", err, responseCode ) );
-    }
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request.\n"
+                        "%1 (%2).", err, responseCode ) );
   }
   else {
-    if ( !mSubJobSuccessful ) {
-      setError( 0 ); // nope, everything went fine
-      mSubJobSuccessful = true;
-    }
-
     /*
      * Extract data from a document like the following:
      *
@@ -114,6 +112,7 @@ void DavItemsListJob::davJobFinished( KJob *job )
      * </multistatus>
      */
 
+    const QString itemsMimeType = job->property( "itemsMimeType" ).toString();
     const QDomDocument document = davJob->response();
     const QDomElement documentElement = document.documentElement();
 
@@ -153,6 +152,7 @@ void DavItemsListJob::davJobFinished( KJob *job )
 
       // ... if not it is an item
       DavItem item;
+      item.setContentType( itemsMimeType );
 
       // extract path
       const QDomElement hrefElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "href" );

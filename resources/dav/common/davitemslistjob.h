@@ -60,7 +60,6 @@ class DavItemsListJob : public KJob
     DavItem::List mItems;
     QSet<QString> mSeenUrls; // to prevent events duplication with some servers
     uint mSubJobCount;
-    bool mSubJobSuccessful;
 };
 
 #endif

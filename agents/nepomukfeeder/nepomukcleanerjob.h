@@ -30,12 +30,12 @@ class NepomukCleanerJob: public KJob
 {
     Q_OBJECT
 public:
-    explicit NepomukCleanerJob(const QList<Akonadi::Item::Id> &staleItems, QObject* parent = 0);
+    explicit NepomukCleanerJob(const QList<QUrl> &uriList, QObject* parent = 0);
     virtual void start();
 private slots:
     void removedItem(KJob*);
 private:
-    QList<Akonadi::Item::Id> mStaleItems;
+    QList<QUrl> mStaleUris;
     void remove();
     int mBatchSize;
 };
