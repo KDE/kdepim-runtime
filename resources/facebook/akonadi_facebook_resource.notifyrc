@@ -1,6 +1,20 @@
 [Global]
 Comment=Akonadi's Facebook integration
+Comment[cs]=Integrace Facebooku do Akonadi
+Comment[nl]=Facebook-integratie van Akonadi
+Comment[pt]=Integração do Facebook com o Akonadi
+Comment[pt_BR]=Integração com o Facebook do Akonadi
+Comment[sk]=Akonadi Facebook integrácia
+Comment[uk]=Інтеграція Akonadi з Facebook
+Comment[x-test]=xxAkonadi's Facebook integrationxx
 Name=Facebook Resource
+Name[cs]=Zdroj Facebooku
+Name[nl]=Facebook-hulpmiddel
+Name[pt]=Recurso do Facebook
+Name[pt_BR]=Recurso do Facebook
+Name[sk]=Facebook zdroj
+Name[uk]=Ресурс Facebook
+Name[x-test]=xxFacebook Resourcexx
 IconName=kde
 
 [Context/Application]
@@ -30,9 +44,27 @@ Name[x-test]=xxFacebookxx
 Name[zh_CN]=Facebook
 Name[zh_TW]=Facebook
 Comment=Notification coming from Facebook
+Comment[nl]=Melding uit Facebook
+Comment[pt]=Notificação proveniente do Facebook
+Comment[pt_BR]=Notificação originada do Facebook
+Comment[sk]=Upozornenie prichádzajúce z Facebooku
+Comment[uk]=Сповіщення, що надходять з Facebook
+Comment[x-test]=xxNotification coming from Facebookxx
 
 [Event/facebookNotification]
 Name=New Facebook notification
+Name[nl]=Nieuwe Facebook-melding
+Name[pt]=Nova notificação do Facebook
+Name[pt_BR]=Nova notificação do Facebook
+Name[sk]=Nové upozornenie Facebooku
+Name[uk]=Нове сповіщення з Facebook
+Name[x-test]=xxNew Facebook notificationxx
 Comment=You have new Facebook notification
+Comment[nl]=Er is een nieuwe Facebook-melding
+Comment[pt]=Tem uma notificação nova do Facebook
+Comment[pt_BR]=Você tem uma nova notificação do Facebook
+Comment[sk]=Máte nové upozornenie Facebooku
+Comment[uk]=Вам надійшло сповіщення з Facebook
+Comment[x-test]=xxYou have new Facebook notificationxx
 Contexts=Application
 Action=Popup
