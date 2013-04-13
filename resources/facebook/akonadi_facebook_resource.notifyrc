@@ -1,6 +1,9 @@
 [Global]
 Comment=Akonadi's Facebook integration
 Comment[cs]=Integrace Facebooku do Akonadi
+Comment[es]=Integración de Facebook con Akonadi
+Comment[fi]=Akonadin Facebook-integraatio
+Comment[mr]=आकोनाडीचे फेसबूकशी एकीकरण
 Comment[nl]=Facebook-integratie van Akonadi
 Comment[pt]=Integração do Facebook com o Akonadi
 Comment[pt_BR]=Integração com o Facebook do Akonadi
@@ -9,6 +12,8 @@ Comment[uk]=Інтеграція Akonadi з Facebook
 Comment[x-test]=xxAkonadi's Facebook integrationxx
 Name=Facebook Resource
 Name[cs]=Zdroj Facebooku
+Name[es]=Recurso de Facebook
+Name[fi]=Facebook-resurssi
 Name[nl]=Facebook-hulpmiddel
 Name[pt]=Recurso do Facebook
 Name[pt_BR]=Recurso do Facebook
@@ -44,6 +49,8 @@ Name[x-test]=xxFacebookxx
 Name[zh_CN]=Facebook
 Name[zh_TW]=Facebook
 Comment=Notification coming from Facebook
+Comment[es]=Notificación originada desde Facebook
+Comment[fi]=Facebookista saapuva ilmoitus
 Comment[nl]=Melding uit Facebook
 Comment[pt]=Notificação proveniente do Facebook
 Comment[pt_BR]=Notificação originada do Facebook
@@ -53,6 +60,8 @@ Comment[x-test]=xxNotification coming from Facebookxx
 
 [Event/facebookNotification]
 Name=New Facebook notification
+Name[es]=Nueva notificación de Facebook
+Name[fi]=Uusi Facebook-ilmoitus
 Name[nl]=Nieuwe Facebook-melding
 Name[pt]=Nova notificação do Facebook
 Name[pt_BR]=Nova notificação do Facebook
@@ -60,6 +69,7 @@ Name[sk]=Nové upozornenie Facebooku
 Name[uk]=Нове сповіщення з Facebook
 Name[x-test]=xxNew Facebook notificationxx
 Comment=You have new Facebook notification
+Comment[es]=Usted tiene una nueva notificación de Facebook
 Comment[nl]=Er is een nieuwe Facebook-melding
 Comment[pt]=Tem uma notificação nova do Facebook
 Comment[pt_BR]=Você tem uma nova notificação do Facebook
