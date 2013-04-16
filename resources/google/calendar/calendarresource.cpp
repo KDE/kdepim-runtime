@@ -423,7 +423,7 @@ void CalendarResource::slotCalendarsRetrieved( KGAPI2::Job *job )
     ObjectsList objects = calendarJob->items();
     calendarJob->deleteLater();
 
-    TaskListFetchJob *fetchJob = new TaskListFetchJob( account(), this );
+    TaskListFetchJob *fetchJob = new TaskListFetchJob( job->account(), this );
     fetchJob->setProperty( CALENDARS_PROPERTY, QVariant::fromValue( objects ) );
     connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
              this, SLOT(slotCollectionsRetrieved(KGAPI2::Job*)) );
@@ -443,12 +443,12 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
     m_rootCollection.setRemoteId( ROOT_COLLECTION_REMOTEID );
-    m_rootCollection.setName( account()->accountName() );
+    m_rootCollection.setName( fetchJob->account()->accountName() );
     m_rootCollection.setParent( Collection::root() );
     m_rootCollection.setRights( Collection::CanCreateCollection );
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
-    attr->setDisplayName( account()->accountName() );
+    attr->setDisplayName( fetchJob->account()->accountName() );
     attr->setIconName( QLatin1String( "im-google" ) );
 
     m_collections[ ROOT_COLLECTION_REMOTEID ] = m_rootCollection;
@@ -625,7 +625,7 @@ void CalendarResource::slotModifyTaskReparentFinished( KGAPI2::Job *job )
     KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
     TaskPtr ktodo( new Task( *todo.data() ) );
 
-    job = new TaskModifyJob( ktodo, item.parentCollection().remoteId(), account(), this );
+    job = new TaskModifyJob( ktodo, item.parentCollection().remoteId(), job->account(), this );
     job->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
     connect( job, SIGNAL(finished(KGAPI2::Job*)),
             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
@@ -681,6 +681,11 @@ void CalendarResource::slotDoRemoveTask( KJob *job )
         return;
     }
 
+    // Make sure account is still valid
+    if ( !canPerformTask() ) {
+        return;
+    }
+
     Item item = job->property( ITEM_PROPERTY ).value< Item >();
 
     /* Now finally we can safely remove the task we wanted to */
@@ -700,6 +705,11 @@ void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
     kDebug() << "Query returned" << items.count() << "results";
 
     const QString tasksListId = item.parentCollection().remoteId();
+
+    // Make sure account is still valid
+    if ( !canPerformTask() ) {
+        return;
+    }
 
     KGAPI2::Job *newJob;
     // The parent is not in Nepomuk, so give up and just store the item in Google
