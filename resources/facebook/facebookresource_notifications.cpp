@@ -191,7 +191,7 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
         //create for each notification a qaction to put in SNI;
         //set the link as property for fast access to it, id is used to remove it
         //from the SNI menu
-        QAction *action = new QAction(notification.title(), contextMenu);
+        QAction *action = new QAction(notification.title().simplified(), contextMenu);
         action->setProperty("notificationLink", notification.link());
         action->setProperty("notificationId", notification.id());
         action->setToolTip(i18nc("@info:tooltip", "Open browser"));
