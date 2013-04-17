@@ -346,7 +346,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::virtualMimeType()
                                                         << KABC::Addressee::mimeType() );
     m_rootCollection.setRemoteId( MYCONTACTS_REMOTEID );
-    m_rootCollection.setName( account()->accountName() );
+    m_rootCollection.setName( fetchJob->account()->accountName() );
     m_rootCollection.setParent( Collection::root() );
     m_rootCollection.setRights( Collection::CanCreateCollection |
                                 Collection::CanCreateItem |
@@ -354,7 +354,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
                                 Collection::CanDeleteItem);
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
-    attr->setDisplayName( account()->accountName() );
+    attr->setDisplayName( fetchJob->account()->accountName() );
     attr->setIconName( QLatin1String( "im-google" ) );
 
     m_collections[ MYCONTACTS_REMOTEID ] = m_rootCollection;
@@ -495,6 +495,11 @@ void ContactsResource::slotUpdatePhotosItemsRetrieved( KJob *job )
             const ContactPtr contact( new Contact( addressee ) );
             contacts << contact;
         }
+    }
+
+    // Make sure account is still valid
+    if ( !canPerformTask() ) {
+        return;
     }
 
     ContactFetchPhotoJob *photoJob = new ContactFetchPhotoJob( contacts, account(), this );
