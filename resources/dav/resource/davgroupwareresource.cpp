@@ -288,7 +288,18 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   }
 
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
-  if ( DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget() ) {
+  if ( !davUrl.url().isValid() ) {
+    cancelTask();
+    return false;
+  }
+
+  const DavProtocolBase *protocol = DavManager::self()->davProtocol( davUrl.protocol() );
+  if ( !protocol ) {
+    cancelTask();
+    return false;
+  }
+
+  if ( protocol->useMultiget() ) {
     // Item is already in the cache as it's been fetched with multiget
     itemRetrieved( item );
     return true;
