@@ -209,11 +209,10 @@ void ItemQueue::batchJobResult(KJob* job)
   const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
   //FIXME: Better error handling - Store this in some error file?
   if ( job->error() ) {
-    kWarning() << "Error while storing graph";
+    kWarning() << "Error while storing graph: " << job->errorString();
     foreach( const Nepomuk2::SimpleResource &res, graph.toList() ) {
-        kWarning() << res;
+        kDebug() << res;
     }
-    kWarning() << job->errorString();
   } else {
     Nepomuk2::StoreResourcesJob *storeResourcesJob = static_cast<Nepomuk2::StoreResourcesJob*>(job);
     Q_ASSERT(storeResourcesJob);

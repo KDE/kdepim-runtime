@@ -49,7 +49,6 @@
 #include <LibKGAPI2/Calendar/CalendarDeleteJob>
 #include <LibKGAPI2/Calendar/CalendarFetchJob>
 #include <LibKGAPI2/Calendar/CalendarModifyJob>
-#include <LibKGAPI2/Calendar/CalendarService>
 #include <LibKGAPI2/Calendar/Event>
 #include <LibKGAPI2/Calendar/EventCreateJob>
 #include <LibKGAPI2/Calendar/EventDeleteJob>
@@ -67,7 +66,6 @@
 #include <LibKGAPI2/Tasks/TaskListDeleteJob>
 #include <LibKGAPI2/Tasks/TaskListFetchJob>
 #include <LibKGAPI2/Tasks/TaskListModifyJob>
-#include <LibKGAPI2/Tasks/TasksService>
 
 #include <LibKGAPI2/Account>
 
@@ -115,8 +113,8 @@ void CalendarResource::updateResourceName()
 QList< QUrl > CalendarResource::scopes() const
 {
     QList<QUrl> scopes;
-    scopes << CalendarService::scopeUrl()
-           << TasksService::scopeUrl();
+    scopes << Account::calendarScopeUrl()
+           << Account::tasksScopeUrl();
 
     return scopes;
 }
