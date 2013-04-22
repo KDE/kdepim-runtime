@@ -31,7 +31,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 DavCollectionsFetchJob::DavCollectionsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url ), mSubJobCount( 0 ), mSubJobSuccessful( false), mHasTemporaryError( false )
+  : KJob( parent ), mUrl( url ), mSubJobCount( 0 )
 {
 }
 
@@ -49,11 +49,6 @@ void DavCollectionsFetchJob::start()
 DavCollection::List DavCollectionsFetchJob::collections() const
 {
   return mCollections;
-}
-
-bool DavCollectionsFetchJob::hasTemporaryError() const
-{
-  return mHasTemporaryError;
 }
 
 DavUtils::DavUrl DavCollectionsFetchJob::davUrl() const
@@ -128,28 +123,18 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       doCollectionsFetch( mUrl.url() );
       return;
     }
-    else if ( !mSubJobSuccessful ) {
-      if ( !responseCode || DavUtils::httpRequestRetryable( responseCode ) )
-        mHasTemporaryError = true;
 
-      QString err;
-      if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
-        err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
-      else
-        err = davJob->errorText();
+    QString err;
+    if ( davJob->error() && davJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( davJob->error(), davJob->errorText() );
+    else
+      err = davJob->errorText();
 
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request.\n"
-                          "%1 (%2).", err, responseCode ) );
-    }
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request.\n"
+                        "%1 (%2).", err, responseCode ) );
   }
   else {
-    if ( !mSubJobSuccessful ) {
-      setError( 0 ); // nope, everything went fine if we're here
-      mSubJobSuccessful = true;
-      mHasTemporaryError = false;
-    }
-
     // For use in the collectionDiscovered() signal
     KUrl _jobUrl = mUrl.url();
     _jobUrl.setUser( QString() );

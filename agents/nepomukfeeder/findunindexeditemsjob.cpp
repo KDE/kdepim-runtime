@@ -42,7 +42,7 @@ FindUnindexedItemsJob::~FindUnindexedItemsJob()
 {
     //Free the memory we used
     mAkonadiItems.clear();
-    mStaleItems.clear();
+    mStaleUris.clear();
 #ifdef HAVE_MALLOC_TRIM
     malloc_trim(0);
 #endif
@@ -104,7 +104,7 @@ void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
     mTime.start();
     Q_ASSERT(Nepomuk2::ResourceManager::instance()->initialized());
     mQuery = QSharedPointer<Soprano::Util::AsyncQuery>(Soprano::Util::AsyncQuery::executeQuery(Nepomuk2::ResourceManager::instance()->mainModel(),
-        QString::fromLatin1("SELECT ?id ?lastMod WHERE { ?r %1 ?id. ?r %2 ?lastMod }")
+        QString::fromLatin1("SELECT ?r ?id ?lastMod WHERE { ?r %1 ?id. ?r %2 ?lastMod }")
             .arg(Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId()),
             Soprano::Node::resourceToN3(Nepomuk2::Vocabulary::NIE::lastModified())),
             Soprano::Query::QueryLanguageSparql));
@@ -114,11 +114,11 @@ void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
 
 void FindUnindexedItemsJob::processResult(Soprano::Util::AsyncQuery *query)
 {
-    const Akonadi::Item::Id &id = query->binding(0).literal().toInt64();
+    const Akonadi::Item::Id &id = query->binding("id").literal().toInt64();
     ItemHash::iterator it = mAkonadiItems.find(id);
     if (it == mAkonadiItems.end()) { //Not found in akonadi, stale
-        mStaleItems.append(id);
-    } else if (query->binding(1).literal().toDateTime() == it->first) { //Found and up-to-date
+        mStaleUris << query->binding("r").uri();
+    } else if (query->binding("lastMod").literal().toDateTime() == it->first) { //Found and up-to-date
         mAkonadiItems.erase(it);
     }
     query->next();
@@ -128,7 +128,7 @@ void FindUnindexedItemsJob::queryFinished(Soprano::Util::AsyncQuery *query)
 {
     if (query->lastError()) {
         mAkonadiItems.clear();
-        mStaleItems.clear();
+        mStaleUris.clear();
         kWarning() << query->lastError();
         setError(KJob::UserDefinedError);
         setErrorText("Nepomuk query failed");
@@ -137,7 +137,7 @@ void FindUnindexedItemsJob::queryFinished(Soprano::Util::AsyncQuery *query)
     }
     kDebug() << "Nepomuk Query took(ms): " << mTime.elapsed();
     kDebug() << "Found " << getUnindexed().size() << " unindexed items.";
-    kDebug() << "Found " << mStaleItems.size() << " items which can be removed from nepomuk.";
+    kDebug() << "Found " << mStaleUris.size() << " items which can be removed from nepomuk.";
     kDebug() << "out of " << mTotalNumberOfItems << " items.";
     emitResult();
 }
@@ -147,9 +147,9 @@ const FindUnindexedItemsJob::ItemHash &FindUnindexedItemsJob::getUnindexed() con
     return mAkonadiItems;
 }
 
-const QList<Akonadi::Item::Id> &FindUnindexedItemsJob::getItemsToRemove() const
+const QList<QUrl> &FindUnindexedItemsJob::staleUris() const
 {
-    return mStaleItems;
+    return mStaleUris;
 }
 
 int FindUnindexedItemsJob::indexedCount() const
