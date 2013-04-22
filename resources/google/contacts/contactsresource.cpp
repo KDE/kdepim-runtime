@@ -49,7 +49,6 @@
 #include <LibKGAPI2/Contacts/ContactsGroupDeleteJob>
 #include <LibKGAPI2/Contacts/ContactsGroupFetchJob>
 #include <LibKGAPI2/Contacts/ContactsGroupModifyJob>
-#include <LibKGAPI2/Contacts/ContactsService>
 
 #define MYCONTACTS_REMOTEID QLatin1String( "MyContacts" )
 #define OTHERCONTACTS_REMOTEID QLatin1String( "OtherContacts" )
@@ -94,7 +93,7 @@ void ContactsResource::updateResourceName()
 QList< QUrl > ContactsResource::scopes() const
 {
     QList< QUrl > scopes;
-    scopes << ContactsService::scopeUrl();
+    scopes << Account::contactsScopeUrl();
     return scopes;
 }
 
