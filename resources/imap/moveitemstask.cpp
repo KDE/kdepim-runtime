@@ -247,10 +247,16 @@ void MoveItemsTask::recordNewUid()
   // the first part of the move succeeded
   QList<qint64> oldUids = imapSetToList( m_oldSet );
 
-  const Akonadi::Item::SmartList list = items();
   Akonadi::Item::List newItems;
   for (int i = 0; i < oldUids.count(); ++i) {
-    Akonadi::Item item = list.findByRemoteId( QString::number( oldUids.at( i ) ) );
+    const QString oldUid = QString::number( oldUids.at( i ) );
+    Akonadi::Item item;
+    Q_FOREACH ( const Akonadi::Item &it, items() ) {
+        if ( it.remoteId() == oldUid ) {
+            item = it;
+            break;
+        }
+    }
     Q_ASSERT ( item.isValid() );
 
     // Update the item content with the new UID from the copy
