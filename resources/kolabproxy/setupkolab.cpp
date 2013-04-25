@@ -40,7 +40,7 @@ SetupKolab::SetupKolab( KolabProxyResource *parentResource )
      m_parentResource( parentResource )
 {
   m_ui->setupUi( mainWidget() );
-  setButtons( Close );
+  setButtons( Ok );
   initConnection();
   updateCombobox();
 }
@@ -71,7 +71,7 @@ void SetupKolab::slotShowUpgradeDialog()
     m_agentList[m_ui->imapAccountComboBox->currentText()];
 
   KDialog *dialog = new KDialog( this );
-  dialog->setButtons( Close );
+  dialog->setButtons( Ok );
   m_versionUi->setupUi( dialog->mainWidget() );
   m_versionUi->progressBar->setDisabled( true );
   connect( m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()) );
