@@ -128,8 +128,15 @@ bool KDEAccountsResource::readFromFile( const QString &fileName )
 
     // remove all leading, trailing and duplicated white spaces
     line = line.trimmed().simplified();
+    if (line.isEmpty()) {
+        continue;
+    }
 
     QStringList parts = line.split( QLatin1Char( ' ' ) );
+    if ( parts.count() < 3 ) {
+        kWarning() << "Failed to parse line \"" << line << "\", invalid format";
+        continue;
+    }
 
     // The first part is the nick name, the last one the email address and
     // everything else in between the full name
