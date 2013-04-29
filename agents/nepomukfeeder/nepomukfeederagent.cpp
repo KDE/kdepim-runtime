@@ -137,8 +137,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mQueue.setIndexingSpeed( mIdleDetectionDisabled ? FeederQueue::FullSpeed : FeederQueue::ReducedSpeed );
 
   connect(&mQueue, SIGNAL(progress(int)), SIGNAL(percent(int)));
-  connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(idle(QString)));
-  connect(&mQueue, SIGNAL(running(QString)), this, SLOT(running(QString)));
+  connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
+  connect(&mQueue, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
   connect(&mQueue, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
   
   mItemBatchTimer.setSingleShot( true );
@@ -523,12 +523,12 @@ void NepomukFeederAgent::systemResumed()
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 
-void NepomukFeederAgent::idle(const QString &string)
+void NepomukFeederAgent::emitIdle(const QString &string)
 {
   emit status( AgentBase::Idle, string );
 }
 
-void NepomukFeederAgent::running(const QString &string)
+void NepomukFeederAgent::emitRunning(const QString &string)
 {
   emit status( AgentBase::Running, string );
 }
