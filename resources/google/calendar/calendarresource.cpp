@@ -28,6 +28,7 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemSearchJob>
+#include <Akonadi/Calendar/BlockAlarmsAttribute>
 
 #include <Soprano/Vocabulary/NAO>
 #include <Nepomuk2/Vocabulary/NIE>
@@ -479,6 +480,12 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>( Entity::AddIfMissing );
         reminderAttr->setReminders( calendar->defaultReminders() );
+
+        // Block email reminders, since Google sends them for us
+        BlockAlarmsAttribute *blockAlarms = collection.attribute<BlockAlarmsAttribute>( Entity::AddIfMissing );
+        blockAlarms->blockAlarmType( KCalCore::Alarm::Audio, false );
+        blockAlarms->blockAlarmType( KCalCore::Alarm::Display, false );
+        blockAlarms->blockAlarmType( KCalCore::Alarm::Procedure, false );
 
         m_collections[ collection.remoteId() ] = collection;
     }
