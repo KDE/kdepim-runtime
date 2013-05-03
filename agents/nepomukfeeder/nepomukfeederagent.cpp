@@ -279,6 +279,9 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
 
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
+  if ( !mShouldRecordNotifications )
+    return;
+
   //kDebug() << item.url();
   Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
   processNextNotification();
