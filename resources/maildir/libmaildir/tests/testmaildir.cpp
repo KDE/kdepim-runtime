@@ -123,7 +123,7 @@ void MaildirTest::testMaildirInstantiation()
   QDir temp( m_temp->name() );
   temp.rmdir( QLatin1String( "new" ) );
   QString error;
-  QVERIFY( !good.isValid( error ) );
+  QVERIFY( !good.isValid( error, false ) );
   QVERIFY( !error.isEmpty() );
 
   Maildir root1( QLatin1String( "/foo/bar/Mail" ), true );
@@ -201,7 +201,7 @@ void MaildirTest::testMaildirCreation()
   QString p( QLatin1String( "CREATETEST" ) );
   std::auto_ptr<KTempDir> temp ( new KTempDir( KStandardDirs::locateLocal( "tmp", p ) ) );
   Maildir d( temp->name() + p );
-  QVERIFY( !d.isValid() );
+  QVERIFY( !d.isValid( false ) );
   d.create();
   QVERIFY( d.isValid() );
 }
@@ -330,7 +330,7 @@ void MaildirTest::testMaildirMoveTo()
 
   // try moving again
   d2 = Maildir( folderPath1 );
-  QVERIFY( !d2.isValid() );
+  QVERIFY( !d2.isValid( false ) );
   QVERIFY( !d2.moveTo( d3 ) );
 }
 
