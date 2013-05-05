@@ -176,6 +176,7 @@ void TemplateMethodsTest::testMoveCollection()
 
   // test moving into unrelated collection
   Collection otherCollection( collection.id() + KRandom::random() );
+  otherCollection.setParentCollection( mStore->topLevelCollection() );
   otherCollection.setRemoteId( "other" );
   job = mStore->moveCollection( collection, otherCollection );
   QVERIFY( job != 0 );
