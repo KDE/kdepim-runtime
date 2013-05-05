@@ -117,7 +117,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   private:
     void setRunning( bool running );
     void processNextNotification();
-    void enableChangeRecording( bool enable );
     void findUnindexed();
 
   private slots:
@@ -129,7 +128,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void collectionsReceived( const Akonadi::Collection::List &collections );
     void collectionListReceived( KJob* );
     void configure( WId windowId );
-    void changesRecorded();
     void foundUnindexedItems(KJob *job);
     void batchTimerElapsed();
     void checkForLostChanges();
@@ -139,8 +137,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   private:
     bool mInitialUpdateDone;
     bool mIdleDetectionDisabled;
-    bool mShouldProcessNotifications;
-    bool mShouldRecordNotifications;
     bool mLostChanges;
     bool mInitialIndexingDisabled;
 
