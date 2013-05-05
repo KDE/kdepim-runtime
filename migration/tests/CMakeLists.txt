@@ -59,7 +59,9 @@ endif (UNIX)
 
 find_program(_testrunner akonaditest)
 
-add_test( testnotesmigration ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
+if (KDEPIM_RUN_ISOLATED_TESTS)
+  add_test( testnotesmigration ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
+endif ()
 
 
 
