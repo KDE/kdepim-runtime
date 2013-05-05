@@ -199,7 +199,7 @@ void TemplateMethodsTest::testCreateItem()
   FileStore::ItemCreateJob *job = 0;
 
   // test item without payload
-  Item item;
+  Item item( KMime::Message::mimeType() );
   job = mStore->createItem( item, collection );
   QVERIFY( job != 0 );
   QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
@@ -211,7 +211,7 @@ void TemplateMethodsTest::testCreateItem()
   QVERIFY( !job->exec() );
 
   // test item with payload
-  item.setPayload<KMime::Message::Ptr>( KMime::Message::Ptr() );
+  item.setPayloadFromData( "Subject: dummy payload\n\nwith some content" );
   job = mStore->createItem( item, collection );
   QVERIFY( job != 0 );
   QCOMPARE( job->error(), 0 );
