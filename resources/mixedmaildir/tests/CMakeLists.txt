@@ -27,6 +27,7 @@ set( testdata_SRCS
 )
 
 kde4_add_unit_test( testdatatest
+ TESTNAME mixedmaildir-testdatatest
  testdatatest.cpp
  ${testdata_SRCS}
 )
@@ -54,6 +55,7 @@ set( common_link_libraries
 
 # test for overwritten methods
 kde4_add_unit_test( templatemethodstest
+ TESTNAME mixedmaildir-templatemethodtest
  ../mixedmaildirstore.cpp
  templatemethodstest.cpp
 )
@@ -65,6 +67,7 @@ target_link_libraries(
 
 # test for collection creation handling
 kde4_add_unit_test( collectioncreatetest
+ TESTNAME mixedmaildir-collectioncreatetest
  ../mixedmaildirstore.cpp
  collectioncreatetest.cpp
 )
@@ -76,6 +79,7 @@ target_link_libraries(
 
 # test for collection deletion handling
 kde4_add_unit_test( collectiondeletetest
+ TESTNAME mixedmaildir-collectiondeletetest
  ../mixedmaildirstore.cpp
  collectiondeletetest.cpp
 )
@@ -87,6 +91,7 @@ target_link_libraries(
 
 # test for collection fetching handling
 kde4_add_unit_test( collectionfetchtest
+ TESTNAME mixedmaildir-collectionfetchtest
  ../mixedmaildirstore.cpp
  collectionfetchtest.cpp
 )
@@ -98,6 +103,7 @@ target_link_libraries(
 
 # test for collection modification handling
 kde4_add_unit_test( collectionmodifytest
+ TESTNAME mixedmaildir-collectionmodifytest
  ../mixedmaildirstore.cpp
  collectionmodifytest.cpp
  ${testdata_SRCS}
@@ -110,6 +116,7 @@ target_link_libraries(
 
 # test for collection move handling
 kde4_add_unit_test( collectionmovetest
+ TESTNAME mixedmaildir-collectionmovetest
  ../mixedmaildirstore.cpp
  collectionmovetest.cpp
  ${testdata_SRCS}
@@ -122,6 +129,7 @@ target_link_libraries(
 
 # test for item creation handling
 kde4_add_unit_test( itemcreatetest
+ TESTNAME mixedmaildir-itemcreatetest
  ../mixedmaildirstore.cpp
  itemcreatetest.cpp
  ${testdata_SRCS}
@@ -134,6 +142,7 @@ target_link_libraries(
 
 # test for item creation handling
 kde4_add_unit_test( itemdeletetest
+ TESTNAME mixedmaildir-itemdeletetest
  ../mixedmaildirstore.cpp
  itemdeletetest.cpp
  ${testdata_SRCS}
@@ -146,6 +155,7 @@ target_link_libraries(
 
 # test for item retrieval handling
 kde4_add_unit_test( itemfetchtest
+ TESTNAME mixedmaildir-itemfetchtest
  ../mixedmaildirstore.cpp
  itemfetchtest.cpp
  ${testdata_SRCS}
@@ -158,6 +168,7 @@ target_link_libraries(
 
 # test for item modification handling
 kde4_add_unit_test( itemmodifytest
+ TESTNAME mixedmaildir-itemmodifytest
  ../mixedmaildirstore.cpp
  itemmodifytest.cpp
  ${testdata_SRCS}
@@ -170,6 +181,7 @@ target_link_libraries(
 
 # test for item move handling
 kde4_add_unit_test( itemmovetest
+ TESTNAME mixedmaildir-itemmovetest
  ../mixedmaildirstore.cpp
  itemmovetest.cpp
  ${testdata_SRCS}
@@ -182,6 +194,7 @@ target_link_libraries(
 
 # test for store compact handling
 kde4_add_unit_test( storecompacttest
+ TESTNAME mixedmaildir-storecompacttest
  ../mixedmaildirstore.cpp
  storecompacttest.cpp
  ${testdata_SRCS}
