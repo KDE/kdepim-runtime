@@ -539,7 +539,7 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
     case MaildirFolder: {
       const Maildir parentMd( path, type == TopLevelFolder );
       const Maildir subFolder = parentMd.subFolder( col.remoteId() );
-      if ( subFolder.isValid() ) {
+      if ( subFolder.isValid( false ) ) {
         path = subFolder.path();
         return MaildirFolder;
       }
@@ -566,7 +566,7 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
       }
 
       const Maildir subFolder( fileInfo.absoluteFilePath(), false );
-      if ( subFolder.isValid() ) {
+      if ( subFolder.isValid( false ) ) {
         path = subFolder.path();
         return MaildirFolder;
       }
