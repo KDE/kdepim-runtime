@@ -327,7 +327,6 @@ private:
     collection.setName( "resource" );
     collection.setRemoteId( "root-id" );
     collection.setContentMimeTypes( QStringList( Akonadi::Collection::mimeType() ) );
-    collection.setRights( Akonadi::Collection::ReadOnly );
     collection.setParentCollection( Akonadi::Collection::root() );
     collection.addAttribute( new NoSelectAttribute( true ) );
 
