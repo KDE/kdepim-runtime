@@ -39,6 +39,7 @@
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
+#include <KTempDir>
 
 #include <qtest_kde.h>
 
@@ -92,6 +93,7 @@ class TemplateMethodsTest : public QObject
     ~TemplateMethodsTest() { delete mStore; }
 
   private:
+    KTempDir mDir;
     TestStore *mStore;
 
   private Q_SLOTS:
@@ -105,12 +107,13 @@ void TemplateMethodsTest::init()
 {
   delete mStore;
   mStore = new TestStore;
+  QVERIFY( mDir.exists() );
 }
 
 void TemplateMethodsTest::testSetTopLevelCollection()
 {
   const QString file = KRandom::randomString( 10 );
-  const QString path = QLatin1String( "/tmp/test/" ) + file;
+  const QString path = mDir.name() + file;
 
   mStore->setPath( path );
 
@@ -128,7 +131,7 @@ void TemplateMethodsTest::testSetTopLevelCollection()
 
 void TemplateMethodsTest::testMoveCollection()
 {
-  mStore->setPath( QLatin1String( "/tmp/test" ) );
+  mStore->setPath( mDir.name() );
 
   FileStore::CollectionMoveJob *job = 0;
 
@@ -190,7 +193,7 @@ void TemplateMethodsTest::testMoveCollection()
 
 void TemplateMethodsTest::testCreateItem()
 {
-  mStore->setPath( QLatin1String( "/tmp/test" ) );
+  mStore->setPath( mDir.name() );
 
   Collection collection( KRandom::random() );
   collection.setParentCollection( mStore->topLevelCollection() );
