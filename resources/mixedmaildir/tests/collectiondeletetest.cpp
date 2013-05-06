@@ -72,7 +72,7 @@ void CollectionDeleteTest::cleanup()
 void CollectionDeleteTest::testNonExisting()
 {
   KPIM::Maildir topLevelMd( mDir->name(), true );
-  QVERIFY( topLevelMd.isValid() );
+  QVERIFY( topLevelMd.isValid( false ) );
 
   KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
   KPIM::Maildir md1_2( md1.addSubFolder( "collection1_2" ), false );
@@ -208,7 +208,7 @@ void CollectionDeleteTest::testNonExisting()
 void CollectionDeleteTest::testLeaves()
 {
   KPIM::Maildir topLevelMd( mDir->name(), true );
-  QVERIFY( topLevelMd.isValid() );
+  QVERIFY( topLevelMd.isValid( false ) );
 
   QDir topDir( mDir->name() );
 
@@ -286,7 +286,7 @@ void CollectionDeleteTest::testLeaves()
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
 
-  QVERIFY( !md1_2.isValid() );
+  QVERIFY( !md1_2.isValid( false ) );
   QCOMPARE( md1.subFolderList(), QStringList() );
 
   // test second level leaves in mbox parent
@@ -305,7 +305,7 @@ void CollectionDeleteTest::testLeaves()
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
 
-  QVERIFY( !md4_1.isValid() );
+  QVERIFY( !md4_1.isValid( false ) );
   QCOMPARE( md4.subFolderList(), QStringList() );
 
   Collection collection4_2;
@@ -333,7 +333,7 @@ void CollectionDeleteTest::testLeaves()
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
 
-  QVERIFY( !md2.isValid() );
+  QVERIFY( !md2.isValid( false ) );
   QCOMPARE( topLevelMd.subFolderList(), QStringList() << QLatin1String( "collection1" ) );
 
   Collection collection3;
@@ -360,7 +360,7 @@ void CollectionDeleteTest::testLeaves()
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
 
-  QVERIFY( !md1.isValid() );
+  QVERIFY( !md1.isValid( false ) );
   subDirInfo1.refresh();
   QVERIFY( !subDirInfo1.exists() );
   QCOMPARE( topLevelMd.subFolderList(), QStringList() );
@@ -380,7 +380,7 @@ void CollectionDeleteTest::testLeaves()
 void CollectionDeleteTest::testSubTrees()
 {
   KPIM::Maildir topLevelMd( mDir->name(), true );
-  QVERIFY( topLevelMd.isValid() );
+  QVERIFY( topLevelMd.isValid( false ) );
 
   QDir topDir( mDir->name() );
 
@@ -434,8 +434,8 @@ void CollectionDeleteTest::testSubTrees()
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
 
-  QVERIFY( !md1.isValid() );
-  QVERIFY( !md1_2.isValid() );
+  QVERIFY( !md1.isValid( false ) );
+  QVERIFY( !md1_2.isValid( false ) );
   fileInfo1_1.refresh();
   QVERIFY( !fileInfo1_1.exists() );
 
@@ -452,7 +452,7 @@ void CollectionDeleteTest::testSubTrees()
 
   fileInfo2.refresh();
   QVERIFY( !fileInfo2.exists() );
-  QVERIFY( !md2_1.isValid() );
+  QVERIFY( !md2_1.isValid( false ) );
   fileInfo2_2.refresh();
   QVERIFY( !fileInfo2_2.exists() );
   QVERIFY( !subDirInfo2.exists() );

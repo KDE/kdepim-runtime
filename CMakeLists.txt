@@ -151,6 +151,7 @@ endif()
 # in the KDE build system, this is the same as CMAKE_BINARY_DIR.
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake)
 
+option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
 ############### Desktop vs. Mobile options ##############
 
@@ -209,8 +210,10 @@ macro( akonadi_add_resourcetest _testname _script )
     set(_resourcetester ${_resourcetester}.shell)
   endif ()
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${_script} ${CMAKE_CURRENT_BINARY_DIR}/${_script} COPYONLY)
-  add_test( akonadi-mysql-db-${_testname} akonaditest -c ${kdepim-runtime_SOURCE_DIR}/resourcetester/tests/unittestenv/config-mysql-db.xml ${_resourcetester} -c ${CMAKE_CURRENT_BINARY_DIR}/${_script} )
-endmacro()
+  if (KDEPIM_RUN_ISOLATED_TESTS)
+    add_test( akonadi-mysql-db-${_testname} akonaditest -c ${kdepim-runtime_SOURCE_DIR}/resourcetester/tests/unittestenv/config-mysql-db.xml ${_resourcetester} -c ${CMAKE_CURRENT_BINARY_DIR}/${_script} )
+  endif ()
+endmacro( akonadi_add_resourcetest )
 
 ############### Now, we add the components ###############
 

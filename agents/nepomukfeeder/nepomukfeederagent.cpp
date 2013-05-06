@@ -25,7 +25,6 @@
 #include <aneo.h>
 
 #include <akonadi/agentmanager.h>
-#include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entityhiddenattribute.h>
@@ -97,8 +96,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
   mInitialUpdateDone( false ),
   mIdleDetectionDisabled( true ),
-  mShouldProcessNotifications( true ),
-  mShouldRecordNotifications( true ),
   mLostChanges( false ),
   mInitialIndexingDisabled( false ),
   mItemBatchCounter( 0 ),
@@ -109,12 +106,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
   new NepomukFeederAdaptor( this );
-
-  changeRecorder()->fetchCollection( true );
-  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
-  changeRecorder()->setAllMonitored( true );
-  changeRecorder()->itemFetchScope().setCacheOnly( true );
-  connect(changeRecorder(), SIGNAL(changesAdded()), this, SLOT(changesRecorded()));
 
   Nepomuk2::ResourceManager::instance()->init();
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
@@ -137,8 +128,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mQueue.setIndexingSpeed( mIdleDetectionDisabled ? FeederQueue::FullSpeed : FeederQueue::ReducedSpeed );
 
   connect(&mQueue, SIGNAL(progress(int)), SIGNAL(percent(int)));
-  connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(idle(QString)));
-  connect(&mQueue, SIGNAL(running(QString)), this, SLOT(running(QString)));
+  connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
+  connect(&mQueue, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
   connect(&mQueue, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
   
   mItemBatchTimer.setSingleShot( true );
@@ -151,9 +142,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   } else {
     kDebug() << "Initial indexing was disabled in the configuration.";
   }
-  
-  if ( !changeRecorder()->isEmpty() )
-     QMetaObject::invokeMethod(changeRecorder(), "replayNext");
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -186,16 +174,10 @@ void NepomukFeederAgent::forceReindexItem(const qlonglong id)
   mQueue.addItem( Akonadi::Item(id) );
 }
 
-void NepomukFeederAgent::changesRecorded()
-{
-  if ( !changeRecorder()->isEmpty() && mShouldProcessNotifications )
-    changeRecorder()->replayNext();
-}
-
 void NepomukFeederAgent::processNextNotification()
 {
   //check if still running otherwise stop
-  if ( mShouldProcessNotifications ) {
+  if ( isOnline() ) {
     changeProcessed();
   }
 }
@@ -232,9 +214,10 @@ bool NepomukFeederAgent::skipBatch(const Item& item)
 
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
+  if( !isOnline() )
+      return;
+
   kDebug() << item.id();
-  if ( !mShouldRecordNotifications )
-    return;
   if ( indexingDisabled( collection ) )
     return processNextNotification();
   if ( skipBatch( item ) ) {
@@ -251,9 +234,9 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
-  if ( !mShouldRecordNotifications )
-    return;
-  
+  if( !isOnline() )
+      return;
+
   QSet<QByteArray> parts = partIdentifiers;
   // Remove parts that we don't use in nepomuk, to avoid unnecessary re-indexing
   // We care for FLAGS, and PLD (headers, body), possibly for modification time
@@ -279,6 +262,9 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
 
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
+  if( !isOnline() )
+      return;
+
   //kDebug() << item.url();
   Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
   processNextNotification();
@@ -286,6 +272,8 @@ void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 
 void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
+  if( !isOnline() )
+      return;
   Q_UNUSED( parent );
   if ( indexingDisabled( collection ) )
     return processNextNotification();
@@ -295,6 +283,9 @@ void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, 
 
 void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
 {
+  if( !isOnline() )
+      return;
+
   QSet<QByteArray> parts = partIdentifiers;
   QMutableSetIterator<QByteArray> it( parts );
   while ( it.hasNext() ) {
@@ -313,6 +304,9 @@ void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
 {
+  if( !isOnline() )
+      return;
+
   Nepomuk2::removeResources( QList <QUrl>() << collection.url() );
   processNextNotification();
 }
@@ -413,12 +407,6 @@ void NepomukFeederAgent::checkMigration()
   }
 }
 
-void NepomukFeederAgent::enableChangeRecording(bool enable)
-{
-  changeRecorder()->setChangeRecordingEnabled( enable );
-  mShouldRecordNotifications = enable;
-}
-
 void NepomukFeederAgent::selfTest()
 {
   // check if we have been disabled explicitly
@@ -427,7 +415,6 @@ void NepomukFeederAgent::selfTest()
     KConfigGroup cfgGrp( &config, "akonadi_nepomuk_email_feeder" );
     if ( !cfgGrp.readEntry( "Enabled", true ) ) {
       setOnline(false);
-      enableChangeRecording( false );
       kDebug() << "Indexing has been disabled by you.";
       emit status( Broken, i18n( "Indexing has been disabled by you." ) );
       return;
@@ -438,12 +425,10 @@ void NepomukFeederAgent::selfTest()
   if ( !Nepomuk2::ResourceManager::instance()->initialized() ) {
     // wait for Nepomuk to start
     setOnline( false );
-    enableChangeRecording( false );
     emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
   }
   else {
     setOnline( true );
-    enableChangeRecording( true );
     emit status( Idle, i18n( "Ready to index data." ) );
 
     if ( !mInitialUpdateDone ) {
@@ -483,10 +468,9 @@ void NepomukFeederAgent::doSetOnline(bool online)
 
 void NepomukFeederAgent::setRunning( bool running )
 {
-  mShouldProcessNotifications = running;
   mQueue.setOnline( running );
-  changesRecorded();
   if ( running && !mQueue.isEmpty() ) {
+    findUnindexed();
     if ( mQueue.currentCollection().isValid() ) {
       const QString summary = i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() );
       const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
@@ -520,12 +504,12 @@ void NepomukFeederAgent::systemResumed()
   mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
 }
 
-void NepomukFeederAgent::idle(const QString &string)
+void NepomukFeederAgent::emitIdle(const QString &string)
 {
   emit status( AgentBase::Idle, string );
 }
 
-void NepomukFeederAgent::running(const QString &string)
+void NepomukFeederAgent::emitRunning(const QString &string)
 {
   emit status( AgentBase::Running, string );
 }
