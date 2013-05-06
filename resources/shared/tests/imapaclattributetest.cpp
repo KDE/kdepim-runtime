@@ -73,6 +73,10 @@ class ImapAclAttributeTest : public QObject
       QCOMPARE( attr->serialized(), oldSerialized );
 
       delete attr;
+
+      ImapAclAttribute deserializeAttr;
+      deserializeAttr.deserialize( serialized );
+      QCOMPARE( deserializeAttr.rights(), rights );
     }
 
     void testOldRights()
