@@ -92,6 +92,24 @@ QByteArray ImapAclAttribute::serialized() const
   return result;
 }
 
+static void fillRightsMap( const QList<QByteArray> &rights, QMap <QByteArray, KIMAP::Acl::Rights> &map )
+{
+  foreach ( const QByteArray &right, rights ) {
+    const QByteArray trimmed = right.trimmed();
+    const int wsIndex = trimmed.indexOf( ' ' );
+    const QByteArray id = trimmed.mid( 0, wsIndex ).trimmed();
+    if ( !id.isEmpty() ) {
+      const bool noValue = ( wsIndex == -1 );
+      if ( noValue ) {
+        map[id] = KIMAP::Acl::None;
+      } else {
+        const QByteArray value = trimmed.mid( wsIndex + 1, right.length() - wsIndex ).trimmed();
+        map[id] = KIMAP::Acl::rightsFromString( value );
+      }
+    }
+  }
+}
+
 void ImapAclAttribute::deserialize( const QByteArray &data )
 {
   mRights.clear();
@@ -102,26 +120,6 @@ void ImapAclAttribute::deserialize( const QByteArray &data )
 
   const QByteArray leftPart = data.left( pos );
   const QByteArray rightPart = data.mid( pos + 4 );
-  QList<QByteArray> rights = leftPart.split( '%' );
-  QList<QByteArray> oldRights = rightPart.split( '%' );
-
-  foreach ( const QByteArray &right, rights ) {
-    const QByteArray trimmed = right.trimmed();
-    const int wsIndex = trimmed.indexOf( ' ' );
-    const QByteArray id = trimmed.mid( 0, wsIndex ).trimmed();
-    if ( !id.isEmpty() ) {
-      const QByteArray value = trimmed.mid( wsIndex + 1, right.length() - wsIndex ).trimmed();
-      mRights[id] = KIMAP::Acl::rightsFromString( value );
-    }
-  }
-
-  foreach ( const QByteArray &right, oldRights ) {
-    const QByteArray trimmed = right.trimmed();
-    const int wsIndex = trimmed.indexOf( ' ' );
-    const QByteArray id = trimmed.mid( 0, wsIndex ).trimmed();
-    if ( !id.isEmpty() ) {
-      const QByteArray value = trimmed.mid( wsIndex + 1, right.length() - wsIndex ).trimmed();
-      mOldRights[id] = KIMAP::Acl::rightsFromString( value );
-    }
-  }
+  fillRightsMap( leftPart.split( '%' ), mRights );
+  fillRightsMap( rightPart.split( '%' ), mOldRights );
 }
