@@ -16,6 +16,7 @@
  */
 
 #include "findunindexeditemsjob.h"
+#include "nepomukfeeder-config.h"
 #include <aneo.h>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Collection>
