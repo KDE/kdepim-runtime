@@ -64,7 +64,6 @@ class CalendarResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
     void error( const KGAPI::Error, const QString & );
     void slotAbortRequested();
 
-    void cachedItemsRetrieved( KJob *job );
     void replyReceived( KGAPI::Reply *reply );
 
     void itemsReceived( KJob *job );

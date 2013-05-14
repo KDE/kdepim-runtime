@@ -176,71 +176,57 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
    * all the calendars associated with this account. There are no items
    * to be fetched from this collection! */
   if ( collection.parentCollection() != Akonadi::Collection::root() ) {
-    ItemFetchJob *fetchJob = new ItemFetchJob( collection, this );
-    connect( fetchJob, SIGNAL(finished(KJob*)),
-             this, SLOT(cachedItemsRetrieved(KJob*)) );
-    connect( fetchJob, SIGNAL(finished(KJob*)),
-             fetchJob, SLOT(deleteLater()) );
+    QUrl url;
+    QString service;
+    QString lastSync;
 
-    fetchJob->fetchScope().fetchFullPayload( false );
+    if ( collection.contentMimeTypes().contains( Event::eventMimeType() ) ) {
+
+        service = "Calendar";
+        url = Services::Calendar::fetchEventsUrl( collection.remoteId() );
+
+    } else if ( collection.contentMimeTypes().contains( Todo::todoMimeType() ) ) {
+
+        service = "Tasks";
+        url = Services::Tasks::fetchAllTasksUrl( collection.remoteId() );
+
+    } else {
+
+        Q_EMIT cancelTask( i18n( "Invalid collection" ) );
+        return;
+
+    }
+
+    lastSync = collection.remoteRevision();
+    const int lastSyncDelta = QDateTime::currentDateTimeUtc().toTime_t() - lastSync.toInt();
+    // https://bugs.kde.org/show_bug.cgi?id=308122: we can only request changes in
+    // max. last 25 days, otherwise we get an error.
+    if ( !lastSync.isEmpty() && ( lastSyncDelta < 25 * 24 * 3600 ) ) {
+        KDateTime dt;
+        dt.setTime_t( lastSync.toInt() );
+        lastSync = AccessManager::dateToRFC3339String( dt );
+
+        url.addQueryItem( "updatedMin", lastSync );
+    }
+
+    url.addQueryItem( "showDeleted", "true" );
+
+    Account::Ptr account = getAccount();
+    if ( account.isNull() ) {
+        deferTask();
+        return;
+    }
+
+    FetchListJob *fetchJob = new FetchListJob( url, service, account->accountName() );
     fetchJob->setProperty( "collection", qVariantFromValue( collection ) );
+    connect( fetchJob, SIGNAL(finished(KJob*)),
+            this, SLOT(itemsReceived(KJob*)) );
+    connect( fetchJob, SIGNAL(percent(KJob*,ulong)),
+            this, SLOT(emitPercent(KJob*,ulong)) );
     fetchJob->start();
-
-    Q_EMIT percent( 0 );
   } else {
     itemsRetrievalDone();
   }
-}
-
-void CalendarResource::cachedItemsRetrieved( KJob *job )
-{
-  QUrl url;
-  QString service;
-  QString lastSync;
-
-  Collection collection = job->property( "collection" ).value<Collection>();
-
-  if ( collection.contentMimeTypes().contains( Event::eventMimeType() ) ) {
-
-    service = "Calendar";
-    url = Services::Calendar::fetchEventsUrl( collection.remoteId() );
-
-  } else if ( collection.contentMimeTypes().contains( Todo::todoMimeType() ) ) {
-
-    service = "Tasks";
-    url = Services::Tasks::fetchAllTasksUrl( collection.remoteId() );
-
-  } else {
-
-    Q_EMIT cancelTask( i18n( "Invalid collection" ) );
-    return;
-
-  }
-
-  lastSync = collection.remoteRevision();
-  if ( !lastSync.isEmpty() ) {
-    KDateTime dt;
-    dt.setTime_t( lastSync.toInt() );
-    lastSync = AccessManager::dateToRFC3339String( dt );
-
-    url.addQueryItem( "updatedMin", lastSync );
-  }
-
-  url.addQueryItem( "showDeleted", "true" );
-
-  Account::Ptr account = getAccount();
-  if ( account.isNull() ) {
-    deferTask();
-    return;
-  }
-
-  FetchListJob *fetchJob = new FetchListJob( url, service, account->accountName() );
-  fetchJob->setProperty( "collection", qVariantFromValue( collection ) );
-  connect( fetchJob, SIGNAL(finished(KJob*)),
-           this, SLOT(itemsReceived(KJob*)) );
-  connect( fetchJob, SIGNAL(percent(KJob*,ulong)),
-           this, SLOT(emitPercent(KJob*,ulong)) );
-  fetchJob->start();
 }
 
 bool CalendarResource::retrieveItem( const Akonadi::Item &item, const QSet< QByteArray >& parts )

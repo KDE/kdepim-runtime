@@ -149,6 +149,9 @@ void CalendarResource::eventsReceived( KJob *job )
   }
 
   FetchListJob *fetchJob = dynamic_cast< FetchListJob * >( job );
+  const QUrl requestUrl = fetchJob->url();
+  const bool isIncremental = requestUrl.hasQueryItem( QLatin1String("updatedMin") );
+
   Collection collection = fetchJob->property( "collection" ).value< Collection >();
   DefaultReminderAttribute *attr =
     dynamic_cast< DefaultReminderAttribute * >( collection.attribute( "defaultReminders" ) );
@@ -218,7 +221,11 @@ void CalendarResource::eventsReceived( KJob *job )
     changed << item;
   }
 
-  itemsRetrievedIncremental( changed, removed );
+  if ( isIncremental ) {
+    itemsRetrievedIncremental( changed, removed );
+  } else {
+    itemsRetrieved( changed );
+  }
 
   collection.setRemoteRevision( QString::number( KDateTime::currentUtcDateTime().toTime_t() ) );
   CollectionModifyJob *modifyJob = new CollectionModifyJob( collection, this );
