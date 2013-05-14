@@ -127,21 +127,27 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
         return;
     }
 
+    // https://bugs.kde.org/show_bug.cgi?id=308122: we can only request changes in
+    // max. last 25 days, otherwise we get an error.
+    int lastSyncDelta = -1;
+    if ( !collection.remoteRevision().isEmpty() ) {
+        lastSyncDelta = QDateTime::currentDateTimeUtc().toTime_t() - collection.remoteRevision().toUInt();
+    }
+
     KGAPI2::Job *job = 0;
     if ( collection.contentMimeTypes().contains( KCalCore::Event::eventMimeType() ) ) {
         EventFetchJob *fetchJob = new EventFetchJob( collection.remoteId(), account(), this );
-        if ( !collection.remoteRevision().isEmpty() ) {
+        if ( lastSyncDelta > -1 && lastSyncDelta < 25 * 24 * 3600 ) {
             fetchJob->setFetchOnlyUpdated( collection.remoteRevision().toULongLong() );
         }
         if ( !Settings::self()->eventsSince().isEmpty() ) {
             const QDate date = QDate::fromString( Settings::self()->eventsSince(), Qt::ISODate );
-            kDebug() << date << QDateTime(date) << QDateTime(date).toTime_t();
             fetchJob->setTimeMin( QDateTime( date ).toTime_t() );
         }
         job = fetchJob;
     } else if ( collection.contentMimeTypes().contains( KCalCore::Todo::todoMimeType() ) ) {
         TaskFetchJob *fetchJob = new TaskFetchJob( collection.remoteId(), account(), this );
-        if ( !collection.remoteRevision().isEmpty() ) {
+        if ( lastSyncDelta > -1 && lastSyncDelta < 25 * 25 * 3600 ) {
             fetchJob->setFetchOnlyUpdated( collection.remoteRevision().toULongLong() );
         }
         job = fetchJob;
@@ -529,10 +535,13 @@ void CalendarResource::slotItemsRetrieved( KGAPI2::Job *job )
     Item::List changedItems, removedItems;
     Collection collection = job->property( COLLECTION_PROPERTY ).value<Collection>();
     DefaultReminderAttribute *attr = collection.attribute<DefaultReminderAttribute>();
+    bool isIncremental = false;
 
     ObjectsList objects = qobject_cast<FetchJob*>( job )->items();
     if ( collection.contentMimeTypes().contains( KCalCore::Event::eventMimeType() ) ) {
         QMap< QString, EventPtr > recurrentEvents;
+
+        isIncremental = ( qobject_cast<EventFetchJob*>( job )->fetchOnlyUpdated() > 0 );
 
         /* Step 1: Find all recurrent events and move them to a separate map */
         int i = 0;
@@ -594,6 +603,9 @@ void CalendarResource::slotItemsRetrieved( KGAPI2::Job *job )
         }
 
     } else if ( collection.contentMimeTypes().contains( KCalCore::Todo::todoMimeType() ) ) {
+
+        isIncremental = ( qobject_cast<TaskFetchJob*>( job )->fetchOnlyUpdated() > 0 );
+
         Q_FOREACH( const ObjectPtr &object, objects ) {
             TaskPtr task = object.dynamicCast<Task>();
 
@@ -612,7 +624,11 @@ void CalendarResource::slotItemsRetrieved( KGAPI2::Job *job )
         }
     }
 
-    itemsRetrievedIncremental( changedItems, removedItems );
+    if ( isIncremental ) {
+        itemsRetrievedIncremental( changedItems, removedItems );
+    } else {
+        itemsRetrieved( changedItems );
+    }
 
     collection.setRemoteRevision( QString::number( KDateTime::currentUtcDateTime().toTime_t() ) );
     new CollectionModifyJob( collection, this );
