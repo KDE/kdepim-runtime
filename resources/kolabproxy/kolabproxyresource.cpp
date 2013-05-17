@@ -168,6 +168,16 @@ KolabProxyResource::~KolabProxyResource()
 {
 }
 
+KolabHandler::Ptr KolabProxyResource::getHandler(Akonadi::Entity::Id collectionId)
+{
+  KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
+  if ( !handler ) {
+    kWarning() << "No handler for collection available: " << collectionId;
+    return KolabHandler::Ptr();
+  }
+  return handler;
+}
+
 void KolabProxyResource::retrieveCollections()
 {
   kDebug() << "RETRIEVECOLLECTIONS ";
@@ -195,23 +205,43 @@ void KolabProxyResource::retrieveCollectionsTreeDone( KJob *job )
 void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
 {
   kDebug() << "RETRIEVEITEMS";
-  m_retrieveState = RetrieveItems;
   const Akonadi::Collection imapCollection = kolabToImap( collection );
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
+  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   Q_ASSERT( handler );
   handler->reset();
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
-  job->setProperty( "resultCanBeEmpty", true );
 
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemsFetchDone(KJob*)) );
+}
+
+void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
+{
+  if ( job->error() ) {
+    kWarning( ) << "Error on item fetch:" << job->errorText();
+    cancelTask();
+    return;
+  }
+
+  const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
+  if ( items.isEmpty() ) {
+    itemsRetrieved( Akonadi::Item::List() );
+    return;
+  }
+  const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() );
+  if ( !handler ) {
+    cancelTask();
+    return;
+  }
+  const Akonadi::Item::List newItems = handler->translateItems( items );
+  itemsRetrieved( newItems );
+  kDebug() << "RETRIEVEITEM DONE";
 }
 
 bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
   kDebug() << "RETRIEVEITEM";
-  m_retrieveState = RetrieveItem;
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( item ) );
   job->fetchScope().fetchFullPayload();
   job->setProperty( "itemId", item.id() );
@@ -226,45 +256,26 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
     cancelTask();
     return;
   }
-  const bool resultCanBeEmpty = job->property( "resultCanBeEmpty" ).isValid();
-
-  Akonadi::Item::Id collectionId = -1;
   const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
-  if ( items.size() < 1 ) {
-    if ( resultCanBeEmpty ) {
-      itemsRetrieved( Akonadi::Item::List() );
-    } else {
-      kWarning() << "Items is emtpy";
-      cancelTask();
-    }
-    return;
-  }
-  collectionId = items[0].storageCollectionId();
-  KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
-  if ( !handler ) {
-    kWarning() << "No handler for collection available: " << collectionId;
+  if ( items.isEmpty() ) {
+    kWarning() << "Items is emtpy";
     cancelTask();
     return;
   }
-  if ( m_retrieveState == DeleteItem ) {
-    kDebug() << "m_retrieveState = DeleteItem";
-    handler->itemDeleted( items[0] );
+  const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() );
+  if ( !handler ) {
+    cancelTask();
     return;
   }
-  Akonadi::Item::List newItems = handler->translateItems( items );
-  if ( m_retrieveState == RetrieveItems ) {
-    itemsRetrieved( newItems );
-  } else { //RetrieveItem
-    if ( !newItems.isEmpty() ) {
-      Akonadi::Item item = newItems[0];
-      item.setId(job->property("itemId").value<Akonadi::Item::Id>());
-      itemRetrieved( item );
-    } else {
-      kWarning() << "Could not translate item";
-      cancelTask();
-      return;
-    }
+  const Akonadi::Item::List newItems = handler->translateItems( items );
+  if ( newItems.isEmpty() ) {
+    kWarning() << "Could not translate item";
+    cancelTask();
+    return;
   }
+  Akonadi::Item item = newItems[0];
+  item.setId(job->property("itemId").value<Akonadi::Item::Id>());
+  itemRetrieved( item );
   kDebug() << "RETRIEVEITEM DONE";
 }
 

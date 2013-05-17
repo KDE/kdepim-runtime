@@ -50,6 +50,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
+    void itemsReceived(Akonadi::Item::List);
 
   protected Q_SLOTS:
     void retrieveCollections();
@@ -80,6 +81,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void itemCreatedDone( KJob *job );
     void collectionFetchDone( KJob *job );
     void retrieveItemFetchDone( KJob * );
+    void retrieveItemsFetchDone( KJob * );
     void retrieveCollectionsTreeDone( KJob *job );
     void addImapItem( const Akonadi::Item &item, Akonadi::Entity::Id collectionId );
     void deleteImapItem( const Akonadi::Item &item );
@@ -130,6 +132,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void kolabFolderChangeResult( KJob *job );
 
   private:
+    KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
     QMap<Akonadi::Collection::Id, KolabHandler::Ptr> m_monitoredCollections;
@@ -138,14 +141,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     QMap<KJob *, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
     FreeBusyUpdateHandler *m_freeBusyUpdateHandler;
-
-    enum RetrieveState {
-      RetrieveItems,
-      RetrieveItem,
-      DeleteItem
-    };
-
-    RetrieveState m_retrieveState;
 };
 
 #endif
