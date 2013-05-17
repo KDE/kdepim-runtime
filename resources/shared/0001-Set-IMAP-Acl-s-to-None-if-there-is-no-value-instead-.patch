@@ -1,0 +1,88 @@
+From daf8c4e363a2d648cc014e7d9b936c02301bba3a Mon Sep 17 00:00:00 2001
+From: Christian Mollekopf <chrigi_1@fastmail.fm>
+Date: Thu, 2 May 2013 18:10:43 +0200
+Subject: [PATCH] Set IMAP Acl's to None if there is no value (instead of
+ something random), and test the deserialize result.
+
+To reduce the code duplication I also refactored the code slightly.
+---
+ resources/shared/imapaclattribute.cpp           | 42 ++++++++++++-------------
+ resources/shared/tests/imapaclattributetest.cpp |  4 +++
+ 2 files changed, 24 insertions(+), 22 deletions(-)
+
+diff --git a/resources/shared/imapaclattribute.cpp b/resources/shared/imapaclattribute.cpp
+index ebd8f47..ad4fe2c 100644
+--- a/resources/shared/imapaclattribute.cpp
++++ b/resources/shared/imapaclattribute.cpp
+@@ -92,6 +92,24 @@ QByteArray ImapAclAttribute::serialized() const
+   return result;
+ }
+ 
++static void fillRightsMap( const QList<QByteArray> &rights, QMap <QByteArray, KIMAP::Acl::Rights> &map )
++{
++  foreach ( const QByteArray &right, rights ) {
++    const QByteArray trimmed = right.trimmed();
++    const int wsIndex = trimmed.indexOf( ' ' );
++    const QByteArray id = trimmed.mid( 0, wsIndex ).trimmed();
++    if ( !id.isEmpty() ) {
++      const bool noValue = ( wsIndex == -1 );
++      if ( noValue ) {
++        map[id] = KIMAP::Acl::None;
++      } else {
++        const QByteArray value = trimmed.mid( wsIndex + 1, right.length() - wsIndex ).trimmed();
++        map[id] = KIMAP::Acl::rightsFromString( value );
++      }
++    }
++  }
++}
++
+ void ImapAclAttribute::deserialize( const QByteArray &data )
+ {
+   mRights.clear();
+@@ -102,26 +120,6 @@ void ImapAclAttribute::deserialize( const QByteArray &data )
+ 
+   const QByteArray leftPart = data.left( pos );
+   const QByteArray rightPart = data.mid( pos + 4 );
+-  QList<QByteArray> rights = leftPart.split( '%' );
+-  QList<QByteArray> oldRights = rightPart.split( '%' );
+-
+-  foreach ( const QByteArray &right, rights ) {
+-    const QByteArray trimmed = right.trimmed();
+-    const int wsIndex = trimmed.indexOf( ' ' );
+-    const QByteArray id = trimmed.mid( 0, wsIndex ).trimmed();
+-    if ( !id.isEmpty() ) {
+-      const QByteArray value = trimmed.mid( wsIndex + 1, right.length() - wsIndex ).trimmed();
+-      mRights[id] = KIMAP::Acl::rightsFromString( value );
+-    }
+-  }
+-
+-  foreach ( const QByteArray &right, oldRights ) {
+-    const QByteArray trimmed = right.trimmed();
+-    const int wsIndex = trimmed.indexOf( ' ' );
+-    const QByteArray id = trimmed.mid( 0, wsIndex ).trimmed();
+-    if ( !id.isEmpty() ) {
+-      const QByteArray value = trimmed.mid( wsIndex + 1, right.length() - wsIndex ).trimmed();
+-      mOldRights[id] = KIMAP::Acl::rightsFromString( value );
+-    }
+-  }
++  fillRightsMap( leftPart.split( '%' ), mRights );
++  fillRightsMap( rightPart.split( '%' ), mOldRights );
+ }
+diff --git a/resources/shared/tests/imapaclattributetest.cpp b/resources/shared/tests/imapaclattributetest.cpp
+index 4f490d0..0ed3222 100644
+--- a/resources/shared/tests/imapaclattributetest.cpp
++++ b/resources/shared/tests/imapaclattributetest.cpp
+@@ -73,6 +73,10 @@ class ImapAclAttributeTest : public QObject
+       QCOMPARE( attr->serialized(), oldSerialized );
+ 
+       delete attr;
++
++      ImapAclAttribute deserializeAttr;
++      deserializeAttr.deserialize( serialized );
++      QCOMPARE( deserializeAttr.rights(), rights );
+     }
+ 
+     void testOldRights()
+-- 
+1.8.1.4
+
