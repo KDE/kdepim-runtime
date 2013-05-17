@@ -50,7 +50,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
-    void itemsReceived(Akonadi::Item::List);
 
   protected Q_SLOTS:
     void retrieveCollections();
@@ -131,6 +130,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapItemUpdateCollectionFetchResult( KJob *job );
     void imapFolderCreateResult( KJob *job );
     void kolabFolderChangeResult( KJob *job );
+    void itemsReceived(const Akonadi::Item::List &);
 
   private:
     KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
