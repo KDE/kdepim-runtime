@@ -114,6 +114,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   private:
     Akonadi::Collection createCollection( const Akonadi::Collection &imapCollection );
+    void createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem );
 
     void applyAttributesToImap( Akonadi::Collection &imapCollection,
                                 const Akonadi::Collection &kolabCollection );

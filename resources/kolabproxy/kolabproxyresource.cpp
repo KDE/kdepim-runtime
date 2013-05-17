@@ -321,20 +321,21 @@ void KolabProxyResource::configure( WId windowId )
   delete kolabConfigDialog;
 }
 
-void KolabProxyResource::itemAdded( const Akonadi::Item &item,
+void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
                                     const Akonadi::Collection &collection )
 {
   kDebug() << "ITEMADDED";
 
-  Akonadi::Item kolabItem( item );
 //   kDebug() << "Item added " << item.id() << collection.remoteId() << collection.id();
 
   const Akonadi::Collection imapCollection = kolabToImap( collection );
+  createItem( imapCollection, kolabItem );
+}
 
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
+void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem )
+{
+  KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   if ( !handler ) {
-    kWarning() << "No handler found for collection" << collection
-               << ", available handlers: " << m_monitoredCollections;
     cancelTask();
     return;
   }
@@ -397,8 +398,13 @@ void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
   const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
 
   Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob->items().size() <= 1 );
-  if ( fetchJob->items().size() == 1 ) { //TODO remove this hack
+  if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
+    Akonadi::CollectionFetchJob *fetch =
+      new Akonadi::CollectionFetchJob( Akonadi::Collection( kolabItem.storageCollectionId() ),
+                                       Akonadi::CollectionFetchJob::Base, this );
+    fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
+    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapItemUpdateCollectionFetchResult(KJob*)) );
+  } else {
     Akonadi::Item imapItem = fetchJob->items().first();
 
     KolabHandler::Ptr handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
@@ -416,20 +422,13 @@ void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
     Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob( imapItem );
     mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
     connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
-  } else {
-    // HACK FIXME how can that happen at all?
-    Akonadi::CollectionFetchJob *fetch =
-      new Akonadi::CollectionFetchJob( Akonadi::Collection( kolabItem.storageCollectionId() ),
-                                       Akonadi::CollectionFetchJob::Base, this );
-    fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapItemUpdateCollectionFetchResult(KJob*)) );
   }
 }
 
 void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob *job )
 {
   Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>( job );
-  if ( job->error() || fetchJob->collections().size() != 1 ) {
+  if ( job->error() || fetchJob->collections().isEmpty() ) {
     cancelTask( job->errorText() );
     return;
   }
@@ -437,25 +436,7 @@ void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob *job )
   const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
   const Akonadi::Collection kolabCollection = fetchJob->collections().first();
   const Akonadi::Collection imapCollection = kolabToImap( kolabCollection );
-
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
-  if ( !handler ) {
-    kWarning() << "No handler found";
-    cancelTask();
-    return;
-  }
-  Akonadi::Item imapItem( handler->contentMimeTypes()[0] );
-  if (!handler->toKolabFormat( kolabItem, imapItem )) {
-    kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
-    cancelTask();
-    return;
-  }
-  imapItem.setFlag( Akonadi::MessageFlags::Seen );
-
-  Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( imapItem, imapCollection );
-  cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-  cjob->setProperty( IMAP_COLLECTION, QVariant::fromValue( imapCollection ) );
-  connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
+  createItem( imapCollection, kolabItem );
 }
 
 void KolabProxyResource::imapItemUpdateResult( KJob *job )
