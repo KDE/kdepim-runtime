@@ -211,6 +211,7 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
   handler->reset();
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
+  job->fetchScope().setIgnoreRetrievalErrors( true );
 
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemsFetchDone(KJob*)) );
 }
