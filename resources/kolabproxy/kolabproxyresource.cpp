@@ -722,49 +722,38 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
   Akonadi::CollectionFetchJob *job =
     new Akonadi::CollectionFetchJob( kolabCol, Akonadi::CollectionFetchJob::Base, this );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchDone(KJob*)) );
-  m_ids[job] = QString::number( collection.id() );
-  m_items[job] = item;
+  job->setProperty( KOLAB_ITEM, QVariant::fromValue( item ) );
+  job->setProperty( "collectionId", QString::number( collection.id() ) );
 }
 
 void KolabProxyResource::collectionFetchDone( KJob *job )
 {
   if ( job->error() ) {
     kWarning( ) << "Error on collection fetch:" << job->errorText();
-  } else {
-    Akonadi::Collection c;
-    Akonadi::Collection::List collections =
-      qobject_cast<Akonadi::CollectionFetchJob*>(job)->collections();
-    foreach ( const Akonadi::Collection &col, collections ) {
-      if ( col.remoteId() == m_ids[job] ) {
-        c = col;
-        break;
-      }
-    }
+    return;
+  }
+  Akonadi::Collection::List collections =
+    qobject_cast<Akonadi::CollectionFetchJob*>(job)->collections();
+  Q_ASSERT(collections.size() == 1);
+  const Akonadi::Collection c = collections[0];
+  Q_ASSERT(c.remoteId() == job->property("collectionId").toString() );
 
-    KolabHandler::Ptr handler = m_monitoredCollections.value( c.remoteId().toUInt() );
-    if ( !handler ) {
-      kWarning() << "No handler found";
-      m_ids.remove( job );
-      m_items.remove( job );
-      return;
-    }
-
-    Akonadi::Item::List newItems = handler->translateItems( Akonadi::Item::List() << m_items[job] );
+  if ( const KolabHandler::Ptr handler = getHandler( c.remoteId().toUInt() ) ) {
+    const Akonadi::Item item = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
+    const Akonadi::Item::List newItems = handler->translateItems( Akonadi::Item::List() << item );
     if ( !newItems.isEmpty() ) {
       Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( newItems[0], c );
       connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
     }
+  } else {
+    kWarning() << "No handler found";
   }
-  m_ids.remove( job );
-  m_items.remove( job );
 }
 
 void KolabProxyResource::itemCreatedDone( KJob *job )
 {
   if ( job->error() ) {
     kWarning( ) << "Error on creating item:" << job->errorText();
-  } else {
-    //?
   }
 }
 
