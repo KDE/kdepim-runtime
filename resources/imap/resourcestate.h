@@ -49,13 +49,18 @@ public:
                                                             const Akonadi::Item &item,
                                                             const QSet<QByteArray> &parts );
 
-  static ResourceStateInterface::Ptr createRemoveItemState( ImapResource *resource,
-                                                            const Akonadi::Item &item );
+  static ResourceStateInterface::Ptr createChangeItemsFlagsState( ImapResource *resource,
+                                                                  const Akonadi::Item::List &items,
+                                                                  const QSet<QByteArray> &addedFlags,
+                                                                  const QSet<QByteArray> &removedFlags );
 
-  static ResourceStateInterface::Ptr createMoveItemState( ImapResource *resource,
-                                                          const Akonadi::Item &item,
-                                                          const Akonadi::Collection &sourceCollection,
-                                                          const Akonadi::Collection &targetCollection );
+  static ResourceStateInterface::Ptr createRemoveItemsState( ImapResource *resource,
+                                                             const Akonadi::Item::List &items );
+
+  static ResourceStateInterface::Ptr createMoveItemsState( ImapResource *resource,
+                                                           const Akonadi::Item::List &item,
+                                                           const Akonadi::Collection &sourceCollection,
+                                                           const Akonadi::Collection &targetCollection );
 
   static ResourceStateInterface::Ptr createAddCollectionState( ImapResource *resource,
                                                                const Akonadi::Collection &collection,
@@ -96,6 +101,7 @@ public:
 
   virtual Akonadi::Collection collection() const;
   virtual Akonadi::Item item() const;
+  virtual Akonadi::Item::List items() const;
 
   virtual Akonadi::Collection parentCollection() const;
 
@@ -103,6 +109,8 @@ public:
   virtual Akonadi::Collection targetCollection() const;
 
   virtual QSet<QByteArray> parts() const;
+  virtual QSet<QByteArray> addedFlags() const;
+  virtual QSet<QByteArray> removedFlags() const;
 
   virtual QString rootRemoteId() const;
   virtual QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true ) const;
@@ -119,6 +127,7 @@ public:
   virtual void itemsRetrievalDone();
 
   virtual void itemChangeCommitted( const Akonadi::Item &item );
+  virtual void itemsChangesCommitted(const Akonadi::Item::List& items);
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
@@ -144,7 +153,7 @@ private:
   ImapResource *m_resource;
 
   Akonadi::Collection m_collection;
-  Akonadi::Item m_item;
+  Akonadi::Item::List m_items;
 
   Akonadi::Collection m_parentCollection;
 
@@ -152,6 +161,8 @@ private:
   Akonadi::Collection m_targetCollection;
 
   QSet<QByteArray> m_parts;
+  QSet<QByteArray> m_addedFlags;
+  QSet<QByteArray> m_removedFlags;
 };
 
 #endif

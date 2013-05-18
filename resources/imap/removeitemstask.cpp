@@ -19,7 +19,7 @@
     02110-1301, USA.
 */
 
-#include "removeitemtask.h"
+#include "removeitemstask.h"
 
 #include <KDE/KDebug>
 #include <KDE/KLocale>
@@ -30,23 +30,23 @@
 
 #include "imapflags.h"
 
-RemoveItemTask::RemoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
+RemoveItemsTask::RemoveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent )
 {
 
 }
 
-RemoveItemTask::~RemoveItemTask()
+RemoveItemsTask::~RemoveItemsTask()
 {
 }
 
-void RemoveItemTask::doStart( KIMAP::Session *session )
+void RemoveItemsTask::doStart( KIMAP::Session *session )
 {
   // The imap specs do not allow for a single message to be deleted. We can only
   // set the \Deleted flag. The message will actually be deleted when EXPUNGE will
   // be issued on the next retrieveItems().
 
-  const QString mailBox = mailBoxForCollection( item().parentCollection() );
+  const QString mailBox = mailBoxForCollection( items().first().parentCollection() );
 
   if ( session->selectedMailBox() != mailBox ) {
     KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
@@ -62,7 +62,7 @@ void RemoveItemTask::doStart( KIMAP::Session *session )
   }
 }
 
-void RemoveItemTask::onSelectDone( KJob *job )
+void RemoveItemsTask::onSelectDone( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( job->errorString() );
@@ -72,18 +72,23 @@ void RemoveItemTask::onSelectDone( KJob *job )
   }
 }
 
-void RemoveItemTask::triggerStoreJob( KIMAP::Session *session )
+void RemoveItemsTask::triggerStoreJob( KIMAP::Session *session )
 {
+  KIMAP::ImapSet set;
+  foreach( const Akonadi::Item &item, items() ) {
+    set.add( item.remoteId().toLong() );
+  }
+
   KIMAP::StoreJob *store = new KIMAP::StoreJob( session );
   store->setUidBased( true );
-  store->setSequenceSet( KIMAP::ImapSet( item().remoteId().toLongLong() ) );
+  store->setSequenceSet( set );
   store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
   connect( store, SIGNAL(result(KJob*)), SLOT(onStoreFlagsDone(KJob*)) );
   store->start();
 }
 
-void RemoveItemTask::onStoreFlagsDone( KJob *job )
+void RemoveItemsTask::onStoreFlagsDone( KJob *job )
 {
   if ( job->error() ) {
     cancelTask( job->errorString() );
@@ -92,6 +97,6 @@ void RemoveItemTask::onStoreFlagsDone( KJob *job )
   }
 }
 
-#include "removeitemtask.moc"
+#include "removeitemstask.moc"
 
 
