@@ -19,18 +19,18 @@
     02110-1301, USA.
 */
 
-#ifndef REMOVEITEMTASK_H
-#define REMOVEITEMTASK_H
+#ifndef REMOVEITEMSTASK_H
+#define REMOVEITEMSTASK_H
 
 #include "resourcetask.h"
 
-class RemoveItemTask : public ResourceTask
+class RemoveItemsTask : public ResourceTask
 {
   Q_OBJECT
 
 public:
-  explicit RemoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
-  virtual ~RemoveItemTask();
+  explicit RemoveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  virtual ~RemoveItemsTask();
 
 private slots:
   void onSelectDone( KJob *job );

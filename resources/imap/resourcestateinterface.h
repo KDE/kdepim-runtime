@@ -50,6 +50,7 @@ public:
 
   virtual Akonadi::Collection collection() const = 0;
   virtual Akonadi::Item item() const = 0;
+  virtual Akonadi::Item::List items() const = 0;
 
   virtual Akonadi::Collection parentCollection() const = 0;
 
@@ -57,6 +58,8 @@ public:
   virtual Akonadi::Collection targetCollection() const = 0;
 
   virtual QSet<QByteArray> parts() const = 0;
+  virtual QSet<QByteArray> addedFlags() const = 0;
+  virtual QSet<QByteArray> removedFlags() const = 0;
 
   virtual QString rootRemoteId() const = 0;
   virtual QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true ) const = 0;
@@ -74,6 +77,7 @@ public:
   virtual void itemsRetrievalDone() = 0;
 
   virtual void itemChangeCommitted( const Akonadi::Item &item ) = 0;
+  virtual void itemsChangesCommitted( const Akonadi::Item::List &items ) = 0;
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections ) = 0;
 

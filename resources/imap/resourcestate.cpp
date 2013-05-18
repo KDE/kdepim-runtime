@@ -37,7 +37,7 @@ ResourceStateInterface::Ptr ResourceState::createRetrieveItemState( ImapResource
 {
   ResourceState *state = new ResourceState( resource );
 
-  state->m_item = item;
+  state->m_items << item;
   state->m_parts = parts;
 
   return ResourceStateInterface::Ptr( state );
@@ -74,7 +74,7 @@ ResourceStateInterface::Ptr ResourceState::createAddItemState( ImapResource *res
 {
   ResourceState *state = new ResourceState( resource );
 
-  state->m_item = item;
+  state->m_items << item;
   state->m_collection = collection;
 
   return ResourceStateInterface::Ptr( state );
@@ -86,30 +86,44 @@ ResourceStateInterface::Ptr ResourceState::createChangeItemState( ImapResource *
 {
   ResourceState *state = new ResourceState( resource );
 
-  state->m_item = item;
+  state->m_items << item;
   state->m_parts = parts;
 
   return ResourceStateInterface::Ptr( state );
 }
 
-ResourceStateInterface::Ptr ResourceState::createRemoveItemState( ImapResource *resource,
-                                                                  const Akonadi::Item &item )
+ResourceStateInterface::Ptr ResourceState::createChangeItemsFlagsState( ImapResource* resource,
+                                                                        const Akonadi::Item::List& items,
+                                                                        const QSet< QByteArray >& addedFlags,
+                                                                        const QSet< QByteArray >& removedFlags)
 {
   ResourceState *state = new ResourceState( resource );
 
-  state->m_item = item;
+  state->m_items = items;
+  state->m_addedFlags = addedFlags;
+  state->m_removedFlags = removedFlags;
 
   return ResourceStateInterface::Ptr( state );
 }
 
-ResourceStateInterface::Ptr ResourceState::createMoveItemState( ImapResource *resource,
-                                                                const Akonadi::Item &item,
-                                                                const Akonadi::Collection &sourceCollection,
-                                                                const Akonadi::Collection &targetCollection )
+ResourceStateInterface::Ptr ResourceState::createRemoveItemsState( ImapResource *resource,
+                                                                  const Akonadi::Item::List &items )
 {
   ResourceState *state = new ResourceState( resource );
 
-  state->m_item = item;
+  state->m_items = items;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
+ResourceStateInterface::Ptr ResourceState::createMoveItemsState( ImapResource *resource,
+                                                                 const Akonadi::Item::List &items,
+                                                                 const Akonadi::Collection &sourceCollection,
+                                                                 const Akonadi::Collection &targetCollection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_items = items;
   state->m_sourceCollection = sourceCollection;
   state->m_targetCollection = targetCollection;
 
@@ -246,7 +260,16 @@ Akonadi::Collection ResourceState::collection() const
 
 Akonadi::Item ResourceState::item() const
 {
-  return m_item;
+  if (m_items.count() > 1) {
+    kWarning() << "Called item() while state holds multiple items!";
+  }
+
+  return m_items.first();
+}
+
+Akonadi::Item::List ResourceState::items() const
+{
+  return m_items;
 }
 
 Akonadi::Collection ResourceState::parentCollection() const
@@ -267,6 +290,16 @@ Akonadi::Collection ResourceState::targetCollection() const
 QSet<QByteArray> ResourceState::parts() const
 {
   return m_parts;
+}
+
+QSet<QByteArray> ResourceState::addedFlags() const
+{
+  return m_addedFlags;
+}
+
+QSet<QByteArray> ResourceState::removedFlags() const
+{
+  return m_removedFlags;
 }
 
 QString ResourceState::rootRemoteId() const
@@ -347,6 +380,11 @@ void ResourceState::itemChangeCommitted( const Akonadi::Item &item )
   m_resource->changeCommitted( item );
 }
 
+void ResourceState::itemsChangesCommitted(const Akonadi::Item::List& items)
+{
+  m_resource->changesCommitted( items );
+}
+
 void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
 {
   m_resource->collectionsRetrieved( collections );
@@ -402,8 +440,10 @@ void ResourceState::cancelTask( const QString &errorString )
               << m_sourceCollection
               << m_targetCollection;
 
-  if ( m_item.isValid() && m_item.parentCollection().isValid() ) {
-    collections << m_item.parentCollection();
+  foreach ( const Akonadi::Item &item, m_items ) {
+    if  ( item.isValid() && item.parentCollection().isValid() ) {
+        collections << item.parentCollection();
+    }
   }
 
   if ( m_collection.isValid() && m_collection.parentCollection().isValid() ) {

@@ -1,7 +1,5 @@
 /*
-    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
-                       a KDAB Group company <info@kdab.com>
-    Author: Kevin Ottens <kevin@kdab.com>
+    Copyright (c) 2013 Daniel Vrátil <dvratil@redhat.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,36 +17,37 @@
     02110-1301, USA.
 */
 
-#ifndef MOVEITEMTASK_H
-#define MOVEITEMTASK_H
+
+#ifndef CHANGEITEMSFLAGSTASK_H
+#define CHANGEITEMSFLAGSTASK_H
 
 #include "resourcetask.h"
 
-class MoveItemTask : public ResourceTask
+namespace KIMAP {
+class StoreJob;
+}
+
+class ChangeItemsFlagsTask : public ResourceTask
 {
   Q_OBJECT
 
 public:
-  explicit MoveItemTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
-  virtual ~MoveItemTask();
+  explicit ChangeItemsFlagsTask( ResourceStateInterface::Ptr resource, QObject* parent = 0 );
+  virtual ~ChangeItemsFlagsTask();
 
-private slots:
+private Q_SLOTS:
   void onSelectDone( KJob *job );
-  void onCopyDone( KJob *job );
-  void onStoreFlagsDone( KJob *job );
-
-  void onPreSearchSelectDone( KJob *job );
-  void onSearchDone( KJob *job );
+  void onAppendFlagsDone( KJob *job );
+  void onRemoveFlagsDone( KJob *job );
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+  virtual void doStart( KIMAP::Session* session );
 
 private:
-  void triggerCopyJob( KIMAP::Session *session );
-  void recordNewUid();
+  KIMAP::StoreJob* prepareJob( KIMAP::Session *session );
+  void triggerAppendFlagsJob( KIMAP::Session *session );
+  void triggerRemoveFlagsJob( KIMAP::Session *session );
 
-  QByteArray m_messageId;
-  qint64 m_newUid;
 };
 
 #endif
