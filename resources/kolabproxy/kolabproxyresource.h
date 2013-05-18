@@ -80,6 +80,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void itemCreatedDone( KJob *job );
     void collectionFetchDone( KJob *job );
     void retrieveItemFetchDone( KJob * );
+    void retrieveItemsFetchDone( KJob * );
     void retrieveCollectionsTreeDone( KJob *job );
     void addImapItem( const Akonadi::Item &item, Akonadi::Entity::Id collectionId );
     void deleteImapItem( const Akonadi::Item &item );
@@ -112,6 +113,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   private:
     Akonadi::Collection createCollection( const Akonadi::Collection &imapCollection );
+    void createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem );
 
     void applyAttributesToImap( Akonadi::Collection &imapCollection,
                                 const Akonadi::Collection &kolabCollection );
@@ -128,24 +130,16 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapItemUpdateCollectionFetchResult( KJob *job );
     void imapFolderCreateResult( KJob *job );
     void kolabFolderChangeResult( KJob *job );
+    void itemsReceived(const Akonadi::Item::List &);
 
   private:
+    KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
     QMap<Akonadi::Collection::Id, KolabHandler::Ptr> m_monitoredCollections;
     QMap<Akonadi::Collection::Id, QString> m_resourceIdentifier;
-    QMap<KJob *, QString> m_ids;
-    QMap<KJob *, Akonadi::Item> m_items;
     QList<Akonadi::Item::Id> m_excludeAppend;
     FreeBusyUpdateHandler *m_freeBusyUpdateHandler;
-
-    enum RetrieveState {
-      RetrieveItems,
-      RetrieveItem,
-      DeleteItem
-    };
-
-    RetrieveState m_retrieveState;
 };
 
 #endif
