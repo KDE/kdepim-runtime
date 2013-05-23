@@ -29,6 +29,7 @@
 
 #include <QtCore/QTimer>
 #include "feederqueue.h"
+#include "indexerconfig.h"
 
 class FeederPluginloader;
 class KJob;
@@ -126,6 +127,8 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     QTimer mInitialIndexingTimer;
     qlonglong mTotalItems;
     qlonglong mIndexedItems;
+
+    IndexerConfig* m_indexerConfig;
 };
 
 }

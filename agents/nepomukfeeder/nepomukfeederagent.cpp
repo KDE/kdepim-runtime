@@ -121,6 +121,8 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", true ) );
   mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
 
+  m_indexerConfig = new IndexerConfig( this );
+  connect( m_indexerConfig, SIGNAL(configChanged()), this, SLOT(selfTest()) );
   setOnline( false );
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
   QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
@@ -409,38 +411,30 @@ void NepomukFeederAgent::checkMigration()
 
 void NepomukFeederAgent::selfTest()
 {
-  // check if we have been disabled explicitly
-  {
-    KConfig config( "akonadi_nepomuk_feederrc" );
-    KConfigGroup cfgGrp( &config, "akonadi_nepomuk_email_feeder" );
-    if ( !cfgGrp.readEntry( "Enabled", true ) ) {
-      setOnline(false);
-      kDebug() << "Indexing has been disabled by you.";
-      emit status( Broken, i18n( "Indexing has been disabled by you." ) );
-      return;
+    if( !m_indexerConfig->isEnabled() ) {
+        setOnline( false );
+        emit status( Broken, i18n( "Email Indexing has been disabled" ) );
+        return;
     }
-  }
 
-  // if Nepomuk is not running, try to start it
-  if ( !Nepomuk2::ResourceManager::instance()->initialized() ) {
-    // wait for Nepomuk to start
-    setOnline( false );
-    emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
-  }
-  else {
-    setOnline( true );
-    emit status( Idle, i18n( "Ready to index data." ) );
-
-    if ( !mInitialUpdateDone ) {
-      mInitialUpdateDone = true;
-      //TODO postpone this until the computer is idle?
-      if ( !mInitialIndexingDisabled ) {
-        QTimer::singleShot( 0, this, SLOT(updateAll()) );
-      } else {
-        kDebug() << "Initial indexing was disabled in the configuration.";
-      }
+    if( !Nepomuk2::ResourceManager::instance()->initialized() ) {
+        setOnline( false );
+        emit status( Broken, i18n( "Waiting for the Nepomuk to start" ) );
     }
-  }
+    else {
+        setOnline( true );
+        emit status( Idle, i18n( "Ready to index data." ) );
+
+        if ( !mInitialUpdateDone ) {
+            mInitialUpdateDone = true;
+            //TODO postpone this until the computer is idle?
+            if ( !mInitialIndexingDisabled ) {
+                QTimer::singleShot( 0, this, SLOT(updateAll()) );
+            } else {
+                kDebug() << "Initial indexing was disabled in the configuration.";
+            }
+        }
+    }
 }
 
 void NepomukFeederAgent::disableIdleDetection( bool value )
