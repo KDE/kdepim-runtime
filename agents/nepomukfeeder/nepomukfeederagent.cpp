@@ -101,7 +101,9 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mItemBatchCounter( 0 ),
   mBatchDetected( false ),
   mTotalItems(0),
-  mIndexedItems(0)
+  mIndexedItems(0),
+  m_collectionFetchJob(0),
+  m_findUnindexedItemsJob(0)
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
@@ -320,9 +322,14 @@ void NepomukFeederAgent::findUnindexed()
     return;
   }
 
-  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-  connect(fetchJob, SIGNAL(finished(KJob*)), this, SLOT(collectionListReceived(KJob*)));
-  fetchJob->start();
+  if ( m_collectionFetchJob )
+      return;
+
+  m_collectionFetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+                                                         Akonadi::CollectionFetchJob::Recursive,
+                                                         this);
+  connect(m_collectionFetchJob, SIGNAL(finished(KJob*)), this, SLOT(collectionListReceived(KJob*)));
+  m_collectionFetchJob->start();
 }
 
 void NepomukFeederAgent::collectionListReceived(KJob *job)
@@ -331,19 +338,22 @@ void NepomukFeederAgent::collectionListReceived(KJob *job)
     kWarning() << "Failed to fetch collections";
     return;
   }
-  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
+
+  Akonadi::Collection::List allCollections = m_collectionFetchJob->collections();
+  m_collectionFetchJob = 0;
 
   Akonadi::Collection::List indexedCollections;
-  foreach (const Akonadi::Collection &col, fetchJob->collections()) {
+  foreach (const Akonadi::Collection &col, allCollections) {
     if (!indexingDisabled(col)) {
-      kDebug() << "collection is indexed: " << col.id();
       indexedCollections << col;
     }
   }
-  FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
-  findUnindexeditemsJob->setIndexedCollections( indexedCollections );
-  connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
-  findUnindexeditemsJob->start();
+
+  m_findUnindexedItemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
+  m_findUnindexedItemsJob->setIndexedCollections( indexedCollections );
+
+  connect(m_findUnindexedItemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
+  m_findUnindexedItemsJob->start();
 }
 
 void NepomukFeederAgent::foundUnindexedItems(KJob* job)
@@ -353,9 +363,13 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     return;
   }
   FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
-  mTotalItems = findJob->totalCount();
+  Q_ASSERT( findJob == m_findUnindexedItemsJob );
+
+  mTotalItems = m_findUnindexedItemsJob->totalCount();
   mIndexedItems = findJob->indexedCount();
   const FindUnindexedItemsJob::ItemHash items = findJob->getUnindexed();
+  m_findUnindexedItemsJob = 0;
+
   FindUnindexedItemsJob::ItemHash::const_iterator it = items.constBegin();
   for (;it != items.constEnd(); it++) {
     Akonadi::Item item( it.key() );
@@ -456,6 +470,17 @@ void NepomukFeederAgent::slotFullyIndexed()
 
 void NepomukFeederAgent::doSetOnline(bool online)
 {
+    if( !online ) {
+        if( m_collectionFetchJob ) {
+            m_collectionFetchJob->kill();
+            m_collectionFetchJob = 0;
+        }
+        if( m_findUnindexedItemsJob ) {
+            m_findUnindexedItemsJob->kill();
+            m_findUnindexedItemsJob = 0;
+        }
+    }
+
   setRunning( online );
   Akonadi::AgentBase::doSetOnline( online );
 }
@@ -463,7 +488,7 @@ void NepomukFeederAgent::doSetOnline(bool online)
 void NepomukFeederAgent::setRunning( bool running )
 {
   mQueue.setOnline( running );
-  if ( running && !mQueue.isEmpty() ) {
+  if ( running ) {
     findUnindexed();
     if ( mQueue.currentCollection().isValid() ) {
       const QString summary = i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() );

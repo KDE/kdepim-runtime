@@ -34,7 +34,8 @@
 FindUnindexedItemsJob::FindUnindexedItemsJob(int compatLevel, QObject* parent)
 : KJob(parent),
   mCompatLevel(compatLevel),
-  mTotalNumberOfItems(0)
+  mTotalNumberOfItems(0),
+  m_killed(false)
 {
 
 }
@@ -78,6 +79,9 @@ void FindUnindexedItemsJob::fetchItemsFromCollection()
 
 void FindUnindexedItemsJob::itemsReceived(const Akonadi::Item::List &items)
 {
+    if( m_killed )
+        return;
+
     mTotalNumberOfItems += items.size();
     foreach (const Akonadi::Item &item, items) {
         mAkonadiItems.insert(item.id(), qMakePair(item.modificationTime(), item.mimeType()));
@@ -93,11 +97,15 @@ void FindUnindexedItemsJob::jobDone(KJob *job)
         emitResult();
         return;
     }
+
     fetchItemsFromCollection();
 }
 
 void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
 {
+    if( m_killed )
+        return;
+
 #ifdef HAVE_MALLOC_TRIM
     malloc_trim(0);
 #endif
@@ -115,6 +123,11 @@ void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
 
 void FindUnindexedItemsJob::processResult(Soprano::Util::AsyncQuery *query)
 {
+    if( m_killed ) {
+        query->close();
+        return;
+    }
+
     const Akonadi::Item::Id &id = query->binding("id").literal().toInt64();
     ItemHash::iterator it = mAkonadiItems.find(id);
     if (it == mAkonadiItems.end()) { //Not found in akonadi, stale
@@ -162,5 +175,12 @@ int FindUnindexedItemsJob::totalCount() const
 {
     return mTotalNumberOfItems;
 }
+
+bool FindUnindexedItemsJob::doKill()
+{
+    m_killed = true;
+    return true;
+}
+
 
 #include "findunindexeditemsjob.moc"

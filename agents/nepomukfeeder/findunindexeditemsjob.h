@@ -51,6 +51,9 @@ public:
     void setIndexedCollections(const Akonadi::Collection::List &);
     int indexedCount() const;
     int totalCount() const;
+protected:
+    virtual bool doKill();
+
 private slots:
     void jobDone(KJob*);
     void retrieveIndexedNepomukResources();
@@ -68,6 +71,8 @@ private:
     Akonadi::Collection::List mIndexedCollections;
     int mTotalNumberOfItems;
     QSharedPointer<Soprano::Util::AsyncQuery> mQuery;
+
+    bool m_killed;
 };
 
 #endif // FINDUNINDEXEDITEMSJOB_H

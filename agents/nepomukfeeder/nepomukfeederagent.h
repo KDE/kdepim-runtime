@@ -32,12 +32,14 @@
 #include "indexerconfig.h"
 
 class FeederPluginloader;
+class FindUnindexedItemsJob;
 class KJob;
 
 namespace Akonadi
 {
   class Item;
   class ItemFetchScope;
+  class CollectionFetchJob;
 
 
 /**
@@ -129,6 +131,9 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     qlonglong mIndexedItems;
 
     IndexerConfig* m_indexerConfig;
+
+    Akonadi::CollectionFetchJob* m_collectionFetchJob;
+    FindUnindexedItemsJob* m_findUnindexedItemsJob;
 };
 
 }
