@@ -39,32 +39,10 @@ namespace Akonadi
   class ItemFetchScope;
 
 
-/** Shared base class for all Nepomuk feeders. 
+/**
+ * The main feeder class which listens for changes and sends them
+ * to the scheduler.
  *
- * The feeder adds/removes all items to/from nepomuk as long as the items are available in akonadi.
- * When an item changes, it is removed and inserted again, which ensures that all subproperties created by the feeder
- * are also removed (i.e. addresses of a contact). As long as the item is only modified or moved, but not removed completely from
- * the akonadi storage all properties set by other applications remain untouched. When the item is finally removed from akonadi,
- * all related properties, including properties set by other applications are removed.
- * 
- * Plugins can subscribe to mimetypes in their desktop files, which ensures they get the chance add their information to the passed Resource
- * 
- * The Feeders are supposed to represent the akonadi items as both NIE:InformationElement and NIE:DataObject (for the DataObject side ANEO:AkonadiDataObject is used).
- * If higher level representations such as PIMO:Person from the PIMO ontology which map to real world entities are desired, they have to be created separately. 
- * 
- * Every created resource has the following properties:
- * NIE:url: akonadi uri, can be used to retrieve the akonadi item
- * ANEO::akonadiItemId: akonadi id, Depreceated usage: this attribute is used in queries to restrict the query to only akonadi items (see ItemSearchJob for more information)
- * nfo:isPartOf: collection hierarchy.
- * ANEO::AkonadiDataObject: Datatype of all resources created by the feeder. Can be used to restrict the query to only akonadi entities.
- * 
- * To use the same resources from an application, i.e. the Nepomuk::Resource api can be used using the Akonadi::Item::url() in the constructor or
- * a SimpleResource with the NIE:url property set to Akonadi::Item::url().
- * Both ways will also work if the item is indexed after being used from the application. 
- * 
- * While the feeder keeps ownership of the created NIE:InformationElement/NIE:DataObject resource and will delete it as soon as the item is removed from akonadi,
- * other resource (i.e. a PIMO representation will not be touched by the feeder)
- * 
  * Reindexing:
  * Increasing the mIndexCompatLevel, issues a reindexing.
  */
