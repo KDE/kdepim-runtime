@@ -354,6 +354,8 @@ void NepomukFeederAgent::collectionListReceived(KJob *job)
 
   connect(m_findUnindexedItemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
   m_findUnindexedItemsJob->start();
+
+  emit status( Running, i18n( "Calculating Emails to index" ) );
 }
 
 void NepomukFeederAgent::foundUnindexedItems(KJob* job)
