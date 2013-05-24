@@ -407,7 +407,25 @@ void NepomukFeederAgent::slotFullyIndexed()
 
 void NepomukFeederAgent::doSetOnline(bool online)
 {
-    if( !online ) {
+    mScheduler.setOnline( online );
+
+    if ( online ) {
+        findUnindexed();
+        if ( mScheduler.currentCollection().isValid() ) {
+            const QString summary = i18n( "Indexing collection '%1'...", mScheduler.currentCollection().name() );
+            const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+            KNotification::event( QLatin1String("startindexingcollection"),
+                                  summary,
+                                  pixmap,
+                                  0,
+                                  KNotification::CloseOnTimeout,
+                                  KGlobal::mainComponent());
+            emit status( AgentBase::Running, summary );
+        }
+        else
+            emit status( AgentBase::Running, i18n( "Indexing recent changes..." ) );
+    }
+    else {
         if( m_collectionFetchJob ) {
             m_collectionFetchJob->kill();
             m_collectionFetchJob = 0;
@@ -418,29 +436,7 @@ void NepomukFeederAgent::doSetOnline(bool online)
         }
     }
 
-  setRunning( online );
-  Akonadi::AgentBase::doSetOnline( online );
-}
-
-void NepomukFeederAgent::setRunning( bool running )
-{
-  mScheduler.setOnline( running );
-  if ( running ) {
-    findUnindexed();
-    if ( mScheduler.currentCollection().isValid() ) {
-      const QString summary = i18n( "Indexing collection '%1'...", mScheduler.currentCollection().name() );
-      const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-      KNotification::event( QLatin1String("startindexingcollection"),
-                              summary,
-                              pixmap,
-                              0,
-                              KNotification::CloseOnTimeout,
-                              KGlobal::mainComponent());
-      emit status( AgentBase::Running, summary );
-    }
-    else
-      emit status( AgentBase::Running, i18n( "Indexing recent changes..." ) );
-  }
+    Akonadi::AgentBase::doSetOnline( online );
 }
 
 void NepomukFeederAgent::systemIdle()

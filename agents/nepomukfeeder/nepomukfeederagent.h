@@ -96,7 +96,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void doSetOnline(bool online);
 
   private:
-    void setRunning( bool running );
     void processNextNotification();
     void findUnindexed();
 
