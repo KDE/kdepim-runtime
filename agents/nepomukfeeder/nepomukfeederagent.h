@@ -28,7 +28,7 @@
 #include <akonadi/item.h>
 
 #include <QtCore/QTimer>
-#include "feederqueue.h"
+#include "indexscheduler.h"
 #include "indexerconfig.h"
 
 class FeederPluginloader;
@@ -118,7 +118,7 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     bool mIdleDetectionDisabled;
     bool mInitialIndexingDisabled;
 
-    FeederQueue mQueue;
+    IndexScheduler mScheduler;
 
     qlonglong mTotalItems;
     qlonglong mIndexedItems;

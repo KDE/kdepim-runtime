@@ -25,7 +25,7 @@ configure_file(nepomukfeeder-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/nepomukf
 set(akonadi_nepomuk_feeder_SRCS
     nepomukfeederagent.cpp
     pluginloader.cpp
-    feederqueue.cpp
+    indexscheduler.cpp
     itemqueue.cpp
     nepomukhelpers.cpp
     propertycache.cpp

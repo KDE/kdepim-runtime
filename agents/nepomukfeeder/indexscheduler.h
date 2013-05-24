@@ -16,8 +16,8 @@
 */
 
 
-#ifndef FEEDERQUEUE_H
-#define FEEDERQUEUE_H
+#ifndef INDEXSCHEDULER_H
+#define INDEXSCHEDULER_H
 
 #include <QObject>
 #include <Akonadi/Item>
@@ -29,7 +29,7 @@ class FeederPluginloader;
 class KJob;
 
 /**
- * The queue takes collections and items and indexes them
+ * The scheduler takes collections and items and indexes them
  * 
  * There is basically: 
  *  -CollectionQueue: list of collections to index (initial indexing), items end up in the ItemQueue
@@ -48,12 +48,12 @@ class KJob;
  *  -addItem: to index a single item (high priority)
  *
  */
-class FeederQueue: public QObject
+class IndexScheduler: public QObject
 {
   Q_OBJECT
 public:
-  explicit FeederQueue( QObject* parent = 0 );
-  virtual ~FeederQueue();
+  explicit IndexScheduler( QObject* parent = 0 );
+  virtual ~IndexScheduler();
 
   ///add the collection to the queue, all items of it will be fetched and indexed
   void addCollection(const Akonadi::Collection &);
@@ -132,4 +132,4 @@ private:
 
 
 
-#endif // FEEDERQUEUE_H
+#endif // INDEXSCHEDULER_H

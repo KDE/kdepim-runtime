@@ -126,12 +126,12 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
   QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
 
-  mQueue.setIndexingSpeed( mIdleDetectionDisabled ? FeederQueue::FullSpeed : FeederQueue::ReducedSpeed );
+  mScheduler.setIndexingSpeed( mIdleDetectionDisabled ? IndexScheduler::FullSpeed : IndexScheduler::ReducedSpeed );
 
-  connect(&mQueue, SIGNAL(progress(int)), SIGNAL(percent(int)));
-  connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
-  connect(&mQueue, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
-  connect(&mQueue, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
+  connect(&mScheduler, SIGNAL(progress(int)), SIGNAL(percent(int)));
+  connect(&mScheduler, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
+  connect(&mScheduler, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
+  connect(&mScheduler, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -161,7 +161,7 @@ void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
 
 void NepomukFeederAgent::forceReindexItem(const qlonglong id)
 {
-  mQueue.addItem( Akonadi::Item(id) );
+  mScheduler.addItem( Akonadi::Item(id) );
 }
 
 void NepomukFeederAgent::processNextNotification()
@@ -182,7 +182,7 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
     return processNextNotification();
 
   Q_ASSERT( item.parentCollection() == collection );
-  mQueue.addItem( item );
+  mScheduler.addItem( item );
   processNextNotification();
 }
 
@@ -208,7 +208,7 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
     return processNextNotification();
 
   //kDebug() << item.id() << partIdentifiers;
-  mQueue.addItem( item );
+  mScheduler.addItem( item );
   processNextNotification();
 }
 
@@ -324,7 +324,7 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
   for (;it != items.constEnd(); it++) {
     Akonadi::Item item( it.key() );
     item.setMimeType( it.value().second );
-    mQueue.addLowPrioItem( item );
+    mScheduler.addLowPrioItem( item );
   }
 
   NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->staleUris(), this);
@@ -339,7 +339,7 @@ void NepomukFeederAgent::updateAll()
 void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& collections)
 {
   foreach ( const Collection &collection, collections ) {
-    mQueue.addCollection( collection );
+    mScheduler.addCollection( collection );
   }
 }
 
@@ -392,7 +392,7 @@ void NepomukFeederAgent::disableIdleDetection( bool value )
 {
   mIdleDetectionDisabled = value;
   if ( value ) {
-    mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
+    mScheduler.setIndexingSpeed( IndexScheduler::FullSpeed );
   }
   if ( KIdleTime::instance()->idleTime() ) {
     systemIdle();
@@ -424,11 +424,11 @@ void NepomukFeederAgent::doSetOnline(bool online)
 
 void NepomukFeederAgent::setRunning( bool running )
 {
-  mQueue.setOnline( running );
+  mScheduler.setOnline( running );
   if ( running ) {
     findUnindexed();
-    if ( mQueue.currentCollection().isValid() ) {
-      const QString summary = i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() );
+    if ( mScheduler.currentCollection().isValid() ) {
+      const QString summary = i18n( "Indexing collection '%1'...", mScheduler.currentCollection().name() );
       const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
       KNotification::event( QLatin1String("startindexingcollection"),
                               summary,
@@ -449,7 +449,7 @@ void NepomukFeederAgent::systemIdle()
     return;
 
   KIdleTime::instance()->catchNextResumeEvent();
-  mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
+  mScheduler.setIndexingSpeed( IndexScheduler::FullSpeed );
 }
 
 void NepomukFeederAgent::systemResumed()
@@ -457,7 +457,7 @@ void NepomukFeederAgent::systemResumed()
   if ( mIdleDetectionDisabled || !isOnline() )
     return;
 
-  mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
+  mScheduler.setIndexingSpeed( IndexScheduler::ReducedSpeed );
 }
 
 void NepomukFeederAgent::emitIdle(const QString &string)
@@ -477,7 +477,7 @@ bool NepomukFeederAgent::isDisableIdleDetection() const
 
 bool NepomukFeederAgent::queueIsEmpty()
 {
-  return mQueue.isEmpty();
+  return mScheduler.isEmpty();
 }
 
 QString NepomukFeederAgent::currentCollectionName()
@@ -485,14 +485,14 @@ QString NepomukFeederAgent::currentCollectionName()
   if(queueIsEmpty()) {
     return QString();
   } else {
-    return mQueue.currentCollection().name();
+    return mScheduler.currentCollection().name();
   }
 }
 
 QStringList NepomukFeederAgent::listOfCollection() const
 {
   QStringList names;
-  Akonadi::Collection::List listQueueCollection = mQueue.listOfCollection();
+  Akonadi::Collection::List listQueueCollection = mScheduler.listOfCollection();
   Q_FOREACH(const Akonadi::Collection& collection, listQueueCollection) {
     names << collection.name();
   }

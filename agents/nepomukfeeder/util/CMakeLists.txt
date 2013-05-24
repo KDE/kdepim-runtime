@@ -2,7 +2,7 @@ include_directories(
         ../
 )
 
-set(shared_SRCS ../feederqueue.cpp ../itemqueue.cpp ../nepomukhelpers.cpp ../pluginloader.cpp ../propertycache.cpp)
+set(shared_SRCS ../indexscheduler.cpp ../itemqueue.cpp ../nepomukhelpers.cpp ../pluginloader.cpp ../propertycache.cpp)
 
 set(nepomukpimindexerutility_SRCS
    nepomukpimindexerutility.cpp

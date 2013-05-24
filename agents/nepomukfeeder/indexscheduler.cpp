@@ -16,7 +16,7 @@
 */
 
 
-#include "feederqueue.h"
+#include "indexscheduler.h"
 
 #include <nie.h>
 
@@ -38,7 +38,7 @@
 
 using namespace Akonadi;
 
-FeederQueue::FeederQueue( QObject* parent )
+IndexScheduler::IndexScheduler( QObject* parent )
 : QObject( parent ),
   mTotalAmount( 0 ),
   mPendingJobs( 0 ),
@@ -60,19 +60,19 @@ FeederQueue::FeederQueue( QObject* parent )
   connect( &emailItemQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
 }
 
-FeederQueue::~FeederQueue()
+IndexScheduler::~IndexScheduler()
 {
 
 }
 
-void FeederQueue::setReindexing( bool reindex )
+void IndexScheduler::setReindexing( bool reindex )
 {
   // FIXME: This doesn't seem like it will do anything?
   //        Shouldn't it call some kind of signal?
   mReIndex = reindex;
 }
 
-void FeederQueue::setOnline( bool online )
+void IndexScheduler::setOnline( bool online )
 {
   //kDebug() << online;
   mOnline = online;
@@ -80,7 +80,7 @@ void FeederQueue::setOnline( bool online )
       continueIndexing();
 }
 
-void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
+void IndexScheduler::setIndexingSpeed(IndexScheduler::IndexingSpeed speed)
 {
     const int s_reducedSpeedDelay = 500; // ms
     const int s_snailPaceDelay = 3000;   // ms
@@ -101,7 +101,7 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     }
 }
 
-void FeederQueue::addCollection( const Akonadi::Collection &collection )
+void IndexScheduler::addCollection( const Akonadi::Collection &collection )
 {
   //kDebug() << collection.id();
 
@@ -124,7 +124,7 @@ void FeederQueue::addCollection( const Akonadi::Collection &collection )
   }
 }
 
-void FeederQueue::processNextCollection()
+void IndexScheduler::processNextCollection()
 {
   //kDebug();
   if ( mCurrentCollection.isValid() )
@@ -147,7 +147,7 @@ void FeederQueue::processNextCollection()
   ++mPendingJobs;
 }
 
-void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
+void IndexScheduler::itemHeadersReceived( const Akonadi::Item::List& items )
 {
   kDebug() << items.count();
   Akonadi::Item::List itemsToUpdate;
@@ -168,7 +168,7 @@ void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
   }
 }
 
-void FeederQueue::itemFetchResult(KJob* job)
+void IndexScheduler::itemFetchResult(KJob* job)
 {
   if ( job->error() )
     kWarning() << job->errorString();
@@ -189,7 +189,7 @@ static inline QString emailMimetype()
   return QLatin1String("message/rfc822");
 }
 
-void FeederQueue::addItem( const Akonadi::Item &item )
+void IndexScheduler::addItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
   highPrioQueue.addItem( item );
@@ -197,7 +197,7 @@ void FeederQueue::addItem( const Akonadi::Item &item )
   mProcessItemQueueTimer.start();
 }
 
-void FeederQueue::addLowPrioItem( const Akonadi::Item &item )
+void IndexScheduler::addLowPrioItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
   if (item.mimeType() == emailMimetype()) {
@@ -209,18 +209,18 @@ void FeederQueue::addLowPrioItem( const Akonadi::Item &item )
   mProcessItemQueueTimer.start();
 }
 
-bool FeederQueue::isEmpty()
+bool IndexScheduler::isEmpty()
 {
   return allQueuesEmpty() && mCollectionQueue.isEmpty();
 }
 
-void FeederQueue::continueIndexing()
+void IndexScheduler::continueIndexing()
 {
   kDebug();
   mProcessItemQueueTimer.start();
 }
 
-void FeederQueue::collectionFullyIndexed()
+void IndexScheduler::collectionFullyIndexed()
 {
     NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
     const QString summary = i18n( "Indexing collection '%1' completed.", mCurrentCollection.name() );
@@ -238,7 +238,7 @@ void FeederQueue::collectionFullyIndexed()
     processNextCollection();
 }
 
-void FeederQueue::indexingComplete()
+void IndexScheduler::indexingComplete()
 {
   //kDebug() << "fully indexed";
   mReIndex = false;
@@ -247,7 +247,7 @@ void FeederQueue::indexingComplete()
   emit fullyIndexed();
 }
 
-void FeederQueue::processItemQueue()
+void IndexScheduler::processItemQueue()
 {
   if ( mTotalAmount ) {
     int percent = ( mTotalAmount - size() ) * 100.0 / mTotalAmount;
@@ -286,7 +286,7 @@ void FeederQueue::processItemQueue()
   emit idle( i18n( "Ready to index data." ) );
 }
 
-void FeederQueue::prioQueueFinished()
+void IndexScheduler::prioQueueFinished()
 {
   if ( allQueuesEmpty() && ( mPendingJobs == 0 )) {
     if (mCurrentCollection.isValid()) {
@@ -298,7 +298,7 @@ void FeederQueue::prioQueueFinished()
   }
 }
 
-bool FeederQueue::allQueuesEmpty() const
+bool IndexScheduler::allQueuesEmpty() const
 {
   if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && emailItemQueue.isEmpty() ) {
     return true;
@@ -307,7 +307,7 @@ bool FeederQueue::allQueuesEmpty() const
 }
 
 
-void FeederQueue::batchFinished()
+void IndexScheduler::batchFinished()
 {
   /*if ( sender() == &highPrioQueue )
     kDebug() << "high prio batch finished--------------------";
@@ -320,26 +320,26 @@ void FeederQueue::batchFinished()
   }
 }
 
-void FeederQueue::jobResult(KJob* job)
+void IndexScheduler::jobResult(KJob* job)
 {
   if ( job->error() )
     kWarning() << job->errorString();
 }
 
-const Akonadi::Collection& FeederQueue::currentCollection()
+const Akonadi::Collection& IndexScheduler::currentCollection()
 {
   return mCurrentCollection;
 }
 
-Akonadi::Collection::List FeederQueue::listOfCollection() const
+Akonadi::Collection::List IndexScheduler::listOfCollection() const
 {
   return mCollectionQueue;
 }
 
-int FeederQueue::size()
+int IndexScheduler::size()
 {
   return lowPrioQueue.size() + highPrioQueue.size() + emailItemQueue.size();
 }
 
 
-#include "feederqueue.moc"
+#include "indexscheduler.moc"
