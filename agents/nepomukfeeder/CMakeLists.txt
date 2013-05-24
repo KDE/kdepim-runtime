@@ -30,7 +30,6 @@ set(akonadi_nepomuk_feeder_SRCS
     nepomukhelpers.cpp
     propertycache.cpp
     findunindexeditemsjob.cpp
-    nepomukcleanerjob.cpp
     nepomukfeederagentdialog.cpp
     indexerconfig.cpp
 )

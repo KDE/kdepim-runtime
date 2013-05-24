@@ -52,7 +52,6 @@
 #include "pluginloader.h"
 #include "nepomukhelpers.h"
 #include "findunindexeditemsjob.h"
-#include "nepomukcleanerjob.h"
 #include "nepomukfeeder-config.h"
 #include "nepomukfeederadaptor.h"
 
@@ -215,7 +214,7 @@ void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
       return;
 
   //kDebug() << item.url();
-  Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
+  mScheduler.removeItem( item );
   processNextNotification();
 }
 
@@ -257,7 +256,7 @@ void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection
   if( !isOnline() )
       return;
 
-  Nepomuk2::removeResources( QList <QUrl>() << collection.url() );
+  mScheduler.removeCollection( collection );
   processNextNotification();
 }
 
@@ -325,8 +324,7 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     mScheduler.addLowPrioItem( item );
   }
 
-  NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->staleUris(), this);
-  cleanerJob->start();
+  mScheduler.removeNepomukUris( findJob->staleUris() );
 }
 
 void NepomukFeederAgent::updateAll()

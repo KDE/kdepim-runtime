@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2011  Christian Mollekopf <chrigi_1@fastmail.fm>
+    Copyright (C) 2013  Vishesh Handa <me@vhanda.in>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,6 +61,19 @@ public:
   ///adds the item to the highPrioQueue or emailQueue
   void addItem(const Akonadi::Item &);
   void addLowPrioItem(const Akonadi::Item &);
+
+  /**
+   * Remove the collection \p collection from the Nepomuk index
+   */
+  void removeCollection(const Akonadi::Collection& collection);
+
+  /**
+   * Remove the item \p item from the Nepomuk index.
+   */
+  void removeItem(const Akonadi::Item& item);
+
+  void removeNepomukUris(const QList<QUrl> uriList);
+
   /**
    * If enabled all items will be reindexed
    * The flag will be reset once all collections/items have been indexed
@@ -114,7 +128,6 @@ private slots:
   void jobResult( KJob* job );
 
 private:
-  bool allQueuesEmpty() const;
   void itemHeadersReceived( const Akonadi::Item::List &items );
   void continueIndexing(); //start the indexing if work is to be done
   void collectionFullyIndexed();
@@ -130,6 +143,11 @@ private:
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
   ItemQueue emailItemQueue;
+
+  // To Clear
+  Akonadi::Item::List mItemsToRemove;
+  Akonadi::Collection::List mCollectionsToRemove;
+  QList<QUrl> mUrisToRemove;
 };
 
 

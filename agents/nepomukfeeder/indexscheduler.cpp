@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2011  Christian Mollekopf <chrigi_1@fastmail.fm>
+    Copyright (C) 2013  Vishesh Handa <me@vhanda.in>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,6 +34,8 @@
 
 #include "nepomukhelpers.h"
 #include "nepomukfeeder-config.h"
+
+#include <Nepomuk2/DataManagement>
 
 using namespace Akonadi;
 
@@ -207,9 +210,28 @@ void IndexScheduler::addLowPrioItem( const Akonadi::Item &item )
   mProcessItemQueueTimer.start();
 }
 
+void IndexScheduler::removeCollection(const Collection& collection)
+{
+    mCollectionsToRemove.append( collection );
+}
+
+void IndexScheduler::removeItem(const Item& item)
+{
+    mItemsToRemove.append( item );
+}
+
+void IndexScheduler::removeNepomukUris(const QList< QUrl > uriList)
+{
+    mUrisToRemove.append( uriList );
+}
+
+
 bool IndexScheduler::isEmpty()
 {
-  return allQueuesEmpty() && mCollectionQueue.isEmpty();
+  return highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() &&
+         emailItemQueue.isEmpty() && mCollectionQueue.isEmpty() &&
+         mCollectionsToRemove.isEmpty() &&
+         mItemsToRemove.isEmpty();
 }
 
 void IndexScheduler::continueIndexing()
@@ -271,13 +293,56 @@ void IndexScheduler::processItemQueue()
     }
   }
 
+  // Cleaning
+  else if( !mCollectionsToRemove.isEmpty() ) {
+      kDebug() << "Clear collection";
+      // FIXME: We should probably be clearing the contents of the collection as well
+
+      // Clear 10 collections at a time
+      QList<QUrl> nieUrls;
+      for( int i=0; i<10 && mCollectionsToRemove.count(); i++ )
+          nieUrls << mCollectionsToRemove.takeFirst().url();
+
+      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
+      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+      emit running( i18n("Clearing unused Emails") );
+      return;
+  }
+
+  else if( !mItemsToRemove.isEmpty() ) {
+      // Clear 10 items at a time
+      QList<QUrl> nieUrls;
+      for( int i=0; i<10 && mItemsToRemove.count(); i++ )
+          nieUrls << mItemsToRemove.takeFirst().url();
+
+      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
+      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+      emit running( i18n("Clearing unused Emails") );
+      return;
+  }
+
+  else if( !mUrisToRemove.isEmpty() ) {
+      // Clear 10 at a time
+      QList<QUrl> uris;
+      for( int i=0; i<10 && mUrisToRemove.count(); i++ )
+            uris << mUrisToRemove.takeFirst();
+
+      KJob *removeJob = Nepomuk2::removeResources( uris, Nepomuk2::RemoveSubResoures );
+      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+      emit running( i18n("Clearing unused Emails") );
+      return;
+  }
+
   kDebug() << "idle";
   emit idle( i18n( "Ready to index data." ) );
 }
 
 void IndexScheduler::prioQueueFinished()
 {
-  if ( allQueuesEmpty() && ( mPendingJobs == 0 )) {
+  if ( isEmpty() && ( mPendingJobs == 0 )) {
     if (mCurrentCollection.isValid()) {
       collectionFullyIndexed();
     } else {
@@ -287,22 +352,13 @@ void IndexScheduler::prioQueueFinished()
   }
 }
 
-bool IndexScheduler::allQueuesEmpty() const
-{
-  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && emailItemQueue.isEmpty() ) {
-    return true;
-  }
-  return false;
-}
-
-
 void IndexScheduler::batchFinished()
 {
   /*if ( sender() == &highPrioQueue )
     kDebug() << "high prio batch finished--------------------";
   if ( sender() == &lowPrioQueue )
     kDebug() << "low prio batch finished--------------------";*/
-  if ( !allQueuesEmpty() ) {
+  if ( !isEmpty() ) {
     //kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();
@@ -328,6 +384,10 @@ void IndexScheduler::clear()
   lowPrioQueue.clear();
   highPrioQueue.clear();
   emailItemQueue.clear();
+
+  mItemsToRemove.clear();
+  mCollectionsToRemove.clear();
+  mUrisToRemove.clear();
 }
 
 
