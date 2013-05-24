@@ -106,7 +106,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
 
   new NepomukFeederAdaptor( this );
 
-  Nepomuk2::ResourceManager::instance()->init();
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(selfTest()) );
