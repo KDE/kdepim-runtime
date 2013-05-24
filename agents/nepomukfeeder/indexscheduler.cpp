@@ -27,8 +27,6 @@
 #include <KLocalizedString>
 #include <KUrl>
 #include <KJob>
-#include <KIcon>
-#include <KNotification>
 #include <KIconLoader>
 
 #include <QDateTime>
@@ -223,16 +221,7 @@ void IndexScheduler::continueIndexing()
 void IndexScheduler::collectionFullyIndexed()
 {
     NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
-    const QString summary = i18n( "Indexing collection '%1' completed.", mCurrentCollection.name() );
     mCurrentCollection = Collection();
-    const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-    KNotification::event( QLatin1String("indexingcollectioncompleted"),
-                            summary,
-                            pixmap,
-                            0,
-                            KNotification::CloseOnTimeout,
-                            KGlobal::mainComponent());
-
 
     //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
     processNextCollection();
@@ -324,16 +313,6 @@ void IndexScheduler::jobResult(KJob* job)
 {
   if ( job->error() )
     kWarning() << job->errorString();
-}
-
-const Akonadi::Collection& IndexScheduler::currentCollection()
-{
-  return mCurrentCollection;
-}
-
-Akonadi::Collection::List IndexScheduler::listOfCollection() const
-{
-  return mCollectionQueue;
 }
 
 int IndexScheduler::size()

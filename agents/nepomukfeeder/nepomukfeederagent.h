@@ -70,9 +70,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     bool queueIsEmpty();
 
-    QString currentCollectionName();
-
-    QStringList listOfCollection() const;
     qlonglong totalitems() const;
     qlonglong indexeditems() const;
     bool isIndexing() const;

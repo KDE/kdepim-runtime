@@ -17,12 +17,6 @@
     <method name="queueIsEmpty" >
       <arg type="b" direction="out"/>
     </method>
-    <method name="currentCollectionName" >
-      <arg type="s" direction="out"/>
-    </method>
-    <method name="listOfCollection" >
-      <arg type="as" direction="out"/>
-    </method>
     <method name="totalitems" >
       <arg type="x" direction="out"/>
     </method>

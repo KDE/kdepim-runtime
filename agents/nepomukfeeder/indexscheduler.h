@@ -68,9 +68,6 @@ public:
 
   bool isEmpty();
 
-  /** returns the collection currently being processed */
-  const Akonadi::Collection &currentCollection();
-
   /** start/stop indexing */
   void setOnline(bool);
 
@@ -96,7 +93,6 @@ public:
 
   void setIndexingSpeed( IndexingSpeed speed );
 
-  Akonadi::Collection::List listOfCollection() const;
 signals:
   void fullyIndexed();
   void progress(int);

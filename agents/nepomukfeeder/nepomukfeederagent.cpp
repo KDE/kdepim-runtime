@@ -45,9 +45,6 @@
 #include <KStandardDirs>
 #include <KIdleTime>
 #include <KConfigGroup>
-#include <KNotification>
-#include <KIconLoader>
-#include <KIcon>
 #include <KWindowSystem>
 
 #include <QtCore/QTimer>
@@ -411,19 +408,6 @@ void NepomukFeederAgent::doSetOnline(bool online)
 
     if ( online ) {
         findUnindexed();
-        if ( mScheduler.currentCollection().isValid() ) {
-            const QString summary = i18n( "Indexing collection '%1'...", mScheduler.currentCollection().name() );
-            const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-            KNotification::event( QLatin1String("startindexingcollection"),
-                                  summary,
-                                  pixmap,
-                                  0,
-                                  KNotification::CloseOnTimeout,
-                                  KGlobal::mainComponent());
-            emit status( AgentBase::Running, summary );
-        }
-        else
-            emit status( AgentBase::Running, i18n( "Indexing recent changes..." ) );
     }
     else {
         if( m_collectionFetchJob ) {
@@ -474,25 +458,6 @@ bool NepomukFeederAgent::isDisableIdleDetection() const
 bool NepomukFeederAgent::queueIsEmpty()
 {
   return mScheduler.isEmpty();
-}
-
-QString NepomukFeederAgent::currentCollectionName()
-{
-  if(queueIsEmpty()) {
-    return QString();
-  } else {
-    return mScheduler.currentCollection().name();
-  }
-}
-
-QStringList NepomukFeederAgent::listOfCollection() const
-{
-  QStringList names;
-  Akonadi::Collection::List listQueueCollection = mScheduler.listOfCollection();
-  Q_FOREACH(const Akonadi::Collection& collection, listQueueCollection) {
-    names << collection.name();
-  }
-  return names;
 }
 
 qlonglong NepomukFeederAgent::totalitems() const
