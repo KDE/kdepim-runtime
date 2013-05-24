@@ -226,7 +226,8 @@ void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, 
   Q_UNUSED( parent );
   if ( indexingDisabled( collection ) )
     return processNextNotification();
-  NepomukHelpers::addCollectionToNepomuk( collection );
+
+  mScheduler.addCollection( collection );
   processNextNotification();
 }
 
