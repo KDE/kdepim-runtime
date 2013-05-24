@@ -320,5 +320,15 @@ int IndexScheduler::size()
   return lowPrioQueue.size() + highPrioQueue.size() + emailItemQueue.size();
 }
 
+void IndexScheduler::clear()
+{
+  mCollectionQueue.clear();
+  mCurrentCollection = Collection();
+
+  lowPrioQueue.clear();
+  highPrioQueue.clear();
+  emailItemQueue.clear();
+}
+
 
 #include "indexscheduler.moc"

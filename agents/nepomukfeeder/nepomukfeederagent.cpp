@@ -419,6 +419,8 @@ void NepomukFeederAgent::doSetOnline(bool online)
             m_findUnindexedItemsJob->kill();
             m_findUnindexedItemsJob = 0;
         }
+
+        mScheduler.clear();
     }
 
     Akonadi::AgentBase::doSetOnline( online );

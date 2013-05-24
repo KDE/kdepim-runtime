@@ -93,6 +93,12 @@ public:
 
   void setIndexingSpeed( IndexingSpeed speed );
 
+  /**
+   * Clears all the Items in the internal queues which
+   * are supposed to be indexed
+   */
+  void clear();
+
 signals:
   void fullyIndexed();
   void progress(int);
@@ -106,6 +112,7 @@ private slots:
   void prioQueueFinished();
   void batchFinished();
   void jobResult( KJob* job );
+
 private:
   bool allQueuesEmpty() const;
   void itemHeadersReceived( const Akonadi::Item::List &items );

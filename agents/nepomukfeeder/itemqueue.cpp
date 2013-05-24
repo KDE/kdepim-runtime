@@ -239,5 +239,12 @@ void ItemQueue::slotEmitFinished()
       emit finished();
 }
 
+void ItemQueue::clear()
+{
+  mRunningJobs = 0;
+  mItemPipeline.clear();
+  mFetchedItemList.clear();
+}
+
 
 #include "itemqueue.moc"

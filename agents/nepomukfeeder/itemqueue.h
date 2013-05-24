@@ -85,6 +85,7 @@ public:
    */
   void setProcessingDelay(int delay);
 
+  void clear();
 signals:
   /** all items processed */
   void finished();
