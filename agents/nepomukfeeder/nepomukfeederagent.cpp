@@ -96,10 +96,7 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
   mInitialUpdateDone( false ),
   mIdleDetectionDisabled( true ),
-  mLostChanges( false ),
   mInitialIndexingDisabled( false ),
-  mItemBatchCounter( 0 ),
-  mBatchDetected( false ),
   mTotalItems(0),
   mIndexedItems(0),
   m_collectionFetchJob(0),
@@ -121,10 +118,11 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   KConfigGroup cfgGrp( componentData().config(), identifier() );
   KIdleTime::instance()->addIdleTimeout( 1000 * cfgGrp.readEntry( "IdleTimeout", 120 ) );
   disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", true ) );
-  mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
+  //mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
 
   m_indexerConfig = new IndexerConfig( this );
   connect( m_indexerConfig, SIGNAL(configChanged()), this, SLOT(selfTest()) );
+
   setOnline( false );
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
   QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
@@ -135,17 +133,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
   connect(&mQueue, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
   connect(&mQueue, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
-  
-  mItemBatchTimer.setSingleShot( true );
-  connect( &mItemBatchTimer, SIGNAL(timeout()), SLOT(batchTimerElapsed()) );
-
-  mInitialIndexingTimer.setSingleShot( true );
-  connect( &mInitialIndexingTimer, SIGNAL(timeout()), SLOT(checkForLostChanges()) );
-  if ( !mInitialIndexingDisabled ) {
-    mInitialIndexingTimer.start( 3600 * 1000 );
-  } else {
-    kDebug() << "Initial indexing was disabled in the configuration.";
-  }
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -186,36 +173,6 @@ void NepomukFeederAgent::processNextNotification()
   }
 }
 
-static int maxItemsWithinTimeframe = 10;
-static int timeframeSeconds = 10;
-void NepomukFeederAgent::batchTimerElapsed()
-{
-  if (mItemBatchCounter <= maxItemsWithinTimeframe) {
-    kDebug() << "end of batch";
-    mBatchDetected = false;
-  } else {
-    mItemBatchTimer.start( timeframeSeconds * 1000 );
-  }
-  mItemBatchCounter = 0;
-}
-
-bool NepomukFeederAgent::skipBatch(const Item& item)
-{
-  if ( item.mimeType() != emailMimetype() ) {
-    return false;
-  }
-  mItemBatchCounter++;
-  if (!mBatchDetected && mItemBatchCounter > maxItemsWithinTimeframe) {
-    kDebug() << "batch detected, skipping";
-    mBatchDetected = true;
-  }
-  
-  if (!mItemBatchTimer.isActive()) {
-    mItemBatchTimer.start( timeframeSeconds * 1000 );
-  }
-  return mBatchDetected;
-}
-
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
   if( !isOnline() )
@@ -224,12 +181,6 @@ void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Col
   kDebug() << item.id();
   if ( indexingDisabled( collection ) )
     return processNextNotification();
-  if ( skipBatch( item ) ) {
-    kDebug() << "skipping item";
-    //Mark that we skipped some changes which we should retrieve again using FindUnindexedItemsJob
-    mLostChanges = true;
-    return processNextNotification();
-  }
 
   Q_ASSERT( item.parentCollection() == collection );
   mQueue.addItem( item );
@@ -256,9 +207,7 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
     return processNextNotification();
   if ( indexingDisabled( item.parentCollection() ) )
     return processNextNotification();
-  if ( skipBatch( item ) ) {
-    return processNextNotification();
-  }
+
   //kDebug() << item.id() << partIdentifiers;
   mQueue.addItem( item );
   processNextNotification();
@@ -381,19 +330,6 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
 
   NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->staleUris(), this);
   cleanerJob->start();
-}
-
-void NepomukFeederAgent::checkForLostChanges()
-{
-  //Check every hour if we should pick up some unindexed new emails, if currently busy come back a bit later
-  //Since we only skip emails, we don't re-run the full check regulary.
-  if ( isOnline() && mLostChanges && mQueue.isEmpty() ) {
-    findUnindexed();
-    mLostChanges = false;
-    mInitialIndexingTimer.start( 1800 * 1000 );
-  } else {
-    mInitialIndexingTimer.start( 60 * 1000 );
-  }
 }
 
 void NepomukFeederAgent::updateAll()

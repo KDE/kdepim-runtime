@@ -110,23 +110,16 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void collectionListReceived( KJob* );
     void configure( WId windowId );
     void foundUnindexedItems(KJob *job);
-    void batchTimerElapsed();
-    void checkForLostChanges();
 
     void emitIdle(const QString&);
     void emitRunning(const QString&);
   private:
     bool mInitialUpdateDone;
     bool mIdleDetectionDisabled;
-    bool mLostChanges;
     bool mInitialIndexingDisabled;
 
     FeederQueue mQueue;
-    bool skipBatch(const Akonadi::Item &item);
-    QTimer mItemBatchTimer;
-    int mItemBatchCounter;
-    bool mBatchDetected;
-    QTimer mInitialIndexingTimer;
+
     qlonglong mTotalItems;
     qlonglong mIndexedItems;
 
