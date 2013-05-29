@@ -293,18 +293,6 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
     return false;
   }
 
-  const DavProtocolBase *protocol = DavManager::self()->davProtocol( davUrl.protocol() );
-  if ( !protocol ) {
-    cancelTask();
-    return false;
-  }
-
-  if ( protocol->useMultiget() ) {
-    // Item is already in the cache as it's been fetched with multiget
-    itemRetrieved( item );
-    return true;
-  }
-
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
   davItem.setContentType( "text/calendar" );
