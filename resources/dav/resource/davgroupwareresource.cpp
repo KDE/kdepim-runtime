@@ -554,6 +554,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     seenRids.insert( davItem.url() );
 
     Akonadi::Item item;
+    item.setParentCollection( collection );
     item.setRemoteId( davItem.url() );
     item.setMimeType( davItem.contentType() );
 
