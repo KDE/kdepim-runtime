@@ -62,7 +62,7 @@ Dock::Dock( QWidget *parent )
 {
     m_parentWidget = parent;
 
-    setIconByName("akonadi");
+    setIconByName("akonaditray");
     setCategory(SystemServices);
     setStatus(Passive);
     KMenu *menu = new KMenu();
