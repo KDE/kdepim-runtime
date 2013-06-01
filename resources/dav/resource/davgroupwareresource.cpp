@@ -257,7 +257,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
   // work around the fact that Akonadi will rightfully try to retrieve items
   // from it. So just return an empty list
   if ( collection.remoteId() == identifier() ) {
-    itemsRetrieved( Akonadi::Item::List() );
+    itemsRetrievalDone();
     return;
   }
 
@@ -290,18 +290,6 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   if ( !davUrl.url().isValid() ) {
     cancelTask();
     return false;
-  }
-
-  const DavProtocolBase *protocol = DavManager::self()->davProtocol( davUrl.protocol() );
-  if ( !protocol ) {
-    cancelTask();
-    return false;
-  }
-
-  if ( protocol->useMultiget() ) {
-    // Item is already in the cache as it's been fetched with multiget
-    itemRetrieved( item );
-    return true;
   }
 
   DavItem davItem;
@@ -556,7 +544,8 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
 
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
-  Akonadi::Item::List items;
+  Akonadi::Item::List changedItems;
+  Akonadi::Item::List removedItems;
   QSet<QString> seenRids;
   QStringList changedRids;
 
@@ -565,12 +554,15 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     seenRids.insert( davItem.url() );
 
     Akonadi::Item item;
+    item.setParentCollection( collection );
     item.setRemoteId( davItem.url() );
     item.setMimeType( davItem.contentType() );
+    item.setRemoteRevision( davItem.etag() );
 
     if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
       mEtagCache.markAsChanged( item.remoteId() );
       changedRids << item.remoteId();
+      changedItems << item;
 
       // Only clear the payload (and therefor trigger a refetch from the backend) if we
       // do not use multiget, because in this case we fetch the complete payload
@@ -580,17 +572,17 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
         item.clearPayload();
       }
     }
-
-    item.setRemoteRevision( davItem.etag() );
-
-    items << item;
   }
 
   QSet<QString> removedRids = mItemsRidCache[collection.remoteId()];
   mItemsRidCache[collection.remoteId()] = seenRids;
   removedRids.subtract( seenRids );
-  foreach ( const QString &rmd, removedRids )
+  foreach ( const QString &rmd, removedRids ) {
+    Akonadi::Item item;
+    item.setRemoteId( rmd );
+    removedItems << item;
     mEtagCache.removeEtag( rmd );
+  }
 
   // If the protocol supports multiget then deviate from the expected behavior
   // and fetch all items with payload now instead of waiting for Akonadi to
@@ -600,12 +592,12 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   if ( protocolSupportsMultiget && !changedRids.isEmpty() ) {
     DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, changedRids );
     connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMultigetFinished(KJob*)) );
-    fetchJob->setProperty( "items", QVariant::fromValue( items ) );
+    fetchJob->setProperty( "items", QVariant::fromValue( changedItems ) );
+    fetchJob->setProperty( "removedItems", QVariant::fromValue( removedItems ) );
     fetchJob->start();
-
     // delay the call of itemsRetrieved() to onMultigetFinished()
   } else {
-    itemsRetrieved( items );
+    itemsRetrievedIncremental( changedItems, removedItems );
   }
 }
 
@@ -623,6 +615,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
   }
 
   const Akonadi::Item::List origItems = job->property( "items" ).value<Akonadi::Item::List>();
+  const Akonadi::Item::List removedItems = job->property( "removedItems" ).value<Akonadi::Item::List>();
   const DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob*>( job );
 
   Akonadi::Item::List items;
@@ -668,7 +661,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     items << item;
   }
 
-  itemsRetrieved( items );
+  itemsRetrievedIncremental( items, removedItems );
 }
 
 void DavGroupwareResource::onRetrieveItemFinished( KJob *job )

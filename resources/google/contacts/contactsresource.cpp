@@ -162,7 +162,7 @@ void ContactsResource::itemAdded( const Item &item, const Collection &collection
 
     /* If the contact has been moved into My Contacts group then modify the membership */
     if ( collection.remoteId() == MYCONTACTS_REMOTEID ) {
-        contact->addGroup( collection.remoteId() );
+        contact->addGroup( QString::fromLatin1( "http://www.google.com/m8/feeds/groups/%1/base/6" ).arg( QString::fromLatin1( QUrl::toPercentEncoding( account()->accountName() ) ) ) );
     }
 
     /* If the contact has been moved to Other Contacts then remove all groups */

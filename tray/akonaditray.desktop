@@ -2,7 +2,7 @@
 Type=Application
 Categories=Qt;KDE;Utility;
 Exec=akonaditray
-Icon=akonadi
+Icon=akonaditray
 Name=Akonaditray
 Name[ar]=Akonaditray
 Name[bs]=Akonaditray
