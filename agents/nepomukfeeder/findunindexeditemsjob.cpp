@@ -18,49 +18,28 @@
 #include "findunindexeditemsjob.h"
 #include "nepomukfeeder-config.h"
 #include "pluginloader.h"
+#include "nepomukhelpers.h"
 
 #include <aneo.h>
-#include <akonadi/entityhiddenattribute.h>
-#include <akonadi/indexpolicyattribute.h>
+
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemFetchJob>
+
 #include <Nepomuk2/ResourceManager>
+#include <Nepomuk2/Vocabulary/NIE>
+
 #include <Soprano/Util/AsyncQuery>
 #include <Soprano/Node>
-#include <Nepomuk2/Vocabulary/NIE>
+
 #include <QTime>
 #include <QStringList>
+
 #ifdef HAVE_MALLOC_H
     #include <malloc.h>
 #endif
 
-namespace Akonadi {
-
-    static inline bool indexingDisabled( const Collection &collection )
-    {
-        if ( collection.hasAttribute<EntityHiddenAttribute>() )
-            return true;
-
-        IndexPolicyAttribute *indexPolicy = collection.attribute<IndexPolicyAttribute>();
-        if ( indexPolicy && !indexPolicy->indexingEnabled() )
-            return true;
-
-        if ( collection.isVirtual() )
-            return true;
-
-        // check if we have a plugin for the stuff in this collection
-        foreach ( const QString &mimeType, collection.contentMimeTypes() ) {
-            if ( mimeType == Collection::mimeType() )
-                continue;
-            if ( !FeederPluginloader::instance().feederPluginsForMimeType( mimeType ).isEmpty() )
-                return false;
-        }
-
-        return true;
-    }
-}
 
 FindUnindexedItemsJob::FindUnindexedItemsJob(int compatLevel, QObject* parent)
 : KJob(parent),

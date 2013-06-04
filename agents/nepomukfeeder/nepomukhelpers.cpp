@@ -36,6 +36,8 @@
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 #include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/EntityHiddenAttribute>
+#include <akonadi/indexpolicyattribute.h>
 
 #include <KJob>
 
@@ -177,5 +179,29 @@ bool isIndexed(const Akonadi::Collection& collection)
                                                                             Soprano::Query::QueryLanguageSparql ).boolValue();
 }
 
-
 }
+
+bool indexingDisabled(const Akonadi::Collection& collection)
+{
+    if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+        return true;
+
+    Akonadi::IndexPolicyAttribute *indexPolicy = collection.attribute<Akonadi::IndexPolicyAttribute>();
+    if ( indexPolicy && !indexPolicy->indexingEnabled() )
+        return true;
+
+    if ( collection.isVirtual() )
+        return true;
+
+    // check if we have a plugin for the stuff in this collection
+    foreach ( const QString &mimeType, collection.contentMimeTypes() ) {
+        if ( mimeType == Akonadi::Collection::mimeType() )
+            continue;
+        if ( !FeederPluginloader::instance().feederPluginsForMimeType( mimeType ).isEmpty() )
+            return false;
+    }
+
+    return true;
+}
+
+

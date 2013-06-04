@@ -44,7 +44,8 @@ KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph );
 
 bool isIndexed(const Akonadi::Item &item);
 bool isIndexed(const Akonadi::Collection &item);
-
 }
+
+bool indexingDisabled(const Akonadi::Collection &collection);
 
 #endif

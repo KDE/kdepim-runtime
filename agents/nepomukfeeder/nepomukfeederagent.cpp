@@ -23,66 +23,37 @@
 
 #include "nepomukfeederagent.h"
 #include "nepomukfeederagentdialog.h"
+#include "nepomukhelpers.h"
+#include "findunindexeditemsjob.h"
+#include "nepomukfeeder-config.h"
+#include "nepomukfeederadaptor.h"
+
 #include <aneo.h>
 
 #include <akonadi/agentmanager.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
-#include <akonadi/entityhiddenattribute.h>
-#include <akonadi/indexpolicyattribute.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
 
-#include <nepomuk2/simpleresource.h>
-#include <nepomuk2/simpleresourcegraph.h>
-#include <nepomuk2/datamanagement.h>
 #include <nepomuk2/resourcemanager.h>
 
 #include <KLocale>
 #include <KUrl>
 #include <KProcess>
 #include <KStandardDirs>
-#include <KIdleTime>
 #include <KConfigGroup>
 #include <KWindowSystem>
 
 #include <QtCore/QTimer>
 #include <nepomukfeederutils.h>
-#include "pluginloader.h"
-#include "nepomukhelpers.h"
-#include "findunindexeditemsjob.h"
-#include "nepomukfeeder-config.h"
-#include "nepomukfeederadaptor.h"
 
 typedef QSharedPointer< QMultiHash< Akonadi::Collection::Id,  Akonadi::Item::Id> > MultiHashPointer;
 Q_DECLARE_METATYPE(MultiHashPointer)
 
 namespace Akonadi {
-
-static inline bool indexingDisabled( const Collection &collection )
-{
-  if ( collection.hasAttribute<EntityHiddenAttribute>() )
-    return true;
-
-  IndexPolicyAttribute *indexPolicy = collection.attribute<IndexPolicyAttribute>();
-  if ( indexPolicy && !indexPolicy->indexingEnabled() )
-    return true;
-
-  if ( collection.isVirtual() )
-    return true;
-
-  // check if we have a plugin for the stuff in this collection
-  foreach ( const QString &mimeType, collection.contentMimeTypes() ) {
-    if ( mimeType == Collection::mimeType() )
-     continue;
-    if ( !FeederPluginloader::instance().feederPluginsForMimeType( mimeType ).isEmpty() )
-      return false;
-  }
-
-  return true;
-}
 
 static inline QString emailMimetype()
 {
@@ -104,9 +75,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(selfTest()) );
-
-  connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
-  connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
 
   //mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
 
