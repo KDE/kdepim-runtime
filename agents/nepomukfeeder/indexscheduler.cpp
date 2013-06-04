@@ -151,7 +151,12 @@ static inline QString emailMimetype()
 void IndexScheduler::addItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
-  highPrioQueue.addItem( item );
+  if (item.mimeType() == emailMimetype()) {
+    emailItemQueue.addItem( item );
+  }
+  else {
+    highPrioQueue.addItem( item );
+  }
   mTotalAmount++;
   mProcessItemQueueTimer.start();
 }
