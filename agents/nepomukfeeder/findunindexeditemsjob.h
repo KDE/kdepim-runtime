@@ -73,7 +73,6 @@ private:
     const int mCompatLevel;
     Akonadi::Collection::List mIndexedCollections;
     int mTotalNumberOfItems;
-    QSharedPointer<Soprano::Util::AsyncQuery> mQuery;
 
     bool m_killed;
 };

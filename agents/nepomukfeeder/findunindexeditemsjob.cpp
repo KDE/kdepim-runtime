@@ -168,16 +168,24 @@ void FindUnindexedItemsJob::retrieveIndexedNepomukResources()
 #ifdef HAVE_MALLOC_TRIM
     malloc_trim(0);
 #endif
+
     kDebug();
     mTime.start();
     Q_ASSERT(Nepomuk2::ResourceManager::instance()->initialized());
-    mQuery = QSharedPointer<Soprano::Util::AsyncQuery>(Soprano::Util::AsyncQuery::executeQuery(Nepomuk2::ResourceManager::instance()->mainModel(),
-        QString::fromLatin1("SELECT ?r ?id ?lastMod WHERE { ?r %1 ?id. ?r %2 ?lastMod }")
-            .arg(Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId()),
-            Soprano::Node::resourceToN3(Nepomuk2::Vocabulary::NIE::lastModified())),
-            Soprano::Query::QueryLanguageSparql));
-    connect(mQuery.data(), SIGNAL(nextReady(Soprano::Util::AsyncQuery*)), this, SLOT(processResult(Soprano::Util::AsyncQuery*)));
-    connect(mQuery.data(), SIGNAL(finished(Soprano::Util::AsyncQuery*)), this, SLOT(queryFinished(Soprano::Util::AsyncQuery*)));
+
+    QString query = QString::fromLatin1("SELECT ?r ?id ?lastMod WHERE { ?r %1 ?id. ?r %2 ?lastMod }")
+                    .arg( Soprano::Node::resourceToN3(Vocabulary::ANEO::akonadiItemId()),
+                          Soprano::Node::resourceToN3(Nepomuk2::Vocabulary::NIE::lastModified()) );
+
+    Soprano::Model* model = Nepomuk2::ResourceManager::instance()->mainModel();
+
+    Soprano::Util::AsyncQuery* mQuery = Soprano::Util::AsyncQuery::executeQuery(model,
+                                                        query, Soprano::Query::QueryLanguageSparql );
+
+    connect(mQuery, SIGNAL(nextReady(Soprano::Util::AsyncQuery*)),
+            this, SLOT(processResult(Soprano::Util::AsyncQuery*)));
+    connect(mQuery, SIGNAL(finished(Soprano::Util::AsyncQuery*)),
+            this, SLOT(queryFinished(Soprano::Util::AsyncQuery*)));
 }
 
 void FindUnindexedItemsJob::processResult(Soprano::Util::AsyncQuery *query)
