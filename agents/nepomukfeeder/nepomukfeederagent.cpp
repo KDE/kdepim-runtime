@@ -95,7 +95,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mInitialIndexingDisabled( false ),
   mTotalItems(0),
   mIndexedItems(0),
-  m_collectionFetchJob(0),
   m_findUnindexedItemsJob(0)
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
@@ -262,35 +261,11 @@ void NepomukFeederAgent::findUnindexed()
     return;
   }
 
-  if ( m_collectionFetchJob )
+  if (m_findUnindexedItemsJob) {
       return;
-
-  m_collectionFetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
-                                                         Akonadi::CollectionFetchJob::Recursive,
-                                                         this);
-  connect(m_collectionFetchJob, SIGNAL(finished(KJob*)), this, SLOT(collectionListReceived(KJob*)));
-  m_collectionFetchJob->start();
-}
-
-void NepomukFeederAgent::collectionListReceived(KJob *job)
-{
-  if (job->error()) {
-    kWarning() << "Failed to fetch collections";
-    return;
-  }
-
-  Akonadi::Collection::List allCollections = m_collectionFetchJob->collections();
-  m_collectionFetchJob = 0;
-
-  Akonadi::Collection::List indexedCollections;
-  foreach (const Akonadi::Collection &col, allCollections) {
-    if (!indexingDisabled(col)) {
-      indexedCollections << col;
-    }
   }
 
   m_findUnindexedItemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
-  m_findUnindexedItemsJob->setIndexedCollections( indexedCollections );
 
   connect(m_findUnindexedItemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
   m_findUnindexedItemsJob->start();
@@ -387,10 +362,6 @@ void NepomukFeederAgent::doSetOnline(bool online)
         findUnindexed();
     }
     else {
-        if( m_collectionFetchJob ) {
-            m_collectionFetchJob->kill();
-            m_collectionFetchJob = 0;
-        }
         if( m_findUnindexedItemsJob ) {
             m_findUnindexedItemsJob->kill();
             m_findUnindexedItemsJob = 0;

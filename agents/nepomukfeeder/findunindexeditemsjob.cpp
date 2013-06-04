@@ -17,9 +17,14 @@
 
 #include "findunindexeditemsjob.h"
 #include "nepomukfeeder-config.h"
+#include "pluginloader.h"
+
 #include <aneo.h>
+#include <akonadi/entityhiddenattribute.h>
+#include <akonadi/indexpolicyattribute.h>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemFetchJob>
 #include <Nepomuk2/ResourceManager>
 #include <Soprano/Util/AsyncQuery>
@@ -30,6 +35,32 @@
 #ifdef HAVE_MALLOC_H
     #include <malloc.h>
 #endif
+
+namespace Akonadi {
+
+    static inline bool indexingDisabled( const Collection &collection )
+    {
+        if ( collection.hasAttribute<EntityHiddenAttribute>() )
+            return true;
+
+        IndexPolicyAttribute *indexPolicy = collection.attribute<IndexPolicyAttribute>();
+        if ( indexPolicy && !indexPolicy->indexingEnabled() )
+            return true;
+
+        if ( collection.isVirtual() )
+            return true;
+
+        // check if we have a plugin for the stuff in this collection
+        foreach ( const QString &mimeType, collection.contentMimeTypes() ) {
+            if ( mimeType == Collection::mimeType() )
+                continue;
+            if ( !FeederPluginloader::instance().feederPluginsForMimeType( mimeType ).isEmpty() )
+                return false;
+        }
+
+        return true;
+    }
+}
 
 FindUnindexedItemsJob::FindUnindexedItemsJob(int compatLevel, QObject* parent)
 : KJob(parent),
@@ -57,12 +88,40 @@ void FindUnindexedItemsJob::setIndexedCollections(const Akonadi::Collection::Lis
 
 void FindUnindexedItemsJob::start()
 {
+    Akonadi::CollectionFetchJob* collectionFetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
+                                                            Akonadi::CollectionFetchJob::Recursive,
+                                                            this);
+    connect(collectionFetchJob, SIGNAL(finished(KJob*)), this, SLOT(slotCollectionListReceived(KJob*)));
+    collectionFetchJob->start();
+}
+
+void FindUnindexedItemsJob::slotCollectionListReceived(KJob* job)
+{
+    if (job->error()) {
+        kWarning() << "Failed to fetch collections";
+        return;
+    }
+
+    Akonadi::CollectionFetchJob* collectionFetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
+    Akonadi::Collection::List allCollections = collectionFetchJob->collections();
+
+    Akonadi::Collection::List indexedCollections;
+    foreach (const Akonadi::Collection &col, allCollections) {
+        if (!indexingDisabled(col)) {
+            indexedCollections << col;
+        }
+    }
+    setIndexedCollections( indexedCollections );
+
     mTime.start();
     fetchItemsFromCollection();
 }
 
 void FindUnindexedItemsJob::fetchItemsFromCollection()
 {
+    if( m_killed )
+        return;
+
     if (mIndexedCollections.isEmpty()) {
         kDebug() << "Akonadi Query took(ms): " << mTime.elapsed();
         QMetaObject::invokeMethod(this, "retrieveIndexedNepomukResources", Qt::QueuedConnection);

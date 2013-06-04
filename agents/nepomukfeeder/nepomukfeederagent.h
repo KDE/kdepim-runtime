@@ -39,7 +39,6 @@ namespace Akonadi
 {
   class Item;
   class ItemFetchScope;
-  class CollectionFetchJob;
 
 
 /**
@@ -93,7 +92,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void selfTest();
     void checkMigration();
     void collectionsReceived( const Akonadi::Collection::List &collections );
-    void collectionListReceived( KJob* );
     void configure( WId windowId );
     void foundUnindexedItems(KJob *job);
 
@@ -110,7 +108,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
 
     IndexerConfig* m_indexerConfig;
 
-    Akonadi::CollectionFetchJob* m_collectionFetchJob;
     FindUnindexedItemsJob* m_findUnindexedItemsJob;
 };
 
