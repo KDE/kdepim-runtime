@@ -36,7 +36,6 @@ namespace  NepomukHelpers {
 void setParentCollection( const Akonadi::Entity &entity, Nepomuk2::SimpleResource& res, Nepomuk2::SimpleResourceGraph& graph );
 
 KJob *addCollectionToNepomuk( const Akonadi::Collection &collection);
-KJob *markCollectionAsIndexed( const Akonadi::Collection &collection );
 void addItemToGraph( const Akonadi::Item &item, Nepomuk2::SimpleResourceGraph &graph );
 
 /** Saves the graph, and marks the data as discardable. Use this function to store data created by the feeder */

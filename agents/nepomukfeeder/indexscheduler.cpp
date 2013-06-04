@@ -42,7 +42,6 @@ using namespace Akonadi;
 IndexScheduler::IndexScheduler( QObject* parent )
 : QObject( parent ),
   mTotalAmount( 0 ),
-  mPendingJobs( 0 ),
   mReIndex( false ),
   mOnline( true ),
   lowPrioQueue(1, 100, this),
@@ -142,70 +141,6 @@ void IndexScheduler::addCollection( const Akonadi::Collection &collection )
     mCollectionQueue.append( collection );
   else
     mCollectionQueue.prepend( collection );
-
-  if ( mPendingJobs == 0 ) {
-    processNextCollection();
-  }
-}
-
-void IndexScheduler::processNextCollection()
-{
-  //kDebug();
-  if ( mCurrentCollection.isValid() )
-    return;
-  if ( mCollectionQueue.isEmpty() ) {
-    indexingComplete();
-    return;
-  }
-  mCurrentCollection = mCollectionQueue.takeFirst();
-  emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
-  kDebug() << "Indexing collection " << mCurrentCollection.name() << mCurrentCollection.id();
-
-  KJob *job = NepomukHelpers::addCollectionToNepomuk( mCurrentCollection );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
-
-  ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
-  itemFetch->fetchScope().setCacheOnly( true );
-  itemFetch->fetchScope().setIgnoreRetrievalErrors( true );
-  connect( itemFetch, SIGNAL(finished(KJob*)), SLOT(itemFetchResult(KJob*)) );
-  ++mPendingJobs;
-}
-
-void IndexScheduler::itemHeadersReceived( const Akonadi::Item::List& items )
-{
-  kDebug() << items.count();
-  Akonadi::Item::List itemsToUpdate;
-  foreach ( const Item &item, items ) {
-    if ( item.storageCollectionId() != mCurrentCollection.id() )
-      continue; // stay away from links
-
-    // update item if it does not exist or does not have a proper id
-    if ( mReIndex || !NepomukHelpers::isIndexed(item)) {
-      itemsToUpdate.append( item );
-    }
-  }
-
-  if ( !itemsToUpdate.isEmpty() ) {
-    lowPrioQueue.addItems( itemsToUpdate );
-    mTotalAmount += itemsToUpdate.size();
-    mProcessItemQueueTimer.start();
-  }
-}
-
-void IndexScheduler::itemFetchResult(KJob* job)
-{
-  if ( job->error() )
-    kWarning() << job->errorString();
-
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>( job );
-  Q_ASSERT( fetchJob );
-  itemHeadersReceived( fetchJob->items() );
-
-  --mPendingJobs;
-  if ( mPendingJobs == 0 && lowPrioQueue.isEmpty() ) { //Fetch jobs finished but there were no items in the collection
-    collectionFullyIndexed();
-    return;
-  }
 }
 
 static inline QString emailMimetype()
@@ -254,22 +189,13 @@ bool IndexScheduler::isEmpty()
   return highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() &&
          emailItemQueue.isEmpty() && mCollectionQueue.isEmpty() &&
          mCollectionsToRemove.isEmpty() &&
-         mItemsToRemove.isEmpty();
+         mItemsToRemove.isEmpty() && mUrisToRemove.isEmpty();
 }
 
 void IndexScheduler::continueIndexing()
 {
   kDebug();
   mProcessItemQueueTimer.start();
-}
-
-void IndexScheduler::collectionFullyIndexed()
-{
-    NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
-    mCurrentCollection = Collection();
-
-    //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
-    processNextCollection();
 }
 
 void IndexScheduler::indexingComplete()
@@ -293,7 +219,16 @@ void IndexScheduler::processItemQueue()
     return;
   }
 
-  if ( !highPrioQueue.isEmpty() ) {
+  if ( !mCollectionQueue.isEmpty() ) {
+    Akonadi::Collection collection = mCollectionQueue.takeFirst();
+
+    KJob *job = NepomukHelpers::addCollectionToNepomuk( collection );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionSaveJobResult(KJob*)));
+
+    emit running( i18n( "Indexing collection '%1'", collection.name() ) );
+    return;
+  }
+  else if ( !highPrioQueue.isEmpty() ) {
     kDebug() << "high";
     if ( highPrioQueue.processBatch() ) {
         emit running( i18n( "Indexing" ) );
@@ -364,14 +299,10 @@ void IndexScheduler::processItemQueue()
 
 void IndexScheduler::prioQueueFinished()
 {
-  if ( isEmpty() && ( mPendingJobs == 0 )) {
-    if (mCurrentCollection.isValid()) {
-      collectionFullyIndexed();
-    } else {
-      indexingComplete();
+    if ( isEmpty() ) {
+        indexingComplete();
+        mTotalAmount = 0;
     }
-    mTotalAmount = 0;
-  }
 }
 
 void IndexScheduler::batchFinished()
@@ -387,10 +318,12 @@ void IndexScheduler::batchFinished()
   }
 }
 
-void IndexScheduler::jobResult(KJob* job)
+void IndexScheduler::collectionSaveJobResult(KJob* job)
 {
   if ( job->error() )
     kWarning() << job->errorString();
+
+  batchFinished();
 }
 
 int IndexScheduler::size()
@@ -401,7 +334,6 @@ int IndexScheduler::size()
 void IndexScheduler::clear()
 {
   mCollectionQueue.clear();
-  mCurrentCollection = Collection();
 
   lowPrioQueue.clear();
   highPrioQueue.clear();

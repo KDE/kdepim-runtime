@@ -89,9 +89,6 @@ int main(int argc, char *argv[])
               Soprano::Node::literalToN3( indexerLevel ) ),
             Soprano::Query::QueryLanguageSparql ).boolValue();
         app.quit();
-    } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "mark-collection" ) ) {
-        KJob *job = NepomukHelpers::markCollectionAsIndexed( Akonadi::Collection( id ) );
-        QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     }
 
     return app.exec();

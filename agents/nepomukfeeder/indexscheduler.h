@@ -120,25 +120,19 @@ signals:
   void running(QString);
 
 private slots:
-  void processNextCollection();
-  void itemFetchResult( KJob* job );
   void processItemQueue();
   void prioQueueFinished();
   void batchFinished();
-  void jobResult( KJob* job );
+  void collectionSaveJobResult( KJob* job );
 
   void slotIdleStatusChanged(bool isIdle);
   void slotPowerManagementChanged(bool onBattery);
 
 private:
-  void itemHeadersReceived( const Akonadi::Item::List &items );
   void continueIndexing(); //start the indexing if work is to be done
-  void collectionFullyIndexed();
   void indexingComplete();
-  int mTotalAmount, mPendingJobs;
+  int mTotalAmount;
 
-  Akonadi::Collection::List mCollectionQueue;
-  Akonadi::Collection mCurrentCollection;
   bool mReIndex;
   bool mOnline;
   QTimer mProcessItemQueueTimer;
@@ -146,6 +140,7 @@ private:
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
   ItemQueue emailItemQueue;
+  Akonadi::Collection::List mCollectionQueue;
 
   // To Clear
   Akonadi::Item::List mItemsToRemove;
