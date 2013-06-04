@@ -18,8 +18,6 @@ target_link_libraries( nepomukpimindexerutility
     akonadi-kde
     ${QT_QTGUI_LIBRARY}
     nepomukfeederpluginlib
-    nepomukquery
-    nepomuk
     ${NEPOMUK_CORE_LIBRARY}
 )
 
