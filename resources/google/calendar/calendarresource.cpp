@@ -559,20 +559,20 @@ void CalendarResource::slotItemsRetrieved( KGAPI2::Job *job )
         Q_FOREACH( const ObjectPtr &object, objects ) {
             EventPtr event = object.dynamicCast<Event>();
 
-            if ( event->useDefaultReminders() && attr ) {
-                KCalCore::Alarm::List alarms = attr->alarms( event.data() );
-                Q_FOREACH ( KCalCore::Alarm::Ptr alarm, alarms ) {
-                    event->addAlarm( alarm );
-                }
-            }
-
             /* If current event is related to a recurrent event stored in the map then
              * take the original recurrent event, set date of the current event as an
              * exception and continue. We will process content of the map later. */
             if ( recurrentEvents.contains( event->uid() ) ) {
                 EventPtr rEvent = recurrentEvents.value( event->uid() );
-
                 rEvent->recurrence()->addExDate( event->dtStart().date() );
+                continue;
+            }
+
+            if ( event->useDefaultReminders() && attr ) {
+                KCalCore::Alarm::List alarms = attr->alarms( event.data() );
+                Q_FOREACH ( KCalCore::Alarm::Ptr alarm, alarms ) {
+                    event->addAlarm( alarm );
+                }
             }
 
             Item item;
