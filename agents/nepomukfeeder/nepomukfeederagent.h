@@ -57,13 +57,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     explicit NepomukFeederAgent(const QString& id);
     ~NepomukFeederAgent();
 
-    /**
-     * Sets whether the 'Only feed when system is idle' functionality shall be used.
-     */
-    void disableIdleDetection( bool value );
-
-    bool isDisableIdleDetection() const;
-
     void forceReindexCollection(const qlonglong id);
 
     void forceReindexItem(const qlonglong id);
@@ -99,9 +92,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
   private slots:
     void selfTest();
     void checkMigration();
-    void slotFullyIndexed();
-    void systemIdle();
-    void systemResumed();
     void collectionsReceived( const Akonadi::Collection::List &collections );
     void collectionListReceived( KJob* );
     void configure( WId windowId );
@@ -111,7 +101,6 @@ class NepomukFeederAgent : public Akonadi::AgentBase, public Akonadi::AgentBase:
     void emitRunning(const QString&);
   private:
     bool mInitialUpdateDone;
-    bool mIdleDetectionDisabled;
     bool mInitialIndexingDisabled;
 
     IndexScheduler mScheduler;

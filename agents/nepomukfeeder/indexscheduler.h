@@ -25,6 +25,7 @@
 #include <Akonadi/Collection>
 #include <QTimer>
 #include "itemqueue.h"
+#include "eventmonitor.h"
 
 class FeederPluginloader;
 class KJob;
@@ -114,7 +115,6 @@ public:
   void clear();
 
 signals:
-  void fullyIndexed();
   void progress(int);
   void idle(QString);
   void running(QString);
@@ -126,6 +126,9 @@ private slots:
   void prioQueueFinished();
   void batchFinished();
   void jobResult( KJob* job );
+
+  void slotIdleStatusChanged(bool isIdle);
+  void slotPowerManagementChanged(bool onBattery);
 
 private:
   void itemHeadersReceived( const Akonadi::Item::List &items );
@@ -148,6 +151,8 @@ private:
   Akonadi::Item::List mItemsToRemove;
   Akonadi::Collection::List mCollectionsToRemove;
   QList<QUrl> mUrisToRemove;
+
+  Nepomuk2::EventMonitor* mEventMonitor;
 };
 
 

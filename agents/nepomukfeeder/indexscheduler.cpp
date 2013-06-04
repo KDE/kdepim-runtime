@@ -59,6 +59,10 @@ IndexScheduler::IndexScheduler( QObject* parent )
   connect( &lowPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
   connect( &highPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
   connect( &emailItemQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
+
+  mEventMonitor = new Nepomuk2::EventMonitor( this );
+  connect( mEventMonitor, SIGNAL(idleStatusChanged(bool)), this, SLOT(slotIdleStatusChanged(bool)) );
+  connect( mEventMonitor, SIGNAL(powerManagementStatusChanged(bool)), this, SLOT(slotPowerManagementChanged(bool)) );
 }
 
 IndexScheduler::~IndexScheduler()
@@ -76,10 +80,29 @@ void IndexScheduler::setReindexing( bool reindex )
 void IndexScheduler::setOnline( bool online )
 {
   //kDebug() << online;
-  mOnline = online;
-  if ( online )
+  if ( online && !mEventMonitor->isOnBattery() ) {
+      mOnline = online;
+      slotIdleStatusChanged( mEventMonitor->isIdle() );
       continueIndexing();
+  }
+  else {
+      mOnline = false;
+  }
 }
+
+void IndexScheduler::slotIdleStatusChanged(bool isIdle)
+{
+    if ( mOnline ) {
+        setIndexingSpeed( isIdle ? FullSpeed : ReducedSpeed );
+    }
+}
+
+void IndexScheduler::slotPowerManagementChanged(bool onBattery)
+{
+    setOnline( !onBattery );
+    // FIXME: Need some kind of better status message!
+}
+
 
 void IndexScheduler::setIndexingSpeed(IndexScheduler::IndexingSpeed speed)
 {
@@ -200,7 +223,7 @@ void IndexScheduler::addItem( const Akonadi::Item &item )
 
 void IndexScheduler::addLowPrioItem( const Akonadi::Item &item )
 {
-  kDebug() << item.id();
+//  kDebug() << item.id();
   if (item.mimeType() == emailMimetype()) {
     emailItemQueue.addItem( item );
   } else {
@@ -255,7 +278,6 @@ void IndexScheduler::indexingComplete()
   mReIndex = false;
   emit progress( 100 );
   emit idle( i18n( "Indexing completed." ) );
-  emit fullyIndexed();
 }
 
 void IndexScheduler::processItemQueue()

@@ -3,6 +3,7 @@
                   2008 Sebastian Trueg <trueg@kde.org>
                   2009 Volker Krause <vkrause@kde.org>
                   2011 Christian Mollekopf <chrigi_1@fastmail.fm>
+                  2013 Vishesh Handa <me@vhanda.in>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -91,7 +92,6 @@ static inline QString emailMimetype()
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
   mInitialUpdateDone( false ),
-  mIdleDetectionDisabled( true ),
   mInitialIndexingDisabled( false ),
   mTotalItems(0),
   mIndexedItems(0),
@@ -105,14 +105,10 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(selfTest()) );
-  connect( this, SIGNAL(fullyIndexed()), this, SLOT(slotFullyIndexed()) );
 
   connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
   connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
 
-  KConfigGroup cfgGrp( componentData().config(), identifier() );
-  KIdleTime::instance()->addIdleTimeout( 1000 * cfgGrp.readEntry( "IdleTimeout", 120 ) );
-  disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", true ) );
   //mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
 
   m_indexerConfig = new IndexerConfig( this );
@@ -122,12 +118,11 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
   QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
 
-  mScheduler.setIndexingSpeed( mIdleDetectionDisabled ? IndexScheduler::FullSpeed : IndexScheduler::ReducedSpeed );
+  //mScheduler.setIndexingSpeed( mIdleDetectionDisabled ? IndexScheduler::FullSpeed : IndexScheduler::ReducedSpeed );
 
   connect(&mScheduler, SIGNAL(progress(int)), SIGNAL(percent(int)));
   connect(&mScheduler, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
   connect(&mScheduler, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
-  connect(&mScheduler, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -384,23 +379,6 @@ void NepomukFeederAgent::selfTest()
     }
 }
 
-void NepomukFeederAgent::disableIdleDetection( bool value )
-{
-  mIdleDetectionDisabled = value;
-  if ( value ) {
-    mScheduler.setIndexingSpeed( IndexScheduler::FullSpeed );
-  }
-  if ( KIdleTime::instance()->idleTime() ) {
-    systemIdle();
-  } else {
-    systemResumed();
-  }
-}
-
-void NepomukFeederAgent::slotFullyIndexed()
-{
-}
-
 void NepomukFeederAgent::doSetOnline(bool online)
 {
     mScheduler.setOnline( online );
@@ -424,23 +402,6 @@ void NepomukFeederAgent::doSetOnline(bool online)
     Akonadi::AgentBase::doSetOnline( online );
 }
 
-void NepomukFeederAgent::systemIdle()
-{
-  if ( mIdleDetectionDisabled || !isOnline() )
-    return;
-
-  KIdleTime::instance()->catchNextResumeEvent();
-  mScheduler.setIndexingSpeed( IndexScheduler::FullSpeed );
-}
-
-void NepomukFeederAgent::systemResumed()
-{
-  if ( mIdleDetectionDisabled || !isOnline() )
-    return;
-
-  mScheduler.setIndexingSpeed( IndexScheduler::ReducedSpeed );
-}
-
 void NepomukFeederAgent::emitIdle(const QString &string)
 {
   emit status( AgentBase::Idle, string );
@@ -449,11 +410,6 @@ void NepomukFeederAgent::emitIdle(const QString &string)
 void NepomukFeederAgent::emitRunning(const QString &string)
 {
   emit status( AgentBase::Running, string );
-}
-
-bool NepomukFeederAgent::isDisableIdleDetection() const
-{
-  return mIdleDetectionDisabled;
 }
 
 bool NepomukFeederAgent::queueIsEmpty()
