@@ -227,9 +227,10 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     writeFile();
     mCurrentUrl = prevUrl;
 
-    emit warning( i18n( "The file '%1' was changed on disk. "
+    const QString message = i18n( "The file '%1' was changed on disk. "
       "As a precaution, a backup of its previous contents has been created at '%2'.",
-      prevUrl.prettyUrl(), KUrl( lostFoundFileName ).prettyUrl() ) );
+      prevUrl.prettyUrl(), KUrl( lostFoundFileName ).prettyUrl() );
+    emit warning( message );
   }
 
   readFile();
@@ -249,7 +250,9 @@ void SingleFileResourceBase::scheduleWrite()
 void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 {
   if ( job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST ) {
-    emit status( Broken, i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() ) );
+    const QString message = i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() );
+    kWarning() << message;
+    emit status( Broken, message );
   } else {
     readLocalFile( KUrl( cacheFile() ).toLocalFile() );
   }
@@ -263,7 +266,9 @@ void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 void SingleFileResourceBase::slotUploadJobResult( KJob *job )
 {
   if ( job->error() ) {
-    emit status( Broken, i18n( "Could not save file '%1'.", mCurrentUrl.prettyUrl() ) );
+    const QString message = i18n( "Could not save file '%1'.", mCurrentUrl.prettyUrl() );
+    kWarning() << message;
+    emit status( Broken, message );
   }
 
   mUploadJob = 0;
