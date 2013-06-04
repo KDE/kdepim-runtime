@@ -65,23 +65,42 @@ void ItemQueue::setProcessingDelay(int delay)
   mDelay = delay;
 }
 
-
-void ItemQueue::addToQueue(Akonadi::Entity::Id id)
-{
-  mItemPipeline.enqueue( id );
-}
-
 void ItemQueue::addItem(const Akonadi::Item &item)
 {
-  //kDebug() << "pipline size: " << mItemPipeline.size();
-  addToQueue(item.id());
+    QDateTime modificationTime = item.modificationTime();
+    if (modificationTime.isNull()) {
+        // If the DateTime is not provided, it means highest priority
+        modificationTime = QDateTime::currentDateTime();
+    }
+
+    mItemPipeline.insert(modificationTime, item.id());
 }
 
-void ItemQueue::addItems(const Akonadi::Item::List &list )
+void ItemQueue::addItems(const Akonadi::Item::List &list)
 {
-  foreach ( const Akonadi::Item &item, list ) {
-    addToQueue( item.id() );
-  }
+    foreach (const Akonadi::Item &item, list) {
+        addItem( item );
+    }
+}
+
+Akonadi::Item::List ItemQueue::fetchHighestPriorityItems(int numItems)
+{
+    Akonadi::Item::List list;
+    list.reserve(numItems);
+
+    int i = 0;
+    QMutableMapIterator<QDateTime, Akonadi::Item::Id> iter(mItemPipeline);
+    iter.toBack();
+
+    while (iter.hasPrevious() && i < numItems) {
+        iter.previous();
+        i++;
+
+        list << Akonadi::Item(iter.value());
+        iter.remove();
+    }
+
+    return list;
 }
 
 bool ItemQueue::processBatch()
@@ -100,11 +119,7 @@ bool ItemQueue::processBatch()
 
   if ( mFetchedItemList.size() <= mBatchSize && !mItemPipeline.isEmpty() ) {
     // Get the list of items to fetch
-    Akonadi::Item::List itemFetchList;
-    itemFetchList.reserve( mFetchSize );
-    for ( int i=0; i<mFetchSize && !mItemPipeline.isEmpty(); i++ ) {
-      itemFetchList << Akonadi::Item( mItemPipeline.dequeue() );
-    }
+    Akonadi::Item::List itemFetchList = fetchHighestPriorityItems( mFetchSize );
     kDebug() << "Fetching" << itemFetchList.size() << "items";
 
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( itemFetchList, this );
@@ -150,7 +165,8 @@ bool ItemQueue::indexBatch()
 
   while ( batch.size() < mBatchSize && !mFetchedItemList.isEmpty() ) {
     const Akonadi::Item &item = mFetchedItemList.takeFirst();
-    //kDebug() << item.id();
+    kDebug() << "Indexing" << item.id() << item.modificationTime();
+
     if ( !item.hasPayload() ) { //can happen due to deserialization error or with items that actually don't have a local payload
       kWarning() << "failed to fetch item or item without payload: " << item.id();
       continue;
