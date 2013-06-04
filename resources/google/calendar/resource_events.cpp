@@ -178,20 +178,20 @@ void CalendarResource::eventsReceived( KJob *job )
   Q_FOREACH( Object *replyData, allData ) {
     Objects::Event *event = static_cast< Objects::Event * >( replyData );
 
-    if ( event->useDefaultReminders() && attr ) {
-      Alarm::List alarms = attr->alarms( event );
-      Q_FOREACH ( Alarm::Ptr alarm, alarms ) {
-        event->addAlarm( alarm );
-      }
-    }
-
     /* If current event is related to a recurrent event stored in the map then
      * take the original recurrent event, set date of the current event as an
      * exception and continue. We will process content of the map later. */
     if ( recurrentEvents.contains( event->uid() ) ) {
       Objects::Event *rEvent = recurrentEvents.value( event->uid() );
-
       rEvent->recurrence()->addExDate( event->dtStart().date() );
+      continue;
+    }
+
+    if ( event->useDefaultReminders() && attr ) {
+      Alarm::List alarms = attr->alarms( event );
+      Q_FOREACH ( Alarm::Ptr alarm, alarms ) {
+        event->addAlarm( alarm );
+      }
     }
 
     Item item;
