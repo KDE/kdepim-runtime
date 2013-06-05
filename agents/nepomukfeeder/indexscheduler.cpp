@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2011  Christian Mollekopf <chrigi_1@fastmail.fm>
+    Copyright (C) 2013  Vishesh Handa <me@vhanda.in>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +17,7 @@
 */
 
 
-#include "feederqueue.h"
+#include "indexscheduler.h"
 
 #include <nie.h>
 
@@ -27,8 +28,6 @@
 #include <KLocalizedString>
 #include <KUrl>
 #include <KJob>
-#include <KIcon>
-#include <KNotification>
 #include <KIconLoader>
 
 #include <QDateTime>
@@ -36,12 +35,13 @@
 #include "nepomukhelpers.h"
 #include "nepomukfeeder-config.h"
 
+#include <Nepomuk2/DataManagement>
+
 using namespace Akonadi;
 
-FeederQueue::FeederQueue( QObject* parent )
+IndexScheduler::IndexScheduler( QObject* parent )
 : QObject( parent ),
   mTotalAmount( 0 ),
-  mPendingJobs( 0 ),
   mReIndex( false ),
   mOnline( true ),
   lowPrioQueue(1, 100, this),
@@ -58,29 +58,52 @@ FeederQueue::FeederQueue( QObject* parent )
   connect( &lowPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
   connect( &highPrioQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
   connect( &emailItemQueue, SIGNAL(batchFinished()), SLOT(batchFinished()));
+
+  mEventMonitor = new Nepomuk2::EventMonitor( this );
+  connect( mEventMonitor, SIGNAL(idleStatusChanged(bool)), this, SLOT(slotIdleStatusChanged(bool)) );
+  connect( mEventMonitor, SIGNAL(powerManagementStatusChanged(bool)), this, SLOT(slotPowerManagementChanged(bool)) );
 }
 
-FeederQueue::~FeederQueue()
+IndexScheduler::~IndexScheduler()
 {
 
 }
 
-void FeederQueue::setReindexing( bool reindex )
+void IndexScheduler::setReindexing( bool reindex )
 {
   // FIXME: This doesn't seem like it will do anything?
   //        Shouldn't it call some kind of signal?
   mReIndex = reindex;
 }
 
-void FeederQueue::setOnline( bool online )
+void IndexScheduler::setOnline( bool online )
 {
   //kDebug() << online;
-  mOnline = online;
-  if ( online )
+  if ( online && !mEventMonitor->isOnBattery() ) {
+      mOnline = online;
+      slotIdleStatusChanged( mEventMonitor->isIdle() );
       continueIndexing();
+  }
+  else {
+      mOnline = false;
+  }
 }
 
-void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
+void IndexScheduler::slotIdleStatusChanged(bool isIdle)
+{
+    if ( mOnline ) {
+        setIndexingSpeed( isIdle ? FullSpeed : ReducedSpeed );
+    }
+}
+
+void IndexScheduler::slotPowerManagementChanged(bool onBattery)
+{
+    setOnline( !onBattery );
+    // FIXME: Need some kind of better status message!
+}
+
+
+void IndexScheduler::setIndexingSpeed(IndexScheduler::IndexingSpeed speed)
 {
     const int s_reducedSpeedDelay = 500; // ms
     const int s_snailPaceDelay = 3000;   // ms
@@ -101,7 +124,7 @@ void FeederQueue::setIndexingSpeed(FeederQueue::IndexingSpeed speed)
     }
 }
 
-void FeederQueue::addCollection( const Akonadi::Collection &collection )
+void IndexScheduler::addCollection( const Akonadi::Collection &collection )
 {
   //kDebug() << collection.id();
 
@@ -118,70 +141,6 @@ void FeederQueue::addCollection( const Akonadi::Collection &collection )
     mCollectionQueue.append( collection );
   else
     mCollectionQueue.prepend( collection );
-
-  if ( mPendingJobs == 0 ) {
-    processNextCollection();
-  }
-}
-
-void FeederQueue::processNextCollection()
-{
-  //kDebug();
-  if ( mCurrentCollection.isValid() )
-    return;
-  if ( mCollectionQueue.isEmpty() ) {
-    indexingComplete();
-    return;
-  }
-  mCurrentCollection = mCollectionQueue.takeFirst();
-  emit running( i18n( "Indexing collection '%1'...", mCurrentCollection.name() ) );
-  kDebug() << "Indexing collection " << mCurrentCollection.name() << mCurrentCollection.id();
-
-  KJob *job = NepomukHelpers::addCollectionToNepomuk( mCurrentCollection );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)));
-
-  ItemFetchJob *itemFetch = new ItemFetchJob( mCurrentCollection, this );
-  itemFetch->fetchScope().setCacheOnly( true );
-  itemFetch->fetchScope().setIgnoreRetrievalErrors( true );
-  connect( itemFetch, SIGNAL(finished(KJob*)), SLOT(itemFetchResult(KJob*)) );
-  ++mPendingJobs;
-}
-
-void FeederQueue::itemHeadersReceived( const Akonadi::Item::List& items )
-{
-  kDebug() << items.count();
-  Akonadi::Item::List itemsToUpdate;
-  foreach ( const Item &item, items ) {
-    if ( item.storageCollectionId() != mCurrentCollection.id() )
-      continue; // stay away from links
-
-    // update item if it does not exist or does not have a proper id
-    if ( mReIndex || !NepomukHelpers::isIndexed(item)) {
-      itemsToUpdate.append( item );
-    }
-  }
-
-  if ( !itemsToUpdate.isEmpty() ) {
-    lowPrioQueue.addItems( itemsToUpdate );
-    mTotalAmount += itemsToUpdate.size();
-    mProcessItemQueueTimer.start();
-  }
-}
-
-void FeederQueue::itemFetchResult(KJob* job)
-{
-  if ( job->error() )
-    kWarning() << job->errorString();
-
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>( job );
-  Q_ASSERT( fetchJob );
-  itemHeadersReceived( fetchJob->items() );
-
-  --mPendingJobs;
-  if ( mPendingJobs == 0 && lowPrioQueue.isEmpty() ) { //Fetch jobs finished but there were no items in the collection
-    collectionFullyIndexed();
-    return;
-  }
 }
 
 static inline QString emailMimetype()
@@ -189,17 +148,22 @@ static inline QString emailMimetype()
   return QLatin1String("message/rfc822");
 }
 
-void FeederQueue::addItem( const Akonadi::Item &item )
+void IndexScheduler::addItem( const Akonadi::Item &item )
 {
   kDebug() << item.id();
-  highPrioQueue.addItem( item );
+  if (item.mimeType() == emailMimetype()) {
+    emailItemQueue.addItem( item );
+  }
+  else {
+    highPrioQueue.addItem( item );
+  }
   mTotalAmount++;
   mProcessItemQueueTimer.start();
 }
 
-void FeederQueue::addLowPrioItem( const Akonadi::Item &item )
+void IndexScheduler::addLowPrioItem( const Akonadi::Item &item )
 {
-  kDebug() << item.id();
+//  kDebug() << item.id();
   if (item.mimeType() == emailMimetype()) {
     emailItemQueue.addItem( item );
   } else {
@@ -209,45 +173,45 @@ void FeederQueue::addLowPrioItem( const Akonadi::Item &item )
   mProcessItemQueueTimer.start();
 }
 
-bool FeederQueue::isEmpty()
+void IndexScheduler::removeCollection(const Collection& collection)
 {
-  return allQueuesEmpty() && mCollectionQueue.isEmpty();
+    mCollectionsToRemove.append( collection );
 }
 
-void FeederQueue::continueIndexing()
+void IndexScheduler::removeItem(const Item& item)
+{
+    mItemsToRemove.append( item );
+}
+
+void IndexScheduler::removeNepomukUris(const QList< QUrl > uriList)
+{
+    mUrisToRemove.append( uriList );
+}
+
+
+bool IndexScheduler::isEmpty()
+{
+  return highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() &&
+         emailItemQueue.isEmpty() && mCollectionQueue.isEmpty() &&
+         mCollectionsToRemove.isEmpty() &&
+         mItemsToRemove.isEmpty() && mUrisToRemove.isEmpty();
+}
+
+void IndexScheduler::continueIndexing()
 {
   kDebug();
   mProcessItemQueueTimer.start();
 }
 
-void FeederQueue::collectionFullyIndexed()
-{
-    NepomukHelpers::markCollectionAsIndexed( mCurrentCollection );
-    const QString summary = i18n( "Indexing collection '%1' completed.", mCurrentCollection.name() );
-    mCurrentCollection = Collection();
-    const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-    KNotification::event( QLatin1String("indexingcollectioncompleted"),
-                            summary,
-                            pixmap,
-                            0,
-                            KNotification::CloseOnTimeout,
-                            KGlobal::mainComponent());
-
-
-    //kDebug() << "indexing of collection " << mCurrentCollection.id() << " completed";
-    processNextCollection();
-}
-
-void FeederQueue::indexingComplete()
+void IndexScheduler::indexingComplete()
 {
   //kDebug() << "fully indexed";
   mReIndex = false;
   emit progress( 100 );
   emit idle( i18n( "Indexing completed." ) );
-  emit fullyIndexed();
 }
 
-void FeederQueue::processItemQueue()
+void IndexScheduler::processItemQueue()
 {
   if ( mTotalAmount ) {
     int percent = ( mTotalAmount - size() ) * 100.0 / mTotalAmount;
@@ -260,7 +224,16 @@ void FeederQueue::processItemQueue()
     return;
   }
 
-  if ( !highPrioQueue.isEmpty() ) {
+  if ( !mCollectionQueue.isEmpty() ) {
+    Akonadi::Collection collection = mCollectionQueue.takeFirst();
+
+    KJob *job = NepomukHelpers::addCollectionToNepomuk( collection );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionSaveJobResult(KJob*)));
+
+    emit running( i18n( "Indexing collection '%1'", collection.name() ) );
+    return;
+  }
+  else if ( !highPrioQueue.isEmpty() ) {
     kDebug() << "high";
     if ( highPrioQueue.processBatch() ) {
         emit running( i18n( "Indexing" ) );
@@ -282,64 +255,99 @@ void FeederQueue::processItemQueue()
     }
   }
 
+  // Cleaning
+  else if( !mCollectionsToRemove.isEmpty() ) {
+      kDebug() << "Clear collection";
+      // FIXME: We should probably be clearing the contents of the collection as well
+
+      // Clear 10 collections at a time
+      QList<QUrl> nieUrls;
+      for( int i=0; i<10 && mCollectionsToRemove.count(); i++ )
+          nieUrls << mCollectionsToRemove.takeFirst().url();
+
+      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
+      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+      emit running( i18n("Clearing unused Emails") );
+      return;
+  }
+
+  else if( !mItemsToRemove.isEmpty() ) {
+      // Clear 10 items at a time
+      QList<QUrl> nieUrls;
+      for( int i=0; i<10 && mItemsToRemove.count(); i++ )
+          nieUrls << mItemsToRemove.takeFirst().url();
+
+      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
+      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+      emit running( i18n("Clearing unused Emails") );
+      return;
+  }
+
+  else if( !mUrisToRemove.isEmpty() ) {
+      // Clear 10 at a time
+      QList<QUrl> uris;
+      for( int i=0; i<10 && mUrisToRemove.count(); i++ )
+            uris << mUrisToRemove.takeFirst();
+
+      KJob *removeJob = Nepomuk2::removeResources( uris, Nepomuk2::RemoveSubResoures );
+      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+      emit running( i18n("Clearing unused Emails") );
+      return;
+  }
+
   kDebug() << "idle";
   emit idle( i18n( "Ready to index data." ) );
 }
 
-void FeederQueue::prioQueueFinished()
+void IndexScheduler::prioQueueFinished()
 {
-  if ( allQueuesEmpty() && ( mPendingJobs == 0 )) {
-    if (mCurrentCollection.isValid()) {
-      collectionFullyIndexed();
-    } else {
-      indexingComplete();
+    if ( isEmpty() ) {
+        indexingComplete();
+        mTotalAmount = 0;
     }
-    mTotalAmount = 0;
-  }
 }
 
-bool FeederQueue::allQueuesEmpty() const
-{
-  if ( highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && emailItemQueue.isEmpty() ) {
-    return true;
-  }
-  return false;
-}
-
-
-void FeederQueue::batchFinished()
+void IndexScheduler::batchFinished()
 {
   /*if ( sender() == &highPrioQueue )
     kDebug() << "high prio batch finished--------------------";
   if ( sender() == &lowPrioQueue )
     kDebug() << "low prio batch finished--------------------";*/
-  if ( !allQueuesEmpty() ) {
+  if ( !isEmpty() ) {
     //kDebug() << "continue";
     // go to eventloop before processing the next one, otherwise we miss the idle status change
     mProcessItemQueueTimer.start();
   }
 }
 
-void FeederQueue::jobResult(KJob* job)
+void IndexScheduler::collectionSaveJobResult(KJob* job)
 {
   if ( job->error() )
     kWarning() << job->errorString();
+
+  batchFinished();
 }
 
-const Akonadi::Collection& FeederQueue::currentCollection()
-{
-  return mCurrentCollection;
-}
-
-Akonadi::Collection::List FeederQueue::listOfCollection() const
-{
-  return mCollectionQueue;
-}
-
-int FeederQueue::size()
+int IndexScheduler::size()
 {
   return lowPrioQueue.size() + highPrioQueue.size() + emailItemQueue.size();
 }
 
+void IndexScheduler::clear()
+{
+  mCollectionQueue.clear();
 
-#include "feederqueue.moc"
+  lowPrioQueue.clear();
+  highPrioQueue.clear();
+  emailItemQueue.clear();
+
+  mItemsToRemove.clear();
+  mCollectionsToRemove.clear();
+  mUrisToRemove.clear();
+}
+
+
+#include "indexscheduler.moc"

@@ -63,7 +63,9 @@ class SingleFileResource : public SingleFileResourceBase
         KDirWatch::self()->removeFile( mCurrentUrl.toLocalFile() );
 
       if ( mSettings->path().isEmpty() ) {
-        emit status( Broken, i18n( "No file selected." ) );
+        const QString message = i18n( "No file selected." );
+        kWarning() << message;
+        emit status( Broken, message );
         if ( taskContext )
           cancelTask();
         return;
@@ -96,7 +98,9 @@ class SingleFileResource : public SingleFileResourceBase
           if ( f.open( QIODevice::WriteOnly ) && f.resize( 0 ) ) {
             emit status( Idle, i18nc( "@info:status", "Ready" ) );
           } else {
-            emit status( Broken, i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() ) );
+            const QString message = i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() );
+            kWarning() << message;
+            emit status( Broken, message );
             mCurrentUrl.clear();
             if ( taskContext )
               cancelTask();
@@ -107,7 +111,9 @@ class SingleFileResource : public SingleFileResourceBase
         // Cache, because readLocalFile will clear mCurrentUrl on failure.
         const QString localFileName = mCurrentUrl.toLocalFile();
         if ( !readLocalFile( mCurrentUrl.toLocalFile() ) ) {
-          emit status( Broken, i18n( "Could not read file '%1'", localFileName ) );
+          const QString message = i18n( "Could not read file '%1'", localFileName );
+          kWarning() << message;
+          emit status( Broken, message );
           if ( taskContext )
             cancelTask();
           return;
@@ -122,7 +128,9 @@ class SingleFileResource : public SingleFileResourceBase
       {
         if ( mDownloadJob )
         {
-          emit error( i18n( "Another download is still in progress." ) );
+          const QString message = i18n( "Another download is still in progress." );
+          kWarning() << message;
+          emit error( message );
           if ( taskContext )
             cancelTask();
           return;
@@ -130,7 +138,9 @@ class SingleFileResource : public SingleFileResourceBase
 
         if ( mUploadJob )
         {
-          emit error( i18n( "Another file upload is still in progress." ) );
+          const QString message = i18n( "Another file upload is still in progress." );
+          kWarning() << message;
+          emit error( message );
           if ( taskContext )
             cancelTask();
           return;
@@ -165,7 +175,9 @@ class SingleFileResource : public SingleFileResourceBase
     void writeFile( bool taskContext = false )
     {
       if ( mSettings->readOnly() ) {
-        emit error( i18n( "Trying to write to a read-only file: '%1'.", mSettings->path() ) );
+        const QString message = i18n( "Trying to write to a read-only file: '%1'.", mSettings->path() );
+        kWarning() << message;
+        emit error( message );
         if ( taskContext )
           cancelTask();
         return;
@@ -174,7 +186,9 @@ class SingleFileResource : public SingleFileResourceBase
       // We don't use the Settings::self()->path() here as that might have changed
       // and in that case it would probably cause data lose.
       if ( mCurrentUrl.isEmpty() ) {
-        emit status( Broken, i18n( "No file specified." ) );
+        const QString message = i18n( "No file specified." );
+        kWarning() << message;
+        emit status( Broken, message );
         if ( taskContext )
           cancelTask();
         return;
@@ -190,6 +204,7 @@ class SingleFileResource : public SingleFileResourceBase
         KDirWatch::self()->startScan();
         if ( !writeResult )
         {
+          kWarning() << "Error writing to file...";
           if ( taskContext )
             cancelTask();
           return;
@@ -199,14 +214,18 @@ class SingleFileResource : public SingleFileResourceBase
       } else {
         // Check if there is a download or an upload in progress.
         if ( mDownloadJob ) {
-          emit error( i18n( "A download is still in progress." ) );
+          const QString message = i18n( "A download is still in progress." );
+          kWarning() << message;
+          emit error( message );
           if ( taskContext )
             cancelTask();
           return;
         }
 
         if ( mUploadJob ) {
-          emit error( i18n( "Another file upload is still in progress." ) );
+          const QString message = i18n( "Another file upload is still in progress." );
+          kWarning() << message;
+          emit error( message );
           if ( taskContext )
             cancelTask();
           return;
@@ -215,6 +234,7 @@ class SingleFileResource : public SingleFileResourceBase
         // Write te items to the locally cached file.
         if ( !writeToFile( cacheFile() ) )
         {
+          kWarning() << "Error writing to file";
           if ( taskContext )
             cancelTask();
           return;

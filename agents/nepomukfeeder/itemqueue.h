@@ -85,6 +85,7 @@ public:
    */
   void setProcessingDelay(int delay);
 
+  void clear();
 signals:
   /** all items processed */
   void finished();
@@ -106,9 +107,13 @@ private:
    */
   bool indexBatch();
 
-  void addToQueue(Akonadi::Entity::Id);
+  /**
+   * Fetches the most recent \p numItems form mItemPipeline based
+   * on when they were added.
+   */
+  Akonadi::Item::List fetchHighestPriorityItems(int numItems);
 
-  QQueue<Akonadi::Item::Id> mItemPipeline;
+  QMultiMap<QDateTime, Akonadi::Item::Id> mItemPipeline;
   Akonadi::Item::List mFetchedItemList;
 
   int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk

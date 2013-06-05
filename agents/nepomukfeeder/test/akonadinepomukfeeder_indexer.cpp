@@ -16,7 +16,7 @@
  */
 
 #include <QtCore/qcoreapplication.h>
-#include <feederqueue.h>
+#include <indexscheduler.h>
 #include <nepomukhelpers.h>
 #include <nie.h>
 #include <aneo.h>
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
         KJob *job = Nepomuk2::removeDataByApplication( QList<QUrl>() << Akonadi::Item( id ).url().url(), Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
         QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "collection" ) ) {
-        FeederQueue *feederq = new FeederQueue( &app );
+        IndexScheduler *feederq = new IndexScheduler( &app );
         kDebug() << "indexing collection: " << id;
         feederq->setReindexing( true );
         feederq->setOnline( true );
@@ -89,9 +89,6 @@ int main(int argc, char *argv[])
               Soprano::Node::literalToN3( indexerLevel ) ),
             Soprano::Query::QueryLanguageSparql ).boolValue();
         app.quit();
-    } else if ( app.arguments().at( 1 ) == QString::fromLatin1( "mark-collection" ) ) {
-        KJob *job = NepomukHelpers::markCollectionAsIndexed( Akonadi::Collection( id ) );
-        QObject::connect( job, SIGNAL(finished(KJob*)), tester, SLOT(removalComplete(KJob*)) );
     }
 
     return app.exec();

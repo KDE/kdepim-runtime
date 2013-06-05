@@ -23,7 +23,7 @@
 #include <kxmlguiwindow.h>
 
 #include "ui_nepomukpimindexerutility.h"
-#include <feederqueue.h>
+#include <indexscheduler.h>
 
 
 /**
@@ -63,7 +63,7 @@ private:
     // this is the name of the root widget inside our Ui file
     // you can rename it in designer and then change it here
     Ui::mainWidget m_ui;
-    FeederQueue *mFeederQueue;
+    IndexScheduler *mFeederQueue;
     QTime mTime;
     Akonadi::Item mRemovedItem;
 };
