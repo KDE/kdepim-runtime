@@ -52,7 +52,7 @@ bool ICalResource::doRetrieveItem( const Akonadi::Item &item, const QSet<QByteAr
 {
   Q_UNUSED( parts );
   const QString rid = item.remoteId();
-  Incidence::Ptr incidence = calendar()->incidence( rid );
+  Incidence::Ptr incidence = calendar()->instance( rid );
   if ( !incidence ) {
     kError() << "akonadi_ical_resource: Can't find incidence with uid "
              << rid << "; item.id() = " << item.id();
@@ -78,13 +78,13 @@ void ICalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   Incidence::Ptr i = item.payload<Incidence::Ptr>();
   if ( !calendar()->addIncidence( Incidence::Ptr( i->clone() ) ) ) {
     kError() << "akonadi_ical_resource: Error adding incidence with uid "
-             << i->uid() << "; item.id() " << item.id();
+             << i->uid() << "; item.id() " << item.id() << i->recurrenceId();
     cancelTask();
     return;
   }
 
   Item it( item );
-  it.setRemoteId( i->uid() );
+  it.setRemoteId( i->instanceIdentifier() );
   scheduleWrite();
   changeCommitted( it );
 }
@@ -99,7 +99,7 @@ void ICalResource::itemChanged( const Akonadi::Item &item,
   }
 
   Incidence::Ptr payload = item.payload<Incidence::Ptr>();
-  Incidence::Ptr incidence = calendar()->incidence( item.remoteId() );
+  Incidence::Ptr incidence = calendar()->instance( item.remoteId() );
   if ( !incidence ) {
     // not in the calendar yet, should not happen -> add it
     calendar()->addIncidence( Incidence::Ptr( payload->clone() ) );
@@ -131,7 +131,7 @@ void ICalResource::doRetrieveItems( const Akonadi::Collection & col )
   Item::List items;
   foreach ( const Incidence::Ptr &incidence, incidences ) {
     Item item ( incidence->mimeType() );
-    item.setRemoteId( incidence->uid() );
+    item.setRemoteId( incidence->instanceIdentifier() );
     item.setPayload( Incidence::Ptr( incidence->clone() ) );
     items << item;
   }
