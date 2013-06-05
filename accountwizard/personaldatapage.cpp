@@ -95,14 +95,14 @@ void PersonalDataPage::slotRadioButtonClicked( QAbstractButton* button)
     server s = mIspdb->smtpServers().first();
     smptHostname = s.hostname;
   }
-  ui.outgoingLabel->setText( i18n( "Smtp, %1", smptHostname ) );
+  ui.outgoingLabel->setText( i18n( "SMTP, %1", smptHostname ) );
   if ( button ==  ui.imapAccount ) {
     server simap = mIspdb->imapServers().first(); // should be ok.
-    ui.incommingLabel->setText( i18n( "Imap, %1", simap.hostname ) );
+    ui.incommingLabel->setText( i18n( "IMAP, %1", simap.hostname ) );
     ui.usernameLabel->setText( simap.username );
   } else if ( button == ui.pop3Account ) {
     server spop3 = mIspdb->pop3Servers().first(); // should be ok.
-    ui.incommingLabel->setText( i18n( "Pop3, %1", spop3.hostname ) );
+    ui.incommingLabel->setText( i18n( "POP3, %1", spop3.hostname ) );
     ui.usernameLabel->setText( spop3.username );
   }
 }

@@ -135,7 +135,7 @@
          <item>
           <widget class="QRadioButton" name="imapAccount">
            <property name="text">
-            <string>Imap account</string>
+            <string>IMAP account</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -148,7 +148,7 @@
          <item>
           <widget class="QRadioButton" name="pop3Account">
            <property name="text">
-            <string>Pop3 Account</string>
+            <string>POP3 account</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>
