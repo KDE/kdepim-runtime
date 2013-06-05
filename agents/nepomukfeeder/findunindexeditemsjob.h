@@ -32,12 +32,13 @@ class FindUnindexedItemsJob: public KJob
 {
     Q_OBJECT
 public:
-
     typedef QHash< Akonadi::Item::Id, QPair< QDateTime, QString > > ItemHash;
 
     explicit FindUnindexedItemsJob(int compatLevel, QObject* parent = 0);
     ~FindUnindexedItemsJob();
+
     virtual void start();
+
     /// Returns all items which were found in akonadi but not in nepomuk (meaning they should be indexed)
     const ItemHash &getUnindexed() const;
 
@@ -51,12 +52,17 @@ public:
     void setIndexedCollections(const Akonadi::Collection::List &);
     int indexedCount() const;
     int totalCount() const;
+protected:
+    virtual bool doKill();
+
 private slots:
+    void slotCollectionListReceived(KJob* job);
     void jobDone(KJob*);
     void retrieveIndexedNepomukResources();
     void queryFinished(Soprano::Util::AsyncQuery *);
     void processResult(Soprano::Util::AsyncQuery *);
     void itemsReceived(const Akonadi::Item::List &);
+
 private:
     void fetchItemsFromCollection();
     ItemHash mAkonadiItems;
@@ -67,7 +73,8 @@ private:
     const int mCompatLevel;
     Akonadi::Collection::List mIndexedCollections;
     int mTotalNumberOfItems;
-    QSharedPointer<Soprano::Util::AsyncQuery> mQuery;
+
+    bool m_killed;
 };
 
 #endif // FINDUNINDEXEDITEMSJOB_H

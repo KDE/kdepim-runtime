@@ -2,7 +2,8 @@ include_directories(
         ../
 )
 
-set(shared_SRCS ../feederqueue.cpp ../itemqueue.cpp ../nepomukhelpers.cpp ../pluginloader.cpp ../propertycache.cpp)
+set(shared_SRCS ../indexscheduler.cpp ../itemqueue.cpp ../nepomukhelpers.cpp ../pluginloader.cpp ../propertycache.cpp
+                ../eventmonitor.cpp )
 
 set(nepomukpimindexerutility_SRCS
    nepomukpimindexerutility.cpp
@@ -17,8 +18,6 @@ target_link_libraries( nepomukpimindexerutility
     akonadi-kde
     ${QT_QTGUI_LIBRARY}
     nepomukfeederpluginlib
-    nepomukquery
-    nepomuk
     ${NEPOMUK_CORE_LIBRARY}
 )
 
