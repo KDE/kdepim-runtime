@@ -139,6 +139,7 @@ void PersonalDataPage::leavePageNext()
     // since the user can go back and forth, explicitly disable the man page
     emit manualWanted( false );
     setCursor( Qt::BusyCursor );
+    ui.mProgress->start();
     kDebug() << "Searching on internet";
     delete mIspdb;
     mIspdb = new Ispdb( this );
@@ -158,6 +159,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
   kDebug() << ok;
 
   unsetCursor();
+  ui.mProgress->stop();
   if ( ok ) {
 
     if ( !mIspdb->imapServers().isEmpty() && !mIspdb->pop3Servers().isEmpty() )
