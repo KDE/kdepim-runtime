@@ -95,14 +95,14 @@ void PersonalDataPage::slotRadioButtonClicked( QAbstractButton* button)
     server s = mIspdb->smtpServers().first();
     smptHostname = s.hostname;
   }
-  ui.outgoingLabel->setText( i18n( "Smtp, %1", smptHostname ) );
+  ui.outgoingLabel->setText( i18n( "SMTP, %1", smptHostname ) );
   if ( button ==  ui.imapAccount ) {
     server simap = mIspdb->imapServers().first(); // should be ok.
-    ui.incommingLabel->setText( i18n( "Imap, %1", simap.hostname ) );
+    ui.incommingLabel->setText( i18n( "IMAP, %1", simap.hostname ) );
     ui.usernameLabel->setText( simap.username );
   } else if ( button == ui.pop3Account ) {
     server spop3 = mIspdb->pop3Servers().first(); // should be ok.
-    ui.incommingLabel->setText( i18n( "Pop3, %1", spop3.hostname ) );
+    ui.incommingLabel->setText( i18n( "POP3, %1", spop3.hostname ) );
     ui.usernameLabel->setText( spop3.username );
   }
 }
@@ -139,6 +139,7 @@ void PersonalDataPage::leavePageNext()
     // since the user can go back and forth, explicitly disable the man page
     emit manualWanted( false );
     setCursor( Qt::BusyCursor );
+    ui.mProgress->start();
     kDebug() << "Searching on internet";
     delete mIspdb;
     mIspdb = new Ispdb( this );
@@ -158,6 +159,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
   kDebug() << ok;
 
   unsetCursor();
+  ui.mProgress->stop();
   if ( ok ) {
 
     if ( !mIspdb->imapServers().isEmpty() && !mIspdb->pop3Servers().isEmpty() )
