@@ -112,7 +112,11 @@ void GoogleSettingsDialog::slotAddAccountClicked()
 {
     AccountPtr account( new Account() );
     // FIXME: We need a proper API for this
-    account->addScope( QUrl( QLatin1String( "https://www.google.com/m8/feeds/" ) ) );
+    account->addScope( Account::contactsScopeUrl() );
+    account->addScope( Account::calendarScopeUrl() );
+    account->addScope( Account::tasksScopeUrl() );
+    account->addScope( Account::accountInfoEmailScopeUrl() );
+    account->addScope( Account::accountInfoScopeUrl() );
 
     AuthJob *authJob = new AuthJob( account,
                                     m_parentResource->settings()->clientId(),
