@@ -124,7 +124,7 @@
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="ProgressIndicatorWidget" name="mProgress" native="true">
+           <widget class="KPIMUtils::ProgressIndicatorWidget" name="mProgress" native="true">
            </widget>
           </item>
          </layout>
@@ -266,9 +266,9 @@
    <header>klineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>ProgressIndicatorWidget</class>
+   <class>KPIMUtils::ProgressIndicatorWidget</class>
    <extends>QLabel</extends>
-   <header location="global">progressindicatorwidget.h</header>
+   <header location="global">kpimutils/progressindicatorwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

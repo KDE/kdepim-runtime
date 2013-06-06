@@ -22,7 +22,6 @@ set(accountwizard_srcs
   servertest.cpp
   personaldatapage.cpp
   ispdb/ispdb.cpp
-  progressindicatorwidget.cpp
 )
 
 kde4_add_ui_files(accountwizard_srcs
