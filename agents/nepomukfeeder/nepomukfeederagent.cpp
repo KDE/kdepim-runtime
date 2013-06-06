@@ -37,6 +37,7 @@
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/changerecorder.h>
 
 #include <nepomuk2/resourcemanager.h>
 
@@ -90,6 +91,12 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   connect(&mScheduler, SIGNAL(progress(int)), SIGNAL(percent(int)));
   connect(&mScheduler, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
   connect(&mScheduler, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
+
+  changeRecorder()->fetchCollection( true );
+  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
+  changeRecorder()->setAllMonitored( true );
+  changeRecorder()->itemFetchScope().setCacheOnly( true );
+  changeRecorder()->setChangeRecordingEnabled( false );
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
