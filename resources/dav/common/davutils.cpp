@@ -223,7 +223,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
 
-    const QString fileName = ptr->uid();
+    const QString fileName = ptr->instanceIdentifier();
     if ( fileName.isEmpty() ) {
       kError() << "Invalid incidence uid";
       return davItem;

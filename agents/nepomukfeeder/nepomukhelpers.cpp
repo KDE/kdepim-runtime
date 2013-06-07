@@ -133,7 +133,7 @@ KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph )
   kDebug() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
   additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
-  return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent() );
+  return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::MergeDuplicateResources, additionalMetadata, KGlobal::mainComponent() );
 }
 
 bool isIndexed(const Akonadi::Item& item)
