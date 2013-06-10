@@ -20,7 +20,7 @@
 */
 
 #include "settings.h"
-#include "getcredentialsjob.h"
+#include "../../getcredentialsjob.h"
 #include "settingsadaptor.h"
 
 #include <kapplication.h>

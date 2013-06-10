@@ -24,7 +24,7 @@
 #include "settings.h"
 #include "settingsdialog.h"
 #include "timestampattribute.h"
-#include "getcredentialsjob.h"
+#include "../getcredentialsjob.h"
 
 #include <libkfbapi/friendlistjob.h>
 #include <libkfbapi/friendjob.h>

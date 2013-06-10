@@ -55,7 +55,8 @@ if (QT_QTXMLPATTERNS_LIBRARY)
     setupwizard.cpp
     settings.cpp
     urlconfigurationdialog.cpp
-    getcredentialsjob.cpp
+
+    ../../getcredentialsjob.cpp
   )
 
   install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

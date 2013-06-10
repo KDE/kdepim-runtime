@@ -7,7 +7,7 @@ include_directories(
 )
 
 set(facebookresource_SRCS
-  getcredentialsjob.cpp
+  ../getcredentialsjob.cpp
   facebookresource.cpp
   facebookresource_events.cpp
   facebookresource_friends.cpp
