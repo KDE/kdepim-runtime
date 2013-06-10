@@ -45,6 +45,26 @@ namespace DavUtils
   };
 
   /**
+   * Describes the DAV privileges on a resource (see RFC3744)
+   */
+  enum Privilege {
+    None = 0x0,
+    Read = 0x1,
+    Write = 0x2,
+    WriteProperties = 0x4,
+    WriteContent = 0x8,
+    Unlock = 0x10,
+    ReadAcl = 0x20,
+    ReadCurrentUserPrivilegeSet = 0x40,
+    WriteAcl = 0x80,
+    Bind = 0x100,
+    Unbind = 0x200,
+    All = 0x400
+  };
+  Q_DECLARE_FLAGS( Privileges, Privilege )
+  Q_DECLARE_OPERATORS_FOR_FLAGS( Privileges )
+
+  /**
    * Returns the i18n'ed name of the given DAV @p protocol dialect.
    */
   QString protocolName( Protocol protocol );
@@ -115,33 +135,22 @@ namespace DavUtils
   QDomElement nextSiblingElementNS( const QDomElement &element, const QString &namespaceUri, const QString &tagName );
 
   /**
+   * Extracts privileges from @p element. The <privilege/> tags are expected to be first level children of @p element.
+   */
+  Privileges extractPrivileges( const QDomElement &element );
+
+  /**
+   * Parses a single <privilege/> tag and returns the final Privileges.
+   */
+  Privileges parsePrivilege( const QDomElement &element );
+
+  /**
    * Creates a new DavItem from the Akonadi::Item @p item.
    *
    * The returned item will have no payload (DavItem::data() will return an empty
    * QByteArray) if the @p item payload is not recognized.
    */
   DavItem createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection );
-
-  /**
-   * Returns whether or not an HTTP error is recoverable.
-   *
-   * An error is considered recoverable if the *same* request can be attempted at
-   * a later time.
-   *
-   * The status codes that are not considered recoverable are:
-   * - 400
-   * - 404 to 406
-   * - 409 to 418 (yes, a teapot is unlikely to respond)
-   * - 422
-   * - 428
-   * - 431
-   * - 450
-   * - 505
-   * - 508
-   * - 510
-   *
-   */
-  bool httpRequestRetryable( int statusCode );
 }
 
 #endif

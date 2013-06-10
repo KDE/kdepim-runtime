@@ -24,4 +24,10 @@
 
 #define NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL ${CMAKE_NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL}
 
+/* Define to 1 if you have malloc.h */
+#cmakedefine HAVE_MALLOC_H 1
+
+/* malloc_trim presence */
+#cmakedefine HAVE_MALLOC_TRIM 1
+
 #endif

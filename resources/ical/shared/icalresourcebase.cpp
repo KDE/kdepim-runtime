@@ -108,16 +108,16 @@ void ICalResourceBase::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
-  Incidence::Ptr i = mCalendar->incidence( item.remoteId() );
+  Incidence::Ptr i = mCalendar->instance( item.remoteId() );
   if ( i ) {
     if ( !mCalendar->deleteIncidence( i ) ) {
-      kError() << "akonadi_ical_resource: Can't delete incidence with uid "
+      kError() << "akonadi_ical_resource: Can't delete incidence with instance identifier "
                << item.remoteId() << "; item.id() = " << item.id();
       cancelTask();
       return;
     }
   } else {
-    kError() << "akonadi_ical_resource: itemRemoved(): Can't find incidence with uid "
+    kError() << "akonadi_ical_resource: itemRemoved(): Can't find incidence with instance identifier "
              << item.remoteId() << "; item.id() = " << item.id();
   }
   scheduleWrite();

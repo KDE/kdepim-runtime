@@ -8,20 +8,8 @@
     <method name="forceReindexItem" >
       <arg name="item" type="x" direction="in"/>
     </method>
-    <method name="disableIdleDetection" >
-      <arg name="disable" type="b" direction="in"/>
-    </method>
-    <method name="isDisableIdleDetection" >
-      <arg type="b" direction="out"/>
-    </method>
     <method name="queueIsEmpty" >
       <arg type="b" direction="out"/>
-    </method>
-    <method name="currentCollectionName" >
-      <arg type="s" direction="out"/>
-    </method>
-    <method name="listOfCollection" >
-      <arg type="as" direction="out"/>
     </method>
     <method name="totalitems" >
       <arg type="x" direction="out"/>

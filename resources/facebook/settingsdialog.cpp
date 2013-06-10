@@ -158,11 +158,14 @@ void SettingsDialog::loadSettings()
 
   nameEdit->setText( mParentResource->name() );
   nameEdit->setFocus();
+  enableNotificationsCheckBox->setChecked( Settings::self()->displayNotifications() );
+
 }
 
 void SettingsDialog::saveSettings()
 {
   mParentResource->setName( nameEdit->text() );
+  Settings::self()->setDisplayNotifications( enableNotificationsCheckBox->isChecked() );
   Settings::self()->writeConfig();
 }
 

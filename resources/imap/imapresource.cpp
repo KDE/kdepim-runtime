@@ -65,13 +65,14 @@
 #include "addcollectiontask.h"
 #include "additemtask.h"
 #include "changecollectiontask.h"
+#include "changeitemsflagstask.h"
 #include "changeitemtask.h"
 #include "expungecollectiontask.h"
 #include "movecollectiontask.h"
-#include "moveitemtask.h"
+#include "moveitemstask.h"
 #include "removecollectionrecursivetask.h"
 #include "removecollectiontask.h"
-#include "removeitemtask.h"
+#include "removeitemstask.h"
 #include "retrievecollectionmetadatatask.h"
 #include "retrievecollectionstask.h"
 #include "retrieveitemtask.h"
@@ -165,6 +166,11 @@ ImapResource::ImapResource( const QString &id )
   }
 
   m_bodyCheckSession = new Akonadi::Session( identifier().toLatin1() + "_body_checker");
+
+  m_statusMessageTimer = new QTimer( this );
+  m_statusMessageTimer->setSingleShot( true );
+  connect( m_statusMessageTimer, SIGNAL(timeout()), SLOT(clearStatusMessage()) );
+  connect( this, SIGNAL(error(QString)), SLOT(showError(QString)) );
 }
 
 ImapResource::~ImapResource()
@@ -349,33 +355,44 @@ void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts 
   queueTask( task );
 }
 
-void ImapResource::itemRemoved( const Akonadi::Item &item )
+void ImapResource::itemsFlagsChanged( const Item::List& items, const QSet< QByteArray >& addedFlags,
+                                      const QSet< QByteArray >& removedFlags )
 {
-  ResourceStateInterface::Ptr state = ::ResourceState::createRemoveItemState( this, item );
+  emit status( AgentBase::Running, i18nc( "@info:status", "Updating items" ) );
 
-  const QString mailBox = state->mailBoxForCollection( item.parentCollection(), false );
+  ResourceStateInterface::Ptr state = ::ResourceState::createChangeItemsFlagsState( this, items, addedFlags, removedFlags );
+  ChangeItemsFlagsTask *task = new ChangeItemsFlagsTask( state, this );
+  task->start( m_pool );
+  queueTask( task );
+}
+
+void ImapResource::itemsRemoved( const Akonadi::Item::List &items )
+{
+  ResourceStateInterface::Ptr state = ::ResourceState::createRemoveItemsState( this, items );
+
+  const QString mailBox = state->mailBoxForCollection( items.first().parentCollection(), false );
   if ( mailBox.isEmpty() ) {
     // this item will be removed soon by its parent collection
     changeProcessed();
     return;
   }
 
-  emit status( AgentBase::Running, i18nc( "@info:status", "Removing item from '%1'", item.parentCollection().name() ) );
+  emit status( AgentBase::Running, i18nc( "@info:status", "Removing items" ) );
 
-  RemoveItemTask *task = new RemoveItemTask( state, this );
+  RemoveItemsTask *task = new RemoveItemsTask( state, this );
   task->start( m_pool );
   queueTask( task );
 }
 
-void ImapResource::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
-                              const Akonadi::Collection &destination )
+void ImapResource::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &source,
+                               const Akonadi::Collection &destination )
 {
-  Q_ASSERT( item.parentCollection() == destination ); // should have been set by the server
+  Q_ASSERT( items.first().parentCollection() == destination ); // should have been set by the server
 
-  emit status( AgentBase::Running, i18nc( "@info:status", "Moving item from '%1' to '%2'", source.name(), destination.name() ) );
+  emit status( AgentBase::Running, i18nc( "@info:status", "Moving items from '%1' to '%2'", source.name(), destination.name() ) );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createMoveItemState( this, item, source, destination );
-  MoveItemTask *task = new MoveItemTask( state, this );
+  ResourceStateInterface::Ptr state = ::ResourceState::createMoveItemsState( this, items, source, destination );
+  MoveItemsTask *task = new MoveItemsTask( state, this );
   task->start( m_pool );
   queueTask( task );
 }
@@ -535,7 +552,7 @@ void ImapResource::reconnect()
 
   setOnline( !needsNetwork()
 #ifndef IMAPRESOURCE_NO_SOLID
-			 ||
+                         ||
              Solid::Networking::status() == Solid::Networking::Unknown ||
              Solid::Networking::status() == Solid::Networking::Connected
 #endif
@@ -696,6 +713,17 @@ QString ImapResource::dumpResourceToString() const
     ret += task->metaObject()->className();
   }
   return QLatin1String("IMAP tasks: ") + ret;
+}
+
+void ImapResource::showError( const QString &message )
+{
+  emit status( Akonadi::AgentBase::Idle, message );
+  m_statusMessageTimer->start( 1000*10 );
+}
+
+void ImapResource::clearStatusMessage()
+{
+  emit status( Akonadi::AgentBase::Idle, "" );
 }
 
 // ----------------------------------------------------------------------------------

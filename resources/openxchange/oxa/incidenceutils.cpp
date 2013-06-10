@@ -164,13 +164,11 @@ static void parseTodoAttribute( const QDomElement &element,
     const KDateTime dateTime = KDateTime( OXUtils::readDateTime( element.text() ), KDateTime::UTC );
     if ( dateTime.isValid() ) {
       todo->setDtStart( dateTime );
-      todo->setHasStartDate( true );
     }
   } else if ( tagName == QLatin1String( "end_date" ) ) {
     const KDateTime dateTime = KDateTime( OXUtils::readDateTime( element.text() ), KDateTime::UTC );
     if ( dateTime.isValid() ) {
       todo->setDtDue( dateTime );
-      todo->setHasDueDate( true );
     }
   } else if ( tagName == QLatin1String( "priority" ) ) {
     const int priorityNumber = OXUtils::readNumber( element.text() );

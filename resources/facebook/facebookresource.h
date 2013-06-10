@@ -24,12 +24,22 @@
 
 #include <libkfbapi/userinfo.h>
 #include <libkfbapi/postinfo.h>
+#include <libkfbapi/notificationinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
 
 #include <Akonadi/ResourceBase>
 #include <QPointer>
 #include <QMutex>
+
+class KStatusNotifierItem;
+
+static const QLatin1String notificationsRID( "notifications" );
+static const QLatin1String friendsRID( "friends" );
+static const QLatin1String eventsRID( "events" );
+static const QLatin1String eventMimeType( "application/x-vnd.akonadi.calendar.event" );
+static const QLatin1String notesRID( "notes" );
+static const QLatin1String postsRID( "posts" );
 
 class FacebookResource : public Akonadi::ResourceBase,
                          public Akonadi::AgentBase::Observer
@@ -75,6 +85,12 @@ class FacebookResource : public Akonadi::ResourceBase,
     void postsListFetched( KJob *job );
     void postAddJobFinished( KJob *job );
     void notificationsListFetched( KJob *job );
+    void notificationSNIActivated(bool active, const QPoint &position);
+    void notificationLinkActivated();
+    void notificationMarkAsReadJobFinished(KJob *job);
+    void notificationCollectionFetchJobFinished(KJob *job);
+    void markNotificationsAsReadTriggered();
+    void hideNotificationsSNITriggered();
 
     void deleteJobFinished( KJob *job );
 
@@ -89,6 +105,13 @@ class FacebookResource : public Akonadi::ResourceBase,
       FacebookLike = 1
     };
     QString formatI18nString( FormattingStringType type, int n );
+
+    enum FbNotificationPresentation {
+        KSNIonly = 0,
+        KSNIandKNotification = 1
+    };
+
+    void displayNotificationsToUser(FbNotificationPresentation displayType);
 
     void fetchNewOrChangedFriends();
     void finishFriendFetching();
@@ -106,12 +129,16 @@ class FacebookResource : public Akonadi::ResourceBase,
 
     QList<KFbAPI::UserInfo> mNewOrChangedFriends;
 
+    QList<KFbAPI::NotificationInfo> mDisplayedNotifications;
+
     // Total number of new & changed friends
     int mNumFriends;
     int mNumPhotosFetched;
 
     bool mIdle;
     QList< QPointer<KJob> > mCurrentJobs;
+
+    QPointer<KStatusNotifierItem> mNotificationSNI;
 };
 
 #endif

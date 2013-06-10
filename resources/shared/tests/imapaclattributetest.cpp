@@ -25,7 +25,7 @@ using namespace Akonadi;
 
 typedef QMap<QByteArray, KIMAP::Acl::Rights> ImapAcl;
 
-Q_DECLARE_METATYPE( ImapAcl );
+Q_DECLARE_METATYPE( ImapAcl )
 
 class ImapAclAttributeTest : public QObject
 {
@@ -73,6 +73,10 @@ class ImapAclAttributeTest : public QObject
       QCOMPARE( attr->serialized(), oldSerialized );
 
       delete attr;
+
+      ImapAclAttribute deserializeAttr;
+      deserializeAttr.deserialize( serialized );
+      QCOMPARE( deserializeAttr.rights(), rights );
     }
 
     void testOldRights()

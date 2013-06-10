@@ -28,6 +28,9 @@
 
 #include <akonadi/resourcebase.h>
 #include <QPointer>
+
+class QTimer;
+
 class ResourceTask;
 namespace KIMAP
 {
@@ -40,7 +43,7 @@ class SessionPool;
 class ResourceState;
 class SubscriptionDialog;
 
-class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
+class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV3
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
@@ -82,9 +85,10 @@ protected Q_SLOTS:
 protected:
   virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
   virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-  virtual void itemRemoved( const Akonadi::Item &item );
-  virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source,
-                          const Akonadi::Collection &destination );
+  virtual void itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags );
+  virtual void itemsRemoved( const Akonadi::Item::List &items );
+  virtual void itemsMoved( const Akonadi::Item::List &item, const Akonadi::Collection &source,
+                           const Akonadi::Collection &destination );
 
 
   virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
@@ -117,6 +121,9 @@ private Q_SLOTS:
 
   void taskDestroyed( QObject *task );
 
+  void showError( const QString &message );
+  void clearStatusMessage();
+
 private:
   friend class ResourceState;
 
@@ -131,6 +138,7 @@ private:
   ImapIdleManager *m_idle;
   bool m_fastSync;
   Akonadi::Session *m_bodyCheckSession;
+  QTimer *m_statusMessageTimer;
 };
 
 #endif

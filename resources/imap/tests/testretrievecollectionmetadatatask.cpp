@@ -30,7 +30,7 @@
 #include "timestampattribute.h"
 #include <noinferiorsattribute.h>
 
-Q_DECLARE_METATYPE( Akonadi::Collection::Rights );
+Q_DECLARE_METATYPE( Akonadi::Collection::Rights )
 
 class TestRetrieveCollectionMetadataTask : public ImapTestBase
 {

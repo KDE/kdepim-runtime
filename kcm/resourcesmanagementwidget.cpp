@@ -113,7 +113,7 @@ void ResourcesManagementWidget::editClicked()
     if ( !instanceList.isEmpty() && instanceList.first().isValid() ) {
         KWindowSystem::allowExternalProcessWindowActivation();
         Akonadi::AgentInstance instance = instanceList.first();
-	instance.configure( this );
+        instance.configure( this );
     }
 }
 
@@ -134,7 +134,7 @@ void ResourcesManagementWidget::removeClicked()
           foreach ( const Akonadi::AgentInstance &agent, instanceList )
               Akonadi::AgentManager::self()->removeInstance( agent );
           updateButtonState();
-	}
+        }
     }
 }
 

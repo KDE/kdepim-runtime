@@ -186,6 +186,11 @@ Akonadi::Item ResourceTask::item() const
   return m_resource->item();
 }
 
+Akonadi::Item::List ResourceTask::items() const
+{
+  return m_resource->items();
+}
+
 Akonadi::Collection ResourceTask::parentCollection() const
 {
   return m_resource->parentCollection();
@@ -204,6 +209,16 @@ Akonadi::Collection ResourceTask::targetCollection() const
 QSet<QByteArray> ResourceTask::parts() const
 {
   return m_resource->parts();
+}
+
+QSet< QByteArray > ResourceTask::addedFlags() const
+{
+  return m_resource->addedFlags();
+}
+
+QSet< QByteArray > ResourceTask::removedFlags() const
+{
+  return m_resource->removedFlags();
 }
 
 QString ResourceTask::rootRemoteId() const
@@ -259,6 +274,12 @@ void ResourceTask::itemsRetrievalDone()
 void ResourceTask::changeCommitted( const Akonadi::Item &item )
 {
   m_resource->itemChangeCommitted( item );
+  deleteLater();
+}
+
+void ResourceTask::changesCommitted(const Akonadi::Item::List& items)
+{
+  m_resource->itemsChangesCommitted( items );
   deleteLater();
 }
 
@@ -373,5 +394,16 @@ void ResourceTask::kill()
   kDebug();
   cancelTask("killed");
 }
+
+const QChar ResourceTask::separatorCharacter() const
+{
+  //If we create a toplevel folder, assume the separator to be '/'. This is not perfect, but detecting the right
+  //IMAP separator is not straightforward for toplevel folders, and fixes bug 292418 and maybe other, where
+  //subfolders end up with remote id's starting with "i" (the first letter of imap:// ...)
+  const QString parentRemoteId = parentCollection().remoteId();
+  const QChar separator = ( ( parentRemoteId != rootRemoteId() ) && !parentRemoteId.isEmpty() ) ? parentRemoteId.at( 0 ) : '/';
+  return separator;
+}
+
 
 #include "resourcetask.moc"

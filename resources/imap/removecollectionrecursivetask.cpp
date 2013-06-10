@@ -30,7 +30,7 @@
 
 RemoveCollectionRecursiveTask::RemoveCollectionRecursiveTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ),
-    mSession( 0 ), mRunningDeleteJobs( 0 )
+    mSession( 0 ), mRunningDeleteJobs( 0 ), mFolderFound( false )
 {
 }
 
@@ -42,6 +42,7 @@ void RemoveCollectionRecursiveTask::doStart( KIMAP::Session *session )
 {
   mSession = session;
 
+  mFolderFound = false;
   KIMAP::ListJob *listJob = new KIMAP::ListJob( session );
   listJob->setIncludeUnsubscribed( !isSubscriptionEnabled() );
   listJob->setQueriedNamespaces( serverNamespaces() );
@@ -63,20 +64,17 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::Mai
   for ( int i = 0; i < descriptors.size(); ++i ) {
     const KIMAP::MailBoxDescriptor descriptor = descriptors[ i ];
 
-    if ( descriptor.name.startsWith( mailBox ) ) { // a sub folder to delete
+    if ( descriptor.name == mailBox || descriptor.name.startsWith( mailBox + descriptor.separator ) ) { // a sub folder to delete
       const QStringList pathParts = descriptor.name.split( descriptor.separator );
       foldersToDelete[ pathParts.count() ].append( descriptor );
     }
   }
 
   if  ( foldersToDelete.isEmpty() ) {
-      changeProcessed();
-
-      kDebug( 5327 ) << "Failed to find the folder to be deleted, resync the folder tree";
-      emitWarning( i18n( "Failed to find the folder to be deleted, restoring folder list." ) );
-      synchronizeCollectionTree();
       return;
   }
+
+  mFolderFound = true;
 
   // Now start the actual deletion work
   QMapIterator<int, QList<KIMAP::MailBoxDescriptor> > it( foldersToDelete );
@@ -135,12 +133,17 @@ void RemoveCollectionRecursiveTask::onDeleteJobDone( KJob* job )
 
 void RemoveCollectionRecursiveTask::onJobDone( KJob* job )
 {
-  if ( job->error() ) {
+ if ( job->error() ) {
     changeProcessed();
 
     kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
+  } else if ( !mFolderFound ) {
+      changeProcessed();
+      kDebug( 5327 ) << "Failed to find the folder to be deleted, resync the folder tree";
+      emitWarning( i18n( "Failed to find the folder to be deleted, restoring folder list." ) );
+      synchronizeCollectionTree();
   }
 }
 

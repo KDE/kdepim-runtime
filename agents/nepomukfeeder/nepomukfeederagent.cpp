@@ -3,6 +3,7 @@
                   2008 Sebastian Trueg <trueg@kde.org>
                   2009 Volker Krause <vkrause@kde.org>
                   2011 Christian Mollekopf <chrigi_1@fastmail.fm>
+                  2013 Vishesh Handa <me@vhanda.in>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -22,71 +23,38 @@
 
 #include "nepomukfeederagent.h"
 #include "nepomukfeederagentdialog.h"
+#include "nepomukhelpers.h"
+#include "findunindexeditemsjob.h"
+#include "nepomukfeeder-config.h"
+#include "nepomukfeederadaptor.h"
+
 #include <aneo.h>
 
 #include <akonadi/agentmanager.h>
-#include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
-#include <akonadi/entityhiddenattribute.h>
-#include <akonadi/indexpolicyattribute.h>
 #include <akonadi/item.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/changerecorder.h>
 
-#include <nepomuk2/simpleresource.h>
-#include <nepomuk2/simpleresourcegraph.h>
-#include <nepomuk2/datamanagement.h>
 #include <nepomuk2/resourcemanager.h>
 
 #include <KLocale>
 #include <KUrl>
 #include <KProcess>
 #include <KStandardDirs>
-#include <KIdleTime>
 #include <KConfigGroup>
-#include <KNotification>
-#include <KIconLoader>
-#include <KIcon>
 #include <KWindowSystem>
 
 #include <QtCore/QTimer>
 #include <nepomukfeederutils.h>
-#include "pluginloader.h"
-#include "nepomukhelpers.h"
-#include "findunindexeditemsjob.h"
-#include "nepomukcleanerjob.h"
-#include "nepomukfeeder-config.h"
-#include "nepomukfeederadaptor.h"
 
 typedef QSharedPointer< QMultiHash< Akonadi::Collection::Id,  Akonadi::Item::Id> > MultiHashPointer;
 Q_DECLARE_METATYPE(MultiHashPointer)
 
 namespace Akonadi {
-
-static inline bool indexingDisabled( const Collection &collection )
-{
-  if ( collection.hasAttribute<EntityHiddenAttribute>() )
-    return true;
-
-  IndexPolicyAttribute *indexPolicy = collection.attribute<IndexPolicyAttribute>();
-  if ( indexPolicy && !indexPolicy->indexingEnabled() )
-    return true;
-
-  if ( collection.isVirtual() )
-    return true;
-
-  // check if we have a plugin for the stuff in this collection
-  foreach ( const QString &mimeType, collection.contentMimeTypes() ) {
-    if ( mimeType == Collection::mimeType() )
-     continue;
-    if ( !FeederPluginloader::instance().feederPluginsForMimeType( mimeType ).isEmpty() )
-      return false;
-  }
-
-  return true;
-}
 
 static inline QString emailMimetype()
 {
@@ -95,69 +63,40 @@ static inline QString emailMimetype()
 
 NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   AgentBase(id),
-  mNepomukStartupAttempted( false ),
   mInitialUpdateDone( false ),
-  mIdleDetectionDisabled( true ),
-  mShouldProcessNotifications( true ),
-  mShouldRecordNotifications( true ),
-  mLostChanges( false ),
   mInitialIndexingDisabled( false ),
-  mItemBatchCounter( 0 ),
-  mBatchDetected( false ),
   mTotalItems(0),
-  mIndexedItems(0)
+  mIndexedItems(0),
+  m_findUnindexedItemsJob(0)
 {
   KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
   new NepomukFeederAdaptor( this );
 
-  changeRecorder()->fetchCollection( true );
-  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
-  changeRecorder()->setAllMonitored( true );
-  changeRecorder()->itemFetchScope().setCacheOnly( true );
-  connect(changeRecorder(), SIGNAL(changesAdded()), this, SLOT(changesRecorded()));
-
-  Nepomuk2::ResourceManager::instance()->init();
-  mNepomukStartupTimeout.setInterval( 300 * 1000 );
-  mNepomukStartupTimeout.setSingleShot( true );
-  connect( &mNepomukStartupTimeout, SIGNAL(timeout()), SLOT(selfTest()) );
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStarted()), SLOT(selfTest()) );
   connect( Nepomuk2::ResourceManager::instance(), SIGNAL(nepomukSystemStopped()), SLOT(selfTest()) );
   connect( this, SIGNAL(reloadConfiguration()), SLOT(selfTest()) );
-  connect( this, SIGNAL(fullyIndexed()), this, SLOT(slotFullyIndexed()) );
 
-  connect( KIdleTime::instance(), SIGNAL(timeoutReached(int)), SLOT(systemIdle()) );
-  connect( KIdleTime::instance(), SIGNAL(resumingFromIdle()), SLOT(systemResumed()) );
+  //mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
 
-  KConfigGroup cfgGrp( componentData().config(), identifier() );
-  KIdleTime::instance()->addIdleTimeout( 1000 * cfgGrp.readEntry( "IdleTimeout", 120 ) );
-  disableIdleDetection( cfgGrp.readEntry( "DisableIdleDetection", true ) );
-  mInitialIndexingDisabled = cfgGrp.readEntry( "DisableInitialIndexing", false );
+  m_indexerConfig = new IndexerConfig( this );
+  connect( m_indexerConfig, SIGNAL(configChanged()), this, SLOT(selfTest()) );
 
   setOnline( false );
   QTimer::singleShot( 0, this, SLOT(selfTest()) );
   QTimer::singleShot( 1000, this, SLOT(checkMigration()) );
 
-  mQueue.setIndexingSpeed( mIdleDetectionDisabled ? FeederQueue::FullSpeed : FeederQueue::ReducedSpeed );
+  //mScheduler.setIndexingSpeed( mIdleDetectionDisabled ? IndexScheduler::FullSpeed : IndexScheduler::ReducedSpeed );
 
-  connect(&mQueue, SIGNAL(progress(int)), SIGNAL(percent(int)));
-  connect(&mQueue, SIGNAL(idle(QString)), this, SLOT(idle(QString)));
-  connect(&mQueue, SIGNAL(running(QString)), this, SLOT(running(QString)));
-  connect(&mQueue, SIGNAL(fullyIndexed()), this, SIGNAL(fullyIndexed()));
-  
-  mItemBatchTimer.setSingleShot( true );
-  connect( &mItemBatchTimer, SIGNAL(timeout()), SLOT(batchTimerElapsed()) );
+  connect(&mScheduler, SIGNAL(progress(int)), SIGNAL(percent(int)));
+  connect(&mScheduler, SIGNAL(idle(QString)), this, SLOT(emitIdle(QString)));
+  connect(&mScheduler, SIGNAL(running(QString)), this, SLOT(emitRunning(QString)));
 
-  mInitialIndexingTimer.setSingleShot( true );
-  connect( &mInitialIndexingTimer, SIGNAL(timeout()), SLOT(checkForLostChanges()) );
-  if ( !mInitialIndexingDisabled ) {
-    mInitialIndexingTimer.start( 3600 * 1000 );
-  } else {
-    kDebug() << "Initial indexing was disabled in the configuration.";
-  }
-  
-  if ( !changeRecorder()->isEmpty() )
-     QMetaObject::invokeMethod(changeRecorder(), "replayNext");
+  changeRecorder()->fetchCollection( true );
+  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::Parent );
+  changeRecorder()->setAllMonitored( true );
+  changeRecorder()->itemFetchScope().setCacheOnly( true );
+  changeRecorder()->setChangeRecordingEnabled( false );
 }
 
 NepomukFeederAgent::~NepomukFeederAgent()
@@ -187,77 +126,36 @@ void NepomukFeederAgent::forceReindexCollection(const qlonglong id)
 
 void NepomukFeederAgent::forceReindexItem(const qlonglong id)
 {
-  mQueue.addItem( Akonadi::Item(id) );
-}
-
-void NepomukFeederAgent::changesRecorded()
-{
-  if ( !changeRecorder()->isEmpty() && mShouldProcessNotifications )
-    changeRecorder()->replayNext();
+  mScheduler.addItem( Akonadi::Item(id) );
 }
 
 void NepomukFeederAgent::processNextNotification()
 {
   //check if still running otherwise stop
-  if ( mShouldProcessNotifications ) {
+  if ( isOnline() ) {
     changeProcessed();
   }
 }
 
-static int maxItemsWithinTimeframe = 10;
-static int timeframeSeconds = 10;
-void NepomukFeederAgent::batchTimerElapsed()
-{
-  if (mItemBatchCounter <= maxItemsWithinTimeframe) {
-    kDebug() << "end of batch";
-    mBatchDetected = false;
-  } else {
-    mItemBatchTimer.start( timeframeSeconds * 1000 );
-  }
-  mItemBatchCounter = 0;
-}
-
-bool NepomukFeederAgent::skipBatch(const Item& item)
-{
-  if ( item.mimeType() != emailMimetype() ) {
-    return false;
-  }
-  mItemBatchCounter++;
-  if (!mBatchDetected && mItemBatchCounter > maxItemsWithinTimeframe) {
-    kDebug() << "batch detected, skipping";
-    mBatchDetected = true;
-  }
-  
-  if (!mItemBatchTimer.isActive()) {
-    mItemBatchTimer.start( timeframeSeconds * 1000 );
-  }
-  return mBatchDetected;
-}
-
 void NepomukFeederAgent::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
+  if( !isOnline() )
+      return;
+
   kDebug() << item.id();
-  if ( !mShouldRecordNotifications )
-    return;
   if ( indexingDisabled( collection ) )
     return processNextNotification();
-  if ( skipBatch( item ) ) {
-    kDebug() << "skipping item";
-    //Mark that we skipped some changes which we should retrieve again using FindUnindexedItemsJob
-    mLostChanges = true;
-    return processNextNotification();
-  }
 
   Q_ASSERT( item.parentCollection() == collection );
-  mQueue.addItem( item );
+  mScheduler.addItem( item );
   processNextNotification();
 }
 
 void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& partIdentifiers)
 {
-  if ( !mShouldRecordNotifications )
-    return;
-  
+  if( !isOnline() )
+      return;
+
   QSet<QByteArray> parts = partIdentifiers;
   // Remove parts that we don't use in nepomuk, to avoid unnecessary re-indexing
   // We care for FLAGS, and PLD (headers, body), possibly for modification time
@@ -273,32 +171,39 @@ void NepomukFeederAgent::itemChanged(const Akonadi::Item& item, const QSet< QByt
     return processNextNotification();
   if ( indexingDisabled( item.parentCollection() ) )
     return processNextNotification();
-  if ( skipBatch( item ) ) {
-    return processNextNotification();
-  }
+
   //kDebug() << item.id() << partIdentifiers;
-  mQueue.addItem( item );
+  mScheduler.addItem( item );
   processNextNotification();
 }
 
 void NepomukFeederAgent::itemRemoved(const Akonadi::Item& item)
 {
+  if( !isOnline() )
+      return;
+
   //kDebug() << item.url();
-  Nepomuk2::removeResources( QList <QUrl>() << item.url(), Nepomuk2::RemoveSubResoures );
+  mScheduler.removeItem( item );
   processNextNotification();
 }
 
 void NepomukFeederAgent::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
+  if( !isOnline() )
+      return;
   Q_UNUSED( parent );
   if ( indexingDisabled( collection ) )
     return processNextNotification();
-  NepomukHelpers::addCollectionToNepomuk( collection );
+
+  mScheduler.addCollection( collection );
   processNextNotification();
 }
 
 void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& partIdentifiers)
 {
+  if( !isOnline() )
+      return;
+
   QSet<QByteArray> parts = partIdentifiers;
   QMutableSetIterator<QByteArray> it( parts );
   while ( it.hasNext() ) {
@@ -317,7 +222,10 @@ void NepomukFeederAgent::collectionChanged(const Akonadi::Collection& collection
 
 void NepomukFeederAgent::collectionRemoved(const Akonadi::Collection& collection)
 {
-  Nepomuk2::removeResources( QList <QUrl>() << collection.url() );
+  if( !isOnline() )
+      return;
+
+  mScheduler.removeCollection( collection );
   processNextNotification();
 }
 
@@ -328,30 +236,16 @@ void NepomukFeederAgent::findUnindexed()
     return;
   }
 
-  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
-  connect(fetchJob, SIGNAL(finished(KJob*)), this, SLOT(collectionListReceived(KJob*)));
-  fetchJob->start();
-}
-
-void NepomukFeederAgent::collectionListReceived(KJob *job)
-{
-  if (job->error()) {
-    kWarning() << "Failed to fetch collections";
-    return;
+  if (m_findUnindexedItemsJob) {
+      return;
   }
-  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
 
-  Akonadi::Collection::List indexedCollections;
-  foreach (const Akonadi::Collection &col, fetchJob->collections()) {
-    if (!indexingDisabled(col)) {
-      kDebug() << "collection is indexed: " << col.id();
-      indexedCollections << col;
-    }
-  }
-  FindUnindexedItemsJob *findUnindexeditemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
-  findUnindexeditemsJob->setIndexedCollections( indexedCollections );
-  connect(findUnindexeditemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
-  findUnindexeditemsJob->start();
+  m_findUnindexedItemsJob = new FindUnindexedItemsJob(NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL, this);
+
+  connect(m_findUnindexedItemsJob, SIGNAL(result(KJob*)), this, SLOT(foundUnindexedItems(KJob*)));
+  m_findUnindexedItemsJob->start();
+
+  emit status( Running, i18n( "Calculating Emails to index" ) );
 }
 
 void NepomukFeederAgent::foundUnindexedItems(KJob* job)
@@ -361,31 +255,21 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
     return;
   }
   FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);
-  mTotalItems = findJob->totalCount();
+  Q_ASSERT( findJob == m_findUnindexedItemsJob );
+
+  mTotalItems = m_findUnindexedItemsJob->totalCount();
   mIndexedItems = findJob->indexedCount();
   const FindUnindexedItemsJob::ItemHash items = findJob->getUnindexed();
+  m_findUnindexedItemsJob = 0;
+
   FindUnindexedItemsJob::ItemHash::const_iterator it = items.constBegin();
   for (;it != items.constEnd(); it++) {
     Akonadi::Item item( it.key() );
     item.setMimeType( it.value().second );
-    mQueue.addLowPrioItem( item );
+    mScheduler.addLowPrioItem( item );
   }
 
-  NepomukCleanerJob *cleanerJob = new NepomukCleanerJob(findJob->getItemsToRemove(), this);
-  cleanerJob->start();
-}
-
-void NepomukFeederAgent::checkForLostChanges()
-{
-  //Check every hour if we should pick up some unindexed new emails, if currently busy come back a bit later
-  //Since we only skip emails, we don't re-run the full check regulary.
-  if ( isOnline() && mLostChanges && mQueue.isEmpty() ) {
-    findUnindexed();
-    mLostChanges = false;
-    mInitialIndexingTimer.start( 1800 * 1000 );
-  } else {
-    mInitialIndexingTimer.start( 60 * 1000 );
-  }
+  mScheduler.removeNepomukUris( findJob->staleUris() );
 }
 
 void NepomukFeederAgent::updateAll()
@@ -396,7 +280,7 @@ void NepomukFeederAgent::updateAll()
 void NepomukFeederAgent::collectionsReceived(const Akonadi::Collection::List& collections)
 {
   foreach ( const Collection &collection, collections ) {
-    mQueue.addCollection( collection );
+    mScheduler.addCollection( collection );
   }
 }
 
@@ -417,202 +301,66 @@ void NepomukFeederAgent::checkMigration()
   }
 }
 
-void NepomukFeederAgent::enableChangeRecording(bool enable)
-{
-  changeRecorder()->setChangeRecordingEnabled( enable );
-  mShouldRecordNotifications = enable;
-}
-
 void NepomukFeederAgent::selfTest()
 {
-  QStringList errorMessages;
-  bool selfTestPassed = false;
-
-  // check if we have been disabled explicitly
-  {
-    KConfig config( "akonadi_nepomuk_feederrc" );
-    KConfigGroup cfgGrp( &config, "akonadi_nepomuk_email_feeder" );
-    if ( !cfgGrp.readEntry( "Enabled", true ) ) {
-      setOnline(false);
-      enableChangeRecording( false );
-      kDebug() << "Indexing has been disabled by you.";
-      emit status( Broken, i18n( "Indexing has been disabled by you." ) );
-      return;
+    if( !m_indexerConfig->isEnabled() ) {
+        setOnline( false );
+        emit status( Broken, i18n( "Email Indexing has been disabled" ) );
+        return;
     }
-  }
 
-  // if Nepomuk is not running, try to start it
-  if ( !mNepomukStartupAttempted && !Nepomuk2::ResourceManager::instance()->initialized() ) {
-    KProcess process;
-    const QString nepomukserver = KStandardDirs::findExe( QLatin1String( "nepomukserver" ) );
-    if ( process.startDetached( nepomukserver ) == 0 ) {
-      errorMessages.append( i18n( "Unable to start the Nepomuk server." ) );
-    } else {
-      mNepomukStartupAttempted = true;
-      mNepomukStartupTimeout.start();
-      // wait for Nepomuk to start
-      setOnline( false );
-      enableChangeRecording( false );
-      emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
-      return;
+    if( !Nepomuk2::ResourceManager::instance()->initialized() ) {
+        setOnline( false );
+        emit status( Broken, i18n( "Waiting for the Nepomuk to start" ) );
     }
-  }
+    else {
+        setOnline( true );
+        emit status( Idle, i18n( "Ready to index data." ) );
 
-  if ( !Nepomuk2::ResourceManager::instance()->initialized() ) {
-    if ( mNepomukStartupAttempted && mNepomukStartupTimeout.isActive() ) {
-      // still waiting for Nepomuk to start
-      setOnline( false );
-      enableChangeRecording( false );
-      emit status( Broken, i18n( "Waiting for the Nepomuk server to start..." ) );
-      return;
-    } else {
-      errorMessages.append( i18n( "Nepomuk is not running." ) );
+        if ( !mInitialUpdateDone ) {
+            mInitialUpdateDone = true;
+            //TODO postpone this until the computer is idle?
+            if ( !mInitialIndexingDisabled ) {
+                QTimer::singleShot( 0, this, SLOT(updateAll()) );
+            } else {
+                kDebug() << "Initial indexing was disabled in the configuration.";
+            }
+        }
     }
-  }
-
-  if ( errorMessages.isEmpty() ) {
-    selfTestPassed = true;
-    mNepomukStartupAttempted = false; // everything worked, we can try again if the server goes down later
-    mNepomukStartupTimeout.stop();
-    setOnline( true );
-    enableChangeRecording( true );
-    if ( !mInitialUpdateDone ) {
-      mInitialUpdateDone = true;
-      //TODO postpone this until the computer is idle?
-      if ( !mInitialIndexingDisabled ) {
-        QTimer::singleShot( 0, this, SLOT(updateAll()) );
-      } else {
-        kDebug() << "Initial indexing was disabled in the configuration.";
-      }
-    } else {
-      emit status( Idle, i18n( "Ready to index data." ) );
-    }
-    return;
-  }
-
-  setOnline( selfTestPassed );
-  emit status( Broken, i18n( "Nepomuk is not operational: %1", errorMessages.join( " " ) ) );
-}
-
-void NepomukFeederAgent::disableIdleDetection( bool value )
-{
-  mIdleDetectionDisabled = value;
-  if ( value ) {
-    mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
-  }
-  if ( KIdleTime::instance()->idleTime() ) {
-    systemIdle();
-  } else {
-    systemResumed();
-  }
-}
-
-void NepomukFeederAgent::slotFullyIndexed()
-{
 }
 
 void NepomukFeederAgent::doSetOnline(bool online)
 {
-  setRunning( online );
-  Akonadi::AgentBase::doSetOnline( online );
-}
+    mScheduler.setOnline( online );
 
-void NepomukFeederAgent::setRunning( bool running )
-{
-  mShouldProcessNotifications = running;
-  mQueue.setOnline( running );
-  changesRecorded();
-  if ( running && !mQueue.isEmpty() ) {
-    if ( mQueue.currentCollection().isValid() ) {
-      const QString summary = i18n( "Indexing collection '%1'...", mQueue.currentCollection().name() );
-      const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-      KNotification::event( QLatin1String("startindexingcollection"),
-                              summary,
-                              pixmap,
-                              0,
-                              KNotification::CloseOnTimeout,
-                              KGlobal::mainComponent());
-      emit status( AgentBase::Running, summary );
+    if ( online ) {
+        findUnindexed();
     }
-    else
-      emit status( AgentBase::Running, i18n( "Indexing recent changes..." ) );
-  }
+    else {
+        if( m_findUnindexedItemsJob ) {
+            m_findUnindexedItemsJob->kill();
+            m_findUnindexedItemsJob = 0;
+        }
+
+        mScheduler.clear();
+    }
+
+    Akonadi::AgentBase::doSetOnline( online );
 }
 
-void NepomukFeederAgent::systemIdle()
-{
-  if ( mIdleDetectionDisabled )
-    return;
-
-  const QString summary = i18n( "System idle, ready to index data." );
-  const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-  KNotification::event( QLatin1String("statusindexing"),
-                          summary,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
-
-  emit status( Idle, summary );
-  KIdleTime::instance()->catchNextResumeEvent();
-  mQueue.setIndexingSpeed( FeederQueue::FullSpeed );
-}
-
-void NepomukFeederAgent::systemResumed()
-{
-  if ( mIdleDetectionDisabled )
-    return;
-
-  const QString summary = i18n( "System busy, indexing suspended." );
-  const QPixmap pixmap = KIcon( "nepomuk" ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-  KNotification::event( QLatin1String("statusindexing"),
-                          summary,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
-
-  emit status( Idle, summary );
-  mQueue.setIndexingSpeed( FeederQueue::ReducedSpeed );
-}
-
-void NepomukFeederAgent::idle(const QString &string)
+void NepomukFeederAgent::emitIdle(const QString &string)
 {
   emit status( AgentBase::Idle, string );
 }
 
-void NepomukFeederAgent::running(const QString &string)
+void NepomukFeederAgent::emitRunning(const QString &string)
 {
   emit status( AgentBase::Running, string );
 }
 
-bool NepomukFeederAgent::isDisableIdleDetection() const
-{
-  return mIdleDetectionDisabled;
-}
-
 bool NepomukFeederAgent::queueIsEmpty()
 {
-  return mQueue.isEmpty();
-}
-
-QString NepomukFeederAgent::currentCollectionName()
-{
-  if(queueIsEmpty()) {
-    return QString();
-  } else {
-    return mQueue.currentCollection().name();
-  }
-}
-
-QStringList NepomukFeederAgent::listOfCollection() const
-{
-  QStringList names;
-  Akonadi::Collection::List listQueueCollection = mQueue.listOfCollection();
-  Q_FOREACH(const Akonadi::Collection& collection, listQueueCollection) {
-    names << collection.name();
-  }
-  return names;
+  return mScheduler.isEmpty();
 }
 
 qlonglong NepomukFeederAgent::totalitems() const

@@ -26,7 +26,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="nameLabel">
        <property name="text">
-        <string>Full Name</string>
+        <string>Full name:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -85,7 +85,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="passwordLabel">
        <property name="text">
-        <string>Password</string>
+        <string>Password:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -113,7 +113,7 @@
           <bool>true</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0">
+          <item row="0" column="1">
            <widget class="QLabel" name="checkOnlineExplanation">
             <property name="text">
              <string>Check online for the settings needed for this email provider. Only the domain name part of the e-mail address will be sent over the Internet at this point. If this option is unchecked, the account can be set up manually.</string>
@@ -121,6 +121,10 @@
             <property name="wordWrap">
              <bool>true</bool>
             </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="KPIMUtils::ProgressIndicatorWidget" name="mProgress" native="true">
            </widget>
           </item>
          </layout>
@@ -135,7 +139,7 @@
          <item>
           <widget class="QRadioButton" name="imapAccount">
            <property name="text">
-            <string>Imap account</string>
+            <string>IMAP account</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -148,7 +152,7 @@
          <item>
           <widget class="QRadioButton" name="pop3Account">
            <property name="text">
-            <string>Pop3 Account</string>
+            <string>POP3 account</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>
@@ -237,12 +241,6 @@
         </layout>
        </item>
       </layout>
-      <zorder>label_2</zorder>
-      <zorder>label_3</zorder>
-      <zorder>incommingLabel</zorder>
-      <zorder>outgoingLabel</zorder>
-      <zorder>usernameLabel</zorder>
-      <zorder>label</zorder>
      </widget>
     </widget>
    </item>
@@ -266,6 +264,12 @@
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KPIMUtils::ProgressIndicatorWidget</class>
+   <extends>QLabel</extends>
+   <header location="global">kpimutils/progressindicatorwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

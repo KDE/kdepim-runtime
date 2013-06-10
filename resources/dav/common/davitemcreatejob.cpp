@@ -27,20 +27,6 @@
 
 #include <QtCore/QDebug>
 
-static QString etagFromHeaders( const QString &headers )
-{
-  const QStringList allHeaders = headers.split( '\n' );
-
-  QString etag;
-  foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( QLatin1String( "etag:" ), Qt::CaseInsensitive ) )
-      etag = header.section( ' ', 1 );
-  }
-
-  return etag;
-}
-
-
 DavItemCreateJob::DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
   : KJob( parent ), mUrl( url ), mItem( item )
 {
@@ -72,15 +58,20 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
 
   if ( storedJob->error() ) {
-    if ( storedJob->queryMetaData( "responsecode" ).isEmpty() ) {
-      setError( storedJob->error() );
-      setErrorText( storedJob->errorText() );
-    } else {
-      const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request. The item has not been created on the server.\n"
-                          "%1 (%2).", storedJob->errorString(), responseCode ) );
-    }
+    const int responseCode = storedJob->queryMetaData( "responsecode" ).isEmpty() ?
+                              0 :
+                              storedJob->queryMetaData( "responsecode" ).toInt();
+
+    QString err;
+    if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
+    else
+      err = storedJob->errorText();
+
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request. The item has not been created on the server.\n"
+                        "%1 (%2).", err, responseCode ) );
+
     emitResult();
     return;
   }
@@ -104,15 +95,10 @@ void DavItemCreateJob::davJobFinished( KJob *job )
 
   url.setUser( QString() );
   mItem.setUrl( url.prettyUrl() );
-  mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
 
-  if ( mItem.etag().isEmpty() ) {
-    DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
-    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );
-    fetchJob->start();
-  } else {
-    emitResult();
-  }
+  DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
+  connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );
+  fetchJob->start();
 }
 
 void DavItemCreateJob::itemRefreshed( KJob *job )

@@ -168,6 +168,16 @@ KolabProxyResource::~KolabProxyResource()
 {
 }
 
+KolabHandler::Ptr KolabProxyResource::getHandler(Akonadi::Entity::Id collectionId)
+{
+  KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
+  if ( !handler ) {
+    kWarning() << "No handler for collection available: " << collectionId;
+    return KolabHandler::Ptr();
+  }
+  return handler;
+}
+
 void KolabProxyResource::retrieveCollections()
 {
   kDebug() << "RETRIEVECOLLECTIONS ";
@@ -195,25 +205,46 @@ void KolabProxyResource::retrieveCollectionsTreeDone( KJob *job )
 void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
 {
   kDebug() << "RETRIEVEITEMS";
-  m_retrieveState = RetrieveItems;
   const Akonadi::Collection imapCollection = kolabToImap( collection );
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
+  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   Q_ASSERT( handler );
   handler->reset();
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
-  job->setProperty( "resultCanBeEmpty", true );
+  job->fetchScope().setIgnoreRetrievalErrors( true );
+  setItemStreamingEnabled( true );
 
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
+  connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)), this, SLOT(itemsReceived(Akonadi::Item::List)) );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemsFetchDone(KJob*)) );
+}
+
+void KolabProxyResource::itemsReceived(const Akonadi::Item::List &items)
+{
+  if ( const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() ) ) {
+    const Akonadi::Item::List newItems = handler->translateItems( items );
+    itemsRetrieved( newItems );
+  }
+}
+
+void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
+{
+  if ( job->error() ) {
+    kWarning( ) << "Error on item fetch:" << job->errorText();
+    cancelTask();
+    return;
+  }
+  itemsRetrievalDone();
+  kDebug() << "RETRIEVEITEM DONE";
 }
 
 bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
   kDebug() << "RETRIEVEITEM";
-  m_retrieveState = RetrieveItem;
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( item ) );
-  job->fetchScope().fetchFullPayload();
+  foreach (const QByteArray &part, parts) {
+    job->fetchScope().fetchPayloadPart( part );
+  }
   job->setProperty( "itemId", item.id() );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
   return true;
@@ -226,45 +257,26 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
     cancelTask();
     return;
   }
-  const bool resultCanBeEmpty = job->property( "resultCanBeEmpty" ).isValid();
-
-  Akonadi::Item::Id collectionId = -1;
   const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
-  if ( items.size() < 1 ) {
-    if ( resultCanBeEmpty ) {
-      itemsRetrieved( Akonadi::Item::List() );
-    } else {
-      kWarning() << "Items is emtpy";
-      cancelTask();
-    }
-    return;
-  }
-  collectionId = items[0].storageCollectionId();
-  KolabHandler::Ptr handler = m_monitoredCollections.value(collectionId);
-  if ( !handler ) {
-    kWarning() << "No handler for collection available: " << collectionId;
+  if ( items.isEmpty() ) {
+    kWarning() << "Items is emtpy";
     cancelTask();
     return;
   }
-  if ( m_retrieveState == DeleteItem ) {
-    kDebug() << "m_retrieveState = DeleteItem";
-    handler->itemDeleted( items[0] );
+  const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() );
+  if ( !handler ) {
+    cancelTask();
     return;
   }
-  Akonadi::Item::List newItems = handler->translateItems( items );
-  if ( m_retrieveState == RetrieveItems ) {
-    itemsRetrieved( newItems );
-  } else { //RetrieveItem
-    if ( !newItems.isEmpty() ) {
-      Akonadi::Item item = newItems[0];
-      item.setId(job->property("itemId").value<Akonadi::Item::Id>());
-      itemRetrieved( item );
-    } else {
-      kWarning() << "Could not translate item";
-      cancelTask();
-      return;
-    }
+  const Akonadi::Item::List newItems = handler->translateItems( items );
+  if ( newItems.isEmpty() ) {
+    kWarning() << "Could not translate item";
+    cancelTask();
+    return;
   }
+  Akonadi::Item item = newItems[0];
+  item.setId(job->property("itemId").value<Akonadi::Item::Id>());
+  itemRetrieved( item );
   kDebug() << "RETRIEVEITEM DONE";
 }
 
@@ -307,20 +319,21 @@ void KolabProxyResource::configure( WId windowId )
   delete kolabConfigDialog;
 }
 
-void KolabProxyResource::itemAdded( const Akonadi::Item &item,
+void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
                                     const Akonadi::Collection &collection )
 {
   kDebug() << "ITEMADDED";
 
-  Akonadi::Item kolabItem( item );
 //   kDebug() << "Item added " << item.id() << collection.remoteId() << collection.id();
 
   const Akonadi::Collection imapCollection = kolabToImap( collection );
+  createItem( imapCollection, kolabItem );
+}
 
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
+void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem )
+{
+  KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   if ( !handler ) {
-    kWarning() << "No handler found for collection" << collection
-               << ", available handlers: " << m_monitoredCollections;
     cancelTask();
     return;
   }
@@ -383,8 +396,13 @@ void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
   const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
 
   Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob->items().size() <= 1 );
-  if ( fetchJob->items().size() == 1 ) { //TODO remove this hack
+  if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
+    Akonadi::CollectionFetchJob *fetch =
+      new Akonadi::CollectionFetchJob( Akonadi::Collection( kolabItem.storageCollectionId() ),
+                                       Akonadi::CollectionFetchJob::Base, this );
+    fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
+    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapItemUpdateCollectionFetchResult(KJob*)) );
+  } else {
     Akonadi::Item imapItem = fetchJob->items().first();
 
     KolabHandler::Ptr handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
@@ -402,20 +420,13 @@ void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
     Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob( imapItem );
     mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
     connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
-  } else {
-    // HACK FIXME how can that happen at all?
-    Akonadi::CollectionFetchJob *fetch =
-      new Akonadi::CollectionFetchJob( Akonadi::Collection( kolabItem.storageCollectionId() ),
-                                       Akonadi::CollectionFetchJob::Base, this );
-    fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapItemUpdateCollectionFetchResult(KJob*)) );
   }
 }
 
 void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob *job )
 {
   Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>( job );
-  if ( job->error() || fetchJob->collections().size() != 1 ) {
+  if ( job->error() || fetchJob->collections().isEmpty() ) {
     cancelTask( job->errorText() );
     return;
   }
@@ -423,25 +434,7 @@ void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob *job )
   const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
   const Akonadi::Collection kolabCollection = fetchJob->collections().first();
   const Akonadi::Collection imapCollection = kolabToImap( kolabCollection );
-
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
-  if ( !handler ) {
-    kWarning() << "No handler found";
-    cancelTask();
-    return;
-  }
-  Akonadi::Item imapItem( handler->contentMimeTypes()[0] );
-  if (!handler->toKolabFormat( kolabItem, imapItem )) {
-    kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
-    cancelTask();
-    return;
-  }
-  imapItem.setFlag( Akonadi::MessageFlags::Seen );
-
-  Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( imapItem, imapCollection );
-  cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-  cjob->setProperty( IMAP_COLLECTION, QVariant::fromValue( imapCollection ) );
-  connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
+  createItem( imapCollection, kolabItem );
 }
 
 void KolabProxyResource::imapItemUpdateResult( KJob *job )
@@ -714,49 +707,38 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
   Akonadi::CollectionFetchJob *job =
     new Akonadi::CollectionFetchJob( kolabCol, Akonadi::CollectionFetchJob::Base, this );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchDone(KJob*)) );
-  m_ids[job] = QString::number( collection.id() );
-  m_items[job] = item;
+  job->setProperty( KOLAB_ITEM, QVariant::fromValue( item ) );
+  job->setProperty( "collectionId", QString::number( collection.id() ) );
 }
 
 void KolabProxyResource::collectionFetchDone( KJob *job )
 {
   if ( job->error() ) {
     kWarning( ) << "Error on collection fetch:" << job->errorText();
-  } else {
-    Akonadi::Collection c;
-    Akonadi::Collection::List collections =
-      qobject_cast<Akonadi::CollectionFetchJob*>(job)->collections();
-    foreach ( const Akonadi::Collection &col, collections ) {
-      if ( col.remoteId() == m_ids[job] ) {
-        c = col;
-        break;
-      }
-    }
+    return;
+  }
+  Akonadi::Collection::List collections =
+    qobject_cast<Akonadi::CollectionFetchJob*>(job)->collections();
+  Q_ASSERT(collections.size() == 1);
+  const Akonadi::Collection c = collections[0];
+  Q_ASSERT(c.remoteId() == job->property("collectionId").toString() );
 
-    KolabHandler::Ptr handler = m_monitoredCollections.value( c.remoteId().toUInt() );
-    if ( !handler ) {
-      kWarning() << "No handler found";
-      m_ids.remove( job );
-      m_items.remove( job );
-      return;
-    }
-
-    Akonadi::Item::List newItems = handler->translateItems( Akonadi::Item::List() << m_items[job] );
+  if ( const KolabHandler::Ptr handler = getHandler( c.remoteId().toUInt() ) ) {
+    const Akonadi::Item item = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
+    const Akonadi::Item::List newItems = handler->translateItems( Akonadi::Item::List() << item );
     if ( !newItems.isEmpty() ) {
       Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( newItems[0], c );
       connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
     }
+  } else {
+    kWarning() << "No handler found";
   }
-  m_ids.remove( job );
-  m_items.remove( job );
 }
 
 void KolabProxyResource::itemCreatedDone( KJob *job )
 {
   if ( job->error() ) {
     kWarning( ) << "Error on creating item:" << job->errorText();
-  } else {
-    //?
   }
 }
 

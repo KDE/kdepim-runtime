@@ -65,7 +65,7 @@ class SendJob::Private
         item( itm ),
         currentJob( 0 ),
         interface( 0 ),
-	mailfilterInterface( 0 ),
+        mailfilterInterface( 0 ),
         aborting( false )
     {
     }

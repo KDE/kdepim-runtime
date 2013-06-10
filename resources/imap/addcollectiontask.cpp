@@ -31,6 +31,8 @@
 #include <kimap/setmetadatajob.h>
 #include <kimap/subscribejob.h>
 
+#include <akonadi/collectiondeletejob.h>
+
 AddCollectionTask::AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent ), m_pendingJobs( 0 ), m_session(0)
 {
@@ -50,7 +52,7 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
     return;
   }
 
-  const QChar separator = parentCollection().remoteId().at( 0 );
+  const QChar separator = separatorCharacter();
   m_pendingJobs = 0;
   m_session = session;
   m_collection = collection();
@@ -79,6 +81,8 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 void AddCollectionTask::onCreateDone( KJob *job )
 {
   if ( job->error() ) {
+    //create on server failed, remove from the cache
+    new Akonadi::CollectionDeleteJob( m_collection );
     cancelTask( job->errorString() );
   } else {
     // Automatically subscribe to newly created mailbox
@@ -105,6 +109,7 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
   if ( !m_collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>() ) {
     // we are finished
     changeCommitted( m_collection );
+    synchronizeCollectionTree();
     return;
   }
 

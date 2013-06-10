@@ -18,6 +18,8 @@
 
 #include "carddavprotocol.h"
 
+#include <kabc/addressee.h>
+
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
 
@@ -36,6 +38,7 @@ CarddavProtocol::CarddavProtocol()
   propElement.appendChild( document.createElementNS( "DAV:", "getetag" ) );
 
   mItemsQueries << document;
+  mItemsMimeTypes << KABC::Addressee::mimeType();
 }
 
 bool CarddavProtocol::supportsPrincipals() const
@@ -89,6 +92,11 @@ QString CarddavProtocol::collectionsXQuery() const
 QList<QDomDocument> CarddavProtocol::itemsQueries() const
 {
   return mItemsQueries;
+}
+
+QString CarddavProtocol::mimeTypeForQuery( int index ) const
+{
+  return mItemsMimeTypes.at( index );
 }
 
 QDomDocument CarddavProtocol::itemsReportQuery( const QStringList &urls ) const

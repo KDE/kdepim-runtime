@@ -33,6 +33,7 @@ class CarddavProtocol : public DavMultigetProtocol
     virtual QDomDocument collectionsQuery() const;
     virtual QString collectionsXQuery() const;
     virtual QList<QDomDocument> itemsQueries() const;
+    virtual QString mimeTypeForQuery( int index ) const;
     virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
     virtual QString responseNamespace() const;
     virtual QString dataTagName() const;
@@ -42,6 +43,7 @@ class CarddavProtocol : public DavMultigetProtocol
 
   private:
     QList<QDomDocument> mItemsQueries;
+    QStringList mItemsMimeTypes;
 };
 
 #endif

@@ -226,7 +226,7 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
     // Can happen when we lose all ready connections while trying to establish
     // a new connection, for example.
     emit connectDone( errorCode,
-                      i18n( "Cound not connect to the IMAP server.\n%1", errorMessage ) );
+                      i18n( "Could not connect to the IMAP server.\n%1", errorMessage ) );
   }
 
   if ( !m_initialConnectDone ) {

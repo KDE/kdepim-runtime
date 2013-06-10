@@ -36,6 +36,8 @@
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 #include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/EntityHiddenAttribute>
+#include <akonadi/indexpolicyattribute.h>
 
 #include <KJob>
 
@@ -48,6 +50,7 @@
 #include "nepomukfeeder-config.h"
 
 using namespace Nepomuk2::Vocabulary;
+using namespace Vocabulary;
 
 namespace  NepomukHelpers {
 
@@ -70,6 +73,7 @@ KJob *addCollectionToNepomuk( const Akonadi::Collection &collection)
   Nepomuk2::SimpleResource res;
   res.setTypes( QList <QUrl>() << Vocabulary::ANEO::AkonadiDataObject() << NIE::InformationElement() );
   res.setProperty( NIE::url(), collection.url() );
+  res.setProperty( ANEO::akonadiIndexCompatLevel(), NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
   setParentCollection( collection, res, graph );
 
   const Akonadi::EntityDisplayAttribute *attr = collection.attribute<Akonadi::EntityDisplayAttribute>();
@@ -96,19 +100,6 @@ KJob *addCollectionToNepomuk( const Akonadi::Collection &collection)
   additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
   //We overwrite properties, as the resource is not removed on update, and there are not subproperties on collections (if there were, we would remove them first too)
   return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
-}
-
-KJob *markCollectionAsIndexed( const Akonadi::Collection &collection )
-{
-    kDebug() << "marking collection as completed: " << collection.id();
-    Nepomuk2::SimpleResourceGraph graph;
-    Nepomuk2::SimpleResource res;
-    res.setProperty( NIE::url(), collection.url() );
-    res.setProperty( Vocabulary::ANEO::akonadiIndexCompatLevel(), NEPOMUK_FEEDER_INDEX_COMPAT_LEVEL );
-    graph << res;
-    QHash <QUrl, QVariant> additionalMetadata;
-    additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
-    return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::OverwriteProperties, additionalMetadata, KGlobal::mainComponent() );
 }
 
 void addItemToGraph( const Akonadi::Item &item, Nepomuk2::SimpleResourceGraph &graph )
@@ -142,7 +133,7 @@ KJob *addGraphToNepomuk( const Nepomuk2::SimpleResourceGraph &graph )
   kDebug() << "--------------------------------";*/
   QHash <QUrl, QVariant> additionalMetadata;
   additionalMetadata.insert( Soprano::Vocabulary::RDF::type(), Soprano::Vocabulary::NRL::DiscardableInstanceBase() );
-  return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::NoStoreResourcesFlags, additionalMetadata, KGlobal::mainComponent() );
+  return Nepomuk2::storeResources( graph, Nepomuk2::IdentifyNew, Nepomuk2::MergeDuplicateResources, additionalMetadata, KGlobal::mainComponent() );
 }
 
 bool isIndexed(const Akonadi::Item& item)
@@ -177,5 +168,29 @@ bool isIndexed(const Akonadi::Collection& collection)
                                                                             Soprano::Query::QueryLanguageSparql ).boolValue();
 }
 
-
 }
+
+bool indexingDisabled(const Akonadi::Collection& collection)
+{
+    if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+        return true;
+
+    Akonadi::IndexPolicyAttribute *indexPolicy = collection.attribute<Akonadi::IndexPolicyAttribute>();
+    if ( indexPolicy && !indexPolicy->indexingEnabled() )
+        return true;
+
+    if ( collection.isVirtual() )
+        return true;
+
+    // check if we have a plugin for the stuff in this collection
+    foreach ( const QString &mimeType, collection.contentMimeTypes() ) {
+        if ( mimeType == Akonadi::Collection::mimeType() )
+            continue;
+        if ( !FeederPluginloader::instance().feederPluginsForMimeType( mimeType ).isEmpty() )
+            return false;
+    }
+
+    return true;
+}
+
+

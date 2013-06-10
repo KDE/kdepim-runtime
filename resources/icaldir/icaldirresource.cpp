@@ -39,7 +39,7 @@
 using namespace Akonadi;
 using namespace KCalCore;
 
-static Incidence::Ptr readFromFile( const QString &fileName, const QString &expectedUid )
+static Incidence::Ptr readFromFile( const QString &fileName, const QString &expectedIdentifier )
 {
   MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr( new MemoryCalendar( QLatin1String( "UTC" ) ) );
   FileStorage::Ptr fileStorage = FileStorage::Ptr( new FileStorage( calendar, fileName, new ICalFormat() ) );
@@ -47,7 +47,7 @@ static Incidence::Ptr readFromFile( const QString &fileName, const QString &expe
   Incidence::Ptr incidence;
   if ( fileStorage->load() ) {
     Incidence::List incidences = calendar->incidences();
-    if ( incidences.count() == 1 && incidences.first()->uid() == expectedUid )
+    if ( incidences.count() == 1 && incidences.first()->instanceIdentifier() == expectedIdentifier )
       incidence = incidences.first();
   } else {
     kError() << "Error loading file " << fileName;
@@ -122,7 +122,7 @@ bool ICalDirResource::loadIncidences()
     if ( it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt" ) {
       const KCalCore::Incidence::Ptr incidence = readFromFile( it.filePath(), it.fileName() );
       if ( incidence ) {
-        mIncidences.insert( incidence->uid(), incidence );
+        mIncidences.insert( incidence->instanceIdentifier(), incidence );
       }
     }
   }
@@ -160,15 +160,15 @@ void ICalDirResource::itemAdded( const Akonadi::Item &item, const Akonadi::Colle
 
   if ( incidence ) {
     // add it to the cache...
-    mIncidences.insert( incidence->uid(), incidence );
+    mIncidences.insert( incidence->instanceIdentifier(), incidence );
 
     // ... and write it through to the file system
-    const bool success = writeToFile( iCalDirectoryFileName( incidence->uid() ), incidence );
+    const bool success = writeToFile( iCalDirectoryFileName( incidence->instanceIdentifier() ), incidence );
 
     if ( success ) {
       // report everything ok
       Item newItem( item );
-      newItem.setRemoteId( incidence->uid() );
+      newItem.setRemoteId( incidence->instanceIdentifier() );
       changeCommitted( newItem );
     } else {
       cancelTask();
@@ -192,14 +192,14 @@ void ICalDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteAr
 
   if ( incidence ) {
     // change it in the cache...
-    mIncidences.insert( incidence->uid(), incidence );
+    mIncidences.insert( incidence->instanceIdentifier(), incidence );
 
     // ... and write it through to the file system
-    const bool success = writeToFile( iCalDirectoryFileName( incidence->uid() ), incidence );
+    const bool success = writeToFile( iCalDirectoryFileName( incidence->instanceIdentifier() ), incidence );
 
     if ( success ) {
       Item newItem( item );
-      newItem.setRemoteId( incidence->uid() );
+      newItem.setRemoteId( incidence->instanceIdentifier() );
       changeCommitted( newItem );
     } else {
       cancelTask();
@@ -261,7 +261,7 @@ void ICalDirResource::retrieveItems( const Akonadi::Collection& )
 
   foreach ( const KCalCore::Incidence::Ptr &incidence, mIncidences ) {
     Item item;
-    item.setRemoteId( incidence->uid() );
+    item.setRemoteId( incidence->instanceIdentifier() );
     item.setMimeType( incidence->mimeType() );
     items.append( item );
   }

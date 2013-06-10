@@ -61,6 +61,68 @@ QDomElement DavUtils::nextSiblingElementNS( const QDomElement &element, const QS
   return QDomElement();
 }
 
+DavUtils::Privileges DavUtils::extractPrivileges( const QDomElement &element )
+{
+  Privileges final = None;
+  QDomElement privElement = firstChildElementNS( element, "DAV:", "privilege" );
+
+  while ( !privElement.isNull() ) {
+    QDomElement child = privElement.firstChildElement();
+
+    while ( !child.isNull() ) {
+      final |= parsePrivilege( child );
+      child = child.nextSiblingElement();
+    }
+
+    privElement = DavUtils::nextSiblingElementNS( privElement, "DAV:", "privilege" );
+  }
+
+  return final;
+}
+
+DavUtils::Privileges DavUtils::parsePrivilege( const QDomElement &element )
+{
+  Privileges final = None;
+
+  if ( !element.childNodes().isEmpty() ) {
+    // This is an aggregate privilege, parse each of its children
+    QDomElement child = element.firstChildElement();
+    while ( !child.isNull() ) {
+      final |= parsePrivilege( child );
+      child = child.nextSiblingElement();
+    }
+  }
+  else {
+    // This is a normal privilege
+    const QString privname = element.localName();
+
+    if ( privname == "read" )
+      final |= DavUtils::Read;
+    else if ( privname == "write" )
+      final |= DavUtils::Write;
+    else if ( privname == "write-properties" )
+      final |= DavUtils::WriteProperties;
+    else if ( privname == "write-content" )
+      final |= DavUtils::WriteContent;
+    else if ( privname == "unlock" )
+      final |= DavUtils::Unlock;
+    else if ( privname == "read-acl" )
+      final |= DavUtils::ReadAcl;
+    else if ( privname == "read-current-user-privilege-set" )
+      final |= DavUtils::ReadCurrentUserPrivilegeSet;
+    else if ( privname == "write-acl" )
+      final |= DavUtils::WriteAcl;
+    else if ( privname == "bind" )
+      final |= DavUtils::Bind;
+    else if ( privname == "unbind" )
+      final |= DavUtils::Unbind;
+    else if ( privname == "all" )
+      final |= DavUtils::All;
+  }
+
+  return final;
+}
+
 DavUtils::DavUrl::DavUrl()
 {
 }
@@ -161,7 +223,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
 
-    const QString fileName = ptr->uid();
+    const QString fileName = ptr->instanceIdentifier();
     if ( fileName.isEmpty() ) {
       kError() << "Invalid incidence uid";
       return davItem;
@@ -180,30 +242,4 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
   davItem.setEtag( item.remoteRevision() );
 
   return davItem;
-}
-
-bool DavUtils::httpRequestRetryable( int statusCode )
-{
-  if ( statusCode == 400 )
-    return false;
-  else if ( statusCode == 405 || statusCode == 406 )
-    return false;
-  else if ( statusCode >= 409 && statusCode <= 418 )
-    return false;
-  else if ( statusCode == 422 )
-    return false;
-  else if ( statusCode == 428 )
-    return false;
-  else if ( statusCode == 431 )
-    return false;
-  else if ( statusCode == 450 )
-    return false;
-  else if ( statusCode == 505 )
-    return false;
-  else if ( statusCode == 508 )
-    return false;
-  else if ( statusCode == 510 )
-    return false;
-  else
-    return true;
 }

@@ -31,9 +31,10 @@ macro(add_akonadi_isolated_test _source)
 
   find_program(_testrunner akonaditest)
 
-  add_test( maildir-${_targetName} ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
-endmacro()
-
+  if (KDEPIM_RUN_ISOLATED_TESTS)
+    add_test( maildir-${_targetName} ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
+  endif ()
+endmacro(add_akonadi_isolated_test)
 
 
 

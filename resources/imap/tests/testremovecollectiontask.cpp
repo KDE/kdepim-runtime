@@ -208,7 +208,9 @@ private slots:
     state->setCollection( collection );
     RemoveCollectionRecursiveTask *task = new RemoveCollectionRecursiveTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
+    QEventLoop loop;
+    connect( task, SIGNAL(destroyed(QObject*)), &loop, SLOT(quit()) );
+    loop.exec();
 
     QCOMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {

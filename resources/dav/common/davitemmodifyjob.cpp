@@ -24,20 +24,6 @@
 #include <kio/job.h>
 #include <klocale.h>
 
-static QString etagFromHeaders( const QString &headers )
-{
-  const QStringList allHeaders = headers.split( '\n' );
-
-  QString etag;
-  foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( QLatin1String( "etag:" ), Qt::CaseInsensitive ) )
-      etag = header.section( ' ', 1 );
-  }
-
-  return etag;
-}
-
-
 DavItemModifyJob::DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
   : KJob( parent ), mUrl( url ), mItem( item )
 {
@@ -69,15 +55,20 @@ void DavItemModifyJob::davJobFinished( KJob *job )
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
 
   if ( storedJob->error() ) {
-    if ( storedJob->queryMetaData( "responsecode" ).isEmpty() ) {
-      setError( storedJob->error() );
-      setErrorText( storedJob->errorText() );
-    } else {
-      const int responseCode = storedJob->queryMetaData( "responsecode" ).toInt();
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request. The item was not modified on the server.\n"
-                          "%1 (%2).", storedJob->errorString(), responseCode ) );
-    }
+    const int responseCode = storedJob->queryMetaData( "responsecode" ).isEmpty() ?
+                              0 :
+                              storedJob->queryMetaData( "responsecode" ).toInt();
+
+    QString err;
+    if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
+      err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
+    else
+      err = storedJob->errorText();
+
+    setError( UserDefinedError + responseCode );
+    setErrorText( i18n( "There was a problem with the request. The item was not modified on the server.\n"
+                        "%1 (%2).", err, responseCode ) );
+
     emitResult();
     return;
   }
@@ -101,15 +92,10 @@ void DavItemModifyJob::davJobFinished( KJob *job )
 
   url.setUser( QString() );
   mItem.setUrl( url.prettyUrl() );
-  mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( "HTTP-Headers" ) ) );
 
-  if ( mItem.etag().isEmpty() ) {
-    DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
-    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );
-    fetchJob->start();
-  } else {
-    emitResult();
-  }
+  DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
+  connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );
+  fetchJob->start();
 }
 
 void DavItemModifyJob::itemRefreshed( KJob *job )
@@ -117,6 +103,9 @@ void DavItemModifyJob::itemRefreshed( KJob *job )
   if ( !job->error() ) {
     DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
     mItem.setEtag( fetchJob->item().etag() );
+  }
+  else {
+    mItem.setEtag( QString() );
   }
   emitResult();
 }

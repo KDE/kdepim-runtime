@@ -99,10 +99,9 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;
-    QStringList mCollectionsWithTemporaryError;
     DavFreeBusyHandler *mFreeBusyHandler;
-    QSet<QString> mSeenCollectionsUrls;
     QMap< QString, QSet<QString> > mItemsRidCache;
+    bool mSyncErrorNotified;
 };
 
 #endif

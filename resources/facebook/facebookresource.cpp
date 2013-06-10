@@ -53,13 +53,6 @@
 
 using namespace Akonadi;
 
-static const QLatin1String friendsRID( "friends" );
-static const QLatin1String eventsRID( "events" );
-static const QLatin1String eventMimeType( "application/x-vnd.akonadi.calendar.event" );
-static const QLatin1String notesRID( "notes" );
-static const QLatin1String postsRID( "posts" );
-static const QLatin1String notificationsRID( "notifications" );
-
 FacebookResource::FacebookResource( const QString &id )
     : ResourceBase( id )
 {
@@ -91,6 +84,7 @@ void FacebookResource::configurationChanged()
   }
 
   Settings::self()->writeConfig();
+  synchronize();
 }
 
 void FacebookResource::aboutToQuit()

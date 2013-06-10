@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2011  Christian Mollekopf <chrigi_1@fastmail.fm>
+    Copyright (C) 2013  Vishesh Handa <me@vhanda.in>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,20 +17,21 @@
 */
 
 
-#ifndef FEEDERQUEUE_H
-#define FEEDERQUEUE_H
+#ifndef INDEXSCHEDULER_H
+#define INDEXSCHEDULER_H
 
 #include <QObject>
 #include <Akonadi/Item>
 #include <Akonadi/Collection>
 #include <QTimer>
 #include "itemqueue.h"
+#include "eventmonitor.h"
 
 class FeederPluginloader;
 class KJob;
 
 /**
- * The queue takes collections and items and indexes them
+ * The scheduler takes collections and items and indexes them
  * 
  * There is basically: 
  *  -CollectionQueue: list of collections to index (initial indexing), items end up in the ItemQueue
@@ -48,18 +50,31 @@ class KJob;
  *  -addItem: to index a single item (high priority)
  *
  */
-class FeederQueue: public QObject
+class IndexScheduler: public QObject
 {
   Q_OBJECT
 public:
-  explicit FeederQueue( QObject* parent = 0 );
-  virtual ~FeederQueue();
+  explicit IndexScheduler( QObject* parent = 0 );
+  virtual ~IndexScheduler();
 
   ///add the collection to the queue, all items of it will be fetched and indexed
   void addCollection(const Akonadi::Collection &);
   ///adds the item to the highPrioQueue or emailQueue
   void addItem(const Akonadi::Item &);
   void addLowPrioItem(const Akonadi::Item &);
+
+  /**
+   * Remove the collection \p collection from the Nepomuk index
+   */
+  void removeCollection(const Akonadi::Collection& collection);
+
+  /**
+   * Remove the item \p item from the Nepomuk index.
+   */
+  void removeItem(const Akonadi::Item& item);
+
+  void removeNepomukUris(const QList<QUrl> uriList);
+
   /**
    * If enabled all items will be reindexed
    * The flag will be reset once all collections/items have been indexed
@@ -68,11 +83,10 @@ public:
 
   bool isEmpty();
 
-  /** returns the collection currently being processed */
-  const Akonadi::Collection &currentCollection();
-
   /** start/stop indexing */
   void setOnline(bool);
+
+  int size();
 
   enum IndexingSpeed {
       /**
@@ -94,30 +108,31 @@ public:
 
   void setIndexingSpeed( IndexingSpeed speed );
 
-  Akonadi::Collection::List listOfCollection() const;
+  /**
+   * Clears all the Items in the internal queues which
+   * are supposed to be indexed
+   */
+  void clear();
+
 signals:
-  void fullyIndexed();
   void progress(int);
   void idle(QString);
   void running(QString);
 
 private slots:
-  void processNextCollection();
-  void itemFetchResult( KJob* job );
   void processItemQueue();
   void prioQueueFinished();
   void batchFinished();
-  void jobResult( KJob* job );
-private:
-  bool allQueuesEmpty() const;
-  void itemHeadersReceived( const Akonadi::Item::List &items );
-  void continueIndexing(); //start the indexing if work is to be done
-  void collectionFullyIndexed();
-  void indexingComplete();
-  int mTotalAmount, mProcessedAmount, mPendingJobs;
+  void collectionSaveJobResult( KJob* job );
 
-  Akonadi::Collection::List mCollectionQueue;
-  Akonadi::Collection mCurrentCollection;
+  void slotIdleStatusChanged(bool isIdle);
+  void slotPowerManagementChanged(bool onBattery);
+
+private:
+  void continueIndexing(); //start the indexing if work is to be done
+  void indexingComplete();
+  int mTotalAmount;
+
   bool mReIndex;
   bool mOnline;
   QTimer mProcessItemQueueTimer;
@@ -125,9 +140,17 @@ private:
   ItemQueue lowPrioQueue;
   ItemQueue highPrioQueue;
   ItemQueue emailItemQueue;
+  Akonadi::Collection::List mCollectionQueue;
+
+  // To Clear
+  Akonadi::Item::List mItemsToRemove;
+  Akonadi::Collection::List mCollectionsToRemove;
+  QList<QUrl> mUrisToRemove;
+
+  Nepomuk2::EventMonitor* mEventMonitor;
 };
 
 
 
 
-#endif // FEEDERQUEUE_H
+#endif // INDEXSCHEDULER_H

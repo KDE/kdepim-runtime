@@ -63,7 +63,7 @@ using namespace Akonadi;
 typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
 DavGroupwareResource::DavGroupwareResource( const QString &id )
-  : ResourceBase( id ), FreeBusyProviderBase()
+  : ResourceBase( id ), FreeBusyProviderBase(), mSyncErrorNotified( false )
 {
   AttributeFactory::registerAttribute<EntityDisplayAttribute>();
   AttributeFactory::registerAttribute<DavProtocolAttribute>();
@@ -88,6 +88,7 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   cachePolicy.setSyncOnDemand( false );
   cachePolicy.setCacheTimeout( -1 );
   cachePolicy.setIntervalCheckTime( refreshInterval );
+  cachePolicy.setLocalParts( QStringList() << QLatin1String( "ALL" ) );
   mDavCollectionRoot.setCachePolicy( cachePolicy );
 
   changeRecorder()->fetchCollection( true );
@@ -117,11 +118,6 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
-    return;
-  }
-
-  if ( mCollectionsWithTemporaryError.contains( collection.remoteId() ) ) {
-    cancelTask();
     return;
   }
 
@@ -230,6 +226,7 @@ void DavGroupwareResource::configure( WId windowId )
 void DavGroupwareResource::retrieveCollections()
 {
   kDebug() << "Retrieving collections list";
+  mSyncErrorNotified = false;
 
   if ( !configurationIsValid() ) {
     emit status( Broken, i18n( "The resource is not configured yet" ) );
@@ -238,7 +235,6 @@ void DavGroupwareResource::retrieveCollections()
   }
 
   emit status( Running, i18n( "Fetching collections" ) );
-  mSeenCollectionsUrls.clear();
 
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
   connect( job, SIGNAL(result(KJob*)), SLOT(onRetrieveCollectionsFinished(KJob*)) );
@@ -257,25 +253,11 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
     return;
   }
 
-  if ( mCollectionsWithTemporaryError.contains( collection.remoteId() )
-       && mItemsRidCache.contains( collection.remoteId() ) ) {
-    // Serve the items from the etag cache
-    kWarning() << "Serving items from the items cache for" << collection.remoteId();
-    Akonadi::Item::List cacheItems;
-    foreach ( const QString &rid, mItemsRidCache[collection.remoteId()] ) {
-      Akonadi::Item i;
-      i.setRemoteId( rid );
-      cacheItems << i;
-    }
-    itemsRetrieved( cacheItems );
-    return;
-  }
-
   // As the resource root collection contains mime types for items we must
   // work around the fact that Akonadi will rightfully try to retrieve items
   // from it. So just return an empty list
   if ( collection.remoteId() == identifier() ) {
-    itemsRetrieved( Akonadi::Item::List() );
+    itemsRetrievalDone();
     return;
   }
 
@@ -304,16 +286,10 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
     return false;
   }
 
-  if ( mCollectionsWithTemporaryError.contains( item.parentCollection().remoteId() ) ) {
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+  if ( !davUrl.url().isValid() ) {
     cancelTask();
     return false;
-  }
-
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
-  if ( DavManager::self()->davProtocol( davUrl.protocol() )->useMultiget() ) {
-    // Item is already in the cache as it's been fetched with multiget
-    itemRetrieved( item );
-    return true;
   }
 
   DavItem davItem;
@@ -441,7 +417,12 @@ void DavGroupwareResource::onCollectionRemovedFinished( KJob *job )
   }
 
   Akonadi::Collection collection = job->property( "collection" ).value<Akonadi::Collection>();
-  mItemsRidCache.remove( collection.remoteId() );
+  if ( mItemsRidCache.contains( collection.remoteId() ) ) {
+    foreach ( const QString &rid, mItemsRidCache.value( collection.remoteId() ) ) {
+      mEtagCache.removeEtag( rid );
+    }
+    mItemsRidCache.remove( collection.remoteId() );
+  }
   changeProcessed();
 }
 
@@ -449,42 +430,24 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
 {
   const DavCollectionsMultiFetchJob *fetchJob = qobject_cast<DavCollectionsMultiFetchJob*>( job );
 
-  if ( job->error() && fetchJob->urlsWithTemporaryError().isEmpty() ) {
+  if ( job->error() ) {
     kWarning() << "Unable to fetch collections" << job->error() << job->errorText();
     cancelTask( i18n( "Unable to retrieve collections: %1", job->errorText() ) );
+    mSyncErrorNotified = true;
     return;
   }
 
   Akonadi::Collection::List collections;
   collections << mDavCollectionRoot;
-
-  foreach ( const DavUtils::DavUrl &davUrl, fetchJob->urlsWithTemporaryError() ) {
-    KUrl url = davUrl.url();
-    url.setUser( QString() );
-    QStringList urls = Settings::self()->mappedCollections( davUrl.protocol(), url.prettyUrl() );
-    mCollectionsWithTemporaryError << urls;
-
-    foreach ( const QString &url, urls ) {
-      kWarning() << "Temporary error with collection" << url;
-      Akonadi::Collection collection;
-      collection.setParentCollection( mDavCollectionRoot );
-      collection.setRemoteId( url );
-      collections << collection;
-    }
-  }
+  QSet<QString> seenCollectionsUrls;
 
   const DavCollection::List davCollections = fetchJob->collections();
 
   foreach ( const DavCollection &davCollection, davCollections ) {
-    if ( mCollectionsWithTemporaryError.contains( davCollection.url() ) ) {
-      kWarning() << davCollection.url() << "is now available";
-      mCollectionsWithTemporaryError.removeOne( davCollection.url() );
-    }
-
-    if ( mSeenCollectionsUrls.contains( davCollection.url() ) )
+    if ( seenCollectionsUrls.contains( davCollection.url() ) )
       continue;
     else
-      mSeenCollectionsUrls.insert( davCollection.url() );
+      seenCollectionsUrls.insert( davCollection.url() );
 
     if ( !mItemsRidCache.contains( davCollection.url() ) )
       mItemsRidCache.insert( davCollection.url(), QSet<QString>() );
@@ -499,6 +462,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     }
 
     QStringList mimeTypes;
+    mimeTypes << Collection::mimeType();
 
     const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
     if ( contentTypes & DavCollection::Calendar )
@@ -525,22 +489,22 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>( Collection::AddIfMissing );
     protoAttr->setDavProtocol( davCollection.protocol() );
 
-    DavCollection::Privileges privileges = davCollection.privileges();
+    DavUtils::Privileges privileges = davCollection.privileges();
     Akonadi::Collection::Rights rights;
 
-    if ( privileges & DavCollection::All || privileges & DavCollection::Write )
+    if ( privileges & DavUtils::All || privileges & DavUtils::Write )
       rights |= Akonadi::Collection::AllRights;
 
-    if ( privileges & DavCollection::WriteContent )
+    if ( privileges & DavUtils::WriteContent )
       rights |= Akonadi::Collection::CanChangeItem;
 
-    if ( privileges & DavCollection::Bind )
+    if ( privileges & DavUtils::Bind )
       rights |= Akonadi::Collection::CanCreateItem;
 
-    if ( privileges & DavCollection::Unbind )
+    if ( privileges & DavUtils::Unbind )
       rights |= Akonadi::Collection::CanDeleteItem;
 
-    if ( privileges == DavCollection::Read )
+    if ( privileges == DavUtils::Read )
       rights |= Akonadi::Collection::ReadOnly;
 
 
@@ -549,13 +513,28 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     collections << collection;
   }
 
+  foreach ( const QString &rid, mItemsRidCache.keys() ) {
+    if ( !seenCollectionsUrls.contains( rid ) ) {
+      foreach ( const QString &itemRid, mItemsRidCache[rid] ) {
+        mEtagCache.removeEtag( itemRid );
+      }
+      mItemsRidCache.remove( rid );
+    }
+  }
+
   collectionsRetrieved( collections );
 }
 
 void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Unable to retrieve items: %1", job->errorText() ) );
+    if ( mSyncErrorNotified ) {
+      cancelTask();
+    }
+    else {
+      cancelTask( i18n( "Unable to retrieve items: %1", job->errorText() ) );
+      mSyncErrorNotified = true;
+    }
     return;
   }
 
@@ -565,39 +544,25 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
 
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
-  Akonadi::Item::List items;
+  Akonadi::Item::List changedItems;
+  Akonadi::Item::List removedItems;
+  QSet<QString> seenRids;
+  QStringList changedRids;
 
   const DavItem::List davItems = listJob->items();
   foreach ( const DavItem &davItem, davItems ) {
-    if ( !mItemsRidCache[collection.remoteId()].contains( davItem.url() ) )
-      mItemsRidCache[collection.remoteId()].insert( davItem.url() );
+    seenRids.insert( davItem.url() );
 
     Akonadi::Item item;
+    item.setParentCollection( collection );
     item.setRemoteId( davItem.url() );
-
-    if ( !mEtagCache.contains( item.remoteId() ) ) {
-      // This is the first time this item is seen, and we can't
-      // know its mime type until content has been fetched, so
-      // set one that looks plausible now. The final mime type
-      // will be set either in onMultiGetFinished() or
-      // onItemFetched()
-      const QStringList contentMimeTypes = collection.contentMimeTypes();
-      if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) )
-        item.setMimeType( KABC::Addressee::mimeType() );
-      else if ( contentMimeTypes.contains( QLatin1String( "text/calendar" ) ) )
-        item.setMimeType( QLatin1String( "text/calendar" ) );
-      else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) )
-        item.setMimeType( KCalCore::Event::eventMimeType() );
-      else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) )
-        item.setMimeType( KCalCore::Todo::todoMimeType() );
-      else if ( contentMimeTypes.contains( KCalCore::FreeBusy::freeBusyMimeType() ) )
-        item.setMimeType( KCalCore::FreeBusy::freeBusyMimeType() );
-      else if ( contentMimeTypes.contains( KCalCore::Journal::journalMimeType() ) )
-        item.setMimeType( KCalCore::Journal::journalMimeType() );
-    }
+    item.setMimeType( davItem.contentType() );
+    item.setRemoteRevision( davItem.etag() );
 
     if ( mEtagCache.etagChanged( item.remoteId(), davItem.etag() ) ) {
       mEtagCache.markAsChanged( item.remoteId() );
+      changedRids << item.remoteId();
+      changedItems << item;
 
       // Only clear the payload (and therefor trigger a refetch from the backend) if we
       // do not use multiget, because in this case we fetch the complete payload
@@ -607,10 +572,16 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
         item.clearPayload();
       }
     }
+  }
 
-    item.setRemoteRevision( davItem.etag() );
-
-    items << item;
+  QSet<QString> removedRids = mItemsRidCache[collection.remoteId()];
+  mItemsRidCache[collection.remoteId()] = seenRids;
+  removedRids.subtract( seenRids );
+  foreach ( const QString &rmd, removedRids ) {
+    Akonadi::Item item;
+    item.setRemoteId( rmd );
+    removedItems << item;
+    mEtagCache.removeEtag( rmd );
   }
 
   // If the protocol supports multiget then deviate from the expected behavior
@@ -618,26 +589,33 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   // request it item by item in retrieveItem().
   // This allows the resource to use the multiget query and let it be nice
   // to the remote server : only one request for n items instead of n requests.
-  if ( protocolSupportsMultiget && !mEtagCache.changedRemoteIds().isEmpty() ) {
-    DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, mEtagCache.changedRemoteIds() );
+  if ( protocolSupportsMultiget && !changedRids.isEmpty() ) {
+    DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, changedRids );
     connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMultigetFinished(KJob*)) );
-    fetchJob->setProperty( "items", QVariant::fromValue( items ) );
+    fetchJob->setProperty( "items", QVariant::fromValue( changedItems ) );
+    fetchJob->setProperty( "removedItems", QVariant::fromValue( removedItems ) );
     fetchJob->start();
-
     // delay the call of itemsRetrieved() to onMultigetFinished()
   } else {
-    itemsRetrieved( items );
+    itemsRetrievedIncremental( changedItems, removedItems );
   }
 }
 
 void DavGroupwareResource::onMultigetFinished( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Unable to retrieve items: %1", job->errorText() ) );
+    if ( mSyncErrorNotified ) {
+      cancelTask();
+    }
+    else {
+      cancelTask( i18n( "Unable to retrieve items: %1", job->errorText() ) );
+      mSyncErrorNotified = true;
+    }
     return;
   }
 
   const Akonadi::Item::List origItems = job->property( "items" ).value<Akonadi::Item::List>();
+  const Akonadi::Item::List removedItems = job->property( "removedItems" ).value<Akonadi::Item::List>();
   const DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob*>( job );
 
   Akonadi::Item::List items;
@@ -645,8 +623,9 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     const DavItem davItem = davJob->item( item.remoteId() );
 
     // No data was retrieved for this item, maybe because it is not out of date
-    if ( davItem.data().isEmpty() && !mEtagCache.isOutOfDate( item.remoteId() ) ) {
-      items << item;
+    if ( davItem.data().isEmpty() ) {
+      if ( !mEtagCache.isOutOfDate( item.remoteId() ) )
+        items << item;
       continue;
     }
 
@@ -662,7 +641,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
       if ( contact.isEmpty() )
         continue;
 
-      item.setPayload<KABC::Addressee>( contact );
+      item.setPayloadFromData( davItem.data() );
     } else {
       KCalCore::ICalFormat formatter;
       const IncidencePtr ptr( formatter.fromString( data ) );
@@ -682,7 +661,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     items << item;
   }
 
-  itemsRetrieved( items );
+  itemsRetrievedIncremental( items, removedItems );
 }
 
 void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
@@ -698,7 +677,13 @@ void DavGroupwareResource::onItemRefreshed( KJob* job )
 void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Unable to retrieve item: %1", job->errorText() ) );
+    if ( mSyncErrorNotified ) {
+      cancelTask();
+    }
+    else {
+      cancelTask( i18n( "Unable to retrieve item: %1", job->errorText() ) );
+      mSyncErrorNotified = true;
+    }
     return;
   }
 
@@ -810,6 +795,7 @@ void DavGroupwareResource::onItemRemovedFinished( KJob *job )
     Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
     Akonadi::Collection collection = job->property( "collection" ).value<Akonadi::Collection>();
     mItemsRidCache[collection.remoteId()].remove( item.remoteId() );
+    mEtagCache.removeEtag( item.remoteId() );
     changeProcessed();
   }
 }

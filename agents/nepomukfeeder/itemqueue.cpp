@@ -1,5 +1,6 @@
 /*
     Copyright (C) 2011  Christian Mollekopf <chrigi_1@fastmail.fm>
+    Copyright (C) 2013  Vishesh Handa <me@vhanda.in>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,6 +25,13 @@
 #include <nepomuk2/storeresourcesjob.h>
 #include <KUrl>
 
+#include <Nepomuk2/Vocabulary/NCO>
+#include <Nepomuk2/Vocabulary/NMO>
+#include <Soprano/Vocabulary/NAO>
+
+using namespace Nepomuk2::Vocabulary;
+using namespace Soprano::Vocabulary;
+
 Q_DECLARE_METATYPE(Nepomuk2::SimpleResourceGraph)
 
 ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
@@ -31,15 +39,15 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
   mBatchSize( batchSize ),
   mFetchSize( fetchSize ),
   mRunningJobs( 0 ),
-  mProcessingDelay( 0 ),
+  mDelay( 0 ),
   mAverageIndexingTime(0),
   mNumberOfIndexedItems(0)
 {
   mPropertyCache.setCachedTypes(QList<QUrl>()
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact")
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/08/15/nao#FreeDesktopIcon")
-     << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#MessageHeader")
+     << NCO::EmailAddress()
+     << NCO::Contact()
+     << NAO::FreeDesktopIcon()
+     << NMO::MessageHeader()
   );
   if ( fetchSize < batchSize )  {
     kWarning() << "fetchSize must be >= batchsize";
@@ -52,57 +60,81 @@ ItemQueue::~ItemQueue()
 
 }
 
-void ItemQueue::addToQueue(Akonadi::Entity::Id id)
+void ItemQueue::setProcessingDelay(int delay)
 {
-  mItemPipeline.enqueue( id );
+  mDelay = delay;
 }
 
 void ItemQueue::addItem(const Akonadi::Item &item)
 {
-  //kDebug() << "pipline size: " << mItemPipeline.size();
-  addToQueue(item.id());
+    QDateTime modificationTime = item.modificationTime();
+    if (modificationTime.isNull()) {
+        // If the DateTime is not provided, it means highest priority
+        modificationTime = QDateTime::currentDateTime();
+    }
+
+    mItemPipeline.insert(modificationTime, item.id());
 }
 
-void ItemQueue::addItems(const Akonadi::Item::List &list )
+void ItemQueue::addItems(const Akonadi::Item::List &list)
 {
-  foreach ( const Akonadi::Item &item, list ) {
-    addToQueue( item.id() );
-  }
+    foreach (const Akonadi::Item &item, list) {
+        addItem( item );
+    }
 }
 
-bool ItemQueue::processItem()
+Akonadi::Item::List ItemQueue::fetchHighestPriorityItems(int numItems)
 {
-  kDebug() << "pipline size: " << mItemPipeline.size() << mItemFetchList.size() << mFetchedItemList.size();
+    Akonadi::Item::List list;
+    list.reserve(numItems);
+
+    int i = 0;
+    QMutableMapIterator<QDateTime, Akonadi::Item::Id> iter(mItemPipeline);
+    iter.toBack();
+
+    while (iter.hasPrevious() && i < numItems) {
+        iter.previous();
+        i++;
+
+        list << Akonadi::Item(iter.value());
+        iter.remove();
+    }
+
+    return list;
+}
+
+bool ItemQueue::processBatch()
+{
+  kDebug() << "pipline size: " << mItemPipeline.size() << mFetchedItemList.size();
   if ( mRunningJobs > 0 ) {//wait until the old graph has been saved
-    //kDebug() << "blocked: " << mRunningJobs;
+    kDebug() << "blocked: " << mRunningJobs;
     return false;
   }
   Q_ASSERT( mRunningJobs == 0 );
   mRunningJobs = 0;
-  //kDebug() << "------------------------procItem";
-  if ( !mItemPipeline.isEmpty() ) {
-    mItemFetchList.append( Akonadi::Item( mItemPipeline.dequeue() ) );
+
+  if ( mItemPipeline.isEmpty() && mFetchedItemList.isEmpty() ) {
+    return false;
   }
 
-  if ( mItemFetchList.size() >= mFetchSize || mItemPipeline.isEmpty() ) {
-    //kDebug() << QString( "Fetching %1 items" ).arg( mItemFetchList.size() );
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( mItemFetchList, this );
+  if ( mFetchedItemList.size() <= mBatchSize && !mItemPipeline.isEmpty() ) {
+    // Get the list of items to fetch
+    Akonadi::Item::List itemFetchList = fetchHighestPriorityItems( mFetchSize );
+    kDebug() << "Fetching" << itemFetchList.size() << "items";
+
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( itemFetchList, this );
     job->fetchScope().fetchFullPayload();
     job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
     job->fetchScope().setCacheOnly( true );
     job->fetchScope().setIgnoreRetrievalErrors( true );
-    foreach(const Akonadi::Item &it, mItemFetchList) {
-      mTempFetchList.append(it.id());
-    }
-    job->setProperty( "numberOfItems", mItemFetchList.size() );
+    job->setProperty( "numberOfItems", itemFetchList.size() );
+
     connect( job, SIGNAL(result(KJob*)), SLOT(fetchJobResult(KJob*)) );
     mRunningJobs++;
-    mItemFetchList.clear();
-    return false;
-  } else { //In case there is nothing in the itemFetchList, but still in the fetchedItemList
-    return processBatch();
+    return true;
   }
-  return true;
+
+  return indexBatch();
 }
 
 void ItemQueue::fetchJobResult(KJob* job)
@@ -114,54 +146,54 @@ void ItemQueue::fetchJobResult(KJob* job)
   }
   Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
   Q_ASSERT( fetchJob );
-  int numberOfItems = fetchJob->property( "numberOfItems" ).toInt();
+
   mFetchedItemList.append( fetchJob->items() );
+  int numberOfItems = fetchJob->property( "numberOfItems" ).toInt();
   if ( fetchJob->items().size() != numberOfItems ) {
     kWarning() << "Not all items were fetched: " << fetchJob->items().size() << numberOfItems;
-    foreach(const Akonadi::Item &it, mItemFetchList) {
-      mTempFetchList.removeOne(it.id());
-    }
   }
-  mTempFetchList.clear();
   
-  if ( processBatch() && mBatch.isEmpty() ) { //Can happen if only items without payload were fetched
-    emit batchFinished();
+  if ( !indexBatch() ) { //Can happen if only items without payload were fetched
+    QTimer::singleShot( mDelay, this, SLOT(slotEmitFinished()) );
   }
 }
 
-bool ItemQueue::processBatch()
+bool ItemQueue::indexBatch()
 {
-  //kDebug() << size;
-  for ( int i = 0; i < mFetchedItemList.size() && i < mBatchSize; i++ ) {
+  Nepomuk2::SimpleResourceGraph resourceGraph;
+  QList<Akonadi::Item::Id> batch;
+
+  while ( batch.size() < mBatchSize && !mFetchedItemList.isEmpty() ) {
     const Akonadi::Item &item = mFetchedItemList.takeFirst();
-    //kDebug() << item.id();
+    kDebug() << "Indexing" << item.id() << item.modificationTime();
+
     if ( !item.hasPayload() ) { //can happen due to deserialization error or with items that actually don't have a local payload
       kWarning() << "failed to fetch item or item without payload: " << item.id();
       continue;
     }
     Q_ASSERT( item.hasPayload() );
-    Q_ASSERT( mBatch.size() == 0 ? mResourceGraph.isEmpty() : true ); //otherwise we havent reached addGraphToNepomuk yet, and therefore mustn't overwrite mResourceGraph
-    NepomukHelpers::addItemToGraph( item, mResourceGraph );
-    mBatch.append( item.id() );
+
+    NepomukHelpers::addItemToGraph( item, resourceGraph );
+    batch.append( item.id() );
   }
-  if ( mBatch.size() && ( mBatch.size() >= mBatchSize || mItemPipeline.isEmpty() ) ) {
-    //kDebug() << "process batch of " << mBatch.size() << "      left: " << mFetchedItemList.size();
+
+  if ( batch.size() ) {
+    //kDebug() << "process batch of " << batch.size() << "  left: " << mFetchedItemList.size();
     mTimer.start();
-    
-    QList<QUrl> batch;
-    foreach (Akonadi::Item::Id id, mBatch) {
-        batch << Akonadi::Item(id).url().url();
+
+    QList<QUrl> akondiUrls;
+    foreach (Akonadi::Item::Id id, batch) {
+        akondiUrls << Akonadi::Item(id).url();
     }
 
-    KJob *job = Nepomuk2::removeDataByApplication( batch, Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
-    job->setProperty("graph", QVariant::fromValue(mResourceGraph));
+    KJob *job = Nepomuk2::removeDataByApplication( akondiUrls, Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
+    job->setProperty("graph", QVariant::fromValue(resourceGraph));
     connect( job, SIGNAL(finished(KJob*)), this, SLOT(removeDataResult(KJob*)) );
     mRunningJobs++;
-    mBatch.clear();
-    mResourceGraph.clear();
-    return false;
+    return true;
   }
-  return true;
+
+  return false;
 }
 
 void ItemQueue::removeDataResult(KJob* job)
@@ -181,6 +213,7 @@ void ItemQueue::removeDataResult(KJob* job)
 void ItemQueue::batchJobResult(KJob* job)
 {
   mRunningJobs--;
+  // FIXME: Only compute all of this if DEBUG messages have been enabled
   kDebug() << "------------------------------------------";
   kDebug() << "pipline size: " << mItemPipeline.size();
   kDebug() << "fetchedItemList : " << mFetchedItemList.size();
@@ -190,46 +223,44 @@ void ItemQueue::batchJobResult(KJob* job)
   mAverageIndexingTime += ((double)mTimer.elapsed()-mAverageIndexingTime)/(double)mNumberOfIndexedItems;
   kDebug() << "Average (ms): " << mAverageIndexingTime;
   const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
-  Q_ASSERT( mBatch.isEmpty() );
+  //FIXME: Better error handling - Store this in some error file?
   if ( job->error() ) {
-    kWarning() << "Error while storing graph";
+    kWarning() << "Error while storing graph: " << job->errorString();
     foreach( const Nepomuk2::SimpleResource &res, graph.toList() ) {
-        kWarning() << res;
+        kDebug() << res;
     }
-    kWarning() << job->errorString();
   } else {
     Nepomuk2::StoreResourcesJob *storeResourcesJob = static_cast<Nepomuk2::StoreResourcesJob*>(job);
     Q_ASSERT(storeResourcesJob);
     mPropertyCache.fillCache(graph, storeResourcesJob->mappings());
   }
-  QTimer::singleShot(mProcessingDelay, this, SLOT(continueProcessing()));
-  mRunningJobs++;
-}
 
-void ItemQueue::continueProcessing()
-{
-  mRunningJobs--;
-  if ( processBatch() ) { //Go back for more
-    //kDebug() << "batch finished";
-    emit batchFinished();
-  } else {
-      //kDebug() << "there was more...";
-      return;
-  }
-  if ( mItemPipeline.isEmpty() && mFetchedItemList.isEmpty() ) {
-    kDebug() << "indexing completed";
-    emit finished();
-  }
+  QTimer::singleShot( mDelay, this, SLOT(slotEmitFinished()) );
 }
 
 bool ItemQueue::isEmpty() const
 {
-    return mItemPipeline.isEmpty() && mFetchedItemList.isEmpty();
+  return mItemPipeline.isEmpty() && mFetchedItemList.isEmpty();
 }
 
-void ItemQueue::setProcessingDelay(int ms)
+int ItemQueue::size() const
 {
-    mProcessingDelay = ms;
+  return mItemPipeline.size() + mFetchedItemList.size();
 }
+
+void ItemQueue::slotEmitFinished()
+{
+  emit batchFinished();
+  if ( isEmpty() )
+      emit finished();
+}
+
+void ItemQueue::clear()
+{
+  mRunningJobs = 0;
+  mItemPipeline.clear();
+  mFetchedItemList.clear();
+}
+
 
 #include "itemqueue.moc"

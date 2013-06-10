@@ -18,7 +18,6 @@
 
 #include "nepomukpimindexerutility.h"
 #include "indexhelpermodel.h"
-#include <feederqueue.h>
 #include <nepomuk2/datamanagement.h>
 
 #include <akonadi/entitytreemodel.h>
@@ -37,7 +36,7 @@
 
 NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     : KXmlGuiWindow(),
-    mFeederQueue(new FeederQueue(this))
+    mFeederQueue(new IndexScheduler(this))
 {
     KGlobal::locale()->insertCatalog( "akonadi_nepomuk_feeder" );
     // tell the KXmlGuiWindow that this is indeed the main widget
@@ -76,7 +75,7 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     (void) KStandardAction::quit(this, SLOT(close()), actionCollection);
 
     
-    mFeederQueue->setIndexingSpeed(FeederQueue::FullSpeed);
+    mFeederQueue->setIndexingSpeed(IndexScheduler::FullSpeed);
     mFeederQueue->setOnline(true);
     mFeederQueue->setReindexing(false);
     //mFeederQueue->setCheckAllItems(true);
