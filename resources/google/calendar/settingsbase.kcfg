@@ -19,5 +19,11 @@
     <entry name="EventsSince" type="String">
         <default></default>
     </entry>
+    <entry name="AccountId" type="UInt">
+      <label>The account id in WebAccouts framework.</label>
+    </entry>
+    <entry name="AccountServices" type="StringList">
+      <label>The account services configured in WebAccouts framework.</label>
+    </entry>
   </group>
 </kcfg>
