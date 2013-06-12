@@ -164,8 +164,12 @@ void PropertyCache::fillCache(const Nepomuk2::SimpleResourceGraph& graph, const 
     const QMap<uint, QUrl> waitingForUri = hashResources(graph);
     QMap<uint, QUrl>::const_iterator it = waitingForUri.constBegin();
     for (; it != waitingForUri.constEnd(); it++) {
-        Q_ASSERT(mappings.contains(it.value()));
-        mCache.insert(it.key(), new QUrl(mappings.value(it.value())));
+        // There are cases where the mappings do not contain a resoucce. This is because we use
+        // the MergeDuplicateResources flag in StoreResources and the duplicates do not have
+        // mappings
+        if (mappings.contains(it.value()) ) {
+            mCache.insert(it.key(), new QUrl(mappings.value(it.value())));
+        }
     }
 }
 
