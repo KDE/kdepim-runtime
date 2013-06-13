@@ -66,7 +66,7 @@ find_package(Boost 1.34.0)
 set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "http://www.boost.org" TYPE REQUIRED PURPOSE "Boost is required by Akonadi")
 
 # Akonadi
-find_package(Akonadi 1.9.51 QUIET CONFIG)
+find_package(Akonadi 1.9.80 QUIET CONFIG)
 set_package_properties(Akonadi PROPERTIES DESCRIPTION "Akonadi server libraries" URL "http://pim.kde.org/akonadi" TYPE REQUIRED PURPOSE "Access to PIM storage and services")
 
 # shared-mime-info
@@ -81,7 +81,7 @@ if(NOT KDEPIM_NO_NEPOMUK)
   find_package(SharedDesktopOntologies 0.10)
   set_package_properties(SharedDesktopOntologies PROPERTIES DESCRIPTION "Shared Desktop Ontologies" URL "http://oscaf.sourceforge.net" TYPE REQUIRED PURPOSE "Ontologies necessary for the Nepomuk semantic desktop")
 
-  find_package(Soprano 2.7.56)
+  find_package(Soprano 2.9)
   set_package_properties(Soprano PROPERTIES DESCRIPTION "C++/Qt4 framework for RDF data" URL "http://soprano.sourceforge.net" TYPE REQUIRED PURPOSE "Storage of semantic data")
 
   find_package(NepomukCore QUIET CONFIG)
