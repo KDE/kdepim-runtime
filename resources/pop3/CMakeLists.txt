@@ -30,6 +30,7 @@ set( pop3resource_SRCS
   accountdialog.cpp
   jobs.cpp
   settings.cpp
+  pop3resourceattribute.cpp
 )
 
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
