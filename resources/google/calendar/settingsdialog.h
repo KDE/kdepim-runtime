@@ -19,7 +19,6 @@
 #define GOOGLE_CALENDAR_SETTINGSDIALOG_H
 
 #include <KDialog>
-#include <boost/graph/graph_concepts.hpp>
 
 class KListWidget;
 class QLabel;
