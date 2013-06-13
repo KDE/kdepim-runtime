@@ -20,9 +20,11 @@
 #include "accountdialog.h"
 #include "settings.h"
 #include "jobs.h"
+#include "pop3resourceattribute.h"
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemCreateJob>
+#include <Akonadi/AttributeFactory>
 #include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <akonadi/kmime/specialmailcollections.h>
@@ -49,6 +51,7 @@ POP3Resource::POP3Resource( const QString &id )
       mTestLocalInbox( false ),
       mWallet( 0 )
 {
+  Akonadi::AttributeFactory::registerAttribute<Pop3ResourceAttribute>();
   setNeedsNetwork( true );
   Settings::self()->setResourceId( identifier() );
   resetState();
@@ -609,6 +612,8 @@ void POP3Resource::messageFinished( int messageId, KMime::Message::Ptr message )
   item.setMimeType( "message/rfc822" );
   item.setPayload<KMime::Message::Ptr>( message );
 
+  Pop3ResourceAttribute *attr  = item.attribute<Pop3ResourceAttribute>( Akonadi::Entity::AddIfMissing );
+  attr->setPop3AccountName( identifier() );
   // update status flags
   if ( KMime::isSigned( message.get() ) )
     item.setFlag( Akonadi::MessageFlags::Signed );
