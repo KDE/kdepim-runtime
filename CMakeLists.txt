@@ -78,7 +78,7 @@ find_package(LibXml2)
 set_package_properties(LibXml2 PROPERTIES DESCRIPTION "The LibXML2 library" URL "http://xmlsoft.org" TYPE OPTIONAL PURPOSE "Needed for building the knut Akonadi resource.")
 
 if(NOT KDEPIM_NO_NEPOMUK)
-  find_package(SharedDesktopOntologies 0.10)
+  find_package(SharedDesktopOntologies 0.11)
   set_package_properties(SharedDesktopOntologies PROPERTIES DESCRIPTION "Shared Desktop Ontologies" URL "http://oscaf.sourceforge.net" TYPE REQUIRED PURPOSE "Ontologies necessary for the Nepomuk semantic desktop")
 
   find_package(Soprano 2.9)
