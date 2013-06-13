@@ -39,6 +39,8 @@ class ContactsResource: public GoogleResource
 
     ~ContactsResource();
 
+    virtual void configure(WId windowId);
+
   protected Q_SLOTS:
     virtual void retrieveCollections();
 
@@ -66,10 +68,8 @@ class ContactsResource: public GoogleResource
 
     void slotCreateJobFinished( KGAPI2::Job *job );
 
-    virtual GoogleSettings *settings() const;
-    virtual int runConfigurationDialog( WId windowId );
+    virtual Settings *settings() const;
     virtual void updateResourceName();
-    virtual QList< QUrl > scopes() const;
 
   private:
 

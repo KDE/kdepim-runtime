@@ -41,7 +41,7 @@ class SettingsHelper
 K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings::Settings():
-    GoogleSettings()
+    SettingsBase()
 {
   Q_ASSERT( !s_globalSettings->q );
   s_globalSettings->q = this;

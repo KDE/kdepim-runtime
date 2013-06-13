@@ -1,13 +1,14 @@
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
+include_directories(${ACCOUNTSQT_INCLUDE_DIRS}
+                    ${SIGNONQT_INCLUDE_DIRS}
+)
+
 set(contactsresource_SRCS
   contactsresource.cpp
   settings.cpp
-  settingsdialog.cpp
-  ../common/googlesettings.cpp
   ../common/googleresource.cpp
-  ../common/googleaccountmanager.cpp
-  ../common/googlesettingsdialog.cpp
+  ../../getcredentialsjob.cpp
 )
 
 kde4_add_kcfg_files(contactsresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
@@ -46,6 +47,8 @@ target_link_libraries(akonadi_googlecontacts_resource
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KIO_LIBS}
   ${LibKGAPI2_LIBRARY}
+  ${ACCOUNTSQT_LIBRARIES}
+  ${SIGNONQT_LIBRARIES}
 )
 
 install(TARGETS akonadi_googlecontacts_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

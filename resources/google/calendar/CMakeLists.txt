@@ -4,6 +4,8 @@ include_directories(${QJSON_INCLUDE_DIR}
                     ${qjson_INCLUDE_DIR}
                     ${NEPOMUK_CORE_INCLUDE_DIR}
                     ${SOPRANO_INCLUDE_DIR}
+                    ${ACCOUNTSQT_INCLUDE_DIRS}
+                    ${SIGNONQT_INCLUDE_DIRS}
 )
 
 set(calendarresource_SRCS
@@ -12,9 +14,7 @@ set(calendarresource_SRCS
   settings.cpp
   settingsdialog.cpp
   ../common/googleresource.cpp
-  ../common/googleaccountmanager.cpp
-  ../common/googlesettings.cpp
-  ../common/googlesettingsdialog.cpp
+    ../../getcredentialsjob.cpp
 )
 
 kde4_add_kcfg_files(calendarresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
@@ -63,6 +63,8 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${QJSON_LIBRARY} # for Mac OSX
   ${qjson_LIBRARY} # for Debian
   ${LibKGAPI2_LIBRARY}
+  ${ACCOUNTSQT_LIBRARIES}
+  ${SIGNONQT_LIBRARIES}
 )
 
 install(TARGETS akonadi_googlecalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

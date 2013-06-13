@@ -18,9 +18,9 @@
 #ifndef GOOGLE_CALENDAR_SETTINGS_H
 #define GOOGLE_CALENDAR_SETTINGS_H
 
-#include "common/googlesettings.h"
+#include "settingsbase.h"
 
-class Settings: public GoogleSettings
+class Settings: public SettingsBase
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.GoogleCalendar.ExtendedSettings" )

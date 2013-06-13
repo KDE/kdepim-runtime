@@ -16,8 +16,10 @@
 */
 
 #include "contactsresource.h"
-#include "settingsdialog.h"
 #include "settings.h"
+
+#include <Accounts/Account>
+#include <Accounts/Manager>
 
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
@@ -70,31 +72,23 @@ ContactsResource::~ContactsResource()
 {
 }
 
-GoogleSettings *ContactsResource::settings() const
+Settings *ContactsResource::settings() const
 {
     return Settings::self();
 }
 
-int ContactsResource::runConfigurationDialog( WId windowId )
+void ContactsResource::configure(WId winId)
 {
+    Q_UNUSED( winId );
 
-   QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( accountManager(), windowId, this ) );
-   settingsDialog->setWindowIcon( KIcon( "im-google" ) );
-
-   return settingsDialog->exec();
+    emit configurationDialogAccepted();
 }
 
 void ContactsResource::updateResourceName()
 {
-    const QString accountName = Settings::self()->account();
+    Accounts::Account *acc = accountsManager()->account( Settings::self()->accountId() );
+    const QString accountName = acc ? acc->displayName() : QLatin1String( "" );
     setName( i18nc( "%1 is account name (user@gmail.com)", "Google Contacts (%1)", accountName.isEmpty() ? i18n( "not configured" ) : accountName ) );
-}
-
-QList< QUrl > ContactsResource::scopes() const
-{
-    QList< QUrl > scopes;
-    scopes << Account::contactsScopeUrl();
-    return scopes;
 }
 
 void ContactsResource::retrieveItems( const Collection &collection )

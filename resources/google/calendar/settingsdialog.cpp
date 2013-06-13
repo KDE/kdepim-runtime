@@ -17,11 +17,15 @@
 
 #include "settingsdialog.h"
 #include "settings.h"
+#include "common/googleresource.h"
+#include "getcredentialsjob.h"
 
 #include <KDE/KLocalizedString>
 #include <KDE/KListWidget>
 #include <KDE/KPushButton>
 #include <KDE/KDateComboBox>
+#include <KDE/KWindowSystem>
+#include <KDE/KMessageBox>
 
 #include <QtGui/QPixmap>
 #include <QtGui/QIcon>
@@ -40,18 +44,24 @@
 
 using namespace KGAPI2;
 
+Q_DECLARE_METATYPE( KGAPI2::Job* )
 
-SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent ):
-    GoogleSettingsDialog( accountManager, windowId, parent )
+SettingsDialog::SettingsDialog( WId windowId, GoogleResource *parent ):
+    KDialog( 0 ),
+    m_resource( parent )
 {
+    KWindowSystem::setMainWindow( this, windowId );
+    setButtons( Ok | Cancel );
+
     connect( this, SIGNAL(accepted()),
              this, SLOT(saveSettings()) );
-    connect( this, SIGNAL(currentAccountChanged(QString)),
-             this, SLOT(slotCurrentAccountChanged(QString)) );
 
+    QWidget *widget = new QWidget( this );
+    QVBoxLayout *mainLayout = new QVBoxLayout( widget );
+    setMainWidget( widget );
 
     m_calendarsBox = new QGroupBox( i18n( "Calendars" ), this );
-    mainWidget()->layout()->addWidget( m_calendarsBox );
+    mainLayout->addWidget( m_calendarsBox );
 
     QVBoxLayout *vbox = new QVBoxLayout( m_calendarsBox );
 
@@ -84,7 +94,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
     hbox->addWidget( m_eventsLimitCombo );
 
     m_taskListsBox = new QGroupBox( i18n( "Tasklists" ), this );
-    mainWidget()->layout()->addWidget( m_taskListsBox );
+    mainLayout->addWidget( m_taskListsBox );
 
     vbox = new QVBoxLayout( m_taskListsBox );
 
@@ -104,17 +114,10 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::saveSettings()
 {
-    const AccountPtr account = currentAccount();
-    if ( !currentAccount() ) {
-        Settings::self()->setAccount( QString() );
-        Settings::self()->setCalendars( QStringList() );
-        Settings::self()->setTaskLists( QStringList() );
-        Settings::self()->setEventsSince( QString() );
-        Settings::self()->writeConfig();
-        return;
-    }
-
-    Settings::self()->setAccount( account->accountName() );
+    Settings::self()->setCalendars( QStringList() );
+    Settings::self()->setTaskLists( QStringList() );
+    Settings::self()->setEventsSince( QString() );
+    Settings::self()->writeConfig();
 
     QStringList calendars;
     for ( int i = 0; i < m_calendarsList->count(); i++ ) {
@@ -143,17 +146,9 @@ void SettingsDialog::saveSettings()
     Settings::self()->writeConfig();
 }
 
-void SettingsDialog::slotCurrentAccountChanged( const QString &accountName )
-{
-    Q_UNUSED( accountName )
-
-    slotReloadCalendars();
-    slotReloadTaskLists();
-}
-
 void SettingsDialog::slotReloadCalendars()
 {
-    const AccountPtr account = currentAccount();
+    const AccountPtr account = m_resource->account();
     if ( !account ) {
         return;
     }
@@ -168,7 +163,7 @@ void SettingsDialog::slotReloadCalendars()
 
 void SettingsDialog::slotReloadTaskLists()
 {
-    const AccountPtr account = currentAccount();
+    const AccountPtr account = m_resource->account();
     if ( !account ) {
         return;
     }
@@ -190,10 +185,8 @@ void SettingsDialog::slotCalendarsRetrieved( Job *job )
     FetchJob *fetchJob = qobject_cast<FetchJob*>(job);
     ObjectsList objects = fetchJob->items();
 
-    QStringList activeCalendars;
-    if ( currentAccount()->accountName() == Settings::self()->account() ) {
-        activeCalendars = Settings::self()->calendars();
-    }
+    const QStringList activeCalendars = Settings::self()->calendars();
+
     Q_FOREACH( const ObjectPtr &object, objects ) {
         CalendarPtr calendar = object.dynamicCast<Calendar>();
 
@@ -217,10 +210,8 @@ void SettingsDialog::slotTaskListsRetrieved( Job *job )
     FetchJob *fetchJob = qobject_cast<FetchJob*>(job);
     ObjectsList objects = fetchJob->items();
 
-    QStringList activeTaskLists;
-    if ( currentAccount()->accountName() == Settings::self()->account()) {
-        activeTaskLists = Settings::self()->taskLists();
-    }
+    const QStringList activeTaskLists = Settings::self()->taskLists();
+
     Q_FOREACH( const ObjectPtr &object, objects ) {
         TaskListPtr taskList = object.dynamicCast<TaskList>();
 
@@ -233,3 +224,26 @@ void SettingsDialog::slotTaskListsRetrieved( Job *job )
 
     m_taskListsBox->setEnabled( true );
 }
+
+bool SettingsDialog::handleError( Job *job )
+{
+    if (( job->error() == KGAPI2::NoError ) || ( job->error() == KGAPI2::OK )) {
+        return true;
+    }
+
+    if ( job->error() == KGAPI2::Unauthorized ) {
+        kDebug() << job << job->errorString();
+        GetCredentialsJob *cj = new GetCredentialsJob( Settings::self()->accountId(), this );
+        cj->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
+        connect( cj, SIGNAL(finished(KJob*)),
+                 m_resource, SLOT(slotTokensReceived(KJob*)) );
+
+        return false;
+    }
+
+    KMessageBox::sorry( this, job->errorString() );
+    job->deleteLater();
+    return false;
+}
+
+#include "settingsdialog.moc"

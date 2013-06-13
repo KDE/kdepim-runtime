@@ -20,6 +20,9 @@
 #include "settings.h"
 #include "settingsdialog.h"
 
+#include <Accounts/Account>
+#include <Accounts/Manager>
+
 #include <Akonadi/Attribute>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionModifyJob>
@@ -92,34 +95,33 @@ CalendarResource::~CalendarResource()
 {
 }
 
-GoogleSettings *CalendarResource::settings() const
+Settings *CalendarResource::settings() const
 {
     return Settings::self();
 }
 
-int CalendarResource::runConfigurationDialog( WId windowId )
+void CalendarResource::configure( WId windowId )
 {
-   QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( accountManager(), windowId, this ) );
-   settingsDialog->setWindowIcon( KIcon( "im-google" ) );
+    QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( windowId, this ) );
+    settingsDialog->setWindowIcon( KIcon( "im-google" ) );
 
-   return settingsDialog->exec();
+   if ( settingsDialog->exec() == KDialog::Accepted ) {
+        emit configurationDialogAccepted();
+
+        emit status( Idle, i18nc( "@info:status", "Ready" ) );
+        synchronize();
+    } else {
+        updateResourceName();
+        emit configurationDialogRejected();
+    }
 }
 
 void CalendarResource::updateResourceName()
 {
-    const QString accountName = Settings::self()->account();
+    Accounts::Account *account = accountsManager()->account( Settings::self()->accountId() );
+    const QString accountName = account ? account->displayName() : QLatin1String("");
     setName( i18nc( "%1 is account name (user@gmail.com)", "Google Calendars and Tasks (%1)", accountName.isEmpty() ? i18n( "not configured" ) : accountName ) );
 }
-
-QList< QUrl > CalendarResource::scopes() const
-{
-    QList<QUrl> scopes;
-    scopes << Account::calendarScopeUrl()
-           << Account::tasksScopeUrl();
-
-    return scopes;
-}
-
 
 void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
 {

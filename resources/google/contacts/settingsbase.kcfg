@@ -6,14 +6,6 @@
 			  http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile/>
   <group name="General">
-    <entry name="Account" type="String">
-    </entry>
-    <entry name="RefreshAddressbook" type="Bool">
-      <default>true</default>
-    </entry>
-    <entry name="RefreshInterval" type="Int">
-      <default>30</default>
-    </entry>
     <entry name="AccountId" type="UInt">
       <label>The account id in WebAccouts framework.</label>
     </entry>

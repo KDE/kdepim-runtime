@@ -31,8 +31,8 @@ class CalendarResource : public GoogleResource
     ~CalendarResource();
 
   public:
-    virtual GoogleSettings *settings() const;
-    virtual QList< QUrl > scopes() const;
+    virtual Settings *settings() const;
+    virtual void configure( WId windowId );
 
   protected Q_SLOTS:
     virtual void retrieveCollections();
@@ -59,7 +59,6 @@ class CalendarResource : public GoogleResource
     void slotCreateJobFinished( KGAPI2::Job *job );
 
   protected:
-    virtual int runConfigurationDialog( WId windowId );
     virtual void updateResourceName();
 
   private:

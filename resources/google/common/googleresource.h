@@ -23,8 +23,6 @@
 
 #include <QtGui/qwindowdefs.h>
 
-#include "googleaccountmanager.h"
-
 #include <LibKGAPI2/Types>
 
 #include <KDE/KLocalizedString>
@@ -34,12 +32,16 @@
 #define COLLECTION_PROPERTY "_AkonadiCollection"
 #define JOB_PROPERTY "_KGAPI2Job"
 
+namespace Accounts {
+class Manager;
+}
+
 namespace KGAPI2
 {
 class Job;
 }
 
-class GoogleSettings;
+class Settings;
 
 class GoogleResource : public Akonadi::ResourceBase,
                        public Akonadi::AgentBase::ObserverV2
@@ -50,28 +52,26 @@ class GoogleResource : public Akonadi::ResourceBase,
     explicit GoogleResource( const QString &id );
     virtual ~GoogleResource();
 
-    virtual GoogleSettings* settings() const = 0;
-    virtual QList<QUrl> scopes() const = 0;
+    virtual Settings* settings() const = 0;
+
+    KGAPI2::AccountPtr account() const;
+    Accounts::Manager* accountsManager() const;
 
   public Q_SLOTS:
-    virtual void configure( WId windowId );
-
     void reloadConfig();
+
+    virtual void slotTokensReceived( KJob *job );
 
   protected Q_SLOTS:
     virtual bool retrieveItem( const Akonadi::Item &item, const QSet< QByteArray > &parts );
 
     bool handleError( KGAPI2::Job *job );
 
-    virtual void slotAuthJobFinished( KGAPI2::Job *job );
     virtual void slotGenericJobFinished( KGAPI2::Job *job );
 
     void emitPercent( KGAPI2::Job* job, int processedCount, int totalCount );
 
     virtual void slotAbortRequested();
-    virtual void slotAccountManagerReady( bool success );
-    virtual void slotAccountChanged( const KGAPI2::AccountPtr &account );
-    virtual void slotAccountRemoved( const QString &accountName );
 
   protected:
     template <typename T>
@@ -89,19 +89,15 @@ class GoogleResource : public Akonadi::ResourceBase,
 
     bool canPerformTask();
 
-    KGAPI2::AccountPtr account() const;
-    GoogleAccountManager* accountManager() const;
 
     virtual void aboutToQuit();
 
-
-    virtual int runConfigurationDialog( WId windowId ) = 0;
     virtual void updateResourceName() = 0;
 
   private:
     void abort();
 
-    GoogleAccountManager *m_accountMgr;
+    Accounts::Manager *m_accountsManager;
     KGAPI2::AccountPtr m_account;
 
 };

@@ -16,7 +16,11 @@
 */
 
 #include "googleresource.h"
-#include "googlesettings.h"
+#include "settings.h"
+
+#include "getcredentialsjob.h"
+
+#include <Accounts/Manager>
 
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/ItemFetchScope>
@@ -51,15 +55,7 @@ GoogleResource::GoogleResource( const QString &id ):
     changeRecorder()->fetchCollection( true );
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
-    m_accountMgr = new GoogleAccountManager( this );
-    connect( m_accountMgr, SIGNAL(accountChanged(KGAPI2::AccountPtr)),
-             this, SLOT(slotAccountChanged(KGAPI2::AccountPtr)) );
-    connect( m_accountMgr, SIGNAL(accountRemoved(QString)),
-             this, SLOT(slotAccountRemoved(QString)) );
-    connect( m_accountMgr, SIGNAL(managerReady(bool)),
-             this, SLOT(slotAccountManagerReady(bool)) );
-
-    emit status( NotConfigured, i18n( "Waiting for KWallet..." ) );
+    m_accountsManager = new Accounts::Manager( this );
 }
 
 GoogleResource::~GoogleResource()
@@ -71,9 +67,9 @@ AccountPtr GoogleResource::account() const
     return m_account;
 }
 
-GoogleAccountManager *GoogleResource::accountManager() const
+Accounts::Manager* GoogleResource::accountsManager() const
 {
-    return m_accountMgr;
+    return m_accountsManager;
 }
 
 void GoogleResource::aboutToQuit()
@@ -91,88 +87,33 @@ void GoogleResource::slotAbortRequested()
     abort();
 }
 
-void GoogleResource::configure( WId windowId )
-{
-    if ( !m_accountMgr->isReady() ) {
-        emit configurationDialogAccepted();
-        return;
-    }
-
-    if ( runConfigurationDialog( windowId ) == KDialog::Accepted ) {
-        updateResourceName();
-
-        emit configurationDialogAccepted();
-
-        m_account = accountManager()->findAccount( settings()->account() );
-        if ( m_account.isNull() ) {
-            emit status( NotConfigured, i18n( "Configured account does not exist" ) );
-            return;
-        }
-
-        emit status( Idle, i18nc( "@info:status", "Ready" ) );
-        synchronize();
-    } else {
-        updateResourceName();
-
-        emit configurationDialogRejected();
-    }
-}
-
 void GoogleResource::reloadConfig()
 {
-    const QString accountName = settings()->account();
-    if ( accountName.isEmpty() ) {
-        emit status( NotConfigured );
-        return;
-    }
-
-    m_account = m_accountMgr->findAccount( accountName );
-    if ( m_account.isNull() ) {
-        emit status( NotConfigured, i18n( "Configured account does not exist" ) );
-        return;
-    }
+    GetCredentialsJob *cj = new GetCredentialsJob( settings()->accountId(), this );
+    connect( cj, SIGNAL(finished(KJob*)),
+             this, SLOT(slotTokensReceived(KJob*)) );
 }
 
-void GoogleResource::slotAccountManagerReady( bool ready )
+void GoogleResource::slotTokensReceived( KJob* job )
 {
-    kDebug() << ready;
-
-    if ( !ready ) {
-        emit status( Broken, i18n( "Can't access KWallet" ) );
+    GetCredentialsJob *cj = qobject_cast<GetCredentialsJob*>( job );
+    if ( cj->error() ) {
+        cancelTask( i18n(" Failed to refresh tokens" ) );
         return;
     }
 
-    const QString accountName = settings()->account();
-    if ( accountName.isEmpty() && (status() != NotConfigured) ) {
-        emit status( NotConfigured );
-        configure( 0 );
-        return;
+    Accounts::Account *acc = m_accountsManager->account( cj->accountId() );
+
+    const QVariantMap data = cj->credentialsData();
+    const QString accessToken = data.value( QLatin1String( "AccessToken" ) ).toString();
+
+    m_account = AccountPtr( new Account( acc->displayName(), accessToken ) );
+
+    if ( !job->property( JOB_PROPERTY ).isNull() ) {
+        KGAPI2::Job *otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job*>();
+        otherJob->setAccount(m_account);
+        otherJob->restart();
     }
-
-    m_account = m_accountMgr->findAccount( accountName );
-    if ( m_account.isNull() ) {
-        emit status( NotConfigured, i18n( "Configured account does not exist" ) );
-        return;
-    }
-
-    emit status( Idle, i18nc( "@info:status", "Ready" ) );
-    synchronize();
-}
-
-void GoogleResource::slotAccountChanged( const AccountPtr &account )
-{
-    m_account = account;
-}
-
-void GoogleResource::slotAccountRemoved( const QString &accountName )
-{
-    if ( m_account && m_account->accountName() != accountName ) {
-        return;
-    }
-
-    emit status( NotConfigured, i18n( "Configured account has been removed" ) );
-    m_account.clear();
-    settings()->setAccount(QString());
 }
 
 bool GoogleResource::handleError( KGAPI2::Job *job )
@@ -183,17 +124,10 @@ bool GoogleResource::handleError( KGAPI2::Job *job )
 
     if ( job->error() == KGAPI2::Unauthorized ) {
         kDebug() << job << job->errorString();
-        const QList<QUrl> resourceScopes = scopes();
-        Q_FOREACH(const QUrl &scope, resourceScopes) {
-            if ( !m_account->scopes().contains( scope ) ) {
-                m_account->addScope( scope );
-            }
-        }
-        AuthJob *authJob = new AuthJob( m_account, settings()->clientId(), settings()->clientSecret(), this );
-        authJob->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
-        connect( authJob, SIGNAL(finished(KGAPI2::Job*)),
-                 this, SLOT(slotAuthJobFinished(KGAPI2::Job*)) );
-
+        GetCredentialsJob *cj = new GetCredentialsJob( settings()->accountId(), this );
+        cj->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
+        connect( cj, SIGNAL(finished(KJob*)),
+                 this, SLOT(slotTokensReceived(KJob*)) );
         return false;
     }
 
@@ -211,28 +145,6 @@ bool GoogleResource::canPerformTask()
     }
 
     return true;
-}
-
-void GoogleResource::slotAuthJobFinished( KGAPI2::Job *job )
-{
-    kDebug();
-
-    if ( job->error() != KGAPI2::NoError ) {
-        cancelTask( i18n( "Failed to refresh tokens" ) );
-        return;
-    }
-
-    AuthJob *authJob = qobject_cast<AuthJob*>( job );
-    m_account = authJob->account();
-    if ( !m_accountMgr->storeAccount( m_account ) ) {
-        kWarning() << "Failed to store account in KWallet";
-    }
-
-    KGAPI2::Job *otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job *>();
-    otherJob->setAccount(m_account);
-    otherJob->restart();
-
-    job->deleteLater();
 }
 
 void GoogleResource::slotGenericJobFinished( KGAPI2::Job *job )

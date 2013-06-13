@@ -18,23 +18,30 @@
 #ifndef GOOGLE_CALENDAR_SETTINGSDIALOG_H
 #define GOOGLE_CALENDAR_SETTINGSDIALOG_H
 
-#include "common/googlesettingsdialog.h"
+#include <KDialog>
+#include <boost/graph/graph_concepts.hpp>
 
 class KListWidget;
 class QLabel;
 class KDateComboBox;
+class QGroupBox;
+class GoogleResource;
 
-class SettingsDialog : public GoogleSettingsDialog
+namespace KGAPI2 {
+class Job;
+}
+
+class SettingsDialog : public KDialog
 {
   Q_OBJECT
+
   public:
-    explicit SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent );
+    explicit SettingsDialog( WId windowId, GoogleResource *parent );
     ~SettingsDialog();
 
   private Q_SLOTS:
     void slotReloadCalendars();
     void slotReloadTaskLists();
-    void slotCurrentAccountChanged( const QString &accountName );
 
     void slotTaskListsRetrieved( KGAPI2::Job *job );
     void slotCalendarsRetrieved( KGAPI2::Job *job );
@@ -42,6 +49,10 @@ class SettingsDialog : public GoogleSettingsDialog
     void saveSettings();
 
   private:
+    bool handleError( KGAPI2::Job *job );
+
+    GoogleResource *m_resource;
+
     QGroupBox *m_calendarsBox;
     KListWidget *m_calendarsList;
     KPushButton *m_reloadCalendarsBtn;

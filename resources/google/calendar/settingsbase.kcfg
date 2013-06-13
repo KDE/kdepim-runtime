@@ -6,8 +6,6 @@
 			  http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile/>
   <group name="General">
-    <entry name="Account" type="String">
-    </entry>
     <entry name="Calendars" type="StringList">
       <default></default>
       <label>IDs of calendars in collection</label>
