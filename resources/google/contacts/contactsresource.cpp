@@ -81,6 +81,7 @@ void ContactsResource::configure(WId winId)
     Q_UNUSED( winId );
 
     emit configurationDialogAccepted();
+    synchronize();
 }
 
 void ContactsResource::updateResourceName()
