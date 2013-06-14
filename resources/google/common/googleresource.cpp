@@ -169,10 +169,10 @@ void GoogleResource::slotAccountInfoReceived( KGAPI2::Job* job )
         otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job*>();
     }
 
-    finishAuthentication( otherJob );
+    finishAuthentication( otherJob, true );
 }
 
-void GoogleResource::finishAuthentication( KGAPI2::Job* job )
+void GoogleResource::finishAuthentication( KGAPI2::Job* job, bool forceConfig )
 {
     updateResourceName();
     emit status( Idle, i18nc( "@info:status", "Ready" ) );
@@ -181,7 +181,11 @@ void GoogleResource::finishAuthentication( KGAPI2::Job* job )
         job->setAccount( m_account );
         job->restart();
     } else {
-        synchronize();
+        if ( forceConfig ) {
+            configure( 0 ); /* FIXME: Get correct wId? How? */
+        } else {
+            synchronize();
+        }
     }
 }
 

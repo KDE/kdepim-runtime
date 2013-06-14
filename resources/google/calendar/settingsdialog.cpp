@@ -105,6 +105,9 @@ SettingsDialog::SettingsDialog( WId windowId, GoogleResource *parent ):
     vbox->addWidget( m_reloadTaskListsBtn );
     connect( m_reloadTaskListsBtn, SIGNAL(clicked(bool)),
              this, SLOT(slotReloadTaskLists()) );
+
+    slotReloadCalendars();
+    slotReloadTaskLists();
 }
 
 SettingsDialog::~SettingsDialog()

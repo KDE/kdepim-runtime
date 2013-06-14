@@ -93,7 +93,7 @@ class GoogleResource : public Akonadi::ResourceBase,
     void slotAccountInfoReceived( KGAPI2::Job *job );
 
   private:
-    void finishAuthentication( KGAPI2::Job *job );
+    void finishAuthentication( KGAPI2::Job *job, bool forceConfig = false );
     void abort();
 
     KGAPI2::AccountPtr m_account;
