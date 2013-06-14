@@ -263,7 +263,7 @@ void FacebookResource::retrieveCollections()
 {
     Collection::List collections;
     kDebug() << Settings::self()->accountServices();
-    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-contacts"))) {
+    if (Settings::self()->accountServices().contains(QLatin1String("facebook-contacts"))) {
         Collection friends;
         friends.setRemoteId( friendsRID );
         friends.setName( i18nc( "@title: addressbook name", "Friends on Facebook" ) );
@@ -276,7 +276,7 @@ void FacebookResource::retrieveCollections()
         collections << friends;
     }
 
-    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-events"))) {
+    if (Settings::self()->accountServices().contains(QLatin1String("facebook-events"))) {
         Collection events;
         events.setRemoteId( eventsRID );
         events.setName( i18nc( "@title: events collection title", "Events on Facebook" ) );
@@ -289,7 +289,7 @@ void FacebookResource::retrieveCollections()
         collections << events;
     }
 
-    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-notes"))) {
+    if (Settings::self()->accountServices().contains(QLatin1String("facebook-notes"))) {
         Collection notes;
         notes.setRemoteId( notesRID );
         notes.setName( i18nc( "@title: notes collection", "Notes on Facebook" ) );
@@ -302,7 +302,7 @@ void FacebookResource::retrieveCollections()
         collections << notes;
     }
 
-    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-feed"))) {
+    if (Settings::self()->accountServices().contains(QLatin1String("facebook-feed"))) {
         Collection posts;
         posts.setRemoteId( postsRID );
         posts.setName( i18nc( "@title: posts collection", "Posts on Facebook" ) );
@@ -323,7 +323,7 @@ void FacebookResource::retrieveCollections()
         collections << posts;
     }
 
-    if (Settings::self()->accountServices().contains(QLatin1String("text/x-vnd.accounts.facebook-notifications"))) {
+    if (Settings::self()->accountServices().contains(QLatin1String("facebook-notifications"))) {
         Collection notifications;
         notifications.setRemoteId( notificationsRID );
         notifications.setName( i18nc( "@title: notifications collection", "Notifications on Facebook" ) );
