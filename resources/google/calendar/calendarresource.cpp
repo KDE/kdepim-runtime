@@ -20,9 +20,6 @@
 #include "settings.h"
 #include "settingsdialog.h"
 
-#include <Accounts/Account>
-#include <Accounts/Manager>
-
 #include <Akonadi/Attribute>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionModifyJob>
@@ -88,7 +85,6 @@ CalendarResource::CalendarResource( const QString &id ):
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
     KGlobal::locale()->insertCatalog( "akonadi_google_resource" );
-    updateResourceName();
 }
 
 CalendarResource::~CalendarResource()
@@ -118,9 +114,10 @@ void CalendarResource::configure( WId windowId )
 
 void CalendarResource::updateResourceName()
 {
-    Accounts::Account *account = accountsManager()->account( Settings::self()->accountId() );
-    const QString accountName = account ? account->displayName() : QLatin1String("");
-    setName( i18nc( "%1 is account name (user@gmail.com)", "Google Calendars and Tasks (%1)", accountName.isEmpty() ? i18n( "not configured" ) : accountName ) );
+    const QString accountName = Settings::self()->accountName();
+    setName( i18nc( "%1 is account name (user@gmail.com)",
+                    "Google Calendars and Tasks (%1)",
+                    accountName.isEmpty() ? i18n( "not configured" ) : accountName ) );
 }
 
 void CalendarResource::retrieveItems( const Akonadi::Collection &collection )

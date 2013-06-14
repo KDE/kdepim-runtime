@@ -20,8 +20,6 @@
 
 #include "getcredentialsjob.h"
 
-#include <Accounts/Manager>
-
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/CollectionFetchScope>
@@ -30,7 +28,11 @@
 #include <KDE/KLocale>
 
 #include <LibKGAPI2/Account>
-#include <LibKGAPI2/AuthJob>
+#include <LibKGAPI2/AccountInfo/AccountInfo>
+#include <LibKGAPI2/AccountInfo/AccountInfoFetchJob>
+#include <QtCore/QTimer>
+
+#define ACCESS_TOKEN_PROPERTY "_AccessToken"
 
 Q_DECLARE_METATYPE( KGAPI2::Job* )
 
@@ -55,7 +57,8 @@ GoogleResource::GoogleResource( const QString &id ):
     changeRecorder()->fetchCollection( true );
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
-    m_accountsManager = new Accounts::Manager( this );
+    // updateResourceName() calls pure-virtual method
+    QTimer::singleShot( 0, this, SLOT(updateResourceName()) );
 }
 
 GoogleResource::~GoogleResource()
@@ -65,11 +68,6 @@ GoogleResource::~GoogleResource()
 AccountPtr GoogleResource::account() const
 {
     return m_account;
-}
-
-Accounts::Manager* GoogleResource::accountsManager() const
-{
-    return m_accountsManager;
 }
 
 void GoogleResource::aboutToQuit()
@@ -89,30 +87,101 @@ void GoogleResource::slotAbortRequested()
 
 void GoogleResource::reloadConfig()
 {
+    kDebug() << "Configuration changed";
+
+    if ( !settings()->accountId() ) {
+        emit status( NotConfigured, i18n( "Account is not configured" ) );
+        return;
+    }
+
     GetCredentialsJob *cj = new GetCredentialsJob( settings()->accountId(), this );
     connect( cj, SIGNAL(finished(KJob*)),
              this, SLOT(slotTokensReceived(KJob*)) );
+    cj->start();
 }
 
 void GoogleResource::slotTokensReceived( KJob* job )
 {
     GetCredentialsJob *cj = qobject_cast<GetCredentialsJob*>( job );
     if ( cj->error() ) {
+        kDebug() << "Error: " << cj->errorString();
         cancelTask( i18n(" Failed to refresh tokens" ) );
         return;
     }
 
-    Accounts::Account *acc = m_accountsManager->account( cj->accountId() );
-
     const QVariantMap data = cj->credentialsData();
     const QString accessToken = data.value( QLatin1String( "AccessToken" ) ).toString();
 
-    m_account = AccountPtr( new Account( acc->displayName(), accessToken ) );
-
+    KGAPI2::Job *otherJob = 0;
     if ( !job->property( JOB_PROPERTY ).isNull() ) {
-        KGAPI2::Job *otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job*>();
-        otherJob->setAccount(m_account);
-        otherJob->restart();
+        otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job*>();
+    }
+
+    if  ( settings()->accountName().isEmpty() ) {
+        // This is just a temporary account without proper name. We will use it
+        // to fetch real account name
+        AccountPtr account(new Account( i18n( "Unknown account" ), accessToken ) );
+        AccountInfoFetchJob *aiJob = new AccountInfoFetchJob( account, this );
+        aiJob->setProperty( ACCESS_TOKEN_PROPERTY, accessToken );
+        if ( otherJob ) {
+            aiJob->setProperty( JOB_PROPERTY, QVariant::fromValue( otherJob ) );
+        }
+        connect( aiJob, SIGNAL(finished(KGAPI2::Job*)),
+                this, SLOT(slotAccountInfoReceived(KGAPI2::Job*)) );
+    } else {
+        m_account = AccountPtr( new Account( settings()->accountName(),
+                                             accessToken ) );
+        finishAuthentication( otherJob );
+    }
+}
+
+void GoogleResource::slotAccountInfoReceived( KGAPI2::Job* job )
+{
+    if ( !handleError( job ) ) {
+        emit error( job->errorString() );
+        cancelTask( i18n( "Failed to refresh tokens") );
+        return;
+    }
+
+    AccountInfoFetchJob *aiJob = qobject_cast<AccountInfoFetchJob*>( job );
+    Q_ASSERT( aiJob );
+    aiJob->deleteLater();
+
+    const AccountPtr account = job->account();
+
+    if ( aiJob->items().count() != 1 ) {
+        kWarning() << "AccountInfoFetchJob returned unexpected amount of results";
+        emit error( i18n( "Invalid reply" ) );
+        cancelTask( i18n( "Failed to refresh tokens") );
+        return;
+    }
+
+    AccountInfoPtr info = aiJob->items().first().dynamicCast<AccountInfo>();
+    settings()->setAccountName( info->email() );
+    m_account = AccountPtr( new Account( info->email(),
+                                         aiJob->property( ACCESS_TOKEN_PROPERTY ).toString() ) );
+
+
+    settings()->writeConfig();
+
+    KGAPI2::Job *otherJob = 0;
+    if ( job->property( JOB_PROPERTY ).isNull() ) {
+        otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job*>();
+    }
+
+    finishAuthentication( otherJob );
+}
+
+void GoogleResource::finishAuthentication( KGAPI2::Job* job )
+{
+    updateResourceName();
+    emit status( Idle, i18nc( "@info:status", "Ready" ) );
+
+    if ( job ) {
+        job->setAccount( m_account );
+        job->restart();
+    } else {
+        synchronize();
     }
 }
 

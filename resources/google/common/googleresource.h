@@ -32,10 +32,6 @@
 #define COLLECTION_PROPERTY "_AkonadiCollection"
 #define JOB_PROPERTY "_KGAPI2Job"
 
-namespace Accounts {
-class Manager;
-}
-
 namespace KGAPI2
 {
 class Job;
@@ -55,7 +51,6 @@ class GoogleResource : public Akonadi::ResourceBase,
     virtual Settings* settings() const = 0;
 
     KGAPI2::AccountPtr account() const;
-    Accounts::Manager* accountsManager() const;
 
   public Q_SLOTS:
     void reloadConfig();
@@ -72,6 +67,8 @@ class GoogleResource : public Akonadi::ResourceBase,
     void emitPercent( KGAPI2::Job* job, int processedCount, int totalCount );
 
     virtual void slotAbortRequested();
+
+    virtual void updateResourceName() = 0;
 
   protected:
     template <typename T>
@@ -92,12 +89,13 @@ class GoogleResource : public Akonadi::ResourceBase,
 
     virtual void aboutToQuit();
 
-    virtual void updateResourceName() = 0;
+  private Q_SLOTS:
+    void slotAccountInfoReceived( KGAPI2::Job *job );
 
   private:
+    void finishAuthentication( KGAPI2::Job *job );
     void abort();
 
-    Accounts::Manager *m_accountsManager;
     KGAPI2::AccountPtr m_account;
 
 };

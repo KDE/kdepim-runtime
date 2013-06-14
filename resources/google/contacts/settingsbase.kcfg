@@ -6,6 +6,9 @@
 			  http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile/>
   <group name="General">
+    <entry name="AccountName" type="String">
+      <label>Name of the configured account (email address)</label>
+    </entry>
     <entry name="AccountId" type="UInt">
       <label>The account id in WebAccouts framework.</label>
     </entry>

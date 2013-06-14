@@ -65,7 +65,6 @@ using namespace KGAPI2;
 ContactsResource::ContactsResource( const QString &id ):
     GoogleResource( id )
 {
-    updateResourceName();
 }
 
 ContactsResource::~ContactsResource()
@@ -86,9 +85,10 @@ void ContactsResource::configure(WId winId)
 
 void ContactsResource::updateResourceName()
 {
-    Accounts::Account *acc = accountsManager()->account( Settings::self()->accountId() );
-    const QString accountName = acc ? acc->displayName() : QLatin1String( "" );
-    setName( i18nc( "%1 is account name (user@gmail.com)", "Google Contacts (%1)", accountName.isEmpty() ? i18n( "not configured" ) : accountName ) );
+    const QString accountName = Settings::self()->accountName();
+    setName( i18nc( "%1 is account name (user@gmail.com)",
+                    "Google Contacts (%1)",
+                    accountName.isEmpty() ? i18n( "not configured" ) : accountName ) );
 }
 
 void ContactsResource::retrieveItems( const Collection &collection )
