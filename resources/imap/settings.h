@@ -63,6 +63,7 @@ private slots:
 
     void onRootCollectionFetched( KJob *job );
 
+    void reloadConfig();
 private:
     WId m_winId;
     mutable QString m_password;

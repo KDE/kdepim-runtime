@@ -5,6 +5,14 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile/>
+  <group name="kde-accounts">
+    <entry name="AccountId" type="UInt">
+      <label>The account id in WebAccouts framework.</label>
+    </entry>
+    <entry name="AccountServices" type="StringList">
+      <label>The account services configured in WebAccouts framework.</label>
+    </entry>
+  </group>
   <group name="network">
     <entry name="ImapServer" type="String">
       <label>IMAP server</label>

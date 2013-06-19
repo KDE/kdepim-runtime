@@ -150,6 +150,7 @@ ImapResource::ImapResource( const QString &id )
   setItemSynchronizationFetchScope( scope );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
+  connect( this, SIGNAL(reloadConfiguration()), Settings::self(), SLOT(reloadConfig()));
 
   Settings::self(); // make sure the D-Bus settings interface is up
   new ResourceAdaptor( this );

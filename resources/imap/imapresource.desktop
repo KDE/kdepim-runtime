@@ -96,6 +96,6 @@ Type=AkonadiResource
 Exec=akonadi_imap_resource
 Icon=network-server
 
-X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-MimeTypes=message/rfc822,text/x-vnd.accounts.google-email
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_imap_resource

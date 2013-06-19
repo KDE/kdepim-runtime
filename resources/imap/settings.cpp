@@ -22,6 +22,11 @@
 #include "settingsadaptor.h"
 
 #include "imapaccount.h"
+#include "../getcredentialsjob.h"
+
+#include <Accounts/Manager>
+#include <Accounts/Account>
+#include <Accounts/AccountService>
 
 #include <kwallet.h>
 using KWallet::Wallet;
@@ -273,6 +278,42 @@ void Settings::onRootCollectionFetched( KJob *job )
     new Akonadi::CollectionModifyJob( rootCollection );
     // We don't care about the result here, nothing we can/should do if the renaming fails
   }
+}
+
+void Settings::reloadConfig()
+{
+    kDebug() << accountId() << userName();
+    if ( !accountId() || !userName().isEmpty() ) {
+        return;
+    }
+
+    Accounts::Manager *manager = new Accounts::Manager( "google-email", this );
+    Accounts::Account *acc =  manager->account( accountId() );
+    if ( !acc ) {
+        kDebug() << "Account not found: " << accountId();
+        return;
+    }
+
+    Accounts::AccountService serv( acc, manager->service("google-email") );
+
+    serv.beginGroup( "imap" );
+    setSafety( serv.value( "safety" ).toString() );
+    setAuthentication( serv.value( "authentication" ).toInt() );
+    setIntervalCheckTime( serv.value( "checkInterval" ).toInt() );
+    setImapServer( serv.value( "server" ).toString() );
+    setImapPort( serv.value( "port" ).toInt() );
+
+    GetCredentialsJob *job = new GetCredentialsJob(accountId(), this);
+    job->exec();
+    QVariantMap data = job->credentialsData();
+    kDebug() << data;
+//     setUserName( data["username"].toString() );
+//     setUserName( data["password"].toString() );
+
+//     kDebug() << acc->childGroups();
+//     acc->beginGroup("imap");
+//     kDebug() << acc->allKeys();
+//     kDebug() << acc->childKeys();
 }
 
 #include "settings.moc"
