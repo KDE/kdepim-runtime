@@ -118,7 +118,6 @@ private:
 
   int mBatchSize; //Size of Nepomuk batch, number of items stored together in nepomuk
   int mFetchSize; //Maximum number of items fetched with full payload (defines ram usage of feeder), must be >= mBatchSize, ideally a multiple of it
-  int mRunningJobs;
   int mDelay;
 
   PropertyCache mPropertyCache;
@@ -126,5 +125,16 @@ private:
   QTime mTimer;
   double mAverageIndexingTime;
   qint64 mNumberOfIndexedItems;
+  
+  /*
+   * Track running jobs
+   */
+  QSet<KJob *> mJobs;
+  
+  int runningJobCount() const;
+  void addJob(KJob *job);
+  void removeJob(KJob *job);
+  void killAllJobs();
+  
 };
 #endif // ITEMQUEUE_H

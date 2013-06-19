@@ -38,7 +38,6 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
   mBatchSize( batchSize ),
   mFetchSize( fetchSize ),
-  mRunningJobs( 0 ),
   mDelay( 0 ),
   mAverageIndexingTime(0),
   mNumberOfIndexedItems(0)
@@ -106,12 +105,11 @@ Akonadi::Item::List ItemQueue::fetchHighestPriorityItems(int numItems)
 bool ItemQueue::processBatch()
 {
   kDebug() << "pipline size: " << mItemPipeline.size() << mFetchedItemList.size();
-  if ( mRunningJobs > 0 ) {//wait until the old graph has been saved
-    kDebug() << "blocked: " << mRunningJobs;
+  if ( runningJobCount() > 0 ) {//wait until the old graph has been saved
+    kDebug() << "blocked: " << runningJobCount();
     return false;
   }
-  Q_ASSERT( mRunningJobs == 0 );
-  mRunningJobs = 0;
+  Q_ASSERT( runningJobCount() == 0 );
 
   if ( mItemPipeline.isEmpty() && mFetchedItemList.isEmpty() ) {
     return false;
@@ -130,7 +128,7 @@ bool ItemQueue::processBatch()
     job->setProperty( "numberOfItems", itemFetchList.size() );
 
     connect( job, SIGNAL(result(KJob*)), SLOT(fetchJobResult(KJob*)) );
-    mRunningJobs++;
+    addJob( job );
     return true;
   }
 
@@ -139,7 +137,7 @@ bool ItemQueue::processBatch()
 
 void ItemQueue::fetchJobResult(KJob* job)
 {
-  mRunningJobs--;
+  removeJob( job );
   if ( job->error() ) {
     kWarning() << job->errorString();
     emit batchFinished();
@@ -189,7 +187,7 @@ bool ItemQueue::indexBatch()
     KJob *job = Nepomuk2::removeDataByApplication( akondiUrls, Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
     job->setProperty("graph", QVariant::fromValue(resourceGraph));
     connect( job, SIGNAL(finished(KJob*)), this, SLOT(removeDataResult(KJob*)) );
-    mRunningJobs++;
+    addJob( job );
     return true;
   }
 
@@ -198,7 +196,7 @@ bool ItemQueue::indexBatch()
 
 void ItemQueue::removeDataResult(KJob* job)
 {
-  mRunningJobs--;
+  removeJob( job );
   if ( job->error() )
     kWarning() << job->errorString();
 
@@ -207,12 +205,12 @@ void ItemQueue::removeDataResult(KJob* job)
   KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( graph ) );
   addGraphJob->setProperty("graph", QVariant::fromValue( graph ));
   connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
-  mRunningJobs++;
+  addJob( addGraphJob );
 }
 
 void ItemQueue::batchJobResult(KJob* job)
 {
-  mRunningJobs--;
+  removeJob( job );
   // FIXME: Only compute all of this if DEBUG messages have been enabled
   kDebug() << "------------------------------------------";
   kDebug() << "pipline size: " << mItemPipeline.size();
@@ -257,10 +255,43 @@ void ItemQueue::slotEmitFinished()
 
 void ItemQueue::clear()
 {
-  mRunningJobs = 0;
+  if ( runningJobCount() > 0 ) {
+    kWarning() << "called with " << runningJobCount() << " jobs outstanding!";
+    killAllJobs();
+  }
   mItemPipeline.clear();
   mFetchedItemList.clear();
 }
 
+int ItemQueue::runningJobCount() const
+{
+  return mJobs.count();
+}
+
+void ItemQueue::addJob(KJob *job)
+{
+  if ( mJobs.contains(job) )
+    kWarning() << "Job Already exists!";
+  else
+    mJobs.insert(job);
+}
+
+void ItemQueue::removeJob(KJob *job)
+{
+  if ( !mJobs.contains(job) )
+    kWarning() << "Job does not exist!";
+  else
+    mJobs.remove(job);
+}
+
+void ItemQueue::killAllJobs()
+{
+  QSetIterator<KJob *> i(mJobs);
+  while (i.hasNext()) {
+     KJob *job = i.next();
+     job->kill(KJob::Quietly);
+  }
+  mJobs.clear();
+}
 
 #include "itemqueue.moc"
