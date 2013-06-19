@@ -71,7 +71,7 @@ void SerializerPluginKCalCore::serialize( const Item &item,
     return;
   Incidence::Ptr i = item.payload<Incidence::Ptr>();
   // ### I guess this can be done without hardcoding stuff
-  data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 3.2//EN\nVERSION:2.0\n" );
+  data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 4.3//EN\nVERSION:2.0\nX-KDE-ICAL-IMPLEMENTATION-VERSION:1.0\n" );
   data.write( mFormat.toRawString( i ) );
   data.write( "\nEND:VCALENDAR" );
 }
