@@ -46,5 +46,5 @@ QStringList TasksHandler::contentMimeTypes()
 
 QString TasksHandler::iconName() const
 {
-  return QString::fromLatin1( "view-pim-tasks" );
+  return QString::fromLatin1( "view-calendar-tasks" );
 }
