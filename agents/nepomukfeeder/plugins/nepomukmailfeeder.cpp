@@ -74,7 +74,6 @@ void NepomukMailFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRe
 
   res.addType( Vocabulary::NMO::Email() );
   NepomukFeederUtils::setIcon( "internet-mail", res, graph );
-  res.setProperty( Vocabulary::NIE::byteSize(), item.size() );
 
   processFlags( item.flags(), res, graph );
   KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
