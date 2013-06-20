@@ -12,13 +12,11 @@ set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
 )
 
-if (NOT WINCE)
-  kde4_add_plugin(newmailnotifieragent ${newmailnotifieragent_SRCS})
-else ()
-  kde4_add_plugin(newmailnotifieragent STATIC ${newmailnotifieragent_SRCS})
-endif ()
 
-target_link_libraries(newmailnotifieragent
+kde4_add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
+
+
+target_link_libraries( akonadi_newmailnotifier_agent
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
@@ -26,8 +24,17 @@ target_link_libraries(newmailnotifieragent
   ${QT_QTDBUS_LIBRARY}
 )
 
-install(TARGETS newmailnotifieragent DESTINATION ${PLUGIN_INSTALL_DIR})
+
+if (Q_WS_MAC)
+  set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/Info.plist.template)
+  set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.newmailnotifier")
+  set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE New Mail Notifier")
+endif ()
+
+install(TARGETS akonadi_newmailnotifier_agent ${INSTALL_TARGETS_DEFAULT_ARGS} )
+
+
 install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
-install(FILES akonadi_newmailnotify_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotify_agent" )
+install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotifier_agent" )
 
 endif ()

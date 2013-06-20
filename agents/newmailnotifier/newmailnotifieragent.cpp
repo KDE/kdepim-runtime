@@ -24,11 +24,15 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entityhiddenattribute.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/session.h>
+#include <Akonadi/CollectionFetchScope>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/messagestatus.h>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
+#include <KIconLoader>
+#include <KIcon>
 
 using namespace Akonadi;
 
@@ -40,10 +44,13 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
   changeRecorder()->itemFetchScope().setFetchModificationTime( false );
   changeRecorder()->fetchCollection( true );
   changeRecorder()->setChangeRecordingEnabled( false );
+  changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
+  changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
 
-  m_timer.setInterval( 30 * 1000 );
-  m_timer.setSingleShot( true );
+
+  m_timer.setInterval( 5 * 1000 );
   connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
+  m_timer.setSingleShot( true );
 }
 
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
@@ -54,13 +61,15 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
     return; // outbox, sent-mail, trash, drafts or templates.
   }
 
+
   Akonadi::MessageStatus status;
   status.setStatusFromFlags( item.flags() );
   if ( status.isRead() || status.isSpam() || status.isIgnored() )
     return;
 
-  if ( !m_timer.isActive() )
+  if ( !m_timer.isActive() ) {
     m_timer.start();
+}
 
   m_newMails[collection]++;
 }
@@ -79,13 +88,21 @@ void NewMailNotifierAgent::showNotifications()
   }
 
   kDebug() << texts;
-  KNotification *notify = new KNotification( "new-email", 0, KNotification::Persistent );
-  notify->setText( texts.join( "<br>" ) );
-  notify->sendEvent();
+
+  const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+  KNotification::event( QLatin1String("new-email"),
+                          texts.join( QLatin1String("<br>") ),
+                          pixmap,
+                          0,
+                          KNotification::CloseOnTimeout,
+                          KGlobal::mainComponent());
+  //qDebug()<<" NewMailNotifierAgent::showNotifications() component name :"<<KGlobal::mainComponent().componentName();
+
 
   m_newMails.clear();
 }
 
-AKONADI_AGENT_FACTORY( NewMailNotifierAgent, newmailnotifieragent )
+AKONADI_AGENT_MAIN( NewMailNotifierAgent )
+
 
 #include "newmailnotifieragent.moc"
