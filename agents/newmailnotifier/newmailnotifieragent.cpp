@@ -86,6 +86,6 @@ void NewMailNotifierAgent::showNotifications()
   m_newMails.clear();
 }
 
-AKONADI_AGENT_FACTORY( NewMailNotifierAgent, newmailnotifieragent );
+AKONADI_AGENT_FACTORY( NewMailNotifierAgent, newmailnotifieragent )
 
 #include "newmailnotifieragent.moc"
