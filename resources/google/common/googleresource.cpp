@@ -35,7 +35,8 @@ using namespace Akonadi;
 
 GoogleResource::GoogleResource( const QString &id ):
     ResourceBase( id ),
-    AgentBase::ObserverV2()
+    AgentBase::ObserverV2(),
+    m_isConfiguring(false)
 {
     KGlobal::locale()->insertCatalog( "akonadi_google_resource" );
     connect( this, SIGNAL(abortRequested()),
@@ -93,11 +94,12 @@ void GoogleResource::slotAbortRequested()
 
 void GoogleResource::configure( WId windowId )
 {
-    if ( !m_accountMgr->isReady() ) {
+    if ( !m_accountMgr->isReady() || m_isConfiguring ) {
         emit configurationDialogAccepted();
         return;
     }
 
+    m_isConfiguring = true;
     if ( runConfigurationDialog( windowId ) == KDialog::Accepted ) {
         updateResourceName();
 
@@ -106,6 +108,7 @@ void GoogleResource::configure( WId windowId )
         m_account = accountManager()->findAccount( settings()->account() );
         if ( m_account.isNull() ) {
             emit status( NotConfigured, i18n( "Configured account does not exist" ) );
+            m_isConfiguring = false;
             return;
         }
 
@@ -116,6 +119,7 @@ void GoogleResource::configure( WId windowId )
 
         emit configurationDialogRejected();
     }
+    m_isConfiguring = false;
 }
 
 void GoogleResource::reloadConfig()
@@ -131,6 +135,8 @@ void GoogleResource::reloadConfig()
         emit status( NotConfigured, i18n( "Configured account does not exist" ) );
         return;
     }
+
+    emit status( Idle, i18nc( "@info:status", "Ready" ) );
 }
 
 void GoogleResource::slotAccountManagerReady( bool ready )
@@ -143,7 +149,7 @@ void GoogleResource::slotAccountManagerReady( bool ready )
     }
 
     const QString accountName = settings()->account();
-    if ( accountName.isEmpty() && (status() != NotConfigured) ) {
+    if ( accountName.isEmpty() ) {
         emit status( NotConfigured );
         configure( 0 );
         return;

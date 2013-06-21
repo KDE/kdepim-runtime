@@ -101,6 +101,7 @@ class GoogleResource : public Akonadi::ResourceBase,
   private:
     void abort();
 
+    bool m_isConfiguring;
     GoogleAccountManager *m_accountMgr;
     KGAPI2::AccountPtr m_account;
 
