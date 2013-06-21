@@ -39,7 +39,7 @@ private slots:
 
 private:
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
-    QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > m_newMails;
+    QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
     QTimer m_timer;
 };
 

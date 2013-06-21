@@ -77,18 +77,18 @@ void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::
     if ( excludeSpecialCollection(collectionDestination) ) {
         return; // outbox, sent-mail, trash, drafts or templates.
     }
-    if ( m_newMails.contains( collectionSource ) ) {
-        QList<Akonadi::Item::Id> idListFrom = m_newMails[ collectionSource ];
+    if ( mNewMails.contains( collectionSource ) ) {
+        QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
         if ( idListFrom.contains( item.id() ) ) {
             idListFrom.removeAll( item.id() );
-            m_newMails[ collectionSource ] = idListFrom;
-            if ( m_newMails[collectionSource].isEmpty() )
-                m_newMails.remove( collectionSource );
+            mNewMails[ collectionSource ] = idListFrom;
+            if ( mNewMails[collectionSource].isEmpty() )
+                mNewMails.remove( collectionSource );
         }
         if ( !excludeSpecialCollection(collectionDestination) ) {
-            QList<Akonadi::Item::Id> idListTo = m_newMails[ collectionDestination ];
+            QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
             idListTo.append( item.id() );
-            m_newMails[ collectionDestination ]=idListTo;
+            mNewMails[ collectionDestination ]=idListTo;
         }
     }
 
@@ -111,14 +111,14 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
         m_timer.start();
     }
 
-    m_newMails[ collection ].append( item.id() );
+    mNewMails[ collection ].append( item.id() );
 }
 
 void NewMailNotifierAgent::showNotifications()
 {
     QStringList texts;
-    QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(m_newMails.constEnd());
-    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = m_newMails.constBegin(); it != end; ++it ) {
+    QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
+    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
         Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
         QString displayName;
         if ( attr && !attr->displayName().isEmpty() )
@@ -140,7 +140,7 @@ void NewMailNotifierAgent::showNotifications()
     //qDebug()<<" NewMailNotifierAgent::showNotifications() component name :"<<KGlobal::mainComponent().componentName();
 
 
-    m_newMails.clear();
+    mNewMails.clear();
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
