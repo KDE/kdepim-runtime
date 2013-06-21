@@ -32,13 +32,14 @@ class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBas
 public:
     explicit NewMailNotifierAgent( const QString &id );
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
 
 private slots:
     void showNotifications();
 
 private:
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
-    QHash<Akonadi::Collection, int> m_newMails;
+    QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > m_newMails;
     QTimer m_timer;
 };
 

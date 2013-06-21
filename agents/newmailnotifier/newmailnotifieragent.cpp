@@ -37,20 +37,20 @@
 using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
-  : AgentBase( id )
+    : AgentBase( id )
 {
-  changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
-  changeRecorder()->itemFetchScope().setCacheOnly( true );
-  changeRecorder()->itemFetchScope().setFetchModificationTime( false );
-  changeRecorder()->fetchCollection( true );
-  changeRecorder()->setChangeRecordingEnabled( false );
-  changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
-  changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
+    changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
+    changeRecorder()->itemFetchScope().setCacheOnly( true );
+    changeRecorder()->itemFetchScope().setFetchModificationTime( false );
+    changeRecorder()->fetchCollection( true );
+    changeRecorder()->setChangeRecordingEnabled( false );
+    changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
+    changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
 
 
-  m_timer.setInterval( 5 * 1000 );
-  connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
-  m_timer.setSingleShot( true );
+    m_timer.setInterval( 5 * 1000 );
+    connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
+    m_timer.setSingleShot( true );
 }
 
 bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const
@@ -65,52 +65,82 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
     }
 }
 
-void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
 {
-  if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
-    return;
-  if ( excludeSpecialCollection(collection) ) {
-    return; // outbox, sent-mail, trash, drafts or templates.
-  }
+    Akonadi::MessageStatus status;
+    status.setStatusFromFlags( item.flags() );
+    if ( status.isRead() || status.isSpam() || status.isIgnored() )
+        return;
+    if ( excludeSpecialCollection(collectionSource) ) {
+        return; // outbox, sent-mail, trash, drafts or templates.
+    }
+    if ( excludeSpecialCollection(collectionDestination) ) {
+        return; // outbox, sent-mail, trash, drafts or templates.
+    }
+    if ( m_newMails.contains( collectionSource ) ) {
+        QList<Akonadi::Item::Id> idListFrom = m_newMails[ collectionSource ];
+        if ( idListFrom.contains( item.id() ) ) {
+            idListFrom.removeAll( item.id() );
+            m_newMails[ collectionSource ] = idListFrom;
+            if ( m_newMails[collectionSource].isEmpty() )
+                m_newMails.remove( collectionSource );
+        }
+        if ( !excludeSpecialCollection(collectionDestination) ) {
+            QList<Akonadi::Item::Id> idListTo = m_newMails[ collectionDestination ];
+            idListTo.append( item.id() );
+            m_newMails[ collectionDestination ]=idListTo;
+        }
+    }
 
-  Akonadi::MessageStatus status;
-  status.setStatusFromFlags( item.flags() );
-  if ( status.isRead() || status.isSpam() || status.isIgnored() )
-    return;
-
-  if ( !m_timer.isActive() ) {
-    m_timer.start();
 }
 
-  m_newMails[collection]++;
+void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+{
+    if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+        return;
+    if ( excludeSpecialCollection(collection) ) {
+        return; // outbox, sent-mail, trash, drafts or templates.
+    }
+
+    Akonadi::MessageStatus status;
+    status.setStatusFromFlags( item.flags() );
+    if ( status.isRead() || status.isSpam() || status.isIgnored() )
+        return;
+
+    if ( !m_timer.isActive() ) {
+        m_timer.start();
+    }
+
+    m_newMails[ collection ].append( item.id() );
 }
 
 void NewMailNotifierAgent::showNotifications()
 {
-  QStringList texts;
-  for ( QHash< Akonadi::Collection, int >::const_iterator it = m_newMails.constBegin(); it != m_newMails.constEnd(); ++it ) {
-    Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
-    QString displayName;
-    if ( attr && !attr->displayName().isEmpty() )
-      displayName = attr->displayName();
-    else
-      displayName = it.key().name();
-    texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value(), displayName ) );
-  }
+    QStringList texts;
+    QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(m_newMails.constEnd());
+    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = m_newMails.constBegin(); it != end; ++it ) {
+        Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
+        QString displayName;
+        if ( attr && !attr->displayName().isEmpty() )
+            displayName = attr->displayName();
+        else
+            displayName = it.key().name();
+        texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
+    }
 
-  kDebug() << texts;
+    kDebug() << texts;
 
-  const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
-  KNotification::event( QLatin1String("new-email"),
+    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+    KNotification::event( QLatin1String("new-email"),
                           texts.join( QLatin1String("<br>") ),
                           pixmap,
                           0,
                           KNotification::CloseOnTimeout,
                           KGlobal::mainComponent());
-  //qDebug()<<" NewMailNotifierAgent::showNotifications() component name :"<<KGlobal::mainComponent().componentName();
+    //qDebug()<<" NewMailNotifierAgent::showNotifications() component name :"<<KGlobal::mainComponent().componentName();
 
 
-  m_newMails.clear();
+    m_newMails.clear();
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
