@@ -88,9 +88,8 @@ Comment[zh_CN]=新邮件通知
 Comment[zh_TW]=收到新郵件的通知
 Icon=mail-unread-new
 Type=AkonadiAgent
-Exec=newmailnotifieragent
+Exec=akonadi_newmailnotifier_agent
 
 X-Akonadi-MimeTypes=message/rfc822
 X-Akonadi-Capabilities=Unique,Autostart,NoConfig
 X-Akonadi-Identifier=akonadi_newmailnotifier_agent
-X-Akonadi-LaunchMethod=AgentServer

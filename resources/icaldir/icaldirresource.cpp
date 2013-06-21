@@ -233,7 +233,11 @@ void ICalDirResource::retrieveCollections()
   c.setParentCollection( Collection::root() );
   c.setRemoteId( iCalDirectoryName() );
   c.setName( name() );
-  c.setContentMimeTypes( QStringList() << "text/calendar" );
+
+  QStringList mimetypes;
+  mimetypes << KCalCore::Event::eventMimeType() << KCalCore::Todo::todoMimeType() << KCalCore::Journal::journalMimeType() << "text/calendar";
+  c.setContentMimeTypes( mimetypes );
+
   if ( Settings::self()->readOnly() ) {
     c.setRights( Collection::CanChangeCollection );
   } else {

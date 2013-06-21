@@ -120,7 +120,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
     } else if ( i == KolabV2::Event ) {
       iconName = QString::fromLatin1( "view-calendar" );
     } else if ( i == KolabV2::Task ) {
-      iconName = QString::fromLatin1( "view-pim-tasks" );
+      iconName = QString::fromLatin1( "view-calendar-tasks" );
     } else if ( i == KolabV2::Journal ) {
       iconName = QString::fromLatin1( "view-pim-journal" );
     } else if ( i == KolabV2::Note ) {

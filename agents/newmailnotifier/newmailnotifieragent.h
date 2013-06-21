@@ -1,4 +1,6 @@
 /*
+    Copyright (c) 2013 Laurent Montel <montel@kde.org>
+
     Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -27,18 +29,28 @@
 
 class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     explicit NewMailNotifierAgent( const QString &id );
+
+
+    void setEnableNotifier(bool b);
+    bool enabledNotifier() const;
+
+protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
 
-  private slots:
+private slots:
     void showNotifications();
+    void configure(WId windowId);
 
-  private:
-    QHash<Akonadi::Collection, int> m_newMails;
+private:
+    bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
+    QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
     QTimer m_timer;
+    bool mNotifierEnabled;
 };
 
 #endif

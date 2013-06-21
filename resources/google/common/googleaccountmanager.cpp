@@ -86,7 +86,7 @@ void GoogleAccountManager::slotWalletOpened( bool success )
 
     if ( !m_wallet->setFolder( WALLET_FOLDER ) ) {
         kWarning() << "Failed to open KWallet folder" << WALLET_FOLDER;
-        Q_EMIT managerReady(false );
+        Q_EMIT managerReady( false );
         return;
     }
 
