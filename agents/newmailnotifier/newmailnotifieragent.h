@@ -1,4 +1,6 @@
 /*
+    Copyright (c) 2013 Laurent Montel <montel@kde.org>
+
     Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it

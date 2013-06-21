@@ -1,4 +1,6 @@
 /*
+    Copyright (c) 2013 Laurent Montel <montel@kde.org>
+
     Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -44,9 +46,9 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     changeRecorder()->itemFetchScope().setFetchModificationTime( false );
     changeRecorder()->fetchCollection( true );
     changeRecorder()->setChangeRecordingEnabled( false );
+    changeRecorder()->setAllMonitored(true);
     changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
-
 
     m_timer.setInterval( 5 * 1000 );
     connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
@@ -137,9 +139,6 @@ void NewMailNotifierAgent::showNotifications()
                           0,
                           KNotification::CloseOnTimeout,
                           KGlobal::mainComponent());
-    //qDebug()<<" NewMailNotifierAgent::showNotifications() component name :"<<KGlobal::mainComponent().componentName();
-
-
     mNewMails.clear();
 }
 
