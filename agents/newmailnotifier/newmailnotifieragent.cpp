@@ -53,14 +53,25 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
   m_timer.setSingleShot( true );
 }
 
+bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const
+{
+    SpecialMailCollections::Type type = SpecialMailCollections::self()->specialCollectionType(collection);
+    switch(type) {
+    case SpecialMailCollections::Invalid: //Not a special collection
+    case SpecialMailCollections::Inbox:
+        return false;
+    default:
+        return true;
+    }
+}
+
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
     return;
-  if ( SpecialMailCollections::self()->specialCollectionType(collection) != SpecialMailCollections::Inbox ) {
+  if ( excludeSpecialCollection(collection) ) {
     return; // outbox, sent-mail, trash, drafts or templates.
   }
-
 
   Akonadi::MessageStatus status;
   status.setStatusFromFlags( item.flags() );
