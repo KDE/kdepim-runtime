@@ -5,8 +5,6 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
-option(BUILD_NEW_MAIL_NOTIFIER_AGENT TRUE "Build mobile new mail notification agent")
-if (BUILD_NEW_MAIL_NOTIFIER_AGENT)
 
 set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
@@ -41,4 +39,3 @@ install(TARGETS akonadi_newmailnotifier_agent ${INSTALL_TARGETS_DEFAULT_ARGS} )
 install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotifier_agent" )
 
-endif ()

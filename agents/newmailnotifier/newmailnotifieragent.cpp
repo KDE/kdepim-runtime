@@ -43,12 +43,14 @@
 #include <KIconLoader>
 #include <KIcon>
 #include <KConfigGroup>
+#include <KLocale>
 
 using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     : AgentBase( id ), mNotifierEnabled(true)
 {
+    KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );
 
