@@ -21,26 +21,42 @@
 
 #include "newmailnotifieragent.h"
 
+#include "newmailnotifierattribute.h"
+#include "newmailnotifieradaptor.h"
+
+#include <akonadi/dbusconnectionpool.h>
+
 #include <akonadi/agentfactory.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/entityhiddenattribute.h>
 #include <akonadi/itemfetchscope.h>
 #include <akonadi/session.h>
+#include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFetchScope>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/messagestatus.h>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
+#include <KNotifyConfigWidget>
 #include <KIconLoader>
 #include <KIcon>
+#include <KConfigGroup>
 
 using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
-    : AgentBase( id )
+    : AgentBase( id ), mNotifierEnabled(true)
 {
+    Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
+    new NewMailNotifierAdaptor( this );
+
+    DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
+                                                           this, QDBusConnection::ExportAdaptors );
+    DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
+
+
     changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
     changeRecorder()->itemFetchScope().setCacheOnly( true );
     changeRecorder()->itemFetchScope().setFetchModificationTime( false );
@@ -49,14 +65,53 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     changeRecorder()->setAllMonitored(true);
     changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
-
+    changeRecorder()->setCollectionMonitored(Collection::root(), true);
     m_timer.setInterval( 5 * 1000 );
     connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
-    m_timer.setSingleShot( true );
+
+    KConfigGroup group( KGlobal::config(), "General" );
+    mNotifierEnabled = group.readEntry( "enabled", true);
+
+    if (mNotifierEnabled) {
+        m_timer.setSingleShot( true );
+    }
+}
+
+
+void NewMailNotifierAgent::setEnableNotifier(bool b)
+{
+    if (mNotifierEnabled != b) {
+        mNotifierEnabled = b;
+        KConfigGroup group( KGlobal::config(), "General" );
+        group.writeEntry( "enabled", mNotifierEnabled);
+        if (!mNotifierEnabled) {
+            mNewMails.clear();
+        }
+    }
+}
+
+
+bool NewMailNotifierAgent::enabledNotifier() const
+{
+    return mNotifierEnabled;
+}
+
+void NewMailNotifierAgent::configure( WId /*windowId*/ )
+{
+    KNotifyConfigWidget::configure( 0 );
 }
 
 bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const
 {
+    if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+        return true;
+
+    if ( collection.hasAttribute<NewMailNotifierAttribute>() ) {
+        if (collection.attribute<NewMailNotifierAttribute>()->ignoreNewMail()) {
+            return true;
+        }
+    }
+
     SpecialMailCollections::Type type = SpecialMailCollections::self()->specialCollectionType(collection);
     switch(type) {
     case SpecialMailCollections::Invalid: //Not a special collection
@@ -69,16 +124,18 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
 
 void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
 {
+    if (!mNotifierEnabled)
+        return;
+
     Akonadi::MessageStatus status;
     status.setStatusFromFlags( item.flags() );
     if ( status.isRead() || status.isSpam() || status.isIgnored() )
         return;
+
     if ( excludeSpecialCollection(collectionSource) ) {
         return; // outbox, sent-mail, trash, drafts or templates.
     }
-    if ( excludeSpecialCollection(collectionDestination) ) {
-        return; // outbox, sent-mail, trash, drafts or templates.
-    }
+
     if ( mNewMails.contains( collectionSource ) ) {
         QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
         if ( idListFrom.contains( item.id() ) ) {
@@ -90,7 +147,7 @@ void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::
         if ( !excludeSpecialCollection(collectionDestination) ) {
             QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
             idListTo.append( item.id() );
-            mNewMails[ collectionDestination ]=idListTo;
+            mNewMails[ collectionDestination ] = idListTo;
         }
     }
 
@@ -98,8 +155,9 @@ void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-    if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+    if (!mNotifierEnabled)
         return;
+
     if ( excludeSpecialCollection(collection) ) {
         return; // outbox, sent-mail, trash, drafts or templates.
     }
@@ -118,6 +176,9 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::showNotifications()
 {
+    if (!mNotifierEnabled)
+        return;
+
     QStringList texts;
     QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
     for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
@@ -132,7 +193,7 @@ void NewMailNotifierAgent::showNotifications()
 
     kDebug() << texts;
 
-    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeSmall, KIconLoader::SizeSmall );
+    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
     KNotification::event( QLatin1String("new-email"),
                           texts.join( QLatin1String("<br>") ),
                           pixmap,

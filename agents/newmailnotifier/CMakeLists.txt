@@ -10,7 +10,10 @@ if (BUILD_NEW_MAIL_NOTIFIER_AGENT)
 
 set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
+  newmailnotifierattribute.cpp
 )
+
+qt4_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
 
 
 kde4_add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
@@ -22,6 +25,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
+  ${KDE4_KNOTIFYCONFIG_LIBS}
 )
 
 
