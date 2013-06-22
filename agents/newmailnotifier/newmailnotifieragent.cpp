@@ -68,14 +68,14 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
-    m_timer.setInterval( 5 * 1000 );
-    connect( &m_timer, SIGNAL(timeout()), SLOT(showNotifications()) );
+    mTimer.setInterval( 5 * 1000 );
+    connect( &mTimer, SIGNAL(timeout()), SLOT(showNotifications()) );
 
     KConfigGroup group( KGlobal::config(), "General" );
     mNotifierEnabled = group.readEntry( "enabled", true);
 
     if (mNotifierEnabled) {
-        m_timer.setSingleShot( true );
+        mTimer.setSingleShot( true );
     }
 }
 
@@ -169,8 +169,8 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
     if ( status.isRead() || status.isSpam() || status.isIgnored() )
         return;
 
-    if ( !m_timer.isActive() ) {
-        m_timer.start();
+    if ( !mTimer.isActive() ) {
+        mTimer.start();
     }
 
     mNewMails[ collection ].append( item.id() );
