@@ -207,6 +207,9 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::showNotifications()
 {
+    if (mNewMails.isEmpty())
+        return;
+
     if (!mNotifierEnabled)
         return;
 
@@ -215,7 +218,6 @@ void NewMailNotifierAgent::showNotifications()
         mTimer.start();
         return;
     }
-
 
     QStringList texts;
     QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
@@ -228,6 +230,7 @@ void NewMailNotifierAgent::showNotifications()
             displayName = it.key().name();
         texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
     }
+
 
     kDebug() << texts;
 
