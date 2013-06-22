@@ -36,6 +36,7 @@
 #include <Akonadi/CollectionFetchScope>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/messagestatus.h>
+#include <Akonadi/AgentManager>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
@@ -57,6 +58,12 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
                                                            this, QDBusConnection::ExportAdaptors );
     DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
+
+    connect( Akonadi::AgentManager::self(), SIGNAL(instanceStatusChanged(Akonadi::AgentInstance)),
+             this, SLOT(slotInstanceStatusChanged(Akonadi::AgentInstance)) );
+    connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)),
+             this, SLOT(slotInstanceRemoved(Akonadi::AgentInstance)) );
+
 
 
     changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
@@ -203,6 +210,23 @@ void NewMailNotifierAgent::showNotifications()
                           KNotification::CloseOnTimeout,
                           KGlobal::mainComponent());
     mNewMails.clear();
+}
+
+void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
+{
+    const QString identifier(instance.identifier());
+    switch(instance.status()) {
+    case Akonadi::AgentInstance::Idle:
+    case Akonadi::AgentInstance::Running:
+    case Akonadi::AgentInstance::Broken:
+    case Akonadi::AgentInstance::NotConfigured:
+        break;
+    }
+}
+
+void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &instance)
+{
+    //TODO
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )

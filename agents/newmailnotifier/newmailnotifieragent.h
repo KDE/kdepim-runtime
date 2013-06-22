@@ -27,6 +27,10 @@
 
 #include <QtCore/QTimer>
 
+namespace Akonadi {
+class AgentInstance;
+}
+
 class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
@@ -45,6 +49,8 @@ protected:
 private slots:
     void showNotifications();
     void configure(WId windowId);
+    void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
+    void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
 
 private:
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
