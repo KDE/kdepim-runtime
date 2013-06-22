@@ -7,5 +7,6 @@
     <method name="enabledNotifier" >
       <arg type="b" direction="out"/>
     </method>
+    <method name="printDebug" />
   </interface>
 </node>

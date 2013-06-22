@@ -272,6 +272,11 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
     }
 }
 
+void NewMailNotifierAgent::printDebug()
+{
+    kDebug()<<"instance in progress: "<<mInstanceNameInProgress<<"\n notifier enabled : "<<mNotifierEnabled<<"\n check in progress : "<<mCheckMailInProgress;
+}
+
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
 
 

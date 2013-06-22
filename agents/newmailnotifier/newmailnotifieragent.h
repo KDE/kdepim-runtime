@@ -43,6 +43,8 @@ public:
     void setEnableNotifier(bool b);
     bool enabledNotifier() const;
 
+    void printDebug();
+
 protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
