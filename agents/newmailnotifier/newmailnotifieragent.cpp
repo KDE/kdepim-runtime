@@ -49,7 +49,9 @@
 using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
-    : AgentBase( id ), mNotifierEnabled(true)
+    : AgentBase( id ),
+      mNotifierEnabled(true),
+      mCheckMailInProgress(false)
 {
     KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
@@ -94,11 +96,17 @@ void NewMailNotifierAgent::setEnableNotifier(bool b)
         KConfigGroup group( KGlobal::config(), "General" );
         group.writeEntry( "enabled", mNotifierEnabled);
         if (!mNotifierEnabled) {
-            mNewMails.clear();
+            clearAll();
         }
     }
 }
 
+void NewMailNotifierAgent::clearAll()
+{
+    mNewMails.clear();
+    mCheckMailInProgress = false;
+    mInstanceNameInProgress.clear();
+}
 
 bool NewMailNotifierAgent::enabledNotifier() const
 {
@@ -188,6 +196,13 @@ void NewMailNotifierAgent::showNotifications()
     if (!mNotifierEnabled)
         return;
 
+    if (mCheckMailInProgress) {
+        //Restart timer until all is done.
+        mTimer.start();
+        return;
+    }
+
+
     QStringList texts;
     QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
     for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
@@ -214,11 +229,30 @@ void NewMailNotifierAgent::showNotifications()
 
 void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
 {
+    if (!mNotifierEnabled)
+        return;
+
     const QString identifier(instance.identifier());
     switch(instance.status()) {
-    case Akonadi::AgentInstance::Idle:
-    case Akonadi::AgentInstance::Running:
     case Akonadi::AgentInstance::Broken:
+    case Akonadi::AgentInstance::Idle:
+    {
+        if (mInstanceNameInProgress.contains(identifier)) {
+            mInstanceNameInProgress.removeAll(identifier);
+            if (mInstanceNameInProgress.isEmpty()) {
+                mCheckMailInProgress = false;
+            }
+        }
+        break;
+    }
+    case Akonadi::AgentInstance::Running:
+    {
+        if (!mInstanceNameInProgress.contains(identifier)) {
+            mInstanceNameInProgress.append(identifier);
+            mCheckMailInProgress = true;
+        }
+        break;
+    }
     case Akonadi::AgentInstance::NotConfigured:
         break;
     }
@@ -226,7 +260,16 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
 
 void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &instance)
 {
-    //TODO
+    if (!mNotifierEnabled)
+        return;
+
+    const QString identifier(instance.identifier());
+    if (mInstanceNameInProgress.contains(identifier)) {
+        mInstanceNameInProgress.removeAll(identifier);
+        if (mInstanceNameInProgress.isEmpty()) {
+            mCheckMailInProgress = false;
+        }
+    }
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )

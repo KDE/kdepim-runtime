@@ -25,7 +25,8 @@
 #include <akonadi/collection.h> // make sure this is included before QHash, otherwise it wont find the correct qHash implementation for some reason
 #include <akonadi/agentbase.h>
 
-#include <QtCore/QTimer>
+#include <QTimer>
+#include <QStringList>
 
 namespace Akonadi {
 class AgentInstance;
@@ -53,10 +54,13 @@ private slots:
     void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
 
 private:
+    void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
     QTimer mTimer;
+    QStringList mInstanceNameInProgress;
     bool mNotifierEnabled;
+    bool mCheckMailInProgress;
 };
 
 #endif
