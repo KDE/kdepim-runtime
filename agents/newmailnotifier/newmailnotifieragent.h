@@ -43,6 +43,10 @@ public:
     void setEnableNotifier(bool b);
     bool enabledNotifier() const;
 
+    void setVerboseMailNotification(bool b);
+    bool verboseMailNotification() const;
+
+
     void printDebug();
 
 protected:
@@ -63,6 +67,7 @@ private:
     QStringList mInstanceNameInProgress;
     bool mNotifierEnabled;
     bool mCheckMailInProgress;
+    bool mVerboseNotification;
 };
 
 #endif

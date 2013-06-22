@@ -51,7 +51,8 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     : AgentBase( id ),
       mNotifierEnabled(true),
-      mCheckMailInProgress(false)
+      mCheckMailInProgress(false),
+      mVerboseNotification(true)
 {
     KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
@@ -82,6 +83,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
 
     KConfigGroup group( KGlobal::config(), "General" );
     mNotifierEnabled = group.readEntry( "enabled", true);
+    mVerboseNotification = group.readEntry("verboseNotification", true);
 
     if (mNotifierEnabled) {
         mTimer.setSingleShot( true );
@@ -99,6 +101,18 @@ void NewMailNotifierAgent::setEnableNotifier(bool b)
             clearAll();
         }
     }
+}
+
+void NewMailNotifierAgent::setVerboseMailNotification(bool b)
+{
+    mVerboseNotification = b;
+    KConfigGroup group( KGlobal::config(), "General" );
+    group.writeEntry( "verboseNotification", mVerboseNotification);
+}
+
+bool NewMailNotifierAgent::verboseMailNotification() const
+{
+    return mVerboseNotification;
 }
 
 void NewMailNotifierAgent::clearAll()
