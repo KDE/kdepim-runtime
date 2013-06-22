@@ -219,28 +219,37 @@ void NewMailNotifierAgent::showNotifications()
         return;
     }
 
-    QStringList texts;
-    QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
-    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
-        Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
-        QString displayName;
-        if ( attr && !attr->displayName().isEmpty() )
-            displayName = attr->displayName();
-        else
-            displayName = it.key().name();
-        texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
+    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
+
+    if (mVerboseNotification) {
+        QStringList texts;
+        QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
+        for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
+            Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
+            QString displayName;
+            if ( attr && !attr->displayName().isEmpty() )
+                displayName = attr->displayName();
+            else
+                displayName = it.key().name();
+            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
+            kDebug() << texts;
+        }
+        KNotification::event( QLatin1String("new-email"),
+                              texts.join( QLatin1String("<br>") ),
+                              pixmap,
+                              0,
+                              KNotification::CloseOnTimeout,
+                              KGlobal::mainComponent());
+
+    } else {
+        KNotification::event( QLatin1String("new-email"),
+                              i18n( "New mail arrived" ),
+                              pixmap,
+                              0,
+                              KNotification::CloseOnTimeout,
+                              KGlobal::mainComponent());
     }
 
-
-    kDebug() << texts;
-
-    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
-    KNotification::event( QLatin1String("new-email"),
-                          texts.join( QLatin1String("<br>") ),
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
     mNewMails.clear();
 }
 
