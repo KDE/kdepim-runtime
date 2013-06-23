@@ -96,6 +96,7 @@ void NewMailNotifierAgent::setEnableNotifier(bool b)
         mNotifierEnabled = b;
         KConfigGroup group( KGlobal::config(), "General" );
         group.writeEntry( "enabled", mNotifierEnabled);
+        group.sync();
         if (!mNotifierEnabled) {
             clearAll();
         }
@@ -108,6 +109,7 @@ void NewMailNotifierAgent::setVerboseMailNotification(bool b)
         mVerboseNotification = b;
         KConfigGroup group( KGlobal::config(), "General" );
         group.writeEntry( "verboseNotification", mVerboseNotification);
+        group.sync();
     }
 }
 
@@ -122,6 +124,7 @@ void NewMailNotifierAgent::setBeepOnNewMails(bool b)
         mBeepOnNewMails = b;
         KConfigGroup group( KGlobal::config(), "General" );
         group.writeEntry( "beepOnNewMails", mBeepOnNewMails);
+        group.sync();
     }
 }
 
