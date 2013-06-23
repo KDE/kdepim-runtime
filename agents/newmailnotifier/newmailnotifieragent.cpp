@@ -67,8 +67,6 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)),
              this, SLOT(slotInstanceRemoved(Akonadi::AgentInstance)) );
 
-
-
     changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
     changeRecorder()->itemFetchScope().setCacheOnly( true );
     changeRecorder()->itemFetchScope().setFetchModificationTime( false );
@@ -315,7 +313,10 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
 
 void NewMailNotifierAgent::printDebug()
 {
-    kDebug()<<"instance in progress: "<<mInstanceNameInProgress<<"\n notifier enabled : "<<mNotifierEnabled<<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty();
+    kDebug()<<"instance in progress: "<<mInstanceNameInProgress
+            <<"\n notifier enabled : "<<mNotifierEnabled
+            <<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty()
+            <<"\n beep on new mails: "<<mBeepOnNewMails;
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
