@@ -18,17 +18,30 @@
 #include "specialnotifierjob.h"
 
 #include <Akonadi/Contact/ContactSearchJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <akonadi/kmime/messageparts.h>
 
 #include <KNotification>
 
 SpecialNotifierJob::SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent)
     : QObject(parent)
 {
+    Akonadi::Item item(id);
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item, this );
+    job->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Envelope, true );
+
+    connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchJobDone(KJob*)) );
 }
 
 SpecialNotifierJob::~SpecialNotifierJob()
 {
 
+}
+
+void SpecialNotifierJob::slotItemFetchJobDone(KJob*)
+{
+    //TODO
 }
 
 void SpecialNotifierJob::slotSearchJobFinished( KJob *job )

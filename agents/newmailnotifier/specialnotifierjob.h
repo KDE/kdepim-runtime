@@ -32,7 +32,7 @@ public:
 
 private Q_SLOTS:
     void slotSearchJobFinished( KJob *job );
-
+    void slotItemFetchJobDone(KJob*);
 };
 
 #endif // SPECIALNOTIFIERJOB_H
