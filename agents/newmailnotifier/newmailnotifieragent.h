@@ -66,7 +66,6 @@ private:
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
     bool mNotifierEnabled;
-    bool mCheckMailInProgress;
     bool mVerboseNotification;
 };
 

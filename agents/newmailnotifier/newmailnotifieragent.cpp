@@ -51,7 +51,6 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     : AgentBase( id ),
       mNotifierEnabled(true),
-      mCheckMailInProgress(false),
       mVerboseNotification(true)
 {
     KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
@@ -118,7 +117,6 @@ bool NewMailNotifierAgent::verboseMailNotification() const
 void NewMailNotifierAgent::clearAll()
 {
     mNewMails.clear();
-    mCheckMailInProgress = false;
     mInstanceNameInProgress.clear();
 }
 
@@ -213,7 +211,7 @@ void NewMailNotifierAgent::showNotifications()
     if (!mNotifierEnabled)
         return;
 
-    if (mCheckMailInProgress) {
+    if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
         mTimer.start();
         return;
@@ -252,6 +250,8 @@ void NewMailNotifierAgent::showNotifications()
     mNewMails.clear();
 }
 
+
+
 void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
 {
     if (!mNotifierEnabled)
@@ -264,9 +264,6 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
     {
         if (mInstanceNameInProgress.contains(identifier)) {
             mInstanceNameInProgress.removeAll(identifier);
-            if (mInstanceNameInProgress.isEmpty()) {
-                mCheckMailInProgress = false;
-            }
         }
         break;
     }
@@ -274,7 +271,6 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
     {
         if (!mInstanceNameInProgress.contains(identifier)) {
             mInstanceNameInProgress.append(identifier);
-            mCheckMailInProgress = true;
         }
         break;
     }
@@ -291,15 +287,12 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
     const QString identifier(instance.identifier());
     if (mInstanceNameInProgress.contains(identifier)) {
         mInstanceNameInProgress.removeAll(identifier);
-        if (mInstanceNameInProgress.isEmpty()) {
-            mCheckMailInProgress = false;
-        }
     }
 }
 
 void NewMailNotifierAgent::printDebug()
 {
-    kDebug()<<"instance in progress: "<<mInstanceNameInProgress<<"\n notifier enabled : "<<mNotifierEnabled<<"\n check in progress : "<<mCheckMailInProgress;
+    kDebug()<<"instance in progress: "<<mInstanceNameInProgress<<"\n notifier enabled : "<<mNotifierEnabled<<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty();
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
