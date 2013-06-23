@@ -33,6 +33,10 @@ public:
 private Q_SLOTS:
     void slotSearchJobFinished( KJob *job );
     void slotItemFetchJobDone(KJob*);
+
+private:
+    QString mSubject;
+    QString mFrom;
 };
 
 #endif // SPECIALNOTIFIERJOB_H

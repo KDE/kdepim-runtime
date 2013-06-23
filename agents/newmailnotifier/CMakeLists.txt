@@ -25,6 +25,9 @@ target_link_libraries( akonadi_newmailnotifier_agent
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KNOTIFYCONFIG_LIBS}
+  ${KDEPIMLIBS_KABC_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS}
 )
 
 

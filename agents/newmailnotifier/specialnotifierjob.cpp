@@ -23,6 +23,9 @@
 #include <akonadi/kmime/messageparts.h>
 
 #include <KNotification>
+#include <KPIMUtils/Email>
+
+#include <KMime/Message>
 
 SpecialNotifierJob::SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent)
     : QObject(parent)
@@ -31,7 +34,7 @@ SpecialNotifierJob::SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent)
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item, this );
     job->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Envelope, true );
 
-    connect( job, SIGNAL(result(KJob*)), SLOT(itemFetchJobDone(KJob*)) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(slotItemFetchJobDone(KJob*)) );
 }
 
 SpecialNotifierJob::~SpecialNotifierJob()
@@ -39,13 +42,46 @@ SpecialNotifierJob::~SpecialNotifierJob()
 
 }
 
-void SpecialNotifierJob::slotItemFetchJobDone(KJob*)
+void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 {
-    //TODO
+    if ( job->error() ) {
+        kWarning() << job->errorString();
+        deleteLater();
+        return;
+    }
+
+    Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob*>( job )->items();
+    if (lst.count() == 1) {
+        Akonadi::Item item = lst.first();
+        if ( !item.hasPayload<KMime::Message::Ptr>() ) {
+          deleteLater();
+          return;
+        }
+        const KMime::Message::Ptr mb = item.payload<KMime::Message::Ptr>();
+
+        mFrom = mb->from()->asUnicodeString();
+        mSubject = mb->subject()->asUnicodeString();
+        Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob( this );
+        job->setLimit( 1 );
+        job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
+        connect( job, SIGNAL(result(KJob*)), SLOT(slotDelayedSelectFromAddressbook(KJob*)) );
+    } else {
+        deleteLater();
+        return;
+    }
 }
 
 void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 {
+    const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
+    if ( searchJob->error() ) {
+        kWarning() << "Unable to fetch contact:" << searchJob->errorText();
+        //TODO
+        return;
+    }
+    const KABC::Addressee addressee = searchJob->contacts().first();
+    const KABC::Picture photo = addressee.photo();
+    QImage image = photo.data();
     //TODO
 }
 
