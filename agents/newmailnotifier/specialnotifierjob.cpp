@@ -67,7 +67,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob( this );
         job->setLimit( 1 );
         job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
-        connect( job, SIGNAL(result(KJob*)), SLOT(slotDelayedSelectFromAddressbook(KJob*)) );
+        connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
     } else {
         deleteLater();
         return;
@@ -79,14 +79,18 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
     if ( searchJob->error() ) {
         kWarning() << "Unable to fetch contact:" << searchJob->errorText();
-        Util::showNotification(Util::defaultPixmap(), i18n("from: %1 <br>Subject: %2",mFrom, mSubject));
+        Util::showNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
         deleteLater();
         return;
     }
-    const KABC::Addressee addressee = searchJob->contacts().first();
-    const KABC::Picture photo = addressee.photo();
-    const QImage image = photo.data();
-    Util::showNotification(QPixmap::fromImage(image), i18n("from: %1 <br>Subject: %2",mFrom, mSubject));
+    if (!searchJob->contacts().isEmpty()) {
+        const KABC::Addressee addressee = searchJob->contacts().first();
+        const KABC::Picture photo = addressee.photo();
+        const QImage image = photo.data();
+        Util::showNotification(QPixmap::fromImage(image), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+    } else {
+        Util::showNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+    }
     deleteLater();
 }
 

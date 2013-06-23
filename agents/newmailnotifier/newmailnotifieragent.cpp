@@ -24,6 +24,7 @@
 #include "util.h"
 
 #include "newmailnotifierattribute.h"
+#include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
 
 #include <akonadi/dbusconnectionpool.h>
@@ -241,6 +242,8 @@ void NewMailNotifierAgent::showNotifications()
 
     QString message;
     if (mVerboseNotification) {
+        int numberOfEmail = 0;
+        Akonadi::Item::Id item = -1;
         QStringList texts;
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
         for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
@@ -251,10 +254,16 @@ void NewMailNotifierAgent::showNotifications()
             else
                 displayName = it.key().name();
             texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
-
-
+            ++numberOfEmail;
+            if (numberOfEmail == 1) {
+                item = it.value().first();
+            }
         }
-        message = texts.join( QLatin1String("<br>") );
+        if (numberOfEmail == 1) {
+            new SpecialNotifierJob(item, this);
+        } else {
+            message = texts.join( QLatin1String("<br>") );
+        }
     } else {
         message = i18n( "New mail arrived" );
     }
