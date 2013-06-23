@@ -221,6 +221,7 @@ void NewMailNotifierAgent::showNotifications()
 
     const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
 
+    QString message;
     if (mVerboseNotification) {
         QStringList texts;
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
@@ -232,23 +233,21 @@ void NewMailNotifierAgent::showNotifications()
             else
                 displayName = it.key().name();
             texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
-            kDebug() << texts;
-        }
-        KNotification::event( QLatin1String("new-email"),
-                              texts.join( QLatin1String("<br>") ),
-                              pixmap,
-                              0,
-                              KNotification::CloseOnTimeout,
-                              KGlobal::mainComponent());
 
+
+        }
+        message = texts.join( QLatin1String("<br>") );
     } else {
-        KNotification::event( QLatin1String("new-email"),
-                              i18n( "New mail arrived" ),
-                              pixmap,
-                              0,
-                              KNotification::CloseOnTimeout,
-                              KGlobal::mainComponent());
+        message = i18n( "New mail arrived" );
     }
+
+    kDebug() << message;
+    KNotification::event( QLatin1String("new-email"),
+                          i18n( "New mail arrived" ),
+                          pixmap,
+                          0,
+                          KNotification::CloseOnTimeout,
+                          KGlobal::mainComponent());
 
     mNewMails.clear();
 }
