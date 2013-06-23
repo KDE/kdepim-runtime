@@ -20,6 +20,8 @@
 #include <KNotification>
 #include <KLocale>
 #include <KGlobal>
+#include <KIcon>
+#include <KIconLoader>
 
 void Util::showNotification(const QPixmap &pixmap, const QString &message)
 {
@@ -29,4 +31,10 @@ void Util::showNotification(const QPixmap &pixmap, const QString &message)
                           0,
                           KNotification::CloseOnTimeout,
                           KGlobal::mainComponent());
+}
+
+QPixmap Util::defaultPixmap()
+{
+    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
+    return pixmap;
 }

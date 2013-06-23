@@ -23,6 +23,7 @@
 
 namespace Util {
 void showNotification(const QPixmap &pixmap, const QString &message);
+QPixmap defaultPixmap();
 }
 
 #endif // UTIL_H

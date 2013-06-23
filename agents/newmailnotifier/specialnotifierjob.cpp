@@ -16,6 +16,7 @@
 */
 
 #include "specialnotifierjob.h"
+#include "util.h"
 
 #include <Akonadi/Contact/ContactSearchJob>
 #include <Akonadi/ItemFetchJob>
@@ -26,6 +27,8 @@
 #include <KPIMUtils/Email>
 
 #include <KMime/Message>
+
+#include <KLocale>
 
 SpecialNotifierJob::SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent)
     : QObject(parent)
@@ -76,13 +79,15 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
     if ( searchJob->error() ) {
         kWarning() << "Unable to fetch contact:" << searchJob->errorText();
-        //TODO
+        Util::showNotification(Util::defaultPixmap(), i18n("from: %1 <br>Subject: %2",mFrom, mSubject));
+        deleteLater();
         return;
     }
     const KABC::Addressee addressee = searchJob->contacts().first();
     const KABC::Picture photo = addressee.photo();
-    QImage image = photo.data();
-    //TODO
+    const QImage image = photo.data();
+    Util::showNotification(QPixmap::fromImage(image), i18n("from: %1 <br>Subject: %2",mFrom, mSubject));
+    deleteLater();
 }
 
 

@@ -239,8 +239,6 @@ void NewMailNotifierAgent::showNotifications()
         return;
     }
 
-    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
-
     QString message;
     if (mVerboseNotification) {
         QStringList texts;
@@ -263,7 +261,7 @@ void NewMailNotifierAgent::showNotifications()
 
     kDebug() << message;
 
-    Util::showNotification(pixmap, message);
+    Util::showNotification(Util::defaultPixmap(), message);
 
     if ( mBeepOnNewMails ) {
         KNotification::beep();
