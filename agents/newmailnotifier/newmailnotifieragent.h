@@ -46,6 +46,8 @@ public:
     void setVerboseMailNotification(bool b);
     bool verboseMailNotification() const;
 
+    void setBeepOnNewMails(bool b);
+    bool beepOnNewMails() const;
 
     void printDebug();
 
@@ -67,6 +69,7 @@ private:
     QStringList mInstanceNameInProgress;
     bool mNotifierEnabled;
     bool mVerboseNotification;
+    bool mBeepOnNewMails;
 };
 
 #endif

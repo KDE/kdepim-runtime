@@ -51,7 +51,8 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     : AgentBase( id ),
       mNotifierEnabled(true),
-      mVerboseNotification(true)
+      mVerboseNotification(true),
+      mBeepOnNewMails(false)
 {
     KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
@@ -83,6 +84,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     KConfigGroup group( KGlobal::config(), "General" );
     mNotifierEnabled = group.readEntry( "enabled", true);
     mVerboseNotification = group.readEntry("verboseNotification", true);
+    mBeepOnNewMails = group.readEntry( "beepOnNewMails", false);
 
     if (mNotifierEnabled) {
         mTimer.setSingleShot( true );
@@ -104,15 +106,32 @@ void NewMailNotifierAgent::setEnableNotifier(bool b)
 
 void NewMailNotifierAgent::setVerboseMailNotification(bool b)
 {
-    mVerboseNotification = b;
-    KConfigGroup group( KGlobal::config(), "General" );
-    group.writeEntry( "verboseNotification", mVerboseNotification);
+    if (mVerboseNotification != b) {
+        mVerboseNotification = b;
+        KConfigGroup group( KGlobal::config(), "General" );
+        group.writeEntry( "verboseNotification", mVerboseNotification);
+    }
 }
 
 bool NewMailNotifierAgent::verboseMailNotification() const
 {
     return mVerboseNotification;
 }
+
+void NewMailNotifierAgent::setBeepOnNewMails(bool b)
+{
+    if (mBeepOnNewMails != b) {
+        mBeepOnNewMails = b;
+        KConfigGroup group( KGlobal::config(), "General" );
+        group.writeEntry( "beepOnNewMails", mBeepOnNewMails);
+    }
+}
+
+bool NewMailNotifierAgent::beepOnNewMails() const
+{
+    return mBeepOnNewMails;
+}
+
 
 void NewMailNotifierAgent::clearAll()
 {
@@ -246,6 +265,10 @@ void NewMailNotifierAgent::showNotifications()
                           0,
                           KNotification::CloseOnTimeout,
                           KGlobal::mainComponent());
+
+    if ( mBeepOnNewMails ) {
+        KNotification::beep();
+    }
 
     mNewMails.clear();
 }
