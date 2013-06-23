@@ -21,6 +21,8 @@
 
 #include "newmailnotifieragent.h"
 
+#include "util.h"
+
 #include "newmailnotifierattribute.h"
 #include "newmailnotifieradaptor.h"
 
@@ -260,12 +262,8 @@ void NewMailNotifierAgent::showNotifications()
     }
 
     kDebug() << message;
-    KNotification::event( QLatin1String("new-email"),
-                          i18n( "New mail arrived" ),
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
+
+    Util::showNotification(pixmap, message);
 
     if ( mBeepOnNewMails ) {
         KNotification::beep();

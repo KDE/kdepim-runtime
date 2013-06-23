@@ -10,6 +10,7 @@ set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
   newmailnotifierattribute.cpp
   specialnotifierjob.cpp
+  util.cpp
 )
 
 qt4_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
