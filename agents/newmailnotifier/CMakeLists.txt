@@ -9,6 +9,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
   newmailnotifierattribute.cpp
+  specialnotifierjob.cpp
 )
 
 qt4_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
