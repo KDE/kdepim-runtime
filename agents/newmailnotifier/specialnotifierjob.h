@@ -18,14 +18,21 @@
 #ifndef SPECIALNOTIFIERJOB_H
 #define SPECIALNOTIFIERJOB_H
 
+
 #include <QObject>
+#include <Akonadi/Item>
+class KJob;
 
 class SpecialNotifierJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit SpecialNotifierJob(QObject *parent = 0);
+    explicit SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent = 0);
     ~SpecialNotifierJob();
+
+private Q_SLOTS:
+    void slotSearchJobFinished( KJob *job );
+
 };
 
 #endif // SPECIALNOTIFIERJOB_H

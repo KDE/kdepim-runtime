@@ -17,9 +17,11 @@
 
 #include "specialnotifierjob.h"
 
+#include <Akonadi/Contact/ContactSearchJob>
+
 #include <KNotification>
 
-SpecialNotifierJob::SpecialNotifierJob(QObject *parent)
+SpecialNotifierJob::SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent)
     : QObject(parent)
 {
 }
@@ -27,6 +29,11 @@ SpecialNotifierJob::SpecialNotifierJob(QObject *parent)
 SpecialNotifierJob::~SpecialNotifierJob()
 {
 
+}
+
+void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
+{
+    //TODO
 }
 
 
