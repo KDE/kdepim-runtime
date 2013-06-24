@@ -90,6 +90,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
 void NewMailNotifierAgent::setEnableNotifier(bool b)
 {
     NewMailNotifierAgentSettings::setEnabled(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
     if (!b) {
         clearAll();
     }
@@ -98,16 +99,19 @@ void NewMailNotifierAgent::setEnableNotifier(bool b)
 void NewMailNotifierAgent::setVerboseMailNotification(bool b)
 {
     NewMailNotifierAgentSettings::setVerboseNotification(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
 bool NewMailNotifierAgent::verboseMailNotification() const
 {
     return NewMailNotifierAgentSettings::verboseNotification();
+    NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
 void NewMailNotifierAgent::setBeepOnNewMails(bool b)
 {
     NewMailNotifierAgentSettings::setBeepOnNewMails(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
 bool NewMailNotifierAgent::beepOnNewMails() const
