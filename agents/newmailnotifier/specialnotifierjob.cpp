@@ -30,6 +30,8 @@
 
 #include <KLocale>
 
+#include <QTextDocument>
+
 SpecialNotifierJob::SpecialNotifierJob(const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),
       mPath(path)
@@ -56,10 +58,11 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 
     const Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob*>( job )->items();
     if (lst.count() == 1) {
-        Akonadi::Item item = lst.first();
+        const Akonadi::Item item = lst.first();
         if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-          deleteLater();
-          return;
+            qDebug()<<" message has not payload.";
+            deleteLater();
+            return;
         }
         const KMime::Message::Ptr mb = item.payload<KMime::Message::Ptr>();
 
@@ -102,7 +105,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
-    emit displayNotification(pixmap, i18n("from: %1 <br>Subject: %2<br>In: %3",mFrom, mSubject, mPath));
+    emit displayNotification(pixmap, i18n("from: %1 <br>Subject: %2<br>In: %3",Qt::escape(mFrom), Qt::escape(mSubject), mPath));
 }
 
 #include "specialnotifierjob.moc"

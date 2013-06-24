@@ -228,11 +228,15 @@ void NewMailNotifierAgent::slotShowNotifications()
 
     QString message;
     if (NewMailNotifierAgentSettings::verboseNotification()) {
-        int numberOfEmail = 0;
+        bool hasUniqMessage = true;
         Akonadi::Item::Id item = -1;
         QString currentPath;
         QStringList texts;
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
+        const int numberOfCollection(mNewMails.count());
+        if (numberOfCollection > 1)
+            hasUniqMessage = false;
+
         for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
             Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
             QString displayName;
@@ -240,14 +244,20 @@ void NewMailNotifierAgent::slotShowNotifications()
                 displayName = attr->displayName();
             else
                 displayName = it.key().name();
-            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
-            ++numberOfEmail;
-            if (numberOfEmail == 1) {
-                item = it.value().first();
-                currentPath = displayName;
+
+            if (hasUniqMessage) {
+                if (it.value().count() == 1 ) {
+                    item = it.value().first();
+                    currentPath = displayName;
+                    break;
+                } else {
+                    hasUniqMessage = false;
+                }
             }
+
+            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
         }
-        if (numberOfEmail == 1) {
+        if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(currentPath, item, this);
             connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
