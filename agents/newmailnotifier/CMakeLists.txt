@@ -9,6 +9,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
   newmailnotifierattribute.cpp
+  specialnotifierjob.cpp
+  util.cpp
 )
 
 qt4_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
@@ -24,6 +26,9 @@ target_link_libraries( akonadi_newmailnotifier_agent
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KNOTIFYCONFIG_LIBS}
+  ${KDEPIMLIBS_KABC_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS}
 )
 
 
@@ -39,3 +44,4 @@ install(TARGETS akonadi_newmailnotifier_agent ${INSTALL_TARGETS_DEFAULT_ARGS} )
 install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotifier_agent" )
 
+add_subdirectory(kconf_update)

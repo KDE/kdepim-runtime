@@ -21,7 +21,10 @@
 
 #include "newmailnotifieragent.h"
 
+#include "util.h"
+
 #include "newmailnotifierattribute.h"
+#include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
 
 #include <akonadi/dbusconnectionpool.h>
@@ -51,8 +54,8 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     : AgentBase( id ),
       mNotifierEnabled(true),
-      mCheckMailInProgress(false),
-      mVerboseNotification(true)
+      mVerboseNotification(true),
+      mBeepOnNewMails(false)
 {
     KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
@@ -67,8 +70,6 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)),
              this, SLOT(slotInstanceRemoved(Akonadi::AgentInstance)) );
 
-
-
     changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
     changeRecorder()->itemFetchScope().setCacheOnly( true );
     changeRecorder()->itemFetchScope().setFetchModificationTime( false );
@@ -79,11 +80,12 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
     mTimer.setInterval( 5 * 1000 );
-    connect( &mTimer, SIGNAL(timeout()), SLOT(showNotifications()) );
+    connect( &mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()) );
 
     KConfigGroup group( KGlobal::config(), "General" );
     mNotifierEnabled = group.readEntry( "enabled", true);
     mVerboseNotification = group.readEntry("verboseNotification", true);
+    mBeepOnNewMails = group.readEntry( "beepOnNewMails", false);
 
     if (mNotifierEnabled) {
         mTimer.setSingleShot( true );
@@ -97,6 +99,7 @@ void NewMailNotifierAgent::setEnableNotifier(bool b)
         mNotifierEnabled = b;
         KConfigGroup group( KGlobal::config(), "General" );
         group.writeEntry( "enabled", mNotifierEnabled);
+        group.sync();
         if (!mNotifierEnabled) {
             clearAll();
         }
@@ -105,9 +108,12 @@ void NewMailNotifierAgent::setEnableNotifier(bool b)
 
 void NewMailNotifierAgent::setVerboseMailNotification(bool b)
 {
-    mVerboseNotification = b;
-    KConfigGroup group( KGlobal::config(), "General" );
-    group.writeEntry( "verboseNotification", mVerboseNotification);
+    if (mVerboseNotification != b) {
+        mVerboseNotification = b;
+        KConfigGroup group( KGlobal::config(), "General" );
+        group.writeEntry( "verboseNotification", mVerboseNotification);
+        group.sync();
+    }
 }
 
 bool NewMailNotifierAgent::verboseMailNotification() const
@@ -115,10 +121,25 @@ bool NewMailNotifierAgent::verboseMailNotification() const
     return mVerboseNotification;
 }
 
+void NewMailNotifierAgent::setBeepOnNewMails(bool b)
+{
+    if (mBeepOnNewMails != b) {
+        mBeepOnNewMails = b;
+        KConfigGroup group( KGlobal::config(), "General" );
+        group.writeEntry( "beepOnNewMails", mBeepOnNewMails);
+        group.sync();
+    }
+}
+
+bool NewMailNotifierAgent::beepOnNewMails() const
+{
+    return mBeepOnNewMails;
+}
+
+
 void NewMailNotifierAgent::clearAll()
 {
     mNewMails.clear();
-    mCheckMailInProgress = false;
     mInstanceNameInProgress.clear();
 }
 
@@ -205,7 +226,7 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
     mNewMails[ collection ].append( item.id() );
 }
 
-void NewMailNotifierAgent::showNotifications()
+void NewMailNotifierAgent::slotShowNotifications()
 {
     if (mNewMails.isEmpty())
         return;
@@ -213,35 +234,58 @@ void NewMailNotifierAgent::showNotifications()
     if (!mNotifierEnabled)
         return;
 
-    if (mCheckMailInProgress) {
+    if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
         mTimer.start();
         return;
     }
 
-    QStringList texts;
-    QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
-    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
-        Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
-        QString displayName;
-        if ( attr && !attr->displayName().isEmpty() )
-            displayName = attr->displayName();
-        else
-            displayName = it.key().name();
-        texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
+    QString message;
+    if (mVerboseNotification) {
+        int numberOfEmail = 0;
+        Akonadi::Item::Id item = -1;
+        QStringList texts;
+        QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
+        for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
+            Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
+            QString displayName;
+            if ( attr && !attr->displayName().isEmpty() )
+                displayName = attr->displayName();
+            else
+                displayName = it.key().name();
+            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
+            ++numberOfEmail;
+            if (numberOfEmail == 1) {
+                item = it.value().first();
+            }
+        }
+        if (numberOfEmail == 1) {
+            SpecialNotifierJob *job = new SpecialNotifierJob(item, this);
+            connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
+            mNewMails.clear();
+            return;
+        } else {
+            message = texts.join( QLatin1String("<br>") );
+        }
+    } else {
+        message = i18n( "New mail arrived" );
     }
 
+    kDebug() << message;
 
-    kDebug() << texts;
+    slotDisplayNotification(Util::defaultPixmap(), message);
 
-    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
-    KNotification::event( QLatin1String("new-email"),
-                          texts.join( QLatin1String("<br>") ),
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
     mNewMails.clear();
+}
+
+
+void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
+{
+    Util::showNotification(pixmap, message);
+
+    if ( mBeepOnNewMails ) {
+        KNotification::beep();
+    }
 }
 
 void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
@@ -256,17 +300,15 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
     {
         if (mInstanceNameInProgress.contains(identifier)) {
             mInstanceNameInProgress.removeAll(identifier);
-            if (mInstanceNameInProgress.isEmpty()) {
-                mCheckMailInProgress = false;
-            }
         }
         break;
     }
     case Akonadi::AgentInstance::Running:
     {
-        if (!mInstanceNameInProgress.contains(identifier)) {
-            mInstanceNameInProgress.append(identifier);
-            mCheckMailInProgress = true;
+        if (!Util::excludeAgentType(instance)) {
+            if (!mInstanceNameInProgress.contains(identifier)) {
+                mInstanceNameInProgress.append(identifier);
+            }
         }
         break;
     }
@@ -283,15 +325,15 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
     const QString identifier(instance.identifier());
     if (mInstanceNameInProgress.contains(identifier)) {
         mInstanceNameInProgress.removeAll(identifier);
-        if (mInstanceNameInProgress.isEmpty()) {
-            mCheckMailInProgress = false;
-        }
     }
 }
 
 void NewMailNotifierAgent::printDebug()
 {
-    kDebug()<<"instance in progress: "<<mInstanceNameInProgress<<"\n notifier enabled : "<<mNotifierEnabled<<"\n check in progress : "<<mCheckMailInProgress;
+    kDebug()<<"instance in progress: "<<mInstanceNameInProgress
+            <<"\n notifier enabled : "<<mNotifierEnabled
+            <<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty()
+            <<"\n beep on new mails: "<<mBeepOnNewMails;
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )

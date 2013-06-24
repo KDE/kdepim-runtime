@@ -46,6 +46,8 @@ public:
     void setVerboseMailNotification(bool b);
     bool verboseMailNotification() const;
 
+    void setBeepOnNewMails(bool b);
+    bool beepOnNewMails() const;
 
     void printDebug();
 
@@ -54,10 +56,11 @@ protected:
     void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
 
 private slots:
-    void showNotifications();
+    void slotShowNotifications();
     void configure(WId windowId);
     void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
     void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
+    void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
 
 private:
     void clearAll();
@@ -66,8 +69,8 @@ private:
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
     bool mNotifierEnabled;
-    bool mCheckMailInProgress;
     bool mVerboseNotification;
+    bool mBeepOnNewMails;
 };
 
 #endif
