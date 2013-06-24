@@ -80,7 +80,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
     mTimer.setInterval( 5 * 1000 );
-    connect( &mTimer, SIGNAL(timeout()), SLOT(showNotifications()) );
+    connect( &mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()) );
 
     KConfigGroup group( KGlobal::config(), "General" );
     mNotifierEnabled = group.readEntry( "enabled", true);
@@ -226,7 +226,7 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
     mNewMails[ collection ].append( item.id() );
 }
 
-void NewMailNotifierAgent::showNotifications()
+void NewMailNotifierAgent::slotShowNotifications()
 {
     if (mNewMails.isEmpty())
         return;

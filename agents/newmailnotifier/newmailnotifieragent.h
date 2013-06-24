@@ -56,7 +56,7 @@ protected:
     void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
 
 private slots:
-    void showNotifications();
+    void slotShowNotifications();
     void configure(WId windowId);
     void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
     void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
