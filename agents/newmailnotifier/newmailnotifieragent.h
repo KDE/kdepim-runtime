@@ -68,9 +68,6 @@ private:
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
-    bool mNotifierEnabled;
-    bool mVerboseNotification;
-    bool mBeepOnNewMails;
 };
 
 #endif
