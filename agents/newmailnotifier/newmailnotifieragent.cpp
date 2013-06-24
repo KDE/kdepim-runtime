@@ -26,6 +26,7 @@
 #include "newmailnotifierattribute.h"
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
+#include "newmailnotifieragentsettings.h"
 
 #include <akonadi/dbusconnectionpool.h>
 
@@ -52,10 +53,7 @@
 using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
-    : AgentBase( id ),
-      mNotifierEnabled(true),
-      mVerboseNotification(true),
-      mBeepOnNewMails(false)
+    : AgentBase( id )
 {
     KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
@@ -82,58 +80,43 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     mTimer.setInterval( 5 * 1000 );
     connect( &mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()) );
 
-    KConfigGroup group( KGlobal::config(), "General" );
-    mNotifierEnabled = group.readEntry( "enabled", true);
-    mVerboseNotification = group.readEntry("verboseNotification", true);
-    mBeepOnNewMails = group.readEntry( "beepOnNewMails", false);
-
-    if (mNotifierEnabled) {
+    if (NewMailNotifierAgentSettings::enabled()) {
         mTimer.setSingleShot( true );
     }
+    qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
 }
 
 
 void NewMailNotifierAgent::setEnableNotifier(bool b)
 {
-    if (mNotifierEnabled != b) {
-        mNotifierEnabled = b;
-        KConfigGroup group( KGlobal::config(), "General" );
-        group.writeEntry( "enabled", mNotifierEnabled);
-        group.sync();
-        if (!mNotifierEnabled) {
-            clearAll();
-        }
+    NewMailNotifierAgentSettings::setEnabled(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+    if (!b) {
+        clearAll();
     }
 }
 
 void NewMailNotifierAgent::setVerboseMailNotification(bool b)
 {
-    if (mVerboseNotification != b) {
-        mVerboseNotification = b;
-        KConfigGroup group( KGlobal::config(), "General" );
-        group.writeEntry( "verboseNotification", mVerboseNotification);
-        group.sync();
-    }
+    NewMailNotifierAgentSettings::setVerboseNotification(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
 bool NewMailNotifierAgent::verboseMailNotification() const
 {
-    return mVerboseNotification;
+    return NewMailNotifierAgentSettings::verboseNotification();
+    NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
 void NewMailNotifierAgent::setBeepOnNewMails(bool b)
 {
-    if (mBeepOnNewMails != b) {
-        mBeepOnNewMails = b;
-        KConfigGroup group( KGlobal::config(), "General" );
-        group.writeEntry( "beepOnNewMails", mBeepOnNewMails);
-        group.sync();
-    }
+    NewMailNotifierAgentSettings::setBeepOnNewMails(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
 bool NewMailNotifierAgent::beepOnNewMails() const
 {
-    return mBeepOnNewMails;
+    return NewMailNotifierAgentSettings::beepOnNewMails();
 }
 
 
@@ -145,7 +128,7 @@ void NewMailNotifierAgent::clearAll()
 
 bool NewMailNotifierAgent::enabledNotifier() const
 {
-    return mNotifierEnabled;
+    return NewMailNotifierAgentSettings::enabled();
 }
 
 void NewMailNotifierAgent::configure( WId /*windowId*/ )
@@ -176,7 +159,7 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
 
 void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
 {
-    if (!mNotifierEnabled)
+    if (!NewMailNotifierAgentSettings::enabled())
         return;
 
     Akonadi::MessageStatus status;
@@ -207,7 +190,7 @@ void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-    if (!mNotifierEnabled)
+    if (!NewMailNotifierAgentSettings::enabled())
         return;
 
     if ( excludeSpecialCollection(collection) ) {
@@ -228,12 +211,15 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::slotShowNotifications()
 {
+    qDebug()<<"void NewMailNotifierAgent::slotShowNotifications()";
     if (mNewMails.isEmpty())
         return;
 
-    if (!mNotifierEnabled)
+    qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
+    if (!NewMailNotifierAgentSettings::enabled())
         return;
 
+    qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
     if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
         mTimer.start();
@@ -241,11 +227,16 @@ void NewMailNotifierAgent::slotShowNotifications()
     }
 
     QString message;
-    if (mVerboseNotification) {
-        int numberOfEmail = 0;
+    if (NewMailNotifierAgentSettings::verboseNotification()) {
+        bool hasUniqMessage = true;
         Akonadi::Item::Id item = -1;
+        QString currentPath;
         QStringList texts;
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
+        const int numberOfCollection(mNewMails.count());
+        if (numberOfCollection > 1)
+            hasUniqMessage = false;
+
         for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
             Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
             QString displayName;
@@ -253,14 +244,21 @@ void NewMailNotifierAgent::slotShowNotifications()
                 displayName = attr->displayName();
             else
                 displayName = it.key().name();
-            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
-            ++numberOfEmail;
-            if (numberOfEmail == 1) {
-                item = it.value().first();
+
+            if (hasUniqMessage) {
+                if (it.value().count() == 1 ) {
+                    item = it.value().first();
+                    currentPath = displayName;
+                    break;
+                } else {
+                    hasUniqMessage = false;
+                }
             }
+
+            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
         }
-        if (numberOfEmail == 1) {
-            SpecialNotifierJob *job = new SpecialNotifierJob(item, this);
+        if (hasUniqMessage) {
+            SpecialNotifierJob *job = new SpecialNotifierJob(currentPath, item, this);
             connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
             return;
@@ -283,14 +281,14 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
 {
     Util::showNotification(pixmap, message);
 
-    if ( mBeepOnNewMails ) {
+    if ( NewMailNotifierAgentSettings::beepOnNewMails() ) {
         KNotification::beep();
     }
 }
 
 void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
 {
-    if (!mNotifierEnabled)
+    if (!NewMailNotifierAgentSettings::enabled())
         return;
 
     const QString identifier(instance.identifier());
@@ -319,7 +317,7 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
 
 void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &instance)
 {
-    if (!mNotifierEnabled)
+    if (!NewMailNotifierAgentSettings::enabled())
         return;
 
     const QString identifier(instance.identifier());
@@ -331,9 +329,9 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
 void NewMailNotifierAgent::printDebug()
 {
     kDebug()<<"instance in progress: "<<mInstanceNameInProgress
-            <<"\n notifier enabled : "<<mNotifierEnabled
+            <<"\n notifier enabled : "<<NewMailNotifierAgentSettings::enabled()
             <<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty()
-            <<"\n beep on new mails: "<<mBeepOnNewMails;
+            <<"\n beep on new mails: "<<NewMailNotifierAgentSettings::beepOnNewMails();
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )

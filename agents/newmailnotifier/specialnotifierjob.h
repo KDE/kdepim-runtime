@@ -27,7 +27,7 @@ class SpecialNotifierJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent = 0);
+    explicit SpecialNotifierJob(const QString &path, Akonadi::Item::Id id, QObject *parent = 0);
     ~SpecialNotifierJob();
 
 Q_SIGNALS:
@@ -38,8 +38,10 @@ private Q_SLOTS:
     void slotItemFetchJobDone(KJob*);
 
 private:
+    void emitNotification(const QPixmap &pixmap);
     QString mSubject;
     QString mFrom;
+    QString mPath;
 };
 
 #endif // SPECIALNOTIFIERJOB_H

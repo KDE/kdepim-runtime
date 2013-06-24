@@ -13,6 +13,11 @@ set(newmailnotifieragent_SRCS
   util.cpp
 )
 
+kde4_add_kcfg_files(newmailnotifieragent_SRCS
+    newmailnotifieragentsettings.kcfgc
+  )
+
+
 qt4_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
 
 

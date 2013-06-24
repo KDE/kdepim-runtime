@@ -91,5 +91,5 @@ Type=AkonadiAgent
 Exec=akonadi_newmailnotifier_agent
 
 X-Akonadi-MimeTypes=message/rfc822
-X-Akonadi-Capabilities=Unique,Autostart,NoConfig
+X-Akonadi-Capabilities=Unique,Autostart
 X-Akonadi-Identifier=akonadi_newmailnotifier_agent
