@@ -305,8 +305,10 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
     }
     case Akonadi::AgentInstance::Running:
     {
-        if (!mInstanceNameInProgress.contains(identifier)) {
-            mInstanceNameInProgress.append(identifier);
+        if (!Util::excludeAgentType(instance)) {
+            if (!mInstanceNameInProgress.contains(identifier)) {
+                mInstanceNameInProgress.append(identifier);
+            }
         }
         break;
     }

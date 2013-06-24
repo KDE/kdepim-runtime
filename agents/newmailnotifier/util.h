@@ -21,9 +21,14 @@
 #include <QPixmap>
 #include <QString>
 
+namespace Akonadi {
+class AgentInstance;
+}
+
 namespace Util {
 void showNotification(const QPixmap &pixmap, const QString &message);
 QPixmap defaultPixmap();
+bool excludeAgentType(const Akonadi::AgentInstance &instance);
 }
 
 #endif // UTIL_H

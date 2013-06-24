@@ -23,6 +23,10 @@
 #include <KIcon>
 #include <KIconLoader>
 
+#include <Akonadi/AgentInstance>
+#include <Akonadi/AgentType>
+#include <KMime/Message>
+
 void Util::showNotification(const QPixmap &pixmap, const QString &message)
 {
     KNotification::event( QLatin1String("new-email"),
@@ -37,4 +41,19 @@ QPixmap Util::defaultPixmap()
 {
     const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
     return pixmap;
+}
+
+bool Util::excludeAgentType(const Akonadi::AgentInstance &instance)
+{
+    if ( instance.type().mimeTypes().contains( KMime::Message::mimeType() ) ) {
+        const QStringList capabilities( instance.type().capabilities() );
+        if ( capabilities.contains( QLatin1String("Resource") ) &&
+             !capabilities.contains( QLatin1String("Virtual") ) &&
+             !capabilities.contains( QLatin1String("MailTransport") ) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
 }
