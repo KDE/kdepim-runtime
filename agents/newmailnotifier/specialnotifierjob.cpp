@@ -53,7 +53,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         return;
     }
 
-    Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob*>( job )->items();
+    const Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob*>( job )->items();
     if (lst.count() == 1) {
         Akonadi::Item item = lst.first();
         if ( !item.hasPayload<KMime::Message::Ptr>() ) {
@@ -79,7 +79,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
     if ( searchJob->error() ) {
         kWarning() << "Unable to fetch contact:" << searchJob->errorText();
-        Util::showNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+        emit displayNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
         deleteLater();
         return;
     }
@@ -87,9 +87,9 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
         const KABC::Addressee addressee = searchJob->contacts().first();
         const KABC::Picture photo = addressee.photo();
         const QImage image = photo.data();
-        Util::showNotification(QPixmap::fromImage(image), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+        emit displayNotification(QPixmap::fromImage(image), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
     } else {
-        Util::showNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+        emit displayNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
     }
     deleteLater();
 }

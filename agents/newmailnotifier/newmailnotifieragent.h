@@ -60,6 +60,7 @@ private slots:
     void configure(WId windowId);
     void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
     void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
+    void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
 
 private:
     void clearAll();

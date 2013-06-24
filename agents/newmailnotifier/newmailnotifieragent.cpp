@@ -260,7 +260,8 @@ void NewMailNotifierAgent::showNotifications()
             }
         }
         if (numberOfEmail == 1) {
-            new SpecialNotifierJob(item, this);
+            SpecialNotifierJob *job = new SpecialNotifierJob(item, this);
+            connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
             return;
         } else {
@@ -272,16 +273,20 @@ void NewMailNotifierAgent::showNotifications()
 
     kDebug() << message;
 
-    Util::showNotification(Util::defaultPixmap(), message);
-
-    if ( mBeepOnNewMails ) {
-        KNotification::beep();
-    }
+    slotDisplayNotification(Util::defaultPixmap(), message);
 
     mNewMails.clear();
 }
 
 
+void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
+{
+    Util::showNotification(pixmap, message);
+
+    if ( mBeepOnNewMails ) {
+        KNotification::beep();
+    }
+}
 
 void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
 {

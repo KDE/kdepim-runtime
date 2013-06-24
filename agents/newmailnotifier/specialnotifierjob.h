@@ -30,6 +30,9 @@ public:
     explicit SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent = 0);
     ~SpecialNotifierJob();
 
+Q_SIGNALS:
+    void displayNotification(const QPixmap &pixmap, const QString &message);
+
 private Q_SLOTS:
     void slotSearchJobFinished( KJob *job );
     void slotItemFetchJobDone(KJob*);
