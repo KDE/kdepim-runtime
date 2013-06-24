@@ -50,10 +50,10 @@ bool Util::excludeAgentType(const Akonadi::AgentInstance &instance)
         if ( capabilities.contains( QLatin1String("Resource") ) &&
              !capabilities.contains( QLatin1String("Virtual") ) &&
              !capabilities.contains( QLatin1String("MailTransport") ) ) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
-    return false;
+    return true;
 }
