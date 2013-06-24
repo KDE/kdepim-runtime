@@ -30,8 +30,9 @@
 
 #include <KLocale>
 
-SpecialNotifierJob::SpecialNotifierJob(Akonadi::Item::Id id, QObject *parent)
-    : QObject(parent)
+SpecialNotifierJob::SpecialNotifierJob(const QString &path, Akonadi::Item::Id id, QObject *parent)
+    : QObject(parent),
+      mPath(path)
 {
     Akonadi::Item item(id);
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item, this );
@@ -69,6 +70,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
         connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
     } else {
+        kdWarning()<<" Found item different from 1: "<<lst.count();
         deleteLater();
         return;
     }
@@ -79,7 +81,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
     if ( searchJob->error() ) {
         kWarning() << "Unable to fetch contact:" << searchJob->errorText();
-        emit displayNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+        emitNotification(Util::defaultPixmap());
         deleteLater();
         return;
     }
@@ -87,12 +89,20 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
         const KABC::Addressee addressee = searchJob->contacts().first();
         const KABC::Picture photo = addressee.photo();
         const QImage image = photo.data();
-        emit displayNotification(QPixmap::fromImage(image), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+        if (!image.isNull()) {
+            emitNotification(QPixmap::fromImage(image));
+        } else {
+            emitNotification(Util::defaultPixmap());
+        }
     } else {
-        emit displayNotification(Util::defaultPixmap(), i18n("from: %1 \nSubject: %2",mFrom, mSubject));
+        emitNotification(Util::defaultPixmap());
     }
     deleteLater();
 }
 
+void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
+{
+    emit displayNotification(pixmap, i18n("from: %1 \nSubject: %2\nIn: %3",mFrom, mSubject, mPath));
+}
 
 #include "specialnotifierjob.moc"

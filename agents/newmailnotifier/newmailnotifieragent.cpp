@@ -244,6 +244,7 @@ void NewMailNotifierAgent::slotShowNotifications()
     if (mVerboseNotification) {
         int numberOfEmail = 0;
         Akonadi::Item::Id item = -1;
+        QString currentPath;
         QStringList texts;
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
         for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
@@ -257,10 +258,11 @@ void NewMailNotifierAgent::slotShowNotifications()
             ++numberOfEmail;
             if (numberOfEmail == 1) {
                 item = it.value().first();
+                currentPath = displayName;
             }
         }
         if (numberOfEmail == 1) {
-            SpecialNotifierJob *job = new SpecialNotifierJob(item, this);
+            SpecialNotifierJob *job = new SpecialNotifierJob(currentPath, item, this);
             connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
             return;
