@@ -102,7 +102,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
-    emit displayNotification(pixmap, i18n("from: %1 \nSubject: %2\nIn: %3",mFrom, mSubject, mPath));
+    emit displayNotification(pixmap, i18n("from: %1 <br>Subject: %2<br>In: %3",mFrom, mSubject, mPath));
 }
 
 #include "specialnotifierjob.moc"
