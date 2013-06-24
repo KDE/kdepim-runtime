@@ -261,6 +261,8 @@ void NewMailNotifierAgent::showNotifications()
         }
         if (numberOfEmail == 1) {
             new SpecialNotifierJob(item, this);
+            mNewMails.clear();
+            return;
         } else {
             message = texts.join( QLatin1String("<br>") );
         }
