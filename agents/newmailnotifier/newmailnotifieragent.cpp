@@ -211,15 +211,15 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::slotShowNotifications()
 {
-    qDebug()<<"void NewMailNotifierAgent::slotShowNotifications()";
+    //qDebug()<<"void NewMailNotifierAgent::slotShowNotifications()";
     if (mNewMails.isEmpty())
         return;
 
-    qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
+    //qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
     if (!NewMailNotifierAgentSettings::enabled())
         return;
 
-    qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
+    //qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
     if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
         mTimer.start();
@@ -311,6 +311,7 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
         break;
     }
     case Akonadi::AgentInstance::NotConfigured:
+        //Nothing
         break;
     }
 }
