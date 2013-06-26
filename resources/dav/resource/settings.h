@@ -117,6 +117,7 @@ class Settings : public SettingsBase
     QString promptForPassword( const QString &user );
 
     void updateToV2();
+    void updateToV3();
 
     WId mWinId;
     QString mResourceIdentifier;

@@ -105,6 +105,9 @@ Settings::Settings()
 
   if ( settingsVersion() == 1 )
     updateToV2();
+
+  if ( settingsVersion() == 2 )
+    updateToV3();
 }
 
 Settings::~Settings()
@@ -453,6 +456,25 @@ void Settings::updateToV2()
   setDefaultPassword( loadPassword( key, urlConfig.mUser ) );
   setRemoteUrls( urls );
   setSettingsVersion( 2 );
+  writeConfig();
+}
+
+void Settings::updateToV3()
+{
+  QStringList updatedUrls;
+
+  foreach ( const QString &url, remoteUrls() ) {
+    QStringList splitUrl = url.split( '|' );
+
+    if ( splitUrl.size() == 3 ) {
+      DavUtils::Protocol protocol = DavUtils::protocolByTranslatedName( splitUrl.at( 1 ) );
+      splitUrl[1] = DavUtils::protocolName( protocol );
+      updatedUrls << splitUrl.join( "|" );
+    }
+  }
+
+  setRemoteUrls( updatedUrls );
+  setSettingsVersion( 3 );
   writeConfig();
 }
 
