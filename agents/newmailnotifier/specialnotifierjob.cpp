@@ -106,8 +106,8 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
     QString subject(mSubject);
-    if (subject.length()> 30) {
-        subject.truncate(30);
+    if (subject.length()> 80) {
+        subject.truncate(80);
         subject += QLatin1String("...");
     }
     emit displayNotification(pixmap, i18n("from: %1 <br>Subject: %2<br>In: %3",Qt::escape(mFrom), Qt::escape(subject), mPath));
