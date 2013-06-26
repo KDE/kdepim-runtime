@@ -148,6 +148,12 @@ qint64 SessionPool::requestSession()
   return requestNumber;
 }
 
+void SessionPool::cancelSessionRequest( qint64 id )
+{
+  Q_ASSERT( id > 0 );
+  m_pendingRequests.removeAll( id );
+}
+
 void SessionPool::releaseSession( KIMAP::Session *session )
 {
   if ( m_reservedPool.contains( session ) ) {

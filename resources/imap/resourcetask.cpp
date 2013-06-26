@@ -42,8 +42,11 @@ ResourceTask::ResourceTask( ActionIfNoSession action, ResourceStateInterface::Pt
 
 ResourceTask::~ResourceTask()
 {
-  if ( m_pool && m_session ) {
-    m_pool->releaseSession( m_session );
+  if ( m_pool ) {
+    if ( m_sessionRequestId )
+      m_pool->cancelSessionRequest( m_sessionRequestId );
+    if ( m_session )
+      m_pool->releaseSession( m_session );
   }
 }
 
