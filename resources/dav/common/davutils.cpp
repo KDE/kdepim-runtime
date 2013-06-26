@@ -152,7 +152,26 @@ DavUtils::Protocol DavUtils::DavUrl::protocol() const
   return mProtocol;
 }
 
-QString DavUtils::protocolName( DavUtils::Protocol protocol )
+QLatin1String DavUtils::protocolName( DavUtils::Protocol protocol )
+{
+  QLatin1String protocolName( "" );
+
+  switch( protocol ) {
+    case DavUtils::CalDav:
+      protocolName = QLatin1String( "CalDav" );
+      break;
+    case DavUtils::CardDav:
+      protocolName = QLatin1String( "CardDav" );
+      break;
+    case DavUtils::GroupDav:
+      protocolName = QLatin1String( "GroupDav" );
+      break;
+  }
+
+  return protocolName;
+}
+
+QString DavUtils::translatedProtocolName( DavUtils::Protocol protocol )
 {
   QString protocolName;
 
@@ -180,6 +199,21 @@ DavUtils::Protocol DavUtils::protocolByName( const QString &name )
   } else if ( name == "CardDav" ) {
     protocol = DavUtils::CardDav;
   } else if ( name == "GroupDav" ) {
+    protocol = DavUtils::GroupDav;
+  }
+
+  return protocol;
+}
+
+DavUtils::Protocol DavUtils::protocolByTranslatedName( const QString &name )
+{
+  DavUtils::Protocol protocol;
+
+  if ( name == i18n( "CalDav" ) ) {
+    protocol = DavUtils::CalDav;
+  } else if ( name == i18n( "CardDav" ) ) {
+    protocol = DavUtils::CardDav;
+  } else if ( name == i18n( "GroupDav" ) ) {
     protocol = DavUtils::GroupDav;
   }
 

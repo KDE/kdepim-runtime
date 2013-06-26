@@ -49,7 +49,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   foreach ( const DavUtils::DavUrl &url, Settings::self()->configuredDavUrls() ) {
     KUrl displayUrl = url.url();
     displayUrl.setUser( QString() );
-    addModelRow( DavUtils::protocolName( url.protocol() ), displayUrl.prettyUrl() );
+    addModelRow( DavUtils::translatedProtocolName( url.protocol() ), displayUrl.prettyUrl() );
   }
 
   mManager = new KConfigDialogManager( this, Settings::self() );
@@ -114,7 +114,7 @@ void ConfigDialog::onAddButtonClicked()
 
       Settings::self()->newUrlConfiguration( urlConfig );
 
-      const QString protocolName = DavUtils::protocolName( dlg->protocol() );
+      const QString protocolName = DavUtils::translatedProtocolName( dlg->protocol() );
 
       addModelRow( protocolName, dlg->remoteUrl() );
       mAddedUrls << QPair<QString, DavUtils::Protocol>( dlg->remoteUrl(), DavUtils::Protocol( dlg->protocol() ) );
@@ -151,7 +151,7 @@ void ConfigDialog::onSearchButtonClicked()
 
         Settings::self()->newUrlConfiguration( urlConfig );
 
-        addModelRow( split.at( 0 ), split.at( 1 ) );
+        addModelRow( DavUtils::translatedProtocolName( protocol ), split.at( 1 ) );
         mAddedUrls << QPair<QString, DavUtils::Protocol>( split.at( 1 ), protocol );
         checkUserInput();
       }
@@ -170,7 +170,7 @@ void ConfigDialog::onRemoveButtonClicked()
   QString proto = mModel->index( indexes.at( 0 ).row(), 0 ).data().toString();
   QString url = mModel->index( indexes.at( 0 ).row(), 1 ).data().toString();
 
-  mRemovedUrls << QPair<QString, DavUtils::Protocol>( url, DavUtils::protocolByName( proto ) );
+  mRemovedUrls << QPair<QString, DavUtils::Protocol>( url, DavUtils::protocolByTranslatedName( proto ) );
   mModel->removeRow( indexes.at( 0 ).row() );
 
   checkUserInput();
@@ -186,7 +186,7 @@ void ConfigDialog::onEditButtonClicked()
   const QString proto = mModel->index( row, 0 ).data().toString();
   const QString url = mModel->index( row, 1 ).data().toString();
 
-  Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( DavUtils::protocolByName( proto ), url );
+  Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( DavUtils::protocolByTranslatedName( proto ), url );
   if ( !urlConfig )
     return;
 
@@ -207,7 +207,7 @@ void ConfigDialog::onEditButtonClicked()
   const int result = dlg->exec();
 
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
-    Settings::self()->removeUrlConfiguration( DavUtils::protocolByName( proto ), url );
+    Settings::self()->removeUrlConfiguration( DavUtils::protocolByTranslatedName( proto ), url );
     Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
     urlConfigAccepted->mUrl = dlg->remoteUrl();
     if ( dlg->useDefaultCredentials() ) {
@@ -220,7 +220,7 @@ void ConfigDialog::onEditButtonClicked()
     Settings::self()->newUrlConfiguration( urlConfigAccepted );
 
     mModel->removeRow( row );
-    insertModelRow( row, DavUtils::protocolName( dlg->protocol() ), dlg->remoteUrl() );
+    insertModelRow( row, DavUtils::translatedProtocolName( dlg->protocol() ), dlg->remoteUrl() );
   }
   delete dlg;
 }
