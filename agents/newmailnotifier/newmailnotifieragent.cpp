@@ -157,6 +157,32 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
     }
 }
 
+void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )
+{
+    if (!NewMailNotifierAgentSettings::enabled())
+        return;
+    QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
+    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
+        QList<Akonadi::Item::Id> idList = it.value();
+        if (idList.contains(item.id())) {
+            idList.removeAll( item.id() );
+            mNewMails[it.key()] = idList;
+            if (mNewMails[it.key()].isEmpty()) {
+                mNewMails.remove( it.key() );
+                break;
+            }
+        }
+    }
+}
+
+void NewMailNotifierAgent::itemChanged(const Akonadi::Item &/*item*/, const QSet< QByteArray > &/*partIdentifiers*/)
+{
+    if (!NewMailNotifierAgentSettings::enabled())
+        return;
+    //qDebug()<<" partIdentifiers"<<partIdentifiers;
+    //TODO need to implement it.
+}
+
 void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
 {
     if (!NewMailNotifierAgentSettings::enabled())
