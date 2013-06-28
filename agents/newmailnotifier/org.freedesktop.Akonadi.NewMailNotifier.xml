@@ -19,6 +19,30 @@
     <method name="beepOnNewMails" >
       <arg type="b" direction="out"/>
     </method>
+    <method name="setShowPhoto" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="showPhoto" >
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="setShowFrom" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="showFrom" >
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="setShowSubject" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="showSubject" >
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="setShowFolderName" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="showFolderName" >
+      <arg type="b" direction="out"/>
+    </method>
     <method name="printDebug" />
   </interface>
 </node>

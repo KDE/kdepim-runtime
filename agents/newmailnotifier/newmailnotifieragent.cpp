@@ -86,6 +86,49 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     //qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
 }
 
+void NewMailNotifierAgent::setShowPhoto(bool show)
+{
+    NewMailNotifierAgentSettings::setShowPhoto(show);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::showPhoto() const
+{
+    return NewMailNotifierAgentSettings::showPhoto();
+}
+
+void NewMailNotifierAgent::setShowFrom(bool show)
+{
+    NewMailNotifierAgentSettings::setShowFrom(show);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::showFrom() const
+{
+    return NewMailNotifierAgentSettings::showFrom();
+}
+
+void NewMailNotifierAgent::setShowSubject(bool show)
+{
+    NewMailNotifierAgentSettings::setShowSubject(show);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::showSubject() const
+{
+    return NewMailNotifierAgentSettings::showSubject();
+}
+
+void NewMailNotifierAgent::setShowFolderName(bool show)
+{
+    NewMailNotifierAgentSettings::setShowFolder(show);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::showFolderName() const
+{
+    return NewMailNotifierAgentSettings::showFolder();
+}
 
 void NewMailNotifierAgent::setEnableNotifier(bool enabled)
 {

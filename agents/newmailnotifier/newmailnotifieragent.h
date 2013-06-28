@@ -49,6 +49,19 @@ public:
     void setBeepOnNewMails(bool b);
     bool beepOnNewMails() const;
 
+    void setShowPhoto(bool b);
+    bool showPhoto() const;
+
+    void setShowFrom(bool b);
+    bool showFrom() const;
+
+    void setShowSubject(bool b);
+    bool showSubject() const;
+
+    void setShowFolderName(bool b);
+    bool showFolderName() const;
+
+
     void printDebug();
 
 protected:
