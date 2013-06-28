@@ -83,22 +83,22 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     if (NewMailNotifierAgentSettings::enabled()) {
         mTimer.setSingleShot( true );
     }
-    qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
+    //qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
 }
 
 
-void NewMailNotifierAgent::setEnableNotifier(bool b)
+void NewMailNotifierAgent::setEnableNotifier(bool enabled)
 {
-    NewMailNotifierAgentSettings::setEnabled(b);
+    NewMailNotifierAgentSettings::setEnabled(enabled);
     NewMailNotifierAgentSettings::self()->writeConfig();
-    if (!b) {
+    if (!enabled) {
         clearAll();
     }
 }
 
-void NewMailNotifierAgent::setVerboseMailNotification(bool b)
+void NewMailNotifierAgent::setVerboseMailNotification(bool verbose)
 {
-    NewMailNotifierAgentSettings::setVerboseNotification(b);
+    NewMailNotifierAgentSettings::setVerboseNotification(verbose);
     NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
@@ -108,9 +108,9 @@ bool NewMailNotifierAgent::verboseMailNotification() const
     NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
-void NewMailNotifierAgent::setBeepOnNewMails(bool b)
+void NewMailNotifierAgent::setBeepOnNewMails(bool beep)
 {
-    NewMailNotifierAgentSettings::setBeepOnNewMails(b);
+    NewMailNotifierAgentSettings::setBeepOnNewMails(beep);
     NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
@@ -118,7 +118,6 @@ bool NewMailNotifierAgent::beepOnNewMails() const
 {
     return NewMailNotifierAgentSettings::beepOnNewMails();
 }
-
 
 void NewMailNotifierAgent::clearAll()
 {
