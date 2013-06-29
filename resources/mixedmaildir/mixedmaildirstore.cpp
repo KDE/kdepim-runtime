@@ -526,8 +526,9 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
   }
 
   if ( col.parentCollection() == Collection::root() ) {
-    kWarning( col.remoteId() != q->path() ) << "RID mismatch, is " << col.remoteId() << " expected " << q->path();
     path = q->path();
+    if ( col.remoteId() != path )
+      kWarning() << "RID mismatch, is" << col.remoteId() << "expected" << path;
     return TopLevelFolder;
   }
 

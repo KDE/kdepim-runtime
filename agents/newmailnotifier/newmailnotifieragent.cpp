@@ -83,22 +83,65 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     if (NewMailNotifierAgentSettings::enabled()) {
         mTimer.setSingleShot( true );
     }
-    qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
+    //qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
 }
 
-
-void NewMailNotifierAgent::setEnableNotifier(bool b)
+void NewMailNotifierAgent::setShowPhoto(bool show)
 {
-    NewMailNotifierAgentSettings::setEnabled(b);
+    NewMailNotifierAgentSettings::setShowPhoto(show);
     NewMailNotifierAgentSettings::self()->writeConfig();
-    if (!b) {
+}
+
+bool NewMailNotifierAgent::showPhoto() const
+{
+    return NewMailNotifierAgentSettings::showPhoto();
+}
+
+void NewMailNotifierAgent::setShowFrom(bool show)
+{
+    NewMailNotifierAgentSettings::setShowFrom(show);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::showFrom() const
+{
+    return NewMailNotifierAgentSettings::showFrom();
+}
+
+void NewMailNotifierAgent::setShowSubject(bool show)
+{
+    NewMailNotifierAgentSettings::setShowSubject(show);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::showSubject() const
+{
+    return NewMailNotifierAgentSettings::showSubject();
+}
+
+void NewMailNotifierAgent::setShowFolderName(bool show)
+{
+    NewMailNotifierAgentSettings::setShowFolder(show);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::showFolderName() const
+{
+    return NewMailNotifierAgentSettings::showFolder();
+}
+
+void NewMailNotifierAgent::setEnableNotifier(bool enabled)
+{
+    NewMailNotifierAgentSettings::setEnabled(enabled);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+    if (!enabled) {
         clearAll();
     }
 }
 
-void NewMailNotifierAgent::setVerboseMailNotification(bool b)
+void NewMailNotifierAgent::setVerboseMailNotification(bool verbose)
 {
-    NewMailNotifierAgentSettings::setVerboseNotification(b);
+    NewMailNotifierAgentSettings::setVerboseNotification(verbose);
     NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
@@ -108,9 +151,9 @@ bool NewMailNotifierAgent::verboseMailNotification() const
     NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
-void NewMailNotifierAgent::setBeepOnNewMails(bool b)
+void NewMailNotifierAgent::setBeepOnNewMails(bool beep)
 {
-    NewMailNotifierAgentSettings::setBeepOnNewMails(b);
+    NewMailNotifierAgentSettings::setBeepOnNewMails(beep);
     NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
@@ -118,7 +161,6 @@ bool NewMailNotifierAgent::beepOnNewMails() const
 {
     return NewMailNotifierAgentSettings::beepOnNewMails();
 }
-
 
 void NewMailNotifierAgent::clearAll()
 {
@@ -155,6 +197,32 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
     default:
         return true;
     }
+}
+
+void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )
+{
+    if (!NewMailNotifierAgentSettings::enabled())
+        return;
+    QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
+    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
+        QList<Akonadi::Item::Id> idList = it.value();
+        if (idList.contains(item.id())) {
+            idList.removeAll( item.id() );
+            mNewMails[it.key()] = idList;
+            if (mNewMails[it.key()].isEmpty()) {
+                mNewMails.remove( it.key() );
+                break;
+            }
+        }
+    }
+}
+
+void NewMailNotifierAgent::itemChanged(const Akonadi::Item &/*item*/, const QSet< QByteArray > &/*partIdentifiers*/)
+{
+    if (!NewMailNotifierAgentSettings::enabled())
+        return;
+    //qDebug()<<" partIdentifiers"<<partIdentifiers;
+    //TODO need to implement it.
 }
 
 void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
@@ -211,15 +279,15 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::slotShowNotifications()
 {
-    qDebug()<<"void NewMailNotifierAgent::slotShowNotifications()";
+    //qDebug()<<"void NewMailNotifierAgent::slotShowNotifications()";
     if (mNewMails.isEmpty())
         return;
 
-    qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
+    //qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
     if (!NewMailNotifierAgentSettings::enabled())
         return;
 
-    qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
+    //qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
     if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
         mTimer.start();
@@ -311,6 +379,7 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
         break;
     }
     case Akonadi::AgentInstance::NotConfigured:
+        //Nothing
         break;
     }
 }

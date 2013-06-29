@@ -214,7 +214,7 @@ void DavGroupwareResource::configure( WId windowId )
   const int result = dialog.exec();
 
   if ( result == QDialog::Accepted ) {
-    Settings::self()->setSettingsVersion( 2 );
+    Settings::self()->setSettingsVersion( 3 );
     Settings::self()->writeConfig();
     synchronize();
     emit configurationDialogAccepted();

@@ -13,5 +13,18 @@
  <entry name="enabled" key="enabled" type="Bool">
    <default>true</default>
  </entry>
+ <entry name="showPhoto" key="showPhoto" type="Bool">
+   <default>true</default>
+ </entry>
+ <entry name="showFrom" key="showFrom" type="Bool">
+   <default>true</default>
+ </entry>
+ <entry name="showSubject" key="showSubject" type="Bool">
+   <default>true</default>
+ </entry>
+ <entry name="showFolder" key="showFolder" type="Bool">
+   <default>true</default>
+ </entry>
+
  </group>
 </kcfg>

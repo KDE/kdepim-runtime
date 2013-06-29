@@ -17,6 +17,7 @@
 
 #include "specialnotifierjob.h"
 #include "util.h"
+#include "newmailnotifieragentsettings.h"
 
 #include <Akonadi/Contact/ContactSearchJob>
 #include <Akonadi/ItemFetchJob>
@@ -64,14 +65,18 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             deleteLater();
             return;
         }
-        const KMime::Message::Ptr mb = item.payload<KMime::Message::Ptr>();
 
+        const KMime::Message::Ptr mb = item.payload<KMime::Message::Ptr>();
         mFrom = mb->from()->asUnicodeString();
         mSubject = mb->subject()->asUnicodeString();
-        Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob( this );
-        job->setLimit( 1 );
-        job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
-        connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
+        if (NewMailNotifierAgentSettings::showPhoto()) {
+            Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob( this );
+            job->setLimit( 1 );
+            job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
+            connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
+        } else {
+            emitNotification(Util::defaultPixmap());
+        }
     } else {
         kdWarning()<<" Found item different from 1: "<<lst.count();
         deleteLater();
@@ -92,10 +97,10 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
         const KABC::Addressee addressee = searchJob->contacts().first();
         const KABC::Picture photo = addressee.photo();
         const QImage image = photo.data();
-        if (!image.isNull()) {
-            emitNotification(QPixmap::fromImage(image));
-        } else {
+        if (image.isNull()) {
             emitNotification(Util::defaultPixmap());
+        } else {
+            emitNotification(QPixmap::fromImage(image));
         }
     } else {
         emitNotification(Util::defaultPixmap());
@@ -105,7 +110,13 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
-    emit displayNotification(pixmap, i18n("from: %1 <br>Subject: %2<br>In: %3",Qt::escape(mFrom), Qt::escape(mSubject), mPath));
+    QString subject(mSubject);
+    if (subject.length()> 80) {
+        subject.truncate(80);
+        subject += QLatin1String("...");
+    }
+    //TODO 4.12 use showFrom/showFolder/showSubject
+    emit displayNotification(pixmap, i18n("from: %1 <br>Subject: %2<br>In: %3",Qt::escape(mFrom), Qt::escape(subject), mPath));
 }
 
 #include "specialnotifierjob.moc"

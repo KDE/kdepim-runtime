@@ -49,11 +49,26 @@ public:
     void setBeepOnNewMails(bool b);
     bool beepOnNewMails() const;
 
+    void setShowPhoto(bool b);
+    bool showPhoto() const;
+
+    void setShowFrom(bool b);
+    bool showFrom() const;
+
+    void setShowSubject(bool b);
+    bool showSubject() const;
+
+    void setShowFolderName(bool b);
+    bool showFolderName() const;
+
+
     void printDebug();
 
 protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
+    void itemRemoved( const Akonadi::Item &item );
+    void itemChanged( const Akonadi::Item &, const QSet< QByteArray > &);
 
 private slots:
     void slotShowNotifications();

@@ -65,15 +65,26 @@ namespace DavUtils
   Q_DECLARE_OPERATORS_FOR_FLAGS( Privileges )
 
   /**
+   * Returns the untranslated name of the given DAV @p protocol dialect.
+   */
+  QLatin1String protocolName( Protocol protocol );
+
+  /**
    * Returns the i18n'ed name of the given DAV @p protocol dialect.
    */
-  QString protocolName( Protocol protocol );
+  QString translatedProtocolName( Protocol protocol );
 
   /**
    * Returns the protocol matching the given name. This is the opposite of
    * DavUtils::protocolName().
    */
   Protocol protocolByName( const QString &name );
+
+  /**
+   * Returns the protocol matching the given i18n'ed @p name. This is the opposite
+   * of DavUtils::translatedProtocolName().
+   */
+  Protocol protocolByTranslatedName( const QString &name );
 
   /**
    * @short A helper class to combine url and protocol of a DAV url.
