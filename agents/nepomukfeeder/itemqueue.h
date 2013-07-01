@@ -136,5 +136,6 @@ private:
   void removeJob(KJob *job);
   void killAllJobs();
   
+  QHash<QUrl, QString> mPlainTextContent;
 };
 #endif // ITEMQUEUE_H

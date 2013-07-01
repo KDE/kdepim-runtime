@@ -22,11 +22,18 @@
 #include <KDebug>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <nepomuk2/storeresourcesjob.h>
 #include <KUrl>
+
+#include <Nepomuk2/DataManagement>
+#include <Nepomuk2/StoreResourcesJob>
+#include <Nepomuk2/ResourceManager>
+
+#include <Soprano/Model>
+#include <Soprano/QueryResultIterator>
 
 #include <Nepomuk2/Vocabulary/NCO>
 #include <Nepomuk2/Vocabulary/NMO>
+#include <Nepomuk2/Vocabulary/NIE>
 #include <Soprano/Vocabulary/NAO>
 
 using namespace Nepomuk2::Vocabulary;
@@ -202,12 +209,58 @@ void ItemQueue::removeDataResult(KJob* job)
 
   //All old items have been removed, so we can now store the new items
   const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
+  Nepomuk2::SimpleResourceGraph identifiedGraph = mPropertyCache.applyCache( graph );
+
+  foreach(const QUrl& uri, identifiedGraph.allResourceUris()) {
+      Nepomuk2::SimpleResource res = identifiedGraph[uri];
+      if( res.contains(NMO::plainTextMessageContent()) ) {
+          mPlainTextContent.insert( uri, res.property(NMO::plainTextMessageContent()).first().toString() );
+          identifiedGraph[uri].remove(NMO::plainTextMessageContent());
+      }
+  }
+
   KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( graph ) );
   addGraphJob->setProperty("graph", QVariant::fromValue( graph ));
   connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
   addJob( addGraphJob );
 }
 
+namespace {
+    void setNmoPlainTextContent(const QUrl& uri, const QString& plainText_) {
+        if( uri.isEmpty() || plainText_.isEmpty() )
+            return;
+
+        QString plainText( plainText_ );
+        // This number has been experimentally chosen. Virtuoso cannot handle more than this
+        static const int maxSize = 2490000;
+        if( plainText.size() > maxSize )  {
+            kWarning() << "Trimming plain text content from " << plainText.size() << " to " << maxSize;
+            plainText.resize( maxSize );
+        }
+
+        QString uriN3 = Soprano::Node::resourceToN3( uri );
+
+        QString query = QString::fromLatin1("select ?g where { graph ?g { %1 a aneo:AkonadiDataObject . } }")
+        .arg ( uriN3 );
+        Soprano::Model* model = Nepomuk2::ResourceManager::instance()->mainModel();
+        Soprano::QueryResultIterator it = model->executeQuery( query, Soprano::Query::QueryLanguageSparqlNoInference );
+
+        QUrl graph;
+        if( it.next() ) {
+            graph = it[0].uri();
+            it.close();
+        }
+
+        if( !graph.isEmpty() ) {
+            QString graphN3 = Soprano::Node::resourceToN3( graph );
+            QString insertCommand = QString::fromLatin1("sparql insert { graph %1 { %2 nmo:plainTextMessageContent %3 . } }")
+                                    .arg( graphN3, uriN3, Soprano::Node::literalToN3(plainText) );
+
+            model->executeQuery( insertCommand, Soprano::Query::QueryLanguageUser, QLatin1String("sql") );
+        }
+    }
+
+}
 void ItemQueue::batchJobResult(KJob* job)
 {
   removeJob( job );
@@ -231,6 +284,15 @@ void ItemQueue::batchJobResult(KJob* job)
     Nepomuk2::StoreResourcesJob *storeResourcesJob = static_cast<Nepomuk2::StoreResourcesJob*>(job);
     Q_ASSERT(storeResourcesJob);
     mPropertyCache.fillCache(graph, storeResourcesJob->mappings());
+
+    // Store the plain text
+    const QHash<QUrl, QUrl> mappings = storeResourcesJob->mappings();
+    QList<QUrl> keys = mappings.uniqueKeys();
+    foreach(const QUrl& key, keys) {
+        const QUrl uri = mappings.value(key);
+        setNmoPlainTextContent( uri, mPlainTextContent.value(key) );
+    }
+    mPlainTextContent.clear();
   }
 
   QTimer::singleShot( mDelay, this, SLOT(slotEmitFinished()) );

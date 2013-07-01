@@ -24,6 +24,11 @@
 #include <nmo/email.h>
 
 #include <propertycache.h>
+#include <Nepomuk2/Vocabulary/NCO>
+#include <Nepomuk2/Vocabulary/NMO>
+
+using namespace Nepomuk2::Vocabulary;
+using namespace Soprano::Vocabulary;
 
 class CacheTest: public QObject
 {
@@ -33,40 +38,41 @@ private slots:
     {
         PropertyCache cache;
         cache.setCachedTypes(QList<QUrl>()
-           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
-           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact")
+           << NCO::EmailAddress()
+           << NCO::Contact()
         );
-        
-        Nepomuk2::SimpleResourceGraph graph;
-        Nepomuk2::SimpleResource res;
-        Nepomuk2::NMO::Email mail( &res );
-        QList<QUrl> contacts;
+
+        Nepomuk2::SimpleResource emailAddressRes;
+        emailAddressRes.addType( NCO::EmailAddress() );
+        emailAddressRes.addProperty( NCO::emailAddress(), "test@example.org" );
+
         Nepomuk2::SimpleResource contactRes;
-        Nepomuk2::NCO::Contact contact( &contactRes );
-        contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), "name" );
+        contactRes.addType( NCO::Contact() );
+        contactRes.addProperty( NCO::hasEmailAddress(), emailAddressRes );
+
         Nepomuk2::SimpleResource emailRes;
-        Nepomuk2::NCO::EmailAddress email( &emailRes );
-        email.setEmailAddress( "test@example.org" );
-        graph << emailRes;
-        contact.addHasEmailAddress( emailRes.uri() );
-        graph << contactRes;
-        contacts << contactRes.uri();
-        mail.setTos( contacts );
-        graph << res;
-        
+        emailRes.addType( NMO::Email() );
+        emailRes.addProperty( NMO::to(), contactRes );
+
+        Nepomuk2::SimpleResourceGraph graph;
+        graph << emailAddressRes << contactRes << emailRes;
+
         QHash<QUrl, QUrl> mapping;
-        mapping.insert(res.uri(), QUrl("nepomuk://a"));
+        mapping.insert(emailAddressRes.uri(), QUrl("nepomuk://a"));
         mapping.insert(contactRes.uri(), QUrl("nepomuk://b"));
         mapping.insert(emailRes.uri(), QUrl("nepomuk://c"));
+
         cache.fillCache(graph, mapping);
 //         kDebug() << graph;
 
         Nepomuk2::SimpleResourceGraph result = cache.applyCache(graph);
-        kDebug() << result;
+//        kDebug() << result;
         QCOMPARE(result.toList().size(), 1);
+
         Nepomuk2::SimpleResource res1 = result.toList().at(0);
-        QCOMPARE(res1.uri(), res.uri());
-        QCOMPARE(res1.property(QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#to")).first().toUrl(), QUrl("nepomuk://b"));
+        QCOMPARE(res1.uri(), emailRes.uri());
+        QCOMPARE(res1.property(RDF::type()).first().toUrl(), NMO::Email());
+        QCOMPARE(res1.property(NMO::to()).first().toUrl(), QUrl("nepomuk://b"));
     }
     
     void testCacheLimit()
