@@ -24,7 +24,9 @@
 #include "freebusyupdatehandler.h"
 #include "settings.h"
 #include "settingsadaptor.h"
+#include "kolabproxyadaptor.h"
 #include "setupkolab.h"
+#include <akonadi/dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
 
@@ -111,11 +113,14 @@ KolabProxyResource::KolabProxyResource( const QString &id )
   : ResourceBase( id )
 {
   Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionAnnotationsAttribute>();
-
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject(
     QLatin1String( "/Settings" ),
     Settings::self(), QDBusConnection::ExportAdaptors );
+
+  new KolabproxyAdaptor( this );
+  Akonadi::DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/KolabProxy" ), this, QDBusConnection::ExportAdaptors );
+  Akonadi::DBusConnectionPool::threadConnection().registerService( QLatin1String( "Agent.akonadi_kolabproxy_resource" ) );
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -967,6 +972,14 @@ bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection
   }
 
   return false;
+}
+
+QString KolabProxyResource::imapResourceForCollection( Akonadi::Collection::Id id )
+{
+    if (m_resourceIdentifier.contains(id)) {
+        return m_resourceIdentifier[id];
+    }
+    return QString();
 }
 
 AKONADI_RESOURCE_MAIN( KolabProxyResource )
