@@ -48,6 +48,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
      */
     bool registerHandlerForCollection( const Akonadi::Collection &imapCollection );
 
+    QString imapResourceForCollection( Akonadi::Collection::Id id );
+
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
