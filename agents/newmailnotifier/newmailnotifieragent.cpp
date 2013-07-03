@@ -80,10 +80,17 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     mTimer.setInterval( 5 * 1000 );
     connect( &mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()) );
 
-    if (NewMailNotifierAgentSettings::enabled()) {
+    if (isActive()) {
         mTimer.setSingleShot( true );
     }
     //qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
+}
+
+void NewMailNotifierAgent::doSetOnline(bool online)
+{
+    if (!online) {
+        clearAll();
+    }
 }
 
 void NewMailNotifierAgent::setShowPhoto(bool show)
@@ -201,7 +208,7 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
 
 void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )
 {
-    if (!NewMailNotifierAgentSettings::enabled())
+    if (!isActive())
         return;
     QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
     for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
@@ -219,7 +226,7 @@ void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )
 
 void NewMailNotifierAgent::itemChanged(const Akonadi::Item &/*item*/, const QSet< QByteArray > &/*partIdentifiers*/)
 {
-    if (!NewMailNotifierAgentSettings::enabled())
+    if (!isActive())
         return;
     //qDebug()<<" partIdentifiers"<<partIdentifiers;
     //TODO need to implement it.
@@ -227,7 +234,7 @@ void NewMailNotifierAgent::itemChanged(const Akonadi::Item &/*item*/, const QSet
 
 void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
 {
-    if (!NewMailNotifierAgentSettings::enabled())
+    if (!isActive())
         return;
 
     Akonadi::MessageStatus status;
@@ -253,12 +260,11 @@ void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::
             mNewMails[ collectionDestination ] = idListTo;
         }
     }
-
 }
 
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-    if (!NewMailNotifierAgentSettings::enabled())
+    if (!isActive())
         return;
 
     if ( excludeSpecialCollection(collection) ) {
@@ -284,7 +290,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         return;
 
     //qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
-    if (!NewMailNotifierAgentSettings::enabled())
+    if (!isActive())
         return;
 
     //qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
@@ -356,7 +362,7 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
 
 void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
 {
-    if (!NewMailNotifierAgentSettings::enabled())
+    if (!isActive())
         return;
 
     const QString identifier(instance.identifier());
@@ -386,7 +392,7 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
 
 void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &instance)
 {
-    if (!NewMailNotifierAgentSettings::enabled())
+    if (!isActive())
         return;
 
     const QString identifier(instance.identifier());
@@ -401,6 +407,11 @@ void NewMailNotifierAgent::printDebug()
             <<"\n notifier enabled : "<<NewMailNotifierAgentSettings::enabled()
             <<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty()
             <<"\n beep on new mails: "<<NewMailNotifierAgentSettings::beepOnNewMails();
+}
+
+bool NewMailNotifierAgent::isActive() const
+{
+    return isOnline() && NewMailNotifierAgentSettings::enabled();
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )

@@ -69,6 +69,7 @@ protected:
     void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
     void itemRemoved( const Akonadi::Item &item );
     void itemChanged( const Akonadi::Item &, const QSet< QByteArray > &);
+    void doSetOnline(bool online);
 
 private slots:
     void slotShowNotifications();
@@ -78,6 +79,7 @@ private slots:
     void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
 
 private:
+    bool isActive() const;
     void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
