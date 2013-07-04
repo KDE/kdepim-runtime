@@ -77,7 +77,7 @@ void Ispdb::lookupInDb()
     break;
   }
   case DataBase:
-    url = KUrl( "https://live.mozillamessaging.com/autoconfig/v1.1/" + mAddr.domain.toLower() );
+    url = KUrl( "https://autoconfig.thunderbird.net/v1.1/" + mAddr.domain.toLower() );
   break;
   }
   startJob( url );
