@@ -1,2 +1,2 @@
 #! /bin/sh
-$XGETTEXT *.cpp -o $podir/newmailnotifieragent.pot
+$XGETTEXT *.cpp -o $podir/akonadi_newmailnotifier_agent.pot
