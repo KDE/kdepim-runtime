@@ -69,7 +69,6 @@ NepomukFeederAgent::NepomukFeederAgent(const QString& id) :
   mIndexedItems(0),
   m_findUnindexedItemsJob(0)
 {
-  KGlobal::locale()->insertCatalog( "akonadi_nepomukfeeder" ); //TODO do we really need this?
 
   new NepomukFeederAdaptor( this );
 
