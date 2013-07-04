@@ -68,7 +68,7 @@ void Ispdb::lookupInDb()
   {
   case IspAutoConfig:
   {
-    url = KUrl( "http://autoconfig." + mAddr.domain.toLower() + "/mail/config-v1.1.xml" );
+    url = KUrl( "http://autoconfig." + mAddr.domain.toLower() + "/mail/config-v1.1.xml?emailaddress=" + mAddr.asString().toLower() );
   }
   break;
   case IspWellKnow:
