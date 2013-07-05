@@ -148,8 +148,8 @@ void MaildirResource::attemptConfigRestoring( KJob * job )
     return;
   }
   // we cannot be sure that a config file is existing
-  QString id = identifier();
-  QString configFile = componentData().dirs()->findResource( "config", id + "rc" );
+  const QString id = identifier();
+  const QString configFile = componentData().dirs()->findResource( "config", id + "rc" );
   // we test it again, to be sure
   if ( configFile.isEmpty() ) {
     // it is still empty, create it
@@ -167,7 +167,7 @@ void MaildirResource::attemptConfigRestoring( KJob * job )
     // test the path
     if ( path.isEmpty() ) {
       kDebug() << "build a new path";
-      QString dataDir = componentData().dirs()->localxdgdatadir();
+      const QString dataDir = componentData().dirs()->localxdgdatadir();
       // we use "id" to get an unique path
       path = dataDir + id;
       kDebug() << "set the path" << path;
@@ -240,7 +240,7 @@ void MaildirResource::configure( WId windowId )
   ConfigDialog dlg( mSettings );
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
-  dlg.setWindowIcon( KIcon( "message-rfc822" ) );
+  dlg.setWindowIcon( KIcon( QLatin1String("message-rfc822") ) );
   if ( dlg.exec() ) {
     // if we have no name, or the default one,
     // better use the name of the top level collection
@@ -346,8 +346,8 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
           if ( headChanged && !bodyChanged ) {
             //only the head has changed, get the current version of the mail
             //replace the head and store the new mail in the file
-            QByteArray currentData = dir.readEntry( newItem.remoteId() );
-            QByteArray newHead = mail->head();
+            const QByteArray currentData = dir.readEntry( newItem.remoteId() );
+            const QByteArray newHead = mail->head();
             mail->setContent( currentData );
             mail->setHead( newHead );
             mail->parse();
@@ -774,8 +774,8 @@ void MaildirResource::fsWatchFileFetchResult( KJob* job )
   if ( items.isEmpty() )
     return;
 
-  QString fileName = job->property( "entry" ).toString();
-  QString path = job->property( "dir" ).toString();
+  const QString fileName = job->property( "entry" ).toString();
+  const QString path = job->property( "dir" ).toString();
 
   const Maildir md( path );
 
