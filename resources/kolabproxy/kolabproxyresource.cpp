@@ -479,7 +479,6 @@ void KolabProxyResource::collectionAdded( const Akonadi::Collection &collection,
                << "doesn't have kolab type set. isValid = "
                << "; parent is " << parent.name() << parent.id() << parent.isValid();
     cancelTask( QLatin1String( "Collection doesn't have kolab type." ) );
-    Q_ASSERT_X( false, "collectionAdded", "Collection doesn't have kolab type set. Crashing..." );
     return;
   }
 
