@@ -399,7 +399,7 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   restartMaildirScan( destDir );
 
   if ( newRid.isEmpty() ) {
-    cancelTask( i18n( "Could not move message '%1'.", item.remoteId() ) );
+    cancelTask( i18n( "Could not move message '%1' from '%2' to '%3'.", item.remoteId(), sourceDir.path(), destDir.path() ) );
     return;
   }
 
