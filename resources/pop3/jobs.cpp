@@ -28,7 +28,7 @@
 #include <KLocalizedString>
 
 POPSession::POPSession( const QString &password )
-  : mPassword( password )
+  : mCurrentJob(0), mPassword( password )
 {
   KIO::Scheduler::connect(
     SIGNAL(slaveError(KIO::Slave*,int,QString)), this,
