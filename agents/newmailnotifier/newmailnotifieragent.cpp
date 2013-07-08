@@ -252,11 +252,11 @@ void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::
             mNewMails[ collectionSource ] = idListFrom;
             if ( mNewMails[collectionSource].isEmpty() )
                 mNewMails.remove( collectionSource );
-        }
-        if ( !excludeSpecialCollection(collectionDestination) ) {
-            QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
-            idListTo.append( item.id() );
-            mNewMails[ collectionDestination ] = idListTo;
+            if ( !excludeSpecialCollection(collectionDestination) ) {
+                QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
+                idListTo.append( item.id() );
+                mNewMails[ collectionDestination ] = idListTo;
+            }
         }
     }
 }
