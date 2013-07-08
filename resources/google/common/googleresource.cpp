@@ -161,7 +161,6 @@ void GoogleResource::slotAccountInfoReceived( KGAPI2::Job* job )
     m_account = AccountPtr( new Account( info->email(),
                                          aiJob->property( ACCESS_TOKEN_PROPERTY ).toString() ) );
 
-
     settings()->writeConfig();
 
     KGAPI2::Job *otherJob = 0;

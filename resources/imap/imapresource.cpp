@@ -388,7 +388,15 @@ void ImapResource::itemsRemoved( const Akonadi::Item::List &items )
 void ImapResource::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &source,
                                const Akonadi::Collection &destination )
 {
-  Q_ASSERT( items.first().parentCollection() == destination ); // should have been set by the server
+  if ( items.first().parentCollection() != destination ) { // should have been set by the server
+    kWarning() << "Collections don't match: destination=" << destination.id()
+               << "; items parent=" << items.first().parentCollection().id()
+               << "; source collection=" << source.id();
+    //Q_ASSERT( false );
+    //TODO: Find out why this happens
+    cancelTask();
+    return;
+  }
 
   emit status( AgentBase::Running, i18nc( "@info:status", "Moving items from '%1' to '%2'", source.name(), destination.name() ) );
 

@@ -78,6 +78,7 @@ public:
   void disconnect( SessionTermination termination = LogoutSession );
 
   qint64 requestSession();
+  void cancelSessionRequest( qint64 id );
   void releaseSession( KIMAP::Session *session );
 
   ImapAccount *account() const;

@@ -1,5 +1,5 @@
 [Global]
-IconName=mail-folder-outbox
+IconName=kmail
 Comment=New email notify
 Comment[bs]=Obavijest o novoj pošti
 Comment[ca]=Notificador de correu electrònic nou

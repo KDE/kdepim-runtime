@@ -1,3 +1,2 @@
 #! /bin/sh
-$EXTRACTRC *.ui *.kcfg >> rc.cpp
-$XGETTEXT *.cpp -o $podir/newmailnotifieragent.pot
+$XGETTEXT *.cpp -o $podir/akonadi_newmailnotifier_agent.pot

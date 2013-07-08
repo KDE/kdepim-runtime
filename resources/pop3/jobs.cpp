@@ -28,7 +28,7 @@
 #include <KLocalizedString>
 
 POPSession::POPSession( const QString &password )
-  : mPassword( password )
+  : mCurrentJob(0), mPassword( password )
 {
   KIO::Scheduler::connect(
     SIGNAL(slaveError(KIO::Slave*,int,QString)), this,
@@ -185,7 +185,7 @@ static QString intListToString( const QList<int> &intList )
 {
   QString idList;
   foreach( int id, intList )
-    idList += QString::number( id ) + ',';
+    idList += QString::number( id ) + QLatin1Char(',');
   idList.chop( 1 );
   return idList;
 }
@@ -318,7 +318,7 @@ ListJob::ListJob( POPSession *popSession )
 
 void ListJob::start()
 {
-  startJob( "/index" );
+  startJob( QLatin1String("/index") );
 }
 
 void ListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
@@ -366,7 +366,7 @@ UIDListJob::UIDListJob( POPSession *popSession )
 
 void UIDListJob::start()
 {
-  startJob( "/uidl" );
+  startJob( QLatin1String("/uidl") );
 }
 
 void UIDListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )

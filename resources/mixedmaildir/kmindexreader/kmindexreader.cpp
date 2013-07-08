@@ -177,6 +177,7 @@ bool KMIndexData::isEmpty() const
 KMIndexReader::KMIndexReader(const QString& indexFile)
 : mIndexFileName( indexFile )
 , mIndexFile( indexFile )
+, mConvertToUtf8 ( false )
 , mIndexSwapByteOrder( false )
 , mHeaderOffset( 0 )
 , mError( false )

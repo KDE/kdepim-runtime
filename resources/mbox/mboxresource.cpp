@@ -145,7 +145,7 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
     return false;
   }
 
-  QString rid = item.remoteId();
+  const QString rid = item.remoteId();
   const quint64 offset = itemOffset( rid );
   KMime::Message *mail = mMBox->readMessage( KMBox::MBoxEntry( offset ) );
   if ( !mail ) {
@@ -186,8 +186,8 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   }
 
   scheduleWrite();
-  const QString rid = QString::number( collection.id() ) + "::"
-                      + collection.remoteId() + "::" + QString::number( entry.messageOffset() );
+  const QString rid = QString::number( collection.id() ) + QLatin1String("::")
+                      + collection.remoteId() + QLatin1String("::") + QString::number( entry.messageOffset() );
 
   Item i( item );
   i.setRemoteId( rid );

@@ -5,29 +5,48 @@ include_directories(
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
-option(BUILD_NEW_MAIL_NOTIFIER_AGENT FALSE "Build mobile new mail notification agent")
-if (BUILD_NEW_MAIL_NOTIFIER_AGENT)
 
 set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
+  newmailnotifierattribute.cpp
+  specialnotifierjob.cpp
+  util.cpp
 )
 
-if (NOT WINCE)
-  kde4_add_plugin(newmailnotifieragent ${newmailnotifieragent_SRCS})
-else ()
-  kde4_add_plugin(newmailnotifieragent STATIC ${newmailnotifieragent_SRCS})
-endif ()
+kde4_add_kcfg_files(newmailnotifieragent_SRCS
+    newmailnotifieragentsettings.kcfgc
+  )
 
-target_link_libraries(newmailnotifieragent
+
+qt4_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
+
+
+kde4_add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
+
+
+target_link_libraries( akonadi_newmailnotifier_agent
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${KDEPIMLIBS_KMIME_LIBS}
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
+  ${KDE4_KNOTIFYCONFIG_LIBS}
+  ${KDEPIMLIBS_KABC_LIBS}
+  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS}
 )
 
-install(TARGETS newmailnotifieragent DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
-install(FILES akonadi_newmailnotify_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotify_agent" )
 
+if (Q_WS_MAC)
+  set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/Info.plist.template)
+  set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.newmailnotifier")
+  set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE New Mail Notifier")
 endif ()
+
+install(TARGETS akonadi_newmailnotifier_agent ${INSTALL_TARGETS_DEFAULT_ARGS} )
+
+
+install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotifier_agent" )
+
+add_subdirectory(kconf_update)

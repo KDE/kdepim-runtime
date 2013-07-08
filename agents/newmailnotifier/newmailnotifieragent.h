@@ -1,4 +1,6 @@
 /*
+    Copyright (c) 2013 Laurent Montel <montel@kde.org>
+
     Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
@@ -23,22 +25,66 @@
 #include <akonadi/collection.h> // make sure this is included before QHash, otherwise it wont find the correct qHash implementation for some reason
 #include <akonadi/agentbase.h>
 
-#include <QtCore/QTimer>
+#include <QTimer>
+#include <QStringList>
+
+namespace Akonadi {
+class AgentInstance;
+}
 
 class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     explicit NewMailNotifierAgent( const QString &id );
+
+
+    void setEnableNotifier(bool b);
+    bool enabledNotifier() const;
+
+    void setVerboseMailNotification(bool b);
+    bool verboseMailNotification() const;
+
+    void setBeepOnNewMails(bool b);
+    bool beepOnNewMails() const;
+
+    void setShowPhoto(bool b);
+    bool showPhoto() const;
+
+    void setShowFrom(bool b);
+    bool showFrom() const;
+
+    void setShowSubject(bool b);
+    bool showSubject() const;
+
+    void setShowFolderName(bool b);
+    bool showFolderName() const;
+
+
+    void printDebug();
+
+protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
+    void itemRemoved( const Akonadi::Item &item );
+    void itemChanged( const Akonadi::Item &, const QSet< QByteArray > &);
+    void doSetOnline(bool online);
 
-  private slots:
-    void showNotifications();
+private slots:
+    void slotShowNotifications();
+    void configure(WId windowId);
+    void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
+    void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
+    void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
 
-  private:
-    QHash<Akonadi::Collection, int> m_newMails;
-    QTimer m_timer;
+private:
+    bool isActive() const;
+    void clearAll();
+    bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
+    QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
+    QTimer mTimer;
+    QStringList mInstanceNameInProgress;
 };
 
 #endif

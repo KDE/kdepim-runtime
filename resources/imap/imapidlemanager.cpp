@@ -52,8 +52,13 @@ ImapIdleManager::~ImapIdleManager()
   if ( m_idle ) {
     m_idle->stop();
   }
-  if ( m_pool && m_session ) {
-    m_pool->releaseSession( m_session );
+  if ( m_pool ) {
+    if ( m_sessionRequestId ) {
+      m_pool->cancelSessionRequest( m_sessionRequestId );
+    }
+    if ( m_session ) {
+      m_pool->releaseSession( m_session );
+    }
   }
 }
 

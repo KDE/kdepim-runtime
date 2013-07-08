@@ -22,11 +22,18 @@
 #include <KDebug>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <nepomuk2/storeresourcesjob.h>
 #include <KUrl>
+
+#include <Nepomuk2/DataManagement>
+#include <Nepomuk2/StoreResourcesJob>
+#include <Nepomuk2/ResourceManager>
+
+#include <Soprano/Model>
+#include <Soprano/QueryResultIterator>
 
 #include <Nepomuk2/Vocabulary/NCO>
 #include <Nepomuk2/Vocabulary/NMO>
+#include <Nepomuk2/Vocabulary/NIE>
 #include <Soprano/Vocabulary/NAO>
 
 using namespace Nepomuk2::Vocabulary;
@@ -38,7 +45,6 @@ ItemQueue::ItemQueue(int batchSize, int fetchSize, QObject* parent)
 : QObject(parent),
   mBatchSize( batchSize ),
   mFetchSize( fetchSize ),
-  mRunningJobs( 0 ),
   mDelay( 0 ),
   mAverageIndexingTime(0),
   mNumberOfIndexedItems(0)
@@ -106,12 +112,11 @@ Akonadi::Item::List ItemQueue::fetchHighestPriorityItems(int numItems)
 bool ItemQueue::processBatch()
 {
   kDebug() << "pipline size: " << mItemPipeline.size() << mFetchedItemList.size();
-  if ( mRunningJobs > 0 ) {//wait until the old graph has been saved
-    kDebug() << "blocked: " << mRunningJobs;
+  if ( runningJobCount() > 0 ) {//wait until the old graph has been saved
+    kDebug() << "blocked: " << runningJobCount();
     return false;
   }
-  Q_ASSERT( mRunningJobs == 0 );
-  mRunningJobs = 0;
+  Q_ASSERT( runningJobCount() == 0 );
 
   if ( mItemPipeline.isEmpty() && mFetchedItemList.isEmpty() ) {
     return false;
@@ -130,7 +135,7 @@ bool ItemQueue::processBatch()
     job->setProperty( "numberOfItems", itemFetchList.size() );
 
     connect( job, SIGNAL(result(KJob*)), SLOT(fetchJobResult(KJob*)) );
-    mRunningJobs++;
+    addJob( job );
     return true;
   }
 
@@ -139,7 +144,7 @@ bool ItemQueue::processBatch()
 
 void ItemQueue::fetchJobResult(KJob* job)
 {
-  mRunningJobs--;
+  removeJob( job );
   if ( job->error() ) {
     kWarning() << job->errorString();
     emit batchFinished();
@@ -189,7 +194,7 @@ bool ItemQueue::indexBatch()
     KJob *job = Nepomuk2::removeDataByApplication( akondiUrls, Nepomuk2::RemoveSubResoures, KGlobal::mainComponent() );
     job->setProperty("graph", QVariant::fromValue(resourceGraph));
     connect( job, SIGNAL(finished(KJob*)), this, SLOT(removeDataResult(KJob*)) );
-    mRunningJobs++;
+    addJob( job );
     return true;
   }
 
@@ -198,21 +203,67 @@ bool ItemQueue::indexBatch()
 
 void ItemQueue::removeDataResult(KJob* job)
 {
-  mRunningJobs--;
+  removeJob( job );
   if ( job->error() )
     kWarning() << job->errorString();
 
   //All old items have been removed, so we can now store the new items
   const Nepomuk2::SimpleResourceGraph graph = job->property("graph").value<Nepomuk2::SimpleResourceGraph>();
+  Nepomuk2::SimpleResourceGraph identifiedGraph = mPropertyCache.applyCache( graph );
+
+  foreach(const QUrl& uri, identifiedGraph.allResourceUris()) {
+      Nepomuk2::SimpleResource res = identifiedGraph[uri];
+      if( res.contains(NMO::plainTextMessageContent()) ) {
+          mPlainTextContent.insert( uri, res.property(NMO::plainTextMessageContent()).first().toString() );
+          identifiedGraph[uri].remove(NMO::plainTextMessageContent());
+      }
+  }
+
   KJob *addGraphJob = NepomukHelpers::addGraphToNepomuk( mPropertyCache.applyCache( graph ) );
   addGraphJob->setProperty("graph", QVariant::fromValue( graph ));
   connect( addGraphJob, SIGNAL(result(KJob*)), SLOT(batchJobResult(KJob*)) );
-  mRunningJobs++;
+  addJob( addGraphJob );
 }
 
+namespace {
+    void setNmoPlainTextContent(const QUrl& uri, const QString& plainText_) {
+        if( uri.isEmpty() || plainText_.isEmpty() )
+            return;
+
+        QString plainText( plainText_ );
+        // This number has been experimentally chosen. Virtuoso cannot handle more than this
+        static const int maxSize = 2490000;
+        if( plainText.size() > maxSize )  {
+            kWarning() << "Trimming plain text content from " << plainText.size() << " to " << maxSize;
+            plainText.resize( maxSize );
+        }
+
+        QString uriN3 = Soprano::Node::resourceToN3( uri );
+
+        QString query = QString::fromLatin1("select ?g where { graph ?g { %1 a aneo:AkonadiDataObject . } }")
+        .arg ( uriN3 );
+        Soprano::Model* model = Nepomuk2::ResourceManager::instance()->mainModel();
+        Soprano::QueryResultIterator it = model->executeQuery( query, Soprano::Query::QueryLanguageSparqlNoInference );
+
+        QUrl graph;
+        if( it.next() ) {
+            graph = it[0].uri();
+            it.close();
+        }
+
+        if( !graph.isEmpty() ) {
+            QString graphN3 = Soprano::Node::resourceToN3( graph );
+            QString insertCommand = QString::fromLatin1("sparql insert { graph %1 { %2 nmo:plainTextMessageContent %3 . } }")
+                                    .arg( graphN3, uriN3, Soprano::Node::literalToN3(plainText) );
+
+            model->executeQuery( insertCommand, Soprano::Query::QueryLanguageUser, QLatin1String("sql") );
+        }
+    }
+
+}
 void ItemQueue::batchJobResult(KJob* job)
 {
-  mRunningJobs--;
+  removeJob( job );
   // FIXME: Only compute all of this if DEBUG messages have been enabled
   kDebug() << "------------------------------------------";
   kDebug() << "pipline size: " << mItemPipeline.size();
@@ -233,6 +284,15 @@ void ItemQueue::batchJobResult(KJob* job)
     Nepomuk2::StoreResourcesJob *storeResourcesJob = static_cast<Nepomuk2::StoreResourcesJob*>(job);
     Q_ASSERT(storeResourcesJob);
     mPropertyCache.fillCache(graph, storeResourcesJob->mappings());
+
+    // Store the plain text
+    const QHash<QUrl, QUrl> mappings = storeResourcesJob->mappings();
+    QList<QUrl> keys = mappings.uniqueKeys();
+    foreach(const QUrl& key, keys) {
+        const QUrl uri = mappings.value(key);
+        setNmoPlainTextContent( uri, mPlainTextContent.value(key) );
+    }
+    mPlainTextContent.clear();
   }
 
   QTimer::singleShot( mDelay, this, SLOT(slotEmitFinished()) );
@@ -257,10 +317,43 @@ void ItemQueue::slotEmitFinished()
 
 void ItemQueue::clear()
 {
-  mRunningJobs = 0;
+  if ( runningJobCount() > 0 ) {
+    kWarning() << "called with " << runningJobCount() << " jobs outstanding!";
+    killAllJobs();
+  }
   mItemPipeline.clear();
   mFetchedItemList.clear();
 }
 
+int ItemQueue::runningJobCount() const
+{
+  return mJobs.count();
+}
+
+void ItemQueue::addJob(KJob *job)
+{
+  if ( mJobs.contains(job) )
+    kWarning() << "Job Already exists!";
+  else
+    mJobs.insert(job);
+}
+
+void ItemQueue::removeJob(KJob *job)
+{
+  if ( !mJobs.contains(job) )
+    kWarning() << "Job does not exist!";
+  else
+    mJobs.remove(job);
+}
+
+void ItemQueue::killAllJobs()
+{
+  QSetIterator<KJob *> i(mJobs);
+  while (i.hasNext()) {
+     KJob *job = i.next();
+     job->kill(KJob::Quietly);
+  }
+  mJobs.clear();
+}
 
 #include "itemqueue.moc"

@@ -35,7 +35,7 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "beta1")
+    set(KDEPIM_RUNTIME_DEV_VERSION "beta2")
 endif()
 
 set(KDEPIM_RUNTIME_VERSION "4.11${KDEPIM_RUNTIME_DEV_VERSION}")
@@ -56,7 +56,7 @@ find_package(KDE4 4.10.0 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.10.80)
+find_package(KdepimLibs 4.10.90)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
@@ -255,4 +255,7 @@ endif ()
 install(FILES kdepim-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
-feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+feature_summary(WHAT ALL
+                     INCLUDE_QUIET_PACKAGES
+                     FATAL_ON_MISSING_REQUIRED_PACKAGES
+               )

@@ -106,14 +106,13 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
                        m_collection.name() ) );
   }
 
-  if ( !m_collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>() ) {
+  const Akonadi::CollectionAnnotationsAttribute *attribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
+  if ( !attribute ) {
     // we are finished
     changeCommitted( m_collection );
     synchronizeCollectionTree();
     return;
   }
-
-  const Akonadi::CollectionAnnotationsAttribute *attribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
 
   const QMap<QByteArray, QByteArray> annotations = attribute->annotations();
 

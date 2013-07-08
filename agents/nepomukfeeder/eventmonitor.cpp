@@ -36,7 +36,7 @@ Nepomuk2::EventMonitor::EventMonitor( QObject* parent )
     : QObject( parent )
 {
     // monitor the powermanagement to not drain the battery
-    connect( Solid::PowerManagement::notifier(), SIGNAL( appShouldConserveResourcesChanged( bool ) ),
+    connect( Solid::PowerManagement::notifier(), SIGNAL(appShouldConserveResourcesChanged(bool)),
              this, SLOT(slotPowerManagementStatusChanged(bool)) );
 
     // setup idle time

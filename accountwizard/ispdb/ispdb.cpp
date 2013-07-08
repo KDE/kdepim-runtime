@@ -68,7 +68,7 @@ void Ispdb::lookupInDb()
   {
   case IspAutoConfig:
   {
-    url = KUrl( "http://autoconfig." + mAddr.domain.toLower() + "/mail/config-v1.1.xml" );
+    url = KUrl( "http://autoconfig." + mAddr.domain.toLower() + "/mail/config-v1.1.xml?emailaddress=" + mAddr.asString().toLower() );
   }
   break;
   case IspWellKnow:
@@ -77,7 +77,7 @@ void Ispdb::lookupInDb()
     break;
   }
   case DataBase:
-    url = KUrl( "https://live.mozillamessaging.com/autoconfig/v1.1/" + mAddr.domain.toLower() );
+    url = KUrl( "https://autoconfig.thunderbird.net/v1.1/" + mAddr.domain.toLower() );
   break;
   }
   startJob( url );
@@ -138,14 +138,21 @@ void Ispdb::slotResult( KJob* job )
             else if ( tagName == QLatin1String( "displayShortName" ) )
                 mDisplayShortName = e.text();
             else if ( tagName == QLatin1String( "incomingServer" )
-                      && e.attribute( "type" ) == QLatin1String( "imap" ) )
-                mImapServers.append( createServer( e ) );
-            else if ( tagName == QLatin1String( "incomingServer" )
-                      && e.attribute( "type" ) == QLatin1String( "pop3" ) )
-                mPop3Servers.append( createServer( e ) );
-            else if ( tagName == QLatin1String( "outgoingServer" )
-                      && e.attribute( "type" ) == QLatin1String( "smtp" ) )
-                mSmtpServers.append( createServer( e ) );
+                      && e.attribute( "type" ) == QLatin1String( "imap" ) ) {
+                server s = createServer( e );
+                if (s.isValid()) 
+                   mImapServers.append( s );
+            } else if ( tagName == QLatin1String( "incomingServer" ) 
+                      && e.attribute( "type" ) == QLatin1String( "pop3" ) ) {
+                server s = createServer( e );
+                if (s.isValid())
+                   mPop3Servers.append( s );
+            } else if ( tagName == QLatin1String( "outgoingServer" )
+                      && e.attribute( "type" ) == QLatin1String( "smtp" ) ) {
+                server s = createServer( e );
+                if (s.isValid())
+                   mSmtpServers.append( s );
+            }
         }
         n = n.nextSibling();
     }
