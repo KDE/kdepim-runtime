@@ -114,6 +114,14 @@ private:
 };
 
 struct server {
+    server() {
+       port = -1;
+       authentication = Ispdb::Plain;
+       socketType = Ispdb::None;
+    }
+    bool isValid() const {
+       return (port != -1);
+    }
     QString hostname;
     int port;
     Ispdb::socketType socketType;

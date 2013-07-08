@@ -66,6 +66,8 @@ POP3Resource::POP3Resource( const QString &id )
 POP3Resource::~POP3Resource()
 {
   Settings::self()->writeConfig();
+  delete mWallet;
+  mWallet = 0;
 }
 
 void POP3Resource::configurationChanged()

@@ -379,7 +379,7 @@ Maildir Maildir::parent() const
     return Maildir();
   QDir dir( d->path );
   dir.cdUp();
-  if ( !dir.dirName().startsWith( '.' ) || !dir.dirName().endsWith( QLatin1String( ".directory" ) ) )
+  if ( !dir.dirName().startsWith( QLatin1Char('.') ) || !dir.dirName().endsWith( QLatin1String( ".directory" ) ) )
     return Maildir();
   const QString parentName = dir.dirName().mid( 1, dir.dirName().size() - 11 );
   dir.cdUp();
@@ -438,7 +438,8 @@ QStringList Maildir::subFolderList() const
     // the root maildir has its subfolders directly beneath it
     if ( !d->isRoot ) {
         dir.cdUp();
-        if ( !dir.exists( d->subDirPath() ) ) return QStringList();
+        if ( !dir.exists( d->subDirPath() ) )
+            return QStringList();
         dir.cd( d->subDirPath() );
     }
     dir.setFilter( QDir::Dirs | QDir::NoDotAndDotDot );
@@ -537,7 +538,7 @@ static QString createUniqueFileName()
     int r = qrand() % 1000;
     QString identifier = QLatin1String( "R" ) + QString::number( r );
 
-    QString fileName = QString::number( time ) + QLatin1String( "." ) + identifier + QLatin1String( "." );
+    QString fileName = QString::number( time ) + QLatin1Char( '.' ) + identifier + QLatin1Char( '.' );
 
     return fileName;
 }
@@ -668,7 +669,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
          int i = 1;
          while ( QFile::exists( d->path + QString::fromLatin1( "/cur/" ) + newFinalKey ) ) {
            i++;
-           newFinalKey = QString::number( i ) + '-' + newUniqueKey;
+           newFinalKey = QString::number( i ) + QLatin1Char('-') + newUniqueKey;
          }
          finalKey = d->path + QString::fromLatin1( "/cur/" ) + newFinalKey;
       } else {
@@ -696,7 +697,8 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString& key) const
     const int index = key.indexOf( rx );
     if ( index != -1 ) {
         const QString mailDirFlags = key.mid( index + 3 ); // after "(:|!)2,"
-        for ( int i = 0; i < mailDirFlags.size(); i++ ) {
+        const int flagSize(mailDirFlags.size());
+        for ( int i = 0; i < flagSize; ++i ) {
             if ( mailDirFlags[i] == QLatin1Char( 'P' ) )
                 flags << Akonadi::MessageFlags::Forwarded;
             else if ( mailDirFlags[i] == QLatin1Char( 'R' ) )

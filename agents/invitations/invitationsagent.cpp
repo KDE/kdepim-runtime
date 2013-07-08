@@ -232,7 +232,6 @@ InvitationsAgent::InvitationsAgent( const QString &id )
   , m_invitationsCollection( new InvitationsCollection( this ) )
 {
   kDebug();
-  KGlobal::locale()->insertCatalog( "akonadi_invitations_agent" );
 
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
   changeRecorder()->itemFetchScope().fetchFullPayload();

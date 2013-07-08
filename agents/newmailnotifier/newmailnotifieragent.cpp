@@ -55,7 +55,6 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     : AgentBase( id )
 {
-    KGlobal::locale()->insertCatalog( "newmailnotifieragent" );
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );
 

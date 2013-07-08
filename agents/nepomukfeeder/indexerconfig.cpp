@@ -34,10 +34,10 @@ IndexerConfig::IndexerConfig(QObject* parent)
     , m_isEnabled( true )
 {
     KDirWatch* dirWatch = KDirWatch::self();
-    connect( dirWatch, SIGNAL( dirty( const QString& ) ),
-             this, SLOT( slotConfigDirty() ) );
-    connect( dirWatch, SIGNAL( created( const QString& ) ),
-             this, SLOT( slotConfigDirty() ) );
+    connect( dirWatch, SIGNAL(dirty(QString)),
+             this, SLOT(slotConfigDirty()) );
+    connect( dirWatch, SIGNAL(created(QString)),
+             this, SLOT(slotConfigDirty()) );
     dirWatch->addFile( KStandardDirs::locateLocal( "config", m_config.name() ) );
 
     KConfigGroup cfgGrp( &m_config, "akonadi_nepomuk_email_feeder" );
