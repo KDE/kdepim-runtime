@@ -38,8 +38,8 @@ QTEST_KDEMAIN( MaildirTest, NoGUI )
 using namespace KPIM;
 
 static const char * testDir = "libmaildir-unit-test";
-static const char * testString = "From: theDukeOfMonmouth@uk.gov\n\ntest\n";
-static const char * testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n";
+static const char * testString = "From: theDukeOfMonmouth@uk.gov\n \nTo: theDukeOfBuccleuch@uk.gov\n\ntest\n";
+static const char * testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n \nTo: theDukeOfBuccleuch@uk.gov\n";
 
 void MaildirTest::init()
 {
