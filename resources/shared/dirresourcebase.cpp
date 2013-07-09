@@ -24,6 +24,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
+#include <QtCore/QTimer>
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ChangeRecorder>
@@ -46,6 +47,8 @@ DirResourceBase::DirResourceBase( const QString &id )
     changeRecorder()->itemFetchScope().fetchFullPayload();
 
     initializeDirWatch();
+
+    QTimer::singleShot( 0, this, SLOT(loadEntities()) );
 }
 
 DirResourceBase::~DirResourceBase()
@@ -170,11 +173,16 @@ bool DirResourceBase::loadEntities()
 {
     clear();
 
+    if ( directoryName().isEmpty() ) {
+        return false;
+    }
+
     QDirIterator it( directoryName() );
     while ( it.hasNext() ) {
         it.next();
         if ( it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt" ) {
             loadEntity( it.filePath() );
+            mIgnoredPaths.removeAll( it.filePath() );
         }
     }
 

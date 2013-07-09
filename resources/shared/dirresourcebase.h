@@ -53,6 +53,8 @@ class DirResourceBase : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     virtual void slotFileCreated( const QString &path ) = 0;
     virtual void slotFileDeleted( const QString &path ) = 0;
 
+    bool loadEntities();
+
   protected:
     virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) = 0;
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) = 0;
@@ -69,7 +71,6 @@ class DirResourceBase : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     Akonadi::Collection createCollection() const;
 
     bool ensureReady( const QString &path, DirResourceBase::FileEvent event );
-    bool loadEntities();
     void initializeDirectory();
 
     QString createUniqueId() const;
