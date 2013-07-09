@@ -190,7 +190,7 @@ QString DirResourceBase::directoryName() const
 
 QString DirResourceBase::directoryFileName( const QString &file ) const
 {
-    return Settings::self()->path() + QDir::separator() + file;
+    return QDir::cleanPath( Settings::self()->path() + QDir::separator() + file + fileNameExtension() );
 }
 
 Collection DirResourceBase::createCollection() const
@@ -215,5 +215,13 @@ Collection DirResourceBase::createCollection() const
     return c;
 }
 
+QString DirResourceBase::createUniqueId() const
+{
+    qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
+    int r = qrand() % 1000;
+    const QString identifier = QLatin1String( "R" ) + QString::number( r );
+    const QString fileName = QString::number( time ) + QLatin1String( "." ) + identifier;
+    return fileName;
+}
 
 #include "dirresourcebase.moc"

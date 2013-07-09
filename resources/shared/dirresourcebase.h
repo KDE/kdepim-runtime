@@ -60,6 +60,8 @@ class DirResourceBase : public Akonadi::ResourceBase, public Akonadi::AgentBase:
 
     virtual QString mimeType() const = 0;
     virtual QString loadEntity( const QString &filePath ) = 0;
+    virtual QString fileNameExtension() const = 0;
+
     virtual void clear();
 
     QString directoryName() const;
@@ -69,6 +71,8 @@ class DirResourceBase : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     bool ensureReady( const QString &path, DirResourceBase::FileEvent event );
     bool loadEntities();
     void initializeDirectory();
+
+    QString createUniqueId() const;
 
   protected:
     KDirWatch *mDirWatch;

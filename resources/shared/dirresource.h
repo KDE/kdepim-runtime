@@ -27,7 +27,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QMap>
+#include <QtCore/QHash>
 
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemModifyJob>
@@ -51,15 +51,13 @@ class DirResource : public DirResourceBase
     }
 
   protected:
-    virtual bool writeToFile( const Payload &payload ) const = 0;
+    virtual bool writeToFile( const Payload &payload, const QString &filePath ) const = 0;
     virtual Payload readFromFile( const QString &filePath ) const = 0;
-    virtual QString payloadId( const Payload &payload ) const = 0;
     virtual bool isEmpty( const Payload &payload ) const = 0;
 
     void clear()
     {
         mItems.clear();
-        mPaths.clear();
     }
 
     QString loadEntity( const QString &filePath )
@@ -71,9 +69,9 @@ class DirResource : public DirResourceBase
             mIgnoredPaths << filePath;
             mDirWatch->startScan( true );
 
-            const QString uid = payloadId( payload );
+            QFileInfo fInfo( filePath );
+            const QString uid = fInfo.fileName().remove( fileNameExtension() );
             mItems.insert( uid, payload );
-            mPaths.insert( filePath, uid );
 
             return uid;
         }
@@ -84,7 +82,7 @@ class DirResource : public DirResourceBase
         return QString();
     }
 
-    bool retrieveItem( const Akonadi::Item& item, const QSet< QByteArray >& parts )
+    bool retrieveItem( const Akonadi::Item& item, const QSet<QByteArray> &parts )
     {
         const QString remoteId = item.remoteId();
         if ( !mItems.contains( remoteId ) ) {
@@ -100,12 +98,12 @@ class DirResource : public DirResourceBase
         return true;
     }
 
-    void itemAdded( const Akonadi::Item& item, const Akonadi::Collection &collection )
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
     {
         storeItem( item );
     }
 
-    void itemChanged( const Akonadi::Item& item, const QSet< QByteArray > &parts )
+    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts )
     {
         storeItem( item );
     }
@@ -124,7 +122,6 @@ class DirResource : public DirResourceBase
         // ... and remove it from the file system
         mDirWatch->stopScan();
         const QString filePath = directoryFileName( item.remoteId() );
-        mPaths.remove( filePath );
 
         QFile::remove( filePath );
         mIgnoredPaths << filePath;
@@ -147,17 +144,16 @@ class DirResource : public DirResourceBase
         }
 
         if ( !isEmpty( payload ) ) {
-            const QString uid = payloadId( payload );
+            const QString uid = createUniqueId();
             // add it to the cache.
             mItems.insert( uid, payload );
 
             // ... and write it through to the file system
             mDirWatch->stopScan();
             const QString fileName = directoryFileName( uid );
-            bool success = writeToFile( payload );
+            bool success = writeToFile( payload, fileName );
             if ( success ) {
                 mIgnoredPaths << fileName;
-                mPaths.insert( fileName, uid );
 
                 // report everything ok
                 Akonadi::Item newItem( item );
@@ -179,10 +175,11 @@ class DirResource : public DirResourceBase
 
         Akonadi::Item::List items;
 
-        Q_FOREACH ( const Payload &payload, mItems ) {
+        Q_FOREACH ( const QString &uid, mItems.keys() ) {
             Akonadi::Item item;
-            item.setRemoteId( payloadId( payload ) );
+            item.setRemoteId( uid );
             item.setMimeType( mimeType() );
+            item.setPayload( mItems.value( uid ) );
             items.append( item );
         }
 
@@ -218,9 +215,9 @@ class DirResource : public DirResourceBase
             return;
         }
 
-        const QString uid = loadEntity( path );
+        const QString uid = fInfo.fileName().remove( fileNameExtension() );
         // File modification does not cause any further notifications
-        mIgnoredPaths.removeAll( mPaths.key( uid ) );
+        mIgnoredPaths.removeAll( directoryFileName( uid ) );
 
         if ( !uid.isEmpty() ) {
             Akonadi::Item item;
@@ -239,8 +236,10 @@ class DirResource : public DirResourceBase
             return;
         }
 
-        if ( mPaths.contains( path ) ) {
-            const QString uid = mPaths.value( path );
+        QFileInfo fInfo( path );
+
+        const QString uid = fInfo.fileName().remove( fileNameExtension() );
+        if ( mItems.contains( uid ) ) {
             mItems.remove( uid );
             Akonadi::Item item;
             item.setRemoteId( uid );
@@ -252,7 +251,6 @@ class DirResource : public DirResourceBase
 
   protected:
     QHash<QString /* uid */, Payload> mItems;
-    QHash<QString /* file */, QString /* uid */> mPaths;
 
 };
 

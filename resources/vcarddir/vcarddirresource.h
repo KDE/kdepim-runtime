@@ -34,14 +34,16 @@ class VCardDirResource : public DirResource<KABC::Addressee>
   protected:
     void retrieveCollections();
 
-    QString payloadId(const KABC::Addressee& payload) const;
+    QString fileNameExtension() const {
+        return QLatin1String(".vcard");
+    }
     QString mimeType() const;
     bool isEmpty( const KABC::Addressee &payload ) const {
         return payload.isEmpty();
     }
 
     KABC::Addressee readFromFile( const QString &filePath ) const;
-    bool writeToFile( const KABC::Addressee &payload ) const;
+    bool writeToFile( const KABC::Addressee &payload, const QString &filePath ) const;
 
   private:
     KABC::VCardConverter mConverter;

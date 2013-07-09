@@ -34,14 +34,16 @@ class ICalDirResource : public DirResource<KCalCore::Incidence::Ptr>
   protected:
     void retrieveCollections();
 
-    QString payloadId( const KCalCore::Incidence::Ptr &payload ) const;
+    QString fileNameExtension() const {
+        return QLatin1String(".ical");
+    }
     QString mimeType() const;
     bool isEmpty( const KCalCore::Incidence::Ptr &payload ) const {
         return payload.isNull();
     }
 
     KCalCore::Incidence::Ptr readFromFile( const QString &file ) const;
-    bool writeToFile( const KCalCore::Incidence::Ptr &payload ) const;
+    bool writeToFile( const KCalCore::Incidence::Ptr &payload, const QString &filePath ) const;
 
 };
 

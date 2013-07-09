@@ -36,11 +36,6 @@ VCardDirResource::~VCardDirResource()
 {
 }
 
-QString VCardDirResource::payloadId( const KABC::Addressee &payload ) const
-{
-    return payload.uid();
-}
-
 QString VCardDirResource::mimeType() const
 {
     return KABC::Addressee::mimeType();
@@ -59,11 +54,11 @@ KABC::Addressee VCardDirResource::readFromFile( const QString &filePath ) const
     return KABC::Addressee();
 }
 
-bool VCardDirResource::writeToFile( const KABC::Addressee &payload ) const
+bool VCardDirResource::writeToFile( const KABC::Addressee &payload, const QString &filePath ) const
 {
     const QByteArray data = mConverter.createVCard( payload );
 
-    QFile file( directoryFileName( payload.uid() ) );
+    QFile file( filePath );
     if ( file.open( QIODevice::WriteOnly ) ) {
         file.write( data );
         file.close();

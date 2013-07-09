@@ -43,11 +43,6 @@ ICalDirResource::~ICalDirResource()
 {
 }
 
-QString ICalDirResource::payloadId( const Incidence::Ptr &payload ) const
-{
-    return payload->instanceIdentifier();
-}
-
 QString ICalDirResource::mimeType() const
 {
     //mimetypes << KCalCore::Event::eventMimeType() << KCalCore::Todo::todoMimeType() << KCalCore::Journal::journalMimeType() << "text/calendar";
@@ -64,7 +59,7 @@ Incidence::Ptr ICalDirResource::readFromFile( const QString &filePath ) const
     Incidence::Ptr incidence;
     if ( fileStorage->load() ) {
         Incidence::List incidences = calendar->incidences();
-        if ( incidences.count() == 1 && incidences.first()->instanceIdentifier() == fInfo.fileName() ) {
+        if ( incidences.count() == 1 ) {
             incidence = incidences.first();
         }
     }
@@ -72,14 +67,13 @@ Incidence::Ptr ICalDirResource::readFromFile( const QString &filePath ) const
     return incidence;
 }
 
-bool ICalDirResource::writeToFile( const Incidence::Ptr &incidence ) const
+bool ICalDirResource::writeToFile( const Incidence::Ptr &incidence, const QString &filePath ) const
 {
     if ( !incidence ) {
         kError() << "incidence is 0!";
         return false;
     }
 
-    const QString filePath = directoryFileName( incidence->instanceIdentifier() );
     MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr( new MemoryCalendar( QLatin1String( "UTC" ) ) );
     FileStorage::Ptr fileStorage = FileStorage::Ptr( new FileStorage( calendar, filePath, new ICalFormat() ) );
     calendar->addIncidence( incidence );
