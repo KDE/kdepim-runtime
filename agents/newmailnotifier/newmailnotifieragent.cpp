@@ -82,7 +82,6 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     if (isActive()) {
         mTimer.setSingleShot( true );
     }
-    //qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
 }
 
 void NewMailNotifierAgent::doSetOnline(bool online)
