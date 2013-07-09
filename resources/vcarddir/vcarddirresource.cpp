@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2008 Tobias Koenig <tokoe@kde.org>
     Copyright (c) 2008 Bertjan Broeksema <broeksema@kde.org>
+    Copyright (c) 2013 Daniel Vrátil <dvratil@redhat.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,261 +20,69 @@
 */
 
 #include "vcarddirresource.h"
-
-#include "settingsadaptor.h"
 #include "../shared/dirsettingsdialog.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QDirIterator>
-#include <QtCore/QFile>
-
-#include <akonadi/changerecorder.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <Akonadi/Collection>
+#include <Akonadi/EntityDisplayAttribute>
 
 using namespace Akonadi;
 
 VCardDirResource::VCardDirResource( const QString &id )
-  : ResourceBase( id )
+  : DirResource< KABC::Addressee >( id )
 {
-  // setup the resource
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
-
-  changeRecorder()->itemFetchScope().fetchFullPayload();
 }
 
 VCardDirResource::~VCardDirResource()
 {
-  // clear cache
-  mAddressees.clear();
 }
 
-void VCardDirResource::aboutToQuit()
+QString VCardDirResource::payloadId( const KABC::Addressee &payload ) const
 {
-  Settings::self()->writeConfig();
+    return payload.uid();
 }
 
-void VCardDirResource::configure( WId windowId )
+QString VCardDirResource::mimeType() const
 {
-  SettingsDialog dlg( windowId );
-  dlg.setWindowIcon( KIcon( "text-directory" ) );
-  if ( dlg.exec() ) {
-    initializeVCardDirectory();
-    loadAddressees();
-
-    synchronize();
-
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
+    return KABC::Addressee::mimeType();
 }
 
-bool VCardDirResource::loadAddressees()
+KABC::Addressee VCardDirResource::readFromFile( const QString &filePath ) const
 {
-  mAddressees.clear();
-
-  QDirIterator it( vCardDirectoryName() );
-  while ( it.hasNext() ) {
-    it.next();
-    if ( it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt" ) {
-      QFile file( it.filePath() );
-      if (file.open( QIODevice::ReadOnly )) {
+    QFile file( filePath );
+    if ( file.open( QIODevice::ReadOnly ) ) {
         const QByteArray data = file.readAll();
         file.close();
 
-        const KABC::Addressee addr = mConverter.parseVCard( data );
-        if ( !addr.isEmpty() ) {
-          mAddressees.insert( addr.uid(), addr );
-        }
-      } else {
-        kDebug()<<" file can't be load "<<it.filePath();
-      }
+        return mConverter.parseVCard( data );
     }
-  }
 
-  emit status( Idle );
-
-  return true;
+    return KABC::Addressee();
 }
 
-bool VCardDirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
+bool VCardDirResource::writeToFile( const KABC::Addressee &payload ) const
 {
-  const QString remoteId = item.remoteId();
-  if ( !mAddressees.contains( remoteId ) ) {
-    emit error( i18n( "Contact with uid '%1' not found.", remoteId ) );
+    const QByteArray data = mConverter.createVCard( payload );
+
+    QFile file( directoryFileName( payload.uid() ) );
+    if ( file.open( QIODevice::WriteOnly ) ) {
+        file.write( data );
+        file.close();
+
+        return true;
+    }
+
     return false;
-  }
-
-  Item newItem( item );
-  newItem.setPayload<KABC::Addressee>( mAddressees.value( remoteId ) );
-  itemRetrieved( newItem );
-
-  return true;
-}
-
-void VCardDirResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
-{
-  if ( Settings::self()->readOnly() ) {
-    emit error( i18n( "Trying to write to a read-only directory: '%1'", vCardDirectoryName() ) );
-    cancelTask();
-    return;
-  }
-
-  KABC::Addressee addressee;
-  if ( item.hasPayload<KABC::Addressee>() )
-    addressee  = item.payload<KABC::Addressee>();
-
-  if ( !addressee.isEmpty() ) {
-    // add it to the cache...
-    mAddressees.insert( addressee.uid(), addressee );
-
-    // ... and write it through to the file system
-    const QByteArray data = mConverter.createVCard( addressee );
-
-    QFile file( vCardDirectoryFileName( addressee.uid() ) );
-    file.open( QIODevice::WriteOnly );
-    file.write( data );
-    file.close();
-
-    // report everything ok
-    Item newItem( item );
-    newItem.setRemoteId( addressee.uid() );
-    changeCommitted( newItem );
-
-  } else {
-    changeProcessed();
-  }
-}
-
-void VCardDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
-{
-  if ( Settings::self()->readOnly() ) {
-    emit error( i18n( "Trying to write to a read-only directory: '%1'", vCardDirectoryName() ) );
-    cancelTask();
-    return;
-  }
-
-  KABC::Addressee addressee;
-  if ( item.hasPayload<KABC::Addressee>() )
-    addressee  = item.payload<KABC::Addressee>();
-
-  if ( !addressee.isEmpty() ) {
-    // change it in the cache...
-    mAddressees.insert( addressee.uid(), addressee );
-
-    // ... and write it through to the file system
-    const QByteArray data = mConverter.createVCard( addressee );
-
-    QFile file( vCardDirectoryFileName( addressee.uid() ) );
-    if (file.open( QIODevice::WriteOnly )) {
-      file.write( data );
-      file.close();
-
-      Item newItem( item );
-      newItem.setRemoteId( addressee.uid() );
-      changeCommitted( newItem );
-    } else {
-      kDebug()<<" We can't write in file "<<file.fileName();
-    }
-
-  } else {
-    changeProcessed();
-  }
-}
-
-void VCardDirResource::itemRemoved( const Akonadi::Item &item )
-{
-  if ( Settings::self()->readOnly() ) {
-    emit error( i18n( "Trying to write to a read-only directory: '%1'", vCardDirectoryName() ) );
-    cancelTask();
-    return;
-  }
-
-  // remove it from the cache...
-  if ( mAddressees.contains( item.remoteId() ) )
-    mAddressees.remove( item.remoteId() );
-
-  // ... and remove it from the file system
-  QFile::remove( vCardDirectoryFileName( item.remoteId() ) );
-
-  changeProcessed();
 }
 
 void VCardDirResource::retrieveCollections()
 {
-  Collection c;
-  c.setParentCollection( Collection::root() );
-  c.setRemoteId( vCardDirectoryName() );
-  c.setName( name() );
-  QStringList mimeTypes;
-  mimeTypes << KABC::Addressee::mimeType();
-  c.setContentMimeTypes( mimeTypes );
-  if ( Settings::self()->readOnly() ) {
-    c.setRights( Collection::CanChangeCollection );
-  } else {
-    Collection::Rights rights = Collection::ReadOnly;
-    rights |= Collection::CanChangeItem;
-    rights |= Collection::CanCreateItem;
-    rights |= Collection::CanDeleteItem;
-    rights |= Collection::CanChangeCollection;
-    c.setRights( rights );
-  }
+    Collection c = createCollection();
 
-  EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
-  attr->setDisplayName( i18n( "Contacts Folder" ) );
-  attr->setIconName( "x-office-address-book" );
+    EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+    attr->setDisplayName( i18n( "Contacts Folder" ) );
+    attr->setIconName( "x-office-address-book" );
 
-  Collection::List list;
-  list << c;
-  collectionsRetrieved( list );
-}
-
-void VCardDirResource::retrieveItems( const Akonadi::Collection& )
-{
-  Item::List items;
-
-  foreach ( const KABC::Addressee &addressee, mAddressees ) {
-    Item item;
-    item.setRemoteId( addressee.uid() );
-    item.setMimeType( KABC::Addressee::mimeType() );
-    items.append( item );
-  }
-
-  itemsRetrieved( items );
-}
-
-QString VCardDirResource::vCardDirectoryName() const
-{
-  return Settings::self()->path();
-}
-
-QString VCardDirResource::vCardDirectoryFileName( const QString &file ) const
-{
-  return Settings::self()->path() + QDir::separator() + file;
-}
-
-void VCardDirResource::initializeVCardDirectory() const
-{
-  QDir dir( vCardDirectoryName() );
-
-  // if folder does not exists, create it
-  if ( !dir.exists() )
-    QDir::root().mkpath( dir.absolutePath() );
-
-  // check whether warning file is in place...
-  QFile file( dir.absolutePath() + QDir::separator() + "WARNING_README.txt" );
-  if ( !file.exists() ) {
-    // ... if not, create it
-    file.open( QIODevice::WriteOnly );
-    file.write( "Important Warning!!!\n\n"
-                "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n" );
-    file.close();
-  }
+    collectionsRetrieved( Collection::List() << c );
 }
 
 AKONADI_RESOURCE_MAIN( VCardDirResource )
-
-#include "vcarddirresource.moc"

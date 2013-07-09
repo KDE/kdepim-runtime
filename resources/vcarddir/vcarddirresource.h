@@ -20,41 +20,30 @@
 #ifndef VCARDDIRRESOURCE_H
 #define VCARDDIRRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include "../shared/dirresource.h"
 
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
+#include <KABC/Addressee>
+#include <KABC/VCardConverter>
 
-class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class VCardDirResource : public DirResource<KABC::Addressee>
 {
-  Q_OBJECT
-
   public:
-    VCardDirResource( const QString &id );
+    explicit VCardDirResource( const QString &id );
     ~VCardDirResource();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-    virtual void aboutToQuit();
-
-  protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-
   protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+    void retrieveCollections();
+
+    QString payloadId(const KABC::Addressee& payload) const;
+    QString mimeType() const;
+    bool isEmpty( const KABC::Addressee &payload ) const {
+        return payload.isEmpty();
+    }
+
+    KABC::Addressee readFromFile( const QString &filePath ) const;
+    bool writeToFile( const KABC::Addressee &payload ) const;
 
   private:
-    bool loadAddressees();
-    QString vCardDirectoryName() const;
-    QString vCardDirectoryFileName( const QString &file ) const;
-    void initializeVCardDirectory() const;
-
-  private:
-    QMap<QString, KABC::Addressee> mAddressees;
     KABC::VCardConverter mConverter;
 };
 

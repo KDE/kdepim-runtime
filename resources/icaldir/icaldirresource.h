@@ -21,42 +21,28 @@
 #ifndef ICALDIRRESOURCE_H
 #define ICALDIRRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include "../shared/dirresource.h"
 
 #include <KCalCore/Incidence>
 
-#include <QHash>
-
-class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
+class ICalDirResource : public DirResource<KCalCore::Incidence::Ptr>
 {
-  Q_OBJECT
-
   public:
     explicit ICalDirResource( const QString &id );
     ~ICalDirResource();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
-    virtual void aboutToQuit();
-
-  protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-
   protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+    void retrieveCollections();
 
-  private:
-    bool loadIncidences();
-    QString iCalDirectoryName() const;
-    QString iCalDirectoryFileName( const QString &file ) const;
-    void initializeICalDirectory() const;
+    QString payloadId( const KCalCore::Incidence::Ptr &payload ) const;
+    QString mimeType() const;
+    bool isEmpty( const KCalCore::Incidence::Ptr &payload ) const {
+        return payload.isNull();
+    }
 
-  private:
-    QHash<QString, KCalCore::Incidence::Ptr> mIncidences;
+    KCalCore::Incidence::Ptr readFromFile( const QString &file ) const;
+    bool writeToFile( const KCalCore::Incidence::Ptr &payload ) const;
+
 };
 
 #endif
