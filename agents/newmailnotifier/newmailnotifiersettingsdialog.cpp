@@ -80,6 +80,7 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setShowFrom(mShowFrom->isChecked());
     NewMailNotifierAgentSettings::setShowSubject(mShowSubject->isChecked());
     NewMailNotifierAgentSettings::setShowFolder(mShowFolders->isChecked());
+    NewMailNotifierAgentSettings::self()->writeConfig();
     mNotify->save();
     accept();
 }
