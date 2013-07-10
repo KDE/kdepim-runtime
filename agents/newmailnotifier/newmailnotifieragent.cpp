@@ -180,6 +180,12 @@ bool NewMailNotifierAgent::enabledNotifier() const
     return NewMailNotifierAgentSettings::enabled();
 }
 
+
+void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
+{
+    configure( windowId );
+}
+
 void NewMailNotifierAgent::configure( WId windowId )
 {
     QPointer<NewMailNotifierSettingsDialog> dialog = new NewMailNotifierSettingsDialog;
