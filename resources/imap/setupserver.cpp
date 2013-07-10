@@ -372,7 +372,7 @@ void SetupServer::readSettings()
   setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i );
 
   bool rejected = false;
-  QString password = Settings::self()->password( &rejected );
+  const QString password = Settings::self()->password( &rejected );
   if ( rejected ) {
     m_ui->password->setEnabled( false );
     KMessageBox::information( 0, i18n( "Could not access KWallet. "
@@ -458,8 +458,8 @@ void SetupServer::slotTest()
   qApp->setOverrideCursor( Qt::BusyCursor );
 #endif
 
-  QString server = m_ui->imapServer->text();
-  int port = m_ui->portSpin->value();
+  const QString server = m_ui->imapServer->text();
+  const int port = m_ui->portSpin->value();
   kDebug() << "server: " << server << "port: " << port;
 
   m_serverTest->setServer( server );
@@ -625,7 +625,7 @@ void SetupServer::slotShowServerInfo()
   dialog->show();
 }
 
-void SetupServer::targetCollectionReceived( Akonadi::Collection::List collections )
+void SetupServer::targetCollectionReceived( const Akonadi::Collection::List &collections )
 {
   m_ui->folderRequester->setCollection( collections.first() );
 }

@@ -104,7 +104,7 @@ private slots:
   void slotSafetyChanged();
   void slotManageSubscriptions();
   void slotEnableWidgets();
-  void targetCollectionReceived( Akonadi::Collection::List collections );
+  void targetCollectionReceived(const Akonadi::Collection::List &collections );
   void localFolderRequestJobFinished( KJob *job );
 };
 

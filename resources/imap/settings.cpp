@@ -267,10 +267,10 @@ void Settings::loadAccount( ImapAccount *account ) const
   account->setUserName( userName() );
   account->setSubscriptionEnabled( subscriptionEnabled() );
 
-  QString encryption = safety();
-  if ( encryption == "SSL" ) {
+  const QString encryption = safety();
+  if ( encryption == QLatin1String("SSL") ) {
     account->setEncryptionMode( KIMAP::LoginJob::AnySslVersion );
-  } else if (  encryption == "STARTTLS" ) {
+  } else if (  encryption == QLatin1String("STARTTLS") ) {
     account->setEncryptionMode( KIMAP::LoginJob::TlsV1 );
   } else {
     account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
