@@ -300,15 +300,12 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::slotShowNotifications()
 {
-    //qDebug()<<"void NewMailNotifierAgent::slotShowNotifications()";
     if (mNewMails.isEmpty())
         return;
 
-    //qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
     if (!isActive())
         return;
 
-    //qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
     if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
         mTimer.start();

@@ -61,7 +61,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
     if (lst.count() == 1) {
         const Akonadi::Item item = lst.first();
         if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-            qDebug()<<" message has not payload.";
+            kDebug()<<" message has not payload.";
             deleteLater();
             return;
         }
@@ -76,6 +76,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
         } else {
             emitNotification(Util::defaultPixmap());
+            deleteLater();
         }
     } else {
         kdWarning()<<" Found item different from 1: "<<lst.count();
