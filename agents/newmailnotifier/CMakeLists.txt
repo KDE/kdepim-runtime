@@ -7,6 +7,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
 
 
 set(newmailnotifieragent_SRCS
+  newmailnotifiersettingsdialog.cpp
   newmailnotifieragent.cpp
   newmailnotifierattribute.cpp
   specialnotifierjob.cpp

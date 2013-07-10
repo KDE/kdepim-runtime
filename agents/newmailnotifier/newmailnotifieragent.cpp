@@ -27,6 +27,7 @@
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
+#include "newmailnotifiersettingsdialog.h"
 
 #include <akonadi/dbusconnectionpool.h>
 
@@ -49,6 +50,7 @@
 #include <KIcon>
 #include <KConfigGroup>
 #include <KLocale>
+#include <KWindowSystem>
 
 using namespace Akonadi;
 
@@ -82,7 +84,6 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     if (isActive()) {
         mTimer.setSingleShot( true );
     }
-    //qDebug()<<" NewMailNotifierAgent::NewMailNotifierAgent:"<<id;
 }
 
 void NewMailNotifierAgent::doSetOnline(bool online)
@@ -179,9 +180,24 @@ bool NewMailNotifierAgent::enabledNotifier() const
     return NewMailNotifierAgentSettings::enabled();
 }
 
-void NewMailNotifierAgent::configure( WId /*windowId*/ )
+
+void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
 {
-    KNotifyConfigWidget::configure( 0 );
+    configure( windowId );
+}
+
+void NewMailNotifierAgent::configure( WId windowId )
+{
+    QPointer<NewMailNotifierSettingsDialog> dialog = new NewMailNotifierSettingsDialog;
+    if (windowId) {
+#ifndef Q_WS_WIN
+        KWindowSystem::setMainWindow( dialog, windowId );
+#else
+        KWindowSystem::setMainWindow( dialog, (HWND)windowId );
+#endif
+    }
+    dialog->exec();
+    delete dialog;
 }
 
 bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const
@@ -252,11 +268,11 @@ void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::
             mNewMails[ collectionSource ] = idListFrom;
             if ( mNewMails[collectionSource].isEmpty() )
                 mNewMails.remove( collectionSource );
-        }
-        if ( !excludeSpecialCollection(collectionDestination) ) {
-            QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
-            idListTo.append( item.id() );
-            mNewMails[ collectionDestination ] = idListTo;
+            if ( !excludeSpecialCollection(collectionDestination) ) {
+                QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
+                idListTo.append( item.id() );
+                mNewMails[ collectionDestination ] = idListTo;
+            }
         }
     }
 }
@@ -284,15 +300,12 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void NewMailNotifierAgent::slotShowNotifications()
 {
-    //qDebug()<<"void NewMailNotifierAgent::slotShowNotifications()";
     if (mNewMails.isEmpty())
         return;
 
-    //qDebug()<<"NewMailNotifierAgent::slotShowNotifications mNotifierEnabled"<<NewMailNotifierAgentSettings::enabled();
     if (!isActive())
         return;
 
-    //qDebug()<<" NewMailNotifierAgent::slotShowNotifications mInstanceNameInProgress: "<<mInstanceNameInProgress;
     if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
         mTimer.start();

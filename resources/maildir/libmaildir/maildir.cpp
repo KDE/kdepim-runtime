@@ -513,7 +513,7 @@ QByteArray Maildir::readEntryHeadersFromFile( const QString& file ) const
     f.map( 0, qMin( (qint64)8000, f.size() ) );
     forever {
         QByteArray line = f.readLine();
-        if ( line.trimmed().isEmpty() )
+        if ( line.isEmpty() || line.startsWith('\n') )
             break;
         result.append( line );
     }

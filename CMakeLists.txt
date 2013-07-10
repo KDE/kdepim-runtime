@@ -35,10 +35,10 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "beta2")
+    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
 endif()
 
-set(KDEPIM_RUNTIME_VERSION "4.11${KDEPIM_RUNTIME_DEV_VERSION}")
+set(KDEPIM_RUNTIME_VERSION "4.12${KDEPIM_RUNTIME_DEV_VERSION}")
 
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
@@ -56,7 +56,7 @@ find_package(KDE4 4.10.0 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.10.90)
+find_package(KdepimLibs 4.11.40)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost

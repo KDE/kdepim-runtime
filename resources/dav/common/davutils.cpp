@@ -124,6 +124,7 @@ DavUtils::Privileges DavUtils::parsePrivilege( const QDomElement &element )
 }
 
 DavUtils::DavUrl::DavUrl()
+  : mProtocol( CalDav )
 {
 }
 

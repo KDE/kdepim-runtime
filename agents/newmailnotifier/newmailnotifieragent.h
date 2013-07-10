@@ -39,6 +39,7 @@ class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBas
 public:
     explicit NewMailNotifierAgent( const QString &id );
 
+    void showConfigureDialog(qlonglong windowId = 0);
 
     void setEnableNotifier(bool b);
     bool enabledNotifier() const;

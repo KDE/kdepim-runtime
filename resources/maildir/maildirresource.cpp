@@ -134,11 +134,12 @@ MaildirResource::MaildirResource( const QString &id )
   scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
 
-  ensureSaneConfiguration();
-
   connect( mFsWatcher, SIGNAL(dirty(QString)), SLOT(slotDirChanged(QString)) );
-
-  synchronizeCollectionTree();
+  if (!ensureSaneConfiguration()) {
+     emit error( i18n( "Unusable configuration." ) );
+  } else {
+     synchronizeCollectionTree();
+  }
 }
 
 void MaildirResource::attemptConfigRestoring( KJob * job )

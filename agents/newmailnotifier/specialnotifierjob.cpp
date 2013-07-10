@@ -61,7 +61,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
     if (lst.count() == 1) {
         const Akonadi::Item item = lst.first();
         if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-            qDebug()<<" message has not payload.";
+            kDebug()<<" message has not payload.";
             deleteLater();
             return;
         }
@@ -76,6 +76,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
         } else {
             emitNotification(Util::defaultPixmap());
+            deleteLater();
         }
     } else {
         kdWarning()<<" Found item different from 1: "<<lst.count();
@@ -110,13 +111,23 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
-    QString subject(mSubject);
-    if (subject.length()> 80) {
-        subject.truncate(80);
-        subject += QLatin1String("...");
+    QStringList result;
+    if (NewMailNotifierAgentSettings::showFrom()) {
+        result << i18n("From: %1", Qt::escape(mFrom));
     }
-    //TODO 4.12 use showFrom/showFolder/showSubject
-    emit displayNotification(pixmap, i18n("from: %1 <br>Subject: %2<br>In: %3",Qt::escape(mFrom), Qt::escape(subject), mPath));
+    if (NewMailNotifierAgentSettings::showSubject()) {
+        QString subject(mSubject);
+        if (subject.length()> 80) {
+            subject.truncate(80);
+            subject += QLatin1String("...");
+        }
+        result << i18n("Subject: %1", Qt::escape(subject));
+    }
+    if (NewMailNotifierAgentSettings::showFolder()) {
+        result << i18n("In: %1", mPath);
+    }
+
+    emit displayNotification(pixmap, result.join(QLatin1String("\n")));
 }
 
 #include "specialnotifierjob.moc"
