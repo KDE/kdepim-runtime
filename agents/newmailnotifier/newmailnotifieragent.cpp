@@ -27,6 +27,7 @@
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
+#include "newmailnotifiersettingsdialog.h"
 
 #include <akonadi/dbusconnectionpool.h>
 
@@ -49,6 +50,7 @@
 #include <KIcon>
 #include <KConfigGroup>
 #include <KLocale>
+#include <KWindowSystem>
 
 using namespace Akonadi;
 
@@ -178,9 +180,18 @@ bool NewMailNotifierAgent::enabledNotifier() const
     return NewMailNotifierAgentSettings::enabled();
 }
 
-void NewMailNotifierAgent::configure( WId /*windowId*/ )
+void NewMailNotifierAgent::configure( WId windowId )
 {
-    KNotifyConfigWidget::configure( 0 );
+    QPointer<NewMailNotifierSettingsDialog> dialog = new NewMailNotifierSettingsDialog;
+    if (windowId) {
+#ifndef Q_WS_WIN
+        KWindowSystem::setMainWindow( dialog, windowId );
+#else
+        KWindowSystem::setMainWindow( dialog, (HWND)windowId );
+#endif
+    }
+    dialog->exec();
+    delete dialog;
 }
 
 bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const
