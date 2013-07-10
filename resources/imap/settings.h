@@ -56,6 +56,8 @@ signals:
 public slots:
     Q_SCRIPTABLE QString password( bool *userRejected = 0 ) const;
     Q_SCRIPTABLE void setPassword( const QString &password );
+    Q_SCRIPTABLE void setSieveCustomPassword(const QString & password);
+    Q_SCRIPTABLE QString sieveCustomPassword( bool *userRejected = 0 ) const;
 
 private slots:
     void onWalletOpened( bool success );
@@ -66,6 +68,7 @@ private slots:
 private:
     WId m_winId;
     mutable QString m_password;
+    mutable QString m_customSievePassword;
 };
 
 #endif

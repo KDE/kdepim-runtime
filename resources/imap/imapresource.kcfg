@@ -99,5 +99,13 @@
       <label>Define default sieve vacation filename</label>
       <default>kmail-vacation.siv</default>
     </entry>
+    <entry name="SieveCustomUsername" type="String">
+      <label>Define username used from custum server sieve url</label>
+      <default></default>
+    </entry>
+    <entry name="SieveCustomAuthentification" type="String">
+      <label>Defines the type of indentification used by custom sieve server</label>
+      <default>ImapUserPassword</default>
+    </entry>
   </group>
 </kcfg>

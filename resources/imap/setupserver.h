@@ -96,7 +96,8 @@ private:
 
 private slots:
   void slotTest();
-  void slotFinished( QList<int> testResult );
+  void slotFinished(const QList<int> &testResult );
+  void slotCustomSieveChanged();
 
   void slotTestChanged();
   void slotComplete();

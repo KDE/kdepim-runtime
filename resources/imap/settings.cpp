@@ -197,6 +197,46 @@ QString Settings::password(bool *userRejected) const
     return m_password;
 }
 
+QString Settings::sieveCustomPassword(bool *userRejected) const
+{
+    if ( userRejected != 0 ) {
+      *userRejected = false;
+    }
+
+    if ( !m_customSievePassword.isEmpty() )
+      return m_customSievePassword;
+
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
+    if ( wallet && wallet->isOpen() ) {
+      if ( wallet->hasFolder( "imap" ) ) {
+        wallet->setFolder( "imap" );
+        wallet->readPassword( QLatin1String("custom_sieve_") + config()->name(), m_customSievePassword );
+      } else {
+        wallet->createFolder( "imap" );
+      }
+    } else if ( userRejected != 0 ) {
+        *userRejected = true;
+    }
+    delete wallet;
+    return m_customSievePassword;
+}
+
+void Settings::setSieveCustomPassword(const QString & password)
+{
+    if (m_customSievePassword == password)
+        return;
+    m_customSievePassword = password;
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
+    if ( wallet && wallet->isOpen() ) {
+        if ( !wallet->hasFolder( "imap" ) )
+            wallet->createFolder( "imap" );
+        wallet->setFolder( "imap" );
+        wallet->writePassword( QLatin1String("custom_sieve_") + config()->name(), password );
+        kDebug() << "Wallet save: " << wallet->sync();
+    }
+    delete wallet;
+}
+
 void Settings::setPassword( const QString & password )
 {
     if ( password == m_password )
@@ -248,7 +288,7 @@ void Settings::loadAccount( ImapAccount *account ) const
 
 QString Settings::rootRemoteId() const
 {
-  return "imap://" + Settings::self()->userName() + '@' + Settings::self()->imapServer() + '/';
+  return QLatin1String("imap://") + Settings::self()->userName() + QLatin1Char('@') + Settings::self()->imapServer() + QLatin1Char('/');
 }
 
 void Settings::renameRootCollection( const QString &newName )
