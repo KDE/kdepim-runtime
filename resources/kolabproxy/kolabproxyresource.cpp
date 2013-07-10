@@ -278,14 +278,6 @@ void KolabProxyResource::aboutToQuit()
   m_monitoredCollections.clear();
 }
 
-Kolab::Version readKolabVersion( const QString &resourceIdentifier )
-{
-  KConfigGroup grp( KGlobal::mainComponent().config(), "KolabProxyResourceSettings" );
-  return static_cast<Kolab::Version>(
-    grp.readEntry<int>( "KolabFormatVersion" + resourceIdentifier,
-                        static_cast<int>( Kolab::KolabV2 ) ) );
-}
-
 void KolabProxyResource::configure( WId windowId )
 {
   // TODO: this method is usually called when a new resource is being
@@ -305,7 +297,7 @@ void KolabProxyResource::configure( WId windowId )
 
   foreach ( Akonadi::Entity::Id id, m_monitoredCollections.keys() ) { //krazy:exclude=foreach
     KolabHandler::Ptr handler = m_monitoredCollections.value( id );
-    Kolab::Version v = readKolabVersion( m_resourceIdentifier.value( id ) );
+    Kolab::Version v = SetupKolab::readKolabVersion( m_resourceIdentifier.value( id ) );
     handler->setKolabFormatVersion( v );
   }
 
@@ -605,7 +597,7 @@ void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &i
     return; // disabled by user
   }
 
-  Kolab::Version v = readKolabVersion( imapCollection.resource() );
+  Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );
   if (v != Kolab::KolabV2) {
     return;
   }
@@ -957,7 +949,7 @@ bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection
         annotations[KOLAB_FOLDER_TYPE_ANNOTATION], imapCollection );
 
     if ( handler ) {
-      Kolab::Version v = readKolabVersion( imapCollection.resource() );
+      Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );
       handler->setKolabFormatVersion( v );
       connect( handler.data(), SIGNAL(deleteItemFromImap(Akonadi::Item)),
                this, SLOT(deleteImapItem(Akonadi::Item)));
