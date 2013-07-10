@@ -62,6 +62,9 @@ public:
     void setShowFolderName(bool b);
     bool showFolderName() const;
 
+    void setExcludeMyselfFromNotification(bool b);
+    bool excludeMyselfFromNotification() const;
+
 
     void printDebug();
 

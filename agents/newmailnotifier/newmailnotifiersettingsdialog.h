@@ -39,6 +39,7 @@ private:
     QCheckBox *mShowFrom;
     QCheckBox *mShowSubject;
     QCheckBox *mShowFolders;
+    QCheckBox *mExcludeMySelf;
     KNotifyConfigWidget *mNotify;
 };
 

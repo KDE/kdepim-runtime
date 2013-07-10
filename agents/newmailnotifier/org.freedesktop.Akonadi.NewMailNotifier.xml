@@ -46,6 +46,12 @@
     <method name="showFolderName" >
       <arg type="b" direction="out"/>
     </method>
+    <method name="setExcludeMyselfFromNotification" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="excludeMyselfFromNotification" >
+      <arg type="b" direction="out"/>
+    </method>
     <method name="printDebug" />
   </interface>
 </node>

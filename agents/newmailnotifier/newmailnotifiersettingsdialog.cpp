@@ -60,6 +60,11 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mShowFolders = new QCheckBox(i18n("Show Folders"));
     mShowFolders->setChecked(NewMailNotifierAgentSettings::showFolder());
     vbox->addWidget(mShowFolders);
+
+    mExcludeMySelf = new QCheckBox(i18n("Do not notify when email was sent by me"));
+    mExcludeMySelf->setChecked(NewMailNotifierAgentSettings::excludeEmailsFromMe());
+    vbox->addWidget(mExcludeMySelf);
+
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
@@ -80,6 +85,8 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setShowFrom(mShowFrom->isChecked());
     NewMailNotifierAgentSettings::setShowSubject(mShowSubject->isChecked());
     NewMailNotifierAgentSettings::setShowFolder(mShowFolders->isChecked());
+    NewMailNotifierAgentSettings::setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
+
     NewMailNotifierAgentSettings::self()->writeConfig();
     mNotify->save();
     accept();

@@ -93,6 +93,17 @@ void NewMailNotifierAgent::doSetOnline(bool online)
     }
 }
 
+void NewMailNotifierAgent::setExcludeMyselfFromNotification(bool b)
+{
+    NewMailNotifierAgentSettings::setExcludeEmailsFromMe(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::excludeMyselfFromNotification() const
+{
+    return NewMailNotifierAgentSettings::excludeEmailsFromMe();
+}
+
 void NewMailNotifierAgent::setShowPhoto(bool show)
 {
     NewMailNotifierAgentSettings::setShowPhoto(show);
