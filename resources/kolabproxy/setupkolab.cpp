@@ -71,9 +71,7 @@ Kolab::Version SetupKolab::readKolabVersion( const QString &resourceIdentifier )
     kWarning() << "resource not found, defaulting to v3: " << resourceIdentifier;
   }
   Kolab::Version version = static_cast<Kolab::Version>(
-    grp.readEntry<int>( key,
-                        static_cast<int>( Kolab::KolabV3 ) ) );
-  kWarning() << "read version " << version << " for resource: " << resourceIdentifier;
+    grp.readEntry<int>( key, static_cast<int>( Kolab::KolabV3 ) ) );
   return version;
 }
 
