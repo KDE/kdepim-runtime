@@ -50,6 +50,31 @@ SetupKolab::~SetupKolab()
   delete m_ui;
 }
 
+KConfigGroup SetupKolab::getConfigGroup()
+{
+  //This is a bit of a hack, but we have to reload the config file in case it was edited by the setupwizard (it's not reloaded automatically).
+  //Without this the config will not be able to load the correct values until restarted (e.g. akonadiconsole).
+  KSharedConfigPtr config = KGlobal::mainComponent().config();
+  config->reparseConfiguration();
+  return KConfigGroup( KGlobal::mainComponent().config(), "KolabProxyResourceSettings" );
+}
+
+Kolab::Version SetupKolab::readKolabVersion( const QString &resourceIdentifier )
+{
+  KConfigGroup grp( getConfigGroup() );
+  if ( resourceIdentifier.isEmpty() ) {
+    kWarning() << "Empty resource identifier, defaulting to v3";
+    return Kolab::KolabV3;
+  }
+  const QString key ("KolabFormatVersion" + resourceIdentifier );
+  if ( !grp.hasKey( key ) ) {
+    kWarning() << "resource not found, defaulting to v3: " << resourceIdentifier;
+  }
+  Kolab::Version version = static_cast<Kolab::Version>(
+    grp.readEntry<int>( key, static_cast<int>( Kolab::KolabV3 ) ) );
+  return version;
+}
+
 void SetupKolab::initConnection()
 {
   connect( m_ui->launchWizard, SIGNAL(clicked()), this, SLOT(slotLaunchWizard()) );
@@ -76,11 +101,7 @@ void SetupKolab::slotShowUpgradeDialog()
   m_versionUi->progressBar->setDisabled( true );
   connect( m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()) );
 
-  KConfigGroup grp( KGlobal::mainComponent().config(), "KolabProxyResourceSettings" );
-  Kolab::Version v =
-    static_cast<Kolab::Version>(
-      grp.readEntry( "KolabFormatVersion" + instanceSelected.identifier(),
-                     static_cast<int>( Kolab::KolabV2 ) ) );
+  Kolab::Version v = readKolabVersion( instanceSelected.identifier() );
 
   m_versionUi->formatVersion->insertItem( 0, "Kolab Format v2", Kolab::KolabV2 );
   m_versionUi->formatVersion->insertItem( 1, "Kolab Format v3", Kolab::KolabV3 );
@@ -89,6 +110,7 @@ void SetupKolab::slotShowUpgradeDialog()
   } else {
     m_versionUi->formatVersion->setCurrentIndex( 1 );
   }
+  KConfigGroup grp( getConfigGroup() );
   m_versionUi->upgradeGroupBox->setEnabled( grp.readEntry<bool>("UpgradeEnabled", false) );
   dialog->exec();
   grp.writeEntry(
@@ -146,11 +168,7 @@ void SetupKolab::slotSelectedAccountChanged()
   const Akonadi::AgentInstance instanceSelected =
     m_agentList[m_ui->imapAccountComboBox->currentText()];
 
-  KConfigGroup grp( KGlobal::mainComponent().config(), "KolabProxyResourceSettings" );
-  Kolab::Version v =
-    static_cast<Kolab::Version>(
-      grp.readEntry( "KolabFormatVersion" + instanceSelected.identifier(),
-                     static_cast<int>( Kolab::KolabV2 ) ) );
+  Kolab::Version v = readKolabVersion( instanceSelected.identifier() );
 
   if ( v == Kolab::KolabV2 ) {
     m_ui->formatVersion->setText( "Kolab Format v2" );
@@ -165,7 +183,6 @@ void SetupKolab::updateCombobox()
   m_ui->imapAccountComboBox->clear();
   m_agentList.clear();
 
-  Akonadi::AgentInstance::List relevantInstances;
   foreach ( const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances() ) {
     if ( instance.identifier().contains( IMAP_RESOURCE_IDENTIFIER ) ) {
       const QString instanceName = instance.name();
