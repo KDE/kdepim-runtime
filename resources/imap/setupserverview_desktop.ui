@@ -217,7 +217,7 @@
           <item row="1" column="0" colspan="2">
            <widget class="QRadioButton" name="noAuthentification">
             <property name="text">
-             <string>No authentifcation</string>
+             <string>No authentification</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">customSieveGroup</string>
@@ -241,7 +241,7 @@
           <item row="3" column="0" colspan="2">
            <widget class="QRadioButton" name="customUserPassword">
             <property name="text">
-             <string>UserName and Password</string>
+             <string>Username and Password</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">customSieveGroup</string>
