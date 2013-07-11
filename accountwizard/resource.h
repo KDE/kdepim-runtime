@@ -38,6 +38,7 @@ class Resource : public SetupObject
     Q_SCRIPTABLE void setName( const QString &name );
     Q_SCRIPTABLE void setOption( const QString &key, const QVariant &value );
     Q_SCRIPTABLE QString identifier();
+    Q_SCRIPTABLE void reconfigure();
 
   private slots:
     void instanceCreateResult( KJob* job );

@@ -27,6 +27,7 @@
 #include <Akonadi/AgentInstance>
 
 #include <KDialog>
+#include <kolabdefinitions.h>
 
 class KolabProxyResource;
 
@@ -39,6 +40,9 @@ class SetupKolab : public KDialog
   public:
     explicit SetupKolab( KolabProxyResource *parentResource );
     ~SetupKolab();
+    
+    static KConfigGroup getConfigGroup();
+    static Kolab::Version readKolabVersion( const QString &resourceIdentifier );
 
   protected:
     void initConnection();

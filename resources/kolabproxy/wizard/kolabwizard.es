@@ -86,12 +86,13 @@ function validateInput()
 var stage = 1;
 var identity; // global so it can be accesed in setup and testOk
 
+var kolabRes;
 function setup()
 {
   var serverAddress = page.widget().serverAddress.text.trim();
   if ( stage == 1 ) {
     SetupManager.openWallet();
-    SetupManager.createResource( "akonadi_kolabproxy_resource" );
+    kolabRes = SetupManager.createResource( "akonadi_kolabproxy_resource" );
 
     identity = SetupManager.createIdentity();
     identity.setEmail( page.widget().emailEdit.text );
@@ -175,6 +176,8 @@ function configureKolabVersion( arg )
     }
     //We have to write to the config file manually as the setup process has already finished
     kolabproxyConfig.write();
+    //And load the config
+    kolabRes.reconfigure();
 }
 
 try {
