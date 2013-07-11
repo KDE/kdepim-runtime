@@ -1,6 +1,7 @@
 [Global]
 Comment=Akonadi's Facebook integration
 Comment[cs]=Integrace Facebooku do Akonadi
+Comment[da]=Akonadis Facebook-integration
 Comment[de]=Facebook-Integration für Akonadi
 Comment[el]=Ενσωμάτωση του Facebook στο Akonadi
 Comment[es]=Integración de Facebook con Akonadi
@@ -29,6 +30,7 @@ Comment[x-test]=xxAkonadi's Facebook integrationxx
 Comment[zh_TW]=Akonadi Facebook 整合
 Name=Facebook Resource
 Name[cs]=Zdroj Facebooku
+Name[da]=Facebook-ressource
 Name[de]=Facebook-Ressource
 Name[el]=Πόρος Facebook
 Name[es]=Recurso de Facebook
@@ -59,6 +61,7 @@ IconName=kde
 [Context/Application]
 Name=Facebook
 Name[cs]=Facebook
+Name[da]=Facebook
 Name[de]=Facebook
 Name[el]=Facebook
 Name[es]=Facebook
@@ -87,6 +90,7 @@ Name[x-test]=xxFacebookxx
 Name[zh_CN]=Facebook
 Name[zh_TW]=Facebook
 Comment=Notification coming from Facebook
+Comment[da]=Notifikation fra Facebook
 Comment[de]=Benachrichtigungen von Facebook
 Comment[el]=Η ειδοποίηση προέρχεαι από το Facebook
 Comment[es]=Notificación originada desde Facebook
@@ -115,6 +119,7 @@ Comment[zh_TW]=從 Facebook 來的通知
 
 [Event/facebookNotification]
 Name=New Facebook notification
+Name[da]=Ny Facebook-notifikation
 Name[de]=Neue Facebook-Benachrichtigung
 Name[el]=Νέα ειδοποίηση Facebook
 Name[es]=Nueva notificación de Facebook
@@ -141,6 +146,7 @@ Name[uk]=Нове сповіщення з Facebook
 Name[x-test]=xxNew Facebook notificationxx
 Name[zh_TW]=新的 Facebook 通知器
 Comment=You have new Facebook notification
+Comment[da]=Du har en ny Facebook-notifikation
 Comment[de]=Sie haben eine Facebook-Benachrichtigungen
 Comment[el]=Έχετε νέα ειδοποίηση στο Facebook
 Comment[es]=Usted tiene una nueva notificación de Facebook
