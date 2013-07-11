@@ -29,6 +29,8 @@
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifiersettingsdialog.h"
 
+#include <KPIMIdentities/IdentityManager>
+
 #include <akonadi/dbusconnectionpool.h>
 
 #include <akonadi/agentfactory.h>
@@ -60,6 +62,10 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );
 
+    mIdentityManager = new KPIMIdentities::IdentityManager( false, this );
+    connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
+    slotIdentitiesChanged();
+
     DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
                                                            this, QDBusConnection::ExportAdaptors );
     DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
@@ -84,6 +90,11 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     if (isActive()) {
         mTimer.setSingleShot( true );
     }
+}
+
+void NewMailNotifierAgent::slotIdentitiesChanged()
+{
+    mListEmails = mIdentityManager->allEmails();
 }
 
 void NewMailNotifierAgent::doSetOnline(bool online)
@@ -355,7 +366,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
         }
         if (hasUniqMessage) {
-            SpecialNotifierJob *job = new SpecialNotifierJob(currentPath, item, this);
+            SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
             connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
             return;
