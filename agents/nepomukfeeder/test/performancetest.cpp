@@ -29,7 +29,7 @@
 #define TESTFILEDIR QString::fromLatin1(TEST_DATA_PATH "/testfiles/")
 
 /**
- * This "test" should hopefully give a reproducible base to compare indexing speeds accross systems.
+ * This "test" should hopefully give a reproducible base to compare indexing speeds across systems.
  * It's not an automated test which can fail, if we have some reliable numbers we could make sure it doesn't get worse than that.
  * Note that the code writes directly to the real nepomuk db, but with an akonadi item id which is never going to exist.
  */

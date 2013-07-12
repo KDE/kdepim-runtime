@@ -100,7 +100,7 @@
       <default>kmail-vacation.siv</default>
     </entry>
     <entry name="SieveCustomUsername" type="String">
-      <label>Define username used from custum server sieve url</label>
+      <label>Define username used from custom server sieve url</label>
       <default></default>
     </entry>
     <entry name="SieveCustomAuthentification" type="String">

@@ -126,7 +126,7 @@ void KResMigratorBase::setOmitClientBridge(bool b)
 
 void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instance, const QString &kresId, const QString &kresName )
 {
-  // do an intial sync so the resource shows up in the folder tree at least
+  // do an initial sync so the resource shows up in the folder tree at least
   AgentInstance nonConstInstance = instance;
   nonConstInstance.synchronize();
 

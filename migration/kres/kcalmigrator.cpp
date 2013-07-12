@@ -150,7 +150,7 @@ void KCalMigrator::davResourceCreated(KJob *job)
     return;
   }
 
-  if ( !url.endsWith( "/" ) )
+  if ( !url.endsWith( '/' ) )
     url.append( "/" );
 
   QStringList remoteUrls;
