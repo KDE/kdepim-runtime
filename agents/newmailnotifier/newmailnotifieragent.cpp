@@ -194,6 +194,10 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
         }
     }
 
+    if (!collection.contentMimeTypes().contains( KMime::Message::mimeType()) ) {
+        return true;
+    }
+
     SpecialMailCollections::Type type = SpecialMailCollections::self()->specialCollectionType(collection);
     switch(type) {
     case SpecialMailCollections::Invalid: //Not a special collection
@@ -202,6 +206,7 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
     default:
         return true;
     }
+
 }
 
 void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )
