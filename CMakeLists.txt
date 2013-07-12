@@ -116,8 +116,8 @@ find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
 )
 macro_log_feature(STRIGIQTDBUSCLIENT_LIBRARY "Strigi Qt D-Bus client library" "Strigi built with indexing" "http://strigi.sourceforge.net/" FALSE "" "For Akonadi tools such as the message searchprovider")
 
-find_package(Libkolab NO_MODULE 0.2)
-macro_log_feature(Libkolab_FOUND "KolabLibraries" "The Kolab Format libraries" "http://mirror.kolabsys.com/pub/releases/" FALSE "0.2" "The Kolab Format libraries are required to build the Kolab Groupware Resource")
+find_package(Libkolab 0.4 QUIET CONFIG)
+set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 find_package(Libkolabxml NO_MODULE)
 macro_log_feature(Libkolabxml_FOUND "Kolabxml" "The Kolab XML Format Schema Definitions Library" "http://mirror.kolabsys.com/pub/releases/" FALSE "" "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
