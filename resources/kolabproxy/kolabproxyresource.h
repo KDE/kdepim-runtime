@@ -135,6 +135,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   private:
     KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
+    bool isKolabFolder( const Akonadi::Collection &collection ) const;
+    Kolab::FolderType getFolderType( const Akonadi::Collection &collection ) const;
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
     QMap<Akonadi::Collection::Id, KolabHandler::Ptr> m_monitoredCollections;
