@@ -179,14 +179,17 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   connect( m_ui->sameConfigCheck, SIGNAL(toggled(bool)),
            SLOT(slotEnableWidgets()) );
 
+
   connect( m_ui->useDefaultIdentityCheck, SIGNAL(toggled(bool)), this, SLOT(slotIdentityCheckboxChanged()) );
   connect( m_ui->enableMailCheckBox, SIGNAL(toggled(bool)), this, SLOT(slotMailCheckboxChanged()) );
   connect( m_ui->safeImapGroup, SIGNAL(buttonClicked(int)), this, SLOT(slotEncryptionRadioChanged()) );
+  connect( m_ui->customSieveGroup, SIGNAL(buttonClicked(int)), this, SLOT(slotCustomSieveChanged()) );
   connect( m_ui->showServerInfo, SIGNAL(pressed()), this, SLOT(slotShowServerInfo()) );
 
   readSettings();
   slotTestChanged();
   slotComplete();
+  slotCustomSieveChanged();
 #ifndef IMAPRESOURCE_NO_SOLID
   connect( Solid::Networking::notifier(),
            SIGNAL(statusChanged(Solid::Networking::Status)),
@@ -237,7 +240,20 @@ void SetupServer::slotEncryptionRadioChanged()
   default:
     kFatal() << "Shouldn't happen";
   }
+}
 
+void SetupServer::slotCustomSieveChanged()
+{
+    QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
+
+    if (checkedButton == m_ui->imapUserPassword ||
+            checkedButton == m_ui->noAuthentification ) {
+        m_ui->customUsername->setEnabled(false);
+        m_ui->customPassword->setEnabled(false);
+    } else if (checkedButton == m_ui->customUserPassword) {
+        m_ui->customUsername->setEnabled(true);
+        m_ui->customPassword->setEnabled(true);
+    }
 }
 
 void SetupServer::applySettings()
@@ -250,7 +266,7 @@ void SetupServer::applySettings()
   Settings::self()->setImapServer( m_ui->imapServer->text() );
   Settings::self()->setImapPort( m_ui->portSpin->value() );
   Settings::self()->setUserName( m_ui->userName->text() );
-  QString encryption = "";
+  QString encryption;
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case KIMAP::LoginJob::Unencrypted :
     encryption = "None";
@@ -297,6 +313,20 @@ void SetupServer::applySettings()
   if ( m_ui->enableMailCheckBox->isChecked() )
     Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
 
+  Settings::self()->setSieveCustomUsername(m_ui->customUsername->text());
+
+  QAbstractButton *checkedButton = 	m_ui->customSieveGroup->checkedButton();
+
+  if (checkedButton == m_ui->imapUserPassword) {
+      Settings::self()->setSieveCustomAuthentification(QLatin1String("ImapUserPassword"));
+  } else if (checkedButton == m_ui->noAuthentification) {
+      Settings::self()->setSieveCustomAuthentification(QLatin1String("NoAuthentification"));
+  } else if (checkedButton == m_ui->customUserPassword) {
+      Settings::self()->setSieveCustomAuthentification(QLatin1String("CustomUserPassword"));
+  }
+
+  Settings::self()->setSieveCustomPassword( m_ui->customPassword->text() );
+
   Settings::self()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
@@ -323,7 +353,7 @@ void SetupServer::readSettings()
     !Settings::self()->userName().isEmpty() ? Settings::self()->userName() :
     currentUser->loginName() );
 
-  QString safety = Settings::self()->safety();
+  const QString safety = Settings::self()->safety();
   int i = 0;
   if ( safety == QLatin1String( "SSL" ) )
     i = KIMAP::LoginJob::AnySslVersion;
@@ -342,7 +372,7 @@ void SetupServer::readSettings()
   setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i );
 
   bool rejected = false;
-  QString password = Settings::self()->password( &rejected );
+  const QString password = Settings::self()->password( &rejected );
   if ( rejected ) {
     m_ui->password->setEnabled( false );
     KMessageBox::information( 0, i18n( "Could not access KWallet. "
@@ -395,6 +425,19 @@ void SetupServer::readSettings()
   if ( m_vacationFileName.isEmpty() )
     m_vacationFileName = "kmail-vacation.siv";
 
+  m_ui->customUsername->setText(Settings::self()->sieveCustomUsername());
+
+  m_ui->customPassword->setText(Settings::self()->sieveCustomPassword());
+
+
+  const QString sieverCustomAuth(Settings::self()->sieveCustomAuthentification());
+  if (sieverCustomAuth == QLatin1String("ImapUserPassword"))
+      m_ui->imapUserPassword->setChecked(true);
+  else if (sieverCustomAuth == QLatin1String("NoAuthentification"))
+      m_ui->noAuthentification->setChecked(true);
+  else if (sieverCustomAuth == QLatin1String("CustomUserPassword"))
+      m_ui->customUserPassword->setChecked(true);
+
   delete currentUser;
 }
 
@@ -415,8 +458,8 @@ void SetupServer::slotTest()
   qApp->setOverrideCursor( Qt::BusyCursor );
 #endif
 
-  QString server = m_ui->imapServer->text();
-  int port = m_ui->portSpin->value();
+  const QString server = m_ui->imapServer->text();
+  const int port = m_ui->portSpin->value();
   kDebug() << "server: " << server << "port: " << port;
 
   m_serverTest->setServer( server );
@@ -434,7 +477,7 @@ void SetupServer::slotTest()
   m_serverTest->start();
 }
 
-void SetupServer::slotFinished( QList<int> testResult )
+void SetupServer::slotFinished( const QList<int> &testResult )
 {
   kDebug() << testResult;
 
@@ -490,17 +533,18 @@ void SetupServer::slotTestChanged()
 
 void SetupServer::slotEnableWidgets()
 {
-  bool haveSieve = m_ui->managesieveCheck->isChecked();
-  bool reuseConfig = m_ui->sameConfigCheck->isChecked();
+  const bool haveSieve = m_ui->managesieveCheck->isChecked();
+  const bool reuseConfig = m_ui->sameConfigCheck->isChecked();
 
   m_ui->sameConfigCheck->setEnabled( haveSieve );
   m_ui->sievePortSpin->setEnabled( haveSieve && reuseConfig );
   m_ui->alternateURL->setEnabled( haveSieve && !reuseConfig );
+  m_ui->authentification->setEnabled( haveSieve && !reuseConfig );
 }
 
 void SetupServer::slotComplete()
 {
-  bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
+  const bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
   button( KDialog::Ok )->setEnabled( ok );
 }
 
@@ -581,7 +625,7 @@ void SetupServer::slotShowServerInfo()
   dialog->show();
 }
 
-void SetupServer::targetCollectionReceived( Akonadi::Collection::List collections )
+void SetupServer::targetCollectionReceived( const Akonadi::Collection::List &collections )
 {
   m_ui->folderRequester->setCollection( collections.first() );
 }

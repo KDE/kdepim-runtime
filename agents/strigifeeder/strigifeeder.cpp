@@ -86,7 +86,7 @@ StrigiFeeder::StrigiFeeder( const QString &id )
   connect( &mStrigiDBusWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(selfTest()) );
   connect( &mStrigiDBusWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(selfTest()) );
 
-// Dont use Idle detection for wince, because it does not work properly
+// Do not use Idle detection for wince, because it does not work properly
 // it could be inplemented, but the scheduler is just a round robin over
 // priority classes, so if we set the prority low, it will suspend the thread
 // if the user does something

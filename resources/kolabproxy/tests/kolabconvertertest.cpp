@@ -183,7 +183,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, vcardFileName );
       QFETCH( QString, mimeFileName );
 
-      KolabHandler::Ptr handler = KolabHandler::createHandler( "contact", Collection() );
+      KolabHandler::Ptr handler = KolabHandler::createHandler( Kolab::ContactType, Collection() );
       QVERIFY( handler );
 
       // mime -> vcard conversion
@@ -238,7 +238,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, icalFileName );
       QFETCH( QString, mimeFileName );
 
-      KolabHandler::Ptr handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
+      KolabHandler::Ptr handler = KolabHandler::createHandler( Kolab::folderTypeFromString( type.toLatin1() ), Collection() );
       QVERIFY( handler );
 
       // mime -> vcard conversion
@@ -310,7 +310,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, mimeFileName );
 
       QBENCHMARK {
-        KolabHandler::Ptr handler = KolabHandler::createHandler( "contact", Collection() );
+        KolabHandler::Ptr handler = KolabHandler::createHandler( Kolab::ContactType, Collection() );
         const Item kolabItem = readMimeFile( mimeFileName );
         const Item::List vcardItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
       }
@@ -327,7 +327,7 @@ class KolabConverterTest : public QObject
       QFETCH( QString, mimeFileName );
 
       QBENCHMARK {
-        KolabHandler::Ptr handler = KolabHandler::createHandler( type.toLatin1(), Collection() );
+        KolabHandler::Ptr handler = KolabHandler::createHandler( Kolab::folderTypeFromString(type.toLatin1()), Collection() );
         const Item kolabItem = readMimeFile( mimeFileName );
         const Item::List icalItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
       }

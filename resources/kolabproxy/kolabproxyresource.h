@@ -132,10 +132,13 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapItemUpdateCollectionFetchResult( KJob *job );
     void imapFolderCreateResult( KJob *job );
     void kolabFolderChangeResult( KJob *job );
-    void itemsReceived(const Akonadi::Item::List &);
 
   private:
+    void removeFolder( const Akonadi::Collection &imapCollection );
     KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
+    bool isKolabFolder( const Akonadi::Collection &collection ) const;
+    bool isHandledKolabFolder( const Akonadi::Collection &collection ) const;
+    Kolab::FolderType getFolderType( const Akonadi::Collection &collection ) const;
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
     QMap<Akonadi::Collection::Id, KolabHandler::Ptr> m_monitoredCollections;

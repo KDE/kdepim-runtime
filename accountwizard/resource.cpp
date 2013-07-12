@@ -157,5 +157,10 @@ QString Resource::identifier()
     return m_instance.identifier();
 }
 
+void Resource::reconfigure()
+{
+    m_instance.reconfigure();
+}
+
 
 #include "resource.moc"

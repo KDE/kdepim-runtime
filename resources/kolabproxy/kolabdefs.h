@@ -23,6 +23,11 @@
 #include <QByteArray>
 
 #include <kolabdefinitions.h> //libkolab
+#include <formathelpers.h> //libkolab
+
+namespace Kolab {
+  FolderType folderTypeFromString( const QByteArray &folderTypeName );
+}
 
 namespace KolabV2 {
 

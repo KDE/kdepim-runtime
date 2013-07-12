@@ -33,8 +33,9 @@
 
 #include <QTextDocument>
 
-SpecialNotifierJob::SpecialNotifierJob(const QString &path, Akonadi::Item::Id id, QObject *parent)
+SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),
+      mListEmails(listEmails),
       mPath(path)
 {
     Akonadi::Item item(id);
@@ -111,6 +112,15 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
+    if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
+        Q_FOREACH( const QString &email, mListEmails) {
+            if (mFrom.contains(email)) {
+                //Exclude this notification
+                return;
+            }
+        }
+    }
+
     QStringList result;
     if (NewMailNotifierAgentSettings::showFrom()) {
         result << i18n("From: %1", Qt::escape(mFrom));

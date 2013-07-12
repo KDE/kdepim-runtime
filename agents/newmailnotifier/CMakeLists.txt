@@ -35,6 +35,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   ${KDEPIMLIBS_KABC_LIBS}
   ${KDEPIMLIBS_KPIMUTILS_LIBS}
   ${KDEPIMLIBS_AKONADI_CONTACT_LIBS}
+  ${KDEPIMLIBS_KPIMIDENTITIES_LIBS}
 )
 
 

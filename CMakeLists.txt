@@ -96,7 +96,7 @@ if(AKONADI_USE_STRIGI_SEARCH)
 endif()
 
 # Libkolab
-find_package(Libkolab 0.2 QUIET CONFIG)
+find_package(Libkolab 0.4 QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 # Libkolabxml

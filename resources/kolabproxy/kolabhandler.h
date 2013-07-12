@@ -39,8 +39,10 @@ class KolabHandler : public QObject
   public:
     typedef QSharedPointer<KolabHandler>  Ptr;
 
-    static Ptr createHandler( const QByteArray &type,
+    static Ptr createHandler( Kolab::FolderType type,
                               const Akonadi::Collection &imapCollection );
+    
+    static bool hasHandler( Kolab::FolderType type );
 
     static Ptr createHandler( const KolabV2::FolderType &type,
                               const Akonadi::Collection &imapCollection );

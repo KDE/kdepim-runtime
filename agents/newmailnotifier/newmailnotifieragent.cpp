@@ -29,6 +29,8 @@
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifiersettingsdialog.h"
 
+#include <KPIMIdentities/IdentityManager>
+
 #include <akonadi/dbusconnectionpool.h>
 
 #include <akonadi/agentfactory.h>
@@ -60,6 +62,10 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );
 
+    mIdentityManager = new KPIMIdentities::IdentityManager( false, this );
+    connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
+    slotIdentitiesChanged();
+
     DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
                                                            this, QDBusConnection::ExportAdaptors );
     DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
@@ -86,11 +92,27 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     }
 }
 
+void NewMailNotifierAgent::slotIdentitiesChanged()
+{
+    mListEmails = mIdentityManager->allEmails();
+}
+
 void NewMailNotifierAgent::doSetOnline(bool online)
 {
     if (!online) {
         clearAll();
     }
+}
+
+void NewMailNotifierAgent::setExcludeMyselfFromNotification(bool b)
+{
+    NewMailNotifierAgentSettings::setExcludeEmailsFromMe(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::excludeMyselfFromNotification() const
+{
+    return NewMailNotifierAgentSettings::excludeEmailsFromMe();
 }
 
 void NewMailNotifierAgent::setShowPhoto(bool show)
@@ -137,7 +159,7 @@ bool NewMailNotifierAgent::showFolderName() const
     return NewMailNotifierAgentSettings::showFolder();
 }
 
-void NewMailNotifierAgent::setEnableNotifier(bool enabled)
+void NewMailNotifierAgent::setEnableAgent(bool enabled)
 {
     NewMailNotifierAgentSettings::setEnabled(enabled);
     NewMailNotifierAgentSettings::self()->writeConfig();
@@ -175,7 +197,7 @@ void NewMailNotifierAgent::clearAll()
     mInstanceNameInProgress.clear();
 }
 
-bool NewMailNotifierAgent::enabledNotifier() const
+bool NewMailNotifierAgent::enabledAgent() const
 {
     return NewMailNotifierAgentSettings::enabled();
 }
@@ -211,6 +233,10 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
         }
     }
 
+    if (!collection.contentMimeTypes().contains( KMime::Message::mimeType()) ) {
+        return true;
+    }
+
     SpecialMailCollections::Type type = SpecialMailCollections::self()->specialCollectionType(collection);
     switch(type) {
     case SpecialMailCollections::Invalid: //Not a special collection
@@ -219,6 +245,7 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
     default:
         return true;
     }
+
 }
 
 void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )
@@ -344,7 +371,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
         }
         if (hasUniqMessage) {
-            SpecialNotifierJob *job = new SpecialNotifierJob(currentPath, item, this);
+            SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
             connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
             return;

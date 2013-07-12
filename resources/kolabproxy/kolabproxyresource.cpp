@@ -217,18 +217,8 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setIgnoreRetrievalErrors( true );
-  setItemStreamingEnabled( true );
 
-  connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)), this, SLOT(itemsReceived(Akonadi::Item::List)) );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemsFetchDone(KJob*)) );
-}
-
-void KolabProxyResource::itemsReceived(const Akonadi::Item::List &items)
-{
-  if ( const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() ) ) {
-    const Akonadi::Item::List newItems = handler->translateItems( items );
-    itemsRetrieved( newItems );
-  }
 }
 
 void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
@@ -238,7 +228,19 @@ void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
     cancelTask();
     return;
   }
-  itemsRetrievalDone();
+
+  const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
+  if ( items.isEmpty() ) {
+    itemsRetrieved( Akonadi::Item::List() );
+    return;
+  }
+  const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() );
+  if ( !handler ) {
+    cancelTask();
+    return;
+  }
+  const Akonadi::Item::List newItems = handler->translateItems( items );
+  itemsRetrieved( newItems );
   kDebug() << "RETRIEVEITEM DONE";
 }
 
@@ -247,9 +249,7 @@ bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QBy
   Q_UNUSED( parts );
   kDebug() << "RETRIEVEITEM";
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( item ) );
-  foreach (const QByteArray &part, parts) {
-    job->fetchScope().fetchPayloadPart( part );
-  }
+  job->fetchScope().fetchFullPayload();
   job->setProperty( "itemId", item.id() );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
   return true;
@@ -290,14 +290,6 @@ void KolabProxyResource::aboutToQuit()
   m_monitoredCollections.clear();
 }
 
-Kolab::Version readKolabVersion( const QString &resourceIdentifier )
-{
-  KConfigGroup grp( KGlobal::mainComponent().config(), "KolabProxyResourceSettings" );
-  return static_cast<Kolab::Version>(
-    grp.readEntry<int>( "KolabFormatVersion" + resourceIdentifier,
-                        static_cast<int>( Kolab::KolabV2 ) ) );
-}
-
 void KolabProxyResource::configure( WId windowId )
 {
   // TODO: this method is usually called when a new resource is being
@@ -317,7 +309,7 @@ void KolabProxyResource::configure( WId windowId )
 
   foreach ( Akonadi::Entity::Id id, m_monitoredCollections.keys() ) { //krazy:exclude=foreach
     KolabHandler::Ptr handler = m_monitoredCollections.value( id );
-    Kolab::Version v = readKolabVersion( m_resourceIdentifier.value( id ) );
+    Kolab::Version v = SetupKolab::readKolabVersion( m_resourceIdentifier.value( id ) );
     handler->setKolabFormatVersion( v );
   }
 
@@ -580,25 +572,19 @@ void KolabProxyResource::applyAttributesFromImap( Akonadi::Collection &kolabColl
 
 void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &imapCollection )
 {
-  const Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-    imapCollection.attribute<Akonadi::CollectionAnnotationsAttribute>();
+  if ( !isHandledKolabFolder( imapCollection ) ) {
+    return;
+  }
 
-  if ( annotationsAttribute ) {
-    const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-    const QByteArray folderType = annotations[ KOLAB_FOLDER_TYPE_ANNOTATION ];
-    if ( folderType != KOLAB_FOLDER_TYPE_EVENT &&
-         folderType != KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-      return; // no kolab calendar collection
-    }
-  } else {
-    return; // no kolab collection
+  if ( getFolderType( imapCollection ) != Kolab::EventType ) {
+    return;
   }
 
   if ( !Settings::self()->updateFreeBusy() ) {
     return; // disabled by user
   }
 
-  Kolab::Version v = readKolabVersion( imapCollection.resource() );
+  Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );
   if (v != Kolab::KolabV2) {
     return;
   }
@@ -790,6 +776,26 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
   }
 }
 
+Kolab::FolderType KolabProxyResource::getFolderType( const Akonadi::Collection& collection ) const
+{
+  Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
+    collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
+  if ( annotationsAttribute ) {
+    return Kolab::folderTypeFromString( annotationsAttribute->annotations().value(KOLAB_FOLDER_TYPE_ANNOTATION) );
+  }
+  return Kolab::MailType;
+}
+ 
+bool KolabProxyResource::isKolabFolder(const Akonadi::Collection &collection) const
+{
+  return (getFolderType(collection) != Kolab::MailType);
+}
+
+bool KolabProxyResource::isHandledKolabFolder(const Akonadi::Collection& collection) const
+{ 
+  return KolabHandler::hasHandler(getFolderType(collection));
+}
+
 void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &collection )
 {
   if ( collection.resource() == identifier() ) {
@@ -799,17 +805,7 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
 
   //kDebug() << "IMAPCOLLECTIONCHANGED";
   if ( !m_monitoredCollections.contains( collection.id() ) ) {
-    // check if this is a Kolab folder at all, if yet something is wrong
-    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-      collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
-    bool isKolabFolder = false;
-    if ( annotationsAttribute ) {
-      const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-      QByteArray folderType = annotations[ KOLAB_FOLDER_TYPE_ANNOTATION ];
-      isKolabFolder = !folderType.isEmpty() && folderType != KOLAB_FOLDER_TYPE_MAIL;
-    }
-
-    if ( isKolabFolder ) {
+    if ( isHandledKolabFolder( collection ) ) {
       synchronizeCollectionTree();
       return;
     }
@@ -820,6 +816,11 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( kolabCollection, this );
     Q_UNUSED( job );
   } else {
+    if ( !isHandledKolabFolder( collection ) ) {
+        //This is no longer a kolab folder, remove
+        removeFolder( collection );
+        return;
+    }
     // Kolab folder we already have in our tree, if the update fails, reload our tree
     Akonadi::Collection kolabCollection = createCollection( collection );
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( kolabCollection, this );
@@ -849,6 +850,15 @@ void KolabProxyResource::kolabFolderChangeResult( KJob *job )
   }
 }
 
+void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection )
+{
+  Akonadi::Collection kolabCollection;
+  kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
+  new Akonadi::CollectionDeleteJob( kolabCollection );
+  m_monitoredCollections.remove( imapCollection.id() );
+  updateFreeBusyInformation( imapCollection );
+}
+
 void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapCollection )
 {
   if ( imapCollection.resource() == identifier() ) {
@@ -857,13 +867,7 @@ void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapC
   }
 
   kDebug() << "IMAPCOLLECTIONREMOVED";
-  Akonadi::Collection kolabCollection;
-  kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
-  new Akonadi::CollectionDeleteJob( kolabCollection );
-
-  m_monitoredCollections.remove( imapCollection.id() );
-
-  updateFreeBusyInformation( imapCollection );
+  removeFolder(imapCollection);
 }
 
 Akonadi::Collection KolabProxyResource::createCollection(
@@ -909,12 +913,13 @@ Akonadi::Collection KolabProxyResource::createCollection(
     }
   }
   applyAttributesFromImap( c, imapCollection );
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
-  contentTypes.append( Akonadi::Collection::mimeType() );
-  if ( handler ) {
-    contentTypes.append( handler->contentMimeTypes() );
-    kolabAttr->setIconName( handler->iconName() );
-
+  if ( isKolabFolder( imapCollection ) ) {
+    KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
+    contentTypes.append( Akonadi::Collection::mimeType() );
+    if ( handler ) {
+        contentTypes.append( handler->contentMimeTypes() );
+        kolabAttr->setIconName( handler->iconName() );
+    }
     // hide Kolab folders on the IMAP server
     if ( !imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>() ) {
       Akonadi::Collection hiddenImapCol( imapCollection );
@@ -929,17 +934,12 @@ Akonadi::Collection KolabProxyResource::createCollection(
 
 bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection &imapCollection )
 {
-  Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-    imapCollection.attribute<Akonadi::CollectionAnnotationsAttribute>();
-  if ( annotationsAttribute ) {
-    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-
+  if ( isHandledKolabFolder( imapCollection ) ) {
     KolabHandler::Ptr handler =
-      KolabHandler::createHandler(
-        annotations[KOLAB_FOLDER_TYPE_ANNOTATION], imapCollection );
+      KolabHandler::createHandler( getFolderType( imapCollection ), imapCollection );
 
     if ( handler ) {
-      Kolab::Version v = readKolabVersion( imapCollection.resource() );
+      Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );
       handler->setKolabFormatVersion( v );
       connect( handler.data(), SIGNAL(deleteItemFromImap(Akonadi::Item)),
                this, SLOT(deleteImapItem(Akonadi::Item)));

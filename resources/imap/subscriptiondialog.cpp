@@ -299,8 +299,8 @@ void SubscriptionDialog::onSubscribedMailBoxesReceived( const QList<KIMAP::MailB
 {
   Q_UNUSED( flags );
   const int numberOfMailBoxes( mailBoxes.size() );
-  for ( int i = 0; i<numberOfMailBoxes; i++ ) {
-    KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
+  for ( int i = 0; i<numberOfMailBoxes; ++i ) {
+    KIMAP::MailBoxDescriptor mailBox = mailBoxes.at(i);
     QString descriptor = mailBox.separator + mailBox.name;
 
     if ( m_itemsMap.contains( descriptor ) ) {
@@ -367,14 +367,18 @@ SubscriptionFilterProxyModel::SubscriptionFilterProxyModel( QObject* parent )
 
 void SubscriptionFilterProxyModel::setSearchPattern( const QString &pattern )
 {
-  m_pattern = pattern;
-  invalidate();
+  if(m_pattern != pattern) {
+    m_pattern = pattern;
+    invalidate();
+  }
 }
 
 void SubscriptionFilterProxyModel::setIncludeCheckedOnly( bool checkedOnly )
 {
-  m_checkedOnly = checkedOnly;
-  invalidate();
+  if (m_checkedOnly != checkedOnly) {
+    m_checkedOnly = checkedOnly;
+    invalidate();
+  }
 }
 
 void SubscriptionFilterProxyModel::setIncludeCheckedOnly( int checkedOnlyState )

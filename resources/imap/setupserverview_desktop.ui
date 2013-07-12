@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
+    <width>454</width>
     <height>518</height>
    </rect>
   </property>
@@ -123,7 +123,7 @@
                <number>0</number>
               </property>
               <property name="suffix">
-               <string> </string>
+               <string/>
               </property>
               <property name="prefix">
                <string/>
@@ -202,6 +202,72 @@
         </layout>
        </item>
        <item>
+        <widget class="QGroupBox" name="authentification">
+         <property name="title">
+          <string>Authentification</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="5" column="1">
+           <widget class="KLineEdit" name="customPassword">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QRadioButton" name="noAuthentification">
+            <property name="text">
+             <string>No authentification</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">customSieveGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Password:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Username:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QRadioButton" name="customUserPassword">
+            <property name="text">
+             <string>Username and Password</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">customSieveGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="KLineEdit" name="customUsername"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QRadioButton" name="imapUserPassword">
+            <property name="text">
+             <string>IMAP Username and Password</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">customSieveGroup</string>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -272,8 +338,7 @@
              </widget>
             </item>
             <item>
-             <widget class="Akonadi::CollectionRequester" name="folderRequester">
-             </widget>
+             <widget class="Akonadi::CollectionRequester" name="folderRequester"/>
             </item>
            </layout>
           </item>
@@ -358,7 +423,7 @@ p, li { white-space: pre-wrap; }
                  <bool>true</bool>
                 </property>
                 <attribute name="buttonGroup">
-                 <string>safeImapGroup</string>
+                 <string notr="true">safeImapGroup</string>
                 </attribute>
                </widget>
               </item>
@@ -368,7 +433,7 @@ p, li { white-space: pre-wrap; }
                  <string>SSL/TLS</string>
                 </property>
                 <attribute name="buttonGroup">
-                 <string>safeImapGroup</string>
+                 <string notr="true">safeImapGroup</string>
                 </attribute>
                </widget>
               </item>
@@ -378,7 +443,7 @@ p, li { white-space: pre-wrap; }
                  <string>STARTTLS</string>
                 </property>
                 <attribute name="buttonGroup">
-                 <string>safeImapGroup</string>
+                 <string notr="true">safeImapGroup</string>
                 </attribute>
                </widget>
               </item>
@@ -514,9 +579,10 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KIntSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>KPushButton</class>
@@ -524,10 +590,9 @@ p, li { white-space: pre-wrap; }
    <header>kpushbutton.h</header>
   </customwidget>
   <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-   <container>1</container>
+   <class>KIntSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>knuminput.h</header>
   </customwidget>
   <customwidget>
    <class>KIntNumInput</class>
@@ -545,5 +610,6 @@ p, li { white-space: pre-wrap; }
  <connections/>
  <buttongroups>
   <buttongroup name="safeImapGroup"/>
+  <buttongroup name="customSieveGroup"/>
  </buttongroups>
 </ui>

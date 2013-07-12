@@ -96,14 +96,15 @@ private:
 
 private slots:
   void slotTest();
-  void slotFinished( QList<int> testResult );
+  void slotFinished(const QList<int> &testResult );
+  void slotCustomSieveChanged();
 
   void slotTestChanged();
   void slotComplete();
   void slotSafetyChanged();
   void slotManageSubscriptions();
   void slotEnableWidgets();
-  void targetCollectionReceived( Akonadi::Collection::List collections );
+  void targetCollectionReceived(const Akonadi::Collection::List &collections );
   void localFolderRequestJobFinished( KJob *job );
 };
 

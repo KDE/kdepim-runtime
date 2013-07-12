@@ -21,7 +21,7 @@ public:
   MainWindow(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
 public slots:
-  /** Returns wheter or not the child collection at row @param row has children. */
+  /** Returns whether or not the child collection at row @param row has children. */
   bool childCollectionHasChildren( int row );
   int selectedCollectionRow();
 

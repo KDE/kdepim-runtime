@@ -21,13 +21,14 @@
 
 #include <QObject>
 #include <Akonadi/Item>
+#include <QStringList>
 class KJob;
 
 class SpecialNotifierJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit SpecialNotifierJob(const QString &path, Akonadi::Item::Id id, QObject *parent = 0);
+    explicit SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent = 0);
     ~SpecialNotifierJob();
 
 Q_SIGNALS:
@@ -39,6 +40,7 @@ private Q_SLOTS:
 
 private:
     void emitNotification(const QPixmap &pixmap);
+    QStringList mListEmails;
     QString mSubject;
     QString mFrom;
     QString mPath;

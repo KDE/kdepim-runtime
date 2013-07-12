@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Facebook
 Name[cs]=Facebook
+Name[da]=Facebook
 Name[de]=Facebook
 Name[el]=Facebook
 Name[es]=Facebook
@@ -30,6 +31,7 @@ Name[zh_CN]=Facebook
 Name[zh_TW]=Facebook
 Comment=Makes your Facebook data available in KDE
 Comment[cs]=Zpřístupňuje váš Facebook v KDE
+Comment[da]=Gør dine Facebook-data tilgængelige i KDE
 Comment[de]=Stellt Ihre Facebook-Daten in KDE zur Verfügung
 Comment[el]=Κάνει τα δεδομένα σας στο Facebook διαθέσιμα στο KDE
 Comment[es]=Hace que sus datos de Facebook estén disponibles en KDE

@@ -96,3 +96,8 @@ QString KolabV2::nameForFolderType( FolderType type )
   Q_ASSERT( type >= 0 && type < FolderTypeSize );
   return i18n( folderTypeData[ type ].label );
 }
+
+Kolab::FolderType Kolab::folderTypeFromString(const QByteArray& folderTypeName)
+{
+  return Kolab::folderTypeFromString( std::string(folderTypeName.data(), folderTypeName.size()) );
+}
