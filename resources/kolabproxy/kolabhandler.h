@@ -41,6 +41,8 @@ class KolabHandler : public QObject
 
     static Ptr createHandler( Kolab::FolderType type,
                               const Akonadi::Collection &imapCollection );
+    
+    static bool hasHandler( Kolab::FolderType type );
 
     static Ptr createHandler( const KolabV2::FolderType &type,
                               const Akonadi::Collection &imapCollection );

@@ -57,6 +57,21 @@ KolabHandler::Ptr KolabHandler::createHandler( Kolab::FolderType type,
   return KolabHandler::Ptr();
 }
 
+bool KolabHandler::hasHandler( Kolab::FolderType type )
+{
+  switch (type) {
+  case Kolab::ContactType:
+  case Kolab::EventType:
+  case Kolab::TaskType:
+  case Kolab::JournalType:
+  case Kolab::NoteType:
+    return true;
+  default:
+    return false;
+  }
+  return false;
+}
+
 KolabHandler::Ptr KolabHandler::createHandler( const KolabV2::FolderType &type,
                                                const Akonadi::Collection &imapCollection )
 {

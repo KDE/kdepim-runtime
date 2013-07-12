@@ -572,7 +572,7 @@ void KolabProxyResource::applyAttributesFromImap( Akonadi::Collection &kolabColl
 
 void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &imapCollection )
 {
-  if ( !isKolabFolder( imapCollection ) ) {
+  if ( !isHandledKolabFolder( imapCollection ) ) {
     return;
   }
 
@@ -791,6 +791,11 @@ bool KolabProxyResource::isKolabFolder(const Akonadi::Collection &collection) co
   return (getFolderType(collection) != Kolab::MailType);
 }
 
+bool KolabProxyResource::isHandledKolabFolder(const Akonadi::Collection& collection) const
+{ 
+  return KolabHandler::hasHandler(getFolderType(collection));
+}
+
 void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &collection )
 {
   if ( collection.resource() == identifier() ) {
@@ -800,7 +805,7 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
 
   //kDebug() << "IMAPCOLLECTIONCHANGED";
   if ( !m_monitoredCollections.contains( collection.id() ) ) {
-    if ( isKolabFolder( collection ) ) {
+    if ( isHandledKolabFolder( collection ) ) {
       synchronizeCollectionTree();
       return;
     }
@@ -811,6 +816,11 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( kolabCollection, this );
     Q_UNUSED( job );
   } else {
+    if ( !isHandledKolabFolder( collection ) ) {
+        //This is no longer a kolab folder, remove
+        removeFolder( collection );
+        return;
+    }
     // Kolab folder we already have in our tree, if the update fails, reload our tree
     Akonadi::Collection kolabCollection = createCollection( collection );
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( kolabCollection, this );
@@ -840,6 +850,15 @@ void KolabProxyResource::kolabFolderChangeResult( KJob *job )
   }
 }
 
+void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection )
+{
+  Akonadi::Collection kolabCollection;
+  kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
+  new Akonadi::CollectionDeleteJob( kolabCollection );
+  m_monitoredCollections.remove( imapCollection.id() );
+  updateFreeBusyInformation( imapCollection );
+}
+
 void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapCollection )
 {
   if ( imapCollection.resource() == identifier() ) {
@@ -848,13 +867,7 @@ void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapC
   }
 
   kDebug() << "IMAPCOLLECTIONREMOVED";
-  Akonadi::Collection kolabCollection;
-  kolabCollection.setRemoteId( QString::number( imapCollection.id() ) );
-  new Akonadi::CollectionDeleteJob( kolabCollection );
-
-  m_monitoredCollections.remove( imapCollection.id() );
-
-  updateFreeBusyInformation( imapCollection );
+  removeFolder(imapCollection);
 }
 
 Akonadi::Collection KolabProxyResource::createCollection(
@@ -921,7 +934,7 @@ Akonadi::Collection KolabProxyResource::createCollection(
 
 bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection &imapCollection )
 {
-  if ( isKolabFolder( imapCollection ) ) {
+  if ( isHandledKolabFolder( imapCollection ) ) {
     KolabHandler::Ptr handler =
       KolabHandler::createHandler( getFolderType( imapCollection ), imapCollection );
 
