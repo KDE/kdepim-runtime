@@ -99,41 +99,5 @@ QString KolabV2::nameForFolderType( FolderType type )
 
 Kolab::FolderType Kolab::folderTypeFromString(const QByteArray& folderTypeName)
 {
-  //TODO use libkolab instead (requires at least 0.3)
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_CONTACT ||
-  folderTypeName == KOLAB_FOLDER_TYPE_CONTACT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return ContactType;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_EVENT ||
-    folderTypeName == KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return EventType;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_TASK ||
-    folderTypeName == KOLAB_FOLDER_TYPE_TASK KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return TaskType;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL ||
-    folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return JournalType;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_NOTE ||
-    folderTypeName == KOLAB_FOLDER_TYPE_NOTE KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return NoteType;
-  }
-  
-  if ( folderTypeName == "configuration" ||
-    folderTypeName == "configuration" KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return ConfigurationType;
-  }
-  
-  if ( folderTypeName == "freebusy" ||
-    folderTypeName == "freebusy" KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX) {
-    return FreebusyType;
-  }
-
-  return MailType;
+  return Kolab::folderTypeFromString( std::string(folderTypeName.data(), folderTypeName.size()) );
 }
