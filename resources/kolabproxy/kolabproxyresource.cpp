@@ -217,18 +217,8 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setIgnoreRetrievalErrors( true );
-  setItemStreamingEnabled( true );
 
-  connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)), this, SLOT(itemsReceived(Akonadi::Item::List)) );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemsFetchDone(KJob*)) );
-}
-
-void KolabProxyResource::itemsReceived(const Akonadi::Item::List &items)
-{
-  if ( const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() ) ) {
-    const Akonadi::Item::List newItems = handler->translateItems( items );
-    itemsRetrieved( newItems );
-  }
 }
 
 void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
@@ -238,7 +228,19 @@ void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
     cancelTask();
     return;
   }
-  itemsRetrievalDone();
+
+  const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
+  if ( items.isEmpty() ) {
+    itemsRetrieved( Akonadi::Item::List() );
+    return;
+  }
+  const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() );
+  if ( !handler ) {
+    cancelTask();
+    return;
+  }
+  const Akonadi::Item::List newItems = handler->translateItems( items );
+  itemsRetrieved( newItems );
   kDebug() << "RETRIEVEITEM DONE";
 }
 
@@ -247,9 +249,7 @@ bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QBy
   Q_UNUSED( parts );
   kDebug() << "RETRIEVEITEM";
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( item ) );
-  foreach (const QByteArray &part, parts) {
-    job->fetchScope().fetchPayloadPart( part );
-  }
+  job->fetchScope().fetchFullPayload();
   job->setProperty( "itemId", item.id() );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
   return true;

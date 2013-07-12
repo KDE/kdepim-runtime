@@ -132,7 +132,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void imapItemUpdateCollectionFetchResult( KJob *job );
     void imapFolderCreateResult( KJob *job );
     void kolabFolderChangeResult( KJob *job );
-    void itemsReceived(const Akonadi::Item::List &);
 
   private:
     KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
