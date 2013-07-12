@@ -572,18 +572,12 @@ void KolabProxyResource::applyAttributesFromImap( Akonadi::Collection &kolabColl
 
 void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &imapCollection )
 {
-  const Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-    imapCollection.attribute<Akonadi::CollectionAnnotationsAttribute>();
+  if ( !isKolabFolder( imapCollection ) ) {
+    return;
+  }
 
-  if ( annotationsAttribute ) {
-    const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-    const QByteArray folderType = annotations[ KOLAB_FOLDER_TYPE_ANNOTATION ];
-    if ( folderType != KOLAB_FOLDER_TYPE_EVENT &&
-         folderType != KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-      return; // no kolab calendar collection
-    }
-  } else {
-    return; // no kolab collection
+  if ( getFolderType( imapCollection ) != Kolab::EventType ) {
+    return;
   }
 
   if ( !Settings::self()->updateFreeBusy() ) {
@@ -782,6 +776,21 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
   }
 }
 
+Kolab::FolderType KolabProxyResource::getFolderType( const Akonadi::Collection& collection ) const
+{
+  Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
+    collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
+  if ( annotationsAttribute ) {
+    return Kolab::folderTypeFromString( annotationsAttribute->annotations().value(KOLAB_FOLDER_TYPE_ANNOTATION) );
+  }
+  return Kolab::MailType;
+}
+ 
+bool KolabProxyResource::isKolabFolder(const Akonadi::Collection &collection) const
+{
+  return (getFolderType(collection) != Kolab::MailType);
+}
+
 void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &collection )
 {
   if ( collection.resource() == identifier() ) {
@@ -791,17 +800,7 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
 
   //kDebug() << "IMAPCOLLECTIONCHANGED";
   if ( !m_monitoredCollections.contains( collection.id() ) ) {
-    // check if this is a Kolab folder at all, if yet something is wrong
-    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-      collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
-    bool isKolabFolder = false;
-    if ( annotationsAttribute ) {
-      const QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-      QByteArray folderType = annotations[ KOLAB_FOLDER_TYPE_ANNOTATION ];
-      isKolabFolder = !folderType.isEmpty() && folderType != KOLAB_FOLDER_TYPE_MAIL;
-    }
-
-    if ( isKolabFolder ) {
+    if ( isKolabFolder( collection ) ) {
       synchronizeCollectionTree();
       return;
     }
@@ -901,12 +900,13 @@ Akonadi::Collection KolabProxyResource::createCollection(
     }
   }
   applyAttributesFromImap( c, imapCollection );
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
-  contentTypes.append( Akonadi::Collection::mimeType() );
-  if ( handler ) {
-    contentTypes.append( handler->contentMimeTypes() );
-    kolabAttr->setIconName( handler->iconName() );
-
+  if ( isKolabFolder( imapCollection ) ) {
+    KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
+    contentTypes.append( Akonadi::Collection::mimeType() );
+    if ( handler ) {
+        contentTypes.append( handler->contentMimeTypes() );
+        kolabAttr->setIconName( handler->iconName() );
+    }
     // hide Kolab folders on the IMAP server
     if ( !imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>() ) {
       Akonadi::Collection hiddenImapCol( imapCollection );
@@ -921,14 +921,9 @@ Akonadi::Collection KolabProxyResource::createCollection(
 
 bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection &imapCollection )
 {
-  Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-    imapCollection.attribute<Akonadi::CollectionAnnotationsAttribute>();
-  if ( annotationsAttribute ) {
-    QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-
+  if ( isKolabFolder( imapCollection ) ) {
     KolabHandler::Ptr handler =
-      KolabHandler::createHandler(
-        annotations[KOLAB_FOLDER_TYPE_ANNOTATION], imapCollection );
+      KolabHandler::createHandler( getFolderType( imapCollection ), imapCollection );
 
     if ( handler ) {
       Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );

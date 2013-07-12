@@ -24,6 +24,22 @@
 
 #include <kolabdefinitions.h> //libkolab
 
+namespace Kolab {
+  enum FolderType {
+    MailType = 0,
+    ContactType,
+    EventType,
+    TaskType,
+    JournalType,
+    NoteType,
+    ConfigurationType,
+    FreebusyType,
+    LastType
+  };
+
+  FolderType folderTypeFromString( const QByteArray &folderTypeName );
+}
+
 namespace KolabV2 {
 
 #define PRODUCT_ID "Akonadi-KolabResource"

@@ -37,19 +37,22 @@ KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )
 {
 }
 
-KolabHandler::Ptr KolabHandler::createHandler( const QByteArray &type,
+KolabHandler::Ptr KolabHandler::createHandler( Kolab::FolderType type,
                                                const Akonadi::Collection &imapCollection )
 {
-  if ( type ==  "contact.default" || type ==  "contact" ) {
+  switch (type) {
+  case Kolab::ContactType:
     return Ptr( new AddressBookHandler( imapCollection ) );
-  } else if ( type ==  "event.default" || type ==  "event" ) {
+  case Kolab::EventType:
     return Ptr( new CalendarHandler( imapCollection ) );
-  } else if ( type ==  "task.default" || type ==  "task" ) {
+  case Kolab::TaskType:
     return Ptr( new TasksHandler( imapCollection ) );
-  } else if ( type ==  "journal.default" || type ==  "journal" ) {
+  case Kolab::JournalType:
     return Ptr( new JournalHandler( imapCollection ) );
-  } else if ( type ==  "note.default" || type ==  "note" ) {
+  case Kolab::NoteType:
     return Ptr( new NotesHandler( imapCollection ) );
+  default:
+    qWarning() << "invalid type";
   }
   return KolabHandler::Ptr();
 }
