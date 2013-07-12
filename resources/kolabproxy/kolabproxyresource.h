@@ -52,7 +52,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
-    void itemsReceived(Akonadi::Item::List);
 
   protected Q_SLOTS:
     void retrieveCollections();
