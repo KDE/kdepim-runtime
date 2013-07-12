@@ -45,8 +45,8 @@ public:
 
     void showConfigureDialog(qlonglong windowId = 0);
 
-    void setEnableNotifier(bool b);
-    bool enabledNotifier() const;
+    void setEnableAgent(bool b);
+    bool enabledAgent() const;
 
     void setVerboseMailNotification(bool b);
     bool verboseMailNotification() const;

@@ -4,10 +4,10 @@
     <method name="showConfigureDialog" >
       <arg direction="in" type="x" name="windowId" />
     </method>
-    <method name="setEnableNotifier" >
+    <method name="setEnableAgent" >
       <arg type="b" direction="in"/>
     </method>
-    <method name="enabledNotifier" >
+    <method name="enabledAgent" >
       <arg type="b" direction="out"/>
     </method>
     <method name="setVerboseMailNotification" >
