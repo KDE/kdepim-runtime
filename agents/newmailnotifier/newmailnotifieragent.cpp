@@ -135,7 +135,7 @@ bool NewMailNotifierAgent::showFolderName() const
     return NewMailNotifierAgentSettings::showFolder();
 }
 
-void NewMailNotifierAgent::setEnableNotifier(bool enabled)
+void NewMailNotifierAgent::setEnableAgent(bool enabled)
 {
     NewMailNotifierAgentSettings::setEnabled(enabled);
     NewMailNotifierAgentSettings::self()->writeConfig();
@@ -173,7 +173,7 @@ void NewMailNotifierAgent::clearAll()
     mInstanceNameInProgress.clear();
 }
 
-bool NewMailNotifierAgent::enabledNotifier() const
+bool NewMailNotifierAgent::enabledAgent() const
 {
     return NewMailNotifierAgentSettings::enabled();
 }
