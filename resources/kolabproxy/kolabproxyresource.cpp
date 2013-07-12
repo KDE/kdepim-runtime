@@ -249,9 +249,7 @@ bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QBy
   Q_UNUSED( parts );
   kDebug() << "RETRIEVEITEM";
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( item ) );
-  foreach (const QByteArray &part, parts) {
-    job->fetchScope().fetchPayloadPart( part );
-  }
+  job->fetchScope().fetchFullPayload();
   job->setProperty( "itemId", item.id() );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
   return true;
