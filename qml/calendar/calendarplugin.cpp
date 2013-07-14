@@ -15,3 +15,6 @@ void CalendarPlugin::registerTypes(const char *uri)
     qmlRegisterType<QAbstractItemModel>();
     qmlRegisterType<QAbstractListModel>();
 }
+
+Q_EXPORT_PLUGIN2(calendarplugin, CalendarPlugin)
+
