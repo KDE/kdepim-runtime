@@ -45,6 +45,7 @@ Name[x-test]=xxCalendar Search Agentxx
 Name[zh_CN]=日历搜索代理
 Name[zh_TW]=行事曆搜尋代理程式
 Comment=Agent for calendar searching
+Comment[bs]=Agent za traženje kalendara
 Comment[ca]=Agent per cerques al calendari
 Comment[ca@valencia]=Agent per cerques al calendari
 Comment[cs]=Agent vyhledávání v kalendáři
