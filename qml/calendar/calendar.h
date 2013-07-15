@@ -70,9 +70,9 @@ public:
 
     // QML invokables
     Q_INVOKABLE void next();
-    Q_INVOKABLE void nextyear();
+    Q_INVOKABLE void nextYear();
     Q_INVOKABLE void previous();
-    Q_INVOKABLE void previousyear();
+    Q_INVOKABLE void previousYear();
     Q_INVOKABLE QString dayName(int weekDay) ;
     
 signals:

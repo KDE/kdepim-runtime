@@ -202,13 +202,13 @@ void Calendar::next()
     emit monthNameChanged();
     emit yearChanged();
 }
-void Calendar::nextyear()
+void Calendar::nextYear()
 {
     m_startDate = m_startDate.addYears(1);
     updateData();
     emit yearChanged();
 }
-void Calendar::previousyear()
+void Calendar::previousYear()
 {
     m_startDate = m_startDate.addYears(-1);
     updateData();
