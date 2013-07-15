@@ -212,7 +212,11 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
   kDebug() << "RETRIEVEITEMS";
   const Akonadi::Collection imapCollection = kolabToImap( collection );
   const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
-  Q_ASSERT( handler );
+  if ( !handler ) {
+    cancelTask();
+    return;
+  }
+  
   handler->reset();
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
@@ -329,7 +333,7 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
 
 void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem )
 {
-  KolabHandler::Ptr handler = getHandler( imapCollection.id() );
+  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   if ( !handler ) {
     cancelTask();
     return;
@@ -363,8 +367,11 @@ void KolabProxyResource::imapItemCreationResult( KJob *job )
   const Akonadi::Collection imapCollection =
     cjob->property( IMAP_COLLECTION ).value<Akonadi::Collection>();
 
-  KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
-  Q_ASSERT( handler );
+  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
+  if ( !handler ) {
+    cancelTask(  );
+    return;
+  }
   handler->itemAdded( imapItem );
   m_excludeAppend << imapItem.id();
 
@@ -402,9 +409,8 @@ void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
   } else {
     Akonadi::Item imapItem = fetchJob->items().first();
 
-    KolabHandler::Ptr handler = m_monitoredCollections.value( imapItem.storageCollectionId() );
+    const KolabHandler::Ptr handler = getHandler( imapItem.storageCollectionId() );
     if ( !handler ) {
-      kWarning() << "No handler found";
       cancelTask();
       return;
     }
