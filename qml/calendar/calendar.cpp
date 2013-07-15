@@ -6,6 +6,7 @@
 #include <kcalcore/event.h>
 #include <akonadi/calendar/etmcalendar.h>
 #include "calendar.h"
+#include <kcalendarsystem.h>
 
 Calendar::Calendar(QObject *parent)
     : QObject(parent)
@@ -201,6 +202,18 @@ void Calendar::next()
     emit monthNameChanged();
     emit yearChanged();
 }
+void Calendar::nextyear()
+{
+    m_startDate = m_startDate.addYears(1);
+    updateData();
+    emit yearChanged();
+}
+void Calendar::previousyear()
+{
+    m_startDate = m_startDate.addYears(-1);
+    updateData();
+    emit yearChanged();
+}
 
 void Calendar::previous()
 {
@@ -208,4 +221,8 @@ void Calendar::previous()
     updateData();
     emit monthNameChanged();
     emit yearChanged();
+}
+QString Calendar::dayName(int weekday)
+{
+    return QDate::longDayName(weekday);
 }

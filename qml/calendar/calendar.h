@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDate>
 #include <QAbstractListModel>
+#include <kcalendarsystem.h>
 
 #include "daydata.h"
 #include "daysmodel.h"
@@ -62,14 +63,17 @@ public:
     // Month name
     QString monthName() const;
     int year() const;
-
+ 
     // Models
     QAbstractListModel* daysModel() const;
 
 
     // QML invokables
     Q_INVOKABLE void next();
+    Q_INVOKABLE void nextyear();
     Q_INVOKABLE void previous();
+    Q_INVOKABLE void previousyear();
+    Q_INVOKABLE QString dayName(int weekDay) ;
     
 signals:
     void startDateChanged();
@@ -94,6 +98,7 @@ private:
     int m_weeks;
     int m_startDay;
     QString m_errorMessage;
+    
 };
 
 #endif // CALENDAR_H
