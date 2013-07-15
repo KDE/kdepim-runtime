@@ -73,7 +73,7 @@ public:
     Q_INVOKABLE void nextYear();
     Q_INVOKABLE void previous();
     Q_INVOKABLE void previousYear();
-    Q_INVOKABLE QString dayName(int weekDay) ;
+    Q_INVOKABLE QString dayName(int weekday) ;
     
 signals:
     void startDateChanged();

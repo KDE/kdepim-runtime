@@ -202,6 +202,10 @@ void Calendar::next()
     emit monthNameChanged();
     emit yearChanged();
 }
+QString Calendar::dayName(int weekday)
+{
+    return QDate::longDayName(weekday);
+}
 void Calendar::nextYear()
 {
     m_startDate = m_startDate.addYears(1);
@@ -221,8 +225,4 @@ void Calendar::previous()
     updateData();
     emit monthNameChanged();
     emit yearChanged();
-}
-QString Calendar::dayName(int weekday)
-{
-    return QDate::longDayName(weekday);
 }
