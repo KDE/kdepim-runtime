@@ -202,7 +202,7 @@ void Calendar::next()
     emit monthNameChanged();
     emit yearChanged();
 }
-QString Calendar::dayName(int weekday)
+QString Calendar::dayName(int weekday) const
 {
     return QDate::longDayName(weekday);
 }
