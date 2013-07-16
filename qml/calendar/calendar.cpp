@@ -14,7 +14,7 @@ Calendar::Calendar(QObject *parent)
     , m_dayList()
     , m_days(0)
     , m_weeks(0)
-    , m_startDay(Qt::Sunday)
+    , m_startDay(Qt::Monday)
     , m_errorMessage()
 {
     m_daysModel = new DaysModel(this);
@@ -204,7 +204,7 @@ void Calendar::next()
 }
 QString Calendar::dayName(int weekday) const
 {
-    return QDate::longDayName(weekday);
+    return QDate::shortDayName(weekday);
 }
 void Calendar::nextYear()
 {
