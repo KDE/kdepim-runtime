@@ -170,6 +170,16 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>The server port changed when ManageSieve turned into a fill RFC Standard. Old server implementations still use port 2000, while newer standard conform server can only be accessed via port 4190.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLabel" name="label_5">
@@ -609,7 +619,7 @@ p, li { white-space: pre-wrap; }
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="safeImapGroup"/>
   <buttongroup name="customSieveGroup"/>
+  <buttongroup name="safeImapGroup"/>
  </buttongroups>
 </ui>

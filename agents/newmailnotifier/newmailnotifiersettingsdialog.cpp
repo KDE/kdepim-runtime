@@ -25,6 +25,7 @@
 
 #include <QTabWidget>
 #include <QCheckBox>
+#include <QGroupBox>
 #include <QVBoxLayout>
 
 NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
@@ -45,21 +46,26 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QVBoxLayout *vbox = new QVBoxLayout;
     settings->setLayout(vbox);
 
+    QGroupBox *grp = new QGroupBox("Choose which fields to show:");
+    vbox->addWidget(grp);
+    QVBoxLayout *groupboxLayout = new QVBoxLayout;
+    grp->setLayout(groupboxLayout);
+
     mShowPhoto = new QCheckBox(i18n("Show Photo"));
     mShowPhoto->setChecked(NewMailNotifierAgentSettings::showPhoto());
-    vbox->addWidget(mShowPhoto);
+    groupboxLayout->addWidget(mShowPhoto);
 
     mShowFrom = new QCheckBox(i18n("Show From"));
     mShowFrom->setChecked(NewMailNotifierAgentSettings::showFrom());
-    vbox->addWidget(mShowFrom);
+    groupboxLayout->addWidget(mShowFrom);
 
     mShowSubject = new QCheckBox(i18n("Show Subject"));
     mShowSubject->setChecked(NewMailNotifierAgentSettings::showSubject());
-    vbox->addWidget(mShowSubject);
+    groupboxLayout->addWidget(mShowSubject);
 
     mShowFolders = new QCheckBox(i18n("Show Folders"));
     mShowFolders->setChecked(NewMailNotifierAgentSettings::showFolder());
-    vbox->addWidget(mShowFolders);
+    groupboxLayout->addWidget(mShowFolders);
 
     mExcludeMySelf = new QCheckBox(i18n("Do not notify when email was sent by me"));
     mExcludeMySelf->setChecked(NewMailNotifierAgentSettings::excludeEmailsFromMe());
