@@ -226,3 +226,7 @@ void Calendar::previous()
     emit monthNameChanged();
     emit yearChanged();
 }
+int Calendar::month() const
+{
+    return m_startDate.month();
+}
