@@ -46,7 +46,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QVBoxLayout *vbox = new QVBoxLayout;
     settings->setLayout(vbox);
 
-    QGroupBox *grp = new QGroupBox("Choose which fields to show:");
+    QGroupBox *grp = new QGroupBox(i18n("Choose which fields to show:"));
     vbox->addWidget(grp);
     QVBoxLayout *groupboxLayout = new QVBoxLayout;
     grp->setLayout(groupboxLayout);
