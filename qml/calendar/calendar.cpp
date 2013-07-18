@@ -226,7 +226,30 @@ void Calendar::previous()
     emit monthNameChanged();
     emit yearChanged();
 }
+
 int Calendar::month() const
 {
     return m_startDate.month();
 }
+void Calendar::monthChanged(int changeMonth)
+{
+    if(m_startDate.month() < changeMonth) {
+        m_startDate=m_startDate.addMonths(changeMonth-m_startDate.month());
+        updateData();
+        emit monthNameChanged();
+        emit yearChanged();
+    } else {
+        m_startDate=m_startDate.addMonths(-changeMonth+m_startDate.month());
+        updateData();
+        emit monthNameChanged();
+        emit yearChanged();
+    }
+}
+    
+int Calendar::weekNumber() const
+{//not working at present
+    QDate date(QDate::currentDate());
+    int currentWeek = date.weekNumber();
+    return currentWeek;
+}
+

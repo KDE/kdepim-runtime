@@ -75,6 +75,8 @@ public:
     Q_INVOKABLE void previousYear();
     Q_INVOKABLE QString dayName(int weekday) const ;
     Q_INVOKABLE int month() const;
+    Q_INVOKABLE int weekNumber() const;
+    Q_INVOKABLE void monthChanged(int changeMonth);
     
 signals:
     void startDateChanged();
@@ -98,6 +100,7 @@ private:
     int m_days;
     int m_weeks;
     int m_startDay;
+    int *yr;
     QString m_errorMessage;
     
 };
