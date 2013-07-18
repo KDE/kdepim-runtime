@@ -75,7 +75,7 @@ public:
     Q_INVOKABLE void previousYear();
     Q_INVOKABLE QString dayName(int weekday) const ;
     Q_INVOKABLE int month() const;
-    Q_INVOKABLE int weekNumber() const;
+    Q_INVOKABLE int weekNumber(QString input) ;
     Q_INVOKABLE void monthChanged(int changeMonth);
     
 signals:

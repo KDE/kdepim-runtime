@@ -7,6 +7,7 @@
 #include <akonadi/calendar/etmcalendar.h>
 #include "calendar.h"
 #include <kcalendarsystem.h>
+#include <klocale.h>
 
 Calendar::Calendar(QObject *parent)
     : QObject(parent)
@@ -245,11 +246,10 @@ void Calendar::monthChanged(int changeMonth)
         emit yearChanged();
     }
 }
-    
-int Calendar::weekNumber() const
-{//not working at present
-    QDate date(QDate::currentDate());
-    int currentWeek = date.weekNumber();
-    return currentWeek;
+int Calendar::weekNumber(QString input)
+/* Somehow it is not including previous month's day if it is in current month calendar :-/ */
+{
+    QDate date = QDate::fromString(input, "d/M/yyyy");
+    return date.weekNumber();
 }
 
