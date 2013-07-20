@@ -240,7 +240,7 @@ void Calendar::monthChanged(int changeMonth)
         emit monthNameChanged();
         emit yearChanged();
     } else {
-        m_startDate=m_startDate.addMonths(-changeMonth+m_startDate.month());
+        m_startDate=m_startDate.addMonths(changeMonth-m_startDate.month());
         updateData();
         emit monthNameChanged();
         emit yearChanged();
@@ -252,4 +252,3 @@ int Calendar::weekNumber(QString input)
     QDate date = QDate::fromString(input, "d/M/yyyy");
     return date.weekNumber();
 }
-
