@@ -42,6 +42,11 @@
 
 using namespace Akonadi;
 
+enum {
+  MaxItemCreateJobs = 100,
+  MaxItemModifyJobs = 100
+};
+
 class RetrieveItemsJob::Private
 {
   RetrieveItemsJob *const q;
@@ -49,7 +54,7 @@ class RetrieveItemsJob::Private
   public:
     Private( RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store )
       : q( parent ), mCollection( collection ), mStore( store ),
-        mTransaction( 0 ), mHighestModTime( -1 )
+        mTransaction( 0 ), mHighestModTime( -1 ), mNumItemCreateJobs( 0 ), mNumItemModifyJobs( 0 )
     {
     }
 
@@ -75,8 +80,9 @@ class RetrieveItemsJob::Private
     QQueue<Item> mChangedItems;
     Item::List mAvailableItems;
     Item::List mItemsMarkedAsDeleted;
-
     qint64 mHighestModTime;
+    int mNumItemCreateJobs;
+    int mNumItemModifyJobs;
 
   public: // slots
     void akonadiFetchResult( KJob *job );
@@ -86,7 +92,29 @@ class RetrieveItemsJob::Private
     void fetchNewResult( KJob* );
     void processChangedItem();
     void fetchChangedResult( KJob* );
+    void itemCreateJobResult( KJob* );
+    void itemModifyJobResult( KJob* );
 };
+
+void RetrieveItemsJob::Private::itemCreateJobResult( KJob *job )
+{
+  if ( job->error() ) {
+    kError() << "Error running ItemCreateJob: " << job->errorText();
+  }
+
+  mNumItemCreateJobs--;
+  QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
+}
+
+void RetrieveItemsJob::Private::itemModifyJobResult( KJob *job )
+{
+  if ( job->error() ) {
+    kError() << "Error running ItemModifyJob: " << job->errorText();
+  }
+
+  mNumItemModifyJobs--;
+  QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
+}
 
 void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
 {
@@ -220,8 +248,12 @@ void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
   }
 
   ItemCreateJob *itemCreate = new ItemCreateJob( item, mCollection, transaction() );
-  Q_UNUSED( itemCreate );
-  QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
+  mNumItemCreateJobs++;
+  connect( itemCreate, SIGNAL(result(KJob*)), q, SLOT(itemCreateJobResult(KJob*)) );
+
+  if (mNumItemCreateJobs < MaxItemCreateJobs ) {
+    QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
+  }
 }
 
 void RetrieveItemsJob::Private::processChangedItem()
@@ -273,8 +305,11 @@ void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
   }
 
   ItemModifyJob *itemModify = new ItemModifyJob( item, transaction() );
-  Q_UNUSED( itemModify );
-  QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
+  connect( itemModify, SIGNAL(result(KJob*)), q, SLOT(itemModifyJobResult(KJob*)) );
+  mNumItemModifyJobs++;
+  if ( mNumItemModifyJobs < MaxItemModifyJobs ) {
+    QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
+  }
 }
 
 void RetrieveItemsJob::Private::transactionResult( KJob *job )
