@@ -208,7 +208,7 @@ void Calendar::updateData()
 //    qDebug() << "---------------------------------------------------------------";
 }
 
-void Calendar::next()
+void Calendar::nextMonth()
 {
     m_startDate = m_startDate.addMonths(1);
     updateData();
@@ -234,7 +234,7 @@ void Calendar::previousYear()
     emit startDateChanged();
 }
 
-void Calendar::previous()
+void Calendar::previousMonth()
 {
     m_startDate = m_startDate.addMonths(-1);
     updateData();
