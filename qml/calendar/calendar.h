@@ -20,9 +20,9 @@ class Calendar : public QObject
     Q_PROPERTY(int days READ days WRITE setDays NOTIFY daysChanged)
     Q_PROPERTY(int weeks READ weeks WRITE setWeeks NOTIFY weeksChanged)
     Q_PROPERTY(int startDay READ startDay WRITE setStartDay NOTIFY startDayChanged)
-    Q_PROPERTY(int year READ year NOTIFY yearChanged)
+    Q_PROPERTY(int year READ year CONSTANT)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
-    Q_PROPERTY(QString monthName READ monthName NOTIFY monthNameChanged)
+    Q_PROPERTY(QString monthName READ monthName CONSTANT)
     Q_PROPERTY(QAbstractListModel* model READ model CONSTANT)
     Q_PROPERTY(QAbstractItemModel* selectedDayModel READ selectedDayModel CONSTANT)
 
@@ -89,8 +89,6 @@ signals:
     void weeksChanged();
     void startDayChanged();
     void errorMessageChanged();
-    void monthNameChanged();
-    void yearChanged();
 
 public slots:
     void updateData();
