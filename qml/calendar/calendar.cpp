@@ -243,11 +243,6 @@ void Calendar::previous()
     emit yearChanged();
 }
 
-int Calendar::month() const
-{
-    return m_startDate.month();
-}
-
 void Calendar::setSelectedDay(int year, int month, int day) const
 {
     m_calDataPerDay->setStartDate(QDate(year, month, day));

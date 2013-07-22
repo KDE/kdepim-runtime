@@ -80,7 +80,6 @@ public:
     Q_INVOKABLE void previous();
     Q_INVOKABLE void previousYear();
     Q_INVOKABLE QString dayName(int weekday) const ;
-    Q_INVOKABLE int month() const;
     Q_INVOKABLE void setSelectedDay(int year, int month, int day) const;
     
 signals:
