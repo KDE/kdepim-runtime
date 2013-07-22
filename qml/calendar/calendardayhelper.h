@@ -5,6 +5,9 @@
 #include <akonadi/calendar/etmcalendar.h>
 #include <kcalcore/event.h>
 
+
+class QAbstractItemModel;
+
 class CalendarDayHelper : public QObject
 {
     Q_OBJECT
@@ -17,6 +20,9 @@ public:
     bool containsEventItems(int day);
     bool containsTodoItems(int day);
     bool containsJournalItems(int day);
+
+    void updateCurrentDatModel();
+    QAbstractItemModel* selectedDayModel() const;
 
 signals:
     void calendarChanged();

@@ -36,6 +36,12 @@ public:
     Q_DECLARE_FLAGS(Types, Type)
 
     explicit CalendarData(QObject *parent = 0);
+    QDate startDate() const;
+    void setStartDate(const QDate &dateTime);
+    QDate endDate() const;
+    void setEndDate(const QDate &dateTime);
+    QAbstractItemModel* model() const;
+
 
 signals:
     void startDateChanged();
@@ -45,20 +51,16 @@ signals:
     void loadingChanged();
 
 private:
-    QDate startDate() const;
-    void setStartDate(const QDate &dateTime);
-    QDate endDate() const;
-    void setEndDate(const QDate &dateTime);
     int types() const;
     void setTypes(int types);
     QString errorMessage() const;
     bool loading() const;
-    QAbstractItemModel* model() const;
 
     void updateTypes();
 
     QDate m_startDate;
     QDate m_endDate;
+  //  QDate test;
     Types m_types;
 
     Akonadi::ETMCalendar *m_etmCalendar;

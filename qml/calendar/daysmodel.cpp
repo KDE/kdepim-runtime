@@ -15,6 +15,8 @@ DaysModel::DaysModel(QObject *parent) :
     roleNames.insert(containsTodoItems,      "containsTodoItems");
     roleNames.insert(containsJournalItems,   "containsJournalItems");
     roleNames.insert(dayNumber,              "dayNumber");
+    roleNames.insert(monthNumber,            "monthNumber");
+    roleNames.insert(yearNumber,             "yearNumber");
 
     setRoleNames(roleNames);
 
@@ -59,6 +61,10 @@ QVariant DaysModel::data(const QModelIndex &index, int role) const
             return currentData.containsJournalItems;
         case dayNumber:
             return currentData.dayNumber;
+        case monthNumber:
+            return currentData.monthNumber;
+        case yearNumber:
+            return currentData.yearNumber;
         }
     }
     return QVariant();

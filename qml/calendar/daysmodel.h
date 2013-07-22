@@ -16,7 +16,9 @@ public:
         containsEventItems,
         containsTodoItems,
         containsJournalItems,
-        dayNumber
+        dayNumber,
+        monthNumber,
+        yearNumber
     };
     explicit DaysModel(QObject *parent = 0);
     void setSourceData(QList<DayData>* data);

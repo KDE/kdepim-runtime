@@ -4,8 +4,10 @@
 #include <QObject>
 #include <QDate>
 #include <QAbstractListModel>
+#include <QAbstractItemModel>
 #include <kcalendarsystem.h>
 
+#include "calendardata.h"
 #include "daydata.h"
 #include "daysmodel.h"
 #include "calendardayhelper.h"
@@ -21,7 +23,8 @@ class Calendar : public QObject
     Q_PROPERTY(int year READ year NOTIFY yearChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
     Q_PROPERTY(QString monthName READ monthName NOTIFY monthNameChanged)
-    Q_PROPERTY(QAbstractListModel* daysModel READ daysModel CONSTANT)
+    Q_PROPERTY(QAbstractListModel* model READ model CONSTANT)
+    Q_PROPERTY(QAbstractItemModel* selectedDayModel READ selectedDayModel CONSTANT)
 
     Q_ENUMS(Type)
 
@@ -64,8 +67,11 @@ public:
     QString monthName() const;
     int year() const;
  
-    // Models
-    QAbstractListModel* daysModel() const;
+    // Model containing all events for the given date range
+    QAbstractListModel* model() const;
+
+    // Model filter that only gived the events for a selected day
+    QAbstractItemModel* selectedDayModel() const;
 
 
     // QML invokables
@@ -77,6 +83,7 @@ public:
     Q_INVOKABLE int month() const;
     Q_INVOKABLE int weekNumber(QString input) ;
     Q_INVOKABLE void monthChanged(int changeMonth);
+    Q_INVOKABLE void setSelectedDay(int year, int month, int day) const;
     
 signals:
     void startDateChanged();
@@ -95,13 +102,15 @@ private:
     QDate m_startDate;
     Types m_types;
     QList<DayData> m_dayList;
-    DaysModel* m_daysModel;
+    DaysModel* m_model;
     CalendarDayHelper* m_dayHelper;
     int m_days;
     int m_weeks;
     int m_startDay;
     int *yr;
     QString m_errorMessage;
+    CalendarData* m_calDataPerDay;
+
     
 };
 
