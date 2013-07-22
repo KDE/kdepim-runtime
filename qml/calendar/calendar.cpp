@@ -209,12 +209,11 @@ void Calendar::updateData()
 //    qDebug() << "---------------------------------------------------------------";
 }
 
-void Calendar::next()
+void Calendar::nextMonth()
 {
     m_startDate = m_startDate.addMonths(1);
     updateData();
-    emit monthNameChanged();
-    emit yearChanged();
+    emit startDateChanged();
 }
 
 QString Calendar::dayName(int weekday) const
@@ -226,28 +225,23 @@ void Calendar::nextYear()
 {
     m_startDate = m_startDate.addYears(1);
     updateData();
-    emit yearChanged();
+    emit startDateChanged();
 }
 
 void Calendar::previousYear()
 {
     m_startDate = m_startDate.addYears(-1);
     updateData();
-    emit yearChanged();
+    emit startDateChanged();
 }
 
-void Calendar::previous()
+void Calendar::previousMonth()
 {
     m_startDate = m_startDate.addMonths(-1);
     updateData();
-    emit monthNameChanged();
-    emit yearChanged();
+    emit startDateChanged();
 }
 
-int Calendar::month() const
-{
-    return m_startDate.month();
-}
 void Calendar::monthChanged(int changeMonth)
 {
     if(m_startDate.month() < changeMonth) {

@@ -5,7 +5,6 @@
 #include <akonadi/calendar/etmcalendar.h>
 #include <kcalcore/event.h>
 
-
 class QAbstractItemModel;
 
 class CalendarDayHelper : public QObject
