@@ -11,7 +11,6 @@
 #include "daydata.h"
 #include "daysmodel.h"
 #include "calendardayhelper.h"
-#include "selecteddayfilter.h"
 
 class Calendar : public QObject
 {

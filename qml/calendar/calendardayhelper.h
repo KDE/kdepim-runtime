@@ -5,8 +5,6 @@
 #include <akonadi/calendar/etmcalendar.h>
 #include <kcalcore/event.h>
 
-#include "selecteddayfilter.h"
-
 class QAbstractItemModel;
 
 class CalendarDayHelper : public QObject
