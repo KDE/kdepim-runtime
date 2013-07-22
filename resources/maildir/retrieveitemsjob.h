@@ -67,7 +67,7 @@ class RetrieveItemsJob : public Akonadi::Job
     qint64 m_highestMtime;
     QString m_listingPath;
     int m_jobCount;
-    int m_nextIndex;
+    qint64 m_nextIndex;
 };
 
 #endif
