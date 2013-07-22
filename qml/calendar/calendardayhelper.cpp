@@ -66,6 +66,5 @@ void CalendarDayHelper::fillLists()
     QDate endDate = QDate(m_year, m_month, date.daysInMonth());
     m_eventList = m_cal->rawEvents(date, endDate);
     m_todoList = m_cal->rawTodos(date, endDate);
-//    m_journalList = m_cal->rawJournals(date, endDate);
 
 }

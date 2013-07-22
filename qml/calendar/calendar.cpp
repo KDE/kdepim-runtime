@@ -17,8 +17,10 @@ Calendar::Calendar(QObject *parent)
     , m_startDay(Qt::Monday)
     , m_errorMessage()
 {
-    m_daysModel = new DaysModel(this);
-    m_daysModel->setSourceData(&m_dayList);
+    m_calDataPerDay = new CalendarData(this);
+
+    m_model = new DaysModel(this);
+    m_model->setSourceData(&m_dayList);
 
     m_dayHelper = new CalendarDayHelper(this);
     connect(m_dayHelper, SIGNAL(calendarChanged()), this, SLOT(updateData()));
@@ -117,9 +119,14 @@ int Calendar::year() const
     return m_startDate.year();
 }
 
-QAbstractListModel *Calendar::daysModel() const
+QAbstractListModel *Calendar::model() const
 {
-    return m_daysModel;
+    return m_model;
+}
+
+QAbstractItemModel *Calendar::selectedDayModel() const
+{
+    return m_calDataPerDay->model();
 }
 
 void Calendar::updateData()
@@ -154,6 +161,8 @@ void Calendar::updateData()
             day.isNextMonth = false;
             day.isPreviousMonth = true;
             day.dayNumber = previousMonth.daysInMonth() - (daysBeforeCurrentMonth - (i + 1));
+            day.monthNumber = previousMonth.month();
+            day.yearNumber = previousMonth.year();
             day.containsEventItems = false;
             m_dayList << day;
         }
@@ -165,6 +174,8 @@ void Calendar::updateData()
         day.isNextMonth = false;
         day.isPreviousMonth = false;
         day.dayNumber = i + 1; // +1 to go form 0 based index to 1 based calendar dates
+        day.monthNumber = m_startDate.month();
+        day.yearNumber = m_startDate.year();
         day.containsEventItems = m_dayHelper->containsEventItems(i + 1);
         m_dayList << day;
     }
@@ -176,12 +187,14 @@ void Calendar::updateData()
             day.isNextMonth = true;
             day.isPreviousMonth = false;
             day.dayNumber = i + 1; // +1 to go form 0 based index to 1 based calendar dates
+            day.monthNumber = m_startDate.addMonths(1).month();
+            day.yearNumber = m_startDate.addMonths(1).year();
             day.containsEventItems = false;
             m_dayList << day;
         }
     }
 
-    m_daysModel->update();
+    m_model->update();
 
 //    qDebug() << "---------------------------------------------------------------";
 //    qDebug() << "Date obj: " << m_startDate;
@@ -202,16 +215,19 @@ void Calendar::next()
     emit monthNameChanged();
     emit yearChanged();
 }
+
 QString Calendar::dayName(int weekday) const
 {
     return QDate::shortDayName(weekday);
 }
+
 void Calendar::nextYear()
 {
     m_startDate = m_startDate.addYears(1);
     updateData();
     emit yearChanged();
 }
+
 void Calendar::previousYear()
 {
     m_startDate = m_startDate.addYears(-1);
@@ -226,7 +242,14 @@ void Calendar::previous()
     emit monthNameChanged();
     emit yearChanged();
 }
+
 int Calendar::month() const
 {
     return m_startDate.month();
+}
+
+void Calendar::setSelectedDay(int year, int month, int day) const
+{
+    m_calDataPerDay->setStartDate(QDate(year, month, day));
+    m_calDataPerDay->setEndDate(m_calDataPerDay->startDate().addDays(1));
 }

@@ -12,6 +12,8 @@ public:
     bool containsTodoItems;
     bool containsJournalItems;
     int dayNumber;
+    int monthNumber;
+    int yearNumber;
 };
 
 
