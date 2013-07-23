@@ -24,6 +24,7 @@ class Calendar : public QObject
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
     Q_PROPERTY(QString monthName READ monthName NOTIFY monthNameChanged)
     Q_PROPERTY(QAbstractListModel* model READ model CONSTANT)
+    Q_PROPERTY(QList<int> weeksModel READ weeksModel NOTIFY startDateChanged CONSTANT)
     Q_PROPERTY(QAbstractItemModel* selectedDayModel READ selectedDayModel CONSTANT)
 
     Q_ENUMS(Type)
@@ -73,6 +74,8 @@ public:
     // Model filter that only gived the events for a selected day
     QAbstractItemModel* selectedDayModel() const;
 
+    QList<int> weeksModel() const;
+
 
     // QML invokables
     Q_INVOKABLE void next();
@@ -99,6 +102,7 @@ private:
     QDate m_startDate;
     Types m_types;
     QList<DayData> m_dayList;
+    QList<int> m_weekList;
     DaysModel* m_model;
     CalendarDayHelper* m_dayHelper;
     int m_days;
