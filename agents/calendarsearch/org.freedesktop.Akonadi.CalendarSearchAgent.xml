@@ -3,7 +3,7 @@
   <interface name="org.freedesktop.Akonadi.CalendarSearchAgent">
     <method name="createSearch">
        <arg type="a{sv}" direction="out">
-        <annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
+        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
       </arg>
       <arg name="startDate" type="s" direction="in"/>
       <arg name="endDate" type="s" direction="in"/>
