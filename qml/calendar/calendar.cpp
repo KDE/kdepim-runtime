@@ -7,7 +7,6 @@
 #include <akonadi/calendar/etmcalendar.h>
 #include "calendar.h"
 #include <kcalendarsystem.h>
-#include <klocale.h>
 
 Calendar::Calendar(QObject *parent)
     : QObject(parent)
@@ -209,11 +208,12 @@ void Calendar::updateData()
 //    qDebug() << "---------------------------------------------------------------";
 }
 
-void Calendar::nextMonth()
+void Calendar::next()
 {
     m_startDate = m_startDate.addMonths(1);
     updateData();
-    emit startDateChanged();
+    emit monthNameChanged();
+    emit yearChanged();
 }
 
 QString Calendar::dayName(int weekday) const
@@ -225,42 +225,22 @@ void Calendar::nextYear()
 {
     m_startDate = m_startDate.addYears(1);
     updateData();
-    emit startDateChanged();
+    emit yearChanged();
 }
 
 void Calendar::previousYear()
 {
     m_startDate = m_startDate.addYears(-1);
     updateData();
-    emit startDateChanged();
+    emit yearChanged();
 }
 
-void Calendar::previousMonth()
+void Calendar::previous()
 {
     m_startDate = m_startDate.addMonths(-1);
     updateData();
-    emit startDateChanged();
-}
-
-void Calendar::monthChanged(int changeMonth)
-{
-    if(m_startDate.month() < changeMonth) {
-        m_startDate=m_startDate.addMonths(changeMonth-m_startDate.month());
-        updateData();
-        emit monthNameChanged();
-        emit yearChanged();
-    } else {
-        m_startDate=m_startDate.addMonths(changeMonth-m_startDate.month());
-        updateData();
-        emit monthNameChanged();
-        emit yearChanged();
-    }
-}
-int Calendar::weekNumber(QString input)
-/* Somehow it is not including previous month's day if it is in current month calendar :-/ */
-{
-    QDate date = QDate::fromString(input, "d/M/yyyy");
-    return date.weekNumber();
+    emit monthNameChanged();
+    emit yearChanged();
 }
 
 void Calendar::setSelectedDay(int year, int month, int day) const

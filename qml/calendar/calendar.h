@@ -20,10 +20,9 @@ class Calendar : public QObject
     Q_PROPERTY(int days READ days WRITE setDays NOTIFY daysChanged)
     Q_PROPERTY(int weeks READ weeks WRITE setWeeks NOTIFY weeksChanged)
     Q_PROPERTY(int startDay READ startDay WRITE setStartDay NOTIFY startDayChanged)
-    Q_PROPERTY(int year READ year CONSTANT)
+    Q_PROPERTY(int year READ year NOTIFY yearChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
     Q_PROPERTY(QString monthName READ monthName NOTIFY monthNameChanged)
-    Q_PROPERTY(QString monthName READ monthName CONSTANT)
     Q_PROPERTY(QAbstractListModel* model READ model CONSTANT)
     Q_PROPERTY(QAbstractItemModel* selectedDayModel READ selectedDayModel CONSTANT)
 
@@ -76,13 +75,11 @@ public:
 
 
     // QML invokables
-    Q_INVOKABLE void nextMonth();
+    Q_INVOKABLE void next();
     Q_INVOKABLE void nextYear();
-    Q_INVOKABLE void previousMonth();
+    Q_INVOKABLE void previous();
     Q_INVOKABLE void previousYear();
     Q_INVOKABLE QString dayName(int weekday) const ;
-    Q_INVOKABLE int weekNumber(QString input) ;
-    Q_INVOKABLE void monthChanged(int changeMonth);
     Q_INVOKABLE void setSelectedDay(int year, int month, int day) const;
     
 signals:
@@ -92,6 +89,8 @@ signals:
     void weeksChanged();
     void startDayChanged();
     void errorMessageChanged();
+    void monthNameChanged();
+    void yearChanged();
 
 public slots:
     void updateData();
@@ -105,7 +104,6 @@ private:
     int m_days;
     int m_weeks;
     int m_startDay;
-    int *yr;
     QString m_errorMessage;
     CalendarData* m_calDataPerDay;
 

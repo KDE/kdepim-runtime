@@ -1,5 +1,4 @@
 #include "calendarplugin.h"
-
 #include "calendardata.h"
 #include "calendar.h"
 #include <qdeclarative.h>
@@ -16,5 +15,5 @@ void CalendarPlugin::registerTypes(const char *uri)
     qmlRegisterType<QAbstractListModel>();
 }
 
-// If i add this line in calendarplugin.h it gives me compile errors.. I don't know why that happens, but this seems to work around it.
 Q_EXPORT_PLUGIN2(calendarplugin, CalendarPlugin)
+
