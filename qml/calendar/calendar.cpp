@@ -11,6 +11,7 @@
 Calendar::Calendar(QObject *parent)
     : QObject(parent)
     , m_types(Holiday | Event | Todo | Journal)
+    , m_sorting(None)
     , m_dayList()
     , m_weekList()
     , m_days(0)
@@ -57,6 +58,23 @@ void Calendar::setTypes(int types)
 //    updateTypes();
 
     emit typesChanged();
+}
+
+int Calendar::sorting() const
+{
+    return m_sorting;
+}
+
+void Calendar::setSorting(int sorting)
+{
+    if (m_sorting == sorting)
+        return;
+
+    m_sorting = static_cast<Sorting>(sorting);
+
+    m_calDataPerDay->setSorting(m_sorting);
+
+    emit sortingChanged();
 }
 
 int Calendar::days()

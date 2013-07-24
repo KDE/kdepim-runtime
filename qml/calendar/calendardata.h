@@ -20,11 +20,13 @@ class CalendarData : public QObject
     Q_PROPERTY(QDate startDate READ startDate WRITE setStartDate NOTIFY startDateChanged)
     Q_PROPERTY(QDate endDate READ endDate WRITE setEndDate NOTIFY endDateChanged)
     Q_PROPERTY(int types READ types WRITE setTypes NOTIFY typesChanged)
+    Q_PROPERTY(int sorting READ sorting WRITE setSorting NOTIFY sortingChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
     Q_PROPERTY(bool loading READ loading NOTIFY loadingChanged)
     Q_PROPERTY(QAbstractItemModel* model READ model CONSTANT)
 
     Q_ENUMS(Type)
+    Q_ENUMS(Sort)
 
 public:
     enum Type {
@@ -35,12 +37,23 @@ public:
     };
     Q_DECLARE_FLAGS(Types, Type)
 
+    enum Sort {
+        Ascending = 1,
+        Descending = 2,
+        None = 4
+    };
+    Q_DECLARE_FLAGS(Sorting, Sort)
+
     explicit CalendarData(QObject *parent = 0);
     QDate startDate() const;
     void setStartDate(const QDate &dateTime);
     QDate endDate() const;
     void setEndDate(const QDate &dateTime);
     QAbstractItemModel* model() const;
+
+    // Sorting
+    int sorting() const;
+    void setSorting(int sorting);
 
 
 signals:
@@ -49,6 +62,7 @@ signals:
     void typesChanged();
     void errorMessageChanged();
     void loadingChanged();
+    void sortingChanged();
 
 private:
     int types() const;
@@ -61,6 +75,7 @@ private:
     QDate m_startDate;
     QDate m_endDate;
     Types m_types;
+    Sorting m_sorting;
 
     Akonadi::ETMCalendar *m_etmCalendar;
     Akonadi::EntityMimeTypeFilterModel *m_itemList;
