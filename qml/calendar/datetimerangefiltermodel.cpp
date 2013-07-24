@@ -53,20 +53,26 @@ bool DateTimeRangeFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
     }
 
     if (m_startDate.isValid() && !m_endDate.isValid()) {
-        if (incidenceEnd.date() >= m_startDate)
-            return true;
+        if (incidenceEnd.date() >= m_startDate) {
+           qDebug()<<"--------------------------------2---1---------------------->"<<incidenceStart.date();
+            return true;}
     } else if (!m_startDate.isValid() && m_endDate.isValid()) {
-        if (incidenceStart.date() <= m_endDate)
-            return true;
+        if (incidenceStart.date() <= m_endDate) {
+            qDebug()<<"--------------------------------2--2----------------------->"<<incidenceStart.date();
+            return true;}
     } else if (m_startDate.isValid() && m_endDate.isValid()) {
-        if (incidenceStart.date() < m_startDate && incidenceEnd.date() >= m_startDate)
-            return true;
-        if (incidenceStart.date() < m_endDate && incidenceEnd.date() >= m_endDate)
-            return true;
-        if (incidenceStart.date() <= m_startDate && incidenceEnd.date() >= m_endDate)
-            return true;
-        if (incidenceStart.date() >= m_startDate && incidenceEnd.date() <= m_endDate)
-            return true;
+        if (incidenceStart.date() < m_startDate && incidenceEnd.date() >= m_startDate) {
+             qDebug()<<"--------------------------------2--3----------------------->"<<incidenceStart.date();
+            return true;}
+        if (incidenceStart.date() < m_endDate && incidenceEnd.date() >= m_endDate){
+             qDebug()<<"--------------------------------2---4---------------------->"<<incidenceStart.date();
+            return true;}
+        if (incidenceStart.date() <= m_startDate && incidenceEnd.date() >= m_endDate){
+             qDebug()<<"--------------------------------2--5----------------------->"<<incidenceStart.date();
+            return true;}
+        if (incidenceStart.date() >= m_startDate && incidenceEnd.date() <= m_endDate) {
+             qDebug()<<"--------------------------------2---6---------------------->"<<incidenceStart.date();
+            return true;}
     }
 
     return false;

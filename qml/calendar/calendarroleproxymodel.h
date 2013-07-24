@@ -11,7 +11,7 @@ public:
     enum Roles {
         SummaryRole = Akonadi::EntityTreeModel::UserRole,
         DescriptionRole,
-        MimeTypeRole
+        MimeTypeRole,
     };
 
     explicit CalendarRoleProxyModel(QObject *parent = 0);

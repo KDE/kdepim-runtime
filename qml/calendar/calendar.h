@@ -78,9 +78,9 @@ public:
 
 
     // QML invokables
-    Q_INVOKABLE void next();
+    Q_INVOKABLE void nextMonth();
     Q_INVOKABLE void nextYear();
-    Q_INVOKABLE void previous();
+    Q_INVOKABLE void previousMonth();
     Q_INVOKABLE void previousYear();
     Q_INVOKABLE QString dayName(int weekday) const ;
     Q_INVOKABLE void setSelectedDay(int year, int month, int day) const;
@@ -110,8 +110,6 @@ private:
     int m_startDay;
     QString m_errorMessage;
     CalendarData* m_calDataPerDay;
-
-    
 };
 
 #endif // CALENDAR_H

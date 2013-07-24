@@ -19,6 +19,7 @@ protected:
 private:
     QDate m_startDate;
     QDate m_endDate;
+    //QDate test;
 };
 
 #endif
