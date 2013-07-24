@@ -77,7 +77,6 @@ private:
 
     QDate m_startDate;
     QDate m_endDate;
-  //  QDate test;
     Types m_types;
     Sorting m_sorting;
 
@@ -85,7 +84,7 @@ private:
     Akonadi::EntityMimeTypeFilterModel *m_itemList;
     DateTimeRangeFilterModel *m_filteredList;
 
-    bool m_overlapping;
+   bool m_overlapping;
 };
 
 #endif // CALENDARDATA_H
