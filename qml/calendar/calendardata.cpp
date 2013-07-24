@@ -14,6 +14,7 @@ CalendarData::CalendarData(QObject *parent)
     : QObject(parent)
     , m_types(Holiday | Event | Todo | Journal)
     , m_sorting(None)
+    , m_overlapping(false)
 {
     m_etmCalendar = new ETMCalendar();
     m_etmCalendar->setParent(this); //TODO: hit sergio
@@ -136,4 +137,18 @@ void CalendarData::setSorting(int sorting)
     }
 
     emit sortingChanged();
+}
+
+bool CalendarData::showOverlapping()
+{
+    return m_overlapping;
+}
+
+void CalendarData::setShowOverlapping(bool overlapping)
+{
+    if(m_overlapping == overlapping) {
+        return;
+    }
+    m_overlapping = overlapping;
+    m_filteredList->includeOverlappingEvents(m_overlapping);
 }

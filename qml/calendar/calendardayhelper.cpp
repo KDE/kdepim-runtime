@@ -41,7 +41,12 @@ bool CalendarDayHelper::containsEventItems(int day)
     qDebug() << "Going to check events against a list with:" << m_eventList.count() << "items";
     foreach(KCalCore::Event::Ptr event, m_eventList) {
         qDebug() << "Checking entry against date:" << compareDate << "with dtStart:" << event->dtStart().date() << "and dtEnd:" << event->dtEnd().date();
-        if(event->dtStart().date() <= compareDate && event->dtEnd().date() >= compareDate) {
+
+        // Keep this line as comment for now. This line works for overlapping calendar events as well.
+        //if(event->dtStart().date() <= compareDate && event->dtEnd().date() >= compareDate) {
+
+        // This condition only enters when the event started todat
+        if(event->dtStart().date() == compareDate) {
             return true;
         }
     }
