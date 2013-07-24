@@ -17,6 +17,7 @@ class Calendar : public QObject
     Q_OBJECT
     Q_PROPERTY(QDate startDate READ startDate WRITE setStartDate NOTIFY startDateChanged)
     Q_PROPERTY(int types READ types WRITE setTypes NOTIFY typesChanged)
+    Q_PROPERTY(int sorting READ sorting WRITE setSorting NOTIFY sortingChanged)
     Q_PROPERTY(int days READ days WRITE setDays NOTIFY daysChanged)
     Q_PROPERTY(int weeks READ weeks WRITE setWeeks NOTIFY weeksChanged)
     Q_PROPERTY(int startDay READ startDay WRITE setStartDay NOTIFY startDayChanged)
@@ -28,6 +29,7 @@ class Calendar : public QObject
     Q_PROPERTY(QAbstractItemModel* selectedDayModel READ selectedDayModel CONSTANT)
 
     Q_ENUMS(Type)
+    Q_ENUMS(Sort)
 
 public:
     enum Type {
@@ -37,6 +39,13 @@ public:
         Journal = 8
     };
     Q_DECLARE_FLAGS(Types, Type)
+
+    enum Sort {
+        Ascending = 1,
+        Descending = 2,
+        None = 4
+    };
+    Q_DECLARE_FLAGS(Sorting, Sort)
 
 
     explicit Calendar(QObject *parent = 0);
@@ -48,6 +57,10 @@ public:
     // Types
     int types() const;
     void setTypes(int types);
+
+    // Sorting
+    int sorting() const;
+    void setSorting(int sorting);
 
     // Days
     int days();
@@ -94,6 +107,7 @@ signals:
     void errorMessageChanged();
     void monthNameChanged();
     void yearChanged();
+    void sortingChanged();
 
 public slots:
     void updateData();
@@ -101,6 +115,7 @@ public slots:
 private:
     QDate m_startDate;
     Types m_types;
+    Sorting m_sorting;
     QList<DayData> m_dayList;
     QList<int> m_weekList;
     DaysModel* m_model;

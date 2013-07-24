@@ -13,6 +13,7 @@ using namespace Akonadi;
 CalendarData::CalendarData(QObject *parent)
     : QObject(parent)
     , m_types(Holiday | Event | Todo | Journal)
+    , m_sorting(None)
 {
     m_etmCalendar = new ETMCalendar();
     m_etmCalendar->setParent(this); //TODO: hit sergio
@@ -110,4 +111,29 @@ bool CalendarData::loading() const
 QAbstractItemModel *CalendarData::model() const
 {
     return m_filteredList;
+}
+
+int CalendarData::sorting() const
+{
+    return m_sorting;
+}
+
+void CalendarData::setSorting(int sorting)
+{
+    if (m_sorting == sorting)
+        return;
+
+    m_sorting = static_cast<Sorting>(sorting);
+
+    if(m_sorting & Ascending) {
+        m_filteredList->sort(0, Qt::AscendingOrder);
+        m_filteredList->setDynamicSortFilter(true);
+    } else if (m_sorting & Descending) {
+        m_filteredList->sort(0, Qt::DescendingOrder);
+        m_filteredList->setDynamicSortFilter(true);
+    } else if (m_sorting & None) {
+        m_filteredList->setDynamicSortFilter(false);
+    }
+
+    emit sortingChanged();
 }

@@ -1,10 +1,16 @@
 #include "datetimerangefiltermodel.h"
+#include "calendarroleproxymodel.h"
+
+#include <QDateTime>
+#include <QDebug>
 
 #include <akonadi/entitytreemodel.h>
 #include <akonadi/item.h>
 #include <kcalcore/event.h>
 #include <kcalcore/journal.h>
 #include <kcalcore/todo.h>
+#include <kcalcore/incidence.h>
+#include <KDateTime>
 
 DateTimeRangeFilterModel::DateTimeRangeFilterModel(QObject *parent) :
     QSortFilterProxyModel(parent)
@@ -76,4 +82,11 @@ bool DateTimeRangeFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
     }
 
     return false;
+}
+
+bool DateTimeRangeFilterModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    const Akonadi::Item itemLeft = left.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
+    const Akonadi::Item itemRight = right.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
+    return itemLeft.payload<KCalCore::Incidence::Ptr>()->dtStart().dateTime() < itemRight.payload<KCalCore::Incidence::Ptr>()->dtStart().dateTime();
 }
