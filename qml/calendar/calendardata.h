@@ -55,6 +55,9 @@ public:
     int sorting() const;
     void setSorting(int sorting);
 
+    // Overlapping events
+    bool showOverlapping();
+    void setShowOverlapping(bool overlapping);
 
 signals:
     void startDateChanged();
@@ -80,6 +83,8 @@ private:
     Akonadi::ETMCalendar *m_etmCalendar;
     Akonadi::EntityMimeTypeFilterModel *m_itemList;
     DateTimeRangeFilterModel *m_filteredList;
+
+    bool m_overlapping;
 };
 
 #endif // CALENDARDATA_H

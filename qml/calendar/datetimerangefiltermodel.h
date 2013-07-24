@@ -12,6 +12,7 @@ public:
 
     void setStartDate(const QDate &date);
     void setEndDate(const QDate &date);
+    void includeOverlappingEvents(bool overlapping);
 
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
@@ -20,6 +21,7 @@ protected:
 private:
     QDate m_startDate;
     QDate m_endDate;
+    bool m_overlapping;
 };
 
 #endif

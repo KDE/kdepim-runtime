@@ -12,8 +12,9 @@
 #include <kcalcore/incidence.h>
 #include <KDateTime>
 
-DateTimeRangeFilterModel::DateTimeRangeFilterModel(QObject *parent) :
-    QSortFilterProxyModel(parent)
+DateTimeRangeFilterModel::DateTimeRangeFilterModel(QObject *parent)
+    : QSortFilterProxyModel(parent)
+    , m_overlapping(false)
 {
 }
 
@@ -34,6 +35,15 @@ void DateTimeRangeFilterModel::setEndDate(const QDate &date)
 
     m_endDate = date;
 
+    invalidateFilter();
+}
+
+void DateTimeRangeFilterModel::includeOverlappingEvents(bool overlapping)
+{
+    if(m_overlapping == overlapping) {
+        return;
+    }
+    m_overlapping = overlapping;
     invalidateFilter();
 }
 
@@ -58,22 +68,29 @@ bool DateTimeRangeFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
         incidenceEnd = item.payload<KCalCore::Journal::Ptr>()->dtStart();
     }
 
-    if (m_startDate.isValid() && !m_endDate.isValid()) {
-        if (incidenceEnd.date() >= m_startDate)
+    if(!m_overlapping) {
+        if(m_startDate.isValid() && m_startDate == incidenceStart.date()) {
             return true;
-    } else if (!m_startDate.isValid() && m_endDate.isValid()) {
-        if (incidenceStart.date() <= m_endDate)
-            return true;
-    } else if (m_startDate.isValid() && m_endDate.isValid()) {
-        if (incidenceStart.date() < m_startDate && incidenceEnd.date() >= m_startDate)
-            return true;
-        if (incidenceStart.date() < m_endDate && incidenceEnd.date() >= m_endDate)
-            return true;
-        if (incidenceStart.date() <= m_startDate && incidenceEnd.date() >= m_endDate)
-            return true;
-        if (incidenceStart.date() >= m_startDate && incidenceEnd.date() <= m_endDate)
-            return true;
+        }
+    } else {
+        if (m_startDate.isValid() && !m_endDate.isValid()) {
+            if (incidenceEnd.date() >= m_startDate)
+                return true;
+        } else if (!m_startDate.isValid() && m_endDate.isValid()) {
+            if (incidenceStart.date() <= m_endDate)
+                return true;
+        } else if (m_startDate.isValid() && m_endDate.isValid()) {
+            if (incidenceStart.date() < m_startDate && incidenceEnd.date() >= m_startDate)
+                return true;
+            if (incidenceStart.date() < m_endDate && incidenceEnd.date() >= m_endDate)
+                return true;
+            if (incidenceStart.date() <= m_startDate && incidenceEnd.date() >= m_endDate)
+                return true;
+            if (incidenceStart.date() >= m_startDate && incidenceEnd.date() <= m_endDate)
+                return true;
+        }
     }
+
 
     return false;
 }

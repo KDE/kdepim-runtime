@@ -21,6 +21,10 @@ Calendar::Calendar(QObject *parent)
 {
     m_calDataPerDay = new CalendarData(this);
 
+    // In a calendar week view we likely want to see which events overlap. Overlapping is events that take more then 24 hours thus show in at least two days.
+    // In the calendar view we don't care about that since we only want to see that events that start on the day we click. So we disable overlapping by default.
+    m_calDataPerDay->setShowOverlapping(false);
+
     m_model = new DaysModel(this);
     m_model->setSourceData(&m_dayList);
 
