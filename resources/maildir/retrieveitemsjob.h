@@ -53,6 +53,7 @@ class RetrieveItemsJob : public Akonadi::Job
     void localListDone( KJob *job );
     void transactionDone( KJob *job );
     void processEntry( qint64 index );
+    void processEntryDone( KJob * );
 
   private:
     Akonadi::Collection m_collection;
@@ -63,6 +64,7 @@ class RetrieveItemsJob : public Akonadi::Job
     QStringList m_entryList;
     qint64 m_previousMtime;
     qint64 m_highestMtime;
+    qint64 m_nextIndex;
     QString m_listingPath;
 };
 

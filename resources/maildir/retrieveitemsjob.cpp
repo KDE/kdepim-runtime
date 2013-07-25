@@ -35,7 +35,8 @@ RetrieveItemsJob::RetrieveItemsJob ( const Akonadi::Collection& collection, cons
   m_mimeType( KMime::Message::mimeType() ),
   m_transaction( 0 ),
   m_previousMtime( 0 ),
-  m_highestMtime( 0 )
+  m_highestMtime( 0 ),
+  m_nextIndex( 0 )
 {
   Q_ASSERT( m_collection.isValid() );
   Q_ASSERT( m_maildir.isValid() );
@@ -116,19 +117,21 @@ void RetrieveItemsJob::processEntry(qint64 index)
 
   item.setPayload( KMime::Message::Ptr( msg ) );
 
+  m_nextIndex = index  + 1;
+  KJob *job = 0;
   if ( m_localItems.contains( entry ) ) { // modification
     item.setId( m_localItems.value( entry ).id() );
-    new Akonadi::ItemModifyJob( item, transaction() );
+    job = new Akonadi::ItemModifyJob( item, transaction() );
     m_localItems.remove( entry );
   } else { // new item
-    new Akonadi::ItemCreateJob( item, m_collection, transaction() );
+    job = new Akonadi::ItemCreateJob( item, m_collection, transaction() );
   }
+  connect(job, SIGNAL(result(KJob*)), SLOT(processEntryDone(KJob*)) );
+}
 
-  if ( index % 20 == 0 ) {
-     QMetaObject::invokeMethod( this, "processEntry", Qt::QueuedConnection, Q_ARG( qint64, index + 1 ) );
-  } else
-      processEntry( index + 1 );
-
+void RetrieveItemsJob::processEntryDone( KJob* )
+{
+    processEntry( m_nextIndex );
 }
 
 void RetrieveItemsJob::entriesProcessed()
