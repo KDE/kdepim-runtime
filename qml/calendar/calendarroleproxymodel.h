@@ -12,7 +12,8 @@ public:
         SummaryRole = Akonadi::EntityTreeModel::UserRole,
         DescriptionRole,
         MimeTypeRole,
-        StartDateRole
+        StartDateRole,
+        IdRole
     };
 
     explicit CalendarRoleProxyModel(QObject *parent = 0);

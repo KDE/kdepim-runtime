@@ -25,6 +25,8 @@ QVariant CalendarRoleProxyModel::data(const QModelIndex &index, int role) const
         return item.mimeType();
     else if (role == StartDateRole)
         return item.payload<KCalCore::Incidence::Ptr>()->dtStart().dateTime(); // QDateTime for now.
+    else if (role == IdRole)
+        return item.id();
     
     return QVariant();
 }
@@ -39,6 +41,7 @@ void CalendarRoleProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     roleNames.insert(DescriptionRole, "description");
     roleNames.insert(MimeTypeRole, "mimeType");
     roleNames.insert(StartDateRole, "startDate");
+    roleNames.insert(IdRole, "id");
 
     setRoleNames(roleNames);
 

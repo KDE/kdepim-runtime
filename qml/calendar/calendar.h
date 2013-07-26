@@ -11,6 +11,7 @@
 #include "daydata.h"
 #include "daysmodel.h"
 #include "calendardayhelper.h"
+#include "incidencemodifier.h"
 
 class Calendar : public QObject
 {
