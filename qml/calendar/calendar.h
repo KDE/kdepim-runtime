@@ -10,6 +10,7 @@
 #include "calendardata.h"
 #include "daydata.h"
 #include "daysmodel.h"
+#include "incidencemodifier.h"
 #include "calendardayhelper.h"
 
 class Calendar : public QObject

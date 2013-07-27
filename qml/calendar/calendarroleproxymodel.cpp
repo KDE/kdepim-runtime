@@ -22,10 +22,12 @@ QVariant CalendarRoleProxyModel::data(const QModelIndex &index, int role) const
         return item.payload<KCalCore::Incidence::Ptr>()->description();
     else if (role == MimeTypeRole)
         return item.mimeType();
+    else if (role==IdRole) 
+        return item.id();
     else if (role == StartDateRole )
-        if(item.payload<KCalCore::Incidence::Ptr>()->dtStart().date().isNull()) qDebug()<<"startdate null 999999999999999999999";
-        //if(item.payload<KCalCore::Incidence::Ptr>()->dtStart().date().isEmpty()) qDebug()<<"empty 7777777777777777777777";
         return item.payload<KCalCore::Incidence::Ptr>()->dtStart().date(); // QDateTime for now.
+
+          
     return QVariant();
 }
 
@@ -38,6 +40,7 @@ void CalendarRoleProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
     roleNames.insert(SummaryRole, "summary");
     roleNames.insert(DescriptionRole, "description");
     roleNames.insert(MimeTypeRole, "mimeType");
+    roleNames.insert(IdRole,"id");
     roleNames.insert(StartDateRole, "startDate");
 
 
