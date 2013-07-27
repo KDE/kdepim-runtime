@@ -20,10 +20,12 @@ Calendar::Calendar(QObject *parent)
     , m_errorMessage()
 {
     m_calDataPerDay = new CalendarData(this);
+    m_upcommingEvents = new CalendarData(this);
 
     // In a calendar week view we likely want to see which events overlap. Overlapping is events that take more then 24 hours thus show in at least two days.
     // In the calendar view we don't care about that since we only want to see that events that start on the day we click. So we disable overlapping by default.
     m_calDataPerDay->setShowOverlapping(false);
+    m_upcommingEvents->setShowOverlapping(true);
 
     m_model = new DaysModel(this);
     m_model->setSourceData(&m_dayList);
@@ -77,6 +79,7 @@ void Calendar::setSorting(int sorting)
     m_sorting = static_cast<Sorting>(sorting);
 
     m_calDataPerDay->setSorting(m_sorting);
+    m_upcommingEvents->setSorting(m_sorting);
 
     emit sortingChanged();
 }
@@ -150,6 +153,11 @@ QAbstractListModel *Calendar::model() const
 QAbstractItemModel *Calendar::selectedDayModel() const
 {
     return m_calDataPerDay->model();
+}
+
+QAbstractItemModel *Calendar::upcomingEventsModel() const
+{
+    return m_upcommingEvents->model();
 }
 
 QList<int> Calendar::weeksModel() const
@@ -282,4 +290,10 @@ void Calendar::setSelectedDay(int year, int month, int day) const
 {
     m_calDataPerDay->setStartDate(QDate(year, month, day));
     m_calDataPerDay->setEndDate(m_calDataPerDay->startDate().addDays(1));
+}
+
+void Calendar::upcommingEventsFromDay(int year, int month, int day) const
+{
+    m_upcommingEvents->setStartDate(QDate(year, month, day));
+    m_upcommingEvents->setEndDate(m_upcommingEvents->startDate().addMonths(1));
 }

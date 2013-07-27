@@ -28,6 +28,7 @@ class Calendar : public QObject
     Q_PROPERTY(QAbstractListModel* model READ model CONSTANT)
     Q_PROPERTY(QList<int> weeksModel READ weeksModel NOTIFY startDateChanged CONSTANT)
     Q_PROPERTY(QAbstractItemModel* selectedDayModel READ selectedDayModel CONSTANT)
+    Q_PROPERTY(QAbstractItemModel* upcomingEventsModel READ upcomingEventsModel CONSTANT)
 
     Q_ENUMS(Type)
     Q_ENUMS(Sort)
@@ -88,6 +89,9 @@ public:
     // Model filter that only gived the events for a selected day
     QAbstractItemModel* selectedDayModel() const;
 
+    // Model filter that only gived the events for a selected day
+    QAbstractItemModel* upcomingEventsModel() const;
+
     QList<int> weeksModel() const;
 
 
@@ -98,6 +102,7 @@ public:
     Q_INVOKABLE void previousYear();
     Q_INVOKABLE QString dayName(int weekday) const ;
     Q_INVOKABLE void setSelectedDay(int year, int month, int day) const;
+    Q_INVOKABLE void upcommingEventsFromDay(int year, int month, int day) const;
     
 signals:
     void startDateChanged();
@@ -124,6 +129,7 @@ private:
     int m_startDay;
     QString m_errorMessage;
     CalendarData* m_calDataPerDay;
+    CalendarData* m_upcommingEvents;
 
     
 };
