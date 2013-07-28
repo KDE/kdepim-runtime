@@ -248,25 +248,32 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
 
 }
 
-void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )
+void NewMailNotifierAgent::itemsRemoved(const Item::List &items )
 {
     if (!isActive())
         return;
+
     QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
     for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
         QList<Akonadi::Item::Id> idList = it.value();
-        if (idList.contains(item.id())) {
-            idList.removeAll( item.id() );
-            mNewMails[it.key()] = idList;
-            if (mNewMails[it.key()].isEmpty()) {
-                mNewMails.remove( it.key() );
-                break;
+        bool itemFound = false;
+        Q_FOREACH( Item item, items ) {
+            qDebug()<<" void NewMailNotifierAgent::itemRemoved( const Akonadi::Item &item )"<<item.id();
+            if (idList.contains(item.id())) {
+                idList.removeAll( item.id() );
+                itemFound = true;
+            }
+            if (itemFound) {
+                mNewMails[it.key()] = idList;
+                if (mNewMails[it.key()].isEmpty()) {
+                    mNewMails.remove( it.key() );
+                }
             }
         }
     }
 }
 
-void NewMailNotifierAgent::itemChanged(const Akonadi::Item &/*item*/, const QSet< QByteArray > &/*partIdentifiers*/)
+void NewMailNotifierAgent::itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags )
 {
     if (!isActive())
         return;
@@ -274,31 +281,34 @@ void NewMailNotifierAgent::itemChanged(const Akonadi::Item &/*item*/, const QSet
     //TODO need to implement it.
 }
 
-void NewMailNotifierAgent::itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
+void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
 {
     if (!isActive())
         return;
 
-    Akonadi::MessageStatus status;
-    status.setStatusFromFlags( item.flags() );
-    if ( status.isRead() || status.isSpam() || status.isIgnored() )
-        return;
+    Q_FOREACH (Akonadi::Item item, items) {
+        Akonadi::MessageStatus status;
+        status.setStatusFromFlags( item.flags() );
+        if ( status.isRead() || status.isSpam() || status.isIgnored() )
+            continue;
 
-    if ( excludeSpecialCollection(collectionSource) ) {
-        return; // outbox, sent-mail, trash, drafts or templates.
-    }
+        if ( excludeSpecialCollection(collectionSource) ) {
+            continue; // outbox, sent-mail, trash, drafts or templates.
+        }
 
-    if ( mNewMails.contains( collectionSource ) ) {
-        QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
-        if ( idListFrom.contains( item.id() ) ) {
-            idListFrom.removeAll( item.id() );
-            mNewMails[ collectionSource ] = idListFrom;
-            if ( mNewMails[collectionSource].isEmpty() )
-                mNewMails.remove( collectionSource );
-            if ( !excludeSpecialCollection(collectionDestination) ) {
-                QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
-                idListTo.append( item.id() );
-                mNewMails[ collectionDestination ] = idListTo;
+        qDebug()<<" itemMoved"<<item.id();
+        if ( mNewMails.contains( collectionSource ) ) {
+            QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
+            if ( idListFrom.contains( item.id() ) ) {
+                idListFrom.removeAll( item.id() );
+                mNewMails[ collectionSource ] = idListFrom;
+                if ( mNewMails[collectionSource].isEmpty() )
+                    mNewMails.remove( collectionSource );
+                if ( !excludeSpecialCollection(collectionDestination) ) {
+                    QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
+                    idListTo.append( item.id() );
+                    mNewMails[ collectionDestination ] = idListTo;
+                }
             }
         }
     }
@@ -321,7 +331,7 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
     if ( !mTimer.isActive() ) {
         mTimer.start();
     }
-
+    qDebug()<<" void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )"<<item.id();
     mNewMails[ collection ].append( item.id() );
 }
 
@@ -367,7 +377,7 @@ void NewMailNotifierAgent::slotShowNotifications()
                     hasUniqMessage = false;
                 }
             }
-
+            qDebug()<<" it.value().count()"<<it.value().count()<<" displayName"<<displayName;
             texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
         }
         if (hasUniqMessage) {
