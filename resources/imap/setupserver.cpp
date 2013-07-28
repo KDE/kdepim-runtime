@@ -315,7 +315,7 @@ void SetupServer::applySettings()
 
   Settings::self()->setSieveCustomUsername(m_ui->customUsername->text());
 
-  QAbstractButton *checkedButton = 	m_ui->customSieveGroup->checkedButton();
+  QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
   if (checkedButton == m_ui->imapUserPassword) {
       Settings::self()->setSieveCustomAuthentification(QLatin1String("ImapUserPassword"));
