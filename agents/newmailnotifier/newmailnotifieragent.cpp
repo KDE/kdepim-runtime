@@ -263,11 +263,12 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items )
                 idList.removeAll( item.id() );
                 itemFound = true;
             }
-            if (itemFound) {
+        }
+        if (itemFound) {
+            if (mNewMails[it.key()].isEmpty()) {
+                mNewMails.remove( it.key() );
+            } else {
                 mNewMails[it.key()] = idList;
-                if (mNewMails[it.key()].isEmpty()) {
-                    mNewMails.remove( it.key() );
-                }
             }
         }
     }
@@ -277,8 +278,22 @@ void NewMailNotifierAgent::itemsFlagsChanged( const Akonadi::Item::List &items, 
 {
     if (!isActive())
         return;
-    //qDebug()<<" partIdentifiers"<<partIdentifiers;
-    //TODO need to implement it.
+    Q_FOREACH (Akonadi::Item item, items) {
+        QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
+        for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
+            QList<Akonadi::Item::Id> idList= it.value();
+            if (idList.contains(item.id()) && addedFlags.contains("\\SEEN")) {
+                idList.removeAll( item.id() );
+                if ( idList.isEmpty() ) {
+                    mNewMails.remove( it.key() );
+                    break;
+                } else {
+                    (*it) = idList;
+                }
+            }
+        }
+    }
+    qDebug()<<" addedFlags"<<addedFlags<<" removedFlags ;"<<removedFlags;
 }
 
 void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
@@ -301,9 +316,12 @@ void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const A
             QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
             if ( idListFrom.contains( item.id() ) ) {
                 idListFrom.removeAll( item.id() );
-                mNewMails[ collectionSource ] = idListFrom;
-                if ( mNewMails[collectionSource].isEmpty() )
+
+                if ( idListFrom.isEmpty() ) {
                     mNewMails.remove( collectionSource );
+                } else {
+                    mNewMails[ collectionSource ] = idListFrom;
+                }
                 if ( !excludeSpecialCollection(collectionDestination) ) {
                     QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
                     idListTo.append( item.id() );
