@@ -54,6 +54,7 @@
 #include "timestampattribute.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
+#include "highestmodseqattribute.h"
 
 #include "setupserver.h"
 #include "settings.h"
@@ -96,8 +97,7 @@ ImapResource::ImapResource( const QString &id )
   : ResourceBase( id ),
     m_pool( new SessionPool( 2, this ) ),
     mSubscriptions( 0 ),
-    m_idle( 0 ),
-    m_fastSync( false )
+    m_idle( 0 )
 {
   if ( name() == identifier() ) {
     const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
@@ -127,6 +127,7 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
   Akonadi::AttributeFactory::registerAttribute<TimestampAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<HighestModSeqAttribute>();
 
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
@@ -176,16 +177,6 @@ ImapResource::ImapResource( const QString &id )
 ImapResource::~ImapResource()
 {
   delete m_bodyCheckSession;
-}
-
-void ImapResource::setFastSyncEnabled( bool fastSync )
-{
-  m_fastSync = fastSync;
-}
-
-bool ImapResource::isFastSyncEnabled() const
-{
-  return m_fastSync;
 }
 
 // ----------------------------------------------------------------------------------
@@ -456,7 +447,6 @@ void ImapResource::retrieveItems( const Collection &col )
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
   RetrieveItemsTask *task = new RetrieveItemsTask( state, m_bodyCheckSession, this );
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-  task->setFastSyncEnabled( m_fastSync );
   task->start( m_pool );
   queueTask( task );
 }

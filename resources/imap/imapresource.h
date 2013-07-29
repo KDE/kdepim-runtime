@@ -63,8 +63,6 @@ public Q_SLOTS:
 
   // DBus methods
   Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
-  Q_SCRIPTABLE void setFastSyncEnabled( bool fastSync );
-  Q_SCRIPTABLE bool isFastSyncEnabled() const;
   Q_SCRIPTABLE int configureSubscription( qlonglong windowId = 0 );
 
   // pseudo-virtual called by ResourceBase
@@ -136,7 +134,6 @@ private:
   QList<ResourceTask*> m_taskList;
   QPointer<SubscriptionDialog> mSubscriptions;
   ImapIdleManager *m_idle;
-  bool m_fastSync;
   Akonadi::Session *m_bodyCheckSession;
   QTimer *m_statusMessageTimer;
 };
