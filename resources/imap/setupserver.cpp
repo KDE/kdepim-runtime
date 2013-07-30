@@ -301,7 +301,9 @@ void SetupServer::applySettings()
   Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
   attribute->setIconName( QLatin1String( "user-trash" ) );
   new Akonadi::CollectionModifyJob( trash );
-
+  if (mOldTrash != trash) {
+      Akonadi::SpecialMailCollections::self()->unregisterCollection(mOldTrash);
+  }
 
   Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
   Settings::self()->setUseDefaultIdentity( m_ui->useDefaultIdentityCheck->isChecked() );
@@ -315,7 +317,7 @@ void SetupServer::applySettings()
 
   Settings::self()->setSieveCustomUsername(m_ui->customUsername->text());
 
-  QAbstractButton *checkedButton = 	m_ui->customSieveGroup->checkedButton();
+  QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
   if (checkedButton == m_ui->imapUserPassword) {
       Settings::self()->setSieveCustomAuthentification(QLatin1String("ImapUserPassword"));
@@ -628,6 +630,7 @@ void SetupServer::slotShowServerInfo()
 void SetupServer::targetCollectionReceived( const Akonadi::Collection::List &collections )
 {
   m_ui->folderRequester->setCollection( collections.first() );
+  mOldTrash = collections.first();
 }
 
 void SetupServer::localFolderRequestJobFinished( KJob *job )
@@ -636,6 +639,7 @@ void SetupServer::localFolderRequestJobFinished( KJob *job )
     Akonadi::Collection targetCollection = Akonadi::SpecialMailCollections::self()->defaultCollection( Akonadi::SpecialMailCollections::Trash );
     Q_ASSERT( targetCollection.isValid() );
      m_ui->folderRequester->setCollection( targetCollection );
+     mOldTrash = targetCollection;
   }
 }
 

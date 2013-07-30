@@ -38,9 +38,6 @@ public:
   explicit RetrieveItemsTask( ResourceStateInterface::Ptr resource, Akonadi::Session *session = 0, QObject *parent = 0 );
   virtual ~RetrieveItemsTask();
 
-  void setFastSyncEnabled( bool fastSync );
-  bool isFastSyncEnabled() const;
-
 private slots:
   void onFetchForBodyCheckDone( KJob *job );
   void onPreExpungeSelectDone( KJob *job );
@@ -70,11 +67,11 @@ private:
   void triggerExpunge( const QString &mailBox );
   void triggerFinalSelect( const QString &mailBox );
 
-  void listFlagsForImapSet( const KIMAP::ImapSet& set );
+  void listFlagsForImapSet( const KIMAP::ImapSet& set, qint64 highestmodseq );
+  qint64 extractHighestModSeq( KJob *job ) const;
 
   KIMAP::Session *m_session;
   Akonadi::Session *m_akonadiSession;
-  bool m_fastSync;
   QList<qint64> m_messageUidsMissingBody;
   int m_fetchedMissingBodies;
 };

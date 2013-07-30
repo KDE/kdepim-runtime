@@ -36,7 +36,7 @@ namespace KPIMIdentities {
 class IdentityManager;
 }
 
-class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
+class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV3
 {
     Q_OBJECT
 
@@ -74,9 +74,9 @@ public:
 
 protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
-    void itemRemoved( const Akonadi::Item &item );
-    void itemChanged( const Akonadi::Item &, const QSet< QByteArray > &);
+    void itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection );
+    void itemsRemoved( const Akonadi::Item::List &items );
+    void itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags );
     void doSetOnline(bool online);
 
 private slots:

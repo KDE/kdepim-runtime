@@ -20,6 +20,7 @@ set( imapresource_LIB_SRCS
   changeitemsflagstask.cpp
   changeitemtask.cpp
   expungecollectiontask.cpp
+  highestmodseqattribute.cpp
   imapaccount.cpp
   imapflags.cpp
   movecollectiontask.cpp

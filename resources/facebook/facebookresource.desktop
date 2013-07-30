@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Facebook
+Name[bs]=Facebook
 Name[cs]=Facebook
 Name[da]=Facebook
 Name[de]=Facebook
@@ -25,11 +26,13 @@ Name[sr@ijekavianlatin]=Facebook
 Name[sr@latin]=Facebook
 Name[sv]=Facebook
 Name[tr]=Facebook
+Name[ug]=فېيىسبۇك(Facebook)
 Name[uk]=Facebook
 Name[x-test]=xxFacebookxx
 Name[zh_CN]=Facebook
 Name[zh_TW]=Facebook
 Comment=Makes your Facebook data available in KDE
+Comment[bs]=Čini vaše Facebook podatke dostupnim u KDE
 Comment[cs]=Zpřístupňuje váš Facebook v KDE
 Comment[da]=Gør dine Facebook-data tilgængelige i KDE
 Comment[de]=Stellt Ihre Facebook-Daten in KDE zur Verfügung
