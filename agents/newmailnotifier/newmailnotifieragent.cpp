@@ -293,7 +293,6 @@ void NewMailNotifierAgent::itemsFlagsChanged( const Akonadi::Item::List &items, 
             }
         }
     }
-    qDebug()<<" addedFlags"<<addedFlags<<" removedFlags ;"<<removedFlags;
 }
 
 void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
@@ -311,7 +310,6 @@ void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const A
             continue; // outbox, sent-mail, trash, drafts or templates.
         }
 
-        qDebug()<<" itemMoved"<<item.id();
         if ( mNewMails.contains( collectionSource ) ) {
             QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
             if ( idListFrom.contains( item.id() ) ) {
