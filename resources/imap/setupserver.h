@@ -93,6 +93,7 @@ private:
   KPIMIdentities::IdentityCombo *m_identityCombobox;
   QString m_oldResourceName;
   QRegExpValidator mValidator;
+  Akonadi::Collection mOldTrash;
 
 private slots:
   void slotTest();
