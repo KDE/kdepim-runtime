@@ -111,5 +111,5 @@ install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )
 if(NOT WINCE)
-#add_subdirectory( tests )
+add_subdirectory( tests )
 endif()

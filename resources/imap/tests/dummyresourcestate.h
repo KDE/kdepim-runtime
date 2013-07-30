@@ -62,6 +62,7 @@ public:
   virtual Akonadi::Collection collection() const;
   void setItem( const Akonadi::Item &item );
   virtual Akonadi::Item item() const;
+  virtual Akonadi::Item::List items() const;
 
   void setParentCollection( const Akonadi::Collection &collection );
   virtual Akonadi::Collection parentCollection() const;
@@ -88,7 +89,11 @@ public:
   virtual void itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed );
   virtual void itemsRetrievalDone();
 
+  virtual QSet< QByteArray > addedFlags() const;
+  virtual QSet< QByteArray > removedFlags() const;
+
   virtual void itemChangeCommitted( const Akonadi::Item &item );
+  virtual void itemsChangesCommitted(const Akonadi::Item::List& items);
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
@@ -103,6 +108,9 @@ public:
   virtual void emitError( const QString &message );
   virtual void emitWarning( const QString &message );
   virtual void emitPercent( int percent );
+
+  virtual void fetchItemsWithoutBodies( const Akonadi::Collection &collection,
+                                        QObject* receiver, const char *slot );
 
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
@@ -125,7 +133,7 @@ private:
   int m_intervalCheckTime;
 
   Akonadi::Collection m_collection;
-  Akonadi::Item m_item;
+  Akonadi::Item::List m_items;
 
   Akonadi::Collection m_parentCollection;
 

@@ -112,7 +112,10 @@ void MoveItemsTask::triggerCopyJob( KIMAP::Session *session )
   foreach ( const Akonadi::Item &item, items() ) {
     try {
         KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-        m_messageIds.insert( item.id(), msg->messageID()->asUnicodeString().toUtf8() );
+        const QByteArray messageId = msg->messageID()->asUnicodeString().toUtf8();
+        if ( !messageId.isEmpty() ) {
+            m_messageIds.insert( item.id(), messageId );
+        }
 
         set.add( item.remoteId().toLong() );
     } catch ( Akonadi::PayloadException e ) {
@@ -234,9 +237,7 @@ void MoveItemsTask::onSearchDone( KJob *job )
   }
 
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
-
-  if ( search->results().count() == 1 )
-    m_newUids = search->results();
+  m_newUids = search->results();
 
   recordNewUid();
 }

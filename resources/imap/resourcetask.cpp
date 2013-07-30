@@ -337,6 +337,12 @@ void ResourceTask::emitWarning( const QString &message )
   m_resource->emitWarning( message );
 }
 
+void ResourceTask::fetchItemsWithoutBodies( const Akonadi::Collection &collection,
+                                            const char *slot )
+{
+  m_resource->fetchItemsWithoutBodies( collection, this, slot );
+}
+
 void ResourceTask::synchronizeCollectionTree()
 {
   m_resource->synchronizeCollectionTree();

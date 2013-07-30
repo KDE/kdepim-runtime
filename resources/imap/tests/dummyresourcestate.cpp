@@ -21,11 +21,13 @@
 
 #include "dummyresourcestate.h"
 
+Q_DECLARE_METATYPE(QList<qint64>)
+
 DummyResourceState::DummyResourceState()
   : m_automaticExpunge( true ), m_subscriptionEnabled( true ),
     m_disconnectedMode( true ), m_intervalCheckTime( -1 )
 {
-
+  qRegisterMetaType<QList<qint64> >();
 }
 
 DummyResourceState::~DummyResourceState()
@@ -125,12 +127,18 @@ Akonadi::Collection DummyResourceState::collection() const
 
 void DummyResourceState::setItem( const Akonadi::Item &item )
 {
-  m_item = item;
+  m_items.clear();
+  m_items << item;
 }
 
 Akonadi::Item DummyResourceState::item() const
 {
-  return m_item;
+  return m_items.first();
+}
+
+Akonadi::Item::List DummyResourceState::items() const
+{
+  return m_items;
 }
 
 void DummyResourceState::setParentCollection( const Akonadi::Collection &collection )
@@ -223,9 +231,24 @@ void DummyResourceState::itemsRetrievalDone()
   recordCall( "itemsRetrievalDone" );
 }
 
+QSet< QByteArray > DummyResourceState::addedFlags() const
+{
+  return QSet<QByteArray>();
+}
+
+QSet< QByteArray > DummyResourceState::removedFlags() const
+{
+  return QSet<QByteArray>();
+}
+
 void DummyResourceState::itemChangeCommitted( const Akonadi::Item &item )
 {
   recordCall( "itemChangeCommitted",  QVariant::fromValue( item ) );
+}
+
+void DummyResourceState::itemsChangesCommitted( const Akonadi::Item::List &items )
+{
+  recordCall( "itemsChangesCommitted", QVariant::fromValue( items ) );
 }
 
 void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
@@ -272,6 +295,17 @@ void DummyResourceState::emitPercent( int percent )
 {
   // FIXME: Many tests need to be updated for this to be uncommented out.
   // recordCall( "emitPercent", QVariant::fromValue(percent) );
+}
+
+void DummyResourceState::fetchItemsWithoutBodies( const Akonadi::Collection &collection,
+                                                  QObject *receiver, const char *slot )
+{
+  Q_UNUSED( collection );
+
+  recordCall( "fetchItemsWithoutBodies" );
+
+  QMetaObject::invokeMethod( receiver, slot, Qt::QueuedConnection,
+                             Q_ARG( QList<qint64>, QList<qint64>() ) );
 }
 
 void DummyResourceState::synchronizeCollectionTree()
