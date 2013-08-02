@@ -49,7 +49,7 @@ protected:
   ImapAccount *createDefaultAccount() const;
   DummyPasswordRequester *createDefaultRequester();
   QList<QByteArray> defaultAuthScenario() const;
-  QList<QByteArray> defaultPoolConnectionScenario() const;
+  QList<QByteArray> defaultPoolConnectionScenario( const QList<QByteArray> &customCapabilities = QList<QByteArray>() ) const;
 
   bool waitForSignal( QObject *obj, const char *member, int timeout = 500 ) const;
 

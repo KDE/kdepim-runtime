@@ -75,13 +75,18 @@ QList<QByteArray> ImapTestBase::defaultAuthScenario() const
   return scenario;
 }
 
-QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario() const
+QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario( const QList<QByteArray> &customCapabilities ) const
 {
   QList<QByteArray> scenario;
 
+  QByteArray caps = "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE";
+  Q_FOREACH ( const QByteArray &cap, customCapabilities ) {
+    caps += " " + cap;
+  }
+
   scenario << defaultAuthScenario()
            << "C: A000002 CAPABILITY"
-           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+           << caps
            << "S: A000002 OK Completed";
 
   return scenario;
