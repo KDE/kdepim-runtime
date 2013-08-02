@@ -54,7 +54,7 @@ private slots:
              << "S: A000004 OK subscribe done";
 
     callNames.clear();
-    callNames << "collectionChangeCommitted";
+    callNames << "collectionChangeCommitted" << "synchronizeCollectionTree";
 
     QTest::newRow( "trivial case" ) << parentCollection << collection << scenario << callNames
                                     << collection.name();
@@ -73,7 +73,7 @@ private slots:
              << "S: A000004 OK subscribe done";
 
     callNames.clear();
-    callNames << "collectionChangeCommitted";
+    callNames << "collectionChangeCommitted" << "synchronizeCollectionTree";
 
     QTest::newRow( "folder with invalid separator" ) << parentCollection << collection << scenario
                                                      << callNames << "BarBaz";

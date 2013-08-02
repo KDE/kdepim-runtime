@@ -19,9 +19,9 @@
 
 #include "imaptestbase.h"
 
-#include "removeitemtask.h"
+#include "removeitemstask.h"
 
-class TestRemoveItemTask : public ImapTestBase
+class TestRemoveItemsTask : public ImapTestBase
 {
   Q_OBJECT
 
@@ -76,7 +76,7 @@ private slots:
 
     DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
     state->setItem( item );
-    RemoveItemTask *task = new RemoveItemTask( state );
+    RemoveItemsTask *task = new RemoveItemsTask( state );
     task->start( &pool );
     QTest::qWait( 100 );
 
@@ -102,6 +102,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestRemoveItemTask )
+QTEST_KDEMAIN_CORE( TestRemoveItemsTask )
 
-#include "testremoveitemtask.moc"
+#include "testremoveitemstask.moc"

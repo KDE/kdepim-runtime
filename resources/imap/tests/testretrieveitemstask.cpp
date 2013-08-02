@@ -21,6 +21,7 @@
 
 #include "retrieveitemstask.h"
 #include "uidnextattribute.h"
+#include <highestmodseqattribute.h>
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionstatistics.h>
@@ -36,12 +37,10 @@ private slots:
     QTest::addColumn<Akonadi::Collection>( "collection" );
     QTest::addColumn< QList<QByteArray> >( "scenario" );
     QTest::addColumn<QStringList>( "callNames" );
-    QTest::addColumn<bool>( "fastSync" );
 
     Akonadi::Collection collection;
     QList<QByteArray> scenario;
     QStringList callNames;
-    bool fastSync;
 
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
@@ -75,10 +74,8 @@ private slots:
     callNames.clear();
     callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
-    fastSync = false;
 
-
-    QTest::newRow( "first listing, connected IMAP" ) << collection << scenario << callNames << fastSync;
+    QTest::newRow( "first listing, connected IMAP" ) << collection << scenario << callNames;
 
     Akonadi::CachePolicy policy;
     policy.setLocalParts( QStringList() << Akonadi::MessagePart::Envelope
@@ -115,12 +112,10 @@ private slots:
              << "S: A000006 OK fetch done";
 
     callNames.clear();
-    callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
-
-    fastSync = false;
+    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
 
-    QTest::newRow( "first listing, disconnected IMAP" ) << collection << scenario << callNames << fastSync;
+    QTest::newRow( "first listing, disconnected IMAP" ) << collection << scenario << callNames;
 
 
 
@@ -151,49 +146,16 @@ private slots:
              << "S: A000006 OK fetch done";
 
     callNames.clear();
-    callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
-
-    fastSync = false;
+    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
 
-    QTest::newRow( "second listing, full sync" ) << collection << scenario << callNames << fastSync;
+    QTest::newRow( "second listing, full sync" ) << collection << scenario << callNames;
 
 
     collection = Akonadi::Collection( 1 );
     collection.setRemoteId( "/INBOX/Foo" );
     collection.setCachePolicy( policy );
     collection.setStatistics( stats );
-
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 SELECT \"INBOX/Foo\""
-             << "S: A000003 OK select done"
-             << "C: A000004 EXPUNGE"
-             << "S: A000004 OK expunge done"
-             << "C: A000005 SELECT \"INBOX/Foo\""
-             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
-             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
-             << "S: * 1 EXISTS"
-             << "S: * 0 RECENT"
-             << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
-             << "S: A000005 OK select done";
-
-    callNames.clear();
-    callNames << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
-
-    fastSync = true;
-
-
-    QTest::newRow( "second listing, fast sync" ) << collection << scenario << callNames << fastSync;
-
-
-
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
-    collection.setCachePolicy( policy );
-    collection.setStatistics( stats );
-
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 SELECT \"INBOX/Foo\""
@@ -210,12 +172,9 @@ private slots:
              << "S: A000005 OK select done";
 
     callNames.clear();
-    callNames << "applyCollectionChanges" << "itemsRetrievalDone";
+    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrievalDone";
 
-    fastSync = false;
-
-    QTest::newRow( "third listing, full sync, empty folder" ) << collection << scenario << callNames << fastSync;
-
+    QTest::newRow( "third listing, full sync, empty folder" ) << collection << scenario << callNames;
 
     collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2470 );
     stats.setCount( 5 );
@@ -233,6 +192,7 @@ private slots:
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
              << "C: A000006 FETCH 4:5 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2471 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
@@ -243,12 +203,45 @@ private slots:
                 "\r\n"
                 "Test\r\n"
                 " )"
+             << "S: A000006 OK fetch done"
+             << "C: A000007 FETCH 1:3 (FLAGS UID)"
+             << "S: * 5 FETCH"
+             << "S: A000007 OK fetch done";
+
+    callNames.clear();
+    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
+
+    QTest::newRow( "uidnext mismatch with recovery attempt" ) << collection << scenario << callNames;
+
+    collection = Akonadi::Collection( 1 );
+    collection.setRemoteId( "/INBOX/Foo" );
+    collection.setCachePolicy( policy );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
+    collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
+    stats.setCount( 5 );
+    collection.setStatistics( stats );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge DONE"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 5 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135 ]"
+             << "S: * OK [ UIDNEXT 2471 ]"
+             << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 FETCH 1:5 (FLAGS UID) (CHANGEDSINCE 123456788)"
+             << "S: * 5 FETCH ( UID 2470 FLAGS () )"
              << "S: A000006 OK fetch done";
     callNames.clear();
-    callNames << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
-    fastSync = true;
+    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
-    QTest::newRow( "uidnext mismatch with recovery attempt" ) << collection << scenario << callNames << fastSync;
+    QTest::newRow( "highestmodseq test" ) << collection << scenario << callNames;
   }
 
   void shouldIntrospectCollection()
@@ -256,7 +249,6 @@ private slots:
     QFETCH( Akonadi::Collection, collection );
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
-    QFETCH( bool, fastSync );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -271,7 +263,6 @@ private slots:
     DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setCollection( collection );
     RetrieveItemsTask *task = new RetrieveItemsTask( state );
-    task->setFastSyncEnabled( fastSync );
     task->start( &pool );
     QTest::qWait( 100 );
 

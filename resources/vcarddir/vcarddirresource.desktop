@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=vCard Directory
 Name[bs]=VCard direktorij
+Name[ca]=Directori vCard
 Name[cs]=Adresář vizitek
 Name[da]=vCard-mappe
 Name[de]=vCard-Ordner
@@ -32,6 +33,7 @@ Name[zh_CN]=vCard 目录
 Name[zh_TW]=vCard 目錄
 Comment=Loads data from a directory with vCards
 Comment[bs]=Učitava podakte iz direktorija sa VCards
+Comment[ca]=Carrega dades des d'un directori amb vCards
 Comment[cs]=Načítá data z adresáře vizitek (vCard)
 Comment[da]=Indlæser data fra en mappe med vCards
 Comment[de]=Daten werden aus einem Ordner mit vCard-Dateien geladen

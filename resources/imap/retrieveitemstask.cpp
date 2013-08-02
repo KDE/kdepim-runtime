@@ -46,8 +46,8 @@
 
 #define HIGHESTMODSEQ_PROPERTY "highestModSeq"
 
-RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, Akonadi::Session *session, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_akonadiSession(session), m_fetchedMissingBodies(-1)
+RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
+  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_fetchedMissingBodies( -1 )
 {
 
 }
@@ -71,44 +71,18 @@ void RetrieveItemsTask::doStart( KIMAP::Session *session )
 
   m_session = session;
 
-  Akonadi::Collection col = collection();
+  const Akonadi::Collection col = collection();
   if ( col.cachePolicy()
        .localParts().contains( Akonadi::MessagePart::Body ) ) { //disconnected mode, make sure we really have the body cached
-     checkForMissingBodies();
+     fetchItemsWithoutBodies( col, "onFetchItemsWithoutBodiesDone" );
   } else {
      startRetrievalTasks();
   }
 }
 
-void RetrieveItemsTask::checkForMissingBodies()
+void RetrieveItemsTask::onFetchItemsWithoutBodiesDone( const QList<qint64> &items )
 {
-  m_messageUidsMissingBody.clear();
-  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection(), m_akonadiSession);
-  job->fetchScope().setCheckForCachedPayloadPartsOnly();
-  job->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
-  job->fetchScope().setFetchModificationTime( false );
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(onFetchForBodyCheckDone(KJob*)));
-}
-
-void RetrieveItemsTask::onFetchForBodyCheckDone(KJob* job)
-{
-  if ( job->error() ) {
-    cancelTask( job->errorString() );
-  } else {
-    const Akonadi::Item::List items = dynamic_cast<Akonadi::ItemFetchJob*>(job)->items();
-    int i = 0;
-    Q_FOREACH( const Akonadi::Item &item, items)  {
-      if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
-          kDebug() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
-          m_messageUidsMissingBody.append(item.remoteId().toInt());
-          i++;
-      }
-    }
-    if (i > 0) {
-      kDebug() << "Number of items missing the body: " << i;
-    }
-  }
-
+  m_messageUidsMissingBody = items;
   startRetrievalTasks();
 }
 

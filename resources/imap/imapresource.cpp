@@ -43,8 +43,10 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/itemfetchjob.h>
 #include <akonadi/specialcollections.h>
 #include <akonadi/session.h>
+#include <akonadi/kmime/messageparts.h>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
@@ -91,6 +93,8 @@
 Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 #endif
 
+Q_DECLARE_METATYPE(QList<qint64>)
+
 using namespace Akonadi;
 
 ImapResource::ImapResource( const QString &id )
@@ -135,6 +139,9 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();
   Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
 
+  // For QMetaObject::invokeMethod()
+  qRegisterMetaType<QList<qint64> >();
+
   changeRecorder()->fetchCollection( true );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
   changeRecorder()->collectionFetchScope().setIncludeStatistics( true );
@@ -177,6 +184,46 @@ ImapResource::ImapResource( const QString &id )
 ImapResource::~ImapResource()
 {
   delete m_bodyCheckSession;
+}
+
+void ImapResource::fetchItemsWithoutBodies( const Collection &collection,
+                                            QObject* receiver, const char* slot)
+{
+  Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( collection, m_bodyCheckSession );
+  fetchJob->setProperty( "receiver", QVariant::fromValue( receiver ) );
+  fetchJob->setProperty( "slot", QString::fromLatin1( slot ) );
+  fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
+  fetchJob->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
+  fetchJob->fetchScope().setFetchModificationTime( false );
+
+  connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemsWithoutBodiesDone(KJob*)) );
+}
+
+void ImapResource::fetchItemsWithoutBodiesDone( KJob *job )
+{
+  Akonadi::ItemFetchJob *fetch = qobject_cast<Akonadi::ItemFetchJob*>( job );
+
+  QList<qint64> uids;
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+  } else {
+    int i = 0;
+    Q_FOREACH( const Akonadi::Item &item, fetch->items() )  {
+      if ( !item.cachedPayloadParts().contains( Akonadi::MessagePart::Body ) ) {
+          kDebug() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
+          uids.append( item.remoteId().toInt() );
+          i++;
+      }
+    }
+    if ( i > 0 ) {
+      kDebug() << "Number of items missing the body: " << i;
+    }
+  }
+
+  QObject *receiver = fetch->property( "receiver" ).value<QObject*>();
+  const QString slot = fetch->property( "slot" ).toString();
+  QMetaObject::invokeMethod( receiver, slot.toLatin1().constData(),
+                             Q_ARG( QList<qint64>, uids ) );
 }
 
 // ----------------------------------------------------------------------------------
@@ -445,7 +492,7 @@ void ImapResource::retrieveItems( const Collection &col )
   setItemStreamingEnabled( true );
 
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
-  RetrieveItemsTask *task = new RetrieveItemsTask( state, m_bodyCheckSession, this );
+  RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
   task->start( m_pool );
   queueTask( task );

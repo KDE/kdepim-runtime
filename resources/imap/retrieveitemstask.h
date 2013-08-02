@@ -35,11 +35,13 @@ class RetrieveItemsTask : public ResourceTask
   Q_OBJECT
 
 public:
-  explicit RetrieveItemsTask( ResourceStateInterface::Ptr resource, Akonadi::Session *session = 0, QObject *parent = 0 );
+  explicit RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~RetrieveItemsTask();
 
+public slots:
+  void onFetchItemsWithoutBodiesDone( const QList<qint64> &items );
+
 private slots:
-  void onFetchForBodyCheckDone( KJob *job );
   void onPreExpungeSelectDone( KJob *job );
   void onExpungeDone( KJob *job );
 
@@ -61,7 +63,6 @@ protected:
   virtual void doStart( KIMAP::Session *session );
 
 private:
-  void checkForMissingBodies();
   void startRetrievalTasks();
   void triggerPreExpungeSelect( const QString &mailBox );
   void triggerExpunge( const QString &mailBox );
@@ -71,7 +72,6 @@ private:
   qint64 extractHighestModSeq( KJob *job ) const;
 
   KIMAP::Session *m_session;
-  Akonadi::Session *m_akonadiSession;
   QList<qint64> m_messageUidsMissingBody;
   int m_fetchedMissingBodies;
 };

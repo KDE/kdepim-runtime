@@ -19,14 +19,14 @@
 
 #include "imaptestbase.h"
 
-#include "moveitemtask.h"
+#include "moveitemstask.h"
 #include "uidnextattribute.h"
 
 #include <kmime/kmime_message.h>
 
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 
-class TestMoveItemTask : public ImapTestBase
+class TestMoveItemsTask : public ImapTestBase
 {
   Q_OBJECT
 
@@ -71,7 +71,7 @@ private slots:
              << "S: A000005 OK store done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << "itemsChangesCommitted";
 
     QTest::newRow( "moving mail" ) << item << source << target << scenario << callNames;
 
@@ -91,7 +91,7 @@ private slots:
              << "S: A000005 NO store failed";
 
     callNames.clear();
-    callNames << "emitWarning" << "itemChangeCommitted";
+    callNames << "emitWarning" << "itemsChangesCommitted";
 
     QTest::newRow( "moving mail, store fails" ) << item << source << target << scenario << callNames;
 
@@ -125,12 +125,12 @@ private slots:
              << "S: A000005 OK store done"
              << "C: A000006 SELECT \"INBOX/Bar\""
              << "S: A000006 OK select done"
-             << "C: A000007 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+             << "C: A000007 UID SEARCH (HEADER Message-ID <42.4242.foo@bar.org>)"
              << "S: * SEARCH 65"
              << "S: A000007 OK search done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted" << "applyCollectionChanges";
+    callNames << "itemsChangesCommitted" << "applyCollectionChanges";
 
     QTest::newRow( "moving mail, no COPYUID, message had Message-ID" ) << item << source << target << scenario << callNames;
 
@@ -170,7 +170,7 @@ private slots:
              << "S: A000007 OK search done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted" << "applyCollectionChanges";
+    callNames << "itemsChangesCommitted" << "applyCollectionChanges";
 
     QTest::newRow( "moving mail, no COPYUID, message didn't have Message-ID" ) << item << source << target << scenario << callNames;
 
@@ -193,12 +193,12 @@ private slots:
              << "S: A000005 OK store done"
              << "C: A000006 SELECT \"INBOX/Bar\""
              << "S: A000006 OK select done"
-             << "C: A000007 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+             << "C: A000007 UID SEARCH (HEADER Message-ID <42.4242.foo@bar.org>)"
              << "S: * SEARCH 61 65"
              << "S: A000007 OK search done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << "itemsChangesCommitted";
 
     QTest::newRow( "moving mail, no COPYUID, message didn't have unique Message-ID" ) << item << source << target << scenario << callNames;
   }
@@ -225,7 +225,7 @@ private slots:
     state->setItem( item );
     state->setSourceCollection( source );
     state->setTargetCollection( target );
-    MoveItemTask *task = new MoveItemTask( state );
+    MoveItemsTask *task = new MoveItemsTask( state );
     task->start( &pool );
     QTest::qWait( 100 );
 
@@ -251,6 +251,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestMoveItemTask )
+QTEST_KDEMAIN_CORE( TestMoveItemsTask )
 
-#include "testmoveitemtask.moc"
+#include "testmoveitemstask.moc"

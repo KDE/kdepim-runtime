@@ -93,6 +93,9 @@ public:
   virtual void emitWarning( const QString &message ) = 0;
   virtual void emitPercent( int percent ) = 0;
 
+  virtual void fetchItemsWithoutBodies( const Akonadi::Collection &collection,
+                                        QObject *receiver, const char *slot ) = 0;
+
   virtual void synchronizeCollectionTree() = 0;
   virtual void scheduleConnectionAttempt() = 0;
 
