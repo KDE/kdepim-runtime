@@ -24,10 +24,11 @@ QVariant CalendarRoleProxyModel::data(const QModelIndex &index, int role) const
         return item.mimeType();
     else if (role==IdRole) 
         return item.id();
-    else if (role == StartDateRole )
-        return item.payload<KCalCore::Incidence::Ptr>()->dtStart().date(); // QDateTime for now.
+    else if (role == StartDateRole ) {
+        QDate d=item.payload<KCalCore::Incidence::Ptr>()->dtStart().date();
+        return d.toString("dddd dd MMM yyyy");// QDateTime for now.
 
-          
+    }
     return QVariant();
 }
 
