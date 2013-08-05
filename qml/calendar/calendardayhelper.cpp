@@ -41,15 +41,12 @@ bool CalendarDayHelper::containsHolidayItems(int day)
 bool CalendarDayHelper::containsEventItems(int day)
 {
     QDate compareDate(m_year, m_month, day);
-   // qDebug() << "Going to check events against a list with:" << m_eventList.count() << "items";
-    foreach(KCalCore::Event::Ptr event, m_eventList) {
-     //   qDebug() << "Checking entry against date:" << compareDate << "with dtStart:" << event->dtStart().date() << "and dtEnd:" << event->dtEnd().date();
     //qDebug() << "Going to check events against a list with:" << m_eventList.count() << "items on day: " << day << ", Year: " << m_year << " and month: " << m_month;
     foreach(KCalCore::Event::Ptr event, m_eventList) {
         //qDebug() << "Checking entry against date:" << compareDate << "with dtStart:" << event->dtStart().date() << "and dtEnd:" << event->dtEnd().date();
 
         // Keep this line as comment for now. This line works for overlapping calendar events as well.
-       // if(event->dtStart().date() <= compareDate && event->dtEnd().date() >= compareDate) {
+        //if(event->dtStart().date() <= compareDate && event->dtEnd().date() >= compareDate) {
 
         // This condition only enters when the event started todat
         if(event->dtStart().date() == compareDate) {
@@ -61,23 +58,13 @@ bool CalendarDayHelper::containsEventItems(int day)
 
 bool CalendarDayHelper::containsTodoItems(int day)
 {
-    QDate compareDate(m_year, m_month, day);
-    foreach(KCalCore::Todo::Ptr todo, m_todoList) {
-        if(todo->dtStart().date() == compareDate ) {
-            return true;
-        }
-    }
-    return false;
+  // Not implemented yet
+  return false;
 }
 
 bool CalendarDayHelper::containsJournalItems(int day)
 {
-    QDate compareDate(m_year, m_month, day);
-    foreach(KCalCore::Journal::Ptr journal, m_journalList) {
-        if(journal->dtStart().date() == compareDate ) {
-            return true;
-        }
-    }
+  // Not implemented yet
   return false;
 }
 
@@ -89,6 +76,5 @@ void CalendarDayHelper::fillLists()
     QDate endDate = date.addMonths(1);
     m_eventList = m_cal->rawEvents(date, endDate);
     m_todoList = m_cal->rawTodos(date, endDate);
-  //  m_journalList = m_cal->rawJournals(date, endDate);
 
 }
