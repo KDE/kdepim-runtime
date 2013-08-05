@@ -76,7 +76,7 @@ void DaysModel::update()
         return;
     }
 
-    beginInsertRows(QModelIndex(), 0, m_data->size() - 1);
-    endInsertRows();
+    // We always have 42 items (or weeks * num of days in week) so we only have to tell the view that the data changed.
+    layoutChanged();
 }
 

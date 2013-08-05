@@ -45,7 +45,6 @@ void Calendar::setStartDate(const QDate &dateTime)
         return;
     }
     m_startDate = dateTime;
-    m_dayHelper->setDate(m_startDate.year(), m_startDate.month());
     updateData();
     emit startDateChanged();
 }
@@ -174,10 +173,12 @@ void Calendar::updateData()
     m_dayList.clear();
     m_weekList.clear();
 
+    m_dayHelper->setDate(m_startDate.year(), m_startDate.month());
+
     int totalDays = m_days * m_weeks;
 
-    int daysBeforeCurrentMonth;
-    int daysAfterCurrentMonth;
+    int daysBeforeCurrentMonth = 0;
+    int daysAfterCurrentMonth = 0;
 
     QDate firstDay(m_startDate.year(), m_startDate.month(), 1);
 
