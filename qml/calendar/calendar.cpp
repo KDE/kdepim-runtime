@@ -200,9 +200,10 @@ void Calendar::updateData()
             day.dayNumber = previousMonth.daysInMonth() - (daysBeforeCurrentMonth - (i + 1));
             day.monthNumber = previousMonth.month();
             day.yearNumber = previousMonth.year();
-            day.containsEventItems = false;                day.containsTodoItems = false;
+            day.containsEventItems = false;
+            day.containsTodoItems = false;
             day.containsJournalItems = false;
-            m_dayList << day;
+           m_dayList << day;
         }
     }
  
@@ -211,7 +212,7 @@ void Calendar::updateData()
         day.isCurrentMonth = true;
         day.isNextMonth = false;
         day.isPreviousMonth = false;
-        day.dayNumber = i + 1; // +1 to go form 0 based index to 1 based calendar dates
+        day.dayNumber = i +1; // +1 to go form 0 based index to 1 based calendar dates
         day.monthNumber = m_startDate.month();
         day.yearNumber = m_startDate.year();
         day.containsEventItems = m_dayHelper->containsEventItems(i + 1);
