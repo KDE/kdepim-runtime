@@ -221,12 +221,12 @@ private slots:
     stats.setCount( 5 );
     collection.setStatistics( stats );
     scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 SELECT \"INBOX/Foo\""
+    scenario << defaultPoolConnectionScenario( QList<QByteArray>() << "CONDSTORE" )
+             << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
              << "S: A000003 OK select done"
              << "C: A000004 EXPUNGE"
              << "S: A000004 OK expunge DONE"
-             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "C: A000005 SELECT \"INBOX/Foo\" (CONDSTORE)"
              << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
              << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
              << "S: * 5 EXISTS"
@@ -261,6 +261,7 @@ private slots:
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
     DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
+    state->setServerCapabilities( pool.serverCapabilities() );
     state->setCollection( collection );
     RetrieveItemsTask *task = new RetrieveItemsTask( state );
     task->start( &pool );

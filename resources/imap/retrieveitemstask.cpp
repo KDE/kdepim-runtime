@@ -108,6 +108,7 @@ void RetrieveItemsTask::triggerPreExpungeSelect( const QString &mailBox )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
+  select->setCondstoreEnabled( serverCapabilities().contains( QLatin1String( "CONDSTORE" ) ) );
   connect( select, SIGNAL(result(KJob*)),
            this, SLOT(onPreExpungeSelectDone(KJob*)) );
   select->start();
@@ -151,6 +152,7 @@ void RetrieveItemsTask::triggerFinalSelect( const QString &mailBox )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
+  select->setCondstoreEnabled( serverCapabilities().contains( QLatin1String( "CONDSTORE" ) ) );
   connect( select, SIGNAL(result(KJob*)),
            this, SLOT(onFinalSelectDone(KJob*)) );
   select->start();
@@ -169,7 +171,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   const int messageCount = select->messageCount();
   const qint64 uidValidity = select->uidValidity();
   const qint64 nextUid = select->nextUid();
-  const qint64 highestModSeq = select->highestModSequence();
+  const quint64 highestModSeq = select->highestModSequence();
   const QList<QByteArray> flags = select->permanentFlags();
 
   // uidvalidity can change between sessions, we don't want to refetch
@@ -231,8 +233,8 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     }
   }
 
-  qint64 oldHighestModSeq = -1;
-  if ( highestModSeq > -1 ) {
+  quint64 oldHighestModSeq = 0;
+  if ( highestModSeq > 0 ) {
     if ( !col.hasAttribute( "highestmodseq" ) ) {
       HighestModSeqAttribute *attr = new HighestModSeqAttribute( highestModSeq );
       col.addAttribute( attr );
@@ -333,7 +335,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     fetch->setScope( scope );
     fetch->setUidBased( true );
     // Do a full flags sync if some messages were removed, otherwise do just an incremental update
-    fetch->setProperty( HIGHESTMODSEQ_PROPERTY, ( messageCount < realMessageCount ) ? -1 : oldHighestModSeq );
+    fetch->setProperty( HIGHESTMODSEQ_PROPERTY, ( messageCount < realMessageCount ) ? 0 : oldHighestModSeq );
     connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
              this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
     connect( fetch, SIGNAL(result(KJob*)),
@@ -347,7 +349,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     } else {
         kDebug( 5327 ) << "All fine, asking for changed flags looking for changes";
     }
-    listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ), ( messageCount < realMessageCount ) ? -1 : oldHighestModSeq );
+    listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ), ( messageCount < realMessageCount ) ? 0 : oldHighestModSeq );
   } else {
     kDebug( 5327 ) << "No messages present so we are done";
     itemsRetrievalDone();
@@ -404,7 +406,7 @@ void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qi
   }
 
   const qint64 highestModSeq = extractHighestModSeq( static_cast<KJob*>( sender() ) );
-  if ( highestModSeq == -1 ) {
+  if ( highestModSeq == 0 ) {
     itemsRetrieved( addedItems );
   } else {
     itemsRetrievedIncremental( addedItems, Akonadi::Item::List() );
@@ -427,7 +429,7 @@ void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
   }
 
   const qint64 highestModSeq = extractHighestModSeq( job );
-  if ( highestModSeq > -1 ) {
+  if ( highestModSeq > 0 ) {
     // Calling itemsRetrievalDone() before previous call to itemsRetrievedIncremental()
     // behaves like if we called itemsRetrieved(Items::List()), so make sure
     // Akonadi knows we did incremental fetch that came up with no changes
@@ -481,7 +483,7 @@ void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( sender() );
     // When changedsince is invalid, we do a full-sync. In that case use itemsRetrieved()
     // so that we correctly update removed moessages
-    if ( fetch->scope().changedSince == -1 ) {
+    if ( fetch->scope().changedSince == 0 ) {
         itemsRetrieved( changedItems );
     } else {
         itemsRetrievedIncremental( changedItems, Akonadi::Item::List() );
@@ -495,7 +497,7 @@ void RetrieveItemsTask::onFlagsFetchDone( KJob *job )
     cancelTask( job->errorString() );
   } else {
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
-    if ( fetch->scope().changedSince > -1 ) {
+    if ( fetch->scope().changedSince > 0 ) {
         // In case there were no changed flags, make sure Akonadi knows that there
         // were no changes
         itemsRetrievedIncremental( Akonadi::Item::List(), Akonadi::Item::List() );
@@ -506,13 +508,13 @@ void RetrieveItemsTask::onFlagsFetchDone( KJob *job )
 
 qint64 RetrieveItemsTask::extractHighestModSeq( KJob *job ) const
 {
-    qint64 highestModSeq = -1;
+    qint64 highestModSeq = 0;
     const QVariant v = job->property( HIGHESTMODSEQ_PROPERTY );
     if ( v.isValid() ) {
         bool ok = false;
         highestModSeq = v.toLongLong( &ok );
         if ( !ok ) {
-            return -1;
+            return 0;
         }
     }
 
