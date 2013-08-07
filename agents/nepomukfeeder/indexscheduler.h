@@ -131,7 +131,9 @@ private slots:
 private:
   void continueIndexing(); //start the indexing if work is to be done
   void indexingComplete();
-  int mTotalAmount;
+
+  int mTotalAmount;      // The number of items than need to be indexe
+  int mTotalClearAmount; // The number of items that need to be cleared
 
   bool mReIndex;
   bool mOnline;
