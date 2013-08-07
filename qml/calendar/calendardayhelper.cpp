@@ -58,13 +58,23 @@ bool CalendarDayHelper::containsEventItems(int day)
 
 bool CalendarDayHelper::containsTodoItems(int day)
 {
-  // Not implemented yet
-  return false;
+    QDate compareDate(m_year, m_month, day);
+    foreach(KCalCore::Todo::Ptr todo, m_todoList) {
+        if(todo->dtStart().date() == compareDate ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool CalendarDayHelper::containsJournalItems(int day)
 {
-  // Not implemented yet
+  QDate compareDate(m_year, m_month, day);
+    foreach(KCalCore::Journal::Ptr journal, m_journalList) {
+        if(journal->dtStart().date() == compareDate ) {
+            return true;
+        }
+    }
   return false;
 }
 

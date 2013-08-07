@@ -202,6 +202,8 @@ void Calendar::updateData()
             day.monthNumber = previousMonth.month();
             day.yearNumber = previousMonth.year();
             day.containsEventItems = false;
+            day.containsTodoItems = false;
+            day.containsJournalItems = false;
             m_dayList << day;
         }
     }
@@ -214,7 +216,7 @@ void Calendar::updateData()
         day.dayNumber = i + 1; // +1 to go form 0 based index to 1 based calendar dates
         day.monthNumber = m_startDate.month();
         day.yearNumber = m_startDate.year();
-        day.containsEventItems = m_dayHelper->containsEventItems(i + 1);
+        day.containsEventItems = m_dayHelper->containsEventItems(i + 1);         day.containsTodoItems = m_dayHelper->containsTodoItems(i + 1);          day.containsJournalItems = m_dayHelper->containsJournalItems(i + 1);
         m_dayList << day;
     }
 
@@ -227,7 +229,8 @@ void Calendar::updateData()
             day.dayNumber = i + 1; // +1 to go form 0 based index to 1 based calendar dates
             day.monthNumber = m_startDate.addMonths(1).month();
             day.yearNumber = m_startDate.addMonths(1).year();
-            day.containsEventItems = false;
+            day.containsEventItems = false;                        day.containsTodoItems = false;  
+            day.containsJournalItems = false;
             m_dayList << day;
         }
     }
