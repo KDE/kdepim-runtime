@@ -84,6 +84,7 @@ public:
    * Sets the articifical delay that is introduced when processing one batch
    */
   void setProcessingDelay(int delay);
+  int processingDelay();
 
   void clear();
 signals:

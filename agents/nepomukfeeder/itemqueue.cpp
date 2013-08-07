@@ -71,6 +71,12 @@ void ItemQueue::setProcessingDelay(int delay)
   mDelay = delay;
 }
 
+int ItemQueue::processingDelay()
+{
+    return mDelay;
+}
+
+
 void ItemQueue::addItem(const Akonadi::Item &item)
 {
     QDateTime modificationTime = item.modificationTime();

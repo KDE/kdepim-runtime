@@ -31,6 +31,7 @@
 #include <KIconLoader>
 
 #include <QDateTime>
+#include <QTimer>
 
 #include "nepomukhelpers.h"
 #include "nepomukfeeder-config.h"
@@ -271,45 +272,44 @@ void IndexScheduler::processItemQueue()
       // FIXME: We should probably be clearing the contents of the collection as well
 
       // Clear 10 collections at a time
-      QList<QUrl> nieUrls;
       for( int i=0; i<10 && mCollectionsToRemove.count(); i++ )
-          nieUrls << mCollectionsToRemove.takeFirst().url();
+          mNieUrlsToRemove << mCollectionsToRemove.takeFirst().url();
 
-      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
-      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
-
+      QTimer::singleShot(lowPrioQueue.processingDelay(), this, SLOT(slotSendUrlsForClearing()));
       emit running( i18n("Clearing unused Emails") );
       return;
   }
 
   else if( !mItemsToRemove.isEmpty() ) {
       // Clear 10 items at a time
-      QList<QUrl> nieUrls;
       for( int i=0; i<10 && mItemsToRemove.count(); i++ )
-          nieUrls << mItemsToRemove.takeFirst().url();
+          mNieUrlsToRemove << mItemsToRemove.takeFirst().url();
 
-      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
-      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
-
+      QTimer::singleShot(lowPrioQueue.processingDelay(), this, SLOT(slotSendUrlsForClearing()));
       emit running( i18n("Clearing unused Emails") );
       return;
   }
 
   else if( !mUrisToRemove.isEmpty() ) {
       // Clear 10 at a time
-      QList<QUrl> uris;
       for( int i=0; i<10 && mUrisToRemove.count(); i++ )
-            uris << mUrisToRemove.takeFirst();
+            mNieUrlsToRemove << mUrisToRemove.takeFirst();
 
-      KJob *removeJob = Nepomuk2::removeResources( uris, Nepomuk2::RemoveSubResoures );
-      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
-
+      QTimer::singleShot(lowPrioQueue.processingDelay(), this, SLOT(slotSendUrlsForClearing()));
       emit running( i18n("Clearing unused Emails") );
       return;
   }
 
   kDebug() << "idle";
   emit idle( i18n( "Ready to index data." ) );
+}
+
+void IndexScheduler::slotSendUrlsForClearing()
+{
+    KJob *removeJob = Nepomuk2::removeResources( mNieUrlsToRemove, Nepomuk2::RemoveSubResoures );
+    connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+    mNieUrlsToRemove.clear();
 }
 
 void IndexScheduler::prioQueueFinished()

@@ -128,6 +128,8 @@ private slots:
   void slotIdleStatusChanged(bool isIdle);
   void slotPowerManagementChanged(bool onBattery);
 
+  void slotSendUrlsForClearing();
+
 private:
   void continueIndexing(); //start the indexing if work is to be done
   void indexingComplete();
@@ -148,6 +150,10 @@ private:
   Akonadi::Item::List mItemsToRemove;
   Akonadi::Collection::List mCollectionsToRemove;
   QList<QUrl> mUrisToRemove;
+
+  // This variable is temporarily used to store the urls that will be passed to nepomuk
+  // for deletion.
+  QList<QUrl> mNieUrlsToRemove;
 
   Nepomuk2::EventMonitor* mEventMonitor;
 };
