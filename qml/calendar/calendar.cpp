@@ -301,3 +301,8 @@ void Calendar::upcommingEventsFromDay(int year, int month, int day) const
     m_upcommingEvents->setStartDate(QDate(year, month, day));
     m_upcommingEvents->setEndDate(m_upcommingEvents->startDate().addMonths(1));
 }
+int Calendar::currentWeek() const
+{
+    QDate date(QDate::currentDate());
+    return date.weekNumber();
+}

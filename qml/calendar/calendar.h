@@ -103,6 +103,7 @@ public:
     Q_INVOKABLE QString dayName(int weekday) const ;
     Q_INVOKABLE void setSelectedDay(int year, int month, int day) const;
     Q_INVOKABLE void upcommingEventsFromDay(int year, int month, int day) const;
+    Q_INVOKABLE int currentWeek() const;
     
 signals:
     void startDateChanged();
