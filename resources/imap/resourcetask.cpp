@@ -401,7 +401,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
 void ResourceTask::kill()
 {
   kDebug();
-  cancelTask("killed");
+  cancelTask(i18n("killed"));
 }
 
 const QChar ResourceTask::separatorCharacter() const
