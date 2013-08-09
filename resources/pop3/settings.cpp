@@ -71,9 +71,9 @@ void Settings::setPassword( const QString& password )
   Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId,
                                        Wallet::Synchronous );
   if ( wallet && wallet->isOpen() ) {
-    if ( !wallet->hasFolder( "pop3" ) )
-      wallet->createFolder( "pop3" );
-    wallet->setFolder( "pop3" );
+    if ( !wallet->hasFolder( QLatin1String("pop3") ) )
+      wallet->createFolder( QLatin1String("pop3") );
+    wallet->setFolder( QLatin1String("pop3") );
     wallet->writePassword( mResourceId, password );
   } else {
     kWarning() << "Unable to open wallet!";
