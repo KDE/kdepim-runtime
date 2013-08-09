@@ -410,7 +410,7 @@ const QChar ResourceTask::separatorCharacter() const
   //IMAP separator is not straightforward for toplevel folders, and fixes bug 292418 and maybe other, where
   //subfolders end up with remote id's starting with "i" (the first letter of imap:// ...)
   const QString parentRemoteId = parentCollection().remoteId();
-  const QChar separator = ( ( parentRemoteId != rootRemoteId() ) && !parentRemoteId.isEmpty() ) ? parentRemoteId.at( 0 ) : '/';
+  const QChar separator = ( ( parentRemoteId != rootRemoteId() ) && !parentRemoteId.isEmpty() ) ? parentRemoteId.at( 0 ) : QLatin1Char('/');
   return separator;
 }
 

@@ -183,12 +183,12 @@ QSet<QByteArray> DummyResourceState::parts() const
 
 QString DummyResourceState::rootRemoteId() const
 {
-  return "root-id";
+  return QLatin1String("root-id");
 }
 
 QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool ) const
 {
-  if ( collection.remoteId().startsWith('/') )
+  if ( collection.remoteId().startsWith(QLatin1Char('/')) )
     return collection.remoteId().mid( 1 );
   else
     return collection.remoteId();

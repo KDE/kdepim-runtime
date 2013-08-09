@@ -45,8 +45,8 @@ private slots:
     QStringList callNames;
 
     collection = Akonadi::Collection( 1 );
-    collection.setName( "Bar" );
-    collection.setRemoteId( "/Foo" );
+    collection.setName( QLatin1String("Bar") );
+    collection.setRemoteId( QLatin1String("/Foo") );
     collection.setRights( Akonadi::Collection::AllRights );
 
     Akonadi::ImapAclAttribute *acls = new Akonadi::ImapAclAttribute;
@@ -89,13 +89,13 @@ private slots:
              << "S: A000009 OK mailbox subscribed";
 
     callNames.clear();
-    callNames << "collectionChangeCommitted";
+    callNames << QLatin1String("collectionChangeCommitted");
 
     QTest::newRow( "complete case" ) << collection << parts << scenario << callNames << collection.name();
 
     collection = Akonadi::Collection( 1 );
-    collection.setName( "Bar/Baz" );
-    collection.setRemoteId( "/Foo" );
+    collection.setName( QLatin1String("Bar/Baz") );
+    collection.setRemoteId( QLatin1String("/Foo") );
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 RENAME \"Foo\" \"BarBaz\""
@@ -105,7 +105,7 @@ private slots:
     parts.clear();
     parts << "NAME";
     callNames.clear();
-    callNames << "collectionChangeCommitted";
+    callNames << QLatin1String("collectionChangeCommitted");
     QTest::newRow( "rename with invalid separator" ) << collection << parts << scenario << callNames
                                                      << "BarBaz";
   }
@@ -130,7 +130,7 @@ private slots:
 
     DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setUserName( defaultUserName() );
-    state->setServerCapabilities( QStringList() << "ANNOTATEMORE" << "ACL" );
+    state->setServerCapabilities( QStringList() << QLatin1String("ANNOTATEMORE") << QLatin1String("ACL") );
     state->setCollection( collection );
     state->setParts( parts );
     ChangeCollectionTask *task = new ChangeCollectionTask( state );
@@ -142,16 +142,16 @@ private slots:
       QString command = QString::fromUtf8(state->calls().at( i ).first);
       QVariant parameter = state->calls().at( i ).second;
 
-      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
+      if ( command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask") ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 
       QCOMPARE( command, callNames[i] );
 
-      if ( command == "cancelTask" ) {
+      if ( command == QLatin1String("cancelTask") ) {
         QVERIFY( !parameter.toString().isEmpty() );
       }
-      if ( command == "collectionChangeCommitted" ) {
+      if ( command == QLatin1String("collectionChangeCommitted") ) {
         QCOMPARE( parameter.value<Akonadi::Collection>().name(), collectionName );
         QCOMPARE( parameter.value<Akonadi::Collection>().remoteId().right( collectionName.length() ),
                   collectionName );

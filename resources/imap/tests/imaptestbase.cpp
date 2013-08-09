@@ -27,19 +27,19 @@ ImapTestBase::ImapTestBase( QObject *parent )
 
 QString ImapTestBase::defaultUserName() const
 {
-  return "test@kdab.com";
+  return QLatin1String("test@kdab.com");
 }
 
 QString ImapTestBase::defaultPassword() const
 {
-  return "foobar";
+  return QLatin1String("foobar");
 }
 
 ImapAccount *ImapTestBase::createDefaultAccount() const
 {
   ImapAccount *account = new ImapAccount;
 
-  account->setServer( "127.0.0.1" );
+  account->setServer( QLatin1String("127.0.0.1") );
   account->setPort( 5989 );
   account->setUserName( defaultUserName() );
   account->setSubscriptionEnabled( true );

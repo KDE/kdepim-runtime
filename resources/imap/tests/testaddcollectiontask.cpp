@@ -36,14 +36,13 @@ private slots:
 
     Akonadi::Collection parentCollection;
     Akonadi::Collection collection;
-    QString messageContent;
     QList<QByteArray> scenario;
     QStringList callNames;
 
     parentCollection = Akonadi::Collection( 1 );
-    parentCollection.setRemoteId( "/INBOX/Foo" );
+    parentCollection.setRemoteId( QLatin1String("/INBOX/Foo") );
     collection = Akonadi::Collection( 2 );
-    collection.setName( "Bar" );
+    collection.setName( QLatin1String("Bar") );
     collection.setParentCollection( parentCollection );
 
     scenario.clear();
@@ -54,15 +53,15 @@ private slots:
              << "S: A000004 OK subscribe done";
 
     callNames.clear();
-    callNames << "collectionChangeCommitted" << "synchronizeCollectionTree";
+    callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
 
     QTest::newRow( "trivial case" ) << parentCollection << collection << scenario << callNames
                                     << collection.name();
 
     parentCollection = Akonadi::Collection( 1 );
-    parentCollection.setRemoteId( "/INBOX/Foo" );
+    parentCollection.setRemoteId( QLatin1String("/INBOX/Foo") );
     collection = Akonadi::Collection( 2 );
-    collection.setName( "Bar/Baz" );
+    collection.setName( QLatin1String("Bar/Baz") );
     collection.setParentCollection( parentCollection );
 
     scenario.clear();
@@ -73,7 +72,7 @@ private slots:
              << "S: A000004 OK subscribe done";
 
     callNames.clear();
-    callNames << "collectionChangeCommitted" << "synchronizeCollectionTree";
+    callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
 
     QTest::newRow( "folder with invalid separator" ) << parentCollection << collection << scenario
                                                      << callNames << "BarBaz";
@@ -109,11 +108,11 @@ private slots:
       QString command = QString::fromUtf8( state->calls().at( i ).first );
       QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command==QLatin1String("cancelTask") && callNames[i]!=QLatin1String("cancelTask") ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 
-      if ( command == "collectionChangeCommitted" ) {
+      if ( command == QLatin1String("collectionChangeCommitted") ) {
         QCOMPARE( parameter.value<Akonadi::Collection>().name(), collectionName );
         QCOMPARE( parameter.value<Akonadi::Collection>().remoteId().right( collectionName.length() ),
                   collectionName );
@@ -121,7 +120,7 @@ private slots:
 
       QCOMPARE( command, callNames[i] );
 
-      if ( command == "cancelTask" ) {
+      if ( command == QLatin1String("cancelTask") ) {
         QVERIFY( !parameter.toString().isEmpty() );
       }
     }

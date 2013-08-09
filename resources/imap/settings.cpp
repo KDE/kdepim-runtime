@@ -135,8 +135,8 @@ void Settings::onWalletOpened( bool success )
   } else {
     Wallet *wallet = qobject_cast<Wallet*>( sender() );
     bool passwordNotStoredInWallet = true;
-    if ( wallet && wallet->hasFolder( "imap" ) ) {
-      wallet->setFolder( "imap" );
+    if ( wallet && wallet->hasFolder( QLatin1String("imap") ) ) {
+      wallet->setFolder( QLatin1String("imap") );
       wallet->readPassword( config()->name(), m_password );
       passwordNotStoredInWallet = false;
     }
@@ -184,11 +184,11 @@ QString Settings::password(bool *userRejected) const
       return m_password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
-      if ( wallet->hasFolder( "imap" ) ) {
-        wallet->setFolder( "imap" );
+      if ( wallet->hasFolder( QLatin1String("imap") ) ) {
+        wallet->setFolder( QLatin1String("imap") );
         wallet->readPassword( config()->name(), m_password );
       } else {
-        wallet->createFolder( "imap" );
+        wallet->createFolder( QLatin1String("imap") );
       }
     } else if ( userRejected != 0 ) {
         *userRejected = true;
@@ -208,11 +208,11 @@ QString Settings::sieveCustomPassword(bool *userRejected) const
 
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
-      if ( wallet->hasFolder( "imap" ) ) {
-        wallet->setFolder( "imap" );
+      if ( wallet->hasFolder( QLatin1String("imap") ) ) {
+        wallet->setFolder( QLatin1String("imap") );
         wallet->readPassword( QLatin1String("custom_sieve_") + config()->name(), m_customSievePassword );
       } else {
-        wallet->createFolder( "imap" );
+        wallet->createFolder( QLatin1String("imap") );
       }
     } else if ( userRejected != 0 ) {
         *userRejected = true;
@@ -228,9 +228,9 @@ void Settings::setSieveCustomPassword(const QString & password)
     m_customSievePassword = password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
-        if ( !wallet->hasFolder( "imap" ) )
-            wallet->createFolder( "imap" );
-        wallet->setFolder( "imap" );
+        if ( !wallet->hasFolder( QLatin1String("imap") ) )
+            wallet->createFolder( QLatin1String("imap") );
+        wallet->setFolder( QLatin1String("imap") );
         wallet->writePassword( QLatin1String("custom_sieve_") + config()->name(), password );
         kDebug() << "Wallet save: " << wallet->sync();
     }
@@ -248,9 +248,9 @@ void Settings::setPassword( const QString & password )
     m_password = password;
     Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
     if ( wallet && wallet->isOpen() ) {
-        if ( !wallet->hasFolder( "imap" ) )
-            wallet->createFolder( "imap" );
-        wallet->setFolder( "imap" );
+        if ( !wallet->hasFolder( QLatin1String("imap") ) )
+            wallet->createFolder( QLatin1String("imap") );
+        wallet->setFolder( QLatin1String("imap") );
         wallet->writePassword( config()->name(), password );
         kDebug() << "Wallet save: " << wallet->sync();
     }

@@ -78,17 +78,17 @@ static QString authenticationModeString( MailTransport::Transport::EnumAuthentic
 {
   switch ( mode ) {
     case  MailTransport::Transport::EnumAuthenticationType::LOGIN:
-      return "LOGIN";
+      return QLatin1String("LOGIN");
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-      return "PLAIN";
+      return QLatin1String("PLAIN");
     case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-      return "CRAM-MD5";
+      return QLatin1String("CRAM-MD5");
     case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-      return "DIGEST-MD5";
+      return QLatin1String("DIGEST-MD5");
     case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-      return "GSSAPI";
+      return QLatin1String("GSSAPI");
     case MailTransport::Transport::EnumAuthenticationType::NTLM:
-      return "NTLM";
+      return QLatin1String("NTLM");
     case MailTransport::Transport::EnumAuthenticationType::CLEAR:
       return i18nc( "Authentication method", "Clear text" );
     case MailTransport::Transport::EnumAuthenticationType::ANONYMOUS:
@@ -149,7 +149,7 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
 
   // regex for evaluating a valid server name/ip
-  mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
+  mValidator.setRegExp( QRegExp( QLatin1String("[A-Za-z0-9-_:.]*") ) );
   m_ui->imapServer->setValidator( &mValidator );
 
   m_ui->folderRequester->setMimeTypeFilter(
@@ -269,13 +269,13 @@ void SetupServer::applySettings()
   QString encryption;
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case KIMAP::LoginJob::Unencrypted :
-    encryption = "None";
+    encryption = QLatin1String("None");
     break;
   case KIMAP::LoginJob::AnySslVersion:
-    encryption = "SSL";
+    encryption = QLatin1String("SSL");
     break;
   case KIMAP::LoginJob::TlsV1:
-    encryption = "STARTTLS";
+    encryption = QLatin1String("STARTTLS");
     break;
   default:
     kFatal() << "Shouldn't happen";
@@ -382,7 +382,7 @@ void SetupServer::readSettings()
                                        "activate it. If you do not "
                                        "want to use KWallet, check the box below, but note that you will be "
                                        "prompted for your password when needed." ),
-                              i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
+                              i18n( "Do not use KWallet" ), QLatin1String("warning_kwallet_disabled") );
   } else {
     m_ui->password->insert( password );
   }
@@ -425,7 +425,7 @@ void SetupServer::readSettings()
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 
   if ( m_vacationFileName.isEmpty() )
-    m_vacationFileName = "kmail-vacation.siv";
+    m_vacationFileName = QLatin1String("kmail-vacation.siv");
 
   m_ui->customUsername->setText(Settings::self()->sieveCustomUsername());
 
@@ -471,7 +471,7 @@ void SetupServer::slotTest()
     m_serverTest->setPort( MailTransport::Transport::EnumEncryption::SSL, port );
   }
 
-  m_serverTest->setProtocol( "imap" );
+  m_serverTest->setProtocol( QLatin1String("imap") );
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL(finished(QList<int>)),
            SLOT(slotFinished(QList<int>)) );
@@ -611,7 +611,7 @@ void SetupServer::slotManageSubscriptions()
 
   QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( this );
   subscriptions->setCaption(  i18n( "Serverside Subscription" ) );
-  subscriptions->setWindowIcon( KIcon( "network-server" ) );
+  subscriptions->setWindowIcon( KIcon( QLatin1String("network-server") ) );
   subscriptions->connectAccount( account, m_ui->password->text() );
   m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 

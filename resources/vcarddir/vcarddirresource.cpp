@@ -58,7 +58,7 @@ void VCardDirResource::aboutToQuit()
 void VCardDirResource::configure( WId windowId )
 {
   SettingsDialog dlg( windowId );
-  dlg.setWindowIcon( KIcon( "text-directory" ) );
+  dlg.setWindowIcon( KIcon( QLatin1String("text-directory") ) );
   if ( dlg.exec() ) {
     initializeVCardDirectory();
     loadAddressees();
@@ -78,7 +78,7 @@ bool VCardDirResource::loadAddressees()
   QDirIterator it( vCardDirectoryName() );
   while ( it.hasNext() ) {
     it.next();
-    if ( it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt" ) {
+    if ( it.fileName() != QLatin1String(".") && it.fileName() != QLatin1String("..") && it.fileName() != QLatin1String("WARNING_README.txt") ) {
       QFile file( it.filePath() );
       if (file.open( QIODevice::ReadOnly )) {
         const QByteArray data = file.readAll();
@@ -224,7 +224,7 @@ void VCardDirResource::retrieveCollections()
 
   EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
   attr->setDisplayName( i18n( "Contacts Folder" ) );
-  attr->setIconName( "x-office-address-book" );
+  attr->setIconName( QLatin1String("x-office-address-book") );
 
   Collection::List list;
   list << c;
@@ -264,7 +264,7 @@ void VCardDirResource::initializeVCardDirectory() const
     QDir::root().mkpath( dir.absolutePath() );
 
   // check whether warning file is in place...
-  QFile file( dir.absolutePath() + QDir::separator() + "WARNING_README.txt" );
+  QFile file( dir.absolutePath() + QDir::separator() + QLatin1String("WARNING_README.txt") );
   if ( !file.exists() ) {
     // ... if not, create it
     file.open( QIODevice::WriteOnly );

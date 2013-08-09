@@ -410,7 +410,7 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
 
   m_capabilities = capJob->capabilities();
   QStringList expected;
-  expected << "IMAP4REV1";
+  expected << QLatin1String("IMAP4REV1");
 
   QStringList missing;
   foreach ( const QString &capability, expected ) {
@@ -426,12 +426,12 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
                                  "some mandatory capabilities are missing: %2. "
                                  "Please ask your sysadmin to upgrade the server.",
                                  m_account->server(),
-                                 missing.join( ", " ) ) );
+                                 missing.join( QLatin1String(", ") ) ) );
     return;
   }
 
   // If the extension is supported, grab the namespaces from the server
-  if ( m_capabilities.contains( "NAMESPACE" ) ) {
+  if ( m_capabilities.contains( QLatin1String("NAMESPACE") ) ) {
     KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob( capJob->session() );
     QObject::connect( nsJob, SIGNAL(result(KJob*)), SLOT(onNamespacesTestDone(KJob*)) );
     nsJob->start();

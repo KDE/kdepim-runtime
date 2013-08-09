@@ -73,7 +73,7 @@ void RetrieveItemsTask::doStart( KIMAP::Session *session )
 
   const Akonadi::Collection col = collection();
   if ( col.cachePolicy()
-       .localParts().contains( Akonadi::MessagePart::Body ) ) { //disconnected mode, make sure we really have the body cached
+       .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) { //disconnected mode, make sure we really have the body cached
      fetchItemsWithoutBodies( col, "onFetchItemsWithoutBodiesDone" );
   } else {
      startRetrievalTasks();
@@ -264,7 +264,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   scope.mode = KIMAP::FetchJob::FetchScope::Headers;
 
   if ( col.cachePolicy()
-       .localParts().contains( Akonadi::MessagePart::Body ) ) {
+       .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) {
     scope.mode = KIMAP::FetchJob::FetchScope::Full;
   }
 

@@ -105,7 +105,7 @@ ImapResource::ImapResource( const QString &id )
 {
   if ( name() == identifier() ) {
     const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
-    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + "akonadi/agentsrc";
+    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + QLatin1String("akonadi/agentsrc");
 
     const QSettings agentsrc( agentsrcFile, QSettings::IniFormat );
     const int instanceCounter = agentsrc.value(
@@ -233,7 +233,7 @@ int ImapResource::configureDialog( WId windowId )
   QPointer<SetupServer> dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
 
-  dlg->setWindowIcon( KIcon( "network-server" ) );
+  dlg->setWindowIcon( KIcon( QLatin1String("network-server") ) );
   int result = QDialog::Rejected;
   if( dlg->exec() ) {
     if ( dlg->shouldClearCache() ) {
@@ -299,7 +299,7 @@ int ImapResource::configureSubscription(qlonglong windowId)
 #endif
   }
   mSubscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
-  mSubscriptions->setWindowIcon( KIcon( "network-server" ) );
+  mSubscriptions->setWindowIcon( KIcon( QLatin1String("network-server") ) );
   mSubscriptions->connectAccount( *m_pool->account(), password );
   mSubscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
 
@@ -580,7 +580,7 @@ void ImapResource::doSetOnline(bool online)
 
 bool ImapResource::needsNetwork() const
 {
-  const QString hostName = Settings::self()->imapServer().section( ':', 0, 0 );
+  const QString hostName = Settings::self()->imapServer().section( QLatin1Char(':'), 0, 0 );
   // ### is there a better way to do this?
   if ( hostName == QLatin1String( "127.0.0.1" ) ||
        hostName == QLatin1String( "localhost" ) ||
@@ -621,7 +621,7 @@ void ImapResource::startIdle()
   delete m_idle;
   m_idle = 0;
 
-  if ( !m_pool->serverCapabilities().contains( "IDLE" ) )
+  if ( !m_pool->serverCapabilities().contains( QLatin1String("IDLE") ) )
     return;
 
   const QStringList ridPath = Settings::self()->idleRidPath();
@@ -755,7 +755,7 @@ QString ImapResource::dumpResourceToString() const
   Q_FOREACH(ResourceTask* task, m_taskList) {
     if (!ret.isEmpty())
       ret += QLatin1String(", ");
-    ret += task->metaObject()->className();
+    ret += QLatin1String(task->metaObject()->className());
   }
   return QLatin1String("IMAP tasks: ") + ret;
 }
@@ -768,7 +768,7 @@ void ImapResource::showError( const QString &message )
 
 void ImapResource::clearStatusMessage()
 {
-  emit status( Akonadi::AgentBase::Idle, "" );
+  emit status( Akonadi::AgentBase::Idle, QString() );
 }
 
 // ----------------------------------------------------------------------------------
