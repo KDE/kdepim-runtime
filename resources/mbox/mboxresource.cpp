@@ -43,22 +43,22 @@ using namespace Akonadi;
 static Entity::Id collectionId( const QString &remoteItemId )
 {
   // [CollectionId]::[RemoteCollectionId]::[Offset]
-  Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
-  return remoteItemId.split( "::" ).first().toLongLong();
+  Q_ASSERT( remoteItemId.split( QLatin1String("::") ).size() == 3 );
+  return remoteItemId.split( QLatin1String("::") ).first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
   // [CollectionId]::[RemoteCollectionId]::[Offset]
-  Q_ASSERT(remoteItemId.split( "::" ).size() == 3);
-  return remoteItemId.split( "::" ).at(1);
+  Q_ASSERT(remoteItemId.split( QLatin1String("::") ).size() == 3);
+  return remoteItemId.split( QLatin1String("::") ).at(1);
 }
 
 static quint64 itemOffset( const QString &remoteItemId )
 {
   // [CollectionId]::[RemoteCollectionId]::[Offset]
-  Q_ASSERT( remoteItemId.split( "::" ).size() == 3 );
-  return remoteItemId.split( "::" ).last().toULongLong();
+  Q_ASSERT( remoteItemId.split( QLatin1String("::") ).size() == 3 );
+  return remoteItemId.split( QLatin1String("::") ).last().toULongLong();
 }
 
 MboxResource::MboxResource( const QString &id )
@@ -70,8 +70,8 @@ MboxResource::MboxResource( const QString &id )
                                                          mSettings, QDBusConnection::ExportAdaptors );
 
   QStringList mimeTypes;
-  mimeTypes << "message/rfc822";
-  setSupportedMimetypes( mimeTypes, "message-rfc822" );
+  mimeTypes << QLatin1String("message/rfc822");
+  setSupportedMimetypes( mimeTypes, QLatin1String("message-rfc822") );
 
   // Register the list of deleted items as an attribute of the collection.
   AttributeFactory::registerAttribute<DeletedItemsAttribute>();
@@ -83,7 +83,7 @@ MboxResource::~MboxResource()
 
 void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  dlg->setWindowIcon( KIcon( "message-rfc822" ) );
+  dlg->setWindowIcon( KIcon( QLatin1String("message-rfc822") ) );
   dlg->addPage( i18n( "Compact frequency" ), new CompactPage( mSettings->path() ) );
   dlg->addPage( i18n( "Lock method" ), new LockMethodPage() );
   dlg->setCaption( i18n( "Select MBox file" ) );
@@ -122,8 +122,8 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     mail->parse();
 
     Item item;
-    item.setRemoteId( colId + "::" + colRid + "::" + QString::number( entry.messageOffset() ) );
-    item.setMimeType( "message/rfc822" );
+    item.setRemoteId( colId + QLatin1String("::") + colRid + QLatin1String("::") + QString::number( entry.messageOffset() ) );
+    item.setMimeType( QLatin1String("message/rfc822") );
     item.setSize( entry.messageSize() );
     item.setPayload( KMime::Message::Ptr( mail ) );
 
