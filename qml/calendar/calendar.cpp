@@ -199,8 +199,10 @@ void Calendar::updateData()
             day.isNextMonth = false;
             day.isPreviousMonth = true;
             day.dayNumber = previousMonth.daysInMonth() - (daysBeforeCurrentMonth - (i + 1));
-            day.monthNumber = previousMonth.month();
-            day.yearNumber = previousMonth.year();
+            //PreviousMonth.month() will be equal to 0 in case present month is 0 in above QDate as you noticed so fixed that bug below
+            day.monthNumber = m_startDate.month()==1?12:previousMonth.month();
+            //same is with previous year of jan
+            day.yearNumber = m_startDate.month()==1?m_startDate.year()-1:previousMonth.year();
             day.containsEventItems = false;
             day.containsTodoItems = false;
             day.containsJournalItems = false;
@@ -216,7 +218,9 @@ void Calendar::updateData()
         day.dayNumber = i + 1; // +1 to go form 0 based index to 1 based calendar dates
         day.monthNumber = m_startDate.month();
         day.yearNumber = m_startDate.year();
-        day.containsEventItems = m_dayHelper->containsEventItems(i + 1);         day.containsTodoItems = m_dayHelper->containsTodoItems(i + 1);          day.containsJournalItems = m_dayHelper->containsJournalItems(i + 1);
+        day.containsEventItems = m_dayHelper->containsEventItems(i + 1);    
+        day.containsTodoItems = m_dayHelper->containsTodoItems(i + 1);
+        day.containsJournalItems = m_dayHelper->containsJournalItems(i + 1);
         m_dayList << day;
     }
 
@@ -229,7 +233,8 @@ void Calendar::updateData()
             day.dayNumber = i + 1; // +1 to go form 0 based index to 1 based calendar dates
             day.monthNumber = m_startDate.addMonths(1).month();
             day.yearNumber = m_startDate.addMonths(1).year();
-            day.containsEventItems = false;                        day.containsTodoItems = false;  
+            day.containsEventItems = false;
+            day.containsTodoItems = false;
             day.containsJournalItems = false;
             m_dayList << day;
         }
