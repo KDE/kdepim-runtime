@@ -1,4 +1,7 @@
 
+#add_definitions( -DQT_NO_CAST_FROM_ASCII )
+#add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}/libkdepim-copy
   ${CMAKE_CURRENT_SOURCE_DIR}/shared

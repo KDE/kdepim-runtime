@@ -35,7 +35,7 @@ using namespace OXA;
 void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &object )
 {
   bool isDistributionList = false;
-  QDomElement distributionListElement = propElement.firstChildElement( "distributionlist_flag" );
+  QDomElement distributionListElement = propElement.firstChildElement( QLatin1String("distributionlist_flag") );
   if ( !distributionListElement.isNull() ) {
     if ( OXUtils::readBoolean( distributionListElement.text() ) == true )
       isDistributionList = true;

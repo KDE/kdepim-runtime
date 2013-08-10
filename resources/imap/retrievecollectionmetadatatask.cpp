@@ -101,10 +101,10 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   m_pendingMetaDataJobs = 0;
 
   // First get the annotations from the mailbox if it's supported
-  if ( capabilities.contains( "METADATA" ) || capabilities.contains( "ANNOTATEMORE" ) ) {
+  if ( capabilities.contains( QLatin1String("METADATA") ) || capabilities.contains( QLatin1String("ANNOTATEMORE") ) ) {
     KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( session );
     meta->setMailBox( mailBox );
-    if ( capabilities.contains( "METADATA" ) ) {
+    if ( capabilities.contains( QLatin1String("METADATA") ) ) {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
       meta->addEntry( "*" );
     } else {
@@ -117,7 +117,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   }
 
   // Get the ACLs from the mailbox if it's supported
-  if ( capabilities.contains( "ACL" ) ) {
+  if ( capabilities.contains( QLatin1String("ACL") ) ) {
     KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( session );
     acl->setMailBox( mailBox );
     connect( acl, SIGNAL(result(KJob*)), SLOT(onGetAclDone(KJob*)) );
@@ -132,7 +132,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   }
 
   // Get the QUOTA info from the mailbox if it's supported
-  if ( capabilities.contains( "QUOTA" ) ) {
+  if ( capabilities.contains( QLatin1String("QUOTA") ) ) {
     KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( session );
     quota->setMailBox( mailBox );
     connect( quota, SIGNAL(result(KJob*)), SLOT(onQuotasReceived(KJob*)) );
@@ -271,7 +271,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
     showInformationDialog( i18n( "<p>Your access rights to folder <b>%1</b> have been restricted, "
                                  "it will no longer be possible to add messages to this folder.</p>",
                                  collectionName ),
-                           i18n( "Access rights revoked" ), "ShowRightsRevokedWarning" );
+                           i18n( "Access rights revoked" ), QLatin1String("ShowRightsRevokedWarning") );
   }
 
   if ( newRights != m_collection.rights() ) {

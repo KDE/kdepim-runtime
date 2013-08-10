@@ -665,7 +665,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
       }
 
       if ( destContent != sourceContent ) {
-         QString newFinalKey = "1-" + newUniqueKey;
+         QString newFinalKey = QLatin1String("1-") + newUniqueKey;
          int i = 1;
          while ( QFile::exists( d->path + QString::fromLatin1( "/cur/" ) + newFinalKey ) ) {
            i++;

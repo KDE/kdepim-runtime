@@ -82,7 +82,7 @@ QByteArray FakeServer::parseDeleteMark( const QByteArray &expectedData,
 {
   // Only called from parseResponse(), which is already thread-safe
 
-  const QByteArray deleteMark = QString( "%DELE%" ).toUtf8();
+  const QByteArray deleteMark = QString::fromLatin1( "%DELE%" ).toUtf8();
   if ( expectedData.contains( deleteMark ) ) {
     Q_ASSERT( !mAllowedDeletions.isEmpty() );
     for ( int i = 0; i < mAllowedDeletions.size(); i++ ) {
@@ -106,7 +106,7 @@ QByteArray FakeServer::parseRetrMark( const QByteArray &expectedData,
 {
   // Only called from parseResponse(), which is already thread-safe
 
-  const QByteArray retrMark = QString( "%RETR%" ).toUtf8();
+  const QByteArray retrMark = QString::fromLatin1( "%RETR%" ).toUtf8();
   if ( expectedData.contains( retrMark ) ) {
     Q_ASSERT( !mAllowedRetrieves.isEmpty() );
     for ( int i = 0; i < mAllowedRetrieves.size(); i++ ) {
@@ -205,7 +205,7 @@ void FakeServer::setAllowedDeletions( const QString &deleteIds )
 {
   QMutexLocker locker( &mMutex );
   mAllowedDeletions.clear();
-  QStringList ids = deleteIds.split( ',', QString::SkipEmptyParts );
+  QStringList ids = deleteIds.split( QLatin1Char(','), QString::SkipEmptyParts );
   foreach( const QString &id, ids ) {
     mAllowedDeletions.append( id.toUtf8() );
   }
@@ -215,7 +215,7 @@ void FakeServer::setAllowedRetrieves( const QString &retrieveIds )
 {
   QMutexLocker locker( &mMutex );
   mAllowedRetrieves.clear();
-  QStringList ids = retrieveIds.split( ',', QString::SkipEmptyParts );
+  QStringList ids = retrieveIds.split( QLatin1Char(','), QString::SkipEmptyParts );
   foreach( const QString &id, ids ) {
     mAllowedRetrieves.append( id.toUtf8() );
   }
@@ -237,14 +237,14 @@ void FakeServer::setNextConversation( const QString& conversation,
   Q_ASSERT( !conversation.isEmpty() );
 
   mGotDisconnected = false;
-  QStringList lines = conversation.split( "\r\n", QString::SkipEmptyParts );
-  Q_ASSERT( lines.first().startsWith( "C:" ) );
+  QStringList lines = conversation.split( QLatin1String("\r\n"), QString::SkipEmptyParts );
+  Q_ASSERT( lines.first().startsWith( QLatin1String("C:") ) );
 
   enum Mode { Client, Server };
   Mode mode = Client;
 
-  const QByteArray mailSizeMarker = QString( "%MAILSIZE%" ).toLatin1();
-  const QByteArray mailMarker = QString( "%MAIL%" ).toLatin1();
+  const QByteArray mailSizeMarker = QString::fromLatin1( "%MAILSIZE%" ).toLatin1();
+  const QByteArray mailMarker = QString::fromLatin1( "%MAIL%" ).toLatin1();
   int sizeIndex = 0;
   int mailIndex = 0;
 
@@ -268,7 +268,7 @@ void FakeServer::setNextConversation( const QString& conversation,
       mWriteData.append( lineData.mid( 3 ) + "\r\n" );
       mode = Server;
     }
-    else if ( line.startsWith("C: " ) ) {
+    else if ( line.startsWith( QLatin1String("C: ") ) ) {
       mReadData.append( lineData.mid( 3 ) + "\r\n" );
       mode = Client;
     }

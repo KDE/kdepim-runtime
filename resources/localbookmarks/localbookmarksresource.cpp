@@ -63,7 +63,7 @@ void LocalBookmarksResource::configure( WId windowId )
   else
     url = KUrl::fromPath( QDir::homePath() );
 
-  const QString newFile = KFileDialog::getOpenFileNameWId( url, "*.xml |" + i18nc( "Filedialog filter for *.xml",
+  const QString newFile = KFileDialog::getOpenFileNameWId( url, QLatin1String("*.xml |") + i18nc( "Filedialog filter for *.xml",
                                                                                    "XML Bookmark file"),
                                                            windowId, i18n( "Select Bookmarks File" ) );
 
@@ -135,7 +135,7 @@ void LocalBookmarksResource::itemRemoved( const Akonadi::Item &item )
 
 static Collection::List listRecursive( const KBookmarkGroup &parentGroup, const Collection &parentCollection )
 {
-  const QStringList mimeTypes = QStringList() << "application/x-xbel" << Collection::mimeType();
+  const QStringList mimeTypes = QStringList() << QLatin1String("application/x-xbel") << Collection::mimeType();
 
   Collection::List collections;
 
@@ -146,7 +146,7 @@ static Collection::List listRecursive( const KBookmarkGroup &parentGroup, const 
 
     KBookmarkGroup bookmarkGroup = it.toGroup();
     Collection collection;
-    collection.setName( bookmarkGroup.fullText() + '(' + bookmarkGroup.address() + ')' ); // has to be unique
+    collection.setName( bookmarkGroup.fullText() + QLatin1Char('(') + bookmarkGroup.address() + QLatin1Char(')') ); // has to be unique
     collection.setRemoteId( bookmarkGroup.address() );
     collection.setParentCollection( parentCollection );
     collection.setContentMimeTypes( mimeTypes ); // ###
@@ -165,7 +165,7 @@ void LocalBookmarksResource::retrieveCollections()
   root.setRemoteId( Settings::self()->path() );
   root.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << "application/x-xbel" << Collection::mimeType();
+  mimeTypes << QLatin1String("application/x-xbel") << Collection::mimeType();
   root.setContentMimeTypes( mimeTypes );
 
 
@@ -209,7 +209,7 @@ void LocalBookmarksResource::retrieveItems( const Akonadi::Collection &collectio
 
     Item item;
     item.setRemoteId( it.address() );
-    item.setMimeType( "application/x-xbel" );
+    item.setMimeType( QLatin1String("application/x-xbel") );
     item.setPayload<KBookmark>( it );
     itemList.append( item );
   }
