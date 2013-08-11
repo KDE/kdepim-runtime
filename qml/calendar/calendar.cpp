@@ -192,17 +192,16 @@ void Calendar::updateData()
     }
 
     if(daysBeforeCurrentMonth > 0) {
-        QDate previousMonth(m_startDate.year(), m_startDate.month() - 1, 1);
+        QDate previousMonth = m_startDate.addMonths(-1);
+        //QDate previousMonth(m_startDate.year(), m_startDate.month() - 1, 1);
         for(int i = 0; i < daysBeforeCurrentMonth; i++) {
             DayData day;
             day.isCurrentMonth = false;
             day.isNextMonth = false;
             day.isPreviousMonth = true;
             day.dayNumber = previousMonth.daysInMonth() - (daysBeforeCurrentMonth - (i + 1));
-            //PreviousMonth.month() will be equal to 0 in case present month is 0 in above QDate as you noticed so fixed that bug below
-            day.monthNumber = m_startDate.month()==1?12:previousMonth.month();
-            //same is with previous year of jan
-            day.yearNumber = m_startDate.month()==1?m_startDate.year()-1:previousMonth.year();
+            day.monthNumber =previousMonth.month();
+            day.yearNumber =previousMonth.year();
             day.containsEventItems = false;
             day.containsTodoItems = false;
             day.containsJournalItems = false;
