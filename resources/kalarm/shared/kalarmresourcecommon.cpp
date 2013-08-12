@@ -70,7 +70,7 @@ void initialise(QObject* parent)
     AttributeFactory::registerAttribute<CompatibilityAttribute>();
     AttributeFactory::registerAttribute<EventAttribute>();
 
-    KGlobal::locale()->insertCatalog("akonadi_kalarm_resource");
+    KGlobal::locale()->insertCatalog(QLatin1String("akonadi_kalarm_resource"));
 }
 
 /******************************************************************************

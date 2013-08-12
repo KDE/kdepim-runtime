@@ -34,11 +34,11 @@ using namespace KCalCore;
 static QLatin1String sNotesType( "application/x-vnd.kde.notes" );
 
 NotesResource::NotesResource( const QString &id )
-    : ICalResource( id, allMimeTypes(), "knotes" )
+    : ICalResource( id, allMimeTypes(), QLatin1String("knotes") )
 {
-  KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath*>( mSettings->findItem( "Path" ) );
+  KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath*>( mSettings->findItem( QLatin1String("Path") ) );
   if ( item ) {
-    item->setDefaultValue( KGlobal::dirs()->saveLocation( "data", "knotes/" ) + "notes.ics" );
+    item->setDefaultValue( KGlobal::dirs()->saveLocation( "data", QLatin1String("knotes/") ) + QLatin1String("notes.ics") );
   }
 }
 

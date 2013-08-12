@@ -40,7 +40,7 @@ using namespace SETTINGS_NAMESPACE;
 ICalResourceBase::ICalResourceBase( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  KGlobal::locale()->insertCatalog( "akonadi_ical_resource" );
+  KGlobal::locale()->insertCatalog( QLatin1String("akonadi_ical_resource") );
 }
 
 void ICalResourceBase::initialise( const QStringList &mimeTypes, const QString &icon )
@@ -80,9 +80,9 @@ void ICalResourceBase::aboutToQuit()
 void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings> *dlg )
 {
 #ifndef KDEPIM_MOBILE_UI
-  dlg->setFilter( "text/calendar" );
+  dlg->setFilter( QLatin1String("text/calendar") );
 #else
-  dlg->setFilter( "*.ics *.vcs" );
+  dlg->setFilter( QLatin1String("*.ics *.vcs") );
 #endif
   dlg->setCaption( i18n( "Select Calendar" ) );
 }
@@ -150,7 +150,7 @@ bool ICalResourceBase::writeToFile( const QString &fileName )
 
   bool success = true;
   if ( !fileStorage->save() ) {
-    kError() << "akonadi_ical_resource: Failed to save calendar to file " + fileName;
+    kError() << QLatin1String("akonadi_ical_resource: Failed to save calendar to file ") + fileName;
     emit error( i18n( "Failed to save calendar file to %1", fileName ) );
     success = false;
   }
