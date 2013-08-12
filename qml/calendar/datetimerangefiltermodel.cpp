@@ -73,7 +73,7 @@ bool DateTimeRangeFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
             return true;
         }
     } else {
-        QDate date(QDate::currentDate());
+        //QDate date(QDate::currentDate());
         if (incidenceStart.date().year() == -(m_startDate.year()+2700))
             {
                 qDebug()<<m_startDate.year()+2700;
