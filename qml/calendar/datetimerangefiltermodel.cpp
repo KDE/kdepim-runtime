@@ -49,8 +49,8 @@ void DateTimeRangeFilterModel::includeOverlappingEvents(bool overlapping)
 
 bool DateTimeRangeFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    if (!m_startDate.isValid() && !m_endDate.isValid())
-        return true;
+   // if (!m_startDate.isValid() && !m_endDate.isValid())
+    //    return true;
 
     const QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     const Akonadi::Item item = sourceModel()->data(index, Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
@@ -73,10 +73,17 @@ bool DateTimeRangeFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
             return true;
         }
     } else {
-        if (m_startDate.isValid() && !m_endDate.isValid()) {
+        QDate date(QDate::currentDate());
+        if (incidenceStart.date().year() == -(m_startDate.year()+2700))
+            {
+                qDebug()<<m_startDate.year()+2700;
+                return true;
+            }
+       /* else if (m_startDate.isValid() && !m_endDate.isValid()) {
             if (incidenceEnd.date() >= m_startDate)
                 return true;
-        } else if (!m_startDate.isValid() && m_endDate.isValid()) {
+        } 
+        else if (!m_startDate.isValid() && m_endDate.isValid()) {
             if (incidenceStart.date() <= m_endDate)
                 return true;
         } else if (m_startDate.isValid() && m_endDate.isValid()) {
@@ -88,7 +95,7 @@ bool DateTimeRangeFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
                 return true;
             if (incidenceStart.date() >= m_startDate && incidenceEnd.date() <= m_endDate)
                 return true;
-        }
+        }*/
     }
 
 
