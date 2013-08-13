@@ -126,7 +126,7 @@ void SetupKolab::slotDoUpgrade()
   const Akonadi::AgentInstance instanceSelected =
     m_agentList[m_ui->imapAccountComboBox->currentText()];
 
-  m_versionUi->statusLabel->setText( "started" );
+  m_versionUi->statusLabel->setText( i18n("Started") );
   m_versionUi->progressBar->setEnabled( true );
 
   UpgradeJob *job =
@@ -152,14 +152,14 @@ void SetupKolab::slotUpgradeDone( KJob *job )
 {
   if ( job->error() ) {
     kWarning() << job->errorString();
-    m_versionUi->statusLabel->setText( "error" );
+    m_versionUi->statusLabel->setText( i18n("Error") );
     KMessageBox::error(
       this,
       i18n( "Could not complete the upgrade process: " ) + job->errorString(),
       i18n( "Error during Upgrade Process" ) );
     return;
   }
-  m_versionUi->statusLabel->setText( "complete" );
+  m_versionUi->statusLabel->setText( i18n("Complete") );
   m_versionUi->progressBar->setValue( 100 );
 }
 
@@ -171,9 +171,9 @@ void SetupKolab::slotSelectedAccountChanged()
   Kolab::Version v = readKolabVersion( instanceSelected.identifier() );
 
   if ( v == Kolab::KolabV2 ) {
-    m_ui->formatVersion->setText( "Kolab Format v2" );
+    m_ui->formatVersion->setText( i18n("Kolab Format v2") );
   } else {
-    m_ui->formatVersion->setText( "Kolab Format v3" );
+    m_ui->formatVersion->setText( i18n("Kolab Format v3") );
   }
 }
 
