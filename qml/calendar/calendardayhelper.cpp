@@ -70,8 +70,8 @@ bool CalendarDayHelper::containsTodoItems(int day)
 bool CalendarDayHelper::containsJournalItems(int day)
 {
   QDate compareDate(m_year, m_month, day);
-    foreach(KCalCore::Todo::Ptr todo, m_todoList) {
-        if(todo->dtStart().date() == compareDate ) {
+    foreach(KCalCore::Journal::Ptr journal, m_journalList) {
+        if(journal->dtStart().date() == compareDate ) {
             return true;
         }
     }
