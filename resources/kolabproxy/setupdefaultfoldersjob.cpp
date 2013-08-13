@@ -30,6 +30,8 @@
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
 
+#include <KLocale>
+
 SetupDefaultFoldersJob::SetupDefaultFoldersJob( const Akonadi::AgentInstance &instance,
                                                 QObject *parent )
   : Job( parent ),
@@ -82,7 +84,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
 
   if (!defaultParent.isValid()) {
     setError(KJob::UserDefinedError);
-    setErrorText("Could not find valid parent collection.");
+    setErrorText(i18n("Could not find valid parent collection."));
     emitResult();
   }
   kDebug() << "default parent " << defaultParent.id();
