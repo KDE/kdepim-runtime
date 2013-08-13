@@ -214,7 +214,7 @@ void FacebookResource::photoJobFinished( KJob *job )
     addressee.setPhoto( KABC::Picture( photoJob->photo() ) );
     Item newUser;
     newUser.setRemoteId( user.id() );
-    newUser.setMimeType( "text/directory" );
+    newUser.setMimeType( QLatin1String("text/directory") );
     newUser.setPayload<KABC::Addressee>( addressee );
     TimeStampAttribute * const timeStampAttribute = new TimeStampAttribute();
     timeStampAttribute->setTimeStamp( user.updatedTime() );

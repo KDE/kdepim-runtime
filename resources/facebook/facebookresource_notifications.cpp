@@ -66,7 +66,7 @@ void FacebookResource::notificationsListFetched( KJob *job )
     Q_FOREACH ( const KFbAPI::NotificationInfo &notificationInfo, listJob->notifications() ) {
       Item notification;
       notification.setRemoteId( notificationInfo.id() );
-      notification.setMimeType( "text/x-vnd.akonadi.socialnotification" );
+      notification.setMimeType( QLatin1String("text/x-vnd.akonadi.socialnotification") );
       notification.setPayload<KFbAPI::NotificationInfo>( notificationInfo );
       notificationItems.append( notification );
 
@@ -138,7 +138,7 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
     int tooltipCount = 0;
     int notificationCount = 0;
 
-    QString sniTooltip = QString("<ul>");;
+    QString sniTooltip = QLatin1String("<ul>");
     QString notificationString;
 
     Q_FOREACH (const KFbAPI::NotificationInfo &notification, mDisplayedNotifications) {
@@ -184,7 +184,7 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
 
         //include only up to 3 notifications in the KNotification/SNI tooltip
         if (tooltipCount < 3) {
-            sniTooltip.append(QString("<li>%1</li>").arg(notification.title()));
+            sniTooltip.append(QString::fromLatin1("<li>%1</li>").arg(notification.title()));
             tooltipCount++;
         }
 
@@ -200,7 +200,7 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
         contextMenu->addAction(action);
     }
 
-    sniTooltip = sniTooltip.append("</ul>");
+    sniTooltip = sniTooltip.append(QLatin1String("</ul>"));
 
     notificationString.append(i18ncp("This string is appended to a Facebook notification displayed "
                                      "in KNotification, indicating how many more notifications "
