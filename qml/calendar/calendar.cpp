@@ -192,7 +192,7 @@ void Calendar::updateData()
     }
 
     if(daysBeforeCurrentMonth > 0) {
-        QDate previousMonth(m_startDate.year(), m_startDate.month() - 1, 1);
+        QDate previousMonth = m_startDate.addMonths(-1);
         for(int i = 0; i < daysBeforeCurrentMonth; i++) {
             DayData day;
             day.isCurrentMonth = false;
@@ -241,6 +241,9 @@ void Calendar::updateData()
     }
 
     m_model->update();
+
+    // Update the upcomming events model according to the new start date.
+    upcommingEventsFromDay(m_startDate.year(), m_startDate.month(), m_startDate.day());
 
 //    qDebug() << "---------------------------------------------------------------";
 //    qDebug() << "Date obj: " << m_startDate;
