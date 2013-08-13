@@ -107,8 +107,8 @@ QByteArray KolabHandler::kolabTypeForMimeType( const QStringList &contentMimeTyp
     return "task";
   } else if ( contentMimeTypes.contains( KCalCore::Journal::journalMimeType() ) ) {
     return "journal";
-  } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.note" ) ||
-              contentMimeTypes.contains( "text/x-vnd.akonadi.note" ) ) {
+  } else if ( contentMimeTypes.contains( QLatin1String("application/x-vnd.akonadi.note") ) ||
+              contentMimeTypes.contains( QLatin1String("text/x-vnd.akonadi.note") ) ) {
     return "note";
   }
   return QByteArray();
@@ -145,7 +145,7 @@ bool KolabHandler::checkForErrors( Akonadi::Item::Id affectedItem )
   QString errorMsg;
   foreach ( const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors() ) {
     errorMsg.append( error.message );
-    errorMsg.append( "\n" );
+    errorMsg.append( QLatin1String("\n") );
   }
 
   kWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;

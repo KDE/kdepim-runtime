@@ -28,7 +28,7 @@
 
 using namespace Akonadi;
 using namespace KMime;
-Q_DECLARE_METATYPE(KCalCore::Incidence::Ptr);
+Q_DECLARE_METATYPE(KCalCore::Incidence::Ptr)
 
 class KolabConverterTest : public QObject
 {
@@ -38,8 +38,8 @@ class KolabConverterTest : public QObject
     {
       QTest::addColumn<KABC::Addressee>( "addressee" );
       KABC::Addressee contact;
-      contact.setName("John Doe");
-      contact.setEmails(QStringList() << "doe@example.org");
+      contact.setName(QLatin1String("John Doe"));
+      contact.setEmails(QStringList() << QLatin1String("doe@example.org"));
 
       QTest::newRow( "contact" ) << contact;
     }
@@ -51,7 +51,7 @@ class KolabConverterTest : public QObject
       KolabHandler::Ptr handler = KolabHandler::createHandler( Kolab::ContactType, Collection() );
       QVERIFY( handler );
 
-      Item vcardItem( "text/directory" );
+      Item vcardItem( QLatin1String("text/directory") );
       vcardItem.setPayload( addressee );
 
       //Convert to kolab item
@@ -72,15 +72,15 @@ class KolabConverterTest : public QObject
 
       KCalCore::Incidence::Ptr event(new KCalCore::Event);
       event->setDtStart(KDateTime::currentUtcDateTime());
-      QTest::newRow("event") << QString("event") << event;
+      QTest::newRow("event") << "event" << event;
       
       KCalCore::Incidence::Ptr todo(new KCalCore::Todo);
       todo->setDtStart(KDateTime::currentUtcDateTime());
-      QTest::newRow("todo") << QString("task") << todo;
+      QTest::newRow("todo") << "task" << todo;
       
       KCalCore::Incidence::Ptr journal(new KCalCore::Journal);
       journal->setDtStart(KDateTime::currentUtcDateTime());
-      QTest::newRow("journal") << QString("journal") << journal;
+      QTest::newRow("journal") << "journal" << journal;
     }
 
     void testIncidences()
@@ -109,7 +109,7 @@ class KolabConverterTest : public QObject
       Item::List icalItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
       QCOMPARE( icalItems.size(), 1 );
       QVERIFY( icalItems.first().hasPayload<KCalCore::Incidence::Ptr>() );
-      if ( type == "task" ) {
+      if ( type == QLatin1String("task") ) {
         QVERIFY( icalItems.first().hasPayload<KCalCore::Todo::Ptr>() );
       }
     }

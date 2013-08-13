@@ -75,7 +75,7 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     if ( checkForErrors( item.id() ) ) {
       return false;
     }
-    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( message );
   } else if ( item.hasPayload<KABC::ContactGroup>() ) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
@@ -117,7 +117,7 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     if ( checkForErrors( item.id() ) ) {
       return false;
     }
-    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( message );
   } else {
     kWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";

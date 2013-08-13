@@ -93,7 +93,7 @@ static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollecti
   }
 
   if ( imapCollection.parentCollection() == Akonadi::Collection::root() ) {
-    return QString( "" );
+    return QLatin1String( "" );
   }
 
   const QString parentMailbox =
@@ -307,7 +307,7 @@ void KolabProxyResource::configure( WId windowId )
   if ( windowId )
     KWindowSystem::setMainWindow( kolabConfigDialog, windowId );
 
-  kolabConfigDialog->setWindowIcon( KIcon( "kolab" ) );
+  kolabConfigDialog->setWindowIcon( KIcon( QLatin1String("kolab") ) );
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
 
