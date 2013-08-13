@@ -248,7 +248,7 @@ void Calendar::updateData()
     }
 
     m_model->update();
-
+    upcommingEventsFromDay(m_startDate.year(), m_startDate.month(), m_startDate.day());
 //    qDebug() << "---------------------------------------------------------------";
 //    qDebug() << "Date obj: " << m_startDate;
 //    qDebug() << "Month: " << m_startDate.month();
