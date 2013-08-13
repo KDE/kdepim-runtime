@@ -58,7 +58,7 @@ NepomukTagResource::NepomukTagResource( const QString &id )
     setName( i18n( "Tags" ) );
 
     m_root.setName( i18n( "Tags" ) );
-    m_root.setRemoteId( "nepomuktags" );
+    m_root.setRemoteId( QLatin1String("nepomuktags") );
     m_root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
     Collection::Rights rights = Collection::CanCreateCollection;
     m_root.setRights( rights );
@@ -93,9 +93,9 @@ void NepomukTagResource::retrieveCollections()
     QHash<QString,Collection> collections;
 
     QStringList contentTypes;
-    contentTypes << "message/rfc822" << Collection::mimeType();
+    contentTypes << QLatin1String("message/rfc822") << Collection::mimeType();
 
-    collections[ "rootfolderunique" ] = m_root;
+    collections[ QLatin1String("rootfolderunique") ] = m_root;
 
     QList<Nepomuk2::Tag> tags = Nepomuk2::Tag::allTags();
     foreach( const Nepomuk2::Tag& tag, tags ) {
@@ -158,13 +158,13 @@ void NepomukTagResource::slotLocalListResult( KJob *job )
 void NepomukTagResource::linkDone( KJob* job )
 {
   if ( job->error() )
-    kDebug()<<QString("error on linking: %1").arg( job->errorText() );
+    kDebug()<<QString::fromLatin1("error on linking: %1").arg( job->errorText() );
 }
 
 void NepomukTagResource::unlinkDone( KJob* job )
 {
   if ( job->error() )
-    kDebug()<<QString("error on unlinking: %1").arg( job->errorText() );
+    kDebug()<<QString::fromLatin1("error on unlinking: %1").arg( job->errorText() );
 }
 
 void NepomukTagResource::slotLinkResult( KJob* job )
@@ -300,7 +300,7 @@ Collection NepomukTagResource::collectionFromTag(const Nepomuk2::Tag& tag)
   c.setRemoteId( tag.uri().toString() );
   c.setRights( Collection::ReadOnly | Collection::CanDeleteCollection | Collection::CanLinkItem | Collection::CanUnlinkItem );
   c.setParentCollection( m_root );
-  c.setContentMimeTypes( QStringList() << "message/rfc822" );
+  c.setContentMimeTypes( QStringList() << QLatin1String("message/rfc822") );
   c.setVirtual( true );
   if ( !tag.symbols().isEmpty() ) {
     const QString icon = tag.symbols().first();
