@@ -80,7 +80,6 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     changeRecorder()->itemFetchScope().setFetchModificationTime( false );
     changeRecorder()->fetchCollection( true );
     changeRecorder()->setChangeRecordingEnabled( false );
-    changeRecorder()->setAllMonitored(true);
     changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
