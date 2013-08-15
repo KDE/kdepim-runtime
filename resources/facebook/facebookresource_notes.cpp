@@ -55,7 +55,7 @@ void FacebookResource::noteListFetched( KJob *job )
       note.setRemoteId( noteInfo.id() );
       note.setPayload<KMime::Message::Ptr>( noteInfo.asNote() );
       note.setSize( noteInfo.asNote()->size() );
-      note.setMimeType( "text/x-vnd.akonadi.note" );
+      note.setMimeType( QLatin1String("text/x-vnd.akonadi.note") );
       noteItems.append( note );
     }
 

@@ -200,7 +200,7 @@ void IncidenceHandler::incidenceToItem( const KCalCore::Incidence::Ptr &incidenc
     return;
   }
   const KMime::Message::Ptr &message = incidenceToMime( incidencePtr );
-  imapItem.setMimeType( "message/rfc822" );
+  imapItem.setMimeType( QLatin1String("message/rfc822") );
   imapItem.setPayload( message );
 }
 

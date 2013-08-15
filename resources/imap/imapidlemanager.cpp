@@ -99,6 +99,8 @@ void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *se
   m_idle = new KIMAP::IdleJob( m_session );
   connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*,QString,int,int)),
            this, SLOT(onStatsReceived(KIMAP::IdleJob*,QString,int,int)) );
+  connect( m_idle, SIGNAL(mailBoxMessageFlagsChanged(KIMAP::IdleJob*,qint64)),
+           this, SLOT(onFlagsChanged(KIMAP::IdleJob*)) );
   connect( m_idle, SIGNAL(result(KJob*)),
            this, SLOT(onIdleStopped()) );
   m_idle->start();
@@ -161,6 +163,12 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
     kDebug( 5327 ) << "Resync needed for" << mailBox << m_state->collection().id();
     m_resource->synchronizeCollection( m_state->collection().id() );
   }
+}
+
+void ImapIdleManager::onFlagsChanged( KIMAP::IdleJob *job )
+{
+  kDebug( 5327 ) << "IDLE flags changed in" << m_session->selectedMailBox();
+  m_resource->synchronizeCollection( m_state->collection().id() );
 }
 
 #include "imapidlemanager.moc"

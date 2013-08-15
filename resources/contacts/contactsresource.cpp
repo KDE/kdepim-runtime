@@ -151,7 +151,7 @@ void ContactsResource::retrieveItems( const Akonadi::Collection &collection )
   const QFileInfoList entries = directory.entryInfoList();
 
   foreach ( const QFileInfo &entry, entries ) {
-    if ( entry.fileName() == "WARNING_README.txt" )
+    if ( entry.fileName() == QLatin1String("WARNING_README.txt") )
       continue;
 
     Item item;
@@ -231,7 +231,7 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
   if ( item.hasPayload<KABC::Addressee>() ) {
     const KABC::Addressee contact = item.payload<KABC::Addressee>();
 
-    const QString fileName = directoryPath + QDir::separator() + contact.uid() + ".vcf";
+    const QString fileName = directoryPath + QDir::separator() + contact.uid() + QLatin1String(".vcf");
 
     KABC::VCardConverter converter;
     const QByteArray content = converter.createVCard( contact );
@@ -245,12 +245,12 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     file.write( content );
     file.close();
 
-    newItem.setRemoteId( contact.uid() + ".vcf" );
+    newItem.setRemoteId( contact.uid() + QLatin1String(".vcf") );
 
   } else if ( item.hasPayload<KABC::ContactGroup>() ) {
     const KABC::ContactGroup group = item.payload<KABC::ContactGroup>();
 
-    const QString fileName = directoryPath + QDir::separator() + group.id() + ".ctg";
+    const QString fileName = directoryPath + QDir::separator() + group.id() + QLatin1String(".ctg");
 
     QFile file( fileName );
     if ( !file.open( QIODevice::WriteOnly ) ) {
@@ -262,7 +262,7 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
     file.close();
 
-    newItem.setRemoteId( group.id() + ".ctg" );
+    newItem.setRemoteId( group.id() + QLatin1String(".ctg") );
 
   } else {
     kWarning() << "got item without (usable) payload, ignoring it";
@@ -476,7 +476,7 @@ void ContactsResource::initializeDirectory( const QString &path ) const
     QDir::root().mkpath( dir.absolutePath() );
 
   // check whether warning file is in place...
-  QFile file( dir.absolutePath() + QDir::separator() + "WARNING_README.txt" );
+  QFile file( dir.absolutePath() + QDir::separator() + QLatin1String("WARNING_README.txt") );
   if ( !file.exists() ) {
     // ... if not, create it
     file.open( QIODevice::WriteOnly );
@@ -522,7 +522,7 @@ QString ContactsResource::directoryForCollection( const Collection& collection )
     return QString();
 
   QString directory = parentDirectory;
-  if ( !directory.endsWith( '/' ) )
+  if ( !directory.endsWith( QLatin1Char('/') ) )
     directory += QDir::separator() + collection.remoteId();
   else
     directory += collection.remoteId();

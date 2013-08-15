@@ -55,7 +55,7 @@ void FacebookResource::postsListFetched( KJob *job )
     Q_FOREACH ( const KFbAPI::PostInfo &postInfo, listJob->allPosts() ) {
       Item post;
       post.setRemoteId( postInfo.id() );
-      post.setMimeType( "text/x-vnd.akonadi.socialfeeditem" );
+      post.setMimeType( QLatin1String("text/x-vnd.akonadi.socialfeeditem") );
       post.setPayload<Akonadi::SocialFeedItem>( convertToSocialFeedItem( postInfo ) );
       postItems.append( post );
     }
@@ -109,8 +109,8 @@ SocialFeedItem FacebookResource::convertToSocialFeedItem( const KFbAPI::PostInfo
 
   QString infoString;
 
-  qlonglong commentsCount = postinfo.commentsMap().value( "count" ).toLongLong();
-  qlonglong likesCount = postinfo.likesMap().value( "count" ).toLongLong();
+  qlonglong commentsCount = postinfo.commentsMap().value( QLatin1String("count") ).toLongLong();
+  qlonglong likesCount = postinfo.likesMap().value( QLatin1String("count") ).toLongLong();
 
   if ( commentsCount > 0 && likesCount > 0 ) {
     infoString =
@@ -162,7 +162,7 @@ SocialFeedItem FacebookResource::convertToSocialFeedItem( const KFbAPI::PostInfo
            "the whole sentence is composed in the UI.",
            "on Facebook" ) );
   item.setAvatarUrl(
-    QString( "https://graph.facebook.com/%1/picture?type=square" ).arg( user.id() ) );
+    QString::fromLatin1( "https://graph.facebook.com/%1/picture?type=square" ).arg( user.id() ) );
 
 //  item.setItemSourceMap( QJson::QObjectHelper::qobject2qvariant( postinfo.data() ) );
 
@@ -184,7 +184,7 @@ void FacebookResource::postAddJobFinished( KJob *job )
     //we fill in a random fake id to prevent duplicates - this post would be in the collection twice
     //once the resource syncs again, filling a random id guarantees that this Item will be removed
     //with the next sync and will be replaced by the real item from the server
-    post.setRemoteId( "non-existing-id" );
+    post.setRemoteId( QLatin1String("non-existing-id") );
     changeCommitted( post );
     resetState();
     kDebug() << "Status posted to server";

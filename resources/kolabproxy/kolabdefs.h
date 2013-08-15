@@ -31,7 +31,7 @@ namespace Kolab {
 
 namespace KolabV2 {
 
-#define PRODUCT_ID "Akonadi-KolabResource"
+#define PRODUCT_ID QLatin1String("Akonadi-KolabResource")
 
   enum FolderType {
     Mail = 0,

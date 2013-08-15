@@ -31,7 +31,7 @@
 
 #include <QProcess>
 
-#define IMAP_RESOURCE_IDENTIFIER "akonadi_imap_resource"
+#define IMAP_RESOURCE_IDENTIFIER QLatin1String("akonadi_imap_resource")
 
 SetupKolab::SetupKolab( KolabProxyResource *parentResource )
   :  KDialog(),
@@ -66,7 +66,7 @@ Kolab::Version SetupKolab::readKolabVersion( const QString &resourceIdentifier )
     kWarning() << "Empty resource identifier, defaulting to v3";
     return Kolab::KolabV3;
   }
-  const QString key ("KolabFormatVersion" + resourceIdentifier );
+  const QString key (QLatin1String("KolabFormatVersion") + resourceIdentifier );
   if ( !grp.hasKey( key ) ) {
     kWarning() << "resource not found, defaulting to v3: " << resourceIdentifier;
   }
@@ -103,8 +103,8 @@ void SetupKolab::slotShowUpgradeDialog()
 
   Kolab::Version v = readKolabVersion( instanceSelected.identifier() );
 
-  m_versionUi->formatVersion->insertItem( 0, "Kolab Format v2", Kolab::KolabV2 );
-  m_versionUi->formatVersion->insertItem( 1, "Kolab Format v3", Kolab::KolabV3 );
+  m_versionUi->formatVersion->insertItem( 0, QLatin1String("Kolab Format v2"), Kolab::KolabV2 );
+  m_versionUi->formatVersion->insertItem( 1, QLatin1String("Kolab Format v3"), Kolab::KolabV3 );
   if ( v == Kolab::KolabV2 ) {
     m_versionUi->formatVersion->setCurrentIndex( 0 );
   } else {
@@ -114,7 +114,7 @@ void SetupKolab::slotShowUpgradeDialog()
   m_versionUi->upgradeGroupBox->setEnabled( grp.readEntry<bool>("UpgradeEnabled", false) );
   dialog->exec();
   grp.writeEntry(
-    "KolabFormatVersion" + instanceSelected.identifier(),
+    QLatin1String("KolabFormatVersion") + instanceSelected.identifier(),
     m_versionUi->formatVersion->itemData( m_versionUi->formatVersion->currentIndex() ) );
   grp.sync();
   slotSelectedAccountChanged();
@@ -126,7 +126,7 @@ void SetupKolab::slotDoUpgrade()
   const Akonadi::AgentInstance instanceSelected =
     m_agentList[m_ui->imapAccountComboBox->currentText()];
 
-  m_versionUi->statusLabel->setText( "started" );
+  m_versionUi->statusLabel->setText( i18n("Started") );
   m_versionUi->progressBar->setEnabled( true );
 
   UpgradeJob *job =
@@ -152,14 +152,14 @@ void SetupKolab::slotUpgradeDone( KJob *job )
 {
   if ( job->error() ) {
     kWarning() << job->errorString();
-    m_versionUi->statusLabel->setText( "error" );
+    m_versionUi->statusLabel->setText( i18n("Error") );
     KMessageBox::error(
       this,
       i18n( "Could not complete the upgrade process: " ) + job->errorString(),
       i18n( "Error during Upgrade Process" ) );
     return;
   }
-  m_versionUi->statusLabel->setText( "complete" );
+  m_versionUi->statusLabel->setText( i18n("Complete") );
   m_versionUi->progressBar->setValue( 100 );
 }
 
@@ -171,9 +171,9 @@ void SetupKolab::slotSelectedAccountChanged()
   Kolab::Version v = readKolabVersion( instanceSelected.identifier() );
 
   if ( v == Kolab::KolabV2 ) {
-    m_ui->formatVersion->setText( "Kolab Format v2" );
+    m_ui->formatVersion->setText( i18n("Kolab Format v2") );
   } else {
-    m_ui->formatVersion->setText( "Kolab Format v3" );
+    m_ui->formatVersion->setText( i18n("Kolab Format v3") );
   }
 }
 
@@ -201,8 +201,8 @@ void SetupKolab::updateCombobox()
 void SetupKolab::slotLaunchWizard()
 {
   QStringList lst;
-  lst.append( "--assistant" );
-  lst.append( "imap" );
+  lst.append( QLatin1String("--assistant" ));
+  lst.append( QLatin1String("imap") );
 
   const QString path = KStandardDirs::findExe( QLatin1String( "accountwizard" ) );
   if ( !QProcess::startDetached( path, lst ) ) {

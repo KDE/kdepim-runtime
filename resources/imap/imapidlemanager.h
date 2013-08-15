@@ -64,6 +64,7 @@ private slots:
   void onIdleStopped();
   void onStatsReceived( KIMAP::IdleJob *job, const QString &mailBox,
                         int messageCount, int recentCount );
+  void onFlagsChanged( KIMAP::IdleJob *job );
   void reconnect();
 
 private:
