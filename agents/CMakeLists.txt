@@ -1,3 +1,6 @@
+add_definitions( -DQT_NO_CAST_FROM_ASCII )
+add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 macro(kdepim_add_agent _target)
     if(KDEPIM_BUILD_AGENTS_AS_PLUGINS)
       add_definitions(-DKDEPIM_PLUGIN_AGENT)

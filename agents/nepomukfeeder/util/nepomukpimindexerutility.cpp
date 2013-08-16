@@ -38,7 +38,7 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     : KXmlGuiWindow(),
     mFeederQueue(new IndexScheduler(this))
 {
-    KGlobal::locale()->insertCatalog( "akonadi_nepomuk_feeder" );
+    KGlobal::locale()->insertCatalog( QLatin1String("akonadi_nepomuk_feeder") );
     // tell the KXmlGuiWindow that this is indeed the main widget
     QWidget* w = new QWidget(this);
     setCentralWidget(w);
@@ -56,19 +56,19 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     KActionCollection *actionCollection = this->actionCollection();
     KAction *action;
 
-    action = actionCollection->addAction( "index" );
+    action = actionCollection->addAction( QLatin1String("index") );
     action->setText( i18n( "Index" ) );
     connect( action, SIGNAL(triggered()), this, SLOT(indexCurrentlySelected()) );
 
-    action = actionCollection->addAction( "reindex" );
+    action = actionCollection->addAction( QLatin1String("reindex") );
     action->setText( i18n( "Re-Index" ) );
     connect( action, SIGNAL(triggered()), this, SLOT(reindexCurrentlySelected()) );
 
-    action = actionCollection->addAction( "remove" );
+    action = actionCollection->addAction( QLatin1String("remove") );
     action->setText( i18n( "Remove Data" ) );
     connect( action, SIGNAL(triggered()), this, SLOT(removeDataOfCurrentlySelected()) );
 
-    action = actionCollection->addAction( "copy" );
+    action = actionCollection->addAction( QLatin1String("copy") );
     action->setText( i18n( "Copy Url" ) );
     connect( action, SIGNAL(triggered()), this, SLOT(copyUrlFromDataCurrentlySelected()) );
 
@@ -83,7 +83,7 @@ NepomukPIMindexerUtility::NepomukPIMindexerUtility()
     QObject::connect(mFeederQueue, SIGNAL(progress(int)), this, SLOT(progress(int)));
     QObject::connect(mFeederQueue, SIGNAL(running(QString)), this, SLOT(running(QString)));
 
-    setupGUI( Keys | StatusBar | Save | Create, "nepomukpimindexerutility.rc");
+    setupGUI( Keys | StatusBar | Save | Create, QLatin1String("nepomukpimindexerutility.rc"));
 
     m_ui.treeView->setXmlGuiClient(this);
 }
@@ -99,12 +99,12 @@ void NepomukPIMindexerUtility::indexCurrentlySelected()
     foreach (const QModelIndex &index, indexList) {
         Akonadi::Item item = index.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
         if (item.isValid()) {
-            statusBar()->showMessage(QString::fromLatin1("Indexing item: ").append(item.url().url()));
+            statusBar()->showMessage(i18n("Indexing item: %1", item.url().url()));
             mFeederQueue->addItem(item);
         } else {
             Akonadi::Collection collection = index.data(Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             if (collection.isValid() && !collection.isVirtual() ) {
-                statusBar()->showMessage(QString::fromLatin1("Indexing collection: ").append(collection.url().url()));
+                statusBar()->showMessage(i18n("Indexing collection: %1",collection.url().url()));
                 mFeederQueue->addCollection(collection);
             }
         }
@@ -137,23 +137,23 @@ void NepomukPIMindexerUtility::removeDataOfCurrentlySelected()
 
 void NepomukPIMindexerUtility::progress(int p) {
     kDebug() << "progress " << p;
-    statusBar()->showMessage(QString::fromLatin1("Progress: ").append(QString::number(p)).append("%"));
+    statusBar()->showMessage(i18n("Progress: %1%", QString::number(p)));
 }
 
 void NepomukPIMindexerUtility::running(const QString &p) {
     kDebug() << "running " << p;
-    statusBar()->showMessage(QString::fromLatin1("Running: ").append(p));
+    statusBar()->showMessage(i18n("Running: %1", p));
 }
 
 void NepomukPIMindexerUtility::fullyIndexed()
 {
     kDebug() << "Time elapsed(ms): " << mTime.elapsed();
-    statusBar()->showMessage(QString::fromLatin1("Indexing complete. Time elapsed(ms): ").append(QString::number(mTime.elapsed())));
+    statusBar()->showMessage(i18n("Indexing complete. Time elapsed(ms): %1", QString::number(mTime.elapsed())));
 }
 
 void NepomukPIMindexerUtility::removalComplete(KJob *job) {
     kDebug() << "Time elapsed(ms): " << mTime.elapsed();
-    statusBar()->showMessage(QString::fromLatin1("Removal complete. Time elapsed(ms): ").append(QString::number(mTime.elapsed())));
+    statusBar()->showMessage(i18n("Removal complete. Time elapsed(ms): %1", QString::number(mTime.elapsed())));
 //     static_cast<IndexHelperModel*>(m_ui.treeView->model())->updateItem(mRemovedItem);
     if (job->error())
         kDebug() << job->errorString();

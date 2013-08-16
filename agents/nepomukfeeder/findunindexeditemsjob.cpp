@@ -174,11 +174,11 @@ void FindUnindexedItemsJob::processResult(Soprano::Util::AsyncQuery *query)
         return;
     }
 
-    const Akonadi::Item::Id &id = query->binding("id").literal().toInt64();
+    const Akonadi::Item::Id &id = query->binding(QLatin1String("id")).literal().toInt64();
     ItemHash::iterator it = mAkonadiItems.find(id);
     if (it == mAkonadiItems.end()) { //Not found in akonadi, stale
-        mStaleUris << query->binding("r").uri();
-    } else if (query->binding("lastMod").literal().toDateTime() == it->first) { //Found and up-to-date
+        mStaleUris << query->binding(QLatin1String("r")).uri();
+    } else if (query->binding(QLatin1String("lastMod")).literal().toDateTime() == it->first) { //Found and up-to-date
         mAkonadiItems.erase(it);
     }
     query->next();

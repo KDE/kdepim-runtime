@@ -44,7 +44,7 @@ private slots:
 
         Nepomuk2::SimpleResource emailAddressRes;
         emailAddressRes.addType( NCO::EmailAddress() );
-        emailAddressRes.addProperty( NCO::emailAddress(), "test@example.org" );
+        emailAddressRes.addProperty( NCO::emailAddress(), QLatin1String("test@example.org") );
 
         Nepomuk2::SimpleResource contactRes;
         contactRes.addType( NCO::Contact() );
@@ -58,9 +58,9 @@ private slots:
         graph << emailAddressRes << contactRes << emailRes;
 
         QHash<QUrl, QUrl> mapping;
-        mapping.insert(emailAddressRes.uri(), QUrl("nepomuk://a"));
-        mapping.insert(contactRes.uri(), QUrl("nepomuk://b"));
-        mapping.insert(emailRes.uri(), QUrl("nepomuk://c"));
+        mapping.insert(emailAddressRes.uri(), QUrl(QLatin1String("nepomuk://a")));
+        mapping.insert(contactRes.uri(), QUrl(QLatin1String("nepomuk://b")));
+        mapping.insert(emailRes.uri(), QUrl(QLatin1String("nepomuk://c")));
 
         cache.fillCache(graph, mapping);
 //         kDebug() << graph;
@@ -72,15 +72,15 @@ private slots:
         Nepomuk2::SimpleResource res1 = result.toList().at(0);
         QCOMPARE(res1.uri(), emailRes.uri());
         QCOMPARE(res1.property(RDF::type()).first().toUrl(), NMO::Email());
-        QCOMPARE(res1.property(NMO::to()).first().toUrl(), QUrl("nepomuk://b"));
+        QCOMPARE(res1.property(NMO::to()).first().toUrl(), QUrl(QLatin1String("nepomuk://b")));
     }
     
     void testCacheLimit()
     {
         PropertyCache cache;
         cache.setCachedTypes(QList<QUrl>()
-           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
-           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact")
+           << QUrl(QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress"))
+           << QUrl(QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact"))
         );
         cache.setSize(1);
         
@@ -90,10 +90,10 @@ private slots:
         QList<QUrl> contacts;
         Nepomuk2::SimpleResource contactRes;
         Nepomuk2::NCO::Contact contact( &contactRes );
-        contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), "name" );
+        contactRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), QLatin1String("name") );
         Nepomuk2::SimpleResource emailRes;
         Nepomuk2::NCO::EmailAddress email( &emailRes );
-        email.setEmailAddress( "test@example.org" );
+        email.setEmailAddress( QLatin1String("test@example.org") );
         graph << emailRes;
         contact.addHasEmailAddress( emailRes.uri() );
         graph << contactRes;
@@ -102,9 +102,9 @@ private slots:
         graph << res;
         
         QHash<QUrl, QUrl> mapping;
-        mapping.insert(res.uri(), QUrl("nepomuk://a"));
-        mapping.insert(contactRes.uri(), QUrl("nepomuk://b"));
-        mapping.insert(emailRes.uri(), QUrl("nepomuk://c"));
+        mapping.insert(res.uri(), QUrl(QLatin1String("nepomuk://a")));
+        mapping.insert(contactRes.uri(), QUrl(QLatin1String("nepomuk://b")));
+        mapping.insert(emailRes.uri(), QUrl(QLatin1String("nepomuk://c")));
         cache.fillCache(graph, mapping);
 //         kDebug() << graph;
 
@@ -113,10 +113,10 @@ private slots:
         QCOMPARE(result.toList().size(), 2);
         Nepomuk2::SimpleResource res1 = result.toList().at(0);
         QCOMPARE(res1.uri(), res.uri());
-        QCOMPARE(res1.property(QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#to")).first().toUrl(), QUrl("nepomuk://b"));
+        QCOMPARE(res1.property(QUrl(QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nmo#to"))).first().toUrl(), QUrl(QLatin1String("nepomuk://b")));
         Nepomuk2::SimpleResource res2 = result.toList().at(1);
         QCOMPARE(res2.uri(), emailRes.uri());
-        QCOMPARE(res2.property(QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#emailAddress")).first().toString(), QString("test@example.org"));
+        QCOMPARE(res2.property(QUrl(QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#emailAddress"))).first().toString(), QLatin1String("test@example.org"));
     }
 
 
