@@ -30,7 +30,7 @@
 
 IndexerConfig::IndexerConfig(QObject* parent)
     : QObject(parent)
-    , m_config("akonadi_nepomuk_feederrc")
+    , m_config(QLatin1String("akonadi_nepomuk_feederrc"))
     , m_isEnabled( true )
 {
     KDirWatch* dirWatch = KDirWatch::self();

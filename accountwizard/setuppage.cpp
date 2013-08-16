@@ -47,13 +47,13 @@ void SetupPage::addMessage(SetupPage::MessageType type, const QString& msg)
   item->setEditable( false );
   switch ( type ) {
     case Success:
-      item->setIcon( KIcon( "dialog-ok" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-ok") ) );
       break;
     case Info:
-      item->setIcon( KIcon( "dialog-information" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-information" )) );
       break;
     case Error:
-      item->setIcon( KIcon( "dialog-error" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-error") ) );
       break;
   }
   m_msgModel->appendRow( item );

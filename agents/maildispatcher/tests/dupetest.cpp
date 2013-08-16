@@ -67,14 +67,14 @@ void DupeTest::initTestCase()
   const QString rid = t->host();
   const AgentInstance agent = AgentManager::self()->instance( rid );
   QVERIFY( agent.isValid() );
-  CollectionPathResolver *resolver = new CollectionPathResolver( "sink", this );
+  CollectionPathResolver *resolver = new CollectionPathResolver( QLatin1String("sink"), this );
   QVERIFY( resolver->exec() );
   sink = Collection( resolver->collection() );
   QVERIFY( sink.isValid() );
-  QDBusInterface conf( "org.freedesktop.Akonadi.Resource." + rid,
-          "/Settings", "org.kde.Akonadi.MailTransportDummy.Settings" );
+  QDBusInterface conf( QLatin1String("org.freedesktop.Akonadi.Resource.") + rid,
+          QLatin1String("/Settings"), QLatin1String("org.kde.Akonadi.MailTransportDummy.Settings") );
   QVERIFY( conf.isValid() );
-  QDBusReply<void> reply = conf.call( "setSink", sink.id() );
+  QDBusReply<void> reply = conf.call( QLatin1String("setSink"), sink.id() );
   QVERIFY( reply.isValid() );
   agent.reconfigure();
 
@@ -146,15 +146,15 @@ void DupeTest::testDupes()
     //kDebug() << "Queuing message" << i + 1 << "of" << count;
 
     Message::Ptr msg = Message::Ptr( new Message );
-    msg->setContent( QString( "%1-msg%2\n" ).arg( message ).arg( i + 1, 2, 10, QLatin1Char( '0' ) ).toLatin1() );
+    msg->setContent( QString::fromLatin1( "%1-msg%2\n" ).arg( message ).arg( i + 1, 2, 10, QLatin1Char( '0' ) ).toLatin1() );
 
     MessageQueueJob *job = new MessageQueueJob( this );
     job->setMessage( msg );
     job->transportAttribute().setTransportId( TransportManager::self()->defaultTransportId() );
     // default dispatch mode
     // default sent-mail collection
-    job->addressAttribute().setFrom( "naiba" );
-    job->addressAttribute().setTo( QStringList( "dracu" ) );
+    job->addressAttribute().setFrom( QLatin1String("naiba") );
+    job->addressAttribute().setTo( QStringList() << QLatin1String( "dracu" ) );
     //AKVERIFYEXEC( job );
     job->start();
     QTest::qWait( delay );

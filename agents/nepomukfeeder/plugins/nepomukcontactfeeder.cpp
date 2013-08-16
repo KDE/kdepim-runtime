@@ -110,18 +110,18 @@ void NepomukContactFeeder::updateContactItem( const Akonadi::Item &item, Nepomuk
 
     if ( !addressee.photo().isEmpty() ) {
         const KStandardDirs ksd;
-        const QDir storeDir( QDir::toNativeSeparators( ksd.localxdgdatadir().append( "/nepomuk-contact-images/" ) ) );
+        const QDir storeDir( QDir::toNativeSeparators( ksd.localxdgdatadir().append( QLatin1String("/nepomuk-contact-images/") ) ) );
 
         if ( !storeDir.exists() ) {
             storeDir.mkpath( storeDir.absolutePath() );
         }
 
-        const QString filePath = storeDir.absolutePath().append( "/%1.png" ).arg( addressee.uid() );
+        const QString filePath = storeDir.absolutePath().append( QLatin1String("/%1.png") ).arg( addressee.uid() );
         bool imageSaved = addressee.photo().data().save( filePath, "PNG" );
 
         if ( imageSaved ) {
             KUrl fileUrl( filePath );
-            fileUrl.setProtocol( "file" );
+            fileUrl.setProtocol( QLatin1String("file") );
 
             res.addProperty( Nepomuk2::Vocabulary::NCO::photo(), fileUrl.url() );
         }

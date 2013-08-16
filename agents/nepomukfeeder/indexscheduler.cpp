@@ -31,6 +31,7 @@
 #include <KIconLoader>
 
 #include <QDateTime>
+#include <QTimer>
 
 #include "nepomukhelpers.h"
 #include "nepomukfeeder-config.h"
@@ -42,6 +43,7 @@ using namespace Akonadi;
 IndexScheduler::IndexScheduler( QObject* parent )
 : QObject( parent ),
   mTotalAmount( 0 ),
+  mTotalClearAmount( 0 ),
   mReIndex( false ),
   mOnline( true ),
   lowPrioQueue(1, 100, this),
@@ -176,16 +178,19 @@ void IndexScheduler::addLowPrioItem( const Akonadi::Item &item )
 void IndexScheduler::removeCollection(const Collection& collection)
 {
     mCollectionsToRemove.append( collection );
+    mTotalClearAmount++;
 }
 
 void IndexScheduler::removeItem(const Item& item)
 {
     mItemsToRemove.append( item );
+    mTotalClearAmount++;
 }
 
 void IndexScheduler::removeNepomukUris(const QList< QUrl > uriList)
 {
     mUrisToRemove.append( uriList );
+    mTotalClearAmount += uriList.size();
 }
 
 
@@ -216,6 +221,12 @@ void IndexScheduler::processItemQueue()
   if ( mTotalAmount ) {
     int percent = ( mTotalAmount - size() ) * 100.0 / mTotalAmount;
     kDebug() << "Progress:" << percent << "%" << size() << mTotalAmount;
+    emit progress( percent );
+  }
+  else if (mTotalClearAmount) {
+    int size = mCollectionsToRemove.size() + mItemsToRemove.size() + mUrisToRemove.size();
+    int percent = ( mTotalClearAmount - size ) * 100.0 / mTotalClearAmount;
+    kDebug() << "Progress:" << percent << "%" << size << mTotalClearAmount;
     emit progress( percent );
   }
 
@@ -261,39 +272,30 @@ void IndexScheduler::processItemQueue()
       // FIXME: We should probably be clearing the contents of the collection as well
 
       // Clear 10 collections at a time
-      QList<QUrl> nieUrls;
       for( int i=0; i<10 && mCollectionsToRemove.count(); i++ )
-          nieUrls << mCollectionsToRemove.takeFirst().url();
+          mNieUrlsToRemove << mCollectionsToRemove.takeFirst().url();
 
-      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
-      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
-
+      QTimer::singleShot(lowPrioQueue.processingDelay(), this, SLOT(slotSendUrlsForClearing()));
       emit running( i18n("Clearing unused Emails") );
       return;
   }
 
   else if( !mItemsToRemove.isEmpty() ) {
       // Clear 10 items at a time
-      QList<QUrl> nieUrls;
       for( int i=0; i<10 && mItemsToRemove.count(); i++ )
-          nieUrls << mItemsToRemove.takeFirst().url();
+          mNieUrlsToRemove << mItemsToRemove.takeFirst().url();
 
-      KJob *removeJob = Nepomuk2::removeResources( nieUrls, Nepomuk2::RemoveSubResoures );
-      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
-
+      QTimer::singleShot(lowPrioQueue.processingDelay(), this, SLOT(slotSendUrlsForClearing()));
       emit running( i18n("Clearing unused Emails") );
       return;
   }
 
   else if( !mUrisToRemove.isEmpty() ) {
       // Clear 10 at a time
-      QList<QUrl> uris;
       for( int i=0; i<10 && mUrisToRemove.count(); i++ )
-            uris << mUrisToRemove.takeFirst();
+            mNieUrlsToRemove << mUrisToRemove.takeFirst();
 
-      KJob *removeJob = Nepomuk2::removeResources( uris, Nepomuk2::RemoveSubResoures );
-      connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
-
+      QTimer::singleShot(lowPrioQueue.processingDelay(), this, SLOT(slotSendUrlsForClearing()));
       emit running( i18n("Clearing unused Emails") );
       return;
   }
@@ -302,9 +304,17 @@ void IndexScheduler::processItemQueue()
   emit idle( i18n( "Ready to index data." ) );
 }
 
+void IndexScheduler::slotSendUrlsForClearing()
+{
+    KJob *removeJob = Nepomuk2::removeResources( mNieUrlsToRemove, Nepomuk2::RemoveSubResoures );
+    connect( removeJob, SIGNAL(finished(KJob*)), this, SLOT(batchFinished()) );
+
+    mNieUrlsToRemove.clear();
+}
+
 void IndexScheduler::prioQueueFinished()
 {
-    if ( isEmpty() ) {
+    if (highPrioQueue.isEmpty() && lowPrioQueue.isEmpty() && emailItemQueue.isEmpty() && mCollectionQueue.isEmpty()) {
         indexingComplete();
         mTotalAmount = 0;
     }
@@ -312,15 +322,14 @@ void IndexScheduler::prioQueueFinished()
 
 void IndexScheduler::batchFinished()
 {
-  /*if ( sender() == &highPrioQueue )
-    kDebug() << "high prio batch finished--------------------";
-  if ( sender() == &lowPrioQueue )
-    kDebug() << "low prio batch finished--------------------";*/
-  if ( !isEmpty() ) {
-    //kDebug() << "continue";
-    // go to eventloop before processing the next one, otherwise we miss the idle status change
-    mProcessItemQueueTimer.start();
-  }
+    if (!isEmpty()) {
+        // go to eventloop before processing the next one, otherwise we miss the idle status change
+        mProcessItemQueueTimer.start();
+    }
+    else if (mCollectionsToRemove.isEmpty() && mItemsToRemove.isEmpty() && mUrisToRemove.isEmpty()) {
+        mTotalClearAmount = 0;
+        indexingComplete();
+    }
 }
 
 void IndexScheduler::collectionSaveJobResult(KJob* job)

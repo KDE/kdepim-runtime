@@ -131,7 +131,7 @@ void FindUnindexedItemsJob::jobDone(KJob *job)
     if (job->error()) {
         mAkonadiItems.clear();
         setError(KJob::UserDefinedError);
-        setErrorText("Retrieving items failed");
+        setErrorText(i18n("Retrieving items failed"));
         emitResult();
         return;
     }
@@ -174,11 +174,11 @@ void FindUnindexedItemsJob::processResult(Soprano::Util::AsyncQuery *query)
         return;
     }
 
-    const Akonadi::Item::Id &id = query->binding("id").literal().toInt64();
+    const Akonadi::Item::Id &id = query->binding(QLatin1String("id")).literal().toInt64();
     ItemHash::iterator it = mAkonadiItems.find(id);
     if (it == mAkonadiItems.end()) { //Not found in akonadi, stale
-        mStaleUris << query->binding("r").uri();
-    } else if (query->binding("lastMod").literal().toDateTime() == it->first) { //Found and up-to-date
+        mStaleUris << query->binding(QLatin1String("r")).uri();
+    } else if (query->binding(QLatin1String("lastMod")).literal().toDateTime() == it->first) { //Found and up-to-date
         mAkonadiItems.erase(it);
     }
     query->next();
@@ -191,7 +191,7 @@ void FindUnindexedItemsJob::queryFinished(Soprano::Util::AsyncQuery *query)
         mStaleUris.clear();
         kWarning() << query->lastError();
         setError(KJob::UserDefinedError);
-        setErrorText("Nepomuk query failed");
+        setErrorText(i18n("Nepomuk query failed"));
         emitResult();
         return;
     }

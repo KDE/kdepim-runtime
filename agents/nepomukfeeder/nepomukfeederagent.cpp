@@ -290,7 +290,7 @@ void NepomukFeederAgent::checkMigration()
   // Cleanup agentsrc after migration to 4.9
   AgentManager* agentManager = AgentManager::self();
   const AgentInstance::List allAgents = agentManager->instances();
-  const QStringList oldFeeders = QStringList() << "akonadi_nepomuk_email_feeder" << "akonadi_nepomuk_contact_feeder" << "akonadi_nepomuk_calendar_feeder";
+  const QStringList oldFeeders = QStringList() << QLatin1String("akonadi_nepomuk_email_feeder") << QLatin1String("akonadi_nepomuk_contact_feeder") << QLatin1String("akonadi_nepomuk_calendar_feeder");
   // Cannot use agentManager->instance(oldInstanceName) here, it wouldn't find broken instances.
   Q_FOREACH( const AgentInstance& inst, allAgents ) {
     if ( oldFeeders.contains( inst.identifier() ) ) {

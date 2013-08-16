@@ -73,7 +73,7 @@ void NepomukMailFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRe
     return; // don't bother with indexing spam
 
   res.addType( Vocabulary::NMO::Email() );
-  NepomukFeederUtils::setIcon( "internet-mail", res, graph );
+  NepomukFeederUtils::setIcon( QLatin1String("internet-mail"), res, graph );
 
   processFlags( item.flags(), res, graph );
   KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
@@ -145,7 +145,7 @@ void NepomukMailFeeder::processPart( KMime::Content* content, const Akonadi::Ite
     attachmentRes.addType( Vocabulary::NFO::Attachment() );
     attachmentRes.addType( Vocabulary::NIE::InformationElement() ); //it needs to be an informationElement in order to set nie:description
     attachmentRes.addProperty( Vocabulary::NIE::isPartOf(), res.uri() );
-    NepomukFeederUtils::setIcon( "mail-attachment", attachmentRes, graph );
+    NepomukFeederUtils::setIcon( QLatin1String("mail-attachment"), attachmentRes, graph );
     if ( !content->contentType()->name().isEmpty() )
       attachmentRes.setProperty( Soprano::Vocabulary::NAO::prefLabel(), content->contentType()->name() );
     else if ( content->contentDisposition( false ) && !content->contentDisposition()->filename().isEmpty() )
@@ -172,34 +172,34 @@ void NepomukMailFeeder::processFlags(const Akonadi::Item::Flags& flags, Nepomuk2
   mail.setIsRead( status.isRead() );
 
   if ( status.isImportant() )
-    addTranslatedTag( "important", i18n( "Important" ), "mail-mark-important" , res, graph );
+    addTranslatedTag( "important", i18n( "Important" ), QLatin1String("mail-mark-important") , res, graph );
   if ( status.isToAct() )
-    addTranslatedTag( "todo", i18n( "To Do" ), "mail-mark-task", res, graph );
+    addTranslatedTag( "todo", i18n( "To Do" ), QLatin1String("mail-mark-task"), res, graph );
   if ( status.isWatched() )
-    addTranslatedTag( "watched", i18n( "Watched" ), "mail-thread-watch" , res, graph );
+    addTranslatedTag( "watched", i18n( "Watched" ), QLatin1String("mail-thread-watch") , res, graph );
   if ( status.isDeleted() ) {
-    addTranslatedTag( "deleted", i18n( "Deleted" ), "mail-deleted" , res, graph );
+    addTranslatedTag( "deleted", i18n( "Deleted" ), QLatin1String("mail-deleted") , res, graph );
   }
   if ( status.isSpam() ) {
-    addTranslatedTag( "spam", i18n( "Spam" ), "mail-mark-junk" , res, graph );
+    addTranslatedTag( "spam", i18n( "Spam" ), QLatin1String("mail-mark-junk") , res, graph );
   }
   if ( status.isReplied() ) {
-    addTranslatedTag( "replied", i18n( "Replied" ), "mail-replied" , res, graph );
+    addTranslatedTag( "replied", i18n( "Replied" ), QLatin1String("mail-replied") , res, graph );
   }
   if ( status.isIgnored() ) {
-    addTranslatedTag( "ignored", i18n( "Ignored" ), "mail-thread-ignored" , res, graph );
+    addTranslatedTag( "ignored", i18n( "Ignored" ), QLatin1String("mail-thread-ignored") , res, graph );
   }
   if ( status.isForwarded() ) {
-    addTranslatedTag( "forwarded", i18n( "Forwarded" ), "mail-forwarded" , res, graph );
+    addTranslatedTag( "forwarded", i18n( "Forwarded" ), QLatin1String("mail-forwarded") , res, graph );
   }
   if ( status.isSent() ) {
-    addTranslatedTag( "sent", i18n( "Sent" ), "mail-sent" , res, graph );
+    addTranslatedTag( "sent", i18n( "Sent" ), QLatin1String("mail-sent") , res, graph );
   }
   if ( status.isQueued() ) {
-    addTranslatedTag( "queued", i18n( "Queued" ), "mail-queued" , res, graph );
+    addTranslatedTag( "queued", i18n( "Queued" ), QLatin1String("mail-queued" ), res, graph );
   }
   if ( status.isHam() ) {
-    addTranslatedTag( "ham", i18n( "Ham" ), "mail-mark-notjunk" , res, graph );
+    addTranslatedTag( "ham", i18n( "Ham" ), QLatin1String("mail-mark-notjunk") , res, graph );
   }
 }
 
@@ -263,7 +263,7 @@ void NepomukMailFeeder::addSpecificHeader( const KMime::Message::Ptr& msg, const
   if ( msg->headerByType( headerName ) ) {
     Nepomuk2::SimpleResource headerRes;
     Nepomuk2::NMO::MessageHeader header( &headerRes );
-    header.setHeaderName( headerName );
+    header.setHeaderName( QLatin1String(headerName) );
     header.setHeaderValue( msg->headerByType( headerName )->asUnicodeString() );
     graph << headerRes;
     mail.addMessageHeader( headerRes.uri() );

@@ -47,7 +47,7 @@ void Ldap::create()
   // If the user gave a full email address, the domain name
   // of that overrides the server name for the ldap dn
   const QString user = m_user;
-  int pos = user.indexOf( "@" );
+  int pos = user.indexOf( QLatin1String("@") );
   if ( pos > 0 ) {
     const QString h = user.mid( pos+1 );
     if ( !h.isEmpty() )
@@ -55,31 +55,31 @@ void Ldap::create()
       basedn = h;
   }
   { // while we're here, write default domain
-    KConfig c( "kmail2rc" );
+    KConfig c( QLatin1String("kmail2rc") );
     KConfigGroup group = c.group( "General" );
     group.writeEntry( "Default domain", basedn );
   }
 
-  basedn.replace( '.', ",dc=" );
-  basedn.prepend( "dc=" );
+  basedn.replace( QLatin1Char('.'), QLatin1String(",dc=") );
+  basedn.prepend( QLatin1String("dc=") );
 
   // Set the changes
-  KConfig c( "kabldaprc" );
+  KConfig c( QLatin1String("kabldaprc") );
   KConfigGroup group = c.group( "LDAP" );
   bool hasMyServer = false;
   uint selHosts = group.readEntry( "NumSelectedHosts", 0 );
   for ( uint i = 0 ; i < selHosts && !hasMyServer; ++i )
-    if ( group.readEntry( QString( "SelectedHost%1" ).arg( i ), QString() ) == host )
+    if ( group.readEntry( QString::fromLatin1( "SelectedHost%1" ).arg( i ), QString() ) == host )
       hasMyServer = true;
   if ( !hasMyServer ) {
     group.writeEntry( "NumSelectedHosts", selHosts + 1 );
-    group.writeEntry( QString( "SelectedHost%1" ).arg( selHosts ), host );
-    group.writeEntry( QString( "SelectedBase%1" ).arg( selHosts ), basedn );
-    group.writeEntry( QString( "SelectedPort%1" ).arg( selHosts ), "389" );
+    group.writeEntry( QString::fromLatin1( "SelectedHost%1" ).arg( selHosts ), host );
+    group.writeEntry( QString::fromLatin1( "SelectedBase%1" ).arg( selHosts ), basedn );
+    group.writeEntry( QString::fromLatin1( "SelectedPort%1" ).arg( selHosts ), "389" );
     if ( !m_authMethod.isEmpty() ) {
-      group.writeEntry( QString( "SelectedAuth%1" ).arg( selHosts ), m_authMethod );
-      group.writeEntry( QString( "SelectedBind%1" ).arg( selHosts ), m_bindDn );
-      group.writeEntry( QString( "SelectedPwdBind%1" ).arg( selHosts ), m_password );
+      group.writeEntry( QString::fromLatin1( "SelectedAuth%1" ).arg( selHosts ), m_authMethod );
+      group.writeEntry( QString::fromLatin1( "SelectedBind%1" ).arg( selHosts ), m_bindDn );
+      group.writeEntry( QString::fromLatin1( "SelectedPwdBind%1" ).arg( selHosts ), m_password );
     }
   }
   emit finished( i18n( "LDAP set up." ) );

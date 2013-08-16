@@ -77,7 +77,7 @@ uint PropertyCache::hashResource(Nepomuk2::SimpleResource &res, QList<Nepomuk2::
     const Nepomuk2::SimpleResource copy = res;
     Nepomuk2::PropertyHash::const_iterator it = copy.properties().constBegin();
     for (;it != copy.properties().constEnd(); it++) {
-        if (it.value().canConvert<QUrl>() && it.value().toUrl().toString().startsWith("_:")) {
+        if (it.value().canConvert<QUrl>() && it.value().toUrl().toString().startsWith(QLatin1String("_:"))) {
             const int hash = getHashOfProperty(it.value().toUrl(), list);
             res.setProperty(it.key(), QString::number(hash));
         }
@@ -90,7 +90,7 @@ void PropertyCache::applyCache(Nepomuk2::SimpleResource &res, const QHash<QUrl, 
     const Nepomuk2::SimpleResource copy = res;
     Nepomuk2::PropertyHash::const_iterator it = copy.properties().constBegin();
     for (;it != copy.properties().constEnd(); it++) {
-        if (it.value().canConvert<QUrl>() && it.value().toUrl().toString().startsWith("_:")) {
+        if (it.value().canConvert<QUrl>() && it.value().toUrl().toString().startsWith(QLatin1String("_:"))) {
             uint hash = tempHashMap.value(it.value().toUrl());
 //             mTotal++;
             if (!mCache.contains(hash)) {

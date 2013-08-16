@@ -131,9 +131,9 @@ private slots:
 
         PropertyCache propertyCache;
         propertyCache.setCachedTypes(QList<QUrl>()
-           << QUrl("http://www.semanticdesktop.org/ontologies/2007/08/15/nao#FreeDesktopIcon")
-           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress")
-           << QUrl("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact")
+           << QUrl(QLatin1String("http://www.semanticdesktop.org/ontologies/2007/08/15/nao#FreeDesktopIcon"))
+           << QUrl(QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#EmailAddress"))
+           << QUrl(QLatin1String("http://www.semanticdesktop.org/ontologies/2007/03/22/nco#Contact"))
         );
         propertyCache.fillCache(graph, mappings);
         

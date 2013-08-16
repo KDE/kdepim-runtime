@@ -92,22 +92,22 @@ QString Global::unpackAssistant( const KUrl& remotePackageUrl )
     localPackageFile = remotePackageUrl.path();
   } else {
     QString remoteFileName = QFileInfo( remotePackageUrl.path() ).fileName();
-    localPackageFile = KStandardDirs::locateLocal( "cache", "accountwizard/" + remoteFileName );
+    localPackageFile = KStandardDirs::locateLocal( "cache", QLatin1String("accountwizard/") + remoteFileName );
     KIO::Job* job = KIO::copy( remotePackageUrl, localPackageFile, KIO::Overwrite | KIO::HideProgressInfo );
     kDebug() << "downloading remote URL" << remotePackageUrl << "to" << localPackageFile;
     if ( !KIO::NetAccess::synchronousRun( job, 0 ) )
       return QString();
   }
 
-  const KUrl file( "tar://" + localPackageFile );
+  const KUrl file( QLatin1String("tar://") + localPackageFile );
   const QFileInfo fi( localPackageFile );
   const QString assistant = fi.baseName();
-  const QString dest = KStandardDirs::locateLocal( "appdata", "/" );
+  const QString dest = KStandardDirs::locateLocal( "appdata", QLatin1String("/") );
   KStandardDirs::makeDir( dest + file.fileName() );
   KIO::Job* getJob = KIO::copy( file, dest, KIO::Overwrite | KIO::HideProgressInfo );
   if ( KIO::NetAccess::synchronousRun( getJob, 0 ) ) {
     kDebug() << "worked, unpacked in " << dest;
-    return dest + file.fileName() + '/' + assistant + '/' + assistant + ".desktop";
+    return dest + file.fileName() + QLatin1Char('/') + assistant + QLatin1Char('/') + assistant + QLatin1String(".desktop");
   } else {
     kDebug() << "failed" << getJob->errorString();
     return QString();
