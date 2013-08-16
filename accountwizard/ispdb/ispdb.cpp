@@ -51,7 +51,7 @@ void Ispdb::start()
 void Ispdb::startJob( const KUrl&url )
 {
     QMap< QString, QVariant > map;
-    map["errorPage"] = false;
+    map[QLatin1String("errorPage")] = false;
 
     KIO::TransferJob* job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
     job->setMetaData( map );
@@ -68,16 +68,16 @@ void Ispdb::lookupInDb()
   {
   case IspAutoConfig:
   {
-    url = KUrl( "http://autoconfig." + mAddr.domain.toLower() + "/mail/config-v1.1.xml?emailaddress=" + mAddr.asString().toLower() );
+    url = KUrl( QLatin1String("http://autoconfig.") + mAddr.domain.toLower() + QLatin1String("/mail/config-v1.1.xml?emailaddress=") + mAddr.asString().toLower() );
   }
   break;
   case IspWellKnow:
   {
-    url = KUrl( "http://" + mAddr.domain.toLower() + "/.well-known/autoconfig/mail/config-v1.1.xml" );
+    url = KUrl( QLatin1String("http://") + mAddr.domain.toLower() + QLatin1String("/.well-known/autoconfig/mail/config-v1.1.xml") );
     break;
   }
   case DataBase:
-    url = KUrl( "https://autoconfig.thunderbird.net/v1.1/" + mAddr.domain.toLower() );
+    url = KUrl( QLatin1String("https://autoconfig.thunderbird.net/v1.1/") + mAddr.domain.toLower() );
   break;
   }
   startJob( url );
@@ -138,17 +138,17 @@ void Ispdb::slotResult( KJob* job )
             else if ( tagName == QLatin1String( "displayShortName" ) )
                 mDisplayShortName = e.text();
             else if ( tagName == QLatin1String( "incomingServer" )
-                      && e.attribute( "type" ) == QLatin1String( "imap" ) ) {
+                      && e.attribute( QLatin1String("type") ) == QLatin1String( "imap" ) ) {
                 server s = createServer( e );
                 if (s.isValid()) 
                    mImapServers.append( s );
             } else if ( tagName == QLatin1String( "incomingServer" ) 
-                      && e.attribute( "type" ) == QLatin1String( "pop3" ) ) {
+                      && e.attribute( QLatin1String("type") ) == QLatin1String( "pop3" ) ) {
                 server s = createServer( e );
                 if (s.isValid())
                    mPop3Servers.append( s );
             } else if ( tagName == QLatin1String( "outgoingServer" )
-                      && e.attribute( "type" ) == QLatin1String( "smtp" ) ) {
+                      && e.attribute( QLatin1String("type") ) == QLatin1String( "smtp" ) ) {
                 server s = createServer( e );
                 if (s.isValid())
                    mSmtpServers.append( s );
@@ -226,9 +226,9 @@ server Ispdb::createServer( const QDomElement& n )
 QString Ispdb::replacePlaceholders( const QString& in )
 {
     QString out( in );
-    out.replace( "%EMAILLOCALPART%", mAddr.localPart );
-    out.replace( "%EMAILADDRESS%", mAddr.asString() );
-    out.replace( "%EMAILDOMAIN%", mAddr.domain );
+    out.replace( QLatin1String("%EMAILLOCALPART%"), mAddr.localPart );
+    out.replace( QLatin1String("%EMAILADDRESS%"), mAddr.asString() );
+    out.replace( QLatin1String("%EMAILDOMAIN%"), mAddr.domain );
     return out;
 }
 
