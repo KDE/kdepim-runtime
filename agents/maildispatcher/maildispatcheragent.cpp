@@ -167,7 +167,7 @@ void MailDispatcherAgent::Private::dispatch()
         emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
 
         if ( !errorOccurred ) {
-          KNotification *notify = new KNotification( "emailsent" );
+          KNotification *notify = new KNotification( QLatin1String("emailsent") );
           notify->setComponentData( q->componentData() );
           notify->setTitle( i18nc( "Notification title when email was sent", "E-Mail Successfully Sent" ) );
           notify->setText( i18nc( "Notification when the email was sent", "Your E-Mail has been sent successfully." ) );
@@ -199,7 +199,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     ___MailTransport____INIT();
 #endif
 
-  KGlobal::locale()->insertCatalog( "libakonadi-kmime" ); // for special collection translation
+  KGlobal::locale()->insertCatalog( QLatin1String("libakonadi-kmime") ); // for special collection translation
 
   new SettingsAdaptor( Settings::self() );
   new MailDispatcherAgentAdaptor( this );
@@ -340,7 +340,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     // do anything.
     kDebug() << "Sending failed. error:" << job->errorString();
 
-    KNotification *notify = new KNotification( "sendingfailed" );
+    KNotification *notify = new KNotification( QLatin1String("sendingfailed") );
     notify->setComponentData( q->componentData() );
     notify->setTitle( i18nc( "Notification title when email sending failed", "E-Mail Sending Failed" ) );
     notify->setText( job->errorString() );

@@ -97,8 +97,8 @@ class  InvitationsCollection : public SpecialCollections
       public:
         Settings()
         {
-          setCurrentGroup( "Invitations" );
-          addItemString( "DefaultResourceId", m_id, QString() );
+          setCurrentGroup( QLatin1String("Invitations") );
+          addItemString( QLatin1String("DefaultResourceId"), m_id, QString() );
         }
 
         virtual ~Settings()
@@ -235,7 +235,7 @@ InvitationsAgent::InvitationsAgent( const QString &id )
 
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
   changeRecorder()->itemFetchScope().fetchFullPayload();
-  changeRecorder()->setMimeTypeMonitored( "message/rfc822", true );
+  changeRecorder()->setMimeTypeMonitored( QLatin1String("message/rfc822"), true );
   //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 
   connect( this, SIGNAL(reloadConfiguration()), this, SLOT(initStart()) );
@@ -475,7 +475,7 @@ Item InvitationsAgent::handleContent( const QString &vcal,
   Q_ASSERT( incidence );
 
   IncidenceAttribute *attr = new IncidenceAttribute;
-  attr->setStatus( "new" ); //TODO
+  attr->setStatus( QLatin1String("new") ); //TODO
   //attr->setFrom( message->from()->asUnicodeString() );
   attr->setReference( item.id() );
 
@@ -523,7 +523,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
       if ( ct->mimeType() != "text/calendar" )
         continue;
 
-      Item newItem = handleContent( content->body(), calendar, item );
+      Item newItem = handleContent( QLatin1String(content->body()), calendar, item );
       if ( !newItem.hasPayload() ) {
         kDebug() << "new item has no payload";
         continue;
@@ -545,7 +545,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
 
     kDebug() << "Message has an invitation in the body, processing";
 
-    Item newItem = handleContent( message->body(), calendar, item );
+    Item newItem = handleContent( QLatin1String(message->body()), calendar, item );
     if ( !newItem.hasPayload() ) {
       kDebug() << "new item has no payload";
       return;

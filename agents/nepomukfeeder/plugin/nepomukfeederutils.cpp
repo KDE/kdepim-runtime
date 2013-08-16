@@ -94,9 +94,9 @@ void indexData(const KUrl& url, const QByteArray& data, const QDateTime& mtime)
 {
   KProcess proc;
   proc.setOutputChannelMode( KProcess::ForwardedChannels );
-  proc.setProgram( "nepomukindexer" );
-  proc << "--uri" << url.url().toLocal8Bit();
-  proc << "--mtime" << QString::number( mtime.toTime_t() );
+  proc.setProgram( QLatin1String("nepomukindexer") );
+  proc << QLatin1String("--uri") << QLatin1String(url.url().toLocal8Bit());
+  proc << QLatin1String("--mtime") << QString::number( mtime.toTime_t() );
   proc.start();
   if ( proc.waitForStarted() ) {
     proc.write( data );
