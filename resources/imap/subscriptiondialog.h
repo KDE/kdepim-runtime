@@ -101,6 +101,8 @@ protected:
 protected slots:
   void slotButtonClicked( int button );
 private:
+  void readConfig();
+  void writeConfig();
   void applyChanges();
 
   KIMAP::Session *m_session;
