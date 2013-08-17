@@ -58,7 +58,7 @@ int main( int argc, char *argv[] )
                           KLocalizedString() );
     aboutData.addAuthor( ki18n( "Tom Albers" ), ki18n( "Maintainer and Author" ),
                          "tomalbers@kde.nl", "http://www.omat.nl" );
-    aboutData.setProgramIconName( "akonaditray" );
+    aboutData.setProgramIconName( QLatin1String("akonaditray") );
 
     KCmdLineArgs::init( argc, argv, &aboutData );
 
