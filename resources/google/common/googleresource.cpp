@@ -38,7 +38,7 @@ GoogleResource::GoogleResource( const QString &id ):
     AgentBase::ObserverV2(),
     m_isConfiguring(false)
 {
-    KGlobal::locale()->insertCatalog( "akonadi_google_resource" );
+    KGlobal::locale()->insertCatalog( QLatin1String("akonadi_google_resource") );
     connect( this, SIGNAL(abortRequested()),
             this, SLOT(slotAbortRequested()) );
     connect( this, SIGNAL(reloadConfiguration()),

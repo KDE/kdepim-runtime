@@ -70,7 +70,7 @@
 
 #include <LibKGAPI2/Account>
 
-#define ROOT_COLLECTION_REMOTEID "RootCollection"
+#define ROOT_COLLECTION_REMOTEID QLatin1String("RootCollection")
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
 #define TASK_PROPERTY "_KGAPI2::TaskPtr"
 
@@ -84,7 +84,7 @@ CalendarResource::CalendarResource( const QString &id ):
     GoogleResource( id )
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
-    KGlobal::locale()->insertCatalog( "akonadi_google_resource" );
+    KGlobal::locale()->insertCatalog( QLatin1String("akonadi_google_resource") );
     updateResourceName();
 }
 
@@ -100,7 +100,7 @@ GoogleSettings *CalendarResource::settings() const
 int CalendarResource::runConfigurationDialog( WId windowId )
 {
    QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( accountManager(), windowId, this ) );
-   settingsDialog->setWindowIcon( KIcon( "im-google" ) );
+   settingsDialog->setWindowIcon( KIcon( QLatin1String("im-google") ) );
 
    return settingsDialog->exec();
 }
@@ -482,7 +482,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( calendar->title() );
-        attr->setIconName( "view-calendar" );
+        attr->setIconName( QLatin1String("view-calendar") );
 
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>( Entity::AddIfMissing );
         reminderAttr->setReminders( calendar->defaultReminders() );
@@ -516,7 +516,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( taskList->title() );
-        attr->setIconName( "view-pim-tasks" );
+        attr->setIconName( QLatin1String("view-pim-tasks") );
 
         m_collections[ collection.remoteId() ] = collection;
     }
@@ -782,4 +782,4 @@ void CalendarResource::slotCreateJobFinished( KGAPI2::Job *job )
     }
 }
 
-AKONADI_RESOURCE_MAIN( CalendarResource );
+AKONADI_RESOURCE_MAIN( CalendarResource )
