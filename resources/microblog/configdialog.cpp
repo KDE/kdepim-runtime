@@ -90,7 +90,7 @@ void ConfigDialog::slotAuthOk()
     unsetCursor();
     ui.testButton->setEnabled( true );
     ui.statusLabel->setText( i18n( "OK" ) );
-    ui.statusImageLabel->setPixmap( KIcon( "dialog-ok" ).pixmap( 16 ) );
+    ui.statusImageLabel->setPixmap( KIcon( QLatin1String("dialog-ok") ).pixmap( 16 ) );
     Settings::self()->setPassword( ui.password->text() );
     mManager->updateSettings();
 }
@@ -102,7 +102,7 @@ void ConfigDialog::slotAuthFailed( const QString& error )
 // should error be shown to the user?
     unsetCursor();
     ui.statusLabel->setText( i18n( "Failed" ) );
-    ui.statusImageLabel->setPixmap( KIcon( "dialog-cancel" ).pixmap( 16 ) );
+    ui.statusImageLabel->setPixmap( KIcon( QLatin1String("dialog-cancel") ).pixmap( 16 ) );
     ui.testButton->setEnabled( true );
 }
 

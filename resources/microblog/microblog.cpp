@@ -83,7 +83,7 @@ void MicroblogResource::retrieveCollections()
 
     Collection root;
     root.setName( i18n( "%1's microblog", Settings::self()->name() ) );
-    root.setRemoteId( "microblog" );
+    root.setRemoteId( QLatin1String("microblog") );
     root.setContentMimeTypes( QStringList( Collection::mimeType() ) );
     Collection::Rights rights = Collection::ReadOnly;
     root.setRights( rights );
@@ -94,25 +94,25 @@ void MicroblogResource::retrieveCollections()
     policy.setIntervalCheckTime( -1 );
     root.setCachePolicy( policy );
 
-    collections[ "rootfolderunique" ] = root;
+    collections[ QLatin1String("rootfolderunique") ] = root;
 
     // for all the folders, inherit it from the parent.
     policy.setInheritFromParent( true );
 
     QStringList folders;
-    folders << "home" << "replies" << "favorites" << "inbox" << "outbox";
+    folders << QLatin1String("home") << QLatin1String("replies") << QLatin1String("favorites") << QLatin1String("inbox") << QLatin1String("outbox");
     QStringList foldersI18n;
     foldersI18n << i18n( "Home" ) << i18n( "Replies" )
     << i18n( "Favorites" ) << i18n( "Inbox" ) << i18n( "Outbox" );
     QStringList contentTypes;
-    contentTypes << "application/x-vnd.kde.microblog";
+    contentTypes << QLatin1String("application/x-vnd.kde.microblog");
 
     for ( int i=0; i<5; ++i ) {
         Collection c;
         c.setRemoteId( folders.at( i ) );
         c.setContentMimeTypes( contentTypes );
         c.setName( foldersI18n.at( i ) );
-        c.parentCollection().setRemoteId( "microblog" );
+        c.parentCollection().setRemoteId( QLatin1String("microblog") );
         c.setRights( Collection::ReadOnly );
 
         CachePolicy policy;
@@ -138,7 +138,7 @@ void MicroblogResource::retrieveItems( const Akonadi::Collection &collection )
 
     // get only newer items, except for favorites, which does not allow that.
     int id = 0;
-    if ( m_collection.hasAttribute( "id" ) && collection.remoteId() != "favorites" ) {
+    if ( m_collection.hasAttribute( "id" ) && collection.remoteId() != QLatin1String("favorites") ) {
         IdAttribute* currentid = static_cast<IdAttribute*>( m_collection.attribute( "id" ) );
         id = currentid->id();
     }
@@ -170,7 +170,7 @@ void MicroblogResource::slotStatusList( const QList<QByteArray> list )
         item.setRemoteId( QString::number( stat.id() ) );
         if ( stat.id() > currentid->id() )
             currentid->setId( stat.id() );
-        item.setMimeType( "application/x-vnd.kde.microblog" );
+        item.setMimeType( QLatin1String("application/x-vnd.kde.microblog") );
         item.setPayload<StatusItem>( stat );
         item.setSize( status.length() );
         messages.append( item );
@@ -191,7 +191,7 @@ void MicroblogResource::configure( WId windowId )
     ConfigDialog dlg;
     if ( windowId )
         KWindowSystem::setMainWindow( &dlg, windowId );
-    dlg.setWindowIcon( KIcon( "view-pim-journal" ) );
+    dlg.setWindowIcon( KIcon( QLatin1String("view-pim-journal") ) );
     if ( dlg.exec() ) {
       emit configurationDialogAccepted();
     } else {
