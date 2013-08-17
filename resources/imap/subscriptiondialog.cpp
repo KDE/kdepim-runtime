@@ -127,7 +127,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
 
   KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( m_listView );
   flatModel->setDisplayAncestorData( true );
-  flatModel->setAncestorSeparator( "/" );
+  flatModel->setAncestorSeparator( QLatin1String("/") );
   flatModel->setSourceModel( m_model );
 
   CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel( m_listView );
