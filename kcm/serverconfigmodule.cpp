@@ -41,8 +41,8 @@ using namespace Akonadi;
 ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & args  ) :
     KCModule( ServerConfigModuleFactory::componentData(), parent, args )
 {
-  KGlobal::locale()->insertCatalog( "kcm_akonadi" );
-  KGlobal::locale()->insertCatalog( "libakonadi" );
+  KGlobal::locale()->insertCatalog( QLatin1String("kcm_akonadi") );
+  KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );
 
   QVBoxLayout *layout = new QVBoxLayout( this );
   setLayout( layout );
@@ -55,9 +55,9 @@ ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & a
   layout->addWidget( m_stackWidget );
 
   // supported drivers
-  ui_driver.driverBox->addItem( "Mysql", QVariant( "QMYSQL" ) );
-  ui_driver.driverBox->addItem( "PostgreSQL", QVariant( "QPSQL" ) );
-  ui_driver.driverBox->addItem( "SQLite", QVariant( "QSQLITE3" ) );
+  ui_driver.driverBox->addItem( QLatin1String("Mysql"), QVariant( QLatin1String("QMYSQL") ) );
+  ui_driver.driverBox->addItem( QLatin1String("PostgreSQL"), QVariant( QLatin1String("QPSQL") ) );
+  ui_driver.driverBox->addItem( QLatin1String("SQLite"), QVariant( QLatin1String("QSQLITE3") ) );
 
   setButtons( KCModule::Default | KCModule::Apply );
 
@@ -113,24 +113,24 @@ void ServerConfigModule::load()
 {
   const QString serverConfigFile = XdgBaseDirs::akonadiServerConfigFile( XdgBaseDirs::ReadWrite );
   QSettings settings( serverConfigFile, QSettings::IniFormat );
-  settings.beginGroup( "QMYSQL" );
-  ui_mysql.startServer->setChecked( settings.value( "StartServer", true ).toBool() );
-  ui_mysql.serverPath->setUrl( KUrl::fromPath( settings.value( "ServerPath", "" ).toString() ) );
-  ui_mysql.name->setText( settings.value( "Name", "akonadi" ).toString() );
-  ui_mysql.host->setText( settings.value( "Host", "" ).toString() );
-  ui_mysql.username->setText( settings.value( "User", "" ).toString() );
-  ui_mysql.password->setText( settings.value( "Password", "" ).toString() );
-  ui_mysql.options->setText( settings.value( "Options", "" ).toString() );
+  settings.beginGroup( QLatin1String("QMYSQL") );
+  ui_mysql.startServer->setChecked( settings.value( QLatin1String("StartServer"), true ).toBool() );
+  ui_mysql.serverPath->setUrl( KUrl::fromPath( settings.value( QLatin1String("ServerPath"), QString() ).toString() ) );
+  ui_mysql.name->setText( settings.value( QLatin1String("Name"), QLatin1String("akonadi") ).toString() );
+  ui_mysql.host->setText( settings.value( QLatin1String("Host"), QString() ).toString() );
+  ui_mysql.username->setText( settings.value( QLatin1String("User"), QString() ).toString() );
+  ui_mysql.password->setText( settings.value( QLatin1String("Password"), QString() ).toString() );
+  ui_mysql.options->setText( settings.value( QLatin1String("Options"), QString() ).toString() );
   settings.endGroup();
 
   // postgresql group
-  settings.beginGroup( "QPSQL" );
-  ui_psql.startServer->setChecked( settings.value( "StartServer", true ).toBool() );
-  ui_psql.name->setText( settings.value( "Name", "akonadi" ).toString() );
-  ui_psql.host->setText( settings.value( "Host", "" ).toString() );
-  ui_psql.username->setText( settings.value( "User", "" ).toString() );
-  ui_psql.password->setText( settings.value( "Password", "" ).toString() );
-  ui_psql.port->setText( settings.value( "Port", "5432" ).toString() );
+  settings.beginGroup( QLatin1String("QPSQL") );
+  ui_psql.startServer->setChecked( settings.value( QLatin1String("StartServer"), true ).toBool() );
+  ui_psql.name->setText( settings.value( QLatin1String("Name"), QLatin1String("akonadi") ).toString() );
+  ui_psql.host->setText( settings.value( QLatin1String("Host"), QString() ).toString() );
+  ui_psql.username->setText( settings.value( QLatin1String("User"), QString() ).toString() );
+  ui_psql.password->setText( settings.value( QLatin1String("Password"), QString() ).toString() );
+  ui_psql.port->setText( settings.value( QLatin1String("Port"), QLatin1String("5432") ).toString() );
   ui_psql.messagewidget->setVisible( !ui_psql.startServer->isChecked() );
   ui_psql.messagewidget->setCloseButtonVisible( false );
   ui_psql.messagewidget->setWordWrap( true );
@@ -141,8 +141,8 @@ void ServerConfigModule::load()
   settings.endGroup();
 
   // selected driver
-  settings.beginGroup( "GENERAL" );
-  ui_driver.driverBox->setCurrentIndex( ui_driver.driverBox->findData( settings.value ( "Driver", "QMYSQL" ) ) );
+  settings.beginGroup( QLatin1String("GENERAL") );
+  ui_driver.driverBox->setCurrentIndex( ui_driver.driverBox->findData( settings.value ( QLatin1String("Driver"), QLatin1String("QMYSQL") ) ) );
   driverChanged( ui_driver.driverBox->currentIndex() );
   settings.endGroup();
 
@@ -154,35 +154,35 @@ void ServerConfigModule::save()
   kDebug();
   const QString serverConfigFile = XdgBaseDirs::akonadiServerConfigFile( XdgBaseDirs::ReadWrite );
   QSettings settings( serverConfigFile, QSettings::IniFormat );
-  settings.beginGroup( "QMYSQL" );
-  settings.setValue( "StartServer", ui_mysql.startServer->isChecked() );
-  settings.setValue( "ServerPath", ui_mysql.serverPath->url().toLocalFile() );
-  settings.setValue( "Name", ui_mysql.name->text() );
-  settings.setValue( "Host", ui_mysql.host->text() );
-  settings.setValue( "User", ui_mysql.username->text() );
-  settings.setValue( "Password", ui_mysql.password->text() );
-  settings.setValue( "Options", ui_mysql.options->text() );
+  settings.beginGroup( QLatin1String("QMYSQL") );
+  settings.setValue( QLatin1String("StartServer"), ui_mysql.startServer->isChecked() );
+  settings.setValue( QLatin1String("ServerPath"), ui_mysql.serverPath->url().toLocalFile() );
+  settings.setValue( QLatin1String("Name"), ui_mysql.name->text() );
+  settings.setValue( QLatin1String("Host"), ui_mysql.host->text() );
+  settings.setValue( QLatin1String("User"), ui_mysql.username->text() );
+  settings.setValue( QLatin1String("Password"), ui_mysql.password->text() );
+  settings.setValue( QLatin1String("Options"), ui_mysql.options->text() );
   settings.endGroup();
 
   // postgresql group
-  settings.beginGroup( "QPSQL" );
-  settings.setValue( "StartServer", ui_psql.startServer->isChecked() );
-  settings.setValue( "Name", ui_psql.name->text() );
-  settings.setValue( "Host", ui_psql.host->text() );
-  settings.setValue( "User", ui_psql.username->text() );
-  settings.setValue( "Password", ui_psql.password->text() );
-  settings.setValue( "Port", ui_psql.port->text() );
+  settings.beginGroup( QLatin1String("QPSQL") );
+  settings.setValue( QLatin1String("StartServer"), ui_psql.startServer->isChecked() );
+  settings.setValue( QLatin1String("Name"), ui_psql.name->text() );
+  settings.setValue( QLatin1String("Host"), ui_psql.host->text() );
+  settings.setValue( QLatin1String("User"), ui_psql.username->text() );
+  settings.setValue( QLatin1String("Password"), ui_psql.password->text() );
+  settings.setValue( QLatin1String("Port"), ui_psql.port->text() );
   settings.endGroup();
 
   // sqlite group
-  settings.beginGroup( "SQLITE" );
+  settings.beginGroup( QLatin1String("SQLITE") );
   // TODO: make it configurable
-  settings.setValue( "Name", "akonadi" );
+  settings.setValue( QLatin1String("Name"), QLatin1String("akonadi") );
   settings.endGroup();
 
   // selected driver
-  settings.beginGroup( "GENERAL" );
-  settings.setValue( "Driver", ui_driver.driverBox->itemData( ui_driver.driverBox->currentIndex() ).toString() );
+  settings.beginGroup( QLatin1String("GENERAL") );
+  settings.setValue( QLatin1String("Driver"), ui_driver.driverBox->itemData( ui_driver.driverBox->currentIndex() ).toString() );
   settings.endGroup();
   settings.sync();
 
@@ -193,9 +193,9 @@ void ServerConfigModule::defaults()
 {
   ui_mysql.startServer->setChecked( true );
   // TODO: detect default server path
-  ui_mysql.name->setText( "akonadi" );
+  ui_mysql.name->setText( QLatin1String("akonadi") );
 
-  ui_driver.driverBox->setCurrentIndex( ui_driver.driverBox->findData( "QMYSQL" ) );
+  ui_driver.driverBox->setCurrentIndex( ui_driver.driverBox->findData( QLatin1String("QMYSQL") ) );
 }
 
 void ServerConfigModule::updateStatus()
@@ -231,9 +231,9 @@ void ServerConfigModule::selfTestClicked()
 
 void ServerConfigModule::driverChanged( int index )
 {
-  if ( ui_driver.driverBox->itemData( index ).toString() == "QMYSQL" ) {
+  if ( ui_driver.driverBox->itemData( index ).toString() == QLatin1String("QMYSQL") ) {
     m_stackWidget->setCurrentWidget( m_mysqlWidget );
-  } else if ( ui_driver.driverBox->itemData( index ).toString() == "QPSQL" ) {
+  } else if ( ui_driver.driverBox->itemData( index ).toString() == QLatin1String("QPSQL") ) {
     m_stackWidget->setCurrentWidget( m_psqlWidget );
   } else {
     m_stackWidget->setCurrentWidget( m_sqliteWidget );
