@@ -1,3 +1,6 @@
+add_definitions( -DQT_NO_CAST_FROM_ASCII )
+add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 include_directories( ${kdepim-runtime_SOURCE_DIR} )
 
 set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)

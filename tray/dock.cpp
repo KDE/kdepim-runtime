@@ -62,7 +62,7 @@ Dock::Dock( QWidget *parent )
 {
     m_parentWidget = parent;
 
-    setIconByName("akonaditray");
+    setIconByName(QLatin1String("akonaditray"));
     setCategory(SystemServices);
     setStatus(Passive);
     KMenu *menu = new KMenu();
@@ -70,13 +70,13 @@ Dock::Dock( QWidget *parent )
 
     new AkonaditrayAdaptor( this );
     QDBusConnection dbus = QDBusConnection::sessionBus();
-    dbus.registerObject( "/Actions", this );
+    dbus.registerObject( QLatin1String("/Actions"), this );
 
     m_stopAction = menu->addAction( i18n( "&Stop Akonadi" ), this, SLOT(slotStopAkonadi()) );
     m_startAction = menu->addAction( i18n( "S&tart Akonadi" ), this, SLOT(slotStartAkonadi()) );
     m_backupAction = menu->addAction( i18n( "Make &Backup..." ), this, SLOT(slotStartBackup()) );
     m_restoreAction = menu->addAction( i18n( "&Restore Backup..." ), this, SLOT(slotStartRestore()) );
-    menu->addAction( KIcon( "configure" ), i18n( "&Configure..." ), this, SLOT(slotConfigure()) );
+    menu->addAction( KIcon( QLatin1String("configure") ), i18n( "&Configure..." ), this, SLOT(slotConfigure()) );
 
     setContextMenu( menu );
     connect( menu, SIGNAL(aboutToShow()), SLOT(slotActivated()) );
@@ -104,7 +104,7 @@ void Dock::slotServerStarted()
     updateMenu( true );
     if ( m_explicitStart ) {
       showMessage( i18n( "Akonadi available" ),
-                   i18n( "The Akonadi server has been started and can be used now." ), "akonadi" );
+                   i18n( "The Akonadi server has been started and can be used now." ), QLatin1String("akonadi") );
     m_explicitStart = false;
     }
 }
@@ -113,7 +113,7 @@ void Dock::slotServerStopped()
 {
     updateMenu( false );
     showMessage( i18n( "Akonadi not available" ),
-                 i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ), "akonadi" );
+                 i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ), QLatin1String("akonadi") );
 }
 
 void Dock::slotStopAkonadi()
@@ -157,10 +157,10 @@ void Dock::slotStartRestore()
 void Dock::updateMenu( bool registered )
 {
     if ( registered ) {
-          setToolTip( "akonadi", i18n( "Akonadi available" ),
+          setToolTip( QLatin1String("akonadi"), i18n( "Akonadi available" ),
                                  i18n( "The Akonadi server has been started and can be used now." ) );
     } else {
-          setToolTip( "akonadi", i18n( "Akonadi not available" ),
+          setToolTip( QLatin1String("akonadi"), i18n( "Akonadi not available" ),
                                  i18n( "The Akonadi server has been stopped, Akonadi related applications can no longer be used." ) );
     }
 
@@ -201,7 +201,7 @@ void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString
 void Dock::errorMessage( const QString &message, const QString &title )
 {
     KNotification::event( KNotification::Error, title.isEmpty() ? i18n( "Akonadi error" ) : title,
-                          message, DesktopIcon( "dialog-warning" ), m_parentWidget );
+                          message, DesktopIcon( QLatin1String("dialog-warning") ), m_parentWidget );
 }
 
 qlonglong Dock::getWinId()
@@ -211,7 +211,7 @@ qlonglong Dock::getWinId()
 
 void Dock::slotConfigure()
 {
-    QProcess::startDetached( KStandardDirs::findExe( QLatin1String( "kcmshell4" ) ), QStringList() << "kcm_akonadi" );
+    QProcess::startDetached( KStandardDirs::findExe( QLatin1String( "kcmshell4" ) ), QStringList() << QLatin1String("kcm_akonadi") );
 }
 
 #include "dock.moc"

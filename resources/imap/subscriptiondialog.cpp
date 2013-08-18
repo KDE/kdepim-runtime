@@ -127,7 +127,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
 
   KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( m_listView );
   flatModel->setDisplayAncestorData( true );
-  flatModel->setAncestorSeparator( "/" );
+  flatModel->setAncestorSeparator( QLatin1String("/") );
   flatModel->setSourceModel( m_model );
 
   CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel( m_listView );
@@ -154,11 +154,33 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   } else {
     m_enableSubscription->hide();
   }
+  readConfig();
 }
 
 SubscriptionDialog::~SubscriptionDialog()
 {
+  writeConfig();
 }
+
+void SubscriptionDialog::readConfig()
+{
+  KConfigGroup group( KGlobal::config(), "SubscriptionDialog" );
+
+  const QSize size = group.readEntry( "Size", QSize() );
+  if ( size.isValid() ) {
+      resize( size );
+  } else {
+      resize( 500, 300 );
+  }
+}
+
+void SubscriptionDialog::writeConfig()
+{
+  KConfigGroup group( KGlobal::config(), "SubscriptionDialog" );
+  group.writeEntry( "Size", size() );
+  group.sync();
+}
+
 
 void SubscriptionDialog::setSubscriptionEnabled( bool enabled )
 {

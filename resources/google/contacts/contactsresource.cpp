@@ -79,7 +79,7 @@ int ContactsResource::runConfigurationDialog( WId windowId )
 {
 
    QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( accountManager(), windowId, this ) );
-   settingsDialog->setWindowIcon( KIcon( "im-google" ) );
+   settingsDialog->setWindowIcon( KIcon( QLatin1String("im-google") ) );
 
    return settingsDialog->exec();
 }
@@ -129,9 +129,9 @@ void ContactsResource::retrieveContactsPhotos( const QVariant &arguments )
     }
 
     const QVariantMap map = arguments.toMap();
-    const Collection collection = map[ "collection" ].value<Collection>();
+    const Collection collection = map[ QLatin1String("collection") ].value<Collection>();
     ItemFetchJob *itemFetchJob = new ItemFetchJob( collection, this );
-    itemFetchJob->setProperty( "modifiedItems", map[ "modifiedItems" ] );
+    itemFetchJob->setProperty( "modifiedItems", map[ QLatin1String("modifiedItems") ] );
     itemFetchJob->fetchScope().fetchFullPayload(true);
     connect( itemFetchJob, SIGNAL(finished(KJob*)),
              this, SLOT(slotUpdatePhotosItemsRetrieved(KJob*)) );
@@ -397,7 +397,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( realName );
-        attr->setIconName( "view-pim-contacts" );
+        attr->setIconName( QLatin1String("view-pim-contacts") );
 
         m_collections[ collection.remoteId() ] = collection;
     }
@@ -413,7 +413,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
     attr = otherCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
     attr->setDisplayName( i18n( "Other Contacts" ) );
-    attr->setIconName( "view-pim-contacts" );
+    attr->setIconName( QLatin1String("view-pim-contacts") );
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
     collectionsRetrieved( m_collections.values() );
@@ -471,8 +471,8 @@ void ContactsResource::slotItemsRetrieved( KGAPI2::Job *job )
     }
 
     QVariantMap map;
-    map["collection"] = QVariant::fromValue(collection);
-    map["modifiedItems"] = QVariant::fromValue(changedPhotos);
+    map[QLatin1String("collection")] = QVariant::fromValue(collection);
+    map[QLatin1String("modifiedItems")] = QVariant::fromValue(changedPhotos);
     scheduleCustomTask( this, "retrieveContactsPhotos", map );
 
     collection.setRemoteRevision( QString::number( KDateTime::currentUtcDateTime().toTime_t() ) );
@@ -554,7 +554,7 @@ void ContactsResource::slotCreateJobFinished( KGAPI2::Job* job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( group->title() );
-        attr->setIconName( "view-pim-contacts" );
+        attr->setIconName( QLatin1String("view-pim-contacts") );
 
         m_collections[ collection.remoteId() ] = collection;
 
