@@ -67,14 +67,14 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
     res.addType( Nepomuk2::Vocabulary::NIE::InformationElement() );
     res.addType( Vocabulary::NRSS::Article() );
 
-    NepomukFeederUtils::setIcon( "application-rss+xml", res, graph );
+    NepomukFeederUtils::setIcon( QLatin1String("application-rss+xml"), res, graph );
 
     /* Tags */
     if ( KRss::Item::isImportant( item ) ) {
-        addTag( "important", i18n( "Important" ), "mail-mark-important", res, graph );
+        addTag( QLatin1String("important"), i18n( "Important" ), QLatin1String("mail-mark-important"), res, graph );
     }
     if ( KRss::Item::isDeleted( item ) ) {
-        addTag( "deleted", i18n( "Deleted" ), "mail-deleted", res, graph );
+        addTag( QLatin1String("deleted"), i18n( "Deleted" ), QLatin1String("mail-deleted"), res, graph );
     }
     res.setProperty( Vocabulary::NRSS::isRead(), KRss::Item::isRead( item ) );
 
@@ -141,14 +141,14 @@ void NepomukRSSFeeder::updateItem(const Akonadi::Item& item, Nepomuk2::SimpleRes
         enclosureRes.addType( Nepomuk2::Vocabulary::NIE::InformationElement() );
         enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Attachment() );
         // rssEnclosure.type() is a mimetype of the enclosure */
-        if ( rssEnclosure.type().startsWith( "image", Qt::CaseInsensitive ) ) {
+        if ( rssEnclosure.type().startsWith( QLatin1String("image"), Qt::CaseInsensitive ) ) {
             enclosureRes.addType( Vocabulary::NRSS::ImageEnclosure() );
             enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Image() );
-        } else if ( rssEnclosure.type().startsWith( "audio", Qt::CaseInsensitive ) ) {
+        } else if ( rssEnclosure.type().startsWith( QLatin1String("audio"), Qt::CaseInsensitive ) ) {
             enclosureRes.addType( Vocabulary::NRSS::AudioEnclosure() );
             enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Audio() );
             enclosureRes.setProperty( Nepomuk2::Vocabulary::NFO::duration(), rssEnclosure.length() );
-        } else if ( rssEnclosure.type().startsWith( "video", Qt::CaseInsensitive ) ) {
+        } else if ( rssEnclosure.type().startsWith( QLatin1String("video"), Qt::CaseInsensitive ) ) {
             enclosureRes.addType( Vocabulary::NRSS::VideoEnclosure() );
             enclosureRes.addType( Nepomuk2::Vocabulary::NFO::Video() );
             enclosureRes.setProperty( Nepomuk2::Vocabulary::NFO::duration(), rssEnclosure.length() );
