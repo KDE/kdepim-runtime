@@ -44,14 +44,14 @@ void MailSerializerPluginTest::testMailPlugin()
 
   // deserializing
   Item item;
-  item.setMimeType( "message/rfc822" );
+  item.setMimeType( QLatin1String("message/rfc822") );
   item.setPayloadFromData( serialized );
 
   QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
   KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
   QVERIFY( msg != 0 );
 
-  QCOMPARE( msg->to()->asUnicodeString(), QString( "receiver@test.org" ) );
+  QCOMPARE( msg->to()->asUnicodeString(), QLatin1String( "receiver@test.org" ) );
   QCOMPARE( msg->body(), QByteArray( "Body data." ) );
 
   // serializing
@@ -75,7 +75,7 @@ void MailSerializerPluginTest::testMessageIntegrity()
 
   // Deserialize.
   Item item;
-  item.setMimeType( "message/rfc822" );
+  item.setMimeType( QLatin1String("message/rfc822") );
   item.setPayloadFromData( serialized );
 
   QVERIFY( item.hasPayload<KMime::Message::Ptr>() );
