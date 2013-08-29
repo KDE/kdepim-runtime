@@ -41,24 +41,24 @@ HTMLDiffAlgoDisplay::HTMLDiffAlgoDisplay( QWidget *parent )
 void HTMLDiffAlgoDisplay::begin()
 {
   clear();
-  mText = "";
+  mText.clear();
 
-  mText.append( "<html>" );
-  mText.append( QString( "<body text=\"%1\" bgcolor=\"%2\">" )
+  mText.append( QLatin1String("<html>") );
+  mText.append( QString::fromLatin1( "<body text=\"%1\" bgcolor=\"%2\">" )
                .arg( KColorScheme( QPalette::Active, KColorScheme::View ).foreground().color().name() )
                .arg( KColorScheme( QPalette::Active, KColorScheme::View ).background().color().name() ) );
 
-  mText.append( "<center><table>" );
-  mText.append( QString( "<tr><th></th><th align=\"center\">%1</th><td>         </td><th align=\"center\">%2</th></tr>" )
+  mText.append( QLatin1String("<center><table>") );
+  mText.append( QString::fromLatin1( "<tr><th></th><th align=\"center\">%1</th><td>         </td><th align=\"center\">%2</th></tr>" )
                .arg( mLeftTitle )
                .arg( mRightTitle ) );
 }
 
 void HTMLDiffAlgoDisplay::end()
 {
-  mText.append( "</table></center>"
+  mText.append( QLatin1String("</table></center>"
                 "</body>"
-                "</html>" );
+                "</html>") );
 
   setHtml( mText );
 }
@@ -75,14 +75,14 @@ void HTMLDiffAlgoDisplay::setRightSourceTitle( const QString &title )
 
 void HTMLDiffAlgoDisplay::additionalLeftField( const QString &id, const QString &value )
 {
-  mText.append( QString( "<tr><td align=\"right\"><b>%1:</b></td><td bgcolor=\"#9cff83\">%2</td><td></td><td></td></tr>" )
+  mText.append( QString::fromLatin1( "<tr><td align=\"right\"><b>%1:</b></td><td bgcolor=\"#9cff83\">%2</td><td></td><td></td></tr>" )
                .arg( id )
                .arg( textToHTML( value ) ) );
 }
 
 void HTMLDiffAlgoDisplay::additionalRightField( const QString &id, const QString &value )
 {
-  mText.append( QString( "<tr><td align=\"right\"><b>%1:</b></td><td></td><td></td><td bgcolor=\"#9cff83\">%2</td></tr>" )
+  mText.append( QString::fromLatin1( "<tr><td align=\"right\"><b>%1:</b></td><td></td><td></td><td bgcolor=\"#9cff83\">%2</td></tr>" )
                .arg( id )
                .arg( textToHTML( value ) ) );
 }
@@ -90,7 +90,7 @@ void HTMLDiffAlgoDisplay::additionalRightField( const QString &id, const QString
 void HTMLDiffAlgoDisplay::conflictField( const QString &id, const QString &leftValue,
                                           const QString &rightValue )
 {
-  mText.append( QString( "<tr><td align=\"right\"><b>%1:</b></td><td bgcolor=\"#ff8686\">%2</td><td></td><td bgcolor=\"#ff8686\">%3</td></tr>" )
+  mText.append( QString::fromLatin1( "<tr><td align=\"right\"><b>%1:</b></td><td bgcolor=\"#ff8686\">%2</td><td></td><td bgcolor=\"#ff8686\">%3</td></tr>" )
                .arg( id )
                .arg( textToHTML( leftValue ) )
                .arg( textToHTML( rightValue ) ) );

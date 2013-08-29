@@ -31,7 +31,7 @@ QTEST_KDEMAIN( MailSerializerTest, NoGUI )
 void MailSerializerTest::testEnvelopeDeserialize()
 {
   Item i;
-  i.setMimeType( "message/rfc822" );
+  i.setMimeType( QLatin1String("message/rfc822") );
 
   SerializerPluginMail *serializer = new SerializerPluginMail();
 
@@ -57,7 +57,7 @@ void MailSerializerTest::testEnvelopeDeserialize()
 void MailSerializerTest::testEnvelopeDeserializeWithReferencesHeader()
 {
   Item i;
-  i.setMimeType( "message/rfc822" );
+  i.setMimeType( QLatin1String("message/rfc822") );
 
   SerializerPluginMail *serializer = new SerializerPluginMail();
 
@@ -84,7 +84,7 @@ void MailSerializerTest::testEnvelopeDeserializeWithReferencesHeader()
 void MailSerializerTest::testEnvelopeSerialize()
 {
   Item i;
-  i.setMimeType( "message/rfc822" );
+  i.setMimeType( QLatin1String("message/rfc822") );
   Message* msg = new Message();
   msg->date()->from7BitString( "Wed, 1 Feb 2006 13:37:19 UT" );
   msg->subject()->from7BitString( "IMPORTANT: Akonadi Test" );
@@ -135,7 +135,7 @@ void MailSerializerTest::testEnvelopeSerialize()
 void MailSerializerTest::testParts()
 {
   Item item;
-  item.setMimeType( "message/rfc822" );
+  item.setMimeType( QLatin1String("message/rfc822") );
   KMime::Message *m = new Message;
   KMime::Message::Ptr msg( m );
   item.setPayload( msg );
@@ -162,7 +162,7 @@ void MailSerializerTest::testParts()
 void MailSerializerTest::testHeaderFetch()
 {
   Item i;
-  i.setMimeType( "message/rfc822" );
+  i.setMimeType( QLatin1String("message/rfc822") );
 
   SerializerPluginMail *serializer = new SerializerPluginMail();
 
@@ -202,7 +202,7 @@ void MailSerializerTest::testMultiDeserialize()
   // to demonstrate that it is not deserialized again.
 
   Item i;
-  i.setMimeType( "message/rfc822" );
+  i.setMimeType( QLatin1String("message/rfc822") );
 
   SerializerPluginMail *serializer = new SerializerPluginMail();
 
