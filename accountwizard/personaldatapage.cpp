@@ -143,6 +143,7 @@ void PersonalDataPage::leavePageNext()
     kDebug() << "Searching on internet";
     delete mIspdb;
     mIspdb = new Ispdb( this );
+    connect(mIspdb, SIGNAL(searchType(QString)), this, SLOT(slotSearchType(QString)));
     mIspdb->setEmail( ui.emailEdit->text() );
     mIspdb->start();
 
@@ -176,6 +177,10 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
   }
 }
 
+void PersonalDataPage::slotSearchType(const QString &type)
+{
+    ui.SearchLabel->setText(type);
+}
 
 void PersonalDataPage::configureSmtpAccount()
 {
