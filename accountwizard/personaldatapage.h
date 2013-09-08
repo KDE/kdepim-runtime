@@ -45,6 +45,7 @@ class PersonalDataPage : public Page
     void slotTextChanged();
     void slotCreateAccountClicked();
     void slotRadioButtonClicked( QAbstractButton* button);
+    void slotSearchType(const QString&);
 
   signals:
     void manualWanted( bool );

@@ -28,10 +28,10 @@ set(accountwizard_srcs
 )
 
 kde4_add_ui_files(accountwizard_srcs
-  typepage.ui
-  loadpage.ui
-  setuppage.ui
-  personaldatapage.ui
+  ui/typepage.ui
+  ui/loadpage.ui
+  ui/setuppage.ui
+  ui/personaldatapage.ui
 )
 
 set(accountwizard_libs
@@ -49,7 +49,7 @@ set(accountwizard_libs
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
   set(accountwizard_srcs ${accountwizard_srcs} providerpage.cpp)
-  kde4_add_ui_files(accountwizard_srcs providerpage.ui)
+  kde4_add_ui_files(accountwizard_srcs ui/providerpage.ui)
   set(accountwizard_libs ${accountwizard_libs} ${KDE4_KNEWSTUFF3_LIBS})
 endif ()
 

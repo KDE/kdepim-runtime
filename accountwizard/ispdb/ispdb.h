@@ -94,6 +94,7 @@ private slots:
 signals:
     /** emitted when done. **/
     void finished( bool );
+    void searchType( const QString &type );
 
 private:
     enum searchServerType { IspAutoConfig = 0, IspWellKnow, DataBase };

@@ -21,6 +21,7 @@
 #include <kdebug.h>
 #include <kio/job.h>
 #include <kio/jobclasses.h>
+#include <KLocale>
 
 #include <kmime/kmime_header_parsing.h>
 #include <QDomDocument>
@@ -63,24 +64,29 @@ void Ispdb::startJob( const KUrl&url )
 
 void Ispdb::lookupInDb()
 {
-  KUrl url;
-  switch( mServerType )
-  {
-  case IspAutoConfig:
-  {
-    url = KUrl( QLatin1String("http://autoconfig.") + mAddr.domain.toLower() + QLatin1String("/mail/config-v1.1.xml?emailaddress=") + mAddr.asString().toLower() );
-  }
-  break;
-  case IspWellKnow:
-  {
-    url = KUrl( QLatin1String("http://") + mAddr.domain.toLower() + QLatin1String("/.well-known/autoconfig/mail/config-v1.1.xml") );
-    break;
-  }
-  case DataBase:
-    url = KUrl( QLatin1String("https://autoconfig.thunderbird.net/v1.1/") + mAddr.domain.toLower() );
-  break;
-  }
-  startJob( url );
+    KUrl url;
+    switch( mServerType )
+    {
+    case IspAutoConfig:
+    {
+        url = KUrl( QLatin1String("http://autoconfig.") + mAddr.domain.toLower() + QLatin1String("/mail/config-v1.1.xml?emailaddress=") + mAddr.asString().toLower() );
+        Q_EMIT searchType(i18n("Lookup configuration: Email provider"));
+        break;
+    }
+    case IspWellKnow:
+    {
+        url = KUrl( QLatin1String("http://") + mAddr.domain.toLower() + QLatin1String("/.well-known/autoconfig/mail/config-v1.1.xml") );
+        Q_EMIT searchType(i18n("Lookup configuration: Trying common server name"));
+        break;
+    }
+    case DataBase:
+    {
+        url = KUrl( QLatin1String("https://autoconfig.thunderbird.net/v1.1/") + mAddr.domain.toLower() );
+        Q_EMIT searchType(i18n("Lookup configuration: Mozilla database"));
+        break;
+    }
+    }
+    startJob( url );
 }
 
 void Ispdb::slotResult( KJob* job )
