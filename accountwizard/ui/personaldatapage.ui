@@ -112,8 +112,8 @@
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="1">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
            <widget class="QLabel" name="checkOnlineExplanation">
             <property name="text">
              <string>Check online for the settings needed for this email provider. Only the domain name part of the e-mail address will be sent over the Internet at this point. If this option is unchecked, the account can be set up manually.</string>
@@ -123,22 +123,26 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="KPIMUtils::ProgressIndicatorWidget" name="mProgress"/>
-          </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="QLabel" name="SearchLabel">
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <italic>true</italic>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="KPIMUtils::ProgressIndicatorWidget" name="mProgress"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="SearchLabel">
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <italic>true</italic>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
