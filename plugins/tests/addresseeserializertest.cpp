@@ -30,7 +30,7 @@ class AddresseeSerializerTest : public QObject
     private slots:
         void testGid()
         {
-            const QString uid("uid");
+            const QString uid(QLatin1String("uid"));
             KABC::Addressee addressee;
             addressee.setUid(uid);
             Akonadi::Item item;
