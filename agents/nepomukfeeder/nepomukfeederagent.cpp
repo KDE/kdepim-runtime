@@ -251,6 +251,7 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
 {
   if (job->error()) {
     kWarning() << "FindUnindexedItemsJob failed";
+    m_findUnindexedItemsJob = 0;
     return;
   }
   FindUnindexedItemsJob *findJob = static_cast<FindUnindexedItemsJob*>(job);

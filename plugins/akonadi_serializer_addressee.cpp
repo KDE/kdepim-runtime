@@ -252,6 +252,17 @@ void SerializerPluginAddressee::compare( Akonadi::AbstractDifferencesReporter *r
   //TODO: logo/photo/custom entries
 }
 
+//// GidExtractorInterface
+
+QString SerializerPluginAddressee::extractGid( const Item& item ) const
+{
+  if ( !item.hasPayload<KABC::Addressee>() ) {
+    return QString();
+  }
+  return item.payload<KABC::Addressee>().uid();
+}
+
+
 Q_EXPORT_PLUGIN2( akonadi_serializer_addressee, Akonadi::SerializerPluginAddressee )
 
 #include "akonadi_serializer_addressee.moc"
