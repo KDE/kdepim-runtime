@@ -28,7 +28,7 @@ class QFile;
 class KJob;
 
 /**
- * Base class for akonadi migrators.
+ * Base class for akonadi resource migrators.
  */
 class KMigratorBase : public QObject
 {
@@ -53,7 +53,19 @@ class KMigratorBase : public QObject
     KMigratorBase();
     virtual ~KMigratorBase();
 
+    /**
+     * Read resource migration state.
+     * 
+     * @return MigrationState and None if the resource with @param identifier as identifier is not available.
+     */
     MigrationState migrationState( const QString &identifier ) const;
+    /**
+     * Set resource migration state.
+     * 
+     * Persists migration state in the resource config.
+     * @param resId and @param state is registered under @param identifier.
+     * Additionally all bridged resources are registered in the @param type and @param identifier.
+     */
     void setMigrationState( const QString &identifier, MigrationState state,
                             const QString &resId, const QString &type );
 
