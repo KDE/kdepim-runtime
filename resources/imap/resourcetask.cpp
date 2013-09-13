@@ -356,7 +356,7 @@ QList<QByteArray> ResourceTask::fromAkonadiFlags( const QList<QByteArray> &flags
       newFlags.append( ImapFlags::Seen );
     } else if ( oldFlag == Akonadi::MessageFlags::Deleted ) {
       newFlags.append( ImapFlags::Deleted );
-    } else if ( oldFlag == Akonadi::MessageFlags::Answered ) {
+    } else if ( oldFlag == Akonadi::MessageFlags::Answered || oldFlag == Akonadi::MessageFlags::Replied ) {
       newFlags.append( ImapFlags::Answered );
     } else if ( oldFlag == Akonadi::MessageFlags::Flagged ) {
       newFlags.append( ImapFlags::Flagged );
