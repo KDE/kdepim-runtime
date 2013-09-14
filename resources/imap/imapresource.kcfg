@@ -104,7 +104,7 @@
       <default></default>
     </entry>
     <entry name="SieveCustomAuthentification" type="String">
-      <label>Defines the type of indentification used by custom sieve server</label>
+      <label>Defines the type of identification used by custom sieve server</label>
       <default>ImapUserPassword</default>
     </entry>
   </group>
