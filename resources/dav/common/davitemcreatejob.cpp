@@ -34,16 +34,16 @@ DavItemCreateJob::DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &
 
 void DavItemCreateJob::start()
 {
-  QString headers = "Content-Type: ";
+  QString headers = QLatin1String("Content-Type: ");
   headers += mItem.contentType();
-  headers += "\r\n";
-  headers += "If-None-Match: *";
+  headers += QLatin1String("\r\n");
+  headers += QLatin1String("If-None-Match: *");
 
   KIO::StoredTransferJob *job = KIO::storedPut( mItem.data(), mUrl.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags );
-  job->addMetaData( "PropagateHttpHeader", "true" );
-  job->addMetaData( "customHTTPHeader", headers );
-  job->addMetaData( "cookies", "none" );
-  job->addMetaData( "no-auth-prompt", "true" );
+  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
+  job->addMetaData( QLatin1String("customHTTPHeader"), headers );
+  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
+  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
 
   connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
 }
@@ -58,9 +58,9 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
 
   if ( storedJob->error() ) {
-    const int responseCode = storedJob->queryMetaData( "responsecode" ).isEmpty() ?
+    const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
                               0 :
-                              storedJob->queryMetaData( "responsecode" ).toInt();
+                              storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
 
     QString err;
     if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
@@ -77,17 +77,17 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   }
 
   // The 'Location:' HTTP header is used to indicate the new URL
-  const QStringList allHeaders = storedJob->queryMetaData( "HTTP-Headers" ).split( '\n' );
+  const QStringList allHeaders = storedJob->queryMetaData( QLatin1String("HTTP-Headers") ).split( QLatin1Char('\n') );
   QString location;
   foreach ( const QString &header, allHeaders ) {
     if ( header.startsWith( QLatin1String( "location:" ), Qt::CaseInsensitive ) )
-      location = header.section( ' ', 1 );
+      location = header.section( QLatin1Char(' '), 1 );
   }
 
   KUrl url;
   if ( location.isEmpty() )
     url = storedJob->url();
-  else if ( location.startsWith( '/' ) ) {
+  else if ( location.startsWith( QLatin1Char('/') ) ) {
     url = storedJob->url();
     url.setPath( location );
   } else

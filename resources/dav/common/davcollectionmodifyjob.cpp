@@ -66,14 +66,14 @@ void DavCollectionModifyJob::start()
   }
 
   QDomDocument mQuery;
-  QDomElement propertyUpdateElement = mQuery.createElementNS( "DAV:", "propertyupdate" );
+  QDomElement propertyUpdateElement = mQuery.createElementNS( QLatin1String("DAV:"), QLatin1String("propertyupdate") );
   mQuery.appendChild( propertyUpdateElement );
 
   if ( !mSetProperties.isEmpty() ) {
-    QDomElement setElement = mQuery.createElementNS( "DAV:", "set" );
+    QDomElement setElement = mQuery.createElementNS( QLatin1String("DAV:"), QLatin1String("set") );
     propertyUpdateElement.appendChild( setElement );
 
-    QDomElement propElement = mQuery.createElementNS( "DAV:", "prop" );
+    QDomElement propElement = mQuery.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
     setElement.appendChild( propElement );
 
     foreach ( const QDomElement &element, mSetProperties )
@@ -81,10 +81,10 @@ void DavCollectionModifyJob::start()
   }
 
   if ( !mRemoveProperties.isEmpty() ) {
-    QDomElement removeElement = mQuery.createElementNS( "DAV:", "remove" );
+    QDomElement removeElement = mQuery.createElementNS( QLatin1String("DAV:"), QLatin1String("remove") );
     propertyUpdateElement.appendChild( removeElement );
 
-    QDomElement propElement = mQuery.createElementNS( "DAV:", "prop" );
+    QDomElement propElement = mQuery.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
     removeElement.appendChild( propElement );
 
     foreach ( const QDomElement &element, mSetProperties )
@@ -92,16 +92,16 @@ void DavCollectionModifyJob::start()
   }
 
   KIO::DavJob *job = DavManager::self()->createPropPatchJob( mUrl.url(), mQuery );
-  job->addMetaData( "PropagateHttpHeader", "true" );
+  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
   connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
 }
 
 void DavCollectionModifyJob::davJobFinished( KJob *job )
 {
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-  const int responseCode = davJob->queryMetaData( "responsecode" ).isEmpty() ?
+  const int responseCode = davJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
                             0 :
-                            davJob->queryMetaData( "responsecode" ).toInt();
+                            davJob->queryMetaData( QLatin1String("responsecode") ).toInt();
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
@@ -120,19 +120,19 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
   }
 
   const QDomDocument response = davJob->response();
-  QDomElement responseElement = DavUtils::firstChildElementNS( response.documentElement(), "DAV:", "response" );
+  QDomElement responseElement = DavUtils::firstChildElementNS( response.documentElement(), QLatin1String("DAV:"), QLatin1String("response") );
 
   bool hasError = false;
   QString errorText;
 
   // parse all propstats answers to get the eventual errors
-  const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
+  const QDomNodeList propstats = responseElement.elementsByTagNameNS( QLatin1String("DAV:"), QLatin1String("propstat") );
   for ( uint i = 0; i < propstats.length(); ++i ) {
     const QDomElement propstatElement = propstats.item( i ).toElement();
-    const QDomElement statusElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "status" );
+    const QDomElement statusElement = DavUtils::firstChildElementNS( propstatElement, QLatin1String("DAV:"), QLatin1String("status") );
 
     const QString statusText = statusElement.text();
-    if ( statusText.contains( "200" ) ) {
+    if ( statusText.contains( QLatin1String("200") ) ) {
       // Nothing special to do here, this indicates the success of the whole request
       break;
     } else {
@@ -144,7 +144,7 @@ void DavCollectionModifyJob::davJobFinished( KJob *job )
 
   if ( hasError ) {
     // Trying to get more information about the error
-    const QDomElement responseDescriptionElement = DavUtils::firstChildElementNS( responseElement, "DAV:", "responsedescription" );
+    const QDomElement responseDescriptionElement = DavUtils::firstChildElementNS( responseElement, QLatin1String("DAV:"), QLatin1String("responsedescription") );
     if ( !responseDescriptionElement.isNull() ) {
       errorText.append( i18n( "\nThe server returned more information:\n" ) );
       errorText.append( responseDescriptionElement.text() );
