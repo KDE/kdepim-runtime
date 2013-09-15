@@ -35,7 +35,7 @@ void DavItemsFetchJob::start()
       dynamic_cast<const DavMultigetProtocol*>( DavManager::self()->davProtocol( mCollectionUrl.protocol() ) );
   if ( !protocol ) {
     setError( UserDefinedError );
-    setErrorText( QString( "Protocol for the collection does not support MULTIGET" ) );
+    setErrorText( i18n( "Protocol for the collection does not support MULTIGET" ) );
     emitResult();
     return;
   }
