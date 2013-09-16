@@ -60,7 +60,7 @@ KUrl Communication::getBaseUrl()
 void Communication::checkAuth()
 {
     KUrl url = getBaseUrl();
-    url.addPath( "account/verify_credentials.xml" );
+    url.addPath( QLatin1String("account/verify_credentials.xml") );
     KIO::StoredTransferJob *job = KIO::storedGet( url, Reload, HideProgressInfo ) ;
     connect( job, SIGNAL(result(KJob*)), this, SLOT(slotCheckAuthData(KJob*)) );
 }
@@ -85,7 +85,7 @@ void Communication::slotCheckAuthData( KJob *job )
 
     QDomDocument dom;
     dom.setContent( data );
-    QDomNodeList nodeList = dom.elementsByTagName( "user" );
+    QDomNodeList nodeList = dom.elementsByTagName( QLatin1String("user") );
     if ( nodeList.count() > 0 ) {
         kDebug() << "Authorization is OK";
         emit authOk();
@@ -100,22 +100,22 @@ void Communication::retrieveFolder( const QString &folder, qlonglong since )
     m_retrievingFolder = folder;
 
     KUrl url = getBaseUrl();
-    if ( folder ==  "home" ) {
-        url.addPath( "statuses/friends_timeline.xml" );
-    } else if ( folder == "replies" ) {
-        url.addPath( "statuses/replies.xml" );
-    } else if ( folder == "favorites" ) {
-        url.addPath( "favorites.xml" );
-    } else if ( folder == "inbox" ) {
-        url.addPath( "direct_messages.xml" );
-    } else if ( folder == "outbox" ) {
-        url.addPath( "direct_messages/sent.xml" );
+    if ( folder ==  QLatin1String("home") ) {
+        url.addPath( QLatin1String("statuses/friends_timeline.xml") );
+    } else if ( folder == QLatin1String("replies") ) {
+        url.addPath( QLatin1String("statuses/replies.xml") );
+    } else if ( folder == QLatin1String("favorites") ) {
+        url.addPath( QLatin1String("favorites.xml") );
+    } else if ( folder == QLatin1String("inbox") ) {
+        url.addPath( QLatin1String("direct_messages.xml") );
+    } else if ( folder == QLatin1String("outbox") ) {
+        url.addPath( QLatin1String("direct_messages/sent.xml") );
     }
 
     if ( since == 0 )
-        url.addQueryItem( "page", "1" );
+        url.addQueryItem( QLatin1String("page"), QLatin1String("1") );
     else
-        url.addQueryItem( "since_id", QString::number( since ) );
+        url.addQueryItem( QLatin1String("since_id"), QString::number( since ) );
 
     kDebug() << url;
 
@@ -142,7 +142,7 @@ void Communication::slotStatusListReceived( KJob* job )
 
     QLatin1String main( "statuses" );
     QLatin1String sub( "status" );
-    if ( m_retrievingFolder == "inbox" || m_retrievingFolder == "outbox" ) {
+    if ( m_retrievingFolder == QLatin1String("inbox") || m_retrievingFolder ==QLatin1String( "outbox") ) {
         main = QLatin1String( "direct-messages" );
         sub = QLatin1String( "direct_message" );
     }
@@ -175,9 +175,9 @@ void Communication::slotStatusListReceived( KJob* job )
 QString Communication::serviceToApi( int service )
 {
     if ( service == 0 )
-        return QString( "http://identi.ca/api/" );
+        return QLatin1String( "http://identi.ca/api/" );
     else if ( service == 1 )
-        return QString( "http://twitter.com/" );
+        return QLatin1String( "http://twitter.com/" );
 
     return QString();
 }
