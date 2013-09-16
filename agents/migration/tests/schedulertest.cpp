@@ -60,7 +60,7 @@ private slots:
 
         QCOMPARE(model.rowCount(), 0);
 
-        QSignalSpy rowsInsertedSpy(&model, SIGNAL(rowsInserted(QModelIndex , int, int)));
+        QSignalSpy rowsInsertedSpy(&model, SIGNAL(rowsInserted(QModelIndex,int,int)));
         QVERIFY(rowsInsertedSpy.isValid());
 
         scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id"))));
@@ -114,7 +114,7 @@ private slots:
         scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id3"))));
         QAbstractItemModel &model(scheduler.model());
 
-        QSignalSpy spy(&model, SIGNAL(dataChanged(QModelIndex, QModelIndex)));
+        QSignalSpy spy(&model, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
         QVERIFY(spy.isValid());
         migrator->start();
 
