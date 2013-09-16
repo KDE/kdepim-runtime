@@ -41,7 +41,7 @@ public:
     bool mAutostart;
 };
 
-Q_DECLARE_METATYPE(QModelIndex);
+Q_DECLARE_METATYPE(QModelIndex)
 
 class SchedulerTest: public QObject
 {
