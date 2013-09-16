@@ -921,7 +921,6 @@ Akonadi::Collection KolabProxyResource::createCollection(
   applyAttributesFromImap( c, imapCollection );
   if ( isKolabFolder( imapCollection ) ) {
     KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
-    contentTypes.append( Akonadi::Collection::mimeType() );
     if ( handler ) {
         contentTypes.append( handler->contentMimeTypes() );
         kolabAttr->setIconName( handler->iconName() );
@@ -933,6 +932,7 @@ Akonadi::Collection KolabProxyResource::createCollection(
       new Akonadi::CollectionModifyJob( hiddenImapCol, this );
     }
   }
+  contentTypes.append( Akonadi::Collection::mimeType() );
   c.setContentMimeTypes( contentTypes );
   c.setRemoteId( QString::number( imapCollection.id() ) );
   return c;

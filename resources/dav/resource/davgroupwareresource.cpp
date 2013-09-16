@@ -186,7 +186,7 @@ void DavGroupwareResource::configure( WId windowId )
         urlConfig->mUrl = url.url;
         urlConfig->mProtocol = url.protocol;
         urlConfig->mUser = url.userName;
-        urlConfig->mPassword = wizard.field( "credentialsPassword" ).toString();
+        urlConfig->mPassword = wizard.field( QLatin1String("credentialsPassword") ).toString();
 
         Settings::self()->newUrlConfiguration( urlConfig );
       }
@@ -194,10 +194,10 @@ void DavGroupwareResource::configure( WId windowId )
       if ( !urls.isEmpty() )
         Settings::self()->setDisplayName( wizard.displayName() );
 
-      QString defaultUser = wizard.field( "credentialsUserName" ).toString();
+      QString defaultUser = wizard.field( QLatin1String("credentialsUserName") ).toString();
       if ( !defaultUser.isEmpty() ) {
         Settings::self()->setDefaultUsername( defaultUser );
-        Settings::self()->setDefaultPassword( wizard.field( "credentialsPassword" ).toString() );
+        Settings::self()->setDefaultPassword( wizard.field( QLatin1String("credentialsPassword") ).toString() );
       }
     }
   }
@@ -294,7 +294,7 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
 
   DavItem davItem;
   davItem.setUrl( item.remoteId() );
-  davItem.setContentType( "text/calendar" );
+  davItem.setContentType( QLatin1String("text/calendar") );
   davItem.setEtag( item.remoteRevision() );
 
   DavItemFetchJob *job = new DavItemFetchJob( davUrl, davItem );
@@ -456,7 +456,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     collection.setParentCollection( mDavCollectionRoot );
     collection.setRemoteId( davCollection.url() );
     if ( davCollection.displayName().isEmpty() ) {
-      collection.setName( name() + " (" + davCollection.url() + ')' );
+      collection.setName( name() + QLatin1String(" (") + davCollection.url() + QLatin1Char(')') );
     } else {
       collection.setName( davCollection.displayName() );
     }

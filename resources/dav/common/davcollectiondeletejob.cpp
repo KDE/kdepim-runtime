@@ -29,9 +29,9 @@ DavCollectionDeleteJob::DavCollectionDeleteJob(const DavUtils::DavUrl &url, QObj
 void DavCollectionDeleteJob::start()
 {
   KIO::DeleteJob *job = KIO::del( mUrl.url(), KIO::HideProgressInfo | KIO::DefaultFlags );
-  job->addMetaData( "PropagateHttpHeader", "true" );
-  job->addMetaData( "cookies", "none" );
-  job->addMetaData( "no-auth-prompt", "true" );
+  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
+  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
+  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
 
   connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
 }
@@ -41,9 +41,9 @@ void DavCollectionDeleteJob::davJobFinished( KJob *job )
   KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
 
   if ( deleteJob->error() && deleteJob->error() != KIO::ERR_NO_CONTENT ) {
-    const int responseCode = deleteJob->queryMetaData( "responsecode" ).isEmpty() ?
+    const int responseCode = deleteJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
                               0 :
-                              deleteJob->queryMetaData( "responsecode" ).toInt();
+                              deleteJob->queryMetaData( QLatin1String("responsecode") ).toInt();
 
     QString err;
     if ( deleteJob->error() != KIO::ERR_SLAVE_DEFINED )

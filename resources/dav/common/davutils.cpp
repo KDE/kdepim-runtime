@@ -64,7 +64,7 @@ QDomElement DavUtils::nextSiblingElementNS( const QDomElement &element, const QS
 DavUtils::Privileges DavUtils::extractPrivileges( const QDomElement &element )
 {
   Privileges final = None;
-  QDomElement privElement = firstChildElementNS( element, "DAV:", "privilege" );
+  QDomElement privElement = firstChildElementNS( element, QLatin1String("DAV:"), QLatin1String("privilege"));
 
   while ( !privElement.isNull() ) {
     QDomElement child = privElement.firstChildElement();
@@ -74,7 +74,7 @@ DavUtils::Privileges DavUtils::extractPrivileges( const QDomElement &element )
       child = child.nextSiblingElement();
     }
 
-    privElement = DavUtils::nextSiblingElementNS( privElement, "DAV:", "privilege" );
+    privElement = DavUtils::nextSiblingElementNS( privElement, QLatin1String("DAV:"), QLatin1String("privilege") );
   }
 
   return final;
@@ -96,27 +96,27 @@ DavUtils::Privileges DavUtils::parsePrivilege( const QDomElement &element )
     // This is a normal privilege
     const QString privname = element.localName();
 
-    if ( privname == "read" )
+    if ( privname == QLatin1String("read") )
       final |= DavUtils::Read;
-    else if ( privname == "write" )
+    else if ( privname == QLatin1String("write") )
       final |= DavUtils::Write;
-    else if ( privname == "write-properties" )
+    else if ( privname == QLatin1String("write-properties") )
       final |= DavUtils::WriteProperties;
-    else if ( privname == "write-content" )
+    else if ( privname == QLatin1String("write-content") )
       final |= DavUtils::WriteContent;
-    else if ( privname == "unlock" )
+    else if ( privname == QLatin1String("unlock") )
       final |= DavUtils::Unlock;
-    else if ( privname == "read-acl" )
+    else if ( privname == QLatin1String("read-acl") )
       final |= DavUtils::ReadAcl;
-    else if ( privname == "read-current-user-privilege-set" )
+    else if ( privname == QLatin1String("read-current-user-privilege-set") )
       final |= DavUtils::ReadCurrentUserPrivilegeSet;
-    else if ( privname == "write-acl" )
+    else if ( privname == QLatin1String("write-acl") )
       final |= DavUtils::WriteAcl;
-    else if ( privname == "bind" )
+    else if ( privname == QLatin1String("bind") )
       final |= DavUtils::Bind;
-    else if ( privname == "unbind" )
+    else if ( privname == QLatin1String("unbind") )
       final |= DavUtils::Unbind;
-    else if ( privname == "all" )
+    else if ( privname == QLatin1String("all") )
       final |= DavUtils::All;
   }
 
@@ -195,11 +195,11 @@ DavUtils::Protocol DavUtils::protocolByName( const QString &name )
 {
   DavUtils::Protocol protocol = DavUtils::CalDav;
 
-  if ( name == "CalDav" ) {
+  if ( name == QLatin1String("CalDav") ) {
     protocol = DavUtils::CalDav;
-  } else if ( name == "CardDav" ) {
+  } else if ( name == QLatin1String("CardDav") ) {
     protocol = DavUtils::CardDav;
-  } else if ( name == "GroupDav" ) {
+  } else if ( name == QLatin1String("GroupDav") ) {
     protocol = DavUtils::GroupDav;
   } else {
     kError() << "Unexpected protocol name : " << name;
@@ -240,7 +240,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
       return davItem;
     }
 
-    url = KUrl( basePath + fileName + ".vcf" );
+    url = KUrl( basePath + fileName + QLatin1String(".vcf") );
 
     const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
     if ( protoAttr ) {
@@ -264,8 +264,8 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
       return davItem;
     }
 
-    url = KUrl( basePath + fileName + ".ics" );
-    mimeType = "text/calendar";
+    url = KUrl( basePath + fileName + QLatin1String(".ics") );
+    mimeType = QLatin1String("text/calendar");
 
     KCalCore::ICalFormat formatter;
     rawData = formatter.toICalString( ptr ).toUtf8();

@@ -78,6 +78,23 @@ InfoDialog::~InfoDialog()
   KGlobal::deref();
 }
 
+static KMigratorBase::MessageType convertType( MigratorBase::MessageType type )
+{
+  switch ( type ) {
+    case MigratorBase::Success: return KMigratorBase::Success;
+    case MigratorBase::Error: return KMigratorBase::Error;
+    case MigratorBase::Skip: return KMigratorBase::Skip;
+    case MigratorBase::Warning: return KMigratorBase::Warning;
+    case MigratorBase::Info: return KMigratorBase::Info;
+  }
+  return KMigratorBase::Info;
+}
+
+void InfoDialog::message( MigratorBase::MessageType type, const QString& msg )
+{
+  message( convertType(type), msg );
+}
+
 void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
 {
   bool autoScroll = mAutoScrollList;

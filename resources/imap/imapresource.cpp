@@ -94,6 +94,7 @@ Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 #endif
 
 Q_DECLARE_METATYPE(QList<qint64>)
+Q_DECLARE_METATYPE(QWeakPointer<QObject>)
 
 using namespace Akonadi;
 
@@ -190,7 +191,7 @@ void ImapResource::fetchItemsWithoutBodies( const Collection &collection,
                                             QObject* receiver, const char* slot)
 {
   Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( collection, m_bodyCheckSession );
-  fetchJob->setProperty( "receiver", QVariant::fromValue( receiver ) );
+  fetchJob->setProperty( "receiver", QVariant::fromValue( QWeakPointer<QObject>( receiver ) ) );
   fetchJob->setProperty( "slot", QString::fromLatin1( slot ) );
   fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
   fetchJob->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
@@ -202,6 +203,11 @@ void ImapResource::fetchItemsWithoutBodies( const Collection &collection,
 void ImapResource::fetchItemsWithoutBodiesDone( KJob *job )
 {
   Akonadi::ItemFetchJob *fetch = qobject_cast<Akonadi::ItemFetchJob*>( job );
+  QWeakPointer<QObject> receiver = fetch->property( "receiver" ).value<QWeakPointer<QObject> >();
+  if ( receiver.isNull() ) {
+      kDebug() << "Parent task has been terminated";
+      return;
+  }
 
   QList<qint64> uids;
   if ( job->error() ) {
@@ -220,9 +226,8 @@ void ImapResource::fetchItemsWithoutBodiesDone( KJob *job )
     }
   }
 
-  QObject *receiver = fetch->property( "receiver" ).value<QObject*>();
   const QString slot = fetch->property( "slot" ).toString();
-  QMetaObject::invokeMethod( receiver, slot.toLatin1().constData(),
+  QMetaObject::invokeMethod( receiver.data(), slot.toLatin1().constData(),
                              Q_ARG( QList<qint64>, uids ) );
 }
 

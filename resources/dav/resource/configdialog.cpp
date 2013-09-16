@@ -36,7 +36,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   : KDialog( parent )
 {
   mUi.setupUi( mainWidget() );
-  setWindowIcon( KIcon( "folder-remote" ) );
+  setWindowIcon( KIcon( QLatin1String("folder-remote") ) );
 
   mModel = new QStandardItemModel();
   QStringList headers;
@@ -105,7 +105,7 @@ void ConfigDialog::onAddButtonClicked()
 
       urlConfig->mUrl = dlg->remoteUrl();
       if ( dlg->useDefaultCredentials() ) {
-        urlConfig->mUser = "$default$";
+        urlConfig->mUser = QLatin1String("$default$");
       } else {
         urlConfig->mUser = dlg->username();
         urlConfig->mPassword = dlg->password();
@@ -135,14 +135,14 @@ void ConfigDialog::onSearchButtonClicked()
   if ( result == QDialog::Accepted && !dlg.isNull() ) {
     QStringList results = dlg->selection();
     foreach ( const QString &result, results ) {
-      QStringList split = result.split( '|' );
+      QStringList split = result.split( QLatin1Char('|') );
       DavUtils::Protocol protocol = DavUtils::protocolByName( split.at( 0 ) );
       if ( !Settings::self()->urlConfiguration( protocol, split.at( 1 ) ) ) {
         Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
         urlConfig->mUrl = split.at( 1 );
         if ( dlg->useDefaultCredentials() ) {
-          urlConfig->mUser = "$default$";
+          urlConfig->mUser = QLatin1String("$default$");
         } else {
           urlConfig->mUser = dlg->username();
           urlConfig->mPassword = dlg->password();
@@ -211,7 +211,7 @@ void ConfigDialog::onEditButtonClicked()
     Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
     urlConfigAccepted->mUrl = dlg->remoteUrl();
     if ( dlg->useDefaultCredentials() ) {
-      urlConfigAccepted->mUser = "$default$";
+      urlConfigAccepted->mUser = QLatin1String("$default$");
     } else {
       urlConfigAccepted->mUser = dlg->username();
       urlConfigAccepted->mPassword = dlg->password();

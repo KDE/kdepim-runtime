@@ -55,10 +55,10 @@ KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument 
   KIO::DavJob *job = KIO::davPropFind( url, document, depth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added
-  const QString header = "Content-Type: text/xml\r\nDepth: " + depth;
-  job->addMetaData( "customHTTPHeader", header );
-  job->addMetaData( "cookies", "none" );
-  job->addMetaData( "no-auth-prompt", "true" );
+  const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
+  job->addMetaData( QLatin1String("customHTTPHeader"), header );
+  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
+  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
   job->setProperty( "extraDavDepth", QVariant::fromValue( depth ) );
 
   return job;
@@ -69,10 +69,10 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
   KIO::DavJob *job = KIO::davReport( url, document.toString(), depth, KIO::HideProgressInfo | KIO::DefaultFlags );
 
   // workaround needed, Depth: header doesn't seem to be correctly added
-  const QString header = "Content-Type: text/xml\r\nDepth: " + depth;
-  job->addMetaData( "customHTTPHeader", header );
-  job->addMetaData( "cookies", "none" );
-  job->addMetaData( "no-auth-prompt", "true" );
+  const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
+  job->addMetaData( QLatin1String("customHTTPHeader"), header );
+  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
+  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
   job->setProperty( "extraDavDepth", QVariant::fromValue( depth ) );
 
   return job;
@@ -81,10 +81,10 @@ KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &d
 KIO::DavJob* DavManager::createPropPatchJob( const KUrl &url, const QDomDocument &document ) const
 {
   KIO::DavJob *job = KIO::davPropPatch( url, document, KIO::HideProgressInfo | KIO::DefaultFlags );
-  const QString header = "Content-Type: text/xml";
-  job->addMetaData( "customHTTPHeader", header );
-  job->addMetaData( "cookies", "none" );
-  job->addMetaData( "no-auth-prompt", "true" );
+  const QString header = QLatin1String("Content-Type: text/xml");
+  job->addMetaData( QLatin1String("customHTTPHeader"), header );
+  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
+  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
   return job;
 }
 

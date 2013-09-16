@@ -10,13 +10,13 @@
 *
 * This library is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 * Lesser General Public License for more details.
 *
 * You should have received a copy of the GNU Lesser General Public
 * License along with this library; if not, write to the Free Software
 * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-* 02110-1301  USA
+* 02110-1301  USA
 */
 
 #include <akonadi/changerecorder.h>
@@ -84,8 +84,8 @@ QmlTestWidget::QmlTestWidget(QWidget* parent)
   QDeclarativeView *view = new QDeclarativeView( this );
   mainLayout->addWidget( view );
   
-  view->engine()->rootContext()->setContextProperty( "collectionModel", QVariant::fromValue( static_cast<QObject*>( collectionFilter ) ) );
-  view->engine()->rootContext()->setContextProperty( "application", QVariant::fromValue( static_cast<QObject*>( this ) ) );
+  view->engine()->rootContext()->setContextProperty( QLatin1String("collectionModel"), QVariant::fromValue( static_cast<QObject*>( collectionFilter ) ) );
+  view->engine()->rootContext()->setContextProperty( QLatin1String("application"), QVariant::fromValue( static_cast<QObject*>( this ) ) );
   view->setSource( QUrl( QLatin1String("collectionviewtest.qml") ) ); // TODO make this a command line argument so this test can be used for other qml components as well
 }
 
