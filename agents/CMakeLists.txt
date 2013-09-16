@@ -14,6 +14,7 @@ endmacro()
 
 add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
+add_subdirectory( migration )
 
 if( STRIGI_FOUND AND AKONADI_USE_STRIGI_SEARCH )
 add_subdirectory( strigifeeder )

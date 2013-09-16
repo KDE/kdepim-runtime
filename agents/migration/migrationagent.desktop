@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Migration Agent
+Type=AkonadiAgent
+Exec=akonadi_migration_agent
+Icon=system-reboot
+
+X-Akonadi-Capabilities=Unique,Autostart
+X-Akonadi-Identifier=akonadi_migration_agent
