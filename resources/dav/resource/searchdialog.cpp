@@ -141,7 +141,7 @@ void SearchDialog::onSearchJobFinished( KJob* job )
   KUrl url = davUrl.url();
 
   foreach ( const DavPrincipalSearchJob::Result &result, results ) {
-    if ( result.value.startsWith( '/' ) ) {
+    if ( result.value.startsWith( QLatin1Char('/') ) ) {
       url.setPath( result.value );
     } else {
       KUrl tmp( result.value );
@@ -181,13 +181,13 @@ void SearchDialog::onCollectionsFetchJobFinished( KJob* job )
 
   foreach ( const DavCollection &collection, collections ) {
     QStandardItem *item = new QStandardItem( collection.displayName() );
-    QString data( DavUtils::protocolName( collection.protocol() ) + '|' + collection.url() );
+    QString data( DavUtils::protocolName( collection.protocol() ) + QLatin1Char('|') + collection.url() );
     item->setData( data, Qt::UserRole + 1 );
     item->setToolTip( collection.url() );
     if ( collection.protocol() == DavUtils::CalDav )
-      item->setIcon( KIcon( "view-calendar" ) );
+      item->setIcon( KIcon( QLatin1String("view-calendar") ) );
     else
-      item->setIcon( KIcon( "view-pim-contacts" ) );
+      item->setIcon( KIcon( QLatin1String("view-pim-contacts" )) );
     mModel->appendRow( item );
   }
 }

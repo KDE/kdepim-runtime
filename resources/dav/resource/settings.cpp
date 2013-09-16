@@ -66,7 +66,7 @@ Settings::UrlConfiguration::UrlConfiguration()
 
 Settings::UrlConfiguration::UrlConfiguration( const QString &serialized )
 {
-  const QStringList splitString = serialized.split( '|' );
+  const QStringList splitString = serialized.split( QLatin1Char('|') );
 
   if ( splitString.size() == 3 ) {
     mUrl = splitString.at( 2 );
@@ -78,8 +78,8 @@ Settings::UrlConfiguration::UrlConfiguration( const QString &serialized )
 QString Settings::UrlConfiguration::serialize()
 {
   QString serialized = mUser;
-  serialized.append( '|' ).append( DavUtils::protocolName( DavUtils::Protocol( mProtocol ) ) );
-  serialized.append( '|' ).append( mUrl );
+  serialized.append( QLatin1Char('|') ).append( DavUtils::protocolName( DavUtils::Protocol( mProtocol ) ) );
+  serialized.append( QLatin1Char('|') ).append( mUrl );
   return serialized;
 }
 
@@ -137,12 +137,12 @@ void Settings::setResourceIdentifier(const QString& identifier)
 
 void Settings::setDefaultPassword( const QString &password )
 {
-  savePassword( mResourceIdentifier, "$default$", password );
+  savePassword( mResourceIdentifier, QLatin1String("$default$"), password );
 }
 
 QString Settings::defaultPassword()
 {
-  return loadPassword( mResourceIdentifier, "$default$" );
+  return loadPassword( mResourceIdentifier, QLatin1String("$default$") );
 }
 
 DavUtils::DavUrl::List Settings::configuredDavUrls()
@@ -154,7 +154,7 @@ DavUtils::DavUrl::List Settings::configuredDavUrls()
 
   while ( it.hasNext() ) {
     it.next();
-    QStringList split = it.key().split( ',' );
+    QStringList split = it.key().split( QLatin1Char(',') );
     davUrls << configuredDavUrl( DavUtils::protocolByName( split.at( 1 ) ), split.at( 0 ) );
   }
 
@@ -186,7 +186,7 @@ DavUtils::DavUrl Settings::davUrlFromCollectionUrl( const QString &collectionUrl
   QString targetUrl = finalUrl.isEmpty() ? collectionUrl : finalUrl;
 
   if ( mCollectionsUrlsMapping.contains( collectionUrl ) ) {
-    QStringList split = mCollectionsUrlsMapping[ collectionUrl ].split( ',' );
+    QStringList split = mCollectionsUrlsMapping[ collectionUrl ].split( QLatin1Char(',') );
     if ( split.size() == 2 )
       davUrl = configuredDavUrl( DavUtils::protocolByName( split.at( 1 ) ), split.at( 0 ), targetUrl );
   }
@@ -199,11 +199,11 @@ void Settings::addCollectionUrlMapping( DavUtils::Protocol proto, const QString 
   if ( mCollectionsUrlsMapping.isEmpty() )
     loadMappings();
 
-  QString value = configuredUrl + ',' + DavUtils::protocolName( proto );
+  QString value = configuredUrl + QLatin1Char(',') + DavUtils::protocolName( proto );
   mCollectionsUrlsMapping.insert( collectionUrl, value );
 
   // Update the cache now
-  QMap<QString, QString> tmp( mCollectionsUrlsMapping );
+  //QMap<QString, QString> tmp( mCollectionsUrlsMapping );
   QFile cacheFile( mCollectionsUrlsMappingCache );
   if ( cacheFile.open( QIODevice::WriteOnly ) ) {
     QDataStream cache( &cacheFile );
@@ -218,7 +218,7 @@ QStringList Settings::mappedCollections( DavUtils::Protocol proto, const QString
   if ( mCollectionsUrlsMapping.isEmpty() )
     loadMappings();
 
-  QString value = configuredUrl + ',' + DavUtils::protocolName( proto );
+  QString value = configuredUrl + QLatin1Char(',') + DavUtils::protocolName( proto );
   return mCollectionsUrlsMapping.keys( value );
 }
 
@@ -231,7 +231,7 @@ void Settings::reloadConfig()
 
 void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
 {
-  QString key = urlConfig->mUrl + ',' + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
+  QString key = urlConfig->mUrl + QLatin1Char(',') + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
 
   if ( mUrls.contains( key ) ) {
     removeUrlConfiguration( DavUtils::Protocol( urlConfig->mProtocol ), urlConfig->mUrl );
@@ -245,7 +245,7 @@ void Settings::newUrlConfiguration( Settings::UrlConfiguration *urlConfig )
 
 void Settings::removeUrlConfiguration( DavUtils::Protocol proto, const QString &url )
 {
-  QString key = url + ',' + DavUtils::protocolName( proto );
+  QString key = url + QLatin1Char(',') + DavUtils::protocolName( proto );
 
   if ( !mUrls.contains( key ) )
     return;
@@ -257,7 +257,7 @@ void Settings::removeUrlConfiguration( DavUtils::Protocol proto, const QString &
 
 Settings::UrlConfiguration * Settings::urlConfiguration( DavUtils::Protocol proto, const QString &url )
 {
-  QString key = url + ',' + DavUtils::protocolName( proto );
+  QString key = url + QLatin1Char(',') + DavUtils::protocolName( proto );
 
   UrlConfiguration *ret = 0;
   if ( mUrls.contains( key ) )
@@ -276,7 +276,7 @@ Settings::UrlConfiguration * Settings::urlConfiguration( DavUtils::Protocol prot
 
 QString Settings::username( DavUtils::Protocol proto, const QString &url ) const
 {
-  QString key = url + ',' + DavUtils::protocolName( proto );
+  QString key = url + QLatin1Char(',') + DavUtils::protocolName( proto );
 
   if ( mUrls.contains( key ) )
     if ( mUrls[ key ]->mUser == QLatin1String( "$default$" ) )
@@ -289,7 +289,7 @@ QString Settings::username( DavUtils::Protocol proto, const QString &url ) const
 
 QString Settings::password(DavUtils::Protocol proto, const QString& url)
 {
-  QString key = url + ',' + DavUtils::protocolName( proto );
+  QString key = url + QLatin1Char(',') + DavUtils::protocolName( proto );
 
   if ( mUrls.contains( key ) )
     if ( mUrls[ key ]->mUser == QLatin1String( "$default$" ) )
@@ -304,7 +304,7 @@ void Settings::buildUrlsList()
 {
   foreach ( const QString &serializedUrl, remoteUrls() ) {
     UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
-    QString key = urlConfig->mUrl + ',' + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
+    QString key = urlConfig->mUrl + QLatin1Char(',') + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
     urlConfig->mPassword = loadPassword( key, urlConfig->mUser );
     mUrls[ key ] = urlConfig;
   }
@@ -312,7 +312,7 @@ void Settings::buildUrlsList()
 
 void Settings::loadMappings()
 {
-  QString collectionsMappingCacheBase = QString( "akonadi-davgroupware/%1_c2u.dat" ).arg( KApplication::applicationName() );
+  QString collectionsMappingCacheBase = QString::fromLatin1( "akonadi-davgroupware/%1_c2u.dat" ).arg( KApplication::applicationName() );
   mCollectionsUrlsMappingCache = KStandardDirs::locateLocal( "data", collectionsMappingCacheBase );
   QFile collectionsMappingsCache( mCollectionsUrlsMappingCache );
 
@@ -345,7 +345,7 @@ void Settings::updateRemoteUrls()
 
 void Settings::savePassword( const QString &key, const QString &user, const QString &password )
 {
-  QString entry = key + ',' + user;
+  QString entry = key + QLatin1Char(',') + user;
   mPasswordsCache[entry] = password;
 
   KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
@@ -367,9 +367,9 @@ QString Settings::loadPassword( const QString &key, const QString &user )
   QString pass;
 
   if ( user == QLatin1String( "$default$" ) )
-    entry = mResourceIdentifier + ',' + user;
+    entry = mResourceIdentifier + QLatin1Char(',') + user;
   else
-    entry = key + ',' + user;
+    entry = key + QLatin1Char(',') + user;
 
   if ( mPasswordsCache.contains( entry ) )
     return mPasswordsCache[entry];
@@ -443,16 +443,16 @@ void Settings::updateToV2()
 
   QString urlConfigStr = urls.at( 0 );
   UrlConfiguration urlConfig( urlConfigStr );
-  QRegExp regexp( '^' + urlConfig.mUser );
+  QRegExp regexp( QLatin1Char('^') + urlConfig.mUser );
 
   QMutableStringListIterator it( urls );
   while ( it.hasNext() ) {
     it.next();
-    it.value().replace( regexp, QString( "$default$" ) );
+    it.value().replace( regexp, QLatin1String( "$default$" ) );
   }
 
   setDefaultUsername( urlConfig.mUser );
-  QString key = urlConfig.mUrl + ',' + DavUtils::protocolName( DavUtils::Protocol( urlConfig.mProtocol ) );
+  QString key = urlConfig.mUrl + QLatin1Char(',') + DavUtils::protocolName( DavUtils::Protocol( urlConfig.mProtocol ) );
   setDefaultPassword( loadPassword( key, urlConfig.mUser ) );
   setRemoteUrls( urls );
   setSettingsVersion( 2 );
@@ -464,12 +464,12 @@ void Settings::updateToV3()
   QStringList updatedUrls;
 
   foreach ( const QString &url, remoteUrls() ) {
-    QStringList splitUrl = url.split( '|' );
+    QStringList splitUrl = url.split( QLatin1Char('|') );
 
     if ( splitUrl.size() == 3 ) {
       DavUtils::Protocol protocol = DavUtils::protocolByTranslatedName( splitUrl.at( 1 ) );
       splitUrl[1] = DavUtils::protocolName( protocol );
-      updatedUrls << splitUrl.join( "|" );
+      updatedUrls << splitUrl.join( QLatin1String("|") );
     }
   }
 

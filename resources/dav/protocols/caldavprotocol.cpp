@@ -47,31 +47,31 @@ CaldavProtocol::CaldavProtocol()
   {
     QDomDocument document;
 
-    QDomElement queryElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
+    QDomElement queryElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("calendar-query") );
     document.appendChild( queryElement );
 
-    QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+    QDomElement propElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
     queryElement.appendChild( propElement );
 
-    QDomElement getetagElement = document.createElementNS( "DAV:", "getetag" );
+    QDomElement getetagElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("getetag") );
     propElement.appendChild( getetagElement );
 
-    QDomElement getRTypeElement = document.createElementNS( "DAV:", "resourcetype" );
+    QDomElement getRTypeElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("resourcetype") );
     propElement.appendChild( getRTypeElement );
 
-    QDomElement filterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
+    QDomElement filterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("filter") );
     queryElement.appendChild( filterElement );
 
-    QDomElement compfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+    QDomElement compfilterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp-filter") );
 
-    QDomAttr nameAttribute = document.createAttribute( "name" );
-    nameAttribute.setValue( "VCALENDAR" );
+    QDomAttr nameAttribute = document.createAttribute( QLatin1String("name") );
+    nameAttribute.setValue( QLatin1String("VCALENDAR") );
     compfilterElement.setAttributeNode( nameAttribute );
     filterElement.appendChild( compfilterElement );
 
-    QDomElement subcompfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
-    nameAttribute = document.createAttribute( "name" );
-    nameAttribute.setValue( "VEVENT" );
+    QDomElement subcompfilterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp-filter") );
+    nameAttribute = document.createAttribute( QLatin1String("name") );
+    nameAttribute.setValue( QLatin1String("VEVENT") );
     subcompfilterElement.setAttributeNode( nameAttribute );
     compfilterElement.appendChild( subcompfilterElement );
 
@@ -97,31 +97,31 @@ CaldavProtocol::CaldavProtocol()
   {
     QDomDocument document;
 
-    QDomElement queryElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
+    QDomElement queryElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("calendar-query") );
     document.appendChild( queryElement );
 
-    QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+    QDomElement propElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
     queryElement.appendChild( propElement );
 
-    QDomElement getetagElement = document.createElementNS( "DAV:", "getetag" );
+    QDomElement getetagElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("getetag") );
     propElement.appendChild( getetagElement );
 
-    QDomElement getRTypeElement = document.createElementNS( "DAV:", "resourcetype" );
+    QDomElement getRTypeElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("resourcetype") );
     propElement.appendChild( getRTypeElement );
 
-    QDomElement filterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
+    QDomElement filterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("filter") );
     queryElement.appendChild( filterElement );
 
-    QDomElement compfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+    QDomElement compfilterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp-filter") );
 
-    QDomAttr nameAttribute = document.createAttribute( "name" );
-    nameAttribute.setValue( "VCALENDAR" );
+    QDomAttr nameAttribute = document.createAttribute( QLatin1String("name") );
+    nameAttribute.setValue( QLatin1String("VCALENDAR") );
     compfilterElement.setAttributeNode( nameAttribute );
     filterElement.appendChild( compfilterElement );
 
-    QDomElement subcompfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
-    nameAttribute = document.createAttribute( "name" );
-    nameAttribute.setValue( "VTODO" );
+    QDomElement subcompfilterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp-filter") );
+    nameAttribute = document.createAttribute( QLatin1String("name") );
+    nameAttribute.setValue( QLatin1String("VTODO") );
     subcompfilterElement.setAttributeNode( nameAttribute );
     compfilterElement.appendChild( subcompfilterElement );
 
@@ -147,31 +147,31 @@ CaldavProtocol::CaldavProtocol()
   {
     QDomDocument document;
 
-    QDomElement queryElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-query" );
+    QDomElement queryElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("calendar-query") );
     document.appendChild( queryElement );
 
-    QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+    QDomElement propElement = document.createElementNS( QLatin1String("DAV:"),QLatin1String( "prop") );
     queryElement.appendChild( propElement );
 
-    QDomElement getetagElement = document.createElementNS( "DAV:", "getetag" );
+    QDomElement getetagElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("getetag") );
     propElement.appendChild( getetagElement );
 
-    QDomElement getRTypeElement = document.createElementNS( "DAV:", "resourcetype" );
+    QDomElement getRTypeElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("resourcetype") );
     propElement.appendChild( getRTypeElement );
 
-    QDomElement filterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "filter" );
+    QDomElement filterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("filter") );
     queryElement.appendChild( filterElement );
 
-    QDomElement compfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
+    QDomElement compfilterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp-filter") );
 
-    QDomAttr nameAttribute = document.createAttribute( "name" );
-    nameAttribute.setValue( "VCALENDAR" );
+    QDomAttr nameAttribute = document.createAttribute( QLatin1String("name") );
+    nameAttribute.setValue( QLatin1String("VCALENDAR") );
     compfilterElement.setAttributeNode( nameAttribute );
     filterElement.appendChild( compfilterElement );
 
-    QDomElement subcompfilterElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "comp-filter" );
-    nameAttribute = document.createAttribute( "name" );
-    nameAttribute.setValue( "VJOURNAL" );
+    QDomElement subcompfilterElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp-filter") );
+    nameAttribute = document.createAttribute( QLatin1String("name") );
+    nameAttribute.setValue( QLatin1String("VJOURNAL") );
     subcompfilterElement.setAttributeNode( nameAttribute );
     compfilterElement.appendChild( subcompfilterElement );
 
@@ -197,29 +197,29 @@ bool CaldavProtocol::useMultiget() const
 
 QString CaldavProtocol::principalHomeSet() const
 {
-  return QString( "calendar-home-set" );
+  return QLatin1String( "calendar-home-set" );
 }
 
 QString CaldavProtocol::principalHomeSetNS() const
 {
-  return QString( "urn:ietf:params:xml:ns:caldav" );
+  return QLatin1String( "urn:ietf:params:xml:ns:caldav" );
 }
 
 QDomDocument CaldavProtocol::collectionsQuery() const
 {
   QDomDocument document;
 
-  QDomElement propfindElement = document.createElementNS( "DAV:", "propfind" );
+  QDomElement propfindElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("propfind") );
   document.appendChild( propfindElement );
 
-  QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+  QDomElement propElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
   propfindElement.appendChild( propElement );
 
-  propElement.appendChild( document.createElementNS( "DAV:", "displayname" ) );
-  propElement.appendChild( document.createElementNS( "DAV:", "resourcetype" ) );
-  propElement.appendChild( document.createElementNS( "http://apple.com/ns/ical/", "calendar-color" ) );
-  propElement.appendChild( document.createElementNS( "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" ) );
-  propElement.appendChild( document.createElementNS( "DAV:", "current-user-privilege-set" ) );
+  propElement.appendChild( document.createElementNS( QLatin1String("DAV:"), QLatin1String("displayname") ) );
+  propElement.appendChild( document.createElementNS( QLatin1String("DAV:"), QLatin1String("resourcetype" )) );
+  propElement.appendChild( document.createElementNS( QLatin1String("http://apple.com/ns/ical/"), QLatin1String("calendar-color") ) );
+  propElement.appendChild( document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("supported-calendar-component-set") ) );
+  propElement.appendChild( document.createElementNS( QLatin1String("DAV:"), QLatin1String("current-user-privilege-set") ) );
 
   return document;
 }
@@ -227,7 +227,7 @@ QDomDocument CaldavProtocol::collectionsQuery() const
 QString CaldavProtocol::collectionsXQuery() const
 {
   //const QString query( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/*[local-name()='supported-calendar-component-set' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/*[local-name()='comp' and namespace-uri()='urn:ietf:params:xml:ns:caldav' and (@name='VTODO' or @name='VEVENT')]/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
-  const QString query( "//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']" );
+  const QString query( QLatin1String("//*[local-name()='calendar' and namespace-uri()='urn:ietf:params:xml:ns:caldav']/ancestor::*[local-name()='prop' and namespace-uri()='DAV:']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']") );
 
   return query;
 }
@@ -246,17 +246,17 @@ QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
 {
   QDomDocument document;
 
-  QDomElement multigetElement = document.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-multiget" );
+  QDomElement multigetElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("calendar-multiget") );
   document.appendChild( multigetElement );
 
-  QDomElement propElement = document.createElementNS( "DAV:", "prop" );
+  QDomElement propElement = document.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
   multigetElement.appendChild( propElement );
 
-  propElement.appendChild( document.createElementNS( "DAV:", "getetag" ) );
-  propElement.appendChild( document.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-data" ) );
+  propElement.appendChild( document.createElementNS( QLatin1String("DAV:"),QLatin1String("getetag") ) );
+  propElement.appendChild( document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("calendar-data") ) );
 
   foreach ( const QString &url, urls ) {
-    QDomElement hrefElement = document.createElementNS( "DAV:", "href" );
+    QDomElement hrefElement = document.createElementNS(QLatin1String( "DAV:"), QLatin1String("href") );
     const KUrl pathUrl( url );
 
     const QDomText textNode = document.createTextNode( pathUrl.encodedPathAndQuery() );
@@ -270,12 +270,12 @@ QDomDocument CaldavProtocol::itemsReportQuery( const QStringList &urls ) const
 
 QString CaldavProtocol::responseNamespace() const
 {
-  return "urn:ietf:params:xml:ns:caldav";
+  return QLatin1String("urn:ietf:params:xml:ns:caldav");
 }
 
 QString CaldavProtocol::dataTagName() const
 {
-  return "calendar-data";
+  return QLatin1String("calendar-data");
 }
 
 DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomElement &propstatElement ) const
@@ -302,11 +302,11 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
    *   </propstat>
    */
 
-  const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
-  const QDomElement supportedcomponentElement = DavUtils::firstChildElementNS( propElement, "urn:ietf:params:xml:ns:caldav", "supported-calendar-component-set" );
+  const QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, QLatin1String("DAV:"), QLatin1String("prop") );
+  const QDomElement supportedcomponentElement = DavUtils::firstChildElementNS( propElement, QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("supported-calendar-component-set") );
 
   DavCollection::ContentTypes contentTypes;
-  QDomElement compElement = DavUtils::firstChildElementNS( supportedcomponentElement, "urn:ietf:params:xml:ns:caldav", "comp" );
+  QDomElement compElement = DavUtils::firstChildElementNS( supportedcomponentElement, QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp") );
 
   /*
    * Assign the content-type if the server didn't return anything.
@@ -324,7 +324,7 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
   }
 
   while ( !compElement.isNull() ) {
-    const QString type = compElement.attribute( "name" ).toLower();
+    const QString type = compElement.attribute( QLatin1String("name") ).toLower();
     if ( type == QLatin1String( "vcalendar" ) )
       contentTypes |= DavCollection::Calendar;
     else if ( type == QLatin1String( "vevent" ) )
@@ -336,7 +336,7 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes( const QDomEl
     else if ( type == QLatin1String( "vjournal" ) )
       contentTypes |= DavCollection::Journal;
 
-    compElement = DavUtils::nextSiblingElementNS( compElement, "urn:ietf:params:xml:ns:caldav", "comp" );
+    compElement = DavUtils::nextSiblingElementNS( compElement, QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("comp") );
   }
 
   return contentTypes;
