@@ -117,7 +117,7 @@ Akonadi::Item::List ItemQueue::fetchHighestPriorityItems(int numItems)
 
 bool ItemQueue::processBatch()
 {
-  kDebug() << "pipline size: " << mItemPipeline.size() << mFetchedItemList.size();
+  kDebug() << "pipeline size: " << mItemPipeline.size() << mFetchedItemList.size();
   if ( runningJobCount() > 0 ) {//wait until the old graph has been saved
     kDebug() << "blocked: " << runningJobCount();
     return false;
@@ -272,7 +272,7 @@ void ItemQueue::batchJobResult(KJob* job)
   removeJob( job );
   // FIXME: Only compute all of this if DEBUG messages have been enabled
   kDebug() << "------------------------------------------";
-  kDebug() << "pipline size: " << mItemPipeline.size();
+  kDebug() << "pipeline size: " << mItemPipeline.size();
   kDebug() << "fetchedItemList : " << mFetchedItemList.size();
 
   kDebug() << "Indexing took(ms): " << mTimer.elapsed();
