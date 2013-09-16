@@ -223,6 +223,6 @@ private:
     int mProgress;
 };
 
-Q_DECLARE_METATYPE(MigratorBase::MigrationState);
+Q_DECLARE_METATYPE(MigratorBase::MigrationState)
 
 #endif // MIGRATORBASE_H
