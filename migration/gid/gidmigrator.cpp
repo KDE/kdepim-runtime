@@ -46,6 +46,11 @@ bool GidMigrator::canStart()
     return MigratorBase::canStart();
 }
 
+bool GidMigrator::shouldAutostart() const
+{
+    return true;
+}
+
 void GidMigrator::startWork()
 {
     GidMigrationJob *job = new GidMigrationJob(QStringList() << mMimeType, this);

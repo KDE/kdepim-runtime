@@ -35,6 +35,9 @@ public:
     virtual QString description() const;
 
     virtual bool canStart();
+
+    virtual bool shouldAutostart() const;
+
 protected:
     virtual void startWork();
 private slots:
