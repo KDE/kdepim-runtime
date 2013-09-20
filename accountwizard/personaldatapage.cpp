@@ -179,7 +179,7 @@ void PersonalDataPage::ispdbSearchFinished( bool ok )
 
 void PersonalDataPage::slotSearchType(const QString &type)
 {
-    ui.SearchLabel->setText(type);
+    ui.mProgress->setActiveLabel(type);
 }
 
 void PersonalDataPage::configureSmtpAccount()
