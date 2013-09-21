@@ -126,21 +126,7 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="KPIMUtils::ProgressIndicatorWidget" name="mProgress"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="SearchLabel">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <italic>true</italic>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
+             <widget class="KPIMUtils::ProgressIndicatorLabel" name="mProgress"/>
             </item>
            </layout>
           </item>
@@ -283,9 +269,9 @@
    <header>klineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>KPIMUtils::ProgressIndicatorWidget</class>
+   <class>KPIMUtils::ProgressIndicatorLabel</class>
    <extends>QLabel</extends>
-   <header location="global">kpimutils/progressindicatorwidget.h</header>
+   <header location="global">kpimutils/progressindicatorlabel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
