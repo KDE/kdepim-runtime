@@ -84,6 +84,7 @@ private slots:
     void configure(WId windowId);
     void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
     void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
+    void slotInstanceAdded(const Akonadi::AgentInstance &instance);
     void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
     void slotIdentitiesChanged();
 
@@ -91,8 +92,10 @@ private:
     bool isActive() const;
     void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
+    void initializeInstanceCache();
     QStringList mListEmails;
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
+    QHash<QString, QString> mCacheResourceName;
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
     KPIMIdentities::IdentityManager *mIdentityManager;

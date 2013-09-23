@@ -62,6 +62,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );
 
+    initializeInstanceCache();
     mIdentityManager = new KPIMIdentities::IdentityManager( false, this );
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
@@ -74,6 +75,8 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
              this, SLOT(slotInstanceStatusChanged(Akonadi::AgentInstance)) );
     connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)),
              this, SLOT(slotInstanceRemoved(Akonadi::AgentInstance)) );
+    connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)),
+             this, SLOT(slotInstanceAdded(Akonadi::AgentInstance)) );
 
     changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
     changeRecorder()->itemFetchScope().setCacheOnly( true );
@@ -390,7 +393,8 @@ void NewMailNotifierAgent::slotShowNotifications()
                     hasUniqMessage = false;
                 }
             }
-            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
+            texts.append( i18np( "One new email in %2 from \"%3\"", "%1 new emails in %2 from \"%3\"", it.value().count(), displayName,
+                                 mCacheResourceName.value(it.key().resource()) ) );
         }
         if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
@@ -462,6 +466,11 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
     }
 }
 
+void NewMailNotifierAgent::slotInstanceAdded(const Akonadi::AgentInstance &instance)
+{
+    mCacheResourceName.insert(instance.identifier(), instance.name());
+}
+
 void NewMailNotifierAgent::printDebug()
 {
     kDebug()<<"instance in progress: "<<mInstanceNameInProgress
@@ -473,6 +482,13 @@ void NewMailNotifierAgent::printDebug()
 bool NewMailNotifierAgent::isActive() const
 {
     return isOnline() && NewMailNotifierAgentSettings::enabled();
+}
+
+void NewMailNotifierAgent::initializeInstanceCache()
+{
+    Q_FOREACH ( const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances() ) {
+        mCacheResourceName.insert(instance.identifier(), instance.name());
+    }
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
