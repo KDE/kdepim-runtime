@@ -113,7 +113,6 @@ public:
   virtual QSet<QByteArray> removedFlags() const;
 
   virtual QString rootRemoteId() const;
-  virtual QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true ) const;
 
   virtual void setIdleCollection( const Akonadi::Collection &collection );
   virtual void applyCollectionChanges( const Akonadi::Collection &collection );
@@ -146,6 +145,9 @@ public:
 
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
+
+  virtual QChar separatorCharacter() const;
+  virtual void setSeparatorCharacter( const QChar &separator );
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
 

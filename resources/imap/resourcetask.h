@@ -123,6 +123,7 @@ protected:
   void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
 
   const QChar separatorCharacter() const;
+  void setSeparatorCharacter( const QChar &separator );
 
   static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
   static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );

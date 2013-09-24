@@ -100,6 +100,8 @@ protected:
 
   virtual void doSetOnline(bool online);
 
+  QChar separatorCharacter() const;
+  void setSeparatorCharacter( const QChar &separator );
 
 private Q_SLOTS:
   void reconnect();
@@ -139,6 +141,7 @@ private:
   bool m_fastSync;
   Akonadi::Session *m_bodyCheckSession;
   QTimer *m_statusMessageTimer;
+  QChar m_separatorCharacter;
 };
 
 #endif
