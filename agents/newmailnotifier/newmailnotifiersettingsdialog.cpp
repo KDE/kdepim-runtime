@@ -28,6 +28,9 @@
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QVBoxLayout>
+#include <QLabel>
+#include <QDebug>
+#include <QWhatsThis>
 
 NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     : KDialog(parent)
@@ -83,9 +86,19 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mTextToSpeak->setChecked(NewMailNotifierAgentSettings::textToSpeakEnabled());
     vbox->addWidget(mTextToSpeak);
 
+    QLabel *howIsItWork = new QLabel(i18n( "<a href=\"whatsthis\">How does this work?</a>" ));
+    howIsItWork->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    vbox->addWidget(howIsItWork);
+    connect(howIsItWork, SIGNAL(linkActivated(QString)),SLOT(slotHelpLinkClicked(QString)) );
+
+    QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
+    textToSpeakLayout->setMargin(0);
+    QLabel *lab = new QLabel(i18n("message:"));
+    textToSpeakLayout->addWidget(lab);
     mTextToSpeakSetting = new KLineEdit;
     mTextToSpeakSetting->setText(NewMailNotifierAgentSettings::textToSpeak());
-    vbox->addWidget(mTextToSpeakSetting);
+    textToSpeakLayout->addWidget(mTextToSpeakSetting);
+    vbox->addLayout(textToSpeakLayout);
     vbox->addStretch();
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
 
@@ -100,6 +113,22 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 
 NewMailNotifierSettingsDialog::~NewMailNotifierSettingsDialog()
 {
+}
+
+void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
+{
+    qDebug()<<" void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)";
+    const QString help =
+            i18n( "<qt>"
+                  "<p>Here you can define message. "
+                  "You can use:</p>"
+                  "<ul>"
+                  "<li>%s set subject</li>"
+                  "<li>%f set from</li>"
+                  "</ul>"
+                  "</qt>" );
+
+    QWhatsThis::showText( QCursor::pos(), help );
 }
 
 void NewMailNotifierSettingsDialog::slotOkClicked()

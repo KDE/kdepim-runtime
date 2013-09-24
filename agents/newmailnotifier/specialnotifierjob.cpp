@@ -143,7 +143,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
-            if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
+            if (QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
                 /*
                 QString error;
                 if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
@@ -151,10 +151,10 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
                     return;
                 }
                 */
-            }
-            QDBusInterface ktts(QLatin1String("org.kde.kttsd"), QLatin1String("/KSpeech"), QLatin1String("org.kde.KSpeech"));
+                QDBusInterface ktts(QLatin1String("org.kde.kttsd"), QLatin1String("/KSpeech"), QLatin1String("org.kde.KSpeech"));
 
-            //ktts.asyncCall(QLatin1String("say"), text, 0);
+                //ktts.asyncCall(QLatin1String("say"), text, 0);
+            }
         }
     }
 
