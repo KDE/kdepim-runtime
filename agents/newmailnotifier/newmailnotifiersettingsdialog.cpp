@@ -22,6 +22,7 @@
 
 #include <KLocale>
 #include <KNotifyConfigWidget>
+#include <KLineEdit>
 
 #include <QTabWidget>
 #include <QCheckBox>
@@ -74,6 +75,22 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
+
+    QWidget *textSpeakWidget = new QWidget;
+    vbox = new QVBoxLayout;
+    textSpeakWidget->setLayout(vbox);
+    mTextToSpeak = new QCheckBox(i18n("Enabled"));
+    mTextToSpeak->setChecked(NewMailNotifierAgentSettings::textToSpeakEnabled());
+    vbox->addWidget(mTextToSpeak);
+
+    mTextToSpeakSetting = new KLineEdit;
+    mTextToSpeakSetting->setText(NewMailNotifierAgentSettings::textToSpeak());
+    vbox->addWidget(mTextToSpeakSetting);
+    vbox->addStretch();
+    tab->addTab(textSpeakWidget, i18n("Text to Speak"));
+
+
+
     mNotify = new KNotifyConfigWidget(this);
     mNotify->setApplication(QLatin1String("akonadi_newmailnotifier_agent"));
     tab->addTab(mNotify, i18n("Notify"));
@@ -92,7 +109,8 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setShowSubject(mShowSubject->isChecked());
     NewMailNotifierAgentSettings::setShowFolder(mShowFolders->isChecked());
     NewMailNotifierAgentSettings::setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
-
+    NewMailNotifierAgentSettings::setTextToSpeakEnabled(mTextToSpeak->isChecked());
+    NewMailNotifierAgentSettings::setTextToSpeak(mTextToSpeakSetting->text());
     NewMailNotifierAgentSettings::self()->writeConfig();
     mNotify->save();
     accept();

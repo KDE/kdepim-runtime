@@ -23,6 +23,7 @@
 #include <KDialog>
 class KNotifyConfigWidget;
 class QCheckBox;
+class KLineEdit;
 
 class NewMailNotifierSettingsDialog : public KDialog
 {
@@ -41,6 +42,8 @@ private:
     QCheckBox *mShowFolders;
     QCheckBox *mExcludeMySelf;
     KNotifyConfigWidget *mNotify;
+    QCheckBox *mTextToSpeak;
+    KLineEdit *mTextToSpeakSetting;
 };
 
 #endif // NEWMAILNOTIFIERSETTINGSDIALOG_H
