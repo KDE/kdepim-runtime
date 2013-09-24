@@ -87,7 +87,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addWidget(mTextToSpeak);
 
     QLabel *howIsItWork = new QLabel(i18n( "<a href=\"whatsthis\">How does this work?</a>" ));
-    howIsItWork->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     vbox->addWidget(howIsItWork);
     connect(howIsItWork, SIGNAL(linkActivated(QString)),SLOT(slotHelpLinkClicked(QString)) );
 

@@ -144,16 +144,11 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
             if (QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
-                /*
-                QString error;
-                if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
-                    KMessageBox::error(this, i18n( "Starting Jovie Text-to-Speech Service Failed"), error );
-                    return;
-                }
-                */
                 QDBusInterface ktts(QLatin1String("org.kde.kttsd"), QLatin1String("/KSpeech"), QLatin1String("org.kde.KSpeech"));
-
-                //ktts.asyncCall(QLatin1String("say"), text, 0);
+                QString message = NewMailNotifierAgentSettings::textToSpeak();
+                message.replace(QLatin1String("%s"), Qt::escape(mSubject));
+                message.replace(QLatin1String("%f"), Qt::escape(mFrom));
+                ktts.asyncCall(QLatin1String("say"), message, 0);
             }
         }
     }
