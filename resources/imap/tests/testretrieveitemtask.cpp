@@ -38,8 +38,7 @@ private slots:
     QString message;
     QList<QByteArray> scenario;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
     item.setRemoteId( "42" );

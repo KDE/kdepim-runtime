@@ -34,18 +34,28 @@ private slots:
     QTest::addColumn< QList<QByteArray> >( "scenario" );
     QTest::addColumn<QStringList>( "callNames" );
 
+    Akonadi::Collection root;
+    Akonadi::Collection inbox;
     Akonadi::Collection collection;
     Akonadi::Collection source;
     Akonadi::Collection target;
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/Baz" );
-    source = Akonadi::Collection( 2 );
-    source.setRemoteId( "/INBOX/Foo" );
-    target = Akonadi::Collection( 3 );
-    target.setRemoteId( "/INBOX/Bar" );
+    root = createCollectionChain( QString() );
+    inbox = createCollectionChain( QLatin1String("/INBOX") );
+
+    source = Akonadi::Collection( 3 );
+    source.setRemoteId( QLatin1String("/Foo") );
+    source.setParentCollection( inbox );
+
+    collection = Akonadi::Collection( 10 );
+    collection.setRemoteId( QLatin1String("/Baz") );
+    collection.setParentCollection( source );
+
+    target = Akonadi::Collection( 4 );
+    target.setRemoteId( QLatin1String("/Bar") );
+    target.setParentCollection( inbox );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -76,6 +86,34 @@ private slots:
     callNames << "emitWarning" << "collectionChangeCommitted";
 
     QTest::newRow( "moving mailbox, subscribe fails" ) << collection << source << target << scenario << callNames;
+
+
+
+    inbox = createCollectionChain( QLatin1String(".INBOX") );
+
+    source = Akonadi::Collection( 3 );
+    source.setRemoteId( QLatin1String(".Foo") );
+    source.setParentCollection( inbox );
+
+    collection = Akonadi::Collection( 10 );
+    collection.setRemoteId( QLatin1String(".Baz") );
+    collection.setParentCollection( source );
+
+    target = Akonadi::Collection( 4 );
+    target.setRemoteId( QLatin1String(".Bar") );
+    target.setParentCollection( inbox );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 RENAME \"INBOX.Foo.Baz\" \"INBOX.Bar.Baz\""
+             << "S: A000003 OK rename done"
+             << "C: A000004 SUBSCRIBE \"INBOX.Bar.Baz\""
+             << "S: A000004 OK subscribe done";
+
+    callNames.clear();
+    callNames << "collectionChangeCommitted";
+
+    QTest::newRow( "moving mailbox with non-standard separators" ) << collection << source << target << scenario << callNames;
   }
 
   void shouldRenameMailBox()

@@ -38,8 +38,7 @@ private slots:
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()

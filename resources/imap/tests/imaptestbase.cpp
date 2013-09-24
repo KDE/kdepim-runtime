@@ -110,4 +110,29 @@ bool ImapTestBase::waitForSignal( QObject *obj, const char *member, int timeout 
   return spy.count()==1;
 }
 
+Akonadi::Collection ImapTestBase::createCollectionChain( const QString &remoteId ) const
+{
+    QChar separator = remoteId.length() > 0 ? remoteId.at(0) : QLatin1Char('/');
+
+    Akonadi::Collection parent( 1 );
+    parent.setRemoteId( QLatin1String("root-id") );
+    parent.setParentCollection( Akonadi::Collection::root() );
+    Akonadi::Entity::Id id = 2;
+
+    Akonadi::Collection collection = parent;
+
+    const QStringList collections = remoteId.split( separator, QString::SkipEmptyParts );
+    Q_FOREACH ( const QString &colId, collections ) {
+        collection = Akonadi::Collection( id );
+        collection.setRemoteId( separator + colId );
+        collection.setParentCollection( parent );
+
+        parent = collection;
+        id++;
+    }
+
+    return collection;
+}
+
+
 #include "imaptestbase.moc"

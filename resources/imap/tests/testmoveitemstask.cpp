@@ -40,6 +40,7 @@ private slots:
     QTest::addColumn<QStringList>( "callNames" );
 
     Akonadi::Item item;
+    Akonadi::Collection inbox;
     Akonadi::Collection source;
     Akonadi::Collection target;
     QList<QByteArray> scenario;
@@ -56,10 +57,13 @@ private slots:
     message->parse();
     item.setPayload(message);
 
-    source = Akonadi::Collection( 2 );
-    source.setRemoteId( "/INBOX/Foo" );
-    target = Akonadi::Collection( 3 );
-    target.setRemoteId( "/INBOX/Bar" );
+    inbox = createCollectionChain( QLatin1String("/INBOX") );
+    source = Akonadi::Collection( 3 );
+    source.setRemoteId( "/Foo" );
+    source.setParentCollection( inbox );
+    target = Akonadi::Collection( 4 );
+    target.setRemoteId( "/Bar" );
+    target.setParentCollection( inbox );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -108,11 +112,13 @@ private slots:
     message->parse();
     item.setPayload( message );
 
-    source = Akonadi::Collection( 2 );
-    source.setRemoteId( "/INBOX/Foo" );
+    source = Akonadi::Collection( 3 );
+    source.setRemoteId( "/Foo" );
+    source.setParentCollection( inbox );
     source.addAttribute( new UidNextAttribute( 42 ) );
     target = Akonadi::Collection( 3 );
-    target.setRemoteId( "/INBOX/Bar" );
+    target.setRemoteId( "/Bar" );
+    target.setParentCollection( inbox );
     target.addAttribute( new UidNextAttribute( 65 ) );
 
     scenario.clear();
@@ -148,11 +154,13 @@ private slots:
     message->parse();
     item.setPayload( message );
 
-    source = Akonadi::Collection( 2 );
+    source = Akonadi::Collection( 3 );
+    source.setRemoteId( "/Foo" );
+    source.setParentCollection( inbox );
     source.addAttribute( new UidNextAttribute( 42 ) );
-    source.setRemoteId( "/INBOX/Foo" );
-    target = Akonadi::Collection( 3 );
-    target.setRemoteId( "/INBOX/Bar" );
+    target = Akonadi::Collection( 4 );
+    target.setRemoteId( "/Bar" );
+    target.setParentCollection( inbox );
     target.addAttribute( new UidNextAttribute( 65 ) );
 
     scenario.clear();

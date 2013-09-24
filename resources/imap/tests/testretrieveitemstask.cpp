@@ -42,8 +42,7 @@ private slots:
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -82,8 +81,7 @@ private slots:
                           << Akonadi::MessagePart::Header
                           << Akonadi::MessagePart::Body );
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
 
     scenario.clear();
@@ -122,8 +120,7 @@ private slots:
     Akonadi::CollectionStatistics stats;
     stats.setCount( 1 );
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
     collection.setStatistics( stats );
 
@@ -152,8 +149,7 @@ private slots:
     QTest::newRow( "second listing, full sync" ) << collection << scenario << callNames;
 
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
     collection.setStatistics( stats );
     scenario.clear();
@@ -213,8 +209,7 @@ private slots:
 
     QTest::newRow( "uidnext mismatch with recovery attempt" ) << collection << scenario << callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
     collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
     collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );

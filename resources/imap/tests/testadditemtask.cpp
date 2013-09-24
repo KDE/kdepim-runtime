@@ -43,8 +43,7 @@ private slots:
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( QLatin1String("/INBOX/Foo") );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     UidNextAttribute *uidNext = new UidNextAttribute;
     uidNext->setUidNext( 63 );
     collection.addAttribute( uidNext );

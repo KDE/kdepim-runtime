@@ -45,8 +45,7 @@ private slots:
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.addAttribute( new UidNextAttribute( 65 ) );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
@@ -78,8 +77,7 @@ private slots:
     QTest::newRow( "modifying mail content" ) << item << parts << scenario << callNames;
 
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.addAttribute( new UidNextAttribute( 65 ) );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
@@ -114,8 +112,7 @@ private slots:
     QTest::newRow( "modifying mail content, no APPENDUID, message has Message-ID" ) << item << parts << scenario << callNames;
 
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.addAttribute( new UidNextAttribute( 65 ));
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );

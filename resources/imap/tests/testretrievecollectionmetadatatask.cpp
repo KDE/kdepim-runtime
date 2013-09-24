@@ -59,8 +59,7 @@ private slots:
     QStringList callNames;
     bool spontaneous;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.setRights( 0 );
     collection.addAttribute( new TimestampAttribute( QDateTime::currentDateTime().toTime_t()
                                                    - RetrieveCollectionMetadataTask::TimestampTimeout
@@ -98,7 +97,7 @@ private slots:
     // Test that if the parent collection doesn't allow renaming in its ACL, the child mailbox
     // can't be renamed, i.e. doesn't have the CanChangeCollection flag.
     //
-    Akonadi::Collection parentCollection( 42 );
+    Akonadi::Collection parentCollection = createCollectionChain( QLatin1String("/INBOX") );
     QMap<QByteArray, KIMAP::Acl::Rights> rightsMap;
     rightsMap.insert( "Hans", KIMAP::Acl::Lookup | KIMAP::Acl::Read | KIMAP::Acl::KeepSeen |
                               KIMAP::Acl::Write | KIMAP::Acl::Insert | KIMAP::Acl::Post |
@@ -118,7 +117,7 @@ private slots:
     // Test that if the parent collection is a noselect folder, the child mailbox will not have
     // rename (CanChangeCollection) permission.
     //
-    parentCollection = Akonadi::Collection( 43 );
+    parentCollection = createCollectionChain( QLatin1String("/INBOX") );
     NoSelectAttribute *noSelectAttribute = new NoSelectAttribute();
     parentCollection.addAttribute( noSelectAttribute );
     collection.setParentCollection( parentCollection );
@@ -129,7 +128,7 @@ private slots:
     // Test that the rights are properly set on the resulting collection if the mailbox doesn't
     // have full rights.
     //
-    collection.setParentCollection( Akonadi::Collection() );
+    collection.setParentCollection( createCollectionChain( QLatin1String("/INBOX") ) );
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
@@ -155,8 +154,7 @@ private slots:
     //
     // We shouldn't query the server for any metadata if we did so recently...
     //
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.setRights( 0 );
     collection.addAttribute( new TimestampAttribute( QDateTime::currentDateTime().toTime_t() ) );
 
@@ -205,7 +203,7 @@ private slots:
     //
     // Test that a warning is issued if the insert rights of a folder have been revoked on the server.
     //
-    collection.setParentCollection( Akonadi::Collection() );
+    collection.setParentCollection( parentCollection );
     collection.setRights( collection.rights() | Akonadi::Collection::CanCreateItem );
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -235,7 +233,7 @@ private slots:
     //
     // Test that NoInferiors overrides acl rigths and disallows creating new mailboxes
     //
-    collection.setParentCollection( Akonadi::Collection() );
+    collection.setParentCollection( createCollectionChain( QString() ) );
     collection.setRemoteId( "/INBOX" );
     collection.setRights( Akonadi::Collection::AllRights );
     collection.addAttribute( new NoInferiorsAttribute( true ) );

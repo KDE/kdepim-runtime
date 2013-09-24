@@ -44,9 +44,8 @@ private slots:
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
+    collection = createCollectionChain( QLatin1String("/Foo") );
     collection.setName( QLatin1String("Bar") );
-    collection.setRemoteId( QLatin1String("/Foo") );
     collection.setRights( Akonadi::Collection::AllRights );
 
     Akonadi::ImapAclAttribute *acls = new Akonadi::ImapAclAttribute;
@@ -93,9 +92,8 @@ private slots:
 
     QTest::newRow( "complete case" ) << collection << parts << scenario << callNames << collection.name();
 
-    collection = Akonadi::Collection( 1 );
+    collection = createCollectionChain( QLatin1String("/Foo") );
     collection.setName( QLatin1String("Bar/Baz") );
-    collection.setRemoteId( QLatin1String("/Foo") );
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 RENAME \"Foo\" \"BarBaz\""
@@ -108,6 +106,17 @@ private slots:
     callNames << QLatin1String("collectionChangeCommitted");
     QTest::newRow( "rename with invalid separator" ) << collection << parts << scenario << callNames
                                                      << "BarBaz";
+
+    collection = createCollectionChain( QLatin1String(".INBOX.Foo") );
+    collection.setName( QLatin1String("Bar") );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 RENAME \"INBOX.Foo\" \"INBOX.Bar\""
+             << "S: A000003 OK rename done"
+             << "C: A000004 SUBSCRIBE \"INBOX.Bar\""
+             << "S: A000004 OK mailbox subscribed";
+    QTest::newRow( "rename with non-standard separator" ) << collection << parts << scenario << callNames
+                                                          << "Bar";
   }
 
   void shouldUpdateMetadataAclAndName()
