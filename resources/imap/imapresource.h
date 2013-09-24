@@ -100,6 +100,8 @@ protected:
 
   virtual void doSetOnline(bool online);
 
+  QChar separatorCharacter() const;
+  void setSeparatorCharacter( const QChar &separator );
 
 private Q_SLOTS:
   void reconnect();
@@ -140,6 +142,7 @@ private:
   ImapIdleManager *m_idle;
   Akonadi::Session *m_bodyCheckSession;
   QTimer *m_statusMessageTimer;
+  QChar m_separatorCharacter;
 };
 
 #endif

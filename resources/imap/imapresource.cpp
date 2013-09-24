@@ -583,6 +583,16 @@ void ImapResource::doSetOnline(bool online)
   ResourceBase::doSetOnline( online );
 }
 
+QChar ImapResource::separatorCharacter() const
+{
+    return m_separatorCharacter;
+}
+
+void ImapResource::setSeparatorCharacter( const QChar &separator )
+{
+    m_separatorCharacter = separator;
+}
+
 bool ImapResource::needsNetwork() const
 {
   const QString hostName = Settings::self()->imapServer().section( QLatin1Char(':'), 0, 0 );

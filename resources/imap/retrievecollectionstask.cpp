@@ -103,6 +103,12 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
   QStringList contentTypes;
   contentTypes << KMime::Message::mimeType() << Akonadi::Collection::mimeType();
 
+  if ( !descriptors.isEmpty() ) {
+      // This is still not optimal way of getting the separator, but it's better
+      // than guessing every time from RID of parent collection
+      setSeparatorCharacter( descriptors.first().separator );
+  }
+
   for ( int i=0; i<descriptors.size(); ++i ) {
     KIMAP::MailBoxDescriptor descriptor = descriptors[i];
 
