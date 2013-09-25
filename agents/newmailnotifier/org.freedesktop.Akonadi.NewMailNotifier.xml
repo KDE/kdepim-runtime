@@ -52,6 +52,20 @@
     <method name="excludeMyselfFromNotification" >
       <arg type="b" direction="out"/>
     </method>
+    <method name="setTextToSpeakEnabled" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="textToSpeakEnabled" >
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="setTextToSpeak" >
+      <arg type="s" direction="in"/>
+    </method>
+    <method name="textToSpeak" >
+      <arg type="s" direction="out"/>
+    </method>
+
+
     <method name="printDebug" />
   </interface>
 </node>

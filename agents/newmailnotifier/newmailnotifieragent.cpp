@@ -195,6 +195,28 @@ bool NewMailNotifierAgent::beepOnNewMails() const
     return NewMailNotifierAgentSettings::beepOnNewMails();
 }
 
+void NewMailNotifierAgent::setTextToSpeakEnabled(bool enabled)
+{
+    NewMailNotifierAgentSettings::setTextToSpeakEnabled(enabled);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+bool NewMailNotifierAgent::textToSpeakEnabled() const
+{
+    return NewMailNotifierAgentSettings::textToSpeakEnabled();
+}
+
+void NewMailNotifierAgent::setTextToSpeak(const QString &msg)
+{
+    NewMailNotifierAgentSettings::setTextToSpeak(msg);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
+QString NewMailNotifierAgent::textToSpeak() const
+{
+    return NewMailNotifierAgentSettings::textToSpeak();
+}
+
 void NewMailNotifierAgent::clearAll()
 {
     mNewMails.clear();

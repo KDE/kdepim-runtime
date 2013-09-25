@@ -69,6 +69,11 @@ public:
     void setExcludeMyselfFromNotification(bool b);
     bool excludeMyselfFromNotification() const;
 
+    void setTextToSpeakEnabled(bool enabled);
+    bool textToSpeakEnabled() const;
+
+    QString textToSpeak() const;
+    void setTextToSpeak(const QString &msg);
 
     void printDebug();
 
