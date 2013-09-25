@@ -62,7 +62,6 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );
 
-    initializeInstanceCache();
     mIdentityManager = new KPIMIdentities::IdentityManager( false, this );
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
@@ -396,8 +395,20 @@ void NewMailNotifierAgent::slotShowNotifications()
                     hasUniqMessage = false;
                 }
             }
+            QString resourceName;
+            if (!mCacheResourceName.contains(it.key().resource())) {
+                Q_FOREACH ( const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances() ) {
+                    if (instance.identifier() == it.key().resource()) {
+                        mCacheResourceName.insert(instance.identifier(), instance.name());
+                        resourceName = instance.name();
+                        break;
+                    }
+                }
+            } else {
+                resourceName = mCacheResourceName.value(it.key().resource());
+            }
             texts.append( i18np( "One new email in %2 from \"%3\"", "%1 new emails in %2 from \"%3\"", it.value().count(), displayName,
-                                 mCacheResourceName.value(it.key().resource()) ) );
+                                 resourceName ) );
         }
         if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
@@ -485,13 +496,6 @@ void NewMailNotifierAgent::printDebug()
 bool NewMailNotifierAgent::isActive() const
 {
     return isOnline() && NewMailNotifierAgentSettings::enabled();
-}
-
-void NewMailNotifierAgent::initializeInstanceCache()
-{
-    Q_FOREACH ( const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances() ) {
-        mCacheResourceName.insert(instance.identifier(), instance.name());
-    }
 }
 
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
