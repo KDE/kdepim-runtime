@@ -129,3 +129,7 @@ Name[zh_CN]=新邮件到达
 Name[zh_TW]=新郵件已抵達
 Action=Popup
 
+[Event/text-to-speak-not-found]
+Name=Jovie Text-to-Speech Service not found
+Action=Popup
+

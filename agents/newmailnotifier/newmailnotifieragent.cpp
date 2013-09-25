@@ -88,6 +88,9 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     mTimer.setInterval( 5 * 1000 );
     connect( &mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()) );
 
+    if (NewMailNotifierAgentSettings::textToSpeakEnabled())
+        Util::testJovieService();
+
     if (isActive()) {
         mTimer.setSingleShot( true );
     }

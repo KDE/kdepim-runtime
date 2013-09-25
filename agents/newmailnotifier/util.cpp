@@ -22,10 +22,31 @@
 #include <KGlobal>
 #include <KIcon>
 #include <KIconLoader>
+#include <KToolInvocation>
 
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentType>
 #include <KMime/Message>
+
+#include <QDBusInterface>
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+
+
+void Util::testJovieService()
+{
+    if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
+        QString error;
+        if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
+            KNotification::event( QLatin1String("text-to-speak-not-found"),
+                                  i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
+                                  Util::defaultPixmap(),
+                                  0,
+                                  KNotification::CloseOnTimeout,
+                                  KGlobal::mainComponent());
+        }
+    }
+}
 
 void Util::showNotification(const QPixmap &pixmap, const QString &message)
 {
