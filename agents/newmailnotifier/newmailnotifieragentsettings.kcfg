@@ -32,7 +32,7 @@
    <default>false</default>
  </entry>
  <entry name="textToSpeak" key="textToSpeak" type="String">
-   <default></default>
+   <default>A message was received from %s</default>
  </entry>
 
  </group>
