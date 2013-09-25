@@ -96,11 +96,15 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QLabel *lab = new QLabel(i18n("message:"));
     textToSpeakLayout->addWidget(lab);
     mTextToSpeakSetting = new KLineEdit;
+    mTextToSpeakSetting->setClearButtonShown(true);
     mTextToSpeakSetting->setText(NewMailNotifierAgentSettings::textToSpeak());
+    mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
     textToSpeakLayout->addWidget(mTextToSpeakSetting);
     vbox->addLayout(textToSpeakLayout);
     vbox->addStretch();
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
+    connect(mTextToSpeak, SIGNAL(toggled(bool)), mTextToSpeakSetting, SLOT(setEnabled(bool)));
+
 
 
 
