@@ -14,6 +14,7 @@ set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
   newmailnotifierattribute.cpp
   specialnotifierjob.cpp
+  newmailnotifierselectcollectionwidget.cpp
   util.cpp
 )
 

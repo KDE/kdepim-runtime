@@ -23,20 +23,10 @@
 #include <KDialog>
 #include <Akonadi/Collection>
 
-namespace Akonadi
-{
-class CollectionModel;
-class CollectionView;
-class RecursiveCollectionFilterProxyModel;
-}
-
-class QModelIndex;
-class QItemSelectionModel;
 class KNotifyConfigWidget;
 class QCheckBox;
 class KLineEdit;
-class KJob;
-
+class NewMailNotifierSelectCollectionWidget;
 class NewMailNotifierSettingsDialog : public KDialog
 {
     Q_OBJECT
@@ -48,19 +38,7 @@ private Q_SLOTS:
     void slotOkClicked();
     void slotHelpLinkClicked(const QString &);
 
-    void slotCollectionsInserted(const QModelIndex &parent, int start, int end);
-
-    void slotSelectAllCollections();
-    void slotUnselectAllCollections();
-
-    void slotModifyJobDone(KJob *job);
-
-    void setCollectionFilter(const QString &filter);
-
 private:
-    void updateCollectionsRecursive(const QModelIndex &parent);
-    void selectAllCollectionsRecursive(const QModelIndex &parent, bool select);
-
     QCheckBox *mShowPhoto;
     QCheckBox *mShowFrom;
     QCheckBox *mShowSubject;
@@ -69,11 +47,7 @@ private:
     KNotifyConfigWidget *mNotify;
     QCheckBox *mTextToSpeak;
     KLineEdit *mTextToSpeakSetting;
-    QItemSelectionModel *mSelectionModel;
-    Akonadi::CollectionModel *mCollectionModel;
-    Akonadi::CollectionView *mCollectionView;
-    Akonadi::RecursiveCollectionFilterProxyModel *mCollectionFilter;
-
+    NewMailNotifierSelectCollectionWidget *mSelectCollection;
 };
 
 #endif // NEWMAILNOTIFIERSETTINGSDIALOG_H

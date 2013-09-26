@@ -19,6 +19,7 @@
 
 #include "newmailnotifiersettingsdialog.h"
 #include "newmailnotifierattribute.h"
+#include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifieragentsettings.h"
 
 #include <KLocale>
@@ -114,74 +115,18 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
     connect(mTextToSpeak, SIGNAL(toggled(bool)), mTextToSpeakSetting, SLOT(setEnabled(bool)));
 
-
-
-
     mNotify = new KNotifyConfigWidget(this);
     mNotify->setApplication(QLatin1String("akonadi_newmailnotifier_agent"));
     tab->addTab(mNotify, i18n("Notify"));
 
-
-    QWidget *colsWidget = new QWidget(this);
-    vbox = new QVBoxLayout(colsWidget);
-
-    QLabel *label = new QLabel(i18n("Select which folders to monitor for new message notifications:"));
-    vbox->addWidget(label);
-
-    mCollectionModel = new Akonadi::CollectionModel(this);
-    connect(mCollectionModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-            this, SLOT(slotCollectionsInserted(QModelIndex,int,int)));
-
-    mSelectionModel = new QItemSelectionModel(mCollectionModel, this);
-
-    KCheckableProxyModel *checkableProxy = new KCheckableProxyModel(this);
-    checkableProxy->setSourceModel(mCollectionModel);
-    checkableProxy->setSelectionModel(mSelectionModel);
-
-    mCollectionFilter = new Akonadi::RecursiveCollectionFilterProxyModel(this);
-    mCollectionFilter->addContentMimeTypeInclusionFilter(QLatin1String("message/rfc822"));
-    mCollectionFilter->setSourceModel(checkableProxy);
-    mCollectionFilter->setDynamicSortFilter(true);
-    mCollectionFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-
-    KLineEdit *searchLine = new KLineEdit(this);
-    searchLine->setPlaceholderText(i18n("Search..."));
-    searchLine->setClearButtonShown(true);
-    connect(searchLine, SIGNAL(textChanged(QString)),
-            this, SLOT(setCollectionFilter(QString)));
-
-    vbox->addWidget(searchLine);
-
-    mCollectionView = new Akonadi::CollectionView(this);
-    mCollectionView->setModel(mCollectionFilter);
-    mCollectionView->setAlternatingRowColors(true);
-    vbox->addWidget(mCollectionView);
-
-    QHBoxLayout *hbox = new QHBoxLayout;
-    vbox->addLayout(hbox);
-
-    KPushButton *button = new KPushButton(i18n("&Select All"), this);
-    connect(button, SIGNAL(clicked(bool)), this, SLOT(slotSelectAllCollections()));
-    hbox->addWidget(button);
-
-    button = new KPushButton(i18n("&Unselect All"), this);
-    connect(button, SIGNAL(clicked(bool)), this, SLOT(slotUnselectAllCollections()));
-    hbox->addWidget(button);
-    hbox->addStretch(1);
-
-    tab->addTab(colsWidget, i18n("Folders"));
+    mSelectCollection = new NewMailNotifierSelectCollectionWidget;
+    tab->addTab(mSelectCollection, i18n("Folders"));
 
     setMainWidget(w);
 }
 
 NewMailNotifierSettingsDialog::~NewMailNotifierSettingsDialog()
 {
-}
-
-void NewMailNotifierSettingsDialog::setCollectionFilter(const QString &filter)
-{
-    mCollectionFilter->setSearchPattern(filter);
-    mCollectionView->expandAll();
 }
 
 void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
@@ -202,7 +147,7 @@ void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
 
 void NewMailNotifierSettingsDialog::slotOkClicked()
 {
-    updateCollectionsRecursive(QModelIndex());
+    mSelectCollection->updateCollectionsRecursive(QModelIndex());
 
     NewMailNotifierAgentSettings::setShowPhoto(mShowPhoto->isChecked());
     NewMailNotifierAgentSettings::setShowFrom(mShowFrom->isChecked());
@@ -215,95 +160,6 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     mNotify->save();
     accept();
 }
-
-void NewMailNotifierSettingsDialog::slotCollectionsInserted(const QModelIndex &parent, int start, int end)
-{
-    for (int i = start; i <= end; ++i) {
-        const QModelIndex index = mCollectionModel->index(i, 0, parent);
-        if (!index.isValid()) {
-            continue;
-        }
-
-        const Akonadi::Collection collection = index.data(Akonadi::CollectionModel::CollectionRole).value<Akonadi::Collection>();
-        NewMailNotifierAttribute *attr = collection.attribute<NewMailNotifierAttribute>();
-        if (!attr || !attr->ignoreNewMail()) {
-            mSelectionModel->select(index, QItemSelectionModel::Select);
-        }
-    }
-
-    mCollectionView->expandAll();
-}
-
-void NewMailNotifierSettingsDialog::slotSelectAllCollections()
-{
-    selectAllCollectionsRecursive(QModelIndex(), true);
-}
-
-void NewMailNotifierSettingsDialog::slotUnselectAllCollections()
-{
-    selectAllCollectionsRecursive(QModelIndex(), false);
-}
-
-void NewMailNotifierSettingsDialog::selectAllCollectionsRecursive(const QModelIndex &parent,
-                                                                  bool select)
-{
-    for (int i = 0; i < mCollectionModel->rowCount(parent); ++i) {
-        const QModelIndex index = mCollectionModel->index(i, 0, parent);
-        if (mCollectionModel->hasChildren(index)) {
-            selectAllCollectionsRecursive(index, select);
-        }
-
-        mSelectionModel->select(index, select ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
-    }
-}
-
-void NewMailNotifierSettingsDialog::updateCollectionsRecursive(const QModelIndex &parent)
-{
-    for (int i = 0; i < mCollectionModel->rowCount(parent); ++i) {
-        const QModelIndex index = mCollectionModel->index(i, 0, parent);
-        if (mCollectionModel->hasChildren(index)) {
-            updateCollectionsRecursive(index);
-        }
-
-        const bool selected = mSelectionModel->isSelected(index);
-        Akonadi::Collection collection = index.data(Akonadi::CollectionModel::CollectionRole).value<Akonadi::Collection>();
-
-        NewMailNotifierAttribute *attr = collection.attribute<NewMailNotifierAttribute>();
-        Akonadi::CollectionModifyJob *modifyJob = 0;
-        if (selected && attr && attr->ignoreNewMail()) {
-            collection.removeAttribute<NewMailNotifierAttribute>();
-            modifyJob = new Akonadi::CollectionModifyJob(collection);
-            modifyJob->setProperty("AttributeAdded", true);
-        } else if (!selected && (!attr || !attr->ignoreNewMail())) {
-            attr = collection.attribute<NewMailNotifierAttribute>(Akonadi::Entity::AddIfMissing);
-            attr->setIgnoreNewMail(true);
-            modifyJob = new Akonadi::CollectionModifyJob(collection);
-            modifyJob->setProperty("AttributeAdded", false);
-        }
-
-        if (modifyJob) {
-            connect(modifyJob, SIGNAL(finished(KJob*)), SLOT(slotModifyJobDone(KJob*)));
-        }
-    }
-}
-
-void NewMailNotifierSettingsDialog::slotModifyJobDone(KJob* job)
-{
-    Akonadi::CollectionModifyJob *modifyJob = qobject_cast<Akonadi::CollectionModifyJob*>(job);
-    if (modifyJob && job->error()) {
-        if (job->property("AttributeAdded").toBool()) {
-            kWarning() << "Failed to append NewMailNotifierAttribute to collection"
-                       << modifyJob->collection().id() << ":"
-                       << job->errorString();
-        } else {
-            kWarning() << "Failed to remove NewMailNotifierAttribute from collection"
-                       << modifyJob->collection().id() << ":"
-                       << job->errorString();
-        }
-    }
-}
-
-
 
 
 
