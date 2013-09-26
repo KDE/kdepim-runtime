@@ -179,6 +179,7 @@ NewMailNotifierSettingsDialog::~NewMailNotifierSettingsDialog()
 void NewMailNotifierSettingsDialog::setCollectionFilter(const QString &filter)
 {
     mCollectionFilter->setSearchPattern(filter);
+    mCollectionView->expandAll();
 }
 
 void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
