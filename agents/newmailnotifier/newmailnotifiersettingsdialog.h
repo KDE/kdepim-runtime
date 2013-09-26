@@ -21,9 +21,12 @@
 #define NEWMAILNOTIFIERSETTINGSDIALOG_H
 
 #include <KDialog>
+#include <Akonadi/Collection>
+
 class KNotifyConfigWidget;
 class QCheckBox;
-
+class KLineEdit;
+class NewMailNotifierSelectCollectionWidget;
 class NewMailNotifierSettingsDialog : public KDialog
 {
     Q_OBJECT
@@ -33,6 +36,7 @@ public:
 
 private Q_SLOTS:
     void slotOkClicked();
+    void slotHelpLinkClicked(const QString &);
 
 private:
     QCheckBox *mShowPhoto;
@@ -41,6 +45,9 @@ private:
     QCheckBox *mShowFolders;
     QCheckBox *mExcludeMySelf;
     KNotifyConfigWidget *mNotify;
+    QCheckBox *mTextToSpeak;
+    KLineEdit *mTextToSpeakSetting;
+    NewMailNotifierSelectCollectionWidget *mSelectCollection;
 };
 
 #endif // NEWMAILNOTIFIERSETTINGSDIALOG_H

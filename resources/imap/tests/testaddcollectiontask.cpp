@@ -33,15 +33,15 @@ private slots:
     QTest::addColumn< QList<QByteArray> >( "scenario" );
     QTest::addColumn<QStringList>( "callNames" );
     QTest::addColumn<QString>( "collectionName" );
+    QTest::addColumn<QString>( "remoteId" );
 
     Akonadi::Collection parentCollection;
     Akonadi::Collection collection;
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    parentCollection = Akonadi::Collection( 1 );
-    parentCollection.setRemoteId( QLatin1String("/INBOX/Foo") );
-    collection = Akonadi::Collection( 2 );
+    parentCollection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection = Akonadi::Collection( 4 );
     collection.setName( QLatin1String("Bar") );
     collection.setParentCollection( parentCollection );
 
@@ -56,11 +56,10 @@ private slots:
     callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
 
     QTest::newRow( "trivial case" ) << parentCollection << collection << scenario << callNames
-                                    << collection.name();
+                                    << collection.name() << "/Bar";
 
-    parentCollection = Akonadi::Collection( 1 );
-    parentCollection.setRemoteId( QLatin1String("/INBOX/Foo") );
-    collection = Akonadi::Collection( 2 );
+    parentCollection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection = Akonadi::Collection( 4 );
     collection.setName( QLatin1String("Bar/Baz") );
     collection.setParentCollection( parentCollection );
 
@@ -75,7 +74,24 @@ private slots:
     callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
 
     QTest::newRow( "folder with invalid separator" ) << parentCollection << collection << scenario
-                                                     << callNames << "BarBaz";
+                                                     << callNames << "BarBaz" << "/BarBaz";
+
+    parentCollection = createCollectionChain( QLatin1String(".INBOX") );
+    collection = Akonadi::Collection( 3 );
+    collection.setName ( QLatin1String("Foo") );
+    collection.setParentCollection( parentCollection );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 CREATE \"INBOX.Foo\""
+             << "S: A000003 OK create done"
+             << "C: A000004 SUBSCRIBE \"INBOX.Foo\""
+             << "S: A000004 OK subscribe done";
+    callNames.clear();
+    callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
+
+    QTest::newRow( "folder with non-standard separator") << parentCollection << collection << scenario
+                                                         << callNames << "Foo" << ".Foo";
   }
 
   void shouldCreateAndSubscribe()
@@ -85,6 +101,7 @@ private slots:
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
     QFETCH( QString, collectionName );
+    QFETCH( QString, remoteId );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -116,6 +133,7 @@ private slots:
         QCOMPARE( parameter.value<Akonadi::Collection>().name(), collectionName );
         QCOMPARE( parameter.value<Akonadi::Collection>().remoteId().right( collectionName.length() ),
                   collectionName );
+        QCOMPARE( parameter.value<Akonadi::Collection>().remoteId(), remoteId );
       }
 
       QCOMPARE( command, callNames[i] );

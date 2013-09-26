@@ -53,6 +53,8 @@ protected:
 
   bool waitForSignal( QObject *obj, const char *member, int timeout = 500 ) const;
 
+  Akonadi::Collection createCollectionChain( const QString &remoteId ) const;
+
 private slots:
   void setupTestCase();
 };

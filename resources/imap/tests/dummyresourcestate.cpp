@@ -186,14 +186,6 @@ QString DummyResourceState::rootRemoteId() const
   return QLatin1String("root-id");
 }
 
-QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool ) const
-{
-  if ( collection.remoteId().startsWith(QLatin1Char('/')) )
-    return collection.remoteId().mid( 1 );
-  else
-    return collection.remoteId();
-}
-
 void DummyResourceState::setIdleCollection( const Akonadi::Collection &collection )
 {
   recordCall( "setIdleCollection",  QVariant::fromValue( collection ) );
@@ -326,6 +318,16 @@ void DummyResourceState::showInformationDialog( const QString &message, const QS
 QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
 {
   return m_calls;
+}
+
+QChar DummyResourceState::separatorCharacter() const
+{
+  return m_separator;
+}
+
+void DummyResourceState::setSeparatorCharacter( const QChar &separator )
+{
+  m_separator = separator;
 }
 
 void DummyResourceState::recordCall( const QByteArray callName, const QVariant &parameter )

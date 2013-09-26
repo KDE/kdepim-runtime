@@ -18,15 +18,29 @@
 */
 
 #include "newmailnotifiersettingsdialog.h"
+#include "newmailnotifierattribute.h"
+#include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifieragentsettings.h"
 
 #include <KLocale>
 #include <KNotifyConfigWidget>
+#include <KLineEdit>
+#include <KCheckableProxyModel>
+#include <KPushButton>
 
 #include <QTabWidget>
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QVBoxLayout>
+#include <QLabel>
+#include <QDebug>
+#include <QWhatsThis>
+
+#include <Akonadi/CollectionView>
+#include <Akonadi/CollectionModel>
+#include <Akonadi/RecursiveCollectionFilterProxyModel>
+#include <Akonadi/CollectionFilterProxyModel>
+#include <Akonadi/CollectionModifyJob>
 
 NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     : KDialog(parent)
@@ -74,9 +88,39 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
+
+    QWidget *textSpeakWidget = new QWidget;
+    vbox = new QVBoxLayout;
+    textSpeakWidget->setLayout(vbox);
+    mTextToSpeak = new QCheckBox(i18n("Enabled"));
+    mTextToSpeak->setChecked(NewMailNotifierAgentSettings::textToSpeakEnabled());
+    vbox->addWidget(mTextToSpeak);
+
+    QLabel *howIsItWork = new QLabel(i18n( "<a href=\"whatsthis\">How does this work?</a>" ));
+    howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+    vbox->addWidget(howIsItWork);
+    connect(howIsItWork, SIGNAL(linkActivated(QString)),SLOT(slotHelpLinkClicked(QString)) );
+
+    QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
+    textToSpeakLayout->setMargin(0);
+    QLabel *lab = new QLabel(i18n("Message:"));
+    textToSpeakLayout->addWidget(lab);
+    mTextToSpeakSetting = new KLineEdit;
+    mTextToSpeakSetting->setClearButtonShown(true);
+    mTextToSpeakSetting->setText(NewMailNotifierAgentSettings::textToSpeak());
+    mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
+    textToSpeakLayout->addWidget(mTextToSpeakSetting);
+    vbox->addLayout(textToSpeakLayout);
+    vbox->addStretch();
+    tab->addTab(textSpeakWidget, i18n("Text to Speak"));
+    connect(mTextToSpeak, SIGNAL(toggled(bool)), mTextToSpeakSetting, SLOT(setEnabled(bool)));
+
     mNotify = new KNotifyConfigWidget(this);
     mNotify->setApplication(QLatin1String("akonadi_newmailnotifier_agent"));
     tab->addTab(mNotify, i18n("Notify"));
+
+    mSelectCollection = new NewMailNotifierSelectCollectionWidget;
+    tab->addTab(mSelectCollection, i18n("Folders"));
 
     setMainWidget(w);
 }
@@ -85,17 +129,38 @@ NewMailNotifierSettingsDialog::~NewMailNotifierSettingsDialog()
 {
 }
 
+void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
+{
+    qDebug()<<" void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)";
+    const QString help =
+            i18n( "<qt>"
+                  "<p>Here you can define message. "
+                  "You can use:</p>"
+                  "<ul>"
+                  "<li>%s set subject</li>"
+                  "<li>%f set from</li>"
+                  "</ul>"
+                  "</qt>" );
+
+    QWhatsThis::showText( QCursor::pos(), help );
+}
+
 void NewMailNotifierSettingsDialog::slotOkClicked()
 {
+    mSelectCollection->updateCollectionsRecursive(QModelIndex());
+
     NewMailNotifierAgentSettings::setShowPhoto(mShowPhoto->isChecked());
     NewMailNotifierAgentSettings::setShowFrom(mShowFrom->isChecked());
     NewMailNotifierAgentSettings::setShowSubject(mShowSubject->isChecked());
     NewMailNotifierAgentSettings::setShowFolder(mShowFolders->isChecked());
     NewMailNotifierAgentSettings::setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
-
+    NewMailNotifierAgentSettings::setTextToSpeakEnabled(mTextToSpeak->isChecked());
+    NewMailNotifierAgentSettings::setTextToSpeak(mTextToSpeakSetting->text());
     NewMailNotifierAgentSettings::self()->writeConfig();
     mNotify->save();
     accept();
 }
+
+
 
 #include "newmailnotifiersettingsdialog.moc"

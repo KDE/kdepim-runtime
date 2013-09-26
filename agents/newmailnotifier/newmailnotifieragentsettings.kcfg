@@ -28,5 +28,12 @@
  <entry name="excludeEmailsFromMe" key="excludeEmailsFromMe" type="Bool">
    <default>false</default>
  </entry>
+ <entry name="textToSpeakEnabled" key="textToSpeakEnabled" type="Bool">
+   <default>false</default>
+ </entry>
+ <entry name="textToSpeak" key="textToSpeak" type="String">
+   <default>A message was received from %s</default>
+ </entry>
+
  </group>
 </kcfg>
