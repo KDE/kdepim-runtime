@@ -125,7 +125,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QWidget *colsWidget = new QWidget(this);
     vbox = new QVBoxLayout(colsWidget);
 
-    QLabel *label = new QLabel(i18n("Select folders for which to show notifications about new emails:"));
+    QLabel *label = new QLabel(i18n("Select which folders to monitor for new message notifications:"));
     vbox->addWidget(label);
 
     mCollectionModel = new Akonadi::CollectionModel(this);
