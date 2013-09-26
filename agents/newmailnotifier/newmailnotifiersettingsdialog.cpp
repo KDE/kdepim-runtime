@@ -102,7 +102,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 
     QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setMargin(0);
-    QLabel *lab = new QLabel(i18n("message:"));
+    QLabel *lab = new QLabel(i18n("Message:"));
     textToSpeakLayout->addWidget(lab);
     mTextToSpeakSetting = new KLineEdit;
     mTextToSpeakSetting->setClearButtonShown(true);
