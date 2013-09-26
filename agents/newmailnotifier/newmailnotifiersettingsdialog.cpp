@@ -226,7 +226,7 @@ void NewMailNotifierSettingsDialog::slotCollectionsInserted(const QModelIndex &p
 
         const Akonadi::Collection collection = index.data(Akonadi::CollectionModel::CollectionRole).value<Akonadi::Collection>();
         NewMailNotifierAttribute *attr = collection.attribute<NewMailNotifierAttribute>();
-        if (attr && attr->ignoreNewMail()) {
+        if (!attr || !attr->ignoreNewMail()) {
             mSelectionModel->select(index, QItemSelectionModel::Select);
         }
     }
