@@ -25,10 +25,10 @@
 #include <QModelIndex>
 
 class QItemSelectionModel;
+class KRecursiveFilterProxyModel;
 namespace Akonadi {
 class EntityTreeModel;
 class ChangeRecorder;
-class EntityRightsFilterModel;
 }
 class QTreeView;
 class KCheckableProxyModel;
@@ -49,6 +49,7 @@ private Q_SLOTS:
     void slotCollectionsInserted(const QModelIndex &parent, int start, int end);
     void slotModifyJobDone(KJob* job);
     void slotUpdateCollectionStatus();
+    void slotSetCollectionFilter(const QString&);
 
 private:
     void updateStatus(const QModelIndex &parent);
@@ -58,7 +59,7 @@ private:
     Akonadi::EntityTreeModel *mModel;
     Akonadi::ChangeRecorder *mChangeRecorder;
     KCheckableProxyModel *mCheckProxy;
-    Akonadi::EntityRightsFilterModel *mCollectionFilter;
+    KRecursiveFilterProxyModel *mCollectionFilter;
     bool mCanUpdateStatus;
 };
 

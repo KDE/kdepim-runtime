@@ -23,10 +23,10 @@
 
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/CollectionFilterProxyModel>
+#include <KRecursiveFilterProxyModel>
 
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/EntityTreeModel>
-#include <Akonadi/EntityRightsFilterModel>
 #include <Akonadi/Collection>
 #include <KMime/Message>
 
@@ -75,8 +75,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
             this, SLOT(slotCollectionsInserted(QModelIndex,int,int)));
 
 
-    mCollectionFilter = new Akonadi::EntityRightsFilterModel(this);
-    //mCollectionFilter->addContentMimeTypeInclusionFilter(QLatin1String("message/rfc822"));
+    mCollectionFilter = new KRecursiveFilterProxyModel(this);
     mCollectionFilter->setSourceModel(mCheckProxy);
     mCollectionFilter->setDynamicSortFilter(true);
     mCollectionFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -114,6 +113,12 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 NewMailNotifierSelectCollectionWidget::~NewMailNotifierSelectCollectionWidget()
 {
 
+}
+
+void NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter(const QString &filter)
+{
+    mCollectionFilter->setFilterWildcard(filter);
+    mFolderView->expandAll();
 }
 
 void NewMailNotifierSelectCollectionWidget::slotUpdateCollectionStatus()
