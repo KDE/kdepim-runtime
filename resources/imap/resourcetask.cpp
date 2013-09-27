@@ -25,6 +25,7 @@
 
 #include <KDE/KLocale>
 
+#include "collectionflagsattribute.h"
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
@@ -345,6 +346,26 @@ void ResourceTask::synchronizeCollectionTree()
 void ResourceTask::showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName )
 {
   m_resource->showInformationDialog( message, title, dontShowAgainName );
+}
+
+QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags ) const
+{
+  QList<QByteArray> imapFlags = fromAkonadiFlags( flags );
+
+  const Akonadi::CollectionFlagsAttribute *flagAttr = collection().attribute<Akonadi::CollectionFlagsAttribute>();
+  // the server does not support arbitrary flags, so filter out those it can't handle
+  if ( flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains( "\\*" ) ) {
+    for ( QList< QByteArray >::iterator it = imapFlags.begin(); it != imapFlags.end(); ) {
+      if ( flagAttr->flags().contains( *it ) ) {
+        ++it;
+      } else {
+        kDebug() << "Server does not support flag" << *it;
+        it = imapFlags.erase( it );
+      }
+    }
+  }
+
+  return imapFlags;
 }
 
 QList<QByteArray> ResourceTask::fromAkonadiFlags( const QList<QByteArray> &flags )
