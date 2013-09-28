@@ -133,6 +133,7 @@ Action=Popup
 Name=Jovie Text-to-Speech Service not found
 Name[nl]=Tekst-naar-spraak-service van Jovie niet gevonden
 Name[pt]=Serviço de Texto-para-Fala Jovie Não Encontrado
+Name[pt_BR]=Não foi encontrado o serviço de Texto-para-Fala do Jovie
 Name[sk]=Služba textu na reč Jovie sa nenašla
 Name[sv]=Jovie text-till-taltjänst hittades inte
 Name[uk]=Не знайдено служби синтезу мовлення Jovie
