@@ -131,10 +131,15 @@ Action=Popup
 
 [Event/text-to-speak-not-found]
 Name=Jovie Text-to-Speech Service not found
+Name[kk]=Jovie мәтінді дауыстап оқу қызметі табылған жоқ
 Name[nl]=Tekst-naar-spraak-service van Jovie niet gevonden
 Name[pt]=Serviço de Texto-para-Fala Jovie Não Encontrado
 Name[pt_BR]=Não foi encontrado o serviço de Texto-para-Fala do Jovie
 Name[sk]=Služba textu na reč Jovie sa nenašla
+Name[sr]=Сервис за текст‑у‑говор Џови није нађен
+Name[sr@ijekavian]=Сервис за текст‑у‑говор Џови није нађен
+Name[sr@ijekavianlatin]=Servis za tekst‑u‑govor Džovi nije nađen
+Name[sr@latin]=Servis za tekst‑u‑govor Džovi nije nađen
 Name[sv]=Jovie text-till-taltjänst hittades inte
 Name[uk]=Не знайдено служби синтезу мовлення Jovie
 Name[x-test]=xxJovie Text-to-Speech Service not foundxx

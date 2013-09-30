@@ -37,6 +37,13 @@ Name[x-test]=xxICal Calendar Folderxx
 Name[zh_CN]=ICal 日历文件夹
 Name[zh_TW]=ICal 行事曆資料夾
 Comment="Provides access to calendar items, each stored in a single file, in a given directory"
+Comment[kk]="Көрсетілген қапшықта, бөлек файлдарда сақталған күнтізбенің жазуларына қатынау мүмкіндігін береді"
+Comment[nl]="Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map"
+Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
+Comment[pt_BR]="Fornece acesso aos itens do calendário, cada um armazenado em um único arquivo na pasta indicada"
+Comment[sv]="Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog"
+Comment[uk]="Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі"
+Comment[x-test]=xx"Provides access to calendar items, each stored in a single file, in a given directory"xx
 
 Type=AkonadiResource
 Exec=akonadi_icaldir_resource
