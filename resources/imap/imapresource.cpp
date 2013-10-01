@@ -175,6 +175,12 @@ ImapResource::ImapResource( const QString &id )
 
 ImapResource::~ImapResource()
 {
+  // Disconnect and destroy the pool now, otherwise it will be called from QObject
+  // destructor and at that point ResourceBase and most of other stuff is already
+  // destroyed, which causes a crash
+  m_pool->disconnect();
+  delete m_pool;
+
   delete m_bodyCheckSession;
 }
 
