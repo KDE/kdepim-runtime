@@ -355,7 +355,10 @@ void NewMailNotifierAgent::slotShowNotifications()
                     hasUniqMessage = false;
                 }
             }
-            texts.append( i18np( "One new email in %2", "%1 new emails in %2", it.value().count(), displayName ) );
+            const int numberOfEmails(it.value().count());
+            if (numberOfEmails>0) {
+               texts.append( i18np( "One new email in %2", "%1 new emails in %2", numberOfEmails, displayName ) );
+            }
         }
         if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(currentPath, item, this);
