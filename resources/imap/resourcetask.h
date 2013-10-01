@@ -126,7 +126,12 @@ protected:
   const QChar separatorCharacter() const;
   void setSeparatorCharacter( const QChar &separator );
 
+  QList<QByteArray> fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags ) const;
+
   static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
+
+private:
+
   static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
 
 private slots:
