@@ -261,7 +261,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
 
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
-  scope.mode = KIMAP::FetchJob::FetchScope::Headers;
+  scope.mode = KIMAP::FetchJob::FetchScope::FullHeaders;
 
   if ( col.cachePolicy()
        .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) {
