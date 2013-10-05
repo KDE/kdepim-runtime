@@ -432,8 +432,11 @@ void NewMailNotifierAgent::slotShowNotifications()
             } else {
                 resourceName = mCacheResourceName.value(it.key().resource());
             }
-            texts.append( i18np( "One new email in %2 from \"%3\"", "%1 new emails in %2 from \"%3\"", it.value().count(), displayName,
+            const int numberOfEmails(it.value().count());
+            if (numberOfEmails>0) {
+                texts.append( i18np( "One new email in %2 from \"%3\"", "%1 new emails in %2 from \"%3\"", numberOfEmails, displayName,
                                  resourceName ) );
+            }
         }
         if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
