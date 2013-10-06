@@ -105,6 +105,7 @@ KAlarmDirResource::KAlarmDirResource(const QString& id)
 
 KAlarmDirResource::~KAlarmDirResource()
 {
+    delete mSettings;
 }
 
 void KAlarmDirResource::aboutToQuit()
