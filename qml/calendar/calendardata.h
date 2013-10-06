@@ -36,14 +36,61 @@ class CalendarData : public QObject
 {
     Q_OBJECT
 
+    /**
+     * This property is used to determine which data from which month to show. One should
+     * set it's Year, Month and Day although the Day is of less importance. Set it using
+     * YYYY-MM-DD format.
+     * 
+     * This component (CalendarData) works by providing a startDate and endDate. It will
+     * then fetch the data between the given range.
+     */
     Q_PROPERTY(QDate startDate READ startDate WRITE setStartDate NOTIFY startDateChanged)
+    
+    /**
+     * This property is used to determine which data from which month to show. One should
+     * set it's Year, Month and Day although the Day is of less importance. Set it using
+     * YYYY-MM-DD format.
+     * 
+     * This component (CalendarData) works by providing a startDate and endDate. It will
+     * then fetch the data between the given range.
+     */
     Q_PROPERTY(QDate endDate READ endDate WRITE setEndDate NOTIFY endDateChanged)
+    
+    /**
+     * This determines which kind of data types should be contained in
+     * selectedDayModel and upcomingEventsModel. By default all types are included.
+     * NOTE: Only the Event type is fully implemented.
+     * TODO: Fully implement the other data types throughout this code.
+     */
     Q_PROPERTY(int types READ types WRITE setTypes NOTIFY typesChanged)
+    
+    /**
+     * The number of days a week contains.
+     * TODO: perhaps this one can just be removed. A week is 7 days by definition.
+     * However, i don't know if that's also the case in other more exotic calendars.
+     */
     Q_PROPERTY(int sorting READ sorting WRITE setSorting NOTIFY sortingChanged)
+    
+    /**
+     * If an error occured, it will be set in this string as human readable text.
+     */
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
+    
+    /**
+     * Indicated if the model is loading.
+     */
     Q_PROPERTY(bool loading READ loading NOTIFY loadingChanged)
+    
+    /**
+     * This model contains the data from startDate till endDate.
+     * Each entry contains metadata about the current day. The exact metadata can 
+     * be found in "daysmodel.cpp" where the exact names usable in QML are being set.
+     */
     Q_PROPERTY(QAbstractItemModel* model READ model CONSTANT)
 
+    /**
+     * The Type and Sort enums are registered in Qt so that they can be used from within QML.
+     */
     Q_ENUMS(Type)
     Q_ENUMS(Sort)
 

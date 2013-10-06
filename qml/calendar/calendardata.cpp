@@ -46,7 +46,7 @@ CalendarData::CalendarData(QObject *parent)
 
     CalendarRoleProxyModel *roleModel = new CalendarRoleProxyModel(this);
     roleModel->setSourceModel(m_itemList);
-
+     
     m_filteredList = new DateTimeRangeFilterModel(this);
     m_filteredList->setSourceModel(roleModel);
 
