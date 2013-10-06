@@ -185,6 +185,26 @@ QList<int> Calendar::weeksModel() const
 
 void Calendar::updateData()
 {
+    /**
+     * Algorithm description
+     * 
+     * Impoertant note, this function should only be called as a result of a month change or bigger (year change).
+     * 
+     * Step 1: We calculate the number of days we have
+     * Step 2: Calculate the number of days we can show before the current month. Here we take the following argument into account.
+     *         In month views you - at most - see one full week of the previous month. That is when the next month starts on the 
+     *         same day as our week days start. So if a month' 1st day is on monday then we have one full week to show from the
+     *         last month. Otherwise we show the number of days till the starting day of the week. So if our first day of a month
+     *         is Wednesday (which is 3) then we have 2 days to show from the last month.
+     * Step 3: We now now how many days we need to show from the last month. Do that by taking the last day from the last month
+     *         and just count down the number of times you have free spots. In our ebove example with wednesday that would be 2,
+     * Step 4: Then we fill out entire current month. Not much difficulties there.
+     * Step 5: After this we might have some free spots left (remember, by default we fill 42 spots). Those that are left are
+     *         filled by the days from the next month.
+     * Step 6: Afterwrds we tell the model that our data has been changed and update the upcomingEventsModel since that has now 
+     *         also been changed.
+     */
+    
     if(m_days == 0 || m_weeks == 0) {
         return;
     }
