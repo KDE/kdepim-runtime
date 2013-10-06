@@ -79,6 +79,7 @@ MboxResource::MboxResource( const QString &id )
 
 MboxResource::~MboxResource()
 {
+  delete mMBox;
 }
 
 void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
