@@ -59,6 +59,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   connect( ui.kcfg_MonitorFile, SIGNAL(toggled(bool)), SLOT(validate()) );
   ui.kcfg_Path->setFocus();
   QTimer::singleShot( 0, this, SLOT(validate()) );
+  setMinimumSize(QSize(600,500));
 }
 
 void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
