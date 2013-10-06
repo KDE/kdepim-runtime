@@ -50,6 +50,7 @@ class SingleFileResourceConfigDialogBase : public KDialog
     Q_OBJECT
   public:
     explicit SingleFileResourceConfigDialogBase( WId windowId );
+    ~SingleFileResourceConfigDialogBase();
 
     /**
      * Adds @param page to the tabwidget. This can be used to add custom
@@ -102,6 +103,8 @@ class SingleFileResourceConfigDialogBase : public KDialog
     void slotStatJobResult( KJob * );
 
   private:
+    void writeConfig();
+    void readConfig();
     KIO::StatJob* mStatJob;
     SingleFileValidatingWidget* mAppendedWidget;
     bool mDirUrlChecked;
