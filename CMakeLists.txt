@@ -56,7 +56,7 @@ find_package(KDE4 4.10.0 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.11.53)
+find_package(KdepimLibs 4.11.54)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
