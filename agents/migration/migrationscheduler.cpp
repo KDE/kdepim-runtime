@@ -28,23 +28,38 @@
 void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 {
     switch ( type ) {
-        case MigratorBase::Success:
-            appendRow(new QStandardItem(KIcon(QLatin1String("dialog-ok-apply")), msg));
-            break;
-        case MigratorBase::Skip:
-            appendRow(new QStandardItem(KIcon(QLatin1String("dialog-ok")), msg));
-            break;
-        case MigratorBase::Info:
-            appendRow(new QStandardItem(KIcon(QLatin1String("dialog-information")), msg));
-            break;
-        case MigratorBase::Warning:
-            appendRow(new QStandardItem(KIcon(QLatin1String("dialog-warning")), msg));
-            break;
-        case MigratorBase::Error:
-            appendRow(new QStandardItem(KIcon(QLatin1String("dialog-error")), msg));
-            break;
-        default:
-            kError() << "unknown type " << type;
+    case MigratorBase::Success: {
+        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-ok-apply")), msg);
+        item->setEditable(false);
+        appendRow(item);
+        break;
+    }
+    case MigratorBase::Skip: {
+        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-ok")), msg);
+        item->setEditable(false);
+        appendRow(item);
+        break;
+    }
+    case MigratorBase::Info: {
+        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-information")), msg);
+        item->setEditable(false);
+        appendRow(item);
+        break;
+    }
+    case MigratorBase::Warning: {
+        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-warning")), msg);
+        item->setEditable(false);
+        appendRow(item);
+        break;
+    }
+    case MigratorBase::Error: {
+        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-error")), msg);
+        item->setEditable(false);
+        appendRow(item);
+        break;
+    }
+    default:
+        kError() << "unknown type " << type;
     }
 }
 
