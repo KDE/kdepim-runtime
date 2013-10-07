@@ -42,7 +42,7 @@ void MigrationAgent::configure(WId windowId)
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setMainWidget(new MigrationStatusWidget(mScheduler, dlg));
     dlg->setCaption(i18nc("Title of the window that shows the status of the migration agent and offers controls to start/stop individual migration jobs.", "Migration Status"));
-    dlg->setButtons(KDialog::Ok);
+    dlg->setButtons(KDialog::Close);
     dlg->resize(600, 300);
 
     if (windowId) {
