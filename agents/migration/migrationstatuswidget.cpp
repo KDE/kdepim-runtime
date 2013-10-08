@@ -117,7 +117,7 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setCaption(i18nc("Title of the window displaying the log of a single migration job.", "Migration Info"));
-    dlg->setButtons(KDialog::Ok);
+    dlg->setButtons(KDialog::Close);
     dlg->resize(600, 300);
     dlg->show();
 }

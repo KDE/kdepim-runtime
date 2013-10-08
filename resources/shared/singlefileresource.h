@@ -53,6 +53,10 @@ class SingleFileResource : public SingleFileResourceBase
       // The resource needs network when the path refers to a non local file.
       setNeedsNetwork( !KUrl( mSettings->path() ).isLocalFile() );
     }
+    ~SingleFileResource()
+    {
+      delete mSettings;
+    }
 
     /**
      * Read changes from the backend file.

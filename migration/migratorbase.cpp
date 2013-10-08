@@ -258,8 +258,10 @@ int MigratorBase::progress() const
 
 void MigratorBase::setProgress(int prog)
 {
-    mProgress = prog;
-    emit progress(prog);
+    if (mProgress != prog) {
+        mProgress = prog;
+        emit progress(prog);
+    }
 }
 
 QString MigratorBase::status() const

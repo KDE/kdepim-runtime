@@ -33,12 +33,12 @@ GidMigrator::~GidMigrator()
 
 QString GidMigrator::displayName() const
 {
-    return i18nc("Name of the GID Migrator (intended for advanced users).", "GID Migrator: %1").arg(mMimeType);
+    return i18nc("Name of the GID Migrator (intended for advanced users).", "GID Migrator: %1", mMimeType);
 }
 
 QString GidMigrator::description() const
 {
-    return i18n("Ensures that all items with the mimetype %1 have a GID if a GID extractor is available.").arg(mMimeType);
+    return i18n("Ensures that all items with the mimetype %1 have a GID if a GID extractor is available.",mMimeType);
 }
 
 bool GidMigrator::canStart()

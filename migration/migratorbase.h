@@ -33,15 +33,15 @@ class NullableConfigGroup
 {
 public:
     NullableConfigGroup()
-    {};
+    {}
 
     NullableConfigGroup(KConfigGroup grp): mConfigGroup(grp)
-    {};
+    {}
 
     KConfigGroup &configGroup()
     {
         return mConfigGroup; 
-    };
+    }
 
     template <typename T>
     inline T readEntry(const QString &key, const T &aDefault) const

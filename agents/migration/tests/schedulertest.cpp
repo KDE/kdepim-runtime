@@ -33,7 +33,7 @@ class Testmigrator: public MigratorBase
 public:
     explicit Testmigrator(const QString &identifier, QObject *parent = 0): 
         MigratorBase(QLatin1String("testmigrator") + identifier, QString(), QString(), parent), mAutostart(false)
-    {};
+    {}
 
     virtual QString displayName() const
     {
@@ -41,7 +41,7 @@ public:
     }
 
     virtual void startWork()
-    {};
+    {}
 
     virtual void abort()
     {
