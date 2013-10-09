@@ -20,7 +20,7 @@ set( resourcetester_SRCS
 kde4_add_executable(resourcetester ${resourcetester_SRCS})
 
 target_link_libraries( resourcetester
-  akonadi-xml
+  ${KDEPIMLIBS_AKONADI_XML_LIBS}
   ${KDEPIMLIBS_AKONADI_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTGUI_LIBRARY}
