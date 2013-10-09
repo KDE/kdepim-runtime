@@ -74,7 +74,6 @@ add_subdirectory( shared )
 
 if (NOT WINCE)
   add_subdirectory( birthdays )
-  add_subdirectory( knut )
   add_subdirectory( mixedmaildir )
   add_subdirectory( mailtransport_dummy )
   add_subdirectory( mbox )

@@ -73,10 +73,6 @@ set_package_properties(Akonadi PROPERTIES DESCRIPTION "Akonadi server libraries"
 find_package(SharedMimeInfo 0.30)
 set_package_properties(SharedMimeInfo PROPERTIES DESCRIPTION "The shared-mime-info utility" URL "http://freedesktop.org/wiki/Software/shared-mime-info" TYPE REQUIRED PURPOSE "Information about filetypes")
 
-# libxml
-find_package(LibXml2)
-set_package_properties(LibXml2 PROPERTIES DESCRIPTION "The LibXML2 library" URL "http://xmlsoft.org" TYPE OPTIONAL PURPOSE "Needed for building the knut Akonadi resource.")
-
 if(NOT KDEPIM_NO_NEPOMUK)
   find_package(SharedDesktopOntologies 0.11)
   set_package_properties(SharedDesktopOntologies PROPERTIES DESCRIPTION "Shared Desktop Ontologies" URL "http://sourceforge.net/projects/oscaf/" TYPE REQUIRED PURPOSE "Ontologies necessary for the Nepomuk semantic desktop")
@@ -225,7 +221,6 @@ add_subdirectory(accountwizard)
 add_subdirectory(defaultsetup)
 
 if (NOT WINCE)
-add_subdirectory(xml)
 add_subdirectory(resourcetester)
 add_subdirectory(kioslave)
 add_subdirectory(kcm)
