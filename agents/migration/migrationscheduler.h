@@ -27,8 +27,11 @@
 #include <QAbstractItemModel>
 #include <QSharedPointer>
 #include <QQueue>
+#include <QPointer>
 #include <QStandardItemModel>
 
+class MigrationExecutor;
+class KJobTrackerInterface;
 class MigratorModel;
 
 class LogModel : public QStandardItemModel
@@ -104,7 +107,8 @@ class MigrationScheduler : public QObject
 {
     Q_OBJECT
 public:
-    explicit MigrationScheduler(QObject *parent = 0);
+    explicit MigrationScheduler(KJobTrackerInterface *jobTracker = 0, QObject *parent = 0);
+    virtual ~MigrationScheduler();
 
     void addMigrator(const QSharedPointer<MigratorBase> &migrator);
 
@@ -117,14 +121,13 @@ public:
     void pause(const QString &identifier);
     void abort(const QString &identifier);
 
-private slots:
-    void checkForAutostart();
-    void onStoppedProcessing();
 private:
+    void checkForAutostart(const QSharedPointer<MigratorBase> &migrator);
+
     QScopedPointer<MigratorModel> mModel;
     QHash<QString, QSharedPointer<LogModel> > mLogModel;
-    QQueue< QWeakPointer<MigratorBase> > mAutostartQueue;
-    bool mAutostartRunning;
+    QPointer<MigrationExecutor> mAutostartExecutor;
+    KJobTrackerInterface *mJobTracker;
 };
 
 #endif // MIGRATIONSCHEDULER_H

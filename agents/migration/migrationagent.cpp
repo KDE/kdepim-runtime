@@ -27,11 +27,13 @@
 #include <KWindowSystem>
 #include <KDialog>
 #include <KLocalizedString>
+#include <kuiserverjobtracker.h>
 
 namespace Akonadi {
 
 MigrationAgent::MigrationAgent(const QString &id)
-    : AgentBase(id)
+:   AgentBase(id),
+    mScheduler(new KUiServerJobTracker)
 {
     mScheduler.addMigrator(QSharedPointer<GidMigrator>(new GidMigrator(KABC::Addressee::mimeType())));
 }

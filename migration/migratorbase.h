@@ -151,7 +151,7 @@ public:
     virtual bool shouldAutostart() const;
 
     /**
-     * Start/Continue migration.
+     * Start migration.
      *
      * Implement startWork instead.
      *
@@ -163,6 +163,11 @@ public:
      * Pause migration.
      */
     virtual void pause();
+
+    /**
+     * Resume migration.
+     */
+    virtual void resume();
 
     /**
      * Abort migration.
@@ -189,7 +194,7 @@ signals:
     //Signal for progress bar
     void progress(int progress);
 
-    //Signal for scheduling
+    //Signal for scheduling. The migrator has finished for some reason (success, failure, ...) and we can forget about it and move on.
     void stoppedProcessing();
 
 protected:

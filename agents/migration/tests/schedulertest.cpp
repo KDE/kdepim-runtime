@@ -22,10 +22,12 @@
 #include <QTest>
 #include <QSignalSpy>
 #include <KDebug>
+#include <KJobTrackerInterface>
 
 #include "../migrationscheduler.h"
 #include <migration/migratorbase.h>
 
+Q_DECLARE_METATYPE(QModelIndex)
 
 class Testmigrator: public MigratorBase
 {
@@ -58,10 +60,50 @@ public:
         return mAutostart;
     }
 
+    virtual void pause()
+    {
+        setMigrationState(Paused);
+    }
+
+    virtual void resume()
+    {
+        setMigrationState(InProgress);
+    }
+
     bool mAutostart;
 };
 
-Q_DECLARE_METATYPE(QModelIndex)
+class TestJobTracker : public KJobTrackerInterface
+{
+public:
+    TestJobTracker() : mPercent(0)
+    {}
+
+    virtual void registerJob(KJob* job)
+    {
+        KJobTrackerInterface::registerJob(job);
+        mJobs << job;
+    }
+
+    virtual void unregisterJob(KJob* job)
+    {
+        mJobs.removeAll(job);
+    }
+
+    virtual void finished(KJob* job)
+    {
+        mJobs.removeAll(job);
+    }
+
+    virtual void percent(KJob* job, long unsigned int percent)
+    {
+        Q_UNUSED(job);
+        mPercent = percent;
+    }
+
+    QList<KJob*> mJobs;
+    int mPercent;
+};
 
 class SchedulerTest: public QObject
 {
@@ -179,6 +221,69 @@ private slots:
         m1->complete();
         QCOMPARE(m2->migrationState(), MigratorBase::InProgress);
 
+    }
+
+    void testJobTracker()
+    {
+        TestJobTracker jobTracker;
+        MigrationScheduler scheduler(&jobTracker);
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        m1->mAutostart = true;
+        scheduler.addMigrator(m1);
+
+        QCOMPARE(jobTracker.mJobs.size(), 1);
+
+        m1->complete();
+
+        //Give the job some time to delete itself
+        QTest::qWait(500);
+
+        QCOMPARE(jobTracker.mJobs.size(), 0);
+    }
+
+    void testSuspend()
+    {
+        TestJobTracker jobTracker;
+        MigrationScheduler scheduler(&jobTracker);
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        m1->mAutostart = true;
+        scheduler.addMigrator(m1);
+        jobTracker.mJobs.first()->suspend();
+        QCOMPARE(m1->migrationState(), MigratorBase::Paused);
+        jobTracker.mJobs.first()->resume();
+        QCOMPARE(m1->migrationState(), MigratorBase::InProgress);
+    }
+
+    /*
+     * Even if the migrator doesn't implement suspend, the executor suspends after completing the current job and waits with starting the second job.
+     */
+    void testJobFinishesDuringSuspend()
+    {
+        TestJobTracker jobTracker;
+        MigrationScheduler scheduler(&jobTracker);
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        m1->mAutostart = true;
+        scheduler.addMigrator(m1);
+        QSharedPointer<Testmigrator> m2(new Testmigrator(QLatin1String("id2")));
+        m2->mAutostart = true;
+        scheduler.addMigrator(m2);
+        jobTracker.mJobs.first()->suspend();
+        m1->complete();
+        QCOMPARE(m2->migrationState(), MigratorBase::None);
+        jobTracker.mJobs.first()->resume();
+        QCOMPARE(m2->migrationState(), MigratorBase::InProgress);
+    }
+
+    void testProgressReporting()
+    {
+        TestJobTracker jobTracker;
+        MigrationScheduler scheduler(&jobTracker);
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        m1->mAutostart = true;
+        scheduler.addMigrator(m1);
+        QCOMPARE(jobTracker.mPercent, 0);
+        m1->complete();
+        QCOMPARE(jobTracker.mPercent, 100);
     }
 
 };

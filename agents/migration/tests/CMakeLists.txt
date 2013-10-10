@@ -3,7 +3,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-kde4_add_executable(schedulertest schedulertest.cpp ../migrationscheduler.cpp)
+kde4_add_executable(schedulertest schedulertest.cpp ../migrationscheduler.cpp ../migrationexecutor.cpp)
 target_link_libraries(schedulertest
     gidmigration
     ${KDE4_KDEUI_LIBRARY}
