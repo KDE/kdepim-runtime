@@ -138,8 +138,7 @@ private slots:
         QVERIFY(spy.isValid());
         migrator->start();
 
-        //One for progress one for state change
-        QCOMPARE(spy.count(), 2);
+        QCOMPARE(spy.count(), 1);
         const QVariantList args = spy.takeFirst();
         QCOMPARE(args.at(0).value<QModelIndex>().row(), 1);
         QCOMPARE(args.at(1).value<QModelIndex>().row(), 1);
