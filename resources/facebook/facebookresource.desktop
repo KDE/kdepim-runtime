@@ -2,6 +2,7 @@
 Name=Facebook
 Name[bs]=Facebook
 Name[ca]=Facebook
+Name[ca@valencia]=Facebook
 Name[cs]=Facebook
 Name[da]=Facebook
 Name[de]=Facebook
@@ -36,6 +37,7 @@ Name[zh_TW]=Facebook
 Comment=Makes your Facebook data available in KDE
 Comment[bs]=Čini vaše Facebook podatke dostupnim u KDE
 Comment[ca]=Fa que les vostres dades de Facebook estiguin disponibles al KDE
+Comment[ca@valencia]=Fa que les vostres dades de Facebook estiguen disponibles al KDE
 Comment[cs]=Zpřístupňuje váš Facebook v KDE
 Comment[da]=Gør dine Facebook-data tilgængelige i KDE
 Comment[de]=Stellt Ihre Facebook-Daten in KDE zur Verfügung
