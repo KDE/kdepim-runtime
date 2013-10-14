@@ -166,6 +166,11 @@ void MigratorBase::pause()
     kWarning() << "pause is not implemented";
 }
 
+void MigratorBase::resume()
+{
+    kWarning() << "resume is not implemented";
+}
+
 void MigratorBase::abort()
 {
     kWarning() << "abort is not implemented";
@@ -204,6 +209,10 @@ void MigratorBase::setMigrationState(MigratorBase::MigrationState state)
             emit message(Error, i18n("Migration failed"));
             emit stoppedProcessing();
             break;
+        case Paused:
+            emit message(Info, i18n("Migration paused"));
+            emit stateChanged(mMigrationState);
+            return;
         default:
             kWarning() << "invalid state " << state;
             Q_ASSERT(false);

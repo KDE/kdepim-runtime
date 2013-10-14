@@ -24,6 +24,9 @@
 #include <KLocalizedString>
 #include <KDebug>
 #include <KIcon>
+#include <KJobTrackerInterface>
+
+#include "migrationexecutor.h"
 
 void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 {
@@ -217,11 +220,16 @@ QList< QSharedPointer<MigratorBase> > MigratorModel::migrators() const
     return migrators;
 }
 
-MigrationScheduler::MigrationScheduler(QObject *parent)
+MigrationScheduler::MigrationScheduler(KJobTrackerInterface *jobTracker, QObject *parent)
     :QObject(parent),
     mModel(new MigratorModel),
-    mAutostartRunning(false)
+    mJobTracker(jobTracker)
 {
+}
+
+MigrationScheduler::~MigrationScheduler()
+{
+    delete mAutostartExecutor;
 }
 
 void MigrationScheduler::addMigrator(const QSharedPointer<MigratorBase> &migrator)
@@ -231,10 +239,7 @@ void MigrationScheduler::addMigrator(const QSharedPointer<MigratorBase> &migrato
         connect(migrator.data(), SIGNAL(message(MigratorBase::MessageType,QString)), logModel.data(), SLOT(message(MigratorBase::MessageType,QString)));
         mLogModel.insert(migrator->identifier(), logModel);
         if (migrator->shouldAutostart()) {
-            Q_ASSERT(!mAutostartQueue.contains(migrator));
-            mAutostartQueue.enqueue(migrator.toWeakRef());
-            kDebug() << "autostart " << migrator->identifier();
-            checkForAutostart();
+            checkForAutostart(migrator);
         }
     }
 }
@@ -250,31 +255,23 @@ QStandardItemModel& MigrationScheduler::logModel(const QString &identifier)
     return *mLogModel.value(identifier);
 }
 
-void MigrationScheduler::checkForAutostart()
+void MigrationScheduler::checkForAutostart(const QSharedPointer<MigratorBase> &migrator)
 {
-    if (mAutostartRunning) {
-        return;
+    if (!mAutostartExecutor) {
+        mAutostartExecutor = new MigrationExecutor;
+        if (mJobTracker) {
+            mJobTracker->registerJob(mAutostartExecutor);
+        }
+        mAutostartExecutor->start();
     }
-    //If the migrators would depend on each other we'd need a topological sort here.
-    QSharedPointer<MigratorBase> migrator;
-    while (!mAutostartQueue.isEmpty() && !migrator) {
-        migrator = mAutostartQueue.dequeue().toStrongRef();
+    if (migrator->migrationState() != MigratorBase::Complete) {
+        mAutostartExecutor->add(migrator);
     }
-    if (migrator) {
-        mAutostartRunning = true;
-        connect(migrator.data(), SIGNAL(stoppedProcessing()), this, SLOT(onStoppedProcessing()));
-        migrator->start();
-    }
-}
-
-void MigrationScheduler::onStoppedProcessing()
-{
-    mAutostartRunning = false;
-    checkForAutostart();
 }
 
 void MigrationScheduler::start(const QString &identifier)
 {
+    //TODO create separate executor?
     const QSharedPointer<MigratorBase> m = mModel->migrator(identifier);
     if (m) {
         m->start();
@@ -298,4 +295,3 @@ void MigrationScheduler::abort(const QString &identifier)
 }
 
 #include "migrationscheduler.moc"
-

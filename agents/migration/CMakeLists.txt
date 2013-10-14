@@ -1,6 +1,7 @@
 
 include_directories(
     ${Boost_INCLUDE_DIR}
+    tests
 )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC")
@@ -8,7 +9,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC")
 set(migrationagent_SRCS
     migrationagent.cpp
     migrationstatuswidget.cpp
+    migrationexecutor.cpp
     migrationscheduler.cpp
+    tests/dummymigrator.cpp
 )
 
 kde4_add_executable(akonadi_migration_agent ${migrationagent_SRCS})
