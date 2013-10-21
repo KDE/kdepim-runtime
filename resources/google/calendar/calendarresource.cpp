@@ -361,29 +361,18 @@ void CalendarResource::collectionChanged( const Collection &collection )
         return;
     }
 
-    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-
     KGAPI2::Job *job;
     if ( collection.contentMimeTypes().contains( KCalCore::Event::eventMimeType() ) ) {
         CalendarPtr calendar( new Calendar() );
         calendar->setUid( collection.remoteId() );
-        if ( attr ) {
-            calendar->setTitle( attr->displayName() );
-        } else {
-            calendar->setTitle( collection.name() );
-        }
+        calendar->setTitle( collection.displayName() );
         calendar->setEditable( true );
         job = new CalendarModifyJob( calendar, account(), this );
 
     } if ( collection.contentMimeTypes().contains( KCalCore::Todo::todoMimeType() ) ) {
         TaskListPtr taskList( new TaskList() );
         taskList->setUid( collection.remoteId() );
-        if ( attr ) {
-            taskList->setTitle( attr->displayName() );
-        } else {
-            taskList->setTitle( collection.name() );
-        }
-
+        taskList->setTitle( collection.displayName() );
         job = new TaskListModifyJob( taskList, account(), this );
     } else {
         cancelTask( i18n( "Unknown collection mimetype" ) );
@@ -468,7 +457,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Event::eventMimeType() );
-        collection.setName( calendar->title() );
+        collection.setName( calendar->uid() );
         collection.setParent( m_rootCollection );
         collection.setRemoteId( calendar->uid() );
         if ( calendar->editable() ) {
@@ -506,7 +495,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Todo::todoMimeType() );
-        collection.setName( taskList->title() );
+        collection.setName( taskList->uid() );
         collection.setParent( m_rootCollection );
         collection.setRemoteId( taskList->uid() );
         collection.setRights( Collection::CanChangeCollection |
