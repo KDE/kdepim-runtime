@@ -59,6 +59,9 @@ void MigrationExecutor::executeNext()
         connect(migrator.data(), SIGNAL(stoppedProcessing()), this, SLOT(onStoppedProcessing()));
         migrator->start();
     } else {
+        // Reset the notification status, otherwise we get notification "In progress...[finished]"
+        // without any description that it's related to PIM-Maintanence
+        emit infoMessage(this, i18n("PIM-Maintanence"));
         emitResult();
     }
 }
