@@ -131,7 +131,7 @@ private slots:
              << "C: A000004 SUBSCRIBE \"INBOX.Bar\""
              << "S: A000004 OK mailbox subscribed";
     QTest::newRow( "rename with non-standard separator" ) << collection << parts << scenario << callNames
-                                                          << "BarBaz" << true;
+                                                          << "Bar" << true;
   }
 
   void shouldUpdateMetadataAclAndName()
