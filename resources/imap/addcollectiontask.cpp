@@ -22,6 +22,7 @@
 #include "addcollectiontask.h"
 
 #include "collectionannotationsattribute.h"
+#include <accountwizard/ispdb/ispdb.h>
 
 #include <KDE/KDebug>
 #include <KDE/KLocale>
@@ -107,7 +108,7 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
   }
 
   const Akonadi::CollectionAnnotationsAttribute *attribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
-  if ( !attribute ) {
+  if ( !attribute || !serverSupportsAnnotations() ) {
     // we are finished
     changeCommitted( m_collection );
     synchronizeCollectionTree();
@@ -125,7 +126,7 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
     }
 
     QByteArray attribute = entry;
-    if ( job->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
+    if ( job->serverCapability() == KIMAP::MetaDataJobBase::Annotatemore ) {
       attribute = "value.shared";
     }
 

@@ -38,6 +38,7 @@ private slots:
     QTest::addColumn< QList<QByteArray> >( "scenario" );
     QTest::addColumn<QStringList>( "callNames" );
     QTest::addColumn<QString>( "collectionName" );
+    QTest::addColumn<bool>( "supportsAnnotations" );
 
     Akonadi::Collection collection;
     QSet<QByteArray> parts;
@@ -91,7 +92,21 @@ private slots:
     callNames.clear();
     callNames << "collectionChangeCommitted";
 
-    QTest::newRow( "complete case" ) << collection << parts << scenario << callNames << collection.name();
+    QTest::newRow( "complete case" ) << collection << parts << scenario << callNames << collection.name() << true;
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+             << "S: A000003 OK acl changed"
+             << "C: A000004 SETACL \"Foo\" \"foo@kde.org\" \"lrswipcda\""
+             << "S: A000004 OK acl changed"
+             << "C: A000005 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+             << "S: A000005 OK acl changed"
+             << "C: A000006 RENAME \"Foo\" \"Bar\""
+             << "S: A000006 OK rename done"
+             << "C: A000007 SUBSCRIBE \"Bar\""
+             << "S: A000007 OK mailbox subscribed";
+    QTest::newRow( "no ANNOTATEMORE support" ) << collection << parts << scenario << callNames << collection.name() << false;
 
     collection = Akonadi::Collection( 1 );
     collection.setName( "Bar/Baz" );
@@ -107,7 +122,7 @@ private slots:
     callNames.clear();
     callNames << "collectionChangeCommitted";
     QTest::newRow( "rename with invalid separator" ) << collection << parts << scenario << callNames
-                                                     << "BarBaz";
+                                                     << "BarBaz" << true;
   }
 
   void shouldUpdateMetadataAclAndName()
@@ -117,6 +132,7 @@ private slots:
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
     QFETCH( QString, collectionName );
+    QFETCH( bool, supportsAnnotations );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -128,9 +144,14 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
+    QStringList caps;
+    caps << QLatin1String( "ACL" );
+    if ( supportsAnnotations ) {
+        caps << QLatin1String( "ANNOTATEMORE" );
+    }
     DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setUserName( defaultUserName() );
-    state->setServerCapabilities( QStringList() << "ANNOTATEMORE" << "ACL" );
+    state->setServerCapabilities( caps );
     state->setCollection( collection );
     state->setParts( parts );
     ChangeCollectionTask *task = new ChangeCollectionTask( state );
