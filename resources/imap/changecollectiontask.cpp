@@ -120,7 +120,7 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
     }
   }
 
-  if ( parts().contains( "collectionannotations" ) ) {
+  if ( parts().contains( "collectionannotations" ) && serverSupportsAnnotations() ) {
     Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
       collection().attribute<Akonadi::CollectionAnnotationsAttribute>();
 
