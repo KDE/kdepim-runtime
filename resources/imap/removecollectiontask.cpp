@@ -25,6 +25,7 @@
 #include <KDE/KLocale>
 
 #include <kimap/deletejob.h>
+#include <kimap/closejob.h>
 #include <kimap/session.h>
 
 RemoveCollectionTask::RemoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
@@ -39,8 +40,35 @@ RemoveCollectionTask::~RemoveCollectionTask()
 
 void RemoveCollectionTask::doStart( KIMAP::Session *session )
 {
-  const QString mailBox = mailBoxForCollection( collection() );
+  // Some IMAP servers don't allow deleting an opened mailbox, so make sure
+  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932)
+  if ( session->selectedMailBox() != mailBoxForCollection( collection() ) ) {
+    doDelete( session );
+    return;
+  }
 
+  KIMAP::CloseJob *close = new KIMAP::CloseJob( session );
+  connect( close, SIGNAL(result(KJob*)),
+           this, SLOT(onCloseDone(KJob*)) );
+  close->start();
+}
+
+void RemoveCollectionTask::onCloseDone( KJob *job )
+{
+  if ( job->error() ) {
+    changeProcessed();
+    kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
+    emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
+    synchronizeCollectionTree();
+  } else {
+    KIMAP::CloseJob *close = dynamic_cast<KIMAP::CloseJob*>( job );
+    doDelete( close->session() );
+  }
+}
+
+void RemoveCollectionTask::doDelete( KIMAP::Session *session )
+{
+  const QString mailBox = mailBoxForCollection( collection() );
   KIMAP::DeleteJob *job = new KIMAP::DeleteJob( session );
   job->setMailBox( mailBox );
 
