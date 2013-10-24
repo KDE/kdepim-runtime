@@ -26,11 +26,14 @@
 #include <kimap/expungejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/storejob.h>
+#include <kimap/closejob.h>
 #include <klocale.h>
+
+Q_DECLARE_METATYPE( KIMAP::DeleteJob* )
 
 RemoveCollectionRecursiveTask::RemoveCollectionRecursiveTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ),
-    mSession( 0 ), mRunningDeleteJobs( 0 ), mFolderFound( false )
+    mSession( 0 ), mFolderFound( false )
 {
 }
 
@@ -59,14 +62,14 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::Mai
 
   // We have to delete the deepest-nested folders first, so
   // we use a map here that has the level of nesting as key.
-  QMap<int, QList<KIMAP::MailBoxDescriptor> > foldersToDelete;
+  QMultiMap<int, KIMAP::MailBoxDescriptor > foldersToDelete;
 
   for ( int i = 0; i < descriptors.size(); ++i ) {
     const KIMAP::MailBoxDescriptor descriptor = descriptors[ i ];
 
     if ( descriptor.name == mailBox || descriptor.name.startsWith( mailBox + descriptor.separator ) ) { // a sub folder to delete
       const QStringList pathParts = descriptor.name.split( descriptor.separator );
-      foldersToDelete[ pathParts.count() ].append( descriptor );
+      foldersToDelete.insert( pathParts.count(), descriptor );
     }
   }
 
@@ -77,42 +80,66 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::Mai
   mFolderFound = true;
 
   // Now start the actual deletion work
-  QMapIterator<int, QList<KIMAP::MailBoxDescriptor> > it( foldersToDelete );
-  it.toBack(); // we start with largest nesting value first
-  while ( it.hasPrevious() ) {
-    it.previous();
+  mFolderIterator.reset( new QMapIterator<int, KIMAP::MailBoxDescriptor >( foldersToDelete ) );
+  mFolderIterator->toBack(); // we start with largest nesting value first
 
-    foreach ( const KIMAP::MailBoxDescriptor &descriptor, it.value() ) {
-      // first select the mailbox
-      KIMAP::SelectJob *selectJob = new KIMAP::SelectJob( mSession );
-      selectJob->setMailBox( descriptor.name );
-      connect( selectJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
-      selectJob->start();
+  deleteNextMailbox();
+}
 
-      // mark all items as deleted
-      KIMAP::ImapSet allItems;
-      allItems.add( KIMAP::ImapInterval( 1, 0 ) ); // means 1:*
-      KIMAP::StoreJob *storeJob = new KIMAP::StoreJob( mSession );
-      storeJob->setSequenceSet( allItems );
-      storeJob->setFlags( KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted );
-      storeJob->setMode( KIMAP::StoreJob::AppendFlags );
-      connect( storeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
-      storeJob->start();
+void RemoveCollectionRecursiveTask::deleteNextMailbox()
+{
+  if ( !mFolderIterator->hasPrevious() ) {
+      changeProcessed(); // finish the job
+      return;
+  }
 
-      // expunge the mailbox
-      KIMAP::ExpungeJob *expungeJob = new KIMAP::ExpungeJob( mSession );
-      connect( expungeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
-      expungeJob->start();
+  mFolderIterator->previous();
+  const KIMAP::MailBoxDescriptor &descriptor = mFolderIterator->value();
+  kDebug() << descriptor.name;
 
-      // finally delete the mailbox
-      KIMAP::DeleteJob *deleteJob = new KIMAP::DeleteJob( mSession );
-      deleteJob->setMailBox( descriptor.name );
-      connect( deleteJob, SIGNAL(result(KJob*)), SLOT(onDeleteJobDone(KJob*)) );
-      mRunningDeleteJobs++;
-      deleteJob->start();
-    }
+  // first select the mailbox
+  KIMAP::SelectJob *selectJob = new KIMAP::SelectJob( mSession );
+  selectJob->setMailBox( descriptor.name );
+  connect( selectJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
+  selectJob->start();
+
+  // mark all items as deleted
+  KIMAP::ImapSet allItems;
+  allItems.add( KIMAP::ImapInterval( 1, 0 ) ); // means 1:*
+  KIMAP::StoreJob *storeJob = new KIMAP::StoreJob( mSession );
+  storeJob->setSequenceSet( allItems );
+  storeJob->setFlags( KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted );
+  storeJob->setMode( KIMAP::StoreJob::AppendFlags );
+  connect( storeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
+  storeJob->start();
+
+  // expunge the mailbox
+  KIMAP::ExpungeJob *expungeJob = new KIMAP::ExpungeJob( mSession );
+  connect( expungeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
+  expungeJob->start();
+
+  // Close the mailbox - some servers refuse to delete an opened mailbox
+  KIMAP::CloseJob *closeJob = new KIMAP::CloseJob( mSession );
+  closeJob->setProperty( "folderDescriptor", descriptor.name );
+  connect( closeJob, SIGNAL(result(KJob*)), SLOT(onCloseJobDone(KJob*)) );
+  closeJob->start();
+}
+
+void RemoveCollectionRecursiveTask::onCloseJobDone( KJob* job )
+{
+  if ( job->error() ) {
+    changeProcessed();
+    kDebug( 5327 ) << "Failed to close the folder, resync the folder tree";
+    emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
+    synchronizeCollectionTree();
+  } else {
+    KIMAP::DeleteJob *deleteJob = new KIMAP::DeleteJob( mSession );
+    deleteJob->setMailBox( job->property( "folderDescriptor" ).toString() );
+    connect( deleteJob, SIGNAL(result(KJob*)), SLOT(onDeleteJobDone(KJob*)) );
+    deleteJob->start();
   }
 }
+
 
 void RemoveCollectionRecursiveTask::onDeleteJobDone( KJob* job )
 {
@@ -123,27 +150,23 @@ void RemoveCollectionRecursiveTask::onDeleteJobDone( KJob* job )
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   } else {
-    mRunningDeleteJobs--;
-
-    if ( mRunningDeleteJobs == 0 ) {
-      changeProcessed(); // finished job
-    }
+    deleteNextMailbox();
   }
 }
 
 void RemoveCollectionRecursiveTask::onJobDone( KJob* job )
 {
- if ( job->error() ) {
+  if ( job->error() ) {
     changeProcessed();
 
     kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   } else if ( !mFolderFound ) {
-      changeProcessed();
-      kDebug( 5327 ) << "Failed to find the folder to be deleted, resync the folder tree";
-      emitWarning( i18n( "Failed to find the folder to be deleted, restoring folder list." ) );
-      synchronizeCollectionTree();
+    changeProcessed();
+    kDebug( 5327 ) << "Failed to find the folder to be deleted, resync the folder tree";
+    emitWarning( i18n( "Failed to find the folder to be deleted, restoring folder list." ) );
+    synchronizeCollectionTree();
   }
 }
 

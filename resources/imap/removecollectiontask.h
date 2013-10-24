@@ -33,10 +33,15 @@ public:
   virtual ~RemoveCollectionTask();
 
 private slots:
+  void onCloseDone(KJob*);
   void onDeleteDone( KJob *job );
 
 protected:
   virtual void doStart( KIMAP::Session *session );
+
+private:
+  void doDelete( KIMAP::Session *session );
+
 };
 
 #endif
