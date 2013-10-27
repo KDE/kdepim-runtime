@@ -37,6 +37,7 @@ public:
 private slots:
   void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
                             const QList< QList<QByteArray> > &flags );
+  void onCloseJobDone( KJob *job );
   void onDeleteJobDone( KJob *job );
   void onJobDone( KJob *job );
 
@@ -44,9 +45,12 @@ protected:
   virtual void doStart( KIMAP::Session *session );
 
 private:
+  void deleteNextMailbox();
+
   KIMAP::Session *mSession;
-  uint mRunningDeleteJobs;
   bool mFolderFound;
+
+  QScopedPointer< QMapIterator<int, KIMAP::MailBoxDescriptor > > mFolderIterator;
 };
 
 #endif

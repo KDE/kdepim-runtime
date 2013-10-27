@@ -29,6 +29,7 @@
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
+#include <accountwizard/ispdb/ispdb.h>
 
 ResourceTask::ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent )
   : QObject( parent ),
@@ -453,6 +454,12 @@ const QChar ResourceTask::separatorCharacter() const
 void ResourceTask::setSeparatorCharacter( const QChar& separator )
 {
     m_resource->setSeparatorCharacter( separator );
+}
+
+bool ResourceTask::serverSupportsAnnotations() const
+{
+    return serverCapabilities().contains( QLatin1String( "METADATA" ) )
+            || serverCapabilities().contains( QLatin1String( "ANNOTATEMORE" ) );
 }
 
 

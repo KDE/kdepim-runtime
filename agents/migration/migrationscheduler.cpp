@@ -257,14 +257,17 @@ QStandardItemModel& MigrationScheduler::logModel(const QString &identifier)
 
 void MigrationScheduler::checkForAutostart(const QSharedPointer<MigratorBase> &migrator)
 {
-    if (!mAutostartExecutor) {
-        mAutostartExecutor = new MigrationExecutor;
-        if (mJobTracker) {
-            mJobTracker->registerJob(mAutostartExecutor);
-        }
-        mAutostartExecutor->start();
-    }
     if (migrator->migrationState() != MigratorBase::Complete) {
+
+        if (!mAutostartExecutor) {
+            mAutostartExecutor = new MigrationExecutor;
+            if (mJobTracker) {
+                mJobTracker->registerJob(mAutostartExecutor);
+            }
+
+            mAutostartExecutor->start();
+        }
+
         mAutostartExecutor->add(migrator);
     }
 }

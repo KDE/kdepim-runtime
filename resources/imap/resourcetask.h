@@ -130,6 +130,8 @@ protected:
 
   static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
 
+  bool serverSupportsAnnotations() const;
+
 private:
 
   static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );

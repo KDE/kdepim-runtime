@@ -42,6 +42,7 @@ Comment[cs]="Poskytuje přístup k položkám kalendáře, každé uložené v j
 Comment[de]=Ermöglicht Zugriff auf Kalender, die jeweils in einzelnen Dateien in einem vorgegebenen Ordner gespeichert sind
 Comment[es]=«Proporciona acceso a elementos de calendario, cada uno almacenado en un solo archivo, en un directorio dado»
 Comment[fi]=”Tarjoaa pääsyn määräkansion yksittäisiin tiedostoihin tallennettuihin kalenterimerkintöihin”
+Comment[fr]=« Fournit l'accès aux éléments d'agenda, chacun stocké dans un fichier distinct, dans un dossier donné »
 Comment[hu]=„Hozzáférést biztosít a naptárelemekhez, mindegyiket külön fájlban tárolva a megadott könyvtárban”
 Comment[ia]="Il provide accesso a elementos de calendario, cata un immagazinate in un file singule, in un date directorio"
 Comment[kk]="Көрсетілген қапшықта, бөлек файлдарда сақталған күнтізбенің жазуларына қатынау мүмкіндігін береді"
@@ -56,6 +57,7 @@ Comment[sr@latin]=Omogućava pristup kalendarskim stavkama, skladištenim u po j
 Comment[sv]="Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog"
 Comment[uk]="Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі"
 Comment[x-test]=xx"Provides access to calendar items, each stored in a single file, in a given directory"xx
+Comment[zh_CN]=“提供日历内容的访问支持，每个日历内容都存储在指定目录的单独文件中”
 
 Type=AkonadiResource
 Exec=akonadi_icaldir_resource
