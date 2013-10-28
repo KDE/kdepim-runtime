@@ -165,7 +165,18 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
   }
 
   foreach ( const QByteArray &entry, rawAnnotations.keys() ) { //krazy:exclude=foreach
-    annotations[entry] = rawAnnotations[entry][attribute];
+    QByteArray annotation = entry;
+    if ( meta->serverCapability() == KIMAP::MetaDataJobBase::Metadata ) {
+      // Convert the annotations to the same style as used with ANNOTATEMORE, without the /shared prefix
+      // We're currently only supporting shared annotations, so this keeps things working for now.
+      if ( annotation.startsWith( "/shared/" ) ) {
+        annotation.remove( 0, QByteArray( "/shared" ).size() );
+      } else {
+        //Since we're only fetching /shared annotations, only the empty "/shared" entry should match here
+        continue;
+      }
+    }
+    annotations[annotation] = rawAnnotations[entry][attribute];
   }
 
   // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
