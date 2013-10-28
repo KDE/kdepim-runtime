@@ -106,7 +106,8 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     meta->setMailBox( mailBox );
     if ( capabilities.contains( "METADATA" ) ) {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
-      meta->addEntry( "*" );
+      meta->addEntry( "/shared" );
+      meta->setDepth( KIMAP::GetMetaDataJob::AllLevels );
     } else {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
       meta->addEntry( "*", "value.shared" );
