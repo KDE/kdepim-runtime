@@ -22,7 +22,6 @@
 #include "addcollectiontask.h"
 
 #include "collectionannotationsattribute.h"
-#include <accountwizard/ispdb/ispdb.h>
 
 #include <KDE/KDebug>
 #include <KDE/KLocale>

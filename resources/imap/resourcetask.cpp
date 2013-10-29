@@ -29,7 +29,6 @@
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
-#include <accountwizard/ispdb/ispdb.h>
 
 ResourceTask::ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent )
   : QObject( parent ),
