@@ -53,16 +53,23 @@ QString TestSerializer::extractGid(const Akonadi::Item &item) const
 }
 
 
-static bool allItemsHaveGid(const Collection &col)
+static bool allItemsHaveGid(const Collection &col, bool haveGid)
 {
-    kDebug() << col.id();
     ItemFetchJob *fetchJob = new ItemFetchJob(col);
     fetchJob->fetchScope().fetchFullPayload();
     fetchJob->fetchScope().setFetchGid(true);
     Q_ASSERT(fetchJob->exec());
+    if (fetchJob->items().isEmpty()) {
+        kWarning() << "FetchJob returned 0 items!";
+        return false;
+    }
+
     foreach (const Item &item, fetchJob->items()) {
-        kDebug() << item.id() << item.gid();
-        if (item.gid().isEmpty()) {
+        if (haveGid && item.gid().isEmpty()) {
+            kDebug() << "Item" << item.id() << item.remoteId() << "does not have GID!";
+            return false;
+        } else if (!haveGid && !item.gid().isEmpty()) {
+            kDebug() << "Item" << item.id() << item.remoteId() << "has GID!";
             return false;
         }
     }
@@ -78,7 +85,10 @@ TestGidMigration::TestGidMigration(QObject *parent)
 void TestGidMigration::initTestCase()
 {
     AkonadiTest::checkTestIsIsolated();
+}
 
+void TestGidMigration::init()
+{
     AkonadiTest::setAllResourcesOffline();
     Akonadi::AgentInstance agent = Akonadi::AgentManager::self()->instance("akonadi_knut_resource_0");
     QVERIFY(agent.isValid());
@@ -93,12 +103,12 @@ void TestGidMigration::testMigration()
     AKVERIFYEXEC(resolver);
     const int colId = resolver->collection();
 
-    QVERIFY(!allItemsHaveGid(Collection(colId)));
+    QVERIFY(allItemsHaveGid(Collection(colId), false));
 
     GidMigrationJob *migrationJob = new GidMigrationJob(QStringList() << QLatin1String("application/octet-stream"), this);
     AKVERIFYEXEC(migrationJob);
 
-    QVERIFY(allItemsHaveGid(Collection(colId)));
+    QVERIFY(allItemsHaveGid(Collection(colId), true));
 }
 
 QTEST_AKONADIMAIN(TestGidMigration, NoGUI)
