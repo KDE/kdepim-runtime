@@ -43,6 +43,8 @@ private Q_SLOTS:
     void testMigration();
 
 private:
+    void allItemsHaveGid(const Collection &collection, bool haveGid, bool *success);
+
     Akonadi::EntityTreeModel *mEtm;
 };
 
