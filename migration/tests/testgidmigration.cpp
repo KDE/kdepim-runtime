@@ -53,20 +53,25 @@ QString TestSerializer::extractGid(const Akonadi::Item &item) const
 }
 
 
-static bool allItemsHaveGid(const Collection &col)
+void TestGidMigration::allItemsHaveGid(const Collection &col, bool haveGid, bool *success)
 {
-    kDebug() << col.id();
+    *success = false;
+
     ItemFetchJob *fetchJob = new ItemFetchJob(col);
     fetchJob->fetchScope().fetchFullPayload();
     fetchJob->fetchScope().setFetchGid(true);
-    Q_ASSERT(fetchJob->exec());
-    foreach (const Item &item, fetchJob->items()) {
-        kDebug() << item.id() << item.gid();
-        if (item.gid().isEmpty()) {
-            return false;
+    AKVERIFYEXEC(fetchJob);
+    QCOMPARE(fetchJob->items().count(), 15);
+
+    Q_FOREACH (const Item &item, fetchJob->items()) {
+        if (haveGid) {
+            QVERIFY2(!item.gid().isEmpty(), QString::fromLatin1("Item %1 (%2) does not have GID!").arg(item.id()).arg(item.remoteId()).toUtf8().constData());
+        } else {
+            QVERIFY2(item.gid().isEmpty(), QString::fromLatin1("Item %1 (%2) has GID!").arg(item.id()).arg(item.remoteId()).toUtf8().constData());
         }
     }
-    return true;
+
+    *success = true;
 }
 
 TestGidMigration::TestGidMigration(QObject *parent)
@@ -78,7 +83,10 @@ TestGidMigration::TestGidMigration(QObject *parent)
 void TestGidMigration::initTestCase()
 {
     AkonadiTest::checkTestIsIsolated();
+}
 
+void TestGidMigration::init()
+{
     AkonadiTest::setAllResourcesOffline();
     Akonadi::AgentInstance agent = Akonadi::AgentManager::self()->instance("akonadi_knut_resource_0");
     QVERIFY(agent.isValid());
@@ -91,14 +99,17 @@ void TestGidMigration::testMigration()
 {
     Akonadi::CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("res1/foo"), this);
     AKVERIFYEXEC(resolver);
-    const int colId = resolver->collection();
+    const Entity::Id colId = resolver->collection();
+    bool allItemsHaveGidOk = false;
 
-    QVERIFY(!allItemsHaveGid(Collection(colId)));
+    allItemsHaveGid(Collection(colId), false, &allItemsHaveGidOk);
+    QVERIFY(allItemsHaveGidOk);
 
     GidMigrationJob *migrationJob = new GidMigrationJob(QStringList() << QLatin1String("application/octet-stream"), this);
     AKVERIFYEXEC(migrationJob);
 
-    QVERIFY(allItemsHaveGid(Collection(colId)));
+    allItemsHaveGid(Collection(colId), true, &allItemsHaveGidOk);
+    QVERIFY(allItemsHaveGidOk);
 }
 
 QTEST_AKONADIMAIN(TestGidMigration, NoGUI)

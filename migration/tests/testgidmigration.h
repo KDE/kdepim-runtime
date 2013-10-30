@@ -38,10 +38,13 @@ public:
     explicit TestGidMigration(QObject *parent = 0);
 
 private Q_SLOTS:
+    void init();
     void initTestCase();
     void testMigration();
 
 private:
+    void allItemsHaveGid(const Collection &collection, bool haveGid, bool *success);
+
     Akonadi::EntityTreeModel *mEtm;
 };
 
