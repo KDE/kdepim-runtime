@@ -60,6 +60,7 @@ Comment[sr@ijekavian]=Ресурс за управљање ДАВ календа
 Comment[sr@ijekavianlatin]=Resurs za upravljanje DAV kalendarima i adresarima (CalDAV, GroupDAV)
 Comment[sr@latin]=Resurs za upravljanje DAV kalendarima i adresarima (CalDAV, GroupDAV)
 Comment[sv]="Resurs för att hantera DAV-kalendrar och adressböcker (CalDAV, GroupDAV)"
+Comment[tr]="DAV takvim ve adres defterlerini yönetmek için kaynak (CalDAV, GroupDAV)"
 Comment[uk]="Ресурс для керування календарями і адресними книгами DAV (CalDAV, GroupDAV)"
 Comment[x-test]=xx"Resource to manage DAV calendars and address books (CalDAV, GroupDAV)"xx
 Comment[zh_CN]=“管理 DAV 日历和地址簿的资源 (CalDAV、GroupDAV)”
