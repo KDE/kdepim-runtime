@@ -50,6 +50,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
 
     QString imapResourceForCollection( Akonadi::Collection::Id id );
 
+    void updateHiddenAttribute( const Akonadi::Collection &imapCollection );
+
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
