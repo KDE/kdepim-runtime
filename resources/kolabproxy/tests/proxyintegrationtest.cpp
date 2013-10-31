@@ -110,18 +110,6 @@ private slots:
         QCOMPARE(expectedCollections.size(), 0);
     }
 
-    void ensureRecognizeNonMailFolder() {
-        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_EVENT), Kolab::EventType);
-        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX), Kolab::EventType);
-        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_TASK), Kolab::TaskType);
-        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_JOURNAL), Kolab::JournalType);
-        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_NOTE), Kolab::NoteType);
-        QCOMPARE(Kolab::folderTypeFromString("freebusy"), Kolab::FreebusyType);
-        QCOMPARE(Kolab::folderTypeFromString("configuration"), Kolab::ConfigurationType);
-        QCOMPARE(Kolab::folderTypeFromString("file"), Kolab::FileType);
-    }
-
-
     /**
      * All kolab folders, if handled by kolab proxy or not, should receive an entity hidden attribute
      */
