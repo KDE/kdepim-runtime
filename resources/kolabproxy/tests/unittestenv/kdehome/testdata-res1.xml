@@ -24,5 +24,14 @@
   <collection rid="7" name="Journal" content="inode/directory,message/rfc822">
    <attribute type="collectionannotations">/vendor/kolab/folder-type journal</attribute>
   </collection>
+  <collection rid="8" name="Configuration" content="inode/directory,message/rfc822">
+   <attribute type="collectionannotations">/vendor/kolab/folder-type configuration</attribute>
+  </collection>
+  <collection rid="9" name="Freebusy" content="inode/directory,message/rfc822">
+   <attribute type="collectionannotations">/vendor/kolab/folder-type freebusy</attribute>
+  </collection>
+  <collection rid="10" name="Files" content="inode/directory,message/rfc822">
+   <attribute type="collectionannotations">/vendor/kolab/folder-type file</attribute>
+  </collection>
  </collection>
 </knut>

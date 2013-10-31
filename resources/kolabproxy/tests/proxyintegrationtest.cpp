@@ -25,19 +25,18 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/AttributeFactory>
+#include <Akonadi/EntityHiddenAttribute>
 #include <QDBusInterface>
 #include <collectionannotationsattribute.h>
+#include <kolabdefinitions.h> //libkolab
+
+#include "../kolabdefs.h"
 
 using namespace Akonadi;
 
 class ProxyIntegrationTest : public QObject
 {
-  Q_OBJECT
-private slots:
-    void initTestCase() {
-        AkonadiTest::checkTestIsIsolated();
-        AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
-    }
+    Q_OBJECT
 
     static Collection createCollection(const QString &name, const QByteArray &annotation)
     {
@@ -50,15 +49,20 @@ private slots:
         return col;
     }
 
-    void setupKolabProxy() {
+    AgentInstance mInstance;
+
+private slots:
+    void initTestCase() {
+        AkonadiTest::checkTestIsIsolated();
+        AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
+
         const AgentType type = AgentManager::self()->type("akonadi_kolabproxy_resource");
         AgentInstanceCreateJob *agentCreateJob = new AgentInstanceCreateJob(type);
         AKVERIFYEXEC(agentCreateJob);
-        AgentInstance instance = agentCreateJob->instance();
+        mInstance = agentCreateJob->instance();
 
         //Wait for kolabproxy to create all folders
         QTest::qWait(1000);
-
         //The below is supposed to allow us to wait on the synchronization to complete, but that somehow crashes
 // //             QDBusInterface *interface = new QDBusInterface(
 // //                 QString::fromLatin1( "org.freedesktop.Akonadi.Resource.%1" ).arg( instance.identifier() ),
@@ -70,9 +74,12 @@ private slots:
 //         QVERIFY( interface->isValid() );
 //         instance.synchronize();
 //         QVERIFY(QTest::kWaitForSignal(interface, SIGNAL(synchronized()), 5 * 1000));
+    }
 
+    void setupKolabProxy() {
+        //Check that all collections in the kolab proxy have been created
         CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
-        fetchJob->fetchScope().setResource(instance.identifier());
+        fetchJob->fetchScope().setResource(mInstance.identifier());
         AKVERIFYEXEC(fetchJob);
 
         QList<Collection> expectedCollections;
@@ -101,6 +108,37 @@ private slots:
             }
         }
         QCOMPARE(expectedCollections.size(), 0);
+    }
+
+    void ensureRecognizeNonMailFolder() {
+        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_EVENT), Kolab::EventType);
+        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX), Kolab::EventType);
+        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_TASK), Kolab::TaskType);
+        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_JOURNAL), Kolab::JournalType);
+        QCOMPARE(Kolab::folderTypeFromString(KOLAB_FOLDER_TYPE_NOTE), Kolab::NoteType);
+        QCOMPARE(Kolab::folderTypeFromString("freebusy"), Kolab::FreebusyType);
+        QCOMPARE(Kolab::folderTypeFromString("configuration"), Kolab::ConfigurationType);
+        QCOMPARE(Kolab::folderTypeFromString("file"), Kolab::FileType);
+    }
+
+
+    /**
+     * All kolab folders, if handled by kolab proxy or not, should receive an entity hidden attribute
+     */
+    void ensureHiddenAttribute() {
+        CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
+        fetchJob->fetchScope().setResource("akonadi_knut_resource_0");
+        AKVERIFYEXEC(fetchJob);
+
+        foreach (const Collection &col, fetchJob->collections()) {
+            if (!col.attribute<CollectionAnnotationsAttribute>()) {
+                continue;
+            }
+            if (Kolab::folderTypeFromString(col.attribute<CollectionAnnotationsAttribute>()->annotations().value(KOLAB_FOLDER_TYPE_ANNOTATION)) != Kolab::MailType) {
+                //Kolab folder
+                QVERIFY(col.attribute<Akonadi::EntityHiddenAttribute>());
+            }
+        }
     }
 
 };
