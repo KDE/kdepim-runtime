@@ -135,5 +135,10 @@ Kolab::FolderType Kolab::folderTypeFromString(const QByteArray& folderTypeName)
     return FreebusyType;
   }
 
+  if ( folderTypeName == "file" ||
+    folderTypeName == "file" KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX) {
+    return FileType;
+  }
+
   return MailType;
 }

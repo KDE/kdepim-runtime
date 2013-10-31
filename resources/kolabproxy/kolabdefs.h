@@ -34,6 +34,7 @@ namespace Kolab {
     NoteType,
     ConfigurationType,
     FreebusyType,
+    FileType,
     LastType
   };
 
