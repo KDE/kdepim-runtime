@@ -775,6 +775,8 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
     return;
   }
 
+  updateHiddenAttribute( collection );
+
   if ( registerHandlerForCollection( collection ) ) {
     const Akonadi::Collection kolabCollection = createCollection( collection );
     Akonadi::CollectionCreateJob *job = new Akonadi::CollectionCreateJob( kolabCollection, this );
@@ -815,6 +817,7 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
       synchronizeCollectionTree();
       return;
     }
+
     // not a Kolab folder, no need to resync the tree.
     // just try to update a possible structural collection.
     // if that fails it's not in our tree -> we don't care
@@ -833,6 +836,7 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
     connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
   }
 
+  updateHiddenAttribute( collection );
   updateFreeBusyInformation( collection );
 }
 
@@ -925,12 +929,6 @@ Akonadi::Collection KolabProxyResource::createCollection(
         contentTypes.append( handler->contentMimeTypes() );
         kolabAttr->setIconName( handler->iconName() );
     }
-    // hide Kolab folders on the IMAP server
-    if ( !imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>() ) {
-      Akonadi::Collection hiddenImapCol( imapCollection );
-      hiddenImapCol.attribute<Akonadi::EntityHiddenAttribute>( Akonadi::Collection::AddIfMissing );
-      new Akonadi::CollectionModifyJob( hiddenImapCol, this );
-    }
   }
   contentTypes.append( Akonadi::Collection::mimeType() );
   c.setContentMimeTypes( contentTypes );
@@ -967,6 +965,20 @@ QString KolabProxyResource::imapResourceForCollection( Akonadi::Collection::Id i
         return m_resourceIdentifier[id];
     }
     return QString();
+}
+
+void KolabProxyResource::updateHiddenAttribute( const Akonadi::Collection &imapCollection )
+{
+  if ( isKolabFolder( imapCollection ) && !imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
+      Akonadi::Collection hiddenImapCol( imapCollection );
+      hiddenImapCol.attribute<Akonadi::EntityHiddenAttribute>( Akonadi::Collection::AddIfMissing );
+      new Akonadi::CollectionModifyJob( hiddenImapCol, this );
+  }
+  if ( !isKolabFolder( imapCollection ) && imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
+      Akonadi::Collection unhiddenImapCol( imapCollection );
+      unhiddenImapCol.removeAttribute<Akonadi::EntityHiddenAttribute>();
+      new Akonadi::CollectionModifyJob( unhiddenImapCol, this );
+  }
 }
 
 AKONADI_RESOURCE_MAIN( KolabProxyResource )
