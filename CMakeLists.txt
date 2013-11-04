@@ -35,7 +35,7 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
+    set(KDEPIM_RUNTIME_DEV_VERSION "beta1")
 endif()
 
 set(KDEPIM_RUNTIME_VERSION "4.12${KDEPIM_RUNTIME_DEV_VERSION}")
@@ -52,11 +52,11 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 ############### search packages used by KDE ###############
 
 # Kdelibs
-find_package(KDE4 4.10.0 REQUIRED)
+find_package(KDE4 4.11.0 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.11.54)
+find_package(KdepimLibs 4.11.80)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
