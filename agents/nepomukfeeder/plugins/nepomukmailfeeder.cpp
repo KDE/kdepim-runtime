@@ -53,7 +53,7 @@ using namespace Nepomuk2;
 namespace Akonadi {
 
 NepomukMailFeeder::NepomukMailFeeder(QObject *parent, const QVariantList &)
-: NepomukFeederPlugin(parent)
+: NepomukFeederPlugin(parent), m_mainBodyPart(0)
 {
 }
 

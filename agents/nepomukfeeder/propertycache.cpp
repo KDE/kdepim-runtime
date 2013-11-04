@@ -61,7 +61,8 @@ uint PropertyCache::hashProperties(const Nepomuk2::PropertyHash &properties) con
 uint PropertyCache::getHashOfProperty(const QUrl &url, QList<Nepomuk2::SimpleResource> &list) const
 {
     QList<Nepomuk2::SimpleResource>::iterator it = list.begin();
-    for (;it != list.end(); it++) {
+    QList<Nepomuk2::SimpleResource>::iterator end = list.end();
+    for (;it != end; ++it) {
         if (it->uri() == url) {
             return hashResource(*it, list);
         }
@@ -76,7 +77,8 @@ uint PropertyCache::hashResource(Nepomuk2::SimpleResource &res, QList<Nepomuk2::
 {
     const Nepomuk2::SimpleResource copy = res;
     Nepomuk2::PropertyHash::const_iterator it = copy.properties().constBegin();
-    for (;it != copy.properties().constEnd(); it++) {
+    Nepomuk2::PropertyHash::const_iterator end = copy.properties().constEnd();
+    for (;it != end; ++it) {
         if (it.value().canConvert<QUrl>() && it.value().toUrl().toString().startsWith(QLatin1String("_:"))) {
             const int hash = getHashOfProperty(it.value().toUrl(), list);
             res.setProperty(it.key(), QString::number(hash));
@@ -89,7 +91,7 @@ void PropertyCache::applyCache(Nepomuk2::SimpleResource &res, const QHash<QUrl, 
 {
     const Nepomuk2::SimpleResource copy = res;
     Nepomuk2::PropertyHash::const_iterator it = copy.properties().constBegin();
-    for (;it != copy.properties().constEnd(); it++) {
+    for (;it != copy.properties().constEnd(); ++it) {
         if (it.value().canConvert<QUrl>() && it.value().toUrl().toString().startsWith(QLatin1String("_:"))) {
             uint hash = tempHashMap.value(it.value().toUrl());
 //             mTotal++;
@@ -121,7 +123,7 @@ QHash<QUrl, uint> PropertyCache::findCachedResources(const Nepomuk2::SimpleResou
 {
     QHash<QUrl, uint> tempHashMap;
     QList<Nepomuk2::SimpleResource> list = graph.toList();
-    for (QList<Nepomuk2::SimpleResource>::iterator it = list.begin(); it != list.end(); it++) {
+    for (QList<Nepomuk2::SimpleResource>::iterator it = list.begin(); it != list.end(); ++it) {
         if (!cachingEnabled(*it)) { //If the caching wasn't enabled before it likely still isn't (that saves us the hashing)
             continue;
         }
@@ -143,7 +145,7 @@ QMap<uint, QUrl> PropertyCache::hashResources(const Nepomuk2::SimpleResourceGrap
 {
     QMap<uint, QUrl> waitingForUri;
     QList<Nepomuk2::SimpleResource> list = graph.toList();
-    for (QList<Nepomuk2::SimpleResource>::iterator it = list.begin(); it != list.end(); it++) {
+    for (QList<Nepomuk2::SimpleResource>::iterator it = list.begin(); it != list.end(); ++it) {
         if (!cachingEnabled(*it)) {
             continue;
         }
@@ -163,7 +165,8 @@ void PropertyCache::fillCache(const Nepomuk2::SimpleResourceGraph& graph, const 
 {
     const QMap<uint, QUrl> waitingForUri = hashResources(graph);
     QMap<uint, QUrl>::const_iterator it = waitingForUri.constBegin();
-    for (; it != waitingForUri.constEnd(); it++) {
+    QMap<uint, QUrl>::const_iterator end = waitingForUri.constEnd();
+    for (; it != end; ++it) {
         // There are cases where the mappings do not contain a resoucce. This is because we use
         // the MergeDuplicateResources flag in StoreResources and the duplicates do not have
         // mappings
@@ -193,7 +196,7 @@ Nepomuk2::SimpleResourceGraph PropertyCache::applyCache(const Nepomuk2::SimpleRe
 
     //Go through all properties and replace any temp uri with it's cache value based on tempHashMap and cache
     QList<Nepomuk2::SimpleResource>::iterator resIt = result.begin();
-    for (;resIt != result.end(); resIt++) {
+    for (;resIt != result.end(); ++resIt) {
         applyCache(*resIt, tempHashMap);
     }
 

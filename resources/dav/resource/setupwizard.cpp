@@ -320,7 +320,7 @@ ServerTypePage::ServerTypePage( QWidget *parent )
 
   QRadioButton *button;
 
-  QHBoxLayout *hLayout = new QHBoxLayout( this );
+  QHBoxLayout *hLayout = new QHBoxLayout;
   button = new QRadioButton( i18n( "Use one of those servers:" ) );
   registerField( QLatin1String("templateConfiguration"), button );
   mServerGroup->addButton( button );
@@ -370,8 +370,8 @@ ConnectionPage::ConnectionPage( QWidget *parent )
   setTitle( i18n( "Connection" ) );
   setSubTitle( i18n( "Enter the connection information for the groupware server" ) );
 
-  mLayout = new QFormLayout( this );
-
+  mLayout = new QFormLayout;
+  setLayout(mLayout);
   QRegExp hostnameRegexp( QLatin1String("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$") );
   mHost = new KLineEdit;
   registerField( QLatin1String("connectionHost*"), mHost );
@@ -404,7 +404,7 @@ void ConnectionPage::initializePage()
 
   QStringList supportedProtocols = service->property( QLatin1String("X-DavGroupware-SupportedProtocols") ).toStringList();
 
-  mPreviewLayout = new QFormLayout( this );
+  mPreviewLayout = new QFormLayout;
   mLayout->addRow( mPreviewLayout );
 
   if ( supportedProtocols.contains( QLatin1String("CalDav") ) ) {

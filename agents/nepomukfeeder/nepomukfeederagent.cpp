@@ -263,7 +263,7 @@ void NepomukFeederAgent::foundUnindexedItems(KJob* job)
   m_findUnindexedItemsJob = 0;
 
   FindUnindexedItemsJob::ItemHash::const_iterator it = items.constBegin();
-  for (;it != items.constEnd(); it++) {
+  for (;it != items.constEnd(); ++it) {
     Akonadi::Item item( it.key() );
     item.setMimeType( it.value().second );
     mScheduler.addLowPrioItem( item );
