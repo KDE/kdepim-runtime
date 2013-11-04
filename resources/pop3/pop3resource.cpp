@@ -925,8 +925,8 @@ void POP3Resource::saveSeenUIDList()
         timeIt = timeOfSeenUIDs.erase( timeIt );
       }
       else {
-        uidIt++;
-        timeIt++;
+        ++uidIt;
+        ++timeIt;
       }
     }
   }
