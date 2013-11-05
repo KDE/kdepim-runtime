@@ -170,6 +170,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           return;
       }
       mUnknownTypeResources.remove( resId );
+      delete mConfig;
       mConfig = new KConfig( bridgedCfgFile );
 
       mBridgeManager = new KRES::Manager<T>( mType );
