@@ -101,4 +101,3 @@ void CollectionTreeBuilder::collectionFetchResult( KJob *job )
   emitResult(); // error handling already done by Akonadi::Job
 }
 
-#include "collectiontreebuilder.moc"

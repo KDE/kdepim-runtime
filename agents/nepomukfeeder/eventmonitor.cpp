@@ -106,4 +106,3 @@ void Nepomuk2::EventMonitor::slotResumeFromIdle()
     }
 }
 
-#include "eventmonitor.moc"

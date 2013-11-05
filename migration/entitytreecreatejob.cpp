@@ -113,4 +113,3 @@ void EntityTreeCreateJob::collectionCreateJobDone( KJob *job )
     commit();
 }
 
-#include "entitytreecreatejob.moc"

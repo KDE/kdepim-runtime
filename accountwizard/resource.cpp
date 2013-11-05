@@ -163,4 +163,3 @@ void Resource::reconfigure()
 }
 
 
-#include "resource.moc"

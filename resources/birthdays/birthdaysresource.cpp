@@ -341,4 +341,3 @@ KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate& date)
 
 AKONADI_RESOURCE_MAIN( BirthdaysResource )
 
-#include "birthdaysresource.moc"

@@ -1210,6 +1210,5 @@ bool isFileValid(const QString& file)
 
 AKONADI_AGENT_FACTORY(KAlarmDirResource, akonadi_kalarm_dir_resource)
 
-#include "kalarmdirresource.moc"
 
 // vim: et sw=4:

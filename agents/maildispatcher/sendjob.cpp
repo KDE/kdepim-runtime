@@ -478,4 +478,4 @@ void SendJob::abort()
   }
 }
 
-#include "sendjob.moc"
+#include "moc_sendjob.cpp"

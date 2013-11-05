@@ -203,6 +203,5 @@ void AddItemTask::applyFoundUid( qint64 uid )
   }
 }
 
-#include "additemtask.moc"
 
 

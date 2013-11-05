@@ -41,4 +41,3 @@ void ConfigDialog::save()
   mManager->updateSettings();
 }
 
-#include "configdialog.moc"

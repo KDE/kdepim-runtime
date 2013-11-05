@@ -90,4 +90,3 @@ void EtagCache::onItemFetchJobFinished( KJob *job )
   }
 }
 
-#include "etagcache.moc"

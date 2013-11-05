@@ -359,4 +359,3 @@ void IndexScheduler::clear()
 }
 
 
-#include "indexscheduler.moc"

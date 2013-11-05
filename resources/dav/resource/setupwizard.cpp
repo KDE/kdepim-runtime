@@ -533,4 +533,3 @@ void CheckPage::onFetchDone( KJob *job )
   mStatusLabel->document()->addResource( QTextDocument::ImageResource, QUrl( QLatin1String("icon") ), QVariant( icon ) );
 }
 
-#include "setupwizard.moc"

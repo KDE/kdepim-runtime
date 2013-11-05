@@ -55,4 +55,3 @@ void LockMethodPage::checkAvailableLockMethods()
   }
 }
 
-#include "lockmethodpage.moc"

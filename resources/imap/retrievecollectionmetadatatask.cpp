@@ -368,6 +368,5 @@ void RetrieveCollectionMetadataTask::endTask()
   }
 }
 
-#include "retrievecollectionmetadatatask.moc"
 
 

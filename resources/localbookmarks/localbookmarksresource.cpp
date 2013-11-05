@@ -219,4 +219,3 @@ void LocalBookmarksResource::retrieveItems( const Akonadi::Collection &collectio
 
 AKONADI_RESOURCE_MAIN( LocalBookmarksResource )
 
-#include "localbookmarksresource.moc"

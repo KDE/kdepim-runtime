@@ -1360,4 +1360,3 @@ QString KMailMigrator::importPassword(const QString &aStr)
 }
 
 
-#include "kmailmigrator.moc"

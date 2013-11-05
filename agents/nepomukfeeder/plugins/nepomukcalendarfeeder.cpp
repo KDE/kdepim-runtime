@@ -170,4 +170,3 @@ K_EXPORT_PLUGIN(factory("akonadi_nepomuk_calendar_feeder"))
 
 }
 
-#include "nepomukcalendarfeeder.moc"

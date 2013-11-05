@@ -76,6 +76,5 @@ void FileStore::CollectionMoveJob::handleCollectionMoved( const Collection &coll
   d->mCollection = collection;
 }
 
-#include "collectionmovejob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

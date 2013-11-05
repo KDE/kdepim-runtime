@@ -113,4 +113,3 @@ void BackupAssistant::slotBackupComplete( bool ok )
                                               "report a bug, so we can find out what the cause is." ) );
 }
 
-#include "backupassistant.moc"

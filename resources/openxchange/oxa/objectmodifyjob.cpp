@@ -115,4 +115,3 @@ void ObjectModifyJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "objectmodifyjob.moc"

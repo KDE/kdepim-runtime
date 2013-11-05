@@ -291,6 +291,5 @@ void ChangeCollectionTask::endTaskIfNeeded()
   }
 }
 
-#include "changecollectiontask.moc"
 
 

@@ -180,6 +180,5 @@ void SubResource::itemRemoved( const Akonadi::Item &item )
   mIdArbiter->removeArbitratedId( kresId );
 }
 
-#include "subresource.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

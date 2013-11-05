@@ -66,6 +66,5 @@ void FileStore::ItemDeleteJob::handleItemDeleted( const Item &item )
   d->mItem = item;
 }
 
-#include "itemdeletejob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

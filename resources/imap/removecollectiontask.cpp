@@ -90,6 +90,5 @@ void RemoveCollectionTask::onDeleteDone( KJob *job )
   }
 }
 
-#include "removecollectiontask.moc"
 
 

@@ -466,4 +466,3 @@ void KIncidenceChooser::takeBoth()
   KDialog::accept();
 }
 
-#include "kincidencechooser.moc"

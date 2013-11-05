@@ -76,4 +76,3 @@ void UserIdRequestJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "useridrequestjob.moc"

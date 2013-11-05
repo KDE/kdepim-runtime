@@ -41,4 +41,3 @@ void ConfigDialog::save()
   Settings::self()->writeConfig();
 }
 
-#include "configdialog.moc"

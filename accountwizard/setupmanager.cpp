@@ -243,4 +243,3 @@ void SetupManager::requestRollback()
 }
 
 
-#include "setupmanager.moc"

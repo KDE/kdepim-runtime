@@ -287,4 +287,3 @@ QString MigratorBase::status() const
     return QString();
 }
 
-#include "migratorbase.moc"

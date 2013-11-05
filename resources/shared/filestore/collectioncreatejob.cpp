@@ -76,6 +76,5 @@ void FileStore::CollectionCreateJob::handleCollectionCreated( const Collection &
   d->mCollection = collection;
 }
 
-#include "collectioncreatejob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

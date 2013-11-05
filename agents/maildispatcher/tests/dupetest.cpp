@@ -219,4 +219,3 @@ void DupeTest::testDupes()
 
 QTEST_AKONADIMAIN( DupeTest, NoGUI )
 
-#include "dupetest.moc"

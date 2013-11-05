@@ -211,4 +211,3 @@ void Dialog::reject()
 }
 
 
-#include "dialog.moc"

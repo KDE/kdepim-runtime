@@ -173,4 +173,3 @@ KCalCore::FileStorage::Ptr ICalResourceBase::fileStorage() const
 }
 
 
-#include "icalresourcebase.moc"

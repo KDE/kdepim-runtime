@@ -265,4 +265,3 @@ QString SerializerPluginAddressee::extractGid( const Item& item ) const
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_addressee, Akonadi::SerializerPluginAddressee )
 
-#include "akonadi_serializer_addressee.moc"

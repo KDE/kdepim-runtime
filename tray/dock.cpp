@@ -214,4 +214,3 @@ void Dock::slotConfigure()
     QProcess::startDetached( KStandardDirs::findExe( QLatin1String( "kcmshell4" ) ), QStringList() << QLatin1String("kcm_akonadi") );
 }
 
-#include "dock.moc"

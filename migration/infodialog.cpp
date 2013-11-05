@@ -184,4 +184,3 @@ void InfoDialog::scrollBarMoved( int value )
   mAutoScrollList = ( value == mList->verticalScrollBar()->maximum() );
 }
 
-#include "infodialog.moc"

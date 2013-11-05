@@ -155,4 +155,3 @@ void AddCollectionTask::onSetMetaDataDone( KJob *job )
     changeCommitted( m_collection );
 }
 
-#include "addcollectiontask.moc"

@@ -2311,4 +2311,4 @@ QModelIndexList KSelectionProxyModel::match(const QModelIndex& start, int role, 
     return list;
 }
 
-#include "kselectionproxymodel.moc"
+#include "moc_kselectionproxymodel.cpp"

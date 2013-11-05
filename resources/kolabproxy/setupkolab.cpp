@@ -229,4 +229,3 @@ void SetupKolab::slotCreateDefaultKolabCollections()
   }
 }
 
-#include "setupkolab.moc"

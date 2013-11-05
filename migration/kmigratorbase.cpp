@@ -137,4 +137,3 @@ void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString& m
   }
 }
 
-#include "kmigratorbase.moc"

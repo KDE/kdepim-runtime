@@ -89,4 +89,3 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   migrationCompleted( instance );
 }
 
-#include "kabcmigrator.moc"

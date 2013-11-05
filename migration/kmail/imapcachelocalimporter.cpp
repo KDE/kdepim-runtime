@@ -343,6 +343,6 @@ void ImapCacheLocalImporter::startImport()
   job->start();
 }
 
-#include "imapcachelocalimporter.moc"
+#include "moc_imapcachelocalimporter.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

@@ -187,4 +187,3 @@ bool VCardResource::writeToFile( const QString &fileName )
 
 AKONADI_AGENT_FACTORY( VCardResource, akonadi_vcard_resource )
 
-#include "vcardresource.moc"

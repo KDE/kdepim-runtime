@@ -534,6 +534,5 @@ CollectionFetchJob* KAlarmResource::fetchCollection(const char* slot)
 
 AKONADI_AGENT_FACTORY(KAlarmResource, akonadi_kalarm_resource)
 
-#include "kalarmresource.moc"
 
 // vim: et sw=4:

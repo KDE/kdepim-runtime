@@ -659,4 +659,3 @@ void SetupServer::populateDefaultAuthenticationOptions()
 
 
 
-#include "setupserver.moc"

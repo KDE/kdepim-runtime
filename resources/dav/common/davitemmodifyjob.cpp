@@ -110,4 +110,3 @@ void DavItemModifyJob::itemRefreshed( KJob *job )
   emitResult();
 }
 
-#include "davitemmodifyjob.moc"

@@ -215,4 +215,3 @@ void SettingsDialog::slotButtonClicked( int button )
   }
 }
 
-#include "settingsdialog.moc"

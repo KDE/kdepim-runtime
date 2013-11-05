@@ -163,6 +163,6 @@ void ImapCacheAdapter::start()
   d->processNextCollection();
 }
 
-#include "imapcacheadapter.moc"
+#include "moc_imapcacheadapter.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

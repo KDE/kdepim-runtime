@@ -18,7 +18,6 @@
 */
 
 #include "mailserializertest.h"
-#include "mailserializertest.moc"
 
 #include "akonadi_serializer_mail.cpp"
 

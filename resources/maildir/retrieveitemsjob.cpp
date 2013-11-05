@@ -174,4 +174,3 @@ void RetrieveItemsJob::transactionDone ( KJob* job )
   emitResult();
 }
 
-#include "retrieveitemsjob.moc"

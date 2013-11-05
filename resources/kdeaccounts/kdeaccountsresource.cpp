@@ -166,4 +166,3 @@ bool KDEAccountsResource::writeToFile( const QString& )
 
 AKONADI_RESOURCE_MAIN( KDEAccountsResource )
 
-#include "kdeaccountsresource.moc"

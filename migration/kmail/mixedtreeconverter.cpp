@@ -118,4 +118,3 @@ void MixedTreeConverter::convertMbox(const QString& path)
 }
 
 
-#include "mixedtreeconverter.moc"

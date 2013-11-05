@@ -118,5 +118,5 @@ bool CheckableItemProxyModel::select(const QItemSelection& selection, QItemSelec
 }
 
 
-#include "checkableitemproxymodel.moc"
+#include "moc_checkableitemproxymodel.cpp"
 

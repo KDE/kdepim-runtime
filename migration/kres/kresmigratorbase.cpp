@@ -175,4 +175,3 @@ void KResMigratorBase::kolabResourceCreated( KJob *job )
 
 
 
-#include "kresmigratorbase.moc"

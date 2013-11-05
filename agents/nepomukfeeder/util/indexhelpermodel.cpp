@@ -98,4 +98,3 @@ QVariant IndexHelperModel::entityData(const Akonadi::Collection& collection, int
 }
 
 
-#include "indexhelpermodel.moc"

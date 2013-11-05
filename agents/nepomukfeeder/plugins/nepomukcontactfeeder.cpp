@@ -400,4 +400,3 @@ K_EXPORT_PLUGIN(factory("akonadi_nepomuk_contact_feeder"))
 
 }
 
-#include "nepomukcontactfeeder.moc"

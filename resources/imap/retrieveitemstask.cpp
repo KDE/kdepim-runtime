@@ -521,6 +521,5 @@ qint64 RetrieveItemsTask::extractHighestModSeq( KJob *job ) const
     return highestModSeq;
 }
 
-#include "retrieveitemstask.moc"
 
 

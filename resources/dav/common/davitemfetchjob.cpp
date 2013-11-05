@@ -91,4 +91,3 @@ void DavItemFetchJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "davitemfetchjob.moc"

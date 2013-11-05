@@ -123,4 +123,3 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
 }
 
 
-#include "migrationstatuswidget.moc"

@@ -58,4 +58,3 @@ void Page::leavePageNext() {}
 void Page::leavePageBackRequested() { emit leavePageBackOk(); }
 void Page::leavePageNextRequested() { emit leavePageNextOk(); }
 
-#include "page.moc"

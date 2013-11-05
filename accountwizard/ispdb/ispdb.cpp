@@ -275,4 +275,3 @@ QList< server > Ispdb::smtpServers() const
     return mSmtpServers;
 }
 
-#include "ispdb.moc"

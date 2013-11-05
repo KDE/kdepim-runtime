@@ -280,4 +280,3 @@ bool GoogleResource::retrieveItem( const Item &item, const QSet< QByteArray > &p
 }
 
 
-#include "googleresource.moc"

@@ -137,4 +137,4 @@ QString StoreResultJob::message() const
   return d->message;
 }
 
-#include "storeresultjob.moc"
+#include "moc_storeresultjob.cpp"

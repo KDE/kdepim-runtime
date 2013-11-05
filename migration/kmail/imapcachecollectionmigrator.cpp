@@ -641,6 +641,6 @@ QString ImapCacheCollectionMigrator::mapRemoteIdFromStore( const QString &storeR
   return separator + storeRemotedId;
 }
 
-#include "imapcachecollectionmigrator.moc"
+#include "moc_imapcachecollectionmigrator.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

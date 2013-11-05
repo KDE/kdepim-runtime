@@ -425,6 +425,5 @@ void ResourceAkonadi::Private::incidenceRemoved( const QString &uid, const QStri
   }
 }
 
-#include "resourceakonadi_p.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

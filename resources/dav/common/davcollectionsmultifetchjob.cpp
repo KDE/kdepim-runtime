@@ -60,4 +60,3 @@ void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
     emitResult();
 }
 
-#include "davcollectionsmultifetchjob.moc"

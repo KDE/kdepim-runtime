@@ -168,4 +168,3 @@ int MainWindow::selectedCollectionRow()
 
 
 
-#include "mainwindow.moc"

@@ -112,6 +112,5 @@ void MoveCollectionTask::onSubscribeDone( KJob *job )
   changeCommitted( collection() );
 }
 
-#include "movecollectiontask.moc"
 
 

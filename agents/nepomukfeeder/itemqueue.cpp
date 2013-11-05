@@ -362,4 +362,3 @@ void ItemQueue::killAllJobs()
   mJobs.clear();
 }
 
-#include "itemqueue.moc"

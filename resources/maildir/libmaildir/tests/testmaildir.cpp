@@ -20,7 +20,6 @@
 
 
 #include "testmaildir.h"
-#include "testmaildir.moc"
 
 #include <memory>
 

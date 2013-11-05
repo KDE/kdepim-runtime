@@ -377,4 +377,4 @@ AKONADI_AGENT_FACTORY( MailDispatcherAgent, akonadi_maildispatcher_agent )
 AKONADI_AGENT_MAIN( MailDispatcherAgent )
 #endif
 
-#include "maildispatcheragent.moc"
+#include "moc_maildispatcheragent.cpp"

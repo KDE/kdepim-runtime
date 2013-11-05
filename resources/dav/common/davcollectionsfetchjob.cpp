@@ -304,4 +304,3 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     emitResult();
 }
 
-#include "davcollectionsfetchjob.moc"

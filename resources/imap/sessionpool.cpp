@@ -495,4 +495,3 @@ void SessionPool::onConnectionLost()
       m_pendingInitialSession = 0;
 }
 
-#include "sessionpool.moc"

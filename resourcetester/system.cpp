@@ -43,4 +43,3 @@ void System::sleep(int secs)
   QTest::qWait( secs * 1000 );
 }
 
-#include "system.moc"

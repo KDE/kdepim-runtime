@@ -983,4 +983,3 @@ void KolabProxyResource::updateHiddenAttribute( const Akonadi::Collection &imapC
 
 AKONADI_RESOURCE_MAIN( KolabProxyResource )
 
-#include "kolabproxyresource.moc"

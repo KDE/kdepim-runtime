@@ -383,4 +383,3 @@ bool NepomukFeederAgent::isIndexing() const
 AKONADI_AGENT_MAIN( Akonadi::NepomukFeederAgent )
 
 
-#include "nepomukfeederagent.moc"

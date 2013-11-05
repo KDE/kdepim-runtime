@@ -112,4 +112,3 @@ void ConfigDialog::slotLinkClicked()
         "the settings on the webpage, as this resource cannot use OpenId." ), this );
 }
 
-#include "configdialog.moc"

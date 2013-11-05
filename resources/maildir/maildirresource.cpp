@@ -836,4 +836,3 @@ void MaildirResource::restartMaildirScan(const Maildir &maildir)
     mFsWatcher->restartDirScan( path + QLatin1Literal( "/cur" ) );
 }
 
-#include "maildirresource.moc"

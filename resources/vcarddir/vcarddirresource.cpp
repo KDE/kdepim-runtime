@@ -276,4 +276,3 @@ void VCardDirResource::initializeVCardDirectory() const
 
 AKONADI_RESOURCE_MAIN( VCardDirResource )
 
-#include "vcarddirresource.moc"

@@ -162,4 +162,3 @@ void Backup::create( const KUrl& filename )
     emit completed( true );
 }
 
-#include "backup.moc"

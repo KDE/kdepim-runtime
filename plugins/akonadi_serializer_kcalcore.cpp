@@ -349,4 +349,3 @@ void SerializerPluginKCalCore::compare( Akonadi::AbstractDifferencesReporter *re
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_kcalcore, SerializerPluginKCalCore )
 
-#include "akonadi_serializer_kcalcore.moc"

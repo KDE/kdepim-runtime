@@ -93,4 +93,3 @@ void MailSerializerPluginTest::testMessageIntegrity()
   QCOMPARE( data, serialized );
 }
 
-#include "mailserializerplugintest.moc"

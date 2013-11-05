@@ -529,4 +529,3 @@ bool NewMailNotifierAgent::isActive() const
 AKONADI_AGENT_MAIN( NewMailNotifierAgent )
 
 
-#include "newmailnotifieragent.moc"

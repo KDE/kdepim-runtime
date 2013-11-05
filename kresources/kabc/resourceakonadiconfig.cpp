@@ -74,4 +74,3 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   connectMimeCheckBoxes();
 }
 
-#include "resourceakonadiconfig.moc"

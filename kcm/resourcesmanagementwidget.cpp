@@ -138,4 +138,3 @@ void ResourcesManagementWidget::removeClicked()
     }
 }
 
-#include "resourcesmanagementwidget.moc"

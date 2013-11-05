@@ -312,6 +312,5 @@ QList< qint64 > MoveItemsTask::imapSetToList(const KIMAP::ImapSet& set)
 }
 
 
-#include "moveitemstask.moc"
 
 

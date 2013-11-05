@@ -208,4 +208,3 @@ void KBreadcrumbSelectionModel::select(const QItemSelection &selection, QItemSel
   }
 }
 
-#include "kbreadcrumbselectionmodel.moc"

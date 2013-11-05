@@ -80,4 +80,3 @@ void MainWindow::doMove()
   command->doCommand();
 }
 
-//#include "mainwindow.moc"

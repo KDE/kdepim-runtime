@@ -478,4 +478,3 @@ void Settings::updateToV3()
   writeConfig();
 }
 
-#include "settings.moc"

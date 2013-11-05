@@ -135,4 +135,3 @@ Akonadi::Collection ImapTestBase::createCollectionChain( const QString &remoteId
 }
 
 
-#include "imaptestbase.moc"

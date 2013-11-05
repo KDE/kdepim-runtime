@@ -56,4 +56,3 @@ void AkonadiSink::connect()
   osync_trace( TRACE_EXIT, "%s", __PRETTY_FUNCTION__ );
 }
 
-#include "akonadisink.moc"

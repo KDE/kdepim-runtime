@@ -302,5 +302,5 @@ qreal KDEIntegration::mm2px(qreal mm)
   return mm * QApplication::desktop()->logicalDpiX() / 25.4;
 }
 
-#include "kdeintegration.moc"
+#include "moc_kdeintegration.cpp"
 

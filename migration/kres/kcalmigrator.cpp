@@ -167,4 +167,3 @@ void KCalMigrator::davResourceCreated(KJob *job)
 }
 
 
-#include "kcalmigrator.moc"

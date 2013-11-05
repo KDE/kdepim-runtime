@@ -532,4 +532,3 @@ QString ContactsResource::directoryForCollection( const Collection& collection )
 
 AKONADI_AGENT_FACTORY( ContactsResource, akonadi_contacts_resource )
 
-#include "contactsresource.moc"

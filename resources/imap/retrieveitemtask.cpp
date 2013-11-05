@@ -138,6 +138,5 @@ void RetrieveItemTask::onContentFetchDone( KJob *job )
 }
 
 
-#include "retrieveitemtask.moc"
 
 

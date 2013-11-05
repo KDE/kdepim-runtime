@@ -232,6 +232,5 @@ void RetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob* job)
   }
 }
 
-#include "retrievecollectionstask.moc"
 
 

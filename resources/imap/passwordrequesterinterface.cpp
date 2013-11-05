@@ -27,5 +27,4 @@ PasswordRequesterInterface::PasswordRequesterInterface( QObject *parent )
 
 }
 
-#include "passwordrequesterinterface.moc"
 

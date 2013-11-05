@@ -291,5 +291,4 @@ void PersonalDataPage::leavePageNextRequested()
 }
 
 
-#include "personaldatapage.moc"
 

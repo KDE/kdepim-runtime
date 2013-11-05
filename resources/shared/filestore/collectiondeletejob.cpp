@@ -69,6 +69,5 @@ void FileStore::CollectionDeleteJob::handleCollectionDeleted( const Collection &
   d->mCollection = collection;
 }
 
-#include "collectiondeletejob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

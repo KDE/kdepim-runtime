@@ -396,5 +396,5 @@ void KResourceAssistant::Private::slotNameChanged( const QString &text )
   mCreationWidget->mResource->setResourceName( text );
 }
 
-#include "kresourceassistant.moc"
+#include "moc_kresourceassistant.cpp"
 // kate: space-indent on; indent-width 2; replace-tabs on;

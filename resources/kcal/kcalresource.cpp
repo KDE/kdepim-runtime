@@ -692,5 +692,4 @@ void KCalResource::delayedSaveCalendar()
 
 AKONADI_RESOURCE_MAIN( KCalResource )
 
-#include "kcalresource.moc"
 // kate: space-indent on; indent-width 2; replace-tabs on;
