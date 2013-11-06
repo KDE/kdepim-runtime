@@ -136,7 +136,7 @@ QString MigratorBase::logfile() const
 bool MigratorBase::canStart()
 {
     if (mIdentifier.isEmpty()) {
-        emit message(Error, "Missing Identifier");
+        emit message(Error, i18n("Missing Identifier"));
         return false;
     }
     return true;
