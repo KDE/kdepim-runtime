@@ -1177,7 +1177,7 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
   iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
   iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
-  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", QLatin1String("kmail-vacation.siv") ) );
+  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
   iface->setDisconnectedModeEnabled( disconnected );
   if ( !disconnected ) {
     iface->setAutomaticExpungeEnabled( config.readEntry( "auto-expunge", true ) );
