@@ -613,12 +613,12 @@ QString ImapCacheCollectionMigrator::mapRemoteIdFromStore( const QString &storeR
   imapPath.remove( 0, 1 );
   imapPath.chop( 1 );
 
-  QChar separator = '/';
+  QChar separator = QLatin1Char('/');
   int namespaceLength = -1;
 
   for ( int i=0; i<=2; i++ ) {
     QStringList namespaces = accountGroup.readEntry( QString::number( i ), QStringList() );
-    namespaces.replaceInStrings( QRegExp( "\"" ), "" );
+    namespaces.replaceInStrings( QRegExp( QLatin1String("\"") ), QLatin1String("") );
 
     foreach ( const QString &ns, namespaces ) {
       QString imapNs = ns;

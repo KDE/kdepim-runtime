@@ -579,8 +579,8 @@ void KMailMigrator::migratePassword( const QString &idString, const AgentInstanc
       password = passwordFromFilePassword;
 
     if ( password.isEmpty() &&  mWallet->hasFolder( "kmail" ) ) {
-      mWallet->setFolder( "kmail" );
-      mWallet->readPassword( "account-" + idString, password );
+      mWallet->setFolder( QLatin1String("kmail") );
+      mWallet->readPassword( QLatin1String("account-") + idString, password );
     }
 
     if ( !password.isEmpty() ) {
@@ -588,7 +588,7 @@ void KMailMigrator::migratePassword( const QString &idString, const AgentInstanc
         mWallet->createFolder( newFolder );
       mWallet->setFolder( newFolder );
 
-      mWallet->writePassword( instance.identifier() + "rc" , password );
+      mWallet->writePassword( instance.identifier() + QLatin1String("rc") , password );
     }
   }
 }
@@ -1105,7 +1105,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
     mCurrentInstance = AgentInstance();
 
-    setMigrationState( "LocalFolders", Complete, instance.identifier(), "LocalFolders" );
+    setMigrationState( QLatin1String("LocalFolders"), Complete, instance.identifier(), QLatin1String("LocalFolders") );
     emit message( Success, i18n( "Local folders migrated successfully." ) );
     emit status( QString() );
     migrationDone();
@@ -1135,9 +1135,9 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   iface->setImapServer( config.readEntry( "host" ) );
   iface->setImapPort( config.readEntry( "port", 143 ) );
   iface->setUserName( config.readEntry( "login" ) );
-  if ( config.readEntry( "use-ssl" ).toLower() == "true" )
+  if ( config.readEntry( "use-ssl" ).toLower() == QLatin1String("true") )
     iface->setSafety( "SSL" );
-  else if ( config.readEntry( "use-tls" ).toLower() == "true" )
+  else if ( config.readEntry( "use-tls" ).toLower() == QLatin1String("true") )
     iface->setSafety( "STARTTLS" );
   else
     iface->setSafety( "NONE" );
@@ -1159,7 +1159,7 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   else {
     iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CLEAR );
   }
-  if ( config.readEntry( "subscribed-folders" ).toLower() == "true" )
+  if ( config.readEntry( "subscribed-folders" ).toLower() == QLatin1String("true") )
     iface->setSubscriptionEnabled( true );
 
   // skip interval checking so it doesn't interfere with cache importing
@@ -1177,7 +1177,7 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
   iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
   iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
-  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
+  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", QLatin1String("kmail-vacation.siv") ) );
   iface->setDisconnectedModeEnabled( disconnected );
   if ( !disconnected ) {
     iface->setAutomaticExpungeEnabled( config.readEntry( "auto-expunge", true ) );

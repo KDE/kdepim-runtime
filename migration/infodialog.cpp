@@ -102,24 +102,24 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
   QListWidgetItem *item = new QListWidgetItem( msg, mList );
   switch ( type ) {
     case KMigratorBase::Success:
-      item->setIcon( KIcon( "dialog-ok-apply" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-ok-apply") ) );
       mChange = true;
       kDebug() << msg;
       break;
     case KMigratorBase::Skip:
-      item->setIcon( KIcon( "dialog-ok" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-ok") ) );
       kDebug() << msg;
       break;
     case KMigratorBase::Info:
-      item->setIcon( KIcon( "dialog-information" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-information") ) );
       kDebug() << msg;
       break;
     case KMigratorBase::Warning:
-      item->setIcon( KIcon( "dialog-warning" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-warning") ) );
       kDebug() << msg;
       break;
     case KMigratorBase::Error: {
-        item->setIcon( KIcon( "dialog-error" ) );
+        item->setIcon( KIcon( QLatin1String("dialog-error") ) );
         QFont currentFont = font();
         currentFont.setBold( true );
         item->setFont( currentFont );
