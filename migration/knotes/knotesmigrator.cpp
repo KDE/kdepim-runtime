@@ -174,4 +174,4 @@ void KNotesMigrator::newResourceFilled(KJob* job)
   migrationCompleted( m_agentInstance );
 }
 
-#include "knotesmigrator.moc"
+#include "moc_knotesmigrator.cpp"
