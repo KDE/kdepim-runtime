@@ -235,4 +235,3 @@ void AbortTest::testAbortWhileIdle()
 
 QTEST_AKONADIMAIN( AbortTest, NoGUI )
 
-#include "aborttest.moc"

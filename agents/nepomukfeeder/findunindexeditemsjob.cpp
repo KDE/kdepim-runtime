@@ -229,4 +229,3 @@ bool FindUnindexedItemsJob::doKill()
 }
 
 
-#include "findunindexeditemsjob.moc"

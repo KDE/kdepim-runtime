@@ -193,4 +193,3 @@ void DavItemsListJob::davJobFinished( KJob *job )
     emitResult();
 }
 
-#include "davitemslistjob.moc"

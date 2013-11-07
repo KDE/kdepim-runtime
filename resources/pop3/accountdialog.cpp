@@ -688,4 +688,3 @@ void AccountDialog::localFolderRequestJobFinished( KJob *job )
   }
 }
 
-#include "accountdialog.moc"

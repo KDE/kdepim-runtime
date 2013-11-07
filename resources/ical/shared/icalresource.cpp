@@ -152,4 +152,3 @@ QString ICalResource::mimeType( const IncidenceBase::Ptr &incidence ) const
 }
 
 
-#include "icalresource.moc"

@@ -106,4 +106,3 @@ bool MigrationExecutor::doResume()
     return true;
 }
 
-#include "migrationexecutor.moc"

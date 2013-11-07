@@ -842,6 +842,6 @@ void FileStore::AbstractLocalStore::checkStoreCompact( FileStore::StoreCompactJo
   Q_UNUSED( errorText );
 }
 
-#include "abstractlocalstore.moc"
+#include "moc_abstractlocalstore.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

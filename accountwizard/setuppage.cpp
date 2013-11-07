@@ -69,4 +69,3 @@ void SetupPage::setProgress(int percent)
   ui.progressBar->setValue( percent );
 }
 
-#include "setuppage.moc"

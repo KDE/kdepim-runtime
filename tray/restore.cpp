@@ -162,4 +162,3 @@ void Restore::restore( const KUrl& filename )
     emit completed( true );
 }
 
-#include "restore.moc"

@@ -163,4 +163,3 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
 
 
 
-#include "newmailnotifiersettingsdialog.moc"

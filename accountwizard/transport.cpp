@@ -154,4 +154,3 @@ int Transport::transportId() const
   return m_transportId;
 }
 
-#include "transport.moc"

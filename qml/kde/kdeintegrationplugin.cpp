@@ -43,6 +43,5 @@ void KDEIntegrationPlugin::initializeEngine(QDeclarativeEngine *engine, const ch
   engine->rootContext()->setContextProperty( QLatin1String("KDE"), new KDEIntegration( engine ) );
 }
 
-#include "kdeintegrationplugin.moc"
 
 Q_EXPORT_PLUGIN2( kdeintegrationplugin, KDEIntegrationPlugin )

@@ -156,4 +156,3 @@ void SinkBase::setContext(OSyncContext * context)
   mContext = context;
 }
 
-#include "sinkbase.moc"

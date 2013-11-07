@@ -97,6 +97,5 @@ void RemoveItemsTask::onStoreFlagsDone( KJob *job )
   }
 }
 
-#include "removeitemstask.moc"
 
 

@@ -315,4 +315,3 @@ void Settings::onRootCollectionFetched( KJob *job )
   }
 }
 
-#include "settings.moc"

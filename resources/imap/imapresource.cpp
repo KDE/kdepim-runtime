@@ -796,4 +796,3 @@ void ImapResource::clearStatusMessage()
 
 AKONADI_RESOURCE_MAIN( ImapResource )
 
-#include "imapresource.moc"

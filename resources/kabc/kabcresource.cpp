@@ -892,6 +892,5 @@ KABC::ContactGroup KABCResource::contactGroupFromDistList( const KABC::Distribut
 
 AKONADI_RESOURCE_MAIN( KABCResource )
 
-#include "kabcresource.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

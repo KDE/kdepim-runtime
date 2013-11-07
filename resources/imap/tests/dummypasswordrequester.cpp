@@ -81,4 +81,3 @@ void DummyPasswordRequester::emitResult()
   }
 }
 
-#include "dummypasswordrequester.moc"

@@ -80,4 +80,3 @@ QObject* ItemTest::newInstance()
   return createNewInstance<ItemTest>( this );
 }
 
-#include "itemtest.moc"

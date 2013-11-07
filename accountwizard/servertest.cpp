@@ -62,4 +62,3 @@ void ServerTest::testFinished( QList< int > list )
   }
 }
 
-#include "servertest.moc"

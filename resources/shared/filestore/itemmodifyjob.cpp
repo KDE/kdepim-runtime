@@ -88,6 +88,5 @@ void FileStore::ItemModifyJob::handleItemModified( const Item &item )
   d->mItem = item;
 }
 
-#include "itemmodifyjob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

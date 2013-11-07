@@ -136,7 +136,7 @@ QString MigratorBase::logfile() const
 bool MigratorBase::canStart()
 {
     if (mIdentifier.isEmpty()) {
-        emit message(Error, "Missing Identifier");
+        emit message(Error, i18n("Missing Identifier"));
         return false;
     }
     return true;
@@ -229,12 +229,12 @@ MigratorBase::MigrationState MigratorBase::migrationState() const
 
 void MigratorBase::saveState()
 {
-    config().writeEntry("MigrationState", stateToIdentifier(mMigrationState));
+    config().writeEntry(QLatin1String("MigrationState"), stateToIdentifier(mMigrationState));
 }
 
 void MigratorBase::loadState()
 {
-    const QString state = config().readEntry("MigrationState", QString());
+    const QString state = config().readEntry(QLatin1String("MigrationState"), QString());
     if (!state.isEmpty()) {
         mMigrationState = identifierToState(state);
     }
@@ -287,4 +287,3 @@ QString MigratorBase::status() const
     return QString();
 }
 
-#include "migratorbase.moc"

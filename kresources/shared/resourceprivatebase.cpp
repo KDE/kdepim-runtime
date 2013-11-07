@@ -504,6 +504,5 @@ void ResourcePrivateBase::savingResult( KJob *job )
   savingResult( job->error() == 0, job->errorString() );
 }
 
-#include "resourceprivatebase.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

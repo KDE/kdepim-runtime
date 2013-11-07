@@ -276,4 +276,3 @@ void ConfigDialog::insertModelRow( int index, const QString &protocol, const QSt
     rootItem->insertRow( index, items );
 }
 
-#include "configdialog.moc"

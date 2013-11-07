@@ -152,4 +152,3 @@ void Users::saveToCache()
   }
 }
 
-#include "users.moc"

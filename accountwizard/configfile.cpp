@@ -89,4 +89,3 @@ void ConfigFile::setPassword(const QString& group, const QString& key, const QSt
 }
 
 
-#include "configfile.moc"

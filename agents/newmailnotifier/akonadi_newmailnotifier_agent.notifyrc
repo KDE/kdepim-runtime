@@ -152,5 +152,6 @@ Name[tr]=Jovie Metin Okuma Hizmeti bulunamadı
 Name[uk]=Не знайдено служби синтезу мовлення Jovie
 Name[x-test]=xxJovie Text-to-Speech Service not foundxx
 Name[zh_CN]=未找到 Jovie 语音合成服务
+Name[zh_TW]=找不到 Jovie 文字轉語音服務
 Action=Popup
 

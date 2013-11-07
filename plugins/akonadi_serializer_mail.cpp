@@ -222,4 +222,4 @@ QSet<QByteArray> SerializerPluginMail::parts( const Item &item ) const
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_mail, SerializerPluginMail )
 
-#include "akonadi_serializer_mail.moc"
+#include "moc_akonadi_serializer_mail.cpp"

@@ -102,4 +102,3 @@ void RestoreAssistant::slotRestoreComplete( bool ok )
                                                "report a bug, so we can find out what the cause is." ) );
 }
 
-#include "restoreassistant.moc"

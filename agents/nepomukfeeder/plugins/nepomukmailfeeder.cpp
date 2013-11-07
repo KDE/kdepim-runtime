@@ -286,4 +286,3 @@ QList<QUrl> NepomukMailFeeder::extractContactsFromMailboxes(const KMime::Types::
 
 }
 
-#include "nepomukmailfeeder.moc"

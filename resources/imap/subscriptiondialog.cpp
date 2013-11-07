@@ -456,4 +456,3 @@ void SubscriptionDialog::keyPressEvent( QKeyEvent *event )
 #endif
 }
 
-#include "subscriptiondialog.moc"

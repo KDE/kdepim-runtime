@@ -156,4 +156,3 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     emit displayNotification(pixmap, result.join(QLatin1String("\n")));
 }
 
-#include "specialnotifierjob.moc"

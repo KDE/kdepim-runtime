@@ -167,4 +167,3 @@ void NepomukPIMindexerUtility::copyUrlFromDataCurrentlySelected() {
     clipboard->setText(item.url().url());
 }
 
-#include "nepomukpimindexerutility.moc"

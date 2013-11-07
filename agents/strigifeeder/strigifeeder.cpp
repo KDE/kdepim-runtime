@@ -444,4 +444,3 @@ void StrigiFeeder::systemResumed()
 
 AKONADI_AGENT_FACTORY( StrigiFeeder, akonadi_strigi_feeder )
 
-#include "strigifeeder.moc"

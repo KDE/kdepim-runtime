@@ -462,4 +462,3 @@ bool ResourceTask::serverSupportsAnnotations() const
 }
 
 
-#include "resourcetask.moc"

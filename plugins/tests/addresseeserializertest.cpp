@@ -44,4 +44,4 @@ class AddresseeSerializerTest : public QObject
 
 QTEST_KDEMAIN( AddresseeSerializerTest, NoGUI )
 
-#include "addresseserializertest.moc"
+#include "addresseeserializertest.moc"

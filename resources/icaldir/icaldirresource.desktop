@@ -59,6 +59,7 @@ Comment[tr]="Belirtilen dizinde tek bir yerel dosyada depolanmış bir alarm tak
 Comment[uk]="Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі"
 Comment[x-test]=xx"Provides access to calendar items, each stored in a single file, in a given directory"xx
 Comment[zh_CN]=“提供日历内容的访问支持，每个日历内容都存储在指定目录的单独文件中”
+Comment[zh_TW]="提供存取行事曆的項目。每個項目都以單一檔案存放在指定的目錄中"
 
 Type=AkonadiResource
 Exec=akonadi_icaldir_resource

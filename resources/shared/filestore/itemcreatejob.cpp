@@ -73,6 +73,5 @@ void FileStore::ItemCreateJob::handleItemCreated( const Item &item )
   d->mItem = item;
 }
 
-#include "itemcreatejob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

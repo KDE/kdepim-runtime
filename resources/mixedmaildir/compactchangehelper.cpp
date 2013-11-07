@@ -233,6 +233,6 @@ void CompactChangeHelper::checkCollectionChanged( const Collection &collection )
   }
 }
 
-#include "compactchangehelper.moc"
+#include "moc_compactchangehelper.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

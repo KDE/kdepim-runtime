@@ -67,4 +67,3 @@ void Script::finished(Kross::Action* action)
 }
 
 
-#include "script.moc"

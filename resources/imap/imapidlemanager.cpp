@@ -171,6 +171,5 @@ void ImapIdleManager::onFlagsChanged( KIMAP::IdleJob *job )
   m_resource->synchronizeCollection( m_state->collection().id() );
 }
 
-#include "imapidlemanager.moc"
 
 

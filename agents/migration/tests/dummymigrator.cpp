@@ -66,4 +66,3 @@ void DummyMigrator::abort()
     MigratorBase::abort();
 }
 
-#include "dummymigrator.moc"

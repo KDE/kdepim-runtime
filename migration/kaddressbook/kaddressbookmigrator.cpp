@@ -34,10 +34,10 @@
 
 KABC::Addressee::List readContacts( bool *ok )
 {
-  const QString fileName = KStandardDirs::locateLocal( "data", "kabc/std.vcf" );
+  const QString fileName = KStandardDirs::locateLocal( "data", QLatin1String("kabc/std.vcf") );
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    kDebug() << QString( "Unable to open file %1 for reading" ).arg( fileName );
+    kDebug() << QString::fromLatin1("Unable to open file %1 for reading" ).arg( fileName );
     *ok = false;
     return KABC::Addressee::List();
   }
@@ -53,7 +53,7 @@ KABC::Addressee::List readContacts( bool *ok )
 
 bool writeContacts( const KABC::Addressee::List &contacts )
 {
-  const QString path = QDir::home().absolutePath() + "/.local/share/contacts/";
+  const QString path = QDir::home().absolutePath() + QLatin1String("/.local/share/contacts/");
   if ( !QDir::root().mkpath( path ) )
     return false;
 
@@ -62,10 +62,10 @@ bool writeContacts( const KABC::Addressee::List &contacts )
     const KABC::Addressee contact = contacts.at( i );
     const QByteArray content = converter.createVCard( contact );
 
-    const QString fileName = path + QDir::separator() + contact.uid() + ".vcf";
+    const QString fileName = path + QDir::separator() + contact.uid() + QLatin1String(".vcf");
     QFile file( fileName );
     if ( !file.open( QIODevice::WriteOnly ) ) {
-      kDebug() << QString( "Unable to open file %1 for writing" ).arg( fileName );
+      kDebug() << QString::fromLatin1( "Unable to open file %1 for writing" ).arg( fileName );
       return false;
     }
 

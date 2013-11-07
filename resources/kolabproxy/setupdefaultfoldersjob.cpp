@@ -180,4 +180,3 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
   emitResult();
 }
 
-#include "setupdefaultfoldersjob.moc"

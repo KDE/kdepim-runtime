@@ -360,4 +360,3 @@ void MboxResource::onCollectionModify( KJob *job )
 
 AKONADI_AGENT_FACTORY( MboxResource, akonadi_mbox_resource )
 
-#include "mboxresource.moc"

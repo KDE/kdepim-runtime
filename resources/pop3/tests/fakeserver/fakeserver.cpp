@@ -293,4 +293,3 @@ bool FakeServer::gotDisconnected() const
   return mGotDisconnected;
 }
 
-#include "fakeserver.moc"

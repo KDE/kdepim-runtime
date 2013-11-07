@@ -1005,6 +1005,5 @@ void ModelLayoutChangeCommand::doCommand()
   m_model->layoutChanged();
 }
 
-//#include "dynamictreemodel.moc"
 
 

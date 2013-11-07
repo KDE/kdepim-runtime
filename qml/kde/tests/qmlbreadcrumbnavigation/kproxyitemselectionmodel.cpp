@@ -253,5 +253,4 @@ void KLinkItemSelectionModel::sourceSelectionChanged(const QItemSelection& selec
   QItemSelectionModel::select(mappedSelection, Select);
 }
 
-#include "kproxyitemselectionmodel.moc"
 

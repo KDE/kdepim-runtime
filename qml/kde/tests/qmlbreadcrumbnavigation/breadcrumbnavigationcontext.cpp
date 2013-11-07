@@ -395,4 +395,3 @@ QObject* KBreadcrumbNavigationFactory::qmlCheckedItemsModel() const
 
 
 
-#include "breadcrumbnavigationcontext.moc"

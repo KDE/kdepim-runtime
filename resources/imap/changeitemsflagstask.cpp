@@ -129,4 +129,3 @@ void ChangeItemsFlagsTask::onRemoveFlagsDone(KJob* job)
   }
 }
 
-#include "changeitemsflagstask.moc"

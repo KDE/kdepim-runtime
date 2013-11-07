@@ -62,4 +62,3 @@ QSet<QByteArray> SerializerPluginmicroblog::parts( const Item &item ) const
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_microblog, Akonadi::SerializerPluginmicroblog )
 
-#include "akonadi_serializer_microblog.moc"

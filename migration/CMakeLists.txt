@@ -1,3 +1,6 @@
+add_definitions( -DQT_NO_CAST_FROM_ASCII )
+add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 add_definitions(
   -DKRESOURCES_DEPRECATED=
   -DKABC_DEPRECATED=
@@ -31,6 +34,7 @@ add_subdirectory( kaddressbook )
 add_subdirectory( kjots )
 add_subdirectory( gid )
 if (KDEPIMLIBS_KRESOURCES_LIBS)
+  add_subdirectory( knotes )
   add_subdirectory( kres )
   add_subdirectory( tests )
 endif ()

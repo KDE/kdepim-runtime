@@ -204,6 +204,5 @@ void MicroblogResource::configure( WId windowId )
 
 AKONADI_RESOURCE_MAIN( MicroblogResource )
 
-#include "microblog.moc"
 
 

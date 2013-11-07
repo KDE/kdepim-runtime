@@ -58,4 +58,3 @@ QString NotesResource::mimeType( const KCalCore::IncidenceBase::Ptr &  ) const
 
 AKONADI_AGENT_FACTORY( NotesResource, akonadi_notes_resource )
 
-#include "notesresource.moc"

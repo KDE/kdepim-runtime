@@ -286,6 +286,5 @@ void ChangeItemTask::recordNewUid()
   changeCommitted( i );
 }
 
-#include "changeitemtask.moc"
 
 

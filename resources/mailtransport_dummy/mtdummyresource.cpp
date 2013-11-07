@@ -106,4 +106,3 @@ void MTDummyResource::jobResult( KJob *job )
 
 AKONADI_RESOURCE_MAIN( MTDummyResource )
 
-#include "mtdummyresource.moc"

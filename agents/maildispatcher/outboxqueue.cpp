@@ -456,4 +456,4 @@ void OutboxQueue::fetchOne()
   connect( job, SIGNAL(result(KJob*)), this, SLOT(itemFetched(KJob*)) );
 }
 
-#include "outboxqueue.moc"
+#include "moc_outboxqueue.cpp"

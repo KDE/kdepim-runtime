@@ -240,4 +240,3 @@ void ServerConfigModule::driverChanged( int index )
   }
 }
 
-#include "serverconfigmodule.moc"

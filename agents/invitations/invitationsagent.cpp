@@ -558,4 +558,3 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
 
 AKONADI_AGENT_MAIN( InvitationsAgent )
 
-#include "invitationsagent.moc"

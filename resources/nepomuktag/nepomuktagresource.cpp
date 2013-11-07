@@ -332,6 +332,5 @@ void NepomukTagResource::createPendingTagCollections()
 
 AKONADI_RESOURCE_MAIN( NepomukTagResource )
 
-#include "nepomuktagresource.moc"
 
 

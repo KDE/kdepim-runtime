@@ -97,6 +97,5 @@ void ExpungeCollectionTask::onExpungeDone( KJob *job )
   }
 }
 
-#include "expungecollectiontask.moc"
 
 

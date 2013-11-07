@@ -62,4 +62,3 @@ void DavItemDeleteJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "davitemdeletejob.moc"

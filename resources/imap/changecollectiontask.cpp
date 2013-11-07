@@ -135,17 +135,17 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
         } else {
           job->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
         }
+        job->setMailBox( mailBoxForCollection( collection() ) );
 
-        QByteArray attribute = entry;
-        if ( job->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
-          attribute = "value.shared";
+        if ( job->serverCapability() == KIMAP::MetaDataJobBase::Annotatemore ) {
+          job->setEntry( entry );
+          job->addMetaData( "value.shared", annotations[entry] );
+        } else {
+          //We stripped the /shared prefix when getting the metadata, so we need to readd it now
+          job->addMetaData( QByteArray("/shared") + entry, annotations[entry] );
         }
 
-        job->setMailBox( mailBoxForCollection( collection() ) );
-        job->setEntry( entry );
-        job->addMetaData( attribute, annotations[entry] );
-
-        kDebug( 5327 ) << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
+        kDebug( 5327 ) << "Job got entry:" << entry << "value:" << annotations[entry];
 
         connect( job, SIGNAL(result(KJob*)),
                  this, SLOT(onSetMetaDataDone(KJob*)) );
@@ -291,6 +291,5 @@ void ChangeCollectionTask::endTaskIfNeeded()
   }
 }
 
-#include "changecollectiontask.moc"
 
 

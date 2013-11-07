@@ -89,4 +89,3 @@ void NepomukFeederAgentDialog::slotTimeoutToggle()
 
 }
 
-#include "nepomukfeederagentdialog.moc"

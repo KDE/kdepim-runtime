@@ -90,5 +90,4 @@ void SettingsPasswordRequester::onPasswordRequestCompleted( const QString &passw
   }
 }
 
-#include "settingspasswordrequester.moc"
 

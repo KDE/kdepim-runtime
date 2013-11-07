@@ -196,8 +196,8 @@ void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
 void ImapCacheLocalImporter::Private::configureResource()
 {
   OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + mResource.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), q );
+    QLatin1String("org.freedesktop.Akonadi.Resource.") + mResource.identifier(),
+    QLatin1String("/Settings"), QDBusConnection::sessionBus(), q );
 
   if ( !iface->isValid() ) {
     q->importFinished( mResource, i18n( "Failed to obtain D-Bus interface for remote configuration." ) );
@@ -343,6 +343,6 @@ void ImapCacheLocalImporter::startImport()
   job->start();
 }
 
-#include "imapcachelocalimporter.moc"
+#include "moc_imapcachelocalimporter.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

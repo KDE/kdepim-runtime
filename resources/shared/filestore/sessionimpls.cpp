@@ -198,6 +198,6 @@ void FileStore::FiFoQueueJobSession::removeJob( FileStore::Job *job )
   d->mJobQueue.removeAll( job );
 }
 
-#include "sessionimpls_p.moc"
+#include "moc_sessionimpls_p.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

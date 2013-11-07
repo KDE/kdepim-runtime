@@ -944,7 +944,7 @@ void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, co
 
 bool MixedMaildirStore::Private::visit( FileStore::Job *job )
 {
-  const QString message = i18nc( "@info:status", "Unhandled operation %1", job->metaObject()->className() );
+  const QString message = i18nc( "@info:status", "Unhandled operation %1", QLatin1String(job->metaObject()->className()) );
   kError() << message;
   q->notifyError( FileStore::Job::InvalidJobContext, message );
   return false;
@@ -2266,7 +2266,7 @@ void MixedMaildirStore::setTopLevelCollection( const Collection &collection )
 
   CachePolicy cachePolicy;
   cachePolicy.setInheritFromParent( false );
-  cachePolicy.setLocalParts( QStringList() << MessagePart::Envelope );
+  cachePolicy.setLocalParts( QStringList() << QLatin1String(MessagePart::Envelope) );
   cachePolicy.setSyncOnDemand( true );
   cachePolicy.setCacheTimeout( 1 );
 
@@ -2342,6 +2342,5 @@ void MixedMaildirStore::checkItemFetch( FileStore::ItemFetchJob *job, int &error
   }
 }
 
-#include "mixedmaildirstore.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

@@ -115,4 +115,3 @@ void Ldap::setPassword(const QString& password)
   m_password = password;
 }
 
-#include "ldap.moc"

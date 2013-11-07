@@ -58,6 +58,5 @@ void ItemFetchAdapter::jobResult( KJob *job )
   emit result( this, job );
 }
 
-#include "itemfetchadapter.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

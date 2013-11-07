@@ -297,4 +297,3 @@ void MigrationScheduler::abort(const QString &identifier)
     }
 }
 
-#include "migrationscheduler.moc"

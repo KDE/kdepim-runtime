@@ -38,7 +38,7 @@
 using namespace Akonadi;
 
 KNotesMigrator::KNotesMigrator() :
-    KResMigrator<KRES::Resource>( "notes", QString() ), m_notesResource( 0 )
+    KResMigrator<KRES::Resource>( QLatin1String("notes"), QString() ), m_notesResource( 0 )
 {
 }
 
@@ -49,8 +49,8 @@ KNotesMigrator::~KNotesMigrator()
 
 bool KNotesMigrator::migrateResource( KRES::Resource* res)
 {
-  if ( res->type() == "file" )
-    createAgentInstance( "akonadi_akonotes_resource", this, SLOT(notesResourceCreated(KJob*)) );
+  if ( res->type() == QLatin1String("file") )
+    createAgentInstance( QLatin1String("akonadi_akonotes_resource"), this, SLOT(notesResourceCreated(KJob*)) );
   else
     return false;
   return true;
@@ -85,8 +85,8 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   }
 
   OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + m_agentInstance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), this );
+    QLatin1String("org.freedesktop.Akonadi.Resource.") + m_agentInstance.identifier(),
+    QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
 
   if ( !iface->isValid() ) {
     migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), m_agentInstance );
@@ -95,7 +95,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
   }
   iface->setReadOnly( res->readOnly() );
 
-  QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + "/notes/" + KRandom::randomString( 10 ) );
+  QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
 
   // make sure the config is saved
   iface->writeConfig();
@@ -147,7 +147,7 @@ void KNotesMigrator::startMigration()
 
   foreach ( KCal::Journal *journal, oldNotesList ) {
     Item newItem;
-    newItem.setMimeType( "text/x-vnd.akonadi.note" );
+    newItem.setMimeType( QLatin1String("text/x-vnd.akonadi.note") );
     newItem.setParentCollection( m_resourceCollection );
     KMime::Message::Ptr note( new KMime::Message() );
 

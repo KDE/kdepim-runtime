@@ -121,5 +121,4 @@ void SerializerPluginContactGroup::compare( Akonadi::AbstractDifferencesReporter
 
 Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
 
-#include "akonadi_serializer_contactgroup.moc"
 // kate: space-indent on; indent-width 2; replace-tabs on;

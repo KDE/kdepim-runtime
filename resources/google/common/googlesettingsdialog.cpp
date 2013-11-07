@@ -214,4 +214,3 @@ void GoogleSettingsDialog::slotAuthJobFinished( Job *job )
     job->deleteLater();
 }
 
-#include "googlesettingsdialog.moc"

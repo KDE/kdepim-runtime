@@ -170,4 +170,3 @@ void RemoveCollectionRecursiveTask::onJobDone( KJob* job )
   }
 }
 
-#include "removecollectionrecursivetask.moc"

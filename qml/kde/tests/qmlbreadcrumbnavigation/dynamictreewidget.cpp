@@ -396,4 +396,3 @@ bool DynamicTreeWidget::eventFilter(QObject* o, QEvent* e)
 }
 
 
-#include "dynamictreewidget.moc"

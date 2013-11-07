@@ -40,7 +40,7 @@ KResMigratorBase::KResMigratorBase(const QString & type, const QString &bridgeTy
     mBridgingInProgress( false )
 {
   KConfigGroup cfg( KGlobal::config(), "Bridged" );
-  mPendingBridgedResources = cfg.readEntry( mType + "Resources", QStringList() );
+  mPendingBridgedResources = cfg.readEntry( mType + QLatin1String("Resources"), QStringList() );
 }
 
 void KResMigratorBase::migrateToBridge( KRES::Resource *res, const QString & typeId)
@@ -70,7 +70,7 @@ void KResMigratorBase::resourceBridgeCreated(KJob * job)
   const KConfigGroup kresCfg = kresConfig( res );
   instance.setName( kresCfg.readEntry( "ResourceName", "Bridged KResource" ) );
 
-  const QString akoResCfgFile = KStandardDirs::locateLocal( "config", QString( "%1rc" ).arg( instance.identifier() ) );
+  const QString akoResCfgFile = KStandardDirs::locateLocal( "config", QString::fromLatin1( "%1rc" ).arg( instance.identifier() ) );
   KConfig *akoResConfig = new KConfig( akoResCfgFile );
   KConfigGroup bridgeResCfg( akoResConfig, kresCfg.name() );
   kresCfg.copyTo( &bridgeResCfg );
@@ -131,7 +131,7 @@ void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instanc
   nonConstInstance.synchronize();
 
   // check if this one was previously bridged and remove the bridge
-  KConfigGroup cfg( KGlobal::config(), "Resource " + kresId );
+  KConfigGroup cfg( KGlobal::config(), QLatin1String("Resource ") + kresId );
   const QString bridgeId = cfg.readEntry( "ResourceIdentifier", "" );
   if ( bridgeId != instance.identifier() ) {
     const AgentInstance bridge = AgentManager::self()->instance( bridgeId );
@@ -145,10 +145,10 @@ void KResMigratorBase::migrationCompleted( const Akonadi::AgentInstance &instanc
 void KResMigratorBase::createKolabResource( const QString &kresId, const QString &kresName )
 {
   // check if kolab resource exists. If not, create one.
-  Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( "akonadi_kolabproxy_resource" );
+  Akonadi::AgentInstance kolabAgent = Akonadi::AgentManager::self()->instance( QLatin1String("akonadi_kolabproxy_resource") );
   if ( !kolabAgent.isValid() ) {
     emit message( Info, i18n( "Attempting to create kolab resource" ) );
-    KJob * job = createAgentInstance( "akonadi_kolabproxy_resource", this, SLOT(kolabResourceCreated(KJob*)) );
+    KJob * job = createAgentInstance(QLatin1String( "akonadi_kolabproxy_resource"), this, SLOT(kolabResourceCreated(KJob*)) );
     job->setProperty( "kresId", kresId );
     job->setProperty( "kresName", kresName );
   } else {
@@ -175,4 +175,3 @@ void KResMigratorBase::kolabResourceCreated( KJob *job )
 
 
 
-#include "kresmigratorbase.moc"

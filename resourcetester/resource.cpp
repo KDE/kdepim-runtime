@@ -154,4 +154,3 @@ QObject* Resource::newInstance(const QString& type)
   return r;
 }
 
-#include "resource.moc"

@@ -103,4 +103,3 @@ void ConfigDialog::save()
   }
 }
 
-#include "configdialog.moc"

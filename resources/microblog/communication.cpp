@@ -182,6 +182,5 @@ QString Communication::serviceToApi( int service )
     return QString();
 }
 
-#include "communication.moc"
 
 

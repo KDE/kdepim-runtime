@@ -150,4 +150,3 @@ void Identity::setXFace(const QString& xface)
   m_xface = xface;
 }
 
-#include "identity.moc"

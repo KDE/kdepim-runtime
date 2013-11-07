@@ -61,4 +61,3 @@ void MigrationAgent::configure(WId windowId)
 
 AKONADI_AGENT_MAIN(Akonadi::MigrationAgent)
 
-#include "migrationagent.moc"

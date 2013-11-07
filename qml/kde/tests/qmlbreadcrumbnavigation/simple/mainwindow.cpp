@@ -88,4 +88,3 @@ void MainWindow::removeBottomRow()
 }
 
 
-#include "mainwindow.moc"

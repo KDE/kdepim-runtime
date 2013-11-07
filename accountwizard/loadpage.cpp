@@ -86,4 +86,3 @@ void LoadPage::exportObject(QObject* object, const QString& name)
 }
 
 
-#include "loadpage.moc"

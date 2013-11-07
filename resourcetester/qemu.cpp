@@ -202,4 +202,3 @@ void QEmu::vmFinished(int exitCode, QProcess::ExitStatus exitStatus)
 }
 
 
-#include "qemu.moc"

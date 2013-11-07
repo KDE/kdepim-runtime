@@ -79,4 +79,3 @@ void CalendarSearchAgent::configure( WId )
 AKONADI_AGENT_MAIN( CalendarSearchAgent )
 
 
-#include "calendarsearchagent.moc"

@@ -426,4 +426,3 @@ bool XmlOperations::compareAttributes(const Entity& entity, const Entity& refEnt
   return true;
 }
 
-#include "xmloperations.moc"

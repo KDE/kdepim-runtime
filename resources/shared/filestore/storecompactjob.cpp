@@ -76,6 +76,5 @@ void FileStore::StoreCompactJob::handleItemsChanged( const Item::List &items )
   emit itemsChanged( items );
 }
 
-#include "storecompactjob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

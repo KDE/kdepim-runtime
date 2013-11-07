@@ -115,4 +115,3 @@ QTreeView *TypePage::treeview() const
   return ui.listView;
 }
 
-#include "typepage.moc"
