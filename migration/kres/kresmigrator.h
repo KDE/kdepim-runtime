@@ -87,7 +87,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           ++mIt;
           continue;
         }
-        KConfigGroup cfg( KGlobal::config(), "Resource " + ( *mIt )->identifier() );
+        //KConfigGroup cfg( KGlobal::config(), QLatin1String("Resource ") + ( *mIt )->identifier() );
         kDebug() << "migrateNext:" << ( *mIt )->identifier();
         if ( migrationState( ( *mIt )->identifier() ) == None ) {
           emit message( Info, i18n( "Trying to migrate '%1'...", ( *mIt )->resourceName() ) );

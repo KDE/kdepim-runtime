@@ -35,19 +35,19 @@
 using namespace Akonadi;
 
 KCalMigrator::KCalMigrator() :
-    KResMigrator<KCal::ResourceCalendar>( "calendar", "akonadi_kcal_resource" )
+    KResMigrator<KCal::ResourceCalendar>( QLatin1String("calendar"), QLatin1String("akonadi_kcal_resource") )
 {
 }
 
 bool KCalMigrator::migrateResource( KCal::ResourceCalendar* res)
 {
   kDebug() << res->identifier() << res->type();
-  if ( res->type() == "file" )
-    createAgentInstance( "akonadi_ical_resource", this, SLOT(fileResourceCreated(KJob*)) );
-  else if ( res->type() == "birthdays" )
-    createAgentInstance( "akonadi_birthdays_resource", this, SLOT(birthdaysResourceCreated(KJob*)) );
-  else if ( res->type() == "groupdav" )
-    createAgentInstance( "akonadi_davgroupware_resource", this, SLOT(davResourceCreated(KJob*)) );
+  if ( res->type() == QLatin1String("file") )
+    createAgentInstance( QLatin1String("akonadi_ical_resource"), this, SLOT(fileResourceCreated(KJob*)) );
+  else if ( res->type() == QLatin1String("birthdays") )
+    createAgentInstance( QLatin1String("akonadi_birthdays_resource"), this, SLOT(birthdaysResourceCreated(KJob*)) );
+  else if ( res->type() == QLatin1String("groupdav") )
+    createAgentInstance( QLatin1String("akonadi_davgroupware_resource"), this, SLOT(davResourceCreated(KJob*)) );
   else
     return false;
   return true;
@@ -62,16 +62,16 @@ void KCalMigrator::fileResourceCreated(KJob * job)
   KCal::ResourceCalendar *res = currentResource();
   AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
   const KConfigGroup kresCfg = kresConfig( res );
-  instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Calendar" ) );
+  instance.setName( kresCfg.readEntry( "ResourceName", i18n("Migrated Calendar") ) );
 
-  OrgKdeAkonadiICalSettingsInterface *iface = new OrgKdeAkonadiICalSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-      "/Settings", QDBusConnection::sessionBus(), this );
+  OrgKdeAkonadiICalSettingsInterface *iface = new OrgKdeAkonadiICalSettingsInterface( QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+      QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
     return;
   }
-  iface->setPath( kresCfg.readPathEntry( "CalendarURL", "" ) );
+  iface->setPath( kresCfg.readPathEntry( "CalendarURL", QLatin1String("") ) );
   iface->setReadOnly( res->readOnly() );
 
   // make sure the config is saved
@@ -90,11 +90,11 @@ void KCalMigrator::birthdaysResourceCreated(KJob* job)
   KCal::ResourceCalendar *res = currentResource();
   AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
   const KConfigGroup kresCfg = kresConfig( res );
-  instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Birthdays" ) );
+  instance.setName( kresCfg.readEntry( "ResourceName", i18n("Migrated Birthdays") ) );
 
   OrgKdeAkonadiBirthdaysSettingsInterface *iface =
-    new OrgKdeAkonadiBirthdaysSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-                                                 "/Settings", QDBusConnection::sessionBus(), this );
+    new OrgKdeAkonadiBirthdaysSettingsInterface( QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+                                                 QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
@@ -117,25 +117,25 @@ void KCalMigrator::davResourceCreated(KJob *job)
   KCal::ResourceCalendar *res = currentResource();
   AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
   const KConfigGroup kresCfg = kresConfig( res );
-  QString name = kresCfg.readEntry( "ResourceName", "Migrated GroupDAV" );
+  QString name = kresCfg.readEntry( "ResourceName", i18n("Migrated GroupDAV") );
   instance.setName( name );
 
-  QString groupdavCfgFile = KStandardDirs::locateLocal( "config", "kresources_groupwarerc" );
+  QString groupdavCfgFile = KStandardDirs::locateLocal( "config", QLatin1String("kresources_groupwarerc") );
   if ( !KStandardDirs::exists( groupdavCfgFile ) ) {
     migrationFailed( i18n( "Failed to find the configuration file for the GroupDAV KResource" ), instance );
     return;
   }
 
   KConfig groupdavCfg( groupdavCfgFile );
-  if ( !groupdavCfg.hasGroup( res->identifier() + ":General" ) ) {
+  if ( !groupdavCfg.hasGroup( res->identifier() + QLatin1String(":General") ) ) {
     migrationFailed( i18n( "Apparently invalid configuration file for the GroupDAV KResource" ), instance );
     return;
   }
-  KConfigGroup groupdavGeneralCfg = groupdavCfg.group( res->identifier() + ":General" );
+  KConfigGroup groupdavGeneralCfg = groupdavCfg.group( res->identifier() + QLatin1String(":General") );
 
   OrgKdeAkonadiDavGroupwareSettingsInterface *iface =
-    new OrgKdeAkonadiDavGroupwareSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-                                           "/Settings", QDBusConnection::sessionBus(), this );
+    new OrgKdeAkonadiDavGroupwareSettingsInterface( QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+                                           QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
@@ -150,11 +150,11 @@ void KCalMigrator::davResourceCreated(KJob *job)
     return;
   }
 
-  if ( !url.endsWith( '/' ) )
-    url.append( "/" );
+  if ( !url.endsWith( QLatin1Char('/') ) )
+    url.append( QLatin1String("/") );
 
   QStringList remoteUrls;
-  remoteUrls << QString( user + "|GroupDav|" + url );
+  remoteUrls << QString( user + QLatin1String("|GroupDav|") + url );
   kDebug() << name << remoteUrls;
 
   iface->setDisplayName( name );

@@ -32,12 +32,12 @@ public:
     bool mCanStart;
 
     explicit Testmigrator(const QString &identifier, QObject *parent = 0)
-        : MigratorBase("testmigrator" + identifier, parent),
+        : MigratorBase(QLatin1String("testmigrator") + identifier, parent),
         mCanStart(true)
     {};
 
     explicit Testmigrator(const QString &identifier, const QString &logfile, const QString &configFile, QObject *parent = 0)
-        : MigratorBase("testmigrator" + identifier, configFile, logfile, parent),
+        : MigratorBase(QLatin1String("testmigrator") + identifier, configFile, logfile, parent),
         mCanStart(true)
     {};
 

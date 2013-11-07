@@ -88,7 +88,7 @@ void TestGidMigration::initTestCase()
 void TestGidMigration::init()
 {
     AkonadiTest::setAllResourcesOffline();
-    Akonadi::AgentInstance agent = Akonadi::AgentManager::self()->instance("akonadi_knut_resource_0");
+    Akonadi::AgentInstance agent = Akonadi::AgentManager::self()->instance(QLatin1String("akonadi_knut_resource_0"));
     QVERIFY(agent.isValid());
     agent.setIsOnline(true);
 
