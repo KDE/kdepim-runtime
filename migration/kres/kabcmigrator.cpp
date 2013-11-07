@@ -70,7 +70,7 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   KABC::Resource *res = currentResource();
   AgentInstance instance = static_cast<AgentInstanceCreateJob*>( job )->instance();
   const KConfigGroup kresCfg = kresConfig( res );
-  instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Addressbook" ) );
+  instance.setName( kresCfg.readEntry( "ResourceName", i18n("Migrated Addressbook") ) );
 
   OrgKdeAkonadiVCardSettingsInterface *iface = new OrgKdeAkonadiVCardSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
       "/Settings", QDBusConnection::sessionBus(), this );
