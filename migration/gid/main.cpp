@@ -41,7 +41,7 @@ int main(int argc, char **argv)
                             ki18n("(c) 2013 the Akonadi developers"),
                             KLocalizedString(),
                             "http://pim.kde.org/akonadi/");
-    aboutData.setProgramIconName("akonadi");
+    aboutData.setProgramIconName(QLatin1String("akonadi"));
     aboutData.addAuthor(ki18n("Christian Mollekopf"),  ki18n("Author"), "mollekopf@kolabsys.com");
 
     KCmdLineArgs::init(argc, argv, &aboutData);
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     app->setQuitOnLastWindowClosed(false);
 
     KGlobal::setAllowQuit(true);
-    KGlobal::locale()->insertCatalog("libakonadi");
+    KGlobal::locale()->insertCatalog(QLatin1String("libakonadi"));
 
     if (!Akonadi::Control::start(0)) {
         return 2;

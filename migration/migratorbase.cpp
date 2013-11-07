@@ -229,12 +229,12 @@ MigratorBase::MigrationState MigratorBase::migrationState() const
 
 void MigratorBase::saveState()
 {
-    config().writeEntry("MigrationState", stateToIdentifier(mMigrationState));
+    config().writeEntry(QLatin1String("MigrationState"), stateToIdentifier(mMigrationState));
 }
 
 void MigratorBase::loadState()
 {
-    const QString state = config().readEntry("MigrationState", QString());
+    const QString state = config().readEntry(QLatin1String("MigrationState"), QString());
     if (!state.isEmpty()) {
         mMigrationState = identifierToState(state);
     }
