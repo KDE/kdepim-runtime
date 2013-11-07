@@ -31,14 +31,14 @@
 using namespace Akonadi;
 
 KABCMigrator::KABCMigrator() :
-    KResMigrator<KABC::Resource>( "contact", "akonadi_kabc_resource" )
+    KResMigrator<KABC::Resource>( QLatin1String("contact"), QLatin1String("akonadi_kabc_resource") )
 {
 }
 
 bool KABCMigrator::migrateResource( KABC::Resource* res)
 {
   kDebug() << res->identifier() << res->type();
-  if ( res->type() == "file" )
+  if ( res->type() == QLatin1String("file") )
     return migrateFileResource( res );
   else
     return false;
@@ -49,15 +49,15 @@ bool KABCMigrator::migrateFileResource(KABC::Resource * res)
 {
   const KConfigGroup kresCfg = kresConfig( res );
   const QString format = kresCfg.readEntry( "FileFormat", "" );
-  if ( format == "binary" ) {
+  if ( format == QLatin1String("binary") ) {
     emit message( Warning, i18n( "Unsupported file format found. "
         "The file format '%1' is no longer supported, please convert to another one.", format ) );
     return false;
-  } else if ( format != "vcard" ) {
+  } else if ( format != QLatin1String("vcard") ) {
     emit message( Skip, i18n( "File format '%1' is not yet supported natively.", format ) );
     return false;
   }
-  createAgentInstance( "akonadi_vcard_resource", this, SLOT(fileResourceCreated(KJob*)) );
+  createAgentInstance( QLatin1String("akonadi_vcard_resource"), this, SLOT(fileResourceCreated(KJob*)) );
   return true;
 }
 
@@ -72,14 +72,14 @@ void KABCMigrator::fileResourceCreated(KJob * job)
   const KConfigGroup kresCfg = kresConfig( res );
   instance.setName( kresCfg.readEntry( "ResourceName", "Migrated Addressbook" ) );
 
-  OrgKdeAkonadiVCardSettingsInterface *iface = new OrgKdeAkonadiVCardSettingsInterface( "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-      "/Settings", QDBusConnection::sessionBus(), this );
+  OrgKdeAkonadiVCardSettingsInterface *iface = new OrgKdeAkonadiVCardSettingsInterface( QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+      QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
   if ( !iface->isValid() ) {
     migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
     delete iface;
     return;
   }
-  iface->setPath( kresCfg.readPathEntry( "FileName", KStandardDirs::locateLocal( "data", "kabc/std.vcf" ) ) );
+  iface->setPath( kresCfg.readPathEntry( "FileName", KStandardDirs::locateLocal( "data", QLatin1String("kabc/std.vcf") ) ) );
   iface->setReadOnly( res->readOnly() );
 
   // make sure the config is saved
