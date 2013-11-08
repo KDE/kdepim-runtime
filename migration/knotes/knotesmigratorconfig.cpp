@@ -25,11 +25,14 @@
 using namespace KCal;
 
 KNotesMigratorConfig::KNotesMigratorConfig(KCal::Journal *journal)
-    : mJournal(journal)
+    : mJournal(journal),
+      mConfig(0)
 {
     const QString configPath = KGlobal::dirs()->saveLocation( "data", QLatin1String("knotes/") ) + QLatin1String("notes/") + journal->uid();
-    mConfig = new KNoteConfig( KSharedConfig::openConfig( configPath, KConfig::NoGlobals ) );
-    mConfig->readConfig();
+    if (!configPath.isEmpty()) {
+        mConfig = new KNoteConfig( KSharedConfig::openConfig( configPath, KConfig::NoGlobals ) );
+        mConfig->readConfig();
+    }
 }
 
 KNotesMigratorConfig::~KNotesMigratorConfig()
@@ -39,5 +42,7 @@ KNotesMigratorConfig::~KNotesMigratorConfig()
 
 bool KNotesMigratorConfig::readOnly() const
 {
-    return mConfig->readOnly();
+    if (mConfig)
+        return mConfig->readOnly();
+    return false;
 }

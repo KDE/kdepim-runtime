@@ -15,39 +15,25 @@
   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "notealarmattribute.h"
+#ifndef NOTE_DISPLAY_ATTRIBUTE_H
+#define NOTE_DISPLAY_ATTRIBUTE_H
 
-#include <QByteArray>
+#include <Akonadi/Attribute>
 
-NoteAlarmAttribute::NoteAlarmAttribute()
-    : Akonadi::Attribute()
+class NoteDisplayAttribute : public Akonadi::Attribute
 {
+public:
+    NoteDisplayAttribute();
+    ~NoteDisplayAttribute();
 
-}
+    QByteArray type() const;
 
-NoteAlarmAttribute::~NoteAlarmAttribute()
-{
+    NoteDisplayAttribute* clone() const;
 
-}
+    QByteArray serialized() const;
 
-NoteAlarmAttribute* NoteAlarmAttribute::clone() const
-{
-    return new NoteAlarmAttribute();
-}
+    void deserialize( const QByteArray &data );
 
-void NoteAlarmAttribute::deserialize(const QByteArray& data)
-{
-}
+};
 
-QByteArray NoteAlarmAttribute::serialized() const
-{
-    //TODO
-    return "?";
-}
-
-QByteArray NoteAlarmAttribute::type() const
-{
-    return "NoteAlarmAttribute";
-}
-
-
+#endif

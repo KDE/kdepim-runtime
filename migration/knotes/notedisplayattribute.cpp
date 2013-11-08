@@ -14,40 +14,39 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
-#include "notealarmattribute.h"
+#include "notedisplayattribute.h"
 
 #include <QByteArray>
 
-NoteAlarmAttribute::NoteAlarmAttribute()
+NoteDisplayAttribute::NoteDisplayAttribute()
     : Akonadi::Attribute()
 {
 
 }
 
-NoteAlarmAttribute::~NoteAlarmAttribute()
+NoteDisplayAttribute::~NoteDisplayAttribute()
 {
 
 }
 
-NoteAlarmAttribute* NoteAlarmAttribute::clone() const
+NoteDisplayAttribute* NoteDisplayAttribute::clone() const
 {
-    return new NoteAlarmAttribute();
+    return new NoteDisplayAttribute();
 }
 
-void NoteAlarmAttribute::deserialize(const QByteArray& data)
+void NoteDisplayAttribute::deserialize(const QByteArray& data)
 {
 }
 
-QByteArray NoteAlarmAttribute::serialized() const
+QByteArray NoteDisplayAttribute::serialized() const
 {
     //TODO
     return "?";
 }
 
-QByteArray NoteAlarmAttribute::type() const
+QByteArray NoteDisplayAttribute::type() const
 {
-    return "NoteAlarmAttribute";
+    return "NoteDisplayAttribute";
 }
 
 

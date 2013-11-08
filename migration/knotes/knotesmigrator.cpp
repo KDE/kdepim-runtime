@@ -21,6 +21,7 @@
 #include "knotesmigrator.h"
 #include "notelockattribute.h"
 #include "notealarmattribute.h"
+#include "notedisplayattribute.h"
 #include "knotesmigratorconfig.h"
 
 #include <akonadi/agentinstance.h>
@@ -47,6 +48,7 @@ KNotesMigrator::KNotesMigrator() :
 {
     Akonadi::AttributeFactory::registerAttribute<NoteLockAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteAlarmAttribute>();
+    Akonadi::AttributeFactory::registerAttribute<NoteDisplayAttribute>();
 }
 
 KNotesMigrator::~KNotesMigrator()
@@ -165,21 +167,27 @@ void KNotesMigrator::startMigration()
 
         note->assemble();
         KNotesMigratorConfig *config = new KNotesMigratorConfig(journal);
+        if (config) {
 
-        // TODO: Consider an attribute for existing alarms.
-        // TODO: add attribute for size/position.
-        if (config->readOnly()) {
-            newItem.addAttribute( new NoteLockAttribute() );
+            if (config->readOnly()) {
+                newItem.addAttribute( new NoteLockAttribute() );
+            }
+
+            //Position/Editor/Color etc.
+            NoteDisplayAttribute *displayAttribute = new NoteDisplayAttribute();
+            newItem.addAttribute( displayAttribute );
+            delete config;
         }
 
+        //Alarm.
         KCal::Alarm::List::ConstIterator it;
         KCal::Alarm::List::ConstIterator itEnd(journal->alarms().constEnd());
+        //In note we have an unique alarm.
         for( it = journal->alarms().constBegin(); it != itEnd; ++it ) {
             //TODO setAlarm
         }
         newItem.setPayload( note );
         newItemsList.append( newItem );
-        delete config;
     }
 
     EntityTreeCreateJob *createJob = new EntityTreeCreateJob( QList<Akonadi::Collection::List>(), newItemsList,this );
