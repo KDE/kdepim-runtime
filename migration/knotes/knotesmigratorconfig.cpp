@@ -46,3 +46,8 @@ bool KNotesMigratorConfig::readOnly() const
         return mConfig->readOnly();
     return false;
 }
+
+KNoteConfig *KNotesMigratorConfig::noteConfig()
+{
+    return mConfig;
+}

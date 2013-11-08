@@ -23,6 +23,7 @@
 #include "notealarmattribute.h"
 #include "notedisplayattribute.h"
 #include "knotesmigratorconfig.h"
+#include "knoteconfig.h"
 
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -175,6 +176,20 @@ void KNotesMigrator::startMigration()
 
             //Position/Editor/Color etc.
             NoteDisplayAttribute *displayAttribute = new NoteDisplayAttribute();
+            displayAttribute->setBackgroundColor(config->noteConfig()->bgColor());
+            displayAttribute->setForegroundColor(config->noteConfig()->fgColor());
+            displayAttribute->setSize(QSize(config->noteConfig()->width(), config->noteConfig()->height()));
+            displayAttribute->setRememberDesktop(config->noteConfig()->rememberDesktop());
+            displayAttribute->setTabSize(config->noteConfig()->tabSize());
+            displayAttribute->setFont(config->noteConfig()->font());
+            displayAttribute->setTitleFont(config->noteConfig()->titleFont());
+            displayAttribute->setDesktop(config->noteConfig()->desktop());
+            displayAttribute->setIsHidden(config->noteConfig()->hideNote());
+            displayAttribute->setPosition(config->noteConfig()->position());
+            displayAttribute->setShowInTaskbar(config->noteConfig()->showInTaskbar());
+            displayAttribute->setKeepAbove(config->noteConfig()->keepAbove());
+            displayAttribute->setKeepBelow(config->noteConfig()->keepBelow());
+            displayAttribute->setAutoIndent(config->noteConfig()->autoIndent());
             newItem.addAttribute( displayAttribute );
             delete config;
         }

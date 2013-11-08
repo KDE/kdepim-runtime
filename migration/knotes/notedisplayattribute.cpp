@@ -20,7 +20,6 @@
 
 #include <QByteArray>
 
-
 NoteDisplayAttribute::NoteDisplayAttribute()
     : Akonadi::Attribute(),
       mFont(KGlobalSettings::generalFont()),
@@ -49,17 +48,63 @@ NoteDisplayAttribute::~NoteDisplayAttribute()
 NoteDisplayAttribute* NoteDisplayAttribute::clone() const
 {
     NoteDisplayAttribute *attr = new NoteDisplayAttribute();
+    attr->setBackgroundColor(backgroundColor());
+    attr->setForegroundColor(foregroundColor());
+    attr->setSize(size());
+    attr->setRememberDesktop(rememberDesktop());
+    attr->setTabSize(tabSize());
+    attr->setFont(font());
+    attr->setTitleFont(titleFont());
+    attr->setDesktop(desktop());
+    attr->setIsHidden(isHidden());
+    attr->setPosition(position());
+    attr->setShowInTaskbar(showInTaskbar());
+    attr->setKeepAbove(keepAbove());
+    attr->setKeepBelow(keepBelow());
+    attr->setAutoIndent(autoIndent());
     return attr;
 }
 
 void NoteDisplayAttribute::deserialize(const QByteArray& data)
 {
+    QDataStream s( data );
+    s >> mFont;
+    s >> mTitleFont;
+    s >> mBackgroundColor;
+    s >> mForegroundgroundColor;
+    s >> mSize;
+    s >> mPosition;
+    s >> mTabSize;
+    s >> mDesktop;
+    s >> mRememberDesktop;
+    s >> mAutoIndent;
+    s >> mHide;
+    s >> mShowInTaskbar;
+    s >> mKeepAbove;
+    s >> mKeepBelove;
+    s >> mKeepBelow;
 }
 
 QByteArray NoteDisplayAttribute::serialized() const
 {
-    //TODO
-    return "?";
+    QByteArray result;
+    QDataStream s( &result, QIODevice::WriteOnly );
+    s << mFont;
+    s << mTitleFont;
+    s << mBackgroundColor;
+    s << mForegroundgroundColor;
+    s << mSize;
+    s << mPosition;
+    s << mTabSize;
+    s << mDesktop;
+    s << mRememberDesktop;
+    s << mAutoIndent;
+    s << mHide;
+    s << mShowInTaskbar;
+    s << mKeepAbove;
+    s << mKeepBelove;
+    s << mKeepBelow;
+    return result;
 }
 
 QByteArray NoteDisplayAttribute::type() const

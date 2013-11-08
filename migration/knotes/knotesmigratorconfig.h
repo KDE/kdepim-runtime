@@ -29,7 +29,7 @@ public:
     ~KNotesMigratorConfig();
 
     bool readOnly() const;
-
+    KNoteConfig *noteConfig();
 private:
     KCal::Journal *mJournal;
     KNoteConfig *mConfig;
