@@ -22,6 +22,8 @@
 
 #include <QColor>
 #include <QSize>
+#include <QFont>
+#include <QPoint>
 
 class NoteDisplayAttribute : public Akonadi::Attribute
 {
@@ -47,11 +49,46 @@ public:
 
     bool rememberDesktop() const;
     void setRememberDesktop(bool b);
+    void setTabSize(int value);
+    int tabSize() const;
+
+
+    void setFont(const QFont &f);
+    QFont font() const;
+    void setTitleFont(const QFont &f);
+    QFont titleFont() const;
+
+    void setDesktop(int v);
+    int desktop() const;
+    void setIsHidden(bool b);
+    bool isHidden() const;
+    void setPosition(const QPoint &pos);
+    QPoint position() const;
+    void setShowInTaskbar(bool b);
+    bool showInTaskbar() const;
+    void setKeepAbove(bool b);
+    bool keepAbove() const;
+    void setKeepBelow(bool b);
+    bool keepBelow() const;
+
+    bool autoIndent() const;
+    void setAutoIndent(bool b);
 private:
-   QColor mBackgroundColor;
-   QColor mForegroundgroundColor;
-   QSize mSize;
-   bool mRememberDesktop;
+    QFont mFont;
+    QFont mTitleFont;
+    QColor mBackgroundColor;
+    QColor mForegroundgroundColor;
+    QSize mSize;
+    QPoint mPosition;
+    int mTabSize;
+    int mDesktop;
+    bool mRememberDesktop;
+    bool mAutoIndent;
+    bool mHide;
+    bool mShowInTaskbar;
+    bool mKeepAbove;
+    bool mKeepBelove;
+    bool mKeepBelow;
 };
 
 #endif

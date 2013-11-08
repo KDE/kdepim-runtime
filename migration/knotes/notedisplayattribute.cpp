@@ -16,14 +16,27 @@
 */
 #include "notedisplayattribute.h"
 
+#include <KGlobalSettings>
+
 #include <QByteArray>
+
 
 NoteDisplayAttribute::NoteDisplayAttribute()
     : Akonadi::Attribute(),
+      mFont(KGlobalSettings::generalFont()),
+      mTitleFont(KGlobalSettings::windowTitleFont()),
       mBackgroundColor(Qt::yellow),
       mForegroundgroundColor(Qt::black),
       mSize(300,300),
-      mRememberDesktop(true)
+      mPosition(QPoint( -10000, -10000 )),
+      mTabSize(4),
+      mDesktop(-10),
+      mRememberDesktop(true),
+      mAutoIndent(true),
+      mHide(false),
+      mShowInTaskbar(false),
+      mKeepAbove(false),
+      mKeepBelow(false)
 {
 
 }
@@ -92,4 +105,104 @@ bool NoteDisplayAttribute::rememberDesktop() const
 void NoteDisplayAttribute::setRememberDesktop(bool b)
 {
     mRememberDesktop = b;
+}
+
+int NoteDisplayAttribute::tabSize() const
+{
+    return mTabSize;
+}
+
+void NoteDisplayAttribute::setTabSize(int value)
+{
+    mTabSize = value;
+}
+
+bool NoteDisplayAttribute::autoIndent() const
+{
+    return mAutoIndent;
+}
+
+void NoteDisplayAttribute::setAutoIndent(bool b)
+{
+    mAutoIndent = b;
+}
+
+void NoteDisplayAttribute::setFont(const QFont &f)
+{
+    mFont = f;
+}
+
+QFont NoteDisplayAttribute::font() const
+{
+    return mFont;
+}
+
+void NoteDisplayAttribute::setTitleFont(const QFont &f)
+{
+    mTitleFont = f;
+}
+
+QFont NoteDisplayAttribute::titleFont() const
+{
+    return mTitleFont;
+}
+
+void NoteDisplayAttribute::setDesktop(int v)
+{
+    mDesktop = v;
+}
+
+int NoteDisplayAttribute::desktop() const
+{
+    return mDesktop;
+}
+
+void NoteDisplayAttribute::setIsHidden(bool b)
+{
+    mHide = b;
+}
+
+bool NoteDisplayAttribute::isHidden() const
+{
+    return mHide;
+}
+
+void NoteDisplayAttribute::setPosition(const QPoint &pos)
+{
+    mPosition = pos;
+}
+
+QPoint NoteDisplayAttribute::position() const
+{
+    return mPosition;
+}
+
+void NoteDisplayAttribute::setShowInTaskbar(bool b)
+{
+    mShowInTaskbar = b;
+}
+
+bool NoteDisplayAttribute::showInTaskbar() const
+{
+    return mShowInTaskbar;
+}
+
+void NoteDisplayAttribute::setKeepAbove(bool b)
+{
+    mKeepAbove = b;
+}
+
+bool NoteDisplayAttribute::keepAbove() const
+{
+    return mKeepAbove;
+}
+
+void NoteDisplayAttribute::setKeepBelow(bool b)
+{
+    mKeepBelow = b;
+}
+
+bool NoteDisplayAttribute::keepBelow() const
+{
+    return mKeepBelow;
 }
