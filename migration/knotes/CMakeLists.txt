@@ -8,6 +8,7 @@ set(knotes-migrator_srcs
     knotesmigrator.cpp
     notelockattribute.cpp
     knotesmigratorconfig.cpp
+    notealarmattribute.cpp
     ../kres/kresmigratorbase.cpp
     ${MIGRATION_AKONADI_SHARED_SOURCES}
 )

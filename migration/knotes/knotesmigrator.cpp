@@ -20,6 +20,7 @@
 
 #include "knotesmigrator.h"
 #include "notelockattribute.h"
+#include "notealarmattribute.h"
 #include "knotesmigratorconfig.h"
 
 #include <akonadi/agentinstance.h>
@@ -45,6 +46,7 @@ KNotesMigrator::KNotesMigrator() :
     KResMigrator<KRES::Resource>( QLatin1String("notes"), QString() ), m_notesResource( 0 )
 {
     Akonadi::AttributeFactory::registerAttribute<NoteLockAttribute>();
+    Akonadi::AttributeFactory::registerAttribute<NoteAlarmAttribute>();
 }
 
 KNotesMigrator::~KNotesMigrator()
