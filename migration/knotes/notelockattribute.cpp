@@ -24,7 +24,7 @@
 #include <QByteArray>
 
 NoteLockAttribute::NoteLockAttribute()
-  : Akonadi::Attribute()
+    : Akonadi::Attribute()
 {
 
 }
@@ -36,23 +36,23 @@ NoteLockAttribute::~NoteLockAttribute()
 
 NoteLockAttribute* NoteLockAttribute::clone() const
 {
-  return new NoteLockAttribute();
+    return new NoteLockAttribute();
 }
 
 void NoteLockAttribute::deserialize(const QByteArray& data)
 {
-  Q_UNUSED( data );
+    Q_UNUSED( data );
 }
 
 QByteArray NoteLockAttribute::serialized() const
 {
-  return "-";
+    return "-";
 }
 
 QByteArray NoteLockAttribute::type() const
 {
-  //We can't change this name!
-  return "KJotsLockAttribute";
+    //We can't change this name!
+    return "KJotsLockAttribute";
 }
 
 

@@ -20,6 +20,7 @@
 
 #include "knotesmigrator.h"
 #include "notelockattribute.h"
+#include "knotesmigratorconfig.h"
 
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
@@ -161,13 +162,22 @@ void KNotesMigrator::startMigration()
         note->contentType( true )->setMimeType( journal->descriptionIsRich() ? "text/html" : "text/plain" );
 
         note->assemble();
+        KNotesMigratorConfig *config = new KNotesMigratorConfig(journal);
 
         // TODO: Consider an attribute for existing alarms.
-        // TODO: add attribute for locking note. (NoteLockAttribute)
         // TODO: add attribute for size/position.
+        if (config->readOnly()) {
+            newItem.addAttribute( new NoteLockAttribute() );
+        }
 
+        KCal::Alarm::List::ConstIterator it;
+        KCal::Alarm::List::ConstIterator itEnd(journal->alarms().constEnd());
+        for( it = journal->alarms().constBegin(); it != itEnd; ++it ) {
+            //TODO setAlarm
+        }
         newItem.setPayload( note );
         newItemsList.append( newItem );
+        delete config;
     }
 
     EntityTreeCreateJob *createJob = new EntityTreeCreateJob( QList<Akonadi::Collection::List>(), newItemsList,this );

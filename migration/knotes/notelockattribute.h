@@ -27,16 +27,16 @@
 class NoteLockAttribute : public Akonadi::Attribute
 {
 public:
-  NoteLockAttribute();
-  ~NoteLockAttribute();
+    NoteLockAttribute();
+    ~NoteLockAttribute();
 
-  QByteArray type() const;
+    QByteArray type() const;
 
-  NoteLockAttribute* clone() const;
+    NoteLockAttribute* clone() const;
 
-  QByteArray serialized() const;
+    QByteArray serialized() const;
 
-  void deserialize( const QByteArray &data );
+    void deserialize( const QByteArray &data );
 
 };
 
