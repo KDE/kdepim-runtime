@@ -19,7 +19,11 @@
 #include <QByteArray>
 
 NoteDisplayAttribute::NoteDisplayAttribute()
-    : Akonadi::Attribute()
+    : Akonadi::Attribute(),
+      mBackgroundColor(Qt::yellow),
+      mForegroundgroundColor(Qt::black),
+      mSize(300,300),
+      mRememberDesktop(true)
 {
 
 }
@@ -50,4 +54,42 @@ QByteArray NoteDisplayAttribute::type() const
     return "NoteDisplayAttribute";
 }
 
+void NoteDisplayAttribute::setBackgroundColor(const QColor &color)
+{
+    mBackgroundColor = color;
+}
 
+QColor NoteDisplayAttribute::backgroundColor() const
+{
+    return mBackgroundColor;
+}
+
+void NoteDisplayAttribute::setForegroundColor(const QColor &color)
+{
+    mForegroundgroundColor = color;
+}
+
+QSize NoteDisplayAttribute::size() const
+{
+    return mSize;
+}
+
+void NoteDisplayAttribute::setSize(const QSize &size)
+{
+    mSize = size;
+}
+
+QColor NoteDisplayAttribute::foregroundColor() const
+{
+    return mForegroundgroundColor;
+}
+
+bool NoteDisplayAttribute::rememberDesktop() const
+{
+    return mRememberDesktop;
+}
+
+void NoteDisplayAttribute::setRememberDesktop(bool b)
+{
+    mRememberDesktop = b;
+}

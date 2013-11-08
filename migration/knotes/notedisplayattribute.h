@@ -20,6 +20,9 @@
 
 #include <Akonadi/Attribute>
 
+#include <QColor>
+#include <QSize>
+
 class NoteDisplayAttribute : public Akonadi::Attribute
 {
 public:
@@ -34,6 +37,21 @@ public:
 
     void deserialize( const QByteArray &data );
 
+    void setBackgroundColor(const QColor &color);
+    QColor backgroundColor() const;
+    QColor foregroundColor() const;
+    void setForegroundColor(const QColor &color);
+
+    QSize size() const;
+    void setSize(const QSize &size);
+
+    bool rememberDesktop() const;
+    void setRememberDesktop(bool b);
+private:
+   QColor mBackgroundColor;
+   QColor mForegroundgroundColor;
+   QSize mSize;
+   bool mRememberDesktop;
 };
 
 #endif
