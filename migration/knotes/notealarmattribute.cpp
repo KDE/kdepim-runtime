@@ -32,22 +32,38 @@ NoteAlarmAttribute::~NoteAlarmAttribute()
 
 NoteAlarmAttribute* NoteAlarmAttribute::clone() const
 {
-    return new NoteAlarmAttribute();
+    NoteAlarmAttribute *attr = new NoteAlarmAttribute();
+    attr->setDateTime(dateTime());
+    return attr;
 }
 
 void NoteAlarmAttribute::deserialize(const QByteArray& data)
 {
+    QDataStream s( data );
+    s >> mDateTime;
 }
 
 QByteArray NoteAlarmAttribute::serialized() const
 {
-    //TODO
-    return "?";
+    QByteArray result;
+    QDataStream s( &result, QIODevice::WriteOnly );
+    s << mDateTime;
+    return result;
 }
 
 QByteArray NoteAlarmAttribute::type() const
 {
     return "NoteAlarmAttribute";
+}
+
+void NoteAlarmAttribute::setDateTime(const KDateTime &dateTime)
+{
+    mDateTime = dateTime;
+}
+
+KDateTime NoteAlarmAttribute::dateTime() const
+{
+    return mDateTime;
 }
 
 
