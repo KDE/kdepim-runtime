@@ -180,11 +180,14 @@ void KNotesMigrator::startMigration()
         }
 
         //Alarm.
-        KCal::Alarm::List::ConstIterator it;
-        KCal::Alarm::List::ConstIterator itEnd(journal->alarms().constEnd());
         //In note we have an unique alarm.
-        for( it = journal->alarms().constBegin(); it != itEnd; ++it ) {
-            //TODO setAlarm
+        if (!journal->alarms().isEmpty()) {
+            KCal::Alarm *alarm = journal->alarms().first();
+            if (alarm->hasTime()) {
+                NoteAlarmAttribute *alarmAttribute = new NoteAlarmAttribute;
+                alarmAttribute->setDateTime(alarm->time());
+                newItem.addAttribute( alarmAttribute );
+            }
         }
         newItem.setPayload( note );
         newItemsList.append( newItem );

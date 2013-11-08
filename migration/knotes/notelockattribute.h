@@ -37,7 +37,6 @@ public:
     QByteArray serialized() const;
 
     void deserialize( const QByteArray &data );
-
 };
 
 #endif

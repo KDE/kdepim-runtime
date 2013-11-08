@@ -31,7 +31,8 @@ NoteDisplayAttribute::~NoteDisplayAttribute()
 
 NoteDisplayAttribute* NoteDisplayAttribute::clone() const
 {
-    return new NoteDisplayAttribute();
+    NoteDisplayAttribute *attr = new NoteDisplayAttribute();
+    return attr;
 }
 
 void NoteDisplayAttribute::deserialize(const QByteArray& data)
