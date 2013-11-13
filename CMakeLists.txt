@@ -54,7 +54,7 @@ add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 set(CMAKE_AUTOMOC ON)
 
 # Kdelibs
-find_package(KDE4 4.11.0 REQUIRED)
+find_package(KDE4 4.11.3 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs

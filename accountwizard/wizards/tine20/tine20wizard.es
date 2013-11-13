@@ -21,7 +21,7 @@
 // add this function to trim user input of whitespace when needed
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 
-var page = Dialog.addPage( "tine20wizard.ui", "Personal Settings" );
+var page = Dialog.addPage( "tine20wizard.ui", qsTr("Personal Settings") );
 var userChangedServerAddress = false;
 
 page.widget().nameEdit.text = SetupManager.name()

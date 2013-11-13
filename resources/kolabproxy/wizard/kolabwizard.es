@@ -21,8 +21,7 @@
 // add this function to trim user input of whitespace when needed
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 
-// TODO: i18n??
-var page = Dialog.addPage( "kolabwizard.ui", "Personal Settings" );
+var page = Dialog.addPage( "kolabwizard.ui", qsTr("Personal Settings") );
 var userChangedServerAddress = false;
 
 page.widget().nameEdit.text = SetupManager.name()
