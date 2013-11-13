@@ -20,8 +20,7 @@
 // add this function to trim user input of whitespace when needed
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 
-// TODO: i18n??
-var page = Dialog.addPage( "pop3wizard.ui", "Personal Settings" );
+var page = Dialog.addPage( "pop3wizard.ui", qsTr("Personal Settings") );
 
 var userChangedServerAddress = false;
 
