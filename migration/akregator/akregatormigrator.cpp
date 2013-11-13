@@ -77,11 +77,11 @@ void AkregatorMigrator::migrate()
 {
   emit message( Info, i18n( "Beginning Akregator migration..." ) );
 
-  createAgentInstance( "akonadi_krsslocal_resource", this, SLOT(resourceCreated(KJob*)) );
+  createAgentInstance( QLatin1String("akonadi_krsslocal_resource"), this, SLOT(resourceCreated(KJob*)) );
 }
 
 static bool ensureOpmlCreated( const QString& target, QString* err ) {
-  const QString source = KGlobal::dirs()->saveLocation("data", "akregator/data") + "feeds.opml";
+  const QString source = KGlobal::dirs()->saveLocation("data", QLatin1String("akregator/data")) + QLatin1String("feeds.opml");
 
   //if there is a feeds.opml from Akregator, copy it over
   if ( QFileInfo( source ).exists() ) {
@@ -131,8 +131,8 @@ void AkregatorMigrator::resourceCreated( KJob *job )
   instance.setName( i18nc( "Default name for resource holding RSS feeds", "Local RSS Feeds" ) );
 
   OrgKdeAkonadiRssLocalSettingsInterface *iface = new OrgKdeAkonadiRssLocalSettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), this );
+    QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+    QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
 
   if (!iface->isValid() ) {
     migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
@@ -140,7 +140,7 @@ void AkregatorMigrator::resourceCreated( KJob *job )
     return;
   }
 
-  const QString targetPath = KGlobal::dirs()->localxdgdatadir() + "/feeds/" + instance.identifier();
+  const QString targetPath = KGlobal::dirs()->localxdgdatadir() + QLatin1String("/feeds/") + instance.identifier();
 
   errno = 0;
   if ( !QDir().mkpath( targetPath ) ) {
@@ -286,5 +286,3 @@ void AkregatorMigrator::migrationFailed( const QString& errorMsg, const Akonadi:
   Q_UNUSED( instance )
   emit message( Error, i18n( "Migration failed: %1" ,errorMsg ) );
 }
-
-#include "akregatormigrator.moc"

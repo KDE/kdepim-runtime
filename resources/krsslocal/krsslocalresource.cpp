@@ -418,5 +418,3 @@ bool KRssLocalResource::writeOpml( QString* errorString )
 
 
 AKONADI_RESOURCE_MAIN( KRssLocalResource )
-
-#include "krsslocalresource.moc"

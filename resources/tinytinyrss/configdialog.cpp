@@ -128,5 +128,3 @@ void ConfigDialog::testLogin()
     testLoginDialog->startTest( ui.serverLineEdit->text(), ui.usernameLineEdit->text(), ui.passwordLineEdit->text()  );
     testLoginDialog->exec();
 }
-
-#include "configdialog.moc"

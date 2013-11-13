@@ -547,5 +547,3 @@ void TinyTinyRssResource::sendLogout()
 }
 
 AKONADI_RESOURCE_MAIN( TinyTinyRssResource )
-
-#include "tinytinyrssresource.moc"

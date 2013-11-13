@@ -56,6 +56,3 @@ void ConfigDialog::slotSave()
     const QString path = ui.urlPath->lineEdit()->text();
     Settings::self()->setPath( path );
 }
-
-#include "configdialog.moc"
- 

@@ -379,6 +379,3 @@ Akonadi::Collection::List RetrieveCollectionsJob::retrievedCollections() const
 {
     return buildCollectionTree( m_categories );
 }
-
-
-#include "jobs.moc"
