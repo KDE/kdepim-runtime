@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2008 Volker Krause <vkrause@kde.org>
     Copyright (c) 2010 Stephen Kelly <steveire@gmail.com>
+    Copyright (c) 2013 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -38,23 +39,23 @@ class KJob;
  */
 class KNotesMigrator : public KResMigrator<KRES::Resource>
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     KNotesMigrator();
     ~KNotesMigrator();
     bool migrateResource( KRES::Resource *res );
 
-  private slots:
+private slots:
     void notesResourceCreated( KJob* job );
     void syncDone(KJob *job);
     void rootFetchFinished( KJob *job );
     void rootCollectionsRecieved( const Akonadi::Collection::List &list );
     void newResourceFilled( KJob *job );
 
-  private:
+private:
     void startMigration();
 
-  private:
+private:
     Akonadi::Collection m_resourceCollection;
     AgentInstance m_agentInstance;
 

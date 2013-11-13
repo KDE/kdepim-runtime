@@ -6,9 +6,15 @@ include_directories(
 set(knotes-migrator_srcs
     main.cpp
     knotesmigrator.cpp
+    notelockattribute.cpp
+    knotesmigratorconfig.cpp
+    notealarmattribute.cpp
+    notedisplayattribute.cpp
     ../kres/kresmigratorbase.cpp
     ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
+
+kde4_add_kcfg_files(knotes-migrator_srcs knoteconfig.kcfgc)
 
 macro(add_resource_iface _kcfgFile _ifaceName _className)
   kcfg_generate_dbus_interface(${kdepim-runtime_SOURCE_DIR}/resources/${_kcfgFile} ${_ifaceName})
