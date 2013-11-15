@@ -30,7 +30,10 @@
 #include "timestampattribute.h"
 #include <noinferiorsattribute.h>
 
+typedef QMap<QByteArray, QByteArray> QBYTEARRAYMAP;
+
 Q_DECLARE_METATYPE( Akonadi::Collection::Rights )
+Q_DECLARE_METATYPE( QBYTEARRAYMAP )
 
 class TestRetrieveCollectionMetadataTask : public ImapTestBase
 {
@@ -52,12 +55,14 @@ private slots:
     QTest::addColumn<QStringList>( "callNames" );
     QTest::addColumn<Akonadi::Collection::Rights>( "expectedRights" );
     QTest::addColumn<bool>( "spontaneous" );
+    QTest::addColumn<QBYTEARRAYMAP>( "expectedAnnotations" );
 
     Akonadi::Collection collection;
     QStringList capabilities;
     QList<QByteArray> scenario;
     QStringList callNames;
     bool spontaneous;
+    QMap<QByteArray, QByteArray> expectedAnnotations;
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.setRights( 0 );
@@ -87,11 +92,14 @@ private slots:
     callNames.clear();
     callNames << "applyCollectionChanges" << "taskDone";
 
+    expectedAnnotations.clear();
+    expectedAnnotations.insert( "/shared/vendor/kolab/folder-test", "true" );
+
     spontaneous = true;
 
     Akonadi::Collection::Rights rights = Akonadi::Collection::AllRights;
     QTest::newRow( "first listing, connected IMAP" ) << collection << capabilities << scenario
-                                                     << callNames << rights << spontaneous;
+                                                     << callNames << rights << spontaneous << expectedAnnotations;
 
     //
     // Test that if the parent collection doesn't allow renaming in its ACL, the child mailbox
@@ -111,7 +119,7 @@ private slots:
     rights &= ~Akonadi::Collection::CanChangeCollection;
     spontaneous = true;
     QTest::newRow( "parent without create rights" ) << collection << capabilities << scenario
-                                                    << callNames << rights << spontaneous;
+                                                    << callNames << rights << spontaneous << expectedAnnotations;
 
     //
     // Test that if the parent collection is a noselect folder, the child mailbox will not have
@@ -122,7 +130,7 @@ private slots:
     parentCollection.addAttribute( noSelectAttribute );
     collection.setParentCollection( parentCollection );
     QTest::newRow( "parent wit noselect" ) << collection << capabilities << scenario
-                                           << callNames << rights << spontaneous;
+                                           << callNames << rights << spontaneous << expectedAnnotations;
 
     //
     // Test that the rights are properly set on the resulting collection if the mailbox doesn't
@@ -148,7 +156,7 @@ private slots:
     rights = Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanChangeItem |
              Akonadi::Collection::CanChangeCollection;
     QTest::newRow( "only some rights" ) << collection << capabilities << scenario
-                                        << callNames << rights << spontaneous;
+                                        << callNames << rights << spontaneous << expectedAnnotations;
 
 
     //
@@ -171,7 +179,7 @@ private slots:
 
     rights = Akonadi::Collection::AllRights;
     QTest::newRow( "recent timestamp, no metadata harvesting" ) << collection << capabilities << scenario
-                                                                << callNames << rights << spontaneous;
+                                                                << callNames << rights << spontaneous << expectedAnnotations;
 
     //
     // ... except if not spontaneous!
@@ -198,7 +206,7 @@ private slots:
     callNames << "collectionAttributesRetrieved";
 
     QTest::newRow( "recent timestamp, but not spontaneous: harvesting" ) << collection << capabilities << scenario
-                                                                         << callNames << rights << spontaneous;
+                                                                         << callNames << rights << spontaneous << expectedAnnotations;
 
     //
     // Test that a warning is issued if the insert rights of a folder have been revoked on the server.
@@ -228,7 +236,7 @@ private slots:
 
     rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
     QTest::newRow( "revoked rights" ) << collection << capabilities << scenario
-                                      << callNames << rights << spontaneous;
+                                      << callNames << rights << spontaneous << expectedAnnotations;
 
     //
     // Test that NoInferiors overrides acl rigths and disallows creating new mailboxes
@@ -262,7 +270,7 @@ private slots:
     rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
 
     QTest::newRow( "noinferiors" ) << collection << capabilities << scenario
-                                      << callNames << rights << spontaneous;
+                                      << callNames << rights << spontaneous << expectedAnnotations;
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.setRights( 0 );
@@ -271,10 +279,16 @@ private slots:
     capabilities.clear();
     capabilities << "METADATA" << "ACL" << "QUOTA";
 
+    expectedAnnotations.clear();
+    expectedAnnotations.insert( "/shared/vendor/kolab/folder-test", "true" );
+    expectedAnnotations.insert( "/shared/vendor/kolab/folder-test2", "" );
+
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 GETMETADATA \"INBOX/Foo\" (DEPTH infinity) (/shared)"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test \"true\")"
+             << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test2 \"NIL\")"
+             << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/cmu/cyrus-imapd/lastupdate \"true\")"
              << "S: A000003 OK GETMETADATA complete"
              << "C: A000004 GETACL \"INBOX/Foo\""
              << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
@@ -294,7 +308,7 @@ private slots:
 
     rights = Akonadi::Collection::AllRights;
     QTest::newRow( "METADATA" ) << collection << capabilities << scenario
-                                    << callNames << rights << spontaneous;
+                                    << callNames << rights << spontaneous << expectedAnnotations;
   }
 
   void shouldCollectionRetrieveMetadata()
@@ -305,6 +319,7 @@ private slots:
     QFETCH( QStringList, callNames );
     QFETCH( Akonadi::Collection::Rights, expectedRights );
     QFETCH( bool, spontaneous );
+    QFETCH( QBYTEARRAYMAP, expectedAnnotations );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -326,6 +341,7 @@ private slots:
     task->start( &pool );
     QTest::qWait( 100 );
 
+    kDebug() << state->calls();
     QCOMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8(state->calls().at( i ).first);
@@ -339,9 +355,6 @@ private slots:
 
       if ( command == "cancelTask" ) {
         QVERIFY( !parameter.toString().isEmpty() );
-      } else if ( command == "applyCollectionChanges" ) {
-        Akonadi::Collection c = parameter.value<Akonadi::Collection>();
-
       }
 
       if ( command == "applyCollectionChanges" ) {
@@ -352,6 +365,11 @@ private slots:
         const qint64 timestamp = collection.attribute<TimestampAttribute>()->timestamp();
         const qint64 currentTimestamp = QDateTime::currentDateTime().toTime_t();
         QVERIFY( qAbs( currentTimestamp - timestamp ) < 5 );
+
+        if ( !expectedAnnotations.isEmpty() ) {
+          QVERIFY( collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>() );
+          QCOMPARE( collection.attribute<Akonadi::CollectionAnnotationsAttribute>()->annotations(), expectedAnnotations );
+        }
       }
     }
 
