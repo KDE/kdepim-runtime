@@ -106,7 +106,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     meta->setMailBox( mailBox );
     if ( capabilities.contains( QLatin1String("METADATA") ) ) {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
-      meta->addEntry( "/shared" );
+      meta->addRequestedEntry( "/shared" );
       meta->setDepth( KIMAP::GetMetaDataJob::AllLevels );
     } else {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
@@ -156,40 +156,20 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
   }
 
   KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>( job );
-  QMap<QByteArray, QMap<QByteArray, QByteArray> > rawAnnotations = meta->allMetaData( meta->mailBox() );
-
-  QMap<QByteArray, QByteArray> annotations;
-  QByteArray attribute = "";
-  if ( meta->serverCapability() == KIMAP::MetaDataJobBase::Annotatemore ) {
-    attribute = "value.shared";
-  }
-
-  foreach ( const QByteArray &entry, rawAnnotations.keys() ) { //krazy:exclude=foreach
-    QByteArray annotation = entry;
-    if ( meta->serverCapability() == KIMAP::MetaDataJobBase::Metadata ) {
-      // Convert the annotations to the same style as used with ANNOTATEMORE, without the /shared prefix
-      // We're currently only supporting shared annotations, so this keeps things working for now.
-      if ( annotation.startsWith( "/shared/" ) ) {
-        annotation.remove( 0, QByteArray( "/shared" ).size() );
-      } else {
-        //Since we're only fetching /shared annotations, only the empty "/shared" entry should match here
-        continue;
-      }
-    }
-    annotations[annotation] = rawAnnotations[entry][attribute];
-  }
+  QMap<QByteArray, QByteArray> rawAnnotations = meta->allMetaData();
 
   // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
   // which contains the current date and time and thus constantly changes for no good
   // reason which triggers a change notification and thus a bunch of Akonadi operations
-  annotations.remove( "/vendor/cmu/cyrus-imapd/lastupdate" );
+  rawAnnotations.remove( "/shared/vendor/cmu/cyrus-imapd/lastupdate" );
+  rawAnnotations.remove( "/private/vendor/cmu/cyrus-imapd/lastupdate" );
 
   // Store the mailbox metadata
   Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
     m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Collection::AddIfMissing );
   const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
-  if ( oldAnnotations != annotations ) {
-    annotationsAttribute->setAnnotations( annotations );
+  if ( oldAnnotations != rawAnnotations ) {
+    annotationsAttribute->setAnnotations( rawAnnotations );
     m_collectionChanged = true;
   }
 
