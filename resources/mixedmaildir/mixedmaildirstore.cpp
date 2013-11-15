@@ -318,10 +318,11 @@ class MaildirContext
     QString addEntry( const QByteArray &data ) {
       const QString result = mMaildir.addEntry( data );
       if ( !result.isEmpty() && mHasIndexData ) {
-        //TODO: use the error string?
-        kWarning() << mMaildir.lastError();
         mIndexData.insert( result, KMIndexDataPtr( new KMIndexData ) );
         Q_ASSERT( mIndexData.value( result )->isEmpty() );
+      } else {
+        //TODO: use the error string?
+        kWarning() << mMaildir.lastError();
       }
 
       return result;
@@ -346,8 +347,6 @@ class MaildirContext
     QString moveEntryTo( const QString &key, MaildirContext &destination ) {
       const QString result = mMaildir.moveEntryTo( key, destination.mMaildir );
       if ( !result.isEmpty() ) {
-        //TODO error handling?
-        kWarning() << mMaildir.lastError();
         if ( mHasIndexData ) {
           mIndexData.remove( key );
         }
@@ -355,6 +354,9 @@ class MaildirContext
         if ( destination.mHasIndexData ) {
           destination.mIndexData.insert( result, KMIndexDataPtr( new KMIndexData ) );
         }
+      } else {
+        //TODO error handling?
+        kWarning() << mMaildir.lastError();
       }
 
       return result;
@@ -370,7 +372,9 @@ class MaildirContext
 
     bool isValid( QString &error ) const {
       bool result = mMaildir.isValid();
-      if ( !result ) error = mMaildir.lastError();
+      if ( !result ) {
+        error = mMaildir.lastError();
+      }
       return result;
     }
 

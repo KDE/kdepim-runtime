@@ -559,10 +559,9 @@ bool Maildir::writeEntry( const QString& key, const QByteArray& data )
         d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
         return false;
     }
-    bool result;
     QFile f( realKey );
-    result = f.open( QIODevice::WriteOnly );
-    result &= ( f.write( data ) != -1 );
+    bool result = f.open( QIODevice::WriteOnly );
+    result = result & ( f.write( data ) != -1 );
     f.close();
     if ( !result) {
        d->lastError = i18n( "Cannot write to mail file %1." ).arg( realKey );
@@ -587,10 +586,9 @@ QString Maildir::addEntry( const QByteArray& data )
       curKey = d->path + QLatin1String( "/cur/" ) + uniqueKey;
     } while ( QFile::exists( key ) || QFile::exists( finalKey ) || QFile::exists( curKey ) );
 
-    bool result;
     QFile f( key );
-    result = f.open( QIODevice::WriteOnly );
-    result &= ( f.write( data ) != -1 );
+    bool result = f.open( QIODevice::WriteOnly );
+    result = result & ( f.write( data ) != -1 );
     f.close();
     if ( !result) {
        d->lastError = i18n( "Cannot write to mail file %1." ).arg( key );
@@ -699,7 +697,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
 
     if ( !f.rename( finalKey ) ) {
         qWarning() << "Maildir: Failed to rename entry: " << f.fileName() << " to "  << finalKey  << "! Error: " << f.errorString();
-        d->lastError = i18n("Failed to update the file name %1 to %2 on the disk. The error was: %3.").arg(f.fileName()).arg(finalKey).arg(f.errorString());
+        d->lastError = i18n( "Failed to update the file name %1 to %2 on the disk. The error was: %3." ).arg( f.fileName(), finalKey, f.errorString() );
         return QString();
      }
 
@@ -774,6 +772,7 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
 {
   const QString realKey( d->findRealKey( key ) );
   if ( realKey.isEmpty() ) {
+    kWarning() << "Unable to find: " << key;
     d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
     return QString();
   }
