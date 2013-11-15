@@ -266,9 +266,8 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     Maildir dir = maildirForCollection( collection );
-    QString errMsg;
-    if ( mSettings->readOnly() || !dir.isValid( errMsg ) ) {
-      cancelTask( errMsg );
+    if ( mSettings->readOnly() || !dir.isValid() ) {
+      cancelTask( dir.lastError() );
       return;
     }
 
@@ -282,6 +281,12 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     stopMaildirScan( dir );
 
     const QString rid = dir.addEntry( mail->encodedContent() );
+
+    if ( rid.isEmpty() ) {
+      restartMaildirScan( dir );
+      cancelTask( dir.lastError() );
+      return;
+    }
 
     restartMaildirScan( dir );
 
@@ -318,9 +323,8 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     }
 
     Maildir dir = maildirForCollection( item.parentCollection() );
-    QString errMsg;
-    if ( !dir.isValid( errMsg ) ) {
-        cancelTask( errMsg );
+    if ( !dir.isValid() ) {
+        cancelTask( dir.lastError() );
         return;
     }
 
@@ -333,7 +337,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
         if ( newKey.isEmpty() ) {
           restartMaildirScan( dir );
-          cancelTask( i18n( "Failed to change the flags for the mail." ) );
+          cancelTask( i18n( "Failed to change the flags for the mail. %1" ).arg( dir.lastError() ) );
           return;
         }
         newItem.setRemoteId( newKey );
@@ -354,7 +358,11 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
             mail->parse();
             data = mail->encodedContent();
           }
-          dir.writeEntry( newItem.remoteId(), data );
+          if ( !dir.writeEntry( newItem.remoteId(), data ) ) {
+            restartMaildirScan( dir );
+            cancelTask( dir.lastError() );
+            return;
+          }
         }
       }
 
@@ -379,15 +387,14 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   }
 
   Maildir sourceDir = maildirForCollection( source );
-  QString errMsg;
-  if ( !sourceDir.isValid( errMsg ) ) {
-    cancelTask( i18n( "Source folder is invalid: '%1'.", errMsg ) );
+  if ( !sourceDir.isValid() ) {
+    cancelTask( i18n( "Source folder is invalid: '%1'.", sourceDir.lastError() ) );
     return;
   }
 
   Maildir destDir = maildirForCollection( destination );
-  if ( !destDir.isValid( errMsg ) ) {
-    cancelTask( i18n( "Destination folder is invalid: '%1'.", errMsg ) );
+  if ( !destDir.isValid() ) {
+    cancelTask( i18n( "Destination folder is invalid: '%1'.", destDir.lastError() ) );
     return;
   }
 
@@ -400,7 +407,7 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   restartMaildirScan( destDir );
 
   if ( newRid.isEmpty() ) {
-    cancelTask( i18n( "Could not move message '%1' from '%2' to '%3'.", item.remoteId(), sourceDir.path(), destDir.path() ) );
+    cancelTask( i18n( "Could not move message '%1' from '%2' to '%3'. The error was %4.", item.remoteId(), sourceDir.path(), destDir.path(), sourceDir.lastError() ) );
     return;
   }
 
@@ -463,9 +470,8 @@ Collection::List MaildirResource::listRecursive( const Collection &root, const M
 void MaildirResource::retrieveCollections()
 {
   Maildir dir( mSettings->path(), mSettings->topLevelIsContainer() );
-  QString errMsg;
-  if ( !dir.isValid( errMsg ) ) {
-    emit error( errMsg );
+  if ( !dir.isValid() ) {
+    emit error( dir.lastError() );
     collectionsRetrieved( Collection::List() );
     return;
   }
