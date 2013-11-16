@@ -38,12 +38,13 @@ private slots:
     QTest::addColumn< QList<QByteArray> >( "scenario" );
     QTest::addColumn<QStringList>( "callNames" );
     QTest::addColumn<QString>( "collectionName" );
-    QTest::addColumn<bool>( "supportsAnnotations" );
+    QTest::addColumn<QStringList>( "caps" );
 
     Akonadi::Collection collection;
     QSet<QByteArray> parts;
     QList<QByteArray> scenario;
     QStringList callNames;
+    QStringList caps;
 
     collection = createCollectionChain( QLatin1String("/Foo") );
     collection.setName( QLatin1String("Bar") );
@@ -71,6 +72,8 @@ private slots:
 
     parts << "NAME" << "AccessRights" << "imapacl" << "collectionannotations";
 
+    caps << "ACL" << "ANNOTATEMORE";
+
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
@@ -91,8 +94,10 @@ private slots:
     callNames.clear();
     callNames << QLatin1String("collectionChangeCommitted");
 
-    QTest::newRow( "complete case" ) << collection << parts << scenario << callNames << collection.name() << true;
+    QTest::newRow( "complete case" ) << collection << parts << scenario << callNames << collection.name() << caps;
 
+    caps.clear();
+    caps << "ACL";
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
@@ -105,10 +110,12 @@ private slots:
              << "S: A000006 OK rename done"
              << "C: A000007 SUBSCRIBE \"Bar\""
              << "S: A000007 OK mailbox subscribed";
-    QTest::newRow( "no ANNOTATEMORE support" ) << collection << parts << scenario << callNames << collection.name() << false;
+    QTest::newRow( "no ANNOTATEMORE support" ) << collection << parts << scenario << callNames << collection.name() << caps;
 
     collection = createCollectionChain( QLatin1String("/Foo") );
     collection.setName( QLatin1String("Bar/Baz") );
+    caps.clear();
+    caps << "ACL" << "ANNOTATEMORE";
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 RENAME \"Foo\" \"BarBaz\""
@@ -120,7 +127,7 @@ private slots:
     callNames.clear();
     callNames << QLatin1String("collectionChangeCommitted");
     QTest::newRow( "rename with invalid separator" ) << collection << parts << scenario << callNames
-                                                     << "BarBaz" << true;
+                                                     << "BarBaz" << caps;
 
     collection = createCollectionChain( QLatin1String(".INBOX.Foo") );
     collection.setName( QLatin1String("Bar") );
@@ -131,7 +138,51 @@ private slots:
              << "C: A000004 SUBSCRIBE \"INBOX.Bar\""
              << "S: A000004 OK mailbox subscribed";
     QTest::newRow( "rename with non-standard separator" ) << collection << parts << scenario << callNames
-                                                          << "Bar" << true;
+                                                          << "Bar" << caps;
+
+    collection = createCollectionChain( QLatin1String("/Foo") );
+    collection.setName( QLatin1String("Bar") );
+    collection.setRights( Akonadi::Collection::AllRights );
+
+    acls = new Akonadi::ImapAclAttribute;
+    // Old rights
+    rights["test@kdab.com"] = KIMAP::Acl::rightsFromString( "lrswipckxtda" );
+    rights["foo@kde.org"] = KIMAP::Acl::rightsFromString( "lrswipcda" );
+    acls->setRights( rights );
+
+    // New rights
+    rights["test@kdab.com"] = KIMAP::Acl::rightsFromString( "lrswipckxtda" );
+    rights["foo@kde.org"] = KIMAP::Acl::rightsFromString( "lrswipcda" );
+    acls->setRights( rights );
+    collection.addAttribute( acls );
+
+    annotationsAttr = new Akonadi::CollectionAnnotationsAttribute;
+    annotations["/vendor/kolab/folder-test"] = "false";
+    annotations["/vendor/kolab/folder-test2"] = "true";
+    annotationsAttr->setAnnotations( annotations );
+    collection.addAttribute( annotationsAttr );
+
+    parts << "NAME" << "AccessRights" << "imapacl" << "collectionannotations";
+
+    caps << "ACL" << "METADATA";
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+             << "S: A000003 OK acl changed"
+             << "C: A000004 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test\"   {5}\r\nfalse)"
+             << "S: A000004 OK SETMETADATA complete"
+             << "C: A000005 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test2\"   {4}\r\ntrue)"
+             << "S: A000005 OK SETMETADATA complete"
+             << "C: A000006 SETACL \"Foo\" \"foo@kde.org\" \"lrswipcda\""
+             << "S: A000006 OK acl changed"
+             << "C: A000007 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+             << "S: A000007 OK acl changed"
+             << "C: A000008 RENAME \"Foo\" \"Bar\""
+             << "S: A000008 OK rename done"
+             << "C: A000009 SUBSCRIBE \"Bar\""
+             << "S: A000009 OK mailbox subscribed";
+    QTest::newRow( "complete case METADATA" ) << collection << parts << scenario << callNames << collection.name() << caps;
   }
 
   void shouldUpdateMetadataAclAndName()
@@ -141,7 +192,7 @@ private slots:
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
     QFETCH( QString, collectionName );
-    QFETCH( bool, supportsAnnotations );
+    QFETCH( QStringList, caps );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -153,11 +204,6 @@ private slots:
     QVERIFY( pool.connect( createDefaultAccount() ) );
     QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
 
-    QStringList caps;
-    caps << QLatin1String( "ACL" );
-    if ( supportsAnnotations ) {
-        caps << QLatin1String( "ANNOTATEMORE" );
-    }
     DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
     state->setUserName( defaultUserName() );
     state->setServerCapabilities( caps );

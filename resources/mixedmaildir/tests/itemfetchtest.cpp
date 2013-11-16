@@ -208,7 +208,7 @@ void ItemFetchTest::testListingMaildir()
   QCOMPARE( items[ 1 ].parentCollection(), collection1 );
   QCOMPARE( items[ 2 ].parentCollection(), collection1 );
   QCOMPARE( items[ 3 ].parentCollection(), collection1 );
-  
+
   QVERIFY( !items[ 0 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
@@ -219,7 +219,7 @@ void ItemFetchTest::testListingMaildir()
       ++flagCounts[ flag ];
     }
   }
-  
+
   // no flags from maildir file name, no advanced flags without index
   QCOMPARE( flagCounts.count(), 0 );
   QCOMPARE( flagCounts[ "\\SEEN" ], 0 );
@@ -282,7 +282,7 @@ void ItemFetchTest::testListingMaildir()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // see data/README
   Q_FOREACH( const Item &item, items ) {
     Q_FOREACH( const QByteArray &flag, item.flags() ) {
@@ -349,14 +349,14 @@ void ItemFetchTest::testListingMaildir()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // see data/README
   Q_FOREACH( const Item &item, items ) {
     Q_FOREACH( const QByteArray &flag, item.flags() ) {
       ++flagCounts[ flag ];
     }
   }
-  
+
   // 2x \SEEN flags: 2x from index, none from file name
   QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
   QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
@@ -405,7 +405,7 @@ void ItemFetchTest::testListingMaildir()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // see data/README
   Q_FOREACH( const Item &item, items ) {
     Q_FOREACH( const QByteArray &flag, item.flags() ) {
@@ -482,7 +482,7 @@ void ItemFetchTest::testListingMaildir()
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 4 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // not flags from index, no flags from file names
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() );
   QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() );
@@ -580,7 +580,7 @@ void ItemFetchTest::testListingMBox()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() );
   QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() );
   QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() );
@@ -640,7 +640,7 @@ void ItemFetchTest::testListingMBox()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // see data/README
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>()  );
   QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" << "$TODO" );
@@ -701,7 +701,7 @@ void ItemFetchTest::testListingMBox()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // see data/README
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>()  );
   QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" << "$TODO" );
@@ -749,7 +749,7 @@ void ItemFetchTest::testListingMBox()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // see data/README
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() << "\\SEEN" );
   QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() << "\\DELETED" );
@@ -806,7 +806,7 @@ void ItemFetchTest::testListingMBox()
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>() );
   QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() );
   QCOMPARE( items[ 2 ].flags(), QSet<QByteArray>() );
@@ -857,9 +857,9 @@ void ItemFetchTest::testListingMBox()
   QVERIFY( !items[ 0 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 1 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 2 ].hasPayload<KMime::Message::Ptr>() );
-  QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );  
+  QVERIFY( !items[ 3 ].hasPayload<KMime::Message::Ptr>() );
   QVERIFY( !items[ 4 ].hasPayload<KMime::Message::Ptr>() );
-  
+
   // see data/README
   QCOMPARE( items[ 0 ].flags(), QSet<QByteArray>()  );
   QCOMPARE( items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" << "$TODO" );

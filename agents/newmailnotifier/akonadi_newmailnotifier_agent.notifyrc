@@ -131,7 +131,6 @@ Action=Popup
 
 [Event/text-to-speak-not-found]
 Name=Jovie Text-to-Speech Service not found
-Name[bs]=Jovie usluga za izgovor teksta nije nađena
 Name[ca]=No s'ha trobat el servei Jovie de text a veu
 Name[da]=Jovie tekst-til-tale-tjeneste ikke fundet
 Name[de]=Der Sprachausgabedienstes Jovie wurde nicht gefunden

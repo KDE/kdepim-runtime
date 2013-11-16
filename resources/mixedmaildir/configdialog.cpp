@@ -58,15 +58,14 @@ void ConfigDialog::checkPath()
 
   if ( d.exists() ) {
     Maildir md( d.path() );
-    QString error;
-    if ( !md.isValid( error ) ) {
+    if ( !md.isValid() ) {
       Maildir md2( d.path(), true );
       if ( md2.isValid() ) {
         ui.statusLabel->setText( i18n( "The selected path contains valid Maildir folders." ) );
         mToplevelIsContainer = true;
         ok = true;
       } else {
-        ui.statusLabel->setText( error );
+        ui.statusLabel->setText( md.lastError() );
       }
     } else {
       ui.statusLabel->setText( i18n( "The selected path is a valid Maildir." ) );

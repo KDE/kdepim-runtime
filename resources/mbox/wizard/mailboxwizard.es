@@ -17,8 +17,7 @@
     02110-1301, USA.
 */
 
-// TODO: i18n??
-var page = Dialog.addPage( "mailboxwizard.ui", "Personal Settings" );
+var page = Dialog.addPage( "mailboxwizard.ui", qsTr("Personal Settings") );
 
 function validateInput()
 {

@@ -320,13 +320,16 @@ class MaildirContext
       if ( !result.isEmpty() && mHasIndexData ) {
         mIndexData.insert( result, KMIndexDataPtr( new KMIndexData ) );
         Q_ASSERT( mIndexData.value( result )->isEmpty() );
+      } else {
+        //TODO: use the error string?
+        kWarning() << mMaildir.lastError();
       }
 
       return result;
     }
 
     void writeEntry( const QString &key, const QByteArray &data ) {
-      mMaildir.writeEntry( key, data );
+      mMaildir.writeEntry( key, data ); //TODO: error handling
       if ( mHasIndexData ) {
         mIndexData.insert( key, KMIndexDataPtr( new KMIndexData ) );
       }
@@ -351,6 +354,9 @@ class MaildirContext
         if ( destination.mHasIndexData ) {
           destination.mIndexData.insert( result, KMIndexDataPtr( new KMIndexData ) );
         }
+      } else {
+        //TODO error handling?
+        kWarning() << mMaildir.lastError();
       }
 
       return result;
@@ -365,7 +371,11 @@ class MaildirContext
     }
 
     bool isValid( QString &error ) const {
-      return mMaildir.isValid( error );
+      bool result = mMaildir.isValid();
+      if ( !result ) {
+        error = mMaildir.lastError();
+      }
+      return result;
     }
 
     bool isValidEntry( const QString &entry ) const {
@@ -829,7 +839,7 @@ bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeHeaders, b
   if ( !ok || !mbox->isValidOffset( offset ) ) {
     return false;
   }
-  
+
   // TODO: size and modification timestamp?
 
   if ( includeHeaders || includeBody ) {
@@ -855,7 +865,7 @@ bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeHea
   const qint64 entrySize = md->maildir().size( item.remoteId() );
   if ( entrySize < 0 )
     return false;
-  
+
   item.setSize( entrySize );
   item.setModificationTime( md->maildir().lastModified( item.remoteId() ) );
 
@@ -1731,7 +1741,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
   const bool payloadChangedButIgnored = payloadChanged && job->ignorePayload();
   const bool ignoreModifyIfValid = nothingChanged ||
                                    ( payloadChangedButIgnored && !flagsChanged );
-  
+
   Item item = job->item();
   const Collection collection = item.parentCollection();
   QString path;
@@ -1791,7 +1801,7 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
       q->notifyItemsProcessed( Item::List() << item );
       return true;
     }
- 
+
     // make sure to read the index (if available) before modifying the data, which would
     // make the index invalid
     mbox->readIndexData();
@@ -1865,8 +1875,8 @@ bool MixedMaildirStore::Private::visit( FileStore::ItemModifyJob *job )
       Maildir md( mdPtr->maildir() );
       newKey = md.changeEntryFlags( item.remoteId(), item.flags() );
       if ( newKey.isEmpty() ) {
-        errorText = i18nc( "@info:status", "Cannot modify emails in folder %1",
-                            collection.name() );
+        errorText = i18nc( "@info:status", "Cannot modify emails in folder %1. %2",
+                            collection.name(), md.lastError() );
         kError() << errorText << "FolderType=" << folderType;
         q->notifyError( FileStore::Job::InvalidJobContext, errorText );
         return false;

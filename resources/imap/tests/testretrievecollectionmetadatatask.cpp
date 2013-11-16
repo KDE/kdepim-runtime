@@ -263,6 +263,38 @@ private slots:
 
     QTest::newRow( "noinferiors" ) << collection << capabilities << scenario
                                       << callNames << rights << spontaneous;
+
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.setRights( 0 );
+    collection.removeAttribute<TimestampAttribute>();
+
+    capabilities.clear();
+    capabilities << "METADATA" << "ACL" << "QUOTA";
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 GETMETADATA \"INBOX/Foo\" (DEPTH infinity) (/shared)"
+             << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test \"true\")"
+             << "S: A000003 OK GETMETADATA complete"
+             << "C: A000004 GETACL \"INBOX/Foo\""
+             << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
+             << "S: A000004 OK acl retrieved"
+             << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+             << "S: * MYRIGHTS \"INBOX/Foo\" lrswipkxtecda"
+             << "S: A000005 OK rights retrieved"
+             << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+             << "S: * QUOTAROOT INBOX/Foo user/Foo"
+             << "S: * QUOTA user/Foo ( )"
+             << "S: A000006 OK quota retrieved";
+
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "taskDone";
+
+    spontaneous = true;
+
+    rights = Akonadi::Collection::AllRights;
+    QTest::newRow( "METADATA" ) << collection << capabilities << scenario
+                                    << callNames << rights << spontaneous;
   }
 
   void shouldCollectionRetrieveMetadata()
