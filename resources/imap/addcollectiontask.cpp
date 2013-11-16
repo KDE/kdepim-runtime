@@ -81,8 +81,6 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 void AddCollectionTask::onCreateDone( KJob *job )
 {
   if ( job->error() ) {
-    //create on server failed, remove from the cache
-    new Akonadi::CollectionDeleteJob( m_collection );
     cancelTask( job->errorString() );
   } else {
     // Automatically subscribe to newly created mailbox
