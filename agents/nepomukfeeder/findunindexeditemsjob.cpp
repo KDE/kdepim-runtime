@@ -111,6 +111,7 @@ void FindUnindexedItemsJob::fetchItemsFromCollection()
     fetchJob->fetchScope().fetchAllAttributes(false);
     fetchJob->fetchScope().fetchFullPayload(false);
     fetchJob->fetchScope().setFetchModificationTime(true);
+    fetchJob->fetchScope().setCacheOnly(true);
     connect(fetchJob, SIGNAL(itemsReceived(Akonadi::Item::List)), this, SLOT(itemsReceived(Akonadi::Item::List)));
     connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(jobDone(KJob*)));
 }
