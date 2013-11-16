@@ -270,6 +270,9 @@ bool Maildir::Private::accessIsPossible( bool createMissingFolders )
 
 bool Maildir::isValid( bool createMissingFolders ) const
 {
+    if ( path().isEmpty() ) {
+      return false;
+    }
     if ( !d->isRoot ) {
       if ( d->accessIsPossible( createMissingFolders ) ) {
           return true;
