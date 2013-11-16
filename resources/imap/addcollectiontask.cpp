@@ -81,8 +81,8 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 void AddCollectionTask::onCreateDone( KJob *job )
 {
   if ( job->error() ) {
-    //create on server failed, remove from the cache
-    new Akonadi::CollectionDeleteJob( m_collection );
+    emitError( i18n( "Failed to create the folder '%1' on the IMAP server. ",
+                      m_collection.name() ) );
     cancelTask( job->errorString() );
   } else {
     // Automatically subscribe to newly created mailbox
