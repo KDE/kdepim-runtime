@@ -33,7 +33,7 @@ CalendarData::CalendarData(QObject *parent)
     : QObject(parent)
     , m_types(Holiday | Event | Todo | Journal)
     , m_sorting(None)
-    , m_overlapping(false)
+    , m_overlapping(true)
 {
     m_etmCalendar = new ETMCalendar();
     m_etmCalendar->setParent(this); //TODO: hit sergio
@@ -49,6 +49,7 @@ CalendarData::CalendarData(QObject *parent)
      
     m_filteredList = new DateTimeRangeFilterModel(this);
     m_filteredList->setSourceModel(roleModel);
+    m_filteredList->includeOverlappingEvents(m_overlapping);
 
     updateTypes();
 }
