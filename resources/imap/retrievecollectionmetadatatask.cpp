@@ -40,23 +40,13 @@
 #include "timestampattribute.h"
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_isSpontaneous( true ),
+  : ResourceTask( CancelIfNoSession, resource, parent ),
     m_pendingMetaDataJobs( 0 ), m_collectionChanged( false )
 {
 }
 
 RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask()
 {
-}
-
-bool RetrieveCollectionMetadataTask::isSpontaneous() const
-{
-  return m_isSpontaneous;
-}
-
-void RetrieveCollectionMetadataTask::setSpontaneous( bool spontaneous )
-{
-  m_isSpontaneous = spontaneous;
 }
 
 void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
@@ -68,7 +58,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
       kDebug( 5327 ) << "No Select folder";
-      endTask();
+      taskDone();
       return;
     }
   }
@@ -123,7 +113,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   // the server does not have any of the capabilities needed to get extra info, so this
   // step is done here
   if ( m_pendingMetaDataJobs == 0 ) {
-    endTask();
+      taskDone();
   }
 }
 
@@ -321,23 +311,9 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
       TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
       attr->setTimestamp( currentTimestamp );
 
-      if ( m_isSpontaneous ) {
-        applyCollectionChanges( m_collection );
-      }
+      applyCollectionChanges( m_collection );
     }
 
-    endTask();
-  }
-}
-
-void RetrieveCollectionMetadataTask::endTask()
-{
-  if ( m_isSpontaneous ) {
     taskDone();
-  } else {
-    collectionAttributesRetrieved( m_collection );
   }
 }
-
-
-

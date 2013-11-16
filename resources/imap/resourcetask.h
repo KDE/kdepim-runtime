@@ -92,8 +92,6 @@ protected:
   void setIdleCollection( const Akonadi::Collection &collection );
   void applyCollectionChanges( const Akonadi::Collection &collection );
 
-  void collectionAttributesRetrieved( const Akonadi::Collection &collection );
-
   void itemRetrieved( const Akonadi::Item &item );
 
   void itemsRetrieved( const Akonadi::Item::List &items );

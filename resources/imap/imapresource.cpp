@@ -468,18 +468,6 @@ void ImapResource::retrieveCollections()
   queueTask( task );
 }
 
-void ImapResource::retrieveCollectionAttributes( const Akonadi::Collection &collection )
-{
-  emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving folder attributes for '%1'", collection.name() ) );
-
-  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionMetadataState( this, collection );
-
-  RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
-  task->setSpontaneous( false );
-  task->start( m_pool );
-  queueTask( task );
-}
-
 void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
 {
   const Collection collection( collectionVariant.value<Collection>() );
