@@ -203,6 +203,11 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
       mItems = items;
     }
 
+    void clearItems()
+    {
+      mItems.clear();
+    }
+
   public:
     using JobProcessingAdaptor::visit;
 
@@ -757,6 +762,7 @@ void FileStore::AbstractLocalStore::notifyItemsProcessed( const Item::List &item
 
   d->mItemsProcessedNotifier.setItems( items );
   d->mCurrentJob->accept( &( d->mItemsProcessedNotifier ) );
+  d->mItemsProcessedNotifier.clearItems(); // save memory
 }
 
 void FileStore::AbstractLocalStore::setTopLevelCollection( const Collection &collection )
