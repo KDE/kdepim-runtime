@@ -123,17 +123,18 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
   ItemFetchJob *itemFetch = qobject_cast<ItemFetchJob*>( job );
   Q_ASSERT( itemFetch != 0 );
 
-  const Item::List items = itemFetch->items();
+  Item::List items = itemFetch->items();
+  itemFetch->clearItems(); // save memory
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Akonadi fetch got" << items.count() << "items";
 
   mServerItemsByRemoteId.reserve( items.size() );
-  Q_FOREACH ( const Item &item, items ) {
+  for ( int i = 0 ; i < items.count() ; ++i ) {
+    Item &item = items[i];
     // items without remoteId have not been written to the resource yet
     if ( !item.remoteId().isEmpty() ) {
       // set the parent collection (with all ancestors) in every item
-      Item copy( item );
-      copy.setParentCollection( mCollection );
-      mServerItemsByRemoteId.insert( copy.remoteId(), copy );
+      item.setParentCollection( mCollection );
+      mServerItemsByRemoteId.insert( item.remoteId(), item );
     }
   }
 
