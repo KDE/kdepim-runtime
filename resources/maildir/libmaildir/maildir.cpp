@@ -275,6 +275,9 @@ bool Maildir::isValid( bool createMissingFolders ) const
 
 bool Maildir::isValid( QString &error, bool createMissingFolders ) const
 {
+    if ( path().isEmpty() ) {
+      return false;
+    }
     if ( !d->isRoot ) {
       if ( d->accessIsPossible( error, createMissingFolders ) ) {
           return true;
