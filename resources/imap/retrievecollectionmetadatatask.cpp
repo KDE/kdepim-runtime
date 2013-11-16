@@ -39,8 +39,6 @@
 #include "noselectattribute.h"
 #include "timestampattribute.h"
 
-const uint RetrieveCollectionMetadataTask::TimestampTimeout = 3600 * 24 * 20; // 20 days
-
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ), m_isSpontaneous( true ),
     m_pendingMetaDataJobs( 0 ), m_collectionChanged( false )
@@ -70,25 +68,6 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
       kDebug( 5327 ) << "No Select folder";
-      endTask();
-      return;
-    }
-  }
-
-  // Evaluate timestamps only if this task is spontaneous (triggered from within the resource)
-  if ( m_isSpontaneous ) {
-    uint timestamp = 0;
-    const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
-
-    if ( collection().hasAttribute<TimestampAttribute>() ) {
-      timestamp = collection().attribute<TimestampAttribute>()->timestamp();
-    } else {
-      m_collectionChanged = true;
-    }
-
-    // Refresh only if we're older than twenty days
-    if ( timestamp + TimestampTimeout >  currentTimestamp ) {
-      kDebug( 5327 ) << "Not refreshing because of timestamp";
       endTask();
       return;
     }
