@@ -54,7 +54,6 @@ macro_optional_add_subdirectory( localbookmarks )
 
 add_subdirectory( maildir )
 
-macro_optional_add_subdirectory( microblog )
 macro_optional_add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
