@@ -23,6 +23,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/resourcebase.h>
 
+class QTimer;
 class QFileInfo;
 class KDirWatch;
 namespace Akonadi_Maildir_Resource
@@ -78,6 +79,7 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     void fsWatchFileModifyResult( KJob* job );
     // Try to restore some config values from Akonadi data
     void attemptConfigRestoring( KJob* job );
+    void changedCleaner();
 
   private:
     bool ensureDirExists();
@@ -97,7 +99,7 @@ private:
     KDirWatch *mFsWatcher;
     QHash<QString, KPIM::Maildir> mMaildirsForCollection;
     QSet<QString> mChangedFiles; //files changed by the resource and that should be ignored in slotFileChanged
-
+    QTimer *mChangedCleanerTimer;
 };
 
 #endif
