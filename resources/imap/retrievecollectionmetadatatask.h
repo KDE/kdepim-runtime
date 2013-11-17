@@ -29,13 +29,8 @@ class RetrieveCollectionMetadataTask : public ResourceTask
   Q_OBJECT
 
 public:
-  static const uint TimestampTimeout;
-
   explicit RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~RetrieveCollectionMetadataTask();
-
-  bool isSpontaneous() const;
-  void setSpontaneous( bool spontaneous );
 
 private slots:
   void onGetMetaDataDone( KJob *job );
@@ -48,9 +43,7 @@ protected:
 
 private:
   void endTaskIfNeeded();
-  void endTask();
 
-  bool m_isSpontaneous;
   int m_pendingMetaDataJobs;
 
   bool m_collectionChanged;

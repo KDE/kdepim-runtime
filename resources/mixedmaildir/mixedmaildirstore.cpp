@@ -88,6 +88,8 @@ class MBoxContext
 
     bool load( const QString &fileName )
     {
+      mModificationTime = QFileInfo( fileName ).lastModified();
+
       // in case of reload, check if anything changed, otherwise keep deleted entries
       if ( !mDeletedOffsets.isEmpty() && fileName == mMBox.fileName() ) {
         const KMBox::MBoxEntry::List currentEntryList = mMBox.entries();
@@ -105,6 +107,8 @@ class MBoxContext
       mDeletedOffsets.clear();
       return mMBox.load( fileName );
     }
+
+    QDateTime modificationTime() const { return mModificationTime; }
 
     KMBox::MBoxEntry::List entryList() const
     {
@@ -160,7 +164,9 @@ class MBoxContext
 
     bool save()
     {
-      return mMBox.save();
+      bool ret = mMBox.save();
+      mModificationTime = QDateTime::currentDateTime();
+      return ret;
     }
 
     int purge( QList<KMBox::MBoxEntry::Pair> &movedEntries )
@@ -197,6 +203,7 @@ class MBoxContext
       }
 
       mDeletedOffsets.clear();
+      mModificationTime = QDateTime::currentDateTime();
       return ( result ? deleteCount : -1 );
     }
 
@@ -246,6 +253,7 @@ class MBoxContext
   private:
     QSet<quint64> mDeletedOffsets;
     MBox mMBox;
+    QDateTime mModificationTime;
 
     typedef QHash<quint64, KMIndexDataPtr> IndexDataHash;
     IndexDataHash mIndexData;
@@ -840,7 +848,9 @@ bool MixedMaildirStore::Private::fillItem( MBoxPtr &mbox, bool includeHeaders, b
     return false;
   }
 
-  // TODO: size and modification timestamp?
+  item.setModificationTime( mbox->modificationTime() );
+  
+  // TODO: size?
 
   if ( includeHeaders || includeBody ) {
     KMime::Message::Ptr messagePtr( new KMime::Message() );

@@ -34,7 +34,7 @@ MigrationExecutor::MigrationExecutor()
 void MigrationExecutor::start()
 {
     setPercent(0);
-    emit description(this, i18nc("User visible name of ongoing akonadi migration jobs", "PIM-Maintenance"));
+    emit description(this, i18nc("User visible name of ongoing Akonadi migration jobs", "PIM Maintenance"));
 }
 
 void MigrationExecutor::add(const QSharedPointer<MigratorBase> &migrator)
@@ -60,8 +60,8 @@ void MigrationExecutor::executeNext()
         migrator->start();
     } else {
         // Reset the notification status, otherwise we get notification "In progress...[finished]"
-        // without any description that it's related to PIM-Maintanence
-        emit infoMessage(this, i18n("PIM-Maintanence"));
+        // without any description that it's related to PIM-Maintenance
+        emit infoMessage(this, i18n("PIM Maintenance"));
         emitResult();
     }
 }

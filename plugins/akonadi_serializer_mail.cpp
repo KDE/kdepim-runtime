@@ -220,6 +220,17 @@ QSet<QByteArray> SerializerPluginMail::parts( const Item &item ) const
   return set;
 }
 
+QString SerializerPluginMail::extractGid(const Item& item) const
+{
+  if (!item.hasPayload<KMime::Message::Ptr>())
+    return QString();
+  const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+  KMime::Headers::MessageID *mid = msg->messageID( false );
+  if (mid)
+    return mid->asUnicodeString();
+  return QString();
+}
+
 Q_EXPORT_PLUGIN2( akonadi_serializer_mail, SerializerPluginMail )
 
 #include "moc_akonadi_serializer_mail.cpp"

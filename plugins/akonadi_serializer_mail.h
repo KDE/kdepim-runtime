@@ -25,6 +25,7 @@
 #include <QtCore/QMutex>
 
 #include <akonadi/itemserializerplugin.h>
+#include <akonadi/gidextractorinterface.h>
 
 namespace Akonadi {
 
@@ -48,15 +49,16 @@ private:
     QSet<QString> m_pool;
 };
 
-class SerializerPluginMail : public QObject, public ItemSerializerPlugin
+class SerializerPluginMail : public QObject, public ItemSerializerPlugin, public GidExtractorInterface
 {
     Q_OBJECT
-    Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+    Q_INTERFACES( Akonadi::ItemSerializerPlugin Akonadi::GidExtractorInterface)
 
 public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
     QSet<QByteArray> parts( const Item &item ) const;
+    QString extractGid(const Item& item) const;
 private:
     StringPool m_stringPool;
 };
