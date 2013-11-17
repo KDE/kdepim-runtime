@@ -282,6 +282,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     stopMaildirScan( dir );
 
     const QString rid = dir.addEntry( mail->encodedContent() );
+    mChangedFiles.insert( rid );
 
     restartMaildirScan( dir );
 
@@ -355,6 +356,11 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
             data = mail->encodedContent();
           }
           dir.writeEntry( newItem.remoteId(), data );
+          mChangedFiles.insert( newItem.remoteId() );
+        } else {
+            restartMaildirScan( dir );
+            cancelTask( i18n( "Error: Unsupported type." ) );
+            return;
         }
       }
 
@@ -395,6 +401,8 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   stopMaildirScan( destDir );
 
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
+
+  mChangedFiles.insert( newRid );
 
   restartMaildirScan( sourceDir );
   restartMaildirScan( destDir );
@@ -685,7 +693,7 @@ void MaildirResource::slotDirChanged(const QString& dir)
 {
   QFileInfo fileInfo( dir );
   if ( fileInfo.isFile() ) {
-    slotFileChanged( dir );
+    slotFileChanged( fileInfo );
     return;
   }
 
@@ -733,11 +741,14 @@ void MaildirResource::fsWatchDirFetchResult(KJob* job)
   synchronizeCollection( cols.first().id() );
 }
 
-void MaildirResource::slotFileChanged( const QString& fileName )
+void MaildirResource::slotFileChanged( const QFileInfo& fileInfo )
 {
-  QFileInfo fileInfo( fileName );
+  const QString key = fileInfo.fileName();
+  if ( mChangedFiles.contains( key ) ) {
+    mChangedFiles.remove( key );
+    return;
+  }
 
-  QString key = fileInfo.fileName();
   QString path = fileInfo.path();
   if ( path.endsWith( QLatin1String( "/new" ) ) ) {
     path.remove( path.length() - 4, 4 );
