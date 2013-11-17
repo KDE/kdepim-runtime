@@ -42,7 +42,6 @@ IncidenceHandler::~IncidenceHandler()
 
 Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List &items )
 {
-  kDebug() << "translateItems" << items.size();
   Akonadi::Item::List newItems;
   Q_FOREACH ( const Akonadi::Item &item, items ) {
     if ( !item.hasPayload<KMime::Message::Ptr>() ) {
@@ -63,7 +62,7 @@ Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List 
     //and not only for incidences (move to kolabhandler)
     if ( m_uidMap.contains( incidencePtr->uid() ) ) {
       StoredItem storedItem = m_uidMap[incidencePtr->uid()];
-      kDebug() << "Conflict detected for incidence uid  " << incidencePtr->uid()
+      kWarning() << "Conflict detected for incidence uid  " << incidencePtr->uid()
                << " for imap item id = " << item.id()
                << " and the other imap item id is "
                << storedItem.id << "; imap collection is "
@@ -138,7 +137,6 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict(
   KCalCore::Incidence::Ptr addedIncidence = inc;
   KCalCore::Incidence::Ptr result;
   if ( localIncidence ) {
-    kDebug() << "Compare  " << localIncidence << addedIncidence;
     if ( *localIncidence.data() == *addedIncidence.data() ) {
       // real duplicate, remove the second one
       return Duplicate;
@@ -175,7 +173,6 @@ IncidenceHandler::ConflictResolution IncidenceHandler::resolveConflict(
 
 bool IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
 {
-//   kDebug() << "toKolabFormat";
   KCalCore::Incidence::Ptr incidencePtr;
   if ( item.hasPayload<KCalCore::Incidence::Ptr>() ) {
     incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
@@ -183,7 +180,6 @@ bool IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &
     kWarning() << "item is not an incidence";
     return false;
   }
-//   kDebug() << "item payload: " << item.payloadData();
   incidenceToItem( incidencePtr, imapItem );
   if ( checkForErrors( item.id() ) ) {
     imapItem.setPayloadFromData( "" );
