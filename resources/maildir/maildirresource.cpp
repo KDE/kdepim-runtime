@@ -281,6 +281,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     stopMaildirScan( dir );
 
     const QString rid = dir.addEntry( mail->encodedContent() );
+    mChangedFiles.insert( rid );
 
     if ( rid.isEmpty() ) {
       restartMaildirScan( dir );
@@ -352,6 +353,11 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
             //only the head has changed, get the current version of the mail
             //replace the head and store the new mail in the file
             const QByteArray currentData = dir.readEntry( newItem.remoteId() );
+            if ( currentData.isEmpty() && !dir.lastError().isEmpty() ) {
+              restartMaildirScan( dir );
+              cancelTask( dir.lastError() );
+              return;
+            }
             const QByteArray newHead = mail->head();
             mail->setContent( currentData );
             mail->setHead( newHead );
@@ -363,6 +369,11 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
             cancelTask( dir.lastError() );
             return;
           }
+          mChangedFiles.insert( newItem.remoteId() );
+        } else {
+            restartMaildirScan( dir );
+            cancelTask( i18n( "Maildir resource got a non-mail content!" ) );
+            return;
         }
       }
 
@@ -402,6 +413,8 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   stopMaildirScan( destDir );
 
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
+
+  mChangedFiles.insert( newRid );
 
   restartMaildirScan( sourceDir );
   restartMaildirScan( destDir );
@@ -691,7 +704,7 @@ void MaildirResource::slotDirChanged(const QString& dir)
 {
   QFileInfo fileInfo( dir );
   if ( fileInfo.isFile() ) {
-    slotFileChanged( dir );
+    slotFileChanged( fileInfo );
     return;
   }
 
@@ -739,11 +752,14 @@ void MaildirResource::fsWatchDirFetchResult(KJob* job)
   synchronizeCollection( cols.first().id() );
 }
 
-void MaildirResource::slotFileChanged( const QString& fileName )
+void MaildirResource::slotFileChanged( const QFileInfo& fileInfo )
 {
-  QFileInfo fileInfo( fileName );
+  const QString key = fileInfo.fileName();
+  if ( mChangedFiles.contains( key ) ) {
+    mChangedFiles.remove( key );
+    return;
+  }
 
-  QString key = fileInfo.fileName();
   QString path = fileInfo.path();
   if ( path.endsWith( QLatin1String( "/new" ) ) ) {
     path.remove( path.length() - 4, 4 );
