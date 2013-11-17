@@ -52,6 +52,8 @@ using namespace Akonadi;
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
+#define CLEANER_TIMEOUT 2*6000
+
 Maildir MaildirResource::maildirForCollection( const Collection& col )
 {
   const QString path = maildirPathForCollection( col );
@@ -140,6 +142,9 @@ MaildirResource::MaildirResource( const QString &id )
   } else {
      synchronizeCollectionTree();
   }
+
+  mChangedCleanerTimer = new QTimer( this );
+  connect( mChangedCleanerTimer, SIGNAL( timeout() ), this, SLOT( changedCleaner() ) );
 }
 
 void MaildirResource::attemptConfigRestoring( KJob * job )
@@ -282,6 +287,7 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
 
     const QString rid = dir.addEntry( mail->encodedContent() );
     mChangedFiles.insert( rid );
+    mChangedCleanerTimer->start( CLEANER_TIMEOUT );
 
     if ( rid.isEmpty() ) {
       restartMaildirScan( dir );
@@ -370,6 +376,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
             return;
           }
           mChangedFiles.insert( newItem.remoteId() );
+          mChangedCleanerTimer->start( CLEANER_TIMEOUT );
         } else {
             restartMaildirScan( dir );
             cancelTask( i18n( "Maildir resource got a non-mail content!" ) );
@@ -415,6 +422,7 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
 
   mChangedFiles.insert( newRid );
+  mChangedCleanerTimer->start( CLEANER_TIMEOUT );
 
   restartMaildirScan( sourceDir );
   restartMaildirScan( destDir );
@@ -858,3 +866,7 @@ void MaildirResource::restartMaildirScan(const Maildir &maildir)
     mFsWatcher->restartDirScan( path + QLatin1Literal( "/cur" ) );
 }
 
+void MaildirResource::changedCleaner()
+{
+    mChangedFiles.clear();
+}
