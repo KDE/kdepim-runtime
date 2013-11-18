@@ -43,7 +43,7 @@ class ProxyIntegrationTest : public QObject
         Collection col;
         col.setName(name);
         QMap<QByteArray, QByteArray> annotations;
-        annotations.insert("/vendor/kolab/folder-type", annotation);
+        Kolab::setFolderTypeAnnotation( annotations, annotation );
         col.addAttribute(new CollectionAnnotationsAttribute(annotations));
         col.setRights(Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem | Collection::CanCreateCollection | Collection::CanChangeCollection | Collection::CanDeleteCollection);
         return col;
@@ -122,7 +122,7 @@ private slots:
             if (!col.attribute<CollectionAnnotationsAttribute>()) {
                 continue;
             }
-            if (Kolab::folderTypeFromString(col.attribute<CollectionAnnotationsAttribute>()->annotations().value(KOLAB_FOLDER_TYPE_ANNOTATION)) != Kolab::MailType) {
+            if (Kolab::folderTypeFromString(Kolab::getFolderTypeAnnotation(col.attribute<CollectionAnnotationsAttribute>()->annotations())) != Kolab::MailType) {
                 //Kolab folder
                 QVERIFY(col.attribute<Akonadi::EntityHiddenAttribute>());
             }

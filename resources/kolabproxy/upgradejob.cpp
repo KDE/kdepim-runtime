@@ -79,8 +79,7 @@ void UpgradeJob::collectionFetchResult( KJob *job )
     Akonadi::CollectionAnnotationsAttribute *attr = 0;
     if ( ( attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>() ) ) {
       folderType =
-        KolabV2::folderTypeFromString(
-          attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
+        KolabV2::folderTypeFromString( Kolab::getFolderTypeAnnotation( attr->annotations() ) );
     }
     if ( folderType == KolabV2::Mail ) {
       //kWarning() << "Wrong folder annotation "

@@ -476,10 +476,7 @@ void KolabProxyResource::collectionAdded( const Akonadi::Collection &collection,
       Akonadi::Collection::AddIfMissing );
 
   QMap<QByteArray, QByteArray> annotations = attr->annotations();
-
-  annotations[KOLAB_FOLDER_TYPE_ANNOTATION] =
-    KolabHandler::kolabTypeForMimeType( collection.contentMimeTypes() );
-
+  Kolab::setFolderTypeAnnotation( annotations, KolabHandler::kolabTypeForMimeType( collection.contentMimeTypes() ) );
   attr->setAnnotations( annotations );
 
   Akonadi::CollectionCreateJob *job = new Akonadi::CollectionCreateJob( imapCollection, this );
@@ -757,7 +754,7 @@ Kolab::FolderType KolabProxyResource::getFolderType( const Akonadi::Collection& 
   Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
     collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
   if ( annotationsAttribute ) {
-    return Kolab::folderTypeFromString( annotationsAttribute->annotations().value(KOLAB_FOLDER_TYPE_ANNOTATION) );
+    return Kolab::folderTypeFromString( Kolab::getFolderTypeAnnotation( annotationsAttribute->annotations() ) );
   }
   return Kolab::MailType;
 }
