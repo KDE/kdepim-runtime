@@ -104,13 +104,14 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
   selectJob->start();
 
   // mark all items as deleted
+  // This step shouldn't be required, but apparently some servers don't allow deleting, non empty mailboxes (although they should).
   KIMAP::ImapSet allItems;
   allItems.add( KIMAP::ImapInterval( 1, 0 ) ); // means 1:*
   KIMAP::StoreJob *storeJob = new KIMAP::StoreJob( mSession );
   storeJob->setSequenceSet( allItems );
   storeJob->setFlags( KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted );
   storeJob->setMode( KIMAP::StoreJob::AppendFlags );
-  connect( storeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
+  // The result is explicitly ignored, since this can fail in the case of an empty folder
   storeJob->start();
 
   // expunge the mailbox
