@@ -422,6 +422,22 @@ QStringList Maildir::listNew() const
     return result;
 }
 
+QString Maildir::pathToNew() const
+{
+    if ( isValid() ) {
+      return d->path + QString::fromLatin1( "/new" );
+    }
+    return QString();
+}
+
+QString Maildir::pathToCurrent() const
+{
+    if ( isValid() ) {
+      return d->path + QString::fromLatin1( "/cur" );
+    }
+    return QString();
+}
+
 QString Maildir::subDirPath() const
 {
   QDir dir( d->path );
