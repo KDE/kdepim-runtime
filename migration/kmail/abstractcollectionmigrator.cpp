@@ -46,9 +46,9 @@
 #include <QQueue>
 #include <QTimer>
 
-#define KOLAB_SHAREDSEEN "/vendor/cmu/cyrus-imapd/sharedseen"
-#define KOLAB_INCIDENCESFOR "/vendor/kolab/incidences-for"
-#define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
+#define KOLAB_SHAREDSEEN "/shared/vendor/cmu/cyrus-imapd/sharedseen"
+#define KOLAB_INCIDENCESFOR "/shared/vendor/kolab/incidences-for"
+#define KOLAB_FOLDERTYPE "/shared/vendor/kolab/folder-type"
 
 
 using namespace Akonadi;
