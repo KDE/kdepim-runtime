@@ -835,7 +835,9 @@ void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection
 void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapCollection )
 {
   Q_ASSERT( imapCollection.resource() == identifier() );
-  removeFolder(imapCollection);
+  if (m_monitoredCollections.contains( imapCollection.id())) {
+    removeFolder(imapCollection);
+  }
 }
 
 Akonadi::Collection KolabProxyResource::createCollection(
