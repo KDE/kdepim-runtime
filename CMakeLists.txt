@@ -88,11 +88,6 @@ else()
   message(STATUS "Skipping detection of Nepomuk dependencies, feature is disabled.")
 endif()
 
-if(AKONADI_USE_STRIGI_SEARCH)
-  find_package(Strigi)
-  set_package_properties(Strigi PROPERTIES DESCRIPTION "Strigi" URL "https://projects.kde.org/strigi" TYPE REQUIRED)
-endif()
-
 # Libkolab
 find_package(Libkolab 0.4 QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
@@ -117,21 +112,6 @@ endif()
 # Xsltproc
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
-
-############### search programs & libraries used by kdepim-runtime ###############
-if(Strigi_FOUND)
-  find_library(STRIGIQTDBUSCLIENT_LIBRARY NAMES strigiqtdbusclient
-    PATHS
-    /usr/lib
-    /usr/local/lib
-    ${LIB_INSTALL_DIR}
-    $ENV{STRIGI_HOME}/lib
-  )
-  if(STRIGIQTDBUSCLIENT_LIBRARY)
-    message(STATUS "Found the strigiqtdbusclient library.")
-  endif()
-  mark_as_advanced(STRIGIQTDBUSCLIENT_LIBRARY)
-endif()
 
 ############### Load the CTest options ###############
 

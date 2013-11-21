@@ -10,28 +10,28 @@
    </item>
   </collection>
   <collection rid="3" name="Calendar" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type event</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type event</attribute>
   </collection>
   <collection rid="4" name="Contact" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type contact</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type contact</attribute>
   </collection>
   <collection rid="5" name="Notes" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type note</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type note</attribute>
   </collection>
   <collection rid="6" name="Tasks" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type task</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type task</attribute>
   </collection>
   <collection rid="7" name="Journal" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type journal</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type journal</attribute>
   </collection>
   <collection rid="8" name="Configuration" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type configuration</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type configuration</attribute>
   </collection>
   <collection rid="9" name="Freebusy" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type freebusy</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type freebusy</attribute>
   </collection>
   <collection rid="10" name="Files" content="inode/directory,message/rfc822">
-   <attribute type="collectionannotations">/vendor/kolab/folder-type file</attribute>
+   <attribute type="collectionannotations">/shared/vendor/kolab/folder-type file</attribute>
   </collection>
  </collection>
 </knut>

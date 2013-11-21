@@ -100,6 +100,12 @@ public:
      */
     QStringList listCurrent() const;
 
+    /** Return the path to the "new" directory */
+    QString pathToNew() const;
+
+    /** Return the path to the "cur" directory */
+    QString pathToCurrent() const;
+
     /**
      * Returns the full path to the subdir (the NAME.directory folder ).
      **/
