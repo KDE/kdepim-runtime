@@ -50,6 +50,7 @@ Comment[hu]=„Hozzáférést biztosít a naptárelemekhez, mindegyiket külön 
 Comment[ia]="Il provide accesso a elementos de calendario, cata un immagazinate in un file singule, in un date directorio"
 Comment[it]="Fornisce accesso a voci di calendario, ciascuna memorizzata in un singolo file in una data cartella"
 Comment[kk]="Көрсетілген қапшықта, бөлек файлдарда сақталған күнтізбенің жазуларына қатынау мүмкіндігін береді"
+Comment[nb]=«Gir tilgang til kalenderelementer, hver lagret i én enkelt fil, i en gitt mappe»
 Comment[nl]="Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map"
 Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
 Comment[pt_BR]="Fornece acesso aos itens do calendário, cada um armazenado em um único arquivo na pasta indicada"
