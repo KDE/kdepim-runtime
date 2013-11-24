@@ -49,6 +49,7 @@ Comment[gl]=«Fornece acceso a elementos de calendario, cada un almacenado nun f
 Comment[hu]=„Hozzáférést biztosít a naptárelemekhez, mindegyiket külön fájlban tárolva a megadott könyvtárban”
 Comment[ia]="Il provide accesso a elementos de calendario, cata un immagazinate in un file singule, in un date directorio"
 Comment[kk]="Көрсетілген қапшықта, бөлек файлдарда сақталған күнтізбенің жазуларына қатынау мүмкіндігін береді"
+Comment[nb]=«Gir tilgang til kalenderelementer, hver lagret i én enkelt fil, i en gitt mappe»
 Comment[nl]="Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map"
 Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
 Comment[pt_BR]="Fornece acesso aos itens do calendário, cada um armazenado em um único arquivo na pasta indicada"
