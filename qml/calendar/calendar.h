@@ -70,9 +70,9 @@ class Calendar : public QObject
     Q_PROPERTY(int weeks READ weeks WRITE setWeeks NOTIFY weeksChanged)
     
     /**
-     * The start day of a week. By default this is Monday (Qt::Monday). It can be
+     * The start day of a week. By default this follows current Locale. It can be
      * changed. One then needs to use the numbers in the Qt DayOfWeek enum:
-     * 
+     *
      *    Monday = 1
      *    Tuesday = 2
      *    Wednesday = 3
@@ -80,11 +80,16 @@ class Calendar : public QObject
      *    Friday = 5
      *    Saturday = 6
      *    Sunday = 7
-     * 
-     * This value doesn't do anything to other data structures, but helps you 
+     *
+     * This value doesn't do anything to other data structures, but helps you
      * visualizing the data.
+     *
+     * WARNING: QML has different enum values for week days - Sunday is 0, this function
+     *          automatically converts that on READ and WRITE and it's stored as QDate format
+     *          (ie. the one above). So firstDayOfWeek() call from QML would return 0 for Sunday
+     *          while internally it's 7 and vice-versa.
      */
-    Q_PROPERTY(int startDay READ startDay WRITE setStartDay NOTIFY startDayChanged)
+    Q_PROPERTY(int firstDayOfWeek READ firstDayOfWeek WRITE setFirstDayOfWeek NOTIFY firstDayOfWeekChanged)
     
     /**
      * The full year in a numeric value. For example 2013, not 13.
@@ -178,8 +183,8 @@ public:
     void setWeeks(int weeks);
 
     // Start day
-    int startDay();
-    void setStartDay(int day);
+    int firstDayOfWeek();
+    void setFirstDayOfWeek(int day);
 
     // Error message
     QString errorMessage() const;
@@ -242,7 +247,7 @@ signals:
     void typesChanged();
     void daysChanged();
     void weeksChanged();
-    void startDayChanged();
+    void firstDayOfWeekChanged();
     void errorMessageChanged();
     void sortingChanged();
 
@@ -262,7 +267,7 @@ private:
     CalendarDayHelper* m_dayHelper;
     int m_days;
     int m_weeks;
-    int m_startDay;
+    int m_firstDayOfWeek;
     QString m_errorMessage;
     CalendarData* m_calDataPerDay;
     CalendarData* m_upcommingEvents;
