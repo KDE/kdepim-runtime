@@ -35,7 +35,7 @@ add_definitions( -DDISABLE_NEPOMUK_LEGACY )
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "beta3")
+    set(KDEPIM_RUNTIME_DEV_VERSION "rc1")
 endif()
 
 set(KDEPIM_RUNTIME_VERSION "4.12${KDEPIM_RUNTIME_DEV_VERSION}")
@@ -56,7 +56,7 @@ find_package(KDE4 4.11.3 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.11.95)
+find_package(KdepimLibs 4.11.97)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
