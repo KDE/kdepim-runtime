@@ -86,20 +86,6 @@ class KolabHandler : public QObject
 
     virtual QByteArray mimeType() const;
 
-    virtual void itemDeleted( const Akonadi::Item &item )
-    {
-      Q_UNUSED( item );
-    }
-
-    virtual void itemAdded( const Akonadi::Item &item )
-    {
-      Q_UNUSED( item );
-    }
-
-    virtual void reset()
-    {
-    }
-
     void setKolabFormatVersion( Kolab::Version );
 
     /**
@@ -116,10 +102,6 @@ class KolabHandler : public QObject
      * @param affectedItem The item which is currently being processed.
      */
     bool checkForErrors( Akonadi::Item::Id affectedItem );
-
-  Q_SIGNALS:
-    void deleteItemFromImap( const Akonadi::Item &item );
-    void addItemToImap( const Akonadi::Item &item, Akonadi::Entity::Id collectionId );
 
   protected:
     explicit KolabHandler( const Akonadi::Collection &imapCollection );

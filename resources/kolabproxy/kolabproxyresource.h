@@ -86,8 +86,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void retrieveItemFetchDone( KJob * );
     void retrieveItemsFetchDone( KJob * );
     void retrieveCollectionsTreeDone( KJob *job );
-    void addImapItem( const Akonadi::Item &item, Akonadi::Entity::Id collectionId );
-    void deleteImapItem( const Akonadi::Item &item );
 
   protected:
     virtual void aboutToQuit();

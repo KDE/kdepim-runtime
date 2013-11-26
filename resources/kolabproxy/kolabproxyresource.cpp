@@ -210,7 +210,6 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
     return;
   }
   
-  handler->reset();
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setIgnoreRetrievalErrors( true );
@@ -358,7 +357,6 @@ void KolabProxyResource::imapItemCreationResult( KJob *job )
     cancelTask(  );
     return;
   }
-  handler->itemAdded( imapItem );
   m_excludeAppend << imapItem.id();
 
   kolabItem.setRemoteId( QString::number( imapItem.id() ) );
@@ -653,19 +651,6 @@ void KolabProxyResource::collectionRemoved( const Akonadi::Collection &collectio
   changeCommitted( collection );
 }
 
-void KolabProxyResource::deleteImapItem( const Akonadi::Item &item )
-{
-  Akonadi::ItemDeleteJob *djob = new Akonadi::ItemDeleteJob( item );
-  connect( djob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)) );
-}
-
-void KolabProxyResource::addImapItem( const Akonadi::Item &item,
-                                      Akonadi::Entity::Id collectionId )
-{
-  KJob *job = new Akonadi::ItemCreateJob( item, Akonadi::Collection( collectionId ) );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)) );
-}
-
 void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
                                         const Akonadi::Collection &collection )
 {
@@ -716,9 +701,6 @@ void KolabProxyResource::itemCreatedDone( KJob *job )
 void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
 {
   const Akonadi::Item kolabItem = imapToKolab( item );
-  Q_FOREACH ( KolabHandler::Ptr handler, m_monitoredCollections ) {
-    handler->itemDeleted( item );
-  }
   Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( kolabItem, this );
   Q_UNUSED( job );
 }
@@ -909,10 +891,7 @@ bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection
     if ( handler ) {
       Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );
       handler->setKolabFormatVersion( v );
-      connect( handler.data(), SIGNAL(deleteItemFromImap(Akonadi::Item)),
-               this, SLOT(deleteImapItem(Akonadi::Item)));
-      connect( handler.data(), SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)),
-               this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
+
       m_monitor->setCollectionMonitored( imapCollection );
       m_monitoredCollections.insert( imapCollection.id(), handler );
       m_resourceIdentifier.insert( imapCollection.id(), imapCollection.resource() );
