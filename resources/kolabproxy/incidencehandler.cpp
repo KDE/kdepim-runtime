@@ -29,8 +29,7 @@
 #include <KLocale>
 
 IncidenceHandler::IncidenceHandler( const Akonadi::Collection &imapCollection )
-  : KolabHandler( imapCollection ),
-    m_calendar( QString::fromLatin1( "UTC" ) )
+  : KolabHandler( imapCollection )
 {
 }
 

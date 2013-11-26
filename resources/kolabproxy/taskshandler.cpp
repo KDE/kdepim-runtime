@@ -36,7 +36,7 @@ KMime::Message::Ptr TasksHandler::incidenceToMime( const KCalCore::Incidence::Pt
   return
     Kolab::KolabObjectWriter::writeTodo(
       incidence.dynamicCast<KCalCore::Todo>(),
-      m_formatVersion, PRODUCT_ID, m_calendar.timeZoneId() );
+      m_formatVersion, PRODUCT_ID, QLatin1String("UTC") );
 }
 
 QStringList TasksHandler::contentMimeTypes()
