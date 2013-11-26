@@ -152,6 +152,10 @@ void KNotesMigrator::startMigration()
 {
     KCal::Journal::List oldNotesList = m_notesResource->rawJournals();
     Akonadi::Item::List newItemsList;
+    KConfig config(QLatin1String("knotesrc"));
+    KConfigGroup grp = config.group(QLatin1String("SelectNoteFolder"));
+    grp.writeEntry("DefaultFolder", m_resourceCollection.id());
+    config.sync();
 
     emit message( Info, i18np( "Starting migration of %1 journal", "Starting migration of %1 journals", oldNotesList.size() ) );
 
