@@ -22,6 +22,7 @@
 #include "notelockattribute.h"
 #include "notealarmattribute.h"
 #include "notedisplayattribute.h"
+#include "showfoldernotesattribute.h"
 #include "knotesmigratorconfig.h"
 #include "knoteconfig.h"
 
@@ -32,6 +33,7 @@
 #include <akonadi/resourcesynchronizationjob.h>
 #include <akonadi/collectionfetchjob.h>
 #include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionModifyJob>
 #include <akonadi/item.h>
 #include "entitytreecreatejob.h"
 #include <KMime/Message>
@@ -50,6 +52,7 @@ KNotesMigrator::KNotesMigrator() :
     Akonadi::AttributeFactory::registerAttribute<NoteLockAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteAlarmAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteDisplayAttribute>();
+    Akonadi::AttributeFactory::registerAttribute<ShowFolderNotesAttribute>();
 }
 
 KNotesMigrator::~KNotesMigrator()
@@ -121,6 +124,7 @@ void KNotesMigrator::syncDone(KJob *job)
 {
     Q_UNUSED( job );
     emit message( Info, i18n( "Instance \"%1\" synchronized" , m_agentInstance.identifier() ) );
+    qDebug()<<" m_agentInstance.identifier() :"<<m_agentInstance.identifier();
 
     CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
     connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
@@ -217,6 +221,20 @@ void KNotesMigrator::startMigration()
 }
 
 void KNotesMigrator::newResourceFilled(KJob* job)
+{
+    Q_UNUSED( job );
+    showDefaultCollection();
+}
+
+void KNotesMigrator::showDefaultCollection()
+{
+    ShowFolderNotesAttribute *attribute = m_resourceCollection.attribute<ShowFolderNotesAttribute>( Akonadi::Collection::AddIfMissing );
+    Q_UNUSED(attribute);
+    Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( m_resourceCollection );
+    connect(job, SIGNAL(result(KJob*)), SLOT(slotCollectionModify(KJob*)));
+}
+
+void KNotesMigrator::slotCollectionModify(KJob* job)
 {
     Q_UNUSED( job );
     migrationCompleted( m_agentInstance );

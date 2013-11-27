@@ -10,6 +10,7 @@ set(knotes-migrator_srcs
     knotesmigratorconfig.cpp
     notealarmattribute.cpp
     notedisplayattribute.cpp
+    showfoldernotesattribute.cpp
     ../kres/kresmigratorbase.cpp
     ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
