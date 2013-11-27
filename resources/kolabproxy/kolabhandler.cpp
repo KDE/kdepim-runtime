@@ -152,3 +152,28 @@ bool KolabHandler::checkForErrors( Akonadi::Item::Id affectedItem )
   return true;
 }
 
+Akonadi::Item::List KolabHandler::resolveConflicts(const Akonadi::Item::List& kolabItems)
+{
+  //we should preserve the order here
+  Akonadi::Item::List finalItems;
+  QMap<QString, Akonadi::Item::List> gidItemMap;
+  foreach (const Akonadi::Item &item, kolabItems) {
+      const QString gid = extractGid(item);
+      kDebug() << item.id() << gid;
+      if (!gid.isEmpty()) {
+        gidItemMap[gid] << item;
+      }
+  }
+  foreach (const Akonadi::Item &item, kolabItems) {
+      const QString gid = extractGid(item);
+      if (gid.isEmpty()) {
+        finalItems << item;
+      } else if (gidItemMap.contains(gid)) {
+        //TODO assuming the items are in revers imap uid order (newest first)
+        finalItems << gidItemMap.value(gid).first();
+        gidItemMap.remove(gid);
+      }
+  }
+  return finalItems;
+}
+

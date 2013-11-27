@@ -66,6 +66,8 @@ class KolabHandler : public QObject
      */
     virtual QString extractGid( const Akonadi::Item &kolabItem ) = 0;
 
+    Akonadi::Item::List resolveConflicts( const Akonadi::Item::List &kolabItems );
+
     /**
      * Translates Kolab items into the items supported by the handler.
      * @param addrs

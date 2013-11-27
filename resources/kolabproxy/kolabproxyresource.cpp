@@ -222,7 +222,8 @@ void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
     cancelTask();
     return;
   }
-  const Akonadi::Item::List newItems = handler->translateItems( items );
+  const Akonadi::Item::List newItems = handler->resolveConflicts( handler->translateItems( items ) );
+
   itemsRetrieved( newItems );
 }
 
