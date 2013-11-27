@@ -33,6 +33,8 @@ class NotesHandler : public JournalHandler
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
 
+    virtual QString extractGid(const Akonadi::Item& kolabItem);
+
   private:
     bool noteFromKolab( const KMime::Message::Ptr &kolabMsg, Akonadi::Item &noteItem );
     void noteToKolab( const KMime::Message::Ptr &note, Akonadi::Item &kolabItem );

@@ -40,6 +40,8 @@ class IncidenceHandler : public KolabHandler
     virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &addrs );
     virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
 
+    virtual QString extractGid(const Akonadi::Item& imapItem);
+
   protected:
     virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence ) = 0;
 

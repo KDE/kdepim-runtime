@@ -81,8 +81,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
                               const Akonadi::Collection &source,
                               const Akonadi::Collection &destination );
 
-    void itemCreatedDone( KJob *job );
-    void collectionFetchDone( KJob *job );
     void retrieveItemFetchDone( KJob * );
     void retrieveItemsFetchDone( KJob * );
     void retrieveCollectionsTreeDone( KJob *job );

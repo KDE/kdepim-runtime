@@ -26,6 +26,7 @@
 #include "settingsadaptor.h"
 #include "kolabproxyadaptor.h"
 #include "setupkolab.h"
+#include "imapitemaddedjob.h"
 #include <akonadi/dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
@@ -67,20 +68,6 @@ Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
 static const char KOLAB_COLLECTION[] = "KolabCollection";
 static const char KOLAB_ITEM[] = "KolabItem";
 static const char IMAP_COLLECTION[] = "ImapCollection";
-
-template <typename T>
-static inline T kolabToImap( const T &kolabObject )
-{
-  return T( kolabObject.remoteId().toLongLong() );
-}
-
-template <typename T>
-static inline T imapToKolab( const T &imapObject )
-{
-  T kolabObject;
-  kolabObject.setRemoteId( QString::number( imapObject.id() ) );
-  return kolabObject;
-}
 
 static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollection,
                                          bool showWarnings )
@@ -659,42 +646,10 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
     m_excludeAppend.removeAll( item.id() );
     return;
   }
-  //TODO: slow, would be nice if ItemCreateJob would work with a Collection
-  //      having only the remoteId set
-  const Akonadi::Collection kolabCol = imapToKolab( collection );
-  Akonadi::CollectionFetchJob *job =
-    new Akonadi::CollectionFetchJob( kolabCol, Akonadi::CollectionFetchJob::Base, this );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchDone(KJob*)) );
-  job->setProperty( KOLAB_ITEM, QVariant::fromValue( item ) );
-  job->setProperty( "collectionId", QString::number( collection.id() ) );
-}
-
-void KolabProxyResource::collectionFetchDone( KJob *job )
-{
-  if ( job->error() ) {
-    kWarning( ) << "Error on collection fetch:" << job->errorText();
-    return;
-  }
-  Akonadi::Collection::List collections =
-    qobject_cast<Akonadi::CollectionFetchJob*>(job)->collections();
-  Q_ASSERT(collections.size() == 1);
-  const Akonadi::Collection c = collections[0];
-  Q_ASSERT(c.remoteId() == job->property("collectionId").toString() );
-
-  if ( const KolabHandler::Ptr handler = getHandler( c.remoteId().toUInt() ) ) {
-    const Akonadi::Item item = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-    const Akonadi::Item::List newItems = handler->translateItems( Akonadi::Item::List() << item );
-    if ( !newItems.isEmpty() ) {
-      Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( newItems[0], c );
-      connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
-    }
-  }
-}
-
-void KolabProxyResource::itemCreatedDone( KJob *job )
-{
-  if ( job->error() ) {
-    kWarning( ) << "Error on creating item:" << job->errorText();
+  if ( const KolabHandler::Ptr handler = getHandler( collection.id() ) ) {
+    ImapItemAddedJob *addedJob = new ImapItemAddedJob( item, collection, handler, this);
+    connect(addedJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    addedJob->start();
   }
 }
 

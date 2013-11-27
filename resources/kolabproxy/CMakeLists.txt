@@ -24,6 +24,7 @@ set(kolabproxyresource_shared_SRCS
   setupdefaultfoldersjob.cpp
   kolabdefs.cpp
   upgradejob.cpp
+  imapitemaddedjob.cpp
 )
 
 set(kolabproxyresource_SRCS

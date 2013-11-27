@@ -60,6 +60,13 @@ class KolabHandler : public QObject
     virtual ~KolabHandler();
 
     /**
+     * Extracts the UID of a kolab object from an imap item.
+     *
+     * Used for conflict detection.
+     */
+    virtual QString extractGid( const Akonadi::Item &kolabItem ) = 0;
+
+    /**
      * Translates Kolab items into the items supported by the handler.
      * @param addrs
      * @return the translated items
@@ -111,5 +118,27 @@ class KolabHandler : public QObject
     Kolab::Version m_formatVersion;
     int m_warningDisplayLevel;
 };
+
+template <typename T>
+static inline T kolabToImap( const T &kolabObject )
+{
+    return T( kolabObject.remoteId().toLongLong() );
+}
+
+template <typename T>
+static inline T imapToKolab( const T &imapObject, T &kolabObject)
+{
+    kolabObject.setRemoteId( QString::number( imapObject.id() ) );
+    return kolabObject;
+}
+
+template <typename T>
+static inline T imapToKolab( const T &imapObject )
+{
+    T kolabObject;
+    imapToKolab( imapObject, kolabObject );
+    return kolabObject;
+}
+
 
 #endif

@@ -92,3 +92,13 @@ void IncidenceHandler::incidenceToItem( const KCalCore::Incidence::Ptr &incidenc
   imapItem.setMimeType( QLatin1String("message/rfc822") );
   imapItem.setPayload( message );
 }
+
+QString IncidenceHandler::extractGid(const Akonadi::Item& kolabItem)
+{
+  if ( !kolabItem.hasPayload<KCalCore::Incidence::Ptr>() ) {
+    kWarning() << "Invalid payload!";
+    return QString();
+  }
+  return kolabItem.payload<KCalCore::Incidence::Ptr>()->instanceIdentifier();
+}
+
