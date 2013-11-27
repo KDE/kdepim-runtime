@@ -27,6 +27,7 @@
 #include "kolabproxyadaptor.h"
 #include "setupkolab.h"
 #include "imapitemaddedjob.h"
+#include "imapitemremovedjob.h"
 #include <akonadi/dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
@@ -657,9 +658,10 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
 
 void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
 {
-  const Akonadi::Item kolabItem = imapToKolab( item );
-  Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( kolabItem, this );
-  Q_UNUSED( job );
+  //TODO delay this in case an imapItemAdded job is already running (it might reuse the item)
+  ImapItemRemovedJob *job = new ImapItemRemovedJob(item, this);
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  job->start();
 }
 
 void KolabProxyResource::imapItemMoved( const Akonadi::Item &item,

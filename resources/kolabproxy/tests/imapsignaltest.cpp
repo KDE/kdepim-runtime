@@ -32,6 +32,7 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/EntityHiddenAttribute>
 #include <Akonadi/ItemCreateJob>
+#include <Akonadi/ItemDeleteJob>
 #include <KCalCore/Event>
 #include <KMime/Message>
 #include <QDBusInterface>
@@ -48,6 +49,26 @@ class ImapSignalTest : public QObject
     Q_OBJECT
 
     AgentInstance mInstance;
+    Akonadi::Collection imapCollection;
+    Akonadi::Collection kolabCollection;
+
+    static Akonadi::Item createImapItem(const KCalCore::Event::Ptr &event) {
+        const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC") );
+        Q_ASSERT(message);
+        Akonadi::Item imapItem1;
+        imapItem1.setMimeType( QLatin1String("message/rfc822") );
+        imapItem1.setPayload( message );
+        return imapItem1;
+    }
+
+    void cleanup() {
+        //cleanup
+//         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(imapCollection);
+//         AKVERIFYEXEC(deleteJob);
+        Akonadi::ItemDeleteJob *deleteJob2 = new Akonadi::ItemDeleteJob(kolabCollection);
+        AKVERIFYEXEC(deleteJob2);
+        QTest::qWait(100);
+    }
 
 private slots:
     void initTestCase() {
@@ -61,6 +82,21 @@ private slots:
 
         //Wait for kolabproxy to create all folders
         QTest::qWait(1000);
+
+        Akonadi::CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("res1/Calendar"), this);
+        AKVERIFYEXEC(resolver);
+        imapCollection = Akonadi::Collection( resolver->collection() );
+        QVERIFY(imapCollection.isValid());
+
+        Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
+        fetchJob->fetchScope().setResource(mInstance.identifier());
+        AKVERIFYEXEC(fetchJob);
+        foreach (const Collection &col, fetchJob->collections()) {
+            if (col.name().contains("Calendar")) {
+                kolabCollection = col;
+            }
+        }
+        QVERIFY(kolabCollection.isValid());
     }
 
     void itemAddedSignal() {
@@ -68,18 +104,9 @@ private slots:
         event->setSummary("summary1");
         event->setDtStart(KDateTime(QDate(2013,02,01), QTime(1,1), KDateTime::ClockTime));
 
-        Akonadi::CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("res1/Calendar"), this);
-        AKVERIFYEXEC(resolver);
-        const Akonadi::Collection &imapCollection = Akonadi::Collection( resolver->collection() );
-
         //Create item in imap resource
         {
-            const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC") );
-            Q_ASSERT(message);
-            Akonadi::Item imapItem1;
-            imapItem1.setMimeType( QLatin1String("message/rfc822") );
-            imapItem1.setPayload( message );
-            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(imapItem1, imapCollection, this);
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
             AKVERIFYEXEC(createJob);
             //Wait for kolab item to get created
             QTest::qWait(100);
@@ -99,11 +126,7 @@ private slots:
         Akonadi::Item recreatdImapItem;
         {
             event->setSummary("summary2");
-            const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC") );
-            Akonadi::Item imapItem1;
-            imapItem1.setMimeType( QLatin1String("message/rfc822") );
-            imapItem1.setPayload( message );
-            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(imapItem1, imapCollection, this);
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
             AKVERIFYEXEC(createJob);
             recreatdImapItem = createJob->item();
             //Wait for kolab item to get created
@@ -127,18 +150,8 @@ private slots:
 
         //test retrieve items with duplicates
         {
-            Akonadi::Collection kolabCollection;
-            {
-                Akonadi::Item expectedItem;
-                expectedItem.setGid(event->instanceIdentifier());
-                Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(expectedItem);
-                fetchJob->fetchScope().setAncestorRetrieval(ItemFetchScope::Parent);
-                AKVERIFYEXEC(fetchJob);
-                QCOMPARE(fetchJob->items().size(), 1);
-                kolabCollection = fetchJob->items().first().parentCollection();
-            }
 
-            mInstance.synchronize(); //triggers retireve items
+            mInstance.synchronize(); //triggers retrieve items
             QTest::qWait(100);
             {
                 Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
@@ -153,6 +166,101 @@ private slots:
             }
         }
 
+        cleanup();
+    }
+
+    void twoItemAddedSignals() {
+        KCalCore::Event::Ptr event(new KCalCore::Event);
+        event->setSummary("summary1");
+        event->setDtStart(KDateTime(QDate(2013,02,01), QTime(1,1), KDateTime::ClockTime));
+
+        //Create item in imap resource
+        {
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
+            AKVERIFYEXEC(createJob);
+        }
+        Akonadi::Item secondImapItem;
+        {
+            event->setSummary("summary2");
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
+            AKVERIFYEXEC(createJob);
+            secondImapItem = createJob->item();
+        }
+        //Wait for kolab item to get created
+        QTest::qWait(100);
+
+        //Ensure the conflict resolution still works with two consequitve item creates
+        //TODO fix
+//         {
+//             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
+//             fetchJob->fetchScope().setFetchRemoteIdentification(true);
+//             AKVERIFYEXEC(fetchJob);
+//             QCOMPARE(fetchJob->items().size(), 1);
+//             const Akonadi::Item item = fetchJob->items().first();
+//             QCOMPARE(item.remoteId().toLongLong(), secondImapItem.id());
+//         }
+
+        cleanup();
+
+    }
+
+    void itemRemovedSignal() {
+
+        KCalCore::Event::Ptr event(new KCalCore::Event);
+        event->setSummary("summary1");
+        event->setDtStart(KDateTime(QDate(2013,02,01), QTime(1,1), KDateTime::ClockTime));
+
+        Akonadi::Item firstImapItem;
+        {
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
+            AKVERIFYEXEC(createJob);
+            firstImapItem = createJob->item();
+        }
+        //Wait for kolab item to get created
+        QTest::qWait(100);
+
+        //create item again in imap resource (same gid), but with different content
+        Akonadi::Item secondImapItem;
+        {
+            event->setSummary("summary2");
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
+            AKVERIFYEXEC(createJob);
+            secondImapItem = createJob->item();
+        }
+        //Wait for kolab item to get created
+        QTest::qWait(100);
+        //we expect one kolab item that is linked to the second imap item
+
+        //remove first imap item
+        {
+            Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(firstImapItem);
+            AKVERIFYEXEC(deleteJob);
+            QTest::qWait(100);
+        }
+
+        //ensure kolab item remains
+        {
+            Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
+            fetchJob->fetchScope().setFetchRemoteIdentification(true);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->items().size(), 1);
+            const Akonadi::Item item = fetchJob->items().first();
+            QCOMPARE(item.remoteId().toLongLong(), secondImapItem.id());
+        }
+
+        //remove second imap item
+        {
+            Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(secondImapItem);
+            AKVERIFYEXEC(deleteJob);
+            QTest::qWait(100);
+        }
+
+        //ensure kolab item is removed
+        {
+            Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->items().size(), 0);
+        }
     }
 
 };

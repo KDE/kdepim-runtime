@@ -25,6 +25,7 @@ set(kolabproxyresource_shared_SRCS
   kolabdefs.cpp
   upgradejob.cpp
   imapitemaddedjob.cpp
+  imapitemremovedjob.cpp
 )
 
 set(kolabproxyresource_SRCS
