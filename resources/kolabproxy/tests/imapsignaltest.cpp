@@ -1,4 +1,3 @@
-
 /*
     Copyright (c) 2013 Christian Mollekopf <mollekopf@kolabsys.com>
 
@@ -33,6 +32,8 @@
 #include <Akonadi/EntityHiddenAttribute>
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
+#include <Akonadi/CollectionCreateJob>
+#include <Akonadi/CollectionDeleteJob>
 #include <KCalCore/Event>
 #include <KMime/Message>
 #include <QDBusInterface>
@@ -259,6 +260,39 @@ private slots:
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
             AKVERIFYEXEC(fetchJob);
             QCOMPARE(fetchJob->items().size(), 0);
+        }
+    }
+
+    void collectionAddedRemovedSignal() {
+        Akonadi::Collection createdCollection;
+        {
+            Akonadi::Collection col;
+            col.setParent(imapCollection);
+            col.setName("test");
+            QMap<QByteArray, QByteArray> annotations;
+            annotations.insert("/shared/vendor/kolab/folder-type", "event");
+            col.addAttribute(new CollectionAnnotationsAttribute(annotations));
+            Akonadi::CollectionCreateJob *createJob = new Akonadi::CollectionCreateJob(col, this);
+            AKVERIFYEXEC(createJob);
+            createdCollection = createJob->collection();
+            //Wait for kolab collection to get created
+            QTest::qWait(100);
+        }
+        {
+            Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->collections().size(), 1);
+        }
+        //cleanup
+        {
+            Akonadi::CollectionDeleteJob *deleteJob = new Akonadi::CollectionDeleteJob(createdCollection);
+            AKVERIFYEXEC(deleteJob);
+        }
+        QTest::qWait(100);
+        {
+            Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->collections().size(), 0);
         }
     }
 

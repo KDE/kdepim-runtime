@@ -680,7 +680,8 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
                                               const Akonadi::Collection &parent )
 {
   Q_UNUSED( parent );
-  Q_ASSERT( collection.resource() == identifier() );
+  //We are ignoring our session
+  Q_ASSERT( collection.resource() != identifier() );
   if ( m_monitoredCollections.contains( collection.id() ) ) {
     // something is wrong, so better reload out collection tree
     kWarning() << "IMAPCOLLECTIONADDED ABORT";
@@ -782,7 +783,8 @@ void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection
 
 void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapCollection )
 {
-  Q_ASSERT( imapCollection.resource() == identifier() );
+  //we are ignoring our session
+  Q_ASSERT( imapCollection.resource() != identifier() );
   if (m_monitoredCollections.contains( imapCollection.id())) {
     removeFolder(imapCollection);
   }
