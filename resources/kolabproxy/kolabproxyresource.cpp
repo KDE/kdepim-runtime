@@ -192,7 +192,7 @@ void KolabProxyResource::retrieveCollectionsTreeDone( KJob *job )
 void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
 {
   const Akonadi::Collection imapCollection = kolabToImap( collection );
-  if ( !m_monitoredCollections.contains( collection.id() ) ) {
+  if ( !m_monitoredCollections.contains( imapCollection.id() ) ) {
     //This should never happen
     kWarning() << "received a retrieveItems request for a collection without imap counterpart" << collection.id();
     cancelTask();
