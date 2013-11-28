@@ -40,8 +40,6 @@
 
 #include <qplatformdefs.h>
 
-#include <kpimutils/networkaccesshelper.h>
-
 Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   KAssistantDialog( parent, flags )
 {
@@ -101,11 +99,6 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   page->enterPageNext();
   emit page->pageEnteredNext();
   enableButton( KDialog::Help, false );
-
-  // attach network access helper to this instance,
-  // establish connection for the lifetime of this dialog
-  KPIMUtils::NetworkAccessHelper* networkHelper = new KPIMUtils::NetworkAccessHelper( this );
-  networkHelper->establishConnection();
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
