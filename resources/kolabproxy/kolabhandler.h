@@ -26,9 +26,11 @@
 #include <Akonadi/Item>
 
 #include <QSharedPointer>
+#include <QQueue>
 
 #include <kolabobject.h> //libkolab
 
+class KJob;
 /**
         @author Andras Mantia <amantia@kde.org>
 */
@@ -112,6 +114,9 @@ class KolabHandler : public QObject
      */
     bool checkForErrors( Akonadi::Item::Id affectedItem );
 
+    void imapItemAdded(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection);
+    void imapItemRemoved(const Akonadi::Item &imapItem);
+
   protected:
     explicit KolabHandler( const Akonadi::Collection &imapCollection );
 
@@ -119,6 +124,15 @@ class KolabHandler : public QObject
     Akonadi::Collection m_imapCollection;
     Kolab::Version m_formatVersion;
     int m_warningDisplayLevel;
+
+  private slots:
+    void onItemAdded(KJob*);
+    void checkResult(KJob*);
+
+  private:
+    void processItemAddedQueue();
+    QQueue<QPair<Akonadi::Item, Akonadi::Collection> > mItemAddedQueue;
+    bool mItemAddJobInProgress;
 };
 
 template <typename T>

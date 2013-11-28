@@ -24,15 +24,19 @@
 #include "calendarhandler.h"
 #include "notehandler.h"
 #include "taskshandler.h"
+#include "imapitemaddedjob.h"
+#include "imapitemremovedjob.h"
 
 #include <errorhandler.h> //libkolab
 
 #include <KLocale>
+#include <QQueue>
 
 KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )
   : m_imapCollection( imapCollection ),
     m_formatVersion ( Kolab::KolabV3 ),
-    m_warningDisplayLevel( Kolab::ErrorHandler::Error )
+    m_warningDisplayLevel( Kolab::ErrorHandler::Error ),
+    mItemAddJobInProgress( false )
 {
 }
 
@@ -177,3 +181,45 @@ Akonadi::Item::List KolabHandler::resolveConflicts(const Akonadi::Item::List& ko
   return finalItems;
 }
 
+void KolabHandler::processItemAddedQueue()
+{
+  if (mItemAddedQueue.isEmpty() || mItemAddJobInProgress) {
+    return;
+  }
+  //TODO we would only have to serialize add jobs for items with the same GID
+  mItemAddJobInProgress = true;
+  const QPair<Akonadi::Item, Akonadi::Collection> pair = mItemAddedQueue.dequeue();
+  ImapItemAddedJob *addedJob = new ImapItemAddedJob( pair.first, pair.second, *this, this );
+  connect(addedJob, SIGNAL(result(KJob*)), this, SLOT(onItemAdded(KJob*)));
+  addedJob->start();
+}
+
+void KolabHandler::onItemAdded(KJob *job)
+{
+  mItemAddJobInProgress = false;
+  if (job->error()) {
+    kWarning() << job->errorString();
+  }
+  processItemAddedQueue();
+}
+
+void KolabHandler::imapItemAdded(const Akonadi::Item& imapItem, const Akonadi::Collection& imapCollection)
+{
+  mItemAddedQueue.enqueue(qMakePair<Akonadi::Item, Akonadi::Collection>(imapItem, imapCollection));
+  processItemAddedQueue();
+}
+
+void KolabHandler::imapItemRemoved(const Akonadi::Item& imapItem)
+{
+  //TODO delay this in case an imapItemAdded job is already running (it might reuse the item)
+  ImapItemRemovedJob *job = new ImapItemRemovedJob(imapItem, this);
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  job->start();
+}
+
+void KolabHandler::checkResult(KJob* job)
+{
+  if ( job->error() ) {
+    kWarning() << "Error occurred: " << job->errorString();
+  }
+}

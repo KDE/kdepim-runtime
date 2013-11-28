@@ -189,16 +189,15 @@ private slots:
         //Wait for kolab item to get created
         QTest::qWait(100);
 
-        //Ensure the conflict resolution still works with two consequitve item creates
-        //TODO fix
-//         {
-//             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
-//             fetchJob->fetchScope().setFetchRemoteIdentification(true);
-//             AKVERIFYEXEC(fetchJob);
-//             QCOMPARE(fetchJob->items().size(), 1);
-//             const Akonadi::Item item = fetchJob->items().first();
-//             QCOMPARE(item.remoteId().toLongLong(), secondImapItem.id());
-//         }
+        //Ensure the conflict resolution still works with two consequitive item creates
+        {
+            Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
+            fetchJob->fetchScope().setFetchRemoteIdentification(true);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->items().size(), 1);
+            const Akonadi::Item item = fetchJob->items().first();
+            QCOMPARE(item.remoteId().toLongLong(), secondImapItem.id());
+        }
 
         cleanup();
 

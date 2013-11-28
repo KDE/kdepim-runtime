@@ -650,18 +650,21 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
     return;
   }
   if ( const KolabHandler::Ptr handler = getHandler( collection.id() ) ) {
-    ImapItemAddedJob *addedJob = new ImapItemAddedJob( item, collection, handler, this);
-    connect(addedJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
-    addedJob->start();
+    handler->imapItemAdded(item, collection);
   }
 }
 
 void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
 {
-  //TODO delay this in case an imapItemAdded job is already running (it might reuse the item)
-  ImapItemRemovedJob *job = new ImapItemRemovedJob(item, this);
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
-  job->start();
+  if ( const KolabHandler::Ptr handler = getHandler( item.parentCollection().id() ) ) {
+    handler->imapItemRemoved(item);
+  } else {
+    //The handler is already gone,
+    kWarning() << "Couldn't find handler for collection " << item.storageCollectionId();
+    ImapItemRemovedJob *job = new ImapItemRemovedJob(item, this);
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    job->start();
+  }
 }
 
 void KolabProxyResource::imapItemMoved( const Akonadi::Item &item,

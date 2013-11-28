@@ -25,7 +25,7 @@ class ImapItemAddedJob: public KJob
 {
     Q_OBJECT
 public:
-    ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, const KolabHandler::Ptr &handler, QObject* parent);
+    ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, KolabHandler &handler, QObject* parent);
     virtual void start();
 private slots:
     void onItemFetchJobDone(KJob *job);
@@ -33,7 +33,7 @@ private slots:
     void itemCreatedDone(KJob *job);
 private:
     Akonadi::Item getTranslatedItem();
-    const KolabHandler::Ptr mHandler;
+    KolabHandler &mHandler;
     Akonadi::Item mImapItem;
     Akonadi::Item mTranslatedItem;
     Akonadi::Collection mKolabCollection;

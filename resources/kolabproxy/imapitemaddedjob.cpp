@@ -23,7 +23,7 @@
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/CollectionFetchJob>
 
-ImapItemAddedJob::ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, const KolabHandler::Ptr &handler, QObject* parent)
+ImapItemAddedJob::ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, KolabHandler &handler, QObject* parent)
     :KJob(parent),
     mImapCollection(imapCollection),
     mKolabCollection(imapToKolab(imapCollection)),
@@ -53,72 +53,71 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
     Q_ASSERT(collections.size() == 1);
     mKolabCollection = collections.first();
 
-    const Akonadi::Item::List newItems = mHandler->translateItems(Akonadi::Item::List() << mImapItem);
-    if (newItems.isEmpty()) {
-        setError(KJob::UserDefinedError);
-        setErrorText("Failed to translate item");
-        emitResult();
-        return;
-    }
-    mTranslatedItem = newItems.first();
-
-    Q_ASSERT(mHandler);
-    const QString &gid = mHandler->extractGid(mTranslatedItem);
-    if (!gid.isEmpty()) {
-        //We have a gid, let's see if this item already exists
-        Akonadi::Item item;
-        item.setGid(gid);
-        Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob(item);
-        itemFetchJob->fetchScope().fetchFullPayload(false);
-        itemFetchJob->fetchScope().setFetchModificationTime(false);
-        itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
-        connect(itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemFetchJobDone(KJob*)));
-    } else {
-        kDebug() << "no gid, creating directly";
-        Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection);
-        connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
-    }
-}
-
-Akonadi::Item ImapItemAddedJob::getTranslatedItem()
-{
-    return Akonadi::Item();
-}
-
-void ImapItemAddedJob::onItemFetchJobDone(KJob *job)
-{
-    Akonadi::ItemFetchJob * const fetchJob = static_cast<Akonadi::ItemFetchJob*>(job);
-
-    Akonadi::Item::List conflictingItems;
-    foreach (const Akonadi::Item &item, fetchJob->items()) {
-        Q_ASSERT(item.parentCollection().isValid());
-        //The same object may be in other collection, just not in this one.
-        if (item.parentCollection().id() != mKolabCollection.id()) {
-            continue;
+        const Akonadi::Item::List newItems = mHandler.translateItems(Akonadi::Item::List() << mImapItem);
+        if (newItems.isEmpty()) {
+            setError(KJob::UserDefinedError);
+            setErrorText("Failed to translate item");
+            emitResult();
+            return;
         }
-        conflictingItems << item;
-    }
-    if (conflictingItems.size() > 1) {
-        kWarning() << "Multiple conflicting items detected in col " << mKolabCollection.id() << ", this should never happen: ";
-        foreach (const Akonadi::Item &item, conflictingItems) {
-            kWarning() << "Conflicting kolab item: " << item.id();
+        mTranslatedItem = newItems.first();
+
+        const QString &gid = mHandler.extractGid(mTranslatedItem);
+        if (!gid.isEmpty()) {
+            //We have a gid, let's see if this item already exists
+            Akonadi::Item item;
+            item.setGid(gid);
+            Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob(item);
+            itemFetchJob->fetchScope().fetchFullPayload(false);
+            itemFetchJob->fetchScope().setFetchModificationTime(false);
+            itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
+            connect(itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemFetchJobDone(KJob*)));
+        } else {
+            kDebug() << "no gid, creating directly";
+            Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection);
+            connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
         }
     }
-    if (!conflictingItems.isEmpty()) {
-        //This is a conflict
-        const Akonadi::Item conflictingKolabItem = conflictingItems.first();
-        mTranslatedItem.setId(conflictingKolabItem.id());
-        imapToKolab(mImapItem, mTranslatedItem);
-        //TODO ensure the modifyjob doesn't collide with a removejob due to the original imap item vanishing.
-        kDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
-        Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mTranslatedItem, this);
-        modJob->disableRevisionCheck();
-        connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
-    } else {
-        kDebug() << "creating new item";
-        Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
-        connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
+
+    Akonadi::Item ImapItemAddedJob::getTranslatedItem()
+    {
+        return Akonadi::Item();
     }
+
+    void ImapItemAddedJob::onItemFetchJobDone(KJob *job)
+    {
+        Akonadi::ItemFetchJob * const fetchJob = static_cast<Akonadi::ItemFetchJob*>(job);
+
+        Akonadi::Item::List conflictingItems;
+        foreach (const Akonadi::Item &item, fetchJob->items()) {
+            Q_ASSERT(item.parentCollection().isValid());
+            //The same object may be in other collection, just not in this one.
+            if (item.parentCollection().id() != mKolabCollection.id()) {
+                continue;
+            }
+            conflictingItems << item;
+        }
+        if (conflictingItems.size() > 1) {
+            kWarning() << "Multiple conflicting items detected in col " << mKolabCollection.id() << ", this should never happen: ";
+            foreach (const Akonadi::Item &item, conflictingItems) {
+                kWarning() << "Conflicting kolab item: " << item.id();
+            }
+        }
+        if (!conflictingItems.isEmpty()) {
+            //This is a conflict
+            const Akonadi::Item conflictingKolabItem = conflictingItems.first();
+            mTranslatedItem.setId(conflictingKolabItem.id());
+            imapToKolab(mImapItem, mTranslatedItem);
+            //TODO ensure the modifyjob doesn't collide with a removejob due to the original imap item vanishing.
+            kDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
+            Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mTranslatedItem, this);
+            modJob->disableRevisionCheck();
+            connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
+        } else {
+            kDebug() << "creating new item";
+            Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
+            connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
+        }
 }
 
 void ImapItemAddedJob::itemCreatedDone(KJob *job)
