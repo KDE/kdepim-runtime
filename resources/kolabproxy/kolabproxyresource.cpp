@@ -54,6 +54,7 @@
 
 #include <KLocale>
 #include <KWindowSystem>
+#include <KNotification>
 #include <QDBusInterface>
 #include <QDBusReply>
 
@@ -158,6 +159,14 @@ KolabProxyResource::KolabProxyResource( const QString &id )
 
 KolabProxyResource::~KolabProxyResource()
 {
+}
+
+void KolabProxyResource::showErrorMessage(const QString &msg)
+{
+  KNotification *notification = new KNotification(QLatin1String("Error"), KNotification::CloseOnTimeout, 0);
+  notification->setText(msg);
+  notification->setComponentData(KGlobal::mainComponent());
+  notification->sendEvent();
 }
 
 KolabHandler::Ptr KolabProxyResource::getHandler(Akonadi::Entity::Id collectionId)
@@ -307,9 +316,11 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
 
 void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem )
 {
+  const QString errorMsg = i18n("An error occured while writing the item to the backend.");
   const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   if ( !handler ) {
     kWarning() << "could find a handler for the collection, but we should have one";
+    showErrorMessage(errorMsg);
     cancelTask();
     new Akonadi::ItemDeleteJob(kolabItem);
     return;
@@ -317,6 +328,7 @@ void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, 
   Akonadi::Item imapItem( "message/rfc822" );
   if (!handler->toKolabFormat( kolabItem, imapItem )) {
     kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
+    showErrorMessage(errorMsg);
     cancelTask();
     new Akonadi::ItemDeleteJob(kolabItem);
     return;
@@ -335,7 +347,9 @@ void KolabProxyResource::imapItemCreationResult( KJob *job )
   Akonadi::Item kolabItem = cjob->property( KOLAB_ITEM ).value<Akonadi::Item>();
 
   if ( job->error() ) {
+    kWarning() << job->errorString();
     cancelTask( job->errorText() );
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
     new Akonadi::ItemDeleteJob(kolabItem);
     return;
   }

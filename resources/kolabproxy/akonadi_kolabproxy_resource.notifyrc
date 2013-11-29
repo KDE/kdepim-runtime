@@ -1,0 +1,8 @@
+[Global]
+IconName=kolab
+Comment=Kolab Proxy Resource Notifications
+Name=Kolab Resource
+
+[Event/Error]
+Name=An error occurred
+Action=Popup

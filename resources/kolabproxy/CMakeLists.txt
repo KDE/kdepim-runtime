@@ -59,6 +59,7 @@ if(RUNTIME_PLUGINS_STATIC)
 endif()
 
 kde4_add_executable(akonadi_kolabproxy_resource ${kolabproxyresource_SRCS})
+install(FILES akonadi_kolabproxy_resource.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_kolabproxy_resource" )
 
 if(Q_WS_MAC)
   set_target_properties(akonadi_kolabproxy_resource PROPERTIES

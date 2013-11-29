@@ -133,6 +133,7 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void checkResult( KJob *job );
 
   private:
+    void showErrorMessage(const QString &);
     void removeFolder( const Akonadi::Collection &imapCollection );
     KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
     bool isKolabFolder( const Akonadi::Collection &collection ) const;
