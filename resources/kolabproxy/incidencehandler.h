@@ -44,8 +44,6 @@ class IncidenceHandler : public KolabHandler
 
   protected:
     virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence ) = 0;
-
-    void incidenceToItem( const KCalCore::Incidence::Ptr &e, Akonadi::Item &imapItem );
 };
 
 #endif

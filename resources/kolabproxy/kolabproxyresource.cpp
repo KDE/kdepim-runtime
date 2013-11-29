@@ -68,7 +68,6 @@ Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
 
 static const char KOLAB_COLLECTION[] = "KolabCollection";
 static const char KOLAB_ITEM[] = "KolabItem";
-static const char IMAP_COLLECTION[] = "ImapCollection";
 
 static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollection,
                                          bool showWarnings )
@@ -310,43 +309,37 @@ void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, 
 {
   const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   if ( !handler ) {
+    kWarning() << "could find a handler for the collection, but we should have one";
     cancelTask();
+    new Akonadi::ItemDeleteJob(kolabItem);
     return;
   }
-  Akonadi::Item imapItem( handler->contentMimeTypes()[0] );
+  Akonadi::Item imapItem( "message/rfc822" );
   if (!handler->toKolabFormat( kolabItem, imapItem )) {
     kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
     cancelTask();
+    new Akonadi::ItemDeleteJob(kolabItem);
     return;
   }
   imapItem.setFlag( Akonadi::MessageFlags::Seen );
 
   Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( imapItem, imapCollection );
   cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-  cjob->setProperty( IMAP_COLLECTION, QVariant::fromValue( imapCollection ) );
   connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
 }
 
 void KolabProxyResource::imapItemCreationResult( KJob *job )
 {
-  if ( job->error() ) {
-    cancelTask( job->errorText() );
-    return;
-  }
-
-  Akonadi::ItemCreateJob *cjob = qobject_cast<Akonadi::ItemCreateJob*>( job );
+  Akonadi::ItemCreateJob *cjob = static_cast<Akonadi::ItemCreateJob*>( job );
   const Akonadi::Item imapItem = cjob->item();
   Akonadi::Item kolabItem = cjob->property( KOLAB_ITEM ).value<Akonadi::Item>();
 
-  // TODO add accessor to ItemCreateJob for the parent collection
-  const Akonadi::Collection imapCollection =
-    cjob->property( IMAP_COLLECTION ).value<Akonadi::Collection>();
-
-  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
-  if ( !handler ) {
-    cancelTask(  );
+  if ( job->error() ) {
+    cancelTask( job->errorText() );
+    new Akonadi::ItemDeleteJob(kolabItem);
     return;
   }
+
   m_excludeAppend << imapItem.id();
 
   kolabItem.setRemoteId( QString::number( imapItem.id() ) );

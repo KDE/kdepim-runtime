@@ -66,31 +66,24 @@ Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List 
 
 bool IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
 {
-  KCalCore::Incidence::Ptr incidencePtr;
-  if ( item.hasPayload<KCalCore::Incidence::Ptr>() ) {
-    incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
-  } else {
+  if ( !item.hasPayload<KCalCore::Incidence::Ptr>() ) {
     kWarning() << "item is not an incidence";
     return false;
   }
-  incidenceToItem( incidencePtr, imapItem );
-  if ( checkForErrors( item.id() ) ) {
-    imapItem.setPayloadFromData( "" );
+  KCalCore::Incidence::Ptr incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
+  if ( !incidencePtr ) {
+    kWarning() << "invalid incidence";
     return false;
   }
-  return true;
-}
 
-void IncidenceHandler::incidenceToItem( const KCalCore::Incidence::Ptr &incidencePtr,
-                                        Akonadi::Item &imapItem )
-{
-  if ( !incidencePtr ) {
-    imapItem.setPayloadFromData( "" );
-    return;
-  }
   const KMime::Message::Ptr &message = incidenceToMime( incidencePtr );
   imapItem.setMimeType( QLatin1String("message/rfc822") );
   imapItem.setPayload( message );
+
+  if ( checkForErrors( item.id() ) ) {
+    return false;
+  }
+  return true;
 }
 
 QString IncidenceHandler::extractGid(const Akonadi::Item& kolabItem)
