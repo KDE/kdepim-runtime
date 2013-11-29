@@ -50,10 +50,12 @@ private slots:
     void syncDone(KJob *job);
     void rootFetchFinished( KJob *job );
     void rootCollectionsRecieved( const Akonadi::Collection::List &list );
-    void newResourceFilled( KJob *job );
+    void newResourceFilled( KJob *job );    
+    void slotCollectionModify(KJob *job);
 
 private:
     void startMigration();
+    void showDefaultCollection();
 
 private:
     Akonadi::Collection m_resourceCollection;

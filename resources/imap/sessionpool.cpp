@@ -31,8 +31,6 @@
 #include <kimap/logoutjob.h>
 #include <kimap/namespacejob.h>
 
-#include <kpimutils/networkaccesshelper.h>
-
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"
 
@@ -44,8 +42,7 @@ SessionPool::SessionPool( int maxPoolSize, QObject *parent )
     m_account( 0 ),
     m_passwordRequester( 0 ),
     m_initialConnectDone( false ),
-    m_pendingInitialSession( 0 ),
-    m_networkAccessHelper( new KPIMUtils::NetworkAccessHelper( this ) )
+    m_pendingInitialSession( 0 )
 {
 }
 
@@ -90,8 +87,6 @@ bool SessionPool::connect( ImapAccount *account )
     return false;
   }
 
-  m_networkAccessHelper->establishConnection();
-
   m_account = account;
   if ( m_account->authenticationMode() == KIMAP::LoginJob::GSSAPI ) {
     // for GSSAPI we don't have to ask for username/password, because it uses session wide tickets
@@ -110,8 +105,6 @@ void SessionPool::disconnect( SessionTermination termination )
   if ( !m_account ) {
     return;
   }
-
-  m_networkAccessHelper->releaseConnection();
 
   foreach ( KIMAP::Session *s, m_unusedPool + m_reservedPool + m_connectingPool ) {
     killSession( s, termination );

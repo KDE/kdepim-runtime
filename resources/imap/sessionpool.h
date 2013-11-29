@@ -34,10 +34,6 @@ namespace KIMAP
   class MailBoxDescriptor;
 }
 
-namespace KPIMUtils {
-  class NetworkAccessHelper;
-}
-
 class ImapAccount;
 class PasswordRequesterInterface;
 
@@ -126,8 +122,6 @@ private:
 
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
-
-  KPIMUtils::NetworkAccessHelper* m_networkAccessHelper;
 };
 
 #endif
