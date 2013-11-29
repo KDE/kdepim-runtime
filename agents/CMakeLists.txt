@@ -18,7 +18,6 @@ add_subdirectory( migration )
 
 if(NOT WINCE)
 add_subdirectory( invitations )
-#add_subdirectory( calendarsearch )
 
 if( NOT KDEPIM_NO_NEPOMUK )
     include_directories( ${CMAKE_CURRENT_BINARY_DIR}/ontologies ontologies ${SOPRANO_INCLUDE_DIR} )
