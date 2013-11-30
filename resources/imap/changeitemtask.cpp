@@ -66,7 +66,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
 
     job->setMailBox( mailBox );
     job->setContent( msg->encodedContent( true ) );
-    job->setFlags( fromAkonadiToSupportedImapFlags( item().flags().toList() ) );
+    job->setFlags( fromAkonadiToSupportedImapFlags( item().flags().toList(), item().parentCollection() ) );
 
     connect( job, SIGNAL(result(KJob*)),
              this, SLOT(onAppendMessageDone(KJob*)) );
@@ -104,7 +104,7 @@ void ChangeItemTask::onPreStoreSelectDone( KJob *job )
 
 void ChangeItemTask::triggerStoreJob()
 {
-  QList<QByteArray> flags = fromAkonadiToSupportedImapFlags( item().flags().toList() );
+  QList<QByteArray> flags = fromAkonadiToSupportedImapFlags( item().flags().toList(), item().parentCollection() );
 
   KIMAP::StoreJob *store = new KIMAP::StoreJob( m_session );
 

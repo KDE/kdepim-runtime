@@ -354,11 +354,12 @@ void ResourceTask::showInformationDialog( const QString &message, const QString 
   m_resource->showInformationDialog( message, title, dontShowAgainName );
 }
 
-QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags ) const
+QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags,
+                                                                 const Akonadi::Collection &collection )
 {
   QList<QByteArray> imapFlags = fromAkonadiFlags( flags );
 
-  const Akonadi::CollectionFlagsAttribute *flagAttr = collection().attribute<Akonadi::CollectionFlagsAttribute>();
+  const Akonadi::CollectionFlagsAttribute *flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
   // the server does not support arbitrary flags, so filter out those it can't handle
   if ( flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains( "\\*" ) ) {
     for ( QList< QByteArray >::iterator it = imapFlags.begin(); it != imapFlags.end(); ) {
