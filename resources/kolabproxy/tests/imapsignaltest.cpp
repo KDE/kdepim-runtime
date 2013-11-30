@@ -34,6 +34,7 @@
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionDeleteJob>
+#include <Akonadi/CollectionModifyJob>
 #include <KCalCore/Event>
 #include <KMime/Message>
 #include <QDBusInterface>
@@ -294,6 +295,49 @@ private slots:
             AKVERIFYEXEC(fetchJob);
             QCOMPARE(fetchJob->collections().size(), 0);
         }
+    }
+
+    void collectionChangedSignal() {
+        Akonadi::Collection createdCollection;
+        {
+            Akonadi::Collection col;
+            col.setParent(imapCollection);
+            col.setName("test");
+            QMap<QByteArray, QByteArray> annotations;
+            annotations.insert("/shared/vendor/kolab/folder-type", "event");
+            col.addAttribute(new CollectionAnnotationsAttribute(annotations));
+            col.setRights(Akonadi::Collection::AllRights);
+            Akonadi::CollectionCreateJob *createJob = new Akonadi::CollectionCreateJob(col, this);
+            AKVERIFYEXEC(createJob);
+            createdCollection = createJob->collection();
+            //Wait for kolab collection to get created
+            QTest::qWait(100);
+        }
+
+        {
+            Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->collections().size(), 1);
+            QCOMPARE(fetchJob->collections().first().rights(), Akonadi::Collection::AllRights);
+        }
+        {
+            createdCollection.setRights(Akonadi::Collection::ReadOnly);
+            Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(createdCollection);
+            AKVERIFYEXEC(modJob);
+            QTest::qWait(100);
+        }
+        {
+            Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->collections().size(), 1);
+            QCOMPARE(fetchJob->collections().first().rights(), Akonadi::Collection::ReadOnly);
+        }
+        //cleanup
+        {
+            Akonadi::CollectionDeleteJob *deleteJob = new Akonadi::CollectionDeleteJob(createdCollection);
+            AKVERIFYEXEC(deleteJob);
+        }
+        QTest::qWait(100);
     }
 
 };

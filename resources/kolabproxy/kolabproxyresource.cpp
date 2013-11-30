@@ -478,6 +478,7 @@ void KolabProxyResource::applyAttributesToImap( Akonadi::Collection &imapCollect
     }
 
     if ( attr->type() == "AccessRights" ) {
+      // Don't propagate access rights here, since it's already propagated using Collection::rigths
       continue;
     }
 
