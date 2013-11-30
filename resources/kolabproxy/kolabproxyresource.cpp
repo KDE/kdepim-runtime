@@ -30,6 +30,7 @@
 #include "imapitemremovedjob.h"
 #include "itemaddedjob.h"
 #include "itemchangedjob.h"
+#include "revertitemchangesjob.h"
 #include <akonadi/dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
@@ -366,7 +367,10 @@ void KolabProxyResource::onItemChangedDone(KJob* job)
   if ( job->error() ) {
     showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask( job->errorText() );
-    //TODO reload status from imap item and modify kolab item back
+    kWarning() << "Failed to modify item, reverting to state of imap item: " << itemChangedJob->item().id();
+    RevertItemChangesJob *revertJob = new RevertItemChangesJob(itemChangedJob->item(), *mHandlerManager, this);
+    connect(revertJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    revertJob->start();
     return;
   }
   changeCommitted( itemChangedJob->item() );

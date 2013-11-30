@@ -206,14 +206,15 @@ private slots:
         QTest::qWait(100);
 
         //Ensure the change has been reverted for the kolab item
-//         {
-//             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
-//             AKVERIFYEXEC(fetchJob);
-//             QCOMPARE(fetchJob->items().size(), 1);
-//             const Akonadi::Item item = fetchJob->items().first();
-//             QVERIFY(item.hasPayload<KCalCore::Incidence::Ptr>());
-//             QCOMPARE(item.payload<KCalCore::Incidence::Ptr>()->dtStart(), KDateTime(QDate(2013,10,10)));
-//         }
+        {
+            Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
+            fetchJob->fetchScope().fetchFullPayload();
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->items().size(), 1);
+            const Akonadi::Item item = fetchJob->items().first();
+            QVERIFY(item.hasPayload<KCalCore::Incidence::Ptr>());
+            QCOMPARE(item.payload<KCalCore::Incidence::Ptr>()->dtStart(), KDateTime(QDate(2013,10,10)));
+        }
         cleanup();
     }
 
