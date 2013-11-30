@@ -22,6 +22,7 @@
 #define KOLABPROXY_KOLABPROXYRESOURCE_H
 
 #include "kolabhandler.h"
+#include "handlermanager.h"
 
 #include <Akonadi/ResourceBase>
 
@@ -134,16 +135,11 @@ class KolabProxyResource : public Akonadi::ResourceBase,
   private:
     void showErrorMessage(const QString &);
     void removeFolder( const Akonadi::Collection &imapCollection );
-    KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
-    bool isKolabFolder( const Akonadi::Collection &collection ) const;
-    bool isHandledKolabFolder( const Akonadi::Collection &collection ) const;
-    Kolab::FolderType getFolderType( const Akonadi::Collection &collection ) const;
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
-    QMap<Akonadi::Collection::Id, KolabHandler::Ptr> m_monitoredCollections;
-    QMap<Akonadi::Collection::Id, QString> m_resourceIdentifier;
     QList<Akonadi::Item::Id> m_excludeAppend;
     FreeBusyUpdateHandler *m_freeBusyUpdateHandler;
+    QScopedPointer<HandlerManager> mHandlerManager;
 };
 
 #endif

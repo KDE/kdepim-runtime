@@ -28,6 +28,7 @@ set(kolabproxyresource_shared_SRCS
   imapitemremovedjob.cpp
   itemaddedjob.cpp
   itemchangedjob.cpp
+  handlermanager.cpp
 )
 
 set(kolabproxyresource_SRCS
