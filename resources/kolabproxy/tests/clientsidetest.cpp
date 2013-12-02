@@ -32,6 +32,7 @@
 #include <Akonadi/EntityHiddenAttribute>
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemModifyJob>
 #include <KCalCore/Event>
 #include <KMime/Message>
 #include <QDBusInterface>
@@ -57,9 +58,9 @@ class ClientSideTest : public QObject
     void cleanup() {
         //cleanup
         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(imapCollection);
-        AKVERIFYEXEC(deleteJob);
+        deleteJob->exec();
         Akonadi::ItemDeleteJob *deleteJob2 = new Akonadi::ItemDeleteJob(kolabCollection);
-        AKVERIFYEXEC(deleteJob2);
+        deleteJob2->exec();
         QTest::qWait(100);
     }
 
@@ -106,7 +107,7 @@ private slots:
             QVERIFY(createdItem.isValid());
         }
 
-        QTest::qWait(100);
+        QTest::qWait(1000);
 
         {
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(imapCollection);
@@ -131,13 +132,89 @@ private slots:
             // the item will simply remain dirty in the akonadi server
 //             QVERIFY(createJob->error());
         }
-        QTest::qWait(100);
+        QTest::qWait(1000);
         //Ensure the item has been removed by the kolabproxy
         {
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
             AKVERIFYEXEC(fetchJob);
             QCOMPARE(fetchJob->items().size(), 0);
         }
+    }
+
+    void testItemModify()
+    {
+        KCalCore::Event::Ptr event(new KCalCore::Event());
+        event->setDtStart(KDateTime(QDate(2013,10,10)));
+        Akonadi::Item createdItem;
+        {
+            Akonadi::Item item(event->mimeType());
+            item.setPayload(event);
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
+            AKVERIFYEXEC(createJob);
+            createdItem = createJob->item();
+            QVERIFY(createdItem.isValid());
+        }
+
+        QTest::qWait(100);
+
+        {
+            event->setDtStart(KDateTime(QDate(2014,10,10)));
+            createdItem.setPayload(event);
+            Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(createdItem);
+            AKVERIFYEXEC(modifyJob);
+            Akonadi::Item modifiedItem = modifyJob->item();
+            QVERIFY(modifiedItem.isValid());
+            QCOMPARE(modifiedItem.payload<KCalCore::Event::Ptr>()->dtStart(), KDateTime(QDate(2014,10,10)));
+        }
+
+        QTest::qWait(1000);
+
+        {
+            Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(imapCollection);
+            fetchJob->fetchScope().fetchFullPayload(true);
+            AKVERIFYEXEC(fetchJob);
+            QCOMPARE(fetchJob->items().size(), 1);
+            const Akonadi::Item item = fetchJob->items().first();
+            QVERIFY(item.hasPayload<KMime::Message::Ptr>());
+            Kolab::KolabObjectReader reader(item.payload<KMime::Message::Ptr>());
+            QCOMPARE(reader.getEvent()->dtStart(), KDateTime(QDate(2014,10,10)));
+        }
+        cleanup();
+    }
+
+    void testItemModifyFailure()
+    {
+        KCalCore::Event::Ptr event(new KCalCore::Event());
+        event->setDtStart(KDateTime(QDate(2013,10,10)));
+        Akonadi::Item createdItem;
+        {
+            Akonadi::Item item(event->mimeType());
+            item.setPayload(event);
+            Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
+            AKVERIFYEXEC(createJob);
+            createdItem = createJob->item();
+            QVERIFY(createdItem.isValid());
+        }
+
+        QTest::qWait(100);
+        {
+            event->setDtStart(KDateTime());
+            createdItem.setPayload(event);
+            Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(createdItem);
+            AKVERIFYEXEC(modifyJob);
+        }
+        QTest::qWait(100);
+
+        //Ensure the change has been reverted for the kolab item
+//         {
+//             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
+//             AKVERIFYEXEC(fetchJob);
+//             QCOMPARE(fetchJob->items().size(), 1);
+//             const Akonadi::Item item = fetchJob->items().first();
+//             QVERIFY(item.hasPayload<KCalCore::Incidence::Ptr>());
+//             QCOMPARE(item.payload<KCalCore::Incidence::Ptr>()->dtStart(), KDateTime(QDate(2013,10,10)));
+//         }
+        cleanup();
     }
 
 };

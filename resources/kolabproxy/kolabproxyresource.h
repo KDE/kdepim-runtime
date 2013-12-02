@@ -124,10 +124,9 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void updateFreeBusyInformation( const Akonadi::Collection &imapCollection );
 
   private slots:
-    void imapItemCreationResult( KJob *job );
-    void imapItemUpdateFetchResult( KJob *job );
-    void imapItemUpdateResult( KJob *job );
-    void imapItemUpdateCollectionFetchResult( KJob *job );
+    void onItemAddedDone(KJob *job);
+    void onItemChangedDone(KJob *job);
+    void onKolabCollectionFetched(KJob *job);
     void imapFolderCreateResult( KJob *job );
     void kolabFolderChangeResult( KJob *job );
     void checkResult( KJob *job );

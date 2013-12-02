@@ -28,6 +28,8 @@
 #include "setupkolab.h"
 #include "imapitemaddedjob.h"
 #include "imapitemremovedjob.h"
+#include "itemaddedjob.h"
+#include "itemchangedjob.h"
 #include <akonadi/dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
@@ -43,14 +45,11 @@
 #include <Akonadi/CollectionMoveJob>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/EntityHiddenAttribute>
-#include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
 #include <Akonadi/Session>
-#include <Akonadi/KMime/MessageFlags>
 
 #include <KLocale>
 #include <KWindowSystem>
@@ -311,49 +310,31 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
                                     const Akonadi::Collection &collection )
 {
   const Akonadi::Collection imapCollection = kolabToImap( collection );
-  createItem( imapCollection, kolabItem );
-}
-
-void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem )
-{
-  const QString errorMsg = i18n("An error occured while writing the item to the backend.");
   const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
   if ( !handler ) {
-    kWarning() << "could find a handler for the collection, but we should have one";
-    showErrorMessage(errorMsg);
+    kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask();
     new Akonadi::ItemDeleteJob(kolabItem);
     return;
   }
-  Akonadi::Item imapItem( "message/rfc822" );
-  if (!handler->toKolabFormat( kolabItem, imapItem )) {
-    kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
-    showErrorMessage(errorMsg);
-    cancelTask();
-    new Akonadi::ItemDeleteJob(kolabItem);
-    return;
-  }
-  imapItem.setFlag( Akonadi::MessageFlags::Seen );
-
-  Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( imapItem, imapCollection );
-  cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-  connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
+  ItemAddedJob *itemAddedJob = new ItemAddedJob(kolabItem, collection, *handler, this);
+  connect(itemAddedJob, SIGNAL(result(KJob*)), this, SLOT(onItemAddedDone(KJob*)));
+  itemAddedJob->start();
 }
 
-void KolabProxyResource::imapItemCreationResult( KJob *job )
+void KolabProxyResource::onItemAddedDone(KJob* job)
 {
-  Akonadi::ItemCreateJob *cjob = static_cast<Akonadi::ItemCreateJob*>( job );
-  const Akonadi::Item imapItem = cjob->item();
-  Akonadi::Item kolabItem = cjob->property( KOLAB_ITEM ).value<Akonadi::Item>();
-
-  if ( job->error() ) {
-    kWarning() << job->errorString();
-    cancelTask( job->errorText() );
+  ItemAddedJob *itemAddedJob = static_cast<ItemAddedJob*>(job);
+  Akonadi::Item kolabItem = itemAddedJob->kolabItem();
+  const Akonadi::Item imapItem = itemAddedJob->imapItem();
+  if (job->error()) {
+    kWarning() << "Failed to create imap item: " << job->errorString();
     showErrorMessage(i18n("An error occured while writing the item to the backend."));
+    cancelTask();
     new Akonadi::ItemDeleteJob(kolabItem);
     return;
   }
-
   m_excludeAppend << imapItem.id();
 
   kolabItem.setRemoteId( QString::number( imapItem.id() ) );
@@ -364,69 +345,46 @@ void KolabProxyResource::itemChanged( const Akonadi::Item &kolabItem,
                                       const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
-  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( kolabItem ), this );
-  job->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-  connect( job, SIGNAL(result(KJob*)), SLOT(imapItemUpdateFetchResult(KJob*)) );
+  Akonadi::CollectionFetchJob *collectionFetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection(kolabItem.storageCollectionId()), Akonadi::CollectionFetchJob::Base);
+  collectionFetchJob->setProperty(KOLAB_ITEM, QVariant::fromValue(kolabItem));
+  connect(collectionFetchJob, SIGNAL(result(KJob*)), this, SLOT(onKolabCollectionFetched(KJob*)));
 }
 
-void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
+void KolabProxyResource::onKolabCollectionFetched(KJob* job)
 {
+
+  Akonadi::CollectionFetchJob *fetchjob = static_cast<Akonadi::CollectionFetchJob*>(job);
+  if ( job->error() || fetchjob->collections().isEmpty() ) {
+    kWarning() << "collection fetch job failed " << job->errorString() << fetchjob->collections().isEmpty();
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
+    cancelTask( job->errorText() );
+    return;
+  }
+  Akonadi::Item kolabItem = job->property(KOLAB_ITEM).value<Akonadi::Item>();
+  const Akonadi::Collection imapCollection = kolabToImap( fetchjob->collections().first() );
+  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
+  if ( !handler ) {
+    kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
+    cancelTask();
+    //TODO reload status from imap item and modify kolab item back
+    return;
+  }
+  ItemChangedJob *itemChangedJob = new ItemChangedJob(kolabItem, *handler, this);
+  connect(itemChangedJob, SIGNAL(result(KJob*)), this, SLOT(onItemChangedDone(KJob*)));
+  itemChangedJob->start();
+}
+
+void KolabProxyResource::onItemChangedDone(KJob* job)
+{
+  ItemChangedJob *itemChangedJob = static_cast<ItemChangedJob*>(job);
   if ( job->error() ) {
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask( job->errorText() );
+    //TODO reload status from imap item and modify kolab item back
     return;
   }
-
-  const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
-    Akonadi::CollectionFetchJob *fetch =
-      new Akonadi::CollectionFetchJob( Akonadi::Collection( kolabItem.storageCollectionId() ),
-                                       Akonadi::CollectionFetchJob::Base, this );
-    fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapItemUpdateCollectionFetchResult(KJob*)) );
-  } else {
-    Akonadi::Item imapItem = fetchJob->items().first();
-
-    const KolabHandler::Ptr handler = getHandler( imapItem.storageCollectionId() );
-    if ( !handler ) {
-      cancelTask();
-      return;
-    }
-
-    if (!handler->toKolabFormat( kolabItem, imapItem )) {
-      kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
-      cancelTask();
-      return;
-    }
-    Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob( imapItem );
-    mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
-    connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
-  }
-}
-
-void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob *job )
-{
-  Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>( job );
-  if ( job->error() || fetchJob->collections().isEmpty() ) {
-    cancelTask( job->errorText() );
-    return;
-  }
-
-  const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-  const Akonadi::Collection kolabCollection = fetchJob->collections().first();
-  const Akonadi::Collection imapCollection = kolabToImap( kolabCollection );
-  createItem( imapCollection, kolabItem );
-}
-
-void KolabProxyResource::imapItemUpdateResult( KJob *job )
-{
-  if ( job->error() ) {
-    cancelTask( job->errorText() );
-    return;
-  }
-  const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-  changeCommitted( kolabItem );
+  changeCommitted( itemChangedJob->item() );
 }
 
 void KolabProxyResource::itemMoved( const Akonadi::Item &item,

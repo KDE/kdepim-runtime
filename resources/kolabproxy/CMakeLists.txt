@@ -26,6 +26,8 @@ set(kolabproxyresource_shared_SRCS
   upgradejob.cpp
   imapitemaddedjob.cpp
   imapitemremovedjob.cpp
+  itemaddedjob.cpp
+  itemchangedjob.cpp
 )
 
 set(kolabproxyresource_SRCS
