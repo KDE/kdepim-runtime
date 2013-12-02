@@ -37,47 +37,13 @@ class IncidenceHandler : public KolabHandler
 
     virtual ~IncidenceHandler();
 
-    virtual void itemAdded( const Akonadi::Item &item );
-    virtual void itemDeleted( const Akonadi::Item &item );
     virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &addrs );
     virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
 
-    /**reimp*/
-    void reset();
-
-  Q_SIGNALS:
-    void useGlobalMode();
+    virtual QString extractGid(const Akonadi::Item& imapItem);
 
   protected:
     virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence ) = 0;
-
-    void incidenceToItem( const KCalCore::Incidence::Ptr &e, Akonadi::Item &imapItem );
-
-    struct StoredItem {
-      StoredItem( Akonadi::Entity::Id _id, const KCalCore::Incidence::Ptr &_inc )
-        : id( _id ), incidence( _inc )
-      {
-      }
-
-      StoredItem() : id( -1 )
-      {
-      }
-
-      Akonadi::Entity::Id id;
-      KCalCore::Incidence::Ptr incidence;
-    };
-
-    enum ConflictResolution {
-      Local = 0,
-      Remote,
-      Both,
-      Duplicate
-    };
-
-    ConflictResolution resolveConflict( const KCalCore::Incidence::Ptr &inc );
-
-    KCalCore::MemoryCalendar m_calendar;
-    QMap<QString, StoredItem> m_uidMap;
 };
 
 #endif

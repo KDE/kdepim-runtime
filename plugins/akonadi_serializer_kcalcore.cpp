@@ -347,5 +347,15 @@ void SerializerPluginKCalCore::compare( Akonadi::AbstractDifferencesReporter *re
   }
 }
 
+//// GidExtractorInterface
+
+QString SerializerPluginKCalCore::extractGid( const Item &item ) const
+{
+  if ( !item.hasPayload<Incidence::Ptr>() ) {
+    return QString();
+  }
+  return item.payload<Incidence::Ptr>()->instanceIdentifier();
+}
+
 Q_EXPORT_PLUGIN2( akonadi_serializer_kcalcore, SerializerPluginKCalCore )
 

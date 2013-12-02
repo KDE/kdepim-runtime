@@ -24,6 +24,7 @@
 
 #include <akonadi/differencesalgorithminterface.h>
 #include <akonadi/itemserializerplugin.h>
+#include <akonadi/gidextractorinterface.h>
 
 namespace Akonadi {
 
@@ -32,11 +33,13 @@ namespace Akonadi {
  */
 class SerializerPluginContactGroup : public QObject,
                                      public ItemSerializerPlugin,
-                                     public DifferencesAlgorithmInterface
+                                     public DifferencesAlgorithmInterface,
+                                     public GidExtractorInterface
 {
   Q_OBJECT
   Q_INTERFACES( Akonadi::ItemSerializerPlugin )
   Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
+  Q_INTERFACES( Akonadi::GidExtractorInterface )
 
   public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
@@ -45,6 +48,8 @@ class SerializerPluginContactGroup : public QObject,
     void compare( Akonadi::AbstractDifferencesReporter *reporter,
                   const Akonadi::Item &leftItem,
                   const Akonadi::Item &rightItem );
+
+    QString extractGid( const Item& item ) const;
 };
 
 }

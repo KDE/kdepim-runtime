@@ -63,12 +63,12 @@ Kolab::Version SetupKolab::readKolabVersion( const QString &resourceIdentifier )
 {
   KConfigGroup grp( getConfigGroup() );
   if ( resourceIdentifier.isEmpty() ) {
-    kWarning() << "Empty resource identifier, defaulting to v3";
+    kDebug() << "Empty resource identifier, defaulting to v3";
     return Kolab::KolabV3;
   }
   const QString key (QLatin1String("KolabFormatVersion") + resourceIdentifier );
   if ( !grp.hasKey( key ) ) {
-    kWarning() << "resource not found, defaulting to v3: " << resourceIdentifier;
+    kDebug() << "resource not found, defaulting to v3: " << resourceIdentifier;
   }
   Kolab::Version version = static_cast<Kolab::Version>(
     grp.readEntry<int>( key, static_cast<int>( Kolab::KolabV3 ) ) );

@@ -26,6 +26,11 @@
 #include "settingsadaptor.h"
 #include "kolabproxyadaptor.h"
 #include "setupkolab.h"
+#include "imapitemaddedjob.h"
+#include "imapitemremovedjob.h"
+#include "itemaddedjob.h"
+#include "itemchangedjob.h"
+#include "revertitemchangesjob.h"
 #include <akonadi/dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
@@ -41,17 +46,15 @@
 #include <Akonadi/CollectionMoveJob>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/EntityHiddenAttribute>
-#include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
 #include <Akonadi/Session>
-#include <Akonadi/KMime/MessageFlags>
 
 #include <KLocale>
 #include <KWindowSystem>
+#include <KNotification>
 #include <QDBusInterface>
 #include <QDBusReply>
 
@@ -65,22 +68,6 @@ Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
 #endif
 
 static const char KOLAB_COLLECTION[] = "KolabCollection";
-static const char KOLAB_ITEM[] = "KolabItem";
-static const char IMAP_COLLECTION[] = "ImapCollection";
-
-template <typename T>
-static inline T kolabToImap( const T &kolabObject )
-{
-  return T( kolabObject.remoteId().toLongLong() );
-}
-
-template <typename T>
-static inline T imapToKolab( const T &imapObject )
-{
-  T kolabObject;
-  kolabObject.setRemoteId( QString::number( imapObject.id() ) );
-  return kolabObject;
-}
 
 static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollection,
                                          bool showWarnings )
@@ -110,7 +97,8 @@ static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollecti
 }
 
 KolabProxyResource::KolabProxyResource( const QString &id )
-  : ResourceBase( id )
+  : ResourceBase( id ),
+  mHandlerManager( new HandlerManager )
 {
   Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionAnnotationsAttribute>();
   new SettingsAdaptor( Settings::self() );
@@ -173,9 +161,27 @@ KolabProxyResource::~KolabProxyResource()
 {
 }
 
-KolabHandler::Ptr KolabProxyResource::getHandler(Akonadi::Entity::Id collectionId)
+void KolabProxyResource::showErrorMessage(const QString &msg)
 {
-  return m_monitoredCollections.value(collectionId);
+  KNotification *notification = new KNotification(QLatin1String("Error"), KNotification::CloseOnTimeout, 0);
+  notification->setText(msg);
+  notification->setComponentData(KGlobal::mainComponent());
+  notification->sendEvent();
+}
+
+bool KolabProxyResource::registerHandlerForCollection(const Akonadi::Collection& imapCollection)
+{
+    const Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );
+    if ( mHandlerManager->registerHandlerForCollection( imapCollection, v ) ) {
+        m_monitor->setCollectionMonitored( imapCollection );
+        return true;
+    }
+    return false;
+}
+
+QString KolabProxyResource::imapResourceForCollection( Akonadi::Entity::Id  id)
+{
+    return mHandlerManager->imapResourceForCollection( id );
 }
 
 void KolabProxyResource::retrieveCollections()
@@ -204,13 +210,13 @@ void KolabProxyResource::retrieveCollectionsTreeDone( KJob *job )
 void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
 {
   const Akonadi::Collection imapCollection = kolabToImap( collection );
-  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
-  if ( !handler ) {
+  if ( !mHandlerManager->isMonitored( imapCollection.id() ) ) {
+    //This should never happen
+    kWarning() << "received a retrieveItems request for a collection without imap counterpart" << collection.id();
     cancelTask();
     return;
   }
   
-  handler->reset();
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setIgnoreRetrievalErrors( true );
@@ -231,12 +237,13 @@ void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
     itemsRetrieved( Akonadi::Item::List() );
     return;
   }
-  const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() );
+  const KolabHandler::Ptr handler = mHandlerManager->getHandler( items[0].storageCollectionId() );
   if ( !handler ) {
     cancelTask();
     return;
   }
-  const Akonadi::Item::List newItems = handler->translateItems( items );
+  const Akonadi::Item::List newItems = handler->resolveConflicts( handler->translateItems( items ) );
+
   itemsRetrieved( newItems );
 }
 
@@ -263,7 +270,7 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
     cancelTask();
     return;
   }
-  const KolabHandler::Ptr handler = getHandler( items[0].storageCollectionId() );
+  const KolabHandler::Ptr handler = mHandlerManager->getHandler( items[0].storageCollectionId() );
   if ( !handler ) {
     cancelTask();
     return;
@@ -281,7 +288,7 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
 
 void KolabProxyResource::aboutToQuit()
 {
-  m_monitoredCollections.clear();
+  mHandlerManager->clear();
 }
 
 void KolabProxyResource::configure( WId windowId )
@@ -301,9 +308,9 @@ void KolabProxyResource::configure( WId windowId )
   kolabConfigDialog->exec();
   emit configurationDialogAccepted();
 
-  foreach ( Akonadi::Entity::Id id, m_monitoredCollections.keys() ) { //krazy:exclude=foreach
-    KolabHandler::Ptr handler = m_monitoredCollections.value( id );
-    Kolab::Version v = SetupKolab::readKolabVersion( m_resourceIdentifier.value( id ) );
+  foreach ( Akonadi::Entity::Id id, mHandlerManager->monitoredCollections() ) { //krazy:exclude=foreach
+    KolabHandler::Ptr handler = mHandlerManager->getHandler( id );
+    Kolab::Version v = SetupKolab::readKolabVersion( mHandlerManager->imapResourceForCollection( id ) );
     handler->setKolabFormatVersion( v );
   }
 
@@ -314,51 +321,31 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
                                     const Akonadi::Collection &collection )
 {
   const Akonadi::Collection imapCollection = kolabToImap( collection );
-  createItem( imapCollection, kolabItem );
+  const KolabHandler::Ptr handler = mHandlerManager->getHandler( imapCollection.id() );
+  if ( !handler ) {
+    kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
+    cancelTask();
+    new Akonadi::ItemDeleteJob(kolabItem);
+    return;
+  }
+  ItemAddedJob *itemAddedJob = new ItemAddedJob(kolabItem, collection, *handler, this);
+  connect(itemAddedJob, SIGNAL(result(KJob*)), this, SLOT(onItemAddedDone(KJob*)));
+  itemAddedJob->start();
 }
 
-void KolabProxyResource::createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem )
+void KolabProxyResource::onItemAddedDone(KJob* job)
 {
-  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
-  if ( !handler ) {
+  ItemAddedJob *itemAddedJob = static_cast<ItemAddedJob*>(job);
+  Akonadi::Item kolabItem = itemAddedJob->kolabItem();
+  const Akonadi::Item imapItem = itemAddedJob->imapItem();
+  if (job->error()) {
+    kWarning() << "Failed to create imap item: " << job->errorString();
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask();
+    new Akonadi::ItemDeleteJob(kolabItem);
     return;
   }
-  Akonadi::Item imapItem( handler->contentMimeTypes()[0] );
-  if (!handler->toKolabFormat( kolabItem, imapItem )) {
-    kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
-    cancelTask();
-    return;
-  }
-  imapItem.setFlag( Akonadi::MessageFlags::Seen );
-
-  Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( imapItem, imapCollection );
-  cjob->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-  cjob->setProperty( IMAP_COLLECTION, QVariant::fromValue( imapCollection ) );
-  connect( cjob, SIGNAL(result(KJob*)), SLOT(imapItemCreationResult(KJob*)) );
-}
-
-void KolabProxyResource::imapItemCreationResult( KJob *job )
-{
-  if ( job->error() ) {
-    cancelTask( job->errorText() );
-    return;
-  }
-
-  Akonadi::ItemCreateJob *cjob = qobject_cast<Akonadi::ItemCreateJob*>( job );
-  const Akonadi::Item imapItem = cjob->item();
-  Akonadi::Item kolabItem = cjob->property( KOLAB_ITEM ).value<Akonadi::Item>();
-
-  // TODO add accessor to ItemCreateJob for the parent collection
-  const Akonadi::Collection imapCollection =
-    cjob->property( IMAP_COLLECTION ).value<Akonadi::Collection>();
-
-  const KolabHandler::Ptr handler = getHandler( imapCollection.id() );
-  if ( !handler ) {
-    cancelTask(  );
-    return;
-  }
-  handler->itemAdded( imapItem );
   m_excludeAppend << imapItem.id();
 
   kolabItem.setRemoteId( QString::number( imapItem.id() ) );
@@ -369,69 +356,24 @@ void KolabProxyResource::itemChanged( const Akonadi::Item &kolabItem,
                                       const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
-  Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( kolabItem ), this );
-  job->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-  connect( job, SIGNAL(result(KJob*)), SLOT(imapItemUpdateFetchResult(KJob*)) );
+  ItemChangedJob *itemChangedJob = new ItemChangedJob(kolabItem, *mHandlerManager, this);
+  connect(itemChangedJob, SIGNAL(result(KJob*)), this, SLOT(onItemChangedDone(KJob*)));
+  itemChangedJob->start();
 }
 
-void KolabProxyResource::imapItemUpdateFetchResult( KJob *job )
+void KolabProxyResource::onItemChangedDone(KJob* job)
 {
+  ItemChangedJob *itemChangedJob = static_cast<ItemChangedJob*>(job);
   if ( job->error() ) {
+    showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask( job->errorText() );
+    kWarning() << "Failed to modify item, reverting to state of imap item: " << itemChangedJob->item().id();
+    RevertItemChangesJob *revertJob = new RevertItemChangesJob(itemChangedJob->item(), *mHandlerManager, this);
+    connect(revertJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    revertJob->start();
     return;
   }
-
-  const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
-    Akonadi::CollectionFetchJob *fetch =
-      new Akonadi::CollectionFetchJob( Akonadi::Collection( kolabItem.storageCollectionId() ),
-                                       Akonadi::CollectionFetchJob::Base, this );
-    fetch->setProperty( KOLAB_ITEM, QVariant::fromValue( kolabItem ) );
-    connect( fetch, SIGNAL(result(KJob*)), SLOT(imapItemUpdateCollectionFetchResult(KJob*)) );
-  } else {
-    Akonadi::Item imapItem = fetchJob->items().first();
-
-    const KolabHandler::Ptr handler = getHandler( imapItem.storageCollectionId() );
-    if ( !handler ) {
-      cancelTask();
-      return;
-    }
-
-    if (!handler->toKolabFormat( kolabItem, imapItem )) {
-      kWarning() << "Failed to convert item to kolab format: " << kolabItem.id();
-      cancelTask();
-      return;
-    }
-    Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob( imapItem );
-    mjob->setProperty( KOLAB_ITEM, fetchJob->property( KOLAB_ITEM ) );
-    connect( mjob, SIGNAL(result(KJob*)), SLOT(imapItemUpdateResult(KJob*)) );
-  }
-}
-
-void KolabProxyResource::imapItemUpdateCollectionFetchResult( KJob *job )
-{
-  Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>( job );
-  if ( job->error() || fetchJob->collections().isEmpty() ) {
-    cancelTask( job->errorText() );
-    return;
-  }
-
-  const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-  const Akonadi::Collection kolabCollection = fetchJob->collections().first();
-  const Akonadi::Collection imapCollection = kolabToImap( kolabCollection );
-  createItem( imapCollection, kolabItem );
-}
-
-void KolabProxyResource::imapItemUpdateResult( KJob *job )
-{
-  if ( job->error() ) {
-    cancelTask( job->errorText() );
-    return;
-  }
-  const Akonadi::Item kolabItem = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-  changeCommitted( kolabItem );
+  changeCommitted( itemChangedJob->item() );
 }
 
 void KolabProxyResource::itemMoved( const Akonadi::Item &item,
@@ -525,6 +467,7 @@ void KolabProxyResource::applyAttributesToImap( Akonadi::Collection &imapCollect
     }
 
     if ( attr->type() == "AccessRights" ) {
+      // Don't propagate access rights here, since it's already propagated using Collection::rigths
       continue;
     }
 
@@ -556,11 +499,11 @@ void KolabProxyResource::applyAttributesFromImap( Akonadi::Collection &kolabColl
 
 void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &imapCollection )
 {
-  if ( !isHandledKolabFolder( imapCollection ) ) {
+  if ( !HandlerManager::isHandledKolabFolder( imapCollection ) ) {
     return;
   }
 
-  if ( getFolderType( imapCollection ) != Kolab::EventType ) {
+  if ( HandlerManager::getFolderType( imapCollection ) != Kolab::EventType ) {
     return;
   }
 
@@ -653,19 +596,6 @@ void KolabProxyResource::collectionRemoved( const Akonadi::Collection &collectio
   changeCommitted( collection );
 }
 
-void KolabProxyResource::deleteImapItem( const Akonadi::Item &item )
-{
-  Akonadi::ItemDeleteJob *djob = new Akonadi::ItemDeleteJob( item );
-  connect( djob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)) );
-}
-
-void KolabProxyResource::addImapItem( const Akonadi::Item &item,
-                                      Akonadi::Entity::Id collectionId )
-{
-  KJob *job = new Akonadi::ItemCreateJob( item, Akonadi::Collection( collectionId ) );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)) );
-}
-
 void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
                                         const Akonadi::Collection &collection )
 {
@@ -674,53 +604,22 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
     m_excludeAppend.removeAll( item.id() );
     return;
   }
-  //TODO: slow, would be nice if ItemCreateJob would work with a Collection
-  //      having only the remoteId set
-  const Akonadi::Collection kolabCol = imapToKolab( collection );
-  Akonadi::CollectionFetchJob *job =
-    new Akonadi::CollectionFetchJob( kolabCol, Akonadi::CollectionFetchJob::Base, this );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchDone(KJob*)) );
-  job->setProperty( KOLAB_ITEM, QVariant::fromValue( item ) );
-  job->setProperty( "collectionId", QString::number( collection.id() ) );
-}
-
-void KolabProxyResource::collectionFetchDone( KJob *job )
-{
-  if ( job->error() ) {
-    kWarning( ) << "Error on collection fetch:" << job->errorText();
-    return;
-  }
-  Akonadi::Collection::List collections =
-    qobject_cast<Akonadi::CollectionFetchJob*>(job)->collections();
-  Q_ASSERT(collections.size() == 1);
-  const Akonadi::Collection c = collections[0];
-  Q_ASSERT(c.remoteId() == job->property("collectionId").toString() );
-
-  if ( const KolabHandler::Ptr handler = getHandler( c.remoteId().toUInt() ) ) {
-    const Akonadi::Item item = job->property( KOLAB_ITEM ).value<Akonadi::Item>();
-    const Akonadi::Item::List newItems = handler->translateItems( Akonadi::Item::List() << item );
-    if ( !newItems.isEmpty() ) {
-      Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob( newItems[0], c );
-      connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
-    }
-  }
-}
-
-void KolabProxyResource::itemCreatedDone( KJob *job )
-{
-  if ( job->error() ) {
-    kWarning( ) << "Error on creating item:" << job->errorText();
+  if ( const KolabHandler::Ptr handler = mHandlerManager->getHandler( collection.id() ) ) {
+    handler->imapItemAdded(item, collection);
   }
 }
 
 void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
 {
-  const Akonadi::Item kolabItem = imapToKolab( item );
-  Q_FOREACH ( KolabHandler::Ptr handler, m_monitoredCollections ) {
-    handler->itemDeleted( item );
+  if ( const KolabHandler::Ptr handler = mHandlerManager->getHandler( item.parentCollection().id() ) ) {
+    handler->imapItemRemoved(item);
+  } else {
+    //The handler is already gone,
+    kWarning() << "Couldn't find handler for collection " << item.storageCollectionId();
+    ImapItemRemovedJob *job = new ImapItemRemovedJob(item, this);
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    job->start();
   }
-  Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( kolabItem, this );
-  Q_UNUSED( job );
 }
 
 void KolabProxyResource::imapItemMoved( const Akonadi::Item &item,
@@ -736,8 +635,9 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
                                               const Akonadi::Collection &parent )
 {
   Q_UNUSED( parent );
-  Q_ASSERT( collection.resource() == identifier() );
-  if ( m_monitoredCollections.contains( collection.id() ) ) {
+  //We are ignoring our session
+  Q_ASSERT( collection.resource() != identifier() );
+  if ( mHandlerManager->isMonitored( collection.id() ) ) {
     // something is wrong, so better reload out collection tree
     kWarning() << "IMAPCOLLECTIONADDED ABORT";
     synchronizeCollectionTree();
@@ -753,26 +653,6 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
   }
 }
 
-Kolab::FolderType KolabProxyResource::getFolderType( const Akonadi::Collection& collection ) const
-{
-  Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-    collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
-  if ( annotationsAttribute ) {
-    return Kolab::folderTypeFromString( Kolab::getFolderTypeAnnotation( annotationsAttribute->annotations() ) );
-  }
-  return Kolab::MailType;
-}
- 
-bool KolabProxyResource::isKolabFolder(const Akonadi::Collection &collection) const
-{
-  return (getFolderType(collection) != Kolab::MailType);
-}
-
-bool KolabProxyResource::isHandledKolabFolder(const Akonadi::Collection& collection) const
-{ 
-  return KolabHandler::hasHandler(getFolderType(collection));
-}
-
 void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &collection )
 {
   if ( collection.resource() == identifier() ) {
@@ -780,8 +660,8 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
     return;
   }
 
-  if ( !m_monitoredCollections.contains( collection.id() ) ) {
-    if ( isHandledKolabFolder( collection ) ) {
+  if ( !mHandlerManager->isMonitored( collection.id() ) ) {
+    if ( HandlerManager::isHandledKolabFolder( collection ) ) {
       synchronizeCollectionTree();
       return;
     }
@@ -793,7 +673,7 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( kolabCollection, this );
     Q_UNUSED( job );
   } else {
-    if ( !isHandledKolabFolder( collection ) ) {
+    if ( !HandlerManager::isHandledKolabFolder( collection ) ) {
         //This is no longer a kolab folder, remove
         removeFolder( collection );
         return;
@@ -832,14 +712,15 @@ void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection
 {
   KJob *deleteJob = new Akonadi::CollectionDeleteJob( imapToKolab( imapCollection ) );
   connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
-  m_monitoredCollections.remove( imapCollection.id() );
+  mHandlerManager->removeFolder( imapCollection.id() );
   updateFreeBusyInformation( imapCollection );
 }
 
 void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapCollection )
 {
-  Q_ASSERT( imapCollection.resource() == identifier() );
-  if (m_monitoredCollections.contains( imapCollection.id())) {
+  //we are ignoring our session
+  Q_ASSERT( imapCollection.resource() != identifier() );
+  if (mHandlerManager->isMonitored( imapCollection.id())) {
     removeFolder(imapCollection);
   }
 }
@@ -887,8 +768,8 @@ Akonadi::Collection KolabProxyResource::createCollection(
     }
   }
   applyAttributesFromImap( c, imapCollection );
-  if ( isKolabFolder( imapCollection ) ) {
-    KolabHandler::Ptr handler = m_monitoredCollections.value( imapCollection.id() );
+  if ( HandlerManager::isKolabFolder( imapCollection ) ) {
+    KolabHandler::Ptr handler = mHandlerManager->getHandler( imapCollection.id() );
     if ( handler ) {
         contentTypes.append( handler->contentMimeTypes() );
         kolabAttr->setIconName( handler->iconName() );
@@ -900,46 +781,15 @@ Akonadi::Collection KolabProxyResource::createCollection(
   return c;
 }
 
-bool KolabProxyResource::registerHandlerForCollection( const Akonadi::Collection &imapCollection )
-{
-  if ( isHandledKolabFolder( imapCollection ) ) {
-    KolabHandler::Ptr handler =
-      KolabHandler::createHandler( getFolderType( imapCollection ), imapCollection );
-
-    if ( handler ) {
-      Kolab::Version v = SetupKolab::readKolabVersion( imapCollection.resource() );
-      handler->setKolabFormatVersion( v );
-      connect( handler.data(), SIGNAL(deleteItemFromImap(Akonadi::Item)),
-               this, SLOT(deleteImapItem(Akonadi::Item)));
-      connect( handler.data(), SIGNAL(addItemToImap(Akonadi::Item,Akonadi::Entity::Id)),
-               this, SLOT(addImapItem(Akonadi::Item,Akonadi::Entity::Id)));
-      m_monitor->setCollectionMonitored( imapCollection );
-      m_monitoredCollections.insert( imapCollection.id(), handler );
-      m_resourceIdentifier.insert( imapCollection.id(), imapCollection.resource() );
-      return true;
-    }
-  }
-
-  return false;
-}
-
-QString KolabProxyResource::imapResourceForCollection( Akonadi::Collection::Id id )
-{
-    if (m_resourceIdentifier.contains(id)) {
-        return m_resourceIdentifier[id];
-    }
-    return QString();
-}
-
 void KolabProxyResource::updateHiddenAttribute( const Akonadi::Collection &imapCollection )
 {
-  if ( isKolabFolder( imapCollection ) && !imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
+  if ( HandlerManager::isKolabFolder( imapCollection ) && !imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
       Akonadi::Collection hiddenImapCol( imapCollection );
       hiddenImapCol.attribute<Akonadi::EntityHiddenAttribute>( Akonadi::Collection::AddIfMissing );
       KJob *job = new Akonadi::CollectionModifyJob( hiddenImapCol, this );
       connect( job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)) );
   }
-  if ( !isKolabFolder( imapCollection ) && imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
+  if ( !HandlerManager::isKolabFolder( imapCollection ) && imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
       Akonadi::Collection unhiddenImapCol( imapCollection );
       unhiddenImapCol.removeAttribute<Akonadi::EntityHiddenAttribute>();
       KJob *job = new Akonadi::CollectionModifyJob( unhiddenImapCol, this );

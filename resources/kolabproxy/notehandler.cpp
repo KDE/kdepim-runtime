@@ -19,6 +19,7 @@
 */
 
 #include "notehandler.h"
+#include <akonadi/notes/noteutils.h>
 
 NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection )
   : JournalHandler( imapCollection )
@@ -89,3 +90,15 @@ bool NotesHandler::noteFromKolab( const KMime::Message::Ptr &kolabMsg, Akonadi::
   noteItem.setPayload( reader.getNote() );
   return true;
 }
+
+QString NotesHandler::extractGid(const Akonadi::Item& kolabItem)
+{
+    if ( !kolabItem.hasPayload<KMime::Message::Ptr>() ) {
+      kWarning() << "Payload is not a MessagePtr!";
+      return QString();
+    }
+    const KMime::Message::Ptr payload = kolabItem.payload<KMime::Message::Ptr>();
+    const Akonadi::NoteUtils::NoteMessageWrapper note(payload);
+    return note.uid();
+}
+
