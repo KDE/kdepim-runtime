@@ -22,3 +22,4 @@ set(KDEPIMLIBS_RUN_SQLITE_ISOLATED_TESTS TRUE)
 
 add_akonadi_isolated_test_advanced(proxyintegrationtest.cpp "" "kolabresourcetest;${Libkolab_LIBRARIES}")
 add_akonadi_isolated_test_advanced(imapsignaltest.cpp "" "kolabresourcetest;${Libkolab_LIBRARIES}")
+add_akonadi_isolated_test_advanced(imapsignaltest.cpp "" "clientsidetest;${Libkolab_LIBRARIES}")
