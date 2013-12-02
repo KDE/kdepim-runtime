@@ -20,21 +20,24 @@
 #define ITEMCHANGEDJOB_H
 #include <KJob>
 #include "kolabhandler.h"
+#include "handlermanager.h"
 
 class ItemChangedJob: public KJob
 {
     Q_OBJECT
 public:
-    ItemChangedJob(const Akonadi::Item &kolabItem, KolabHandler &handler, QObject* parent);
+    ItemChangedJob(const Akonadi::Item &kolabItem, HandlerManager &handler, QObject* parent);
     virtual void start();
     Akonadi::Item item() const;
 private slots:
+    void onKolabCollectionFetched(KJob* job);
     void onImapItemFetchDone(KJob *job);
     void onCollectionFetchDone(KJob *job);
     void onItemAddedDone(KJob *job);
     void onItemModifyDone(KJob *job);
 private:
-    KolabHandler &mHandler;
+    HandlerManager &mHandlerManager;
+    KolabHandler::Ptr mHandler;
     const Akonadi::Item mKolabItem;
 };
 

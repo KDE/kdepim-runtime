@@ -67,7 +67,6 @@ Q_IMPORT_PLUGIN(akonadi_serializer_contactgroup)
 #endif
 
 static const char KOLAB_COLLECTION[] = "KolabCollection";
-static const char KOLAB_ITEM[] = "KolabItem";
 
 static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollection,
                                          bool showWarnings )
@@ -356,32 +355,7 @@ void KolabProxyResource::itemChanged( const Akonadi::Item &kolabItem,
                                       const QSet<QByteArray> &parts )
 {
   Q_UNUSED( parts );
-  Akonadi::CollectionFetchJob *collectionFetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection(kolabItem.storageCollectionId()), Akonadi::CollectionFetchJob::Base);
-  collectionFetchJob->setProperty(KOLAB_ITEM, QVariant::fromValue(kolabItem));
-  connect(collectionFetchJob, SIGNAL(result(KJob*)), this, SLOT(onKolabCollectionFetched(KJob*)));
-}
-
-void KolabProxyResource::onKolabCollectionFetched(KJob* job)
-{
-
-  Akonadi::CollectionFetchJob *fetchjob = static_cast<Akonadi::CollectionFetchJob*>(job);
-  if ( job->error() || fetchjob->collections().isEmpty() ) {
-    kWarning() << "collection fetch job failed " << job->errorString() << fetchjob->collections().isEmpty();
-    showErrorMessage(i18n("An error occured while writing the item to the backend."));
-    cancelTask( job->errorText() );
-    return;
-  }
-  Akonadi::Item kolabItem = job->property(KOLAB_ITEM).value<Akonadi::Item>();
-  const Akonadi::Collection imapCollection = kolabToImap( fetchjob->collections().first() );
-  const KolabHandler::Ptr handler = mHandlerManager->getHandler( imapCollection.id() );
-  if ( !handler ) {
-    kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
-    showErrorMessage(i18n("An error occured while writing the item to the backend."));
-    cancelTask();
-    //TODO reload status from imap item and modify kolab item back
-    return;
-  }
-  ItemChangedJob *itemChangedJob = new ItemChangedJob(kolabItem, *handler, this);
+  ItemChangedJob *itemChangedJob = new ItemChangedJob(kolabItem, *mHandlerManager, this);
   connect(itemChangedJob, SIGNAL(result(KJob*)), this, SLOT(onItemChangedDone(KJob*)));
   itemChangedJob->start();
 }

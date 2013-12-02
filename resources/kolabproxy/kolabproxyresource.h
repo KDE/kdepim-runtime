@@ -127,7 +127,6 @@ class KolabProxyResource : public Akonadi::ResourceBase,
   private slots:
     void onItemAddedDone(KJob *job);
     void onItemChangedDone(KJob *job);
-    void onKolabCollectionFetched(KJob *job);
     void imapFolderCreateResult( KJob *job );
     void kolabFolderChangeResult( KJob *job );
     void checkResult( KJob *job );

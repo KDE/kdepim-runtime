@@ -23,18 +23,40 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemModifyJob>
 
-ItemChangedJob::ItemChangedJob(const Akonadi::Item& kolabItem, KolabHandler& handler, QObject* parent)
+ItemChangedJob::ItemChangedJob(const Akonadi::Item& kolabItem, HandlerManager& handler, QObject* parent)
 :   KJob(parent),
     mKolabItem(kolabItem),
-    mHandler(handler)
+    mHandlerManager(handler)
 {
 
 }
 
 void ItemChangedJob::start()
 {
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(kolabToImap(mKolabItem), this);
-    connect( job, SIGNAL(result(KJob*)), SLOT(onImapItemFetchDone(KJob*)) );
+    Akonadi::CollectionFetchJob *collectionFetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection(mKolabItem.storageCollectionId()), Akonadi::CollectionFetchJob::Base);
+    connect(collectionFetchJob, SIGNAL(result(KJob*)), this, SLOT(onKolabCollectionFetched(KJob*)));
+}
+
+void ItemChangedJob::onKolabCollectionFetched(KJob* job)
+{
+    Akonadi::CollectionFetchJob *fetchjob = static_cast<Akonadi::CollectionFetchJob*>(job);
+    if (job->error() || fetchjob->collections().isEmpty()) {
+        kWarning() << "collection fetch job failed " << job->errorString() << fetchjob->collections().isEmpty();
+        setError(KJob::UserDefinedError);
+        emitResult();
+        return;
+    }
+    const Akonadi::Collection imapCollection = kolabToImap(fetchjob->collections().first());
+    mHandler = mHandlerManager.getHandler(imapCollection.id());
+    if (!mHandler) {
+        kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
+        setError(KJob::UserDefinedError);
+        emitResult();
+        return;
+    }
+
+    Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob(kolabToImap(mKolabItem), this);
+    connect(itemFetchJob, SIGNAL(result(KJob*)), SLOT(onImapItemFetchDone(KJob*)));
 }
 
 void ItemChangedJob::onImapItemFetchDone(KJob* job)
@@ -56,7 +78,7 @@ void ItemChangedJob::onImapItemFetchDone(KJob* job)
         kDebug() << "item is in imap resource";
         Akonadi::Item imapItem = fetchJob->items().first();
 
-        if (!mHandler.toKolabFormat(mKolabItem, imapItem)) {
+        if (!mHandler->toKolabFormat(mKolabItem, imapItem)) {
             kWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
             setError(KJob::UserDefinedError);
             emitResult();
@@ -78,7 +100,7 @@ void ItemChangedJob::onCollectionFetchDone(KJob *job)
     }
 
     const Akonadi::Collection kolabCollection = fetchJob->collections().first();
-    ItemAddedJob *itemAddedJob = new ItemAddedJob(mKolabItem, kolabCollection, mHandler, this);
+    ItemAddedJob *itemAddedJob = new ItemAddedJob(mKolabItem, kolabCollection, *mHandler, this);
     connect(itemAddedJob, SIGNAL(result(KJob*)), SLOT(onItemAddedDone(KJob*)) );
     itemAddedJob->start();
 }
