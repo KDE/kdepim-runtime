@@ -41,6 +41,7 @@
 #include <kolabobject.h>
 
 #include "../kolabdefs.h"
+#include "testutils.h"
 
 using namespace Akonadi;
 
@@ -61,7 +62,7 @@ class ClientSideTest : public QObject
         deleteJob->exec();
         Akonadi::ItemDeleteJob *deleteJob2 = new Akonadi::ItemDeleteJob(kolabCollection);
         deleteJob2->exec();
-        QTest::qWait(100);
+        QTest::qWait(TIMEOUT);
     }
 
 private slots:
@@ -75,21 +76,14 @@ private slots:
         mInstance = agentCreateJob->instance();
 
         //Wait for kolabproxy to create all folders
-        QTest::qWait(1000);
+        QVERIFY(TestUtils::ensurePopulated(mInstance.identifier(), 6));
 
         Akonadi::CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("res1/Calendar"), this);
         AKVERIFYEXEC(resolver);
         imapCollection = Akonadi::Collection( resolver->collection() );
         QVERIFY(imapCollection.isValid());
 
-        Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
-        fetchJob->fetchScope().setResource(mInstance.identifier());
-        AKVERIFYEXEC(fetchJob);
-        foreach (const Collection &col, fetchJob->collections()) {
-            if (col.name().contains("Calendar")) {
-                kolabCollection = col;
-            }
-        }
+        kolabCollection = TestUtils::findCollection(mInstance.identifier(), "Calendar");
         QVERIFY(kolabCollection.isValid());
     }
 
@@ -102,12 +96,10 @@ private slots:
             Akonadi::Item item(event->mimeType());
             item.setPayload(event);
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), createJob));
             createdItem = createJob->item();
             QVERIFY(createdItem.isValid());
         }
-
-        QTest::qWait(1000);
 
         {
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(imapCollection);
@@ -127,12 +119,13 @@ private slots:
             Akonadi::Item item(event->mimeType());
             item.setPayload(event);
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
-            AKVERIFYEXEC(createJob);
+            //Check that the signal is NOT emitted within the timeout
+            QVERIFY(!TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)), createJob));
             //TODO akonadi currently doesn't support failing itemcreatejobs if the resource fails to store the item.
             // the item will simply remain dirty in the akonadi server
 //             QVERIFY(createJob->error());
         }
-        QTest::qWait(1000);
+
         //Ensure the item has been removed by the kolabproxy
         {
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
@@ -150,24 +143,20 @@ private slots:
             Akonadi::Item item(event->mimeType());
             item.setPayload(event);
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)), createJob));
             createdItem = createJob->item();
             QVERIFY(createdItem.isValid());
         }
-
-        QTest::qWait(100);
 
         {
             event->setDtStart(KDateTime(QDate(2014,10,10)));
             createdItem.setPayload(event);
             Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(createdItem);
-            AKVERIFYEXEC(modifyJob);
+            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)), modifyJob));
             Akonadi::Item modifiedItem = modifyJob->item();
-            QVERIFY(modifiedItem.isValid());
+            QVERIFY(modifiedItem.hasPayload<KCalCore::Event::Ptr>());
             QCOMPARE(modifiedItem.payload<KCalCore::Event::Ptr>()->dtStart(), KDateTime(QDate(2014,10,10)));
         }
-
-        QTest::qWait(1000);
 
         {
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(imapCollection);
@@ -191,19 +180,20 @@ private slots:
             Akonadi::Item item(event->mimeType());
             item.setPayload(event);
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)), createJob));
             createdItem = createJob->item();
             QVERIFY(createdItem.isValid());
         }
 
-        QTest::qWait(100);
         {
             event->setDtStart(KDateTime());
             createdItem.setPayload(event);
             Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(createdItem);
             AKVERIFYEXEC(modifyJob);
+            QTest::qWait(TIMEOUT);
+            //FIXME this fails, no idea why
+//             QVERIFY(!TestUtils::ensure(imapCollection, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)), modifyJob));
         }
-        QTest::qWait(100);
 
         //Ensure the change has been reverted for the kolab item
         {

@@ -27,8 +27,11 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/EntityHiddenAttribute>
 #include <QDBusInterface>
+#include <QSignalSpy>
 #include <collectionannotationsattribute.h>
 #include <kolabdefinitions.h> //libkolab
+
+#include "testutils.h"
 
 #include "../kolabdefs.h"
 
@@ -62,18 +65,7 @@ private slots:
         mInstance = agentCreateJob->instance();
 
         //Wait for kolabproxy to create all folders
-        QTest::qWait(1000);
-        //The below is supposed to allow us to wait on the synchronization to complete, but that somehow crashes
-// //             QDBusInterface *interface = new QDBusInterface(
-// //                 QString::fromLatin1( "org.freedesktop.Akonadi.Resource.%1" ).arg( instance.identifier() ),
-// //                 "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this );
-//         QDBusInterface *interface = new QDBusInterface(
-//             ServerManager::agentServiceName(ServerManager::Resource, instance.identifier()),
-//             "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this);
-//
-//         QVERIFY( interface->isValid() );
-//         instance.synchronize();
-//         QVERIFY(QTest::kWaitForSignal(interface, SIGNAL(synchronized()), 5 * 1000));
+        QVERIFY(TestUtils::ensurePopulated(mInstance.identifier(), 6));
     }
 
     void setupKolabProxy() {

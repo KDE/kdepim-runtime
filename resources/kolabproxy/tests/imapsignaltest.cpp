@@ -18,7 +18,6 @@
 */
 
 #include <QObject>
-#include <qtest_kde.h>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/servermanager.h>
 #include <akonadi/collectionpathresolver_p.h>
@@ -35,6 +34,7 @@
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionDeleteJob>
 #include <Akonadi/CollectionModifyJob>
+#include <Akonadi/Monitor>
 #include <KCalCore/Event>
 #include <KMime/Message>
 #include <QDBusInterface>
@@ -43,6 +43,7 @@
 #include <kolabobject.h>
 
 #include "../kolabdefs.h"
+#include "testutils.h"
 
 using namespace Akonadi;
 
@@ -69,7 +70,7 @@ class ImapSignalTest : public QObject
 //         AKVERIFYEXEC(deleteJob);
         Akonadi::ItemDeleteJob *deleteJob2 = new Akonadi::ItemDeleteJob(kolabCollection);
         AKVERIFYEXEC(deleteJob2);
-        QTest::qWait(100);
+        QTest::qWait(TIMEOUT);
     }
 
 private slots:
@@ -83,23 +84,17 @@ private slots:
         mInstance = agentCreateJob->instance();
 
         //Wait for kolabproxy to create all folders
-        QTest::qWait(1000);
+        QVERIFY(TestUtils::ensurePopulated(mInstance.identifier(), 5));
 
         Akonadi::CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("res1/Calendar"), this);
         AKVERIFYEXEC(resolver);
         imapCollection = Akonadi::Collection( resolver->collection() );
         QVERIFY(imapCollection.isValid());
 
-        Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
-        fetchJob->fetchScope().setResource(mInstance.identifier());
-        AKVERIFYEXEC(fetchJob);
-        foreach (const Collection &col, fetchJob->collections()) {
-            if (col.name().contains("Calendar")) {
-                kolabCollection = col;
-            }
-        }
+        kolabCollection = TestUtils::findCollection(mInstance.identifier(), "Calendar");
         QVERIFY(kolabCollection.isValid());
     }
+
 
     void itemAddedSignal() {
         KCalCore::Event::Ptr event(new KCalCore::Event);
@@ -109,12 +104,10 @@ private slots:
         //Create item in imap resource
         {
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
-            AKVERIFYEXEC(createJob);
-            //Wait for kolab item to get created
-            QTest::qWait(100);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), createJob));
         }
 
-        //ensure kolab equivalent gets created
+        //TestUtils::ensure kolab equivalent gets created
         {
             Akonadi::Item expectedItem;
             expectedItem.setGid(event->instanceIdentifier());
@@ -129,13 +122,11 @@ private slots:
         {
             event->setSummary("summary2");
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)), createJob));
             recreatdImapItem = createJob->item();
-            //Wait for kolab item to get created
-            QTest::qWait(100);
         }
 
-        //ensure only one item with gid exists, and it's content and rid has been updated as expected
+        //TestUtils::ensure only one item with gid exists, and it's content and rid has been updated as expected
         {
             Akonadi::Item expectedItem;
             expectedItem.setGid(event->instanceIdentifier());
@@ -154,7 +145,8 @@ private slots:
         {
 
             mInstance.synchronize(); //triggers retrieve items
-            QTest::qWait(100);
+            //TODO listen for some signals instead of a timeout
+            QTest::qWait(TIMEOUT);
             {
                 Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
                 fetchJob->fetchScope().setFetchRemoteIdentification(true);
@@ -185,11 +177,9 @@ private slots:
         {
             event->setSummary("summary2");
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)), createJob));
             secondImapItem = createJob->item();
         }
-        //Wait for kolab item to get created
-        QTest::qWait(100);
 
         //Ensure the conflict resolution still works with two consequitive item creates
         {
@@ -214,32 +204,28 @@ private slots:
         Akonadi::Item firstImapItem;
         {
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), createJob));
             firstImapItem = createJob->item();
         }
-        //Wait for kolab item to get created
-        QTest::qWait(100);
 
         //create item again in imap resource (same gid), but with different content
         Akonadi::Item secondImapItem;
         {
             event->setSummary("summary2");
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
-            AKVERIFYEXEC(createJob);
+//             AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)), createJob));
             secondImapItem = createJob->item();
         }
-        //Wait for kolab item to get created
-        QTest::qWait(100);
         //we expect one kolab item that is linked to the second imap item
 
         //remove first imap item
         {
             Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(firstImapItem);
-            AKVERIFYEXEC(deleteJob);
-            QTest::qWait(100);
+            QVERIFY(!TestUtils::ensure(kolabCollection, SIGNAL(itemRemoved(const Akonadi::Item &)), deleteJob));
         }
 
-        //ensure kolab item remains
+        //TestUtils::ensure kolab item remains
         {
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
             fetchJob->fetchScope().setFetchRemoteIdentification(true);
@@ -252,11 +238,10 @@ private slots:
         //remove second imap item
         {
             Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(secondImapItem);
-            AKVERIFYEXEC(deleteJob);
-            QTest::qWait(100);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemRemoved(const Akonadi::Item &)), deleteJob));
         }
 
-        //ensure kolab item is removed
+        //TestUtils::ensure kolab item is removed
         {
             Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(kolabCollection);
             AKVERIFYEXEC(fetchJob);
@@ -274,10 +259,8 @@ private slots:
             annotations.insert("/shared/vendor/kolab/folder-type", "event");
             col.addAttribute(new CollectionAnnotationsAttribute(annotations));
             Akonadi::CollectionCreateJob *createJob = new Akonadi::CollectionCreateJob(col, this);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)), createJob));
             createdCollection = createJob->collection();
-            //Wait for kolab collection to get created
-            QTest::qWait(100);
         }
         {
             Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
@@ -287,9 +270,8 @@ private slots:
         //cleanup
         {
             Akonadi::CollectionDeleteJob *deleteJob = new Akonadi::CollectionDeleteJob(createdCollection);
-            AKVERIFYEXEC(deleteJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionRemoved(const Akonadi::Collection &)), deleteJob));
         }
-        QTest::qWait(100);
         {
             Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
             AKVERIFYEXEC(fetchJob);
@@ -308,10 +290,8 @@ private slots:
             col.addAttribute(new CollectionAnnotationsAttribute(annotations));
             col.setRights(Akonadi::Collection::AllRights);
             Akonadi::CollectionCreateJob *createJob = new Akonadi::CollectionCreateJob(col, this);
-            AKVERIFYEXEC(createJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)), createJob));
             createdCollection = createJob->collection();
-            //Wait for kolab collection to get created
-            QTest::qWait(100);
         }
 
         {
@@ -323,8 +303,7 @@ private slots:
         {
             createdCollection.setRights(Akonadi::Collection::ReadOnly);
             Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(createdCollection);
-            AKVERIFYEXEC(modJob);
-            QTest::qWait(100);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionChanged(const Akonadi::Collection &)), modJob));
         }
         {
             Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
@@ -335,9 +314,8 @@ private slots:
         //cleanup
         {
             Akonadi::CollectionDeleteJob *deleteJob = new Akonadi::CollectionDeleteJob(createdCollection);
-            AKVERIFYEXEC(deleteJob);
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionRemoved(const Akonadi::Collection &)), deleteJob));
         }
-        QTest::qWait(100);
     }
 
 };
