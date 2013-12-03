@@ -56,8 +56,8 @@ void SearchTask::doStart( KIMAP::Session *session )
 void SearchTask::onSelectDone( KJob *job )
 {
     if ( job->error() ) {
-        emitError( job->errorText() );
         searchFinished( QVector<qint64>() );
+        cancelTask( job->errorText() );
         return;
     }
 
@@ -77,8 +77,8 @@ void SearchTask::doSearch( KIMAP::Session *session )
 void SearchTask::onSearchDone( KJob* job )
 {
     if ( job->error() ) {
-        emitError( job->errorString() );
         searchFinished( QVector<qint64>() );
+        cancelTask( job->errorString() );
         return;
     }
 
@@ -87,4 +87,5 @@ void SearchTask::onSearchDone( KJob* job )
     kDebug() << result.count() << "matches";
 
     searchFinished( result.toVector() );
+    taskDone();
 }

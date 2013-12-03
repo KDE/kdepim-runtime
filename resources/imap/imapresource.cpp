@@ -561,7 +561,7 @@ void ImapResource::removeSearch(const Collection& resultCollection)
 void ImapResource::search( const QString &query, const Collection &collection )
 {
   ResourceStateInterface::Ptr state = ::ResourceState::createSearchState( this, collection );
-  emit status( AgentBase::Running, i18nc( "@info:status", "Searching" ) );
+  emit status( AgentBase::Running, i18nc( "@info:status", "Searching..." ) );
   SearchTask *task = new SearchTask( state, query, this );
   task->start( m_pool );
   queueTask( task );
