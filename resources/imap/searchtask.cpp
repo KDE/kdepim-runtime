@@ -55,8 +55,6 @@ void SearchTask::doStart( KIMAP::Session *session )
 
 void SearchTask::onSelectDone( KJob *job )
 {
-    kDebug();
-
     if ( job->error() ) {
         emitError( job->errorText() );
         searchFinished( QVector<qint64>() );
@@ -68,10 +66,9 @@ void SearchTask::onSelectDone( KJob *job )
 
 void SearchTask::doSearch( KIMAP::Session *session )
 {
-    kDebug();
-
     KIMAP::SearchJob *searchJob = new KIMAP::SearchJob( session );
-    searchJob->addSearchCriteria( KIMAP::SearchJob::From, "dvratil@redhat.com" );
+    searchJob->setUidBased( true );
+    searchJob->addSearchCriteria( KIMAP::SearchJob::To, "dvratil@redhat.com" );
     connect( searchJob, SIGNAL(finished(KJob*)),
              this, SLOT(onSearchDone(KJob*)) );
     searchJob->start();
@@ -79,7 +76,6 @@ void SearchTask::doSearch( KIMAP::Session *session )
 
 void SearchTask::onSearchDone( KJob* job )
 {
-    kDebug();
     if ( job->error() ) {
         emitError( job->errorString() );
         searchFinished( QVector<qint64>() );
@@ -88,6 +84,7 @@ void SearchTask::onSearchDone( KJob* job )
 
     KIMAP::SearchJob *searchJob = qobject_cast<KIMAP::SearchJob*>( job );
     const QList<qint64> result = searchJob->results();
+    kDebug() << result.count() << "matches";
 
     searchFinished( result.toVector() );
 }
