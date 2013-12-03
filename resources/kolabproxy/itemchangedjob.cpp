@@ -25,8 +25,8 @@
 
 ItemChangedJob::ItemChangedJob(const Akonadi::Item& kolabItem, HandlerManager& handler, QObject* parent)
 :   KJob(parent),
-    mKolabItem(kolabItem),
-    mHandlerManager(handler)
+    mHandlerManager(handler),
+    mKolabItem(kolabItem)
 {
 
 }
