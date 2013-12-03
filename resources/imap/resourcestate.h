@@ -84,6 +84,10 @@ public:
   static ResourceStateInterface::Ptr createIdleState( ImapResource *resource,
                                                       const Akonadi::Collection &collection );
 
+
+  static ResourceStateInterface::Ptr createSearchState( ImapResource *resource,
+                                                        const Akonadi::Collection &collection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
@@ -136,6 +140,8 @@ public:
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
 
   virtual void changeProcessed();
+
+  virtual void searchFinished( const QVector<qint64> &result, bool isRid = true );
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();

@@ -22,12 +22,14 @@
 #include "dummyresourcestate.h"
 
 Q_DECLARE_METATYPE(QList<qint64>)
+Q_DECLARE_METATYPE(QVector<qint64>);
 
 DummyResourceState::DummyResourceState()
   : m_automaticExpunge( true ), m_subscriptionEnabled( true ),
     m_disconnectedMode( true ), m_intervalCheckTime( -1 )
 {
   qRegisterMetaType<QList<qint64> >();
+  qRegisterMetaType<QVector<qint64> >();
 }
 
 DummyResourceState::~DummyResourceState()
@@ -256,6 +258,11 @@ void DummyResourceState::collectionChangeCommitted( const Akonadi::Collection &c
 void DummyResourceState::changeProcessed()
 {
   recordCall( "changeProcessed" );
+}
+
+void DummyResourceState::searchFinished( const QVector<qint64> &result, bool isRid )
+{
+  recordCall( "searchFinished", QVariant::fromValue( result ) );
 }
 
 void DummyResourceState::cancelTask( const QString &errorString )
