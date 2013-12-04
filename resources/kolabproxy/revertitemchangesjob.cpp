@@ -24,8 +24,8 @@
 
 RevertItemChangesJob::RevertItemChangesJob(const Akonadi::Item& kolabItem, HandlerManager &handlerManager, QObject* parent)
     :KJob(parent),
-    mKolabItem(kolabItem),
-    mHandlerManager(handlerManager)
+    mHandlerManager(handlerManager),
+    mKolabItem(kolabItem)
 {
 
 }

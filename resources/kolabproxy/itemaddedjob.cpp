@@ -23,9 +23,9 @@
 
 ItemAddedJob::ItemAddedJob(const Akonadi::Item& kolabItem, const Akonadi::Collection& col, KolabHandler& handler, QObject* parent)
     :KJob(parent),
+    mHandler(handler),
     mKolabItem(kolabItem),
-    mParentCollection(col),
-    mHandler(handler)
+    mParentCollection(col)
 {
 
 }
