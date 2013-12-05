@@ -100,8 +100,11 @@ private slots:
 
     void testItemCreate()
     {
+        KDateTime date(QDate(2013,10,10), KDateTime::ClockTime);
+        date.setDateOnly(true);
+
         KCalCore::Event::Ptr event(new KCalCore::Event());
-        event->setDtStart(KDateTime(QDate(2013,10,10)));
+        event->setDtStart(date);
         Akonadi::Item createdItem;
         {
             Akonadi::Item item(event->mimeType());
@@ -147,8 +150,13 @@ private slots:
 
     void testItemModify()
     {
+        KDateTime date1(QDate(2013,10,10), KDateTime::ClockTime);
+        date1.setDateOnly(true);
+        KDateTime date2(QDate(2014,10,10), KDateTime::ClockTime);
+        date2.setDateOnly(true);
+
         KCalCore::Event::Ptr event(new KCalCore::Event());
-        event->setDtStart(KDateTime(QDate(2013,10,10)));
+        event->setDtStart(date1);
         Akonadi::Item createdItem;
         {
             Akonadi::Item item(event->mimeType());
@@ -160,13 +168,13 @@ private slots:
         }
 
         {
-            event->setDtStart(KDateTime(QDate(2014,10,10)));
+            event->setDtStart(date2);
             createdItem.setPayload(event);
             Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(createdItem);
             QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)), modifyJob));
             Akonadi::Item modifiedItem = modifyJob->item();
             QVERIFY(modifiedItem.hasPayload<KCalCore::Event::Ptr>());
-            QCOMPARE(modifiedItem.payload<KCalCore::Event::Ptr>()->dtStart(), KDateTime(QDate(2014,10,10)));
+            QCOMPARE(modifiedItem.payload<KCalCore::Event::Ptr>()->dtStart().toString(), date2.toString());
         }
 
         {
@@ -177,15 +185,18 @@ private slots:
             const Akonadi::Item item = fetchJob->items().first();
             QVERIFY(item.hasPayload<KMime::Message::Ptr>());
             Kolab::KolabObjectReader reader(item.payload<KMime::Message::Ptr>());
-            QCOMPARE(reader.getEvent()->dtStart(), KDateTime(QDate(2014,10,10)));
+            QCOMPARE(reader.getEvent()->dtStart().toString(), date2.toString());
         }
         cleanup();
     }
 
     void testItemModifyFailure()
     {
+        KDateTime date1(QDate(2013,10,10), KDateTime::ClockTime);
+        date1.setDateOnly(true);
+
         KCalCore::Event::Ptr event(new KCalCore::Event());
-        event->setDtStart(KDateTime(QDate(2013,10,10)));
+        event->setDtStart(date1);
         Akonadi::Item createdItem;
         {
             Akonadi::Item item(event->mimeType());
@@ -214,7 +225,7 @@ private slots:
             QCOMPARE(fetchJob->items().size(), 1);
             const Akonadi::Item item = fetchJob->items().first();
             QVERIFY(item.hasPayload<KCalCore::Incidence::Ptr>());
-            QCOMPARE(item.payload<KCalCore::Incidence::Ptr>()->dtStart(), KDateTime(QDate(2013,10,10)));
+            QCOMPARE(item.payload<KCalCore::Incidence::Ptr>()->dtStart().toString(), date1.toString());
         }
         cleanup();
     }
