@@ -43,6 +43,8 @@
 #include "../kolabdefs.h"
 #include "testutils.h"
 
+Q_DECLARE_METATYPE(QSet<QByteArray>)
+
 using namespace Akonadi;
 
 /*
@@ -55,6 +57,15 @@ class ClientSideTest : public QObject
     AgentInstance mInstance;
     Akonadi::Collection imapCollection;
     Akonadi::Collection kolabCollection;
+
+public:
+    ClientSideTest():
+        QObject()
+    {
+        qRegisterMetaType<Akonadi::Item>();
+        qRegisterMetaType<Akonadi::Collection>();
+        qRegisterMetaType<QSet<QByteArray> >();
+    }
 
     void cleanup() {
         //cleanup
