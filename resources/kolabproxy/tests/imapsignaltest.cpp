@@ -38,6 +38,7 @@
 #include <KCalCore/Event>
 #include <KMime/Message>
 #include <QDBusInterface>
+#include <QMetaType>
 #include <collectionannotationsattribute.h>
 #include <kolabdefinitions.h> //libkolab
 #include <kolabobject.h>
@@ -47,6 +48,8 @@
 
 using namespace Akonadi;
 
+Q_DECLARE_METATYPE(QSet<QByteArray>)
+
 class ImapSignalTest : public QObject
 {
     Q_OBJECT
@@ -55,6 +58,16 @@ class ImapSignalTest : public QObject
     Akonadi::Collection imapCollection;
     Akonadi::Collection kolabCollection;
 
+public:
+    ImapSignalTest():
+        QObject()
+    {
+        qRegisterMetaType<Akonadi::Item>();
+        qRegisterMetaType<Akonadi::Collection>();
+        qRegisterMetaType<QSet<QByteArray> >();
+    }
+
+private:
     static Akonadi::Item createImapItem(const KCalCore::Event::Ptr &event) {
         const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC") );
         Q_ASSERT(message);
