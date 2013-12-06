@@ -121,6 +121,35 @@ private slots:
         }
     }
 
+    void testRemoval() {
+        Akonadi::AgentInstance instance = AgentManager::self()->instance("akonadi_knut_resource_0");
+        AgentManager::self()->removeInstance(instance);
+
+        //Ensure all kolab collections are removed as well
+        QTest::qWait(10);
+        bool kolabCollectionsAreGone = false;
+        Akonadi::Collection::List rootCollections;
+        for (int i = 0; i < TIMEOUT/10; i++) {
+            Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root());
+            AKVERIFYEXEC(fetchJob);
+            rootCollections.clear();
+            foreach (const Akonadi::Collection &col, fetchJob->collections()) {
+                if (col.resource().contains("kolabproxy")) {
+                    rootCollections << col;
+                }
+            }
+            if (rootCollections.size() == 0) {
+                kolabCollectionsAreGone = true;
+                break;
+            }
+            QTest::qWait(10);
+        }
+        if (!kolabCollectionsAreGone) {
+            kDebug() << rootCollections;
+        }
+        QVERIFY(kolabCollectionsAreGone);
+    }
+
 };
 
 QTEST_AKONADIMAIN( ProxyIntegrationTest, NoGUI )
