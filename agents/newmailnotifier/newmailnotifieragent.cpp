@@ -231,7 +231,7 @@ bool NewMailNotifierAgent::enabledAgent() const
 
 void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
 {
-    configure( reinterpret_cast<WId>(windowId));
+    configure( windowId );
 }
 
 void NewMailNotifierAgent::configure( WId windowId )
