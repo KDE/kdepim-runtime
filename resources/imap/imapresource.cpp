@@ -627,8 +627,10 @@ void ImapResource::startIdleIfNeeded()
 
 void ImapResource::startIdle()
 {
-  delete m_idle;
-  m_idle = 0;
+  if ( m_idle ) {
+    delete m_idle;
+    m_idle = 0;
+  }
 
   if ( !m_pool->serverCapabilities().contains( QLatin1String("IDLE") ) )
     return;
