@@ -15,8 +15,6 @@ endmacro()
 add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
 add_subdirectory( migration )
-
-if(NOT WINCE)
 add_subdirectory( invitations )
 
 if( NOT KDEPIM_NO_NEPOMUK )
@@ -25,5 +23,4 @@ if( NOT KDEPIM_NO_NEPOMUK )
     add_subdirectory( nepomukfeeder )
     add_subdirectory( ontologies )
 
-endif()
 endif()

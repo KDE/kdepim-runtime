@@ -35,11 +35,7 @@ qt4_add_dbus_adaptor(maildirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Akonadi_Maildir_Resource::MaildirSettings maildirsettingsadaptor MaildirSettingsAdaptor
 )
 
-if (NOT WINCE)
-  kde4_add_plugin(akonadi_maildir_resource ${maildirresource_SRCS})
-else()
-kde4_add_plugin(akonadi_maildir_resource STATIC ${maildirresource_SRCS})
-endif()
+kde4_add_plugin(akonadi_maildir_resource ${maildirresource_SRCS})
 
 target_link_libraries(akonadi_maildir_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} maildir ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} )
 

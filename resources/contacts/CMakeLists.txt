@@ -23,11 +23,7 @@ qt4_add_dbus_adaptor(contactsresource_SRCS
 
 install( FILES contactsresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-if (NOT WINCE)
-  kde4_add_plugin(akonadi_contacts_resource ${contactsresource_SRCS})
-else()
-  kde4_add_plugin(akonadi_contacts_resource STATIC ${contactsresource_SRCS})
-endif()
+kde4_add_plugin(akonadi_contacts_resource ${contactsresource_SRCS})
 
 target_link_libraries(akonadi_contacts_resource
   ${KDEPIMLIBS_AKONADI_LIBS}

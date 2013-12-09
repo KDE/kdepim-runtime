@@ -31,14 +31,6 @@
 
 #include <stdio.h>
 
-#ifdef Q_OS_WINCE
-#include <QtPlugin>
-
-#include <QLayout>
-
-Q_IMPORT_PLUGIN(krossqtsplugin)
-#endif
-
 int main( int argc, char **argv )
 {
   KAboutData aboutData( "accountwizard", 0,
