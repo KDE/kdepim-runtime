@@ -584,13 +584,18 @@ void ImapResource::doSetOnline(bool online)
   kDebug() << "online=" << online;
 #endif
   if ( !online ) {
+    Q_FOREACH(ResourceTask* task, m_taskList) {
+      task->kill();
+      delete task;
+    }
+    m_taskList.clear();
     if ( m_pool->isConnected() )
       m_pool->disconnect();
-    Q_FOREACH(ResourceTask* task, m_taskList)
-      task->kill();
-    m_taskList.clear();
-    delete m_idle;
-    m_idle = 0;
+    if (m_idle) {
+      m_idle->stop();
+      delete m_idle;
+      m_idle = 0;
+    }
     Settings::self()->clearCachedPassword();
   } else if ( online && !m_pool->isConnected() ) {
     scheduleConnectionAttempt();
