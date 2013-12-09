@@ -49,9 +49,7 @@ ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
 
 ImapIdleManager::~ImapIdleManager()
 {
-  if ( m_idle ) {
-    m_idle->stop();
-  }
+  stop();
   if ( m_pool ) {
     if ( m_sessionRequestId ) {
       m_pool->cancelSessionRequest( m_sessionRequestId );
@@ -59,6 +57,18 @@ ImapIdleManager::~ImapIdleManager()
     if ( m_session ) {
       m_pool->releaseSession( m_session );
     }
+  }
+}
+
+void ImapIdleManager::stop()
+{
+  if ( m_idle ) {
+    m_idle->stop();
+    disconnect(m_idle, 0, this, 0);
+    m_idle = 0;
+  }
+  if ( m_pool ) {
+    disconnect(m_pool, 0, this, 0);
   }
 }
 
