@@ -29,11 +29,7 @@ qt4_add_dbus_adaptor(kalarmresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
 add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml)
 
-if (NOT WINCE)
-    kde4_add_plugin(akonadi_kalarm_resource ${kalarmresource_SRCS})
-else()
-    kde4_add_plugin(akonadi_kalarm_resource STATIC ${kalarmresource_SRCS})
-endif()
+kde4_add_plugin(akonadi_kalarm_resource ${kalarmresource_SRCS})
 
 if (Q_WS_MAC)
     set_target_properties(akonadi_kalarm_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)

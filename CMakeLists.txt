@@ -89,11 +89,11 @@ else()
 endif()
 
 # Libkolab
-find_package(Libkolab 0.4 QUIET CONFIG)
+find_package(Libkolab 0.5 QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 # Libkolabxml
-find_package(Libkolabxml QUIET CONFIG)
+find_package(Libkolabxml 1.0 QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 # Libkgapi2
@@ -141,12 +141,7 @@ if (KDEPIM_MOBILE_UI)
   endif()
 endif ()
 
-if(WINCE)
-  set(LIBRARY_TYPE STATIC)
-  add_definitions(-DKDEPIM_STATIC_LIBS)
-else()
-  set(LIBRARY_TYPE SHARED)
-endif()
+set(LIBRARY_TYPE SHARED)
 
 #FIXME: kde4_add_plugin doesn't have a parameter to build the plugins statically.
 if (RUNTIME_PLUGINS_STATIC)
@@ -201,8 +196,6 @@ add_subdirectory(libkdepim-copy)
 add_subdirectory(plugins)
 add_subdirectory(accountwizard)
 add_subdirectory(defaultsetup)
-
-if (NOT WINCE)
 add_subdirectory(resourcetester)
 add_subdirectory(kioslave)
 add_subdirectory(kcm)
@@ -211,7 +204,6 @@ add_subdirectory(migration)
 if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory(kresources)
 endif ()
-endif()
 if (QT_QTDECLARATIVE_FOUND)
   add_subdirectory(qml)
 endif ()

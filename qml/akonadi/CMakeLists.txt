@@ -11,8 +11,6 @@ install(FILES
   DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde/akonadi
 )
 
-if(NOT WINCE)
 add_subdirectory( tests )
-endif()
 
 endif ()

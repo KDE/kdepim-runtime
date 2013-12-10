@@ -25,11 +25,7 @@ qt4_add_dbus_adaptor(kalarmdirresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml settings.h Akonadi_KAlarm_Dir_Resource::Settings kalarmdirsettingsadaptor KAlarmDirSettingsAdaptor)
 add_custom_target(kalarmdir_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml)
 
-if (NOT WINCE)
-    kde4_add_plugin(akonadi_kalarm_dir_resource ${kalarmdirresource_SRCS})
-else()
-    kde4_add_plugin(akonadi_kalarm_dir_resource STATIC ${kalarmdirresource_SRCS})
-endif()
+kde4_add_plugin(akonadi_kalarm_dir_resource ${kalarmdirresource_SRCS})
 
 if (Q_WS_MAC)
     set_target_properties(akonadi_kalarm_dir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)

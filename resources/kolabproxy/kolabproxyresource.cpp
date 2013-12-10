@@ -722,6 +722,9 @@ void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapC
   Q_ASSERT( imapCollection.resource() != identifier() );
   if (mHandlerManager->isMonitored( imapCollection.id())) {
     removeFolder(imapCollection);
+  } else if ( imapCollection.parentCollection() == Akonadi::Collection::root() ) {
+    //we are not explicitly monitoring the top-level collection, but it should be removed anyways when the rest is gone
+    removeFolder(imapCollection);
   }
 }
 

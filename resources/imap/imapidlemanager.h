@@ -51,6 +51,7 @@ class ImapIdleManager : public QObject
 public:
   ImapIdleManager( ResourceStateInterface::Ptr state, SessionPool *pool, ImapResource *parent );
   ~ImapIdleManager();
+  void stop();
 
   KIMAP::Session *session() const;
 

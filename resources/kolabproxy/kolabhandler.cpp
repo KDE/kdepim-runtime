@@ -163,7 +163,6 @@ Akonadi::Item::List KolabHandler::resolveConflicts(const Akonadi::Item::List& ko
   QMap<QString, Akonadi::Item::List> gidItemMap;
   foreach (const Akonadi::Item &item, kolabItems) {
       const QString gid = extractGid(item);
-      kDebug() << item.id() << gid;
       if (!gid.isEmpty()) {
         gidItemMap[gid] << item;
       }

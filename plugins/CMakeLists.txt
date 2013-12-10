@@ -31,13 +31,10 @@ kde4_add_plugin(akonadi_serializer_kcalcore ${SERIALIZER_TYPE} ${akonadi_seriali
 target_link_libraries(akonadi_serializer_kcalcore ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCALUTILS_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
 install(TARGETS akonadi_serializer_kcalcore DESTINATION ${PLUGIN_INSTALL_DIR})
 
-if(NOT WINCE)
-
 set(akonadi_serializer_bookmark_SRCS akonadi_serializer_bookmark.cpp)
 kde4_add_plugin(akonadi_serializer_bookmark ${SERIALIZER_TYPE} ${akonadi_serializer_bookmark_SRCS})
 target_link_libraries(akonadi_serializer_bookmark ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
 install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
-endif()
 
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 kde4_add_plugin(akonadi_serializer_contactgroup ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
@@ -45,12 +42,10 @@ target_link_libraries(akonadi_serializer_contactgroup ${KDE4_KDECORE_LIBS} ${KDE
                                                       ${KDEPIMLIBS_AKONADI_KABC_LIBS} ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
-if(NOT WINCE)
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
 kde4_add_plugin(akonadi_serializer_microblog ${SERIALIZER_TYPE} ${akonadi_serializer_microblog_SRCS})
 target_link_libraries(akonadi_serializer_microblog ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${KDE4_KDECORE_LIBS} ${QT_QTXML_LIBRARY} ${KDEPIMLIBS_KPIMUTILS_LIBS} ${KDEPIMLIBS_MICROBLOG_LIBS})
 install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
-endif()
 
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp)
 kde4_add_plugin(akonadi_serializer_kalarm ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})

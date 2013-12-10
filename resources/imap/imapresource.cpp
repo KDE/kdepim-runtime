@@ -184,13 +184,34 @@ ImapResource::ImapResource( const QString &id )
 
 ImapResource::~ImapResource()
 {
-  // Disconnect and destroy the pool now, otherwise it will be called from QObject
-  // destructor and at that point ResourceBase and most of other stuff is already
-  // destroyed, which causes a crash
-  m_pool->disconnect();
-  delete m_pool;
+  //Destroy everything that could cause callbacks immediately, otherwise the callbacks can result in a crash.
 
+  if ( m_idle ) {
+    delete m_idle;
+    m_idle = 0;
+  }
+
+  Q_FOREACH (ResourceTask* task, m_taskList) {
+    delete task;
+  }
+  m_taskList.clear();
+
+  delete m_pool;
   delete m_bodyCheckSession;
+}
+
+void ImapResource::aboutToQuit()
+{
+  //TODO the resource would ideally have to signal when it's done with logging out etc, before the destructor gets called
+  if ( m_idle ) {
+    m_idle->stop();
+  }
+
+  Q_FOREACH (ResourceTask* task, m_taskList) {
+    task->kill();
+  }
+
+  m_pool->disconnect();
 }
 
 void ImapResource::fetchItemsWithoutBodies( const Collection &collection,
@@ -563,13 +584,18 @@ void ImapResource::doSetOnline(bool online)
   kDebug() << "online=" << online;
 #endif
   if ( !online ) {
+    Q_FOREACH(ResourceTask* task, m_taskList) {
+      task->kill();
+      delete task;
+    }
+    m_taskList.clear();
     if ( m_pool->isConnected() )
       m_pool->disconnect();
-    Q_FOREACH(ResourceTask* task, m_taskList)
-      task->kill();
-    m_taskList.clear();
-    delete m_idle;
-    m_idle = 0;
+    if (m_idle) {
+      m_idle->stop();
+      delete m_idle;
+      m_idle = 0;
+    }
     Settings::self()->clearCachedPassword();
   } else if ( online && !m_pool->isConnected() ) {
     scheduleConnectionAttempt();
@@ -627,8 +653,10 @@ void ImapResource::startIdleIfNeeded()
 
 void ImapResource::startIdle()
 {
-  delete m_idle;
-  m_idle = 0;
+  if ( m_idle ) {
+    delete m_idle;
+    m_idle = 0;
+  }
 
   if ( !m_pool->serverCapabilities().contains( QLatin1String("IDLE") ) )
     return;
