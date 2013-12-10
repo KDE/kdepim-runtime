@@ -22,11 +22,16 @@
 #include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifieragentsettings.h"
 
+#include "kdepim-runtime-version.h"
+
 #include <KLocale>
 #include <KNotifyConfigWidget>
 #include <KLineEdit>
 #include <KCheckableProxyModel>
 #include <KPushButton>
+#include <KMenu>
+#include <KHelpMenu>
+#include <KAboutData>
 
 #include <QTabWidget>
 #include <QCheckBox>
@@ -47,7 +52,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 {
     setCaption( i18n("New Mail Notifier settings") );
     setWindowIcon( KIcon( QLatin1String("kmail") ) );
-    setButtons( Ok|Cancel );
+    setButtons( Help | Ok|Cancel );
     connect(this, SIGNAL(okClicked()), this, SLOT(slotOkClicked()));
 
     QWidget *w = new QWidget;
@@ -123,15 +128,60 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     tab->addTab(mSelectCollection, i18n("Folders"));
 
     setMainWidget(w);
+
+    mAboutData = new KAboutData(
+                QByteArray( "newmailnotifieragent" ),
+                QByteArray(),
+                ki18n( "New Mail Notifier Agent" ),
+                QByteArray( KDEPIM_RUNTIME_VERSION ),
+                ki18n( "Notifier new mail." ),
+                KAboutData::License_GPL_V2,
+                ki18n( "Copyright (C) 2013 Laurent Montel" ) );
+
+    mAboutData->addAuthor( ki18n( "Laurent Montel" ),
+                         ki18n( "Maintainer" ), "montel@kde.org" );
+
+    mAboutData->setProgramIconName( QLatin1String("kmail") );
+    mAboutData->setTranslator( ki18nc( "NAME OF TRANSLATORS", "Your names" ),
+                             ki18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
+
+
+    KHelpMenu *helpMenu = new KHelpMenu(this, mAboutData, true);
+    //Initialize menu
+    KMenu *menu = helpMenu->menu();
+    helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(KIcon(QLatin1String("kmail")));
+    setButtonMenu( Help, menu );
+    readConfig();
 }
 
 NewMailNotifierSettingsDialog::~NewMailNotifierSettingsDialog()
 {
+    writeConfig();
+    delete mAboutData;
 }
+
+static const char *myConfigGroupName = "NewMailNotifierDialog";
+
+void NewMailNotifierSettingsDialog::readConfig()
+{
+    KConfigGroup group( KGlobal::config(), myConfigGroupName );
+
+    const QSize size = group.readEntry( "Size", QSize(500, 300) );
+    if ( size.isValid() ) {
+        resize( size );
+    }
+}
+
+void NewMailNotifierSettingsDialog::writeConfig()
+{
+    KConfigGroup group( KGlobal::config(), myConfigGroupName );
+    group.writeEntry( "Size", size() );
+    group.sync();
+}
+
 
 void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
 {
-    qDebug()<<" void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)";
     const QString help =
             i18n( "<qt>"
                   "<p>Here you can define message. "

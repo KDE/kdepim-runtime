@@ -26,6 +26,7 @@
 class KNotifyConfigWidget;
 class QCheckBox;
 class KLineEdit;
+class KAboutData;
 class NewMailNotifierSelectCollectionWidget;
 class NewMailNotifierSettingsDialog : public KDialog
 {
@@ -39,6 +40,8 @@ private Q_SLOTS:
     void slotHelpLinkClicked(const QString &);
 
 private:
+    void writeConfig();
+    void readConfig();
     QCheckBox *mShowPhoto;
     QCheckBox *mShowFrom;
     QCheckBox *mShowSubject;
@@ -48,6 +51,7 @@ private:
     QCheckBox *mTextToSpeak;
     KLineEdit *mTextToSpeakSetting;
     NewMailNotifierSelectCollectionWidget *mSelectCollection;
+    KAboutData *mAboutData;
 };
 
 #endif // NEWMAILNOTIFIERSETTINGSDIALOG_H
