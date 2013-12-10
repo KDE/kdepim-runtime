@@ -37,7 +37,6 @@ namespace KIMAP
   class Session;
 }
 
-class ImapAccount;
 class ImapIdleManager;
 class SessionPool;
 class ResourceState;

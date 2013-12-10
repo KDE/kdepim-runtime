@@ -30,7 +30,6 @@
 
 #include <Akonadi/ResourceBase>
 #include <QPointer>
-#include <QMutex>
 
 class KStatusNotifierItem;
 

@@ -33,7 +33,6 @@ class QKeyEvent;
 class QStandardItemModel;
 class QStandardItem;
 
-class KDescendantsProxyModel;
 class KLineEdit;
 class QCheckBox;
 class ImapAccount;

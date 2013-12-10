@@ -21,7 +21,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <KGlobal>
 
 class SettingsHelper
 {

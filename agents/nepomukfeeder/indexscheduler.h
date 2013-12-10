@@ -27,7 +27,6 @@
 #include "itemqueue.h"
 #include "eventmonitor.h"
 
-class FeederPluginloader;
 class KJob;
 
 /**
