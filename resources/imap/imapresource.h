@@ -108,6 +108,8 @@ protected:
   QChar separatorCharacter() const;
   void setSeparatorCharacter( const QChar &separator );
 
+  virtual void aboutToQuit();
+
 private Q_SLOTS:
   void reconnect();
 

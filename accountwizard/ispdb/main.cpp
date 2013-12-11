@@ -27,7 +27,7 @@
 int main( int argc, char **argv )
 {
     KAboutData aboutData( "ispdb", 0,
-                          ki18n( "Ispdb Assistant" ),
+                          ki18n( "ISPDB Assistant" ),
                           "0.1",
                           ki18n( "Helps setting up PIM accounts" ),
                           KAboutData::License_LGPL,

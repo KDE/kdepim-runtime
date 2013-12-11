@@ -26,9 +26,11 @@
 #include <Akonadi/Item>
 
 #include <QSharedPointer>
+#include <QQueue>
 
 #include <kolabobject.h> //libkolab
 
+class KJob;
 /**
         @author Andras Mantia <amantia@kde.org>
 */
@@ -60,6 +62,15 @@ class KolabHandler : public QObject
     virtual ~KolabHandler();
 
     /**
+     * Extracts the UID of a kolab object from an imap item.
+     *
+     * Used for conflict detection.
+     */
+    virtual QString extractGid( const Akonadi::Item &kolabItem ) = 0;
+
+    Akonadi::Item::List resolveConflicts( const Akonadi::Item::List &kolabItems );
+
+    /**
      * Translates Kolab items into the items supported by the handler.
      * @param addrs
      * @return the translated items
@@ -86,20 +97,6 @@ class KolabHandler : public QObject
 
     virtual QByteArray mimeType() const;
 
-    virtual void itemDeleted( const Akonadi::Item &item )
-    {
-      Q_UNUSED( item );
-    }
-
-    virtual void itemAdded( const Akonadi::Item &item )
-    {
-      Q_UNUSED( item );
-    }
-
-    virtual void reset()
-    {
-    }
-
     void setKolabFormatVersion( Kolab::Version );
 
     /**
@@ -117,9 +114,8 @@ class KolabHandler : public QObject
      */
     bool checkForErrors( Akonadi::Item::Id affectedItem );
 
-  Q_SIGNALS:
-    void deleteItemFromImap( const Akonadi::Item &item );
-    void addItemToImap( const Akonadi::Item &item, Akonadi::Entity::Id collectionId );
+    void imapItemAdded(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection);
+    void imapItemRemoved(const Akonadi::Item &imapItem);
 
   protected:
     explicit KolabHandler( const Akonadi::Collection &imapCollection );
@@ -128,6 +124,37 @@ class KolabHandler : public QObject
     Akonadi::Collection m_imapCollection;
     Kolab::Version m_formatVersion;
     int m_warningDisplayLevel;
+
+  private slots:
+    void onItemAdded(KJob*);
+    void checkResult(KJob*);
+
+  private:
+    void processItemAddedQueue();
+    QQueue<QPair<Akonadi::Item, Akonadi::Collection> > mItemAddedQueue;
+    bool mItemAddJobInProgress;
 };
+
+template <typename T>
+static inline T kolabToImap( const T &kolabObject )
+{
+    return T( kolabObject.remoteId().toLongLong() );
+}
+
+template <typename T>
+static inline T imapToKolab( const T &imapObject, T &kolabObject)
+{
+    kolabObject.setRemoteId( QString::number( imapObject.id() ) );
+    return kolabObject;
+}
+
+template <typename T>
+static inline T imapToKolab( const T &imapObject )
+{
+    T kolabObject;
+    imapToKolab( imapObject, kolabObject );
+    return kolabObject;
+}
+
 
 #endif

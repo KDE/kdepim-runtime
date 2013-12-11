@@ -38,6 +38,8 @@ class AddressBookHandler : public KolabHandler
     virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
+
+    virtual QString extractGid(const Akonadi::Item& kolabItem);
 };
 
 #endif

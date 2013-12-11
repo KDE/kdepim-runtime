@@ -153,3 +153,15 @@ QString AddressBookHandler::iconName() const
 {
   return QString::fromLatin1( "view-pim-contacts" );
 }
+
+QString AddressBookHandler::extractGid(const Akonadi::Item& kolabItem)
+{
+  if ( kolabItem.hasPayload<KABC::Addressee>() ) {
+    return kolabItem.payload<KABC::Addressee>().uid();
+  } else if ( kolabItem.hasPayload<KABC::ContactGroup>() ) {
+    return kolabItem.payload<KABC::ContactGroup>().id();
+  }
+  kWarning() << "invalid payload type!";
+  return QString();
+}
+

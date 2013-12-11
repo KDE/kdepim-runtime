@@ -89,11 +89,11 @@ else()
 endif()
 
 # Libkolab
-find_package(Libkolab 0.4 QUIET CONFIG)
+find_package(Libkolab 0.5 QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 # Libkolabxml
-find_package(Libkolabxml QUIET CONFIG)
+find_package(Libkolabxml 1.0 QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 # Libkgapi2
@@ -162,7 +162,7 @@ configure_file(config-enterprise.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ente
 
 ############### Needed commands before building anything ###############
 
-include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR} ${AKONADI_INCLUDE_DIR} ${Boost_INCLUDE_DIR} ${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
+include_directories(${kdepim-runtime_SOURCE_DIR} ${kdepim-runtime_BINARY_DIR} ${KDEPIMLIBS_INCLUDE_DIRS} ${AKONADI_INCLUDE_DIR} ${KDE4_INCLUDES} ${Boost_INCLUDE_DIR})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 ############### Generate akonadi-config.h ###############
