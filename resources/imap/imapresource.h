@@ -111,6 +111,8 @@ protected:
   virtual void aboutToQuit();
 
 private Q_SLOTS:
+  void doSearch( const QVariant &arg );
+
   void reconnect();
 
   void scheduleConnectionAttempt();

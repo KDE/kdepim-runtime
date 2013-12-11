@@ -27,7 +27,7 @@
 Q_DECLARE_METATYPE( KIMAP::Session* )
 
 SearchTask::SearchTask( ResourceStateInterface::Ptr state,  const QString &query, QObject *parent)
- : ResourceTask( ResourceTask::CancelIfNoSession, state, parent)
+ : ResourceTask( ResourceTask::DeferIfNoSession, state, parent)
  , m_query( query )
 {
 }
