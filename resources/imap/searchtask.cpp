@@ -38,7 +38,7 @@ SearchTask::~SearchTask()
 
 void SearchTask::doStart( KIMAP::Session *session )
 {
-    kDebug();
+    kDebug() << collection().remoteId();
 
     const QString mailbox = mailBoxForCollection( collection() );
     if ( session->selectedMailBox() == mailbox ) {
@@ -66,6 +66,8 @@ void SearchTask::onSelectDone( KJob *job )
 
 void SearchTask::doSearch( KIMAP::Session *session )
 {
+    kDebug();
+
     KIMAP::SearchJob *searchJob = new KIMAP::SearchJob( session );
     searchJob->setUidBased( true );
     searchJob->addSearchCriteria( KIMAP::SearchJob::To, "dvratil@redhat.com" );
