@@ -44,7 +44,6 @@
 
 #include <QHash>
 #include <QQueue>
-#include <QTimer>
 
 #define KOLAB_SHAREDSEEN "/shared/vendor/cmu/cyrus-imapd/sharedseen"
 #define KOLAB_INCIDENCESFOR "/shared/vendor/kolab/incidences-for"

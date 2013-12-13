@@ -21,8 +21,6 @@
 #define CONFIGFILE_H
 
 #include "setupobject.h"
-#include <QMap>
-#include <QPair>
 
 class KConfig;
 

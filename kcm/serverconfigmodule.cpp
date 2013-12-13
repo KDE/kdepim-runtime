@@ -24,7 +24,6 @@
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 
-#include <QComboBox>
 #include <QSettings>
 #include <QStackedWidget>
 #include <QVBoxLayout>

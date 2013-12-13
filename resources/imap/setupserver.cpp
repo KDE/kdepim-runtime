@@ -33,12 +33,6 @@
 #include "imapresource.h"
 #include "serverinfodialog.h"
 
-#include <QButtonGroup>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QLabel>
-#include <QProgressBar>
-#include <QRadioButton>
 
 #include <mailtransport/transport.h>
 #include <mailtransport/servertest.h>

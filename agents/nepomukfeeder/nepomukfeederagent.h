@@ -31,14 +31,12 @@
 #include "indexscheduler.h"
 #include "indexerconfig.h"
 
-class FeederPluginloader;
 class FindUnindexedItemsJob;
 class KJob;
 
 namespace Akonadi
 {
   class Item;
-  class ItemFetchScope;
 
 
 /**

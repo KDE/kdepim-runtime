@@ -23,7 +23,6 @@
 #define GLOBAL_H
 
 #include <QStringList>
-#include <QObject>
 
 namespace Tray
 {

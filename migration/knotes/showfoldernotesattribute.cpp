@@ -19,8 +19,6 @@
 #include "showfoldernotesattribute.h"
 
 #include <QByteArray>
-#include <QIODevice>
-#include <QDataStream>
 ShowFolderNotesAttribute::ShowFolderNotesAttribute()
 {
 }

@@ -27,7 +27,6 @@
 #include <KUrl>
 
 #include <QDir>
-#include <QSettings>
 
 #include <akonadi/private/xdgbasedirs_p.h>
 #include <akonadi/agentmanager.h>

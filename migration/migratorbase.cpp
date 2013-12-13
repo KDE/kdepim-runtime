@@ -23,7 +23,6 @@
 #include <KStandardDirs>
 #include <KDebug>
 #include <KComponentData>
-#include <KConfigGroup>
 #include <KLocalizedString>
 #include <akonadi/servermanager.h>
 #include <QFile>

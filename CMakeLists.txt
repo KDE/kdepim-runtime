@@ -40,6 +40,8 @@ endif()
 
 set(KDEPIM_RUNTIME_VERSION "4.13${KDEPIM_RUNTIME_DEV_VERSION}")
 
+configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
+
 ############### search-related options ################
 option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
 

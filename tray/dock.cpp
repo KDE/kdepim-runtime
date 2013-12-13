@@ -21,19 +21,14 @@
 #include "restoreassistant.h"
 #include "akonaditrayadaptor.h"
 
-#include <QDBusInterface>
 #include <QDBusConnectionInterface>
-#include <QMouseEvent>
 #include <QToolButton>
 #include <QWidgetAction>
 
-#include <KComponentData>
 #include <KDebug>
 #include <KIcon>
-#include <KIconLoader>
 #include <KLocale>
 #include <KMenu>
-#include <KMessageBox>
 #include <KNotification>
 #include <KStandardShortcut>
 #include <KStandardDirs>
