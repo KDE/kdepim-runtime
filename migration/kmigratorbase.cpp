@@ -32,7 +32,6 @@
 
 #include <QFile>
 #include <QMetaEnum>
-#include <QStringBuilder>
 #include <QTimer>
 #include <kcomponentdata.h>
 

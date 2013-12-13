@@ -33,9 +33,7 @@
 #include <kwindowsystem.h>
 
 #include <KDebug>
-#include <KMenu>
 #include <KMessageBox>
-#include <KMimeType>
 #include <KLineEdit>
 
 class ResourcesManagementWidget::Private

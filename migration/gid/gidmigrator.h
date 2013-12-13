@@ -21,7 +21,6 @@
 #define GIDMIGRATOR_H
 
 #include <migration/migratorbase.h>
-#include <QStringList>
 #include <KJob>
 
 class GidMigrator: public MigratorBase

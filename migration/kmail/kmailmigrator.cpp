@@ -60,14 +60,11 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KDateTime>
 #include <KDebug>
 #include <KStandardDirs>
-#include <KMessageBox>
 #include <KSharedConfig>
-#include <KCursor>
 #include <kwallet.h>
 #include <kstringhandler.h>
 #include <KLocalizedString>
 
-#include <QApplication>
 
 using KWallet::Wallet;
 

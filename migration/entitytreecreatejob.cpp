@@ -20,8 +20,6 @@
 
 #include "entitytreecreatejob.h"
 
-#include <QVariant>
-#include <QStringList>
 
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/ItemCreateJob>

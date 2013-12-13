@@ -35,7 +35,6 @@
 
 #include <KDebug>
 
-#include <QScrollArea>
 
 QString accountName(Ispdb *ispdb, QString username)
 {

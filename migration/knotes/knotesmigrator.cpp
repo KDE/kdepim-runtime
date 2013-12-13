@@ -40,7 +40,6 @@
 
 #include <KDebug>
 #include "maildirsettings.h"
-#include <KCal/CalendarLocal>
 #include <krandom.h>
 
 
