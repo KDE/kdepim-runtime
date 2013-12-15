@@ -28,6 +28,7 @@
 #include <kio/jobuidelegate.h>
 #include <KDebug>
 #include <KDirWatch>
+#include <KLocalizedString>
 #include <KLocale>
 #include <KStandardDirs>
 

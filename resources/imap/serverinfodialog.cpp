@@ -22,7 +22,7 @@
 #include "imapresource.h"
 #include "ui_serverinfo.h"
 
-#include <KLocale>
+#include <KLocalizedString>
 
 ServerInfoDialog::ServerInfoDialog(ImapResource *parentResource, QWidget *parent)
     : KDialog(parent)

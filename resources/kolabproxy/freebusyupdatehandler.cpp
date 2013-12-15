@@ -20,7 +20,7 @@
 #include "freebusyupdatehandler.h"
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KPassivePopup>
 #include <KIO/Job>
 

@@ -31,7 +31,7 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 
-#include <KLocale>
+#include <KLocalizedString>
 
 ChangeCollectionTask::ChangeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent ), m_pendingJobs(0)

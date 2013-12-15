@@ -29,7 +29,7 @@
 
 #include <errorhandler.h> //libkolab
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <QQueue>
 
 KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )

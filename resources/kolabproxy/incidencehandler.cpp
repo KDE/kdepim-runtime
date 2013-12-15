@@ -26,7 +26,7 @@
 
 #include <KCalCore/CalFormat>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 IncidenceHandler::IncidenceHandler( const Akonadi::Collection &imapCollection )
   : KolabHandler( imapCollection )

@@ -47,7 +47,7 @@
 
 #include <kpimutils/kfileio.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QDir>
 #include <QFileInfo>
