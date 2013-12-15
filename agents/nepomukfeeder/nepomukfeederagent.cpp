@@ -41,7 +41,7 @@
 
 #include <nepomuk2/resourcemanager.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <KUrl>
 #include <KProcess>
 #include <KStandardDirs>

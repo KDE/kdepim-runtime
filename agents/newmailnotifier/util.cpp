@@ -18,7 +18,7 @@
 #include "util.h"
 
 #include <KNotification>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KGlobal>
 #include <KIcon>
 #include <KIconLoader>

@@ -24,7 +24,7 @@
 
 #include "kdepim-runtime-version.h"
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <KNotifyConfigWidget>
 #include <KLineEdit>
 #include <KCheckableProxyModel>

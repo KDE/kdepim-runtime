@@ -27,7 +27,7 @@
 
 #include <KDebug>
 #include <KIcon>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KMenu>
 #include <KNotification>
 #include <KStandardShortcut>

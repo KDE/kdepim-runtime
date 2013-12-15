@@ -29,7 +29,7 @@
 
 #include <KMime/Message>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QTextDocument>
 #include <QDBusInterface>

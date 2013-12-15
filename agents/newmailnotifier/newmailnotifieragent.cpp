@@ -51,7 +51,7 @@
 #include <KIconLoader>
 #include <KIcon>
 #include <KConfigGroup>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 using namespace Akonadi;

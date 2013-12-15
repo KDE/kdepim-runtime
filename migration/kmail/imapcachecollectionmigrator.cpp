@@ -45,7 +45,7 @@
 #include <Nepomuk2/Tag>
 
 #include <KConfigGroup>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QSet>
 #include <QVariant>

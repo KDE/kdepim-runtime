@@ -23,7 +23,7 @@
 #include <kpimidentities/identitymanager.h>
 #include <kpimidentities/identity.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 Identity::Identity( QObject *parent )
   : SetupObject( parent ),

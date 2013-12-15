@@ -37,11 +37,12 @@
 #include <KDebug>
 #include <KIcon>
 #include <KIconLoader>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
 #include <KWindowSystem>
+#include <KLocale>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>

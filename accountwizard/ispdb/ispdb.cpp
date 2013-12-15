@@ -21,7 +21,7 @@
 #include <kdebug.h>
 #include <kio/job.h>
 #include <kio/jobclasses.h>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <kmime/kmime_header_parsing.h>
 #include <QDomDocument>

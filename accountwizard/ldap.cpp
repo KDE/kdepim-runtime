@@ -21,7 +21,7 @@
 
 #include <KConfig>
 #include <KConfigGroup>
-#include <KLocale>
+#include <KLocalizedString>
 
 
 Ldap::Ldap( QObject *parent )

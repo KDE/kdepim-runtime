@@ -25,7 +25,7 @@
 #include <KAssistantDialog>
 #include <KDebug>
 #include <KFileDialog>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KVBox>
 
 RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent ), m_selectFileButton(0)
