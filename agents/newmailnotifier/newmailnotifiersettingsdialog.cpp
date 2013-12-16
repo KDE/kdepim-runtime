@@ -134,7 +134,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
                 QByteArray(),
                 ki18n( "New Mail Notifier Agent" ),
                 QByteArray( KDEPIM_RUNTIME_VERSION ),
-                ki18n( "Notifier new mail." ),
+                ki18n( "Notifies about new mail." ),
                 KAboutData::License_GPL_V2,
                 ki18n( "Copyright (C) 2013 Laurent Montel" ) );
 
