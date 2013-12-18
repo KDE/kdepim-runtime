@@ -36,12 +36,15 @@ class SettingsDialog : public KDialog
   Q_OBJECT
   public:
     explicit SettingsDialog( Akonadi_Contacts_Resource::ContactsResourceSettings* settings, WId windowId );
+    ~SettingsDialog();
 
   private Q_SLOTS:
     void save();
     void validate();
 
   private:
+    void readConfig();
+    void writeConfig();
     Ui::SettingsDialog ui;
     KConfigDialogManager* mManager;
     Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings;
