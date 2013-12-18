@@ -50,6 +50,12 @@ SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId
   ui.kcfg_Path->setUrl( KUrl( mSettings->path() ) );
   mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
+  readConfig();
+}
+
+SettingsDialog::~SettingsDialog()
+{
+    writeConfig();
 }
 
 void SettingsDialog::save()
@@ -75,4 +81,20 @@ void SettingsDialog::validate()
     ui.kcfg_ReadOnly->setEnabled( true );
   }
   enableButton( Ok, true );
+}
+
+void SettingsDialog::readConfig()
+{
+    KConfigGroup group( KGlobal::config(), "SettingsDialog" );
+    const QSize size = group.readEntry( "Size", QSize(600, 400) );
+    if ( size.isValid() ) {
+        resize( size );
+    }
+}
+
+void SettingsDialog::writeConfig()
+{
+    KConfigGroup group( KGlobal::config(), "SettingsDialog" );
+    group.writeEntry( "Size", size() );
+    group.sync();
 }
