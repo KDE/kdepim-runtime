@@ -25,10 +25,10 @@
 
 ImapItemAddedJob::ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, KolabHandler &handler, QObject* parent)
     :KJob(parent),
-    mImapCollection(imapCollection),
-    mKolabCollection(imapToKolab(imapCollection)),
+    mHandler(handler),
     mImapItem(imapItem),
-    mHandler(handler)
+    mKolabCollection(imapToKolab(imapCollection)),
+    mImapCollection(imapCollection)
 {
 
 }

@@ -22,7 +22,7 @@
 
 #include <KDebug>
 #include <KPassivePopup>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KStandardDirs>
 #include <KConfigGroup>
 #include <KIdleTime>

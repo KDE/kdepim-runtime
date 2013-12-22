@@ -35,7 +35,7 @@
 #include <KPIMUtils/Email>
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 using namespace Akonadi;

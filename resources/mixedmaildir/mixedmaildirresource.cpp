@@ -58,7 +58,7 @@
 #include <Nepomuk2/Resource>
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 #include <QtCore/QDir>

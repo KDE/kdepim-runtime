@@ -36,7 +36,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/entitydisplayattribute.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QFileInfo>
 

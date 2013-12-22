@@ -26,7 +26,7 @@
 
 #include <KDebug>
 #include <kurl.h>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <KMime/Message>
 

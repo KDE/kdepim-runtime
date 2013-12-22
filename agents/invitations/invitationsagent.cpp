@@ -46,7 +46,7 @@
 #include <KConfigSkeleton>
 #include <KDebug>
 #include <KJob>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KMime/Content>
 #include <KMime/Message>
 #include <kpimidentities/identitymanager.h>

@@ -24,7 +24,7 @@
 #include <akonadi/agentinstancecreatejob.h>
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QMetaMethod>
 #include <QVariant>

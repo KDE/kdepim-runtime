@@ -19,7 +19,7 @@
 
 #include "kolabdefs.h"
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <boost/static_assert.hpp>
 

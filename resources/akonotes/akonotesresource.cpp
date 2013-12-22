@@ -19,6 +19,7 @@
 
 #include "akonotesresource.h"
 
+#include <KLocalizedString>
 #include <KLocale>
 
 AkonotesResource::AkonotesResource( const QString &id )

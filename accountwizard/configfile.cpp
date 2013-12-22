@@ -21,7 +21,7 @@
 
 #include <KConfig>
 #include <KConfigGroup>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KStringHandler>
 
 ConfigFile::ConfigFile( const QString & configName, QObject *parent )

@@ -52,7 +52,7 @@
 #include <Akonadi/ItemMoveJob>
 #include <Akonadi/Session>
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <KWindowSystem>
 #include <KNotification>
 #include <QDBusInterface>

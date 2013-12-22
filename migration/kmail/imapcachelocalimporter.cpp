@@ -35,7 +35,7 @@
 #include <akonadi/session.h>
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 using namespace Akonadi;
 

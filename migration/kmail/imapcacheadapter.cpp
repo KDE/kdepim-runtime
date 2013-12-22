@@ -31,7 +31,7 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QQueue>
 

@@ -29,7 +29,7 @@
 
 #include <kio/job.h>
 #include <KDirWatch>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KStandardDirs>
 
 #include <QFile>

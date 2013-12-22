@@ -24,9 +24,11 @@
 #include <QTextCodec>
 #include <QTextDocument>
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <KStandardDirs>
 #include <krandom.h>
+#include <KConfig>
+
 
 #include <KMime/Message>
 

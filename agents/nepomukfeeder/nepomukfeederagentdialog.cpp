@@ -24,8 +24,9 @@
 #include <QLabel>
 #include <QDebug>
 #include <KIntNumInput>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KConfigGroup>
+#include <KSharedConfig>
 
 NepomukFeederAgentDialog::NepomukFeederAgentDialog(QWidget *parent)
   :KDialog(parent)

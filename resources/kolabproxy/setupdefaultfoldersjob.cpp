@@ -30,7 +30,7 @@
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 SetupDefaultFoldersJob::SetupDefaultFoldersJob( const Akonadi::AgentInstance &instance,
                                                 QObject *parent )
