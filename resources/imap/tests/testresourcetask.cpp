@@ -134,25 +134,26 @@ private slots:
       pool.setPasswordRequester( createDefaultRequester() );
       QVERIFY( pool.connect( createDefaultAccount() ) );
 
-      QTest::qWait( 200 );
-      QCOMPARE( poolSpy.count(), 1 );
+      QTRY_COMPARE( poolSpy.count(), 1 );
       QCOMPARE( poolSpy.at( 0 ).at( 0 ).toInt(), (int)SessionPool::NoError );
     }
 
 
     if ( shouldRequestSession ) {
+      QSignalSpy requestSpy( &pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
       pool.requestSession();
-      QTest::qWait( 100 );
+      QTRY_COMPARE( requestSpy.count(), 1 );
     }
 
     QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
     DummyResourceTask *task = new DummyResourceTask( actionIfNoSession, state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
     if ( shouldConnect ) {
-      QCOMPARE( sessionSpy.count(), 1 );
+      QTRY_COMPARE( sessionSpy.count(), 1 );
     } else {
+      //We want to ensure the signal isn't emitted, so we have to wait
+      QTest::qWait( 500 );
       QCOMPARE( sessionSpy.count(), 0 );
     }
 
