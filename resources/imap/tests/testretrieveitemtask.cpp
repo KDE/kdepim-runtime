@@ -90,9 +90,8 @@ private slots:
     state->setItem( item );
     RetrieveItemTask *task = new RetrieveItemTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
-    QCOMPARE( state->calls().count(), 1 );
+    QTRY_COMPARE( state->calls().count(), 1 );
 
     QString command = QString::fromUtf8(state->calls().first().first);
     if ( command == "cancelTask" && callName != "cancelTask" ) {

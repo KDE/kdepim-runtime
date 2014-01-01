@@ -118,9 +118,8 @@ private slots:
     state->setCollection( collection );
     AddCollectionTask *task = new AddCollectionTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
-    QCOMPARE( state->calls().count(), callNames.size() );
+    QTRY_COMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8( state->calls().at( i ).first );
       QVariant parameter = state->calls().at( i ).second;
