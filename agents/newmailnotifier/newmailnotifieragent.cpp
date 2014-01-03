@@ -76,6 +76,9 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
              this, SLOT(slotInstanceRemoved(Akonadi::AgentInstance)) );
     connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)),
              this, SLOT(slotInstanceAdded(Akonadi::AgentInstance)) );
+    connect( Akonadi::AgentManager::self(), SIGNAL(instanceNameChanged(Akonadi::AgentInstance)),
+             this, SLOT(slotInstanceNameChanged(Akonadi::AgentInstance)) );
+
 
     changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
     changeRecorder()->itemFetchScope().setCacheOnly( true );
@@ -464,6 +467,18 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
 
     if ( NewMailNotifierAgentSettings::beepOnNewMails() ) {
         KNotification::beep();
+    }
+}
+
+void NewMailNotifierAgent::slotInstanceNameChanged(const Akonadi::AgentInstance &instance)
+{
+    if (!isActive())
+        return;
+
+    const QString identifier(instance.identifier());
+    if (mCacheResourceName.contains(identifier)) {
+        mCacheResourceName.remove(identifier);
+        mCacheResourceName.insert(identifier, instance.name());
     }
 }
 

@@ -92,6 +92,7 @@ private slots:
     void slotInstanceAdded(const Akonadi::AgentInstance &instance);
     void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
     void slotIdentitiesChanged();
+    void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
 
 private:
     bool isActive() const;
