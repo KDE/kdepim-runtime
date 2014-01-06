@@ -42,6 +42,16 @@
 #include <Akonadi/CollectionFilterProxyModel>
 #include <Akonadi/CollectionModifyJob>
 
+static const char * textToSpeakMessage =
+        I18N_NOOP( "<qt>"
+              "<p>Here you can define message. "
+              "You can use:</p>"
+              "<ul>"
+              "<li>%s set subject</li>"
+              "<li>%f set from</li>"
+              "</ul>"
+              "</qt>" );
+
 NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     : KDialog(parent)
 {
@@ -109,6 +119,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mTextToSpeakSetting->setClearButtonShown(true);
     mTextToSpeakSetting->setText(NewMailNotifierAgentSettings::textToSpeak());
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
+    mTextToSpeakSetting->setWhatsThis(i18n(textToSpeakMessage));
     textToSpeakLayout->addWidget(mTextToSpeakSetting);
     vbox->addLayout(textToSpeakLayout);
     vbox->addStretch();
@@ -131,16 +142,8 @@ NewMailNotifierSettingsDialog::~NewMailNotifierSettingsDialog()
 
 void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
 {
-    qDebug()<<" void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)";
     const QString help =
-            i18n( "<qt>"
-                  "<p>Here you can define message. "
-                  "You can use:</p>"
-                  "<ul>"
-                  "<li>%s set subject</li>"
-                  "<li>%f set from</li>"
-                  "</ul>"
-                  "</qt>" );
+            i18n( textToSpeakMessage);
 
     QWhatsThis::showText( QCursor::pos(), help );
 }
