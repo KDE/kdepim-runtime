@@ -33,6 +33,7 @@ public:
   virtual ~MoveCollectionTask();
 
 private slots:
+  void onCloseDone( KJob *job );
   void onRenameDone( KJob *job );
   void onSubscribeDone( KJob *job );
 
@@ -40,6 +41,8 @@ protected:
   virtual void doStart( KIMAP::Session *session );
 
 private:
+  void doRename( KIMAP::Session *session );
+
   Akonadi::Collection m_collection;
 };
 

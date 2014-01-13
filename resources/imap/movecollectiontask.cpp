@@ -27,6 +27,7 @@
 #include <kimap/renamejob.h>
 #include <kimap/session.h>
 #include <kimap/subscribejob.h>
+#include <kimap/closejob.h>
 
 MoveCollectionTask::MoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent )
@@ -63,6 +64,32 @@ void MoveCollectionTask::doStart( KIMAP::Session *session )
     return;
   }
 
+  // Some IMAP servers don't allow renaming an opened mailbox, so make sure
+  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932)
+  if ( session->selectedMailBox() != mailBoxForCollection( collection() ) ) {
+    doRename( session );
+    return;
+  }
+
+  KIMAP::CloseJob *close = new KIMAP::CloseJob( session );
+  connect( close, SIGNAL(result(KJob*)),
+           this, SLOT(onCloseDone(KJob*)) );
+  close->start();
+}
+
+void MoveCollectionTask::onCloseDone(KJob* job)
+{
+  if ( job->error() ) {
+    changeProcessed();
+    emitWarning( i18n( "Cannot move IMAP folder '%1' to '%2', en error occurred when closing folder" ) );
+  } else {
+    KIMAP::CloseJob *close = dynamic_cast<KIMAP::CloseJob*>( job );
+    doRename( close->session() );
+  }
+}
+
+void MoveCollectionTask::doRename( KIMAP::Session *session )
+{
   // collection.remoteId() already includes the separator
   const QString oldMailBox = mailBoxForCollection( sourceCollection() )+collection().remoteId();
   const QString newMailBox = mailBoxForCollection( targetCollection() )+collection().remoteId();
@@ -81,7 +108,6 @@ void MoveCollectionTask::doStart( KIMAP::Session *session )
     changeProcessed();
   }
 }
-
 
 void MoveCollectionTask::onRenameDone( KJob *job )
 {
