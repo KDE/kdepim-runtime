@@ -82,7 +82,7 @@ void MoveCollectionTask::onCloseDone(KJob* job)
   if ( job->error() ) {
     changeProcessed();
   } else {
-    KIMAP::CloseJob *close = dynamic_cast<KIMAP::CloseJob*>( job );
+    KIMAP::CloseJob *close = static_cast<KIMAP::CloseJob*>( job );
     doRename( close->session() );
   }
 }
