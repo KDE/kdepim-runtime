@@ -74,7 +74,6 @@
 #include "movecollectiontask.h"
 #include "moveitemstask.h"
 #include "removecollectionrecursivetask.h"
-#include "removecollectiontask.h"
 #include "removeitemstask.h"
 #include "retrievecollectionmetadatatask.h"
 #include "retrievecollectionstask.h"
