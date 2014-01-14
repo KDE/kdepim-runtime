@@ -27,7 +27,9 @@
 #include <kimap/renamejob.h>
 #include <kimap/session.h>
 #include <kimap/subscribejob.h>
-#include <kimap/closejob.h>
+#include <kimap/selectjob.h>
+
+#include <QtCore/QUuid>
 
 MoveCollectionTask::MoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent )
@@ -64,28 +66,29 @@ void MoveCollectionTask::doStart( KIMAP::Session *session )
     return;
   }
 
-  // Some IMAP servers don't allow renaming an opened mailbox, so make sure
-  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932)
   if ( session->selectedMailBox() != mailBoxForCollection( collection() ) ) {
     doRename( session );
     return;
   }
 
-  KIMAP::CloseJob *close = new KIMAP::CloseJob( session );
-  connect( close, SIGNAL(result(KJob*)),
-           this, SLOT(onCloseDone(KJob*)) );
-  close->start();
+  // Some IMAP servers don't allow moving an opened mailbox, so make sure
+  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932) by examining
+  // a non-existent mailbox. We don't use CLOSE in order not to trigger EXPUNGE
+  KIMAP::SelectJob *examine = new KIMAP::SelectJob( session );
+  examine->setOpenReadOnly( true ); // use EXAMINE instead of SELECT
+  examine->setMailBox( QString::fromLatin1( "IMAP Resource non existing folder %1" ).arg( QUuid::createUuid().toString() ) );
+  connect( examine, SIGNAL(result(KJob*)),
+           this, SLOT(onExamineDone(KJob*)) );
+  examine->start();
 }
 
-void MoveCollectionTask::onCloseDone(KJob* job)
+void MoveCollectionTask::onExamineDone( KJob* job )
 {
-  if ( job->error() ) {
-    changeProcessed();
-    emitWarning( i18n( "Cannot move IMAP folder '%1' to '%2', an error occurred when closing folder." ) );
-  } else {
-    KIMAP::CloseJob *close = static_cast<KIMAP::CloseJob*>( job );
-    doRename( close->session() );
-  }
+  // We deliberately ignore any error here, because the SelectJob will always fail
+  // when examining a non-existent mailbox
+
+  KIMAP::SelectJob *examine = static_cast<KIMAP::SelectJob*>( job );
+  doRename( examine->session() );
 }
 
 void MoveCollectionTask::doRename( KIMAP::Session *session )
