@@ -81,7 +81,7 @@ void MoveCollectionTask::onCloseDone(KJob* job)
 {
   if ( job->error() ) {
     changeProcessed();
-    emitWarning( i18n( "Cannot move IMAP folder '%1' to '%2', an error occurred when closing folder" ) );
+    emitWarning( i18n( "Cannot move IMAP folder '%1' to '%2', an error occurred when closing folder." ) );
   } else {
     KIMAP::CloseJob *close = static_cast<KIMAP::CloseJob*>( job );
     doRename( close->session() );
