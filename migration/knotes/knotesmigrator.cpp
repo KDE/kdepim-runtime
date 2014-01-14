@@ -160,7 +160,7 @@ void KNotesMigrator::startMigration()
     grp.writeEntry("DefaultFolder", m_resourceCollection.id());
     config.sync();
 
-    emit message( Info, i18np( "Starting migration of %1 journal", "Starting migration of %1 journals", oldNotesList.size() ) );
+    emit message( Info, i18np( "Starting migration of %1 note", "Starting migration of %1 notes", oldNotesList.size() ) );
 
     foreach ( KCal::Journal *journal, oldNotesList ) {
         Item newItem;
