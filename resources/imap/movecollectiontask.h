@@ -33,7 +33,7 @@ public:
   virtual ~MoveCollectionTask();
 
 private slots:
-  void onCloseDone( KJob *job );
+  void onExamineDone( KJob *job );
   void onRenameDone( KJob *job );
   void onSubscribeDone( KJob *job );
 
