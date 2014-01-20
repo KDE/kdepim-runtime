@@ -599,6 +599,10 @@ void KolabProxyResource::collectionRemoved( const Akonadi::Collection &collectio
 void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
                                         const Akonadi::Collection &collection )
 {
+  //We only want updates about collections that are not from this resource
+  if ( collection.resource() == identifier() ) {
+    return;
+  }
   if ( m_excludeAppend.contains( item.id() ) )   {
     kDebug() << "item already present";
     m_excludeAppend.removeAll( item.id() );
@@ -611,6 +615,10 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
 
 void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
 {
+  //We only want updates about collections that are not from this resource
+  if ( item.parentCollection().resource() == identifier() ) {
+    return;
+  }
   if ( const KolabHandler::Ptr handler = mHandlerManager->getHandler( item.parentCollection().id() ) ) {
     handler->imapItemRemoved(item);
   } else {
@@ -626,7 +634,10 @@ void KolabProxyResource::imapItemMoved( const Akonadi::Item &item,
                                         const Akonadi::Collection &collectionSource,
                                         const Akonadi::Collection &collectionDestination )
 {
-  Q_UNUSED( collectionSource );
+  //We only want updates about collections that are not from this resource
+  if ( collectionSource.resource() == identifier() || collectionDestination.resource() == identifier() ) {
+    return;
+  }
   KJob *job = new Akonadi::ItemMoveJob( imapToKolab( item ), imapToKolab( collectionDestination ), this );
   connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
 }
@@ -635,8 +646,10 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
                                               const Akonadi::Collection &parent )
 {
   Q_UNUSED( parent );
-  //We are ignoring our session
-  Q_ASSERT( collection.resource() != identifier() );
+  //We only want updates about collections that are not from this resource
+  if ( collection.resource() == identifier() ) {
+    return;
+  }
   if ( mHandlerManager->isMonitored( collection.id() ) ) {
     // something is wrong, so better reload out collection tree
     kWarning() << "IMAPCOLLECTIONADDED ABORT";
@@ -655,8 +668,8 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
 
 void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &collection )
 {
+  //We only want updates about collections that are not from this resource
   if ( collection.resource() == identifier() ) {
-    // just to be sure...
     return;
   }
 
@@ -692,7 +705,10 @@ void KolabProxyResource::imapCollectionMoved( const Akonadi::Collection &collect
                                               const Akonadi::Collection &source,
                                               const Akonadi::Collection &destination )
 {
-  Q_UNUSED( source );
+  //We only want updates about collections that are not from this resource
+  if ( source.resource() == identifier() || destination.resource() == identifier() ) {
+    return;
+  }
   if ( mHandlerManager->isMonitored( collection.id() ) ) {
     KJob *job = new Akonadi::CollectionMoveJob( imapToKolab( collection ), imapToKolab( destination ), this );
     connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
@@ -720,8 +736,10 @@ void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection
 
 void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapCollection )
 {
-  //we are ignoring our session
-  Q_ASSERT( imapCollection.resource() != identifier() );
+  //We only want updates about collections that are not from this resource
+  if ( imapCollection.resource() == identifier() ) {
+    return;
+  }
   if (mHandlerManager->isMonitored( imapCollection.id())) {
     removeFolder(imapCollection);
   } else if ( imapCollection.parentCollection() == Akonadi::Collection::root() ) {
