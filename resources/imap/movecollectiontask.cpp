@@ -91,11 +91,20 @@ void MoveCollectionTask::onExamineDone( KJob* job )
   doRename( examine->session() );
 }
 
+QString MoveCollectionTask::mailBoxForCollections( const Akonadi::Collection& parent, const Akonadi::Collection& child ) const
+{
+  const QString parentMailbox = mailBoxForCollection( parent );
+  if ( parentMailbox.isEmpty() ) {
+      return child.remoteId().mid(1); //Strip separator on toplevel mailboxes
+  }
+  return parentMailbox + child.remoteId();
+}
+
 void MoveCollectionTask::doRename( KIMAP::Session *session )
 {
   // collection.remoteId() already includes the separator
-  const QString oldMailBox = mailBoxForCollection( sourceCollection() )+collection().remoteId();
-  const QString newMailBox = mailBoxForCollection( targetCollection() )+collection().remoteId();
+  const QString oldMailBox = mailBoxForCollections( sourceCollection(), collection() );
+  const QString newMailBox = mailBoxForCollections( targetCollection(), collection() );
 
   if ( oldMailBox != newMailBox ) {
     KIMAP::RenameJob *job = new KIMAP::RenameJob( session );

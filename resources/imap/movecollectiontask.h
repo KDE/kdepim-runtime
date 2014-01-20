@@ -42,6 +42,7 @@ protected:
 
 private:
   void doRename( KIMAP::Session *session );
+  QString mailBoxForCollections( const Akonadi::Collection &parent, const Akonadi::Collection &child ) const;
 
   Akonadi::Collection m_collection;
 };

@@ -69,8 +69,37 @@ private slots:
 
     QTest::newRow( "moving mailbox" ) << collection << source << target << scenario << callNames;
 
+    {
+      const Akonadi::Collection toplevel = createCollectionChain( QLatin1String("/Bar") );
 
+      scenario.clear();
+      scenario << defaultPoolConnectionScenario()
+              << "C: A000003 RENAME \"Bar\" \"INBOX/Bar\""
+              << "S: A000003 OK rename done"
+              << "C: A000004 SUBSCRIBE \"INBOX/Bar\""
+              << "S: A000004 OK subscribe done";
 
+      callNames.clear();
+      callNames << "collectionChangeCommitted";
+
+      QTest::newRow( "move mailbox from toplevel" ) << toplevel << root << inbox << scenario << callNames;
+    }
+
+    {
+      const Akonadi::Collection toplevel = createCollectionChain( QLatin1String("/INBOX/Bar") );
+
+      scenario.clear();
+      scenario << defaultPoolConnectionScenario()
+              << "C: A000003 RENAME \"INBOX/Bar\" \"Bar\""
+              << "S: A000003 OK rename done"
+              << "C: A000004 SUBSCRIBE \"Bar\""
+              << "S: A000004 OK subscribe done";
+
+      callNames.clear();
+      callNames << "collectionChangeCommitted";
+
+      QTest::newRow( "move mailbox to toplevel" ) << toplevel << inbox << root << scenario << callNames;
+    }
 
     // Same collections
     // The scenario changes though
