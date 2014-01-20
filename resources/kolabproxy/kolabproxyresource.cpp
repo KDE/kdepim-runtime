@@ -693,8 +693,10 @@ void KolabProxyResource::imapCollectionMoved( const Akonadi::Collection &collect
                                               const Akonadi::Collection &destination )
 {
   Q_UNUSED( source );
-  KJob *job = new Akonadi::CollectionMoveJob( imapToKolab( collection ), imapToKolab( destination ), this );
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  if ( mHandlerManager->isMonitored( collection.id() ) ) {
+    KJob *job = new Akonadi::CollectionMoveJob( imapToKolab( collection ), imapToKolab( destination ), this );
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  }
 }
 
 void KolabProxyResource::kolabFolderChangeResult( KJob *job )
