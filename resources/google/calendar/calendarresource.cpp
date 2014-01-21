@@ -445,7 +445,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
     m_rootCollection.setRemoteId( ROOT_COLLECTION_REMOTEID );
     m_rootCollection.setName( fetchJob->account()->accountName() );
-    m_rootCollection.setParent( Collection::root() );
+    m_rootCollection.setParentCollection( Collection::root() );
     m_rootCollection.setRights( Collection::CanCreateCollection );
     m_rootCollection.setCachePolicy( cachePolicy );
 
@@ -466,7 +466,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Event::eventMimeType() );
         collection.setName( calendar->uid() );
-        collection.setParent( m_rootCollection );
+        collection.setParentCollection( m_rootCollection );
         collection.setRemoteId( calendar->uid() );
         if ( calendar->editable() ) {
             collection.setRights( Collection::CanChangeCollection |
@@ -504,7 +504,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Todo::todoMimeType() );
         collection.setName( taskList->uid() );
-        collection.setParent( m_rootCollection );
+        collection.setParentCollection( m_rootCollection );
         collection.setRemoteId( taskList->uid() );
         collection.setRights( Collection::CanChangeCollection |
                               Collection::CanCreateItem |
