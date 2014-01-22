@@ -114,12 +114,9 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
   // The result is explicitly ignored, since this can fail in the case of an empty folder
   storeJob->start();
 
-  // expunge the mailbox
-  KIMAP::ExpungeJob *expungeJob = new KIMAP::ExpungeJob( mSession );
-  connect( expungeJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
-  expungeJob->start();
-
-  // Close the mailbox - some servers refuse to delete an opened mailbox
+  // Some IMAP servers don't allow deleting an opened mailbox, so make sure
+  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932). CLOSE will
+  // also trigger EXPUNGE to take care of the messages deleted above
   KIMAP::CloseJob *closeJob = new KIMAP::CloseJob( mSession );
   closeJob->setProperty( "folderDescriptor", descriptor.name );
   connect( closeJob, SIGNAL(result(KJob*)), SLOT(onCloseJobDone(KJob*)) );

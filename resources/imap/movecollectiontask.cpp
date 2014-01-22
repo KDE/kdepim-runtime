@@ -27,6 +27,9 @@
 #include <kimap/renamejob.h>
 #include <kimap/session.h>
 #include <kimap/subscribejob.h>
+#include <kimap/selectjob.h>
+
+#include <QtCore/QUuid>
 
 MoveCollectionTask::MoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent )
@@ -63,9 +66,45 @@ void MoveCollectionTask::doStart( KIMAP::Session *session )
     return;
   }
 
+  if ( session->selectedMailBox() != mailBoxForCollection( collection() ) ) {
+    doRename( session );
+    return;
+  }
+
+  // Some IMAP servers don't allow moving an opened mailbox, so make sure
+  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932) by examining
+  // a non-existent mailbox. We don't use CLOSE in order not to trigger EXPUNGE
+  KIMAP::SelectJob *examine = new KIMAP::SelectJob( session );
+  examine->setOpenReadOnly( true ); // use EXAMINE instead of SELECT
+  examine->setMailBox( QString::fromLatin1( "IMAP Resource non existing folder %1" ).arg( QUuid::createUuid().toString() ) );
+  connect( examine, SIGNAL(result(KJob*)),
+           this, SLOT(onExamineDone(KJob*)) );
+  examine->start();
+}
+
+void MoveCollectionTask::onExamineDone( KJob* job )
+{
+  // We deliberately ignore any error here, because the SelectJob will always fail
+  // when examining a non-existent mailbox
+
+  KIMAP::SelectJob *examine = static_cast<KIMAP::SelectJob*>( job );
+  doRename( examine->session() );
+}
+
+QString MoveCollectionTask::mailBoxForCollections( const Akonadi::Collection& parent, const Akonadi::Collection& child ) const
+{
+  const QString parentMailbox = mailBoxForCollection( parent );
+  if ( parentMailbox.isEmpty() ) {
+      return child.remoteId().mid(1); //Strip separator on toplevel mailboxes
+  }
+  return parentMailbox + child.remoteId();
+}
+
+void MoveCollectionTask::doRename( KIMAP::Session *session )
+{
   // collection.remoteId() already includes the separator
-  const QString oldMailBox = mailBoxForCollection( sourceCollection() )+collection().remoteId();
-  const QString newMailBox = mailBoxForCollection( targetCollection() )+collection().remoteId();
+  const QString oldMailBox = mailBoxForCollections( sourceCollection(), collection() );
+  const QString newMailBox = mailBoxForCollections( targetCollection(), collection() );
 
   if ( oldMailBox != newMailBox ) {
     KIMAP::RenameJob *job = new KIMAP::RenameJob( session );
@@ -81,7 +120,6 @@ void MoveCollectionTask::doStart( KIMAP::Session *session )
     changeProcessed();
   }
 }
-
 
 void MoveCollectionTask::onRenameDone( KJob *job )
 {

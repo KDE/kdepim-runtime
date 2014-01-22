@@ -33,6 +33,9 @@ class GoogleAccountManager;
 
 class QGroupBox;
 class KComboBox;
+class QCheckBox;
+class KIntSpinBox;
+
 
 class GoogleSettingsDialog : public KDialog
 {
@@ -53,12 +56,13 @@ class GoogleSettingsDialog : public KDialog
 
   protected:
     bool handleError( KGAPI2::Job *job );
+    virtual void saveSettings() = 0;
 
   private Q_SLOTS:
+    void slotSaveSettings();
     void slotAddAccountClicked();
     void slotRemoveAccountClicked();
     void slotAuthJobFinished( KGAPI2::Job *job );
-
     void slotAccountAuthenticated( KGAPI2::Job *job );
 
   private:
@@ -69,6 +73,8 @@ class GoogleSettingsDialog : public KDialog
     KPushButton *m_addAccButton;
     KPushButton *m_removeAccButton;
     KComboBox *m_accComboBox;
+    QCheckBox *m_enableRefresh;
+    KIntSpinBox *m_refreshSpinBox;
 
 };
 

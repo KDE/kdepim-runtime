@@ -99,7 +99,6 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
 
 SettingsDialog::~SettingsDialog()
 {
-    saveSettings();
 }
 
 void SettingsDialog::saveSettings()

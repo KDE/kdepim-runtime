@@ -26,6 +26,7 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/LinkJob>
 #include <Akonadi/UnlinkJob>
+#include <Akonadi/CachePolicy>
 
 #include <KABC/Addressee>
 #include <KABC/Picture>
@@ -341,12 +342,19 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     ContactsGroupFetchJob *fetchJob = qobject_cast<ContactsGroupFetchJob *>( job );
     const ObjectsList objects = fetchJob->items();
 
+    CachePolicy cachePolicy;
+    if ( Settings::self()->enableIntervalCheck() ) {
+        cachePolicy.setInheritFromParent( false );
+        cachePolicy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+    }
+
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::virtualMimeType()
                                                         << KABC::Addressee::mimeType() );
     m_rootCollection.setRemoteId( MYCONTACTS_REMOTEID );
     m_rootCollection.setName( fetchJob->account()->accountName() );
-    m_rootCollection.setParent( Collection::root() );
+    m_rootCollection.setParentCollection( Collection::root() );
+    m_rootCollection.setCachePolicy( cachePolicy );
     m_rootCollection.setRights( Collection::CanCreateCollection |
                                 Collection::CanCreateItem |
                                 Collection::CanChangeItem |
@@ -383,7 +391,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
         collection.setName( group->title() );
-        collection.setParent( m_rootCollection );
+        collection.setParentCollection( m_rootCollection );
         collection.setRights( Collection::CanLinkItem |
                               Collection::CanUnlinkItem |
                               Collection::CanChangeItem );
@@ -405,7 +413,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     Collection otherCollection;
     otherCollection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
     otherCollection.setName( i18n( "Other Contacts" ) );
-    otherCollection.setParent( m_rootCollection );
+    otherCollection.setParentCollection( m_rootCollection );
     otherCollection.setRights( Collection::CanCreateItem |
                                Collection::CanChangeItem |
                                Collection::CanDeleteItem );

@@ -29,6 +29,7 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemSearchJob>
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
+#include <Akonadi/CachePolicy>
 
 #include <Soprano/Vocabulary/NAO>
 #include <Nepomuk2/Vocabulary/NIE>
@@ -434,12 +435,19 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     ObjectsList calendars = fetchJob->property( CALENDARS_PROPERTY ).value<ObjectsList>();
     ObjectsList taskLists = fetchJob->items();
 
+    CachePolicy cachePolicy;
+    if ( Settings::self()->enableIntervalCheck() ) {
+        cachePolicy.setInheritFromParent( false );
+        cachePolicy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+    }
+
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
     m_rootCollection.setRemoteId( ROOT_COLLECTION_REMOTEID );
     m_rootCollection.setName( fetchJob->account()->accountName() );
-    m_rootCollection.setParent( Collection::root() );
+    m_rootCollection.setParentCollection( Collection::root() );
     m_rootCollection.setRights( Collection::CanCreateCollection );
+    m_rootCollection.setCachePolicy( cachePolicy );
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
     attr->setDisplayName( fetchJob->account()->accountName() );
@@ -458,7 +466,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Event::eventMimeType() );
         collection.setName( calendar->uid() );
-        collection.setParent( m_rootCollection );
+        collection.setParentCollection( m_rootCollection );
         collection.setRemoteId( calendar->uid() );
         if ( calendar->editable() ) {
             collection.setRights( Collection::CanChangeCollection |
@@ -496,7 +504,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Todo::todoMimeType() );
         collection.setName( taskList->uid() );
-        collection.setParent( m_rootCollection );
+        collection.setParentCollection( m_rootCollection );
         collection.setRemoteId( taskList->uid() );
         collection.setRights( Collection::CanChangeCollection |
                               Collection::CanCreateItem |

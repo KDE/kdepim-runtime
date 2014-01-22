@@ -20,107 +20,10 @@
 #include "imaptestbase.h"
 
 #include "removecollectionrecursivetask.h"
-#include "removecollectiontask.h"
 
-class TestRemoveCollectionTask : public ImapTestBase
+class TestRemoveCollectionRecursiveTask : public ImapTestBase
 {
   Q_OBJECT
-
-private slots:
-  void shouldDeleteMailBox_data()
-  {
-    QTest::addColumn<Akonadi::Collection>( "collection" );
-    QTest::addColumn< QList<QByteArray> >( "scenario" );
-    QTest::addColumn<QStringList>( "callNames" );
-    QTest::addColumn<QString>( "selectedCollection" );
-
-    Akonadi::Collection collection;
-    QSet<QByteArray> parts;
-    QString messageContent;
-    QList<QByteArray> scenario;
-    QStringList callNames;
-    QString selectedCollection;
-
-    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
-
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 DELETE \"INBOX/Foo\""
-             << "S: A000003 OK delete done";
-
-    callNames.clear();
-    callNames << "changeProcessed";
-
-    QTest::newRow( "normal case" ) << collection << scenario << callNames;
-
-
-    // We keep the same collection
-
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 DELETE \"INBOX/Foo\""
-             << "S: A000003 NO delete failed";
-
-    callNames.clear();
-    callNames << "changeProcessed" << "emitWarning" << "synchronizeCollectionTree";
-
-    QTest::newRow( "delete failed" ) << collection << scenario << callNames;
-
-
-    collection = createCollectionChain( QLatin1String(".INBOX.Foo") );
-
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 DELETE \"INBOX.Foo\""
-             << "S: A000003 OK delete done";
-
-    callNames.clear();
-    callNames << "changeProcessed";
-
-    QTest::newRow( "non-standard separator" ) << collection << scenario << callNames;
-  }
-
-  void shouldDeleteMailBox()
-  {
-    QFETCH( Akonadi::Collection, collection );
-    QFETCH( QList<QByteArray>, scenario );
-    QFETCH( QStringList, callNames );
-
-    FakeServer server;
-    server.setScenario( scenario );
-    server.startAndWait();
-
-    SessionPool pool( 1 );
-
-    pool.setPasswordRequester( createDefaultRequester() );
-    QVERIFY( pool.connect( createDefaultAccount() ) );
-    QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
-
-    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
-    state->setCollection( collection );
-    RemoveCollectionTask *task = new RemoveCollectionTask( state );
-    task->start( &pool );
-
-    QTRY_COMPARE( state->calls().count(), callNames.size() );
-    for ( int i = 0; i < callNames.size(); i++ ) {
-      QString command = QString::fromUtf8(state->calls().at( i ).first);
-      QVariant parameter = state->calls().at( i ).second;
-
-      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
-        kDebug() << "Got a cancel:" << parameter.toString();
-      }
-
-      QCOMPARE( command, callNames[i] );
-
-      if ( command == "cancelTask" ) {
-        QVERIFY( !parameter.toString().isEmpty() );
-      }
-    }
-
-    QVERIFY( server.isAllScenarioDone() );
-
-    server.quit();
-  }
 
   void shouldDeleteMailBoxRecursive_data()
   {
@@ -339,6 +242,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestRemoveCollectionTask )
+QTEST_KDEMAIN_CORE( TestRemoveCollectionRecursiveTask )
 
-#include "testremovecollectiontask.moc"
+#include "testremovecollectionrecursivetask.moc"

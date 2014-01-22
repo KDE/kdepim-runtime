@@ -33,6 +33,7 @@ public:
   virtual ~MoveCollectionTask();
 
 private slots:
+  void onExamineDone( KJob *job );
   void onRenameDone( KJob *job );
   void onSubscribeDone( KJob *job );
 
@@ -40,6 +41,9 @@ protected:
   virtual void doStart( KIMAP::Session *session );
 
 private:
+  void doRename( KIMAP::Session *session );
+  QString mailBoxForCollections( const Akonadi::Collection &parent, const Akonadi::Collection &child ) const;
+
   Akonadi::Collection m_collection;
 };
 

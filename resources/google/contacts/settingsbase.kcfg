@@ -8,11 +8,11 @@
   <group name="General">
     <entry name="Account" type="String">
     </entry>
-    <entry name="RefreshAddressbook" type="Bool">
-      <default>true</default>
+    <entry name="EnableIntervalCheck" type="Bool">
+      <default>false</default>
     </entry>
-    <entry name="RefreshInterval" type="Int">
-      <default>30</default>
+    <entry name="IntervalCheckTime" type="Int">
+      <default>60</default>
     </entry>
   </group>
 </kcfg>
