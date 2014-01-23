@@ -126,7 +126,7 @@ void PostJob::doStart()
 
     KIO::TransferJob* transfer = KIO::http_post( url, postData, KIO::HideProgressInfo );
     transfer->addMetaData( QLatin1String("content-type"), QLatin1String("Content-type: application/x-www-form-urlencoded") );
-    transfer->addMetaData ( QLatin1String("customHTTPHeader"), "Authorization: Basic " + QString( username() + QLatin1Char(':') + password() ).toUtf8().toBase64() );
+    transfer->addMetaData( QLatin1String("customHTTPHeader"), QLatin1String("Authorization: Basic ") + QString( username() + QLatin1Char(':') + password() ).toUtf8().toBase64() );
     connect( transfer, SIGNAL(result(KJob*)), this, SLOT(jobFinished(KJob*)) );
 }
 
@@ -166,7 +166,7 @@ void GetJob::doStart()
 {
     const KUrl url = assembleUrl( path() );
     KIO::TransferJob* transfer = KIO::get( url, KIO::Reload, KIO::HideProgressInfo );
-    transfer->addMetaData ( QLatin1String("customHTTPHeader"), "Authorization: Basic " + QString( username() + QLatin1Char(':') + password() ).toUtf8().toBase64() );
+    transfer->addMetaData( QLatin1String("customHTTPHeader"), QLatin1String("Authorization: Basic ") + QString( username() + QLatin1Char(':') + password() ).toUtf8().toBase64() );
     connect( transfer, SIGNAL(data(KIO::Job*,QByteArray)),
              this, SLOT(data(KIO::Job*,QByteArray)) );
     connect( transfer, SIGNAL(result(KJob*)), this, SLOT(jobFinished(KJob*)) );
