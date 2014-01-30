@@ -23,6 +23,9 @@
 #include <kimap/searchjob.h>
 #include <kimap/session.h>
 #include <kimap/selectjob.h>
+#include <Akonadi/SearchQuery>
+#include <Akonadi/KMime/MessageFlags>
+#include <KDateTime>
 
 Q_DECLARE_METATYPE( KIMAP::Session* )
 
@@ -68,9 +71,93 @@ void SearchTask::doSearch( KIMAP::Session *session )
 {
     kDebug();
 
+    Akonadi::SearchQuery query = Akonadi::SearchQuery::fromJSON( m_query.toLatin1() );
     KIMAP::SearchJob *searchJob = new KIMAP::SearchJob( session );
     searchJob->setUidBased( true );
-    searchJob->addSearchCriteria( KIMAP::SearchJob::To, "dvratil@redhat.com" );
+
+    Akonadi::SearchTerm term = query.term();
+    if ( term.relation() == Akonadi::SearchTerm::RelAnd ) {
+        searchJob->setSearchLogic( KIMAP::SearchJob::And );
+    } else {
+        searchJob->setSearchLogic( KIMAP::SearchJob::Or );
+    }
+
+    Q_FOREACH (const Akonadi::SearchTerm &termsGroup, term.subTerms()) {
+        Q_FOREACH (const Akonadi::SearchTerm &subterm, termsGroup.subTerms()) {
+            kDebug() << subterm.key() << subterm.value();
+            const Akonadi::EmailSearchTerm::EmailSearchField field = Akonadi::EmailSearchTerm::fromKey(subterm.key());
+            switch (field) {
+                case Akonadi::EmailSearchTerm::Message:
+                case Akonadi::EmailSearchTerm::Body:
+                    //FIXME
+                    //todo somehow search the body (not possible yet)
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::Body, subterm.value().toByteArray() );
+                    break;
+                case Akonadi::EmailSearchTerm::Headers:
+                    //FIXME
+                    //search all headers
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::Header, subterm.value().toByteArray() );
+                    break;
+                case Akonadi::EmailSearchTerm::ByteSize:
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::Larger, subterm.value().toInt( ) );
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::Smaller, subterm.value().toInt( ) );
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderDate: {
+                    const KDateTime dt = KDateTime::fromString(subterm.value().toString(), KDateTime::ISODate);
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::On, dt.date() );
+                }
+                    break;
+                case Akonadi::EmailSearchTerm::Subject:
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::Subject, subterm.value().toByteArray() );
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderFrom:
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::From, subterm.value().toByteArray() );
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderTo:
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::To, subterm.value().toByteArray() );
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderCC:
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::CC, subterm.value().toByteArray() );
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderBCC:
+                    searchJob->addSearchCriteria( KIMAP::SearchJob::BCC, subterm.value().toByteArray() );
+                    break;
+                case Akonadi::EmailSearchTerm::MessageStatus:
+                    if ( subterm.value().toString() == QString::fromLatin1( Akonadi::MessageFlags::Flagged ) ) {
+                        searchJob->addSearchCriteria( KIMAP::SearchJob::Flagged );
+                    }
+                    //TODO remaining flags
+                    break;
+                case Akonadi::EmailSearchTerm::MessageTag:
+                    //search directly in akonadi? or index tags.
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderReplyTo:
+                    // TODO
+                    //t.addSubTerm(getTerm(subterm, "replyto"));
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderOrganization:
+                    // TODO
+                    //t.addSubTerm(getTerm(subterm, "organization"));
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderListId:
+    //                     t.addSubTerm(getTerm(subterm, "listid"));
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderResentFrom:
+    //                     t.addSubTerm(getTerm(subterm, "resentfrom"));
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderXLoop:
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderXMailingList:
+                    break;
+                case Akonadi::EmailSearchTerm::HeaderXSpamFlag:
+                    break;
+                case Akonadi::EmailSearchTerm::Unknown:
+                default:
+                    kWarning() << "unknown term " << subterm.key();
+            }
+        }
+    }
+
     connect( searchJob, SIGNAL(finished(KJob*)),
              this, SLOT(onSearchDone(KJob*)) );
     searchJob->start();
