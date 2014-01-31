@@ -20,6 +20,7 @@
 #include "imaptestbase.h"
 
 #include "addcollectiontask.h"
+#include <collectionannotationsattribute.h>
 
 class TestAddCollectionTask : public ImapTestBase
 {
@@ -92,6 +93,30 @@ private slots:
 
     QTest::newRow( "folder with non-standard separator") << parentCollection << collection << scenario
                                                          << callNames << "Foo" << ".Foo";
+
+    parentCollection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection = Akonadi::Collection( 4 );
+    collection.setName( QLatin1String("Bar") );
+    collection.setParentCollection( parentCollection );
+    Akonadi::CollectionAnnotationsAttribute *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Collection::AddIfMissing );
+    QMap<QByteArray, QByteArray> annotations;
+    annotations.insert( "/shared/vendor/foobar/foo", "value" );
+    attr->setAnnotations( annotations );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 CREATE \"INBOX/Foo/Bar\""
+             << "S: A000003 OK create done"
+             << "C: A000004 SUBSCRIBE \"INBOX/Foo/Bar\""
+             << "S: A000004 OK subscribe done"
+             << "C: A000005 SETMETADATA \"INBOX/Foo/Bar\" (\"/shared/vendor/foobar/foo\"   {5}\r\nvalue)"
+             << "S: A000005 OK SETMETADATA complete";
+
+    callNames.clear();
+    callNames << QLatin1String("collectionChangeCommitted");
+
+    QTest::newRow( "folder with annotations" ) << parentCollection << collection << scenario << callNames
+                                    << collection.name() << "/Bar";
   }
 
   void shouldCreateAndSubscribe()
@@ -116,6 +141,9 @@ private slots:
     DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
     state->setParentCollection( parentCollection );
     state->setCollection( collection );
+    if (collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>()) {
+      state->setServerCapabilities( QStringList() << "METADATA" );
+    }
     AddCollectionTask *task = new AddCollectionTask( state );
     task->start( &pool );
 
