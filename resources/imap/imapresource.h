@@ -27,6 +27,7 @@
 #define RESOURCES_IMAP_IMAPRESOURCE_H
 
 #include <akonadi/resourcebase.h>
+#include <akonadi/agentsearchinterface.h>
 #include <QPointer>
 
 class QTimer;
@@ -42,7 +43,9 @@ class SessionPool;
 class ResourceState;
 class SubscriptionDialog;
 
-class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV3
+class ImapResource : public Akonadi::ResourceBase,
+                     public Akonadi::AgentBase::ObserverV3,
+                     public Akonadi::AgentSearchInterface
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
@@ -95,6 +98,9 @@ protected:
   virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                 const Akonadi::Collection &destination );
 
+  virtual void addSearch( const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection );
+  virtual void removeSearch( const Akonadi::Collection &resultCollection );
+  virtual void search( const QString &query, const Akonadi::Collection &collection );
 
   virtual void doSetOnline(bool online);
 
@@ -104,6 +110,8 @@ protected:
   virtual void aboutToQuit();
 
 private Q_SLOTS:
+  void doSearch( const QVariant &arg );
+
   void reconnect();
 
   void scheduleConnectionAttempt();

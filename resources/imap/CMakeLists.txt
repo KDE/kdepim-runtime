@@ -36,6 +36,7 @@ set( imapresource_LIB_SRCS
   retrievecollectionstask.cpp
   retrieveitemtask.cpp
   retrieveitemstask.cpp
+  searchtask.cpp
   sessionpool.cpp
   timestampattribute.cpp
   uidvalidityattribute.cpp

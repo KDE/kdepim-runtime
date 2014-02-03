@@ -281,6 +281,12 @@ void ResourceTask::changesCommitted(const Akonadi::Item::List& items)
   deleteLater();
 }
 
+void ResourceTask::searchFinished( const QVector<qint64> &result, bool isRid )
+{
+  m_resource->searchFinished( result, isRid );
+  deleteLater();
+}
+
 void ResourceTask::collectionsRetrieved( const Akonadi::Collection::List &collections )
 {
   m_resource->collectionsRetrieved( collections );

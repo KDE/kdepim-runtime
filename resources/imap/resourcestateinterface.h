@@ -83,6 +83,8 @@ public:
 
   virtual void changeProcessed() = 0;
 
+  virtual void searchFinished( const QVector<qint64> &result, bool isRid = true ) = 0;
+
   virtual void cancelTask( const QString &errorString ) = 0;
   virtual void deferTask() = 0;
   virtual void taskDone() = 0;
