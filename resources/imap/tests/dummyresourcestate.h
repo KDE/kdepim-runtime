@@ -98,6 +98,8 @@ public:
 
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
 
+  virtual void searchFinished( const QVector<qint64> &result, bool isRid = true );
+
   virtual void changeProcessed();
 
   virtual void cancelTask( const QString &errorString );

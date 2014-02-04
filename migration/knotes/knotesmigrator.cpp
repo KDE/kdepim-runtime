@@ -238,5 +238,3 @@ void KNotesMigrator::slotCollectionModify(KJob* job)
     Q_UNUSED( job );
     migrationCompleted( m_agentInstance );
 }
-
-#include "moc_knotesmigrator.cpp"

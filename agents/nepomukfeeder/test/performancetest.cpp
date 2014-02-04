@@ -81,7 +81,7 @@ private slots:
         item.setModificationTime(QDateTime(QDate(2012, 01, 02)));
         QFETCH(QString, file);
         KMime::Message::Ptr  msg = readMimeFile(file);
-        QVERIFY(msg);
+        QVERIFY(msg.get());
         item.setPayload(msg);
         item.setMimeType(KMime::Message::mimeType());
         Nepomuk2::SimpleResourceGraph graph;
@@ -113,7 +113,7 @@ private slots:
         item.setModificationTime(QDateTime(QDate(2012, 01, 02)));
         QFETCH(QString, file);
         KMime::Message::Ptr  msg = readMimeFile(file);
-        QVERIFY(msg);
+        QVERIFY(msg.get());
         item.setPayload(msg);
         item.setMimeType(KMime::Message::mimeType());
         

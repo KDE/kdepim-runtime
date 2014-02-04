@@ -125,12 +125,11 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
     }
     job->setMailBox( mailBoxForCollection( m_collection ) );
 
-    if ( job->serverCapability() == KIMAP::MetaDataJobBase::Annotatemore ) {
-      job->setEntry( entry );
-      job->addMetaData( "value.shared", annotations[entry] );
-    } else {
-      //We stripped the /shared prefix when getting the metadata, so we need to readd it now
+    if ( !entry.startsWith( "/shared" ) && !entry.startsWith( "/private" ) ) {
+        //Support for legacy annotations that don't include the prefix
       job->addMetaData( QByteArray("/shared") + entry, annotations[entry] );
+    } else {
+      job->addMetaData( entry, annotations[entry] );
     }
 
     connect( job, SIGNAL(result(KJob*)),

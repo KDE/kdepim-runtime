@@ -29,6 +29,7 @@
 #include "timestampattribute.h"
 
 #include <akonadi/collectionmodifyjob.h>
+#include <akonadi/agentsearchinterface.h>
 #include <kmessagebox.h>
 
 ResourceStateInterface::Ptr ResourceState::createRetrieveItemState( ImapResource *resource,
@@ -190,6 +191,16 @@ ResourceStateInterface::Ptr ResourceState::createExpungeCollectionState( ImapRes
 
 ResourceStateInterface::Ptr ResourceState::createIdleState( ImapResource *resource,
                                                             const Akonadi::Collection &collection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
+ResourceStateInterface::Ptr ResourceState::createSearchState( ImapResource *resource,
+                                                              const Akonadi::Collection &collection )
 {
   ResourceState *state = new ResourceState( resource );
 
@@ -405,6 +416,13 @@ void ResourceState::changeProcessed()
 {
   m_resource->changeProcessed();
 }
+
+void ResourceState::searchFinished( const QVector<qint64> &result, bool isRid )
+{
+  m_resource->searchFinished( result, isRid ? Akonadi::AgentSearchInterface::Rid :
+                                              Akonadi::AgentSearchInterface::Uid );
+}
+
 
 void ResourceState::cancelTask( const QString &errorString )
 {

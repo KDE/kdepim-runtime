@@ -79,6 +79,7 @@
 #include "retrievecollectionstask.h"
 #include "retrieveitemtask.h"
 #include "retrieveitemstask.h"
+#include "searchtask.h"
 
 #include "settingspasswordrequester.h"
 #include "sessionpool.h"
@@ -256,7 +257,7 @@ void ImapResource::fetchItemsWithoutBodiesDone( KJob *job )
                              Q_ARG( QList<qint64>, uids ) );
 }
 
-// ----------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 int ImapResource::configureDialog( WId windowId )
 {
@@ -567,6 +568,38 @@ void ImapResource::collectionMoved( const Akonadi::Collection &collection, const
 }
 
 
+
+void ImapResource::addSearch(const QString& query, const QString& queryLanguage, const Collection& resultCollection)
+{
+}
+
+void ImapResource::removeSearch(const Collection& resultCollection)
+{
+}
+
+void ImapResource::search( const QString &query, const Collection &collection )
+{
+  QVariantMap arg;
+  arg[QLatin1String("query")] = query;
+  arg[QLatin1String("collection")] = QVariant::fromValue( collection );
+  scheduleCustomTask( this, "doSearch", arg );
+}
+
+void ImapResource::doSearch( const QVariant &arg )
+{
+  const QVariantMap map = arg.toMap();
+  const QString query = map[QLatin1String("query")].toString();
+  const Collection collection = map[QLatin1String("collection")].value<Collection>();
+
+  ResourceStateInterface::Ptr state = ::ResourceState::createSearchState( this, collection );
+  emit status( AgentBase::Running, i18nc( "@info:status", "Searching..." ) );
+  SearchTask *task = new SearchTask( state, query, this );
+  task->start( m_pool );
+  queueTask( task );
+}
+
+
+// -----
 
 // ----------------------------------------------------------------------------------
 
