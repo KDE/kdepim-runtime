@@ -52,6 +52,7 @@ Comment[ia]="Il provide accesso a elementos de calendario, cata un immagazinate 
 Comment[kk]="Көрсетілген қапшықта, бөлек файлдарда сақталған күнтізбенің жазуларына қатынау мүмкіндігін береді"
 Comment[nb]=«Gir tilgang til kalenderelementer, hver lagret i én enkelt fil, i en gitt mappe»
 Comment[nl]="Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map"
+Comment[pl]="Daje dostęp do plików obiektów kalendarza, każdy w oddzielnym pliku, w podanym katalogu"
 Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
 Comment[pt_BR]="Fornece acesso aos itens do calendário, cada um armazenado em um único arquivo na pasta indicada"
 Comment[ru]="Обеспечивает доступ к элементам календаря, каждый из которых хранится в отдельном файле в указанном каталоге"
