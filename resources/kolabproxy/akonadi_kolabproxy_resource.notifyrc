@@ -1,6 +1,7 @@
 [Global]
 IconName=kolab
 Comment=Kolab Proxy Resource Notifications
+Comment[bs]=Notifikacija Kolab Proxy resursa
 Comment[de]=Benachrichtigungen der Proxy-Ressource für Kolab
 Comment[es]=Notificaciones de recursos del proxy Kolab
 Comment[fi]=Kolab Proxy -resurssin ilmoitukset
@@ -24,6 +25,7 @@ Comment[uk]=Сповіщення ресурсу проксі-сервера Kola
 Comment[x-test]=xxKolab Proxy Resource Notificationsxx
 Comment[zh_TW]=Kolab Proxy 資源通知
 Name=Kolab Resource
+Name[bs]=Kolab resurs
 Name[cs]=Zdroj Kolab
 Name[de]=Kolab-Ressource
 Name[es]=Recurso de Kolab
@@ -50,6 +52,7 @@ Name[zh_TW]=Kolab 資源
 
 [Event/Error]
 Name=An error occurred
+Name[bs]=Desila se greška
 Name[de]=Es ist ein Fehler aufgetreten
 Name[es]=Ocurrió un error
 Name[fi]=Tapahtui virhe
