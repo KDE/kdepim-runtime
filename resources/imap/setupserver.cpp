@@ -32,6 +32,7 @@
 #include "settings.h"
 #include "imapresource.h"
 #include "serverinfodialog.h"
+#include "resources/folderarchivesettings/folderarchivesettingpage.h"
 
 
 #include <mailtransport/transport.h>
@@ -125,6 +126,8 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
 {
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
+  m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
+  m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
   m_ui->safeImapGroup->setId( m_ui->noRadio, KIMAP::LoginJob::Unencrypted );
   m_ui->safeImapGroup->setId( m_ui->sslRadio, KIMAP::LoginJob::AnySslVersion );
   m_ui->safeImapGroup->setId( m_ui->tlsRadio, KIMAP::LoginJob::TlsV1 );
@@ -252,6 +255,7 @@ void SetupServer::slotCustomSieveChanged()
 
 void SetupServer::applySettings()
 {
+  m_folderArchiveSettingPage->writeSettings();
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
                     || ( Settings::self()->userName() != m_ui->userName->text() );
 
@@ -333,6 +337,7 @@ void SetupServer::applySettings()
 
 void SetupServer::readSettings()
 {
+  m_folderArchiveSettingPage->loadSettings();
   m_ui->accountName->setText( m_parentResource->name() );
   m_oldResourceName = m_ui->accountName->text();
 
