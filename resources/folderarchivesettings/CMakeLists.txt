@@ -18,6 +18,7 @@ set(folderarchivesettings_SRCS
 kde4_add_library(folderarchivesettings ${LIBRARY_TYPE} ${folderarchivesettings_SRCS} )
 
 target_link_libraries(folderarchivesettings
+                      ${KDEPIMLIBS_KMIME_LIBS}
                       ${AKONADI_COMMON_LIBRARIES}
                       ${QT_QTGUI_LIBRARY}
                       ${KDEPIMLIBS_AKONADI_LIBS}

@@ -18,7 +18,10 @@
 #include "folderarchivesettingpage.h"
 #include "folderarchiveaccountinfo.h"
 #include "folderarchiveutil.h"
+
 #include <Akonadi/CollectionRequester>
+
+#include <kmime/kmime_message.h>
 
 #include <KLocale>
 #include <KGlobal>
@@ -81,6 +84,7 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
         "Archive into:"));
     hbox->addWidget(lab);
     mArchiveFolder = new Akonadi::CollectionRequester;
+    mArchiveFolder->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());
     hbox->addWidget(mArchiveFolder);
     lay->addLayout(hbox);
 
