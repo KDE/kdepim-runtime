@@ -23,7 +23,6 @@ namespace FolderArchive {
 namespace FolderArchiveUtil
 {
 QString groupConfigPattern();
-bool resourceSupportArchiving(const QString &resource);
 QString configFileName();
 }
 }
