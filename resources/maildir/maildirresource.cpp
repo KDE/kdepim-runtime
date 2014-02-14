@@ -243,7 +243,7 @@ void MaildirResource::aboutToQuit()
 
 void MaildirResource::configure( WId windowId )
 {
-  ConfigDialog dlg( mSettings );
+  ConfigDialog dlg( mSettings, identifier() );
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   dlg.setWindowIcon( KIcon( QLatin1String("message-rfc822") ) );

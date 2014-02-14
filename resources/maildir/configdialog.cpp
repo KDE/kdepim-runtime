@@ -19,6 +19,7 @@
 
 #include "configdialog.h"
 #include "settings.h"
+#include "resources/folderarchivesettings/folderarchivesettingpage.h"
 
 #include <maildir.h>
 
@@ -29,13 +30,17 @@
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
-ConfigDialog::ConfigDialog( MaildirSettings *settings, QWidget * parent) :
+ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget * parent) :
     KDialog( parent ),
     mSettings( settings ),
     mToplevelIsContainer( false )
 {
   setCaption( i18n( "Select a MailDir folder" ) );
   ui.setupUi( mainWidget() );
+  mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier);
+  mFolderArchiveSettingPage->loadSettings();
+  ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Folder Archive"));
+
   mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
@@ -88,6 +93,7 @@ void ConfigDialog::checkPath()
 
 void ConfigDialog::save()
 {
+  mFolderArchiveSettingPage->writeSettings();
   mManager->updateSettings();
   QString path = ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path();
   mSettings->setPath( path );

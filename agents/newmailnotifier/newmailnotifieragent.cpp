@@ -184,7 +184,6 @@ void NewMailNotifierAgent::setVerboseMailNotification(bool verbose)
 bool NewMailNotifierAgent::verboseMailNotification() const
 {
     return NewMailNotifierAgentSettings::verboseNotification();
-    NewMailNotifierAgentSettings::self()->writeConfig();
 }
 
 void NewMailNotifierAgent::setBeepOnNewMails(bool beep)

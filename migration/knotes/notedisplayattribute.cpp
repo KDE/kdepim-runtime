@@ -20,6 +20,7 @@
 
 #include <QByteArray>
 
+
 NoteDisplayAttribute::NoteDisplayAttribute()
     : Akonadi::Attribute(),
       mFont(KGlobalSettings::generalFont()),
@@ -35,6 +36,7 @@ NoteDisplayAttribute::NoteDisplayAttribute()
       mHide(false),
       mShowInTaskbar(false),
       mKeepAbove(false),
+      mKeepBelove(false),
       mKeepBelow(false)
 {
 
