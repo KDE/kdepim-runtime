@@ -80,7 +80,7 @@ void DavItemsFetchJob::davJobFinished( KJob *job )
   }
 
   const DavMultigetProtocol *protocol =
-      dynamic_cast<const DavMultigetProtocol*>( DavManager::self()->davProtocol( mCollectionUrl.protocol() ) );
+      static_cast<const DavMultigetProtocol*>( DavManager::self()->davProtocol( mCollectionUrl.protocol() ) );
 
   const QDomDocument document = davJob->response();
   const QDomElement documentElement = document.documentElement();
