@@ -1,6 +1,11 @@
 project(facebookresource)
 include_directories(${LibKFbAPI_INCLUDE_DIR})
 include_directories(${QJSON_INCLUDE_DIR} ${qjson_INCLUDE_DIR})
+if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
+  include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})
+  add_definitions(-DHAVE_ACCOUNTS)
+  set(facebookresource_SRCS ../shared/getcredentialsjob.cpp)
+endif()
 
 set(facebookresource_SRCS
   facebookresource.cpp
@@ -12,6 +17,7 @@ set(facebookresource_SRCS
   settings.cpp
   settingsdialog.cpp
   timestampattribute.cpp
+  ${facebookresource_SRCS}
 )
 
 install(FILES facebookresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
@@ -64,6 +70,12 @@ target_link_libraries(akonadi_facebook_resource
   ${KDEPIMLIBS_KMIME_LIBS}
   ${LibKFbAPI_LIBRARY}
 )
+
+if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
+  target_link_libraries(akonadi_facebook_resource
+    ${ACCOUNTSQT_LIBRARIES}
+    ${SIGNONQT_LIBRARIES})
+endif()
 
 add_subdirectory(icons)
 add_subdirectory(serializer)

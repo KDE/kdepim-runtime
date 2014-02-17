@@ -166,6 +166,15 @@ void SettingsDialog::saveSettings()
 {
   mParentResource->setName( nameEdit->text() );
   Settings::self()->setDisplayNotifications( enableNotificationsCheckBox->isChecked() );
+  if ( !Settings::self()->accountId() ) {
+    QStringList services;
+    services << QLatin1String("facebook-contacts")
+            << QLatin1String("facebook-feed")
+            << QLatin1String("facebook-events")
+            << QLatin1String("facebook-notes")
+            << QLatin1String("facebook-notifications");
+    Settings::self()->setAccountServices(services);
+  }
   Settings::self()->writeConfig();
 }
 
