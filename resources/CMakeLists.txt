@@ -65,7 +65,6 @@ if( LibKFbAPI_FOUND )
   add_subdirectory( facebook )
 endif()
 
-add_subdirectory( nepomuktag )
 add_subdirectory( shared )
 add_subdirectory( birthdays )
 add_subdirectory( mixedmaildir )

@@ -16,11 +16,3 @@ add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
 add_subdirectory( migration )
 add_subdirectory( invitations )
-
-if( NOT KDEPIM_NO_NEPOMUK )
-    include_directories( ${CMAKE_CURRENT_BINARY_DIR}/ontologies ontologies ${SOPRANO_INCLUDE_DIR} )
-
-    add_subdirectory( nepomukfeeder )
-    add_subdirectory( ontologies )
-
-endif()
