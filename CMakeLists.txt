@@ -115,6 +115,12 @@ endif()
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 
+find_package(AccountsQt 1.11 QUIET CONFIG)
+set_package_properties(AccountsQt PROPERTIES DESCRIPTION "Qt bindings for accounts-sso" URL "https://code.google.com/p/accounts-sso/" TYPE OPTIONAL PURPOSE "Required to support AccountsQt in different resources")
+
+find_package(SignOnQt 8.56 QUIET CONFIG)
+set_package_properties(SignOnQt PROPERTIES DESCRIPTION "SignOn Qt bindings for accounts-sso" URL "https://code.google.com/p/accounts-sso/" TYPE OPTIONAL PURPOSE "Required to support SignOn in different resources")
+
 ############### Load the CTest options ###############
 
 # CMake is irritating and doesn't allow setting the tests timeout globally.
