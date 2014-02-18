@@ -48,8 +48,8 @@ class TestStore : public AbstractLocalStore
     TestStore() : mLastCheckedJob( 0 ), mLastProcessedJob( 0 ), mErrorCode( 0 ) {}
 
   public:
-    mutable Job *mLastCheckedJob;
-    Job *mLastProcessedJob;
+    mutable Akonadi::FileStore::Job *mLastCheckedJob;
+    Akonadi::FileStore::Job *mLastProcessedJob;
 
     Collection mTopLevelCollection;
 
@@ -57,7 +57,7 @@ class TestStore : public AbstractLocalStore
     QString mErrorText;
 
   protected:
-    void processJob( Job *job );
+    void processJob( Akonadi::FileStore::Job *job );
 
   protected:
     void setTopLevelCollection( const Collection &collection )
@@ -70,14 +70,14 @@ class TestStore : public AbstractLocalStore
       AbstractLocalStore::setTopLevelCollection( modifiedCollection );
     }
 
-    void checkCollectionCreate( CollectionCreateJob *job, int &errorCode, QString &errorText ) const
+    void checkCollectionCreate( Akonadi::FileStore::CollectionCreateJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
       errorText = mErrorText;
     }
 
-    void checkCollectionDelete( CollectionDeleteJob *job, int &errorCode, QString &errorText ) const
+    void checkCollectionDelete( Akonadi::FileStore::CollectionDeleteJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
@@ -119,7 +119,7 @@ class TestStore : public AbstractLocalStore
       errorText = mErrorText;
     }
 
-    void checkItemFetch( ItemFetchJob *job, int &errorCode, QString &errorText ) const
+    void checkItemFetch( Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
@@ -133,14 +133,14 @@ class TestStore : public AbstractLocalStore
       errorText = mErrorText;
     }
 
-    void checkItemMove( ItemMoveJob *job, int &errorCode, QString &errorText ) const
+    void checkItemMove( Akonadi::FileStore::ItemMoveJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
       errorText = mErrorText;
     }
 
-    void checkStoreCompact( StoreCompactJob *job, int &errorCode, QString &errorText ) const
+    void checkStoreCompact( Akonadi::FileStore::StoreCompactJob *job, int &errorCode, QString &errorText ) const
     {
       mLastCheckedJob = job;
       errorCode = mErrorCode;
@@ -148,7 +148,7 @@ class TestStore : public AbstractLocalStore
     }
 };
 
-void TestStore::processJob( Job *job )
+void TestStore::processJob( Akonadi::FileStore::Job *job )
 {
   mLastProcessedJob = job;
 
@@ -236,7 +236,7 @@ void AbstractLocalStoreTest::testCreateCollection()
   job = mStore->createCollection( Collection(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -247,7 +247,7 @@ void AbstractLocalStoreTest::testCreateCollection()
   job = mStore->createCollection( Collection(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -259,7 +259,7 @@ void AbstractLocalStoreTest::testCreateCollection()
   job = mStore->createCollection( collection, Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -302,7 +302,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
   job = mStore->deleteCollection( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -313,7 +313,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
   job = mStore->deleteCollection( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -325,7 +325,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
   job = mStore->deleteCollection( collection );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -369,7 +369,7 @@ void AbstractLocalStoreTest::testFetchCollection()
   job = mStore->fetchCollections( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -380,7 +380,7 @@ void AbstractLocalStoreTest::testFetchCollection()
   job = mStore->fetchCollections( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -436,7 +436,7 @@ void AbstractLocalStoreTest::testModifyCollection()
   job = mStore->modifyCollection( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -447,7 +447,7 @@ void AbstractLocalStoreTest::testModifyCollection()
   job = mStore->modifyCollection( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -502,7 +502,7 @@ void AbstractLocalStoreTest::testMoveCollection()
   job = mStore->moveCollection( Collection(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -513,7 +513,7 @@ void AbstractLocalStoreTest::testMoveCollection()
   job = mStore->moveCollection( Collection(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -528,7 +528,7 @@ void AbstractLocalStoreTest::testMoveCollection()
   job = mStore->moveCollection( collection, Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -539,7 +539,7 @@ void AbstractLocalStoreTest::testMoveCollection()
   job = mStore->moveCollection( collection, parentCollection );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -581,7 +581,7 @@ void AbstractLocalStoreTest::testFetchItems()
   job = mStore->fetchItems( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -592,7 +592,7 @@ void AbstractLocalStoreTest::testFetchItems()
   job = mStore->fetchItems( Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -635,7 +635,7 @@ void AbstractLocalStoreTest::testFetchItem()
   job = mStore->fetchItem( Item() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -646,7 +646,7 @@ void AbstractLocalStoreTest::testFetchItem()
   job = mStore->fetchItem( Item() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -689,7 +689,7 @@ void AbstractLocalStoreTest::testCreateItem()
   job = mStore->createItem( Item(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -700,7 +700,7 @@ void AbstractLocalStoreTest::testCreateItem()
   job = mStore->createItem( Item(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -743,7 +743,7 @@ void AbstractLocalStoreTest::testDeleteItem()
   job = mStore->deleteItem( Item() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -754,7 +754,7 @@ void AbstractLocalStoreTest::testDeleteItem()
   job = mStore->deleteItem( Item() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -797,7 +797,7 @@ void AbstractLocalStoreTest::testModifyItem()
   job = mStore->modifyItem( Item() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -808,7 +808,7 @@ void AbstractLocalStoreTest::testModifyItem()
   job = mStore->modifyItem( Item() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -849,7 +849,7 @@ void AbstractLocalStoreTest::testMoveItem()
   job = mStore->moveItem( Item(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -860,7 +860,7 @@ void AbstractLocalStoreTest::testMoveItem()
   job = mStore->moveItem( Item(), Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -875,7 +875,7 @@ void AbstractLocalStoreTest::testMoveItem()
   job = mStore->moveItem( item, Collection() );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -886,7 +886,7 @@ void AbstractLocalStoreTest::testMoveItem()
   job = mStore->moveItem( item, parentCollection );
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidJobContext );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
@@ -928,7 +928,7 @@ void AbstractLocalStoreTest::testCompactStore()
   job = mStore->compactStore();
   QVERIFY( job != 0 );
   QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( job->error(), (int)Job::InvalidStoreState );
+  QCOMPARE( job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState );
   QVERIFY( !job->errorText().isEmpty() );
 
   QVERIFY( !job->exec() );
