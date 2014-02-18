@@ -2,8 +2,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 
 include_directories(${QJSON_INCLUDE_DIR}
                     ${qjson_INCLUDE_DIR}
-                    ${NEPOMUK_CORE_INCLUDE_DIR}
-                    ${SOPRANO_INCLUDE_DIR}
 )
 
 set(calendarresource_SRCS
@@ -57,8 +55,6 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${QT_QTNETWORK_LIBRARY}
   ${KDE4_KDECORE_LIBS}
   ${KDE4_KDEWEBKIT_LIBS}
-  ${NEPOMUK_CORE_LIBRARY}
-  ${SOPRANO_LIBRARIES}
   ${QJSON_LIBRARIES}
   ${QJSON_LIBRARY} # for Mac OSX
   ${qjson_LIBRARY} # for Debian
