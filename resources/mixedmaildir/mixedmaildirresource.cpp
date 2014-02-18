@@ -28,6 +28,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "retrieveitemsjob.h"
+#include "createandsettagsjob.h"
 
 
 #include "filestore/collectioncreatejob.h"
@@ -62,74 +63,9 @@
 #include <QtDBus/QDBusConnection>
 
 #include <Akonadi/Tag>
-#include <Akonadi/TagCreateJob>
 
 using namespace Akonadi;
 
-class CreateAndSetTagsJob : public KJob
-{
-  Q_OBJECT
-public:
-  explicit CreateAndSetTagsJob(const Akonadi::Item &item, const Akonadi::Tag::List &tags, QObject* parent = 0);
-  virtual void start();
-
-private Q_SLOTS:
-  void onCreateDone(KJob*);
-  void onModifyDone(KJob*);
-
-private:
-  Akonadi::Item mItem;
-  Akonadi::Tag::List mTags;
-  Akonadi::Tag::List mCreatedTags;
-  int mCount;
-};
-
-CreateAndSetTagsJob::CreateAndSetTagsJob(const Item& item, const Akonadi::Tag::List& tags, QObject* parent)
-: KJob(parent),
-  mItem(item),
-  mTags(tags)
-{
-
-}
-
-void CreateAndSetTagsJob::start()
-{
-  if (mTags.isEmpty()) {
-    emitResult();
-  }
-  Q_FOREACH (const Akonadi::Tag &tag, mTags) {
-    Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag, this);
-    createJob->setMergeIfExisting(true);
-    connect(createJob, SIGNAL(result(KJob*)), this, SLOT(onCreateDone(KJob*)));
-  }
-}
-
-void CreateAndSetTagsJob::onCreateDone(KJob *job)
-{
-  mCount++;
-  if (job->error()) {
-      kWarning() << "Failed to create tag " << job->errorString();
-  } else {
-    Akonadi::TagCreateJob *createJob = static_cast<Akonadi::TagCreateJob*>(job);
-    mCreatedTags << createJob->tag();
-  }
-  if (mCount == mTags.size()) {
-    Q_FOREACH (const Akonadi::Tag &tag, mCreatedTags) {
-      mItem.setTag(tag);
-    }
-    Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mItem, this);
-    connect(modJob, SIGNAL(result(KJob*)), this, SLOT(onModifyDone(KJob*)));
-  }
-}
-
-void CreateAndSetTagsJob::onModifyDone(KJob *job)
-{
-  if (job->error()) {
-    kWarning() << "Failed to modify item " << job->errorString();
-    setError(KJob::UserDefinedError);
-  }
-  emitResult();
-}
 
 
 MixedMaildirResource::MixedMaildirResource( const QString &id )
@@ -886,7 +822,5 @@ void MixedMaildirResource::tagFetchJobResult( KJob *job )
 
 
 AKONADI_RESOURCE_MAIN( MixedMaildirResource )
-
-#include "mixedmaildirresource.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

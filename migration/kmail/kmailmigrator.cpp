@@ -275,7 +275,7 @@ void KMailMigrator::migrateTags()
     Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag);
     createJob->setMergeIfExisting(true);
 
-    kDebug() << "Nepomuk::Tag: label=" << label << "name=" << name
+    kDebug() << "Tag: label=" << label << "name=" << name
              << "textColor=" << textColor << "backgroundColor=" << backgroundColor
              << "hasFont=" << hasFont << "font=" << textFont
              << "icon=" << iconName << "inToolbar=" << inToolbar
