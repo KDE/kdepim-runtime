@@ -14,10 +14,10 @@
       <default>2000-01-01</default>
     </entry>
     <entry name="AccountId" type="UInt">
-      <label>The account id in WebAccouts framework.</label>
+      <label>The account id in WebAccounts framework.</label>
     </entry>
     <entry name="AccountServices" type="StringList">
-      <label>The account services configured in WebAccouts framework.</label>
+      <label>The account services configured in WebAccounts framework.</label>
     </entry>
     <entry name="DisplayNotifications" type="Bool">
       <default>true</default>
