@@ -361,7 +361,9 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set, qint64 h
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
   scope.mode = KIMAP::FetchJob::FetchScope::Flags;
-  scope.changedSince = highestModSeq;
+  if(serverCapabilities().contains( QLatin1String( "CONDSTORE" ))) {
+      scope.changedSince = highestModSeq;
+  }
 
   KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_session );
   fetch->setSequenceSet( set );
