@@ -24,11 +24,8 @@
 #include "kmailmigrator.h"
 
 
-#include "messagetag.h"
 // avoid metatype.h from interfering
-#include <Nepomuk2/Variant>
 #define POP3_METATYPE_H
-#include <Nepomuk2/Tag>
 
 #include "imapsettings.h"
 #include "pop3settings.h"
@@ -49,6 +46,9 @@
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentinstancecreatejob.h>
 #include <akonadi/attributefactory.h>
+#include <akonadi/tag.h>
+#include <akonadi/tagcreatejob.h>
+#include <akonadi/tagattribute.h>
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
@@ -65,6 +65,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <kstringhandler.h>
 #include <KLocalizedString>
 
+Q_DECLARE_METATYPE(QList<int>);
 
 using KWallet::Wallet;
 
@@ -259,28 +260,22 @@ void KMailMigrator::migrateTags()
 
     const QString shortcut = group.readEntry( QLatin1String( "shortcut" ), QString() );
 
-    Nepomuk2::Tag nepomukTag( label );
-    nepomukTag.setLabel( name );
-    nepomukTag.setSymbols( QStringList( iconName ) );
-    nepomukTag.setProperty( Vocabulary::MessageTag::inToolbar(), inToolbar );
-
-    if ( textColor.isValid() ) {
-      nepomukTag.setProperty( Vocabulary::MessageTag::textColor(), textColor.name() );
+    Akonadi::Tag tag(label);
+    Akonadi::TagAttribute *attr = tag.attribute<Akonadi::TagAttribute>(Akonadi::AttributeEntity::AddIfMissing);
+    attr->setDisplayName(name);
+    attr->setIconName( iconName );
+    attr->setInToolbar( inToolbar );
+    if (hasFont) {
+        attr->setFont( textFont.toString() );
     }
+    attr->setBackgroundColor( backgroundColor );
+    attr->setTextColor( textColor );
+    attr->setShortcut( shortcut );
 
-    if ( backgroundColor.isValid() ) {
-      nepomukTag.setProperty( Vocabulary::MessageTag::backgroundColor(), backgroundColor.name() );
-    }
+    Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag);
+    createJob->setMergeIfExisting(true);
 
-    if ( hasFont ) {
-      nepomukTag.setProperty( Vocabulary::MessageTag::font(), textFont.toString() );
-    }
-
-    if ( !shortcut.isEmpty() ) {
-      nepomukTag.setProperty( Vocabulary::MessageTag::shortcut(), shortcut );
-    }
-
-    kDebug() << "Nepomuk::Tag: label=" << label << "name=" << name
+    kDebug() << "Tag: label=" << label << "name=" << name
              << "textColor=" << textColor << "backgroundColor=" << backgroundColor
              << "hasFont=" << hasFont << "font=" << textFont
              << "icon=" << iconName << "inToolbar=" << inToolbar

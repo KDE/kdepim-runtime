@@ -28,6 +28,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "retrieveitemsjob.h"
+#include "createandsettagsjob.h"
 
 
 #include "filestore/collectioncreatejob.h"
@@ -54,9 +55,6 @@
 
 #include <kmime/kmime_message.h>
 
-#include <Nepomuk2/Tag>
-#include <Nepomuk2/Resource>
-
 #include <KDebug>
 #include <KLocalizedString>
 #include <KWindowSystem>
@@ -64,7 +62,11 @@
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
 
+#include <Akonadi/Tag>
+
 using namespace Akonadi;
+
+
 
 MixedMaildirResource::MixedMaildirResource( const QString &id )
     : ResourceBase( id ), mStore( new MixedMaildirStore() ), mCompactHelper( 0 )
@@ -805,17 +807,15 @@ void MixedMaildirResource::tagFetchJobResult( KJob *job )
   const QStringList tagList = job->property( "tagList" ).value<QStringList>();
   kDebug() << "Tagging item" << item.url() << "with" << tagList;
 
-  QList<Nepomuk2::Tag> nepomukTags;
+  Akonadi::Tag::List tags;
   Q_FOREACH( const QString &tag, tagList ) {
     if ( tag.isEmpty() ) {
       kWarning() << "TagList for item" << item.url() << "contains an empty tag";
     } else {
-      nepomukTags << Nepomuk2::Tag( tag );
+      tags << Akonadi::Tag(tag);
     }
   }
-
-  Nepomuk2::Resource nepomukResource( item.url() );
-  nepomukResource.setTags( nepomukTags );
+  new CreateAndSetTagsJob(item, tags);
 
   processNextTagContext();
 }
