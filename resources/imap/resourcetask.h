@@ -117,8 +117,6 @@ protected:
   void emitError( const QString &message );
   void emitWarning( const QString &message );
 
-  void fetchItemsWithoutBodies( const Akonadi::Collection &collection, const char *slot );
-
   void synchronizeCollectionTree();
 
   void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );

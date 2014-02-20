@@ -132,9 +132,6 @@ public:
   virtual void itemChangeCommitted( const Akonadi::Item &item );
   virtual void itemsChangesCommitted(const Akonadi::Item::List& items);
 
-  virtual void fetchItemsWithoutBodies( const Akonadi::Collection &collection,
-                                        QObject *receiver, const char *slot );
-
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );

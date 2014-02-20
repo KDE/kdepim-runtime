@@ -110,7 +110,7 @@ private slots:
              << "S: A000006 OK fetch done";
 
     callNames.clear();
-    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
+    callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
 
     QTest::newRow( "first listing, disconnected IMAP" ) << collection << scenario << callNames;
@@ -143,7 +143,7 @@ private slots:
              << "S: A000006 OK fetch done";
 
     callNames.clear();
-    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
+    callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
 
     QTest::newRow( "second listing, full sync" ) << collection << scenario << callNames;
@@ -168,7 +168,7 @@ private slots:
              << "S: A000005 OK select done";
 
     callNames.clear();
-    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrievalDone";
+    callNames << "applyCollectionChanges" << "itemsRetrievalDone";
 
     QTest::newRow( "third listing, full sync, empty folder" ) << collection << scenario << callNames;
 
@@ -205,7 +205,7 @@ private slots:
              << "S: A000007 OK fetch done";
 
     callNames.clear();
-    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
+    callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
     QTest::newRow( "uidnext mismatch with recovery attempt" ) << collection << scenario << callNames;
 
@@ -234,7 +234,7 @@ private slots:
              << "S: * 5 FETCH ( UID 2470 FLAGS () )"
              << "S: A000006 OK fetch done";
     callNames.clear();
-    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+    callNames << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
     QTest::newRow( "highestmodseq test" ) << collection << scenario << callNames;
 
@@ -263,7 +263,7 @@ private slots:
              << "S: * 5 FETCH ( UID 2470 FLAGS () )"
              << "S: A000006 OK fetch done";
     callNames.clear();
-    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
+    callNames << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
 
     QTest::newRow( "yahoo highestmodseq test" ) << collection << scenario << callNames;
   }
@@ -288,6 +288,7 @@ private slots:
     state->setServerCapabilities( pool.serverCapabilities() );
     state->setCollection( collection );
     RetrieveItemsTask *task = new RetrieveItemsTask( state );
+    task->setFetchMissingItemBodies( false );
     task->start( &pool );
 
     QTRY_COMPARE( state->calls().count(), callNames.size() );

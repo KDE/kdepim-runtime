@@ -296,17 +296,6 @@ void DummyResourceState::emitPercent( int percent )
   // recordCall( "emitPercent", QVariant::fromValue(percent) );
 }
 
-void DummyResourceState::fetchItemsWithoutBodies( const Akonadi::Collection &collection,
-                                                  QObject *receiver, const char *slot )
-{
-  Q_UNUSED( collection );
-
-  recordCall( "fetchItemsWithoutBodies" );
-
-  QMetaObject::invokeMethod( receiver, slot, Qt::QueuedConnection,
-                             Q_ARG( QList<qint64>, QList<qint64>() ) );
-}
-
 void DummyResourceState::synchronizeCollectionTree()
 {
   recordCall( "synchronizeCollectionTree" );

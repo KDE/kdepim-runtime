@@ -37,11 +37,13 @@ class RetrieveItemsTask : public ResourceTask
 public:
   explicit RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~RetrieveItemsTask();
+  void setFetchMissingItemBodies(bool enabled);
 
 public slots:
   void onFetchItemsWithoutBodiesDone( const QList<qint64> &items );
 
 private slots:
+  void fetchItemsWithoutBodiesDone( KJob *job );
   void onPreExpungeSelectDone( KJob *job );
   void onExpungeDone( KJob *job );
 
@@ -74,6 +76,7 @@ private:
   KIMAP::Session *m_session;
   QList<qint64> m_messageUidsMissingBody;
   int m_fetchedMissingBodies;
+  bool m_fetchMissingBodies;
 };
 
 #endif
