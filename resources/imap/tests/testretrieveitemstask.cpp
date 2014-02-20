@@ -237,6 +237,35 @@ private slots:
     callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
     QTest::newRow( "highestmodseq test" ) << collection << scenario << callNames;
+
+    collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
+    collection.setCachePolicy( policy );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
+    collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
+    stats.setCount( 5 );
+    collection.setStatistics( stats );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario( QList<QByteArray>() << "XYMHIGHESTMODSEQ" )
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge DONE"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 5 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135 ]"
+             << "S: * OK [ UIDNEXT 2471 ]"
+             << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 FETCH 1:5 (FLAGS UID)"
+             << "S: * 5 FETCH ( UID 2470 FLAGS () )"
+             << "S: A000006 OK fetch done";
+    callNames.clear();
+    callNames << "fetchItemsWithoutBodies" << "applyCollectionChanges" << "itemsRetrieved" << "itemsRetrievalDone";
+
+    QTest::newRow( "yahoo highestmodseq test" ) << collection << scenario << callNames;
   }
 
   void shouldIntrospectCollection()
