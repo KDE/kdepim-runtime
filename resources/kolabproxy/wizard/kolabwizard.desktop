@@ -2,7 +2,7 @@
 Name=Kolab Groupware Server
 Name[bg]=Сървър Kolab Groupware
 Name[bs]=Server kolaborativnog softvera
-Name[ca]=Servidor de Groupware Kolab
+Name[ca]=Servidor de treball en grup Kolab
 Name[ca@valencia]=Servidor de Groupware Kolab
 Name[cs]=Kolab Groupware server
 Name[da]=Kolab groupware-server
@@ -49,7 +49,7 @@ Icon=kolab
 Comment=Kolab Groupware Server
 Comment[bg]=Сървър Kolab Groupware
 Comment[bs]=Server kolaborativnog softvera
-Comment[ca]=Servidor de Groupware Kolab
+Comment[ca]=Servidor de treball en grup Kolab
 Comment[ca@valencia]=Servidor de Groupware Kolab
 Comment[cs]=Kolab Groupware server
 Comment[da]=Kolab groupware-server
