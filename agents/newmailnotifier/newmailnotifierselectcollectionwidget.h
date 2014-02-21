@@ -46,10 +46,11 @@ public:
 private Q_SLOTS:
     void slotSelectAllCollections();
     void slotUnselectAllCollections();
-    void slotCollectionsInserted(const QModelIndex &parent, int start, int end);
     void slotModifyJobDone(KJob* job);
     void slotUpdateCollectionStatus();
     void slotSetCollectionFilter(const QString&);
+
+    void slotCollectionTreeFetched();
 
 private:
     void updateStatus(const QModelIndex &parent);
@@ -60,7 +61,7 @@ private:
     Akonadi::ChangeRecorder *mChangeRecorder;
     KCheckableProxyModel *mCheckProxy;
     KRecursiveFilterProxyModel *mCollectionFilter;
-    bool mCanUpdateStatus;
+    bool mNeedUpdate;
 };
 
 #endif // NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H

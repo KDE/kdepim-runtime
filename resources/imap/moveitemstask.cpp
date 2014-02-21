@@ -287,7 +287,7 @@ void MoveItemsTask::recordNewUid()
   // then update the property to the probable next uid to keep the cache in sync.
   // If not something happened in our back, so we don't update and a refetch will
   // happen at some point.
-  if ( m_newUids.last() == oldNextUid ) {
+  if ( !m_newUids.isEmpty() && m_newUids.last() == oldNextUid ) {
     if ( uidAttr == 0 ) {
       uidAttr = new UidNextAttribute( m_newUids.last() + 1 );
       c.addAttribute( uidAttr );

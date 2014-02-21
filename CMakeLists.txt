@@ -3,8 +3,6 @@ project(kdepim-runtime)
 # where to look first for cmake modules. This line must be the first one or cmake will use the system's FindFoo.cmake
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
-add_definitions( -DDISABLE_NEPOMUK_LEGACY )
-
 ############### KDEPIM-Runtime version ################
 # KDEPIM_RUNTIME_VERSION
 # Version scheme: "x.y.z build".
@@ -43,11 +41,6 @@ set(KDEPIM_RUNTIME_VERSION "4.13${KDEPIM_RUNTIME_DEV_VERSION}")
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
 ############### search-related options ################
-option(KDEPIM_NO_NEPOMUK "Build without nepomuk dependency" FALSE)
-
-if(KDEPIM_NO_NEPOMUK)
-  add_definitions(-DKDEPIM_NO_NEPOMUK)
-endif()	
 
 add_definitions(-DQT_USE_QSTRINGBUILDER)
 
@@ -60,7 +53,7 @@ find_package(KDE4 4.11.3 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.12.45)
+find_package(KdepimLibs 4.12.46)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
@@ -76,19 +69,6 @@ set_package_properties(Akonadi PROPERTIES DESCRIPTION "Akonadi server libraries"
 # shared-mime-info
 find_package(SharedMimeInfo 0.30)
 set_package_properties(SharedMimeInfo PROPERTIES DESCRIPTION "The shared-mime-info utility" URL "http://freedesktop.org/wiki/Software/shared-mime-info" TYPE REQUIRED PURPOSE "Information about filetypes")
-
-if(NOT KDEPIM_NO_NEPOMUK)
-  find_package(SharedDesktopOntologies 0.11)
-  set_package_properties(SharedDesktopOntologies PROPERTIES DESCRIPTION "Shared Desktop Ontologies" URL "http://sourceforge.net/projects/oscaf/" TYPE REQUIRED PURPOSE "Ontologies necessary for the Nepomuk semantic desktop")
-
-  find_package(Soprano 2.9)
-  set_package_properties(Soprano PROPERTIES DESCRIPTION "C++/Qt4 framework for RDF data" URL "http://soprano.sourceforge.net" TYPE REQUIRED PURPOSE "Storage of semantic data")
-
-  find_package(NepomukCore QUIET CONFIG)
-  set_package_properties(NepomukCore PROPERTIES DESCRIPTION "Nepomuk core libraries"  URL "http://www.kde.org" TYPE REQUIRED PURPOSE "Nepomuk extends the search and tagging functionalities in KMail and Akonadi")
-else()
-  message(STATUS "Skipping detection of Nepomuk dependencies, feature is disabled.")
-endif()
 
 # Libkolab
 find_package(Libkolab 0.5 QUIET CONFIG)

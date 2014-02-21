@@ -171,8 +171,13 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   const int messageCount = select->messageCount();
   const qint64 uidValidity = select->uidValidity();
   const qint64 nextUid = select->nextUid();
-  const quint64 highestModSeq = select->highestModSequence();
+  quint64 highestModSeq = select->highestModSequence();
   const QList<QByteArray> flags = select->permanentFlags();
+
+  //The select job retrieves highestmodset whenever it's available, but in case of no CONDSTORE support we ignore it
+  if( !serverCapabilities().contains( QLatin1String( "CONDSTORE" )) ) {
+    highestModSeq = 0;
+  }
 
   // uidvalidity can change between sessions, we don't want to refetch
   // folders in that case. Keep track of what is processed and what not.
@@ -361,7 +366,9 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set, qint64 h
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
   scope.mode = KIMAP::FetchJob::FetchScope::Flags;
-  scope.changedSince = highestModSeq;
+  if(serverCapabilities().contains( QLatin1String( "CONDSTORE" ))) {
+      scope.changedSince = highestModSeq;
+  }
 
   KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_session );
   fetch->setSequenceSet( set );

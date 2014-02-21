@@ -27,23 +27,13 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/ItemSearchJob>
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
 #include <Akonadi/CachePolicy>
-
-#include <Soprano/Vocabulary/NAO>
-#include <Nepomuk2/Vocabulary/NIE>
-#include <Nepomuk2/Vocabulary/NCAL>
-#include <Nepomuk2/Query/Query>
-#include <Nepomuk2/Query/AndTerm>
-#include <Nepomuk2/Query/ComparisonTerm>
-#include <Nepomuk2/Query/LiteralTerm>
-#include <Nepomuk2/Query/ResourceTypeTerm>
-#include <Nepomuk2/Query/ResourceTerm>
 
 #include <KCalCore/Calendar>
 
 #include <KDE/KLocalizedString>
+#include <KDE/KLocale>
 #include <KDE/KDialog>
 
 #include <LibKGAPI2/Calendar/Calendar>
@@ -203,22 +193,14 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
         ktodo->setUid( QLatin1String("") );
 
         if ( !ktodo->relatedTo( KCalCore::Incidence::RelTypeParent ).isEmpty() ) {
-            Nepomuk2::Query::Query query;
-            const Nepomuk2::Types::Class cl( Nepomuk2::Vocabulary::NCAL::Todo() );
-            const Nepomuk2::Query::ResourceTypeTerm typeTerm( cl );
-            const Nepomuk2::Query::Query::RequestProperty itemIdProperty (
-                ItemSearchJob::akonadiItemIdUri(), false );
-            const Nepomuk2::Query::ComparisonTerm term(
-                Nepomuk2::Vocabulary::NCAL::uid(),
-                Nepomuk2::Query::LiteralTerm( ktodo->relatedTo( KCalCore::Incidence::RelTypeParent ) ) );
+            Akonadi::Item parentItem;
+            parentItem.setGid( ktodo->relatedTo( KCalCore::Incidence::RelTypeParent ) );
 
-            query.setTerm( term );
-            query.addRequestProperty( itemIdProperty );
+            ItemFetchJob *fetchJob = new ItemFetchJob( parentItem, this );
+            fetchJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
+            fetchJob->setProperty( TASK_PROPERTY, QVariant::fromValue( ktodo ) );
 
-            ItemSearchJob *searchJob = new ItemSearchJob( query.toSparqlQuery(), this );
-            searchJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-            searchJob->setProperty( TASK_PROPERTY, QVariant::fromValue( ktodo ) );
-            connect( searchJob, SIGNAL(finished(KJob*)),
+            connect( fetchJob, SIGNAL(finished(KJob*)),
                      this, SLOT(slotTaskAddedSearchFinished(KJob*)) );
             return;
         } else {
@@ -715,12 +697,12 @@ void CalendarResource::slotDoRemoveTask( KJob *job )
 
 void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
 {
-    ItemSearchJob *searchJob = qobject_cast<ItemSearchJob*>( job );
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
     Item item = job->property( ITEM_PROPERTY ).value<Item>();
     TaskPtr task = job->property( TASK_PROPERTY ).value<TaskPtr>();
 
-    Item::List items = searchJob->items();
-    kDebug() << "Query returned" << items.count() << "results";
+    Item::List items = fetchJob->items();
+    kDebug() << "Parent query returned" << items.count() << "results";
 
     const QString tasksListId = item.parentCollection().remoteId();
 
@@ -730,13 +712,13 @@ void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
     }
 
     KGAPI2::Job *newJob;
-    // The parent is not in Nepomuk, so give up and just store the item in Google
+    // The parent is not known, so give up and just store the item in Google
     // without the information about parent.
     if ( items.count() == 0 ) {
         task->setRelatedTo( QString(), KCalCore::Incidence::RelTypeParent );
         newJob = new TaskCreateJob( task, tasksListId, account(), this );
     } else {
-        const Item matchedItem = items.first();
+        Item matchedItem = items.first();
 
         task->setRelatedTo( matchedItem.remoteId(), KCalCore::Incidence::RelTypeParent );
         TaskCreateJob *createJob = new TaskCreateJob( task, tasksListId, account(), this );
@@ -766,6 +748,7 @@ void CalendarResource::slotCreateJobFinished( KGAPI2::Job *job )
         EventPtr event = objects.first().dynamicCast<Event>();
         item.setRemoteId( event->uid() );
         item.setRemoteRevision( event->etag() );
+        item.setGid( event->uid() );
         changeCommitted( item );
         item.setPayload<KCalCore::Event::Ptr>( event.dynamicCast<KCalCore::Event>() );
         new ItemModifyJob( item, this );
@@ -773,6 +756,7 @@ void CalendarResource::slotCreateJobFinished( KGAPI2::Job *job )
         TaskPtr task = objects.first().dynamicCast<Task>();
         item.setRemoteId( task->uid() );
         item.setRemoteRevision( task->etag() );
+        item.setGid( task->uid() );
         changeCommitted( item );
         item.setPayload<KCalCore::Todo::Ptr>( task.dynamicCast<KCalCore::Todo>() );
         new ItemModifyJob( item, this );

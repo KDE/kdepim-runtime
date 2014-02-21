@@ -45,7 +45,7 @@
 
 NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWidget *parent)
     : QWidget(parent),
-      mCanUpdateStatus(false)
+      mNeedUpdate(false)
 {
     QVBoxLayout *vbox = new QVBoxLayout;
 
@@ -59,6 +59,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mModel = new Akonadi::EntityTreeModel( mChangeRecorder, this );
     // Set the model to show only collections, not items.
     mModel->setItemPopulationStrategy( Akonadi::EntityTreeModel::NoItemPopulation );
+    connect(mModel, SIGNAL(collectionTreeFetched(Akonadi::Collection::List)), SLOT(slotCollectionTreeFetched()));
 
     Akonadi::CollectionFilterProxyModel *mimeTypeProxy = new Akonadi::CollectionFilterProxyModel( this );
     mimeTypeProxy->setExcludeVirtualCollections( true );
@@ -70,9 +71,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mCheckProxy = new KCheckableProxyModel( this );
     mCheckProxy->setSelectionModel( mSelectionModel );
     mCheckProxy->setSourceModel( mimeTypeProxy );
-
-    connect(mModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-            this, SLOT(slotCollectionsInserted(QModelIndex,int,int)));
 
 
     mCollectionFilter = new KRecursiveFilterProxyModel(this);
@@ -108,12 +106,20 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     hbox->addWidget(button);
     hbox->addStretch(1);
     setLayout(vbox);
-    QTimer::singleShot(1000, this, SLOT(slotUpdateCollectionStatus()));
 }
 
 NewMailNotifierSelectCollectionWidget::~NewMailNotifierSelectCollectionWidget()
 {
 
+}
+
+void NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched()
+{
+    if (!mNeedUpdate) {
+        mNeedUpdate = true;
+        QTimer::singleShot(1000, this, SLOT(slotUpdateCollectionStatus()));
+    }
+    mFolderView->expandAll();
 }
 
 void NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter(const QString &filter)
@@ -124,7 +130,6 @@ void NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter(const QStrin
 
 void NewMailNotifierSelectCollectionWidget::slotUpdateCollectionStatus()
 {
-    mCanUpdateStatus = true;
     updateStatus(QModelIndex());
 }
 
@@ -140,9 +145,6 @@ void NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections()
 
 void NewMailNotifierSelectCollectionWidget::updateStatus(const QModelIndex &parent)
 {
-    if (!mCanUpdateStatus)
-        return;
-
     const int nbCol = mCheckProxy->rowCount( parent );
     for ( int i = 0; i < nbCol; ++i ) {
         const QModelIndex child = mCheckProxy->index( i, 0, parent );
@@ -156,6 +158,7 @@ void NewMailNotifierSelectCollectionWidget::updateStatus(const QModelIndex &pare
         }
         updateStatus( child );
     }
+    mNeedUpdate = false;
 }
 
 void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &parent, bool status)
@@ -166,11 +169,6 @@ void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &paren
         mCheckProxy->setData( child, status ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole );
         forceStatus( child, status );
     }
-}
-
-void NewMailNotifierSelectCollectionWidget::slotCollectionsInserted(const QModelIndex &, int, int)
-{
-    mFolderView->expandAll();
 }
 
 void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QModelIndex &parent)
