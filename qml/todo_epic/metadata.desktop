@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Todo
+Comment=Shows a list with the todos from Korganizer
+Type=Service
+ServiceTypes=Plasma/Applet
+X-KDE-Library=todo_test
+X-KDE-PluginInfo-Author=Heena Mahour
+X-KDE-PluginInfo-Email=heena393@gmail.com
+X-KDE-PluginInfo-Name=todo_test
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Category=
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
