@@ -13,6 +13,7 @@ set(calendarresource_SRCS
   ../common/googleaccountmanager.cpp
   ../common/googlesettings.cpp
   ../common/googlesettingsdialog.cpp
+  ${accounts_SRCS}
 )
 
 kde4_add_kcfg_files(calendarresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
@@ -60,6 +61,13 @@ target_link_libraries(akonadi_googlecalendar_resource
   ${qjson_LIBRARY} # for Debian
   ${LibKGAPI2_LIBRARY}
 )
+
+if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
+  target_link_libraries(akonadi_googlecalendar_resource
+    ${ACCOUNTSQT_LIBRARIES}
+    ${SIGNONQT_LIBRARIES})
+endif()
+
 
 install(TARGETS akonadi_googlecalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
