@@ -65,6 +65,7 @@ void AddItemTask::doStart( KIMAP::Session *session )
   job->setMailBox( mailBox );
   job->setContent( msg->encodedContent( true ) );
   job->setFlags( fromAkonadiToSupportedImapFlags( item().flags().toList(), collection() ) );
+  job->setInternalDate( msg->date()->dateTime() );
   connect( job, SIGNAL(result(KJob*)), SLOT(onAppendMessageDone(KJob*)) );
   job->start();
 }
