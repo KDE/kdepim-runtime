@@ -94,7 +94,8 @@ void ContactsResource::updateResourceName()
 QList< QUrl > ContactsResource::scopes() const
 {
     QList< QUrl > scopes;
-    scopes << Account::contactsScopeUrl();
+    scopes << Account::contactsScopeUrl()
+           << Account::accountInfoScopeUrl();
     return scopes;
 }
 

@@ -8,6 +8,7 @@ set(contactsresource_SRCS
   ../common/googleresource.cpp
   ../common/googleaccountmanager.cpp
   ../common/googlesettingsdialog.cpp
+  ${accounts_SRCS}
 )
 
 kde4_add_kcfg_files(contactsresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
@@ -47,6 +48,12 @@ target_link_libraries(akonadi_googlecontacts_resource
   ${KDE4_KIO_LIBS}
   ${LibKGAPI2_LIBRARY}
 )
+
+if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
+  target_link_libraries(akonadi_googlecontacts_resource
+    ${ACCOUNTSQT_LIBRARIES}
+    ${SIGNONQT_LIBRARIES})
+endif()
 
 install(TARGETS akonadi_googlecontacts_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
