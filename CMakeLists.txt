@@ -33,10 +33,10 @@ set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "beta1")
+    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
 endif()
 
-set(KDEPIM_RUNTIME_VERSION "4.13${KDEPIM_RUNTIME_DEV_VERSION}")
+set(KDEPIM_RUNTIME_VERSION "4.14${KDEPIM_RUNTIME_DEV_VERSION}")
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
@@ -53,7 +53,7 @@ find_package(KDE4 4.12.0 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.12.80)
+find_package(KdepimLibs 4.13.40)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
