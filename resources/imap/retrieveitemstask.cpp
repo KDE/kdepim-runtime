@@ -47,13 +47,18 @@
 #define HIGHESTMODSEQ_PROPERTY "highestModSeq"
 
 RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_fetchedMissingBodies( -1 )
+  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_fetchedMissingBodies( -1 ), m_fetchMissingBodies( true )
 {
 
 }
 
 RetrieveItemsTask::~RetrieveItemsTask()
 {
+}
+
+void RetrieveItemsTask::setFetchMissingItemBodies(bool enabled)
+{
+  m_fetchMissingBodies = enabled;
 }
 
 void RetrieveItemsTask::doStart( KIMAP::Session *session )
@@ -72,12 +77,43 @@ void RetrieveItemsTask::doStart( KIMAP::Session *session )
   m_session = session;
 
   const Akonadi::Collection col = collection();
-  if ( col.cachePolicy()
+  if ( m_fetchMissingBodies && col.cachePolicy()
        .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) { //disconnected mode, make sure we really have the body cached
-     fetchItemsWithoutBodies( col, "onFetchItemsWithoutBodiesDone" );
+
+    Akonadi::Session *session = new Akonadi::Session( resourceName().toLatin1() + "_body_checker", this );
+    Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( col, session );
+    fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
+    fetchJob->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
+    fetchJob->fetchScope().setFetchModificationTime( false );
+    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemsWithoutBodiesDone(KJob*)) );
+    connect( fetchJob, SIGNAL(result(KJob*)), session, SLOT(deleteLater()) );
   } else {
-     startRetrievalTasks();
+    startRetrievalTasks();
   }
+}
+
+void RetrieveItemsTask::fetchItemsWithoutBodiesDone( KJob *job )
+{
+  Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob*>( job );
+  QList<qint64> uids;
+  if ( job->error() ) {
+    cancelTask( job->errorString() );
+    return;
+  } else {
+    int i = 0;
+    Q_FOREACH( const Akonadi::Item &item, fetch->items() )  {
+      if ( !item.cachedPayloadParts().contains( Akonadi::MessagePart::Body ) ) {
+          kWarning() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
+          uids.append( item.remoteId().toInt() );
+          i++;
+      }
+    }
+    if ( i > 0 ) {
+      kWarning() << "Number of items missing the body: " << i;
+    }
+  }
+
+  onFetchItemsWithoutBodiesDone(uids);
 }
 
 void RetrieveItemsTask::onFetchItemsWithoutBodiesDone( const QList<qint64> &items )

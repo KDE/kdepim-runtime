@@ -60,8 +60,6 @@ public:
   int configureDialog( WId windowId );
   QStringList serverCapabilities() const;
 
-  void fetchItemsWithoutBodies( const Akonadi::Collection &collection, QObject *receiver, const char *slot );
-
 public Q_SLOTS:
   virtual void configure( WId windowId );
 
@@ -134,8 +132,6 @@ private Q_SLOTS:
   void showError( const QString &message );
   void clearStatusMessage();
 
-  void fetchItemsWithoutBodiesDone( KJob *job );
-
 private:
   friend class ResourceState;
 
@@ -148,7 +144,6 @@ private:
   QList<ResourceTask*> m_taskList;
   QPointer<SubscriptionDialog> mSubscriptions;
   ImapIdleManager *m_idle;
-  Akonadi::Session *m_bodyCheckSession;
   QTimer *m_statusMessageTimer;
   QChar m_separatorCharacter;
 };

@@ -373,12 +373,6 @@ void ResourceState::itemsChangesCommitted(const Akonadi::Item::List& items)
   m_resource->changesCommitted( items );
 }
 
-void ResourceState::fetchItemsWithoutBodies( const Akonadi::Collection &collection,
-                                             QObject *receiver, const char *slot )
-{
-  m_resource->fetchItemsWithoutBodies( collection, receiver, slot );
-}
-
 void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
 {
   m_resource->collectionsRetrieved( collections );
