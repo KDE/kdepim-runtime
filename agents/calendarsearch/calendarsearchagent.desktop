@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Calendar Search Agent
 Name[bs]=Agent za pretragu kalendara.
-Name[ca]=Agent de cerca del calendari
+Name[ca]=Agent de cerca al calendari
 Name[ca@valencia]=Agent de cerca del calendari
 Name[cs]=Agent vyhledávání v kalendáři
 Name[da]=Agent til kalendersøgning
@@ -46,7 +46,7 @@ Name[zh_CN]=日历搜索代理
 Name[zh_TW]=行事曆搜尋代理程式
 Comment=Agent for calendar searching
 Comment[bs]=Agent za traženje kalendara
-Comment[ca]=Agent per cerques al calendari
+Comment[ca]=Agent per a cerques al calendari
 Comment[ca@valencia]=Agent per cerques al calendari
 Comment[cs]=Agent vyhledávání v kalendáři
 Comment[da]=Agent til kalendersøgning
