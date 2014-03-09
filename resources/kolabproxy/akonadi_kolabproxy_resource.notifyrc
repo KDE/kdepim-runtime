@@ -2,6 +2,7 @@
 IconName=kolab
 Comment=Kolab Proxy Resource Notifications
 Comment[bs]=Notifikacija Kolab Proxy resursa
+Comment[ca]=Notificacions del recurs d'intermediari del Kolab
 Comment[de]=Benachrichtigungen der Proxy-Ressource für Kolab
 Comment[es]=Notificaciones de recursos del proxy Kolab
 Comment[fi]=Kolab Proxy -resurssin ilmoitukset
