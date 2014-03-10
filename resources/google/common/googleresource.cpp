@@ -53,7 +53,6 @@ GoogleResource::GoogleResource( const QString &id ):
             this, SLOT(reloadConfig()) );
 
     setNeedsNetwork( true );
-    setOnline( true );
 
     changeRecorder()->itemFetchScope().fetchFullPayload( true );
     changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
