@@ -111,7 +111,7 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         if ( !addrList.isEmpty() )
           parseAddrList( addrList, msg->from(), version, m_stringPool );
         // sender
-        ImapParser::parseParenthesizedList( env[2], addrList );
+        ImapParser::parseParenthesizedList( env[3], addrList );
         if ( !addrList.isEmpty() )
           parseAddrList( addrList, msg->sender(), version, m_stringPool );
         // reply-to
