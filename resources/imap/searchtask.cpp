@@ -116,11 +116,11 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                 QDate value = term.value().toDateTime().date();
                 switch (term.condition()) {
                     case Akonadi::SearchTerm::CondGreaterOrEqual:
-                        value.addDays(-1);
+                        value = value.addDays(-1);
                     case Akonadi::SearchTerm::CondGreaterThan:
                         return KIMAP::Term(KIMAP::Term::SentSince, value).setNegated(term.isNegated());
                     case Akonadi::SearchTerm::CondLessOrEqual:
-                        value.addDays(1);
+                        value = value.addDays(1);
                     case Akonadi::SearchTerm::CondLessThan:
                         return KIMAP::Term(KIMAP::Term::SentBefore, value).setNegated(term.isNegated());
                     case Akonadi::SearchTerm::CondEqual:

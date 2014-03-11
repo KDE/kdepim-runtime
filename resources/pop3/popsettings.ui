@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
+    <width>451</width>
     <height>557</height>
    </rect>
   </property>
@@ -405,6 +405,9 @@
               </property>
               <property name="toolTip">
                <string>Command that is executed before checking mail</string>
+              </property>
+              <property name="showClearButton" stdset="0">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
