@@ -253,10 +253,10 @@ void GoogleResource::slotKAccountsAccountInfoReceived( KGAPI2::Job *job )
         otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job*>();
     }
 
-    finishKAccountsAuthentication( otherJob, true );
+    finishKAccountsAuthentication( otherJob );
 }
 
-void GoogleResource::finishKAccountsAuthentication( KGAPI2::Job *job, bool forceConfig )
+void GoogleResource::finishKAccountsAuthentication( KGAPI2::Job *job )
 {
     updateResourceName();
     emit status( Idle, i18nc( "@info:status", "Ready" ) );
@@ -265,11 +265,7 @@ void GoogleResource::finishKAccountsAuthentication( KGAPI2::Job *job, bool force
         job->setAccount( m_account );
         job->restart();
     } else {
-        if ( forceConfig ) {
-            configure( 0 ); /* FIXME: Get correct wId? How? */
-        } else {
-            synchronize();
-        }
+      synchronize();
     }
 }
 #endif // HAVE_ACCOUNTS
@@ -296,7 +292,6 @@ void GoogleResource::slotAccountManagerReady( bool ready )
     const QString accountName = settings()->account();
     if ( accountName.isEmpty() ) {
         emit status( NotConfigured );
-        configure( 0 );
         return;
     }
 

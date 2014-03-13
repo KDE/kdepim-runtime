@@ -76,7 +76,7 @@ class GoogleResource : public Akonadi::ResourceBase,
 #ifdef HAVE_ACCOUNTS
     void slotKAccountsCredentialsReceived( KJob *job );
     void slotKAccountsAccountInfoReceived( KGAPI2::Job *job );
-    void finishKAccountsAuthentication( KGAPI2::Job *job, bool forceConfig = false );
+    void finishKAccountsAuthentication( KGAPI2::Job* job );
 #endif // HAVE_ACCOUNTS
 
   protected:
