@@ -374,12 +374,12 @@ void SendJob::Private::postJobResult( KJob *job )
 {
   Q_ASSERT( currentJob == job );
   currentJob = 0;
+  const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
+  Q_ASSERT( attribute );
+
 
   if ( job->error() ) {
     kDebug() << "Error deleting or moving to sent-mail.";
-
-    const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
-    Q_ASSERT( attribute );
 
     QString errorString;
     switch( attribute->sentBehaviour() ) {
@@ -399,7 +399,10 @@ void SendJob::Private::postJobResult( KJob *job )
     kDebug() << "Success deleting or moving to sent-mail.";
     if ( !filterItem( 2 ) ) //Outbound
       return;
-    storeResult( true );
+    if ( attribute->sentBehaviour() == SentBehaviourAttribute::Delete )
+       q->emitResult();
+    else
+       storeResult( true );
   }
 }
 
