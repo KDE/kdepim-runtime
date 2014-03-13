@@ -35,7 +35,7 @@
       <default>false</default>
     </entry>
     <entry name="AccountId" type="UInt">
-        <label>The account id in WebAccouts framework.</label>
+        <label>The account id in WebAccounts framework.</label>
     </entry>
     <entry name="AccountServices" type="StringList">
         <label>Account enabled services</label>
