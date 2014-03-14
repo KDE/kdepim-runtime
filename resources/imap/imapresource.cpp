@@ -296,7 +296,7 @@ void ImapResource::startConnect( const QVariant& )
 {
   if ( Settings::self()->imapServer().isEmpty() ) {
     setOnline( false );
-    emit status( Broken, i18n( "No server configured yet." ) );
+    emit status( NotConfigured, i18n( "No server configured yet." ) );
     taskDone();
     return;
   }
