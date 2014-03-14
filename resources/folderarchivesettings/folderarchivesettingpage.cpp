@@ -33,6 +33,8 @@
 #include <QLabel>
 #include <QComboBox>
 
+static const KCatalogLoader loader( QLatin1String("libfolderarchivesettings") );
+
 FolderArchiveComboBox::FolderArchiveComboBox(QWidget *parent)
     : QComboBox(parent)
 {
