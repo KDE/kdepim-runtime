@@ -154,7 +154,7 @@ void KABCResource::configure( WId windowId )
 
   int stat =  kresAssistant->exec();
   if ( stat != QDialog::Accepted ) {
-    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     emit configurationDialogRejected();
     delete kresAssistant;
     return;
@@ -178,7 +178,7 @@ void KABCResource::configure( WId windowId )
       i18nc( "@info:status",
              "Initialization based on newly created configuration failed." );
     emit error( message );
-    emit status( Broken, message );
+    emit status( NotConfigured, message );
     return;
   }
 
@@ -201,7 +201,7 @@ void KABCResource::retrieveCollections()
     const QString message = i18nc( "@info:status", "No KDE address book plugin configured yet" );
     emit error( message );
 
-    emit status( Broken, message );
+    emit status( NotConfigured, message );
     return;
   }
 
@@ -375,7 +375,7 @@ void KABCResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
   if ( mBaseResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
   }
 
@@ -431,7 +431,7 @@ void KABCResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
   if ( mBaseResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
   }
 
@@ -486,7 +486,7 @@ void KABCResource::itemRemoved( const Akonadi::Item &item )
 
   if ( mBaseResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
   }
 
@@ -524,7 +524,7 @@ void KABCResource::collectionChanged( const Akonadi::Collection &collection )
 
   if ( mBaseResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
   }
 
@@ -761,7 +761,7 @@ void KABCResource::reloadConfiguration()
   KGlobal::config()->reparseConfiguration();
 
   if ( KGlobal::config()->groupList().isEmpty() ) {
-    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
   }
 
@@ -774,14 +774,14 @@ void KABCResource::reloadConfiguration()
   if ( resource != 0 ) {
     if ( resource->type().toLower() == QLatin1String( "akonadi" ) ) {
       kError() << "Resource config points to an Akonadi bridge resource";
-      emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+      emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
       return;
     }
   }
 
   setResourcePointers( manager->standardResource() );
   if ( mBaseResource == 0 ) {
-    emit status( Broken, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE address book plugin configured yet" ) );
     return;
   }
 

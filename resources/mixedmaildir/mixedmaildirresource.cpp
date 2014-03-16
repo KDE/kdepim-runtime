@@ -413,7 +413,7 @@ bool MixedMaildirResource::ensureSaneConfiguration()
   if ( Settings::self()->path().isEmpty() ) {
     const QString message = i18nc( "@info:status", "No usable storage location configured." );
     kError() << message;
-    status( Broken, message );
+    status( NotConfigured, message );
     return false;
   }
   return true;
