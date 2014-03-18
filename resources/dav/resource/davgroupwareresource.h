@@ -91,6 +91,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
 
   private:
     bool configurationIsValid();
+    void retryAfterFailure(const QString &errorMessage);
 
     /**
      * Collections which only support one mime type have an icon indicating what they support.
