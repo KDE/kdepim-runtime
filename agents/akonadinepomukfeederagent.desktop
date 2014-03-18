@@ -1,7 +1,9 @@
 [Desktop Entry]
 Name=Akonadi Nepomuk Feeder
 Name[bs]=Akonadi Nepomuk napajač
+Name[ca]=Alimentador del Nepomuk per a l'Akonadi
 Name[ca@valencia]=Alimentador Nepomuk per l'Akonadi
+Name[cs]=Akonadi podavač Nepomuku
 Name[da]=Akonadi Nepomuk-feeder
 Name[de]=Nepomuk-Modul für Akonadi
 Name[el]=Τροφοδότης Nepomuk του Akonadi
@@ -27,6 +29,7 @@ Name[sl]=Podajalnik za Nepomuk
 Name[sv]=Akonadi-inmatning till Nepomuk
 Name[tr]=Akonadi Nepomuk Besleyici
 Name[uk]=Передавач даних Akonadi Nepomuk
+Name[x-test]=xxAkonadi Nepomuk Feederxx
 Name[zh_CN]=Akonadi Nepomuk 邮件采集器
 Name[zh_TW]=Akonadi Nepomuk Feeder
 
