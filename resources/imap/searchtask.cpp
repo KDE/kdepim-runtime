@@ -109,9 +109,13 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                         return KIMAP::Term(KIMAP::Term::Smaller, value).setNegated(term.isNegated());
                     case Akonadi::SearchTerm::CondEqual:
                         return KIMAP::Term(KIMAP::Term::And, QVector<KIMAP::Term>() << KIMAP::Term(KIMAP::Term::Smaller, value + 1) << KIMAP::Term(KIMAP::Term::Larger, value + 1)).setNegated(term.isNegated());
+                    case Akonadi::SearchTerm::CondContains:
+                        kDebug()<<" invalid condition for ByteSize";
+                        break;
                 }
             }
                 break;
+            case Akonadi::EmailSearchTerm::HeaderOnlyDate:
             case Akonadi::EmailSearchTerm::HeaderDate: {
                 QDate value = term.value().toDateTime().date();
                 switch (term.condition()) {
@@ -125,10 +129,11 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                         return KIMAP::Term(KIMAP::Term::SentBefore, value).setNegated(term.isNegated());
                     case Akonadi::SearchTerm::CondEqual:
                         return KIMAP::Term(KIMAP::Term::SentOn, value).setNegated(term.isNegated());
+                    case Akonadi::SearchTerm::CondContains:
+                        kDebug()<<" invalid condition for Date";
+                        break;
                 }
             }
-            //TODO
-//             case Akonadi::EmailSearchTerm::MessageDate: {
             case Akonadi::EmailSearchTerm::Subject:
                 return KIMAP::Term(KIMAP::Term::Subject, term.value().toString()).setNegated(term.isNegated());
             case Akonadi::EmailSearchTerm::HeaderFrom:

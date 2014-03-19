@@ -116,7 +116,7 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
   kDebug() << "Removing collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -229,7 +229,7 @@ void DavGroupwareResource::retrieveCollections()
   mSyncErrorNotified = false;
 
   if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -248,7 +248,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
   kDebug() << "Retrieving items for collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -281,7 +281,7 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   kDebug() << "Retrieving single item. Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return false;
   }
@@ -312,7 +312,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
       << ". Collection remote id = " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -347,7 +347,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
       << ". Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -374,7 +374,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
 void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
 {
   if ( !configurationIsValid() ) {
-    emit status( Broken, i18n( "The resource is not configured yet" ) );
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
@@ -738,10 +738,9 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
   Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
   item.setRemoteId( davItem.url() );
 
-
   if ( createJob->error() ) {
     kError() << "Error when uploading item:" << createJob->error() << createJob->errorString();
-    cancelTask( i18n( "Unable to add item: %1", createJob->errorString() ) );
+    retryAfterFailure(createJob->errorString());
     return;
   }
 
@@ -769,7 +768,7 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
 
   if ( modifyJob->error() ) {
     kError() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
-    cancelTask( i18n( "Unable to change item: %1", modifyJob->errorString() ) );
+    retryAfterFailure(modifyJob->errorString());
     return;
   }
 
@@ -789,7 +788,7 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
 void DavGroupwareResource::onItemRemovedFinished( KJob *job )
 {
   if ( job->error() ) {
-    cancelTask( i18n( "Unable to remove item: %1", job->errorString() ) );
+    retryAfterFailure(job->errorString());
   }
   else {
     Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
@@ -833,6 +832,13 @@ bool DavGroupwareResource::configurationIsValid()
   }
 
   return true;
+}
+
+void DavGroupwareResource::retryAfterFailure(const QString &errorMessage)
+{
+  emit status(Broken, errorMessage);
+  deferTask();
+  setTemporaryOffline(Settings::self()->refreshInterval() <= 0 ? 300 : Settings::self()->refreshInterval() * 60);
 }
 
 /*static*/

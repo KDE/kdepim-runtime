@@ -22,6 +22,9 @@
 #include "settings.h"
 
 #include "settingsadaptor.h"
+#ifdef HAVE_ACCOUNTS
+#include "../shared/getcredentialsjob.h"
+#endif
 
 #include <kapplication.h>
 #include <kdebug.h>
@@ -41,6 +44,11 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
+
+#ifdef HAVE_ACCOUNTS
+#include <Accounts/Account>
+#include <Accounts/Manager>
+#endif
 
 class SettingsHelper
 {
@@ -96,6 +104,10 @@ Settings *Settings::self()
 Settings::Settings()
   : SettingsBase(), mWinId( 0 )
 {
+
+#ifdef HAVE_ACCOUNTS
+  m_manager = 0;
+#endif
   Q_ASSERT( !s_globalSettings->q );
   s_globalSettings->q = this;
 
@@ -224,6 +236,9 @@ QStringList Settings::mappedCollections( DavUtils::Protocol proto, const QString
 
 void Settings::reloadConfig()
 {
+#ifdef HAVE_ACCOUNTS
+    importFromAccounts();
+#endif
     buildUrlsList();
     updateRemoteUrls();
     loadMappings();
@@ -281,6 +296,10 @@ QString Settings::username( DavUtils::Protocol proto, const QString &url ) const
   if ( mUrls.contains( key ) )
     if ( mUrls[ key ]->mUser == QLatin1String( "$default$" ) )
       return defaultUsername();
+#ifdef HAVE_ACCOUNTS
+    else if ( mUrls[ key ]->mUser == QLatin1String( "$accounts$" ) )
+      return accountsUsername();
+#endif
     else
       return mUrls[ key ]->mUser;
   else
@@ -299,7 +318,97 @@ QString Settings::password(DavUtils::Protocol proto, const QString& url)
   else
     return QString();
 }
+#ifdef HAVE_ACCOUNTS
+void Settings::importFromAccounts()
+{
+  kDebug();
+  Accounts::AccountId id = accountId();
+  kDebug() << "Account Id: " << id;
 
+  if ( !m_manager ) {
+    m_manager = new Accounts::Manager( this );
+  }
+
+  if ( !m_manager->accountList().contains( id ) ) {
+    return;
+  }
+
+  removeAccountsDisabledServices();
+  addAccountsEnabledServices();
+
+  setSettingsVersion( 3 );
+  writeConfig();
+}
+
+void Settings::addAccountsEnabledServices()
+{
+  kDebug();
+  Accounts::Account *acc = m_manager->account( accountId() );
+  QStringList enabledServices = accountServices();
+  kDebug() << "Enabled" << enabledServices;
+  foreach( QString serviceType, enabledServices ) {
+    Accounts::ServiceList services = acc->services( serviceType );
+    foreach( const Accounts::Service &service, services ) {
+      configureAccountService( acc, service );
+    }
+  }
+}
+
+void Settings::removeAccountsDisabledServices()
+{
+  kDebug();
+  QStringList urls = remoteUrls();
+  for (int i = 0; i < urls.size(); ++i) {
+    if ( !urls.at( i ).startsWith( "$accounts$" ) ) {
+      continue;
+    }
+
+    if (urls.at( i ).contains( "carddav" )
+      && accountServices().contains( "dav-contacts" )) {
+      continue;
+    }
+    if (urls.at( i ).contains( "caldav" )
+      && accountServices().contains( "dav-calendar" )) {
+      continue;
+    }
+
+    urls.removeAt( i );
+  }
+
+  setRemoteUrls( urls );
+}
+
+void Settings::configureAccountService(Accounts::Account *acc, const Accounts::Service& service)
+{
+  kDebug() << "Configuring service: " << service.name();
+
+  QString domain = acc->valueAsString( "server/host" );
+  acc->selectService( service );
+
+  QString type;
+  if ( service.serviceType() == "dav-contacts" ) {
+    type = "CardDav";
+  } else {
+    type = "CalDav";
+  }
+
+  QString url = "$accounts$|" + type + "|" + domain + acc->valueAsString("dav/path");
+  kDebug() << url;
+  acc->selectService();
+
+  QStringList urls = remoteUrls();
+  foreach ( const QString &serializedUrl, urls ) {
+    if ( url == serializedUrl ) {
+      kDebug() << "Url already configured";
+      return;
+    }
+  }
+
+  kDebug() << "Adding url";
+  urls.append( url );
+  setRemoteUrls( urls );
+}
+#endif
 void Settings::buildUrlsList()
 {
   foreach ( const QString &serializedUrl, remoteUrls() ) {
@@ -368,6 +477,10 @@ QString Settings::loadPassword( const QString &key, const QString &user )
 
   if ( user == QLatin1String( "$default$" ) )
     entry = mResourceIdentifier + QLatin1Char(',') + user;
+#ifdef HAVE_ACCOUNTS
+  else if (user == QLatin1String( "$accounts$" ))
+      return loadPasswordFromAccounts();
+#endif
   else
     entry = key + QLatin1Char(',') + user;
 
@@ -398,7 +511,27 @@ QString Settings::loadPassword( const QString &key, const QString &user )
 
   return pass;
 }
+#ifdef HAVE_ACCOUNTS
+QString Settings::loadPasswordFromAccounts()
+{
+    kDebug() << "Getting credentials for: " << accountId();
+    GetCredentialsJob *job = new GetCredentialsJob(accountId());
+    job->exec();
 
+    return job->credentialsData().value("Secret").toString();
+}
+
+QString Settings::accountsUsername() const
+{
+    kDebug() << "Getting credentials for: " << accountId();
+    GetCredentialsJob *job = new GetCredentialsJob(accountId());
+    job->exec();
+
+    kDebug() << "Got some: " << job->credentialsData();
+
+    return job->credentialsData().value("UserName").toString();
+}
+#endif
 QString Settings::promptForPassword( const QString &user )
 {
   QPointer<KDialog> dlg = new KDialog();

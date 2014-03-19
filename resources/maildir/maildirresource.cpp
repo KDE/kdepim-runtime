@@ -700,7 +700,7 @@ bool MaildirResource::ensureDirExists()
 bool MaildirResource::ensureSaneConfiguration()
 {
   if ( mSettings->path().isEmpty() ) {
-    emit status( Broken, i18n( "No usable storage location configured." ) );
+    emit status( NotConfigured, i18n( "No usable storage location configured." ) );
     setOnline( false );
     return false;
   }

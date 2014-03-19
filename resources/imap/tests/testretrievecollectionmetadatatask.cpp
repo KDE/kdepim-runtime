@@ -188,7 +188,7 @@ private slots:
                                       << callNames << rights << expectedAnnotations;
 
     //
-    // Test that NoInferiors overrides acl rigths and disallows creating new mailboxes
+    // Test that NoInferiors overrides acl rights and disallows creating new mailboxes
     //
     collection.setParentCollection( createCollectionChain( QString() ) );
     collection.setRemoteId( "/INBOX" );
