@@ -17,8 +17,7 @@
     02110-1301, USA.
 */
 
-// TODO: i18n??
-var page = Dialog.addPage( "contactswizard.ui", "Settings" );
+var page = Dialog.addPage( "contactswizard.ui", qsTr("Settings") );
 
 page.widget().lineEdit.text = "${CONTACTS_DIRECTORY_DEFAULT_PATH}";
 
