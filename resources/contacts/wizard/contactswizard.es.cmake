@@ -35,7 +35,7 @@ function setup()
   var contactsResource = SetupManager.createResource( "akonadi_contacts_resource" );
   contactsResource.setOption( "Path", page.widget().lineEdit.text );
   contactsResource.setOption( "IsConfigured", "true" );
-  contactsResource.setName( "Local Contacts" ); //TODO: i18n
+  contactsResource.setName( qsTr("Local Contacts") );
   SetupManager.execute();
 }
 

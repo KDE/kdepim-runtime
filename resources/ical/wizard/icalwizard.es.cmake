@@ -35,7 +35,7 @@ function setup()
 {
   var icalRes = SetupManager.createResource( "akonadi_ical_resource" );
   icalRes.setOption( "Path", page.widget().lineEdit.text );
-  icalRes.setName( "Default Calendar" ); //TODO: i18n
+  icalRes.setName( qsTr("Default Calendar") );
   SetupManager.execute();
 }
 
