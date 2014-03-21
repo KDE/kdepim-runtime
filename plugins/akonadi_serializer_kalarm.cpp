@@ -264,6 +264,11 @@ void SerializerPluginKAlarm::reportDifference(AbstractDifferencesReporter* repor
         reporter->addProperty(AbstractDifferencesReporter::ConflictMode, KAEventFormatter::label(id), mValueL.value(id), mValueR.value(id));
 }
 
+QString SerializerPluginKAlarm::extractGid(const Item& item) const
+{
+    return item.hasPayload<KAEvent>() ? item.payload<KAEvent>().id() : QString();
+}
+
 Q_EXPORT_PLUGIN2(akonadi_serializer_kalarm, SerializerPluginKAlarm)
 
 
