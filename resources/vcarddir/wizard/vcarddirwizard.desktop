@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=VCard Directory
+Icon=text-directory
+Comment=Loads contact from VCard Directory
+
+[Wizard]
+Type=text/vcard
+Script=vcarddirwizard.es
+
+[Translate]
+Filename=accountwizard_vcarddir
