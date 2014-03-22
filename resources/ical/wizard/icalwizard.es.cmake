@@ -17,7 +17,6 @@
     02110-1301, USA.
 */
 
-// TODO: i18n??
 var page = Dialog.addPage( "icalwizard.ui", qsTr("Settings") );
 
 page.widget().lineEdit.text = "${ICAL_FILE_DEFAULT_PATH}";
