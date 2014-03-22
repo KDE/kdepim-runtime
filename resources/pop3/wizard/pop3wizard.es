@@ -58,6 +58,6 @@ function setup()
   SetupManager.execute();
 }
 
-connect( page.widget().incommingAddress, "textChanged(QString)", this, "serverChanged(QString)" );
-connect( page, "pageLeftNext()", this, "setup()" );
+page.widget().incommingAddress.textChanged.connect( serverChanged );
+page.pageLeftNext.connect( setup );
 validateInput();
