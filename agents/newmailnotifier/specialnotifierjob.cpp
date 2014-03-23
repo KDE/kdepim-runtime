@@ -154,15 +154,23 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         }
     }
 
-    KNotification *notification= new KNotification ( QLatin1String("new-email"), 0, KNotification::CloseOnTimeout);
-    notification->setText( result.join(QLatin1String("\n")) );
-    notification->setPixmap( pixmap );
-    notification->setActions( QStringList() << i18n( "Show mail..." ) );
+    if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
+        KNotification *notification= new KNotification ( QLatin1String("new-email"), 0, KNotification::CloseOnTimeout);
+        notification->setText( result.join(QLatin1String("\n")) );
+        notification->setPixmap( pixmap );
+        notification->setActions( QStringList() << i18n( "Show mail..." ) );
 
-    connect(notification, SIGNAL(activated(unsigned int)), this, SLOT(slotOpenMail()) );
-    connect(notification, SIGNAL(closed()), this, SLOT(deleteLater()));
+        connect(notification, SIGNAL(activated(unsigned int)), this, SLOT(slotOpenMail()) );
+        connect(notification, SIGNAL(closed()), this, SLOT(deleteLater()));
 
-    notification->sendEvent();
+        notification->sendEvent();
+        if ( NewMailNotifierAgentSettings::beepOnNewMails() ) {
+            KNotification::beep();
+        }
+    } else {
+        emit displayNotification(pixmap, result.join(QLatin1String("\n")));
+        deleteLater();
+    }
 }
 
 void SpecialNotifierJob::slotOpenMail()

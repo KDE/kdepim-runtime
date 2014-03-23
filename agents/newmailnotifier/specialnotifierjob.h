@@ -32,7 +32,7 @@ public:
     ~SpecialNotifierJob();
 
 Q_SIGNALS:
-    void displayNotification(const QPixmap &pixmap, const QString &message, Akonadi::Item::Id id);
+    void displayNotification(const QPixmap &pixmap, const QString &message);
 
 private Q_SLOTS:
     void slotSearchJobFinished( KJob *job );

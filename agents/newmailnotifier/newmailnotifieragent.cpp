@@ -441,7 +441,8 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
         }
         if (hasUniqMessage) {
-            new SpecialNotifierJob(mListEmails, currentPath, item, this);
+            SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
+            connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
             return;
         } else {

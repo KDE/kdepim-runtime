@@ -100,6 +100,10 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mExcludeMySelf->setChecked(NewMailNotifierAgentSettings::excludeEmailsFromMe());
     vbox->addWidget(mExcludeMySelf);
 
+    mAllowToShowMail = new QCheckBox(i18n("Show button to display mail"));
+    mAllowToShowMail->setChecked(NewMailNotifierAgentSettings::showButtonToDisplayMail());
+    vbox->addWidget(mAllowToShowMail);
+
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
@@ -210,6 +214,7 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
     NewMailNotifierAgentSettings::setTextToSpeakEnabled(mTextToSpeak->isChecked());
     NewMailNotifierAgentSettings::setTextToSpeak(mTextToSpeakSetting->text());
+    NewMailNotifierAgentSettings::setShowButtonToDisplayMail(mAllowToShowMail->isChecked());
     NewMailNotifierAgentSettings::self()->writeConfig();
     mNotify->save();
     accept();
