@@ -47,6 +47,7 @@ private:
     QCheckBox *mShowSubject;
     QCheckBox *mShowFolders;
     QCheckBox *mExcludeMySelf;
+    QCheckBox *mAllowToShowMail;
     KNotifyConfigWidget *mNotify;
     QCheckBox *mTextToSpeak;
     KLineEdit *mTextToSpeakSetting;

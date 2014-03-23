@@ -17,8 +17,7 @@
     02110-1301, USA.
 */
 
-// TODO: i18n??
-var page = Dialog.addPage( "icalwizard.ui", "Settings" );
+var page = Dialog.addPage( "icalwizard.ui", qsTr("Settings") );
 
 page.widget().lineEdit.text = "${ICAL_FILE_DEFAULT_PATH}";
 
@@ -35,7 +34,7 @@ function setup()
 {
   var icalRes = SetupManager.createResource( "akonadi_ical_resource" );
   icalRes.setOption( "Path", page.widget().lineEdit.text );
-  icalRes.setName( "Default Calendar" ); //TODO: i18n
+  icalRes.setName( qsTr("Default Calendar") );
   SetupManager.execute();
 }
 

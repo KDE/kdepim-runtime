@@ -1,6 +1,6 @@
 /*
  *  akonadi_serializer_kalarm.h  -  Akonadi resource serializer for KAlarm
- *  Copyright © 2009-2012 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2014 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -25,24 +25,32 @@
 
 #include <akonadi/itemserializerplugin.h>
 #include <akonadi/differencesalgorithminterface.h>
+#include <akonadi/gidextractorinterface.h>
 #include <kcalcore/icalformat.h>
 
 #include <QtCore/QObject>
 
-namespace Akonadi { class AbstractDifferencesReporter; }
+namespace Akonadi
+{
+    class Item;
+    class AbstractDifferencesReporter;
+}
 
 class SerializerPluginKAlarm : public QObject,
                                public Akonadi::ItemSerializerPlugin,
-                               public Akonadi::DifferencesAlgorithmInterface
+                               public Akonadi::DifferencesAlgorithmInterface,
+                               public Akonadi::GidExtractorInterface
 {
         Q_OBJECT
         Q_INTERFACES(Akonadi::ItemSerializerPlugin)
         Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
+        Q_INTERFACES(Akonadi::GidExtractorInterface)
 
     public:
         bool deserialize(Akonadi::Item& item, const QByteArray& label, QIODevice& data, int version);
         void serialize(const Akonadi::Item& item, const QByteArray& label, QIODevice& data, int& version);
         void compare(Akonadi::AbstractDifferencesReporter*, const Akonadi::Item& left, const Akonadi::Item& right);
+        QString extractGid(const Akonadi::Item& item) const;
 
     private:
         void reportDifference(Akonadi::AbstractDifferencesReporter*, KAEventFormatter::Parameter);

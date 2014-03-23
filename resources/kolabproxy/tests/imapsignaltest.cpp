@@ -135,7 +135,7 @@ private slots:
         {
             event->setSummary("summary2");
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)), createJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), createJob));
             recreatdImapItem = createJob->item();
         }
 
@@ -190,7 +190,7 @@ private slots:
         {
             event->setSummary("summary2");
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)), createJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), createJob));
             secondImapItem = createJob->item();
         }
 
@@ -227,7 +227,7 @@ private slots:
             event->setSummary("summary2");
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(createImapItem(event), imapCollection, this);
 //             AKVERIFYEXEC(createJob);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)), createJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), createJob));
             secondImapItem = createJob->item();
         }
         //we expect one kolab item that is linked to the second imap item
@@ -235,7 +235,7 @@ private slots:
         //remove first imap item
         {
             Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(firstImapItem);
-            QVERIFY(!TestUtils::ensure(kolabCollection, SIGNAL(itemRemoved(const Akonadi::Item &)), deleteJob));
+            QVERIFY(!TestUtils::ensure(kolabCollection, SIGNAL(itemRemoved(Akonadi::Item)), deleteJob));
         }
 
         //TestUtils::ensure kolab item remains
@@ -251,7 +251,7 @@ private slots:
         //remove second imap item
         {
             Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(secondImapItem);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemRemoved(const Akonadi::Item &)), deleteJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(itemRemoved(Akonadi::Item)), deleteJob));
         }
 
         //TestUtils::ensure kolab item is removed
@@ -272,7 +272,7 @@ private slots:
             annotations.insert("/shared/vendor/kolab/folder-type", "event");
             col.addAttribute(new CollectionAnnotationsAttribute(annotations));
             Akonadi::CollectionCreateJob *createJob = new Akonadi::CollectionCreateJob(col, this);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)), createJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionAdded(Akonadi::Collection,Akonadi::Collection)), createJob));
             createdCollection = createJob->collection();
         }
         {
@@ -283,7 +283,7 @@ private slots:
         //cleanup
         {
             Akonadi::CollectionDeleteJob *deleteJob = new Akonadi::CollectionDeleteJob(createdCollection);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionRemoved(const Akonadi::Collection &)), deleteJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionRemoved(Akonadi::Collection)), deleteJob));
         }
         {
             Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
@@ -303,7 +303,7 @@ private slots:
             col.addAttribute(new CollectionAnnotationsAttribute(annotations));
             col.setRights(Akonadi::Collection::AllRights);
             Akonadi::CollectionCreateJob *createJob = new Akonadi::CollectionCreateJob(col, this);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionAdded(const Akonadi::Collection &, const Akonadi::Collection &)), createJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionAdded(Akonadi::Collection,Akonadi::Collection)), createJob));
             createdCollection = createJob->collection();
         }
 
@@ -316,7 +316,7 @@ private slots:
         {
             createdCollection.setRights(Akonadi::Collection::ReadOnly);
             Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(createdCollection);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionChanged(const Akonadi::Collection &)), modJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionChanged(Akonadi::Collection)), modJob));
         }
         {
             Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(kolabCollection);
@@ -327,7 +327,7 @@ private slots:
         //cleanup
         {
             Akonadi::CollectionDeleteJob *deleteJob = new Akonadi::CollectionDeleteJob(createdCollection);
-            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionRemoved(const Akonadi::Collection &)), deleteJob));
+            QVERIFY(TestUtils::ensure(kolabCollection, SIGNAL(collectionRemoved(Akonadi::Collection)), deleteJob));
         }
     }
 
@@ -336,3 +336,4 @@ private slots:
 QTEST_AKONADIMAIN( ImapSignalTest, NoGUI )
 
 #include "imapsignaltest.moc"
+

@@ -37,13 +37,14 @@ Q_SIGNALS:
 private Q_SLOTS:
     void slotSearchJobFinished( KJob *job );
     void slotItemFetchJobDone(KJob*);
-
+    void slotOpenMail();
 private:
     void emitNotification(const QPixmap &pixmap);
     QStringList mListEmails;
     QString mSubject;
     QString mFrom;
     QString mPath;
+    Akonadi::Item::Id mItemId;
 };
 
 #endif // SPECIALNOTIFIERJOB_H

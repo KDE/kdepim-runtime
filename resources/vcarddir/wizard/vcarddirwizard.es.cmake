@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2010 Till Adam <adam@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,9 +17,9 @@
     02110-1301, USA.
 */
 
-var page = Dialog.addPage( "contactswizard.ui", qsTr("Settings") );
+var page = Dialog.addPage( "vcarddirwizard.ui", qsTr("Settings") );
 
-page.widget().lineEdit.text = "${CONTACTS_DIRECTORY_DEFAULT_PATH}";
+page.widget().lineEdit.text = "${VCARDDIR_FILE_DEFAULT_PATH}";
 
 function validateInput()
 {
@@ -32,10 +32,9 @@ function validateInput()
 
 function setup()
 {
-  var contactsResource = SetupManager.createResource( "akonadi_contacts_resource" );
-  contactsResource.setOption( "Path", page.widget().lineEdit.text );
-  contactsResource.setOption( "IsConfigured", "true" );
-  contactsResource.setName( qsTr("Local Contacts") );
+  var vcardRes = SetupManager.createResource( "akonadi_vcarddir_resource" );
+  vcardRes.setOption( "Path", page.widget().lineEdit.text );
+  vcardRes.setName( qsTr("Default Contact") );
   SetupManager.execute();
 }
 

@@ -95,6 +95,7 @@ private slots:
     void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
 
 private:
+    bool ignoreStatusMail(const Akonadi::Item &item);
     bool isActive() const;
     void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;

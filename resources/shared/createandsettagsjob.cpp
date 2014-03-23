@@ -25,7 +25,8 @@ using namespace Akonadi;
 CreateAndSetTagsJob::CreateAndSetTagsJob(const Item& item, const Akonadi::Tag::List& tags, QObject* parent)
 : KJob(parent),
   mItem(item),
-  mTags(tags)
+  mTags(tags),
+  mCount(0)
 {
 
 }

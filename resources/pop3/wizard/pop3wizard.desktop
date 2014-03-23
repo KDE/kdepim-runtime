@@ -99,7 +99,7 @@ Comment[zh_TW]=Pop3 帳號
 
 [Wizard]
 Type=message/rfc822
-Script=pop3wizard.js
+Script=pop3wizard.es
 
 [Translate]
 Filename=accountwizard_pop3
