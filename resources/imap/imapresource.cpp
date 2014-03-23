@@ -33,10 +33,6 @@
 #include <kstandarddirs.h>
 #include <KWindowSystem>
 
-#ifndef IMAPRESOURCE_NO_SOLID
-#include <solid/networking.h>
-#endif
-
 #include <akonadi/agentmanager.h>
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionfetchjob.h>
@@ -664,15 +660,7 @@ void ImapResource::reconnect()
 {
   setNeedsNetwork( needsNetwork() );
   setOnline( false ); // we are not connected initially
-
-  setOnline( !needsNetwork()
-#ifndef IMAPRESOURCE_NO_SOLID
-                         ||
-             Solid::Networking::status() == Solid::Networking::Unknown ||
-             Solid::Networking::status() == Solid::Networking::Connected
-#endif
-             );
-
+  setOnline( true );
 }
 
 
