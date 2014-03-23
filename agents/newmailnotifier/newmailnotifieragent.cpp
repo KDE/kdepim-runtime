@@ -285,7 +285,7 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items )
     for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
         QList<Akonadi::Item::Id> idList = it.value();
         bool itemFound = false;
-        Q_FOREACH( Item item, items ) {
+        Q_FOREACH( const Item &item, items ) {
             if (idList.contains(item.id())) {
                 idList.removeAll( item.id() );
                 itemFound = true;
@@ -305,7 +305,7 @@ void NewMailNotifierAgent::itemsFlagsChanged( const Akonadi::Item::List &items, 
 {
     if (!isActive())
         return;
-    Q_FOREACH (Akonadi::Item item, items) {
+    Q_FOREACH (const Akonadi::Item &item, items) {
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
         for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
             QList<Akonadi::Item::Id> idList= it.value();
@@ -327,7 +327,7 @@ void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const A
     if (!isActive())
         return;
 
-    Q_FOREACH (Akonadi::Item item, items) {
+    Q_FOREACH (const Akonadi::Item &item, items) {
         Akonadi::MessageStatus status;
         status.setStatusFromFlags( item.flags() );
         if ( status.isRead() || status.isSpam() || status.isIgnored() )
