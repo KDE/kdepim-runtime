@@ -185,6 +185,6 @@ void SpecialNotifierJob::slotOpenMail()
             return;
         }
     }
-    QDBusInterface kmail(QLatin1String("org.kde.kmail"), QLatin1String("/KMail"), kmailInterface);
+    QDBusInterface kmail(kmailInterface, QLatin1String("/KMail"), QLatin1String("org.kde.kmail.kmail"));
     kmail.call(QLatin1String("showMail"), mItemId);
 }
