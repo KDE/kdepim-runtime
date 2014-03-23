@@ -328,10 +328,9 @@ void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const A
         return;
 
     Q_FOREACH (const Akonadi::Item &item, items) {
-        Akonadi::MessageStatus status;
-        status.setStatusFromFlags( item.flags() );
-        if ( status.isRead() || status.isSpam() || status.isIgnored() )
+        if (ignoreStatusMail(item)) {
             continue;
+        }
 
         if ( excludeSpecialCollection(collectionSource) ) {
             continue; // outbox, sent-mail, trash, drafts or templates.
@@ -357,6 +356,15 @@ void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const A
     }
 }
 
+bool NewMailNotifierAgent::ignoreStatusMail(const Akonadi::Item &item)
+{
+    Akonadi::MessageStatus status;
+    status.setStatusFromFlags( item.flags() );
+    if ( status.isRead() || status.isSpam() || status.isIgnored() )
+        return true;
+    return false;
+}
+
 void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
     if (!isActive())
@@ -366,10 +374,9 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
         return; // outbox, sent-mail, trash, drafts or templates.
     }
 
-    Akonadi::MessageStatus status;
-    status.setStatusFromFlags( item.flags() );
-    if ( status.isRead() || status.isSpam() || status.isIgnored() )
+    if (ignoreStatusMail(item)) {
         return;
+    }
 
     if ( !mTimer.isActive() ) {
         mTimer.start();
