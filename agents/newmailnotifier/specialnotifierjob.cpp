@@ -160,7 +160,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         notification->setPixmap( pixmap );
         notification->setActions( QStringList() << i18n( "Show mail..." ) );
 
-        connect(notification, SIGNAL(activated(unsigned int)), this, SLOT(slotOpenMail()) );
+        connect(notification, SIGNAL(activated(uint)), this, SLOT(slotOpenMail()) );
         connect(notification, SIGNAL(closed()), this, SLOT(deleteLater()));
 
         notification->sendEvent();
