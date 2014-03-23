@@ -66,6 +66,11 @@ void SessionPool::setPasswordRequester( PasswordRequesterInterface *requester )
                     this, SLOT(onPasswordRequestDone(int,QString)) );
 }
 
+void SessionPool::cancelPasswordRequests()
+{
+  m_passwordRequester->cancelPasswordRequests();
+}
+
 KIMAP::SessionUiProxy::Ptr SessionPool::sessionUiProxy() const
 {
   return m_sessionUiProxy;
@@ -113,6 +118,7 @@ void SessionPool::disconnect( SessionTermination termination )
   m_reservedPool.clear();
   m_connectingPool.clear();
   m_pendingInitialSession = 0;
+  m_passwordRequester->cancelPasswordRequests();
 
   delete m_account;
   m_account = 0;
@@ -473,6 +479,7 @@ void SessionPool::onConnectionLost()
   m_connectingPool.removeAll( session );
 
   if ( m_unusedPool.isEmpty() && m_reservedPool.isEmpty() ) {
+    m_passwordRequester->cancelPasswordRequests();
     delete m_account;
     m_account = 0;
     m_namespaces.clear();

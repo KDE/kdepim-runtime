@@ -259,28 +259,30 @@ void ImapResource::fetchItemsWithoutBodiesDone( KJob *job )
 
 // -----------------------------------------------------------------------------
 
-int ImapResource::configureDialog( WId windowId )
+KDialog* ImapResource::createConfigureDialog(WId windowId)
 {
-  QPointer<SetupServer> dlg = new SetupServer( this, windowId );
+  SetupServer *dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
-
   dlg->setWindowIcon( KIcon( QLatin1String("network-server") ) );
-  int result = QDialog::Rejected;
-  if( dlg->exec() ) {
+  connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+  return dlg;
+}
+
+void ImapResource::onConfigurationDone(int result)
+{
+  SetupServer *dlg = qobject_cast<SetupServer*>(sender());
+  if (result) {
     if ( dlg->shouldClearCache() ) {
       clearCache();
     }
     Settings::self()->writeConfig();
-    result = QDialog::Accepted;
   }
-  delete dlg;
-
-  return result;
+  dlg->deleteLater();
 }
 
 void ImapResource::configure( WId windowId )
 {
-  if ( configureDialog( windowId ) == QDialog::Accepted ) {
+  if ( createConfigureDialog( windowId )->exec() == QDialog::Accepted ) {
     emit configurationDialogAccepted();
     reconnect();
   } else {
@@ -620,8 +622,10 @@ void ImapResource::doSetOnline(bool online)
       delete task;
     }
     m_taskList.clear();
-    if ( m_pool->isConnected() )
-      m_pool->disconnect();
+    m_pool->cancelPasswordRequests();
+    if (m_pool->isConnected()) {
+        m_pool->disconnect();
+    }
     if (m_idle) {
       m_idle->stop();
       delete m_idle;

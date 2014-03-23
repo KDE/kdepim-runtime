@@ -28,6 +28,7 @@
 
 #include <akonadi/resourcebase.h>
 #include <akonadi/agentsearchinterface.h>
+#include <KDialog>
 #include <QPointer>
 
 class QTimer;
@@ -57,7 +58,7 @@ public:
   ~ImapResource();
 
 
-  int configureDialog( WId windowId );
+  KDialog *createConfigureDialog( WId windowId );
   QStringList serverCapabilities() const;
 
   void fetchItemsWithoutBodies( const Akonadi::Collection &collection, QObject *receiver, const char *slot );
@@ -135,6 +136,7 @@ private Q_SLOTS:
   void clearStatusMessage();
 
   void fetchItemsWithoutBodiesDone( KJob *job );
+  void onConfigurationDone( int result );
 
 private:
   friend class ResourceState;
