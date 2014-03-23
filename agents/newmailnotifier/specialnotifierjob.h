@@ -32,18 +32,19 @@ public:
     ~SpecialNotifierJob();
 
 Q_SIGNALS:
-    void displayNotification(const QPixmap &pixmap, const QString &message);
+    void displayNotification(const QPixmap &pixmap, const QString &message, Akonadi::Item::Id id);
 
 private Q_SLOTS:
     void slotSearchJobFinished( KJob *job );
     void slotItemFetchJobDone(KJob*);
-
+    void slotOpenMail();
 private:
     void emitNotification(const QPixmap &pixmap);
     QStringList mListEmails;
     QString mSubject;
     QString mFrom;
     QString mPath;
+    Akonadi::Item::Id mItemId;
 };
 
 #endif // SPECIALNOTIFIERJOB_H
