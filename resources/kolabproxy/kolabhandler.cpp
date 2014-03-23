@@ -222,3 +222,4 @@ void KolabHandler::checkResult(KJob* job)
     kWarning() << "Error occurred: " << job->errorString();
   }
 }
+
