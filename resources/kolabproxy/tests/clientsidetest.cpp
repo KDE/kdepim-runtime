@@ -134,7 +134,7 @@ private slots:
             item.setPayload(event);
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
             //Check that the signal is NOT emitted within the timeout
-            QVERIFY(!TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)), createJob));
+            QVERIFY(!TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), createJob));
             //TODO akonadi currently doesn't support failing itemcreatejobs if the resource fails to store the item.
             // the item will simply remain dirty in the akonadi server
 //             QVERIFY(createJob->error());
@@ -162,7 +162,7 @@ private slots:
             Akonadi::Item item(event->mimeType());
             item.setPayload(event);
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
-            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)), createJob));
+            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), createJob));
             createdItem = createJob->item();
             QVERIFY(createdItem.isValid());
         }
@@ -171,7 +171,7 @@ private slots:
             event->setDtStart(date2);
             createdItem.setPayload(event);
             Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(createdItem);
-            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)), modifyJob));
+            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), modifyJob));
             Akonadi::Item modifiedItem = modifyJob->item();
             QVERIFY(modifiedItem.hasPayload<KCalCore::Event::Ptr>());
             QCOMPARE(modifiedItem.payload<KCalCore::Event::Ptr>()->dtStart().toString(), date2.toString());
@@ -202,7 +202,7 @@ private slots:
             Akonadi::Item item(event->mimeType());
             item.setPayload(event);
             Akonadi::ItemCreateJob *createJob = new Akonadi::ItemCreateJob(item, kolabCollection);
-            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item, Akonadi::Collection)), createJob));
+            QVERIFY(TestUtils::ensure(imapCollection, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), createJob));
             createdItem = createJob->item();
             QVERIFY(createdItem.isValid());
         }
@@ -214,7 +214,7 @@ private slots:
             AKVERIFYEXEC(modifyJob);
             QTest::qWait(TIMEOUT);
             //FIXME this fails, no idea why
-//             QVERIFY(!TestUtils::ensure(imapCollection, SIGNAL(itemChanged(Akonadi::Item, QSet<QByteArray>)), modifyJob));
+//             QVERIFY(!TestUtils::ensure(imapCollection, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)), modifyJob));
         }
 
         //Ensure the change has been reverted for the kolab item

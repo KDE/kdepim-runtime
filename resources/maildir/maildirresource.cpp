@@ -144,7 +144,7 @@ MaildirResource::MaildirResource( const QString &id )
   }
 
   mChangedCleanerTimer = new QTimer( this );
-  connect( mChangedCleanerTimer, SIGNAL( timeout() ), this, SLOT( changedCleaner() ) );
+  connect( mChangedCleanerTimer, SIGNAL(timeout()), this, SLOT(changedCleaner()) );
 }
 
 void MaildirResource::attemptConfigRestoring( KJob * job )
