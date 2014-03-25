@@ -55,7 +55,7 @@ class AccountDialog : public KDialog, private Ui::PopPage
     void slotPipeliningClicked();
     void slotPopEncryptionChanged(int);
     void slotCheckPopCapabilities();
-    void slotPopCapabilities( QList<int> );
+    void slotPopCapabilities(const QList<int> & );
     void slotLeaveOnServerDaysChanged( int value );
     void slotLeaveOnServerCountChanged( int value );
     void slotFilterOnServerSizeChanged( int value );

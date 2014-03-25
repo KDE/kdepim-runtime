@@ -44,6 +44,7 @@ Comment[ca@valencia]=«Proporciona l'accés als elements d'un calendari, cada un
 Comment[cs]="Poskytuje přístup k položkám kalendáře, každé uložené v jednom souboru v daném adresáři"
 Comment[da]="Giver adgang til en kalenderelementer, hver især gemt i en enkelt fil i en given mappe"
 Comment[de]="Ermöglicht Zugriff auf Kalender, die jeweils in einzelnen Dateien in einem vorgegebenen Ordner gespeichert sind"
+Comment[el]="Παρέχει πρόσβαση σε αντικείμενα ημερολογίου, με το καθένα αποθηκευμένο σε ένα αρχείο, σε δοσμένο κατάλογο"
 Comment[es]=«Proporciona acceso a elementos de calendario, cada uno almacenado en un solo archivo, en un directorio dado»
 Comment[fi]="Tarjoaa pääsyn määräkansion yksittäisiin tiedostoihin tallennettuihin kalenterimerkintöihin"
 Comment[fr]=« Fournit l'accès aux éléments d'agenda, chacun stocké dans un fichier distinct, dans un dossier donné »
