@@ -361,12 +361,13 @@ void ImapResource::onConnectDone( int errorCode, const QString &errorString )
   case SessionPool::IncompatibleServerError:
     setOnline( false );
     emit status( Broken, errorString );
-    taskDone();
+    cancelTask();
     return;
 
   case SessionPool::CouldNotConnectError:
-    setOnline( false );
-    taskDone();
+    emit status( Broken, errorString );
+    deferTask();
+    setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
     return;
 
   case SessionPool::ReconnectNeededError:
