@@ -48,6 +48,7 @@ protected:
 public:
   virtual void requestPassword( RequestType request = StandardRequest,
                                 const QString &serverError = QString() ) = 0;
+  virtual void cancelPasswordRequests();
 
 signals:
   void done( int resultType, const QString &password = QString() );
