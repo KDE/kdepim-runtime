@@ -77,6 +77,9 @@ public:
 
     void printDebug();
 
+    bool showButtonToDisplayMail() const;
+    void setShowButtonToDisplayMail(bool b);
+
 protected:
     void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
     void itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection );

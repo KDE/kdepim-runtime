@@ -64,6 +64,12 @@
     <method name="textToSpeak" >
       <arg type="s" direction="out"/>
     </method>
+    <method name="setShowButtonToDisplayMail" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="showButtonToDisplayMail" >
+      <arg type="b" direction="out"/>
+    </method>
 
 
     <method name="printDebug" />
