@@ -133,6 +133,8 @@ private Q_SLOTS:
   void showError( const QString &message );
   void clearStatusMessage();
 
+  void onConfigurationDone( int result );
+
 private:
   friend class ResourceState;
 
