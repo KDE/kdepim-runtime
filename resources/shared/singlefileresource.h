@@ -69,7 +69,7 @@ class SingleFileResource : public SingleFileResourceBase
       if ( mSettings->path().isEmpty() ) {
         const QString message = i18n( "No file selected." );
         kWarning() << message;
-        emit status( Broken, message );
+        emit status( NotConfigured, i18n("The resource not configured yet") );
         if ( taskContext )
           cancelTask();
         return;

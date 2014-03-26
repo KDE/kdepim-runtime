@@ -230,6 +230,17 @@ bool NewMailNotifierAgent::enabledAgent() const
     return NewMailNotifierAgentSettings::enabled();
 }
 
+bool NewMailNotifierAgent::showButtonToDisplayMail() const
+{
+    return NewMailNotifierAgentSettings::showButtonToDisplayMail();
+}
+
+void NewMailNotifierAgent::setShowButtonToDisplayMail(bool b)
+{
+    NewMailNotifierAgentSettings::setShowButtonToDisplayMail(b);
+    NewMailNotifierAgentSettings::self()->writeConfig();
+}
+
 
 void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
 {

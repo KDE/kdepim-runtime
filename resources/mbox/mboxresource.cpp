@@ -97,6 +97,10 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     cancelTask();
     return;
   }
+  if (mMBox->fileName().isEmpty()) {
+      emit status(NotConfigured, i18nc( "@info:status", "MBox not configured." ) );
+      return;
+  }
 
   KMBox::MBoxEntry::List entryList;
   if ( col.hasAttribute<DeletedItemsAttribute>() ) {
@@ -145,6 +149,10 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
     emit error( i18n( "MBox not loaded." ) );
     return false;
   }
+  if (mMBox->fileName().isEmpty()) {
+      emit status(NotConfigured, i18nc( "@info:status", "MBox not configured." ) );
+      return false;
+  }
 
   const QString rid = item.remoteId();
   const quint64 offset = itemOffset( rid );
@@ -172,6 +180,10 @@ void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
   if ( !mMBox ) {
     cancelTask( i18n( "MBox not loaded." ) );
     return;
+  }
+  if (mMBox->fileName().isEmpty()) {
+      emit status(NotConfigured, i18nc( "@info:status", "MBox not configured." ) );
+      return;
   }
 
   // we can only deal with mail

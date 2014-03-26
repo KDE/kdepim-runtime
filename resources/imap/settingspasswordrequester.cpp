@@ -21,20 +21,25 @@
 
 #include "settingspasswordrequester.h"
 
-#include <QtCore/QTimer>
-
 #include <KDE/KMessageBox>
 #include <KDE/KLocale>
+#include <KDialog>
 
 #include <mailtransport/transportbase.h>
+#include <kwindowsystem.h>
 
 #include "imapresource.h"
 #include "settings.h"
 
 SettingsPasswordRequester::SettingsPasswordRequester( ImapResource *resource, QObject *parent )
-  : PasswordRequesterInterface( parent ), m_resource( resource )
+  : PasswordRequesterInterface( parent ), m_resource( resource ), m_requestDialog( 0 ), m_settingsDialog( 0 )
 {
 
+}
+
+SettingsPasswordRequester::~SettingsPasswordRequester()
+{
+  cancelPasswordRequests();
 }
 
 void SettingsPasswordRequester::requestPassword( RequestType request, const QString &serverError )
@@ -50,29 +55,75 @@ void SettingsPasswordRequester::requestPassword( RequestType request, const QStr
 
 void SettingsPasswordRequester::askUserInput( const QString &serverError )
 {
-  // the credentials were not ok....
-  int i = KMessageBox::questionYesNoCancelWId( m_resource->winIdForDialogs(),
-                                               i18n( "The server for account \"%2\" refused the supplied username and password. "
+  // the credentials were not ok, allow to retry or change password
+  if ( m_requestDialog ) {
+    kDebug() << "Password request dialog is already open";
+    return;
+  }
+  QWidget *parent = QWidget::find(m_resource->winIdForDialogs());
+  QString text = i18n( "The server for account \"%2\" refused the supplied username and password. "
                                                      "Do you want to go to the settings, have another attempt "
                                                      "at logging in, or do nothing?\n\n"
-                                                     "%1", serverError, m_resource->name() ),
-                                               i18n( "Could Not Authenticate" ),
-                                               KGuiItem( i18n( "Account Settings" ) ),
-                                               KGuiItem( i18nc( "Input username/password manually and not store them", "Try Again" ) ) );
+                                                     "%1", serverError, m_resource->name() );
+  KDialog *dialog = new KDialog(parent, Qt::Dialog);
+  dialog->setCaption(i18n( "Could Not Authenticate" ));
+  dialog->setButtons(KDialog::Yes|KDialog::No|KDialog::Cancel);
+  dialog->setDefaultButton(KDialog::Yes);
+  dialog->setButtonText(KDialog::Yes, i18n( "Account Settings" ));
+  dialog->setButtonText(KDialog::No, i18nc( "Input username/password manually and not store them", "Try Again" ));
+  dialog->setAttribute(Qt::WA_DeleteOnClose);
+  connect(dialog, SIGNAL(buttonClicked(KDialog::ButtonCode)), this, SLOT(onButtonClicked(KDialog::ButtonCode)));
+  connect(dialog, SIGNAL(destroyed(QObject*)), this, SLOT(onDialogDestroyed()));
+  m_requestDialog = dialog;
+  KWindowSystem::setMainWindow(dialog, m_resource->winIdForDialogs());
+  bool checkboxResult = false;
+  KMessageBox::createKMessageBox(dialog, QMessageBox::Information,
+                                       text, QStringList(),
+                                       QString(),
+                                       &checkboxResult, KMessageBox::NoExec);
+  dialog->show();
+}
 
-  if ( i == KMessageBox::Yes ) {
-    int result = m_resource->configureDialog( m_resource->winIdForDialogs() );
-    if ( result==QDialog::Accepted ) {
-      emit done( ReconnectNeeded );
-    } else {
-      emit done( UserRejected );
+void SettingsPasswordRequester::onDialogDestroyed()
+{
+  m_requestDialog = 0;
+}
+
+void SettingsPasswordRequester::onButtonClicked(KDialog::ButtonCode result)
+{
+  if ( result == KDialog::Yes ) {
+    if (!m_settingsDialog) {
+      KDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
+      connect(dialog, SIGNAL(finished(int)), this, SLOT(onSettingsDialogFinished(int)));
+      m_settingsDialog = dialog;
+      dialog->show();
     }
-  } else if ( i == KMessageBox::No ) {
+  } else if ( result == KDialog::No ) {
     connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString,bool)),
              this, SLOT(onPasswordRequestCompleted(QString,bool)) );
     Settings::self()->requestManualAuth();
   } else {
     emit done( UserRejected );
+  }
+  m_requestDialog = 0;
+}
+
+void SettingsPasswordRequester::onSettingsDialogFinished(int result)
+{
+  m_settingsDialog = 0;
+  if (result == QDialog::Accepted) {
+    emit done( ReconnectNeeded );
+  } else {
+    emit done( UserRejected );
+  }
+}
+
+void SettingsPasswordRequester::cancelPasswordRequests()
+{
+  if (m_requestDialog) {
+    if (m_requestDialog->close()) {
+        m_requestDialog = 0;
+    }
   }
 }
 
@@ -89,5 +140,3 @@ void SettingsPasswordRequester::onPasswordRequestCompleted( const QString &passw
     emit done( PasswordRetrieved, password );
   }
 }
-
-

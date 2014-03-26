@@ -65,6 +65,7 @@ public:
 
   PasswordRequesterInterface *passwordRequester() const;
   void setPasswordRequester( PasswordRequesterInterface *requester );
+  void cancelPasswordRequests();
 
   KIMAP::SessionUiProxy::Ptr sessionUiProxy() const;
   void setSessionUiProxy( KIMAP::SessionUiProxy::Ptr proxy );

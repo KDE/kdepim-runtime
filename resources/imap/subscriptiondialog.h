@@ -94,6 +94,7 @@ private slots:
   void onItemChanged( QStandardItem *item );
   void onMobileLineEditChanged( const QString &text );
 
+  void slotSearchPattern(const QString &pattern);
 protected:
   /* reimp */ void keyPressEvent( QKeyEvent *event );
 

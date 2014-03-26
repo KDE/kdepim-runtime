@@ -417,7 +417,7 @@ void AccountDialog::slotCheckPopCapabilities()
   mServerTestFailed = false;
 }
 
-void AccountDialog::slotPopCapabilities( QList<int> encryptionTypes )
+void AccountDialog::slotPopCapabilities( const QList<int> &encryptionTypes )
 {
   checkCapabilitiesStack->setCurrentIndex( 0 );
   enableButtonOk( true );

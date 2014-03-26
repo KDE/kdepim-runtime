@@ -116,8 +116,6 @@ void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collect
   kDebug() << "Removing collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
-    cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
@@ -229,8 +227,6 @@ void DavGroupwareResource::retrieveCollections()
   mSyncErrorNotified = false;
 
   if ( !configurationIsValid() ) {
-    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
-    cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
@@ -248,8 +244,6 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
   kDebug() << "Retrieving items for collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
-    cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
@@ -281,8 +275,6 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
   kDebug() << "Retrieving single item. Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
-    cancelTask( i18n( "The resource is not configured yet" ) );
     return false;
   }
 
@@ -312,8 +304,6 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
       << ". Collection remote id = " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
-    cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
@@ -347,8 +337,6 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
       << ". Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
-    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
-    cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
@@ -374,8 +362,6 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
 void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
 {
   if ( !configurationIsValid() ) {
-    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
-    cancelTask( i18n( "The resource is not configured yet" ) );
     return;
   }
 
@@ -811,8 +797,11 @@ void DavGroupwareResource::onEtagChanged(const QString& itemUrl, const QString& 
 
 bool DavGroupwareResource::configurationIsValid()
 {
-  if ( Settings::self()->remoteUrls().empty() )
+  if ( Settings::self()->remoteUrls().empty() ) {
+    emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
+    cancelTask( i18n( "The resource is not configured yet" ) );
     return false;
+  }
 
   int newICT = Settings::self()->refreshInterval();
   if ( newICT == 0 )

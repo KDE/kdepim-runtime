@@ -103,7 +103,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   m_lineEdit = new KLineEdit( mainWidget );
   m_lineEdit->setClearButtonShown( true );
   connect( m_lineEdit, SIGNAL(textChanged(QString)),
-           m_filter, SLOT(setSearchPattern(QString)) );
+           this, SLOT(slotSearchPattern(QString)) );
   filterBarLayout->addWidget( m_lineEdit );
   m_lineEdit->setFocus();
 
@@ -160,6 +160,14 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
 SubscriptionDialog::~SubscriptionDialog()
 {
   writeConfig();
+}
+
+void SubscriptionDialog::slotSearchPattern(const QString &pattern)
+{
+#ifndef KDEPIM_MOBILE_UI
+  m_treeView->expandAll();
+#endif
+  m_filter->setSearchPattern(pattern);
 }
 
 void SubscriptionDialog::readConfig()

@@ -33,10 +33,6 @@
 #include <kstandarddirs.h>
 #include <KWindowSystem>
 
-#ifndef IMAPRESOURCE_NO_SOLID
-#include <solid/networking.h>
-#endif
-
 #include <akonadi/agentmanager.h>
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionfetchjob.h>
@@ -212,28 +208,30 @@ void ImapResource::aboutToQuit()
 
 // -----------------------------------------------------------------------------
 
-int ImapResource::configureDialog( WId windowId )
+KDialog* ImapResource::createConfigureDialog(WId windowId)
 {
-  QPointer<SetupServer> dlg = new SetupServer( this, windowId );
+  SetupServer *dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
-
   dlg->setWindowIcon( KIcon( QLatin1String("network-server") ) );
-  int result = QDialog::Rejected;
-  if( dlg->exec() ) {
+  connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+  return dlg;
+}
+
+void ImapResource::onConfigurationDone(int result)
+{
+  SetupServer *dlg = qobject_cast<SetupServer*>(sender());
+  if (result) {
     if ( dlg->shouldClearCache() ) {
       clearCache();
     }
     Settings::self()->writeConfig();
-    result = QDialog::Accepted;
   }
-  delete dlg;
-
-  return result;
+  dlg->deleteLater();
 }
 
 void ImapResource::configure( WId windowId )
 {
-  if ( configureDialog( windowId ) == QDialog::Accepted ) {
+  if ( createConfigureDialog( windowId )->exec() == QDialog::Accepted ) {
     emit configurationDialogAccepted();
     reconnect();
   } else {
@@ -316,12 +314,13 @@ void ImapResource::onConnectDone( int errorCode, const QString &errorString )
   case SessionPool::IncompatibleServerError:
     setOnline( false );
     emit status( Broken, errorString );
-    taskDone();
+    cancelTask();
     return;
 
   case SessionPool::CouldNotConnectError:
-    setOnline( false );
-    taskDone();
+    emit status( Broken, errorString );
+    deferTask();
+    setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
     return;
 
   case SessionPool::ReconnectNeededError:
@@ -573,8 +572,10 @@ void ImapResource::doSetOnline(bool online)
       delete task;
     }
     m_taskList.clear();
-    if ( m_pool->isConnected() )
-      m_pool->disconnect();
+    m_pool->cancelPasswordRequests();
+    if (m_pool->isConnected()) {
+        m_pool->disconnect();
+    }
     if (m_idle) {
       m_idle->stop();
       delete m_idle;
@@ -613,15 +614,7 @@ void ImapResource::reconnect()
 {
   setNeedsNetwork( needsNetwork() );
   setOnline( false ); // we are not connected initially
-
-  setOnline( !needsNetwork()
-#ifndef IMAPRESOURCE_NO_SOLID
-                         ||
-             Solid::Networking::status() == Solid::Networking::Unknown ||
-             Solid::Networking::status() == Solid::Networking::Connected
-#endif
-             );
-
+  setOnline( true );
 }
 
 
