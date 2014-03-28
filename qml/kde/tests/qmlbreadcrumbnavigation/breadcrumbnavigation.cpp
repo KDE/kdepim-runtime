@@ -183,4 +183,3 @@ void KForwardingItemSelectionModel::navigationSelectionChanged(const QItemSelect
     resetNavigation();
 }
 
-#include "breadcrumbnavigation.moc"

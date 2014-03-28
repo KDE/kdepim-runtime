@@ -20,6 +20,7 @@ set( imapresource_LIB_SRCS
   changeitemsflagstask.cpp
   changeitemtask.cpp
   expungecollectiontask.cpp
+  highestmodseqattribute.cpp
   imapaccount.cpp
   imapflags.cpp
   movecollectiontask.cpp
@@ -27,7 +28,6 @@ set( imapresource_LIB_SRCS
   noselectattribute.cpp
   noinferiorsattribute.cpp
   passwordrequesterinterface.cpp
-  removecollectiontask.cpp
   removecollectionrecursivetask.cpp
   removeitemstask.cpp
   resourcestateinterface.cpp
@@ -36,6 +36,7 @@ set( imapresource_LIB_SRCS
   retrievecollectionstask.cpp
   retrieveitemtask.cpp
   retrieveitemstask.cpp
+  searchtask.cpp
   sessionpool.cpp
   timestampattribute.cpp
   uidvalidityattribute.cpp
@@ -46,7 +47,7 @@ set( imapresource_LIB_SRCS
 
 kde4_add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
-target_link_libraries(imapresource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS} ${KDEPIMLIBS_KPIMUTILS_LIBS})
+target_link_libraries(imapresource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS})
 
 if( NOT IMAPRESOURCE_NO_SOLID)
   target_link_libraries(imapresource ${KDE4_SOLID_LIBS})
@@ -96,7 +97,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource")
 endif ()
 
-target_link_libraries(akonadi_imap_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS} imapresource)
+target_link_libraries(akonadi_imap_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS} imapresource folderarchivesettings)
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)
@@ -109,6 +110,4 @@ endif()
 install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )
-if(NOT WINCE)
-#add_subdirectory( tests )
-endif()
+add_subdirectory( tests )

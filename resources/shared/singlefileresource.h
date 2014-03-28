@@ -29,7 +29,7 @@
 
 #include <kio/job.h>
 #include <KDirWatch>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KStandardDirs>
 
 #include <QFile>
@@ -53,6 +53,10 @@ class SingleFileResource : public SingleFileResourceBase
       // The resource needs network when the path refers to a non local file.
       setNeedsNetwork( !KUrl( mSettings->path() ).isLocalFile() );
     }
+    ~SingleFileResource()
+    {
+      delete mSettings;
+    }
 
     /**
      * Read changes from the backend file.
@@ -65,7 +69,7 @@ class SingleFileResource : public SingleFileResourceBase
       if ( mSettings->path().isEmpty() ) {
         const QString message = i18n( "No file selected." );
         kWarning() << message;
-        emit status( Broken, message );
+        emit status( NotConfigured, i18n("The resource not configured yet") );
         if ( taskContext )
           cancelTask();
         return;

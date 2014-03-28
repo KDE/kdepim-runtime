@@ -24,16 +24,19 @@
 #include "calendarhandler.h"
 #include "notehandler.h"
 #include "taskshandler.h"
+#include "imapitemaddedjob.h"
+#include "imapitemremovedjob.h"
 
 #include <errorhandler.h> //libkolab
 
-#include <KLocale>
-#include <KPassivePopup>
+#include <KLocalizedString>
+#include <QQueue>
 
 KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )
   : m_imapCollection( imapCollection ),
     m_formatVersion ( Kolab::KolabV3 ),
-    m_warningDisplayLevel( Kolab::ErrorHandler::Error )
+    m_warningDisplayLevel( Kolab::ErrorHandler::Error ),
+    mItemAddJobInProgress( false )
 {
 }
 
@@ -107,8 +110,8 @@ QByteArray KolabHandler::kolabTypeForMimeType( const QStringList &contentMimeTyp
     return "task";
   } else if ( contentMimeTypes.contains( KCalCore::Journal::journalMimeType() ) ) {
     return "journal";
-  } else if ( contentMimeTypes.contains( "application/x-vnd.akonadi.note" ) ||
-              contentMimeTypes.contains( "text/x-vnd.akonadi.note" ) ) {
+  } else if ( contentMimeTypes.contains( QLatin1String("application/x-vnd.akonadi.note") ) ||
+              contentMimeTypes.contains( QLatin1String("text/x-vnd.akonadi.note") ) ) {
     return "note";
   }
   return QByteArray();
@@ -145,16 +148,78 @@ bool KolabHandler::checkForErrors( Akonadi::Item::Id affectedItem )
   QString errorMsg;
   foreach ( const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors() ) {
     errorMsg.append( error.message );
-    errorMsg.append( "\n" );
+    errorMsg.append( QLatin1String("\n") );
   }
 
   kWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
-  KPassivePopup *popup = KPassivePopup::message(
-    i18n( "An error occurred while reading/writing a Kolab-Groupware-Object(akonadi id %1): \n%2",
-          affectedItem, errorMsg ),
-    (QWidget*) 0 );
-  popup->setTimeout(120000);
   Kolab::ErrorHandler::instance().clear();
   return true;
+}
+
+Akonadi::Item::List KolabHandler::resolveConflicts(const Akonadi::Item::List& kolabItems)
+{
+  //we should preserve the order here
+  Akonadi::Item::List finalItems;
+  QMap<QString, Akonadi::Item::List> gidItemMap;
+  foreach (const Akonadi::Item &item, kolabItems) {
+      const QString gid = extractGid(item);
+      if (!gid.isEmpty()) {
+        gidItemMap[gid] << item;
+      }
+  }
+  foreach (const Akonadi::Item &item, kolabItems) {
+      const QString gid = extractGid(item);
+      if (gid.isEmpty()) {
+        finalItems << item;
+      } else if (gidItemMap.contains(gid)) {
+        //TODO assuming the items are in revers imap uid order (newest first)
+        finalItems << gidItemMap.value(gid).first();
+        gidItemMap.remove(gid);
+      }
+  }
+  return finalItems;
+}
+
+void KolabHandler::processItemAddedQueue()
+{
+  if (mItemAddedQueue.isEmpty() || mItemAddJobInProgress) {
+    return;
+  }
+  //TODO we would only have to serialize add jobs for items with the same GID
+  mItemAddJobInProgress = true;
+  const QPair<Akonadi::Item, Akonadi::Collection> pair = mItemAddedQueue.dequeue();
+  ImapItemAddedJob *addedJob = new ImapItemAddedJob( pair.first, pair.second, *this, this );
+  connect(addedJob, SIGNAL(result(KJob*)), this, SLOT(onItemAdded(KJob*)));
+  addedJob->start();
+}
+
+void KolabHandler::onItemAdded(KJob *job)
+{
+  mItemAddJobInProgress = false;
+  if (job->error()) {
+    kWarning() << job->errorString();
+  }
+  processItemAddedQueue();
+}
+
+void KolabHandler::imapItemAdded(const Akonadi::Item& imapItem, const Akonadi::Collection& imapCollection)
+{
+  mItemAddedQueue.enqueue(qMakePair<Akonadi::Item, Akonadi::Collection>(imapItem, imapCollection));
+  processItemAddedQueue();
+}
+
+void KolabHandler::imapItemRemoved(const Akonadi::Item& imapItem)
+{
+  //TODO delay this in case an imapItemAdded job is already running (it might reuse the item)
+  ImapItemRemovedJob *job = new ImapItemRemovedJob(imapItem, this);
+  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  job->start();
+}
+
+void KolabHandler::checkResult(KJob* job)
+{
+  if ( job->error() ) {
+    kWarning() << "Error occurred: " << job->errorString();
+  }
 }
 

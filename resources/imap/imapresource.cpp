@@ -33,18 +33,16 @@
 #include <kstandarddirs.h>
 #include <KWindowSystem>
 
-#ifndef IMAPRESOURCE_NO_SOLID
-#include <solid/networking.h>
-#endif
-
 #include <akonadi/agentmanager.h>
 #include <akonadi/attributefactory.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/changerecorder.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/itemfetchjob.h>
 #include <akonadi/specialcollections.h>
 #include <akonadi/session.h>
+#include <akonadi/kmime/messageparts.h>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
@@ -54,6 +52,7 @@
 #include "timestampattribute.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
+#include "highestmodseqattribute.h"
 
 #include "setupserver.h"
 #include "settings.h"
@@ -71,12 +70,12 @@
 #include "movecollectiontask.h"
 #include "moveitemstask.h"
 #include "removecollectionrecursivetask.h"
-#include "removecollectiontask.h"
 #include "removeitemstask.h"
 #include "retrievecollectionmetadatatask.h"
 #include "retrievecollectionstask.h"
 #include "retrieveitemtask.h"
 #include "retrieveitemstask.h"
+#include "searchtask.h"
 
 #include "settingspasswordrequester.h"
 #include "sessionpool.h"
@@ -85,10 +84,12 @@
 #include "resourceadaptor.h"
 
 #ifdef MAIL_SERIALIZER_PLUGIN_STATIC
-#include <QtPlugin>
 
 Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 #endif
+
+Q_DECLARE_METATYPE(QList<qint64>)
+Q_DECLARE_METATYPE(QWeakPointer<QObject>)
 
 using namespace Akonadi;
 
@@ -96,12 +97,11 @@ ImapResource::ImapResource( const QString &id )
   : ResourceBase( id ),
     m_pool( new SessionPool( 2, this ) ),
     mSubscriptions( 0 ),
-    m_idle( 0 ),
-    m_fastSync( false )
+    m_idle( 0 )
 {
   if ( name() == identifier() ) {
     const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
-    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + "akonadi/agentsrc";
+    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + QLatin1String("akonadi/agentsrc");
 
     const QSettings agentsrc( agentsrcFile, QSettings::IniFormat );
     const int instanceCounter = agentsrc.value(
@@ -127,12 +127,16 @@ ImapResource::ImapResource( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
   Akonadi::AttributeFactory::registerAttribute<TimestampAttribute>();
+  Akonadi::AttributeFactory::registerAttribute<HighestModSeqAttribute>();
 
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
   Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
 
   Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();
   Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
+
+  // For QMetaObject::invokeMethod()
+  qRegisterMetaType<QList<qint64> >();
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
@@ -165,8 +169,6 @@ ImapResource::ImapResource( const QString &id )
     Settings::self()->setTrashCollectionMigrated(true);
   }
 
-  m_bodyCheckSession = new Akonadi::Session( identifier().toLatin1() + "_body_checker");
-
   m_statusMessageTimer = new QTimer( this );
   m_statusMessageTimer->setSingleShot( true );
   connect( m_statusMessageTimer, SIGNAL(timeout()), SLOT(clearStatusMessage()) );
@@ -175,43 +177,61 @@ ImapResource::ImapResource( const QString &id )
 
 ImapResource::~ImapResource()
 {
-  delete m_bodyCheckSession;
+  //Destroy everything that could cause callbacks immediately, otherwise the callbacks can result in a crash.
+
+  if ( m_idle ) {
+    delete m_idle;
+    m_idle = 0;
+  }
+
+  Q_FOREACH (ResourceTask* task, m_taskList) {
+    delete task;
+  }
+  m_taskList.clear();
+
+  delete m_pool;
 }
 
-void ImapResource::setFastSyncEnabled( bool fastSync )
+void ImapResource::aboutToQuit()
 {
-  m_fastSync = fastSync;
+  //TODO the resource would ideally have to signal when it's done with logging out etc, before the destructor gets called
+  if ( m_idle ) {
+    m_idle->stop();
+  }
+
+  Q_FOREACH (ResourceTask* task, m_taskList) {
+    task->kill();
+  }
+
+  m_pool->disconnect();
 }
 
-bool ImapResource::isFastSyncEnabled() const
-{
-  return m_fastSync;
-}
+// -----------------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------------
-
-int ImapResource::configureDialog( WId windowId )
+KDialog* ImapResource::createConfigureDialog(WId windowId)
 {
-  QPointer<SetupServer> dlg = new SetupServer( this, windowId );
+  SetupServer *dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
+  dlg->setWindowIcon( KIcon( QLatin1String("network-server") ) );
+  connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+  return dlg;
+}
 
-  dlg->setWindowIcon( KIcon( "network-server" ) );
-  int result = QDialog::Rejected;
-  if( dlg->exec() ) {
+void ImapResource::onConfigurationDone(int result)
+{
+  SetupServer *dlg = qobject_cast<SetupServer*>(sender());
+  if (result) {
     if ( dlg->shouldClearCache() ) {
       clearCache();
     }
     Settings::self()->writeConfig();
-    result = QDialog::Accepted;
   }
-  delete dlg;
-
-  return result;
+  dlg->deleteLater();
 }
 
 void ImapResource::configure( WId windowId )
 {
-  if ( configureDialog( windowId ) == QDialog::Accepted ) {
+  if ( createConfigureDialog( windowId )->exec() == QDialog::Accepted ) {
     emit configurationDialogAccepted();
     reconnect();
   } else {
@@ -227,7 +247,7 @@ void ImapResource::startConnect( const QVariant& )
 {
   if ( Settings::self()->imapServer().isEmpty() ) {
     setOnline( false );
-    emit status( Broken, i18n( "No server configured yet." ) );
+    emit status( NotConfigured, i18n( "No server configured yet." ) );
     taskDone();
     return;
   }
@@ -261,7 +281,7 @@ int ImapResource::configureSubscription(qlonglong windowId)
 #endif
   }
   mSubscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
-  mSubscriptions->setWindowIcon( KIcon( "network-server" ) );
+  mSubscriptions->setWindowIcon( KIcon( QLatin1String("network-server") ) );
   mSubscriptions->connectAccount( *m_pool->account(), password );
   mSubscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
 
@@ -294,12 +314,13 @@ void ImapResource::onConnectDone( int errorCode, const QString &errorString )
   case SessionPool::IncompatibleServerError:
     setOnline( false );
     emit status( Broken, errorString );
-    taskDone();
+    cancelTask();
     return;
 
   case SessionPool::CouldNotConnectError:
-    setOnline( false );
-    taskDone();
+    emit status( Broken, errorString );
+    deferTask();
+    setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
     return;
 
   case SessionPool::ReconnectNeededError:
@@ -419,18 +440,6 @@ void ImapResource::retrieveCollections()
   queueTask( task );
 }
 
-void ImapResource::retrieveCollectionAttributes( const Akonadi::Collection &collection )
-{
-  emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving folder attributes for '%1'", collection.name() ) );
-
-  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionMetadataState( this, collection );
-
-  RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
-  task->setSpontaneous( false );
-  task->start( m_pool );
-  queueTask( task );
-}
-
 void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
 {
   const Collection collection( collectionVariant.value<Collection>() );
@@ -454,9 +463,8 @@ void ImapResource::retrieveItems( const Collection &col )
   setItemStreamingEnabled( true );
 
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
-  RetrieveItemsTask *task = new RetrieveItemsTask( state, m_bodyCheckSession, this );
+  RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-  task->setFastSyncEnabled( m_fastSync );
   task->start( m_pool );
   queueTask( task );
 }
@@ -513,6 +521,38 @@ void ImapResource::collectionMoved( const Akonadi::Collection &collection, const
 
 
 
+void ImapResource::addSearch(const QString& query, const QString& queryLanguage, const Collection& resultCollection)
+{
+}
+
+void ImapResource::removeSearch(const Collection& resultCollection)
+{
+}
+
+void ImapResource::search( const QString &query, const Collection &collection )
+{
+  QVariantMap arg;
+  arg[QLatin1String("query")] = query;
+  arg[QLatin1String("collection")] = QVariant::fromValue( collection );
+  scheduleCustomTask( this, "doSearch", arg );
+}
+
+void ImapResource::doSearch( const QVariant &arg )
+{
+  const QVariantMap map = arg.toMap();
+  const QString query = map[QLatin1String("query")].toString();
+  const Collection collection = map[QLatin1String("collection")].value<Collection>();
+
+  ResourceStateInterface::Ptr state = ::ResourceState::createSearchState( this, collection );
+  emit status( AgentBase::Running, i18nc( "@info:status", "Searching..." ) );
+  SearchTask *task = new SearchTask( state, query, this );
+  task->start( m_pool );
+  queueTask( task );
+}
+
+
+// -----
+
 // ----------------------------------------------------------------------------------
 
 void ImapResource::scheduleConnectionAttempt()
@@ -527,13 +567,20 @@ void ImapResource::doSetOnline(bool online)
   kDebug() << "online=" << online;
 #endif
   if ( !online ) {
-    if ( m_pool->isConnected() )
-      m_pool->disconnect();
-    Q_FOREACH(ResourceTask* task, m_taskList)
+    Q_FOREACH(ResourceTask* task, m_taskList) {
       task->kill();
+      delete task;
+    }
     m_taskList.clear();
-    delete m_idle;
-    m_idle = 0;
+    m_pool->cancelPasswordRequests();
+    if (m_pool->isConnected()) {
+        m_pool->disconnect();
+    }
+    if (m_idle) {
+      m_idle->stop();
+      delete m_idle;
+      m_idle = 0;
+    }
     Settings::self()->clearCachedPassword();
   } else if ( online && !m_pool->isConnected() ) {
     scheduleConnectionAttempt();
@@ -541,9 +588,19 @@ void ImapResource::doSetOnline(bool online)
   ResourceBase::doSetOnline( online );
 }
 
+QChar ImapResource::separatorCharacter() const
+{
+    return m_separatorCharacter;
+}
+
+void ImapResource::setSeparatorCharacter( const QChar &separator )
+{
+    m_separatorCharacter = separator;
+}
+
 bool ImapResource::needsNetwork() const
 {
-  const QString hostName = Settings::self()->imapServer().section( ':', 0, 0 );
+  const QString hostName = Settings::self()->imapServer().section( QLatin1Char(':'), 0, 0 );
   // ### is there a better way to do this?
   if ( hostName == QLatin1String( "127.0.0.1" ) ||
        hostName == QLatin1String( "localhost" ) ||
@@ -557,15 +614,7 @@ void ImapResource::reconnect()
 {
   setNeedsNetwork( needsNetwork() );
   setOnline( false ); // we are not connected initially
-
-  setOnline( !needsNetwork()
-#ifndef IMAPRESOURCE_NO_SOLID
-                         ||
-             Solid::Networking::status() == Solid::Networking::Unknown ||
-             Solid::Networking::status() == Solid::Networking::Connected
-#endif
-             );
-
+  setOnline( true );
 }
 
 
@@ -584,7 +633,7 @@ void ImapResource::startIdle()
   delete m_idle;
   m_idle = 0;
 
-  if ( !m_pool->serverCapabilities().contains( "IDLE" ) )
+  if ( !m_pool->serverCapabilities().contains( QLatin1String("IDLE") ) )
     return;
 
   const QStringList ridPath = Settings::self()->idleRidPath();
@@ -718,7 +767,7 @@ QString ImapResource::dumpResourceToString() const
   Q_FOREACH(ResourceTask* task, m_taskList) {
     if (!ret.isEmpty())
       ret += QLatin1String(", ");
-    ret += task->metaObject()->className();
+    ret += QLatin1String(task->metaObject()->className());
   }
   return QLatin1String("IMAP tasks: ") + ret;
 }
@@ -731,11 +780,10 @@ void ImapResource::showError( const QString &message )
 
 void ImapResource::clearStatusMessage()
 {
-  emit status( Akonadi::AgentBase::Idle, "" );
+  emit status( Akonadi::AgentBase::Idle, QString() );
 }
 
 // ----------------------------------------------------------------------------------
 
 AKONADI_RESOURCE_MAIN( ImapResource )
 
-#include "imapresource.moc"

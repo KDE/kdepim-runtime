@@ -36,7 +36,7 @@
 #include <akonadi/collection.h>
 #include <akonadi/entitydisplayattribute.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QFileInfo>
 
@@ -201,6 +201,11 @@ class ItemsProcessedNotifier : public JobProcessingAdaptor
     void setItems( const Item::List &items )
     {
       mItems = items;
+    }
+
+    void clearItems()
+    {
+      mItems.clear();
     }
 
   public:
@@ -757,6 +762,7 @@ void FileStore::AbstractLocalStore::notifyItemsProcessed( const Item::List &item
 
   d->mItemsProcessedNotifier.setItems( items );
   d->mCurrentJob->accept( &( d->mItemsProcessedNotifier ) );
+  d->mItemsProcessedNotifier.clearItems(); // save memory
 }
 
 void FileStore::AbstractLocalStore::setTopLevelCollection( const Collection &collection )
@@ -842,6 +848,6 @@ void FileStore::AbstractLocalStore::checkStoreCompact( FileStore::StoreCompactJo
   Q_UNUSED( errorText );
 }
 
-#include "abstractlocalstore.moc"
+#include "moc_abstractlocalstore.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

@@ -76,9 +76,9 @@ KIO::MetaData POPSession::slaveConfig() const
 {
   KIO::MetaData m;
 
-  m.insert( "progress", "off" );
-  m.insert( "tls", Settings::self()->useTLS() ? "on" : "off" );
-  m.insert( "pipelining", ( Settings::self()->pipelining() ) ? "on" : "off" );
+  m.insert( QLatin1String("progress"), QLatin1String("off") );
+  m.insert( QLatin1String("tls"), Settings::self()->useTLS() ? QLatin1String("on") : QLatin1String("off") );
+  m.insert( QLatin1String("pipelining"), ( Settings::self()->pipelining() ) ? QLatin1String("on") : QLatin1String("off") );
   int type = Settings::self()->authenticationMethod();
   switch( type ) {
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
@@ -87,14 +87,14 @@ KIO::MetaData POPSession::slaveConfig() const
     case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
     case MailTransport::Transport::EnumAuthenticationType::NTLM:
     case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-      m.insert( "auth", "SASL" );
-      m.insert( "sasl", authenticationToString( type ) );
+      m.insert( QLatin1String("auth"), QLatin1String("SASL") );
+      m.insert( QLatin1String("sasl"), authenticationToString( type ) );
       break;
     case MailTransport::Transport::EnumAuthenticationType::CLEAR:
-      m.insert( "auth", "USER" );
+      m.insert( QLatin1String("auth"), QLatin1String("USER") );
       break;
     default:
-      m.insert( "auth", authenticationToString( type ) );
+      m.insert( QLatin1String("auth"), authenticationToString( type ) );
       break;
   }
   return m;
@@ -104,21 +104,21 @@ QString POPSession::authenticationToString( int type ) const
 {
   switch ( type ) {
     case MailTransport::Transport::EnumAuthenticationType::LOGIN:
-      return "LOGIN";
+      return QLatin1String("LOGIN");
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-      return "PLAIN";
+      return QLatin1String("PLAIN");
     case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-      return "CRAM-MD5";
+      return QLatin1String("CRAM-MD5");
     case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-      return "DIGEST-MD5";
+      return QLatin1String("DIGEST-MD5");
     case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-      return "GSSAPI";
+      return QLatin1String("GSSAPI");
     case MailTransport::Transport::EnumAuthenticationType::NTLM:
-      return "NTLM";
+      return QLatin1String("NTLM");
     case  MailTransport::Transport::EnumAuthenticationType::CLEAR:
-      return "USER";
+      return QLatin1String("USER");
     case MailTransport::Transport::EnumAuthenticationType::APOP:
-      return "APOP";
+      return QLatin1String("APOP");
     default:
       break;
   }
@@ -130,9 +130,9 @@ KUrl POPSession::getUrl() const
   KUrl url;
 
   if ( Settings::self()->useSSL() )
-    url.setProtocol( "pop3s" );
+    url.setProtocol( QLatin1String("pop3s") );
   else
-    url.setProtocol( "pop3" );
+    url.setProtocol( QLatin1String("pop3") );
 
   url.setUser( Settings::self()->login() );
   url.setPass( mPassword );
@@ -430,7 +430,7 @@ void DeleteJob::setDeleteIds( const QList<int> ids )
 
 void DeleteJob::start()
 {
-  startJob( "/remove/" + intListToString( mIdsToDelete ) );
+  startJob( QLatin1String("/remove/") + intListToString( mIdsToDelete ) );
 }
 
 QList<int> DeleteJob::deletedIDs() const
@@ -447,7 +447,7 @@ QuitJob::QuitJob( POPSession *popSession )
 
 void QuitJob::start()
 {
-  startJob( "/commit" );
+  startJob( QLatin1String("/commit") );
 }
 
 FetchJob::FetchJob ( POPSession *session )
@@ -467,7 +467,7 @@ void FetchJob::setFetchIds( const QList<int> ids, QList<int> sizes )
 
 void FetchJob::start()
 {
-  startJob( "/download/" + intListToString( mIdsPendingDownload ) );
+  startJob( QLatin1String("/download/") + intListToString( mIdsPendingDownload ) );
   setTotalAmount( KJob::Bytes, mTotalBytesToDownload );
 }
 
@@ -492,7 +492,7 @@ void FetchJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
 void FetchJob::slotInfoMessage( KJob *job, const QString &infoMessage, const QString & )
 {
   Q_UNUSED( job );
-  if ( infoMessage != "message complete" )
+  if ( infoMessage != QLatin1String("message complete") )
     return;
 
   KMime::Message::Ptr msg( new KMime::Message );

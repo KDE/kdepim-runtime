@@ -2,6 +2,10 @@ project(migrationtests)
 
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
+include(AkonadiMacros)
+set(KDEPIMLIBS_RUN_ISOLATED_TESTS TRUE)
+set(KDEPIMLIBS_RUN_SQLITE_ISOLATED_TESTS TRUE)
+
 set(_srcList
   testnotesmigration.cpp
   ../kjots/kjotsmigrator.cpp
@@ -9,7 +13,6 @@ set(_srcList
   ../kres/kresmigratorbase.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
-
 include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}/../kjots
@@ -27,44 +30,16 @@ endmacro()
 add_resource_iface( maildir/maildirresource.kcfg
                     org.kde.Akonadi.Maildir.Settings MaildirSettings )
 
+#add_akonadi_isolated_test_advanced( testnotesmigration.cpp "${_srcList}" "kpimtextedit;kcal")
+add_akonadi_isolated_test_advanced( testgidmigration.cpp "${MIGRATION_AKONADI_SHARED_SOURCES};../gid/gidmigrationjob.cpp" "" )
 
-kde4_add_executable(testnotesmigration TEST ${_srcList})
-target_link_libraries(testnotesmigration
-  ${QT_QTTEST_LIBRARY}
-  ${QT_QTGUI_LIBRARY}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDE4_KDECORE_LIBS}
-  ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
-  ${KDEPIMLIBS_KPIMTEXTEDIT_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KCAL_LIBS}
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTDBUS_LIBRARY}
-  ${QT_QTXML_LIBRARY}
-  maildir
+kde4_add_executable(testmigratorbase testmigratorbase.cpp ../migratorbase.cpp)
+target_link_libraries(testmigratorbase
+    gidmigration
+    ${KDE4_KDECORE_LIBS}
+    ${KDEPIMLIBS_AKONADI_LIBS}
+    ${QT_QTCORE_LIBRARY}
+    ${QT_QTDBUS_LIBRARY}
+    ${QT_QTTEST_LIBRARY}
 )
-
-
-# based on kde4_add_unit_test
-if (WIN32)
-  get_target_property( _loc testnotesmigration LOCATION )
-  set(_executable ${_loc}.bat)
-else ()
-  set(_executable ${EXECUTABLE_OUTPUT_PATH}/testnotesmigration)
-endif ()
-if (UNIX)
-  set(_executable ${_executable}.shell)
-endif ()
-
-find_program(_testrunner akonaditest)
-
-if (KDEPIM_RUN_ISOLATED_TESTS)
-  add_test( testnotesmigration ${_testrunner} -c ${CMAKE_CURRENT_SOURCE_DIR}/unittestenv/config.xml ${_executable} )
-endif ()
-
-
-
-
-add_akonadi_isolated_test( testnotesmigration.cpp )
-
+add_test(testmigratorbase testmigratorbase)

@@ -78,6 +78,23 @@ InfoDialog::~InfoDialog()
   KGlobal::deref();
 }
 
+static KMigratorBase::MessageType convertType( MigratorBase::MessageType type )
+{
+  switch ( type ) {
+    case MigratorBase::Success: return KMigratorBase::Success;
+    case MigratorBase::Error: return KMigratorBase::Error;
+    case MigratorBase::Skip: return KMigratorBase::Skip;
+    case MigratorBase::Warning: return KMigratorBase::Warning;
+    case MigratorBase::Info: return KMigratorBase::Info;
+  }
+  return KMigratorBase::Info;
+}
+
+void InfoDialog::message( MigratorBase::MessageType type, const QString& msg )
+{
+  message( convertType(type), msg );
+}
+
 void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
 {
   bool autoScroll = mAutoScrollList;
@@ -85,24 +102,24 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
   QListWidgetItem *item = new QListWidgetItem( msg, mList );
   switch ( type ) {
     case KMigratorBase::Success:
-      item->setIcon( KIcon( "dialog-ok-apply" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-ok-apply") ) );
       mChange = true;
       kDebug() << msg;
       break;
     case KMigratorBase::Skip:
-      item->setIcon( KIcon( "dialog-ok" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-ok") ) );
       kDebug() << msg;
       break;
     case KMigratorBase::Info:
-      item->setIcon( KIcon( "dialog-information" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-information") ) );
       kDebug() << msg;
       break;
     case KMigratorBase::Warning:
-      item->setIcon( KIcon( "dialog-warning" ) );
+      item->setIcon( KIcon( QLatin1String("dialog-warning") ) );
       kDebug() << msg;
       break;
     case KMigratorBase::Error: {
-        item->setIcon( KIcon( "dialog-error" ) );
+        item->setIcon( KIcon( QLatin1String("dialog-error") ) );
         QFont currentFont = font();
         currentFont.setBold( true );
         item->setFont( currentFont );
@@ -167,4 +184,3 @@ void InfoDialog::scrollBarMoved( int value )
   mAutoScrollList = ( value == mList->verticalScrollBar()->maximum() );
 }
 
-#include "infodialog.moc"

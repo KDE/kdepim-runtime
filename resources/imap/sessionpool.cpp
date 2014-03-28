@@ -31,8 +31,6 @@
 #include <kimap/logoutjob.h>
 #include <kimap/namespacejob.h>
 
-#include <kpimutils/networkaccesshelper.h>
-
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"
 
@@ -44,14 +42,13 @@ SessionPool::SessionPool( int maxPoolSize, QObject *parent )
     m_account( 0 ),
     m_passwordRequester( 0 ),
     m_initialConnectDone( false ),
-    m_pendingInitialSession( 0 ),
-    m_networkAccessHelper( new KPIMUtils::NetworkAccessHelper( this ) )
+    m_pendingInitialSession( 0 )
 {
 }
 
 SessionPool::~SessionPool()
 {
-  disconnect();
+  disconnect( CloseSession );
 }
 
 PasswordRequesterInterface *SessionPool::passwordRequester() const
@@ -67,6 +64,11 @@ void SessionPool::setPasswordRequester( PasswordRequesterInterface *requester )
   m_passwordRequester->setParent( this );
   QObject::connect( m_passwordRequester, SIGNAL(done(int,QString)),
                     this, SLOT(onPasswordRequestDone(int,QString)) );
+}
+
+void SessionPool::cancelPasswordRequests()
+{
+  m_passwordRequester->cancelPasswordRequests();
 }
 
 KIMAP::SessionUiProxy::Ptr SessionPool::sessionUiProxy() const
@@ -90,8 +92,6 @@ bool SessionPool::connect( ImapAccount *account )
     return false;
   }
 
-  m_networkAccessHelper->establishConnection();
-
   m_account = account;
   if ( m_account->authenticationMode() == KIMAP::LoginJob::GSSAPI ) {
     // for GSSAPI we don't have to ask for username/password, because it uses session wide tickets
@@ -111,8 +111,6 @@ void SessionPool::disconnect( SessionTermination termination )
     return;
   }
 
-  m_networkAccessHelper->releaseConnection();
-
   foreach ( KIMAP::Session *s, m_unusedPool + m_reservedPool + m_connectingPool ) {
     killSession( s, termination );
   }
@@ -120,6 +118,7 @@ void SessionPool::disconnect( SessionTermination termination )
   m_reservedPool.clear();
   m_connectingPool.clear();
   m_pendingInitialSession = 0;
+  m_passwordRequester->cancelPasswordRequests();
 
   delete m_account;
   m_account = 0;
@@ -224,15 +223,13 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
 {
   m_pendingInitialSession = 0;
 
+  QString msg;
   if ( m_account ) {
-    emit connectDone( errorCode,
-                      i18n( "Could not connect to the IMAP-server %1.\n%2",
-                            m_account->server(), errorMessage ) );
+    msg = i18n( "Could not connect to the IMAP-server %1.\n%2", m_account->server(), errorMessage );
   } else {
     // Can happen when we lose all ready connections while trying to establish
     // a new connection, for example.
-    emit connectDone( errorCode,
-                      i18n( "Could not connect to the IMAP server.\n%1", errorMessage ) );
+    msg = i18n( "Could not connect to the IMAP server.\n%1", errorMessage );
   }
 
   if ( !m_initialConnectDone ) {
@@ -246,6 +243,8 @@ void SessionPool::cancelSessionCreation( KIMAP::Session *session, int errorCode,
       }
     }
   }
+  //Always emit this at the end. This can call SessionPool::disconnect via ImapResource.
+  emit connectDone( errorCode, msg );
 }
 
 void SessionPool::processPendingRequests()
@@ -410,7 +409,7 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
 
   m_capabilities = capJob->capabilities();
   QStringList expected;
-  expected << "IMAP4REV1";
+  expected << QLatin1String("IMAP4REV1");
 
   QStringList missing;
   foreach ( const QString &capability, expected ) {
@@ -426,12 +425,12 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
                                  "some mandatory capabilities are missing: %2. "
                                  "Please ask your sysadmin to upgrade the server.",
                                  m_account->server(),
-                                 missing.join( ", " ) ) );
+                                 missing.join( QLatin1String(", ") ) ) );
     return;
   }
 
   // If the extension is supported, grab the namespaces from the server
-  if ( m_capabilities.contains( "NAMESPACE" ) ) {
+  if ( m_capabilities.contains( QLatin1String("NAMESPACE") ) ) {
     KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob( capJob->session() );
     QObject::connect( nsJob, SIGNAL(result(KJob*)), SLOT(onNamespacesTestDone(KJob*)) );
     nsJob->start();
@@ -480,6 +479,7 @@ void SessionPool::onConnectionLost()
   m_connectingPool.removeAll( session );
 
   if ( m_unusedPool.isEmpty() && m_reservedPool.isEmpty() ) {
+    m_passwordRequester->cancelPasswordRequests();
     delete m_account;
     m_account = 0;
     m_namespaces.clear();
@@ -495,4 +495,3 @@ void SessionPool::onConnectionLost()
       m_pendingInitialSession = 0;
 }
 
-#include "sessionpool.moc"

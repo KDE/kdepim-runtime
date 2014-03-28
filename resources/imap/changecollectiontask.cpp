@@ -31,7 +31,7 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 
-#include <KLocale>
+#include <KLocalizedString>
 
 ChangeCollectionTask::ChangeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent ), m_pendingJobs(0)
@@ -120,7 +120,7 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
     }
   }
 
-  if ( parts().contains( "collectionannotations" ) ) {
+  if ( parts().contains( "collectionannotations" ) && serverSupportsAnnotations() ) {
     Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
       collection().attribute<Akonadi::CollectionAnnotationsAttribute>();
 
@@ -130,22 +130,21 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
 
       foreach ( const QByteArray &entry, annotations.keys() ) { //krazy:exclude=foreach
         KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob( session );
-        if ( serverCapabilities().contains( "METADATA" ) ) {
+        if ( serverCapabilities().contains( QLatin1String("METADATA") ) ) {
           job->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
         } else {
           job->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
         }
+        job->setMailBox( mailBoxForCollection( collection() ) );
 
-        QByteArray attribute = entry;
-        if ( job->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
-          attribute = "value.shared";
+        if ( !entry.startsWith( "/shared" ) && !entry.startsWith( "/private" ) ) {
+          //Support for legacy annotations that don't include the prefix
+          job->addMetaData( QByteArray("/shared") + entry, annotations[entry] );
+        } else {
+          job->addMetaData( entry, annotations[entry] );
         }
 
-        job->setMailBox( mailBoxForCollection( collection() ) );
-        job->setEntry( entry );
-        job->addMetaData( attribute, annotations[entry] );
-
-        kDebug( 5327 ) << "Job got entry:" << entry << " attribute:" << attribute << "value:" << annotations[entry];
+        kDebug( 5327 ) << "Job got entry:" << entry << "value:" << annotations[entry];
 
         connect( job, SIGNAL(result(KJob*)),
                  this, SLOT(onSetMetaDataDone(KJob*)) );
@@ -291,6 +290,5 @@ void ChangeCollectionTask::endTaskIfNeeded()
   }
 }
 
-#include "changecollectiontask.moc"
 
 

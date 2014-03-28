@@ -35,7 +35,7 @@ ICalResource::ICalResource( const QString &id )
   QStringList mimeTypes;
   mimeTypes << QLatin1String( "text/calendar" );
   mimeTypes += allMimeTypes();
-  initialise( mimeTypes, "office-calendar" );
+  initialise( mimeTypes, QLatin1String("office-calendar") );
 }
 
 ICalResource::ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon )
@@ -152,4 +152,3 @@ QString ICalResource::mimeType( const IncidenceBase::Ptr &incidence ) const
 }
 
 
-#include "icalresource.moc"

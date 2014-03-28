@@ -25,7 +25,7 @@
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
-#include "xml/xmlwritejob.h"
+#include <akonadi/xml/xmlwritejob.h>
 
 #include <KDebug>
 
@@ -426,4 +426,3 @@ bool XmlOperations::compareAttributes(const Entity& entity, const Entity& refEnt
   return true;
 }
 
-#include "xmloperations.moc"

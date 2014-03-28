@@ -26,7 +26,7 @@
 #include <KAssistantDialog>
 #include <KDebug>
 #include <KFileDialog>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KVBox>
 
 BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent ), m_selectFileButton( 0 )
@@ -39,18 +39,18 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
     QLabel *label1 = new QLabel( box1 );
     label1->setWordWrap( true );
     if ( !possible ) {
-        label1->setText( '\n' + i18n( "The backup cannot be made. Either the mysqldump application "
+        label1->setText( QLatin1Char('\n') + i18n( "The backup cannot be made. Either the mysqldump application "
                                       "is not installed, or the bzip2 application is not found. "
                                       "Please install those and make sure they can be found in "
                                       "the current path. Restart this Assistant when this is fixed." ) );
     } else {
-        label1->setText( '\n' + i18n( "Please select the file where to store "
-                                      "the backup, give it the extension .tar.bz2" ) + "\n\n" );
+        label1->setText( QLatin1Char('\n') + i18n( "Please select the file where to store "
+                                      "the backup, give it the extension .tar.bz2" ) + QLatin1String("\n\n") );
 
         m_selectFileButton = new QPushButton( i18n( "&Click Here to Select the Backup Location..." ), box1 );
         connect( m_selectFileButton, SIGNAL(clicked(bool)), SLOT(slotSelectFile()) );
 
-        QLabel *label2 = new QLabel( "\n\n" + i18n( "Press 'Next' to start the Backup" ), box1 );
+        QLabel *label2 = new QLabel( QLatin1String("\n\n") + i18n( "Press 'Next' to start the Backup" ), box1 );
         label2->setWordWrap( true );
         label2->setAlignment( Qt::AlignRight );
     }
@@ -72,11 +72,11 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
 
 void BackupAssistant::slotSelectFile()
 {
-    QString file = QString( "akonadibackup-" +
-                            QDateTime::currentDateTime().toString( "yyyyMMdd" )  + ".tar.bz2" );
+    QString file = QLatin1String( "akonadibackup-") +
+                            QDateTime::currentDateTime().toString( QLatin1String("yyyyMMdd") )  + QLatin1String(".tar.bz2" );
 
     // Build one special, as we want the keyword /and/ a proposed filename
-    KFileDialog dlg( KUrl( "kfiledialog://BackupDir" ), QString(), this );
+    KFileDialog dlg( KUrl( QLatin1String("kfiledialog://BackupDir") ), QString(), this );
     dlg.setSelection( file );
     dlg.setOperationMode( KFileDialog::Saving );
     dlg.setMode( KFile::File );
@@ -113,4 +113,3 @@ void BackupAssistant::slotBackupComplete( bool ok )
                                               "report a bug, so we can find out what the cause is." ) );
 }
 
-#include "backupassistant.moc"

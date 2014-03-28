@@ -284,7 +284,7 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
     const QString error = aborting ? i18n( "Message transport aborted." )
                                    : i18n( "Failed to transport message." );
 
-    q->setErrorText( error + ' ' + transportMessage );
+    q->setErrorText( error + QLatin1Char(' ') + transportMessage );
     storeResult( false, q->errorString() );
   } else {
     kDebug() << "Success transporting.";
@@ -374,12 +374,12 @@ void SendJob::Private::postJobResult( KJob *job )
 {
   Q_ASSERT( currentJob == job );
   currentJob = 0;
+  const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
+  Q_ASSERT( attribute );
+
 
   if ( job->error() ) {
     kDebug() << "Error deleting or moving to sent-mail.";
-
-    const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
-    Q_ASSERT( attribute );
 
     QString errorString;
     switch( attribute->sentBehaviour() ) {
@@ -393,13 +393,16 @@ void SendJob::Private::postJobResult( KJob *job )
       break;
     }
     q->setError( UserDefinedError );
-    q->setErrorText( errorString + ' ' + job->errorString() );
+    q->setErrorText( errorString + QLatin1Char(' ') + job->errorString() );
     storeResult( false, q->errorString() );
   } else {
     kDebug() << "Success deleting or moving to sent-mail.";
     if ( !filterItem( 2 ) ) //Outbound
       return;
-    storeResult( true );
+    if ( attribute->sentBehaviour() == SentBehaviourAttribute::Delete )
+       q->emitResult();
+    else
+       storeResult( true );
   }
 }
 
@@ -420,7 +423,7 @@ void SendJob::Private::doEmitResult( KJob *job )
   if ( job->error() ) {
     kWarning() << "Error storing result.";
     q->setError( UserDefinedError );
-    q->setErrorText( q->errorString() + ' ' + i18n( "Failed to store result in item." ) + ' ' + job->errorString() );
+    q->setErrorText( q->errorString() + QLatin1Char(' ') + i18n( "Failed to store result in item." ) + QLatin1Char(' ') + job->errorString() );
   } else {
     kDebug() << "Success storing result.";
     // It is still possible that the transport failed.
@@ -478,4 +481,4 @@ void SendJob::abort()
   }
 }
 
-#include "sendjob.moc"
+#include "moc_sendjob.cpp"

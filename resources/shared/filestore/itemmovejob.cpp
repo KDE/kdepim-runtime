@@ -74,6 +74,5 @@ void FileStore::ItemMoveJob::handleItemMoved( const Item &item )
   d->mItem = item;
 }
 
-#include "itemmovejob.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

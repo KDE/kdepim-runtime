@@ -34,10 +34,6 @@ namespace KIMAP
   class MailBoxDescriptor;
 }
 
-namespace KPIMUtils {
-  class NetworkAccessHelper;
-}
-
 class ImapAccount;
 class PasswordRequesterInterface;
 
@@ -69,6 +65,7 @@ public:
 
   PasswordRequesterInterface *passwordRequester() const;
   void setPasswordRequester( PasswordRequesterInterface *requester );
+  void cancelPasswordRequests();
 
   KIMAP::SessionUiProxy::Ptr sessionUiProxy() const;
   void setSessionUiProxy( KIMAP::SessionUiProxy::Ptr proxy );
@@ -126,8 +123,6 @@ private:
 
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
-
-  KPIMUtils::NetworkAccessHelper* m_networkAccessHelper;
 };
 
 #endif

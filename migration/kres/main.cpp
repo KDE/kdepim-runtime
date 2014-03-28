@@ -49,10 +49,10 @@ int main( int argc, char **argv )
                         ki18n( "(c) 2008 the Akonadi developers" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );
-  aboutData.setProgramIconName( "akonadi" );
+  aboutData.setProgramIconName( QLatin1String("akonadi") );
   aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
 
-  const QStringList supportedTypes = QStringList() << "contact" << "calendar" << "notes";
+  const QStringList supportedTypes = QStringList() << QLatin1String("contact") << QLatin1String("calendar") << QLatin1String("notes");
 
   KCmdLineArgs::init( argc, argv, &aboutData );
   KCmdLineOptions options;
@@ -62,17 +62,17 @@ int main( int argc, char **argv )
   options.add( "calendar-only", ki18n( "Only migrate calendar resources" ) );
   options.add( "notes-only", ki18n( "Only migrate knotes resources" ) );
   options.add( "type <type>", ki18n( "Only migrate the specified types (supported: contact, calendar, notes)" ),
-               supportedTypes.join( "," ).toLatin1() );
+               supportedTypes.join( QLatin1String(",") ).toLatin1() );
   options.add( "interactive", ki18n( "Show reporting dialog" ) );
   options.add( "interactive-on-change", ki18n( "Show report only if changes were made" ) );
   KCmdLineArgs::addCmdLineOptions( options );
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   QStringList typesToMigrate;
-  foreach ( const QString &type, args->getOption( "type" ).split( ',' ) ) {
+  foreach ( const QString &type, args->getOption( "type" ).split( QLatin1Char(',') ) ) {
     if ( !supportedTypes.contains( type ) )
       kWarning() << "Unknown resource type: " << type;
-    else if ( !QDBusConnection::sessionBus().registerService( "org.kde.Akonadi.KResMigrator." + type ) )
+    else if ( !QDBusConnection::sessionBus().registerService( QLatin1String("org.kde.Akonadi.KResMigrator.") + type ) )
       kWarning() << "Migrator instance already running for type " << type;
     else
       typesToMigrate << type;
@@ -84,7 +84,7 @@ int main( int argc, char **argv )
   app.setQuitOnLastWindowClosed( false );
 
   KGlobal::setAllowQuit( true );
-  KGlobal::locale()->insertCatalog( "libakonadi" );
+  KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );
 
   InfoDialog *infoDialog = 0;
   if ( args->isSet( "interactive" ) || args->isSet( "interactive-on-change" ) ) {
@@ -94,11 +94,11 @@ int main( int argc, char **argv )
 
   foreach ( const QString &type, typesToMigrate ) {
     KResMigratorBase *m = 0;
-    if ( type == "contact" )
+    if ( type == QLatin1String("contact") )
       m = new KABCMigrator();
-    else if ( type == "calendar" )
+    else if ( type == QLatin1String("calendar") )
       m = new KCalMigrator();
-    else if ( type == "notes" )
+    else if ( type == QLatin1String("notes") )
       m = new KNotesMigrator();
     else {
       kError() << "Unknown resource type: " << type;

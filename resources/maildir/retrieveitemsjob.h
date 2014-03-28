@@ -26,6 +26,7 @@
 
 #include "maildir.h"
 
+class QDirIterator;
 namespace Akonadi
 {
 class TransactionSequence;
@@ -52,9 +53,8 @@ class RetrieveItemsJob : public Akonadi::Job
   private slots:
     void localListDone( KJob *job );
     void transactionDone( KJob *job );
-
-    void processEntry( qint64 index );
-    void processEntryDone( KJob *job );
+    void processEntry();
+    void processEntryDone( KJob * );
 
   private:
     Akonadi::Collection m_collection;
@@ -62,12 +62,10 @@ class RetrieveItemsJob : public Akonadi::Job
     QHash<QString, Akonadi::Item> m_localItems;
     QString m_mimeType;
     Akonadi::TransactionSequence *m_transaction;
-    QStringList m_entryList;
+    QDirIterator *m_entryIterator;
     qint64 m_previousMtime;
     qint64 m_highestMtime;
     QString m_listingPath;
-    int m_jobCount;
-    int m_nextIndex;
 };
 
 #endif

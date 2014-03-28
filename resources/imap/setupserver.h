@@ -42,7 +42,7 @@ namespace KPIMIdentities
 class IdentityCombo;
 class IdentityManager;
 }
-
+class FolderArchiveSettingPage;
 class ImapResource;
 
 /**
@@ -93,6 +93,8 @@ private:
   KPIMIdentities::IdentityCombo *m_identityCombobox;
   QString m_oldResourceName;
   QRegExpValidator mValidator;
+  Akonadi::Collection mOldTrash;
+  FolderArchiveSettingPage *m_folderArchiveSettingPage;
 
 private slots:
   void slotTest();

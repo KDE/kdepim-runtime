@@ -4,6 +4,9 @@ include_directories(
 )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+add_definitions( -DQT_NO_CAST_FROM_ASCII )
+add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 
 
 set(newmailnotifieragent_SRCS
@@ -11,6 +14,7 @@ set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp
   newmailnotifierattribute.cpp
   specialnotifierjob.cpp
+  newmailnotifierselectcollectionwidget.cpp
   util.cpp
 )
 

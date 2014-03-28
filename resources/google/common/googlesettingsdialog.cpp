@@ -19,9 +19,13 @@
 #include "googleaccountmanager.h"
 #include "googlesettings.h"
 #include "googleresource.h"
+#include "settings.h"
 
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QSpinBox>
+#include <QtGui/QCheckBox>
 
 #include <KDE/KLocalizedString>
 #include <KDE/KComboBox>
@@ -29,6 +33,7 @@
 #include <KDE/KDebug>
 #include <KDE/KMessageBox>
 #include <KDE/KWindowSystem>
+#include <KDE/KIntSpinBox>
 
 #include <LibKGAPI2/Account>
 #include <LibKGAPI2/AuthJob>
@@ -45,6 +50,9 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
     KWindowSystem::setMainWindow( this, wId );
     setButtons( Ok | Cancel );
 
+    connect( this, SIGNAL(accepted()),
+             this, SLOT(slotSaveSettings()) );
+
     QWidget *widget = new QWidget( this );
     QVBoxLayout *mainLayout = new QVBoxLayout( widget );
     setMainWidget( widget );
@@ -58,15 +66,36 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
     connect( m_accComboBox, SIGNAL(currentIndexChanged(QString)),
              this, SIGNAL(currentAccountChanged(QString)) );
 
-    m_addAccButton = new KPushButton( KIcon( "list-add-user" ), i18n( "&Add" ), m_accGroupBox );
+    m_addAccButton = new KPushButton( KIcon( QLatin1String("list-add-user") ), i18n( "&Add" ), m_accGroupBox );
     accLayout->addWidget( m_addAccButton );
     connect( m_addAccButton, SIGNAL(clicked(bool)),
              this, SLOT(slotAddAccountClicked()) );
 
-    m_removeAccButton = new KPushButton( KIcon( "list-remove-user" ), i18n( "&Remove" ), m_accGroupBox );
+    m_removeAccButton = new KPushButton( KIcon( QLatin1String("list-remove-user") ), i18n( "&Remove" ), m_accGroupBox );
     accLayout->addWidget( m_removeAccButton );
     connect( m_removeAccButton, SIGNAL(clicked(bool)),
              this, SLOT(slotRemoveAccountClicked()) );
+
+    QGroupBox *refreshBox = new QGroupBox( i18n( "Refresh" ), this );
+    mainLayout->addWidget( refreshBox );
+    QGridLayout *refreshLayout = new QGridLayout( refreshBox );
+
+    m_enableRefresh = new QCheckBox( i18n( "Enable interval refresh" ), refreshBox );
+    m_enableRefresh->setChecked( Settings::self()->enableIntervalCheck() );
+    refreshLayout->addWidget( m_enableRefresh, 0, 0, 1, 2 );
+
+    QLabel *label = new QLabel( i18n( "Refresh interval:" ) );
+    refreshLayout->addWidget( label, 1, 0 );
+    m_refreshSpinBox = new KIntSpinBox( 10, 720, 1, 30, this, 10 );
+    m_refreshSpinBox->setSuffix( ki18np( " minute", " minutes" ) );
+    m_refreshSpinBox->setEnabled( Settings::self()->enableIntervalCheck() );
+    refreshLayout->addWidget( m_refreshSpinBox, 1, 1 );
+    connect( m_enableRefresh, SIGNAL(toggled(bool)),
+             m_refreshSpinBox, SLOT(setEnabled(bool)) );
+
+    if ( m_enableRefresh->isEnabled() ) {
+        m_refreshSpinBox->setValue( Settings::self()->intervalCheckTime() );
+    }
 
     QMetaObject::invokeMethod( this, "reloadAccounts", Qt::QueuedConnection );
 }
@@ -214,4 +243,10 @@ void GoogleSettingsDialog::slotAuthJobFinished( Job *job )
     job->deleteLater();
 }
 
-#include "googlesettingsdialog.moc"
+void GoogleSettingsDialog::slotSaveSettings()
+{
+    Settings::self()->setEnableIntervalCheck( m_enableRefresh->isChecked() );
+    Settings::self()->setIntervalCheckTime( m_refreshSpinBox->value() );
+
+    saveSettings();
+}

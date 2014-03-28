@@ -34,18 +34,28 @@ private slots:
     QTest::addColumn< QList<QByteArray> >( "scenario" );
     QTest::addColumn<QStringList>( "callNames" );
 
+    Akonadi::Collection root;
+    Akonadi::Collection inbox;
     Akonadi::Collection collection;
     Akonadi::Collection source;
     Akonadi::Collection target;
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/Baz" );
-    source = Akonadi::Collection( 2 );
-    source.setRemoteId( "/INBOX/Foo" );
-    target = Akonadi::Collection( 3 );
-    target.setRemoteId( "/INBOX/Bar" );
+    root = createCollectionChain( QString() );
+    inbox = createCollectionChain( QLatin1String("/INBOX") );
+
+    source = Akonadi::Collection( 3 );
+    source.setRemoteId( QLatin1String("/Foo") );
+    source.setParentCollection( inbox );
+
+    collection = Akonadi::Collection( 10 );
+    collection.setRemoteId( QLatin1String("/Baz") );
+    collection.setParentCollection( source );
+
+    target = Akonadi::Collection( 4 );
+    target.setRemoteId( QLatin1String("/Bar") );
+    target.setParentCollection( inbox );
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -59,8 +69,37 @@ private slots:
 
     QTest::newRow( "moving mailbox" ) << collection << source << target << scenario << callNames;
 
+    {
+      const Akonadi::Collection toplevel = createCollectionChain( QLatin1String("/Bar") );
 
+      scenario.clear();
+      scenario << defaultPoolConnectionScenario()
+              << "C: A000003 RENAME \"Bar\" \"INBOX/Bar\""
+              << "S: A000003 OK rename done"
+              << "C: A000004 SUBSCRIBE \"INBOX/Bar\""
+              << "S: A000004 OK subscribe done";
 
+      callNames.clear();
+      callNames << "collectionChangeCommitted";
+
+      QTest::newRow( "move mailbox from toplevel" ) << toplevel << root << inbox << scenario << callNames;
+    }
+
+    {
+      const Akonadi::Collection toplevel = createCollectionChain( QLatin1String("/INBOX/Bar") );
+
+      scenario.clear();
+      scenario << defaultPoolConnectionScenario()
+              << "C: A000003 RENAME \"INBOX/Bar\" \"Bar\""
+              << "S: A000003 OK rename done"
+              << "C: A000004 SUBSCRIBE \"Bar\""
+              << "S: A000004 OK subscribe done";
+
+      callNames.clear();
+      callNames << "collectionChangeCommitted";
+
+      QTest::newRow( "move mailbox to toplevel" ) << toplevel << inbox << root << scenario << callNames;
+    }
 
     // Same collections
     // The scenario changes though
@@ -76,6 +115,34 @@ private slots:
     callNames << "emitWarning" << "collectionChangeCommitted";
 
     QTest::newRow( "moving mailbox, subscribe fails" ) << collection << source << target << scenario << callNames;
+
+
+
+    inbox = createCollectionChain( QLatin1String(".INBOX") );
+
+    source = Akonadi::Collection( 3 );
+    source.setRemoteId( QLatin1String(".Foo") );
+    source.setParentCollection( inbox );
+
+    collection = Akonadi::Collection( 10 );
+    collection.setRemoteId( QLatin1String(".Baz") );
+    collection.setParentCollection( source );
+
+    target = Akonadi::Collection( 4 );
+    target.setRemoteId( QLatin1String(".Bar") );
+    target.setParentCollection( inbox );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 RENAME \"INBOX.Foo.Baz\" \"INBOX.Bar.Baz\""
+             << "S: A000003 OK rename done"
+             << "C: A000004 SUBSCRIBE \"INBOX.Bar.Baz\""
+             << "S: A000004 OK subscribe done";
+
+    callNames.clear();
+    callNames << "collectionChangeCommitted";
+
+    QTest::newRow( "moving mailbox with non-standard separators" ) << collection << source << target << scenario << callNames;
   }
 
   void shouldRenameMailBox()
@@ -102,9 +169,8 @@ private slots:
     state->setTargetCollection( target );
     MoveCollectionTask *task = new MoveCollectionTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
-    QCOMPARE( state->calls().count(), callNames.size() );
+    QTRY_COMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8(state->calls().at( i ).first);
       QVariant parameter = state->calls().at( i ).second;

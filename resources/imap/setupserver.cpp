@@ -32,13 +32,8 @@
 #include "settings.h"
 #include "imapresource.h"
 #include "serverinfodialog.h"
+#include "resources/folderarchivesettings/folderarchivesettingpage.h"
 
-#include <QButtonGroup>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QLabel>
-#include <QProgressBar>
-#include <QRadioButton>
 
 #include <mailtransport/transport.h>
 #include <mailtransport/servertest.h>
@@ -78,17 +73,17 @@ static QString authenticationModeString( MailTransport::Transport::EnumAuthentic
 {
   switch ( mode ) {
     case  MailTransport::Transport::EnumAuthenticationType::LOGIN:
-      return "LOGIN";
+      return QLatin1String("LOGIN");
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-      return "PLAIN";
+      return QLatin1String("PLAIN");
     case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-      return "CRAM-MD5";
+      return QLatin1String("CRAM-MD5");
     case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-      return "DIGEST-MD5";
+      return QLatin1String("DIGEST-MD5");
     case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-      return "GSSAPI";
+      return QLatin1String("GSSAPI");
     case MailTransport::Transport::EnumAuthenticationType::NTLM:
-      return "NTLM";
+      return QLatin1String("NTLM");
     case MailTransport::Transport::EnumAuthenticationType::CLEAR:
       return i18nc( "Authentication method", "Clear text" );
     case MailTransport::Transport::EnumAuthenticationType::ANONYMOUS:
@@ -131,6 +126,8 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
 {
   Settings::self()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
+  m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
+  m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
   m_ui->safeImapGroup->setId( m_ui->noRadio, KIMAP::LoginJob::Unencrypted );
   m_ui->safeImapGroup->setId( m_ui->sslRadio, KIMAP::LoginJob::AnySslVersion );
   m_ui->safeImapGroup->setId( m_ui->tlsRadio, KIMAP::LoginJob::TlsV1 );
@@ -149,7 +146,7 @@ SetupServer::SetupServer( ImapResource *parentResource, WId parent )
   m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
 
   // regex for evaluating a valid server name/ip
-  mValidator.setRegExp( QRegExp( "[A-Za-z0-9-_:.]*" ) );
+  mValidator.setRegExp( QRegExp( QLatin1String("[A-Za-z0-9-_:.]*") ) );
   m_ui->imapServer->setValidator( &mValidator );
 
   m_ui->folderRequester->setMimeTypeFilter(
@@ -258,6 +255,7 @@ void SetupServer::slotCustomSieveChanged()
 
 void SetupServer::applySettings()
 {
+  m_folderArchiveSettingPage->writeSettings();
   m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
                     || ( Settings::self()->userName() != m_ui->userName->text() );
 
@@ -269,13 +267,13 @@ void SetupServer::applySettings()
   QString encryption;
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case KIMAP::LoginJob::Unencrypted :
-    encryption = "None";
+    encryption = QLatin1String("None");
     break;
   case KIMAP::LoginJob::AnySslVersion:
-    encryption = "SSL";
+    encryption = QLatin1String("SSL");
     break;
   case KIMAP::LoginJob::TlsV1:
-    encryption = "STARTTLS";
+    encryption = QLatin1String("STARTTLS");
     break;
   default:
     kFatal() << "Shouldn't happen";
@@ -301,7 +299,9 @@ void SetupServer::applySettings()
   Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
   attribute->setIconName( QLatin1String( "user-trash" ) );
   new Akonadi::CollectionModifyJob( trash );
-
+  if (mOldTrash != trash) {
+      Akonadi::SpecialMailCollections::self()->unregisterCollection(mOldTrash);
+  }
 
   Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
   Settings::self()->setUseDefaultIdentity( m_ui->useDefaultIdentityCheck->isChecked() );
@@ -315,7 +315,7 @@ void SetupServer::applySettings()
 
   Settings::self()->setSieveCustomUsername(m_ui->customUsername->text());
 
-  QAbstractButton *checkedButton = 	m_ui->customSieveGroup->checkedButton();
+  QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
   if (checkedButton == m_ui->imapUserPassword) {
       Settings::self()->setSieveCustomAuthentification(QLatin1String("ImapUserPassword"));
@@ -337,6 +337,7 @@ void SetupServer::applySettings()
 
 void SetupServer::readSettings()
 {
+  m_folderArchiveSettingPage->loadSettings();
   m_ui->accountName->setText( m_parentResource->name() );
   m_oldResourceName = m_ui->accountName->text();
 
@@ -380,7 +381,7 @@ void SetupServer::readSettings()
                                        "activate it. If you do not "
                                        "want to use KWallet, check the box below, but note that you will be "
                                        "prompted for your password when needed." ),
-                              i18n( "Do not use KWallet" ), "warning_kwallet_disabled" );
+                              i18n( "Do not use KWallet" ), QLatin1String("warning_kwallet_disabled") );
   } else {
     m_ui->password->insert( password );
   }
@@ -423,7 +424,7 @@ void SetupServer::readSettings()
   m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
 
   if ( m_vacationFileName.isEmpty() )
-    m_vacationFileName = "kmail-vacation.siv";
+    m_vacationFileName = QLatin1String("kmail-vacation.siv");
 
   m_ui->customUsername->setText(Settings::self()->sieveCustomUsername());
 
@@ -469,7 +470,7 @@ void SetupServer::slotTest()
     m_serverTest->setPort( MailTransport::Transport::EnumEncryption::SSL, port );
   }
 
-  m_serverTest->setProtocol( "imap" );
+  m_serverTest->setProtocol( QLatin1String("imap") );
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL(finished(QList<int>)),
            SLOT(slotFinished(QList<int>)) );
@@ -609,7 +610,7 @@ void SetupServer::slotManageSubscriptions()
 
   QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( this );
   subscriptions->setCaption(  i18n( "Serverside Subscription" ) );
-  subscriptions->setWindowIcon( KIcon( "network-server" ) );
+  subscriptions->setWindowIcon( KIcon( QLatin1String("network-server") ) );
   subscriptions->connectAccount( account, m_ui->password->text() );
   m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 
@@ -628,6 +629,7 @@ void SetupServer::slotShowServerInfo()
 void SetupServer::targetCollectionReceived( const Akonadi::Collection::List &collections )
 {
   m_ui->folderRequester->setCollection( collections.first() );
+  mOldTrash = collections.first();
 }
 
 void SetupServer::localFolderRequestJobFinished( KJob *job )
@@ -636,6 +638,7 @@ void SetupServer::localFolderRequestJobFinished( KJob *job )
     Akonadi::Collection targetCollection = Akonadi::SpecialMailCollections::self()->defaultCollection( Akonadi::SpecialMailCollections::Trash );
     Q_ASSERT( targetCollection.isValid() );
      m_ui->folderRequester->setCollection( targetCollection );
+     mOldTrash = targetCollection;
   }
 }
 
@@ -655,4 +658,3 @@ void SetupServer::populateDefaultAuthenticationOptions()
 
 
 
-#include "setupserver.moc"

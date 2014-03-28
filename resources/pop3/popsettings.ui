@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
+    <width>451</width>
     <height>557</height>
    </rect>
   </property>
@@ -135,6 +135,9 @@
             <property name="whatsThis">
              <string>Account name: This defines the name displayed in the account list.</string>
             </property>
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -155,6 +158,9 @@
             <property name="whatsThis">
              <string>The address of the POP3 server, e.g. pop3.yourprovider.org. You should get this address from your mail provider.</string>
             </property>
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
            </widget>
           </item>
           <item row="2" column="0">
@@ -175,6 +181,9 @@
             <property name="whatsThis">
              <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
             </property>
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
            </widget>
           </item>
           <item row="3" column="0">
@@ -198,6 +207,9 @@
             <property name="echoMode">
              <enum>QLineEdit::Password</enum>
             </property>
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
            </widget>
           </item>
          </layout>
@@ -405,6 +417,12 @@
               </property>
               <property name="toolTip">
                <string>Command that is executed before checking mail</string>
+              </property>
+              <property name="showClearButton" stdset="0">
+               <bool>true</bool>
+              </property>
+              <property name="trapReturnKey">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

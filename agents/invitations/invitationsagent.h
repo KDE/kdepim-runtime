@@ -31,10 +31,6 @@
 
 class KJob;
 
-namespace KCalCore {
-  class ScheduleMessage;
-}
-
 class InvitationsAgent;
 class InvitationsCollection;
 

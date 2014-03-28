@@ -39,26 +39,14 @@
 #include "noselectattribute.h"
 #include "timestampattribute.h"
 
-const uint RetrieveCollectionMetadataTask::TimestampTimeout = 3600 * 24 * 20; // 20 days
-
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_isSpontaneous( true ),
+  : ResourceTask( CancelIfNoSession, resource, parent ),
     m_pendingMetaDataJobs( 0 ), m_collectionChanged( false )
 {
 }
 
 RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask()
 {
-}
-
-bool RetrieveCollectionMetadataTask::isSpontaneous() const
-{
-  return m_isSpontaneous;
-}
-
-void RetrieveCollectionMetadataTask::setSpontaneous( bool spontaneous )
-{
-  m_isSpontaneous = spontaneous;
 }
 
 void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
@@ -70,26 +58,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
       kDebug( 5327 ) << "No Select folder";
-      endTask();
-      return;
-    }
-  }
-
-  // Evaluate timestamps only if this task is spontaneous (triggered from within the resource)
-  if ( m_isSpontaneous ) {
-    uint timestamp = 0;
-    const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
-
-    if ( collection().hasAttribute<TimestampAttribute>() ) {
-      timestamp = collection().attribute<TimestampAttribute>()->timestamp();
-    } else {
-      m_collectionChanged = true;
-    }
-
-    // Refresh only if we're older than twenty days
-    if ( timestamp + TimestampTimeout >  currentTimestamp ) {
-      kDebug( 5327 ) << "Not refreshing because of timestamp";
-      endTask();
+      taskDone();
       return;
     }
   }
@@ -101,12 +70,13 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   m_pendingMetaDataJobs = 0;
 
   // First get the annotations from the mailbox if it's supported
-  if ( capabilities.contains( "METADATA" ) || capabilities.contains( "ANNOTATEMORE" ) ) {
+  if ( capabilities.contains( QLatin1String("METADATA") ) || capabilities.contains( QLatin1String("ANNOTATEMORE") ) ) {
     KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob( session );
     meta->setMailBox( mailBox );
-    if ( capabilities.contains( "METADATA" ) ) {
+    if ( capabilities.contains( QLatin1String("METADATA") ) ) {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
-      meta->addEntry( "*" );
+      meta->addRequestedEntry( "/shared" );
+      meta->setDepth( KIMAP::GetMetaDataJob::AllLevels );
     } else {
       meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
       meta->addEntry( "*", "value.shared" );
@@ -117,7 +87,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   }
 
   // Get the ACLs from the mailbox if it's supported
-  if ( capabilities.contains( "ACL" ) ) {
+  if ( capabilities.contains( QLatin1String("ACL") ) ) {
     KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( session );
     acl->setMailBox( mailBox );
     connect( acl, SIGNAL(result(KJob*)), SLOT(onGetAclDone(KJob*)) );
@@ -132,7 +102,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   }
 
   // Get the QUOTA info from the mailbox if it's supported
-  if ( capabilities.contains( "QUOTA" ) ) {
+  if ( capabilities.contains( QLatin1String("QUOTA") ) ) {
     KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( session );
     quota->setMailBox( mailBox );
     connect( quota, SIGNAL(result(KJob*)), SLOT(onQuotasReceived(KJob*)) );
@@ -143,7 +113,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   // the server does not have any of the capabilities needed to get extra info, so this
   // step is done here
   if ( m_pendingMetaDataJobs == 0 ) {
-    endTask();
+      taskDone();
   }
 }
 
@@ -155,29 +125,20 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
   }
 
   KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>( job );
-  QMap<QByteArray, QMap<QByteArray, QByteArray> > rawAnnotations = meta->allMetaData( meta->mailBox() );
-
-  QMap<QByteArray, QByteArray> annotations;
-  QByteArray attribute = "";
-  if ( meta->serverCapability() == KIMAP::MetaDataJobBase::Annotatemore ) {
-    attribute = "value.shared";
-  }
-
-  foreach ( const QByteArray &entry, rawAnnotations.keys() ) { //krazy:exclude=foreach
-    annotations[entry] = rawAnnotations[entry][attribute];
-  }
+  QMap<QByteArray, QByteArray> rawAnnotations = meta->allMetaData();
 
   // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
   // which contains the current date and time and thus constantly changes for no good
   // reason which triggers a change notification and thus a bunch of Akonadi operations
-  annotations.remove( "/vendor/cmu/cyrus-imapd/lastupdate" );
+  rawAnnotations.remove( "/shared/vendor/cmu/cyrus-imapd/lastupdate" );
+  rawAnnotations.remove( "/private/vendor/cmu/cyrus-imapd/lastupdate" );
 
   // Store the mailbox metadata
   Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
     m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Collection::AddIfMissing );
   const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
-  if ( oldAnnotations != annotations ) {
-    annotationsAttribute->setAnnotations( annotations );
+  if ( oldAnnotations != rawAnnotations ) {
+    annotationsAttribute->setAnnotations( rawAnnotations );
     m_collectionChanged = true;
   }
 
@@ -271,7 +232,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
     showInformationDialog( i18n( "<p>Your access rights to folder <b>%1</b> have been restricted, "
                                  "it will no longer be possible to add messages to this folder.</p>",
                                  collectionName ),
-                           i18n( "Access rights revoked" ), "ShowRightsRevokedWarning" );
+                           i18n( "Access rights revoked" ), QLatin1String("ShowRightsRevokedWarning") );
   }
 
   if ( newRights != m_collection.rights() ) {
@@ -350,24 +311,9 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
       TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
       attr->setTimestamp( currentTimestamp );
 
-      if ( m_isSpontaneous ) {
-        applyCollectionChanges( m_collection );
-      }
+      applyCollectionChanges( m_collection );
     }
 
-    endTask();
-  }
-}
-
-void RetrieveCollectionMetadataTask::endTask()
-{
-  if ( m_isSpontaneous ) {
     taskDone();
-  } else {
-    collectionAttributesRetrieved( m_collection );
   }
 }
-
-#include "retrievecollectionmetadatatask.moc"
-
-

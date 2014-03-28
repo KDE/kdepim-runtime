@@ -25,7 +25,7 @@
 #include <KAssistantDialog>
 #include <KDebug>
 #include <KFileDialog>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KVBox>
 
 RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent ), m_selectFileButton(0)
@@ -38,20 +38,20 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
     QLabel *label1 = new QLabel( box1 );
     label1->setWordWrap( true );
     if ( !possible ) {
-        label1->setText( '\n' + i18n( "The backup cannot be restored. Either the mysql application "
+        label1->setText( QLatin1Char('\n') + i18n( "The backup cannot be restored. Either the mysql application "
                                       "is not installed, or the bzip2 application is not found. "
                                       "Please install those and make sure they can be found in "
                                       "the current path. Restart this Assistant when this is fixed." ) );
     } else {
-        label1->setText( '\n' + i18n( "Please select the file to restore. Note that restoring a "
+        label1->setText( QLatin1Char('\n') + i18n( "Please select the file to restore. Note that restoring a "
                                       "backup will overwrite all existing data. You might want to "
                                       "make a backup first and please consider closing all Akonadi "
-                                      "applications (but do not stop the akonadi server)." ) + "\n\n" );
+                                      "applications (but do not stop the akonadi server)." ) + QLatin1String("\n\n") );
 
         m_selectFileButton = new QPushButton( i18n( "&Click Here to Select the File to Restore..." ), box1 );
         connect( m_selectFileButton, SIGNAL(clicked(bool)), SLOT(slotSelectFile()) );
 
-        QLabel *label2 = new QLabel( "\n\n" + i18n( "Press 'Next' to start the Restore" ), box1 );
+        QLabel *label2 = new QLabel( QLatin1String("\n\n") + i18n( "Press 'Next' to start the Restore" ), box1 );
         label2->setWordWrap( true );
         label2->setAlignment( Qt::AlignRight );
     }
@@ -73,7 +73,7 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
 
 void RestoreAssistant::slotSelectFile()
 {
-    m_filename = KFileDialog::getOpenFileName( KUrl( "kfiledialog://BackupDir" ) );
+    m_filename = KFileDialog::getOpenFileName( KUrl( QLatin1String("kfiledialog://BackupDir") ) );
     if ( !m_filename.isEmpty() ) {
         m_selectFileButton->setText( m_filename );
         setValid( m_page1, true );
@@ -102,4 +102,3 @@ void RestoreAssistant::slotRestoreComplete( bool ok )
                                                "report a bug, so we can find out what the cause is." ) );
 }
 
-#include "restoreassistant.moc"

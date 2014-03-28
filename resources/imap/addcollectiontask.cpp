@@ -81,8 +81,8 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 void AddCollectionTask::onCreateDone( KJob *job )
 {
   if ( job->error() ) {
-    //create on server failed, remove from the cache
-    new Akonadi::CollectionDeleteJob( m_collection );
+    emitError( i18n( "Failed to create the folder '%1' on the IMAP server. ",
+                      m_collection.name() ) );
     cancelTask( job->errorString() );
   } else {
     // Automatically subscribe to newly created mailbox
@@ -107,7 +107,7 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
   }
 
   const Akonadi::CollectionAnnotationsAttribute *attribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
-  if ( !attribute ) {
+  if ( !attribute || !serverSupportsAnnotations() ) {
     // we are finished
     changeCommitted( m_collection );
     synchronizeCollectionTree();
@@ -118,20 +118,19 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
 
   foreach ( const QByteArray &entry, annotations.keys() ) { //krazy:exclude=foreach
     KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob( m_session );
-    if ( serverCapabilities().contains( "METADATA" ) ) {
+    if ( serverCapabilities().contains( QLatin1String("METADATA") ) ) {
       job->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
     } else {
       job->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
     }
-
-    QByteArray attribute = entry;
-    if ( job->serverCapability()==KIMAP::MetaDataJobBase::Annotatemore ) {
-      attribute = "value.shared";
-    }
-
     job->setMailBox( mailBoxForCollection( m_collection ) );
-    job->setEntry( entry );
-    job->addMetaData( attribute, annotations[entry] );
+
+    if ( !entry.startsWith( "/shared" ) && !entry.startsWith( "/private" ) ) {
+        //Support for legacy annotations that don't include the prefix
+      job->addMetaData( QByteArray("/shared") + entry, annotations[entry] );
+    } else {
+      job->addMetaData( entry, annotations[entry] );
+    }
 
     connect( job, SIGNAL(result(KJob*)),
              this, SLOT(onSetMetaDataDone(KJob*)) );
@@ -155,4 +154,3 @@ void AddCollectionTask::onSetMetaDataDone( KJob *job )
     changeCommitted( m_collection );
 }
 
-#include "addcollectiontask.moc"

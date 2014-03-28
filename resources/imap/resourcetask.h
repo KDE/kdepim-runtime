@@ -92,8 +92,6 @@ protected:
   void setIdleCollection( const Akonadi::Collection &collection );
   void applyCollectionChanges( const Akonadi::Collection &collection );
 
-  void collectionAttributesRetrieved( const Akonadi::Collection &collection );
-
   void itemRetrieved( const Akonadi::Item &item );
 
   void itemsRetrieved( const Akonadi::Item::List &items );
@@ -110,6 +108,8 @@ protected:
 
   void changeProcessed();
 
+  void searchFinished( const QVector<qint64> &result, bool isRid = true );
+
   void cancelTask( const QString &errorString );
   void deferTask();
   void taskDone();
@@ -117,14 +117,21 @@ protected:
   void emitError( const QString &message );
   void emitWarning( const QString &message );
 
-
   void synchronizeCollectionTree();
 
   void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
 
   const QChar separatorCharacter() const;
+  void setSeparatorCharacter( const QChar &separator );
+
+  static QList<QByteArray> fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags, const Akonadi::Collection &collection );
 
   static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
+
+  bool serverSupportsAnnotations() const;
+
+private:
+
   static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
 
 private slots:

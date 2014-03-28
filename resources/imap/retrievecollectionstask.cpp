@@ -56,14 +56,14 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
   policy.setSyncOnDemand( true );
 
   QStringList localParts;
-  localParts << Akonadi::MessagePart::Envelope
-             << Akonadi::MessagePart::Header;
+  localParts << QLatin1String(Akonadi::MessagePart::Envelope)
+             << QLatin1String(Akonadi::MessagePart::Header);
   int cacheTimeout = 60;
 
   if ( isDisconnectedModeEnabled() ) {
     // For disconnected mode we also cache the body
     // and we keep all data indifinitely
-    localParts << Akonadi::MessagePart::Body;
+    localParts << QLatin1String(Akonadi::MessagePart::Body);
     cacheTimeout = -1;
   }
 
@@ -102,6 +102,12 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 {
   QStringList contentTypes;
   contentTypes << KMime::Message::mimeType() << Akonadi::Collection::mimeType();
+
+  if ( !descriptors.isEmpty() ) {
+      // This is still not optimal way of getting the separator, but it's better
+      // than guessing every time from RID of parent collection
+      setSeparatorCharacter( descriptors.first().separator );
+  }
 
   for ( int i=0; i<descriptors.size(); ++i ) {
     KIMAP::MailBoxDescriptor descriptor = descriptors[i];
@@ -161,7 +167,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       if ( currentPath.compare( separator + QLatin1String( "INBOX" ) , Qt::CaseInsensitive ) == 0 ) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Inbox" ) );
-        attr->setIconName( "mail-folder-inbox" );
+        attr->setIconName( QLatin1String("mail-folder-inbox") );
         setIdleCollection( c );
       }
 
@@ -169,7 +175,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
       if ( currentPath == ( separator + QLatin1String( "user" ) ) && currentFlags.contains( "\\noselect" ) ) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
         attr->setDisplayName( i18n( "Shared Folders" ) );
-        attr->setIconName( "x-mail-distribution-list" );
+        attr->setIconName( QLatin1String("x-mail-distribution-list") );
       }
 
       // If this folder is a noselect folder, make some special settings.
@@ -226,6 +232,5 @@ void RetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob* job)
   }
 }
 
-#include "retrievecollectionstask.moc"
 
 

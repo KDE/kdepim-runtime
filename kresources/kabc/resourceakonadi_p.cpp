@@ -529,6 +529,5 @@ ContactGroup ResourceAkonadi::Private::contactGroupFromDistList( const KABC::Dis
   return contactGroup;
 }
 
-#include "resourceakonadi_p.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

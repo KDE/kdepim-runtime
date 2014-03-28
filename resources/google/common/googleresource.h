@@ -73,7 +73,17 @@ class GoogleResource : public Akonadi::ResourceBase,
     virtual void slotAccountChanged( const KGAPI2::AccountPtr &account );
     virtual void slotAccountRemoved( const QString &accountName );
 
+#ifdef HAVE_ACCOUNTS
+    void slotKAccountsCredentialsReceived( KJob *job );
+    void slotKAccountsAccountInfoReceived( KGAPI2::Job *job );
+    void finishKAccountsAuthentication( KGAPI2::Job* job );
+#endif // HAVE_ACCOUNTS
+
   protected:
+    bool configureKAccounts( int accountId, KGAPI2::Job *restartJob = 0 );
+    bool configureKGAPIAccount( const KGAPI2::AccountPtr &account );
+    void updateAccountToken( const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = 0 );
+
     template <typename T>
     bool canPerformTask( const Akonadi::Item &item, const QString &mimeType = QString() ) {
         if ( item.isValid() && !item.hasPayload<T>()) {
@@ -90,6 +100,14 @@ class GoogleResource : public Akonadi::ResourceBase,
     bool canPerformTask();
 
     KGAPI2::AccountPtr account() const;
+    /**
+     * KAccounts support abstraction.
+     *
+     * Returns 0 when compiled without KAccounts or not configured for KAccounts
+     */
+    int accountId() const;
+
+
     GoogleAccountManager* accountManager() const;
 
     virtual void aboutToQuit();

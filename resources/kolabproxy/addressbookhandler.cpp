@@ -49,9 +49,23 @@ Akonadi::Item::List AddressBookHandler::translateItems( const Akonadi::Item::Lis
       newItem.setPayload( reader.getContact() );
       newItems << newItem;
     } else if ( reader.getType() == Kolab::DistlistObject ) {
+      KABC::ContactGroup contactGroup = reader.getDistlist();
+
+      QList<KABC::ContactGroup::ContactReference> toAdd;
+      for ( uint index = 0; index < contactGroup.contactReferenceCount(); ++index ) {
+        const KABC::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
+        KABC::ContactGroup::ContactReference ref;
+        ref.setGid( reference.uid() ); //libkolab set a gid with setUid()
+        toAdd << ref;
+      }
+      contactGroup.removeAllContactReferences();
+      foreach ( const KABC::ContactGroup::ContactReference &ref, toAdd ) {
+        contactGroup.append( ref );
+      }
+
       Akonadi::Item newItem( KABC::ContactGroup::mimeType() );
       newItem.setRemoteId( QString::number( item.id() ) );
-      newItem.setPayload( reader.getDistlist() );
+      newItem.setPayload( contactGroup );
       newItems << newItem;
     }
     if ( checkForErrors( item.id() ) && !newItems.isEmpty() ) {
@@ -75,7 +89,7 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     if ( checkForErrors( item.id() ) ) {
       return false;
     }
-    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( message );
   } else if ( item.hasPayload<KABC::ContactGroup>() ) {
     KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
@@ -84,32 +98,35 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     // Hopefully all resources are available during saving, so we can look up
     // in the addressbook to get name+email from the UID.
     // TODO proxy should at least know the addressees it created
+    QList<KABC::ContactGroup::ContactReference> toAdd;
     for ( uint index = 0; index < contactGroup.contactReferenceCount(); ++index ) {
       const KABC::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
 
-      const Akonadi::Item item( reference.uid().toLongLong() );
-      Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
-      job->fetchScope().fetchFullPayload();
-      if ( !job->exec() )
-        continue;
+      QString gid;
+      if (!reference.gid().isEmpty()) {
+        gid = reference.gid();
+      } else {
+        const Akonadi::Item item( reference.uid().toLongLong() );
+        Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
+        job->fetchScope().fetchFullPayload();
+        if ( !job->exec() )
+            continue;
 
-      const Akonadi::Item::List items = job->items();
-      if ( items.count() != 1 )
-        continue;
+        const Akonadi::Item::List items = job->items();
+        if ( items.count() != 1 )
+            continue;
 
-      const KABC::Addressee addressee = job->items().first().payload<KABC::Addressee>();
-
-      if ( !addressee.isEmpty() ) {
-        const QString name = addressee.formattedName();
-        QString email = reference.preferredEmail();
-        if ( email.isEmpty() )
-          email = addressee.preferredEmail();
-
-        const KABC::ContactGroup::Data data(name, email);
-        contactGroup.append(data);
+        const KABC::Addressee addressee = job->items().first().payload<KABC::Addressee>();
+        gid = addressee.uid();
       }
+      KABC::ContactGroup::ContactReference ref;
+      ref.setUid(gid); //libkolab expects a gid for uid()
+      toAdd << ref;
     }
     contactGroup.removeAllContactReferences();
+    foreach ( const KABC::ContactGroup::ContactReference &ref, toAdd ) {
+      contactGroup.append( ref );
+    }
 
     const KMime::Message::Ptr &message =
       Kolab::KolabObjectWriter::writeDistlist( contactGroup, m_formatVersion, PRODUCT_ID );
@@ -117,7 +134,7 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     if ( checkForErrors( item.id() ) ) {
       return false;
     }
-    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( message );
   } else {
     kWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";
@@ -136,3 +153,15 @@ QString AddressBookHandler::iconName() const
 {
   return QString::fromLatin1( "view-pim-contacts" );
 }
+
+QString AddressBookHandler::extractGid(const Akonadi::Item& kolabItem)
+{
+  if ( kolabItem.hasPayload<KABC::Addressee>() ) {
+    return kolabItem.payload<KABC::Addressee>().uid();
+  } else if ( kolabItem.hasPayload<KABC::ContactGroup>() ) {
+    return kolabItem.payload<KABC::ContactGroup>().id();
+  }
+  kWarning() << "invalid payload type!";
+  return QString();
+}
+

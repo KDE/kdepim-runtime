@@ -109,12 +109,12 @@ QString KDEIntegration::i18n( const QScriptValue &array )
 
   if (!context) {
       kWarning() << "No context !";
-      return "";
+      return QString();
   }
 
   if (context->argumentCount() < 1) {
       // ## TODO: (new str): context->throwError(i18n("i18n() takes at least one argument"));
-      return "";
+      return QString();
   }
 
   KLocalizedString message = ki18n(context->argument(0).toString().toUtf8());
@@ -128,13 +128,13 @@ QString KDEIntegration::i18nc( const QScriptValue &array )
 
   if (!context) {
       kWarning() << "No context !";
-      return "";
+      return QString();
   }
 
   if (context->argumentCount() < 2) {
       kWarning() << "i18nc() takes at least two arguments";
       //### TODO (new str): context->throwError(i18n("i18nc() takes at least two arguments"));
-      return "";
+      return QString();
   }
 
   KLocalizedString message = ki18nc(context->argument(0).toString().toUtf8(),
@@ -149,13 +149,13 @@ QString KDEIntegration::i18np( const QScriptValue &array )
 
   if (!context) {
       kWarning() << "No context !";
-      return "";
+      return QString();
   }
 
   if (context->argumentCount() < 2) {
       kWarning() << "i18np() takes at least two arguments";
       //### TODO (new str): context->throwError(i18n("i18np() takes at least two arguments"));
-      return "";
+      return QString();
   }
 
   KLocalizedString message = ki18np(context->argument(0).toString().toUtf8(),
@@ -170,13 +170,13 @@ QString KDEIntegration::i18ncp( const QScriptValue &array )
 
   if (!context) {
       kWarning() << "No context !";
-      return "";
+      return QString();
   }
 
   if (context->argumentCount() < 3) {
       kWarning() << "i18ncp() takes at least three arguments";
       //### TODO (new str): context->throwError(i18n("i18ncp() takes at least three arguments"));
-      return "";
+      return QString();
   }
 
   KLocalizedString message = ki18ncp(context->argument(0).toString().toUtf8(),
@@ -221,7 +221,7 @@ qreal KDEIntegration::mm2px(qreal mm)
 
   const QString deviceID = QString::fromUtf16( ( const unsigned short *)dd.DeviceID);
 
-  QRegExp rx("^MONITOR\\\\(\\w+)\\\\");
+  QRegExp rx(QLatin1String("^MONITOR\\\\(\\w+)\\\\"));
 
   if (rx.indexIn(deviceID) != -1) {
     const QString devID = rx.cap(1);
@@ -302,5 +302,5 @@ qreal KDEIntegration::mm2px(qreal mm)
   return mm * QApplication::desktop()->logicalDpiX() / 25.4;
 }
 
-#include "kdeintegration.moc"
+#include "moc_kdeintegration.cpp"
 

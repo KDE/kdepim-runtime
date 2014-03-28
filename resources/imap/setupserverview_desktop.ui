@@ -35,7 +35,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="accountName"/>
+           <widget class="KLineEdit" name="accountName">
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label">
@@ -51,7 +55,11 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="KLineEdit" name="imapServer"/>
+           <widget class="KLineEdit" name="imapServer">
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_2">
@@ -67,7 +75,11 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="KLineEdit" name="userName"/>
+           <widget class="KLineEdit" name="userName">
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
+           </widget>
           </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_3">
@@ -87,6 +99,10 @@
             <property name="echoMode">
              <enum>QLineEdit::Password</enum>
             </property>
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
+
            </widget>
           </item>
          </layout>
@@ -170,6 +186,16 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>The server port changed when ManageSieve turned into a full RFC Standard. Old server implementations still use port 2000, while newer standard conform server can only be accessed via port 4190.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLabel" name="label_5">
@@ -197,7 +223,12 @@
           </widget>
          </item>
          <item>
-          <widget class="KLineEdit" name="alternateURL"/>
+          <widget class="KLineEdit" name="alternateURL">
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
+
+          </widget>
          </item>
         </layout>
        </item>
@@ -212,6 +243,9 @@
             <property name="echoMode">
              <enum>QLineEdit::Password</enum>
             </property>
+              <property name="trapReturnKey">
+               <bool>true</bool>
+              </property>
            </widget>
           </item>
           <item row="1" column="0" colspan="2">
@@ -249,7 +283,11 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="KLineEdit" name="customUsername"/>
+           <widget class="KLineEdit" name="customUsername">
+              <property name="trapReturnKey">
+              <bool>true</bool>
+              </property>
+           </widget>
           </item>
           <item row="0" column="0">
            <widget class="QRadioButton" name="imapUserPassword">
@@ -609,7 +647,7 @@ p, li { white-space: pre-wrap; }
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="safeImapGroup"/>
   <buttongroup name="customSieveGroup"/>
+  <buttongroup name="safeImapGroup"/>
  </buttongroups>
 </ui>

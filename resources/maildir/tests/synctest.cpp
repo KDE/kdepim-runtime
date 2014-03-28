@@ -60,4 +60,3 @@ void SyncTest::testSync()
 
 QTEST_AKONADIMAIN( SyncTest, NoGUI )
 
-#include "synctest.moc"

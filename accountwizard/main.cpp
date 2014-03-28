@@ -31,14 +31,6 @@
 
 #include <stdio.h>
 
-#ifdef Q_OS_WINCE
-#include <QtPlugin>
-
-#include <QLayout>
-
-Q_IMPORT_PLUGIN(krossqtsplugin)
-#endif
-
 int main( int argc, char **argv )
 {
   KAboutData aboutData( "accountwizard", 0,
@@ -49,7 +41,7 @@ int main( int argc, char **argv )
                         ki18n( "(c) 2009 the Akonadi developers" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );
-  aboutData.setProgramIconName( "akonadi" );
+  aboutData.setProgramIconName( QLatin1String("akonadi") );
   aboutData.addAuthor( ki18n( "Volker Krause" ),  ki18n( "Author" ), "vkrause@kde.org" );
   aboutData.addAuthor( ki18n( "Laurent Montel" ), KLocalizedString() , "montel@kde.org" );
 
@@ -70,7 +62,7 @@ int main( int argc, char **argv )
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   KUniqueApplication app;
-  KGlobal::locale()->insertCatalog( "libakonadi" );
+  KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );
 
   Akonadi::Control::start( 0 );
 
@@ -80,7 +72,7 @@ int main( int argc, char **argv )
     Global::setAssistant( args->getOption( "assistant" ) );
 
   if ( !args->getOption( "type" ).isEmpty() )
-     Global::setTypeFilter( args->getOption( "type" ).split( ',' ) );
+     Global::setTypeFilter( args->getOption( "type" ).split( QLatin1Char(',') ) );
   args->clear();
   Dialog dlg( 0/*, Qt::WindowStaysOnTopHint*/ );
   dlg.show();

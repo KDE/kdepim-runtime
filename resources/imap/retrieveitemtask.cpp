@@ -47,7 +47,7 @@ void RetrieveItemTask::doStart( KIMAP::Session *session )
 
   if ( m_uid == 0 ) {
     kWarning() << "Remote id is " << item().remoteId();
-    cancelTask( "Remote id is empty or invalid" ); // TODO: i18n
+    cancelTask( i18n("Remote id is empty or invalid") );
     return;
   }
 
@@ -138,6 +138,5 @@ void RetrieveItemTask::onContentFetchDone( KJob *job )
 }
 
 
-#include "retrieveitemtask.moc"
 
 

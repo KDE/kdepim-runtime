@@ -80,5 +80,4 @@ ResourceAkonadiConfig::ResourceAkonadiConfig( QWidget *parent )
   connectMimeCheckBoxes();
 }
 
-#include "resourceakonadiconfig.moc"
 // kate: space-indent on; indent-width 2; replace-tabs on;

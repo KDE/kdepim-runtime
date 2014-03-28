@@ -27,19 +27,19 @@ ImapTestBase::ImapTestBase( QObject *parent )
 
 QString ImapTestBase::defaultUserName() const
 {
-  return "test@kdab.com";
+  return QLatin1String("test@kdab.com");
 }
 
 QString ImapTestBase::defaultPassword() const
 {
-  return "foobar";
+  return QLatin1String("foobar");
 }
 
 ImapAccount *ImapTestBase::createDefaultAccount() const
 {
   ImapAccount *account = new ImapAccount;
 
-  account->setServer( "127.0.0.1" );
+  account->setServer( QLatin1String("127.0.0.1") );
   account->setPort( 5989 );
   account->setUserName( defaultUserName() );
   account->setSubscriptionEnabled( true );
@@ -75,13 +75,18 @@ QList<QByteArray> ImapTestBase::defaultAuthScenario() const
   return scenario;
 }
 
-QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario() const
+QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario( const QList<QByteArray> &customCapabilities ) const
 {
   QList<QByteArray> scenario;
 
+  QByteArray caps = "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE";
+  Q_FOREACH ( const QByteArray &cap, customCapabilities ) {
+    caps += " " + cap;
+  }
+
   scenario << defaultAuthScenario()
            << "C: A000002 CAPABILITY"
-           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+           << caps
            << "S: A000002 OK Completed";
 
   return scenario;
@@ -105,4 +110,28 @@ bool ImapTestBase::waitForSignal( QObject *obj, const char *member, int timeout 
   return spy.count()==1;
 }
 
-#include "imaptestbase.moc"
+Akonadi::Collection ImapTestBase::createCollectionChain( const QString &remoteId ) const
+{
+    QChar separator = remoteId.length() > 0 ? remoteId.at(0) : QLatin1Char('/');
+
+    Akonadi::Collection parent( 1 );
+    parent.setRemoteId( QLatin1String("root-id") );
+    parent.setParentCollection( Akonadi::Collection::root() );
+    Akonadi::Entity::Id id = 2;
+
+    Akonadi::Collection collection = parent;
+
+    const QStringList collections = remoteId.split( separator, QString::SkipEmptyParts );
+    Q_FOREACH ( const QString &colId, collections ) {
+        collection = Akonadi::Collection( id );
+        collection.setRemoteId( separator + colId );
+        collection.setParentCollection( parent );
+
+        parent = collection;
+        id++;
+    }
+
+    return collection;
+}
+
+

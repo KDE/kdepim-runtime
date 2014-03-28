@@ -62,6 +62,7 @@ public:
   virtual Akonadi::Collection collection() const;
   void setItem( const Akonadi::Item &item );
   virtual Akonadi::Item item() const;
+  virtual Akonadi::Item::List items() const;
 
   void setParentCollection( const Akonadi::Collection &collection );
   virtual Akonadi::Collection parentCollection() const;
@@ -75,7 +76,6 @@ public:
   virtual QSet<QByteArray> parts() const;
 
   virtual QString rootRemoteId() const;
-  virtual QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true ) const;
 
   virtual void setIdleCollection( const Akonadi::Collection &collection );
   virtual void applyCollectionChanges( const Akonadi::Collection &collection );
@@ -88,11 +88,17 @@ public:
   virtual void itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed );
   virtual void itemsRetrievalDone();
 
+  virtual QSet< QByteArray > addedFlags() const;
+  virtual QSet< QByteArray > removedFlags() const;
+
   virtual void itemChangeCommitted( const Akonadi::Item &item );
+  virtual void itemsChangesCommitted(const Akonadi::Item::List& items);
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
+
+  virtual void searchFinished( const QVector<qint64> &result, bool isRid = true );
 
   virtual void changeProcessed();
 
@@ -106,6 +112,9 @@ public:
 
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
+
+  virtual QChar separatorCharacter() const;
+  virtual void setSeparatorCharacter( const QChar &separator );
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
 
@@ -123,9 +132,10 @@ private:
   bool m_subscriptionEnabled;
   bool m_disconnectedMode;
   int m_intervalCheckTime;
+  QChar m_separator;
 
   Akonadi::Collection m_collection;
-  Akonadi::Item m_item;
+  Akonadi::Item::List m_items;
 
   Akonadi::Collection m_parentCollection;
 

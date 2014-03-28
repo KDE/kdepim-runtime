@@ -111,7 +111,7 @@ void KCalResource::configure( WId windowId )
            this, SIGNAL(error(QString)) );
 
   if ( kresAssistant.exec() != QDialog::Accepted ) {
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     emit configurationDialogRejected();
     return;
   }
@@ -127,7 +127,7 @@ void KCalResource::configure( WId windowId )
   if ( !openConfiguration() ) {
     const QString message = i18nc( "@info:status", "Initialization based on newly created configuration failed." );
     emit error( message );
-    emit status( Broken, message );
+    emit status( NotConfigured, message );
     return;
   }
 
@@ -148,7 +148,7 @@ void KCalResource::retrieveCollections()
     const QString message = i18nc( "@info:status", "No KDE calendar plugin configured yet" );
     emit error( message );
 
-    emit status( Broken, message );
+    emit status( NotConfigured, message );
     return;
   }
 
@@ -236,7 +236,7 @@ void KCalResource::retrieveItems( const Akonadi::Collection &collection )
     const QString message = i18nc( "@info:status", "No KDE calendar plugin configured yet" );
     emit error( message );
 
-    emit status( Broken, message );
+    emit status( NotConfigured, message );
     return;
   }
 
@@ -269,7 +269,7 @@ bool KCalResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
     const QString message = i18nc( "@info:status", "No KDE calendar plugin configured yet" );
     emit error( message );
 
-    emit status( Broken, message );
+    emit status( NotConfigured, message );
     return false;
   }
 
@@ -318,7 +318,7 @@ void KCalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
   if ( mResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -357,7 +357,7 @@ void KCalResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
 
   if ( mResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -411,7 +411,7 @@ void KCalResource::itemRemoved( const Akonadi::Item &item )
 
   if ( mResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -436,7 +436,7 @@ void KCalResource::collectionAdded( const Akonadi::Collection &collection,
 
   if ( mResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -455,7 +455,7 @@ void KCalResource::collectionChanged( const Akonadi::Collection &collection )
 
   if ( mResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -481,7 +481,7 @@ void KCalResource::collectionRemoved( const Akonadi::Collection &collection )
 
   if ( mResource == 0 ) {
     kError() << "Resource not fully operational yet";
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -578,7 +578,7 @@ void KCalResource::reloadConfig()
   KGlobal::config()->reparseConfiguration();
 
   if ( KGlobal::config()->groupList().isEmpty() ) {
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -590,13 +590,13 @@ void KCalResource::reloadConfig()
   if ( mResource != 0 ) {
     if ( mResource->type().toLower() == QLatin1String( "akonadi" ) ) {
       kError() << "Resource config points to an Akonadi bridge resource";
-      emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+      emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
       return;
     }
   }
 
   if ( mResource == 0 ) {
-    emit status( Broken, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
+    emit status( NotConfigured, i18nc( "@info:status", "No KDE calendar plugin configured yet" ) );
     return;
   }
 
@@ -608,7 +608,7 @@ void KCalResource::reloadConfig()
 
     const QString message = i18nc( "@info:status", "Initialization based on stored configuration failed." );
     emit error( message );
-    emit status( Broken, message );
+    emit status( NotConfigured, message );
     return;
   }
 
@@ -692,5 +692,4 @@ void KCalResource::delayedSaveCalendar()
 
 AKONADI_RESOURCE_MAIN( KCalResource )
 
-#include "kcalresource.moc"
 // kate: space-indent on; indent-width 2; replace-tabs on;

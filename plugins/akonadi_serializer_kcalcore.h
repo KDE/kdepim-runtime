@@ -24,18 +24,21 @@
 
 #include <akonadi/differencesalgorithminterface.h>
 #include <akonadi/itemserializerplugin.h>
+#include <akonadi/gidextractorinterface.h>
 #include <KCalCore/ICalFormat>
 
 namespace Akonadi {
 
 class SerializerPluginKCalCore : public QObject,
                              public ItemSerializerPlugin,
-                             public DifferencesAlgorithmInterface
+                             public DifferencesAlgorithmInterface,
+                             public GidExtractorInterface
 
 {
     Q_OBJECT
     Q_INTERFACES( Akonadi::ItemSerializerPlugin )
     Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
+    Q_INTERFACES( Akonadi::GidExtractorInterface )
 
   public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
@@ -44,6 +47,9 @@ class SerializerPluginKCalCore : public QObject,
     void compare( Akonadi::AbstractDifferencesReporter *reporter,
                   const Akonadi::Item &leftItem,
                   const Akonadi::Item &rightItem );
+
+    QString extractGid( const Item &item ) const;
+
   private:
     KCalCore::ICalFormat mFormat;
 };

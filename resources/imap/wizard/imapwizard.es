@@ -20,8 +20,7 @@
 // add this function to trim user input of whitespace when needed
 String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g, ""); };
 
-// TODO: i18n??
-var page = Dialog.addPage( "imapwizard.ui", "Personal Settings" );
+var page = Dialog.addPage( "imapwizard.ui", qsTr("Personal Settings") );
 
 // try to guess some defaults
 var emailAddr = SetupManager.email();

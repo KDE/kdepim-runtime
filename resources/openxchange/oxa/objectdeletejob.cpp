@@ -76,4 +76,3 @@ void ObjectDeleteJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "objectdeletejob.moc"

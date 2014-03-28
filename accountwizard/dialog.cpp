@@ -40,12 +40,10 @@
 
 #include <qplatformdefs.h>
 
-#include <kpimutils/networkaccesshelper.h>
-
 Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   KAssistantDialog( parent, flags )
 {
-#if defined (Q_WS_MAEMO_5) || defined (Q_OS_WINCE) || defined (MEEGO_EDITION_HARMATTAN)
+#if defined (Q_WS_MAEMO_5) || defined (MEEGO_EDITION_HARMATTAN)
   setWindowState( Qt::WindowFullScreen );
 #endif
 
@@ -101,11 +99,6 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   page->enterPageNext();
   emit page->pageEnteredNext();
   enableButton( KDialog::Help, false );
-
-  // attach network access helper to this instance,
-  // establish connection for the lifetime of this dialog
-  KPIMUtils::NetworkAccessHelper* networkHelper = new KPIMUtils::NetworkAccessHelper( this );
-  networkHelper->establishConnection();
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
@@ -211,4 +204,3 @@ void Dialog::reject()
 }
 
 
-#include "dialog.moc"

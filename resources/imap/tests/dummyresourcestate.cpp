@@ -21,11 +21,15 @@
 
 #include "dummyresourcestate.h"
 
+Q_DECLARE_METATYPE(QList<qint64>)
+Q_DECLARE_METATYPE(QVector<qint64>);
+
 DummyResourceState::DummyResourceState()
   : m_automaticExpunge( true ), m_subscriptionEnabled( true ),
     m_disconnectedMode( true ), m_intervalCheckTime( -1 )
 {
-
+  qRegisterMetaType<QList<qint64> >();
+  qRegisterMetaType<QVector<qint64> >();
 }
 
 DummyResourceState::~DummyResourceState()
@@ -125,12 +129,18 @@ Akonadi::Collection DummyResourceState::collection() const
 
 void DummyResourceState::setItem( const Akonadi::Item &item )
 {
-  m_item = item;
+  m_items.clear();
+  m_items << item;
 }
 
 Akonadi::Item DummyResourceState::item() const
 {
-  return m_item;
+  return m_items.first();
+}
+
+Akonadi::Item::List DummyResourceState::items() const
+{
+  return m_items;
 }
 
 void DummyResourceState::setParentCollection( const Akonadi::Collection &collection )
@@ -175,15 +185,7 @@ QSet<QByteArray> DummyResourceState::parts() const
 
 QString DummyResourceState::rootRemoteId() const
 {
-  return "root-id";
-}
-
-QString DummyResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool ) const
-{
-  if ( collection.remoteId().startsWith('/') )
-    return collection.remoteId().mid( 1 );
-  else
-    return collection.remoteId();
+  return QLatin1String("root-id");
 }
 
 void DummyResourceState::setIdleCollection( const Akonadi::Collection &collection )
@@ -223,9 +225,24 @@ void DummyResourceState::itemsRetrievalDone()
   recordCall( "itemsRetrievalDone" );
 }
 
+QSet< QByteArray > DummyResourceState::addedFlags() const
+{
+  return QSet<QByteArray>();
+}
+
+QSet< QByteArray > DummyResourceState::removedFlags() const
+{
+  return QSet<QByteArray>();
+}
+
 void DummyResourceState::itemChangeCommitted( const Akonadi::Item &item )
 {
   recordCall( "itemChangeCommitted",  QVariant::fromValue( item ) );
+}
+
+void DummyResourceState::itemsChangesCommitted( const Akonadi::Item::List &items )
+{
+  recordCall( "itemsChangesCommitted", QVariant::fromValue( items ) );
 }
 
 void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
@@ -241,6 +258,11 @@ void DummyResourceState::collectionChangeCommitted( const Akonadi::Collection &c
 void DummyResourceState::changeProcessed()
 {
   recordCall( "changeProcessed" );
+}
+
+void DummyResourceState::searchFinished( const QVector<qint64> &result, bool isRid )
+{
+  recordCall( "searchFinished", QVariant::fromValue( result ) );
 }
 
 void DummyResourceState::cancelTask( const QString &errorString )
@@ -292,6 +314,16 @@ void DummyResourceState::showInformationDialog( const QString &message, const QS
 QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
 {
   return m_calls;
+}
+
+QChar DummyResourceState::separatorCharacter() const
+{
+  return m_separator;
+}
+
+void DummyResourceState::setSeparatorCharacter( const QChar &separator )
+{
+  m_separator = separator;
 }
 
 void DummyResourceState::recordCall( const QByteArray callName, const QVariant &parameter )

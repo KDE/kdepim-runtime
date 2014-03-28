@@ -59,7 +59,30 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   connect( ui.kcfg_MonitorFile, SIGNAL(toggled(bool)), SLOT(validate()) );
   ui.kcfg_Path->setFocus();
   QTimer::singleShot( 0, this, SLOT(validate()) );
+  setMinimumSize(600, 540);
+  readConfig();
 }
+
+SingleFileResourceConfigDialogBase::~SingleFileResourceConfigDialogBase()
+{
+    writeConfig();
+}
+
+void SingleFileResourceConfigDialogBase::writeConfig()
+{
+    KConfigGroup group( KGlobal::config(), "SingleFileResourceConfigDialogBase" );
+    group.writeEntry( "Size", size() );
+}
+
+void SingleFileResourceConfigDialogBase::readConfig()
+{
+    KConfigGroup group( KGlobal::config(), "SingleFileResourceConfigDialogBase" );
+    const QSize sizeDialog = group.readEntry( "Size", QSize(600,540) );
+    if ( sizeDialog.isValid() ) {
+        resize( sizeDialog );
+    }
+}
+
 
 void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
 {

@@ -29,7 +29,6 @@
 
 #include <akonadi/agentinstance.h>
 
-class QItemSelection;
 
 /**
   @short A widget to manage imaplib

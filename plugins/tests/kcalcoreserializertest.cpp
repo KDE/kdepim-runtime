@@ -80,8 +80,8 @@ class KCalCoreSerializerTest : public QObject
       const Event::Ptr event = item.payload<Event::Ptr>();
       QVERIFY( event != 0 );
 
-      QCOMPARE( event->summary(), QString( "Test event" ) );
-      QCOMPARE( event->location(), QString( "here" ) );
+      QCOMPARE( event->summary(), QLatin1String( "Test event" ) );
+      QCOMPARE( event->location(), QLatin1String( "here" ) );
 
       // serializing
       const QByteArray data = item.payloadData();
@@ -98,13 +98,13 @@ class KCalCoreSerializerTest : public QObject
       const QDate currentDate = QDate::currentDate();
 
       Event::Ptr event = Event::Ptr( new Event() );
-      event->setUid( "12345" );
+      event->setUid( QLatin1String("12345") );
       event->setDtStart( KDateTime( currentDate ) );
       event->setDtEnd( KDateTime( currentDate.addDays( 1 ) ) );
 
       // ü
       const char latin1_umlaut[] = { 0xFC, '\0' };
-      event->setSummary( latin1_umlaut );
+      event->setSummary( QLatin1String(latin1_umlaut) );
 
       Item item;
       item.setMimeType( mimeType );

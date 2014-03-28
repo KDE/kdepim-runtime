@@ -963,5 +963,4 @@ void ModelResetCommand::doCommand()
 }
 
 
-#include "dynamictreemodel.moc"
 

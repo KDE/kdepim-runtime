@@ -22,6 +22,7 @@
 #define KOLABPROXY_KOLABPROXYRESOURCE_H
 
 #include "kolabhandler.h"
+#include "handlermanager.h"
 
 #include <Akonadi/ResourceBase>
 
@@ -49,6 +50,8 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     bool registerHandlerForCollection( const Akonadi::Collection &imapCollection );
 
     QString imapResourceForCollection( Akonadi::Collection::Id id );
+
+    void updateHiddenAttribute( const Akonadi::Collection &imapCollection );
 
   public Q_SLOTS:
     virtual void configure( WId windowId );
@@ -79,13 +82,9 @@ class KolabProxyResource : public Akonadi::ResourceBase,
                               const Akonadi::Collection &source,
                               const Akonadi::Collection &destination );
 
-    void itemCreatedDone( KJob *job );
-    void collectionFetchDone( KJob *job );
     void retrieveItemFetchDone( KJob * );
     void retrieveItemsFetchDone( KJob * );
     void retrieveCollectionsTreeDone( KJob *job );
-    void addImapItem( const Akonadi::Item &item, Akonadi::Entity::Id collectionId );
-    void deleteImapItem( const Akonadi::Item &item );
 
   protected:
     virtual void aboutToQuit();
@@ -126,25 +125,20 @@ class KolabProxyResource : public Akonadi::ResourceBase,
     void updateFreeBusyInformation( const Akonadi::Collection &imapCollection );
 
   private slots:
-    void imapItemCreationResult( KJob *job );
-    void imapItemUpdateFetchResult( KJob *job );
-    void imapItemUpdateResult( KJob *job );
-    void imapItemUpdateCollectionFetchResult( KJob *job );
+    void onItemAddedDone(KJob *job);
+    void onItemChangedDone(KJob *job);
     void imapFolderCreateResult( KJob *job );
     void kolabFolderChangeResult( KJob *job );
+    void checkResult( KJob *job );
 
   private:
+    void showErrorMessage(const QString &);
     void removeFolder( const Akonadi::Collection &imapCollection );
-    KolabHandler::Ptr getHandler(Akonadi::Collection::Id);
-    bool isKolabFolder( const Akonadi::Collection &collection ) const;
-    bool isHandledKolabFolder( const Akonadi::Collection &collection ) const;
-    Kolab::FolderType getFolderType( const Akonadi::Collection &collection ) const;
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
-    QMap<Akonadi::Collection::Id, KolabHandler::Ptr> m_monitoredCollections;
-    QMap<Akonadi::Collection::Id, QString> m_resourceIdentifier;
     QList<Akonadi::Item::Id> m_excludeAppend;
     FreeBusyUpdateHandler *m_freeBusyUpdateHandler;
+    QScopedPointer<HandlerManager> mHandlerManager;
 };
 
 #endif

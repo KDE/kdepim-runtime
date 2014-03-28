@@ -48,17 +48,17 @@ bool Restore::possible()
 {
     Tray::Global global;
     QString dbRestoreAppName;
-    if( global.dbdriver() == "QPSQL" )
-      dbRestoreAppName = "pg_restore";
-    else if( global.dbdriver() == "QMYSQL" )
-      dbRestoreAppName = "mysql";
+    if( global.dbdriver() == QLatin1String("QPSQL") )
+      dbRestoreAppName = QLatin1String("pg_restore");
+    else if( global.dbdriver() == QLatin1String("QMYSQL") )
+      dbRestoreAppName = QLatin1String("mysql");
     else {
       kError() << "Could not find an application to restore the database.";
     }
 
     m_dbRestoreApp = KStandardDirs::findExe( dbRestoreAppName );
-    const QString bzip2 = KStandardDirs::findExe( "bzip2" );
-    const QString tar = KStandardDirs::findExe( "tar" );
+    const QString bzip2 = KStandardDirs::findExe( QLatin1String("bzip2") );
+    const QString tar = KStandardDirs::findExe( QLatin1String("tar") );
     kDebug() << "m_dbRestoreApp:" << m_dbRestoreApp << "bzip2:" << bzip2 << "tar:" << tar;
     return !m_dbRestoreApp.isEmpty() && !bzip2.isEmpty() && !tar.isEmpty();
 }
@@ -73,22 +73,22 @@ void Restore::restore( const KUrl& filename )
     const QString sep = QDir::separator();
 
     /* first create the temp folder. */
-    KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", "akonadi" ) );
+    KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", QLatin1String("akonadi") ) );
     tempDir->setAutoRemove( false );
     kDebug() << "Temp dir: "<< tempDir->name();
 
     /* Extract the nice tar file. */
     KProcess *proc = new KProcess( this );
     QStringList params;
-    params << "-C" << tempDir->name();
-    params << "-xjf";
+    params << QLatin1String("-C") << tempDir->name();
+    params << QLatin1String("-xjf");
     params << filename.toLocalFile();
     proc->setWorkingDirectory( tempDir->name() );
-    proc->setProgram( KStandardDirs::findExe( "tar" ), params );
+    proc->setProgram( KStandardDirs::findExe( QLatin1String("tar") ), params );
     int result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-        kWarning() << "Executed:" << KStandardDirs::findExe( "tar" ) << params << " Result: " << result;
+        kWarning() << "Executed:" << KStandardDirs::findExe( QLatin1String("tar") ) << params << " Result: " << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
@@ -96,7 +96,7 @@ void Restore::restore( const KUrl& filename )
     }
 
     /* Copy over the KDE configuration files. */
-    QDir dir( tempDir->name() + "kdeconfig" + sep );
+    QDir dir( tempDir->name() + QLatin1String("kdeconfig") + sep );
     dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
     QFileInfoList list = dir.entryInfoList();
     const int numberOfElement = list.size();
@@ -110,8 +110,8 @@ void Restore::restore( const KUrl& filename )
     }
 
     /* Copy over the Akonadi configuration files. */
-    const QString akonadiconfigfolder = XdgBaseDirs::findResourceDir( "config", "akonadi" );
-    dir.setPath( tempDir->name() + "akonadiconfig" + sep );
+    const QString akonadiconfigfolder = XdgBaseDirs::findResourceDir( "config", QLatin1String("akonadi") );
+    dir.setPath( tempDir->name() + QLatin1String("akonadiconfig") + sep );
     dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
     list = dir.entryInfoList();
     const int sizeOfList = list.size();
@@ -129,24 +129,24 @@ void Restore::restore( const KUrl& filename )
     proc = new KProcess( this );
     params.clear();
 
-    if( global.dbdriver() == "QPSQL" ) {
+    if( global.dbdriver() == QLatin1String("QPSQL") ) {
       params << global.dboptions()
-             << "--dbname=" + global.dbname()
-             << "--format=custom"
-             << "--clean"
-             << "--no-owner"
-             << "--no-privileges"
-             << tempDir->name() + "db" + sep + "database.sql";
+             << QLatin1String("--dbname=") + global.dbname()
+             << QLatin1String("--format=custom")
+             << QLatin1String("--clean")
+             << QLatin1String("--no-owner")
+             << QLatin1String("--no-privileges")
+             << tempDir->name() + QLatin1String("db") + sep + QLatin1String("database.sql");
     }
-    else if (global.dbdriver() == "QMYSQL" ) {
+    else if (global.dbdriver() == QLatin1String("QMYSQL") ) {
       params << global.dboptions()
-             << "--database=" + global.dbname();
+             << QLatin1String("--database=") + global.dbname();
     }
 
     kDebug() << "Executing:" << m_dbRestoreApp << params;
     ;
     proc->setProgram( KStandardDirs::findExe( m_dbRestoreApp ), params );
-    proc->setStandardInputFile(tempDir->name() + "db" + sep + "database.sql");
+    proc->setStandardInputFile(tempDir->name() + QLatin1String("db") + sep + QLatin1String("database.sql"));
     result = proc->execute();
     delete proc;
     if ( result != 0 ) {
@@ -162,4 +162,3 @@ void Restore::restore( const KUrl& filename )
     emit completed( true );
 }
 
-#include "restore.moc"

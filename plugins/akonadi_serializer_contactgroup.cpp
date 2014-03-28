@@ -119,7 +119,16 @@ void SerializerPluginContactGroup::compare( Akonadi::AbstractDifferencesReporter
   compareList( reporter, i18n( "Member" ), leftJob->contacts(), rightJob->contacts() );
 }
 
+//// GidExtractorInterface
+
+QString SerializerPluginContactGroup::extractGid( const Item &item ) const
+{
+  if ( !item.hasPayload<KABC::ContactGroup>() ) {
+    return QString();
+  }
+  return item.payload<KABC::ContactGroup>().id();
+}
+
 Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
 
-#include "akonadi_serializer_contactgroup.moc"
 // kate: space-indent on; indent-width 2; replace-tabs on;

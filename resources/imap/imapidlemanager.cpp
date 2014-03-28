@@ -49,9 +49,7 @@ ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
 
 ImapIdleManager::~ImapIdleManager()
 {
-  if ( m_idle ) {
-    m_idle->stop();
-  }
+  stop();
   if ( m_pool ) {
     if ( m_sessionRequestId ) {
       m_pool->cancelSessionRequest( m_sessionRequestId );
@@ -59,6 +57,18 @@ ImapIdleManager::~ImapIdleManager()
     if ( m_session ) {
       m_pool->releaseSession( m_session );
     }
+  }
+}
+
+void ImapIdleManager::stop()
+{
+  if ( m_idle ) {
+    m_idle->stop();
+    disconnect(m_idle, 0, this, 0);
+    m_idle = 0;
+  }
+  if ( m_pool ) {
+    disconnect(m_pool, 0, this, 0);
   }
 }
 
@@ -99,6 +109,8 @@ void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *se
   m_idle = new KIMAP::IdleJob( m_session );
   connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*,QString,int,int)),
            this, SLOT(onStatsReceived(KIMAP::IdleJob*,QString,int,int)) );
+  connect( m_idle, SIGNAL(mailBoxMessageFlagsChanged(KIMAP::IdleJob*,qint64)),
+           this, SLOT(onFlagsChanged(KIMAP::IdleJob*)) );
   connect( m_idle, SIGNAL(result(KJob*)),
            this, SLOT(onIdleStopped()) );
   m_idle->start();
@@ -163,6 +175,11 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
   }
 }
 
-#include "imapidlemanager.moc"
+void ImapIdleManager::onFlagsChanged( KIMAP::IdleJob *job )
+{
+  kDebug( 5327 ) << "IDLE flags changed in" << m_session->selectedMailBox();
+  m_resource->synchronizeCollection( m_state->collection().id() );
+}
+
 
 

@@ -40,8 +40,8 @@ SettingsDialog::SettingsDialog( FacebookResource *parentResource, WId parentWind
   KWindowSystem::setMainWindow( this, parentWindow );
   setButtons( Ok|Cancel|User1 );
   setButtonText( User1, i18n( "About" ) );
-  setButtonIcon( User1, KIcon( "help-about" ) );
-  setWindowIcon( KIcon( "facebookresource" ) );
+  setButtonIcon( User1, KIcon( QLatin1String("help-about") ) );
+  setWindowIcon( KIcon( QLatin1String("facebookresource") ) );
   setWindowTitle( i18n( "Facebook Settings" ) );
 
   setupWidgets();
@@ -69,17 +69,17 @@ void SettingsDialog::setupWidgets()
 void SettingsDialog::showAuthenticationDialog()
 {
   QStringList permissions;
-  permissions << "offline_access"
-              << "friends_birthday"
-              << "friends_website"
-              << "friends_location"
-              << "friends_work_history"
-              << "friends_relationships"
-              << "manage_notifications"
-              << "publish_actions"
-              << "read_stream"
-              << "user_events"
-              << "user_notes";
+  permissions << QLatin1String("offline_access")
+              << QLatin1String("friends_birthday")
+              << QLatin1String("friends_website")
+              << QLatin1String("friends_location")
+              << QLatin1String("friends_work_history")
+              << QLatin1String("friends_relationships")
+              << QLatin1String("manage_notifications")
+              << QLatin1String("publish_actions")
+              << QLatin1String("read_stream")
+              << QLatin1String("user_events")
+              << QLatin1String("user_notes");
   KFbAPI::AuthenticationDialog * const authDialog = new KFbAPI::AuthenticationDialog( this );
   authDialog->setAppId( Settings::self()->appID() );
   authDialog->setPermissions( permissions );
@@ -166,6 +166,15 @@ void SettingsDialog::saveSettings()
 {
   mParentResource->setName( nameEdit->text() );
   Settings::self()->setDisplayNotifications( enableNotificationsCheckBox->isChecked() );
+  if ( !Settings::self()->accountId() ) {
+    QStringList services;
+    services << QLatin1String("facebook-contacts")
+            << QLatin1String("facebook-feed")
+            << QLatin1String("facebook-events")
+            << QLatin1String("facebook-notes")
+            << QLatin1String("facebook-notifications");
+    Settings::self()->setAccountServices(services);
+  }
   Settings::self()->writeConfig();
 }
 
@@ -203,7 +212,7 @@ void SettingsDialog::slotButtonClicked( int button )
     aboutData.addCredit( ki18n( "Till Adam" ),
                          ki18n( "MacOS Support" ), "adam@kde.org" );
 
-    aboutData.setProgramIconName( "facebookresource" );
+    aboutData.setProgramIconName( QLatin1String("facebookresource") );
     aboutData.setTranslator( ki18nc( "NAME OF TRANSLATORS", "Your names" ),
                              ki18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
 
@@ -215,4 +224,3 @@ void SettingsDialog::slotButtonClicked( int button )
   }
 }
 
-#include "settingsdialog.moc"

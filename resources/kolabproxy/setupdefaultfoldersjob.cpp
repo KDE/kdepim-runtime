@@ -30,6 +30,8 @@
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
 
+#include <KLocalizedString>
+
 SetupDefaultFoldersJob::SetupDefaultFoldersJob( const Akonadi::AgentInstance &instance,
                                                 QObject *parent )
   : Job( parent ),
@@ -82,7 +84,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
 
   if (!defaultParent.isValid()) {
     setError(KJob::UserDefinedError);
-    setErrorText("Could not find valid parent collection.");
+    setErrorText(i18n("Could not find valid parent collection."));
     emitResult();
   }
   kDebug() << "default parent " << defaultParent.id();
@@ -98,8 +100,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
     Akonadi::CollectionAnnotationsAttribute *attr = 0;
     if ( ( attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>() ) ) {
       folderType =
-        KolabV2::folderTypeFromString(
-          attr->annotations().value( KOLAB_FOLDER_TYPE_ANNOTATION ) );
+        KolabV2::folderTypeFromString( Kolab::getFolderTypeAnnotation( attr->annotations() ) );
     }
     KolabV2::FolderType guessedType = KolabV2::guessFolderTypeFromName( col.name() );
 
@@ -140,10 +141,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
         col.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Entity::AddIfMissing );
 
       QMap<QByteArray, QByteArray> annotations;
-      annotations.insert(
-        KOLAB_FOLDER_TYPE_ANNOTATION,
-        KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
-
+      Kolab::setFolderTypeAnnotation( annotations, KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
       attr->setAnnotations( annotations );
       if ( !iconName.isEmpty() ) {
         Akonadi::EntityDisplayAttribute *attribute =
@@ -160,10 +158,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
         col.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Entity::AddIfMissing );
 
       QMap<QByteArray, QByteArray> annotations;
-      annotations.insert(
-        KOLAB_FOLDER_TYPE_ANNOTATION,
-        KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
-
+      Kolab::setFolderTypeAnnotation( annotations, KolabV2::folderTypeToString( static_cast<KolabV2::FolderType>( i ), true ) );
       attr->setAnnotations( annotations );
       if ( !iconName.isEmpty() ) {
         Akonadi::EntityDisplayAttribute *attribute =
@@ -178,4 +173,3 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
   emitResult();
 }
 
-#include "setupdefaultfoldersjob.moc"

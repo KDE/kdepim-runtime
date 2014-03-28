@@ -19,6 +19,7 @@
 */
 
 #include "notehandler.h"
+#include <akonadi/notes/noteutils.h>
 
 NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection )
   : JournalHandler( imapCollection )
@@ -39,7 +40,7 @@ bool NotesHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imap
     if ( checkForErrors( item.id() ) ) {
       return false;
     }
-    imapItem.setMimeType( "message/rfc822" );
+    imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( msg );
   } else {
     kWarning() << "Payload is not a note!";
@@ -57,7 +58,7 @@ Akonadi::Item::List NotesHandler::translateItems( const Akonadi::Item::List &kol
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-    Akonadi::Item noteItem( "text/x-vnd.akonadi.note" );
+    Akonadi::Item noteItem( QLatin1String("text/x-vnd.akonadi.note") );
     bool ret = noteFromKolab( payload, noteItem );
     if ( checkForErrors( item.id() ) ) {
       continue;
@@ -89,3 +90,15 @@ bool NotesHandler::noteFromKolab( const KMime::Message::Ptr &kolabMsg, Akonadi::
   noteItem.setPayload( reader.getNote() );
   return true;
 }
+
+QString NotesHandler::extractGid(const Akonadi::Item& kolabItem)
+{
+    if ( !kolabItem.hasPayload<KMime::Message::Ptr>() ) {
+      kWarning() << "Payload is not a MessagePtr!";
+      return QString();
+    }
+    const KMime::Message::Ptr payload = kolabItem.payload<KMime::Message::Ptr>();
+    const Akonadi::NoteUtils::NoteMessageWrapper note(payload);
+    return note.uid();
+}
+

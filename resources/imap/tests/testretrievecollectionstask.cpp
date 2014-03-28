@@ -45,6 +45,7 @@ private slots:
     QTest::addColumn<bool>( "isSubscriptionEnabled" );
     QTest::addColumn<bool>( "isDisconnectedModeEnabled" );
     QTest::addColumn<int>( "intervalCheckTime" );
+    QTest::addColumn<QChar>( "separator" );
 
     Akonadi::Collection collection;
 
@@ -79,7 +80,8 @@ private slots:
     intervalCheckTime = -1;
 
     QTest::newRow( "first listing, connected IMAP" ) << expectedCollections << scenario << callNames
-                                                     << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+                                                     << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                     << QChar('/');
 
 
 
@@ -107,7 +109,8 @@ private slots:
     intervalCheckTime = 5;
 
     QTest::newRow( "first listing, disconnected IMAP" ) << expectedCollections << scenario << callNames
-                                                        << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+                                                        << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                        << QChar('/');
 
 
 
@@ -132,7 +135,8 @@ private slots:
     intervalCheckTime = 5;
 
     QTest::newRow( "first listing, spurious INBOX/ (BR: 25342)" ) << expectedCollections << scenario << callNames
-                                                                  << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+                                                                  << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                                  << QChar('/');
 
 
     expectedCollections.clear();
@@ -158,7 +162,8 @@ private slots:
     intervalCheckTime = -1;
 
     QTest::newRow( "auto-insert missing nodes in the tree" ) << expectedCollections << scenario << callNames
-                                                             << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+                                                             << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                             << QChar('/');
 
 
 
@@ -180,7 +185,8 @@ private slots:
 
     QTest::newRow( "auto-insert missing nodes in the tree (reverse order)" )
       << expectedCollections << scenario << callNames
-      << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+      << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+      << QChar('/');
 
 
 
@@ -213,7 +219,8 @@ private slots:
     intervalCheckTime = -1;
 
     QTest::newRow( "subscription enabled" ) << expectedCollections << scenario << callNames
-                                            << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+                                            << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                            << QChar('/');
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
              << "C: A000003 LIST \"\" *"
@@ -237,7 +244,8 @@ private slots:
     intervalCheckTime = -1;
 
     QTest::newRow( "subscription enabled, case insensitive inbox" ) << expectedCollections << scenario << callNames
-                                            << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+                                            << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                            << QChar('/');
 
     expectedCollections.clear();
     expectedCollections << createRootCollection()
@@ -259,7 +267,32 @@ private slots:
     intervalCheckTime = -1;
 
     QTest::newRow( "Noinferiors" ) << expectedCollections << scenario << callNames
-                                                     << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime;
+                                                     << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                     << QChar('/');
+
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 LIST \"\" *"
+             << "S: * LIST ( ) . INBOX"
+             << "S: * LIST ( ) . INBOX.Foo"
+             << "S: * LIST ( ) . INBOX.Bar"
+             << "S: A000003 OK list done";
+    callNames.clear();
+    callNames << "setIdleCollection" << "collectionsRetrieved";
+
+    expectedCollections.clear();
+    expectedCollections << createRootCollection()
+                        << createCollection( ".", "INBOX" )
+                        << createCollection( ".", "INBOX.Foo" )
+                        << createCollection( ".", "INBOX.Bar" );
+    isSubscriptionEnabled = false;
+    isDisconnectedModeEnabled = false;
+    intervalCheckTime = -1;
+
+    QTest::newRow( "non-standard separators" ) << expectedCollections << scenario << callNames
+                                               << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                               << QChar('.');
   }
 
   void shouldListCollections()
@@ -270,6 +303,7 @@ private slots:
     QFETCH( bool, isSubscriptionEnabled );
     QFETCH( bool, isDisconnectedModeEnabled );
     QFETCH( int, intervalCheckTime );
+    QFETCH( QChar, separator );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -289,11 +323,10 @@ private slots:
 
     RetrieveCollectionsTask *task = new RetrieveCollectionsTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
     Akonadi::Collection::List collections;
 
-    QCOMPARE( state->calls().count(), callNames.size() );
+    QTRY_COMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8(state->calls().at( i ).first);
       QVariant parameter = state->calls().at( i ).second;
@@ -310,6 +343,8 @@ private slots:
         collections+= parameter.value<Akonadi::Collection::List>();
       }
     }
+
+    QCOMPARE( state->separatorCharacter(), separator );
 
     QVERIFY( server.isAllScenarioDone() );
     compareCollectionLists( collections, expectedCollections );

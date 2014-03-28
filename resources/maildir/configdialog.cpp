@@ -19,6 +19,7 @@
 
 #include "configdialog.h"
 #include "settings.h"
+#include "resources/folderarchivesettings/folderarchivesettingpage.h"
 
 #include <maildir.h>
 
@@ -29,13 +30,17 @@
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
-ConfigDialog::ConfigDialog( MaildirSettings *settings, QWidget * parent) :
+ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget * parent) :
     KDialog( parent ),
     mSettings( settings ),
     mToplevelIsContainer( false )
 {
   setCaption( i18n( "Select a MailDir folder" ) );
   ui.setupUi( mainWidget() );
+  mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier);
+  mFolderArchiveSettingPage->loadSettings();
+  ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Folder Archive"));
+
   mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
@@ -60,15 +65,14 @@ void ConfigDialog::checkPath()
 
   if ( d.exists() ) {
     Maildir md( d.path() );
-    QString error;
-    if ( !md.isValid( error, false ) ) {
+    if ( !md.isValid( false ) ) {
       Maildir md2( d.path(), true );
       if ( md2.isValid( false ) ) {
         ui.statusLabel->setText( i18n( "The selected path contains valid Maildir folders." ) );
         mToplevelIsContainer = true;
         ok = true;
       } else {
-        ui.statusLabel->setText( error );
+        ui.statusLabel->setText( md.lastError() );
       }
     } else {
       ui.statusLabel->setText( i18n( "The selected path is a valid Maildir." ) );
@@ -89,6 +93,7 @@ void ConfigDialog::checkPath()
 
 void ConfigDialog::save()
 {
+  mFolderArchiveSettingPage->writeSettings();
   mManager->updateSettings();
   QString path = ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path();
   mSettings->setPath( path );
@@ -103,4 +108,3 @@ void ConfigDialog::save()
   }
 }
 
-#include "configdialog.moc"

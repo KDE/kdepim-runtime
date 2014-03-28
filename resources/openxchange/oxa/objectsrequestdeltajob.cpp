@@ -91,4 +91,3 @@ void ObjectsRequestDeltaJob::fetchDeletedJobFinished( KJob *job )
     emitResult();
 }
 
-#include "objectsrequestdeltajob.moc"

@@ -33,9 +33,7 @@
 #include <kwindowsystem.h>
 
 #include <KDebug>
-#include <KMenu>
 #include <KMessageBox>
-#include <KMimeType>
 #include <KLineEdit>
 
 class ResourcesManagementWidget::Private
@@ -53,7 +51,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     d->wantedMimeTypes = args;
     d->ui.setupUi( this );
 
-    d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter( "Resource" );
+    d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter( QLatin1String("Resource") );
     foreach ( const QString& type, d->wantedMimeTypes )
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
     connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
@@ -138,4 +136,3 @@ void ResourcesManagementWidget::removeClicked()
     }
 }
 
-#include "resourcesmanagementwidget.moc"

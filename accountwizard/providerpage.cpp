@@ -173,4 +173,3 @@ void ProviderPage::leavePageNextRequested()
   }
 }
 
-#include "providerpage.moc"

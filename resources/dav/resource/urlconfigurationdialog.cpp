@@ -208,7 +208,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
 
   DavUtils::DavUrl davUrl( fullUrl, protocol() );
   DavCollectionModifyJob *job = new DavCollectionModifyJob( davUrl );
-  job->setProperty( "displayname", newName );
+  job->setProperty( QLatin1String("displayname"), newName );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(onChangeDisplayNameFinished(KJob*)) );
   job->start();
   mUi.discoveredUrls->setEnabled( false );

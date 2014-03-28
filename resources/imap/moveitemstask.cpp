@@ -112,7 +112,10 @@ void MoveItemsTask::triggerCopyJob( KIMAP::Session *session )
   foreach ( const Akonadi::Item &item, items() ) {
     try {
         KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-        m_messageIds.insert( item.id(), msg->messageID()->asUnicodeString().toUtf8() );
+        const QByteArray messageId = msg->messageID()->asUnicodeString().toUtf8();
+        if ( !messageId.isEmpty() ) {
+            m_messageIds.insert( item.id(), messageId );
+        }
 
         set.add( item.remoteId().toLong() );
     } catch ( Akonadi::PayloadException e ) {
@@ -234,9 +237,7 @@ void MoveItemsTask::onSearchDone( KJob *job )
   }
 
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
-
-  if ( search->results().count() == 1 )
-    m_newUids = search->results();
+  m_newUids = search->results();
 
   recordNewUid();
 }
@@ -286,7 +287,7 @@ void MoveItemsTask::recordNewUid()
   // then update the property to the probable next uid to keep the cache in sync.
   // If not something happened in our back, so we don't update and a refetch will
   // happen at some point.
-  if ( m_newUids.last() == oldNextUid ) {
+  if ( !m_newUids.isEmpty() && m_newUids.last() == oldNextUid ) {
     if ( uidAttr == 0 ) {
       uidAttr = new UidNextAttribute( m_newUids.last() + 1 );
       c.addAttribute( uidAttr );
@@ -311,6 +312,5 @@ QList< qint64 > MoveItemsTask::imapSetToList(const KIMAP::ImapSet& set)
 }
 
 
-#include "moveitemstask.moc"
 
 

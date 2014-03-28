@@ -105,6 +105,7 @@ KAlarmDirResource::KAlarmDirResource(const QString& id)
 
 KAlarmDirResource::~KAlarmDirResource()
 {
+    delete mSettings;
 }
 
 void KAlarmDirResource::aboutToQuit()
@@ -765,7 +766,7 @@ void KAlarmDirResource::setNameRights(Collection& c)
     c.setName(display.isEmpty() ? name() : display);
     EntityDisplayAttribute* attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(name());
-    attr->setIconName("kalarm");
+    attr->setIconName(QLatin1String("kalarm"));
     if (mSettings->readOnly())
     {
         c.setRights(Collection::CanChangeCollection);
@@ -1203,12 +1204,11 @@ QString KAlarmDirResource::removeEventFile(const QString& eventId, const QString
 bool isFileValid(const QString& file)
 {
     return !file.isEmpty()
-        &&  !file.startsWith('.')  &&  !file.endsWith('~')
+        &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
         &&  file != QLatin1String(warningFile);
 }
 
 AKONADI_AGENT_FACTORY(KAlarmDirResource, akonadi_kalarm_dir_resource)
 
-#include "kalarmdirresource.moc"
 
 // vim: et sw=4:

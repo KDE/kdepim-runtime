@@ -55,7 +55,7 @@ KAlarmResource::KAlarmResource(const QString& id)
 {
     kDebug() << id;
     KAlarmResourceCommon::initialise(this);
-    initialise(mSettings->alarmTypes(), "kalarm");
+    initialise(mSettings->alarmTypes(), QLatin1String("kalarm"));
     connect(mSettings, SIGNAL(configChanged()), SLOT(settingsChanged()));
 
     // Start a job to fetch the collection attributes
@@ -534,6 +534,5 @@ CollectionFetchJob* KAlarmResource::fetchCollection(const char* slot)
 
 AKONADI_AGENT_FACTORY(KAlarmResource, akonadi_kalarm_resource)
 
-#include "kalarmresource.moc"
 
 // vim: et sw=4:

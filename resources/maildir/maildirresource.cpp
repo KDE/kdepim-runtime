@@ -52,6 +52,8 @@ using namespace Akonadi;
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
+#define CLEANER_TIMEOUT 2*6000
+
 Maildir MaildirResource::maildirForCollection( const Collection& col )
 {
   const QString path = maildirPathForCollection( col );
@@ -140,6 +142,9 @@ MaildirResource::MaildirResource( const QString &id )
   } else {
      synchronizeCollectionTree();
   }
+
+  mChangedCleanerTimer = new QTimer( this );
+  connect( mChangedCleanerTimer, SIGNAL(timeout()), this, SLOT(changedCleaner()) );
 }
 
 void MaildirResource::attemptConfigRestoring( KJob * job )
@@ -238,7 +243,7 @@ void MaildirResource::aboutToQuit()
 
 void MaildirResource::configure( WId windowId )
 {
-  ConfigDialog dlg( mSettings );
+  ConfigDialog dlg( mSettings, identifier() );
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
   dlg.setWindowIcon( KIcon( QLatin1String("message-rfc822") ) );
@@ -266,9 +271,8 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
       return;
     }
     Maildir dir = maildirForCollection( collection );
-    QString errMsg;
-    if ( mSettings->readOnly() || !dir.isValid( errMsg ) ) {
-      cancelTask( errMsg );
+    if ( mSettings->readOnly() || !dir.isValid() ) {
+      cancelTask( dir.lastError() );
       return;
     }
 
@@ -282,6 +286,14 @@ void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Coll
     stopMaildirScan( dir );
 
     const QString rid = dir.addEntry( mail->encodedContent() );
+    mChangedFiles.insert( rid );
+    mChangedCleanerTimer->start( CLEANER_TIMEOUT );
+
+    if ( rid.isEmpty() ) {
+      restartMaildirScan( dir );
+      cancelTask( dir.lastError() );
+      return;
+    }
 
     restartMaildirScan( dir );
 
@@ -318,9 +330,8 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
     }
 
     Maildir dir = maildirForCollection( item.parentCollection() );
-    QString errMsg;
-    if ( !dir.isValid( errMsg ) ) {
-        cancelTask( errMsg );
+    if ( !dir.isValid() ) {
+        cancelTask( dir.lastError() );
         return;
     }
 
@@ -333,7 +344,7 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
         const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
         if ( newKey.isEmpty() ) {
           restartMaildirScan( dir );
-          cancelTask( i18n( "Failed to change the flags for the mail." ) );
+          cancelTask( i18n( "Failed to change the flags for the mail. %1" ).arg( dir.lastError() ) );
           return;
         }
         newItem.setRemoteId( newKey );
@@ -348,13 +359,28 @@ void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteAr
             //only the head has changed, get the current version of the mail
             //replace the head and store the new mail in the file
             const QByteArray currentData = dir.readEntry( newItem.remoteId() );
+            if ( currentData.isEmpty() && !dir.lastError().isEmpty() ) {
+              restartMaildirScan( dir );
+              cancelTask( dir.lastError() );
+              return;
+            }
             const QByteArray newHead = mail->head();
             mail->setContent( currentData );
             mail->setHead( newHead );
             mail->parse();
             data = mail->encodedContent();
           }
-          dir.writeEntry( newItem.remoteId(), data );
+          if ( !dir.writeEntry( newItem.remoteId(), data ) ) {
+            restartMaildirScan( dir );
+            cancelTask( dir.lastError() );
+            return;
+          }
+          mChangedFiles.insert( newItem.remoteId() );
+          mChangedCleanerTimer->start( CLEANER_TIMEOUT );
+        } else {
+            restartMaildirScan( dir );
+            cancelTask( i18n( "Maildir resource got a non-mail content!" ) );
+            return;
         }
       }
 
@@ -379,15 +405,14 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
   }
 
   Maildir sourceDir = maildirForCollection( source );
-  QString errMsg;
-  if ( !sourceDir.isValid( errMsg ) ) {
-    cancelTask( i18n( "Source folder is invalid: '%1'.", errMsg ) );
+  if ( !sourceDir.isValid() ) {
+    cancelTask( i18n( "Source folder is invalid: '%1'.", sourceDir.lastError() ) );
     return;
   }
 
   Maildir destDir = maildirForCollection( destination );
-  if ( !destDir.isValid( errMsg ) ) {
-    cancelTask( i18n( "Destination folder is invalid: '%1'.", errMsg ) );
+  if ( !destDir.isValid() ) {
+    cancelTask( i18n( "Destination folder is invalid: '%1'.", destDir.lastError() ) );
     return;
   }
 
@@ -396,11 +421,14 @@ void MaildirResource::itemMoved( const Item &item, const Collection &source, con
 
   const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
 
+  mChangedFiles.insert( newRid );
+  mChangedCleanerTimer->start( CLEANER_TIMEOUT );
+
   restartMaildirScan( sourceDir );
   restartMaildirScan( destDir );
 
   if ( newRid.isEmpty() ) {
-    cancelTask( i18n( "Could not move message '%1' from '%2' to '%3'.", item.remoteId(), sourceDir.path(), destDir.path() ) );
+    cancelTask( i18n( "Could not move message '%1' from '%2' to '%3'. The error was %4.", item.remoteId(), sourceDir.path(), destDir.path(), sourceDir.lastError() ) );
     return;
   }
 
@@ -463,9 +491,8 @@ Collection::List MaildirResource::listRecursive( const Collection &root, const M
 void MaildirResource::retrieveCollections()
 {
   Maildir dir( mSettings->path(), mSettings->topLevelIsContainer() );
-  QString errMsg;
-  if ( !dir.isValid( errMsg ) ) {
-    emit error( errMsg );
+  if ( !dir.isValid() ) {
+    emit error( dir.lastError() );
     collectionsRetrieved( Collection::List() );
     return;
   }
@@ -673,7 +700,7 @@ bool MaildirResource::ensureDirExists()
 bool MaildirResource::ensureSaneConfiguration()
 {
   if ( mSettings->path().isEmpty() ) {
-    emit status( Broken, i18n( "No usable storage location configured." ) );
+    emit status( NotConfigured, i18n( "No usable storage location configured." ) );
     setOnline( false );
     return false;
   }
@@ -685,7 +712,7 @@ void MaildirResource::slotDirChanged(const QString& dir)
 {
   QFileInfo fileInfo( dir );
   if ( fileInfo.isFile() ) {
-    slotFileChanged( dir );
+    slotFileChanged( fileInfo );
     return;
   }
 
@@ -733,11 +760,14 @@ void MaildirResource::fsWatchDirFetchResult(KJob* job)
   synchronizeCollection( cols.first().id() );
 }
 
-void MaildirResource::slotFileChanged( const QString& fileName )
+void MaildirResource::slotFileChanged( const QFileInfo& fileInfo )
 {
-  QFileInfo fileInfo( fileName );
+  const QString key = fileInfo.fileName();
+  if ( mChangedFiles.contains( key ) ) {
+    mChangedFiles.remove( key );
+    return;
+  }
 
-  QString key = fileInfo.fileName();
   QString path = fileInfo.path();
   if ( path.endsWith( QLatin1String( "/new" ) ) ) {
     path.remove( path.length() - 4, 4 );
@@ -836,4 +866,7 @@ void MaildirResource::restartMaildirScan(const Maildir &maildir)
     mFsWatcher->restartDirScan( path + QLatin1Literal( "/cur" ) );
 }
 
-#include "maildirresource.moc"
+void MaildirResource::changedCleaner()
+{
+    mChangedFiles.clear();
+}

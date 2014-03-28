@@ -20,6 +20,7 @@
 #include "imaptestbase.h"
 
 #include "addcollectiontask.h"
+#include <collectionannotationsattribute.h>
 
 class TestAddCollectionTask : public ImapTestBase
 {
@@ -33,17 +34,16 @@ private slots:
     QTest::addColumn< QList<QByteArray> >( "scenario" );
     QTest::addColumn<QStringList>( "callNames" );
     QTest::addColumn<QString>( "collectionName" );
+    QTest::addColumn<QString>( "remoteId" );
 
     Akonadi::Collection parentCollection;
     Akonadi::Collection collection;
-    QString messageContent;
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    parentCollection = Akonadi::Collection( 1 );
-    parentCollection.setRemoteId( "/INBOX/Foo" );
-    collection = Akonadi::Collection( 2 );
-    collection.setName( "Bar" );
+    parentCollection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection = Akonadi::Collection( 4 );
+    collection.setName( QLatin1String("Bar") );
     collection.setParentCollection( parentCollection );
 
     scenario.clear();
@@ -54,15 +54,14 @@ private slots:
              << "S: A000004 OK subscribe done";
 
     callNames.clear();
-    callNames << "collectionChangeCommitted";
+    callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
 
     QTest::newRow( "trivial case" ) << parentCollection << collection << scenario << callNames
-                                    << collection.name();
+                                    << collection.name() << "/Bar";
 
-    parentCollection = Akonadi::Collection( 1 );
-    parentCollection.setRemoteId( "/INBOX/Foo" );
-    collection = Akonadi::Collection( 2 );
-    collection.setName( "Bar/Baz" );
+    parentCollection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection = Akonadi::Collection( 4 );
+    collection.setName( QLatin1String("Bar/Baz") );
     collection.setParentCollection( parentCollection );
 
     scenario.clear();
@@ -73,10 +72,51 @@ private slots:
              << "S: A000004 OK subscribe done";
 
     callNames.clear();
-    callNames << "collectionChangeCommitted";
+    callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
 
     QTest::newRow( "folder with invalid separator" ) << parentCollection << collection << scenario
-                                                     << callNames << "BarBaz";
+                                                     << callNames << "BarBaz" << "/BarBaz";
+
+    parentCollection = createCollectionChain( QLatin1String(".INBOX") );
+    collection = Akonadi::Collection( 3 );
+    collection.setName ( QLatin1String("Foo") );
+    collection.setParentCollection( parentCollection );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 CREATE \"INBOX.Foo\""
+             << "S: A000003 OK create done"
+             << "C: A000004 SUBSCRIBE \"INBOX.Foo\""
+             << "S: A000004 OK subscribe done";
+    callNames.clear();
+    callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
+
+    QTest::newRow( "folder with non-standard separator") << parentCollection << collection << scenario
+                                                         << callNames << "Foo" << ".Foo";
+
+    parentCollection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection = Akonadi::Collection( 4 );
+    collection.setName( QLatin1String("Bar") );
+    collection.setParentCollection( parentCollection );
+    Akonadi::CollectionAnnotationsAttribute *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>( Akonadi::Collection::AddIfMissing );
+    QMap<QByteArray, QByteArray> annotations;
+    annotations.insert( "/shared/vendor/foobar/foo", "value" );
+    attr->setAnnotations( annotations );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 CREATE \"INBOX/Foo/Bar\""
+             << "S: A000003 OK create done"
+             << "C: A000004 SUBSCRIBE \"INBOX/Foo/Bar\""
+             << "S: A000004 OK subscribe done"
+             << "C: A000005 SETMETADATA \"INBOX/Foo/Bar\" (\"/shared/vendor/foobar/foo\"   {5}\r\nvalue)"
+             << "S: A000005 OK SETMETADATA complete";
+
+    callNames.clear();
+    callNames << QLatin1String("collectionChangeCommitted");
+
+    QTest::newRow( "folder with annotations" ) << parentCollection << collection << scenario << callNames
+                                    << collection.name() << "/Bar";
   }
 
   void shouldCreateAndSubscribe()
@@ -86,6 +126,7 @@ private slots:
     QFETCH( QList<QByteArray>, scenario );
     QFETCH( QStringList, callNames );
     QFETCH( QString, collectionName );
+    QFETCH( QString, remoteId );
 
     FakeServer server;
     server.setScenario( scenario );
@@ -100,28 +141,31 @@ private slots:
     DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
     state->setParentCollection( parentCollection );
     state->setCollection( collection );
+    if (collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>()) {
+      state->setServerCapabilities( QStringList() << "METADATA" );
+    }
     AddCollectionTask *task = new AddCollectionTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
-    QCOMPARE( state->calls().count(), callNames.size() );
+    QTRY_COMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8( state->calls().at( i ).first );
       QVariant parameter = state->calls().at( i ).second;
 
-      if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
+      if ( command==QLatin1String("cancelTask") && callNames[i]!=QLatin1String("cancelTask") ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 
-      if ( command == "collectionChangeCommitted" ) {
+      if ( command == QLatin1String("collectionChangeCommitted") ) {
         QCOMPARE( parameter.value<Akonadi::Collection>().name(), collectionName );
         QCOMPARE( parameter.value<Akonadi::Collection>().remoteId().right( collectionName.length() ),
                   collectionName );
+        QCOMPARE( parameter.value<Akonadi::Collection>().remoteId(), remoteId );
       }
 
       QCOMPARE( command, callNames[i] );
 
-      if ( command == "cancelTask" ) {
+      if ( command == QLatin1String("cancelTask") ) {
         QVERIFY( !parameter.toString().isEmpty() );
       }
     }

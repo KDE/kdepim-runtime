@@ -69,4 +69,3 @@ void QMLListSelectionModel::clearSelection()
   emit selectionChanged();
 }
 
-#include "qmllistselectionmodel.moc"

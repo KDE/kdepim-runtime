@@ -33,7 +33,6 @@ class QKeyEvent;
 class QStandardItemModel;
 class QStandardItem;
 
-class KDescendantsProxyModel;
 class KLineEdit;
 class QCheckBox;
 class ImapAccount;
@@ -95,12 +94,15 @@ private slots:
   void onItemChanged( QStandardItem *item );
   void onMobileLineEditChanged( const QString &text );
 
+  void slotSearchPattern(const QString &pattern);
 protected:
   /* reimp */ void keyPressEvent( QKeyEvent *event );
 
 protected slots:
   void slotButtonClicked( int button );
 private:
+  void readConfig();
+  void writeConfig();
   void applyChanges();
 
   KIMAP::Session *m_session;

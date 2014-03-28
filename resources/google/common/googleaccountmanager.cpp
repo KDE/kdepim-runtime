@@ -241,4 +241,3 @@ AccountsList GoogleAccountManager::listAccounts() const
     return m_accounts.values();
 }
 
-#include "googleaccountmanager.moc"

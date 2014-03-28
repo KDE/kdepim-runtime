@@ -58,7 +58,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     void migrate()
     {
-      const QString kresCfgFile = KStandardDirs::locateLocal( "config", QString( "kresources/%1/stdrc" ).arg( mType ) );
+      const QString kresCfgFile = KStandardDirs::locateLocal( "config", QString::fromLatin1( "kresources/%1/stdrc" ).arg( mType ) );
       mConfig = new KConfig( kresCfgFile );
       const KConfigGroup generalGroup( mConfig, QLatin1String( "General" ) );
       mUnknownTypeResources = QSet<QString>::fromList( generalGroup.readEntry( QLatin1String( "ResourceKeys" ), QStringList() ) );
@@ -80,14 +80,14 @@ template <typename T> class KResMigrator : public KResMigratorBase
     {
       while ( mIt != mResourcesToMigrate.constEnd() ) {
         mUnknownTypeResources.remove( ( *mIt )->identifier() );
-        if ( ( *mIt )->type() == "akonadi" ) {
+        if ( ( *mIt )->type() == QLatin1String("akonadi") ) {
           mClientBridgeIdentifier = ( *mIt )->identifier();
           mClientBridgeFound = true;
           emit message( Skip, i18n( "Client-side bridge already set up." ) );
           ++mIt;
           continue;
         }
-        KConfigGroup cfg( KGlobal::config(), "Resource " + ( *mIt )->identifier() );
+        //KConfigGroup cfg( KGlobal::config(), QLatin1String("Resource ") + ( *mIt )->identifier() );
         kDebug() << "migrateNext:" << ( *mIt )->identifier();
         if ( migrationState( ( *mIt )->identifier() ) == None ) {
           emit message( Info, i18n( "Trying to migrate '%1'...", ( *mIt )->resourceName() ) );
@@ -96,7 +96,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           mCurrentKResource = res;
           ++mIt;
 
-          if ( res->type() == "imap" ) {
+          if ( res->type() == QLatin1String("imap") ) {
             createKolabResource( res->identifier(), res->resourceName() );
           } else {
             bool nativeAvailable = mBridgeOnly ? false : migrateResource( res );
@@ -142,7 +142,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         return;
       }
       const QString resId = mPendingBridgedResources.takeFirst();
-      KConfigGroup resMigrationCfg( KGlobal::config(), "Resource " + resId );
+      KConfigGroup resMigrationCfg( KGlobal::config(), QLatin1String("Resource ") + resId );
       const QString akoResId = resMigrationCfg.readEntry( "ResourceIdentifier", "" );
       if ( akoResId.isEmpty() ) {
         mUnknownTypeResources.remove( resId );
@@ -151,7 +151,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
         return;
       }
 
-      const QString bridgedCfgFile = KStandardDirs::locateLocal( "config", QString( "%1rc" ).arg( akoResId ) );
+      const QString bridgedCfgFile = KStandardDirs::locateLocal( "config", QString::fromLatin1( "%1rc" ).arg( akoResId ) );
       kDebug() << bridgedCfgFile;
       if ( !QFile::exists( bridgedCfgFile ) ) {
           emit message( Info, i18n( "Bridged resource %1 does not exist anymore, trying a direct migration", akoResId ) );
@@ -170,6 +170,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
           return;
       }
       mUnknownTypeResources.remove( resId );
+      delete mConfig;
       mConfig = new KConfig( bridgedCfgFile );
 
       mBridgeManager = new KRES::Manager<T>( mType );
@@ -218,7 +219,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
 
     KConfigGroup kresConfig( KRES::Resource* res ) const
     {
-      return KConfigGroup( mConfig, "Resource_" + res->identifier() );
+      return KConfigGroup( mConfig, QLatin1String("Resource_") + res->identifier() );
     }
 
     T* currentResource()
@@ -261,7 +262,7 @@ template <typename T> class KResMigrator : public KResMigratorBase
       if ( !mOmitClientBridge ) {
         if ( !mClientBridgeFound ) {
           emit message( Info, i18n( "Setting up client-side bridge..." ) );
-          T* clientBridge = mManager->createResource( "akonadi" );
+          T* clientBridge = mManager->createResource( QLatin1String("akonadi") );
           if ( clientBridge ) {
             mClientBridgeIdentifier = clientBridge->identifier();
             clientBridge->setResourceName( i18n( "Akonadi Compatibility Resource" ) );
@@ -274,8 +275,8 @@ template <typename T> class KResMigrator : public KResMigratorBase
         }
 
         mManager->writeConfig();
-        const QString keyName( "DefaultAkonadiResourceIdentifier" );
-        KConfigGroup clientBridgeConfig( mConfig, "Resource_" + mClientBridgeIdentifier );
+        const QString keyName( QLatin1String("DefaultAkonadiResourceIdentifier") );
+        KConfigGroup clientBridgeConfig( mConfig, QLatin1String("Resource_") + mClientBridgeIdentifier );
         if ( !clientBridgeConfig.hasKey( keyName ) &&
             !mAgentForOldDefaultResource.isEmpty() ) {
           clientBridgeConfig.writeEntry( keyName, mAgentForOldDefaultResource );

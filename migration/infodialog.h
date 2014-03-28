@@ -21,6 +21,7 @@
 #define INFODIALOG_H
 
 #include "kmigratorbase.h"
+#include "migratorbase.h"
 
 #include <KDialog>
 
@@ -37,6 +38,7 @@ class InfoDialog : public KDialog
 
   public slots:
     void message( KMigratorBase::MessageType type, const QString &msg );
+    void message( MigratorBase::MessageType type, const QString &msg );
 
     void migratorAdded();
     void migratorDone();

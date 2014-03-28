@@ -54,7 +54,7 @@ void LoadPage::enterPageNext()
   }
   ui.statusLabel->setText( i18n( "Loading script '%1'...", Global::assistantBasePath() + scriptFile ) );
 
-  m_action = new Kross::Action( this, "AccountWizard" );
+  m_action = new Kross::Action( this, QLatin1String("AccountWizard") );
   typedef QPair<QObject*, QString> ObjectStringPair;
   foreach ( const ObjectStringPair &exportedObject, m_exportedObjects )
     m_action->addQObject( exportedObject.first, exportedObject.second );
@@ -86,4 +86,3 @@ void LoadPage::exportObject(QObject* object, const QString& name)
 }
 
 
-#include "loadpage.moc"

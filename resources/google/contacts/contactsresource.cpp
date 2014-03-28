@@ -26,6 +26,7 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/LinkJob>
 #include <Akonadi/UnlinkJob>
+#include <Akonadi/CachePolicy>
 
 #include <KABC/Addressee>
 #include <KABC/Picture>
@@ -79,7 +80,7 @@ int ContactsResource::runConfigurationDialog( WId windowId )
 {
 
    QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( accountManager(), windowId, this ) );
-   settingsDialog->setWindowIcon( KIcon( "im-google" ) );
+   settingsDialog->setWindowIcon( KIcon( QLatin1String("im-google") ) );
 
    return settingsDialog->exec();
 }
@@ -93,7 +94,8 @@ void ContactsResource::updateResourceName()
 QList< QUrl > ContactsResource::scopes() const
 {
     QList< QUrl > scopes;
-    scopes << Account::contactsScopeUrl();
+    scopes << Account::contactsScopeUrl()
+           << Account::accountInfoScopeUrl();
     return scopes;
 }
 
@@ -129,9 +131,9 @@ void ContactsResource::retrieveContactsPhotos( const QVariant &arguments )
     }
 
     const QVariantMap map = arguments.toMap();
-    const Collection collection = map[ "collection" ].value<Collection>();
+    const Collection collection = map[ QLatin1String("collection") ].value<Collection>();
     ItemFetchJob *itemFetchJob = new ItemFetchJob( collection, this );
-    itemFetchJob->setProperty( "modifiedItems", map[ "modifiedItems" ] );
+    itemFetchJob->setProperty( "modifiedItems", map[ QLatin1String("modifiedItems") ] );
     itemFetchJob->fetchScope().fetchFullPayload(true);
     connect( itemFetchJob, SIGNAL(finished(KJob*)),
              this, SLOT(slotUpdatePhotosItemsRetrieved(KJob*)) );
@@ -341,12 +343,19 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     ContactsGroupFetchJob *fetchJob = qobject_cast<ContactsGroupFetchJob *>( job );
     const ObjectsList objects = fetchJob->items();
 
+    CachePolicy cachePolicy;
+    if ( Settings::self()->enableIntervalCheck() ) {
+        cachePolicy.setInheritFromParent( false );
+        cachePolicy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+    }
+
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::virtualMimeType()
                                                         << KABC::Addressee::mimeType() );
     m_rootCollection.setRemoteId( MYCONTACTS_REMOTEID );
     m_rootCollection.setName( fetchJob->account()->accountName() );
-    m_rootCollection.setParent( Collection::root() );
+    m_rootCollection.setParentCollection( Collection::root() );
+    m_rootCollection.setCachePolicy( cachePolicy );
     m_rootCollection.setRights( Collection::CanCreateCollection |
                                 Collection::CanCreateItem |
                                 Collection::CanChangeItem |
@@ -383,7 +392,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
         collection.setName( group->title() );
-        collection.setParent( m_rootCollection );
+        collection.setParentCollection( m_rootCollection );
         collection.setRights( Collection::CanLinkItem |
                               Collection::CanUnlinkItem |
                               Collection::CanChangeItem );
@@ -397,7 +406,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( realName );
-        attr->setIconName( "view-pim-contacts" );
+        attr->setIconName( QLatin1String("view-pim-contacts") );
 
         m_collections[ collection.remoteId() ] = collection;
     }
@@ -405,7 +414,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     Collection otherCollection;
     otherCollection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
     otherCollection.setName( i18n( "Other Contacts" ) );
-    otherCollection.setParent( m_rootCollection );
+    otherCollection.setParentCollection( m_rootCollection );
     otherCollection.setRights( Collection::CanCreateItem |
                                Collection::CanChangeItem |
                                Collection::CanDeleteItem );
@@ -413,7 +422,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
     attr = otherCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
     attr->setDisplayName( i18n( "Other Contacts" ) );
-    attr->setIconName( "view-pim-contacts" );
+    attr->setIconName( QLatin1String("view-pim-contacts") );
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
     collectionsRetrieved( m_collections.values() );
@@ -471,8 +480,8 @@ void ContactsResource::slotItemsRetrieved( KGAPI2::Job *job )
     }
 
     QVariantMap map;
-    map["collection"] = QVariant::fromValue(collection);
-    map["modifiedItems"] = QVariant::fromValue(changedPhotos);
+    map[QLatin1String("collection")] = QVariant::fromValue(collection);
+    map[QLatin1String("modifiedItems")] = QVariant::fromValue(changedPhotos);
     scheduleCustomTask( this, "retrieveContactsPhotos", map );
 
     collection.setRemoteRevision( QString::number( KDateTime::currentUtcDateTime().toTime_t() ) );
@@ -554,7 +563,7 @@ void ContactsResource::slotCreateJobFinished( KGAPI2::Job* job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( group->title() );
-        attr->setIconName( "view-pim-contacts" );
+        attr->setIconName( QLatin1String("view-pim-contacts") );
 
         m_collections[ collection.remoteId() ] = collection;
 

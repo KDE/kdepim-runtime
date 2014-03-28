@@ -78,4 +78,3 @@ Test* Test::instance()
 }
 
 
-#include "test.moc"

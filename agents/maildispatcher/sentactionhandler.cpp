@@ -68,4 +68,3 @@ void SentActionHandler::itemFetchResult( KJob *job )
   modifyJob->setIgnorePayload( true );
 }
 
-#include "sentactionhandler.moc"

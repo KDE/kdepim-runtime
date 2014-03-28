@@ -31,7 +31,7 @@
 #include <akonadi/agentmanager.h>
 #include <akonadi/collection.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QQueue>
 
@@ -101,8 +101,8 @@ void ImapCacheAdapter::Private::createResourceResult( KJob *job )
   AgentInstance instance = createJob->instance();
 
   OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
-    "org.freedesktop.Akonadi.Resource." + instance.identifier(),
-    "/Settings", QDBusConnection::sessionBus(), q );
+    QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+    QLatin1String("/Settings"), QDBusConnection::sessionBus(), q );
 
   if ( !iface->isValid() ) {
     kError() << "Failed to obtain D-Bus interface for remote configuration of local cache adapter resource" << instance.identifier();
@@ -163,6 +163,6 @@ void ImapCacheAdapter::start()
   d->processNextCollection();
 }
 
-#include "imapcacheadapter.moc"
+#include "moc_imapcacheadapter.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

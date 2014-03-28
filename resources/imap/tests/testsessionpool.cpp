@@ -39,7 +39,6 @@ private slots:
     DummyPasswordRequester *requester = 0;
     QList<QByteArray> scenario;
     QString password;
-    int errorCode = SessionPool::NoError;
     QStringList capabilities;
 
     account = createDefaultAccount();
@@ -55,7 +54,7 @@ private slots:
              << "S: * NAMESPACE ( (\"INBOX/\" \"/\") ) ( (\"user/\" \"/\") ) ( (\"\" \"/\") )"
              << "S: A000003 OK Completed";
     password = "foobar";
-    errorCode = SessionPool::NoError;
+    int errorCode = SessionPool::NoError;
     capabilities.clear();
     capabilities << "IMAP4" << "IMAP4REV1" << "NAMESPACE" << "UIDPLUS" << "IDLE";
     QTest::newRow( "normal case" ) << account << requester << scenario

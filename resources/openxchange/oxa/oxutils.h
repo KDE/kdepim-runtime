@@ -26,7 +26,6 @@
 #include <QtCore/QStringList>
 #include <QtCore/QDateTime>
 
-class KDateTime;
 
 namespace OXA {
 

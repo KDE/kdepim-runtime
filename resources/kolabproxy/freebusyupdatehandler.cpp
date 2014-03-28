@@ -20,7 +20,7 @@
 #include "freebusyupdatehandler.h"
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KPassivePopup>
 #include <KIO/Job>
 
@@ -55,12 +55,12 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
 
   // IMAP path is either /INBOX/<path> or /user/someone/<path>
   //FIXME this assumption is no longer true. Kolabfolders can also be toplevel.
-  if ( !path.startsWith( '/' ) ) {
+  if ( !path.startsWith( QLatin1Char('/') ) ) {
     //The path separator can i.e. also be '.' on a different imap server
     kWarning() << "Unsupported path separator";
     return;
   }
-  const int secondSlash = path.indexOf( '/', 1 );
+  const int secondSlash = path.indexOf( QLatin1Char('/'), 1 );
   if ( secondSlash == -1 ) {
     kWarning() << "path is too short: " << path;
     return;
@@ -76,10 +76,10 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
     path = path.mid( secondSlash );
   }
 
-  if ( path.startsWith( '/' ) ) {
-    httpUrl.setPath( "/freebusy/trigger" + path + ".pfb" );
+  if ( path.startsWith( QLatin1Char('/') ) ) {
+    httpUrl.setPath( QLatin1String("/freebusy/trigger") + path + QLatin1String(".pfb") );
   } else {
-    httpUrl.setPath( "/freebusy/trigger/" + path + ".pfb" );
+    httpUrl.setPath( QLatin1String("/freebusy/trigger/") + path + QLatin1String(".pfb") );
   }
 
   mUrls.insert( httpUrl );

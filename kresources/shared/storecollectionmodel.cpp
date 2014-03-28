@@ -87,6 +87,5 @@ StoreCollectionModel::StoreItemsByCollection StoreCollectionModel::storeMapping(
   return mStoreMapping;
 }
 
-#include "storecollectionmodel.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

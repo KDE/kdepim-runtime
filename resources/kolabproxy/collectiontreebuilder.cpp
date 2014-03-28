@@ -45,6 +45,7 @@ void CollectionTreeBuilder::collectionsReceived( const Akonadi::Collection::List
     if ( collection.resource() == resource()->identifier() ) {
       continue;
     }
+    resource()->updateHiddenAttribute( collection );
     if ( resource()->registerHandlerForCollection( collection ) ) {
       m_kolabCollections.append( collection );
     }
@@ -100,4 +101,3 @@ void CollectionTreeBuilder::collectionFetchResult( KJob *job )
   emitResult(); // error handling already done by Akonadi::Job
 }
 
-#include "collectiontreebuilder.moc"

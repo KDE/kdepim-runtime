@@ -38,8 +38,7 @@ private slots:
     QString message;
     QList<QByteArray> scenario;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
     item.setRemoteId( "42" );
@@ -91,9 +90,8 @@ private slots:
     state->setItem( item );
     RetrieveItemTask *task = new RetrieveItemTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
-    QCOMPARE( state->calls().count(), 1 );
+    QTRY_COMPARE( state->calls().count(), 1 );
 
     QString command = QString::fromUtf8(state->calls().first().first);
     if ( command == "cancelTask" && callName != "cancelTask" ) {

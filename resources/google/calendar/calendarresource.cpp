@@ -27,22 +27,13 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/ItemSearchJob>
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
-
-#include <Soprano/Vocabulary/NAO>
-#include <Nepomuk2/Vocabulary/NIE>
-#include <Nepomuk2/Vocabulary/NCAL>
-#include <Nepomuk2/Query/Query>
-#include <Nepomuk2/Query/AndTerm>
-#include <Nepomuk2/Query/ComparisonTerm>
-#include <Nepomuk2/Query/LiteralTerm>
-#include <Nepomuk2/Query/ResourceTypeTerm>
-#include <Nepomuk2/Query/ResourceTerm>
+#include <Akonadi/CachePolicy>
 
 #include <KCalCore/Calendar>
 
 #include <KDE/KLocalizedString>
+#include <KDE/KLocale>
 #include <KDE/KDialog>
 
 #include <LibKGAPI2/Calendar/Calendar>
@@ -70,7 +61,7 @@
 
 #include <LibKGAPI2/Account>
 
-#define ROOT_COLLECTION_REMOTEID "RootCollection"
+#define ROOT_COLLECTION_REMOTEID QLatin1String("RootCollection")
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
 #define TASK_PROPERTY "_KGAPI2::TaskPtr"
 
@@ -84,7 +75,7 @@ CalendarResource::CalendarResource( const QString &id ):
     GoogleResource( id )
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
-    KGlobal::locale()->insertCatalog( "akonadi_google_resource" );
+    KGlobal::locale()->insertCatalog( QLatin1String("akonadi_google_resource") );
     updateResourceName();
 }
 
@@ -100,7 +91,7 @@ GoogleSettings *CalendarResource::settings() const
 int CalendarResource::runConfigurationDialog( WId windowId )
 {
    QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( accountManager(), windowId, this ) );
-   settingsDialog->setWindowIcon( KIcon( "im-google" ) );
+   settingsDialog->setWindowIcon( KIcon( QLatin1String("im-google") ) );
 
    return settingsDialog->exec();
 }
@@ -202,22 +193,14 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
         ktodo->setUid( QLatin1String("") );
 
         if ( !ktodo->relatedTo( KCalCore::Incidence::RelTypeParent ).isEmpty() ) {
-            Nepomuk2::Query::Query query;
-            const Nepomuk2::Types::Class cl( Nepomuk2::Vocabulary::NCAL::Todo() );
-            const Nepomuk2::Query::ResourceTypeTerm typeTerm( cl );
-            const Nepomuk2::Query::Query::RequestProperty itemIdProperty (
-                ItemSearchJob::akonadiItemIdUri(), false );
-            const Nepomuk2::Query::ComparisonTerm term(
-                Nepomuk2::Vocabulary::NCAL::uid(),
-                Nepomuk2::Query::LiteralTerm( ktodo->relatedTo( KCalCore::Incidence::RelTypeParent ) ) );
+            Akonadi::Item parentItem;
+            parentItem.setGid( ktodo->relatedTo( KCalCore::Incidence::RelTypeParent ) );
 
-            query.setTerm( term );
-            query.addRequestProperty( itemIdProperty );
+            ItemFetchJob *fetchJob = new ItemFetchJob( parentItem, this );
+            fetchJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
+            fetchJob->setProperty( TASK_PROPERTY, QVariant::fromValue( ktodo ) );
 
-            ItemSearchJob *searchJob = new ItemSearchJob( query.toSparqlQuery(), this );
-            searchJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-            searchJob->setProperty( TASK_PROPERTY, QVariant::fromValue( ktodo ) );
-            connect( searchJob, SIGNAL(finished(KJob*)),
+            connect( fetchJob, SIGNAL(finished(KJob*)),
                      this, SLOT(slotTaskAddedSearchFinished(KJob*)) );
             return;
         } else {
@@ -361,29 +344,18 @@ void CalendarResource::collectionChanged( const Collection &collection )
         return;
     }
 
-    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-
     KGAPI2::Job *job;
     if ( collection.contentMimeTypes().contains( KCalCore::Event::eventMimeType() ) ) {
         CalendarPtr calendar( new Calendar() );
         calendar->setUid( collection.remoteId() );
-        if ( attr ) {
-            calendar->setTitle( attr->displayName() );
-        } else {
-            calendar->setTitle( collection.name() );
-        }
+        calendar->setTitle( collection.displayName() );
         calendar->setEditable( true );
         job = new CalendarModifyJob( calendar, account(), this );
 
     } if ( collection.contentMimeTypes().contains( KCalCore::Todo::todoMimeType() ) ) {
         TaskListPtr taskList( new TaskList() );
         taskList->setUid( collection.remoteId() );
-        if ( attr ) {
-            taskList->setTitle( attr->displayName() );
-        } else {
-            taskList->setTitle( collection.name() );
-        }
-
+        taskList->setTitle( collection.displayName() );
         job = new TaskListModifyJob( taskList, account(), this );
     } else {
         cancelTask( i18n( "Unknown collection mimetype" ) );
@@ -445,12 +417,19 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     ObjectsList calendars = fetchJob->property( CALENDARS_PROPERTY ).value<ObjectsList>();
     ObjectsList taskLists = fetchJob->items();
 
+    CachePolicy cachePolicy;
+    if ( Settings::self()->enableIntervalCheck() ) {
+        cachePolicy.setInheritFromParent( false );
+        cachePolicy.setIntervalCheckTime( Settings::self()->intervalCheckTime() );
+    }
+
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
     m_rootCollection.setRemoteId( ROOT_COLLECTION_REMOTEID );
     m_rootCollection.setName( fetchJob->account()->accountName() );
-    m_rootCollection.setParent( Collection::root() );
+    m_rootCollection.setParentCollection( Collection::root() );
     m_rootCollection.setRights( Collection::CanCreateCollection );
+    m_rootCollection.setCachePolicy( cachePolicy );
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
     attr->setDisplayName( fetchJob->account()->accountName() );
@@ -468,8 +447,8 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Event::eventMimeType() );
-        collection.setName( calendar->title() );
-        collection.setParent( m_rootCollection );
+        collection.setName( calendar->uid() );
+        collection.setParentCollection( m_rootCollection );
         collection.setRemoteId( calendar->uid() );
         if ( calendar->editable() ) {
             collection.setRights( Collection::CanChangeCollection |
@@ -482,7 +461,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( calendar->title() );
-        attr->setIconName( "view-calendar" );
+        attr->setIconName( QLatin1String("view-calendar") );
 
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>( Entity::AddIfMissing );
         reminderAttr->setReminders( calendar->defaultReminders() );
@@ -506,8 +485,8 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KCalCore::Todo::todoMimeType() );
-        collection.setName( taskList->title() );
-        collection.setParent( m_rootCollection );
+        collection.setName( taskList->uid() );
+        collection.setParentCollection( m_rootCollection );
         collection.setRemoteId( taskList->uid() );
         collection.setRights( Collection::CanChangeCollection |
                               Collection::CanCreateItem |
@@ -516,7 +495,7 @@ void CalendarResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( taskList->title() );
-        attr->setIconName( "view-pim-tasks" );
+        attr->setIconName( QLatin1String("view-pim-tasks") );
 
         m_collections[ collection.remoteId() ] = collection;
     }
@@ -718,12 +697,12 @@ void CalendarResource::slotDoRemoveTask( KJob *job )
 
 void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
 {
-    ItemSearchJob *searchJob = qobject_cast<ItemSearchJob*>( job );
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
     Item item = job->property( ITEM_PROPERTY ).value<Item>();
     TaskPtr task = job->property( TASK_PROPERTY ).value<TaskPtr>();
 
-    Item::List items = searchJob->items();
-    kDebug() << "Query returned" << items.count() << "results";
+    Item::List items = fetchJob->items();
+    kDebug() << "Parent query returned" << items.count() << "results";
 
     const QString tasksListId = item.parentCollection().remoteId();
 
@@ -733,13 +712,13 @@ void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
     }
 
     KGAPI2::Job *newJob;
-    // The parent is not in Nepomuk, so give up and just store the item in Google
+    // The parent is not known, so give up and just store the item in Google
     // without the information about parent.
     if ( items.count() == 0 ) {
         task->setRelatedTo( QString(), KCalCore::Incidence::RelTypeParent );
         newJob = new TaskCreateJob( task, tasksListId, account(), this );
     } else {
-        const Item matchedItem = items.first();
+        Item matchedItem = items.first();
 
         task->setRelatedTo( matchedItem.remoteId(), KCalCore::Incidence::RelTypeParent );
         TaskCreateJob *createJob = new TaskCreateJob( task, tasksListId, account(), this );
@@ -769,6 +748,7 @@ void CalendarResource::slotCreateJobFinished( KGAPI2::Job *job )
         EventPtr event = objects.first().dynamicCast<Event>();
         item.setRemoteId( event->uid() );
         item.setRemoteRevision( event->etag() );
+        item.setGid( event->uid() );
         changeCommitted( item );
         item.setPayload<KCalCore::Event::Ptr>( event.dynamicCast<KCalCore::Event>() );
         new ItemModifyJob( item, this );
@@ -776,10 +756,11 @@ void CalendarResource::slotCreateJobFinished( KGAPI2::Job *job )
         TaskPtr task = objects.first().dynamicCast<Task>();
         item.setRemoteId( task->uid() );
         item.setRemoteRevision( task->etag() );
+        item.setGid( task->uid() );
         changeCommitted( item );
         item.setPayload<KCalCore::Todo::Ptr>( task.dynamicCast<KCalCore::Todo>() );
         new ItemModifyJob( item, this );
     }
 }
 
-AKONADI_RESOURCE_MAIN( CalendarResource );
+AKONADI_RESOURCE_MAIN( CalendarResource )

@@ -111,7 +111,7 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         if ( !addrList.isEmpty() )
           parseAddrList( addrList, msg->from(), version, m_stringPool );
         // sender
-        ImapParser::parseParenthesizedList( env[2], addrList );
+        ImapParser::parseParenthesizedList( env[3], addrList );
         if ( !addrList.isEmpty() )
           parseAddrList( addrList, msg->sender(), version, m_stringPool );
         // reply-to
@@ -220,6 +220,17 @@ QSet<QByteArray> SerializerPluginMail::parts( const Item &item ) const
   return set;
 }
 
+QString SerializerPluginMail::extractGid(const Item& item) const
+{
+  if (!item.hasPayload<KMime::Message::Ptr>())
+    return QString();
+  const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+  KMime::Headers::MessageID *mid = msg->messageID( false );
+  if (mid)
+    return mid->asUnicodeString();
+  return QString();
+}
+
 Q_EXPORT_PLUGIN2( akonadi_serializer_mail, SerializerPluginMail )
 
-#include "akonadi_serializer_mail.moc"
+#include "moc_akonadi_serializer_mail.cpp"

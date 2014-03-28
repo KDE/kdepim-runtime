@@ -83,4 +83,3 @@ void FolderRequestJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "folderrequestjob.moc"

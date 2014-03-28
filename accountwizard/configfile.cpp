@@ -21,7 +21,7 @@
 
 #include <KConfig>
 #include <KConfigGroup>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KStringHandler>
 
 ConfigFile::ConfigFile( const QString & configName, QObject *parent )
@@ -89,4 +89,3 @@ void ConfigFile::setPassword(const QString& group, const QString& key, const QSt
 }
 
 
-#include "configfile.moc"

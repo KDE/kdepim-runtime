@@ -28,6 +28,7 @@
 #include <kio/jobuidelegate.h>
 #include <KDebug>
 #include <KDirWatch>
+#include <KLocalizedString>
 #include <KLocale>
 #include <KStandardDirs>
 
@@ -50,12 +51,12 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   connect( KDirWatch::self(), SIGNAL(dirty(QString)), SLOT(fileChanged(QString)) );
   connect( KDirWatch::self(), SIGNAL(created(QString)), SLOT(fileChanged(QString)) );
 
-  KGlobal::locale()->insertCatalog( "akonadi_singlefile_resource" );
+  KGlobal::locale()->insertCatalog( QLatin1String("akonadi_singlefile_resource") );
 }
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
 {
-  return KSharedConfig::openConfig( name() + "rc", KConfig::SimpleConfig, "cache" );
+  return KSharedConfig::openConfig( name() + QLatin1String("rc"), KConfig::SimpleConfig, "cache" );
 }
 
 bool SingleFileResourceBase::readLocalFile( const QString &fileName )
@@ -110,7 +111,7 @@ void SingleFileResourceBase::setLocalFileName( const QString &fileName )
 
 QString SingleFileResourceBase::cacheFile() const
 {
-  return KStandardDirs::locateLocal( "cache", "akonadi/" + identifier() );
+  return KStandardDirs::locateLocal( "cache", QLatin1String("akonadi/") + identifier() );
 }
 
 QByteArray SingleFileResourceBase::calculateHash( const QString &fileName ) const
@@ -215,7 +216,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     int i = 0;
     do {
       lostFoundFileName = KStandardDirs::locateLocal( "data", identifier() + QDir::separator()
-          + prevUrl.fileName() + '-' + QString::number( ++i ) );
+          + prevUrl.fileName() + QLatin1Char('-') + QString::number( ++i ) );
     } while ( KStandardDirs::exists( lostFoundFileName ) );
 
     // create the directory if it doesn't exist yet
@@ -277,4 +278,3 @@ void SingleFileResourceBase::slotUploadJobResult( KJob *job )
   emit status( Idle, i18nc( "@info:status", "Ready" ) );
 }
 
-#include "singlefileresourcebase.moc"

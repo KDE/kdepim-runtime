@@ -45,8 +45,7 @@ private slots:
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.addAttribute( new UidNextAttribute( 65 ) );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
@@ -78,8 +77,7 @@ private slots:
     QTest::newRow( "modifying mail content" ) << item << parts << scenario << callNames;
 
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.addAttribute( new UidNextAttribute( 65 ) );
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
@@ -114,8 +112,7 @@ private slots:
     QTest::newRow( "modifying mail content, no APPENDUID, message has Message-ID" ) << item << parts << scenario << callNames;
 
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.addAttribute( new UidNextAttribute( 65 ));
     item = Akonadi::Item( 2 );
     item.setParentCollection( collection );
@@ -193,9 +190,8 @@ private slots:
     state->setItem( item );
     ChangeItemTask *task = new ChangeItemTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
-    QCOMPARE( state->calls().count(), callNames.size() );
+    QTRY_COMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8(state->calls().at( i ).first);
       QVariant parameter = state->calls().at( i ).second;

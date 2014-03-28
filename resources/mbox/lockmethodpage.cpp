@@ -35,14 +35,14 @@ void LockMethodPage::checkAvailableLockMethods()
   // FIXME: I guess this whole checking makes only sense on linux machines.
 
   // Check for procmail lock method.
-  if ( KStandardDirs::findExe( "lockfile" ).isEmpty() ) {
+  if ( KStandardDirs::findExe( QLatin1String("lockfile") ).isEmpty() ) {
     ui.procmail->setEnabled( false );
     if ( ui.procmail->isChecked() ) // Select another lock method if necessary
       ui.mutt_dotlock->setChecked( true );
   }
 
   // Check for mutt lock method.
-  if ( KStandardDirs::findExe( "mutt_dotlock" ).isEmpty() ) {
+  if ( KStandardDirs::findExe( QLatin1String("mutt_dotlock") ).isEmpty() ) {
     ui.mutt_dotlock->setEnabled( false );
     ui.mutt_dotlock_privileged->setEnabled( false );
     if ( ui.mutt_dotlock->isChecked() || ui.mutt_dotlock_privileged->isChecked() )
@@ -55,4 +55,3 @@ void LockMethodPage::checkAvailableLockMethods()
   }
 }
 
-#include "lockmethodpage.moc"

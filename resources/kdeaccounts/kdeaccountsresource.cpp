@@ -34,7 +34,7 @@ using namespace Akonadi;
 KDEAccountsResource::KDEAccountsResource( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), "kde" );
+  setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), QLatin1String("kde") );
 
   setName( i18n( "KDE Accounts" ) );
 
@@ -65,7 +65,7 @@ bool KDEAccountsResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
 
 void KDEAccountsResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  dlg->setWindowIcon( KIcon( "kde" ) );
+  dlg->setWindowIcon( KIcon( QLatin1String("kde") ) );
   dlg->setCaption( i18n( "Select KDE Accounts File" ) );
 }
 
@@ -98,8 +98,8 @@ void KDEAccountsResource::retrieveItems( const Akonadi::Collection &collection )
   Q_UNUSED( collection );
 
   Akonadi::Item::List items;
-
-  for ( ContactsMap::const_iterator it = mContacts.constBegin(); it != mContacts.constEnd(); ++it ) {
+  ContactsMap::const_iterator end(mContacts.constEnd());
+  for ( ContactsMap::const_iterator it = mContacts.constBegin(); it != end; ++it ) {
     Item item;
     item.setRemoteId( it.key() );
     item.setMimeType( KABC::Addressee::mimeType() );
@@ -166,4 +166,3 @@ bool KDEAccountsResource::writeToFile( const QString& )
 
 AKONADI_RESOURCE_MAIN( KDEAccountsResource )
 
-#include "kdeaccountsresource.moc"

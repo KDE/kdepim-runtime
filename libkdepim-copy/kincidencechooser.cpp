@@ -370,7 +370,7 @@ void KIncidenceChooser::showIncidence1()
   connect( mTbL, SIGNAL(okClicked()), this, SLOT(detailsDialogClosed()) );
   KTextBrowser *textBrowser = new KTextBrowser( mTbL );
   mTbL->setMainWidget( textBrowser );
-  textBrowser->setHtml( IncidenceFormatter::extensiveDisplayStr( 0, mInc1 ) );
+  textBrowser->setHtml( IncidenceFormatter::extensiveDisplayStr( QString(), mInc1 ) );
   textBrowser->setToolTip( i18nc( "@info:tooltip", "Incidence details" ) );
   textBrowser->setWhatsThis( i18nc( "@info:whatsthis",
                                     "This area shows the incidence details" ) );
@@ -438,7 +438,7 @@ void KIncidenceChooser::showIncidence2()
   connect( mTbN, SIGNAL(okClicked()), this, SLOT(detailsDialogClosed()) );
   KTextBrowser *textBrowser = new KTextBrowser( mTbN );
   mTbN->setMainWidget( textBrowser );
-  textBrowser->setHtml( IncidenceFormatter::extensiveDisplayStr( 0, mInc2 ) );
+  textBrowser->setHtml( IncidenceFormatter::extensiveDisplayStr( QString(), mInc2 ) );
   textBrowser->setToolTip( i18nc( "@info:tooltip", "Incidence details" ) );
   textBrowser->setWhatsThis( i18nc( "@info:whatsthis",
                                     "This area shows the incidence details" ) );
@@ -466,4 +466,3 @@ void KIncidenceChooser::takeBoth()
   KDialog::accept();
 }
 
-#include "kincidencechooser.moc"

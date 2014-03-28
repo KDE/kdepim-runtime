@@ -25,6 +25,7 @@
 
 #include <KDE/KLocale>
 
+#include "collectionflagsattribute.h"
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
@@ -244,12 +245,6 @@ void ResourceTask::applyCollectionChanges( const Akonadi::Collection &collection
   m_resource->applyCollectionChanges( collection );
 }
 
-void ResourceTask::collectionAttributesRetrieved( const Akonadi::Collection &collection )
-{
-  m_resource->collectionAttributesRetrieved( collection );
-  deleteLater();
-}
-
 void ResourceTask::itemRetrieved( const Akonadi::Item &item )
 {
   m_resource->itemRetrieved( item );
@@ -283,6 +278,12 @@ void ResourceTask::changeCommitted( const Akonadi::Item &item )
 void ResourceTask::changesCommitted(const Akonadi::Item::List& items)
 {
   m_resource->itemsChangesCommitted( items );
+  deleteLater();
+}
+
+void ResourceTask::searchFinished( const QVector<qint64> &result, bool isRid )
+{
+  m_resource->searchFinished( result, isRid );
   deleteLater();
 }
 
@@ -347,6 +348,27 @@ void ResourceTask::showInformationDialog( const QString &message, const QString 
   m_resource->showInformationDialog( message, title, dontShowAgainName );
 }
 
+QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags,
+                                                                 const Akonadi::Collection &collection )
+{
+  QList<QByteArray> imapFlags = fromAkonadiFlags( flags );
+
+  const Akonadi::CollectionFlagsAttribute *flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
+  // the server does not support arbitrary flags, so filter out those it can't handle
+  if ( flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains( "\\*" ) ) {
+    for ( QList< QByteArray >::iterator it = imapFlags.begin(); it != imapFlags.end(); ) {
+      if ( flagAttr->flags().contains( *it ) ) {
+        ++it;
+      } else {
+        kDebug() << "Server does not support flag" << *it;
+        it = imapFlags.erase( it );
+      }
+    }
+  }
+
+  return imapFlags;
+}
+
 QList<QByteArray> ResourceTask::fromAkonadiFlags( const QList<QByteArray> &flags )
 {
   QList<QByteArray> newFlags;
@@ -356,7 +378,7 @@ QList<QByteArray> ResourceTask::fromAkonadiFlags( const QList<QByteArray> &flags
       newFlags.append( ImapFlags::Seen );
     } else if ( oldFlag == Akonadi::MessageFlags::Deleted ) {
       newFlags.append( ImapFlags::Deleted );
-    } else if ( oldFlag == Akonadi::MessageFlags::Answered ) {
+    } else if ( oldFlag == Akonadi::MessageFlags::Answered || oldFlag == Akonadi::MessageFlags::Replied ) {
       newFlags.append( ImapFlags::Answered );
     } else if ( oldFlag == Akonadi::MessageFlags::Flagged ) {
       newFlags.append( ImapFlags::Flagged );
@@ -395,18 +417,43 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
 void ResourceTask::kill()
 {
   kDebug();
-  cancelTask("killed");
+  cancelTask(i18n("killed"));
 }
 
 const QChar ResourceTask::separatorCharacter() const
 {
-  //If we create a toplevel folder, assume the separator to be '/'. This is not perfect, but detecting the right
-  //IMAP separator is not straightforward for toplevel folders, and fixes bug 292418 and maybe other, where
-  //subfolders end up with remote id's starting with "i" (the first letter of imap:// ...)
-  const QString parentRemoteId = parentCollection().remoteId();
-  const QChar separator = ( ( parentRemoteId != rootRemoteId() ) && !parentRemoteId.isEmpty() ) ? parentRemoteId.at( 0 ) : '/';
-  return separator;
+  const QChar separator = m_resource->separatorCharacter();
+  if ( !separator.isNull() ) {
+    return separator;
+  } else {
+    //If we request the separator before first folder listing, then try to guess
+    //the separator:
+    //If we create a toplevel folder, assume the separator to be '/'. This is not perfect, but detecting the right
+    //IMAP separator is not straightforward for toplevel folders, and fixes bug 292418 and maybe other, where
+    //subfolders end up with remote id's starting with "i" (the first letter of imap:// ...)
+
+    QString remoteId;
+    // We don't always have parent collection set (for example for CollectionChangeTask),
+    // in such cases however we can use current collection's remoteId to get the separator
+    const Akonadi::Collection parent = parentCollection();
+    if ( parent.isValid() ) {
+        remoteId = parent.remoteId();
+    } else {
+        remoteId = collection().remoteId();
+    }
+    return ( ( remoteId != rootRemoteId() ) && !remoteId.isEmpty() ) ? remoteId.at( 0 ) : QLatin1Char('/');
+  }
+}
+
+void ResourceTask::setSeparatorCharacter( const QChar& separator )
+{
+    m_resource->setSeparatorCharacter( separator );
+}
+
+bool ResourceTask::serverSupportsAnnotations() const
+{
+    return serverCapabilities().contains( QLatin1String( "METADATA" ) )
+            || serverCapabilities().contains( QLatin1String( "ANNOTATEMORE" ) );
 }
 
 
-#include "resourcetask.moc"

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2013 Montel Laurent <montel@kde.org>
+  Copyright (c) 2013, 2014 Montel Laurent <montel@kde.org>
 
   This program is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License, version 2, as
@@ -37,13 +37,14 @@ Q_SIGNALS:
 private Q_SLOTS:
     void slotSearchJobFinished( KJob *job );
     void slotItemFetchJobDone(KJob*);
-
+    void slotOpenMail();
 private:
     void emitNotification(const QPixmap &pixmap);
     QStringList mListEmails;
     QString mSubject;
     QString mFrom;
     QString mPath;
+    Akonadi::Item::Id mItemId;
 };
 
 #endif // SPECIALNOTIFIERJOB_H

@@ -40,15 +40,14 @@
 
 #include <KConfig>
 #include <KConfigGroup>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QHash>
 #include <QQueue>
-#include <QTimer>
 
-#define KOLAB_SHAREDSEEN "/vendor/cmu/cyrus-imapd/sharedseen"
-#define KOLAB_INCIDENCESFOR "/vendor/kolab/incidences-for"
-#define KOLAB_FOLDERTYPE "/vendor/kolab/folder-type"
+#define KOLAB_SHAREDSEEN "/shared/vendor/cmu/cyrus-imapd/sharedseen"
+#define KOLAB_INCIDENCESFOR "/shared/vendor/kolab/incidences-for"
+#define KOLAB_FOLDERTYPE "/shared/vendor/kolab/folder-type"
 
 
 using namespace Akonadi;
@@ -173,11 +172,11 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     if ( newGroup.hasKey( "IncidencesFor" ) ) {
       const QString incidenceFor = newGroup.readEntry( "IncidencesFor" );
       //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "IncidencesFor=" << incidenceFor;
-      if ( incidenceFor == "nobody" ) {
+      if ( incidenceFor == QLatin1String("nobody") ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "nobody";
-      } else if ( incidenceFor == "admins" ) {
+      } else if ( incidenceFor == QLatin1String("admins") ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "admins";
-      } else if ( incidenceFor == "readers" ) {
+      } else if ( incidenceFor == QLatin1String("readers") ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "readers";
       } else {
         annotations[ KOLAB_INCIDENCESFOR ] = "admins"; //Default
@@ -188,23 +187,23 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     if ( newGroup.hasKey( "Annotation-FolderType" ) ) {
       const QString annotationFolderType = newGroup.readEntry( "Annotation-FolderType" );
       EntityDisplayAttribute *attribute = mCurrentCollection.attribute<EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
-      if ( annotationFolderType == "mail" ) {
+      if ( annotationFolderType == QLatin1String("mail") ) {
         //????
-      } else if ( annotationFolderType == "event" ) {
+      } else if ( annotationFolderType == QLatin1String("event") ) {
         annotations[ KOLAB_FOLDERTYPE ] = "event";
-        attribute->setIconName( "view-calendar" );
-      } else if ( annotationFolderType == "task" ) {
+        attribute->setIconName( QLatin1String("view-calendar") );
+      } else if ( annotationFolderType == QLatin1String("task") ) {
         annotations[ KOLAB_FOLDERTYPE ] = "task";
-        attribute->setIconName( "view-pim-tasks" );
-      } else if ( annotationFolderType == "contact" ) {
+        attribute->setIconName( QLatin1String("view-pim-tasks") );
+      } else if ( annotationFolderType == QLatin1String("contact") ) {
         annotations[ KOLAB_FOLDERTYPE ] = "contact";
-        attribute->setIconName( "view-pim-contacts" );
-      } else if ( annotationFolderType == "note" ) {
+        attribute->setIconName( QLatin1String("view-pim-contacts") );
+      } else if ( annotationFolderType == QLatin1String("note") ) {
         annotations[ KOLAB_FOLDERTYPE ] = "note";
-        attribute->setIconName( "view-pim-notes" );
-      } else if ( annotationFolderType == "journal" ) {
+        attribute->setIconName( QLatin1String("view-pim-notes") );
+      } else if ( annotationFolderType == QLatin1String("journal") ) {
         annotations[ KOLAB_FOLDERTYPE ] = "journal";
-        attribute->setIconName( "view-pim-journal" );
+        attribute->setIconName( QLatin1String("view-pim-journal") );
       } else {
         //????
       }
@@ -302,7 +301,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
   // check emailidentity
-  const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( "Identity #\\d+" ) );
+  const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( QLatin1String("Identity #\\d+") ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "identityGroups=" << identityGroups;
   Q_FOREACH ( const QString &groupName, identityGroups ) {
     KConfigGroup identityGroup( mEmailIdentityConfig, groupName );
@@ -325,9 +324,9 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
     QStringList lstCollection = kcmkmailsummary.readEntry( "Role_CheckState", QStringList() );
     QString visualPath( mCurrentFolderId );
-    visualPath.remove( ".directory" );
-    visualPath.replace( "/.", "/" );
-    if ( !visualPath.isEmpty() && ( visualPath.at( 0 ) == '.' ) )
+    visualPath.remove( QLatin1String(".directory") );
+    visualPath.replace( QLatin1String("/."), QLatin1String("/") );
+    if ( !visualPath.isEmpty() && ( visualPath.at( 0 ) == QLatin1Char('.') ) )
       visualPath.remove( 0, 1 ); //remove first "."
 
     const QString localFolderPattern = QLatin1String( "/Local/%1" );
@@ -336,12 +335,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     if ( lstCollection.contains( localFolderPattern.arg( visualPath ) ) ) {
       const int pos = lstCollection.indexOf( localFolderPattern.arg( visualPath ) );
       lstCollection.replace( pos, newCollectionPattern.arg( mCurrentCollection.id() ) );
-      lstCollection.insert( pos+1, "2" );
+      lstCollection.insert( pos+1, QLatin1String("2") );
       kcmkmailsummary.writeEntry( "Role_CheckState", lstCollection );
     } else if ( lstCollection.contains( imapFolderPattern.arg( visualPath ) ) ) {
       const int pos = lstCollection.indexOf( imapFolderPattern.arg( visualPath ) );
       lstCollection.replace( pos, newCollectionPattern.arg( mCurrentCollection.id() ) );
-      lstCollection.insert( pos+1, "2" );
+      lstCollection.insert( pos+1, QLatin1String("2") );
 
       kcmkmailsummary.writeEntry( "Role_CheckState", lstCollection );
     }
@@ -366,7 +365,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   general.deleteEntry( "default-mailbox-format" );
 
   // check all expire folder
-  const QStringList folderGroups = mKMailConfig->groupList().filter( "Folder-" );
+  const QStringList folderGroups = mKMailConfig->groupList().filter( QLatin1String("Folder-") );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "folderGroups=" << folderGroups;
   Q_FOREACH ( const QString &groupName, folderGroups ) {
     KConfigGroup filterGroup( mKMailConfig, groupName );
@@ -375,7 +374,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
   // check all account folder
-  const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( "Account \\d+" ) );
+  const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( QLatin1String("Account \\d+") ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "accountGroups=" << accountGroups;
   Q_FOREACH ( const QString &groupName, accountGroups ) {
     KConfigGroup accountGroup( mKMailConfig, groupName );
@@ -397,12 +396,12 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   }
 
   // check all filters
-  const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( "Filter #\\d+" ) );
+  const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( QLatin1String("Filter #\\d+") ) );
   //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "filterGroups=" << filterGroups;
   Q_FOREACH ( const QString &groupName, filterGroups ) {
     KConfigGroup filterGroup( mKMailConfig, groupName );
 
-    const QStringList actionKeys = filterGroup.keyList().filter( QRegExp( "action-args-\\d+" ) );
+    const QStringList actionKeys = filterGroup.keyList().filter( QRegExp( QLatin1String("action-args-\\d+") ) );
     //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "actionKeys=" << actionKeys;
 
     Q_FOREACH ( const QString &actionKey, actionKeys ) {
@@ -837,6 +836,6 @@ QString AbstractCollectionMigrator::currentStoreFolderId() const
   return d->mCurrentStoreFolderId;
 }
 
-#include "abstractcollectionmigrator.moc"
+#include "moc_abstractcollectionmigrator.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

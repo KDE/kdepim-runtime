@@ -35,7 +35,7 @@
 #include <KPIMUtils/Email>
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 using namespace Akonadi;
@@ -87,9 +87,9 @@ void BirthdaysResource::retrieveCollections()
 {
   Collection c;
   c.setParentCollection( Collection::root() );
-  c.setRemoteId( "akonadi_birthdays_resource" );
+  c.setRemoteId( QLatin1String("akonadi_birthdays_resource") );
   c.setName( name() );
-  c.setContentMimeTypes( QStringList() << "application/x-vnd.akonadi.calendar.event" );
+  c.setContentMimeTypes( QStringList() << QLatin1String("application/x-vnd.akonadi.calendar.event") );
   c.setRights( Collection::ReadOnly );
 
   EntityDisplayAttribute *attribute = c.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
@@ -128,9 +128,9 @@ void BirthdaysResource::contactRetrieved(KJob* job)
     cancelTask();
   } else {
     KCalCore::Incidence::Ptr ev;
-    if ( currentItem().remoteId().startsWith( 'b' ) )
+    if ( currentItem().remoteId().startsWith( QLatin1Char('b') ) )
       ev = createBirthday( fj->items().first() );
-    else if ( currentItem().remoteId().startsWith( 'a' ) )
+    else if ( currentItem().remoteId().startsWith( QLatin1Char('a') ) )
       ev = createAnniversary( fj->items().first() );
     if ( !ev ) {
       cancelTask();
@@ -236,9 +236,9 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item& cont
     const QString summary = i18n( "%1's birthday", name );
 
     Event::Ptr ev = createEvent( birthdate );
-    ev->setUid( contact.uid() + "_KABC_Birthday" );
+    ev->setUid( contact.uid() + QLatin1String("_KABC_Birthday") );
 
-    ev->setCustomProperty( "KABC", "BIRTHDAY", "YES" );
+    ev->setCustomProperty( "KABC", "BIRTHDAY", QLatin1String("YES") );
     ev->setCustomProperty( "KABC", "UID-1", contact.uid() );
     ev->setCustomProperty( "KABC", "NAME-1", name );
     ev->setCustomProperty( "KABC", "EMAIL-1", contact.fullEmail() );
@@ -262,23 +262,23 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& c
     return KCalCore::Event::Ptr();
   }
 
-  const QString anniversary_string = contact.custom( "KADDRESSBOOK", "X-Anniversary" );
+  const QString anniversary_string = contact.custom( QLatin1String("KADDRESSBOOK"), QLatin1String("X-Anniversary") );
   if ( anniversary_string.isEmpty() )
     return KCalCore::Event::Ptr();
   const QDate anniversary = QDate::fromString( anniversary_string, Qt::ISODate );
   if ( anniversary.isValid() ) {
-    const QString spouseName = contact.custom( "KADDRESSBOOK", "X-SpousesName" );
+    const QString spouseName = contact.custom( QLatin1String("KADDRESSBOOK"), QLatin1String("X-SpousesName") );
 
     QString summary;
     if ( !spouseName.isEmpty() ) {
       QString tname, temail;
       KPIMUtils::extractEmailAddressAndName( spouseName, temail, tname );
       tname = KPIMUtils::quoteNameIfNecessary( tname );
-      if ( ( tname[0] == '"' ) && ( tname[tname.length() - 1] == '"' ) ) {
+      if ( ( tname[0] == QLatin1Char('"') ) && ( tname[tname.length() - 1] == QLatin1Char('"') ) ) {
         tname.remove( 0, 1 );
         tname.truncate( tname.length() - 1 );
       }
-      tname.remove( '\\' ); // remove escape chars
+      tname.remove( QLatin1Char('\\') ); // remove escape chars
       KABC::Addressee spouse;
       spouse.setNameFromString( tname );
       QString name_2 = spouse.nickName();
@@ -293,13 +293,13 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& c
     }
 
     Event::Ptr event = createEvent( anniversary );
-    event->setUid( contact.uid() + "_KABC_Anniversary" );
+    event->setUid( contact.uid() + QLatin1String("_KABC_Anniversary") );
     event->setSummary( summary );
 
     event->setCustomProperty( "KABC", "UID-1", contact.uid() );
     event->setCustomProperty( "KABC", "NAME-1", name );
     event->setCustomProperty( "KABC", "EMAIL-1", contact.fullEmail() );
-    event->setCustomProperty( "KABC", "ANNIVERSARY", "YES" );
+    event->setCustomProperty( "KABC", "ANNIVERSARY", QLatin1String("YES") );
     // insert category
     event->setCategories( i18n( "Anniversary" ) );
     return event;
@@ -341,4 +341,3 @@ KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate& date)
 
 AKONADI_RESOURCE_MAIN( BirthdaysResource )
 
-#include "birthdaysresource.moc"

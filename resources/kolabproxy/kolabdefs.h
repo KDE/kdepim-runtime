@@ -21,17 +21,20 @@
 #define KOLABPROXY_KOLABDEFS_H
 
 #include <QByteArray>
+#include <QMap>
 
 #include <kolabdefinitions.h> //libkolab
 #include <formathelpers.h> //libkolab
 
 namespace Kolab {
   FolderType folderTypeFromString( const QByteArray &folderTypeName );
+  QByteArray getFolderTypeAnnotation( const QMap<QByteArray, QByteArray> &annotations);
+  void setFolderTypeAnnotation( QMap<QByteArray, QByteArray> &annotations, const QByteArray &value);
 }
 
 namespace KolabV2 {
 
-#define PRODUCT_ID "Akonadi-KolabResource"
+#define PRODUCT_ID QLatin1String("Akonadi-KolabResource")
 
   enum FolderType {
     Mail = 0,

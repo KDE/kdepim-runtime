@@ -22,7 +22,7 @@
 #include <mailtransport/transportmanager.h>
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 #define TABLE_SIZE x
 
@@ -154,4 +154,3 @@ int Transport::transportId() const
   return m_transportId;
 }
 
-#include "transport.moc"

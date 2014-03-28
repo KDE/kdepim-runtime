@@ -33,4 +33,3 @@ void SetupObject::setDependsOn(SetupObject* obj)
   m_dependsOn = obj;
 }
 
-#include "setupobject.moc"

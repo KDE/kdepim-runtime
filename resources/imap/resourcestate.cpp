@@ -29,6 +29,7 @@
 #include "timestampattribute.h"
 
 #include <akonadi/collectionmodifyjob.h>
+#include <akonadi/agentsearchinterface.h>
 #include <kmessagebox.h>
 
 ResourceStateInterface::Ptr ResourceState::createRetrieveItemState( ImapResource *resource,
@@ -198,6 +199,16 @@ ResourceStateInterface::Ptr ResourceState::createIdleState( ImapResource *resour
   return ResourceStateInterface::Ptr( state );
 }
 
+ResourceStateInterface::Ptr ResourceState::createSearchState( ImapResource *resource,
+                                                              const Akonadi::Collection &collection )
+{
+  ResourceState *state = new ResourceState( resource );
+
+  state->m_collection = collection;
+
+  return ResourceStateInterface::Ptr( state );
+}
+
 
 ResourceState::ResourceState( ImapResource *resource )
   : m_resource( resource )
@@ -307,29 +318,6 @@ QString ResourceState::rootRemoteId() const
   return Settings::self()->rootRemoteId();
 }
 
-QString ResourceState::mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings ) const
-{
-  if ( collection.remoteId().isEmpty() ) { //This should never happen, investigate why a collection without remoteId made it this far
-    if ( showWarnings )
-      kWarning() << "Got incomplete ancestor chain due to empty remoteId:" << collection;
-    return QString();
-  }
-
-  if ( collection.parentCollection() == Akonadi::Collection::root() ) {
-    if ( showWarnings )
-      kWarning( collection.remoteId() != rootRemoteId() ) << "RID mismatch, is " << collection.remoteId() << " expected " << rootRemoteId();
-    return QString( "" );
-  }
-  const QString parentMailbox = mailBoxForCollection( collection.parentCollection() );
-  if ( parentMailbox.isNull() ) // invalid, != isEmpty() here!
-    return QString();
-
-  const QString mailbox =  parentMailbox + collection.remoteId();
-  if ( parentMailbox.isEmpty() )
-    return mailbox.mid( 1 ); // strip of the separator on top-level mailboxes
-  return mailbox;
-}
-
 void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
 {
   QStringList ridPath;
@@ -423,6 +411,13 @@ void ResourceState::changeProcessed()
   m_resource->changeProcessed();
 }
 
+void ResourceState::searchFinished( const QVector<qint64> &result, bool isRid )
+{
+  m_resource->searchFinished( result, isRid ? Akonadi::AgentSearchInterface::Rid :
+                                              Akonadi::AgentSearchInterface::Uid );
+}
+
+
 void ResourceState::cancelTask( const QString &errorString )
 {
   m_resource->cancelTask( errorString );
@@ -504,6 +499,16 @@ void ResourceState::synchronizeCollectionTree()
 void ResourceState::scheduleConnectionAttempt()
 {
   m_resource->scheduleConnectionAttempt();
+}
+
+QChar ResourceState::separatorCharacter() const
+{
+  return m_resource->separatorCharacter();
+}
+
+void ResourceState::setSeparatorCharacter( const QChar &separator )
+{
+  m_resource->setSeparatorCharacter( separator );
 }
 
 void ResourceState::showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName )

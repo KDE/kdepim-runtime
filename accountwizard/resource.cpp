@@ -24,7 +24,7 @@
 #include <akonadi/agentinstancecreatejob.h>
 
 #include <KDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QMetaMethod>
 #include <QVariant>
@@ -112,7 +112,7 @@ void Resource::instanceCreateResult(KJob* job)
 
   if ( !m_settings.isEmpty() ) {
     emit info( i18n( "Configuring resource instance..." ) );
-    QDBusInterface iface( "org.freedesktop.Akonadi.Resource." + m_instance.identifier(), "/Settings" );
+    QDBusInterface iface( QLatin1String("org.freedesktop.Akonadi.Resource.") + m_instance.identifier(), QLatin1String("/Settings") );
     if ( !iface.isValid() ) {
       emit error( i18n( "Unable to configure resource instance." ) );
       return;
@@ -128,7 +128,7 @@ void Resource::instanceCreateResult(KJob* job)
       QVariant arg = it.value();
       const QVariant::Type targetType = argumentType( iface.metaObject(), methodName );
       if ( !arg.canConvert( targetType ) ) {
-        emit error( i18n( "Could not convert value of setting '%1' to required type %2.", it.key(), QVariant::typeToName( targetType ) ) );
+        emit error( i18n( "Could not convert value of setting '%1' to required type %2.", it.key(), QLatin1String(QVariant::typeToName( targetType )) ) );
         return;
       }
       arg.convert( targetType );
@@ -163,4 +163,3 @@ void Resource::reconfigure()
 }
 
 
-#include "resource.moc"

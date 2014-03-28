@@ -431,4 +431,3 @@ void DataSink::syncDone()
   success();
 }
 
-#include "datasink.moc"

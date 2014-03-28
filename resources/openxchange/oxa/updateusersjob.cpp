@@ -91,4 +91,3 @@ void UpdateUsersJob::finish()
   emitResult();
 }
 
-#include "updateusersjob.moc"

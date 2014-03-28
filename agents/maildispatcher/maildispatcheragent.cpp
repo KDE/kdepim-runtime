@@ -28,7 +28,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <kpimutils/networkaccesshelper.h>
 #include <akonadi/agentfactory.h>
 #include <akonadi/dbusconnectionpool.h>
 #include <akonadi/itemfetchscope.h>
@@ -38,11 +37,12 @@
 #include <KDebug>
 #include <KIcon>
 #include <KIconLoader>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
 #include <KWindowSystem>
+#include <KLocale>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
@@ -71,8 +71,7 @@ class MailDispatcherAgent::Private
         sentAnything( false ),
         errorOccurred( false ),
         sentItemsSize( 0 ),
-        sentActionHandler( 0 ),
-        networkAccessHelper( new KPIMUtils::NetworkAccessHelper( parent ) )
+        sentActionHandler( 0 )
     {
     }
 
@@ -91,7 +90,6 @@ class MailDispatcherAgent::Private
     bool errorOccurred;
     qulonglong sentItemsSize;
     SentActionHandler *sentActionHandler;
-    KPIMUtils::NetworkAccessHelper *networkAccessHelper;
 
     // slots:
     void abort();
@@ -132,7 +130,6 @@ void MailDispatcherAgent::Private::abort()
 void MailDispatcherAgent::Private::dispatch()
 {
   Q_ASSERT( queue );
-  networkAccessHelper->establishConnection();
 
   if ( !q->isOnline() || sendingInProgress ) {
     kDebug() << "Offline or busy. See you later.";
@@ -167,7 +164,7 @@ void MailDispatcherAgent::Private::dispatch()
         emit q->status( AgentBase::Idle, i18n( "Finished sending messages." ) );
 
         if ( !errorOccurred ) {
-          KNotification *notify = new KNotification( "emailsent" );
+          KNotification *notify = new KNotification( QLatin1String("emailsent") );
           notify->setComponentData( q->componentData() );
           notify->setTitle( i18nc( "Notification title when email was sent", "E-Mail Successfully Sent" ) );
           notify->setText( i18nc( "Notification when the email was sent", "Your E-Mail has been sent successfully." ) );
@@ -191,15 +188,11 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
 {
   kDebug() << "maildispatcheragent: At your service, sir!";
 
-#ifdef _WIN32_WCE
-  QThread::currentThread()->setPriority( QThread::NormalPriority );
-#endif
-
 #ifdef KDEPIM_STATIC_LIBS
     ___MailTransport____INIT();
 #endif
 
-  KGlobal::locale()->insertCatalog( "libakonadi-kmime" ); // for special collection translation
+  KGlobal::locale()->insertCatalog( QLatin1String("libakonadi-kmime") ); // for special collection translation
 
   new SettingsAdaptor( Settings::self() );
   new MailDispatcherAgentAdaptor( this );
@@ -340,7 +333,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     // do anything.
     kDebug() << "Sending failed. error:" << job->errorString();
 
-    KNotification *notify = new KNotification( "sendingfailed" );
+    KNotification *notify = new KNotification( QLatin1String("sendingfailed") );
     notify->setComponentData( q->componentData() );
     notify->setTitle( i18nc( "Notification title when email sending failed", "E-Mail Sending Failed" ) );
     notify->setText( job->errorString() );
@@ -377,4 +370,4 @@ AKONADI_AGENT_FACTORY( MailDispatcherAgent, akonadi_maildispatcher_agent )
 AKONADI_AGENT_MAIN( MailDispatcherAgent )
 #endif
 
-#include "maildispatcheragent.moc"
+#include "moc_maildispatcheragent.cpp"

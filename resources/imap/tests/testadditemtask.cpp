@@ -43,8 +43,7 @@ private slots:
     QList<QByteArray> scenario;
     QStringList callNames;
 
-    collection = Akonadi::Collection( 1 );
-    collection.setRemoteId( "/INBOX/Foo" );
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     UidNextAttribute *uidNext = new UidNextAttribute;
     uidNext->setUidNext( 63 );
     collection.addAttribute( uidNext );
@@ -54,7 +53,7 @@ private slots:
 
     KMime::Message::Ptr message(new KMime::Message);
 
-    messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
+    messageContent = QLatin1String("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
     message->setContent( messageContent.toUtf8() );
     message->parse();
@@ -66,7 +65,7 @@ private slots:
              << "S: A000003 OK append done [ APPENDUID 1239890035 66 ]";
 
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << QLatin1String("itemChangeCommitted");
 
     QTest::newRow( "trivial case" ) << item << collection << scenario << callNames;
 
@@ -74,7 +73,7 @@ private slots:
 
     message = KMime::Message::Ptr( new KMime::Message );
 
-    messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
+    messageContent = QLatin1String("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
 
     message->setContent( messageContent.toUtf8() );
     message->parse();
@@ -91,7 +90,7 @@ private slots:
              << "S: A000005 OK search done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << QLatin1String("itemChangeCommitted");
 
     QTest::newRow( "no APPENDUID, message contained Message-ID" ) << item << collection << scenario << callNames;
 
@@ -106,14 +105,14 @@ private slots:
              << "S: * SEARCH 65 66"
              << "S: A000005 OK search done";
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << QLatin1String("itemChangeCommitted");
     QTest::newRow( "no APPENDUID, message contained non-unique Message-ID" ) << item << collection << scenario << callNames;
 
 
 
     message = KMime::Message::Ptr( new KMime::Message );
 
-    messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
+    messageContent = QLatin1String("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
     message->setContent( messageContent.toUtf8() );
     message->parse();
@@ -130,7 +129,7 @@ private slots:
              << "S: A000005 OK search done";
 
     callNames.clear();
-    callNames << "itemChangeCommitted";
+    callNames << QLatin1String("itemChangeCommitted");
 
     QTest::newRow( "no APPENDUID, message didn't contain Message-ID" ) << item << collection << scenario << callNames;
   }
@@ -157,20 +156,19 @@ private slots:
     state->setItem( item );
     AddItemTask *task = new AddItemTask( state );
     task->start( &pool );
-    QTest::qWait( 100 );
 
-    QCOMPARE( state->calls().count(), callNames.size() );
+    QTRY_COMPARE( state->calls().count(), callNames.size() );
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8( state->calls().at( i ).first );
       QVariant parameter = state->calls().at( i ).second;
 
-      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
+      if ( command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask") ) {
         kDebug() << "Got a cancel:" << parameter.toString();
       }
 
       QCOMPARE( command, callNames[i] );
 
-      if ( command == "cancelTask" ) {
+      if ( command == QLatin1String("cancelTask") ) {
         QVERIFY( !parameter.toString().isEmpty() );
       }
     }

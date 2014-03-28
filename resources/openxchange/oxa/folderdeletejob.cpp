@@ -76,4 +76,3 @@ void FolderDeleteJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "folderdeletejob.moc"

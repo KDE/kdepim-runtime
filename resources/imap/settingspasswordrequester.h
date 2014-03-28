@@ -23,6 +23,7 @@
 #define SETTINGSPASSWORDREQUESTER_H
 
 #include <passwordrequesterinterface.h>
+#include <KDialog>
 
 class ImapResource;
 
@@ -32,16 +33,23 @@ class SettingsPasswordRequester : public PasswordRequesterInterface
 
 public:
   explicit SettingsPasswordRequester( ImapResource *resource, QObject *parent = 0 );
+  virtual ~SettingsPasswordRequester();
 
   virtual void requestPassword( RequestType request = StandardRequest,
                                 const QString &serverError = QString() );
+  virtual void cancelPasswordRequests();
 
 private slots:
   void askUserInput( const QString &serverError );
   void onPasswordRequestCompleted( const QString &password, bool userRejected );
+  void onButtonClicked(KDialog::ButtonCode);
+  void onDialogDestroyed();
+  void onSettingsDialogFinished(int result);
 
 private:
   ImapResource *m_resource;
+  KDialog *m_requestDialog;
+  KDialog *m_settingsDialog;
 };
 
 #endif

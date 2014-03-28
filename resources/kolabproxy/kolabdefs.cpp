@@ -19,7 +19,7 @@
 
 #include "kolabdefs.h"
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <boost/static_assert.hpp>
 
@@ -101,3 +101,17 @@ Kolab::FolderType Kolab::folderTypeFromString(const QByteArray& folderTypeName)
 {
   return Kolab::folderTypeFromString( std::string(folderTypeName.data(), folderTypeName.size()) );
 }
+
+QByteArray Kolab::getFolderTypeAnnotation(const QMap< QByteArray, QByteArray > &annotations)
+{
+    if ( annotations.contains( "/shared" KOLAB_FOLDER_TYPE_ANNOTATION ) ) {
+        return annotations.value( "/shared" KOLAB_FOLDER_TYPE_ANNOTATION );
+    }
+    return annotations.value(KOLAB_FOLDER_TYPE_ANNOTATION);
+}
+
+void Kolab::setFolderTypeAnnotation(QMap< QByteArray, QByteArray >& annotations, const QByteArray& value)
+{
+    annotations["/shared" KOLAB_FOLDER_TYPE_ANNOTATION] = value;
+}
+

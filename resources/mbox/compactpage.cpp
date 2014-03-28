@@ -129,4 +129,3 @@ void CompactPage::onCollectionModify( KJob *job )
     ui.messageLabel->setText( i18n( "MBox file compacted." ) );
 }
 
-#include "compactpage.moc"

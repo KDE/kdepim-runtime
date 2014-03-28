@@ -93,4 +93,3 @@ void FolderModifyJob::davJobFinished( KJob *job )
   emitResult();
 }
 
-#include "foldermodifyjob.moc"

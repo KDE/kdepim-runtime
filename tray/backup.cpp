@@ -27,7 +27,6 @@
 #include <KUrl>
 
 #include <QDir>
-#include <QSettings>
 
 #include <akonadi/private/xdgbasedirs_p.h>
 #include <akonadi/agentmanager.h>
@@ -49,17 +48,17 @@ bool Backup::possible()
 {
     Tray::Global global;
     QString dbDumpAppName;
-    if( global.dbdriver() == "QPSQL" )
-      dbDumpAppName = "pg_dump";
-    else if( global.dbdriver() == "QMYSQL" )
-      dbDumpAppName = "mysqldump";
+    if( global.dbdriver() == QLatin1String("QPSQL") )
+      dbDumpAppName = QLatin1String("pg_dump");
+    else if( global.dbdriver() == QLatin1String("QMYSQL") )
+      dbDumpAppName = QLatin1String("mysqldump");
     else {
       kError() << "Could not find an application to dump the database.";
     }
 
     m_dbDumpApp = KStandardDirs::findExe( dbDumpAppName );
-    const QString bzip2 = KStandardDirs::findExe( "bzip2" );
-    const QString tar = KStandardDirs::findExe( "tar" );
+    const QString bzip2 = KStandardDirs::findExe( QLatin1String("bzip2") );
+    const QString tar = KStandardDirs::findExe( QLatin1String("tar") );
     kDebug() << "m_dbDumpApp:" << m_dbDumpApp << "bzip2:" << bzip2 << "tar:" << tar;
     return !m_dbDumpApp.isEmpty() && !bzip2.isEmpty() && !tar.isEmpty();
 }
@@ -73,11 +72,11 @@ void Backup::create( const KUrl& filename )
 
     const QString sep( QDir::separator() );
     /* first create the temp folder. */
-    KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", "akonadi" ) );
+    KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", QLatin1String("akonadi") ) );
     tempDir->setAutoRemove( false );
-    KIO::NetAccess::mkdir( QString(tempDir->name() + "kdeconfig"), this );
-    KIO::NetAccess::mkdir( QString(tempDir->name() + "akonadiconfig"), this );
-    KIO::NetAccess::mkdir( QString(tempDir->name() + "db"), this );
+    KIO::NetAccess::mkdir( QString(tempDir->name() + QLatin1String("kdeconfig")), this );
+    KIO::NetAccess::mkdir( QString(tempDir->name() + QLatin1String("akonadiconfig")), this );
+    KIO::NetAccess::mkdir( QString(tempDir->name() + QLatin1String("db")), this );
 
     QStringList filesToBackup;
 
@@ -85,24 +84,24 @@ void Backup::create( const KUrl& filename )
     AgentManager *manager = AgentManager::self();
     const AgentInstance::List list = manager->instances();
     foreach( const AgentInstance &agent, list ) {
-        const QString agentFileName = agent.identifier() + "rc";
+        const QString agentFileName = agent.identifier() + QLatin1String("rc");
         const QString configFileName = KStandardDirs::locateLocal( "config", agentFileName );
         bool exists = KIO::NetAccess::exists( configFileName, KIO::NetAccess::DestinationSide, this );
         if ( exists ) {
             KIO::NetAccess::file_copy( configFileName,
-                                       QString(tempDir->name() + "kdeconfig" + sep + agentFileName), this );
-            filesToBackup << "kdeconfig" + sep + agentFileName;
+                                       QString(tempDir->name() + QLatin1String("kdeconfig") + sep + agentFileName), this );
+            filesToBackup << QLatin1String("kdeconfig") + sep + agentFileName;
         }
     }
 
     /* Copy over the Akonadi config files */
-    const QString config = XdgBaseDirs::findResourceDir( "config", "akonadi" );
+    const QString config = XdgBaseDirs::findResourceDir( "config", QLatin1String("akonadi") );
     QDir dir( config );
     const QStringList configlist = dir.entryList( QDir::Files );
     foreach( const QString& item, configlist ) {
         KIO::NetAccess::file_copy( QString(config + sep + item),
-                                   QString(tempDir->name() + "akonadiconfig" + sep + item), this );
-        filesToBackup << "akonadiconfig/" + item;
+                                   QString(tempDir->name() + QLatin1String("akonadiconfig") + sep + item), this );
+        filesToBackup << QLatin1String("akonadiconfig/") + item;
     }
 
     /* Dump the database */
@@ -110,18 +109,18 @@ void Backup::create( const KUrl& filename )
     KProcess *proc = new KProcess( this );
     QStringList params;
 
-    if( global.dbdriver() == "QMYSQL" ) {
-        params << "--single-transaction"
-               << "--flush-logs"
-               << "--triggers"
-               << "--result-file=" + tempDir->name() + "db" + sep + "database.sql"
+    if( global.dbdriver() == QLatin1String("QMYSQL") ) {
+        params << QLatin1String("--single-transaction")
+               << QLatin1String("--flush-logs")
+               << QLatin1String("--triggers")
+               << QLatin1String("--result-file=") + tempDir->name() + QLatin1String("db") + sep + QLatin1String("database.sql")
                << global.dboptions()
                << global.dbname();
     }
-    else if ( global.dbdriver() == "QPSQL" ) {
-        params << "--format=custom"
-               << "--blobs"
-               << "--file=" + tempDir->name() + "db" + sep + "database.sql"
+    else if ( global.dbdriver() == QLatin1String("QPSQL") ) {
+        params << QLatin1String("--format=custom")
+               << QLatin1String("--blobs")
+               << QLatin1String("--file=") + tempDir->name() + QLatin1String("db") + sep + QLatin1String("database.sql")
                << global.dboptions()
                << global.dbname();
     }
@@ -137,20 +136,20 @@ void Backup::create( const KUrl& filename )
         emit completed( false );
         return;
     }
-    filesToBackup << "db" + sep + "database.sql";
+    filesToBackup << QLatin1String("db") + sep + QLatin1String("database.sql");
 
     /* Make a nice tar file. */
     proc = new KProcess( this );
     params.clear();
-    params << "-C" << tempDir->name();
-    params << "-cjf";
+    params << QLatin1String("-C") << tempDir->name();
+    params << QLatin1String("-cjf");
     params << filename.toLocalFile() << filesToBackup;
     proc->setWorkingDirectory( tempDir->name() );
-    proc->setProgram( KStandardDirs::findExe( "tar" ), params );
+    proc->setProgram( KStandardDirs::findExe( QLatin1String("tar") ), params );
     result = proc->execute();
     delete proc;
     if ( result != 0 ) {
-        kWarning() << "Executed: " << KStandardDirs::findExe( "tar" ) << params << "Result: " << result;
+        kWarning() << "Executed: " << KStandardDirs::findExe( QLatin1String("tar") ) << params << QLatin1String("Result: ") << result;
         tempDir->unlink();
         delete tempDir;
         emit completed( false );
@@ -162,4 +161,3 @@ void Backup::create( const KUrl& filename )
     emit completed( true );
 }
 
-#include "backup.moc"

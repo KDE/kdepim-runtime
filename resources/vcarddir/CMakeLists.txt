@@ -39,4 +39,6 @@ target_link_libraries(akonadi_vcarddir_resource
   ${KDE4_KIO_LIBS}
 )
 
+add_subdirectory(wizard)
+
 install(TARGETS akonadi_vcarddir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

@@ -26,11 +26,8 @@
 #include <akonadi/transactionsequence.h>
 
 #include <QDateTime>
+#include <QDirIterator>
 #include <KMime/Message>
-
-enum {
-  MaxSubJobs = 300 // To save memory
-};
 
 RetrieveItemsJob::RetrieveItemsJob ( const Akonadi::Collection& collection, const KPIM::Maildir& md, QObject* parent ) :
   Job ( parent ),
@@ -38,10 +35,9 @@ RetrieveItemsJob::RetrieveItemsJob ( const Akonadi::Collection& collection, cons
   m_maildir( md ),
   m_mimeType( KMime::Message::mimeType() ),
   m_transaction( 0 ),
+  m_entryIterator(0),
   m_previousMtime( 0 ),
-  m_highestMtime( 0 ),
-  m_jobCount( 0 ),
-  m_nextIndex( 0 )
+  m_highestMtime( 0 )
 {
   Q_ASSERT( m_collection.isValid() );
   Q_ASSERT( m_maildir.isValid() );
@@ -71,51 +67,58 @@ void RetrieveItemsJob::localListDone ( KJob* job )
   }
 
   m_listingPath = m_maildir.path() + QLatin1String( "/new/" );
-  m_entryList = m_maildir.listNew();
+  delete m_entryIterator;
+  m_entryIterator = new QDirIterator( m_maildir.pathToNew(), QDir::Files );
   m_previousMtime = m_collection.remoteRevision().toLongLong();
   m_highestMtime = 0;
-  processEntry(0);
+  processEntry();
 }
 
-void RetrieveItemsJob::processEntry(qint64 index)
+void RetrieveItemsJob::processEntry()
 {
-  QString entry;
+  QFileInfo entryInfo;
+
+  QString filePath = m_entryIterator->next();
+
+  QString fileName = m_entryIterator->fileName();
 
   bool newItemFound = false;
   while ( !newItemFound ) {
-    if ( index >= m_entryList.size() ) {
+    if ( filePath.isEmpty() ) {
       if ( m_listingPath.endsWith( QLatin1String( "/new/" ) ) ) {
         m_listingPath = m_maildir.path() + QLatin1String( "/cur/" );
-        m_entryList = m_maildir.listCurrent();
-        processEntry( 0 );
+        delete m_entryIterator;
+        m_entryIterator = new QDirIterator( m_maildir.pathToCurrent(), QDir::Files );
+        processEntry();
       } else {
         entriesProcessed();
       }
       return;
     }
 
-    entry = m_entryList[index];
-    const qint64 currentMtime = m_maildir.lastModified( entry ).toMSecsSinceEpoch();
+    entryInfo = m_entryIterator->fileInfo();
+    const qint64 currentMtime = entryInfo.lastModified().toMSecsSinceEpoch();
     m_highestMtime = qMax( m_highestMtime, currentMtime );
-    if ( currentMtime <= m_previousMtime && m_localItems.contains( entry ) ) { // old, we got this one already
-      m_localItems.remove( entry );
-      index++;
+    if ( currentMtime <= m_previousMtime && m_localItems.contains( fileName ) ) { // old, we got this one already
+      m_localItems.remove( fileName );
+      filePath = m_entryIterator->next();
+      fileName = m_entryIterator->fileName();
     } else {
       newItemFound = true;
     }
   }
   Akonadi::Item item;
-  item.setRemoteId( entry );
+  item.setRemoteId( fileName );
   item.setMimeType( m_mimeType );
-  const qint64 entrySize = m_maildir.size( entry );
+  const qint64 entrySize = entryInfo.size();
   if ( entrySize >= 0 )
     item.setSize( entrySize );
 
   KMime::Message *msg = new KMime::Message;
-  msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeadersFromFile( m_listingPath + entry ) ) );
+  msg->setHead( KMime::CRLFtoLF( m_maildir.readEntryHeadersFromFile( m_listingPath + fileName ) ) );
   msg->parse();
 
-  Akonadi::Item::Flags flags = m_maildir.readEntryFlags( entry );
+  Akonadi::Item::Flags flags = m_maildir.readEntryFlags( fileName );
   Q_FOREACH ( const Akonadi::Item::Flag &flag, flags ) {
     item.setFlag( flag );
   }
@@ -123,32 +126,25 @@ void RetrieveItemsJob::processEntry(qint64 index)
   item.setPayload( KMime::Message::Ptr( msg ) );
 
   KJob *job = 0;
-  if ( m_localItems.contains( entry ) ) { // modification
-    item.setId( m_localItems.value( entry ).id() );
+  if ( m_localItems.contains( fileName ) ) { // modification
+    item.setId( m_localItems.value( fileName ).id() );
     job = new Akonadi::ItemModifyJob( item, transaction() );
-    m_localItems.remove( entry );
+    m_localItems.remove( fileName );
   } else { // new item
     job = new Akonadi::ItemCreateJob( item, m_collection, transaction() );
   }
-
-  m_jobCount++;
   connect(job, SIGNAL(result(KJob*)), SLOT(processEntryDone(KJob*)) );
-
-  m_nextIndex = index  + 1;
-  if ( m_jobCount < MaxSubJobs ) {
-    processEntry( m_nextIndex );
-  }
 }
 
 void RetrieveItemsJob::processEntryDone( KJob* )
 {
-  m_jobCount--;
-  if ( m_jobCount == 0 )
-    processEntry( m_nextIndex );
+    processEntry();
 }
 
 void RetrieveItemsJob::entriesProcessed()
 {
+  delete m_entryIterator;
+  m_entryIterator = 0;
   if ( !m_localItems.isEmpty() ) {
     Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob( m_localItems.values(), transaction() );
     m_maildir.removeCachedKeys( m_localItems.keys() );
@@ -187,4 +183,3 @@ void RetrieveItemsJob::transactionDone ( KJob* job )
   emitResult();
 }
 
-#include "retrieveitemsjob.moc"

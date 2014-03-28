@@ -142,7 +142,7 @@ QString POP3Resource::buildLabelForPasswordDialog( const QString &detailedError 
 {
   QString queryText = i18n( "Please enter the username and password for account '%1'.",
                             agentName() );
-  queryText += "<br>" + detailedError;
+  queryText += QLatin1String("<br>") + detailedError;
   return queryText;
 }
 
@@ -150,8 +150,8 @@ void POP3Resource::walletOpenedForLoading( bool success )
 {
   bool passwordLoaded = success;
   if ( success ) {
-    if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( "pop3" ) ) {
-      mWallet->setFolder( "pop3" );
+    if ( mWallet && mWallet->isOpen() && mWallet->hasFolder( QLatin1String("pop3") ) ) {
+      mWallet->setFolder( QLatin1String("pop3") );
       if ( mWallet->hasEntry( identifier() ) )
         mWallet->readPassword( identifier(), mPassword );
       else
@@ -178,10 +178,10 @@ void POP3Resource::walletOpenedForSaving( bool success )
 {
   if ( success ) {
     if ( mWallet && mWallet->isOpen() ) {
-      if ( !mWallet->hasFolder( "pop3" ) ) {
-        mWallet->createFolder( "pop3" );
+      if ( !mWallet->hasFolder( QLatin1String("pop3") ) ) {
+        mWallet->createFolder( QLatin1String("pop3") );
       }
-      mWallet->setFolder( "pop3" );
+      mWallet->setFolder( QLatin1String("pop3") );
       mWallet->writePassword( identifier(), mPassword );
     }
   }
@@ -463,7 +463,7 @@ void POP3Resource::localFolderRequestJobFinished( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Error while trying to get the local inbox folder, "
-                      "aborting mail check." ) + '\n' + job->errorString() );
+                      "aborting mail check." ) + QLatin1Char('\n') + job->errorString() );
     return;
   }
   if ( mTestLocalInbox ) {
@@ -489,7 +489,7 @@ void POP3Resource::targetCollectionFetchJobFinished( KJob *job )
       return;
     } else {
       cancelSync( i18n( "Error while trying to get the folder for incoming mail, "
-                        "aborting mail check." ) + '\n' + job->errorString() );
+                        "aborting mail check." ) + QLatin1Char('\n') + job->errorString() );
       mTestLocalInbox = false;
       return;
     }
@@ -514,7 +514,7 @@ void POP3Resource::precommandResult( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Error while executing precommand." ) +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
     return;
   }
   else {
@@ -529,7 +529,7 @@ void POP3Resource::loginJobResult( KJob *job )
     if ( job->error() == KIO::ERR_COULD_NOT_LOGIN )
       mAskAgain = true;
     cancelSync( i18n( "Unable to login to the server %1.", Settings::self()->host() ) +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
   }
   else {
     advanceState( List );
@@ -540,7 +540,7 @@ void POP3Resource::listJobResult( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Error while getting the list of messages on the server." ) +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
   }
   else {
     ListJob *listJob = dynamic_cast<ListJob*>( job );
@@ -555,7 +555,7 @@ void POP3Resource::uidListJobResult( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Error while getting list of unique mail identifiers from the server." ) +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
   }
   else {
     UIDListJob *listJob = dynamic_cast<UIDListJob*>( job );
@@ -584,7 +584,7 @@ void POP3Resource::fetchJobResult( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Error while fetching mails from the server." ) +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
     return;
   }
   else {
@@ -611,7 +611,7 @@ void POP3Resource::messageFinished( int messageId, KMime::Message::Ptr message )
   //         << "with subject" << message->subject()->asUnicodeString();
 
   Akonadi::Item item;
-  item.setMimeType( "message/rfc822" );
+  item.setMimeType( QLatin1String("message/rfc822") );
   item.setPayload<KMime::Message::Ptr>( message );
 
   Pop3ResourceAttribute *attr  = item.attribute<Pop3ResourceAttribute>( Akonadi::Entity::AddIfMissing );
@@ -661,7 +661,7 @@ void POP3Resource::messageDownloadProgress( KJob *job, KJob::Unit unit, qulonglo
   }
   else {
     statusMessage = i18n( "Fetching message %1 of %2 (%3 of %4 KB) for %5",
-                          mDownloadedIDs.size() + 1, totalMessages,
+                          mDownloadedIDs.size() +1, totalMessages,
                           job->processedAmount( KJob::Bytes ) / 1024,
                           job->totalAmount( KJob::Bytes ) / 1024, name() );
   }
@@ -682,7 +682,7 @@ void POP3Resource::itemCreateJobResult( KJob *job )
 
   if ( job->error() ) {
     cancelSync( i18n( "Unable to store downloaded mails." ) +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
     return;
   }
 
@@ -813,7 +813,7 @@ void POP3Resource::deleteJobResult( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Failed to delete the messages from the server.") +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
     return;
   }
 
@@ -865,7 +865,7 @@ void POP3Resource::quitJobResult( KJob *job )
 {
   if ( job->error() ) {
     cancelSync( i18n( "Unable to complete the mail fetch." ) +
-                '\n' + job->errorString() );
+                QLatin1Char('\n') + job->errorString() );
     return;
   }
 
@@ -925,8 +925,8 @@ void POP3Resource::saveSeenUIDList()
         timeIt = timeOfSeenUIDs.erase( timeIt );
       }
       else {
-        uidIt++;
-        timeIt++;
+        ++uidIt;
+        ++timeIt;
       }
     }
   }

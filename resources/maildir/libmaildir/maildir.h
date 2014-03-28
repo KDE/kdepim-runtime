@@ -59,16 +59,6 @@ public:
     bool isValid( bool createMissingFolders = true ) const;
 
     /**
-     * Returns whether the maildir is valid, and sets the error out-parameter
-     * so it can be used to signal the kind of error to the user.
-     * @see isValid
-     *
-     * @param error will contain the error message
-     * @param createMissingFolders if true (the default), the cur/new/tmp folders are created if they are missing
-     */
-    bool isValid( QString &error, bool createMissingFolders = true ) const;
-
-    /**
      * Returns whether this is a normal maildir or a container containing maildirs.
      */
     bool isRoot() const;
@@ -109,6 +99,12 @@ public:
      * should not be relied on.
      */
     QStringList listCurrent() const;
+
+    /** Return the path to the "new" directory */
+    QString pathToNew() const;
+
+    /** Return the path to the "cur" directory */
+    QString pathToCurrent() const;
 
     /**
      * Returns the full path to the subdir (the NAME.directory folder ).
@@ -185,8 +181,9 @@ public:
 
     /**
      * Write the given @p data to a file in the maildir with the given  @p key.
+     * Returns true in case of success, false in case of any error.
      */
-    void writeEntry( const QString& key, const QByteArray& data );
+    bool writeEntry( const QString& key, const QByteArray& data );
 
     /**
      * Adds the given @p data to the maildir. Returns the key of the entry.
@@ -218,7 +215,7 @@ public:
      * Moves the file with the given @p key into the Maildir @p destination.
      * @returns The new file name inside @p destination.
      */
-    QString moveEntryTo( const QString &key, const Maildir &destination );
+    QString moveEntryTo( const QString& key, const KPIM::Maildir& destination );
 
     /**
      * Creates the maildir tree structure specific directory path that the
@@ -246,6 +243,11 @@ public:
 
     /** Reloads the keys associated with the maildir in the key cache*/
     void refreshKeyCache();
+
+    /** Return the last error message string. The error might not come from the last performed operation,
+     if that was sucessful. The caller should always check the return value of the methods before
+     querying the last error string. */
+    QString lastError() const;
 
 private:
     void swap( const Maildir& );

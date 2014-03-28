@@ -30,9 +30,9 @@ if(KIMAPTEST_INCLUDE_DIR AND KIMAPTEST_LIBRARY)
     testchangeitemtask
     testexpungecollectiontask
     testmovecollectiontask
-    testmoveitemtask
-    testremovecollectiontask
-    testremoveitemtask
+    testmoveitemstask
+    testremovecollectionrecursivetask
+    testremoveitemstask
     testretrievecollectionmetadatatask
     testretrievecollectionstask
     testretrieveitemtask

@@ -142,6 +142,4 @@ void FileStore::AbstractJobSession::emitResult( FileStore::Job *job )
   job->emitResult();
 }
 
-#include "session_p.moc"
-
 // kate: space-indent on; indent-width 2; replace-tabs on;

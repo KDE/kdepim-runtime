@@ -32,7 +32,6 @@
 
 #include <QFile>
 #include <QMetaEnum>
-#include <QStringBuilder>
 #include <QTimer>
 #include <kcomponentdata.h>
 
@@ -59,14 +58,14 @@ KMigratorBase::KMigratorBase() : m_logFile( 0 )
 {
   KGlobal::ref();
 
-  const QString logFileName = KStandardDirs::locateLocal( "data", KGlobal::mainComponent().componentName() + "/migration.log" );
+  const QString logFileName = KStandardDirs::locateLocal( "data", KGlobal::mainComponent().componentName() + QLatin1String("/migration.log") );
   m_logFile = new QFile( logFileName );
   if ( !m_logFile->open( QFile::Append ) ) {
     delete m_logFile;
     m_logFile = 0;
     kWarning() << "Unable to open log file: " << logFileName;
   }
-  logMessage( Info, "Starting migration..." );
+  logMessage( Info, QLatin1String("Starting migration...") );
   connect( this, SIGNAL(message(KMigratorBase::MessageType,QString)), SLOT(logMessage(KMigratorBase::MessageType,QString)) );
 
   // load the vtable before we continue
@@ -75,14 +74,14 @@ KMigratorBase::KMigratorBase() : m_logFile( 0 )
 
 KMigratorBase::~KMigratorBase()
 {
-  logMessage( Info, "Migration finished." );
+  logMessage( Info, QLatin1String("Migration finished.") );
   delete m_logFile;
   KGlobal::deref();
 }
 
 KMigratorBase::MigrationState KMigratorBase::migrationState( const QString &identifier ) const
 {
-  KConfigGroup cfg( KGlobal::config(), "Resource " + identifier );
+  KConfigGroup cfg( KGlobal::config(), QLatin1String("Resource ") + identifier );
   QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
   const QString s = cfg.readEntry( "MigrationState", e.valueToKey( None ) );
   MigrationState state = (MigrationState)e.keyToValue( s.toLatin1() );
@@ -100,22 +99,22 @@ KMigratorBase::MigrationState KMigratorBase::migrationState( const QString &iden
 void KMigratorBase::setMigrationState( const QString &identifier, MigrationState state,
                         const QString &resId, const QString &type )
 {
-  KConfigGroup cfg( KGlobal::config(), "Resource " + identifier );
+  KConfigGroup cfg( KGlobal::config(), QLatin1String("Resource ") + identifier );
   QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
-  const QString stateStr = e.valueToKey( state );
+  const QString stateStr = QLatin1String(e.valueToKey( state ));
   cfg.writeEntry( "MigrationState", stateStr );
   cfg.writeEntry( "ResourceIdentifier", resId );
   cfg.sync();
 
   cfg = KConfigGroup( KGlobal::config(), "Bridged" );
-  QStringList bridgedResources = cfg.readEntry( type + "Resources", QStringList() );
+  QStringList bridgedResources = cfg.readEntry( type + QLatin1String("Resources"), QStringList() );
   if ( state == Bridged ) {
     if ( !bridgedResources.contains( identifier ) )
       bridgedResources << identifier;
   } else {
     bridgedResources.removeAll( identifier );
   }
-  cfg.writeEntry( type + "Resources", bridgedResources );
+  cfg.writeEntry( type + QLatin1String("Resources"), bridgedResources );
   cfg.sync();
 }
 
@@ -137,4 +136,3 @@ void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString& m
   }
 }
 
-#include "kmigratorbase.moc"

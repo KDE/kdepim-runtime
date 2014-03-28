@@ -27,5 +27,7 @@ PasswordRequesterInterface::PasswordRequesterInterface( QObject *parent )
 
 }
 
-#include "passwordrequesterinterface.moc"
+void PasswordRequesterInterface::cancelPasswordRequests()
+{
 
+}

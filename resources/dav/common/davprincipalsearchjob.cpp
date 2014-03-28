@@ -35,7 +35,7 @@ void DavPrincipalSearchJob::fetchProperty( const QString& name, const QString& n
 {
   QString propNamespace = ns;
   if ( propNamespace.isEmpty() )
-    propNamespace = "DAV:";
+    propNamespace = QLatin1String("DAV:");
 
   mFetchProperties << QPair<QString, QString>( propNamespace, name );
 }
@@ -59,17 +59,17 @@ void DavPrincipalSearchJob::start()
    */
   QDomDocument query;
 
-  QDomElement propfind = query.createElementNS( "DAV:", "propfind" );
+  QDomElement propfind = query.createElementNS( QLatin1String("DAV:"), QLatin1String("propfind") );
   query.appendChild( propfind );
 
-  QDomElement prop = query.createElementNS( "DAV:", "prop" );
+  QDomElement prop = query.createElementNS( QLatin1String("DAV:"), QLatin1String("prop" ));
   propfind.appendChild( prop );
 
-  QDomElement principalCollectionSet = query.createElementNS( "DAV:", "principal-collection-set" );
+  QDomElement principalCollectionSet = query.createElementNS( QLatin1String("DAV:"), QLatin1String("principal-collection-set") );
   prop.appendChild( principalCollectionSet );
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), query );
-  job->addMetaData( "PropagateHttpHeader", "true" );
+  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
   connect( job, SIGNAL(result(KJob*)), this, SLOT(principalCollectionSetSearchFinished(KJob*)) );
   job->start();
 }
@@ -77,9 +77,9 @@ void DavPrincipalSearchJob::start()
 void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
 {
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-  const int responseCode = davJob->queryMetaData( "responsecode" ).isEmpty() ?
+  const int responseCode = davJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
                             0 :
-                            davJob->queryMetaData( "responsecode" ).toInt();
+                            davJob->queryMetaData( QLatin1String("responsecode") ).toInt();
 
   // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
   if ( davJob->error() || ( responseCode >= 400 && responseCode < 600 ) ) {
@@ -127,7 +127,7 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
   QDomDocument document = davJob->response();
   QDomElement documentElement = document.documentElement();
 
-  QDomElement responseElement = DavUtils::firstChildElementNS( documentElement, "DAV:", "response" );
+  QDomElement responseElement = DavUtils::firstChildElementNS( documentElement, QLatin1String("DAV:"), QLatin1String("response") );
   if ( responseElement.isNull() ) {
     emitResult();
     return;
@@ -136,11 +136,11 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
   // check for the valid propstat, without giving up on first error
   QDomElement propstatElement;
   {
-    const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
+    const QDomNodeList propstats = responseElement.elementsByTagNameNS( QLatin1String("DAV:"), QLatin1String("propstat"));
     for ( uint i = 0; i < propstats.length(); ++i ) {
       const QDomElement propstatCandidate = propstats.item( i ).toElement();
-      const QDomElement statusElement = DavUtils::firstChildElementNS( propstatCandidate, "DAV:", "status" );
-      if ( statusElement.text().contains( "200" ) ) {
+      const QDomElement statusElement = DavUtils::firstChildElementNS( propstatCandidate, QLatin1String("DAV:"), QLatin1String("status") );
+      if ( statusElement.text().contains( QLatin1String("200") ) ) {
         propstatElement = propstatCandidate;
       }
     }
@@ -151,25 +151,25 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
     return;
   }
 
-  QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
+  QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, QLatin1String("DAV:"), QLatin1String("prop") );
   if ( propElement.isNull() ) {
     emitResult();
     return;
   }
 
-  QDomElement principalCollectionSetElement = DavUtils::firstChildElementNS( propElement, "DAV:", "principal-collection-set" );
+  QDomElement principalCollectionSetElement = DavUtils::firstChildElementNS( propElement, QLatin1String("DAV:"), QLatin1String("principal-collection-set") );
   if ( principalCollectionSetElement.isNull() ) {
     emitResult();
     return;
   }
 
-  QDomNodeList hrefNodes = principalCollectionSetElement.elementsByTagNameNS( "DAV:", "href" );
+  QDomNodeList hrefNodes = principalCollectionSetElement.elementsByTagNameNS( QLatin1String("DAV:"), QLatin1String("href") );
   for ( int i = 0; i < hrefNodes.size(); ++i ) {
     QDomElement hrefElement = hrefNodes.at( i ).toElement();
     QString href = hrefElement.text();
 
     KUrl url = mUrl.url();
-    if ( href.startsWith( '/' ) ) {
+    if ( href.startsWith( QLatin1Char('/') ) ) {
       // href is only a path, use request url to complete
       url.setEncodedPath( href.toLatin1() );
     } else {
@@ -183,7 +183,7 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
     QDomDocument principalPropertySearchQuery;
     buildReportQuery( principalPropertySearchQuery );
     KIO::DavJob *reportJob = DavManager::self()->createReportJob( url, principalPropertySearchQuery );
-    reportJob->addMetaData( "PropagateHttpHeader", "true" );
+    reportJob->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
     connect( reportJob, SIGNAL(result(KJob*)), this, SLOT(principalPropertySearchFinished(KJob*)) );
     ++mPrincipalPropertySearchSubJobCount;
     reportJob->start();
@@ -204,7 +204,7 @@ void DavPrincipalSearchJob::principalPropertySearchFinished( KJob* job )
 
   KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
 
-  const int responseCode = davJob->queryMetaData( "responsecode" ).toInt();
+  const int responseCode = davJob->queryMetaData( QLatin1String("responsecode") ).toInt();
 
   if ( responseCode > 499 && responseCode < 600 && !mPrincipalPropertySearchSubJobSuccessful ) {
     // Server-side error, unrecoverable
@@ -256,7 +256,7 @@ void DavPrincipalSearchJob::principalPropertySearchFinished( KJob* job )
   const QDomDocument document = davJob->response();
   const QDomElement documentElement = document.documentElement();
 
-  QDomElement responseElement = DavUtils::firstChildElementNS( documentElement, "DAV:", "response" );
+  QDomElement responseElement = DavUtils::firstChildElementNS( documentElement, QLatin1String("DAV:"), QLatin1String("response") );
   if ( responseElement.isNull() ) {
     if ( mPrincipalPropertySearchSubJobCount == 0 )
       emitResult();
@@ -266,11 +266,11 @@ void DavPrincipalSearchJob::principalPropertySearchFinished( KJob* job )
   // check for the valid propstat, without giving up on first error
   QDomElement propstatElement;
   {
-    const QDomNodeList propstats = responseElement.elementsByTagNameNS( "DAV:", "propstat" );
+    const QDomNodeList propstats = responseElement.elementsByTagNameNS( QLatin1String("DAV:"), QLatin1String("propstat") );
     for ( uint i = 0; i < propstats.length(); ++i ) {
       const QDomElement propstatCandidate = propstats.item( i ).toElement();
-      const QDomElement statusElement = DavUtils::firstChildElementNS( propstatCandidate, "DAV:", "status" );
-      if ( statusElement.text().contains( "200" ) ) {
+      const QDomElement statusElement = DavUtils::firstChildElementNS( propstatCandidate, QLatin1String("DAV:"), QLatin1String("status") );
+      if ( statusElement.text().contains( QLatin1String("200") ) ) {
         propstatElement = propstatCandidate;
       }
     }
@@ -282,7 +282,7 @@ void DavPrincipalSearchJob::principalPropertySearchFinished( KJob* job )
     return;
   }
 
-  QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, "DAV:", "prop" );
+  QDomElement propElement = DavUtils::firstChildElementNS( propstatElement, QLatin1String("DAV:"), QLatin1String("prop" ));
   if ( propElement.isNull() ) {
     if ( mPrincipalPropertySearchSubJobCount == 0 )
       emitResult();
@@ -332,33 +332,33 @@ void DavPrincipalSearchJob::buildReportQuery( QDomDocument& query )
    *  </D:principal-property-search>
    */
 
-  QDomElement principalPropertySearch = query.createElementNS( "DAV:", "principal-property-search" );
+  QDomElement principalPropertySearch = query.createElementNS( QLatin1String("DAV:"), QLatin1String("principal-property-search") );
   query.appendChild( principalPropertySearch );
 
-  QDomElement propertySearch = query.createElementNS( "DAV:", "property-search" );
+  QDomElement propertySearch = query.createElementNS( QLatin1String("DAV:"), QLatin1String("property-search") );
   principalPropertySearch.appendChild( propertySearch );
 
-  QDomElement prop = query.createElementNS( "DAV:", "prop" );
+  QDomElement prop = query.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
   propertySearch.appendChild( prop );
 
   if ( mType == DisplayName ) {
-    QDomElement displayName = query.createElementNS( "DAV:", "displayname" );
+    QDomElement displayName = query.createElementNS( QLatin1String("DAV:"), QLatin1String("displayname") );
     prop.appendChild( displayName );
   }
   else if ( mType == EmailAddress ) {
-    QDomElement calendarUserAddressSet = query.createElementNS( "urn:ietf:params:xml:ns:caldav", "calendar-user-address-set" );
+    QDomElement calendarUserAddressSet = query.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("calendar-user-address-set") );
     prop.appendChild( calendarUserAddressSet );
     //QDomElement hrefElement = query.createElementNS( "DAV:", "href" );
     //prop.appendChild( hrefElement );
   }
 
-  QDomElement match = query.createElementNS( "DAV:", "match" );
+  QDomElement match = query.createElementNS( QLatin1String("DAV:"), QLatin1String("match") );
   propertySearch.appendChild( match );
 
   QDomText propFilter = query.createTextNode( mFilter );
   match.appendChild( propFilter );
 
-  prop = query.createElementNS( "DAV:", "prop" );
+  prop = query.createElementNS( QLatin1String("DAV:"), QLatin1String("prop") );
   principalPropertySearch.appendChild( prop );
 
   typedef QPair<QString, QString> PropertyPair;

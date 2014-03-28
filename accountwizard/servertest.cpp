@@ -50,9 +50,9 @@ void ServerTest::testFinished( QList< int > list )
 {
   kDebug() << "types: " << list;
   if ( list.contains( MailTransport::Transport::EnumEncryption::TLS ) ) {
-    emit testResult( "tls" );
+    emit testResult( QLatin1String("tls") );
   } else if ( list.contains( MailTransport::Transport::EnumEncryption::SSL ) ) {
-    emit testResult( "ssl" );
+    emit testResult( QLatin1String("ssl") );
   } else {
     KMessageBox::information( 0, i18n( "There seems to be a problem in reaching this server "
           "or choosing a safe way to sent the credentials to server. We advise you to "
@@ -62,4 +62,3 @@ void ServerTest::testFinished( QList< int > list )
   }
 }
 
-#include "servertest.moc"

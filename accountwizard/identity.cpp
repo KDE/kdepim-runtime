@@ -23,7 +23,7 @@
 #include <kpimidentities/identitymanager.h>
 #include <kpimidentities/identity.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 Identity::Identity( QObject *parent )
   : SetupObject( parent ),
@@ -75,14 +75,14 @@ QString Identity::identityName() const
     name = i18nc( "Default name for new email accounts/identities.", "Unnamed" );
 
     QString idName = m_email;
-    int pos = idName.indexOf( '@' );
+    int pos = idName.indexOf( QLatin1Char('@') );
     if ( pos != -1 ) {
       name = idName.mid( 0, pos );
     }
 
     // Make the name a bit more human friendly
-    name.replace( '.', ' ' );
-    pos = name.indexOf( ' ' );
+    name.replace( QLatin1Char('.'), QLatin1Char(' ') );
+    pos = name.indexOf( QLatin1Char(' ') );
     if ( pos != 0 ) {
       name[ pos + 1 ] = name[ pos + 1 ].toUpper();
     }
@@ -150,4 +150,3 @@ void Identity::setXFace(const QString& xface)
   m_xface = xface;
 }
 
-#include "identity.moc"

@@ -1,4 +1,7 @@
 
+#add_definitions( -DQT_NO_CAST_FROM_ASCII )
+#add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}/libkdepim-copy
   ${CMAKE_CURRENT_SOURCE_DIR}/shared
@@ -51,7 +54,6 @@ macro_optional_add_subdirectory( localbookmarks )
 
 add_subdirectory( maildir )
 
-macro_optional_add_subdirectory( microblog )
 macro_optional_add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
@@ -63,24 +65,13 @@ if( LibKFbAPI_FOUND )
   add_subdirectory( facebook )
 endif()
 
-if (NOT WINCE)
-  add_subdirectory( nepomuktag )
-endif ()
-
 add_subdirectory( shared )
-
-if (NOT WINCE)
-  add_subdirectory( birthdays )
-  add_subdirectory( knut )
-  add_subdirectory( mixedmaildir )
-  add_subdirectory( mailtransport_dummy )
-  add_subdirectory( mbox )
-  add_subdirectory( nntp )
-  add_subdirectory( vcarddir )
-  add_subdirectory( icaldir )
-else ()
-  add_subdirectory( agentserver )
-endif ()
-
+add_subdirectory( birthdays )
+add_subdirectory( mixedmaildir )
+add_subdirectory( mailtransport_dummy )
+add_subdirectory( mbox )
+add_subdirectory( nntp )
+add_subdirectory( vcarddir )
+add_subdirectory( icaldir )
 add_subdirectory( vcard )
-
+add_subdirectory( folderarchivesettings )

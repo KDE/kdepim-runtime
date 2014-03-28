@@ -1,3 +1,6 @@
+add_definitions( -DQT_NO_CAST_FROM_ASCII )
+add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 macro(kdepim_add_agent _target)
     if(KDEPIM_BUILD_AGENTS_AS_PLUGINS)
       add_definitions(-DKDEPIM_PLUGIN_AGENT)
@@ -11,20 +14,7 @@ endmacro()
 
 add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
-
-if( STRIGI_FOUND AND AKONADI_USE_STRIGI_SEARCH )
-add_subdirectory( strigifeeder )
-endif()
-
-if(NOT WINCE)
+add_subdirectory( migration )
 add_subdirectory( invitations )
-#add_subdirectory( calendarsearch )
 
-if( NOT KDEPIM_NO_NEPOMUK )
-    include_directories( ${CMAKE_CURRENT_BINARY_DIR}/ontologies ontologies ${SOPRANO_INCLUDE_DIR} )
-
-    add_subdirectory( nepomukfeeder )
-    add_subdirectory( ontologies )
-
-endif()
-endif()
+install(FILES akonadinepomukfeederagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")

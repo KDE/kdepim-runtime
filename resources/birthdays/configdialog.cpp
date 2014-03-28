@@ -27,7 +27,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
   : KDialog( parent )
 {
   ui.setupUi( mainWidget() );
-  setWindowIcon( KIcon( "view-calendar-birthday" ) );
+  setWindowIcon( KIcon( QLatin1String("view-calendar-birthday") ) );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.kcfg_AlarmDays->setSuffix( ki18np( " day", " days" ) );
@@ -41,4 +41,3 @@ void ConfigDialog::save()
   Settings::self()->writeConfig();
 }
 
-#include "configdialog.moc"

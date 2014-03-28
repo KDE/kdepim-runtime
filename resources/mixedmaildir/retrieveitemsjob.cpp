@@ -42,6 +42,11 @@
 
 using namespace Akonadi;
 
+enum {
+  MaxItemCreateJobs = 100,
+  MaxItemModifyJobs = 100
+};
+
 class RetrieveItemsJob::Private
 {
   RetrieveItemsJob *const q;
@@ -49,7 +54,7 @@ class RetrieveItemsJob::Private
   public:
     Private( RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store )
       : q( parent ), mCollection( collection ), mStore( store ),
-        mTransaction( 0 ), mHighestModTime( -1 )
+        mTransaction( 0 ), mHighestModTime( -1 ), mNumItemCreateJobs( 0 ), mNumItemModifyJobs( 0 )
     {
     }
 
@@ -75,8 +80,9 @@ class RetrieveItemsJob::Private
     QQueue<Item> mChangedItems;
     Item::List mAvailableItems;
     Item::List mItemsMarkedAsDeleted;
-
     qint64 mHighestModTime;
+    int mNumItemCreateJobs;
+    int mNumItemModifyJobs;
 
   public: // slots
     void akonadiFetchResult( KJob *job );
@@ -86,7 +92,29 @@ class RetrieveItemsJob::Private
     void fetchNewResult( KJob* );
     void processChangedItem();
     void fetchChangedResult( KJob* );
+    void itemCreateJobResult( KJob* );
+    void itemModifyJobResult( KJob* );
 };
+
+void RetrieveItemsJob::Private::itemCreateJobResult( KJob *job )
+{
+  if ( job->error() ) {
+    kError() << "Error running ItemCreateJob: " << job->errorText();
+  }
+
+  mNumItemCreateJobs--;
+  QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
+}
+
+void RetrieveItemsJob::Private::itemModifyJobResult( KJob *job )
+{
+  if ( job->error() ) {
+    kError() << "Error running ItemModifyJob: " << job->errorText();
+  }
+
+  mNumItemModifyJobs--;
+  QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
+}
 
 void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
 {
@@ -95,17 +123,18 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
   ItemFetchJob *itemFetch = qobject_cast<ItemFetchJob*>( job );
   Q_ASSERT( itemFetch != 0 );
 
-  const Item::List items = itemFetch->items();
+  Item::List items = itemFetch->items();
+  itemFetch->clearItems(); // save memory
   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Akonadi fetch got" << items.count() << "items";
 
   mServerItemsByRemoteId.reserve( items.size() );
-  Q_FOREACH ( const Item &item, items ) {
+  for ( int i = 0 ; i < items.count() ; ++i ) {
+    Item &item = items[i];
     // items without remoteId have not been written to the resource yet
     if ( !item.remoteId().isEmpty() ) {
       // set the parent collection (with all ancestors) in every item
-      Item copy( item );
-      copy.setParentCollection( mCollection );
-      mServerItemsByRemoteId.insert( copy.remoteId(), copy );
+      item.setParentCollection( mCollection );
+      mServerItemsByRemoteId.insert( item.remoteId(), item );
     }
   }
 
@@ -220,8 +249,12 @@ void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
   }
 
   ItemCreateJob *itemCreate = new ItemCreateJob( item, mCollection, transaction() );
-  Q_UNUSED( itemCreate );
-  QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
+  mNumItemCreateJobs++;
+  connect( itemCreate, SIGNAL(result(KJob*)), q, SLOT(itemCreateJobResult(KJob*)) );
+
+  if (mNumItemCreateJobs < MaxItemCreateJobs ) {
+    QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
+  }
 }
 
 void RetrieveItemsJob::Private::processChangedItem()
@@ -273,8 +306,11 @@ void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
   }
 
   ItemModifyJob *itemModify = new ItemModifyJob( item, transaction() );
-  Q_UNUSED( itemModify );
-  QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
+  connect( itemModify, SIGNAL(result(KJob*)), q, SLOT(itemModifyJobResult(KJob*)) );
+  mNumItemModifyJobs++;
+  if ( mNumItemModifyJobs < MaxItemModifyJobs ) {
+    QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
+  }
 }
 
 void RetrieveItemsJob::Private::transactionResult( KJob *job )
@@ -318,6 +354,6 @@ void RetrieveItemsJob::doStart()
   connect( job, SIGNAL(result(KJob*)), this, SLOT(akonadiFetchResult(KJob*)) );
 }
 
-#include "retrieveitemsjob.moc"
+#include "moc_retrieveitemsjob.cpp"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

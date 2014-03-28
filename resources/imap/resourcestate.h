@@ -84,6 +84,10 @@ public:
   static ResourceStateInterface::Ptr createIdleState( ImapResource *resource,
                                                       const Akonadi::Collection &collection );
 
+
+  static ResourceStateInterface::Ptr createSearchState( ImapResource *resource,
+                                                        const Akonadi::Collection &collection );
+
 private:
   explicit ResourceState( ImapResource *resource );
 public:
@@ -113,7 +117,6 @@ public:
   virtual QSet<QByteArray> removedFlags() const;
 
   virtual QString rootRemoteId() const;
-  virtual QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true ) const;
 
   virtual void setIdleCollection( const Akonadi::Collection &collection );
   virtual void applyCollectionChanges( const Akonadi::Collection &collection );
@@ -135,6 +138,8 @@ public:
 
   virtual void changeProcessed();
 
+  virtual void searchFinished( const QVector<qint64> &result, bool isRid = true );
+
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
   virtual void taskDone();
@@ -146,6 +151,9 @@ public:
 
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
+
+  virtual QChar separatorCharacter() const;
+  virtual void setSeparatorCharacter( const QChar &separator );
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
 

@@ -20,7 +20,6 @@
 
 
 #include "testmaildir.h"
-#include "testmaildir.moc"
 
 #include <memory>
 
@@ -122,9 +121,8 @@ void MaildirTest::testMaildirInstantiation()
 
   QDir temp( m_temp->name() );
   temp.rmdir( QLatin1String( "new" ) );
-  QString error;
-  QVERIFY( !good.isValid( error, false ) );
-  QVERIFY( !error.isEmpty() );
+  QVERIFY( !good.isValid( false ) );
+  QVERIFY( !good.lastError().isEmpty() );
 
   Maildir root1( QLatin1String( "/foo/bar/Mail" ), true );
   QVERIFY( root1.isRoot() );
@@ -183,7 +181,7 @@ void MaildirTest::testMaildirWrite()
 
   QByteArray data = d.readEntry( entries[0] );
   QByteArray data2 = "changed\n";
-  d.writeEntry( entries[0], data2 );
+  QVERIFY( d.writeEntry( entries[0], data2 ) );
   QCOMPARE( data2, d.readEntry( entries[0] ) );
 }
 

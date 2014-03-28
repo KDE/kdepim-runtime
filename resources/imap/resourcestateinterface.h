@@ -62,12 +62,10 @@ public:
   virtual QSet<QByteArray> removedFlags() const = 0;
 
   virtual QString rootRemoteId() const = 0;
-  virtual QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true ) const = 0;
+  QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true );
 
   virtual void setIdleCollection( const Akonadi::Collection &collection ) = 0;
   virtual void applyCollectionChanges( const Akonadi::Collection &collection ) = 0;
-
-  virtual void collectionAttributesRetrieved( const Akonadi::Collection &collection ) = 0;
 
   virtual void itemRetrieved( const Akonadi::Item &item ) = 0;
 
@@ -85,6 +83,8 @@ public:
 
   virtual void changeProcessed() = 0;
 
+  virtual void searchFinished( const QVector<qint64> &result, bool isRid = true ) = 0;
+
   virtual void cancelTask( const QString &errorString ) = 0;
   virtual void deferTask() = 0;
   virtual void taskDone() = 0;
@@ -95,6 +95,9 @@ public:
 
   virtual void synchronizeCollectionTree() = 0;
   virtual void scheduleConnectionAttempt() = 0;
+
+  virtual QChar separatorCharacter() const = 0;
+  virtual void setSeparatorCharacter( const QChar &separator ) = 0;
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName ) = 0;
 };

@@ -48,8 +48,42 @@ bool SerializerPluginKCalCore::deserialize( Item &item, const QByteArray &label,
     return false;
   }
 
-  Incidence::Ptr i = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
-  if ( !i ) {
+  qint32 type;
+  quint32 magic, incidenceVersion;
+  QDataStream input( &data );
+  input >> magic;
+  input >> incidenceVersion;
+  input >> type;
+  data.seek( 0 );
+
+  Incidence::Ptr incidence;
+
+  if (magic == IncidenceBase::magicSerializationIdentifier()) {
+    IncidenceBase::Ptr base;
+    switch ( static_cast<KCalCore::Incidence::IncidenceType>( type ) ) {
+      case KCalCore::Incidence::TypeEvent: {
+        base = Event::Ptr( new Event() );
+        break;
+      }
+      case KCalCore::Incidence::TypeTodo: {
+        base = Todo::Ptr( new Todo() );
+        break;
+      }
+      case KCalCore::Incidence::TypeJournal: {
+        base = Journal::Ptr( new Journal() );
+        break;
+      }
+      default:
+        break;
+    }
+    input >> base;
+    incidence = base.staticCast<KCalCore::Incidence>();
+  } else {
+    // Use the old format
+    incidence = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
+  }
+
+  if ( !incidence ) {
     kWarning( 5263 ) << "Failed to parse incidence! Item id = " << item.id()
                      << "Storage collection id " << item.storageCollectionId()
                      << "parentCollectionId = " << item.parentCollection().id();
@@ -57,7 +91,8 @@ bool SerializerPluginKCalCore::deserialize( Item &item, const QByteArray &label,
     kWarning( 5263 ) << QString::fromUtf8( data.readAll() );
     return false;
   }
-  item.setPayload( i );
+
+  item.setPayload( incidence );
   return true;
 }
 
@@ -70,10 +105,18 @@ void SerializerPluginKCalCore::serialize( const Item &item,
   if ( label != Item::FullPayload || !item.hasPayload<Incidence::Ptr>() )
     return;
   Incidence::Ptr i = item.payload<Incidence::Ptr>();
-  // ### I guess this can be done without hardcoding stuff
-  data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 4.3//EN\nVERSION:2.0\nX-KDE-ICAL-IMPLEMENTATION-VERSION:1.0\n" );
-  data.write( mFormat.toRawString( i ) );
-  data.write( "\nEND:VCALENDAR" );
+
+  // Using an env variable for now while testing
+  if (qgetenv("KCALCORE_BINARY_SERIALIZER") == QByteArray("1")) {
+    QDataStream output(&data);
+    IncidenceBase::Ptr base = i;
+    output << base;
+  } else {
+    // ### I guess this can be done without hardcoding stuff
+    data.write( "BEGIN:VCALENDAR\nPRODID:-//K Desktop Environment//NONSGML libkcal 4.3//EN\nVERSION:2.0\nX-KDE-ICAL-IMPLEMENTATION-VERSION:1.0\n" );
+    data.write( mFormat.toRawString( i ) );
+    data.write( "\nEND:VCALENDAR" );
+  }
 }
 
 //// DifferencesAlgorithmInterface
@@ -304,6 +347,15 @@ void SerializerPluginKCalCore::compare( Akonadi::AbstractDifferencesReporter *re
   }
 }
 
+//// GidExtractorInterface
+
+QString SerializerPluginKCalCore::extractGid( const Item &item ) const
+{
+  if ( !item.hasPayload<Incidence::Ptr>() ) {
+    return QString();
+  }
+  return item.payload<Incidence::Ptr>()->instanceIdentifier();
+}
+
 Q_EXPORT_PLUGIN2( akonadi_serializer_kcalcore, SerializerPluginKCalCore )
 
-#include "akonadi_serializer_kcalcore.moc"

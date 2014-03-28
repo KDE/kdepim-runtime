@@ -27,6 +27,8 @@
 #define RESOURCES_IMAP_IMAPRESOURCE_H
 
 #include <akonadi/resourcebase.h>
+#include <akonadi/agentsearchinterface.h>
+#include <KDialog>
 #include <QPointer>
 
 class QTimer;
@@ -37,13 +39,14 @@ namespace KIMAP
   class Session;
 }
 
-class ImapAccount;
 class ImapIdleManager;
 class SessionPool;
 class ResourceState;
 class SubscriptionDialog;
 
-class ImapResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV3
+class ImapResource : public Akonadi::ResourceBase,
+                     public Akonadi::AgentBase::ObserverV3,
+                     public Akonadi::AgentSearchInterface
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
@@ -55,7 +58,7 @@ public:
   ~ImapResource();
 
 
-  int configureDialog( WId windowId );
+  KDialog *createConfigureDialog( WId windowId );
   QStringList serverCapabilities() const;
 
 public Q_SLOTS:
@@ -63,8 +66,6 @@ public Q_SLOTS:
 
   // DBus methods
   Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
-  Q_SCRIPTABLE void setFastSyncEnabled( bool fastSync );
-  Q_SCRIPTABLE bool isFastSyncEnabled() const;
   Q_SCRIPTABLE int configureSubscription( qlonglong windowId = 0 );
 
   // pseudo-virtual called by ResourceBase
@@ -77,7 +78,6 @@ protected Q_SLOTS:
   void abortActivity();
 
   void retrieveCollections();
-  void retrieveCollectionAttributes( const Akonadi::Collection &collection );
 
   void retrieveItems( const Akonadi::Collection &col );
   bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
@@ -97,11 +97,20 @@ protected:
   virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                 const Akonadi::Collection &destination );
 
+  virtual void addSearch( const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection );
+  virtual void removeSearch( const Akonadi::Collection &resultCollection );
+  virtual void search( const QString &query, const Akonadi::Collection &collection );
 
   virtual void doSetOnline(bool online);
 
+  QChar separatorCharacter() const;
+  void setSeparatorCharacter( const QChar &separator );
+
+  virtual void aboutToQuit();
 
 private Q_SLOTS:
+  void doSearch( const QVariant &arg );
+
   void reconnect();
 
   void scheduleConnectionAttempt();
@@ -124,6 +133,8 @@ private Q_SLOTS:
   void showError( const QString &message );
   void clearStatusMessage();
 
+  void onConfigurationDone( int result );
+
 private:
   friend class ResourceState;
 
@@ -136,9 +147,8 @@ private:
   QList<ResourceTask*> m_taskList;
   QPointer<SubscriptionDialog> mSubscriptions;
   ImapIdleManager *m_idle;
-  bool m_fastSync;
-  Akonadi::Session *m_bodyCheckSession;
   QTimer *m_statusMessageTimer;
+  QChar m_separatorCharacter;
 };
 
 #endif

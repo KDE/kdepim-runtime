@@ -87,16 +87,11 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
             EventAttribute* evAttr = dynamic_cast<EventAttribute*>(a);
             if (!evAttr)
             {
-                kError(5954) << "deserialize(): unknown type EventAttribute: retrying";
-                AttributeFactory::registerAttribute<KAlarmCal::EventAttribute>();
-                mRegistered = QLatin1String("x");   // set to any non-null string
-                if (item.hasAttribute<EventAttribute>())
-                    evAttr = item.attribute<EventAttribute>();
-                if (evAttr)
-                    kError(5954) << "deserialize(): EventAttribute was not already registered";
+                // Registering EventAttribute doesn't work in the serializer
+                // unless the application also registers it. This doesn't
+                // matter unless the application uses KAEvent class.
+                kError(5954) << "deserialize(): Event with uid" << event.id() << "contains unknown type EventAttribute (application must call AttributeFactory::registerAttribute())";
             }
-            if (!evAttr)
-                kFatal(5954) << "deserialize(): Event with uid" << event.id() << "contains unknown type EventAttribute";
             else
             {
                 KAEvent::CmdErrType err = evAttr->commandError();
@@ -269,8 +264,12 @@ void SerializerPluginKAlarm::reportDifference(AbstractDifferencesReporter* repor
         reporter->addProperty(AbstractDifferencesReporter::ConflictMode, KAEventFormatter::label(id), mValueL.value(id), mValueR.value(id));
 }
 
+QString SerializerPluginKAlarm::extractGid(const Item& item) const
+{
+    return item.hasPayload<KAEvent>() ? item.payload<KAEvent>().id() : QString();
+}
+
 Q_EXPORT_PLUGIN2(akonadi_serializer_kalarm, SerializerPluginKAlarm)
 
-#include "akonadi_serializer_kalarm.moc"
 
 // vim: et sw=4:

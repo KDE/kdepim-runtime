@@ -17,8 +17,7 @@
     02110-1301, USA.
 */
 
-// TODO: i18n??
-var page = Dialog.addPage( "contactswizard.ui", "Settings" );
+var page = Dialog.addPage( "contactswizard.ui", qsTr("Settings") );
 
 page.widget().lineEdit.text = "${CONTACTS_DIRECTORY_DEFAULT_PATH}";
 
@@ -36,7 +35,7 @@ function setup()
   var contactsResource = SetupManager.createResource( "akonadi_contacts_resource" );
   contactsResource.setOption( "Path", page.widget().lineEdit.text );
   contactsResource.setOption( "IsConfigured", "true" );
-  contactsResource.setName( "Local Contacts" ); //TODO: i18n
+  contactsResource.setName( qsTr("Local Contacts") );
   SetupManager.execute();
 }
 
