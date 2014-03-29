@@ -382,7 +382,8 @@ void Settings::configureAccountService(Accounts::Account *acc, const Accounts::S
 {
   kDebug() << "Configuring service: " << service.name();
 
-  QString domain = acc->valueAsString( "server/host" );
+  acc->selectService();
+  QString domain = acc->valueAsString( "dav/scheme" ) + "://" + acc->valueAsString( "dav/host" );
   acc->selectService( service );
 
   QString type;
