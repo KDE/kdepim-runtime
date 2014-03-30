@@ -129,6 +129,7 @@ protected:
   static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
 
   bool serverSupportsAnnotations() const;
+  bool serverSupportsCondstore() const;
 
 private:
 

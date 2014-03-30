@@ -144,7 +144,7 @@ void RetrieveItemsTask::triggerPreExpungeSelect( const QString &mailBox )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
-  select->setCondstoreEnabled( serverCapabilities().contains( QLatin1String( "CONDSTORE" ) ) );
+  select->setCondstoreEnabled( serverSupportsCondstore() );
   connect( select, SIGNAL(result(KJob*)),
            this, SLOT(onPreExpungeSelectDone(KJob*)) );
   select->start();
@@ -188,7 +188,7 @@ void RetrieveItemsTask::triggerFinalSelect( const QString &mailBox )
 {
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( mailBox );
-  select->setCondstoreEnabled( serverCapabilities().contains( QLatin1String( "CONDSTORE" ) ) );
+  select->setCondstoreEnabled( serverSupportsCondstore() );
   connect( select, SIGNAL(result(KJob*)),
            this, SLOT(onFinalSelectDone(KJob*)) );
   select->start();
@@ -211,7 +211,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   const QList<QByteArray> flags = select->permanentFlags();
 
   //The select job retrieves highestmodset whenever it's available, but in case of no CONDSTORE support we ignore it
-  if( !serverCapabilities().contains( QLatin1String( "CONDSTORE" )) ) {
+  if ( !serverSupportsCondstore() ) {
     highestModSeq = 0;
   }
 
@@ -402,7 +402,7 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set, qint64 h
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
   scope.mode = KIMAP::FetchJob::FetchScope::Flags;
-  if(serverCapabilities().contains( QLatin1String( "CONDSTORE" ))) {
+  if ( serverSupportsCondstore() ) {
       scope.changedSince = highestModSeq;
   }
 
