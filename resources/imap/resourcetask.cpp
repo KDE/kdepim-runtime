@@ -462,4 +462,12 @@ bool ResourceTask::serverSupportsAnnotations() const
             || serverCapabilities().contains( QLatin1String( "ANNOTATEMORE" ) );
 }
 
+bool ResourceTask::serverSupportsCondstore() const
+{
+    // Don't enable CONDSTORE for GMail (X-GM-EXT-1 is a GMail-specific capability)
+    // because it breaks changes synchronization when using labels.
+    return serverCapabilities().contains( QLatin1String( "CONDSTORE" ) ) &&
+            !serverCapabilities().contains( QLatin1String( "X-GM-EXT-1" ) );
+}
+
 
