@@ -113,6 +113,10 @@ void KAlarmDirResource::aboutToQuit()
     mSettings->writeConfig();
 }
 
+/******************************************************************************
+* Called when the collection fetch job completes.
+* Check the calendar files' compatibility statuses if pending.
+*/
 void KAlarmDirResource::collectionFetchResult(KJob* j)
 {
     kDebug();
