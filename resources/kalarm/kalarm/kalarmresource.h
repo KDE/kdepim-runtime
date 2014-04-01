@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.h  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2012 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2014 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -62,7 +62,7 @@ class KAlarmResource : public ICalResourceBase
         void setCompatibility(KJob*);
 
     private:
-        void checkFileCompatibility(const Akonadi::Collection& = Akonadi::Collection());
+        void checkFileCompatibility(const Akonadi::Collection& = Akonadi::Collection(), bool createAttribute = false);
         Akonadi::CollectionFetchJob* fetchCollection(const char* slot);
 
         AlarmTypeRadioWidget* mTypeSelector;
