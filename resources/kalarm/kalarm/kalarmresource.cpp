@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.cpp  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2012 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2014 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -76,7 +76,7 @@ void KAlarmResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settin
     dlg->setFilter("*.ics");
 #endif
     mTypeSelector = new AlarmTypeRadioWidget(dlg);
-    QStringList types = mSettings->alarmTypes();
+    const QStringList types = mSettings->alarmTypes();
     CalEvent::Type alarmType = CalEvent::ACTIVE;
     if (!types.isEmpty())
         alarmType = CalEvent::type(types[0]);
@@ -138,14 +138,14 @@ void KAlarmResource::collectionFetchResult(KJob* j)
         bool firstTime = !mFetchedAttributes;
         mFetchedAttributes = true;
         CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
-        Collection::List collections = job->collections();
+        const Collection::List collections = job->collections();
         if (collections.isEmpty())
             kDebug() << "Error: resource's collection not found";
         else
         {
             // Check whether calendar file format needs to be updated
             kDebug() << "Fetched collection";
-            Collection& c(collections[0]);
+            const Collection& c(collections[0]);
             if (firstTime  &&  mSettings->path().isEmpty())
             {
                 // Initialising a resource which seems to have no stored
@@ -159,7 +159,7 @@ void KAlarmResource::collectionFetchResult(KJob* j)
                 mSettings->writeConfig();
                 synchronize();   // tell the server to use the new config
             }
-            checkFileCompatibility(c);
+            checkFileCompatibility(c, true);
         }
     }
 }
@@ -203,25 +203,29 @@ bool KAlarmResource::readFromFile(const QString& fileName)
 * Check if the recorded calendar version and compatibility are different from
 * the actual backend file, and if necessary convert the calendar in memory to
 * the current version.
+* If 'createAttribute' is true, the CompatibilityAttribute will be created if
+* it does not already exist.
 */
-void KAlarmResource::checkFileCompatibility(const Collection& collection)
+void KAlarmResource::checkFileCompatibility(const Collection& collection, bool createAttribute)
 {
     if (collection.isValid()
     &&  collection.hasAttribute<CompatibilityAttribute>())
     {
         // Update our note of the calendar version and compatibility
-        CompatibilityAttribute* attr = collection.attribute<CompatibilityAttribute>();
+        const CompatibilityAttribute* attr = collection.attribute<CompatibilityAttribute>();
         mCompatibility = attr->compatibility();
         mVersion       = attr->version();
+        createAttribute = false;
     }
     if (mHaveReadFile
-    &&  (mFileCompatibility != mCompatibility  ||  mFileVersion != mVersion))
+    && (createAttribute
+        ||  mFileCompatibility != mCompatibility  ||  mFileVersion != mVersion))
     {
         // The actual file's version and compatibility are different from
         // those in the Akonadi database, so update the database attributes.
         mCompatibility = mFileCompatibility;
         mVersion       = mFileVersion;
-        Collection c(collection);
+        const Collection c(collection);
         if (c.isValid())
             KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
         else
@@ -293,7 +297,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item& item, const QSet<QByteA
         return false;
     }
     event.setCompatibility(mCompatibility);
-    Item newItem = KAlarmResourceCommon::retrieveItem(item, event);
+    const Item newItem = KAlarmResourceCommon::retrieveItem(item, event);
     itemRetrieved(newItem);
     return true;
 }
@@ -332,10 +336,10 @@ void KAlarmResource::updateFormat(KJob* j)
         kDebug() << "Error: resource's collection not found";
     else
     {
-        Collection c(job->collections()[0]);
+        const Collection c(job->collections()[0]);
         if (c.hasAttribute<CompatibilityAttribute>())
         {
-            CompatibilityAttribute* attr = c.attribute<CompatibilityAttribute>();
+            const CompatibilityAttribute* attr = c.attribute<CompatibilityAttribute>();
             if (attr->compatibility() != mCompatibility)
                 kDebug()<<"Compatibility changed:"<<mCompatibility<<"->"<<attr->compatibility();
         }
@@ -357,7 +361,7 @@ void KAlarmResource::updateFormat(KJob* j)
                     break;
                 }
                 // Update the backend storage format to the current KAlarm format
-                QString filename = fileStorage()->fileName();
+                const QString filename = fileStorage()->fileName();
                 kDebug() << "Updating storage for" << filename;
                 KACalendar::setKAlarmVersion(fileStorage()->calendar());
                 if (!writeToFile(filename))
@@ -395,7 +399,7 @@ void KAlarmResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collect
         cancelTask(errorMessage(KAlarmResourceCommon::NotCurrentFormat));
         return;
     }
-    KAEvent event = item.payload<KAEvent>();
+    const KAEvent event = item.payload<KAEvent>();
     KCalCore::Event::Ptr kcalEvent(new KCalCore::Event);
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
     calendar()->addIncidence(kcalEvent);
@@ -422,7 +426,7 @@ void KAlarmResource::itemChanged(const Akonadi::Item& item, const QSet<QByteArra
         cancelTask(errorMessage(KAlarmResourceCommon::NotCurrentFormat));
         return;
     }
-    KAEvent event = KAlarmResourceCommon::checkItemChanged(item, errorMsg);
+    const KAEvent event = KAlarmResourceCommon::checkItemChanged(item, errorMsg);
     if (!event.isValid())
     {
         if (errorMsg.isEmpty())
@@ -495,7 +499,7 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection& collection)
     KAlarmResourceCommon::setCollectionCompatibility(collection, mCompatibility, mVersion);
 
     // Retrieve events from the calendar
-    KCalCore::Event::List events = calendar()->events();
+    const KCalCore::Event::List events = calendar()->events();
     Item::List items;
     foreach (const KCalCore::Event::Ptr& kcalEvent, events)
     {
@@ -505,8 +509,8 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection& collection)
             continue;    // ignore events without alarms
         }
 
-        KAEvent event(kcalEvent);
-        QString mime = CalEvent::mimeType(event.category());
+        const KAEvent event(kcalEvent);
+        const QString mime = CalEvent::mimeType(event.category());
         if (mime.isEmpty())
         {
             kWarning() << "KAEvent has no alarms:" << event.id();
