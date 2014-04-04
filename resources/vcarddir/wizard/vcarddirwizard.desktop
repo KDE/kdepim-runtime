@@ -1,20 +1,24 @@
 [Desktop Entry]
 Name=VCard Directory
+Name[ca]=Directori vCard
 Name[cs]=Adresář vizitek
 Name[de]=vCard-Ordner
 Name[fr]=Dossier « vCard »
 Name[nds]=vCard-Orner
 Name[pt]=Pasta de vCard's
+Name[pt_BR]=Diretório VCard
 Name[sk]=Adresár VCard
 Name[sv]=VCard-katalog
 Name[uk]=Каталог vCard
 Name[x-test]=xxVCard Directoryxx
 Icon=text-directory
 Comment=Loads contact from VCard Directory
+Comment[ca]=Carrega contactes des d'un directori amb vCard
 Comment[cs]=Načítá data z adresáře vizitek (vCard)
 Comment[de]=Lädt Kontakte aus einem vCard-Ordner
 Comment[nds]=Laadt Kontakten ut en vCard-Orner
 Comment[pt]=Carrega um contacto de uma pasta de ficheiros vCard
+Comment[pt_BR]=Carrega os contatos de um Diretório VCard
 Comment[sk]=Načíta kontakt z adresára vCard
 Comment[sv]=Laddar data från en VCard-katalog
 Comment[uk]=Завантажує дані запису контакту із каталогу vCard
