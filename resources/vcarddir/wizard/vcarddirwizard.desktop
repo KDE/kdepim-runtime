@@ -1,7 +1,42 @@
 [Desktop Entry]
 Name=VCard Directory
+Name[ca]=Directori vCard
+Name[cs]=Adresář vizitek
+Name[de]=vCard-Ordner
+Name[fi]=VCard-kansio
+Name[fr]=Dossier « vCard »
+Name[ko]=vCard 디렉터리
+Name[nds]=vCard-Orner
+Name[pl]=Katalog VCard
+Name[pt]=Pasta de vCard's
+Name[pt_BR]=Diretório VCard
+Name[sk]=Adresár VCard
+Name[sr]=В‑кард фасцикла
+Name[sr@ijekavian]=В‑кард фасцикла
+Name[sr@ijekavianlatin]=VCard fascikla
+Name[sr@latin]=VCard fascikla
+Name[sv]=VCard-katalog
+Name[uk]=Каталог vCard
+Name[x-test]=xxVCard Directoryxx
 Icon=text-directory
 Comment=Loads contact from VCard Directory
+Comment[ca]=Carrega contactes des d'un directori amb vCard
+Comment[cs]=Načítá data z adresáře vizitek (vCard)
+Comment[de]=Lädt Kontakte aus einem vCard-Ordner
+Comment[fi]=Lataa yhteystiedon VCard-kansiosta
+Comment[ko]=vCard 디렉터리에서 연락처를 가져옵니다
+Comment[nds]=Laadt Kontakten ut en vCard-Orner
+Comment[pl]=Wczytuje kontakty z katalogu vCard
+Comment[pt]=Carrega um contacto de uma pasta de ficheiros vCard
+Comment[pt_BR]=Carrega os contatos de um Diretório VCard
+Comment[sk]=Načíta kontakt z adresára vCard
+Comment[sr]=Учитава контакт из в‑кард фасцикле
+Comment[sr@ijekavian]=Учитава контакт из в‑кард фасцикле
+Comment[sr@ijekavianlatin]=Učitava kontakt iz vCard fascikle
+Comment[sr@latin]=Učitava kontakt iz vCard fascikle
+Comment[sv]=Laddar data från en VCard-katalog
+Comment[uk]=Завантажує дані запису контакту із каталогу vCard
+Comment[x-test]=xxLoads contact from VCard Directoryxx
 
 [Wizard]
 Type=text/vcard
