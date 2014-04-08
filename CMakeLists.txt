@@ -33,7 +33,6 @@ set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "rc")
     set(KDEPIM_RUNTIME_DEV_VERSION "")
 endif()
 
