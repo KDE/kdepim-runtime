@@ -34,6 +34,7 @@ set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
     set(KDEPIM_RUNTIME_DEV_VERSION "rc")
+    set(KDEPIM_RUNTIME_DEV_VERSION "")
 endif()
 
 set(KDEPIM_RUNTIME_VERSION "4.13${KDEPIM_RUNTIME_DEV_VERSION}")
@@ -53,7 +54,7 @@ find_package(KDE4 4.12.0 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.12.97)
+find_package(KdepimLibs 4.13.0)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
@@ -63,7 +64,7 @@ find_package(Boost 1.34.0)
 set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "http://www.boost.org" TYPE REQUIRED PURPOSE "Boost is required by Akonadi")
 
 # Akonadi
-find_package(Akonadi 1.11.80 QUIET CONFIG)
+find_package(Akonadi 1.12.0 QUIET CONFIG)
 set_package_properties(Akonadi PROPERTIES DESCRIPTION "Akonadi server libraries" URL "http://pim.kde.org/akonadi" TYPE REQUIRED PURPOSE "Access to PIM storage and services")
 
 # shared-mime-info
