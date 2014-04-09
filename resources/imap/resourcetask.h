@@ -56,6 +56,10 @@ public:
 
   void kill();
 
+  static QList<QByteArray> fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags, const Akonadi::Collection &collection );
+
+  static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
+
 Q_SIGNALS:
   void status( int status, const QString &message = QString() );
 
@@ -99,6 +103,8 @@ protected:
                                   const Akonadi::Item::List &removed );
   void itemsRetrievalDone();
 
+  void setTotalItems(int);
+
   void changeCommitted( const Akonadi::Item &item );
   void changesCommitted( const Akonadi::Item::List &items );
 
@@ -124,11 +130,9 @@ protected:
   const QChar separatorCharacter() const;
   void setSeparatorCharacter( const QChar &separator );
 
-  static QList<QByteArray> fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags, const Akonadi::Collection &collection );
-
-  static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
-
   bool serverSupportsAnnotations() const;
+
+  int batchSize() const;
 
 private:
 

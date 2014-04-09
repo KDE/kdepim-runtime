@@ -88,6 +88,8 @@ public:
   virtual void itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed );
   virtual void itemsRetrievalDone();
 
+  virtual void setTotalItems(int);
+
   virtual QSet< QByteArray > addedFlags() const;
   virtual QSet< QByteArray > removedFlags() const;
 
@@ -117,6 +119,8 @@ public:
   virtual void setSeparatorCharacter( const QChar &separator );
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
+
+  virtual int batchSize() const;
 
   QList< QPair<QByteArray, QVariant> > calls() const;
 

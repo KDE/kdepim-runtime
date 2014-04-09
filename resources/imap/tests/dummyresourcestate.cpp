@@ -225,6 +225,11 @@ void DummyResourceState::itemsRetrievalDone()
   recordCall( "itemsRetrievalDone" );
 }
 
+void DummyResourceState::setTotalItems(int)
+{
+
+}
+
 QSet< QByteArray > DummyResourceState::addedFlags() const
 {
   return QSet<QByteArray>();
@@ -329,4 +334,9 @@ void DummyResourceState::setSeparatorCharacter( const QChar &separator )
 void DummyResourceState::recordCall( const QByteArray callName, const QVariant &parameter )
 {
   m_calls << QPair<QByteArray, QVariant>( callName, parameter );
+}
+
+int DummyResourceState::batchSize() const
+{
+  return -1;
 }

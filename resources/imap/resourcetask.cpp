@@ -269,6 +269,11 @@ void ResourceTask::itemsRetrievalDone()
   deleteLater();
 }
 
+void ResourceTask::setTotalItems(int totalItems)
+{
+  m_resource->setTotalItems(totalItems);
+}
+
 void ResourceTask::changeCommitted( const Akonadi::Item &item )
 {
   m_resource->itemChangeCommitted( item );
@@ -455,5 +460,11 @@ bool ResourceTask::serverSupportsAnnotations() const
     return serverCapabilities().contains( QLatin1String( "METADATA" ) )
             || serverCapabilities().contains( QLatin1String( "ANNOTATEMORE" ) );
 }
+
+int ResourceTask::batchSize() const
+{
+    return m_resource->batchSize();
+}
+
 
 
