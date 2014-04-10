@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=VCard File
 Name[ca]=Fitxer vCard
+Name[ca@valencia]=Fitxer vCard
 Name[cs]=Soubor s vizitkou
 Name[de]=vCard-Datei
 Name[es]=Archivo VCard
@@ -23,6 +24,7 @@ Name[x-test]=xxVCard Filexx
 Icon=text-directory
 Comment=Loads contact from VCard File
 Comment[ca]=Carrega contactes des d'un fitxer vCard
+Comment[ca@valencia]=Carrega contactes des d'un fitxer vCard
 Comment[cs]=Načítá data ze souboru vizitek (vCard)
 Comment[de]=Lädt Kontakte aus einer vCard-Datei
 Comment[es]=Cargar contactos desde un archivo VCard

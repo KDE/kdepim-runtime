@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=VCard Directory
 Name[ca]=Directori vCard
+Name[ca@valencia]=Directori vCard
 Name[cs]=Adresář vizitek
 Name[de]=vCard-Ordner
 Name[es]=Directorio VCard
@@ -23,6 +24,7 @@ Name[x-test]=xxVCard Directoryxx
 Icon=text-directory
 Comment=Loads contact from VCard Directory
 Comment[ca]=Carrega contactes des d'un directori amb vCard
+Comment[ca@valencia]=Carrega contactes des d'un directori amb vCard
 Comment[cs]=Načítá data z adresáře vizitek (vCard)
 Comment[de]=Lädt Kontakte aus einem vCard-Ordner
 Comment[es]=Cargar contactos desde un directorio VCard
