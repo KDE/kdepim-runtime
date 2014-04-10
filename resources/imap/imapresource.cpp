@@ -169,8 +169,6 @@ ImapResource::ImapResource( const QString &id )
     Settings::self()->setTrashCollectionMigrated(true);
   }
 
-  m_bodyCheckSession = new Akonadi::Session( identifier().toLatin1() + "_body_checker");
-
   m_statusMessageTimer = new QTimer( this );
   m_statusMessageTimer->setSingleShot( true );
   connect( m_statusMessageTimer, SIGNAL(timeout()), SLOT(clearStatusMessage()) );
@@ -192,7 +190,6 @@ ImapResource::~ImapResource()
   m_taskList.clear();
 
   delete m_pool;
-  delete m_bodyCheckSession;
 }
 
 void ImapResource::aboutToQuit()
@@ -207,50 +204,6 @@ void ImapResource::aboutToQuit()
   }
 
   m_pool->disconnect();
-}
-
-void ImapResource::fetchItemsWithoutBodies( const Collection &collection,
-                                            QObject* receiver, const char* slot)
-{
-  Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( collection, m_bodyCheckSession );
-  fetchJob->setProperty( "receiver", QVariant::fromValue( QWeakPointer<QObject>( receiver ) ) );
-  fetchJob->setProperty( "slot", QString::fromLatin1( slot ) );
-  fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
-  fetchJob->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
-  fetchJob->fetchScope().setFetchModificationTime( false );
-
-  connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemsWithoutBodiesDone(KJob*)) );
-}
-
-void ImapResource::fetchItemsWithoutBodiesDone( KJob *job )
-{
-  Akonadi::ItemFetchJob *fetch = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  QWeakPointer<QObject> receiver = fetch->property( "receiver" ).value<QWeakPointer<QObject> >();
-  if ( receiver.isNull() ) {
-      kDebug() << "Parent task has been terminated";
-      return;
-  }
-
-  QList<qint64> uids;
-  if ( job->error() ) {
-    cancelTask( job->errorString() );
-  } else {
-    int i = 0;
-    Q_FOREACH( const Akonadi::Item &item, fetch->items() )  {
-      if ( !item.cachedPayloadParts().contains( Akonadi::MessagePart::Body ) ) {
-          kDebug() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
-          uids.append( item.remoteId().toInt() );
-          i++;
-      }
-    }
-    if ( i > 0 ) {
-      kDebug() << "Number of items missing the body: " << i;
-    }
-  }
-
-  const QString slot = fetch->property( "slot" ).toString();
-  QMetaObject::invokeMethod( receiver.data(), slot.toLatin1().constData(),
-                             Q_ARG( QList<qint64>, uids ) );
 }
 
 // -----------------------------------------------------------------------------
