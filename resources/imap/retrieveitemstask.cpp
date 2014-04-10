@@ -364,15 +364,6 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     highestModSeq = 0;
   }
 
-  // uidvalidity can change between sessions, we don't want to refetch
-  // folders in that case. Keep track of what is processed and what not.
-  static QStringList processed;
-  bool firstTime = false;
-  if ( processed.indexOf( mailBox ) == -1 ) {
-    firstTime = true;
-    processed.append( mailBox );
-  }
-
   Akonadi::Collection col = collection();
   bool modifyNeeded = false;
 
@@ -464,7 +455,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   // First check the uidvalidity, if this has changed, it means the folder
   // has been deleted and recreated. So we wipe out the messages and
   // retrieve all.
-  if ( oldUidValidity != uidValidity && !firstTime
+  if ( oldUidValidity != uidValidity
     && oldUidValidity != 0 && messageCount > 0 ) {
     kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
                    << uidValidity << ") refetching " << mailBox;
@@ -479,7 +470,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     setTotalItems(messageCount - realMessageCount);
     retrieveItems(KIMAP::ImapSet( realMessageCount + 1, messageCount ), scope, oldHighestModSeq, realMessageCount != 0);
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
-           && oldNextUid != 0 && !firstTime && messageCount > 0 ) {
+           && oldNextUid != 0 && messageCount > 0 ) {
     // amount is right but uidnext is different.... something happened
     // behind our back...
     kDebug( 5327 ) << "UIDNEXT check failed, refetching mailbox";
@@ -488,7 +479,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     // one scenario we can recover from is that an equal amount of mails has been deleted and added while we were not looking
     // the amount has to be less or equal to (nextUid - oldNextUid) due to strictly ascending UIDs
     // so, we just have to reload the last (nextUid - oldNextUid) mails if the uidnext values seem sane
-    if ( oldNextUid < nextUid && oldNextUid != 0 && !firstTime )
+    if ( oldNextUid < nextUid && oldNextUid != 0 )
       startIndex = qMax( 1ll, messageCount - ( nextUid - oldNextUid ) );
 
     Q_ASSERT( startIndex >= 1 );
