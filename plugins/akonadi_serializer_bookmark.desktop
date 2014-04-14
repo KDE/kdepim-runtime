@@ -2,7 +2,7 @@
 Name=Bookmark serializer
 Name[ar]=مسلسل العلامات
 Name[bs]=Serializator oznaka
-Name[ca]=Serialitzador de punts
+Name[ca]=Serialitzador d'adreces d'interès
 Name[ca@valencia]=Serialitzador de punts
 Name[da]=Serieordning af bogmærker
 Name[de]=Lesezeichen-Serialisierung
@@ -48,7 +48,7 @@ Name[zh_TW]=書籤序列器
 Comment=An Akonadi serializer plugin for bookmark objects
 Comment[ar]=ملحق مسلسل اكوندا لكائنات العلامة
 Comment[bs]=Akonadi dodatak serializatora za oznacene objekte
-Comment[ca]=Un connector de serialització de l'Akonadi pels objectes punts
+Comment[ca]=Un connector de serialització de l'Akonadi pels objectes d'adreces d'interès
 Comment[ca@valencia]=Un connector de serialització de l'Akonadi pels objectes punts
 Comment[da]=Et Akonadi-plugin til serieordning af bogmærkeobjekter
 Comment[de]=Akonadi-Modul zur Serialisierung von Lesezeichen

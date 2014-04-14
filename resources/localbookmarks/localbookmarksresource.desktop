@@ -2,7 +2,7 @@
 Name=Local Bookmarks
 Name[ar]=علامات محلية
 Name[bs]=Lokale oznake
-Name[ca]=Punts locals
+Name[ca]=Adreces d'interès locals
 Name[ca@valencia]=Punts locals
 Name[cs]=Místní záložky
 Name[da]=Lokale bogmærker
@@ -49,7 +49,7 @@ Name[zh_TW]=本地書籤
 Comment=Loads data from a local bookmarks file
 Comment[ar]=تحمل البيانات من ملف العلامات المحلية
 Comment[bs]=Učitava podatke iz datoteke lokalnih oznaka
-Comment[ca]=Carrega dades des d'un fitxer de punts local
+Comment[ca]=Carrega les dades des d'un fitxer d'adreces d'interès local
 Comment[ca@valencia]=Carrega dades des d'un fitxer de punts local
 Comment[cs]=Načítá data z místních záložek
 Comment[da]=Indlæser data fra en lokal bogmærkefil
