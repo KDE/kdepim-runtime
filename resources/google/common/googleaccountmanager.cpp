@@ -241,3 +241,8 @@ AccountsList GoogleAccountManager::listAccounts() const
     return m_accounts.values();
 }
 
+void GoogleAccountManager::cleanup(const QString &accountName)
+{
+    removeAccount(accountName);
+}
+

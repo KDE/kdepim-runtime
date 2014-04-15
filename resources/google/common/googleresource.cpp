@@ -74,6 +74,11 @@ GoogleResource::~GoogleResource()
 {
 }
 
+void GoogleResource::cleanup()
+{
+    accountManager()->cleanup(settings()->account());
+}
+
 AccountPtr GoogleResource::account() const
 {
     return m_account;

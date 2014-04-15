@@ -45,6 +45,8 @@ class GoogleAccountManager : public QObject
     bool removeAccount( const QString &accountName );
     KGAPI2::AccountsList listAccounts() const;
 
+    void cleanup(const QString &accountName);
+
   Q_SIGNALS:
     void managerReady( bool ready );
     void accountAdded( const KGAPI2::AccountPtr &account );
