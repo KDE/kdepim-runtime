@@ -60,6 +60,7 @@ public:
 
   KDialog *createConfigureDialog( WId windowId );
   QStringList serverCapabilities() const;
+  void cleanup();
 
   void fetchItemsWithoutBodies( const Akonadi::Collection &collection, QObject *receiver, const char *slot );
 

@@ -49,6 +49,7 @@ public:
     void renameRootCollection( const QString &newName );
 
     void clearCachedPassword();
+    void cleanup();
 
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );
