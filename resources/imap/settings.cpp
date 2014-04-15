@@ -112,6 +112,18 @@ void Settings::clearCachedPassword()
     m_password.clear();
 }
 
+void Settings::cleanup()
+{
+    Wallet* wallet = Wallet::openWallet( Wallet::NetworkWallet(), m_winId );
+    if ( wallet && wallet->isOpen() ) {
+        if ( wallet->hasFolder( QLatin1String("imap") ) ) {
+            wallet->setFolder( QLatin1String("imap") );
+            wallet->removeEntry( config()->name() );
+        }
+        delete wallet;
+    }
+}
+
 void Settings::requestPassword()
 {
   if ( !m_password.isEmpty() ||

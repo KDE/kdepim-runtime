@@ -758,7 +758,12 @@ void ImapResource::taskDestroyed( QObject *task )
 
 QStringList ImapResource::serverCapabilities() const
 {
-  return m_pool->serverCapabilities();
+    return m_pool->serverCapabilities();
+}
+
+void ImapResource::cleanup()
+{
+    Settings::self()->cleanup();
 }
 
 QString ImapResource::dumpResourceToString() const
