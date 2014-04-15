@@ -44,6 +44,8 @@ class POP3Resource : public Akonadi::ResourceBase,
 
     void clearCachedPassword();
 
+    void cleanup();
+
   public Q_SLOTS:
     virtual void configure( WId windowId );
 
@@ -180,6 +182,7 @@ class POP3Resource : public Akonadi::ResourceBase,
 
     // List of message IDs that were successfully deleted
     QList<int> mDeletedIDs;
+
 };
 
 #endif
