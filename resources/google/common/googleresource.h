@@ -53,7 +53,9 @@ class GoogleResource : public Akonadi::ResourceBase,
     virtual GoogleSettings* settings() const = 0;
     virtual QList<QUrl> scopes() const = 0;
 
-  public Q_SLOTS:
+    void cleanup();
+
+public Q_SLOTS:
     virtual void configure( WId windowId );
 
     void reloadConfig();
