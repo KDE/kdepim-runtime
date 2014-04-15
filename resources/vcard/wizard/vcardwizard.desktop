@@ -21,6 +21,7 @@ Name[sr@ijekavian]=В‑кард фајл
 Name[sr@ijekavianlatin]=VCard fajl
 Name[sr@latin]=VCard fajl
 Name[sv]=VCard-fil
+Name[tr]=VCard Dosyası
 Name[uk]=Файл vCard
 Name[x-test]=xxVCard Filexx
 Icon=text-directory
@@ -43,6 +44,7 @@ Comment[sr@ijekavian]=Учитава контакт из в‑кард фајл�
 Comment[sr@ijekavianlatin]=Učitava kontakt iz vCard fajla
 Comment[sr@latin]=Učitava kontakt iz vCard fajla
 Comment[sv]=Laddar data från en VCard-fil
+Comment[tr]=Bir VCard dosyasından veri yükler
 Comment[uk]=Завантажує дані запису контакту із файла vCard
 Comment[x-test]=xxLoads contact from VCard Filexx
 
