@@ -318,7 +318,6 @@ void ImapResource::onConnectDone( int errorCode, const QString &errorString )
     return;
 
   case SessionPool::CouldNotConnectError:
-    emit status( Broken, errorString );
     deferTask();
     setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
     return;
