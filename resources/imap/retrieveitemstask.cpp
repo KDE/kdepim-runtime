@@ -103,6 +103,11 @@ void BatchFetcher::fetchNextBatch()
 {
     Q_ASSERT(m_batchSize > 0);
     Q_ASSERT(m_currentSet.intervals().size() == 1);
+    if (m_currentSet.isEmpty()) {
+        kDebug() << "fetch complete";
+        emitResult();
+        return;
+    }
     const KIMAP::ImapInterval interval = m_currentSet.intervals().first();
     Q_ASSERT(interval.hasDefinedEnd());
 
