@@ -60,6 +60,7 @@ public:
 
   KDialog *createConfigureDialog( WId windowId );
   QStringList serverCapabilities() const;
+  void cleanup();
 
 public Q_SLOTS:
   virtual void configure( WId windowId );

@@ -25,6 +25,8 @@
 
 #include "deleteditemsattribute.h"
 
+#include <QFileInfo>
+
 using namespace Akonadi;
 
 CompactPage::CompactPage( const QString &collectionId, QWidget *parent )
@@ -105,13 +107,19 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
 
   KMBox::MBox mbox;
   // TODO: Set lock method.
-  if ( !mbox.load( KUrl( mCollectionId ).toLocalFile() ) ) {
+  const QString fileName = KUrl(mCollectionId).toLocalFile();
+  if ( !mbox.load(fileName) ) {
     ui.messageLabel->setText( i18n( "Failed to load the mbox file" ) );
   } else {
     ui.messageLabel->setText( i18np( "(Deleting 1 message)",
       "(Deleting %1 messages)", attr->offsetCount() ) );
     // TODO: implement and connect to messageProcessed signal.
-    if ( mbox.purge( attr->deletedItemEntries() ) ) {
+    if ( mbox.purge(attr->deletedItemEntries()) ||
+         (QFileInfo(fileName).size() == 0) ) {
+      // even if purge() failed but the file is now empty.
+      // it was probably deleted/emptied by an external prog. For whatever reason
+      // doesn't matter here. We know the file is empty so we can get rid
+      // of our stored DeletedItemsAttribute
       mboxCollection.removeAttribute<DeletedItemsAttribute>();
       CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
       connect( modifyJob, SIGNAL(result(KJob*)),

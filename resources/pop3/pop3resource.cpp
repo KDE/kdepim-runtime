@@ -1008,7 +1008,16 @@ void POP3Resource::retrieveCollections()
 
 void POP3Resource::clearCachedPassword()
 {
-  mPassword.clear();
+    mPassword.clear();
+}
+
+void POP3Resource::cleanup()
+{
+  if (mWallet && mWallet->isOpen() && mWallet->hasFolder( QLatin1String("pop3") ) ) {
+    mWallet->setFolder( QLatin1String("pop3") );
+    if ( mWallet->hasEntry( identifier() ) )
+        mWallet->removeEntry(identifier());
+    }
 }
 
 void POP3Resource::doSetOnline( bool online )

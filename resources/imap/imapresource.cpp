@@ -318,7 +318,7 @@ void ImapResource::onConnectDone( int errorCode, const QString &errorString )
     return;
 
   case SessionPool::CouldNotConnectError:
-    emit status( Broken, errorString );
+    emit status( Idle, i18n( "Server is not available." ) );
     deferTask();
     setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
     return;
@@ -758,7 +758,12 @@ void ImapResource::taskDestroyed( QObject *task )
 
 QStringList ImapResource::serverCapabilities() const
 {
-  return m_pool->serverCapabilities();
+    return m_pool->serverCapabilities();
+}
+
+void ImapResource::cleanup()
+{
+    Settings::self()->cleanup();
 }
 
 QString ImapResource::dumpResourceToString() const
