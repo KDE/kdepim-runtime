@@ -1,8 +1,45 @@
+cmake_minimum_required(VERSION 2.8.12)
+
 project(kdepim-runtime)
 
-# where to look first for cmake modules. This line must be the first one or cmake will use the system's FindFoo.cmake
-set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
+# we need some parts of the ECM CMake helpers
+find_package (ECM 0.0.12 REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
+include(ECMOptionalAddSubdirectory)
+include(ECMInstallIcons)
+include(ECMSetupVersion)
+include(ECMAddTests)
+include(ECMMarkNonGuiExecutable)
+include(ECMGenerateHeaders)
 
+include(CMakePackageConfigHelpers)
+include(FeatureSummary)
+include(WriteBasicConfigVersionFile)
+include(CheckFunctionExists)
+
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings)
+
+set(KF5_VERSION "4.98.0")
+
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test)
+find_package(KF5Akonadi CONFIG REQUIRED)
+
+option(KDEPIM_ENTERPRISE_BUILD "Enable features specific to the enterprise branch, which are normally disabled. Also, it disables many components not needed for Kontact such as the Kolab client." FALSE)
+
+# config-enterprise.h is needed for both ENTERPRISE_BUILD and BUILD_EVERYTHING
+configure_file(config-enterprise.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-enterprise.h )
+
+
+
+feature_summary(WHAT ALL
+                INCLUDE_QUIET_PACKAGES
+                FATAL_ON_MISSING_REQUIRED_PACKAGES
+)
+
+
+if (false)
 ############### KDEPIM-Runtime version ################
 # KDEPIM_RUNTIME_VERSION
 # Version scheme: "x.y.z build".
@@ -210,3 +247,4 @@ feature_summary(WHAT ALL
                      INCLUDE_QUIET_PACKAGES
                      FATAL_ON_MISSING_REQUIRED_PACKAGES
                )
+endif()
