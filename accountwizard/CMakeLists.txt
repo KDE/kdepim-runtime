@@ -1,3 +1,20 @@
+cmake_minimum_required(VERSION 2.8.12)
+project(accountwizard)
+
+# ECM setup
+find_package(ECM 0.0.12 CONFIG REQUIRED)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+
+include(GenerateExportHeader)
+include(ECMGenerateHeaders)
+include(ECMGeneratePriFile)
+include(ECMPackageConfigHelpers)
+include(ECMSetupVersion)
+include(FeatureSummary)
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDEFrameworkCompilerSettings)
+
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
@@ -6,6 +23,17 @@ option( ACCOUNTWIZARD_NO_GHNS "Disable GHNS support in the account wizard" ${KDE
 if ( ACCOUNTWIZARD_NO_GHNS )
   add_definitions( -DACCOUNTWIZARD_NO_GHNS )
 endif ()
+
+# FIXME: Do we want the same versions in kdepimlibs and kf5?
+set(KF5_VERSION "4.98.0")
+########### Find packages ###########
+find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5KWidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
 
 set(accountwizard_srcs
   dialog.cpp
@@ -27,7 +55,7 @@ set(accountwizard_srcs
   ispdb/ispdb.cpp
 )
 
-kde4_add_ui_files(accountwizard_srcs
+qt5_wrap_ui(accountwizard_srcs
   ui/typepage.ui
   ui/loadpage.ui
   ui/setuppage.ui
@@ -35,28 +63,26 @@ kde4_add_ui_files(accountwizard_srcs
 )
 
 set(accountwizard_libs
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${KDE4_KROSSCORE_LIBS}
-  ${KDE4_KDECORE_LIBS}
-  ${KDE4_KIO_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMIDENTITIES_LIBS}
-  ${QT_QTGUI_LIBRARY}
-  ${QT_QTUITOOLS_LIBRARY}
+  KF5::AkonadiCore
+  KF5::MailTransport
+  KF5::PimUtils
+  KF5::KrossCore
+  KF5::KIOCore
+  KF5::KMime
+  KF5::PimIdentities
+  KF5::KWidgetsAddons
 )
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
   set(accountwizard_srcs ${accountwizard_srcs} providerpage.cpp)
-  kde4_add_ui_files(accountwizard_srcs ui/providerpage.ui)
+  qt5_wrap_ui(accountwizard_srcs ui/providerpage.ui)
   set(accountwizard_libs ${accountwizard_libs} ${KDE4_KNEWSTUFF3_LIBS})
 endif ()
 
-kde4_add_executable(accountwizard ${accountwizard_srcs} main.cpp)
+add_executable(accountwizard ${accountwizard_srcs} main.cpp)
 target_link_libraries(accountwizard ${accountwizard_libs})
 
-kde4_add_plugin(accountwizard_plugin ${accountwizard_srcs} inprocess-main.cpp)
+add_library(accountwizard_plugin MODULE ${accountwizard_srcs} inprocess-main.cpp)
 target_link_libraries(accountwizard_plugin ${accountwizard_libs})
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
@@ -66,6 +92,7 @@ install(TARGETS accountwizard ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(TARGETS accountwizard_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
 install(PROGRAMS accountwizard.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
-update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
+#REACTIVATE it
+#update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
 add_subdirectory(wizards)
