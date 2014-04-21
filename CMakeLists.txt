@@ -32,6 +32,22 @@ option(KDEPIM_ENTERPRISE_BUILD "Enable features specific to the enterprise branc
 configure_file(config-enterprise.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-enterprise.h )
 
 
+add_subdirectory(resources)
+#add_subdirectory(agents)
+#add_subdirectory(libkdepim-copy)
+#add_subdirectory(plugins)
+#add_subdirectory(accountwizard)
+#add_subdirectory(defaultsetup)
+#add_subdirectory(resourcetester)
+#add_subdirectory(kioslave)
+#add_subdirectory(kcm)
+#add_subdirectory(tray)
+#add_subdirectory(migration)
+if (QT_QTDECLARATIVE_FOUND)
+  add_subdirectory(qml)
+endif ()
+
+
 
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
