@@ -1,16 +1,4 @@
 project(akonadi-filestore)
-
-include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${AKONADI_INCLUDE_DIR}
-  ${KDE4_INCLUDES}
-  ${KDEPIMLIBS_INCLUDE_DIR}
-  ${QT_INCLUDES}
-  ${Boost_INCLUDE_DIR}
-)
-
-include(KDE4Defaults)
-
 kde_enable_exceptions()
 
 set(akonadi-filestore_SRCS
@@ -32,12 +20,9 @@ set(akonadi-filestore_SRCS
   storecompactjob.cpp
 )
 
-kde4_add_library(akonadi-filestore ${LIBRARY_TYPE} ${akonadi-filestore_SRCS} )
+add_library(akonadi-filestore ${LIBRARY_TYPE} ${akonadi-filestore_SRCS} )
 
 target_link_libraries(akonadi-filestore
-                      ${AKONADI_COMMON_LIBRARIES}
-                      
-                      
                       KF5::AkonadiCore
                       KF5::KIOCore
 )

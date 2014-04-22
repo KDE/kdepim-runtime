@@ -22,8 +22,8 @@
 
 #include "job.h"
 
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
+#include <Collection>
+#include <Item>
 
 namespace Akonadi
 {

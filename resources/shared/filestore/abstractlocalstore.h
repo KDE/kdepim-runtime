@@ -23,8 +23,8 @@
 
 #include "storeinterface.h"
 
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
+#include <Collection>
+#include <Item>
 
 #include <QObject>
 

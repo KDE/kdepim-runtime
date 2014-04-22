@@ -23,6 +23,8 @@
 
 #include <KConfigDialogManager>
 #include <KWindowSystem>
+#include <KLocalizedString>
+#include <KUrl>
 
 #include <QTimer>
 

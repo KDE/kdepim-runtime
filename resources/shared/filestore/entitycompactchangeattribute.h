@@ -23,7 +23,7 @@
 
 #include "akonadi-filestore_export.h"
 
-#include <Akonadi/Attribute>
+#include <Attribute>
 
 namespace Akonadi
 {
