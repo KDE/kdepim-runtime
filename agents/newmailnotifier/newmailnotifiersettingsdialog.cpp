@@ -22,7 +22,8 @@
 #include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifieragentsettings.h"
 
-#include "kdepim-runtime-version.h"
+//QT5
+//#include "kdepim-runtime-version.h"
 
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
@@ -31,7 +32,9 @@
 #include <KPushButton>
 #include <KMenu>
 #include <KHelpMenu>
-#include <KAboutData>
+#include <k4aboutdata.h>
+#include <KIcon>
+#include <KGlobal>
 
 #include <QTabWidget>
 #include <QCheckBox>
@@ -41,11 +44,11 @@
 #include <QDebug>
 #include <QWhatsThis>
 
-#include <Akonadi/CollectionView>
-#include <Akonadi/CollectionModel>
-#include <Akonadi/RecursiveCollectionFilterProxyModel>
-#include <Akonadi/CollectionFilterProxyModel>
-#include <Akonadi/CollectionModifyJob>
+#include <CollectionView>
+#include <CollectionModel>
+#include <RecursiveCollectionFilterProxyModel>
+#include <CollectionFilterProxyModel>
+#include <CollectionModifyJob>
 
 static const char * textToSpeakMessage =
         I18N_NOOP( "<qt>"
@@ -144,13 +147,14 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 
     setMainWidget(w);
 
-    mAboutData = new KAboutData(
+//QT5
+    mAboutData = new K4AboutData(
                 QByteArray( "newmailnotifieragent" ),
                 QByteArray(),
                 ki18n( "New Mail Notifier Agent" ),
-                QByteArray( KDEPIM_RUNTIME_VERSION ),
+                QByteArray( /*KDEPIM_RUNTIME_VERSION*/ "5.0" ),
                 ki18n( "Notifies about new mail." ),
-                KAboutData::License_GPL_V2,
+                K4AboutData::License_GPL_V2,
                 ki18n( "Copyright (C) 2013 Laurent Montel" ) );
 
     mAboutData->addAuthor( ki18n( "Laurent Montel" ),
@@ -160,12 +164,14 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mAboutData->setTranslator( ki18nc( "NAME OF TRANSLATORS", "Your names" ),
                              ki18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
 
-
+//QT5
+#if 0
     KHelpMenu *helpMenu = new KHelpMenu(this, mAboutData, true);
     //Initialize menu
-    KMenu *menu = helpMenu->menu();
+    QMenu *menu = helpMenu->menu();
     helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(KIcon(QLatin1String("kmail")));
     setButtonMenu( Help, menu );
+#endif
     readConfig();
 }
 

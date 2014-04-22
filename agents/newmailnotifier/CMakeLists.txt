@@ -1,13 +1,13 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${Boost_INCLUDE_DIR}
-)
-
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
-
+find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
+#find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiKMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5KMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5NotifyConfig CONFIG REQUIRED)
 
 set(newmailnotifieragent_SRCS
   newmailnotifiersettingsdialog.cpp
@@ -18,28 +18,27 @@ set(newmailnotifieragent_SRCS
   util.cpp
 )
 
-kde4_add_kcfg_files(newmailnotifieragent_SRCS
+kconfig_add_kcfg_files(newmailnotifieragent_SRCS
     newmailnotifieragentsettings.kcfgc
   )
 
 
-qt4_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
+qt5_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
 
 
-kde4_add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
+add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
 
 
 target_link_libraries( akonadi_newmailnotifier_agent
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTDBUS_LIBRARY}
-  ${KDE4_KNOTIFYCONFIG_LIBS}
-  ${KDEPIMLIBS_KABC_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS}
-  ${KDEPIMLIBS_KPIMIDENTITIES_LIBS}
+  KF5::AkonadiCore
+  KF5::KMime
+  KF5::AkonadiKMime
+  KF5::KF5AkonadiContact
+  KF5::PimUtils
+  KF5::PimIdentities
+  KF5::NotifyConfig
+  KF5::AkonadiAgentBase
+  
 )
 
 

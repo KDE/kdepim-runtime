@@ -14,7 +14,7 @@ set(migrationagent_SRCS
     tests/dummymigrator.cpp
 )
 
-kde4_add_executable(akonadi_migration_agent ${migrationagent_SRCS})
+add_executable(akonadi_migration_agent ${migrationagent_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_migration_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -24,12 +24,9 @@ endif ()
 
 target_link_libraries(akonadi_migration_agent
     gidmigration
-    ${KDE4_KDEUI_LIBRARY}
-    ${KDE4_KDECORE_LIBS}
-    ${KDEPIMLIBS_AKONADI_LIBS}
+    KF5::AkonadiCore
+    KF5::AkonadiAgentBase
     ${KDEPIMLIBS_KABC_LIBS}
-    ${QT_QTCORE_LIBRARY}
-    ${QT_QTDBUS_LIBRARY}
     ${KDE4_KIDLETIME_LIBRARY}
     ${KDE4_SOLID_LIBS}
 )

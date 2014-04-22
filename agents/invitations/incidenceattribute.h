@@ -20,8 +20,8 @@
 #ifndef INCIDENCEATTRIBUTE_H
 #define INCIDENCEATTRIBUTE_H
 
-#include <akonadi/item.h>
-#include <akonadi/attribute.h>
+#include <item.h>
+#include <attribute.h>
 
 namespace Akonadi {
 

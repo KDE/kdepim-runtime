@@ -21,21 +21,21 @@
 
 #include "incidenceattribute.h"
 
-#include <Akonadi/AgentInstance>
-#include <Akonadi/AgentInstanceCreateJob>
-#include <Akonadi/AgentManager>
-#include <Akonadi/ChangeRecorder>
-#include <Akonadi/Collection>
-#include <Akonadi/CollectionCreateJob>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
-#include <akonadi/kmime/messageflags.h>
-#include <akonadi/resourcesynchronizationjob.h>
-#include <akonadi/specialcollections.h>
-#include <akonadi/specialcollectionsrequestjob.h>
+#include <AgentInstance>
+#include <AgentInstanceCreateJob>
+#include <AgentManager>
+#include <ChangeRecorder>
+#include <Collection>
+#include <CollectionCreateJob>
+#include <CollectionFetchJob>
+#include <CollectionFetchScope>
+#include <ItemFetchJob>
+#include <ItemFetchScope>
+#include <ItemModifyJob>
+#include <kmime/messageflags.h>
+#include <resourcesynchronizationjob.h>
+#include <specialcollections.h>
+#include <specialcollectionsrequestjob.h>
 
 #include <kcalcore/event.h>
 #include <kcalcore/icalformat.h>

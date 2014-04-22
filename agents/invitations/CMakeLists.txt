@@ -1,27 +1,39 @@
+
+set(KF5_VERSION "4.98.0")
+set(QT_REQUIRED_VERSION "5.2.0")
+
+find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiKMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarCore ${KF5_VERSION} CONFIG REQUIRED)
+
+
+
 set( invitationsagent_SRCS
   invitationsagent.cpp
   incidenceattribute.cpp
 )
 
-#kde4_add_ui_files(invitationsagent_SRCS settings.ui)
-#kde4_add_kcfg_files(invitationsagent_SRCS settings.kcfgc)
+#qt5_wrap_ui(invitationsagent_SRCS settings.ui)
+#kconfig_add_kcfg_files(invitationsagent_SRCS settings.kcfgc)
 #kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/invitationsagent.kcfg org.kde.Akonadi.MailDispatcher.Settings)
-#qt4_add_dbus_adaptor(invitationsagent_SRCS
+#qt5_add_dbus_adaptor(invitationsagent_SRCS
 #  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MailDispatcher.Settings.xml settings.h Settings
 #)
-## qt4_add_dbus_adaptor( invitationsagent_SRCS
+## qt5_add_dbus_adaptor( invitationsagent_SRCS
 ## ${KDE4_DBUS_INTERFACES_DIR}/org.kde.Akonadi.MailDispatcher.xml invitationsagent.h MailDispatcherAgent
 ## )
 
-kde4_add_executable(akonadi_invitations_agent ${invitationsagent_SRCS})
+add_executable(akonadi_invitations_agent ${invitationsagent_SRCS})
 
 target_link_libraries(akonadi_invitations_agent
-  ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
-  ${KDEPIMLIBS_KCALCORE_LIBS}
+    ${KDE4_KDECORE_LIBS} KF5::KIOCore
+  KF5::AkonadiCore
+  KF5::AkonadiKMime
+  KF5::KMime
+  KF5::MailTransport
+  KF5::CalendarCore
+  KF5::AkonadiAgentBase
 )
 
 if (Q_WS_MAC)

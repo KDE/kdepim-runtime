@@ -18,7 +18,7 @@
 #ifndef NEWMAILNOTIFIERATTRIBUTE_H
 #define NEWMAILNOTIFIERATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 
 class NewMailNotifierAttributePrivate;

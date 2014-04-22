@@ -22,7 +22,7 @@
 #ifndef MIGRATIONSCHEDULER_H
 #define MIGRATIONSCHEDULER_H
 
-#include <migration/migratorbase.h>
+#include <migratorbase.h>
 #include <QObject>
 #include <QAbstractItemModel>
 #include <QSharedPointer>

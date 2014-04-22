@@ -21,7 +21,7 @@
 #define NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H
 
 #include <QWidget>
-#include <Akonadi/Collection>
+#include <Collection>
 #include <QModelIndex>
 
 class QItemSelectionModel;

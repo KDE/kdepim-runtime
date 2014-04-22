@@ -20,7 +20,7 @@
 
 
 #include <QObject>
-#include <Akonadi/Item>
+#include <Item>
 #include <QStringList>
 class KJob;
 

@@ -22,7 +22,7 @@
 #ifndef MIGRATIONAGENT_H
 #define MIGRATIONAGENT_H
 
-#include <Akonadi/AgentBase>
+#include <agentbase.h>
 #include "migrationscheduler.h"
 
 namespace Akonadi {

@@ -22,10 +22,10 @@
 
 #include <KCalCore/MemoryCalendar>
 
-#include <Akonadi/AgentBase>
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
-#include <Akonadi/ItemCreateJob>
+#include <AgentBase>
+#include <Collection>
+#include <Item>
+#include <ItemCreateJob>
 
 #include <QtCore/QObject>
 
