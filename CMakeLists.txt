@@ -22,6 +22,8 @@ include(KDECMakeSettings)
 include(KDECompilerSettings)
 
 set(KF5_VERSION "4.98.0")
+set(QT_REQUIRED_VERSION "5.2.0")
+
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test)
 find_package(KF5Akonadi CONFIG REQUIRED)

@@ -13,7 +13,7 @@ find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 set(kio_akonadi_srcs akonadislave.cpp )
 
 
-add_library(kio_akonadi ${kio_akonadi_srcs})
+add_library(kio_akonadi MODULE ${kio_akonadi_srcs})
 
 
 
