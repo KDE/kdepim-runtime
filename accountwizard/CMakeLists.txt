@@ -34,8 +34,9 @@ find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5KWidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5WidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Wallet ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
 
 set(accountwizard_srcs
   dialog.cpp
@@ -72,7 +73,7 @@ set(accountwizard_libs
   KF5::KIOCore
   KF5::KMime
   KF5::PimIdentities
-  KF5::KWidgetsAddons
+  KF5::WidgetsAddons
 )
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
