@@ -23,21 +23,21 @@ set(facebookresource_SRCS
 install(FILES facebookresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 install(FILES akonadi_facebook_resource.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_facebook_resource")
 
-kde4_add_ui_files(facebookresource_SRCS settingsdialog.ui)
-kde4_add_kcfg_files(facebookresource_SRCS settingsbase.kcfgc)
+qt5_wrap_ui(facebookresource_SRCS settingsdialog.ui)
+kconfig_add_kcfg_files(facebookresource_SRCS settingsbase.kcfgc)
 
 kcfg_generate_dbus_interface(
   ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfg
   org.kde.Akonadi.Facebook.Settings
 )
 
-qt4_add_dbus_adaptor(facebookresource_SRCS
+qt5_add_dbus_adaptor(facebookresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Facebook.Settings.xml
   settings.h
   Settings
 )
 
-kde4_add_executable(akonadi_facebook_resource RUN_UNINSTALLED ${facebookresource_SRCS})
+add_executable(akonadi_facebook_resource RUN_UNINSTALLED ${facebookresource_SRCS})
 
 if(Q_WS_MAC)
   set_target_properties(
@@ -59,15 +59,15 @@ include_directories(${Boost_INCLUDE_DIR})
 target_link_libraries(akonadi_facebook_resource
   ${KDEPIMLIBS_AKONADI_SOCIALUTILS_LIBS}
   ${KDEPIMLIBS_AKONADI_NOTES_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
+  KF5::AkonadiCore
   ${KDEPIMLIBS_KABC_LIBS}
-  ${KDEPIMLIBS_KCALCORE_LIBS}
+  KF5::CalendarCore
   ${QT_QTCORE_LIBRARY}
   ${QT_QTGUI_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${QJSON_LIBRARIES}
   ${KDE4_KDECORE_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
+  KF5::KMime
   ${LibKFbAPI_LIBRARY}
 )
 

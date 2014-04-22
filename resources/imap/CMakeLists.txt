@@ -4,7 +4,7 @@ include_directories(
     ${Boost_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 option(IMAPRESOURCE_NO_SOLID "Disable the use of solid in the imap resource" FALSE)
 if(IMAPRESOURCE_NO_SOLID)
@@ -47,7 +47,7 @@ set( imapresource_LIB_SRCS
 
 kde4_add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
-target_link_libraries(imapresource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS})
+target_link_libraries(imapresource KF5::AkonadiCore ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} KF5::MailTransport KF5::KIOCore KF5::KMime ${KDEPIMLIBS_AKONADI_KMIME_LIBS} KF5::KF5PimIdentities)
 
 if( NOT IMAPRESOURCE_NO_SOLID)
   target_link_libraries(imapresource ${KDE4_SOLID_LIBS})
@@ -68,28 +68,28 @@ set( akonadi_imap_resource_SRCS
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 if (KDEPIM_MOBILE_UI)
-kde4_add_ui_files(akonadi_imap_resource_SRCS setupserverview_mobile.ui)
+qt5_wrap_ui(akonadi_imap_resource_SRCS setupserverview_mobile.ui)
 else ()
-kde4_add_ui_files(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
+qt5_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 endif ()
-kde4_add_ui_files(akonadi_imap_resource_SRCS serverinfo.ui)
+qt5_wrap_ui(akonadi_imap_resource_SRCS serverinfo.ui)
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
-qt4_add_dbus_adaptor( akonadi_imap_resource_SRCS
+qt5_add_dbus_adaptor( akonadi_imap_resource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
      )
 qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
-qt4_add_dbus_adaptor( akonadi_imap_resource_SRCS
+qt5_add_dbus_adaptor( akonadi_imap_resource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
         imapresource.h ImapResource
      )
-kde4_add_kcfg_files(akonadi_imap_resource_SRCS settingsbase.kcfgc)
+kconfig_add_kcfg_files(akonadi_imap_resource_SRCS settingsbase.kcfgc)
 
 if (RUNTIME_PLUGINS_STATIC)
     add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
 endif ()
 
-kde4_add_executable(akonadi_imap_resource ${akonadi_imap_resource_SRCS})
+add_executable(akonadi_imap_resource ${akonadi_imap_resource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -97,7 +97,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource")
 endif ()
 
-target_link_libraries(akonadi_imap_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} ${KDEPIMLIBS_MAILTRANSPORT_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${KDEPIMLIBS_KPIMIDENTITIES_LIBS} imapresource folderarchivesettings)
+target_link_libraries(akonadi_imap_resource KF5::AkonadiCore ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} KF5::MailTransport KF5::KIOCore KF5::KMime ${KDEPIMLIBS_AKONADI_KMIME_LIBS} KF5::KF5PimIdentities imapresource folderarchivesettings)
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)

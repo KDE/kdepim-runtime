@@ -4,7 +4,7 @@ include_directories(
     ${Boost_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 add_subdirectory(wizard)
 
@@ -20,18 +20,18 @@ set( mboxresource_SRCS
 
 install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_ui_files(mboxresource_SRCS
+qt5_wrap_ui(mboxresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_UI}
   compactpage.ui
   lockfilepage.ui
 )
-kde4_add_kcfg_files(mboxresource_SRCS settings.kcfgc)
+kconfig_add_kcfg_files(mboxresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mboxresource.kcfg org.kde.Akonadi.Mbox.Settings)
-qt4_add_dbus_adaptor(mboxresource_SRCS
+qt5_add_dbus_adaptor(mboxresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Mbox.Settings.xml settings.h Settings
 )
 
-kde4_add_plugin(akonadi_mbox_resource ${mboxresource_SRCS})
+add_library(akonadi_mbox_resource MODULE ${mboxresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -39,6 +39,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Mbox Resource")
 endif ()
 
-target_link_libraries(akonadi_mbox_resource ${KDEPIMLIBS_KMBOX_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
+target_link_libraries(akonadi_mbox_resource ${KDEPIMLIBS_KMBOX_LIBS} KF5::AkonadiCore ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} KF5::KIOCore KF5::KMime)
 
 install(TARGETS akonadi_mbox_resource DESTINATION ${PLUGIN_INSTALL_DIR})

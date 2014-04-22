@@ -8,15 +8,15 @@ add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5324)
 
 install( FILES mtdummyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_ui_files(mtdummyresource_SRCS settings.ui)
-kde4_add_kcfg_files(mtdummyresource_SRCS settings.kcfgc)
+qt5_wrap_ui(mtdummyresource_SRCS settings.ui)
+kconfig_add_kcfg_files(mtdummyresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mtdummyresource.kcfg org.kde.Akonadi.MailTransportDummy.Settings)
-qt4_add_dbus_adaptor(mtdummyresource_SRCS
+qt5_add_dbus_adaptor(mtdummyresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MailTransportDummy.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_mailtransport_dummy_resource ${mtdummyresource_SRCS})
+add_executable(akonadi_mailtransport_dummy_resource ${mtdummyresource_SRCS})
 
-target_link_libraries(akonadi_mailtransport_dummy_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS})
+target_link_libraries(akonadi_mailtransport_dummy_resource KF5::AkonadiCore ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBS})
 
 install(TARGETS akonadi_mailtransport_dummy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

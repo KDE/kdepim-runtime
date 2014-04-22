@@ -7,7 +7,7 @@ include_directories(
 
 include(KDE4Defaults)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
+kde_enable_exceptions()
 
 set(folderarchivesettings_SRCS
    folderarchivesettingpage.cpp
@@ -18,10 +18,10 @@ set(folderarchivesettings_SRCS
 kde4_add_library(folderarchivesettings ${LIBRARY_TYPE} ${folderarchivesettings_SRCS} )
 
 target_link_libraries(folderarchivesettings
-                      ${KDEPIMLIBS_KMIME_LIBS}
+                      KF5::KMime
                       ${AKONADI_COMMON_LIBRARIES}
                       ${QT_QTGUI_LIBRARY}
-                      ${KDEPIMLIBS_AKONADI_LIBS}
+                      KF5::AkonadiCore
 )
 
 set_target_properties(folderarchivesettings PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )

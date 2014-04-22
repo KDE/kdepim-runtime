@@ -11,7 +11,7 @@ include_directories(
     ${Boost_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 add_subdirectory(kmindexreader)
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5254) # TODO get our own debug area
@@ -29,17 +29,17 @@ set( mixedmaildirresource_SRCS
 
 install( FILES mixedmaildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_ui_files(mixedmaildirresource_SRCS settings.ui)
+qt5_wrap_ui(mixedmaildirresource_SRCS settings.ui)
 
-kde4_add_kcfg_files(mixedmaildirresource_SRCS settings.kcfgc)
+kconfig_add_kcfg_files(mixedmaildirresource_SRCS settings.kcfgc)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mixedmaildirresource.kcfg org.kde.Akonadi.MixedMaildir.Settings)
 
-qt4_add_dbus_adaptor(mixedmaildirresource_SRCS
+qt5_add_dbus_adaptor(mixedmaildirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_mixedmaildir_resource ${mixedmaildirresource_SRCS})
+add_executable(akonadi_mixedmaildir_resource ${mixedmaildirresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_mixedmaildir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -51,13 +51,13 @@ target_link_libraries(akonadi_mixedmaildir_resource
   kmindexreader
   maildir
   akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_LIBS}
+  KF5::AkonadiCore
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${QT_QTDBUS_LIBRARY}
-  ${KDE4_KIO_LIBS}
+  KF5::KIOCore
   ${KDEPIMLIBS_KMBOX_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  KF5::KMime
+  KF5::PimUtils
 )
 
 install(TARGETS akonadi_mixedmaildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

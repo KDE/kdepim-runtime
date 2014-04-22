@@ -34,17 +34,17 @@ set( openxchangeresource_SRCS
   openxchangeresource.cpp
 )
 
-kde4_add_ui_files( openxchangeresource_SRCS configdialog.ui )
+qt5_wrap_ui( openxchangeresource_SRCS configdialog.ui )
 
 install( FILES openxchangeresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_kcfg_files(openxchangeresource_SRCS settings.kcfgc)
+kconfig_add_kcfg_files(openxchangeresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/openxchangeresource.kcfg org.kde.Akonadi.OpenXchange.Settings)
-qt4_add_dbus_adaptor(openxchangeresource_SRCS
+qt5_add_dbus_adaptor(openxchangeresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.OpenXchange.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_openxchange_resource RUN_UNINSTALLED ${openxchangeresource_SRCS})
+add_executable(akonadi_openxchange_resource RUN_UNINSTALLED ${openxchangeresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -53,7 +53,7 @@ if (Q_WS_MAC)
 endif ()
 
 
-target_link_libraries(akonadi_openxchange_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS}  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS} )
+target_link_libraries(akonadi_openxchange_resource KF5::AkonadiCore ${KDEPIMLIBS_KABC_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDE4_KDECORE_LIBS} KF5::KIOCore KF5::CalendarCore  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS} )
 
 install(TARGETS akonadi_openxchange_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

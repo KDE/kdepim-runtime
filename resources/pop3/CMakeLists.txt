@@ -20,7 +20,7 @@ include_directories(
     ${KDEPIMLIBS_INCLUDE_DIRS}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 
 ########### next target ###############
@@ -37,14 +37,14 @@ add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
 
 install( FILES pop3resource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_ui_files( pop3resource_SRCS popsettings.ui)
-kde4_add_kcfg_files(pop3resource_SRCS settingsbase.kcfgc)
+qt5_wrap_ui( pop3resource_SRCS popsettings.ui)
+kconfig_add_kcfg_files(pop3resource_SRCS settingsbase.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
-qt4_add_dbus_adaptor(pop3resource_SRCS
+qt5_add_dbus_adaptor(pop3resource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_pop3_resource RUN_UNINSTALLED ${pop3resource_SRCS})
+add_executable(akonadi_pop3_resource RUN_UNINSTALLED ${pop3resource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_pop3_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -54,16 +54,16 @@ endif ()
 
 
 target_link_libraries( akonadi_pop3_resource
-  ${KDEPIMLIBS_AKONADI_LIBS}
+  KF5::AkonadiCore
   ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTGUI_LIBRARY}
   ${QT_QTDBUS_LIBRARY}
   ${KDE4_KDECORE_LIBS}
-  ${KDE4_KIO_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
+  KF5::KIOCore
+  KF5::KMime
+  KF5::MailTransport
+  KF5::PimUtils
 )
 
 add_subdirectory( tests )

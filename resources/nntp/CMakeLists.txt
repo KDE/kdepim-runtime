@@ -11,18 +11,18 @@ set( nntpresource_SRCS
   settings.cpp
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 install( FILES nntpresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/nntpresource.kcfg org.kde.Akonadi.NNTP.Settings )
 
-qt4_add_dbus_adaptor( nntpresource_SRCS
+qt5_add_dbus_adaptor( nntpresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.NNTP.Settings.xml settings.h Settings
 )
-kde4_add_ui_files(nntpresource_SRCS configdialog.ui)
-kde4_add_kcfg_files(nntpresource_SRCS settingsbase.kcfgc)
-kde4_add_executable(akonadi_nntp_resource ${nntpresource_SRCS})
+qt5_wrap_ui(nntpresource_SRCS configdialog.ui)
+kconfig_add_kcfg_files(nntpresource_SRCS settingsbase.kcfgc)
+add_executable(akonadi_nntp_resource ${nntpresource_SRCS})
 
 
 if (Q_WS_MAC)
@@ -31,6 +31,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_nntp_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi NNTP Resource")
 endif ()
 
-target_link_libraries(akonadi_nntp_resource ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${QT_QTCORE_LIBRARY})
+target_link_libraries(akonadi_nntp_resource KF5::AkonadiCore ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} KF5::KIOCore KF5::KMime ${QT_QTCORE_LIBRARY})
 
 install(TARGETS akonadi_nntp_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

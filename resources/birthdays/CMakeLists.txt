@@ -24,7 +24,7 @@ if (Q_WS_MAC)
 endif ()
 
 target_link_libraries(akonadi_birthdays_resource
-  ${KDE4_KIO_LIBS}
+  KF5::KIOCore
   KF5::AkonadiCore
   ${KDEPIMLIBS_KABC_LIBS}
   KF5::CalendarCore

@@ -4,7 +4,7 @@ include_directories(
     ${Boost_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 
 ########### next target ###############
@@ -16,13 +16,13 @@ set( localbookmarksresource_SRCS
 install( FILES localbookmarksresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 
-kde4_add_kcfg_files(localbookmarksresource_SRCS settings.kcfgc)
+kconfig_add_kcfg_files(localbookmarksresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/localbookmarksresource.kcfg org.kde.Akonadi.LocalBookmarks.Settings)
-qt4_add_dbus_adaptor(localbookmarksresource_SRCS
+qt5_add_dbus_adaptor(localbookmarksresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.LocalBookmarks.Settings.xml settings.h Settings
 )
 
-kde4_add_executable(akonadi_localbookmarks_resource ${localbookmarksresource_SRCS})
+add_executable(akonadi_localbookmarks_resource ${localbookmarksresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_localbookmarks_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -30,7 +30,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_localbookmarks_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi LocalBookmarks Resource")
 endif ()
 
-target_link_libraries(akonadi_localbookmarks_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY}  ${KDE4_KIO_LIBS})
+target_link_libraries(akonadi_localbookmarks_resource KF5::AkonadiCore ${QT_QTDBUS_LIBRARY}  KF5::KIOCore)
 
 install(TARGETS akonadi_localbookmarks_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

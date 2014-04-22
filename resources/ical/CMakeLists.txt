@@ -6,7 +6,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/shared
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 add_subdirectory( wizard )
 add_subdirectory( notes )
@@ -24,14 +24,14 @@ set( icalresource_SRCS
 
 install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_ui_files(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
-kde4_add_kcfg_files(icalresource_SRCS settings.kcfgc)
+qt5_wrap_ui(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+kconfig_add_kcfg_files(icalresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
-qt4_add_dbus_adaptor(icalresource_SRCS
+qt5_add_dbus_adaptor(icalresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Akonadi_ICal_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
 )
 
-kde4_add_plugin(akonadi_ical_resource ${icalresource_SRCS})
+add_library(akonadi_ical_resource MODULE ${icalresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -39,6 +39,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi ICal Resource")
 endif ()
 
-target_link_libraries(akonadi_ical_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY}  ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS})
+target_link_libraries(akonadi_ical_resource KF5::AkonadiCore ${QT_QTDBUS_LIBRARY}  KF5::KIOCore KF5::CalendarCore)
 
 install(TARGETS akonadi_ical_resource DESTINATION ${PLUGIN_INSTALL_DIR})
