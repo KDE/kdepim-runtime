@@ -25,7 +25,8 @@
 
 #include <KDateTime>
 #include <KLocale>
-
+#include <QDate>
+#include <QDateTime>
 using namespace KPIM;
 
 #ifndef KDE_USE_FINAL

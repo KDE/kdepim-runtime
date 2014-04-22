@@ -31,6 +31,7 @@ using namespace KPIM;
 
 #include <KHBox>
 #include <KLocale>
+#include <KGlobal>
 
 #include <QButtonGroup>
 #include <QGridLayout>
