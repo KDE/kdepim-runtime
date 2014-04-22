@@ -15,7 +15,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
       ../protocols/
   )
 
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+  kde_enable_exceptions()
 
 
   ########### next target ###############
@@ -67,14 +67,14 @@ if (QT_QTXMLPATTERNS_LIBRARY)
   file( GLOB providersFiles "../services/*.desktop" )
   install( FILES ${providersFiles} DESTINATION "${SERVICES_INSTALL_DIR}/akonadi/davgroupware-providers" )
 
-  kde4_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
-  kde4_add_ui_files(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
+  kconfig_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
+  qt5_wrap_ui(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
   kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davgroupwareresource.kcfg org.kde.Akonadi.davGroupware.Settings)
-  qt4_add_dbus_adaptor(davgroupwareresource_SRCS
+  qt5_add_dbus_adaptor(davgroupwareresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davGroupware.Settings.xml settings.h Settings
   )
 
-  kde4_add_executable(akonadi_davgroupware_resource RUN_UNINSTALLED ${davgroupwareresource_SRCS})
+  add_executable(akonadi_davgroupware_resource RUN_UNINSTALLED ${davgroupwareresource_SRCS})
 
   if (Q_WS_MAC)
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template)
@@ -83,16 +83,16 @@ if (QT_QTXMLPATTERNS_LIBRARY)
   endif ()
 
   target_link_libraries(akonadi_davgroupware_resource
-                        ${QT_QTCORE_LIBRARY}
-                        ${QT_QTDBUS_LIBRARY}
+                        
+                        
                         ${QT_QTXML_LIBRARY}
                         ${QT_QTXMLPATTERNS_LIBRARY}
                         ${KDE4_KDECORE_LIBS}
-                        ${KDE4_KIO_LIBS}
-                        ${KDEPIMLIBS_AKONADI_LIBS}
+                        KF5::KIOCore
+                        KF5::AkonadiCore
                         ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
                         ${KDEPIMLIBS_KABC_LIBS}
-                        ${KDEPIMLIBS_KCALCORE_LIBS})
+                        KF5::CalendarCore)
 
   if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
     target_link_libraries(akonadi_davgroupware_resource

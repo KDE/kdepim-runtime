@@ -20,9 +20,9 @@
 #ifndef MAILDIR_RETRIEVEITEMSJOB_H
 #define MAILDIR_RETRIEVEITEMSJOB_H
 
-#include <Akonadi/Item>
-#include <Akonadi/Job>
-#include <Akonadi/Collection>
+#include <item.h>
+#include <job.h>
+#include <collection.h>
 
 #include "maildir.h"
 

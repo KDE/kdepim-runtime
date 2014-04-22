@@ -6,7 +6,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared
 )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
+kde_enable_exceptions()
 
 ########### next target ###############
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5952)
@@ -22,14 +22,14 @@ set(kalarmresource_SRCS
 
 install(FILES kalarmresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
-kde4_add_ui_files(kalarmresource_SRCS ../shared/alarmtyperadiowidget.ui ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
-kde4_add_kcfg_files(kalarmresource_SRCS settings.kcfgc)
+qt5_wrap_ui(kalarmresource_SRCS ../shared/alarmtyperadiowidget.ui ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+kconfig_add_kcfg_files(kalarmresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmresource.kcfg org.kde.Akonadi.KAlarm.Settings)
-qt4_add_dbus_adaptor(kalarmresource_SRCS
+qt5_add_dbus_adaptor(kalarmresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
 add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml)
 
-kde4_add_plugin(akonadi_kalarm_resource ${kalarmresource_SRCS})
+add_library(akonadi_kalarm_resource MODULE ${kalarmresource_SRCS})
 
 if (Q_WS_MAC)
     set_target_properties(akonadi_kalarm_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -38,12 +38,12 @@ if (Q_WS_MAC)
 endif ()
 
 target_link_libraries(akonadi_kalarm_resource
-                      ${KDEPIMLIBS_KALARMCAL_LIBS}
+                      KF5::KAlarmCal
                       ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
-                      ${KDEPIMLIBS_AKONADI_LIBS}
-                      ${KDEPIMLIBS_KCALCORE_LIBS}
-                      ${KDE4_KIO_LIBS}
-                      ${QT_QTDBUS_LIBRARY}
+                      KF5::AkonadiCore
+                      KF5::CalendarCore
+                      KF5::KIOCore
+                      KF5::AkonadiAgentBase
                      )
 
 install(TARGETS akonadi_kalarm_resource DESTINATION ${PLUGIN_INSTALL_DIR})

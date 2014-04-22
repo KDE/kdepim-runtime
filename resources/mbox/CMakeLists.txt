@@ -1,10 +1,6 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${QT_QTDBUS_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIR}
-)
-
 kde_enable_exceptions()
+
+find_package(KF5Mbox ${KF5_VERSION} CONFIG REQUIRED)
 
 add_subdirectory(wizard)
 
@@ -39,6 +35,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Mbox Resource")
 endif ()
 
-target_link_libraries(akonadi_mbox_resource ${KDEPIMLIBS_KMBOX_LIBS} KF5::AkonadiCore KF5::AkonadiKMime  KF5::KIOCore KF5::KMime)
+target_link_libraries(akonadi_mbox_resource KF5::Mbox KF5::AkonadiCore KF5::AkonadiKMime  KF5::KIOCore KF5::KMime KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_mbox_resource DESTINATION ${PLUGIN_INSTALL_DIR})

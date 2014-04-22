@@ -33,8 +33,7 @@ endif ()
 
 target_link_libraries(akonadi_icaldir_resource
   KF5::AkonadiCore
-  
-  ${KDE4_KDECORE_LIBS}
+  KF5::AkonadiAgentBase  
   KF5::CalendarCore
   KF5::KIOCore
 )

@@ -3,9 +3,9 @@ add_subdirectory( tests )
 
 set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
 
-kde4_add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
+add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
 
-target_link_libraries(maildir ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KPIMUTILS_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTNETWORK_LIBRARY})
+target_link_libraries(maildir KF5::PimUtils KF5::AkonadiKMime KF5::AkonadiCore)
 
 set_target_properties(maildir PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 

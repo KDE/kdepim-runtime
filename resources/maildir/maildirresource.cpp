@@ -26,7 +26,7 @@
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
 
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 #include <changerecorder.h>
 #include <itemfetchscope.h>
 #include <itemfetchjob.h>

@@ -34,6 +34,8 @@
 #include <dbusconnectionpool.h>
 #include <agentfactory.h>
 
+#include <KLocalizedString>
+
 using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
 

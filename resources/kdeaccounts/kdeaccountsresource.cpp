@@ -27,7 +27,7 @@
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <KWindowSystem>
-
+#include <KIcon>
 
 using namespace Akonadi;
 

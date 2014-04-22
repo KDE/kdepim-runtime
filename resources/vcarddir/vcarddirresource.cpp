@@ -31,6 +31,9 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
+#include <KIcon>
+#include <KLocalizedString>
+
 using namespace Akonadi;
 
 VCardDirResource::VCardDirResource( const QString &id )

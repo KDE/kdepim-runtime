@@ -22,6 +22,8 @@
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
 #include <kmbox/mbox.h>
+#include <KLocalizedString>
+#include <KUrl>
 
 #include "deleteditemsattribute.h"
 

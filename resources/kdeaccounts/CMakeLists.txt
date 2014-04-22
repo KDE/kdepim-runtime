@@ -29,6 +29,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_kdeaccounts_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi KDEAccounts Resource")
 endif ()
 
-target_link_libraries(akonadi_kdeaccounts_resource KF5::AkonadiCore   ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} KF5::KIOCore)
+target_link_libraries(akonadi_kdeaccounts_resource KF5::AkonadiCore  KF5::Abc KF5::KIOCore KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_kdeaccounts_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

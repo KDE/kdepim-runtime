@@ -33,10 +33,10 @@ configure_file(config-enterprise.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ente
 
 
 add_subdirectory(resources)
-#add_subdirectory(agents)
+add_subdirectory(agents)
 add_subdirectory(libkdepim-copy)
 #add_subdirectory(plugins)
-#add_subdirectory(accountwizard)
+add_subdirectory(accountwizard)
 add_subdirectory(defaultsetup)
 #add_subdirectory(resourcetester)
 add_subdirectory(kioslave)

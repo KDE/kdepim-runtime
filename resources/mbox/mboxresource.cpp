@@ -31,6 +31,7 @@
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
+#include <KIcon>
 
 #include "compactpage.h"
 #include "deleteditemsattribute.h"

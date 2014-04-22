@@ -1,10 +1,6 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${QT_QTDBUS_INCLUDE_DIR}
-)
-
 kde_enable_exceptions()
-add_subdirectory( tests )
+#Reactivate it
+#add_subdirectory( tests )
 
 ########### next target ###############
 
@@ -32,7 +28,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCard Resource")
 endif ()
 
-target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore   ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} KF5::KIOCore)
+target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore KF5::KIOCore   KF5::AkonadiAgentBase KF5::Abc)
 
 install(TARGETS akonadi_vcard_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 

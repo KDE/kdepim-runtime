@@ -31,6 +31,9 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/FileStorage>
 #include <KCalCore/ICalFormat>
+#include <KIcon>
+#include <KLocalizedString>
+
 
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>

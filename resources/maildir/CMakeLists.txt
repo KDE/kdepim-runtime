@@ -1,13 +1,7 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/libmaildir
-    ${QT_QTDBUS_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIR}
-)
-
 kde_enable_exceptions()
 
-add_subdirectory( tests )
+#reactivate it
+#add_subdirectory( tests )
 add_subdirectory( wizard )
 
 # maildir access library
@@ -37,7 +31,7 @@ qt5_add_dbus_adaptor(maildirresource_SRCS
 
 add_library(akonadi_maildir_resource MODULE ${maildirresource_SRCS})
 
-target_link_libraries(akonadi_maildir_resource KF5::AkonadiCore KF5::AkonadiKMime maildir  KF5::KIOCore KF5::KMime folderarchivesettings )
+target_link_libraries(akonadi_maildir_resource KF5::AkonadiCore KF5::AkonadiKMime maildir  KF5::KIOCore KF5::KMime folderarchivesettings KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_maildir_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
