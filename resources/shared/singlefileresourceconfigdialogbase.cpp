@@ -26,8 +26,11 @@
 #include <KFileItem>
 #include <KIO/Job>
 #include <KWindowSystem>
-
+#include <KUrl>
 #include <QTimer>
+
+#include <KGlobal>
+#include <KLocalizedString>
 
 using namespace Akonadi;
 
@@ -190,7 +193,9 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult( KJob* job )
   if ( job->error() == KIO::ERR_DOES_NOT_EXIST && !mDirUrlChecked ) {
     // The file did not exist, so let's see if the directory the file should
     // reside in supports writing.
-    const KUrl dirUrl = ui.kcfg_Path->url().upUrl();
+
+    //QT5
+    const KUrl dirUrl ;//= ui.kcfg_Path->url().upUrl();
 
     mStatJob = KIO::stat( dirUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
     mStatJob->setDetails( 2 ); // All details.

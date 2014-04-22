@@ -29,7 +29,7 @@
 #endif
 
 #include <KDE/KDialog>
-
+#include <KUrl>
 class KConfigDialogManager;
 class KJob;
 
