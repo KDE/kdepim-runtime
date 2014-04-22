@@ -34,7 +34,6 @@ add_subdirectory( kjots )
 add_subdirectory( gid )
 if (KDEPIMLIBS_KRESOURCES_LIBS)
   add_subdirectory( knotes )
-  add_subdirectory( kres )
   add_subdirectory( tests )
 endif ()
 
