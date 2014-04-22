@@ -5,7 +5,7 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 find_package(KF5KCMUtils ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
-
+find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 
 set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
 qt5_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
