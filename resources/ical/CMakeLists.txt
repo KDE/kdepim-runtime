@@ -40,6 +40,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi ICal Resource")
 endif ()
 
-target_link_libraries(akonadi_ical_resource KF5::AkonadiCore   KF5::KIOCore KF5::CalendarCore)
+target_link_libraries(akonadi_ical_resource KF5::AkonadiCore   KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_ical_resource DESTINATION ${PLUGIN_INSTALL_DIR})

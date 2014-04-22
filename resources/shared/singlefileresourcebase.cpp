@@ -31,6 +31,8 @@
 #include <KLocalizedString>
 #include <KLocale>
 #include <KStandardDirs>
+#include <KGlobal>
+#include <KConfigGroup>
 
 #include <QtCore/QDir>
 #include <QtCore/QCryptographicHash>
