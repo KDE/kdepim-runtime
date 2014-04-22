@@ -18,7 +18,7 @@
 */
 
 #include "setuppage.h"
-
+#include <KIcon>
 #include <qstandarditemmodel.h>
 
 SetupPage::SetupPage(KAssistantDialog* parent) :

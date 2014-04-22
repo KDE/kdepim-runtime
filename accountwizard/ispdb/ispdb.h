@@ -24,6 +24,7 @@
 
 #include <kio/job.h>
 #include <kmime/kmime_header_parsing.h>
+#include <KUrl>
 
 class QDomElement;
 

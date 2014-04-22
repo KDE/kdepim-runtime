@@ -19,9 +19,9 @@
 
 #include "resource.h"
 
-#include <akonadi/agenttype.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/agentinstancecreatejob.h>
+#include <agenttype.h>
+#include <agentmanager.h>
+#include <agentinstancecreatejob.h>
 
 #include <KDebug>
 #include <KLocalizedString>
@@ -35,6 +35,8 @@ using namespace Akonadi;
 
 static QVariant::Type argumentType( const QMetaObject *mo, const QString &method )
 {
+//QT5
+#if 0
   QMetaMethod m;
   for ( int i = 0; i < mo->methodCount(); ++i ) {
     const QString signature = QString::fromLatin1( mo->method( i ).signature() );
@@ -56,6 +58,9 @@ static QVariant::Type argumentType( const QMetaObject *mo, const QString &method
     return QVariant::Invalid;
 
   return QVariant::nameToType( argTypes.first() );
+#else
+  return QVariant::Invalid;
+#endif
 }
 
 Resource::Resource(const QString& type, QObject* parent) :

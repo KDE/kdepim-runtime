@@ -27,6 +27,7 @@
 
 #include <kemailsettings.h>
 #include <kwallet.h>
+#include <KGlobal>
 
 SetupManager::SetupManager( QWidget* parent) :
   QObject(parent),

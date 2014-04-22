@@ -21,7 +21,7 @@
 #define RESOURCE_H
 
 #include "setupobject.h"
-#include <akonadi/agentinstance.h>
+#include <agentinstance.h>
 #include <QtCore/QMap>
 
 class KJob;

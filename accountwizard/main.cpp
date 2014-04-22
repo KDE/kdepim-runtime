@@ -20,9 +20,9 @@
 #include "dialog.h"
 #include "global.h"
 
-#include <akonadi/control.h>
+#include <control.h>
 
-#include <kaboutdata.h>
+#include <k4aboutdata.h>
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kglobal.h>
@@ -33,7 +33,7 @@
 
 int main( int argc, char **argv )
 {
-  KAboutData aboutData( "accountwizard", 0,
+  K4AboutData aboutData( "accountwizard", 0,
                         ki18n( "Account Assistant" ),
                         "0.1",
                         ki18n( "Helps setting up PIM accounts" ),

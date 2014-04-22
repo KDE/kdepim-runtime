@@ -21,7 +21,7 @@
 
 #include "personaldatapage.h"
 
-#include "config-enterprise.h"
+#include "../config-enterprise.h"
 #include "global.h"
 #include "dialog.h"
 #include "transport.h"

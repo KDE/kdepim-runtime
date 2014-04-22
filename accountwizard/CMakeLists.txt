@@ -18,6 +18,7 @@ include(KDEFrameworkCompilerSettings)
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
+
 # allow to disable GHNS support on resource-constrained systems
 option( ACCOUNTWIZARD_NO_GHNS "Disable GHNS support in the account wizard" ${KDEPIM_MOBILE_UI} )
 if ( ACCOUNTWIZARD_NO_GHNS )
@@ -37,6 +38,8 @@ find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5WidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Wallet ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5NewStuff ${KF5_VERSION} CONFIG REQUIRED)
+find_package(Qt5UiTools ${QT_REQUIRED_VERSION} CONFIG REQUIRED)
 
 set(accountwizard_srcs
   dialog.cpp
@@ -74,6 +77,8 @@ set(accountwizard_libs
   KF5::KMime
   KF5::PimIdentities
   KF5::WidgetsAddons
+  KF5::NewStuff
+  Qt5::UiTools
 )
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
