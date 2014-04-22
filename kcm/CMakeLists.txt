@@ -1,26 +1,30 @@
+project(kcmakonadi)
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
-include_directories( ${kdepim-runtime_SOURCE_DIR} )
+
+find_package(KF5KCMUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+
 
 set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
-kde4_add_ui_files(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
-kde4_add_plugin(kcm_akonadi_resources ${akonadi_resources_kcm_srcs})
-target_link_libraries(kcm_akonadi_resources  ${KDE4_KDEUI_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
+qt5_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
+add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
+target_link_libraries(kcm_akonadi_resources  KF5::AkonadiCore)
 
 
 set(akonadi_server_kcm_srcs serverconfigmodule.cpp)
-kde4_add_ui_files(akonadi_server_kcm_srcs serverconfigmodule.ui
+qt5_wrap_ui(akonadi_server_kcm_srcs serverconfigmodule.ui
                                           servermysqlstorage.ui
                                           serverpsqlstorage.ui
                                           serverstoragedriver.ui)
-kde4_add_plugin(kcm_akonadi_server ${akonadi_server_kcm_srcs})
-target_link_libraries(kcm_akonadi_server  ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${AKONADI_COMMON_LIBRARIES})
+add_library(kcm_akonadi_server MODULE ${akonadi_server_kcm_srcs})
+target_link_libraries(kcm_akonadi_server  KF5::KIOCore KF5::AkonadiCore KF5::KCMUtils)
 
 
 set(akonadi_kcm_srcs akonadiconfigmodule.cpp)
-kde4_add_plugin(kcm_akonadi ${akonadi_kcm_srcs})
-target_link_libraries(kcm_akonadi  ${KDE4_KCMUTILS_LIBS})
+add_library(kcm_akonadi MODULE ${akonadi_kcm_srcs})
+target_link_libraries(kcm_akonadi  KF5::KCMUtils)
 
 
 install(TARGETS
@@ -33,3 +37,8 @@ install(FILES
   kcm_akonadi_server.desktop
   kcm_akonadi.desktop
   DESTINATION ${SERVICES_INSTALL_DIR})
+
+if ("${CMAKE_BINARY_DIR}" STREQUAL "${kcmakonadi_BINARY_DIR}")
+  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+endif()
+

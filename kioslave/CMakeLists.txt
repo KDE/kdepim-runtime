@@ -26,4 +26,8 @@ install(TARGETS kio_akonadi DESTINATION ${PLUGIN_INSTALL_DIR} )
 
 install( FILES akonadi.protocol  DESTINATION  ${SERVICES_INSTALL_DIR} )
 
+if ("${CMAKE_BINARY_DIR}" STREQUAL "${kioslave_BINARY_DIR}")
+  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+endif()
+
 

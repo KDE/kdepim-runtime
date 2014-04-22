@@ -26,6 +26,7 @@ endif ()
 
 # FIXME: Do we want the same versions in kdepimlibs and kf5?
 set(KF5_VERSION "4.98.0")
+set(QT_REQUIRED_VERSION "5.2.0")
 ########### Find packages ###########
 find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
@@ -34,6 +35,7 @@ find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KWidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Wallet ${KF5_VERSION} CONFIG REQUIRED)
 
 set(accountwizard_srcs
   dialog.cpp
@@ -96,3 +98,8 @@ install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 #update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
 add_subdirectory(wizards)
+
+if ("${CMAKE_BINARY_DIR}" STREQUAL "${accountwizard_BINARY_DIR}")
+  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+endif()
+
