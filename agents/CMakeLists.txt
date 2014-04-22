@@ -22,9 +22,9 @@ macro(kdepim_add_agent _target)
     endif()
 endmacro()
 
-#add_subdirectory( maildispatcher )
-#add_subdirectory( newmailnotifier )
-#add_subdirectory( migration )
+add_subdirectory( maildispatcher )
+add_subdirectory( newmailnotifier )
+add_subdirectory( migration )
 add_subdirectory( invitations )
 
 install(FILES akonadinepomukfeederagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")

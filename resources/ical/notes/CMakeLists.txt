@@ -5,7 +5,7 @@ include_directories(
     ${Boost_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 
 ########### next target ###############
@@ -21,15 +21,15 @@ set( notesresource_SRCS
 
 install( FILES notesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-kde4_add_ui_files(notesresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
-kde4_add_kcfg_files(notesresource_SRCS settings.kcfgc)
+qt5_wrap_ui(notesresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+kconfig_add_kcfg_files(notesresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/notesresource.kcfg org.kde.Akonadi.Notes.Settings)
-qt4_add_dbus_adaptor(notesresource_SRCS
+qt5_add_dbus_adaptor(notesresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Akonadi_Aknotes_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
 )
 
-kde4_add_plugin(akonadi_notes_resource ${notesresource_SRCS})
+add_library(akonadi_notes_resource MODULE ${notesresource_SRCS})
 
-target_link_libraries(akonadi_notes_resource ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS})
+target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore)
 
 install(TARGETS akonadi_notes_resource DESTINATION ${PLUGIN_INSTALL_DIR})

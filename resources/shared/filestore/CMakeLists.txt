@@ -11,7 +11,7 @@ include_directories(
 
 include(KDE4Defaults)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
+kde_enable_exceptions()
 
 set(akonadi-filestore_SRCS
   abstractlocalstore.cpp
@@ -36,10 +36,10 @@ kde4_add_library(akonadi-filestore ${LIBRARY_TYPE} ${akonadi-filestore_SRCS} )
 
 target_link_libraries(akonadi-filestore
                       ${AKONADI_COMMON_LIBRARIES}
-                      ${QT_QTCORE_LIBRARY}
-                      ${QT_QTGUI_LIBRARY}
-                      ${KDEPIMLIBS_AKONADI_LIBS}
-                      ${KDE4_KIO_LIBS}
+                      
+                      
+                      KF5::AkonadiCore
+                      KF5::KIOCore
 )
 
 set_target_properties(akonadi-filestore PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
