@@ -5,28 +5,26 @@ project(kdepim-runtime)
 # we need some parts of the ECM CMake helpers
 find_package (ECM 0.0.12 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
-include(ECMOptionalAddSubdirectory)
-include(ECMInstallIcons)
-include(ECMSetupVersion)
-include(ECMAddTests)
-include(ECMMarkNonGuiExecutable)
+
+include(GenerateExportHeader)
 include(ECMGenerateHeaders)
-
-include(CMakePackageConfigHelpers)
+include(ECMGeneratePriFile)
+include(ECMPackageConfigHelpers)
+include(ECMSetupVersion)
 include(FeatureSummary)
-include(WriteBasicConfigVersionFile)
-include(CheckFunctionExists)
-
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDECompilerSettings)
+include(KDEFrameworkCompilerSettings)
 
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test)
-find_package(KF5Akonadi CONFIG REQUIRED)
+
+set(AkonadiServer_MIN_VERSION "1.70.41")
+find_package(Akonadi ${AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
+
 
 option(KDEPIM_ENTERPRISE_BUILD "Enable features specific to the enterprise branch, which are normally disabled. Also, it disables many components not needed for Kontact such as the Kolab client." FALSE)
 
@@ -41,7 +39,7 @@ add_subdirectory(resources)
 #add_subdirectory(accountwizard)
 add_subdirectory(defaultsetup)
 #add_subdirectory(resourcetester)
-#add_subdirectory(kioslave)
+add_subdirectory(kioslave)
 #add_subdirectory(kcm)
 #add_subdirectory(tray)
 #add_subdirectory(migration)
@@ -57,7 +55,7 @@ feature_summary(WHAT ALL
 )
 
 
-if (false)
+if (FALSE)
 ############### KDEPIM-Runtime version ################
 # KDEPIM_RUNTIME_VERSION
 # Version scheme: "x.y.z build".

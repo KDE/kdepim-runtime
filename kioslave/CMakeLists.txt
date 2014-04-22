@@ -10,14 +10,21 @@ find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 
-set(kio_akonadi_srcs akonadislave.cpp )
+set(kio_akonadi_SRCS akonadislave.cpp )
 
 
-add_library(kio_akonadi MODULE ${kio_akonadi_srcs})
+add_library(kio_akonadi MODULE ${kio_akonadi_SRCS})
 
 
 
-target_link_libraries(kio_akonadi  KF5::KDELibs4Support KF5::ItemModels KF5::KIOCore KF5::AkonadiCore )
+target_link_libraries(kio_akonadi  
+                      KF5::KDELibs4Support 
+                      KF5::ItemModels 
+                      KF5::KIOCore 
+                      KF5::AkonadiCore 
+                      Qt5::DBus
+                      Qt5::Widgets
+                      )
 
 install(TARGETS kio_akonadi DESTINATION ${PLUGIN_INSTALL_DIR} )
 
