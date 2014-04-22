@@ -24,6 +24,8 @@
 #include <kconfiggroup.h>
 #include <kross/core/action.h>
 #include <QtCore/qfile.h>
+#include <KLocalizedString>
+#include <KGlobal>
 
 LoadPage::LoadPage(KAssistantDialog* parent) :
   Page( parent ),

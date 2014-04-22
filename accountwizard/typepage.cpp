@@ -22,6 +22,9 @@
 #include <KDebug>
 #include <KDesktopFile>
 #include <KStandardDirs>
+#include <KGlobal>
+#include <KConfigGroup>
+#include <KIcon>
 
 #include <QSortFilterProxyModel>
 #include "global.h"
