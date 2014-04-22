@@ -18,9 +18,8 @@ set(kdepim-copy_LIB_SRCS
 kde4_add_library(kdepim-copy ${LIBRARY_TYPE} ${kdepim-copy_LIB_SRCS})
 
 target_link_libraries(kdepim-copy
-  ${KDE4_KDEUI_LIBS}
-  ${KDEPIMLIBS_KCALCORE_LIBS}
-  ${KDEPIMLIBS_KCALUTILS_LIBS}
+  KF5::CalendarCore
+  KF5::CalendarUtils
 )
 
 set_target_properties(kdepim-copy PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
