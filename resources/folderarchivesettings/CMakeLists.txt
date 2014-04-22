@@ -20,7 +20,7 @@ kde4_add_library(folderarchivesettings ${LIBRARY_TYPE} ${folderarchivesettings_S
 target_link_libraries(folderarchivesettings
                       KF5::KMime
                       ${AKONADI_COMMON_LIBRARIES}
-                      ${QT_QTGUI_LIBRARY}
+                      
                       KF5::AkonadiCore
 )
 

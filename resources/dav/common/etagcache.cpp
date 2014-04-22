@@ -18,10 +18,10 @@
 
 #include "etagcache.h"
 
-#include <akonadi/collection.h>
-#include <akonadi/item.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
+#include <collection.h>
+#include <item.h>
+#include <itemfetchjob.h>
+#include <itemfetchscope.h>
 #include <kdebug.h>
 #include <kjob.h>
 

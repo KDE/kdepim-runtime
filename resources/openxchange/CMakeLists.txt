@@ -53,7 +53,7 @@ if (Q_WS_MAC)
 endif ()
 
 
-target_link_libraries(akonadi_openxchange_resource KF5::AkonadiCore ${KDEPIMLIBS_KABC_LIBS} ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDE4_KDECORE_LIBS} KF5::KIOCore KF5::CalendarCore  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS} )
+target_link_libraries(akonadi_openxchange_resource KF5::AkonadiCore ${KDEPIMLIBS_KABC_LIBS}    ${KDE4_KDECORE_LIBS} KF5::KIOCore KF5::CalendarCore  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS} )
 
 install(TARGETS akonadi_openxchange_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

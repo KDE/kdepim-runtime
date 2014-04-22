@@ -20,8 +20,8 @@
 #ifndef MAILDIR_RESOURCE_H
 #define MAILDIR_RESOURCE_H
 
-#include <akonadi/collection.h>
-#include <akonadi/resourcebase.h>
+#include <collection.h>
+#include <resourcebase.h>
 
 class QTimer;
 class QFileInfo;

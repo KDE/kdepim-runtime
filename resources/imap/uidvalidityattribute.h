@@ -20,7 +20,7 @@
 #ifndef UIDVALIDITYATTRIBUTE_H
 #define UIDVALIDITYATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 class UidValidityAttribute : public Akonadi::Attribute
 {

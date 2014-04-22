@@ -29,7 +29,7 @@
 #include <kdebug.h>
 #include <klocale.h>
 #include <kpimutils/kfileio.h>
-#include <akonadi/kmime/messageflags.h>
+#include <kmime/messageflags.h>
 
 #include <kde_file.h>
 #include <time.h>

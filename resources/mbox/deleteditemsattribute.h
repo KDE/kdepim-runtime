@@ -20,7 +20,7 @@
 #ifndef DELETEDITEMSATTRIBUTE_H
 #define DELETEDITEMSATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 #include <kmbox/mboxentry.h>
 
 #include <QtCore/QSet>

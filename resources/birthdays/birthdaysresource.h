@@ -23,7 +23,7 @@
 
 #include <kcalcore/event.h>
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 #include <QHash>
 

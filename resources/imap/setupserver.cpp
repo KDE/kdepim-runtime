@@ -40,11 +40,11 @@
 
 #include <kmime/kmime_message.h>
 
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/kmime/specialmailcollections.h>
-#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
-#include <akonadi/resourcesettings.h>
-#include <akonadi/entitydisplayattribute.h>
+#include <collectionfetchjob.h>
+#include <kmime/specialmailcollections.h>
+#include <kmime/specialmailcollectionsrequestjob.h>
+#include <resourcesettings.h>
+#include <entitydisplayattribute.h>
 #include <Akonadi/CollectionModifyJob>
 #include <kemailsettings.h>
 #include <klocale.h>

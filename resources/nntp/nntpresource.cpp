@@ -23,14 +23,14 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/attributefactory.h>
-#include <akonadi/cachepolicy.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/itemcreatejob.h>
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/monitor.h>
-#include <akonadi/session.h>
-#include <akonadi/changerecorder.h>
+#include <attributefactory.h>
+#include <cachepolicy.h>
+#include <collectionmodifyjob.h>
+#include <itemcreatejob.h>
+#include <kmime/messageparts.h>
+#include <monitor.h>
+#include <session.h>
+#include <changerecorder.h>
 
 #include <kmime/kmime_message.h>
 #include <kmime/kmime_newsarticle.h>

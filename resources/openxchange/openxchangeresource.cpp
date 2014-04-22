@@ -22,12 +22,12 @@
 #include "configdialog.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/cachepolicy.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <cachepolicy.h>
+#include <changerecorder.h>
+#include <collectionfetchjob.h>
+#include <collectionfetchscope.h>
+#include <entitydisplayattribute.h>
+#include <itemfetchscope.h>
 
 #include <kabc/addressee.h>
 #include <KCalCore/Event>

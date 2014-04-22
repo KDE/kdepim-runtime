@@ -21,7 +21,7 @@
 
 #include "session_p.h"
 
-#include <akonadi/collectionfetchscope.h>
+#include <collectionfetchscope.h>
 
 using namespace Akonadi;
 

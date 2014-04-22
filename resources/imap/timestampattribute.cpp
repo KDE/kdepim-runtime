@@ -23,7 +23,7 @@
 
 #include <QByteArray>
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 TimestampAttribute::TimestampAttribute( uint timestamp )
         : mTimestamp( timestamp )

@@ -23,18 +23,18 @@
 
 #include "filestore/itemfetchjob.h"
 
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/kmime/messagestatus.h>
+#include <kmime/messageparts.h>
+#include <kmime/messagestatus.h>
 
-#include <akonadi/collection.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/item.h>
-#include <akonadi/itemcreatejob.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/transactionsequence.h>
+#include <collection.h>
+#include <collectionmodifyjob.h>
+#include <item.h>
+#include <itemcreatejob.h>
+#include <itemdeletejob.h>
+#include <itemfetchjob.h>
+#include <itemfetchscope.h>
+#include <itemmodifyjob.h>
+#include <transactionsequence.h>
 
 #include <QDateTime>
 #include <QQueue>

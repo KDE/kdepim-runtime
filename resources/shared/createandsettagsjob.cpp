@@ -17,8 +17,8 @@
  *  02110-1301, USA.
  */
 #include "createandsettagsjob.h"
-#include <akonadi/tagcreatejob.h>
-#include <akonadi/itemmodifyjob.h>
+#include <tagcreatejob.h>
+#include <itemmodifyjob.h>
 
 using namespace Akonadi;
 

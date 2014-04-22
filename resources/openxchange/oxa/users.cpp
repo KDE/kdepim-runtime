@@ -78,7 +78,7 @@ User Users::lookupEmail( const QString &email ) const
 
 QString Users::cacheFilePath() const
 {
-  return KStandardDirs::locateLocal( "data", "akonadi/openxchangeresource_" + mIdentifier );
+  return KStandardDirs::locateLocal( "data", "openxchangeresource_" + mIdentifier );
 }
 
 void Users::setCurrentUserId( qlonglong id )

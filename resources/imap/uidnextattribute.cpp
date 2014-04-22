@@ -21,7 +21,7 @@
 
 #include <QByteArray>
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 UidNextAttribute::UidNextAttribute( int uidnext )
         : mUidNext( uidnext )

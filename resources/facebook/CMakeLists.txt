@@ -62,9 +62,9 @@ target_link_libraries(akonadi_facebook_resource
   KF5::AkonadiCore
   ${KDEPIMLIBS_KABC_LIBS}
   KF5::CalendarCore
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTGUI_LIBRARY}
-  ${QT_QTDBUS_LIBRARY}
+  
+  
+  
   ${QJSON_LIBRARIES}
   ${KDE4_KDECORE_LIBS}
   KF5::KMime

@@ -79,13 +79,13 @@ endif()
 
 target_link_libraries(akonadi_kolabproxy_resource
   kdepim-copy
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+  KF5::AkonadiKMime
   KF5::AkonadiCore
   ${KDEPIMLIBS_KABC_LIBS}
   KF5::CalendarCore
   KF5::KMime
   KF5::KIOCore
-  ${QT_QTDBUS_LIBRARY}
+  
   ${QT_QTXML_LIBRARY}
   ${Libkolab_LIBRARIES}
   ${Libkolabxml_LIBRARIES}

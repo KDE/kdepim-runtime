@@ -23,7 +23,7 @@
 
 #include <klineedit.h>
 #include <kdialog.h>
-#include <akonadi/collection.h>
+#include <collection.h>
 #include <KJob>
 
 #include <QRegExpValidator>

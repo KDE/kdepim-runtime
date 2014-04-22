@@ -24,7 +24,7 @@
 
 #include <kalarmcal/kaevent.h>
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 #include <QHash>
 
 namespace Akonadi_KAlarm_Dir_Resource { class Settings; }

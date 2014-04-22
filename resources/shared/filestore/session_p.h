@@ -20,8 +20,8 @@
 #ifndef AKONADI_FILESTORE_SESSION_P_H
 #define AKONADI_FILESTORE_SESSION_P_H
 
-#include <akonadi/collection.h>
-#include <akonadi/item.h>
+#include <collection.h>
+#include <item.h>
 
 #include <QObject>
 

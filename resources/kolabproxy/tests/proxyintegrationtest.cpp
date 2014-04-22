@@ -19,8 +19,8 @@
 
 #include <QObject>
 #include <qtest_kde.h>
-#include <akonadi/qtest_akonadi.h>
-#include <akonadi/servermanager.h>
+#include <qtest_akonadi.h>
+#include <servermanager.h>
 #include <Akonadi/AgentInstanceCreateJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>

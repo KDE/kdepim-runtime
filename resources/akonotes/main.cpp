@@ -19,6 +19,6 @@
 
 #include "akonotesresource.h"
 
-#include <akonadi/agentfactory.h>
+#include <agentfactory.h>
 
 AKONADI_AGENT_FACTORY( AkonotesResource, akonadi_akonotes_resource )

@@ -24,9 +24,9 @@
 #include "settingsadaptor.h"
 #include "../shared/dirsettingsdialog.h"
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <changerecorder.h>
+#include <entitydisplayattribute.h>
+#include <itemfetchscope.h>
 
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/FileStorage>

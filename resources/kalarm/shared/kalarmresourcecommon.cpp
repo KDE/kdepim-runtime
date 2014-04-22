@@ -24,8 +24,8 @@
 #include <kalarmcal/compatibilityattribute.h>
 #include <kalarmcal/eventattribute.h>
 
-#include <akonadi/attributefactory.h>
-#include <akonadi/collectionmodifyjob.h>
+#include <attributefactory.h>
+#include <collectionmodifyjob.h>
 
 #include <kcalcore/filestorage.h>
 #include <kcalcore/memorycalendar.h>

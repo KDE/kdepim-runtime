@@ -43,13 +43,13 @@
 #include <kdatetime.h>
 #include <kjob.h>
 
-#include <akonadi/attributefactory.h>
-#include <akonadi/cachepolicy.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
+#include <attributefactory.h>
+#include <cachepolicy.h>
+#include <changerecorder.h>
+#include <collectionfetchscope.h>
+#include <entitydisplayattribute.h>
+#include <itemfetchjob.h>
+#include <itemfetchscope.h>
 
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>

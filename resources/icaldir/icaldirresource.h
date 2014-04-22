@@ -21,7 +21,7 @@
 #ifndef ICALDIRRESOURCE_H
 #define ICALDIRRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 #include <KCalCore/Incidence>
 

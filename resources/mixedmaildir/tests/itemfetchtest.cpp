@@ -30,8 +30,8 @@
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/itemfetchscope.h>
+#include <kmime/messageparts.h>
+#include <itemfetchscope.h>
 
 #include <KRandom>
 #include <KRandomSequence>

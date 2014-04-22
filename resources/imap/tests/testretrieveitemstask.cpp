@@ -23,9 +23,9 @@
 #include "uidnextattribute.h"
 #include <highestmodseqattribute.h>
 
-#include <akonadi/cachepolicy.h>
-#include <akonadi/collectionstatistics.h>
-#include <akonadi/kmime/messageparts.h>
+#include <cachepolicy.h>
+#include <collectionstatistics.h>
+#include <kmime/messageparts.h>
 
 class TestRetrieveItemsTask : public ImapTestBase
 {

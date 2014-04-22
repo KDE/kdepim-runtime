@@ -22,8 +22,8 @@
 #include "davprotocolattribute.h"
 #include "davprotocolbase.h"
 
-#include <akonadi/collection.h>
-#include <akonadi/item.h>
+#include <collection.h>
+#include <item.h>
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
 #include <kcalcore/icalformat.h>

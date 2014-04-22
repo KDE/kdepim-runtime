@@ -20,7 +20,7 @@
 #ifndef CONTACTSRESOURCE_H
 #define CONTACTSRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 #include <kabc/addressee.h>
 #include <kabc/contactgroup.h>

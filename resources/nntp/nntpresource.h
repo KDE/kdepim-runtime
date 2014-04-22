@@ -20,7 +20,7 @@
 #ifndef AKONADI_NNTPRESOURCE_H
 #define AKONADI_NNTPRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 #include <kurl.h>
 #include <kio/job.h>

@@ -22,7 +22,7 @@
 #include "icalsettingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <akonadi/dbusconnectionpool.h>
+#include <dbusconnectionpool.h>
 
 #include <kcalcore/filestorage.h>
 #include <kcalcore/memorycalendar.h>

@@ -18,9 +18,9 @@
 */
 
 #include <QObject>
-#include <akonadi/qtest_akonadi.h>
-#include <akonadi/servermanager.h>
-#include <akonadi/collectionpathresolver_p.h>
+#include <qtest_akonadi.h>
+#include <servermanager.h>
+#include <collectionpathresolver_p.h>
 #include <Akonadi/Item>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>

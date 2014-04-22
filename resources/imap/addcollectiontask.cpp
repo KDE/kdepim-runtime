@@ -31,7 +31,7 @@
 #include <kimap/setmetadatajob.h>
 #include <kimap/subscribejob.h>
 
-#include <akonadi/collectiondeletejob.h>
+#include <collectiondeletejob.h>
 
 AddCollectionTask::AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent ), m_pendingJobs( 0 ), m_session(0)

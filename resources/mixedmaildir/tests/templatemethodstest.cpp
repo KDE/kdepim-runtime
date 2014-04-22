@@ -33,8 +33,8 @@
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
 
-#include <akonadi/cachepolicy.h>
-#include <akonadi/kmime/messageparts.h>
+#include <cachepolicy.h>
+#include <kmime/messageparts.h>
 
 #include <kmime/kmime_message.h>
 

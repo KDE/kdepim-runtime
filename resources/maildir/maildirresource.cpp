@@ -26,15 +26,15 @@
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
 
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/cachepolicy.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/dbusconnectionpool.h>
+#include <kmime/messageparts.h>
+#include <changerecorder.h>
+#include <itemfetchscope.h>
+#include <itemfetchjob.h>
+#include <itemmodifyjob.h>
+#include <collectionfetchscope.h>
+#include <cachepolicy.h>
+#include <collectionfetchjob.h>
+#include <dbusconnectionpool.h>
 
 #include <kmime/kmime_message.h>
 

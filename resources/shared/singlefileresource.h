@@ -25,7 +25,7 @@
 #include "singlefileresourcebase.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <akonadi/entitydisplayattribute.h>
+#include <entitydisplayattribute.h>
 
 #include <kio/job.h>
 #include <KDirWatch>

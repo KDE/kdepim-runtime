@@ -20,7 +20,7 @@
 #ifndef AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
 #define AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 #include <QtCore/QMap>
 

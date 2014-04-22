@@ -23,12 +23,12 @@
 #include "settingsadaptor.h"
 #include "configdialog.h"
 
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/mimetypechecker.h>
-#include <akonadi/monitor.h>
-#include <akonadi/entitydisplayattribute.h>
+#include <collectionfetchjob.h>
+#include <itemfetchjob.h>
+#include <itemfetchscope.h>
+#include <mimetypechecker.h>
+#include <monitor.h>
+#include <entitydisplayattribute.h>
 
 #include <kabc/addressee.h>
 

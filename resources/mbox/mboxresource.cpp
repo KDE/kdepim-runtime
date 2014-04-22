@@ -21,13 +21,13 @@
 
 #include <QtCore/QtPlugin>
 
-#include <akonadi/attributefactory.h>
-#include <akonadi/agentfactory.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/dbusconnectionpool.h>
-#include <akonadi/itemfetchscope.h>
+#include <attributefactory.h>
+#include <agentfactory.h>
+#include <changerecorder.h>
+#include <collectionfetchjob.h>
+#include <collectionmodifyjob.h>
+#include <dbusconnectionpool.h>
+#include <itemfetchscope.h>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>

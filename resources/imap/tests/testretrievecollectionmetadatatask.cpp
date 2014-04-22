@@ -21,8 +21,8 @@
 
 #include "retrievecollectionmetadatatask.h"
 
-#include <akonadi/collectionquotaattribute.h>
-#include <akonadi/attributefactory.h>
+#include <collectionquotaattribute.h>
+#include <attributefactory.h>
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"

@@ -22,7 +22,7 @@
 #ifndef MIXEDMAILDIR_RESOURCE_H
 #define MIXEDMAILDIR_RESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 #include <QStringList>
 

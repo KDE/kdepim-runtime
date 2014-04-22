@@ -31,7 +31,7 @@
 #include "itemaddedjob.h"
 #include "itemchangedjob.h"
 #include "revertitemchangesjob.h"
-#include <akonadi/dbusconnectionpool.h>
+#include <dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
 

@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <qtest_kde.h>
-#include <akonadi/item.h>
+#include <item.h>
 #include <kmime/kmime_message.h>
 #include <kolabhandler.h>
 #include <algorithm>

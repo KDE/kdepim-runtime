@@ -23,9 +23,9 @@
 #include "noselectattribute.h"
 #include <noinferiorsattribute.h>
 
-#include <akonadi/cachepolicy.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/kmime/messageparts.h>
+#include <cachepolicy.h>
+#include <entitydisplayattribute.h>
+#include <kmime/messageparts.h>
 
 class TestRetrieveCollectionsTask : public ImapTestBase
 {

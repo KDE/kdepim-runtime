@@ -20,7 +20,7 @@
 #ifndef AKONADI_SINGLEFILERESOURCEBASE_H
 #define AKONADI_SINGLEFILERESOURCEBASE_H
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 #include <KDE/KUrl>
 #include <QtCore/QStringList>

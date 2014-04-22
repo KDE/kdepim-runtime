@@ -19,7 +19,7 @@
 */
 
 #include "notehandler.h"
-#include <akonadi/notes/noteutils.h>
+#include <notes/noteutils.h>
 
 NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection )
   : JournalHandler( imapCollection )

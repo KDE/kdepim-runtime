@@ -44,14 +44,14 @@
 #include "filestore/itemmovejob.h"
 #include "filestore/storecompactjob.h"
 
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/kmime/messagestatus.h>
+#include <kmime/messageparts.h>
+#include <kmime/messagestatus.h>
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/collectionfetchscope.h>
+#include <changerecorder.h>
+#include <itemfetchjob.h>
+#include <itemfetchscope.h>
+#include <itemmodifyjob.h>
+#include <collectionfetchscope.h>
 
 #include <kmime/kmime_message.h>
 

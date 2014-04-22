@@ -22,7 +22,7 @@
 #ifndef TIMESTAMPATTRIBUTE_H
 #define TIMESTAMPATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 class TimestampAttribute : public Akonadi::Attribute
 {

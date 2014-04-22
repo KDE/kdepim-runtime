@@ -31,8 +31,8 @@
 #include <kimap/session.h>
 #include <klocale.h>
 
-#include <akonadi/collectionquotaattribute.h>
-#include <akonadi/entitydisplayattribute.h>
+#include <collectionquotaattribute.h>
+#include <entitydisplayattribute.h>
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"

@@ -20,7 +20,7 @@
 #ifndef AKONADI_IMAPQUOTAATTRIBUTE_H
 #define AKONADI_IMAPQUOTAATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 #include <QtCore/QMap>
 

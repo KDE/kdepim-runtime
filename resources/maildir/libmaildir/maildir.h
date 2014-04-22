@@ -25,7 +25,7 @@
 
 #include <QString>
 #include <QStringList>
-#include <akonadi/item.h>
+#include <item.h>
 
 class QDateTime;
 

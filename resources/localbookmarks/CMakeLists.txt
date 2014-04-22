@@ -1,9 +1,3 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${QT_QTDBUS_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIR}
-)
-
 kde_enable_exceptions()
 
 
@@ -30,7 +24,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_localbookmarks_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi LocalBookmarks Resource")
 endif ()
 
-target_link_libraries(akonadi_localbookmarks_resource KF5::AkonadiCore ${QT_QTDBUS_LIBRARY}  KF5::KIOCore)
+target_link_libraries(akonadi_localbookmarks_resource KF5::AkonadiCore   KF5::KIOCore KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_localbookmarks_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

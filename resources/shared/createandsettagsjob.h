@@ -20,8 +20,8 @@
 #define CREATEANDSETTAGSJOB_H
 
 #include <KJob>
-#include <akonadi/item.h>
-#include <akonadi/tag.h>
+#include <item.h>
+#include <tag.h>
 
 class CreateAndSetTagsJob : public KJob
 {

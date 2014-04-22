@@ -22,7 +22,7 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <akonadi/dbusconnectionpool.h>
+#include <dbusconnectionpool.h>
 
 #include <kfiledialog.h>
 #include <klocale.h>

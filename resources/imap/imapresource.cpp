@@ -33,16 +33,16 @@
 #include <kstandarddirs.h>
 #include <KWindowSystem>
 
-#include <akonadi/agentmanager.h>
-#include <akonadi/attributefactory.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/specialcollections.h>
-#include <akonadi/session.h>
-#include <akonadi/kmime/messageparts.h>
+#include <agentmanager.h>
+#include <attributefactory.h>
+#include <collectionfetchjob.h>
+#include <collectionfetchscope.h>
+#include <changerecorder.h>
+#include <itemfetchscope.h>
+#include <itemfetchjob.h>
+#include <specialcollections.h>
+#include <session.h>
+#include <kmime/messageparts.h>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
@@ -101,7 +101,7 @@ ImapResource::ImapResource( const QString &id )
 {
   if ( name() == identifier() ) {
     const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
-    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + QLatin1String("akonadi/agentsrc");
+    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + QLatin1String("agentsrc");
 
     const QSettings agentsrc( agentsrcFile, QSettings::IniFormat );
     const int instanceCounter = agentsrc.value(

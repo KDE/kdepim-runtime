@@ -47,7 +47,7 @@ set( imapresource_LIB_SRCS
 
 kde4_add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
-target_link_libraries(imapresource KF5::AkonadiCore ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} KF5::MailTransport KF5::KIOCore KF5::KMime ${KDEPIMLIBS_AKONADI_KMIME_LIBS} KF5::KF5PimIdentities)
+target_link_libraries(imapresource KF5::AkonadiCore     KF5::Imap KF5::MailTransport KF5::KIOCore KF5::KMime KF5::AkonadiKMime KF5::KF5PimIdentities)
 
 if( NOT IMAPRESOURCE_NO_SOLID)
   target_link_libraries(imapresource ${KDE4_SOLID_LIBS})
@@ -97,7 +97,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource")
 endif ()
 
-target_link_libraries(akonadi_imap_resource KF5::AkonadiCore ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${KDEPIMLIBS_KIMAP_LIBS} KF5::MailTransport KF5::KIOCore KF5::KMime ${KDEPIMLIBS_AKONADI_KMIME_LIBS} KF5::KF5PimIdentities imapresource folderarchivesettings)
+target_link_libraries(akonadi_imap_resource KF5::AkonadiCore     KF5::Imap KF5::MailTransport KF5::KIOCore KF5::KMime KF5::AkonadiKMime KF5::KF5PimIdentities imapresource folderarchivesettings)
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)

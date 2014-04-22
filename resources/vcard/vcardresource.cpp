@@ -22,8 +22,8 @@
 #include "vcardsettingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <akonadi/dbusconnectionpool.h>
-#include <akonadi/agentfactory.h>
+#include <dbusconnectionpool.h>
+#include <agentfactory.h>
 
 #include <kfiledialog.h>
 #include <klocale.h>

@@ -20,7 +20,7 @@
 #ifndef NOSELECTATTRIBUTE_H
 #define NOSELECTATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 class NoSelectAttribute : public Akonadi::Attribute
 {

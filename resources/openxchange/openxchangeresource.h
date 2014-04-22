@@ -20,7 +20,7 @@
 #ifndef OPENXCHANGERESOURCE_H
 #define OPENXCHANGERESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {

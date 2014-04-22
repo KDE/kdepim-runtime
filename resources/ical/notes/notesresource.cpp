@@ -19,7 +19,7 @@
 
 #include "notesresource.h"
 
-#include <akonadi/agentfactory.h>
+#include <agentfactory.h>
 
 #include <kcalcore/incidence.h>
 

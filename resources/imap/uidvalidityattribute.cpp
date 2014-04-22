@@ -21,7 +21,7 @@
 
 #include <QByteArray>
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 UidValidityAttribute::UidValidityAttribute( int uidvalidity )
         : mUidValidity( uidvalidity )

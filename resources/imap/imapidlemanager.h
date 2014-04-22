@@ -28,7 +28,7 @@
 
 #include "resourcestateinterface.h"
 
-#include <akonadi/collection.h>
+#include <collection.h>
 
 #include <QObject>
 #include <QPointer>

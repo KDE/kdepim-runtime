@@ -22,7 +22,7 @@
 
 #include "job.h"
 
-#include <akonadi/item.h>
+#include <item.h>
 
 namespace Akonadi
 {

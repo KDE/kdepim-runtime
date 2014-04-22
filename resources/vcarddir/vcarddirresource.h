@@ -20,7 +20,7 @@
 #ifndef VCARDDIRRESOURCE_H
 #define VCARDDIRRESOURCE_H
 
-#include <akonadi/resourcebase.h>
+#include <resourcebase.h>
 
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>

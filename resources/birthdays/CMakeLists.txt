@@ -2,6 +2,7 @@ include_directories( ${Boost_INCLUDE_DIR} )
 
 kde_enable_exceptions()
 
+
 set( birthdayresource_srcs
   birthdaysresource.cpp
   configdialog.cpp
@@ -26,9 +27,10 @@ endif ()
 target_link_libraries(akonadi_birthdays_resource
   KF5::KIOCore
   KF5::AkonadiCore
-  ${KDEPIMLIBS_KABC_LIBS}
   KF5::CalendarCore
   KF5::PimUtils
+  KF5::AkonadiAgentBase
+  KF5::Abc
 )
 
 install( TARGETS akonadi_birthdays_resource ${INSTALL_TARGETS_DEFAULT_ARGS} )

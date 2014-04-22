@@ -22,12 +22,12 @@
 
 #include "filestore/entitycompactchangeattribute.h"
 
-#include <akonadi/collection.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/item.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/session.h>
+#include <collection.h>
+#include <collectionmodifyjob.h>
+#include <item.h>
+#include <itemfetchjob.h>
+#include <itemmodifyjob.h>
+#include <session.h>
 
 #include <QtCore/QMap>
 #include <QtCore/QQueue>

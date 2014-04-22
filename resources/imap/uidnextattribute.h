@@ -20,7 +20,7 @@
 #ifndef UIDNEXTATTRIBUTE_H
 #define UIDNEXTATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 class UidNextAttribute : public Akonadi::Attribute
 {

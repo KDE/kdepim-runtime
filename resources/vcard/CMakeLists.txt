@@ -32,7 +32,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCard Resource")
 endif ()
 
-target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY} ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} KF5::KIOCore)
+target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore   ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} KF5::KIOCore)
 
 install(TARGETS akonadi_vcard_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 

@@ -1,8 +1,3 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${QT_QTDBUS_INCLUDE_DIR}
-)
-
 kde_enable_exceptions()
 
 add_subdirectory( wizard )
@@ -27,8 +22,6 @@ add_library(akonadi_contacts_resource MODULE ${contactsresource_SRCS})
 
 target_link_libraries(akonadi_contacts_resource
   KF5::AkonadiCore
-  ${QT_QTCORE_LIBRARY}
-  ${KDE4_KDECORE_LIBS}
   ${KDEPIMLIBS_KABC_LIBS}
   KF5::KIOCore
 )

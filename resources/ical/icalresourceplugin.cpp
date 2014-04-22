@@ -19,7 +19,7 @@
 
 #include "icalresource.h"
 
-#include <akonadi/agentfactory.h>
+#include <agentfactory.h>
 
 #include <QtCore/QtPlugin>
 

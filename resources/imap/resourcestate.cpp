@@ -28,8 +28,8 @@
 #include "noselectattribute.h"
 #include "timestampattribute.h"
 
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/agentsearchinterface.h>
+#include <collectionmodifyjob.h>
+#include <agentsearchinterface.h>
 #include <kmessagebox.h>
 
 ResourceStateInterface::Ptr ResourceState::createRetrieveItemState( ImapResource *resource,

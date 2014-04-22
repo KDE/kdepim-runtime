@@ -19,7 +19,7 @@
 #ifndef DAVPROTOCOLATTRIBUTE_H
 #define DAVPROTOCOLATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 #include <QtCore/QString>
 

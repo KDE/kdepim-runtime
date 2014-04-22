@@ -25,7 +25,7 @@
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <akonadi/qtest_akonadi.h>
+#include <qtest_akonadi.h>
 #include <KMime/Message>
 
 #include <KStandardDirs>

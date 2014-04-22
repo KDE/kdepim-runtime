@@ -27,12 +27,12 @@
 #include <QtCore/QDirIterator>
 #include <QtCore/QFile>
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/dbusconnectionpool.h>
-#include <akonadi/agentfactory.h>
+#include <changerecorder.h>
+#include <collectionfetchscope.h>
+#include <entitydisplayattribute.h>
+#include <itemfetchscope.h>
+#include <dbusconnectionpool.h>
+#include <agentfactory.h>
 
 using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;

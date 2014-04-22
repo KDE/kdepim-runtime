@@ -33,8 +33,8 @@
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
 
-#include <akonadi/collection.h>
-#include <akonadi/entitydisplayattribute.h>
+#include <collection.h>
+#include <entitydisplayattribute.h>
 
 #include <KLocalizedString>
 

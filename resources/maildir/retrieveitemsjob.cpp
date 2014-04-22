@@ -18,12 +18,12 @@
 */
 
 #include "retrieveitemsjob.h"
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemcreatejob.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/transactionsequence.h>
+#include <itemfetchjob.h>
+#include <itemmodifyjob.h>
+#include <itemdeletejob.h>
+#include <itemcreatejob.h>
+#include <collectionmodifyjob.h>
+#include <transactionsequence.h>
 
 #include <QDateTime>
 #include <QDirIterator>

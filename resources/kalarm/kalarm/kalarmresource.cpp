@@ -27,11 +27,11 @@
 #include <kalarmcal/kacalendar.h>
 #include <kalarmcal/kaevent.h>
 
-#include <akonadi/agentfactory.h>
-#include <akonadi/attributefactory.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/collectionmodifyjob.h>
+#include <agentfactory.h>
+#include <attributefactory.h>
+#include <collectionfetchjob.h>
+#include <collectionfetchscope.h>
+#include <collectionmodifyjob.h>
 
 #include <kcalcore/memorycalendar.h>
 #include <kcalcore/incidence.h>

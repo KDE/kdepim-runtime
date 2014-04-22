@@ -18,7 +18,7 @@
 #ifndef POP3RESOURCEATTRIBUTE_H
 #define POP3RESOURCEATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 class Pop3ResourceAttributePrivate;
 class Pop3ResourceAttribute : public Akonadi::Attribute

@@ -20,7 +20,7 @@
 #ifndef NOINFERIORSATTRIBUTE_H
 #define NOINFERIORSATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 class NoInferiorsAttribute : public Akonadi::Attribute
 {

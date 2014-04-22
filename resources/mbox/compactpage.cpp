@@ -19,8 +19,8 @@
 
 #include "compactpage.h"
 
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionmodifyjob.h>
+#include <collectionfetchjob.h>
+#include <collectionmodifyjob.h>
 #include <kmbox/mbox.h>
 
 #include "deleteditemsattribute.h"

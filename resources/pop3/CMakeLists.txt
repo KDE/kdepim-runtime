@@ -55,10 +55,10 @@ endif ()
 
 target_link_libraries( akonadi_pop3_resource
   KF5::AkonadiCore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTGUI_LIBRARY}
-  ${QT_QTDBUS_LIBRARY}
+  KF5::AkonadiKMime
+  
+  
+  
   ${KDE4_KDECORE_LIBS}
   KF5::KIOCore
   KF5::KMime

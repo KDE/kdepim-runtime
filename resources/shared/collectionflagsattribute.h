@@ -20,7 +20,7 @@
 #ifndef AKONADI_COLLECTIONFLAGSATTRIBUTE_H
 #define AKONADI_COLLECTIONFLAGSATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 namespace Akonadi {
 

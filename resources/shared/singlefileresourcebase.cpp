@@ -20,9 +20,9 @@
 
 #include "singlefileresourcebase.h"
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <changerecorder.h>
+#include <entitydisplayattribute.h>
+#include <itemfetchscope.h>
 
 #include <kio/job.h>
 #include <kio/jobuidelegate.h>
@@ -111,7 +111,7 @@ void SingleFileResourceBase::setLocalFileName( const QString &fileName )
 
 QString SingleFileResourceBase::cacheFile() const
 {
-  return KStandardDirs::locateLocal( "cache", QLatin1String("akonadi/") + identifier() );
+  return KStandardDirs::locateLocal( "cache", QLatin1String("") + identifier() );
 }
 
 QByteArray SingleFileResourceBase::calculateHash( const QString &fileName ) const

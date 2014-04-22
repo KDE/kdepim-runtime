@@ -21,7 +21,7 @@
 
 #include <KDebug>
 #include <QByteArray>
-#include <akonadi/attribute.h>
+#include <attribute.h>
 
 using namespace Akonadi;
 

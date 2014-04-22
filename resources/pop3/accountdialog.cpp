@@ -29,9 +29,9 @@
 // KDEPIMLIBS includes
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
-#include <akonadi/kmime/specialmailcollections.h>
-#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
-#include <akonadi/resourcesettings.h>
+#include <kmime/specialmailcollections.h>
+#include <kmime/specialmailcollectionsrequestjob.h>
+#include <resourcesettings.h>
 #include <Mailtransport/ServerTest>
 
 // KDELIBS includes

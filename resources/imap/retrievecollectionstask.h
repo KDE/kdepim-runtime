@@ -22,7 +22,7 @@
 #ifndef RETRIEVECOLLECTIONSTASK_H
 #define RETRIEVECOLLECTIONSTASK_H
 
-#include <akonadi/collection.h>
+#include <collection.h>
 
 #include <kimap/listjob.h>
 

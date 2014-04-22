@@ -27,9 +27,9 @@
 #include <QtCore/QDirIterator>
 #include <QtCore/QFile>
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <changerecorder.h>
+#include <entitydisplayattribute.h>
+#include <itemfetchscope.h>
 
 using namespace Akonadi;
 
