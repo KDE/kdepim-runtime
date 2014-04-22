@@ -19,14 +19,15 @@
 
 #include "akonadislave.h"
 
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/collection.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectiondeletejob.h>
-#include <akonadi/entitydisplayattribute.h>
+#include <itemfetchjob.h>
+#include <itemfetchscope.h>
+#include <itemdeletejob.h>
+#include <collection.h>
+#include <collectionfetchjob.h>
+#include <collectiondeletejob.h>
+#include <entitydisplayattribute.h>
 
+#include <kdemacros.h>
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kdebug.h>
@@ -67,7 +68,7 @@ AkonadiSlave::~ AkonadiSlave()
   kDebug( 7129 ) << "kio_akonadi shutting down";
 }
 
-void AkonadiSlave::get(const KUrl & url)
+void AkonadiSlave::get(const QUrl & url)
 {
   const Item item = Item::fromUrl( url );
   ItemFetchJob *job = new ItemFetchJob( item );
@@ -91,7 +92,7 @@ void AkonadiSlave::get(const KUrl & url)
   finished();
 }
 
-void AkonadiSlave::stat(const KUrl & url)
+void AkonadiSlave::stat(const QUrl & url)
 {
   kDebug( 7129 ) << url;
 
@@ -138,7 +139,7 @@ void AkonadiSlave::stat(const KUrl & url)
   }
 }
 
-void AkonadiSlave::del( const KUrl &url, bool isFile )
+void AkonadiSlave::del( const QUrl &url, bool isFile )
 {
   kDebug( 7129 ) << url;
 
@@ -160,7 +161,7 @@ void AkonadiSlave::del( const KUrl &url, bool isFile )
   }
 }
 
-void AkonadiSlave::listDir( const KUrl &url )
+void AkonadiSlave::listDir( const QUrl &url )
 {
   kDebug( 7129 ) << url;
 

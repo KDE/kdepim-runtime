@@ -36,22 +36,22 @@ class AkonadiSlave : public KIO::SlaveBase
     /**
      * Reimplemented from SlaveBase
      */
-    virtual void get( const KUrl &url );
+    virtual void get( const QUrl &url );
 
     /**
      * Reimplemented from SlaveBase
      */
-    virtual void stat( const KUrl &url );
+    virtual void stat( const QUrl &url );
 
     /**
      * Reimplemented from SlaveBase
      */
-    virtual void listDir( const KUrl &url );
+    virtual void listDir( const QUrl &url );
 
     /**
      * Reimplemented from SlaveBase
      */
-    virtual void del( const KUrl &url, bool isFile );
+    virtual void del( const QUrl &url, bool isFile );
 
   private:
     static KIO::UDSEntry entryForItem( const Akonadi::Item &item );
