@@ -37,7 +37,7 @@ int main( int argc, char **argv )
                         ki18n( "Account Assistant" ),
                         "0.1",
                         ki18n( "Helps setting up PIM accounts" ),
-                        KAboutData::License_LGPL,
+                        K4AboutData::License_LGPL,
                         ki18n( "(c) 2009 the Akonadi developers" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );
