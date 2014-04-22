@@ -31,19 +31,19 @@
 
 #include <KPIMIdentities/IdentityManager>
 
-#include <akonadi/dbusconnectionpool.h>
+#include <dbusconnectionpool.h>
 
-#include <akonadi/agentfactory.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/entityhiddenattribute.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/session.h>
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/CollectionFetchScope>
+#include <agentfactory.h>
+#include <changerecorder.h>
+#include <entitydisplayattribute.h>
+#include <entityhiddenattribute.h>
+#include <itemfetchscope.h>
+#include <session.h>
+#include <AttributeFactory>
+#include <CollectionFetchScope>
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/messagestatus.h>
-#include <Akonadi/AgentManager>
+#include <AgentManager>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>

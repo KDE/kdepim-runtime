@@ -21,13 +21,13 @@
 #include "newmailnotifierattribute.h"
 
 
-#include <Akonadi/CollectionModifyJob>
-#include <Akonadi/CollectionFilterProxyModel>
+#include <CollectionModifyJob>
+#include <CollectionFilterProxyModel>
 #include <KRecursiveFilterProxyModel>
 
-#include <Akonadi/ChangeRecorder>
-#include <Akonadi/EntityTreeModel>
-#include <Akonadi/Collection>
+#include <ChangeRecorder>
+#include <EntityTreeModel>
+#include <Collection>
 #include <KMime/Message>
 
 #include <KCheckableProxyModel>

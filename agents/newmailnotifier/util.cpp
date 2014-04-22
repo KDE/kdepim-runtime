@@ -24,8 +24,8 @@
 #include <KIconLoader>
 #include <KToolInvocation>
 
-#include <Akonadi/AgentInstance>
-#include <Akonadi/AgentType>
+#include <AgentInstance>
+#include <AgentType>
 #include <KMime/Message>
 
 #include <QDBusInterface>

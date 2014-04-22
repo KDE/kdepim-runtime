@@ -19,9 +19,9 @@
 #include "util.h"
 #include "newmailnotifieragentsettings.h"
 
-#include <Akonadi/Contact/ContactSearchJob>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
+#include <akonadi/contact/contactsearchjob.h>
+#include <ItemFetchJob>
+#include <ItemFetchScope>
 #include <akonadi/kmime/messageparts.h>
 
 #include <KNotification>
