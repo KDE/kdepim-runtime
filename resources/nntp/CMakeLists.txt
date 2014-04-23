@@ -1,9 +1,4 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-    ${QT_QTDBUS_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIR}
-)
-
+remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 set( nntpresource_SRCS
   nntpcollectionattribute.cpp
   nntpresource.cpp

@@ -21,6 +21,7 @@
 #include "settings.h"
 
 #include <kconfigdialogmanager.h>
+#include <KLocalizedString>
 
 ConfigDialog::ConfigDialog(QWidget * parent) :
     KDialog( parent )

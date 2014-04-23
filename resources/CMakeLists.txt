@@ -72,7 +72,7 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 #add_subdirectory( contacts )
 add_subdirectory( dav )
 #add_subdirectory( ical )
-add_subdirectory( imap )
+#add_subdirectory( imap )
 add_subdirectory( kdeaccounts )
 #if (Libkolab_FOUND AND Libkolabxml_FOUND)
 #    macro_optional_add_subdirectory( kolabproxy )
