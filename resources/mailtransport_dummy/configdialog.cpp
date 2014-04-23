@@ -20,8 +20,8 @@
 #include "configdialog.h"
 #include "settings.h"
 
-#include <Akonadi/Collection>
-#include <Akonadi/CollectionRequester>
+#include <Collection>
+#include <CollectionRequester>
 
 using namespace Akonadi;
 

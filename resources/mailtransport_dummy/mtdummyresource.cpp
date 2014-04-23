@@ -28,8 +28,8 @@
 
 #include <QtDBus/QDBusConnection>
 
-#include <Akonadi/ItemCopyJob>
-
+#include <ItemCopyJob>
+#include <KGlobal>
 using namespace Akonadi;
 
 MTDummyResource::MTDummyResource( const QString &id )

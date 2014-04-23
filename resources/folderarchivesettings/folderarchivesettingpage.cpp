@@ -19,7 +19,7 @@
 #include "folderarchiveaccountinfo.h"
 #include "folderarchiveutil.h"
 
-#include <Akonadi/CollectionRequester>
+#include <CollectionRequester>
 
 #include <kmime/kmime_message.h>
 

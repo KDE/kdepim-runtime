@@ -24,12 +24,6 @@
    </item>
    <item>
     <widget class="Akonadi::CollectionRequester" name="sink">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
     </widget>
    </item>
    <item>
@@ -51,7 +45,7 @@
   <customwidget>
    <class>Akonadi::CollectionRequester</class>
    <extends>QFrame</extends>
-   <header>akonadi/collectionrequester.h</header>
+   <header>collectionrequester.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

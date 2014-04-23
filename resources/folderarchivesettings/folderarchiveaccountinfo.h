@@ -19,7 +19,7 @@
 #define FOLDERARCHIVEACCOUNTINFO_H
 
 #include <KConfigGroup>
-#include <Akonadi/Collection>
+#include <Collection>
 
 class FolderArchiveAccountInfo
 {

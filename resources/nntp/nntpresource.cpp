@@ -27,7 +27,7 @@
 #include <cachepolicy.h>
 #include <collectionmodifyjob.h>
 #include <itemcreatejob.h>
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 #include <monitor.h>
 #include <session.h>
 #include <changerecorder.h>
@@ -37,6 +37,8 @@
 #include <kmime/kmime_util.h>
 
 #include <KWindowSystem>
+#include <KLocalizedString>
+#include <KIcon>
 
 #include <QDateTime>
 #include <QDir>

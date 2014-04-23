@@ -21,9 +21,9 @@
 #ifndef MTDUMMYRESOURCE_H
 #define MTDUMMYRESOURCE_H
 
-#include <Akonadi/Item>
-#include <Akonadi/ResourceBase>
-#include <Akonadi/TransportResourceBase>
+#include <Item>
+#include <ResourceBase>
+#include <TransportResourceBase>
 
 class MTDummyResource : public Akonadi::ResourceBase, public Akonadi::TransportResourceBase
 {
