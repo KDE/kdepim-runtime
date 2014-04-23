@@ -27,5 +27,5 @@ target_link_libraries(kdepim-copy
   KF5::KDELibs4Support
 )
 
-set_target_properties(kdepim-copy PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION})
+set_target_properties(kdepim-copy PROPERTIES VERSION ${KF5_VERSION} SOVERSION ${KF5_VERSION})
 install(TARGETS kdepim-copy ${INSTALL_TARGETS_DEFAULT_ARGS})
