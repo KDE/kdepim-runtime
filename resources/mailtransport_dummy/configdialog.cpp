@@ -23,6 +23,8 @@
 #include <Collection>
 #include <CollectionRequester>
 
+#include <KDebug>
+
 using namespace Akonadi;
 
 ConfigDialog::ConfigDialog(QWidget * parent) :

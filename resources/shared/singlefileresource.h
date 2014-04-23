@@ -36,6 +36,7 @@
 #include <QFile>
 #include <QDir>
 #include <QPointer>
+#include <KDebug>
 
 namespace Akonadi
 {

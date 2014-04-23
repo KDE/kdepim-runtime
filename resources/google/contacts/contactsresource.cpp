@@ -80,7 +80,7 @@ int ContactsResource::runConfigurationDialog( WId windowId )
 {
 
    QScopedPointer<SettingsDialog> settingsDialog( new SettingsDialog( accountManager(), windowId, this ) );
-   settingsDialog->setWindowIcon( KIcon( QLatin1String("im-google") ) );
+   settingsDialog->setWindowIcon( QIcon::fromTheme( QLatin1String("im-google") ) );
 
    return settingsDialog->exec();
 }

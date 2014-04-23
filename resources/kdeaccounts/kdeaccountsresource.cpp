@@ -27,7 +27,7 @@
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <KWindowSystem>
-#include <KIcon>
+#include <QIcon>
 
 using namespace Akonadi;
 
@@ -65,7 +65,7 @@ bool KDEAccountsResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
 
 void KDEAccountsResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  dlg->setWindowIcon( KIcon( QLatin1String("kde") ) );
+  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("kde") ) );
   dlg->setCaption( i18n( "Select KDE Accounts File" ) );
 }
 

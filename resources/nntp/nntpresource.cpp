@@ -38,7 +38,7 @@
 
 #include <KWindowSystem>
 #include <KLocalizedString>
-#include <KIcon>
+#include <QIcon>
 
 #include <QDateTime>
 #include <QDir>
@@ -282,7 +282,7 @@ void NntpResource::configure( WId windowId )
   if ( windowId ) {
     KWindowSystem::setMainWindow( &dlg, windowId );
   }
-  dlg.setWindowIcon( KIcon( "message-news" ) );
+  dlg.setWindowIcon( QIcon::fromTheme( "message-news" ) );
   if ( dlg.exec() ) {
     emit configurationDialogAccepted();
   } else {

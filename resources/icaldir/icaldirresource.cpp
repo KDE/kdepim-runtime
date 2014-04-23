@@ -31,8 +31,9 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/FileStorage>
 #include <KCalCore/ICalFormat>
-#include <KIcon>
+#include <QIcon>
 #include <KLocalizedString>
+#include <KDebug>
 
 
 #include <QtCore/QDir>
@@ -102,7 +103,7 @@ void ICalDirResource::aboutToQuit()
 void ICalDirResource::configure( WId windowId )
 {
   SettingsDialog dlg( windowId );
-  dlg.setWindowIcon( KIcon( "text-calendar" ) );
+  dlg.setWindowIcon( QIcon::fromTheme( "text-calendar" ) );
   if ( dlg.exec() ) {
     initializeICalDirectory();
     loadIncidences();

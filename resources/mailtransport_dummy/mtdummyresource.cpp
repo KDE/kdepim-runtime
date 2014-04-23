@@ -30,6 +30,8 @@
 
 #include <ItemCopyJob>
 #include <KGlobal>
+#include <KDebug>
+
 using namespace Akonadi;
 
 MTDummyResource::MTDummyResource( const QString &id )

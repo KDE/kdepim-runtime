@@ -58,7 +58,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
     m_calendarsList = new KListWidget( m_calendarsBox );
     vbox->addWidget( m_calendarsList, 1 );
 
-    m_reloadCalendarsBtn = new KPushButton( KIcon( QLatin1String("view-refresh") ), i18n( "Reload" ), m_calendarsBox );
+    m_reloadCalendarsBtn = new KPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_calendarsBox );
     vbox->addWidget( m_reloadCalendarsBtn );
     connect( m_reloadCalendarsBtn, SIGNAL(clicked(bool)),
              this, SLOT(slotReloadCalendars()) );
@@ -91,7 +91,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
     m_taskListsList = new KListWidget( m_taskListsBox );
     vbox->addWidget( m_taskListsList, 1 );
 
-    m_reloadTaskListsBtn = new KPushButton( KIcon( QLatin1String("view-refresh") ), i18n( "Reload" ), m_taskListsBox );
+    m_reloadTaskListsBtn = new KPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_taskListsBox );
     vbox->addWidget( m_reloadTaskListsBtn );
     connect( m_reloadTaskListsBtn, SIGNAL(clicked(bool)),
              this, SLOT(slotReloadTaskLists()) );

@@ -135,7 +135,7 @@ SetupWizard::SetupWizard( QWidget *parent )
   : QWizard( parent )
 {
   setWindowTitle( i18n( "DAV groupware configuration wizard" ) );
-  setWindowIcon( KIcon( QLatin1String("folder-remote") ) );
+  setWindowIcon( QIcon::fromTheme( QLatin1String("folder-remote") ) );
   setPage( W_CredentialsPage, new CredentialsPage );
   setPage( W_PredefinedProviderPage, new PredefinedProviderPage );
   setPage( W_ServerTypePage, new ServerTypePage );
@@ -523,10 +523,10 @@ void CheckPage::onFetchDone( KJob *job )
 
   if ( job->error() ) {
     msg = i18n( "An error occurred: %1",job->errorText());
-    icon = KIcon( QLatin1String("dialog-close") ).pixmap( 16, 16 );
+    icon = QIcon::fromTheme( QLatin1String("dialog-close") ).pixmap( 16, 16 );
   } else {
     msg = i18n( "Connected successfully" );
-    icon = KIcon( QLatin1String("dialog-ok-apply") ).pixmap( 16, 16 );
+    icon = QIcon::fromTheme( QLatin1String("dialog-ok-apply") ).pixmap( 16, 16 );
   }
 
   mStatusLabel->setHtml( QString::fromLatin1( "<html><body><img src=\"icon\"> %1</body></html>" ).arg( msg ) );

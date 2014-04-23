@@ -31,7 +31,7 @@
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
-#include <KIcon>
+#include <QIcon>
 
 #include "compactpage.h"
 #include "deleteditemsattribute.h"
@@ -85,7 +85,7 @@ MboxResource::~MboxResource()
 
 void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
 {
-  dlg->setWindowIcon( KIcon( QLatin1String("message-rfc822") ) );
+  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("message-rfc822") ) );
   dlg->addPage( i18n( "Compact frequency" ), new CompactPage( mSettings->path() ) );
   dlg->addPage( i18n( "Lock method" ), new LockMethodPage() );
   dlg->setCaption( i18n( "Select MBox file" ) );

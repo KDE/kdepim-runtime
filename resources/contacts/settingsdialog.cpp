@@ -33,7 +33,7 @@ SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId
   mSettings( settings )
 {
   ui.setupUi( mainWidget() );
-  setWindowIcon( KIcon( QLatin1String("text-directory") ) );
+  setWindowIcon( QIcon::fromTheme( QLatin1String("text-directory") ) );
   ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
   setButtons( Ok | Cancel );
 

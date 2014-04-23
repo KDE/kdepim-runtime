@@ -37,7 +37,7 @@
 #include <entitydisplayattribute.h>
 
 #include <KLocalizedString>
-
+#include <KDebug>
 #include <QFileInfo>
 
 using namespace Akonadi;

@@ -22,14 +22,14 @@
 #include "settings.h"
 
 #include <kconfigdialogmanager.h>
-#include <KIcon>
+#include <QIcon>
 #include <KLocalizedString>
 
 ConfigDialog::ConfigDialog(QWidget* parent)
   : KDialog( parent )
 {
   ui.setupUi( mainWidget() );
-  setWindowIcon( KIcon( QLatin1String("view-calendar-birthday") ) );
+  setWindowIcon( QIcon::fromTheme( QLatin1String("view-calendar-birthday") ) );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.kcfg_AlarmDays->setSuffix( ki18np( " day", " days" ) );

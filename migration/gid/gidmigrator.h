@@ -20,7 +20,7 @@
 #ifndef GIDMIGRATOR_H
 #define GIDMIGRATOR_H
 
-#include <migration/migratorbase.h>
+#include <migratorbase.h>
 #include <KJob>
 
 class GidMigrator: public MigratorBase

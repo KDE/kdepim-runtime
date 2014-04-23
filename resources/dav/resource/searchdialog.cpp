@@ -25,7 +25,7 @@
 #include "davutils.h"
 
 #include <KDebug>
-#include <KIcon>
+#include <QIcon>
 #include <KMessageBox>
 #include <KUrl>
 
@@ -185,9 +185,9 @@ void SearchDialog::onCollectionsFetchJobFinished( KJob* job )
     item->setData( data, Qt::UserRole + 1 );
     item->setToolTip( collection.url() );
     if ( collection.protocol() == DavUtils::CalDav )
-      item->setIcon( KIcon( QLatin1String("view-calendar") ) );
+      item->setIcon( QIcon::fromTheme( QLatin1String("view-calendar") ) );
     else
-      item->setIcon( KIcon( QLatin1String("view-pim-contacts" )) );
+      item->setIcon( QIcon::fromTheme( QLatin1String("view-pim-contacts" )) );
     mModel->appendRow( item );
   }
 }

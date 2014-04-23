@@ -255,10 +255,6 @@ if (QT_QTDECLARATIVE_FOUND)
   add_subdirectory(qml)
 endif ()
 
-#if(OPENSYNC_FOUND)
-#  add_subdirectory(opensync)
-#endif(OPENSYNC_FOUND)
-
 ############### Here we install some extra stuff  ###############
 
 ## install the MIME type spec file for KDEPIM specific MIME types

@@ -117,7 +117,7 @@ void MixedMaildirResource::configure( WId windowId )
   if ( windowId ) {
     KWindowSystem::setMainWindow( &dlg, windowId );
   }
-  dlg.setWindowIcon( KIcon( "message-rfc822" ) );
+  dlg.setWindowIcon( QIcon::fromTheme( "message-rfc822" ) );
 
   bool fullSync = false;
 

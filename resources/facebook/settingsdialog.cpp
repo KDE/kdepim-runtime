@@ -40,8 +40,8 @@ SettingsDialog::SettingsDialog( FacebookResource *parentResource, WId parentWind
   KWindowSystem::setMainWindow( this, parentWindow );
   setButtons( Ok|Cancel|User1 );
   setButtonText( User1, i18n( "About" ) );
-  setButtonIcon( User1, KIcon( QLatin1String("help-about") ) );
-  setWindowIcon( KIcon( QLatin1String("facebookresource") ) );
+  setButtonIcon( User1, QIcon::fromTheme( QLatin1String("help-about") ) );
+  setWindowIcon( QIcon::fromTheme( QLatin1String("facebookresource") ) );
   setWindowTitle( i18n( "Facebook Settings" ) );
 
   setupWidgets();

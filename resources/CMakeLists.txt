@@ -58,6 +58,12 @@ if(LibKGAPI2_FOUND OR LibKFbAPI_FOUND)
   set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google and Facebook resources")
 endif()
 
+include_directories(
+  ${kdepim-runtime_SOURCE_DIR}/libkdepim-copy
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared
+  ${CMAKE_CURRENT_BINARY_DIR}/shared
+)
+
 
 
 #add_definitions( -DQT_NO_CAST_FROM_ASCII )
@@ -98,7 +104,7 @@ add_subdirectory( dav )
 #add_subdirectory( imap )
 add_subdirectory( kdeaccounts )
 #if (Libkolab_FOUND AND Libkolabxml_FOUND)
-#    macro_optional_add_subdirectory( kolabproxy )
+#    add_subdirectory( kolabproxy )
 #endif()
 
 add_subdirectory( localbookmarks )

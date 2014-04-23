@@ -246,7 +246,7 @@ void MaildirResource::configure( WId windowId )
   ConfigDialog dlg( mSettings, identifier() );
   if ( windowId )
     KWindowSystem::setMainWindow( &dlg, windowId );
-  dlg.setWindowIcon( KIcon( QLatin1String("message-rfc822") ) );
+  dlg.setWindowIcon( QIcon::fromTheme( QLatin1String("message-rfc822") ) );
   if ( dlg.exec() ) {
     // if we have no name, or the default one,
     // better use the name of the top level collection

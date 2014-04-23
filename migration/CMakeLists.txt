@@ -2,6 +2,9 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 kde_enable_exceptions()
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/
+)
 
 set( MIGRATION_AKONADI_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/kmigratorbase.cpp

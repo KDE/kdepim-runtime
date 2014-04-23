@@ -32,7 +32,7 @@
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <KWindowSystem>
-#include <KIcon>
+#include <QIcon>
 #include <KGlobal>
 
 #include <agentmanager.h>
@@ -214,7 +214,7 @@ KDialog* ImapResource::createConfigureDialog(WId windowId)
 {
   SetupServer *dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
-  dlg->setWindowIcon( KIcon( QLatin1String("network-server") ) );
+  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
   connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
   return dlg;
 }
@@ -283,7 +283,7 @@ int ImapResource::configureSubscription(qlonglong windowId)
 #endif
   }
   mSubscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
-  mSubscriptions->setWindowIcon( KIcon( QLatin1String("network-server") ) );
+  mSubscriptions->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
   mSubscriptions->connectAccount( *m_pool->account(), password );
   mSubscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
 

@@ -31,8 +31,9 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
-#include <KIcon>
+#include <QIcon>
 #include <KLocalizedString>
+#include <KDebug>
 
 using namespace Akonadi;
 
@@ -61,7 +62,7 @@ void VCardDirResource::aboutToQuit()
 void VCardDirResource::configure( WId windowId )
 {
   SettingsDialog dlg( windowId );
-  dlg.setWindowIcon( KIcon( QLatin1String("text-directory") ) );
+  dlg.setWindowIcon( QIcon::fromTheme( QLatin1String("text-directory") ) );
   if ( dlg.exec() ) {
     initializeVCardDirectory();
     loadAddressees();
