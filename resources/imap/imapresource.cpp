@@ -32,6 +32,8 @@
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <KWindowSystem>
+#include <KIcon>
+#include <KGlobal>
 
 #include <agentmanager.h>
 #include <attributefactory.h>
@@ -42,7 +44,7 @@
 #include <itemfetchjob.h>
 #include <specialcollections.h>
 #include <session.h>
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"

@@ -21,10 +21,10 @@
 
 #include "retrieveitemtask.h"
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
-#include <kmime/messageflags.h>
+#include <akonadi/kmime/messageflags.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 

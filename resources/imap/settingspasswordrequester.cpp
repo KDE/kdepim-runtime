@@ -21,8 +21,8 @@
 
 #include "settingspasswordrequester.h"
 
-#include <KDE/KMessageBox>
-#include <KDE/KLocale>
+#include <KMessageBox>
+#include <KLocale>
 #include <KDialog>
 
 #include <mailtransport/transportbase.h>

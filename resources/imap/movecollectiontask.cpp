@@ -21,8 +21,8 @@
 
 #include "movecollectiontask.h"
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/renamejob.h>
 #include <kimap/session.h>

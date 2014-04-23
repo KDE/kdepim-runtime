@@ -24,8 +24,8 @@
 
 #include <QtCore/QObject>
 
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
+#include <Collection>
+#include <Item>
 
 #include <kimap/listjob.h>
 

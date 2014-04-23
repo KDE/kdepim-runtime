@@ -21,9 +21,9 @@
 
 #include "resourcetask.h"
 
-#include <kmime/messageflags.h>
+#include <akonadi/kmime/messageflags.h>
 
-#include <KDE/KLocale>
+#include <KLocale>
 
 #include "collectionflagsattribute.h"
 #include "imapflags.h"

@@ -24,8 +24,8 @@
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslSocket>
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/capabilitiesjob.h>
 #include <kimap/logoutjob.h>

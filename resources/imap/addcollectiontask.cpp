@@ -23,8 +23,8 @@
 
 #include "collectionannotationsattribute.h"
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/createjob.h>
 #include <kimap/session.h>

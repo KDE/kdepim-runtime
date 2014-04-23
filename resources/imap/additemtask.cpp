@@ -23,8 +23,8 @@
 
 #include <QtCore/QUuid>
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/appendjob.h>
 #include <kimap/imapset.h>
@@ -173,7 +173,7 @@ void AddItemTask::applyFoundUid( qint64 uid )
   if ( uid > 0 )
     i.setRemoteId( QString::number( uid ) );
   else
-    i.setRemoteId( QUuid::createUuid() );
+    i.setRemoteId( QUuid::createUuid().toString() );
   kDebug( 5327 ) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
 
   changeCommitted( i );

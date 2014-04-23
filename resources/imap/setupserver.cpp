@@ -45,7 +45,7 @@
 #include <kmime/specialmailcollectionsrequestjob.h>
 #include <resourcesettings.h>
 #include <entitydisplayattribute.h>
-#include <Akonadi/CollectionModifyJob>
+#include <CollectionModifyJob>
 #include <kemailsettings.h>
 #include <klocale.h>
 #include <kpushbutton.h>

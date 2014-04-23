@@ -21,7 +21,7 @@
 
 #include "removecollectionrecursivetask.h"
 
-#include <kmime/messageflags.h>
+#include <akonadi/kmime/messageflags.h>
 #include <kimap/deletejob.h>
 #include <kimap/expungejob.h>
 #include <kimap/selectjob.h>

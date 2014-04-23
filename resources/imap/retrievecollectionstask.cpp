@@ -26,12 +26,12 @@
 
 #include <cachepolicy.h>
 #include <entitydisplayattribute.h>
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 
 #include <kmime/kmime_message.h>
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 RetrieveCollectionsTask::RetrieveCollectionsTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent )

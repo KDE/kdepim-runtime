@@ -25,7 +25,7 @@
 
 #include "imapidlemanager.h"
 
-#include <KDE/KDebug>
+#include <KDebug>
 
 #include <kimap/idlejob.h>
 #include <kimap/selectjob.h>

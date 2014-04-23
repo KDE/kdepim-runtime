@@ -32,9 +32,9 @@ using KWallet::Wallet;
 
 #include <QDBusConnection>
 
-#include <KDE/Akonadi/Collection>
-#include <KDE/Akonadi/CollectionFetchJob>
-#include <KDE/Akonadi/CollectionModifyJob>
+#include <Collection>
+#include <CollectionFetchJob>
+#include <CollectionModifyJob>
 
 class SettingsHelper
 {

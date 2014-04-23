@@ -21,8 +21,8 @@
 
 #include "changeitemtask.h"
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/appendjob.h>
 #include <kimap/searchjob.h>

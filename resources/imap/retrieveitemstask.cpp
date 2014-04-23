@@ -29,15 +29,15 @@
 
 #include <cachepolicy.h>
 #include <collectionstatistics.h>
-#include <kmime/messageflags.h>
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageflags.h>
+#include <akonadi/kmime/messageparts.h>
 #include <agentbase.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
 #include <session.h>
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/expungejob.h>
 #include <kimap/fetchjob.h>

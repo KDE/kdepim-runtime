@@ -23,8 +23,8 @@
 
 #include <QtCore/QUuid>
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/copyjob.h>
 #include <kimap/searchjob.h>
@@ -264,7 +264,7 @@ void MoveItemsTask::recordNewUid()
     // if we didn't manage to get a valid UID from the server, use a random RID instead
     // this will make ItemSync clean up the mess during the next sync (while empty RIDs are protected as not yet existing on the server)
     if ( m_newUids.count() <= i ) {
-        item.setRemoteId( QUuid::createUuid() );
+        item.setRemoteId( QUuid::createUuid().toString() );
     } else {
         item.setRemoteId( QString::number( m_newUids.at( i ) ) );
     }

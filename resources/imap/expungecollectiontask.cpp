@@ -21,8 +21,8 @@
 
 #include "expungecollectiontask.h"
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/expungejob.h>
 #include <kimap/selectjob.h>

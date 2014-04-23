@@ -22,7 +22,7 @@
 #ifndef SUBSCRIPTIONDIALOG_H
 #define SUBSCRIPTIONDIALOG_H
 
-#include <KDE/KDialog>
+#include <KDialog>
 
 #include <krecursivefilterproxymodel.h>
 #include <kimap/listjob.h>

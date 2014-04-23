@@ -20,7 +20,7 @@
 #ifndef HIGHESTMODSEQATTRIBUTE_H
 #define HIGHESTMODSEQATTRIBUTE_H
 
-#include <Akonadi/Attribute>
+#include <Attribute>
 
 class HighestModSeqAttribute : public Akonadi::Attribute
 {

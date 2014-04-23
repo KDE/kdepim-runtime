@@ -23,7 +23,7 @@
 #include <kimap/searchjob.h>
 #include <kimap/session.h>
 #include <kimap/selectjob.h>
-#include <Akonadi/SearchQuery>
+#include <SearchQuery>
 #include <Akonadi/KMime/MessageFlags>
 #include <KDateTime>
 
