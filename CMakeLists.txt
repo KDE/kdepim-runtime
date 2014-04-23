@@ -31,6 +31,11 @@ option(KDEPIM_ENTERPRISE_BUILD "Enable features specific to the enterprise branc
 # config-enterprise.h is needed for both ENTERPRISE_BUILD and BUILD_EVERYTHING
 configure_file(config-enterprise.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-enterprise.h )
 
+#Boost
+# Don't use BoostConfig.cmake
+set(Boost_NO_BOOST_CMAKE TRUE)
+find_package(Boost 1.34.0)
+set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "http://www.boost.org" TYPE REQUIRED PURPOSE "Boost is required by Akonadi")
 
 add_subdirectory(resources)
 add_subdirectory(agents)
@@ -43,7 +48,7 @@ add_subdirectory(kioslave)
 #add_subdirectory(kcm)
 # We can't compile tray for the moment missing
 #add_subdirectory(tray)
-#add_subdirectory(migration)
+add_subdirectory(migration)
 if (QT_QTDECLARATIVE_FOUND)
   add_subdirectory(qml)
 endif ()

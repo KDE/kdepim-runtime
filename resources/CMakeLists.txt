@@ -31,14 +31,37 @@ find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 
+find_package(AccountsQt 1.11 QUIET CONFIG)
+set_package_properties(AccountsQt PROPERTIES DESCRIPTION "Qt bindings for accounts-sso" URL "https://code.google.com/p/accounts-sso/" TYPE OPTIONAL PURPOSE "Required to support AccountsQt in different resources")
+
+find_package(SignOnQt 8.56 QUIET CONFIG)
+set_package_properties(SignOnQt PROPERTIES DESCRIPTION "SignOn Qt bindings for accounts-sso" URL "https://code.google.com/p/accounts-sso/" TYPE OPTIONAL PURPOSE "Required to support SignOn in different resources")
+
+# Libkolab
+find_package(Libkolab 0.5 QUIET CONFIG)
+set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
+
+# Libkolabxml
+find_package(Libkolabxml 1.0 QUIET CONFIG)
+set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
+
+# Libkgapi2
+find_package(LibKGAPI2 1.9.81 QUIET CONFIG)
+set_package_properties(LibKGAPI2 PROPERTIES DESCRIPTION "KDE-based library for accessing various Google services" URL "https://projects.kde.org/libkgapi" TYPE OPTIONAL PURPOSE "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks")
+
+# Libkfbapi
+find_package(LibKFbAPI 1.0 QUIET CONFIG)
+set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
+
+if(LibKGAPI2_FOUND OR LibKFbAPI_FOUND)
+  find_package(QJSON)
+  set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google and Facebook resources")
+endif()
+
+
+
 #add_definitions( -DQT_NO_CAST_FROM_ASCII )
 #add_definitions( -DQT_NO_CAST_TO_ASCII )
-
-include_directories(
-  ${kdepim-runtime_SOURCE_DIR}/libkdepim-copy
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared
-  ${CMAKE_CURRENT_BINARY_DIR}/shared
-)
 
 set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourcebase.cpp
