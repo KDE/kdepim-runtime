@@ -24,6 +24,7 @@ Name[sv]=VCard-katalog
 Name[tr]=VCard Dizini
 Name[uk]=Каталог vCard
 Name[x-test]=xxVCard Directoryxx
+Name[zh_TW]=vCard 目錄
 Icon=text-directory
 Comment=Loads contact from VCard Directory
 Comment[ca]=Carrega contactes des d'un directori amb vCard
@@ -47,6 +48,7 @@ Comment[sv]=Laddar data från en VCard-katalog
 Comment[tr]=Bir VCard dosyasından veri yükler
 Comment[uk]=Завантажує дані запису контакту із каталогу vCard
 Comment[x-test]=xxLoads contact from VCard Directoryxx
+Comment[zh_TW]=從 vCard 目錄載入聯絡人
 
 [Wizard]
 Type=text/vcard

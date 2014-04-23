@@ -24,6 +24,7 @@ Name[sv]=VCard-fil
 Name[tr]=VCard Dosyası
 Name[uk]=Файл vCard
 Name[x-test]=xxVCard Filexx
+Name[zh_TW]=vCard 檔案
 Icon=text-directory
 Comment=Loads contact from VCard File
 Comment[ca]=Carrega contactes des d'un fitxer vCard
@@ -47,6 +48,7 @@ Comment[sv]=Laddar data från en VCard-fil
 Comment[tr]=Bir VCard dosyasından veri yükler
 Comment[uk]=Завантажує дані запису контакту із файла vCard
 Comment[x-test]=xxLoads contact from VCard Filexx
+Comment[zh_TW]=從 vCard 檔載入聯絡人
 
 [Wizard]
 Type=text/vcard
