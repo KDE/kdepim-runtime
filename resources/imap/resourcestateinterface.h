@@ -74,8 +74,6 @@ public:
                                           const Akonadi::Item::List &removed ) = 0;
   virtual void itemsRetrievalDone() = 0;
 
-  virtual void setTotalItems(int) = 0;
-
   virtual void itemChangeCommitted( const Akonadi::Item &item ) = 0;
   virtual void itemsChangesCommitted( const Akonadi::Item::List &items ) = 0;
 
@@ -102,8 +100,6 @@ public:
   virtual void setSeparatorCharacter( const QChar &separator ) = 0;
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName ) = 0;
-
-  virtual int batchSize() const = 0;
 };
 
 #endif
