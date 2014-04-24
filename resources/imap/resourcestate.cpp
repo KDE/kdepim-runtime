@@ -191,6 +191,11 @@ void ResourceState::itemsRetrievalDone()
   emitPercent(100);
 }
 
+void ResourceState::setTotalItems(int items)
+{
+  m_resource->setTotalItems(items);
+}
+
 void ResourceState::itemChangeCommitted( const Akonadi::Item &item )
 {
   m_resource->changeCommitted( item );
@@ -342,4 +347,9 @@ void ResourceState::setSeparatorCharacter( const QChar &separator )
 void ResourceState::showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName )
 {
   KMessageBox::information( 0, message, title, dontShowAgainName );
+}
+
+int ResourceState::batchSize() const
+{
+  return m_resource->itemSyncBatchSize();
 }
