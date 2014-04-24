@@ -2,6 +2,7 @@
     Copyright (c) 2010 Klarälvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
     Author: Kevin Ottens <kevin@kdab.com>
+    Copyright (c) 2014 Christian Mollekopf <mollekopf@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -44,10 +45,186 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
-#define HIGHESTMODSEQ_PROPERTY "highestModSeq"
+/**
+ * A job that retrieves a set of messages in reverse-ordered batches.
+ * After each batch fetchNextBatch() needs to be called (for throttling the download speed)
+ */
+class BatchFetcher : public KJob {
+    Q_OBJECT
+public:
+    BatchFetcher(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session);
+    virtual ~BatchFetcher();
+    virtual void start();
+    void fetchNextBatch();
+    void setUidBased(bool);
+    qint64 lowestUidFetched() const;
+
+Q_SIGNALS:
+    void itemsRetrieved(Akonadi::Item::List);
+
+private Q_SLOTS:
+    void onHeadersReceived(const QString &mailBox, const QMap<qint64, qint64> &uids,
+                                           const QMap<qint64, qint64> &sizes,
+                                           const QMap<qint64, KIMAP::MessageFlags> &flags,
+                                           const QMap<qint64, KIMAP::MessagePtr> &messages);
+    void onHeadersFetchDone(KJob *job);
+
+private:
+    //Batch fetching
+    KIMAP::ImapSet m_currentSet;
+    KIMAP::FetchJob::FetchScope m_scope;
+    KIMAP::Session *m_session;
+    int m_batchSize;
+    bool m_uidBased;
+    qint64 m_lowestUid;
+};
+
+BatchFetcher::BatchFetcher(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope& scope, int batchSize, KIMAP::Session* session)
+    : KJob(session),
+    m_currentSet(set),
+    m_scope(scope),
+    m_session(session),
+    m_batchSize(batchSize),
+    m_uidBased(false),
+    m_lowestUid(-1)
+{
+}
+
+BatchFetcher::~BatchFetcher()
+{
+}
+
+void BatchFetcher::setUidBased(bool uidBased)
+{
+    m_uidBased = uidBased;
+}
+
+void BatchFetcher::start()
+{
+    fetchNextBatch();
+}
+
+void BatchFetcher::fetchNextBatch()
+{
+    Q_ASSERT(m_batchSize > 0);
+    if (m_currentSet.isEmpty()) {
+        kDebug() << "fetch complete";
+        emitResult();
+        return;
+    }
+    const KIMAP::ImapInterval interval = m_currentSet.intervals().first();
+    Q_ASSERT(interval.hasDefinedEnd());
+
+    KIMAP::FetchJob *fetch = new KIMAP::FetchJob(m_session);
+    if (!m_uidBased) {
+        //Reverse fetching would be great, because it gives you the most relevant (recent) messages first,
+        //but since we usually just check the number of messages, we have the problem that we don't know
+        //whether the interval at the beginning or the end is missing. Therefore it's disabled for now
+
+        //get an interval of m_batchSize
+//         const qint64 end = interval.end();
+//         const qint64 begin = qMax(interval.begin(), end - m_batchSize + 1);
+//         const KIMAP::ImapSet intervalToFetch(begin, end);
+//         //fetch items in reverse order in chunks
+//         if (interval.begin() < (begin - 1)) {
+//             m_currentSet = KIMAP::ImapSet(interval.begin(), begin - 1);
+//         } else {
+//             m_currentSet = KIMAP::ImapSet();
+//         }
+        const qint64 begin = interval.begin();
+        const qint64 end = qMin(interval.end(), begin + m_batchSize - 1);
+        const KIMAP::ImapSet intervalToFetch(begin, end);
+        if (interval.end() > end) {
+            m_currentSet = KIMAP::ImapSet(end + 1, interval.end());
+        } else {
+            m_currentSet = KIMAP::ImapSet();
+        }
+        fetch->setSequenceSet(intervalToFetch);
+    } else {
+        fetch->setSequenceSet(m_currentSet);
+        m_currentSet = KIMAP::ImapSet();
+    }
+
+    if (m_uidBased) {
+        fetch->setUidBased(true);
+    }
+    fetch->setScope(m_scope);
+    connect(fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
+            this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
+    connect(fetch, SIGNAL(result(KJob*)),
+            this, SLOT(onHeadersFetchDone(KJob*)));
+    fetch->start();
+}
+
+void BatchFetcher::onHeadersReceived(const QString &mailBox, const QMap<qint64, qint64> &uids,
+                                           const QMap<qint64, qint64> &sizes,
+                                           const QMap<qint64, KIMAP::MessageFlags> &flags,
+                                           const QMap<qint64, KIMAP::MessagePtr> &messages)
+{
+    Akonadi::Item::List addedItems;
+    foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
+        const qint64 uid = uids[number];
+        Akonadi::Item i;
+        i.setRemoteId(QString::number(uid));
+        i.setMimeType(KMime::Message::mimeType());
+        i.setPayload(KMime::Message::Ptr(messages[number]));
+        i.setSize(sizes[number]);
+
+        // update status flags
+        if (KMime::isSigned(messages[number].get())) {
+            i.setFlag(Akonadi::MessageFlags::Signed);
+        }
+        if (KMime::isEncrypted(messages[number].get())) {
+            i.setFlag(Akonadi::MessageFlags::Encrypted);
+        }
+        if (KMime::isInvitation(messages[number].get())) {
+            i.setFlag(Akonadi::MessageFlags::HasInvitation);
+        }
+        if (KMime::hasAttachment(messages[number].get())) {
+            i.setFlag(Akonadi::MessageFlags::HasAttachment);
+        }
+
+        const QList<QByteArray> akonadiFlags = ResourceTask::toAkonadiFlags(flags[number]);
+        foreach (const QByteArray &flag, akonadiFlags) {
+            i.setFlag(flag);
+        }
+        if (m_lowestUid > uid || m_lowestUid == -1) {
+            m_lowestUid = uid;
+        }
+        //kDebug( 5327 ) << "Flags: " << i.flags();
+        addedItems << i;
+    }
+//     kDebug() << addedItems.size();
+    emit itemsRetrieved(addedItems);
+}
+
+void BatchFetcher::onHeadersFetchDone( KJob *job )
+{
+    if (job->error()) {
+        kWarning() << "Fetch job failed " << job->errorString();
+        setError(KJob::UserDefinedError);
+        emitResult();
+        return;
+    }
+    if (m_currentSet.isEmpty()) {
+        emitResult();
+        return;
+    }
+}
+
+qint64 BatchFetcher::lowestUidFetched() const
+{
+    return m_lowestUid;
+}
+
 
 RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_fetchedMissingBodies( -1 ), m_fetchMissingBodies( true )
+  : ResourceTask( CancelIfNoSession, resource, parent ),
+  m_session( 0 ),
+  m_fetchedMissingBodies( -1 ),
+  m_fetchMissingBodies( false ),
+  m_batchFetcher( 0 ),
+  m_lowestExpectedUid( 0 )
 {
 
 }
@@ -97,6 +274,7 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone( KJob *job )
   Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob*>( job );
   QList<qint64> uids;
   if ( job->error() ) {
+    kWarning() << job->errorString();
     cancelTask( job->errorString() );
     return;
   } else {
@@ -153,6 +331,7 @@ void RetrieveItemsTask::triggerPreExpungeSelect( const QString &mailBox )
 void RetrieveItemsTask::onPreExpungeSelectDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << job->errorString();
     cancelTask( job->errorString() );
   } else {
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
@@ -172,8 +351,12 @@ void RetrieveItemsTask::triggerExpunge( const QString &mailBox )
 
 void RetrieveItemsTask::onExpungeDone( KJob *job )
 {
-  // We can ignore the error IMO, we just had a wrong expunge so some old messages will just reappear
-  // Not entirely, we at least have to handle network errors here to avoid getting stuck
+  // We can ignore the error, we just had a wrong expunge so some old messages will just reappear.
+  // TODO we should probably hide messages that are marked as deleted (skipping will not work with our mode of synchronization)
+  if (job->error()) {
+    kWarning() << "Expunge failed: " << job->errorString();
+  }
+  // Except for network errors.
   if ( job->error() && m_session->state() == KIMAP::Session::Disconnected ) {
     cancelTask( job->errorString() );
     return;
@@ -197,6 +380,7 @@ void RetrieveItemsTask::triggerFinalSelect( const QString &mailBox )
 void RetrieveItemsTask::onFinalSelectDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
@@ -213,15 +397,6 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   //The select job retrieves highestmodset whenever it's available, but in case of no CONDSTORE support we ignore it
   if ( !serverSupportsCondstore() ) {
     highestModSeq = 0;
-  }
-
-  // uidvalidity can change between sessions, we don't want to refetch
-  // folders in that case. Keep track of what is processed and what not.
-  static QStringList processed;
-  bool firstTime = false;
-  if ( processed.indexOf( mailBox ) == -1 ) {
-    firstTime = true;
-    processed.append( mailBox );
   }
 
   Akonadi::Collection col = collection();
@@ -296,9 +471,11 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
       }
     }
   }
+  m_highestModseq = oldHighestModSeq;
 
-  if ( modifyNeeded )
-    applyCollectionChanges( col );
+  if ( modifyNeeded ) {
+    m_modifiedCollection = col;
+  }
 
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
@@ -309,101 +486,182 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     scope.mode = KIMAP::FetchJob::FetchScope::Full;
   }
 
-  const qint64 realMessageCount = col.statistics().count();
+  qint64 realMessageCount = col.statistics().count();
+  if (realMessageCount < 0) {
+      realMessageCount = 0;
+  }
   m_fetchedMissingBodies = -1;
 
   // First check the uidvalidity, if this has changed, it means the folder
   // has been deleted and recreated. So we wipe out the messages and
   // retrieve all.
-  if ( oldUidValidity != uidValidity && !firstTime
+  if ( oldUidValidity != uidValidity
     && oldUidValidity != 0 && messageCount > 0 ) {
     kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
                    << uidValidity << ") refetching " << mailBox;
 
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
-    fetch->setSequenceSet( KIMAP::ImapSet( 1, messageCount ) );
-    fetch->setScope( scope );
-    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
-           this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-    connect( fetch, SIGNAL(result(KJob*)),
-           this, SLOT(onHeadersFetchDone(KJob*)) );
-    fetch->start();
+    setTotalItems(messageCount);
+    retrieveItems(KIMAP::ImapSet(1, messageCount), scope, false);
   } else if ( messageCount > realMessageCount && messageCount > 0 ) {
     // The amount on the server is bigger than that we have in the cache
     // that probably means that there is new mail. Fetch missing.
     kDebug( 5327 ) << "Fetch missing: " << messageCount << " But: " << realMessageCount;
 
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
-    fetch->setSequenceSet( KIMAP::ImapSet( realMessageCount+1, messageCount ) );
-    fetch->setScope( scope );
-    fetch->setProperty( HIGHESTMODSEQ_PROPERTY, oldHighestModSeq );
-    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
-           this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-    connect( fetch, SIGNAL(result(KJob*)),
-           this, SLOT(onHeadersFetchDone(KJob*)) );
-    fetch->start();
+    // Since we're only fetching new messages, we know the lowest expected uid
+    // If we get something lower, our realMessageCount doesn't correspond to that of the server,
+    // meaning we're missing some messages locally.
+    m_lowestExpectedUid = oldNextUid;
+    setTotalItems(messageCount - realMessageCount);
+    retrieveItems(KIMAP::ImapSet( realMessageCount + 1, messageCount ), scope, realMessageCount != 0);
   } else if ( messageCount == realMessageCount && oldNextUid != nextUid
-           && oldNextUid != 0 && !firstTime && messageCount > 0 ) {
+           && oldNextUid != 0 && messageCount > 0 ) {
     // amount is right but uidnext is different.... something happened
     // behind our back...
-    kDebug( 5327 ) << "UIDNEXT check failed, refetching mailbox";
 
     qint64 startIndex = 1;
     // one scenario we can recover from is that an equal amount of mails has been deleted and added while we were not looking
     // the amount has to be less or equal to (nextUid - oldNextUid) due to strictly ascending UIDs
     // so, we just have to reload the last (nextUid - oldNextUid) mails if the uidnext values seem sane
-    if ( oldNextUid < nextUid && oldNextUid != 0 && !firstTime )
+    if ( oldNextUid < nextUid && oldNextUid != 0 ) {
       startIndex = qMax( 1ll, messageCount - ( nextUid - oldNextUid ) );
+    }
 
     Q_ASSERT( startIndex >= 1 );
     Q_ASSERT( startIndex <= messageCount );
 
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
-    fetch->setSequenceSet( KIMAP::ImapSet( startIndex, messageCount ) );
-    fetch->setScope( scope );
-    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
-           this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-    connect( fetch, SIGNAL(result(KJob*)),
-           this, SLOT(onHeadersFetchDone(KJob*)) );
-    fetch->start();
+    kDebug( 5327 ) << "UIDNEXT check failed, refetching mailbox: " << startIndex << messageCount;
+    setTotalItems(messageCount - startIndex);
+    retrieveItems(KIMAP::ImapSet( startIndex, messageCount ), scope, false);
   } else if (!m_messageUidsMissingBody.isEmpty() ) {
-    m_fetchedMissingBodies = 0;
     //fetch missing uids
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob( m_session );
+    m_fetchedMissingBodies = 0;
+    setTotalItems(m_messageUidsMissingBody.size());
     KIMAP::ImapSet imapSet;
     imapSet.add( m_messageUidsMissingBody );
-    fetch->setSequenceSet( imapSet );
-    fetch->setScope( scope );
-    fetch->setUidBased( true );
-    // Do a full flags sync if some messages were removed, otherwise do just an incremental update
-    fetch->setProperty( HIGHESTMODSEQ_PROPERTY, ( messageCount < realMessageCount ) ? 0 : oldHighestModSeq );
-    connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
-             this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-    connect( fetch, SIGNAL(result(KJob*)),
-             this, SLOT(onHeadersFetchDone(KJob*)) );
-    fetch->start();
+
+    m_batchFetcher = new BatchFetcher(imapSet, scope, batchSize(), m_session);
+    m_batchFetcher->setUidBased(true);
+    m_incremental = true;
+    m_batchFetcher->setProperty("alreadyFetched", 1);
+    connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
+            this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
+    connect(m_batchFetcher, SIGNAL(result(KJob*)),
+            this, SLOT(onRetrievalDone(KJob*)));
+    m_batchFetcher->start();
   } else if ( messageCount > 0 ) {
     if ( messageCount < realMessageCount ) {
         // Some messages were removed, list all flags to find out which messages
         // are missing
         kDebug( 5327 ) << ( realMessageCount - messageCount ) << "messages were removed from maildir";
+        m_incremental = false;
     } else {
         kDebug( 5327 ) << "All fine, asking for changed flags looking for changes";
+        m_incremental = true;
     }
-    listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ), ( messageCount < realMessageCount ) ? 0 : oldHighestModSeq );
+    setTotalItems(messageCount);
+    listFlagsForImapSet( KIMAP::ImapSet( 1, messageCount ));
   } else {
-    kDebug( 5327 ) << "No messages present so we are done";
-    itemsRetrievalDone();
+    m_incremental = false;
+    if (realMessageCount > 0) {
+        kDebug( 5327 ) << "No messages present so we are done, deleting local messages.";
+        itemsRetrieved(Akonadi::Item::List());
+    } else {
+        kDebug( 5327 ) << "No messages present so we are done";
+    }
+    taskComplete();
   }
 }
 
-void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set, qint64 highestModSeq )
+void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental)
+{
+  Q_ASSERT(set.intervals().size() == 1);
+
+  m_incremental = incremental;
+
+  m_batchFetcher = new BatchFetcher(set, scope, batchSize(), m_session);
+  m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
+  connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
+          this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
+  connect(m_batchFetcher, SIGNAL(result(KJob*)),
+          this, SLOT(onRetrievalDone(KJob*)));
+  m_batchFetcher->start();
+}
+
+void RetrieveItemsTask::onReadyForNextBatch(int size)
+{
+  if (m_batchFetcher) {
+    m_batchFetcher->fetchNextBatch();
+  }
+}
+
+void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
+{
+  if ( m_incremental ) {
+    itemsRetrievedIncremental( addedItems, Akonadi::Item::List() );
+  } else {
+    itemsRetrieved( addedItems );
+  }
+
+  //m_fetchedMissingBodies is -1 if we fetch for other reason, but missing bodies
+  if ( m_fetchedMissingBodies != -1 ) {
+    const QString mailBox = mailBoxForCollection( collection() );
+    m_fetchedMissingBodies += addedItems.count();
+    emit status(Akonadi::AgentBase::Running,
+                i18nc( "@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
+  }
+}
+
+void RetrieveItemsTask::onRetrievalDone( KJob *job )
+{
+    m_batchFetcher = 0;
+    if ( job->error() ) {
+        kWarning() << job->errorString();
+        cancelTask( job->errorString() );
+        m_fetchedMissingBodies = -1;
+        return;
+    }
+
+    BatchFetcher *batchFetcher = static_cast<BatchFetcher*>(job);
+    if (batchFetcher->lowestUidFetched() < m_lowestExpectedUid) {
+        //We just fetched an item we already have,
+        //we probably miss some messages on the lower end.
+        Akonadi::Collection col = collection();
+        //This will trigger a complete resync
+        col.removeAttribute("uidvalidity");
+        applyCollectionChanges(col);
+        kWarning() << "Inconsistent cache, aborting sync.";
+        cancelTask( i18n("Inconsistent cache, aborting sync.") );
+        //TODO deferTask instead?
+        return;
+    }
+
+    //This is the lowest sequence number that we just fetched.
+    const KIMAP::ImapSet::Id alreadyFetchedBegin = job->property("alreadyFetched").value<KIMAP::ImapSet::Id>();
+
+    // If this is the first fetch of a folder, skip getting flags, we
+    // already have them all from the previous full fetch. This is not
+    // just an optimization, as incremental retrieval assumes nothing
+    // will be listed twice.
+    if ( m_fetchedMissingBodies != -1 || alreadyFetchedBegin <= 1 ) {
+        taskComplete();
+        return;
+    }
+
+    // Fetch flags of all items that were not fetched by the fetchJob. After
+    // that /all/ items in the folder are synced.
+    listFlagsForImapSet(KIMAP::ImapSet(1, alreadyFetchedBegin - 1));
+}
+
+
+void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
 {
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
   scope.mode = KIMAP::FetchJob::FetchScope::Flags;
-  if ( serverSupportsCondstore() ) {
-      scope.changedSince = highestModSeq;
+  // Only use changeSince when doing incremental listings,
+  // otherwise we would overwrite our local data with an incomplete dataset
+  if(m_incremental && serverSupportsCondstore()) {
+      scope.changedSince = m_highestModseq;
   }
 
   KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_session );
@@ -414,91 +672,6 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set, qint64 h
   connect( fetch, SIGNAL(result(KJob*)),
            this, SLOT(onFlagsFetchDone(KJob*)) );
   fetch->start();
-}
-
-void RetrieveItemsTask::onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
-                                           const QMap<qint64, qint64> &sizes,
-                                           const QMap<qint64, KIMAP::MessageFlags> &flags,
-                                           const QMap<qint64, KIMAP::MessagePtr> &messages )
-{
-  Akonadi::Item::List addedItems;
-
-  foreach ( qint64 number, uids.keys() ) { //krazy:exclude=foreach
-    Akonadi::Item i;
-    i.setRemoteId( QString::number( uids[number] ) );
-    i.setMimeType( KMime::Message::mimeType() );
-    i.setPayload( KMime::Message::Ptr( messages[number] ) );
-    i.setSize( sizes[number] );
-
-    // update status flags
-    if ( KMime::isSigned( messages[number].get() ) )
-      i.setFlag( Akonadi::MessageFlags::Signed );
-    if ( KMime::isEncrypted( messages[number].get() ) )
-      i.setFlag( Akonadi::MessageFlags::Encrypted );
-    if ( KMime::isInvitation( messages[number].get() ) )
-      i.setFlag( Akonadi::MessageFlags::HasInvitation );
-    if ( KMime::hasAttachment( messages[number].get() ) )
-      i.setFlag( Akonadi::MessageFlags::HasAttachment );
-
-    const QList<QByteArray> akonadiFlags = toAkonadiFlags( flags[number] );
-    foreach ( const QByteArray &flag, akonadiFlags ) {
-      i.setFlag( flag );
-    }
-    //kDebug( 5327 ) << "Flags: " << i.flags();
-    addedItems << i;
-  }
-
-  const qint64 highestModSeq = extractHighestModSeq( static_cast<KJob*>( sender() ) );
-  if ( highestModSeq == 0 ) {
-    itemsRetrieved( addedItems );
-  } else {
-    itemsRetrievedIncremental( addedItems, Akonadi::Item::List() );
-  }
-
-  //m_fetchedMissingBodies is -1 if we fetch for other reason, but missing bodies
-  if ( m_fetchedMissingBodies != -1 ) {
-    m_fetchedMissingBodies += addedItems.count();
-    emit status(Akonadi::AgentBase::Running,
-                i18nc( "@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
-  }
-}
-
-void RetrieveItemsTask::onHeadersFetchDone( KJob *job )
-{
-  if ( job->error() ) {
-      cancelTask( job->errorString() );
-      m_fetchedMissingBodies = -1;
-      return;
-  }
-
-  const qint64 highestModSeq = extractHighestModSeq( job );
-  if ( highestModSeq > 0 ) {
-    // Calling itemsRetrievalDone() before previous call to itemsRetrievedIncremental()
-    // behaves like if we called itemsRetrieved(Items::List()), so make sure
-    // Akonadi knows we did incremental fetch that came up with no changes
-    itemsRetrievedIncremental( Akonadi::Item::List(), Akonadi::Item::List() );
-  }
-
-  KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
-  KIMAP::ImapSet alreadyFetched = fetch->sequenceSet();
-
-  // If this is the first fetch of a folder, skip getting flags, we
-  // already have them all from the previous full fetch. This is not
-  // just an optimization, as incremental retrieval assumes nothing
-  // will be listed twice.
-  if ( m_fetchedMissingBodies == -1 && alreadyFetched.intervals().first().begin() <= 1 ) {
-    itemsRetrievalDone();
-    return;
-  }
-
-  // Fetch flags of all items that were not fetched by the fetchJob. After
-  // that /all/ items in the folder are synced.
-  KIMAP::ImapSet::Id end = 0;
-  if ( m_fetchedMissingBodies == -1) {
-      end = alreadyFetched.intervals().first().begin() - 1;
-  }
-  KIMAP::ImapSet set( 1, end );
-  listFlagsForImapSet( set, highestModSeq );
 }
 
 void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
@@ -524,12 +697,10 @@ void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint
 
   if ( !changedItems.isEmpty() ) {
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( sender() );
-    // When changedsince is invalid, we do a full-sync. In that case use itemsRetrieved()
-    // so that we correctly update removed moessages
-    if ( fetch->scope().changedSince == 0 ) {
-        itemsRetrieved( changedItems );
-    } else {
+    if ( m_incremental ) {
         itemsRetrievedIncremental( changedItems, Akonadi::Item::List() );
+    } else {
+        itemsRetrieved( changedItems );
     }
   }
 }
@@ -537,32 +708,25 @@ void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint
 void RetrieveItemsTask::onFlagsFetchDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << job->errorString();
     cancelTask( job->errorString() );
   } else {
-    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( job );
-    if ( fetch->scope().changedSince > 0 ) {
-        // In case there were no changed flags, make sure Akonadi knows that there
-        // were no changes
-        itemsRetrievedIncremental( Akonadi::Item::List(), Akonadi::Item::List() );
-    }
-    itemsRetrievalDone();
+    taskComplete();
   }
 }
 
-qint64 RetrieveItemsTask::extractHighestModSeq( KJob *job ) const
+void RetrieveItemsTask::taskComplete()
 {
-    qint64 highestModSeq = 0;
-    const QVariant v = job->property( HIGHESTMODSEQ_PROPERTY );
-    if ( v.isValid() ) {
-        bool ok = false;
-        highestModSeq = v.toLongLong( &ok );
-        if ( !ok ) {
-            return 0;
-        }
+    if (m_modifiedCollection.isValid()) {
+        applyCollectionChanges(m_modifiedCollection);
     }
-
-    return highestModSeq;
+    if ( m_incremental ) {
+        // Calling itemsRetrievalDone() before previous call to itemsRetrievedIncremental()
+        // behaves like if we called itemsRetrieved(Items::List()), so make sure
+        // Akonadi knows we did incremental fetch that came up with no changes
+        itemsRetrievedIncremental(Akonadi::Item::List(), Akonadi::Item::List());
+    }
+    itemsRetrievalDone();
 }
 
-
-
+#include "retrieveitemstask.moc"

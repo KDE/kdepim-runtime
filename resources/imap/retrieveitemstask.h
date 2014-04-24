@@ -26,6 +26,7 @@
 
 #include "resourcetask.h"
 
+class BatchFetcher;
 namespace Akonadi {
   class Session;
 }
@@ -41,6 +42,7 @@ public:
 
 public slots:
   void onFetchItemsWithoutBodiesDone( const QList<qint64> &items );
+  void onReadyForNextBatch(int size);
 
 private slots:
   void fetchItemsWithoutBodiesDone( KJob *job );
@@ -49,11 +51,8 @@ private slots:
 
   void onFinalSelectDone( KJob *job );
 
-  void onHeadersReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
-                          const QMap<qint64, qint64> &sizes,
-                          const QMap<qint64, KIMAP::MessageFlags> &flags,
-                          const QMap<qint64, KIMAP::MessagePtr> &messages );
-  void onHeadersFetchDone( KJob *job );
+  void onItemsRetrieved(const Akonadi::Item::List &addedItems);
+  void onRetrievalDone(KJob *job);
 
   void onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
                         const QMap<qint64, qint64> &sizes,
@@ -69,14 +68,21 @@ private:
   void triggerPreExpungeSelect( const QString &mailBox );
   void triggerExpunge( const QString &mailBox );
   void triggerFinalSelect( const QString &mailBox );
+  void retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental = false);
 
-  void listFlagsForImapSet( const KIMAP::ImapSet& set, qint64 highestmodseq );
-  qint64 extractHighestModSeq( KJob *job ) const;
+  void listFlagsForImapSet( const KIMAP::ImapSet& set );
+  void taskComplete();
 
   KIMAP::Session *m_session;
   QList<qint64> m_messageUidsMissingBody;
   int m_fetchedMissingBodies;
   bool m_fetchMissingBodies;
+  bool m_incremental;
+  qint64 m_highestModseq;
+  BatchFetcher *m_batchFetcher;
+  bool m_collectionModifyNeeded;
+  qint64 m_lowestExpectedUid;
+  Akonadi::Collection m_modifiedCollection;
 };
 
 #endif

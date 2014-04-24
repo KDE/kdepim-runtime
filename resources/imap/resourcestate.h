@@ -92,6 +92,8 @@ public:
   virtual void itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed );
   virtual void itemsRetrievalDone();
 
+  virtual void setTotalItems(int);
+
   virtual void itemChangeCommitted( const Akonadi::Item &item );
   virtual void itemsChangesCommitted(const Akonadi::Item::List& items);
 
@@ -120,6 +122,7 @@ public:
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
 
+  virtual int batchSize() const;
 
 
 private:

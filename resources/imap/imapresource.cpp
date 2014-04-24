@@ -152,6 +152,7 @@ ImapResource::ImapResource( const QString &id )
   scope.fetchFullPayload( false );
   scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
+  setDisableAutomaticItemDeliveryDone( true );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
 
@@ -442,10 +443,6 @@ void ImapResource::retrieveItems( const Collection &col )
   connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
   startTask(task);
 }
-
-
-
-// ----------------------------------------------------------------------------------
 
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
