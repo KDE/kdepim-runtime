@@ -340,7 +340,10 @@ void ImapResource::onConnectionLost( KIMAP::Session */*session*/ )
   }
 }
 
-
+ResourceStateInterface::Ptr ImapResource::createResourceState(const TaskArguments &args)
+{
+  return ResourceStateInterface::Ptr(new ResourceState(this, args));
+}
 
 // ----------------------------------------------------------------------------------
 
@@ -349,8 +352,7 @@ bool ImapResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
   // The collection name is empty here...
   //emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving item in '%1'", item.parentCollection().name() ) );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemState( this, item, parts );
-  RetrieveItemTask *task = new RetrieveItemTask( state, this );
+  RetrieveItemTask *task = new RetrieveItemTask( createResourceState(TaskArguments(item, parts)), this );
   task->start( m_pool );
   queueTask( task );
   return true;
@@ -360,20 +362,14 @@ void ImapResource::itemAdded( const Item &item, const Collection &collection )
 {
   emit status( AgentBase::Running, i18nc( "@info:status", "Adding item in '%1'", collection.name() ) );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createAddItemState( this, item, collection );
-  AddItemTask *task = new AddItemTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new AddItemTask( createResourceState(TaskArguments(item, collection)), this ));
 }
 
 void ImapResource::itemChanged( const Item &item, const QSet<QByteArray> &parts )
 {
   emit status( AgentBase::Running, i18nc( "@info:status", "Updating item in '%1'", item.parentCollection().name() ) );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createChangeItemState( this, item, parts );
-  ChangeItemTask *task = new ChangeItemTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new ChangeItemTask( createResourceState(TaskArguments(item, parts)), this ));
 }
 
 void ImapResource::itemsFlagsChanged( const Item::List& items, const QSet< QByteArray >& addedFlags,
@@ -381,17 +377,12 @@ void ImapResource::itemsFlagsChanged( const Item::List& items, const QSet< QByte
 {
   emit status( AgentBase::Running, i18nc( "@info:status", "Updating items" ) );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createChangeItemsFlagsState( this, items, addedFlags, removedFlags );
-  ChangeItemsFlagsTask *task = new ChangeItemsFlagsTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new ChangeItemsFlagsTask( createResourceState(TaskArguments(items, addedFlags, removedFlags)), this ));
 }
 
 void ImapResource::itemsRemoved( const Akonadi::Item::List &items )
 {
-  ResourceStateInterface::Ptr state = ::ResourceState::createRemoveItemsState( this, items );
-
-  const QString mailBox = state->mailBoxForCollection( items.first().parentCollection(), false );
+  const QString mailBox = ResourceStateInterface::mailBoxForCollection( items.first().parentCollection(), false );
   if ( mailBox.isEmpty() ) {
     // this item will be removed soon by its parent collection
     changeProcessed();
@@ -400,9 +391,7 @@ void ImapResource::itemsRemoved( const Akonadi::Item::List &items )
 
   emit status( AgentBase::Running, i18nc( "@info:status", "Removing items" ) );
 
-  RemoveItemsTask *task = new RemoveItemsTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new RemoveItemsTask( createResourceState(TaskArguments(items)), this ));
 }
 
 void ImapResource::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &source,
@@ -420,10 +409,7 @@ void ImapResource::itemsMoved( const Akonadi::Item::List &items, const Akonadi::
 
   emit status( AgentBase::Running, i18nc( "@info:status", "Moving items from '%1' to '%2'", source.name(), destination.name() ) );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createMoveItemsState( this, items, source, destination );
-  MoveItemsTask *task = new MoveItemsTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new MoveItemsTask( createResourceState(TaskArguments(items, source, destination)), this ));
 }
 
 
@@ -434,21 +420,15 @@ void ImapResource::retrieveCollections()
 {
   emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving folders" ) );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionsState( this );
-  RetrieveCollectionsTask *task = new RetrieveCollectionsTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new RetrieveCollectionsTask( createResourceState(TaskArguments()), this ));
 }
 
 void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
 {
   const Collection collection( collectionVariant.value<Collection>() );
   emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving extra folder information for '%1'", collection.name() ) );
-  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveCollectionMetadataState( this, collection );
 
-  RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new RetrieveCollectionMetadataTask( createResourceState(TaskArguments(collection)), this ));
 }
 
 void ImapResource::retrieveItems( const Collection &col )
@@ -462,11 +442,10 @@ void ImapResource::retrieveItems( const Collection &col )
 
   setItemStreamingEnabled( true );
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
-  RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
+  RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(col)), this );
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-  task->start( m_pool );
-  queueTask( task );
+  connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
+  startTask(task);
 }
 
 
@@ -476,26 +455,19 @@ void ImapResource::retrieveItems( const Collection &col )
 void ImapResource::collectionAdded( const Collection & collection, const Collection &parent )
 {
   emit status( AgentBase::Running, i18nc( "@info:status", "Creating folder '%1'", collection.name() ) );
-  ResourceStateInterface::Ptr state = ::ResourceState::createAddCollectionState( this, collection, parent );
-  AddCollectionTask *task = new AddCollectionTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new AddCollectionTask( createResourceState(TaskArguments(collection, parent)), this ));
 }
 
 void ImapResource::collectionChanged( const Collection &collection, const QSet<QByteArray> &parts )
 {
   emit status( AgentBase::Running, i18nc( "@info:status", "Updating folder '%1'", collection.name() ) );
-  ResourceStateInterface::Ptr state = ::ResourceState::createChangeCollectionState( this, collection, parts );
-  ChangeCollectionTask *task = new ChangeCollectionTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new ChangeCollectionTask( createResourceState(TaskArguments(collection, parts)), this ));
 }
 
 void ImapResource::collectionRemoved( const Collection &collection )
 {
-  ResourceStateInterface::Ptr state = ::ResourceState::createRemoveCollectionState( this, collection );
-
-  const QString mailBox = state->mailBoxForCollection( collection, false );
+  //TODO Move this to the task
+  const QString mailBox = ResourceStateInterface::mailBoxForCollection( collection, false );
   if ( mailBox.isEmpty() ) {
     // this collection will be removed soon by its parent collection
     changeProcessed();
@@ -503,20 +475,15 @@ void ImapResource::collectionRemoved( const Collection &collection )
   }
   emit status( AgentBase::Running, i18nc( "@info:status", "Removing folder '%1'", collection.name() ) );
 
-  RemoveCollectionRecursiveTask *task = new RemoveCollectionRecursiveTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new RemoveCollectionRecursiveTask( createResourceState(TaskArguments(collection)), this ));
 }
 
 void ImapResource::collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                     const Akonadi::Collection &destination )
 {
-  ResourceStateInterface::Ptr state = ::ResourceState::createMoveCollectionState( this, collection, source, destination );
   emit status( AgentBase::Running, i18nc( "@info:status", "Moving folder '%1' from '%2' to '%3'",
         collection.name(), source.name(), destination.name() ) );
-  MoveCollectionTask *task = new MoveCollectionTask( state, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new MoveCollectionTask( createResourceState(TaskArguments(collection, source, destination)), this ));
 }
 
 
@@ -543,11 +510,8 @@ void ImapResource::doSearch( const QVariant &arg )
   const QString query = map[QLatin1String("query")].toString();
   const Collection collection = map[QLatin1String("collection")].value<Collection>();
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createSearchState( this, collection );
   emit status( AgentBase::Running, i18nc( "@info:status", "Searching..." ) );
-  SearchTask *task = new SearchTask( state, query, this );
-  task->start( m_pool );
-  queueTask( task );
+  startTask(new SearchTask( createResourceState(TaskArguments(collection)), query, this ));
 }
 
 
@@ -671,8 +635,7 @@ void ImapResource::onIdleCollectionFetchDone( KJob *job )
     if ( password.isEmpty() )
       return;
 
-    ResourceStateInterface::Ptr state = ::ResourceState::createIdleState( this, c );
-    m_idle = new ImapIdleManager( state, m_pool, this );
+    m_idle = new ImapIdleManager( createResourceState(TaskArguments(c)), m_pool, this );
 
   } else {
     kWarning() << "CollectionFetch for idling failed."
@@ -725,8 +688,7 @@ void ImapResource::triggerCollectionExpunge( const QVariant &collectionVariant )
 {
   const Collection collection = collectionVariant.value<Collection>();
 
-  ResourceStateInterface::Ptr state = ::ResourceState::createExpungeCollectionState( this, collection );
-  ExpungeCollectionTask *task = new ExpungeCollectionTask( state, this );
+  ExpungeCollectionTask *task = new ExpungeCollectionTask( createResourceState(TaskArguments(collection)), this );
   task->start( m_pool );
   queueTask( task );
 }
@@ -748,6 +710,12 @@ void ImapResource::queueTask( ResourceTask *task )
   connect( task, SIGNAL(destroyed(QObject*)),
            this, SLOT(taskDestroyed(QObject*)) );
   m_taskList << task;
+}
+
+void ImapResource::startTask( ResourceTask* task )
+{
+  task->start(m_pool);
+  queueTask(task);
 }
 
 void ImapResource::taskDestroyed( QObject *task )
@@ -782,8 +750,4 @@ void ImapResource::clearStatusMessage()
 {
   emit status( Akonadi::AgentBase::Idle, QString() );
 }
-
-// ----------------------------------------------------------------------------------
-
-AKONADI_RESOURCE_MAIN( ImapResource )
 
