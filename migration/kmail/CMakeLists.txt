@@ -49,7 +49,7 @@ target_link_libraries(kmail-migrator
   KF5::PimUtils
   KF5::AkonadiKMime
   KF5::AkonadiCore
-  
+  KF5::AkonadiAgentBase  
   KF5::KIOCore
   akonadi-filestore
   maildir

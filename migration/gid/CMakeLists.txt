@@ -18,5 +18,6 @@ target_link_libraries(gidmigrator
   gidmigration
   KF5::AkonadiCore
   KF5::KMime
+  KF5::KConfigCore
 )
 install(TARGETS gidmigrator ${INSTALL_TARGETS_DEFAULT_ARGS})

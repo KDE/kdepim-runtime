@@ -46,7 +46,6 @@ add_subdirectory(defaultsetup)
 #add_subdirectory(resourcetester)
 add_subdirectory(kioslave)
 #add_subdirectory(kcm)
-# We can't compile tray for the moment missing
 add_subdirectory(tray)
 add_subdirectory(migration)
 if (QT_QTDECLARATIVE_FOUND)

@@ -28,13 +28,13 @@
 
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/messagefolderattribute.h>
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/collection.h>
-#include <akonadi/collectioncreatejob.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/session.h>
+#include <agentinstance.h>
+#include <agentmanager.h>
+#include <collection.h>
+#include <collectioncreatejob.h>
+#include <collectionmodifyjob.h>
+#include <entitydisplayattribute.h>
+#include <session.h>
 
 #include "collectionannotationsattribute.h"
 
