@@ -12,8 +12,10 @@ find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KMime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiKMime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
+
 
 macro(kdepim_add_agent _target)
     if(KDEPIM_BUILD_AGENTS_AS_PLUGINS)

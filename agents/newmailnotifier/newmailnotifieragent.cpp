@@ -53,6 +53,7 @@
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KWindowSystem>
+#include <KDebug>
 
 using namespace Akonadi;
 

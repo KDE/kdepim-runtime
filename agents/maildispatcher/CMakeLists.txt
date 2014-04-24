@@ -36,7 +36,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Maildispatcher")
 endif ()
 
-target_link_libraries(akonadi_maildispatcher_agent KF5::AkonadiCore KF5::AkonadiKMime   ${KDE4_KDECORE_LIBS} KF5::KIOCore KF5::KMime KF5::MailTransport ${KDE4_KNOTIFYCONFIG_LIBS})
+target_link_libraries(akonadi_maildispatcher_agent KF5::AkonadiCore KF5::AkonadiKMime KF5::KIOCore KF5::KMime KF5::MailTransport KF5::AkonadiAgentBase KF5::NotifyConfig)
 
 install( FILES maildispatcheragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_maildispatcher_agent" )

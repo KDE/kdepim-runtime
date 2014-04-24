@@ -28,9 +28,9 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <akonadi/agentfactory.h>
-#include <akonadi/dbusconnectionpool.h>
-#include <akonadi/itemfetchscope.h>
+#include <agentfactory.h>
+#include <dbusconnectionpool.h>
+#include <itemfetchscope.h>
 #include <mailtransport/sentactionattribute.h>
 
 #include <knotifyconfigwidget.h>
@@ -43,6 +43,7 @@
 #include <KNotification>
 #include <KWindowSystem>
 #include <KLocale>
+#include <KGlobal>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>

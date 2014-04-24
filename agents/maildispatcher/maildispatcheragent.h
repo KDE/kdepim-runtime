@@ -21,7 +21,7 @@
 #ifndef MAILDISPATCHERAGENT_H
 #define MAILDISPATCHERAGENT_H
 
-#include <Akonadi/AgentBase>
+#include <AgentBase>
 
 namespace Akonadi {
 class Item;
