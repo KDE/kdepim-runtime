@@ -218,11 +218,6 @@ qint64 BatchFetcher::lowestUidFetched() const
 }
 
 
-    if (m_currentSet.isEmpty()) {
-        kDebug() << "fetch complete";
-        emitResult();
-        return;
-    }
 RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ),
   m_session( 0 ),
