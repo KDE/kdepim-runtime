@@ -28,6 +28,8 @@
 #include <KFileDialog>
 #include <KLocalizedString>
 #include <KVBox>
+#include <KDialog>
+#include <KUrl>
 
 BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent ), m_selectFileButton( 0 )
 {
@@ -64,7 +66,8 @@ BackupAssistant::BackupAssistant( QWidget *parent ) : KAssistantDialog( parent )
 
     addPage( m_page1 );
     addPage( m_page2 );
-    showButton( KDialog::Help, false );
+    //QT5
+    //showButton( KDialog::Help, false );
 
     connect( this, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)),
              SLOT(slotPageChanged(KPageWidgetItem*,KPageWidgetItem*)) );

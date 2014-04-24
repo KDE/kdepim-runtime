@@ -19,7 +19,7 @@
 #include <kuniqueapplication.h>
 #include <kstartupinfo.h>
 #include <kcmdlineargs.h>
-#include <kaboutdata.h>
+#include <k4aboutdata.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -48,11 +48,11 @@ public:
 
 int main( int argc, char *argv[] )
 {
-    KAboutData aboutData( "akonaditray", 0,
+    K4AboutData aboutData( "akonaditray", 0,
                           ki18n( "AkonadiTray" ),
                           "0.1",
                           ki18n( "System tray application to control basic Akonadi functions" ),
-                          KAboutData::License_GPL,
+                          K4AboutData::License_GPL,
                           ki18n( "(c) 2008 Omat Holding B.V." ),
                           KLocalizedString() );
     aboutData.addAuthor( ki18n( "Tom Albers" ), ki18n( "Maintainer and Author" ),

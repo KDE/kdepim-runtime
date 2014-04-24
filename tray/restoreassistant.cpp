@@ -27,6 +27,7 @@
 #include <KFileDialog>
 #include <KLocalizedString>
 #include <KVBox>
+#include <KUrl>
 
 RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent ), m_selectFileButton(0)
 {
@@ -65,7 +66,8 @@ RestoreAssistant::RestoreAssistant( QWidget *parent ) : KAssistantDialog( parent
 
     addPage( m_page1 );
     addPage( m_page2 );
-    showButton( KDialog::Help, false );
+//QT5
+    //showButton( KDialog::Help, false );
 
     connect( this, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)),
              SLOT(slotPageChanged(KPageWidgetItem*,KPageWidgetItem*)) );

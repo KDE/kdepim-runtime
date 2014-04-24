@@ -33,10 +33,10 @@
 #include <KStandardShortcut>
 #include <KStandardDirs>
 
-#include <akonadi/control.h>
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/servermanager.h>
+#include <control.h>
+#include <agentinstance.h>
+#include <agentmanager.h>
+#include <servermanager.h>
 
 using namespace Akonadi;
 
@@ -195,8 +195,11 @@ void Dock::slotInstanceError( const Akonadi::AgentInstance& agent, const QString
 
 void Dock::errorMessage( const QString &message, const QString &title )
 {
+//QT5
+#if 0
     KNotification::event( KNotification::Error, title.isEmpty() ? i18n( "Akonadi error" ) : title,
-                          message, DesktopIcon( QLatin1String("dialog-warning") ), m_parentWidget );
+                          message, KIcon( QLatin1String("dialog-warning") ), m_parentWidget );
+#endif
 }
 
 qlonglong Dock::getWinId()

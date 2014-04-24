@@ -29,7 +29,7 @@
 #include <QDir>
 
 #include <akonadi/private/xdgbasedirs_p.h>
-#include <akonadi/agentmanager.h>
+#include <agentmanager.h>
 
 
 using namespace Akonadi;
@@ -74,10 +74,11 @@ void Backup::create( const KUrl& filename )
     /* first create the temp folder. */
     KTempDir *tempDir = new KTempDir( KStandardDirs::locateLocal( "tmp", QLatin1String("akonadi") ) );
     tempDir->setAutoRemove( false );
+//QT5
+#if 0
     KIO::NetAccess::mkdir( QString(tempDir->name() + QLatin1String("kdeconfig")), this );
     KIO::NetAccess::mkdir( QString(tempDir->name() + QLatin1String("akonadiconfig")), this );
     KIO::NetAccess::mkdir( QString(tempDir->name() + QLatin1String("db")), this );
-
     QStringList filesToBackup;
 
     /* Copy over the KDE config files. */
@@ -158,6 +159,7 @@ void Backup::create( const KUrl& filename )
 
     tempDir->unlink();
     delete tempDir;
+#endif
     emit completed( true );
 }
 

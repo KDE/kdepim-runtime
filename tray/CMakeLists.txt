@@ -1,4 +1,15 @@
 project(tray)
+include(GenerateExportHeader)
+include(ECMGenerateHeaders)
+include(ECMGeneratePriFile)
+include(ECMPackageConfigHelpers)
+include(ECMSetupVersion)
+include(FeatureSummary)
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDEFrameworkCompilerSettings)
+include(ECMInstallIcons)
+
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
@@ -19,7 +30,7 @@ kde4_add_app_icon(tray_sources "${CMAKE_CURRENT_SOURCE_DIR}/icons/hi*-app-akonad
 
 add_executable(akonaditray ${tray_sources})
 
-target_link_libraries(akonaditray KF5::KIOCore KF5::AkonadiCore)
+target_link_libraries(akonaditray KF5::KIOCore KF5::AkonadiCore KF5::AkonadiAgentBase)
 
 install(TARGETS akonaditray ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(PROGRAMS  akonaditray.desktop DESTINATION ${XDG_APPS_INSTALL_DIR} )

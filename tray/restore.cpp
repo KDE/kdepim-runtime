@@ -94,7 +94,8 @@ void Restore::restore( const KUrl& filename )
         emit completed( false );
         return;
     }
-
+//QT5
+#if 0
     /* Copy over the KDE configuration files. */
     QDir dir( tempDir->name() + QLatin1String("kdeconfig") + sep );
     dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
@@ -159,6 +160,7 @@ void Restore::restore( const KUrl& filename )
 
     tempDir->unlink();
     delete tempDir;
+#endif
     emit completed( true );
 }
 
