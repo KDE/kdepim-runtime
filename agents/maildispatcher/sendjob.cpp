@@ -21,19 +21,19 @@
 
 #include "storeresultjob.h"
 
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/collection.h>
-#include <akonadi/dbusconnectionpool.h>
-#include <akonadi/item.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/itemmovejob.h>
-#include <akonadi/collectionfetchjob.h>
+#include <agentinstance.h>
+#include <agentmanager.h>
+#include <collection.h>
+#include <dbusconnectionpool.h>
+#include <item.h>
+#include <itemdeletejob.h>
+#include <itemmodifyjob.h>
+#include <itemmovejob.h>
+#include <collectionfetchjob.h>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/kmime/specialmailcollections.h>
-#include <akonadi/transportresourcebase.h>
+#include <transportresourcebase.h>
 #include <kdebug.h>
 #include <klocalizedstring.h>
 #include <kmime/kmime_message.h>

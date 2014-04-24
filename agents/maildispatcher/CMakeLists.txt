@@ -1,3 +1,4 @@
+kde_enable_exceptions()
 #Reactivate it
 #add_subdirectory( tests )
 

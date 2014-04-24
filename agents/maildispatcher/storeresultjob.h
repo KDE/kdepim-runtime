@@ -20,7 +20,7 @@
 #ifndef STORERESULTJOB_H
 #define STORERESULTJOB_H
 
-#include <Akonadi/TransactionSequence>
+#include <TransactionSequence>
 
 #include <QtCore/QString>
 

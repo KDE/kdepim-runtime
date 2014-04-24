@@ -26,11 +26,11 @@
 #include <KDebug>
 #include <KLocalizedString>
 
-#include <Akonadi/Attribute>
-#include <Akonadi/Item>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/Monitor>
+#include <Attribute>
+#include <Item>
+#include <ItemFetchJob>
+#include <ItemFetchScope>
+#include <Monitor>
 #include <akonadi/kmime/addressattribute.h>
 #include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/specialmailcollections.h>

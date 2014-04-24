@@ -21,9 +21,10 @@
 
 #include "sentactionhandler.h"
 
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemmodifyjob.h>
+#include <itemfetchjob.h>
+#include <itemmodifyjob.h>
 #include <akonadi/kmime/messageflags.h>
+#include <KDebug>
 
 using namespace MailTransport;
 

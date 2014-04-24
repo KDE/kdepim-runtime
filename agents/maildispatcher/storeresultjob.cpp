@@ -19,9 +19,9 @@
 
 #include "storeresultjob.h"
 
-#include <Akonadi/Item>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemModifyJob>
+#include <Item>
+#include <ItemFetchJob>
+#include <ItemModifyJob>
 #include <akonadi/kmime/messageflags.h>
 #include <KDebug>
 #include <KLocalizedString>

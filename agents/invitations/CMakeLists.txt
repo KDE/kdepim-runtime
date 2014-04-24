@@ -1,4 +1,4 @@
-
+kde_enable_exceptions()
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
@@ -34,6 +34,7 @@ target_link_libraries(akonadi_invitations_agent
   KF5::MailTransport
   KF5::CalendarCore
   KF5::AkonadiAgentBase
+  KF5::PimIdentities
 )
 
 if (Q_WS_MAC)

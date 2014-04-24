@@ -32,7 +32,7 @@
 #include <ItemFetchJob>
 #include <ItemFetchScope>
 #include <ItemModifyJob>
-#include <kmime/messageflags.h>
+#include <akonadi/kmime/messageflags.h>
 #include <resourcesynchronizationjob.h>
 #include <specialcollections.h>
 #include <specialcollectionsrequestjob.h>
@@ -52,6 +52,7 @@
 #include <kpimidentities/identitymanager.h>
 #include <KSystemTimeZones>
 #include <KStandardDirs>
+#include <KGlobal>
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
