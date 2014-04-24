@@ -523,7 +523,7 @@ void ResourceState::showInformationDialog( const QString &message, const QString
 
 int ResourceState::batchSize() const
 {
-  return m_resource->itemSyncBatchSize();
+  return m_resource->batchSize();
 }
 
 void ResourceState::retrieveNextBatch(int)

@@ -465,7 +465,7 @@ void ImapResource::retrieveItems( const Collection &col )
   ResourceStateInterface::Ptr state = ::ResourceState::createRetrieveItemsState( this, col );
   RetrieveItemsTask *task = new RetrieveItemsTask( state, this );
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-  connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
+  connect(this, SIGNAL(retrieveNextBatch(int)), task, SLOT(onReadyForNextBatch(int)));
   task->start( m_pool );
   queueTask( task );
 }
