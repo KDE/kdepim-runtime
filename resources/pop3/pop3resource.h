@@ -19,7 +19,7 @@
 #ifndef POP3RESOURCE_H
 #define POP3RESOURCE_H
 
-#include <Akonadi/ResourceBase>
+#include <ResourceBase>
 #include <KMime/Message>
 #include <KJob>
 

@@ -27,12 +27,12 @@
 #include "settingsadaptor.h"
 
 // KDEPIMLIBS includes
-#include <Akonadi/Collection>
-#include <Akonadi/CollectionFetchJob>
-#include <kmime/specialmailcollections.h>
-#include <kmime/specialmailcollectionsrequestjob.h>
+#include <Collection>
+#include <CollectionFetchJob>
+#include <akonadi/kmime/specialmailcollections.h>
+#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <resourcesettings.h>
-#include <Mailtransport/ServerTest>
+#include <MailTransport/ServerTest>
 
 // KDELIBS includes
 #include <KEMailSettings>
@@ -41,6 +41,8 @@
 #include <KUser>
 #include <KWindowSystem>
 #include <kwallet.h>
+#include <KDebug>
+#include <KGlobalSettings>
 
 using namespace MailTransport;
 using namespace Akonadi;
@@ -147,7 +149,6 @@ void AccountDialog::setupWidgets()
 
   folderRequester->setMimeTypeFilter(
       QStringList() << QLatin1String( "message/rfc822" ) );
-  folderRequester->setFrameStyle( QFrame::NoFrame );
   folderRequester->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
   folderRequester->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
 

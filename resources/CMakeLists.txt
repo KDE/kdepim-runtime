@@ -112,7 +112,7 @@ add_subdirectory( localbookmarks )
 #add_subdirectory( maildir )
 
 #add_subdirectory( openxchange )
-#add_subdirectory( pop3 )
+add_subdirectory( pop3 )
 
 #if( LibKGAPI2_FOUND )
 #  add_subdirectory( google )

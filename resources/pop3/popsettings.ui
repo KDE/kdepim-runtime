@@ -428,12 +428,6 @@
             </item>
             <item row="0" column="1">
              <widget class="Akonadi::CollectionRequester" name="folderRequester">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
              </widget>
             </item>
            </layout>
@@ -611,7 +605,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>Akonadi::CollectionRequester</class>
    <extends>QFrame</extends>
-   <header>Akonadi/CollectionRequester</header>
+   <header>CollectionRequester</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

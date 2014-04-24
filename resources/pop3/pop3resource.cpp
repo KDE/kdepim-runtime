@@ -22,19 +22,22 @@
 #include "jobs.h"
 #include "pop3resourceattribute.h"
 
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/ItemCreateJob>
-#include <Akonadi/AttributeFactory>
-#include <kmime/messageflags.h>
-#include <kmime/specialmailcollectionsrequestjob.h>
-#include <kmime/specialmailcollections.h>
+#include <CollectionFetchJob>
+#include <ItemCreateJob>
+#include <AttributeFactory>
+#include <akonadi/kmime/messageflags.h>
+#include <akonadi/kmime/specialmailcollectionsrequestjob.h>
+#include <akonadi/kmime/specialmailcollections.h>
 #include <kmime/kmime_util.h>
-#include <Mailtransport/PrecommandJob>
-#include <Mailtransport/Transport>
+#include <MailTransport/PrecommandJob>
+#include <MailTransport/Transport>
 
+#include <kio/global.h>
+#include <kio/job.h>
 #include <KPasswordDialog>
 #include <KMessageBox>
 #include <kwallet.h>
+#include <KDebug>
 
 #include <QTimer>
 
@@ -204,7 +207,7 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
   dlg->setUsername( Settings::self()->login() );
   dlg->setPassword( mPassword );
   dlg->setPrompt( queryText );
-  dlg->setCaption( name() );
+  dlg->setWindowTitle( name() );
   dlg->addCommentLine( i18n( "Account:" ), name() );
 
   bool gotIt = false;

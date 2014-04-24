@@ -21,6 +21,7 @@
 
 #include <KGlobal>
 #include <kwallet.h>
+#include <KDebug>
 
 class SettingsHelper
 {

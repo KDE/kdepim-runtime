@@ -20,10 +20,12 @@
 #include "jobs.h"
 #include "settings.h"
 
-#include <Mailtransport/Transport>
+#include <MailTransport/Transport>
 
 #include <KIO/Scheduler>
 #include <KIO/Slave>
+#include <KIO/Job>
+#include <KIO/TransferJob>
 #include <KDebug>
 #include <KLocalizedString>
 
