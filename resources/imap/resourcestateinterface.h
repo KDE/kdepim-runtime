@@ -78,6 +78,7 @@ public:
   virtual void itemsChangesCommitted( const Akonadi::Item::List &items ) = 0;
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections ) = 0;
+  virtual void collectionAttributesRetrieved( const Akonadi::Collection &collection ) = 0;
 
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection ) = 0;
 

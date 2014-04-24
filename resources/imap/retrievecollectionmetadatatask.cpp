@@ -58,7 +58,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
       kDebug( 5327 ) << "No Select folder";
-      taskDone();
+      collectionAttributesRetrieved(Akonadi::Collection());
       return;
     }
   }
@@ -113,7 +113,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   // the server does not have any of the capabilities needed to get extra info, so this
   // step is done here
   if ( m_pendingMetaDataJobs == 0 ) {
-      taskDone();
+    collectionAttributesRetrieved(Akonadi::Collection());
   }
 }
 
@@ -311,9 +311,10 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
       TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
       attr->setTimestamp( currentTimestamp );
 
-      applyCollectionChanges( m_collection );
+      collectionAttributesRetrieved( m_collection );
+      return;
     }
 
-    taskDone();
+    collectionAttributesRetrieved(Akonadi::Collection());
   }
 }
