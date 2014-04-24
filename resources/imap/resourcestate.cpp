@@ -162,7 +162,12 @@ void ResourceState::applyCollectionChanges( const Akonadi::Collection &collectio
 
 void ResourceState::collectionAttributesRetrieved( const Akonadi::Collection &collection )
 {
-  m_resource->collectionAttributesRetrieved( collection );
+    //TODO use collection attributes retrieved properly. (Currently we're only emulating the behaviour)
+//   m_resource->collectionAttributesRetrieved( collection );
+  if (collection.isValid() || !collection.remoteId().isEmpty()) {
+    applyCollectionChanges(collection);
+  }
+  taskDone();
 }
 
 void ResourceState::itemRetrieved( const Akonadi::Item &item )

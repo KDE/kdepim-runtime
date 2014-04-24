@@ -104,6 +104,8 @@ protected:
 
   void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
+  void collectionAttributesRetrieved( const Akonadi::Collection &col );
+
   void changeCommitted( const Akonadi::Collection &collection );
 
   void changeProcessed();

@@ -293,6 +293,12 @@ void ResourceTask::collectionsRetrieved( const Akonadi::Collection::List &collec
   deleteLater();
 }
 
+void ResourceTask::collectionAttributesRetrieved(const Akonadi::Collection& col)
+{
+  m_resource->collectionAttributesRetrieved( col );
+  deleteLater();
+}
+
 void ResourceTask::changeCommitted( const Akonadi::Collection &collection )
 {
   m_resource->collectionChangeCommitted( collection );
