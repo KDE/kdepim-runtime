@@ -495,10 +495,13 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   // First check the uidvalidity, if this has changed, it means the folder
   // has been deleted and recreated. So we wipe out the messages and
   // retrieve all.
-  if ( oldUidValidity != uidValidity
-    && oldUidValidity != 0 && messageCount > 0 ) {
-    kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-                   << uidValidity << ") refetching " << mailBox;
+  if ( oldUidValidity != uidValidity && messageCount > 0 ) {
+    if (oldUidValidity != 0) {
+        kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
+                    << uidValidity << ") refetching " << mailBox;
+    } else {
+        kDebug( 5327 ) << "Fetching complete mailbox " << mailBox;
+    }
 
     setTotalItems(messageCount);
     retrieveItems(KIMAP::ImapSet(1, messageCount), scope, false);

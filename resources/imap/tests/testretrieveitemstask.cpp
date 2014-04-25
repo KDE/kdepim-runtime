@@ -22,6 +22,7 @@
 #include "retrieveitemstask.h"
 #include "uidnextattribute.h"
 #include <highestmodseqattribute.h>
+#include <uidvalidityattribute.h>
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionstatistics.h>
@@ -43,6 +44,7 @@ private slots:
     QStringList callNames;
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -82,6 +84,7 @@ private slots:
                           << Akonadi::MessagePart::Body );
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
 
     scenario.clear();
@@ -121,6 +124,7 @@ private slots:
     stats.setCount( 1 );
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
     collection.setStatistics( stats );
 
@@ -150,6 +154,7 @@ private slots:
 
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
     collection.setStatistics( stats );
     scenario.clear();
@@ -220,6 +225,7 @@ private slots:
     QTest::newRow( "uidnext mismatch with recovery attempt" ) << collection << scenario << callNames;
 
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
     collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
     collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
@@ -250,6 +256,7 @@ private slots:
 
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
     collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
     stats.setCount( 5 );
@@ -279,6 +286,7 @@ private slots:
 
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
     collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
     stats.setCount( 3 );
@@ -323,6 +331,45 @@ private slots:
     // We miss one item in the local collection, and therefore fetch the wrong items based
     // the item count of the collection.
     QTest::newRow( "Inconsistent local cache" ) << collection << scenario << callNames;
+
+
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(3);
+    collection.setCachePolicy( policy );
+    stats.setCount( 1 );
+    collection.setStatistics( stats );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 1 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 FETCH 1 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                "RFC822.SIZE 75 BODY[] {75}\r\n"
+                "From: Foo <foo@kde.org>\r\n"
+                "To: Bar <bar@kde.org>\r\n"
+                "Subject: Test Mail\r\n"
+                "\r\n"
+                "Test\r\n"
+                " )"
+             << "S: A000006 OK fetch done";
+
+    callNames.clear();
+    callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+
+    QTest::newRow( "uidvalidity" ) << collection << scenario << callNames;
+
   }
 
   void shouldIntrospectCollection()
