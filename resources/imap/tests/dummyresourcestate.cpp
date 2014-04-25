@@ -280,6 +280,11 @@ void DummyResourceState::deferTask()
   recordCall( "deferTask" );
 }
 
+void DummyResourceState::restartItemRetrieval(Akonadi::Entity::Id col)
+{
+  recordCall( "restartItemRetrieval", QVariant::fromValue(col) );
+}
+
 void DummyResourceState::taskDone()
 {
   recordCall( "taskDone" );

@@ -106,6 +106,7 @@ public:
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
+  virtual void restartItemRetrieval(Akonadi::Collection::Id col);
   virtual void taskDone();
 
   virtual void emitError( const QString &message );

@@ -632,9 +632,9 @@ void RetrieveItemsTask::onRetrievalDone( KJob *job )
         //This will trigger a complete resync
         col.removeAttribute("uidvalidity");
         applyCollectionChanges(col);
-        kWarning() << "Inconsistent cache, aborting sync.";
-        cancelTask( i18n("Inconsistent cache, aborting sync.") );
-        //TODO deferTask instead?
+        kWarning() << "Inconsistent cache, retrying sync." << batchFetcher->lowestUidFetched() << m_lowestExpectedUid;
+        //We cannot use deferTask because that doesn't refetch the collection and we rely on up-to date annotations
+        restartItemRetrieval(col.id());
         return;
     }
 
