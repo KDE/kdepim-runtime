@@ -68,7 +68,7 @@ private:
   void triggerPreExpungeSelect( const QString &mailBox );
   void triggerExpunge( const QString &mailBox );
   void triggerFinalSelect( const QString &mailBox );
-  void retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental = false);
+  void retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental = false, bool uidBased = false);
 
   void listFlagsForImapSet( const KIMAP::ImapSet& set );
   void taskComplete();
