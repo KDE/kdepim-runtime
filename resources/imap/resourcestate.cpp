@@ -303,6 +303,15 @@ void ResourceState::deferTask()
   m_resource->deferTask();
 }
 
+void ResourceState::restartItemRetrieval(Akonadi::Collection::Id col)
+{
+  //This ensures the collection fetch job is rerun (it isn't when using deferTask)
+  //The task will be appended
+  //TODO: deferTask should rerun the collectionfetchjob
+  m_resource->synchronizeCollection(col);
+  cancelTask("Restarting item retrieval.");
+}
+
 void ResourceState::taskDone()
 {
   m_resource->taskDone();
@@ -323,6 +332,10 @@ void ResourceState::emitPercent( int percent )
   emit m_resource->percent( percent );
 }
 
+void ResourceState::synchronizeCollection(Akonadi::Entity::Id id)
+{
+    m_resource->synchronizeCollection(id);
+}
 
 void ResourceState::synchronizeCollectionTree()
 {

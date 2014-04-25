@@ -328,6 +328,12 @@ void ResourceTask::deferTask()
   deleteLater();
 }
 
+void ResourceTask::restartItemRetrieval(Akonadi::Entity::Id col)
+{
+  m_resource->restartItemRetrieval(col);
+  deleteLater();
+}
+
 void ResourceTask::taskDone()
 {
   m_resource->taskDone();

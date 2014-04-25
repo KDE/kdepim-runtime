@@ -318,7 +318,7 @@ private slots:
              << "S: A000006 OK fetch done";
 
     callNames.clear();
-    callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "cancelTask";
+    callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "restartItemRetrieval";
 
     // We miss one item in the local collection, and therefore fetch the wrong items based
     // the item count of the collection.
