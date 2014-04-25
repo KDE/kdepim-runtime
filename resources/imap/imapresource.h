@@ -30,6 +30,8 @@
 #include <agentsearchinterface.h>
 #include <KDialog>
 #include <QPointer>
+#include "resourcestateinterface.h"
+#include "resourcestate.h"
 
 class QTimer;
 
@@ -78,10 +80,10 @@ protected Q_SLOTS:
 
   void abortActivity();
 
-  void retrieveCollections();
+  virtual void retrieveCollections();
 
-  void retrieveItems( const Akonadi::Collection &col );
-  bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+  virtual void retrieveItems( const Akonadi::Collection &col );
+  virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
 protected:
   virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -108,6 +110,8 @@ protected:
   void setSeparatorCharacter( const QChar &separator );
 
   virtual void aboutToQuit();
+
+  virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
 
 private Q_SLOTS:
   void doSearch( const QVariant &arg );
@@ -136,16 +140,20 @@ private Q_SLOTS:
 
   void onConfigurationDone( int result );
 
+protected:
+  //Starts and queues a task
+  void startTask( ResourceTask *task );
+  void queueTask( ResourceTask *task );
+  SessionPool *m_pool;
+
 private:
   friend class ResourceState;
 
-  void queueTask( ResourceTask *task );
   bool needsNetwork() const;
 
   friend class ImapIdleManager;
 
-  SessionPool *m_pool;
-  QList<ResourceTask*> m_taskList;
+  QList<ResourceTask*> m_taskList; //used to be able to kill tasks
   QPointer<SubscriptionDialog> mSubscriptions;
   ImapIdleManager *m_idle;
   QTimer *m_statusMessageTimer;

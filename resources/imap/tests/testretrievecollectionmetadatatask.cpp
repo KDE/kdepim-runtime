@@ -86,7 +86,7 @@ private slots:
              << "S: A000006 OK quota retrieved";
 
     callNames.clear();
-    callNames << "applyCollectionChanges" << "taskDone";
+    callNames << "collectionAttributesRetrieved";
 
     expectedAnnotations.clear();
     expectedAnnotations.insert( "/shared/vendor/kolab/folder-test", "true" );
@@ -180,8 +180,7 @@ private slots:
 
     callNames.clear();
     callNames << "showInformationDialog";
-    callNames << "applyCollectionChanges";
-    callNames << "taskDone";
+    callNames << "collectionAttributesRetrieved";
 
     rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
     QTest::newRow( "revoked rights" ) << collection << capabilities << scenario
@@ -212,8 +211,7 @@ private slots:
              << "S: A000006 OK quota retrieved";
 
     callNames.clear();
-    callNames << "applyCollectionChanges";
-    callNames << "taskDone";
+    callNames << "collectionAttributesRetrieved";
 
     rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
 
@@ -250,7 +248,7 @@ private slots:
              << "S: A000006 OK quota retrieved";
 
     callNames.clear();
-    callNames << "applyCollectionChanges" << "taskDone";
+    callNames << "collectionAttributesRetrieved";
 
     rights = Akonadi::Collection::AllRights;
     QTest::newRow( "METADATA" ) << collection << capabilities << scenario
@@ -299,7 +297,7 @@ private slots:
         QVERIFY( !parameter.toString().isEmpty() );
       }
 
-      if ( command == "applyCollectionChanges" ) {
+      if ( command == "collectionAttributesRetrieved" ) {
         Akonadi::Collection collection = parameter.value<Akonadi::Collection>();
         QCOMPARE( collection.rights(), expectedRights );
         QVERIFY( collection.hasAttribute<TimestampAttribute>() );

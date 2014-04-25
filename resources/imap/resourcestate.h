@@ -26,70 +26,33 @@
 
 class ImapResource;
 
+struct TaskArguments {
+    TaskArguments(){}
+    TaskArguments(const Akonadi::Item &_item): items(Akonadi::Item::List() << _item) {}
+    TaskArguments(const Akonadi::Item &_item, const Akonadi::Collection &_parentCollection): items(Akonadi::Item::List() << _item), parentCollection(_parentCollection) {}
+    TaskArguments(const Akonadi::Item &_item, const QSet<QByteArray> &_parts): items(Akonadi::Item::List() << _item), parts(_parts) {}
+    TaskArguments(const Akonadi::Item::List &_items): items(_items) {}
+    TaskArguments(const Akonadi::Item::List &_items, const QSet<QByteArray> &_addedFlags, const QSet<QByteArray> &_removedFlags): items(_items), addedFlags(_addedFlags), removedFlags(_removedFlags) {}
+    TaskArguments(const Akonadi::Item::List &_items, const Akonadi::Collection &_sourceCollection, const Akonadi::Collection &_targetCollection): items(_items), sourceCollection(_sourceCollection), targetCollection(_targetCollection){}
+    TaskArguments(const Akonadi::Collection &_collection): collection(_collection){}
+    TaskArguments(const Akonadi::Collection &_collection, const Akonadi::Collection &_parentCollection): collection(_collection), parentCollection(_parentCollection){}
+    TaskArguments(const Akonadi::Collection &_collection, const Akonadi::Collection &_sourceCollection, const Akonadi::Collection &_targetCollection): collection(_collection), sourceCollection(_sourceCollection), targetCollection(_targetCollection){}
+    TaskArguments(const Akonadi::Collection &_collection, const QSet<QByteArray> &_parts): collection(_collection), parts(_parts){}
+    Akonadi::Collection collection;
+    Akonadi::Item::List items;
+    Akonadi::Collection parentCollection;
+    Akonadi::Collection sourceCollection;
+    Akonadi::Collection targetCollection;
+    QSet<QByteArray> parts;
+    QSet<QByteArray> addedFlags;
+    QSet<QByteArray> removedFlags;
+};
+
 class ResourceState : public ResourceStateInterface
 {
 public:
-  static ResourceStateInterface::Ptr createRetrieveItemState( ImapResource *resource,
-                                                              const Akonadi::Item &item,
-                                                              const QSet<QByteArray> &parts );
+  explicit ResourceState( ImapResource *resource, const TaskArguments &arguments );
 
-  static ResourceStateInterface::Ptr createRetrieveItemsState( ImapResource *resource,
-                                                               const Akonadi::Collection &collection );
-
-  static ResourceStateInterface::Ptr createRetrieveCollectionsState( ImapResource *resource );
-
-  static ResourceStateInterface::Ptr createRetrieveCollectionMetadataState( ImapResource *resource,
-                                                                            const Akonadi::Collection &collection );
-
-  static ResourceStateInterface::Ptr createAddItemState( ImapResource *resource,
-                                                         const Akonadi::Item &item,
-                                                         const Akonadi::Collection &collection );
-
-  static ResourceStateInterface::Ptr createChangeItemState( ImapResource *resource,
-                                                            const Akonadi::Item &item,
-                                                            const QSet<QByteArray> &parts );
-
-  static ResourceStateInterface::Ptr createChangeItemsFlagsState( ImapResource *resource,
-                                                                  const Akonadi::Item::List &items,
-                                                                  const QSet<QByteArray> &addedFlags,
-                                                                  const QSet<QByteArray> &removedFlags );
-
-  static ResourceStateInterface::Ptr createRemoveItemsState( ImapResource *resource,
-                                                             const Akonadi::Item::List &items );
-
-  static ResourceStateInterface::Ptr createMoveItemsState( ImapResource *resource,
-                                                           const Akonadi::Item::List &item,
-                                                           const Akonadi::Collection &sourceCollection,
-                                                           const Akonadi::Collection &targetCollection );
-
-  static ResourceStateInterface::Ptr createAddCollectionState( ImapResource *resource,
-                                                               const Akonadi::Collection &collection,
-                                                               const Akonadi::Collection &parentCollection );
-
-  static ResourceStateInterface::Ptr createChangeCollectionState( ImapResource *resource,
-                                                                  const Akonadi::Collection &collection,
-                                                                  const QSet<QByteArray> &parts );
-
-  static ResourceStateInterface::Ptr createRemoveCollectionState( ImapResource *resource,
-                                                                  const Akonadi::Collection &collection );
-
-  static ResourceStateInterface::Ptr createMoveCollectionState( ImapResource *resource,
-                                                                const Akonadi::Collection &collection,
-                                                                const Akonadi::Collection &sourceCollection,
-                                                                const Akonadi::Collection &targetCollection );
-
-  static ResourceStateInterface::Ptr createExpungeCollectionState( ImapResource *resource,
-                                                                   const Akonadi::Collection &collection );
-
-  static ResourceStateInterface::Ptr createIdleState( ImapResource *resource,
-                                                      const Akonadi::Collection &collection );
-
-
-  static ResourceStateInterface::Ptr createSearchState( ImapResource *resource,
-                                                        const Akonadi::Collection &collection );
-
-private:
-  explicit ResourceState( ImapResource *resource );
 public:
   ~ResourceState();
 
@@ -129,6 +92,8 @@ public:
   virtual void itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed );
   virtual void itemsRetrievalDone();
 
+  virtual void setTotalItems(int);
+
   virtual void itemChangeCommitted( const Akonadi::Item &item );
   virtual void itemsChangesCommitted(const Akonadi::Item::List& items);
 
@@ -157,20 +122,12 @@ public:
 
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
 
+  virtual int batchSize() const;
+
+
 private:
   ImapResource *m_resource;
-
-  Akonadi::Collection m_collection;
-  Akonadi::Item::List m_items;
-
-  Akonadi::Collection m_parentCollection;
-
-  Akonadi::Collection m_sourceCollection;
-  Akonadi::Collection m_targetCollection;
-
-  QSet<QByteArray> m_parts;
-  QSet<QByteArray> m_addedFlags;
-  QSet<QByteArray> m_removedFlags;
+  const TaskArguments m_arguments;
 };
 
 #endif

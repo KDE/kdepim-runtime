@@ -53,6 +53,7 @@ endif()
 ########### next target ###############
 
 set( akonadi_imap_resource_SRCS
+  main.cpp
   imapidlemanager.cpp
   imapresource.cpp
   resourcestate.cpp
