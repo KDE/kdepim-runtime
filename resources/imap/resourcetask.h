@@ -120,6 +120,7 @@ protected:
 
   void cancelTask( const QString &errorString );
   void deferTask();
+  void restartItemRetrieval(Akonadi::Collection::Id col);
   void taskDone();
   void emitPercent( int percent );
   void emitError( const QString &message );

@@ -495,10 +495,13 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   // First check the uidvalidity, if this has changed, it means the folder
   // has been deleted and recreated. So we wipe out the messages and
   // retrieve all.
-  if ( oldUidValidity != uidValidity
-    && oldUidValidity != 0 && messageCount > 0 ) {
-    kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-                   << uidValidity << ") refetching " << mailBox;
+  if ( oldUidValidity != uidValidity && messageCount > 0 ) {
+    if (oldUidValidity != 0) {
+        kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
+                    << uidValidity << ") refetching " << mailBox;
+    } else {
+        kDebug( 5327 ) << "Fetching complete mailbox " << mailBox;
+    }
 
     setTotalItems(messageCount);
     retrieveItems(KIMAP::ImapSet(1, messageCount), scope, false);
@@ -538,16 +541,7 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     setTotalItems(m_messageUidsMissingBody.size());
     KIMAP::ImapSet imapSet;
     imapSet.add( m_messageUidsMissingBody );
-
-    m_batchFetcher = new BatchFetcher(imapSet, scope, batchSize(), m_session);
-    m_batchFetcher->setUidBased(true);
-    m_incremental = true;
-    m_batchFetcher->setProperty("alreadyFetched", 1);
-    connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
-            this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
-    connect(m_batchFetcher, SIGNAL(result(KJob*)),
-            this, SLOT(onRetrievalDone(KJob*)));
-    m_batchFetcher->start();
+    retrieveItems(imapSet, scope, true, true);
   } else if ( messageCount > 0 ) {
     if ( messageCount < realMessageCount ) {
         // Some messages were removed, list all flags to find out which messages
@@ -572,13 +566,14 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
   }
 }
 
-void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental)
+void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental, bool uidBased)
 {
   Q_ASSERT(set.intervals().size() == 1);
 
   m_incremental = incremental;
 
   m_batchFetcher = new BatchFetcher(set, scope, batchSize(), m_session);
+  m_batchFetcher->setUidBased(uidBased);
   m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
   connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
           this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
@@ -629,9 +624,9 @@ void RetrieveItemsTask::onRetrievalDone( KJob *job )
         //This will trigger a complete resync
         col.removeAttribute("uidvalidity");
         applyCollectionChanges(col);
-        kWarning() << "Inconsistent cache, aborting sync.";
-        cancelTask( i18n("Inconsistent cache, aborting sync.") );
-        //TODO deferTask instead?
+        kWarning() << "Inconsistent cache, retrying sync." << batchFetcher->lowestUidFetched() << m_lowestExpectedUid;
+        //We cannot use deferTask because that doesn't refetch the collection and we rely on up-to date annotations
+        restartItemRetrieval(col.id());
         return;
     }
 

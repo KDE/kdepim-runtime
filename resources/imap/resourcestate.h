@@ -107,6 +107,7 @@ public:
 
   virtual void cancelTask( const QString &errorString );
   virtual void deferTask();
+  virtual void restartItemRetrieval(Akonadi::Collection::Id col);
   virtual void taskDone();
 
   virtual void emitError( const QString &message );
@@ -114,6 +115,7 @@ public:
 
   virtual void emitPercent( int percent );
 
+  virtual void synchronizeCollection(Akonadi::Collection::Id);
   virtual void synchronizeCollectionTree();
   virtual void scheduleConnectionAttempt();
 
