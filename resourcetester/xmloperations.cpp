@@ -21,10 +21,10 @@
 #include "global.h"
 #include "test.h"
 
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
+#include <AkonadiCore/collectionfetchjob.h>
+#include <AkonadiCore/collectionfetchscope.h>
+#include <AkonadiCore/itemfetchjob.h>
+#include <AkonadiCore/itemfetchscope.h>
 #include <akonadi/xml/xmlwritejob.h>
 
 #include <KDebug>

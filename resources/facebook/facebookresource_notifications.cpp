@@ -27,12 +27,12 @@
 #include <libkfbapi/notificationinfo.h>
 #include <libkfbapi/notificationsmarkreadjob.h>
 
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ChangeRecorder>
-#include <Akonadi/CollectionFetchJob>
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ChangeRecorder>
+#include <AkonadiCore/CollectionFetchJob>
 
 #include <KLocalizedString>
 #include <KNotification>

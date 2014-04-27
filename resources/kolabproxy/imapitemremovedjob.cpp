@@ -17,12 +17,12 @@
   02110-1301, USA.
 */
 #include "imapitemremovedjob.h"
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
-#include <Akonadi/ItemCreateJob>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/ItemDeleteJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemModifyJob>
+#include <AkonadiCore/ItemCreateJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/ItemDeleteJob>
 
 ImapItemRemovedJob::ImapItemRemovedJob(const Akonadi::Item& imapItem, QObject* parent)
     :KJob(parent),

@@ -24,7 +24,7 @@
 #include "setupdefaultfoldersjob.h"
 #include "upgradejob.h"
 
-#include <Akonadi/AgentManager>
+#include <AkonadiCore/AgentManager>
 
 #include <KMessageBox>
 #include <KStandardDirs>

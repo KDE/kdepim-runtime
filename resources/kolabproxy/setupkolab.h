@@ -24,7 +24,7 @@
 #include "ui_changeformat.h"
 #include "ui_kolabsettings.h"
 
-#include <Akonadi/AgentInstance>
+#include <AkonadiCore/AgentInstance>
 
 #include <KDialog>
 #include <kolabdefinitions.h>

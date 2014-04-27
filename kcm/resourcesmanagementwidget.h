@@ -27,7 +27,7 @@
 #include <QtGui/QWidget>
 #include <QStringList>
 
-#include <akonadi/agentinstance.h>
+#include <AkonadiCore/agentinstance.h>
 
 
 /**

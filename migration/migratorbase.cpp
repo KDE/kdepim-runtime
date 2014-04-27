@@ -24,7 +24,7 @@
 #include <KDebug>
 #include <KComponentData>
 #include <KLocalizedString>
-#include <akonadi/servermanager.h>
+#include <AkonadiCore/servermanager.h>
 #include <QFile>
 #include <QDateTime>
 

@@ -18,13 +18,13 @@
 */
 #include "pop3test.h"
 
-#include <Akonadi/AgentInstanceCreateJob>
-#include <Akonadi/AgentManager>
-#include <Akonadi/Control>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/ItemDeleteJob>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
+#include <AkonadiCore/AgentInstanceCreateJob>
+#include <AkonadiCore/AgentManager>
+#include <AkonadiCore/Control>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/ItemDeleteJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 #include <qtest_akonadi.h>
 #include <KMime/Message>
 

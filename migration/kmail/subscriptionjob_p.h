@@ -20,8 +20,8 @@
 #ifndef AKONADI_SUBSCRIPTIONJOB_P_H
 #define AKONADI_SUBSCRIPTIONJOB_P_H
 
-#include <akonadi/collection.h>
-#include <akonadi/job.h>
+#include <AkonadiCore/collection.h>
+#include <AkonadiCore/job.h>
 
 namespace Akonadi {
 

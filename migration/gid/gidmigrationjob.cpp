@@ -18,11 +18,11 @@
 */
 
 #include "gidmigrationjob.h"
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemmodifyjob.h>
-#include <akonadi/itemfetchscope.h>
+#include <AkonadiCore/collectionfetchjob.h>
+#include <AkonadiCore/collectionfetchscope.h>
+#include <AkonadiCore/itemfetchjob.h>
+#include <AkonadiCore/itemmodifyjob.h>
+#include <AkonadiCore/itemfetchscope.h>
 
 using namespace Akonadi;
 

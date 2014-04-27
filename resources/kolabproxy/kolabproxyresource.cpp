@@ -35,22 +35,22 @@
 
 #include "collectionannotationsattribute.h" //from shared
 
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/CachePolicy>
-#include <Akonadi/ChangeRecorder>
-#include <Akonadi/CollectionCreateJob>
-#include <Akonadi/CollectionDeleteJob>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
-#include <Akonadi/CollectionModifyJob>
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/CachePolicy>
+#include <AkonadiCore/ChangeRecorder>
+#include <AkonadiCore/CollectionCreateJob>
+#include <AkonadiCore/CollectionDeleteJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchScope>
+#include <AkonadiCore/CollectionModifyJob>
 #include <Akonadi/CollectionMoveJob>
-#include <Akonadi/EntityDisplayAttribute>
+#include <AkonadiCore/EntityDisplayAttribute>
 #include <Akonadi/EntityHiddenAttribute>
-#include <Akonadi/ItemDeleteJob>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemMoveJob>
-#include <Akonadi/Session>
+#include <AkonadiCore/ItemDeleteJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemMoveJob>
+#include <AkonadiCore/Session>
 
 #include <KLocalizedString>
 #include <KWindowSystem>

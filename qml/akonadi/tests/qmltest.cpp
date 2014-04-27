@@ -19,10 +19,10 @@
 * 02110-1301  USA
 */
 
-#include <akonadi/changerecorder.h>
-#include <akonadi/entitytreeview.h>
-#include <Akonadi/ItemFetchScope>
-#include <akonadi/entitymimetypefiltermodel.h>
+#include <AkonadiCore/changerecorder.h>
+#include <AkonadiWidgets/entitytreeview.h>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/entitymimetypefiltermodel.h>
 
 #include <kdebug.h>
 #include <kselectionproxymodel.h>

@@ -21,10 +21,10 @@
 #include <qtest_kde.h>
 #include <qtest_akonadi.h>
 #include <servermanager.h>
-#include <Akonadi/AgentInstanceCreateJob>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
-#include <Akonadi/AttributeFactory>
+#include <AkonadiCore/AgentInstanceCreateJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchScope>
+#include <AkonadiCore/AttributeFactory>
 #include <Akonadi/EntityHiddenAttribute>
 #include <QDBusInterface>
 #include <QSignalSpy>

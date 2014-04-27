@@ -20,9 +20,9 @@
 
 #include <QTest>
 #include <Akonadi/Item>
-#include <Akonadi/AgentInstanceCreateJob>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
+#include <AkonadiCore/AgentInstanceCreateJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchScope>
 #include <KMime/Message>
 #include <collectionannotationsattribute.h>
 #include <kolabdefinitions.h> //libkolab

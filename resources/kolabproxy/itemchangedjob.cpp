@@ -19,9 +19,9 @@
 
 #include "itemchangedjob.h"
 #include "itemaddedjob.h"
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/ItemModifyJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/ItemModifyJob>
 
 ItemChangedJob::ItemChangedJob(const Akonadi::Item& kolabItem, HandlerManager& handler, QObject* parent)
 :   KJob(parent),

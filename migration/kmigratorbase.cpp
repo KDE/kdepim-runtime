@@ -19,9 +19,9 @@
 
 #include "kmigratorbase.h"
 
-#include <akonadi/agentinstancecreatejob.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/agenttype.h>
+#include <AkonadiCore/agentinstancecreatejob.h>
+#include <AkonadiCore/agentmanager.h>
+#include <AkonadiCore/agenttype.h>
 
 #include <KSharedConfig>
 #include <KConfigGroup>

@@ -20,14 +20,14 @@
 
 #include "emptyresourcecleaner.h"
 
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/collection.h>
-#include <akonadi/collectiondeletejob.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/collectionstatistics.h>
-#include <akonadi/itemfetchjob.h>
+#include <AkonadiCore/agentinstance.h>
+#include <AkonadiCore/agentmanager.h>
+#include <AkonadiCore/collection.h>
+#include <AkonadiCore/collectiondeletejob.h>
+#include <AkonadiCore/collectionfetchjob.h>
+#include <AkonadiCore/collectionfetchscope.h>
+#include <AkonadiCore/collectionstatistics.h>
+#include <AkonadiCore/itemfetchjob.h>
 
 #include <KDebug>
 

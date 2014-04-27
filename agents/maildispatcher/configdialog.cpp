@@ -22,8 +22,8 @@
 #include "settings.h"
 
 #include <Akonadi/Collection>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionRequester>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiWidgets/CollectionRequester>
 #include <KConfigDialogManager>
 #include <KMime/Message>
 

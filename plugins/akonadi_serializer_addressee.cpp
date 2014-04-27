@@ -20,7 +20,7 @@
 #include "akonadi_serializer_addressee.h"
 
 #include <akonadi/abstractdifferencesreporter.h>
-#include <akonadi/item.h>
+#include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 
 #include <kabc/addressee.h>

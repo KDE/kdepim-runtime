@@ -26,10 +26,10 @@
 
 #include <filestore/collectionmodifyjob.h>
 
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentinstancecreatejob.h>
-#include <akonadi/agentmanager.h>
-#include <akonadi/collection.h>
+#include <AkonadiCore/agentinstance.h>
+#include <AkonadiCore/agentinstancecreatejob.h>
+#include <AkonadiCore/agentmanager.h>
+#include <AkonadiCore/collection.h>
 
 #include <KLocalizedString>
 

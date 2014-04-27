@@ -19,14 +19,14 @@
 #include "settingsdialog.h"
 #include "settings.h"
 
-#include <Akonadi/CollectionModifyJob>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
+#include <AkonadiCore/CollectionModifyJob>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemModifyJob>
 #include <Akonadi/LinkJob>
 #include <Akonadi/UnlinkJob>
-#include <Akonadi/CachePolicy>
+#include <AkonadiCore/CachePolicy>
 
 #include <KABC/Addressee>
 #include <KABC/Picture>

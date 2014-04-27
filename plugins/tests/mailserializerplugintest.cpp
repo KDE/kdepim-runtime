@@ -19,7 +19,7 @@
 
 #include "mailserializerplugintest.h"
 
-#include <akonadi/item.h>
+#include <AkonadiCore/item.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 

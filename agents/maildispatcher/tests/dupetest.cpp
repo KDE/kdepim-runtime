@@ -24,13 +24,13 @@
 
 #include <KDebug>
 
-#include <Akonadi/Control>
-#include <Akonadi/AgentInstance>
-#include <Akonadi/AgentManager>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/ItemDeleteJob>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
+#include <AkonadiCore/Control>
+#include <AkonadiCore/AgentInstance>
+#include <AkonadiCore/AgentManager>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/ItemDeleteJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/private/collectionpathresolver_p.h>
 

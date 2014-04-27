@@ -21,7 +21,7 @@
 #ifndef KOLABPROXY_SETUPDEFAULTFOLDERSJOB_H
 #define KOLABPROXY_SETUPDEFAULTFOLDERSJOB_H
 
-#include <Akonadi/AgentInstance>
+#include <AkonadiCore/AgentInstance>
 #include <Akonadi/Job>
 
 class SetupDefaultFoldersJob : public Akonadi::Job

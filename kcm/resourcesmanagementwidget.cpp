@@ -24,11 +24,11 @@
 #include "resourcesmanagementwidget.h"
 #include "ui_resourcesmanagementwidget.h"
 
-#include <akonadi/agentmanager.h>
-#include <akonadi/agentinstancecreatejob.h>
-#include <akonadi/agentfilterproxymodel.h>
-#include <akonadi/agenttypedialog.h>
-#include <akonadi/control.h>
+#include <AkonadiCore/agentmanager.h>
+#include <AkonadiCore/agentinstancecreatejob.h>
+#include <AkonadiCore/agentfilterproxymodel.h>
+#include <AkonadiWidgets/agenttypedialog.h>
+#include <AkonadiCore/control.h>
 
 #include <kwindowsystem.h>
 

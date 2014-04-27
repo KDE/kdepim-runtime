@@ -18,7 +18,7 @@
 */
 
 #include "itemaddedjob.h"
-#include <Akonadi/ItemCreateJob>
+#include <AkonadiCore/ItemCreateJob>
 #include <Akonadi/KMime/MessageFlags>
 
 ItemAddedJob::ItemAddedJob(const Akonadi::Item& kolabItem, const Akonadi::Collection& col, KolabHandler& handler, QObject* parent)

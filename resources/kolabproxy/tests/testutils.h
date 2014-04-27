@@ -19,7 +19,7 @@
 */
 #include <qsharedpointer.h>
 #include <QSignalSpy>
-#include <Akonadi/Monitor>
+#include <AkonadiCore/Monitor>
 #include <Akonadi/Job>
 #include <KCalCore/Event>
 

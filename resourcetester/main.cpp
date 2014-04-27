@@ -25,7 +25,7 @@
 #include "system.h"
 #include "qemu.h"
 
-#include <akonadi/control.h>
+#include <AkonadiCore/control.h>
 
 #include <KApplication>
 #include <KAboutData>

@@ -22,8 +22,8 @@
 #include <akonadi/resourcesynchronizationjob.h>
 #include "test.h"
 
-#include <akonadi/agentmanager.h>
-#include <akonadi/agentinstancecreatejob.h>
+#include <AkonadiCore/agentmanager.h>
+#include <AkonadiCore/agentinstancecreatejob.h>
 
 #include <KDebug>
 #include <qtest_kde.h>

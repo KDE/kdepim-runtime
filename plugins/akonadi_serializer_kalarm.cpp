@@ -25,9 +25,9 @@
 #include <kalarmcal/kacalendar.h>
 #include <kalarmcal/kaevent.h>
 
-#include <akonadi/item.h>
+#include <AkonadiCore/item.h>
 #include <akonadi/abstractdifferencesreporter.h>
-#include <akonadi/attributefactory.h>
+#include <AkonadiCore/attributefactory.h>
 
 #include <klocale.h>
 #include <kdebug.h>

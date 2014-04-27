@@ -21,14 +21,14 @@
 #include "settingsdialog.h"
 
 #include <Akonadi/Attribute>
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/CollectionModifyJob>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/CollectionModifyJob>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemModifyJob>
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
-#include <Akonadi/CachePolicy>
+#include <AkonadiCore/CachePolicy>
 
 #include <KCalCore/Calendar>
 

@@ -20,8 +20,8 @@
 #include "akonadi_serializer_kcalcore.h"
 
 #include <akonadi/abstractdifferencesreporter.h>
-#include <akonadi/item.h>
-#include <akonadi/collection.h>
+#include <AkonadiCore/item.h>
+#include <AkonadiCore/collection.h>
 
 #include <KCalCore/Event>
 #include <KCalCore/Todo>

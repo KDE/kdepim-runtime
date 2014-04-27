@@ -25,7 +25,7 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <akonadi/item.h>
+#include <AkonadiCore/item.h>
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/private/imapparser_p.h>
 

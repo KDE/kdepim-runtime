@@ -23,7 +23,7 @@
 #include "test.h"
 
 #include <akonadi/private/collectionpathresolver_p.h>
-#include <akonadi/itemcreatejob.h>
+#include <AkonadiCore/itemcreatejob.h>
 
 #include <KDebug>
 #include <QFile>

@@ -24,9 +24,9 @@
 
 #include <KDebug>
 
-#include <Akonadi/AgentInstance>
-#include <Akonadi/AgentManager>
-#include <Akonadi/Control>
+#include <AkonadiCore/AgentInstance>
+#include <AkonadiCore/AgentManager>
+#include <AkonadiCore/Control>
 #include <qtest_akonadi.h>
 
 #define TIMES 100 // How many times to sync.

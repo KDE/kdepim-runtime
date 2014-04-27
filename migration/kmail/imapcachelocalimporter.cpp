@@ -26,13 +26,13 @@
 #include "filestore/collectionfetchjob.h"
 #include "filestore/itemfetchjob.h"
 
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentinstancecreatejob.h>
-#include <akonadi/collection.h>
+#include <AkonadiCore/agentinstance.h>
+#include <AkonadiCore/agentinstancecreatejob.h>
+#include <AkonadiCore/collection.h>
 #include <akonadi/collectioncreatejob.h>
-#include <akonadi/item.h>
-#include <akonadi/itemcreatejob.h>
-#include <akonadi/session.h>
+#include <AkonadiCore/item.h>
+#include <AkonadiCore/itemcreatejob.h>
+#include <AkonadiCore/session.h>
 
 #include <KDebug>
 #include <KLocalizedString>

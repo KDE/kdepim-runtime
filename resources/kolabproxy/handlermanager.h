@@ -20,7 +20,7 @@
 #define HANDLERMANAGER_H
 
 #include <KJob>
-#include <Akonadi/Monitor>
+#include <AkonadiCore/Monitor>
 #include "kolabhandler.h"
 
 class HandlerManager

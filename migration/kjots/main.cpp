@@ -22,7 +22,7 @@
 
 #include "infodialog.h"
 
-#include <akonadi/control.h>
+#include <AkonadiCore/control.h>
 
 #include <KAboutData>
 #include <KApplication>

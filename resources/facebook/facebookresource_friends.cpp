@@ -28,11 +28,11 @@
 #include <libkfbapi/friendjob.h>
 #include <libkfbapi/photojob.h>
 
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ChangeRecorder>
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ChangeRecorder>
 
 using namespace Akonadi;
 

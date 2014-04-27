@@ -20,8 +20,8 @@
 */
 
 #include "addressbookhandler.h"
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 
 AddressBookHandler::AddressBookHandler( const Akonadi::Collection &imapCollection )
   : KolabHandler( imapCollection )

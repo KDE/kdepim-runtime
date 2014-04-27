@@ -42,12 +42,12 @@
 
 #include <Mailtransport/Transport>
 
-#include <akonadi/agentmanager.h>
-#include <akonadi/agentinstance.h>
-#include <akonadi/agentinstancecreatejob.h>
-#include <akonadi/attributefactory.h>
-#include <akonadi/tag.h>
-#include <akonadi/tagcreatejob.h>
+#include <AkonadiCore/agentmanager.h>
+#include <AkonadiCore/agentinstance.h>
+#include <AkonadiCore/agentinstancecreatejob.h>
+#include <AkonadiCore/attributefactory.h>
+#include <AkonadiCore/tag.h>
+#include <AkonadiCore/tagcreatejob.h>
 #include <akonadi/tagattribute.h>
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;

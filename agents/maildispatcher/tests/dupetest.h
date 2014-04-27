@@ -24,7 +24,7 @@
 #include <QList>
 
 #include <Akonadi/Collection>
-#include <Akonadi/Monitor>
+#include <AkonadiCore/Monitor>
 
 
 /**

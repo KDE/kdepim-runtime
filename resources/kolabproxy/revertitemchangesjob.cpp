@@ -17,10 +17,10 @@
   02110-1301, USA.
 */
 #include "revertitemchangesjob.h"
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
-#include <Akonadi/ItemDeleteJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemModifyJob>
+#include <AkonadiCore/ItemDeleteJob>
 
 RevertItemChangesJob::RevertItemChangesJob(const Akonadi::Item& kolabItem, HandlerManager &handlerManager, QObject* parent)
     :KJob(parent),

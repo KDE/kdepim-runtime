@@ -21,8 +21,8 @@
 #include "entitytreecreatejob.h"
 
 
-#include <Akonadi/CollectionCreateJob>
-#include <Akonadi/ItemCreateJob>
+#include <AkonadiCore/CollectionCreateJob>
+#include <AkonadiCore/ItemCreateJob>
 
 using namespace Akonadi;
 

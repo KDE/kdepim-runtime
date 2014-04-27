@@ -43,11 +43,11 @@
 #include <libkfbapi/allpostslistjob.h>
 #include <libkfbapi/postaddjob.h>
 
-#include <Akonadi/AttributeFactory>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ChangeRecorder>
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ChangeRecorder>
 #include <notes/noteutils.h> //krazy:exclude=camelcase wait for kdepimlibs 4.11
 
 #include <Akonadi/SocialUtils/SocialNetworkAttributes>

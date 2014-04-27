@@ -34,14 +34,14 @@
 
 #include <kmime/kmime_message.h>
 
-#include <akonadi/agentinstance.h>
-#include <akonadi/collection.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/item.h>
-#include <akonadi/itemcreatejob.h>
-#include <akonadi/itemdeletejob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/session.h>
+#include <AkonadiCore/agentinstance.h>
+#include <AkonadiCore/collection.h>
+#include <AkonadiCore/collectionfetchscope.h>
+#include <AkonadiCore/item.h>
+#include <AkonadiCore/itemcreatejob.h>
+#include <AkonadiCore/itemdeletejob.h>
+#include <AkonadiCore/itemfetchscope.h>
+#include <AkonadiCore/session.h>
 #include <akonadi/kmime/messagestatus.h>
 
 #include <KConfigGroup>

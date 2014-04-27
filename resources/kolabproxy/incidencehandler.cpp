@@ -21,8 +21,8 @@
 
 #include "incidencehandler.h"
 
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 
 #include <KCalCore/CalFormat>
 

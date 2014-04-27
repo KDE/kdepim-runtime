@@ -22,7 +22,7 @@
 #define RESOURCE_H
 
 #include "wrappedobject.h"
-#include <akonadi/agentinstance.h>
+#include <AkonadiCore/agentinstance.h>
 
 #include <QHash>
 #include <QPointer>

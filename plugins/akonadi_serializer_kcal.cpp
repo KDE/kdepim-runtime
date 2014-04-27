@@ -20,7 +20,7 @@
 #include "akonadi_serializer_kcal.h"
 
 #include <akonadi/abstractdifferencesreporter.h>
-#include <akonadi/item.h>
+#include <AkonadiCore/item.h>
 
 #include <KCal/Event>
 #include <KCal/Todo>

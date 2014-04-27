@@ -21,8 +21,8 @@
 #include "test.h"
 
 #include <akonadi/collectioncreatejob.h>
-#include <akonadi/collectionmodifyjob.h>
-#include <akonadi/collectiondeletejob.h>
+#include <AkonadiCore/collectionmodifyjob.h>
+#include <AkonadiCore/collectiondeletejob.h>
 #include <akonadi/private/collectionpathresolver_p.h>
 
 #include <QStringList>

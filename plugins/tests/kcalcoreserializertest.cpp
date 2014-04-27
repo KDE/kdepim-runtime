@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include <akonadi/item.h>
+#include <AkonadiCore/item.h>
 #include <KCalCore/Event>
 #include <qtest_kde.h>
 #include <QtCore/QObject>

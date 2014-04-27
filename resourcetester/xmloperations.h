@@ -20,8 +20,8 @@
 #ifndef XMLOPERATIONS_H
 #define XMLOPERATIONS_H
 
-#include <akonadi/collection.h>
-#include <akonadi/item.h>
+#include <AkonadiCore/collection.h>
+#include <AkonadiCore/item.h>
 #include <akonadi/xml/xmldocument.h>
 
 #include <QtCore/QMetaEnum>

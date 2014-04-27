@@ -28,8 +28,8 @@
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
-#include <akonadi/control.h>
-#include <akonadi/servermanager.h>
+#include <AkonadiCore/control.h>
+#include <AkonadiCore/servermanager.h>
 #include <akonadi/private/xdgbasedirs_p.h>
 
 K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )

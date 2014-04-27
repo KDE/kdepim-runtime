@@ -17,11 +17,11 @@
   02110-1301, USA.
 */
 #include "imapitemaddedjob.h"
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
-#include <Akonadi/ItemCreateJob>
-#include <Akonadi/CollectionFetchJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemModifyJob>
+#include <AkonadiCore/ItemCreateJob>
+#include <AkonadiCore/CollectionFetchJob>
 
 ImapItemAddedJob::ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, KolabHandler &handler, QObject* parent)
     :KJob(parent),

@@ -24,11 +24,11 @@
 
 #include "collectionannotationsattribute.h" //from shared
 
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchScope>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemModifyJob>
 
 #define IMAP_COLLECTION "IMAP_COLLECTION"
 #define FOLDER_TYPE "FOLDER_TYPE"

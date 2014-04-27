@@ -17,7 +17,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <Akonadi/Control>
+#include <AkonadiCore/Control>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <kconfig.h>

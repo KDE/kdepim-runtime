@@ -32,12 +32,12 @@
 
 #include <KMime/Message>
 
-#include <Akonadi/AgentInstance>
-#include <Akonadi/AgentInstanceCreateJob>
-#include <akonadi/item.h>
+#include <AkonadiCore/AgentInstance>
+#include <AkonadiCore/AgentInstanceCreateJob>
+#include <AkonadiCore/item.h>
 #include <Akonadi/Collection>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/CollectionFetchJob>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/CollectionFetchJob>
 #include <akonadi/resourcesynchronizationjob.h>
 
 #include <kpimtextedit/textutils.h>

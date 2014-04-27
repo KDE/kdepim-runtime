@@ -18,9 +18,9 @@
 #include "googleresource.h"
 #include "googlesettings.h"
 
-#include <Akonadi/ChangeRecorder>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/CollectionFetchScope>
+#include <AkonadiCore/ChangeRecorder>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/CollectionFetchScope>
 
 #include <KDE/KDialog>
 #include <KDE/KLocale>

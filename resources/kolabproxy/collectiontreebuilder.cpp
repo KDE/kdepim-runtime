@@ -19,7 +19,7 @@
 
 #include "collectiontreebuilder.h"
 
-#include <Akonadi/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchJob>
 
 CollectionTreeBuilder::CollectionTreeBuilder( KolabProxyResource *parent )
   : Job( parent ),

@@ -22,7 +22,7 @@
 
 #include "wrappedobject.h"
 
-#include <akonadi/collection.h>
+#include <AkonadiCore/collection.h>
 
 class CollectionTest : public QObject, protected WrappedObject
 {

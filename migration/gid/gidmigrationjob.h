@@ -20,9 +20,9 @@
 #ifndef AKONADI_GIDMIGRATIONJOB_H
 #define AKONADI_GIDMIGRATIONJOB_H
 
-#include <akonadi/item.h>
-#include <akonadi/collection.h>
-#include <akonadi/job.h>
+#include <AkonadiCore/item.h>
+#include <AkonadiCore/collection.h>
+#include <AkonadiCore/job.h>
 #include <QStringList>
 #include <QQueue>
 

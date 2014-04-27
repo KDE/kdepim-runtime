@@ -20,7 +20,7 @@
 #ifndef KMIGRATORBASE_H
 #define KMIGRATORBASE_H
 
-#include <akonadi/agentinstance.h>
+#include <AkonadiCore/agentinstance.h>
 
 #include <QObject>
 
