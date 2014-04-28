@@ -65,13 +65,13 @@ void ConfigDialog::save()
 
   const Collection outbox = ui.outboxSelector->collection();
   if ( outbox.isValid() ) {
-    kDebug() << "Collection" << outbox.id() << "selected for outbox.";
+    qDebug() << "Collection" << outbox.id() << "selected for outbox.";
     Settings::self()->setOutbox( outbox.id() );
   }
 
   const Collection sentMail = ui.sentMailSelector->collection();
   if ( sentMail.isValid() ) {
-    kDebug() << "Collection" << sentMail.id() << "selected for sentMail.";
+    qDebug() << "Collection" << sentMail.id() << "selected for sentMail.";
     Settings::self()->setSentMail( sentMail.id() );
   }
 

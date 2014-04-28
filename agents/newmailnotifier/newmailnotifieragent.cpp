@@ -471,7 +471,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         message = i18n( "New mail arrived" );
     }
 
-    kDebug() << message;
+    qDebug() << message;
 
     slotDisplayNotification(Util::defaultPixmap(), message);
 
@@ -548,7 +548,7 @@ void NewMailNotifierAgent::slotInstanceAdded(const Akonadi::AgentInstance &insta
 
 void NewMailNotifierAgent::printDebug()
 {
-    kDebug()<<"instance in progress: "<<mInstanceNameInProgress
+    qDebug()<<"instance in progress: "<<mInstanceNameInProgress
             <<"\n notifier enabled : "<<NewMailNotifierAgentSettings::enabled()
             <<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty()
             <<"\n beep on new mails: "<<NewMailNotifierAgentSettings::beepOnNewMails();

@@ -60,7 +60,7 @@ SpecialNotifierJob::~SpecialNotifierJob()
 void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 {
     if ( job->error() ) {
-        kWarning() << job->errorString();
+        qWarning() << job->errorString();
         deleteLater();
         return;
     }
@@ -69,7 +69,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
     if (lst.count() == 1) {
         const Akonadi::Item item = lst.first();
         if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-            kDebug()<<" message has not payload.";
+            qDebug()<<" message has not payload.";
             deleteLater();
             return;
         }
@@ -87,7 +87,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             deleteLater();
         }
     } else {
-        kdWarning()<<" Found item different from 1: "<<lst.count();
+        qWarning()<<" Found item different from 1: "<<lst.count();
         deleteLater();
         return;
     }
@@ -97,7 +97,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 {
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
     if ( searchJob->error() ) {
-        kWarning() << "Unable to fetch contact:" << searchJob->errorText();
+        qWarning() << "Unable to fetch contact:" << searchJob->errorText();
         emitNotification(Util::defaultPixmap());
         return;
     }

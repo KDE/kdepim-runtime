@@ -48,7 +48,7 @@ void SentActionHandler::runAction( const SentActionAttribute::Action &action )
 void SentActionHandler::itemFetchResult( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << job->errorText();
+    qWarning() << job->errorText();
     return;
   }
 

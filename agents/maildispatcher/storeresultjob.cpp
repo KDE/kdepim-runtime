@@ -58,12 +58,12 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   if ( job->error() )
     return;
 
-  kDebug();
+  qDebug();
 
   const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
   Q_ASSERT( fetchJob );
   if ( fetchJob->items().count() != 1 ) {
-    kError() << "Fetched" << fetchJob->items().count() << "items, expected 1.";
+    qCritical() << "Fetched" << fetchJob->items().count() << "items, expected 1.";
     q->setError( Unknown );
     q->setErrorText( i18n( "Failed to fetch item." ) );
     q->commit();
@@ -100,7 +100,7 @@ void StoreResultJob::Private::modifyDone( KJob *job )
   if ( job->error() )
     return;
 
-  kDebug();
+  qDebug();
 
   q->commit();
 }

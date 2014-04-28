@@ -106,20 +106,20 @@ class MailDispatcherAgent::Private
 void MailDispatcherAgent::Private::abort()
 {
   if ( !q->isOnline() ) {
-    kDebug() << "Offline. Ignoring call.";
+    qDebug() << "Offline. Ignoring call.";
     return;
   }
 
   if ( aborting ) {
-    kDebug() << "Already aborting.";
+    qDebug() << "Already aborting.";
     return;
   }
 
   if ( !sendingInProgress && queue->isEmpty() ) {
-    kDebug() << "MDA is idle.";
+    qDebug() << "MDA is idle.";
     Q_ASSERT( q->status() == AgentBase::Idle );
   } else {
-    kDebug() << "Aborting...";
+    qDebug() << "Aborting...";
     aborting = true;
     if ( currentJob ) {
       currentJob->abort();
@@ -133,7 +133,7 @@ void MailDispatcherAgent::Private::dispatch()
   Q_ASSERT( queue );
 
   if ( !q->isOnline() || sendingInProgress ) {
-    kDebug() << "Offline or busy. See you later.";
+    qDebug() << "Offline or busy. See you later.";
     return;
   }
 
@@ -146,11 +146,11 @@ void MailDispatcherAgent::Private::dispatch()
     emit q->status( AgentBase::Running,
         i18np( "Sending messages (1 item in queue)...",
                "Sending messages (%1 items in queue)...", queue->count() ) );
-    kDebug() << "Attempting to dispatch the next message.";
+    qDebug() << "Attempting to dispatch the next message.";
     sendingInProgress = true;
     queue->fetchOne(); // will trigger itemFetched
   } else {
-    kDebug() << "Empty queue.";
+    qDebug() << "Empty queue.";
     if ( aborting ) {
       // Finished marking messages as 'aborted'.
       aborting = false;
@@ -188,7 +188,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
-  kDebug() << "maildispatcheragent: At your service, sir!";
+  qDebug() << "maildispatcheragent: At your service, sir!";
 
 #ifdef KDEPIM_STATIC_LIBS
     ___MailTransport____INIT();
@@ -238,11 +238,11 @@ void MailDispatcherAgent::doSetOnline( bool online )
 {
   Q_ASSERT( d->queue );
   if ( online ) {
-    kDebug() << "Online. Dispatching messages.";
+    qDebug() << "Online. Dispatching messages.";
     emit status( AgentBase::Idle, i18n( "Online, sending messages in queue." ) );
     QTimer::singleShot( 0, this, SLOT(dispatch()) );
   } else {
-    kDebug() << "Offline.";
+    qDebug() << "Offline.";
     emit status( AgentBase::Idle, i18n( "Offline, message sending suspended." ) );
 
     // TODO: This way, the OutboxQueue will continue to react to changes in
@@ -255,7 +255,7 @@ void MailDispatcherAgent::doSetOnline( bool online )
 
 void MailDispatcherAgent::Private::itemFetched( const Item &item )
 {
-  kDebug() << "Fetched item" << item.id() << "; creating SendJob.";
+  qDebug() << "Fetched item" << item.id() << "; creating SendJob.";
   Q_ASSERT( sendingInProgress );
   Q_ASSERT( !currentItem.isValid() );
   currentItem = item;
@@ -299,7 +299,7 @@ void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long )
   const int percent = 100 * ( sentItemsSize + job->processedAmount( KJob::Bytes ) * transportWeight )
                           / ( sentItemsSize + currentItem.size() + queue->totalSize() );
 
-  kDebug() << "sentItemsSize" << sentItemsSize
+  qDebug() << "sentItemsSize" << sentItemsSize
            << "this job processed" << job->processedAmount( KJob::Bytes )
            << "queue totalSize" << queue->totalSize()
            << "total total size (sent+current+queue)" << ( sentItemsSize + currentItem.size() + queue->totalSize() )
@@ -333,7 +333,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   if ( job->error() ) {
     // The SendJob gave the item an ErrorAttribute, so we don't have to
     // do anything.
-    kDebug() << "Sending failed. error:" << job->errorString();
+    qDebug() << "Sending failed. error:" << job->errorString();
 
     KNotification *notify = new KNotification( QLatin1String("sendingfailed") );
     //QT5
@@ -344,7 +344,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
 
     errorOccurred = true;
   } else {
-    kDebug() << "Sending succeeded.";
+    qDebug() << "Sending succeeded.";
 
     // handle possible sent actions
     const MailTransport::SentActionAttribute *attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
