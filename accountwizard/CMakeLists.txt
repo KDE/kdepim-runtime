@@ -90,16 +90,14 @@ endif ()
 add_executable(accountwizard ${accountwizard_srcs} main.cpp)
 target_link_libraries(accountwizard ${accountwizard_libs})
 
-#REACTIVATE IT
-#add_library(accountwizard_plugin MODULE ${accountwizard_srcs} inprocess-main.cpp)
-#target_link_libraries(accountwizard_plugin ${accountwizard_libs})
+add_library(accountwizard_plugin MODULE ${accountwizard_srcs} inprocess-main.cpp)
+target_link_libraries(accountwizard_plugin ${accountwizard_libs})
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
   install(FILES accountwizard.knsrc DESTINATION ${CONFIG_INSTALL_DIR})
 endif ()
 install(TARGETS accountwizard ${INSTALL_TARGETS_DEFAULT_ARGS})
-#REACTIVATE IT
-#install(TARGETS accountwizard_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS accountwizard_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
 install(PROGRAMS accountwizard.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 #REACTIVATE it

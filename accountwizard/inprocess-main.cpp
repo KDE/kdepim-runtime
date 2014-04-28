@@ -41,6 +41,7 @@ class AccountWizard : public QObject
     }
 };
 
-Q_EXPORT_PLUGIN2( accountwizard, AccountWizard )
+//QT5
+//Q_EXPORT_PLUGIN2( accountwizard, AccountWizard )
 
 #include "inprocess-main.moc"
