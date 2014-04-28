@@ -27,6 +27,7 @@
 
 #include <MailTransport/transportbase.h>
 #include <kwindowsystem.h>
+#include <KDebug>
 
 #include "imapresource.h"
 #include "settings.h"
@@ -77,10 +78,12 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
   m_requestDialog = dialog;
   KWindowSystem::setMainWindow(dialog, m_resource->winIdForDialogs());
   bool checkboxResult = false;
+#if 0 //QT5
   KMessageBox::createKMessageBox(dialog, QMessageBox::Information,
                                        text, QStringList(),
                                        QString(),
                                        &checkboxResult, KMessageBox::NoExec);
+#endif
   dialog->show();
 }
 

@@ -30,6 +30,7 @@
 #include <klocale.h>
 #include <kdebug.h>
 #include <klineedit.h>
+#include <KGlobal>
 
 #include <KImap/session.h>
 #include <KImap/loginjob.h>

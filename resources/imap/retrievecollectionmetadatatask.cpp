@@ -30,6 +30,7 @@
 #include <KImap/rfccodecs.h>
 #include <KImap/session.h>
 #include <klocale.h>
+#include <KDebug>
 
 #include <collectionquotaattribute.h>
 #include <entitydisplayattribute.h>

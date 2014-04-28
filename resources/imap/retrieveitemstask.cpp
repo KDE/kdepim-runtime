@@ -30,8 +30,8 @@
 
 #include <cachepolicy.h>
 #include <collectionstatistics.h>
-#include <akonadi/kmime/messageflags.h>
-#include <akonadi/kmime/messageparts.h>
+#include <Akonadi/KMime/messageflags.h>
+#include <Akonadi/KMime/messageparts.h>
 #include <agentbase.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>

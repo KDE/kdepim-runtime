@@ -31,6 +31,7 @@
 #include <collectionmodifyjob.h>
 #include <agentsearchinterface.h>
 #include <kmessagebox.h>
+#include <KDebug>
 
 ResourceState::ResourceState( ImapResource *resource, const TaskArguments &args )
   : m_resource( resource ),

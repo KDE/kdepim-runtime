@@ -26,7 +26,7 @@
 
 #include <cachepolicy.h>
 #include <entitydisplayattribute.h>
-#include <akonadi/kmime/messageparts.h>
+#include <Akonadi/KMime/messageparts.h>
 
 #include <KMime/kmime_message.h>
 

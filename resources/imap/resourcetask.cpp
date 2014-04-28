@@ -21,9 +21,10 @@
 
 #include "resourcetask.h"
 
-#include <akonadi/kmime/messageflags.h>
+#include <Akonadi/KMime/messageflags.h>
 
 #include <KLocale>
+#include <KDebug>
 
 #include "collectionflagsattribute.h"
 #include "imapflags.h"

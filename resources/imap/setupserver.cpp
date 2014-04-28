@@ -32,7 +32,7 @@
 #include "settings.h"
 #include "imapresource.h"
 #include "serverinfodialog.h"
-#include "resources/folderarchivesettings/folderarchivesettingpage.h"
+#include "folderarchivesettingpage.h"
 
 
 #include <MailTransport/transport.h>
@@ -41,8 +41,8 @@
 #include <KMime/kmime_message.h>
 
 #include <collectionfetchjob.h>
-#include <KMime/specialmailcollections.h>
-#include <KMime/specialmailcollectionsrequestjob.h>
+#include <Akonadi/KMime/specialmailcollections.h>
+#include <Akonadi/KMime/specialmailcollectionsrequestjob.h>
 #include <resourcesettings.h>
 #include <entitydisplayattribute.h>
 #include <CollectionModifyJob>
@@ -51,6 +51,7 @@
 #include <kpushbutton.h>
 #include <kmessagebox.h>
 #include <kuser.h>
+#include <KDebug>
 #ifndef IMAPRESOURCE_NO_SOLID
 #include <solid/networking.h>
 #endif

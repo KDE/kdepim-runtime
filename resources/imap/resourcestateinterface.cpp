@@ -20,6 +20,7 @@
 */
 
 #include "resourcestateinterface.h"
+#include <KDebug>
 
 ResourceStateInterface::~ResourceStateInterface()
 {

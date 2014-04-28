@@ -26,6 +26,7 @@
 #include <SearchQuery>
 #include <Akonadi/KMime/MessageFlags>
 #include <KDateTime>
+#include <KDebug>
 
 Q_DECLARE_METATYPE( KIMAP::Session* )
 

@@ -24,7 +24,7 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <akonadi/kmime/messageflags.h>
+#include <Akonadi/KMime/messageflags.h>
 #include <KImap/selectjob.h>
 #include <KImap/session.h>
 

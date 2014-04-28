@@ -96,7 +96,7 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource")
 endif ()
 
-target_link_libraries(akonadi_imap_resource KF5::AkonadiCore     KF5::Imap KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::KF5PimIdentities imapresource folderarchivesettings)
+target_link_libraries(akonadi_imap_resource KF5::AkonadiCore     KF5::Imap KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::PimIdentities imapresource folderarchivesettings)
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)
@@ -109,4 +109,5 @@ endif()
 install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )
-add_subdirectory( tests )
+#REACTIVATE
+#add_subdirectory( tests )
