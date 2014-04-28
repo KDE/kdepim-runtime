@@ -54,12 +54,12 @@ TypePage::TypePage(KAssistantDialog* parent) :
   const QStringList filter = Global::typeFilter();
   foreach ( const QString &entry, list ) {
     KDesktopFile f( entry );
-    kDebug() << entry << f.readName();
+    qDebug() << entry << f.readName();
     const KConfig configWizard( entry );
     KConfigGroup grp( &configWizard, "Wizard" );
     const QStringList lstType = grp.readEntry( "Type", QStringList() );
     if ( lstType.isEmpty() ) {
-      kDebug() << QString::fromLatin1( " %1 doesn't contains specific type" ).arg( f.readName() );
+      qDebug() << QString::fromLatin1( " %1 doesn't contains specific type" ).arg( f.readName() );
     }
     if ( !filter.isEmpty() ) {
       // stolen from agentfilterproxymodel

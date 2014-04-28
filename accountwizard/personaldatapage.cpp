@@ -124,7 +124,7 @@ void PersonalDataPage::leavePageNext()
     emit manualWanted( false );
     setCursor( Qt::BusyCursor );
     ui.mProgress->start();
-    kDebug() << "Searching on internet";
+    qDebug() << "Searching on internet";
     delete mIspdb;
     mIspdb = new Ispdb( this );
     connect(mIspdb, SIGNAL(searchType(QString)), this, SLOT(slotSearchType(QString)));
@@ -141,7 +141,7 @@ void PersonalDataPage::leavePageNext()
 
 void PersonalDataPage::ispdbSearchFinished( bool ok )
 {
-  kDebug() << ok;
+  qDebug() << ok;
 
   unsetCursor();
   ui.mProgress->stop();
@@ -170,7 +170,7 @@ void PersonalDataPage::configureSmtpAccount()
 {
   if ( !mIspdb->smtpServers().isEmpty() ) {
     server s = mIspdb->smtpServers().first(); // should be ok.
-    kDebug() << "Configuring transport for" << s.hostname;
+    qDebug() << "Configuring transport for" << s.hostname;
 
     QObject* object = mSetupManager->createTransport( QLatin1String("smtp") );
     Transport* t = qobject_cast<Transport*>( object );
@@ -195,14 +195,14 @@ void PersonalDataPage::configureSmtpAccount()
     default: break;
     }
   } else
-    kDebug() << "No transport to be created....";
+    qDebug() << "No transport to be created....";
 }
 
 void PersonalDataPage::configureImapAccount()
 {
   if ( !mIspdb->imapServers().isEmpty() ) {
     server s = mIspdb->imapServers().first(); // should be ok.
-    kDebug() << "Configuring imap for" << s.hostname;
+    qDebug() << "Configuring imap for" << s.hostname;
 
     QObject* object = mSetupManager->createResource( QLatin1String("akonadi_imap_resource") );
     Resource* t = qobject_cast<Resource*>( object );
@@ -233,7 +233,7 @@ void PersonalDataPage::configurePop3Account()
 {
   if ( !mIspdb->pop3Servers().isEmpty() ) {
     server s = mIspdb->pop3Servers().first(); // should be ok.
-    kDebug() << "No Imap to be created, configuring pop3 for" << s.hostname;
+    qDebug() << "No Imap to be created, configuring pop3 for" << s.hostname;
 
     QObject* object = mSetupManager->createResource( QLatin1String("akonadi_pop3_resource") );
     Resource* t = qobject_cast<Resource*>( object );

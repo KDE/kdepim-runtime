@@ -47,9 +47,9 @@ static QVariant::Type argumentType( const QMetaObject *mo, const QString &method
   }
 
   if ( !m.signature() ) {
-    kWarning() << "Did not find D-Bus method: " << method << " available methods are:";
+    qWarning() << "Did not find D-Bus method: " << method << " available methods are:";
     for ( int i = 0; i < mo->methodCount(); ++i )
-      kWarning() << mo->method( i ).signature();
+      qWarning() << mo->method( i ).signature();
     return QVariant::Invalid;
   }
 
@@ -88,10 +88,10 @@ void Resource::create()
   }
 
   // check if unique instance already exists
-  kDebug() << type.capabilities();
+  qDebug() << type.capabilities();
   if ( type.capabilities().contains( QLatin1String( "Unique" ) ) ) {
     foreach ( const AgentInstance &instance, AgentManager::self()->instances() ) {
-      kDebug() << instance.type().identifier() << ( instance.type() == type );
+      qDebug() << instance.type().identifier() << ( instance.type() == type );
       if ( instance.type() == type ) {
         emit finished( i18n( "Resource '%1' is already set up.", type.name() ) );
         return;
@@ -128,7 +128,7 @@ void Resource::instanceCreateResult(KJob* job)
       m_instance.setName( m_name );
     QMap<QString, QVariant>::const_iterator end( m_settings.constEnd() );
     for ( QMap<QString, QVariant>::const_iterator it = m_settings.constBegin(); it != end; ++it ) {
-      kDebug() << "Setting up " << it.key() << " for agent " << m_instance.identifier();
+      qDebug() << "Setting up " << it.key() << " for agent " << m_instance.identifier();
       const QString methodName = QString::fromLatin1( "set%1" ).arg( it.key() );
       QVariant arg = it.value();
       const QVariant::Type targetType = argumentType( iface.metaObject(), methodName );

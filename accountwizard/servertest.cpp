@@ -21,14 +21,14 @@
 #include <MailTransport/transport.h>
 #include <MailTransport/servertest.h>
 
-#include <kdebug.h>
+#include <qdebug.h>
 #include <kmessagebox.h>
 #include <klocale.h>
 
 ServerTest::ServerTest( QObject* parent) :
   QObject(parent), m_serverTest( new MailTransport::ServerTest( 0 ) )
 {
-  kDebug() << "Welcome!";
+  qDebug() << "Welcome!";
   connect( m_serverTest, SIGNAL(finished(QList<int>)),
            SLOT(testFinished(QList<int>)) );
 }
@@ -40,7 +40,7 @@ ServerTest::~ServerTest()
 
 void ServerTest::test( const QString server, const QString protocol )
 {
-  kDebug() << server << protocol;
+  qDebug() << server << protocol;
   m_serverTest->setServer( server );
   m_serverTest->setProtocol( protocol );
   m_serverTest->start();
@@ -48,7 +48,7 @@ void ServerTest::test( const QString server, const QString protocol )
 
 void ServerTest::testFinished( QList< int > list )
 {
-  kDebug() << "types: " << list;
+  qDebug() << "types: " << list;
   if ( list.contains( MailTransport::Transport::EnumEncryption::TLS ) ) {
     emit testResult( QLatin1String("tls") );
   } else if ( list.contains( MailTransport::Transport::EnumEncryption::SSL ) ) {

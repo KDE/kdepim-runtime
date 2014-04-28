@@ -19,7 +19,7 @@
 
 #include "global.h"
 
-#include <kdebug.h>
+#include <qdebug.h>
 #include <KGlobal>
 #include <KStandardDirs>
 #include <QtCore/qfileinfo.h>
@@ -56,7 +56,7 @@ void Global::setAssistant(const QString& assistant)
   foreach ( const QString &entry, list ) {
     const QFileInfo info( entry );
     const QDir dir( info.absolutePath() );
-    kDebug() << dir.dirName();
+    qDebug() << dir.dirName();
     if ( dir.dirName() == assistant ) {
       sInstance->assistant = entry;
       return;
@@ -96,7 +96,7 @@ QString Global::unpackAssistant( const KUrl& remotePackageUrl )
 //QT5
 #if 0
     KIO::Job* job = KIO::copy( remotePackageUrl, localPackageFile, KIO::Overwrite | KIO::HideProgressInfo );
-    kDebug() << "downloading remote URL" << remotePackageUrl << "to" << localPackageFile;
+    qDebug() << "downloading remote URL" << remotePackageUrl << "to" << localPackageFile;
     if ( !KIO::NetAccess::synchronousRun( job, 0 ) )
       return QString();
 #endif
@@ -111,10 +111,10 @@ QString Global::unpackAssistant( const KUrl& remotePackageUrl )
 #if 0
   KIO::Job* getJob = KIO::copy( file, dest, KIO::Overwrite | KIO::HideProgressInfo );
   if ( KIO::NetAccess::synchronousRun( getJob, 0 ) ) {
-    kDebug() << "worked, unpacked in " << dest;
+    qDebug() << "worked, unpacked in " << dest;
     return dest + file.fileName() + QLatin1Char('/') + assistant + QLatin1Char('/') + assistant + QLatin1String(".desktop");
   } else {
-    kDebug() << "failed" << getJob->errorString();
+    qDebug() << "failed" << getJob->errorString();
     return QString();
   }
 #else

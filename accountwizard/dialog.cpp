@@ -35,7 +35,7 @@
 
 #include <klocalizedstring.h>
 #include <kross/core/action.h>
-#include <kdebug.h>
+#include <qdebug.h>
 #include <kmessagebox.h>
 #include <KDialog>
 #include <qplatformdefs.h>
@@ -155,7 +155,7 @@ void Dialog::slotBackOk()
 
 QObject* Dialog::addPage(const QString& uiFile, const QString &title )
 {
-  kDebug() << uiFile;
+  qDebug() << uiFile;
   DynamicPage *page = new DynamicPage( Global::assistantBasePath() + uiFile, this );
   connect( page, SIGNAL(leavePageNextOk()), SLOT(slotNextOk()) );
   connect( page, SIGNAL(leavePageBackOk()), SLOT(slotBackOk()) );

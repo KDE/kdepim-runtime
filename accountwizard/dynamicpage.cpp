@@ -45,7 +45,7 @@ DynamicPage::DynamicPage(const QString& uiFile, KAssistantDialog* parent) : Page
   QUiLoader loader;
   QFile file( uiFile );
   file.open( QFile::ReadOnly );
-  kDebug() << uiFile;
+  qDebug() << uiFile;
   m_dynamicWidget = loader.load( &file, pageParent );
   file.close();
 
