@@ -21,7 +21,7 @@
 
 #include "localfolderscollectionmigrator.h"
 
-#include <akonadi/kmime/specialmailcollections.h>
+#include <Akonadi/KMime/specialmailcollections.h>
 #include <AkonadiCore/collection.h>
 
 #include <KConfig>

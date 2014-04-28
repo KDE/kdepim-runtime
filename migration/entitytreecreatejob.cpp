@@ -24,6 +24,8 @@
 #include <AkonadiCore/CollectionCreateJob>
 #include <AkonadiCore/ItemCreateJob>
 
+#include <KDebug>
+
 using namespace Akonadi;
 
 static const char collectionIdMappingProperty[] = "collectionIdMappingProperty";

@@ -23,7 +23,7 @@
 #define ABSTRACTCOLLECTIONMIGRATOR_H
 
 #include <QObject>
-
+#include <KSharedConfig>
 namespace Akonadi {
   class AgentInstance;
   class Collection;
@@ -33,8 +33,8 @@ namespace Akonadi {
 class KJob;
 class KSharedConfig;
 
-template <typename T> class KSharedPtr;
-typedef KSharedPtr<KSharedConfig> KSharedConfigPtr;
+//template <typename T> class KSharedPtr;
+//typedef KSharedPtr<KSharedConfig> KSharedConfigPtr;
 
 class MixedMaildirStore;
 

@@ -18,7 +18,7 @@
 */
 
 #include <AkonadiCore/Control>
-#include <kaboutdata.h>
+#include <k4aboutdata.h>
 #include <kcmdlineargs.h>
 #include <kconfig.h>
 #include <kconfiggroup.h>
@@ -33,11 +33,11 @@
 
 int main(int argc, char **argv)
 {
-    KAboutData aboutData("gid-migrator", 0,
+    K4AboutData aboutData("gid-migrator", 0,
                             ki18n("GID Migration Tool"),
                             "0.1",
                             ki18n("Migration of Akonadi Items to support GID"),
-                            KAboutData::License_LGPL,
+                            K4AboutData::License_LGPL,
                             ki18n("(c) 2013 the Akonadi developers"),
                             KLocalizedString(),
                             "http://pim.kde.org/akonadi/");

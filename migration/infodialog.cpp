@@ -22,6 +22,7 @@
 #include <KCursor>
 #include <KDebug>
 #include <KGlobal>
+#include <KIcon>
 
 #include <QApplication>
 #include <QHBoxLayout>
@@ -141,7 +142,7 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
 void InfoDialog::migratorAdded()
 {
   ++mMigratorCount;
-  QApplication::setOverrideCursor( KCursor( QLatin1String( "wait" ), Qt::WaitCursor ) );
+  //QT5 QApplication::setOverrideCursor( KCursor( QLatin1String( "wait" ), Qt::WaitCursor ) );
 }
 
 void InfoDialog::migratorDone()

@@ -26,8 +26,8 @@
 
 #include "filestore/collectionfetchjob.h"
 
-#include <akonadi/kmime/specialmailcollections.h>
-#include <akonadi/kmime/messagefolderattribute.h>
+#include <Akonadi/KMime/specialmailcollections.h>
+#include <Akonadi/KMime/messagefolderattribute.h>
 #include <agentinstance.h>
 #include <agentmanager.h>
 #include <collection.h>
@@ -41,6 +41,7 @@
 #include <KConfig>
 #include <KConfigGroup>
 #include <KLocalizedString>
+#include <KDebug>
 
 #include <QHash>
 #include <QQueue>

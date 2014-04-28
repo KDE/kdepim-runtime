@@ -10,7 +10,6 @@ target_link_libraries(gidmigration
   KF5::Mime
   KF5::KDELibs4Support
   Qt5::Core
-  KF5::KConfigCore
 )
 
 add_executable(gidmigrator main.cpp)
@@ -18,6 +17,5 @@ target_link_libraries(gidmigrator
   gidmigration
   KF5::AkonadiCore
   KF5::Mime
-  KF5::KConfigCore
 )
 install(TARGETS gidmigrator ${INSTALL_TARGETS_DEFAULT_ARGS})

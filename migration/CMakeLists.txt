@@ -20,10 +20,12 @@ set(QT_REQUIRED_VERSION "5.2.0")
 find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
-
+#REMOVE IT
+remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/
@@ -42,8 +44,8 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
 )
 
 
-add_subdirectory( kmail )
-add_subdirectory( kaddressbook )
-add_subdirectory( kjots )
+#add_subdirectory( kmail )
+#add_subdirectory( kaddressbook )
+#add_subdirectory( kjots )
 add_subdirectory( gid )
-add_subdirectory( knotes )
+#add_subdirectory( knotes )

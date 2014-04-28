@@ -21,10 +21,10 @@
 #ifndef ENTITYTREECREATEJOB_H
 #define ENTITYTREECREATEJOB_H
 
-#include <Akonadi/Job>
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
-#include <Akonadi/TransactionSequence>
+#include <AkonadiCore/Job>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
+#include <AkonadiCore/TransactionSequence>
 
 class EntityTreeCreateJob : public Akonadi::TransactionSequence
 {

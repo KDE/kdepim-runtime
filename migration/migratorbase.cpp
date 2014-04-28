@@ -27,6 +27,7 @@
 #include <AkonadiCore/servermanager.h>
 #include <QFile>
 #include <QDateTime>
+#include <KGlobal>
 
 static QString messageTypeToString(MigratorBase::MessageType type)
 {
