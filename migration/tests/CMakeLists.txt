@@ -9,7 +9,6 @@ set(KDEPIMLIBS_RUN_SQLITE_ISOLATED_TESTS TRUE)
 set(_srcList
   testnotesmigration.cpp
   ../kjots/kjotsmigrator.cpp
-  ../kres/knotesmigrator.cpp
   ../kres/kresmigratorbase.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
@@ -30,7 +29,6 @@ endmacro()
 add_resource_iface( maildir/maildirresource.kcfg
                     org.kde.Akonadi.Maildir.Settings MaildirSettings )
 
-#add_akonadi_isolated_test_advanced( testnotesmigration.cpp "${_srcList}" "kpimtextedit;kcal")
 add_akonadi_isolated_test_advanced( testgidmigration.cpp "${MIGRATION_AKONADI_SHARED_SOURCES};../gid/gidmigrationjob.cpp" "" )
 
 kde4_add_executable(testmigratorbase testmigratorbase.cpp ../migratorbase.cpp)
