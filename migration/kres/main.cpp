@@ -19,7 +19,6 @@
 
 #include "kabcmigrator.h"
 #include "kcalmigrator.h"
-#include "knotesmigrator.h"
 #include "infodialog.h"
 
 #include <kaboutdata.h>
@@ -60,7 +59,6 @@ int main( int argc, char **argv )
   options.add( "omit-client-bridge", ki18n( "Omit setting up of the client side compatibility bridges" ) );
   options.add( "contacts-only", ki18n( "Only migrate contact resources" ) );
   options.add( "calendar-only", ki18n( "Only migrate calendar resources" ) );
-  options.add( "notes-only", ki18n( "Only migrate knotes resources" ) );
   options.add( "type <type>", ki18n( "Only migrate the specified types (supported: contact, calendar, notes)" ),
                supportedTypes.join( QLatin1String(",") ).toLatin1() );
   options.add( "interactive", ki18n( "Show reporting dialog" ) );
@@ -98,8 +96,6 @@ int main( int argc, char **argv )
       m = new KABCMigrator();
     else if ( type == QLatin1String("calendar") )
       m = new KCalMigrator();
-    else if ( type == QLatin1String("notes") )
-      m = new KNotesMigrator();
     else {
       kError() << "Unknown resource type: " << type;
       continue;

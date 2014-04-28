@@ -22,8 +22,7 @@
 #ifndef KNOTESMIGRATOR_H
 #define KNOTESMIGRATOR_H
 
-#include "kresmigrator.h"
-
+#include "kmigratorbase.h"
 #include <kcal/resourcecalendar.h>
 #include <kcal/calendarlocal.h>
 #include <akonadi/collection.h>
@@ -37,13 +36,17 @@ class KJob;
 /**
  * Migrate KNotes resources to Akonadi
  */
-class KNotesMigrator : public KResMigrator<KRES::Resource>
+class KNotesMigrator : public KMigratorBase
 {
     Q_OBJECT
 public:
     KNotesMigrator();
     ~KNotesMigrator();
-    bool migrateResource( KRES::Resource *res );
+
+    /* reimp */ void migrate();
+    /* reimp */ void migrateNext();
+protected:
+  /* reimp */ void migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance = Akonadi::AgentInstance() );
 
 private slots:
     void notesResourceCreated( KJob* job );
@@ -58,10 +61,13 @@ private:
     void showDefaultCollection();
 
 private:
+    int mIndexResource;
+    QStringList mUnknownTypeResources;
     Akonadi::Collection m_resourceCollection;
-    AgentInstance m_agentInstance;
+    Akonadi::AgentInstance m_agentInstance;
 
     KCal::CalendarLocal *m_notesResource;
+    KConfig *mConfig;
 };
 
 #endif

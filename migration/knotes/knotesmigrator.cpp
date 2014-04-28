@@ -39,6 +39,7 @@
 #include <KMime/Message>
 
 #include <KDebug>
+#include <KStandardDirs>
 #include "maildirsettings.h"
 #include <krandom.h>
 
@@ -46,53 +47,76 @@
 using namespace Akonadi;
 
 KNotesMigrator::KNotesMigrator() :
-    KResMigrator<KRES::Resource>( QLatin1String("notes"), QString() ), m_notesResource( 0 )
+    KMigratorBase(), mIndexResource(-1), m_notesResource( 0 )
 {
     Akonadi::AttributeFactory::registerAttribute<NoteLockAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteAlarmAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteDisplayAttribute>();
     Akonadi::AttributeFactory::registerAttribute<ShowFolderNotesAttribute>();
+    const QString kresCfgFile = KStandardDirs::locateLocal( "config", QLatin1String( "kresources/notes/stdrc" ) );
+    mConfig = new KConfig( kresCfgFile );
+    const KConfigGroup generalGroup( mConfig, QLatin1String( "General" ) );
+    mUnknownTypeResources = generalGroup.readEntry( QLatin1String( "ResourceKeys" ), QStringList() );
+    m_notesResource = new KCal::CalendarLocal( QString() );
 }
 
 KNotesMigrator::~KNotesMigrator()
 {
     delete m_notesResource;
+    delete mConfig;
 }
 
-bool KNotesMigrator::migrateResource( KRES::Resource* res)
+void KNotesMigrator::migrate()
 {
-    if ( res->type() == QLatin1String("file") )
+    emit message( Info, i18n( "Beginning KNotes migration..." ) );
+    migrateNext();
+}
+
+void KNotesMigrator::migrateNext()
+{
+    ++mIndexResource;
+
+    if (mUnknownTypeResources.isEmpty() || mIndexResource >= mUnknownTypeResources.count()) {
+        emit message( Info, i18n( "KNotes migration finished" ) );
+        deleteLater();
+        return;
+    }
+
+    const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1" ).arg( mUnknownTypeResources.at(mIndexResource) ) );
+    const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
+    if (resourceType == QLatin1String("file")) {
         createAgentInstance( QLatin1String("akonadi_akonotes_resource"), this, SLOT(notesResourceCreated(KJob*)) );
-    else
-        return false;
-    return true;
+    } else {
+        migrateNext();
+    }
 }
 
 void KNotesMigrator::notesResourceCreated(KJob * job)
 {
     if ( job->error() ) {
         migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
+        migrateNext();
         return;
     }
 
-    KRES::Resource *res = currentResource();
-    m_agentInstance = static_cast<AgentInstanceCreateJob*>( job )->instance();
-    const KConfigGroup kresCfg = kresConfig( res );
-    m_agentInstance.setName( kresCfg.readEntry( "ResourceName", "Migrated Notes" ) );
+    const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1" ).arg( mUnknownTypeResources.at(mIndexResource) ) );
 
-    QString resourcePath = kresCfg.readEntry( "NotesURL" );
+    m_agentInstance = static_cast<AgentInstanceCreateJob*>( job )->instance();
+    m_agentInstance.setName( kresCfgGroup.readEntry( "ResourceName", "Migrated Notes" ) );
+
+    const QString resourcePath = kresCfgGroup.readEntry( "NotesURL" );
     KUrl url( resourcePath );
 
     if ( !QFile::exists( url.toLocalFile() ) ) {
-        migrationCompleted( m_agentInstance );
+        migrateNext();
         return;
     }
 
-    m_notesResource = new KCal::CalendarLocal( QString() );
 
     bool success = m_notesResource->load( url.toLocalFile() );
     if ( !success ) {
         migrationFailed( i18n( "Failed to open file for reading: %1" , resourcePath ) );
+        migrateNext();
         return;
     }
 
@@ -103,9 +127,11 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
     if ( !iface->isValid() ) {
         migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), m_agentInstance );
         delete iface;
+        migrateNext();
         return;
     }
-    iface->setReadOnly( res->readOnly() );
+    bool isReadOnly = kresCfgGroup.readEntry("ResourceIsReadOnly", false);
+    iface->setReadOnly( isReadOnly );
 
     QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
 
@@ -149,6 +175,7 @@ void KNotesMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &l
         }
     }
     emit message( Error, i18n( "Could not find root collection for resource \"%1\"" ,m_agentInstance.identifier() ) );
+    migrateNext();
 }
 
 void KNotesMigrator::startMigration()
@@ -236,5 +263,12 @@ void KNotesMigrator::showDefaultCollection()
 void KNotesMigrator::slotCollectionModify(KJob* job)
 {
     Q_UNUSED( job );
-    migrationCompleted( m_agentInstance );
+    migrateNext();
 }
+
+void KNotesMigrator::migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance )
+{
+    Q_UNUSED( instance )
+    emit message( Error, i18n( "Migration failed: %1" ,errorMsg ) );
+}
+

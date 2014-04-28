@@ -2,7 +2,6 @@ set(kres-migrator_srcs
     main.cpp
     kabcmigrator.cpp
     kcalmigrator.cpp
-    knotesmigrator.cpp
     kresmigratorbase.cpp
     ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
