@@ -161,13 +161,24 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox, const QMap<qint64, 
                                            const QMap<qint64, KIMAP::MessageFlags> &flags,
                                            const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
+    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( sender() );
+    Q_ASSERT( fetch );
+    KIMAP::FetchJob::FetchScope scope = fetch->scope();
+
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
         const qint64 uid = uids[number];
         Akonadi::Item i;
+        KMime::Message::Ptr message( messages[number] );
+        // Sometimes messages might not have a body at all
+        if ( message->body().isEmpty() && scope.mode == KIMAP::FetchJob::FetchScope::Full ) {
+            // In that case put a space in as body so that it gets cached
+            // otherwise we'll wrongly believe the body part is missing from the cache
+            message->setBody( " " );
+        }
         i.setRemoteId(QString::number(uid));
         i.setMimeType(KMime::Message::mimeType());
-        i.setPayload(KMime::Message::Ptr(messages[number]));
+        i.setPayload(KMime::Message::Ptr(message));
         i.setSize(sizes[number]);
 
         // update status flags
