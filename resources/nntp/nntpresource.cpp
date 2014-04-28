@@ -27,7 +27,7 @@
 #include <cachepolicy.h>
 #include <collectionmodifyjob.h>
 #include <itemcreatejob.h>
-#include <akonadi/kmime/messageparts.h>
+#include <Akonadi/KMime/messageparts.h>
 #include <monitor.h>
 #include <session.h>
 #include <changerecorder.h>

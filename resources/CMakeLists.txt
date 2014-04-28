@@ -16,6 +16,10 @@ include(KDEFrameworkCompilerSettings)
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
+set(KDEPIM_LIB_VERSION "4.70.0")
+set(KDEPIM_LIB_SOVERSION "5")
+
+
 find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
@@ -25,6 +29,7 @@ find_package(KF5Abc ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
 
 
 # Xsltproc
@@ -62,6 +67,7 @@ include_directories(
   ${kdepim-runtime_SOURCE_DIR}/libkdepim-copy
   ${CMAKE_CURRENT_SOURCE_DIR}/shared
   ${CMAKE_CURRENT_BINARY_DIR}/shared
+  ${CMAKE_CURRENT_SOURCE_DIR}/folderarchivesettings/
 )
 
 
@@ -101,7 +107,7 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 #add_subdirectory( contacts )
 add_subdirectory( dav )
 #add_subdirectory( ical )
-#add_subdirectory( imap )
+add_subdirectory( imap )
 add_subdirectory( kdeaccounts )
 #if (Libkolab_FOUND AND Libkolabxml_FOUND)
 #    add_subdirectory( kolabproxy )
