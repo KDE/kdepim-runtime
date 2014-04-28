@@ -23,7 +23,7 @@
 #include <kio/jobclasses.h>
 #include <KLocalizedString>
 
-#include <kmime/kmime_header_parsing.h>
+#include <KMime/kmime_header_parsing.h>
 #include <QDomDocument>
 
 Ispdb::Ispdb( QObject *parent )

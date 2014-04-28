@@ -28,10 +28,10 @@
 #include "resource.h"
 #include "ispdb/ispdb.h"
 
-#include <kpimutils/emailvalidator.h>
-#include <kpimutils/email.h>
+#include <KPIMUtils/emailvalidator.h>
+#include <KPIMUtils/email.h>
 
-#include <mailtransport/transport.h>
+#include <MailTransport/transport.h>
 
 #include <KDebug>
 

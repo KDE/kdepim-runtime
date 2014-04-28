@@ -28,7 +28,7 @@
 #include "calendardiffalgo.h"
 #include "htmldiffalgodisplay.h"
 
-#include <kcalcore/incidence.h>
+#include <KCalCore/incidence.h>
 
 #include <KDialog>
 

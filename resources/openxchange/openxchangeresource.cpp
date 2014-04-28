@@ -29,7 +29,7 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
-#include <kabc/addressee.h>
+#include <KABC/addressee.h>
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
 #include <klocale.h>

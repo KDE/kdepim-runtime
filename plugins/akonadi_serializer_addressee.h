@@ -25,7 +25,7 @@
 #include <akonadi/differencesalgorithminterface.h>
 #include <akonadi/itemserializerplugin.h>
 #include <akonadi/gidextractorinterface.h>
-#include <kabc/vcardconverter.h>
+#include <KABC/vcardconverter.h>
 
 namespace Akonadi {
 

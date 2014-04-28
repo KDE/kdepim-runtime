@@ -20,8 +20,8 @@
 #include "identity.h"
 #include "transport.h"
 
-#include <kpimidentities/identitymanager.h>
-#include <kpimidentities/identity.h>
+#include <KPIMIdentities/identitymanager.h>
+#include <KPIMIdentities/identity.h>
 
 #include <KLocalizedString>
 

@@ -30,7 +30,7 @@
 #include <monitor.h>
 #include <entitydisplayattribute.h>
 
-#include <kabc/addressee.h>
+#include <KABC/addressee.h>
 
 #include <KPIMUtils/Email>
 

@@ -37,11 +37,11 @@
 #include <specialcollections.h>
 #include <specialcollectionsrequestjob.h>
 
-#include <kcalcore/event.h>
-#include <kcalcore/icalformat.h>
-#include <kcalcore/incidence.h>
-#include <kcalcore/journal.h>
-#include <kcalcore/todo.h>
+#include <KCalCore/event.h>
+#include <KCalCore/icalformat.h>
+#include <KCalCore/incidence.h>
+#include <KCalCore/journal.h>
+#include <KCalCore/todo.h>
 #include <KConfig>
 #include <KConfigSkeleton>
 #include <KDebug>
@@ -49,7 +49,7 @@
 #include <KLocalizedString>
 #include <KMime/Content>
 #include <KMime/Message>
-#include <kpimidentities/identitymanager.h>
+#include <KPIMIdentities/identitymanager.h>
 #include <KSystemTimeZones>
 #include <KStandardDirs>
 #include <KGlobal>

@@ -28,7 +28,7 @@
 
 #include <KDebug>
 #include <kde_file.h>
-#include <kmime/messagestatus.h>
+#include <KMime/messagestatus.h>
 using Akonadi::MessageStatus;
 #include <QFile>
 

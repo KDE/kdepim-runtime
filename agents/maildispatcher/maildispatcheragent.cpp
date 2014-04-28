@@ -31,7 +31,7 @@
 #include <agentfactory.h>
 #include <dbusconnectionpool.h>
 #include <itemfetchscope.h>
-#include <mailtransport/sentactionattribute.h>
+#include <MailTransport/sentactionattribute.h>
 
 #include <knotifyconfigwidget.h>
 #include <KDebug>

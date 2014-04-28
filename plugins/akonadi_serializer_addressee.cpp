@@ -23,7 +23,7 @@
 #include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 
-#include <kabc/addressee.h>
+#include <KABC/addressee.h>
 #include <klocale.h>
 
 #include <QtCore/qplugin.h>

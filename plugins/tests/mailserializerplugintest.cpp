@@ -20,7 +20,7 @@
 #include "mailserializerplugintest.h"
 
 #include <AkonadiCore/item.h>
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
 #include <qtest_kde.h>

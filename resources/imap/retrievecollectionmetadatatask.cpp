@@ -23,12 +23,12 @@
 
 #include <QtCore/QDateTime>
 
-#include <kimap/getacljob.h>
-#include <kimap/getmetadatajob.h>
-#include <kimap/getquotarootjob.h>
-#include <kimap/myrightsjob.h>
-#include <kimap/rfccodecs.h>
-#include <kimap/session.h>
+#include <KImap/getacljob.h>
+#include <KImap/getmetadatajob.h>
+#include <KImap/getquotarootjob.h>
+#include <KImap/myrightsjob.h>
+#include <KImap/rfccodecs.h>
+#include <KImap/session.h>
 #include <klocale.h>
 
 #include <collectionquotaattribute.h>

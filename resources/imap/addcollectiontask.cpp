@@ -26,10 +26,10 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <kimap/createjob.h>
-#include <kimap/session.h>
-#include <kimap/setmetadatajob.h>
-#include <kimap/subscribejob.h>
+#include <KImap/createjob.h>
+#include <KImap/session.h>
+#include <KImap/setmetadatajob.h>
+#include <KImap/subscribejob.h>
 
 #include <collectiondeletejob.h>
 

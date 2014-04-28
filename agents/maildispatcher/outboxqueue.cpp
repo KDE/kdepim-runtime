@@ -36,12 +36,12 @@
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
-#include <mailtransport/dispatchmodeattribute.h>
-#include <mailtransport/sentbehaviourattribute.h>
-#include <mailtransport/transportattribute.h>
+#include <MailTransport/dispatchmodeattribute.h>
+#include <MailTransport/sentbehaviourattribute.h>
+#include <MailTransport/transportattribute.h>
 
 using namespace Akonadi;
 using namespace MailTransport;

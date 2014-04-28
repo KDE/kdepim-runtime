@@ -25,7 +25,7 @@
 #include <KDialog>
 
 #include <krecursivefilterproxymodel.h>
-#include <kimap/listjob.h>
+#include <KImap/listjob.h>
 
 #include <QtCore/QMap>
 

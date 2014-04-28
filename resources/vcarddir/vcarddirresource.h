@@ -22,8 +22,8 @@
 
 #include <resourcebase.h>
 
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
+#include <KABC/addressee.h>
+#include <KABC/vcardconverter.h>
 
 class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {

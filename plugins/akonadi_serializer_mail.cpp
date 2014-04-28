@@ -22,7 +22,7 @@
 #include <QtCore/qplugin.h>
 
 #include <kdebug.h>
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
 #include <AkonadiCore/item.h>

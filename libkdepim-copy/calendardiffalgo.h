@@ -23,8 +23,8 @@
 #define KDEPIM_CALENDARDIFFALGO_H
 
 #include "diffalgo.h"
-#include <kcalcore/event.h>
-#include <kcalcore/todo.h>
+#include <KCalCore/event.h>
+#include <KCalCore/todo.h>
 #include <QList>
 
 namespace KPIM {

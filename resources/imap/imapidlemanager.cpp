@@ -27,9 +27,9 @@
 
 #include <KDebug>
 
-#include <kimap/idlejob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KImap/idlejob.h>
+#include <KImap/selectjob.h>
+#include <KImap/session.h>
 
 #include <QtCore/QTimer>
 

@@ -20,11 +20,11 @@
 #include <QObject>
 #include <qtest_kde.h>
 #include <item.h>
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 #include <kolabhandler.h>
 #include <algorithm>
-#include <kcalcore/incidence.h>
-#include <kcalcore/todo.h>
+#include <KCalCore/incidence.h>
+#include <KCalCore/todo.h>
 
 using namespace Akonadi;
 using namespace KMime;

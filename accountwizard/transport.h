@@ -21,7 +21,7 @@
 #define TRANSPORT_H
 
 #include "setupobject.h"
-#include <mailtransport/transport.h>
+#include <MailTransport/transport.h>
 
 
 class Transport : public SetupObject

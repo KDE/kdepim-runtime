@@ -25,8 +25,8 @@
 #include <KLocale>
 
 #include <akonadi/kmime/messageflags.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KImap/selectjob.h>
+#include <KImap/session.h>
 
 RetrieveItemTask::RetrieveItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ), m_session( 0 ), m_uid( 0 ), m_messageReceived( false )

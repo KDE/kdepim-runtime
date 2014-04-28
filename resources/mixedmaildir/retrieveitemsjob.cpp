@@ -23,8 +23,8 @@
 
 #include "filestore/itemfetchjob.h"
 
-#include <kmime/messageparts.h>
-#include <kmime/messagestatus.h>
+#include <KMime/messageparts.h>
+#include <KMime/messagestatus.h>
 
 #include <collection.h>
 #include <collectionmodifyjob.h>

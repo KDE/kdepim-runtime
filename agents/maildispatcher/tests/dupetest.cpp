@@ -34,11 +34,11 @@
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/private/collectionpathresolver_p.h>
 
-#include <mailtransport/messagequeuejob.h>
-#include <mailtransport/transport.h>
-#include <mailtransport/transportmanager.h>
+#include <MailTransport/messagequeuejob.h>
+#include <MailTransport/transport.h>
+#include <MailTransport/transportmanager.h>
 
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
 

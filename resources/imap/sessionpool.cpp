@@ -27,9 +27,9 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <kimap/capabilitiesjob.h>
-#include <kimap/logoutjob.h>
-#include <kimap/namespacejob.h>
+#include <KImap/capabilitiesjob.h>
+#include <KImap/logoutjob.h>
+#include <KImap/namespacejob.h>
 
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"

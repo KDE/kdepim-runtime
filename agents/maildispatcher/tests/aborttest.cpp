@@ -39,14 +39,14 @@
 #include <akonadi/kmime/specialmailcollections.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 
-#include <mailtransport/dispatcherinterface.h>
-#include <mailtransport/errorattribute.h>
-#include <mailtransport/messagequeuejob.h>
-#include <mailtransport/transport.h>
-#include <mailtransport/transportattribute.h>
-#include <mailtransport/transportmanager.h>
+#include <MailTransport/dispatcherinterface.h>
+#include <MailTransport/errorattribute.h>
+#include <MailTransport/messagequeuejob.h>
+#include <MailTransport/transport.h>
+#include <MailTransport/transportattribute.h>
+#include <MailTransport/transportmanager.h>
 
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
 #define SPAM_ADDRESS "idanoka@gmail.com"

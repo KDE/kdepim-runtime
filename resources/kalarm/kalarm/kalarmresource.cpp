@@ -33,8 +33,8 @@
 #include <collectionfetchscope.h>
 #include <collectionmodifyjob.h>
 
-#include <kcalcore/memorycalendar.h>
-#include <kcalcore/incidence.h>
+#include <KCalCore/memorycalendar.h>
+#include <KCalCore/incidence.h>
 
 #include <klocale.h>
 #include <kdebug.h>

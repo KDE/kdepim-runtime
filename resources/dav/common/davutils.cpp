@@ -24,10 +24,10 @@
 
 #include <collection.h>
 #include <item.h>
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
-#include <kcalcore/icalformat.h>
-#include <kcalcore/incidence.h>
+#include <KABC/addressee.h>
+#include <KABC/vcardconverter.h>
+#include <KCalCore/icalformat.h>
+#include <KCalCore/incidence.h>
 #include <klocale.h>
 
 #include <QtCore/QByteArray>

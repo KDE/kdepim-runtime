@@ -20,9 +20,9 @@
  */
 
 #include "searchtask.h"
-#include <kimap/searchjob.h>
-#include <kimap/session.h>
-#include <kimap/selectjob.h>
+#include <KImap/searchjob.h>
+#include <KImap/session.h>
+#include <KImap/selectjob.h>
 #include <SearchQuery>
 #include <Akonadi/KMime/MessageFlags>
 #include <KDateTime>

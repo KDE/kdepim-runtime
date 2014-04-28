@@ -24,9 +24,9 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/storejob.h>
+#include <KImap/selectjob.h>
+#include <KImap/session.h>
+#include <KImap/storejob.h>
 
 #include "imapflags.h"
 

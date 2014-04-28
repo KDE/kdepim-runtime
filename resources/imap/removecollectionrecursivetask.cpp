@@ -22,11 +22,11 @@
 #include "removecollectionrecursivetask.h"
 
 #include <akonadi/kmime/messageflags.h>
-#include <kimap/deletejob.h>
-#include <kimap/expungejob.h>
-#include <kimap/selectjob.h>
-#include <kimap/storejob.h>
-#include <kimap/closejob.h>
+#include <KImap/deletejob.h>
+#include <KImap/expungejob.h>
+#include <KImap/selectjob.h>
+#include <KImap/storejob.h>
+#include <KImap/closejob.h>
 #include <klocale.h>
 
 Q_DECLARE_METATYPE( KIMAP::DeleteJob* )

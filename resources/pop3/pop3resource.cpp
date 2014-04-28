@@ -28,7 +28,7 @@
 #include <akonadi/kmime/messageflags.h>
 #include <akonadi/kmime/specialmailcollectionsrequestjob.h>
 #include <akonadi/kmime/specialmailcollections.h>
-#include <kmime/kmime_util.h>
+#include <KMime/kmime_util.h>
 #include <MailTransport/PrecommandJob>
 #include <MailTransport/Transport>
 

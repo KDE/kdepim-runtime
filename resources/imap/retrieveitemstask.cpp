@@ -40,10 +40,10 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <kimap/expungejob.h>
-#include <kimap/fetchjob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KImap/expungejob.h>
+#include <KImap/fetchjob.h>
+#include <KImap/selectjob.h>
+#include <KImap/session.h>
 
 /**
  * A job that retrieves a set of messages in reverse-ordered batches.

@@ -24,10 +24,10 @@
 
 #include <dbusconnectionpool.h>
 
-#include <kcalcore/filestorage.h>
-#include <kcalcore/memorycalendar.h>
-#include <kcalcore/incidence.h>
-#include <kcalcore/icalformat.h>
+#include <KCalCore/filestorage.h>
+#include <KCalCore/memorycalendar.h>
+#include <KCalCore/incidence.h>
+#include <KCalCore/icalformat.h>
 
 #include <kglobal.h>
 #include <klocale.h>

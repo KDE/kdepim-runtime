@@ -24,7 +24,7 @@
 #include <kalarmcal/kaevent.h>
 #include <kalarmcal/datetime.h>
 
-#include <kcalutils/incidenceformatter.h>
+#include <KCalUtils/incidenceformatter.h>
 
 #include <kglobal.h>
 #include <klocale.h>

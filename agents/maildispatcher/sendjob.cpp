@@ -36,12 +36,12 @@
 #include <transportresourcebase.h>
 #include <kdebug.h>
 #include <klocalizedstring.h>
-#include <kmime/kmime_message.h>
-#include <mailtransport/sentbehaviourattribute.h>
-#include <mailtransport/transport.h>
-#include <mailtransport/transportattribute.h>
-#include <mailtransport/transportjob.h>
-#include <mailtransport/transportmanager.h>
+#include <KMime/kmime_message.h>
+#include <MailTransport/sentbehaviourattribute.h>
+#include <MailTransport/transport.h>
+#include <MailTransport/transportattribute.h>
+#include <MailTransport/transportjob.h>
+#include <MailTransport/transportmanager.h>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusInterface>

@@ -25,7 +25,7 @@
 #include <KLocale>
 #include <KDialog>
 
-#include <mailtransport/transportbase.h>
+#include <MailTransport/transportbase.h>
 #include <kwindowsystem.h>
 
 #include "imapresource.h"

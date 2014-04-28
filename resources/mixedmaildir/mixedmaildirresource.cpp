@@ -44,8 +44,8 @@
 #include "filestore/itemmovejob.h"
 #include "filestore/storecompactjob.h"
 
-#include <kmime/messageparts.h>
-#include <kmime/messagestatus.h>
+#include <KMime/messageparts.h>
+#include <KMime/messagestatus.h>
 
 #include <changerecorder.h>
 #include <itemfetchjob.h>
@@ -53,7 +53,7 @@
 #include <itemmodifyjob.h>
 #include <collectionfetchscope.h>
 
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 
 #include <KDebug>
 #include <KLocalizedString>

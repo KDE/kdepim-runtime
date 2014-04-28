@@ -34,9 +34,9 @@
 #include "storecompactjob.h"
 
 #include <cachepolicy.h>
-#include <kmime/messageparts.h>
+#include <KMime/messageparts.h>
 
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 
 #include <KRandom>
 #include <KTempDir>

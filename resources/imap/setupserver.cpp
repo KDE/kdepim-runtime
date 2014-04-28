@@ -35,14 +35,14 @@
 #include "resources/folderarchivesettings/folderarchivesettingpage.h"
 
 
-#include <mailtransport/transport.h>
-#include <mailtransport/servertest.h>
+#include <MailTransport/transport.h>
+#include <MailTransport/servertest.h>
 
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 
 #include <collectionfetchjob.h>
-#include <kmime/specialmailcollections.h>
-#include <kmime/specialmailcollectionsrequestjob.h>
+#include <KMime/specialmailcollections.h>
+#include <KMime/specialmailcollectionsrequestjob.h>
 #include <resourcesettings.h>
 #include <entitydisplayattribute.h>
 #include <CollectionModifyJob>
@@ -55,8 +55,8 @@
 #include <solid/networking.h>
 #endif
 
-#include <kpimidentities/identitymanager.h>
-#include <kpimidentities/identitycombo.h>
+#include <KPIMIdentities/identitymanager.h>
+#include <KPIMIdentities/identitycombo.h>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"

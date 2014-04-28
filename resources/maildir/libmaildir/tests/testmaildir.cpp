@@ -29,7 +29,7 @@
 #include <qtest_kde.h>
 #include <kstandarddirs.h>
 #include <ktempdir.h>
-#include <kmime/messageflags.h>
+#include <KMime/messageflags.h>
 
 QTEST_KDEMAIN( MaildirTest, NoGUI )
 

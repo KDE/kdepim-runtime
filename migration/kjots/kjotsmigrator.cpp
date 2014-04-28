@@ -40,7 +40,7 @@
 #include <AkonadiCore/CollectionFetchJob>
 #include <akonadi/resourcesynchronizationjob.h>
 
-#include <kpimtextedit/textutils.h>
+#include <KPIMTextEdit/textutils.h>
 
 #include "maildirsettings.h"
 

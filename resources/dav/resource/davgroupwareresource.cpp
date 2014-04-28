@@ -36,10 +36,10 @@
 #include "settingsadaptor.h"
 #include "setupwizard.h"
 
-#include <kcalcore/freebusy.h>
-#include <kcalcore/incidence.h>
-#include <kcalcore/icalformat.h>
-#include <kcalcore/todo.h>
+#include <KCalCore/freebusy.h>
+#include <KCalCore/incidence.h>
+#include <KCalCore/icalformat.h>
+#include <KCalCore/todo.h>
 #include <kdatetime.h>
 #include <kjob.h>
 
@@ -51,8 +51,8 @@
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
 
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
+#include <KABC/addressee.h>
+#include <KABC/vcardconverter.h>
 #include <kwindowsystem.h>
 
 #include <QtCore/QSet>

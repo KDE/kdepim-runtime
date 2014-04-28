@@ -30,9 +30,9 @@
 
 #include <kalarmcal/kacalendar.h>
 
-#include <kcalcore/filestorage.h>
-#include <kcalcore/icalformat.h>
-#include <kcalcore/memorycalendar.h>
+#include <KCalCore/filestorage.h>
+#include <KCalCore/icalformat.h>
+#include <KCalCore/memorycalendar.h>
 #include <agentfactory.h>
 #include <changerecorder.h>
 #include <dbusconnectionpool.h>

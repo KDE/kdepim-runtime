@@ -24,7 +24,7 @@
 
 #include <QtCore/QMap>
 
-#include <kimap/acl.h>
+#include <KImap/acl.h>
 
 namespace Akonadi {
 

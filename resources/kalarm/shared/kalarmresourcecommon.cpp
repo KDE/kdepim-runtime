@@ -27,8 +27,8 @@
 #include <attributefactory.h>
 #include <collectionmodifyjob.h>
 
-#include <kcalcore/filestorage.h>
-#include <kcalcore/memorycalendar.h>
+#include <KCalCore/filestorage.h>
+#include <KCalCore/memorycalendar.h>
 
 #include <kglobal.h>
 #include <klocale.h>

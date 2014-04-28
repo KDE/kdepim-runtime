@@ -24,7 +24,7 @@
 
 #include "libmaildir/maildir.h"
 
-#include <kmime/kmime_message.h>
+#include <KMime/kmime_message.h>
 
 #include <KTempDir>
 

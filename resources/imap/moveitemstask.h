@@ -24,7 +24,7 @@
 
 #include "resourcetask.h"
 
-#include <kimap/imapset.h>
+#include <KImap/imapset.h>
 
 class MoveItemsTask : public ResourceTask
 {

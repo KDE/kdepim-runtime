@@ -26,8 +26,8 @@
 #include "oxutils.h"
 #include "users.h"
 
-#include <kcalcore/event.h>
-#include <kcalcore/todo.h>
+#include <KCalCore/event.h>
+#include <KCalCore/todo.h>
 
 #include <QtXml/QDomElement>
 

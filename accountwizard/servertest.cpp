@@ -18,8 +18,8 @@
 */
 
 #include "servertest.h"
-#include <mailtransport/transport.h>
-#include <mailtransport/servertest.h>
+#include <MailTransport/transport.h>
+#include <MailTransport/servertest.h>
 
 #include <kdebug.h>
 #include <kmessagebox.h>

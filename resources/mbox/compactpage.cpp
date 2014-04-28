@@ -21,7 +21,7 @@
 
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
-#include <kmbox/mbox.h>
+#include <KMbox/mbox.h>
 #include <KLocalizedString>
 #include <KUrl>
 

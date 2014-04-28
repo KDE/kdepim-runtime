@@ -24,9 +24,9 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <kimap/expungejob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KImap/expungejob.h>
+#include <KImap/selectjob.h>
+#include <KImap/session.h>
 
 #include "noselectattribute.h"
 

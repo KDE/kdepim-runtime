@@ -27,7 +27,7 @@
 #include <Collection>
 #include <Item>
 
-#include <kimap/listjob.h>
+#include <KImap/listjob.h>
 
 #include "resourcestateinterface.h"
 

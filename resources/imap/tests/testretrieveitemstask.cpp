@@ -26,7 +26,7 @@
 
 #include <cachepolicy.h>
 #include <collectionstatistics.h>
-#include <kmime/messageparts.h>
+#include <KMime/messageparts.h>
 
 class TestRetrieveItemsTask : public ImapTestBase
 {
