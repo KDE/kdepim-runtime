@@ -38,7 +38,7 @@ if (Q_WS_MAC)
 endif ()
 
 target_link_libraries(akonadi_kalarm_resource
-                      KF5::KAlarmCal
+                      KF5::AlarmCalendar
                       ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
                       KF5::AkonadiCore
                       KF5::CalendarCore
