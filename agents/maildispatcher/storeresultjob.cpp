@@ -22,7 +22,7 @@
 #include <Item>
 #include <ItemFetchJob>
 #include <ItemModifyJob>
-#include <akonadi/kmime/messageflags.h>
+#include <Akonadi/KMime/messageflags.h>
 #include <KDebug>
 #include <KLocalizedString>
 #include <MailTransport/errorattribute.h>

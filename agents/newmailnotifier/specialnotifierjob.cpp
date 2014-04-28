@@ -22,7 +22,7 @@
 #include <Akonadi/Contact/contactsearchjob.h>
 #include <ItemFetchJob>
 #include <ItemFetchScope>
-#include <akonadi/kmime/messageparts.h>
+#include <Akonadi/KMime/messageparts.h>
 
 #include <KNotification>
 #include <KPIMUtils/Email>

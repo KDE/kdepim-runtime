@@ -41,8 +41,8 @@
 #include <session.h>
 #include <AttributeFactory>
 #include <CollectionFetchScope>
-#include <akonadi/kmime/specialmailcollections.h>
-#include <akonadi/kmime/messagestatus.h>
+#include <Akonadi/KMime/specialmailcollections.h>
+#include <Akonadi/KMime/messagestatus.h>
 #include <AgentManager>
 #include <KLocalizedString>
 #include <KMime/Message>

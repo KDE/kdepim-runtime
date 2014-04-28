@@ -30,9 +30,9 @@
 #include <itemmodifyjob.h>
 #include <itemmovejob.h>
 #include <collectionfetchjob.h>
-#include <akonadi/kmime/addressattribute.h>
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/kmime/specialmailcollections.h>
+#include <Akonadi/KMime/addressattribute.h>
+#include <Akonadi/KMime/messageparts.h>
+#include <Akonadi/KMime/specialmailcollections.h>
 #include <transportresourcebase.h>
 #include <kdebug.h>
 #include <klocalizedstring.h>

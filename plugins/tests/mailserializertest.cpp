@@ -21,7 +21,7 @@
 
 #include "akonadi_serializer_mail.cpp"
 
-#include <akonadi/kmime/messageparts.h>
+#include <Akonadi/KMime/messageparts.h>
 
 #include <qtest_kde.h>
 

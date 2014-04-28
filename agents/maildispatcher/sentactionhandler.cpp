@@ -23,7 +23,7 @@
 
 #include <itemfetchjob.h>
 #include <itemmodifyjob.h>
-#include <akonadi/kmime/messageflags.h>
+#include <Akonadi/KMime/messageflags.h>
 #include <KDebug>
 
 using namespace MailTransport;

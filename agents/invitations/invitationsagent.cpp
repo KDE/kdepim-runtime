@@ -32,7 +32,7 @@
 #include <ItemFetchJob>
 #include <ItemFetchScope>
 #include <ItemModifyJob>
-#include <akonadi/kmime/messageflags.h>
+#include <Akonadi/KMime/messageflags.h>
 #include <resourcesynchronizationjob.h>
 #include <specialcollections.h>
 #include <specialcollectionsrequestjob.h>
