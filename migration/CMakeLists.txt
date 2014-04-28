@@ -46,4 +46,4 @@ add_subdirectory( kmail )
 add_subdirectory( kaddressbook )
 add_subdirectory( kjots )
 add_subdirectory( gid )
-
+add_subdirectory( knotes )
