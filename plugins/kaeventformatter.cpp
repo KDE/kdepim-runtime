@@ -20,9 +20,9 @@
 
 #include "kaeventformatter.h"
 
-#include <kalarmcal/kacalendar.h>
-#include <kalarmcal/kaevent.h>
-#include <kalarmcal/datetime.h>
+#include <KAlarmCal/kacalendar.h>
+#include <KAlarmCal/kaevent.h>
+#include <KAlarmCal/datetime.h>
 
 #include <KCalUtils/incidenceformatter.h>
 

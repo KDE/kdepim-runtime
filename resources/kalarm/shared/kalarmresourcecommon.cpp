@@ -21,8 +21,8 @@
 
 #include "kalarmresourcecommon.h"
 
-#include <kalarmcal/compatibilityattribute.h>
-#include <kalarmcal/eventattribute.h>
+#include <KAlarmCal/compatibilityattribute.h>
+#include <KAlarmCal/eventattribute.h>
 
 #include <attributefactory.h>
 #include <collectionmodifyjob.h>

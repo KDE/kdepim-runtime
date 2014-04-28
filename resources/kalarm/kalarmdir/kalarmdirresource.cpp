@@ -28,7 +28,7 @@
 #include "kalarmdirsettingsadaptor.h"
 #include "settingsdialog.h"
 
-#include <kalarmcal/kacalendar.h>
+#include <KAlarmCal/kacalendar.h>
 
 #include <KCalCore/filestorage.h>
 #include <KCalCore/icalformat.h>

@@ -22,7 +22,7 @@
 #ifndef KALARMDIRRESOURCE_H
 #define KALARMDIRRESOURCE_H
 
-#include <kalarmcal/kaevent.h>
+#include <KAlarmCal/kaevent.h>
 
 #include <resourcebase.h>
 #include <QHash>

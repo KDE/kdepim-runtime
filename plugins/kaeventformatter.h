@@ -21,7 +21,7 @@
 #ifndef KAEVENTFORMATTER_H
 #define KAEVENTFORMATTER_H
 
-#include <kalarmcal/kaevent.h>
+#include <KAlarmCal/kaevent.h>
 
 #include <QString>
 

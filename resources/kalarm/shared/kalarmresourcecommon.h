@@ -22,8 +22,8 @@
 #ifndef KALARMRESOURCECOMMON_H
 #define KALARMRESOURCECOMMON_H
 
-#include <kalarmcal/kacalendar.h>
-#include <kalarmcal/kaevent.h>
+#include <KAlarmCal/kacalendar.h>
+#include <KAlarmCal/kaevent.h>
 
 #include <QObject>
 

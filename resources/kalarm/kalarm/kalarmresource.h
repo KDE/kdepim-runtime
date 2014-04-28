@@ -24,7 +24,7 @@
 
 #include "icalresourcebase.h"
 
-#include <kalarmcal/kacalendar.h>
+#include <KAlarmCal/kacalendar.h>
 
 using namespace KAlarmCal;
 

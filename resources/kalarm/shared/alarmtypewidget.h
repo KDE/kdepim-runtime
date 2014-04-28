@@ -24,7 +24,7 @@
 
 #include "ui_alarmtypewidget.h"
 
-#include <kalarmcal/kacalendar.h>
+#include <KAlarmCal/kacalendar.h>
 
 using namespace KAlarmCal;
 
