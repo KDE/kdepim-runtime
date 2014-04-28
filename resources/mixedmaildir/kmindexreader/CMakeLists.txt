@@ -18,6 +18,6 @@ target_link_libraries(kmindexreader
     ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
 )
 
-set_target_properties(kmindexreader PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
+set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIM_LIB_VERSION} SOVERSION ${KDEPIM_LIB_SOVERSION} )
 
 install(TARGETS kmindexreader ${INSTALL_TARGETS_DEFAULT_ARGS})

@@ -19,6 +19,9 @@ include(KDEFrameworkCompilerSettings)
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
+set(KDEPIM_LIB_VERSION "4.70.0")
+set(KDEPIM_LIB_SOVERSION "5")
+
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test)
 
