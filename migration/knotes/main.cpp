@@ -64,8 +64,6 @@ int main( int argc, char **argv )
     args->clear();
 
     KNotesMigrator *migrator = new KNotesMigrator;
-    migrator->setBridgingOnly(false);
-    migrator->setOmitClientBridge(false);
     if ( infoDialog && migrator ) {
         infoDialog->migratorAdded();
         QObject::connect( migrator, SIGNAL(message(KMigratorBase::MessageType,QString)),
