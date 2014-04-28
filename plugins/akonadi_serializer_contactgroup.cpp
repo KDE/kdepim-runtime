@@ -20,7 +20,7 @@
 #include "akonadi_serializer_contactgroup.h"
 
 #include <akonadi/abstractdifferencesreporter.h>
-#include <Akonadi/contact/contactgroupexpandjob.h>
+#include <Akonadi/Contact/contactgroupexpandjob.h>
 #include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 

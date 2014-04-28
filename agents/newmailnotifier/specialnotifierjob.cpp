@@ -19,7 +19,7 @@
 #include "util.h"
 #include "newmailnotifieragentsettings.h"
 
-#include <Akonadi/contact/contactsearchjob.h>
+#include <Akonadi/Contact/contactsearchjob.h>
 #include <ItemFetchJob>
 #include <ItemFetchScope>
 #include <akonadi/kmime/messageparts.h>
