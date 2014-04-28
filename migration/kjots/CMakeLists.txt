@@ -29,7 +29,7 @@ target_link_libraries(kjotsmigrator
   ${KDE4_KDEPIMLIBS_LIBS}
   KF5::AkonadiCore
   KF5::PimTextEdit
-  KF5::KMime
+  KF5::Mime
   maildir
 )
 

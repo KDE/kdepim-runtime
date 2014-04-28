@@ -31,7 +31,7 @@ qt5_add_dbus_adaptor(maildirresource_SRCS
 
 add_library(akonadi_maildir_resource MODULE ${maildirresource_SRCS})
 
-target_link_libraries(akonadi_maildir_resource KF5::AkonadiCore KF5::AkonadiKMime maildir  KF5::KIOCore KF5::KMime folderarchivesettings KF5::AkonadiAgentBase)
+target_link_libraries(akonadi_maildir_resource KF5::AkonadiCore KF5::AkonadiMime maildir  KF5::KIOCore KF5::Mime folderarchivesettings KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_maildir_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml

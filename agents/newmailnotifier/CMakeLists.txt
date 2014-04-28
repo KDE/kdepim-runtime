@@ -5,8 +5,8 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 #find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiKMime ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5KMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5NotifyConfig CONFIG REQUIRED)
 
 set(newmailnotifieragent_SRCS
@@ -31,8 +31,8 @@ add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
 
 target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiCore
-  KF5::KMime
-  KF5::AkonadiKMime
+  KF5::Mime
+  KF5::AkonadiMime
   KF5::AkonadiContact
   KF5::PimUtils
   KF5::PimIdentities

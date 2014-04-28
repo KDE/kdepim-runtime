@@ -74,7 +74,7 @@ set(accountwizard_libs
   KF5::PimUtils
   KF5::KrossCore
   KF5::KIOCore
-  KF5::KMime
+  KF5::Mime
   KF5::PimIdentities
   KF5::WidgetsAddons
   KF5::NewStuff

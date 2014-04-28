@@ -22,7 +22,7 @@ find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5CalendarCore ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Abc ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiKMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 

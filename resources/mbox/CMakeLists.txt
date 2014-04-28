@@ -35,6 +35,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Mbox Resource")
 endif ()
 
-target_link_libraries(akonadi_mbox_resource KF5::Mbox KF5::AkonadiCore KF5::AkonadiKMime  KF5::KIOCore KF5::KMime KF5::AkonadiAgentBase)
+target_link_libraries(akonadi_mbox_resource KF5::Mbox KF5::AkonadiCore KF5::AkonadiMime  KF5::KIOCore KF5::Mime KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_mbox_resource DESTINATION ${PLUGIN_INSTALL_DIR})

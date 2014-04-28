@@ -26,6 +26,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_nntp_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi NNTP Resource")
 endif ()
 
-target_link_libraries(akonadi_nntp_resource KF5::AkonadiCore KF5::AkonadiKMime KF5::KIOCore KF5::KMime KF5::AkonadiAgentBase)
+target_link_libraries(akonadi_nntp_resource KF5::AkonadiCore KF5::AkonadiMime KF5::KIOCore KF5::Mime KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_nntp_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

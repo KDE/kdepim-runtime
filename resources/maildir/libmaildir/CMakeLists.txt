@@ -5,7 +5,7 @@ set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
 
 add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
 
-target_link_libraries(maildir KF5::PimUtils KF5::AkonadiKMime KF5::AkonadiCore)
+target_link_libraries(maildir KF5::PimUtils KF5::AkonadiMime KF5::AkonadiCore)
 
 set_target_properties(maildir PROPERTIES VERSION ${KDEPIM_LIB_VERSION} SOVERSION ${KDEPIM_LIB_SOVERSION} )
 

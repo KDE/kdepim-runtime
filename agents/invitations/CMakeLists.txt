@@ -3,7 +3,7 @@ set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiKMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5CalendarCore ${KF5_VERSION} CONFIG REQUIRED)
 
@@ -29,8 +29,8 @@ add_executable(akonadi_invitations_agent ${invitationsagent_SRCS})
 target_link_libraries(akonadi_invitations_agent
     ${KDE4_KDECORE_LIBS} KF5::KIOCore
   KF5::AkonadiCore
-  KF5::AkonadiKMime
-  KF5::KMime
+  KF5::AkonadiMime
+  KF5::Mime
   KF5::MailTransport
   KF5::CalendarCore
   KF5::AkonadiAgentBase

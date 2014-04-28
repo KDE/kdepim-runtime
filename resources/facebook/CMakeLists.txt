@@ -67,7 +67,7 @@ target_link_libraries(akonadi_facebook_resource
   
   ${QJSON_LIBRARIES}
   ${KDE4_KDECORE_LIBS}
-  KF5::KMime
+  KF5::Mime
   ${LibKFbAPI_LIBRARY}
 )
 

@@ -36,7 +36,7 @@ install( FILES akonotesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sha
 
 add_library(akonadi_akonotes_resource MODULE ${akonotesresource_SRCS})
 
-target_link_libraries(akonadi_akonotes_resource KF5::AkonadiCore KF5::AkonadiKMime maildir  KF5::KIOCore KF5::KMime folderarchivesettings)
+target_link_libraries(akonadi_akonotes_resource KF5::AkonadiCore KF5::AkonadiMime maildir  KF5::KIOCore KF5::Mime folderarchivesettings)
 
 install(TARGETS akonadi_akonotes_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 

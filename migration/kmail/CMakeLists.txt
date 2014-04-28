@@ -45,9 +45,9 @@ kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.pn
 add_executable(kmail-migrator ${kmail-migrator_srcs} )
 target_link_libraries(kmail-migrator
   KF5::Mbox
-  KF5::KMime
+  KF5::Mime
   KF5::PimUtils
-  KF5::AkonadiKMime
+  KF5::AkonadiMime
   KF5::AkonadiCore
   KF5::AkonadiAgentBase  
   KF5::KIOCore

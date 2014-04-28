@@ -52,11 +52,11 @@ target_link_libraries(akonadi_mixedmaildir_resource
   maildir
   akonadi-filestore
   KF5::AkonadiCore
-  KF5::AkonadiKMime
+  KF5::AkonadiMime
   
   KF5::KIOCore
   ${KDEPIMLIBS_KMBOX_LIBS}
-  KF5::KMime
+  KF5::Mime
   KF5::PimUtils
 )
 

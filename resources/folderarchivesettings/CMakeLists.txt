@@ -10,7 +10,7 @@ set(folderarchivesettings_SRCS
 add_library(folderarchivesettings ${LIBRARY_TYPE} ${folderarchivesettings_SRCS} )
 
 target_link_libraries(folderarchivesettings
-                      KF5::KMime
+                      KF5::Mime
                       KF5::AkonadiCore
                       KF5::AkonadiWidgets
 )

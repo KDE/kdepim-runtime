@@ -36,9 +36,9 @@ endif ()
 
 target_link_libraries( akonadi_pop3_resource
   KF5::AkonadiCore
-  KF5::AkonadiKMime
+  KF5::AkonadiMime
   KF5::KIOCore
-  KF5::KMime
+  KF5::Mime
   KF5::MailTransport
   KF5::PimUtils
   KF5::AkonadiAgentBase
