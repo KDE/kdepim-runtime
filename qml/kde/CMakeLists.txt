@@ -6,11 +6,11 @@ else()
   set(LIBRARY_TYPE)
 endif ()
 
-kde4_add_plugin( kdeqmlplugin ${LIBRARY_TYPE} WITH_PREFIX
+add_library(kdeqmlplugin MODULE ${LIBRARY_TYPE} WITH_PREFIX
   kdeintegration.cpp
   kdeintegrationplugin.cpp
 )
-target_link_libraries(kdeqmlplugin ${KDE4_KDEUI_LIBS} ${QT_QTDECLARATIVE_LIBRARY} ${QT_QTSCRIPT_LIBRARY})
+target_link_libraries(kdeqmlplugin  Qt5::Declarative ${QT_QTSCRIPT_LIBRARY})
 
 if (KDEQMLPLUGIN_STATIC)
   install( FILES qmldir_without_kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde RENAME qmldir)

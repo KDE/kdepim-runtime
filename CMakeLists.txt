@@ -23,7 +23,7 @@ set(KDEPIM_LIB_VERSION "4.70.0")
 set(KDEPIM_LIB_SOVERSION "5")
 
 
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test)
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test Declarative)
 
 set(AkonadiServer_MIN_VERSION "1.70.41")
 find_package(Akonadi ${AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
@@ -50,9 +50,7 @@ add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 #add_subdirectory(kcm)
 #add_subdirectory(migration)
-if (QT_QTDECLARATIVE_FOUND)
-  add_subdirectory(qml)
-endif ()
+add_subdirectory(qml)
 
 
 
