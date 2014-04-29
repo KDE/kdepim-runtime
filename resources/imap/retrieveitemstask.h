@@ -81,8 +81,8 @@ private:
   qint64 m_highestModseq;
   BatchFetcher *m_batchFetcher;
   bool m_collectionModifyNeeded;
-  qint64 m_lowestExpectedUid;
   Akonadi::Collection m_modifiedCollection;
+  bool m_uidBasedFetch;
 };
 
 #endif
