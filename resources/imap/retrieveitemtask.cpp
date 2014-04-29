@@ -20,6 +20,7 @@
 */
 
 #include "retrieveitemtask.h"
+#include "messagehelper.h"
 
 #include <KDE/KDebug>
 #include <KDE/KLocale>
@@ -94,33 +95,24 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
                                            const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
   Q_UNUSED( mailBox );
-  Q_UNUSED( uids );
 
   KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob*>( sender() );
   Q_ASSERT( fetch!=0 );
   Q_ASSERT( uids.size()==1 );
   Q_ASSERT( messages.size()==1 );
-  Q_UNUSED( fetch );
 
   Akonadi::Item i = item();
 
   kDebug( 5327 ) << "MESSAGE from Imap server" << item().remoteId();
   Q_ASSERT( item().isValid() );
 
-  KIMAP::MessagePtr message = messages[messages.keys().first()];
-
-  i.setMimeType( KMime::Message::mimeType() );
-  i.setPayload( KMime::Message::Ptr( message ) );
-
-  // update status flags
-  if ( KMime::isSigned( message.get() ) )
-    i.setFlag( Akonadi::MessageFlags::Signed );
-  if ( KMime::isEncrypted( message.get() ) )
-    i.setFlag( Akonadi::MessageFlags::Encrypted );
-  if ( KMime::isInvitation( message.get() ) )
-    i.setFlag( Akonadi::MessageFlags::HasInvitation );
-  if ( KMime::hasAttachment( message.get() ) )
-    i.setFlag( Akonadi::MessageFlags::HasAttachment );
+  const qint64 number = uids.keys().first();
+  const Akonadi::Item remoteItem = MessageHelper::createItemFromMessage(messages[number], uids[number], 0, QList<QByteArray>(), fetch->scope());
+  i.setMimeType(remoteItem.mimeType());
+  i.setPayload(remoteItem.payload<KMime::Message::Ptr>());
+  foreach (const QByteArray &flag, remoteItem.flags()) {
+    i.setFlag(flag);
+  }
 
   kDebug( 5327 ) << "Has Payload: " << i.hasPayload();
 
