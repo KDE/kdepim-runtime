@@ -23,6 +23,7 @@ set( imapresource_LIB_SRCS
   highestmodseqattribute.cpp
   imapaccount.cpp
   imapflags.cpp
+  messagehelper.cpp
   movecollectiontask.cpp
   moveitemstask.cpp
   noselectattribute.cpp
