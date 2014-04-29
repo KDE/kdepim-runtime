@@ -60,7 +60,7 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 2471  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 FETCH 1 (RFC822.SIZE INTERNALDATE "
+             << "C: A000006 UID FETCH 1:2471 (RFC822.SIZE INTERNALDATE "
                 "BODY.PEEK[HEADER] "
                 "FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
@@ -101,7 +101,7 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 2471  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 FETCH 1 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID FETCH 1:2471 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
@@ -115,9 +115,7 @@ private slots:
     callNames.clear();
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
 
-
     QTest::newRow( "first listing, disconnected IMAP" ) << collection << scenario << callNames;
-
 
 
     Akonadi::CollectionStatistics stats;
@@ -125,6 +123,7 @@ private slots:
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext(2471);
     collection.setCachePolicy( policy );
     collection.setStatistics( stats );
 
@@ -142,15 +141,14 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 2471  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 FETCH 1 (FLAGS UID)"
+             << "C: A000006 UID FETCH 1:2471 (FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
              << "S: A000006 OK fetch done";
 
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
-
-    QTest::newRow( "second listing, full sync" ) << collection << scenario << callNames;
+    QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
 
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
@@ -195,7 +193,7 @@ private slots:
              << "S: * OK [ UIDNEXT 2471  ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 FETCH 4:5 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID FETCH 2470:2471 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 4 FETCH ( FLAGS (\\Seen) UID 2470 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
@@ -213,7 +211,7 @@ private slots:
                 "Test\r\n"
                 " )"
              << "S: A000006 OK fetch done"
-             << "C: A000007 FETCH 1:3 (FLAGS UID)"
+             << "C: A000007 UID FETCH 1:2469 (FLAGS UID)"
              << "S: * 1 FETCH"
              << "S: * 2 FETCH"
              << "S: * 3 FETCH"
@@ -222,7 +220,36 @@ private slots:
     callNames.clear();
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
 
-    QTest::newRow( "uidnext mismatch with recovery attempt" ) << collection << scenario << callNames;
+    QTest::newRow( "uidnext changed, fetch new messages and list flags" ) << collection << scenario << callNames;
+
+
+    collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+    collection.setCachePolicy( policy );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
+    collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456789 );
+    stats.setCount( 5 );
+    collection.setStatistics( stats );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario( QList<QByteArray>() << "CONDSTORE" )
+             << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge DONE"
+             << "C: A000005 SELECT \"INBOX/Foo\" (CONDSTORE)"
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 5 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135 ]"
+             << "S: * OK [ UIDNEXT 2471 ]"
+             << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
+             << "S: A000005 OK select done";
+    callNames.clear();
+    callNames << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+
+    //No flags have changed
+    QTest::newRow( "highestmodseq test" ) << collection << scenario << callNames;
 
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
@@ -246,13 +273,14 @@ private slots:
              << "S: * OK [ UIDNEXT 2471 ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 FETCH 1:5 (FLAGS UID) (CHANGEDSINCE 123456788)"
+             << "C: A000006 UID FETCH 1:2471 (FLAGS UID) (CHANGEDSINCE 123456788)"
              << "S: * 5 FETCH ( UID 2470 FLAGS () )"
              << "S: A000006 OK fetch done";
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
-    QTest::newRow( "highestmodseq test" ) << collection << scenario << callNames;
+    //fetch only changed flags
+    QTest::newRow( "changedsince test" ) << collection << scenario << callNames;
 
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
@@ -276,61 +304,14 @@ private slots:
              << "S: * OK [ UIDNEXT 2471 ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 FETCH 1:5 (FLAGS UID)"
+             << "C: A000006 UID FETCH 1:2471 (FLAGS UID)"
              << "S: * 5 FETCH ( UID 2470 FLAGS () )"
              << "S: A000006 OK fetch done";
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
+    //Don't rely on yahoos highestmodseq implementation
     QTest::newRow( "yahoo highestmodseq test" ) << collection << scenario << callNames;
-
-    collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
-    collection.setCachePolicy( policy );
-    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
-    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
-    collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
-    stats.setCount( 3 );
-    collection.setStatistics( stats );
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 SELECT \"INBOX/Foo\""
-             << "S: A000003 OK select done"
-             << "C: A000004 EXPUNGE"
-             << "S: A000004 OK expunge done"
-             << "C: A000005 SELECT \"INBOX/Foo\""
-             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
-             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
-             << "S: * 5 EXISTS"
-             << "S: * 0 RECENT"
-             << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
-             << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
-             << "S: A000005 OK select done"
-             << "C: A000006 FETCH 4:5 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
-             << "S: * 4 FETCH ( FLAGS (\\Seen) UID 2470 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-                "RFC822.SIZE 75 BODY[] {75}\r\n"
-                "From: Foo <foo@kde.org>\r\n"
-                "To: Bar <bar@kde.org>\r\n"
-                "Subject: Test Mail\r\n"
-                "\r\n"
-                "Test\r\n"
-                " )"
-             << "S: * 5 FETCH ( FLAGS (\\Seen) UID 2471 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-                "RFC822.SIZE 75 BODY[] {75}\r\n"
-                "From: Foo <foo@kde.org>\r\n"
-                "To: Bar <bar@kde.org>\r\n"
-                "Subject: Test Mail\r\n"
-                "\r\n"
-                "Test\r\n"
-                " )"
-             << "S: A000006 OK fetch done";
-
-    callNames.clear();
-    callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "restartItemRetrieval";
-
-    // We miss one item in the local collection, and therefore fetch the wrong items based
-    // the item count of the collection.
-    QTest::newRow( "Inconsistent local cache" ) << collection << scenario << callNames;
 
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
@@ -353,7 +334,7 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 2471  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 FETCH 1 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID FETCH 1:2471 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
@@ -368,7 +349,7 @@ private slots:
     callNames.clear();
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
 
-    QTest::newRow( "uidvalidity" ) << collection << scenario << callNames;
+    QTest::newRow( "uidvalidity changed" ) << collection << scenario << callNames;
 
   }
 
