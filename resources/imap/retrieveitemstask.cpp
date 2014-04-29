@@ -27,6 +27,7 @@
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
 #include "highestmodseqattribute.h"
+#include "messagehelper.h"
 
 #include <cachepolicy.h>
 #include <collectionstatistics.h>
@@ -162,45 +163,12 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox, const QMap<qint64, 
 {
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( sender() );
     Q_ASSERT( fetch );
-    KIMAP::FetchJob::FetchScope scope = fetch->scope();
 
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
-        const qint64 uid = uids[number];
-        Akonadi::Item i;
-        KMime::Message::Ptr message( messages[number] );
-        // Sometimes messages might not have a body at all
-        if ( message->body().isEmpty() && scope.mode == KIMAP::FetchJob::FetchScope::Full ) {
-            // In that case put a space in as body so that it gets cached
-            // otherwise we'll wrongly believe the body part is missing from the cache
-            message->setBody( " " );
-        }
-        i.setRemoteId(QString::number(uid));
-        i.setMimeType(KMime::Message::mimeType());
-        i.setPayload(KMime::Message::Ptr(message));
-        i.setSize(sizes[number]);
-
-        // update status flags
-        if (KMime::isSigned(messages[number].get())) {
-            i.setFlag(Akonadi::MessageFlags::Signed);
-        }
-        if (KMime::isEncrypted(messages[number].get())) {
-            i.setFlag(Akonadi::MessageFlags::Encrypted);
-        }
-        if (KMime::isInvitation(messages[number].get())) {
-            i.setFlag(Akonadi::MessageFlags::HasInvitation);
-        }
-        if (KMime::hasAttachment(messages[number].get())) {
-            i.setFlag(Akonadi::MessageFlags::HasAttachment);
-        }
-
-        const QList<QByteArray> akonadiFlags = ResourceTask::toAkonadiFlags(flags[number]);
-        foreach (const QByteArray &flag, akonadiFlags) {
-            i.setFlag(flag);
-        }
         //kDebug( 5327 ) << "Flags: " << i.flags();
         m_fetchedItemsInCurrentBatch++;
-        addedItems << i;
+        addedItems << MessageHelper::createItemFromMessage(messages[number], uids[number], sizes[number], flags[number], fetch->scope());
     }
 //     kDebug() << addedItems.size();
     emit itemsRetrieved(addedItems);
