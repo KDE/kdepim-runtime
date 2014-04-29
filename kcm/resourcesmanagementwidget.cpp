@@ -35,6 +35,7 @@
 #include <KDebug>
 #include <KMessageBox>
 #include <KLineEdit>
+#include <KLocalizedString>
 
 class ResourcesManagementWidget::Private
 {
@@ -64,7 +65,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
     connect( d->ui.removeButton, SIGNAL(clicked()), SLOT(removeClicked()) );
     
     d->ui.mFilterAccount->setProxy( d->ui.resourcesList->agentFilterProxyModel() );
-    d->ui.mFilterAccount->lineEdit()->setTrapReturnKey( true );
+    //QT5 d->ui.mFilterAccount->lineEdit()->setTrapReturnKey( true );
 
     updateButtonState();
     Akonadi::Control::widgetNeedsAkonadi( this );

@@ -24,6 +24,9 @@
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 
+#include <KGlobal>
+#include <KUrl>
+
 #include <QSettings>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -32,13 +35,13 @@
 #include <AkonadiCore/servermanager.h>
 #include <akonadi/private/xdgbasedirs_p.h>
 
-K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )
+//QT5 K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )
 K_EXPORT_PLUGIN( ServerConfigModuleFactory( "kcm_akonadi_server" ) )
 
 using namespace Akonadi;
 
 ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & args  ) :
-    KCModule( ServerConfigModuleFactory::componentData(), parent, args )
+    KCModule( /*ServerConfigModuleFactory::componentData(),*/ parent, args )
 {
   KGlobal::locale()->insertCatalog( QLatin1String("kcm_akonadi") );
   KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );

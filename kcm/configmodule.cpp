@@ -25,12 +25,13 @@
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 #include <qboxlayout.h>
+#include <KGlobal>
 
-K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
+//QT5 K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
 K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
-        KCModule( ResourcesConfigFactory::componentData(), parent, args )
+        KCModule( /*ResourcesConfigFactory::componentData(),*/ parent, args )
 {
     KGlobal::locale()->insertCatalog( QLatin1String("kcm_akonadi") );
     KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );

@@ -6,11 +6,13 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 find_package(KF5KCMUtils ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 
-set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
-qt5_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
-add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
-target_link_libraries(kcm_akonadi_resources  KF5::AkonadiCore)
+#REACTIVATE
+#set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
+#qt5_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
+#add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
+#target_link_libraries(kcm_akonadi_resources  KF5::AkonadiCore KF5::AkonadiWidgets Qt5::Widgets)
 
 
 set(akonadi_server_kcm_srcs serverconfigmodule.cpp)
@@ -24,11 +26,12 @@ target_link_libraries(kcm_akonadi_server  KF5::KIOCore KF5::AkonadiCore KF5::KCM
 
 set(akonadi_kcm_srcs akonadiconfigmodule.cpp)
 add_library(kcm_akonadi MODULE ${akonadi_kcm_srcs})
-target_link_libraries(kcm_akonadi  KF5::KCMUtils)
+target_link_libraries(kcm_akonadi  KF5::KCMUtils KF5::AkonadiWidgets KF5::AkonadiCore)
 
 
 install(TARGETS
-  kcm_akonadi_resources
+  #REACTIVATE
+  #kcm_akonadi_resources
   kcm_akonadi_server
   kcm_akonadi
   DESTINATION ${PLUGIN_INSTALL_DIR})
