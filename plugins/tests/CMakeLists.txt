@@ -25,7 +25,3 @@ add_akonadiplugin_test(mailserializerplugintest.cpp "${KDEPIMLIBS_KMIME_LIBS}" "
 add_akonadiplugin_test(kcalcoreserializertest.cpp "${KDEPIMLIBS_KCALCORE_LIBS}" "")
 
 add_akonadiplugin_test(addresseeserializertest.cpp "${KDEPIMLIBS_KABC_LIBS};${KDEPIMLIBS_AKONADI_KABC_LIBS}" "../akonadi_serializer_addressee.cpp")
-
-if (KDEPIMLIBS_KCAL_LIBS)
-  add_akonadiplugin_test(kcalserializertest.cpp "${KDEPIMLIBS_KCAL_LIBS}" "")
-endif ()
