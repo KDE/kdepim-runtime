@@ -19,13 +19,6 @@ kde4_add_plugin(akonadi_serializer_mail ${SERIALIZER_TYPE} ${akonadi_serializer_
 target_link_libraries(akonadi_serializer_mail ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${AKONADI_COMMON_LIBRARIES} )
 install(TARGETS akonadi_serializer_mail DESTINATION ${PLUGIN_INSTALL_DIR})
 
-if(KDEPIMLIBS_KCAL_LIBRARY)
-set(akonadi_serializer_kcal_SRCS akonadi_serializer_kcal.cpp)
-kde4_add_plugin(akonadi_serializer_kcal ${SERIALIZER_TYPE} ${akonadi_serializer_kcal_SRCS})
-target_link_libraries(akonadi_serializer_kcal ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCAL_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
-install(TARGETS akonadi_serializer_kcal DESTINATION ${PLUGIN_INSTALL_DIR})
-endif()
-
 set(akonadi_serializer_kcalcore_SRCS akonadi_serializer_kcalcore.cpp)
 kde4_add_plugin(akonadi_serializer_kcalcore ${SERIALIZER_TYPE} ${akonadi_serializer_kcalcore_SRCS})
 target_link_libraries(akonadi_serializer_kcalcore ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCALUTILS_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
@@ -64,7 +57,6 @@ install(TARGETS akonadi_serializer_kalarm DESTINATION ${PLUGIN_INSTALL_DIR})
 install( FILES
   akonadi_serializer_addressee.desktop
   akonadi_serializer_mail.desktop
-  akonadi_serializer_kcal.desktop
   akonadi_serializer_kcalcore.desktop
   akonadi_serializer_bookmark.desktop
   akonadi_serializer_contactgroup.desktop
