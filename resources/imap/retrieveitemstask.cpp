@@ -200,7 +200,8 @@ RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObj
   m_fetchedMissingBodies( -1 ),
   m_fetchMissingBodies( false ),
   m_batchFetcher( 0 ),
-  m_uidBasedFetch( true )
+  m_uidBasedFetch( true ),
+  m_flagsChanged( false )
 {
 
 }
@@ -280,6 +281,8 @@ void RetrieveItemsTask::onFetchItemsWithoutBodiesDone( const QList<qint64> &item
 void RetrieveItemsTask::startRetrievalTasks()
 {
   const QString mailBox = mailBoxForCollection( collection() );
+  kDebug(5327) << "Starting retrieval for " << mailBox;
+  m_time.start();
 
   // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
   if ( isAutomaticExpungeEnabled() ) {
@@ -464,6 +467,17 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
 
   const qint64 realMessageCount = col.statistics().count();
 
+  kDebug(5327) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
+
+  /*
+   * A synchronization has 3 mandatory steps:
+   * * If uidvalidity changed the local cache must be invalidated
+   * * New messages can be fetched usin uidNext and the last known fetched uid
+   * * flag changes and removals can be detected by listing all messages that weren't part of the previous step
+   *
+   * Everything else is optimizations.
+   */
+
   if (messageCount == 0) {
     //Shortcut:
     //If no messages are present on the server, clear local cash and finish
@@ -492,6 +506,15 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     KIMAP::ImapSet imapSet;
     imapSet.add(m_messageUidsMissingBody);
     retrieveItems(imapSet, scope, true, true);
+  } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) == messageCount)) {
+    //Optimization:
+    //New messages are available, but we know no messages have been removed.
+    //Fetch new messages, and then check for changed flags and removed messages
+    //We can make an incremental update and use modseq.
+    kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
+    setTotalItems(messageCount);
+    m_flagsChanged = !(highestModSeq == oldHighestModSeq);
+    retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
   } else if (nextUid > oldNextUid) {
     //New messages are available. Fetch new messages, and then check for changed flags and removed messages
     kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
@@ -501,16 +524,11 @@ void RetrieveItemsTask::onFinalSelectDone( KJob *job )
     //Optimization:
     //We know no messages were added or removed (if the message count and uidnext is still the same)
     //We only check the flags incrementally and can make use of modseq
-    if (!serverSupportsCondstore() || highestModSeq > oldHighestModSeq) {
-      m_uidBasedFetch = true;
-      m_incremental = true;
-      setTotalItems(messageCount);
-      listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
-    } else {
-      kDebug(5327)  << "No changes";
-      m_incremental = true;
-      taskComplete();
-    }
+    m_uidBasedFetch = true;
+    m_incremental = true;
+    m_flagsChanged = !(highestModSeq == oldHighestModSeq);
+    setTotalItems(messageCount);
+    listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
   } else {
     //Shortcut:
     //No new messages are available. Directly check for changed flags and removed messages.
@@ -593,6 +611,7 @@ void RetrieveItemsTask::onRetrievalDone( KJob *job )
 void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
 {
   kDebug(5327) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
+  kDebug(5327) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
 
   KIMAP::FetchJob::FetchScope scope;
   scope.parts.clear();
@@ -601,51 +620,25 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
   // otherwise we would overwrite our local data with an incomplete dataset
   if(m_incremental && serverSupportsCondstore()) {
       scope.changedSince = m_highestModseq;
+      if (!m_flagsChanged) {
+          kDebug(5327)  << "No flag changes.";
+          taskComplete();
+          return;
+      }
   }
 
-  KIMAP::FetchJob* fetch = new KIMAP::FetchJob( m_session );
-  fetch->setSequenceSet( set );
-  fetch->setScope( scope );
-  fetch->setUidBased(m_uidBasedFetch);
-  connect( fetch, SIGNAL(headersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)),
-           this, SLOT(onFlagsReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
-  connect( fetch, SIGNAL(result(KJob*)),
-           this, SLOT(onFlagsFetchDone(KJob*)) );
-  fetch->start();
-}
-
-void RetrieveItemsTask::onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
-                                         const QMap<qint64, qint64> &sizes,
-                                         const QMap<qint64, KIMAP::MessageFlags> &flags,
-                                         const QMap<qint64, KIMAP::MessagePtr> &messages )
-{
-  Q_UNUSED( mailBox );
-  Q_UNUSED( sizes );
-  Q_UNUSED( messages );
-
-  Akonadi::Item::List changedItems;
-
-  foreach ( qint64 number, uids.keys() ) { //krazy:exclude=foreach
-    Akonadi::Item i;
-    i.setRemoteId( QString::number( uids[number] ) );
-    i.setMimeType( KMime::Message::mimeType() );
-    i.setFlags( Akonadi::Item::Flags::fromList( toAkonadiFlags( flags[number] ) ) );
-
-    //kDebug( 5327 ) << "Flags: " << i.flags();
-    changedItems << i;
-  }
-
-  if ( !changedItems.isEmpty() ) {
-    if ( m_incremental ) {
-        itemsRetrievedIncremental( changedItems, Akonadi::Item::List() );
-    } else {
-        itemsRetrieved( changedItems );
-    }
-  }
+  m_batchFetcher = new BatchFetcher(set, scope, 10 * batchSize(), m_session);
+  m_batchFetcher->setUidBased(m_uidBasedFetch);
+  connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
+          this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
+  connect(m_batchFetcher, SIGNAL(result(KJob*)),
+          this, SLOT(onFlagsFetchDone(KJob*)));
+  m_batchFetcher->start();
 }
 
 void RetrieveItemsTask::onFlagsFetchDone( KJob *job )
 {
+  m_batchFetcher = 0;
   if ( job->error() ) {
     kWarning() << job->errorString();
     cancelTask( job->errorString() );
@@ -665,6 +658,7 @@ void RetrieveItemsTask::taskComplete()
         // Akonadi knows we did incremental fetch that came up with no changes
         itemsRetrievedIncremental(Akonadi::Item::List(), Akonadi::Item::List());
     }
+    kDebug(5327) << "Retrieval complete. Elapsed(ms): " << m_time.elapsed();
     itemsRetrievalDone();
 }
 

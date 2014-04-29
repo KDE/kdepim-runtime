@@ -25,33 +25,39 @@
 Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope)
 {
     Akonadi::Item i;
-    // Sometimes messages might not have a body at all
-    if (message->body().isEmpty() && (scope.mode == KIMAP::FetchJob::FetchScope::Full || scope.mode == KIMAP::FetchJob::FetchScope::Content)) {
-        // In that case put a space in as body so that it gets cached
-        // otherwise we'll wrongly believe the body part is missing from the cache
-        message->setBody( " " );
-    }
-    i.setRemoteId(QString::number(uid));
-    i.setMimeType(KMime::Message::mimeType());
-    i.setPayload(KMime::Message::Ptr(message));
-    i.setSize(size);
+    if (scope.mode == KIMAP::FetchJob::FetchScope::Flags) {
+        i.setRemoteId(QString::number(uid));
+        i.setMimeType(KMime::Message::mimeType());
+        i.setFlags(Akonadi::Item::Flags::fromList(ResourceTask::toAkonadiFlags(flags)));
+    } else {
+        // Sometimes messages might not have a body at all
+        if (message->body().isEmpty() && (scope.mode == KIMAP::FetchJob::FetchScope::Full || scope.mode == KIMAP::FetchJob::FetchScope::Content)) {
+            // In that case put a space in as body so that it gets cached
+            // otherwise we'll wrongly believe the body part is missing from the cache
+            message->setBody( " " );
+        }
+        i.setRemoteId(QString::number(uid));
+        i.setMimeType(KMime::Message::mimeType());
+        i.setPayload(KMime::Message::Ptr(message));
+        i.setSize(size);
 
-    // update status flags
-    if (KMime::isSigned(message.get())) {
-        i.setFlag(Akonadi::MessageFlags::Signed);
-    }
-    if (KMime::isEncrypted(message.get())) {
-        i.setFlag(Akonadi::MessageFlags::Encrypted);
-    }
-    if (KMime::isInvitation(message.get())) {
-        i.setFlag(Akonadi::MessageFlags::HasInvitation);
-    }
-    if (KMime::hasAttachment(message.get())) {
-        i.setFlag(Akonadi::MessageFlags::HasAttachment);
-    }
+        // update status flags
+        if (KMime::isSigned(message.get())) {
+            i.setFlag(Akonadi::MessageFlags::Signed);
+        }
+        if (KMime::isEncrypted(message.get())) {
+            i.setFlag(Akonadi::MessageFlags::Encrypted);
+        }
+        if (KMime::isInvitation(message.get())) {
+            i.setFlag(Akonadi::MessageFlags::HasInvitation);
+        }
+        if (KMime::hasAttachment(message.get())) {
+            i.setFlag(Akonadi::MessageFlags::HasAttachment);
+        }
 
-    foreach (const QByteArray &flag, ResourceTask::toAkonadiFlags(flags)) {
-        i.setFlag(flag);
+        foreach (const QByteArray &flag, ResourceTask::toAkonadiFlags(flags)) {
+            i.setFlag(flag);
+        }
     }
     return i;
 }

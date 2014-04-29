@@ -53,11 +53,6 @@ private slots:
 
   void onItemsRetrieved(const Akonadi::Item::List &addedItems);
   void onRetrievalDone(KJob *job);
-
-  void onFlagsReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
-                        const QMap<qint64, qint64> &sizes,
-                        const QMap<qint64, KIMAP::MessageFlags> &flags,
-                        const QMap<qint64, KIMAP::MessagePtr> &messages );
   void onFlagsFetchDone( KJob *job );
 
 protected:
@@ -83,6 +78,8 @@ private:
   bool m_collectionModifyNeeded;
   Akonadi::Collection m_modifiedCollection;
   bool m_uidBasedFetch;
+  bool m_flagsChanged;
+  QTime m_time;
 };
 
 #endif
