@@ -33,6 +33,7 @@
 #include <itemfetchscope.h>
 #include <dbusconnectionpool.h>
 #include <agentfactory.h>
+#include <KDebug>
 
 #include <KLocalizedString>
 
