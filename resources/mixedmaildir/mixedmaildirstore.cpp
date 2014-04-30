@@ -40,14 +40,16 @@
 #include <KMbox/mbox.h>
 #include <KMime/kmime_message.h>
 
-#include <KMime/messageparts.h>
+#include <Akonadi/KMime/messageparts.h>
 
-#include <cachepolicy.h>
-#include <itemfetchscope.h>
+#include <AkonadiCore/cachepolicy.h>
+#include <AkonadiCore/itemfetchscope.h>
 
 #include <KPIMUtils/kfileio.h>
 
 #include <KLocalizedString>
+
+#include <KDebug>
 
 #include <QDir>
 #include <QFileInfo>
