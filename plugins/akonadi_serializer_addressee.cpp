@@ -19,10 +19,11 @@
 
 #include "akonadi_serializer_addressee.h"
 
-#include <akonadi/abstractdifferencesreporter.h>
+#include <AkonadiCore/abstractdifferencesreporter.h>
 #include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 
+#include <KDebug>
 #include <KABC/addressee.h>
 #include <klocale.h>
 
@@ -243,7 +244,7 @@ void SerializerPluginAddressee::compare( Akonadi::AbstractDifferencesReporter *r
 
   if ( leftContact.url() != rightContact.url() )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::urlLabel(),
-                            leftContact.url().prettyUrl(), rightContact.url().prettyUrl() );
+                            leftContact.url().toDisplayString(), rightContact.url().toDisplayString() );
 
   compareList( reporter, i18n( "Emails" ), leftContact.emails(), rightContact.emails() );
   compareList( reporter, i18n( "Phone Numbers" ), leftContact.phoneNumbers(), rightContact.phoneNumbers() );

@@ -7,48 +7,61 @@ include_directories(
         ${Boost_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
-set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
-kde4_add_plugin(akonadi_serializer_addressee ${SERIALIZER_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
-target_link_libraries(akonadi_serializer_addressee ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KABC_LIBS})
-install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
+find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Abc ${KF5_VERSION} CONFIG REQUIRED)
+find_package(Qt5DBus ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AlarmCalendar ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarCore ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5MicroBlog ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
+
+#REACTIVATE IT
+#set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
+#add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
+#target_link_libraries(akonadi_serializer_addressee  KF5::Abc KF5::AkonadiCore )
+#install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp )
-kde4_add_plugin(akonadi_serializer_mail ${SERIALIZER_TYPE} ${akonadi_serializer_mail_PART_SRCS})
-target_link_libraries(akonadi_serializer_mail ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KMIME_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${AKONADI_COMMON_LIBRARIES} )
+add_library(akonadi_serializer_mail MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_mail_PART_SRCS})
+target_link_libraries(akonadi_serializer_mail  KF5::Mime KF5::AkonadiCore KF5::AkonadiMime ${AKONADI_COMMON_LIBRARIES} Qt5::DBus )
 install(TARGETS akonadi_serializer_mail DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kcalcore_SRCS akonadi_serializer_kcalcore.cpp)
-kde4_add_plugin(akonadi_serializer_kcalcore ${SERIALIZER_TYPE} ${akonadi_serializer_kcalcore_SRCS})
-target_link_libraries(akonadi_serializer_kcalcore ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KCALUTILS_LIBS} ${KDEPIMLIBS_KCALCORE_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
+add_library(akonadi_serializer_kcalcore MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kcalcore_SRCS})
+target_link_libraries(akonadi_serializer_kcalcore  KF5::CalendarUtils KF5::CalendarCore KF5::AkonadiCore)
 install(TARGETS akonadi_serializer_kcalcore DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_bookmark_SRCS akonadi_serializer_bookmark.cpp)
-kde4_add_plugin(akonadi_serializer_bookmark ${SERIALIZER_TYPE} ${akonadi_serializer_bookmark_SRCS})
-target_link_libraries(akonadi_serializer_bookmark ${KDE4_KDECORE_LIBS} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_AKONADI_LIBS})
+add_library(akonadi_serializer_bookmark MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_bookmark_SRCS})
+target_link_libraries(akonadi_serializer_bookmark  KF5::KIOCore KF5::AkonadiCore)
 install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
 
-set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
-kde4_add_plugin(akonadi_serializer_contactgroup ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
-target_link_libraries(akonadi_serializer_contactgroup ${KDE4_KDECORE_LIBS} ${KDEPIMLIBS_KABC_LIBS} ${KDEPIMLIBS_AKONADI_LIBS}
-                                                      ${KDEPIMLIBS_AKONADI_KABC_LIBS} ${KDEPIMLIBS_AKONADI_CONTACT_LIBS})
-install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
+#REACTIVATE
+#set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
+#add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
+#target_link_libraries(akonadi_serializer_contactgroup  KF5::Abc KF5::AkonadiCore KF5::AkonadiContact)
+#install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
-kde4_add_plugin(akonadi_serializer_microblog ${SERIALIZER_TYPE} ${akonadi_serializer_microblog_SRCS})
-target_link_libraries(akonadi_serializer_microblog ${KDEPIMLIBS_AKONADI_LIBS} ${QT_QTCORE_LIBRARY} ${KDE4_KDECORE_LIBS} ${QT_QTXML_LIBRARY} ${KDEPIMLIBS_KPIMUTILS_LIBS} ${KDEPIMLIBS_MICROBLOG_LIBS})
+add_library(akonadi_serializer_microblog MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_microblog_SRCS})
+target_link_libraries(akonadi_serializer_microblog KF5::AkonadiCore   ${QT_QTXML_LIBRARY} KF5::PimUtils KF5::MicroBlog)
 install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp)
-kde4_add_plugin(akonadi_serializer_kalarm ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
+add_library(akonadi_serializer_kalarm MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
 target_link_libraries(akonadi_serializer_kalarm
-                      ${KDEPIMLIBS_KALARMCAL_LIBS}
-                      ${KDEPIMLIBS_KCALCORE_LIBS}
-                      ${KDEPIMLIBS_KCALUTILS_LIBS}
-                      ${KDEPIMLIBS_AKONADI_LIBS}
-                      ${KDE4_KDECORE_LIBS}
-                      ${QT_QTGUI_LIBRARY}
+                      KF5::AlarmCalendar
+                      KF5::CalendarCore
+                      KF5::CalendarUtils
+                      KF5::AkonadiCore
+                      
+                      
                      )
 install(TARGETS akonadi_serializer_kalarm DESTINATION ${PLUGIN_INSTALL_DIR})
 

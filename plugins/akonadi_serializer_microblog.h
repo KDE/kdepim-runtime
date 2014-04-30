@@ -22,14 +22,14 @@
 
 #include <QtCore/QObject>
 
-#include <akonadi/itemserializerplugin.h>
+#include <AkonadiCore/itemserializerplugin.h>
 
 namespace Akonadi {
 
 class SerializerPluginmicroblog : public QObject, public ItemSerializerPlugin
 {
   Q_OBJECT
-  Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+  //QT5 Q_INTERFACES( Akonadi::ItemSerializerPlugin )
 
 public:
   bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );

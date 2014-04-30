@@ -72,5 +72,5 @@ void SerializerPluginBookmark::serialize( const Item& item, const QByteArray& la
 
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_bookmark, SerializerPluginBookmark )
+//QT5 Q_EXPORT_PLUGIN2( akonadi_serializer_bookmark, SerializerPluginBookmark )
 

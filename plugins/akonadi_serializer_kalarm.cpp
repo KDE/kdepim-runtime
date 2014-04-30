@@ -26,7 +26,7 @@
 #include <KAlarmCal/kaevent.h>
 
 #include <AkonadiCore/item.h>
-#include <akonadi/abstractdifferencesreporter.h>
+#include <AkonadiCore/abstractdifferencesreporter.h>
 #include <AkonadiCore/attributefactory.h>
 
 #include <klocale.h>
@@ -269,7 +269,7 @@ QString SerializerPluginKAlarm::extractGid(const Item& item) const
     return item.hasPayload<KAEvent>() ? item.payload<KAEvent>().id() : QString();
 }
 
-Q_EXPORT_PLUGIN2(akonadi_serializer_kalarm, SerializerPluginKAlarm)
+//QT5 Q_EXPORT_PLUGIN2(akonadi_serializer_kalarm, SerializerPluginKAlarm)
 
 
 // vim: et sw=4:

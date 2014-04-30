@@ -19,7 +19,7 @@
 
 #include "akonadi_serializer_kcalcore.h"
 
-#include <akonadi/abstractdifferencesreporter.h>
+#include <AkonadiCore/abstractdifferencesreporter.h>
 #include <AkonadiCore/item.h>
 #include <AkonadiCore/collection.h>
 
@@ -31,6 +31,7 @@
 #include <kdebug.h>
 #include <klocale.h>
 
+#include <QDate>
 #include <QtCore/qplugin.h>
 
 using namespace KCalCore;
@@ -357,5 +358,5 @@ QString SerializerPluginKCalCore::extractGid( const Item &item ) const
   return item.payload<Incidence::Ptr>()->instanceIdentifier();
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_kcalcore, SerializerPluginKCalCore )
+//QT5 Q_EXPORT_PLUGIN2( akonadi_serializer_kcalcore, SerializerPluginKCalCore )
 
