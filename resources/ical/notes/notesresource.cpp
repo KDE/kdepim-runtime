@@ -21,7 +21,7 @@
 
 #include <agentfactory.h>
 
-#include <KCalCore/incidence.h>
+#include <KCalCore/Incidence>
 
 #include <kglobal.h>
 #include <klocale.h>

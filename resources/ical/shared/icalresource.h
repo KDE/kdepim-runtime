@@ -23,7 +23,7 @@
 
 #include "icalresourcebase.h"
 
-#include <KCalCore/incidencebase.h>
+#include <KCalCore/IncidenceBase>
 
 class ICalResource : public ICalResourceBase
 {

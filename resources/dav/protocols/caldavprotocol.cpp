@@ -20,9 +20,9 @@
 #include "davutils.h"
 
 #include <kurl.h>
-#include <KCalCore/event.h>
-#include <KCalCore/journal.h>
-#include <KCalCore/todo.h>
+#include <KCalCore/Event>
+#include <KCalCore/Journal>
+#include <KCalCore/Todo>
 
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>

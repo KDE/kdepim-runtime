@@ -37,11 +37,11 @@
 #include <specialcollections.h>
 #include <specialcollectionsrequestjob.h>
 
-#include <KCalCore/event.h>
-#include <KCalCore/icalformat.h>
-#include <KCalCore/incidence.h>
-#include <KCalCore/journal.h>
-#include <KCalCore/todo.h>
+#include <KCalCore/Event>
+#include <KCalCore/IcalFormat>
+#include <KCalCore/Incidence>
+#include <KCalCore/Journal>
+#include <KCalCore/Todo>
 #include <KConfig>
 #include <KConfigSkeleton>
 #include <KDebug>

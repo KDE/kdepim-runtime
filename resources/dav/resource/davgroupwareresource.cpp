@@ -36,10 +36,10 @@
 #include "settingsadaptor.h"
 #include "setupwizard.h"
 
-#include <KCalCore/freebusy.h>
-#include <KCalCore/incidence.h>
-#include <KCalCore/icalformat.h>
-#include <KCalCore/todo.h>
+#include <KCalCore/FreeBusy>
+#include <KCalCore/Incidence>
+#include <KCalCore/IcalFormat>
+#include <KCalCore/Todo>
 #include <kdatetime.h>
 #include <kjob.h>
 

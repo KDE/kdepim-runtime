@@ -26,7 +26,7 @@
 
 #include <KABC/addressee.h>
 #include <KABC/contactgroup.h>
-#include <KCalCore/incidence.h>
+#include <KCalCore/Incidence>
 
 #include <QtCore/QList>
 #include <QtCore/QString>

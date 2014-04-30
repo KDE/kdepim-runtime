@@ -20,8 +20,8 @@
 
 #include "icalresource.h"
 
-#include <KCalCore/memorycalendar.h>
-#include <KCalCore/freebusy.h>
+#include <KCalCore/MemoryCalendar>
+#include <KCalCore/FreeBusy>
 
 #include <kdebug.h>
 #include <klocale.h>

@@ -26,7 +26,7 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/differencesalgorithminterface.h>
 #include <AkonadiCore/gidextractorinterface.h>
-#include <KCalCore/icalformat.h>
+#include <KCalCore/IcalFormat>
 
 #include <QtCore/QObject>
 

@@ -21,7 +21,7 @@
 #ifndef BIRTHDAYSRESOURCE_H
 #define BIRTHDAYSRESOURCE_H
 
-#include <KCalCore/event.h>
+#include <KCalCore/Event>
 
 #include <resourcebase.h>
 

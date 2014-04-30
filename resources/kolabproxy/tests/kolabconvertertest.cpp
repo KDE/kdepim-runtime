@@ -23,8 +23,8 @@
 #include <KMime/kmime_message.h>
 #include <kolabhandler.h>
 #include <algorithm>
-#include <KCalCore/incidence.h>
-#include <KCalCore/todo.h>
+#include <KCalCore/Incidence>
+#include <KCalCore/Todo>
 
 using namespace Akonadi;
 using namespace KMime;
