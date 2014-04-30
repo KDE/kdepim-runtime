@@ -26,6 +26,7 @@ find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Mbox ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5PimTextEdit ${KF5_VERSION} CONFIG REQUIRED)
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
