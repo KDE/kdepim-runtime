@@ -29,22 +29,21 @@
 #include "highestmodseqattribute.h"
 #include "messagehelper.h"
 
-#include <cachepolicy.h>
-#include <collectionstatistics.h>
-#include <Akonadi/KMime/messageflags.h>
-#include <Akonadi/KMime/messageparts.h>
-#include <agentbase.h>
-#include <itemfetchjob.h>
-#include <itemfetchscope.h>
-#include <session.h>
+#include <akonadi/cachepolicy.h>
+#include <akonadi/collectionstatistics.h>
+#include <akonadi/kmime/messageparts.h>
+#include <akonadi/agentbase.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
+#include <akonadi/session.h>
 
-#include <KDebug>
-#include <KLocale>
+#include <KDE/KDebug>
+#include <KDE/KLocale>
 
-#include <KImap/expungejob.h>
-#include <KImap/fetchjob.h>
-#include <KImap/selectjob.h>
-#include <KImap/session.h>
+#include <kimap/expungejob.h>
+#include <kimap/fetchjob.h>
+#include <kimap/selectjob.h>
+#include <kimap/session.h>
 
 /**
  * A job that retrieves a set of messages in reverse-ordered batches.
@@ -194,14 +193,14 @@ void BatchFetcher::onHeadersFetchDone( KJob *job )
 }
 
 
-RetrieveItemsTask::RetrieveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ),
-  m_session( 0 ),
-  m_fetchedMissingBodies( -1 ),
-  m_fetchMissingBodies( false ),
-  m_batchFetcher( 0 ),
-  m_uidBasedFetch( true ),
-  m_flagsChanged( false )
+RetrieveItemsTask::RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent)
+    : ResourceTask(CancelIfNoSession, resource, parent),
+    m_session(0),
+    m_fetchedMissingBodies(-1),
+    m_fetchMissingBodies(false),
+    m_batchFetcher(0),
+    m_uidBasedFetch(true),
+    m_flagsChanged(false)
 {
 
 }
@@ -212,380 +211,378 @@ RetrieveItemsTask::~RetrieveItemsTask()
 
 void RetrieveItemsTask::setFetchMissingItemBodies(bool enabled)
 {
-  m_fetchMissingBodies = enabled;
+    m_fetchMissingBodies = enabled;
 }
 
-void RetrieveItemsTask::doStart( KIMAP::Session *session )
+void RetrieveItemsTask::doStart(KIMAP::Session *session)
 {
-  emitPercent(0);
-  // Prevent fetching items from noselect folders.
-  if ( collection().hasAttribute( "noselect" ) ) {
-    NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
-    if ( noselect->noSelect() ) {
-      kDebug( 5327 ) << "No Select folder";
-      itemsRetrievalDone();
-      return;
+    emitPercent(0);
+    // Prevent fetching items from noselect folders.
+    if (collection().hasAttribute("noselect")) {
+        NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>(collection().attribute("noselect"));
+        if (noselect->noSelect()) {
+            kDebug(5327) << "No Select folder";
+            itemsRetrievalDone();
+            return;
+        }
     }
-  }
 
-  m_session = session;
+    m_session = session;
 
-  const Akonadi::Collection col = collection();
-  if ( m_fetchMissingBodies && col.cachePolicy()
-       .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) { //disconnected mode, make sure we really have the body cached
+    const Akonadi::Collection col = collection();
+    if (m_fetchMissingBodies && col.cachePolicy()
+        .localParts().contains( QLatin1String(Akonadi::MessagePart::Body))) { //disconnected mode, make sure we really have the body cached
 
-    Akonadi::Session *session = new Akonadi::Session( resourceName().toLatin1() + "_body_checker", this );
-    Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob( col, session );
-    fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
-    fetchJob->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Body );
-    fetchJob->fetchScope().setFetchModificationTime( false );
-    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemsWithoutBodiesDone(KJob*)) );
-    connect( fetchJob, SIGNAL(result(KJob*)), session, SLOT(deleteLater()) );
-  } else {
+        Akonadi::Session *session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
+        Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(col, session);
+        fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
+        fetchJob->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Body);
+        fetchJob->fetchScope().setFetchModificationTime(false);
+        connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemsWithoutBodiesDone(KJob*)));
+        connect(fetchJob, SIGNAL(result(KJob*)), session, SLOT(deleteLater()));
+    } else {
+        startRetrievalTasks();
+    }
+}
+
+void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
+{
+    QList<qint64> uids;
+    if (job->error()) {
+        kWarning() << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    } else {
+        int i = 0;
+        Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob*>(job);
+        Q_FOREACH(const Akonadi::Item &item, fetch->items())  {
+            if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
+                kWarning() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
+                uids.append(item.remoteId().toInt());
+                i++;
+            }
+        }
+        if (i > 0) {
+            kWarning() << "Number of items missing the body: " << i;
+        }
+    }
+    onFetchItemsWithoutBodiesDone(uids);
+}
+
+void RetrieveItemsTask::onFetchItemsWithoutBodiesDone(const QList<qint64> &items)
+{
+    m_messageUidsMissingBody = items;
     startRetrievalTasks();
-  }
-}
-
-void RetrieveItemsTask::fetchItemsWithoutBodiesDone( KJob *job )
-{
-  Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob*>( job );
-  QList<qint64> uids;
-  if ( job->error() ) {
-    kWarning() << job->errorString();
-    cancelTask( job->errorString() );
-    return;
-  } else {
-    int i = 0;
-    Q_FOREACH( const Akonadi::Item &item, fetch->items() )  {
-      if ( !item.cachedPayloadParts().contains( Akonadi::MessagePart::Body ) ) {
-          kWarning() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
-          uids.append( item.remoteId().toInt() );
-          i++;
-      }
-    }
-    if ( i > 0 ) {
-      kWarning() << "Number of items missing the body: " << i;
-    }
-  }
-
-  onFetchItemsWithoutBodiesDone(uids);
-}
-
-void RetrieveItemsTask::onFetchItemsWithoutBodiesDone( const QList<qint64> &items )
-{
-  m_messageUidsMissingBody = items;
-  startRetrievalTasks();
 }
 
 
 void RetrieveItemsTask::startRetrievalTasks()
 {
-  const QString mailBox = mailBoxForCollection( collection() );
-  kDebug(5327) << "Starting retrieval for " << mailBox;
-  m_time.start();
+    const QString mailBox = mailBoxForCollection(collection());
+    kDebug(5327) << "Starting retrieval for " << mailBox;
+    m_time.start();
 
-  // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
-  if ( isAutomaticExpungeEnabled() ) {
-    if ( m_session->selectedMailBox() != mailBox ) {
-      triggerPreExpungeSelect( mailBox );
+    // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
+    if (isAutomaticExpungeEnabled()) {
+        if (m_session->selectedMailBox() != mailBox) {
+            triggerPreExpungeSelect(mailBox);
+        } else {
+            triggerExpunge(mailBox);
+        }
     } else {
-      triggerExpunge( mailBox );
+        // Always select to get the stats updated
+        triggerFinalSelect(mailBox);
     }
-  } else {
-    // Always select to get the stats updated
-    triggerFinalSelect( mailBox );
-  }
 }
 
-void RetrieveItemsTask::triggerPreExpungeSelect( const QString &mailBox )
+void RetrieveItemsTask::triggerPreExpungeSelect(const QString &mailBox)
 {
-  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-  select->setMailBox( mailBox );
-  select->setCondstoreEnabled( serverSupportsCondstore() );
-  connect( select, SIGNAL(result(KJob*)),
-           this, SLOT(onPreExpungeSelectDone(KJob*)) );
-  select->start();
+    KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+    select->setMailBox(mailBox);
+    select->setCondstoreEnabled(serverSupportsCondstore());
+    connect(select, SIGNAL(result(KJob*)),
+            this, SLOT(onPreExpungeSelectDone(KJob*)));
+    select->start();
 }
 
-void RetrieveItemsTask::onPreExpungeSelectDone( KJob *job )
+void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
 {
-  if ( job->error() ) {
-    kWarning() << job->errorString();
-    cancelTask( job->errorString() );
-  } else {
-    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
-    triggerExpunge( select->mailBox() );
-  }
-}
-
-void RetrieveItemsTask::triggerExpunge( const QString &mailBox )
-{
-  kDebug( 5327 ) << mailBox;
-
-  KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( m_session );
-  connect( expunge, SIGNAL(result(KJob*)),
-           this, SLOT(onExpungeDone(KJob*)) );
-  expunge->start();
-}
-
-void RetrieveItemsTask::onExpungeDone( KJob *job )
-{
-  // We can ignore the error, we just had a wrong expunge so some old messages will just reappear.
-  // TODO we should probably hide messages that are marked as deleted (skipping will not work with our mode of synchronization)
-  if (job->error()) {
-    kWarning() << "Expunge failed: " << job->errorString();
-  }
-  // Except for network errors.
-  if ( job->error() && m_session->state() == KIMAP::Session::Disconnected ) {
-    cancelTask( job->errorString() );
-    return;
-  }
-
-  // We have to re-select the mailbox to update all the stats after the expunge
-  // (the EXPUNGE command doesn't return enough for our needs)
-  triggerFinalSelect( m_session->selectedMailBox() );
-}
-
-void RetrieveItemsTask::triggerFinalSelect( const QString &mailBox )
-{
-  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-  select->setMailBox( mailBox );
-  select->setCondstoreEnabled( serverSupportsCondstore() );
-  connect( select, SIGNAL(result(KJob*)),
-           this, SLOT(onFinalSelectDone(KJob*)) );
-  select->start();
-}
-
-void RetrieveItemsTask::onFinalSelectDone( KJob *job )
-{
-  if ( job->error() ) {
-    kWarning() << job->errorString();
-    cancelTask( job->errorString() );
-    return;
-  }
-
-  KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob*>( job );
-
-  const QString mailBox = select->mailBox();
-  const int messageCount = select->messageCount();
-  const qint64 uidValidity = select->uidValidity();
-  const qint64 nextUid = select->nextUid();
-  quint64 highestModSeq = select->highestModSequence();
-  const QList<QByteArray> flags = select->permanentFlags();
-
-  //The select job retrieves highestmodseq whenever it's available, but in case of no CONDSTORE support we ignore it
-  if ( !serverSupportsCondstore() ) {
-    highestModSeq = 0;
-  }
-
-  Akonadi::Collection col = collection();
-  bool modifyNeeded = false;
-
-  // Get the current uid validity value and store it
-  int oldUidValidity = 0;
-  if ( !col.hasAttribute( "uidvalidity" ) ) {
-    UidValidityAttribute* currentUidValidity  = new UidValidityAttribute( uidValidity );
-    col.addAttribute( currentUidValidity );
-    modifyNeeded = true;
-  } else {
-    UidValidityAttribute* currentUidValidity =
-      static_cast<UidValidityAttribute*>( col.attribute( "uidvalidity" ) );
-    oldUidValidity = currentUidValidity->uidValidity();
-    if ( oldUidValidity != uidValidity ) {
-      currentUidValidity->setUidValidity( uidValidity );
-      modifyNeeded = true;
-    }
-  }
-
-  // Get the current uid next value and store it
-  int oldNextUid = 0;
-  if ( !col.hasAttribute( "uidnext" ) ) {
-    UidNextAttribute* currentNextUid  = new UidNextAttribute( nextUid );
-    col.addAttribute( currentNextUid );
-    modifyNeeded = true;
-  } else {
-    UidNextAttribute* currentNextUid =
-      static_cast<UidNextAttribute*>( col.attribute( "uidnext" ) );
-    oldNextUid = currentNextUid->uidNext();
-    if ( oldNextUid != nextUid ) {
-      currentNextUid->setUidNext( nextUid );
-      modifyNeeded = true;
-    }
-  }
-
-  // Store the mailbox flags
-  if ( !col.hasAttribute( "collectionflags" ) ) {
-    Akonadi::CollectionFlagsAttribute *flagsAttribute  = new Akonadi::CollectionFlagsAttribute( flags );
-    col.addAttribute( flagsAttribute );
-    modifyNeeded = true;
-  } else {
-    Akonadi::CollectionFlagsAttribute *flagsAttribute =
-      static_cast<Akonadi::CollectionFlagsAttribute*>( col.attribute( "collectionflags" ) );
-    const QList<QByteArray> oldFlags = flagsAttribute->flags();
-    if ( oldFlags != flags ) {
-      flagsAttribute->setFlags( flags );
-      modifyNeeded = true;
-    }
-  }
-
-  quint64 oldHighestModSeq = 0;
-  if ( serverSupportsCondstore() && highestModSeq > 0 ) {
-    if ( !col.hasAttribute( "highestmodseq" ) ) {
-      HighestModSeqAttribute *attr = new HighestModSeqAttribute( highestModSeq );
-      col.addAttribute( attr );
-      modifyNeeded = true;
+    if (job->error()) {
+        kWarning() << job->errorString();
+        cancelTask(job->errorString());
     } else {
-      HighestModSeqAttribute *attr = col.attribute<HighestModSeqAttribute>();
-      if ( attr->highestModSequence() < highestModSeq ) {
-        oldHighestModSeq = attr->highestModSequence();
-        attr->setHighestModSeq( highestModSeq );
+        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
+        triggerExpunge(select->mailBox());
+    }
+}
+
+void RetrieveItemsTask::triggerExpunge(const QString &mailBox)
+{
+    KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob(m_session);
+    connect(expunge, SIGNAL(result(KJob*)),
+            this, SLOT(onExpungeDone(KJob*)));
+    expunge->start();
+}
+
+void RetrieveItemsTask::onExpungeDone(KJob *job)
+{
+    // We can ignore the error, we just had a wrong expunge so some old messages will just reappear.
+    // TODO we should probably hide messages that are marked as deleted (skipping will not work because we rely on the message count)
+    if (job->error()) {
+        kWarning() << "Expunge failed: " << job->errorString();
+    }
+    // Except for network errors.
+    if (job->error() && m_session->state() == KIMAP::Session::Disconnected) {
+        cancelTask( job->errorString() );
+        return;
+    }
+
+    // We have to re-select the mailbox to update all the stats after the expunge
+    // (the EXPUNGE command doesn't return enough for our needs)
+    triggerFinalSelect(m_session->selectedMailBox());
+}
+
+void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
+{
+    KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+    select->setMailBox(mailBox);
+    select->setCondstoreEnabled(serverSupportsCondstore());
+    connect( select, SIGNAL(result(KJob*)),
+            this, SLOT(onFinalSelectDone(KJob*)) );
+    select->start();
+}
+
+void RetrieveItemsTask::onFinalSelectDone(KJob *job)
+{
+    if (job->error()) {
+        kWarning() << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    }
+
+    KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob*>(job);
+
+    const QString mailBox = select->mailBox();
+    const int messageCount = select->messageCount();
+    const qint64 uidValidity = select->uidValidity();
+    const qint64 nextUid = select->nextUid();
+    quint64 highestModSeq = select->highestModSequence();
+    const QList<QByteArray> flags = select->permanentFlags();
+
+    //The select job retrieves highestmodseq whenever it's available, but in case of no CONDSTORE support we ignore it
+    if (!serverSupportsCondstore()) {
+        highestModSeq = 0;
+    }
+
+    Akonadi::Collection col = collection();
+    bool modifyNeeded = false;
+
+    // Get the current uid validity value and store it
+    int oldUidValidity = 0;
+    if (!col.hasAttribute("uidvalidity")) {
+        UidValidityAttribute* currentUidValidity  = new UidValidityAttribute(uidValidity);
+        col.addAttribute(currentUidValidity);
         modifyNeeded = true;
-      } else if ( attr->highestModSequence() == highestModSeq ) {
-        oldHighestModSeq = attr->highestModSequence();
-      } else if ( attr->highestModSequence() > highestModSeq ) {
-        // This situation should not happen. If it does, update the highestModSeq
-        // attribute, but rather do a full sync
-        attr->setHighestModSeq( highestModSeq );
+    } else {
+        UidValidityAttribute* currentUidValidity =
+        static_cast<UidValidityAttribute*>(col.attribute("uidvalidity" ));
+        oldUidValidity = currentUidValidity->uidValidity();
+        if (oldUidValidity != uidValidity) {
+            currentUidValidity->setUidValidity(uidValidity);
+            modifyNeeded = true;
+        }
+    }
+
+    // Get the current uid next value and store it
+    int oldNextUid = 0;
+    if (!col.hasAttribute("uidnext")) {
+        UidNextAttribute* currentNextUid  = new UidNextAttribute(nextUid);
+        col.addAttribute(currentNextUid);
         modifyNeeded = true;
-      }
-    }
-  }
-  m_highestModseq = oldHighestModSeq;
-
-  if ( modifyNeeded ) {
-    m_modifiedCollection = col;
-  }
-
-  KIMAP::FetchJob::FetchScope scope;
-  scope.parts.clear();
-  scope.mode = KIMAP::FetchJob::FetchScope::FullHeaders;
-
-  if ( col.cachePolicy()
-       .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) {
-    scope.mode = KIMAP::FetchJob::FetchScope::Full;
-  }
-
-  const qint64 realMessageCount = col.statistics().count();
-
-  kDebug(5327) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
-
-  /*
-   * A synchronization has 3 mandatory steps:
-   * * If uidvalidity changed the local cache must be invalidated
-   * * New messages can be fetched usin uidNext and the last known fetched uid
-   * * flag changes and removals can be detected by listing all messages that weren't part of the previous step
-   *
-   * Everything else is optimizations.
-   */
-
-  if (messageCount == 0) {
-    //Shortcut:
-    //If no messages are present on the server, clear local cash and finish
-    if (realMessageCount > 0) {
-      kDebug( 5327 ) << "No messages present so we are done, deleting local messages.";
-      itemsRetrieved(Akonadi::Item::List());
     } else {
-      kDebug( 5327 ) << "No messages present so we are done";
-    }
-    taskComplete();
-  } else if (oldUidValidity != uidValidity) {
-    //If uidvalidity has changed our local cache is worthless and has to be refetched completely
-    if (oldUidValidity != 0) {
-      kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-                    << uidValidity << ") refetching " << mailBox;
-    } else {
-      kDebug( 5327 ) << "Fetching complete mailbox " << mailBox;
+        UidNextAttribute* currentNextUid =
+        static_cast<UidNextAttribute*>(col.attribute("uidnext"));
+        oldNextUid = currentNextUid->uidNext();
+        if (oldNextUid != nextUid) {
+            currentNextUid->setUidNext(nextUid);
+            modifyNeeded = true;
+        }
     }
 
-    setTotalItems(messageCount);
-    retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
-  } else if (!m_messageUidsMissingBody.isEmpty()) {
-    //fetch missing uids
-    m_fetchedMissingBodies = 0;
-    setTotalItems(m_messageUidsMissingBody.size());
-    KIMAP::ImapSet imapSet;
-    imapSet.add(m_messageUidsMissingBody);
-    retrieveItems(imapSet, scope, true, true);
-  } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) == messageCount)) {
-    //Optimization:
-    //New messages are available, but we know no messages have been removed.
-    //Fetch new messages, and then check for changed flags and removed messages
-    //We can make an incremental update and use modseq.
-    kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
-    setTotalItems(messageCount);
-    m_flagsChanged = !(highestModSeq == oldHighestModSeq);
-    retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
-  } else if (nextUid > oldNextUid) {
-    //New messages are available. Fetch new messages, and then check for changed flags and removed messages
-    kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
-    setTotalItems(qMax(1ll, messageCount - realMessageCount));
-    retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
-  } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
-    //Optimization:
-    //We know no messages were added or removed (if the message count and uidnext is still the same)
-    //We only check the flags incrementally and can make use of modseq
-    m_uidBasedFetch = true;
-    m_incremental = true;
-    m_flagsChanged = !(highestModSeq == oldHighestModSeq);
-    setTotalItems(messageCount);
-    listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
-  } else {
-    //Shortcut:
-    //No new messages are available. Directly check for changed flags and removed messages.
-    m_uidBasedFetch = true;
-    m_incremental = false;
-    setTotalItems(messageCount);
-    listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
-  }
+    // Store the mailbox flags
+    if (!col.hasAttribute("collectionflags")) {
+        Akonadi::CollectionFlagsAttribute *flagsAttribute  = new Akonadi::CollectionFlagsAttribute(flags);
+        col.addAttribute(flagsAttribute);
+        modifyNeeded = true;
+    } else {
+        Akonadi::CollectionFlagsAttribute *flagsAttribute =
+        static_cast<Akonadi::CollectionFlagsAttribute*>(col.attribute("collectionflags"));
+        const QList<QByteArray> oldFlags = flagsAttribute->flags();
+        if (oldFlags != flags) {
+            flagsAttribute->setFlags(flags);
+            modifyNeeded = true;
+        }
+    }
+
+    quint64 oldHighestModSeq = 0;
+    if (serverSupportsCondstore() && highestModSeq > 0) {
+        if (!col.hasAttribute("highestmodseq")) {
+            HighestModSeqAttribute *attr = new HighestModSeqAttribute(highestModSeq);
+            col.addAttribute(attr);
+            modifyNeeded = true;
+        } else {
+            HighestModSeqAttribute *attr = col.attribute<HighestModSeqAttribute>();
+            if (attr->highestModSequence() < highestModSeq) {
+                oldHighestModSeq = attr->highestModSequence();
+                attr->setHighestModSeq(highestModSeq);
+                modifyNeeded = true;
+            } else if (attr->highestModSequence() == highestModSeq) {
+                oldHighestModSeq = attr->highestModSequence();
+            } else if (attr->highestModSequence() > highestModSeq) {
+                // This situation should not happen. If it does, update the highestModSeq
+                // attribute, but rather do a full sync
+                attr->setHighestModSeq(highestModSeq);
+                modifyNeeded = true;
+            }
+        }
+    }
+    m_highestModseq = oldHighestModSeq;
+
+    if ( modifyNeeded ) {
+        m_modifiedCollection = col;
+    }
+
+    KIMAP::FetchJob::FetchScope scope;
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::FullHeaders;
+
+    if ( col.cachePolicy()
+        .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) {
+        scope.mode = KIMAP::FetchJob::FetchScope::Full;
+    }
+
+    const qint64 realMessageCount = col.statistics().count();
+
+    kDebug(5327) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
+
+    /*
+    * A synchronization has 3 mandatory steps:
+    * * If uidvalidity changed the local cache must be invalidated
+    * * New messages can be fetched usin uidNext and the last known fetched uid
+    * * flag changes and removals can be detected by listing all messages that weren't part of the previous step
+    *
+    * Everything else is optimizations.
+    */
+
+    if (messageCount == 0) {
+        //Shortcut:
+        //If no messages are present on the server, clear local cash and finish
+        if (realMessageCount > 0) {
+            kDebug( 5327 ) << "No messages present so we are done, deleting local messages.";
+            itemsRetrieved(Akonadi::Item::List());
+        } else {
+            kDebug( 5327 ) << "No messages present so we are done";
+        }
+        taskComplete();
+    } else if (oldUidValidity != uidValidity) {
+        //If uidvalidity has changed our local cache is worthless and has to be refetched completely
+        if (oldUidValidity != 0) {
+            kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
+                            << uidValidity << ") refetching " << mailBox;
+        } else {
+            kDebug( 5327 ) << "Fetching complete mailbox " << mailBox;
+        }
+
+        setTotalItems(messageCount);
+        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
+    } else if (!m_messageUidsMissingBody.isEmpty()) {
+        //fetch missing uids
+        m_fetchedMissingBodies = 0;
+        setTotalItems(m_messageUidsMissingBody.size());
+        KIMAP::ImapSet imapSet;
+        imapSet.add(m_messageUidsMissingBody);
+        retrieveItems(imapSet, scope, true, true);
+    } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) == messageCount)) {
+        //Optimization:
+        //New messages are available, but we know no messages have been removed.
+        //Fetch new messages, and then check for changed flags and removed messages
+        //We can make an incremental update and use modseq.
+        kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
+        setTotalItems(messageCount);
+        m_flagsChanged = !(highestModSeq == oldHighestModSeq);
+        retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
+    } else if (nextUid > oldNextUid) {
+        //New messages are available. Fetch new messages, and then check for changed flags and removed messages
+        kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
+        setTotalItems(qMax(1ll, messageCount - realMessageCount));
+        retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
+    } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
+        //Optimization:
+        //We know no messages were added or removed (if the message count and uidnext is still the same)
+        //We only check the flags incrementally and can make use of modseq
+        m_uidBasedFetch = true;
+        m_incremental = true;
+        m_flagsChanged = !(highestModSeq == oldHighestModSeq);
+        setTotalItems(messageCount);
+        listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
+    } else {
+        //Shortcut:
+        //No new messages are available. Directly check for changed flags and removed messages.
+        m_uidBasedFetch = true;
+        m_incremental = false;
+        setTotalItems(messageCount);
+        listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
+    }
 }
 
 void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental, bool uidBased)
 {
-  Q_ASSERT(set.intervals().size() == 1);
+    Q_ASSERT(set.intervals().size() == 1);
 
-  m_incremental = incremental;
-  m_uidBasedFetch = uidBased;
+    m_incremental = incremental;
+    m_uidBasedFetch = uidBased;
 
-  m_batchFetcher = new BatchFetcher(set, scope, batchSize(), m_session);
-  m_batchFetcher->setUidBased(m_uidBasedFetch);
-  m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
-  connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
-          this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
-  connect(m_batchFetcher, SIGNAL(result(KJob*)),
-          this, SLOT(onRetrievalDone(KJob*)));
-  m_batchFetcher->start();
+    m_batchFetcher = new BatchFetcher(set, scope, batchSize(), m_session);
+    m_batchFetcher->setUidBased(m_uidBasedFetch);
+    m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
+    connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
+            this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
+    connect(m_batchFetcher, SIGNAL(result(KJob*)),
+            this, SLOT(onRetrievalDone(KJob*)));
+    m_batchFetcher->start();
 }
 
 void RetrieveItemsTask::onReadyForNextBatch(int size)
 {
-  if (m_batchFetcher) {
-    m_batchFetcher->fetchNextBatch();
-  }
+    Q_UNUSED(size);
+    if (m_batchFetcher) {
+        m_batchFetcher->fetchNextBatch();
+    }
 }
 
 void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
 {
-  if ( m_incremental ) {
-    itemsRetrievedIncremental( addedItems, Akonadi::Item::List() );
-  } else {
-    itemsRetrieved( addedItems );
-  }
+    if (m_incremental) {
+        itemsRetrievedIncremental(addedItems, Akonadi::Item::List());
+    } else {
+        itemsRetrieved(addedItems);
+    }
 
-  //m_fetchedMissingBodies is -1 if we fetch for other reason, but missing bodies
-  if ( m_fetchedMissingBodies != -1 ) {
-    const QString mailBox = mailBoxForCollection( collection() );
-    m_fetchedMissingBodies += addedItems.count();
-    emit status(Akonadi::AgentBase::Running,
-                i18nc( "@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
-  }
+    //m_fetchedMissingBodies is -1 if we fetch for other reason, but missing bodies
+    if (m_fetchedMissingBodies != -1) {
+        const QString mailBox = mailBoxForCollection(collection());
+        m_fetchedMissingBodies += addedItems.count();
+        emit status(Akonadi::AgentBase::Running,
+                    i18nc( "@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
+    }
 }
 
-void RetrieveItemsTask::onRetrievalDone( KJob *job )
+void RetrieveItemsTask::onRetrievalDone(KJob *job)
 {
     m_batchFetcher = 0;
-    if ( job->error() ) {
+    if (job->error()) {
         kWarning() << job->errorString();
-        cancelTask( job->errorString() );
+        cancelTask(job->errorString());
         m_fetchedMissingBodies = -1;
         return;
     }
@@ -597,7 +594,7 @@ void RetrieveItemsTask::onRetrievalDone( KJob *job )
     // already have them all from the previous full fetch. This is not
     // just an optimization, as incremental retrieval assumes nothing
     // will be listed twice.
-    if ( m_fetchedMissingBodies != -1 || alreadyFetchedBegin <= 1 ) {
+    if (m_fetchedMissingBodies != -1 || alreadyFetchedBegin <= 1) {
         taskComplete();
         return;
     }
@@ -608,7 +605,7 @@ void RetrieveItemsTask::onRetrievalDone( KJob *job )
 }
 
 
-void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
+void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
 {
   kDebug(5327) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
   kDebug(5327) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
@@ -636,15 +633,15 @@ void RetrieveItemsTask::listFlagsForImapSet( const KIMAP::ImapSet& set )
   m_batchFetcher->start();
 }
 
-void RetrieveItemsTask::onFlagsFetchDone( KJob *job )
+void RetrieveItemsTask::onFlagsFetchDone(KJob *job)
 {
-  m_batchFetcher = 0;
-  if ( job->error() ) {
-    kWarning() << job->errorString();
-    cancelTask( job->errorString() );
-  } else {
-    taskComplete();
-  }
+    m_batchFetcher = 0;
+    if ( job->error() ) {
+        kWarning() << job->errorString();
+        cancelTask(job->errorString());
+    } else {
+        taskComplete();
+    }
 }
 
 void RetrieveItemsTask::taskComplete()
@@ -652,7 +649,7 @@ void RetrieveItemsTask::taskComplete()
     if (m_modifiedCollection.isValid()) {
         applyCollectionChanges(m_modifiedCollection);
     }
-    if ( m_incremental ) {
+    if (m_incremental) {
         // Calling itemsRetrievalDone() before previous call to itemsRetrievedIncremental()
         // behaves like if we called itemsRetrieved(Items::List()), so make sure
         // Akonadi knows we did incremental fetch that came up with no changes
