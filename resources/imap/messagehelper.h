@@ -20,9 +20,9 @@
 #ifndef MESSAGEHELPER_H
 #define MESSAGEHELPER_H
 
-#include <Akonadi/Item>
+#include <AkonadiCore/Item>
 #include <KMime/Message>
-#include <KIMAP/FetchJob>
+#include <KImap/FetchJob>
 
 class MessageHelper {
 public:
