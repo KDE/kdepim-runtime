@@ -58,12 +58,12 @@ private slots:
              << "S: * 1 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:2471 (RFC822.SIZE INTERNALDATE "
+             << "C: A000006 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
                 "BODY.PEEK[HEADER] "
                 "FLAGS UID)"
-             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[HEADER] {69}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
                 "To: Bar <bar@kde.org>\r\n"
@@ -99,10 +99,10 @@ private slots:
              << "S: * 1 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:2471 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
-             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+             << "C: A000006 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
                 "To: Bar <bar@kde.org>\r\n"
@@ -123,7 +123,7 @@ private slots:
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
-    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext(2471);
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext(9);
     collection.setCachePolicy( policy );
     collection.setStatistics( stats );
 
@@ -139,10 +139,10 @@ private slots:
              << "S: * 1 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:2471 (FLAGS UID)"
-             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
+             << "C: A000006 UID FETCH 1:9 (FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 )"
              << "S: A000006 OK fetch done";
 
     callNames.clear();
@@ -167,7 +167,7 @@ private slots:
              << "S: * 0 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done";
 
     callNames.clear();
@@ -175,7 +175,7 @@ private slots:
 
     QTest::newRow( "third listing, full sync, empty folder" ) << collection << scenario << callNames;
 
-    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2470 );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 8 );
     stats.setCount( 5 );
     collection.setStatistics( stats );
     scenario.clear();
@@ -190,11 +190,11 @@ private slots:
              << "S: * 5 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: * OK [ UIDNEXT 9  ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 2470:2471 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
-             << "S: * 4 FETCH ( FLAGS (\\Seen) UID 2470 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+             << "C: A000006 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 4 FETCH ( FLAGS (\\Seen) UID 8 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
                 "To: Bar <bar@kde.org>\r\n"
@@ -202,7 +202,7 @@ private slots:
                 "\r\n"
                 "Test\r\n"
                 " )"
-             << "S: * 5 FETCH ( FLAGS (\\Seen) UID 2471 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+             << "S: * 5 FETCH ( FLAGS (\\Seen) UID 9 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
                 "To: Bar <bar@kde.org>\r\n"
@@ -211,7 +211,7 @@ private slots:
                 "Test\r\n"
                 " )"
              << "S: A000006 OK fetch done"
-             << "C: A000007 UID FETCH 1:2469 (FLAGS UID)"
+             << "C: A000007 UID FETCH 1:7 (FLAGS UID)"
              << "S: * 1 FETCH"
              << "S: * 2 FETCH"
              << "S: * 3 FETCH"
@@ -226,7 +226,7 @@ private slots:
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
-    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 9 );
     collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456789 );
     stats.setCount( 5 );
     collection.setStatistics( stats );
@@ -242,7 +242,7 @@ private slots:
              << "S: * 5 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135 ]"
-             << "S: * OK [ UIDNEXT 2471 ]"
+             << "S: * OK [ UIDNEXT 9 ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done";
     callNames.clear();
@@ -254,7 +254,7 @@ private slots:
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
-    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 9 );
     collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
     stats.setCount( 5 );
     collection.setStatistics( stats );
@@ -270,11 +270,11 @@ private slots:
              << "S: * 5 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135 ]"
-             << "S: * OK [ UIDNEXT 2471 ]"
+             << "S: * OK [ UIDNEXT 9 ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:2471 (FLAGS UID) (CHANGEDSINCE 123456788)"
-             << "S: * 5 FETCH ( UID 2470 FLAGS () )"
+             << "C: A000006 UID FETCH 1:9 (FLAGS UID) (CHANGEDSINCE 123456788)"
+             << "S: * 5 FETCH ( UID 8 FLAGS () )"
              << "S: A000006 OK fetch done";
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
@@ -285,7 +285,7 @@ private slots:
     collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
     collection.setCachePolicy( policy );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
-    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 2471 );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 9 );
     collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
     stats.setCount( 5 );
     collection.setStatistics( stats );
@@ -301,11 +301,11 @@ private slots:
              << "S: * 5 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135 ]"
-             << "S: * OK [ UIDNEXT 2471 ]"
+             << "S: * OK [ UIDNEXT 9 ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:2471 (FLAGS UID)"
-             << "S: * 5 FETCH ( UID 2470 FLAGS () )"
+             << "C: A000006 UID FETCH 1:9 (FLAGS UID)"
+             << "S: * 5 FETCH ( UID 8 FLAGS () )"
              << "S: A000006 OK fetch done";
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
@@ -315,6 +315,7 @@ private slots:
 
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 9 );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(3);
     collection.setCachePolicy( policy );
     stats.setCount( 1 );
@@ -332,9 +333,9 @@ private slots:
              << "S: * 1 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
-             << "S: * OK [ UIDNEXT 2471  ]"
+             << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:2471 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
@@ -350,6 +351,63 @@ private slots:
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
 
     QTest::newRow( "uidvalidity changed" ) << collection << scenario << callNames;
+
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(105);
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+    collection.setCachePolicy( policy );
+    stats.setCount(15);
+    collection.setStatistics( stats );
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 120 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: * OK [ UIDNEXT 120  ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 UID FETCH 105:114 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 105 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                "RFC822.SIZE 75 BODY[] {75}\r\n"
+                "From: Foo <foo@kde.org>\r\n"
+                "To: Bar <bar@kde.org>\r\n"
+                "Subject: Test Mail\r\n"
+                "\r\n"
+                "Test\r\n"
+                " )"
+              //9 more would follow but are excluded for clarity
+             << "S: A000006 OK fetch done"
+             << "C: A000007 UID FETCH 115:120 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 115 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                "RFC822.SIZE 75 BODY[] {75}\r\n"
+                "From: Foo <foo@kde.org>\r\n"
+                "To: Bar <bar@kde.org>\r\n"
+                "Subject: Test Mail\r\n"
+                "\r\n"
+                "Test\r\n"
+                " )"
+              //4 more would follow but are excluded for clarity
+             << "S: A000007 OK fetch done"
+             << "C: A000008 UID FETCH 1:100 (FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+              //99 more would follow but are excluded for clarity
+             << "S: A000008 OK fetch done"
+             << "C: A000009 UID FETCH 101:104 (FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 101 )"
+              //3 more would follow but are excluded for clarity
+             << "S: A000009 OK fetch done";
+
+    callNames.clear();
+    callNames << "itemsRetrieved" << "itemsRetrieved" << "itemsRetrieved" << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+
+    QTest::newRow( "test batch processing" ) << collection << scenario << callNames;
 
   }
 
