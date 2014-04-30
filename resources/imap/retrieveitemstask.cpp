@@ -283,7 +283,8 @@ void RetrieveItemsTask::startRetrievalTasks()
     m_time.start();
 
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
-    if (isAutomaticExpungeEnabled()) {
+    // We assume that we can only expunge if we can delete items (correct would be to check for "e" ACL right).
+    if (isAutomaticExpungeEnabled() && (collection().rights() & Akonadi::Collection::CanDeleteItem)) {
         if (m_session->selectedMailBox() != mailBox) {
             triggerPreExpungeSelect(mailBox);
         } else {
