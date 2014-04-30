@@ -29,7 +29,7 @@ class ImapResource;
 struct TaskArguments {
     TaskArguments(){}
     TaskArguments(const Akonadi::Item &_item): items(Akonadi::Item::List() << _item) {}
-    TaskArguments(const Akonadi::Item &_item, const Akonadi::Collection &_parentCollection): items(Akonadi::Item::List() << _item), parentCollection(_parentCollection) {}
+    TaskArguments(const Akonadi::Item &_item, const Akonadi::Collection &_collection): collection(_collection), items(Akonadi::Item::List() << _item) {}
     TaskArguments(const Akonadi::Item &_item, const QSet<QByteArray> &_parts): items(Akonadi::Item::List() << _item), parts(_parts) {}
     TaskArguments(const Akonadi::Item::List &_items): items(_items) {}
     TaskArguments(const Akonadi::Item::List &_items, const QSet<QByteArray> &_addedFlags, const QSet<QByteArray> &_removedFlags): items(_items), addedFlags(_addedFlags), removedFlags(_removedFlags) {}
@@ -40,7 +40,7 @@ struct TaskArguments {
     TaskArguments(const Akonadi::Collection &_collection, const QSet<QByteArray> &_parts): collection(_collection), parts(_parts){}
     Akonadi::Collection collection;
     Akonadi::Item::List items;
-    Akonadi::Collection parentCollection;
+    Akonadi::Collection parentCollection; //only used as parent of a collection
     Akonadi::Collection sourceCollection;
     Akonadi::Collection targetCollection;
     QSet<QByteArray> parts;
