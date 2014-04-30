@@ -54,6 +54,9 @@ void AddItemTask::doStart( KIMAP::Session *session )
   }
 
   const QString mailBox = mailBoxForCollection( collection() );
+  if ( mailBox.isEmpty() ) {
+    kWarning() << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
+  }
 
   kDebug( 5327 ) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
 
@@ -76,6 +79,7 @@ void AddItemTask::onAppendMessageDone( KJob *job )
   KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>( job );
 
   if ( append->error() ) {
+    kWarning() << append->errorString();
     cancelTask( append->errorString() );
     return;
   }
@@ -109,6 +113,7 @@ void AddItemTask::onAppendMessageDone( KJob *job )
 void AddItemTask::onPreSearchSelectDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << job->errorString();
     cancelTask( job->errorString() );
   } else {
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
@@ -151,6 +156,7 @@ void AddItemTask::triggerSearchJob( KIMAP::Session *session )
 void AddItemTask::onSearchDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
