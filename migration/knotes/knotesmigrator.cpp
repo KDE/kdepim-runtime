@@ -113,7 +113,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
     }
 
 
-    bool success = m_notesResource->load( url.toLocalFile() );
+    const bool success = m_notesResource->load( url.toLocalFile() );
     if ( !success ) {
         migrationFailed( i18n( "Failed to open file for reading: %1" , resourcePath ) );
         migrateNext();
@@ -130,7 +130,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
         migrateNext();
         return;
     }
-    bool isReadOnly = kresCfgGroup.readEntry("ResourceIsReadOnly", false);
+    const bool isReadOnly = kresCfgGroup.readEntry("ResourceIsReadOnly", false);
     iface->setReadOnly( isReadOnly );
 
     QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
@@ -149,7 +149,6 @@ void KNotesMigrator::syncDone(KJob *job)
 {
     Q_UNUSED( job );
     emit message( Info, i18n( "Instance \"%1\" synchronized" , m_agentInstance.identifier() ) );
-    qDebug()<<" m_agentInstance.identifier() :"<<m_agentInstance.identifier();
 
     CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
     connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
