@@ -153,6 +153,7 @@ ImapResource::ImapResource( const QString &id )
   scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
   setDisableAutomaticItemDeliveryDone( true );
+  setItemSyncBatchSize( 100 );
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
 
