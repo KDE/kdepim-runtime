@@ -51,6 +51,7 @@ target_link_libraries(kmail-migrator
   KF5::AkonadiCore
   KF5::AkonadiAgentBase  
   KF5::KIOCore
+  KF5::MailTransport
   akonadi-filestore
   maildir
   kmindexreader

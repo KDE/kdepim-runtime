@@ -47,7 +47,7 @@
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KSharedConfig>
-
+#include <KDebug>
 #include <QSet>
 #include <QVariant>
 

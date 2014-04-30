@@ -33,6 +33,8 @@
 
 #include <KLocalizedString>
 
+#include <KDebug>
+
 #include <QQueue>
 
 using namespace Akonadi;

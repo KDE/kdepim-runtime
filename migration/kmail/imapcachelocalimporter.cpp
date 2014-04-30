@@ -29,7 +29,7 @@
 #include <AkonadiCore/agentinstance.h>
 #include <AkonadiCore/agentinstancecreatejob.h>
 #include <AkonadiCore/collection.h>
-#include <akonadi/collectioncreatejob.h>
+#include <AkonadiCore/collectioncreatejob.h>
 #include <AkonadiCore/item.h>
 #include <AkonadiCore/itemcreatejob.h>
 #include <AkonadiCore/session.h>

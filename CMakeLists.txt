@@ -43,7 +43,7 @@ set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "h
 add_subdirectory(resources)
 add_subdirectory(agents)
 add_subdirectory(libkdepim-copy)
-#add_subdirectory(plugins)
+add_subdirectory(plugins)
 add_subdirectory(accountwizard)
 add_subdirectory(defaultsetup)
 #add_subdirectory(resourcetester)

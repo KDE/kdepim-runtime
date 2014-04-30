@@ -40,7 +40,7 @@
 
 #include "collectionannotationsattribute.h"
 
-#include <Mailtransport/Transport>
+#include <MailTransport/Transport>
 
 #include <AkonadiCore/agentmanager.h>
 #include <AkonadiCore/agentinstance.h>
@@ -48,13 +48,14 @@
 #include <AkonadiCore/attributefactory.h>
 #include <AkonadiCore/tag.h>
 #include <AkonadiCore/tagcreatejob.h>
-#include <akonadi/tagattribute.h>
+#include <AkonadiCore/tagattribute.h>
 using Akonadi::AgentManager;
 using Akonadi::AgentInstance;
 using Akonadi::AgentInstanceCreateJob;
 
 #include <KIO/CopyJob>
 
+#include <KGlobal>
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDateTime>
@@ -837,7 +838,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
                                       .arg( config.readEntry( "host", QString() ) )
                                       .arg( config.readEntry( "port", 110u ) );
 
-  const KConfig popFilterConfig( popFilterFileName, KConfig::SimpleConfig, "data" );
+  const KConfig popFilterConfig( popFilterFileName, KConfig::SimpleConfig, QStandardPaths::GenericDataLocation );
   const KConfigGroup popFilterGroup( &popFilterConfig, QString() );
   iface->setDownloadLater( popFilterGroup.readEntry( "downloadLater", QStringList() ) );
   iface->setSeenUidList( popFilterGroup.readEntry( "seenUidList", QStringList() ) );

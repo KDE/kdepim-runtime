@@ -23,7 +23,7 @@
 #include <QtCore/QFile>
 
 #include <KABC/vcardconverter.h>
-#include <kaboutdata.h>
+#include <k4aboutdata.h>
 #include <kcmdlineargs.h>
 #include <kconfig.h>
 #include <kconfiggroup.h>
@@ -93,7 +93,7 @@ void convertAddressBook()
 
 int main( int argc, char **argv )
 {
-  KAboutData aboutData( "kaddressbookmigrator", QByteArray(), ki18n( "Migration tool for the KDE address book" ), "0.1" );
+  K4AboutData aboutData( "kaddressbookmigrator", QByteArray(), ki18n( "Migration tool for the KDE address book" ), "0.1" );
   aboutData.addAuthor( ki18n( "Tobias Koenig" ), ki18n( "Author" ), "tokoe@kde.org" );
 
   KCmdLineArgs::init( argc, argv, &aboutData );

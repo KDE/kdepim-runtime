@@ -30,10 +30,10 @@
 #include <Akonadi/KMime/messagefolderattribute.h>
 #include <agentinstance.h>
 #include <agentmanager.h>
-#include <collection.h>
-#include <collectioncreatejob.h>
-#include <collectionmodifyjob.h>
-#include <entitydisplayattribute.h>
+#include <AkonadiCore/collection.h>
+#include <AkonadiCore/collectioncreatejob.h>
+#include <AkonadiCore/collectionmodifyjob.h>
+#include <AkonadiCore/entitydisplayattribute.h>
 #include <session.h>
 
 #include "collectionannotationsattribute.h"

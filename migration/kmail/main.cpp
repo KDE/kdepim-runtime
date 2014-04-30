@@ -24,7 +24,7 @@
 
 #include <AkonadiCore/control.h>
 
-#include <KAboutData>
+#include <K4AboutData>
 #include <KApplication>
 #include <KCmdLineArgs>
 #include <KGlobal>
@@ -35,11 +35,11 @@ using namespace KMail;
 
 int main( int argc, char **argv )
 {
-  KAboutData aboutData( "kmail-migrator", 0,
+  K4AboutData aboutData( "kmail-migrator", 0,
                         ki18n( "KMail Migration Tool" ),
                         "0.1",
                         ki18n( "Migration of KMail accounts to Akonadi" ),
-                        KAboutData::License_LGPL,
+                        K4AboutData::License_LGPL,
                         ki18n( "(c) 2009-2010 the Akonadi developers" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );

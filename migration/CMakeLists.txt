@@ -21,6 +21,11 @@ find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Abc ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Mbox ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
@@ -45,7 +50,7 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
 
 
 #add_subdirectory( kmail )
-#add_subdirectory( kaddressbook )
+add_subdirectory( kaddressbook )
 #add_subdirectory( kjots )
 add_subdirectory( gid )
 #add_subdirectory( knotes )
