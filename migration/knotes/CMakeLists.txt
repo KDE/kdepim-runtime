@@ -1,7 +1,3 @@
-include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../kres/
-)
-
 
 set(knotes-migrator_srcs
     main.cpp
@@ -11,7 +7,6 @@ set(knotes-migrator_srcs
     notealarmattribute.cpp
     notedisplayattribute.cpp
     showfoldernotesattribute.cpp
-    ../kres/kresmigratorbase.cpp
     ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
 
@@ -31,7 +26,6 @@ kde4_add_executable(knotes-migrator ${knotes-migrator_srcs})
 
 target_link_libraries(knotes-migrator
     ${KDEPIMLIBS_AKONADI_LIBS}
-    ${KDE4_KRESOURCE_LIBS}
     ${KDEPIMLIBS_KABC_LIBS}
     ${KDEPIMLIBS_KCAL_LIBS}
     ${KDEPIMLIBS_KMIME_LIBS}
