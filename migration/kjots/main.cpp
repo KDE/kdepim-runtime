@@ -24,7 +24,7 @@
 
 #include <AkonadiCore/control.h>
 
-#include <KAboutData>
+#include <K4AboutData>
 #include <KApplication>
 #include <KCmdLineArgs>
 #include <KGlobal>
@@ -33,11 +33,11 @@
 
 int main( int argc, char **argv )
 {
-  KAboutData aboutData( "kjotsmigrator", 0,
+  K4AboutData aboutData( "kjotsmigrator", 0,
                         ki18n( "KJots Migration Tool" ),
                         "0.1",
                         ki18n( "Migration of KJots notes to Akonadi" ),
-                        KAboutData::License_LGPL,
+                        K4AboutData::License_LGPL,
                         ki18n( "(c) 2010 the Akonadi developers" ),
                         KLocalizedString(),
                         "http://pim.kde.org/akonadi/" );

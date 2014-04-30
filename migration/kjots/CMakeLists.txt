@@ -24,9 +24,6 @@ add_resource_iface( maildir/maildirresource.kcfg
 add_executable( kjotsmigrator ${kjotsmigrator_SRCS} )
 
 target_link_libraries(kjotsmigrator
-  ${QT_QTXML_LIBRARY}
-  
-  ${KDE4_KDEPIMLIBS_LIBS}
   KF5::AkonadiCore
   KF5::PimTextEdit
   KF5::Mime

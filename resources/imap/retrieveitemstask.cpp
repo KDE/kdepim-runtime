@@ -29,21 +29,21 @@
 #include "highestmodseqattribute.h"
 #include "messagehelper.h"
 
-#include <akonadi/cachepolicy.h>
-#include <akonadi/collectionstatistics.h>
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/agentbase.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/session.h>
+#include <AkonadiCore/cachepolicy.h>
+#include <AkonadiCore/collectionstatistics.h>
+#include <Akonadi/KMime/messageparts.h>
+#include <AkonadiAgentBase/agentbase.h>
+#include <AkonadiCore/itemfetchjob.h>
+#include <AkonadiCore/itemfetchscope.h>
+#include <AkonadiCore/session.h>
 
 #include <KDE/KDebug>
 #include <KDE/KLocale>
 
-#include <kimap/expungejob.h>
-#include <kimap/fetchjob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KImap/expungejob.h>
+#include <KImap/fetchjob.h>
+#include <KImap/selectjob.h>
+#include <KImap/session.h>
 
 /**
  * A job that retrieves a set of messages in reverse-ordered batches.

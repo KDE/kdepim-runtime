@@ -28,6 +28,7 @@
 #include <KStandardDirs>
 #include <krandom.h>
 #include <KConfig>
+#include <KGlobal>
 
 
 #include <KMime/Message>
@@ -35,10 +36,10 @@
 #include <AkonadiCore/AgentInstance>
 #include <AkonadiCore/AgentInstanceCreateJob>
 #include <AkonadiCore/item.h>
-#include <Akonadi/Collection>
+#include <AkonadiCore/Collection>
 #include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/CollectionFetchJob>
-#include <akonadi/resourcesynchronizationjob.h>
+#include <AkonadiCore/resourcesynchronizationjob.h>
 
 #include <KPIMTextEdit/textutils.h>
 
