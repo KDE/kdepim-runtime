@@ -366,3 +366,8 @@ int ResourceState::batchSize() const
 {
   return m_resource->itemSyncBatchSize();
 }
+
+MessageHelper::Ptr ResourceState::messageHelper() const
+{
+  return MessageHelper::Ptr(new MessageHelper());
+}

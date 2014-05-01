@@ -30,6 +30,7 @@
 #include <kimap/listjob.h>
 
 #include <boost/shared_ptr.hpp>
+#include "messagehelper.h"
 
 class ResourceStateInterface
 {
@@ -106,6 +107,9 @@ public:
   virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName ) = 0;
 
   virtual int batchSize() const = 0;
+
+  virtual MessageHelper::Ptr messageHelper() const = 0;
+
 };
 
 #endif

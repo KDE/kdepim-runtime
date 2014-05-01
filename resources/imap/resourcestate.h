@@ -23,6 +23,7 @@
 #define RESOURCESTATE_H
 
 #include "resourcestateinterface.h"
+#include "messagehelper.h"
 
 class ImapResource;
 
@@ -126,6 +127,7 @@ public:
 
   virtual int batchSize() const;
 
+  virtual MessageHelper::Ptr messageHelper() const;
 
 private:
   ImapResource *m_resource;

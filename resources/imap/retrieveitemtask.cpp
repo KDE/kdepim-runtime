@@ -107,7 +107,13 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
   Q_ASSERT( item().isValid() );
 
   const qint64 number = uids.keys().first();
-  const Akonadi::Item remoteItem = MessageHelper::createItemFromMessage(messages[number], uids[number], 0, QList<QByteArray>(), fetch->scope());
+  bool ok;
+  const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(messages[number], uids[number], 0, QList<QByteArray>(), fetch->scope(), ok);
+  if (!ok) {
+    kWarning() << "Failed to retrieve message " << uids[number];
+    cancelTask( i18n( "No message retrieved, failed to read the message." ) );
+    return;
+  }
   i.setMimeType(remoteItem.mimeType());
   i.setPayload(remoteItem.payload<KMime::Message::Ptr>());
   foreach (const QByteArray &flag, remoteItem.flags()) {
