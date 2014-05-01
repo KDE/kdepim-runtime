@@ -526,6 +526,14 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
         setTotalItems(messageCount);
         listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
+    } else if (messageCount > realMessageCount) {
+        //Error recovery:
+        //We didn't detect any new messages based on the uid, but according to the message count there are new ones.
+        //Our local cache is invalid and has to be refetched.
+        kWarning() << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
+        kWarning() << "Refetching complete mailbox.";
+        setTotalItems(messageCount);
+        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
     } else {
         //Shortcut:
         //No new messages are available. Directly check for changed flags and removed messages.
