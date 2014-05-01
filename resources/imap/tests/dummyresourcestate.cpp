@@ -345,3 +345,8 @@ int DummyResourceState::batchSize() const
 {
   return 10;
 }
+
+MessageHelper::Ptr DummyResourceState::messageHelper() const
+{
+  return MessageHelper::Ptr(new MessageHelper());
+}

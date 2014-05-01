@@ -123,6 +123,8 @@ public:
 
   virtual int batchSize() const;
 
+  virtual MessageHelper::Ptr messageHelper() const;
+
   QList< QPair<QByteArray, QVariant> > calls() const;
 
 private:

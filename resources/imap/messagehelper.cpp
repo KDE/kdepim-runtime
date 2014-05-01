@@ -22,7 +22,12 @@
 
 #include "resourcetask.h"
 
-Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope)
+MessageHelper::~MessageHelper()
+{
+
+}
+
+Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const
 {
     Akonadi::Item i;
     if (scope.mode == KIMAP::FetchJob::FetchScope::Flags) {
@@ -59,5 +64,6 @@ Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message, 
             i.setFlag(flag);
         }
     }
+    ok = true;
     return i;
 }
