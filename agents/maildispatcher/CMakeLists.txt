@@ -40,4 +40,4 @@ endif ()
 target_link_libraries(akonadi_maildispatcher_agent KF5::AkonadiCore KF5::AkonadiMime KF5::KIOCore KF5::Mime KF5::MailTransport KF5::AkonadiAgentBase KF5::NotifyConfig)
 
 install( FILES maildispatcheragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
-install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_maildispatcher_agent" )
+install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR} )
