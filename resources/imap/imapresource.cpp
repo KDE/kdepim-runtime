@@ -437,9 +437,29 @@ void ImapResource::retrieveItems( const Collection &col )
 {
   scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( col ), ResourceBase::Append );
 
+  //The collection that we receive was fetched when the task was scheduled, it is therefore possible that it is outdated.
+  //We refetch the collection since we rely on up-to-date annotations.
+  //FIXME: because this is async and not part of the resourcetask, it can't be killed. ResourceBase should just provide an up-to date copy of the collection.
+  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(col, CollectionFetchJob::Base, this);
+  fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+  fetchJob->fetchScope().setIncludeStatistics( true );
+  connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemRetrievalCollectionFetchDone(KJob*)));
+}
+
+void ImapResource::onItemRetrievalCollectionFetchDone(KJob *job)
+{
+  if (job->error()) {
+    kWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
+    cancelTask(i18n("Failed to retrieve items."));
+    return;
+  }
+
+  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
+  Q_ASSERT(fetchJob->collections().size() == 1);
+
   setItemStreamingEnabled( true );
 
-  RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(col)), this );
+  RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(fetchJob->collections().first())), this);
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
   connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
   startTask(task);
