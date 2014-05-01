@@ -38,7 +38,7 @@
 
 #include <KCalCore/FreeBusy>
 #include <KCalCore/Incidence>
-#include <KCalCore/IcalFormat>
+#include <KCalCore/ICalFormat>
 #include <KCalCore/Todo>
 #include <kdatetime.h>
 #include <kjob.h>

@@ -38,7 +38,7 @@
 #include <specialcollectionsrequestjob.h>
 
 #include <KCalCore/Event>
-#include <KCalCore/IcalFormat>
+#include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <KCalCore/Journal>
 #include <KCalCore/Todo>

@@ -31,7 +31,7 @@
 #include <KAlarmCal/kacalendar.h>
 
 #include <KCalCore/FileStorage>
-#include <KCalCore/IcalFormat>
+#include <KCalCore/ICalFormat>
 #include <KCalCore/MemoryCalendar>
 #include <agentfactory.h>
 #include <changerecorder.h>

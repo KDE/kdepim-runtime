@@ -26,7 +26,7 @@
 #include <item.h>
 #include <KABC/addressee.h>
 #include <KABC/vcardconverter.h>
-#include <KCalCore/IcalFormat>
+#include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <klocale.h>
 
