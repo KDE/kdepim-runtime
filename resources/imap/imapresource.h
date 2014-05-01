@@ -52,7 +52,7 @@ class ImapResource : public Akonadi::ResourceBase,
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
-
+protected:
   using Akonadi::AgentBase::Observer::collectionChanged;
 
 public:
