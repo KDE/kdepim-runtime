@@ -6,6 +6,6 @@ if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
   set(accounts_SRCS ../../shared/getcredentialsjob.cpp)
 endif()
 
-macro_optional_add_subdirectory(calendar)
-macro_optional_add_subdirectory(contacts)
+add_subdirectory(calendar)
+add_subdirectory(contacts)
 

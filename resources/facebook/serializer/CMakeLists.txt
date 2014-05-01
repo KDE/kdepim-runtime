@@ -6,12 +6,12 @@ set(akonadi_serializer_socialnotification_SRCS
   akonadi_serializer_socialnotification.cpp
 )
 
-kde4_add_plugin(akonadi_serializer_socialnotification ${akonadi_serializer_socialnotification_SRCS})
+add_library(akonadi_serializer_socialnotification MODULE ${akonadi_serializer_socialnotification_SRCS})
 
 target_link_libraries(akonadi_serializer_socialnotification
   ${KDE4_AKONADI_LIBS}
-  ${QT_QTCORE_LIBRARY}
-  ${KDE4_KDECORE_LIBS}
+  
+  
   ${LibKFbAPI_LIBRARY}
   ${qjson_LIBRARIES}    # for Debian
   ${QJSON_LIBRARIES}

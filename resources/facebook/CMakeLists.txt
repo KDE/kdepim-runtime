@@ -60,13 +60,13 @@ target_link_libraries(akonadi_facebook_resource
   ${KDEPIMLIBS_AKONADI_SOCIALUTILS_LIBS}
   ${KDEPIMLIBS_AKONADI_NOTES_LIBS}
   KF5::AkonadiCore
-  ${KDEPIMLIBS_KABC_LIBS}
+  KF5::Abc
   KF5::CalendarCore
   
   
   
   ${QJSON_LIBRARIES}
-  ${KDE4_KDECORE_LIBS}
+  
   KF5::Mime
   ${LibKFbAPI_LIBRARY}
 )
