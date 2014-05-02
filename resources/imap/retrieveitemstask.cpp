@@ -122,7 +122,7 @@ void BatchFetcher::fetchNextBatch()
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(m_session);
     //In the most common case that we want optimized we use batch processing.
-    if (m_currentSet.intervals().size() == 1 && m_currentSet.intervals().first().hasDefinedEnd()) {
+    if (m_scope.changedSince == 0 && m_currentSet.intervals().size() == 1 && m_currentSet.intervals().first().hasDefinedEnd()) {
         const KIMAP::ImapInterval interval = m_currentSet.intervals().first();
         Q_ASSERT(interval.hasDefinedEnd());
         //Reverse fetching would be great, because it gives you the most relevant (recent) messages first,
