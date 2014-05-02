@@ -55,6 +55,8 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     // Create a new change recorder.
     mChangeRecorder = new Akonadi::ChangeRecorder( this );
     mChangeRecorder->setMimeTypeMonitored( KMime::Message::mimeType() );
+    mChangeRecorder->fetchCollection( true );
+    mChangeRecorder->setAllMonitored( true );
 
     mModel = new Akonadi::EntityTreeModel( mChangeRecorder, this );
     // Set the model to show only collections, not items.
