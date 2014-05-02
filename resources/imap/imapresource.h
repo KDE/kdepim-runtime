@@ -126,6 +126,7 @@ private Q_SLOTS:
 
   void onIdleCollectionFetchDone( KJob *job );
   void onItemRetrievalCollectionFetchDone( KJob *job );
+  void onMetadataCollectionFetchDone( KJob *job );
 
   void onExpungeCollectionFetchDone( KJob *job );
   void triggerCollectionExpunge( const QVariant &collectionVariant );
