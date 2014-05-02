@@ -652,7 +652,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
       }
   }
 
-  m_batchFetcher = new BatchFetcher(resourceState()->messageHelper(), set, scope, 10 * batchSize(), m_session);
+  m_batchFetcher = new BatchFetcher(resourceState()->messageHelper(), set, scope, batchSize(), m_session);
   m_batchFetcher->setUidBased(m_uidBasedFetch);
   connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
           this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
