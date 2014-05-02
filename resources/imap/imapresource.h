@@ -138,6 +138,8 @@ private Q_SLOTS:
   void clearStatusMessage();
 
   void onConfigurationDone( int result );
+  void onCollectionModifyDone( KJob *job );
+
 protected:
   //Starts and queues a task
   void startTask( ResourceTask *task );
@@ -148,6 +150,7 @@ private:
   friend class ResourceState;
 
   bool needsNetwork() const;
+  void modifyCollection(const Akonadi::Collection &);
 
   friend class ImapIdleManager;
 

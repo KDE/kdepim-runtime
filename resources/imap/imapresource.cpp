@@ -32,6 +32,7 @@
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <KWindowSystem>
+#include <Akonadi/CollectionModifyJob>
 
 #include <akonadi/agentmanager.h>
 #include <akonadi/attributefactory.h>
@@ -762,5 +763,18 @@ void ImapResource::showError( const QString &message )
 void ImapResource::clearStatusMessage()
 {
   emit status( Akonadi::AgentBase::Idle, QString() );
+}
+
+void ImapResource::modifyCollection(const Collection &col)
+{
+    Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(col, this);
+    connect(modJob, SIGNAL(result(KJob*)), this, SLOT(onCollectionModifyDone(KJob*)));
+}
+
+void ImapResource::onCollectionModifyDone(KJob* job)
+{
+    if (job->error()) {
+        kWarning() << "Failed to modify collection: " << job->errorString();
+    }
 }
 
