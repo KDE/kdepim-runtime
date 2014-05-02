@@ -20,10 +20,10 @@ macro(add_akonadi_isolated_test _source)
   kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../../maildir/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
   set(maildirsettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml)
   set_source_files_properties(${pop3settingsinterface_xml} PROPERTIES INCLUDE "../metatype.h")
-  qt4_add_dbus_interface(_srcList ${pop3settingsinterface_xml} pop3settings)
-  qt4_add_dbus_interface(_srcList ${maildirsettingsinterface_xml} maildirsettings)
+  qt5_add_dbus_interface(_srcList ${pop3settingsinterface_xml} pop3settings)
+  qt5_add_dbus_interface(_srcList ${maildirsettingsinterface_xml} maildirsettings)
   # add the dbus interace to every test (easier than adding to particular tests only)
-  #qt4_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
+  #qt5_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
 
   kde4_add_executable(${_targetName} TEST ${_srcList})
   target_link_libraries(${_targetName}

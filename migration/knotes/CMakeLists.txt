@@ -15,7 +15,7 @@ kconfig_add_kcfg_files(knotes-migrator_srcs knoteconfig.kcfgc)
 macro(add_resource_iface _kcfgFile _ifaceName _className)
   kcfg_generate_dbus_interface(${kdepim-runtime_SOURCE_DIR}/resources/${_kcfgFile} ${_ifaceName})
   string(TOLOWER ${_className} _codeFile)
-  qt4_add_dbus_interface(knotes-migrator_srcs
+  qt5_add_dbus_interface(knotes-migrator_srcs
     ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml ${_codeFile} ${_className}
   )
 endmacro()

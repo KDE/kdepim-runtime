@@ -13,7 +13,7 @@ macro(add_resource_iface _kcfgFile _ifaceName _className)
   kcfg_generate_dbus_interface(${kdepim-runtime_SOURCE_DIR}/resources/${_kcfgFile} ${_ifaceName})
   string(TOLOWER ${_className} _codeFile)
   set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml PROPERTIES INCLUDE "metatype.h")
-  qt4_add_dbus_interface(kjotsmigrator_SRCS
+  qt5_add_dbus_interface(kjotsmigrator_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/${_ifaceName}.xml ${_codeFile} ${_className}
   )
 endmacro()
