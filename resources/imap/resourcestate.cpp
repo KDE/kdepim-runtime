@@ -28,7 +28,6 @@
 #include "noselectattribute.h"
 #include "timestampattribute.h"
 
-#include <akonadi/collectionmodifyjob.h>
 #include <akonadi/agentsearchinterface.h>
 #include <kmessagebox.h>
 
@@ -157,7 +156,7 @@ void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
 
 void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
 {
-  new Akonadi::CollectionModifyJob( collection );
+  m_resource->modifyCollection(collection);
 }
 
 void ResourceState::collectionAttributesRetrieved( const Akonadi::Collection &collection )
@@ -288,7 +287,7 @@ void ResourceState::cancelTask( const QString &errorString )
       Akonadi::Collection c = collection;
       c.removeAttribute<TimestampAttribute>();
 
-      new Akonadi::CollectionModifyJob( c );
+      m_resource->modifyCollection( c );
       newMailBoxes.removeAll( mailBoxForCollection( c ) );
     }
   }
