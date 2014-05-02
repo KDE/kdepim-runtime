@@ -115,7 +115,7 @@ void BatchFetcher::fetchNextBatch()
     }
     Q_ASSERT(m_batchSize > 0);
     if (m_currentSet.isEmpty()) {
-        kDebug() << "fetch complete";
+        kDebug(5327) << "fetch complete";
         emitResult();
         return;
     }
@@ -147,10 +147,10 @@ void BatchFetcher::fetchNextBatch()
         } else {
             m_currentSet = KIMAP::ImapSet();
         }
-        kDebug() << "Fetching " << begin << " to " << end;
+        kDebug(5327) << "Fetching " << begin << " to " << end;
         fetch->setSequenceSet(intervalToFetch);
     } else {
-        kDebug() << "Fetching all messages in one go.";
+        kDebug(5327) << "Fetching all messages in one go.";
         fetch->setSequenceSet(m_currentSet);
         m_currentSet = KIMAP::ImapSet();
     }
@@ -484,6 +484,9 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     const qint64 realMessageCount = col.statistics().count();
 
     kDebug(5327) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
+    kDebug(5327) << "MessageCount: " << messageCount << "Local message count: " << realMessageCount;
+    kDebug(5327) << "UidNext: " << nextUid << "Local UidNext: "<< oldNextUid;
+    kDebug(5327) << "HighestModSeq: " << highestModSeq << "Local HighestModSeq: "<< oldHighestModSeq;
 
     /*
     * A synchronization has 3 mandatory steps:
@@ -675,6 +678,7 @@ void RetrieveItemsTask::onFlagsFetchDone(KJob *job)
 void RetrieveItemsTask::taskComplete()
 {
     if (m_modifiedCollection.isValid()) {
+        kDebug(5327) << "Applying collection changes";
         applyCollectionChanges(m_modifiedCollection);
     }
     if (m_incremental) {
