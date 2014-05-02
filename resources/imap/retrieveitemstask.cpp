@@ -77,6 +77,7 @@ private:
     bool m_uidBased;
     int m_fetchedItemsInCurrentBatch;
     const MessageHelper::Ptr m_messageHelper;
+    bool m_fetchInProgress;
 };
 
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope& scope, int batchSize, KIMAP::Session* session)
@@ -87,7 +88,8 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSe
     m_batchSize(batchSize),
     m_uidBased(false),
     m_fetchedItemsInCurrentBatch(0),
-    m_messageHelper(messageHelper)
+    m_messageHelper(messageHelper),
+    m_fetchInProgress(false)
 {
 }
 
@@ -107,6 +109,10 @@ void BatchFetcher::start()
 
 void BatchFetcher::fetchNextBatch()
 {
+    if (m_fetchInProgress) {
+        kWarning() << "fetchNextBatch called while fetch is in process";
+        return;
+    }
     Q_ASSERT(m_batchSize > 0);
     if (m_currentSet.isEmpty()) {
         kDebug() << "fetch complete";
@@ -141,9 +147,10 @@ void BatchFetcher::fetchNextBatch()
         } else {
             m_currentSet = KIMAP::ImapSet();
         }
+        kDebug() << "Fetching " << begin << " to " << end;
         fetch->setSequenceSet(intervalToFetch);
     } else {
-        kDebug() << "Fetching all messages in one go";
+        kDebug() << "Fetching all messages in one go.";
         fetch->setSequenceSet(m_currentSet);
         m_currentSet = KIMAP::ImapSet();
     }
@@ -154,6 +161,7 @@ void BatchFetcher::fetchNextBatch()
             this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
     connect(fetch, SIGNAL(result(KJob*)),
             this, SLOT(onHeadersFetchDone(KJob*)));
+    m_fetchInProgress = true;
     fetch->start();
 }
 
@@ -183,6 +191,7 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox, const QMap<qint64, 
 
 void BatchFetcher::onHeadersFetchDone( KJob *job )
 {
+    m_fetchInProgress = false;
     if (job->error()) {
         kWarning() << "Fetch job failed " << job->errorString();
         setError(KJob::UserDefinedError);
