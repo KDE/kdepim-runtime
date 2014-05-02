@@ -528,13 +528,13 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //Fetch new messages, and then check for changed flags and removed messages
         //We can make an incremental update and use modseq.
         kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
-        setTotalItems(messageCount);
+        setTotalItems(qMax(1ll, messageCount - realMessageCount));
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
     } else if (nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
         kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
-        setTotalItems(qMax(1ll, messageCount - realMessageCount));
+        setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
     } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
         //Optimization:
