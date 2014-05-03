@@ -158,7 +158,7 @@ void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
 
 void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
 {
-  new Akonadi::CollectionModifyJob( collection );
+  m_resource->modifyCollection(collection);
 }
 
 void ResourceState::collectionAttributesRetrieved( const Akonadi::Collection &collection )
@@ -289,7 +289,7 @@ void ResourceState::cancelTask( const QString &errorString )
       Akonadi::Collection c = collection;
       c.removeAttribute<TimestampAttribute>();
 
-      new Akonadi::CollectionModifyJob( c );
+      m_resource->modifyCollection( c );
       newMailBoxes.removeAll( mailBoxForCollection( c ) );
     }
   }
@@ -366,4 +366,9 @@ void ResourceState::showInformationDialog( const QString &message, const QString
 int ResourceState::batchSize() const
 {
   return m_resource->itemSyncBatchSize();
+}
+
+MessageHelper::Ptr ResourceState::messageHelper() const
+{
+  return MessageHelper::Ptr(new MessageHelper());
 }

@@ -46,7 +46,6 @@ private:
 
   int m_pendingMetaDataJobs;
 
-  bool m_collectionChanged;
   Akonadi::Collection m_collection;
 };
 

@@ -34,7 +34,7 @@
 #include <KWindowSystem>
 #include <QIcon>
 #include <KGlobal>
-
+#include <AkonadiCore/CollectionModifyJob>
 #include <agentmanager.h>
 #include <attributefactory.h>
 #include <collectionfetchjob.h>
@@ -432,16 +432,56 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
   const Collection collection( collectionVariant.value<Collection>() );
   emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving extra folder information for '%1'", collection.name() ) );
 
-  startTask(new RetrieveCollectionMetadataTask( createResourceState(TaskArguments(collection)), this ));
+  //The collection that we received is potentially outdated.
+  //Using it would overwrite attributes with old values.
+  //FIXME: because this is async and not part of the resourcetask, it can't be killed. ResourceBase should just provide an up-to date copy of the collection.
+  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collection, CollectionFetchJob::Base, this);
+  fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+  fetchJob->fetchScope().setIncludeStatistics( true );
+  connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMetadataCollectionFetchDone(KJob*)));
+}
+
+void ImapResource::onMetadataCollectionFetchDone(KJob *job)
+{
+  if (job->error()) {
+    kWarning() << "Failed to retrieve collection before RetrieveCollectionMetadataTask " << job->errorString();
+    cancelTask(i18n("Failed to collect metadata."));
+    return;
+  }
+
+  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
+  Q_ASSERT(fetchJob->collections().size() == 1);
+
+  startTask(new RetrieveCollectionMetadataTask( createResourceState(TaskArguments(fetchJob->collections().first())), this ));
 }
 
 void ImapResource::retrieveItems( const Collection &col )
 {
   scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( col ), ResourceBase::Append );
 
+  //The collection that we receive was fetched when the task was scheduled, it is therefore possible that it is outdated.
+  //We refetch the collection since we rely on up-to-date annotations.
+  //FIXME: because this is async and not part of the resourcetask, it can't be killed. ResourceBase should just provide an up-to date copy of the collection.
+  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(col, CollectionFetchJob::Base, this);
+  fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
+  fetchJob->fetchScope().setIncludeStatistics( true );
+  connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemRetrievalCollectionFetchDone(KJob*)));
+}
+
+void ImapResource::onItemRetrievalCollectionFetchDone(KJob *job)
+{
+  if (job->error()) {
+    kWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
+    cancelTask(i18n("Failed to retrieve items."));
+    return;
+  }
+
+  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
+  Q_ASSERT(fetchJob->collections().size() == 1);
+
   setItemStreamingEnabled( true );
 
-  RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(col)), this );
+  RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(fetchJob->collections().first())), this);
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
   connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
   startTask(task);
@@ -749,5 +789,18 @@ void ImapResource::showError( const QString &message )
 void ImapResource::clearStatusMessage()
 {
   emit status( Akonadi::AgentBase::Idle, QString() );
+}
+
+void ImapResource::modifyCollection(const Collection &col)
+{
+    Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(col, this);
+    connect(modJob, SIGNAL(result(KJob*)), this, SLOT(onCollectionModifyDone(KJob*)));
+}
+
+void ImapResource::onCollectionModifyDone(KJob* job)
+{
+    if (job->error()) {
+        kWarning() << "Failed to modify collection: " << job->errorString();
+    }
 }
 

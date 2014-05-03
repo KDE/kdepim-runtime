@@ -42,7 +42,7 @@
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ),
-    m_pendingMetaDataJobs( 0 ), m_collectionChanged( false )
+    m_pendingMetaDataJobs( 0 )
 {
 }
 
@@ -59,7 +59,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
       kDebug( 5327 ) << "No Select folder";
-      collectionAttributesRetrieved(Akonadi::Collection());
+      endTaskIfNeeded();
       return;
     }
   }
@@ -114,7 +114,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
   // the server does not have any of the capabilities needed to get extra info, so this
   // step is done here
   if ( m_pendingMetaDataJobs == 0 ) {
-    collectionAttributesRetrieved(Akonadi::Collection());
+    endTaskIfNeeded();
   }
 }
 
@@ -140,7 +140,6 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
   const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
   if ( oldAnnotations != rawAnnotations ) {
     annotationsAttribute->setAnnotations( rawAnnotations );
-    m_collectionChanged = true;
   }
 
   endTaskIfNeeded();
@@ -161,7 +160,6 @@ void RetrieveCollectionMetadataTask::onGetAclDone( KJob *job )
   const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
   if ( oldRights != acl->allRights() ) {
     aclAttribute->setRights( acl->allRights() );
-    m_collectionChanged = true;
   }
 
   endTaskIfNeeded();
@@ -238,7 +236,6 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 
   if ( newRights != m_collection.rights() ) {
     m_collection.setRights( newRights );
-    m_collectionChanged = true;
   }
 
   endTaskIfNeeded();
@@ -283,7 +280,6 @@ void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
     || oldLimits != newLimits
     || oldUsages != newUsages ) {
     imapQuotaAttribute->setQuotas( newRoots, newLimits, newUsages );
-    m_collectionChanged = true;
   }
 
   // Store the collection Quota
@@ -296,7 +292,6 @@ void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
     || oldMax != newMax ) {
     quotaAttribute->setCurrentValue( newCurrent );
     quotaAttribute->setMaximumValue( newMax );
-    m_collectionChanged = true;
   }
 
   endTaskIfNeeded();
@@ -306,16 +301,10 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
 {
   if ( --m_pendingMetaDataJobs == 0 ) {
     // the others have ended, we're done, the next one can go
-    if ( m_collectionChanged ) {
-      const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
+    const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
+    TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
+    attr->setTimestamp( currentTimestamp );
 
-      TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
-      attr->setTimestamp( currentTimestamp );
-
-      collectionAttributesRetrieved( m_collection );
-      return;
-    }
-
-    collectionAttributesRetrieved(Akonadi::Collection());
+    collectionAttributesRetrieved( m_collection );
   }
 }

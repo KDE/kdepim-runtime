@@ -52,7 +52,7 @@ class ImapResource : public Akonadi::ResourceBase,
 {
   Q_OBJECT
   Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
-
+protected:
   using Akonadi::AgentBase::Observer::collectionChanged;
 
 public:
@@ -125,7 +125,8 @@ private Q_SLOTS:
 
 
   void onIdleCollectionFetchDone( KJob *job );
-
+  void onItemRetrievalCollectionFetchDone( KJob *job );
+  void onMetadataCollectionFetchDone( KJob *job );
 
   void onExpungeCollectionFetchDone( KJob *job );
   void triggerCollectionExpunge( const QVariant &collectionVariant );
@@ -140,6 +141,8 @@ private Q_SLOTS:
 
   void onConfigurationDone( int result );
 
+  void onCollectionModifyDone( KJob *job );
+
 protected:
   //Starts and queues a task
   void startTask( ResourceTask *task );
@@ -150,6 +153,7 @@ private:
   friend class ResourceState;
 
   bool needsNetwork() const;
+  void modifyCollection(const Akonadi::Collection &);
 
   friend class ImapIdleManager;
 

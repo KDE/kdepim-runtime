@@ -138,6 +138,8 @@ protected:
 
   int batchSize() const;
 
+  ResourceStateInterface::Ptr resourceState();
+
 private:
 
   static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );

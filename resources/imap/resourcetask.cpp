@@ -487,3 +487,7 @@ int ResourceTask::batchSize() const
     return m_resource->batchSize();
 }
 
+ResourceStateInterface::Ptr ResourceTask::resourceState()
+{
+    return m_resource;
+}

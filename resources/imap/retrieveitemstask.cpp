@@ -52,7 +52,7 @@
 class BatchFetcher : public KJob {
     Q_OBJECT
 public:
-    BatchFetcher(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session);
+    BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session);
     virtual ~BatchFetcher();
     virtual void start();
     void fetchNextBatch();
@@ -76,16 +76,20 @@ private:
     int m_batchSize;
     bool m_uidBased;
     int m_fetchedItemsInCurrentBatch;
+    const MessageHelper::Ptr m_messageHelper;
+    bool m_fetchInProgress;
 };
 
-BatchFetcher::BatchFetcher(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope& scope, int batchSize, KIMAP::Session* session)
+BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope& scope, int batchSize, KIMAP::Session* session)
     : KJob(session),
     m_currentSet(set),
     m_scope(scope),
     m_session(session),
     m_batchSize(batchSize),
     m_uidBased(false),
-    m_fetchedItemsInCurrentBatch(0)
+    m_fetchedItemsInCurrentBatch(0),
+    m_messageHelper(messageHelper),
+    m_fetchInProgress(false)
 {
 }
 
@@ -105,16 +109,20 @@ void BatchFetcher::start()
 
 void BatchFetcher::fetchNextBatch()
 {
+    if (m_fetchInProgress) {
+        kWarning() << "fetchNextBatch called while fetch is in process";
+        return;
+    }
     Q_ASSERT(m_batchSize > 0);
     if (m_currentSet.isEmpty()) {
-        kDebug() << "fetch complete";
+        kDebug(5327) << "fetch complete";
         emitResult();
         return;
     }
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(m_session);
     //In the most common case that we want optimized we use batch processing.
-    if (m_currentSet.intervals().size() == 1 && m_currentSet.intervals().first().hasDefinedEnd()) {
+    if (m_scope.changedSince == 0 && m_currentSet.intervals().size() == 1 && m_currentSet.intervals().first().hasDefinedEnd()) {
         const KIMAP::ImapInterval interval = m_currentSet.intervals().first();
         Q_ASSERT(interval.hasDefinedEnd());
         //Reverse fetching would be great, because it gives you the most relevant (recent) messages first,
@@ -139,9 +147,10 @@ void BatchFetcher::fetchNextBatch()
         } else {
             m_currentSet = KIMAP::ImapSet();
         }
+        kDebug(5327) << "Fetching " << begin << " to " << end;
         fetch->setSequenceSet(intervalToFetch);
     } else {
-        kDebug() << "Fetching all messages in one go";
+        kDebug(5327) << "Fetching all messages in one go.";
         fetch->setSequenceSet(m_currentSet);
         m_currentSet = KIMAP::ImapSet();
     }
@@ -152,6 +161,7 @@ void BatchFetcher::fetchNextBatch()
             this, SLOT(onHeadersReceived(QString,QMap<qint64,qint64>,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageFlags>,QMap<qint64,KIMAP::MessagePtr>)) );
     connect(fetch, SIGNAL(result(KJob*)),
             this, SLOT(onHeadersFetchDone(KJob*)));
+    m_fetchInProgress = true;
     fetch->start();
 }
 
@@ -166,15 +176,22 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox, const QMap<qint64, 
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
         //kDebug( 5327 ) << "Flags: " << i.flags();
-        m_fetchedItemsInCurrentBatch++;
-        addedItems << MessageHelper::createItemFromMessage(messages[number], uids[number], sizes[number], flags[number], fetch->scope());
+        bool ok;
+        const Akonadi::Item item = m_messageHelper->createItemFromMessage(messages[number], uids[number], sizes[number], flags[number], fetch->scope(), ok);
+        if (ok) {
+            m_fetchedItemsInCurrentBatch++;
+            addedItems << item;
+        }
     }
 //     kDebug() << addedItems.size();
-    emit itemsRetrieved(addedItems);
+    if (!addedItems.isEmpty()) {
+        emit itemsRetrieved(addedItems);
+    }
 }
 
 void BatchFetcher::onHeadersFetchDone( KJob *job )
 {
+    m_fetchInProgress = false;
     if (job->error()) {
         kWarning() << "Fetch job failed " << job->errorString();
         setError(KJob::UserDefinedError);
@@ -185,6 +202,8 @@ void BatchFetcher::onHeadersFetchDone( KJob *job )
         emitResult();
         return;
     }
+    //Fetch more if we didn't deliver enough yet.
+    //This can happen because no message is in the fetched uid range, or if the translation failed
     if (m_fetchedItemsInCurrentBatch < m_batchSize) {
         fetchNextBatch();
     } else {
@@ -465,6 +484,9 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     const qint64 realMessageCount = col.statistics().count();
 
     kDebug(5327) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
+    kDebug(5327) << "MessageCount: " << messageCount << "Local message count: " << realMessageCount;
+    kDebug(5327) << "UidNext: " << nextUid << "Local UidNext: "<< oldNextUid;
+    kDebug(5327) << "HighestModSeq: " << highestModSeq << "Local HighestModSeq: "<< oldHighestModSeq;
 
     /*
     * A synchronization has 3 mandatory steps:
@@ -509,13 +531,13 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //Fetch new messages, and then check for changed flags and removed messages
         //We can make an incremental update and use modseq.
         kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
-        setTotalItems(messageCount);
+        setTotalItems(qMax(1ll, messageCount - realMessageCount));
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
     } else if (nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
         kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
-        setTotalItems(qMax(1ll, messageCount - realMessageCount));
+        setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
     } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
         //Optimization:
@@ -551,7 +573,7 @@ void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::Fe
     m_incremental = incremental;
     m_uidBasedFetch = uidBased;
 
-    m_batchFetcher = new BatchFetcher(set, scope, batchSize(), m_session);
+    m_batchFetcher = new BatchFetcher(resourceState()->messageHelper(), set, scope, batchSize(), m_session);
     m_batchFetcher->setUidBased(m_uidBasedFetch);
     m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
     connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
@@ -633,7 +655,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
       }
   }
 
-  m_batchFetcher = new BatchFetcher(set, scope, 10 * batchSize(), m_session);
+  m_batchFetcher = new BatchFetcher(resourceState()->messageHelper(), set, scope, batchSize(), m_session);
   m_batchFetcher->setUidBased(m_uidBasedFetch);
   connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
           this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
@@ -656,6 +678,7 @@ void RetrieveItemsTask::onFlagsFetchDone(KJob *job)
 void RetrieveItemsTask::taskComplete()
 {
     if (m_modifiedCollection.isValid()) {
+        kDebug(5327) << "Applying collection changes";
         applyCollectionChanges(m_modifiedCollection);
     }
     if (m_incremental) {
