@@ -444,7 +444,7 @@ void ImapResource::onMetadataCollectionFetchDone(KJob *job)
 {
   if (job->error()) {
     kWarning() << "Failed to retrieve collection before RetrieveCollectionMetadataTask " << job->errorString();
-    cancelTask(i18n("Failed to collection metadata."));
+    cancelTask(i18n("Failed to collect metadata."));
     return;
   }
 
