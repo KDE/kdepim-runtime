@@ -106,12 +106,14 @@ public:
     QStringList listNew() const
     {
         QDir d( path + QString::fromLatin1( "/new" ) );
+        d.setSorting(QDir::NoSort);
         return d.entryList( QDir::Files );
     }
 
     QStringList listCurrent() const
     {
         QDir d( path + QString::fromLatin1( "/cur" ) );
+        d.setSorting(QDir::NoSort);
         return d.entryList( QDir::Files );
     }
 
