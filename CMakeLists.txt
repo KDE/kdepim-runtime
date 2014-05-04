@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.12)
 project(kdepim-runtime)
 
 # we need some parts of the ECM CMake helpers
-find_package (ECM 0.0.12 REQUIRED NO_MODULE)
+find_package (ECM 0.0.13 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
 include(GenerateExportHeader)

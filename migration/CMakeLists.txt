@@ -1,7 +1,7 @@
 project(migration)
 kde_enable_exceptions()
 
-find_package(ECM 0.0.12 CONFIG REQUIRED)
+find_package(ECM 0.0.13 CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${migration_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
 include(GenerateExportHeader)
