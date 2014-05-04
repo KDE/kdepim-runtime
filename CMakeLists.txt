@@ -29,11 +29,6 @@ set(AkonadiServer_MIN_VERSION "1.70.41")
 find_package(Akonadi ${AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
 
 
-option(KDEPIM_ENTERPRISE_BUILD "Enable features specific to the enterprise branch, which are normally disabled. Also, it disables many components not needed for Kontact such as the Kolab client." FALSE)
-
-# config-enterprise.h is needed for both ENTERPRISE_BUILD and BUILD_EVERYTHING
-configure_file(config-enterprise.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-enterprise.h )
-
 #Boost
 # Don't use BoostConfig.cmake
 set(Boost_NO_BOOST_CMAKE TRUE)

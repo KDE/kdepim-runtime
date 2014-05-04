@@ -21,6 +21,12 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 # allow to disable GHNS support on resource-constrained systems
 option( ACCOUNTWIZARD_NO_GHNS "Disable GHNS support in the account wizard" ${KDEPIM_MOBILE_UI} )
+
+option(KDEPIM_ENTERPRISE_BUILD "Enable features specific to the enterprise branch, which are normally disabled. Also, it disables many components not needed for Kontact such as the Kolab client." FALSE)
+
+# config-enterprise.h is needed for both ENTERPRISE_BUILD and BUILD_EVERYTHING
+configure_file(config-enterprise.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-enterprise.h )
+
 if ( ACCOUNTWIZARD_NO_GHNS )
   add_definitions( -DACCOUNTWIZARD_NO_GHNS )
 endif ()
