@@ -11,6 +11,7 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5CalendarCore ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5CalendarUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
 
 set(kdepim-copy_LIB_SRCS
     calendardiffalgo.cpp
