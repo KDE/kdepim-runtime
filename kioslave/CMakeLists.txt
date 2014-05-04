@@ -1,4 +1,18 @@
 project(kioslave)
+cmake_minimum_required(VERSION 2.8.12)
+
+find_package(ECM 0.0.12 CONFIG REQUIRED)
+set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
+
+include(GenerateExportHeader)
+include(ECMGenerateHeaders)
+include(ECMGeneratePriFile)
+include(ECMPackageConfigHelpers)
+include(ECMSetupVersion)
+include(FeatureSummary)
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDEFrameworkCompilerSettings)
 
 
 set(KF5_VERSION "4.98.0")
