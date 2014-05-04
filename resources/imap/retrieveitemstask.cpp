@@ -78,6 +78,7 @@ private:
     int m_fetchedItemsInCurrentBatch;
     const MessageHelper::Ptr m_messageHelper;
     bool m_fetchInProgress;
+    bool m_continuationRequested;
 };
 
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope& scope, int batchSize, KIMAP::Session* session)
@@ -89,7 +90,8 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSe
     m_uidBased(false),
     m_fetchedItemsInCurrentBatch(0),
     m_messageHelper(messageHelper),
-    m_fetchInProgress(false)
+    m_fetchInProgress(false),
+    m_continuationRequested(false)
 {
 }
 
@@ -111,8 +113,10 @@ void BatchFetcher::fetchNextBatch()
 {
     if (m_fetchInProgress) {
         kWarning() << "fetchNextBatch called while fetch is in process";
+        m_continuationRequested = true;
         return;
     }
+    m_continuationRequested = false;
     Q_ASSERT(m_batchSize > 0);
     if (m_currentSet.isEmpty()) {
         kDebug(5327) << "fetch complete";
@@ -208,6 +212,12 @@ void BatchFetcher::onHeadersFetchDone( KJob *job )
         fetchNextBatch();
     } else {
         m_fetchedItemsInCurrentBatch = 0;
+        //Also fetch more if we already got a continuation request during the fetch.
+        //This can happen if we deliver too many items during a previous batch (after using )
+        //Note that m_fetchedItemsInCurrentBatch will be off by the items that we delivered already.
+        if (m_continuationRequested) {
+            fetchNextBatch();
+        }
     }
 }
 
