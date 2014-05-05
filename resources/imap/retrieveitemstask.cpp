@@ -44,6 +44,7 @@
 #include <kimap/fetchjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
+#include <kimap/searchjob.h>
 
 /**
  * A job that retrieves a set of messages in reverse-ordered batches.
@@ -57,6 +58,7 @@ public:
     virtual void start();
     void fetchNextBatch();
     void setUidBased(bool);
+    void setSearchTerm(const KIMAP::Term &);
 
 Q_SIGNALS:
     void itemsRetrieved(Akonadi::Item::List);
@@ -67,6 +69,7 @@ private Q_SLOTS:
                                            const QMap<qint64, KIMAP::MessageFlags> &flags,
                                            const QMap<qint64, KIMAP::MessagePtr> &messages);
     void onHeadersFetchDone(KJob *job);
+    void onUidSearchDone(KJob* job);
 
 private:
     //Batch fetching
@@ -79,6 +82,7 @@ private:
     const MessageHelper::Ptr m_messageHelper;
     bool m_fetchInProgress;
     bool m_continuationRequested;
+    KIMAP::Term m_searchTerm;
 };
 
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope& scope, int batchSize, KIMAP::Session* session)
@@ -104,15 +108,45 @@ void BatchFetcher::setUidBased(bool uidBased)
     m_uidBased = uidBased;
 }
 
+void BatchFetcher::setSearchTerm(const KIMAP::Term &searchTerm)
+{
+    m_searchTerm = searchTerm;
+}
+
 void BatchFetcher::start()
 {
+    if (!m_searchTerm.isNull()) {
+        //Resolve the uid to sequence numbers
+        KIMAP::SearchJob *search = new KIMAP::SearchJob(m_session);
+        search->setUidBased(true);
+        search->setTerm(m_searchTerm);
+        connect(search, SIGNAL(result(KJob*)), this, SLOT(onUidSearchDone(KJob*)));
+        search->start();
+    } else {
+        fetchNextBatch();
+    }
+}
+
+void BatchFetcher::onUidSearchDone(KJob* job)
+{
+    if (job->error()) {
+        kWarning() << "Search job failed: " << job->errorString();
+        setError(KJob::UserDefinedError);
+        emitResult();
+        return;
+    }
+    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>(job);
+    m_uidBased = search->isUidBased();
+
+    KIMAP::ImapSet set;
+    set.add(search->results());
+    m_currentSet = set;
     fetchNextBatch();
 }
 
 void BatchFetcher::fetchNextBatch()
 {
     if (m_fetchInProgress) {
-        kWarning() << "fetchNextBatch called while fetch is in process";
         m_continuationRequested = true;
         return;
     }
@@ -125,38 +159,34 @@ void BatchFetcher::fetchNextBatch()
     }
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(m_session);
-    //In the most common case that we want optimized we use batch processing.
-    if (m_scope.changedSince == 0 && m_currentSet.intervals().size() == 1 && m_currentSet.intervals().first().hasDefinedEnd()) {
-        const KIMAP::ImapInterval interval = m_currentSet.intervals().first();
-        Q_ASSERT(interval.hasDefinedEnd());
-        //Reverse fetching would be great, because it gives you the most relevant (recent) messages first,
-        //but since we usually just check the latest uid, we wouldn't detect if an interval
-        //at the beginning is missing. Therefore this is disabled for now.
-
-        //get an interval of m_batchSize
-//         const qint64 end = interval.end();
-//         const qint64 begin = qMax(interval.begin(), end - m_batchSize + 1);
-//         const KIMAP::ImapSet intervalToFetch(begin, end);
-//         //fetch items in reverse order in chunks
-//         if (interval.begin() < (begin - 1)) {
-//             m_currentSet = KIMAP::ImapSet(interval.begin(), begin - 1);
-//         } else {
-//             m_currentSet = KIMAP::ImapSet();
-//         }
-        const qint64 begin = interval.begin();
-        const qint64 end = qMin(interval.end(), begin + m_batchSize - 1);
-        const KIMAP::ImapSet intervalToFetch(begin, end);
-        if (interval.end() > end) {
-            m_currentSet = KIMAP::ImapSet(end + 1, interval.end());
-        } else {
-            m_currentSet = KIMAP::ImapSet();
-        }
-        kDebug(5327) << "Fetching " << begin << " to " << end;
-        fetch->setSequenceSet(intervalToFetch);
-    } else {
-        kDebug(5327) << "Fetching all messages in one go.";
+    if (m_scope.changedSince != 0) {
+        kDebug(5327) << "Fetching all messages in one batch.";
         fetch->setSequenceSet(m_currentSet);
         m_currentSet = KIMAP::ImapSet();
+    } else {
+        KIMAP::ImapSet toFetch;
+        qint64 counter = 0;
+        KIMAP::ImapSet newSet;
+
+        //Take a chunk from the set
+        Q_FOREACH (const KIMAP::ImapInterval &interval, m_currentSet.intervals()) {
+            const qint64 wantedItems = m_batchSize - counter;
+            if (counter < m_batchSize) {
+                if (interval.size() <= wantedItems) {
+                    counter += interval.size();
+                    toFetch.add(interval);
+                } else {
+                    counter += wantedItems;
+                    toFetch.add(KIMAP::ImapInterval(interval.begin(), interval.begin() + wantedItems - 1));
+                    newSet.add(KIMAP::ImapInterval(interval.begin() + wantedItems, interval.end()));
+                }
+            } else {
+                newSet.add(interval);
+            }
+        }
+        kDebug(5327) << "Fetching " << toFetch.intervals().size() << " intervals";
+        fetch->setSequenceSet(toFetch);
+        m_currentSet = newSet;
     }
 
     fetch->setUidBased(m_uidBased);
@@ -585,6 +615,9 @@ void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::Fe
 
     m_batchFetcher = new BatchFetcher(resourceState()->messageHelper(), set, scope, batchSize(), m_session);
     m_batchFetcher->setUidBased(m_uidBasedFetch);
+    if (m_uidBasedFetch && set.intervals().size() == 1) {
+        m_batchFetcher->setSearchTerm(KIMAP::Term(KIMAP::Term::Uid, set));
+    }
     m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
     connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
             this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
@@ -645,7 +678,6 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
     listFlagsForImapSet(KIMAP::ImapSet(1, alreadyFetchedBegin - 1));
 }
 
-
 void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
 {
   kDebug(5327) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
@@ -665,8 +697,11 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
       }
   }
 
-  m_batchFetcher = new BatchFetcher(resourceState()->messageHelper(), set, scope, batchSize(), m_session);
+  m_batchFetcher = new BatchFetcher(resourceState()->messageHelper(), set, scope, 50 * batchSize(), m_session);
   m_batchFetcher->setUidBased(m_uidBasedFetch);
+  if (m_uidBasedFetch && scope.changedSince == 0 && set.intervals().size() == 1) {
+      m_batchFetcher->setSearchTerm(KIMAP::Term(KIMAP::Term::Uid, set));
+  }
   connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
           this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
   connect(m_batchFetcher, SIGNAL(result(KJob*)),
