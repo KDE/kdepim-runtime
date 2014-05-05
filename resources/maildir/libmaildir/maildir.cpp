@@ -28,7 +28,7 @@
 
 #include <kdebug.h>
 #include <klocale.h>
-#include <KPIMUtils/kfileio.h>
+#include <kpimutils/kfileio.h>
 #include <Akonadi/KMime/messageflags.h>
 
 #include <kde_file.h>
