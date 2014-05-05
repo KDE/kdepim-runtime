@@ -600,7 +600,7 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
                                         const Akonadi::Collection &collection )
 {
   //We only want updates about collections that are not from this resource
-  if ( collection.resource() == identifier() ) {
+  if ( collection.resource() == identifier() || collection.resource().startsWith("akonadi_kolab_resource") ) {
     return;
   }
   if ( m_excludeAppend.contains( item.id() ) )   {
@@ -616,7 +616,7 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
 void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
 {
   //We only want updates about collections that are not from this resource
-  if ( item.parentCollection().resource() == identifier() ) {
+  if ( item.parentCollection().resource() == identifier() || item.parentCollection().resource().startsWith("akonadi_kolab_resource") ) {
     return;
   }
   if ( const KolabHandler::Ptr handler = mHandlerManager->getHandler( item.parentCollection().id() ) ) {
@@ -635,7 +635,8 @@ void KolabProxyResource::imapItemMoved( const Akonadi::Item &item,
                                         const Akonadi::Collection &collectionDestination )
 {
   //We only want updates about collections that are not from this resource
-  if ( collectionSource.resource() == identifier() || collectionDestination.resource() == identifier() ) {
+  if ( collectionSource.resource() == identifier() || collectionDestination.resource() == identifier() ||
+       collectionSource.resource().startsWith("akonadi_kolab_resource") || collectionDestination.resource().startsWith("akonadi_kolab_resource") ) {
     return;
   }
   KJob *job = new Akonadi::ItemMoveJob( imapToKolab( item ), imapToKolab( collectionDestination ), this );
@@ -647,7 +648,7 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
 {
   Q_UNUSED( parent );
   //We only want updates about collections that are not from this resource
-  if ( collection.resource() == identifier() ) {
+   if ( collection.resource() == identifier() || collection.resource().startsWith("akonadi_kolab_resource") ) {
     return;
   }
   if ( mHandlerManager->isMonitored( collection.id() ) ) {
@@ -669,7 +670,7 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
 void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &collection )
 {
   //We only want updates about collections that are not from this resource
-  if ( collection.resource() == identifier() ) {
+  if ( collection.resource() == identifier() || collection.resource().startsWith("akonadi_kolab_resource") ) {
     return;
   }
 
@@ -706,7 +707,8 @@ void KolabProxyResource::imapCollectionMoved( const Akonadi::Collection &collect
                                               const Akonadi::Collection &destination )
 {
   //We only want updates about collections that are not from this resource
-  if ( source.resource() == identifier() || destination.resource() == identifier() ) {
+  if ( source.resource() == identifier() || destination.resource() == identifier() ||
+       source.resource().startsWith("akonadi_kolab_resource") || destination.resource().startsWith("akonadi_kolab_resource") ) {
     return;
   }
   if ( mHandlerManager->isMonitored( collection.id() ) ) {
@@ -737,7 +739,7 @@ void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection
 void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapCollection )
 {
   //We only want updates about collections that are not from this resource
-  if ( imapCollection.resource() == identifier() ) {
+  if ( imapCollection.resource() == identifier() || imapCollection.resource().startsWith("akonadi_kolab_resource") ) {
     return;
   }
   if (mHandlerManager->isMonitored( imapCollection.id())) {

@@ -42,7 +42,7 @@ void CollectionTreeBuilder::doStart()
 void CollectionTreeBuilder::collectionsReceived( const Akonadi::Collection::List &collections )
 {
   foreach ( const Akonadi::Collection &collection, collections ) {
-    if ( collection.resource() == resource()->identifier() ) {
+    if ( collection.resource() == resource()->identifier() || collection.resource().startsWith("akonadi_kolab_resource") ) {
       continue;
     }
     resource()->updateHiddenAttribute( collection );
