@@ -65,7 +65,6 @@ if(LibKGAPI2_FOUND OR LibKFbAPI_FOUND)
 endif()
 
 include_directories(
-  ${kdepim-runtime_SOURCE_DIR}/libkdepim-copy
   ${CMAKE_CURRENT_SOURCE_DIR}/shared
   ${CMAKE_CURRENT_BINARY_DIR}/shared
   ${CMAKE_CURRENT_SOURCE_DIR}/folderarchivesettings/
