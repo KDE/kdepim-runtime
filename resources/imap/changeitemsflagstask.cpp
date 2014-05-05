@@ -20,9 +20,9 @@
 
 #include "changeitemsflagstask.h"
 
-#include <KImap/session.h>
-#include <KImap/selectjob.h>
-#include <KImap/storejob.h>
+#include <kimap/session.h>
+#include <kimap/selectjob.h>
+#include <kimap/storejob.h>
 
 ChangeItemsFlagsTask::ChangeItemsFlagsTask( ResourceStateInterface::Ptr resource, QObject* parent ):
     ResourceTask( ResourceTask::DeferIfNoSession, resource, parent )

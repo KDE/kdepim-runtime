@@ -23,9 +23,9 @@
 
 #include "settingsbase.h"
 
-#include <KImap/loginjob.h>
+#include <kimap/loginjob.h>
 
-#include <MailTransport/transport.h>
+#include <mailtransport/transport.h>
 
 class ImapAccount;
 

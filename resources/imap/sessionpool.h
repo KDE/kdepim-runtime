@@ -25,9 +25,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
 
-#include <KImap/listjob.h>
-#include <KImap/session.h>
-#include <KImap/sessionuiproxy.h>
+#include <kimap/listjob.h>
+#include <kimap/session.h>
+#include <kimap/sessionuiproxy.h>
 
 namespace KIMAP
 {

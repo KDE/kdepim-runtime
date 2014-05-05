@@ -23,8 +23,8 @@
 #include "singlefileresource.h"
 #include "settings.h"
 
-#include <KABC/addressee.h>
-#include <KABC/vcardconverter.h>
+#include <kabc/addressee.h>
+#include <kabc/vcardconverter.h>
 
 class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource::Settings>
 {

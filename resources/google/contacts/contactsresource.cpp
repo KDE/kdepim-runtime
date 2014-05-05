@@ -28,8 +28,8 @@
 #include <Akonadi/UnlinkJob>
 #include <AkonadiCore/CachePolicy>
 
-#include <KABC/Addressee>
-#include <KABC/Picture>
+#include <kabc/Addressee>
+#include <kabc/Picture>
 
 #include <KDE/KLocalizedString>
 #include <KDE/KDebug>

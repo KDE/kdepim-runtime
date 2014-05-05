@@ -27,7 +27,7 @@
 using namespace KPIM;
 
 
-#include <KCalUtils/incidenceformatter.h>
+#include <kcalutils/incidenceformatter.h>
 
 #include <KHBox>
 #include <KLocale>

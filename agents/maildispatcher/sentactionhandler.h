@@ -22,7 +22,7 @@
 #ifndef SENTACTIONHANDLER_H
 #define SENTACTIONHANDLER_H
 
-#include <MailTransport/sentactionattribute.h>
+#include <mailtransport/sentactionattribute.h>
 
 #include <QtCore/QObject>
 

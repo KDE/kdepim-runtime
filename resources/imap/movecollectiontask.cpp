@@ -24,10 +24,10 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <KImap/renamejob.h>
-#include <KImap/session.h>
-#include <KImap/subscribejob.h>
-#include <KImap/selectjob.h>
+#include <kimap/renamejob.h>
+#include <kimap/session.h>
+#include <kimap/subscribejob.h>
+#include <kimap/selectjob.h>
 
 #include <QtCore/QUuid>
 

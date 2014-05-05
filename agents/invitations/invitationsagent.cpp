@@ -49,7 +49,7 @@
 #include <KLocalizedString>
 #include <KMime/Content>
 #include <KMime/Message>
-#include <KPIMIdentities/identitymanager.h>
+#include <kpimidentities/identitymanager.h>
 #include <KSystemTimeZones>
 #include <KStandardDirs>
 #include <KGlobal>

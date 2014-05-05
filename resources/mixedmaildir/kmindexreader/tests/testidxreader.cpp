@@ -24,7 +24,7 @@
 
 #include "TestIdxReader_data.h"
 
-#include <KMime/messagestatus.h>
+#include <kmime/messagestatus.h>
 using Akonadi::MessageStatus;
 #include <QTemporaryFile>
 

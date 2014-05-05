@@ -21,11 +21,11 @@
 
 #include "changecollectiontask.h"
 
-#include <KImap/renamejob.h>
-#include <KImap/setacljob.h>
-#include <KImap/setmetadatajob.h>
-#include <KImap/session.h>
-#include <KImap/subscribejob.h>
+#include <kimap/renamejob.h>
+#include <kimap/setacljob.h>
+#include <kimap/setmetadatajob.h>
+#include <kimap/session.h>
+#include <kimap/subscribejob.h>
 
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"

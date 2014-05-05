@@ -51,8 +51,8 @@
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
 
-#include <KABC/addressee.h>
-#include <KABC/vcardconverter.h>
+#include <kabc/addressee.h>
+#include <kabc/vcardconverter.h>
 #include <kwindowsystem.h>
 
 #include <QtCore/QSet>

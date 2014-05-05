@@ -19,7 +19,7 @@
 
 #include "imaptestbase.h"
 
-#include <KImap/capabilitiesjob.h>
+#include <kimap/capabilitiesjob.h>
 
 class TestSessionPool : public ImapTestBase
 {

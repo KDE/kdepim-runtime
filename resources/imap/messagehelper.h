@@ -22,7 +22,7 @@
 
 #include <AkonadiCore/Item>
 #include <KMime/Message>
-#include <KImap/FetchJob>
+#include <kimap/FetchJob>
 #include <boost/shared_ptr.hpp>
 
 class MessageHelper {

@@ -35,10 +35,10 @@
 #include "folderarchivesettingpage.h"
 
 
-#include <MailTransport/transport.h>
-#include <MailTransport/servertest.h>
+#include <mailtransport/transport.h>
+#include <mailtransport/servertest.h>
 
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 #include <collectionfetchjob.h>
 #include <Akonadi/KMime/specialmailcollections.h>
@@ -56,8 +56,8 @@
 #include <solid/networking.h>
 #endif
 
-#include <KPIMIdentities/identitymanager.h>
-#include <KPIMIdentities/identitycombo.h>
+#include <kpimidentities/identitymanager.h>
+#include <kpimidentities/identitycombo.h>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"

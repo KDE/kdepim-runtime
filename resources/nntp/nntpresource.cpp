@@ -32,9 +32,9 @@
 #include <session.h>
 #include <changerecorder.h>
 
-#include <KMime/kmime_message.h>
-#include <KMime/kmime_newsarticle.h>
-#include <KMime/kmime_util.h>
+#include <kmime/kmime_message.h>
+#include <kmime/kmime_newsarticle.h>
+#include <kmime/kmime_util.h>
 
 #include <KWindowSystem>
 #include <KLocalizedString>

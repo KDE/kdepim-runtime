@@ -24,8 +24,8 @@
 
 #include <collection.h>
 #include <item.h>
-#include <KABC/addressee.h>
-#include <KABC/vcardconverter.h>
+#include <kabc/addressee.h>
+#include <kabc/vcardconverter.h>
 #include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <klocale.h>

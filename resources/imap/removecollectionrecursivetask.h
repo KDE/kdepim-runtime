@@ -22,7 +22,7 @@
 #ifndef REMOVECOLLECTIONRECURSIVETASK_H
 #define REMOVECOLLECTIONRECURSIVETASK_H
 
-#include <KImap/listjob.h>
+#include <kimap/listjob.h>
 
 #include "resourcetask.h"
 

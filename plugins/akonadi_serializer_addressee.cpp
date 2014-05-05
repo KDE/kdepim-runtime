@@ -24,7 +24,7 @@
 #include <akonadi/kabc/contactparts.h>
 
 #include <KDebug>
-#include <KABC/addressee.h>
+#include <kabc/addressee.h>
 #include <klocale.h>
 
 #include <QtCore/qplugin.h>

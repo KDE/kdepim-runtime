@@ -24,8 +24,8 @@
 #include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 
-#include <KABC/contactgroup.h>
-#include <KABC/contactgrouptool.h>
+#include <kabc/contactgroup.h>
+#include <kabc/contactgrouptool.h>
 #include <klocale.h>
 
 #include <QtCore/qplugin.h>

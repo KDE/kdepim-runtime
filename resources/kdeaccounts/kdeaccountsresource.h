@@ -23,7 +23,7 @@
 #include "singlefileresource.h"
 #include "settings.h"
 
-#include <KABC/addressee.h>
+#include <kabc/addressee.h>
 
 class KDEAccountsResource : public Akonadi::SingleFileResource<Settings>
 {

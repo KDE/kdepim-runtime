@@ -32,7 +32,7 @@
 
 #include "createandsettagsjob.h"
 
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 #include <AkonadiCore/agentinstance.h>
 #include <AkonadiCore/collection.h>

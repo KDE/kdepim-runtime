@@ -32,10 +32,10 @@
 #include <klineedit.h>
 #include <KGlobal>
 
-#include <KImap/session.h>
-#include <KImap/loginjob.h>
-#include <KImap/unsubscribejob.h>
-#include <KImap/subscribejob.h>
+#include <kimap/session.h>
+#include <kimap/loginjob.h>
+#include <kimap/unsubscribejob.h>
+#include <kimap/subscribejob.h>
 
 #include "imapaccount.h"
 #include "sessionuiproxy.h"

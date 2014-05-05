@@ -18,7 +18,7 @@
 
 #include "carddavprotocol.h"
 
-#include <KABC/addressee.h>
+#include <kabc/addressee.h>
 
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>

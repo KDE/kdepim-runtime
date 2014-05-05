@@ -21,9 +21,9 @@
 #include "akonadi_serializer_kalarm.h"
 #include "kaeventformatter.h"
 
-#include <KAlarmCal/eventattribute.h>
-#include <KAlarmCal/kacalendar.h>
-#include <KAlarmCal/kaevent.h>
+#include <kalarmcal/eventattribute.h>
+#include <kalarmcal/kacalendar.h>
+#include <kalarmcal/kaevent.h>
 
 #include <AkonadiCore/item.h>
 #include <AkonadiCore/abstractdifferencesreporter.h>

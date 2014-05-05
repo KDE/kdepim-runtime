@@ -25,8 +25,8 @@
 #include <Akonadi/KMime/messageflags.h>
 #include <KDebug>
 #include <KLocalizedString>
-#include <MailTransport/errorattribute.h>
-#include <MailTransport/dispatchmodeattribute.h>
+#include <mailtransport/errorattribute.h>
+#include <mailtransport/dispatchmodeattribute.h>
 
 using namespace Akonadi;
 using namespace MailTransport;

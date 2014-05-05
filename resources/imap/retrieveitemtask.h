@@ -22,7 +22,7 @@
 #ifndef RETRIEVEITEMTASK_H
 #define RETRIEVEITEMTASK_H
 
-#include <KImap/fetchjob.h>
+#include <kimap/fetchjob.h>
 
 #include "resourcetask.h"
 

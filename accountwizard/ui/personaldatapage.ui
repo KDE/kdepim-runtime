@@ -271,7 +271,7 @@
   <customwidget>
    <class>KPIMUtils::ProgressIndicatorLabel</class>
    <extends>QLabel</extends>
-   <header location="global">KPIMUtils/progressindicatorlabel.h</header>
+   <header location="global">kpimutils/progressindicatorlabel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

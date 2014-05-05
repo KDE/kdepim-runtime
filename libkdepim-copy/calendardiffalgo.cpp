@@ -21,7 +21,7 @@
 
 #include "calendardiffalgo.h"
 
-#include <KCalUtils/stringify.h>
+#include <kcalutils/stringify.h>
 
 #include <KDateTime>
 #include <KLocale>

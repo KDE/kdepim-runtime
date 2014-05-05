@@ -22,7 +22,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include <KABC/vcardconverter.h>
+#include <kabc/vcardconverter.h>
 #include <k4aboutdata.h>
 #include <kcmdlineargs.h>
 #include <kconfig.h>

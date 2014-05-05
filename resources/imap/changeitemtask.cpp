@@ -24,13 +24,13 @@
 #include <KDebug>
 #include <KLocale>
 
-#include <KImap/appendjob.h>
-#include <KImap/searchjob.h>
-#include <KImap/selectjob.h>
-#include <KImap/session.h>
-#include <KImap/storejob.h>
+#include <kimap/appendjob.h>
+#include <kimap/searchjob.h>
+#include <kimap/selectjob.h>
+#include <kimap/session.h>
+#include <kimap/storejob.h>
 
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 #include "imapflags.h"
 #include "uidnextattribute.h"

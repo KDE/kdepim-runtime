@@ -27,7 +27,7 @@
 #include <Collection>
 #include <Item>
 
-#include <KImap/listjob.h>
+#include <kimap/listjob.h>
 
 #include <boost/shared_ptr.hpp>
 #include "messagehelper.h"

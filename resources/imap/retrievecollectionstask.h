@@ -24,7 +24,7 @@
 
 #include <collection.h>
 
-#include <KImap/listjob.h>
+#include <kimap/listjob.h>
 
 #include "resourcetask.h"
 

@@ -24,8 +24,8 @@
 
 #include "folder.h"
 
-#include <KABC/addressee.h>
-#include <KABC/contactgroup.h>
+#include <kabc/addressee.h>
+#include <kabc/contactgroup.h>
 #include <KCalCore/Incidence>
 
 #include <QtCore/QList>

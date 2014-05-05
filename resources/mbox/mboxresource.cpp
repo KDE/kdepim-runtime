@@ -29,7 +29,7 @@
 #include <dbusconnectionpool.h>
 #include <itemfetchscope.h>
 #include <KMbox/mbox.h>
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 #include <KWindowSystem>
 #include <QIcon>
 

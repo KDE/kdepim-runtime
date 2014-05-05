@@ -38,7 +38,7 @@
 #include "libmaildir/maildir.h"
 
 #include <KMbox/mbox.h>
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 #include <Akonadi/KMime/messageparts.h>
 

@@ -19,7 +19,7 @@
 
 #include "akonadi_serializer_microblog.h"
 
-#include <MicroBlog/statusitem.h>
+#include <microblog/statusitem.h>
 #include <AkonadiCore/item.h>
 
 #include <QtCore/qplugin.h>

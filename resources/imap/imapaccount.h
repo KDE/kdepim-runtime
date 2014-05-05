@@ -26,7 +26,7 @@
 #ifndef IMAPACCOUNT_H
 #define IMAPACCOUNT_H
 
-#include <KImap/loginjob.h>
+#include <kimap/loginjob.h>
 
 class ImapAccount
 {

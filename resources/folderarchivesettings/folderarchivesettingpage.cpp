@@ -21,7 +21,7 @@
 
 #include <CollectionRequester>
 
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 #include <KLocale>
 #include <KGlobal>

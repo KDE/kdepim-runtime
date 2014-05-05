@@ -22,7 +22,7 @@
 #include "moveitemstask.h"
 #include "uidnextattribute.h"
 
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 

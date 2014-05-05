@@ -28,7 +28,7 @@
 #include <entitydisplayattribute.h>
 #include <Akonadi/KMime/messageparts.h>
 
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 #include <KDebug>
 #include <KLocale>

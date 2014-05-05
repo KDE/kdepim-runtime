@@ -20,7 +20,7 @@
 #include <QObject>
 #include <qtest_kde.h>
 #include <item.h>
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 #include <kolabhandler.h>
 #include <algorithm>
 #include <KCalCore/Incidence>

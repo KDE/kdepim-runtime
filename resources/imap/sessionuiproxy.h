@@ -23,7 +23,7 @@
 #define SESSIONUIPROXY_H
 
 #include <kio/sslui.h>
-#include <KImap/sessionuiproxy.h>
+#include <kimap/sessionuiproxy.h>
 
 
 class SessionUiProxy : public KIMAP::SessionUiProxy {

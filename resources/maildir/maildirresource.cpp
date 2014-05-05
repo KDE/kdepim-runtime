@@ -36,7 +36,7 @@
 #include <collectionfetchjob.h>
 #include <dbusconnectionpool.h>
 
-#include <KMime/kmime_message.h>
+#include <kmime/kmime_message.h>
 
 #include <kdebug.h>
 #include <kdirwatch.h>
