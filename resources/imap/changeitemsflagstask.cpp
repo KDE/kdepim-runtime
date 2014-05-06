@@ -37,6 +37,7 @@ ChangeItemsFlagsTask::~ChangeItemsFlagsTask()
 void ChangeItemsFlagsTask::doStart(KIMAP::Session* session)
 {
   const QString mailBox = mailBoxForCollection( items().first().parentCollection() );
+  kDebug(5327) << mailBox;
 
   if ( session->selectedMailBox() != mailBox ) {
     KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
@@ -53,6 +54,7 @@ void ChangeItemsFlagsTask::doStart(KIMAP::Session* session)
     } else if ( !removedFlags().isEmpty() ) {
         triggerRemoveFlagsJob( session );
     } else {
+        kDebug(5327) << "nothing to do";
         changeProcessed();
     }
   }
@@ -61,14 +63,17 @@ void ChangeItemsFlagsTask::doStart(KIMAP::Session* session)
 void ChangeItemsFlagsTask::onSelectDone(KJob* job)
 {
   if ( job->error() ) {
+    kWarning() << "Select failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
+    kDebug(5327) << addedFlags();
     if ( !addedFlags().isEmpty() ) {
         triggerAppendFlagsJob( select->session() );
     } else if ( !removedFlags().isEmpty() ) {
         triggerRemoveFlagsJob( select->session() );
     } else {
+        kDebug(5327) << "nothing to do";
         changeProcessed();
     }
   }
@@ -109,8 +114,10 @@ void ChangeItemsFlagsTask::triggerRemoveFlagsJob(KIMAP::Session* session)
 void ChangeItemsFlagsTask::onAppendFlagsDone(KJob* job)
 {
   if ( job->error() ) {
+    kWarning() << "Flag append failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
+    kDebug(5327) << removedFlags();
     if ( removedFlags().isEmpty() ) {
       changeProcessed();
     } else {
@@ -123,6 +130,7 @@ void ChangeItemsFlagsTask::onAppendFlagsDone(KJob* job)
 void ChangeItemsFlagsTask::onRemoveFlagsDone(KJob* job)
 {
   if ( job->error() ) {
+    kWarning() << "Flag remove failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     changeProcessed();
