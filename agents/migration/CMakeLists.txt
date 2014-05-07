@@ -1,6 +1,7 @@
 
 include_directories(
     ${Boost_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/migration
     tests
 )
 
@@ -26,9 +27,7 @@ target_link_libraries(akonadi_migration_agent
     gidmigration
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
-    ${KDEPIMLIBS_KABC_LIBS}
-    ${KDE4_KIDLETIME_LIBRARY}
-    ${KDE4_SOLID_LIBS}
+    KF5::Abc
 )
 
 install(TARGETS akonadi_migration_agent ${INSTALL_TARGETS_DEFAULT_ARGS})

@@ -31,6 +31,17 @@ if ( ACCOUNTWIZARD_NO_GHNS )
   add_definitions( -DACCOUNTWIZARD_NO_GHNS )
 endif ()
 
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${accountwizard_SOURCE_DIR}")
+ option(KDEPIM_MOBILE_UI "Build UI for mobile devices instead of for desktops" FALSE)
+ if (KDEPIM_MOBILE_UI)
+   add_definitions( -DKDEPIM_MOBILE_UI )
+   if(NOT QT_QTDECLARATIVE_FOUND)
+     message(FATAL_ERROR "The QtDeclarative library is required for building the mobile UI")
+   endif()
+ endif ()
+endif()
+
+
 # FIXME: Do we want the same versions in kdepimlibs and kf5?
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
