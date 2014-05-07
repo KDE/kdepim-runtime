@@ -222,7 +222,7 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setTextToSpeakEnabled(mTextToSpeak->isChecked());
     NewMailNotifierAgentSettings::setTextToSpeak(mTextToSpeakSetting->text());
     NewMailNotifierAgentSettings::setShowButtonToDisplayMail(mAllowToShowMail->isChecked());
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
     mNotify->save();
     accept();
 }

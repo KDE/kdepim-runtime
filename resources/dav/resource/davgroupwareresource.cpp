@@ -213,7 +213,7 @@ void DavGroupwareResource::configure( WId windowId )
 
   if ( result == QDialog::Accepted ) {
     Settings::self()->setSettingsVersion( 3 );
-    Settings::self()->writeConfig();
+    Settings::self()->save();
     synchronize();
     emit configurationDialogAccepted();
   } else {

@@ -228,7 +228,7 @@ void ImapResource::onConfigurationDone(int result)
     if ( dlg->shouldClearCache() ) {
       clearCache();
     }
-    Settings::self()->writeConfig();
+    Settings::self()->save();
   }
   dlg->deleteLater();
 }
@@ -291,7 +291,7 @@ int ImapResource::configureSubscription(qlonglong windowId)
 
   if ( mSubscriptions->exec() ) {
     Settings::self()->setSubscriptionEnabled( mSubscriptions->subscriptionEnabled() );
-    Settings::self()->writeConfig();
+    Settings::self()->save();
     emit configurationDialogAccepted();
     reconnect();
   }

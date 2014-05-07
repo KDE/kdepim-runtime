@@ -53,6 +53,6 @@ void ConfigDialog::save()
 {
   kDebug() << "Sink changed to" << ui.sink->collection().id();
   Settings::self()->setSink( ui.sink->collection().id() );
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 

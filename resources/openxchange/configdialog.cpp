@@ -67,7 +67,7 @@ ConfigDialog::ConfigDialog( WId windowId )
 void ConfigDialog::save()
 {
   mManager->updateSettings();
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 
 void ConfigDialog::showAboutDialog()

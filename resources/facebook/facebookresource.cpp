@@ -75,7 +75,7 @@ FacebookResource::FacebookResource( const QString &id )
 
 FacebookResource::~FacebookResource()
 {
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 
 void FacebookResource::configurationChanged()
@@ -85,7 +85,7 @@ void FacebookResource::configurationChanged()
     configureByAccount( Settings::self()->accountId() );
   }
 #endif
-  Settings::self()->writeConfig();
+  Settings::self()->save();
   synchronize();
 }
 

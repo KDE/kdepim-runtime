@@ -115,7 +115,7 @@ void NewMailNotifierAgent::doSetOnline(bool online)
 void NewMailNotifierAgent::setExcludeMyselfFromNotification(bool b)
 {
     NewMailNotifierAgentSettings::setExcludeEmailsFromMe(b);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::excludeMyselfFromNotification() const
@@ -126,7 +126,7 @@ bool NewMailNotifierAgent::excludeMyselfFromNotification() const
 void NewMailNotifierAgent::setShowPhoto(bool show)
 {
     NewMailNotifierAgentSettings::setShowPhoto(show);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::showPhoto() const
@@ -137,7 +137,7 @@ bool NewMailNotifierAgent::showPhoto() const
 void NewMailNotifierAgent::setShowFrom(bool show)
 {
     NewMailNotifierAgentSettings::setShowFrom(show);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::showFrom() const
@@ -148,7 +148,7 @@ bool NewMailNotifierAgent::showFrom() const
 void NewMailNotifierAgent::setShowSubject(bool show)
 {
     NewMailNotifierAgentSettings::setShowSubject(show);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::showSubject() const
@@ -159,7 +159,7 @@ bool NewMailNotifierAgent::showSubject() const
 void NewMailNotifierAgent::setShowFolderName(bool show)
 {
     NewMailNotifierAgentSettings::setShowFolder(show);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::showFolderName() const
@@ -170,7 +170,7 @@ bool NewMailNotifierAgent::showFolderName() const
 void NewMailNotifierAgent::setEnableAgent(bool enabled)
 {
     NewMailNotifierAgentSettings::setEnabled(enabled);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
     if (!enabled) {
         clearAll();
     }
@@ -179,7 +179,7 @@ void NewMailNotifierAgent::setEnableAgent(bool enabled)
 void NewMailNotifierAgent::setVerboseMailNotification(bool verbose)
 {
     NewMailNotifierAgentSettings::setVerboseNotification(verbose);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::verboseMailNotification() const
@@ -190,7 +190,7 @@ bool NewMailNotifierAgent::verboseMailNotification() const
 void NewMailNotifierAgent::setBeepOnNewMails(bool beep)
 {
     NewMailNotifierAgentSettings::setBeepOnNewMails(beep);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::beepOnNewMails() const
@@ -201,7 +201,7 @@ bool NewMailNotifierAgent::beepOnNewMails() const
 void NewMailNotifierAgent::setTextToSpeakEnabled(bool enabled)
 {
     NewMailNotifierAgentSettings::setTextToSpeakEnabled(enabled);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::textToSpeakEnabled() const
@@ -212,7 +212,7 @@ bool NewMailNotifierAgent::textToSpeakEnabled() const
 void NewMailNotifierAgent::setTextToSpeak(const QString &msg)
 {
     NewMailNotifierAgentSettings::setTextToSpeak(msg);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 QString NewMailNotifierAgent::textToSpeak() const
@@ -239,7 +239,7 @@ bool NewMailNotifierAgent::showButtonToDisplayMail() const
 void NewMailNotifierAgent::setShowButtonToDisplayMail(bool b)
 {
     NewMailNotifierAgentSettings::setShowButtonToDisplayMail(b);
-    NewMailNotifierAgentSettings::self()->writeConfig();
+    NewMailNotifierAgentSettings::self()->save();
 }
 
 

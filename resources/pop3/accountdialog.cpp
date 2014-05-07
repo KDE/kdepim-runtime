@@ -607,7 +607,7 @@ void AccountDialog::saveSettings()
   Settings::self()->setFilterOnServer( filterOnServerCheck->isChecked() );
   Settings::self()->setFilterCheckSize (filterOnServerSizeSpin->value() );
   Settings::self()->setTargetCollection( folderRequester->collection().id() );
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 
   // Now, either save the password or delete it from the wallet. For both, we need
   // to open it.

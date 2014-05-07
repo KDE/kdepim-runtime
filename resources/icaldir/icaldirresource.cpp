@@ -97,7 +97,7 @@ ICalDirResource::~ICalDirResource()
 
 void ICalDirResource::aboutToQuit()
 {
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 
 void ICalDirResource::configure( WId windowId )

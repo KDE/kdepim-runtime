@@ -108,7 +108,7 @@ void MixedMaildirResource::aboutToQuit()
 {
   // The settings may not have been saved if e.g. they have been modified via
   // DBus instead of the config dialog.
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 
 void MixedMaildirResource::configure( WId windowId )

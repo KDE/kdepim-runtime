@@ -328,7 +328,7 @@ void SetupServer::applySettings()
 
   Settings::self()->setSieveCustomPassword( m_ui->customPassword->text() );
 
-  Settings::self()->writeConfig();
+  Settings::self()->save();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
   if ( m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty() ) {

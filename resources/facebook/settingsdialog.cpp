@@ -175,7 +175,7 @@ void SettingsDialog::saveSettings()
             << QLatin1String("facebook-notifications");
     Settings::self()->setAccountServices(services);
   }
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 
 void SettingsDialog::slotButtonClicked( int button )

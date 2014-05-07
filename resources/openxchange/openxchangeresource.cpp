@@ -158,7 +158,7 @@ class ObjectsLastSync
       }
 
       Settings::self()->setObjectsLastSync( pairs.join( QLatin1String( ":" ) ) );
-      Settings::self()->writeConfig();
+      Settings::self()->save();
     }
 
     qulonglong lastSync( qlonglong collectionId ) const
@@ -332,7 +332,7 @@ void OpenXchangeResource::configure( WId windowId )
       Settings::self()->setObjectsLastSync( QString() );
     }
 
-    Settings::self()->writeConfig();
+    Settings::self()->save();
 
     clearCache();
 
@@ -1001,7 +1001,7 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished( KJob *job )
     // maximum last modified value to cover multiple changes that might have been
     // done in the same millisecond to the data on the server
     Settings::self()->setFoldersLastSync( foldersLastSync - 1 );
-    Settings::self()->writeConfig();
+    Settings::self()->save();
   }
 
   //qDebug( "changedFolders=%d removedFolders=%d", modifiedFolders.count(), deletedFolders.count() );

@@ -109,7 +109,7 @@ void SettingsDialog::saveSettings()
         Settings::self()->setCalendars( QStringList() );
         Settings::self()->setTaskLists( QStringList() );
         Settings::self()->setEventsSince( QString() );
-        Settings::self()->writeConfig();
+        Settings::self()->save();
         return;
     }
 
@@ -139,7 +139,7 @@ void SettingsDialog::saveSettings()
     Settings::self()->setTaskLists( taskLists );
 
 
-    Settings::self()->writeConfig();
+    Settings::self()->save();
 }
 
 void SettingsDialog::slotCurrentAccountChanged( const QString &accountName )

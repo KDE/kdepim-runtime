@@ -40,6 +40,6 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 void ConfigDialog::save()
 {
   mManager->updateSettings();
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 

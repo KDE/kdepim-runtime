@@ -43,10 +43,10 @@ void SettingsDialog::saveSettings()
     const AccountPtr account = currentAccount();
     if ( !account ) {
         Settings::self()->setAccount( QString() );
-        Settings::self()->writeConfig();
+        Settings::self()->save();
         return;
     }
 
     Settings::self()->setAccount( account->accountName() );
-    Settings::self()->writeConfig();
+    Settings::self()->save();
 }

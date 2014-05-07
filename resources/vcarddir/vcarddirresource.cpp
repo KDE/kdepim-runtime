@@ -56,7 +56,7 @@ VCardDirResource::~VCardDirResource()
 
 void VCardDirResource::aboutToQuit()
 {
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 
 void VCardDirResource::configure( WId windowId )

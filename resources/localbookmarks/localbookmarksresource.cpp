@@ -81,7 +81,7 @@ void LocalBookmarksResource::configure( WId windowId )
 
   mBookmarkManager = KBookmarkManager::managerForFile( newFile, name() );
 
-  Settings::self()->writeConfig();
+  Settings::self()->save();
   synchronize();
 
   emit configurationDialogAccepted();

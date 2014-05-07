@@ -75,6 +75,6 @@ void ConfigDialog::save()
     Settings::self()->setSentMail( sentMail.id() );
   }
 
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 

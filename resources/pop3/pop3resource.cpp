@@ -68,14 +68,14 @@ POP3Resource::POP3Resource( const QString &id )
 
 POP3Resource::~POP3Resource()
 {
-  Settings::self()->writeConfig();
+  Settings::self()->save();
   delete mWallet;
   mWallet = 0;
 }
 
 void POP3Resource::configurationChanged()
 {
-  Settings::self()->writeConfig();
+  Settings::self()->save();
   updateIntervalTimer();
 }
 
@@ -214,7 +214,7 @@ void POP3Resource::showPasswordDialog( const QString &queryText )
   if ( dlg->exec() ) {
     mPassword = dlg->password();
     Settings::self()->setLogin( dlg->username() );
-    Settings::self()->writeConfig();
+    Settings::self()->save();
     if ( !dlg->password().isEmpty()  ) {
       mSavePassword = true;
     }
@@ -843,7 +843,7 @@ void POP3Resource::deleteJobResult( KJob *job )
   }
   Settings::self()->setSeenUidList( seenUIDs );
   Settings::self()->setSeenUidTimeList( timeOfSeenUids );
-  Settings::self()->writeConfig(),
+  Settings::self()->save(),
 
   advanceState( Quit );
 }
@@ -943,7 +943,7 @@ void POP3Resource::saveSeenUIDList()
   kDebug() << "The seen UID list has" << seenUIDs.size() << "entries";
   Settings::self()->setSeenUidList( seenUIDs );
   Settings::self()->setSeenUidTimeList( timeOfSeenUIDs );
-  Settings::self()->writeConfig();
+  Settings::self()->save();
 }
 
 void POP3Resource::cancelSync( const QString &errorMessage, bool error )
