@@ -271,9 +271,33 @@ void Settings::loadAccount( ImapAccount *account ) const
   if ( encryption == QLatin1String("SSL") ) {
     account->setEncryptionMode( KIMAP::LoginJob::AnySslVersion );
   } else if (  encryption == QLatin1String("STARTTLS") ) {
+    //KIMAP confused TLS and STARTTLS, TlsV1 really means "use STARTTLS"
     account->setEncryptionMode( KIMAP::LoginJob::TlsV1 );
   } else {
     account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
+  }
+
+  //Some SSL Server fail to advertise an ssl version they support (AnySslVersion),
+  //we therefore allow overriding this in the config
+  //(so we don't have to make the UI unnecessarily complex for properly working servers).
+  const QString overrideEncryptionMode = overrideEncryption();
+  if (!overrideEncryptionMode.isEmpty()) {
+    kWarning() << "Overriding encryption mode with: " << overrideEncryptionMode;
+    if ( overrideEncryptionMode == QLatin1String("SSLV2") ) {
+      account->setEncryptionMode( KIMAP::LoginJob::SslV2 );
+    } else if (  overrideEncryptionMode == QLatin1String("SSLV3") ) {
+      account->setEncryptionMode( KIMAP::LoginJob::SslV3 );
+    } else if (  overrideEncryptionMode == QLatin1String("TLSV1") ) {
+      account->setEncryptionMode( KIMAP::LoginJob::SslV3_1 );
+    } else if ( overrideEncryptionMode == QLatin1String("SSL") ) {
+      account->setEncryptionMode( KIMAP::LoginJob::AnySslVersion );
+    } else if (  overrideEncryptionMode == QLatin1String("STARTTLS") ) {
+      account->setEncryptionMode( KIMAP::LoginJob::TlsV1 );
+    } else if (  overrideEncryptionMode == QLatin1String("UNENCRYPTED") ) {
+      account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
+    } else {
+      kWarning() << "Tried to force invalid encryption mode: " << overrideEncryptionMode;
+    }
   }
 
   account->setAuthenticationMode(
