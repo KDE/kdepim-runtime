@@ -48,6 +48,7 @@
 #include <QtGui/QListView>
 #include <QtGui/QSortFilterProxyModel>
 #include <kdescendantsproxymodel.h>
+#include <KSharedConfig>
 
 class CheckableFilterProxyModel : public QSortFilterProxyModel
 {
@@ -173,7 +174,7 @@ void SubscriptionDialog::slotSearchPattern(const QString &pattern)
 
 void SubscriptionDialog::readConfig()
 {
-  KConfigGroup group( KGlobal::config(), "SubscriptionDialog" );
+  KConfigGroup group( KSharedConfig::openConfig(), "SubscriptionDialog" );
 
   const QSize size = group.readEntry( "Size", QSize() );
   if ( size.isValid() ) {
@@ -185,7 +186,7 @@ void SubscriptionDialog::readConfig()
 
 void SubscriptionDialog::writeConfig()
 {
-  KConfigGroup group( KGlobal::config(), "SubscriptionDialog" );
+  KConfigGroup group( KSharedConfig::openConfig(), "SubscriptionDialog" );
   group.writeEntry( "Size", size() );
   group.sync();
 }

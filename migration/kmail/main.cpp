@@ -29,6 +29,7 @@
 #include <KCmdLineArgs>
 #include <KGlobal>
 #include <KDebug>
+#include <KSharedConfig>
 
 
 using namespace KMail;
@@ -71,7 +72,7 @@ int main( int argc, char **argv )
   // Don't run the migration twice
   // The second time, it would only copy kmailrc over kmail2rc and
   // not migrate the accounts and folders again...
-  KConfigGroup migrationCfg( KGlobal::config(), "Migration" );
+  KConfigGroup migrationCfg( KSharedConfig::openConfig(), "Migration" );
   const bool enabled = migrationCfg.readEntry( "Enabled", false );
   const int currentVersion = migrationCfg.readEntry( "Version", 0 );
   const int targetVersion = migrationCfg.readEntry( "TargetVersion", 1 );

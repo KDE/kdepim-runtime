@@ -81,7 +81,7 @@ KMigratorBase::~KMigratorBase()
 
 KMigratorBase::MigrationState KMigratorBase::migrationState( const QString &identifier ) const
 {
-  KConfigGroup cfg( KGlobal::config(), QLatin1String("Resource ") + identifier );
+  KConfigGroup cfg( KSharedConfig::openConfig(), QLatin1String("Resource ") + identifier );
   QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
   const QString s = cfg.readEntry( "MigrationState", e.valueToKey( None ) );
   MigrationState state = (MigrationState)e.keyToValue( s.toLatin1() );
@@ -99,14 +99,14 @@ KMigratorBase::MigrationState KMigratorBase::migrationState( const QString &iden
 void KMigratorBase::setMigrationState( const QString &identifier, MigrationState state,
                         const QString &resId, const QString &type )
 {
-  KConfigGroup cfg( KGlobal::config(), QLatin1String("Resource ") + identifier );
+  KConfigGroup cfg( KSharedConfig::openConfig(), QLatin1String("Resource ") + identifier );
   QMetaEnum e = metaObject()->enumerator( metaObject()->indexOfEnumerator( "MigrationState" ) );
   const QString stateStr = QLatin1String(e.valueToKey( state ));
   cfg.writeEntry( "MigrationState", stateStr );
   cfg.writeEntry( "ResourceIdentifier", resId );
   cfg.sync();
 
-  cfg = KConfigGroup( KGlobal::config(), "Bridged" );
+  cfg = KConfigGroup( KSharedConfig::openConfig(), "Bridged" );
   QStringList bridgedResources = cfg.readEntry( type + QLatin1String("Resources"), QStringList() );
   if ( state == Bridged ) {
     if ( !bridgedResources.contains( identifier ) )

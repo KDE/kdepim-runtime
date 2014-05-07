@@ -49,6 +49,7 @@
 #include <RecursiveCollectionFilterProxyModel>
 #include <CollectionFilterProxyModel>
 #include <CollectionModifyJob>
+#include <KSharedConfig>
 
 static const char * textToSpeakMessage =
         I18N_NOOP( "<qt>"
@@ -185,7 +186,7 @@ static const char *myConfigGroupName = "NewMailNotifierDialog";
 
 void NewMailNotifierSettingsDialog::readConfig()
 {
-    KConfigGroup group( KGlobal::config(), myConfigGroupName );
+    KConfigGroup group( KSharedConfig::openConfig(), myConfigGroupName );
 
     const QSize size = group.readEntry( "Size", QSize(500, 300) );
     if ( size.isValid() ) {
@@ -195,7 +196,7 @@ void NewMailNotifierSettingsDialog::readConfig()
 
 void NewMailNotifierSettingsDialog::writeConfig()
 {
-    KConfigGroup group( KGlobal::config(), myConfigGroupName );
+    KConfigGroup group( KSharedConfig::openConfig(), myConfigGroupName );
     group.writeEntry( "Size", size() );
     group.sync();
 }

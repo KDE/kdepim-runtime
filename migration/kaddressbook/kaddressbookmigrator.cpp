@@ -31,6 +31,7 @@
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <kdebug.h>
+#include <KSharedConfig>
 
 KABC::Addressee::List readContacts( bool *ok )
 {
@@ -106,7 +107,7 @@ int main( int argc, char **argv )
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   if ( args->isSet( "disable-autostart" ) ) {
-    KSharedConfigPtr config = KGlobal::config();
+    KSharedConfigPtr config = KSharedConfig::openConfig();
     KConfigGroup group( config, "Startup" );
     group.writeEntry( "EnableAutostart", false );
   }

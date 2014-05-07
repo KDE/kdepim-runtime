@@ -141,7 +141,7 @@ void KMailMigrator::migrate()
   KSharedConfigPtr oldConfig = KSharedConfig::openConfig( QLatin1String( "kmailrc" ) );
   mConfig = KSharedConfig::openConfig( QLatin1String( "kmail2rc" ) );
 
-  const QFileInfo migratorConfigInfo( KStandardDirs::locateLocal( "config", KGlobal::config()->name() ) );
+  const QFileInfo migratorConfigInfo( KStandardDirs::locateLocal( "config", KSharedConfig::openConfig()->name() ) );
 
   const QString &newKMailCfgFile = KStandardDirs::locateLocal( "config", QLatin1String( "kmail2rc" ) );
 
@@ -227,7 +227,7 @@ void KMailMigrator::migrateNotifyFile()
 
 void KMailMigrator::migrateTags()
 {
-  KConfigGroup tagMigrationConfig( KGlobal::config(), QLatin1String( "MessageTags" ) );
+  KConfigGroup tagMigrationConfig( KSharedConfig::openConfig(), QLatin1String( "MessageTags" ) );
   const QStringList migratedTags = tagMigrationConfig.readEntry( "MigratedTags", QStringList() );
 
   const QStringList tagGroups = mConfig->groupList().filter( QRegExp( QLatin1String("MessageTag #\\d+") ) );
@@ -661,7 +661,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
 
   ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportNewMessages;
   if ( disconnected ) {
-    const KConfigGroup dimapConfig( KGlobal::config(), QLatin1String( "Disconnected IMAP" ) );
+    const KConfigGroup dimapConfig( KSharedConfig::openConfig(), QLatin1String( "Disconnected IMAP" ) );
     if ( dimapConfig.isValid() ) {
       options = ImapCacheCollectionMigrator::ConfigOnly;
 
@@ -1076,7 +1076,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
   resource.reconfigure();
 
   if ( error.isEmpty() ) {
-    KConfigGroup config( KGlobal::config(), QLatin1String( "SpecialMailCollections" ) );
+    KConfigGroup config( KSharedConfig::openConfig(), QLatin1String( "SpecialMailCollections" ) );
     if ( config.readEntry( QLatin1String( "TakeOverIfDefaultIsTotallyEmpty" ), false ) ) {
       KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
       KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );

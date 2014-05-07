@@ -24,6 +24,7 @@
 #include <KWindowSystem>
 
 #include <QTimer>
+#include <KSharedConfig>
 
 using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
@@ -85,7 +86,7 @@ void SettingsDialog::validate()
 
 void SettingsDialog::readConfig()
 {
-    KConfigGroup group( KGlobal::config(), "SettingsDialog" );
+    KConfigGroup group( KSharedConfig::openConfig(), "SettingsDialog" );
     const QSize size = group.readEntry( "Size", QSize(600, 400) );
     if ( size.isValid() ) {
         resize( size );
@@ -94,7 +95,7 @@ void SettingsDialog::readConfig()
 
 void SettingsDialog::writeConfig()
 {
-    KConfigGroup group( KGlobal::config(), "SettingsDialog" );
+    KConfigGroup group( KSharedConfig::openConfig(), "SettingsDialog" );
     group.writeEntry( "Size", size() );
     group.sync();
 }

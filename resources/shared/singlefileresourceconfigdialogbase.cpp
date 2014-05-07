@@ -31,6 +31,7 @@
 
 #include <KGlobal>
 #include <KLocalizedString>
+#include <KSharedConfig>
 
 using namespace Akonadi;
 
@@ -73,13 +74,13 @@ SingleFileResourceConfigDialogBase::~SingleFileResourceConfigDialogBase()
 
 void SingleFileResourceConfigDialogBase::writeConfig()
 {
-    KConfigGroup group( KGlobal::config(), "SingleFileResourceConfigDialogBase" );
+    KConfigGroup group( KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase" );
     group.writeEntry( "Size", size() );
 }
 
 void SingleFileResourceConfigDialogBase::readConfig()
 {
-    KConfigGroup group( KGlobal::config(), "SingleFileResourceConfigDialogBase" );
+    KConfigGroup group( KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase" );
     const QSize sizeDialog = group.readEntry( "Size", QSize(600,540) );
     if ( sizeDialog.isValid() ) {
         resize( sizeDialog );
