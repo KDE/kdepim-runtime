@@ -60,7 +60,10 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
+             << "C: A000006 UID SEARCH UID 1:9"
+             << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
                 "BODY.PEEK[HEADER] "
                 "FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
@@ -70,7 +73,7 @@ private slots:
                 "Subject: Test Mail\r\n"
                 "\r\n"
                 " )"
-             << "S: A000006 OK fetch done";
+             << "S: A000007 OK fetch done";
 
     callNames.clear();
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone" ;
@@ -101,7 +104,10 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID SEARCH UID 1:9"
+             << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
@@ -110,7 +116,7 @@ private slots:
                 "\r\n"
                 "Test\r\n"
                 " )"
-             << "S: A000006 OK fetch done";
+             << "S: A000007 OK fetch done";
 
     callNames.clear();
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
@@ -141,9 +147,12 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:9 (FLAGS UID)"
+             << "C: A000006 UID SEARCH UID 1:9"
+             << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 1:9 (FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 )"
-             << "S: A000006 OK fetch done";
+             << "S: A000007 OK fetch done";
 
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
@@ -193,7 +202,10 @@ private slots:
              << "S: * OK [ UIDNEXT 9  ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID SEARCH UID 8:9"
+             << "S: * SEARCH 8 9"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 4 FETCH ( FLAGS (\\Seen) UID 8 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
@@ -210,12 +222,15 @@ private slots:
                 "\r\n"
                 "Test\r\n"
                 " )"
-             << "S: A000006 OK fetch done"
-             << "C: A000007 UID FETCH 1:7 (FLAGS UID)"
+             << "S: A000007 OK fetch done"
+             << "C: A000008 UID SEARCH UID 1:7"
+             << "S: * SEARCH 1 2 3 4 5 6 7"
+             << "S: A000008 OK search done"
+             << "C: A000009 UID FETCH 1:7 (FLAGS UID)"
              << "S: * 1 FETCH"
              << "S: * 2 FETCH"
              << "S: * 3 FETCH"
-             << "S: A000007 OK fetch done";
+             << "S: A000009 OK fetch done";
 
     callNames.clear();
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
@@ -304,9 +319,12 @@ private slots:
              << "S: * OK [ UIDNEXT 9 ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:9 (FLAGS UID)"
+             << "C: A000006 UID SEARCH UID 1:9"
+             << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 1:9 (FLAGS UID)"
              << "S: * 5 FETCH ( UID 8 FLAGS () )"
-             << "S: A000006 OK fetch done";
+             << "S: A000007 OK fetch done";
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
@@ -335,7 +353,10 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 9  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID SEARCH UID 1:9"
+             << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
@@ -345,7 +366,7 @@ private slots:
                 "\r\n"
                 "Test\r\n"
                 " )"
-             << "S: A000006 OK fetch done";
+             << "S: A000007 OK fetch done";
 
     callNames.clear();
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
@@ -373,7 +394,11 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 120  ]"
              << "S: A000005 OK select done"
-             << "C: A000006 UID FETCH 105:114 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "C: A000006 UID SEARCH UID 105:120"
+             //We asked for until 120 but only 119 is available (120 is uidnext)
+             << "S: * SEARCH 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 105:114 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 105 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
@@ -383,8 +408,8 @@ private slots:
                 "Test\r\n"
                 " )"
               //9 more would follow but are excluded for clarity
-             << "S: A000006 OK fetch done"
-             << "C: A000007 UID FETCH 115:120 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: A000007 OK fetch done"
+             << "C: A000008 UID FETCH 115:119 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 115 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
@@ -394,18 +419,17 @@ private slots:
                 "Test\r\n"
                 " )"
               //4 more would follow but are excluded for clarity
-             << "S: A000007 OK fetch done"
-             << "C: A000008 UID FETCH 1:100 (FLAGS UID)"
-             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
-              //99 more would follow but are excluded for clarity
              << "S: A000008 OK fetch done"
-             << "C: A000009 UID FETCH 101:104 (FLAGS UID)"
-             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 101 )"
+             << "C: A000009 UID SEARCH UID 1:104"
+             << "S: * SEARCH 1 2 99 100"
+             << "S: A000009 OK search done"
+             << "C: A000010 UID FETCH 1:2,99:100 (FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
               //3 more would follow but are excluded for clarity
-             << "S: A000009 OK fetch done";
+             << "S: A000010 OK fetch done";
 
     callNames.clear();
-    callNames << "itemsRetrieved" << "itemsRetrieved" << "itemsRetrieved" << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+    callNames << "itemsRetrieved" << "itemsRetrieved" << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
 
     QTest::newRow( "test batch processing" ) << collection << scenario << callNames;
 
