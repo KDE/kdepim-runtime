@@ -26,6 +26,7 @@
 #include <KDE/KLocale>
 
 #include "collectionflagsattribute.h"
+#include <imapaclattribute.h>
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
@@ -499,4 +500,19 @@ int ResourceTask::batchSize() const
 ResourceStateInterface::Ptr ResourceTask::resourceState()
 {
     return m_resource;
+}
+
+KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
+{
+    Akonadi::ImapAclAttribute *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
+    if (aclAttribute) {
+        //HACK, only return myrights if they are available
+        if (aclAttribute->myRights() != KIMAP::Acl::None) {
+            return aclAttribute->myRights();
+        } else {
+            //This should be removed after 4.14, and myrights should be always used.
+            return aclAttribute->rights().value(userName().toUtf8());
+        }
+    }
+    return KIMAP::Acl::None;
 }

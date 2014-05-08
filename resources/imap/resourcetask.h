@@ -28,6 +28,7 @@
 #include <Akonadi/Item>
 
 #include <kimap/listjob.h>
+#include <kimap/acl.h>
 
 #include "resourcestateinterface.h"
 
@@ -139,6 +140,8 @@ protected:
   int batchSize() const;
 
   ResourceStateInterface::Ptr resourceState();
+
+  KIMAP::Acl::Rights myRights(const Akonadi::Collection &);
 
 private:
 

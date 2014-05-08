@@ -32,6 +32,36 @@ class ImapAclAttributeTest : public QObject
   Q_OBJECT
 
   private Q_SLOTS:
+    void testDeserialize_data()
+    {
+      QTest::addColumn<ImapAcl>( "rights" );
+      QTest::addColumn<QByteArray>( "serialized" );
+
+      ImapAcl acl;
+      QTest::newRow( "empty" ) << acl << QByteArray( " %% " );
+
+      acl.insert( "user@host", KIMAP::Acl::None );
+      QTest::newRow( "none" ) << acl << QByteArray( "user@host  %% " );
+
+      acl.insert( "user@host", KIMAP::Acl::Lookup );
+      QTest::newRow( "lookup" ) << acl << QByteArray( "user@host l %% " );
+
+      acl.insert( "user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
+      QTest::newRow( "lookup/read" ) << acl << QByteArray( "user@host lr %% " );
+
+      acl.insert( "otheruser@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
+      QTest::newRow( "lookup/read" ) << acl << QByteArray( "otheruser@host lr % user@host lr %% " );
+    }
+
+    void testDeserialize()
+    {
+      QFETCH( ImapAcl, rights );
+      QFETCH( QByteArray, serialized );
+
+      ImapAclAttribute deserializeAttr;
+      deserializeAttr.deserialize( serialized );
+      QCOMPARE( deserializeAttr.rights(), rights );
+    }
 
     void testSerializeDeserialize_data()
     {
@@ -40,20 +70,20 @@ class ImapAclAttributeTest : public QObject
       QTest::addColumn<QByteArray>( "oldSerialized" );
 
       ImapAcl acl;
-      QTest::newRow( "empty" ) << acl << QByteArray( " %% " ) << QByteArray( "testme@host l %% " );
+      QTest::newRow( "empty" ) << acl << QByteArray( " %%  %% " ) << QByteArray( "testme@host l %%  %% " );
 
       acl.insert( "user@host", KIMAP::Acl::None );
-      QTest::newRow( "none" ) << acl << QByteArray( "user@host  %% " ) << QByteArray( "testme@host l %% user@host " );
+      QTest::newRow( "none" ) << acl << QByteArray( "user@host  %%  %% " ) << QByteArray( "testme@host l %% user@host  %% " );
 
       acl.insert( "user@host", KIMAP::Acl::Lookup );
-      QTest::newRow( "lookup" ) << acl << QByteArray( "user@host l %% " ) << QByteArray( "testme@host l %% user@host l" );
+      QTest::newRow( "lookup" ) << acl << QByteArray( "user@host l %%  %% " ) << QByteArray( "testme@host l %% user@host l %% " );
 
       acl.insert( "user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
-      QTest::newRow( "lookup/read" ) << acl << QByteArray( "user@host lr %% " ) << QByteArray( "testme@host l %% user@host lr" );
+      QTest::newRow( "lookup/read" ) << acl << QByteArray( "user@host lr %%  %% " ) << QByteArray( "testme@host l %% user@host lr %% " );
 
       acl.insert( "otheruser@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
-      QTest::newRow( "lookup/read" ) << acl << QByteArray( "otheruser@host lr % user@host lr %% " )
-                                     << QByteArray( "testme@host l %% otheruser@host lr % user@host lr" );
+      QTest::newRow( "lookup/read" ) << acl << QByteArray( "otheruser@host lr % user@host lr %%  %% " )
+                                     << QByteArray( "testme@host l %% otheruser@host lr % user@host lr %% " );
     }
 
     void testSerializeDeserialize()

@@ -63,6 +63,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     }
   }
 
+  m_session = session;
   m_collection = collection();
   const QString mailBox = mailBoxForCollection( m_collection );
   const QStringList capabilities = serverCapabilities();
@@ -88,12 +89,6 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
 
   // Get the ACLs from the mailbox if it's supported
   if ( capabilities.contains( QLatin1String("ACL") ) ) {
-    KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( session );
-    acl->setMailBox( mailBox );
-    connect( acl, SIGNAL(result(KJob*)), SLOT(onGetAclDone(KJob*)) );
-    m_pendingMetaDataJobs++;
-    acl->start();
-
     KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( session );
     rights->setMailBox( mailBox );
     connect( rights, SIGNAL(result(KJob*)), SLOT(onRightsReceived(KJob*)) );
@@ -186,7 +181,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
     parentRights = parentAclAttribute->rights()[userName().toUtf8()];
   }
 
-  KIMAP::Acl::Rights imapRights = rightsJob->rights();
+  const KIMAP::Acl::Rights imapRights = rightsJob->rights();
   Akonadi::Collection::Rights newRights = Akonadi::Collection::ReadOnly;
 
   // For renaming, the parent folder needs to have the CreateMailbox or Create permission.
@@ -241,6 +236,15 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 
   if ( newRights != m_collection.rights() ) {
     m_collection.setRights( newRights );
+  }
+
+  //The a right is required to list acl's
+  if ( imapRights & KIMAP::Acl::Admin ) {
+    KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( m_session );
+    acl->setMailBox( mailBoxForCollection( m_collection ) );
+    connect( acl, SIGNAL(result(KJob*)), SLOT(onGetAclDone(KJob*)) );
+    m_pendingMetaDataJobs++;
+    acl->start();
   }
 
   endTaskIfNeeded();
