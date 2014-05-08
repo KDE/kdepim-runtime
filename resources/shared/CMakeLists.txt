@@ -1,2 +1,3 @@
 add_subdirectory(filestore)
-add_subdirectory(tests)
+#REACTIVATE
+#add_subdirectory(tests)
