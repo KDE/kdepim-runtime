@@ -110,9 +110,9 @@ ImapResource::ImapResource( const QString &id )
                                   -1 ).toInt();
 
     if ( instanceCounter > 0 ) {
-      setName( i18n( "IMAP Account %1", instanceCounter ) );
+      setName( QString("%1 %2").arg(defaultName()).arg(instanceCounter) );
     } else {
-      setName( i18n( "IMAP Account" ) );
+      setName( defaultName() );
     }
   }
 
@@ -193,6 +193,11 @@ ImapResource::~ImapResource()
   m_taskList.clear();
 
   delete m_pool;
+}
+
+QString ImapResource::defaultName()
+{
+  return i18n( "IMAP Account" );
 }
 
 void ImapResource::aboutToQuit()
