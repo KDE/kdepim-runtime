@@ -111,6 +111,7 @@ protected:
   virtual void aboutToQuit();
 
   virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
+  virtual QString defaultName();
 
 private Q_SLOTS:
   void doSearch( const QVariant &arg );
