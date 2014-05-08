@@ -384,3 +384,4 @@ bool KolabHelpers::isHandledType(Kolab::FolderType type)
     }
     return false;
 }
+
