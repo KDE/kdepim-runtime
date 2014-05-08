@@ -53,7 +53,7 @@ private:
     void createCollection(const QString &mailbox, const QList<QByteArray> &flags);
 
     int mJobs;
-    QHash<QString, Akonadi::Collection> mMailCollections;;
+    QHash<QString, Akonadi::Collection> mMailCollections;
     QSet<QString> mSubscribedMailboxes;
 };
 
