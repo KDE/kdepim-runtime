@@ -54,7 +54,7 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
 {
   kDebug( 5327 ) << collection().remoteId();
 
-  // Prevent fetching items from noselect folders.
+  // Prevent fetching metadata from noselect folders.
   if ( collection().hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
@@ -83,8 +83,8 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
       meta->addEntry( "*", "value.shared" );
     }
     connect( meta, SIGNAL(result(KJob*)), SLOT(onGetMetaDataDone(KJob*)) );
-    meta->start();
     m_pendingMetaDataJobs++;
+    meta->start();
   }
 
   // Get the ACLs from the mailbox if it's supported
@@ -92,14 +92,14 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     KIMAP::GetAclJob *acl = new KIMAP::GetAclJob( session );
     acl->setMailBox( mailBox );
     connect( acl, SIGNAL(result(KJob*)), SLOT(onGetAclDone(KJob*)) );
-    acl->start();
     m_pendingMetaDataJobs++;
+    acl->start();
 
     KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( session );
     rights->setMailBox( mailBox );
     connect( rights, SIGNAL(result(KJob*)), SLOT(onRightsReceived(KJob*)) );
-    rights->start();
     m_pendingMetaDataJobs++;
+    rights->start();
   }
 
   // Get the QUOTA info from the mailbox if it's supported
@@ -107,8 +107,8 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
     KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob( session );
     quota->setMailBox( mailBox );
     connect( quota, SIGNAL(result(KJob*)), SLOT(onQuotasReceived(KJob*)) );
-    quota->start();
     m_pendingMetaDataJobs++;
+    quota->start();
   }
 
   // the server does not have any of the capabilities needed to get extra info, so this
@@ -120,7 +120,9 @@ void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
 
 void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
 {
+  m_pendingMetaDataJobs--;
   if ( job->error() ) {
+    kWarning() << "Get metadata failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -147,7 +149,9 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
 
 void RetrieveCollectionMetadataTask::onGetAclDone( KJob *job )
 {
+  m_pendingMetaDataJobs--;
   if ( job->error() ) {
+    kWarning() << "GetACL failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -167,7 +171,9 @@ void RetrieveCollectionMetadataTask::onGetAclDone( KJob *job )
 
 void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 {
+  m_pendingMetaDataJobs--;
   if ( job->error() ) {
+    kWarning() << "MyRights failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -243,7 +249,9 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 
 void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
 {
+  m_pendingMetaDataJobs--;
   if ( job->error() ) {
+    kWarning() << "Quota retrieval failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -299,8 +307,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
 
 void RetrieveCollectionMetadataTask::endTaskIfNeeded()
 {
-  if ( --m_pendingMetaDataJobs == 0 ) {
-    // the others have ended, we're done, the next one can go
+  if ( m_pendingMetaDataJobs <= 0 ) {
     const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
     TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
     attr->setTimestamp( currentTimestamp );

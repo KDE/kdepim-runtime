@@ -22,7 +22,7 @@
 #include "dummyresourcestate.h"
 
 Q_DECLARE_METATYPE(QList<qint64>)
-Q_DECLARE_METATYPE(QVector<qint64>);
+Q_DECLARE_METATYPE(QVector<qint64>)
 
 DummyResourceState::DummyResourceState()
   : m_automaticExpunge( true ), m_subscriptionEnabled( true ),

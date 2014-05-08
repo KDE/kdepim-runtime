@@ -111,9 +111,9 @@ ImapResource::ImapResource( const QString &id )
                                   -1 ).toInt();
 
     if ( instanceCounter > 0 ) {
-      setName( i18n( "IMAP Account %1", instanceCounter ) );
+      setName( QString("%1 %2").arg(defaultName()).arg(instanceCounter) );
     } else {
-      setName( i18n( "IMAP Account" ) );
+      setName( defaultName() );
     }
   }
 
@@ -194,6 +194,11 @@ ImapResource::~ImapResource()
   m_taskList.clear();
 
   delete m_pool;
+}
+
+QString ImapResource::defaultName()
+{
+  return i18n( "IMAP Account" );
 }
 
 void ImapResource::aboutToQuit()
@@ -438,6 +443,7 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
   Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collection, CollectionFetchJob::Base, this);
   fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
   fetchJob->fetchScope().setIncludeStatistics( true );
+  fetchJob->fetchScope().setIncludeUnsubscribed( true );
   connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMetadataCollectionFetchDone(KJob*)));
 }
 
@@ -465,6 +471,7 @@ void ImapResource::retrieveItems( const Collection &col )
   Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(col, CollectionFetchJob::Base, this);
   fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
   fetchJob->fetchScope().setIncludeStatistics( true );
+  fetchJob->fetchScope().setIncludeUnsubscribed( true );
   connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemRetrievalCollectionFetchDone(KJob*)));
 }
 
@@ -635,6 +642,11 @@ void ImapResource::startIdle()
   if ( !m_pool->serverCapabilities().contains( QLatin1String("IDLE") ) )
     return;
 
+  //Without password we don't even have to try
+  if (Settings::self()->password().isEmpty()) {
+    return;
+  }
+
   const QStringList ridPath = Settings::self()->idleRidPath();
   if ( ridPath.size() < 2 )
     return;
@@ -662,20 +674,16 @@ void ImapResource::startIdle()
 
 void ImapResource::onIdleCollectionFetchDone( KJob *job )
 {
-  if ( job->error() == 0 ) {
-    Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>( job );
-    Akonadi::Collection c = fetch->collections().first();
-
-    const QString password = Settings::self()->password();
-    if ( password.isEmpty() )
-      return;
-
-    m_idle = new ImapIdleManager( createResourceState(TaskArguments(c)), m_pool, this );
-
-  } else {
+  if (job->error()) {
     kWarning() << "CollectionFetch for idling failed."
                << "error=" << job->error()
                << ", errorString=" << job->errorString();
+    return;
+  }
+  Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>(job);
+  //Can be empty if collection is not subscribed locally
+  if (!fetch->collections().isEmpty()) {
+    m_idle = new ImapIdleManager( createResourceState(TaskArguments(fetch->collections().first())), m_pool, this );
   }
 }
 
@@ -691,6 +699,7 @@ void ImapResource::requestManualExpunge( qint64 collectionId )
     Akonadi::CollectionFetchScope scope;
     scope.setResource( identifier() );
     scope.setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
+    scope.setIncludeUnsubscribed( true );
 
     Akonadi::CollectionFetchJob *fetch
       = new Akonadi::CollectionFetchJob( collection,
