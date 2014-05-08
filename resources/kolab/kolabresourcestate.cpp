@@ -21,10 +21,10 @@
 #include "kolabhelpers.h"
 #include "kolabmessagehelper.h"
 #include <collectionannotationsattribute.h>
-#include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/CachePolicy>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/CachePolicy>
 #include <Akonadi/KMime/MessageParts>
-
+#include <KDebug>
 
 KolabResourceState::KolabResourceState(ImapResource* resource, const TaskArguments& arguments)
     : ResourceState(resource, arguments)

@@ -26,8 +26,8 @@
 #include <collectionannotationsattribute.h>
 
 #include <KLocalizedString>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchScope>
 
 #include "kolabretrievecollectionstask.h"
 #include "kolabresourcestate.h"

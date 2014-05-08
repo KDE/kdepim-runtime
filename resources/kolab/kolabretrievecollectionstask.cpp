@@ -27,9 +27,9 @@
 #include <noinferiorsattribute.h>
 #include <collectionannotationsattribute.h>
 
-#include <akonadi/cachepolicy.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/kmime/messageparts.h>
+#include <AkonadiCore/cachepolicy.h>
+#include <AkonadiCore/entitydisplayattribute.h>
+#include <Akonadi/KMime/MessageParts>
 
 #include <kmime/kmime_message.h>
 

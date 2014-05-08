@@ -20,7 +20,7 @@
 #ifndef KOLABHELPERS_H
 #define KOLABHELPERS_H
 
-#include <Akonadi/Item>
+#include <AkonadiCore/Item>
 #include <kolabdefinitions.h> //libkolab
 #include <formathelpers.h> //libkolab
 

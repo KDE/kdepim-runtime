@@ -20,10 +20,10 @@
 #include "kolabhelpers.h"
 #include <KMime/KMimeMessage>
 #include <KCalCore/Incidence>
-#include <Akonadi/Collection>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <akonadi/notes/noteutils.h>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <Akonadi/notes/noteutils.h>
 #include <kolab/kolabobject.h>
 #include <kolab/errorhandler.h>
 

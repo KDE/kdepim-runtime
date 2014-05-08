@@ -23,7 +23,7 @@
 #include <kolabdefinitions.h> //libkolab
 
 #include "kolabhelpers.h"
-
+#include <KDebug>
 
 KolabMessageHelper::KolabMessageHelper(const Akonadi::Collection &col)
     : mCollection(col)

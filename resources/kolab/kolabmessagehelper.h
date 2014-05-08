@@ -21,7 +21,7 @@
 #define KOLABMESSAGEHELPER_H
 
 #include <messagehelper.h>
-#include <Akonadi/Collection>
+#include <AkonadiCore/Collection>
 
 class KolabMessageHelper : public MessageHelper {
 public:
