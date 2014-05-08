@@ -682,6 +682,11 @@ void ImapResource::startIdle()
   if ( !m_pool->serverCapabilities().contains( QLatin1String("IDLE") ) )
     return;
 
+  //Without password we don't even have to try
+  if (Settings::self()->password().isEmpty()) {
+    return;
+  }
+
   const QStringList ridPath = Settings::self()->idleRidPath();
   if ( ridPath.size() < 2 )
     return;
@@ -709,21 +714,17 @@ void ImapResource::startIdle()
 
 void ImapResource::onIdleCollectionFetchDone( KJob *job )
 {
-  if ( job->error() == 0 ) {
-    Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>( job );
-    Akonadi::Collection c = fetch->collections().first();
-
-    const QString password = Settings::self()->password();
-    if ( password.isEmpty() )
-      return;
-
-    ResourceStateInterface::Ptr state = ::ResourceState::createIdleState( this, c );
-    m_idle = new ImapIdleManager( state, m_pool, this );
-
-  } else {
+  if (job->error()) {
     kWarning() << "CollectionFetch for idling failed."
                << "error=" << job->error()
                << ", errorString=" << job->errorString();
+    return;
+  }
+  Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob*>(job);
+  //Can be empty if collection is not subscribed locally
+  if (!fetch->collections().isEmpty()) {
+    ResourceStateInterface::Ptr state = ::ResourceState::createIdleState( this, fetch->collections().first() );
+    m_idle = new ImapIdleManager( state, m_pool, this );
   }
 }
 
