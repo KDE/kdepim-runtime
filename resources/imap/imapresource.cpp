@@ -442,6 +442,7 @@ void ImapResource::triggerCollectionExtraInfoJobs( const QVariant &collectionVar
   Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collection, CollectionFetchJob::Base, this);
   fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
   fetchJob->fetchScope().setIncludeStatistics( true );
+  fetchJob->fetchScope().setIncludeUnsubscribed( true );
   connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMetadataCollectionFetchDone(KJob*)));
 }
 
@@ -469,6 +470,7 @@ void ImapResource::retrieveItems( const Collection &col )
   Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(col, CollectionFetchJob::Base, this);
   fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
   fetchJob->fetchScope().setIncludeStatistics( true );
+  fetchJob->fetchScope().setIncludeUnsubscribed( true );
   connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemRetrievalCollectionFetchDone(KJob*)));
 }
 
@@ -696,6 +698,7 @@ void ImapResource::requestManualExpunge( qint64 collectionId )
     Akonadi::CollectionFetchScope scope;
     scope.setResource( identifier() );
     scope.setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
+    scope.setIncludeUnsubscribed( true );
 
     Akonadi::CollectionFetchJob *fetch
       = new Akonadi::CollectionFetchJob( collection,
