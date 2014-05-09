@@ -24,8 +24,8 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <akonadi/notes/noteutils.h>
-#include <kolab/kolabobject.h>
-#include <kolab/errorhandler.h>
+#include <kolabobject.h>
+#include <errorhandler.h>
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
