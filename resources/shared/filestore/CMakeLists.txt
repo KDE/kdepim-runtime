@@ -31,7 +31,8 @@ set_target_properties(akonadi-filestore PROPERTIES VERSION ${KF5_VERSION} SOVERS
 
 install(TARGETS akonadi-filestore ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-if (KDE4_BUILD_TESTS)
-  add_subdirectory( tests )
-endif ()
+#reactivate
+#if (KDE4_BUILD_TESTS)
+#  add_subdirectory( tests )
+#endif ()
 
