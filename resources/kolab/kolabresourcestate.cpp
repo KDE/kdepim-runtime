@@ -21,6 +21,7 @@
 #include "kolabhelpers.h"
 #include "kolabmessagehelper.h"
 #include <collectionannotationsattribute.h>
+#include <noselectattribute.h>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/KMime/MessageParts>
@@ -63,6 +64,10 @@ void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection
                 cachePolicy.setSyncOnDemand(true);
                 col.setCachePolicy(cachePolicy);
             }
+        }
+        if (!KolabHelpers::isHandledType(folderType)) {
+            //If we don't handle the folder, make sure we don't download the messages
+            col.attribute<NoSelectAttribute>(Akonadi::Entity::AddIfMissing);
         }
     }
     ResourceState::collectionAttributesRetrieved(col);
