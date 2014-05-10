@@ -194,7 +194,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     ___MailTransport____INIT();
 #endif
 
-  KGlobal::locale()->insertCatalog( QLatin1String("libakonadi-kmime") ); // for special collection translation
+  //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi-kmime") ); // for special collection translation
 
   new SettingsAdaptor( Settings::self() );
   new MailDispatcherAgentAdaptor( this );

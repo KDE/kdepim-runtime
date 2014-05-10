@@ -32,6 +32,7 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <kdebug.h>
+#include <KLocale>
 
 using namespace Akonadi;
 using namespace KCalCore;
@@ -40,7 +41,7 @@ using namespace SETTINGS_NAMESPACE;
 ICalResourceBase::ICalResourceBase( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  KGlobal::locale()->insertCatalog( QLatin1String("akonadi_ical_resource") );
+  //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_ical_resource") );
 }
 
 void ICalResourceBase::initialise( const QStringList &mimeTypes, const QString &icon )

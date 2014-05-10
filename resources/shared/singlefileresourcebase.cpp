@@ -53,7 +53,7 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   connect( KDirWatch::self(), SIGNAL(dirty(QString)), SLOT(fileChanged(QString)) );
   connect( KDirWatch::self(), SIGNAL(created(QString)), SLOT(fileChanged(QString)) );
 
-  KGlobal::locale()->insertCatalog( QLatin1String("akonadi_singlefile_resource") );
+  //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_singlefile_resource") );
 }
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const

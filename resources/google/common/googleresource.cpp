@@ -29,6 +29,7 @@
 #include <LibKGAPI2/AccountInfo/AccountInfoFetchJob>
 #include <LibKGAPI2/AccountInfo/AccountInfo>
 #include <LibKGAPI2/AuthJob>
+#include <KLocale>
 
 #ifdef HAVE_ACCOUNTS
 #include "shared/getcredentialsjob.h"
@@ -46,7 +47,7 @@ GoogleResource::GoogleResource( const QString &id ):
     AgentBase::ObserverV2(),
     m_isConfiguring(false)
 {
-    KGlobal::locale()->insertCatalog( QLatin1String("akonadi_google_resource") );
+    //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
     connect( this, SIGNAL(abortRequested()),
             this, SLOT(slotAbortRequested()) );
     connect( this, SIGNAL(reloadConfiguration()),

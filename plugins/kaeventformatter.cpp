@@ -30,6 +30,7 @@
 #include <klocale.h>
 #include <kdatetime.h>
 #include <kdebug.h>
+#include <KLocale>
 
 static QString trueFalse(bool value);
 static QString number(unsigned long n);
@@ -314,7 +315,7 @@ QString trueFalse(bool value)
 // Do not use for date/time or monetary numbers (which have their own digit sets).
 QString number(unsigned long n)
 {
-    KLocale* locale = KGlobal::locale();
+    KLocale* locale = KLocale::global();
     return locale->convertDigits(QString::number(n), locale->digitSet());
 }
 

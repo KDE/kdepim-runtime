@@ -31,13 +31,14 @@
 #include <ItemCopyJob>
 #include <KGlobal>
 #include <KDebug>
+#include <KLocale>
 
 using namespace Akonadi;
 
 MTDummyResource::MTDummyResource( const QString &id )
   : ResourceBase( id )
 {
-  KGlobal::locale()->insertCatalog( QLatin1String("akonadi_mailtransport_resource") );
+  //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_mailtransport_resource") );
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );

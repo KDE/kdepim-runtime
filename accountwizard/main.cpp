@@ -30,6 +30,7 @@
 
 
 #include <stdio.h>
+#include <KLocale>
 
 int main( int argc, char **argv )
 {
@@ -62,7 +63,7 @@ int main( int argc, char **argv )
   KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
   KUniqueApplication app;
-  KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );
+  //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi") );
 
   Akonadi::Control::start( 0 );
 

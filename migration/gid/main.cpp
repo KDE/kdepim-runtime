@@ -28,6 +28,7 @@
 #include <kdebug.h>
 #include <KApplication>
 #include <infodialog.h>
+#include <KLocale>
 
 #include "gidmigrator.h"
 
@@ -56,7 +57,7 @@ int main(int argc, char **argv)
     app->setQuitOnLastWindowClosed(false);
 
     KGlobal::setAllowQuit(true);
-    KGlobal::locale()->insertCatalog(QLatin1String("libakonadi"));
+    //QT5 KLocale::global()->insertCatalog(QLatin1String("libakonadi"));
 
     if (!Akonadi::Control::start(0)) {
         return 2;

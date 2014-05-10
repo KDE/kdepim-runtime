@@ -126,6 +126,7 @@ void SerializerPluginKAlarm::serialize(const Item& item, const QByteArray& label
 }
 
 #include <kglobal.h>
+#include <KLocale>
 
 void SerializerPluginKAlarm::compare(AbstractDifferencesReporter* reporter, const Item& left, const Item& right)
 {
@@ -252,7 +253,7 @@ void SerializerPluginKAlarm::compare(AbstractDifferencesReporter* reporter, cons
     if (eventL.emailAttachments() != eventR.emailAttachments())
         reportDifference(reporter, KAEventFormatter::EmailAttachments);
 
-    KLocale* locale = KGlobal::locale();
+    KLocale* locale = KLocale::global();
     reporter->addProperty(AbstractDifferencesReporter::ConflictMode, i18nc("@label", "Item revision"),
                           locale->convertDigits(QString::number(left.revision()), locale->digitSet()),
                           locale->convertDigits(QString::number(right.revision()), locale->digitSet()));

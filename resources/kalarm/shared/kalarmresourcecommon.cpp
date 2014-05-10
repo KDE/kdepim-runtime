@@ -33,6 +33,7 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <kdebug.h>
+#include <KLocale>
 
 using namespace Akonadi;
 using namespace KCalCore;
@@ -70,7 +71,7 @@ void initialise(QObject* parent)
     AttributeFactory::registerAttribute<CompatibilityAttribute>();
     AttributeFactory::registerAttribute<EventAttribute>();
 
-    KGlobal::locale()->insertCatalog(QLatin1String("akonadi_kalarm_resource"));
+    //QT5 KLocale::global()->insertCatalog(QLatin1String("akonadi_kalarm_resource"));
 }
 
 /******************************************************************************

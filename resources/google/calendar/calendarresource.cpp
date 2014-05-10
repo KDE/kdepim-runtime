@@ -60,6 +60,7 @@
 #include <LibKGAPI2/Tasks/TaskListModifyJob>
 
 #include <LibKGAPI2/Account>
+#include <KLocale>
 
 #define ROOT_COLLECTION_REMOTEID QLatin1String("RootCollection")
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
@@ -75,7 +76,7 @@ CalendarResource::CalendarResource( const QString &id ):
     GoogleResource( id )
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
-    KGlobal::locale()->insertCatalog( QLatin1String("akonadi_google_resource") );
+    //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
     updateResourceName();
 }
 

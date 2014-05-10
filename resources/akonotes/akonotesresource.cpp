@@ -25,7 +25,7 @@
 AkonotesResource::AkonotesResource( const QString &id )
     : MaildirResource( id )
 {
-  KGlobal::locale()->insertCatalog( "akonadi_maildir_resource" );
+  //QT5 KLocale::global()->insertCatalog( "akonadi_maildir_resource" );
 }
 
 AkonotesResource::~AkonotesResource()

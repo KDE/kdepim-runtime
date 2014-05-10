@@ -26,6 +26,7 @@
 #include <kpluginloader.h>
 #include <qboxlayout.h>
 #include <KGlobal>
+#include <KLocale>
 
 //QT5 K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
 K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
@@ -33,8 +34,8 @@ K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
         KCModule( /*ResourcesConfigFactory::componentData(),*/ parent, args )
 {
-    KGlobal::locale()->insertCatalog( QLatin1String("kcm_akonadi") );
-    KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );
+    //QT5 KLocale::global()->insertCatalog( QLatin1String("kcm_akonadi") );
+    //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi") );
 
     setButtons( KCModule::Default | KCModule::Apply );
     QVBoxLayout *l = new QVBoxLayout( this );

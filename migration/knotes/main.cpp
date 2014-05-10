@@ -26,6 +26,7 @@
 #include <KCmdLineArgs>
 #include <KGlobal>
 #include <KDebug>
+#include <KLocale>
 
 int main( int argc, char **argv )
 {
@@ -51,7 +52,7 @@ int main( int argc, char **argv )
     app->setQuitOnLastWindowClosed( false );
 
     KGlobal::setAllowQuit( true );
-    KGlobal::locale()->insertCatalog( QLatin1String("libakonadi") );
+    //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi") );
 
     if ( !Akonadi::Control::start( 0 ) )
         return 2;
