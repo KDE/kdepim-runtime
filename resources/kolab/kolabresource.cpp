@@ -28,6 +28,7 @@
 #include <KLocalizedString>
 #include <AkonadiCore/CollectionFetchJob>
 #include <AkonadiCore/CollectionFetchScope>
+#include <KLocale>
 
 #include "kolabretrievecollectionstask.h"
 #include "kolabresourcestate.h"
@@ -36,7 +37,8 @@
 KolabResource::KolabResource(const QString& id)
     :ImapResource(id)
 {
-
+    //Load translations from imap resource
+    KGlobal::locale()->insertCatalog("akonadi_imap_resource");
 }
 
 KolabResource::~KolabResource()

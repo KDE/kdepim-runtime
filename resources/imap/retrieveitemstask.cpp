@@ -574,6 +574,15 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         setTotalItems(qMax(1ll, messageCount - realMessageCount));
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
+    } else if (nextUid > oldNextUid && messageCount > (realMessageCount + nextUid - oldNextUid)) {
+        //Error recovery:
+        //New messages are available, but not enough to justify the difference between the local and remote message count.
+        //This can be triggered if we i.e. clear the local cache, but the keep the annotations.
+        //If we didn't catch this case, we end up inserting flags only for every missing message.
+        kWarning() << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
+        kWarning() << "Refetching complete mailbox.";
+        setTotalItems(messageCount);
+        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
     } else if (nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
         kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;

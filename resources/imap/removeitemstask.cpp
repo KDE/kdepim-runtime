@@ -48,6 +48,8 @@ void RemoveItemsTask::doStart( KIMAP::Session *session )
 
   const QString mailBox = mailBoxForCollection( items().first().parentCollection() );
 
+  kDebug(5327) << "Deleting " << items().size() << " messages from " << mailBox;
+
   if ( session->selectedMailBox() != mailBox ) {
     KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
     select->setMailBox( mailBox );
@@ -65,6 +67,7 @@ void RemoveItemsTask::doStart( KIMAP::Session *session )
 void RemoveItemsTask::onSelectDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << "Failed to select mailbox: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
@@ -90,7 +93,9 @@ void RemoveItemsTask::triggerStoreJob( KIMAP::Session *session )
 
 void RemoveItemsTask::onStoreFlagsDone( KJob *job )
 {
+  //TODO use UID EXPUNGE if available
   if ( job->error() ) {
+    kWarning() << "Failed to append flags: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     changeProcessed();
