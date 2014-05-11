@@ -29,7 +29,7 @@
 #include <KNotifyConfigWidget>
 #include <KLineEdit>
 #include <KCheckableProxyModel>
-#include <KPushButton>
+#include <QPushButton>
 #include <KMenu>
 #include <KHelpMenu>
 #include <k4aboutdata.h>

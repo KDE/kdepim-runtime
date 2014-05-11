@@ -33,7 +33,7 @@
 #include <KCheckableProxyModel>
 
 #include <KLocalizedString>
-#include <KPushButton>
+#include <QPushButton>
 #include <KLineEdit>
 #include <KDebug>
 
@@ -99,11 +99,11 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     QHBoxLayout *hbox = new QHBoxLayout;
     vbox->addLayout(hbox);
 
-    KPushButton *button = new KPushButton(i18n("&Select All"), this);
+    QPushButton *button = new QPushButton(i18n("&Select All"), this);
     connect(button, SIGNAL(clicked(bool)), this, SLOT(slotSelectAllCollections()));
     hbox->addWidget(button);
 
-    button = new KPushButton(i18n("&Unselect All"), this);
+    button = new QPushButton(i18n("&Unselect All"), this);
     connect(button, SIGNAL(clicked(bool)), this, SLOT(slotUnselectAllCollections()));
     hbox->addWidget(button);
     hbox->addStretch(1);
