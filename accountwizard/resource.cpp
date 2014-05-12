@@ -35,21 +35,19 @@ using namespace Akonadi;
 
 static QVariant::Type argumentType( const QMetaObject *mo, const QString &method )
 {
-//QT5
-#if 0
   QMetaMethod m;
   for ( int i = 0; i < mo->methodCount(); ++i ) {
-    const QString signature = QString::fromLatin1( mo->method( i ).signature() );
+    const QString signature = QString::fromLatin1( mo->method( i ).methodSignature() );
     if ( signature.contains( method + QLatin1Char( '(' ) ) ) {
       m = mo->method( i );
       break;
     }
   }
 
-  if ( !m.signature() ) {
+  if ( m.methodSignature().isEmpty() ) {
     qWarning() << "Did not find D-Bus method: " << method << " available methods are:";
     for ( int i = 0; i < mo->methodCount(); ++i )
-      qWarning() << mo->method( i ).signature();
+      qWarning() << mo->method( i ).methodSignature();
     return QVariant::Invalid;
   }
 
@@ -58,9 +56,6 @@ static QVariant::Type argumentType( const QMetaObject *mo, const QString &method
     return QVariant::Invalid;
 
   return QVariant::nameToType( argTypes.first() );
-#else
-  return QVariant::Invalid;
-#endif
 }
 
 Resource::Resource(const QString& type, QObject* parent) :
