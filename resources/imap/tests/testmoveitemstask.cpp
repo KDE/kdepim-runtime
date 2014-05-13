@@ -206,9 +206,9 @@ private slots:
              << "S: A000007 OK search done";
 
     callNames.clear();
-    callNames << "itemsChangesCommitted";
+    callNames << "itemsChangesCommitted" << "applyCollectionChanges";
 
-    QTest::newRow( "moving mail, no COPYUID, message didn't have unique Message-ID" ) << item << source << target << scenario << callNames;
+    QTest::newRow( "moving mail, no COPYUID, message didn't have unique Message-ID, but last one matches old uidnext" ) << item << source << target << scenario << callNames;
   }
 
   void shouldCopyAndDeleteMessage()
