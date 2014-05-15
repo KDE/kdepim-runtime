@@ -377,7 +377,7 @@ private slots:
     collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(105);
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
-    stats.setCount(15);
+    stats.setCount(104);
     collection.setStatistics( stats );
 
     scenario.clear();
@@ -389,7 +389,7 @@ private slots:
              << "C: A000005 SELECT \"INBOX/Foo\""
              << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
              << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
-             << "S: * 120 EXISTS"
+             << "S: * 119 EXISTS"
              << "S: * 0 RECENT"
              << "S: * OK [ UIDVALIDITY 1149151135  ]"
              << "S: * OK [ UIDNEXT 120  ]"
@@ -429,7 +429,7 @@ private slots:
              << "S: A000010 OK fetch done";
 
     callNames.clear();
-    callNames << "itemsRetrieved" << "itemsRetrieved" << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+    callNames << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
     QTest::newRow( "test batch processing" ) << collection << scenario << callNames;
 

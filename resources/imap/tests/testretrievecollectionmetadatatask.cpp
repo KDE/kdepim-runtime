@@ -231,7 +231,7 @@ private slots:
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
-             << "C: A000003 GETMETADATA \"INBOX/Foo\" (DEPTH infinity) (/shared)"
+             << "C: A000003 GETMETADATA (DEPTH infinity) \"INBOX/Foo\" (/shared)"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test \"true\")"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test2 \"NIL\")"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/cmu/cyrus-imapd/lastupdate \"true\")"
@@ -253,6 +253,24 @@ private slots:
     rights = Akonadi::Collection::AllRights;
     QTest::newRow( "METADATA" ) << collection << capabilities << scenario
                                     << callNames << rights << expectedAnnotations;
+
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.setRights( 0 );
+    collection.addAttribute( new TimestampAttribute( QDateTime::currentDateTime().toTime_t() ) );
+
+    capabilities.clear();
+    expectedAnnotations.clear();
+
+    callNames.clear();
+    callNames << "collectionAttributesRetrieved";
+
+    rights = 0;
+
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario();
+
+    QTest::newRow( "no capabilities" ) << collection << capabilities << scenario
+                                       << callNames << rights << expectedAnnotations;
   }
 
   void shouldCollectionRetrieveMetadata()
