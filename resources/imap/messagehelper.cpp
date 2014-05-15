@@ -35,6 +35,11 @@ Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message, 
         i.setMimeType(KMime::Message::mimeType());
         i.setFlags(Akonadi::Item::Flags::fromList(ResourceTask::toAkonadiFlags(flags)));
     } else {
+        if (!message) {
+            kWarning() << "Got empty message: " << uid;
+            ok = false;
+            return Akonadi::Item();
+        }
         // Sometimes messages might not have a body at all
         if (message->body().isEmpty() && (scope.mode == KIMAP::FetchJob::FetchScope::Full || scope.mode == KIMAP::FetchJob::FetchScope::Content)) {
             // In that case put a space in as body so that it gets cached
