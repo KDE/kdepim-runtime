@@ -275,7 +275,7 @@ class SingleFileResource : public SingleFileResourceBase
       const QString oldName = mSettings->displayName();
       if ( newName != oldName ) {
         mSettings->setDisplayName( newName );
-        mSettings->writeConfig();
+        mSettings->save();
       }
       SingleFileResourceBase::collectionChanged( collection );
     }

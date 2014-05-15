@@ -50,7 +50,7 @@ class SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
     {
       mManager->updateSettings();
       mSettings->setPath( ui.kcfg_Path->url().url() );
-      mSettings->writeConfig();
+      mSettings->save();
     }
 };
 

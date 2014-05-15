@@ -102,7 +102,7 @@ void Transport::create()
   mt->setEncryption( m_encr );
   mt->setAuthenticationType( m_auth );
   m_transportId = mt->id();
-  mt->writeConfig();
+  mt->save();
   MailTransport::TransportManager::self()->addTransport( mt );
   MailTransport::TransportManager::self()->setDefaultTransport( mt->id() );
   emit finished( i18n( "Mail transport account set up." ) );

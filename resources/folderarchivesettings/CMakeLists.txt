@@ -1,6 +1,9 @@
 project(folderarchivesettings)
 kde_enable_exceptions()
 
+add_definitions(-DTRANSLATION_DOMAIN=\"libfolderarchivesettings\")
+
+
 set(folderarchivesettings_SRCS
    folderarchivesettingpage.cpp
    folderarchiveutil.cpp
