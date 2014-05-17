@@ -210,8 +210,13 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox, const QMap<qint64, 
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
         //kDebug( 5327 ) << "Flags: " << i.flags();
+        const KIMAP::MessagePtr msg = messages[number];
+        if (!msg) {
+            kWarning() << "Failed to download message. Message is empty. " << uids[number];
+            continue;
+        }
         bool ok;
-        const Akonadi::Item item = m_messageHelper->createItemFromMessage(messages[number], uids[number], sizes[number], flags[number], fetch->scope(), ok);
+        const Akonadi::Item item = m_messageHelper->createItemFromMessage(msg, uids[number], sizes[number], flags[number], fetch->scope(), ok);
         if (ok) {
             m_fetchedItemsInCurrentBatch++;
             addedItems << item;
@@ -568,7 +573,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) == messageCount)) {
         //Optimization:
         //New messages are available, but we know no messages have been removed.
-        //Fetch new messages, and then check for changed flags and removed messages
+        //Fetch new messages, and then check for changed flags.
         //We can make an incremental update and use modseq.
         kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
         setTotalItems(qMax(1ll, messageCount - realMessageCount));

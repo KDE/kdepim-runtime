@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Kolab Groupware Server (legacy)
+Name[ca]=Servidor de treball en grup Kolab (llegat)
 Name[de]=Kolab-Groupware-Server (veraltet)
 Name[es]=Servidor de trabajo en grupo Kolab (heredado)
 Name[fi]=Kolab-työryhmäpalvelin (vanha)
@@ -13,6 +14,7 @@ Name[sv]=Kolab grupprogramserver (föråldrad)
 Name[uk]=Сервер групової роботи Kolab (застаріле)
 Name[x-test]=xxKolab Groupware Server (legacy)xx
 Comment=Provides access to Kolab groupware folders on an IMAP server (IMAP accounts need to be set up separately). This resource is obsolete, use the Kolab Groupware Server resource instead.
+Comment[ca]=Proporciona accés a les carpetes de treball en grup Kolab en un servidor IMAP (els comptes IMAP s'han de configurar per separat). Aquest recurs és obsolet, en el seu lloc useu el recurs del servidor de treball en grup del Kolab.
 Comment[de]=Ermöglicht den Zugriff auf Kolab-Groupware-Ordner auf einem Kolab-IMAP-Server. Diese Ressource ist veraltet, verwenden Sie statt dessen Ressource Kolab-Groupware-Server.
 Comment[es]=Proporciona acceso a carpetas de trabajo en grupo de Kolab en un servidor IMAP (las cuentas IMAP necesitan ser configuradas por separado). Este recurso es obsoleto, usar el servidor de colaboración Kolab en su lugar.
 Comment[fi]=Tarjoaa pääsyn Kolab-työryhmäkansioihin IMAP-palvelimella (IMAP-tilit täytyy luoda erikseen). Tämä resurssi on vanha. Käytä tämän sijaan Kolab-työryhmäpalvelinta.
