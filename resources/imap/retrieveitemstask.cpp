@@ -597,6 +597,14 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         m_uidBasedFetch = true;
         m_incremental = true;
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
+        //Workaround: If the server doesn't support CONDSTORE we would end up syncing all flags during every sync.
+        //Instead we only sync flags when new messages are available or removed and skip this step.
+        //WARNING: This sacrifices consitency as we will not detect flag changes until a new message enters the mailbox.
+        if (!serverSupportsCondstore()) {
+            kDebug(5327) << "Avoiding flag sync due to missing CONDSTORE support";
+            taskComplete();
+            return;
+        }
         setTotalItems(messageCount);
         listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
     } else if (messageCount > realMessageCount) {
