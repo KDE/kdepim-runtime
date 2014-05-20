@@ -565,16 +565,17 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         KIMAP::ImapSet imapSet;
         imapSet.add(m_messageUidsMissingBody);
         retrieveItems(imapSet, scope, true, true);
-    } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) == messageCount)) {
+    } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) >= messageCount) && realMessageCount > 0) {
         //Optimization:
         //New messages are available, but we know no messages have been removed.
         //Fetch new messages, and then check for changed flags and removed messages
         //We can make an incremental update and use modseq.
+        //The local message count can be larger if we locally have messages that were not yet uploaded.
         kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
         setTotalItems(qMax(1ll, messageCount - realMessageCount));
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
-    } else if (nextUid > oldNextUid && messageCount > (realMessageCount + nextUid - oldNextUid)) {
+    } else if (nextUid > oldNextUid && messageCount > (realMessageCount + nextUid - oldNextUid) && realMessageCount > 0) {
         //Error recovery:
         //New messages are available, but not enough to justify the difference between the local and remote message count.
         //This can be triggered if we i.e. clear the local cache, but the keep the annotations.
@@ -588,10 +589,11 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
-    } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
+    } else if (messageCount <= realMessageCount && oldNextUid == nextUid) {
         //Optimization:
         //We know no messages were added or removed (if the message count and uidnext is still the same)
         //We only check the flags incrementally and can make use of modseq
+        //The local message count can be larger if we locally have messages that were not yet uploaded.
         m_uidBasedFetch = true;
         m_incremental = true;
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
