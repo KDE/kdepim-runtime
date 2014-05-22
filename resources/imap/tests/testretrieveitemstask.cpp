@@ -157,7 +157,8 @@ private slots:
     callNames.clear();
     callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
-    QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
+    //Disabled test since the flag sync is disabled if CONDSTORE is not supported
+//     QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
 
 
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
@@ -233,7 +234,7 @@ private slots:
              << "S: A000009 OK fetch done";
 
     callNames.clear();
-    callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+    callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental"<< "itemsRetrievalDone";
 
     QTest::newRow( "uidnext changed, fetch new messages and list flags" ) << collection << scenario << callNames;
 
@@ -318,15 +319,18 @@ private slots:
              << "S: * OK [ UIDVALIDITY 1149151135 ]"
              << "S: * OK [ UIDNEXT 9 ]"
              << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
-             << "S: A000005 OK select done"
-             << "C: A000006 UID SEARCH UID 1:9"
-             << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
-             << "S: A000006 OK search done"
-             << "C: A000007 UID FETCH 1:9 (FLAGS UID)"
-             << "S: * 5 FETCH ( UID 8 FLAGS () )"
-             << "S: A000007 OK fetch done";
+             << "S: A000005 OK select done";
+    //Disabled since the flag sync is disabled if CONDSTORE is not supported
+//              << "C: A000006 UID SEARCH UID 1:9"
+//              << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+//              << "S: A000006 OK search done"
+//              << "C: A000007 UID FETCH 1:9 (FLAGS UID)"
+//              << "S: * 5 FETCH ( UID 8 FLAGS () )"
+//              << "S: A000007 OK fetch done";
     callNames.clear();
-    callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+
+    //Disabled since the flag sync is disabled if CONDSTORE is not supported
+    callNames << /*"itemsRetrievedIncremental" << */"applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
     //Don't rely on yahoos highestmodseq implementation
     QTest::newRow( "yahoo highestmodseq test" ) << collection << scenario << callNames;
