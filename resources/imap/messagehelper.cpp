@@ -22,6 +22,8 @@
 
 #include "resourcetask.h"
 
+#include <KDebug>
+
 MessageHelper::~MessageHelper()
 {
 
