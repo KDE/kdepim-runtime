@@ -27,7 +27,7 @@ set( invitationsagent_SRCS
 add_executable(akonadi_invitations_agent ${invitationsagent_SRCS})
 
 target_link_libraries(akonadi_invitations_agent
-    ${KDE4_KDECORE_LIBS} KF5::KIOCore
+  KF5::KIOCore
   KF5::AkonadiCore
   KF5::AkonadiMime
   KF5::Mime
