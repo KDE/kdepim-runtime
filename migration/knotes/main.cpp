@@ -52,7 +52,6 @@ int main( int argc, char **argv )
     app->setQuitOnLastWindowClosed( false );
 
     KGlobal::setAllowQuit( true );
-    //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi") );
 
     if ( !Akonadi::Control::start( 0 ) )
         return 2;
