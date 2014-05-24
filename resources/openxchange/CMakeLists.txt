@@ -1,3 +1,5 @@
+kde_enable_exceptions()
+
 set( openxchangeresource_SRCS
   oxa/connectiontestjob.cpp
   oxa/contactutils.cpp
@@ -44,7 +46,7 @@ qt5_add_dbus_adaptor(openxchangeresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.OpenXchange.Settings.xml settings.h Settings
 )
 
-add_executable(akonadi_openxchange_resource RUN_UNINSTALLED ${openxchangeresource_SRCS})
+add_executable(akonadi_openxchange_resource ${openxchangeresource_SRCS})
 
 if (Q_WS_MAC)
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -53,7 +55,7 @@ if (Q_WS_MAC)
 endif ()
 
 
-target_link_libraries(akonadi_openxchange_resource KF5::AkonadiCore ${KDEPIMLIBS_KABC_LIBS}    ${KDE4_KDECORE_LIBS} KF5::KIOCore KF5::CalendarCore  ${KDEPIMLIBS_AKONADI_CONTACT_LIBS} )
+target_link_libraries(akonadi_openxchange_resource KF5::AkonadiAgentBase KF5::AkonadiCore KF5::Abc     KF5::KIOCore KF5::CalendarCore  KF5::AkonadiContact )
 
 install(TARGETS akonadi_openxchange_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 

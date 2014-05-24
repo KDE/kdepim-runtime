@@ -25,7 +25,7 @@
 #include "oxutils.h"
 #include "users.h"
 
-#include <contact/contactgroupexpandjob.h>
+#include <Akonadi/Contact/contactgroupexpandjob.h>
 
 #include <QtCore/QBuffer>
 #include <QtXml/QDomElement>
@@ -167,7 +167,7 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
       } else if ( tagName == QLatin1String( "note" ) ) {
         contact.setNote( text );
       } else if ( tagName == QLatin1String( "url" ) ) {
-        contact.setUrl( text );
+        contact.setUrl( QUrl(text) );
       } else if ( tagName == QLatin1String( "image1" ) ) {
         const QByteArray data = text.toUtf8();
         contact.setPhoto( KABC::Picture( QImage::fromData( QByteArray::fromBase64( data ) ) ) );

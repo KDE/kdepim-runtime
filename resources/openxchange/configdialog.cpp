@@ -28,6 +28,7 @@
 #include <kconfigdialogmanager.h>
 #include <kmessagebox.h>
 #include <kwindowsystem.h>
+#include <KLocalizedString>
 
 ConfigDialog::ConfigDialog( WId windowId )
   : KDialog()
@@ -72,6 +73,7 @@ void ConfigDialog::save()
 
 void ConfigDialog::showAboutDialog()
 {
+#if 0 //QT5
   KAboutData aboutData( "ox", "", ki18n( "Open-Xchange" ), "0.1",
                         ki18n( "Akonadi Open-Xchange Resource" ),
                         KAboutData::License_LGPL,
@@ -81,6 +83,7 @@ void ConfigDialog::showAboutDialog()
 
   KAboutApplicationDialog dlg( &aboutData, this );
   dlg.exec();
+#endif
 }
 
 void ConfigDialog::updateButtonState()
