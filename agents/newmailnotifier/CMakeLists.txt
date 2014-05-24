@@ -3,7 +3,7 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
-#find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
