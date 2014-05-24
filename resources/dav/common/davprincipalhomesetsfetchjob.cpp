@@ -22,6 +22,7 @@
 #include "davprotocolbase.h"
 
 #include <kio/davjob.h>
+#include <kio/job.h>
 #include <klocale.h>
 
 DavPrincipalHomeSetsFetchJob::DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent )

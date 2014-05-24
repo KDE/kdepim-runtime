@@ -20,6 +20,7 @@
 
 #include "davmanager.h"
 
+#include <kio/job.h>
 #include <kio/davjob.h>
 #include <klocale.h>
 #include <kdebug.h>

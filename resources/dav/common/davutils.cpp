@@ -29,6 +29,7 @@
 #include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <klocale.h>
+#include <kdebug.h>
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>

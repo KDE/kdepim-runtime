@@ -105,7 +105,7 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
 #add_subdirectory( akonotes )
 #add_subdirectory( kalarm )
 #add_subdirectory( contacts )
-add_subdirectory( dav )
+#add_subdirectory( dav )
 #add_subdirectory( ical )
 add_subdirectory( imap )
 add_subdirectory( kdeaccounts )

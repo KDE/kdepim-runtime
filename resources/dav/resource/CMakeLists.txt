@@ -1,6 +1,6 @@
 project(davgroupware)
 
-if (QT_QTXMLPATTERNS_LIBRARY)
+#if (QT_QTXMLPATTERNS_LIBRARY)
   if(WIN32)
       set(LIB_INSTALL_DIR ${LIB_INSTALL_DIR}
                           RUNTIME DESTINATION ${BIN_INSTALL_DIR}
@@ -74,7 +74,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davGroupware.Settings.xml settings.h Settings
   )
 
-  add_executable(akonadi_davgroupware_resource RUN_UNINSTALLED ${davgroupwareresource_SRCS})
+  add_executable(akonadi_davgroupware_resource ${davgroupwareresource_SRCS})
 
   if (Q_WS_MAC)
     set_target_properties(akonadi_davgroupware_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template)
@@ -100,7 +100,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
                         ${SIGNONQT_LIBRARIES})
   endif()
   install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
-else()
-  add_feature_info("Davgroupware resource" QT_QTXMLPATTERNS_LIBRARY "The QtXmlPatterns library was not found. It is needed for building the davgroupware resource.")
-endif()
+#else()
+#  add_feature_info("Davgroupware resource" QT_QTXMLPATTERNS_LIBRARY "The QtXmlPatterns library was not found. It is needed for building the davgroupware resource.")
+#endif()
 

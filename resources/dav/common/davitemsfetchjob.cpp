@@ -22,6 +22,7 @@
 #include "davmultigetprotocol.h"
 
 #include <kio/davjob.h>
+#include <kio/job.h>
 #include <klocale.h>
 
 DavItemsFetchJob::DavItemsFetchJob( const DavUtils::DavUrl &collectionUrl, const QStringList &urls, QObject *parent )

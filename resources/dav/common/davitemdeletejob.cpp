@@ -21,6 +21,7 @@
 #include "davmanager.h"
 
 #include <kio/deletejob.h>
+#include <kio/job.h>
 #include <klocale.h>
 
 DavItemDeleteJob::DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )

@@ -21,6 +21,7 @@
 #include "davutils.h"
 
 #include <kio/davjob.h>
+#include <kio/job.h>
 #include <klocale.h>
 #include <kdebug.h>
 

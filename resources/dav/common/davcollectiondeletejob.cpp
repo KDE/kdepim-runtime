@@ -19,7 +19,9 @@
 #include "davcollectiondeletejob.h"
 
 #include <kio/deletejob.h>
+#include <kio/job.h>
 #include <klocale.h>
+
 
 DavCollectionDeleteJob::DavCollectionDeleteJob(const DavUtils::DavUrl &url, QObject *parent )
   : KJob( parent ), mUrl( url )
