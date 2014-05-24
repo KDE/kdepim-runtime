@@ -29,7 +29,7 @@ namespace Akonadi {
 class SerializerPluginmicroblog : public QObject, public ItemSerializerPlugin
 {
   Q_OBJECT
-  //QT5 Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+  Q_INTERFACES( Akonadi::ItemSerializerPlugin )
 
 public:
   bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );

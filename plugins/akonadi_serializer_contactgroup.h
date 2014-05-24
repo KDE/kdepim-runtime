@@ -37,9 +37,9 @@ class SerializerPluginContactGroup : public QObject,
                                      public GidExtractorInterface
 {
   Q_OBJECT
-  //QT5 Q_INTERFACES( Akonadi::ItemSerializerPlugin )
-  //QT5 Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
-  //QT5 Q_INTERFACES( Akonadi::GidExtractorInterface )
+  Q_INTERFACES( Akonadi::ItemSerializerPlugin )
+  Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
+  Q_INTERFACES( Akonadi::GidExtractorInterface )
 
   public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );

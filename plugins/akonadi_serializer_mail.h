@@ -52,7 +52,7 @@ private:
 class SerializerPluginMail : public QObject, public ItemSerializerPlugin, public GidExtractorInterface
 {
     Q_OBJECT
-    //QT5 Q_INTERFACES( Akonadi::ItemSerializerPlugin Akonadi::GidExtractorInterface)
+    Q_INTERFACES( Akonadi::ItemSerializerPlugin Akonadi::GidExtractorInterface)
 
 public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
