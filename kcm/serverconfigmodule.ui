@@ -35,7 +35,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="KPushButton" name="selfTestButton">
+       <widget class="QPushButton" name="selfTestButton">
         <property name="whatsThis">
          <string>Test your MySQL settings for Akonadi.</string>
         </property>
@@ -58,7 +58,7 @@
        </spacer>
       </item>
       <item row="2" column="2">
-       <widget class="KPushButton" name="startStopButton">
+       <widget class="QPushButton" name="startStopButton">
         <property name="whatsThis">
          <string>Stop Akonadi</string>
         </property>
@@ -68,7 +68,7 @@
        </widget>
       </item>
       <item row="2" column="3">
-       <widget class="KPushButton" name="restartButton">
+       <widget class="QPushButton" name="restartButton">
         <property name="whatsThis">
          <string>Restart Akonadi</string>
         </property>
@@ -82,13 +82,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
