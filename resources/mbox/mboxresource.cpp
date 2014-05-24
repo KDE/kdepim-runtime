@@ -28,7 +28,7 @@
 #include <collectionmodifyjob.h>
 #include <dbusconnectionpool.h>
 #include <itemfetchscope.h>
-#include <KMbox/mbox.h>
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
 #include <QIcon>

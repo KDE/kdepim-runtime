@@ -21,7 +21,7 @@
 #define DELETEDITEMSATTRIBUTE_H
 
 #include <attribute.h>
-#include <KMbox/mboxentry.h>
+#include <kmbox/mboxentry.h>
 
 #include <QtCore/QSet>
 
