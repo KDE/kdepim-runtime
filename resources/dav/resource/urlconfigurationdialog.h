@@ -24,6 +24,7 @@
 #include "davutils.h"
 
 #include <QtCore/QString>
+#include <KDialog>
 
 class KJob;
 class QModelIndex;

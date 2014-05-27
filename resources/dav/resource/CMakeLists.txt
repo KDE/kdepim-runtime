@@ -83,16 +83,11 @@ project(davgroupware)
   endif ()
 
   target_link_libraries(akonadi_davgroupware_resource
-                        
-                        
-                        ${QT_QTXML_LIBRARY}
-                        ${QT_QTXMLPATTERNS_LIBRARY}
-                        ${KDE4_KDECORE_LIBS}
-                        KF5::KIOCore
-                        KF5::AkonadiCore
-                        ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
-                        ${KDEPIMLIBS_KABC_LIBS}
-                        KF5::CalendarCore)
+	  KF5::AkonadiCalendar 
+          KF5::KIOCore
+	  KF5::AkonadiAgentBase
+          KF5::AkonadiCore
+          KF5::CalendarCore)
 
   if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
     target_link_libraries(akonadi_davgroupware_resource

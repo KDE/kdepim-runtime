@@ -54,6 +54,8 @@
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
 #include <kwindowsystem.h>
+#include <KLocalizedString>
+#include <KDebug>
 
 #include <QtCore/QSet>
 #include <QtDBus/QDBusConnection>

@@ -28,6 +28,7 @@
 #include <QIcon>
 #include <KMessageBox>
 #include <KUrl>
+#include <KLocalizedString>
 
 #include <QtGui/QStandardItemModel>
 
