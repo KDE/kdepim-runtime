@@ -115,6 +115,13 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
+           <widget class="QCheckBox" name="disconnectedModeEnabled">
+            <property name="text">
+             <string>&amp;Download all messages for offline use</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="enableMailCheckBox">
             <property name="text">
              <string>Enable &amp;interval mail checking</string>
@@ -351,13 +358,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="disconnectedModeEnabled">
-            <property name="text">
-             <string>Enable disconnected mode</string>
-            </property>
-           </widget>
           </item>
           <item>
            <widget class="QCheckBox" name="autoExpungeCheck">
