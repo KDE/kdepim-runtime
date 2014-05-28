@@ -308,7 +308,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QCheckBox" name="disconnectedModeEnabled">
          <property name="text">
-          <string>Enable Disconnected Mode</string>
+          <string>&amp;Download all messages for offline use</string>
          </property>
         </widget>
        </item>
