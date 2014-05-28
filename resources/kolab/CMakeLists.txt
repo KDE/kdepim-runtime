@@ -41,11 +41,11 @@ qt5_add_dbus_adaptor(kolabresource_SRCS
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)
 
 if (KDEPIM_MOBILE_UI)
-kde4_add_ui_files(kolabresource_SRCS ../imap/setupserverview_mobile.ui)
+qt5_wrap_ui(kolabresource_SRCS ../imap/setupserverview_mobile.ui)
 else ()
-kde4_add_ui_files(kolabresource_SRCS ../imap/setupserverview_desktop.ui)
+qt5_wrap_ui(kolabresource_SRCS ../imap/setupserverview_desktop.ui)
 endif ()
-kde4_add_ui_files(kolabresource_SRCS ../imap/serverinfo.ui)
+qt5_wrap_ui(kolabresource_SRCS ../imap/serverinfo.ui)
 add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 
 target_link_libraries(akonadi_kolab_resource
