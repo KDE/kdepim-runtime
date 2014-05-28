@@ -55,7 +55,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  ui.ktabwidget->setTabBarHidden( true );
+  ui.ktabwidget->tabBar()->hide();
 
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
 
@@ -90,7 +90,7 @@ void SingleFileResourceConfigDialogBase::readConfig()
 
 void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
 {
-  ui.ktabwidget->setTabBarHidden( false );
+  ui.ktabwidget->tabBar()->show();
   ui.ktabwidget->addTab( page, title );
   mManager->addWidget( page );
   mManager->updateWidgets();

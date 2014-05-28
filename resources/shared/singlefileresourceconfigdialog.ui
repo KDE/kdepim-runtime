@@ -4,19 +4,9 @@
  <widget class="QWidget" name="SingleFileResourceConfigDialog">
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <widget class="KTabWidget" name="ktabwidget">
+    <widget class="QTabWidget" name="ktabwidget">
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KTabWidget</class>
-   <extends>QTabWidget</extends>
-   <header>ktabwidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
- <resources/>
- <connections/>
 </ui>

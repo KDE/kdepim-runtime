@@ -12,7 +12,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="5" column="0">
-    <widget class="KTabWidget" name="ktabwidget">
+    <widget class="QTabWidget" name="ktabwidget">
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>File</string>
@@ -95,12 +95,6 @@
    <class>KUrlRequester</class>
    <extends>QFrame</extends>
    <header>kurlrequester.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KTabWidget</class>
-   <extends>QTabWidget</extends>
-   <header>ktabwidget.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
