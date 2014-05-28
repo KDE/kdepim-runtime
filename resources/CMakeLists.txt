@@ -13,6 +13,7 @@ include(FeatureSummary)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
+include(ECMInstallIcons)
 
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
