@@ -21,7 +21,7 @@
 
 #include "singlefileresourceconfigdialogbase.h"
 
-#include <KTabWidget>
+#include <QTabWidget>
 #include <KConfigDialogManager>
 #include <KFileItem>
 #include <KIO/Job>
