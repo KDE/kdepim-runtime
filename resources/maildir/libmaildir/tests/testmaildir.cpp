@@ -357,6 +357,10 @@ void MaildirTest::testMaildirFlagsReading()
 
   Maildir d( m_temp->name() );
   QStringList entries = d.entryList();
+  // Maildir::entryList() doesn't sort for performance reasons,
+  // do it here to make test sequence reliable.
+  entries.sort();
+
   QCOMPARE( entries.count(), 6 );
 
   Akonadi::Item::Flags flags = d.readEntryFlags( entries[0] );
