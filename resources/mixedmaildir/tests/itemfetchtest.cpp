@@ -366,6 +366,11 @@ void ItemFetchTest::testListingMaildir()
   var = job->property( "remoteIdToTagList" );
   QVERIFY( var.isValid() );
 
+  // tagListHash.contains tests below needs sorting of entries,
+  // but libmaildir does not sort for performance reasons.
+  // TODO: Check should not depend on any specific ordering.
+  qSort(items);
+
   tagListHash = var.value< QHash<QString, QVariant> >();
   QCOMPARE( (int)tagListHash.count(), 3 );
   QVERIFY( !tagListHash.contains( items[ 0 ].remoteId() ) );
