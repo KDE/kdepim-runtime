@@ -18,7 +18,7 @@ set(kalarmdirresource_SRCS
 
 install(FILES kalarmdirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
-qt5_wrap_ui(kalarmdirresource_SRCS settingsdialog.ui ../shared/alarmtypewidget.ui)
+ki18n_wrap_ui(kalarmdirresource_SRCS settingsdialog.ui ../shared/alarmtypewidget.ui)
 kconfig_add_kcfg_files(kalarmdirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmdirresource.kcfg org.kde.Akonadi.KAlarmDir.Settings)
 qt5_add_dbus_adaptor(kalarmdirresource_SRCS

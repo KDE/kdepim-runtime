@@ -15,7 +15,7 @@ kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/nntpresource.kcfg org.
 qt5_add_dbus_adaptor( nntpresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.NNTP.Settings.xml settings.h Settings
 )
-qt5_wrap_ui(nntpresource_SRCS configdialog.ui)
+ki18n_wrap_ui(nntpresource_SRCS configdialog.ui)
 kconfig_add_kcfg_files(nntpresource_SRCS settingsbase.kcfgc)
 add_executable(akonadi_nntp_resource ${nntpresource_SRCS})
 

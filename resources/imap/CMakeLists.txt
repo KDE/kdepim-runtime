@@ -68,11 +68,11 @@ set( akonadi_imap_resource_SRCS
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 if (KDEPIM_MOBILE_UI)
-qt5_wrap_ui(akonadi_imap_resource_SRCS setupserverview_mobile.ui)
+ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_mobile.ui)
 else ()
-qt5_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
+ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 endif ()
-qt5_wrap_ui(akonadi_imap_resource_SRCS serverinfo.ui)
+ki18n_wrap_ui(akonadi_imap_resource_SRCS serverinfo.ui)
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 qt5_add_dbus_adaptor( akonadi_imap_resource_SRCS

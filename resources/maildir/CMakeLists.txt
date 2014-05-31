@@ -19,7 +19,7 @@ set( maildirresource_SRCS
 
 install( FILES maildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(maildirresource_SRCS settings.ui)
+ki18n_wrap_ui(maildirresource_SRCS settings.ui)
 
 kconfig_add_kcfg_files(maildirresource_SRCS settings.kcfgc)
 

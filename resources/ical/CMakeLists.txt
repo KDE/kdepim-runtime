@@ -25,7 +25,7 @@ set( icalresource_SRCS
 
 install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+ki18n_wrap_ui(icalresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kconfig_add_kcfg_files(icalresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
 qt5_add_dbus_adaptor(icalresource_SRCS

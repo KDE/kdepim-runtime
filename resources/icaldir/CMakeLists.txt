@@ -13,7 +13,7 @@ set( icaldirresource_SRCS
   ../shared/dirsettingsdialog.cpp
 )
 
-qt5_wrap_ui(icaldirresource_SRCS settingsdialog.ui)
+ki18n_wrap_ui(icaldirresource_SRCS settingsdialog.ui)
 kconfig_add_kcfg_files(icaldirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icaldirresource.kcfg org.kde.Akonadi.ICalDirectory.Settings)
 qt5_add_dbus_adaptor(icaldirresource_SRCS

@@ -21,7 +21,7 @@ set( notesresource_SRCS
 
 install( FILES notesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(notesresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+ki18n_wrap_ui(notesresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kconfig_add_kcfg_files(notesresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/notesresource.kcfg org.kde.Akonadi.Notes.Settings)
 qt5_add_dbus_adaptor(notesresource_SRCS

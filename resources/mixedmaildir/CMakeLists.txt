@@ -29,7 +29,7 @@ set( mixedmaildirresource_SRCS
 
 install( FILES mixedmaildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(mixedmaildirresource_SRCS settings.ui)
+ki18n_wrap_ui(mixedmaildirresource_SRCS settings.ui)
 
 kconfig_add_kcfg_files(mixedmaildirresource_SRCS settings.kcfgc)
 

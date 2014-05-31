@@ -36,7 +36,7 @@ set( openxchangeresource_SRCS
   openxchangeresource.cpp
 )
 
-qt5_wrap_ui( openxchangeresource_SRCS configdialog.ui )
+ki18n_wrap_ui( openxchangeresource_SRCS configdialog.ui )
 
 install( FILES openxchangeresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 

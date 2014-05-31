@@ -10,13 +10,13 @@ find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 
 #REACTIVATE
 #set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
-#qt5_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
+#ki18n_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
 #add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
 #target_link_libraries(kcm_akonadi_resources  KF5::AkonadiCore KF5::AkonadiWidgets Qt5::Widgets)
 
 
 set(akonadi_server_kcm_srcs serverconfigmodule.cpp)
-qt5_wrap_ui(akonadi_server_kcm_srcs serverconfigmodule.ui
+ki18n_wrap_ui(akonadi_server_kcm_srcs serverconfigmodule.ui
                                           servermysqlstorage.ui
                                           serverpsqlstorage.ui
                                           serverstoragedriver.ui)

@@ -17,7 +17,7 @@ add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
 
 install( FILES pop3resource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui( pop3resource_SRCS popsettings.ui)
+ki18n_wrap_ui( pop3resource_SRCS popsettings.ui)
 kconfig_add_kcfg_files(pop3resource_SRCS settingsbase.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
 qt5_add_dbus_adaptor(pop3resource_SRCS

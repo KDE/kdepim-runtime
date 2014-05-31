@@ -9,7 +9,7 @@ set( contactsresource_SRCS
   settingsdialog.cpp
 )
 
-qt5_wrap_ui(contactsresource_SRCS settingsdialog.ui)
+ki18n_wrap_ui(contactsresource_SRCS settingsdialog.ui)
 kconfig_add_kcfg_files(contactsresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/contactsresource.kcfg org.kde.Akonadi.Contacts.Settings)
 qt5_add_dbus_adaptor(contactsresource_SRCS

@@ -68,7 +68,7 @@ project(davgroupware)
   install( FILES ${providersFiles} DESTINATION "${SERVICES_INSTALL_DIR}/akonadi/davgroupware-providers" )
 
   kconfig_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
-  qt5_wrap_ui(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
+  ki18n_wrap_ui(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
   kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davgroupwareresource.kcfg org.kde.Akonadi.davGroupware.Settings)
   qt5_add_dbus_adaptor(davgroupwareresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davGroupware.Settings.xml settings.h Settings

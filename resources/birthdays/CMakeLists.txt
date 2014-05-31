@@ -11,7 +11,7 @@ set( birthdayresource_srcs
 kconfig_add_kcfg_files( birthdayresource_srcs settings.kcfgc )
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.Settings)
 
-qt5_wrap_ui(birthdayresource_srcs configdialog.ui)
+ki18n_wrap_ui(birthdayresource_srcs configdialog.ui)
 
 qt5_add_dbus_adaptor(birthdayresource_srcs
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Birthdays.Settings.xml settings.h Settings

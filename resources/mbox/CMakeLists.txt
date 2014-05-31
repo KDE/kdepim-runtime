@@ -16,7 +16,7 @@ set( mboxresource_SRCS
 
 install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(mboxresource_SRCS
+ki18n_wrap_ui(mboxresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_UI}
   compactpage.ui
   lockfilepage.ui

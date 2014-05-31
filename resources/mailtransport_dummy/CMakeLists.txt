@@ -8,7 +8,7 @@ add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5324)
 
 install( FILES mtdummyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(mtdummyresource_SRCS settings.ui)
+ki18n_wrap_ui(mtdummyresource_SRCS settings.ui)
 kconfig_add_kcfg_files(mtdummyresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mtdummyresource.kcfg org.kde.Akonadi.MailTransportDummy.Settings)
 qt5_add_dbus_adaptor(mtdummyresource_SRCS

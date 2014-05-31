@@ -14,7 +14,7 @@ set( invitationsagent_SRCS
   incidenceattribute.cpp
 )
 
-#qt5_wrap_ui(invitationsagent_SRCS settings.ui)
+#ki18n_wrap_ui(invitationsagent_SRCS settings.ui)
 #kconfig_add_kcfg_files(invitationsagent_SRCS settings.kcfgc)
 #kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/invitationsagent.kcfg org.kde.Akonadi.MailDispatcher.Settings)
 #qt5_add_dbus_adaptor(invitationsagent_SRCS

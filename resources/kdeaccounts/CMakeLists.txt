@@ -14,7 +14,7 @@ set( kdeaccountsresource_SRCS
 
 install( FILES kdeaccountsresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(kdeaccountsresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+ki18n_wrap_ui(kdeaccountsresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kconfig_add_kcfg_files(kdeaccountsresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kdeaccountsresource.kcfg org.kde.Akonadi.KDEAccounts.Settings)
 qt5_add_dbus_adaptor(kdeaccountsresource_SRCS

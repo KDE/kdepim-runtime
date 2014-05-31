@@ -11,7 +11,7 @@ set( vcardresource_SRCS
 
 install( FILES vcardresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-qt5_wrap_ui(vcardresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+ki18n_wrap_ui(vcardresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kconfig_add_kcfg_files(vcardresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)
 qt5_add_dbus_adaptor(vcardresource_SRCS

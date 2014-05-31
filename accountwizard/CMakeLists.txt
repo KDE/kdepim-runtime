@@ -78,7 +78,7 @@ set(accountwizard_srcs
   ispdb/ispdb.cpp
 )
 
-qt5_wrap_ui(accountwizard_srcs
+ki18n_wrap_ui(accountwizard_srcs
   ui/typepage.ui
   ui/loadpage.ui
   ui/setuppage.ui
@@ -100,7 +100,7 @@ set(accountwizard_libs
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
   set(accountwizard_srcs ${accountwizard_srcs} providerpage.cpp)
-  qt5_wrap_ui(accountwizard_srcs ui/providerpage.ui)
+  ki18n_wrap_ui(accountwizard_srcs ui/providerpage.ui)
   set(accountwizard_libs ${accountwizard_libs} ${KDE4_KNEWSTUFF3_LIBS})
 endif ()
 

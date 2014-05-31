@@ -24,7 +24,7 @@ set( akonotesresource_SRCS
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../maildir/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
 
-qt5_wrap_ui(akonotesresource_SRCS ../maildir/settings.ui)
+ki18n_wrap_ui(akonotesresource_SRCS ../maildir/settings.ui)
 
 kconfig_add_kcfg_files(akonotesresource_SRCS ../maildir/settings.kcfgc)
 

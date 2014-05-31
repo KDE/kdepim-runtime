@@ -46,7 +46,7 @@ install(FILES kolabproxyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sh
 
 kconfig_add_kcfg_files(kolabproxyresource_SRCS settings.kcfgc)
 
-qt5_wrap_ui(kolabproxyresource_SRCS kolabsettings.ui changeformat.ui)
+ki18n_wrap_ui(kolabproxyresource_SRCS kolabsettings.ui changeformat.ui)
 
 kcfg_generate_dbus_interface(
   ${CMAKE_CURRENT_SOURCE_DIR}/kolabproxyresource.kcfg
