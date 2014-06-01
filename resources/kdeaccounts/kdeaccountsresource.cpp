@@ -74,7 +74,7 @@ void KDEAccountsResource::configDialogAcceptedActions( SingleFileResourceConfigD
     // We can't hide the GUI element but we can enforce that the
     // resource is read-only
     mSettings->setReadOnly( true );
-    mSettings->writeConfig();
+    mSettings->save();
 }
 
 void KDEAccountsResource::itemAdded( const Akonadi::Item&, const Akonadi::Collection& )
