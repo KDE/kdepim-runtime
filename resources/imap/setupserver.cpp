@@ -41,8 +41,8 @@
 #include <kmime/kmime_message.h>
 
 #include <collectionfetchjob.h>
-#include <Akonadi/KMime/specialmailcollections.h>
-#include <Akonadi/KMime/specialmailcollectionsrequestjob.h>
+#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <resourcesettings.h>
 #include <entitydisplayattribute.h>
 #include <CollectionModifyJob>

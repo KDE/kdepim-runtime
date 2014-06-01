@@ -19,10 +19,10 @@
 #include "util.h"
 #include "newmailnotifieragentsettings.h"
 
-#include <Akonadi/Contact/contactsearchjob.h>
+#include <Akonadi/Contact/ContactSearchJob>
 #include <ItemFetchJob>
 #include <ItemFetchScope>
-#include <Akonadi/KMime/messageparts.h>
+#include <Akonadi/KMime/MessageParts>
 
 #include <KNotification>
 #include <KPIMUtils/Email>

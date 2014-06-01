@@ -31,7 +31,7 @@
 
 #include <AkonadiCore/cachepolicy.h>
 #include <AkonadiCore/collectionstatistics.h>
-#include <Akonadi/KMime/messageparts.h>
+#include <Akonadi/KMime/MessageParts>
 #include <AkonadiAgentBase/agentbase.h>
 #include <AkonadiCore/itemfetchjob.h>
 #include <AkonadiCore/itemfetchscope.h>

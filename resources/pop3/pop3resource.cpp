@@ -25,9 +25,9 @@
 #include <CollectionFetchJob>
 #include <ItemCreateJob>
 #include <AttributeFactory>
-#include <Akonadi/KMime/messageflags.h>
-#include <Akonadi/KMime/specialmailcollectionsrequestjob.h>
-#include <Akonadi/KMime/specialmailcollections.h>
+#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
+#include <Akonadi/KMime/SpecialMailCollections>
 #include <kmime/kmime_util.h>
 #include <MailTransport/PrecommandJob>
 #include <MailTransport/Transport>

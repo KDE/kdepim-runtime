@@ -31,10 +31,10 @@
 #include <ItemFetchJob>
 #include <ItemFetchScope>
 #include <Monitor>
-#include <Akonadi/KMime/addressattribute.h>
-#include <Akonadi/KMime/messageflags.h>
-#include <Akonadi/KMime/specialmailcollections.h>
-#include <Akonadi/KMime/specialmailcollectionsrequestjob.h>
+#include <Akonadi/KMime/AddressAttribute>
+#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>

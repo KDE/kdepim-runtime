@@ -25,7 +25,7 @@
 #include "oxutils.h"
 #include "users.h"
 
-#include <Akonadi/Contact/contactgroupexpandjob.h>
+#include <Akonadi/Contact/ContactGroupExpandJob>
 
 #include <QtCore/QBuffer>
 #include <QtXml/QDomElement>

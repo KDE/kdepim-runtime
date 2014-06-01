@@ -44,7 +44,7 @@
 #include <itemfetchjob.h>
 #include <specialcollections.h>
 #include <session.h>
-#include <Akonadi/KMime/messageparts.h>
+#include <Akonadi/KMime/MessageParts>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"

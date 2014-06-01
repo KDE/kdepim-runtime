@@ -35,9 +35,9 @@
 #include <AkonadiCore/Monitor>
 #include <akonadi/qtest_akonadi.h>
 #include <akonadi/private/collectionpathresolver_p.h>
-#include <Akonadi/KMime/messageflags.h>
-#include <Akonadi/KMime/specialmailcollections.h>
-#include <Akonadi/KMime/specialmailcollectionsrequestjob.h>
+#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 
 #include <mailtransport/dispatcherinterface.h>
 #include <mailtransport/errorattribute.h>

@@ -26,8 +26,8 @@
 
 #include "filestore/collectionfetchjob.h"
 
-#include <Akonadi/KMime/specialmailcollections.h>
-#include <Akonadi/KMime/messagefolderattribute.h>
+#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/KMime/MessageFolderAttribute>
 #include <agentinstance.h>
 #include <agentmanager.h>
 #include <AkonadiCore/collection.h>

@@ -40,7 +40,7 @@
 #include <KMbox/mbox.h>
 #include <kmime/kmime_message.h>
 
-#include <Akonadi/KMime/messageparts.h>
+#include <Akonadi/KMime/MessageParts>
 
 #include <AkonadiCore/cachepolicy.h>
 #include <AkonadiCore/itemfetchscope.h>

@@ -42,7 +42,7 @@
 #include <AkonadiCore/itemdeletejob.h>
 #include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiCore/session.h>
-#include <Akonadi/KMime/messagestatus.h>
+#include <Akonadi/KMime/MessageStatus>
 
 #include <KConfigGroup>
 #include <KLocalizedString>

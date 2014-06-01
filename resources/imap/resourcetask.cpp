@@ -21,7 +21,7 @@
 
 #include "resourcetask.h"
 
-#include <Akonadi/KMime/messageflags.h>
+#include <Akonadi/KMime/MessageFlags>
 
 #include <KLocale>
 #include <KDebug>
