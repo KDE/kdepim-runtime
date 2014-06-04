@@ -20,8 +20,8 @@
 
 #include "common/googleresource.h"
 
-#include <Akonadi/Item>
-#include <Akonadi/Collection>
+#include <AkonadiCore/Item>
+#include <AkonadiCore/Collection>
 
 class CalendarResource : public GoogleResource
 {

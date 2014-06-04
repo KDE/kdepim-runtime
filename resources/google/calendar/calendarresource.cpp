@@ -20,7 +20,7 @@
 #include "settings.h"
 #include "settingsdialog.h"
 
-#include <Akonadi/Attribute>
+#include <AkonadiCore/Attribute>
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/EntityDisplayAttribute>
@@ -647,7 +647,7 @@ void CalendarResource::slotRemoveTaskFetchJobFinished( KJob *job )
     Item::List items = fetchJob->items();
     Q_FOREACH ( Item item, items ) { //krazy:exclude=foreach
         if( !item.hasPayload<KCalCore::Todo::Ptr>() ) {
-            kDebug() << "Item " << item.remoteId() << " does not have Todo payload";
+            qDebug() << "Item " << item.remoteId() << " does not have Todo payload";
             continue;
         }
 
@@ -703,7 +703,7 @@ void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
     TaskPtr task = job->property( TASK_PROPERTY ).value<TaskPtr>();
 
     Item::List items = fetchJob->items();
-    kDebug() << "Parent query returned" << items.count() << "results";
+    qDebug() << "Parent query returned" << items.count() << "results";
 
     const QString tasksListId = item.parentCollection().remoteId();
 

@@ -18,8 +18,8 @@
 #ifndef GOOGLERESOURCE_H
 #define GOOGLERESOURCE_H
 
-#include <Akonadi/ResourceBase>
-#include <Akonadi/AgentBase>
+#include <AkonadiAgentBase/ResourceBase>
+#include <AkonadiAgentBase/AgentBase>
 
 #include <QtGui/qwindowdefs.h>
 
@@ -27,7 +27,7 @@
 
 #include <LibKGAPI2/Types>
 
-#include <KDE/KLocalizedString>
+#include <KLocalizedString>
 
 #define ITEM_PROPERTY "_AkonadiItem"
 #define ITEMLIST_PROPERTY "_AkonadiItemList"

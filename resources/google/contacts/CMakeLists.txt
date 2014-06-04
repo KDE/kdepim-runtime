@@ -23,7 +23,7 @@ qt5_add_dbus_adaptor(contactsresource_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/settings.h Settings
 )
 
-add_executable(akonadi_googlecontacts_resource RUN_UNINSTALLED ${contactsresource_SRCS})
+add_executable(akonadi_googlecontacts_resource ${contactsresource_SRCS})
 
 if(Q_WS_MAC)
   set_target_properties(akonadi_googlecontacts_resource PROPERTIES
@@ -41,12 +41,9 @@ endif()
 target_link_libraries(akonadi_googlecontacts_resource
   KF5::AkonadiCore
   KF5::Abc
-  
-  
-  
-  
   KF5::KIOCore
-  ${LibKGAPI2_LIBRARY}
+  KF5::GAPI
+  KF5::AkonadiAgentBase
 )
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})

@@ -1,9 +1,5 @@
 kde_enable_exceptions()
 
-include_directories(${QJSON_INCLUDE_DIR}
-                    ${qjson_INCLUDE_DIR}
-)
-
 set(calendarresource_SRCS
   calendarresource.cpp
   defaultreminderattribute.cpp
@@ -28,7 +24,7 @@ qt5_add_dbus_adaptor(calendarresource_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/settings.h Settings
 )
 
-add_executable(akonadi_googlecalendar_resource RUN_UNINSTALLED ${calendarresource_SRCS})
+add_executable(akonadi_googlecalendar_resource ${calendarresource_SRCS})
 
 if(Q_WS_MAC)
   set_target_properties(akonadi_googlecalendar_resource PROPERTIES
@@ -47,19 +43,10 @@ endif()
 
 target_link_libraries(akonadi_googlecalendar_resource
   KF5::AkonadiCore
-  ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
   KF5::CalendarCore
   KF5::Mime
-  
-  
-  
-  
-  
-  ${KDE4_KDEWEBKIT_LIBS}
-  ${QJSON_LIBRARIES}
-  ${QJSON_LIBRARY} # for Mac OSX
-  ${qjson_LIBRARY} # for Debian
-  ${LibKGAPI2_LIBRARY}
+  KF5::GAPI
+  KF5::AkonadiAgentBase
 )
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})

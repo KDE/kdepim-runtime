@@ -1,4 +1,4 @@
-include_directories(${LibKGAPI2_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
   include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS} ../)

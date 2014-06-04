@@ -18,7 +18,7 @@
 #ifndef GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
 #define GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
 
-#include <Akonadi/Attribute>
+#include <AkonadiCore/Attribute>
 
 #include <LibKGAPI2/Types>
 
