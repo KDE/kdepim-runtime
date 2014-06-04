@@ -33,7 +33,7 @@ find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
-
+find_package(KF5GAPI ${KF5_VERSION} CONFIG)
 # Xsltproc
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
@@ -59,11 +59,6 @@ set_package_properties(LibKGAPI2 PROPERTIES DESCRIPTION "KDE-based library for a
 # Libkfbapi
 find_package(LibKFbAPI 1.0 QUIET CONFIG)
 set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
-
-if(LibKGAPI2_FOUND OR LibKFbAPI_FOUND)
-  find_package(QJSON)
-  set_package_properties(QJSON PROPERTIES DESCRIPTION "Qt library for handling JSON data" URL "http://qjson.sourceforge.net/" TYPE REQUIRED PURPOSE "Required to build the Google and Facebook resources")
-endif()
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/shared
@@ -122,7 +117,8 @@ add_subdirectory( localbookmarks )
 add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
-#if( LibKGAPI2_FOUND )
+#NEED TO REMOVE QSJON SUPPORT
+#if( KF5GAPI_FOUND )
 #  add_subdirectory( google )
 #endif()
 
