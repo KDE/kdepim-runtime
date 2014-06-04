@@ -34,6 +34,7 @@ find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5GAPI ${KF5_VERSION} CONFIG)
+find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 # Xsltproc
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
