@@ -36,30 +36,30 @@
 #include <KDE/KLocale>
 #include <KDE/KDialog>
 
-#include <LibKGAPI2/Calendar/Calendar>
-#include <LibKGAPI2/Calendar/CalendarCreateJob>
-#include <LibKGAPI2/Calendar/CalendarDeleteJob>
-#include <LibKGAPI2/Calendar/CalendarFetchJob>
-#include <LibKGAPI2/Calendar/CalendarModifyJob>
-#include <LibKGAPI2/Calendar/Event>
-#include <LibKGAPI2/Calendar/EventCreateJob>
-#include <LibKGAPI2/Calendar/EventDeleteJob>
-#include <LibKGAPI2/Calendar/EventFetchJob>
-#include <LibKGAPI2/Calendar/EventModifyJob>
-#include <LibKGAPI2/Calendar/EventMoveJob>
-#include <LibKGAPI2/Tasks/Task>
-#include <LibKGAPI2/Tasks/TaskCreateJob>
-#include <LibKGAPI2/Tasks/TaskDeleteJob>
-#include <LibKGAPI2/Tasks/TaskFetchJob>
-#include <LibKGAPI2/Tasks/TaskModifyJob>
-#include <LibKGAPI2/Tasks/TaskMoveJob>
-#include <LibKGAPI2/Tasks/TaskList>
-#include <LibKGAPI2/Tasks/TaskListCreateJob>
-#include <LibKGAPI2/Tasks/TaskListDeleteJob>
-#include <LibKGAPI2/Tasks/TaskListFetchJob>
-#include <LibKGAPI2/Tasks/TaskListModifyJob>
+#include <KGAPI/Calendar/Calendar>
+#include <KGAPI/Calendar/CalendarCreateJob>
+#include <KGAPI/Calendar/CalendarDeleteJob>
+#include <KGAPI/Calendar/CalendarFetchJob>
+#include <KGAPI/Calendar/CalendarModifyJob>
+#include <KGAPI/Calendar/Event>
+#include <KGAPI/Calendar/EventCreateJob>
+#include <KGAPI/Calendar/EventDeleteJob>
+#include <KGAPI/Calendar/EventFetchJob>
+#include <KGAPI/Calendar/EventModifyJob>
+#include <KGAPI/Calendar/EventMoveJob>
+#include <KGAPI/Tasks/Task>
+#include <KGAPI/Tasks/TaskCreateJob>
+#include <KGAPI/Tasks/TaskDeleteJob>
+#include <KGAPI/Tasks/TaskFetchJob>
+#include <KGAPI/Tasks/TaskModifyJob>
+#include <KGAPI/Tasks/TaskMoveJob>
+#include <KGAPI/Tasks/TaskList>
+#include <KGAPI/Tasks/TaskListCreateJob>
+#include <KGAPI/Tasks/TaskListDeleteJob>
+#include <KGAPI/Tasks/TaskListFetchJob>
+#include <KGAPI/Tasks/TaskListModifyJob>
 
-#include <LibKGAPI2/Account>
+#include <KGAPI/Account>
 #include <KLocale>
 
 #define ROOT_COLLECTION_REMOTEID QLatin1String("RootCollection")

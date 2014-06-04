@@ -36,20 +36,20 @@
 
 #include <QtCore/QPointer>
 
-#include <LibKGAPI2/Types>
-#include <LibKGAPI2/Account>
-#include <LibKGAPI2/AuthJob>
-#include <LibKGAPI2/Contacts/Contact>
-#include <LibKGAPI2/Contacts/ContactCreateJob>
-#include <LibKGAPI2/Contacts/ContactDeleteJob>
-#include <LibKGAPI2/Contacts/ContactFetchJob>
-#include <LibKGAPI2/Contacts/ContactFetchPhotoJob>
-#include <LibKGAPI2/Contacts/ContactModifyJob>
-#include <LibKGAPI2/Contacts/ContactsGroup>
-#include <LibKGAPI2/Contacts/ContactsGroupCreateJob>
-#include <LibKGAPI2/Contacts/ContactsGroupDeleteJob>
-#include <LibKGAPI2/Contacts/ContactsGroupFetchJob>
-#include <LibKGAPI2/Contacts/ContactsGroupModifyJob>
+#include <KGAPI/Types>
+#include <KGAPI/Account>
+#include <KGAPI/AuthJob>
+#include <KGAPI/Contacts/Contact>
+#include <KGAPI/Contacts/ContactCreateJob>
+#include <KGAPI/Contacts/ContactDeleteJob>
+#include <KGAPI/Contacts/ContactFetchJob>
+#include <KGAPI/Contacts/ContactFetchPhotoJob>
+#include <KGAPI/Contacts/ContactModifyJob>
+#include <KGAPI/Contacts/ContactsGroup>
+#include <KGAPI/Contacts/ContactsGroupCreateJob>
+#include <KGAPI/Contacts/ContactsGroupDeleteJob>
+#include <KGAPI/Contacts/ContactsGroupFetchJob>
+#include <KGAPI/Contacts/ContactsGroupModifyJob>
 
 #define MYCONTACTS_REMOTEID QLatin1String( "MyContacts" )
 #define OTHERCONTACTS_REMOTEID QLatin1String( "OtherContacts" )

@@ -22,7 +22,7 @@
 #include <qjson/parser.h>
 #include <qjson/serializer.h>
 
-#include <LibKGAPI2/Calendar/Reminder>
+#include <KGAPI/Calendar/Reminder>
 
 using namespace KGAPI2;
 

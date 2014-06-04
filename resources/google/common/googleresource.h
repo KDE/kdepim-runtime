@@ -25,7 +25,7 @@
 
 #include "googleaccountmanager.h"
 
-#include <LibKGAPI2/Types>
+#include <KGAPI/Types>
 
 #include <KLocalizedString>
 

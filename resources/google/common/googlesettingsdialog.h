@@ -20,7 +20,7 @@
 
 #include <KDE/KDialog>
 
-#include <LibKGAPI2/Types>
+#include <KGAPI/Types>
 
 namespace KGAPI2
 {

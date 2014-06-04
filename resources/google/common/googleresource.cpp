@@ -25,10 +25,10 @@
 #include <KDE/KDialog>
 #include <KDE/KLocale>
 
-#include <LibKGAPI2/Account>
-#include <LibKGAPI2/AccountInfo/AccountInfoFetchJob>
-#include <LibKGAPI2/AccountInfo/AccountInfo>
-#include <LibKGAPI2/AuthJob>
+#include <KGAPI/Account>
+#include <KGAPI/AccountInfo/AccountInfoFetchJob>
+#include <KGAPI/AccountInfo/AccountInfo>
+#include <KGAPI/AuthJob>
 #include <KLocale>
 
 #ifdef HAVE_ACCOUNTS

@@ -24,7 +24,7 @@
 #include <QtCore/QPointer>
 #include <QtCore/QMap>
 
-#include <LibKGAPI2/Types>
+#include <KGAPI/Types>
 
 namespace KWallet {
     class Wallet;

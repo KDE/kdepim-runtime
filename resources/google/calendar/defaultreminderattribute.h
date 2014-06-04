@@ -20,7 +20,7 @@
 
 #include <AkonadiCore/Attribute>
 
-#include <LibKGAPI2/Types>
+#include <KGAPI/Types>
 
 #include <KCalCore/Alarm>
 #include <KCalCore/Incidence>

@@ -31,12 +31,12 @@
 #include <QtGui/QLabel>
 #include <QtCore/QPointer>
 
-#include <LibKGAPI2/Account>
-#include <LibKGAPI2/AuthJob>
-#include <LibKGAPI2/Calendar/Calendar>
-#include <LibKGAPI2/Calendar/CalendarFetchJob>
-#include <LibKGAPI2/Tasks/TaskList>
-#include <LibKGAPI2/Tasks/TaskListFetchJob>
+#include <KGAPI/Account>
+#include <KGAPI/AuthJob>
+#include <KGAPI/Calendar/Calendar>
+#include <KGAPI/Calendar/CalendarFetchJob>
+#include <KGAPI/Tasks/TaskList>
+#include <KGAPI/Tasks/TaskListFetchJob>
 
 using namespace KGAPI2;
 

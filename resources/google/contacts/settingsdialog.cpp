@@ -22,8 +22,8 @@
 #include <KDE/KLocalizedString>
 #include <KDE/KDebug>
 
-#include <LibKGAPI2/Account>
-#include <LibKGAPI2/AuthJob>
+#include <KGAPI/Account>
+#include <KGAPI/AuthJob>
 
 using namespace KGAPI2;
 

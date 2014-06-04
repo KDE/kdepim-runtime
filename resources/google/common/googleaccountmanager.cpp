@@ -25,7 +25,7 @@
 #include <KDE/KDebug>
 #include <KDE/KWindowSystem>
 
-#include <LibKGAPI2/Account>
+#include <KGAPI/Account>
 
 #define WALLET_FOLDER QLatin1String("Akonadi Google")
 

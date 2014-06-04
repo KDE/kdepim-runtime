@@ -45,7 +45,8 @@ target_link_libraries(akonadi_googlecalendar_resource
   KF5::AkonadiCore
   KF5::CalendarCore
   KF5::Mime
-  KF5::GAPI
+  KF5::GAPICalendar
+  KF5::GAPICore
   KF5::AkonadiAgentBase
 )
 

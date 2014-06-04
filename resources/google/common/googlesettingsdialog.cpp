@@ -35,8 +35,8 @@
 #include <KDE/KWindowSystem>
 #include <KDE/KIntSpinBox>
 
-#include <LibKGAPI2/Account>
-#include <LibKGAPI2/AuthJob>
+#include <KGAPI/Account>
+#include <KGAPI/AuthJob>
 
 Q_DECLARE_METATYPE( KGAPI2::Job* )
 
