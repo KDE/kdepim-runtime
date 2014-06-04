@@ -44,11 +44,11 @@
 #include <QDebug>
 #include <QWhatsThis>
 
-#include <CollectionView>
-#include <CollectionModel>
-#include <RecursiveCollectionFilterProxyModel>
-#include <CollectionFilterProxyModel>
-#include <CollectionModifyJob>
+#include <AkonadiWidgets/CollectionView>
+#include <AkonadiCore/CollectionModel>
+#include <AkonadiCore/RecursiveCollectionFilterProxyModel>
+#include <AkonadiCore/CollectionFilterProxyModel>
+#include <AkonadiCore/CollectionModifyJob>
 #include <KSharedConfig>
 
 static const char * textToSpeakMessage =
