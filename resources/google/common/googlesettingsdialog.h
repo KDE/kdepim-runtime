@@ -35,7 +35,7 @@ class QGroupBox;
 class KComboBox;
 class QCheckBox;
 class KIntSpinBox;
-
+class KPushButton;
 
 class GoogleSettingsDialog : public KDialog
 {

@@ -19,8 +19,8 @@
 
 #include <QVariant>
 
-#include <qjson/parser.h>
-#include <qjson/serializer.h>
+//#include <qjson/parser.h>
+//#include <qjson/serializer.h>
 
 #include <KGAPI/Calendar/Reminder>
 
