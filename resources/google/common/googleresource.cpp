@@ -352,7 +352,7 @@ bool GoogleResource::handleError( KGAPI2::Job *job )
             }
         }
 
-        updateAccountToken( m_account );
+        updateAccountToken( m_account, job );
         return false;
     }
 

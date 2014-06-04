@@ -63,7 +63,7 @@ find_package(Boost 1.34.0)
 set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "http://www.boost.org" TYPE REQUIRED PURPOSE "Boost is required by Akonadi")
 
 # Akonadi
-find_package(Akonadi 1.12.0 QUIET CONFIG)
+find_package(Akonadi 1.12.1 QUIET CONFIG)
 set_package_properties(Akonadi PROPERTIES DESCRIPTION "Akonadi server libraries" URL "http://pim.kde.org/akonadi" TYPE REQUIRED PURPOSE "Access to PIM storage and services")
 
 # shared-mime-info
