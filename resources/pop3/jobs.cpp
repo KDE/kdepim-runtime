@@ -46,7 +46,7 @@ void POPSession::slotSlaveError( KIO::Slave *slave , int errorCode,
                                  const QString &errorMessage )
 {
   Q_UNUSED( slave );
-  kWarning() << "Got a slave error:" << errorMessage;
+  qWarning() << "Got a slave error:" << errorMessage;
 
   if ( slave != mSlave )
     return;
@@ -231,7 +231,7 @@ void SlaveBaseJob::slotSlaveResult( KJob *job )
 void SlaveBaseJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
 {
   Q_UNUSED( job );
-  kWarning() << "Got unexpected slave data:" << data.data();
+  qWarning() << "Got unexpected slave data:" << data.data();
 }
 
 void SlaveBaseJob::slaveError( int errorCode, const QString &errorMessage )
@@ -348,11 +348,11 @@ void ListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
     if ( idIsNumber )
       mIdList.insert( id, length );
     else
-      kWarning() << "Got non-integer ID as part of the LIST response, ignoring"
+      qWarning() << "Got non-integer ID as part of the LIST response, ignoring"
                  << idString.data();
   }
   else {
-    kWarning() << "Got invalid LIST response:" << data.data();
+    qWarning() << "Got invalid LIST response:" << data.data();
   }
 }
 
@@ -383,8 +383,8 @@ void UIDListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
   const int space = cleanData.indexOf( ' ' );
 
   if ( space <= 0 ) {
-    kWarning() << "Invalid response to the UIDL command:" << data.data();
-    kWarning() << "Ignoring this entry.";
+    qWarning() << "Invalid response to the UIDL command:" << data.data();
+    qWarning() << "Ignoring this entry.";
   }
   else {
     QByteArray idString = cleanData.left( space );
@@ -398,14 +398,14 @@ void UIDListJob::slotSlaveData( KIO::Job *job, const QByteArray &data )
         mIdList.insert( uidQString, id );
       }
       else {
-        kWarning() << "Got invalid/empty UID from the UIDL command:"
+        qWarning() << "Got invalid/empty UID from the UIDL command:"
                    << uidString.data();
-        kWarning() << "The whole response was:" << data.data();
+        qWarning() << "The whole response was:" << data.data();
       }
     }
     else {
-      kWarning() << "Got invalid ID from the UIDL command:" << idString.data();
-      kWarning() << "The whole response was:" << data.data();
+      qWarning() << "Got invalid ID from the UIDL command:" << idString.data();
+      qWarning() << "The whole response was:" << data.data();
     }
   }
 }

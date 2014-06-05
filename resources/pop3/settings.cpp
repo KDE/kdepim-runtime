@@ -28,7 +28,7 @@ class SettingsHelper
   public:
     SettingsHelper() : q( 0 ) {}
     ~SettingsHelper() {
-      kWarning() << q;
+      qWarning() << q;
       delete q;
       q = 0;
     }
@@ -77,7 +77,7 @@ void Settings::setPassword( const QString& password )
     wallet->setFolder( QLatin1String("pop3") );
     wallet->writePassword( mResourceId, password );
   } else {
-    kWarning() << "Unable to open wallet!";
+    qWarning() << "Unable to open wallet!";
   }
   delete wallet;
 }

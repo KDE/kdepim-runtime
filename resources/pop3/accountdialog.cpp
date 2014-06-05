@@ -259,11 +259,11 @@ void AccountDialog::walletOpenedForLoading( bool success )
       passwordEdit->setText( password );
       mInitalPassword = password;
     } else {
-      kWarning() << "Wallet not open or doesn't have pop3 folder.";
+      qWarning() << "Wallet not open or doesn't have pop3 folder.";
     }
   }
   else {
-    kWarning() << "Failed to open wallet for loading the password.";
+    qWarning() << "Failed to open wallet for loading the password.";
   }
 
   const bool walletError = !success || !mWallet->isOpen();
@@ -295,12 +295,12 @@ void AccountDialog::walletOpenedForSaving( bool success )
       mParentResource->clearCachedPassword();
     }
     else {
-      kWarning() << "Wallet not open.";
+      qWarning() << "Wallet not open.";
     }
   }
   else {
     // Should we alert the user here?
-    kWarning() << "Failed to open wallet for saving the password.";
+    qWarning() << "Failed to open wallet for saving the password.";
   }
 
   delete mWallet;
@@ -378,12 +378,12 @@ void AccountDialog::slotPipeliningClicked()
 
 void AccountDialog::slotPopEncryptionChanged( int id )
 {
-  kDebug() << "setting port";
+  qDebug() << "setting port";
   // adjust port
   if ( id == Transport::EnumEncryption::SSL || portEdit->value() == 995 )
     portEdit->setValue( ( id == Transport::EnumEncryption::SSL ) ? 995 : 110 );
 
-  kDebug() << "port set ";
+  qDebug() << "port set ";
   enablePopFeatures(); // removes invalid auth options from the combobox
 }
 
@@ -617,13 +617,13 @@ void AccountDialog::saveSettings()
 
   if ( ( !passwordEdit->text().isEmpty() && userChangedPassword ) ||
        userWantsToDeletePassword ) {
-    kDebug() << mWallet <<  mWallet->isOpen();
+    qDebug() << mWallet <<  mWallet->isOpen();
     if ( mWallet && mWallet->isOpen() ) {
       // wallet is already open
       walletOpenedForSaving( true );
     } else {
       // we need to open the wallet
-      kDebug() << "we need to open the wallet";
+      qDebug() << "we need to open the wallet";
       mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
                                     Wallet::Asynchronous );
       if ( mWallet ) {

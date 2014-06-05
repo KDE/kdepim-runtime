@@ -169,7 +169,7 @@ InvitationsAgentItem::~InvitationsAgentItem()
 
 void InvitationsAgentItem::add( const Item &item )
 {
-  kDebug();
+  qDebug();
   const Collection collection = m_agent->collection();
   Q_ASSERT( collection.isValid() );
 
@@ -186,7 +186,7 @@ void InvitationsAgentItem::createItemResult( KJob *job )
   ItemCreateJob *createJob = qobject_cast<ItemCreateJob*>( job );
   m_jobs.removeAll( createJob );
   if ( createJob->error() ) {
-    kWarning() << "Failed to create new Item in invitations collection." << createJob->errorText();
+    qWarning() << "Failed to create new Item in invitations collection." << createJob->errorText();
     return;
   }
 
@@ -201,7 +201,7 @@ void InvitationsAgentItem::createItemResult( KJob *job )
 void InvitationsAgentItem::fetchItemDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Failed to fetch Item in invitations collection." << job->errorText();
+    qWarning() << "Failed to fetch Item in invitations collection." << job->errorText();
     return;
   }
 
@@ -220,19 +220,19 @@ void InvitationsAgentItem::fetchItemDone( KJob *job )
 void InvitationsAgentItem::modifyItemDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Failed to modify Item in invitations collection." << job->errorText();
+    qWarning() << "Failed to modify Item in invitations collection." << job->errorText();
     return;
   }
 
   //ItemModifyJob *mj = qobject_cast<ItemModifyJob*>( job );
-  //kDebug()<<"Job successful done.";
+  //qDebug()<<"Job successful done.";
 }
 
 InvitationsAgent::InvitationsAgent( const QString &id )
   : AgentBase( id ), AgentBase::ObserverV2()
   , m_invitationsCollection( new InvitationsCollection( this ) )
 {
-  kDebug();
+  qDebug();
 
   changeRecorder()->setChangeRecordingEnabled( false ); // behave like Monitor
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -250,7 +250,7 @@ InvitationsAgent::~InvitationsAgent()
 
 void InvitationsAgent::initStart()
 {
-  kDebug();
+  qDebug();
 
   m_invitationsCollection->clear();
   if ( m_invitationsCollection->hasDefaultCollection() ) {
@@ -285,7 +285,7 @@ void InvitationsAgent::initDone( KJob *job )
 {
   if ( job ) {
     if ( job->error() ) {
-      kWarning() << "Failed to request default collection:" << job->errorText();
+      qWarning() << "Failed to request default collection:" << job->errorText();
       return;
     }
 
@@ -312,7 +312,7 @@ KPIMIdentities::IdentityManager* InvitationsAgent::identityManager()
 
 void InvitationsAgent::configure( WId windowId )
 {
-  kDebug() << windowId;
+  qDebug() << windowId;
   /*
   QWidget *parent = QWidget::find( windowId );
   KDialog *dialog = new KDialog( parent );
@@ -326,11 +326,11 @@ void InvitationsAgent::configure( WId windowId )
 #if 0
 void InvitationsAgent::createAgentResult( KJob *job )
 {
-  kDebug();
+  qDebug();
   AgentInstance agent;
   if ( job ) {
     if ( job->error() ) {
-      kWarning() << job->errorString();
+      qWarning() << job->errorString();
       emit status( AgentBase::Broken, i18n( "Failed to create resource: %1", job->errorString() ) );
       return;
     }
@@ -347,7 +347,7 @@ void InvitationsAgent::createAgentResult( KJob *job )
                                         KGlobal::dirs()->localxdgdatadir() + "akonadi_ical_resource" );
 
     if ( !reply.isValid() ) {
-      kWarning() << "dbus call failed, m_resourceId=" << m_resourceId;
+      qWarning() << "dbus call failed, m_resourceId=" << m_resourceId;
       emit status( AgentBase::Broken, i18n( "Failed to set the directory for invitations via D-Bus" ) );
       AgentManager::self()->removeInstance( agent );
       return;
@@ -371,9 +371,9 @@ void InvitationsAgent::createAgentResult( KJob *job )
 
 void InvitationsAgent::resourceSyncResult( KJob *job )
 {
-  kDebug();
+  qDebug();
   if ( job->error() ) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
     emit status( AgentBase::Broken, i18n( "Failed to synchronize collection: %1", job->errorString() ) );
     if ( newAgentCreated )
       AgentManager::self()->removeInstance( AgentManager::self()->instance( m_resourceId ) );
@@ -388,10 +388,10 @@ void InvitationsAgent::resourceSyncResult( KJob *job )
 
 void InvitationsAgent::collectionFetchResult( KJob *job )
 {
-  kDebug();
+  qDebug();
 
   if ( job->error() ) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
     emit status( AgentBase::Broken, i18n( "Failed to fetch collection: %1", job->errorString() ) );
     if ( newAgentCreated )
       AgentManager::self()->removeInstance( AgentManager::self()->instance( m_resourceId ) );
@@ -445,9 +445,9 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
 
 void InvitationsAgent::collectionCreateResult( KJob *job )
 {
-  kDebug();
+  qDebug();
   if ( job->error() ) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
     emit status( AgentBase::Broken, i18n( "Failed to create collection: %1", job->errorString() ) );
     if ( newAgentCreated )
       AgentManager::self()->removeInstance( AgentManager::self()->instance( m_resourceId ) );
@@ -466,11 +466,11 @@ Item InvitationsAgent::handleContent( const QString &vcal,
   KCalCore::ICalFormat format;
   KCalCore::ScheduleMessage::Ptr message = format.parseScheduleMessage( calendar, vcal );
   if ( !message ) {
-    kWarning() << "Invalid invitation:" << vcal;
+    qWarning() << "Invalid invitation:" << vcal;
     return Item();
   }
 
-  kDebug() << "id=" << item.id() << "remoteId=" << item.remoteId() << "vcal=" << vcal;
+  qDebug() << "id=" << item.id() << "remoteId=" << item.remoteId() << "vcal=" << vcal;
 
   KCalCore::Incidence::Ptr incidence = message->event().staticCast<KCalCore::Incidence>();
   Q_ASSERT( incidence );
@@ -489,11 +489,11 @@ Item InvitationsAgent::handleContent( const QString &vcal,
 
 void InvitationsAgent::itemAdded( const Item &item, const Collection &collection )
 {
-  kDebug() << item.id() << collection;
+  qDebug() << item.id() << collection;
   Q_UNUSED( collection );
 
   if ( !m_invitationsCollection->defaultCollection().isValid() ) {
-    kDebug() << "No default collection found";
+    qDebug() << "No default collection found";
     return;
   }
 
@@ -501,7 +501,7 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
     return;
 
   if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-    kDebug() << "Item has no payload";
+    qDebug() << "Item has no payload";
     return;
   }
 
@@ -513,20 +513,20 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
 
   KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KSystemTimeZones::local() ) );
   if ( message->contentType()->isMultipart() ) {
-    kDebug() << "message is multipart:" << message->attachments().size();
+    qDebug() << "message is multipart:" << message->attachments().size();
 
     InvitationsAgentItem *it = 0;
     foreach ( KMime::Content *content, message->contents() ) {
 
       KMime::Headers::ContentType *ct = content->contentType();
       Q_ASSERT( ct );
-      kDebug() << "Mimetype of the body part is " << ct->mimeType();
+      qDebug() << "Mimetype of the body part is " << ct->mimeType();
       if ( ct->mimeType() != "text/calendar" )
         continue;
 
       Item newItem = handleContent( QLatin1String(content->body()), calendar, item );
       if ( !newItem.hasPayload() ) {
-        kDebug() << "new item has no payload";
+        qDebug() << "new item has no payload";
         continue;
       }
 
@@ -536,19 +536,19 @@ void InvitationsAgent::itemAdded( const Item &item, const Collection &collection
       it->add( newItem );
     }
   } else {
-    kDebug() << "message is not multipart";
+    qDebug() << "message is not multipart";
 
     KMime::Headers::ContentType *ct = message->contentType();
     Q_ASSERT( ct );
-    kDebug() << "Mimetype of the body is " << ct->mimeType();
+    qDebug() << "Mimetype of the body is " << ct->mimeType();
     if ( ct->mimeType() != "text/calendar" )
       return;
 
-    kDebug() << "Message has an invitation in the body, processing";
+    qDebug() << "Message has an invitation in the body, processing";
 
     Item newItem = handleContent( QLatin1String(message->body()), calendar, item );
     if ( !newItem.hasPayload() ) {
-      kDebug() << "new item has no payload";
+      qDebug() << "new item has no payload";
       return;
     }
 
