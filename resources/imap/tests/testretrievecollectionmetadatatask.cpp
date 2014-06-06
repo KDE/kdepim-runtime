@@ -233,7 +233,7 @@ private slots:
 
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
-             << "C: A000003 GETMETADATA \"INBOX/Foo\" (DEPTH infinity) (/shared)"
+             << "C: A000003 GETMETADATA (DEPTH infinity) \"INBOX/Foo\" (/shared)"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test \"true\")"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test2 \"NIL\")"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/cmu/cyrus-imapd/lastupdate \"true\")"
