@@ -20,7 +20,7 @@
 
 #include "davcollectionsmultifetchjob.h"
 
-#include <kicon.h>
+#include <qicon.h>
 #include <klocale.h>
 #include <klineedit.h>
 #include <kservice.h>

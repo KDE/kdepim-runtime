@@ -48,7 +48,7 @@
 #include <CollectionModifyJob>
 #include <kemailsettings.h>
 #include <klocale.h>
-#include <kpushbutton.h>
+#include <qpushbutton.h>
 #include <kmessagebox.h>
 #include <kuser.h>
 #include <KDebug>

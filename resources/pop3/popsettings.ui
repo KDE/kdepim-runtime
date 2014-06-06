@@ -458,7 +458,7 @@ p, li { white-space: pre-wrap; }
             <widget class="QWidget" name="page">
              <layout class="QVBoxLayout" name="verticalLayout_3">
               <item>
-               <widget class="KPushButton" name="checkCapabilities">
+               <widget class="QPushButton" name="checkCapabilities">
                 <property name="text">
                  <string>Auto Detect</string>
                 </property>
@@ -585,11 +585,6 @@ p, li { white-space: pre-wrap; }
    <extends>QFrame</extends>
    <header>kseparator.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
   </customwidget>
   <customwidget>
    <class>KIntNumInput</class>
