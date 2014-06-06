@@ -101,6 +101,7 @@ class ImapAclAttributeTest : public QObject
       attr->setRights( acls );
 
       QCOMPARE( attr->oldRights(), acls );
+      delete attr;
     }
 };
 
