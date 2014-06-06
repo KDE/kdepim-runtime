@@ -535,11 +535,18 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     * * flag changes and removals can be detected by listing all messages that weren't part of the previous step
     *
     * Everything else is optimizations.
+    *
+    * TODO: Note that the local message count can be larger than the remote message count although no messages
+    * have been deleted remotely, if we locally have messages that were not yet uploaded.
+    * We cannot differentiate that from remotely removed messages, so we have to do a full flag
+    * listing in that case. This can be optimized once we support QRESYNC and therefore have a way
+    * to determine wether messages have been removed.
     */
 
     if (messageCount == 0) {
         //Shortcut:
         //If no messages are present on the server, clear local cash and finish
+        m_incremental = false;
         if (realMessageCount > 0) {
             kDebug( 5327 ) << "No messages present so we are done, deleting local messages.";
             itemsRetrieved(Akonadi::Item::List());
@@ -565,12 +572,11 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         KIMAP::ImapSet imapSet;
         imapSet.add(m_messageUidsMissingBody);
         retrieveItems(imapSet, scope, true, true);
-    } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) >= messageCount) && realMessageCount > 0) {
+    } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) == messageCount) && realMessageCount > 0) {
         //Optimization:
         //New messages are available, but we know no messages have been removed.
         //Fetch new messages, and then check for changed flags and removed messages
         //We can make an incremental update and use modseq.
-        //The local message count can be larger if we locally have messages that were not yet uploaded.
         kDebug( 5327 ) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
         setTotalItems(qMax(1ll, messageCount - realMessageCount));
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
@@ -589,18 +595,17 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
-    } else if (messageCount <= realMessageCount && oldNextUid == nextUid) {
+    } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
         //Optimization:
         //We know no messages were added or removed (if the message count and uidnext is still the same)
         //We only check the flags incrementally and can make use of modseq
-        //The local message count can be larger if we locally have messages that were not yet uploaded.
         m_uidBasedFetch = true;
         m_incremental = true;
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
         //Workaround: If the server doesn't support CONDSTORE we would end up syncing all flags during every sync.
         //Instead we only sync flags when new messages are available or removed and skip this step.
-        //WARNING: This sacrifices consitency as we will not detect flag changes until a new message enters the mailbox.
-        if (!serverSupportsCondstore()) {
+        //WARNING: This sacrifices consistency as we will not detect flag changes until a new message enters the mailbox.
+        if (m_incremental && !serverSupportsCondstore()) {
             kDebug(5327) << "Avoiding flag sync due to missing CONDSTORE support";
             taskComplete();
             return;

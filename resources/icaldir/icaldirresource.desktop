@@ -47,6 +47,7 @@ Comment[da]="Giver adgang til en kalenderelementer, hver især gemt i en enkelt 
 Comment[de]="Ermöglicht Zugriff auf Kalender, die jeweils in einzelnen Dateien in einem vorgegebenen Ordner gespeichert sind"
 Comment[el]="Παρέχει πρόσβαση σε αντικείμενα ημερολογίου, με το καθένα αποθηκευμένο σε ένα αρχείο, σε δοσμένο κατάλογο"
 Comment[es]=«Proporciona acceso a elementos de calendario, cada uno almacenado en un solo archivo, en un directorio dado»
+Comment[et]="Võimaldab kasutada eraldi failidesse salvestatud kalendrielemente määratud kataloogis"
 Comment[fi]="Tarjoaa pääsyn määräkansion yksittäisiin tiedostoihin tallennettuihin kalenterimerkintöihin"
 Comment[fr]=« Fournit l'accès aux éléments d'agenda, chacun stocké dans un fichier distinct, dans un dossier donné »
 Comment[gl]=«Fornece acceso a elementos de calendario, cada un almacenado nun ficheiro de seu, nun directorio dado.»
