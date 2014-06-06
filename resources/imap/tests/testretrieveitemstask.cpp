@@ -164,6 +164,7 @@ private slots:
     collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
     collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
     collection.setCachePolicy( policy );
+    stats.setCount( 1 );
     collection.setStatistics( stats );
     scenario.clear();
     scenario << defaultPoolConnectionScenario()
@@ -184,6 +185,54 @@ private slots:
     callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
 
     QTest::newRow( "third listing, full sync, empty folder" ) << collection << scenario << callNames;
+
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 8 );
+    stats.setCount( 4 );
+    collection.setStatistics( stats );
+    collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456788 );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 5 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: * OK [ UIDNEXT 9  ]"
+             << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 UID SEARCH UID 8:9"
+             << "S: * SEARCH 8 9"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 5 FETCH ( FLAGS (\\Seen) UID 9 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                "RFC822.SIZE 75 BODY[] {75}\r\n"
+                "From: Foo <foo@kde.org>\r\n"
+                "To: Bar <bar@kde.org>\r\n"
+                "Subject: Test Mail\r\n"
+                "\r\n"
+                "Test\r\n"
+                " )"
+             << "S: A000007 OK fetch done"
+             << "C: A000008 UID SEARCH UID 1:7"
+             << "S: * SEARCH 1 2 3 4 5 6 7"
+             << "S: A000008 OK search done"
+             << "C: A000009 UID FETCH 1:7 (FLAGS UID)"
+             << "S: * 1 FETCH"
+             << "S: * 2 FETCH"
+             << "S: * 3 FETCH"
+             << "S: * 4 FETCH"
+             << "S: A000009 OK fetch done";
+
+    callNames.clear();
+    callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental"<< "itemsRetrievalDone";
+
+    //We know no messages have been removed, so we can do an incremental update
+    QTest::newRow( "uidnext changed, fetch new messages incrementally" ) << collection << scenario << callNames;
 
     collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 8 );
     stats.setCount( 5 );
@@ -234,8 +283,9 @@ private slots:
              << "S: A000009 OK fetch done";
 
     callNames.clear();
-    callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental"<< "itemsRetrievalDone";
+    callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
 
+    //A new message has been added and an old one removed, we can't do an incremental update
     QTest::newRow( "uidnext changed, fetch new messages and list flags" ) << collection << scenario << callNames;
 
 
@@ -436,6 +486,43 @@ private slots:
     callNames << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
 
     QTest::newRow( "test batch processing" ) << collection << scenario << callNames;
+
+    collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+    collection.setCachePolicy( policy );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( 9 );
+    collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456789 );
+    stats.setCount( 5 );
+    collection.setStatistics( stats );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario( QList<QByteArray>() << "CONDSTORE" )
+             << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge DONE"
+             << "C: A000005 SELECT \"INBOX/Foo\" (CONDSTORE)"
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 4 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135 ]"
+             << "S: * OK [ UIDNEXT 9 ]"
+             << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 UID SEARCH UID 1:9"
+             << "S: * SEARCH 1 2 3 4"
+             << "S: A000006 OK search done"
+             << "C: A000007 UID FETCH 1:4 (FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
+             << "S: * 2 FETCH ( FLAGS (\\Seen) UID 2 )"
+             << "S: * 3 FETCH ( FLAGS (\\Seen) UID 3 )"
+             << "S: * 4 FETCH ( FLAGS (\\Seen) UID 4 )"
+             << "S: A000007 OK fetch done";
+    callNames.clear();
+    callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+
+    //fetch only changed flags
+    QTest::newRow( "remote message deleted" ) << collection << scenario << callNames;
 
   }
 
