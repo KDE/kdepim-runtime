@@ -57,16 +57,11 @@ endif()
 include_directories(${Boost_INCLUDE_DIR})
 
 target_link_libraries(akonadi_facebook_resource
-  ${KDEPIMLIBS_AKONADI_SOCIALUTILS_LIBS}
-  ${KDEPIMLIBS_AKONADI_NOTES_LIBS}
+  KF5::Syndication
   KF5::AkonadiCore
   KF5::Abc
   KF5::CalendarCore
-  
-  
-  
-  ${QJSON_LIBRARIES}
-  
+  KF5::KF5AkonadiNotes
   KF5::Mime
   ${LibKFbAPI_LIBRARY}
 )

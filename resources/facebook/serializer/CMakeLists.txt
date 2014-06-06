@@ -10,12 +10,7 @@ add_library(akonadi_serializer_socialnotification MODULE ${akonadi_serializer_so
 
 target_link_libraries(akonadi_serializer_socialnotification
   ${KDE4_AKONADI_LIBS}
-  
-  
   ${LibKFbAPI_LIBRARY}
-  ${qjson_LIBRARIES}    # for Debian
-  ${QJSON_LIBRARIES}
-  ${QJSON_LIBRARY}
 )
 
 install(
