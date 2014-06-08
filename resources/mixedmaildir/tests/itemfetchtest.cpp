@@ -72,6 +72,13 @@ static QSet<QByteArray> messageParts( const KMime::Message::Ptr &msgPtr )
   return set;
 }
 
+// needed to sort maildir directory entries by filename which is their
+// remoteId. tagListHash.contains tests below need sorting of entries.
+static bool itemLessThanByRemoteId(const Item &item1, const Item &item2)
+{
+    return item1.remoteId() < item2.remoteId();
+}
+
 class ItemFetchTest : public QObject
 {
   Q_OBJECT
@@ -369,7 +376,7 @@ void ItemFetchTest::testListingMaildir()
   // tagListHash.contains tests below needs sorting of entries,
   // but libmaildir does not sort for performance reasons.
   // TODO: Check should not depend on any specific ordering.
-  qSort(items);
+  qSort(items.begin(), items.end(), itemLessThanByRemoteId);
 
   tagListHash = var.value< QHash<QString, QVariant> >();
   QCOMPARE( (int)tagListHash.count(), 3 );
