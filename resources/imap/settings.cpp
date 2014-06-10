@@ -47,7 +47,7 @@ public:
     Settings *q;
 };
 
-K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings *Settings::self()
 {

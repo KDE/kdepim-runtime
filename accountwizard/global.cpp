@@ -34,7 +34,7 @@ class GlobalPrivate
     QString assistant;
 };
 
-K_GLOBAL_STATIC( GlobalPrivate, sInstance )
+Q_GLOBAL_STATIC( GlobalPrivate, sInstance )
 
 
 QString Global::assistant()
