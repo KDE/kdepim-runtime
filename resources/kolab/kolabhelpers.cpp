@@ -140,10 +140,9 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         default:
             kWarning() << "Object type not handled";
             ok = false;
-            return Akonadi::Item();
+            break;
     }
-    ok = false;
-    return Akonadi::Item();
+   return Akonadi::Item();
 }
 
 Akonadi::Item::List KolabHelpers::translateToImap(const Akonadi::Item::List &items, bool &ok)

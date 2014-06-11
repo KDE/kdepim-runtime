@@ -180,7 +180,6 @@ static void parseTodoAttribute( const QDomElement &element,
         case 1:
           priority = 9;
           break;
-        default:
         case 2:
           priority = 5;
           break;
