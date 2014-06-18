@@ -16,6 +16,7 @@ endif()
 set( imapresource_LIB_SRCS
   addcollectiontask.cpp
   additemtask.cpp
+  batchfetcher.cpp
   changecollectiontask.cpp
   changeitemsflagstask.cpp
   changeitemtask.cpp
