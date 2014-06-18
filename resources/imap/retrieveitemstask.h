@@ -57,6 +57,10 @@ private slots:
 protected:
     virtual void doStart(KIMAP::Session *session);
 
+    virtual BatchFetcher* createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set,
+                                             const KIMAP::FetchJob::FetchScope &scope, int batchSize,
+                                             KIMAP::Session *session);
+
 private:
     void startRetrievalTasks();
     void triggerPreExpungeSelect(const QString &mailBox);

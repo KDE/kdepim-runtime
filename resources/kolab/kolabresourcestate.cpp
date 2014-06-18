@@ -20,6 +20,9 @@
 #include "kolabresourcestate.h"
 #include "kolabhelpers.h"
 #include "kolabmessagehelper.h"
+
+#include <imapresource.h>
+
 #include <collectionannotationsattribute.h>
 #include <noselectattribute.h>
 #include <Akonadi/EntityDisplayAttribute>
