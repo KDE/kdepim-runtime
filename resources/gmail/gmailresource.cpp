@@ -32,6 +32,8 @@
 #include <Akonadi/LinkJob>
 #include <Akonadi/CollectionFetchJob>
 #include <akonadi/collectionpathresolver_p.h>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 
 #include <imap/sessionpool.h>
 #include <imap/sessionuiproxy.h>
@@ -198,6 +200,24 @@ void GmailResource::onLinkItemsCollectionResolved(KJob *job)
         item.setRemoteId(remoteId);
         items << item;
     }
+
+    // FIXME: This is a dirty hack to force Akonadi server to change connection
+    // context to "All Mail" collection, since we don't have access to
+    // CollectionSelectJob to do it ourselves.
+    //
+    // Previous syncs change to context to "Trash" or other collections, and the
+    // link job then fails to link any item because none exist in such context.
+    //
+    // This can be removed once we kill SELECT and persistent collection contexts.
+    Akonadi::Collection allMailCol;
+    allMailCol.setRemoteId(QLatin1String("/[Gmail]/All Mail"));
+    Akonadi::Item fakeItem;
+    fakeItem.setRemoteId(QLatin1String("fakeRemoteId"));
+    Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(Akonadi::Item::List() << fakeItem, this);
+    fetch->setCollection(allMailCol);
+    fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::None);
+    fetch->fetchScope().setCacheOnly(true);
+    fetch->fetchScope().setIgnoreRetrievalErrors(true);
 
     Akonadi::LinkJob *linkJob = new Akonadi::LinkJob(collection, items, this);
     linkJob->setProperty("Collection", QVariant::fromValue(collection));
