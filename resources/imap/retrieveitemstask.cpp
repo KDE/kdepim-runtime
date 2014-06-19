@@ -524,7 +524,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
       }
   }
 
-  m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), set, scope, 50 * batchSize(), m_session);
+  m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), set, scope, 10 * batchSize(), m_session);
   m_batchFetcher->setUidBased(m_uidBasedFetch);
   if (m_uidBasedFetch && scope.changedSince == 0 && set.intervals().size() == 1) {
       m_batchFetcher->setSearchTerm(KIMAP::Term(KIMAP::Term::Uid, set));
