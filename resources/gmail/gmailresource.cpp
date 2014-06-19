@@ -24,7 +24,6 @@
 #include "gmailpasswordrequester.h"
 #include "gmailconfigdialog.h"
 #include "gmailsettings.h"
-#include "gmailspecialcollectionstask.h"
 
 #include <KLocalizedString>
 #include <KWindowSystem>
@@ -62,8 +61,8 @@ QString GmailResource::defaultName() const
 KDialog *GmailResource::createConfigureDialog(WId windowId)
 {
     GmailConfigDialog *dlg = new GmailConfigDialog(this, windowId);
-    KWindowSystem::setMainWindow( dlg, windowId );
-    dlg->setWindowIcon( KIcon( QLatin1String("network-server") ) );
+    KWindowSystem::setMainWindow(dlg, windowId);
+    dlg->setWindowIcon(KIcon(QLatin1String("network-server")));
     connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
     return dlg;
 }
@@ -92,20 +91,9 @@ void GmailResource::retrieveCollections()
     emit status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
 
     ResourceTask *task = new GmailRetrieveCollectionsTask(createResourceState(TaskArguments()), this);
-    connect(task, SIGNAL(destroyed(QObject*)),
-            this, SLOT(onRetrieveCollectionsDone()));
     task->start(m_pool);
     queueTask(task);
 }
-
-void GmailResource::onRetrieveCollectionsDone()
-{
-    // FIXME: This does not really seem to do what I want it to do...
-    GmailSpecialCollectionsTask *task = new GmailSpecialCollectionsTask(createResourceState(TaskArguments()), this);
-    task->start(m_pool);
-    queueTask(task);;
-}
-
 
 void GmailResource::retrieveItems(const Akonadi::Collection &col)
 {

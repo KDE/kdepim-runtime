@@ -26,7 +26,6 @@ set(gmailresource_SRCS
     gmailresourcestate.cpp
     gmailconfigdialog.cpp
     gmailsettings.cpp
-    gmailspecialcollectionstask.cpp
 )
 
 kde4_add_ui_files(gmailresource_SRCS gmailconfigdialog.ui)
