@@ -149,31 +149,33 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
 
 void GmailResource::linkItems(const QByteArray &collectionName, const QStringList &remoteIds)
 {
-    QString realCollectionName = GmailSettings::self()->accountName();
-
+    QString realCollectionName;
     if (collectionName == "\\Inbox") {
-        realCollectionName += QLatin1String("/INBOX");
+        realCollectionName = QLatin1String("/INBOX");
     } else if (collectionName == "\\Drafts" || collectionName == "\\Draft") {
-        realCollectionName += QLatin1String("/Drafts");
+        realCollectionName = QLatin1String("/Drafts");
     } else if (collectionName == "\\Important") {
-        realCollectionName += QLatin1String("/Important");
+        realCollectionName = QLatin1String("/Important");
     } else if (collectionName == "\\Sent") {
-        realCollectionName += QLatin1String("/Sent Mail");
+        realCollectionName = QLatin1String("/Sent Mail");
     } else if (collectionName == "\\Junk" || collectionName == "\\Spam") {
-        realCollectionName += QLatin1String("/Spam");
+        realCollectionName = QLatin1String("/Spam");
     } else if (collectionName == "\\Flagged" || collectionName == "\\Starred") {
-        realCollectionName += QLatin1String("/Starred");
+        realCollectionName = QLatin1String("/Starred");
     } else if (collectionName == "\\Trash") {
-        realCollectionName += QLatin1String("/Trash");
+        realCollectionName = QLatin1String("/Trash");
     } else if (collectionName[0] == '/') {
-        realCollectionName += QString::fromLatin1(collectionName);
+        realCollectionName = QString::fromLatin1(collectionName);
     } else {
-        realCollectionName += QLatin1Char('/') + QString::fromLatin1(collectionName);
+        realCollectionName = QLatin1Char('/') + QString::fromLatin1(collectionName);
     }
+
+    Akonadi::Collection rootCollection;
+    rootCollection.setRemoteId(GmailSettings::self()->rootRemoteId());
 
     kDebug() << "Looking for actual collection for" << realCollectionName << "(originally" << collectionName << ")";
     Akonadi::CollectionPathResolver *resolver
-        = new Akonadi::CollectionPathResolver(realCollectionName, this);
+        = new Akonadi::CollectionPathResolver(realCollectionName, rootCollection, this);
     resolver->setProperty("Items", QVariant::fromValue(remoteIds));
     resolver->setProperty("CollectionName", realCollectionName);
     connect(resolver, SIGNAL(finished(KJob*)),
