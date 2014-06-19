@@ -39,23 +39,6 @@ GmailRetrieveItemsTask::~GmailRetrieveItemsTask()
 
 }
 
-void GmailRetrieveItemsTask::linkItem(const Akonadi::Item &item, const QVector<QByteArray> &labels)
-{
-    kDebug() << item.remoteId() << ":" << labels;
-    Q_FOREACH (const QByteArray &label, labels) {
-        QStringList &RIDs = mToLink[label];
-        RIDs << item.remoteId();
-        /* TODO: Link items in batches to prevent ntf overload when linking
-         * thousands of items
-        if (RIDs.size() == 100) {
-            state->linkItems(label, RIDs);
-            RIDs.clear();
-        }
-        */
-    }
-}
-
-
 BatchFetcher *GmailRetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
                                                          const KIMAP::ImapSet &set,
                                                          const KIMAP::FetchJob::FetchScope &scope,
@@ -67,21 +50,7 @@ BatchFetcher *GmailRetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr mess
     gmailScope.fetchXGMMSGID = true;
     gmailScope.fetchXGMLabels = true;
     BatchFetcher *batchFetcher = new BatchFetcher(messageHelper, set, gmailScope, batchSize, session);
-    connect(batchFetcher, SIGNAL(result(KJob*)),
-            this, SLOT(onBatchFetcherFinished(KJob*)));
     return batchFetcher;
-}
-
-void GmailRetrieveItemsTask::onBatchFetcherFinished(KJob *job)
-{
-    // TODO: Error handling
-
-    Q_FOREACH (const QByteArray &colName, mToLink.keys()) {
-        kDebug() << colName;
-        ResourceStateInterface::Ptr stateIface = resourceState();
-        GmailResourceState *state = static_cast<GmailResourceState*>(stateIface.get());
-        state->linkItems(colName, mToLink[colName]);
-    }
 }
 
 bool GmailRetrieveItemsTask::serverSupportsCondstore() const

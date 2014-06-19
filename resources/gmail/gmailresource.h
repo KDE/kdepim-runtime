@@ -41,13 +41,9 @@ public:
     void linkItems(const QByteArray &collectionName, const QStringList &remoteIds);
 
 private Q_SLOTS:
-    void onLinkItemsCollectionResolved(KJob *job);
     void onConfigurationDone(int result);
-    void onLinkingFinished(KJob *job);
-
     void onRetrieveItemsCollectionRetrieved(KJob *job);
 
-    void onRetrieveCollectionsDone();
 private:
 };
 

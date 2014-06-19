@@ -33,8 +33,6 @@ public:
     void setCurrentTask(ResourceTask *task);
     ResourceTask *currentTask() const;
 
-    void linkItems(const QByteArray &collectionName, const QStringList &remoteIds);
-
 protected:
     virtual MessageHelper::Ptr messageHelper() const;
 

@@ -46,8 +46,3 @@ MessageHelper::Ptr GmailResourceState::messageHelper() const
     return MessageHelper::Ptr(new GmailMessageHelper(collection(),
                                                      qobject_cast<GmailRetrieveItemsTask*>(mTask)));
 }
-
-void GmailResourceState::linkItems(const QByteArray &collectionName, const QStringList &remoteIds)
-{
-    mResource->linkItems(collectionName, remoteIds);
-}

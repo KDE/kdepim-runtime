@@ -32,9 +32,10 @@ public:
     explicit GmailRetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
     ~GmailRetrieveItemsTask();
 
-    void linkItem(const Akonadi::Item &item, const QVector<QByteArray> &labels);
-
     virtual bool serverSupportsCondstore() const;
+
+Q_SIGNALS:
+    void linkItem(const QString &remoteId, const QVector<QByteArray> &labels);
 
 protected:
     BatchFetcher *createBatchFetcher(MessageHelper::Ptr messageHelper,
@@ -43,11 +44,9 @@ protected:
                                      int batchSize,
                                      KIMAP::Session *session);
 
-private Q_SLOTS:
-    void onBatchFetcherFinished(KJob *job);
-
 private:
-    QMap<QByteArray, QStringList /* remoteIDs */> mToLink;
+    // Allow GmailMessageHelper to emit linkItem() for us
+    friend class GmailMessageHelper;
 };
 
 #endif // GMAILRETRIEVEITEMSTASK_H

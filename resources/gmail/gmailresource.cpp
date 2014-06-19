@@ -24,6 +24,7 @@
 #include "gmailpasswordrequester.h"
 #include "gmailconfigdialog.h"
 #include "gmailsettings.h"
+#include "gmaillinkitemstask.h"
 
 #include <KLocalizedString>
 #include <KWindowSystem>
@@ -113,6 +114,9 @@ void GmailResource::retrieveItems(const Akonadi::Collection &col)
     GmailRetrieveItemsTask *task = new GmailRetrieveItemsTask(createResourceState(TaskArguments(col)), this);
     connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
     connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
+
+    new GmailLinkItemsTask(task, this);
+
     startTask(task);
     scheduleCustomTask(this, "triggerCollectionExtraInfoJobs", QVariant::fromValue(col), ResourceBase::Append);
 }
@@ -133,99 +137,6 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
 
     retrieveItems(fetch->collections().first());
 }
-
-
-void GmailResource::linkItems(const QByteArray &collectionName, const QStringList &remoteIds)
-{
-    QString realCollectionName;
-    if (collectionName == "\\Inbox") {
-        realCollectionName = QLatin1String("/INBOX");
-    } else if (collectionName == "\\Drafts" || collectionName == "\\Draft") {
-        realCollectionName = QLatin1String("/Drafts");
-    } else if (collectionName == "\\Important") {
-        realCollectionName = QLatin1String("/Important");
-    } else if (collectionName == "\\Sent") {
-        realCollectionName = QLatin1String("/Sent Mail");
-    } else if (collectionName == "\\Junk" || collectionName == "\\Spam") {
-        realCollectionName = QLatin1String("/Spam");
-    } else if (collectionName == "\\Flagged" || collectionName == "\\Starred") {
-        realCollectionName = QLatin1String("/Starred");
-    } else if (collectionName == "\\Trash") {
-        realCollectionName = QLatin1String("/Trash");
-    } else if (collectionName[0] == '/') {
-        realCollectionName = QString::fromLatin1(collectionName);
-    } else {
-        realCollectionName = QLatin1Char('/') + QString::fromLatin1(collectionName);
-    }
-
-    Akonadi::Collection rootCollection;
-    rootCollection.setRemoteId(GmailSettings::self()->rootRemoteId());
-
-    kDebug() << "Looking for actual collection for" << realCollectionName << "(originally" << collectionName << ")";
-    Akonadi::CollectionPathResolver *resolver
-        = new Akonadi::CollectionPathResolver(realCollectionName, rootCollection, this);
-    resolver->setProperty("Items", QVariant::fromValue(remoteIds));
-    resolver->setProperty("CollectionName", realCollectionName);
-    connect(resolver, SIGNAL(finished(KJob*)),
-            this, SLOT(onLinkItemsCollectionResolved(KJob*)));
-}
-
-void GmailResource::onLinkItemsCollectionResolved(KJob *job)
-{
-    Akonadi::CollectionPathResolver *resolver
-        = qobject_cast<Akonadi::CollectionPathResolver*>(job);
-    const QString collectionName = resolver->property("CollectionName").toString();
-    if (resolver->error() && resolver->collection() < 0) {
-        kWarning() << "Failed to resolve collection ID for path" << collectionName << ":" << resolver->errorString();
-        return;
-    }
-    const Akonadi::Collection collection(resolver->collection());
-    const QStringList remoteIds = resolver->property("Items").value<QStringList>();
-
-    kDebug() << "Linking" << remoteIds << "to" << collectionName << "(Collection" << collection.id() << ")";
-
-    Akonadi::Item::List items;
-    Q_FOREACH (const QString &remoteId, remoteIds) {
-        Akonadi::Item item;
-        item.setRemoteId(remoteId);
-        items << item;
-    }
-
-    // FIXME: This is a dirty hack to force Akonadi server to change connection
-    // context to "All Mail" collection, since we don't have access to
-    // CollectionSelectJob to do it ourselves.
-    //
-    // Previous syncs change to context to "Trash" or other collections, and the
-    // link job then fails to link any item because none exist in such context.
-    //
-    // This can be removed once we kill SELECT and persistent collection contexts.
-    Akonadi::Collection allMailCol;
-    allMailCol.setRemoteId(QLatin1String("/[Gmail]/All Mail"));
-    Akonadi::Item fakeItem;
-    fakeItem.setRemoteId(QLatin1String("fakeRemoteId"));
-    Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(Akonadi::Item::List() << fakeItem, this);
-    fetch->setCollection(allMailCol);
-    fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::None);
-    fetch->fetchScope().setCacheOnly(true);
-    fetch->fetchScope().setIgnoreRetrievalErrors(true);
-
-    Akonadi::LinkJob *linkJob = new Akonadi::LinkJob(collection, items, this);
-    linkJob->setProperty("Collection", QVariant::fromValue(collection));
-    connect(linkJob, SIGNAL(finished(KJob*)),
-            this, SLOT(onLinkingFinished(KJob*)));
-}
-
-void GmailResource::onLinkingFinished(KJob *job)
-{
-    const Akonadi::Collection collection = job->property("Collection").value<Akonadi::Collection>();
-    if (job->error()) {
-        kWarning() << "Error while linking items to collection" << collection.name() << "(ID" << collection.id() << ")";
-        kWarning() << "Error was: " << job->errorString();
-    } else {
-        kDebug() << "Successfully linked items to" << collection.name() << "(ID" << collection.id() << ")";
-    }
-}
-
 
 
 AKONADI_RESOURCE_MAIN(GmailResource)

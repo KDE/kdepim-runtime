@@ -93,7 +93,7 @@ Akonadi::Item GmailMessageHelper::createItemFromMessage(KMime::Message::Ptr mess
                if (!labels.isEmpty()) {
                   GmailRetrieveItemsTask *task = qobject_cast<GmailRetrieveItemsTask*>(mTask);
                   Q_ASSERT(task);
-                  task->linkItem(item, labels);
+                  task->linkItem(item.remoteId(), labels);
                }
           }
         } else if (attr.first == "X-GM-THRID") {
