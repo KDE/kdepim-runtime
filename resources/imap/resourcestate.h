@@ -25,7 +25,7 @@
 #include "resourcestateinterface.h"
 #include "messagehelper.h"
 
-class ImapResource;
+class ImapResourceBase;
 
 struct TaskArguments {
     TaskArguments(){}
@@ -52,7 +52,7 @@ struct TaskArguments {
 class ResourceState : public ResourceStateInterface
 {
 public:
-  explicit ResourceState( ImapResource *resource, const TaskArguments &arguments );
+  explicit ResourceState( ImapResourceBase *resource, const TaskArguments &arguments );
 
 public:
   ~ResourceState();
@@ -130,7 +130,7 @@ public:
   virtual MessageHelper::Ptr messageHelper() const;
 
 private:
-  ImapResource *m_resource;
+  ImapResourceBase *m_resource;
   const TaskArguments m_arguments;
 };
 

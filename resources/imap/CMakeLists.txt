@@ -24,6 +24,7 @@ set( imapresource_LIB_SRCS
   highestmodseqattribute.cpp
   imapaccount.cpp
   imapflags.cpp
+  imapresourcebase.cpp
   messagehelper.cpp
   movecollectiontask.cpp
   moveitemstask.cpp
@@ -46,6 +47,12 @@ set( imapresource_LIB_SRCS
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
+
+qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
+qt4_add_dbus_adaptor( imapresource_LIB_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
+        imapresourcebase.h ImapResourceBase
+     )
 
 kde4_add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
@@ -80,11 +87,6 @@ kde4_add_ui_files(akonadi_imap_resource_SRCS serverinfo.ui)
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 qt4_add_dbus_adaptor( akonadi_imap_resource_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
-     )
-qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
-qt4_add_dbus_adaptor( akonadi_imap_resource_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
-        imapresource.h ImapResource
      )
 kde4_add_kcfg_files(akonadi_imap_resource_SRCS settingsbase.kcfgc)
 

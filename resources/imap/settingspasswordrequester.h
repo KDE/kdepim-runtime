@@ -25,14 +25,14 @@
 #include <passwordrequesterinterface.h>
 #include <KDialog>
 
-class ImapResource;
+class ImapResourceBase;
 
 class SettingsPasswordRequester : public PasswordRequesterInterface
 {
   Q_OBJECT
 
 public:
-  explicit SettingsPasswordRequester( ImapResource *resource, QObject *parent = 0 );
+  explicit SettingsPasswordRequester( ImapResourceBase *resource, QObject *parent = 0 );
   virtual ~SettingsPasswordRequester();
 
   virtual void requestPassword( RequestType request = StandardRequest,
@@ -47,7 +47,7 @@ private slots:
   void onSettingsDialogFinished(int result);
 
 private:
-  ImapResource *m_resource;
+  ImapResourceBase *m_resource;
   KDialog *m_requestDialog;
   KDialog *m_settingsDialog;
 };

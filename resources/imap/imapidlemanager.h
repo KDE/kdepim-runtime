@@ -39,7 +39,7 @@ namespace KIMAP
   class Session;
 }
 
-class ImapResource;
+class ImapResourceBase;
 class SessionPool;
 
 class KJob;
@@ -49,7 +49,7 @@ class ImapIdleManager : public QObject
   Q_OBJECT
 
 public:
-  ImapIdleManager( ResourceStateInterface::Ptr state, SessionPool *pool, ImapResource *parent );
+  ImapIdleManager( ResourceStateInterface::Ptr state, SessionPool *pool, ImapResourceBase *parent );
   ~ImapIdleManager();
   void stop();
 
@@ -73,7 +73,7 @@ private:
   SessionPool *m_pool;
   KIMAP::Session *m_session;
   QPointer<KIMAP::IdleJob> m_idle;
-  ImapResource *m_resource;
+  ImapResourceBase *m_resource;
   ResourceStateInterface::Ptr m_state;
   qint64 m_lastMessageCount;
   qint64 m_lastRecentCount;

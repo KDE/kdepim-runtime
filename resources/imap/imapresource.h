@@ -23,144 +23,27 @@
     02110-1301, USA.
 */
 
-#ifndef RESOURCES_IMAP_IMAPRESOURCE_H
-#define RESOURCES_IMAP_IMAPRESOURCE_H
+#ifndef IMAPRESOURCE_H
+#define IMAPRESOURCE_H
 
-#include <akonadi/resourcebase.h>
-#include <akonadi/agentsearchinterface.h>
-#include <KDialog>
-#include <QPointer>
-#include "resourcestateinterface.h"
-#include "resourcestate.h"
+#include <imapresourcebase.h>
 
-class QTimer;
-
-class ResourceTask;
-namespace KIMAP
+class ImapResource : public ImapResourceBase
 {
-  class Session;
-}
-
-class ImapIdleManager;
-class SessionPool;
-class ResourceState;
-class SubscriptionDialog;
-
-class ImapResource : public Akonadi::ResourceBase,
-                     public Akonadi::AgentBase::ObserverV3,
-                     public Akonadi::AgentSearchInterface
-{
-  Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
-protected:
-  using Akonadi::AgentBase::Observer::collectionChanged;
+    Q_OBJECT
+    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
 
 public:
-  explicit ImapResource( const QString &id );
-  ~ImapResource();
+    explicit ImapResource( const QString &id );
+    virtual ~ImapResource();
 
-
-  KDialog *createConfigureDialog( WId windowId );
-  QStringList serverCapabilities() const;
-
-public Q_SLOTS:
-  virtual void configure( WId windowId );
-
-  // DBus methods
-  Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
-  Q_SCRIPTABLE int configureSubscription( qlonglong windowId = 0 );
-
-  // pseudo-virtual called by ResourceBase
-  QString dumpResourceToString() const;
-
-protected Q_SLOTS:
-  void startIdleIfNeeded();
-  void startIdle();
-
-  void abortActivity();
-
-  virtual void retrieveCollections();
-
-  virtual void retrieveItems( const Akonadi::Collection &col );
-  virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual KDialog *createConfigureDialog ( WId windowId );
 
 protected:
-  virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-  virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-  virtual void itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags );
-  virtual void itemsRemoved( const Akonadi::Item::List &items );
-  virtual void itemsMoved( const Akonadi::Item::List &item, const Akonadi::Collection &source,
-                           const Akonadi::Collection &destination );
-
-
-  virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-  virtual void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &parts );
-  virtual void collectionRemoved( const Akonadi::Collection &collection );
-  virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
-                                const Akonadi::Collection &destination );
-
-  virtual void addSearch( const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection );
-  virtual void removeSearch( const Akonadi::Collection &resultCollection );
-  virtual void search( const QString &query, const Akonadi::Collection &collection );
-
-  virtual void doSetOnline(bool online);
-
-  QChar separatorCharacter() const;
-  void setSeparatorCharacter( const QChar &separator );
-
-  virtual void aboutToQuit();
-
-  virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
-  virtual QString defaultName();
+    virtual QString defaultName() const;
 
 private Q_SLOTS:
-  void doSearch( const QVariant &arg );
-
-  void reconnect();
-
-  void scheduleConnectionAttempt();
-  void startConnect( const QVariant & ); // the parameter is necessary, since this method is used by the task scheduler
-  void onConnectDone( int errorCode, const QString &errorMessage );
-  void onConnectionLost( KIMAP::Session *session );
-
-
-  void onIdleCollectionFetchDone( KJob *job );
-  void onItemRetrievalCollectionFetchDone( KJob *job );
-  void onMetadataCollectionFetchDone( KJob *job );
-
-  void onExpungeCollectionFetchDone( KJob *job );
-  void triggerCollectionExpunge( const QVariant &collectionVariant );
-
-
-  void triggerCollectionExtraInfoJobs( const QVariant &collection );
-
-  void taskDestroyed( QObject *task );
-
-  void showError( const QString &message );
-  void clearStatusMessage();
-
-  void onConfigurationDone( int result );
-  void onCollectionModifyDone( KJob *job );
-
-protected:
-  //Starts and queues a task
-  void startTask( ResourceTask *task );
-  void queueTask( ResourceTask *task );
-  SessionPool *m_pool;
-
-private:
-  friend class ResourceState;
-
-  bool needsNetwork() const;
-  void modifyCollection(const Akonadi::Collection &);
-
-  friend class ImapIdleManager;
-
-  QList<ResourceTask*> m_taskList; //used to be able to kill tasks
-  QPointer<SubscriptionDialog> mSubscriptions;
-  ImapIdleManager *m_idle;
-  QTimer *m_statusMessageTimer;
-  QChar m_separatorCharacter;
+    void onConfigurationDone( int result );
 };
 
-#endif
+#endif // IMAPRESOURCE_H
