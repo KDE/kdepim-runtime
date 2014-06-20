@@ -98,7 +98,6 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
             c.setParentCollection(parentCollection);
             c.setContentMimeTypes(contentTypes);
             c.setVirtual(true); // All collections are virtual
-            c.setLocalListPreference(Akonadi::Collection::ListSync, Akonadi::Collection::ListDisabled);
             c.setRights(Akonadi::Collection::CanChangeCollection |
                         Akonadi::Collection::CanDeleteCollection |
                         Akonadi::Collection::CanCreateCollection |

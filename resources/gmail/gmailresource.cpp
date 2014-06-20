@@ -104,9 +104,15 @@ void GmailResource::retrieveCollections()
 void GmailResource::retrieveItems(const Akonadi::Collection &col)
 {
     kDebug() << col.id() << col.remoteId() << col.name();
+    // We can't sync the virtual collections - instead we get ID of "All Mail" and
+    // we schedule it's sync
+    //
+    // TODO: Don't resync the All Mail collections X times in a row for each virtual
+    // collection, instead uset a timer or something
     if (col.isVirtual()) {
         Akonadi::Collection allMailCol;
         allMailCol.setRemoteId(QLatin1String("/[Gmail]/All Mail"));
+
         Akonadi::CollectionFetchJob *fetch
             = new Akonadi::CollectionFetchJob(allMailCol, Akonadi::CollectionFetchJob::Base, this);
         connect(fetch, SIGNAL(finished(KJob*)),
@@ -140,7 +146,9 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
         return;
     }
 
-    retrieveItems(fetch->collections().first());
+    synchronizeCollection(fetch->collections().first().id());
+
+    itemsRetrievalDone();
 }
 
 void GmailResource::itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
