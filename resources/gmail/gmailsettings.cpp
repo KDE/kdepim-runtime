@@ -70,6 +70,7 @@ Settings *Settings::self()
 Settings::Settings(WId winId)
     : SettingsBase()
     , mWinId(winId)
+    , mActiveAuthJob(0)
 {
     Q_ASSERT( !s_globalSettings->q );
     s_globalSettings->q = this;
@@ -134,9 +135,14 @@ void Settings::requestAccount(bool authenticate)
     }
 
     if (authenticate) {
+        if (mActiveAuthJob) {
+            return;
+        }
+
         KGAPI2::AuthJob *authJob = new KGAPI2::AuthJob(mAccount, apiKey(), secretKey(), this);
         connect(authJob, SIGNAL(finished(KGAPI2::Job*)),
                 this, SLOT(onAuthFinished(KGAPI2::Job*)));
+        mActiveAuthJob = authJob;
     } else {
         Q_EMIT accountRequestCompleted(mAccount, false);
     }
@@ -144,6 +150,8 @@ void Settings::requestAccount(bool authenticate)
 
 void Settings::onAuthFinished(KGAPI2::Job *job)
 {
+    mActiveAuthJob = 0;
+
     if (job->error()) {
         Q_EMIT accountRequestCompleted(KGAPI2::AccountPtr(), job->error() == KGAPI2::AuthCancelled);
         return;

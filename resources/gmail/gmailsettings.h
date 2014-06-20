@@ -26,6 +26,7 @@
 
 namespace KGAPI2 {
 class Job;
+class AuthJob;
 }
 
 class ImapAccount;
@@ -85,6 +86,7 @@ private slots:
 private:
     WId mWinId;
     mutable KGAPI2::AccountPtr mAccount;
+    KGAPI2::AuthJob *mActiveAuthJob;
 
 };
 
