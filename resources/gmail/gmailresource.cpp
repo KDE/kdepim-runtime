@@ -126,7 +126,8 @@ void GmailResource::retrieveItems(const Akonadi::Collection &col)
     connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
     connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
 
-    new GmailLinkItemsTask(task, this);
+    GmailLinkItemsTask *linkTask = new GmailLinkItemsTask(task, this);
+    connect(linkTask, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
 
     startTask(task);
     scheduleCustomTask(this, "triggerCollectionExtraInfoJobs", QVariant::fromValue(col), ResourceBase::Append);

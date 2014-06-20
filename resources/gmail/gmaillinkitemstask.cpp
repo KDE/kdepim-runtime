@@ -22,11 +22,14 @@
 #include "gmailsettings.h"
 
 #include <akonadi/collectionpathresolver_p.h>
+#include <Akonadi/AgentBase>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/LinkJob>
 #include <Akonadi/UnlinkJob>
+
+#include <KLocalizedString>
 
 #define LABEL_PROPERTY "LabelProperty"
 #define COLLECTION_NAME_PROPERTY "CollectionNameProperty"
@@ -49,6 +52,7 @@ GmailLinkItemsTask::~GmailLinkItemsTask()
 void GmailLinkItemsTask::emitDone()
 {
     Q_EMIT done();
+    Q_EMIT status(Akonadi::AgentBase::Idle);
     deleteLater();
 }
 
@@ -66,6 +70,7 @@ void GmailLinkItemsTask::linkItem(const QString &remoteId, const QVector<QByteAr
 
 void GmailLinkItemsTask::onRetrievalDone()
 {
+    Q_EMIT status(Akonadi::AgentBase::Running, i18n("Linking emails to labels"));
     if (!mLabels.isEmpty()) {
         resolveNextLabel();
     } else {

@@ -38,6 +38,7 @@ public:
 
 Q_SIGNALS:
     void done();
+    void status(int status, const QString &message = QString());
 
 private Q_SLOTS:
     void linkItem(const QString &remoteId, const QVector<QByteArray> &labels);
