@@ -114,7 +114,6 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                 Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Inbox"));
                 attr->setIconName(QLatin1String("mail-folder-inbox"));
-                setIdleCollection(c);
             }
 
             // "All Mail", "Trash" and "Spam" are the only non-virtual collections
@@ -127,12 +126,16 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                 c.setRemoteId(currentPath);
                 c.setLocalListPreference(Akonadi::Collection::ListSync, Akonadi::Collection::ListDefault);
 
-                // Hide "All mail" collection
+                // Hide "All mail" collection and mark it as IDLE
                 if (currentFlags.contains("\\all")) {
                     c.setEnabled(false);
                     c.setLocalListPreference(Akonadi::Collection::ListDisplay, Akonadi::Collection::ListDisabled);
                     c.setLocalListPreference(Akonadi::Collection::ListIndex, Akonadi::Collection::ListDisabled);
                     c.setLocalListPreference(Akonadi::Collection::ListSync, Akonadi::Collection::ListEnabled);
+
+                    // This mean that we will automatically pick up changes in
+                    // all labels - YAY!
+                    setIdleCollection(c);
                 }
                 c.setRights(Akonadi::Collection::CanCreateItem |
                             Akonadi::Collection::CanChangeItem |
