@@ -81,6 +81,8 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
 
     readSettings();
     slotComplete();
+    slotSubcriptionCheckboxChanged();
+    slotIdentityCheckboxChanged();
 
     connect(this, SIGNAL(applyClicked()),
             this, SLOT(applySettings()) );
