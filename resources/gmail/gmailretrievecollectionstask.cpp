@@ -49,7 +49,7 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
     attr->setDisplayName(rootCollection.name());
 
     QStringList contentTypes;
-    contentTypes << KMime::Message::mimeType() << Akonadi::Collection::mimeType();
+    contentTypes << KMime::Message::mimeType();
 
     for (int i = 0, dscCnt = descriptors.size(); i < dscCnt; ++i) {
         const KIMAP::MailBoxDescriptor descriptor = descriptors[i];
@@ -107,7 +107,6 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                         Akonadi::Collection::CanChangeItem);
 
             Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
-            // TODO: Enable before release
             attr->setIconName(QLatin1String("folder"));
             attr->setDisplayName(pathPart);
 
@@ -117,14 +116,6 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                 attr->setDisplayName(i18n("Inbox"));
                 attr->setIconName(QLatin1String("mail-folder-inbox"));
                 setIdleCollection(c);
-            }
-
-            // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
-            // FIXME: Does Gmail actally support this?
-            if (currentPath == (separatorCharacter() + QLatin1String("user")) && currentFlags.contains("\\noselect")) {
-                Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
-                attr->setDisplayName( i18n( "Shared Folders" ) );
-                attr->setIconName( QLatin1String("x-mail-distribution-list") );
             }
 
             // "All Mail", "Trash" and "Spam" are the only non-virtual collections
@@ -168,8 +159,9 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
             }
 
             kDebug() << currentPath << currentFlags;
-            // Special treating of Gmail system collections
-            if (currentFlags.contains("\\drafts") ||
+            // Special treating of Gmail system collections (and INBOX)
+            if (currentPath == QLatin1String("/INBOX") ||
+                currentFlags.contains("\\drafts") ||
                 currentFlags.contains("\\important") ||
                 currentFlags.contains("\\sent") ||
                 currentFlags.contains("\\flagged"))
@@ -208,6 +200,13 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                 // For non-gmail flags, store the actual path without opening "/",
                 // which is actually Gmail label
                 c.addAttribute(new GmailLabelAttribute(currentPath.mid(1).toUtf8()));
+            }
+
+            // Add special mimetype to non-system virtual collections to allow
+            // creating subfolders
+            if (c.isVirtual() && c.rights() & Akonadi::Collection::CanCreateCollection) {
+                c.setContentMimeTypes(c.contentMimeTypes()
+                                      << Akonadi::Collection::virtualMimeType());
             }
 
             m_reportedCollections.insert(currentPath, c);
