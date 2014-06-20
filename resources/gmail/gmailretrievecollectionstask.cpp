@@ -18,6 +18,7 @@
  */
 
 #include "gmailretrievecollectionstask.h"
+#include "gmaillabelattribute.h"
 
 #include <imap/noselectattribute.h>
 #include <imap/noinferiorsattribute.h>
@@ -168,10 +169,10 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
 
             kDebug() << currentPath << currentFlags;
             // Special treating of Gmail system collections
-            if (currentFlags.contains( "\\drafts" ) ||
-                currentFlags.contains( "\\important" ) ||
-                currentFlags.contains( "\\sent" ) ||
-                currentFlags.contains( "\\flagged" ))
+            if (currentFlags.contains("\\drafts") ||
+                currentFlags.contains("\\important") ||
+                currentFlags.contains("\\sent") ||
+                currentFlags.contains("\\flagged"))
             {
                 // Keep [Gmail] in remoteID, so that we can reference them correctly
                 // even though they have different parent in Akonadi
@@ -183,6 +184,30 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                 c.setRights( c.rights() & ~Akonadi::Collection::CanDeleteCollection
                                         & ~Akonadi::Collection::CanChangeCollection
                                         & ~Akonadi::Collection::CanCreateCollection );
+            }
+
+            // I am the king of non-generic code!
+            if (currentFlags.contains("\\inbox") || pathPart == QLatin1String("INBOX")) {
+                c.addAttribute(new GmailLabelAttribute("\\Inbox"));
+            } else if (currentFlags.contains("\\drafts")) {
+                // This is not a typo, they actually use "\Draft" in X-GM-LABEL
+                c.addAttribute(new GmailLabelAttribute("\\Draft"));
+            } else if (currentFlags.contains("\\important")) {
+                c.addAttribute(new GmailLabelAttribute("\\Important"));
+            } else if (currentFlags.contains("\\sent")) {
+                c.addAttribute(new GmailLabelAttribute("\\Sent"));
+            } else if (currentFlags.contains("\\junk")) {
+                c.addAttribute(new GmailLabelAttribute("\\Junk"));
+            } else if (currentFlags.contains("\\flagged")) {
+                c.addAttribute(new GmailLabelAttribute("\\Flagged"));
+            } else if (currentFlags.contains("\\trash")) {
+                c.addAttribute(new GmailLabelAttribute("\\trash"));
+            } else if (currentFlags.contains("\\all")) {
+                // Ignore
+            } else {
+                // For non-gmail flags, store the actual path without opening "/",
+                // which is actually Gmail label
+                c.addAttribute(new GmailLabelAttribute(currentPath.mid(1).toUtf8()));
             }
 
             m_reportedCollections.insert(currentPath, c);

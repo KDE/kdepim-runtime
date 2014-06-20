@@ -25,6 +25,8 @@
 #include "gmailconfigdialog.h"
 #include "gmailsettings.h"
 #include "gmaillinkitemstask.h"
+#include "gmaillabelattribute.h"
+#include "gmailchangeitemslabelstask.h"
 
 #include <KLocalizedString>
 #include <KWindowSystem>
@@ -34,6 +36,7 @@
 #include <akonadi/collectionpathresolver_p.h>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
+#include <Akonadi/AttributeFactory>
 
 #include <imap/sessionpool.h>
 #include <imap/sessionuiproxy.h>
@@ -48,6 +51,8 @@ GmailResource::GmailResource(const QString &id):
 
     m_pool->setPasswordRequester(new GmailPasswordRequester(m_pool));
     m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
+
+    Akonadi::AttributeFactory::registerAttribute<GmailLabelAttribute>();
 }
 
 GmailResource::~GmailResource()
@@ -138,5 +143,32 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
     retrieveItems(fetch->collections().first());
 }
 
+void GmailResource::itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
+{
+    if (!collection.hasAttribute<GmailLabelAttribute>()) {
+        kWarning() << "Collection is missing GmailLabelAttribute! IMPOSSIBRU!";
+        cancelTask();
+        return;
+    }
+
+    const QByteArray label = collection.attribute<GmailLabelAttribute>()->label();
+    TaskArguments args(items, QSet<QByteArray>() << label, QSet<QByteArray>());
+    GmailChangeItemsLabelsTask *task = new GmailChangeItemsLabelsTask(createResourceState(args), this);
+    startTask(task);
+}
+
+void GmailResource::itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
+{
+    if (!collection.hasAttribute<GmailLabelAttribute>()) {
+        kWarning() << "Collection is missing GmailLabelAttribute! IMPOSSIBRU!";
+        cancelTask();
+        return;
+    }
+
+    const QByteArray label = collection.attribute<GmailLabelAttribute>()->label();
+    TaskArguments args(items, QSet<QByteArray>(), QSet<QByteArray>() << label);
+    GmailChangeItemsLabelsTask *task = new GmailChangeItemsLabelsTask(createResourceState(args), this);
+    startTask(task);
+}
 
 AKONADI_RESOURCE_MAIN(GmailResource)

@@ -27,6 +27,8 @@ set(gmailresource_SRCS
     gmailconfigdialog.cpp
     gmailsettings.cpp
     gmaillinkitemstask.cpp
+    gmaillabelattribute.cpp
+    gmailchangeitemslabelstask.cpp
 )
 
 kde4_add_ui_files(gmailresource_SRCS gmailconfigdialog.ui)

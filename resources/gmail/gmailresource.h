@@ -22,9 +22,13 @@
 
 #include <imap/imapresourcebase.h>
 
+#include <Akonadi/AgentBase>
+
 class GmailResource : public ImapResourceBase
 {
     Q_OBJECT
+
+    using Akonadi::AgentBase::ObserverV3;
 
 public:
     explicit GmailResource(const QString &id);
@@ -38,7 +42,8 @@ public:
     void retrieveCollections();
     void retrieveItems(const Akonadi::Collection &col);
 
-    void linkItems(const QByteArray &collectionName, const QStringList &remoteIds);
+    void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection);
+    void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection);
 
 private Q_SLOTS:
     void onConfigurationDone(int result);
