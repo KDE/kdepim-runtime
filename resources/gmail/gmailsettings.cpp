@@ -139,6 +139,11 @@ void Settings::requestAccount(bool authenticate)
             return;
         }
 
+        if (!mAccount) {
+            mAccount = KGAPI2::AccountPtr(new KGAPI2::Account());
+            mAccount->addScope(QUrl(QLatin1String("https://mail.google.com")));
+        }
+
         KGAPI2::AuthJob *authJob = new KGAPI2::AuthJob(mAccount, apiKey(), secretKey(), this);
         connect(authJob, SIGNAL(finished(KGAPI2::Job*)),
                 this, SLOT(onAuthFinished(KGAPI2::Job*)));

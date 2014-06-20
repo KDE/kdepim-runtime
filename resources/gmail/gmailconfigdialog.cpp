@@ -225,7 +225,10 @@ void GmailConfigDialog::slotManageSubscriptions()
 
 void GmailConfigDialog::slotAuthenticate()
 {
+    GmailSettings::self()->clearCachedPassword();
+    GmailSettings::self()->storeAccount(KGAPI2::AccountPtr());
     GmailSettings::self()->requestAccount(true);
+    m_shouldClearCache = true;
 }
 
 void GmailConfigDialog::onAccountRequestCompleted(const KGAPI2::AccountPtr &account, bool userRejected)
