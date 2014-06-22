@@ -28,7 +28,7 @@
     </spacer>
    </item>
    <item row="2" column="1">
-    <widget class="KPushButton" name="removeButton">
+    <widget class="QPushButton" name="removeButton">
      <property name="whatsThis">
       <string>Remove resource from your Akonadi server.</string>
      </property>
@@ -43,7 +43,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="KPushButton" name="editButton">
+    <widget class="QPushButton" name="editButton">
      <property name="whatsThis">
       <string>Modify your installed resources</string>
      </property>
@@ -58,7 +58,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="KPushButton" name="addButton">
+    <widget class="QPushButton" name="addButton">
      <property name="whatsThis">
       <string>Add resource to your Akonadi server.</string>
      </property>
@@ -85,11 +85,6 @@
    <class>KFilterProxySearchLine</class>
    <extends>QWidget</extends>
    <header>kfilterproxysearchline.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
   </customwidget>
   <customwidget>
    <class>Akonadi::AgentInstanceWidget</class>
