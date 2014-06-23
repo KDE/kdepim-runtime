@@ -181,7 +181,7 @@ void SpecialNotifierJob::slotOpenMail()
     if (!reply.isValid() || !reply.value()) {
         // Program is not already running, so start it
         QString errmsg;
-        if (KToolInvocation::startServiceByDesktopName(QLatin1String("kmail"), QString(), &errmsg)) {
+        if (KToolInvocation::startServiceByDesktopName(QLatin1String("kmail2"), QString(), &errmsg)) {
             qDebug()<<" Can not start kmail"<<errmsg;
             return;
         }
