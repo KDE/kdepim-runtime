@@ -391,7 +391,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
         Collection collection;
         collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
-        collection.setName( group->title() );
+        collection.setName( group->id() );
         collection.setParentCollection( m_rootCollection );
         collection.setRights( Collection::CanLinkItem |
                               Collection::CanUnlinkItem |
