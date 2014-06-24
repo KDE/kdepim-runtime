@@ -20,7 +20,6 @@
 #include "akonadi_serializer_bookmark.h"
 
 #include <QtCore/qplugin.h>
-#include <QDebug>
 #include <QMimeData>
 #include <kbookmark.h>
 
