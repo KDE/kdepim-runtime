@@ -36,14 +36,11 @@
 #include <knotifyconfigwidget.h>
 #include <KDebug>
 #include <KIcon>
-#include <KIconLoader>
 #include <KLocalizedString>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
-#include <KWindowSystem>
 #include <KLocale>
-#include <KGlobal>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
@@ -53,7 +50,6 @@ extern bool ___MailTransport____INIT();
 #endif
 
 #ifdef MAIL_SERIALIZER_PLUGIN_STATIC
-#include <QtPlugin>
 
 Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 #endif

@@ -23,7 +23,6 @@
 // Qt
 #include <QDebug>
 #include <QTcpServer>
-#include <QtTest>
 
 // KDE
 #include <KDebug>

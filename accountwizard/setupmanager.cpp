@@ -27,7 +27,6 @@
 
 #include <kemailsettings.h>
 #include <kwallet.h>
-#include <KGlobal>
 #include <KLocale>
 
 SetupManager::SetupManager( QWidget* parent) :

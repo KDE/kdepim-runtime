@@ -37,7 +37,6 @@
 // KDELIBS includes
 #include <KEMailSettings>
 #include <KMessageBox>
-#include <KProtocolInfo>
 #include <KUser>
 #include <KWindowSystem>
 #include <kwallet.h>

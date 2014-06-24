@@ -47,10 +47,6 @@
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
-#include <KNotifyConfigWidget>
-#include <KIconLoader>
-#include <KIcon>
-#include <KConfigGroup>
 #include <KLocalizedString>
 #include <KWindowSystem>
 #include <KDebug>

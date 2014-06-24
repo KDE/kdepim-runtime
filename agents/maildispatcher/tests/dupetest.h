@@ -21,7 +21,6 @@
 #define DUPETEST_H
 
 #include <QtCore/QObject>
-#include <QList>
 
 #include <Akonadi/Collection>
 #include <AkonadiCore/Monitor>

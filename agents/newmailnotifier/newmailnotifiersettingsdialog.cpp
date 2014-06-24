@@ -30,18 +30,15 @@
 #include <KLineEdit>
 #include <KCheckableProxyModel>
 #include <QPushButton>
-#include <KMenu>
 #include <KHelpMenu>
 #include <k4aboutdata.h>
 #include <KIcon>
-#include <KGlobal>
 
 #include <QTabWidget>
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QDebug>
 #include <QWhatsThis>
 
 #include <AkonadiWidgets/CollectionView>

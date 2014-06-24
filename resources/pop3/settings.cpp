@@ -19,7 +19,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <KGlobal>
 #include <kwallet.h>
 #include <KDebug>
 

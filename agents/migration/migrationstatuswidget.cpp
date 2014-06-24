@@ -23,10 +23,8 @@
 #include "migrationscheduler.h"
 #include <QVBoxLayout>
 #include <QTreeView>
-#include <QStandardItemModel>
 #include <QAction>
 #include <QListView>
-#include <QApplication>
 #include <QLabel>
 #include <KToolBar>
 #include <KDebug>

@@ -28,7 +28,6 @@
 #include <AgentType>
 #include <KMime/Message>
 
-#include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 

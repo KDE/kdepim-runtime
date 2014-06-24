@@ -26,7 +26,6 @@
 #include <QObject>
 #include <QAbstractItemModel>
 #include <QSharedPointer>
-#include <QQueue>
 #include <QPointer>
 #include <QStandardItemModel>
 
