@@ -35,7 +35,8 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
     m_fetchedItemsInCurrentBatch(0),
     m_messageHelper(messageHelper),
     m_fetchInProgress(false),
-    m_continuationRequested(false)
+    m_continuationRequested(false),
+    m_gmailEnabled(false)
 {
 }
 
@@ -51,6 +52,11 @@ void BatchFetcher::setUidBased(bool uidBased)
 void BatchFetcher::setSearchTerm(const KIMAP::Term &searchTerm)
 {
     m_searchTerm = searchTerm;
+}
+
+void BatchFetcher::setGmailExtensionsEnabled(bool enable)
+{
+    m_gmailEnabled = enable;
 }
 
 void BatchFetcher::start()
@@ -131,6 +137,7 @@ void BatchFetcher::fetchNextBatch()
 
     fetch->setUidBased(m_uidBased);
     fetch->setScope(m_scope);
+    fetch->setGmailExtensionsEnabled(m_gmailEnabled);
     connect(fetch, SIGNAL(headersReceived(QString,
                                           QMap<qint64,qint64>,
                                           QMap<qint64,qint64>,

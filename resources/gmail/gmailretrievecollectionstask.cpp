@@ -103,6 +103,8 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                         Akonadi::Collection::CanCreateCollection |
                         Akonadi::Collection::CanLinkItem |
                         Akonadi::Collection::CanUnlinkItem |
+                        Akonadi::Collection::CanCreateItem |
+                        Akonadi::Collection::CanDeleteItem |
                         Akonadi::Collection::CanChangeItem);
 
             Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);

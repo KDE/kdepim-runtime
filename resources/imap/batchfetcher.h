@@ -44,6 +44,7 @@ public:
     void fetchNextBatch();
     void setUidBased(bool);
     void setSearchTerm(const KIMAP::Term &);
+    void setGmailExtensionsEnabled(bool enable);
 
 Q_SIGNALS:
     void itemsRetrieved(Akonadi::Item::List);
@@ -70,6 +71,7 @@ private:
     bool m_fetchInProgress;
     bool m_continuationRequested;
     KIMAP::Term m_searchTerm;
+    bool m_gmailEnabled;
 };
 
 

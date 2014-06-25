@@ -47,9 +47,8 @@ BatchFetcher *GmailRetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr mess
 {
     kDebug();
     KIMAP::FetchJob::FetchScope gmailScope = scope;
-    gmailScope.fetchXGMMSGID = true;
-    gmailScope.fetchXGMLabels = true;
     BatchFetcher *batchFetcher = new BatchFetcher(messageHelper, set, gmailScope, batchSize, session);
+    batchFetcher->setGmailExtensionsEnabled(true);
     return batchFetcher;
 }
 
