@@ -1,3 +1,4 @@
+kde_enable_exceptions()
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 set( nntpresource_SRCS
   nntpcollectionattribute.cpp
@@ -5,8 +6,6 @@ set( nntpresource_SRCS
   configdialog.cpp
   settings.cpp
 )
-
-kde_enable_exceptions()
 
 install( FILES nntpresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 

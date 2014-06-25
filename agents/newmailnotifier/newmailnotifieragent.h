@@ -87,7 +87,7 @@ protected:
     void itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags );
     void doSetOnline(bool online);
 
-private slots:
+private Q_SLOTS:
     void slotShowNotifications();
     void configure(WId windowId);
     void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);

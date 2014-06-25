@@ -2,11 +2,11 @@ kde_enable_exceptions()
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
-find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5NotifyConfig CONFIG REQUIRED)
 
 set(newmailnotifieragent_SRCS

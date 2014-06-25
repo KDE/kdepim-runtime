@@ -36,7 +36,7 @@ public:
   explicit AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~AddCollectionTask();
 
-private slots:
+private Q_SLOTS:
   void onCreateDone( KJob *job );
   void onSubscribeDone( KJob *job );
   void onSetMetaDataDone( KJob *job );

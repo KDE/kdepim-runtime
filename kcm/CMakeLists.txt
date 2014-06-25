@@ -3,7 +3,7 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kcmakonadi_BINARY_DIR}")
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kcmakonadi_SOURCE_DIR}")
   set(KDEPIMLIBS_LIB_VERSION "4.70.0")
   find_package(KF5KCMUtils ${KF5_VERSION} CONFIG REQUIRED)
   find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
@@ -43,7 +43,7 @@ install(FILES
   kcm_akonadi.desktop
   DESTINATION ${SERVICES_INSTALL_DIR})
 
-if ("${CMAKE_BINARY_DIR}" STREQUAL "${kcmakonadi_BINARY_DIR}")
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kcmakonadi_SOURCE_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 endif()
 

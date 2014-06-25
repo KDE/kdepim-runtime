@@ -12,17 +12,20 @@ kde_enable_exceptions()
 
 set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 
-find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Abc ${KF5_VERSION} CONFIG REQUIRED)
 find_package(Qt5DBus ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AlarmCalendar ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5CalendarCore ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5CalendarUtils ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5MicroBlog ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
+
+find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+
+
+find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Abc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AlarmCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5MicroBlog ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
 #REACTIVATE IT
 #set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )

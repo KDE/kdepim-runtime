@@ -2,7 +2,42 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(kdepim-runtime)
 
+############### KDEPIM-Runtime version ################
+# KDEPIM_RUNTIME_VERSION
+# Version scheme: "x.y.z build".
+#
+# x is the version number.
+# y is the major release number.
+# z is the minor release number.
+#
+# "x.y.z" follow the kdelibs version kdepim is released with.
+#
+# If "z" is 0, it the version is "x.y"
+#
+# KDEPIM_RUNTIME_DEV_VERSION
+# is empty for final versions. For development versions "build" is
+# something like "pre", "alpha1", "alpha2", "beta1", "beta2", "rc1", "rc2".
+#
+# Examples in chronological order:
+#
+#    3.0
+#    3.0.1
+#    3.1 alpha1
+#    3.1 beta1
+#    3.1 beta2
+#    3.1 rc1
+#    3.1
+#    3.1.1
+#    3.2 pre
+#    3.2 alpha1
 
+if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
+    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
+endif()
+
+set(KDEPIM_RUNTIME_VERSION "4.98${KDEPIM_RUNTIME_DEV_VERSION}")
+
+configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
 
 # we need some parts of the ECM CMake helpers
@@ -18,18 +53,18 @@ if (KDEPIMLIBS_SUPERBUILD)
 
 # use mkdir build && cd build && cmake -DKDEPIMLIBS_SUPERBUILD=TRUE ../ && make -j8 sb_all
 
-include(SuperBuild.cmake)
+  include(SuperBuild.cmake)
 
-sb_add_project(resources)
-sb_add_project(agents)
-#sb_add_project(plugins)
-sb_add_project(accountwizard)
-#sb_add_project(defaultsetup)
-#sb_add_project(resourcetester)
-sb_add_project(kioslave)
-#sb_add_project(kcm)
-#sb_add_project(migration)
-#sb_add_project(qml)
+  sb_add_project(resources)
+  sb_add_project(agents)
+  #sb_add_project(plugins)
+  sb_add_project(accountwizard)
+  #sb_add_project(defaultsetup)
+  #sb_add_project(resourcetester)
+  sb_add_project(kioslave)
+  #sb_add_project(kcm)
+  #sb_add_project(migration)
+  #sb_add_project(qml)
 
 sb_end()
 
@@ -40,7 +75,6 @@ set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PA
 
 include(GenerateExportHeader)
 include(ECMGenerateHeaders)
-include(ECMGeneratePriFile)
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(FeatureSummary)
@@ -48,7 +82,7 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
 
-set(KF5_VERSION "4.98.0")
+set(KF5_VERSION "4.100.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
 set(KDEPIM_LIB_VERSION "4.70.0")
@@ -57,6 +91,10 @@ set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test Declarative)
+
+# QT5 package
+find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+
 
 set(AkonadiServer_MIN_VERSION "1.70.41")
 find_package(Akonadi ${AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
@@ -67,6 +105,9 @@ find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
@@ -75,6 +116,14 @@ find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Abc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AlarmCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5MicroBlog ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
 
 
 #Boost

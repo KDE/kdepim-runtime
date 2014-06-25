@@ -15,31 +15,36 @@ include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
 include(ECMInstallIcons)
 
-set(KF5_VERSION "4.98.0")
-set(QT_REQUIRED_VERSION "5.2.0")
+#if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
+  set(KF5_VERSION "4.100.0")
+  set(QT_REQUIRED_VERSION "5.2.0")
 
-set(KDEPIMLIBS_LIB_VERSION "4.70.0")
+  set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 
-set(KDEPIM_LIB_VERSION "4.70.0")
-set(KDEPIM_LIB_SOVERSION "5")
+  set(KDEPIM_LIB_VERSION "4.70.0")
+  set(KDEPIM_LIB_SOVERSION "5")
 
-# QT5 package
-find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+  # QT5 package
+  find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
-# KF5 package
-find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+  # KF5 package
+  find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
+  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 
-# Kdepimlibs package
-find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Abc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  # Kdepimlibs package
+  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5Abc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+#endif()
+
+find_package(KF5Imap ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
 
 # Extra package
 find_package(KF5GAPI "4.98.0" CONFIG)

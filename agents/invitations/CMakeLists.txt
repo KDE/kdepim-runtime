@@ -1,13 +1,4 @@
 kde_enable_exceptions()
-set(KF5_VERSION "4.98.0")
-set(QT_REQUIRED_VERSION "5.2.0")
-
-find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5CalendarCore ${KF5_VERSION} CONFIG REQUIRED)
-
-
 
 set( invitationsagent_SRCS
   invitationsagent.cpp

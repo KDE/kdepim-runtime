@@ -6,7 +6,6 @@ set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
 include(GenerateExportHeader)
 include(ECMGenerateHeaders)
-include(ECMGeneratePriFile)
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(FeatureSummary)
@@ -15,12 +14,12 @@ include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
 
 set(KDEPIMLIBS_LIB_VERSION "4.70.0")
-set(KF5_VERSION "4.98.0")
+set(KF5_VERSION "4.100.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
 
 find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 

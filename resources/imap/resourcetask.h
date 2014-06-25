@@ -144,7 +144,7 @@ private:
 
   static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
 
-private slots:
+private Q_SLOTS:
   void onSessionRequested( qint64 requestId, KIMAP::Session *session,
                            int errorCode, const QString &errorString );
   void onConnectionLost( KIMAP::Session *session );

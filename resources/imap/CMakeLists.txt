@@ -5,9 +5,6 @@ if(IMAPRESOURCE_NO_SOLID)
   add_definitions( -DIMAPRESOURCE_NO_SOLID=1 )
 endif()
 
-find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Imap ${KF5_VERSION} CONFIG REQUIRED)
 
 ########### next target ###############
 
