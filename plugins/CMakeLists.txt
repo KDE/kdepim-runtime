@@ -10,6 +10,8 @@ include_directories(
 
 kde_enable_exceptions()
 
+set(KDEPIMLIBS_LIB_VERSION "4.70.0")
+
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)

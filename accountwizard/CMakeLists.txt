@@ -45,6 +45,7 @@ endif()
 # FIXME: Do we want the same versions in kdepimlibs and kf5?
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
+set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 ########### Find packages ###########
 find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)

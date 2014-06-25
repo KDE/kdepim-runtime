@@ -17,6 +17,7 @@ include(KDEFrameworkCompilerSettings)
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
+set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
