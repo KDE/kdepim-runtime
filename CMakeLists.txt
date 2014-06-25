@@ -73,7 +73,6 @@ else( KDEPIMLIBS_SUPERBUILD)
 find_package(ECM 0.0.14 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
-include(GenerateExportHeader)
 include(ECMGenerateHeaders)
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
