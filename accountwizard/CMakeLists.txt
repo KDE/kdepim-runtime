@@ -5,7 +5,6 @@ project(accountwizard)
 find_package(ECM 0.0.14 CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
-include(ECMGenerateHeaders)
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(FeatureSummary)

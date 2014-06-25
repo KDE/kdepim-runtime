@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 2.8.12)
 find_package(ECM 0.0.14 CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
-include(ECMGenerateHeaders)
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(FeatureSummary)
