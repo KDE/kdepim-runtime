@@ -47,16 +47,22 @@ set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 ########### Find packages ###########
+
+# KF5 package
 find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5PimUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5NewStuff ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5WidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Wallet ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5NewStuff ${KF5_VERSION} CONFIG REQUIRED)
+
+# KdepimLibs package
+find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
+# Qt5 package
 find_package(Qt5UiTools ${QT_REQUIRED_VERSION} CONFIG REQUIRED)
 
 set(accountwizard_srcs

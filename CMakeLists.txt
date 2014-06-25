@@ -61,6 +61,21 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test Declarative)
 set(AkonadiServer_MIN_VERSION "1.70.41")
 find_package(Akonadi ${AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
 
+# KF5 package
+find_package(KF5KCMUtils ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
+
+# KdepimLibs package
+find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
 
 #Boost
 # Don't use BoostConfig.cmake
@@ -86,7 +101,7 @@ add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(kcm)
 add_subdirectory(migration)
-add_subdirectory(qml)
+#add_subdirectory(qml)
 
 
 

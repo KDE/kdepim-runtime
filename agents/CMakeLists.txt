@@ -20,16 +20,19 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 set(KF5_VERSION "4.98.0")
 set(QT_REQUIRED_VERSION "5.2.0")
-
+# KF5 package
 find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Akonadi ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Mime ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiMime ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5MailTransport ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5PimIdentities ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiContact ${KF5_VERSION} CONFIG REQUIRED)
+
+# KdepimLibs package
+find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
 # Xsltproc
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
