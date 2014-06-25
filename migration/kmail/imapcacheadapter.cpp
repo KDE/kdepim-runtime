@@ -123,7 +123,7 @@ void ImapCacheAdapter::Private::createResourceResult( KJob *job )
   iface->setPath( mStore->path() );
 
   // make sure the config is saved
-  iface->writeConfig();
+  iface->save();
   delete iface;
 
   instance.reconfigure();

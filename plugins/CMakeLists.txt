@@ -1,3 +1,4 @@
+project(plugins)
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
@@ -10,22 +11,26 @@ include_directories(
 
 kde_enable_exceptions()
 
-set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 
-find_package(Qt5DBus ${KF5_VERSION} CONFIG REQUIRED)
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
 
-find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+ set(KDEPIMLIBS_LIB_VERSION "4.70.0")
+
+ find_package(Qt5DBus ${KF5_VERSION} CONFIG REQUIRED)
+
+ find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 
 
-find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Abc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AlarmCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5MicroBlog ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5Abc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5AlarmCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5MicroBlog ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+endif()
 
 #REACTIVATE IT
 #set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
@@ -82,4 +87,9 @@ install( FILES
   akonadi_serializer_microblog.desktop
   akonadi_serializer_kalarm.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
+
+
+if ("${CMAKE_BINARY_DIR}" STREQUAL "${plugins_BINARY_DIR}")
+  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+endif()
 

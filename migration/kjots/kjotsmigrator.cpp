@@ -41,7 +41,7 @@
 #include <AkonadiCore/CollectionFetchJob>
 #include <AkonadiCore/resourcesynchronizationjob.h>
 
-#include <KPIMTextEdit/textutils.h>
+#include <kpimtextedit/textutils.h>
 
 #include "maildirsettings.h"
 
@@ -105,7 +105,7 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
   QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
 
   // make sure the config is saved
-  iface->writeConfig();
+  iface->save();
 
   instance.reconfigure();
   m_resourceIdentifier = instance.identifier();

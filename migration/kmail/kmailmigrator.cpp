@@ -466,7 +466,7 @@ void KMailMigrator::migrateInstanceTrashFolder()
           if ( value != -1 ) {
             iface->setTrashCollection( value );
             // make sure the config is saved
-            iface->writeConfig();
+            iface->save();
             instance.reconfigure();
           }
         }
@@ -477,7 +477,7 @@ void KMailMigrator::migrateInstanceTrashFolder()
           if ( value != -1 ) {
             iface->setTargetCollection( value );
             // make sure the config is saved
-            iface->writeConfig();
+            iface->save();
             instance.reconfigure();
           }
         }
@@ -845,7 +845,7 @@ void KMailMigrator::pop3AccountCreated( KJob *job )
   iface->setSeenUidTimeList( popFilterGroup.readEntry( "seenUidTimeList", QList<int>() ) );
 
   // make sure the config is saved
-  iface->writeConfig();
+  iface->save();
 
   //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
   config.deleteEntry( "trash" );
@@ -893,7 +893,7 @@ void KMailMigrator::mboxAccountCreated( KJob *job )
     iface->setLockfileMethod( MboxNone );
 
   // make sure the config is saved
-  iface->writeConfig();
+  iface->save();
 
   // check-exclude in Account section means that this account should not be included
   // in manual checks. In KMail UI this is called "Include in manual checks"
@@ -945,7 +945,7 @@ void KMailMigrator::maildirAccountCreated( KJob *job )
   iface->setPath( config.readEntry( "Location" ) );
 
   // make sure the config is saved
-  iface->writeConfig();
+  iface->save();
 
   // check-exclude in Account section means that this account should not be included
   // in manual checks. In KMail UI this is called "Include in manual checks"
@@ -1070,7 +1070,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
   iface->setPath( mLocalMaildirPath );
 
   // make sure the config is saved
-  iface->writeConfig();
+  iface->save();
 
   AgentInstance resource = instance;
   resource.reconfigure();
@@ -1205,7 +1205,7 @@ void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance,
   }
 
   // make sure the config is saved
-  iface->writeConfig();
+  iface->save();
 
   AgentInstance resource = instance;
   resource.reconfigure();

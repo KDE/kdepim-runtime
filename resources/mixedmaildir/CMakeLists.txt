@@ -14,6 +14,10 @@ include_directories(
 kde_enable_exceptions()
 
 add_subdirectory(kmindexreader)
+
+#REACTIVATE IT
+if (FALSE)
+
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5254) # TODO get our own debug area
 
 ########### next target ###############
@@ -68,3 +72,4 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.
 if (KDE4_BUILD_TESTS)
   add_subdirectory( tests )
 endif ()
+endif()

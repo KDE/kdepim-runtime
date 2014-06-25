@@ -37,7 +37,7 @@
 
 #include "libmaildir/maildir.h"
 
-#include <KMbox/mbox.h>
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <Akonadi/KMime/MessageParts>
@@ -45,7 +45,7 @@
 #include <AkonadiCore/cachepolicy.h>
 #include <AkonadiCore/itemfetchscope.h>
 
-#include <KPIMUtils/kfileio.h>
+#include <kpimutils/kfileio.h>
 
 #include <KLocalizedString>
 

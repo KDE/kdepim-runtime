@@ -1,16 +1,45 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(accountwizard)
 
-# ECM setup
-find_package(ECM 0.0.14 CONFIG REQUIRED)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+########### Find packages ###########
 
-include(ECMPackageConfigHelpers)
-include(ECMSetupVersion)
-include(FeatureSummary)
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings)
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${accountwizard_SOURCE_DIR}")
+  find_package(ECM 0.0.14 CONFIG REQUIRED)
+  set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+
+  include(ECMPackageConfigHelpers)
+  include(ECMSetupVersion)
+  include(FeatureSummary)
+  include(KDEInstallDirs)
+  include(KDECMakeSettings)
+  include(KDEFrameworkCompilerSettings)
+
+  # FIXME: Do we want the same versions in kdepimlibs and kf5?
+  set(KF5_VERSION "4.100.0")
+  set(QT_REQUIRED_VERSION "5.2.0")
+  set(KDEPIMLIBS_LIB_VERSION "4.70.0")
+
+  # KF5 package
+  find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
+  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+  find_package(KF5WidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
+  find_package(KF5Wallet ${KF5_VERSION} CONFIG REQUIRED)
+
+  # KdepimLibs package
+  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
+endif()
+
+# Qt5 package
+find_package(Qt5UiTools ${QT_REQUIRED_VERSION} CONFIG REQUIRED)
+
+
+find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5NewStuff ${KF5_VERSION} CONFIG REQUIRED)
+
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
@@ -37,34 +66,6 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${accountwizard_SOURCE_DIR}")
    endif()
  endif ()
 endif()
-
-
-########### Find packages ###########
-
-#if ("${CMAKE_SOURCE_DIR}" STREQUAL "${accountwizard_SOURCE_DIR}")
-# FIXME: Do we want the same versions in kdepimlibs and kf5?
-set(KF5_VERSION "4.100.0")
-set(QT_REQUIRED_VERSION "5.2.0")
-set(KDEPIMLIBS_LIB_VERSION "4.70.0")
-
-# KF5 package
-find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5WidgetsAddons ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Wallet ${KF5_VERSION} CONFIG REQUIRED)
-
-# KdepimLibs package
-find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-
-# Qt5 package
-find_package(Qt5UiTools ${QT_REQUIRED_VERSION} CONFIG REQUIRED)
-#endif()
-
-find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5NewStuff ${KF5_VERSION} CONFIG REQUIRED)
 
 
 set(accountwizard_srcs

@@ -1,20 +1,20 @@
 project(agents)
 cmake_minimum_required(VERSION 2.8.12)
 
-find_package(ECM 0.0.14 CONFIG REQUIRED)
-set(CMAKE_MODULE_PATH ${agents_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
-
-include(ECMPackageConfigHelpers)
-include(ECMSetupVersion)
-include(FeatureSummary)
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings)
-
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
+
+  find_package(ECM 0.0.14 CONFIG REQUIRED)
+  set(CMAKE_MODULE_PATH ${agents_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
+
+  include(ECMPackageConfigHelpers)
+  include(ECMSetupVersion)
+  include(FeatureSummary)
+  include(KDEInstallDirs)
+  include(KDECMakeSettings)
+  include(KDEFrameworkCompilerSettings)
 
   set(KDEPIMLIBS_LIB_VERSION "4.70.0")
   set(KF5_VERSION "4.100.0")

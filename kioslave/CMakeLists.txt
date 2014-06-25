@@ -1,25 +1,28 @@
 project(kioslave)
 cmake_minimum_required(VERSION 2.8.12)
 
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kioslave_SOURCE_DIR}")
+
 find_package(ECM 0.0.14 CONFIG REQUIRED)
-set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
+ set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
-include(ECMPackageConfigHelpers)
-include(ECMSetupVersion)
-include(FeatureSummary)
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings)
+ include(ECMPackageConfigHelpers)
+ include(ECMSetupVersion)
+ include(FeatureSummary)
+ include(KDEInstallDirs)
+ include(KDECMakeSettings)
+ include(KDEFrameworkCompilerSettings)
 
-set(KDEPIMLIBS_LIB_VERSION "4.70.0")
-set(KF5_VERSION "4.100.0")
-set(QT_REQUIRED_VERSION "5.2.0")
+ set(KDEPIMLIBS_LIB_VERSION "4.70.0")
+ set(KF5_VERSION "4.100.0")
+ set(QT_REQUIRED_VERSION "5.2.0")
 
 
-find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+ find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
+ find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
+ find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+endif()
 
 set(kio_akonadi_SRCS akonadislave.cpp )
 
@@ -44,7 +47,7 @@ install(TARGETS kio_akonadi DESTINATION ${PLUGIN_INSTALL_DIR} )
 
 install( FILES akonadi.protocol  DESTINATION  ${SERVICES_INSTALL_DIR} )
 
-if ("${CMAKE_BINARY_DIR}" STREQUAL "${kioslave_BINARY_DIR}")
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kioslave_SOURCE_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 endif()
 

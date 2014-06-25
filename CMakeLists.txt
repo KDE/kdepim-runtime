@@ -79,6 +79,7 @@ include(FeatureSummary)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
+include(ECMInstallIcons)
 
 set(KF5_VERSION "4.100.0")
 set(QT_REQUIRED_VERSION "5.2.0")
@@ -92,6 +93,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test Declarative)
 
 # QT5 package
 find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+
 
 
 set(AkonadiServer_MIN_VERSION "1.70.41")
@@ -121,6 +123,8 @@ find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5MicroBlog ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimTextEdit ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
 
 

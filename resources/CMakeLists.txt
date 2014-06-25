@@ -1,18 +1,18 @@
 project(resources)
 cmake_minimum_required(VERSION 2.8.12)
 
-find_package(ECM 0.0.14 CONFIG REQUIRED)
-set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
+  find_package(ECM 0.0.14 CONFIG REQUIRED)
+  set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
-include(ECMPackageConfigHelpers)
-include(ECMSetupVersion)
-include(FeatureSummary)
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings)
-include(ECMInstallIcons)
+  include(ECMPackageConfigHelpers)
+  include(ECMSetupVersion)
+  include(FeatureSummary)
+  include(KDEInstallDirs)
+  include(KDECMakeSettings)
+  include(KDEFrameworkCompilerSettings)
+  include(ECMInstallIcons)
 
-#if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
   set(KF5_VERSION "4.100.0")
   set(QT_REQUIRED_VERSION "5.2.0")
 
@@ -38,7 +38,7 @@ include(ECMInstallIcons)
   find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
   find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
   find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-#endif()
+endif()
 
 find_package(KF5Imap ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
@@ -120,7 +120,7 @@ add_subdirectory( kdeaccounts )
 
 add_subdirectory( localbookmarks )
 
-#add_subdirectory( maildir )
+add_subdirectory( maildir )
 
 add_subdirectory( openxchange )
 add_subdirectory( pop3 )
@@ -136,7 +136,7 @@ add_subdirectory( pop3 )
 
 add_subdirectory( shared )
 add_subdirectory( birthdays )
-#add_subdirectory( mixedmaildir )
+add_subdirectory( mixedmaildir )
 add_subdirectory( mailtransport_dummy )
 #FIX LINKING add_subdirectory( mbox )
 add_subdirectory( nntp )
