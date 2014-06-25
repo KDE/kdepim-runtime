@@ -44,7 +44,7 @@ ImapResource::~ImapResource()
 {
 }
 
-QString ImapResource::defaultName()
+QString ImapResource::defaultName() const
 {
   return i18n( "IMAP Account" );
 }
