@@ -28,10 +28,10 @@
 #include <mailtransport/transportbase.h>
 #include <kwindowsystem.h>
 
-#include "imapresource.h"
+#include "imapresourcebase.h"
 #include "settings.h"
 
-SettingsPasswordRequester::SettingsPasswordRequester( ImapResource *resource, QObject *parent )
+SettingsPasswordRequester::SettingsPasswordRequester( ImapResourceBase *resource, QObject *parent )
   : PasswordRequesterInterface( parent ), m_resource( resource ), m_requestDialog( 0 ), m_settingsDialog( 0 )
 {
 

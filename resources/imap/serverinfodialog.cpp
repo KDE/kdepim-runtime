@@ -24,7 +24,7 @@
 
 #include <KLocalizedString>
 
-ServerInfoDialog::ServerInfoDialog(ImapResource *parentResource, QWidget *parent)
+ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent)
     : KDialog(parent)
 {
     setCaption(

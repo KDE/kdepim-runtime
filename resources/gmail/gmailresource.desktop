@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Gmail
+Comment=Connects to your Gmail account
+Type=AkonadiResource
+Exec=akonadi_gmail_resource
+Icon=im-google
+
+X-Akonadi-MimeTypes=message/rfc822
+X-Akonadi-Capabilities=Resource
+X-Akonadi-Identifier=akonadi_gmail_resource

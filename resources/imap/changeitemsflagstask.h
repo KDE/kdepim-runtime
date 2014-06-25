@@ -35,18 +35,18 @@ public:
   explicit ChangeItemsFlagsTask( ResourceStateInterface::Ptr resource, QObject* parent = 0 );
   virtual ~ChangeItemsFlagsTask();
 
-private Q_SLOTS:
+protected Q_SLOTS:
   void onSelectDone( KJob *job );
   void onAppendFlagsDone( KJob *job );
   void onRemoveFlagsDone( KJob *job );
 
 protected:
+  KIMAP::StoreJob* prepareJob( KIMAP::Session *session );
+
   virtual void doStart( KIMAP::Session* session );
 
-private:
-  KIMAP::StoreJob* prepareJob( KIMAP::Session *session );
-  void triggerAppendFlagsJob( KIMAP::Session *session );
-  void triggerRemoveFlagsJob( KIMAP::Session *session );
+  virtual void triggerAppendFlagsJob( KIMAP::Session *session );
+  virtual void triggerRemoveFlagsJob( KIMAP::Session *session );
 
 };
 

@@ -133,8 +133,8 @@ protected:
   const QChar separatorCharacter() const;
   void setSeparatorCharacter( const QChar &separator );
 
-  bool serverSupportsAnnotations() const;
-  bool serverSupportsCondstore() const;
+  virtual bool serverSupportsAnnotations() const;
+  virtual bool serverSupportsCondstore() const;
 
   int batchSize() const;
 

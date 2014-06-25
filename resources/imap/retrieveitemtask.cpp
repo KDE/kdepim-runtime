@@ -81,8 +81,14 @@ void RetrieveItemTask::triggerFetchJob()
   scope.parts.clear();// = parts.toList();
   scope.mode = KIMAP::FetchJob::FetchScope::Content;
   fetch->setScope( scope );
-  connect( fetch, SIGNAL(messagesReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessagePtr>)),
-           this, SLOT(onMessagesReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessagePtr>)) );
+  connect( fetch, SIGNAL(messagesReceived(QString,
+                                          QMap<qint64,qint64>,
+                                          QMap<qint64,KIMAP::MessageAttribute>,
+                                          QMap<qint64,KIMAP::MessagePtr>)),
+           this, SLOT(onMessagesReceived(QString,
+                                         QMap<qint64,qint64>,
+                                         QMap<qint64,KIMAP::MessageAttribute>,
+                                         QMap<qint64,KIMAP::MessagePtr>)) );
   //TODO: Handle parts retrieval
   //connect( fetch, SIGNAL(partsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)),
   //         this, SLOT(onPartsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)) );
@@ -91,7 +97,9 @@ void RetrieveItemTask::triggerFetchJob()
   fetch->start();
 }
 
-void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+void RetrieveItemTask::onMessagesReceived( const QString &mailBox,
+                                           const QMap<qint64, qint64> &uids,
+                                           const QMap<qint64, KIMAP::MessageAttribute> &attrs,
                                            const QMap<qint64, KIMAP::MessagePtr> &messages )
 {
   Q_UNUSED( mailBox );
@@ -108,7 +116,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox, const QMap<qi
 
   const qint64 number = uids.keys().first();
   bool ok;
-  const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(messages[number], uids[number], 0, QList<QByteArray>(), fetch->scope(), ok);
+  const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(messages[number], uids[number], 0, attrs.values(number), QList<QByteArray>(), fetch->scope(), ok);
   if (!ok) {
     kWarning() << "Failed to retrieve message " << uids[number];
     cancelTask( i18n( "No message retrieved, failed to read the message." ) );

@@ -27,8 +27,16 @@ MessageHelper::~MessageHelper()
 
 }
 
-Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const
+Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message,
+                                                   const qint64 uid,
+                                                   const qint64 size,
+                                                   const QList<KIMAP::MessageAttribute> &attrs,
+                                                   const QList<QByteArray> &flags,
+                                                   const KIMAP::FetchJob::FetchScope &scope,
+                                                   bool &ok) const
 {
+    Q_UNUSED(attrs);
+
     Akonadi::Item i;
     if (scope.mode == KIMAP::FetchJob::FetchScope::Flags) {
         i.setRemoteId(QString::number(uid));

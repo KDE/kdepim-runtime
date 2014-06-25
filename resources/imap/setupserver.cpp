@@ -120,7 +120,7 @@ static void addAuthenticationItem( QComboBox* authCombo, MailTransport::Transpor
     authCombo->addItem( authenticationModeString( authtype ), QVariant( authtype ) );
 }
 
-SetupServer::SetupServer( ImapResource *parentResource, WId parent )
+SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator( this )
 {
