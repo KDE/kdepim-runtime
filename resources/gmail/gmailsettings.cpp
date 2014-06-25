@@ -52,22 +52,22 @@ public:
         delete q;
     }
 
-    Settings *q;
+    GmailSettings *q;
 };
 
 K_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
-Settings *Settings::self()
+GmailSettings *GmailSettings::self()
 {
     if (!s_globalSettings->q) {
-        new Settings;
+        new GmailSettings;
         s_globalSettings->q->readConfig();
     }
 
     return s_globalSettings->q;
 }
 
-Settings::Settings(WId winId)
+GmailSettings::GmailSettings(WId winId)
     : SettingsBase()
     , mWinId(winId)
     , mActiveAuthJob(0)
@@ -77,33 +77,33 @@ Settings::Settings(WId winId)
 
     /*
     new SettingsAdaptor( this );
-    QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
+    QDBusConnection::sessionBus().registerObject( QLatin1String( "/GmailSettings" ), this,
                                                   QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
     */
 }
 
-QString Settings::apiKey() const
+QString GmailSettings::apiKey() const
 {
     return QLatin1String("554041944266.apps.googleusercontent.com");
 }
 
-QString Settings::secretKey() const
+QString GmailSettings::secretKey() const
 {
     return QLatin1String("mdT1DjzohxN3npUUzkENT0gO");
 }
 
 
-void Settings::setWinId(WId winId)
+void GmailSettings::setWinId(WId winId)
 {
     mWinId = winId;
 }
 
-void Settings::clearCachedPassword()
+void GmailSettings::clearCachedPassword()
 {
     mAccount = KGAPI2::AccountPtr();
 }
 
-void Settings::cleanup()
+void GmailSettings::cleanup()
 {
     Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId);
     if (wallet && wallet->isOpen()) {
@@ -115,7 +115,7 @@ void Settings::cleanup()
     }
 }
 
-void Settings::requestPassword()
+void GmailSettings::requestPassword()
 {
     requestAccount(false);
     if (mAccount) {
@@ -125,7 +125,7 @@ void Settings::requestPassword()
     }
 }
 
-void Settings::requestAccount(bool authenticate)
+void GmailSettings::requestAccount(bool authenticate)
 {
     bool userRejected = false;
     loadAccountFromKWallet(&userRejected);
@@ -153,7 +153,7 @@ void Settings::requestAccount(bool authenticate)
     }
 }
 
-void Settings::onAuthFinished(KGAPI2::Job *job)
+void GmailSettings::onAuthFinished(KGAPI2::Job *job)
 {
     mActiveAuthJob = 0;
 
@@ -170,7 +170,7 @@ void Settings::onAuthFinished(KGAPI2::Job *job)
 }
 
 
-void Settings::onWalletOpened(bool success)
+void GmailSettings::onWalletOpened(bool success)
 {
     if (!success) {
         emit passwordRequestCompleted(QString(), true);
@@ -194,7 +194,7 @@ void Settings::onWalletOpened(bool success)
     }
 }
 
-void Settings::loadAccountFromKWallet(bool *userRejected) const
+void GmailSettings::loadAccountFromKWallet(bool *userRejected) const
 {
     if (userRejected != 0) {
         *userRejected = false;
@@ -224,7 +224,7 @@ void Settings::loadAccountFromKWallet(bool *userRejected) const
     }
 }
 
-void Settings::saveAccountToKWallet()
+void GmailSettings::saveAccountToKWallet()
 {
     Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId);
     if (wallet && wallet->isOpen()) {
@@ -243,7 +243,7 @@ void Settings::saveAccountToKWallet()
 }
 
 
-QString Settings::accountName(bool *userRejected) const
+QString GmailSettings::accountName(bool *userRejected) const
 {
     if (!mAccount) {
         loadAccountFromKWallet(userRejected);
@@ -252,7 +252,7 @@ QString Settings::accountName(bool *userRejected) const
     return mAccount->accountName();
 }
 
-void Settings::setAccountName(const QString &accountName)
+void GmailSettings::setAccountName(const QString &accountName)
 {
     if (accountName == mAccount->accountName()) {
         return;
@@ -262,7 +262,7 @@ void Settings::setAccountName(const QString &accountName)
     saveAccountToKWallet();
 }
 
-QString Settings::password(bool *userRejected) const
+QString GmailSettings::password(bool *userRejected) const
 {
     if (!mAccount) {
         loadAccountFromKWallet(userRejected);
@@ -271,7 +271,7 @@ QString Settings::password(bool *userRejected) const
     return mAccount->accessToken();
 }
 
-void Settings::setPassword(const QString &accessToken)
+void GmailSettings::setPassword(const QString &accessToken)
 {
     if (accessToken == mAccount->accessToken()) {
         return;
@@ -281,7 +281,7 @@ void Settings::setPassword(const QString &accessToken)
     saveAccountToKWallet();
 }
 
-QString Settings::refreshToken(bool *userRejected) const
+QString GmailSettings::refreshToken(bool *userRejected) const
 {
     if (!mAccount) {
         loadAccountFromKWallet(userRejected);
@@ -290,7 +290,7 @@ QString Settings::refreshToken(bool *userRejected) const
     return mAccount->refreshToken();
 }
 
-void Settings::setRefreshToken(const QString &refreshToken)
+void GmailSettings::setRefreshToken(const QString &refreshToken)
 {
     if (refreshToken == mAccount->refreshToken()) {
         return;
@@ -301,7 +301,7 @@ void Settings::setRefreshToken(const QString &refreshToken)
 }
 
 
-void Settings::loadAccount(ImapAccount *account) const
+void GmailSettings::loadAccount(ImapAccount *account) const
 {
     kDebug() << userName();
     account->setServer(QLatin1String("imap.gmail.com"));
@@ -316,7 +316,7 @@ void Settings::loadAccount(ImapAccount *account) const
     account->setTimeout( sessionTimeout() );
 }
 
-void Settings::storeAccount(const KGAPI2::AccountPtr &account)
+void GmailSettings::storeAccount(const KGAPI2::AccountPtr &account)
 {
     if (!account) {
         cleanup();
@@ -327,12 +327,12 @@ void Settings::storeAccount(const KGAPI2::AccountPtr &account)
     saveAccountToKWallet();
 }
 
-QString Settings::rootRemoteId() const
+QString GmailSettings::rootRemoteId() const
 {
-    return QLatin1String("imap://") + Settings::self()->userName() + QLatin1Char('@') + Settings::self()->imapServer() + QLatin1Char('/');
+    return QLatin1String("imap://") + GmailSettings::self()->userName() + QLatin1Char('@') + GmailSettings::self()->imapServer() + QLatin1Char('/');
 }
 
-void Settings::renameRootCollection(const QString &newName)
+void GmailSettings::renameRootCollection(const QString &newName)
 {
     Akonadi::Collection rootCollection;
     rootCollection.setRemoteId(rootRemoteId());
@@ -343,7 +343,7 @@ void Settings::renameRootCollection(const QString &newName)
             this, SLOT(onRootCollectionFetched(KJob*)));
 }
 
-void Settings::onRootCollectionFetched(KJob *job)
+void GmailSettings::onRootCollectionFetched(KJob *job)
 {
     const QString newName = job->property("collectionName").toString();
     Q_ASSERT(!newName.isEmpty());

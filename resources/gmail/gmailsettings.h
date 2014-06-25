@@ -32,13 +32,13 @@ class AuthJob;
 class ImapAccount;
 class KJob;
 
-class Settings : public SettingsBase
+class GmailSettings : public SettingsBase
 {
   Q_OBJECT
   Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Gmail.Wallet")
 public:
-    explicit Settings(WId wid = 0);
-    static Settings *self();
+    explicit GmailSettings(WId wid = 0);
+    static GmailSettings *self();
     void setWinId(WId wid);
 
     void requestPassword();
@@ -91,6 +91,6 @@ private:
 };
 
 // HACK: Make GmailSettings usable in ImapResoure to
-typedef Settings GmailSettings;
+//typedef GmailSettings GmailSettings;
 
 #endif
