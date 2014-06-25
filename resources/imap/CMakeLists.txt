@@ -44,9 +44,22 @@ set( imapresource_LIB_SRCS
   timestampattribute.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
+  settings.cpp
+  subscriptiondialog.cpp
+  imapidlemanager.cpp
+  resourcestate.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
+
+kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
+kde4_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
+
+qt4_add_dbus_adaptor( imapresource_LIB_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
+     )
+
+
 
 qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
 qt4_add_dbus_adaptor( imapresource_LIB_SRCS
@@ -65,14 +78,11 @@ endif()
 
 set( akonadi_imap_resource_SRCS
   main.cpp
-  imapidlemanager.cpp
   imapresource.cpp
   resourcestate.cpp
-  settings.cpp
   settingspasswordrequester.cpp
   setupserver.cpp
   serverinfodialog.cpp
-  subscriptiondialog.cpp
 )
 
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -84,11 +94,7 @@ kde4_add_ui_files(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 endif ()
 kde4_add_ui_files(akonadi_imap_resource_SRCS serverinfo.ui)
 
-kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
-qt4_add_dbus_adaptor( akonadi_imap_resource_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
-     )
-kde4_add_kcfg_files(akonadi_imap_resource_SRCS settingsbase.kcfgc)
+
 
 if (RUNTIME_PLUGINS_STATIC)
     add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
