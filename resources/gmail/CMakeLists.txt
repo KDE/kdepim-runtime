@@ -12,7 +12,7 @@ include_directories(
     ${qjson_INCLUDE_DIR}
 )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 ########### next target ###############
 
@@ -30,22 +30,22 @@ set(gmailresource_SRCS
     gmailchangeitemslabelstask.cpp
 )
 
-kde4_add_ui_files(gmailresource_SRCS gmailconfigdialog.ui)
-kde4_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
+qt5_wrap_ui(gmailresource_SRCS gmailconfigdialog.ui)
+kconfig_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
 
-kde4_add_executable(akonadi_gmail_resource ${gmailresource_SRCS})
+add_executable(akonadi_gmail_resource ${gmailresource_SRCS})
 target_link_libraries(akonadi_gmail_resource
-    ${KDEPIMLIBS_AKONADI_LIBS}
-    ${QT_QTDBUS_LIBRARY}
-    ${QT_QTCORE_LIBRARY}
-    ${QT_QTGUI_LIBRARY}
-    ${QT_QTNETWORK_LIBRARY}
-    ${KDEPIMLIBS_KIMAP_LIBS}
-    ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
-    ${KDE4_KIO_LIBS}
-    ${KDEPIMLIBS_KMIME_LIBS}
-    ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-    ${KDEPIMLIBS_KPIMIDENTITIES_LIBS}
+    KF5::AkonadiCore
+    
+    
+    
+    
+    KF5::Imap
+    KF5::MailTransport
+    KF5::KIOCore
+    KF5::Mime
+    KF5::AkonadiMime
+    KF5::PimIdentities
     ${LibKGAPI2_LIBRARY}
     ${QJSON_LIBRARIES}
     imapresource
