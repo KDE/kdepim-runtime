@@ -18,9 +18,7 @@
 #include "defaultreminderattribute.h"
 
 #include <QVariant>
-
-//#include <qjson/parser.h>
-//#include <qjson/serializer.h>
+#include <QJsonDocument>
 
 #include <KGAPI/Calendar/Reminder>
 
@@ -45,10 +43,14 @@ void DefaultReminderAttribute::setReminders( const RemindersList &reminders )
 
 void DefaultReminderAttribute::deserialize( const QByteArray &data )
 {
-    QJson::Parser parser;
+    QJsonDocument json = QJsonDocument::fromJson(data);
+    if (json.isNull())
+       return;
+
+    QVariant var = json.toVariant();
     QVariantList list;
 
-    list = parser.parse( data ).toList();
+    list = var.toList();
     Q_FOREACH( const QVariant & l, list ) {
         QVariantMap reminder = l.toMap();
 
@@ -84,9 +86,8 @@ QByteArray DefaultReminderAttribute::serialized() const
 
         list << reminder;
     }
-
-    QJson::Serializer serializer;
-    return serializer.serialize( list );
+    QJsonDocument serialized = QJsonDocument::fromVariant(list);
+    return serialized.toJson();
 }
 
 KCalCore::Alarm::List DefaultReminderAttribute::alarms( KCalCore::Incidence *incidence ) const

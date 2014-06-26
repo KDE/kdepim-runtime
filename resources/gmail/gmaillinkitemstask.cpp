@@ -21,13 +21,13 @@
 #include "gmailretrieveitemstask.h"
 #include "gmailsettings.h"
 
-#include <akonadi/collectionpathresolver_p.h>
-#include <Akonadi/AgentBase>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/LinkJob>
-#include <Akonadi/UnlinkJob>
+#include <AkonadiCore/collectionpathresolver.h>
+#include <AkonadiAgentBase/AgentBase>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/LinkJob>
+#include <AkonadiCore/UnlinkJob>
 
 #include <KLocalizedString>
 
@@ -122,7 +122,7 @@ void GmailLinkItemsTask::onLabelResolved(KJob *job)
     const QString collectionName = resolver->property(COLLECTION_NAME_PROPERTY).toString();
     const QByteArray label = resolver->property(LABEL_PROPERTY).toByteArray();
     if (resolver->error() && resolver->collection() < 0) {
-        kWarning() << "Failed to resolve collection ID for path" << collectionName << ":" << resolver->errorString();
+        qWarning() << "Failed to resolve collection ID for path" << collectionName << ":" << resolver->errorString();
         return;
     }
     const Akonadi::Collection collection(resolver->collection());

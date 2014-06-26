@@ -22,15 +22,15 @@
 
 #include <imap/batchfetcher.h>
 
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/LinkJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/LinkJob>
 
-#include <KIMAP/Session>
+#include <KImap/Session>
 
 GmailRetrieveItemsTask::GmailRetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : RetrieveItemsTask(resource, parent)
 {
-    kDebug();
+    qDebug();
     dynamic_cast<GmailResourceState*>(resource.get())->setCurrentTask(this);
 }
 
@@ -45,7 +45,7 @@ BatchFetcher *GmailRetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr mess
                                                          int batchSize,
                                                          KIMAP::Session *session)
 {
-    kDebug();
+    qDebug();
     KIMAP::FetchJob::FetchScope gmailScope = scope;
     BatchFetcher *batchFetcher = new BatchFetcher(messageHelper, set, gmailScope, batchSize, session);
     batchFetcher->setGmailExtensionsEnabled(true);

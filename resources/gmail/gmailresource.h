@@ -22,7 +22,7 @@
 
 #include <imap/imapresourcebase.h>
 
-#include <Akonadi/AgentBase>
+#include <AkonadiAgentBase/AgentBase>
 
 class GmailResource : public ImapResourceBase
 {

@@ -20,10 +20,10 @@
 #include "gmailpasswordrequester.h"
 #include "gmailsettings.h"
 
-#include <libkgapi2/account.h>
-#include <libkgapi2/authjob.h>
+#include <kgapi/account.h>
+#include <kgapi/authjob.h>
 
-#include <qjson/parser.h>
+#include <QJsonDocument>
 
 #include <KDebug>
 
@@ -56,16 +56,16 @@ void GmailPasswordRequester::requestPassword(PasswordRequesterInterface::Request
 
 bool GmailPasswordRequester::isTokenExpired(const QString &serverError)
 {
-    QJson::Parser parser;
-
     QString base64Error = serverError.mid(7, serverError.length() - 9);
     const QByteArray decoded = QByteArray::fromBase64(base64Error.toLatin1());
-    bool ok = false;
-    const QVariant json = parser.parse(decoded, &ok);
-    if (!ok) {
+    QJsonDocument document = QJsonDocument::fromJson(decoded);
+    if (document.isNull()) {
         return false;
     }
-
+    const QVariant json = document.toVariant();
+    if (!json.isValid()) {
+       return false;
+    }
     const QVariantMap map = json.toMap();
     if (map[QLatin1String("status")].toString().toInt() == KGAPI2::Unauthorized) {
         return true;

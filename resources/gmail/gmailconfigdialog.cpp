@@ -27,10 +27,10 @@
 #include <kpimidentities/identitymanager.h>
 #include <kpimidentities/identitycombo.h>
 
-#include <akonadi/resourcesettings.h>
+#include <AkonadiAgentBase/resourcesettings.h>
 
-#include <libkgapi2/account.h>
-#include <libkgapi2/authjob.h>
+#include <kgapi/account.h>
+#include <kgapi/authjob.h>
 
 #include <imap/imapaccount.h>
 #include <imap/subscriptiondialog.h>
@@ -215,7 +215,7 @@ void GmailConfigDialog::slotManageSubscriptions()
 
     QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( this );
     subscriptions->setCaption(i18n("Serverside Subscription"));
-    subscriptions->setWindowIcon(KIcon(QLatin1String("network-server")));
+    subscriptions->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
     subscriptions->connectAccount(account, m_account->accessToken());
     m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 

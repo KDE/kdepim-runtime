@@ -1,4 +1,5 @@
-add_subdirectory(saslplugin)
+# REACTIVATE IT
+#add_subdirectory(saslplugin)
 
 
 
@@ -8,11 +9,9 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/../imap
     ${LibKGAPI2_INCLUDE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR}
-    ${QJSON_INCLUDE_DIR} 
-    ${qjson_INCLUDE_DIR}
 )
 
-kde_enable_exceptions()
+
 
 ########### next target ###############
 
@@ -36,18 +35,13 @@ kconfig_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
 add_executable(akonadi_gmail_resource ${gmailresource_SRCS})
 target_link_libraries(akonadi_gmail_resource
     KF5::AkonadiCore
-    
-    
-    
-    
     KF5::Imap
     KF5::MailTransport
     KF5::KIOCore
     KF5::Mime
     KF5::AkonadiMime
     KF5::PimIdentities
-    ${LibKGAPI2_LIBRARY}
-    ${QJSON_LIBRARIES}
+    KF5::GAPICore
     imapresource
     folderarchivesettings
 )

@@ -31,22 +31,23 @@
 #include <KLocalizedString>
 #include <KWindowSystem>
 
-#include <Akonadi/LinkJob>
-#include <Akonadi/CollectionFetchJob>
-#include <akonadi/collectionpathresolver_p.h>
-#include <Akonadi/ItemFetchJob>
-#include <Akonadi/ItemFetchScope>
-#include <Akonadi/AttributeFactory>
+#include <AkonadiCore/LinkJob>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/collectionpathresolver.h>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/AttributeFactory>
 
 #include <imap/sessionpool.h>
 #include <imap/sessionuiproxy.h>
 
 #include <KLocale>
+#include <QIcon>
 
 GmailResource::GmailResource(const QString &id):
     ImapResourceBase(id)
 {
-    KGlobal::locale()->insertCatalog("akonadi_imap_resource");
+    //QT5 KGlobal::locale()->insertCatalog("akonadi_imap_resource");
     setSeparatorCharacter('/');
 
     m_pool->setPasswordRequester(new GmailPasswordRequester(m_pool));
@@ -68,7 +69,7 @@ KDialog *GmailResource::createConfigureDialog(WId windowId)
 {
     GmailConfigDialog *dlg = new GmailConfigDialog(this, windowId);
     KWindowSystem::setMainWindow(dlg, windowId);
-    dlg->setWindowIcon(KIcon(QLatin1String("network-server")));
+    dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
     connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
     return dlg;
 }
@@ -80,7 +81,7 @@ void GmailResource::onConfigurationDone(int result)
         if ( dlg->shouldClearCache() ) {
             clearCache();
         }
-        GmailSettings::self()->writeConfig();
+        GmailSettings::self()->save();
     }
     dlg->deleteLater();
 }
@@ -103,7 +104,7 @@ void GmailResource::retrieveCollections()
 
 void GmailResource::retrieveItems(const Akonadi::Collection &col)
 {
-    kDebug() << col.id() << col.remoteId() << col.name();
+    qDebug() << col.id() << col.remoteId() << col.name();
     // We can't sync the virtual collections - instead we get ID of "All Mail" and
     // we schedule it's sync
     //
@@ -142,7 +143,7 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
 
     Akonadi::CollectionFetchJob *fetch = qobject_cast<Akonadi::CollectionFetchJob*>(job);
     if (fetch->collections().count() != 1) {
-        kWarning() << "Got" << fetch->collections().count() << "collections, expected only one!";
+        qWarning() << "Got" << fetch->collections().count() << "collections, expected only one!";
         cancelTask();
         return;
     }
@@ -155,7 +156,7 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
 void GmailResource::itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
 {
     if (!collection.hasAttribute<GmailLabelAttribute>()) {
-        kWarning() << "Collection is missing GmailLabelAttribute! IMPOSSIBRU!";
+        qWarning() << "Collection is missing GmailLabelAttribute! IMPOSSIBRU!";
         cancelTask();
         return;
     }
@@ -169,7 +170,7 @@ void GmailResource::itemsLinked(const Akonadi::Item::List &items, const Akonadi:
 void GmailResource::itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
 {
     if (!collection.hasAttribute<GmailLabelAttribute>()) {
-        kWarning() << "Collection is missing GmailLabelAttribute! IMPOSSIBRU!";
+        qWarning() << "Collection is missing GmailLabelAttribute! IMPOSSIBRU!";
         cancelTask();
         return;
     }

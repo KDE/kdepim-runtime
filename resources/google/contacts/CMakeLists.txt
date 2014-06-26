@@ -1,4 +1,4 @@
-kde_enable_exceptions()
+
 
 set(contactsresource_SRCS
   contactsresource.cpp
@@ -45,6 +45,7 @@ target_link_libraries(akonadi_googlecontacts_resource
   KF5::GAPICore
   KF5::GAPIContacts
   KF5::AkonadiAgentBase
+  KF5::Wallet
 )
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})

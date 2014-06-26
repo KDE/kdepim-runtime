@@ -20,8 +20,8 @@
 
 #include "common/googleresource.h"
 
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 
 class GoogleSettings;
 namespace KGAPI2

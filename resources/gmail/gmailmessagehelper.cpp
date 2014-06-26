@@ -39,7 +39,7 @@ Akonadi::Item GmailMessageHelper::createItemFromMessage(KMime::Message::Ptr mess
 {
     Akonadi::Item item = MessageHelper::createItemFromMessage(message, uid, size, attrs, flags, scope, ok);
     if (!ok) {
-        kWarning() << "Failed to read imap message";
+        qWarning() << "Failed to read imap message";
         return item;
     }
 

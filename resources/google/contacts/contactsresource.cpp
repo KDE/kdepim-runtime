@@ -24,12 +24,12 @@
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/ItemModifyJob>
-#include <Akonadi/LinkJob>
-#include <Akonadi/UnlinkJob>
+#include <AkonadiCore/LinkJob>
+#include <AkonadiCore/UnlinkJob>
 #include <AkonadiCore/CachePolicy>
 
-#include <kabc/Addressee>
-#include <kabc/Picture>
+#include <KABC/Addressee>
+#include <KABC/Picture>
 
 #include <KDE/KLocalizedString>
 #include <KDE/KDebug>

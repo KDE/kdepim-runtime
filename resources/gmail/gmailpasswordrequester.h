@@ -22,7 +22,7 @@
 
 #include <imap/passwordrequesterinterface.h>
 
-#include <LibKGAPI2/Types>
+#include <KGAPI/Types>
 
 class GmailPasswordRequester : public PasswordRequesterInterface
 {

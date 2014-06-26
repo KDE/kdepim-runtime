@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QMultiHash>
 
-#include <Akonadi/Collection>
+#include <AkonadiCore/Collection>
 
 class GmailRetrieveItemsTask;
 class KJob;

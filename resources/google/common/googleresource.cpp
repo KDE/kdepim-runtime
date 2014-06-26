@@ -26,8 +26,8 @@
 #include <KDE/KLocale>
 
 #include <KGAPI/Account>
-#include <KGAPI/AccountInfo/AccountInfoFetchJob>
-#include <KGAPI/AccountInfo/AccountInfo>
+#include <KGAPI/AccountInfoFetchJob>
+#include <KGAPI/AccountInfo>
 #include <KGAPI/AuthJob>
 #include <KLocale>
 
@@ -242,7 +242,7 @@ void GoogleResource::slotKAccountsAccountInfoReceived( KGAPI2::Job *job )
     const AccountPtr account = job->account();
 
     if ( aiJob->items().count() != 1 ) {
-        kWarning() << "AccountInfoFetchJob returned unexpected amount of results";
+        qWarning() << "AccountInfoFetchJob returned unexpected amount of results";
         emit error( i18n( "Invalid reply" ) );
         cancelTask( i18n( "Failed to refresh tokens") );
         return;
@@ -289,7 +289,7 @@ void GoogleResource::slotAccountManagerReady( bool ready )
         return;
     }
 
-    kDebug() << ready;
+    qDebug() << ready;
     if ( !ready ) {
         emit status( Broken, i18n( "Can't access KWallet" ) );
         return;
@@ -344,7 +344,7 @@ bool GoogleResource::handleError( KGAPI2::Job *job )
     }
 
     if ( job->error() == KGAPI2::Unauthorized ) {
-        kDebug() << job << job->errorString();
+        qDebug() << job << job->errorString();
 
         const QList<QUrl> resourceScopes = scopes();
         Q_FOREACH(const QUrl &scope, resourceScopes) {
@@ -375,7 +375,7 @@ bool GoogleResource::canPerformTask()
 
 void GoogleResource::slotAuthJobFinished( KGAPI2::Job *job )
 {
-    kDebug();
+    qDebug();
 
     if ( job->error() != KGAPI2::NoError ) {
         cancelTask( i18n( "Failed to refresh tokens" ) );
@@ -385,7 +385,7 @@ void GoogleResource::slotAuthJobFinished( KGAPI2::Job *job )
     AuthJob *authJob = qobject_cast<AuthJob*>( job );
     m_account = authJob->account();
     if ( !m_accountMgr->storeAccount( m_account ) ) {
-        kWarning() << "Failed to store account in KWallet";
+        qWarning() << "Failed to store account in KWallet";
     }
 
     KGAPI2::Job *otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job *>();

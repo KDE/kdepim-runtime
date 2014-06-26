@@ -20,7 +20,7 @@
 #ifndef GMAILLABELATTRIBUTE_H
 #define GMAILLABELATTRIBUTE_H
 
-#include <Akonadi/Attribute>
+#include <AkonadiCore/Attribute>
 #include <QByteArray>
 
 class GmailLabelAttribute : public Akonadi::Attribute

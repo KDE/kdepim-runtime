@@ -3,8 +3,8 @@ set_package_properties(Sasl2 PROPERTIES DESCRIPTION "cyrus-sasl" URL "http://asg
 
 add_definitions(-D_POSIX_SOURCE)
 
-include_directories(${SASL2_INCLUDE_DIR}
-                    ${SASL2_INCLUDE_DIR}/sasl)
+include_directories(${Sasl2_INCLUDE_DIRS}
+                    ${Sasl2_INCLUDE_DIR}/sasl)
 
 set(kdexoauth2sasl_SRCS
     plugin_common.c
@@ -12,7 +12,13 @@ set(kdexoauth2sasl_SRCS
     xoauth2plugin_init.c
 )
 
-add_library(kdexoauth2 ${kdexoauth2sasl_SRCS})
+
+if(Sasl2_FOUND)
+  set(kdexoauth2sasl_EXTRA_LIBS ${Sasl2_LIBRARIES})
+endif()
+
+
+add_library(kdexoauth2 ${kdexoauth2sasl_SRCS} ${kdexoauth2sasl_EXTRA_LIBS})
 set_target_properties(kdexoauth2 PROPERTIES SOVERSION 3 VERSION 3.0.0)
 
 install(TARGETS kdexoauth2 DESTINATION ${LIB_INSTALL_DIR}/sasl2)

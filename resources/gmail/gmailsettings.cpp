@@ -32,12 +32,12 @@ using KWallet::Wallet;
 
 #include <QDBusConnection>
 
-#include <KDE/Akonadi/Collection>
-#include <KDE/Akonadi/CollectionFetchJob>
-#include <KDE/Akonadi/CollectionModifyJob>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionModifyJob>
 
-#include <LibKGAPI2/Account>
-#include <LibKGAPI2/AuthJob>
+#include <KGAPI/Account>
+#include <KGAPI/AuthJob>
 
 class SettingsHelper
 {
@@ -237,7 +237,7 @@ void GmailSettings::saveAccountToKWallet()
         map[QLatin1String("accessToken")] = mAccount->accessToken();
         map[QLatin1String("refreshToken")] = mAccount->refreshToken();
         wallet->writeMap(config()->name(), map);
-        kDebug() << "Wallet save: " << wallet->sync();
+        qDebug() << "Wallet save: " << wallet->sync();
     }
     delete wallet;
 }
@@ -303,7 +303,7 @@ void GmailSettings::setRefreshToken(const QString &refreshToken)
 
 void GmailSettings::loadAccount(ImapAccount *account) const
 {
-    kDebug() << userName();
+    qDebug() << userName();
     account->setServer(QLatin1String("imap.gmail.com"));
     account->setPort(993);
 

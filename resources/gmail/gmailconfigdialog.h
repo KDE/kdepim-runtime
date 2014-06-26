@@ -22,7 +22,7 @@
 
 #include <KDialog>
 
-#include <LibKGAPI2/Account>
+#include <KGAPI/Account>
 
 namespace Ui
 {

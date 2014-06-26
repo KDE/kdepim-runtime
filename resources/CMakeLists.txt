@@ -41,10 +41,10 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
 endif()
 
 find_package(KF5Imap ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-
+find_package(KF5AkonadiCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
 # Extra package
-find_package(KF5GAPI "4.98.0" CONFIG)
+find_package(KF5GAPI "4.70.0" CONFIG)
 
 # Xsltproc
 find_package(Xsltproc)
@@ -126,10 +126,10 @@ add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
 #NEED TO REMOVE QSJON SUPPORT
-#if( KF5GAPI_FOUND )
-#  add_subdirectory( google )
-#  add_subdirectory( gmail )
-#endif()
+if( KF5GAPI_FOUND )
+  add_subdirectory( google )
+  add_subdirectory( gmail )
+endif()
 
 #if( LibKFbAPI_FOUND )
 #  add_subdirectory( facebook )

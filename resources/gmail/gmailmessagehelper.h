@@ -22,7 +22,7 @@
 
 #include <imap/messagehelper.h>
 
-#include <Akonadi/Collection>
+#include <AkonadiCore/Collection>
 
 class ResourceTask;
 

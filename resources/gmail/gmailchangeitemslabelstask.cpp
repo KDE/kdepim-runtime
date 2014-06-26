@@ -19,9 +19,9 @@
 
 #include "gmailchangeitemslabelstask.h"
 
-#include <KIMAP/Session>
-#include <KIMAP/StoreJob>
-#include <KIMAP/SelectJob>
+#include <KImap/Session>
+#include <KImap/StoreJob>
+#include <KImap/SelectJob>
 
 
 GmailChangeItemsLabelsTask::GmailChangeItemsLabelsTask(ResourceStateInterface::Ptr resource, QObject *parent)
