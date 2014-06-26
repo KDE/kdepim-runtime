@@ -19,8 +19,6 @@
 
 #include "settings.h"
 
-#include <kglobal.h>
-
 class SettingsHelper
 {
   public:
