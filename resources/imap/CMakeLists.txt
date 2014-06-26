@@ -56,7 +56,7 @@ qt5_add_dbus_adaptor( imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
      )
 
-qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
+qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
 qt5_add_dbus_adaptor( imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
         imapresourcebase.h ImapResourceBase
@@ -67,7 +67,7 @@ add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 target_link_libraries(imapresource KF5::AkonadiCore KF5::Imap KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::PimIdentities KF5::AkonadiAgentBase)
 
 if( NOT IMAPRESOURCE_NO_SOLID)
-  target_link_libraries(imapresource ${KDE4_SOLID_LIBS})
+  target_link_libraries(imapresource )
 endif()
 ########### next target ###############
 
@@ -108,7 +108,7 @@ if (RUNTIME_PLUGINS_STATIC)
 endif ()
 
 if( NOT IMAPRESOURCE_NO_SOLID)
-target_link_libraries(akonadi_imap_resource ${KDE4_SOLID_LIBS})
+target_link_libraries(akonadi_imap_resource )
 endif()
 
 install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
