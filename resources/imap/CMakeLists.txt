@@ -47,18 +47,20 @@ set( imapresource_LIB_SRCS
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
+
+
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
+kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
+
 qt5_add_dbus_adaptor( imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
      )
-qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
+
+qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
 qt5_add_dbus_adaptor( imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
-        imapresource.h ImapResourceBase
+        imapresourcebase.h ImapResourceBase
      )
-kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
-
-
 
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
