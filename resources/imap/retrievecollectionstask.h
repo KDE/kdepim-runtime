@@ -46,7 +46,7 @@ private slots:
 protected:
   virtual void doStart( KIMAP::Session *session );
 
-private:
+protected:
   QHash<QString, Akonadi::Collection> m_reportedCollections;
   QHash<QString, Akonadi::Collection> m_dummyCollections;
   QSet<QString> m_fullReportedCollections;

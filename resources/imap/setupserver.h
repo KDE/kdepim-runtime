@@ -43,7 +43,7 @@ class IdentityCombo;
 class IdentityManager;
 }
 class FolderArchiveSettingPage;
-class ImapResource;
+class ImapResourceBase;
 
 /**
  * @class SetupServer
@@ -60,7 +60,7 @@ public:
    * @param parentResource The resource this dialog belongs to
    * @param parent Parent WId
    */
-  SetupServer( ImapResource *parentResource, WId parent );
+  SetupServer( ImapResourceBase *parentResource, WId parent );
 
   /**
    * Destructor
@@ -83,7 +83,7 @@ private:
   void readSettings();
   void populateDefaultAuthenticationOptions();
 
-  ImapResource *m_parentResource;
+  ImapResourceBase *m_parentResource;
   Ui::SetupServerView *m_ui;
   MailTransport::ServerTest *m_serverTest;
   bool m_subscriptionsChanged;

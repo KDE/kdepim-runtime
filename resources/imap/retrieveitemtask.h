@@ -36,7 +36,9 @@ public:
 
 private slots:
   void onSelectDone( KJob *job );
-  void onMessagesReceived( const QString &mailBox, const QMap<qint64, qint64> &uids,
+  void onMessagesReceived( const QString &mailBox,
+                           const QMap<qint64, qint64> &uids,
+                           const QMap<qint64, KIMAP::MessageAttribute> &attrs,
                            const QMap<qint64, KIMAP::MessagePtr> &messages );
   void onContentFetchDone( KJob *job );
 

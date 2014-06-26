@@ -1,0 +1,6 @@
+File=gmailresource.kcfg
+ClassName=SettingsBase
+Mutators=true
+SetUserTexts=true
+Singleton=false
+GlobalEnums=true

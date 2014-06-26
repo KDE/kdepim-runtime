@@ -33,7 +33,7 @@
 #include <kmessagebox.h>
 #include <KDebug>
 
-ResourceState::ResourceState( ImapResource *resource, const TaskArguments &args )
+ResourceState::ResourceState( ImapResourceBase *resource, const TaskArguments &args )
   : m_resource( resource ),
   m_arguments( args )
 {

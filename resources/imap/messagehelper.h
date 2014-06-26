@@ -30,7 +30,13 @@ public:
     typedef boost::shared_ptr<MessageHelper> Ptr;
 
     virtual ~MessageHelper();
-    virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const;
+    virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message,
+                                                const qint64 uid,
+                                                const qint64 size,
+                                                const QList<KIMAP::MessageAttribute> &attrs,
+                                                const QList<QByteArray> &flags,
+                                                const KIMAP::FetchJob::FetchScope &scope,
+                                                bool &ok) const;
 };
 
 #endif

@@ -11,6 +11,7 @@ endif()
 set( imapresource_LIB_SRCS
   addcollectiontask.cpp
   additemtask.cpp
+  batchfetcher.cpp
   changecollectiontask.cpp
   changeitemsflagstask.cpp
   changeitemtask.cpp
@@ -18,6 +19,7 @@ set( imapresource_LIB_SRCS
   highestmodseqattribute.cpp
   imapaccount.cpp
   imapflags.cpp
+  imapresourcebase.cpp
   messagehelper.cpp
   movecollectiontask.cpp
   moveitemstask.cpp
@@ -37,9 +39,26 @@ set( imapresource_LIB_SRCS
   timestampattribute.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
+  settings.cpp
+  subscriptiondialog.cpp
+  imapidlemanager.cpp
+  resourcestate.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
+
+kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
+qt5_add_dbus_adaptor( imapresource_LIB_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
+     )
+qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
+qt5_add_dbus_adaptor( imapresource_LIB_SRCS
+     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
+        imapresource.h ImapResourceBase
+     )
+kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
+
+
 
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
@@ -52,14 +71,11 @@ endif()
 
 set( akonadi_imap_resource_SRCS
   main.cpp
-  imapidlemanager.cpp
   imapresource.cpp
   resourcestate.cpp
-  settings.cpp
   settingspasswordrequester.cpp
   setupserver.cpp
   serverinfodialog.cpp
-  subscriptiondialog.cpp
 )
 
 install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -70,17 +86,6 @@ else ()
 ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 endif ()
 ki18n_wrap_ui(akonadi_imap_resource_SRCS serverinfo.ui)
-
-kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
-qt5_add_dbus_adaptor( akonadi_imap_resource_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
-     )
-qt4_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
-qt5_add_dbus_adaptor( akonadi_imap_resource_SRCS
-     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
-        imapresource.h ImapResource
-     )
-kconfig_add_kcfg_files(akonadi_imap_resource_SRCS settingsbase.kcfgc)
 
 if (RUNTIME_PLUGINS_STATIC)
     add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)

@@ -36,9 +36,15 @@ KolabMessageHelper::~KolabMessageHelper()
 
 }
 
-Akonadi::Item KolabMessageHelper::createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList< QByteArray >& flags, const KIMAP::FetchJob::FetchScope& scope, bool& ok) const
+Akonadi::Item KolabMessageHelper::createItemFromMessage(KMime::Message::Ptr message,
+                                                        const qint64 uid,
+                                                        const qint64 size,
+                                                        const QList<KIMAP::MessageAttribute> &attrs,
+                                                        const QList<QByteArray> &flags,
+                                                        const KIMAP::FetchJob::FetchScope &scope,
+                                                        bool &ok) const
 {
-    const Akonadi::Item item = MessageHelper::createItemFromMessage(message, uid, size, flags, scope, ok);
+    const Akonadi::Item item = MessageHelper::createItemFromMessage(message, uid, size, attrs, flags, scope, ok);
     if (!ok) {
         kWarning() << "Failed to read imap message";
         return item;

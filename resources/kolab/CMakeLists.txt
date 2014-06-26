@@ -13,29 +13,15 @@ find_package(KF5Imap ${KF5_VERSION} CONFIG REQUIRED)
 ########### next target ###############
 
 set(kolabresource_SRCS
-    ../imap/imapidlemanager.cpp
     ../imap/imapresource.cpp
-    ../imap/resourcestate.cpp
-    ../imap/settings.cpp
     ../imap/settingspasswordrequester.cpp
     ../imap/setupserver.cpp
     ../imap/serverinfodialog.cpp
-    ../imap/subscriptiondialog.cpp
     kolabretrievecollectionstask.cpp
     kolabresource.cpp
     kolabresourcestate.cpp
     kolabhelpers.cpp
     kolabmessagehelper.cpp
-)
-
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../imap/imapresource.kcfg org.kde.Akonadi.Imap.Settings)
-qt5_add_dbus_adaptor(kolabresource_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
-)
-qt5_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../imap/imapresource.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
-qt5_add_dbus_adaptor(kolabresource_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
-    imapresource.h ImapResource
 )
 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)

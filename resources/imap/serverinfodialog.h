@@ -23,7 +23,7 @@
 
 #include <KDialog>
 
-class ImapResource;
+class ImapResourceBase;
 namespace Ui {
 class ServerInfo;
 }
@@ -32,7 +32,7 @@ class ServerInfoDialog : public KDialog
 {
     Q_OBJECT
 public:
-    explicit ServerInfoDialog(ImapResource *parentResource, QWidget *parent);
+    explicit ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent);
     ~ServerInfoDialog();
 private:
     Ui::ServerInfo *mServerInfoWidget;

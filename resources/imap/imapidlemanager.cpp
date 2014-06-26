@@ -37,7 +37,7 @@
 #include "sessionpool.h"
 
 ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
-                                  SessionPool *pool, ImapResource *parent )
+                                  SessionPool *pool, ImapResourceBase *parent )
   : QObject( parent ), m_sessionRequestId( 0 ), m_pool( pool ), m_session( 0 ),
     m_idle( 0 ), m_resource( parent ), m_state( state ),
     m_lastMessageCount( -1 ), m_lastRecentCount( -1 )
