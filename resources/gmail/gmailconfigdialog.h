@@ -35,11 +35,6 @@ class IdentityCombo;
 class IdentityManager;
 }
 
-namespace KGAPI2
-{
-class Job;
-}
-
 class GmailResource;
 
 /**
