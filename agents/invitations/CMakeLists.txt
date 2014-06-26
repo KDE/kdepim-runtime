@@ -1,4 +1,4 @@
-kde_enable_exceptions()
+
 
 set( invitationsagent_SRCS
   invitationsagent.cpp

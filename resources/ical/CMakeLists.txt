@@ -6,7 +6,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/shared
 )
 
-kde_enable_exceptions()
+
 
 add_subdirectory( wizard )
 add_subdirectory( notes )

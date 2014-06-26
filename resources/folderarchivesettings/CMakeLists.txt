@@ -1,5 +1,5 @@
 project(folderarchivesettings)
-kde_enable_exceptions()
+
 
 add_definitions(-DTRANSLATION_DOMAIN=\"libfolderarchivesettings\")
 

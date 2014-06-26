@@ -1,5 +1,5 @@
 project(migration)
-kde_enable_exceptions()
+
 
 if (0)
   find_package(ECM 0.0.14 CONFIG REQUIRED)

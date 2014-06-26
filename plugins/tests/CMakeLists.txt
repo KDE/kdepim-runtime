@@ -1,5 +1,5 @@
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
-kde_enable_exceptions()
+
 
 include_directories(
     ${kdepim-runtime_SOURCE_DIR}/plugins

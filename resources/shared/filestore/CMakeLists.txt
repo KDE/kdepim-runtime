@@ -1,5 +1,5 @@
 project(akonadi-filestore)
-kde_enable_exceptions()
+
 
 set(akonadi-filestore_SRCS
   abstractlocalstore.cpp

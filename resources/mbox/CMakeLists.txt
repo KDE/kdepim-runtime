@@ -1,4 +1,4 @@
-kde_enable_exceptions()
+
 
 find_package(KF5Mbox ${KF5_VERSION} CONFIG REQUIRED)
 

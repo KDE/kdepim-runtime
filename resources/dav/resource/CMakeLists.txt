@@ -15,7 +15,7 @@ project(davgroupware)
       ../protocols/
   )
 
-  kde_enable_exceptions()
+  
 
 
   ########### next target ###############

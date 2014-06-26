@@ -13,7 +13,7 @@ if(KIMAPTEST_INCLUDE_DIR AND KIMAPTEST_LIBRARY)
 			dummyresourcestate.cpp
 			imaptestbase.cpp
 			)
-      kde_enable_exceptions()
+      
       target_link_libraries(${_testname} 
             KF5::Imap ${KDEPIMLIBS_KIMAP_LIBS} ${KIMAPTEST_LIBRARY} ${QT_QTTEST_LIBRARY} imapresource)
       add_definitions(-DTEST_DATA="\\"${CMAKE_CURRENT_SOURCE_DIR}\\"")
@@ -49,6 +49,6 @@ set(testsubscriptiondialog_SRCS
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/..)
 add_executable(testsubscriptiondialog ${testsubscriptiondialog_SRCS})
-kde_enable_exceptions()
+
 target_link_libraries(testsubscriptiondialog KF5::KIOCore KF5::Imap KF5::KMime)
 

@@ -7,7 +7,7 @@ include_directories(
     ${Libkolabxml_INCLUDES}
 )
 
-kde_enable_exceptions()
+
 find_package(KF5Imap ${KF5_VERSION} CONFIG REQUIRED)
 
 ########### next target ###############

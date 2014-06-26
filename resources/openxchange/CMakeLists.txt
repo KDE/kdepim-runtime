@@ -1,4 +1,4 @@
-kde_enable_exceptions()
+
 
 set( openxchangeresource_SRCS
   oxa/connectiontestjob.cpp

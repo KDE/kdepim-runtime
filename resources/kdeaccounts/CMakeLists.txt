@@ -3,7 +3,7 @@ include_directories(
     ${QT_QTDBUS_INCLUDE_DIR}
 )
 
-kde_enable_exceptions()
+
 
 ########### next target ###############
 

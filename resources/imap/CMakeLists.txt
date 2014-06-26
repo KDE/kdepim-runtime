@@ -1,4 +1,4 @@
-kde_enable_exceptions()
+
 
 option(IMAPRESOURCE_NO_SOLID "Disable the use of solid in the imap resource" FALSE)
 if(IMAPRESOURCE_NO_SOLID)

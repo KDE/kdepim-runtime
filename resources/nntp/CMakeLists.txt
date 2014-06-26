@@ -1,4 +1,4 @@
-kde_enable_exceptions()
+
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 set( nntpresource_SRCS
   nntpcollectionattribute.cpp

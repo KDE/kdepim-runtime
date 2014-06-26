@@ -1,6 +1,6 @@
 project(pop3)
 
-kde_enable_exceptions()
+
 
 
 ########### next target ###############

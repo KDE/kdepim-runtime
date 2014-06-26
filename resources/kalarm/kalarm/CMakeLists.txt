@@ -6,7 +6,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared
 )
 
-kde_enable_exceptions()
+
 
 ########### next target ###############
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5952)
