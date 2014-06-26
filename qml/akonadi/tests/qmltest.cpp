@@ -28,7 +28,7 @@
 #include <kselectionproxymodel.h>
 #include <KStandardDirs>
 #include <kapplication.h>
-#include <kaboutdata.h>
+#include <K4AboutData>
 #include <kcmdlineargs.h>
 // #include <kdescendantsproxymodel.h>
 
@@ -98,7 +98,7 @@ int main( int argc, char **argv )
 {
   const QByteArray& ba = QByteArray( "akonadi_qml" );
   const KLocalizedString name = ki18n( "Akonadi QML Test" );
-  KAboutData aboutData( ba, ba, name, ba, name );
+  K4AboutData aboutData( ba, ba, name, ba, name );
   KCmdLineArgs::init( argc, argv, &aboutData );
   KApplication app;
 

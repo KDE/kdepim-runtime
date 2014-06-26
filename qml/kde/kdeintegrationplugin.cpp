@@ -44,4 +44,4 @@ void KDEIntegrationPlugin::initializeEngine(QDeclarativeEngine *engine, const ch
 }
 
 
-Q_EXPORT_PLUGIN2( kdeintegrationplugin, KDEIntegrationPlugin )
+//QT5 Q_EXPORT_PLUGIN2( kdeintegrationplugin, KDEIntegrationPlugin )

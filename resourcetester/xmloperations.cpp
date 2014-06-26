@@ -25,7 +25,7 @@
 #include <AkonadiCore/collectionfetchscope.h>
 #include <AkonadiCore/itemfetchjob.h>
 #include <AkonadiCore/itemfetchscope.h>
-#include <akonadi/xml/xmlwritejob.h>
+#include <AkonadiXml/xmlwritejob.h>
 
 #include <KDebug>
 

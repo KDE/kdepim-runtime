@@ -40,36 +40,6 @@ set(KDEPIM_RUNTIME_VERSION "4.98${KDEPIM_RUNTIME_DEV_VERSION}")
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
 
-# we need some parts of the ECM CMake helpers
-option(KDEPIMLIBS_SUPERBUILD "Build standalone lib" FALSE)
-
-if (KDEPIMLIBS_SUPERBUILD)
-
-# Remove it when splitted
-
-# This CMakeLists.txt is a "superbuild" for the frameworks.
-# This means it can be used to build them all standalone one-by-one.
-# This is useful to compile all them with one command.
-
-# use mkdir build && cd build && cmake -DKDEPIMLIBS_SUPERBUILD=TRUE ../ && make -j8 sb_all
-
-  include(SuperBuild.cmake)
-
-  sb_add_project(resources)
-  sb_add_project(agents)
-  #sb_add_project(plugins)
-  sb_add_project(accountwizard)
-  #sb_add_project(defaultsetup)
-  #sb_add_project(resourcetester)
-  sb_add_project(kioslave)
-  #sb_add_project(kcm)
-  #sb_add_project(migration)
-  #sb_add_project(qml)
-
-sb_end()
-
-else( KDEPIMLIBS_SUPERBUILD)
-
 find_package(ECM 0.0.14 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
@@ -108,6 +78,7 @@ find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
@@ -152,7 +123,7 @@ add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(kcm)
 add_subdirectory(migration)
-#add_subdirectory(qml)
+add_subdirectory(qml)
 
 
 
@@ -160,8 +131,6 @@ feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
                 FATAL_ON_MISSING_REQUIRED_PACKAGES
 )
-
-endif()
 
 if (FALSE)
 ############### KDEPIM-Runtime version ################

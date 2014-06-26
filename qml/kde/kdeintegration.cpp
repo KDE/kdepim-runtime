@@ -19,7 +19,7 @@
 
 #include "kdeintegration.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocale>
 #include <KIconLoader>
 #include <KStandardDirs>
@@ -75,7 +75,7 @@ static QString translate( const KLocalizedString &msg,
         string = string.subs( arg.toString() );
         break;
       default:
-        kWarning() << "Unknown i18n argument type:" << arg;
+        qWarning() << "Unknown i18n argument type:" << arg;
     }
 
   }
@@ -108,7 +108,7 @@ QString KDEIntegration::i18n( const QScriptValue &array )
   QScriptContext *context = getContext(array);
 
   if (!context) {
-      kWarning() << "No context !";
+      qWarning() << "No context !";
       return QString();
   }
 
@@ -127,12 +127,12 @@ QString KDEIntegration::i18nc( const QScriptValue &array )
   QScriptContext *context = getContext(array);
 
   if (!context) {
-      kWarning() << "No context !";
+      qWarning() << "No context !";
       return QString();
   }
 
   if (context->argumentCount() < 2) {
-      kWarning() << "i18nc() takes at least two arguments";
+      qWarning() << "i18nc() takes at least two arguments";
       //### TODO (new str): context->throwError(i18n("i18nc() takes at least two arguments"));
       return QString();
   }
@@ -148,12 +148,12 @@ QString KDEIntegration::i18np( const QScriptValue &array )
   QScriptContext *context = getContext(array);
 
   if (!context) {
-      kWarning() << "No context !";
+      qWarning() << "No context !";
       return QString();
   }
 
   if (context->argumentCount() < 2) {
-      kWarning() << "i18np() takes at least two arguments";
+      qWarning() << "i18np() takes at least two arguments";
       //### TODO (new str): context->throwError(i18n("i18np() takes at least two arguments"));
       return QString();
   }
@@ -169,12 +169,12 @@ QString KDEIntegration::i18ncp( const QScriptValue &array )
   QScriptContext *context = getContext(array);
 
   if (!context) {
-      kWarning() << "No context !";
+      qWarning() << "No context !";
       return QString();
   }
 
   if (context->argumentCount() < 3) {
-      kWarning() << "i18ncp() takes at least three arguments";
+      qWarning() << "i18ncp() takes at least three arguments";
       //### TODO (new str): context->throwError(i18n("i18ncp() takes at least three arguments"));
       return QString();
   }
