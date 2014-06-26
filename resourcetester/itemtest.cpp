@@ -22,7 +22,7 @@
 #include "global.h"
 #include "test.h"
 
-#include <akonadi/private/collectionpathresolver_p.h>
+#include <AkonadiCore/collectionpathresolver.h>
 #include <AkonadiCore/itemcreatejob.h>
 
 #include <KDebug>

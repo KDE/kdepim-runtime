@@ -23,7 +23,7 @@
 #include <AkonadiCore/collectioncreatejob.h>
 #include <AkonadiCore/collectionmodifyjob.h>
 #include <AkonadiCore/collectiondeletejob.h>
-#include <akonadi/private/collectionpathresolver_p.h>
+#include <AkonadiCore/collectionpathresolver.h>
 
 #include <QStringList>
 

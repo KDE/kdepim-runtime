@@ -1,5 +1,5 @@
 
-kde_enable_exceptions()
+
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 #add_subdirectory( tests )
@@ -21,6 +21,7 @@ set( resourcetester_SRCS
 add_executable(resourcetester ${resourcetester_SRCS})
 
 target_link_libraries( resourcetester
+  KF5::AkonadiXml
   KF5::AkonadiCore
   Qt5::Test
   KF5::KrossCore
