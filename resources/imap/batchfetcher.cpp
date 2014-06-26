@@ -19,8 +19,9 @@
 
 #include "batchfetcher.h"
 
-#include <KIMAP/Session>
-
+#include <KImap/Session>
+#include <QDebug>
+#include <KDebug>
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
                            const KIMAP::ImapSet &set,
                            const KIMAP::FetchJob::FetchScope &scope,
@@ -76,7 +77,7 @@ void BatchFetcher::start()
 void BatchFetcher::onUidSearchDone(KJob* job)
 {
     if (job->error()) {
-        kWarning() << "Search job failed: " << job->errorString();
+        qWarning() << "Search job failed: " << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -168,7 +169,7 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
 
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
-        //kDebug( 5327 ) << "Flags: " << i.flags();
+        //qDebug( 5327 ) << "Flags: " << i.flags();
         bool ok;
         const Akonadi::Item item = m_messageHelper->createItemFromMessage(messages[number], uids[number], sizes[number], attrs.values(number), flags[number], fetch->scope(), ok);
         if (ok) {
@@ -176,7 +177,7 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
             addedItems << item;
         }
     }
-//     kDebug() << addedItems.size();
+//     qDebug() << addedItems.size();
     if (!addedItems.isEmpty()) {
         emit itemsRetrieved(addedItems);
     }
@@ -186,7 +187,7 @@ void BatchFetcher::onHeadersFetchDone( KJob *job )
 {
     m_fetchInProgress = false;
     if (job->error()) {
-        kWarning() << "Fetch job failed " << job->errorString();
+        qWarning() << "Fetch job failed " << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;

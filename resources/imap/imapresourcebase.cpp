@@ -28,21 +28,23 @@
 #include <QHostInfo>
 #include <QSettings>
 
+#include <KIcon>
+#include <KGlobal>
 #include <kdebug.h>
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <kwindowsystem.h>
-#include <Akonadi/CollectionModifyJob>
+#include <AkonadiCore/CollectionModifyJob>
 
-#include <akonadi/agentmanager.h>
-#include <akonadi/attributefactory.h>
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/changerecorder.h>
-#include <akonadi/itemfetchscope.h>
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/specialcollections.h>
-#include <akonadi/session.h>
+#include <AkonadiCore/agentmanager.h>
+#include <AkonadiCore/attributefactory.h>
+#include <AkonadiCore/collectionfetchjob.h>
+#include <AkonadiCore/collectionfetchscope.h>
+#include <AkonadiCore/changerecorder.h>
+#include <AkonadiCore/itemfetchscope.h>
+#include <AkonadiCore/itemfetchjob.h>
+#include <AkonadiCore/specialcollections.h>
+#include <AkonadiCore/session.h>
 #include <akonadi/kmime/messageparts.h>
 
 #include "collectionannotationsattribute.h"

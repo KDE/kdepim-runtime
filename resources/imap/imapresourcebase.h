@@ -26,8 +26,8 @@
 #ifndef RESOURCES_IMAP_IMAPRESOURCEBASE_H
 #define RESOURCES_IMAP_IMAPRESOURCEBASE_H
 
-#include <akonadi/resourcebase.h>
-#include <akonadi/agentsearchinterface.h>
+#include <AkonadiAgentBase/resourcebase.h>
+#include <AkonadiAgentBase/agentsearchinterface.h>
 #include <KDialog>
 #include <QPointer>
 #include "resourcestateinterface.h"
