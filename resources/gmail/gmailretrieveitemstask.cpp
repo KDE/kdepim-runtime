@@ -25,7 +25,6 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/LinkJob>
 
-#include <KIMAP/Session>
 
 GmailRetrieveItemsTask::GmailRetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : RetrieveItemsTask(resource, parent)

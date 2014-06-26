@@ -22,7 +22,6 @@
 
 #include <imap/retrieveitemstask.h>
 
-#include <KIMAP/ImapSet>
 #include <KIMAP/FetchJob>
 
 class GmailRetrieveItemsTask : public RetrieveItemsTask

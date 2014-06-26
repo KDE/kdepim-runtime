@@ -30,7 +30,6 @@
 
 #include <KMime/Message>
 
-#include <KIMAP/ListJob>
 
 #include <KLocalizedString>
 
