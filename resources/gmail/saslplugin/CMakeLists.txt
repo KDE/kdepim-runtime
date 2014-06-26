@@ -12,7 +12,7 @@ set(kdexoauth2sasl_SRCS
     xoauth2plugin_init.c
 )
 
-add_library(kdexoauth2 ${kdexoauth2sasl_SRCS})
+kde4_add_library(kdexoauth2 SHARED ${kdexoauth2sasl_SRCS})
 set_target_properties(kdexoauth2 PROPERTIES SOVERSION 3 VERSION 3.0.0)
 
 install(TARGETS kdexoauth2 DESTINATION ${LIB_INSTALL_DIR}/sasl2)
