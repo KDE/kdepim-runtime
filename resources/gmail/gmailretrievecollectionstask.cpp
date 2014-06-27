@@ -30,8 +30,6 @@
 
 #include <KMime/Message>
 
-#include <KImap/ListJob>
-
 #include <KLocalizedString>
 
 GmailRetrieveCollectionsTask::GmailRetrieveCollectionsTask(ResourceStateInterface::Ptr resource,

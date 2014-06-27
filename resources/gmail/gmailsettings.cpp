@@ -267,8 +267,9 @@ QString GmailSettings::password(bool *userRejected) const
     if (!mAccount) {
         loadAccountFromKWallet(userRejected);
     }
-
-    return mAccount->accessToken();
+    if (mAccount)
+        return mAccount->accessToken();
+    return QString();
 }
 
 void GmailSettings::setPassword(const QString &accessToken)

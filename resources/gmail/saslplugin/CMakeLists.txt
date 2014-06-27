@@ -12,13 +12,12 @@ set(kdexoauth2sasl_SRCS
     xoauth2plugin_init.c
 )
 
-
 if(Sasl2_FOUND)
   set(kdexoauth2sasl_EXTRA_LIBS ${Sasl2_LIBRARIES})
 endif()
 
 
-add_library(kdexoauth2 ${kdexoauth2sasl_SRCS} ${kdexoauth2sasl_EXTRA_LIBS})
+add_library(kdexoauth2 SHARED ${kdexoauth2sasl_SRCS} ${kdexoauth2sasl_EXTRA_LIBS})
 set_target_properties(kdexoauth2 PROPERTIES SOVERSION 3 VERSION 3.0.0)
 
 install(TARGETS kdexoauth2 DESTINATION ${LIB_INSTALL_DIR}/sasl2)
