@@ -42,6 +42,7 @@ endif()
 
 find_package(KF5Imap ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
 # Extra package
 find_package(KF5GAPI "4.70.0" CONFIG)
@@ -125,7 +126,6 @@ add_subdirectory( maildir )
 add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
-#NEED TO REMOVE QSJON SUPPORT
 if( KF5GAPI_FOUND )
   add_subdirectory( google )
   add_subdirectory( gmail )
@@ -139,7 +139,7 @@ add_subdirectory( shared )
 add_subdirectory( birthdays )
 add_subdirectory( mixedmaildir )
 add_subdirectory( mailtransport_dummy )
-#FIX LINKING add_subdirectory( mbox )
+# FIX LINKING add_subdirectory( mbox )
 add_subdirectory( nntp )
 add_subdirectory( vcarddir )
 add_subdirectory( icaldir )

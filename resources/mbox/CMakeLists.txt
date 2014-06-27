@@ -1,7 +1,4 @@
 
-
-find_package(KF5Mbox ${KF5_VERSION} CONFIG REQUIRED)
-
 add_subdirectory(wizard)
 
 ########### next target ###############
