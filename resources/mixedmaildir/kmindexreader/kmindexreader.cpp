@@ -24,8 +24,6 @@
 
 #include "kmindexreader.h"
 
-#include "kmindexreader_support.h"
-
 #include <KDebug>
 #include <kde_file.h>
 #include <akonadi/kmime/messagestatus.h>
