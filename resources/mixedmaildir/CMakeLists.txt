@@ -7,16 +7,11 @@ include_directories(
     ${kdepim-runtime_SOURCE_DIR}/resources/maildir
     ${kdepim-runtime_SOURCE_DIR}/resources/mbox
     ${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader
-    ${QT_QTDBUS_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIR}
 )
 
 
 
 add_subdirectory(kmindexreader)
-
-#REACTIVATE IT
-if (FALSE)
 
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5254) # TODO get our own debug area
 
@@ -57,11 +52,11 @@ target_link_libraries(akonadi_mixedmaildir_resource
   akonadi-filestore
   KF5::AkonadiCore
   KF5::AkonadiMime
-  
   KF5::KIOCore
-  ${KDEPIMLIBS_KMBOX_LIBS}
+  KF5::Mbox
   KF5::Mime
   KF5::PimUtils
+  KF5::AkonadiAgentBase
 )
 
 install(TARGETS akonadi_mixedmaildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
@@ -72,4 +67,3 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.
 if (KDE4_BUILD_TESTS)
   add_subdirectory( tests )
 endif ()
-endif()

@@ -20,8 +20,8 @@
 #ifndef MIXEDMAILDIR_RETRIEVEITEMSJOB_H
 #define MIXEDMAILDIR_RETRIEVEITEMSJOB_H
 
-#include <Akonadi/Item>
-#include <Akonadi/Job>
+#include <AkonadiCore/Item>
+#include <AkonadiCore/Job>
 
 namespace Akonadi
 {

@@ -44,14 +44,14 @@
 #include "filestore/itemmovejob.h"
 #include "filestore/storecompactjob.h"
 
-#include <kmime/messageparts.h>
-#include <kmime/messagestatus.h>
+#include <akonadi/kmime/messageparts.h>
+#include <akonadi/kmime/messagestatus.h>
 
-#include <changerecorder.h>
-#include <itemfetchjob.h>
-#include <itemfetchscope.h>
-#include <itemmodifyjob.h>
-#include <collectionfetchscope.h>
+#include <AkonadiCore/changerecorder.h>
+#include <AkonadiCore/itemfetchjob.h>
+#include <AkonadiCore/itemfetchscope.h>
+#include <AkonadiCore/itemmodifyjob.h>
+#include <AkonadiCore/collectionfetchscope.h>
 
 #include <kmime/kmime_message.h>
 
@@ -62,7 +62,7 @@
 #include <QtCore/QDir>
 #include <QtDBus/QDBusConnection>
 
-#include <Akonadi/Tag>
+#include <AkonadiCore/Tag>
 
 using namespace Akonadi;
 

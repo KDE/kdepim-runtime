@@ -22,12 +22,12 @@
 
 #include "filestore/entitycompactchangeattribute.h"
 
-#include <collection.h>
-#include <collectionmodifyjob.h>
-#include <item.h>
-#include <itemfetchjob.h>
-#include <itemmodifyjob.h>
-#include <session.h>
+#include <AkonadiCore/collection.h>
+#include <AkonadiCore/collectionmodifyjob.h>
+#include <AkonadiCore/item.h>
+#include <AkonadiCore/itemfetchjob.h>
+#include <AkonadiCore/itemmodifyjob.h>
+#include <AkonadiCore/session.h>
 
 #include <QtCore/QMap>
 #include <QtCore/QQueue>
@@ -68,7 +68,7 @@ class CompactChangeHelper::Private
 
 void CompactChangeHelper::Private::processNextBatch()
 {
-  //kDebug() << "pendingUpdates.count=" << mPendingUpdates.count();
+  //qDebug() << "pendingUpdates.count=" << mPendingUpdates.count();
   if ( mPendingUpdates.isEmpty() ) {
     return;
   }
@@ -80,7 +80,7 @@ void CompactChangeHelper::Private::processNextBatch()
 
 void CompactChangeHelper::Private::processNextItem()
 {
-  //kDebug() << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
+  //qDebug() << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
   if ( mCurrentUpdate.items.isEmpty() ) {
     CollectionModifyJob *job = new CollectionModifyJob( mCurrentUpdate.collection, mSession );
     QObject::connect( job, SIGNAL(result(KJob*)), q, SLOT(processNextBatch()) );
@@ -110,8 +110,8 @@ void CompactChangeHelper::Private::itemFetchResult( KJob *job )
   Q_ASSERT( !newRemoteId.isEmpty() );
 
   if ( fetchJob->error() != 0 ) {
-    kError() << "Item fetch for remoteId=" << oldRemoteId
-             << "new remoteId=" << newRemoteId << "failed:" << fetchJob->errorString();
+    //qFatal() << "Item fetch for remoteId=" << oldRemoteId
+    //         << "new remoteId=" << newRemoteId << "failed:" << fetchJob->errorString();
     processNextItem();
     return;
   }
@@ -149,7 +149,7 @@ void CompactChangeHelper::addChangedItems( const Item::List &items )
     return;
   }
 
-  kDebug() << "items.count=" << items.count()
+  qDebug() << "items.count=" << items.count()
            << "pendingUpdates.count=" << d->mPendingUpdates.count();
   UpdateBatch updateBatch;
 
@@ -201,7 +201,7 @@ QString CompactChangeHelper::currentRemoteId( const Item &item ) const
   }
 
   if ( item.remoteId() != remoteId ) {
-    kDebug() << "item (id=" << item.id() << "remoteId=" << item.remoteId()
+    qDebug() << "item (id=" << item.id() << "remoteId=" << item.remoteId()
              << "), col(id=" << collection.id() << ", name=" << collection.name()
              << ", revision=" << revision << ") in compact change set (revisions="
              << colIt->keys() << ": current remoteId=" << remoteId;
@@ -213,21 +213,21 @@ QString CompactChangeHelper::currentRemoteId( const Item &item ) const
 void CompactChangeHelper::checkCollectionChanged( const Collection &collection )
 {
   const qint64 revision = collection.remoteRevision().toLongLong();
-  //kDebug() << "col.id=" << collection.id() << ", remoteId=" << collection.remoteId()
+  //qDebug() << "col.id=" << collection.id() << ", remoteId=" << collection.remoteId()
   //         << "revision=" << revision;
 
   const CollectionRevisionMap::iterator colIt = d->mChangesByCollection.find( collection.id() );
   if ( colIt != d->mChangesByCollection.end() ) {
-    kDebug() << "matching change map found with" << colIt->count() << "entries";
+    qDebug() << "matching change map found with" << colIt->count() << "entries";
     // remove all revisions until the seen one appears
     RevisionChangeMap::iterator revIt = colIt->begin();
     while ( revIt != colIt->end() && revIt.key() <= revision ) {
-      kDebug() << "removing entry for revision" << revIt.key();
+      qDebug() << "removing entry for revision" << revIt.key();
       revIt = colIt->erase( revIt );
     }
 
     if ( revIt == colIt->end() ) {
-      kDebug() << "all change maps gone";
+      qDebug() << "all change maps gone";
       d->mChangesByCollection.erase( colIt );
     }
   }
