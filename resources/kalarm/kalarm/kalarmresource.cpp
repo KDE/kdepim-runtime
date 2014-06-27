@@ -23,9 +23,9 @@
 #include "kalarmresourcecommon.h"
 #include "alarmtyperadiowidget.h"
 
-#include <KAlarmCal/compatibilityattribute.h>
-#include <KAlarmCal/kacalendar.h>
-#include <KAlarmCal/kaevent.h>
+#include <kalarmcal/compatibilityattribute.h>
+#include <kalarmcal/kacalendar.h>
+#include <kalarmcal/kaevent.h>
 
 #include <agentfactory.h>
 #include <attributefactory.h>

@@ -25,6 +25,7 @@
 
 #include <KConfigDialogManager>
 #include <KWindowSystem>
+#include <KUrl>
 
 #include <QTimer>
 

@@ -25,7 +25,7 @@
 
 #include <QTimer>
 #include <KSharedConfig>
-
+#include <KUrl>
 using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
 

@@ -77,8 +77,8 @@ void ICalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
   Incidence::Ptr i = item.payload<Incidence::Ptr>();
   if ( !calendar()->addIncidence( Incidence::Ptr( i->clone() ) ) ) {
-    kError() << "akonadi_ical_resource: Error adding incidence with uid "
-             << i->uid() << "; item.id() " << item.id() << i->recurrenceId();
+    //kError() << "akonadi_ical_resource: Error adding incidence with uid "
+    //         << i->uid() << "; item.id() " << item.id() << i->recurrenceId();
     cancelTask();
     return;
   }

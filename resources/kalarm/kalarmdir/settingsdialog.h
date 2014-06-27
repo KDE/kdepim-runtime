@@ -25,9 +25,9 @@
 #include "ui_settingsdialog.h"
 #include "ui_alarmtypewidget.h"
 
-#include <KAlarmCal/kacalendar.h>
+#include <kalarmcal/kacalendar.h>
 
-#include <KDE/KDialog>
+#include <KDialog>
 
 using namespace KAlarmCal;
 

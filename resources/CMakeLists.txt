@@ -107,11 +107,11 @@ set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/imapquotaattribute.cpp
 )
 
-#add_subdirectory( akonotes )
-#add_subdirectory( kalarm )
-#add_subdirectory( contacts )
+add_subdirectory( akonotes )
+add_subdirectory( kalarm )
+add_subdirectory( contacts )
 #add_subdirectory( dav )
-#add_subdirectory( ical )
+add_subdirectory( ical )
 add_subdirectory( imap )
 add_subdirectory( kdeaccounts )
 #if (Libkolab_FOUND AND Libkolabxml_FOUND)

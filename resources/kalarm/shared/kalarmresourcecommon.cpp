@@ -21,8 +21,8 @@
 
 #include "kalarmresourcecommon.h"
 
-#include <KAlarmCal/compatibilityattribute.h>
-#include <KAlarmCal/eventattribute.h>
+#include <kalarmcal/compatibilityattribute.h>
+#include <kalarmcal/eventattribute.h>
 
 #include <attributefactory.h>
 #include <collectionmodifyjob.h>
@@ -34,6 +34,8 @@
 #include <klocale.h>
 #include <kdebug.h>
 #include <KLocale>
+
+#include <QTime>
 
 using namespace Akonadi;
 using namespace KCalCore;

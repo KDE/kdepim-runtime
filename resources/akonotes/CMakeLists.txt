@@ -3,7 +3,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../maildir
     ${CMAKE_CURRENT_BINARY_DIR}/../maildir
     ${CMAKE_CURRENT_SOURCE_DIR}/../maildir/libmaildir
-    ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
 )
 
@@ -36,7 +35,7 @@ install( FILES akonotesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sha
 
 add_library(akonadi_akonotes_resource MODULE ${akonotesresource_SRCS})
 
-target_link_libraries(akonadi_akonotes_resource KF5::AkonadiCore KF5::AkonadiMime maildir  KF5::KIOCore KF5::Mime folderarchivesettings)
+target_link_libraries(akonadi_akonotes_resource KF5::AkonadiCore KF5::AkonadiMime maildir  KF5::KIOCore KF5::Mime folderarchivesettings KF5::AkonadiAgentBase)
 
 install(TARGETS akonadi_akonotes_resource DESTINATION ${PLUGIN_INSTALL_DIR})
 

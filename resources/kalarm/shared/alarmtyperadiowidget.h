@@ -25,7 +25,7 @@
 #include "singlefileresourceconfigdialogbase.h"
 #include "ui_alarmtyperadiowidget.h"
 
-#include <KAlarmCal/kacalendar.h>
+#include <kalarmcal/kacalendar.h>
 
 using namespace KAlarmCal;
 
