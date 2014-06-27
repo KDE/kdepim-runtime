@@ -22,8 +22,8 @@
 #ifndef KPROXYITEMSELECTIONMODEL_H
 #define KPROXYITEMSELECTIONMODEL_H
 
-#include <QtGui/QItemSelectionModel>
-#include <QtGui/QAbstractProxyModel>
+#include <QItemSelectionModel>
+#include <QAbstractProxyModel>
 
 class KLinkItemSelectionModelPrivate;
 

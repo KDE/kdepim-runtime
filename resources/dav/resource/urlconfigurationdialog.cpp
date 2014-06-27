@@ -26,8 +26,8 @@
 #include <kmessagebox.h>
 #include <KLocalizedString>
 
-#include <QtGui/QStandardItem>
-#include <QtGui/QStandardItemModel>
+#include <QStandardItem>
+#include <QStandardItemModel>
 
 UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   : KDialog( parent )

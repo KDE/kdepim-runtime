@@ -25,8 +25,8 @@
 #include <KStandardDirs>
 #include <QIcon>
 #include <QPixmap>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
+#include <QApplication>
+#include <QDesktopWidget>
 
 #include <QScriptValue>
 #include <QScriptContext>

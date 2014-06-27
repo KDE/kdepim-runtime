@@ -21,11 +21,11 @@
 #include "googleresource.h"
 #include "settings.h"
 
-#include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QSpinBox>
-#include <QtGui/QCheckBox>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QSpinBox>
+#include <QCheckBox>
 
 #include <KDE/KLocalizedString>
 #include <KDE/KComboBox>

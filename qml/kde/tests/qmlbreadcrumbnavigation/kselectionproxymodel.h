@@ -20,8 +20,8 @@
 #ifndef KSELECTIONPROXYMODEL_H
 #define KSELECTIONPROXYMODEL_H
 
-#include <QtGui/QAbstractProxyModel>
-#include <QtGui/QItemSelectionModel>
+#include <QAbstractProxyModel>
+#include <QItemSelectionModel>
 
 
 #include "kmodelindexproxymapper.h"

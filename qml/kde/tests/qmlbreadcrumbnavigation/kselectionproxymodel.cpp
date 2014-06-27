@@ -21,7 +21,7 @@
 
 #include <QtCore/QStack>
 #include <QtCore/QStringList>
-#include <QtGui/QItemSelectionRange>
+#include <QItemSelectionRange>
 
 /**
   Return true if @p idx is a descendant of one of the indexes in @p list.

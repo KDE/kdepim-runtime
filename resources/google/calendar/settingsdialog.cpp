@@ -23,12 +23,12 @@
 #include <KDE/KPushButton>
 #include <KDE/KDateComboBox>
 
-#include <QtGui/QPixmap>
-#include <QtGui/QIcon>
-#include <QtGui/QListWidget>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLayout>
-#include <QtGui/QLabel>
+#include <QPixmap>
+#include <QIcon>
+#include <QListWidget>
+#include <QGroupBox>
+#include <QLayout>
+#include <QLabel>
 #include <QtCore/QPointer>
 
 #include <KGAPI/Account>

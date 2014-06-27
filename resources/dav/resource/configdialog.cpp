@@ -29,8 +29,8 @@
 #include <QtCore/QList>
 #include <QtCore/QPointer>
 #include <QtCore/QStringList>
-#include <QtGui/QStandardItem>
-#include <QtGui/QStandardItemModel>
+#include <QStandardItem>
+#include <QStandardItemModel>
 
 ConfigDialog::ConfigDialog( QWidget *parent )
   : KDialog( parent )

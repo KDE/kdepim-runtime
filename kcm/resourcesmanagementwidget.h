@@ -24,7 +24,7 @@
 #ifndef RESOURCES_MANAGEMENTWIDGET_H
 #define RESOURCES_MANAGEMENTWIDGET_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include <QStringList>
 
 #include <AkonadiCore/agentinstance.h>

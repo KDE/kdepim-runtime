@@ -30,7 +30,7 @@
 #include <KUrl>
 #include <KLocalizedString>
 
-#include <QtGui/QStandardItemModel>
+#include <QStandardItemModel>
 
 SearchDialog::SearchDialog( QWidget *parent )
   : KDialog( parent ), mModel( new QStandardItemModel( this ) ), mSubJobCount( 0 )

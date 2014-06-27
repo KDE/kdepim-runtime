@@ -22,10 +22,10 @@
 #include "subscriptiondialog.h"
 
 #include <QtCore/QCoreApplication>
-#include <QtGui/QStandardItemModel>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QCheckBox>
+#include <QStandardItemModel>
+#include <QBoxLayout>
+#include <QKeyEvent>
+#include <QCheckBox>
 
 #include <klocale.h>
 #include <kdebug.h>
@@ -41,12 +41,12 @@
 #include "sessionuiproxy.h"
 
 #ifndef KDEPIM_MOBILE_UI
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
-#include <QtGui/QTreeView>
+#include <QHeaderView>
+#include <QLabel>
+#include <QTreeView>
 #else
-#include <QtGui/QListView>
-#include <QtGui/QSortFilterProxyModel>
+#include <QListView>
+#include <QSortFilterProxyModel>
 #include <kdescendantsproxymodel.h>
 #include <KSharedConfig>
 

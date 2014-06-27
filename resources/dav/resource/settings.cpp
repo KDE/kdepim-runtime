@@ -41,9 +41,9 @@
 #include <QtCore/QPointer>
 #include <QtCore/QRegExp>
 #include <QtDBus/QDBusConnection>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QVBoxLayout>
 
 #ifdef HAVE_ACCOUNTS
 #include <Accounts/Account>

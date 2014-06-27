@@ -20,7 +20,7 @@
 #ifndef PAGE_H
 #define PAGE_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class KAssistantDialog;
 class KPageWidgetItem;

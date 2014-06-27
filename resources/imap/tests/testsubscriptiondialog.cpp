@@ -19,7 +19,7 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QStringList>
-#include <QtGui/QApplication>
+#include <QApplication>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"

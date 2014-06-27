@@ -21,7 +21,7 @@
 #include <AkonadiAgentBase/ResourceBase>
 #include <AkonadiAgentBase/AgentBase>
 
-#include <QtGui/qwindowdefs.h>
+#include <qwindowdefs.h>
 
 #include "googleaccountmanager.h"
 

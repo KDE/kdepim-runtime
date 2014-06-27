@@ -21,7 +21,7 @@
 
 #include "davutils.h"
 
-#include <QtGui/QColor>
+#include <QColor>
 #include <QtCore/QList>
 #include <QtCore/QString>
 
