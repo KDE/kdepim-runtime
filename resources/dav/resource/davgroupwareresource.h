@@ -22,7 +22,7 @@
 #include "etagcache.h"
 
 #include <resourcebase.h>
-#include <Akonadi/Calendar/freebusyproviderbase.h>
+#include <akonadi/calendar/freebusyproviderbase.h>
 
 class DavFreeBusyHandler;
 class KDateTime;

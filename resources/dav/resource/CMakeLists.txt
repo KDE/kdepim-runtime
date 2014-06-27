@@ -9,14 +9,9 @@ project(davgroupware)
   endif()
 
   include_directories(
-      ${KDE4_INCLUDES}
-      ${KDEPIMLIBS_INCLUDE_DIRS}
       ../common/
       ../protocols/
   )
-
-  
-
 
   ########### next target ###############
 
@@ -83,10 +78,12 @@ project(davgroupware)
   endif ()
 
   target_link_libraries(akonadi_davgroupware_resource
+          KF5::Abc
 	  KF5::AkonadiCalendar 
           KF5::KIOCore
 	  KF5::AkonadiAgentBase
           KF5::AkonadiCore
+          KF5::Wallet
           KF5::CalendarCore)
 
   if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
