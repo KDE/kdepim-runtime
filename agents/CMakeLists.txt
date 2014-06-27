@@ -53,8 +53,7 @@ endmacro()
 
 add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
-#reactivate it
-#add_subdirectory( migration )
+add_subdirectory( migration )
 add_subdirectory( invitations )
 
 install(FILES akonadinepomukfeederagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")

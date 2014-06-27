@@ -83,7 +83,7 @@ install( FILES
   akonadi_serializer_mail.desktop
   akonadi_serializer_kcalcore.desktop
   akonadi_serializer_bookmark.desktop
-  akonadi_serializer_contactgroup.desktop
+  #REACTIVATE akonadi_serializer_contactgroup.desktop
   akonadi_serializer_microblog.desktop
   akonadi_serializer_kalarm.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)

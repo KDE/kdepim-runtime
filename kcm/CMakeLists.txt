@@ -10,11 +10,10 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kcmakonadi_SOURCE_DIR}")
   find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 endif()
 
-#REACTIVATE
-#set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
-#ki18n_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
-#add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
-#target_link_libraries(kcm_akonadi_resources  KF5::AkonadiCore KF5::AkonadiWidgets Qt5::Widgets)
+set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
+ki18n_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
+add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
+target_link_libraries(kcm_akonadi_resources  KF5::AkonadiCore KF5::AkonadiWidgets Qt5::Widgets)
 
 
 set(akonadi_server_kcm_srcs serverconfigmodule.cpp)
@@ -32,8 +31,7 @@ target_link_libraries(kcm_akonadi  KF5::KCMUtils KF5::AkonadiWidgets KF5::Akonad
 
 
 install(TARGETS
-  #REACTIVATE
-  #kcm_akonadi_resources
+  kcm_akonadi_resources
   kcm_akonadi_server
   kcm_akonadi
   DESTINATION ${PLUGIN_INSTALL_DIR})
