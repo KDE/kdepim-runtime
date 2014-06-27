@@ -27,18 +27,18 @@
 #include <kservicetypetrader.h>
 #include <ktextbrowser.h>
 
-#include <QtCore/QUrl>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QComboBox>
-#include <QtGui/QCheckBox>
-#include <QtGui/QFormLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QRadioButton>
-#include <QtGui/QRegExpValidator>
-#include <QtGui/QTextBrowser>
+#include <QUrl>
+#include <QButtonGroup>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QFormLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QRegExpValidator>
+#include <QTextBrowser>
 
 #include <kdebug.h>
 

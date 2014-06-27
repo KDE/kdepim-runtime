@@ -21,8 +21,8 @@
 
 #include "davutils.h"
 
-#include <QtGui/QWizard>
-#include <QtGui/QWizardPage>
+#include <QWizard>
+#include <QWizardPage>
 #include <qlabel.h>
 
 class KJob;

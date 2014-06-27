@@ -78,6 +78,7 @@ project(davgroupware)
   endif ()
 
   target_link_libraries(akonadi_davgroupware_resource
+          Qt5::XmlPatterns
           KF5::Abc
 	  KF5::AkonadiCalendar 
           KF5::KIOCore

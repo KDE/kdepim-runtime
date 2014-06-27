@@ -59,7 +59,7 @@ set(KDEPIM_LIB_SOVERSION "5")
 set(KDEPIMLIBS_LIB_VERSION "4.70.0")
 
 
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test Declarative)
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED Widgets Test Declarative XmlPatterns)
 
 # QT5 package
 find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
