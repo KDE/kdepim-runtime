@@ -20,7 +20,7 @@
 #ifndef LOCKMETHODPAGE_H
 #define LOCKMETHODPAGE_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 #include "ui_lockfilepage.h"
 

@@ -20,7 +20,7 @@
 #ifndef COMPACTPAGE_H
 #define COMPACTPAGE_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 #include "ui_compactpage.h"
 
