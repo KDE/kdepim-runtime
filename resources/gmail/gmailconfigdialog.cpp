@@ -146,7 +146,7 @@ void GmailConfigDialog::applySettings()
         GmailSettings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
     }
 
-    GmailSettings::self()->writeConfig();
+    GmailSettings::self()->save();
 
     if (m_oldResourceName != m_account->accountName() && !m_account->accountName().isEmpty()) {
         GmailSettings::self()->renameRootCollection(m_account->accountName());

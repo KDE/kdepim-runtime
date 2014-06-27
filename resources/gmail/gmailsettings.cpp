@@ -61,7 +61,7 @@ GmailSettings *GmailSettings::self()
 {
     if (!s_globalSettings->q) {
         new GmailSettings;
-        s_globalSettings->q->readConfig();
+        s_globalSettings->q->load();
     }
 
     return s_globalSettings->q;
