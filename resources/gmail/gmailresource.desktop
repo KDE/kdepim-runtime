@@ -1,6 +1,20 @@
 [Desktop Entry]
 Name=Gmail
+Name[ca]=Gmail
+Name[nds]=GMail
+Name[pt]=Gmail
+Name[sk]=Gmail
+Name[sv]=Gmail
+Name[uk]=Gmail
+Name[x-test]=xxGmailxx
 Comment=Connects to your Gmail account
+Comment[ca]=Connecta amb el vostre compte de Gmail
+Comment[nds]=Koppelt sik Dien GMail-Konto to
+Comment[pt]=Liga-se à sua conta de Gmail
+Comment[sk]=Pripojí k vášmu Gmail účtu
+Comment[sv]=Ansluter till ditt Gmail-konto
+Comment[uk]=Встановлює з’єднання з вашим обліковим записом Gmail
+Comment[x-test]=xxConnects to your Gmail accountxx
 Type=AkonadiResource
 Exec=akonadi_gmail_resource
 Icon=im-google
