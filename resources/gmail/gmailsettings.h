@@ -90,7 +90,4 @@ private:
 
 };
 
-// HACK: Make GmailSettings usable in ImapResoure to
-//typedef GmailSettings GmailSettings;
-
 #endif
