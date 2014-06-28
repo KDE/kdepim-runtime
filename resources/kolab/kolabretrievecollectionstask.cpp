@@ -168,7 +168,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     //We add a dummy mimetype, otherwise the itemsync doesn't even work (action is disabled and resourcebase aborts the operation)
     c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType() << QLatin1String("application/x-kolab-objects"));
     //assume LRS, until myrights is executed
-    if (serverCapabilities().contains("ACL")) {
+    if (serverCapabilities().contains(QLatin1String("ACL"))) {
         c.setRights(Akonadi::Collection::ReadOnly);
     } else {
         c.setRights(Akonadi::Collection::AllRights);
