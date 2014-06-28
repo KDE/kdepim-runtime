@@ -46,8 +46,8 @@
 GmailResource::GmailResource(const QString &id):
     ImapResourceBase(id)
 {
-    KGlobal::locale()->insertCatalog("akonadi_imap_resource");
-    setSeparatorCharacter('/');
+    KGlobal::locale()->insertCatalog(QLatin1String("akonadi_imap_resource"));
+    setSeparatorCharacter(QLatin1Char('/'));
 
     m_pool->setPasswordRequester(new GmailPasswordRequester(m_pool));
     m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));

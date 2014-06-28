@@ -124,7 +124,7 @@ void GmailConfigDialog::applySettings()
     GmailSettings::self()->setUserName(m_account->accountName());
     GmailSettings::self()->setPassword(m_account->accessToken());
     GmailSettings::self()->setRefreshToken(m_account->refreshToken());
-    GmailSettings::self()->setSafety("SSL");
+    GmailSettings::self()->setSafety(QLatin1String("SSL"));
     GmailSettings::self()->setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
     GmailSettings::self()->setIntervalCheckTime(m_ui->checkInterval->value());
     GmailSettings::self()->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
