@@ -50,7 +50,7 @@
              </widget>
             </item>
             <item>
-             <widget class="KPushButton" name="changeAuthButton">
+             <widget class="QPushButton" name="changeAuthButton">
               <property name="text">
                <string>Change...</string>
               </property>
@@ -62,7 +62,7 @@
         </layout>
        </item>
        <item>
-        <widget class="KPushButton" name="authenticateButton">
+        <widget class="QPushButton" name="authenticateButton">
          <property name="text">
           <string>Authenticate</string>
          </property>
@@ -104,18 +104,12 @@
              </widget>
             </item>
             <item>
-             <widget class="KIntNumInput" name="checkInterval">
+             <widget class="KPluralHandlingSpinBox" name="checkInterval">
               <property name="value">
                <number>15</number>
               </property>
               <property name="minimum">
                <number>5</number>
-              </property>
-              <property name="suffix">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string/>
               </property>
              </widget>
             </item>
@@ -158,7 +152,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="KPushButton" name="subscriptionButton">
+           <widget class="QPushButton" name="subscriptionButton">
             <property name="text">
              <string>Select folders to synchronize...</string>
             </property>
@@ -228,14 +222,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KIntNumInput</class>
-   <extends>QWidget</extends>
-   <header>knuminput.h</header>
+   <class>KPluralHandlingSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>kpluralhandlingspinbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

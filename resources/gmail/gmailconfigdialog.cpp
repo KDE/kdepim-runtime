@@ -52,8 +52,8 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     m_ui->setupUi(mainWidget());
 
     m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
-    m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
-
+    m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000 );
+    m_ui->checkInterval->setSingleStep( 1 );
 
     m_identityManager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
     m_identityCombobox = new KPIMIdentities::IdentityCombo( m_identityManager, this );
