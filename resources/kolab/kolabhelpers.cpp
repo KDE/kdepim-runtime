@@ -97,7 +97,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
                 ok = false;
                 return Akonadi::Item();
             }
-            Akonadi::Item newItem("text/x-vnd.akonadi.note");
+            Akonadi::Item newItem(QLatin1String("text/x-vnd.akonadi.note"));
             newItem.setPayload(note);
             newItem.setRemoteId(imapItem.remoteId());
             const Akonadi::NoteUtils::NoteMessageWrapper wrapper(note);
