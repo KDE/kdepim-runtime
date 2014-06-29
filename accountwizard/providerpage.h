@@ -25,7 +25,7 @@
 #include <QStandardItemModel>
 
 #include "ui_providerpage.h"
-#include <knewstuff3/entry.h>
+#include <kns3/entry.h>
 
 struct Provider {
   QString entryId;

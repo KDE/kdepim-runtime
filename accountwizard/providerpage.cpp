@@ -23,7 +23,7 @@
 
 #include <KDebug>
 #include <QSortFilterProxyModel>
-#include <knewstuff3/downloadmanager.h>
+#include <kns3/downloadmanager.h>
 #include <KLocalizedString>
 
 ProviderPage::ProviderPage(KAssistantDialog* parent) :
