@@ -29,7 +29,7 @@
 
 #include <KDE/KLocalizedString>
 #include <KDE/KComboBox>
-#include <KDE/KPushButton>
+#include <QPushButton>
 #include <KDE/KDebug>
 #include <KDE/KMessageBox>
 #include <KDE/KWindowSystem>
@@ -66,12 +66,12 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
     connect( m_accComboBox, SIGNAL(currentIndexChanged(QString)),
              this, SIGNAL(currentAccountChanged(QString)) );
 
-    m_addAccButton = new KPushButton( QIcon::fromTheme( QLatin1String("list-add-user") ), i18n( "&Add" ), m_accGroupBox );
+    m_addAccButton = new QPushButton( QIcon::fromTheme( QLatin1String("list-add-user") ), i18n( "&Add" ), m_accGroupBox );
     accLayout->addWidget( m_addAccButton );
     connect( m_addAccButton, SIGNAL(clicked(bool)),
              this, SLOT(slotAddAccountClicked()) );
 
-    m_removeAccButton = new KPushButton( QIcon::fromTheme( QLatin1String("list-remove-user") ), i18n( "&Remove" ), m_accGroupBox );
+    m_removeAccButton = new QPushButton( QIcon::fromTheme( QLatin1String("list-remove-user") ), i18n( "&Remove" ), m_accGroupBox );
     accLayout->addWidget( m_removeAccButton );
     connect( m_removeAccButton, SIGNAL(clicked(bool)),
              this, SLOT(slotRemoveAccountClicked()) );

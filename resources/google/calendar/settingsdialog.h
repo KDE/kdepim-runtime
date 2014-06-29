@@ -44,13 +44,13 @@ class SettingsDialog : public GoogleSettingsDialog
   private:
     QGroupBox *m_calendarsBox;
     KListWidget *m_calendarsList;
-    KPushButton *m_reloadCalendarsBtn;
+    QPushButton *m_reloadCalendarsBtn;
     QLabel *m_eventsLimitLabel;
     KDateComboBox *m_eventsLimitCombo;
 
     QGroupBox *m_taskListsBox;
     KListWidget *m_taskListsList;
-    KPushButton *m_reloadTaskListsBtn;
+    QPushButton *m_reloadTaskListsBtn;
 
 };
 
