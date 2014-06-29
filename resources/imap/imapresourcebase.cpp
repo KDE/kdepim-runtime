@@ -28,7 +28,7 @@
 #include <QHostInfo>
 #include <QSettings>
 
-#include <KIcon>
+#include <QIcon>
 #include <KGlobal>
 #include <kdebug.h>
 #include <klocale.h>
@@ -265,7 +265,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
 #endif
   }
   mSubscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
-  mSubscriptions->setWindowIcon( KIcon( QLatin1String("network-server") ) );
+  mSubscriptions->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
   mSubscriptions->connectAccount( *m_pool->account(), password );
   mSubscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
 

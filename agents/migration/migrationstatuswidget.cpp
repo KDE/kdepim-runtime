@@ -28,7 +28,7 @@
 #include <QLabel>
 #include <KToolBar>
 #include <KDebug>
-#include <KIcon>
+#include <QIcon>
 #include <KDialog>
 #include <KLocalizedString>
 
@@ -41,15 +41,15 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
         KToolBar *toolbar = new KToolBar(QLatin1String("MigrationControlToolbar"), this);
 
         QAction *start = toolbar->addAction(QLatin1String("Start"));
-        start->setIcon(KIcon(QLatin1String("media-playback-start")));
+        start->setIcon(QIcon::fromTheme(QLatin1String("media-playback-start")));
         connect(start, SIGNAL(triggered(bool)), this, SLOT(startSelected()));
 
         QAction *pause = toolbar->addAction(QLatin1String("Pause"));
-        pause->setIcon(KIcon(QLatin1String("media-playback-pause")));
+        pause->setIcon(QIcon::fromTheme(QLatin1String("media-playback-pause")));
         connect(pause, SIGNAL(triggered(bool)), this, SLOT(pauseSelected()));
 
         QAction *abort = toolbar->addAction(QLatin1String("Abort"));
-        abort->setIcon(KIcon(QLatin1String("media-playback-stop")));
+        abort->setIcon(QIcon::fromTheme(QLatin1String("media-playback-stop")));
         connect(abort, SIGNAL(triggered(bool)), this, SLOT(abortSelected()));
 
         vboxLayout->addWidget(toolbar);

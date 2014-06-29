@@ -23,7 +23,7 @@
 
 #include <KLocalizedString>
 #include <KDebug>
-#include <KIcon>
+#include <QIcon>
 #include <KJobTrackerInterface>
 
 #include "migrationexecutor.h"
@@ -32,31 +32,31 @@ void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 {
     switch ( type ) {
     case MigratorBase::Success: {
-        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-ok-apply")), msg);
+        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QLatin1String("dialog-ok-apply")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Skip: {
-        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-ok")), msg);
+        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QLatin1String("dialog-ok")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Info: {
-        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-information")), msg);
+        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QLatin1String("dialog-information")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Warning: {
-        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-warning")), msg);
+        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QLatin1String("dialog-warning")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Error: {
-        QStandardItem *item = new QStandardItem(KIcon(QLatin1String("dialog-error")), msg);
+        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QLatin1String("dialog-error")), msg);
         item->setEditable(false);
         appendRow(item);
         break;

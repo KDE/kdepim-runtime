@@ -35,7 +35,7 @@
 
 #include <knotifyconfigwidget.h>
 #include <KDebug>
-#include <KIcon>
+#include <QIcon>
 #include <KLocalizedString>
 #include <KLocalizedString>
 #include <KMime/Message>

@@ -18,7 +18,7 @@
 */
 
 #include "setuppage.h"
-#include <KIcon>
+#include <QIcon>
 #include <qstandarditemmodel.h>
 
 SetupPage::SetupPage(KAssistantDialog* parent) :
@@ -47,13 +47,13 @@ void SetupPage::addMessage(SetupPage::MessageType type, const QString& msg)
   item->setEditable( false );
   switch ( type ) {
     case Success:
-      item->setIcon( KIcon( QLatin1String("dialog-ok") ) );
+      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-ok") ) );
       break;
     case Info:
-      item->setIcon( KIcon( QLatin1String("dialog-information" )) );
+      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-information" )) );
       break;
     case Error:
-      item->setIcon( KIcon( QLatin1String("dialog-error") ) );
+      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-error") ) );
       break;
   }
   m_msgModel->appendRow( item );

@@ -32,7 +32,7 @@
 #include <QPushButton>
 #include <KHelpMenu>
 #include <k4aboutdata.h>
-#include <KIcon>
+#include <QIcon>
 
 #include <QTabWidget>
 #include <QCheckBox>
@@ -62,7 +62,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     : KDialog(parent)
 {
     setCaption( i18n("New Mail Notifier settings") );
-    setWindowIcon( KIcon( QLatin1String("kmail") ) );
+    setWindowIcon( QIcon::fromTheme( QLatin1String("kmail") ) );
     setButtons( Help | Ok|Cancel );
     connect(this, SIGNAL(okClicked()), this, SLOT(slotOkClicked()));
 
@@ -167,7 +167,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     KHelpMenu *helpMenu = new KHelpMenu(this, mAboutData, true);
     //Initialize menu
     QMenu *menu = helpMenu->menu();
-    helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(KIcon(QLatin1String("kmail")));
+    helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(QIcon::fromTheme(QLatin1String("kmail")));
     setButtonMenu( Help, menu );
 #endif
     readConfig();

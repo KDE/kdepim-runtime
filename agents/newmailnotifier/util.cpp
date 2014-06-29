@@ -20,7 +20,7 @@
 #include <KNotification>
 #include <KLocalizedString>
 #include <KGlobal>
-#include <KIcon>
+#include <QIcon>
 #include <KIconLoader>
 #include <KToolInvocation>
 
@@ -65,7 +65,7 @@ void Util::showNotification(const QPixmap &pixmap, const QString &message)
 
 QPixmap Util::defaultPixmap()
 {
-    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
+    const QPixmap pixmap = QIcon::fromTheme( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
     return pixmap;
 }
 

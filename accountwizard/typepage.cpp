@@ -24,7 +24,7 @@
 #include <KStandardDirs>
 #include <KGlobal>
 #include <KConfigGroup>
-#include <KIcon>
+#include <QIcon>
 
 #include <QSortFilterProxyModel>
 #include "global.h"
@@ -87,7 +87,7 @@ TypePage::TypePage(KAssistantDialog* parent) :
     item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
     item->setData( entry, Qt::UserRole );
     if ( !f.readIcon().isEmpty() )
-      item->setData( KIcon( f.readIcon() ), Qt::DecorationRole );
+      item->setData( QIcon::fromTheme( f.readIcon() ), Qt::DecorationRole );
     item->setData( f.readComment(), Qt::ToolTipRole );
     m_model->appendRow( item );
   }
