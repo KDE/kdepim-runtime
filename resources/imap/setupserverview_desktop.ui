@@ -348,7 +348,7 @@
              </widget>
             </item>
             <item>
-             <widget class="KPushButton" name="subscriptionButton">
+             <widget class="QPushButton" name="subscriptionButton">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="KPushButton" name="testButton">
+           <widget class="QPushButton" name="testButton">
             <property name="text">
              <string>Auto Detect</string>
             </property>
@@ -621,11 +621,6 @@ p, li { white-space: pre-wrap; }
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
   </customwidget>
   <customwidget>
    <class>KIntSpinBox</class>
