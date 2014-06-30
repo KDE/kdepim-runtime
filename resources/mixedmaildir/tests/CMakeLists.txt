@@ -5,7 +5,7 @@ else()
 endif()
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 include_directories(
   ${AKONADI_INCLUDE_DIR}
@@ -34,9 +34,8 @@ kde4_add_unit_test( testdatatest
 
 target_link_libraries(
   testdatatest
-  ${KDE4_KDECORE_LIBS}
-  ${QT_QTTEST_LIBRARY}
-  ${QT_QTGUI_LIBRARY}
+  Qt5::Test
+  KF5::KDELibs4Support 
 )
 
 # put the libraries all tests link against into a variable and use it
@@ -45,12 +44,12 @@ set( common_link_libraries
   kmindexreader
   maildir
   akonadi-filestore
-  ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-  ${KDEPIMLIBS_AKONADI_LIBS}
-  ${KDEPIMLIBS_KMBOX_LIBS}
-  ${KDEPIMLIBS_KMIME_LIBS}
-  ${KDEPIMLIBS_KPIMUTILS_LIBS}
-  ${QT_QTTEST_LIBRARY}
+  KF5::AkonadiMime
+  KF5::AkonadiCore
+  KF5::Mbox
+  KF5::Mime
+  KF5::PimUtils
+  Qt5::Test
 )
 
 # test for overwritten methods

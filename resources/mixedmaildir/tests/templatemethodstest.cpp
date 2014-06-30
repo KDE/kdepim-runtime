@@ -34,7 +34,7 @@
 #include "storecompactjob.h"
 
 #include <cachepolicy.h>
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 
 #include <kmime/kmime_message.h>
 

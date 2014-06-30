@@ -29,7 +29,7 @@
 
 #include "libmaildir/maildir.h"
 
-#include <KMbox/mbox.h>
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <KRandom>

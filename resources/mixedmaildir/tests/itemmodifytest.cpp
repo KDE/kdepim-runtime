@@ -29,10 +29,10 @@
 
 #include "libmaildir/maildir.h"
 
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 #include <itemfetchscope.h>
 
-#include <KMbox/mbox.h>
+#include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
 #include <KRandom>

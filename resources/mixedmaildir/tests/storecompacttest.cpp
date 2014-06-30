@@ -26,7 +26,7 @@
 #include "filestore/itemdeletejob.h"
 #include "filestore/storecompactjob.h"
 
-#include <KMbox/mbox.h>
+#include <kmbox/mbox.h>
 
 #include <KRandom>
 #include <KTempDir>
