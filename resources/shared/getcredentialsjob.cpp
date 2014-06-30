@@ -67,7 +67,7 @@ void GetCredentialsJob::getCredentials()
         return;
     }
 
-    m_authData["AccountUsername"] = acc->value(QLatin1String("username")).toString();
+    m_authData[QLatin1String("AccountUsername")] = acc->value(QLatin1String("username")).toString();
     QPointer<SignOn::AuthSession> authSession = identity->createSession(authData.method());
 
     connect(authSession, SIGNAL(response(SignOn::SessionData)),
