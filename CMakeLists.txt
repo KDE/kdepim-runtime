@@ -40,7 +40,7 @@ set(KDEPIM_RUNTIME_VERSION "4.98${KDEPIM_RUNTIME_DEV_VERSION}")
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
 
-find_package(ECM 0.0.14 REQUIRED NO_MODULE)
+find_package(ECM 0.0.15 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
 include(ECMPackageConfigHelpers)
