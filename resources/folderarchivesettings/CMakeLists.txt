@@ -18,7 +18,7 @@ target_link_libraries(folderarchivesettings
                       KF5::AkonadiWidgets
 )
 
-set_target_properties(folderarchivesettings PROPERTIES VERSION ${KF5_VERSION} SOVERSION ${KF5_VERSION} )
+set_target_properties(folderarchivesettings PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_VERSION} )
 
 install(TARGETS folderarchivesettings ${INSTALL_TARGETS_DEFAULT_ARGS})
 
