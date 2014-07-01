@@ -51,7 +51,7 @@ include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
 include(ECMInstallIcons)
 
-set(KF5_VERSION "4.100.0")
+set(KF5_VERSION "5.0.0")
 set(QT_REQUIRED_VERSION "5.2.0")
 
 set(KDEPIM_LIB_VERSION "4.70.0")
