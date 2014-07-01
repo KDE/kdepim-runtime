@@ -7,6 +7,6 @@ add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
 
 target_link_libraries(maildir KF5::PimUtils KF5::AkonadiMime KF5::AkonadiCore)
 
-set_target_properties(maildir PROPERTIES VERSION ${KDEPIM_LIB_VERSION} SOVERSION ${KDEPIM_LIB_SOVERSION} )
+set_target_properties(maildir PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
 install(TARGETS maildir ${INSTALL_TARGETS_DEFAULT_ARGS})

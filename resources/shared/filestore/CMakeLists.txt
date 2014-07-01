@@ -27,7 +27,7 @@ target_link_libraries(akonadi-filestore
                       KF5::KIOCore
 )
 
-set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_VERSION} )
+set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
 install(TARGETS akonadi-filestore ${INSTALL_TARGETS_DEFAULT_ARGS})
 

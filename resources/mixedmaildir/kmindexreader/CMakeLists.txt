@@ -16,6 +16,6 @@ target_link_libraries(kmindexreader
     KF5::AkonadiMime
 )
 
-set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIM_LIB_VERSION} SOVERSION ${KDEPIM_LIB_SOVERSION} )
+set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
 install(TARGETS kmindexreader ${INSTALL_TARGETS_DEFAULT_ARGS})
