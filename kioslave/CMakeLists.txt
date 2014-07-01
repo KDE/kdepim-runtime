@@ -20,7 +20,6 @@ find_package(ECM 0.0.14 CONFIG REQUIRED)
 
  find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 endif()
 
@@ -33,7 +32,6 @@ add_library(kio_akonadi MODULE ${kio_akonadi_SRCS})
 
 target_link_libraries(kio_akonadi  
                       KF5::KDELibs4Support 
-                      KF5::ItemModels 
                       KF5::KIOCore 
                       KF5::AkonadiCore 
                       Qt5::DBus

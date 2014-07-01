@@ -111,7 +111,7 @@ set(accountwizard_libs
 if ( NOT ACCOUNTWIZARD_NO_GHNS )
   set(accountwizard_srcs ${accountwizard_srcs} providerpage.cpp)
   ki18n_wrap_ui(accountwizard_srcs ui/providerpage.ui)
-  set(accountwizard_libs ${accountwizard_libs} ${KDE4_KNEWSTUFF3_LIBS})
+  set(accountwizard_libs ${accountwizard_libs} KF5::NewStuff)
 endif ()
 
 add_executable(accountwizard ${accountwizard_srcs} main.cpp)

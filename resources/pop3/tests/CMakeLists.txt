@@ -9,7 +9,7 @@ include_directories(
 )
 
 # Stolen from kdepimlibs/akonadi/tests
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )
+kde_enable_exceptions()
 
 macro(add_akonadi_isolated_test _source)
   get_filename_component(_targetName ${_source} NAME_WE)
@@ -25,16 +25,16 @@ macro(add_akonadi_isolated_test _source)
   # add the dbus interace to every test (easier than adding to particular tests only)
   #qt5_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
 
-  kde4_add_executable(${_targetName} TEST ${_srcList})
+  add_executable(${_targetName} TEST ${_srcList})
   target_link_libraries(${_targetName}
-    ${QT_QTTEST_LIBRARY}
-    ${QT_QTGUI_LIBRARY}
-    ${KDEPIMLIBS_AKONADI_LIBS}
-    ${KDE4_KDECORE_LIBS}
-    ${KDEPIMLIBS_KMIME_LIBS}
-    ${QT_QTCORE_LIBRARY}
-    ${QT_QTNETWORK_LIBRARY}
-    ${QT_QTDBUS_LIBRARY}
+    Qt5::Test
+    
+    KF5::AkonadiCore
+    
+    KF5::Mime
+    
+    
+    
   )
 
   # based on kde4_add_unit_test

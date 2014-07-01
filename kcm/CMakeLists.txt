@@ -6,7 +6,6 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kcmakonadi_SOURCE_DIR}")
   set(KDEPIMLIBS_LIB_VERSION "4.70.0")
   find_package(KF5KCMUtils ${KF5_VERSION} CONFIG REQUIRED)
-  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
   find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 endif()
 
