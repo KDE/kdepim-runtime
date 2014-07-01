@@ -55,7 +55,7 @@ static QVariant::Type argumentType( const QMetaObject *mo, const QString &method
   if ( argTypes.count() != 1 )
     return QVariant::Invalid;
 
-  return QVariant::nameToType( argTypes.first() );
+  return QVariant::nameToType( argTypes.first().constData() );
 }
 
 Resource::Resource(const QString& type, QObject* parent) :

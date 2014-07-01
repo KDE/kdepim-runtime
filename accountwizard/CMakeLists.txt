@@ -43,7 +43,6 @@ find_package(KF5NewStuff ${KF5_VERSION} CONFIG REQUIRED)
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
-remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 # allow to disable GHNS support on resource-constrained systems
 option( ACCOUNTWIZARD_NO_GHNS "Disable GHNS support in the account wizard" ${KDEPIM_MOBILE_UI} )
