@@ -1,5 +1,4 @@
 include_directories(
-    ${QT_QTDBUS_INCLUDE_DIR}
     ${Boost_INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/../shared
@@ -35,7 +34,6 @@ endif ()
 
 target_link_libraries(akonadi_kalarm_dir_resource
                       KF5::AlarmCalendar
-                      ${KDEPIMLIBS_AKONADI_KCAL_LIBS}
                       KF5::AkonadiCore
                       KF5::CalendarCore
                       KF5::KIOCore

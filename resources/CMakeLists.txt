@@ -145,3 +145,8 @@ add_subdirectory( vcarddir )
 add_subdirectory( icaldir )
 add_subdirectory( vcard )
 add_subdirectory( folderarchivesettings )
+
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
+  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+endif()
+

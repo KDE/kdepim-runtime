@@ -1,7 +1,7 @@
 project(migration)
 
 
-if (0)
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${migration_SOURCE_DIR}")
   find_package(ECM 0.0.14 CONFIG REQUIRED)
   set(CMAKE_MODULE_PATH ${migration_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
@@ -55,3 +55,8 @@ add_subdirectory( kjots )
 add_subdirectory( gid )
 #TODO port away kcal
 #add_subdirectory( knotes )
+
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${migration_SOURCE_DIR}")
+  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+endif()
+

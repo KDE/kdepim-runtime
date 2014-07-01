@@ -1,3 +1,4 @@
+kde_enable_exceptions()
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 # if kdepimlibs was built without -DKDE4_BUILD_TESTS, kimaptest doesn't exist.
@@ -15,7 +16,7 @@ if(KIMAPTEST_INCLUDE_DIR AND KIMAPTEST_LIBRARY)
 			)
       
       target_link_libraries(${_testname} 
-            KF5::Imap ${KDEPIMLIBS_KIMAP_LIBS} ${KIMAPTEST_LIBRARY} ${QT_QTTEST_LIBRARY} imapresource)
+            KF5::Imap KF5::Imap ${KIMAPTEST_LIBRARY} Qt5::Test imapresource)
       add_definitions(-DTEST_DATA="\\"${CMAKE_CURRENT_SOURCE_DIR}\\"")
     ENDFOREACH(_testname)
   ENDMACRO(IMAP_RESOURCE_UNIT_TESTS)
@@ -50,5 +51,5 @@ set(testsubscriptiondialog_SRCS
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/..)
 add_executable(testsubscriptiondialog ${testsubscriptiondialog_SRCS})
 
-target_link_libraries(testsubscriptiondialog KF5::KIOCore KF5::Imap KF5::KMime)
+target_link_libraries(testsubscriptiondialog KF5::KIOCore KF5::Imap KF5::Mime KF5::ItemModels)
 

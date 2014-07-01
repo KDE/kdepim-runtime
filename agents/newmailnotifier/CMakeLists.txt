@@ -2,13 +2,6 @@
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
-find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5NotifyConfig CONFIG REQUIRED)
-
 set(newmailnotifieragent_SRCS
   newmailnotifiersettingsdialog.cpp
   newmailnotifieragent.cpp
@@ -38,7 +31,6 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::PimIdentities
   KF5::NotifyConfig
   KF5::AkonadiAgentBase
-  
 )
 
 

@@ -23,8 +23,8 @@
 #include "pop3settings.h"
 #include "maildirsettings.h"
 
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 
 #include <QtCore/QObject>
 #include <QtCore/QList>

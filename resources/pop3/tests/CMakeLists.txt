@@ -5,7 +5,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIR}
     ${AKONADI_INCLUDE_DIR}
-    ${KDEPIMLIBS_INCLUDE_DIRS}
 )
 
 # Stolen from kdepimlibs/akonadi/tests
@@ -25,16 +24,11 @@ macro(add_akonadi_isolated_test _source)
   # add the dbus interace to every test (easier than adding to particular tests only)
   #qt5_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
 
-  add_executable(${_targetName} TEST ${_srcList})
+  add_executable(${_targetName} ${_srcList})
   target_link_libraries(${_targetName}
     Qt5::Test
-    
     KF5::AkonadiCore
-    
     KF5::Mime
-    
-    
-    
   )
 
   # based on kde4_add_unit_test
