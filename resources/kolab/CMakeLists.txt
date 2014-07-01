@@ -6,6 +6,9 @@ include_directories(
     ${Libkolab_INCLUDES}
     ${Libkolabxml_INCLUDES}
 )
+add_definitions( -DQT_NO_CAST_FROM_ASCII )
+add_definitions( -DQT_NO_CAST_TO_ASCII )
+
 
 
 find_package(KF5Imap ${KF5_VERSION} CONFIG REQUIRED)

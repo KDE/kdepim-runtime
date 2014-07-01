@@ -38,8 +38,8 @@
 GmailLinkItemsTask::GmailLinkItemsTask(GmailRetrieveItemsTask *retrieveTask, QObject *parent)
     : QObject(parent)
 {
-    connect(retrieveTask, SIGNAL(linkItem(QString, QVector<QByteArray>)),
-            this, SLOT(linkItem(QString, QVector<QByteArray>)));
+    connect(retrieveTask, SIGNAL(linkItem(QString,QVector<QByteArray>)),
+            this, SLOT(linkItem(QString,QVector<QByteArray>)));
     connect(retrieveTask, SIGNAL(destroyed(QObject*)),
             this, SLOT(onRetrievalDone()));
 }

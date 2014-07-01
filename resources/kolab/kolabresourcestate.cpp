@@ -59,8 +59,8 @@ void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection
             //Groupware data always requires the full message, because it cannot translate without the body
             Akonadi::CachePolicy cachePolicy = col.cachePolicy();
             QStringList localParts = cachePolicy.localParts();
-            if (!localParts.contains(Akonadi::MessagePart::Body)) {
-                localParts << Akonadi::MessagePart::Body;
+            if (!localParts.contains(QLatin1String(Akonadi::MessagePart::Body))) {
+                localParts << QLatin1String(Akonadi::MessagePart::Body);
                 cachePolicy.setLocalParts(localParts);
                 cachePolicy.setCacheTimeout(-1);
                 cachePolicy.setInheritFromParent(false);
