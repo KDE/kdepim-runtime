@@ -163,24 +163,6 @@ void Ispdb::slotResult( KJob* job )
         n = n.nextSibling();
     }
 
-    // comment this section out when you are tired of it...
-    kDebug() << "------------------ summary --------------";
-    kDebug() << "Domains" << mDomains;
-    kDebug() << "Name" << mDisplayName << "(" << mDisplayShortName << ")";
-    kDebug() << "Imap servers:";
-    foreach ( const server& s, mImapServers ) {
-        kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
-    }
-    kDebug() << "pop3 servers:";
-    foreach ( const server& s, mPop3Servers ) {
-        kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
-    }
-    kDebug() << "smtp servers:";
-    foreach ( const server& s, mSmtpServers ) {
-        kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
-    }
-    // end section.
-
     emit finished( true );
 }
 
