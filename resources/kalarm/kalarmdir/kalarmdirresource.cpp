@@ -110,7 +110,7 @@ KAlarmDirResource::~KAlarmDirResource()
 
 void KAlarmDirResource::aboutToQuit()
 {
-    mSettings->writeConfig();
+    mSettings->save();
 }
 
 /******************************************************************************
@@ -162,7 +162,7 @@ void KAlarmDirResource::collectionFetchResult(KJob* j)
                     mSettings->setDisplayName(c.name());
                     mSettings->setAlarmTypes(c.contentMimeTypes());
                     mSettings->setReadOnly((c.rights() & writableRights) != writableRights);
-                    mSettings->writeConfig();
+                    mSettings->save();
                 }
                 mCollectionId = c.id();
                 if (recreate)
@@ -396,7 +396,7 @@ kDebug()<<"Monitored changed";
             }
         }
         mSettings->setUpdateStorageFormat(false);
-        mSettings->writeConfig();
+        mSettings->save();
     }
 }
 
@@ -846,7 +846,7 @@ void KAlarmDirResource::collectionChanged(const Akonadi::Collection& collection)
     if (newName != mSettings->displayName())
     {
         mSettings->setDisplayName(newName);
-        mSettings->writeConfig();
+        mSettings->save();
     }
 
     changeCommitted(collection);

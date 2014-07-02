@@ -55,7 +55,7 @@ Settings *Settings::self()
 {
   if ( !s_globalSettings->q ) {
     new Settings;
-    s_globalSettings->q->readConfig();
+    s_globalSettings->q->load();
   }
 
   return s_globalSettings->q;
