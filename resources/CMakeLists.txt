@@ -2,7 +2,7 @@ project(resources)
 cmake_minimum_required(VERSION 2.8.12)
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
-  find_package(ECM 0.0.15 CONFIG REQUIRED)
+  find_package(ECM 1.0.0 CONFIG REQUIRED)
   set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
   include(ECMPackageConfigHelpers)
