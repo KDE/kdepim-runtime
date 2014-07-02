@@ -75,7 +75,7 @@ void ICalResourceBase::aboutToQuit()
   if ( !mSettings->readOnly() ) {
     writeFile();
   }
-  mSettings->writeConfig();
+  mSettings->save();
 }
 
 void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings> *dlg )

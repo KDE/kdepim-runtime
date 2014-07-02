@@ -107,7 +107,7 @@ void KAlarmResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settin
 void KAlarmResource::configDialogAcceptedActions(SingleFileResourceConfigDialog<Settings>*)
 {
     mSettings->setAlarmTypes(CalEvent::mimeTypes(mTypeSelector->alarmType()));
-    mSettings->writeConfig();
+    mSettings->save();
 }
 
 /******************************************************************************
@@ -156,7 +156,7 @@ void KAlarmResource::collectionFetchResult(KJob* j)
                 mSettings->setDisplayName(c.name());
                 mSettings->setAlarmTypes(c.contentMimeTypes());
                 mSettings->setReadOnly((c.rights() & writableRights) != writableRights);
-                mSettings->writeConfig();
+                mSettings->save();
                 synchronize();   // tell the server to use the new config
             }
             checkFileCompatibility(c, true);
@@ -380,7 +380,7 @@ void KAlarmResource::updateFormat(KJob* j)
             }
         }
         mSettings->setUpdateStorageFormat(false);
-        mSettings->writeConfig();
+        mSettings->save();
     }
 }
 
