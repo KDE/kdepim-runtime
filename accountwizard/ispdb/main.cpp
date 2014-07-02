@@ -24,6 +24,44 @@
 #include <kcmdlineargs.h>
 #include <kglobal.h>
 
+#include <KDebug>
+
+QString socketTypeToStr( Ispdb::socketType socketType )
+{
+    QString enc = QLatin1String("None");
+    if ( socketType == Ispdb::SSL ) {
+        enc = QLatin1String("SSL");
+    } else if ( socketType == Ispdb::StartTLS ) {
+        enc = QLatin1String("TLS");
+    }
+    return enc;
+}
+
+QString authTypeToStr( Ispdb::authType authType )
+{
+    QString auth = QLatin1String("unknown");
+    switch ( authType ) {
+      case Ispdb::Plain:
+        auth = QLatin1String("plain");
+        break;
+      case Ispdb::CramMD5:
+        auth = QLatin1String("CramMD5");
+        break;
+      case Ispdb::NTLM:
+        auth = QLatin1String("NTLM");
+        break;
+      case Ispdb::GSSAPI:
+        auth = QLatin1String("GSSAPI");
+        break;
+      case Ispdb::ClientIP:
+        auth = QLatin1String("ClientIP");
+        break;
+      case Ispdb::NoAuth:
+        auth = QLatin1String("NoAuth");
+        break;
+    }
+    return auth;
+}
 int main( int argc, char **argv )
 {
     KAboutData aboutData( "ispdb", 0,
@@ -34,7 +72,7 @@ int main( int argc, char **argv )
                           ki18n( "(c) 2010 Omat Holding B.V." ),
                           KLocalizedString(),
                           "http://pim.kde.org/akonadi/" );
-    aboutData.setProgramIconName( "akonadi" );
+    aboutData.setProgramIconName( QLatin1String("akonadi") );
     aboutData.addAuthor( ki18n( "Tom Albers" ),  ki18n( "Author" ), "toma@kde.org" );
 
     KCmdLineArgs::init( argc, argv, &aboutData );
@@ -43,19 +81,48 @@ int main( int argc, char **argv )
     KCmdLineArgs::addCmdLineOptions( options );
     KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
-    QString email;
-    if ( !args->getOption( "email" ).isEmpty() )
+    QString email( QLatin1String("blablabla@gmail.com") );
+    if ( !args->getOption( "email" ).isEmpty() ) {
         email = args->getOption( "email" );
-    else
-        email = "blablabla@gmail.com";
-
+    }
 
     KApplication app;
 
+    QEventLoop loop;
     Ispdb ispdb;
     ispdb.setEmail( email );
+
+    loop.connect( &ispdb, SIGNAL(finished(bool)), SLOT(quit()) );
+
     ispdb.start();
 
-    return app.exec();
+    loop.exec();
+    kDebug() << "Domains" << ispdb.relevantDomains();
+    kDebug() << "Name" << ispdb.name( Ispdb::Long ) << "(" << ispdb.name( Ispdb::Short ) << ")";
+    kDebug() << "Imap servers:";
+    foreach ( const server &s, ispdb.imapServers() ) {
+        kDebug() << "\thostname:" << s.hostname
+                 << "- port:" << s.port
+                 << "- encryption:" << socketTypeToStr(s.socketType)
+                 << "- username:" << s.username
+                 << "- authentication:" << authTypeToStr(s.authentication);
+    }
+    kDebug() << "pop3 servers:";
+    foreach ( const server &s, ispdb.pop3Servers() ) {
+        kDebug() << "\thostname:" << s.hostname
+                 << "- port:" << s.port
+                 << "- encryption:" << socketTypeToStr(s.socketType)
+                 << "- username:" << s.username
+                 << "- authentication:" << authTypeToStr(s.authentication);
+    }
+    kDebug() << "smtp servers:";
+    foreach ( const server &s, ispdb.smtpServers() ) {
+        kDebug() << "\thostname:" << s.hostname
+                 << "- port:" << s.port
+                 << "- encryption:" << socketTypeToStr(s.socketType)
+                 << "- username:" << s.username
+                 << "- authentication:" << authTypeToStr(s.authentication);
+    }
 
+    return true;
 }

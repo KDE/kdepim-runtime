@@ -69,3 +69,4 @@ install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
 add_subdirectory(wizards)
+add_subdirectory(ispdb)
