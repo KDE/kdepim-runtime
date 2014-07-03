@@ -15,7 +15,7 @@ set(kalarmresource_SRCS
     ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared/icalresourcebase.cpp
     kalarmresource.cpp
-    kalarmresource.cpp
+    kalarmresourcefactory.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtyperadiowidget.cpp
 )

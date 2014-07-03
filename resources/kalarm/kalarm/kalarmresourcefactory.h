@@ -21,7 +21,7 @@
 #include <agentfactory.h> 
 #include <kalarmresource.h>
  
-class KalarmResourceFactory : public Akonadi::AgentFactory<KalarmResource>
+class KalarmResourceFactory : public Akonadi::AgentFactory<KAlarmResource>
 {
    Q_OBJECT
    Q_PLUGIN_METADATA(IID "org.kde.akonadi.KalarmResource");
