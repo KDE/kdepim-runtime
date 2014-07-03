@@ -82,7 +82,7 @@ void ContactsResource::configure( WId windowId )
   QPointer<SettingsDialog> dlg = new SettingsDialog( mSettings, windowId );
   if ( dlg->exec() ) {
     mSettings->setIsConfigured( true );
-    mSettings->writeConfig();
+    mSettings->save();
 
     clearCache();
     initializeDirectory( baseDirectoryPath() );

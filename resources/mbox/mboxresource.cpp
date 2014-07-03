@@ -173,7 +173,7 @@ void MboxResource::aboutToQuit()
 {
   if ( !mSettings->readOnly() )
     writeFile();
-  mSettings->writeConfig();
+  mSettings->save();
 }
 
 void MboxResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
