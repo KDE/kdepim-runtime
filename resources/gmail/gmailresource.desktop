@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Gmail
 Name[ca]=Gmail
+Name[es]=Gmail
 Name[fi]=Gmail
 Name[nds]=GMail
 Name[nl]=Gmail
@@ -13,6 +14,7 @@ Name[uk]=Gmail
 Name[x-test]=xxGmailxx
 Comment=Connects to your Gmail account
 Comment[ca]=Connecta amb el vostre compte de Gmail
+Comment[es]=Conecta a su cuenta Gmail
 Comment[fi]=Yhdistää Gmail-tiliin
 Comment[nds]=Koppelt sik Dien GMail-Konto to
 Comment[nl]=Verbindt met uw Gmail account
