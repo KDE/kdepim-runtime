@@ -56,5 +56,4 @@ QString NotesResource::mimeType( const KCalCore::IncidenceBase::Ptr &  ) const
   return sNotesType;
 }
 
-AKONADI_AGENT_FACTORY( NotesResource, akonadi_notes_resource )
 

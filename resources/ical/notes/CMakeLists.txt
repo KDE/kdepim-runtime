@@ -17,6 +17,7 @@ set( notesresource_SRCS
   ../shared/icalresourcebase.cpp
   ../shared/icalresource.cpp
   notesresource.cpp
+  notesresourcefactory.cpp
 )
 
 install( FILES notesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
