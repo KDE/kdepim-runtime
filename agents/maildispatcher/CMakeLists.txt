@@ -8,6 +8,7 @@ set( maildispatcheragent_SRCS
   sendjob.cpp
   sentactionhandler.cpp
   storeresultjob.cpp
+  maildispatcherresourcefactory.cpp
   #configdialog.cpp
 )
 

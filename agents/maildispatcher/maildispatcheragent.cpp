@@ -363,9 +363,7 @@ void MailDispatcherAgent::Private::emitStatusReady()
   }
 }
 
-#ifdef KDEPIM_PLUGIN_AGENT
-AKONADI_AGENT_FACTORY( MailDispatcherAgent, akonadi_maildispatcher_agent )
-#else
+#ifndef KDEPIM_PLUGIN_AGENT
 AKONADI_AGENT_MAIN( MailDispatcherAgent )
 #endif
 
