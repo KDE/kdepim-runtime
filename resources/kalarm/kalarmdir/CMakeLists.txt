@@ -11,6 +11,7 @@ add_definitions(-DSETTINGS_NAMESPACE=Akonadi_KAlarm_Dir_Resource)
 set(kalarmdirresource_SRCS
     settingsdialog.cpp
     kalarmdirresource.cpp
+    kalarmdirresourcefactory.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtypewidget.cpp
 )

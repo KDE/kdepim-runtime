@@ -7,6 +7,7 @@
 set( vcardresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   vcardresource.cpp
+  vcardresourcefactory.cpp
 )
 
 install( FILES vcardresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

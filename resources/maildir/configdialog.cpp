@@ -98,7 +98,7 @@ void ConfigDialog::save()
   QString path = ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path();
   mSettings->setPath( path );
   mSettings->setTopLevelIsContainer( mToplevelIsContainer );
-  mSettings->writeConfig();
+  mSettings->save();
 
   if ( ui.kcfg_Path->url().isLocalFile() ) {
     QDir d( path );

@@ -9,6 +9,7 @@ set( mboxresource_SRCS
   lockmethodpage.cpp
   deleteditemsattribute.cpp
   mboxresource.cpp
+  mboxresourcefactory.cpp
 )
 
 install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

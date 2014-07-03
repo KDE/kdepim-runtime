@@ -371,5 +371,4 @@ void MboxResource::onCollectionModify( KJob *job )
   itemAdded( item, c );
 }
 
-AKONADI_AGENT_FACTORY( MboxResource, akonadi_mbox_resource )
 

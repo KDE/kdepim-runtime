@@ -1212,7 +1212,5 @@ bool isFileValid(const QString& file)
         &&  file != QLatin1String(warningFile);
 }
 
-AKONADI_AGENT_FACTORY(KAlarmDirResource, akonadi_kalarm_dir_resource)
-
 
 // vim: et sw=4:

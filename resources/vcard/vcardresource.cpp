@@ -185,5 +185,3 @@ bool VCardResource::writeToFile( const QString &fileName )
   return true;
 }
 
-AKONADI_AGENT_FACTORY( VCardResource, akonadi_vcard_resource )
-

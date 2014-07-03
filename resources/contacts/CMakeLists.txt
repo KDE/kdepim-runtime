@@ -7,6 +7,7 @@ add_subdirectory( wizard )
 set( contactsresource_SRCS
   contactsresource.cpp
   settingsdialog.cpp
+  contactsresourcefactory.cpp
 )
 
 ki18n_wrap_ui(contactsresource_SRCS settingsdialog.ui)

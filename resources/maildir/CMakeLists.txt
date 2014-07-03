@@ -17,8 +17,8 @@ add_subdirectory(libmaildir)
 set( maildirresource_SRCS
   maildirresource.cpp
   configdialog.cpp
-  main.cpp
   retrieveitemsjob.cpp
+  maildirresourcefactory.cpp
 )
 
 ki18n_wrap_ui(maildirresource_SRCS settings.ui)

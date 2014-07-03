@@ -533,5 +533,3 @@ QString ContactsResource::directoryForCollection( const Collection& collection )
   return directory;
 }
 
-AKONADI_AGENT_FACTORY( ContactsResource, akonadi_contacts_resource )
-

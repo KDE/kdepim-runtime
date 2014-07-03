@@ -536,7 +536,5 @@ CollectionFetchJob* KAlarmResource::fetchCollection(const char* slot)
     return job;
 }
 
-AKONADI_AGENT_FACTORY(KAlarmResource, akonadi_kalarm_resource)
-
 
 // vim: et sw=4:
