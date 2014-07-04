@@ -22,8 +22,7 @@
 #include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifieragentsettings.h"
 
-//QT5
-//#include "kdepim-runtime-version.h"
+#include "kdepim-runtime-version.h"
 
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
@@ -31,7 +30,7 @@
 #include <KCheckableProxyModel>
 #include <QPushButton>
 #include <KHelpMenu>
-#include <k4aboutdata.h>
+#include <kaboutdata.h>
 #include <QIcon>
 
 #include <QTabWidget>
@@ -40,6 +39,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QWhatsThis>
+#include <QAction>
 
 #include <AkonadiWidgets/CollectionView>
 #include <AkonadiCore/CollectionModel>
@@ -145,38 +145,31 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 
     setMainWidget(w);
 
-//QT5
-    mAboutData = new K4AboutData(
-                QByteArray( "newmailnotifieragent" ),
-                QByteArray(),
-                ki18n( "New Mail Notifier Agent" ),
-                QByteArray( /*KDEPIM_RUNTIME_VERSION*/ "5.0" ),
-                ki18n( "Notifies about new mail." ),
-                K4AboutData::License_GPL_V2,
-                ki18n( "Copyright (C) 2013 Laurent Montel" ) );
+    KAboutData aboutData = KAboutData(
+                QLatin1String( "newmailnotifieragent" ),
+                i18n( "New Mail Notifier Agent" ),
+                QLatin1String( KDEPIM_RUNTIME_VERSION ),
+                i18n( "Notifies about new mail." ),
+                KAboutLicense::GPL_V2,
+                i18n( "Copyright (C) 2013 Laurent Montel" ) );
 
-    mAboutData->addAuthor( ki18n( "Laurent Montel" ),
-                         ki18n( "Maintainer" ), "montel@kde.org" );
+    aboutData.addAuthor( i18n( "Laurent Montel" ),
+                         i18n( "Maintainer" ), QLatin1String("montel@kde.org") );
+    aboutData.setProgramIconName( QLatin1String("kmail") );
+    aboutData.setTranslator( i18nc( "NAME OF TRANSLATORS", "Your names" ),
+                             i18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
 
-    mAboutData->setProgramIconName( QLatin1String("kmail") );
-    mAboutData->setTranslator( ki18nc( "NAME OF TRANSLATORS", "Your names" ),
-                             ki18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
-
-//QT5
-#if 0
-    KHelpMenu *helpMenu = new KHelpMenu(this, mAboutData, true);
+    KHelpMenu *helpMenu = new KHelpMenu(this, aboutData, true);
     //Initialize menu
     QMenu *menu = helpMenu->menu();
     helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(QIcon::fromTheme(QLatin1String("kmail")));
     setButtonMenu( Help, menu );
-#endif
     readConfig();
 }
 
 NewMailNotifierSettingsDialog::~NewMailNotifierSettingsDialog()
 {
     writeConfig();
-    delete mAboutData;
 }
 
 static const char *myConfigGroupName = "NewMailNotifierDialog";

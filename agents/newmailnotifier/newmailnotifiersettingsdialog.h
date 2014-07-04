@@ -26,7 +26,6 @@
 class KNotifyConfigWidget;
 class QCheckBox;
 class KLineEdit;
-class K4AboutData;
 class NewMailNotifierSelectCollectionWidget;
 class NewMailNotifierSettingsDialog : public KDialog
 {
@@ -52,7 +51,6 @@ private:
     QCheckBox *mTextToSpeak;
     KLineEdit *mTextToSpeakSetting;
     NewMailNotifierSelectCollectionWidget *mSelectCollection;
-    K4AboutData *mAboutData;
 };
 
 #endif // NEWMAILNOTIFIERSETTINGSDIALOG_H
