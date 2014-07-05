@@ -81,7 +81,7 @@ target_link_libraries(akonadi_kolabproxy_resource
   kdepim-copy
   KF5::AkonadiMime
   KF5::AkonadiCore
-  ${KDEPIMLIBS_KABC_LIBS}
+  KF5::Abc
   KF5::CalendarCore
   KF5::Mime
   KF5::KIOCore
@@ -102,7 +102,7 @@ endif()
 
 install(TARGETS akonadi_kolabproxy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-kde4_install_icons(${ICON_INSTALL_DIR})
+ecm_install_icons(ICONS hi64-apps-kolab.png DESTINATION ${ICON_INSTALL_DIR})
 
 add_subdirectory(tests)
 add_subdirectory(wizard)
