@@ -33,7 +33,7 @@ set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules)
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
+    set(KDEPIM_RUNTIME_DEV_VERSION "beta1")
 endif()
 
 set(KDEPIM_RUNTIME_VERSION "4.14${KDEPIM_RUNTIME_DEV_VERSION}")
@@ -53,7 +53,7 @@ find_package(KDE4 4.12.0 REQUIRED)
 include(KDE4Defaults)
 
 # KdepimLibs
-find_package(KdepimLibs 4.13.48)
+find_package(KdepimLibs 4.13.80)
 set_package_properties(KdepimLibs PROPERTIES DESCRIPTION "The KDEPIM libraries" URL "http://www.kde.org" TYPE REQUIRED)
 
 #Boost
@@ -79,7 +79,7 @@ find_package(Libkolabxml 1.0 QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 # Libkgapi2
-find_package(LibKGAPI2 2.1.50 QUIET CONFIG)
+find_package(LibKGAPI2 2.1.80 QUIET CONFIG)
 set_package_properties(LibKGAPI2 PROPERTIES DESCRIPTION "KDE-based library for accessing various Google services" URL "https://projects.kde.org/libkgapi" TYPE OPTIONAL PURPOSE "LibKGAPI is required to build Akonadi resources to access Google Contacts, Calendars and Tasks and Gmail")
 
 # Libkfbapi
