@@ -47,7 +47,6 @@
 GmailResource::GmailResource(const QString &id):
     ImapResourceBase(id)
 {
-    //QT5 KGlobal::locale()->insertCatalog("akonadi_imap_resource");
     setSeparatorCharacter(QLatin1Char('/'));
 
     m_pool->setPasswordRequester(new GmailPasswordRequester(m_pool));

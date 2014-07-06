@@ -38,7 +38,7 @@ KolabResource::KolabResource(const QString& id)
     :ImapResource(id)
 {
     //Load translations from imap resource
-    KGlobal::locale()->insertCatalog(QLatin1String("akonadi_imap_resource"));
+    //QT5 KLocale::global()->insertCatalog(QLatin1String("akonadi_imap_resource"));
 }
 
 KolabResource::~KolabResource()
