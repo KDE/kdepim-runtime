@@ -32,6 +32,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <sys/signal.h>
+#include <QStandardPaths>
 
 QTEST_AKONADIMAIN( Pop3Test, NoGUI )
 
@@ -68,7 +69,7 @@ void Pop3Test::initTestCase()
   //
   // Configure the maildir resource
   //
-  QString maildirRootPath = KGlobal::dirs()->saveLocation( "data", QLatin1String("tester"), false ) + QLatin1String("maildirtest");
+  QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/' + QLatin1String("tester";
   mMaildirPath = maildirRootPath + QLatin1String("/new");
   mMaildirSettingsInterface = new OrgKdeAkonadiMaildirSettingsInterface(
       QLatin1String("org.freedesktop.Akonadi.Resource." )+ mMaildirIdentifier,

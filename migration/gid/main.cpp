@@ -24,7 +24,7 @@
 #include <kconfiggroup.h>
 #include <kglobal.h>
 #include <klocale.h>
-#include <kstandarddirs.h>
+
 #include <kdebug.h>
 #include <KApplication>
 #include <infodialog.h>

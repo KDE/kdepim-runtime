@@ -29,13 +29,14 @@
 #include <kconfiggroup.h>
 #include <kglobal.h>
 #include <klocale.h>
-#include <kstandarddirs.h>
+
 #include <kdebug.h>
 #include <KSharedConfig>
+#include <QStandardPaths>
 
 KABC::Addressee::List readContacts( bool *ok )
 {
-  const QString fileName = KStandardDirs::locateLocal( "data", QLatin1String("kabc/std.vcf") );
+  const QString fileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kabc/std.vcf") ;
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     kDebug() << QString::fromLatin1("Unable to open file %1 for reading" ).arg( fileName );

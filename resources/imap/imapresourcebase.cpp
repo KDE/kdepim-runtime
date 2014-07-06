@@ -32,7 +32,7 @@
 #include <KGlobal>
 #include <kdebug.h>
 #include <klocale.h>
-#include <kstandarddirs.h>
+
 #include <kwindowsystem.h>
 #include <AkonadiCore/CollectionModifyJob>
 
@@ -46,6 +46,7 @@
 #include <AkonadiCore/specialcollections.h>
 #include <AkonadiCore/session.h>
 #include <akonadi/kmime/messageparts.h>
+#include <QStandardPaths>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
@@ -197,7 +198,7 @@ void ImapResourceBase::updateResourceName()
 {
   if ( name() == identifier() ) {
     const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
-    const QString agentsrcFile = KGlobal::dirs()->localxdgconfdir() + QLatin1String("akonadi/agentsrc");
+    const QString agentsrcFile = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + '/' + QLatin1String("akonadi/agentsrc");
 
     const QSettings agentsrc( agentsrcFile, QSettings::IniFormat );
     const int instanceCounter = agentsrc.value(

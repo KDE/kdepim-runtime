@@ -34,6 +34,7 @@
 #include <QMetaEnum>
 #include <QTimer>
 #include <kcomponentdata.h>
+#include <QStandardPaths>
 
 using namespace Akonadi;
 
@@ -58,7 +59,7 @@ KMigratorBase::KMigratorBase() : m_logFile( 0 )
 {
   KGlobal::ref();
 
-  const QString logFileName = KStandardDirs::locateLocal( "data", KGlobal::mainComponent().componentName() + QLatin1String("/migration.log") );
+  const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + KGlobal::mainComponent().componentName() + QLatin1String("/migration.log") ;
   m_logFile = new QFile( logFileName );
   if ( !m_logFile->open( QFile::Append ) ) {
     delete m_logFile;

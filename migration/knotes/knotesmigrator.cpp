@@ -42,6 +42,7 @@
 #include <KStandardDirs>
 #include "maildirsettings.h"
 #include <krandom.h>
+#include <QStandardPaths>
 
 
 using namespace Akonadi;
@@ -53,7 +54,7 @@ KNotesMigrator::KNotesMigrator() :
     Akonadi::AttributeFactory::registerAttribute<NoteAlarmAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteDisplayAttribute>();
     Akonadi::AttributeFactory::registerAttribute<ShowFolderNotesAttribute>();
-    const QString kresCfgFile = KStandardDirs::locateLocal( "config", QLatin1String( "kresources/notes/stdrc" ) );
+    const QString kresCfgFile = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String( "/kresources/notes/stdrc" ) ;
     mConfig = new KConfig( kresCfgFile );
     const KConfigGroup generalGroup( mConfig, QLatin1String( "General" ) );
     mUnknownTypeResources = generalGroup.readEntry( QLatin1String( "ResourceKeys" ), QStringList() );
@@ -133,7 +134,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
     const bool isReadOnly = kresCfgGroup.readEntry("ResourceIsReadOnly", false);
     iface->setReadOnly( isReadOnly );
 
-    QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
+    QDBusPendingReply<void> response = iface->setPath( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
 
     // make sure the config is saved
     iface->writeConfig();

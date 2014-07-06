@@ -23,6 +23,7 @@
 #include <kconfigdialogmanager.h>
 #include <kstandarddirs.h>
 #include <kurlrequester.h>
+#include <QStandardPaths>
 
 LockMethodPage::LockMethodPage( QWidget *parent ) : QWidget( parent )
 {
@@ -35,7 +36,7 @@ void LockMethodPage::checkAvailableLockMethods()
   // FIXME: I guess this whole checking makes only sense on linux machines.
 
   // Check for procmail lock method.
-  if ( KStandardDirs::findExe( QLatin1String("lockfile") ).isEmpty() ) {
+  if ( QStandardPaths::findExecutable( QLatin1String("lockfile") ).isEmpty() ) {
     ui.procmail->setEnabled( false );
     if ( ui.procmail->isChecked() ) // Select another lock method if necessary
       ui.mutt_dotlock->setChecked( true );

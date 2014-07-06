@@ -22,8 +22,9 @@
 #include "users.h"
 
 #include <QtCore/QFile>
+#include <QStandardPaths>
 
-#include <kstandarddirs.h>
+
 
 using namespace OXA;
 
@@ -78,7 +79,7 @@ User Users::lookupEmail( const QString &email ) const
 
 QString Users::cacheFilePath() const
 {
-  return KStandardDirs::locateLocal( "data", "openxchangeresource_" + mIdentifier );
+  return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + "openxchangeresource_" + mIdentifier ;
 }
 
 void Users::setCurrentUserId( qlonglong id )

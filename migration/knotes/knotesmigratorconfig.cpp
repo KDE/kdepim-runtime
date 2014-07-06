@@ -22,13 +22,14 @@
 #include <KStandardDirs>
 
 #include <KCal/Journal>
+#include <QStandardPaths>
 using namespace KCal;
 
 KNotesMigratorConfig::KNotesMigratorConfig(KCal::Journal *journal)
     : mJournal(journal),
       mConfig(0)
 {
-    const QString configPath = KGlobal::dirs()->saveLocation( "data", QLatin1String("knotes/") ) + QLatin1String("notes/") + journal->uid();
+    const QString configPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/' + QLatin1String("knotes/";
     if (!configPath.isEmpty()) {
         mConfig = new KNoteConfig( KSharedConfig::openConfig( configPath, KConfig::NoGlobals ) );
         mConfig->readConfig();

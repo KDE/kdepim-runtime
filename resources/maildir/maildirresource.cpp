@@ -48,6 +48,7 @@
 
 #include "libmaildir/maildir.h"
 #include <kstandarddirs.h>
+#include <QStandardPaths>
 
 using namespace Akonadi;
 using KPIM::Maildir;
@@ -105,7 +106,7 @@ MaildirResource::MaildirResource( const QString &id )
   // we cannot be sure that a config file is existing
   // the MaildirResource will always be build
   // look for a resource of this name
-  QString configFile = KGlobal::dirs()->findResource( "config", id + "rc" );
+  QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc" );
   // if not present, create it
   if ( configFile.isEmpty() ) {
     // check if the resource was used before
@@ -156,7 +157,7 @@ void MaildirResource::attemptConfigRestoring( KJob * job )
   }
   // we cannot be sure that a config file is existing
   const QString id = identifier();
-  const QString configFile = KGlobal::dirs()->findResource( "config", id + "rc" );
+  const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc" );
   // we test it again, to be sure
   if ( configFile.isEmpty() ) {
     // it is still empty, create it
@@ -174,7 +175,7 @@ void MaildirResource::attemptConfigRestoring( KJob * job )
     // test the path
     if ( path.isEmpty() ) {
       kDebug() << "build a new path";
-      const QString dataDir = KGlobal::dirs()->localxdgdatadir();
+      const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/';
       // we use "id" to get an unique path
       path = dataDir + id;
       kDebug() << "set the path" << path;

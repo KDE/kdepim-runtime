@@ -32,7 +32,7 @@
 #include <kglobal.h>
 #include <klineedit.h>
 #include <klocale.h>
-#include <kstandarddirs.h>
+
 #include <kwallet.h>
 
 #include <QtCore/QByteArray>
@@ -48,6 +48,7 @@
 #ifdef HAVE_ACCOUNTS
 #include <Accounts/Account>
 #include <Accounts/Manager>
+#include <QStandardPaths>
 #endif
 
 class SettingsHelper
@@ -423,7 +424,7 @@ void Settings::buildUrlsList()
 void Settings::loadMappings()
 {
   QString collectionsMappingCacheBase = QString::fromLatin1( "akonadi-davgroupware/%1_c2u.dat" ).arg( KApplication::applicationName() );
-  mCollectionsUrlsMappingCache = KStandardDirs::locateLocal( "data", collectionsMappingCacheBase );
+  mCollectionsUrlsMappingCache = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + collectionsMappingCacheBase ;
   QFile collectionsMappingsCache( mCollectionsUrlsMappingCache );
 
   if ( collectionsMappingsCache.exists() ) {

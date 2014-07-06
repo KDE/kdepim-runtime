@@ -27,6 +27,7 @@
 #include <kio/copyjob.h>
 #include <kio/netaccess.h>
 #include <QDir>
+#include <QStandardPaths>
 
 class GlobalPrivate
 {
@@ -93,7 +94,7 @@ QString Global::unpackAssistant( const KUrl& remotePackageUrl )
     localPackageFile = remotePackageUrl.path();
   } else {
     QString remoteFileName = QFileInfo( remotePackageUrl.path() ).fileName();
-    localPackageFile = KStandardDirs::locateLocal( "cache", QLatin1String("accountwizard/") + remoteFileName );
+    localPackageFile = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/accountwizard/") + remoteFileName ;
     KIO::Job* job = KIO::copy( remotePackageUrl, QUrl(localPackageFile), KIO::Overwrite | KIO::HideProgressInfo );
     qDebug() << "downloading remote URL" << remotePackageUrl << "to" << localPackageFile;
     if ( !KIO::NetAccess::synchronousRun( job, 0 ) )
@@ -103,7 +104,7 @@ QString Global::unpackAssistant( const KUrl& remotePackageUrl )
   const KUrl file( QLatin1String("tar://") + localPackageFile );
   const QFileInfo fi( localPackageFile );
   const QString assistant = fi.baseName();
-  const QString dest = KStandardDirs::locateLocal( "appdata", QLatin1String("/") );
+  const QString dest = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1String("/") ;
   QDir().mkpath( dest + file.fileName() );
   KIO::Job* getJob = KIO::copy( file, QUrl(dest), KIO::Overwrite | KIO::HideProgressInfo );
   if ( KIO::NetAccess::synchronousRun( getJob, 0 ) ) {

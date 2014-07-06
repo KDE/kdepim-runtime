@@ -33,7 +33,7 @@
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
 #include <klocale.h>
-#include <kstandarddirs.h>
+
 
 #include <oxa/davmanager.h>
 #include <oxa/oxerrors.h>
@@ -52,6 +52,7 @@
 #include <oxa/objectsrequestjob.h>
 #include <oxa/updateusersjob.h>
 #include <oxa/users.h>
+#include <QStandardPaths>
 
 using namespace Akonadi;
 
@@ -308,7 +309,7 @@ void OpenXchangeResource::cleanup()
   // be nice and remove cache file when resource is removed
   QFile::remove( OXA::Users::self()->cacheFilePath() );
 
-  QFile::remove( KStandardDirs::locateLocal( "config", Settings::self()->config()->name() ) );
+  QFile::remove( QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1Char('/') + Settings::self()->config()->name() ) ;
 
   ResourceBase::cleanup();
 }
