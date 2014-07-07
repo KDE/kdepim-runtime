@@ -8,10 +8,6 @@ set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 kde_enable_exceptions()
 
 include_directories(
-  ${AKONADI_INCLUDE_DIR}
-  ${KDE4_INCLUDES}
-  ${KDEPIMLIBS_INCLUDE_DIR}
-  ${QT_INCLUDES}
   ${Boost_INCLUDE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/../
   ${CMAKE_CURRENT_BINARY_DIR}/../
@@ -19,18 +15,17 @@ include_directories(
 )
 
 # test data
-qt4_add_resources( testdata_generated_SRCS testdata.qrc )
+qt5_add_resources( testdata_generated_SRCS testdata.qrc )
 
 set( testdata_SRCS
   ${testdata_generated_SRCS}
   testdatautil.cpp
 )
 
-kde4_add_unit_test( testdatatest
- TESTNAME mixedmaildir-testdatatest
- testdatatest.cpp
- ${testdata_SRCS}
-)
+
+add_executable(testdatatest testdatatest.cpp ${testdata_SRCS})
+add_test(testdatatest testdatatest)
+ecm_mark_as_test(mixedmaildir-testdatatest)
 
 target_link_libraries(
   testdatatest
@@ -53,11 +48,10 @@ set( common_link_libraries
 )
 
 # test for overwritten methods
-kde4_add_unit_test( templatemethodstest
- TESTNAME mixedmaildir-templatemethodtest
- ../mixedmaildirstore.cpp
- templatemethodstest.cpp
-)
+add_executable(templatemethodstest ../mixedmaildirstore.cpp templatemethodstest.cpp)
+add_test(templatemethodstest templatemethodstest)
+ecm_mark_as_test(mixedmaildir-templatemethodtest)
+
 
 target_link_libraries(
   templatemethodstest
