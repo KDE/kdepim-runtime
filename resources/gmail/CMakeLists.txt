@@ -12,6 +12,7 @@ include_directories(
     ${QT_QTDBUS_INCLUDE_DIR}
     ${QJSON_INCLUDE_DIR} 
     ${qjson_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../folderarchivesettings/
 )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}" )

@@ -36,10 +36,7 @@ class IdentityManager;
 }
 
 class GmailResource;
-
-/**
- * TODO: Folder Archive support
- */
+class FolderArchiveSettingPage;
 class GmailConfigDialog : public KDialog
 {
     Q_OBJECT
@@ -75,7 +72,7 @@ private:
     KPIMIdentities::IdentityCombo *m_identityCombobox;
     QString m_oldResourceName;
     KGAPI2::AccountPtr m_account;
-
+    FolderArchiveSettingPage *m_folderArchiveSettingPage;
 
 };
 
