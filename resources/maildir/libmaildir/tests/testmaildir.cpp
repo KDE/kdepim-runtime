@@ -27,7 +27,7 @@
 #include <QFile>
 
 #include <qtest_kde.h>
-#include <kstandarddirs.h>
+
 #include <ktempdir.h>
 #include <akonadi/kmime/messageflags.h>
 
@@ -42,7 +42,7 @@ static const char * testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n \nTo: 
 
 void MaildirTest::init()
 {
-  m_temp = new KTempDir( KStandardDirs::locateLocal( "tmp", QLatin1String( testDir ) ) );
+  m_temp = new KTempDir( QDir::tempPath() + QLatin1Char('/') +  QLatin1String( testDir ) );
 
   QDir temp( m_temp->name() );
   QVERIFY( temp.exists() );
@@ -197,7 +197,7 @@ void MaildirTest::testMaildirAppend()
 void MaildirTest::testMaildirCreation()
 {
   QString p( QLatin1String( "CREATETEST" ) );
-  std::auto_ptr<KTempDir> temp ( new KTempDir( KStandardDirs::locateLocal( "tmp", p ) ) );
+  std::auto_ptr<KTempDir> temp ( new KTempDir( QDir::tempPath() + QLatin1Char('/') +  p ) );
   Maildir d( temp->name() + p );
   QVERIFY( !d.isValid( false ) );
   d.create();
