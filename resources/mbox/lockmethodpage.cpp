@@ -43,7 +43,7 @@ void LockMethodPage::checkAvailableLockMethods()
   }
 
   // Check for mutt lock method.
-  if ( KStandardDirs::findExe( QLatin1String("mutt_dotlock") ).isEmpty() ) {
+  if ( QStandardPaths::findExecutable( QLatin1String("mutt_dotlock") ).isEmpty() ) {
     ui.mutt_dotlock->setEnabled( false );
     ui.mutt_dotlock_privileged->setEnabled( false );
     if ( ui.mutt_dotlock->isChecked() || ui.mutt_dotlock_privileged->isChecked() )
