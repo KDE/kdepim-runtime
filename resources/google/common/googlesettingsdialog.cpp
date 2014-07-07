@@ -185,7 +185,7 @@ void GoogleSettingsDialog::slotAccountAuthenticated( Job *job )
     const AccountPtr account = authJob->account();
 
     if ( !m_accountManager->storeAccount( account ) ) {
-        kWarning() << "Failed to add account to KWallet";
+        qWarning() << "Failed to add account to KWallet";
     }
 
     reloadAccounts();
@@ -198,7 +198,7 @@ bool GoogleSettingsDialog::handleError( Job *job )
     }
 
     if ( job->error() == KGAPI2::Unauthorized ) {
-        kDebug() << job << job->errorString();
+        qDebug() << job << job->errorString();
         const AccountPtr account = currentAccount();
         const QList<QUrl> resourceScopes = m_parentResource->scopes();
         Q_FOREACH(const QUrl &scope, resourceScopes) {
@@ -223,7 +223,7 @@ bool GoogleSettingsDialog::handleError( Job *job )
 
 void GoogleSettingsDialog::slotAuthJobFinished( Job *job )
 {
-    kDebug();
+    qDebug();
 
     if ( job->error() != KGAPI2::NoError ) {
         KMessageBox::sorry( this, job->errorString() );
@@ -233,7 +233,7 @@ void GoogleSettingsDialog::slotAuthJobFinished( Job *job )
     AuthJob *authJob = qobject_cast<AuthJob*>( job );
     const AccountPtr account = authJob->account();
     if ( !m_accountManager->storeAccount( account ) ) {
-        kWarning() << "Failed to store account in KWallet";
+        qWarning() << "Failed to store account in KWallet";
     }
 
     KGAPI2::Job *otherJob = job->property( JOB_PROPERTY ).value<KGAPI2::Job *>();

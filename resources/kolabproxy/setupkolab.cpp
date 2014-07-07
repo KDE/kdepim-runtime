@@ -200,7 +200,7 @@ void SetupKolab::slotLaunchWizard()
   lst.append( QLatin1String("--assistant" ));
   lst.append( QLatin1String("imap") );
 
-  const QString path = KStandardDirs::findExe( QLatin1String( "accountwizard" ) );
+  const QString path = QStandardPaths::findExecutable( QLatin1String( "accountwizard" ) );
   if ( !QProcess::startDetached( path, lst ) ) {
     KMessageBox::error(
       this,

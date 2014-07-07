@@ -25,7 +25,7 @@
 #include <kglobal.h>
 #include <klocale.h>
 
-#include <kdebug.h>
+#include <qdebug.h>
 #include <KApplication>
 #include <infodialog.h>
 #include <KLocale>
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 
     const QString mimeType = args->getOption("mimetype");
     if (mimeType.isEmpty()) {
-        kWarning() << "set the mimetype to migrate";
+        qWarning() << "set the mimetype to migrate";
         return 5;
     }
 

@@ -30,7 +30,7 @@
 #include <kglobal.h>
 #include <klocale.h>
 
-#include <kdebug.h>
+#include <qdebug.h>
 #include <KSharedConfig>
 #include <QStandardPaths>
 
@@ -39,7 +39,7 @@ KABC::Addressee::List readContacts( bool *ok )
   const QString fileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kabc/std.vcf") ;
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    kDebug() << QString::fromLatin1("Unable to open file %1 for reading" ).arg( fileName );
+    qDebug() << QString::fromLatin1("Unable to open file %1 for reading" ).arg( fileName );
     *ok = false;
     return KABC::Addressee::List();
   }
@@ -67,7 +67,7 @@ bool writeContacts( const KABC::Addressee::List &contacts )
     const QString fileName = path + QDir::separator() + contact.uid() + QLatin1String(".vcf");
     QFile file( fileName );
     if ( !file.open( QIODevice::WriteOnly ) ) {
-      kDebug() << QString::fromLatin1( "Unable to open file %1 for writing" ).arg( fileName );
+      qDebug() << QString::fromLatin1( "Unable to open file %1 for writing" ).arg( fileName );
       return false;
     }
 

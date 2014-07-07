@@ -18,7 +18,7 @@
 */
 
 #include "ispdb.h"
-#include <kdebug.h>
+#include <qdebug.h>
 #include <kio/job.h>
 #include <kio/jobclasses.h>
 #include <KLocalizedString>
@@ -44,7 +44,7 @@ void Ispdb::setEmail( const QString& address )
 
 void Ispdb::start()
 {
-    kDebug() << mAddr.asString();
+    qDebug() << mAddr.asString();
     // we should do different things in here. But lets focus in the db first.
     lookupInDb();
 }
@@ -92,7 +92,7 @@ void Ispdb::lookupInDb()
 void Ispdb::slotResult( KJob* job )
 {
     if ( job->error() ) {
-      kDebug() << "Fetching failed" << job->errorString();
+      qDebug() << "Fetching failed" << job->errorString();
       bool lookupFinished = false;
 
       switch( mServerType ) {
@@ -119,11 +119,11 @@ void Ispdb::slotResult( KJob* job )
       return;
     }
 
-    //kDebug() << mData;
+    //qDebug() << mData;
     QDomDocument document;
     bool ok = document.setContent( mData );
     if ( !ok ) {
-        kDebug() << "Could not parse xml" << mData;
+        qDebug() << "Could not parse xml" << mData;
         emit finished( false );
         return;
     }
@@ -135,7 +135,7 @@ void Ispdb::slotResult( KJob* job )
     while ( !n.isNull() ) {
         QDomElement e = n.toElement();
         if ( !e.isNull() ) {
-            //kDebug()  << qPrintable( e.tagName() );
+            //qDebug()  << qPrintable( e.tagName() );
           const QString tagName( e.tagName() );
             if ( tagName == QLatin1String( "domain" ) )
                 mDomains << e.text();
@@ -164,20 +164,20 @@ void Ispdb::slotResult( KJob* job )
     }
 
     // comment this section out when you are tired of it...
-    kDebug() << "------------------ summary --------------";
-    kDebug() << "Domains" << mDomains;
-    kDebug() << "Name" << mDisplayName << "(" << mDisplayShortName << ")";
-    kDebug() << "Imap servers:";
+    qDebug() << "------------------ summary --------------";
+    qDebug() << "Domains" << mDomains;
+    qDebug() << "Name" << mDisplayName << "(" << mDisplayShortName << ")";
+    qDebug() << "Imap servers:";
     foreach ( const server& s, mImapServers ) {
-        kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
+        qDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
-    kDebug() << "pop3 servers:";
+    qDebug() << "pop3 servers:";
     foreach ( const server& s, mPop3Servers ) {
-        kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
+        qDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
-    kDebug() << "smtp servers:";
+    qDebug() << "smtp servers:";
     foreach ( const server& s, mSmtpServers ) {
-        kDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
+        qDebug() << s.hostname << s.port << s.socketType << s.username << s.authentication;
     }
     // end section.
 

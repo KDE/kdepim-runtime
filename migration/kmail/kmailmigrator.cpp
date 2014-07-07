@@ -65,6 +65,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <kwallet.h>
 #include <kstringhandler.h>
 #include <KLocalizedString>
+#include <QDir>
 
 Q_DECLARE_METATYPE(QList<int>);
 
@@ -300,7 +301,7 @@ void KMailMigrator::migrateRCFiles()
 {
   const QDir sourceDir( KStandardDirs::locateLocal( "data", QLatin1String("kmail") ) );
   const QDir targetDir( KStandardDirs::locateLocal( "data", QLatin1String("kmail2") ) );
-  KStandardDirs::makeDir( targetDir.absolutePath() );
+  QDir().mkpath( targetDir.absolutePath() );
 
   const QFileInfoList files = sourceDir.entryInfoList( QStringList() << QLatin1String( "*.rc" ),
                                                        QDir::Files | QDir::Readable );

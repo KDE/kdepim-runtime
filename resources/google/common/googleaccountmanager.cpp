@@ -71,21 +71,21 @@ void GoogleAccountManager::initManager()
 void GoogleAccountManager::slotWalletOpened( bool success )
 {
     if ( !success ) {
-        kWarning() << "Failed to open wallet";
+        qWarning() << "Failed to open wallet";
         Q_EMIT managerReady( false );
         return;
     }
 
     if ( !m_wallet->hasFolder( WALLET_FOLDER ) ) {
         if ( !m_wallet->createFolder( WALLET_FOLDER ) ) {
-            kWarning() << "Failed to create KWallet folder " << WALLET_FOLDER;
+            qWarning() << "Failed to create KWallet folder " << WALLET_FOLDER;
             Q_EMIT managerReady( false );
             return;
         }
     }
 
     if ( !m_wallet->setFolder( WALLET_FOLDER ) ) {
-        kWarning() << "Failed to open KWallet folder" << WALLET_FOLDER;
+        qWarning() << "Failed to open KWallet folder" << WALLET_FOLDER;
         Q_EMIT managerReady( false );
         return;
     }
@@ -145,7 +145,7 @@ void GoogleAccountManager::slotFolderUpdated(const QString& folder)
 AccountPtr GoogleAccountManager::findAccount( const QString& accountName ) const
 {
     if ( !m_isReady ) {
-        kWarning() << "Manager is not ready!";
+        qWarning() << "Manager is not ready!";
         return AccountPtr();
     }
 
@@ -165,7 +165,7 @@ AccountPtr GoogleAccountManager::findAccount( const QString& accountName ) const
 AccountPtr GoogleAccountManager::findAccountInWallet(const QString& accountName) const
 {
   if ( !m_wallet->entryList().contains( accountName ) ) {
-        kDebug() << "Account" << accountName << "not found in KWallet";
+        qDebug() << "Account" << accountName << "not found in KWallet";
         return AccountPtr();
     }
 
@@ -188,7 +188,7 @@ AccountPtr GoogleAccountManager::findAccountInWallet(const QString& accountName)
 bool GoogleAccountManager::storeAccount(const AccountPtr& account)
 {
     if ( !m_isReady ) {
-        kWarning() << "Manager is not ready!";
+        qWarning() << "Manager is not ready!";
         return false;
     }
 
@@ -214,7 +214,7 @@ bool GoogleAccountManager::storeAccount(const AccountPtr& account)
 bool GoogleAccountManager::removeAccount(const QString& accountName)
 {
     if ( !m_isReady ) {
-        kWarning() << "Manager is not ready";
+        qWarning() << "Manager is not ready";
         return false;
     }
 
@@ -223,7 +223,7 @@ bool GoogleAccountManager::removeAccount(const QString& accountName)
     }
 
     if (m_wallet->removeEntry( accountName ) != 0) {
-        kWarning() << "Failed to remove account from KWallet";
+        qWarning() << "Failed to remove account from KWallet";
         return false;
     }
 
@@ -234,7 +234,7 @@ bool GoogleAccountManager::removeAccount(const QString& accountName)
 AccountsList GoogleAccountManager::listAccounts() const
 {
     if ( !m_isReady ) {
-        kWarning() << "Manager is not ready";
+        qWarning() << "Manager is not ready";
         return AccountsList();
     }
 

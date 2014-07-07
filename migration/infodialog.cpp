@@ -105,19 +105,19 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
     case KMigratorBase::Success:
       item->setIcon( QIcon::fromTheme( QLatin1String("dialog-ok-apply") ) );
       mChange = true;
-      kDebug() << msg;
+      qDebug() << msg;
       break;
     case KMigratorBase::Skip:
       item->setIcon( QIcon::fromTheme( QLatin1String("dialog-ok") ) );
-      kDebug() << msg;
+      qDebug() << msg;
       break;
     case KMigratorBase::Info:
       item->setIcon( QIcon::fromTheme( QLatin1String("dialog-information") ) );
-      kDebug() << msg;
+      qDebug() << msg;
       break;
     case KMigratorBase::Warning:
       item->setIcon( QIcon::fromTheme( QLatin1String("dialog-warning") ) );
-      kDebug() << msg;
+      qDebug() << msg;
       break;
     case KMigratorBase::Error: {
         item->setIcon( QIcon::fromTheme( QLatin1String("dialog-error") ) );
@@ -125,11 +125,11 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
         currentFont.setBold( true );
         item->setFont( currentFont );
         mError = true;
-        kError() << msg;
+        qCritical() << msg;
       }
       break;
     default:
-      kError() << "WTF?";
+      qCritical() << "WTF?";
   }
 
   mAutoScrollList = autoScroll;

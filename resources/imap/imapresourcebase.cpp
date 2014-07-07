@@ -272,7 +272,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
 
   if ( mSubscriptions->exec() ) {
     Settings::self()->setSubscriptionEnabled( mSubscriptions->subscriptionEnabled() );
-    Settings::self()->writeConfig();
+    Settings::self()->save();
     emit configurationDialogAccepted();
     reconnect();
   }
