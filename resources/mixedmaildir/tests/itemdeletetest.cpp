@@ -596,7 +596,7 @@ void ItemDeleteTest::testExpectedFailure()
   QCOMPARE( itemFetch->error(), (int)FileStore::Job::InvalidJobContext );
 }
 
-QTEST_KDEMAIN( ItemDeleteTest, NoGUI )
+QTEST_MAIN( ItemDeleteTest )
 
 #include "itemdeletetest.moc"
 

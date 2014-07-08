@@ -225,7 +225,7 @@ void TemplateMethodsTest::testCreateItem()
   QVERIFY( !job->exec() );
 }
 
-QTEST_KDEMAIN( TemplateMethodsTest, NoGUI )
+QTEST_MAIN( TemplateMethodsTest )
 
 #include "templatemethodstest.moc"
 

@@ -528,7 +528,7 @@ void ItemCreateTest::testMaildir()
   flagCounts.clear();
 }
 
-QTEST_KDEMAIN( ItemCreateTest, NoGUI )
+QTEST_MAIN( ItemCreateTest )
 
 #include "itemcreatetest.moc"
 

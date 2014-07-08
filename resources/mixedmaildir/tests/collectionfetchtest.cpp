@@ -464,7 +464,7 @@ void CollectionFetchTest::testMixedTree()
   }
 }
 
-QTEST_KDEMAIN( CollectionFetchTest, NoGUI )
+QTEST_MAIN( CollectionFetchTest )
 
 #include "collectionfetchtest.moc"
 

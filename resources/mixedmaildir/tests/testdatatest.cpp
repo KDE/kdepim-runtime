@@ -101,6 +101,6 @@ void TestDataTest::testInstall()
 
 #include "testdatatest.moc"
 
-QTEST_KDEMAIN( TestDataTest, NoGUI )
+QTEST_MAIN( TestDataTest )
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

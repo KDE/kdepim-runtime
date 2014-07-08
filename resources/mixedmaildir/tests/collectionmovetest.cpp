@@ -1992,7 +1992,7 @@ void CollectionMoveTest::testMoveToMBox()
   flagCounts.clear();
 }
 
-QTEST_KDEMAIN( CollectionMoveTest, NoGUI )
+QTEST_MAIN( CollectionMoveTest )
 
 #include "collectionmovetest.moc"
 

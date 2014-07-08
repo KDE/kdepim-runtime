@@ -458,7 +458,7 @@ void CollectionDeleteTest::testSubTrees()
   QVERIFY( !subDirInfo2.exists() );
 }
 
-QTEST_KDEMAIN( CollectionDeleteTest, NoGUI )
+QTEST_MAIN( CollectionDeleteTest )
 
 #include "collectiondeletetest.moc"
 

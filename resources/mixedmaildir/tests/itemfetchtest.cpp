@@ -1150,7 +1150,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
   }
 }
 
-QTEST_KDEMAIN( ItemFetchTest, NoGUI )
+QTEST_MAIN( ItemFetchTest )
 
 #include "itemfetchtest.moc"
 

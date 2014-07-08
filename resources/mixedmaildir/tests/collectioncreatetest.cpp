@@ -319,7 +319,7 @@ void CollectionCreateTest::testMixedTree()
   QCOMPARE( md1.subFolderList(), QStringList() << QLatin1String( "collection1_1" ) );
 }
 
-QTEST_KDEMAIN( CollectionCreateTest, NoGUI )
+QTEST_MAIN( CollectionCreateTest )
 
 #include "collectioncreatetest.moc"
 

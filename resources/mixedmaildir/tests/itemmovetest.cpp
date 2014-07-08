@@ -666,7 +666,7 @@ void ItemMoveTest::testMBoxItem()
   QVERIFY( std::equal( newEntryList.begin(), newEntryList.end(), entryList1.begin(), fullEntryCompare ) );
 }
 
-QTEST_KDEMAIN( ItemMoveTest, NoGUI )
+QTEST_MAIN( ItemMoveTest )
 
 #include "itemmovetest.moc"
 

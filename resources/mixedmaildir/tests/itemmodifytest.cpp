@@ -663,7 +663,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
   // TODO test for mbox.
 }
 
-QTEST_KDEMAIN( ItemModifyTest, NoGUI )
+QTEST_MAIN( ItemModifyTest )
 
 #include "itemmodifytest.moc"
 

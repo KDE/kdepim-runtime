@@ -621,7 +621,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
   flagCounts.clear();
 }
 
-QTEST_KDEMAIN( CollectionModifyTest, NoGUI )
+QTEST_MAIN( CollectionModifyTest )
 
 #include "collectionmodifytest.moc"
 

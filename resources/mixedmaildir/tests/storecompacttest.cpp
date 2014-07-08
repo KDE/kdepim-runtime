@@ -388,7 +388,7 @@ void StoreCompactTest::testCompact()
   QCOMPARE( collections, Collection::List() << collection3 << collection4 );
 }
 
-QTEST_KDEMAIN( StoreCompactTest, NoGUI )
+QTEST_MAIN( StoreCompactTest )
 
 #include "storecompacttest.moc"
 
