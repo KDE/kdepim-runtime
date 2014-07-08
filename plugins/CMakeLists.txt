@@ -32,11 +32,12 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 endif()
 
-#REACTIVATE IT
-#set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
-#add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
-#target_link_libraries(akonadi_serializer_addressee  KF5::Abc KF5::AkonadiCore )
-#install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
+find_package(KF5AkonadiKAbc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
+set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
+add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
+target_link_libraries(akonadi_serializer_addressee  KF5::Abc KF5::AkonadiCore KF5::AkonadiKAbc)
+install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp )
 add_library(akonadi_serializer_mail MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_mail_PART_SRCS})
@@ -54,10 +55,10 @@ target_link_libraries(akonadi_serializer_bookmark  KF5::KIOCore KF5::AkonadiCore
 install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
 
 #REACTIVATE
-#set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
-#add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
-#target_link_libraries(akonadi_serializer_contactgroup  KF5::Abc KF5::AkonadiCore KF5::AkonadiContact)
-#install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
+set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
+add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
+target_link_libraries(akonadi_serializer_contactgroup  KF5::Abc KF5::AkonadiCore KF5::AkonadiContact)
+install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
 add_library(akonadi_serializer_microblog MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_microblog_SRCS})
@@ -83,7 +84,7 @@ install( FILES
   akonadi_serializer_mail.desktop
   akonadi_serializer_kcalcore.desktop
   akonadi_serializer_bookmark.desktop
-  #REACTIVATE akonadi_serializer_contactgroup.desktop
+  akonadi_serializer_contactgroup.desktop
   akonadi_serializer_microblog.desktop
   akonadi_serializer_kalarm.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)

@@ -129,6 +129,6 @@ QString SerializerPluginContactGroup::extractGid( const Item &item ) const
   return item.payload<KABC::ContactGroup>().id();
 }
 
-Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
+//Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

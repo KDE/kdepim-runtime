@@ -39,7 +39,7 @@ class SerializerPluginKCalCore : public QObject,
     Q_INTERFACES( Akonadi::ItemSerializerPlugin )
     Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
     Q_INTERFACES( Akonadi::GidExtractorInterface )
-
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKCalCore");
   public:
     bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
     void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
