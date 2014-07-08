@@ -57,7 +57,7 @@ install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
 #REACTIVATE
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
-target_link_libraries(akonadi_serializer_contactgroup  KF5::Abc KF5::AkonadiCore KF5::AkonadiContact)
+target_link_libraries(akonadi_serializer_contactgroup  KF5::Abc KF5::AkonadiCore KF5::AkonadiContact KF5::AkonadiAbc)
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
