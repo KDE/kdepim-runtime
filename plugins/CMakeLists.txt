@@ -32,11 +32,11 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 endif()
 
-find_package(KF5AkonadiKAbc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiAbc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
 set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
 add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
-target_link_libraries(akonadi_serializer_addressee  KF5::Abc KF5::AkonadiCore KF5::AkonadiKAbc)
+target_link_libraries(akonadi_serializer_addressee  KF5::Abc KF5::AkonadiCore KF5::AkonadiAbc)
 install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp )
