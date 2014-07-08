@@ -1,3 +1,7 @@
+include(ECMAddTests)
+
+find_package(Qt5Test CONFIG REQUIRED)
+
 if(${EXECUTABLE_OUTPUT_PATH})
     set( PREVIOUS_EXEC_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH} )
 else()
@@ -59,11 +63,10 @@ target_link_libraries(
 )
 
 # test for collection creation handling
-kde4_add_unit_test( collectioncreatetest
- TESTNAME mixedmaildir-collectioncreatetest
- ../mixedmaildirstore.cpp
- collectioncreatetest.cpp
-)
+add_executable(collectioncreatetest  ../mixedmaildirstore.cpp collectioncreatetest.cpp)
+add_test(collectioncreatetest collectioncreatetest)
+ecm_mark_as_test(mixedmaildir-collectioncreatetest)
+
 
 target_link_libraries(
   collectioncreatetest
@@ -71,11 +74,9 @@ target_link_libraries(
 )
 
 # test for collection deletion handling
-kde4_add_unit_test( collectiondeletetest
- TESTNAME mixedmaildir-collectiondeletetest
- ../mixedmaildirstore.cpp
- collectiondeletetest.cpp
-)
+add_executable(collectiondeletetest   ../mixedmaildirstore.cpp collectiondeletetest.cpp)
+add_test(collectiondeletetest collectiondeletetest)
+ecm_mark_as_test(mixedmaildir-collectiondeletetest)
 
 target_link_libraries(
   collectiondeletetest
@@ -83,11 +84,10 @@ target_link_libraries(
 )
 
 # test for collection fetching handling
-kde4_add_unit_test( collectionfetchtest
- TESTNAME mixedmaildir-collectionfetchtest
- ../mixedmaildirstore.cpp
- collectionfetchtest.cpp
-)
+add_executable( collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp)
+add_test(collectionfetchtest collectionfetchtest)
+ecm_mark_as_test(mixedmaildir-collectionfetchtest)
+
 
 target_link_libraries(
   collectionfetchtest
@@ -95,12 +95,13 @@ target_link_libraries(
 )
 
 # test for collection modification handling
-kde4_add_unit_test( collectionmodifytest
- TESTNAME mixedmaildir-collectionmodifytest
- ../mixedmaildirstore.cpp
+add_executable( collectionmodifytest  ../mixedmaildirstore.cpp
  collectionmodifytest.cpp
  ${testdata_SRCS}
 )
+add_test(collectionmodifytest collectionmodifytest)
+ecm_mark_as_test(mixedmaildir-collectionmodifytest)
+
 
 target_link_libraries(
   collectionmodifytest
@@ -108,12 +109,12 @@ target_link_libraries(
 )
 
 # test for collection move handling
-kde4_add_unit_test( collectionmovetest
- TESTNAME mixedmaildir-collectionmovetest
- ../mixedmaildirstore.cpp
+add_executable( collectionmovetest  ../mixedmaildirstore.cpp
  collectionmovetest.cpp
  ${testdata_SRCS}
 )
+add_test(collectionmovetest collectionmovetest)
+ecm_mark_as_test(mixedmaildir-collectionmovetest)
 
 target_link_libraries(
   collectionmovetest
@@ -121,12 +122,13 @@ target_link_libraries(
 )
 
 # test for item creation handling
-kde4_add_unit_test( itemcreatetest
- TESTNAME mixedmaildir-itemcreatetest
- ../mixedmaildirstore.cpp
+add_executable(itemcreatetest   ../mixedmaildirstore.cpp
  itemcreatetest.cpp
  ${testdata_SRCS}
 )
+add_test(itemcreatetest itemcreatetest)
+ecm_mark_as_test(mixedmaildir-itemcreatetest)
+
 
 target_link_libraries(
   itemcreatetest
@@ -134,12 +136,13 @@ target_link_libraries(
 )
 
 # test for item creation handling
-kde4_add_unit_test( itemdeletetest
- TESTNAME mixedmaildir-itemdeletetest
- ../mixedmaildirstore.cpp
+add_executable(itemdeletetest  ../mixedmaildirstore.cpp
  itemdeletetest.cpp
  ${testdata_SRCS}
 )
+add_test(itemdeletetest itemdeletetest)
+ecm_mark_as_test(mixedmaildir-itemdeletetest)
+
 
 target_link_libraries(
   itemdeletetest
@@ -147,12 +150,12 @@ target_link_libraries(
 )
 
 # test for item retrieval handling
-kde4_add_unit_test( itemfetchtest
- TESTNAME mixedmaildir-itemfetchtest
- ../mixedmaildirstore.cpp
+add_executable(itemfetchtest   ../mixedmaildirstore.cpp
  itemfetchtest.cpp
  ${testdata_SRCS}
 )
+add_test(itemfetchtest itemfetchtest)
+ecm_mark_as_test(mixedmaildir-itemfetchtest)
 
 target_link_libraries(
   itemfetchtest
@@ -160,12 +163,12 @@ target_link_libraries(
 )
 
 # test for item modification handling
-kde4_add_unit_test( itemmodifytest
- TESTNAME mixedmaildir-itemmodifytest
- ../mixedmaildirstore.cpp
+add_executable(itemmodifytest   ../mixedmaildirstore.cpp
  itemmodifytest.cpp
  ${testdata_SRCS}
 )
+add_test(itemmodifytest itemmodifytest)
+ecm_mark_as_test( mixedmaildir-itemmodifytest)
 
 target_link_libraries(
   itemmodifytest
@@ -173,12 +176,13 @@ target_link_libraries(
 )
 
 # test for item move handling
-kde4_add_unit_test( itemmovetest
- TESTNAME mixedmaildir-itemmovetest
- ../mixedmaildirstore.cpp
+add_executable(itemmovetest  ../mixedmaildirstore.cpp
  itemmovetest.cpp
  ${testdata_SRCS}
 )
+add_test(itemmovetest itemmovetest)
+ecm_mark_as_test(mixedmaildir-itemmovetest)
+
 
 target_link_libraries(
   itemmovetest
@@ -186,12 +190,13 @@ target_link_libraries(
 )
 
 # test for store compact handling
-kde4_add_unit_test( storecompacttest
- TESTNAME mixedmaildir-storecompacttest
- ../mixedmaildirstore.cpp
+add_executable(storecompacttest  ../mixedmaildirstore.cpp
  storecompacttest.cpp
  ${testdata_SRCS}
 )
+add_test(storecompacttest storecompacttest)
+ecm_mark_as_test(mixedmaildir-storecompacttest)
+
 
 target_link_libraries(
   storecompacttest
