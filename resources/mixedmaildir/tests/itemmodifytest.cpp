@@ -38,8 +38,9 @@
 #include <KRandom>
 #include <KTempDir>
 
-#include <qtest_kde.h>
-
+#include <qtest.h>
+#include <QFileInfo>
+#include <QDir>
 #include <QCryptographicHash>
 
 using namespace Akonadi;

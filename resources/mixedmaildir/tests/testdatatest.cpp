@@ -22,7 +22,8 @@
 
 #include <KTempDir>
 
-#include <qtest_kde.h>
+#include <qtest.h>
+#include <QDir>
 
 class TestDataTest : public QObject
 {

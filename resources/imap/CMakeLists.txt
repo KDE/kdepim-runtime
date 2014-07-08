@@ -114,5 +114,4 @@ endif()
 install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )
-#REACTIVATE
 add_subdirectory( tests )

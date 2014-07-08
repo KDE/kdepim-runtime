@@ -41,7 +41,7 @@
 #include <KRandom>
 #include <KTempDir>
 
-#include <qtest_kde.h>
+#include <qtest.h>
 
 using namespace Akonadi;
 
