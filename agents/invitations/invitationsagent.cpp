@@ -58,6 +58,7 @@
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
+#include <QStandardPaths>
 
 using namespace Akonadi;
 
@@ -70,7 +71,7 @@ class InvitationsCollectionRequestJob : public SpecialCollectionsRequestJob
       setDefaultResourceType( QLatin1String( "akonadi_ical_resource" ) );
 
       QVariantMap options;
-      options.insert( QLatin1String( "Path" ), QString( KGlobal::dirs()->localxdgdatadir() + QLatin1String( "akonadi_invitations" ) ) );
+      options.insert( QLatin1String( "Path" ), QString( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String( "akonadi_invitations" ) ) );
       options.insert( QLatin1String( "Name" ), i18n( "Invitations" ) );
       setDefaultResourceOptions( options );
 
@@ -344,7 +345,7 @@ void InvitationsAgent::createAgentResult( KJob *job )
                          QString::fromLatin1( "/Settings" ),
                          QString::fromLatin1( "org.kde.Akonadi.ICal.Settings" ) );
     QDBusReply<void> reply = conf.call( QString::fromLatin1( "setPath" ),
-                                        KGlobal::dirs()->localxdgdatadir() + "akonadi_ical_resource" );
+                                        QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/' + "akonadi_ical_resource" );
 
     if ( !reply.isValid() ) {
       qWarning() << "dbus call failed, m_resourceId=" << m_resourceId;

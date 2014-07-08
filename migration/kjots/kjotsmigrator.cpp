@@ -47,20 +47,21 @@
 
 #include "entitytreecreatejob.h"
 #include <KConfigGroup>
+#include <QStandardPaths>
 
 using namespace Akonadi;
 
 KJotsMigrator::KJotsMigrator()
   : KMigratorBase(), unicode( false )
 {
-  m_dataDir = QDir( KStandardDirs::locateLocal( "data", QLatin1String("kjots") ) );
+  m_dataDir = QDir( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kjots") ) ;
   m_dataDir.setNameFilters( QStringList( QLatin1String("*.book") ) );
 
   if ( !m_dataDir.exists() ) {
     return;
   }
 
-  const QString &kjotsCfgFile = KStandardDirs::locateLocal( "config", QLatin1String( "kjotsrc" ) );
+  const QString &kjotsCfgFile = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kjotsrc" ) ;
 
   KConfig config( kjotsCfgFile );
   KConfigGroup cfgGroup = config.group( "kjots" );
@@ -102,7 +103,7 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
     return;
   }
 
-  QDBusPendingReply<void> response = iface->setPath( KGlobal::dirs()->localxdgdatadir() + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
+  QDBusPendingReply<void> response = iface->setPath( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
 
   // make sure the config is saved
   iface->save();
@@ -175,7 +176,7 @@ void KJotsMigrator::migrationFinished()
 // This method taken from KJotsBook::openBook
 void KJotsMigrator::migrateLegacyBook( const QString& fileName )
 {
-  QFile file( KStandardDirs::locateLocal( "data", QLatin1String("kjots/") ) + QLatin1Char('/') + fileName );
+  QFile file( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kjots/") + QLatin1Char('/') + fileName) ;
   QDomDocument doc( QLatin1String("KJots") );
   bool oldBook = false;
 

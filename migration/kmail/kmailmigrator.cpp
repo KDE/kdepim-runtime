@@ -66,6 +66,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <kstringhandler.h>
 #include <KLocalizedString>
 #include <QDir>
+#include <QStandardPaths>
 
 Q_DECLARE_METATYPE(QList<int>);
 
@@ -94,7 +95,7 @@ static MixedMaildirStore *createStoreFromBasePath( const QString &basePath )
 
 static void backupConfig( const QString &name, const QDir &backupDir )
 {
-  const QString configFile = KStandardDirs::locate( "config", name );
+  const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, name );
   if ( !configFile.isEmpty() ) {
     QFile::copy( configFile, QFileInfo( backupDir, name ).absoluteFilePath() );
   }
@@ -128,7 +129,7 @@ void KMailMigrator::migrate()
 
   // copy config files to backup locations
   const KDateTime now = KDateTime::currentLocalDateTime();
-  const QDir backupDir( KGlobal::dirs()->saveLocation( "appdata", now.toString() ) );
+  const QDir backupDir( QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + now.toString());
 
   // copy current configs to backup location
   // strickly speaking neither kmailrc not mailtransports are changed by the migrator
@@ -142,9 +143,9 @@ void KMailMigrator::migrate()
   KSharedConfigPtr oldConfig = KSharedConfig::openConfig( QLatin1String( "kmailrc" ) );
   mConfig = KSharedConfig::openConfig( QLatin1String( "kmail2rc" ) );
 
-  const QFileInfo migratorConfigInfo( KStandardDirs::locateLocal( "config", KSharedConfig::openConfig()->name() ) );
+  const QFileInfo migratorConfigInfo( QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1Char('/') + KSharedConfig::openConfig()->name() ) ;
 
-  const QString &newKMailCfgFile = KStandardDirs::locateLocal( "config", QLatin1String( "kmail2rc" ) );
+  const QString &newKMailCfgFile = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kmail2rc" ) ;
 
   // copy old config into new config, if
   bool copy = false;
@@ -176,9 +177,9 @@ void KMailMigrator::migrate()
   migrateNotifyFile();
 
   // copy autosave files if there are any
-  const QString autoSaveDir = KGlobal::dirs()->saveLocation( "data", QLatin1String("kmail/autosave"), false );
+  const QString autoSaveDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail/autosave");
   if ( !autoSaveDir.isEmpty() ) {
-    const QString destDir = KGlobal::dirs()->saveLocation( "data", QLatin1String("kmail2") );
+    const QString destDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail2");
     KIO::CopyJob *job = KIO::copy( KUrl::fromPath( autoSaveDir ),
                                    KUrl::fromPath( destDir ),
                                    KIO::HideProgressInfo );
@@ -219,9 +220,9 @@ void KMailMigrator::deleteOldGroup( const QString& name ) {
 
 void KMailMigrator::migrateNotifyFile()
 {
-    const QString notifyFile = KStandardDirs::locate( "config", QLatin1String("kmail.notifyrc") );
+    const QString notifyFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, QLatin1String("kmail.notifyrc") );
     if ( !notifyFile.isEmpty() ) {
-        QFile::copy( notifyFile, KStandardDirs::locateLocal( "config", QLatin1String("kmail2.notifyrc" )) );
+        QFile::copy( notifyFile, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kmail2.notifyrc" )) ;
     }
 
 }
@@ -299,8 +300,8 @@ void KMailMigrator::migrateTags()
 
 void KMailMigrator::migrateRCFiles()
 {
-  const QDir sourceDir( KStandardDirs::locateLocal( "data", QLatin1String("kmail") ) );
-  const QDir targetDir( KStandardDirs::locateLocal( "data", QLatin1String("kmail2") ) );
+  const QDir sourceDir( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail") ) ;
+  const QDir targetDir( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail2") ) ;
   QDir().mkpath( targetDir.absolutePath() );
 
   const QFileInfoList files = sourceDir.entryInfoList( QStringList() << QLatin1String( "*.rc" ),
@@ -357,7 +358,7 @@ void KMailMigrator::migrateLocalFolders()
   cfgGroup.deleteEntry( "QuotaUnit" );
   cfgGroup.deleteEntry( "default-mailbox-format" );
   mConfig->sync();
-  const QString localMaildirDefaultPath = KStandardDirs::locateLocal( "data", QLatin1String( "kmail/mail" ) );
+  const QString localMaildirDefaultPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/mail" ) ;
   mLocalMaildirPath = cfgGroup.readPathEntry( "folders", localMaildirDefaultPath );
   const QFileInfo fileInfo( mLocalMaildirPath );
   if ( !fileInfo.exists() || !fileInfo.isDir() ) {
@@ -688,12 +689,12 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
     }
 #endif
     if ( mDImapCache == 0 ) {
-      mDImapCache = createStoreFromBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/dimap" ) ) );
+      mDImapCache = createStoreFromBasePath( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/dimap" ) ) ;
     }
     store = mDImapCache;
   } else {
     if ( mImapCache == 0 ) {
-      mImapCache = createStoreFromBasePath( KStandardDirs::locateLocal( "data", QLatin1String( "kmail/imap" ) ) );
+      mImapCache = createStoreFromBasePath( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/imap" ) ) ;
     }
     store = mImapCache;
   }

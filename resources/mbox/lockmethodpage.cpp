@@ -21,7 +21,7 @@
 #include "settings.h"
 
 #include <kconfigdialogmanager.h>
-#include <kstandarddirs.h>
+
 #include <kurlrequester.h>
 #include <QStandardPaths>
 

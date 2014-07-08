@@ -30,6 +30,7 @@
 #include <KStandardDirs>
 
 #include <QProcess>
+#include <QStandardPaths>
 
 #define IMAP_RESOURCE_IDENTIFIER QLatin1String("akonadi_imap_resource")
 
