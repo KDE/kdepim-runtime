@@ -21,6 +21,7 @@
 #include "gmailsettings.h"
 #include "gmailresource.h"
 #include "ui_gmailconfigdialog.h"
+#include <folderarchivesettingpage.h>
 
 #include <mailtransport/transport.h>
 
@@ -50,6 +51,8 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     GmailSettings::self()->setWinId(parent);
 
     m_ui->setupUi(mainWidget());
+    m_folderArchiveSettingPage = new FolderArchiveSettingPage(resource->identifier());
+    m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
 
     m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
     m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000 );
@@ -117,6 +120,7 @@ void GmailConfigDialog::slotMailCheckboxChanged()
 
 void GmailConfigDialog::applySettings()
 {
+    m_folderArchiveSettingPage->writeSettings();
     m_parentResource->setName(m_ui->usernameLabel->text());
 
     GmailSettings::self()->setImapServer(QLatin1String("imap.gmail.com"));
@@ -155,6 +159,7 @@ void GmailConfigDialog::applySettings()
 
 void GmailConfigDialog::readSettings()
 {
+    m_folderArchiveSettingPage->loadSettings();
     m_ui->usernameLabel->setText(m_parentResource->name());
     m_oldResourceName = m_parentResource->name();
 
