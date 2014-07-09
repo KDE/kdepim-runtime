@@ -93,7 +93,7 @@ class KCalCoreSerializerTest : public QObject
       QFETCH( QString, mimeType );
 
       // 0 defaults to latin1.
-      QVERIFY( QTextCodec::codecForCStrings() == 0 );
+      //QT5 QVERIFY( QTextCodec::codecForCStrings() == 0 );
 
       const QDate currentDate = QDate::currentDate();
 

@@ -2,8 +2,6 @@ project(plugins)
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
-#REACTIVATE
-#add_subdirectory( tests )
 
 include_directories(
         ${Boost_INCLUDE_DIR}
@@ -89,6 +87,7 @@ install( FILES
   akonadi_serializer_kalarm.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
 
+add_subdirectory( tests ) 
 
 if ("${CMAKE_BINARY_DIR}" STREQUAL "${plugins_BINARY_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

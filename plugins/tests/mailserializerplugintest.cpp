@@ -22,7 +22,7 @@
 #include <AkonadiCore/item.h>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
-
+#include <QDebug>
 #include <qtest_kde.h>
 
 QTEST_KDEMAIN( MailSerializerPluginTest, NoGUI )
@@ -82,14 +82,14 @@ void MailSerializerPluginTest::testMessageIntegrity()
   KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
   QVERIFY( msg != 0 );
 
-  kDebug() << "original data:" << serialized;
-  kDebug() << "message content:" << msg->encodedContent();
+  qDebug() << "original data:" << serialized;
+  qDebug() << "message content:" << msg->encodedContent();
   QCOMPARE( msg->encodedContent(), serialized );
 
   // Serialize.
   QByteArray data = item.payloadData();
-  kDebug() << "original data:" << serialized;
-  kDebug() << "serialized data:" << data;
+  qDebug() << "original data:" << serialized;
+  qDebug() << "serialized data:" << data;
   QCOMPARE( data, serialized );
 }
 
