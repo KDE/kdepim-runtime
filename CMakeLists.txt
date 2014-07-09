@@ -110,6 +110,8 @@ if (KDEPIM_MOBILE_UI)
   endif()
 endif ()
 
+option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
+
 
 add_subdirectory(resources)
 add_subdirectory(agents)
