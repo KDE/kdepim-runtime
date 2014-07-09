@@ -5,17 +5,13 @@ macro(add_akonadi_isolated_test _source)
   get_filename_component(_targetName ${_source} NAME_WE)
   set(_srcList ${_source} )
 
-  kde4_add_executable(${_targetName} TEST ${_srcList})
+  add_executable(${_targetName} TEST ${_srcList})
   target_link_libraries(${_targetName}
-    ${QT_QTTEST_LIBRARY}
-    ${QT_QTGUI_LIBRARY}
-    ${KDEPIMLIBS_AKONADI_LIBS}
-    ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
-    ${KDE4_KDECORE_LIBS}
-    ${KDEPIMLIBS_MAILTRANSPORT_LIBS}
-    ${KDEPIMLIBS_KMIME_LIBS}
-    ${QT_QTCORE_LIBRARY}
-    ${QT_QTDBUS_LIBRARY}
+    Qt5::Test
+    KF5::AkonadiCore
+    KF5::AkonadiMime
+    KF5::MailTransport
+    KF5::Mime
   )
 
   # based on kde4_add_unit_test
