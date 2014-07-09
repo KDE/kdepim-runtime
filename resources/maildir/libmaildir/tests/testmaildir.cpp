@@ -26,12 +26,12 @@
 #include <QDir>
 #include <QFile>
 
-#include <qtest_kde.h>
+#include <qtest.h>
 
 #include <ktempdir.h>
 #include <akonadi/kmime/messageflags.h>
 
-QTEST_KDEMAIN( MaildirTest, NoGUI )
+QTEST_MAIN( MaildirTest )
 
 #include "../maildir.h"
 using namespace KPIM;
