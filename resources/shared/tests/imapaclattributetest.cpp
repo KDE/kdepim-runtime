@@ -18,7 +18,7 @@
 */
 
 #include <QtTest>
-#include <qtest_kde.h>
+#include <qtest.h>
 #include "../imapaclattribute.cpp"
 
 using namespace Akonadi;
@@ -105,6 +105,6 @@ class ImapAclAttributeTest : public QObject
     }
 };
 
-QTEST_KDEMAIN( ImapAclAttributeTest, NoGUI )
+QTEST_MAIN( ImapAclAttributeTest )
 
 #include "imapaclattributetest.moc"

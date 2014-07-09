@@ -31,8 +31,7 @@ set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_V
 
 install(TARGETS akonadi-filestore ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-#reactivate
-#if (KDE4_BUILD_TESTS)
-#  add_subdirectory( tests )
-#endif ()
+if (KDE4_BUILD_TESTS)
+  add_subdirectory( tests )
+endif ()
 

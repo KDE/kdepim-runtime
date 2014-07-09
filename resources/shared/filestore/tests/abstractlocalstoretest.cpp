@@ -35,7 +35,7 @@
 
 #include <KRandom>
 
-#include <qtest_kde.h>
+#include <qtest.h>
 
 using namespace Akonadi;
 using namespace Akonadi::FileStore;
@@ -962,7 +962,7 @@ void AbstractLocalStoreTest::testCompactStore()
   mStore->mErrorText = QString();
 }
 
-QTEST_KDEMAIN( AbstractLocalStoreTest, NoGUI )
+QTEST_MAIN( AbstractLocalStoreTest )
 
 #include "abstractlocalstoretest.moc"
 

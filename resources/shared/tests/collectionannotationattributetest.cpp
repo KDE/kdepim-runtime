@@ -18,7 +18,7 @@
 */
 
 #include <QtTest>
-#include <qtest_kde.h>
+#include <qtest.h>
 #include "../collectionannotationsattribute.cpp"
 
 typedef QMap<QByteArray, QByteArray> Annotation;
@@ -79,7 +79,7 @@ class CollectionAnnotationAttributeTest : public QObject
 
 };
 
-QTEST_KDEMAIN( CollectionAnnotationAttributeTest, NoGUI )
+QTEST_MAIN( CollectionAnnotationAttributeTest )
 
 #include "collectionannotationattributetest.moc"
 
