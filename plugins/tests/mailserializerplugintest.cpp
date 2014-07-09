@@ -23,9 +23,9 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 #include <QDebug>
-#include <qtest_kde.h>
+#include <qtest.h>
 
-QTEST_KDEMAIN( MailSerializerPluginTest, NoGUI )
+QTEST_MAIN( MailSerializerPluginTest )
 
 using namespace Akonadi;
 using namespace KMime;

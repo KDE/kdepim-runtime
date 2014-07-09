@@ -19,7 +19,7 @@
 
 #include <AkonadiCore/item.h>
 #include <KCalCore/Event>
-#include <qtest_kde.h>
+#include <qtest.h>
 #include <QtCore/QObject>
 
 using namespace Akonadi;
@@ -128,6 +128,6 @@ class KCalCoreSerializerTest : public QObject
     }
 };
 
-QTEST_KDEMAIN( KCalCoreSerializerTest, NoGUI )
+QTEST_MAIN( KCalCoreSerializerTest )
 
 #include "kcalcoreserializertest.moc"

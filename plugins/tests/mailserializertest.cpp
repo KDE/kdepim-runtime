@@ -23,9 +23,10 @@
 
 #include <Akonadi/KMime/MessageParts>
 
-#include <qtest_kde.h>
+#include <qtest.h>
+#include <QBuffer>
 
-QTEST_KDEMAIN( MailSerializerTest, NoGUI )
+QTEST_MAIN( MailSerializerTest )
 
 void MailSerializerTest::testEnvelopeDeserialize()
 {

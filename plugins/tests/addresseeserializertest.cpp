@@ -18,7 +18,7 @@
 */
 
 #include <AkonadiCore/item.h>
-#include <qtest_kde.h>
+#include <qtest.h>
 #include <QtCore/QObject>
 #include <akonadi_serializer_addressee.h>
 
@@ -42,6 +42,6 @@ class AddresseeSerializerTest : public QObject
         }
 };
 
-QTEST_KDEMAIN( AddresseeSerializerTest, NoGUI )
+QTEST_MAIN( AddresseeSerializerTest )
 
 #include "addresseeserializertest.moc"
