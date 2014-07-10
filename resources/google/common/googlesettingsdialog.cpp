@@ -27,13 +27,13 @@
 #include <QSpinBox>
 #include <QCheckBox>
 
-#include <KDE/KLocalizedString>
-#include <KDE/KComboBox>
+#include <KLocalizedString>
+#include <KComboBox>
 #include <QPushButton>
-#include <KDE/KDebug>
-#include <KDE/KMessageBox>
-#include <KDE/KWindowSystem>
-#include <KDE/KIntSpinBox>
+#include <KDebug>
+#include <KMessageBox>
+#include <KWindowSystem>
+#include <KIntSpinBox>
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>

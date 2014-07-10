@@ -31,8 +31,8 @@
 #include <KABC/Addressee>
 #include <KABC/Picture>
 
-#include <KDE/KLocalizedString>
-#include <KDE/KDebug>
+#include <KLocalizedString>
+#include <KDebug>
 
 #include <QtCore/QPointer>
 

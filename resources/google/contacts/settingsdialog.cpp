@@ -18,9 +18,9 @@
 #include "settingsdialog.h"
 #include "settings.h"
 
-#include <KDE/KWindowSystem>
-#include <KDE/KLocalizedString>
-#include <KDE/KDebug>
+#include <KWindowSystem>
+#include <KLocalizedString>
+#include <KDebug>
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>

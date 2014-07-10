@@ -18,7 +18,7 @@
 #ifndef GOOGLESETTINGSDIALOG_H
 #define GOOGLESETTINGSDIALOG_H
 
-#include <KDE/KDialog>
+#include <KDialog>
 
 #include <KGAPI/Types>
 

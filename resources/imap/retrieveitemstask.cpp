@@ -38,8 +38,8 @@
 #include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiCore/session.h>
 
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KDebug>
+#include <KLocale>
 
 #include <kimap/expungejob.h>
 #include <kimap/fetchjob.h>
@@ -563,4 +563,3 @@ void RetrieveItemsTask::taskComplete()
     itemsRetrievalDone();
 }
 
-#include "retrieveitemstask.moc"

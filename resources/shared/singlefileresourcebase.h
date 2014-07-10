@@ -22,7 +22,7 @@
 
 #include <resourcebase.h>
 
-#include <KDE/KUrl>
+#include <KUrl>
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
 

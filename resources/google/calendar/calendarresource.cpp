@@ -32,9 +32,9 @@
 
 #include <KCalCore/Calendar>
 
-#include <KDE/KLocalizedString>
-#include <KDE/KLocale>
-#include <KDE/KDialog>
+#include <KLocalizedString>
+#include <KLocale>
+#include <KDialog>
 
 #include <KGAPI/Calendar/Calendar>
 #include <KGAPI/Calendar/CalendarCreateJob>

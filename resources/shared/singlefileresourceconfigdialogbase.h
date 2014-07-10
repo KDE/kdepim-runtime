@@ -28,7 +28,7 @@
 #include "ui_singlefileresourceconfigdialog_desktop.h"
 #endif
 
-#include <KDE/KDialog>
+#include <KDialog>
 #include <KUrl>
 class KConfigDialogManager;
 class KJob;

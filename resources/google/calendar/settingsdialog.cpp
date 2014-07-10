@@ -18,10 +18,10 @@
 #include "settingsdialog.h"
 #include "settings.h"
 
-#include <KDE/KLocalizedString>
-#include <KDE/KListWidget>
+#include <KLocalizedString>
+#include <KListWidget>
 #include <QPushButton>
-#include <KDE/KDateComboBox>
+#include <KDateComboBox>
 
 #include <QPixmap>
 #include <QIcon>

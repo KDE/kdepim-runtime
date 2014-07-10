@@ -23,7 +23,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include <KDE/KDebug>
+#include <KDebug>
 
 using namespace Akonadi;
 

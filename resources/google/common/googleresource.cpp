@@ -22,8 +22,8 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/CollectionFetchScope>
 
-#include <KDE/KDialog>
-#include <KDE/KLocale>
+#include <KDialog>
+#include <KLocale>
 
 #include <KGAPI/Account>
 #include <KGAPI/AccountInfoFetchJob>

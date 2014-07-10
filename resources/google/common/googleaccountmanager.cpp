@@ -21,9 +21,9 @@
 
 #include <QtCore/QTimer>
 
-#include <KDE/KWallet/Wallet>
-#include <KDE/KDebug>
-#include <KDE/KWindowSystem>
+#include <KWallet/Wallet>
+#include <KDebug>
+#include <KWindowSystem>
 
 #include <KGAPI/Account>
 

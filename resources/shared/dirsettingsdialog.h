@@ -22,7 +22,7 @@
 
 #include "ui_settingsdialog.h"
 
-#include <KDE/KDialog>
+#include <KDialog>
 
 class KConfigDialogManager;
 

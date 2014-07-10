@@ -23,7 +23,7 @@
 
 #include "singlefileresourceconfigdialogbase.h"
 
-#include <KDE/KConfigDialogManager>
+#include <KConfigDialogManager>
 
 namespace Akonadi {
 
