@@ -35,6 +35,7 @@ MigrationAgent::MigrationAgent(const QString &id)
 :   AgentBase(id),
     mScheduler(new KUiServerJobTracker)
 {
+    KLocalizedString::setApplicationDomain( "akonadi_migration_agent" );
     mScheduler.addMigrator(QSharedPointer<GidMigrator>(new GidMigrator(KABC::Addressee::mimeType())));
 }
 
