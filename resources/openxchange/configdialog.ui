@@ -50,7 +50,7 @@
         <property name="whatsThis">
          <string>The URL of the Open-Xchange server, should be something like https://myserver.org/</string>
         </property>
-        <property name="clickMessage">
+        <property name="placeholderText">
          <string notr="true">https://myserver.org</string>
         </property>
        </widget>
