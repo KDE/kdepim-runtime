@@ -67,7 +67,7 @@ void VCardResource::aboutToQuit()
 {
   if ( !mSettings->readOnly() )
     writeFile();
-  mSettings->writeConfig();
+  mSettings->save();
 }
 
 void VCardResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )

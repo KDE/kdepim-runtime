@@ -63,7 +63,7 @@ void SettingsDialog::save()
 {
   mManager->updateSettings();
   mSettings->setPath( ui.kcfg_Path->url().toLocalFile() );
-  mSettings->writeConfig();
+  mSettings->save();
 }
 
 void SettingsDialog::validate()

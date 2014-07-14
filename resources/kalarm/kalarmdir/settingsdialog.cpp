@@ -70,7 +70,7 @@ void SettingsDialog::save()
     mManager->updateSettings();
     mSettings->setPath(ui.kcfg_Path->url().toLocalFile());
     mSettings->setAlarmTypes(CalEvent::mimeTypes(mTypeSelector->alarmTypes()));
-    mSettings->writeConfig();
+    mSettings->save();
 }
 
 void SettingsDialog::readOnlyClicked(bool set)
