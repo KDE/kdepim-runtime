@@ -40,6 +40,8 @@ find_package(Qt5UiTools ${QT_REQUIRED_VERSION} CONFIG REQUIRED)
 find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5NewStuff ${KF5_VERSION} CONFIG REQUIRED)
 
+set( SHARED_MIME_INFO_MINIMUM_VERSION "0.40" )
+find_package( SharedMimeInfo REQUIRED )
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
@@ -126,8 +128,7 @@ install(TARGETS accountwizard ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(TARGETS accountwizard_plugin DESTINATION ${PLUGIN_INSTALL_DIR})
 install(PROGRAMS accountwizard.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
-#REACTIVATE it
-#update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
+update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
 add_subdirectory(wizards)
 

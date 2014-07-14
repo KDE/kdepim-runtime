@@ -1,5 +1,8 @@
 project(facebook-notifications-serializer)
 
+set( SHARED_MIME_INFO_MINIMUM_VERSION "0.40" )
+find_package( SharedMimeInfo REQUIRED )
+
 include_directories(${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
 
 set(akonadi_serializer_socialnotification_SRCS
