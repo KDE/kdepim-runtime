@@ -1,8 +1,6 @@
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../imap
     ${CMAKE_CURRENT_BINARY_DIR}/../imap
-    ${QT_QTDBUS_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIR}
     ${Libkolab_INCLUDES}
     ${Libkolabxml_INCLUDES}
 )

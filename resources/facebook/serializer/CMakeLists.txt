@@ -3,8 +3,6 @@ project(facebook-notifications-serializer)
 set( SHARED_MIME_INFO_MINIMUM_VERSION "0.40" )
 find_package( SharedMimeInfo REQUIRED )
 
-include_directories(${KDE4_INCLUDES} ${KDEPIMLIBS_INCLUDE_DIRS})
-
 set(akonadi_serializer_socialnotification_SRCS
   akonadi_serializer_socialnotification.cpp
 )
@@ -12,7 +10,7 @@ set(akonadi_serializer_socialnotification_SRCS
 add_library(akonadi_serializer_socialnotification MODULE ${akonadi_serializer_socialnotification_SRCS})
 
 target_link_libraries(akonadi_serializer_socialnotification
-  ${KDE4_AKONADI_LIBS}
+  KF5::AkonadiCore
   ${LibKFbAPI_LIBRARY}
 )
 
