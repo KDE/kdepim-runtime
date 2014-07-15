@@ -144,7 +144,9 @@ void SettingsDialog::saveSettings()
 
 void SettingsDialog::slotCurrentAccountChanged( const QString &accountName )
 {
-    Q_UNUSED( accountName )
+    if ( accountName.isEmpty() ) {
+        return;
+    }
 
     slotReloadCalendars();
     slotReloadTaskLists();
@@ -182,7 +184,8 @@ void SettingsDialog::slotReloadTaskLists()
 
 void SettingsDialog::slotCalendarsRetrieved( Job *job )
 {
-    if ( !handleError( job ) ) {
+    if ( !handleError( job ) || !currentAccount() ) {
+        m_calendarsBox->setEnabled( true );
         return;
     }
 
@@ -209,7 +212,8 @@ void SettingsDialog::slotCalendarsRetrieved( Job *job )
 
 void SettingsDialog::slotTaskListsRetrieved( Job *job )
 {
-    if ( !handleError( job ) ) {
+    if ( !handleError( job ) || !currentAccount() ) {
+        m_taskListsBox->setEnabled( true );
         return;
     }
 
