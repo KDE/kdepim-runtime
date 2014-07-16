@@ -66,7 +66,7 @@ void ImapResource::onConfigurationDone(int result)
     if ( dlg->shouldClearCache() ) {
       clearCache();
     }
-    Settings::self()->writeConfig();
+    settings()->writeConfig();
   }
   dlg->deleteLater();
 }
