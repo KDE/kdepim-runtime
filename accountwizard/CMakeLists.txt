@@ -22,9 +22,16 @@ set(accountwizard_srcs
   configfile.cpp
   ldap.cpp
   identity.cpp
+  setupispdb.cpp
+  setupautoconfigkolabmail.cpp
+  setupautoconfigkolabldap.cpp
+  setupautoconfigkolabfreebusy.cpp
   servertest.cpp
   personaldatapage.cpp
   ispdb/ispdb.cpp
+  ispdb/autoconfigkolabmail.cpp
+  ispdb/autoconfigkolabldap.cpp
+  ispdb/autoconfigkolabfreebusy.cpp
 )
 
 kde4_add_ui_files(accountwizard_srcs

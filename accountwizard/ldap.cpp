@@ -26,6 +26,12 @@
 
 Ldap::Ldap( QObject *parent )
   : SetupObject( parent )
+  , m_port(389)
+  , m_security(KLDAP::LdapServer::None)
+  , m_version(3)
+  , m_pageSize(0)
+  , m_timeLimit(0)
+  , m_sizeLimit(0)
 {
 }
 
@@ -75,15 +81,46 @@ void Ldap::create()
     group.writeEntry( "NumSelectedHosts", selHosts + 1 );
     group.writeEntry( QString::fromLatin1( "SelectedHost%1" ).arg( selHosts ), host );
     group.writeEntry( QString::fromLatin1( "SelectedBase%1" ).arg( selHosts ), basedn );
-    group.writeEntry( QString::fromLatin1( "SelectedPort%1" ).arg( selHosts ), "389" );
+    group.writeEntry( QString::fromLatin1( "SelectedPort%1" ).arg( selHosts ), m_port );
+    group.writeEntry( QString::fromLatin1( "SelectedVersion%1" ).arg( selHosts ), m_version );
+    group.writeEntry( QString::fromLatin1( "SelectedSecurity%1" ).arg( selHosts ), securityString() );
+
+    if (m_pageSize > 0) {
+        group.writeEntry( QString::fromLatin1( "SelectedPageSize%1" ).arg( selHosts ), m_pageSize );
+    }
+
+    if (m_timeLimit > 0) {
+        group.writeEntry( QString::fromLatin1( "SelectedTimeLimit%1" ).arg( selHosts ), m_timeLimit );
+    }
+
+    if (m_sizeLimit > 0) {
+        group.writeEntry( QString::fromLatin1( "SelectedSizeLimit%1" ).arg( selHosts ), m_sizeLimit );
+    }
+
     if ( !m_authMethod.isEmpty() ) {
       group.writeEntry( QString::fromLatin1( "SelectedAuth%1" ).arg( selHosts ), m_authMethod );
       group.writeEntry( QString::fromLatin1( "SelectedBind%1" ).arg( selHosts ), m_bindDn );
       group.writeEntry( QString::fromLatin1( "SelectedPwdBind%1" ).arg( selHosts ), m_password );
+      group.writeEntry( QString::fromLatin1( "SelectedRealm%1" ).arg( selHosts ), m_realm );
+      group.writeEntry( QString::fromLatin1( "SelectedUser%1" ).arg( selHosts ), m_user );
+      group.writeEntry( QString::fromLatin1( "SelectedMech%1" ).arg( selHosts ), m_mech );
     }
   }
   emit finished( i18n( "LDAP set up." ) );
 }
+
+QString Ldap::securityString()
+{
+    if (m_security == KLDAP::LdapServer::None) {
+        return QLatin1String("None");
+    } else if (m_security == KLDAP::LdapServer::SSL) {
+        return QLatin1String("SSL");
+    } else if (m_security == KLDAP::LdapServer::TLS) {
+        return QLatin1String("TLS");
+    }
+    return QLatin1String("");
+}
+
 
 void Ldap::destroy()
 {
@@ -113,5 +150,46 @@ void Ldap::setBindDn(const QString& bindDn)
 void Ldap::setPassword(const QString& password)
 {
   m_password = password;
+}
+
+
+void Ldap::setPageSize(const int pageSize)
+{
+    m_pageSize = pageSize;
+}
+
+void Ldap::setPort(const int port)
+{
+    m_port = port;
+}
+
+void Ldap::setRealm(const QString &realm)
+{
+    m_realm = realm;
+}
+
+void Ldap::setSaslMech(const QString &saslmech)
+{
+    m_mech = saslmech;
+}
+
+void Ldap::setSecurity(const KLDAP::LdapServer::Security security)
+{
+    m_security = security;
+}
+
+void Ldap::setSizeLimit(const int sizeLimit)
+{
+    m_sizeLimit = sizeLimit;
+}
+
+void Ldap::setTimeLimit(const int timeLimit)
+{
+    m_timeLimit = timeLimit;
+}
+
+void Ldap::setVersion(const int version)
+{
+    m_version = version;
 }
 

@@ -21,7 +21,7 @@
 #define LDAP_H
 
 #include "setupobject.h"
-
+#include <KLDAP/LdapServer>
 
 class Ldap : public SetupObject
 {
@@ -37,12 +37,31 @@ class Ldap : public SetupObject
     Q_SCRIPTABLE void setAuthenticationMethod( const QString &meth );
     Q_SCRIPTABLE void setBindDn( const QString &bindDn );
     Q_SCRIPTABLE void setPassword( const QString &password );
+    Q_SCRIPTABLE void setPort(const int port);
+    Q_SCRIPTABLE void setSecurity(const KLDAP::LdapServer::Security security);
+    Q_SCRIPTABLE void setSaslMech(const QString &saslmech);
+    Q_SCRIPTABLE void setRealm(const QString &realm);
+    Q_SCRIPTABLE void setVersion(const int version);
+    Q_SCRIPTABLE void setPageSize(const int pageSize);
+    Q_SCRIPTABLE void setTimeLimit(const int timeLimit);
+    Q_SCRIPTABLE void setSizeLimit(const int sizeLimit);
+
   private:
+    QString securityString();
+
     QString m_user;
     QString m_server;
     QString m_bindDn;
     QString m_authMethod;
     QString m_password;
+    int m_port;
+    KLDAP::LdapServer::Security m_security;
+    QString m_mech;
+    QString m_realm;
+    int m_version;
+    int m_pageSize;
+    int m_timeLimit;
+    int m_sizeLimit;
 };
 
 #endif
