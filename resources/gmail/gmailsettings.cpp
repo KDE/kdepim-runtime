@@ -43,11 +43,8 @@ GmailSettings::GmailSettings(WId winId)
     : Settings(winId)
     , mActiveAuthJob(0)
 {
-    // HACK: ImapResourceBase will consider the settings invalid as long as
-    // server is not set. To prevent early connection without valid account
-    // (which seems to somehow mess up SASL in KIMAP), we pretend we don't
-    // know the server yet
-    setImapServer(QString());
+    // Try to initialize mAccount
+    requestAccount(false);
     /*
     new SettingsAdaptor( this );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/GmailSettings" ), this,
