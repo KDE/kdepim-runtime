@@ -26,7 +26,7 @@
 
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
-#include <KLineEdit>
+#include <QLineEdit>
 #include <KCheckableProxyModel>
 #include <QPushButton>
 #include <KHelpMenu>
@@ -125,8 +125,8 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     textToSpeakLayout->setMargin(0);
     QLabel *lab = new QLabel(i18n("Message:"));
     textToSpeakLayout->addWidget(lab);
-    mTextToSpeakSetting = new KLineEdit;
-    mTextToSpeakSetting->setClearButtonShown(true);
+    mTextToSpeakSetting = new QLineEdit;
+    mTextToSpeakSetting->setClearButtonEnabled(true);
     mTextToSpeakSetting->setText(NewMailNotifierAgentSettings::textToSpeak());
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
     mTextToSpeakSetting->setWhatsThis(i18n(textToSpeakMessage));

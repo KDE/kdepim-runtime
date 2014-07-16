@@ -34,7 +34,7 @@ class GoogleAccountManager;
 class QGroupBox;
 class KComboBox;
 class QCheckBox;
-class KIntSpinBox;
+class KPluralHandlingSpinBox;
 class QPushButton;
 
 class GoogleSettingsDialog : public KDialog
@@ -74,7 +74,7 @@ class GoogleSettingsDialog : public KDialog
     QPushButton *m_removeAccButton;
     KComboBox *m_accComboBox;
     QCheckBox *m_enableRefresh;
-    KIntSpinBox *m_refreshSpinBox;
+    KPluralHandlingSpinBox *m_refreshSpinBox;
 
 };
 

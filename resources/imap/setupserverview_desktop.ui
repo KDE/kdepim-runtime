@@ -212,7 +212,7 @@
           </widget>
          </item>
          <item>
-          <widget class="KIntSpinBox" name="sievePortSpin">
+          <widget class="KPluralHandlingSpinBox" name="sievePortSpin">
            <property name="maximum">
             <number>65535</number>
            </property>
@@ -623,9 +623,9 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>KIntSpinBox</class>
+   <class>KPluralHandlingSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
+   <header>KPluralHandlingSpinBox</header>
   </customwidget>
   <customwidget>
    <class>KIntNumInput</class>

@@ -33,7 +33,7 @@
 #include <KDebug>
 #include <KMessageBox>
 #include <KWindowSystem>
-#include <KIntSpinBox>
+#include <KPluralHandlingSpinBox>
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>
@@ -86,7 +86,12 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
 
     QLabel *label = new QLabel( i18n( "Refresh interval:" ) );
     refreshLayout->addWidget( label, 1, 0 );
-    m_refreshSpinBox = new KIntSpinBox( 10, 720, 1, 30, this, 10 );
+    m_refreshSpinBox = new KPluralHandlingSpinBox(this);
+    m_refreshSpinBox->setMaximum(720);
+    m_refreshSpinBox->setMinimum( 10);
+    m_refreshSpinBox->setSingleStep(1);
+    m_refreshSpinBox->setValue(30);
+    m_refreshSpinBox->setDisplayIntegerBase(10 );
     m_refreshSpinBox->setSuffix( ki18np( " minute", " minutes" ) );
     m_refreshSpinBox->setEnabled( Settings::self()->enableIntervalCheck() );
     refreshLayout->addWidget( m_refreshSpinBox, 1, 1 );

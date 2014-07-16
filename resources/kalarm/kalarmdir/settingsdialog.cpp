@@ -39,7 +39,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
 {
     ui.setupUi(mainWidget());
     mTypeSelector = new AlarmTypeWidget(ui.tab, ui.tabLayout);
-    ui.ktabwidget->setTabBarHidden(true);
+    ui.ktabwidget->tabBar()->hide();
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
     setButtons(Ok | Cancel);
     setCaption(i18nc("@title", "Configure Calendar"));

@@ -40,7 +40,7 @@
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="KIntSpinBox" name="kcfg_AlarmDays" >
+       <widget class="KPluralHandlingSpinBox" name="kcfg_AlarmDays" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -103,9 +103,9 @@
    <header>keditlistwidget.h</header>
   </customwidget>
   <customwidget>
-   <class>KIntSpinBox</class>
+   <class>KPluralHandlingSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
+   <header>KPluralHandlingSpinBox</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -11,7 +11,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
-    <widget class="KTabWidget" name="ktabwidget" >
+    <widget class="QTabWidget" name="ktabwidget" >
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -122,7 +122,7 @@
           </widget>
          </item>
          <item>
-          <widget class="KIntSpinBox" name="kcfg_AutosaveInterval" >
+          <widget class="KPluralHandlingSpinBox" name="kcfg_AutosaveInterval" >
            <property name="value" >
             <number>1</number>
            </property>
@@ -167,15 +167,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KIntSpinBox</class>
+   <class>KPluralHandlingSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KTabWidget</class>
-   <extends>QTabWidget</extends>
-   <header>ktabwidget.h</header>
-   <container>1</container>
+   <header>KPluralHandlingSpinBox</header>
   </customwidget>
   <customwidget>
    <class>KUrlRequester</class>
