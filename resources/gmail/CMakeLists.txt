@@ -31,7 +31,7 @@ set(gmailresource_SRCS
 )
 
 qt5_wrap_ui(gmailresource_SRCS gmailconfigdialog.ui)
-kconfig_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
+#kconfig_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
 
 add_executable(akonadi_gmail_resource ${gmailresource_SRCS})
 target_link_libraries(akonadi_gmail_resource

@@ -24,10 +24,11 @@
 
 #include <KGAPI/Types>
 
+class GmailResource;
 class GmailPasswordRequester : public PasswordRequesterInterface
 {
 public:
-    GmailPasswordRequester(QObject *parent);
+    GmailPasswordRequester(GmailResource *resource, QObject *parent);
     virtual ~GmailPasswordRequester();
 
     virtual void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString());
@@ -39,6 +40,8 @@ private:
 private Q_SLOTS:
     void onAuthFinished(const KGAPI2::AccountPtr &account, bool userRejected);
 
+private:
+    GmailResource *mResource;
 };
 
 #endif // GMAILPASSWORDREQUESTER_H

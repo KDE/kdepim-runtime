@@ -36,28 +36,6 @@ using KWallet::Wallet;
 #include <CollectionFetchJob>
 #include <CollectionModifyJob>
 
-class SettingsHelper
-{
-public:
-    SettingsHelper() : q( 0 ) {}
-    ~SettingsHelper() {
-        delete q;
-    }
-    Settings *q;
-};
-
-Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
-
-Settings *Settings::self()
-{
-    if ( !s_globalSettings->q ) {
-        new Settings;
-        s_globalSettings->q->save();
-    }
-
-    return s_globalSettings->q;
-}
-
 /**
  * Maps the enum used to represent authentication in MailTransport (kdepimlibs)
  * to the one used by the imap resource.
@@ -95,8 +73,7 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap( MailTrans
 
 Settings::Settings( WId winId ) : SettingsBase(), m_winId( winId )
 {
-    Q_ASSERT( !s_globalSettings->q );
-    s_globalSettings->q = this;
+    readConfig();
 
     new SettingsAdaptor( this );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this, QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
@@ -324,7 +301,7 @@ void Settings::loadAccount( ImapAccount *account ) const
 
 QString Settings::rootRemoteId() const
 {
-  return QLatin1String("imap://") + Settings::self()->userName() + QLatin1Char('@') + Settings::self()->imapServer() + QLatin1Char('/');
+  return QLatin1String("imap://") + userName() + QLatin1Char('@') + imapServer() + QLatin1Char('/');
 }
 
 void Settings::renameRootCollection( const QString &newName )

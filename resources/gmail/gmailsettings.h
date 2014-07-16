@@ -20,7 +20,7 @@
 #ifndef GMAILSETTINGS_H
 #define GMAILSETTINGS_H
 
-#include "settingsbase.h"
+#include <imap/settings.h>
 
 #include <KGAPI/Types>
 
@@ -32,14 +32,12 @@ class AuthJob;
 class ImapAccount;
 class KJob;
 
-class GmailSettings : public SettingsBase
+class GmailSettings : public Settings
 {
   Q_OBJECT
-  Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Gmail.Wallet")
+
 public:
     explicit GmailSettings(WId wid = 0);
-    static GmailSettings *self();
-    void setWinId(WId wid);
 
     void requestPassword();
     void requestAccount(bool authenticate = false);
@@ -50,7 +48,6 @@ public:
     /* FIXME: I have serious doubts about this methods...they should be in the
      * Resource, not here. */
     QString rootRemoteId() const;
-    void renameRootCollection(const QString &newName);
 
     // Actually cleans tokens
     void clearCachedPassword();
@@ -73,10 +70,8 @@ public Q_SLOTS:
     Q_SCRIPTABLE QString refreshToken(bool *userRejected = 0) const;
     Q_SCRIPTABLE void setRefreshToken(const QString &refreshToken);
 
-private slots:
+private Q_SLOTS:
     void onWalletOpened(bool success);
-
-    void onRootCollectionFetched(KJob *job);
 
     void loadAccountFromKWallet(bool *userRejected = 0) const;
     void saveAccountToKWallet();
@@ -84,7 +79,6 @@ private slots:
     void onAuthFinished(KGAPI2::Job *job);
 
 private:
-    WId mWinId;
     mutable KGAPI2::AccountPtr mAccount;
     KGAPI2::AuthJob *mActiveAuthJob;
 

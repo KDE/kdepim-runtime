@@ -19,6 +19,7 @@
 
 #include "gmailpasswordrequester.h"
 #include "gmailsettings.h"
+#include "gmailresource.h"
 
 #include <kgapi/account.h>
 #include <kgapi/authjob.h>
@@ -31,8 +32,9 @@
  * See https://developers.google.com/gmail/xoauth2_protocol for protocol documentation
  */
 
-GmailPasswordRequester::GmailPasswordRequester(QObject *parent)
+GmailPasswordRequester::GmailPasswordRequester(GmailResource *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
+    , mResource(resource)
 {
 }
 
@@ -43,14 +45,14 @@ GmailPasswordRequester::~GmailPasswordRequester()
 void GmailPasswordRequester::requestPassword(PasswordRequesterInterface::RequestType request, const QString &serverError)
 {
     if (request == PasswordRequesterInterface::WrongPasswordRequest) {
-        connect(GmailSettings::self(), SIGNAL(accountRequestCompleted(KGAPI2::AccountPtr,bool)),
+        connect(mResource->settings(), SIGNAL(accountRequestCompleted(KGAPI2::AccountPtr,bool)),
                 this, SLOT(onAuthFinished(KGAPI2::AccountPtr,bool)),
                 Qt::UniqueConnection);
-        GmailSettings::self()->requestAccount(true);
+        static_cast<GmailSettings*>(mResource->settings())->requestAccount(true);
     } else {
         QMetaObject::invokeMethod(this, "done", Qt::QueuedConnection,
                                   Q_ARG(int, PasswordRetrieved),
-                                  Q_ARG(QString, GmailSettings::self()->password()));
+                                  Q_ARG(QString, mResource->settings()->password()));
     }
 }
 

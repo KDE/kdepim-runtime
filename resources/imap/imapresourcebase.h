@@ -45,6 +45,7 @@ class ImapIdleManager;
 class SessionPool;
 class ResourceState;
 class SubscriptionDialog;
+class Settings;
 
 class ImapResourceBase : public Akonadi::ResourceBase,
                          public Akonadi::AgentBase::ObserverV3,
@@ -63,6 +64,8 @@ public:
 
   QStringList serverCapabilities() const;
   void cleanup();
+
+  virtual Settings* settings() const;
 
 public Q_SLOTS:
   virtual void configure( WId windowId );
@@ -144,6 +147,8 @@ private Q_SLOTS:
 
   void onCollectionModifyDone( KJob *job );
 
+  void delayedInit();
+
 protected:
   //Starts and queues a task
   void startTask( ResourceTask *task );
@@ -163,6 +168,7 @@ private:
   ImapIdleManager *m_idle;
   QTimer *m_statusMessageTimer;
   QChar m_separatorCharacter;
+  mutable Settings *m_settings;
 };
 
 #endif

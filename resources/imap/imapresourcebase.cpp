@@ -100,7 +100,8 @@ ImapResourceBase::ImapResourceBase( const QString &id )
   : ResourceBase( id ),
     m_pool( new SessionPool( 2, this ) ),
     mSubscriptions( 0 ),
-    m_idle( 0 )
+    m_idle( 0 ),
+    m_settings( 0 )
 {
   QTimer::singleShot( 0, this, SLOT(updateResourceName()) );
 
@@ -143,25 +144,32 @@ ImapResourceBase::ImapResourceBase( const QString &id )
 
   connect( this, SIGNAL(reloadConfiguration()), SLOT(reconnect()) );
 
-  Settings::self(); // make sure the D-Bus settings interface is up
-  new ImapResourceBaseAdaptor( this );
-  setNeedsNetwork( needsNetwork() );
-
-  // Migration issue: trash folder had ID in config, but didn't have SpecialCollections attribute, fix that.
-  if (!Settings::self()->trashCollectionMigrated()) {
-    const Akonadi::Collection::Id trashCollection = Settings::self()->trashCollection();
-    if (trashCollection != -1) {
-      Collection attributeCollection(trashCollection);
-      SpecialCollections::setSpecialCollectionType("trash", attributeCollection);
-    }
-    Settings::self()->setTrashCollectionMigrated(true);
-  }
 
   m_statusMessageTimer = new QTimer( this );
   m_statusMessageTimer->setSingleShot( true );
   connect( m_statusMessageTimer, SIGNAL(timeout()), SLOT(clearStatusMessage()) );
   connect( this, SIGNAL(error(QString)), SLOT(showError(QString)) );
+
+  QMetaObject::invokeMethod( this, "delayedInit", Qt::QueuedConnection );
 }
+
+void ImapResourceBase::delayedInit()
+{
+  settings(); // make sure the D-Bus settings interface is up
+  new ImapResourceBaseAdaptor( this );
+  setNeedsNetwork( needsNetwork() );
+
+  // Migration issue: trash folder had ID in config, but didn't have SpecialCollections attribute, fix that.
+  if (!settings()->trashCollectionMigrated()) {
+    const Akonadi::Collection::Id trashCollection = settings()->trashCollection();
+    if (trashCollection != -1) {
+      Collection attributeCollection(trashCollection);
+      SpecialCollections::setSpecialCollectionType("trash", attributeCollection);
+    }
+    settings()->setTrashCollectionMigrated(true);
+  }
+}
+
 
 ImapResourceBase::~ImapResourceBase()
 {
@@ -178,6 +186,7 @@ ImapResourceBase::~ImapResourceBase()
   m_taskList.clear();
 
   delete m_pool;
+  delete m_settings;
 }
 
 void ImapResourceBase::aboutToQuit()
@@ -230,7 +239,7 @@ void ImapResourceBase::configure( WId windowId )
 
 void ImapResourceBase::startConnect( const QVariant& )
 {
-  if ( Settings::self()->imapServer().isEmpty() ) {
+  if ( settings()->imapServer().isEmpty() ) {
     setOnline( false );
     emit status( NotConfigured, i18n( "No server configured yet." ) );
     taskDone();
@@ -239,7 +248,7 @@ void ImapResourceBase::startConnect( const QVariant& )
 
   m_pool->disconnect(); // reset all state, delete any old account
   ImapAccount *account = new ImapAccount;
-  Settings::self()->loadAccount( account );
+  settings()->loadAccount( account );
 
   const bool result = m_pool->connect( account );
   Q_ASSERT( result );
@@ -253,7 +262,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
 
   if ( !m_pool->account() )
      return -2;
-  const QString password = Settings::self()->password();
+  const QString password = settings()->password();
   if ( password.isEmpty() )
      return -1;
 
@@ -268,11 +277,11 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
   mSubscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
   mSubscriptions->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
   mSubscriptions->connectAccount( *m_pool->account(), password );
-  mSubscriptions->setSubscriptionEnabled( Settings::self()->subscriptionEnabled() );
+  mSubscriptions->setSubscriptionEnabled( settings()->subscriptionEnabled() );
 
   if ( mSubscriptions->exec() ) {
-    Settings::self()->setSubscriptionEnabled( mSubscriptions->subscriptionEnabled() );
-    Settings::self()->save();
+    settings()->setSubscriptionEnabled( mSubscriptions->subscriptionEnabled() );
+    settings()->save();
     emit configurationDialogAccepted();
     reconnect();
   }
@@ -329,6 +338,16 @@ ResourceStateInterface::Ptr ImapResourceBase::createResourceState(const TaskArgu
 {
   return ResourceStateInterface::Ptr(new ResourceState(this, args));
 }
+
+Settings *ImapResourceBase::settings() const
+{
+  if (m_settings == 0) {
+    m_settings = new Settings;
+  }
+
+  return m_settings;
+}
+
 
 // ----------------------------------------------------------------------------------
 
@@ -563,7 +582,7 @@ void ImapResourceBase::doSetOnline(bool online)
       delete m_idle;
       m_idle = 0;
     }
-    Settings::self()->clearCachedPassword();
+    settings()->clearCachedPassword();
   } else if ( online && !m_pool->isConnected() ) {
     scheduleConnectionAttempt();
   }
@@ -582,7 +601,7 @@ void ImapResourceBase::setSeparatorCharacter( const QChar &separator )
 
 bool ImapResourceBase::needsNetwork() const
 {
-  const QString hostName = Settings::self()->imapServer().section( QLatin1Char(':'), 0, 0 );
+  const QString hostName = settings()->imapServer().section( QLatin1Char(':'), 0, 0 );
   // ### is there a better way to do this?
   if ( hostName == QLatin1String( "127.0.0.1" ) ||
        hostName == QLatin1String( "localhost" ) ||
@@ -619,11 +638,11 @@ void ImapResourceBase::startIdle()
     return;
 
   //Without password we don't even have to try
-  if (Settings::self()->password().isEmpty()) {
+  if (settings()->password().isEmpty()) {
     return;
   }
 
-  const QStringList ridPath = Settings::self()->idleRidPath();
+  const QStringList ridPath = settings()->idleRidPath();
   if ( ridPath.size() < 2 )
     return;
 
@@ -669,7 +688,7 @@ void ImapResourceBase::onIdleCollectionFetchDone( KJob *job )
 
 void ImapResourceBase::requestManualExpunge( qint64 collectionId )
 {
-  if ( !Settings::self()->automaticExpungeEnabled() ) {
+  if ( !settings()->automaticExpungeEnabled() ) {
     Collection collection( collectionId );
 
     Akonadi::CollectionFetchScope scope;
@@ -751,7 +770,7 @@ QStringList ImapResourceBase::serverCapabilities() const
 
 void ImapResourceBase::cleanup()
 {
-    Settings::self()->cleanup();
+    settings()->cleanup();
 }
 
 QString ImapResourceBase::dumpResourceToString() const

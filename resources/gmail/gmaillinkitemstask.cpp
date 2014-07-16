@@ -18,6 +18,7 @@
  */
 
 #include "gmaillinkitemstask.h"
+#include "gmailresource.h"
 #include "gmailretrieveitemstask.h"
 #include "gmailsettings.h"
 
@@ -35,13 +36,15 @@
 #define COLLECTION_NAME_PROPERTY "CollectionNameProperty"
 #define COLLECTION_PROPERTY "CollectionProperty"
 
-GmailLinkItemsTask::GmailLinkItemsTask(GmailRetrieveItemsTask *retrieveTask, QObject *parent)
+GmailLinkItemsTask::GmailLinkItemsTask(GmailRetrieveItemsTask *retrieveTask, GmailResource *parent)
     : QObject(parent)
+    , mResource(parent)
 {
     connect(retrieveTask, SIGNAL(linkItem(QString,QVector<QByteArray>)),
             this, SLOT(linkItem(QString,QVector<QByteArray>)));
     connect(retrieveTask, SIGNAL(destroyed(QObject*)),
             this, SLOT(onRetrievalDone()));
+
 }
 
 GmailLinkItemsTask::~GmailLinkItemsTask()
@@ -105,7 +108,7 @@ void GmailLinkItemsTask::resolveNextLabel()
     }
 
     Akonadi::Collection rootCollection;
-    rootCollection.setRemoteId(GmailSettings::self()->rootRemoteId());
+    rootCollection.setRemoteId(mResource->settings()->rootRemoteId());
     Akonadi::CollectionPathResolver *resolver
         = new Akonadi::CollectionPathResolver(realCollectionName, rootCollection, this);
     resolver->setProperty(COLLECTION_NAME_PROPERTY, realCollectionName);
