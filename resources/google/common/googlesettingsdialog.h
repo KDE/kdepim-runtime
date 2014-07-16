@@ -80,4 +80,3 @@ class GoogleSettingsDialog : public KDialog
 
 #endif // GOOGLESETTINGSDIALOG_H
 
-class QGroupBox;
