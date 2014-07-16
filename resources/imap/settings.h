@@ -37,36 +37,35 @@ public:
     static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
 
     explicit Settings( WId = 0 );
-    static Settings *self();
     void setWinId( WId );
 
-    void requestPassword();
-    void requestManualAuth();
+    virtual void requestPassword();
+    virtual void requestManualAuth();
 
-    void loadAccount( ImapAccount *account ) const;
+    virtual void loadAccount( ImapAccount *account ) const;
 
     QString rootRemoteId() const;
-    void renameRootCollection( const QString &newName );
+    virtual void renameRootCollection( const QString &newName );
 
-    void clearCachedPassword();
-    void cleanup();
+    virtual void clearCachedPassword();
+    virtual void cleanup();
 
 signals:
     void passwordRequestCompleted( const QString &password, bool userRejected );
 
 public slots:
-    Q_SCRIPTABLE QString password( bool *userRejected = 0 ) const;
-    Q_SCRIPTABLE void setPassword( const QString &password );
-    Q_SCRIPTABLE void setSieveCustomPassword(const QString & password);
-    Q_SCRIPTABLE QString sieveCustomPassword( bool *userRejected = 0 ) const;
+    Q_SCRIPTABLE virtual QString password( bool *userRejected = 0 ) const;
+    Q_SCRIPTABLE virtual void setPassword( const QString &password );
+    Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString & password);
+    Q_SCRIPTABLE virtual QString sieveCustomPassword( bool *userRejected = 0 ) const;
 
-private slots:
-    void onWalletOpened( bool success );
-    void onDialogFinished( int result );
+protected slots:
+    virtual void onWalletOpened( bool success );
+    virtual void onDialogFinished( int result );
 
     void onRootCollectionFetched( KJob *job );
 
-private:
+protected:
     WId m_winId;
     mutable QString m_password;
     mutable QString m_customSievePassword;

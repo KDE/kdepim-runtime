@@ -43,13 +43,14 @@
 
 #include <KLocale>
 
-GmailResource::GmailResource(const QString &id):
-    ImapResourceBase(id)
+GmailResource::GmailResource(const QString &id)
+  : ImapResourceBase(id)
+  , m_settings(0)
 {
     KGlobal::locale()->insertCatalog(QLatin1String("akonadi_imap_resource"));
     setSeparatorCharacter(QLatin1Char('/'));
 
-    m_pool->setPasswordRequester(new GmailPasswordRequester(m_pool));
+    m_pool->setPasswordRequester(new GmailPasswordRequester(this, m_pool));
     m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
 
     Akonadi::AttributeFactory::registerAttribute<GmailLabelAttribute>();
@@ -58,6 +59,16 @@ GmailResource::GmailResource(const QString &id):
 GmailResource::~GmailResource()
 {
 }
+
+Settings *GmailResource::settings() const
+{
+    if (m_settings == 0) {
+        m_settings = new GmailSettings;
+    }
+
+    return m_settings;
+}
+
 
 QString GmailResource::defaultName() const
 {
@@ -80,7 +91,7 @@ void GmailResource::onConfigurationDone(int result)
         if ( dlg->shouldClearCache() ) {
             clearCache();
         }
-        GmailSettings::self()->writeConfig();
+        settings()->writeConfig();
     }
     dlg->deleteLater();
 }

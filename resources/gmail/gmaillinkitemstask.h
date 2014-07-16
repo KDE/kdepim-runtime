@@ -25,6 +25,7 @@
 
 #include <Akonadi/Collection>
 
+class GmailResource;
 class GmailRetrieveItemsTask;
 class KJob;
 
@@ -33,7 +34,7 @@ class GmailLinkItemsTask : public QObject
     Q_OBJECT
 
 public:
-    explicit GmailLinkItemsTask(GmailRetrieveItemsTask *retrieveTask, QObject *parent = 0);
+    explicit GmailLinkItemsTask(GmailRetrieveItemsTask *retrieveTask, GmailResource *parent0);
     virtual ~GmailLinkItemsTask();
 
 Q_SIGNALS:
@@ -56,6 +57,7 @@ private:
     QList<QByteArray> mLabels;
     QMap<QByteArray, Akonadi::Collection> mLabelCollectionMap;
 
+    GmailResource *mResource;
 };
 
 #endif // GMAILLINKITEMSTASK_H

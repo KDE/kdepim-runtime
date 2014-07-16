@@ -48,7 +48,7 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     , m_subscriptionsChanged(false)
     , m_shouldClearCache(false)
 {
-    GmailSettings::self()->setWinId(parent);
+    m_parentResource->settings()->setWinId(parent);
 
     m_ui->setupUi(mainWidget());
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(resource->identifier());
@@ -79,7 +79,7 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     connect(m_ui->enableMailCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(slotMailCheckboxChanged()));
 
-    connect(GmailSettings::self(), SIGNAL(accountRequestCompleted(KGAPI2::AccountPtr,bool)),
+    connect(m_parentResource->settings(), SIGNAL(accountRequestCompleted(KGAPI2::AccountPtr,bool)),
             this, SLOT(onAccountRequestCompleted(KGAPI2::AccountPtr,bool)));
 
     readSettings();
@@ -123,37 +123,38 @@ void GmailConfigDialog::applySettings()
     m_folderArchiveSettingPage->writeSettings();
     m_parentResource->setName(m_ui->usernameLabel->text());
 
-    GmailSettings::self()->setImapServer(QLatin1String("imap.gmail.com"));
-    GmailSettings::self()->setImapPort(993);
-    GmailSettings::self()->setUserName(m_account->accountName());
-    GmailSettings::self()->setPassword(m_account->accessToken());
-    GmailSettings::self()->setRefreshToken(m_account->refreshToken());
-    GmailSettings::self()->setSafety(QLatin1String("SSL"));
-    GmailSettings::self()->setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
-    GmailSettings::self()->setIntervalCheckTime(m_ui->checkInterval->value());
-    GmailSettings::self()->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
+    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+    settings->setImapServer(QLatin1String("imap.gmail.com"));
+    settings->setImapPort(993);
+    settings->setUserName(m_account->accountName());
+    settings->setPassword(m_account->accessToken());
+    settings->setRefreshToken(m_account->refreshToken());
+    settings->setSafety(QLatin1String("SSL"));
+    settings->setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
+    settings->setIntervalCheckTime(m_ui->checkInterval->value());
+    settings->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
 
     /* Gmail does not support sieve */
-    GmailSettings::self()->setSieveSupport(false);
+    settings->setSieveSupport(false);
 
     /* Trash is autodetected on collection sync */
-    GmailSettings::self()->setTrashCollection( -1 );
+    settings->setTrashCollection( -1 );
 
-    GmailSettings::self()->setAutomaticExpungeEnabled(m_ui->autoExpungeCheck->isChecked());
-    GmailSettings::self()->setUseDefaultIdentity(m_ui->useDefaultIdentityCheck->isChecked());
+    settings->setAutomaticExpungeEnabled(m_ui->autoExpungeCheck->isChecked());
+    settings->setUseDefaultIdentity(m_ui->useDefaultIdentityCheck->isChecked());
     if (!m_ui->useDefaultIdentityCheck->isChecked()) {
-        GmailSettings::self()->setAccountIdentity(m_identityCombobox->currentIdentity());
+        settings->setAccountIdentity(m_identityCombobox->currentIdentity());
     }
 
-    GmailSettings::self()->setIntervalCheckEnabled(m_ui->enableMailCheckBox->isChecked());
+    settings->setIntervalCheckEnabled(m_ui->enableMailCheckBox->isChecked());
     if (m_ui->enableMailCheckBox->isChecked()) {
-        GmailSettings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
+        settings->setIntervalCheckTime( m_ui->checkInterval->value() );
     }
 
-    GmailSettings::self()->writeConfig();
+    settings->writeConfig();
 
     if (m_oldResourceName != m_account->accountName() && !m_account->accountName().isEmpty()) {
-        GmailSettings::self()->renameRootCollection(m_account->accountName());
+        settings->renameRootCollection(m_account->accountName());
     }
 }
 
@@ -163,6 +164,8 @@ void GmailConfigDialog::readSettings()
     m_ui->usernameLabel->setText(m_parentResource->name());
     m_oldResourceName = m_parentResource->name();
 
+    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+
     m_account = KGAPI2::AccountPtr(new KGAPI2::Account);
     if (!m_parentResource->name().startsWith(m_parentResource->defaultName())) {
         m_account->setAccountName(m_parentResource->name());
@@ -171,8 +174,8 @@ void GmailConfigDialog::readSettings()
         m_ui->currentAccountBox->setVisible(true);
 
         bool rejected = false;
-        const QString accessToken = GmailSettings::self()->password(&rejected);
-        const QString refreshToken = GmailSettings::self()->refreshToken(&rejected);
+        const QString accessToken = settings->password(&rejected);
+        const QString refreshToken = settings->refreshToken(&rejected);
         if ( rejected ) {
             //m_ui->password->setEnabled( false );
             KMessageBox::information(0, i18n("Could not access KWallet. If you want to use Gmail resource, you have to activate it."));
@@ -185,19 +188,19 @@ void GmailConfigDialog::readSettings()
         m_ui->authenticateButton->setVisible(true);
     }
 
-    m_ui->subscriptionEnabled->setChecked(GmailSettings::self()->subscriptionEnabled());
+    m_ui->subscriptionEnabled->setChecked(settings->subscriptionEnabled());
 
-    m_ui->enableMailCheckBox->setChecked(GmailSettings::self()->intervalCheckEnabled());
+    m_ui->enableMailCheckBox->setChecked(settings->intervalCheckEnabled());
     m_ui->checkInterval->setEnabled(m_ui->enableMailCheckBox->isChecked());
-    m_ui->checkInterval->setValue(GmailSettings::self()->intervalCheckTime());
-    m_ui->disconnectedModeEnabled->setChecked(GmailSettings::self()->disconnectedModeEnabled());
+    m_ui->checkInterval->setValue(settings->intervalCheckTime());
+    m_ui->disconnectedModeEnabled->setChecked(settings->disconnectedModeEnabled());
 
-    m_ui->useDefaultIdentityCheck->setChecked(GmailSettings::self()->useDefaultIdentity());
+    m_ui->useDefaultIdentityCheck->setChecked(settings->useDefaultIdentity());
     if (!m_ui->useDefaultIdentityCheck->isChecked())
-        m_identityCombobox->setCurrentIdentity(GmailSettings::self()->accountIdentity());
+        m_identityCombobox->setCurrentIdentity(settings->accountIdentity());
 
 
-    m_ui->autoExpungeCheck->setChecked(GmailSettings::self()->automaticExpungeEnabled());
+    m_ui->autoExpungeCheck->setChecked(settings->automaticExpungeEnabled());
 }
 
 void GmailConfigDialog::slotComplete()
@@ -232,9 +235,10 @@ void GmailConfigDialog::slotManageSubscriptions()
 
 void GmailConfigDialog::slotAuthenticate()
 {
-    GmailSettings::self()->clearCachedPassword();
-    GmailSettings::self()->storeAccount(KGAPI2::AccountPtr());
-    GmailSettings::self()->requestAccount(true);
+    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+    settings->clearCachedPassword();
+    settings->storeAccount(KGAPI2::AccountPtr());
+    settings->requestAccount(true);
     m_shouldClearCache = true;
 }
 
@@ -252,7 +256,8 @@ void GmailConfigDialog::onAccountRequestCompleted(const KGAPI2::AccountPtr &acco
         m_ui->authenticateButton->setVisible(false);
     }
 
-    GmailSettings::self()->storeAccount(m_account);
+    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+    settings->storeAccount(m_account);
     slotComplete();
 }
 

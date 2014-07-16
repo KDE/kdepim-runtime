@@ -39,42 +39,15 @@ using KWallet::Wallet;
 #include <LibKGAPI2/Account>
 #include <LibKGAPI2/AuthJob>
 
-class SettingsHelper
-{
-public:
-    SettingsHelper()
-        : q(0)
-    {
-    }
-
-    ~SettingsHelper()
-    {
-        delete q;
-    }
-
-    GmailSettings *q;
-};
-
-K_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
-
-GmailSettings *GmailSettings::self()
-{
-    if (!s_globalSettings->q) {
-        new GmailSettings;
-        s_globalSettings->q->readConfig();
-    }
-
-    return s_globalSettings->q;
-}
-
 GmailSettings::GmailSettings(WId winId)
-    : SettingsBase()
-    , mWinId(winId)
+    : Settings(winId)
     , mActiveAuthJob(0)
 {
-    Q_ASSERT( !s_globalSettings->q );
-    s_globalSettings->q = this;
-
+    // HACK: ImapResourceBase will consider the settings invalid as long as
+    // server is not set. To prevent early connection without valid account
+    // (which seems to somehow mess up SASL in KIMAP), we pretend we don't
+    // know the server yet
+    setImapServer(QString());
     /*
     new SettingsAdaptor( this );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/GmailSettings" ), this,
@@ -93,11 +66,6 @@ QString GmailSettings::secretKey() const
 }
 
 
-void GmailSettings::setWinId(WId winId)
-{
-    mWinId = winId;
-}
-
 void GmailSettings::clearCachedPassword()
 {
     mAccount = KGAPI2::AccountPtr();
@@ -105,7 +73,7 @@ void GmailSettings::clearCachedPassword()
 
 void GmailSettings::cleanup()
 {
-    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId);
+    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QLatin1String("gmail"))) {
             wallet->setFolder(QLatin1String("gmail"));
@@ -149,6 +117,11 @@ void GmailSettings::requestAccount(bool authenticate)
                 this, SLOT(onAuthFinished(KGAPI2::Job*)));
         mActiveAuthJob = authJob;
     } else {
+        if (mAccount) {
+            setImapServer(QLatin1String("imap.gmail.com"));
+        } else {
+            setImapServer(QString());
+        }
         Q_EMIT accountRequestCompleted(mAccount, false);
     }
 }
@@ -165,6 +138,7 @@ void GmailSettings::onAuthFinished(KGAPI2::Job *job)
     KGAPI2::AuthJob *auth = qobject_cast<KGAPI2::AuthJob*>(job);
     const KGAPI2::AccountPtr account = auth->account();
     storeAccount(account);
+    setImapServer(QLatin1String("imap.gmail.com"));
 
     Q_EMIT accountRequestCompleted(account, false);
 }
@@ -200,7 +174,7 @@ void GmailSettings::loadAccountFromKWallet(bool *userRejected) const
         *userRejected = false;
     }
 
-    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId);
+    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QLatin1String("gmail"))) {
             wallet->setFolder(QLatin1String("gmail"));
@@ -226,7 +200,7 @@ void GmailSettings::loadAccountFromKWallet(bool *userRejected) const
 
 void GmailSettings::saveAccountToKWallet()
 {
-    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId);
+    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (!wallet->hasFolder(QLatin1String("gmail"))) {
             wallet->createFolder(QLatin1String("gmail"));
@@ -330,29 +304,5 @@ void GmailSettings::storeAccount(const KGAPI2::AccountPtr &account)
 
 QString GmailSettings::rootRemoteId() const
 {
-    return QLatin1String("imap://") + GmailSettings::self()->userName() + QLatin1Char('@') + GmailSettings::self()->imapServer() + QLatin1Char('/');
+    return QLatin1String("imap://") + userName() + QLatin1Char('@') + imapServer() + QLatin1Char('/');
 }
-
-void GmailSettings::renameRootCollection(const QString &newName)
-{
-    Akonadi::Collection rootCollection;
-    rootCollection.setRemoteId(rootRemoteId());
-    Akonadi::CollectionFetchJob *fetchJob =
-        new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
-    fetchJob->setProperty("collectionName", newName);
-    connect(fetchJob, SIGNAL(result(KJob*)),
-            this, SLOT(onRootCollectionFetched(KJob*)));
-}
-
-void GmailSettings::onRootCollectionFetched(KJob *job)
-{
-    const QString newName = job->property("collectionName").toString();
-    Q_ASSERT(!newName.isEmpty());
-    Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
-    if (fetchJob->collections().size() == 1) {
-        Akonadi::Collection rootCollection = fetchJob->collections().first();
-        rootCollection.setName(newName);
-        new Akonadi::CollectionModifyJob(rootCollection);
-    }
-}
-

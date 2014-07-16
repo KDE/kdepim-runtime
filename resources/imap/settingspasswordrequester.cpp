@@ -47,9 +47,9 @@ void SettingsPasswordRequester::requestPassword( RequestType request, const QStr
   if ( request == WrongPasswordRequest ) {
     QMetaObject::invokeMethod( this, "askUserInput", Qt::QueuedConnection, Q_ARG(QString, serverError) );
   } else {
-    connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString,bool)),
+    connect( m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
              this, SLOT(onPasswordRequestCompleted(QString,bool)) );
-    Settings::self()->requestPassword();
+    m_resource->settings()->requestPassword();
   }
 }
 
@@ -99,9 +99,9 @@ void SettingsPasswordRequester::onButtonClicked(KDialog::ButtonCode result)
       dialog->show();
     }
   } else if ( result == KDialog::No ) {
-    connect( Settings::self(), SIGNAL(passwordRequestCompleted(QString,bool)),
+    connect( m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
              this, SLOT(onPasswordRequestCompleted(QString,bool)) );
-    Settings::self()->requestManualAuth();
+    m_resource->settings()->requestManualAuth();
   } else {
     emit done( UserRejected );
   }
@@ -129,12 +129,12 @@ void SettingsPasswordRequester::cancelPasswordRequests()
 
 void SettingsPasswordRequester::onPasswordRequestCompleted( const QString &password, bool userRejected )
 {
-  disconnect( Settings::self(), SIGNAL(passwordRequestCompleted(QString,bool)),
+  disconnect( m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
               this, SLOT(onPasswordRequestCompleted(QString,bool)) );
 
   if ( userRejected ) {
     emit done( UserRejected );
-  } else if ( password.isEmpty() && (Settings::self()->authentication() != MailTransport::Transport::EnumAuthenticationType::GSSAPI) ) {
+  } else if ( password.isEmpty() && (m_resource->settings()->authentication() != MailTransport::Transport::EnumAuthenticationType::GSSAPI) ) {
     emit done( EmptyPasswordEntered );
   } else {
     emit done( PasswordRetrieved, password );

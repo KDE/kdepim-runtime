@@ -24,6 +24,8 @@
 
 #include <Akonadi/AgentBase>
 
+class GmailSettings;
+
 class GmailResource : public ImapResourceBase
 {
     Q_OBJECT
@@ -45,11 +47,14 @@ public:
     void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection);
     void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection);
 
+    Settings *settings() const;
+
 private Q_SLOTS:
     void onConfigurationDone(int result);
     void onRetrieveItemsCollectionRetrieved(KJob *job);
 
 private:
+    mutable GmailSettings *m_settings;
 };
 
 
