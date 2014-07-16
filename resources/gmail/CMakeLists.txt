@@ -34,7 +34,7 @@ set(gmailresource_SRCS
 )
 
 kde4_add_ui_files(gmailresource_SRCS gmailconfigdialog.ui)
-kde4_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
+#kde4_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
 
 kde4_add_executable(akonadi_gmail_resource ${gmailresource_SRCS})
 target_link_libraries(akonadi_gmail_resource
