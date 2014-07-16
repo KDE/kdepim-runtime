@@ -124,7 +124,7 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
   : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator( this )
 {
-  Settings::self()->setWinId( parent );
+  m_parentResource->settings()->setWinId( parent );
   m_ui->setupUi( mainWidget() );
   m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
   m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
@@ -256,14 +256,14 @@ void SetupServer::slotCustomSieveChanged()
 void SetupServer::applySettings()
 {
   m_folderArchiveSettingPage->writeSettings();
-  m_shouldClearCache = ( Settings::self()->imapServer() != m_ui->imapServer->text() )
-                    || ( Settings::self()->userName() != m_ui->userName->text() );
+  m_shouldClearCache = ( m_parentResource->settings()->imapServer() != m_ui->imapServer->text() )
+                    || ( m_parentResource->settings()->userName() != m_ui->userName->text() );
 
   m_parentResource->setName( m_ui->accountName->text() );
 
-  Settings::self()->setImapServer( m_ui->imapServer->text() );
-  Settings::self()->setImapPort( m_ui->portSpin->value() );
-  Settings::self()->setUserName( m_ui->userName->text() );
+  m_parentResource->settings()->setImapServer( m_ui->imapServer->text() );
+  m_parentResource->settings()->setImapPort( m_ui->portSpin->value() );
+  m_parentResource->settings()->setUserName( m_ui->userName->text() );
   QString encryption;
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case KIMAP::LoginJob::Unencrypted :
@@ -278,22 +278,22 @@ void SetupServer::applySettings()
   default:
     kFatal() << "Shouldn't happen";
   }
-  Settings::self()->setSafety( encryption );
+  m_parentResource->settings()->setSafety( encryption );
   MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode( m_ui->authenticationCombo );
   kDebug() << "saving IMAP auth mode: " << authenticationModeString( authtype );
-  Settings::self()->setAuthentication( authtype );
-  Settings::self()->setPassword( m_ui->password->text() );
-  Settings::self()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
-  Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
-  Settings::self()->setDisconnectedModeEnabled( m_ui->disconnectedModeEnabled->isChecked() );
+  m_parentResource->settings()->setAuthentication( authtype );
+  m_parentResource->settings()->setPassword( m_ui->password->text() );
+  m_parentResource->settings()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
+  m_parentResource->settings()->setIntervalCheckTime( m_ui->checkInterval->value() );
+  m_parentResource->settings()->setDisconnectedModeEnabled( m_ui->disconnectedModeEnabled->isChecked() );
 
-  Settings::self()->setSieveSupport( m_ui->managesieveCheck->isChecked() );
-  Settings::self()->setSieveReuseConfig( m_ui->sameConfigCheck->isChecked() );
-  Settings::self()->setSievePort( m_ui->sievePortSpin->value() );
-  Settings::self()->setSieveAlternateUrl( m_ui->alternateURL->text() );
-  Settings::self()->setSieveVacationFilename( m_vacationFileName );
+  m_parentResource->settings()->setSieveSupport( m_ui->managesieveCheck->isChecked() );
+  m_parentResource->settings()->setSieveReuseConfig( m_ui->sameConfigCheck->isChecked() );
+  m_parentResource->settings()->setSievePort( m_ui->sievePortSpin->value() );
+  m_parentResource->settings()->setSieveAlternateUrl( m_ui->alternateURL->text() );
+  m_parentResource->settings()->setSieveVacationFilename( m_vacationFileName );
 
-  Settings::self()->setTrashCollection( m_ui->folderRequester->collection().id() );
+  m_parentResource->settings()->setTrashCollection( m_ui->folderRequester->collection().id() );
   Akonadi::Collection trash = m_ui->folderRequester->collection();
   Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
   Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
@@ -303,35 +303,35 @@ void SetupServer::applySettings()
       Akonadi::SpecialMailCollections::self()->unregisterCollection(mOldTrash);
   }
 
-  Settings::self()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
-  Settings::self()->setUseDefaultIdentity( m_ui->useDefaultIdentityCheck->isChecked() );
+  m_parentResource->settings()->setAutomaticExpungeEnabled( m_ui->autoExpungeCheck->isChecked() );
+  m_parentResource->settings()->setUseDefaultIdentity( m_ui->useDefaultIdentityCheck->isChecked() );
 
   if ( !m_ui->useDefaultIdentityCheck->isChecked() )
-    Settings::self()->setAccountIdentity( m_identityCombobox->currentIdentity() );
+    m_parentResource->settings()->setAccountIdentity( m_identityCombobox->currentIdentity() );
 
-  Settings::self()->setIntervalCheckEnabled( m_ui->enableMailCheckBox->isChecked() );
+  m_parentResource->settings()->setIntervalCheckEnabled( m_ui->enableMailCheckBox->isChecked() );
   if ( m_ui->enableMailCheckBox->isChecked() )
-    Settings::self()->setIntervalCheckTime( m_ui->checkInterval->value() );
+    m_parentResource->settings()->setIntervalCheckTime( m_ui->checkInterval->value() );
 
-  Settings::self()->setSieveCustomUsername(m_ui->customUsername->text());
+  m_parentResource->settings()->setSieveCustomUsername(m_ui->customUsername->text());
 
   QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
   if (checkedButton == m_ui->imapUserPassword) {
-      Settings::self()->setSieveCustomAuthentification(QLatin1String("ImapUserPassword"));
+      m_parentResource->settings()->setSieveCustomAuthentification(QLatin1String("ImapUserPassword"));
   } else if (checkedButton == m_ui->noAuthentification) {
-      Settings::self()->setSieveCustomAuthentification(QLatin1String("NoAuthentification"));
+      m_parentResource->settings()->setSieveCustomAuthentification(QLatin1String("NoAuthentification"));
   } else if (checkedButton == m_ui->customUserPassword) {
-      Settings::self()->setSieveCustomAuthentification(QLatin1String("CustomUserPassword"));
+      m_parentResource->settings()->setSieveCustomAuthentification(QLatin1String("CustomUserPassword"));
   }
 
-  Settings::self()->setSieveCustomPassword( m_ui->customPassword->text() );
+  m_parentResource->settings()->setSieveCustomPassword( m_ui->customPassword->text() );
 
-  Settings::self()->writeConfig();
+  m_parentResource->settings()->writeConfig();
   kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
   if ( m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty() ) {
-    Settings::self()->renameRootCollection( m_ui->accountName->text() );
+    m_parentResource->settings()->renameRootCollection( m_ui->accountName->text() );
   }
 }
 
@@ -345,16 +345,16 @@ void SetupServer::readSettings()
   KEMailSettings esetting;
 
   m_ui->imapServer->setText(
-    !Settings::self()->imapServer().isEmpty() ? Settings::self()->imapServer() :
+    !m_parentResource->settings()->imapServer().isEmpty() ? m_parentResource->settings()->imapServer() :
     esetting.getSetting( KEMailSettings::InServer ) );
 
-  m_ui->portSpin->setValue( Settings::self()->imapPort() );
+  m_ui->portSpin->setValue( m_parentResource->settings()->imapPort() );
 
   m_ui->userName->setText(
-    !Settings::self()->userName().isEmpty() ? Settings::self()->userName() :
+    !m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName() :
     currentUser->loginName() );
 
-  const QString safety = Settings::self()->safety();
+  const QString safety = m_parentResource->settings()->safety();
   int i = 0;
   if ( safety == QLatin1String( "SSL" ) )
     i = KIMAP::LoginJob::AnySslVersion;
@@ -368,12 +368,12 @@ void SetupServer::readSettings()
       safetyButton->setChecked( true );
 
   populateDefaultAuthenticationOptions();
-  i = Settings::self()->authentication();
+  i = m_parentResource->settings()->authentication();
   kDebug() << "read IMAP auth mode: " << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) i );
   setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i );
 
   bool rejected = false;
-  const QString password = Settings::self()->password( &rejected );
+  const QString password = m_parentResource->settings()->password( &rejected );
   if ( rejected ) {
     m_ui->password->setEnabled( false );
     KMessageBox::information( 0, i18n( "Could not access KWallet. "
@@ -386,19 +386,19 @@ void SetupServer::readSettings()
     m_ui->password->insert( password );
   }
 
-  m_ui->subscriptionEnabled->setChecked( Settings::self()->subscriptionEnabled() );
+  m_ui->subscriptionEnabled->setChecked( m_parentResource->settings()->subscriptionEnabled() );
 
-  m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
-  m_ui->disconnectedModeEnabled->setChecked( Settings::self()->disconnectedModeEnabled() );
+  m_ui->checkInterval->setValue( m_parentResource->settings()->intervalCheckTime() );
+  m_ui->disconnectedModeEnabled->setChecked( m_parentResource->settings()->disconnectedModeEnabled() );
 
-  m_ui->managesieveCheck->setChecked( Settings::self()->sieveSupport() );
-  m_ui->sameConfigCheck->setChecked( Settings::self()->sieveReuseConfig() );
-  m_ui->sievePortSpin->setValue( Settings::self()->sievePort() );
-  m_ui->alternateURL->setText( Settings::self()->sieveAlternateUrl() );
-  m_vacationFileName = Settings::self()->sieveVacationFilename();
+  m_ui->managesieveCheck->setChecked( m_parentResource->settings()->sieveSupport() );
+  m_ui->sameConfigCheck->setChecked( m_parentResource->settings()->sieveReuseConfig() );
+  m_ui->sievePortSpin->setValue( m_parentResource->settings()->sievePort() );
+  m_ui->alternateURL->setText( m_parentResource->settings()->sieveAlternateUrl() );
+  m_vacationFileName = m_parentResource->settings()->sieveVacationFilename();
 
 
-  Akonadi::Collection trashCollection( Settings::self()->trashCollection() );
+  Akonadi::Collection trashCollection( m_parentResource->settings()->trashCollection() );
   if ( trashCollection.isValid() ) {
     Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob( trashCollection,Akonadi::CollectionFetchJob::Base,this );
     connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
@@ -411,27 +411,27 @@ void SetupServer::readSettings()
     requestJob->start();
   }
 
-  m_ui->useDefaultIdentityCheck->setChecked( Settings::self()->useDefaultIdentity() );
+  m_ui->useDefaultIdentityCheck->setChecked( m_parentResource->settings()->useDefaultIdentity() );
   if ( !m_ui->useDefaultIdentityCheck->isChecked() )
-    m_identityCombobox->setCurrentIdentity( Settings::self()->accountIdentity() );
+    m_identityCombobox->setCurrentIdentity( m_parentResource->settings()->accountIdentity() );
 
-  m_ui->enableMailCheckBox->setChecked( Settings::self()->intervalCheckEnabled() );
+  m_ui->enableMailCheckBox->setChecked( m_parentResource->settings()->intervalCheckEnabled() );
   if ( m_ui->enableMailCheckBox->isChecked() )
-    m_ui->checkInterval->setValue( Settings::self()->intervalCheckTime() );
+    m_ui->checkInterval->setValue( m_parentResource->settings()->intervalCheckTime() );
   else
     m_ui->checkInterval->setEnabled( false );
 
-  m_ui->autoExpungeCheck->setChecked( Settings::self()->automaticExpungeEnabled() );
+  m_ui->autoExpungeCheck->setChecked( m_parentResource->settings()->automaticExpungeEnabled() );
 
   if ( m_vacationFileName.isEmpty() )
     m_vacationFileName = QLatin1String("kmail-vacation.siv");
 
-  m_ui->customUsername->setText(Settings::self()->sieveCustomUsername());
+  m_ui->customUsername->setText(m_parentResource->settings()->sieveCustomUsername());
 
-  m_ui->customPassword->setText(Settings::self()->sieveCustomPassword());
+  m_ui->customPassword->setText(m_parentResource->settings()->sieveCustomPassword());
 
 
-  const QString sieverCustomAuth(Settings::self()->sieveCustomAuthentification());
+  const QString sieverCustomAuth(m_parentResource->settings()->sieveCustomAuthentification());
   if (sieverCustomAuth == QLatin1String("ImapUserPassword"))
       m_ui->imapUserPassword->setChecked(true);
   else if (sieverCustomAuth == QLatin1String("NoAuthentification"))

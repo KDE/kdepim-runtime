@@ -65,23 +65,23 @@ QList<KIMAP::MailBoxDescriptor> ResourceState::serverNamespaces() const
 
 bool ResourceState::isAutomaticExpungeEnabled() const
 {
-  return Settings::self()->automaticExpungeEnabled();
+  return m_resource->settings()->automaticExpungeEnabled();
 }
 
 bool ResourceState::isSubscriptionEnabled() const
 {
-  return Settings::self()->subscriptionEnabled();
+  return m_resource->settings()->subscriptionEnabled();
 }
 
 bool ResourceState::isDisconnectedModeEnabled() const
 {
-  return Settings::self()->disconnectedModeEnabled();
+  return m_resource->settings()->disconnectedModeEnabled();
 }
 
 int ResourceState::intervalCheckTime() const
 {
-  if ( Settings::self()->intervalCheckEnabled() )
-    return Settings::self()->intervalCheckTime();
+  if ( m_resource->settings()->intervalCheckEnabled() )
+    return m_resource->settings()->intervalCheckTime();
   else
     return -1; // -1 for never
 }
@@ -137,7 +137,7 @@ QSet<QByteArray> ResourceState::removedFlags() const
 
 QString ResourceState::rootRemoteId() const
 {
-  return Settings::self()->rootRemoteId();
+  return m_resource->settings()->rootRemoteId();
 }
 
 void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
@@ -150,8 +150,8 @@ void ResourceState::setIdleCollection( const Akonadi::Collection &collection )
     curCol = curCol.parentCollection();
   }
 
-  Settings::self()->setIdleRidPath( ridPath );
-  Settings::self()->writeConfig();
+  m_resource->settings()->setIdleRidPath( ridPath );
+  m_resource->settings()->writeConfig();
 }
 
 void ResourceState::applyCollectionChanges( const Akonadi::Collection &collection )
@@ -209,8 +209,8 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
 {
   m_resource->collectionsRetrieved( collections );
 
-  if ( Settings::self()->retrieveMetadataOnFolderListing() ) {
-    QStringList oldMailBoxes = Settings::self()->knownMailBoxes();
+  if ( m_resource->settings()->retrieveMetadataOnFolderListing() ) {
+    QStringList oldMailBoxes = m_resource->settings()->knownMailBoxes();
     QStringList newMailBoxes;
 
     foreach ( const Akonadi::Collection &c, collections ) {
@@ -227,7 +227,7 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
       newMailBoxes << mailBox;
     }
 
-    Settings::self()->setKnownMailBoxes( newMailBoxes );
+    m_resource->settings()->setKnownMailBoxes( newMailBoxes );
   }
 
   m_resource->startIdleIfNeeded();
@@ -277,7 +277,7 @@ void ResourceState::cancelTask( const QString &errorString )
     collections << m_arguments.collection.parentCollection();
   }
 
-  const QStringList oldMailBoxes = Settings::self()->knownMailBoxes();
+  const QStringList oldMailBoxes = m_resource->settings()->knownMailBoxes();
   QStringList newMailBoxes = oldMailBoxes;
 
   foreach ( const Akonadi::Collection &collection, collections ) {
@@ -293,7 +293,7 @@ void ResourceState::cancelTask( const QString &errorString )
   }
 
   if ( oldMailBoxes.size()!=newMailBoxes.size() ) {
-    Settings::self()->setKnownMailBoxes( newMailBoxes );
+    m_resource->settings()->setKnownMailBoxes( newMailBoxes );
   }
 }
 

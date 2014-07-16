@@ -37,7 +37,6 @@ public:
     static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
 
     explicit Settings( WId = 0 );
-    static Settings *self();
     void setWinId( WId );
 
     void requestPassword();
