@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clientConfig version="1.1">
+	<emailProvider id="example.com">
+		<domain>example.com</domain>
+		<displayName>Example Mail</displayName>
+		<displayShortName>Example</displayShortName>
+		<incomingServer type="imap">
+			<hostname>imap.example.com</hostname>
+			<port>993</port>
+			<socketType>SSL</socketType>
+			<authentication>password-encrypted</authentication>
+			<username>%EMAILADDRESS%</username>
+		</incomingServer>
+		<outgoingServer type="smtp">
+			<hostname>smtp.example.com</hostname>
+			<port>25</port>
+			<socketType>plain</socketType>
+			<authentication>plain</authentication>
+			<username>%EMAILLOCALPART%</username>
+		</outgoingServer>
+		<incomingServer type="pop3">
+			<hostname>pop.example.com</hostname>
+			<port>995</port>
+			<socketType>STARTTLS</socketType>
+			<authentication>NTLM</authentication>
+			<username>%EMAILDOMAIN%</username>
+		</incomingServer>
+
+		<identity id="john.doe@example.com" type="kolab" version="1.0">
+			<default>true</default>
+			<email>john.doe@example.com</email>
+			<name>John Doe</name>
+			<organization>Example AG</organization>
+			<signature>John Doe
+Head of World
+
+Example AG
+
+w: <a href="http://example.com">http://example.com</a></signature>
+		</identity>
+	</emailProvider>
+	<emailProvider />
+</clientConfig>

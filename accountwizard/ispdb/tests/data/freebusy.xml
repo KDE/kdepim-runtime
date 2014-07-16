@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<clientConfig version="1.0">
+    <freebusyProvider id="freebusy.example.com">
+        <hostname>example.com</hostname>
+        <!--
+        "plain":
+            No encryption
+        "TLS":
+            Using TLS to connect server
+        "SSL":
+            Using SSL to connect to server -->
+        <socketType>plain</socketType>
+        <!--
+        "none":
+            No authentication
+        "basic":
+            Use simple authentication -->
+        <authentication>basic</authentication>
+        <username>user</username>
+        <password>pass</password>
+        <!-- path to the ifb file:
+        $EMAIL$:
+            will be replaced with the email for that a ifb is requested
+        $USER$:
+            will be replaced with the username of the ifb that is requested
+            -->
+        <path>/freebusy/$EMAIL$.ifb</path>
+</freebusyProvider>
+</clientConfig>

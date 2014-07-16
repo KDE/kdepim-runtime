@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<clientConfig version="1.0">
+    <ldapProvider id="ldap.example.com">
+        <hostname>ldap.example.com</hostname>
+        <port>389</port>
+        <!--
+        "plain":
+            No encryption
+        "TLS":
+            Using TLS to connect server
+        "SSL":
+            Using SSL to connect to server -->
+        <socketType>plain</socketType>
+        <!--
+        "anonyoum":
+            Use anonyoum authentification
+        "simple":
+            Use simple authentification
+        "sasl":
+            Use sasl authentification -->
+        <authentication>simple</authentication>
+
+        <!-- not used for anoyoum authentification -->
+        <bindDn>cn=Directory Manager</bindDn>
+
+        <!-- not used for anoyoum authentification -->
+        <password>Welcome2KolabSystems</password>
+
+        <!-- sasl-mech is the SASL mechanism to login for SASL authentification -->
+        <sasl-mech />
+        <!-- only used for SASL -->
+        <username />
+        <!-- only used for SASL -->
+        <realm />
+
+        <!-- BaseDN (namingcontexts) of the ldapServer -->
+        <dn>dc=kolabsys,dc=com</dn>
+
+        <ldapVersion>3</ldapVersion>
+        <filter/>
+        <!-- value 1-9999999 (not setting is using default) -->
+        <pagesize />
+        <!-- value 1-9999999 (not setting is using default) -->
+        <timelimit />
+        <!-- value 1-9999999 (not setting is using default) -->
+        <sizelimit />
+    </ldapProvider>
+    <ldapProvider id="ldap2.example.com">
+        <hostname>ldap2.example.com</hostname>
+        <port>387</port>
+        <socketType>SSL</socketType>
+        <authentication>sasl</authentication>
+        <bindDn>cn=Directory</bindDn>
+        <password>Welcome2KolabSystems</password>
+        <sasl-mech>XXX</sasl-mech>
+        <username>john.doe</username>
+        <realm>realm.example.com</realm>
+        <dn>dc=example,dc=com</dn>
+        <ldapVersion>3</ldapVersion>
+        <pagesize>10</pagesize>
+        <timelimit>10000000</timelimit>
+        <sizelimit>9999999</sizelimit>
+    </ldapProvider>
+
+
+</clientConfig>
+
