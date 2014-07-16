@@ -27,6 +27,8 @@
 class GmailResource;
 class GmailPasswordRequester : public PasswordRequesterInterface
 {
+  Q_OBJECT
+
 public:
     GmailPasswordRequester(GmailResource *resource, QObject *parent);
     virtual ~GmailPasswordRequester();
