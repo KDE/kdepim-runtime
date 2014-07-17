@@ -87,8 +87,8 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     slotSubcriptionCheckboxChanged();
     slotIdentityCheckboxChanged();
 
-    connect(this, SIGNAL(applyClicked()),
-            this, SLOT(applySettings()) );
+    //connect(this, SIGNAL(applyClicked()),
+            //this, SLOT(applySettings()) );
     connect(this, SIGNAL(okClicked()),
             this, SLOT(applySettings()) );
 }
@@ -205,7 +205,7 @@ void GmailConfigDialog::readSettings()
 
 void GmailConfigDialog::slotComplete()
 {
-    const bool ok = !m_account->accountName().isEmpty();
+    const bool ok = (m_account || !m_account->accountName().isEmpty());
     button(KDialog::Ok)->setEnabled(ok);
 }
 
