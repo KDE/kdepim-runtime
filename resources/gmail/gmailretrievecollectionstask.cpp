@@ -62,6 +62,15 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                                 ? descriptor.name.left(descriptor.name.size() - 1)
                                 : descriptor.name;
 
+        /* FIXME: The Chats folder contains logs of Hangouts chats, which is rather
+         * useless in Kmail, and also it breaks sync, because it is not a "special"
+         * folder. We should re-enable it at some point so that people can't
+         * complain, but until then the folder will not be synced.
+         */
+         if (boxName == QLatin1String("[Gmail]/Chats")) {
+            continue;
+        }
+
         const QStringList pathParts = boxName.split(separatorCharacter());
 
         QString parentPath;
