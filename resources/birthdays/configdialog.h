@@ -23,11 +23,11 @@
 
 #include "ui_configdialog.h"
 
-#include <KDialog>
+#include <QDialog>
 
 class KConfigDialogManager;
 
-class ConfigDialog : public KDialog
+class ConfigDialog : public QDialog
 {
   Q_OBJECT
   public:

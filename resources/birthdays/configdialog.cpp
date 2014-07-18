@@ -26,9 +26,13 @@
 #include <KLocalizedString>
 
 ConfigDialog::ConfigDialog(QWidget* parent)
-  : KDialog( parent )
+  : QDialog( parent )
 {
-  ui.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  ui.setupUi(mainWidget);
   setWindowIcon( QIcon::fromTheme( QLatin1String("view-calendar-birthday") ) );
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
