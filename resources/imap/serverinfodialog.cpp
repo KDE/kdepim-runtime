@@ -23,19 +23,30 @@
 #include "ui_serverinfo.h"
 
 #include <KLocalizedString>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent)
-    : KDialog(parent)
+    : QDialog(parent)
 {
-    setCaption(
+    setWindowTitle(
       i18nc( "@title:window Dialog title for dialog showing information about a server",
              "Server Info" ) );
-    setButtons( KDialog::Close );
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
     setAttribute( Qt::WA_DeleteOnClose );
 
     mServerInfoWidget = new Ui::ServerInfo();
     mServerInfoWidget->setupUi( this );
-    setMainWidget( mServerInfoWidget->serverInfo );
+    mainLayout->addWidget(mServerInfoWidget->serverInfo);
+    mainLayout->addWidget(buttonBox);
     mServerInfoWidget->serverInfo->setPlainText(
       parentResource->serverCapabilities().join( QLatin1String( "\n" ) ) );
 }

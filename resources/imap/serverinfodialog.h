@@ -21,14 +21,14 @@
 #ifndef SERVERINFODIALOG_H
 #define SERVERINFODIALOG_H
 
-#include <KDialog>
+#include <QDialog>
 
 class ImapResourceBase;
 namespace Ui {
 class ServerInfo;
 }
 
-class ServerInfoDialog : public KDialog
+class ServerInfoDialog : public QDialog
 {
     Q_OBJECT
 public:

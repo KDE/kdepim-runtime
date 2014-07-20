@@ -21,12 +21,12 @@
 
 #include "ui_searchdialog.h"
 
-#include <KDialog>
+#include <QDialog>
 
 class KJob;
 class QStandardItemModel;
 
-class SearchDialog : public KDialog
+class SearchDialog : public QDialog
 {
   Q_OBJECT
 

@@ -31,17 +31,28 @@
 #include <KLocalizedString>
 
 #include <QStandardItemModel>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 
 SearchDialog::SearchDialog( QWidget *parent )
-  : KDialog( parent ), mModel( new QStandardItemModel( this ) ), mSubJobCount( 0 )
+  : QDialog( parent ), mModel( new QStandardItemModel( this ) ), mSubJobCount( 0 )
 {
-  mUi.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  mUi.setupUi(mainWidget);
   mUi.credentialsGroup->setVisible( false );
   mUi.searchResults->setModel( mModel );
 
-  setButtonFocus( KDialog::None );
-  setDefaultButton( KDialog::None );
-  setButtonText( KDialog::Ok, i18n( "Add selected items" ) );
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+  okButton->setDefault(true);
+  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+  buttonBox->button(QDialogButtonBox::Ok)->setText(i18n("Addselecteditems"));
 
   connect( mUi.searchUrl, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
   connect( mUi.searchParam, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );

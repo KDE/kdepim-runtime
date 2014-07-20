@@ -26,13 +26,18 @@
 #include <AkonadiWidgets/CollectionRequester>
 #include <KConfigDialogManager>
 #include <KMime/Message>
+#include <QVBoxLayout>
 
 using namespace Akonadi;
 
 ConfigDialog::ConfigDialog( QWidget *parent )
-  : KDialog( parent )
+  : QDialog( parent )
 {
-  mUi.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  mUi.setupUi(mainWidget);
 
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
@@ -56,7 +61,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
       ui.sentMailSelector->setCollection( collections.first() );
   }
 
-  connect( this, SIGNAL(okClicked()), this, SLOT(save()) );
+  connect(okButton, SIGNAL(clicked()), this, SLOT(save()) );
 }
 
 void ConfigDialog::save()
