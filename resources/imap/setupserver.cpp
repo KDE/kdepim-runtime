@@ -58,6 +58,7 @@
 
 #include <kpimidentities/identitymanager.h>
 #include <kpimidentities/identitycombo.h>
+#include <QVBoxLayout>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
@@ -122,11 +123,24 @@ static void addAuthenticationItem( QComboBox* authCombo, MailTransport::Transpor
 }
 
 SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
-  : KDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
+  : QDialog(), m_parentResource( parentResource ), m_ui(new Ui::SetupServerView), m_serverTest(0),
     m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator( this )
 {
   m_parentResource->settings()->setWinId( parent );
-  m_ui->setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+
+
+  m_ui->setupUi(mainWidget);
   m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
   m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
   m_ui->safeImapGroup->setId( m_ui->noRadio, KIMAP::LoginJob::Unencrypted );
@@ -195,7 +209,7 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
 #endif
   connect( this, SIGNAL(applyClicked()),
            SLOT(applySettings()) );
-  connect( this, SIGNAL(okClicked()),
+  connect(mOkButton, SIGNAL(clicked()),
            SLOT(applySettings()) );
 }
 
@@ -475,7 +489,7 @@ void SetupServer::slotTest()
   m_serverTest->setProgressBar( m_ui->testProgress );
   connect( m_serverTest, SIGNAL(finished(QList<int>)),
            SLOT(slotFinished(QList<int>)) );
-  enableButtonOk( false );
+  mOkButton->setEnabled( false );
   m_serverTest->start();
 }
 
@@ -486,7 +500,7 @@ void SetupServer::slotFinished( const QList<int> &testResult )
 #ifndef QT_NO_CURSOR
   qApp->restoreOverrideCursor();
 #endif
-  enableButtonOk( true );
+  mOkButton->setEnabled( true );
 
   using namespace MailTransport;
 
@@ -547,7 +561,7 @@ void SetupServer::slotEnableWidgets()
 void SetupServer::slotComplete()
 {
   const bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
-  button( KDialog::Ok )->setEnabled( ok );
+  mOkButton->setEnabled( ok );
 }
 
 void SetupServer::slotSafetyChanged()
@@ -610,7 +624,7 @@ void SetupServer::slotManageSubscriptions()
   account.setAuthenticationMode( Settings::mapTransportAuthToKimap( getCurrentAuthMode( m_ui->authenticationCombo ) ) );
 
   QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( this );
-  subscriptions->setCaption(  i18n( "Serverside Subscription" ) );
+  subscriptions->setWindowTitle(  i18n( "Serverside Subscription" ) );
   subscriptions->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
   subscriptions->connectAccount( account, m_ui->password->text() );
   m_subscriptionsChanged = subscriptions->isSubscriptionChanged();

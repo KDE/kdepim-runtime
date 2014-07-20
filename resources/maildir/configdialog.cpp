@@ -26,27 +26,42 @@
 #include <kconfigdialogmanager.h>
 #include <kurlrequester.h>
 #include <klineedit.h>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
 ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget * parent) :
-    KDialog( parent ),
+    QDialog( parent ),
     mSettings( settings ),
     mToplevelIsContainer( false )
 {
-  setCaption( i18n( "Select a MailDir folder" ) );
-  ui.setupUi( mainWidget() );
+  setWindowTitle( i18n( "Select a MailDir folder" ) );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  ui.setupUi(mainWidget);
   mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier);
   mFolderArchiveSettingPage->loadSettings();
   ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Folder Archive"));
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+
 
   mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
   ui.kcfg_Path->setUrl( KUrl( mSettings->path() ) );
 
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
   connect( ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()) );
   ui.kcfg_Path->lineEdit()->setFocus();
   checkPath();
@@ -56,7 +71,7 @@ void ConfigDialog::checkPath()
 {
   if ( ui.kcfg_Path->url().isEmpty() ) {
     ui.statusLabel->setText( i18n( "The selected path is empty." ) );
-    enableButton( Ok, false );
+    mOkButton->setEnabled( false );
     return;
   }
   bool ok = false;
@@ -88,7 +103,7 @@ void ConfigDialog::checkPath()
       ui.statusLabel->setText( i18n( "The selected path does not exist." ) );
     }
   }
-  enableButton( Ok, ok );
+  mOkButton->setEnabled( ok );
 }
 
 void ConfigDialog::save()

@@ -37,7 +37,7 @@ public:
     explicit ImapResource( const QString &id );
     virtual ~ImapResource();
 
-    virtual KDialog *createConfigureDialog ( WId windowId );
+    virtual QDialog *createConfigureDialog ( WId windowId );
 
 protected:
     virtual QString defaultName() const;

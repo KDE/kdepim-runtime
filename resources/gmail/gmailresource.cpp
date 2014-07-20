@@ -75,7 +75,7 @@ QString GmailResource::defaultName() const
     return i18n("Gmail Resource");
 }
 
-KDialog *GmailResource::createConfigureDialog(WId windowId)
+QDialog *GmailResource::createConfigureDialog(WId windowId)
 {
     GmailConfigDialog *dlg = new GmailConfigDialog(this, windowId);
     KWindowSystem::setMainWindow(dlg, windowId);

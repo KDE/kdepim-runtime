@@ -28,7 +28,7 @@
 
 #include <AkonadiAgentBase/resourcebase.h>
 #include <AkonadiAgentBase/agentsearchinterface.h>
-#include <KDialog>
+#include <QDialog>
 #include <QPointer>
 #include "resourcestateinterface.h"
 #include "resourcestate.h"
@@ -60,7 +60,7 @@ public:
   explicit ImapResourceBase( const QString &id );
   ~ImapResourceBase();
 
-  virtual KDialog *createConfigureDialog( WId windowId ) = 0;
+  virtual QDialog *createConfigureDialog( WId windowId ) = 0;
 
   QStringList serverCapabilities() const;
   void cleanup();

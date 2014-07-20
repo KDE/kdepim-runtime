@@ -20,17 +20,17 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
-#include <kdialog.h>
+#include <QDialog>
 
 #include "ui_settings.h"
-
+class QPushButton;
 class KConfigDialogManager;
 namespace Akonadi_Maildir_Resource
 {
 class MaildirSettings;
 }
 class FolderArchiveSettingPage;
-class ConfigDialog : public KDialog
+class ConfigDialog : public QDialog
 {
   Q_OBJECT
   public:
@@ -46,6 +46,7 @@ class ConfigDialog : public KDialog
     FolderArchiveSettingPage *mFolderArchiveSettingPage;
     Akonadi_Maildir_Resource::MaildirSettings *mSettings;
     bool mToplevelIsContainer;
+    QPushButton *mOkButton;
 };
 
 #endif

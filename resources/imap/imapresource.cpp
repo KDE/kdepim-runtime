@@ -51,7 +51,7 @@ QString ImapResource::defaultName() const
 }
 
 
-KDialog* ImapResource::createConfigureDialog(WId windowId)
+QDialog* ImapResource::createConfigureDialog(WId windowId)
 {
   SetupServer *dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );

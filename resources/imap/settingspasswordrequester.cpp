@@ -96,7 +96,7 @@ void SettingsPasswordRequester::onButtonClicked(KDialog::ButtonCode result)
 {
   if ( result == KDialog::Yes ) {
     if (!m_settingsDialog) {
-      KDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
+      QDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
       connect(dialog, SIGNAL(finished(int)), this, SLOT(onSettingsDialogFinished(int)));
       m_settingsDialog = dialog;
       dialog->show();

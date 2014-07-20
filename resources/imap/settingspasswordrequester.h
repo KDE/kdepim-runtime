@@ -49,7 +49,7 @@ private slots:
 private:
   ImapResourceBase *m_resource;
   KDialog *m_requestDialog;
-  KDialog *m_settingsDialog;
+  QDialog *m_settingsDialog;
 };
 
 #endif

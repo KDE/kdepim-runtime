@@ -36,7 +36,7 @@ public:
     explicit GmailResource(const QString &id);
     ~GmailResource();
 
-    KDialog *createConfigureDialog (WId windowId);
+    QDialog *createConfigureDialog (WId windowId);
     QString defaultName() const;
 
     ResourceStateInterface::Ptr createResourceState (const TaskArguments &args);
