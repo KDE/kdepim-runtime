@@ -20,13 +20,13 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
-#include <kdialog.h>
+#include <QDialog>
 
 class KConfigDialogManager;
 class KJob;
 class KLineEdit;
 
-class ConfigDialog : public KDialog
+class ConfigDialog : public QDialog
 {
   Q_OBJECT
 

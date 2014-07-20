@@ -29,20 +29,36 @@
 #include <kmessagebox.h>
 #include <kwindowsystem.h>
 #include <KLocalizedString>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 ConfigDialog::ConfigDialog( WId windowId )
-  : KDialog()
+  : QDialog()
 {
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  setButtons( Ok | Cancel | User1 );
-  setButtonText( User1, i18n( "About..." ) );
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+  okButton->setDefault(true);
+  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  QPushButton *user1Button = new QPushButton;
+  buttonBox->addButton(user1Button, QDialogButtonBox::ActionRole);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+  user1Button->setText(i18n("About..."));
 
-  setCaption( i18n( "Open-Xchange Configuration" ) );
+  setWindowTitle( i18n( "Open-Xchange Configuration" ) );
 
   Ui::ConfigDialog ui;
-  ui.setupUi( mainWidget() );
+  ui.setupUi(mainWidget);
 
   ui.kcfg_BaseUrl->setWhatsThis( i18n( "Enter the http or https URL to your Open-Xchange installation here." ) );
   ui.kcfg_Username->setWhatsThis( i18n( "Enter the username of your Open-Xchange account here." ) );
@@ -56,13 +72,13 @@ ConfigDialog::ConfigDialog( WId windowId )
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
-  connect( this, SIGNAL(user1Clicked()), this, SLOT(showAboutDialog()) );
+  connect(okButton, SIGNAL(clicked()), SLOT(save()) );
+  connect(user1Button, SIGNAL(clicked()), this, SLOT(showAboutDialog()) );
   connect( mServerEdit, SIGNAL(textChanged(QString)), SLOT(updateButtonState()) );
   connect( mUserEdit, SIGNAL(textChanged(QString)), SLOT(updateButtonState()) );
   connect( mCheckConnectionButton, SIGNAL(clicked()), SLOT(checkConnection()) );
 
-  setInitialSize( QSize( 410, 200 ) );
+  resize( QSize( 410, 200 ) );
 }
 
 void ConfigDialog::save()
