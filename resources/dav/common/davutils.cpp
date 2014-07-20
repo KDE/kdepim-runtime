@@ -29,7 +29,6 @@
 #include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <klocale.h>
-#include <kdebug.h>
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
@@ -203,7 +202,7 @@ DavUtils::Protocol DavUtils::protocolByName( const QString &name )
   } else if ( name == QLatin1String("GroupDav") ) {
     protocol = DavUtils::GroupDav;
   } else {
-    kError() << "Unexpected protocol name : " << name;
+    qCritical() << "Unexpected protocol name : " << name;
   }
 
   return protocol;
@@ -237,7 +236,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
 
     const QString fileName = contact.uid();
     if ( fileName.isEmpty() ) {
-      kError() << "Invalid contact uid";
+      qCritical() << "Invalid contact uid";
       return davItem;
     }
 
@@ -260,7 +259,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
 
     const QString fileName = ptr->instanceIdentifier();
     if ( fileName.isEmpty() ) {
-      kError() << "Invalid incidence uid";
+      qCritical() << "Invalid incidence uid";
       return davItem;
     }
 

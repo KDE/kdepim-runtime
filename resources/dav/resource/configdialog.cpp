@@ -31,12 +31,26 @@
 #include <QtCore/QStringList>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 
 ConfigDialog::ConfigDialog( QWidget *parent )
-  : KDialog( parent )
+  : QDialog( parent )
 {
-  mUi.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  mUi.setupUi(mainWidget);
   setWindowIcon( QIcon::fromTheme( QLatin1String("folder-remote") ) );
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
 
   mModel = new QStandardItemModel();
   QStringList headers;
@@ -64,8 +78,8 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   connect( mUi.removeButton, SIGNAL(clicked()), this, SLOT(onRemoveButtonClicked()) );
   connect( mUi.editButton, SIGNAL(clicked()), this, SLOT(onEditButtonClicked()) );
 
-  connect( this, SIGNAL(okClicked()), this, SLOT(onOkClicked()) );
-  connect( this, SIGNAL(cancelClicked()), this, SLOT(onCancelClicked()) );
+  connect(mOkButton, SIGNAL(clicked()), this, SLOT(onOkClicked()) );
+  connect(buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), this, SLOT(onCancelClicked()) );
 
   checkUserInput();
 }
@@ -84,9 +98,9 @@ void ConfigDialog::checkUserInput()
   checkConfiguredUrlsButtonsState();
 
   if ( !mUi.kcfg_displayName->text().isEmpty() && !( mModel->invisibleRootItem()->rowCount() == 0 ) )
-    enableButtonOk( true );
+    mOkButton->setEnabled( true );
   else
-    enableButtonOk( false );
+    mOkButton->setEnabled( false );
 }
 
 void ConfigDialog::onAddButtonClicked()

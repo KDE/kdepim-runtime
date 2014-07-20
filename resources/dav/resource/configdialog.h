@@ -23,16 +23,16 @@
 
 #include "davutils.h"
 
-#include <kdialog.h>
+#include <QDialog>
 
 #include <QtCore/QList>
 #include <QtCore/QPair>
 #include <QtCore/QString>
-
+class QPushButton;
 class KConfigDialogManager;
 class QStandardItemModel;
 
-class ConfigDialog : public KDialog
+class ConfigDialog : public QDialog
 {
   Q_OBJECT
 
@@ -61,6 +61,7 @@ class ConfigDialog : public KDialog
     QList< QPair<QString, DavUtils::Protocol> > mAddedUrls;
     QList< QPair<QString, DavUtils::Protocol> > mRemovedUrls;
     QStandardItemModel *mModel;
+    QPushButton *mOkButton;
 };
 
 #endif
