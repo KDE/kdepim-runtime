@@ -36,7 +36,7 @@
 #include <akonadi/private/xdgbasedirs_p.h>
 #include <KLocale>
 
-//QT5 K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )
+K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )
 K_EXPORT_PLUGIN( ServerConfigModuleFactory( "kcm_akonadi_server" ) )
 
 using namespace Akonadi;
@@ -243,3 +243,4 @@ void ServerConfigModule::driverChanged( int index )
   }
 }
 
+#include "serverconfigmodule.moc"

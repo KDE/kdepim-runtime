@@ -28,7 +28,7 @@
 #include <KGlobal>
 #include <KLocale>
 
-//QT5 K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
+K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
 K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
@@ -48,3 +48,5 @@ ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
     ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this, args2 );
     l->addWidget( tmw );
 }
+#include "configmodule.moc"
+

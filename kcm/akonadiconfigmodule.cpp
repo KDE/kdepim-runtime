@@ -22,7 +22,7 @@
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 
-//QT5 K_PLUGIN_FACTORY( AkonadiConfigModuleFactory, registerPlugin<AkonadiConfigModule>(); )
+K_PLUGIN_FACTORY( AkonadiConfigModuleFactory, registerPlugin<AkonadiConfigModule>(); )
 K_EXPORT_PLUGIN( AkonadiConfigModuleFactory( "kcm_akonadi" ) )
 
 AkonadiConfigModule::AkonadiConfigModule( QWidget * parent, const QVariantList & args ) :
@@ -34,3 +34,4 @@ AkonadiConfigModule::AkonadiConfigModule( QWidget * parent, const QVariantList &
   addModule( QLatin1String( "kcm_akonadi_server" ) );
 }
 
+#include "akonadiconfigmodule.moc"
