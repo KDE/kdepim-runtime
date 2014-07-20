@@ -28,12 +28,26 @@
 
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QVBoxLayout>
 
 UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
-  : KDialog( parent )
+  : QDialog( parent )
 {
-  mUi.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  mUi.setupUi(mainWidget);
   mUi.credentialsGroup->setVisible( false );
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+
 
   mModel = new QStandardItemModel();
   initModel();
@@ -50,7 +64,7 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   connect( mUi.password, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
 
   connect( mUi.fetchButton, SIGNAL(clicked()), this, SLOT(onFetchButtonClicked()) );
-  connect( this, SIGNAL(okClicked()), this, SLOT(onOkButtonClicked()) );
+  connect(mOkButton, SIGNAL(clicked()), this, SLOT(onOkButtonClicked()) );
 
   checkUserInput();
 }
@@ -132,7 +146,7 @@ void UrlConfigurationDialog::onConfigChanged()
 {
   initModel();
   mUi.fetchButton->setEnabled( false );
-  enableButtonOk( false );
+  mOkButton->setEnabled( false );
   checkUserInput();
 }
 
@@ -141,10 +155,10 @@ void UrlConfigurationDialog::checkUserInput()
   if ( !mUi.remoteUrl->text().isEmpty() && checkUserAuthInput() ) {
     mUi.fetchButton->setEnabled( true );
     if ( mModel->rowCount() > 0 )
-      enableButtonOk( true );
+      mOkButton->setEnabled( true );
   } else {
     mUi.fetchButton->setEnabled( false );
-    enableButtonOk( false );
+    mOkButton->setEnabled( false );
   }
 }
 

@@ -27,20 +27,34 @@
 #include <KUrl>
 
 #include <QTimer>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 using namespace Akonadi;
 
 SettingsDialog::SettingsDialog( WId windowId )
-  : KDialog()
+  : QDialog()
 {
-  ui.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  ui.setupUi(mainWidget);
   ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
-  setButtons( Ok | Cancel );
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
 
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
 
   connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
   connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
@@ -64,7 +78,7 @@ void SettingsDialog::validate()
 {
   const KUrl currentUrl = ui.kcfg_Path->url();
   if ( currentUrl.isEmpty() ) {
-    enableButton( Ok, false );
+    mOkButton->setEnabled(false);
     return;
   }
 
@@ -75,5 +89,5 @@ void SettingsDialog::validate()
   } else {
     ui.kcfg_ReadOnly->setEnabled( true );
   }
-  enableButton( Ok, true );
+  mOkButton->setEnabled(true);
 }

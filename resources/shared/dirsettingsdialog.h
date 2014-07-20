@@ -22,13 +22,14 @@
 
 #include "ui_settingsdialog.h"
 
-#include <KDialog>
+#include <QDialog>
+#include <QPushButton>
 
 class KConfigDialogManager;
 
 namespace Akonadi {
 
-class SettingsDialog : public KDialog
+class SettingsDialog : public QDialog
 {
   Q_OBJECT
   public:
@@ -41,6 +42,7 @@ class SettingsDialog : public KDialog
   private:
     Ui::SettingsDialog ui;
     KConfigDialogManager* mManager;
+    QPushButton *mOkButton;
 };
 
 }

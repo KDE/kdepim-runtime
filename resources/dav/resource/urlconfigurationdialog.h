@@ -24,13 +24,13 @@
 #include "davutils.h"
 
 #include <QtCore/QString>
-#include <KDialog>
+#include <QDialog>
 
 class KJob;
 class QModelIndex;
 class QStandardItemModel;
-
-class UrlConfigurationDialog : public KDialog
+class QPushButton;
+class UrlConfigurationDialog : public QDialog
 {
   Q_OBJECT
 
@@ -73,6 +73,7 @@ class UrlConfigurationDialog : public KDialog
     QStandardItemModel *mModel;
     QString mDefaultUsername;
     QString mDefaultPassword;
+    QPushButton *mOkButton;
 };
 
 #endif

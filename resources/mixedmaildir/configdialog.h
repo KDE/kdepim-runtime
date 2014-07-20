@@ -20,13 +20,14 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
-#include <kdialog.h>
+#include <QDialog>
 
 #include "ui_settings.h"
+class QPushButton;
 
 class KConfigDialogManager;
 
-class ConfigDialog : public KDialog
+class ConfigDialog : public QDialog
 {
   Q_OBJECT
   public:
@@ -39,6 +40,7 @@ class ConfigDialog : public KDialog
   private:
     Ui::ConfigDialog ui;
     KConfigDialogManager* mManager;
+    QPushButton *mOkButton;
     bool mToplevelIsContainer;
 };
 

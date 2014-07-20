@@ -25,21 +25,33 @@
 #include <kconfigdialogmanager.h>
 #include <kurlrequester.h>
 #include <klineedit.h>
-
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 using KPIM::Maildir;
 
 ConfigDialog::ConfigDialog(QWidget * parent) :
-    KDialog( parent ),
+    QDialog( parent ),
     mToplevelIsContainer( false )
 {
-  setCaption( i18n( "Select a KMail Mail folder" ) );
-  ui.setupUi( mainWidget() );
+  setWindowTitle( i18n( "Select a KMail Mail folder" ) );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  ui.setupUi(mainWidget);
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
   ui.kcfg_Path->setUrl( KUrl( Settings::self()->path() ) );
 
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+  connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
   connect( ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()) );
   ui.kcfg_Path->lineEdit()->setFocus();
   checkPath();
@@ -49,7 +61,7 @@ void ConfigDialog::checkPath()
 {
   if ( ui.kcfg_Path->url().isEmpty() ) {
     ui.statusLabel->setText( i18n( "The selected path is empty.") );
-    enableButton( Ok, false);
+    mOkButton->setEnabled(false);
     return;
   }
   bool ok = false;
@@ -80,7 +92,7 @@ void ConfigDialog::checkPath()
       ui.statusLabel->setText( i18n( "The selected path does not exist." ) );
     }
   }
-  enableButton( Ok, ok );
+  mOkButton->setEnabled(ok);
 }
 
 void ConfigDialog::save()
