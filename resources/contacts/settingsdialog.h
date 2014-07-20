@@ -22,8 +22,8 @@
 
 #include "ui_settingsdialog.h"
 
-#include <KDialog>
-
+#include <QDialog>
+class QPushButton;
 namespace Akonadi_Contacts_Resource {
 class ContactsResourceSettings;
 }
@@ -31,7 +31,7 @@ class KConfigDialogManager;
 
 namespace Akonadi {
 
-class SettingsDialog : public KDialog
+class SettingsDialog : public QDialog
 {
   Q_OBJECT
   public:
@@ -48,6 +48,7 @@ class SettingsDialog : public KDialog
     Ui::SettingsDialog ui;
     KConfigDialogManager* mManager;
     Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings;
+    QPushButton *mOkButton;
 };
 
 }

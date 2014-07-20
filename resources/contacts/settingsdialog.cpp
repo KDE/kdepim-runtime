@@ -26,22 +26,37 @@
 #include <QTimer>
 #include <KSharedConfig>
 #include <KUrl>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <QPushButton>
+#include <QVBoxLayout>
 using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
 
 SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId )
-  : KDialog(),
+  : QDialog(),
   mSettings( settings )
 {
-  ui.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  ui.setupUi(mainWidget);
   setWindowIcon( QIcon::fromTheme( QLatin1String("text-directory") ) );
   ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
-  setButtons( Ok | Cancel );
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
 
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
 
   connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
   connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
@@ -70,7 +85,7 @@ void SettingsDialog::validate()
 {
   const KUrl currentUrl = ui.kcfg_Path->url();
   if ( currentUrl.isEmpty() ) {
-    enableButton( Ok, false );
+    mOkButton->setEnabled(false);
     return;
   }
 
@@ -81,7 +96,7 @@ void SettingsDialog::validate()
   } else {
     ui.kcfg_ReadOnly->setEnabled( true );
   }
-  enableButton( Ok, true );
+  mOkButton->setEnabled(true);
 }
 
 void SettingsDialog::readConfig()

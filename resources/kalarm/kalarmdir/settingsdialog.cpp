@@ -28,21 +28,35 @@
 #include <KUrl>
 
 #include <QTimer>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 namespace Akonadi_KAlarm_Dir_Resource
 {
 
 SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
-  : KDialog(),
+  : QDialog(),
     mSettings(settings),
     mReadOnlySelected(false)
 {
-    ui.setupUi(mainWidget());
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    ui.setupUi(mainWidget);
     mTypeSelector = new AlarmTypeWidget(ui.tab, ui.tabLayout);
     ui.ktabwidget->tabBar()->hide();
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
-    setButtons(Ok | Cancel);
-    setCaption(i18nc("@title", "Configure Calendar"));
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    mainLayout->addWidget(buttonBox);
+    setWindowTitle(i18nc("@title", "Configure Calendar"));
 
     if (windowId)
         KWindowSystem::setMainWindow(this, windowId);
@@ -57,7 +71,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
     mManager = new KConfigDialogManager(this, mSettings);
     mManager->updateWidgets();
 
-    connect(this, SIGNAL(okClicked()), SLOT(save()));
+    connect(mOkButton, SIGNAL(clicked()), SLOT(save()));
     connect(ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(textChanged()));
     connect(ui.kcfg_ReadOnly, SIGNAL(clicked(bool)), SLOT(readOnlyClicked(bool)));
     connect(mTypeSelector, SIGNAL(changed()), SLOT(validate()));
@@ -128,7 +142,7 @@ void SettingsDialog::validate()
             }
         }
     }
-    enableButton(Ok, enableOk);
+    mOkButton->setEnabled(enableOk);
 }
 
 }

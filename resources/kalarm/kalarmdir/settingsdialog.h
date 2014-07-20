@@ -27,8 +27,8 @@
 
 #include <kalarmcal/kacalendar.h>
 
-#include <KDialog>
-
+#include <QDialog>
+class QPushButton;
 using namespace KAlarmCal;
 
 class KConfigDialogManager;
@@ -39,7 +39,7 @@ namespace Akonadi_KAlarm_Dir_Resource
 
 class Settings;
 
-class SettingsDialog : public KDialog
+class SettingsDialog : public QDialog
 {
         Q_OBJECT
     public:
@@ -59,6 +59,7 @@ class SettingsDialog : public KDialog
         KConfigDialogManager* mManager;
         Akonadi_KAlarm_Dir_Resource::Settings* mSettings;
         bool                  mReadOnlySelected;   // read-only was set by user (not by validate())
+        QPushButton *mOkButton;
 };
 
 }
