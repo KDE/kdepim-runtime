@@ -20,7 +20,7 @@
 
 #include "common/googlesettingsdialog.h"
 
-class KListWidget;
+class QListWidget;
 class QLabel;
 class KDateComboBox;
 
@@ -43,13 +43,13 @@ class SettingsDialog : public GoogleSettingsDialog
 
   private:
     QGroupBox *m_calendarsBox;
-    KListWidget *m_calendarsList;
+    QListWidget *m_calendarsList;
     QPushButton *m_reloadCalendarsBtn;
     QLabel *m_eventsLimitLabel;
     KDateComboBox *m_eventsLimitCombo;
 
     QGroupBox *m_taskListsBox;
-    KListWidget *m_taskListsList;
+    QListWidget *m_taskListsList;
     QPushButton *m_reloadTaskListsBtn;
 
 };

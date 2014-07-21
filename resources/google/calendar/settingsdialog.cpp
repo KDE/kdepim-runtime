@@ -19,7 +19,7 @@
 #include "settings.h"
 
 #include <KLocalizedString>
-#include <KListWidget>
+#include <QListWidget>
 #include <QPushButton>
 #include <KDateComboBox>
 
@@ -55,7 +55,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
 
     QVBoxLayout *vbox = new QVBoxLayout( m_calendarsBox );
 
-    m_calendarsList = new KListWidget( m_calendarsBox );
+    m_calendarsList = new QListWidget( m_calendarsBox );
     vbox->addWidget( m_calendarsList, 1 );
 
     m_reloadCalendarsBtn = new QPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_calendarsBox );
@@ -88,7 +88,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
 
     vbox = new QVBoxLayout( m_taskListsBox );
 
-    m_taskListsList = new KListWidget( m_taskListsBox );
+    m_taskListsList = new QListWidget( m_taskListsBox );
     vbox->addWidget( m_taskListsList, 1 );
 
     m_reloadTaskListsBtn = new QPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_taskListsBox );
