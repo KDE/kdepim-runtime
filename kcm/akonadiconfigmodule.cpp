@@ -23,8 +23,6 @@
 #include <kpluginloader.h>
 
 K_PLUGIN_FACTORY( AkonadiConfigModuleFactory, registerPlugin<AkonadiConfigModule>(); )
-K_EXPORT_PLUGIN( AkonadiConfigModuleFactory( "kcm_akonadi" ) )
-
 AkonadiConfigModule::AkonadiConfigModule( QWidget * parent, const QVariantList & args ) :
     KCModuleContainer( parent )
 {

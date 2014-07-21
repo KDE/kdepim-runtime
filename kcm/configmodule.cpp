@@ -29,7 +29,6 @@
 #include <KLocale>
 
 K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
-K_EXPORT_PLUGIN( ResourcesConfigFactory( "imaplib" ) )
 
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
         KCModule( /*ResourcesConfigFactory::componentData(),*/ parent, args )
