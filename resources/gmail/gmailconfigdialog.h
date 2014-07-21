@@ -20,7 +20,7 @@
 #ifndef GMAILSETUPSERVER_H
 #define GMAILSETUPSERVER_H
 
-#include <KDialog>
+#include <QDialog>
 
 #include <KGAPI/Account>
 
@@ -34,10 +34,10 @@ namespace KPIMIdentities
 class IdentityCombo;
 class IdentityManager;
 }
-
+class QPushButton;
 class GmailResource;
 class FolderArchiveSettingPage;
-class GmailConfigDialog : public KDialog
+class GmailConfigDialog : public QDialog
 {
     Q_OBJECT
 
@@ -73,7 +73,7 @@ private:
     QString m_oldResourceName;
     KGAPI2::AccountPtr m_account;
     FolderArchiveSettingPage *m_folderArchiveSettingPage;
-
+    QPushButton *mOkButton;
 };
 
 #endif // GMAILSETUPSERVER_H

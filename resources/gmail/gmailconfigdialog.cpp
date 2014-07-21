@@ -40,9 +40,11 @@
 #include <KMessageBox>
 
 #include <QPointer>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 
 GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
-    : KDialog()
+    : QDialog()
     , m_parentResource(resource)
     , m_ui(new Ui::GmailConfigDialog)
     , m_subscriptionsChanged(false)
@@ -50,7 +52,11 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
 {
     m_parentResource->settings()->setWinId(parent);
 
-    m_ui->setupUi(mainWidget());
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    m_ui->setupUi(mainWidget);
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(resource->identifier());
     m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
 
@@ -63,6 +69,14 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     m_ui->identityLabel->setBuddy( m_identityCombobox );
     m_ui->identityLayout->addWidget( m_identityCombobox, 1 );
     m_ui->identityLabel->setBuddy( m_identityCombobox );
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    mainLayout->addWidget(buttonBox);
 
     connect(m_ui->subscriptionEnabled, SIGNAL(toggled(bool)),
             this, SLOT(slotSubcriptionCheckboxChanged()) );
@@ -89,7 +103,7 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
 
     //connect(this, SIGNAL(applyClicked()),
             //this, SLOT(applySettings()) );
-    connect(this, SIGNAL(okClicked()),
+    connect(mOkButton, SIGNAL(clicked()),
             this, SLOT(applySettings()) );
 }
 
@@ -206,7 +220,7 @@ void GmailConfigDialog::readSettings()
 void GmailConfigDialog::slotComplete()
 {
     const bool ok = (m_account || !m_account->accountName().isEmpty());
-    button(KDialog::Ok)->setEnabled(ok);
+    mOkButton->setEnabled(ok);
 }
 
 void GmailConfigDialog::slotManageSubscriptions()
@@ -222,7 +236,7 @@ void GmailConfigDialog::slotManageSubscriptions()
     account.setAuthenticationMode(KIMAP::LoginJob::XOAuth2);
 
     QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( this );
-    subscriptions->setCaption(i18n("Serverside Subscription"));
+    subscriptions->setWindowTitle(i18n("Serverside Subscription"));
     subscriptions->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
     subscriptions->connectAccount(account, m_account->accessToken());
     m_subscriptionsChanged = subscriptions->isSubscriptionChanged();

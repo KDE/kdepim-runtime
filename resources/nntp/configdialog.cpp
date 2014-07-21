@@ -22,17 +22,31 @@
 
 #include <kconfigdialogmanager.h>
 #include <KLocalizedString>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 
 ConfigDialog::ConfigDialog(QWidget * parent) :
-    KDialog( parent )
+    QDialog( parent )
 {
-  ui.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  ui.setupUi(mainWidget);
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.password->setText( Settings::self()->password() );
   ui.kcfg_MaxDownload->setSuffix( ki18np( " article", " articles" ) );
 
-  connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+  okButton->setDefault(true);
+  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+
+  connect(okButton, SIGNAL(clicked()), SLOT(save()) );
 }
 
 void ConfigDialog::save()
