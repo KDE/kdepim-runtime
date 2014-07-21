@@ -59,9 +59,9 @@ void LocalBookmarksResource::configure( WId windowId )
 
   KUrl url;
   if ( !oldFile.isEmpty() )
-    url = KUrl::fromPath( oldFile );
+    url = QUrl::fromLocalFile( oldFile );
   else
-    url = KUrl::fromPath( QDir::homePath() );
+    url = QUrl::fromLocalFile( QDir::homePath() );
 
   const QString newFile = KFileDialog::getOpenFileNameWId( url, QLatin1String("*.xml |") + i18nc( "Filedialog filter for *.xml",
                                                                                    "XML Bookmark file"),

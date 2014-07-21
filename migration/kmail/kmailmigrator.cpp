@@ -180,8 +180,8 @@ void KMailMigrator::migrate()
   const QString autoSaveDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail/autosave");
   if ( !autoSaveDir.isEmpty() ) {
     const QString destDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail2");
-    KIO::CopyJob *job = KIO::copy( KUrl::fromPath( autoSaveDir ),
-                                   KUrl::fromPath( destDir ),
+    KIO::CopyJob *job = KIO::copy( QUrl::fromLocalFile( autoSaveDir ),
+                                   QUrl::fromLocalFile( destDir ),
                                    KIO::HideProgressInfo );
     job->setAutoSkip( true );
     job->setWriteIntoExistingDirectories( true );

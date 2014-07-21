@@ -118,7 +118,7 @@ void ServerConfigModule::load()
   QSettings settings( serverConfigFile, QSettings::IniFormat );
   settings.beginGroup( QLatin1String("QMYSQL") );
   ui_mysql.startServer->setChecked( settings.value( QLatin1String("StartServer"), true ).toBool() );
-  ui_mysql.serverPath->setUrl( KUrl::fromPath( settings.value( QLatin1String("ServerPath"), QString() ).toString() ) );
+  ui_mysql.serverPath->setUrl( QUrl::fromLocalFile( settings.value( QLatin1String("ServerPath"), QString() ).toString() ) );
   ui_mysql.name->setText( settings.value( QLatin1String("Name"), QLatin1String("akonadi") ).toString() );
   ui_mysql.host->setText( settings.value( QLatin1String("Host"), QString() ).toString() );
   ui_mysql.username->setText( settings.value( QLatin1String("User"), QString() ).toString() );
