@@ -11,6 +11,7 @@ set(folderarchivesettings_SRCS
 )
 
 add_library(folderarchivesettings ${LIBRARY_TYPE} ${folderarchivesettings_SRCS} )
+generate_export_header(folderarchivesettings BASE_NAME folderarchivesettings)
 
 target_link_libraries(folderarchivesettings
                       KF5::Mime

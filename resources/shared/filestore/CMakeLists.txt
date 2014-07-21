@@ -21,6 +21,7 @@ set(akonadi-filestore_SRCS
 )
 
 add_library(akonadi-filestore ${LIBRARY_TYPE} ${akonadi-filestore_SRCS} )
+generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
 
 target_link_libraries(akonadi-filestore
                       KF5::AkonadiCore
