@@ -98,6 +98,8 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     return;
   }
 
+  reloadFile();
+
   KMBox::MBoxEntry::List entryList;
   if ( col.hasAttribute<DeletedItemsAttribute>() ) {
     DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
