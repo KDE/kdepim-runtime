@@ -38,7 +38,7 @@
 #include <KNotification>
 #include <KAboutData>
 #include <KStatusNotifierItem>
-#include <KMenu>
+#include <QMenu>
 #include <KToolInvocation>
 
 using namespace Akonadi;
@@ -126,8 +126,8 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
 
     //the menu is deleted by SNI whenever we set new context menu
     //and/or when the SNI is destroyed
-    KMenu *contextMenu = new KMenu();
-    contextMenu->addTitle(i18n("Facebook Notifications"));
+    QMenu *contextMenu = new QMenu();
+    contextMenu->addSection(i18n("Facebook Notifications"));
 
     //use separate config file for the displayed notifications
     KSharedConfigPtr knotificationHistory = KSharedConfig::openConfig(QLatin1String("facebook-notificationsrc"));
