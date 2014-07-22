@@ -22,8 +22,7 @@
 
 #include <qdeclarativeextensionplugin.h>
 #include <kglobal.h>
-#include <kdemacros.h>
-class KDE_EXPORT KDEIntegrationPlugin : public QDeclarativeExtensionPlugin
+class Q_DECL_EXPORT KDEIntegrationPlugin : public QDeclarativeExtensionPlugin
 {
   Q_OBJECT
   public:
