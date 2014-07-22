@@ -19,7 +19,7 @@
 
 #include <AkonadiCore/Control>
 #include <k4aboutdata.h>
-#include <kcmdlineargs.h>
+
 #include <kconfig.h>
 #include <kconfiggroup.h>
 #include <kglobal.h>
@@ -29,32 +29,35 @@
 #include <KApplication>
 #include <infodialog.h>
 #include <KLocale>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 #include "gidmigrator.h"
 
 int main(int argc, char **argv)
 {
-    K4AboutData aboutData("gid-migrator", 0,
-                            ki18n("GID Migration Tool"),
-                            "0.1",
-                            ki18n("Migration of Akonadi Items to support GID"),
-                            K4AboutData::License_LGPL,
-                            ki18n("(c) 2013 the Akonadi developers"),
-                            KLocalizedString(),
-                            "http://pim.kde.org/akonadi/");
+    KAboutData aboutData(QStringLiteral("gid-migrator"),
+                            i18n("GID Migration Tool"),
+                            QStringLiteral("0.1"),
+                            i18n("Migration of Akonadi Items to support GID"),
+                            KAboutLicense::LGPL,
+                            i18n("(c) 2013 the Akonadi developers"),
+                            QStringLiteral("http://pim.kde.org/akonadi/"));
     aboutData.setProgramIconName(QLatin1String("akonadi"));
-    aboutData.addAuthor(ki18n("Christian Mollekopf"),  ki18n("Author"), "mollekopf@kolabsys.com");
+    aboutData.addAuthor(i18n("Christian Mollekopf"),  i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
-    KCmdLineArgs::init(argc, argv, &aboutData);
-    KCmdLineOptions options;
-    options.add("interactive", ki18n("Show reporting dialog"));
-    options.add("interactive-on-change", ki18n("Show report only if changes were made"));
-    options.add("mimetype", ki18n("Mimetype to migrate"));
-    KCmdLineArgs::addCmdLineOptions(options);
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    QCommandLineParser parser;
+    QApplication app(argc, argv);
+    parser.addVersionOption();
+    parser.addHelpOption();
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
+    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive"), i18n("Show reporting dialog")));
+    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive-on-change"), i18n("Show report only if changes were made")));
+    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("mimetype"), i18n("Mimetype to migrate")));
 
-    KApplication *app = new KApplication();
-    app->setQuitOnLastWindowClosed(false);
+    app.setQuitOnLastWindowClosed(false);
 
     KGlobal::setAllowQuit(true);
 
@@ -63,13 +66,13 @@ int main(int argc, char **argv)
     }
 
     InfoDialog *infoDialog = 0;
-    if (args->isSet("interactive") || args->isSet("interactive-on-change")) {
-        infoDialog = new InfoDialog(args->isSet("interactive-on-change"));
+    if (parser.isSet(QLatin1String("interactive")) || parser.isSet(QLatin1String("interactive-on-change"))) {
+        infoDialog = new InfoDialog(parser.isSet(QLatin1String("interactive-on-change")));
         Akonadi::Control::widgetNeedsAkonadi(infoDialog);
         infoDialog->show();
     }
 
-    const QString mimeType = args->getOption("mimetype");
+    const QString mimeType = parser.value(QLatin1String("mimetype"));
     if (mimeType.isEmpty()) {
         qWarning() << "set the mimetype to migrate";
         return 5;
@@ -83,9 +86,9 @@ int main(int argc, char **argv)
         QObject::connect(migrator, SIGNAL(destroyed()), infoDialog, SLOT(migratorDone()));
         QObject::connect(migrator, SIGNAL(progress(int)), infoDialog, SLOT(progress(int)));
     }
-    QObject::connect(migrator, SIGNAL(stoppedProcessing()), app, SLOT(quit));
+    QObject::connect(migrator, SIGNAL(stoppedProcessing()), &app, SLOT(quit));
     migrator->start();
-    const int result = app->exec();
+    const int result = app.exec();
     if (InfoDialog::hasError() || migrator->migrationState() == MigratorBase::Failed) {
         return 3;
     }

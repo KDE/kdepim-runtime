@@ -24,47 +24,51 @@
 
 #include <AkonadiCore/control.h>
 
-#include <K4AboutData>
+#include <KAboutData>
 #include <KApplication>
-#include <KCmdLineArgs>
+
 #include <KGlobal>
 #include <KDebug>
 #include <KSharedConfig>
 #include <KLocale>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 
 using namespace KMail;
 
 int main( int argc, char **argv )
 {
-  K4AboutData aboutData( "kmail-migrator", 0,
-                        ki18n( "KMail Migration Tool" ),
-                        "0.1",
-                        ki18n( "Migration of KMail accounts to Akonadi" ),
-                        K4AboutData::License_LGPL,
-                        ki18n( "(c) 2009-2010 the Akonadi developers" ),
-                        KLocalizedString(),
-                        "http://pim.kde.org/akonadi/" );
+  KAboutData aboutData( QStringLiteral("kmail-migrator"),
+                        i18n( "KMail Migration Tool" ),
+                        QStringLiteral("0.1"),
+                        i18n( "Migration of KMail accounts to Akonadi" ),
+                        KAboutLicense::LGPL,
+                        i18n( "(c) 2009-2010 the Akonadi developers" ),
+                        QStringLiteral("http://pim.kde.org/akonadi/") );
   aboutData.setProgramIconName( QLatin1String("akonadi") );
-  aboutData.addAuthor( ki18n( "Jonathan Armond" ),  ki18n( "Author" ), "jon.armond@gmail.com" );
+  aboutData.addAuthor( i18n( "Jonathan Armond" ),  i18n( "Author" ), QStringLiteral("jon.armond@gmail.com") );
 
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KCmdLineOptions options;
-  options.add( "interactive", ki18n( "Show reporting dialog" ) );
-  options.add( "interactive-on-change", ki18n( "Show report only if changes were made" ) );
-  KCmdLineArgs::addCmdLineOptions( options );
-  KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+  QCommandLineParser parser;
+  QApplication app(argc, argv);
+  parser.addVersionOption();
+  parser.addHelpOption();
+  //PORTING SCRIPT: adapt aboutdata variable if necessary
+  aboutData.setupCommandLine(&parser);
+  parser.process(app);
+  aboutData.processCommandLine(&parser);
+  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive"), i18n( "Show reporting dialog" )));
+  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive-on-change"), i18n( "Show report only if changes were made" )));
 
-  KApplication *app = new KApplication();
-  app->setQuitOnLastWindowClosed( false );
+  app.setQuitOnLastWindowClosed( false );
 
   KGlobal::setAllowQuit( true );
   if ( !Akonadi::Control::start( 0 ) )
     return 2;
 
   InfoDialog *infoDialog = 0;
-  if ( args->isSet( "interactive" ) || args->isSet( "interactive-on-change" ) ) {
-    infoDialog = new InfoDialog( args->isSet( "interactive-on-change" ) );
+  if ( parser.isSet( QStringLiteral("interactive") ) || parser.isSet( QStringLiteral("interactive-on-change") ) ) {
+    infoDialog = new InfoDialog( parser.isSet( QStringLiteral("interactive-on-change") ) );
     infoDialog->show();
   }
 
@@ -91,8 +95,8 @@ int main( int argc, char **argv )
     QObject::connect( migrator, SIGNAL(progress(int,int,int)),
                       infoDialog, SLOT(progress(int,int,int)) );
   }
-  args->clear();
-  const int result = app->exec();
+  
+  const int result = app.exec();
   if ( InfoDialog::hasError() )
     return 3;
 
