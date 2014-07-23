@@ -77,6 +77,21 @@ QList<KIMAP::MailBoxDescriptor> DummyResourceState::serverNamespaces() const
   return m_namespaces;
 }
 
+QList<KIMAP::MailBoxDescriptor> DummyResourceState::personalNamespaces() const
+{
+  return QList<KIMAP::MailBoxDescriptor>();
+}
+
+QList<KIMAP::MailBoxDescriptor> DummyResourceState::userNamespaces() const
+{
+  return QList<KIMAP::MailBoxDescriptor>();
+}
+
+QList<KIMAP::MailBoxDescriptor> DummyResourceState::sharedNamespaces() const
+{
+  return QList<KIMAP::MailBoxDescriptor>();
+}
+
 void DummyResourceState::setAutomaticExpungeEnagled( bool enabled )
 {
   m_automaticExpunge = enabled;

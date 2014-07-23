@@ -81,6 +81,12 @@ public:
   ImapAccount *account() const;
   QStringList serverCapabilities() const;
   QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+  enum Namespace {
+      Personal,
+      User,
+      Shared
+  };
+  QList<KIMAP::MailBoxDescriptor> serverNamespaces(Namespace) const;
 
 signals:
   void connectionLost( KIMAP::Session *session );
@@ -123,6 +129,9 @@ private:
 
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
+  QList<KIMAP::MailBoxDescriptor> m_personalNamespaces;
+  QList<KIMAP::MailBoxDescriptor> m_userNamespaces;
+  QList<KIMAP::MailBoxDescriptor> m_sharedNamespaces;
 };
 
 #endif

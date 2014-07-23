@@ -46,6 +46,9 @@ public:
 
   void setServerNamespaces( const QList<KIMAP::MailBoxDescriptor> &namespaces );
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+  virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const;
+  virtual QList<KIMAP::MailBoxDescriptor> userNamespaces() const;
+  virtual QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const;
 
   void setAutomaticExpungeEnagled( bool enabled );
   virtual bool isAutomaticExpungeEnabled() const;
