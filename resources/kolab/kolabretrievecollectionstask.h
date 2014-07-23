@@ -50,7 +50,7 @@ protected:
 private:
     void checkDone();
     Akonadi::Collection getOrCreateParent(const QString &parentPath);
-    void createCollection(const QString &mailbox, const QList<QByteArray> &flags);
+    void createCollection(const QString &mailbox, const QList<QByteArray> &flags, bool isSubscribed);
 
     int mJobs;
     QHash<QString, Akonadi::Collection> mMailCollections;
