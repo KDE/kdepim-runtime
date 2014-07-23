@@ -24,7 +24,7 @@
 #include <KConfigDialogManager>
 #include <KWindowSystem>
 #include <KLocalizedString>
-#include <KUrl>
+#include <QUrl>
 
 #include <QTimer>
 #include <QDialogButtonBox>
@@ -61,7 +61,7 @@ SettingsDialog::SettingsDialog( WId windowId )
 
   QTimer::singleShot( 0, this, SLOT(validate()) );
 
-  ui.kcfg_Path->setUrl( KUrl( Settings::self()->path() ) );
+  ui.kcfg_Path->setUrl( QUrl( Settings::self()->path() ) );
   ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
@@ -76,7 +76,7 @@ void SettingsDialog::save()
 
 void SettingsDialog::validate()
 {
-  const KUrl currentUrl = ui.kcfg_Path->url();
+  const QUrl currentUrl = ui.kcfg_Path->url();
   if ( currentUrl.isEmpty() ) {
     mOkButton->setEnabled(false);
     return;

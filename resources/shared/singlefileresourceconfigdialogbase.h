@@ -29,7 +29,7 @@
 #endif
 
 #include <KDialog>
-#include <KUrl>
+#include <QUrl>
 class KConfigDialogManager;
 class KJob;
 
@@ -73,12 +73,12 @@ class SingleFileResourceConfigDialogBase : public KDialog
     /**
      * Return the file URL.
      */
-    KUrl url() const;
+    QUrl url() const;
 
     /**
      * Set the file URL.
      */
-    void setUrl( const KUrl& url );
+    void setUrl( const QUrl& url );
 
     /**
      * Specify whether the file must be local.

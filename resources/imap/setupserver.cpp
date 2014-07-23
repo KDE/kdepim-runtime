@@ -207,8 +207,6 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
            SIGNAL(statusChanged(Solid::Networking::Status)),
            SLOT(slotTestChanged()) );
 #endif
-  connect( this, SIGNAL(applyClicked()),
-           SLOT(applySettings()) );
   connect(mOkButton, SIGNAL(clicked()),
            SLOT(applySettings()) );
 }

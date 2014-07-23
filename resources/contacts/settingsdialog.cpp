@@ -25,7 +25,7 @@
 
 #include <QTimer>
 #include <KSharedConfig>
-#include <KUrl>
+#include <QUrl>
 #include <QDialogButtonBox>
 #include <KConfigGroup>
 #include <QPushButton>
@@ -63,7 +63,7 @@ SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId
 
   QTimer::singleShot( 0, this, SLOT(validate()) );
 
-  ui.kcfg_Path->setUrl( KUrl( mSettings->path() ) );
+  ui.kcfg_Path->setUrl( QUrl( mSettings->path() ) );
   mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
   readConfig();
@@ -83,7 +83,7 @@ void SettingsDialog::save()
 
 void SettingsDialog::validate()
 {
-  const KUrl currentUrl = ui.kcfg_Path->url();
+  const QUrl currentUrl = ui.kcfg_Path->url();
   if ( currentUrl.isEmpty() ) {
     mOkButton->setEnabled(false);
     return;

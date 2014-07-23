@@ -23,35 +23,51 @@
 #include <Collection>
 #include <CollectionRequester>
 
-#include <KDebug>
+#include <QDebug>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include <QDialogButtonBox>
 
 using namespace Akonadi;
 
 ConfigDialog::ConfigDialog(QWidget * parent) :
-    KDialog( parent )
+    QDialog( parent )
 {
-  ui.setupUi( mainWidget() );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  ui.setupUi(mainWidget);
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+
 
   ui.sink->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
   ui.sink->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
   // Don't bother fetching the collection. Will have an empty name :-/
   ui.sink->setCollection( Collection( Settings::self()->sink() ) );
   ui.sink->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
-  kDebug() << "Sink from settings" << Settings::self()->sink();
+  qDebug() << "Sink from settings" << Settings::self()->sink();
 
-  connect( this, SIGNAL(okClicked()), this, SLOT(save()) );
+  connect(mOkButton, SIGNAL(clicked()), this, SLOT(save()) );
   connect( ui.sink, SIGNAL(collectionChanged(Akonadi::Collection)), this, SLOT(slotCollectionChanged(Akonadi::Collection)) );
-  enableButtonOk(false);
+  mOkButton->setEnabled(false);
 }
 
 void ConfigDialog::slotCollectionChanged( const Akonadi::Collection& col )
 {
-  enableButtonOk(col.isValid());
+  mOkButton->setEnabled(col.isValid());
 }
 
 void ConfigDialog::save()
 {
-  kDebug() << "Sink changed to" << ui.sink->collection().id();
+  qDebug() << "Sink changed to" << ui.sink->collection().id();
   Settings::self()->setSink( ui.sink->collection().id() );
   Settings::self()->save();
 }

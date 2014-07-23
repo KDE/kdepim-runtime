@@ -25,7 +25,7 @@
 
 #include <KConfigDialogManager>
 #include <KWindowSystem>
-#include <KUrl>
+#include <QUrl>
 
 #include <QTimer>
 #include <QDialogButtonBox>
@@ -62,7 +62,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
         KWindowSystem::setMainWindow(this, windowId);
 
     // Make directory path read-only if the resource already exists
-    KUrl path(mSettings->path());
+    QUrl path(mSettings->path());
     ui.kcfg_Path->setUrl(path);
     if (!path.isEmpty())
         ui.kcfg_Path->setEnabled(false);
@@ -111,7 +111,7 @@ void SettingsDialog::validate()
     if (mTypeSelector->alarmTypes() != CalEvent::EMPTY)
     {
         // The entered URL must be valid and local
-        const KUrl currentUrl = ui.kcfg_Path->url();
+        const QUrl currentUrl = ui.kcfg_Path->url();
         if (currentUrl.isEmpty())
             ui.kcfg_ReadOnly->setEnabled(true);
         else if (currentUrl.isLocalFile())

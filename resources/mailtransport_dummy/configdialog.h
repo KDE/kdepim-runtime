@@ -20,13 +20,14 @@
 #ifndef CONFIGDIALOG_H
 #define CONFIGDIALOG_H
 
-#include <KDialog>
+#include <QDialog>
 
 #include "ui_settings.h"
 
 
+class QPushButton;
 
-class ConfigDialog : public KDialog
+class ConfigDialog : public QDialog
 {
   Q_OBJECT
   public:
@@ -37,7 +38,7 @@ class ConfigDialog : public KDialog
     void slotCollectionChanged(const Akonadi::Collection& );
   private:
     Ui::ConfigDialog ui;
-
+    QPushButton *mOkButton;
 };
 
 #endif

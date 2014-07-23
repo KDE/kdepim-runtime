@@ -26,7 +26,7 @@
 #include <KFileItem>
 #include <KIO/Job>
 #include <KWindowSystem>
-#include <KUrl>
+#include <QUrl>
 #include <QTimer>
 
 #include <KGlobal>
@@ -111,12 +111,12 @@ void SingleFileResourceConfigDialogBase::setMonitorEnabled(bool enable)
 #endif
 }
 
-void SingleFileResourceConfigDialogBase::setUrl(const KUrl &url )
+void SingleFileResourceConfigDialogBase::setUrl(const QUrl &url )
 {
   ui.kcfg_Path->setUrl( url );
 }
 
-KUrl SingleFileResourceConfigDialogBase::url() const
+QUrl SingleFileResourceConfigDialogBase::url() const
 {
   return ui.kcfg_Path->url();
 }
@@ -142,7 +142,7 @@ void SingleFileResourceConfigDialogBase::validate()
     return;
   }
 
-  const KUrl currentUrl = ui.kcfg_Path->url();
+  const QUrl currentUrl = ui.kcfg_Path->url();
   if ( currentUrl.isEmpty() ) {
     enableButton( Ok, false );
     return;
@@ -196,7 +196,7 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult( KJob* job )
     // reside in supports writing.
 
     //QT5
-    const KUrl dirUrl ;//= ui.kcfg_Path->url().upUrl();
+    const QUrl dirUrl ;//= ui.kcfg_Path->url().upUrl();
 
     mStatJob = KIO::stat( dirUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
     mStatJob->setDetails( 2 ); // All details.

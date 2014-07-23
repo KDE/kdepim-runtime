@@ -59,7 +59,7 @@ ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier,
   mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
-  ui.kcfg_Path->setUrl( KUrl( mSettings->path() ) );
+  ui.kcfg_Path->setUrl( QUrl( mSettings->path() ) );
 
   connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
   connect( ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()) );
