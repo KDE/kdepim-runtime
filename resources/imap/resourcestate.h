@@ -61,6 +61,9 @@ public:
   virtual QString resourceName() const;
   virtual QStringList serverCapabilities() const;
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+  virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const;
+  virtual QList<KIMAP::MailBoxDescriptor> userNamespaces() const;
+  virtual QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const;
 
   virtual bool isAutomaticExpungeEnabled() const;
   virtual bool isSubscriptionEnabled() const;

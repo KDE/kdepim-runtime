@@ -176,6 +176,22 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces() const
   return m_namespaces;
 }
 
+QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces(Namespace ns) const
+{
+    switch(ns) {
+        case Personal:
+            return m_personalNamespaces;
+        case User:
+            return m_userNamespaces;
+        case Shared:
+            return m_sharedNamespaces;
+        default:
+            break;
+    }
+    Q_ASSERT(false);
+    return QList<KIMAP::MailBoxDescriptor>();
+}
+
 void SessionPool::killSession( KIMAP::Session *session, SessionTermination termination )
 {
   QObject::disconnect( session, SIGNAL(stateChanged(KIMAP::Session::State,KIMAP::Session::State)),
@@ -443,6 +459,9 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
 void SessionPool::onNamespacesTestDone( KJob *job )
 {
   KIMAP::NamespaceJob *nsJob = qobject_cast<KIMAP::NamespaceJob*>( job );
+  m_personalNamespaces = nsJob->personalNamespaces();
+  m_userNamespaces = nsJob->userNamespaces();
+  m_sharedNamespaces = nsJob->sharedNamespaces();
 
   if ( nsJob->containsEmptyNamespace() ) {
     // When we got the empty namespace here, we assume that the other

@@ -63,6 +63,21 @@ QList<KIMAP::MailBoxDescriptor> ResourceState::serverNamespaces() const
   return m_resource->m_pool->serverNamespaces();
 }
 
+QList<KIMAP::MailBoxDescriptor> ResourceState::personalNamespaces() const
+{
+    return m_resource->m_pool->serverNamespaces(SessionPool::Personal);
+}
+
+QList<KIMAP::MailBoxDescriptor> ResourceState::userNamespaces() const
+{
+    return m_resource->m_pool->serverNamespaces(SessionPool::User);
+}
+
+QList<KIMAP::MailBoxDescriptor> ResourceState::sharedNamespaces() const
+{
+    return m_resource->m_pool->serverNamespaces(SessionPool::Shared);
+}
+
 bool ResourceState::isAutomaticExpungeEnabled() const
 {
   return m_resource->settings()->automaticExpungeEnabled();
