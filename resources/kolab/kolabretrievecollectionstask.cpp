@@ -109,14 +109,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailB
 {
     for (int i=0; i<descriptors.size(); ++i) {
         const KIMAP::MailBoxDescriptor descriptor = descriptors[i];
-
-        //TODO Get all folders anyways, but locally unsubscribe from the ones we're not subscribed to online?
-        if (isSubscriptionEnabled() && !mSubscribedMailboxes.contains(descriptor.name)) {
-            // not subscribed, skipping
-            continue;
-        }
-
-        createCollection(descriptor.name, flags.at(i));
+        createCollection(descriptor.name, flags.at(i), !isSubscriptionEnabled() || mSubscribedMailboxes.contains(descriptor.name));
     }
     checkDone();
 }
@@ -140,11 +133,12 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
     c.addAttribute(new NoSelectAttribute(true));
     c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType());
     c.setRights(Akonadi::Collection::ReadOnly);
+    c.setEnabled(false);
     mMailCollections.insert(path, c);
     return c;
 }
 
-void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, const QList<QByteArray> &currentFlags)
+void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, const QList<QByteArray> &currentFlags, bool isSubscribed)
 {
     const QString separator = separatorCharacter();
     Q_ASSERT(separator.size() == 1);
@@ -205,6 +199,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
         c.addAttribute(new NoInferiorsAttribute(true));
         c.setRights(c.rights() & ~Akonadi::Collection::CanCreateCollection);
     }
+    c.setEnabled(isSubscribed);
 
     kDebug() << "creating collection " << mailbox << " with parent " << parentPath;
     mMailCollections.insert(mailbox, c);
