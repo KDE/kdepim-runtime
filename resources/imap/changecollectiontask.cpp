@@ -26,6 +26,7 @@
 #include <kimap/setmetadatajob.h>
 #include <kimap/session.h>
 #include <kimap/subscribejob.h>
+#include <kimap/unsubscribejob.h>
 
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
@@ -40,6 +41,11 @@ ChangeCollectionTask::ChangeCollectionTask( ResourceStateInterface::Ptr resource
 
 ChangeCollectionTask::~ChangeCollectionTask()
 {
+}
+
+void ChangeCollectionTask::syncEnabledState( bool enable )
+{
+    m_syncEnabledState = enable;
 }
 
 void ChangeCollectionTask::doStart( KIMAP::Session *session )
@@ -220,6 +226,23 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
 
       m_pendingJobs++;
     }
+  }
+
+  if ( m_syncEnabledState && isSubscriptionEnabled() && parts().contains( "ENABLED" ) ) {
+    if ( collection().enabled() ) {
+        KIMAP::SubscribeJob *job = new KIMAP::SubscribeJob( session );
+        job->setMailBox( mailBoxForCollection( collection() ) );
+        connect( job, SIGNAL(result(KJob*)),
+                this, SLOT(onSubscribeDone(KJob*)) );
+        job->start();
+    } else {
+        KIMAP::UnsubscribeJob *job = new KIMAP::UnsubscribeJob( session );
+        job->setMailBox( mailBoxForCollection( collection() ) );
+        connect( job, SIGNAL(result(KJob*)),
+                this, SLOT(onSubscribeDone(KJob*)) );
+        job->start();
+    }
+    m_pendingJobs++;
   }
 
   // we scheduled no change on the server side, probably we got only
