@@ -64,3 +64,43 @@ QByteArray GmailLabelAttribute::type() const
 {
     return "GmailLabel";
 }
+
+bool GmailLabelAttribute::isAllMail() const
+{
+    return mLabel == "\\All";
+}
+
+bool GmailLabelAttribute::isDrafts() const
+{
+    return mLabel == "\\Draft";
+}
+
+bool GmailLabelAttribute::isFlagged() const
+{
+    return mLabel == "\\Flagged";
+}
+
+bool GmailLabelAttribute::isImportant() const
+{
+    return mLabel == "\\Important";
+}
+
+bool GmailLabelAttribute::isInbox() const
+{
+    return mLabel == "\\Inbox";
+}
+
+bool GmailLabelAttribute::isJunk() const
+{
+    return mLabel == "\\Junk";
+}
+
+bool GmailLabelAttribute::isSent() const
+{
+    return mLabel == "\\Sent";
+}
+
+bool GmailLabelAttribute::isTrash() const
+{
+    return mLabel == "\\Trash";
+}

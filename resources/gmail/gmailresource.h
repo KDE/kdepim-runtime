@@ -36,6 +36,9 @@ public:
     explicit GmailResource(const QString &id);
     ~GmailResource();
 
+    Akonadi::Collection allMailCollection() const;
+    Akonadi::Collection rootCollection() const;
+
     KDialog *createConfigureDialog (WId windowId);
     QString defaultName() const;
 
@@ -50,6 +53,9 @@ public:
     Settings *settings() const;
 
 private Q_SLOTS:
+    void updateTrashFolder();
+    void onUpdateTrashFolderCollectionsRetrieved(KJob *job);
+
     void onConfigurationDone(int result);
     void onRetrieveItemsCollectionRetrieved(KJob *job);
 
