@@ -73,7 +73,7 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap( MailTrans
 
 Settings::Settings( WId winId ) : SettingsBase(), m_winId( winId )
 {
-    readConfig();
+    load();
 
     new SettingsAdaptor( this );
     QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this, QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );

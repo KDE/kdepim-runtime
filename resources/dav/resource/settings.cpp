@@ -96,7 +96,7 @@ Settings *Settings::self()
 {
   if ( !s_globalSettings->q ) {
     new Settings;
-    s_globalSettings->q->readConfig();
+    s_globalSettings->q->load();
   }
 
   return s_globalSettings->q;
@@ -591,7 +591,7 @@ void Settings::updateToV2()
   setDefaultPassword( loadPassword( key, urlConfig.mUser ) );
   setRemoteUrls( urls );
   setSettingsVersion( 2 );
-  writeConfig();
+  save();
 }
 
 void Settings::updateToV3()
@@ -610,6 +610,6 @@ void Settings::updateToV3()
 
   setRemoteUrls( updatedUrls );
   setSettingsVersion( 3 );
-  writeConfig();
+  save();
 }
 
