@@ -29,6 +29,7 @@
 
 #include <AkonadiCore/cachepolicy.h>
 #include <AkonadiCore/entitydisplayattribute.h>
+#include <AkonadiCore/collectionidentificationattribute.h>
 #include <Akonadi/KMime/MessageParts>
 
 #include <kmime/kmime_message.h>
@@ -109,14 +110,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailB
 {
     for (int i=0; i<descriptors.size(); ++i) {
         const KIMAP::MailBoxDescriptor descriptor = descriptors[i];
-
-        //TODO Get all folders anyways, but locally unsubscribe from the ones we're not subscribed to online?
-        if (isSubscriptionEnabled() && !mSubscribedMailboxes.contains(descriptor.name)) {
-            // not subscribed, skipping
-            continue;
-        }
-
-        createCollection(descriptor.name, flags.at(i));
+        createCollection(descriptor.name, flags.at(i), !isSubscriptionEnabled() || mSubscribedMailboxes.contains(descriptor.name));
     }
     checkDone();
 }
@@ -140,11 +134,58 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
     c.addAttribute(new NoSelectAttribute(true));
     c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType());
     c.setRights(Akonadi::Collection::ReadOnly);
+    c.setEnabled(false);
+    setAttributes(c, pathParts, path);
+
     mMailCollections.insert(path, c);
     return c;
 }
 
-void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, const QList<QByteArray> &currentFlags)
+bool KolabRetrieveCollectionsTask::isNamespaceFolder(const QStringList &pathParts, const QList<KIMAP::MailBoxDescriptor> &namespaces)
+{
+    Q_FOREACH (const KIMAP::MailBoxDescriptor &desc, namespaces) {
+        if (desc.name.contains(pathParts.first())) { //Namespace ends with path separator and pathPart doesn't
+            return true;
+        }
+    }
+    return false;
+}
+
+void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path)
+{
+
+    CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+    attr->setIdentifier(path.toLatin1());
+
+    // If the folder is a other users top-level folder mark it accordingly
+    if (pathParts.size() == 1 && isNamespaceFolder(pathParts, resourceState()->userNamespaces())) {
+        Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        attr->setDisplayName(i18n("Other Users"));
+        attr->setIconName(QLatin1String("x-mail-distribution-list"));
+    }
+
+    //Mark user folders for searching
+    if (pathParts.size() == 2 && isNamespaceFolder(pathParts, resourceState()->userNamespaces())) {
+        CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+        attr->setCollectionNamespace("user");
+    }
+
+    // If the folder is a shared folders top-level folder mark it accordingly
+    if (pathParts.size() == 1 && isNamespaceFolder(pathParts, resourceState()->sharedNamespaces())) {
+        Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        attr->setDisplayName(i18n("Shared Folders"));
+        attr->setIconName(QLatin1String("x-mail-distribution-list"));
+    }
+
+    //Mark shared folders for searching
+    if (pathParts.size() >= 2 && isNamespaceFolder(pathParts, resourceState()->sharedNamespaces())) {
+        CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+        attr->setCollectionNamespace("shared");
+    }
+
+}
+
+void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, const QList<QByteArray> &currentFlags, bool isSubscribed)
 {
     const QString separator = separatorCharacter();
     Q_ASSERT(separator.size() == 1);
@@ -167,6 +208,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     //TODO get from ResourceState, and add KMime::Message::mimeType() for the normal imap resource by default
     //We add a dummy mimetype, otherwise the itemsync doesn't even work (action is disabled and resourcebase aborts the operation)
     c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType() << QLatin1String("application/x-kolab-objects"));
+
     //assume LRS, until myrights is executed
     if (serverCapabilities().contains(QLatin1String("ACL"))) {
         c.setRights(Akonadi::Collection::ReadOnly);
@@ -174,19 +216,14 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
         c.setRights(Akonadi::Collection::AllRights);
     }
 
+    setAttributes(c, pathParts, mailbox);
+
     // If the folder is the Inbox, make some special settings.
     if (pathParts.size() == 1 && pathPart.compare(QLatin1String("inbox") , Qt::CaseInsensitive) == 0) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Inbox"));
         attr->setIconName(QLatin1String("mail-folder-inbox"));
         setIdleCollection(c);
-    }
-
-    // If the folder is the user top-level folder, mark it as well, although it is not officially noted in the RFC
-    if (pathParts.size() == 1 && pathPart == QLatin1String("user") && currentFlags.contains("\\noselect")) {
-        Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
-        attr->setDisplayName(i18n("Shared Folders"));
-        attr->setIconName(QLatin1String("x-mail-distribution-list"));
     }
 
     // If this folder is a noselect folder, make some special settings.
@@ -205,6 +242,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
         c.addAttribute(new NoInferiorsAttribute(true));
         c.setRights(c.rights() & ~Akonadi::Collection::CanCreateCollection);
     }
+    c.setEnabled(isSubscribed);
 
     kDebug() << "creating collection " << mailbox << " with parent " << parentPath;
     mMailCollections.insert(mailbox, c);

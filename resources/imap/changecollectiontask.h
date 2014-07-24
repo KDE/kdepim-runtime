@@ -32,6 +32,8 @@ public:
   explicit ChangeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
   virtual ~ChangeCollectionTask();
 
+  void syncEnabledState(bool);
+
 private slots:
   void onRenameDone( KJob *job );
   void onSubscribeDone( KJob *job );
@@ -46,6 +48,7 @@ private:
 
   int m_pendingJobs;
   Akonadi::Collection m_collection;
+  bool m_syncEnabledState;
 };
 
 #endif

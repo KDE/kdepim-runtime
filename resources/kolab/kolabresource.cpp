@@ -24,6 +24,7 @@
 #include <timestampattribute.h>
 #include <retrieveitemstask.h>
 #include <collectionannotationsattribute.h>
+#include <changecollectiontask.h>
 
 #include <KLocalizedString>
 #include <AkonadiCore/CollectionFetchJob>
@@ -174,7 +175,10 @@ void KolabResource::collectionChanged(const Akonadi::Collection& collection, con
     //Update annotations if necessary
     const Akonadi::Collection col = updateAnnotations(collection);
     //TODO we need to save the collections as well if the annotations have changed
-    ImapResource::collectionChanged(col, parts);
+    emit status( AgentBase::Running, i18nc( "@info:status", "Updating folder '%1'", collection.name() ) );
+    ChangeCollectionTask *task = new ChangeCollectionTask( createResourceState(TaskArguments(collection, parts)), this );
+    task->syncEnabledState(true);
+    startTask(task);
 }
 
 AKONADI_RESOURCE_MAIN( KolabResource )

@@ -1,9 +1,9 @@
 [Desktop Entry]
 Name=Gmail
 Name[ca]=Gmail
+Name[da]=Gmail
 Name[en_GB]=Gmail
 Name[es]=Gmail
-Name[et]=Gmail
 Name[fi]=Gmail
 Name[hu]=Gmail
 Name[nds]=GMail
@@ -21,9 +21,9 @@ Name[uk]=Gmail
 Name[x-test]=xxGmailxx
 Comment=Connects to your Gmail account
 Comment[ca]=Connecta amb el vostre compte de Gmail
+Comment[da]=Forbinder til din Gmail-konto
 Comment[en_GB]=Connects to your Gmail account
 Comment[es]=Conecta a su cuenta Gmail
-Comment[et]=Ühendumine Gmaili kontoga
 Comment[fi]=Yhdistää Gmail-tiliin
 Comment[hu]=Csatlakozik a Gmail fiókjához
 Comment[nds]=Koppelt sik Dien GMail-Konto to

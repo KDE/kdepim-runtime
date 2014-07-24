@@ -50,7 +50,9 @@ protected:
 private:
     void checkDone();
     Akonadi::Collection getOrCreateParent(const QString &parentPath);
-    void createCollection(const QString &mailbox, const QList<QByteArray> &flags);
+    void createCollection(const QString &mailbox, const QList<QByteArray> &flags, bool isSubscribed);
+    bool isNamespaceFolder(const QStringList &pathParts, const QList<KIMAP::MailBoxDescriptor> &namespaces);
+    void setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path);
 
     int mJobs;
     QHash<QString, Akonadi::Collection> mMailCollections;
