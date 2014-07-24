@@ -116,7 +116,15 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                         Akonadi::Collection::CanChangeItem);
 
             Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
-            attr->setIconName(QLatin1String("folder"));
+            if (currentFlags.contains("\\trash")) {
+                attr->setIconName(QLatin1String("user-trash"));
+            } else if (currentFlags.contains("\\sent")) {
+                attr->setIconName(QLatin1String("mail-folder-sent"));
+            } else if (currentFlags.contains("\\inbox")) {
+                attr->setIconName(QLatin1String("mail-folder-inbox"));
+            } else {
+                attr->setIconName(QLatin1String("folder"));
+            }
             attr->setDisplayName(pathPart);
 
             // If the folder is the Inbox, make some special settings.
