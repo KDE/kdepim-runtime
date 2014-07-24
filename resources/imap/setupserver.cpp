@@ -158,7 +158,10 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
   m_ui->testProgress->hide();
   m_ui->accountName->setFocus();
   m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
-  m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
+  m_ui->checkInterval->setMinimum(1);
+  m_ui->checkInterval->setMaximum(10000);
+  m_ui->checkInterval->setSingleStep(Akonadi::ResourceSettings::self()->minimumCheckInterval());
+
 
   // regex for evaluating a valid server name/ip
   mValidator.setRegExp( QRegExp( QLatin1String("[A-Za-z0-9-_:.]*") ) );

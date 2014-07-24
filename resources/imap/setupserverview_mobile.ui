@@ -288,18 +288,12 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="KIntNumInput" name="checkInterval">
+          <widget class="KPluralHandlingSpinBox" name="checkInterval">
            <property name="value">
             <number>1</number>
            </property>
            <property name="minimum">
             <number>0</number>
-           </property>
-           <property name="suffix">
-            <string> minutes</string>
-           </property>
-           <property name="prefix">
-            <string/>
            </property>
           </widget>
          </item>
@@ -471,11 +465,6 @@ p, li { white-space: pre-wrap; }
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KIntNumInput</class>
-   <extends>QWidget</extends>
-   <header>knuminput.h</header>
   </customwidget>
   <customwidget>
    <class>Akonadi::CollectionRequester</class>

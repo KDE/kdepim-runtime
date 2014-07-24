@@ -58,7 +58,7 @@
         </widget>
        </item>
        <item row="2" column="1" >
-        <widget class="KIntNumInput" name="kcfg_Port" />
+        <widget class="KPluralHandlingSpinBox" name="kcfg_Port" />
        </item>
        <item row="2" column="2" >
         <spacer>
@@ -233,7 +233,7 @@
            </widget>
           </item>
           <item>
-           <widget class="KIntNumInput" name="kcfg_MaxDownload" >
+           <widget class="KPluralHandlingSpinBox" name="kcfg_MaxDownload" >
             <property name="minimum" >
              <number>1</number>
             </property>
@@ -298,9 +298,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>KIntNumInput</class>
-   <extends>QWidget</extends>
-   <header>knuminput.h</header>
+   <class>KPluralHandlingSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>KPluralHandlingSpinBox</header>
   </customwidget>
   <customwidget>
    <class>KLineEdit</class>

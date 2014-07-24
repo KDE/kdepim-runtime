@@ -138,18 +138,12 @@
              </widget>
             </item>
             <item>
-             <widget class="KIntNumInput" name="checkInterval">
+             <widget class="KPluralHandlingSpinBox" name="checkInterval">
               <property name="value">
                <number>1</number>
               </property>
               <property name="minimum">
                <number>0</number>
-              </property>
-              <property name="suffix">
-               <string/>
-              </property>
-              <property name="prefix">
-               <string/>
               </property>
              </widget>
             </item>
@@ -626,11 +620,6 @@ p, li { white-space: pre-wrap; }
    <class>KPluralHandlingSpinBox</class>
    <extends>QSpinBox</extends>
    <header>KPluralHandlingSpinBox</header>
-  </customwidget>
-  <customwidget>
-   <class>KIntNumInput</class>
-   <extends>QWidget</extends>
-   <header>knuminput.h</header>
   </customwidget>
   <customwidget>
    <class>Akonadi::CollectionRequester</class>
