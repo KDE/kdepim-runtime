@@ -158,9 +158,9 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
   m_ui->testProgress->hide();
   m_ui->accountName->setFocus();
   m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
-  m_ui->checkInterval->setMinimum(1);
+  m_ui->checkInterval->setMinimum(Akonadi::ResourceSettings::self()->minimumCheckInterval());
   m_ui->checkInterval->setMaximum(10000);
-  m_ui->checkInterval->setSingleStep(Akonadi::ResourceSettings::self()->minimumCheckInterval());
+  m_ui->checkInterval->setSingleStep(1);
 
 
   // regex for evaluating a valid server name/ip

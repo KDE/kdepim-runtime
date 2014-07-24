@@ -85,7 +85,7 @@
              </widget>
             </item>
             <item>
-             <widget class="KIntNumInput" name="intervalSpin">
+             <widget class="KPluralHandlingSpinBox" name="intervalSpin">
               <property name="value">
                <number>5</number>
               </property>
@@ -94,9 +94,6 @@
               </property>
               <property name="maximum">
                <number>10000000</number>
-              </property>
-              <property name="suffix">
-               <string/>
               </property>
              </widget>
             </item>
@@ -258,7 +255,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="KIntNumInput" name="leaveOnServerDaysSpin">
+           <widget class="QSpinBox" name="leaveOnServerDaysSpin">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -270,9 +267,6 @@
             </property>
             <property name="maximum">
              <number>365</number>
-            </property>
-            <property name="suffix">
-             <string comment="Number of days that the message will be left on the server."> days</string>
             </property>
            </widget>
           </item>
@@ -290,7 +284,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="KIntNumInput" name="leaveOnServerCountSpin">
+           <widget class="QSpinBox" name="leaveOnServerCountSpin">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -302,9 +296,6 @@
             </property>
             <property name="maximum">
              <number>999999</number>
-            </property>
-            <property name="suffix">
-             <string> messages</string>
             </property>
            </widget>
           </item>
@@ -322,7 +313,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="KIntNumInput" name="leaveOnServerSizeSpin">
+           <widget class="QSpinBox" name="leaveOnServerSizeSpin">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -351,7 +342,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="KIntNumInput" name="filterOnServerSizeSpin">
+           <widget class="QSpinBox" name="filterOnServerSizeSpin">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -366,12 +357,6 @@
             </property>
             <property name="maximum">
              <number>10000000</number>
-            </property>
-            <property name="referencePoint">
-             <number>100</number>
-            </property>
-            <property name="suffix">
-             <string> bytes</string>
             </property>
            </widget>
           </item>
@@ -587,9 +572,9 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>KIntNumInput</class>
-   <extends>QWidget</extends>
-   <header>knuminput.h</header>
+   <class>KPluralHandlingSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>KPluralHandlingSpinBox</header>
   </customwidget>
   <customwidget>
    <class>Akonadi::CollectionRequester</class>

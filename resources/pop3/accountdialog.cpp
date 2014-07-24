@@ -107,8 +107,9 @@ void AccountDialog::setupWidgets()
   hostEdit->setValidator( &mValidator );
   intervalSpin->setSuffix( ki18np( " minute", " minutes" ) );
 
-  intervalSpin->setRange( ResourceSettings::self()->minimumCheckInterval(), 10000, 1 );
-
+  intervalSpin->setRange( ResourceSettings::self()->minimumCheckInterval(), 10000 );
+  intervalSpin->setSingleStep( 1 );
+  
   connect( leaveOnServerCheck, SIGNAL(clicked()),
            this, SLOT(slotLeaveOnServerClicked()) );
   connect( leaveOnServerDaysCheck, SIGNAL(toggled(bool)),
