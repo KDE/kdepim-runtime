@@ -33,6 +33,15 @@ public:
     QByteArray label() const;
     void setLabel(const QByteArray &label);
 
+    bool isDrafts() const;
+    bool isTrash() const;
+    bool isImportant() const;
+    bool isSent() const;
+    bool isJunk() const;
+    bool isFlagged() const;
+    bool isInbox() const;
+    bool isAllMail() const;
+
     void deserialize(const QByteArray &data);
     QByteArray serialized() const;
     Akonadi::Attribute* clone() const;

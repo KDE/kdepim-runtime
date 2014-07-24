@@ -205,7 +205,7 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
             } else if (currentFlags.contains("\\flagged")) {
                 c.addAttribute(new GmailLabelAttribute("\\Flagged"));
             } else if (currentFlags.contains("\\trash")) {
-                c.addAttribute(new GmailLabelAttribute("\\trash"));
+                c.addAttribute(new GmailLabelAttribute("\\Trash"));
             } else if (currentFlags.contains("\\all")) {
                 // Ignore
             } else {
