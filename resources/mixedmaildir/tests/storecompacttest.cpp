@@ -29,7 +29,7 @@
 #include <kmbox/mbox.h>
 
 #include <KRandom>
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <QSignalSpy>
 
@@ -105,7 +105,7 @@ class StoreCompactTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -117,7 +117,7 @@ void StoreCompactTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -131,7 +131,7 @@ void StoreCompactTest::cleanup()
 
 void StoreCompactTest::testCompact()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );

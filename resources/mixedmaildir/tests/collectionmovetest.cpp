@@ -27,7 +27,7 @@
 
 #include "libmaildir/maildir.h"
 
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <qtest.h>
 #include <QFileInfo>
@@ -50,7 +50,7 @@ class CollectionMoveTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -64,7 +64,7 @@ void CollectionMoveTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -78,7 +78,7 @@ void CollectionMoveTest::cleanup()
 
 void CollectionMoveTest::testMoveToTopLevel()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   // top level dir
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
@@ -321,7 +321,7 @@ void CollectionMoveTest::testMoveToTopLevel()
 
 void CollectionMoveTest::testMoveToMaildir()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   // top level dir
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
@@ -1128,7 +1128,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
 void CollectionMoveTest::testMoveToMBox()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   // top level dir
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );

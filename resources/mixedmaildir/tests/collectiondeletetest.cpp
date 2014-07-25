@@ -24,7 +24,7 @@
 
 #include "libmaildir/maildir.h"
 
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <qtest.h>
 #include <QFileInfo>
@@ -45,7 +45,7 @@ class CollectionDeleteTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -59,7 +59,7 @@ void CollectionDeleteTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -73,7 +73,7 @@ void CollectionDeleteTest::cleanup()
 
 void CollectionDeleteTest::testNonExisting()
 {
-  KPIM::Maildir topLevelMd( mDir->name(), true );
+  KPIM::Maildir topLevelMd( mDir->path(), true );
   QVERIFY( topLevelMd.isValid( false ) );
 
   KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
@@ -82,24 +82,24 @@ void CollectionDeleteTest::testNonExisting()
   KPIM::Maildir md2( topLevelMd.addSubFolder( "collection2" ), false );
 
   // simulate mbox
-  QFileInfo fileInfo1( mDir->name(), QLatin1String( "collection3" ) );
+  QFileInfo fileInfo1( mDir->path(), QLatin1String( "collection3" ) );
   QFile file1( fileInfo1.absoluteFilePath() );
   file1.open( QIODevice::WriteOnly );
   file1.close();
   QVERIFY( fileInfo1.exists() );
 
   // simulate mbox with empty subtree
-  QFileInfo fileInfo2( mDir->name(), QLatin1String( "collection4" ) );
+  QFileInfo fileInfo2( mDir->path(), QLatin1String( "collection4" ) );
   QFile file2( fileInfo2.absoluteFilePath() );
   file2.open( QIODevice::WriteOnly );
   file2.close();
   QVERIFY( fileInfo2.exists() );
 
   QFileInfo subDirInfo2( KPIM::Maildir::subDirPathForFolderPath( fileInfo2.absoluteFilePath() ) );
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
   QVERIFY( topDir.mkpath( subDirInfo2.absoluteFilePath() ) );
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionDeleteJob *job = 0;
 
@@ -209,10 +209,10 @@ void CollectionDeleteTest::testNonExisting()
 
 void CollectionDeleteTest::testLeaves()
 {
-  KPIM::Maildir topLevelMd( mDir->name(), true );
+  KPIM::Maildir topLevelMd( mDir->path(), true );
   QVERIFY( topLevelMd.isValid( false ) );
 
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
   KPIM::Maildir md1_2( md1.addSubFolder( "collection1_2" ), false );
@@ -228,14 +228,14 @@ void CollectionDeleteTest::testLeaves()
   KPIM::Maildir md2( topLevelMd.addSubFolder( "collection2" ), false );
 
   // simulate first level mbox
-  QFileInfo fileInfo3( mDir->name(), QLatin1String( "collection3" ) );
+  QFileInfo fileInfo3( mDir->path(), QLatin1String( "collection3" ) );
   QFile file3( fileInfo3.absoluteFilePath() );
   file3.open( QIODevice::WriteOnly );
   file3.close();
   QVERIFY( fileInfo3.exists() );
 
   // simulate first level mbox with subtree
-  QFileInfo fileInfo4( mDir->name(), QLatin1String( "collection4" ) );
+  QFileInfo fileInfo4( mDir->path(), QLatin1String( "collection4" ) );
   QFile file4( fileInfo4.absoluteFilePath() );
   file4.open( QIODevice::WriteOnly );
   file4.close();
@@ -255,7 +255,7 @@ void CollectionDeleteTest::testLeaves()
   file4_2.close();
   QVERIFY( fileInfo4_2.exists() );
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionDeleteJob *job = 0;
 
@@ -381,10 +381,10 @@ void CollectionDeleteTest::testLeaves()
 
 void CollectionDeleteTest::testSubTrees()
 {
-  KPIM::Maildir topLevelMd( mDir->name(), true );
+  KPIM::Maildir topLevelMd( mDir->path(), true );
   QVERIFY( topLevelMd.isValid( false ) );
 
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
   KPIM::Maildir md1_2( md1.addSubFolder( "collection1_2" ), false );
@@ -398,7 +398,7 @@ void CollectionDeleteTest::testSubTrees()
   QVERIFY( fileInfo1_1.exists() );
 
   // simulate first level mbox with subtree
-  QFileInfo fileInfo2( mDir->name(), QLatin1String( "collection2" ) );
+  QFileInfo fileInfo2( mDir->path(), QLatin1String( "collection2" ) );
   QFile file2( fileInfo2.absoluteFilePath() );
   file2.open( QIODevice::WriteOnly );
   file2.close();
@@ -418,7 +418,7 @@ void CollectionDeleteTest::testSubTrees()
   file2_2.close();
   QVERIFY( fileInfo2_2.exists() );
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionDeleteJob *job = 0;
 

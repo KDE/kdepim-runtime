@@ -36,7 +36,7 @@
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <qtest.h>
 #include <QFileInfo>
@@ -68,7 +68,7 @@ class ItemModifyTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -84,7 +84,7 @@ void ItemModifyTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -98,7 +98,7 @@ void ItemModifyTest::cleanup()
 
 void ItemModifyTest::testExpectedFail()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -181,7 +181,7 @@ void ItemModifyTest::testExpectedFail()
 
 void ItemModifyTest::testIgnorePayload()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -257,7 +257,7 @@ void ItemModifyTest::testIgnorePayload()
 
 void ItemModifyTest::testModifyPayload()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -385,7 +385,7 @@ void ItemModifyTest::testModifyPayload()
 
 void ItemModifyTest::testModifyFlags()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -552,7 +552,7 @@ void ItemModifyTest::testModifyFlags()
 
 void ItemModifyTest::testModifyFlagsAndPayload()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );

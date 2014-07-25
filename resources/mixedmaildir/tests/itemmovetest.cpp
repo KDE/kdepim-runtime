@@ -33,7 +33,7 @@
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <QSignalSpy>
 
@@ -78,7 +78,7 @@ class ItemMoveTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -92,7 +92,7 @@ void ItemMoveTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -106,7 +106,7 @@ void ItemMoveTest::cleanup()
 
 void ItemMoveTest::testExpectedFail()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -238,7 +238,7 @@ void ItemMoveTest::testExpectedFail()
 
 void ItemMoveTest::testMaildirItem()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -428,7 +428,7 @@ void ItemMoveTest::testMaildirItem()
 
 void ItemMoveTest::testMBoxItem()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection2" ) ) );

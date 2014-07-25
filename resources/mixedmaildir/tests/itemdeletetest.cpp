@@ -33,7 +33,7 @@
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <QSignalSpy>
 
@@ -97,7 +97,7 @@ class ItemDeleteTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -112,7 +112,7 @@ void ItemDeleteTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -126,7 +126,7 @@ void ItemDeleteTest::cleanup()
 
 void ItemDeleteTest::testMaildir()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
 
@@ -184,7 +184,7 @@ void ItemDeleteTest::testMaildir()
 
 void ItemDeleteTest::testMBox()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
 
@@ -364,7 +364,7 @@ void ItemDeleteTest::testMBox()
 
 void ItemDeleteTest::testCachePreservation()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -504,7 +504,7 @@ void ItemDeleteTest::testCachePreservation()
 
 void ItemDeleteTest::testExpectedFailure()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );

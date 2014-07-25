@@ -35,7 +35,7 @@
 
 #include <KRandom>
 #include <KRandomSequence>
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <QSignalSpy>
 
@@ -108,7 +108,7 @@ class ItemFetchTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
     const QString mIndexFilePattern;
 
@@ -125,7 +125,7 @@ void ItemFetchTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -139,7 +139,7 @@ void ItemFetchTest::cleanup()
 
 void ItemFetchTest::testListingMaildir()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -509,7 +509,7 @@ void ItemFetchTest::testListingMaildir()
 
 void ItemFetchTest::testListingMBox()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
@@ -886,7 +886,7 @@ void ItemFetchTest::testListingMBox()
 
 void ItemFetchTest::testSingleItemFetchMaildir()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
 
@@ -1015,7 +1015,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 
 void ItemFetchTest::testSingleItemFetchMBox()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
   // one message has no body

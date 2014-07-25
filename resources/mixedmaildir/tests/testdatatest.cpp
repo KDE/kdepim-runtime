@@ -20,7 +20,7 @@
 
 #include "testdatautil.h"
 
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <qtest.h>
 #include <QDir>
@@ -59,21 +59,21 @@ void TestDataTest::testResources()
 
 void TestDataTest::testInstall()
 {
-  KTempDir dir;
-  QDir installDir( dir.name() );
+  QTemporaryDir dir;
+  QDir installDir( dir.path() );
   QDir curDir;
 
   const QString indexFilePattern = QLatin1String( ".%1.index" );
 
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), dir.name(), QLatin1String( "mbox1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), dir.path(), QLatin1String( "mbox1" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "mbox1" ) ) );
   QVERIFY( installDir.exists( indexFilePattern.arg( QLatin1String( "mbox1" ) ) ) );
 
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox-tagged" ), dir.name(), QLatin1String( "mbox2" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox-tagged" ), dir.path(), QLatin1String( "mbox2" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "mbox2" ) ) );
   QVERIFY( installDir.exists( indexFilePattern.arg( QLatin1String( "mbox2" ) ) ) );
 
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), dir.name(), QLatin1String( "md1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), dir.path(), QLatin1String( "md1" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "md1" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "md1/new" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "md1/cur" ) ) );
@@ -86,7 +86,7 @@ void TestDataTest::testInstall()
   curDir.setFilter( QDir::Files );
   QCOMPARE( (int)curDir.count(), 4 );
 
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir-tagged" ), dir.name(), QLatin1String( "md2" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir-tagged" ), dir.path(), QLatin1String( "md2" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "md2" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "md2/new" ) ) );
   QVERIFY( installDir.exists( QLatin1String( "md2/cur" ) ) );

@@ -26,7 +26,7 @@
 
 #include <kmime/kmime_message.h>
 
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <qtest.h>
 #include <QFileInfo>
@@ -47,7 +47,7 @@ class CollectionCreateTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -62,7 +62,7 @@ void CollectionCreateTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -76,7 +76,7 @@ void CollectionCreateTest::cleanup()
 
 void CollectionCreateTest::testCollectionProperties()
 {
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionCreateJob *job = 0;
 
@@ -103,7 +103,7 @@ void CollectionCreateTest::testCollectionProperties()
 
 void CollectionCreateTest::testEmptyDir()
 {
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   KPIM::Maildir topLevelMd( mStore->path(), true );
 
@@ -180,14 +180,14 @@ void CollectionCreateTest::testEmptyDir()
 
 void CollectionCreateTest::testMaildirTree()
 {
-  KPIM::Maildir topLevelMd( mDir->name(), true );
+  KPIM::Maildir topLevelMd( mDir->path(), true );
   QVERIFY( topLevelMd.isValid() );
 
   KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
 
   KPIM::Maildir md1_2( md1.addSubFolder( "collection1_2" ), false );
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionCreateJob *job = 0;
 
@@ -254,17 +254,17 @@ void CollectionCreateTest::testMaildirTree()
 
 void CollectionCreateTest::testMixedTree()
 {
-  KPIM::Maildir topLevelMd( mDir->name(), true );
+  KPIM::Maildir topLevelMd( mDir->path(), true );
   QVERIFY( topLevelMd.isValid() );
 
   // simulate a first level MBox
-  QFileInfo fileInfo1( mDir->name(), QLatin1String( "collection1" ) );
+  QFileInfo fileInfo1( mDir->path(), QLatin1String( "collection1" ) );
   QFile file1( fileInfo1.absoluteFilePath() );
   file1.open( QIODevice::WriteOnly );
   file1.close();
   QVERIFY( fileInfo1.exists() );
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionCreateJob *job = 0;
 

@@ -26,7 +26,7 @@
 
 #include <kmime/kmime_message.h>
 
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <QSignalSpy>
 
@@ -67,7 +67,7 @@ class CollectionFetchTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -80,7 +80,7 @@ void CollectionFetchTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -94,7 +94,7 @@ void CollectionFetchTest::cleanup()
 
 void CollectionFetchTest::testEmptyDir()
 {
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionFetchJob *job = 0;
   QSignalSpy *spy = 0;
@@ -187,9 +187,9 @@ void CollectionFetchTest::testEmptyDir()
 
 void CollectionFetchTest::testMixedTree()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
 
-  KPIM::Maildir topLevelMd( mDir->name(), true );
+  KPIM::Maildir topLevelMd( mDir->path(), true );
   QVERIFY( topLevelMd.isValid() );
 
   KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
@@ -219,14 +219,14 @@ void CollectionFetchTest::testMixedTree()
   KPIM::Maildir md2( topLevelMd.addSubFolder( "collection2" ), false );
 
   // simulate first level mbox
-  QFileInfo fileInfo3( mDir->name(), QLatin1String( "collection3" ) );
+  QFileInfo fileInfo3( mDir->path(), QLatin1String( "collection3" ) );
   QFile file3( fileInfo3.absoluteFilePath() );
   file3.open( QIODevice::WriteOnly );
   file3.close();
   QVERIFY( fileInfo3.exists() );
 
   // simulate first level mbox with subtree
-  QFileInfo fileInfo4( mDir->name(), QLatin1String( "collection4" ) );
+  QFileInfo fileInfo4( mDir->path(), QLatin1String( "collection4" ) );
   QFile file4( fileInfo4.absoluteFilePath() );
   file4.open( QIODevice::WriteOnly );
   file4.close();
@@ -256,7 +256,7 @@ void CollectionFetchTest::testMixedTree()
   QSet<QString> thirdLevelNames;
   thirdLevelNames << md1_1_1.name() << fileInfo1_1_2.fileName() << md1_2_1.name();
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
   //mDir = 0;
 
   FileStore::CollectionFetchJob *job = 0;

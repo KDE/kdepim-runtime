@@ -27,7 +27,7 @@
 
 #include "libmaildir/maildir.h"
 
-#include <KTempDir>
+#include <QTemporaryDir>
 
 #include <qtest.h>
 #include <QFileInfo>
@@ -49,7 +49,7 @@ class CollectionModifyTest : public QObject
 
   private:
     MixedMaildirStore *mStore;
-    KTempDir *mDir;
+    QTemporaryDir *mDir;
 
   private Q_SLOTS:
     void init();
@@ -63,7 +63,7 @@ void CollectionModifyTest::init()
 {
   mStore = new MixedMaildirStore;
 
-  mDir = new KTempDir;
+  mDir = new QTemporaryDir;
   QVERIFY( mDir->exists() );
 }
 
@@ -77,7 +77,7 @@ void CollectionModifyTest::cleanup()
 
 void CollectionModifyTest::testRename()
 {
-  QDir topDir( mDir->name() );
+  QDir topDir( mDir->path() );
   QVERIFY( topDir.mkdir( QLatin1String( "topLevel" ) ) );
   QVERIFY( topDir.cd( QLatin1String( "topLevel" ) ) );
 
@@ -366,10 +366,10 @@ void CollectionModifyTest::testRename()
 
 void CollectionModifyTest::testIndexPreservation()
 {
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), mDir->name(), QLatin1String( "collection1" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), mDir->name(), QLatin1String( "collection2" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), mDir->path(), QLatin1String( "collection1" ) ) );
+  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), mDir->path(), QLatin1String( "collection2" ) ) );
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
   FileStore::CollectionModifyJob *job = 0;
@@ -398,7 +398,7 @@ void CollectionModifyTest::testIndexPreservation()
   QCOMPARE( (int)collections.count(), 1 );
   QCOMPARE( collections.first(), collection1 );
 
-  const QFileInfo indexFileInfo1( mDir->name(), QLatin1String( ".collection1_renamed.index" ) );
+  const QFileInfo indexFileInfo1( mDir->path(), QLatin1String( ".collection1_renamed.index" ) );
   QVERIFY( !indexFileInfo1.exists() );
 
   // get the items and check the flags (see data/README)
@@ -436,7 +436,7 @@ void CollectionModifyTest::testIndexPreservation()
   QCOMPARE( (int)collections.count(), 1 );
   QCOMPARE( collections.first(), collection2 );
 
-  const QFileInfo indexFileInfo2( mDir->name(), QLatin1String( ".collection2_renamed.index" ) );
+  const QFileInfo indexFileInfo2( mDir->path(), QLatin1String( ".collection2_renamed.index" ) );
   QVERIFY( !indexFileInfo2.exists() );
 
   // get the items and check the flags (see data/README)
@@ -461,13 +461,13 @@ void CollectionModifyTest::testIndexPreservation()
 
 void CollectionModifyTest::testIndexCacheUpdate()
 {
-  KPIM::Maildir topLevelMd( mDir->name(), true );
+  KPIM::Maildir topLevelMd( mDir->path(), true );
   QVERIFY( topLevelMd.isValid( false ) );
 
   KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
 
   // simulate first level mbox
-  QFileInfo fileInfo2( mDir->name(), QLatin1String( "collection2" ) );
+  QFileInfo fileInfo2( mDir->path(), QLatin1String( "collection2" ) );
   QFile file2( fileInfo2.absoluteFilePath() );
   file2.open( QIODevice::WriteOnly );
   file2.close();
@@ -481,7 +481,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), colSubDir2, QLatin1String( "collection2_1" ) ) );
   QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), colSubDir2, QLatin1String( "collection2_2" ) ) );
 
-  mStore->setPath( mDir->name() );
+  mStore->setPath( mDir->path() );
 
   FileStore::CollectionModifyJob *job = 0;
   FileStore::ItemFetchJob *itemFetch = 0;

@@ -24,7 +24,7 @@
 
 #include <QObject>
 
-class KTempDir;
+class QTemporaryDir;
 
 class MaildirTest : public QObject
 {
@@ -53,7 +53,7 @@ private:
     void fillNewDirectory();
     void fillCurrentDirectory();
     void createSubFolders();
-    KTempDir *m_temp;
+    QTemporaryDir *m_temp;
 };
 
 #endif
