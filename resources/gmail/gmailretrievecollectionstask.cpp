@@ -115,7 +115,15 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                         Akonadi::Collection::CanChangeItem);
 
             Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
-            attr->setIconName(QLatin1String("folder"));
+            if (currentFlags.contains("\\trash")) {
+                attr->setIconName(QLatin1String("user-trash"));
+            } else if (currentFlags.contains("\\sent")) {
+                attr->setIconName(QLatin1String("mail-folder-sent"));
+            } else if (currentFlags.contains("\\inbox")) {
+                attr->setIconName(QLatin1String("mail-folder-inbox"));
+            } else {
+                attr->setIconName(QLatin1String("folder"));
+            }
             attr->setDisplayName(pathPart);
 
             // If the folder is the Inbox, make some special settings.
@@ -204,7 +212,7 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
             } else if (currentFlags.contains("\\flagged")) {
                 c.addAttribute(new GmailLabelAttribute("\\Flagged"));
             } else if (currentFlags.contains("\\trash")) {
-                c.addAttribute(new GmailLabelAttribute("\\trash"));
+                c.addAttribute(new GmailLabelAttribute("\\Trash"));
             } else if (currentFlags.contains("\\all")) {
                 // Ignore
             } else {

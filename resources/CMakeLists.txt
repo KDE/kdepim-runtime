@@ -128,7 +128,8 @@ add_subdirectory( pop3 )
 
 if( KF5GAPI_FOUND )
   add_subdirectory( google )
-  add_subdirectory( gmail )
+  # Disabled in KDE 4.14 - too many issues for stable release
+  #add_subdirectory( gmail )
 endif()
 
 #if( LibKFbAPI_FOUND )

@@ -151,9 +151,6 @@ void GmailConfigDialog::applySettings()
     /* Gmail does not support sieve */
     settings->setSieveSupport(false);
 
-    /* Trash is autodetected on collection sync */
-    settings->setTrashCollection( -1 );
-
     settings->setAutomaticExpungeEnabled(m_ui->autoExpungeCheck->isChecked());
     settings->setUseDefaultIdentity(m_ui->useDefaultIdentityCheck->isChecked());
     if (!m_ui->useDefaultIdentityCheck->isChecked()) {

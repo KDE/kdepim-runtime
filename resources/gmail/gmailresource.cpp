@@ -37,6 +37,7 @@
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/specialcollections.h>
 
 #include <imap/sessionpool.h>
 #include <imap/sessionuiproxy.h>
@@ -96,7 +97,19 @@ void GmailResource::onConfigurationDone(int result)
     dlg->deleteLater();
 }
 
+Akonadi::Collection GmailResource::allMailCollection() const
+{
+    Akonadi::Collection c;
+    c.setRemoteId(QLatin1String("/[Gmail]/All Mail"));
+    return c;
+}
 
+Akonadi::Collection GmailResource::rootCollection() const
+{
+    Akonadi::Collection c;
+    c.setRemoteId(settings()->rootRemoteId());
+    return c;
+}
 
 ResourceStateInterface::Ptr GmailResource::createResourceState(const TaskArguments &args)
 {
@@ -108,8 +121,45 @@ void GmailResource::retrieveCollections()
     emit status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
 
     ResourceTask *task = new GmailRetrieveCollectionsTask(createResourceState(TaskArguments()), this);
+    if (settings()->trashCollection() == -1) {
+        connect(task, SIGNAL(destroyed(QObject*)),
+                this, SLOT(updateTrashFolder()));
+    }
     task->start(m_pool);
     queueTask(task);
+}
+
+void GmailResource::updateTrashFolder()
+{
+    Akonadi::CollectionFetchJob *fetch
+        = new Akonadi::CollectionFetchJob(rootCollection(), Akonadi::CollectionFetchJob::FirstLevel, this);
+    connect(fetch, SIGNAL(finished(KJob*)),
+            this, SLOT(onUpdateTrashFolderCollectionsRetrieved(KJob*)));
+}
+
+void GmailResource::onUpdateTrashFolderCollectionsRetrieved(KJob *job)
+{
+    Akonadi::CollectionFetchJob *fetch = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+    if (job->error()) {
+        kError() << fetch->errorString();
+        return;
+    }
+
+    Akonadi::Collection::List cols = fetch->collections();
+    Q_FOREACH (const Akonadi::Collection &col, cols) {
+        GmailLabelAttribute *attr = col.attribute<GmailLabelAttribute>();
+        if (!attr) {
+            continue;
+        }
+
+        if (attr->isTrash()) {
+            settings()->setTrashCollection(col.id());
+            Akonadi::SpecialCollections::setSpecialCollectionType("trash", col);
+            return;
+        }
+    }
+
+    kWarning() << "Failed to detect the Trash folder...!?";
 }
 
 void GmailResource::retrieveItems(const Akonadi::Collection &col)
@@ -121,11 +171,8 @@ void GmailResource::retrieveItems(const Akonadi::Collection &col)
     // TODO: Don't resync the All Mail collections X times in a row for each virtual
     // collection, instead uset a timer or something
     if (col.isVirtual()) {
-        Akonadi::Collection allMailCol;
-        allMailCol.setRemoteId(QLatin1String("/[Gmail]/All Mail"));
-
         Akonadi::CollectionFetchJob *fetch
-            = new Akonadi::CollectionFetchJob(allMailCol, Akonadi::CollectionFetchJob::Base, this);
+            = new Akonadi::CollectionFetchJob(allMailCollection(), Akonadi::CollectionFetchJob::Base, this);
         connect(fetch, SIGNAL(finished(KJob*)),
                 this, SLOT(onRetrieveItemsCollectionRetrieved(KJob*)));
         return;
