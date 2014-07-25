@@ -125,6 +125,10 @@ add_subdirectory(migration)
 add_subdirectory(qml)
 
 
+## install the MIME type spec file for KDEPIM specific MIME types
+install(FILES kdepim-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
+update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
+
 
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
