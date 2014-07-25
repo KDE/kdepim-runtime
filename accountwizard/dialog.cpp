@@ -43,7 +43,7 @@
 Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   KAssistantDialog( parent, flags )
 {
-#if defined (Q_WS_MAEMO_5) || defined (MEEGO_EDITION_HARMATTAN)
+#if defined (Q_OS_MAEMO_5) || defined (MEEGO_EDITION_HARMATTAN)
   setWindowState( Qt::WindowFullScreen );
 #endif
 

@@ -268,7 +268,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
 
   mSubscriptions = new SubscriptionDialog( 0, SubscriptionDialog::AllowToEnableSubscription );
   if(windowId) {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
     KWindowSystem::setMainWindow( mSubscriptions, windowId );
 #else
     KWindowSystem::setMainWindow( mSubscriptions, (HWND)windowId );

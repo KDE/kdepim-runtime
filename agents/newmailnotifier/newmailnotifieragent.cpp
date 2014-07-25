@@ -249,7 +249,7 @@ void NewMailNotifierAgent::configure( WId windowId )
 {
     QPointer<NewMailNotifierSettingsDialog> dialog = new NewMailNotifierSettingsDialog;
     if (windowId) {
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         KWindowSystem::setMainWindow( dialog, windowId );
 #else
         KWindowSystem::setMainWindow( dialog, (HWND)windowId );

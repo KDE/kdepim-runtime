@@ -49,7 +49,7 @@ void MigrationAgent::configure(WId windowId)
     dlg->resize(600, 300);
 
     if (windowId) {
-    #ifndef Q_WS_WIN
+    #ifndef Q_OS_WIN
         KWindowSystem::setMainWindow(dlg, windowId);
     #else
         KWindowSystem::setMainWindow(dlg, (HWND)windowId);

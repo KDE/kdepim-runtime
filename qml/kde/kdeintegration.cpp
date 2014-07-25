@@ -292,7 +292,7 @@ qreal KDEIntegration::mm2px(qreal mm)
   }
 #endif
 
-#ifdef Q_WS_MAEMO_5
+#ifdef Q_OS_MAEMO_5
   // N900 (which is the only thing actually running Maemo5) reports 96 dpi while its screen actually has 267 dpi
   return mm * 267 / 25.4;
 #elif defined(MEEGO_EDITION_HARMATTAN)
