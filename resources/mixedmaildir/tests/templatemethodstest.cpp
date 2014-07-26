@@ -107,7 +107,8 @@ void TemplateMethodsTest::init()
 {
   delete mStore;
   mStore = new TestStore;
-  QVERIFY( mDir.exists() );
+  QVERIFY( mDir.isValid() );
+  QVERIFY( QDir(mDir.path()).exists() );
 }
 
 void TemplateMethodsTest::testSetTopLevelCollection()

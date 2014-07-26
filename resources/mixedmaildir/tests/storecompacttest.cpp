@@ -118,7 +118,8 @@ void StoreCompactTest::init()
   mStore = new MixedMaildirStore;
 
   mDir = new QTemporaryDir;
-  QVERIFY( mDir->exists() );
+  QVERIFY( mDir->isValid() );
+  QVERIFY( QDir(mDir->path()).exists() );
 }
 
 void StoreCompactTest::cleanup()
