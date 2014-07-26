@@ -24,6 +24,10 @@
 #include "configfile.h"
 #include "ldap.h"
 #include "identity.h"
+#include "setupispdb.h"
+#include "setupautoconfigkolabmail.h"
+#include "setupautoconfigkolabldap.h"
+#include "setupautoconfigkolabfreebusy.h"
 
 #include <kemailsettings.h>
 #include <kwallet.h>
@@ -229,6 +233,22 @@ bool SetupManager::personalDataAvailable()
 void SetupManager::setPersonalDataAvailable(bool available)
 {
   m_personalDataAvailable = available;
+}
+
+QObject* SetupManager::ispDB(const QString &type)
+{
+    const QString t = type.toLower();
+    if ( t == QLatin1String("autoconfigkolabmail") ) {
+        return new SetupAutoconfigKolabMail(this);
+    } else if ( t == QLatin1String("autoconfigkolabldap") ) {
+        return new SetupAutoconfigKolabLdap(this);
+    } else if ( t == QLatin1String("autoconfigkolabfreebusy") ) {
+        return new SetupAutoconfigKolabFreebusy(this);
+    } else if ( t == QLatin1String("ispdb") ) {
+        return new SetupIspdb( this );
+    } else {
+        return new SetupIspdb( this );
+    }
 }
 
 void SetupManager::requestRollback()
