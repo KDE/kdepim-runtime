@@ -1,6 +1,6 @@
 
 #Reactivate it
-#add_subdirectory( tests )
+#add_subdirectory( autotests )
 
 set( maildispatcheragent_SRCS
   maildispatcheragent.cpp

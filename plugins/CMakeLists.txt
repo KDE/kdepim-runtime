@@ -87,7 +87,7 @@ install( FILES
   akonadi_serializer_kalarm.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
 
-add_subdirectory( tests ) 
+add_subdirectory( autotests ) 
 
 if ("${CMAKE_BINARY_DIR}" STREQUAL "${plugins_BINARY_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
