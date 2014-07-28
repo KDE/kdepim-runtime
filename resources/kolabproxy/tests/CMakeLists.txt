@@ -31,7 +31,6 @@ target_link_libraries(kolabconvertertest
 #akonadi_add_resourcetest( kolab kolabtest.es )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
-include(AkonadiMacros)
 set(KDEPIMLIBS_RUN_ISOLATED_TESTS TRUE)
 set(KDEPIMLIBS_RUN_SQLITE_ISOLATED_TESTS TRUE)
 
