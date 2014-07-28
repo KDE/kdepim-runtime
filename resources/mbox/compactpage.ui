@@ -91,10 +91,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="KIntNumInput" name="kcfg_MessageCount">
-        <property name="label">
-         <string/>
-        </property>
+       <widget class="QSpinBox" name="kcfg_MessageCount">
         <property name="suffix">
          <string>msg</string>
         </property>
@@ -111,11 +108,6 @@ p, li { white-space: pre-wrap; }
    <extends>QGroupBox</extends>
    <header>kbuttongroup.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KIntNumInput</class>
-   <extends>QWidget</extends>
-   <header>knuminput.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
