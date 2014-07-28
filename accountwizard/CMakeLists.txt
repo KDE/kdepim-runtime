@@ -131,6 +131,7 @@ install(FILES accountwizard-mime.xml DESTINATION ${XDG_MIME_INSTALL_DIR})
 update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
 
 add_subdirectory(wizards)
+add_subdirectory(ispdb)
 
 if ("${CMAKE_BINARY_DIR}" STREQUAL "${accountwizard_BINARY_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
