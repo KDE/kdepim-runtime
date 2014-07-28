@@ -24,7 +24,7 @@
 
 #include <kio/job.h>
 #include <kmime/kmime_header_parsing.h>
-#include <KUrl>
+#include <QUrl>
 
 class QDomElement;
 
@@ -103,7 +103,7 @@ private:
     server createServer( const QDomElement& n );
     void lookupInDb();
     QString replacePlaceholders( const QString& );
-    void startJob( const KUrl&url );
+    void startJob( const QUrl&url );
 
     KMime::Types::AddrSpec mAddr; // emailaddress
     QByteArray mData;             // storage of incoming data from kio

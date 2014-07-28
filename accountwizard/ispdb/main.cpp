@@ -20,11 +20,14 @@
 #include "ispdb.h"
 
 #include <kaboutdata.h>
-#include <kapplication.h>
-#include <kcmdlineargs.h>
-#include <kglobal.h>
 
-#include <KDebug>
+
+#include <KLocalizedString>
+#include <QDebug>
+#include <QApplication>
+#include <KAboutData>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 QString socketTypeToStr( Ispdb::socketType socketType )
 {
@@ -64,29 +67,31 @@ QString authTypeToStr( Ispdb::authType authType )
 }
 int main( int argc, char **argv )
 {
-    KAboutData aboutData( "ispdb", 0,
-                          ki18n( "ISPDB Assistant" ),
-                          "0.1",
-                          ki18n( "Helps setting up PIM accounts" ),
-                          KAboutData::License_LGPL,
-                          ki18n( "(c) 2010 Omat Holding B.V." ),
-                          KLocalizedString(),
-                          "http://pim.kde.org/akonadi/" );
+    KAboutData aboutData( QLatin1String("ispdb"),
+                          i18n( "ISPDB Assistant" ),
+                          QLatin1String("0.1"),
+                          i18n( "Helps setting up PIM accounts" ),
+                          KAboutLicense::LGPL,
+                          i18n( "(c) 2010 Omat Holding B.V." ),
+                          QLatin1String("http://pim.kde.org/akonadi/") );
     aboutData.setProgramIconName( QLatin1String("akonadi") );
-    aboutData.addAuthor( ki18n( "Tom Albers" ),  ki18n( "Author" ), "toma@kde.org" );
+    aboutData.addAuthor( i18n( "Tom Albers" ),  i18n( "Author" ), QLatin1String("toma@kde.org") );
 
-    KCmdLineArgs::init( argc, argv, &aboutData );
-    KCmdLineOptions options;
-    options.add( "email <emailaddress>", ki18n( "Tries to fetch the settings for that email address" ) );
-    KCmdLineArgs::addCmdLineOptions( options );
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    QApplication app(argc, argv);
+    QCommandLineParser parser;
+    KAboutData::setApplicationData(aboutData);
+    parser.addVersionOption();
+    parser.addHelpOption();
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
+    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("email"), i18n( "Tries to fetch the settings for that email address" ), QLatin1String("emailaddress")));
 
     QString email( QLatin1String("blablabla@gmail.com") );
-    if ( !args->getOption( "email" ).isEmpty() ) {
-        email = args->getOption( "email" );
+    if ( !parser.value( QLatin1String("email") ).isEmpty() ) {
+        email = parser.value( QLatin1String("email") );
     }
 
-    KApplication app;
 
     QEventLoop loop;
     Ispdb ispdb;
@@ -97,27 +102,27 @@ int main( int argc, char **argv )
     ispdb.start();
 
     loop.exec();
-    kDebug() << "Domains" << ispdb.relevantDomains();
-    kDebug() << "Name" << ispdb.name( Ispdb::Long ) << "(" << ispdb.name( Ispdb::Short ) << ")";
-    kDebug() << "Imap servers:";
+    qDebug() << "Domains" << ispdb.relevantDomains();
+    qDebug() << "Name" << ispdb.name( Ispdb::Long ) << "(" << ispdb.name( Ispdb::Short ) << ")";
+    qDebug() << "Imap servers:";
     foreach ( const server &s, ispdb.imapServers() ) {
-        kDebug() << "\thostname:" << s.hostname
+        qDebug() << "\thostname:" << s.hostname
                  << "- port:" << s.port
                  << "- encryption:" << socketTypeToStr(s.socketType)
                  << "- username:" << s.username
                  << "- authentication:" << authTypeToStr(s.authentication);
     }
-    kDebug() << "pop3 servers:";
+    qDebug() << "pop3 servers:";
     foreach ( const server &s, ispdb.pop3Servers() ) {
-        kDebug() << "\thostname:" << s.hostname
+        qDebug() << "\thostname:" << s.hostname
                  << "- port:" << s.port
                  << "- encryption:" << socketTypeToStr(s.socketType)
                  << "- username:" << s.username
                  << "- authentication:" << authTypeToStr(s.authentication);
     }
-    kDebug() << "smtp servers:";
+    qDebug() << "smtp servers:";
     foreach ( const server &s, ispdb.smtpServers() ) {
-        kDebug() << "\thostname:" << s.hostname
+        qDebug() << "\thostname:" << s.hostname
                  << "- port:" << s.port
                  << "- encryption:" << socketTypeToStr(s.socketType)
                  << "- username:" << s.username

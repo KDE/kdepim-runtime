@@ -49,7 +49,7 @@ void Ispdb::start()
     lookupInDb();
 }
 
-void Ispdb::startJob( const KUrl&url )
+void Ispdb::startJob( const QUrl&url )
 {
     QMap< QString, QVariant > map;
     map[QLatin1String("errorPage")] = false;
@@ -64,24 +64,24 @@ void Ispdb::startJob( const KUrl&url )
 
 void Ispdb::lookupInDb()
 {
-    KUrl url;
+    QUrl url;
     switch( mServerType )
     {
     case IspAutoConfig:
     {
-        url = KUrl( QLatin1String("http://autoconfig.") + mAddr.domain.toLower() + QLatin1String("/mail/config-v1.1.xml?emailaddress=") + mAddr.asString().toLower() );
+        url = QUrl( QLatin1String("http://autoconfig.") + mAddr.domain.toLower() + QLatin1String("/mail/config-v1.1.xml?emailaddress=") + mAddr.asString().toLower() );
         Q_EMIT searchType(i18n("Lookup configuration: Email provider"));
         break;
     }
     case IspWellKnow:
     {
-        url = KUrl( QLatin1String("http://") + mAddr.domain.toLower() + QLatin1String("/.well-known/autoconfig/mail/config-v1.1.xml") );
+        url = QUrl( QLatin1String("http://") + mAddr.domain.toLower() + QLatin1String("/.well-known/autoconfig/mail/config-v1.1.xml") );
         Q_EMIT searchType(i18n("Lookup configuration: Trying common server name"));
         break;
     }
     case DataBase:
     {
-        url = KUrl( QLatin1String("https://autoconfig.thunderbird.net/v1.1/") + mAddr.domain.toLower() );
+        url = QUrl( QLatin1String("https://autoconfig.thunderbird.net/v1.1/") + mAddr.domain.toLower() );
         Q_EMIT searchType(i18n("Lookup configuration: Mozilla database"));
         break;
     }
