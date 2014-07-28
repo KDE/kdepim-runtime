@@ -42,7 +42,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
-  ui.kcfg_Path->setUrl( QUrl( Settings::self()->path() ) );
+  ui.kcfg_Path->setUrl( QUrl::fromLocalFile( Settings::self()->path() ) );
 
   QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);

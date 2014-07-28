@@ -63,7 +63,7 @@ SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId
 
   QTimer::singleShot( 0, this, SLOT(validate()) );
 
-  ui.kcfg_Path->setUrl( QUrl( mSettings->path() ) );
+  ui.kcfg_Path->setUrl( QUrl::fromLocalFile( mSettings->path() ) );
   mManager = new KConfigDialogManager( this, mSettings );
   mManager->updateWidgets();
   readConfig();

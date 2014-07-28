@@ -62,7 +62,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
         KWindowSystem::setMainWindow(this, windowId);
 
     // Make directory path read-only if the resource already exists
-    QUrl path(mSettings->path());
+    QUrl path = QUrl::fromLocalFile(mSettings->path());
     ui.kcfg_Path->setUrl(path);
     if (!path.isEmpty())
         ui.kcfg_Path->setEnabled(false);
