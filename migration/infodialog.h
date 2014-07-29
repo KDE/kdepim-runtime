@@ -23,13 +23,14 @@
 #include "kmigratorbase.h"
 #include "migratorbase.h"
 
-#include <KDialog>
+#include <QDialog>
 
 class QLabel;
 class QListWidget;
 class QProgressBar;
+class QDialogButtonBox;
 
-class InfoDialog : public KDialog
+class InfoDialog : public QDialog
 {
   Q_OBJECT
   public:
@@ -55,6 +56,7 @@ class InfoDialog : public KDialog
     void scrollBarMoved( int value );
 
   private:
+    QDialogButtonBox *mButtonBox;
     QListWidget *mList;
     QLabel *mStatusLabel;
     QProgressBar *mProgressBar;

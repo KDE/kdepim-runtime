@@ -31,6 +31,9 @@
 #include <QProgressBar>
 #include <QScrollBar>
 #include <QVBoxLayout>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <QPushButton>
 
 enum {
   // The max value of the scrollbar. Don't change this without making the kmail
@@ -49,8 +52,14 @@ InfoDialog::InfoDialog( bool closeWhenDone ) :
   setAttribute( Qt::WA_DeleteOnClose );
 
   KGlobal::ref();
-  setButtons( Close );
-  enableButton( Close, false );
+  mButtonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+  connect(mButtonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(mButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
 
   QWidget *widget = new QWidget( this );
   QVBoxLayout *widgetLayout = new QVBoxLayout( widget );
@@ -70,8 +79,9 @@ InfoDialog::InfoDialog( bool closeWhenDone ) :
   mProgressBar->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Preferred );
   mProgressBar->setMinimumWidth( 200 );
   statusLayout->addWidget( mProgressBar );
+  mainLayout->addWidget(widget);
+  mainLayout->addWidget(mButtonBox);
 
-  setMainWidget( widget );
 }
 
 InfoDialog::~InfoDialog()
@@ -151,7 +161,7 @@ void InfoDialog::migratorDone()
 
   --mMigratorCount;
   if ( mMigratorCount == 0 ) {
-    enableButton( Close, true );
+    mButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
     status( QString() );
     if ( mCloseWhenDone && !hasError() && !hasChange() )
       accept();
