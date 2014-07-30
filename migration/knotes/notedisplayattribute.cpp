@@ -16,8 +16,6 @@
 */
 #include "notedisplayattribute.h"
 
-#include <KGlobalSettings>
-
 #include <QByteArray>
 #include <QFontDatabase>
 
