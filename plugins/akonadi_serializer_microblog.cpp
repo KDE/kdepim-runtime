@@ -60,5 +60,3 @@ QSet<QByteArray> SerializerPluginmicroblog::parts( const Item &item ) const
   return ItemSerializerPlugin::parts( item );
 }
 
-//QT5 Q_EXPORT_PLUGIN2( akonadi_serializer_microblog, Akonadi::SerializerPluginmicroblog )
-

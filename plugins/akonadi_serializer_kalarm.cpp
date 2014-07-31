@@ -270,7 +270,5 @@ QString SerializerPluginKAlarm::extractGid(const Item& item) const
     return item.hasPayload<KAEvent>() ? item.payload<KAEvent>().id() : QString();
 }
 
-//QT5 Q_EXPORT_PLUGIN2(akonadi_serializer_kalarm, SerializerPluginKAlarm)
-
 
 // vim: et sw=4:

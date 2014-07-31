@@ -358,5 +358,3 @@ QString SerializerPluginKCalCore::extractGid( const Item &item ) const
   return item.payload<Incidence::Ptr>()->instanceIdentifier();
 }
 
-//QT5 Q_EXPORT_PLUGIN2( akonadi_serializer_kcalcore, SerializerPluginKCalCore )
-

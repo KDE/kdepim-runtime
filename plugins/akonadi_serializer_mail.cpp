@@ -231,6 +231,4 @@ QString SerializerPluginMail::extractGid(const Item& item) const
   return QString();
 }
 
-//QT5 Q_EXPORT_PLUGIN2( akonadi_serializer_mail, SerializerPluginMail )
-
 #include "moc_akonadi_serializer_mail.cpp"
