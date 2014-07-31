@@ -34,7 +34,7 @@
 #include <sys/signal.h>
 #include <QStandardPaths>
 
-QTEST_AKONADIMAIN( Pop3Test, NoGUI )
+QTEST_AKONADIMAIN( Pop3Test )
 
 using namespace Akonadi;
 
