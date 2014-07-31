@@ -45,7 +45,6 @@ target_link_libraries( akonadi_pop3_resource
   KF5::AkonadiWidgets
 )
 
-#REACTIVATE
 add_subdirectory( autotests )
 add_subdirectory( wizard )
 
