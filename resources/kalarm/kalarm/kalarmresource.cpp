@@ -175,9 +175,7 @@ void KAlarmResource::collectionFetchResult(KJob* j)
 bool KAlarmResource::readFromFile(const QString& fileName)
 {
     kDebug() << fileName;
-#ifdef __GNUC__
-#warning Notify user if error occurs on next line
-#endif
+//TODO Notify user if error occurs on next line
     if (!ICalResourceBase::readFromFile(fileName))
         return false;
     if (calendar()->incidences().isEmpty())
@@ -402,7 +400,12 @@ void KAlarmResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collect
     const KAEvent event = item.payload<KAEvent>();
     KCalCore::Event::Ptr kcalEvent(new KCalCore::Event);
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
-    calendar()->addIncidence(kcalEvent);
+    if (!calendar()->addIncidence(kcalEvent))
+    {
+        kError() << "Error adding event with id" << event.id() << ", item id" << item.id();
+        cancelTask(errorMessage(KAlarmResourceCommon::CalendarAdd, event.id()));
+        return;
+    }
 
     Item it(item);
     it.setRemoteId(kcalEvent->uid());

@@ -1,7 +1,7 @@
 /*
  *  kalarmresourcecommon.h  -  common functions for KAlarm Akonadi resources
  *  Program:  kalarm
- *  Copyright © 2011 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2011-2014 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -49,7 +49,8 @@ namespace KAlarmResourceCommon
         NotCurrentFormat,
         EventNotCurrentFormat,
         EventNoAlarms,
-        EventReadOnly
+        EventReadOnly,
+        CalendarAdd
     };
     QString       errorMessage(ErrorCode, const QString& param = QString());
 }
