@@ -47,9 +47,6 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   setWindowState( Qt::WindowFullScreen );
 #endif
 
-//QT5
-  //showButton( KDialog::Help, false ); // we don't have help for the account wizard atm
-
   mSetupManager = new SetupManager( this );
   const bool showPersonalDataPage = Global::typeFilter().size() == 1 && Global::typeFilter().first() == KMime::Message::mimeType();
 
@@ -99,8 +96,6 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->enterPageNext();
   emit page->pageEnteredNext();
-//PORT QT5
-  //enableButton( KDialog::Help, false );
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
