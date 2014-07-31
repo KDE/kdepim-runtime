@@ -195,8 +195,8 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult( KJob* job )
     // The file did not exist, so let's see if the directory the file should
     // reside in supports writing.
 
-    //QT5
-    const QUrl dirUrl ;//= ui.kcfg_Path->url().upUrl();
+    QUrl dirUrl(ui.kcfg_Path->url());
+    dirUrl = KIO::upUrl(dirUrl);
 
     mStatJob = KIO::stat( dirUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
     mStatJob->setDetails( 2 ); // All details.
