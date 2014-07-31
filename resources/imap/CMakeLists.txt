@@ -115,3 +115,4 @@ install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )
 add_subdirectory( autotests )
+add_subdirectory( tests )

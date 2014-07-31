@@ -42,14 +42,3 @@ if(KIMAPTEST_INCLUDE_DIR AND KIMAPTEST_LIBRARY)
 
 endif()
 
-set(testsubscriptiondialog_SRCS
-  testsubscriptiondialog.cpp
-  ../imapaccount.cpp
-  ../subscriptiondialog.cpp
-)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/..)
-add_executable(testsubscriptiondialog ${testsubscriptiondialog_SRCS})
-
-target_link_libraries(testsubscriptiondialog KF5::KIOCore KF5::Imap KF5::Mime KF5::ItemModels Qt5::Widgets KF5::KDELibs4Support)
-
