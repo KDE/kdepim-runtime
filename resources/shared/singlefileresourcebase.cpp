@@ -58,10 +58,7 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
 {
-//QT5
-
-  //return KSharedConfig::openConfig( name() + QLatin1String("rc"), KConfig::SimpleConfig, "cache" );
-  return KSharedConfig::openConfig();
+  return KSharedConfig::openConfig( name() + QLatin1String("rc"), KConfig::SimpleConfig, QStandardPaths::CacheLocation );
 }
 
 bool SingleFileResourceBase::readLocalFile( const QString &fileName )
