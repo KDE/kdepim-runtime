@@ -5,8 +5,7 @@ include_directories(
 )
 
 
-#reactivate it
-#add_subdirectory( tests )
+add_subdirectory( autotests )
 add_subdirectory( wizard )
 
 # maildir access library

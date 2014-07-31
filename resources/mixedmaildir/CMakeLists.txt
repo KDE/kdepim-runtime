@@ -65,5 +65,5 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.
 
 # unit tests
 if (KDE4_BUILD_TESTS)
-  add_subdirectory( tests )
+  add_subdirectory( autotests )
 endif ()

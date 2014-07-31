@@ -22,7 +22,7 @@
 
 #include <QtCore/QObject>
 
-#include <Akonadi/Collection>
+#include <AkonadiCore/Collection>
 
 /**
   This syncs the resource again and again, watching out for "lost"

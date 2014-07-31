@@ -1,6 +1,5 @@
 
-#Reactivate it
-#add_subdirectory( tests )
+add_subdirectory( autotests )
 
 ########### next target ###############
 

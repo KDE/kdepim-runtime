@@ -13,7 +13,7 @@ set(migrationagent_SRCS
     migrationstatuswidget.cpp
     migrationexecutor.cpp
     migrationscheduler.cpp
-    tests/dummymigrator.cpp
+    autotests/dummymigrator.cpp
 )
 
 add_executable(akonadi_migration_agent ${migrationagent_SRCS})
@@ -34,4 +34,4 @@ target_link_libraries(akonadi_migration_agent
 install(TARGETS akonadi_migration_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES migrationagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
-add_subdirectory(tests)
+add_subdirectory(autotests)

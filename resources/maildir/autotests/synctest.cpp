@@ -58,5 +58,5 @@ void SyncTest::testSync()
   }
 }
 
-QTEST_AKONADIMAIN( SyncTest, NoGUI )
+QTEST_AKONADIMAIN( SyncTest )
 

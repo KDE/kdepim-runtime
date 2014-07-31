@@ -2,7 +2,7 @@
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
-#add_subdirectory( tests )
+add_subdirectory( autotests )
 
 set( resourcetester_SRCS
   global.cpp

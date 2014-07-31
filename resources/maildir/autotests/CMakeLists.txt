@@ -1,3 +1,7 @@
+include(ECMMarkAsTest)
+
+find_package(Qt5Test CONFIG REQUIRED)
+
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
 # Stolen from kdepimlibs/akonadi/tests
@@ -5,17 +9,15 @@ macro(add_akonadi_isolated_test _source)
   get_filename_component(_targetName ${_source} NAME_WE)
   set(_srcList ${_source} )
 
-  add_executable(${_targetName} TEST ${_srcList})
+  add_executable(${_targetName} ${_srcList})
+  add_test( ${_targetName} ${_targetName} )
+  ecm_mark_as_test(${_targetName})
   target_link_libraries(${_targetName}
     Qt5::Test
-    
     KF5::AkonadiCore
     KF5::AkonadiMime
-    
     KF5::MailTransport
     KF5::Mime
-    
-    
   )
 
   # based on kde4_add_unit_test

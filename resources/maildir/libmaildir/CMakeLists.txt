@@ -1,5 +1,5 @@
 
-add_subdirectory( tests )
+add_subdirectory( autotests )
 
 set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
 

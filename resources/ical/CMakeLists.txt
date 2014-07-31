@@ -9,8 +9,7 @@ include_directories(
 
 add_subdirectory( wizard )
 add_subdirectory( notes )
-#REACTIVATE IT
-#add_subdirectory( tests )
+add_subdirectory( autotests )
 
 ########### next target ###############
 add_definitions( -DSETTINGS_NAMESPACE=Akonadi_ICal_Resource )
