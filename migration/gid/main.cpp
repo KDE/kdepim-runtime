@@ -18,7 +18,7 @@
 */
 
 #include <AkonadiCore/Control>
-#include <k4aboutdata.h>
+#include <kaboutdata.h>
 
 #include <kconfig.h>
 #include <kconfiggroup.h>
@@ -26,7 +26,7 @@
 #include <klocale.h>
 
 #include <qdebug.h>
-#include <KApplication>
+#include <QApplication>
 #include <infodialog.h>
 #include <KLocale>
 #include <QCommandLineParser>

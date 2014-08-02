@@ -25,8 +25,7 @@
 #include <AkonadiCore/control.h>
 
 #include <KAboutData>
-#include <KApplication>
-
+#include <QApplication>
 #include <KGlobal>
 #include <KDebug>
 #include <KSharedConfig>
