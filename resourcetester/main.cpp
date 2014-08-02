@@ -27,9 +27,9 @@
 
 #include <AkonadiCore/control.h>
 
-#include <KApplication>
-#include <K4AboutData>
-#include <KCmdLineArgs>
+
+#include <KAboutData>
+
 #include <KDebug>
 
 #include <QCoreApplication>
@@ -37,6 +37,10 @@
 #include <QFileInfo>
 
 #include <signal.h>
+#include <QApplication>
+#include <KLocalizedString>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 void sigHandler( int signal)
 {
@@ -48,26 +52,27 @@ int main(int argc, char *argv[])
 {
   QString path;
 
-  K4AboutData aboutdata( "akonadi-RT", 0,
-                        ki18n( "Akonadi Resource Tester" ),
-                        "1.0",
-                        ki18n( "Resource Tester" ),
-                        K4AboutData::License_GPL,
-                        ki18n( "(c) 2009 Igor Trindade Oliveira" ) );
+  KAboutData aboutData( QLatin1String("akonadi-RT"),
+                        i18n( "Akonadi Resource Tester" ),
+                        QLatin1String("1.0"),
+                        i18n( "Resource Tester" ),
+                        KAboutLicense::GPL,
+                        i18n( "(c) 2009 Igor Trindade Oliveira" ) );
 
-  KCmdLineArgs::init( argc, argv, &aboutdata );
+    QApplication app(argc, argv);
+    QCommandLineParser parser;
+    KAboutData::setApplicationData(aboutData);
+    parser.addVersionOption();
+    parser.addHelpOption();
+  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("c") << QLatin1String("config"), i18n( "Configuration file to open" ), QLatin1String("configfile"), QLatin1String("script.js/py/rb" )));
 
+    //PORTING SCRIPT: adapt aboutdata variable if necessary
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
 
-  KCmdLineOptions options;
-  options.add( "c" ).add( "config <configfile>", ki18n( "Configuration file to open" ), "script.js/py/rb" );
-  KCmdLineArgs::addCmdLineOptions( options );
-
-  KApplication app;
-
-  const KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-
-  if ( args->isSet( "config" ) )
-    path.append(args->getOption( "config" )) ;
+  if ( parser.isSet( QLatin1String("config") ) )
+    path.append(parser.value( QLatin1String("config") )) ;
   else
     return -1;
   Global::setBasePath( QFileInfo( path ).absolutePath() );
