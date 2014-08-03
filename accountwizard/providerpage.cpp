@@ -21,7 +21,7 @@
 #include "providerpage.h"
 #include "global.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <QSortFilterProxyModel>
 #include <kns3/downloadmanager.h>
 #include <KLocalizedString>

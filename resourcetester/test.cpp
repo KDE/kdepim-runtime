@@ -21,7 +21,7 @@
 #include "resource.h"
 #include "global.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <KMessageBox>
 #include <stdlib.h>
 
@@ -40,7 +40,7 @@ void Test::verify(bool value)
 
 void Test::verify( QObject* object, const QString &slot )
 {
-  kDebug() << object << slot;
+  qDebug() << object << slot;
   bool result = false;
   if ( !QMetaObject::invokeMethod( object, slot.toLatin1(), Q_RETURN_ARG( bool, result ) ) )
     fail( "Unable to call method " + slot );
@@ -55,7 +55,7 @@ void Test::verify( QObject* object, const QString &slot )
 
 void Test::fail(const QString& error)
 {
-  kError() << error;
+  qCritical() << error;
   abort();
 }
 

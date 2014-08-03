@@ -19,7 +19,7 @@
 
 #include "serverconfigmodule.h"
 
-#include <kdebug.h>
+#include <QDebug>
 #include <klocale.h>
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
@@ -154,7 +154,7 @@ void ServerConfigModule::load()
 
 void ServerConfigModule::save()
 {
-  kDebug();
+  qDebug();
   const QString serverConfigFile = XdgBaseDirs::akonadiServerConfigFile( XdgBaseDirs::ReadWrite );
   QSettings settings( serverConfigFile, QSettings::IniFormat );
   settings.beginGroup( QLatin1String("QMYSQL") );

@@ -17,7 +17,7 @@
 
 #include "script.h"
 #include "global.h"
-#include <KDebug>
+#include <QDebug>
 #include <qcoreapplication.h>
 
 Script::Script()
@@ -41,7 +41,7 @@ void Script::include(const QString& path)
 {
   QFile f( Global::basePath() + path );
   if ( !f.open( QFile::ReadOnly ) )
-    kError() << "Unable to open file" << Global::basePath() + path;
+    qCritical() << "Unable to open file" << Global::basePath() + path;
   else
     action->evaluate( f.readAll() );
 }
@@ -59,7 +59,7 @@ void Script::start()
 void Script::finished(Kross::Action* action)
 {
   if ( action->hadError() ) {
-    kError() << action->errorMessage() << action->errorTrace();
+    qCritical() << action->errorMessage() << action->errorTrace();
     QCoreApplication::instance()->exit( 1 );
   } else {
     QCoreApplication::instance()->quit();

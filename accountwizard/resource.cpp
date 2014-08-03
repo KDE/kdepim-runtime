@@ -23,7 +23,7 @@
 #include <agentmanager.h>
 #include <agentinstancecreatejob.h>
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocalizedString>
 
 #include <QMetaMethod>

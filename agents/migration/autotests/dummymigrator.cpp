@@ -21,7 +21,7 @@
 
 #include "dummymigrator.h"
 #include <QTimer>
-#include <KDebug>
+#include <QDebug>
 
 DummyMigrator::DummyMigrator(const QString &identifier)
 :   MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
@@ -34,13 +34,13 @@ QString DummyMigrator::displayName() const
 
 void DummyMigrator::startWork()
 {
-    kDebug();
+    qDebug();
     QTimer::singleShot(10000, this, SLOT(onTimerElapsed()));
 }
 
 void DummyMigrator::onTimerElapsed()
 {
-    kDebug();
+    qDebug();
     setMigrationState(Complete);
 }
 
@@ -56,13 +56,13 @@ bool DummyMigrator::canStart()
 
 void DummyMigrator::pause()
 {
-    kDebug();
+    qDebug();
     MigratorBase::pause();
 }
 
 void DummyMigrator::abort()
 {
-    kDebug();
+    qDebug();
     MigratorBase::abort();
 }
 

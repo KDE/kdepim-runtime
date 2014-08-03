@@ -21,7 +21,7 @@
 
 #include <QTest>
 #include <QSignalSpy>
-#include <KDebug>
+#include <QDebug>
 #include <KJobTrackerInterface>
 
 #include "../migrationscheduler.h"
@@ -216,7 +216,7 @@ private slots:
         scheduler.addMigrator(m2);
 
         QCOMPARE(m1->migrationState(), MigratorBase::InProgress);
-        kDebug() << m2->migrationState();
+        qDebug() << m2->migrationState();
         QCOMPARE(m2->migrationState(), MigratorBase::None);
         m1->complete();
         QCOMPARE(m2->migrationState(), MigratorBase::InProgress);

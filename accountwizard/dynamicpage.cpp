@@ -19,7 +19,7 @@
 
 #include "dynamicpage.h"
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QUiLoader>
 #include <QFile>

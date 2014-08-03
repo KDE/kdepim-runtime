@@ -30,7 +30,7 @@
 
 #include <KAboutData>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QCoreApplication>
 #include <QtCore/QTimer>

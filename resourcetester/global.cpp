@@ -20,7 +20,7 @@
 #include <kglobal.h>
 #include <QDir>
 #include <kstandarddirs.h>
-#include <KDebug>
+#include <QDebug>
 
 class GlobalPrivate
 {
@@ -54,7 +54,7 @@ QString Global::vmPath()
 
 void Global::setVMPath(const QString& path)
 {
-  kDebug() << path;
+  qDebug() << path;
   sInstance->vmPath = path;
   if ( !path.endsWith( QDir::separator() ) )
     sInstance->vmPath += QDir::separator();

@@ -19,7 +19,7 @@
 
 #include "typepage.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <KDesktopFile>
 #include <KStandardDirs>
 #include <KGlobal>

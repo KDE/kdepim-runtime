@@ -25,7 +25,7 @@
 #include <AkonadiCore/agentmanager.h>
 #include <AkonadiCore/agentinstancecreatejob.h>
 
-#include <KDebug>
+#include <QDebug>
 #include <qtest_kde.h>
 
 #include <QDBusConnection>
@@ -80,7 +80,7 @@ bool Resource::createResource()
 
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
   if ( !job->exec() ) {
-    kWarning() << job->errorText();
+    qWarning() << job->errorText();
     return false;
   }
   mInstance = job->instance();
@@ -91,18 +91,18 @@ bool Resource::createResource()
 
   // configure resource
   for ( QHash<QString, QVariant>::const_iterator it = mSettings.constBegin(); it != mSettings.constEnd(); ++it ) {
-    kDebug() << "Setting up " << it.key() << " for agent " << identifier();
+    qDebug() << "Setting up " << it.key() << " for agent " << identifier();
     const QString methodName = QString::fromLatin1("set%1").arg( it.key() );
     const QVariant arg = it.value();
     QDBusReply<void> reply = iface.call( methodName, arg );
     if ( !reply.isValid() )
-      kError() << "Setting " << it.key() << " failed for agent " << identifier() << ":" << reply.error().message();
+      qCritical() << "Setting " << it.key() << " failed for agent " << identifier() << ":" << reply.error().message();
   }
   mInstance.reconfigure();
 
   ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( mInstance, this );
   if ( !syncJob->exec() )
-    kError() << "Synching resource failed: " << syncJob->errorString();
+    qCritical() << "Synching resource failed: " << syncJob->errorString();
 
   return true;
 }
@@ -131,7 +131,7 @@ void Resource::write()
     Test::instance()->fail( result.error().message() );
   ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( mInstance, this );
   if ( !syncJob->exec() )
-    kError() << "Synching resource failed: " << syncJob->errorString();
+    qCritical() << "Synching resource failed: " << syncJob->errorString();
 }
 
 void Resource::recreate()

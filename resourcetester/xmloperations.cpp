@@ -27,7 +27,7 @@
 #include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiXml/xmlwritejob.h>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QDir>
 #include <QFileInfo>
@@ -178,7 +178,7 @@ bool XmlOperations::compare()
 
   XmlWriteJob *xmlJob = new XmlWriteJob( mRoots, mFileName + ".actual", this );
   if ( !xmlJob->exec() )
-    kError() << xmlJob->errorText();
+    qCritical() << xmlJob->errorText();
   return false;
 }
 

@@ -33,7 +33,7 @@
 
 #include <mailtransport/transport.h>
 
-#include <KDebug>
+#include <QDebug>
 
 
 QString accountName(Ispdb *ispdb, QString username)

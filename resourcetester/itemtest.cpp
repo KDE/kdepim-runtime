@@ -25,7 +25,7 @@
 #include <AkonadiCore/collectionpathresolver.h>
 #include <AkonadiCore/itemcreatejob.h>
 
-#include <KDebug>
+#include <QDebug>
 #include <QFile>
 
 using namespace Akonadi;
