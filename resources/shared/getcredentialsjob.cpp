@@ -86,7 +86,7 @@ void GetCredentialsJob::sessionResponse(const SignOn::SessionData &data)
 
 void GetCredentialsJob::sessionError(const SignOn::Error &error)
 {
-    kDebug() << error.message();
+    qDebug() << error.message();
     setError(-1);
     setErrorText(error.message());
     emitResult();

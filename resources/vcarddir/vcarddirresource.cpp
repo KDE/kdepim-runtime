@@ -93,7 +93,7 @@ bool VCardDirResource::loadAddressees()
           mAddressees.insert( addr.uid(), addr );
         }
       } else {
-        kDebug()<<" file can't be load "<<it.filePath();
+        qDebug()<<" file can't be load "<<it.filePath();
       }
     }
   }
@@ -180,7 +180,7 @@ void VCardDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
       newItem.setRemoteId( addressee.uid() );
       changeCommitted( newItem );
     } else {
-      kDebug()<<" We can't write in file "<<file.fileName();
+      qDebug()<<" We can't write in file "<<file.fileName();
     }
 
   } else {

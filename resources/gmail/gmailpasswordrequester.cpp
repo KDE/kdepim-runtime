@@ -73,7 +73,7 @@ bool GmailPasswordRequester::isTokenExpired(const QString &serverError)
         return true;
     }
 
-    kDebug() << "Gmail Auth error:" << json;
+    qDebug() << "Gmail Auth error:" << json;
     return false;
 }
 

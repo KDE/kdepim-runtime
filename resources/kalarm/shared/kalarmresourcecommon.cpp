@@ -32,7 +32,7 @@
 
 #include <kglobal.h>
 #include <klocale.h>
-#include <kdebug.h>
+#include <qdebug.h>
 #include <KLocale>
 
 #include <QTime>
@@ -128,7 +128,7 @@ KAEvent checkItemChanged(const Akonadi::Item& item, QString& errorMsg)
     {
         if (item.remoteId() != event.id())
         {
-            kWarning() << "Item ID" << item.remoteId() << "differs from payload ID" << event.id();
+            qWarning() << "Item ID" << item.remoteId() << "differs from payload ID" << event.id();
             errorMsg = i18nc("@info", "Item ID %1 differs from payload ID %2.", item.remoteId(), event.id());
             return KAEvent();
         }
@@ -147,7 +147,7 @@ KAEvent checkItemChanged(const Akonadi::Item& item, QString& errorMsg)
 */
 void setCollectionCompatibility(const Collection& collection, KACalendar::Compat compatibility, int version)
 {
-    kDebug() << collection.id() << "->" << compatibility << version;
+    qDebug() << collection.id() << "->" << compatibility << version;
     // Update the CompatibilityAttribute value only.
     // Note that we can't supply 'collection' to CollectionModifyJob since
     // that may also contain the CollectionAttribute value, which is read-only
@@ -195,11 +195,11 @@ QString errorMessage(ErrorCode code, const QString& param)
 */
 void Private::modifyCollectionJobDone(KJob* j)
 {
-    kDebug();
+    qDebug();
     if (j->error())
     {
         Collection collection = static_cast<CollectionModifyJob*>(j)->collection();
-        kError() << "Error: collection id" << collection.id() << ":" << j->errorString();
+        qCritical() << "Error: collection id" << collection.id() << ":" << j->errorString();
     }
 }
 

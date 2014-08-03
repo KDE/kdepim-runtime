@@ -140,7 +140,7 @@ QByteArray SingleFileResourceBase::calculateHash( const QString &fileName ) cons
 void SingleFileResourceBase::handleHashChange()
 {
   // Default implementation does nothing.
-  kDebug() << "The hash has changed.";
+  qDebug() << "The hash has changed.";
 }
 
 QByteArray SingleFileResourceBase::loadHash() const
@@ -254,7 +254,7 @@ void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 {
   if ( job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST ) {
     const QString message = i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() );
-    kWarning() << message;
+    qWarning() << message;
     emit status( Broken, message );
   } else {
     readLocalFile( KUrl( cacheFile() ).toLocalFile() );
@@ -270,7 +270,7 @@ void SingleFileResourceBase::slotUploadJobResult( KJob *job )
 {
   if ( job->error() ) {
     const QString message = i18n( "Could not save file '%1'.", mCurrentUrl.prettyUrl() );
-    kWarning() << message;
+    qWarning() << message;
     emit status( Broken, message );
   }
 

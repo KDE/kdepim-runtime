@@ -26,7 +26,7 @@
 #include <QHostInfo>
 #include <QUuid>
 
-#include <kdebug.h>
+#include <qdebug.h>
 #include <klocale.h>
 #include <kpimutils/kfileio.h>
 #include <Akonadi/KMime/MessageFlags>
@@ -123,7 +123,7 @@ public:
         if ( keyCache->isNewKey( path, key ) ) {
 #ifdef DEBUG_KEYCACHE_CONSITENCY
           if ( !QFile::exists( path + QString::fromLatin1( "/new/" ) + key ) ) {
-            kDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1( "/new/" ) + key;
+            qDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1( "/new/" ) + key;
           }
 #endif
           return path + QString::fromLatin1( "/new/" ) + key;
@@ -131,7 +131,7 @@ public:
         if ( keyCache->isCurKey( path, key ) ) {
 #ifdef DEBUG_KEYCACHE_CONSITENCY
           if ( !QFile::exists( path + QString::fromLatin1( "/cur/" ) + key ) ) {
-            kDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1( "/cur/" ) + key;
+            qDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1( "/cur/" ) + key;
           }
 #endif
           return path + QString::fromLatin1( "/cur/" ) + key;
@@ -168,21 +168,21 @@ public:
     bool moveAndRename( QDir &dest, const QString &newName )
     {
       if ( !dest.exists() ) {
-        kDebug() << "Destination does not exist";
+        qDebug() << "Destination does not exist";
         return false;
       }
       if ( dest.exists( newName ) || dest.exists( subDirNameForFolderName( newName ) ) ) {
-        kDebug() << "New name already in use";
+        qDebug() << "New name already in use";
         return false;
       }
 
       if ( !dest.rename( path, newName ) ) {
-        kDebug() << "Failed to rename maildir";
+        qDebug() << "Failed to rename maildir";
         return false;
       }
       const QDir subDirs( Maildir::subDirPathForFolderPath( path ) );
       if ( subDirs.exists() && !dest.rename( subDirs.path(), subDirNameForFolderName( newName ) ) ) {
-        kDebug() << "Failed to rename subfolders";
+        qDebug() << "Failed to rename subfolders";
         return false;
       }
 
@@ -396,7 +396,7 @@ QStringList Maildir::entryList() const
         result += d->listNew();
         result += d->listCurrent();
     }
-    //  kDebug() <<"Maildir::entryList()" << result;
+    //  qDebug() <<"Maildir::entryList()" << result;
     return result;
 }
 
@@ -793,7 +793,7 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
 {
   const QString realKey( d->findRealKey( key ) );
   if ( realKey.isEmpty() ) {
-    kWarning() << "Unable to find: " << key;
+    qWarning() << "Unable to find: " << key;
     d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
     return QString();
   }
@@ -801,7 +801,7 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
   // ### is this safe regarding the maildir locking scheme?
   const QString targetKey = destination.path() + QDir::separator() + QLatin1String( "new" ) + QDir::separator() + key;
   if ( !f.rename( targetKey ) ) {
-    kDebug() << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();;
+    qDebug() << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();;
     d->lastError = f.errorString();
     return QString();
   }
