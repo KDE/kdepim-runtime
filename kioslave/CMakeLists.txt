@@ -23,7 +23,7 @@ find_package(ECM 1.1.0 CONFIG REQUIRED)
  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 endif()
 
-set(kio_akonadi_SRCS akonadislave.cpp )
+set(kio_akonadi_SRCS akonadislave.cpp akonadislave_debug.cpp)
 
 
 add_library(kio_akonadi MODULE ${kio_akonadi_SRCS})

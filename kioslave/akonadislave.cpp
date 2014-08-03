@@ -27,6 +27,8 @@
 #include <collectiondeletejob.h>
 #include <entitydisplayattribute.h>
 
+#include <QDebug> 
+#include "akonadislave_debug.h"
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 #include <kdebug.h>
@@ -59,12 +61,12 @@ using namespace Akonadi;
 AkonadiSlave::AkonadiSlave(const QByteArray & pool_socket, const QByteArray & app_socket) :
     KIO::SlaveBase( "akonadi", pool_socket, app_socket )
 {
-  kDebug( 7129 ) << "kio_akonadi starting up";
+  qCDebug(AKONADISLAVE_LOG) << "kio_akonadi starting up";
 }
 
 AkonadiSlave::~ AkonadiSlave()
 {
-  kDebug( 7129 ) << "kio_akonadi shutting down";
+  qCDebug(AKONADISLAVE_LOG) << "kio_akonadi shutting down";
 }
 
 void AkonadiSlave::get(const QUrl & url)
@@ -93,7 +95,7 @@ void AkonadiSlave::get(const QUrl & url)
 
 void AkonadiSlave::stat(const QUrl & url)
 {
-  kDebug( 7129 ) << url;
+  qCDebug(AKONADISLAVE_LOG) << url;
 
   // Stats for a collection
   if ( Collection::fromUrl( url ).isValid() ) {
@@ -140,7 +142,7 @@ void AkonadiSlave::stat(const QUrl & url)
 
 void AkonadiSlave::del( const QUrl &url, bool isFile )
 {
-  kDebug( 7129 ) << url;
+  qCDebug(AKONADISLAVE_LOG) << url;
 
   if ( !isFile ) {                 // It's a directory
     Collection collection = Collection::fromUrl( url );
@@ -162,7 +164,7 @@ void AkonadiSlave::del( const QUrl &url, bool isFile )
 
 void AkonadiSlave::listDir( const QUrl &url )
 {
-  kDebug( 7129 ) << url;
+  qCDebug(AKONADISLAVE_LOG) << url;
 
   if ( !Collection::fromUrl( url ).isValid() ) {
     error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such collection." ) );
