@@ -95,7 +95,7 @@ private slots:
 
     QString command = QString::fromUtf8(state->calls().first().first);
     if ( command == "cancelTask" && callName != "cancelTask" ) {
-      kDebug() << "Got a cancel:" << state->calls().first().second.toString();
+      qDebug() << "Got a cancel:" << state->calls().first().second.toString();
     }
     QCOMPARE( command, callName );
 

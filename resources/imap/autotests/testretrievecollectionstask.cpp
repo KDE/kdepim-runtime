@@ -25,7 +25,7 @@
 
 #include <cachepolicy.h>
 #include <entitydisplayattribute.h>
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 
 class TestRetrieveCollectionsTask : public ImapTestBase
 {
@@ -332,7 +332,7 @@ private slots:
       QVariant parameter = state->calls().at( i ).second;
 
       if ( command=="cancelTask" && callNames[i]!="cancelTask" ) {
-        kDebug() << "Got a cancel:" << parameter.toString();
+        qDebug() << "Got a cancel:" << parameter.toString();
       }
 
       QCOMPARE( command, callNames[i] );
@@ -479,7 +479,7 @@ private:
         }
       }
 
-      QVERIFY2( found, QString( "%1 not found!" ).arg(expected.remoteId() ).toUtf8() );
+      QVERIFY2( found, QString::fromLatin1( "%1 not found!" ).arg(expected.remoteId() ).toUtf8().constData() );
     }
 
     QCOMPARE( resultList.size(), expectedList.size() );

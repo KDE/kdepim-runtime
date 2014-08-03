@@ -218,7 +218,7 @@ private slots:
       QVariant parameter = state->calls().at( i ).second;
 
       if ( command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask") ) {
-        kDebug() << "Got a cancel:" << parameter.toString();
+        qDebug() << "Got a cancel:" << parameter.toString();
       }
 
       QCOMPARE( command, callNames[i] );

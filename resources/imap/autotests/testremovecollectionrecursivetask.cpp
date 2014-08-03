@@ -226,7 +226,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
       QVariant parameter = state->calls().at( i ).second;
 
       if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
-        kDebug() << "Got a cancel:" << parameter.toString();
+        qDebug() << "Got a cancel:" << parameter.toString();
       }
 
       QCOMPARE( command, callNames[i] );

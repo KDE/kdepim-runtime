@@ -26,7 +26,7 @@
 
 #include <cachepolicy.h>
 #include <collectionstatistics.h>
-#include <kmime/messageparts.h>
+#include <akonadi/kmime/messageparts.h>
 
 class TestRetrieveItemsTask : public ImapTestBase
 {
@@ -551,13 +551,13 @@ private slots:
     task->start( &pool );
 
     QTRY_COMPARE( state->calls().count(), callNames.size() );
-    kDebug() << state->calls();
+    qDebug() << state->calls();
     for ( int i = 0; i < callNames.size(); i++ ) {
       QString command = QString::fromUtf8(state->calls().at( i ).first);
       QVariant parameter = state->calls().at( i ).second;
 
       if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
-        kDebug() << "Got a cancel:" << parameter.toString();
+        qDebug() << "Got a cancel:" << parameter.toString();
       }
 
       QCOMPARE( command, callNames[i] );
