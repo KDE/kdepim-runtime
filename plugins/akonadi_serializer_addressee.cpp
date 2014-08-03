@@ -23,10 +23,9 @@
 #include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 
-#include <KDebug>
 #include <kabc/addressee.h>
 #include <klocale.h>
-
+#include <QDebug>
 #include <QtCore/qplugin.h>
 
 using namespace Akonadi;
@@ -65,7 +64,7 @@ bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label
     if ( !addr.isEmpty() ) {
         item.setPayload<KABC::Addressee>( addr );
     } else {
-        kWarning( 5261 ) << "Empty addressee object!";
+        qWarning( ) << "Empty addressee object!";
     }
 
     return true;

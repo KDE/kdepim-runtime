@@ -29,7 +29,6 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <kdatetime.h>
-#include <kdebug.h>
 #include <KLocale>
 
 static QString trueFalse(bool value);

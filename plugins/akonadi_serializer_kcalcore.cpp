@@ -28,11 +28,12 @@
 
 #include <KCalUtils/Stringify>
 
-#include <kdebug.h>
+
 #include <klocale.h>
 
 #include <QDate>
 #include <QtCore/qplugin.h>
+#include <QDebug>
 
 using namespace KCalCore;
 using namespace KCalUtils;
@@ -85,11 +86,11 @@ bool SerializerPluginKCalCore::deserialize( Item &item, const QByteArray &label,
   }
 
   if ( !incidence ) {
-    kWarning( 5263 ) << "Failed to parse incidence! Item id = " << item.id()
+    qWarning() << "Failed to parse incidence! Item id = " << item.id()
                      << "Storage collection id " << item.storageCollectionId()
                      << "parentCollectionId = " << item.parentCollection().id();
     data.seek( 0 );
-    kWarning( 5263 ) << QString::fromUtf8( data.readAll() );
+    qWarning() << QString::fromUtf8( data.readAll() );
     return false;
   }
 
