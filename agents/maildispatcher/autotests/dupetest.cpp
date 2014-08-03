@@ -22,7 +22,7 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <AkonadiCore/Control>
 #include <AkonadiCore/AgentInstance>
@@ -31,8 +31,8 @@
 #include <AkonadiCore/ItemDeleteJob>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
-#include <akonadi/qtest_akonadi.h>
-#include <akonadi/private/collectionpathresolver_p.h>
+#include <AkonadiCore/qtest_akonadi.h>
+#include <AkonadiCore/collectionpathresolver.h>
 
 #include <mailtransport/messagequeuejob.h>
 #include <mailtransport/transport.h>
@@ -141,9 +141,9 @@ void DupeTest::testDupes()
   // queue messages
   Q_ASSERT( monitor );
   QSignalSpy *addSpy = new QSignalSpy( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)) );
-  kDebug() << "Queuing" << count << "messages...";
+  qDebug() << "Queuing" << count << "messages...";
   for ( int i = 0; i < count; i++ ) {
-    //kDebug() << "Queuing message" << i + 1 << "of" << count;
+    //qDebug() << "Queuing message" << i + 1 << "of" << count;
 
     Message::Ptr msg = Message::Ptr( new Message );
     msg->setContent( QString::fromLatin1( "%1-msg%2\n" ).arg( message ).arg( i + 1, 2, 10, QLatin1Char( '0' ) ).toLatin1() );
@@ -159,20 +159,20 @@ void DupeTest::testDupes()
     job->start();
     QTest::qWait( delay );
   }
-  kDebug() << "Queued" << count << "messages.";
+  qDebug() << "Queued" << count << "messages.";
 
   // wait for the MDA to send them
   int seconds = 0;
   while ( true ) {
     seconds++;
     QTest::qWait( 1000 );
-    kDebug() << seconds << "seconds elapsed." << addSpy->count() << "messages got to sink.";
+    qDebug() << seconds << "seconds elapsed." << addSpy->count() << "messages got to sink.";
     if ( addSpy->count() >= count )
       break;
 
 #if 0
     if ( seconds >= TIMEOUT_SECONDS ) {
-      kDebug() << "Timeout, gdb master!";
+      qDebug() << "Timeout, gdb master!";
       QTest::qWait( 1000*1000 );
     }
 #endif
@@ -195,21 +195,21 @@ void DupeTest::testDupes()
     QVERIFY( items[i].hasPayload<Message::Ptr>() );
     Message::Ptr msg = items[i].payload<Message::Ptr>();
     const QByteArray content = msg->encodedContent();
-    //kDebug() << "i" << i << "content" << content;
+    //qDebug() << "i" << i << "content" << content;
     int loc = content.indexOf( "-msg" );
     QVERIFY( loc >= 0 );
     bool ok;
     int who = content.mid( loc + 4, 2 ).toInt( &ok );
     QVERIFY( ok );
-    //kDebug() << "identified msg" << who;
+    //qDebug() << "identified msg" << who;
     QVERIFY( who > 0 && who <= count );
     found[ who - 1 ]++;
   }
   for ( int i = 0; i < count; i++ ) {
     if ( found[i] > 1 ) {
-      kDebug() << "found duplicate message" << i + 1 << "(" << found[i] << "times )";
+      qDebug() << "found duplicate message" << i + 1 << "(" << found[i] << "times )";
     } else if ( found[i] < 1 ) {
-      kDebug() << "didn't find message" << i + 1;
+      qDebug() << "didn't find message" << i + 1;
     }
     QCOMPARE( found[i], 1 );
   }
@@ -217,5 +217,5 @@ void DupeTest::testDupes()
   QCOMPARE( items.count(), count );
 }
 
-QTEST_AKONADIMAIN( DupeTest, NoGUI )
+QTEST_AKONADIMAIN( DupeTest )
 

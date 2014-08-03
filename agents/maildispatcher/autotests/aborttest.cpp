@@ -22,7 +22,7 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <AkonadiCore/AgentInstance>
 #include <AkonadiCore/AgentManager>
@@ -117,7 +117,7 @@ void AbortTest::testAbort()
   QVERIFY( iface.dispatcherInstance().isOnline() );
 
   // Create a large message.
-  kDebug() << "Building message.";
+  qDebug() << "Building message.";
   Message::Ptr msg = Message::Ptr( new Message );
   QByteArray line( 70, 'a' );
   line.append( "\n" );
@@ -129,7 +129,7 @@ void AbortTest::testAbort()
   msg->setContent( content );
 
   // Queue the message.
-  kDebug() << "Queuing message.";
+  qDebug() << "Queuing message.";
   MessageQueueJob *qjob = new MessageQueueJob( this );
   qjob->setMessage( msg );
   qjob->transportAttribute().setTransportId( smtpTid );
@@ -144,7 +144,7 @@ void AbortTest::testAbort()
   for ( int ds = 0; iface.dispatcherInstance().status() == AgentInstance::Idle; ds++ ) {
     QTest::qWait( 100 );
     if ( ds % 10 == 0 ) {
-      kDebug() << "Waiting for the MDA to begin dispatching." << ds / 10 << "seconds elapsed.";
+      qDebug() << "Waiting for the MDA to begin dispatching." << ds / 10 << "seconds elapsed.";
     }
 
     QVERIFY2( ds <= 100, "Timeout" );
@@ -157,7 +157,7 @@ void AbortTest::testAbort()
   for ( int ds = 0; iface.dispatcherInstance().status() != AgentInstance::Idle; ds++ ) {
     QTest::qWait( 100 );
     if ( ds % 10 == 0 ) {
-      kDebug() << "Waiting for the MDA to become idle after aborting." << ds / 10 << "seconds elapsed.";
+      qDebug() << "Waiting for the MDA to become idle after aborting." << ds / 10 << "seconds elapsed.";
     }
 
     QVERIFY2( ds <= 100, "Timeout" );
@@ -172,7 +172,7 @@ void AbortTest::testAbort()
   Item item = fjob->items().first();
   QVERIFY( item.hasAttribute<ErrorAttribute>() );
   ErrorAttribute *eA = item.attribute<ErrorAttribute>();
-  kDebug() << "Stored error:" << eA->message();
+  qDebug() << "Stored error:" << eA->message();
 
   // "Fix" the item and send again, this time with the default (Akonadi) transport.
   item.removeAttribute<ErrorAttribute>();
@@ -188,7 +188,7 @@ void AbortTest::testAbort()
   for ( int ds = 0; addSpy->isEmpty(); ds++ ) {
     QTest::qWait( 100 );
     if ( ds % 10 == 0 ) {
-      kDebug() << "Waiting for an item to be sent." << ds / 10 << "seconds elapsed.";
+      qDebug() << "Waiting for an item to be sent." << ds / 10 << "seconds elapsed.";
     }
 
     QVERIFY2( ds <= 100, "Timeout" );
@@ -233,5 +233,5 @@ void AbortTest::testAbortWhileIdle()
   QCOMPARE( iface.dispatcherInstance().status(), AgentInstance::Idle );
 }
 
-QTEST_AKONADIMAIN( AbortTest, NoGUI )
+QTEST_AKONADIMAIN( AbortTest )
 

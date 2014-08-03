@@ -22,7 +22,7 @@
 
 #include <QtCore/QObject>
 
-#include <Akonadi/Collection>
+#include <AkonadiCore/Collection>
 #include <AkonadiCore/Monitor>
 
 

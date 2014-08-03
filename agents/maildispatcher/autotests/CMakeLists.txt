@@ -1,3 +1,7 @@
+include(ECMMarkAsTest)
+
+find_package(Qt5Test CONFIG REQUIRED)
+
 set( EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR} )
 
 # Stolen from kdepimlibs/akonadi/tests
