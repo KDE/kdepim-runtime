@@ -32,6 +32,9 @@ endif()
 
 find_package(KF5AkonadiAbc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_serializer_plugins\")
+
+
 set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
 add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
 target_link_libraries(akonadi_serializer_addressee  KF5::Abc KF5::AkonadiCore KF5::AkonadiAbc)
