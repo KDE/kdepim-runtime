@@ -28,7 +28,7 @@ using KWallet::Wallet;
 
 #include <klocale.h>
 #include <kpassworddialog.h>
-#include <KDebug>
+#include <QDebug>
 
 #include <QDBusConnection>
 

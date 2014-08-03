@@ -22,7 +22,7 @@
 
 #include "resourcetask.h"
 
-#include <KDebug>
+#include <QDebug>
 
 MessageHelper::~MessageHelper()
 {

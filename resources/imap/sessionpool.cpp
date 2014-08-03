@@ -24,7 +24,7 @@
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslSocket>
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocale>
 
 #include <kimap/capabilitiesjob.h>

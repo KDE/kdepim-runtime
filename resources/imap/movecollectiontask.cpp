@@ -21,7 +21,7 @@
 
 #include "movecollectiontask.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocale>
 
 #include <kimap/renamejob.h>

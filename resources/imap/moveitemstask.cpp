@@ -23,7 +23,7 @@
 
 #include <QtCore/QUuid>
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocale>
 
 #include <kimap/copyjob.h>

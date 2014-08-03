@@ -27,7 +27,7 @@
 
 #include <mailtransport/transportbase.h>
 #include <kwindowsystem.h>
-#include <KDebug>
+#include <QDebug>
 
 #include "imapresourcebase.h"
 #include "settings.h"

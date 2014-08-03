@@ -24,7 +24,7 @@
 #include <Akonadi/KMime/MessageFlags>
 
 #include <KLocale>
-#include <KDebug>
+#include <QDebug>
 
 #include "collectionflagsattribute.h"
 #include "imapflags.h"

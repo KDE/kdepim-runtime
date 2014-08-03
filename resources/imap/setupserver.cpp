@@ -51,7 +51,7 @@
 #include <qpushbutton.h>
 #include <kmessagebox.h>
 #include <kuser.h>
-#include <KDebug>
+#include <QDebug>
 #ifndef IMAPRESOURCE_NO_SOLID
 #include <solid/networking.h>
 #endif

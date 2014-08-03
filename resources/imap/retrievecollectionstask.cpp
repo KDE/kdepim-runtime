@@ -30,7 +30,7 @@
 
 #include <kmime/kmime_message.h>
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocale>
 
 RetrieveCollectionsTask::RetrieveCollectionsTask( ResourceStateInterface::Ptr resource, QObject *parent )
