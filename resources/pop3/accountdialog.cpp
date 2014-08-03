@@ -40,7 +40,7 @@
 #include <KUser>
 #include <KWindowSystem>
 #include <kwallet.h>
-#include <KDebug>
+#include <QDebug>
 #include <KGlobalSettings>
 
 using namespace MailTransport;

@@ -25,7 +25,7 @@
 #include <QTcpServer>
 
 // KDE
-#include <KDebug>
+#include <QDebug>
 
 FakeServerThread::FakeServerThread( QObject *parent )
   : QThread( parent ),
@@ -59,7 +59,7 @@ FakeServer::FakeServer( QObject* parent )
 {
   mTcpServer = new QTcpServer();
   if ( !mTcpServer->listen( QHostAddress( QHostAddress::LocalHost ), 5989 ) ) {
-    kFatal() << "Unable to start the server";
+    qCritical() << "Unable to start the server";
   }
 
   connect( mTcpServer, SIGNAL(newConnection()),

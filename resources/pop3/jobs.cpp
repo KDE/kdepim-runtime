@@ -26,7 +26,7 @@
 #include <KIO/Slave>
 #include <KIO/Job>
 #include <KIO/TransferJob>
-#include <KDebug>
+#include <QDebug>
 #include <KLocalizedString>
 
 POPSession::POPSession( const QString &password )

@@ -20,7 +20,7 @@
 #include "settingsadaptor.h"
 
 #include <kwallet.h>
-#include <KDebug>
+#include <QDebug>
 
 class SettingsHelper
 {
