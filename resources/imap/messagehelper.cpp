@@ -46,7 +46,7 @@ Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message,
         i.setFlags(Akonadi::Item::Flags::fromList(ResourceTask::toAkonadiFlags(flags)));
     } else {
         if (!message) {
-            kWarning() << "Got empty message: " << uid;
+            qWarning() << "Got empty message: " << uid;
             ok = false;
             return Akonadi::Item();
         }

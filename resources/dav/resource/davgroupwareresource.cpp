@@ -115,7 +115,7 @@ DavGroupwareResource::~DavGroupwareResource()
 
 void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collection )
 {
-  kDebug() << "Removing collection " << collection.remoteId();
+  qDebug() << "Removing collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
     return;
@@ -225,7 +225,7 @@ void DavGroupwareResource::configure( WId windowId )
 
 void DavGroupwareResource::retrieveCollections()
 {
-  kDebug() << "Retrieving collections list";
+  qDebug() << "Retrieving collections list";
   mSyncErrorNotified = false;
 
   if ( !configurationIsValid() ) {
@@ -243,7 +243,7 @@ void DavGroupwareResource::retrieveCollections()
 
 void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  kDebug() << "Retrieving items for collection " << collection.remoteId();
+  qDebug() << "Retrieving items for collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
     return;
@@ -260,7 +260,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId() );
 
   if ( !davUrl.url().isValid() ) {
-    kError() << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
+    qCritical() << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
     cancelTask( i18n( "Asked to retrieve items for an unknown collection: %1", collection.remoteId() ) );
     //Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
     return;
@@ -274,7 +274,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
 
 bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  kDebug() << "Retrieving single item. Remote id = " << item.remoteId();
+  qDebug() << "Retrieving single item. Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
     return false;
@@ -301,7 +301,7 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
 
 void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  kDebug() << "Received notification for added item. Local id = "
+  qDebug() << "Received notification for added item. Local id = "
       << item.id() << ". Remote id = " << item.remoteId()
       << ". Collection remote id = " << collection.remoteId();
 
@@ -310,21 +310,21 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
   }
 
   if ( collection.remoteId().isEmpty() ) {
-    kError() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
+    qCritical() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
     cancelTask( i18n( "Invalid collection for item %1.", item.id() ) );
     return;
   }
 
   DavItem davItem = DavUtils::createDavItem( item, collection );
   if ( davItem.data().isEmpty() ) {
-    kError() << "Item " << item.id() << " doesn't has a valid payload";
+    qCritical() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask();
     return;
   }
 
   QString urlStr = davItem.url();
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId(), urlStr );
-  kDebug() << "Item " << item.id() << " will be put to " << urlStr;
+  qDebug() << "Item " << item.id() << " will be put to " << urlStr;
 
   DavItemCreateJob *job = new DavItemCreateJob( davUrl, davItem );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
@@ -335,7 +335,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  kDebug() << "Received notification for changed item. Local id = " << item.id()
+  qDebug() << "Received notification for changed item. Local id = " << item.id()
       << ". Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
@@ -344,7 +344,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
 
   DavItem davItem = DavUtils::createDavItem( item, item.parentCollection() );
   if ( davItem.data().isEmpty() ) {
-    kError() << "Item " << item.id() << " doesn't has a valid payload";
+    qCritical() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask();
     return;
   }
@@ -382,7 +382,7 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
 
 void DavGroupwareResource::doSetOnline( bool online )
 {
-  kDebug() << "Resource changed online status to" << online;
+  qDebug() << "Resource changed online status to" << online;
 
   if ( online ) {
     synchronize();
@@ -419,7 +419,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   const DavCollectionsMultiFetchJob *fetchJob = qobject_cast<DavCollectionsMultiFetchJob*>( job );
 
   if ( job->error() ) {
-    kWarning() << "Unable to fetch collections" << job->error() << job->errorText();
+    qWarning() << "Unable to fetch collections" << job->error() << job->errorText();
     cancelTask( i18n( "Unable to retrieve collections: %1", job->errorText() ) );
     mSyncErrorNotified = true;
     return;
@@ -556,7 +556,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
       // do not use multiget, because in this case we fetch the complete payload
       // some lines below already.
       if ( !protocolSupportsMultiget ) {
-        kDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
+        qDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
         item.clearPayload();
       }
     }
@@ -617,7 +617,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
       continue;
     }
 
-    kDebug() << "Multiget'ed item at " << davItem.url() << item.remoteId();
+    qDebug() << "Multiget'ed item at " << davItem.url() << item.remoteId();
 
     // convert dav data into payload
     const QString data = QString::fromUtf8( davItem.data() );
@@ -727,7 +727,7 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
   item.setRemoteId( davItem.url() );
 
   if ( createJob->error() ) {
-    kError() << "Error when uploading item:" << createJob->error() << createJob->errorString();
+    qCritical() << "Error when uploading item:" << createJob->error() << createJob->errorString();
     retryAfterFailure(createJob->errorString());
     return;
   }
@@ -755,7 +755,7 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
   Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
 
   if ( modifyJob->error() ) {
-    kError() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
+    qCritical() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
     retryAfterFailure(modifyJob->errorString());
     return;
   }

@@ -23,7 +23,8 @@
 
 #include "collectionannotationsattribute.h"
 
-#include <KDebug>
+#include "resource_imap_debug.h"
+#include <QDebug>
 #include <KLocale>
 
 #include <kimap/createjob.h>
@@ -66,7 +67,7 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 
   newMailBox += m_collection.name();
 
-  kDebug( 5327 ) << "New folder: " << newMailBox;
+  qCDebug(RESOURCE_IMAP_LOG) << "New folder: " << newMailBox;
 
   KIMAP::CreateJob *job = new KIMAP::CreateJob( session );
   job->setMailBox( newMailBox );

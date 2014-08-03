@@ -98,27 +98,27 @@ static QString authenticationModeString( MailTransport::Transport::EnumAuthentic
 
 static void setCurrentAuthMode( QComboBox* authCombo, MailTransport::Transport::EnumAuthenticationType::type authtype )
 {
-  kDebug() << "setting authcombo: " << authenticationModeString( authtype );
+  qDebug() << "setting authcombo: " << authenticationModeString( authtype );
   int index = authCombo->findData( authtype );
   if ( index == -1 )
-    kWarning() << "desired authmode not in the combo";
-  kDebug() << "found corresponding index: " << index << "with data" << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( index ).toInt() );
+    qWarning() << "desired authmode not in the combo";
+  qDebug() << "found corresponding index: " << index << "with data" << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( index ).toInt() );
   authCombo->setCurrentIndex( index );
   MailTransport::Transport::EnumAuthenticationType::type t = (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( authCombo->currentIndex() ).toInt();
-  kDebug() << "selected auth mode:" << authenticationModeString( t );
+  qDebug() << "selected auth mode:" << authenticationModeString( t );
   Q_ASSERT( t == authtype );
 }
 
 static MailTransport::Transport::EnumAuthenticationType::type getCurrentAuthMode( QComboBox* authCombo )
 {
   MailTransport::Transport::EnumAuthenticationType::type authtype = (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData( authCombo->currentIndex() ).toInt();
-  kDebug() << "current auth mode: " << authenticationModeString( authtype );
+  qDebug() << "current auth mode: " << authenticationModeString( authtype );
   return authtype;
 }
 
 static void addAuthenticationItem( QComboBox* authCombo, MailTransport::Transport::EnumAuthenticationType::type authtype )
 {
-    kDebug() << "adding auth item " << authenticationModeString( authtype );
+    qDebug() << "adding auth item " << authenticationModeString( authtype );
     authCombo->addItem( authenticationModeString( authtype ), QVariant( authtype ) );
 }
 
@@ -251,7 +251,7 @@ void SetupServer::slotEncryptionRadioChanged()
       m_ui->portSpin->setValue( 993 );
       break;
   default:
-    kFatal() << "Shouldn't happen";
+    qFatal("Shouldn't happen");
   }
 }
 
@@ -292,11 +292,11 @@ void SetupServer::applySettings()
     encryption = QLatin1String("STARTTLS");
     break;
   default:
-    kFatal() << "Shouldn't happen";
+    qFatal("Shouldn't happen");
   }
   m_parentResource->settings()->setSafety( encryption );
   MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode( m_ui->authenticationCombo );
-  kDebug() << "saving IMAP auth mode: " << authenticationModeString( authtype );
+  qDebug() << "saving IMAP auth mode: " << authenticationModeString( authtype );
   m_parentResource->settings()->setAuthentication( authtype );
   m_parentResource->settings()->setPassword( m_ui->password->text() );
   m_parentResource->settings()->setSubscriptionEnabled( m_ui->subscriptionEnabled->isChecked() );
@@ -344,7 +344,7 @@ void SetupServer::applySettings()
   m_parentResource->settings()->setSieveCustomPassword( m_ui->customPassword->text() );
 
   m_parentResource->settings()->save();
-  kDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
+  qDebug() << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
 
   if ( m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty() ) {
     m_parentResource->settings()->renameRootCollection( m_ui->accountName->text() );
@@ -385,7 +385,7 @@ void SetupServer::readSettings()
 
   populateDefaultAuthenticationOptions();
   i = m_parentResource->settings()->authentication();
-  kDebug() << "read IMAP auth mode: " << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) i );
+  qDebug() << "read IMAP auth mode: " << authenticationModeString( (MailTransport::Transport::EnumAuthenticationType::type) i );
   setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i );
 
   bool rejected = false;
@@ -460,7 +460,7 @@ void SetupServer::readSettings()
 
 void SetupServer::slotTest()
 {
-  kDebug() << m_ui->imapServer->text();
+  qDebug() << m_ui->imapServer->text();
 
   m_ui->testButton->setEnabled( false );
   m_ui->safeImap->setEnabled( false );
@@ -477,7 +477,7 @@ void SetupServer::slotTest()
 
   const QString server = m_ui->imapServer->text();
   const int port = m_ui->portSpin->value();
-  kDebug() << "server: " << server << "port: " << port;
+  qDebug() << "server: " << server << "port: " << port;
 
   m_serverTest->setServer( server );
 
@@ -496,7 +496,7 @@ void SetupServer::slotTest()
 
 void SetupServer::slotFinished( const QList<int> &testResult )
 {
-  kDebug() << testResult;
+  qDebug() << testResult;
 
 #ifndef QT_NO_CURSOR
   qApp->restoreOverrideCursor();
@@ -568,7 +568,7 @@ void SetupServer::slotComplete()
 void SetupServer::slotSafetyChanged()
 {
   if ( m_serverTest == 0 ) {
-    kDebug() << "serverTest null";
+    qDebug() << "serverTest null";
     m_ui->noRadio->setEnabled( true );
     m_ui->sslRadio->setEnabled( true );
     m_ui->tlsRadio->setEnabled( true );
@@ -581,19 +581,19 @@ void SetupServer::slotSafetyChanged()
 
   switch ( m_ui->safeImapGroup->checkedId() ) {
   case KIMAP::LoginJob::Unencrypted :
-    kDebug() << "safeImapGroup: unencrypted";
+    qDebug() << "safeImapGroup: unencrypted";
     protocols = m_serverTest->normalProtocols();
     break;
   case KIMAP::LoginJob::AnySslVersion:
     protocols = m_serverTest->secureProtocols();
-    kDebug() << "safeImapGroup: SSL";
+    qDebug() << "safeImapGroup: SSL";
     break;
   case KIMAP::LoginJob::TlsV1:
     protocols = m_serverTest->tlsProtocols();
-    kDebug() << "safeImapGroup: starttls";
+    qDebug() << "safeImapGroup: starttls";
     break;
   default:
-    kFatal() << "Shouldn't happen";
+    qFatal("Shouldn't happen");
   }
 
   m_ui->authenticationCombo->clear();
@@ -604,12 +604,12 @@ void SetupServer::slotSafetyChanged()
   if ( protocols.size() > 0 )
     setCurrentAuthMode( m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) protocols.first() );
   else
-    kDebug() << "no authmodes found";
+    qDebug() << "no authmodes found";
 }
 
 void SetupServer::slotManageSubscriptions()
 {
-  kDebug() << "manage subscripts";
+  qDebug() << "manage subscripts";
   ImapAccount account;
 
   account.setServer( m_ui->imapServer->text() );

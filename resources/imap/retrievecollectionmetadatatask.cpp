@@ -30,7 +30,9 @@
 #include <kimap/rfccodecs.h>
 #include <kimap/session.h>
 #include <klocale.h>
-#include <KDebug>
+
+#include "resource_imap_debug.h"
+#include <QDebug>
 
 #include <collectionquotaattribute.h>
 #include <entitydisplayattribute.h>
@@ -52,13 +54,13 @@ RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask()
 
 void RetrieveCollectionMetadataTask::doStart( KIMAP::Session *session )
 {
-  kDebug( 5327 ) << collection().remoteId();
+  qCDebug(RESOURCE_IMAP_LOG) << collection().remoteId();
 
   // Prevent fetching metadata from noselect folders.
   if ( collection().hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
-      kDebug( 5327 ) << "No Select folder";
+      qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
       endTaskIfNeeded();
       return;
     }
@@ -122,7 +124,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    kWarning() << "Get metadata failed: " << job->errorString();
+    qWarning() << "Get metadata failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -151,7 +153,7 @@ void RetrieveCollectionMetadataTask::onGetAclDone( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    kWarning() << "GetACL failed: " << job->errorString();
+    qWarning() << "GetACL failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -173,7 +175,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    kWarning() << "MyRights failed: " << job->errorString();
+    qWarning() << "MyRights failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -222,7 +224,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
     newRights|= Akonadi::Collection::CanDeleteCollection;
   }
 
-//  kDebug( 5327 ) << collection.remoteId()
+//  qCDebug(RESOURCE_IMAP_LOG) << collection.remoteId()
 //                 << "imapRights:" << imapRights
 //                 << "newRights:" << newRights
 //                 << "oldRights:" << collection.rights();
@@ -251,7 +253,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    kWarning() << "Quota retrieval failed: " << job->errorString();
+    qWarning() << "Quota retrieval failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }

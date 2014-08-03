@@ -28,7 +28,9 @@
 #include <kimap/storejob.h>
 #include <kimap/closejob.h>
 #include <klocale.h>
-#include <KDebug>
+#include "resource_imap_debug.h"
+#include <QDebug>
+
 
 Q_DECLARE_METATYPE( KIMAP::DeleteJob* )
 
@@ -96,7 +98,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
 
   mFolderIterator->previous();
   const KIMAP::MailBoxDescriptor &descriptor = mFolderIterator->value();
-  kDebug() << descriptor.name;
+  qDebug() << descriptor.name;
 
   // first select the mailbox
   KIMAP::SelectJob *selectJob = new KIMAP::SelectJob( mSession );
@@ -128,7 +130,7 @@ void RemoveCollectionRecursiveTask::onCloseJobDone( KJob* job )
 {
   if ( job->error() ) {
     changeProcessed();
-    kDebug( 5327 ) << "Failed to close the folder, resync the folder tree";
+    qCDebug(RESOURCE_IMAP_LOG) << "Failed to close the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   } else {
@@ -145,7 +147,7 @@ void RemoveCollectionRecursiveTask::onDeleteJobDone( KJob* job )
   if ( job->error() ) {
     changeProcessed();
 
-    kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
+    qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   } else {
@@ -158,12 +160,12 @@ void RemoveCollectionRecursiveTask::onJobDone( KJob* job )
   if ( job->error() ) {
     changeProcessed();
 
-    kDebug( 5327 ) << "Failed to delete the folder, resync the folder tree";
+    qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
     emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
     synchronizeCollectionTree();
   } else if ( !mFolderFound ) {
     changeProcessed();
-    kDebug( 5327 ) << "Failed to find the folder to be deleted, resync the folder tree";
+    qCDebug(RESOURCE_IMAP_LOG) << "Failed to find the folder to be deleted, resync the folder tree";
     emitWarning( i18n( "Failed to find the folder to be deleted, restoring folder list." ) );
     synchronizeCollectionTree();
   }

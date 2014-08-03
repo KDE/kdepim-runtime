@@ -43,6 +43,7 @@ set( imapresource_LIB_SRCS
   subscriptiondialog.cpp
   imapidlemanager.cpp
   resourcestate.cpp
+  resource_imap_debug.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )

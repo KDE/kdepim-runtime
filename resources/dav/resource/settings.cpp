@@ -27,7 +27,7 @@
 #endif
 
 #include <kapplication.h>
-#include <kdebug.h>
+#include <qdebug.h>
 #include <kdialog.h>
 #include <kglobal.h>
 #include <klineedit.h>
@@ -322,9 +322,9 @@ QString Settings::password(DavUtils::Protocol proto, const QString& url)
 #ifdef HAVE_ACCOUNTS
 void Settings::importFromAccounts()
 {
-  kDebug();
+  qDebug();
   Accounts::AccountId id = accountId();
-  kDebug() << "Account Id: " << id;
+  qDebug() << "Account Id: " << id;
 
   if ( !m_manager ) {
     m_manager = new Accounts::Manager( this );
@@ -343,10 +343,10 @@ void Settings::importFromAccounts()
 
 void Settings::addAccountsEnabledServices()
 {
-  kDebug();
+  qDebug();
   Accounts::Account *acc = m_manager->account( accountId() );
   QStringList enabledServices = accountServices();
-  kDebug() << "Enabled" << enabledServices;
+  qDebug() << "Enabled" << enabledServices;
   foreach( QString serviceType, enabledServices ) {
     Accounts::ServiceList services = acc->services( serviceType );
     foreach( const Accounts::Service &service, services ) {
@@ -357,7 +357,7 @@ void Settings::addAccountsEnabledServices()
 
 void Settings::removeAccountsDisabledServices()
 {
-  kDebug();
+  qDebug();
   QStringList urls = remoteUrls();
   for (int i = 0; i < urls.size(); ++i) {
     if ( !urls.at( i ).startsWith( "$accounts$" ) ) {
@@ -381,7 +381,7 @@ void Settings::removeAccountsDisabledServices()
 
 void Settings::configureAccountService(Accounts::Account *acc, const Accounts::Service& service)
 {
-  kDebug() << "Configuring service: " << service.name();
+  qDebug() << "Configuring service: " << service.name();
 
   acc->selectService();
   QString domain = acc->valueAsString( "dav/scheme" ) + "://" + acc->valueAsString( "dav/host" );
@@ -395,18 +395,18 @@ void Settings::configureAccountService(Accounts::Account *acc, const Accounts::S
   }
 
   QString url = "$accounts$|" + type + "|" + domain + acc->valueAsString("dav/path");
-  kDebug() << url;
+  qDebug() << url;
   acc->selectService();
 
   QStringList urls = remoteUrls();
   foreach ( const QString &serializedUrl, urls ) {
     if ( url == serializedUrl ) {
-      kDebug() << "Url already configured";
+      qDebug() << "Url already configured";
       return;
     }
   }
 
-  kDebug() << "Adding url";
+  qDebug() << "Adding url";
   urls.append( url );
   setRemoteUrls( urls );
 }
@@ -516,7 +516,7 @@ QString Settings::loadPassword( const QString &key, const QString &user )
 #ifdef HAVE_ACCOUNTS
 QString Settings::loadPasswordFromAccounts()
 {
-    kDebug() << "Getting credentials for: " << accountId();
+    qDebug() << "Getting credentials for: " << accountId();
     GetCredentialsJob *job = new GetCredentialsJob(accountId());
     job->exec();
 
@@ -525,11 +525,11 @@ QString Settings::loadPasswordFromAccounts()
 
 QString Settings::accountsUsername() const
 {
-    kDebug() << "Getting credentials for: " << accountId();
+    qDebug() << "Getting credentials for: " << accountId();
     GetCredentialsJob *job = new GetCredentialsJob(accountId());
     job->exec();
 
-    kDebug() << "Got some: " << job->credentialsData();
+    qDebug() << "Got some: " << job->credentialsData();
 
     return job->credentialsData().value("UserName").toString();
 }

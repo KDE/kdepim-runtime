@@ -19,9 +19,9 @@
 
 #include "batchfetcher.h"
 
+#include "resource_imap_debug.h"
 #include <KImap/Session>
 #include <QDebug>
-#include <KDebug>
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
                            const KIMAP::ImapSet &set,
                            const KIMAP::FetchJob::FetchScope &scope,
@@ -100,14 +100,14 @@ void BatchFetcher::fetchNextBatch()
     m_continuationRequested = false;
     Q_ASSERT(m_batchSize > 0);
     if (m_currentSet.isEmpty()) {
-        kDebug(5327) << "fetch complete";
+        qCDebug(RESOURCE_IMAP_LOG) << "fetch complete";
         emitResult();
         return;
     }
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(m_session);
     if (m_scope.changedSince != 0) {
-        kDebug(5327) << "Fetching all messages in one batch.";
+        qCDebug(RESOURCE_IMAP_LOG) << "Fetching all messages in one batch.";
         fetch->setSequenceSet(m_currentSet);
         m_currentSet = KIMAP::ImapSet();
     } else {
@@ -131,7 +131,7 @@ void BatchFetcher::fetchNextBatch()
                 newSet.add(interval);
             }
         }
-        kDebug(5327) << "Fetching " << toFetch.intervals().size() << " intervals";
+        qCDebug(RESOURCE_IMAP_LOG) << "Fetching " << toFetch.intervals().size() << " intervals";
         fetch->setSequenceSet(toFetch);
         m_currentSet = newSet;
     }

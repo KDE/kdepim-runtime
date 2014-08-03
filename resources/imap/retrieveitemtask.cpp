@@ -22,7 +22,9 @@
 #include "retrieveitemtask.h"
 #include "messagehelper.h"
 
-#include <KDebug>
+#include "resource_imap_debug.h"
+#include <QDebug>
+
 #include <KLocale>
 
 #include <Akonadi/KMime/MessageFlags>
@@ -47,7 +49,7 @@ void RetrieveItemTask::doStart( KIMAP::Session *session )
   m_uid = item().remoteId().toLongLong();
 
   if ( m_uid == 0 ) {
-    kWarning() << "Remote id is " << item().remoteId();
+    qWarning() << "Remote id is " << item().remoteId();
     cancelTask( i18n("Remote id is empty or invalid") );
     return;
   }
@@ -111,14 +113,14 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox,
 
   Akonadi::Item i = item();
 
-  kDebug( 5327 ) << "MESSAGE from Imap server" << item().remoteId();
+  qCDebug(RESOURCE_IMAP_LOG) << "MESSAGE from Imap server" << item().remoteId();
   Q_ASSERT( item().isValid() );
 
   const qint64 number = uids.keys().first();
   bool ok;
   const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(messages[number], uids[number], 0, attrs.values(number), QList<QByteArray>(), fetch->scope(), ok);
   if (!ok) {
-    kWarning() << "Failed to retrieve message " << uids[number];
+    qWarning() << "Failed to retrieve message " << uids[number];
     cancelTask( i18n( "No message retrieved, failed to read the message." ) );
     return;
   }
@@ -128,7 +130,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox,
     i.setFlag(flag);
   }
 
-  kDebug( 5327 ) << "Has Payload: " << i.hasPayload();
+  qCDebug(RESOURCE_IMAP_LOG) << "Has Payload: " << i.hasPayload();
 
   m_messageReceived = true;
   itemRetrieved( i );

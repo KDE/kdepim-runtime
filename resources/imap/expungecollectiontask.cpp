@@ -21,7 +21,9 @@
 
 #include "expungecollectiontask.h"
 
-#include <KDebug>
+#include "resource_imap_debug.h"
+#include <QDebug>
+
 #include <KLocale>
 
 #include <kimap/expungejob.h>
@@ -46,7 +48,7 @@ void ExpungeCollectionTask::doStart( KIMAP::Session *session )
   if ( collection().hasAttribute( "noselect" ) ) {
     NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
     if ( noselect->noSelect() ) {
-      kDebug( 5327 ) << "No Select folder";
+      qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
       taskDone();
       return;
     }

@@ -32,8 +32,9 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 
+#include "resource_imap_debug.h"
 #include <KLocalizedString>
-#include <KDebug>
+#include <QDebug>
 
 ChangeCollectionTask::ChangeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent ), m_pendingJobs(0)
@@ -110,7 +111,7 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
         imapRights&= ~KIMAP::Acl::Delete;
       }
 
-      kDebug( 5327 ) << "imapRights:" << imapRights
+      qCDebug(RESOURCE_IMAP_LOG) << "imapRights:" << imapRights
                      << "newRights:" << newRights;
 
       KIMAP::SetAclJob *job = new KIMAP::SetAclJob( session );
@@ -133,7 +134,7 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
 
     if ( annotationsAttribute ) { // No annotations it seems... server is lieing to us?
       QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
-      kDebug( 5327 ) << "All annotations: " << annotations;
+      qCDebug(RESOURCE_IMAP_LOG) << "All annotations: " << annotations;
 
       foreach ( const QByteArray &entry, annotations.keys() ) { //krazy:exclude=foreach
         KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob( session );
@@ -151,7 +152,7 @@ void ChangeCollectionTask::doStart( KIMAP::Session *session )
           job->addMetaData( entry, annotations[entry] );
         }
 
-        kDebug( 5327 ) << "Job got entry:" << entry << "value:" << annotations[entry];
+        qCDebug(RESOURCE_IMAP_LOG) << "Job got entry:" << entry << "value:" << annotations[entry];
 
         connect( job, SIGNAL(result(KJob*)),
                  this, SLOT(onSetMetaDataDone(KJob*)) );

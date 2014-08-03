@@ -111,7 +111,7 @@ Akonadi::Collection ResourceState::collection() const
 Akonadi::Item ResourceState::item() const
 {
   if (m_arguments.items.count() > 1) {
-    kWarning() << "Called item() while state holds multiple items!";
+    qWarning() << "Called item() while state holds multiple items!";
   }
 
   return m_arguments.items.first();

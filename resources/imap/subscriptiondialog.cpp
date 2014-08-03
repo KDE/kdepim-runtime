@@ -28,7 +28,7 @@
 #include <QCheckBox>
 
 #include <klocale.h>
-#include <kdebug.h>
+#include <qdebug.h>
 #include <klineedit.h>
 #include <KGlobal>
 
@@ -245,7 +245,7 @@ void SubscriptionDialog::onReloadRequested()
   // we need a connection
   if ( !m_session
     || m_session->state() != KIMAP::Session::Authenticated ) {
-    kWarning() << "SubscriptionDialog - got no connection";
+    qWarning() << "SubscriptionDialog - got no connection";
     enableButton( User1, true );
     return;
   }
@@ -375,12 +375,12 @@ void SubscriptionDialog::applyChanges()
 
     if ( item->checkState()!=item->data( InitialStateRole ).toInt() ) {
       if ( item->checkState() == Qt::Checked ) {
-        kDebug() << "Subscribing" << item->data( PathRole );
+        qDebug() << "Subscribing" << item->data( PathRole );
         KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_session );
         subscribe->setMailBox( item->data( PathRole ).toString() );
         subscribe->exec();
       } else {
-        kDebug() << "Unsubscribing" << item->data( PathRole );
+        qDebug() << "Unsubscribing" << item->data( PathRole );
         KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( m_session );
         unsubscribe->setMailBox( item->data( PathRole ).toString() );
         unsubscribe->exec();

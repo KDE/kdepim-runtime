@@ -23,7 +23,7 @@
 #include "davprotocolbase.h"
 #include "davutils.h"
 
-#include <kdebug.h>
+#include <qdebug.h>
 #include <kio/davjob.h>
 #include <kio/job.h>
 #include <klocale.h>
@@ -73,7 +73,7 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
   if ( job->error() ) {
     // This may mean that the URL was not a principal URL.
     // Retry as if it were a calendar URL.
-    kDebug() << job->errorText();
+    qDebug() << job->errorText();
     doCollectionsFetch( mUrl.url() );
     return;
   }
@@ -81,8 +81,8 @@ void DavCollectionsFetchJob::principalFetchFinished( KJob *job )
   const DavPrincipalHomeSetsFetchJob *davJob = qobject_cast<DavPrincipalHomeSetsFetchJob*>( job );
 
   const QStringList homeSets = davJob->homeSets();
-  kDebug() << "Found " << homeSets.size() << " homesets";
-  kDebug() << homeSets;
+  qDebug() << "Found " << homeSets.size() << " homesets";
+  qDebug() << homeSets;
 
   if ( homeSets.isEmpty() ) {
     // Same as above, retry as if it were a calendar URL.
@@ -141,7 +141,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     _jobUrl.setUser( QString() );
     const QString jobUrl = _jobUrl.prettyUrl();
 
-    //kDebug() << davJob->response().toString();
+    //qDebug() << davJob->response().toString();
 
     QByteArray resp( davJob->response().toByteArray() );
     QBuffer buffer( &resp );
@@ -292,7 +292,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
           collection.setPrivileges( privileges );
         }
 
-        kDebug() << url.prettyUrl() << "PRIVS: " << collection.privileges();
+        qDebug() << url.prettyUrl() << "PRIVS: " << collection.privileges();
         mCollections << collection;
         emit collectionDiscovered( mUrl.protocol(), url.prettyUrl(), jobUrl );
 

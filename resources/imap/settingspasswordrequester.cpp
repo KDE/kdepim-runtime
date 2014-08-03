@@ -58,7 +58,7 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
 {
   // the credentials were not ok, allow to retry or change password
   if ( m_requestDialog ) {
-    kDebug() << "Password request dialog is already open";
+    qDebug() << "Password request dialog is already open";
     return;
   }
   QWidget *parent = QWidget::find(m_resource->winIdForDialogs());

@@ -66,7 +66,7 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap( MailTrans
     case MTAuth::CLEAR:
       return KIAuth::ClearText;
     default:
-      kFatal() << "mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible";
+      qFatal("mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible");
   }
   return KIAuth::ClearText; // dummy value, shouldn't get here.
 }
@@ -221,7 +221,7 @@ void Settings::setSieveCustomPassword(const QString & password)
             wallet->createFolder( QLatin1String("imap") );
         wallet->setFolder( QLatin1String("imap") );
         wallet->writePassword( QLatin1String("custom_sieve_") + config()->name(), password );
-        kDebug() << "Wallet save: " << wallet->sync();
+        qDebug() << "Wallet save: " << wallet->sync();
     }
     delete wallet;
 }
@@ -241,7 +241,7 @@ void Settings::setPassword( const QString & password )
             wallet->createFolder( QLatin1String("imap") );
         wallet->setFolder( QLatin1String("imap") );
         wallet->writePassword( config()->name(), password );
-        kDebug() << "Wallet save: " << wallet->sync();
+        qDebug() << "Wallet save: " << wallet->sync();
     }
     delete wallet;
 }
@@ -271,7 +271,7 @@ void Settings::loadAccount( ImapAccount *account ) const
   //(so we don't have to make the UI unnecessarily complex for properly working servers).
   const QString overrideEncryptionMode = overrideEncryption();
   if (!overrideEncryptionMode.isEmpty()) {
-    kWarning() << "Overriding encryption mode with: " << overrideEncryptionMode;
+    qWarning() << "Overriding encryption mode with: " << overrideEncryptionMode;
     if ( overrideEncryptionMode == QLatin1String("SSLV2") ) {
       account->setEncryptionMode( KIMAP::LoginJob::SslV2 );
     } else if (  overrideEncryptionMode == QLatin1String("SSLV3") ) {
@@ -285,7 +285,7 @@ void Settings::loadAccount( ImapAccount *account ) const
     } else if (  overrideEncryptionMode == QLatin1String("UNENCRYPTED") ) {
       account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
     } else {
-      kWarning() << "Tried to force invalid encryption mode: " << overrideEncryptionMode;
+      qWarning() << "Tried to force invalid encryption mode: " << overrideEncryptionMode;
     }
   }
 

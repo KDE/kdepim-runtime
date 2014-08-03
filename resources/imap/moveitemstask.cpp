@@ -50,14 +50,14 @@ MoveItemsTask::~MoveItemsTask()
 void MoveItemsTask::doStart( KIMAP::Session *session )
 {
   if ( item().remoteId().isEmpty() ) {
-    kWarning() << "Failed: messages has no rid";
+    qWarning() << "Failed: messages has no rid";
     emitError( i18n( "Cannot move message, it does not exist on the server." ) );
     changeProcessed();
     return;
   }
 
   if ( sourceCollection().remoteId().isEmpty() ) {
-    kWarning() << "Failed: source collection has no rid";
+    qWarning() << "Failed: source collection has no rid";
     emitError( i18n( "Cannot move message out of '%1', '%1' does not exist on the server.",
                      sourceCollection().name() ) );
     changeProcessed();
@@ -65,7 +65,7 @@ void MoveItemsTask::doStart( KIMAP::Session *session )
   }
 
   if ( targetCollection().remoteId().isEmpty() ) {
-    kWarning() << "Failed: target collection has no rid";
+    qWarning() << "Failed: target collection has no rid";
     emitError( i18n( "Cannot move message to '%1', '%1' does not exist on the server.",
                      targetCollection().name() ) );
     changeProcessed();
@@ -76,7 +76,7 @@ void MoveItemsTask::doStart( KIMAP::Session *session )
   const QString newMailBox = mailBoxForCollection( targetCollection() );
 
   if ( oldMailBox == newMailBox ) {
-    kDebug() << "Nothing to do, same mailbox";
+    qDebug() << "Nothing to do, same mailbox";
     changeProcessed();
     return;
   }
@@ -97,7 +97,7 @@ void MoveItemsTask::doStart( KIMAP::Session *session )
 void MoveItemsTask::onSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Select failed: " << job->errorString();
+    qWarning() << "Select failed: " << job->errorString();
     cancelTask( job->errorString() );
 
   } else {
@@ -124,7 +124,7 @@ void MoveItemsTask::triggerCopyJob( KIMAP::Session *session )
 
         set.add( item.remoteId().toLong() );
     } catch ( Akonadi::PayloadException e ) {
-        kWarning() << "Copy failed, payload exception " << item.id() << item.remoteId();
+        qWarning() << "Copy failed, payload exception " << item.id() << item.remoteId();
         cancelTask( i18n( "Failed to copy item, it has no message payload. Remote id: %1", item.remoteId() ) );
         return;
     }
@@ -147,7 +147,7 @@ void MoveItemsTask::triggerCopyJob( KIMAP::Session *session )
 void MoveItemsTask::onCopyDone( KJob *job )
 {
   if ( job->error()  ) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
     cancelTask( job->errorString() );
 
   } else {
@@ -173,7 +173,7 @@ void MoveItemsTask::onCopyDone( KJob *job )
 void MoveItemsTask::onStoreFlagsDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Failed to mark message as deleted on source server: " << job->errorString();
+    qWarning() << "Failed to mark message as deleted on source server: " << job->errorString();
     emitWarning( i18n( "Failed to mark the message from '%1' for deletion on the IMAP server. "
                        "It will reappear on next sync.",
                        sourceCollection().name() ) );
@@ -199,7 +199,7 @@ void MoveItemsTask::onStoreFlagsDone( KJob *job )
 void MoveItemsTask::onPreSearchSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Select failed: " << job->errorString();
+    qWarning() << "Select failed: " << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
@@ -241,7 +241,7 @@ void MoveItemsTask::onPreSearchSelectDone( KJob *job )
 void MoveItemsTask::onSearchDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Search failed: " << job->errorString();
+    qWarning() << "Search failed: " << job->errorString();
     cancelTask( job->errorString() );
     return;
   }

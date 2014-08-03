@@ -30,7 +30,7 @@
 
 #include <QIcon>
 #include <KGlobal>
-#include <kdebug.h>
+#include <qdebug.h>
 #include <klocale.h>
 
 #include <kwindowsystem.h>
@@ -322,7 +322,7 @@ void ImapResourceBase::onConnectDone( int errorCode, const QString &errorString 
     return;
 
   case SessionPool::NoAvailableSessionError:
-    kFatal() << "Shouldn't happen";
+    qFatal("Shouldn't happen");
     return;
   }
 }
@@ -402,7 +402,7 @@ void ImapResourceBase::itemsMoved( const Akonadi::Item::List &items, const Akona
                                const Akonadi::Collection &destination )
 {
   if ( items.first().parentCollection() != destination ) { // should have been set by the server
-    kWarning() << "Collections don't match: destination=" << destination.id()
+    qWarning() << "Collections don't match: destination=" << destination.id()
                << "; items parent=" << items.first().parentCollection().id()
                << "; source collection=" << source.id();
     //Q_ASSERT( false );
@@ -445,7 +445,7 @@ void ImapResourceBase::triggerCollectionExtraInfoJobs( const QVariant &collectio
 void ImapResourceBase::onMetadataCollectionFetchDone(KJob *job)
 {
   if (job->error()) {
-    kWarning() << "Failed to retrieve collection before RetrieveCollectionMetadataTask " << job->errorString();
+    qWarning() << "Failed to retrieve collection before RetrieveCollectionMetadataTask " << job->errorString();
     cancelTask(i18n("Failed to collect metadata."));
     return;
   }
@@ -473,7 +473,7 @@ void ImapResourceBase::retrieveItems( const Collection &col )
 void ImapResourceBase::onItemRetrievalCollectionFetchDone(KJob *job)
 {
   if (job->error()) {
-    kWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
+    qWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
     cancelTask(i18n("Failed to retrieve items."));
     return;
   }
@@ -565,7 +565,7 @@ void ImapResourceBase::scheduleConnectionAttempt()
 void ImapResourceBase::doSetOnline(bool online)
 {
 #ifndef IMAPRESOURCE_NO_SOLID
-  kDebug() << "online=" << online;
+  qDebug() << "online=" << online;
 #endif
   if ( !online ) {
     Q_FOREACH(ResourceTask* task, m_taskList) {
@@ -670,7 +670,7 @@ void ImapResourceBase::startIdle()
 void ImapResourceBase::onIdleCollectionFetchDone( KJob *job )
 {
   if (job->error()) {
-    kWarning() << "CollectionFetch for idling failed."
+    qWarning() << "CollectionFetch for idling failed."
                << "error=" << job->error()
                << ", errorString=" << job->errorString();
     return;
@@ -717,7 +717,7 @@ void ImapResourceBase::onExpungeCollectionFetchDone( KJob *job )
                         QVariant::fromValue( collection ) );
 
   } else {
-    kWarning() << "CollectionFetch for expunge failed."
+    qWarning() << "CollectionFetch for expunge failed."
                << "error=" << job->error()
                << ", errorString=" << job->errorString();
   }
@@ -804,7 +804,7 @@ void ImapResourceBase::modifyCollection(const Collection &col)
 void ImapResourceBase::onCollectionModifyDone(KJob* job)
 {
     if (job->error()) {
-        kWarning() << "Failed to modify collection: " << job->errorString();
+        qWarning() << "Failed to modify collection: " << job->errorString();
     }
 }
 

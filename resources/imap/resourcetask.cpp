@@ -65,12 +65,12 @@ void ResourceTask::start( SessionPool *pool )
 
     switch ( m_actionIfNoSession ) {
     case CancelIfNoSession:
-      kDebug() << "Cancelling this request. Probably there is no connection.";
+      qDebug() << "Cancelling this request. Probably there is no connection.";
       m_resource->cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
       break;
 
     case DeferIfNoSession:
-      kDebug() << "Defering this request. Probably there is no connection.";
+      qDebug() << "Defering this request. Probably there is no connection.";
       m_resource->deferTask();
       break;
     }
@@ -96,12 +96,12 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   if ( errorCode!=SessionPool::NoError ) {
     switch ( m_actionIfNoSession ) {
     case CancelIfNoSession:
-      kDebug() << "Cancelling this request. Probably there is no more session available.";
+      qDebug() << "Cancelling this request. Probably there is no more session available.";
       m_resource->cancelTask( i18n( "There is currently no session to the IMAP server available." ) );
       break;
 
     case DeferIfNoSession:
-      kDebug() << "Defering this request. Probably there is no more session available.";
+      qDebug() << "Defering this request. Probably there is no more session available.";
       m_resource->deferTask();
       break;
     }
@@ -388,7 +388,7 @@ QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags( const QList<QBy
       if ( flagAttr->flags().contains( *it ) ) {
         ++it;
       } else {
-        kDebug() << "Server does not support flag" << *it;
+        qDebug() << "Server does not support flag" << *it;
         it = imapFlags.erase( it );
       }
     }
@@ -444,7 +444,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
 
 void ResourceTask::kill()
 {
-  kDebug();
+  qDebug();
   cancelTask(i18n("killed"));
 }
 

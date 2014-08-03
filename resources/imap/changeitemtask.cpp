@@ -21,7 +21,10 @@
 
 #include "changeitemtask.h"
 
-#include <KDebug>
+#include "resource_imap_debug.h"
+#include <QDebug>
+
+
 #include <KLocale>
 
 #include <kimap/appendjob.h>
@@ -51,11 +54,11 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
 
   const QString mailBox = mailBoxForCollection( item().parentCollection() );
   m_oldUid = item().remoteId().toLongLong();
-  kDebug(5327) << mailBox << m_oldUid << parts();
+  qCDebug(RESOURCE_IMAP_LOG) << mailBox << m_oldUid << parts();
 
   if ( parts().contains( "PLD:RFC822" ) ) {
     if ( !item().hasPayload<KMime::Message::Ptr>() ) {
-      kWarning() << "Payload changed, no payload available.";
+      qWarning() << "Payload changed, no payload available.";
       changeProcessed();
       return;
     }
@@ -70,7 +73,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
     job->setContent( msg->encodedContent( true ) );
     const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags( item().flags().toList(), item().parentCollection() );
     job->setFlags( flags );
-    kDebug(5327) << "Appending new message: " << flags;
+    qCDebug(RESOURCE_IMAP_LOG) << "Appending new message: " << flags;
 
     connect( job, SIGNAL(result(KJob*)),
              this, SLOT(onAppendMessageDone(KJob*)) );
@@ -93,7 +96,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
     }
 
   } else {
-    kDebug(5327) << "Nothing to do";
+    qCDebug(RESOURCE_IMAP_LOG) << "Nothing to do";
     changeProcessed();
   }
 }
@@ -101,7 +104,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
 void ChangeItemTask::onPreStoreSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Select failed: " << job->errorString();
+    qWarning() << "Select failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     triggerStoreJob();
@@ -111,7 +114,7 @@ void ChangeItemTask::onPreStoreSelectDone( KJob *job )
 void ChangeItemTask::triggerStoreJob()
 {
   QList<QByteArray> flags = fromAkonadiToSupportedImapFlags( item().flags().toList(), item().parentCollection() );
-  kDebug(5327) << flags;
+  qCDebug(RESOURCE_IMAP_LOG) << flags;
 
   KIMAP::StoreJob *store = new KIMAP::StoreJob( m_session );
 
@@ -129,7 +132,7 @@ void ChangeItemTask::triggerStoreJob()
 void ChangeItemTask::onStoreFlagsDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Flag store failed: " << job->errorString();
+    qWarning() << "Flag store failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     changeProcessed();
@@ -139,7 +142,7 @@ void ChangeItemTask::onStoreFlagsDone( KJob *job )
 void ChangeItemTask::onAppendMessageDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Append failed: " << job->errorString();
+    qWarning() << "Append failed: " << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
@@ -174,7 +177,7 @@ void ChangeItemTask::onAppendMessageDone( KJob *job )
 void ChangeItemTask::onPreDeleteSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "PreDelete select failed: " << job->errorString();
+    qWarning() << "PreDelete select failed: " << job->errorString();
     if ( m_newUid > 0 ) {
       recordNewUid();
     } else {
@@ -206,7 +209,7 @@ void ChangeItemTask::triggerSearchJob()
 
     UidNextAttribute *uidNext = item().parentCollection().attribute<UidNextAttribute>();
     if ( !uidNext ) {
-      kWarning() << "Failed to determine new uid.";
+      qWarning() << "Failed to determine new uid.";
       cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
       search->deleteLater();
       return;
@@ -225,7 +228,7 @@ void ChangeItemTask::triggerSearchJob()
 void ChangeItemTask::onSearchDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << "Search failed: " << job->errorString();
+    qWarning() << "Search failed: " << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
@@ -233,7 +236,7 @@ void ChangeItemTask::onSearchDone( KJob *job )
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
 
   if ( search->results().count()!=1 ) {
-    kWarning() << "Failed to determine new uid.";
+    qWarning() << "Failed to determine new uid.";
     cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
     return;
   }
@@ -293,7 +296,7 @@ void ChangeItemTask::recordNewUid()
   }
 
   const QString remoteId =  QString::number( m_newUid );
-  kDebug( 5327 ) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
+  qCDebug(RESOURCE_IMAP_LOG) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
   i.setRemoteId( remoteId );
 
   changeCommitted( i );

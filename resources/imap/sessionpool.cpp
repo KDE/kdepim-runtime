@@ -334,7 +334,7 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
   }
 
   if ( m_account->encryptionMode() != KIMAP::LoginJob::Unencrypted && !QSslSocket::supportsSsl() ) {
-    kWarning() << "Crypto not supported!";
+    qWarning() << "Crypto not supported!";
     emit connectDone( EncryptionError,
                       i18n( "You requested TLS/SSL to connect to %1, but your "
                             "system does not seem to be set up for that.", m_account->server() ) );

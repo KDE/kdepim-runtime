@@ -23,7 +23,8 @@
 
 #include <QtCore/QUuid>
 
-#include <KDebug>
+#include "resource_imap_debug.h"
+#include <QDebug>
 #include <KLocale>
 
 #include <kimap/appendjob.h>
@@ -55,10 +56,10 @@ void AddItemTask::doStart( KIMAP::Session *session )
 
   const QString mailBox = mailBoxForCollection( collection() );
   if ( mailBox.isEmpty() ) {
-    kWarning() << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
+    qWarning() << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
   }
 
-  kDebug( 5327 ) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
+  qCDebug(RESOURCE_IMAP_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
 
   // save message to the server.
   KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
@@ -80,7 +81,7 @@ void AddItemTask::onAppendMessageDone( KJob *job )
   KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>( job );
 
   if ( append->error() ) {
-    kWarning() << append->errorString();
+    qWarning() << append->errorString();
     cancelTask( append->errorString() );
     return;
   }
@@ -114,7 +115,7 @@ void AddItemTask::onAppendMessageDone( KJob *job )
 void AddItemTask::onPreSearchSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
     cancelTask( job->errorString() );
   } else {
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
@@ -157,7 +158,7 @@ void AddItemTask::triggerSearchJob( KIMAP::Session *session )
 void AddItemTask::onSearchDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
@@ -181,7 +182,7 @@ void AddItemTask::applyFoundUid( qint64 uid )
     i.setRemoteId( QString::number( uid ) );
   else
     i.setRemoteId( QUuid::createUuid().toString() );
-  kDebug( 5327 ) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
+  qCDebug(RESOURCE_IMAP_LOG) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
 
   changeCommitted( i );
 

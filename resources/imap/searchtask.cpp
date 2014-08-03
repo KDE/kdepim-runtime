@@ -42,7 +42,7 @@ SearchTask::~SearchTask()
 
 void SearchTask::doStart( KIMAP::Session *session )
 {
-    kDebug() << collection().remoteId();
+    qDebug() << collection().remoteId();
 
     const QString mailbox = mailBoxForCollection( collection() );
     if ( session->selectedMailBox() == mailbox ) {
@@ -111,7 +111,7 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                     case Akonadi::SearchTerm::CondEqual:
                         return KIMAP::Term(KIMAP::Term::And, QVector<KIMAP::Term>() << KIMAP::Term(KIMAP::Term::Smaller, value + 1) << KIMAP::Term(KIMAP::Term::Larger, value + 1)).setNegated(term.isNegated());
                     case Akonadi::SearchTerm::CondContains:
-                        kDebug()<<" invalid condition for ByteSize";
+                        qDebug()<<" invalid condition for ByteSize";
                         break;
                 }
             }
@@ -131,7 +131,7 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                     case Akonadi::SearchTerm::CondEqual:
                         return KIMAP::Term(KIMAP::Term::SentOn, value).setNegated(term.isNegated());
                     case Akonadi::SearchTerm::CondContains:
-                        kDebug()<<" invalid condition for Date";
+                        qDebug()<<" invalid condition for Date";
                         break;
                 }
             }
@@ -177,7 +177,7 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                 break;
             case Akonadi::EmailSearchTerm::Unknown:
             default:
-                kWarning() << "unknown term " << term.key();
+                qWarning() << "unknown term " << term.key();
         }
     }
     return KIMAP::Term();
@@ -185,7 +185,7 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
 
 void SearchTask::doSearch( KIMAP::Session *session )
 {
-    kDebug() << m_query;
+    qDebug() << m_query;
 
     Akonadi::SearchQuery query = Akonadi::SearchQuery::fromJSON( m_query.toLatin1() );
     KIMAP::SearchJob *searchJob = new KIMAP::SearchJob( session );
@@ -193,7 +193,7 @@ void SearchTask::doSearch( KIMAP::Session *session )
 
     KIMAP::Term term = recursiveEmailTermMapping(query.term());
     if (term.isNull()) {
-        kWarning() << "failed to translate query " << m_query;
+        qWarning() << "failed to translate query " << m_query;
         searchFinished( QVector<qint64>() );
         cancelTask( "Invalid search" );
         return;
@@ -208,8 +208,8 @@ void SearchTask::doSearch( KIMAP::Session *session )
 void SearchTask::onSearchDone( KJob* job )
 {
     if ( job->error() ) {
-        kWarning() << "Failed to execute search " << job->errorString();
-        kDebug() << m_query;
+        qWarning() << "Failed to execute search " << job->errorString();
+        qDebug() << m_query;
         searchFinished( QVector<qint64>() );
         cancelTask( job->errorString() );
         return;
@@ -217,7 +217,7 @@ void SearchTask::onSearchDone( KJob* job )
 
     KIMAP::SearchJob *searchJob = qobject_cast<KIMAP::SearchJob*>( job );
     const QList<qint64> result = searchJob->results();
-    kDebug() << result.count() << "matches";
+    qDebug() << result.count() << "matches";
 
     searchFinished( result.toVector() );
     taskDone();
