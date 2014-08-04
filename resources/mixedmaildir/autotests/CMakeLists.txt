@@ -24,6 +24,7 @@ qt5_add_resources( testdata_generated_SRCS testdata.qrc )
 set( testdata_SRCS
   ${testdata_generated_SRCS}
   testdatautil.cpp
+  ../mixedmaildir_debug.cpp
 )
 
 
@@ -52,7 +53,7 @@ set( common_link_libraries
 )
 
 # test for overwritten methods
-add_executable(templatemethodstest ../mixedmaildirstore.cpp templatemethodstest.cpp)
+add_executable(templatemethodstest ../mixedmaildirstore.cpp templatemethodstest.cpp ../mixedmaildir_debug.cpp)
 add_test(templatemethodstest templatemethodstest)
 ecm_mark_as_test(mixedmaildir-templatemethodtest)
 
@@ -63,7 +64,7 @@ target_link_libraries(
 )
 
 # test for collection creation handling
-add_executable(collectioncreatetest  ../mixedmaildirstore.cpp collectioncreatetest.cpp)
+add_executable(collectioncreatetest  ../mixedmaildirstore.cpp collectioncreatetest.cpp ../mixedmaildir_debug.cpp)
 add_test(collectioncreatetest collectioncreatetest)
 ecm_mark_as_test(mixedmaildir-collectioncreatetest)
 
@@ -74,7 +75,7 @@ target_link_libraries(
 )
 
 # test for collection deletion handling
-add_executable(collectiondeletetest   ../mixedmaildirstore.cpp collectiondeletetest.cpp)
+add_executable(collectiondeletetest   ../mixedmaildirstore.cpp collectiondeletetest.cpp ../mixedmaildir_debug.cpp)
 add_test(collectiondeletetest collectiondeletetest)
 ecm_mark_as_test(mixedmaildir-collectiondeletetest)
 
@@ -84,7 +85,7 @@ target_link_libraries(
 )
 
 # test for collection fetching handling
-add_executable( collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp)
+add_executable( collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp ../mixedmaildir_debug.cpp)
 add_test(collectionfetchtest collectionfetchtest)
 ecm_mark_as_test(mixedmaildir-collectionfetchtest)
 
@@ -96,7 +97,7 @@ target_link_libraries(
 
 # test for collection modification handling
 add_executable( collectionmodifytest  ../mixedmaildirstore.cpp
- collectionmodifytest.cpp
+ collectionmodifytest.cpp ../mixedmaildir_debug.cpp
  ${testdata_SRCS}
 )
 add_test(collectionmodifytest collectionmodifytest)
@@ -109,7 +110,7 @@ target_link_libraries(
 )
 
 # test for collection move handling
-add_executable( collectionmovetest  ../mixedmaildirstore.cpp
+add_executable( collectionmovetest  ../mixedmaildirstore.cpp ../mixedmaildir_debug.cpp
  collectionmovetest.cpp
  ${testdata_SRCS}
 )
@@ -122,7 +123,7 @@ target_link_libraries(
 )
 
 # test for item creation handling
-add_executable(itemcreatetest   ../mixedmaildirstore.cpp
+add_executable(itemcreatetest   ../mixedmaildirstore.cpp ../mixedmaildir_debug.cpp
  itemcreatetest.cpp
  ${testdata_SRCS}
 )
