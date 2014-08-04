@@ -6,6 +6,8 @@ include_directories(
     tests
 )
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_migration_agent\")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC")
 
 set(migrationagent_SRCS
