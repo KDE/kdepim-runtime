@@ -476,13 +476,13 @@ QByteArray Maildir::readEntry( const QString& key ) const
     if ( realKey.isEmpty() ) {
         // FIXME error handling?
         qWarning() << "Maildir::readEntry unable to find: " << key;
-        d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
+        d->lastError = i18n( "Cannot locate mail file %1." ,key );
         return result;
     }
 
     QFile f( realKey );
     if ( !f.open( QIODevice::ReadOnly ) ) {
-      d->lastError = i18n( "Cannot open mail file %1." ).arg( realKey );
+      d->lastError = i18n( "Cannot open mail file %1.", realKey );
       return result;
     }
 
@@ -497,13 +497,13 @@ qint64 Maildir::size( const QString& key ) const
     if ( realKey.isEmpty() ) {
         // FIXME error handling?
         qWarning() << "Maildir::size unable to find: " << key;
-        d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
+        d->lastError = i18n( "Cannot locate mail file %1." , key );
         return -1;
     }
 
     QFileInfo info( realKey );
     if ( !info.exists() ) {
-        d->lastError = i18n( "Cannot open mail file %1." ).arg( realKey );
+        d->lastError = i18n( "Cannot open mail file %1." ,realKey );
         return -1;
     }
 
@@ -515,7 +515,7 @@ QDateTime Maildir::lastModified(const QString& key) const
     const QString realKey( d->findRealKey( key ) );
     if ( realKey.isEmpty() ) {
         qWarning() << "Maildir::lastModified unable to find: " << key;
-        d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
+        d->lastError = i18n( "Cannot locate mail file %1." , key );
         return QDateTime();
     }
 
@@ -534,7 +534,7 @@ QByteArray Maildir::readEntryHeadersFromFile( const QString& file ) const
     if ( !f.open( QIODevice::ReadOnly ) ) {
         // FIXME error handling?
         qWarning() << "Maildir::readEntryHeaders unable to find: " << file;
-        d->lastError = i18n( "Cannot locate mail file %1." ).arg( file );
+        d->lastError = i18n( "Cannot locate mail file %1." , file );
         return result;
     }
     f.map( 0, qMin( (qint64)8000, f.size() ) );
@@ -552,7 +552,7 @@ QByteArray Maildir::readEntryHeaders( const QString& key ) const
     const QString realKey( d->findRealKey( key ) );
     if ( realKey.isEmpty() ) {
         qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
-        d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
+        d->lastError = i18n( "Cannot locate mail file %1." , key );
         return QByteArray();
     }
 
@@ -577,7 +577,7 @@ bool Maildir::writeEntry( const QString& key, const QByteArray& data )
     if ( realKey.isEmpty() ) {
         // FIXME error handling?
         qWarning() << "Maildir::writeEntry unable to find: " << key;
-        d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
+        d->lastError = i18n( "Cannot locate mail file %1." ,key );
         return false;
     }
     QFile f( realKey );
@@ -585,7 +585,7 @@ bool Maildir::writeEntry( const QString& key, const QByteArray& data )
     result = result & ( f.write( data ) != -1 );
     f.close();
     if ( !result) {
-       d->lastError = i18n( "Cannot write to mail file %1." ).arg( realKey );
+       d->lastError = i18n( "Cannot write to mail file %1." ,realKey );
        return false;
     }
     return true;
@@ -612,7 +612,7 @@ QString Maildir::addEntry( const QByteArray& data )
     result = result & ( f.write( data ) != -1 );
     f.close();
     if ( !result) {
-       d->lastError = i18n( "Cannot write to mail file %1." ).arg( key );
+       d->lastError = i18n( "Cannot write to mail file %1." , key );
        return QString();
     }
     /*
@@ -626,7 +626,7 @@ QString Maildir::addEntry( const QByteArray& data )
      */
     if ( !f.rename( finalKey ) ) {
         qWarning() << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
-        d->lastError = i18n( "Failed to create mail file %1. The error was: %2" ).arg( finalKey, f.errorString() );
+        d->lastError = i18n( "Failed to create mail file %1. The error was: %2" , finalKey, f.errorString() );
         return QString();
     }
     KeyCache *keyCache = KeyCache::self();
@@ -652,7 +652,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
     QString realKey( d->findRealKey( key ) );
     if ( realKey.isEmpty() ) {
         qWarning() << "Maildir::changeEntryFlags unable to find: " << key;
-        d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
+        d->lastError = i18n( "Cannot locate mail file %1." , key );
         return QString();
     }
 
@@ -718,7 +718,7 @@ QString Maildir::changeEntryFlags(const QString& key, const Akonadi::Item::Flags
 
     if ( !f.rename( finalKey ) ) {
         qWarning() << "Maildir: Failed to rename entry: " << f.fileName() << " to "  << finalKey  << "! Error: " << f.errorString();
-        d->lastError = i18n( "Failed to update the file name %1 to %2 on the disk. The error was: %3." ).arg( f.fileName(), finalKey, f.errorString() );
+        d->lastError = i18n( "Failed to update the file name %1 to %2 on the disk. The error was: %3." , f.fileName(), finalKey, f.errorString() );
         return QString();
      }
 
@@ -794,7 +794,7 @@ QString Maildir::moveEntryTo( const QString &key, const Maildir &destination )
   const QString realKey( d->findRealKey( key ) );
   if ( realKey.isEmpty() ) {
     qWarning() << "Unable to find: " << key;
-    d->lastError = i18n( "Cannot locate mail file %1." ).arg( key );
+    d->lastError = i18n( "Cannot locate mail file %1." , key );
     return QString();
   }
   QFile f( realKey );
