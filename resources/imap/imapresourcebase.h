@@ -49,10 +49,10 @@ class Settings;
 
 class ImapResourceBase : public Akonadi::ResourceBase,
                          public Akonadi::AgentBase::ObserverV3,
-                         public Akonadi::AgentSearchInterface
+                        public Akonadi::AgentSearchInterface
 {
   Q_OBJECT
-
+  Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.ImapResourceBase")
 protected:
   using Akonadi::AgentBase::Observer::collectionChanged;
 
