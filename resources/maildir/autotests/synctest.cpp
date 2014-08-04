@@ -22,7 +22,7 @@
 #include <QDBusInterface>
 #include <QTime>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <AkonadiCore/AgentInstance>
 #include <AkonadiCore/AgentManager>
@@ -54,7 +54,7 @@ void SyncTest::testSync()
     t.start();
     instance.synchronize();
     QVERIFY( QTest::kWaitForSignal( interface, SIGNAL(synchronized()), TIMEOUT * 1000 ) );
-    kDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
+    qDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
   }
 }
 

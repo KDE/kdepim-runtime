@@ -18,10 +18,11 @@
 */
 
 #include "akonadi_serializer_mail.h"
+#include "akonadi_serializer_mail_debug.h"
 
 #include <QtCore/qplugin.h>
 
-#include <kdebug.h>
+#include <QDebug>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
@@ -51,7 +52,7 @@ template <typename T> static void parseAddrList( const QVarLengthArray<QByteArra
   for ( int i = 0; i < count; ++i ) {
     ImapParser::parseParenthesizedList( addrList[ i ], addr );
     if ( addr.count() != 4 ) {
-      kWarning( 5264 ) << "Error parsing envelope address field: " << addrList[ i ];
+      qCWarning(AKONADI_SERIALIZER_MAIL_LOG) << "Error parsing envelope address field: " << addrList[ i ];
       continue;
     }
     KMime::Types::Mailbox addrField;
@@ -97,7 +98,7 @@ bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIO
         QVarLengthArray<QByteArray, 16> env;
         ImapParser::parseParenthesizedList( buffer, env );
         if ( env.count() < 10 ) {
-          kWarning( 5264 ) << "Akonadi KMime Deserializer: Got invalid envelope: " << buffer;
+          qCWarning(AKONADI_SERIALIZER_MAIL_LOG) << "Akonadi KMime Deserializer: Got invalid envelope: " << buffer;
           return false;
         }
         Q_ASSERT( env.count() >= 10 );

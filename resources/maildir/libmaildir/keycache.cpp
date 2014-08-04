@@ -27,12 +27,12 @@ void KeyCache::addKeys( const QString& dir )
 {
   if ( !mNewKeys.contains( dir ) ) {
     mNewKeys.insert( dir, listNew( dir ) );
-    //kDebug() << "Added new keys for: " << dir;
+    //qDebug() << "Added new keys for: " << dir;
   }
 
   if ( !mCurKeys.contains( dir ) ) {
     mCurKeys.insert( dir, listCurrent( dir ) );
-    //kDebug() << "Added cur keys for: " << dir;
+    //qDebug() << "Added cur keys for: " << dir;
   }
 }
 
@@ -46,18 +46,18 @@ void KeyCache::refreshKeys( const QString& dir )
 void KeyCache::addNewKey( const QString& dir, const QString& key )
 {
     mNewKeys[dir].insert( key );
-  // kDebug() << "Added new key for : " << dir << " key: " << key;
+  // qDebug() << "Added new key for : " << dir << " key: " << key;
 }
 
 void KeyCache::addCurKey( const QString& dir, const QString& key )
 {
     mCurKeys[dir].insert( key );
-  // kDebug() << "Added cur key for : " << dir << " key:" << key;
+  // qDebug() << "Added cur key for : " << dir << " key:" << key;
 }
 
 void KeyCache::removeKey( const QString& dir, const QString& key )
 {
-  //kDebug() << "Removed new and cur key for: " << dir << " key:" << key;
+  //qDebug() << "Removed new and cur key for: " << dir << " key:" << key;
     mNewKeys[dir].remove( key );
     mCurKeys[dir].remove( key );
 }

@@ -30,7 +30,8 @@
 #include <AkonadiCore/attributefactory.h>
 
 #include <klocale.h>
-#include <kdebug.h>
+#include <akonadi_serializer_kalarm_debug.h>
+#include <QDebug>
 
 #include <QtCore/qplugin.h>
 
@@ -49,14 +50,14 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
     KCalCore::Incidence::Ptr i = mFormat.fromString(QString::fromUtf8(data.readAll()));
     if (!i)
     {
-        kWarning(5954) << "Failed to parse incidence!";
+        qCWarning(AKONADI_SERIALIZER_KALARM_LOG) << "Failed to parse incidence!";
         data.seek(0);
-        kWarning(5954) << QString::fromUtf8(data.readAll());
+        qCWarning(AKONADI_SERIALIZER_KALARM_LOG) << QString::fromUtf8(data.readAll());
         return false;
     }
     if (i->type() != KCalCore::Incidence::TypeEvent)
     {
-        kWarning(5954) << "Incidence with uid" << i->uid() << "is not an Event!";
+        qCWarning(AKONADI_SERIALIZER_KALARM_LOG) << "Incidence with uid" << i->uid() << "is not an Event!";
         data.seek(0);
         return false;
     }
@@ -64,7 +65,7 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
     const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty()  ||  !event.isValid())
     {
-        kWarning(5954) << "Event with uid" << event.id() << "contains no usable alarms!";
+        qCWarning(AKONADI_SERIALIZER_KALARM_LOG) << "Event with uid" << event.id() << "contains no usable alarms!";
         data.seek(0);
         return false;
     }
@@ -81,7 +82,7 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
     {
         Attribute* a = item.attribute(dummy.type());
         if (!a)
-            kError(5954) << "deserialize(): Event with uid" << event.id() << "contains null attribute";
+            qCCritical(AKONADI_SERIALIZER_KALARM_LOG) << "deserialize(): Event with uid" << event.id() << "contains null attribute";
         else
         {
             EventAttribute* evAttr = dynamic_cast<EventAttribute*>(a);
@@ -90,7 +91,7 @@ bool SerializerPluginKAlarm::deserialize(Item& item, const QByteArray& label, QI
                 // Registering EventAttribute doesn't work in the serializer
                 // unless the application also registers it. This doesn't
                 // matter unless the application uses KAEvent class.
-                kError(5954) << "deserialize(): Event with uid" << event.id() << "contains unknown type EventAttribute (application must call AttributeFactory::registerAttribute())";
+                qCCritical(AKONADI_SERIALIZER_KALARM_LOG) << "deserialize(): Event with uid" << event.id() << "contains unknown type EventAttribute (application must call AttributeFactory::registerAttribute())";
             }
             else
             {

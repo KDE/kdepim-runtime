@@ -31,7 +31,7 @@
 #include "akonadislave_debug.h"
 #include <kapplication.h>
 #include <kcmdlineargs.h>
-#include <kdebug.h>
+#include <QDebug>
 #include <klocale.h>
 
 #include <QDateTime>

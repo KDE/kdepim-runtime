@@ -40,7 +40,7 @@ add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_ser
 target_link_libraries(akonadi_serializer_addressee  KF5::Abc KF5::AkonadiCore KF5::AkonadiAbc)
 install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
-set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp )
+set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp akonadi_serializer_mail_debug.cpp)
 add_library(akonadi_serializer_mail MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_mail_PART_SRCS})
 target_link_libraries(akonadi_serializer_mail  KF5::Mime KF5::AkonadiCore KF5::AkonadiMime ${AKONADI_COMMON_LIBRARIES} Qt5::DBus )
 install(TARGETS akonadi_serializer_mail DESTINATION ${PLUGIN_INSTALL_DIR})
@@ -66,7 +66,7 @@ add_library(akonadi_serializer_microblog MODULE ${SERIALIZER_TYPE} ${akonadi_ser
 target_link_libraries(akonadi_serializer_microblog KF5::AkonadiCore   ${QT_QTXML_LIBRARY} KF5::PimUtils KF5::MicroBlog)
 install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
 
-set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp)
+set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp akonadi_serializer_kalarm_debug.cpp)
 add_library(akonadi_serializer_kalarm MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
 target_link_libraries(akonadi_serializer_kalarm
                       KF5::AlarmCalendar
