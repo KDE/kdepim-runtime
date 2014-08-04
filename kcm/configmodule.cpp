@@ -27,6 +27,7 @@
 #include <qboxlayout.h>
 #include <KGlobal>
 #include <KLocale>
+#include <AkonadiCore/control.h>
 
 K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
 
@@ -36,6 +37,7 @@ ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
     //QT5 KLocale::global()->insertCatalog( QLatin1String("kcm_akonadi") );
     //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi") );
 
+    Akonadi::Control::widgetNeedsAkonadi(this);
     setButtons( KCModule::Default | KCModule::Apply );
     QVBoxLayout *l = new QVBoxLayout( this );
     l->setMargin( 0 );
