@@ -1,6 +1,8 @@
 
 add_subdirectory( autotests )
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
+
 set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
 
 add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
