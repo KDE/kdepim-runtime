@@ -23,8 +23,8 @@
 #include <QtCore/QFile>
 
 #include <kabc/vcardconverter.h>
-#include <k4aboutdata.h>
-#include <kcmdlineargs.h>
+#include <kaboutdata.h>
+
 #include <kconfig.h>
 #include <kconfiggroup.h>
 #include <kglobal.h>
@@ -33,6 +33,8 @@
 #include <qdebug.h>
 #include <KSharedConfig>
 #include <QStandardPaths>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 KABC::Addressee::List readContacts( bool *ok )
 {
@@ -95,24 +97,27 @@ void convertAddressBook()
 
 int main( int argc, char **argv )
 {
-  K4AboutData aboutData( "kaddressbookmigrator", QByteArray(), ki18n( "Migration tool for the KDE address book" ), "0.1" );
-  aboutData.addAuthor( ki18n( "Tobias Koenig" ), ki18n( "Author" ), "tokoe@kde.org" );
+  KAboutData aboutData( QLatin1String("kaddressbookmigrator"), i18n( "Migration tool for the KDE address book" ), QLatin1String("0.1") );
+  aboutData.addAuthor( i18n( "Tobias Koenig" ), i18n( "Author" ), QLatin1String("tokoe@kde.org") );
 
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KCmdLineOptions options;
-  options.add( "disable-autostart", ki18n( "Disable automatic startup on login" ) );
-  KCmdLineArgs::addCmdLineOptions( options );
+    QCoreApplication app(argc, argv);
+    QCommandLineParser parser;
+    KAboutData::setApplicationData(aboutData);
+    parser.addVersionOption();
+    parser.addHelpOption();
+  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("disable-autostart"), i18n( "Disable automatic startup on login" )));
 
-  QCoreApplication app( KCmdLineArgs::qtArgc(), KCmdLineArgs::qtArgv() );
+    //PORTING SCRIPT: adapt aboutdata variable if necessary
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
 
-  KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-
-  if ( args->isSet( "disable-autostart" ) ) {
+  if ( parser.isSet( QLatin1String("disable-autostart") ) ) {
     KSharedConfigPtr config = KSharedConfig::openConfig();
     KConfigGroup group( config, "Startup" );
     group.writeEntry( "EnableAutostart", false );
   }
-  args->clear();
+  
   convertAddressBook();
 
   return 0;
