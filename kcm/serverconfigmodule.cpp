@@ -37,15 +37,13 @@
 #include <KLocale>
 
 K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )
-K_EXPORT_PLUGIN( ServerConfigModuleFactory( "kcm_akonadi_server" ) )
 
 using namespace Akonadi;
 
 ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & args  ) :
-    KCModule( /*ServerConfigModuleFactory::componentData(),*/ parent, args )
+    KCModule( parent, args )
 {
   //QT5 KLocale::global()->insertCatalog( QLatin1String("kcm_akonadi") );
-  //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi") );
 
   QVBoxLayout *layout = new QVBoxLayout( this );
   setLayout( layout );

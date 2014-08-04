@@ -32,10 +32,9 @@
 K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
 
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
-        KCModule( /*ResourcesConfigFactory::componentData(),*/ parent, args )
+        KCModule( parent, args )
 {
     //QT5 KLocale::global()->insertCatalog( QLatin1String("kcm_akonadi") );
-    //QT5 KLocale::global()->insertCatalog( QLatin1String("libakonadi") );
 
     Akonadi::Control::widgetNeedsAkonadi(this);
     setButtons( KCModule::Default | KCModule::Apply );

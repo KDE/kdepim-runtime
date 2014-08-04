@@ -9,6 +9,8 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kcmakonadi_SOURCE_DIR}")
   find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 endif()
 
+add_definitions(-DTRANSLATION_DOMAIN=\"kcm_akonadi\")
+
 set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
 ki18n_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
 add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
