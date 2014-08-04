@@ -9,7 +9,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/kmindexreader
 )
 
-
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mixedmaildir_resource\")
 
 add_subdirectory(kmindexreader)
 

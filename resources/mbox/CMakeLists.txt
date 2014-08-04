@@ -2,6 +2,7 @@
 add_subdirectory(wizard)
 
 ########### next target ###############
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mbox_resource\")
 
 set( mboxresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}

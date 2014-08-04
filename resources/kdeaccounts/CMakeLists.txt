@@ -7,6 +7,9 @@ include_directories(
 
 ########### next target ###############
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_kdeaccounts_resource\")
+
+
 set( kdeaccountsresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   kdeaccountsresource.cpp

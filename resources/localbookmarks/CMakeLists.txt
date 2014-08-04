@@ -3,6 +3,8 @@
 
 ########### next target ###############
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_localbookmarks_resource\")
+
 set( localbookmarksresource_SRCS
   localbookmarksresource.cpp
 )
