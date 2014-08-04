@@ -22,7 +22,7 @@
 #include <item.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
-#include <kdebug.h>
+#include <QDebug>
 #include <kjob.h>
 
 EtagCache::EtagCache()

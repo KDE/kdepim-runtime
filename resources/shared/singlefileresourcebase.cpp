@@ -26,7 +26,7 @@
 
 #include <kio/job.h>
 #include <kio/jobuidelegate.h>
-#include <KDebug>
+#include <QDebug>
 #include <KDirWatch>
 #include <KLocalizedString>
 #include <KLocale>

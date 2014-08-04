@@ -22,7 +22,7 @@
 #include <QtCore/QTimer>
 
 #include <KWallet/Wallet>
-#include <KDebug>
+#include <QDebug>
 #include <KWindowSystem>
 
 #include <KGAPI/Account>

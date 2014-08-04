@@ -24,7 +24,7 @@
 #include <itemfetchjob.h>
 #include <itemmodifyjob.h>
 #include <Akonadi/KMime/MessageFlags>
-#include <KDebug>
+#include <QDebug>
 
 using namespace MailTransport;
 

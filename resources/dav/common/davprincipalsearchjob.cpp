@@ -23,7 +23,7 @@
 #include <kio/job.h>
 #include <kio/davjob.h>
 #include <klocale.h>
-#include <kdebug.h>
+#include <QDebug>
 
 DavPrincipalSearchJob::DavPrincipalSearchJob( const DavUtils::DavUrl& url, DavPrincipalSearchJob::FilterType type,
                                               const QString& filter, QObject* parent )

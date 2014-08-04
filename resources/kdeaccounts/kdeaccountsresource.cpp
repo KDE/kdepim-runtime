@@ -134,7 +134,7 @@ bool KDEAccountsResource::readFromFile( const QString &fileName )
 
     QStringList parts = line.split( QLatin1Char( ' ' ) );
     if ( parts.count() < 3 ) {
-        kWarning() << "Failed to parse line \"" << line << "\", invalid format";
+        qWarning() << "Failed to parse line \"" << line << "\", invalid format";
         continue;
     }
 

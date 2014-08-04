@@ -20,7 +20,7 @@
 #include <AkonadiCore/tagcreatejob.h>
 #include <AkonadiCore/itemmodifyjob.h>
 
-#include <KDebug>
+#include <QDebug>
 
 using namespace Akonadi;
 
@@ -49,7 +49,7 @@ void CreateAndSetTagsJob::onCreateDone(KJob *job)
 {
   mCount++;
   if (job->error()) {
-      kWarning() << "Failed to create tag " << job->errorString();
+      qWarning() << "Failed to create tag " << job->errorString();
   } else {
     Akonadi::TagCreateJob *createJob = static_cast<Akonadi::TagCreateJob*>(job);
     mCreatedTags << createJob->tag();
@@ -66,7 +66,7 @@ void CreateAndSetTagsJob::onCreateDone(KJob *job)
 void CreateAndSetTagsJob::onModifyDone(KJob *job)
 {
   if (job->error()) {
-    kWarning() << "Failed to modify item " << job->errorString();
+    qWarning() << "Failed to modify item " << job->errorString();
     setError(KJob::UserDefinedError);
   }
   emitResult();

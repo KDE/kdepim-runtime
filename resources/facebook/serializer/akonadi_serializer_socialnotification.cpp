@@ -30,7 +30,7 @@
 #include <qjson/serializer.h>
 #include <qjson/parser.h>
 
-#include <KDebug>
+#include <QDebug>
 
 using namespace Akonadi;
 

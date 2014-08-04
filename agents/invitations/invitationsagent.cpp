@@ -44,7 +44,7 @@
 #include <KCalCore/Todo>
 #include <KConfig>
 #include <KConfigSkeleton>
-#include <KDebug>
+#include <QDebug>
 #include <KJob>
 #include <KLocalizedString>
 #include <KMime/Content>

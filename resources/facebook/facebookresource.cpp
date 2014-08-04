@@ -92,7 +92,7 @@ void FacebookResource::configurationChanged()
 #ifdef HAVE_ACCOUNTS
 void FacebookResource::configureByAccount( int accountId )
 {
-  kDebug() << "Starting credentials job";
+  qDebug() << "Starting credentials job";
   GetCredentialsJob *gc = new GetCredentialsJob( accountId, this );
   connect(gc, SIGNAL(finished(KJob*)), SLOT(slotGetCredentials(KJob*)));
   gc->start();
@@ -150,7 +150,7 @@ void FacebookResource::slotAbortRequested()
 {
   if ( !mIdle ) {
     foreach ( const QPointer<KJob> &job, mCurrentJobs ) {
-      kDebug() << "Killing current job:" << job;
+      qDebug() << "Killing current job:" << job;
       job->kill( KJob::Quietly );
     }
     abort();
@@ -234,7 +234,7 @@ bool FacebookResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
 {
   Q_UNUSED( parts );
 
-  kDebug() << item.mimeType();
+  qDebug() << item.mimeType();
 
   if ( item.mimeType() == KABC::Addressee::mimeType() ) {
     // TODO: Is this ever called??
@@ -263,7 +263,7 @@ bool FacebookResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
     postJob->start();
   } else if ( item.mimeType() == QLatin1String("text/x-vnd.akonadi.socialnotification") ) {
     //FIXME: Need to figure out how to fetch single notification
-    kDebug() << "Notifications listjob";
+    qDebug() << "Notifications listjob";
   }
   return true;
 }
@@ -400,7 +400,7 @@ void FacebookResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
       cancelTask();
     }
   } else if ( collection.remoteId() == postsRID ) {
-    kDebug() << "Adding new status";
+    qDebug() << "Adding new status";
     QString message;
     if ( item.hasPayload<KFbAPI::PostInfo>() ) {
       message = item.payload<KFbAPI::PostInfo>().message();

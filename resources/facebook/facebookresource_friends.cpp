@@ -88,13 +88,13 @@ void FacebookResource::friendListJobFinished( KJob *job )
       // See http://bugs.developers.facebook.net/show_bug.cgi?id=15475
       const KDateTime stampOfExisting = mExistingFriends.value( user->id(), KDateTime() );
       if ( !stampOfExisting.isValid() ) {
-        kDebug() << "Friend" << user->id() << user->name() << "is new!";
+        qDebug() << "Friend" << user->id() << user->name() << "is new!";
         mNewOrChangedFriends.append( user );
       } else if ( user->updatedTime() > stampOfExisting ) {
-        kDebug() << "Friend" << user->id() << user->name() << "is updated!";
+        qDebug() << "Friend" << user->id() << user->name() << "is updated!";
         mNewOrChangedFriends.append( user );
       } else {
-        //kDebug() << "Friend" << user->id() << user->name() << "is old.";
+        //qDebug() << "Friend" << user->id() << user->name() << "is old.";
       }
 #else
       mNewOrChangedFriends.append( user );
@@ -112,7 +112,7 @@ void FacebookResource::friendListJobFinished( KJob *job )
         }
       }
       if ( !found ) {
-        kDebug() << friendId << "is no longer your friend :(";
+        qDebug() << friendId << "is no longer your friend :(";
         Item removedItem;
         removedItem.setRemoteId( friendId );
         removedItems.append( removedItem );

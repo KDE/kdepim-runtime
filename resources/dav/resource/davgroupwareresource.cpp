@@ -55,7 +55,7 @@
 #include <kabc/vcardconverter.h>
 #include <kwindowsystem.h>
 #include <KLocalizedString>
-#include <KDebug>
+#include <QDebug>
 
 #include <QtCore/QSet>
 #include <QtDBus/QDBusConnection>

@@ -30,7 +30,7 @@
 
 #include <ItemCopyJob>
 #include <KGlobal>
-#include <KDebug>
+#include <QDebug>
 #include <KLocale>
 
 using namespace Akonadi;
@@ -90,7 +90,7 @@ void MTDummyResource::configure( WId windowId )
 
 void MTDummyResource::sendItem( const Item &message )
 {
-  kDebug() << "id" << message.id();
+  qDebug() << "id" << message.id();
   Q_ASSERT( currentlySending == -1 );
   currentlySending = message.id();
   ItemCopyJob *job = new ItemCopyJob( message, Collection( Settings::self()->sink() ) );

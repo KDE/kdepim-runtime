@@ -30,7 +30,7 @@
 typedef KBiHash<QPersistentModelIndex, QModelIndex> SourceProxyIndexMapping;
 typedef KBiHash<qint64, QModelIndex> ParentMapping;
 
-#define KDO(object) kDebug() << #object << object
+#define KDO(object) qDebug() << #object << object
 #define SON(object) object->setObjectName(#object)
 
 class QItemSelectionModel;

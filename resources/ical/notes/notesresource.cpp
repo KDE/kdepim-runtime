@@ -26,7 +26,7 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <kconfigskeleton.h>
-#include <kdebug.h>
+#include <QDebug>
 
 using namespace Akonadi;
 using namespace KCalCore;

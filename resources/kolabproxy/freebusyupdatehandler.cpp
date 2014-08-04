@@ -19,7 +19,7 @@
 
 #include "freebusyupdatehandler.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocalizedString>
 #include <KPassivePopup>
 #include <KIO/Job>
@@ -57,12 +57,12 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
   //FIXME this assumption is no longer true. Kolabfolders can also be toplevel.
   if ( !path.startsWith( QLatin1Char('/') ) ) {
     //The path separator can i.e. also be '.' on a different imap server
-    kWarning() << "Unsupported path separator";
+    qWarning() << "Unsupported path separator";
     return;
   }
   const int secondSlash = path.indexOf( QLatin1Char('/'), 1 );
   if ( secondSlash == -1 ) {
-    kWarning() << "path is too short: " << path;
+    qWarning() << "path is too short: " << path;
     return;
   }
 
@@ -89,7 +89,7 @@ void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QStri
 void FreeBusyUpdateHandler::timeout()
 {
   foreach ( const KUrl &url, mUrls ) {
-    kDebug() << "Triggering PFB update for " << url;
+    qDebug() << "Triggering PFB update for " << url;
 
     KIO::Job *job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
     // we want an error in case of 404

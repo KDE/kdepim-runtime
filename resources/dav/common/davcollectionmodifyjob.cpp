@@ -23,7 +23,7 @@
 #include <kio/davjob.h>
 #include <kio/job.h>
 #include <klocale.h>
-#include <kdebug.h>
+#include <QDebug>
 
 DavCollectionModifyJob::DavCollectionModifyJob( const DavUtils::DavUrl &url, QObject *parent )
   : KJob( parent ), mUrl( url )

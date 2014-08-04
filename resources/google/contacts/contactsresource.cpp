@@ -32,7 +32,7 @@
 #include <KABC/Picture>
 
 #include <KLocalizedString>
-#include <KDebug>
+#include <QDebug>
 
 #include <QtCore/QPointer>
 

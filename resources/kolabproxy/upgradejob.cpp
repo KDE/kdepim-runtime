@@ -40,12 +40,12 @@ UpgradeJob::UpgradeJob( Kolab::Version targetVersion,
     m_agentInstance( instance ),
     m_targetVersion( targetVersion )
 {
-  kDebug() << targetVersion;
+  qDebug() << targetVersion;
 }
 
 void UpgradeJob::doStart()
 {
-  kDebug();
+  qDebug();
   //Get all subdirectories of kolab resource
   Akonadi::CollectionFetchJob *job =
     new Akonadi::CollectionFetchJob( Akonadi::Collection::root(),
@@ -56,9 +56,9 @@ void UpgradeJob::doStart()
 
 void UpgradeJob::collectionFetchResult( KJob *job )
 {
-  kDebug();
+  qDebug();
   if ( job->error() ) {
-    kDebug() << job->errorString();
+    qDebug() << job->errorString();
     emitResult();
     return;
   }
@@ -72,7 +72,7 @@ void UpgradeJob::collectionFetchResult( KJob *job )
     // but that's just a workaround.
     if ( !( col.rights() & Akonadi::Collection::CanCreateCollection ) ||
          !( col.rights() & Akonadi::Collection::CanChangeItem ) ) {
-      kDebug() << "skipping shared/non-editable folder";
+      qDebug() << "skipping shared/non-editable folder";
       continue;
     }
     KolabV2::FolderType folderType = KolabV2::Mail;
@@ -82,12 +82,12 @@ void UpgradeJob::collectionFetchResult( KJob *job )
         KolabV2::folderTypeFromString( Kolab::getFolderTypeAnnotation( attr->annotations() ) );
     }
     if ( folderType == KolabV2::Mail ) {
-      //kWarning() << "Wrong folder annotation "
+      //qWarning() << "Wrong folder annotation "
       //           << "(this should never happen, the annotation is probably not available)";
       continue;
     }
 
-    kDebug() << "upgrading " << col.id();
+    qDebug() << "upgrading " << col.id();
     collCount++;
     Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob( col, this );
     itemFetchJob->fetchScope().fetchFullPayload( true );
@@ -106,7 +106,7 @@ void UpgradeJob::collectionFetchResult( KJob *job )
 void UpgradeJob::itemFetchResult( KJob *job )
 {
   if ( job->error() ) {
-    kDebug() << job->errorString();
+    qDebug() << job->errorString();
     checkResult();
     return; // Akonadi::Job propagates that automatically
   }
@@ -142,7 +142,7 @@ void UpgradeJob::itemFetchResult( KJob *job )
       qWarning() << "invalid item";
       continue;
     }
-    kDebug() << "updating item " << imapItem.id();
+    qDebug() << "updating item " << imapItem.id();
     const Akonadi::Item::List &translatedItems =
       handler->translateItems( Akonadi::Item::List() << imapItem );
 
@@ -168,9 +168,9 @@ void UpgradeJob::checkResult()
 void UpgradeJob::itemModifyResult( KJob *job )
 {
   if ( job->error() ) {
-    kDebug() << job->errorString();
+    qDebug() << job->errorString();
     return; // Akonadi::Job propagates that automatically
   }
-  kDebug() << "modjob done";
+  qDebug() << "modjob done";
 }
 

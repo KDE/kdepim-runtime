@@ -35,7 +35,7 @@
 #include <KLocalizedString>
 #include <QPushButton>
 #include <KLineEdit>
-#include <KDebug>
+#include <QDebug>
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>

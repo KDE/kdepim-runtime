@@ -51,7 +51,7 @@ void FacebookResource::postsListFetched( KJob *job )
     setItemStreamingEnabled( true );
 
     Item::List postItems;
-    kDebug() << "Going into foreach";
+    qDebug() << "Going into foreach";
     Q_FOREACH ( const KFbAPI::PostInfo &postInfo, listJob->allPosts() ) {
       Item post;
       post.setRemoteId( postInfo.id() );
@@ -187,7 +187,7 @@ void FacebookResource::postAddJobFinished( KJob *job )
     post.setRemoteId( QLatin1String("non-existing-id") );
     changeCommitted( post );
     resetState();
-    kDebug() << "Status posted to server";
+    qDebug() << "Status posted to server";
   }
 
   addJob->deleteLater();

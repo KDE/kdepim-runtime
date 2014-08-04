@@ -20,6 +20,7 @@
 #include "retrieveitemsjob.h"
 
 #include "mixedmaildirstore.h"
+#include "mixedmaildir_debug.h"
 
 #include "filestore/itemfetchjob.h"
 
@@ -36,7 +37,7 @@
 #include <AkonadiCore/itemmodifyjob.h>
 #include <AkonadiCore/transactionsequence.h>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QDateTime>
 #include <QQueue>
@@ -101,7 +102,7 @@ class RetrieveItemsJob::Private
 void RetrieveItemsJob::Private::itemCreateJobResult( KJob *job )
 {
   if ( job->error() ) {
-    kError() << "Error running ItemCreateJob: " << job->errorText();
+    qCritical() << "Error running ItemCreateJob: " << job->errorText();
   }
 
   mNumItemCreateJobs--;
@@ -111,7 +112,7 @@ void RetrieveItemsJob::Private::itemCreateJobResult( KJob *job )
 void RetrieveItemsJob::Private::itemModifyJobResult( KJob *job )
 {
   if ( job->error() ) {
-    kError() << "Error running ItemModifyJob: " << job->errorText();
+    qCritical() << "Error running ItemModifyJob: " << job->errorText();
   }
 
   mNumItemModifyJobs--;
@@ -127,7 +128,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
 
   Item::List items = itemFetch->items();
   itemFetch->clearItems(); // save memory
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Akonadi fetch got" << items.count() << "items";
+  qCDebug(MIXEDMAILDIR_LOG) << "Akonadi fetch got" << items.count() << "items";
 
   mServerItemsByRemoteId.reserve( items.size() );
   for ( int i = 0 ; i < items.count() ; ++i ) {
@@ -140,7 +141,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
     }
   }
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "of which" << mServerItemsByRemoteId.count() << "have remoteId";
+  qCDebug(MIXEDMAILDIR_LOG) << "of which" << mServerItemsByRemoteId.count() << "have remoteId";
 
   FileStore::ItemFetchJob *storeFetch = mStore->fetchItems( mCollection );
   // just basic items, no data
@@ -150,7 +151,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
 
 void RetrieveItemsJob::Private::storeListResult( KJob *job )
 {
-  kDebug() << "storeList->error=" << job->error();
+  qDebug() << "storeList->error=" << job->error();
   FileStore::ItemFetchJob *storeList = qobject_cast<FileStore::ItemFetchJob*>( job );
   Q_ASSERT( storeList != 0 );
 
@@ -199,7 +200,7 @@ void RetrieveItemsJob::Private::storeListResult( KJob *job )
     }
   }
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Store fetch got" << storedItems.count() << "items"
+  qCDebug(MIXEDMAILDIR_LOG) << "Store fetch got" << storedItems.count() << "items"
                                    << "of which" << mNewItems.count() << "are new and" << mChangedItems.count()
                                    << "are changed and" << mServerItemsByRemoteId.count()
                                    << "need to be removed";
@@ -235,7 +236,7 @@ void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
 
   if ( fetchJob->items().count() != 1 ) {
     const Item item = fetchJob->item();
-    kWarning() << "Store fetch for new item" << item.remoteId()
+    qWarning() << "Store fetch for new item" << item.remoteId()
                << "in collection" << item.parentCollection().id()
                << "," << item.parentCollection().remoteId()
                << "did not return the expected item. error="
@@ -292,7 +293,7 @@ void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
 
   if ( fetchJob->items().count() != 1 ) {
     const Item item = fetchJob->item();
-    kWarning() << "Store fetch for changed item" << item.remoteId()
+    qWarning() << "Store fetch for changed item" << item.remoteId()
                << "in collection" << item.parentCollection().id()
                << "," << item.parentCollection().remoteId()
                << "did not return the expected item. error="

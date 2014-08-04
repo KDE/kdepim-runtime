@@ -31,7 +31,7 @@
 #include "itemmovejob.h"
 #include "storecompactjob.h"
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QQueue>
 #include <QTimer>
@@ -116,7 +116,7 @@ class FileStore::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
 
     void runNextJob()
     {
-/*      kDebug() << "Queue with" << mJobQueue.count() << "entries";*/
+/*      qDebug() << "Queue with" << mJobQueue.count() << "entries";*/
       if ( mJobQueue.isEmpty() ) {
         mJobRunTimer.stop();
         return;
@@ -124,7 +124,7 @@ class FileStore::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
 
       FileStore::Job *job = mJobQueue.dequeue();
       while ( job != 0 && job->error() != 0 ) {
-/*        kDebug() << "Dequeued job" << job << "has error ("
+/*        qDebug() << "Dequeued job" << job << "has error ("
                  << job->error() << "," << job->errorText() << ")";*/
         mParent->emitResult( job );
         if ( !mJobQueue.isEmpty() ) {
@@ -135,13 +135,13 @@ class FileStore::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
       }
 
       if ( job != 0 ) {
-/*        kDebug() << "Dequeued job" << job << "is ready";*/
+/*        qDebug() << "Dequeued job" << job << "is ready";*/
         QList<FileStore::Job*> jobs;
         jobs << job;
 
         emit mParent->jobsReady( jobs );
       } else {
-/*        kDebug() << "Queue now empty";*/
+/*        qDebug() << "Queue now empty";*/
         mJobRunTimer.stop();
       }
     }
@@ -157,7 +157,7 @@ class FileStore::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
       Q_UNUSED( className );
       mJobQueue.enqueue( job );
 
-//       kDebug() << "adding" << className << ". Queue now with"
+//       qDebug() << "adding" << className << ". Queue now with"
 //                << mJobQueue.count() << "entries";
 
       mJobRunTimer.start( 0 );

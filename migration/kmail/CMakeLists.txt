@@ -11,6 +11,7 @@ set(kmail-migrator_srcs
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/collectionannotationsattribute.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/createandsettagsjob.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildirstore.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildir_debug.cpp
 )
 
 include_directories(

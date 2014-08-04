@@ -24,7 +24,8 @@
 
 #include "kmindexreader.h"
 
-#include <KDebug>
+#include <QDebug>
+#include "../mixedmaildir_debug.h"
 #include <kde_file.h>
 #include <akonadi/kmime/messagestatus.h>
 using Akonadi::MessageStatus;
@@ -181,12 +182,12 @@ KMIndexReader::KMIndexReader(const QString& indexFile)
 , mError( false )
 {
   if( !mIndexFile.exists() ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "file doesn't exist";
+    qCDebug(MIXEDMAILDIR_LOG) << "file doesn't exist";
     mError = true;
   }
 
   if( !mIndexFile.open( QIODevice::ReadOnly ) ) {
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "file cant be open";
+    qCDebug(MIXEDMAILDIR_LOG) << "file cant be open";
     mError = true;
   }
 
@@ -238,17 +239,17 @@ bool KMIndexReader::readHeader( int *version )
       *version = indexVersion;
   if ( indexVersion < 1505 ) {
       if( indexVersion == 1503 ) {
-        kWarning() << "Need to convert old index file" << mIndexFileName << "to utf-8";
+        qWarning() << "Need to convert old index file" << mIndexFileName << "to utf-8";
         mConvertToUtf8 = true;
       }
       return true;
   } else if ( indexVersion == 1505 ) {
   } else if ( indexVersion < INDEX_VERSION ) {
-      kFatal() << "Index file" << mIndexFileName << "is out of date. What to do?";
+      qCritical() << "Index file" << mIndexFileName << "is out of date. What to do?";
 //       createIndexFromContents();
       return false;
   } else if( indexVersion > INDEX_VERSION ) {
-      kFatal() << "index file of newer version";
+      qFatal("index file of newer version");
       return false;
   } else {
       // Header
@@ -258,7 +259,7 @@ bool KMIndexReader::readHeader( int *version )
       quint32 header_length = 0;
       KDE_fseek( mFp, sizeof( char ), SEEK_CUR );
       if ( fread( &header_length, sizeof( header_length ), readCount, mFp ) != readCount ) {
-         kWarning() << "Failed to read header_length";
+         qWarning() << "Failed to read header_length";
          return false;
       }
       if ( header_length > 0xFFFF )
@@ -270,7 +271,7 @@ bool KMIndexReader::readHeader( int *version )
       // Process available header parts
       if ( header_length >= sizeof( byteOrder ) ) {
          if ( fread( &byteOrder, sizeof( byteOrder ), readCount, mFp ) != readCount ) {
-             kWarning() << "Failed to read byteOrder";
+             qWarning() << "Failed to read byteOrder";
              return false;
          }
          mIndexSwapByteOrder = ( byteOrder == 0x78563412 );
@@ -278,7 +279,7 @@ bool KMIndexReader::readHeader( int *version )
 
          if ( header_length >= sizeof( sizeOfLong ) ) {
             if ( fread( &sizeOfLong, sizeof( sizeOfLong ), readCount, mFp ) != readCount ) {
-                kWarning() << "Failed to read sizeOfLong";
+                qWarning() << "Failed to read sizeOfLong";
                 return false;
             }
             if ( mIndexSwapByteOrder )
@@ -289,17 +290,17 @@ bool KMIndexReader::readHeader( int *version )
          }
       }
       if ( needs_update || mIndexSwapByteOrder || ( mIndexSizeOfLong != sizeof( long ) ) ) {
-      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "DIRTY!";
+      qCDebug(MIXEDMAILDIR_LOG) << "DIRTY!";
 //         setDirty( true );
       }
       // Seek to end of header
       KDE_fseek( mFp, endOfHeader, SEEK_SET );
 
       if ( mIndexSwapByteOrder ) {
-         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Index File has byte order swapped!";
+         qCDebug(MIXEDMAILDIR_LOG) << "Index File has byte order swapped!";
       }
       if ( mIndexSizeOfLong != sizeof( long ) ) {
-         kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Index File sizeOfLong is" << mIndexSizeOfLong << "while sizeof(long) is" << sizeof(long) << "!";
+         qCDebug(MIXEDMAILDIR_LOG) << "Index File sizeOfLong is" << mIndexSizeOfLong << "while sizeof(long) is" << sizeof(long) << "!";
       }
 
   }
@@ -326,12 +327,12 @@ bool KMIndexReader::readIndex()
 
   // loop through the entire index
   while ( !feof( mFp ) ) {
-    //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "NEW MSG!";
+    //qCDebug(MIXEDMAILDIR_LOG) << "NEW MSG!";
     msg = 0;
     // check version (parsed by readHeader)
     // because different versions must be
     // parsed differently
-    //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "parsing version" << version;
+    //qCDebug(MIXEDMAILDIR_LOG) << "parsing version" << version;
     if( version >= 1505 ) {
       // parse versions >= 1505
       if( !fread( &len, sizeof( len ), 1, mFp ) )
@@ -357,8 +358,8 @@ bool KMIndexReader::readIndex()
       if ( *line.data() == '\0' ) {
         // really, i have no idea when or how this would occur
         // but we probably want to know if it does - Casey
-        kWarning() << "Unknowable bad occurred";
-        kDebug( KDE_DEFAULT_DEBUG_AREA ) << "fclose(mFp = " << mFp << ")";
+        qWarning() << "Unknowable bad occurred";
+        qCDebug(MIXEDMAILDIR_LOG) << "fclose(mFp = " << mFp << ")";
         fclose( mFp );
         mFp = 0;
         mMsgList.clear();
@@ -460,7 +461,7 @@ namespace {
   template < typename T > void copy_from_stream( T & x ) {
     if( g_chunk_offset + int( sizeof( T ) ) > g_chunk_length ) {
       g_chunk_offset = g_chunk_length;
-      kWarning() << "This should never happen..";
+      qWarning() << "This should never happen..";
       x = 0;
     } else {
       // the memcpy is optimized out by the compiler for the values
@@ -475,14 +476,14 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
 {
   if( !msg )
     return false;
-  //kDebug( KDE_DEFAULT_DEBUG_AREA );
+  //qCDebug(MIXEDMAILDIR_LOG);
   if ( g_chunk_length < indexLen )
        g_chunk = (uchar *)realloc( g_chunk, g_chunk_length = indexLen );
 
   off_t first_off = KDE_ftell( mFp );
   KDE_fseek( mFp, indexOff, SEEK_SET );
   if ( fread( g_chunk, indexLen, readCount, mFp ) != readCount ) {
-      kWarning() << "Failed to read index";
+      qWarning() << "Failed to read index";
       return false;
   }
   KDE_fseek( mFp, first_off, SEEK_SET );
@@ -500,7 +501,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
     }
     type = (MsgPartType) tmp;
     if ( g_chunk_offset + len > indexLen ) {
-      kWarning() << "g_chunk_offset + len > indexLen" << "This should never happen..";
+      qWarning() << "g_chunk_offset + len > indexLen" << "This should never happen..";
       return false;
     }
         // Only try to create strings if the part is really a string part, see declaration of
@@ -526,7 +527,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
     } else  if( ( type >= 7 && type <= 10 ) || type == 12 || type == 13 || ( type >= 16 && type <= 18 ) ) {
       Q_ASSERT( mIndexSizeOfLong == len );
       if ( mIndexSizeOfLong == sizeof( ret ) ) {
-        //kDebug( KDE_DEFAULT_DEBUG_AREA ) << "mIndexSizeOfLong == sizeof(ret)";
+        //qCDebug(MIXEDMAILDIR_LOG) << "mIndexSizeOfLong == sizeof(ret)";
         // this memcpy replaces the original call to copy_from_stream
         // so that g_chunk_offset is not changed
         memcpy( &ret, g_chunk + g_chunk_offset, sizeof( ret ) );

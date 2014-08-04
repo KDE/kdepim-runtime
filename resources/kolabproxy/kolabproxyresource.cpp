@@ -74,7 +74,7 @@ static QString mailBoxForImapCollection( const Akonadi::Collection &imapCollecti
 {
   if ( imapCollection.remoteId().isEmpty() ) {
     if ( showWarnings ) {
-      kWarning() << "Got incomplete ancestor chain:" << imapCollection;
+      qWarning() << "Got incomplete ancestor chain:" << imapCollection;
     }
     return QString();
   }
@@ -212,7 +212,7 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
   const Akonadi::Collection imapCollection = kolabToImap( collection );
   if ( !mHandlerManager->isMonitored( imapCollection.id() ) ) {
     //This should never happen
-    kWarning() << "received a retrieveItems request for a collection without imap counterpart" << collection.id();
+    qWarning() << "received a retrieveItems request for a collection without imap counterpart" << collection.id();
     cancelTask();
     return;
   }
@@ -266,7 +266,7 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
   }
   const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob*>(job)->items();
   if ( items.isEmpty() ) {
-    kWarning() << "Items is emtpy";
+    qWarning() << "Items is emtpy";
     cancelTask();
     return;
   }
@@ -277,7 +277,7 @@ void KolabProxyResource::retrieveItemFetchDone( KJob *job )
   }
   const Akonadi::Item::List newItems = handler->translateItems( items );
   if ( newItems.isEmpty() ) {
-    kWarning() << "Could not translate item";
+    qWarning() << "Could not translate item";
     cancelTask();
     return;
   }
@@ -323,7 +323,7 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
   const Akonadi::Collection imapCollection = kolabToImap( collection );
   const KolabHandler::Ptr handler = mHandlerManager->getHandler( imapCollection.id() );
   if ( !handler ) {
-    kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
+    qWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
     showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask();
     new Akonadi::ItemDeleteJob(kolabItem);
@@ -340,7 +340,7 @@ void KolabProxyResource::onItemAddedDone(KJob* job)
   Akonadi::Item kolabItem = itemAddedJob->kolabItem();
   const Akonadi::Item imapItem = itemAddedJob->imapItem();
   if (job->error()) {
-    kWarning() << "Failed to create imap item: " << job->errorString();
+    qWarning() << "Failed to create imap item: " << job->errorString();
     showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask();
     new Akonadi::ItemDeleteJob(kolabItem);
@@ -367,7 +367,7 @@ void KolabProxyResource::onItemChangedDone(KJob* job)
   if ( job->error() ) {
     showErrorMessage(i18n("An error occured while writing the item to the backend."));
     cancelTask( job->errorText() );
-    kWarning() << "Failed to modify item, reverting to state of imap item: " << itemChangedJob->item().id();
+    qWarning() << "Failed to modify item, reverting to state of imap item: " << itemChangedJob->item().id();
     RevertItemChangesJob *revertJob = new RevertItemChangesJob(itemChangedJob->item(), *mHandlerManager, this);
     connect(revertJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
     revertJob->start();
@@ -398,7 +398,7 @@ void KolabProxyResource::collectionAdded( const Akonadi::Collection &collection,
                                           const Akonadi::Collection &parent )
 {
   if ( KolabHandler::kolabTypeForMimeType( collection.contentMimeTypes() ).isEmpty() ) {
-    kWarning() << "Collection " << collection.name() << collection.id() << collection.isValid()
+    qWarning() << "Collection " << collection.name() << collection.id() << collection.isValid()
                << "doesn't have kolab type set. isValid = "
                << "; parent is " << parent.name() << parent.id() << parent.isValid();
     cancelTask( QLatin1String( "Collection doesn't have kolab type." ) );
@@ -532,25 +532,25 @@ void KolabProxyResource::updateFreeBusyInformation( const Akonadi::Collection &i
     QLatin1String( "/Settings" ), QLatin1String( "org.kde.Akonadi.Imap.Wallet" ) );
 
   if ( !settingsInterface.isValid() || !walletInterface.isValid() ) {
-    kWarning() << "unable to retrieve imap resource settings interface";
+    qWarning() << "unable to retrieve imap resource settings interface";
     return;
   }
 
   const QDBusReply<QString> userNameReply = settingsInterface.call( QLatin1String( "userName" ) );
   if ( !userNameReply.isValid() ) {
-    kWarning() << "unable to retrieve user name from imap resource settings";
+    qWarning() << "unable to retrieve user name from imap resource settings";
     return;
   }
 
   const QDBusReply<QString> passwordReply = walletInterface.call( QLatin1String( "password" ) );
   if ( !passwordReply.isValid() ) {
-    kWarning() << "unable to retrieve password from imap resource settings";
+    qWarning() << "unable to retrieve password from imap resource settings";
     return;
   }
 
   const QDBusReply<QString> hostReply = settingsInterface.call( QLatin1String( "imapServer" ) );
   if ( !hostReply.isValid() ) {
-    kWarning() << "unable to retrieve host from imap resource settings";
+    qWarning() << "unable to retrieve host from imap resource settings";
     return;
   }
 
@@ -604,7 +604,7 @@ void KolabProxyResource::imapItemAdded( const Akonadi::Item &item,
     return;
   }
   if ( m_excludeAppend.contains( item.id() ) )   {
-    kDebug() << "item already present";
+    qDebug() << "item already present";
     m_excludeAppend.removeAll( item.id() );
     return;
   }
@@ -623,7 +623,7 @@ void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
     handler->imapItemRemoved(item);
   } else {
     //The handler is already gone,
-    kWarning() << "Couldn't find handler for collection " << item.storageCollectionId();
+    qWarning() << "Couldn't find handler for collection " << item.storageCollectionId();
     ImapItemRemovedJob *job = new ImapItemRemovedJob(item, this);
     connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
     job->start();
@@ -653,7 +653,7 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
   }
   if ( mHandlerManager->isMonitored( collection.id() ) ) {
     // something is wrong, so better reload out collection tree
-    kWarning() << "IMAPCOLLECTIONADDED ABORT";
+    qWarning() << "IMAPCOLLECTIONADDED ABORT";
     synchronizeCollectionTree();
     return;
   }
@@ -722,7 +722,7 @@ void KolabProxyResource::kolabFolderChangeResult( KJob *job )
   if ( job->error() ) {
     // something went wrong or the change was too complex to handle in the above slots,
     // so re-sync the entire tree.
-    kWarning() << "Re-syncing collection tree as incremental changes did not succeed."
+    qWarning() << "Re-syncing collection tree as incremental changes did not succeed."
              << job->errorText();
     synchronizeCollectionTree();
   }
@@ -825,7 +825,7 @@ void KolabProxyResource::updateHiddenAttribute( const Akonadi::Collection &imapC
 void KolabProxyResource::checkResult(KJob* job)
 {
   if ( job->error() ) {
-    kWarning() << "Error occurred: " << job->errorString();
+    qWarning() << "Error occurred: " << job->errorString();
   }
 }
 

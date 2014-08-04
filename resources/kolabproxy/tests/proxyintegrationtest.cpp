@@ -87,11 +87,11 @@ private slots:
             }
             for (int i = 0; i < expectedCollections.size(); i++) {
                 const Collection &expectedCol = expectedCollections.at(i);
-//                 kDebug() << col.name() << expectedCol.name();
-//                 kDebug() << col.attribute<CollectionAnnotationsAttribute>()->annotations();
-//                 kDebug() << expectedCol.attribute<CollectionAnnotationsAttribute>()->annotations();
+//                 qDebug() << col.name() << expectedCol.name();
+//                 qDebug() << col.attribute<CollectionAnnotationsAttribute>()->annotations();
+//                 qDebug() << expectedCol.attribute<CollectionAnnotationsAttribute>()->annotations();
                 if (col.name() == expectedCol.name()) {
-                    kDebug() << " found " << col.name();
+                    qDebug() << " found " << col.name();
                     QCOMPARE(col.attribute<CollectionAnnotationsAttribute>()->annotations(), expectedCol.attribute<CollectionAnnotationsAttribute>()->annotations());
                     QCOMPARE(col.rights(), expectedCol.rights());
                     expectedCollections.removeAt(i);
@@ -145,7 +145,7 @@ private slots:
             QTest::qWait(10);
         }
         if (!kolabCollectionsAreGone) {
-            kDebug() << rootCollections;
+            qDebug() << rootCollections;
         }
         QVERIFY(kolabCollectionsAreGone);
     }

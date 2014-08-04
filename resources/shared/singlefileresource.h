@@ -36,7 +36,7 @@
 #include <QFile>
 #include <QDir>
 #include <QPointer>
-#include <KDebug>
+#include <QDebug>
 
 namespace Akonadi
 {
@@ -70,7 +70,7 @@ class SingleFileResource : public SingleFileResourceBase
 
       if ( mSettings->path().isEmpty() ) {
         const QString message = i18n( "No file selected." );
-        kWarning() << message;
+        qWarning() << message;
         emit status( NotConfigured, i18n("The resource not configured yet") );
         if ( taskContext )
           cancelTask();
@@ -105,7 +105,7 @@ class SingleFileResource : public SingleFileResourceBase
             emit status( Idle, i18nc( "@info:status", "Ready" ) );
           } else {
             const QString message = i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() );
-            kWarning() << message;
+            qWarning() << message;
             emit status( Broken, message );
             mCurrentUrl.clear();
             if ( taskContext )
@@ -118,7 +118,7 @@ class SingleFileResource : public SingleFileResourceBase
         const QString localFileName = mCurrentUrl.toLocalFile();
         if ( !readLocalFile( mCurrentUrl.toLocalFile() ) ) {
           const QString message = i18n( "Could not read file '%1'", localFileName );
-          kWarning() << message;
+          qWarning() << message;
           emit status( Broken, message );
           if ( taskContext )
             cancelTask();
@@ -135,7 +135,7 @@ class SingleFileResource : public SingleFileResourceBase
         if ( mDownloadJob )
         {
           const QString message = i18n( "Another download is still in progress." );
-          kWarning() << message;
+          qWarning() << message;
           emit error( message );
           if ( taskContext )
             cancelTask();
@@ -145,7 +145,7 @@ class SingleFileResource : public SingleFileResourceBase
         if ( mUploadJob )
         {
           const QString message = i18n( "Another file upload is still in progress." );
-          kWarning() << message;
+          qWarning() << message;
           emit error( message );
           if ( taskContext )
             cancelTask();
@@ -182,7 +182,7 @@ class SingleFileResource : public SingleFileResourceBase
     {
       if ( mSettings->readOnly() ) {
         const QString message = i18n( "Trying to write to a read-only file: '%1'.", mSettings->path() );
-        kWarning() << message;
+        qWarning() << message;
         emit error( message );
         if ( taskContext )
           cancelTask();
@@ -193,7 +193,7 @@ class SingleFileResource : public SingleFileResourceBase
       // and in that case it would probably cause data lose.
       if ( mCurrentUrl.isEmpty() ) {
         const QString message = i18n( "No file specified." );
-        kWarning() << message;
+        qWarning() << message;
         emit status( Broken, message );
         if ( taskContext )
           cancelTask();
@@ -210,7 +210,7 @@ class SingleFileResource : public SingleFileResourceBase
         KDirWatch::self()->startScan();
         if ( !writeResult )
         {
-          kWarning() << "Error writing to file...";
+          qWarning() << "Error writing to file...";
           if ( taskContext )
             cancelTask();
           return;
@@ -221,7 +221,7 @@ class SingleFileResource : public SingleFileResourceBase
         // Check if there is a download or an upload in progress.
         if ( mDownloadJob ) {
           const QString message = i18n( "A download is still in progress." );
-          kWarning() << message;
+          qWarning() << message;
           emit error( message );
           if ( taskContext )
             cancelTask();
@@ -230,7 +230,7 @@ class SingleFileResource : public SingleFileResourceBase
 
         if ( mUploadJob ) {
           const QString message = i18n( "Another file upload is still in progress." );
-          kWarning() << message;
+          qWarning() << message;
           emit error( message );
           if ( taskContext )
             cancelTask();
@@ -240,7 +240,7 @@ class SingleFileResource : public SingleFileResourceBase
         // Write te items to the locally cached file.
         if ( !writeToFile( cacheFile() ) )
         {
-          kWarning() << "Error writing to file";
+          qWarning() << "Error writing to file";
           if ( taskContext )
             cancelTask();
           return;

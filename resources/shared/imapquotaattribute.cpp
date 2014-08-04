@@ -23,7 +23,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include <KDebug>
+#include <QDebug>
 
 using namespace Akonadi;
 
@@ -140,7 +140,7 @@ void ImapQuotaAttribute::deserialize( const QByteArray &data )
 
   // We expect exactly three members (roots, limits and usages), otherwise something is funky
   if ( members.size() != 3 ) {
-    kWarning() << "We didn't find exactly three members in this quota serialization";
+    qWarning() << "We didn't find exactly three members in this quota serialization";
     return;
   }
 

@@ -40,7 +40,7 @@
 #include <QRegExpValidator>
 #include <QTextBrowser>
 
-#include <kdebug.h>
+#include <QDebug>
 
 enum GroupwareServers
 {

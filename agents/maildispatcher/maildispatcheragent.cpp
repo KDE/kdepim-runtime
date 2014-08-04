@@ -34,7 +34,7 @@
 #include <mailtransport/sentactionattribute.h>
 
 #include <knotifyconfigwidget.h>
-#include <KDebug>
+#include <QDebug>
 #include <QIcon>
 #include <KLocalizedString>
 #include <KLocalizedString>

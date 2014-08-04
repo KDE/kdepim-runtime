@@ -20,7 +20,7 @@
 #include "kdeintegrationplugin.h"
 #include "kdeintegration.h"
 
-#include <kdebug.h>
+#include <QDebug>
 #include <QtDeclarative/qdeclarative.h>
 #include <qdeclarativecontext.h>
 #include <qdeclarativeengine.h>
@@ -28,18 +28,18 @@
 KDEIntegrationPlugin::KDEIntegrationPlugin(QObject* parent) : QDeclarativeExtensionPlugin( parent )
 {
   qDebug() << Q_FUNC_INFO;
-  kDebug(); 
+  qDebug(); 
 }
 
 void KDEIntegrationPlugin::registerTypes(const char* uri)
 {
-  kDebug() << uri;
+  qDebug() << uri;
 //  qmlRegisterType<KDEIntegration>( uri, 4, 5, "KDE" );
 }
 
 void KDEIntegrationPlugin::initializeEngine(QDeclarativeEngine *engine, const char* uri)
 {
-  kDebug() << engine << uri;
+  qDebug() << engine << uri;
   engine->rootContext()->setContextProperty( QLatin1String("KDE"), new KDEIntegration( engine ) );
 }
 

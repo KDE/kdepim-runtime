@@ -31,7 +31,7 @@
 #include <KToolInvocation>
 
 #include <KLocalizedString>
-#include <KDebug>
+#include <QDebug>
 
 #include <QTextDocument>
 #include <QDBusInterface>

@@ -175,7 +175,7 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
                     notificationCount++;
                     notificationConfig.writeEntry(QLatin1String("updatedTime"), notification.updatedTimeString());
                 } else {
-                    kDebug() << "Skipping notification" << notification.id();
+                    qDebug() << "Skipping notification" << notification.id();
                 }
             }
         }
@@ -339,7 +339,7 @@ void FacebookResource::notificationLinkActivated()
 void FacebookResource::notificationMarkAsReadJobFinished(KJob *job)
 {
     if (job->error()) {
-        kWarning() << job->errorString() << job->errorText();
+        qWarning() << job->errorString() << job->errorText();
     }
 
     mCurrentJobs.removeAll( job );

@@ -27,7 +27,7 @@
 #include <QListView>
 #include <QLabel>
 #include <KToolBar>
-#include <KDebug>
+#include <QDebug>
 #include <QIcon>
 #include <KDialog>
 #include <KLocalizedString>

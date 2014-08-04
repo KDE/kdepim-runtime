@@ -52,7 +52,7 @@ TestUtils::MonitorPair TestUtils::monitor(Akonadi::Collection col, const char *s
 bool TestUtils::wait(const MonitorPair &pair) {
     for (int i = 0; i < TIMEOUT/10 ; i++) {
         if (pair.first->count() >= 1) {
-            kDebug() << pair.first->first();
+            qDebug() << pair.first->first();
             return true;
         }
         QTest::qWait(10);

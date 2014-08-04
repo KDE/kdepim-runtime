@@ -26,7 +26,7 @@
 
 #include <QJsonDocument>
 
-#include <KDebug>
+#include <QDebug>
 
 /**
  * See https://developers.google.com/gmail/xoauth2_protocol for protocol documentation

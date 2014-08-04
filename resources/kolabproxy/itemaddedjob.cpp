@@ -38,10 +38,10 @@ void ItemAddedJob::start()
 void ItemAddedJob::doStart()
 {
     const Akonadi::Collection imapCollection = kolabToImap(mParentCollection);
-    kDebug() << imapCollection.id();
+    qDebug() << imapCollection.id();
     Akonadi::Item imapItem( "message/rfc822" );
     if (!mHandler.toKolabFormat(mKolabItem, imapItem)) {
-        kWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
+        qWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
         setError(KJob::UserDefinedError);
         emitResult();
         return;

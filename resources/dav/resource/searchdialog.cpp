@@ -24,7 +24,7 @@
 #include "davprotocolbase.h"
 #include "davutils.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <QIcon>
 #include <KMessageBox>
 #include <KUrl>
@@ -95,7 +95,7 @@ QStringList SearchDialog::selection() const
   QModelIndexList indexes = mUi.searchResults->selectionModel()->selectedIndexes();
   QStringList ret;
   foreach ( const QModelIndex &index, indexes ) {
-    kError() << "SELECTED DATA: " << index.data( Qt::UserRole + 1 ).toString();
+    qCritical() << "SELECTED DATA: " << index.data( Qt::UserRole + 1 ).toString();
     ret << index.data( Qt::UserRole + 1 ).toString();
   }
   return ret;

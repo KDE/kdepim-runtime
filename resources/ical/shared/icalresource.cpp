@@ -23,7 +23,7 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/FreeBusy>
 
-#include <kdebug.h>
+#include <QDebug>
 #include <klocale.h>
 
 using namespace Akonadi;
@@ -54,7 +54,7 @@ bool ICalResource::doRetrieveItem( const Akonadi::Item &item, const QSet<QByteAr
   const QString rid = item.remoteId();
   Incidence::Ptr incidence = calendar()->instance( rid );
   if ( !incidence ) {
-    kError() << "akonadi_ical_resource: Can't find incidence with uid "
+    qCritical() << "akonadi_ical_resource: Can't find incidence with uid "
              << rid << "; item.id() = " << item.id();
     emit error( i18n( "Incidence with uid '%1' not found.", rid ) );
     return false;
@@ -77,7 +77,7 @@ void ICalResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collecti
 
   Incidence::Ptr i = item.payload<Incidence::Ptr>();
   if ( !calendar()->addIncidence( Incidence::Ptr( i->clone() ) ) ) {
-    //kError() << "akonadi_ical_resource: Error adding incidence with uid "
+    //qCritical() << "akonadi_ical_resource: Error adding incidence with uid "
     //         << i->uid() << "; item.id() " << item.id() << i->recurrenceId();
     cancelTask();
     return;
@@ -114,7 +114,7 @@ void ICalResource::itemChanged( const Akonadi::Item &item,
       incidence->endUpdates();
     } else {
       incidence->endUpdates();
-      kWarning() << "akonadi_ical_resource: Item changed incidence type. Replacing it.";
+      qWarning() << "akonadi_ical_resource: Item changed incidence type. Replacing it.";
 
       calendar()->deleteIncidence( incidence );
       calendar()->addIncidence( Incidence::Ptr( payload->clone() ) );

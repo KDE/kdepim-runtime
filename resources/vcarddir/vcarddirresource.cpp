@@ -33,7 +33,7 @@
 
 #include <QIcon>
 #include <KLocalizedString>
-#include <KDebug>
+#include <QDebug>
 
 using namespace Akonadi;
 

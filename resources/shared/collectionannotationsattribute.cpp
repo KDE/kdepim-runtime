@@ -19,7 +19,7 @@
 
 #include "collectionannotationsattribute.h"
 
-#include <KDebug>
+#include <QDebug>
 #include <QByteArray>
 #include <attribute.h>
 

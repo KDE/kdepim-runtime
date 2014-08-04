@@ -24,7 +24,7 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/entitymimetypefiltermodel.h>
 
-#include <kdebug.h>
+#include <QDebug>
 #include <kselectionproxymodel.h>
 #include <KStandardDirs>
 #include <kapplication.h>
@@ -91,7 +91,7 @@ QmlTestWidget::QmlTestWidget(QWidget* parent)
 
 void QmlTestWidget::collectionRowSelected(int row)
 {
-  kDebug() << row;
+  qDebug() << row;
 }
 
 int main( int argc, char **argv )

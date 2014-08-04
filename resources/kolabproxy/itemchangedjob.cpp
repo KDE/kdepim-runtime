@@ -41,7 +41,7 @@ void ItemChangedJob::onKolabCollectionFetched(KJob* job)
 {
     Akonadi::CollectionFetchJob *fetchjob = static_cast<Akonadi::CollectionFetchJob*>(job);
     if (job->error() || fetchjob->collections().isEmpty()) {
-        kWarning() << "collection fetch job failed " << job->errorString() << fetchjob->collections().isEmpty();
+        qWarning() << "collection fetch job failed " << job->errorString() << fetchjob->collections().isEmpty();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -49,7 +49,7 @@ void ItemChangedJob::onKolabCollectionFetched(KJob* job)
     const Akonadi::Collection imapCollection = kolabToImap(fetchjob->collections().first());
     mHandler = mHandlerManager.getHandler(imapCollection.id());
     if (!mHandler) {
-        kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
+        qWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -69,17 +69,17 @@ void ItemChangedJob::onImapItemFetchDone(KJob* job)
 
     Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
     if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
-        kDebug() << "item is not yet created in imap resource";
+        qDebug() << "item is not yet created in imap resource";
         Akonadi::CollectionFetchJob *fetch =
         new Akonadi::CollectionFetchJob( Akonadi::Collection( mKolabItem.storageCollectionId() ),
                                         Akonadi::CollectionFetchJob::Base, this );
         connect( fetch, SIGNAL(result(KJob*)), SLOT(onCollectionFetchDone(KJob*)) );
     } else {
-        kDebug() << "item is in imap resource";
+        qDebug() << "item is in imap resource";
         Akonadi::Item imapItem = fetchJob->items().first();
 
         if (!mHandler->toKolabFormat(mKolabItem, imapItem)) {
-            kWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
+            qWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
             setError(KJob::UserDefinedError);
             emitResult();
             return;
@@ -93,7 +93,7 @@ void ItemChangedJob::onCollectionFetchDone(KJob *job)
 {
     Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
     if ( job->error() || fetchJob->collections().isEmpty() ) {
-        kWarning() << "Collection fetch job failed" << fetchJob->errorString();
+        qWarning() << "Collection fetch job failed" << fetchJob->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;

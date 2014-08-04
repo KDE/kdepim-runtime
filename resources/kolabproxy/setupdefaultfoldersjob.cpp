@@ -87,7 +87,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
     setErrorText(i18n("Could not find valid parent collection."));
     emitResult();
   }
-  kDebug() << "default parent " << defaultParent.id();
+  qDebug() << "default parent " << defaultParent.id();
 
   // look for existing folders
   QVector<Akonadi::Collection> existingDefaultFolders( KolabV2::FolderTypeSize );
@@ -129,12 +129,12 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
     }
 
     if ( existingDefaultFolders[ i ].isValid() ) {
-      kDebug() << "Existing collection ok: " << iconName;
+      qDebug() << "Existing collection ok: " << iconName;
       continue; // all good
     } else if ( recoveryCandidates[ i ].isValid() ) {
       Akonadi::Collection col = recoveryCandidates[ i ];
       if ( !( col.rights() & Akonadi::Collection::CanChangeCollection ) ) {
-        kWarning() << "no change rights on collection";
+        qWarning() << "no change rights on collection";
         continue;
       }
       Akonadi::CollectionAnnotationsAttribute *attr =
@@ -148,7 +148,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
           col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
         attribute->setIconName( iconName );
       }
-      kDebug() << "Fixing collection: " << col.id() << iconName;
+      qDebug() << "Fixing collection: " << col.id() << iconName;
       new Akonadi::CollectionModifyJob( col, 0 );
     } else {
       Akonadi::Collection col;
@@ -165,7 +165,7 @@ void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )
           col.attribute<Akonadi::EntityDisplayAttribute>( Akonadi::Entity::AddIfMissing );
         attribute->setIconName( iconName );
       }
-      kDebug() << "Creating new collection: " << iconName;
+      qDebug() << "Creating new collection: " << iconName;
       new Akonadi::CollectionCreateJob( col, 0 );
     }
   }

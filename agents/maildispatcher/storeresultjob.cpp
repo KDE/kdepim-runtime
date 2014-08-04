@@ -23,7 +23,7 @@
 #include <ItemFetchJob>
 #include <ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>
-#include <KDebug>
+#include <QDebug>
 #include <KLocalizedString>
 #include <mailtransport/errorattribute.h>
 #include <mailtransport/dispatchmodeattribute.h>

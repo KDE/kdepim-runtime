@@ -33,7 +33,7 @@
 #include <KCalCore/ICalFormat>
 #include <QIcon>
 #include <KLocalizedString>
-#include <KDebug>
+#include <QDebug>
 
 
 #include <QtCore/QDir>
@@ -54,7 +54,7 @@ static Incidence::Ptr readFromFile( const QString &fileName, const QString &expe
     if ( incidences.count() == 1 && incidences.first()->instanceIdentifier() == expectedIdentifier )
       incidence = incidences.first();
   } else {
-    kError() << "Error loading file " << fileName;
+    qCritical() << "Error loading file " << fileName;
   }
 
   return incidence;
@@ -63,7 +63,7 @@ static Incidence::Ptr readFromFile( const QString &fileName, const QString &expe
 static bool writeToFile( const QString &fileName, Incidence::Ptr &incidence )
 {
   if ( !incidence ) {
-    kError() << "incidence is 0!";
+    qCritical() << "incidence is 0!";
     return false;
   }
 
@@ -74,7 +74,7 @@ static bool writeToFile( const QString &fileName, Incidence::Ptr &incidence )
 
   const bool success = fileStorage->save();
   if ( !success ) {
-    kError() << "Failed to save calendar to file " + fileName;
+    qCritical() << "Failed to save calendar to file " + fileName;
   }
 
   return success;

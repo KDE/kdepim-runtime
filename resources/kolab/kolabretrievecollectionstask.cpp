@@ -34,7 +34,7 @@
 
 #include <kmime/kmime_message.h>
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocale>
 
 KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject* parent)
@@ -238,13 +238,13 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 
     // If this folder is a noinferiors folder, it is not allowed to create subfolders inside.
     if (currentFlags.contains("\\noinferiors")) {
-        //kDebug() << "Noinferiors: " << currentPath;
+        //qDebug() << "Noinferiors: " << currentPath;
         c.addAttribute(new NoInferiorsAttribute(true));
         c.setRights(c.rights() & ~Akonadi::Collection::CanCreateCollection);
     }
     c.setEnabled(isSubscribed);
 
-    kDebug() << "creating collection " << mailbox << " with parent " << parentPath;
+    qDebug() << "creating collection " << mailbox << " with parent " << parentPath;
     mMailCollections.insert(mailbox, c);
     //This is no longer required
     mSubscribedMailboxes.remove(mailbox);

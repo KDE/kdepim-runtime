@@ -73,7 +73,7 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
             itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
             connect(itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemFetchJobDone(KJob*)));
         } else {
-            kDebug() << "no gid, creating directly";
+            qDebug() << "no gid, creating directly";
             Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection);
             connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
         }
@@ -98,9 +98,9 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
             conflictingItems << item;
         }
         if (conflictingItems.size() > 1) {
-            kWarning() << "Multiple conflicting items detected in col " << mKolabCollection.id() << ", this should never happen: ";
+            qWarning() << "Multiple conflicting items detected in col " << mKolabCollection.id() << ", this should never happen: ";
             foreach (const Akonadi::Item &item, conflictingItems) {
-                kWarning() << "Conflicting kolab item: " << item.id();
+                qWarning() << "Conflicting kolab item: " << item.id();
             }
         }
         if (!conflictingItems.isEmpty()) {
@@ -109,12 +109,12 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
             mTranslatedItem.setId(conflictingKolabItem.id());
             imapToKolab(mImapItem, mTranslatedItem);
             //TODO ensure the modifyjob doesn't collide with a removejob due to the original imap item vanishing.
-            kDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
+            qDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
             Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mTranslatedItem, this);
             modJob->disableRevisionCheck();
             connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
         } else {
-            kDebug() << "creating new item";
+            qDebug() << "creating new item";
             Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
             connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
         }
@@ -123,8 +123,8 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
 void ImapItemAddedJob::itemCreatedDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << "Error on creating item:" << job->errorText();
-        kWarning() << "imap item: " << mImapItem.id() << " in collection " << mImapCollection.id();
+        qWarning() << "Error on creating item:" << job->errorText();
+        qWarning() << "imap item: " << mImapItem.id() << " in collection " << mImapCollection.id();
     }
     emitResult();
 }

@@ -20,7 +20,7 @@
 
 #include "testdatautil.h"
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QDir>
 #include <QFile>
@@ -34,12 +34,12 @@ static bool copyFile( const QString &sourceFileName, const QString &targetFileNa
   QFile targetFile( targetFileName );
 
   if ( !sourceFile.open( QIODevice::ReadOnly ) ) {
-    kError() << "Cannot open source file" << sourceFileName;
+    qCritical() << "Cannot open source file" << sourceFileName;
     return false;
   }
 
   if ( !targetFile.open( QIODevice::WriteOnly ) ) {
-    kError() << "Cannot open target file" << targetFileName;
+    qCritical() << "Cannot open target file" << targetFileName;
     return false;
   }
 
@@ -53,7 +53,7 @@ static bool copyFiles( const QDir &sourceDir, const QDir &targetDir )
     const QFileInfo sourceFileInfo( sourceDir, file );
     const QFileInfo targetFileInfo( targetDir, file );
     if ( !copyFile( sourceFileInfo.absoluteFilePath(), targetFileInfo.absoluteFilePath() ) ) {
-      kError() << "Failed to copy" << sourceFileInfo.absoluteFilePath()
+      qCritical() << "Failed to copy" << sourceFileInfo.absoluteFilePath()
                << "to" << targetFileInfo.absoluteFilePath();
       return false;
     }
@@ -97,12 +97,12 @@ bool TestDataUtil::installFolder( const QString &testDataName, const QString &in
 {
   const FolderType type = TestDataUtil::folderType( testDataName );
   if ( type == InvalidFolder ) {
-    kError() << "testDataName" << testDataName << "is not a valid mail folder type";
+    qCritical() << "testDataName" << testDataName << "is not a valid mail folder type";
     return false;
   }
 
   if ( !QDir::current().mkpath( installPath ) ) {
-    kError() << "Couldn't create installPath" << installPath;
+    qCritical() << "Couldn't create installPath" << installPath;
     return false;
   }
 
@@ -112,14 +112,14 @@ bool TestDataUtil::installFolder( const QString &testDataName, const QString &in
     switch ( type ) {
       case MaildirFolder:
         if ( !installFileInfo.isDir() ) {
-          kError() << "Target file name" << folderName << "already exists but is not a directory";
+          qCritical() << "Target file name" << folderName << "already exists but is not a directory";
           return false;
         }
         break;
 
       case MBoxFolder:
         if ( !installFileInfo.isFile() ) {
-          kError() << "Target file name" << folderName << "already exists but is not a directory";
+          qCritical() << "Target file name" << folderName << "already exists but is not a directory";
           return false;
         }
         break;
@@ -139,7 +139,7 @@ bool TestDataUtil::installFolder( const QString &testDataName, const QString &in
       if ( !installDir.mkpath( subPathPattern.arg( folderName, QLatin1String( "new" ) ) ) ||
            !installDir.mkpath( subPathPattern.arg( folderName, QLatin1String( "cur" ) ) ) ||
            !installDir.mkpath( subPathPattern.arg( folderName, QLatin1String( "tmp" ) ) ) ) {
-        kError() << "Couldn't create maildir directory structure";
+        qCritical() << "Couldn't create maildir directory structure";
         return false;
       }
 
@@ -179,7 +179,7 @@ bool TestDataUtil::installFolder( const QString &testDataName, const QString &in
     case MBoxFolder: {
       const QFileInfo mboxFileInfo( testDataDir, testDataName );
       if ( !copyFile( mboxFileInfo.absoluteFilePath(), installFileInfo.absoluteFilePath() ) ) {
-        kError() << "Failed to copy" << mboxFileInfo.absoluteFilePath()
+        qCritical() << "Failed to copy" << mboxFileInfo.absoluteFilePath()
                  << "to" << installFileInfo.absoluteFilePath();
         return false;
       }

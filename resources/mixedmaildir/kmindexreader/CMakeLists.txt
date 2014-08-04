@@ -8,6 +8,7 @@ add_subdirectory(tests)
 
 set(kmindexreader_LIB_SRCS
  kmindexreader.cpp
+ ../mixedmaildir_debug.cpp
 )
 
 add_library(kmindexreader ${LIBRARY_TYPE} ${kmindexreader_LIB_SRCS})

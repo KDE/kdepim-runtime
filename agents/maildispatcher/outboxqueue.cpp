@@ -23,7 +23,7 @@
 #include <QSet>
 #include <QTimer>
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocalizedString>
 
 #include <Attribute>

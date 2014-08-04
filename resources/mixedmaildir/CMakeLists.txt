@@ -24,6 +24,7 @@ set( mixedmaildirresource_SRCS
   mixedmaildirstore.cpp
   retrieveitemsjob.cpp
   ../shared/createandsettagsjob.cpp
+  mixedmaildir_debug.cpp
 )
 
 install( FILES mixedmaildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

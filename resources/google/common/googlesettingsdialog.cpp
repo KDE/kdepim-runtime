@@ -30,7 +30,7 @@
 #include <KLocalizedString>
 #include <KComboBox>
 #include <QPushButton>
-#include <KDebug>
+#include <QDebug>
 #include <KMessageBox>
 #include <KWindowSystem>
 #include <KPluralHandlingSpinBox>

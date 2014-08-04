@@ -48,15 +48,15 @@ void RevertItemChangesJob::onImapItemFetchDone(KJob* job)
 
     Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
     if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
-        kDebug() << "item is not yet created in imap resource, deleting the kolab item";
+        qDebug() << "item is not yet created in imap resource, deleting the kolab item";
         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(mKolabItem, this);
         connect(deleteJob, SIGNAL(result(KJob*)), SLOT(onItemModifyDone(KJob*)));
     } else {
-        kDebug() << "reverting to state of imap item";
+        qDebug() << "reverting to state of imap item";
         Akonadi::Item imapItem = fetchJob->items().first();
         const KolabHandler::Ptr handler = mHandlerManager.getHandler(imapItem.parentCollection().id());
         if (!handler) {
-            kWarning() << "No handler: " << imapItem.parentCollection().id();
+            qWarning() << "No handler: " << imapItem.parentCollection().id();
             setError(KJob::UserDefinedError);
             emitResult();
             return;
@@ -64,7 +64,7 @@ void RevertItemChangesJob::onImapItemFetchDone(KJob* job)
         const Akonadi::Item::List translatedItems = handler->translateItems(fetchJob->items());
 
         if (translatedItems.isEmpty()) {
-            kWarning() << "Failed to reload item: " << mKolabItem.id();
+            qWarning() << "Failed to reload item: " << mKolabItem.id();
             setError(KJob::UserDefinedError);
             emitResult();
             return;

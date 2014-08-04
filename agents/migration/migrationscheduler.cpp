@@ -22,7 +22,7 @@
 #include "migrationscheduler.h"
 
 #include <KLocalizedString>
-#include <KDebug>
+#include <QDebug>
 #include <QIcon>
 #include <KJobTrackerInterface>
 
@@ -62,7 +62,7 @@ void LogModel::message(MigratorBase::MessageType type, const QString &msg)
         break;
     }
     default:
-        kError() << "unknown type " << type;
+        qCritical() << "unknown type " << type;
     }
 }
 
@@ -116,7 +116,7 @@ void MigratorModel::columnChanged(const Row &row, int col)
 bool MigratorModel::addMigrator(const QSharedPointer<MigratorBase> &m)
 {
     if (migrator(m->identifier())) {
-        kWarning() << "Model already contains a migrator with the identifier: " << m;
+        qWarning() << "Model already contains a migrator with the identifier: " << m;
         return false;
     }
     const int pos = mMigrators.size();
@@ -174,7 +174,7 @@ QVariant MigratorModel::data(const QModelIndex &index, int role) const
     const Row *row = static_cast<Row*>(index.internalPointer());
     const QSharedPointer<MigratorBase> migrator(row->mMigrator);
     if (!migrator) {
-        kWarning() << "migrator not found";
+        qWarning() << "migrator not found";
         return QVariant();
     }
     switch (role) {
