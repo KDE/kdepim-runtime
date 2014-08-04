@@ -1,5 +1,6 @@
 project(pop3)
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_pop3_resource\")
 
 
 
@@ -12,6 +13,7 @@ set( pop3resource_SRCS
   settings.cpp
   pop3resourceattribute.cpp
 )
+
 
 
 install( FILES pop3resource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

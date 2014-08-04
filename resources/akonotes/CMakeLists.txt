@@ -7,6 +7,7 @@ include_directories(
 )
 
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_akonotes_resource\")
 
 
 ########### next target ###############

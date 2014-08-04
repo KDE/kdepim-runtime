@@ -5,6 +5,7 @@ if(IMAPRESOURCE_NO_SOLID)
   add_definitions( -DIMAPRESOURCE_NO_SOLID=1 )
 endif()
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
 ########### next target ###############
 
