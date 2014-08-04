@@ -13,7 +13,6 @@ set( pop3resource_SRCS
   pop3resourceattribute.cpp
 )
 
-add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
 
 install( FILES pop3resource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 

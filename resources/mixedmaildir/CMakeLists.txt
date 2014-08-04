@@ -13,8 +13,6 @@ include_directories(
 
 add_subdirectory(kmindexreader)
 
-add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5254) # TODO get our own debug area
-
 ########### next target ###############
 
 set( mixedmaildirresource_SRCS

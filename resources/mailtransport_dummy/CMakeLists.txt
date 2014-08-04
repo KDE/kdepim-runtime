@@ -3,9 +3,6 @@ set( mtdummyresource_SRCS
   mtdummyresource.cpp
 )
 
-# mailtransport debug area
-add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5324)
-
 install( FILES mtdummyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 ki18n_wrap_ui(mtdummyresource_SRCS settings.ui)
