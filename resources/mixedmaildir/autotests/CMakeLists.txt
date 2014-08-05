@@ -35,7 +35,6 @@ ecm_mark_as_test(mixedmaildir-testdatatest)
 target_link_libraries(
   testdatatest
   Qt5::Test
-  KF5::KDELibs4Support 
 )
 
 # put the libraries all tests link against into a variable and use it

@@ -25,7 +25,7 @@
 #include <klineedit.h>
 #include <kservice.h>
 #include <kservicetypetrader.h>
-#include <ktextbrowser.h>
+#include <QTextBrowser>
 
 #include <QUrl>
 #include <QButtonGroup>
@@ -484,7 +484,7 @@ CheckPage::CheckPage( QWidget *parent )
   QPushButton *button = new QPushButton( i18n( "Test Connection" ) );
   layout->addWidget( button );
 
-  mStatusLabel = new KTextBrowser;
+  mStatusLabel = new QTextBrowser;
   layout->addWidget( mStatusLabel );
 
   connect( button, SIGNAL(clicked()), SLOT(checkConnection()) );

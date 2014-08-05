@@ -27,7 +27,7 @@
 
 class KJob;
 class KLineEdit;
-class KTextBrowser;
+class QTextBrowser;
 
 class QButtonGroup;
 class QCheckBox;
@@ -148,7 +148,7 @@ class CheckPage : public QWizardPage
     void onFetchDone( KJob* );
 
   private:
-    KTextBrowser *mStatusLabel;
+    QTextBrowser *mStatusLabel;
 };
 
 #endif

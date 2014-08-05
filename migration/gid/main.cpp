@@ -23,7 +23,7 @@
 #include <kconfig.h>
 #include <kconfiggroup.h>
 #include <kglobal.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include <qdebug.h>
 #include <QApplication>
