@@ -71,7 +71,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
 
 #ifndef ACCOUNTWIZARD_NO_GHNS
     ProviderPage *ppage = new ProviderPage( this );
-    connect( typePage, SIGNAL(ghnsWanted()), ppage, SLOT(startFetchingData()) );
+    connect(typePage, &TypePage::ghnsWanted, ppage, &ProviderPage::startFetchingData);
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
     connect( ppage, SIGNAL(ghnsNotWanted()), SLOT(slotGhnsNotWanted()) );
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
