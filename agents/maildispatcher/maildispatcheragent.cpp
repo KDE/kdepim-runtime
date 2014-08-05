@@ -162,8 +162,7 @@ void MailDispatcherAgent::Private::dispatch()
 
         if ( !errorOccurred ) {
           KNotification *notify = new KNotification( QLatin1String("emailsent") );
-          //QT5
-          //notify->setComponentName( q->componentData() );
+          notify->setComponentName( QLatin1String("akonadi_maildispatcher_agent") );
           notify->setTitle( i18nc( "Notification title when email was sent", "E-Mail Successfully Sent" ) );
           notify->setText( i18nc( "Notification when the email was sent", "Your E-Mail has been sent successfully." ) );
           notify->sendEvent();
@@ -330,8 +329,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
     qDebug() << "Sending failed. error:" << job->errorString();
 
     KNotification *notify = new KNotification( QLatin1String("sendingfailed") );
-    //QT5
-    //notify->setComponentName( q->componentData() );
+    notify->setComponentName( QLatin1String("akonadi_maildispatcher_agent") );
     notify->setTitle( i18nc( "Notification title when email sending failed", "E-Mail Sending Failed" ) );
     notify->setText( job->errorString() );
     notify->sendEvent();

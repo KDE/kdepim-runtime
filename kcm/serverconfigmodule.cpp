@@ -43,8 +43,6 @@ using namespace Akonadi;
 ServerConfigModule::ServerConfigModule( QWidget * parent, const QVariantList & args  ) :
     KCModule( parent, args )
 {
-  //QT5 KLocale::global()->insertCatalog( QLatin1String("kcm_akonadi") );
-
   QVBoxLayout *layout = new QVBoxLayout( this );
   setLayout( layout );
 

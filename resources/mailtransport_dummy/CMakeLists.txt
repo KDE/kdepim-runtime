@@ -1,3 +1,5 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mailtransport_resource\")
+
 set( mtdummyresource_SRCS
   configdialog.cpp
   mtdummyresource.cpp

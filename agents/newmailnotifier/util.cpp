@@ -19,7 +19,6 @@
 
 #include <KNotification>
 #include <KLocalizedString>
-#include <KGlobal>
 #include <QIcon>
 #include <KIconLoader>
 #include <KToolInvocation>
@@ -37,30 +36,24 @@ void Util::testJovieService()
     if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
         QString error;
         if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
-//QT5
-#if 0
             KNotification::event( QLatin1String("text-to-speak-not-found"),
                                   i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
                                   Util::defaultPixmap(),
                                   0,
                                   KNotification::CloseOnTimeout,
-                                  KGlobal::mainComponent());
-#endif
+                                  QLatin1String("akonadi_newmailnotifier_agent"));
         }
     }
 }
 
 void Util::showNotification(const QPixmap &pixmap, const QString &message)
 {
-//QT5
-#if 0
     KNotification::event( QLatin1String("new-email"),
                           message,
                           pixmap,
                           0,
                           KNotification::CloseOnTimeout,
-                          KGlobal::mainComponent());
-#endif
+                          QLatin1String("akonadi_newmailnotifier_agent"));
 }
 
 QPixmap Util::defaultPixmap()

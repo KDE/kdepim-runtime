@@ -38,7 +38,6 @@ using namespace Akonadi;
 MTDummyResource::MTDummyResource( const QString &id )
   : ResourceBase( id )
 {
-  //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_mailtransport_resource") );
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                             Settings::self(), QDBusConnection::ExportAdaptors );

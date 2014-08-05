@@ -34,8 +34,6 @@ K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
 ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
         KCModule( parent, args )
 {
-    //QT5 KLocale::global()->insertCatalog( QLatin1String("kcm_akonadi") );
-
     Akonadi::Control::widgetNeedsAkonadi(this);
     setButtons( KCModule::Default | KCModule::Apply );
     QVBoxLayout *l = new QVBoxLayout( this );
