@@ -36,6 +36,7 @@
 
 int main( int argc, char **argv )
 {
+  KLocalizedString::setApplicationDomain("kjotsmigrator"); 
   KAboutData aboutData( QStringLiteral("kjotsmigrator"),
                         i18n( "KJots Migration Tool" ),
                         QStringLiteral("0.1"),
@@ -50,11 +51,12 @@ int main( int argc, char **argv )
   QApplication app(argc, argv);
   parser.addVersionOption();
   parser.addHelpOption();
+  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive"), i18n( "Show reporting dialog" )));
+  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive-on-change"), i18n( "Show report only if changes were made" )));
+
   aboutData.setupCommandLine(&parser);
   parser.process(app);
   aboutData.processCommandLine(&parser);
-  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive"), i18n( "Show reporting dialog" )));
-  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive-on-change"), i18n( "Show report only if changes were made" )));
 
   app.setQuitOnLastWindowClosed( false );
 

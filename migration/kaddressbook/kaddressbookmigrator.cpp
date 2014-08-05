@@ -97,6 +97,8 @@ void convertAddressBook()
 
 int main( int argc, char **argv )
 {
+  KLocalizedString::setApplicationDomain("kaddressbookmigrator");
+
   KAboutData aboutData( QLatin1String("kaddressbookmigrator"), i18n( "Migration tool for the KDE address book" ), QLatin1String("0.1") );
   aboutData.addAuthor( i18n( "Tobias Koenig" ), i18n( "Author" ), QLatin1String("tokoe@kde.org") );
 

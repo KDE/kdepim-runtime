@@ -36,6 +36,7 @@
 
 int main(int argc, char **argv)
 {
+    KLocalizedString::setApplicationDomain("gid-migrator");
     KAboutData aboutData(QStringLiteral("gid-migrator"),
                             i18n("GID Migration Tool"),
                             QStringLiteral("0.1"),
@@ -50,12 +51,13 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     parser.addVersionOption();
     parser.addHelpOption();
-    aboutData.setupCommandLine(&parser);
-    parser.process(app);
-    aboutData.processCommandLine(&parser);
     parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive"), i18n("Show reporting dialog")));
     parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive-on-change"), i18n("Show report only if changes were made")));
     parser.addOption(QCommandLineOption(QStringList() << QLatin1String("mimetype"), i18n("Mimetype to migrate")));
+
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
 
     app.setQuitOnLastWindowClosed(false);
 

@@ -34,6 +34,7 @@
 
 int main( int argc, char **argv )
 {
+  KLocalizedString::setApplicationDomain("accountwizard");
   K4AboutData aboutData( "accountwizard", 0,
                         ki18n( "Account Assistant" ),
                         "0.1",
