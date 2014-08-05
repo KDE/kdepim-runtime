@@ -1,4 +1,6 @@
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_googlecalendar_resource\")
+
 
 set(calendarresource_SRCS
   calendarresource.cpp
