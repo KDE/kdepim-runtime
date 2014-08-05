@@ -129,7 +129,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
     QStringList result;
     if (NewMailNotifierAgentSettings::showFrom()) {
-        result << i18n("From: %1", Qt::escape(mFrom));
+        result << i18n("From: %1", mFrom.toHtmlEscaped());
     }
     if (NewMailNotifierAgentSettings::showSubject()) {
         QString subject(mSubject);
@@ -137,7 +137,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
             subject.truncate(80);
             subject += QLatin1String("...");
         }
-        result << i18n("Subject: %1", Qt::escape(subject));
+        result << i18n("Subject: %1", subject.toHtmlEscaped());
     }
     if (NewMailNotifierAgentSettings::showFolder()) {
         result << i18n("In: %1", mPath);
@@ -148,8 +148,8 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
             if (QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
                 QDBusInterface ktts(QLatin1String("org.kde.kttsd"), QLatin1String("/KSpeech"), QLatin1String("org.kde.KSpeech"));
                 QString message = NewMailNotifierAgentSettings::textToSpeak();
-                message.replace(QLatin1String("%s"), Qt::escape(mSubject));
-                message.replace(QLatin1String("%f"), Qt::escape(mFrom));
+                message.replace(QLatin1String("%s"), mSubject.toHtmlEscaped());
+                message.replace(QLatin1String("%f"), mFrom.toHtmlEscaped());
                 ktts.asyncCall(QLatin1String("say"), message, 0);
             }
         }
