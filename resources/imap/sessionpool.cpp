@@ -194,6 +194,11 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces(Namespace ns) cons
 
 void SessionPool::killSession( KIMAP::Session *session, SessionTermination termination )
 {
+  if (!m_unusedPool.contains(session) && !m_reservedPool.contains(session) && !m_connectingPool.contains(session)) {
+    kWarning() << "Unmanaged session" << session;
+    Q_ASSERT(false);
+    return;
+  }
   QObject::disconnect( session, SIGNAL(stateChanged(KIMAP::Session::State,KIMAP::Session::State)),
                        this, SLOT(onSessionStateChanged(KIMAP::Session::State,KIMAP::Session::State)) );
   m_unusedPool.removeAll( session );
