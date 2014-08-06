@@ -96,7 +96,7 @@ void Resource::create()
 
   emit info( i18n( "Creating resource instance for '%1'...", type.name() ) );
   AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(instanceCreateResult(KJob*)) );
+  connect(job, &AgentInstanceCreateJob::result, this, &Resource::instanceCreateResult);
   job->start();
 }
 
