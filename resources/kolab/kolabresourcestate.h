@@ -31,6 +31,7 @@ public:
 
 private:
     virtual void collectionAttributesRetrieved(const Akonadi::Collection& collection);
+    virtual void collectionsRetrieved(const Akonadi::Collection::List &collections);
     virtual MessageHelper::Ptr messageHelper() const;
 };
 

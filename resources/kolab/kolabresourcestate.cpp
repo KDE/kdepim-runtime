@@ -36,14 +36,10 @@ KolabResourceState::KolabResourceState(ImapResource* resource, const TaskArgumen
 
 }
 
-void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection& collection)
+static Akonadi::Collection processAnnotations(const Akonadi::Collection &collection)
 {
-    if (!collection.isValid() && collection.remoteId().isEmpty()) {
-        ResourceState::collectionAttributesRetrieved(collection);
-        return;
-    }
-    Akonadi::Collection col = collection;
-    if (col.attribute<Akonadi::CollectionAnnotationsAttribute>()) {
+    if (collection.attribute<Akonadi::CollectionAnnotationsAttribute>()) {
+        Akonadi::Collection col = collection;
         const QMap<QByteArray, QByteArray> rawAnnotations = col.attribute<Akonadi::CollectionAnnotationsAttribute>()->annotations();
         const QByteArray type = KolabHelpers::getFolderTypeAnnotation(rawAnnotations);
         const Kolab::FolderType folderType = KolabHelpers::folderTypeFromString(type);
@@ -72,8 +68,28 @@ void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection
             //If we don't handle the folder, make sure we don't download the messages
             col.attribute<NoSelectAttribute>(Akonadi::Entity::AddIfMissing);
         }
+        return col;
     }
+    return collection;
+}
+
+void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection& collection)
+{
+    if (!collection.isValid() && collection.remoteId().isEmpty()) {
+        ResourceState::collectionAttributesRetrieved(collection);
+        return;
+    }
+    const Akonadi::Collection col = processAnnotations(collection);
     ResourceState::collectionAttributesRetrieved(col);
+}
+
+void KolabResourceState::collectionsRetrieved(const Akonadi::Collection::List &collections)
+{
+    Akonadi::Collection::List modifiedCollections;
+    Q_FOREACH (const Akonadi::Collection &col, collections) {
+        modifiedCollections << processAnnotations(col);
+    }
+    ResourceState::collectionsRetrieved(modifiedCollections);
 }
 
 MessageHelper::Ptr KolabResourceState::messageHelper() const

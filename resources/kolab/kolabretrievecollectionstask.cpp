@@ -26,6 +26,7 @@
 #include <noselectattribute.h>
 #include <noinferiorsattribute.h>
 #include <collectionannotationsattribute.h>
+#include <kimap/getmetadatajob.h>
 
 #include <akonadi/cachepolicy.h>
 #include <akonadi/entitydisplayattribute.h>
@@ -41,7 +42,8 @@ KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterfac
     : ResourceTask(CancelIfNoSession, resource, parent),
     mJobs(0)
 {
-
+    mRequestedMetadata << "/shared/vendor/kolab/folder-type";
+    mRequestedMetadata << "/private/vendor/kolab/folder-type";
 }
 
 KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
@@ -95,6 +97,23 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
         fullListJob->start();
     }
 
+    if ( resourceState()->serverCapabilities().contains( QLatin1String("METADATA") ) || resourceState()->serverCapabilities().contains( QLatin1String("ANNOTATEMORE") ) ) {
+        //TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
+        KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(session);
+        meta->setMailBox(QLatin1String("*"));
+        if ( resourceState()->serverCapabilities().contains( QLatin1String("METADATA") ) ) {
+            meta->setServerCapability( KIMAP::MetaDataJobBase::Metadata );
+        } else {
+            meta->setServerCapability( KIMAP::MetaDataJobBase::Annotatemore );
+        }
+        meta->setDepth( KIMAP::GetMetaDataJob::AllLevels );
+        Q_FOREACH (const QByteArray &requestedEntry, mRequestedMetadata) {
+            meta->addRequestedEntry(requestedEntry);
+        }
+        connect( meta, SIGNAL(result(KJob*)), SLOT(onGetMetaDataDone(KJob*)) );
+        meta->start();
+    }
+
     KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
     listJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
@@ -103,6 +122,17 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     connect(listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)));
     mJobs++;
     listJob->start();
+}
+
+void KolabRetrieveCollectionsTask::onGetMetaDataDone( KJob *job )
+{
+    if ( job->error() ) {
+            kWarning() << "Get metadata failed: " << job->errorString();
+            return;
+    }
+
+    KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>( job );
+    mMetadata = meta->allMetaDataForMailboxes();
 }
 
 void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
@@ -181,6 +211,11 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
     if (pathParts.size() >= 2 && isNamespaceFolder(pathParts, resourceState()->sharedNamespaces())) {
         CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setCollectionNamespace("shared");
+    }
+
+    const QMap<QByteArray, QByteArray> metadata = mMetadata.value(path);
+    if (!metadata.isEmpty()) {
+        c.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing)->setAnnotations(metadata);
     }
 
 }
