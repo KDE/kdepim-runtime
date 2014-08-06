@@ -52,7 +52,7 @@ void EntityTreeCreateJob::createNextLevelOfCollections()
     ++m_pendingJobs;
     job = new CollectionCreateJob( collection, this );
     job->setProperty( collectionIdMappingProperty, collection.id() );
-    connect( job, SIGNAL(result(KJob*)), SLOT(collectionCreateJobDone(KJob*)) );
+    connect(job, &CollectionCreateJob::result, this, &EntityTreeCreateJob::collectionCreateJobDone);
   }
 }
 

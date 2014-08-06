@@ -113,7 +113,7 @@ MaildirResource::MaildirResource( const QString &id )
     // check if the resource was used before
     CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), Akonadi::CollectionFetchJob::FirstLevel, this );
     job->fetchScope().setResource( id );
-    connect( job, SIGNAL(result(KJob*)), SLOT(attemptConfigRestoring(KJob*)) );
+    connect(job, &CollectionFetchJob::result, this, &MaildirResource::attemptConfigRestoring);
     job->start();
   }
   new MaildirSettingsAdaptor( mSettings );
@@ -139,7 +139,7 @@ MaildirResource::MaildirResource( const QString &id )
   scope.setAncestorRetrieval( ItemFetchScope::None );
   setItemSynchronizationFetchScope( scope );
 
-  connect( mFsWatcher, SIGNAL(dirty(QString)), SLOT(slotDirChanged(QString)) );
+  connect(mFsWatcher, &KDirWatch::dirty, this, &MaildirResource::slotDirChanged);
   if (!ensureSaneConfiguration()) {
      emit error( i18n( "Unusable configuration." ) );
   } else {
@@ -147,7 +147,7 @@ MaildirResource::MaildirResource( const QString &id )
   }
 
   mChangedCleanerTimer = new QTimer( this );
-  connect( mChangedCleanerTimer, SIGNAL(timeout()), this, SLOT(changedCleaner()) );
+  connect(mChangedCleanerTimer, &QTimer::timeout, this, &MaildirResource::changedCleaner);
 }
 
 void MaildirResource::attemptConfigRestoring( KJob * job )
@@ -545,7 +545,7 @@ void MaildirResource::retrieveItems( const Akonadi::Collection & col )
 
   RetrieveItemsJob *job = new RetrieveItemsJob( col, md, this );
   job->setMimeType( itemMimeType() );
-  connect( job, SIGNAL(result(KJob*)), SLOT(slotItemsRetrievalResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MaildirResource::slotItemsRetrievalResult);
 }
 
 void MaildirResource::slotItemsRetrievalResult ( KJob* job )
@@ -747,7 +747,7 @@ void MaildirResource::slotDirChanged(const QString& dir)
   }
 
   CollectionFetchJob *job = new CollectionFetchJob( col, Akonadi::CollectionFetchJob::Base, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchDirFetchResult(KJob*)) );
+  connect(job, &CollectionFetchJob::result, this, &MaildirResource::fsWatchDirFetchResult);
 }
 
 void MaildirResource::fsWatchDirFetchResult(KJob* job)
@@ -795,7 +795,7 @@ void MaildirResource::slotFileChanged( const QFileInfo& fileInfo )
   ItemFetchJob *job = new ItemFetchJob( item, this );
   job->setProperty( "entry", key );
   job->setProperty( "dir", path );
-  connect( job, SIGNAL(result(KJob*)), SLOT(fsWatchFileFetchResult(KJob*)) );
+  connect(job, &ItemFetchJob::result, this, &MaildirResource::fsWatchFileFetchResult);
 }
 
 void MaildirResource::fsWatchFileFetchResult( KJob* job )
@@ -832,7 +832,7 @@ void MaildirResource::fsWatchFileFetchResult( KJob* job )
   item.setPayload( KMime::Message::Ptr( mail ) );
 
   ItemModifyJob *mjob = new ItemModifyJob( item );
-  connect( mjob, SIGNAL(result(KJob*)), SLOT(fsWatchFileModifyResult(KJob*)) );
+  connect(mjob, &ItemModifyJob::result, this, &MaildirResource::fsWatchFileModifyResult);
 }
 
 void MaildirResource::fsWatchFileModifyResult(KJob* job)

@@ -52,7 +52,7 @@ void RetrieveItemsJob::doStart()
 {
   Q_ASSERT( !m_mimeType.isEmpty() );
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( m_collection, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(localListDone(KJob*)) );
+  connect(job, &Akonadi::ItemFetchJob::result, this, &RetrieveItemsJob::localListDone);
 }
 
 void RetrieveItemsJob::localListDone ( KJob* job )
@@ -133,7 +133,7 @@ void RetrieveItemsJob::processEntry()
   } else { // new item
     job = new Akonadi::ItemCreateJob( item, m_collection, transaction() );
   }
-  connect(job, SIGNAL(result(KJob*)), SLOT(processEntryDone(KJob*)) );
+  connect(job, &Akonadi::ItemCreateJob::result, this, &RetrieveItemsJob::processEntryDone);
 }
 
 void RetrieveItemsJob::processEntryDone( KJob* )
@@ -172,7 +172,7 @@ Akonadi::TransactionSequence* RetrieveItemsJob::transaction()
   if ( !m_transaction ) {
     m_transaction = new Akonadi::TransactionSequence( this );
     m_transaction->setAutomaticCommittingEnabled( false );
-    connect( m_transaction, SIGNAL(result(KJob*)), SLOT(transactionDone(KJob*)) );
+    connect(m_transaction, &Akonadi::TransactionSequence::result, this, &RetrieveItemsJob::transactionDone);
   }
   return m_transaction;
 }

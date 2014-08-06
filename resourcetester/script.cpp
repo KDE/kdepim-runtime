@@ -23,7 +23,7 @@
 Script::Script()
 {
   action = new Kross::Action(this, "ResourceTester");
-  connect( action, SIGNAL(finished(Kross::Action*)), SLOT(finished(Kross::Action*)) );
+  connect(action, &Kross::Action::finished, this, &Script::finished);
   action->addObject( this, QLatin1String( "Script" ) );
 }
 

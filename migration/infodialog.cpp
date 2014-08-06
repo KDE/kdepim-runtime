@@ -57,8 +57,8 @@ InfoDialog::InfoDialog( bool closeWhenDone ) :
   QVBoxLayout *mainLayout = new QVBoxLayout;
   setLayout(mainLayout);
   mainLayout->addWidget(mainWidget);
-  connect(mButtonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(mButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(mButtonBox, &QDialogButtonBox::accepted, this, &InfoDialog::accept);
+  connect(mButtonBox, &QDialogButtonBox::rejected, this, &InfoDialog::reject);
   mButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
 
   QWidget *widget = new QWidget( this );

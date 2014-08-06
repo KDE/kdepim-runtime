@@ -93,7 +93,7 @@ void MTDummyResource::sendItem( const Item &message )
   Q_ASSERT( currentlySending == -1 );
   currentlySending = message.id();
   ItemCopyJob *job = new ItemCopyJob( message, Collection( Settings::self()->sink() ) );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(jobResult(KJob*)) );
+  connect(job, &ItemCopyJob::result, this, &MTDummyResource::jobResult);
 }
 
 void MTDummyResource::jobResult( KJob *job )

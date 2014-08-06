@@ -61,7 +61,7 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
         Q_ASSERT(mSelectionModel);
         //Not sure why this is required, but otherwise the view doesn't load anything from the model
         treeView->update(QModelIndex());
-        connect(treeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onItemActivated(QModelIndex)));
+        connect(treeView, &QTreeView::doubleClicked, this, &MigrationStatusWidget::onItemActivated);
 
         vboxLayout->addWidget(treeView);
     }

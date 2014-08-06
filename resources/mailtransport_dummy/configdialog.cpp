@@ -43,8 +43,8 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
   mainLayout->addWidget(buttonBox);
 
 
@@ -55,7 +55,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   ui.sink->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
   qDebug() << "Sink from settings" << Settings::self()->sink();
 
-  connect(mOkButton, SIGNAL(clicked()), this, SLOT(save()) );
+  connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
   connect( ui.sink, SIGNAL(collectionChanged(Akonadi::Collection)), this, SLOT(slotCollectionChanged(Akonadi::Collection)) );
   mOkButton->setEnabled(false);
 }

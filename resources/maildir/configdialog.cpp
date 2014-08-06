@@ -51,8 +51,8 @@ ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier,
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
   mainLayout->addWidget(buttonBox);
 
 
@@ -61,7 +61,7 @@ ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier,
   ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
   ui.kcfg_Path->setUrl( QUrl::fromLocalFile( mSettings->path() ) );
 
-  connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
+  connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
   connect( ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()) );
   ui.kcfg_Path->lineEdit()->setFocus();
   checkPath();

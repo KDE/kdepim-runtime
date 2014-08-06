@@ -64,7 +64,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     setCaption( i18n("New Mail Notifier settings") );
     setWindowIcon( QIcon::fromTheme( QLatin1String("kmail") ) );
     setButtons( Help | Ok|Cancel );
-    connect(this, SIGNAL(okClicked()), this, SLOT(slotOkClicked()));
+    connect(this, &NewMailNotifierSettingsDialog::okClicked, this, &NewMailNotifierSettingsDialog::slotOkClicked);
 
     QWidget *w = new QWidget;
     QVBoxLayout *lay = new QVBoxLayout;
@@ -119,7 +119,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QLabel *howIsItWork = new QLabel(i18n( "<a href=\"whatsthis\">How does this work?</a>" ));
     howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     vbox->addWidget(howIsItWork);
-    connect(howIsItWork, SIGNAL(linkActivated(QString)),SLOT(slotHelpLinkClicked(QString)) );
+    connect(howIsItWork, &QLabel::linkActivated, this, &NewMailNotifierSettingsDialog::slotHelpLinkClicked);
 
     QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setMargin(0);
@@ -134,7 +134,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addLayout(textToSpeakLayout);
     vbox->addStretch();
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
-    connect(mTextToSpeak, SIGNAL(toggled(bool)), mTextToSpeakSetting, SLOT(setEnabled(bool)));
+    connect(mTextToSpeak, &QCheckBox::toggled, mTextToSpeakSetting, &QLineEdit::setEnabled);
 
     mNotify = new KNotifyConfigWidget(this);
     mNotify->setApplication(QLatin1String("akonadi_newmailnotifier_agent"));

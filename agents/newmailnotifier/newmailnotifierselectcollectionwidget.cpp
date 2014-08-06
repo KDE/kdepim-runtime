@@ -61,7 +61,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mModel = new Akonadi::EntityTreeModel( mChangeRecorder, this );
     // Set the model to show only collections, not items.
     mModel->setItemPopulationStrategy( Akonadi::EntityTreeModel::NoItemPopulation );
-    connect(mModel, SIGNAL(collectionTreeFetched(Akonadi::Collection::List)), SLOT(slotCollectionTreeFetched()));
+    connect(mModel, &Akonadi::EntityTreeModel::collectionTreeFetched, this, &NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched);
 
     Akonadi::CollectionFilterProxyModel *mimeTypeProxy = new Akonadi::CollectionFilterProxyModel( this );
     mimeTypeProxy->setExcludeVirtualCollections( true );
@@ -100,11 +100,11 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     vbox->addLayout(hbox);
 
     QPushButton *button = new QPushButton(i18n("&Select All"), this);
-    connect(button, SIGNAL(clicked(bool)), this, SLOT(slotSelectAllCollections()));
+    connect(button, &QPushButton::clicked, this, &NewMailNotifierSelectCollectionWidget::slotSelectAllCollections);
     hbox->addWidget(button);
 
     button = new QPushButton(i18n("&Unselect All"), this);
-    connect(button, SIGNAL(clicked(bool)), this, SLOT(slotUnselectAllCollections()));
+    connect(button, &QPushButton::clicked, this, &NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections);
     hbox->addWidget(button);
     hbox->addStretch(1);
     setLayout(vbox);
@@ -197,7 +197,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QMo
         }
 
         if (modifyJob) {
-            connect(modifyJob, SIGNAL(finished(KJob*)), SLOT(slotModifyJobDone(KJob*)));
+            connect(modifyJob, &Akonadi::CollectionModifyJob::finished, this, &NewMailNotifierSelectCollectionWidget::slotModifyJobDone);
         }
         updateCollectionsRecursive(child);
     }
