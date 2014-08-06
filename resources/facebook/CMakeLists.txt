@@ -1,4 +1,8 @@
 project(facebookresource)
+
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_facebook_resource\")
+
+
 include_directories(${LibKFbAPI_INCLUDE_DIR})
 include_directories(${QJSON_INCLUDE_DIR} ${qjson_INCLUDE_DIR})
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
