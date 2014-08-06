@@ -54,7 +54,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
     // todo: dont ask these details based on a setting of the desktop file.
     PersonalDataPage *pdpage = new PersonalDataPage( this );
     addPage( pdpage, i18n( "Provide personal data" ) );
-    connect( pdpage, SIGNAL(manualWanted(bool)), SLOT(slotManualConfigWanted(bool)) );
+    connect(pdpage, &PersonalDataPage::manualWanted, this, &Dialog::slotManualConfigWanted);
     if ( !Global::assistant().isEmpty() ) {
       pdpage->setHideOptionInternetSearch( true );
     }
@@ -64,7 +64,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
     TypePage* typePage = new TypePage( this );
     connect( typePage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
 #ifndef ACCOUNTWIZARD_NO_GHNS
-    connect( typePage, SIGNAL(ghnsWanted()), SLOT(slotGhnsWanted()) );
+    connect(typePage, &TypePage::ghnsWanted, this, &Dialog::slotGhnsWanted);
 #endif
     mTypePage = addPage( typePage, i18n( "Select Account Type" ) );
     setAppropriate( mTypePage, false );
@@ -73,7 +73,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
     ProviderPage *ppage = new ProviderPage( this );
     connect(typePage, &TypePage::ghnsWanted, ppage, &ProviderPage::startFetchingData);
     connect( ppage->treeview(), SIGNAL(doubleClicked(QModelIndex)), SLOT(slotNextPage()) );
-    connect( ppage, SIGNAL(ghnsNotWanted()), SLOT(slotGhnsNotWanted()) );
+    connect(ppage, &ProviderPage::ghnsNotWanted, this, &Dialog::slotGhnsNotWanted);
     mProviderPage = addPage( ppage, i18n( "Select Provider" ) );
     setAppropriate( mProviderPage, false );
 #endif
@@ -85,7 +85,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   loadPage->exportObject( this, QLatin1String( "Dialog" ) );
   loadPage->exportObject( mSetupManager, QLatin1String( "SetupManager" ) );
   loadPage->exportObject( new ServerTest( this ), QLatin1String( "ServerTest" ) );
-  connect( loadPage, SIGNAL(aboutToStart()), SLOT(clearDynamicPages()) );
+  connect(loadPage, &LoadPage::aboutToStart, this, &Dialog::clearDynamicPages);
 
   SetupPage *setupPage = new SetupPage( this );
   mLastPage = addPage( setupPage, i18n( "Setting up Account" )  );
@@ -152,8 +152,8 @@ QObject* Dialog::addPage(const QString& uiFile, const QString &title )
 {
   qDebug() << uiFile;
   DynamicPage *page = new DynamicPage( Global::assistantBasePath() + uiFile, this );
-  connect( page, SIGNAL(leavePageNextOk()), SLOT(slotNextOk()) );
-  connect( page, SIGNAL(leavePageBackOk()), SLOT(slotBackOk()) );
+  connect(page, &DynamicPage::leavePageNextOk, this, &Dialog::slotNextOk);
+  connect(page, &DynamicPage::leavePageBackOk, this, &Dialog::slotBackOk);
   KPageWidgetItem* item = insertPage( mLastPage, page, title );
   page->setPageWidgetItem( item );
   mDynamicPages.push_back( item );
@@ -196,7 +196,7 @@ void Dialog::clearDynamicPages()
 
 void Dialog::reject()
 {
-  connect( mSetupManager, SIGNAL(rollbackComplete()), SLOT(close()) );
+  connect(mSetupManager, &SetupManager::rollbackComplete, this, &Dialog::close);
   mSetupManager->requestRollback();
 }
 
