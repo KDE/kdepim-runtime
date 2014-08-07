@@ -29,28 +29,37 @@
 
 #include <QDebug> 
 #include "akonadislave_debug.h"
-#include <kapplication.h>
-#include <kcmdlineargs.h>
+
+
 #include <QDebug>
 #include <klocale.h>
 
 #include <QDateTime>
+#include <QApplication>
+#include <KAboutData>
+#include <KLocalizedString>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 extern "C" { int Q_DECL_EXPORT kdemain(int argc, char **argv); }
 
 int kdemain(int argc, char **argv) {
 
-  KCmdLineArgs::init( argc, argv, "kio_akonadi", 0, KLocalizedString(), 0 );
+  KAboutData aboutData( QLatin1String("kio_akonadi"), QString(), QLatin1String( "0" ));
+  QApplication app(argc, argv);
+  QCommandLineParser parser;
+  KAboutData::setApplicationData(aboutData);
+  parser.addVersionOption();
+  parser.addHelpOption();
+  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+protocol"), i18n( "Protocol name" )));
+  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+pool"), i18n( "Socket name" )));
+  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+app"), i18n( "Socket name" )));
 
-  KCmdLineOptions options;
-  options.add( "+protocol", ki18n( "Protocol name" ) );
-  options.add( "+pool", ki18n( "Socket name" ) );
-  options.add( "+app", ki18n( "Socket name" ) );
-  KCmdLineArgs::addCmdLineOptions( options );
-  KApplication app( false );
+  aboutData.setupCommandLine(&parser);
+  parser.process(app);
+  aboutData.processCommandLine(&parser);
 
-  KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-  AkonadiSlave slave( args->arg( 1 ).toLocal8Bit(), args->arg( 2 ).toLocal8Bit() );
+  AkonadiSlave slave( parser.positionalArguments().at(1).toLocal8Bit(), parser.positionalArguments().at(2).toLocal8Bit() );
   slave.dispatchLoop();
 
   return 0;

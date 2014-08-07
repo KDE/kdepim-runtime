@@ -27,7 +27,7 @@
 
 #include <kglobal.h>
 //#include <KUniqueApplication>
-
+#include <KDBusService>
 
 #include <stdio.h>
 #include <KLocale>
@@ -48,7 +48,13 @@ int main( int argc, char **argv )
   aboutData.addAuthor( i18n( "Volker Krause" ),  i18n( "Author" ), QLatin1String("vkrause@kde.org") );
   aboutData.addAuthor( i18n( "Laurent Montel" ), QString() , QLatin1String("montel@kde.org") );
 
+
+
   QApplication app(argc, argv);
+  app.setOrganizationDomain(QStringLiteral("kde.org"));
+
+
+
   QCommandLineParser parser;
   KAboutData::setApplicationData(aboutData);
   parser.addVersionOption();
@@ -61,6 +67,8 @@ int main( int argc, char **argv )
   aboutData.setupCommandLine(&parser);
   parser.process(app);
   aboutData.processCommandLine(&parser);
+  KDBusService service(KDBusService::Unique);
+
 #if 0 //PORT QT5
   KUniqueApplication::addCmdLineOptions();
 

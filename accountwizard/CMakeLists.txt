@@ -107,6 +107,7 @@ set(accountwizard_libs
   KF5::WidgetsAddons
   KF5::NewStuff
   Qt5::UiTools
+  KF5::DBusAddons
 )
 
 if ( NOT ACCOUNTWIZARD_NO_GHNS )

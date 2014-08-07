@@ -95,3 +95,4 @@ Comment[zh_CN]=调用账户向导配置个人信息账户。
 Comment[zh_TW]=啟動帳號精靈來設定 PIM 帳號
 MimeType=application/x-accountwizard-package;
 Terminal=false
+X-DBUS-StartupType=Unique
