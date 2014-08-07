@@ -95,6 +95,7 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->enterPageNext();
   emit page->pageEnteredNext();
+  connect(button(QDialogButtonBox::Cancel), SIGNAL(clicked()), this, SLOT(accept()));
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
