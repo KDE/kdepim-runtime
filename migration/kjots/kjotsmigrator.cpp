@@ -112,7 +112,7 @@ void KJotsMigrator::notesResourceCreated( KJob *job )
   m_resourceIdentifier = instance.identifier();
 
   ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( instance, this );
-  connect( syncJob, SIGNAL(result(KJob*)), SLOT(syncDone(KJob*)));
+  connect(syncJob, &ResourceSynchronizationJob::result, this, &KJotsMigrator::syncDone);
   syncJob->start();
 }
 
@@ -125,8 +125,8 @@ void KJotsMigrator::syncDone(KJob *job)
   emit message( Info, i18n( "Instance \"%1\" synchronized" , m_resourceIdentifier ) );
 
   CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
-  connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
-  connect( collectionFetchJob, SIGNAL(result(KJob*)), SLOT(rootFetchFinished(KJob*)) );
+  connect(collectionFetchJob, &CollectionFetchJob::collectionsReceived, this, &KJotsMigrator::rootCollectionsRecieved);
+  connect(collectionFetchJob, &CollectionFetchJob::result, this, &KJotsMigrator::rootFetchFinished);
 }
 
 void KJotsMigrator::rootFetchFinished( KJob *job )
@@ -220,7 +220,7 @@ void KJotsMigrator::migrateLegacyBook( const QString& fileName )
     }
   }
   EntityTreeCreateJob *job = new EntityTreeCreateJob( m_collectionLists, m_items, this );
-  connect( job, SIGNAL(finished(KJob*)), SLOT(bookMigrateJobFinished(KJob*)) );
+  connect(job, &EntityTreeCreateJob::finished, this, &KJotsMigrator::bookMigrateJobFinished);
   m_collectionLists.clear();
   m_items.clear();
 }
