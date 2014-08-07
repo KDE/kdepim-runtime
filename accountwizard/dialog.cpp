@@ -37,7 +37,6 @@
 #include <kross/core/action.h>
 #include <qdebug.h>
 #include <kmessagebox.h>
-#include <KDialog>
 #include <qplatformdefs.h>
 
 Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
