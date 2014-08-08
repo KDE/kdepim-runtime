@@ -26,6 +26,7 @@
 #include <SignOn/Identity>
 
 #include <QDebug>
+#include <KLocalizedString>
 
 GetCredentialsJob::GetCredentialsJob(const Accounts::AccountId &id, QObject *parent)
 : KJob(parent)
@@ -50,7 +51,7 @@ void GetCredentialsJob::getCredentials()
     Accounts::Account *acc = m_manager->account(m_id);
     if (!acc) {
         setError(-1);
-        setErrorText(QLatin1String("Could not find account"));
+        setErrorText(i18n("Could not find account"));
         emitResult();
         return;
     }
@@ -62,7 +63,7 @@ void GetCredentialsJob::getCredentials()
 
     if (!identity) {
         setError(-1);
-        setErrorText(QLatin1String("Could not find credentials"));
+        setErrorText(i18n("Could not find credentials"));
         emitResult();
         return;
     }
