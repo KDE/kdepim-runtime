@@ -44,8 +44,8 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &UrlConfigurationDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &UrlConfigurationDialog::reject);
   mainLayout->addWidget(buttonBox);
 
 
@@ -57,14 +57,14 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
   connect( mModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
            this, SLOT(onModelDataChanged(QModelIndex,QModelIndex)) );
 
-  connect( mUi.remoteProtocol, SIGNAL(changed(int)), this, SLOT(onConfigChanged()) );
-  connect( mUi.remoteUrl, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
-  connect( mUi.useDefaultCreds, SIGNAL(toggled(bool)), this, SLOT(onConfigChanged()) );
-  connect( mUi.username, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
-  connect( mUi.password, SIGNAL(textChanged(QString)), this, SLOT(onConfigChanged()) );
+  connect(mUi.remoteProtocol, &KButtonGroup::changed, this, &UrlConfigurationDialog::onConfigChanged);
+  connect(mUi.remoteUrl, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
+  connect(mUi.useDefaultCreds, &QRadioButton::toggled, this, &UrlConfigurationDialog::onConfigChanged);
+  connect(mUi.username, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
+  connect(mUi.password, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
 
-  connect( mUi.fetchButton, SIGNAL(clicked()), this, SLOT(onFetchButtonClicked()) );
-  connect(mOkButton, SIGNAL(clicked()), this, SLOT(onOkButtonClicked()) );
+  connect(mUi.fetchButton, &QPushButton::clicked, this, &UrlConfigurationDialog::onFetchButtonClicked);
+  connect(mOkButton, &QPushButton::clicked, this, &UrlConfigurationDialog::onOkButtonClicked);
 
   checkUserInput();
 }
@@ -182,7 +182,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 
   DavUtils::DavUrl davUrl( url, protocol() );
   DavCollectionsFetchJob *job = new DavCollectionsFetchJob( davUrl );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(onCollectionsFetchDone(KJob*)) );
+  connect(job, &DavCollectionsFetchJob::result, this, &UrlConfigurationDialog::onCollectionsFetchDone);
   job->start();
 }
 
@@ -224,7 +224,7 @@ void UrlConfigurationDialog::onModelDataChanged( const QModelIndex &topLeft, con
   DavUtils::DavUrl davUrl( fullUrl, protocol() );
   DavCollectionModifyJob *job = new DavCollectionModifyJob( davUrl );
   job->setProperty( QLatin1String("displayname"), newName );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(onChangeDisplayNameFinished(KJob*)) );
+  connect(job, &DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);
   job->start();
   mUi.discoveredUrls->setEnabled( false );
 }
