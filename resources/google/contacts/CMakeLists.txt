@@ -1,4 +1,5 @@
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_googlecontacts_resource\")
 
 set(contactsresource_SRCS
   contactsresource.cpp
