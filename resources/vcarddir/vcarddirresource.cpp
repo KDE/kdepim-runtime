@@ -21,7 +21,7 @@
 #include "vcarddirresource.h"
 
 #include "settingsadaptor.h"
-#include "../shared/dirsettingsdialog.h"
+#include "dirsettingsdialog.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>

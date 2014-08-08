@@ -21,6 +21,7 @@
 #ifndef AKONADI_SINGLEFILERESOURCECONFIGDIALOG_H
 #define AKONADI_SINGLEFILERESOURCECONFIGDIALOG_H
 
+#include "akonadi-singlefileresource_export.h"
 #include "singlefileresourceconfigdialogbase.h"
 
 #include <KConfigDialogManager>
@@ -31,7 +32,7 @@ namespace Akonadi {
  * Configuration dialog for single file resources.
  */
 template <typename Settings>
-class SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
 {
   Settings *mSettings;
 

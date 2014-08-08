@@ -22,6 +22,8 @@
 #ifndef AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 #define AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
 
+#include "akonadi-singlefileresource_export.h"
+
 #ifdef KDEPIM_MOBILE_UI
 #include "ui_singlefileresourceconfigdialog_mobile.h"
 #else
@@ -45,7 +47,7 @@ class SingleFileValidatingWidget;
  * Base class for the configuration dialog for single file based resources.
  * @see SingleFileResourceConfigDialog
  */
-class SingleFileResourceConfigDialogBase : public KDialog
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : public KDialog
 {
     Q_OBJECT
   public:
@@ -119,7 +121,7 @@ class SingleFileResourceConfigDialogBase : public KDialog
  * Derived classes must implement validate() and emit changed() when
  * appropriate.
  */
-class SingleFileValidatingWidget : public QWidget
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileValidatingWidget : public QWidget
 {
     Q_OBJECT
   public:

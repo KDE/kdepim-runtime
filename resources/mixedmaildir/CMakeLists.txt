@@ -21,7 +21,6 @@ set( mixedmaildirresource_SRCS
   mixedmaildirresource.cpp
   mixedmaildirstore.cpp
   retrieveitemsjob.cpp
-  ../shared/createandsettagsjob.cpp
   mixedmaildir_debug.cpp
 )
 
@@ -56,6 +55,7 @@ target_link_libraries(akonadi_mixedmaildir_resource
   KF5::Mime
   KF5::PimUtils
   KF5::AkonadiAgentBase
+  akonadi-singlefileresource
 )
 
 install(TARGETS akonadi_mixedmaildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

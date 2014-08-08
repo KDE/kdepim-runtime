@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2008 Omat Holding B.V. <info@omat.nl>
+    Copyright (c) 2009 Tobias Koenig <tokoe@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,29 +17,32 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
-#define AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
+#ifndef DIRSETTINGSDIALOG_H
+#define DIRSETTINGSDIALOG_H
 
-#include <attribute.h>
+#include "ui_settingsdialog.h"
 
-#include <QtCore/QMap>
+#include <QDialog>
+#include <QPushButton>
+
+class KConfigDialogManager;
 
 namespace Akonadi {
 
-class CollectionAnnotationsAttribute : public Akonadi::Attribute
+class SettingsDialog : public QDialog
 {
+  Q_OBJECT
   public:
-    CollectionAnnotationsAttribute();
-    CollectionAnnotationsAttribute( const QMap<QByteArray, QByteArray> &annotations );
-    void setAnnotations( const QMap<QByteArray, QByteArray> &annotations );
-    QMap<QByteArray, QByteArray> annotations() const;
-    virtual QByteArray type() const;
-    virtual Attribute *clone() const;
-    virtual QByteArray serialized() const;
-    virtual void deserialize( const QByteArray &data );
+    explicit SettingsDialog( WId windowId );
+
+  private Q_SLOTS:
+    void save();
+    void validate();
 
   private:
-    QMap<QByteArray, QByteArray> mAnnotations;
+    Ui::SettingsDialog ui;
+    KConfigDialogManager* mManager;
+    QPushButton *mOkButton;
 };
 
 }

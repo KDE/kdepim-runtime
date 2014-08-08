@@ -38,9 +38,10 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
   find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
   find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
   find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+  find_package(KF5Imap ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+
 endif()
 
-find_package(KF5Imap ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
@@ -70,8 +71,8 @@ find_package(LibKFbAPI 1.0 QUIET CONFIG)
 set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
 
 include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared
-  ${CMAKE_CURRENT_BINARY_DIR}/shared
+  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresource/
+  ${CMAKE_CURRENT_BINARY_DIR}/shared/singlefileresource/
   ${CMAKE_CURRENT_SOURCE_DIR}/folderarchivesettings/
 )
 
@@ -101,33 +102,6 @@ endmacro( akonadi_add_resourcetest )
 
 #add_definitions( -DQT_NO_CAST_FROM_ASCII )
 #add_definitions( -DQT_NO_CAST_TO_ASCII )
-
-set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourcebase.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialogbase.cpp
-)
-
-if (KDEPIM_MOBILE_UI)
-set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_mobile.ui
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
-)
-else ()
-set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog_desktop.ui
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresourceconfigdialog.ui
-)
-endif ()
-
-set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionannotationsattribute.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/collectionflagsattribute.cpp
-)
-
-set( AKONADI_IMAPATTRIBUTES_SHARED_SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/imapaclattribute.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/shared/imapquotaattribute.cpp
-)
 
 add_subdirectory( akonotes )
 add_subdirectory( kalarm )

@@ -10,10 +10,9 @@ include_directories(
 
 set( vcarddirresource_SRCS
   vcarddirresource.cpp
-  ../shared/dirsettingsdialog.cpp
+  dirsettingsdialog.cpp
 )
 
-ki18n_wrap_ui(vcarddirresource_SRCS settingsdialog.ui)
 kconfig_add_kcfg_files(vcarddirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcarddirresource.kcfg org.kde.Akonadi.VCardDirectory.Settings)
 qt5_add_dbus_adaptor(vcarddirresource_SRCS

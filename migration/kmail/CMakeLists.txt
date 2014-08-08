@@ -8,8 +8,6 @@ set(kmail-migrator_srcs
   localfolderscollectionmigrator.cpp
   main.cpp
   ${MIGRATION_AKONADI_SHARED_SOURCES}
-  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/collectionannotationsattribute.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/shared/createandsettagsjob.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildirstore.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildir_debug.cpp
 )
@@ -56,6 +54,7 @@ target_link_libraries(kmail-migrator
   akonadi-filestore
   maildir
   kmindexreader
+  akonadi-singlefileresource
 )
 
 install(TARGETS kmail-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})

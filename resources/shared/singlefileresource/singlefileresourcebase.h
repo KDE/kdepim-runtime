@@ -20,6 +20,7 @@
 #ifndef AKONADI_SINGLEFILERESOURCEBASE_H
 #define AKONADI_SINGLEFILERESOURCEBASE_H
 
+#include "akonadi-singlefileresource_export.h"
 #include <resourcebase.h>
 
 #include <KUrl>
@@ -38,7 +39,7 @@ namespace Akonadi
  * Base class for single file based resources.
  * @see SingleFileResource
  */
-class SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
 {
   Q_OBJECT
   public:

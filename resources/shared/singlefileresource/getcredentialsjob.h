@@ -20,6 +20,7 @@
 #ifndef GET_CREDENTIALS_JOB_H
 #define GET_CREDENTIALS_JOB_H
 
+#include "akonadi-singlefileresource_export.h"
 #include <kjob.h>
 
 #include <Accounts/Account>
@@ -33,7 +34,7 @@ namespace SignOn {
     class Error;
 };
 
-class GetCredentialsJob : public KJob
+class AKONADI_SINGLEFILERESOURCE_EXPORT GetCredentialsJob : public KJob
 {
     Q_OBJECT
 public:

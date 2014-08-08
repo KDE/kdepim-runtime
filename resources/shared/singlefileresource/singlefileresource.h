@@ -22,6 +22,7 @@
 #ifndef AKONADI_SINGLEFILERESOURCE_H
 #define AKONADI_SINGLEFILERESOURCE_H
 
+#include "akonadi-singlefileresource_export.h"
 #include "singlefileresourcebase.h"
 #include "singlefileresourceconfigdialog.h"
 
@@ -45,7 +46,7 @@ namespace Akonadi
  * Base class for single file based resources.
  */
 template <typename Settings>
-class SingleFileResource : public SingleFileResourceBase
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileResourceBase
 {
   public:
     SingleFileResource( const QString &id )

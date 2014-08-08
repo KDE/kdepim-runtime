@@ -10,7 +10,7 @@ include_directories(
 
 set( icaldirresource_SRCS
   icaldirresource.cpp
-  ../shared/dirsettingsdialog.cpp
+  dirsettingsdialog.cpp
 )
 
 ki18n_wrap_ui(icaldirresource_SRCS settingsdialog.ui)

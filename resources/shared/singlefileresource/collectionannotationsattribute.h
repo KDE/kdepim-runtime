@@ -17,26 +17,29 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_COLLECTIONFLAGSATTRIBUTE_H
-#define AKONADI_COLLECTIONFLAGSATTRIBUTE_H
+#ifndef AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
+#define AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
 
 #include <attribute.h>
+#include "akonadi-singlefileresource_export.h"
+#include <QtCore/QMap>
 
 namespace Akonadi {
 
-class CollectionFlagsAttribute : public Akonadi::Attribute
+class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionAnnotationsAttribute : public Akonadi::Attribute
 {
   public:
-    explicit CollectionFlagsAttribute( const QList<QByteArray> &flags = QList<QByteArray>() );
-    void setFlags( const QList<QByteArray> &flags );
-    QList<QByteArray> flags() const;
+    CollectionAnnotationsAttribute();
+    CollectionAnnotationsAttribute( const QMap<QByteArray, QByteArray> &annotations );
+    void setAnnotations( const QMap<QByteArray, QByteArray> &annotations );
+    QMap<QByteArray, QByteArray> annotations() const;
     virtual QByteArray type() const;
     virtual Attribute *clone() const;
     virtual QByteArray serialized() const;
     virtual void deserialize( const QByteArray &data );
 
   private:
-    QList<QByteArray> mFlags;
+    QMap<QByteArray, QByteArray> mAnnotations;
 };
 
 }

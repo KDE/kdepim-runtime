@@ -17,34 +17,41 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_IMAPACLATTRIBUTE_H
-#define AKONADI_IMAPACLATTRIBUTE_H
+#ifndef AKONADI_IMAPQUOTAATTRIBUTE_H
+#define AKONADI_IMAPQUOTAATTRIBUTE_H
 
+#include "akonadi-singlefileresource_export.h"
 #include <attribute.h>
 
 #include <QtCore/QMap>
 
-#include <kimap/acl.h>
-
 namespace Akonadi {
 
-class ImapAclAttribute : public Akonadi::Attribute
+class AKONADI_SINGLEFILERESOURCE_EXPORT ImapQuotaAttribute : public Akonadi::Attribute
 {
   public:
-    ImapAclAttribute();
-    ImapAclAttribute( const QMap<QByteArray, KIMAP::Acl::Rights> &rights,
-                      const QMap<QByteArray, KIMAP::Acl::Rights> &oldRights );
-    void setRights( const QMap<QByteArray, KIMAP::Acl::Rights> &rights );
-    QMap<QByteArray, KIMAP::Acl::Rights> rights() const;
-    QMap<QByteArray, KIMAP::Acl::Rights> oldRights() const;
+    ImapQuotaAttribute();
+    ImapQuotaAttribute( const QList<QByteArray> &roots,
+                        const QList< QMap<QByteArray, qint64> > &limits,
+                        const QList< QMap<QByteArray, qint64> > &usages );
+
+    void setQuotas( const QList<QByteArray> &roots,
+                    const QList< QMap<QByteArray, qint64> > &limits,
+                    const QList< QMap<QByteArray, qint64> > &usages );
+
+    QList<QByteArray> roots() const;
+    QList< QMap<QByteArray, qint64> > limits() const;
+    QList< QMap<QByteArray, qint64> > usages() const;
+
     virtual QByteArray type() const;
     virtual Attribute *clone() const;
     virtual QByteArray serialized() const;
     virtual void deserialize( const QByteArray &data );
 
   private:
-    QMap<QByteArray, KIMAP::Acl::Rights> mRights;
-    QMap<QByteArray, KIMAP::Acl::Rights> mOldRights;
+    QList<QByteArray> mRoots;
+    QList< QMap<QByteArray, qint64> > mLimits;
+    QList< QMap<QByteArray, qint64> > mUsages;
 };
 
 }

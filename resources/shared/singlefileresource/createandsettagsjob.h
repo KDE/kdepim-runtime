@@ -22,8 +22,9 @@
 #include <KJob>
 #include <item.h>
 #include <tag.h>
+#include "akonadi-singlefileresource_export.h"
 
-class CreateAndSetTagsJob : public KJob
+class AKONADI_SINGLEFILERESOURCE_EXPORT CreateAndSetTagsJob : public KJob
 {
   Q_OBJECT
 public:

@@ -5,7 +5,6 @@ add_subdirectory(wizard)
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mbox_resource\")
 
 set( mboxresource_SRCS
-  ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   compactpage.cpp
   lockmethodpage.cpp
   deleteditemsattribute.cpp
@@ -16,7 +15,6 @@ set( mboxresource_SRCS
 install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
 ki18n_wrap_ui(mboxresource_SRCS
-  ${AKONADI_SINGLEFILERESOURCE_SHARED_UI}
   compactpage.ui
   lockfilepage.ui
 )
@@ -34,6 +32,6 @@ if (Q_WS_MAC)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Mbox Resource")
 endif ()
 
-target_link_libraries(akonadi_mbox_resource KF5::Mbox KF5::AkonadiCore KF5::AkonadiMime  KF5::KIOCore KF5::Mime KF5::AkonadiAgentBase)
+target_link_libraries(akonadi_mbox_resource KF5::Mbox KF5::AkonadiCore KF5::AkonadiMime  KF5::KIOCore KF5::Mime KF5::AkonadiAgentBase akonadi-singlefileresource)
 
 install(TARGETS akonadi_mbox_resource DESTINATION ${PLUGIN_INSTALL_DIR})

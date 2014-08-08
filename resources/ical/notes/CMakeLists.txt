@@ -13,7 +13,6 @@ include_directories(
 add_definitions( -DSETTINGS_NAMESPACE=Akonadi_Aknotes_Resource )
 
 set( notesresource_SRCS
-  ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   ../shared/icalresourcebase.cpp
   ../shared/icalresource.cpp
   notesresource.cpp
@@ -22,7 +21,6 @@ set( notesresource_SRCS
 
 install( FILES notesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-ki18n_wrap_ui(notesresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kconfig_add_kcfg_files(notesresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/notesresource.kcfg org.kde.Akonadi.Notes.Settings)
 qt5_add_dbus_adaptor(notesresource_SRCS
@@ -31,6 +29,6 @@ qt5_add_dbus_adaptor(notesresource_SRCS
 
 add_library(akonadi_notes_resource MODULE ${notesresource_SRCS})
 
-target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase)
+target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
 install(TARGETS akonadi_notes_resource DESTINATION ${PLUGIN_INSTALL_DIR})

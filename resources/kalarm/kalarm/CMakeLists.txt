@@ -11,7 +11,6 @@ include_directories(
 add_definitions(-DSETTINGS_NAMESPACE=Akonadi_KAlarm_Resource)
 
 set(kalarmresource_SRCS
-    ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared/icalresourcebase.cpp
     kalarmresource.cpp
     kalarmresourcefactory.cpp
@@ -21,7 +20,7 @@ set(kalarmresource_SRCS
 
 install(FILES kalarmresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
-ki18n_wrap_ui(kalarmresource_SRCS ../shared/alarmtyperadiowidget.ui ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
+ki18n_wrap_ui(kalarmresource_SRCS ../shared/alarmtyperadiowidget.ui)
 kconfig_add_kcfg_files(kalarmresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmresource.kcfg org.kde.Akonadi.KAlarm.Settings)
 qt5_add_dbus_adaptor(kalarmresource_SRCS
@@ -42,6 +41,7 @@ target_link_libraries(akonadi_kalarm_resource
                       KF5::CalendarCore
                       KF5::KIOCore
                       KF5::AkonadiAgentBase
+                      akonadi-singlefileresource
                      )
 
 install(TARGETS akonadi_kalarm_resource DESTINATION ${PLUGIN_INSTALL_DIR})

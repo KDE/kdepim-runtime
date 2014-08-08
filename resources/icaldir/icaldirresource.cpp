@@ -22,7 +22,7 @@
 #include "icaldirresource.h"
 
 #include "settingsadaptor.h"
-#include "../shared/dirsettingsdialog.h"
+#include "dirsettingsdialog.h"
 
 #include <changerecorder.h>
 #include <entitydisplayattribute.h>
