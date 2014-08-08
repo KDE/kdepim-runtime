@@ -45,6 +45,7 @@ AddCollectionTask::~AddCollectionTask()
 void AddCollectionTask::doStart( KIMAP::Session *session )
 {
   if ( parentCollection().remoteId().isEmpty() ) {
+    kWarning() << "Parent collection has no remote id, aborting." << collection().name() << parentCollection().name();
     emitError( i18n( "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.",
                     collection().name(),
                     parentCollection().name() ) );
@@ -81,6 +82,7 @@ void AddCollectionTask::doStart( KIMAP::Session *session )
 void AddCollectionTask::onCreateDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << "Failed to create folder on server: " << job->errorString();
     emitError( i18n( "Failed to create the folder '%1' on the IMAP server. ",
                       m_collection.name() ) );
     cancelTask( job->errorString() );
@@ -101,6 +103,7 @@ void AddCollectionTask::onCreateDone( KJob *job )
 void AddCollectionTask::onSubscribeDone( KJob *job )
 {
   if ( job->error() && isSubscriptionEnabled() ) {
+    kWarning() << "Failed to subscribe to the new folder: " << job->errorString();
     emitWarning( i18n( "Failed to subscribe to the folder '%1' on the IMAP server. "
                        "It will disappear on next sync. Use the subscription dialog to overcome that",
                        m_collection.name() ) );
@@ -144,6 +147,7 @@ void AddCollectionTask::onSubscribeDone( KJob *job )
 void AddCollectionTask::onSetMetaDataDone( KJob *job )
 {
   if ( job->error() ) {
+    kWarning() << "Failed to write annotations: " << job->errorString();
     emitWarning( i18n( "Failed to write some annotations for '%1' on the IMAP server. %2",
                        collection().name(), job->errorText() ) );
   }
