@@ -27,8 +27,10 @@
 #include <QIcon>
 
 #include <QSortFilterProxyModel>
+#include <QMimeDatabase>
+#include <QMimeType>
 #include "global.h"
-#include <kmimetype.h>
+
 
 TypePage::TypePage(KAssistantDialog* parent) :
   Page( parent ),
@@ -70,8 +72,9 @@ TypePage::TypePage(KAssistantDialog* parent) :
           break;
         } else {
           foreach ( const QString &type, filter ) {
-            KMimeType::Ptr typePtr = KMimeType::mimeType( type, KMimeType::ResolveAliases );
-            if ( !typePtr.isNull() && typePtr->is( mimeType ) ) {
+            QMimeDatabase db;
+            QMimeType typePtr = db.mimeTypeForName( type );
+            if (typePtr.isValid() && typePtr.inherits( mimeType ) ) {
               found = true;
               break;
             }
