@@ -37,7 +37,7 @@ CompactPage::CompactPage( const QString &collectionId, QWidget *parent )
 {
   ui.setupUi( this );
 
-  connect( ui.compactButton, SIGNAL(clicked()), this, SLOT(compact()) );
+  connect(ui.compactButton, &QPushButton::clicked, this, &CompactPage::compact);
 
   checkCollectionId();
 }
