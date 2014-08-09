@@ -27,7 +27,7 @@ SetupPage::SetupPage(KAssistantDialog* parent) :
 {
   ui.setupUi( this );
   ui.detailView->setModel( m_msgModel );
-  connect( ui.detailsButton, SIGNAL(clicked()), SLOT(detailsClicked()) );
+  connect(ui.detailsButton, &QPushButton::clicked, this, &SetupPage::detailsClicked);
 }
 
 void SetupPage::enterPageNext()

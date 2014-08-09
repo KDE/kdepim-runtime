@@ -57,9 +57,9 @@ PersonalDataPage::PersonalDataPage(Dialog* parent) :
   ui.nameEdit->setText( mSetupManager->name() );
   ui.emailEdit->setText( mSetupManager->email() );
   slotTextChanged();
-  connect( ui.emailEdit, SIGNAL(textChanged(QString)), SLOT(slotTextChanged()) );
-  connect( ui.nameEdit, SIGNAL(textChanged(QString)), SLOT(slotTextChanged()) );
-  connect( ui.createAccountPb, SIGNAL(clicked()), SLOT(slotCreateAccountClicked()) );
+  connect(ui.emailEdit, &QLineEdit::textChanged, this, &PersonalDataPage::slotTextChanged);
+  connect(ui.nameEdit, &QLineEdit::textChanged, this, &PersonalDataPage::slotTextChanged);
+  connect(ui.createAccountPb, &QPushButton::clicked, this, &PersonalDataPage::slotCreateAccountClicked);
   connect( ui.buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(slotRadioButtonClicked(QAbstractButton*)) );
 #ifdef KDEPIM_ENTERPRISE_BUILD
   ui.checkOnlineGroupBox->setChecked( false );
@@ -127,7 +127,7 @@ void PersonalDataPage::leavePageNext()
     qDebug() << "Searching on internet";
     delete mIspdb;
     mIspdb = new Ispdb( this );
-    connect(mIspdb, SIGNAL(searchType(QString)), this, SLOT(slotSearchType(QString)));
+    connect(mIspdb, &Ispdb::searchType, this, &PersonalDataPage::slotSearchType);
     mIspdb->setEmail( ui.emailEdit->text() );
     mIspdb->start();
 
