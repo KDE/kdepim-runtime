@@ -70,3 +70,8 @@ void ImapResource::onConfigurationDone(int result)
   }
   dlg->deleteLater();
 }
+
+void ImapResource::cleanup()
+{
+    settings()->cleanup();
+}
