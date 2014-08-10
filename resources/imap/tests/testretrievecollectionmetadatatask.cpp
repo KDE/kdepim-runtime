@@ -74,16 +74,16 @@ private slots:
              << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
              << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
              << "S: A000003 OK annotations retrieved"
-             << "C: A000004 GETACL \"INBOX/Foo\""
-             << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
-             << "S: A000004 OK acl retrieved"
-             << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+             << "C: A000004 MYRIGHTS \"INBOX/Foo\""
              << "S: * MYRIGHTS \"INBOX/Foo\" lrswipkxtecda"
-             << "S: A000005 OK rights retrieved"
-             << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+             << "S: A000004 OK rights retrieved"
+             << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
              << "S: * QUOTAROOT INBOX/Foo user/foo"
              << "S: * QUOTA user/foo ( )"
-             << "S: A000006 OK quota retrieved";
+             << "S: A000005 OK quota retrieved"
+             << "C: A000006 GETACL \"INBOX/Foo\""
+             << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
+             << "S: A000006 OK acl retrieved";
 
     callNames.clear();
     callNames << "collectionAttributesRetrieved";
@@ -122,7 +122,7 @@ private slots:
     NoSelectAttribute *noSelectAttribute = new NoSelectAttribute();
     parentCollection.addAttribute( noSelectAttribute );
     collection.setParentCollection( parentCollection );
-    QTest::newRow( "parent wit noselect" ) << collection << capabilities << scenario
+    QTest::newRow( "parent with noselect" ) << collection << capabilities << scenario
                                            << callNames << rights << expectedAnnotations;
     parentCollection.removeAttribute<NoSelectAttribute>();
 
@@ -136,16 +136,13 @@ private slots:
              << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
              << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
              << "S: A000003 OK annotations retrieved"
-             << "C: A000004 GETACL \"INBOX/Foo\""
-             << "S: * ACL INBOX/Foo foo@kde.org wi"
-             << "S: A000004 OK acl retrieved"
-             << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+             << "C: A000004 MYRIGHTS \"INBOX/Foo\""
              << "S: * MYRIGHTS \"INBOX/Foo\" wi"
-             << "S: A000005 OK rights retrieved"
-             << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+             << "S: A000004 OK rights retrieved"
+             << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
              << "S: * QUOTAROOT INBOX/Foo user/foo"
              << "S: * QUOTA user/foo ( )"
-             << "S: A000006 OK quota retrieved";
+             << "S: A000005 OK quota retrieved";
     rights = Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanChangeItem |
              Akonadi::Collection::CanChangeCollection;
     QTest::newRow( "only some rights" ) << collection << capabilities << scenario
@@ -167,16 +164,13 @@ private slots:
              << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
              << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
              << "S: A000003 OK annotations retrieved"
-             << "C: A000004 GETACL \"INBOX/Foo\""
-             << "S: * ACL INBOX/Foo foo@kde.org wi"
-             << "S: A000004 OK acl retrieved"
-             << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+             << "C: A000004 MYRIGHTS \"INBOX/Foo\""
              << "S: * MYRIGHTS \"INBOX/Foo\" w"
-             << "S: A000005 OK rights retrieved"
-             << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+             << "S: A000004 OK rights retrieved"
+             << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
              << "S: * QUOTAROOT INBOX/Foo user/foo"
              << "S: * QUOTA user/foo ( )"
-             << "S: A000006 OK quota retrieved";
+             << "S: A000005 OK quota retrieved";
 
     callNames.clear();
     callNames << "showInformationDialog";
@@ -199,16 +193,13 @@ private slots:
              << "C: A000003 GETANNOTATION \"INBOX\" \"*\" \"value.shared\""
              << "S: * ANNOTATION INBOX /vendor/kolab/folder-test ( value.shared true )"
              << "S: A000003 OK annotations retrieved"
-             << "C: A000004 GETACL \"INBOX\""
-             << "S: * ACL INBOX foo@kde.org wik"
-             << "S: A000004 OK acl retrieved"
-             << "C: A000005 MYRIGHTS \"INBOX\""
+             << "C: A000004 MYRIGHTS \"INBOX\""
              << "S: * MYRIGHTS \"INBOX\" wk"
-             << "S: A000005 OK rights retrieved"
-             << "C: A000006 GETQUOTAROOT \"INBOX\""
+             << "S: A000004 OK rights retrieved"
+             << "C: A000005 GETQUOTAROOT \"INBOX\""
              << "S: * QUOTAROOT INBOX user"
              << "S: * QUOTA user ( )"
-             << "S: A000006 OK quota retrieved";
+             << "S: A000005 OK quota retrieved";
 
     callNames.clear();
     callNames << "collectionAttributesRetrieved";
@@ -236,16 +227,16 @@ private slots:
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test2 \"NIL\")"
              << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/cmu/cyrus-imapd/lastupdate \"true\")"
              << "S: A000003 OK GETMETADATA complete"
-             << "C: A000004 GETACL \"INBOX/Foo\""
-             << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
-             << "S: A000004 OK acl retrieved"
-             << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+             << "C: A000004 MYRIGHTS \"INBOX/Foo\""
              << "S: * MYRIGHTS \"INBOX/Foo\" lrswipkxtecda"
-             << "S: A000005 OK rights retrieved"
-             << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+             << "S: A000004 OK rights retrieved"
+             << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
              << "S: * QUOTAROOT INBOX/Foo user/Foo"
              << "S: * QUOTA user/Foo ( )"
-             << "S: A000006 OK quota retrieved";
+             << "S: A000005 OK quota retrieved"
+             << "C: A000006 GETACL \"INBOX/Foo\""
+             << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
+             << "S: A000006 OK acl retrieved";
 
     callNames.clear();
     callNames << "collectionAttributesRetrieved";

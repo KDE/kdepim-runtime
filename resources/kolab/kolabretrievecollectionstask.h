@@ -43,7 +43,7 @@ private slots:
     void onMailBoxesReceiveDone(KJob *job);
     void onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);
     void onFullMailBoxesReceiveDone(KJob *job);
-    void onGetMetaDataDone(KJob *job);
+    void onMetadataRetrieved(KJob *job);
 
 protected:
     virtual void doStart(KIMAP::Session *session);
@@ -52,14 +52,40 @@ private:
     void checkDone();
     Akonadi::Collection getOrCreateParent(const QString &parentPath);
     void createCollection(const QString &mailbox, const QList<QByteArray> &flags, bool isSubscribed);
-    bool isNamespaceFolder(const QStringList &pathParts, const QList<KIMAP::MailBoxDescriptor> &namespaces);
+    bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces) const;
     void setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path);
+    void applyRights(QHash<QString, KIMAP::Acl::Rights> rights);
+    void applyMetadata(QHash<QString, QMap<QByteArray, QByteArray> > metadata);
 
     int mJobs;
     QHash<QString, Akonadi::Collection> mMailCollections;
     QSet<QString> mSubscribedMailboxes;
     QSet<QByteArray> mRequestedMetadata;
+    KIMAP::Session *mSession;
+};
+
+class RetrieveMetadataJob : public KJob
+{
+    Q_OBJECT
+public:
+    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, QObject *parent = 0);
+    void start();
+
     QHash<QString, QMap<QByteArray, QByteArray> > mMetadata;
+    QHash<QString, KIMAP::Acl::Rights> mRights;
+
+private:
+    void checkDone();
+    int mJobs;
+    QSet<QByteArray> mRequestedMetadata;
+    QStringList mServerCapabilities;
+    QStringList mMailboxes;
+    KIMAP::Session *mSession;
+    QString mSeparator;
+
+private Q_SLOTS:
+    void onGetMetaDataDone(KJob *job);
+    void onRightsReceived(KJob *job);
 };
 
 #endif

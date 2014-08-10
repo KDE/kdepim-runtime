@@ -224,6 +224,7 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
 {
   m_resource->collectionsRetrieved( collections );
 
+  //FIXME get rid of this. If we retrieve metadata before syncing a folder I think we can live without this code.
   if ( m_resource->settings()->retrieveMetadataOnFolderListing() ) {
     QStringList oldMailBoxes = m_resource->settings()->knownMailBoxes();
     QStringList newMailBoxes;

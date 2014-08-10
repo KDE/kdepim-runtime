@@ -34,6 +34,7 @@
 #include "kolabretrievecollectionstask.h"
 #include "kolabresourcestate.h"
 #include "kolabhelpers.h"
+#include "settings.h"
 
 KolabResource::KolabResource(const QString& id)
     :ImapResource(id)
@@ -45,6 +46,13 @@ KolabResource::KolabResource(const QString& id)
 KolabResource::~KolabResource()
 {
 
+}
+
+void KolabResource::delayedInit()
+{
+    ImapResource::delayedInit();
+    settings()->setRetrieveMetadataOnFolderListing(false);
+    Q_ASSERT(!settings()->retrieveMetadataOnFolderListing());
 }
 
 QString KolabResource::defaultName()

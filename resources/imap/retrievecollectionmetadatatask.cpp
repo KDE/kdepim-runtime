@@ -38,6 +38,7 @@
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include "timestampattribute.h"
+#include "collectionmetadatahelper.h"
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent ),
@@ -174,47 +175,15 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 
   KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>( job );
 
-  Akonadi::ImapAclAttribute * const parentAclAttribute =
-        collection().parentCollection().attribute<Akonadi::ImapAclAttribute>();
-  KIMAP::Acl::Rights parentRights = 0;
-  if ( parentAclAttribute ) {
-    parentRights = parentAclAttribute->rights()[userName().toUtf8()];
+  //Default value in case we have nothing better available
+  KIMAP::Acl::Rights parentRights = KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create;
+
+  //FIXME I don't think we have the parent's acl's available
+  if (collection().parentCollection().attribute<Akonadi::ImapAclAttribute>()) {
+    parentRights = myRights(collection().parentCollection());
   }
 
   const KIMAP::Acl::Rights imapRights = rightsJob->rights();
-  Akonadi::Collection::Rights newRights = Akonadi::Collection::ReadOnly;
-
-  // For renaming, the parent folder needs to have the CreateMailbox or Create permission.
-  // We map renaming to CanChangeCollection here, which is not entirely correct, but we have no
-  // CanRenameCollection flag.
-  // If the ACL of the parent folder hasn't been retrieved yet, allow changing, since we don't know
-  // better. If the parent folder is a noselect folder though, don't allow it, since for those we have
-  // no CreateMailbox right.
-  if ( ( !parentAclAttribute && !collection().parentCollection().hasAttribute( "noselect" ) ) ||
-       parentRights & KIMAP::Acl::CreateMailbox ||
-       parentRights & KIMAP::Acl::Create ) {
-    newRights|= Akonadi::Collection::CanChangeCollection;
-  }
-
-  if ( imapRights & KIMAP::Acl::Write ) {
-    newRights|= Akonadi::Collection::CanChangeItem;
-  }
-
-  if ( imapRights & KIMAP::Acl::Insert ) {
-    newRights|= Akonadi::Collection::CanCreateItem;
-  }
-
-  if ( imapRights & ( KIMAP::Acl::DeleteMessage | KIMAP::Acl::Delete ) ) {
-    newRights|= Akonadi::Collection::CanDeleteItem;
-  }
-
-  if ( !m_collection.hasAttribute( "noinferiors" ) && imapRights & ( KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create ) ) {
-    newRights|= Akonadi::Collection::CanCreateCollection;
-  }
-
-  if ( imapRights & ( KIMAP::Acl::DeleteMailbox | KIMAP::Acl::Delete ) ) {
-    newRights|= Akonadi::Collection::CanDeleteCollection;
-  }
 
 //  kDebug( 5327 ) << collection.remoteId()
 //                 << "imapRights:" << imapRights
@@ -222,9 +191,8 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 //                 << "oldRights:" << collection.rights();
 
   const bool isNewCollection = !m_collection.hasAttribute<TimestampAttribute>();
-  if ( (m_collection.rights() & Akonadi::Collection::CanCreateItem) &&
-       !(newRights & Akonadi::Collection::CanCreateItem) &&
-       !isNewCollection ) {
+  const bool accessRevoked = CollectionMetadataHelper::applyRights(m_collection, imapRights, parentRights);
+  if ( accessRevoked && !isNewCollection ) {
     // write access revoked
     const QString collectionName = m_collection.displayName();
 
@@ -234,8 +202,12 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
                            i18n( "Access rights revoked" ), QLatin1String("ShowRightsRevokedWarning") );
   }
 
-  if ( newRights != m_collection.rights() ) {
-    m_collection.setRights( newRights );
+  // Store the mailbox ACLs
+  Akonadi::ImapAclAttribute *aclAttribute
+    = m_collection.attribute<Akonadi::ImapAclAttribute>( Akonadi::Collection::AddIfMissing );
+  const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
+  if ( oldRights != imapRights ) {
+    aclAttribute->setMyRights( imapRights );
   }
 
   //The a right is required to list acl's

@@ -87,6 +87,7 @@ protected Q_SLOTS:
 
   virtual void retrieveItems( const Akonadi::Collection &col );
   virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+  virtual void delayedInit();
 
 protected:
   virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
@@ -146,8 +147,6 @@ private Q_SLOTS:
   void updateResourceName();
 
   void onCollectionModifyDone( KJob *job );
-
-  void delayedInit();
 
 protected:
   //Starts and queues a task

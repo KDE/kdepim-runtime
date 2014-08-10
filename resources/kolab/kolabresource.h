@@ -36,6 +36,7 @@ public:
 protected Q_SLOTS:
     virtual void retrieveCollections();
     virtual void retrieveItems(const Akonadi::Collection& col);
+    virtual void delayedInit();
 
 protected:
     virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
