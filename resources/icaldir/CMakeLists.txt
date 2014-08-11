@@ -3,7 +3,7 @@ include_directories(
     ${QT_QTDBUS_INCLUDE_DIR}
 )
 
-
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_icaldir_resource\")
 
 
 ########### next target ###############

@@ -1,3 +1,4 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_nntp_resource\")
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 set( nntpresource_SRCS

@@ -12,6 +12,8 @@ add_subdirectory( wizard )
 add_subdirectory(libmaildir)
 
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
+
 ########### next target ###############
 set( maildirresource_SRCS
   maildirresource.cpp

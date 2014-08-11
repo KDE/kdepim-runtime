@@ -2,11 +2,12 @@ project(kolabproxy)
 
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}
-  ${QT_QTDBUS_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
   ${Libkolab_INCLUDES}
   ${Libkolabxml_INCLUDES}
 )
+
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_kolabproxy_resource\")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC")
 

@@ -2,6 +2,8 @@
 
 add_subdirectory( wizard )
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_contacts_resource\")
+
 ########### next target ###############
 
 set( contactsresource_SRCS

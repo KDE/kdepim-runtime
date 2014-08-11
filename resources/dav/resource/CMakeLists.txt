@@ -1,5 +1,7 @@
 project(davgroupware)
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
+
 #if (QT_QTXMLPATTERNS_LIBRARY)
   if(WIN32)
       set(LIB_INSTALL_DIR ${LIB_INSTALL_DIR}

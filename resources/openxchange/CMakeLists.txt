@@ -1,4 +1,5 @@
 
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_openxchange_resource\")
 
 set( openxchangeresource_SRCS
   oxa/connectiontestjob.cpp

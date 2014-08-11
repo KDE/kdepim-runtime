@@ -1,5 +1,8 @@
 
+
 add_subdirectory( autotests )
+
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_vcard_resource\")
 
 ########### next target ###############
 
