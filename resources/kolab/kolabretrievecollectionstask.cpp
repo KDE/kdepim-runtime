@@ -111,7 +111,10 @@ void RetrieveMetadataJob::onGetMetaDataDone( KJob *job )
     }
 
     KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>( job );
-    mMetadata = meta->allMetaDataForMailboxes();
+    const QHash<QString, QMap<QByteArray, QByteArray> > metadata = meta->allMetaDataForMailboxes();
+    Q_FOREACH (const QString &folder, metadata.keys()) {
+        mMetadata.insert(folder, metadata.value(folder));
+    }
     checkDone();
 }
 
