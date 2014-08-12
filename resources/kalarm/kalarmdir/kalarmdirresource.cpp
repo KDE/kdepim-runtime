@@ -144,9 +144,9 @@ void KAlarmDirResource::collectionFetchResult(KJob* j)
                     // Remote ID could be path or URL, depending on which version
                     // of Akonadi created it.
                     QString rid = c.remoteId();
-                    KUrl url(mSettings->path());
+                    QUrl url = QUrl::fromLocalFile(mSettings->path());
                     if (!url.isLocalFile()
-                    ||  (rid != url.toLocalFile() && rid != url.url() && rid != url.prettyUrl()))
+                    ||  (rid != url.toLocalFile() && rid != url.url() && rid != url.toDisplayString()))
                     {
                         qCritical() << "Collection remote ID does not match settings: changing settings";
                         recreate = true;

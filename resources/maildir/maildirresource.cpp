@@ -40,7 +40,6 @@
 
 #include <QDebug>
 #include <kdirwatch.h>
-#include <kurl.h>
 #include <kfiledialog.h>
 #include <klocale.h>
 #include <kwindowsystem.h>

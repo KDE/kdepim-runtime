@@ -25,7 +25,6 @@
 #include <kpluginloader.h>
 
 #include <KGlobal>
-#include <KUrl>
 
 #include <QSettings>
 #include <QStackedWidget>
