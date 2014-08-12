@@ -38,6 +38,7 @@ using namespace KMail;
 
 int main( int argc, char **argv )
 {
+  KLocalizedString::setApplicationDomain("kmail-migrator");
   KAboutData aboutData( QStringLiteral("kmail-migrator"),
                         i18n( "KMail Migration Tool" ),
                         QStringLiteral("0.1"),

@@ -29,6 +29,7 @@
 
 int main( int argc, char **argv )
 {
+    KLocalizedString::setApplicationDomain("knotes-migrator");
     KAboutData aboutData( "knotesmigrator", 0,
                           ki18n( "KNotes Migration Tool" ),
                           "0.1",
