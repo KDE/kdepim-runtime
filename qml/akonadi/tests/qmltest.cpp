@@ -27,9 +27,9 @@
 #include <QDebug>
 #include <kselectionproxymodel.h>
 #include <KStandardDirs>
-#include <kapplication.h>
-#include <K4AboutData>
-#include <kcmdlineargs.h>
+
+#include <KAboutData>
+
 // #include <kdescendantsproxymodel.h>
 
 #include <QBoxLayout>
@@ -40,6 +40,9 @@
 #include <QtDeclarative/QDeclarativeEngine>
 #include <QtDeclarative/QDeclarativeComponent>
 #include <QtDeclarative/QDeclarativeView>
+#include <QApplication>
+#include <KLocalizedString>
+#include <QCommandLineParser>
 
 
 class QmlTestWidget : public QWidget
@@ -96,11 +99,17 @@ void QmlTestWidget::collectionRowSelected(int row)
 
 int main( int argc, char **argv )
 {
-  const QByteArray& ba = QByteArray( "akonadi_qml" );
-  const KLocalizedString name = ki18n( "Akonadi QML Test" );
-  K4AboutData aboutData( ba, ba, name, ba, name );
-  KCmdLineArgs::init( argc, argv, &aboutData );
-  KApplication app;
+  const QString ba = QLatin1String( "akonadi_qml" );
+  const QString name = i18n( "Akonadi QML Test" );
+  KAboutData aboutData( ba, name, ba );
+  QApplication app(argc, argv);
+  QCommandLineParser parser;
+  KAboutData::setApplicationData(aboutData);
+  parser.addVersionOption();
+  parser.addHelpOption();
+  aboutData.setupCommandLine(&parser);
+  parser.process(app);
+  aboutData.processCommandLine(&parser);
 
   QmlTestWidget testWidget;
   testWidget.show();
