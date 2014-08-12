@@ -57,7 +57,7 @@ void LocalBookmarksResource::configure( WId windowId )
 {
   const QString oldFile = Settings::self()->path();
 
-  KUrl url;
+  QUrl url;
   if ( !oldFile.isEmpty() )
     url = QUrl::fromLocalFile( oldFile );
   else
