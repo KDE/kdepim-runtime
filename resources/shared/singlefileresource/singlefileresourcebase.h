@@ -23,7 +23,7 @@
 #include "akonadi-singlefileresource_export.h"
 #include <resourcebase.h>
 
-#include <KUrl>
+#include <QUrl>
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
 
@@ -167,7 +167,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
     virtual Collection rootCollection() const = 0;
 
   protected:
-    KUrl mCurrentUrl;
+    QUrl mCurrentUrl;
     QStringList mSupportedMimetypes;
     QString mCollectionIcon;
     KIO::FileCopyJob *mDownloadJob;

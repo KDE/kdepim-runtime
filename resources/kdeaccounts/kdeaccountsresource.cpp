@@ -114,7 +114,7 @@ bool KDEAccountsResource::readFromFile( const QString &fileName )
 {
   mContacts.clear();
 
-  QFile file( KUrl( fileName ).toLocalFile() );
+  QFile file( QUrl::fromLocalFile( fileName ).toLocalFile() );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     emit status( Broken, i18n( "Unable to open KDE accounts file '%1'.", fileName ) );
     return false;

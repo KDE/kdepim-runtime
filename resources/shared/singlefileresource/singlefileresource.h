@@ -54,7 +54,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
       , mSettings( new Settings( componentData().config() ) )
     {
       // The resource needs network when the path refers to a non local file.
-      setNeedsNetwork( !KUrl( mSettings->path() ).isLocalFile() );
+      setNeedsNetwork( !QUrl::fromLocalFile( mSettings->path() ).isLocalFile() );
     }
     ~SingleFileResource()
     {
@@ -78,7 +78,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
         return;
       }
 
-      mCurrentUrl = KUrl( mSettings->path() );
+      mCurrentUrl = QUrl::fromLocalFile( mSettings->path() );
       if ( mCurrentHash.isEmpty() ) {
         // First call to readFile() lets see if there is a hash stored in a
         // cache file. If both are the same than there is no need to load the
@@ -105,7 +105,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
           if ( f.open( QIODevice::WriteOnly ) && f.resize( 0 ) ) {
             emit status( Idle, i18nc( "@info:status", "Ready" ) );
           } else {
-            const QString message = i18n( "Could not create file '%1'.", mCurrentUrl.prettyUrl() );
+            const QString message = i18n( "Could not create file '%1'.", mCurrentUrl.toDisplayString() );
             qWarning() << message;
             emit status( Broken, message );
             mCurrentUrl.clear();
@@ -156,7 +156,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
         KGlobal::ref();
 
         // NOTE: Test what happens with remotefile -> save, close before save is finished.
-        mDownloadJob = KIO::file_copy( mCurrentUrl, KUrl( cacheFile() ), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
+        mDownloadJob = KIO::file_copy( mCurrentUrl, QUrl::fromLocalFile( cacheFile() ), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
         connect( mDownloadJob, SIGNAL( result( KJob * ) ),
                 SLOT( slotDownloadJobResult( KJob * ) ) );
         connect( mDownloadJob, SIGNAL( percent( KJob *, unsigned long ) ),
@@ -254,7 +254,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
 
         KGlobal::ref();
         // Start a job to upload the locally cached file to the remote location.
-        mUploadJob = KIO::file_copy( KUrl( cacheFile() ), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
+        mUploadJob = KIO::file_copy( QUrl::fromLocalFile( cacheFile() ), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
         connect( mUploadJob, SIGNAL( result( KJob * ) ),
                 SLOT( slotUploadJobResult( KJob * ) ) );
         connect( mUploadJob, SIGNAL( percent( KJob *, unsigned long ) ),

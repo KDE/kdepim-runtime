@@ -73,7 +73,7 @@ bool SingleFileResourceBase::readLocalFile( const QString &fileName )
 
     if ( !readFromFile( fileName ) ) {
       mCurrentHash.clear();
-      mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
+      mCurrentUrl = QUrl(); // reset so we don't accidentally overwrite the file
       return false;
     }
 
@@ -106,7 +106,7 @@ void SingleFileResourceBase::setLocalFileName( const QString &fileName )
   // Default implementation.
   if ( !readFromFile( fileName ) ) {
     mCurrentHash.clear();
-    mCurrentUrl = KUrl(); // reset so we don't accidentally overwrite the file
+    mCurrentUrl = QUrl(); // reset so we don't accidentally overwrite the file
     return;
   }
 }
@@ -214,7 +214,7 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
 
   if ( !mCurrentUrl.isEmpty() ) {
     QString lostFoundFileName;
-    const KUrl prevUrl = mCurrentUrl;
+    const QUrl prevUrl = mCurrentUrl;
     int i = 0;
     do {
       lostFoundFileName = KStandardDirs::locateLocal( "data", identifier() + QDir::separator()
@@ -226,13 +226,13 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     if ( !dir.exists() )
       dir.mkpath( dir.path() );
 
-    mCurrentUrl = KUrl( lostFoundFileName );
+    mCurrentUrl = QUrl::fromLocalFile( lostFoundFileName );
     writeFile();
     mCurrentUrl = prevUrl;
 
     const QString message = i18n( "The file '%1' was changed on disk. "
       "As a precaution, a backup of its previous contents has been created at '%2'.",
-      prevUrl.prettyUrl(), KUrl( lostFoundFileName ).prettyUrl() );
+      prevUrl.toDisplayString(), QUrl::fromLocalFile( lostFoundFileName ).toDisplayString() );
     emit warning( message );
   }
 
@@ -253,11 +253,11 @@ void SingleFileResourceBase::scheduleWrite()
 void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 {
   if ( job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST ) {
-    const QString message = i18n( "Could not load file '%1'.", mCurrentUrl.prettyUrl() );
+    const QString message = i18n( "Could not load file '%1'.", mCurrentUrl.toDisplayString() );
     qWarning() << message;
     emit status( Broken, message );
   } else {
-    readLocalFile( KUrl( cacheFile() ).toLocalFile() );
+    readLocalFile( QUrl::fromLocalFile( cacheFile() ).toLocalFile() );
   }
 
   mDownloadJob = 0;
@@ -269,7 +269,7 @@ void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
 void SingleFileResourceBase::slotUploadJobResult( KJob *job )
 {
   if ( job->error() ) {
-    const QString message = i18n( "Could not save file '%1'.", mCurrentUrl.prettyUrl() );
+    const QString message = i18n( "Could not save file '%1'.", mCurrentUrl.toDisplayString() );
     qWarning() << message;
     emit status( Broken, message );
   }

@@ -41,7 +41,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialog : public 
         : SingleFileResourceConfigDialogBase( windowId )
         , mSettings( settings )
     {
-      ui.kcfg_Path->setUrl( KUrl( mSettings->path() ) );
+      ui.kcfg_Path->setUrl( QUrl::fromLocalFile( mSettings->path() ) );
       mManager = new KConfigDialogManager( this, mSettings );
       mManager->updateWidgets();
     }
