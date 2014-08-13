@@ -85,7 +85,7 @@ void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Set
 #else
   dlg->setFilter( QLatin1String("*.ics *.vcs") );
 #endif
-  dlg->setCaption( i18n( "Select Calendar" ) );
+  dlg->setWindowTitle( i18n( "Select Calendar" ) );
 }
 
 bool ICalResourceBase::readFromFile( const QString &fileName )

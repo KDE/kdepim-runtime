@@ -74,7 +74,7 @@ void VCardResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settin
 {
   dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("text-directory") ) );
   dlg->setFilter( QLatin1String("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File" ) );
-  dlg->setCaption( i18n("Select Address Book") );
+  dlg->setWindowTitle( i18n("Select Address Book") );
 }
 
 void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )

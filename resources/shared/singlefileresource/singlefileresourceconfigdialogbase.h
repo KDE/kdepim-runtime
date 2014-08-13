@@ -30,10 +30,11 @@
 #include "ui_singlefileresourceconfigdialog_desktop.h"
 #endif
 
-#include <KDialog>
+#include <QDialog>
 #include <QUrl>
 class KConfigDialogManager;
 class KJob;
+class QPushButton;
 
 namespace KIO {
   class StatJob;
@@ -47,7 +48,7 @@ class SingleFileValidatingWidget;
  * Base class for the configuration dialog for single file based resources.
  * @see SingleFileResourceConfigDialog
  */
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : public KDialog
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : public QDialog
 {
     Q_OBJECT
   public:
@@ -112,6 +113,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : pub
     bool mDirUrlChecked;
     bool mMonitorEnabled;
     bool mLocalFileOnly;
+    QPushButton *mOkButton;
 };
 
 /**

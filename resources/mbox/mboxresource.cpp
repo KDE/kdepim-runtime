@@ -88,7 +88,7 @@ void MboxResource::customizeConfigDialog( SingleFileResourceConfigDialog<Setting
   dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("message-rfc822") ) );
   dlg->addPage( i18n( "Compact frequency" ), new CompactPage( mSettings->path() ) );
   dlg->addPage( i18n( "Lock method" ), new LockMethodPage() );
-  dlg->setCaption( i18n( "Select MBox file" ) );
+  dlg->setWindowTitle( i18n( "Select MBox file" ) );
 }
 
 void MboxResource::retrieveItems( const Akonadi::Collection &col )

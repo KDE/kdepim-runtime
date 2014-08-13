@@ -98,7 +98,7 @@ void KAlarmResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settin
         default:
             return;
     }
-    dlg->setCaption(title);
+    dlg->setWindowTitle(title);
 }
 
 /******************************************************************************
