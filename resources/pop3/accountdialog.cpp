@@ -651,7 +651,6 @@ void AccountDialog::slotEnableLeaveOnServerCount( bool state )
   if ( state && !leaveOnServerCountCheck->isEnabled() )
     return;
   leaveOnServerCountSpin->setEnabled( state );
-  return;
 }
 
 void AccountDialog::slotEnableLeaveOnServerSize( bool state )
@@ -659,7 +658,6 @@ void AccountDialog::slotEnableLeaveOnServerSize( bool state )
   if ( state && !leaveOnServerSizeCheck->isEnabled() )
     return;
   leaveOnServerSizeSpin->setEnabled( state );
-  return;
 }
 
 void AccountDialog::slotEnablePopInterval( bool state )
