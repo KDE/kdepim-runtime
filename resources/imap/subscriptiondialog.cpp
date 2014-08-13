@@ -27,10 +27,11 @@
 #include <QKeyEvent>
 #include <QCheckBox>
 
-#include <klocale.h>
 #include <qdebug.h>
-#include <klineedit.h>
-#include <KGlobal>
+#include <QLineEdit>
+#include <KSharedConfig>
+
+#include <KLocalizedString>
 
 #include <kimap/session.h>
 #include <kimap/loginjob.h>
@@ -39,6 +40,9 @@
 
 #include "imapaccount.h"
 #include "sessionuiproxy.h"
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
 
 #ifndef KDEPIM_MOBILE_UI
 #include <QHeaderView>
@@ -48,7 +52,7 @@
 #include <QListView>
 #include <QSortFilterProxyModel>
 #include <kdescendantsproxymodel.h>
-#include <KSharedConfig>
+#include <QVBoxLayout>
 
 class CheckableFilterProxyModel : public QSortFilterProxyModel
 {
@@ -70,7 +74,7 @@ protected:
 
 
 SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option )
-  : KDialog( parent ),
+  : QDialog( parent ),
     m_session( 0 ),
     m_subscriptionChanged( false ),
     m_lineEdit( 0 ),
@@ -78,17 +82,27 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
     m_model( new QStandardItemModel( this ) )
 {
   setModal( true );
-  setButtons( Ok | Cancel | User1 );
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  QVBoxLayout *topLayout = new QVBoxLayout;
+  setLayout(topLayout);
+  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+  okButton->setDefault(true);
+  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  QPushButton *mUser1Button = new QPushButton;
+  buttonBox->addButton(mUser1Button, QDialogButtonBox::ActionRole);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
-  setButtonText( User1, i18nc( "@action:button", "Reload &List" ) );
-  enableButton( User1, false );
-  connect( this, SIGNAL(user1Clicked()),
+  mUser1Button->setText(i18nc( "@action:button", "Reload &List" ));
+  mUser1Button->setEnabled(false);
+  connect(mUser1Button, SIGNAL(clicked()),
           this, SLOT(onReloadRequested()) );
 
   QWidget *mainWidget = new QWidget( this );
   QVBoxLayout *mainLayout = new QVBoxLayout;
   mainWidget->setLayout( mainLayout );
-  setMainWidget( mainWidget );
+  topLayout->addWidget(mainWidget);
+  topLayout->addWidget(buttonBox);
 
   m_enableSubscription = new QCheckBox( i18nc( "@option:check",
                                                "Enable server-side subscriptions" ) );
@@ -102,8 +116,8 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
                                                  "Search:" ) ) );
 #endif
 
-  m_lineEdit = new KLineEdit( mainWidget );
-  m_lineEdit->setClearButtonShown( true );
+  m_lineEdit = new QLineEdit( mainWidget );
+  m_lineEdit->setClearButtonEnabled( true );
   connect( m_lineEdit, SIGNAL(textChanged(QString)),
            this, SLOT(slotSearchPattern(QString)) );
   filterBarLayout->addWidget( m_lineEdit );
@@ -238,7 +252,7 @@ void SubscriptionDialog::onLoginDone( KJob *job )
 
 void SubscriptionDialog::onReloadRequested()
 {
-  enableButton( User1, false );
+  mUser1Button->setEnabled(false);
   m_itemsMap.clear();
   m_model->clear();
 
@@ -246,7 +260,7 @@ void SubscriptionDialog::onReloadRequested()
   if ( !m_session
     || m_session->state() != KIMAP::Session::Authenticated ) {
     qWarning() << "SubscriptionDialog - got no connection";
-    enableButton( User1, true );
+    mUser1Button->setEnabled(true);
     return;
   }
 
@@ -314,7 +328,7 @@ void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescript
 void SubscriptionDialog::onFullListingDone( KJob *job )
 {
   if ( job->error() ) {
-    enableButton( User1, true );
+    mUser1Button->setEnabled(true);
     return;
   }
 
@@ -346,7 +360,7 @@ void SubscriptionDialog::onSubscribedMailBoxesReceived( const QList<KIMAP::MailB
 void SubscriptionDialog::onReloadDone( KJob *job )
 {
   Q_UNUSED( job );
-  enableButton( User1, true );
+  mUser1Button->setEnabled(true);
 }
 
 void SubscriptionDialog::onItemChanged( QStandardItem *item )
@@ -356,14 +370,10 @@ void SubscriptionDialog::onItemChanged( QStandardItem *item )
   item->setFont( font );
 }
 
-void SubscriptionDialog::slotButtonClicked( int button )
+void SubscriptionDialog::slotAccepted()
 {
-  if ( button == KDialog::Ok ) {
-    applyChanges();
-    accept();
-  } else {
-    KDialog::slotButtonClicked( button );
-  }
+  applyChanges();
+  accept();
 }
 
 void SubscriptionDialog::applyChanges()
@@ -450,7 +460,7 @@ void SubscriptionDialog::onMobileLineEditChanged( const QString &text )
 void SubscriptionDialog::keyPressEvent( QKeyEvent *event )
 {
 #ifndef KDEPIM_MOBILE_UI
-  KDialog::keyPressEvent( event );
+  QDialog::keyPressEvent( event );
 #else
   static bool isSendingEvent = false;
 
@@ -461,7 +471,7 @@ void SubscriptionDialog::keyPressEvent( QKeyEvent *event )
     QCoreApplication::sendEvent( m_lineEdit, event );
     isSendingEvent = false;
   } else {
-    KDialog::keyPressEvent( event );
+    QDialog::keyPressEvent( event );
   }
 #endif
 }

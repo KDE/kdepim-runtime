@@ -22,7 +22,7 @@
 #ifndef SUBSCRIPTIONDIALOG_H
 #define SUBSCRIPTIONDIALOG_H
 
-#include <KDialog>
+#include <QDialog>
 
 #include <krecursivefilterproxymodel.h>
 #include <kimap/listjob.h>
@@ -33,12 +33,12 @@ class QKeyEvent;
 class QStandardItemModel;
 class QStandardItem;
 
-class KLineEdit;
+class QLineEdit;
 class QCheckBox;
 class ImapAccount;
 class QTreeView;
 class QListView;
-
+class QPushButton;
 
 class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel
 {
@@ -60,7 +60,7 @@ private:
 };
 
 
-class SubscriptionDialog : public KDialog
+class SubscriptionDialog : public QDialog
 {
   Q_OBJECT
 public:
@@ -99,7 +99,7 @@ protected:
   /* reimp */ void keyPressEvent( QKeyEvent *event );
 
 protected slots:
-  void slotButtonClicked( int button );
+  void slotAccepted();
 private:
   void readConfig();
   void writeConfig();
@@ -114,11 +114,12 @@ private:
   QListView* m_listView;
 #endif
 
-  KLineEdit *m_lineEdit;
+  QLineEdit *m_lineEdit;
   QCheckBox *m_enableSubscription;
   SubscriptionFilterProxyModel *m_filter;
   QStandardItemModel *m_model;
   QMap<QString, QStandardItem*> m_itemsMap;
+  QPushButton *mUser1Button;
 };
 
 #endif

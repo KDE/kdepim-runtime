@@ -274,7 +274,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
     KWindowSystem::setMainWindow( mSubscriptions, (HWND)windowId );
 #endif
   }
-  mSubscriptions->setCaption( i18nc( "@title:window", "Serverside Subscription" ) );
+  mSubscriptions->setWindowTitle( i18nc( "@title:window", "Serverside Subscription" ) );
   mSubscriptions->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
   mSubscriptions->connectAccount( *m_pool->account(), password );
   mSubscriptions->setSubscriptionEnabled( settings()->subscriptionEnabled() );
