@@ -52,7 +52,7 @@ SearchDialog::SearchDialog( QWidget *parent )
   connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
   connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
   mainLayout->addWidget(buttonBox);
-  buttonBox->button(QDialogButtonBox::Ok)->setText(i18n("Addselecteditems"));
+  buttonBox->button(QDialogButtonBox::Ok)->setText(i18n("Add Selected Items"));
 
   connect( mUi.searchUrl, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
   connect( mUi.searchParam, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
