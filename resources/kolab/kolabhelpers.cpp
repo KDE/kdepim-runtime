@@ -210,52 +210,54 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
     //Everthing stays the same, except mime type and payload
     Akonadi::Item imapItem = item;
     imapItem.setMimeType( QLatin1String("message/rfc822") );
-    switch(getKolabTypeFromMimeType(item.mimeType())) {
-        case Kolab::EventObject:
-        case Kolab::TodoObject:
-        case Kolab::JournalObject:
-        {
-            Q_ASSERT(item.hasPayload<KCalCore::Incidence::Ptr>());
-            kDebug() << "converted event";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeIncidence(
-                item.payload<KCalCore::Incidence::Ptr>(),
-                Kolab::KolabV3, productId, QLatin1String("UTC") );
-            imapItem.setPayload( message );
-        }
-        break;
-        case Kolab::NoteObject:
-        {
-            Q_ASSERT(item.hasPayload<KMime::Message::Ptr>());
-            kDebug() << "converted note";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeNote(
-                item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
-            imapItem.setPayload( message );
-        }
-        break;
-        case Kolab::ContactObject:
-        {
-            Q_ASSERT(item.hasPayload<KABC::Addressee>());
-            kDebug() << "converted contact";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(
-                item.payload<KABC::Addressee>(), Kolab::KolabV3, productId);
-            imapItem.setPayload( message );
-        }
-        break;
-        case Kolab::DistlistObject:
-        {
-            Q_ASSERT(item.hasPayload<KABC::ContactGroup>());
-            const KABC::ContactGroup contactGroup = convertToGidOnly(item.payload<KABC::ContactGroup>());
-            kDebug() << "converted distlist";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(
-                contactGroup, Kolab::KolabV3, productId);
-            imapItem.setPayload( message );
-        }
-        break;
-        default:
-            kWarning() << "object type not handled: " << item.id() << item.mimeType();
-            ok = false;
-            return Akonadi::Item();
+    try {
+        switch(getKolabTypeFromMimeType(item.mimeType())) {
+            case Kolab::EventObject:
+            case Kolab::TodoObject:
+            case Kolab::JournalObject:
+            {
+                kDebug() << "converted event";
+                const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeIncidence(
+                    item.payload<KCalCore::Incidence::Ptr>(),
+                    Kolab::KolabV3, productId, QLatin1String("UTC") );
+                imapItem.setPayload( message );
+            }
+            break;
+            case Kolab::NoteObject:
+            {
+                kDebug() << "converted note";
+                const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeNote(
+                    item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
+                imapItem.setPayload( message );
+            }
+            break;
+            case Kolab::ContactObject:
+            {
+                kDebug() << "converted contact";
+                const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(
+                    item.payload<KABC::Addressee>(), Kolab::KolabV3, productId);
+                imapItem.setPayload( message );
+            }
+            break;
+            case Kolab::DistlistObject:
+            {
+                const KABC::ContactGroup contactGroup = convertToGidOnly(item.payload<KABC::ContactGroup>());
+                kDebug() << "converted distlist";
+                const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(
+                    contactGroup, Kolab::KolabV3, productId);
+                imapItem.setPayload( message );
+            }
+            break;
+            default:
+                kWarning() << "object type not handled: " << item.id() << item.mimeType();
+                ok = false;
+                return Akonadi::Item();
 
+        }
+    } catch (Akonadi::PayloadException e) {
+        kWarning() << "The item contains the wrong or no payload: " << item.id() << item.mimeType();
+        kWarning() << e.what();
+        return Akonadi::Item();
     }
 
     if (checkForErrors(item)) {
