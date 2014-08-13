@@ -30,8 +30,6 @@ using namespace KGAPI2;
 SettingsDialog::SettingsDialog( GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent ):
     GoogleSettingsDialog( accountMgr, windowId, parent )
 {
-    connect( this, SIGNAL(accepted()),
-             this, SLOT(saveSettings()) );
 }
 
 SettingsDialog::~SettingsDialog()

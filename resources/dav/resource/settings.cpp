@@ -28,10 +28,8 @@
 
 #include <kapplication.h>
 #include <qdebug.h>
-#include <kdialog.h>
-#include <kglobal.h>
 #include <klineedit.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include <kwallet.h>
 
@@ -44,6 +42,9 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QDialogButtonBox>
+#include <QDialog>
+#include <QPushButton>
 
 #ifdef HAVE_ACCOUNTS
 #include <Accounts/Account>
@@ -67,7 +68,7 @@ class SettingsHelper
     Settings *q;
 };
 
-K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings::UrlConfiguration::UrlConfiguration()
 {
@@ -536,10 +537,21 @@ QString Settings::accountsUsername() const
 #endif
 QString Settings::promptForPassword( const QString &user )
 {
-  QPointer<KDialog> dlg = new KDialog();
+  QPointer<QDialog> dlg = new QDialog();
   QString password;
 
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Help);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  dlg->setLayout(mainLayout);
+  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+  okButton->setDefault(true);
+  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), dlg, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), dlg, SLOT(reject()));
+
   QWidget *mainWidget = new QWidget( dlg );
+  mainLayout->addWidget(mainWidget);
+  mainLayout->addWidget(buttonBox);
   QVBoxLayout *vLayout = new QVBoxLayout();
   mainWidget->setLayout( vLayout );
   QLabel *label = new QLabel( i18n( "A password is required for user %1",
@@ -554,7 +566,6 @@ QString Settings::promptForPassword( const QString &user )
   lineEdit->setPasswordMode( true );
   hLayout->addWidget( lineEdit );
   vLayout->addLayout( hLayout );
-  dlg->setMainWidget( mainWidget );
   lineEdit->setFocus();
 
   const int result = dlg->exec();

@@ -33,6 +33,7 @@
 
 #include <KLocalizedString>
 #include <QDebug>
+#include <QIcon>
 
 #include <QtCore/QPointer>
 

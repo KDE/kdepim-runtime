@@ -22,7 +22,7 @@
 
 #include <resourcebase.h>
 
-#include <kurl.h>
+#include <QUrl>
 #include <kio/job.h>
 
 class NntpResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
@@ -49,7 +49,7 @@ class NntpResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
       Returns the base url used for all KIO operations, containing
       protocol, hostname and port.
     */
-    KUrl baseUrl() const;
+    QUrl baseUrl() const;
 
     void setupKioJob( KIO::Job *job ) const;
 

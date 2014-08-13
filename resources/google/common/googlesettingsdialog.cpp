@@ -37,25 +37,33 @@
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <QVBoxLayout>
 
 Q_DECLARE_METATYPE( KGAPI2::Job* )
 
 using namespace KGAPI2;
 
 GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager, WId wId, GoogleResource *parent ):
-    KDialog(),
+    QDialog(),
     m_parentResource( parent ),
     m_accountManager( accountManager )
 {
     KWindowSystem::setMainWindow( this, wId );
-    setButtons( Ok | Cancel );
-
-    connect( this, SIGNAL(accepted()),
-             this, SLOT(slotSaveSettings()) );
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    QVBoxLayout *topLayout = new QVBoxLayout;
+    setLayout(topLayout);
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setDefault(true);
+    okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotSaveSettings()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
     QWidget *widget = new QWidget( this );
+    topLayout->addWidget(widget);
+    topLayout->addWidget(buttonBox);
     QVBoxLayout *mainLayout = new QVBoxLayout( widget );
-    setMainWidget( widget );
 
     m_accGroupBox = new QGroupBox( i18n( "Accounts" ), this );
     mainLayout->addWidget( m_accGroupBox );
@@ -107,6 +115,11 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
 
 GoogleSettingsDialog::~GoogleSettingsDialog()
 {
+}
+
+QVBoxLayout *GoogleSettingsDialog::mainLayout() const
+{
+    return m_mainLayout;
 }
 
 GoogleAccountManager *GoogleSettingsDialog::accountManager() const
@@ -254,4 +267,6 @@ void GoogleSettingsDialog::slotSaveSettings()
     Settings::self()->setIntervalCheckTime( m_refreshSpinBox->value() );
 
     saveSettings();
+    accept();
 }
+

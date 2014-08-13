@@ -44,14 +44,12 @@ using namespace KGAPI2;
 SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent ):
     GoogleSettingsDialog( accountManager, windowId, parent )
 {
-    connect( this, SIGNAL(accepted()),
-             this, SLOT(saveSettings()) );
     connect( this, SIGNAL(currentAccountChanged(QString)),
              this, SLOT(slotCurrentAccountChanged(QString)) );
 
 
     m_calendarsBox = new QGroupBox( i18n( "Calendars" ), this );
-    mainWidget()->layout()->addWidget( m_calendarsBox );
+    mainLayout()->addWidget( m_calendarsBox );
 
     QVBoxLayout *vbox = new QVBoxLayout( m_calendarsBox );
 
@@ -84,7 +82,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
     hbox->addWidget( m_eventsLimitCombo );
 
     m_taskListsBox = new QGroupBox( i18n( "Tasklists" ), this );
-    mainWidget()->layout()->addWidget( m_taskListsBox );
+    mainLayout()->addWidget( m_taskListsBox );
 
     vbox = new QVBoxLayout( m_taskListsBox );
 

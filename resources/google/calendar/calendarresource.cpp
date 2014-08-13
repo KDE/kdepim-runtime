@@ -35,6 +35,7 @@
 #include <KLocalizedString>
 #include <KLocale>
 #include <QDialog>
+#include <QIcon>
 
 #include <KGAPI/Calendar/Calendar>
 #include <KGAPI/Calendar/CalendarCreateJob>

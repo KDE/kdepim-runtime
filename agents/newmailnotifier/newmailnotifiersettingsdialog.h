@@ -20,14 +20,14 @@
 #ifndef NEWMAILNOTIFIERSETTINGSDIALOG_H
 #define NEWMAILNOTIFIERSETTINGSDIALOG_H
 
-#include <KDialog>
+#include <QDialog>
 #include <Collection>
 
 class KNotifyConfigWidget;
 class QCheckBox;
 class QLineEdit;
 class NewMailNotifierSelectCollectionWidget;
-class NewMailNotifierSettingsDialog : public KDialog
+class NewMailNotifierSettingsDialog : public QDialog
 {
     Q_OBJECT
 public:

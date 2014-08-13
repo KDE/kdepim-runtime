@@ -47,6 +47,8 @@
 #include <AkonadiCore/CollectionFilterProxyModel>
 #include <AkonadiCore/CollectionModifyJob>
 #include <KSharedConfig>
+#include <QDialogButtonBox>
+#include <KConfigGroup>
 
 static const char * textToSpeakMessage =
         I18N_NOOP( "<qt>"
@@ -59,14 +61,22 @@ static const char * textToSpeakMessage =
               "</qt>" );
 
 NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
-    : KDialog(parent)
+    : QDialog(parent)
 {
-    setCaption( i18n("New Mail Notifier settings") );
+    setWindowTitle( i18n("New Mail Notifier settings") );
     setWindowIcon( QIcon::fromTheme( QLatin1String("kmail") ) );
-    setButtons( Help | Ok|Cancel );
-    connect(this, &NewMailNotifierSettingsDialog::okClicked, this, &NewMailNotifierSettingsDialog::slotOkClicked);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Help);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setDefault(true);
+    okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotOkClicked()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
     QWidget *w = new QWidget;
+    mainLayout->addWidget(w);
+    mainLayout->addWidget(buttonBox);
     QVBoxLayout *lay = new QVBoxLayout;
     w->setLayout(lay);
     QTabWidget *tab = new QTabWidget;
@@ -143,7 +153,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mSelectCollection = new NewMailNotifierSelectCollectionWidget;
     tab->addTab(mSelectCollection, i18n("Folders"));
 
-    setMainWidget(w);
+    mainLayout->addWidget(w);
 
     KAboutData aboutData = KAboutData(
                 QLatin1String( "newmailnotifieragent" ),
@@ -163,7 +173,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     //Initialize menu
     QMenu *menu = helpMenu->menu();
     helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(QIcon::fromTheme(QLatin1String("kmail")));
-    setButtonMenu( Help, menu );
+    buttonBox->button(QDialogButtonBox::Help)->setMenu(menu);
     readConfig();
 }
 

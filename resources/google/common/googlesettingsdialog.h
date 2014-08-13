@@ -18,7 +18,7 @@
 #ifndef GOOGLESETTINGSDIALOG_H
 #define GOOGLESETTINGSDIALOG_H
 
-#include <KDialog>
+#include <QDialog>
 
 #include <KGAPI/Types>
 
@@ -36,8 +36,9 @@ class KComboBox;
 class QCheckBox;
 class KPluralHandlingSpinBox;
 class QPushButton;
+class QVBoxLayout;
 
-class GoogleSettingsDialog : public KDialog
+class GoogleSettingsDialog : public QDialog
 {
     Q_OBJECT
 
@@ -57,6 +58,7 @@ class GoogleSettingsDialog : public KDialog
   protected:
     bool handleError( KGAPI2::Job *job );
     virtual void saveSettings() = 0;
+    QVBoxLayout *mainLayout() const;
 
   private Q_SLOTS:
     void slotSaveSettings();
@@ -75,6 +77,7 @@ class GoogleSettingsDialog : public KDialog
     KComboBox *m_accComboBox;
     QCheckBox *m_enableRefresh;
     KPluralHandlingSpinBox *m_refreshSpinBox;
+    QVBoxLayout *m_mainLayout;
 
 };
 

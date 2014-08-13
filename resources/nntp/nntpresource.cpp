@@ -67,7 +67,7 @@ NntpResource::~ NntpResource()
 bool NntpResource::retrieveItem(const Akonadi::Item& item, const QSet<QByteArray> &parts)
 {
   Q_UNUSED( parts );
-  KIO::Job* job = KIO::storedGet( KUrl( item.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
+  KIO::Job* job = KIO::storedGet( QUrl( item.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
   setupKioJob( job );
   connect( job, SIGNAL(result(KJob*)), SLOT(fetchArticleResult(KJob*)) );
   return true;
@@ -90,7 +90,7 @@ void NntpResource::retrieveCollections()
   rootCollection.setContentMimeTypes( contentTypes );
   remoteCollections << rootCollection;
 
-  KUrl url = baseUrl();
+  QUrl url = baseUrl();
   QDate lastList = Settings::self()->lastGroupList().date();
   if ( lastList.isValid() ) {
     mIncremental = true;
@@ -117,7 +117,7 @@ void NntpResource::retrieveItems( const Akonadi::Collection & col )
     return;
   }
 
-  KUrl url = baseUrl();
+  QUrl url = baseUrl();
   url.setPath( col.remoteId() );
 
   NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>();
@@ -180,7 +180,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
 {
   Q_UNUSED( job );
   foreach ( const KIO::UDSEntry &entry, list ) {
-    KUrl url = baseUrl();
+    QUrl url = baseUrl();
     url.setPath( currentCollection().remoteId() + '/' + entry.stringValue( KIO::UDSEntry::UDS_NAME ) );
     Item item;
     item.setRemoteId( url.url() );
@@ -244,18 +244,18 @@ void NntpResource::listGroupResult(KJob * job)
   itemsRetrievalDone();
 }
 
-KUrl NntpResource::baseUrl() const
+QUrl NntpResource::baseUrl() const
 {
-  KUrl url;
+  QUrl url;
  if ( Settings::self()->encryption() == Settings::SSL )
-    url.setProtocol( "nntps" );
+    url.setScheme( "nntps" );
   else
-    url.setProtocol( "nntp" );
+    url.setScheme( "nntp" );
   url.setHost( Settings::self()->server() );
   url.setPort( Settings::self()->port() );
   if ( Settings::self()->requiresAuthentication() ) {
-    url.setUser( Settings::self()->userName() );
-    url.setPass( Settings::self()->password() );
+    url.setUserName( Settings::self()->userName() );
+    url.setPassword( Settings::self()->password() );
   }
   return url;
 }

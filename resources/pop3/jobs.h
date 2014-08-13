@@ -20,7 +20,7 @@
 #define JOBS_H
 
 #include <KJob>
-#include <KUrl>
+#include <QUrl>
 #include <KIO/MetaData>
 
 #include <KMime/Message>
@@ -51,7 +51,7 @@ public:
   void closeSession();
 
   KIO::Slave* getSlave() const;
-  KUrl getUrl() const;
+  QUrl getUrl() const;
 
   // Sets the current SlaveBaseJob that is using the POPSession.
   // If there is a job, all slave errors will be forwared to that job

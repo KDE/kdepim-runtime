@@ -127,17 +127,17 @@ QString POPSession::authenticationToString( int type ) const
   return QString();
 }
 
-KUrl POPSession::getUrl() const
+QUrl POPSession::getUrl() const
 {
-  KUrl url;
+  QUrl url;
 
   if ( Settings::self()->useSSL() )
-    url.setProtocol( QLatin1String("pop3s") );
+    url.setScheme( QLatin1String("pop3s") );
   else
-    url.setProtocol( QLatin1String("pop3") );
+    url.setScheme( QLatin1String("pop3") );
 
-  url.setUser( Settings::self()->login() );
-  url.setPass( mPassword );
+  url.setUserName( Settings::self()->login() );
+  url.setPassword( mPassword );
   url.setHost( Settings::self()->host() );
   url.setPort( Settings::self()->port() );
   return url;
@@ -255,7 +255,7 @@ void SlaveBaseJob::connectJob()
 
 void SlaveBaseJob::startJob( const QString &path)
 {
-  KUrl url = mPOPSession->getUrl();
+  QUrl url = mPOPSession->getUrl();
   url.setPath( path );
   mJob = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
   KIO::Scheduler::assignJobToSlave( mPOPSession->getSlave(), mJob );
