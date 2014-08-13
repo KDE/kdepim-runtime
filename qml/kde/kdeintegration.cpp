@@ -20,7 +20,7 @@
 #include "kdeintegration.h"
 
 #include <QDebug>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KIconLoader>
 #include <KStandardDirs>
 #include <QIcon>

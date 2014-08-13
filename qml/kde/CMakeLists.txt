@@ -10,7 +10,7 @@ add_library(kdeqmlplugin MODULE ${LIBRARY_TYPE}
   kdeintegration.cpp
   kdeintegrationplugin.cpp
 )
-target_link_libraries(kdeqmlplugin  Qt5::Declarative KF5::KDELibs4Support ${QT_QTSCRIPT_LIBRARY})
+target_link_libraries(kdeqmlplugin  Qt5::Declarative KF5::I18n KF5::IconThemes KF5::KDELibs4Support ${QT_QTSCRIPT_LIBRARY})
 
 if (KDEQMLPLUGIN_STATIC)
   install( FILES qmldir_without_kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde RENAME qmldir)
