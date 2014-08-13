@@ -25,9 +25,11 @@
 #include <migration/gid/gidmigrator.h>
 #include <KABC/Addressee>
 #include <KWindowSystem>
-#include <KDialog>
+#include <QDialog>
 #include <KLocalizedString>
 #include <kuiserverjobtracker.h>
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
 
 namespace Akonadi {
 
@@ -41,11 +43,20 @@ MigrationAgent::MigrationAgent(const QString &id)
 
 void MigrationAgent::configure(WId windowId)
 {
-    KDialog *dlg = new KDialog();
+    QDialog *dlg = new QDialog();
+    QVBoxLayout *topLayout = new QVBoxLayout;
+    dlg->setLayout(topLayout);
+
+
+    MigrationStatusWidget *widget = new MigrationStatusWidget(mScheduler, dlg);
+    topLayout->addWidget(widget);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setMainWidget(new MigrationStatusWidget(mScheduler, dlg));
-    dlg->setCaption(i18nc("Title of the window that shows the status of the migration agent and offers controls to start/stop individual migration jobs.", "Migration Status"));
-    dlg->setButtons(KDialog::Close);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+    connect(buttonBox, SIGNAL(accepted()), dlg, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), dlg, SLOT(reject()));
+    topLayout->addWidget(buttonBox);
+
+    dlg->setWindowTitle(i18nc("Title of the window that shows the status of the migration agent and offers controls to start/stop individual migration jobs.", "Migration Status"));
     dlg->resize(600, 300);
 
     if (windowId) {

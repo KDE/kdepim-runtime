@@ -29,8 +29,9 @@
 #include <KToolBar>
 #include <QDebug>
 #include <QIcon>
-#include <KDialog>
+#include <QDialog>
 #include <KLocalizedString>
+#include <QDialogButtonBox>
 
 MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWidget *parent)
     :QWidget(parent),
@@ -91,8 +92,16 @@ void MigrationStatusWidget::abortSelected()
 
 void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
 {
-    KDialog *dlg = new KDialog(this);
+    QDialog *dlg = new QDialog(this);
+    QVBoxLayout *topLayout = new QVBoxLayout;
+    dlg->setLayout(topLayout);
     QWidget *widget = new QWidget(dlg);
+    topLayout->addWidget(widget);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+    connect(buttonBox, SIGNAL(accepted()), dlg, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), dlg, SLOT(reject()));
+    topLayout->addWidget(buttonBox);
+
 
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     {
@@ -111,11 +120,9 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
         vboxLayout->addLayout(hboxLayout);
     }
     widget->setLayout(vboxLayout);
-    dlg->setMainWidget(widget);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->setCaption(i18nc("Title of the window displaying the log of a single migration job.", "Migration Info"));
-    dlg->setButtons(KDialog::Close);
+    dlg->setWindowTitle(i18nc("Title of the window displaying the log of a single migration job.", "Migration Info"));
     dlg->resize(600, 300);
     dlg->show();
 }
