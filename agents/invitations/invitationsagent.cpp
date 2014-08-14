@@ -51,8 +51,6 @@
 #include <KMime/Message>
 #include <kpimidentities/identitymanager.h>
 #include <KSystemTimeZones>
-#include <KStandardDirs>
-#include <KGlobal>
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
@@ -316,7 +314,7 @@ void InvitationsAgent::configure( WId windowId )
   qDebug() << windowId;
   /*
   QWidget *parent = QWidget::find( windowId );
-  KDialog *dialog = new KDialog( parent );
+  QDialog *dialog = new QDialog( parent );
   QVBoxLayout *layout = new QVBoxLayout( dialog->mainWidget() );
   //layout->addWidget(  );
   dialog->mainWidget()->setLayout( layout );
