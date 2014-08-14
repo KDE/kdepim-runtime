@@ -31,7 +31,6 @@
 #include <kio/job.h>
 #include <KDirWatch>
 #include <KLocalizedString>
-#include <KStandardDirs>
 #include <KGlobal>
 
 #include <QFile>

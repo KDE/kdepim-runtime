@@ -39,7 +39,6 @@
 #include <KMime/Message>
 
 #include <KDebug>
-#include <KStandardDirs>
 #include "maildirsettings.h"
 #include <krandom.h>
 #include <QStandardPaths>

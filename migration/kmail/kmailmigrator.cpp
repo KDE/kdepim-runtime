@@ -60,7 +60,6 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KConfigGroup>
 #include <KDateTime>
 #include <KDebug>
-#include <KStandardDirs>
 #include <KSharedConfig>
 #include <kwallet.h>
 #include <kstringhandler.h>

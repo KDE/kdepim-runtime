@@ -28,7 +28,6 @@
 #include <qtest_akonadi.h>
 #include <KMime/Message>
 
-#include <KStandardDirs>
 
 #include <boost/shared_ptr.hpp>
 #include <sys/signal.h>

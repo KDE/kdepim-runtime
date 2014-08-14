@@ -25,7 +25,6 @@
 #include <QTextDocument>
 
 #include <KLocalizedString>
-#include <KStandardDirs>
 #include <krandom.h>
 #include <KConfig>
 #include <KGlobal>

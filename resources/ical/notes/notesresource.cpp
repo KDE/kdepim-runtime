@@ -27,6 +27,7 @@
 #include <klocale.h>
 #include <kconfigskeleton.h>
 #include <QDebug>
+#include <KStandardDirs>
 
 using namespace Akonadi;
 using namespace KCalCore;

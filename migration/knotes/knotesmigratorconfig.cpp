@@ -19,7 +19,6 @@
 #include "knoteconfig.h"
 
 #include <KGlobal>
-#include <KStandardDirs>
 
 #include <KCal/Journal>
 #include <QStandardPaths>

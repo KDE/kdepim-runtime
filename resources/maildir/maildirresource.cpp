@@ -46,7 +46,6 @@
 #include <KGlobal>
 
 #include "libmaildir/maildir.h"
-#include <kstandarddirs.h>
 #include <QStandardPaths>
 
 using namespace Akonadi;

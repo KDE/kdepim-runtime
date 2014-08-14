@@ -20,8 +20,7 @@
  */
 
 #include "migratorbase.h"
-#include <KStandardDirs>
-#include <KDebug>
+#include <QDebug>
 #include <KComponentData>
 #include <KLocalizedString>
 #include <AkonadiCore/servermanager.h>
@@ -104,7 +103,7 @@ void MigratorBase::setLogfile(const QString &logfile)
         mLogFile.reset(new QFile(logfile));
         if (!mLogFile->open(QFile::Append)) {
             mLogFile.reset();
-            kWarning() << "Unable to open log file: " << logfile;
+            qWarning() << "Unable to open log file: " << logfile;
         }
     } else {
         mLogFile.reset();
@@ -146,7 +145,7 @@ bool MigratorBase::canStart()
 void MigratorBase::start()
 {
     if (mMigrationState == InProgress) {
-        kWarning() << "already running";
+        qWarning() << "already running";
         return;
     }
     if (!canStart()) {
@@ -164,17 +163,17 @@ void MigratorBase::start()
 
 void MigratorBase::pause()
 {
-    kWarning() << "pause is not implemented";
+    qWarning() << "pause is not implemented";
 }
 
 void MigratorBase::resume()
 {
-    kWarning() << "resume is not implemented";
+    qWarning() << "resume is not implemented";
 }
 
 void MigratorBase::abort()
 {
-    kWarning() << "abort is not implemented";
+    qWarning() << "abort is not implemented";
 }
 
 void MigratorBase::logMessage(MigratorBase::MessageType type, const QString &msg)
@@ -215,7 +214,7 @@ void MigratorBase::setMigrationState(MigratorBase::MigrationState state)
             emit stateChanged(mMigrationState);
             return;
         default:
-            kWarning() << "invalid state " << state;
+            qWarning() << "invalid state " << state;
             Q_ASSERT(false);
             return;
     }
