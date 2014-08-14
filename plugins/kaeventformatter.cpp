@@ -27,7 +27,6 @@
 #include <kcalutils/incidenceformatter.h>
 
 #include <kglobal.h>
-#include <klocale.h>
 #include <kdatetime.h>
 #include <KLocale>
 

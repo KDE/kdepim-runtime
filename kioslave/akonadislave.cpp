@@ -32,7 +32,6 @@
 
 
 #include <QDebug>
-#include <klocale.h>
 
 #include <QDateTime>
 #include <QApplication>

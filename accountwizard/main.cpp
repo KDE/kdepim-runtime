@@ -23,7 +23,8 @@
 #include <control.h>
 
 #include <kaboutdata.h>
-#include <kapplication.h>
+#include <qapplication.h>
+#include <QUrl>
 
 #include <KDBusService>
 #include <KLocalizedString>
@@ -80,7 +81,7 @@ int main( int argc, char **argv )
   Akonadi::Control::start( 0 );
 
   if ( !parser.value( QLatin1String("package") ).isEmpty() ) {
-    Global::setAssistant( Global::unpackAssistant( KUrl( parser.value( QLatin1String("package") ) ) ) );
+    Global::setAssistant( Global::unpackAssistant( QUrl::fromLocalFile( parser.value( QLatin1String("package") ) ) ) );
   } else
     Global::setAssistant( parser.value( QLatin1String("assistant") ) );
 

@@ -29,10 +29,8 @@
 #include <KCalCore/Incidence>
 #include <KCalCore/ICalFormat>
 
-#include <kglobal.h>
-#include <klocale.h>
 #include <QDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 using namespace Akonadi;
 using namespace KCalCore;
@@ -41,7 +39,6 @@ using namespace SETTINGS_NAMESPACE;
 ICalResourceBase::ICalResourceBase( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_ical_resource") );
 }
 
 void ICalResourceBase::initialise( const QStringList &mimeTypes, const QString &icon )

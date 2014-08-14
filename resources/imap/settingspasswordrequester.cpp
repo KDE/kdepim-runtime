@@ -22,7 +22,7 @@
 #include "settingspasswordrequester.h"
 
 #include <KMessageBox>
-#include <KLocale>
+#include <KLocalizedString>
 #include <KDialog>
 
 #include <mailtransport/transportbase.h>

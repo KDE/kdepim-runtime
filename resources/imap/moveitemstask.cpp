@@ -24,7 +24,7 @@
 #include <QtCore/QUuid>
 
 #include <QDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <kimap/copyjob.h>
 #include <kimap/searchjob.h>

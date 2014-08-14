@@ -20,7 +20,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <KUrl>
+#include <QUrl>
 #include <QStringList>
 
 namespace Global

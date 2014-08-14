@@ -25,7 +25,7 @@
 #include <QDebug>
 
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <kimap/appendjob.h>
 #include <kimap/searchjob.h>
