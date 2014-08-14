@@ -25,9 +25,7 @@
 
 #include <kwallet.h>
 using KWallet::Wallet;
-
-#include <kglobal.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <kpassworddialog.h>
 
 #include <QDBusConnection>

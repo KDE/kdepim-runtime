@@ -26,7 +26,7 @@
 
 #include <kabc/contactgroup.h>
 #include <kabc/contactgrouptool.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include <QtCore/qplugin.h>
 

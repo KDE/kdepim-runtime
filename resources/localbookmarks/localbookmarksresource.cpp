@@ -25,7 +25,7 @@
 #include <kbookmark.h>
 #include <kbookmarkmanager.h>
 #include <kfiledialog.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 using namespace Akonadi;
 

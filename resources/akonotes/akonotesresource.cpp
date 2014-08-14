@@ -20,12 +20,10 @@
 #include "akonotesresource.h"
 
 #include <KLocalizedString>
-#include <KLocale>
 
 AkonotesResource::AkonotesResource( const QString &id )
     : MaildirResource( id )
 {
-  //QT5 KLocale::global()->insertCatalog( "akonadi_maildir_resource" );
 }
 
 AkonotesResource::~AkonotesResource()
