@@ -52,9 +52,7 @@ void Global::setAssistant(const QString& assistant)
     return;
   }
 
-  const QStringList list = KGlobal::dirs()->findAllResources(
-    "data", QLatin1String( "akonadi/accountwizard/*.desktop" ),
-    KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
+  const QStringList list = KGlobal::dirs()->findAllResources("data", QLatin1String( "akonadi/accountwizard/*.desktop" ), KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
   foreach ( const QString &entry, list ) {
     const QFileInfo info( entry );
     const QDir dir( info.absolutePath() );
@@ -87,10 +85,10 @@ QString Global::assistantBasePath()
   return QString();
 }
 
-QString Global::unpackAssistant( const KUrl& remotePackageUrl )
+QString Global::unpackAssistant( const QUrl& remotePackageUrl )
 {
   QString localPackageFile;
-  if ( remotePackageUrl.protocol() == QLatin1String( "file" ) ) {
+  if ( remotePackageUrl.scheme() == QLatin1String( "file" ) ) {
     localPackageFile = remotePackageUrl.path();
   } else {
     QString remoteFileName = QFileInfo( remotePackageUrl.path() ).fileName();
@@ -101,12 +99,12 @@ QString Global::unpackAssistant( const KUrl& remotePackageUrl )
       return QString();
   }
 
-  const KUrl file( QLatin1String("tar://") + localPackageFile );
+  const QUrl file( QLatin1String("tar://") + localPackageFile );
   const QFileInfo fi( localPackageFile );
   const QString assistant = fi.baseName();
   const QString dest = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1String("/") ;
   QDir().mkpath( dest + file.fileName() );
-  KIO::Job* getJob = KIO::copy( file, QUrl(dest), KIO::Overwrite | KIO::HideProgressInfo );
+  KIO::Job* getJob = KIO::copy( file, QUrl::fromLocalFile(dest), KIO::Overwrite | KIO::HideProgressInfo );
   if ( KIO::NetAccess::synchronousRun( getJob, 0 ) ) {
     qDebug() << "worked, unpacked in " << dest;
     return dest + file.fileName() + QLatin1Char('/') + assistant + QLatin1Char('/') + assistant + QLatin1String(".desktop");
@@ -115,3 +113,4 @@ QString Global::unpackAssistant( const KUrl& remotePackageUrl )
     return QString();
   }
 }
+

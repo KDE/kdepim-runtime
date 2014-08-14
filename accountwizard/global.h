@@ -33,7 +33,7 @@ namespace Global
 
   QString assistantBasePath();
 
-  QString unpackAssistant( const KUrl& remotePackageUrl );
+  QString unpackAssistant( const QUrl& remotePackageUrl );
 }
 
 #endif

@@ -22,15 +22,12 @@
 
 #include <control.h>
 
-#include <k4aboutdata.h>
+#include <kaboutdata.h>
 #include <kapplication.h>
 
-#include <kglobal.h>
-//#include <KUniqueApplication>
 #include <KDBusService>
-
+#include <KLocalizedString>
 #include <stdio.h>
-#include <KLocale>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 

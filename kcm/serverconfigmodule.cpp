@@ -20,11 +20,8 @@
 #include "serverconfigmodule.h"
 
 #include <QDebug>
-#include <klocale.h>
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
-
-#include <KGlobal>
 
 #include <QSettings>
 #include <QStackedWidget>

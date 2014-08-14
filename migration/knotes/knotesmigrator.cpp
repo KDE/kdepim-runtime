@@ -38,7 +38,6 @@
 #include "entitytreecreatejob.h"
 #include <KMime/Message>
 
-#include <KDebug>
 #include "maildirsettings.h"
 #include <krandom.h>
 #include <QStandardPaths>
