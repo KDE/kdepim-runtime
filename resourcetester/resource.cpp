@@ -26,11 +26,13 @@
 #include <AkonadiCore/agentinstancecreatejob.h>
 
 #include <QDebug>
-#include <qtest_kde.h>
+#include <qtest.h>
 
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QFileInfo>
+#include <QDir>
 
 using namespace Akonadi;
 

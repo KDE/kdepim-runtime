@@ -33,7 +33,7 @@
 
 #include <KLocalizedString>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QQueue>
 
@@ -65,7 +65,7 @@ class ImapCacheAdapter::Private
 
 void ImapCacheAdapter::Private::processNextCollection()
 {
-  kDebug() << mPendingCollections.count() << "pending collections";
+  qDebug() << mPendingCollections.count() << "pending collections";
 
   if ( mPendingCollections.isEmpty() ) {
     createResource();
@@ -73,7 +73,7 @@ void ImapCacheAdapter::Private::processNextCollection()
   }
 
   const Collection collection = mPendingCollections.dequeue();
-  kDebug() << "processing: name=" << collection.name()
+  qDebug() << "processing: name=" << collection.name()
            << "remoteId=" << collection.remoteId()
            << "parent=" << collection.parentCollection().remoteId();
 
@@ -92,7 +92,7 @@ void ImapCacheAdapter::Private::createResource()
 void ImapCacheAdapter::Private::createResourceResult( KJob *job )
 {
   if ( job->error() != 0 ) {
-    kError() << "Creation of MixedMaildir resource for local cache adapter failed:" << job->errorString();
+    qCritical() << "Creation of MixedMaildir resource for local cache adapter failed:" << job->errorString();
     emit q->finished( KMigratorBase::Error,
                       i18n( "Could not create adapter for previous KMail version's disconnected IMAP cache" ) );
     return;
@@ -107,7 +107,7 @@ void ImapCacheAdapter::Private::createResourceResult( KJob *job )
     QLatin1String("/Settings"), QDBusConnection::sessionBus(), q );
 
   if ( !iface->isValid() ) {
-    kError() << "Failed to obtain D-Bus interface for remote configuration of local cache adapter resource" << instance.identifier();
+    qCritical() << "Failed to obtain D-Bus interface for remote configuration of local cache adapter resource" << instance.identifier();
     delete iface;
 
     AgentManager::self()->removeInstance( instance );
@@ -134,7 +134,7 @@ void ImapCacheAdapter::Private::createResourceResult( KJob *job )
 void ImapCacheAdapter::Private::collectionModifyResult( KJob *job )
 {
   if ( job->error() != 0 ) {
-    kError() << "Rename of DIMAP top level collection failed:" << job->errorString();
+    qCritical() << "Rename of DIMAP top level collection failed:" << job->errorString();
   }
 
   processNextCollection();

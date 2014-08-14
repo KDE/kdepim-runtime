@@ -34,7 +34,7 @@
 #include <AkonadiCore/itemcreatejob.h>
 #include <AkonadiCore/session.h>
 
-#include <KDebug>
+#include <QDebug>
 #include <KLocalizedString>
 
 using namespace Akonadi;
@@ -107,7 +107,7 @@ void ImapCacheLocalImporter::Private::processNextCollection()
 
   const QString idPath = remoteIdPath( storeCollection );
   mStoreCollectionsByPath.insert( idPath, storeCollection );
-//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "inserting storeCollection" << storeCollection.remoteId()
+//   qDebug() << "inserting storeCollection" << storeCollection.remoteId()
 //                                    << "at idPath" << idPath;
 
   // create on Akonadi server
@@ -124,12 +124,12 @@ void ImapCacheLocalImporter::Private::processNextCollection()
     if ( findIt != mAkonadiCollectionsByPath.constEnd() ) {
       collection.setParentCollection( findIt.value() );
     } else {
-      kError() << "storeCollection with idPath" << idPath << "parent=" << parent.remoteId()
+      qCritical() << "storeCollection with idPath" << idPath << "parent=" << parent.remoteId()
                << "does not have parent in Akonadi collection hash";
     }
   }
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Processing collection" << collection.remoteId()
+  qDebug() << "Processing collection" << collection.remoteId()
                                    << "remoteIdPath=" << idPath
                                    << ", " << mPendingCollections.count() << "remaining";
 
@@ -153,7 +153,7 @@ void ImapCacheLocalImporter::Private::processNextItem()
   const Item item = mPendingItems.front();
   mPendingItems.pop_front();
 
-//   kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Processing item" << item.remoteId()
+//   qDebug() << "Processing item" << item.remoteId()
 //                                    << "parentCollection" << item.parentCollection().id()
 //                                    << "remoteIdPath=" << remoteIdPath( item.parentCollection() )
 //                                    << ", " << mPendingCollections.count() << "remaining";
@@ -165,7 +165,7 @@ void ImapCacheLocalImporter::Private::processNextItem()
 void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
 {
   if ( job->error() != 0 ) {
-    kError() << "Creation of Maildir resource for local cache copy of account"
+    qCritical() << "Creation of Maildir resource for local cache copy of account"
              << mAccountName << "failed:" << job->errorString();
     emit q->importFinished( mResource,
                             i18n( "Cannot provide access to local copies of "
@@ -206,7 +206,7 @@ void ImapCacheLocalImporter::Private::configureResource()
   }
 
   const QFileInfo pathInfo( QDir( mStore->path() ), mTopLevelFolder );
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "resource working path=" << pathInfo.absoluteFilePath();
+  qDebug() << "resource working path=" << pathInfo.absoluteFilePath();
   iface->setPath( pathInfo.absoluteFilePath()  );
 
   // make sure the config is saved
@@ -222,7 +222,7 @@ void ImapCacheLocalImporter::Private::configureResource()
 void ImapCacheLocalImporter::Private::collectionFetchResult( KJob *job )
 {
   if ( job->error() != 0 ) {
-    kError() << "Store CollectionFetch failed:" << job->errorString();
+    qCritical() << "Store CollectionFetch failed:" << job->errorString();
   } else {
     FileStore::CollectionFetchJob *fetchJob = qobject_cast<FileStore::CollectionFetchJob*>( job );
     Q_ASSERT( fetchJob != 0 );
@@ -237,7 +237,7 @@ void ImapCacheLocalImporter::Private::collectionCreateResult( KJob *job )
 {
   const QString idPath = job->property( "remoteIdPath" ).value<QString>();
   if ( job->error() != 0 ) {
-    kError() << "Akonadi CollectionCreate for" << idPath << "failed:" << job->errorString();
+    qCritical() << "Akonadi CollectionCreate for" << idPath << "failed:" << job->errorString();
     processNextCollection();
     return;
   }
@@ -247,12 +247,12 @@ void ImapCacheLocalImporter::Private::collectionCreateResult( KJob *job )
 
   const Collection collection = createJob->collection();
   mCurrentCollection = collection;
-/*  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "inserting collection" << collection.id()
+/*  qDebug() << "inserting collection" << collection.id()
                                    << collection.remoteId()
                                    << "at idPath" << idPath;*/
   mAkonadiCollectionsByPath.insert( idPath, collection );
 
-/*  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Checking for storeCollection with idPath" << idPath;*/
+/*  qDebug() << "Checking for storeCollection with idPath" << idPath;*/
   const Collection storeCollection = mStoreCollectionsByPath[ idPath ];
   Q_ASSERT( !storeCollection.remoteId().isEmpty() );
 
@@ -267,7 +267,7 @@ void ImapCacheLocalImporter::Private::itemFetchResult( KJob *job )
 {
   const QString idPath = job->property( "remoteIdPath" ).value<QString>();
   if ( job->error() != 0 ) {
-    kError() << "Store ItemFetch for" << idPath << "failed:" << job->errorString();
+    qCritical() << "Store ItemFetch for" << idPath << "failed:" << job->errorString();
     processNextCollection();
     return;
   }
@@ -298,7 +298,7 @@ void ImapCacheLocalImporter::Private::itemCreateResult( KJob *job )
   Q_ASSERT( createJob != 0 );
   if ( createJob->error() != 0 ) {
     const Item item = createJob->item();
-    kError() << "Akonadi ItemCreate for" << item.parentCollection().remoteId()
+    qCritical() << "Akonadi ItemCreate for" << item.parentCollection().remoteId()
              << "/" << item.remoteId() << "failed:" << job->errorString();
     return;
   }

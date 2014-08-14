@@ -23,7 +23,7 @@
 
 #include <KProcess>
 #include <QFile>
-#include <qtest_kde.h>
+#include <qtest.h>
 
 System::System(QObject* parent) :
   QObject( parent )

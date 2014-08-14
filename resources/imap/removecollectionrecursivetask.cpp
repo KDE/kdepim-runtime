@@ -27,7 +27,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/storejob.h>
 #include <kimap/closejob.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include "resource_imap_debug.h"
 #include <QDebug>
 

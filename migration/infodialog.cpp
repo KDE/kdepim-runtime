@@ -20,7 +20,7 @@
 #include "infodialog.h"
 
 #include <KCursor>
-#include <KDebug>
+#include <QDebug>
 #include <KGlobal>
 #include <QIcon>
 

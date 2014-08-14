@@ -27,8 +27,8 @@
 #include <KConfigGroup>
 #include <KShell>
 #include <KIO/NetAccess>
-
-#include <qtest_kde.h>
+#include <qtest.h>
+#include <KUrl>
 
 #include <QDir>
 #include <QFile>

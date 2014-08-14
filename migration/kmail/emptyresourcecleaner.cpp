@@ -29,7 +29,7 @@
 #include <AkonadiCore/collectionstatistics.h>
 #include <AkonadiCore/itemfetchjob.h>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <QHash>
 #include <QVariant>
@@ -77,7 +77,7 @@ void EmptyResourceCleaner::Private::deleteCollections()
       mDeletedCollections.insert( collection.id(), collection );
       it = mDeletableCollections.erase( it );
     } else {
-      kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Removing collection: id=" << collection.id()
+      qDebug() << "Removing collection: id=" << collection.id()
                                        << "remoteId=" << collection.remoteId();
       CollectionDeleteJob *deleteJob = new CollectionDeleteJob( collection );
       deleteJob->setProperty( "collection", QVariant::fromValue<Collection>( collection ) );
@@ -98,7 +98,7 @@ void EmptyResourceCleaner::Private::deleteCollections()
 
 void EmptyResourceCleaner::Private::deleteResource()
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Removing resource" << mResource.identifier();
+  qDebug() << "Removing resource" << mResource.identifier();
 
   AgentManager::self()->removeInstance( mResource );
 
@@ -108,7 +108,7 @@ void EmptyResourceCleaner::Private::deleteResource()
 void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
 {
   if ( job->error() != 0 ) {
-    kError() << job->errorString();
+    qCritical() << job->errorString();
     emit q->cleanupFinished( mResource );
     return;
   }
@@ -128,7 +128,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
       }
     }
 
-    kDebug( KDE_DEFAULT_DEBUG_AREA ) << "collection" << collection.name()
+    qDebug() << "collection" << collection.name()
                                      << "has" << itemCount
                                      << "items";
     if ( itemCount == 0 ) {
@@ -138,7 +138,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
     }
   }
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << mDeletableCollections.count()
+  qDebug() << mDeletableCollections.count()
                                    << "potenially deletable collections"
                                    << nonEmptyCollections.count() << "not empty";
 
@@ -150,7 +150,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
     }
   }
 
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << mDeletableCollections.count() << "of"
+  qDebug() << mDeletableCollections.count() << "of"
                                    << mAllCollections.count() << "are empty";
 
   if ( mOptions.testFlag( DeleteEmptyCollections ) ) {
@@ -166,7 +166,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
 void EmptyResourceCleaner::Private::collectionDeleteResult( KJob *job )
 {
   if ( job->error() != 0 ) {
-    kError() << job->errorString();
+    qCritical() << job->errorString();
     emit q->cleanupFinished( mResource );
     return;
   }
@@ -184,7 +184,7 @@ void EmptyResourceCleaner::Private::collectionDeleteResult( KJob *job )
 EmptyResourceCleaner::EmptyResourceCleaner( const AgentInstance &resource, QObject *parent )
   : QObject( parent ), d( new Private( this, resource ) )
 {
-  kDebug( KDE_DEFAULT_DEBUG_AREA ) << "Creating cleaner for resource"
+  qDebug() << "Creating cleaner for resource"
                                    << d->mResource.identifier();
   connect( this, SIGNAL(cleanupFinished(Akonadi::AgentInstance)), SLOT(deleteLater()) );
 

@@ -26,7 +26,6 @@
 
 #include <QDebug>
 #include <kselectionproxymodel.h>
-#include <KStandardDirs>
 
 #include <KAboutData>
 
