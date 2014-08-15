@@ -23,7 +23,7 @@
 
 #include <kconfigdialogmanager.h>
 #include <kconfigskeleton.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <kmessagebox.h>
 
 #include <QtCore/QList>

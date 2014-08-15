@@ -32,7 +32,7 @@
 #include <kabc/addressee.h>
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
-#include <klocale.h>
+#include <KLocalizedString>
 
 
 #include <oxa/davmanager.h>

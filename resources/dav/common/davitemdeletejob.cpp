@@ -22,7 +22,7 @@
 
 #include <kio/deletejob.h>
 #include <kio/job.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 DavItemDeleteJob::DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
   : KJob( parent ), mUrl( url ), mItem( item )

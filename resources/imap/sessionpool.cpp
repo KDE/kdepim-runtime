@@ -25,7 +25,7 @@
 #include <QtNetwork/QSslSocket>
 
 #include <QDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <kimap/capabilitiesjob.h>
 #include <kimap/logoutjob.h>

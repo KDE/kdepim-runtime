@@ -42,7 +42,7 @@
 #include <imap/sessionpool.h>
 #include <imap/sessionuiproxy.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <QIcon>
 
 GmailResource::GmailResource(const QString &id)

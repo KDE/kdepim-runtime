@@ -31,7 +31,7 @@
 #include <QIcon>
 #include <KGlobal>
 #include <qdebug.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include <kwindowsystem.h>
 #include <AkonadiCore/CollectionModifyJob>

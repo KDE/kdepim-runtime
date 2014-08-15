@@ -21,7 +21,7 @@
 #include "davcollectionsmultifetchjob.h"
 
 #include <qicon.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <klineedit.h>
 #include <kservice.h>
 #include <kservicetypetrader.h>

@@ -23,7 +23,7 @@
 
 #include <kmime/kmime_message.h>
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <KGlobal>
 #include <KSharedConfig>
 

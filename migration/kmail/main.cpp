@@ -29,7 +29,7 @@
 #include <KGlobal>
 #include <QDebug>
 #include <KSharedConfig>
-#include <KLocale>
+#include <KLocalizedString>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 

@@ -25,7 +25,7 @@
 #include <KApplication>
 #include <KCmdLineArgs>
 #include <KGlobal>
-#include <KLocale>
+#include <KLocalizedString>
 
 int main( int argc, char **argv )
 {

@@ -33,7 +33,7 @@
 #include <KCalCore/Calendar>
 
 #include <KLocalizedString>
-#include <KLocale>
+#include <KLocalizedString>
 #include <QDialog>
 #include <QIcon>
 
@@ -61,7 +61,7 @@
 #include <KGAPI/Tasks/TaskListModifyJob>
 
 #include <KGAPI/Account>
-#include <KLocale>
+#include <KLocalizedString>
 
 #define ROOT_COLLECTION_REMOTEID QLatin1String("RootCollection")
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
@@ -77,7 +77,7 @@ CalendarResource::CalendarResource( const QString &id ):
     GoogleResource( id )
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
-    //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
+    //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
     updateResourceName();
 }
 

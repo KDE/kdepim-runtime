@@ -26,7 +26,7 @@
 #include <kwallet.h>
 using KWallet::Wallet;
 
-#include <klocale.h>
+#include <KLocalizedString>
 #include <kpassworddialog.h>
 #include <QDebug>
 

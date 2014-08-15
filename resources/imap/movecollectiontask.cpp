@@ -22,7 +22,7 @@
 #include "movecollectiontask.h"
 
 #include <QDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <kimap/renamejob.h>
 #include <kimap/session.h>

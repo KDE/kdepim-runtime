@@ -23,7 +23,7 @@
 
 #include <qdebug.h>
 #include <kmessagebox.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 ServerTest::ServerTest( QObject* parent) :
   QObject(parent), m_serverTest( new MailTransport::ServerTest( 0 ) )

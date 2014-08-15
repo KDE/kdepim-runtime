@@ -23,13 +23,13 @@
 #include <AkonadiCore/CollectionFetchScope>
 
 #include <KDialog>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <KGAPI/Account>
 #include <KGAPI/AccountInfoFetchJob>
 #include <KGAPI/AccountInfo>
 #include <KGAPI/AuthJob>
-#include <KLocale>
+#include <KLocalizedString>
 
 #ifdef HAVE_ACCOUNTS
 #include "shared/getcredentialsjob.h"
@@ -47,7 +47,7 @@ GoogleResource::GoogleResource( const QString &id ):
     AgentBase::ObserverV2(),
     m_isConfiguring(false)
 {
-    //QT5 KLocale::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
+    //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
     connect( this, SIGNAL(abortRequested()),
             this, SLOT(slotAbortRequested()) );
     connect( this, SIGNAL(reloadConfiguration()),

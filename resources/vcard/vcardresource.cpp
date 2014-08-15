@@ -26,7 +26,7 @@
 #include <agentfactory.h>
 
 #include <kfiledialog.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <KWindowSystem>
 
 #include <QtDBus/QDBusConnection>

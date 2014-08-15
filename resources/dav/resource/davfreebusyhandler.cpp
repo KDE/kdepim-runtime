@@ -25,7 +25,7 @@
 
 #include <KCalCore/ICalFormat>
 #include <KDateTime>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <kio/davjob.h>
 #include <kio/job.h>
 #include <qdebug.h>

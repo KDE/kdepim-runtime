@@ -25,7 +25,7 @@
 #include <kross/core/action.h>
 #include <QtCore/qfile.h>
 #include <KLocalizedString>
-#include <KLocale>
+#include <KLocalizedString>
 
 LoadPage::LoadPage(KAssistantDialog* parent) :
   Page( parent ),
@@ -69,7 +69,7 @@ void LoadPage::enterPageNext()
   KConfigGroup grpTranslate( &f, "Translate" );
   const QString poFileName = grpTranslate.readEntry( "Filename" );
   if ( !poFileName.isEmpty() )
-    //QT5 KLocale::global()->insertCatalog( poFileName );
+    //QT5 KLocalizedString::global()->insertCatalog( poFileName );
 
   m_action->trigger();
 

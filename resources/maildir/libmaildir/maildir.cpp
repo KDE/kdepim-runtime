@@ -27,7 +27,7 @@
 #include <QUuid>
 
 #include <qdebug.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <kpimutils/kfileio.h>
 #include <Akonadi/KMime/MessageFlags>
 

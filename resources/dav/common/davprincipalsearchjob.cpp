@@ -22,7 +22,7 @@
 
 #include <kio/job.h>
 #include <kio/davjob.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <QDebug>
 
 DavPrincipalSearchJob::DavPrincipalSearchJob( const DavUtils::DavUrl& url, DavPrincipalSearchJob::FilterType type,

@@ -23,7 +23,7 @@
 
 #include <kio/davjob.h>
 #include <kio/job.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 DavPrincipalHomeSetsFetchJob::DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent )
   : KJob( parent ), mUrl( url )

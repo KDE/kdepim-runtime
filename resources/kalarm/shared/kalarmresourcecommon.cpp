@@ -31,9 +31,9 @@
 #include <KCalCore/MemoryCalendar>
 
 #include <kglobal.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <qdebug.h>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <QTime>
 
@@ -73,7 +73,7 @@ void initialise(QObject* parent)
     AttributeFactory::registerAttribute<CompatibilityAttribute>();
     AttributeFactory::registerAttribute<EventAttribute>();
 
-    //QT5 KLocale::global()->insertCatalog(QLatin1String("akonadi_kalarm_resource"));
+    //QT5 KLocalizedString::global()->insertCatalog(QLatin1String("akonadi_kalarm_resource"));
 }
 
 /******************************************************************************

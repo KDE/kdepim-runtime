@@ -24,7 +24,7 @@
 #include "resource_imap_debug.h"
 #include <QDebug>
 
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <kimap/selectjob.h>
 #include <kimap/session.h>

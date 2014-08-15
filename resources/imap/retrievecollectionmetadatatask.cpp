@@ -29,7 +29,7 @@
 #include <kimap/myrightsjob.h>
 #include <kimap/rfccodecs.h>
 #include <kimap/session.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include "resource_imap_debug.h"
 #include <QDebug>

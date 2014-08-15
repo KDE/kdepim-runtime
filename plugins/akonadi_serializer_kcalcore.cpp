@@ -29,7 +29,7 @@
 #include <KCalUtils/Stringify>
 
 
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include <QDate>
 #include <QtCore/qplugin.h>

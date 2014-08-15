@@ -23,7 +23,7 @@
 
 #include <kio/davjob.h>
 #include <kio/job.h>
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include <QtCore/QDebug>
 

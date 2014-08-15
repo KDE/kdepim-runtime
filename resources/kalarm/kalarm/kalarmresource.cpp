@@ -36,7 +36,7 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/Incidence>
 
-#include <klocale.h>
+#include <KLocalizedString>
 #include <qdebug.h>
 
 using namespace Akonadi;

@@ -30,7 +30,7 @@
 #include <AkonadiCore/control.h>
 #include <AkonadiCore/servermanager.h>
 #include <akonadi/private/xdgbasedirs_p.h>
-#include <KLocale>
+#include <KLocalizedString>
 
 K_PLUGIN_FACTORY( ServerConfigModuleFactory, registerPlugin<ServerConfigModule>(); )
 

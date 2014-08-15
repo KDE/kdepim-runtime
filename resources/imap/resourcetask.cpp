@@ -23,7 +23,7 @@
 
 #include <Akonadi/KMime/MessageFlags>
 
-#include <KLocale>
+#include <KLocalizedString>
 #include <QDebug>
 
 #include "collectionflagsattribute.h"

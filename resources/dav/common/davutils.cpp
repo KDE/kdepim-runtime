@@ -28,7 +28,7 @@
 #include <kabc/vcardconverter.h>
 #include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
-#include <klocale.h>
+#include <KLocalizedString>
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>

@@ -31,7 +31,7 @@
 #include <kmime/kmime_message.h>
 
 #include <QDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 RetrieveCollectionsTask::RetrieveCollectionsTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( CancelIfNoSession, resource, parent )

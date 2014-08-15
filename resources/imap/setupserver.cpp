@@ -47,7 +47,7 @@
 #include <entitydisplayattribute.h>
 #include <CollectionModifyJob>
 #include <kemailsettings.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <qpushbutton.h>
 #include <kmessagebox.h>
 #include <kuser.h>

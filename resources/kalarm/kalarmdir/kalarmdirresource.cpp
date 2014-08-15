@@ -46,7 +46,7 @@
 #include <itemmodifyjob.h>
 
 #include <kdirwatch.h>
-#include <klocale.h>
+#include <KLocalizedString>
 #include <qdebug.h>
 
 #include <QtCore/QDir>

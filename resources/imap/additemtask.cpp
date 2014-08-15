@@ -25,7 +25,7 @@
 
 #include "resource_imap_debug.h"
 #include <QDebug>
-#include <KLocale>
+#include <KLocalizedString>
 
 #include <kimap/appendjob.h>
 #include <kimap/imapset.h>

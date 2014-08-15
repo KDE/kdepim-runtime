@@ -21,12 +21,12 @@
 #include "configmodule.h"
 #include "resourcesmanagementwidget.h"
 
-#include <klocale.h>
+#include <KLocalizedString>
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 #include <qboxlayout.h>
 #include <KGlobal>
-#include <KLocale>
+#include <KLocalizedString>
 #include <AkonadiCore/control.h>
 
 K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
