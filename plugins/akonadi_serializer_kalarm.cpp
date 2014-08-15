@@ -126,9 +126,6 @@ void SerializerPluginKAlarm::serialize(const Item& item, const QByteArray& label
     data.write("\nEND:VCALENDAR");
 }
 
-#include <kglobal.h>
-#include <KLocale>
-
 void SerializerPluginKAlarm::compare(AbstractDifferencesReporter* reporter, const Item& left, const Item& right)
 {
     Q_ASSERT(reporter);
