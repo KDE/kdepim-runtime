@@ -40,7 +40,6 @@
 
 #include <QDebug>
 #include <kdirwatch.h>
-#include <kfiledialog.h>
 #include <KLocalizedString>
 #include <kwindowsystem.h>
 #include <KGlobal>

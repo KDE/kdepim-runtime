@@ -25,7 +25,6 @@
 #include <dbusconnectionpool.h>
 #include <agentfactory.h>
 
-#include <kfiledialog.h>
 #include <KLocalizedString>
 #include <KWindowSystem>
 
