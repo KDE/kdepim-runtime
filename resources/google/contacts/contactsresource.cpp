@@ -32,6 +32,7 @@
 #include <KABC/Picture>
 
 #include <KLocalizedString>
+#include <KDateTime>
 #include <QDebug>
 #include <QIcon>
 
