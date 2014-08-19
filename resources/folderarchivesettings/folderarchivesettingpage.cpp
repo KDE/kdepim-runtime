@@ -24,7 +24,6 @@
 #include <kmime/kmime_message.h>
 
 #include <KLocalizedString>
-#include <KGlobal>
 #include <KSharedConfig>
 
 #include <QCheckBox>

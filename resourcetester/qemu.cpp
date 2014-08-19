@@ -28,7 +28,7 @@
 #include <KShell>
 #include <KIO/NetAccess>
 #include <qtest.h>
-#include <KUrl>
+#include <QUrl>
 
 #include <QDir>
 #include <QFile>
@@ -137,7 +137,7 @@ QString QEmu::vmImage() const
 {
   KConfigGroup conf( mVMConfig, "Image" );
 
-  const KUrl imageUrl = conf.readEntry( "Source", QString() );
+  const QUrl imageUrl = QUrl::fromLocalFile(conf.readEntry( "Source", QString() ));
   Q_ASSERT( !imageUrl.isEmpty() );
 
   const QString imageArchiveFileName = imageUrl.fileName();
@@ -147,7 +147,7 @@ QString QEmu::vmImage() const
   const QString localArchiveFileName = Global::vmPath() + imageArchiveFileName;
   if ( !QFile::exists( localArchiveFileName ) ) {
     qDebug() << "Downloading VM image from" << imageUrl << "to" << localArchiveFileName << "...";
-    const bool result = KIO::NetAccess::file_copy( imageUrl, QUrl(localArchiveFileName), 0 );
+    const bool result = KIO::NetAccess::file_copy( imageUrl, QUrl::fromLocalFile(localArchiveFileName), 0 );
     if ( !result )
       qCritical() << "Downloading" << imageUrl << "failed!";
     qDebug() << "Downloading VM image complete.";

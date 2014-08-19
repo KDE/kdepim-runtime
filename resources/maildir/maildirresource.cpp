@@ -42,7 +42,6 @@
 #include <kdirwatch.h>
 #include <KLocalizedString>
 #include <kwindowsystem.h>
-#include <KGlobal>
 
 #include "libmaildir/maildir.h"
 #include <QStandardPaths>
