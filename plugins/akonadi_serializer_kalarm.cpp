@@ -20,6 +20,7 @@
 
 #include "akonadi_serializer_kalarm.h"
 #include "kaeventformatter.h"
+#include "akonadi_serializer_kalarm_debug.h"
 
 #include <kalarmcal/eventattribute.h>
 #include <kalarmcal/kacalendar.h>
@@ -30,10 +31,9 @@
 #include <AkonadiCore/attributefactory.h>
 
 #include <klocale.h>
-#include <akonadi_serializer_kalarm_debug.h>
-#include <QDebug>
 
 #include <QtCore/qplugin.h>
+#include <QDebug>
 
 using namespace Akonadi;
 using namespace KAlarmCal;

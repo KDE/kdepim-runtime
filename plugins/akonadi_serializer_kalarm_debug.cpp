@@ -18,6 +18,5 @@
 */
 
 #include "akonadi_serializer_kalarm_debug.h"
+
 Q_LOGGING_CATEGORY(AKONADI_SERIALIZER_KALARM_LOG, "log_akonadi_serializer_kalarm")
-
-

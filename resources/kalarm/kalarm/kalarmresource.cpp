@@ -536,5 +536,4 @@ CollectionFetchJob* KAlarmResource::fetchCollection(const char* slot)
     return job;
 }
 
-
 // vim: et sw=4:

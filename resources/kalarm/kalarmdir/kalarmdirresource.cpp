@@ -24,7 +24,6 @@
 #include "kalarmdirresource.h"
 #include "kalarmresourcecommon.h"
 #include "autoqpointer.h"
-
 #include "kalarmdirsettingsadaptor.h"
 #include "settingsdialog.h"
 
@@ -47,13 +46,13 @@
 
 #include <kdirwatch.h>
 #include <KLocalizedString>
-#include <qdebug.h>
 
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
+#include <qdebug.h>
 
 using namespace Akonadi;
 using namespace KCalCore;
@@ -1211,6 +1210,5 @@ bool isFileValid(const QString& file)
         &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
         &&  file != QLatin1String(warningFile);
 }
-
 
 // vim: et sw=4:

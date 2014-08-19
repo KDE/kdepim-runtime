@@ -32,10 +32,9 @@
 
 #include <kglobal.h>
 #include <KLocalizedString>
-#include <qdebug.h>
-#include <KLocalizedString>
 
 #include <QTime>
+#include <qdebug.h>
 
 using namespace Akonadi;
 using namespace KCalCore;

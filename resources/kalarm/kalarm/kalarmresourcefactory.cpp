@@ -17,9 +17,10 @@
 
 #include "kalarmresourcefactory.h"
 
-KalarmResourceFactory::KalarmResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< KAlarmResource >( "akonadi_kalarm_resource", parent )
+KalarmResourceFactory::KalarmResourceFactory(QObject* parent)
+    : Akonadi::AgentFactory<KAlarmResource>("akonadi_kalarm_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_kalarm_resource") );
+    setObjectName(QLatin1String("akonadi_kalarm_resource"));
 }
 
+// vim: et sw=4:
