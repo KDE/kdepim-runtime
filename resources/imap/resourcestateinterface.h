@@ -41,6 +41,7 @@ public:
 
   virtual QString userName() const = 0;
   virtual QString resourceName() const = 0;
+  virtual QString resourceIdentifier() const = 0;
   virtual QStringList serverCapabilities() const = 0;
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const = 0;
   virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const = 0;
@@ -65,6 +66,10 @@ public:
   virtual QSet<QByteArray> addedFlags() const = 0;
   virtual QSet<QByteArray> removedFlags() const = 0;
 
+  virtual Akonadi::Tag tag() const = 0;
+  virtual QSet<Akonadi::Tag> addedTags() const = 0;
+  virtual QSet<Akonadi::Tag> removedTags() const = 0;
+
   virtual QString rootRemoteId() const = 0;
   static QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true );
 
@@ -87,6 +92,8 @@ public:
   virtual void collectionAttributesRetrieved( const Akonadi::Collection &collection ) = 0;
 
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection ) = 0;
+
+  virtual void tagChangeCommitted( const Akonadi::Tag &tag ) = 0;
 
   virtual void changeProcessed() = 0;
 
@@ -112,6 +119,7 @@ public:
   virtual int batchSize() const = 0;
 
   virtual MessageHelper::Ptr messageHelper() const = 0;
+  virtual void tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> & ) = 0;
 
 };
 

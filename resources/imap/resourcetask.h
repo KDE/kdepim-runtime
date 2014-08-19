@@ -115,6 +115,8 @@ protected:
 
   void changeCommitted( const Akonadi::Collection &collection );
 
+  void changeCommitted( const Akonadi::Tag &tag );
+
   void changeProcessed();
 
   void searchFinished( const QVector<qint64> &result, bool isRid = true );

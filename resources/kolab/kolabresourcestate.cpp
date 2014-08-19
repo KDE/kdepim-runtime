@@ -64,6 +64,11 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
                 col.setCachePolicy(cachePolicy);
             }
         }
+        if (folderType == Kolab::ConfigurationType) {
+            //we want to hide this folder from indexing and display, but still have the data available locally.
+            col.setEnabled(false);
+            col.setShouldList(Akonadi::Collection::ListSync, true);
+        }
         if (!KolabHelpers::isHandledType(folderType)) {
             //If we don't handle the folder, make sure we don't download the messages
             col.attribute<NoSelectAttribute>(Akonadi::Entity::AddIfMissing);

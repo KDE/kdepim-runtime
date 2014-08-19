@@ -321,6 +321,12 @@ void ResourceTask::changeCommitted( const Akonadi::Collection &collection )
   deleteLater();
 }
 
+void ResourceTask::changeCommitted( const Akonadi::Tag &tag )
+{
+    m_resource->tagChangeCommitted( tag );
+    deleteLater();
+}
+
 void ResourceTask::changeProcessed()
 {
   m_resource->changeProcessed();

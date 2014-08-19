@@ -53,6 +53,11 @@ QString ResourceState::resourceName() const
   return m_resource->name();
 }
 
+QString ResourceState::resourceIdentifier() const
+{
+  return m_resource->identifier();
+}
+
 QStringList ResourceState::serverCapabilities() const
 {
   return m_resource->m_pool->serverCapabilities();
@@ -148,6 +153,21 @@ QSet<QByteArray> ResourceState::addedFlags() const
 QSet<QByteArray> ResourceState::removedFlags() const
 {
   return m_arguments.removedFlags;
+}
+
+Akonadi::Tag ResourceState::tag() const
+{
+    return m_arguments.tag;
+}
+
+QSet<Akonadi::Tag> ResourceState::addedTags() const
+{
+    return m_arguments.addedTags;
+}
+
+QSet<Akonadi::Tag> ResourceState::removedTags() const
+{
+    return m_arguments.removedTags;
 }
 
 QString ResourceState::rootRemoteId() const
@@ -252,6 +272,11 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
 void ResourceState::collectionChangeCommitted( const Akonadi::Collection &collection )
 {
   m_resource->changeCommitted( collection );
+}
+
+void ResourceState::tagChangeCommitted(const Akonadi::Tag &tag)
+{
+  m_resource->changeCommitted( tag );
 }
 
 void ResourceState::changeProcessed()
@@ -385,4 +410,9 @@ int ResourceState::batchSize() const
 MessageHelper::Ptr ResourceState::messageHelper() const
 {
   return MessageHelper::Ptr(new MessageHelper());
+}
+
+void ResourceState::tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &tagMembers )
+{
+  m_resource->tagsRetrieved(tags, tagMembers);
 }

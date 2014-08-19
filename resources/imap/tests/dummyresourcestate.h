@@ -27,6 +27,8 @@
 
 #include "resourcestateinterface.h"
 
+typedef QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List> > TagListAndMembers;
+
 class DummyResourceState : public ResourceStateInterface
 {
 public:
@@ -40,6 +42,9 @@ public:
 
   void setResourceName( const QString &name );
   virtual QString resourceName() const;
+
+  void setResourceIdentifier( const QString &identifier );
+  virtual QString resourceIdentifier() const;
 
   void setServerCapabilities( const QStringList &capabilities );
   virtual QStringList serverCapabilities() const;
@@ -78,6 +83,13 @@ public:
   void setParts( const QSet<QByteArray> &parts );
   virtual QSet<QByteArray> parts() const;
 
+  void setTag( const Akonadi::Tag &tag );
+  virtual Akonadi::Tag tag() const;
+  void setAddedTags( const QSet<Akonadi::Tag> &addedTags );
+  virtual QSet<Akonadi::Tag> addedTags() const;
+  void setRemovedTags( const QSet<Akonadi::Tag> &removedTags );
+  virtual QSet<Akonadi::Tag> removedTags() const;
+
   virtual QString rootRemoteId() const;
 
   virtual void setIdleCollection( const Akonadi::Collection &collection );
@@ -102,6 +114,9 @@ public:
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
+
+  virtual void tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> & );
+  virtual void tagChangeCommitted( const Akonadi::Tag &tag );
 
   virtual void searchFinished( const QVector<qint64> &result, bool isRid = true );
 
@@ -135,6 +150,7 @@ private:
 
   QString m_userName;
   QString m_resourceName;
+  QString m_resourceIdentifier;
   QStringList m_capabilities;
   QList<KIMAP::MailBoxDescriptor> m_namespaces;
 
@@ -153,6 +169,10 @@ private:
   Akonadi::Collection m_targetCollection;
 
   QSet<QByteArray> m_parts;
+
+  Akonadi::Tag m_tag;
+  QSet<Akonadi::Tag> m_addedTags;
+  QSet<Akonadi::Tag> m_removedTags;
 
   QList< QPair<QByteArray, QVariant> > m_calls;
 };

@@ -36,6 +36,7 @@ public:
     static Kolab::ObjectType getKolabTypeFromMimeType(const QString &type);
     static QByteArray kolabTypeForMimeType( const QStringList &contentMimeTypes );
     static QStringList getContentMimeTypes(Kolab::FolderType type);
+    static QString getMimeType(Kolab::FolderType type);
     static QString getIcon(Kolab::FolderType type);
     //Returns true if the folder type shouldn't be ignored
     static bool isHandledType(Kolab::FolderType type);

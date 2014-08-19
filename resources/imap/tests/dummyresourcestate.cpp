@@ -20,9 +20,10 @@
 */
 
 #include "dummyresourcestate.h"
-
 Q_DECLARE_METATYPE(QList<qint64>)
 Q_DECLARE_METATYPE(QVector<qint64>);
+Q_DECLARE_METATYPE(QString);
+Q_DECLARE_METATYPE(TagListAndMembers);
 
 DummyResourceState::DummyResourceState()
   : m_automaticExpunge( true ), m_subscriptionEnabled( true ),
@@ -30,6 +31,7 @@ DummyResourceState::DummyResourceState()
 {
   qRegisterMetaType<QList<qint64> >();
   qRegisterMetaType<QVector<qint64> >();
+  qRegisterMetaType<TagListAndMembers>();
 }
 
 DummyResourceState::~DummyResourceState()
@@ -55,6 +57,16 @@ void DummyResourceState::setResourceName( const QString &name )
 QString DummyResourceState::resourceName() const
 {
   return m_resourceName;
+}
+
+void DummyResourceState::setResourceIdentifier(const QString &identifier)
+{
+  m_resourceIdentifier = identifier;
+}
+
+QString DummyResourceState::resourceIdentifier() const
+{
+  return m_resourceIdentifier;
 }
 
 void DummyResourceState::setServerCapabilities( const QStringList &capabilities )
@@ -195,7 +207,37 @@ void DummyResourceState::setParts( const QSet<QByteArray> &parts )
 
 QSet<QByteArray> DummyResourceState::parts() const
 {
-  return m_parts;
+    return m_parts;
+}
+
+void DummyResourceState::setTag(const Akonadi::Tag &tag)
+{
+    m_tag = tag;
+}
+
+Akonadi::Tag DummyResourceState::tag() const
+{
+    return m_tag;
+}
+
+void DummyResourceState::setAddedTags(const QSet<Akonadi::Tag> &addedTags)
+{
+    m_addedTags = addedTags;
+}
+
+QSet<Akonadi::Tag> DummyResourceState::addedTags() const
+{
+    return m_addedTags;
+}
+
+void DummyResourceState::setRemovedTags(const QSet<Akonadi::Tag> &removedTags)
+{
+    m_removedTags = removedTags;
+}
+
+QSet<Akonadi::Tag> DummyResourceState::removedTags() const
+{
+    return m_removedTags;
 }
 
 QString DummyResourceState::rootRemoteId() const
@@ -272,7 +314,17 @@ void DummyResourceState::collectionsRetrieved( const Akonadi::Collection::List &
 
 void DummyResourceState::collectionChangeCommitted( const Akonadi::Collection &collection )
 {
-  recordCall( "collectionChangeCommitted", QVariant::fromValue( collection ) );
+    recordCall( "collectionChangeCommitted", QVariant::fromValue( collection ) );
+}
+
+void DummyResourceState::tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &items )
+{
+  recordCall( "tagsRetrieved",  QVariant::fromValue( qMakePair(tags, items) ) );
+}
+
+void DummyResourceState::tagChangeCommitted(const Akonadi::Tag &tag)
+{
+  recordCall( "tagChangeCommitted", QVariant::fromValue( tag ) );
 }
 
 void DummyResourceState::changeProcessed()

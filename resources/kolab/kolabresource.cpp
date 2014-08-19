@@ -35,6 +35,11 @@
 #include "kolabresourcestate.h"
 #include "kolabhelpers.h"
 #include "settings.h"
+#include "kolabaddtagtask.h"
+#include "kolabchangeitemstagstask.h"
+#include "kolabchangetagtask.h"
+#include "kolabremovetagtask.h"
+#include "kolabretrievetagstask.h"
 
 KolabResource::KolabResource(const QString& id)
     :ImapResource(id)
@@ -69,6 +74,7 @@ void KolabResource::retrieveCollections()
 {
     emit status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
+    synchronizeTags();
 }
 
 void KolabResource::retrieveItems(const Akonadi::Collection &col)
@@ -184,6 +190,36 @@ void KolabResource::collectionChanged(const Akonadi::Collection& collection, con
     emit status( AgentBase::Running, i18nc( "@info:status", "Updating folder '%1'", collection.name() ) );
     ChangeCollectionTask *task = new ChangeCollectionTask( createResourceState(TaskArguments(collection, parts)), this );
     task->syncEnabledState(true);
+    startTask(task);
+}
+
+void KolabResource::tagAdded(const Akonadi::Tag &tag)
+{
+    KolabAddTagTask *task = new KolabAddTagTask(createResourceState(TaskArguments(tag)), this);
+    startTask(task);
+}
+
+void KolabResource::tagChanged(const Akonadi::Tag &tag)
+{
+    KolabChangeTagTask *task = new KolabChangeTagTask(createResourceState(TaskArguments(tag)), QSharedPointer<TagConverter>(new TagConverter), this);
+    startTask(task);
+}
+
+void KolabResource::tagRemoved(const Akonadi::Tag &tag)
+{
+    KolabRemoveTagTask *task = new KolabRemoveTagTask(createResourceState(TaskArguments(tag)), this);
+    startTask(task);
+}
+
+void KolabResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags)
+{
+    KolabChangeItemsTagsTask *task = new KolabChangeItemsTagsTask(createResourceState(TaskArguments(items, addedTags, removedTags)), QSharedPointer<TagConverter>(new TagConverter), this);
+    startTask(task);
+}
+
+void KolabResource::retrieveTags()
+{
+    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), this);
     startTask(task);
 }
 

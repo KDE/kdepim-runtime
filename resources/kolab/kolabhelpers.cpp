@@ -304,6 +304,19 @@ Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
     return Kolab::InvalidObject;
 }
 
+QString KolabHelpers::getMimeType(Kolab::FolderType type)
+{
+    switch (type) {
+        case Kolab::MailType:
+            return KMime::Message::mimeType();
+        case Kolab::ConfigurationType:
+            return QLatin1String(KOLAB_TYPE_RELATION);
+        default:
+            kDebug() << "unhandled folder type: " << type;
+    }
+    return QString();
+}
+
 QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
 {
     QStringList contentTypes;
@@ -322,6 +335,9 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
             break;
         case Kolab::MailType:
             contentTypes << KMime::Message::mimeType();
+            break;
+        case Kolab::ConfigurationType:
+            contentTypes << QLatin1String(KOLAB_TYPE_RELATION);
             break;
         default:
             kDebug() << "unhandled folder type: " << type;

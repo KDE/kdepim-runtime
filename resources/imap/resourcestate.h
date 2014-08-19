@@ -35,18 +35,23 @@ struct TaskArguments {
     TaskArguments(const Akonadi::Item::List &_items): items(_items) {}
     TaskArguments(const Akonadi::Item::List &_items, const QSet<QByteArray> &_addedFlags, const QSet<QByteArray> &_removedFlags): items(_items), addedFlags(_addedFlags), removedFlags(_removedFlags) {}
     TaskArguments(const Akonadi::Item::List &_items, const Akonadi::Collection &_sourceCollection, const Akonadi::Collection &_targetCollection): items(_items), sourceCollection(_sourceCollection), targetCollection(_targetCollection){}
+    TaskArguments(const Akonadi::Item::List &_items, const QSet<Akonadi::Tag> &_addedTags, const QSet<Akonadi::Tag> &_removedTags): items(_items), addedTags(_addedTags), removedTags(_removedTags) {}
     TaskArguments(const Akonadi::Collection &_collection): collection(_collection){}
     TaskArguments(const Akonadi::Collection &_collection, const Akonadi::Collection &_parentCollection): collection(_collection), parentCollection(_parentCollection){}
     TaskArguments(const Akonadi::Collection &_collection, const Akonadi::Collection &_sourceCollection, const Akonadi::Collection &_targetCollection): collection(_collection), sourceCollection(_sourceCollection), targetCollection(_targetCollection){}
     TaskArguments(const Akonadi::Collection &_collection, const QSet<QByteArray> &_parts): collection(_collection), parts(_parts){}
+    TaskArguments(const Akonadi::Tag &_tag) : tag(_tag) {}
     Akonadi::Collection collection;
     Akonadi::Item::List items;
     Akonadi::Collection parentCollection; //only used as parent of a collection
     Akonadi::Collection sourceCollection;
     Akonadi::Collection targetCollection;
+    Akonadi::Tag tag;
     QSet<QByteArray> parts;
     QSet<QByteArray> addedFlags;
     QSet<QByteArray> removedFlags;
+    QSet<Akonadi::Tag> addedTags;
+    QSet<Akonadi::Tag> removedTags;
 };
 
 class ResourceState : public ResourceStateInterface
@@ -59,6 +64,7 @@ public:
 
   virtual QString userName() const;
   virtual QString resourceName() const;
+  virtual QString resourceIdentifier() const;
   virtual QStringList serverCapabilities() const;
   virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
   virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const;
@@ -83,6 +89,10 @@ public:
   virtual QSet<QByteArray> addedFlags() const;
   virtual QSet<QByteArray> removedFlags() const;
 
+  virtual Akonadi::Tag tag() const;
+  virtual QSet<Akonadi::Tag> addedTags() const;
+  virtual QSet<Akonadi::Tag> removedTags() const;
+
   virtual QString rootRemoteId() const;
 
   virtual void setIdleCollection( const Akonadi::Collection &collection );
@@ -103,7 +113,11 @@ public:
 
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
+  virtual void tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> & );
+
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
+
+  virtual void tagChangeCommitted( const Akonadi::Tag &tag );
 
   virtual void changeProcessed();
 

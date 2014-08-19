@@ -51,10 +51,16 @@ protected:
     virtual void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts);
     //collectionRemoved & collectionMoved do not require adjustments since they don't change the annotations
 
+    virtual void tagAdded(const Akonadi::Tag &tag);
+    virtual void tagChanged(const Akonadi::Tag &tag);
+    virtual void tagRemoved(const Akonadi::Tag &tag);
+    virtual void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags);
+
     virtual QString defaultName();
 
 private Q_SLOTS:
     void onItemRetrievalCollectionFetchDone(KJob *job);
+    void retrieveTags();
 };
 
 #endif
