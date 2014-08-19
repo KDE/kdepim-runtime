@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     parser.addHelpOption();
     parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive"), i18n("Show reporting dialog")));
     parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive-on-change"), i18n("Show report only if changes were made")));
-    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("mimetype"), i18n("Mimetype to migrate")));
+    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("mimetype"), i18n("MIME type to migrate")));
 
     aboutData.setupCommandLine(&parser);
     parser.process(app);
