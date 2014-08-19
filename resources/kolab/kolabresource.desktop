@@ -69,6 +69,7 @@ Comment[sr@latin]=Omogućava pristup Kolabovim grupverskim fasciklama i e‑poš
 Comment[sv]=Ger tillgång till Kolab grupprogramkorgar och e-post på en Kolab IMAP-server.
 Comment[uk]=Надає доступ до тек групової роботи та електронної пошти на серверів IMAP Kolab.
 Comment[x-test]=xxProvides access to Kolab groupware folders and e-mail on a Kolab IMAP Server.xx
+Comment[zh_TW]=提供存取某 Kolab IMAP 伺服器上的 Kolab 群組資料夾與電子郵件
 Type=AkonadiResource
 Exec=akonadi_kolab_resource
 Icon=kolab
