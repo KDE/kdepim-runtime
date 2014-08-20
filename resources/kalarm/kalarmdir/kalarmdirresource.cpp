@@ -1,7 +1,7 @@
 /*
  *  kalarmdirresource.cpp  -  Akonadi directory resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2011-2012 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2011-2014 by David Jarvie <djarvie@kde.org>
  *  Copyright (c) 2008 Tobias Koenig <tokoe@kde.org>
  *  Copyright (c) 2008 Bertjan Broeksema <broeksema@kde.org>
  *
@@ -713,7 +713,13 @@ bool KAlarmDirResource::writeToFile(const KAEvent& event)
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
     MemoryCalendar::Ptr calendar(new MemoryCalendar(QLatin1String("UTC")));
     KACalendar::setKAlarmVersion(calendar);   // set the KAlarm custom property
-    calendar->addIncidence(kcalEvent);
+    if (!calendar->addIncidence(kcalEvent))
+    {
+        kError() << "Error adding event with id" << event.id();
+        emit error(errorMessage(KAlarmResourceCommon::CalendarAdd, event.id()));
+        cancelTask();
+        return false;
+    }
 
     mChangedFiles += event.id();    // suppress KDirWatch processing for this write
 

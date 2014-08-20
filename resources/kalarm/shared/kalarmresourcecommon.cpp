@@ -1,7 +1,7 @@
 /*
  *  kalarmresourcecommon.cpp  -  common functions for KAlarm Akonadi resources
  *  Program:  kalarm
- *  Copyright © 2009-2011 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2014 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -183,6 +183,8 @@ QString errorMessage(ErrorCode code, const QString& param)
             return i18nc("@info", "Event with uid '%1' contains no usable alarms.", param);
         case EventReadOnly:
             return i18nc("@info", "Event with uid '%1' is read only", param);
+        case CalendarAdd:
+            return i18nc("@info", "Failed to add event with uid '%1' to calendar", param);
     }
     return QString();
 }
