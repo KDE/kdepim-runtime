@@ -715,7 +715,7 @@ bool KAlarmDirResource::writeToFile(const KAEvent& event)
     KACalendar::setKAlarmVersion(calendar);   // set the KAlarm custom property
     if (!calendar->addIncidence(kcalEvent))
     {
-        kError() << "Error adding event with id" << event.id();
+        qCritical() << "Error adding event with id" << event.id();
         emit error(errorMessage(KAlarmResourceCommon::CalendarAdd, event.id()));
         cancelTask();
         return false;

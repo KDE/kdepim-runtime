@@ -402,7 +402,7 @@ void KAlarmResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collect
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
     if (!calendar()->addIncidence(kcalEvent))
     {
-        kError() << "Error adding event with id" << event.id() << ", item id" << item.id();
+        qCritical() << "Error adding event with id" << event.id() << ", item id" << item.id();
         cancelTask(errorMessage(KAlarmResourceCommon::CalendarAdd, event.id()));
         return;
     }
