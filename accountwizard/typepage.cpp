@@ -21,7 +21,6 @@
 
 #include <QDebug>
 #include <KDesktopFile>
-#include <KStandardDirs>
 #include <KGlobal>
 #include <KConfigGroup>
 #include <QIcon>
@@ -30,7 +29,8 @@
 #include <QMimeDatabase>
 #include <QMimeType>
 #include "global.h"
-
+#include <QStandardPaths>
+#include <QDir>
 
 TypePage::TypePage(KAssistantDialog* parent) :
   Page( parent ),
@@ -51,8 +51,16 @@ TypePage::TypePage(KAssistantDialog* parent) :
   ui.listView->setModel( proxy );
   ui.searchLine->setProxy( proxy );
 
-  const QStringList list = KGlobal::dirs()->findAllResources( "data", QLatin1String( "akonadi/accountwizard/*.desktop" ),
-                                                              KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
+  QStringList list;// = KGlobal::dirs()->findAllResources("data", QLatin1String( "akonadi/accountwizard/*.desktop" ), KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
+  QStringList files;
+  const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/accountwizard/"), QStandardPaths::LocateDirectory);
+  Q_FOREACH (const QString& dir, dirs) {
+      const QStringList fileNames = QDir(dir).entryList(QStringList() << QStringLiteral("*.desktop"));
+      Q_FOREACH (const QString& file, fileNames) {
+         list.append(dir + QLatin1Char('/') + file);
+      }
+  }
+
   const QStringList filter = Global::typeFilter();
   foreach ( const QString &entry, list ) {
     KDesktopFile f( entry );

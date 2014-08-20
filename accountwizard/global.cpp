@@ -20,8 +20,6 @@
 #include "global.h"
 
 #include <qdebug.h>
-#include <KGlobal>
-#include <KStandardDirs>
 #include <QtCore/qfileinfo.h>
 #include <QtCore/QDir>
 #include <kio/copyjob.h>
@@ -52,7 +50,15 @@ void Global::setAssistant(const QString& assistant)
     return;
   }
 
-  const QStringList list = KGlobal::dirs()->findAllResources("data", QLatin1String( "akonadi/accountwizard/*.desktop" ), KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
+  QStringList list;// = KGlobal::dirs()->findAllResources("data", QLatin1String( "akonadi/accountwizard/*.desktop" ), KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
+  QStringList files;
+  const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/accountwizard/"), QStandardPaths::LocateDirectory);
+  Q_FOREACH (const QString& dir, dirs) {
+      const QStringList fileNames = QDir(dir).entryList(QStringList() << QStringLiteral("*.desktop"));
+      Q_FOREACH (const QString& file, fileNames) {
+         list.append(dir + QLatin1Char('/') + file);
+      }
+  }
   foreach ( const QString &entry, list ) {
     const QFileInfo info( entry );
     const QDir dir( info.absolutePath() );
