@@ -30,12 +30,13 @@
 #include <KDirWatch>
 #include <KLocalizedString>
 #include <KLocalizedString>
-#include <KStandardDirs>
+
 #include <KGlobal>
 #include <KConfigGroup>
 
 #include <QtCore/QDir>
 #include <QtCore/QCryptographicHash>
+#include <QStandardPaths>
 
 using namespace Akonadi;
 
@@ -113,7 +114,7 @@ void SingleFileResourceBase::setLocalFileName( const QString &fileName )
 
 QString SingleFileResourceBase::cacheFile() const
 {
-  return KStandardDirs::locateLocal( "cache", QLatin1String("") + identifier() );
+  return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/") + identifier() ;
 }
 
 QByteArray SingleFileResourceBase::calculateHash( const QString &fileName ) const
@@ -217,9 +218,8 @@ void SingleFileResourceBase::fileChanged( const QString & fileName )
     const QUrl prevUrl = mCurrentUrl;
     int i = 0;
     do {
-      lostFoundFileName = KStandardDirs::locateLocal( "data", identifier() + QDir::separator()
-          + prevUrl.fileName() + QLatin1Char('-') + QString::number( ++i ) );
-    } while ( KStandardDirs::exists( lostFoundFileName ) );
+      lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-') + QString::number( ++i ) ;
+    } while ( QFile( lostFoundFileName ).exists() );
 
     // create the directory if it doesn't exist yet
     QDir dir = QFileInfo(lostFoundFileName).dir();

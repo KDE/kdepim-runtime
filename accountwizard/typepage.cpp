@@ -21,7 +21,6 @@
 
 #include <QDebug>
 #include <KDesktopFile>
-#include <KGlobal>
 #include <KConfigGroup>
 #include <QIcon>
 
