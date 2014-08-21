@@ -49,17 +49,17 @@ SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::reject);
   mainLayout->addWidget(buttonBox);
 
   if ( windowId )
     KWindowSystem::setMainWindow( this, windowId );
 
-  connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
+  connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
 
-  connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
-  connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
+  connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
+  connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
   QTimer::singleShot( 0, this, SLOT(validate()) );
 

@@ -167,9 +167,9 @@ void SetupManager::rollback()
 
 SetupObject* SetupManager::connectObject(SetupObject* obj)
 {
-  connect( obj, SIGNAL(finished(QString)), SLOT(setupSucceeded(QString)) );
-  connect( obj, SIGNAL(info(QString)), SLOT(setupInfo(QString)) );
-  connect( obj, SIGNAL(error(QString)), SLOT(setupFailed(QString)) );
+  connect(obj, &SetupObject::finished, this, &SetupManager::setupSucceeded);
+  connect(obj, &SetupObject::info, this, &SetupManager::setupInfo);
+  connect(obj, &SetupObject::error, this, &SetupManager::setupFailed);
   m_objectToSetup.append( obj );
   return obj;
 }
@@ -218,7 +218,7 @@ void SetupManager::openWallet()
   Q_ASSERT( parent()->isWidgetType() );
   m_wallet = Wallet::openWallet( Wallet::NetworkWallet(), qobject_cast<QWidget*>( parent() )->effectiveWinId(), Wallet::Asynchronous );
   QEventLoop loop;
-  connect( m_wallet, SIGNAL(walletOpened(bool)), &loop, SLOT(quit()) );
+  connect(m_wallet, &KWallet::Wallet::walletOpened, &loop, &QEventLoop::quit);
   loop.exec();
 }
 

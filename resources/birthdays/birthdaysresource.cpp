@@ -62,7 +62,7 @@ BirthdaysResource::BirthdaysResource(const QString& id) :
   connect( monitor, SIGNAL(itemRemoved(Akonadi::Item)),
            SLOT(contactRemoved(Akonadi::Item)) );
 
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(doFullSearch()) );
+  connect(this, &BirthdaysResource::reloadConfiguration, this, &BirthdaysResource::doFullSearch);
 }
 
 BirthdaysResource::~BirthdaysResource()
@@ -114,7 +114,7 @@ bool BirthdaysResource::retrieveItem(const Akonadi::Item& item, const QSet< QByt
   qint64 contactId = item.remoteId().mid( 1 ).toLongLong();
   ItemFetchJob *job = new ItemFetchJob( Item( contactId ), this );
   job->fetchScope().fetchFullPayload();
-  connect( job, SIGNAL(result(KJob*)), SLOT(contactRetrieved(KJob*)) );
+  connect(job, &ItemFetchJob::result, this, &BirthdaysResource::contactRetrieved);
   return true;
 }
 
@@ -197,7 +197,7 @@ void BirthdaysResource::contactRemoved( const Akonadi::Item& item )
 void BirthdaysResource::doFullSearch()
 {
   CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
-  connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(listContacts(Akonadi::Collection::List)) );
+  connect(job, &CollectionFetchJob::collectionsReceived, this, &BirthdaysResource::listContacts);
 }
 
 void BirthdaysResource::listContacts(const Akonadi::Collection::List &cols)
@@ -209,7 +209,7 @@ void BirthdaysResource::listContacts(const Akonadi::Collection::List &cols)
       continue;
     ItemFetchJob *job = new ItemFetchJob( col, this );
     job->fetchScope().fetchFullPayload();
-    connect( job, SIGNAL(itemsReceived(Akonadi::Item::List)), SLOT(createEvents(Akonadi::Item::List)) );
+    connect(job, &ItemFetchJob::itemsReceived, this, &BirthdaysResource::createEvents);
   }
 }
 

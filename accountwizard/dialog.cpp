@@ -95,14 +95,14 @@ Dialog::Dialog(QWidget* parent, Qt::WindowFlags flags ) :
   Page *page = qobject_cast<Page*>( currentPage()->widget() );
   page->enterPageNext();
   emit page->pageEnteredNext();
-  connect(button(QDialogButtonBox::Cancel), SIGNAL(clicked()), this, SLOT(accept()));
+  connect(button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &Dialog::accept);
 }
 
 KPageWidgetItem* Dialog::addPage(Page* page, const QString &title)
 {
   KPageWidgetItem *item = KAssistantDialog::addPage( page, title );
-  connect( page, SIGNAL(leavePageNextOk()), SLOT(slotNextOk()) );
-  connect( page, SIGNAL(leavePageBackOk()), SLOT(slotBackOk()) );
+  connect(page, &Page::leavePageNextOk, this, &Dialog::slotNextOk);
+  connect(page, &Page::leavePageBackOk, this, &Dialog::slotBackOk);
   page->setPageWidgetItem( item );
   return item;
 }
