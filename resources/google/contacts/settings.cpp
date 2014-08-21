@@ -18,8 +18,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <KGlobal>
-
 #include <QDBusConnection>
 
 class SettingsHelper
@@ -38,7 +36,7 @@ class SettingsHelper
     Settings *q;
 };
 
-K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings::Settings():
     GoogleSettings()

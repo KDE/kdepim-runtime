@@ -22,7 +22,7 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/CollectionFetchScope>
 
-#include <KDialog>
+#include <QDialog>
 #include <KLocalizedString>
 
 #include <KGAPI/Account>
@@ -113,7 +113,7 @@ void GoogleResource::configure( WId windowId )
     }
 
     m_isConfiguring = true;
-    if ( runConfigurationDialog( windowId ) == KDialog::Accepted ) {
+    if ( runConfigurationDialog( windowId ) == QDialog::Accepted ) {
         updateResourceName();
 
         emit configurationDialogAccepted();

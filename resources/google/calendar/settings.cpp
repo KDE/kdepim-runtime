@@ -18,7 +18,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <KGlobal>
 #include <KWallet/Wallet>
 
 #include <QDBusConnection>
@@ -39,7 +38,7 @@ class SettingsHelper
     Settings *q;
 };
 
-K_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
 
 Settings::Settings():
     GoogleSettings()
