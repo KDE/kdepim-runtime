@@ -202,21 +202,21 @@ QString KAEventFormatter::value(Parameter param) const
         case AlarmType:
             switch (mEvent.actionSubType())
             {
-                case KAEvent::MESSAGE:  return i18nc("@info/plain Alarm type", "Display (text)");
-                case KAEvent::FILE:     return i18nc("@info/plain Alarm type", "Display (file)");
+                case KAEvent::MESSAGE:  return i18nc("@info Alarm type", "Display (text)");
+                case KAEvent::FILE:     return i18nc("@info Alarm type", "Display (file)");
                 case KAEvent::COMMAND:  return mEvent.commandDisplay()
-                                             ? i18nc("@info/plain Alarm type", "Display (command)")
-                                             : i18nc("@info/plain Alarm type", "Command");
-                case KAEvent::EMAIL:    return i18nc("@info/plain Alarm type", "Email");
-                case KAEvent::AUDIO:    return i18nc("@info/plain Alarm type", "Audio");
+                                             ? i18nc("@info Alarm type", "Display (command)")
+                                             : i18nc("@info Alarm type", "Command");
+                case KAEvent::EMAIL:    return i18nc("@info Alarm type", "Email");
+                case KAEvent::AUDIO:    return i18nc("@info Alarm type", "Audio");
             }
             break;
         case AlarmCategory:
             switch (mEvent.category())
             {
-                case CalEvent::ACTIVE:    return i18nc("@info/plain Alarm type", "Active");
-                case CalEvent::ARCHIVED:  return i18nc("@info/plain Alarm type", "Archived");
-                case CalEvent::TEMPLATE:  return i18nc("@info/plain Alarm type", "Template");
+                case CalEvent::ACTIVE:    return i18nc("@info Alarm type", "Active");
+                case CalEvent::ARCHIVED:  return i18nc("@info Alarm type", "Archived");
+                case CalEvent::TEMPLATE:  return i18nc("@info Alarm type", "Template");
                 default:
                     break;
             }
@@ -229,7 +229,7 @@ QString KAEventFormatter::value(Parameter param) const
         case Recurrence:
         {
             if (mEvent.repeatAtLogin(true))
-                return i18nc("@info/plain Repeat at login", "At login until %1", dateTime(mEvent.mainDateTime().kDateTime()));
+                return i18nc("@info Repeat at login", "At login until %1", dateTime(mEvent.mainDateTime().kDateTime()));
             KCalCore::Event::Ptr eptr(new KCalCore::Event);
             mEvent.updateKCalEvent(eptr, KAEvent::UID_SET);
             return KCalUtils::IncidenceFormatter::recurrenceString(eptr);
@@ -255,38 +255,38 @@ QString KAEventFormatter::value(Parameter param) const
             QString value;
             for (QMap<QByteArray, QString>::ConstIterator it = mEvent.customProperties().constBegin();  it != mEvent.customProperties().constEnd();  ++it)
                 value += QString::fromLatin1(it.key()) + QLatin1String(":") + it.value() + QLatin1String("<nl/>");
-            return i18nc("@info/plain", "%1", value);
+            return i18nc("@info", "%1", value);
         }
 
         case MessageText:       return (mEvent.actionSubType() == KAEvent::MESSAGE) ? mEvent.cleanText() : QString();
         case MessageFile:       return (mEvent.actionSubType() == KAEvent::FILE) ? mEvent.cleanText() : QString();
         case FgColour:          return mEvent.fgColour().name();
         case BgColour:          return mEvent.bgColour().name();
-        case Font:              return mEvent.useDefaultFont() ? i18nc("@info/plain Using default font", "Default") : mEvent.font().toString();
+        case Font:              return mEvent.useDefaultFont() ? i18nc("@info Using default font", "Default") : mEvent.font().toString();
         case PreActionCancel:   return trueFalse(mEvent.cancelOnPreActionError());
         case PreActionNoError:  return trueFalse(mEvent.dontShowPreActionError());
         case PreAction:         return mEvent.preAction();
         case PostAction:        return mEvent.postAction();
         case Reminder:          return mEvent.reminderMinutes() ? minutesHoursDays(mEvent.reminderMinutes()) : trueFalse(false);
         case ReminderOnce:      return trueFalse(mEvent.reminderOnceOnly());
-        case DeferralType:      return mEvent.reminderDeferral() ? i18nc("@info/plain", "Reminder") : trueFalse(mEvent.deferred());
+        case DeferralType:      return mEvent.reminderDeferral() ? i18nc("@info", "Reminder") : trueFalse(mEvent.deferred());
         case DeferralTime:      return mEvent.deferred() ? dateTime(mEvent.deferDateTime().kDateTime()) : trueFalse(false);
         case DeferDefault:      return (mEvent.deferDefaultMinutes() > 0) ? minutes(mEvent.deferDefaultMinutes()) : trueFalse(false);
         case DeferDefaultDate:  return trueFalse(mEvent.deferDefaultDateOnly());
         case ConfirmAck:        return trueFalse(mEvent.confirmAck());
         case KMailSerial:       return mEvent.kmailSerialNumber() ? number(mEvent.kmailSerialNumber()) : trueFalse(false);
         case Sound:             return !mEvent.audioFile().isEmpty() ? mEvent.audioFile()
-                                     : mEvent.speak() ? i18nc("@info/plain", "Speak")
-                                     : mEvent.beep() ? i18nc("@info/plain", "Beep") : trueFalse(false);
+                                     : mEvent.speak() ? i18nc("@info", "Speak")
+                                     : mEvent.beep() ? i18nc("@info", "Beep") : trueFalse(false);
         case SoundRepeat:       return trueFalse(mEvent.repeatSound());
         case SoundVolume:       return mEvent.soundVolume() >= 0
-                                     ? i18nc("@info/plain Percentage", "%1%%", static_cast<int>(mEvent.soundVolume() * 100))
+                                     ? i18nc("@info Percentage", "%1%%", static_cast<int>(mEvent.soundVolume() * 100))
                                      : mUnspecifiedValue;
         case SoundFadeVolume:   return mEvent.fadeVolume() >= 0
-                                     ? i18nc("@info/plain Percentage", "%1%%", static_cast<int>(mEvent.fadeVolume() * 100))
+                                     ? i18nc("@info Percentage", "%1%%", static_cast<int>(mEvent.fadeVolume() * 100))
                                      : mUnspecifiedValue;
         case SoundFadeTime:     return mEvent.fadeSeconds()
-                                     ? i18ncp("@info/plain", "1 Second", "%1 Seconds", mEvent.fadeSeconds())
+                                     ? i18ncp("@info", "1 Second", "%1 Seconds", mEvent.fadeSeconds())
                                      : mUnspecifiedValue;
 
         case Command:           return (mEvent.actionSubType() == KAEvent::COMMAND) ? mEvent.cleanText() : QString();
@@ -300,13 +300,13 @@ QString KAEventFormatter::value(Parameter param) const
         case EmailBody:         return mEvent.emailMessage();
         case EmailAttachments:  return mEvent.emailAttachments(QLatin1String(", "));
     }
-    return i18nc("@info/plain Error indication", "error!");
+    return i18nc("@info Error indication", "error!");
 }
 
 QString trueFalse(bool value)
 {
-    return value ? i18nc("@info/plain General purpose status indication: yes or no", "Yes")
-                 : i18nc("@info/plain General purpose status indication: yes or no", "No");
+    return value ? i18nc("@info General purpose status indication: yes or no", "Yes")
+                 : i18nc("@info General purpose status indication: yes or no", "No");
 }
 
 // Convert an integer to digits for the locale.
@@ -319,7 +319,7 @@ QString number(unsigned long n)
 
 QString minutes(int n)
 {
-    return i18ncp("@info/plain", "1 Minute", "%1 Minutes", n);
+    return i18ncp("@info", "1 Minute", "%1 Minutes", n);
 }
 
 QString dateTime(const KDateTime& dt)
@@ -333,11 +333,11 @@ QString dateTime(const KDateTime& dt)
 QString minutesHoursDays(int minutes)
 {
     if (minutes % 60)
-        return i18ncp("@info/plain", "1 Minute", "%1 Minutes", minutes);
+        return i18ncp("@info", "1 Minute", "%1 Minutes", minutes);
     else if (minutes % 1440)
-        return i18ncp("@info/plain", "1 Hour", "%1 Hours", minutes/60);
+        return i18ncp("@info", "1 Hour", "%1 Hours", minutes/60);
     else
-        return i18ncp("@info/plain", "1 Day", "%1 Days", minutes/1440);
+        return i18ncp("@info", "1 Day", "%1 Days", minutes/1440);
 }
 
 // vim: et sw=4:
