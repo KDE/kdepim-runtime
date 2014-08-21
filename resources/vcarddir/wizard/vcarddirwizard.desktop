@@ -40,6 +40,15 @@ Name[zh_CN]=vCard 目录
 Name[zh_TW]=vCard 目錄
 Icon=text-directory
 Comment=Loads contact from vCard Directory
+Comment[ca]=Carrega els contactes des d'un directori amb vCard
+Comment[en_GB]=Loads contact from vCard Directory
+Comment[nl]=Laadt contactpersoon uit een vCard-map
+Comment[pl]=Wczytuje kontakty z katalogu vCard
+Comment[pt]=Carrega um contacto de uma pasta de ficheiros vCard
+Comment[sk]=Načíta kontakt z adresára vCard
+Comment[sv]=Laddar kontakter från en vCard-katalog
+Comment[uk]=Завантажує дані запису контакту із каталогу vCard
+Comment[x-test]=xxLoads contact from vCard Directoryxx
 
 [Wizard]
 Type=text/vcard
