@@ -88,7 +88,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
   okButton->setDefault(true);
   okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  QPushButton *mUser1Button = new QPushButton;
+  mUser1Button = new QPushButton;
   buttonBox->addButton(mUser1Button, QDialogButtonBox::ActionRole);
   connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccepted()));
   connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
