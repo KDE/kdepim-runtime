@@ -27,7 +27,7 @@
 
 #include <kemailsettings.h>
 #include <kwallet.h>
-#include <KLocale>
+#include <QLocale>
 
 SetupManager::SetupManager( QWidget* parent) :
   QObject(parent),
@@ -206,7 +206,7 @@ QString SetupManager::password()
 
 QString SetupManager::country()
 {
-  return KLocale::global()->country();
+  return QLocale::countryToString(QLocale().country());
 }
 
 void SetupManager::openWallet()
