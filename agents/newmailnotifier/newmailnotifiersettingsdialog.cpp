@@ -153,7 +153,6 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mSelectCollection = new NewMailNotifierSelectCollectionWidget;
     tab->addTab(mSelectCollection, i18n("Folders"));
 
-    mainLayout->addWidget(w);
 
     KAboutData aboutData = KAboutData(
                 QLatin1String( "newmailnotifieragent" ),
