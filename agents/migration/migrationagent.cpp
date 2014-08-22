@@ -52,8 +52,8 @@ void MigrationAgent::configure(WId windowId)
     topLayout->addWidget(widget);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
-    connect(buttonBox, SIGNAL(accepted()), dlg, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), dlg, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, dlg, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
 
     dlg->setWindowTitle(i18nc("Title of the window that shows the status of the migration agent and offers controls to start/stop individual migration jobs.", "Migration Status"));

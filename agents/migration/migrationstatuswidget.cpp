@@ -98,8 +98,8 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     QWidget *widget = new QWidget(dlg);
     topLayout->addWidget(widget);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
-    connect(buttonBox, SIGNAL(accepted()), dlg, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), dlg, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, dlg, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
 
 

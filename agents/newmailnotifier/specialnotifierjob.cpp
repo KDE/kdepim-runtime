@@ -49,7 +49,7 @@ SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QStr
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item, this );
     job->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Envelope, true );
 
-    connect( job, SIGNAL(result(KJob*)), SLOT(slotItemFetchJobDone(KJob*)) );
+    connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotItemFetchJobDone);
 }
 
 SpecialNotifierJob::~SpecialNotifierJob()
@@ -81,7 +81,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob( this );
             job->setLimit( 1 );
             job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
-            connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
+            connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
             emitNotification(Util::defaultPixmap());
             deleteLater();
@@ -162,7 +162,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         notification->setActions( QStringList() << i18n( "Show mail..." ) );
 
         connect(notification, SIGNAL(activated(uint)), this, SLOT(slotOpenMail()) );
-        connect(notification, SIGNAL(closed()), this, SLOT(deleteLater()));
+        connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
 
         notification->sendEvent();
         if ( NewMailNotifierAgentSettings::beepOnNewMails() ) {

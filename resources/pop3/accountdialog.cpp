@@ -107,8 +107,8 @@ void AccountDialog::setupWidgets()
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccepted()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &AccountDialog::slotAccepted);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &AccountDialog::reject);
 
   QWidget *page = new QWidget( this );
   mainLayout->addWidget(page);

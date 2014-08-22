@@ -63,7 +63,7 @@ POP3Resource::POP3Resource( const QString &id )
            this, SLOT(slotAbortRequested()) );
   connect( mIntervalTimer, SIGNAL(timeout()),
            this, SLOT(intervalCheckTriggered()) );
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(configurationChanged()) );
+  connect(this, &POP3Resource::reloadConfiguration, this, &POP3Resource::configurationChanged);
 }
 
 POP3Resource::~POP3Resource()
