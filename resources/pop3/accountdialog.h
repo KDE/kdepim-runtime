@@ -35,7 +35,7 @@ namespace KWallet {
 class POP3Resource;
 class KJob;
 
-class AccountDialog : public KDialog, private Ui::PopPage
+class AccountDialog : public QDialog, private Ui::PopPage
 {
   Q_OBJECT
 
@@ -44,7 +44,6 @@ class AccountDialog : public KDialog, private Ui::PopPage
     virtual ~AccountDialog();
 
   private slots:
-    virtual void slotButtonClicked( int button );
     void slotEnablePopInterval( bool state );
     void slotFontChanged();
     void slotLeaveOnServerClicked();
@@ -64,6 +63,7 @@ class AccountDialog : public KDialog, private Ui::PopPage
     void localFolderRequestJobFinished( KJob *job );
     void walletOpenedForLoading( bool success );
     void walletOpenedForSaving( bool success );
+    void slotAccepted();
   private:
     void setupWidgets();
     void loadSettings();
@@ -80,6 +80,8 @@ class AccountDialog : public KDialog, private Ui::PopPage
     bool mServerTestFailed;
     KWallet::Wallet *mWallet;
     QString mInitalPassword;
+    QPushButton *mOkButton;
 };
+
 
 #endif

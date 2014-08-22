@@ -42,6 +42,10 @@
 #include <kwallet.h>
 #include <QDebug>
 #include <KGlobalSettings>
+#include <KConfigGroup>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 using namespace MailTransport;
 using namespace Akonadi;
@@ -72,7 +76,7 @@ public:
 
 
 AccountDialog::AccountDialog( POP3Resource *parentResource, WId parentWindow )
-  : KDialog(),
+  : QDialog(),
     mParentResource( parentResource ),
     mServerTest( 0 ),
     mValidator( this ),
@@ -81,7 +85,6 @@ AccountDialog::AccountDialog( POP3Resource *parentResource, WId parentWindow )
   KWindowSystem::setMainWindow( this, parentWindow );
   setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
   setWindowTitle( i18n( "POP3 Account Settings" ) );
-  setButtons( Ok|Cancel );
   mValidator.setRegExp( QRegExp( QLatin1String("[A-Za-z0-9-_:.]*") ) );
 
   setupWidgets();
@@ -98,9 +101,20 @@ AccountDialog::~AccountDialog()
 
 void AccountDialog::setupWidgets()
 {
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+  mOkButton->setDefault(true);
+  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccepted()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
   QWidget *page = new QWidget( this );
+  mainLayout->addWidget(page);
+  mainLayout->addWidget(buttonBox);
+
   setupUi( page );
-  setMainWidget( page );
 
   // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
   // compatibility) are allowed
@@ -399,7 +413,7 @@ void AccountDialog::slotCheckPopCapabilities()
   mServerTest = new ServerTest( this );
   BusyCursorHelper *busyCursorHelper = new BusyCursorHelper( mServerTest );
   mServerTest->setProgressBar( checkCapabilitiesProgress );
-  enableButtonOk( false );
+  mOkButton->setEnabled( false );
   checkCapabilitiesStack->setCurrentIndex( 1 );
   Transport::EnumEncryption::type encryptionType;
   if ( encryptionSSL->isChecked() )
@@ -421,7 +435,7 @@ void AccountDialog::slotCheckPopCapabilities()
 void AccountDialog::slotPopCapabilities( const QList<int> &encryptionTypes )
 {
   checkCapabilitiesStack->setCurrentIndex( 0 );
-  enableButtonOk( true );
+  mOkButton->setEnabled( true );
 
   // if both fail, popup a dialog
   if ( !mServerTest->isNormalPossible() && !mServerTest->isSecurePossible() )
@@ -565,19 +579,11 @@ void AccountDialog::checkHighest( QButtonGroup *btnGroup )
   }
 }
 
-void AccountDialog::slotButtonClicked( int button )
+void AccountDialog::slotAccepted()
 {
-  switch( button ) {
-  case Ok:
     saveSettings();
-
     // Don't call accept() yet, saveSettings() triggers an asnychronous wallet operation,
     // which will call accept() when it is finished
-    break;
-  case Cancel:
-    reject();
-    return;
-  }
 }
 
 void AccountDialog::saveSettings()
