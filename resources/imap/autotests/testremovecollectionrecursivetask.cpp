@@ -242,6 +242,6 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
   }
 };
 
-QTEST_KDEMAIN_CORE( TestRemoveCollectionRecursiveTask )
+QTEST_GUILESS_MAIN( TestRemoveCollectionRecursiveTask )
 
 #include "testremovecollectionrecursivetask.moc"

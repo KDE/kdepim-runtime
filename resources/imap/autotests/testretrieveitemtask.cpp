@@ -121,6 +121,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestRetrieveItemTask )
+QTEST_GUILESS_MAIN( TestRetrieveItemTask )
 
 #include "testretrieveitemtask.moc"

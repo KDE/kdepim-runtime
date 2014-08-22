@@ -486,6 +486,6 @@ private:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestRetrieveCollectionsTask )
+QTEST_GUILESS_MAIN( TestRetrieveCollectionsTask )
 
 #include "testretrievecollectionstask.moc"

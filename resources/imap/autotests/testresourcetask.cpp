@@ -173,6 +173,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestResourceTask )
+QTEST_GUILESS_MAIN( TestResourceTask )
 
 #include "testresourcetask.moc"

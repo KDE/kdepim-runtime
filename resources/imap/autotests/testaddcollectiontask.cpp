@@ -177,6 +177,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestAddCollectionTask )
+QTEST_GUILESS_MAIN( TestAddCollectionTask )
 
 #include "testaddcollectiontask.moc"

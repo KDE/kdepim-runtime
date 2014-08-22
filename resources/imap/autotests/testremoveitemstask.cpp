@@ -100,6 +100,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestRemoveItemsTask )
+QTEST_GUILESS_MAIN( TestRemoveItemsTask )
 
 #include "testremoveitemstask.moc"

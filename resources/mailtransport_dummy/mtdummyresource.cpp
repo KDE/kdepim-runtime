@@ -29,9 +29,7 @@
 #include <QtDBus/QDBusConnection>
 
 #include <ItemCopyJob>
-#include <KGlobal>
 #include <QDebug>
-#include <KLocale>
 
 using namespace Akonadi;
 

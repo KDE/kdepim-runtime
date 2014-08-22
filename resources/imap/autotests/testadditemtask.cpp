@@ -179,6 +179,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestAddItemTask )
+QTEST_GUILESS_MAIN( TestAddItemTask )
 
 #include "testadditemtask.moc"

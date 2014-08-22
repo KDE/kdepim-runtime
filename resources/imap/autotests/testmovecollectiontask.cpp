@@ -192,6 +192,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestMoveCollectionTask )
+QTEST_GUILESS_MAIN( TestMoveCollectionTask )
 
 #include "testmovecollectiontask.moc"

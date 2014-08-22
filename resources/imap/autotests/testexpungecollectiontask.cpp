@@ -123,6 +123,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestExpungeCollectionTask )
+QTEST_GUILESS_MAIN( TestExpungeCollectionTask )
 
 #include "testexpungecollectiontask.moc"

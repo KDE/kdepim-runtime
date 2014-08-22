@@ -258,6 +258,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestMoveItemsTask )
+QTEST_GUILESS_MAIN( TestMoveItemsTask )
 
 #include "testmoveitemstask.moc"

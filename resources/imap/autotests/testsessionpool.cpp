@@ -757,6 +757,6 @@ private slots:
 
 };
 
-QTEST_KDEMAIN_CORE( TestSessionPool )
+QTEST_GUILESS_MAIN( TestSessionPool )
 
 #include "testsessionpool.moc"

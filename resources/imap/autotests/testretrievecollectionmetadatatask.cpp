@@ -337,6 +337,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestRetrieveCollectionMetadataTask )
+QTEST_GUILESS_MAIN( TestRetrieveCollectionMetadataTask )
 
 #include "testretrievecollectionmetadatatask.moc"

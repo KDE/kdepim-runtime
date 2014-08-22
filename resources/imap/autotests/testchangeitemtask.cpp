@@ -213,6 +213,6 @@ private slots:
   }
 };
 
-QTEST_KDEMAIN_CORE( TestChangeItemTask )
+QTEST_GUILESS_MAIN( TestChangeItemTask )
 
 #include "testchangeitemtask.moc"
