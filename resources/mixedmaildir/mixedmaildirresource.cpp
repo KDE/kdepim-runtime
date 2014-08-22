@@ -216,6 +216,15 @@ void MixedMaildirResource::itemRemoved(const Item &item)
 {
 /*  kDebug() << "item.id=" << item.id() << "col=" << collection.remoteId()
            << "collection.remoteRevision=" << item.parentCollection().remoteRevision();*/
+  Q_ASSERT( !item.remoteId().isEmpty() );
+  Q_ASSERT( item.parentCollection().isValid() );
+  if ( item.parentCollection().remoteId().isEmpty() ) {
+    const QString message = i18nc( "@info:status", "Item %1 belongs to invalid collection %2. Maybe it was deleted meanwhile?", item.id(), item.parentCollection().id() );
+    kError() << message;
+    cancelTask( message );
+    return;
+  }
+
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
     kError() << message;
