@@ -85,19 +85,19 @@ KAlarmDirResource::KAlarmDirResource(const QString& id)
     new KAlarmDirSettingsAdaptor(mSettings);
     DBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
                                 mSettings, QDBusConnection::ExportAdaptors);
-    connect(mSettings, SIGNAL(configChanged()), SLOT(settingsChanged()));
+    connect(mSettings, &Akonadi_KAlarm_Dir_Resource::Settings::configChanged, this, &KAlarmDirResource::settingsChanged);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
     changeRecorder()->fetchCollection(true);
 
-    connect(KDirWatch::self(), SIGNAL(created(QString)), SLOT(fileCreated(QString)));
-    connect(KDirWatch::self(), SIGNAL(dirty(QString)), SLOT(fileChanged(QString)));
-    connect(KDirWatch::self(), SIGNAL(deleted(QString)), SLOT(fileDeleted(QString)));
+    connect(KDirWatch::self(), &KDirWatch::created, this, &KAlarmDirResource::fileCreated);
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, &KAlarmDirResource::fileChanged);
+    connect(KDirWatch::self(), &KDirWatch::deleted, this, &KAlarmDirResource::fileDeleted);
 
     // Find the collection which this resource manages
     CollectionFetchJob* job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
     job->fetchScope().setResource(identifier());
-    connect(job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)));
+    connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::collectionFetchResult);
 
     QTimer::singleShot(0, this, SLOT(loadFiles()));
 }
@@ -239,7 +239,7 @@ void KAlarmDirResource::configure(WId windowId)
             {
                 // Update the Akonadi server with the changes
                 CollectionModifyJob* job = new CollectionModifyJob(c);
-                connect(job, SIGNAL(result(KJob*)), SLOT(jobDone(KJob*)));
+                connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
             }
         }
         emit configurationDialogAccepted();
@@ -962,7 +962,7 @@ void KAlarmDirResource::fileDeleted(const QString& path)
         // Tell the Akonadi server to delete all Items in the collection
         Collection c(mCollectionId);
         ItemDeleteJob* job = new ItemDeleteJob(c);
-        connect(job, SIGNAL(result(KJob*)), SLOT(jobDone(KJob*)));
+        connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
     }
     else
     {
@@ -1033,7 +1033,7 @@ bool KAlarmDirResource::createItem(const KAEvent& event)
     item.setParentCollection(c);
     item.setRemoteId(event.id());
     ItemCreateJob* job = new ItemCreateJob(item, c);
-    connect(job, SIGNAL(result(KJob*)), SLOT(jobDone(KJob*)));
+    connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
     return true;
 }
 
@@ -1053,7 +1053,7 @@ bool KAlarmDirResource::modifyItem(const KAEvent& event)
     item.setRemoteId(event.id());
     ItemModifyJob* job = new ItemModifyJob(item);
     job->disableRevisionCheck();
-    connect(job, SIGNAL(result(KJob*)), SLOT(jobDone(KJob*)));
+    connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
     return true;
 }
 
@@ -1067,7 +1067,7 @@ void KAlarmDirResource::deleteItem(const KAEvent& event)
     item.setParentCollection(c);
     item.setRemoteId(event.id());
     ItemDeleteJob* job = new ItemDeleteJob(item);
-    connect(job, SIGNAL(result(KJob*)), SLOT(jobDone(KJob*)));
+    connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
 }
 
 /******************************************************************************

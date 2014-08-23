@@ -53,8 +53,8 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::reject);
     mainLayout->addWidget(buttonBox);
     setWindowTitle(i18nc("@title", "Configure Calendar"));
 
@@ -71,10 +71,10 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
     mManager = new KConfigDialogManager(this, mSettings);
     mManager->updateWidgets();
 
-    connect(mOkButton, SIGNAL(clicked()), SLOT(save()));
-    connect(ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(textChanged()));
-    connect(ui.kcfg_ReadOnly, SIGNAL(clicked(bool)), SLOT(readOnlyClicked(bool)));
-    connect(mTypeSelector, SIGNAL(changed()), SLOT(validate()));
+    connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
+    connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::textChanged);
+    connect(ui.kcfg_ReadOnly, &QCheckBox::clicked, this, &SettingsDialog::readOnlyClicked);
+    connect(mTypeSelector, &AlarmTypeWidget::changed, this, &SettingsDialog::validate);
 
     QTimer::singleShot(0, this, SLOT(validate()));
 }

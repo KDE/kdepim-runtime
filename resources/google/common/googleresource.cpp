@@ -178,7 +178,7 @@ bool GoogleResource::configureKAccounts( int accountId, KGAPI2::Job *restartJob 
 #ifdef HAVE_ACCOUNTS
     GetCredentialsJob *gc = new GetCredentialsJob( accountId, this );
     gc->setProperty( JOB_PROPERTY, QVariant::fromValue( restartJob ) );
-    connect( gc, SIGNAL(finished(KJob*)), this, SLOT(slotKAccountsCredentialsReceived(KJob*)) );
+    connect(gc, &GetCredentialsJob::finished, this, &GoogleResource::slotKAccountsCredentialsReceived);
     gc->start();
     // SUCKS!
     return true;

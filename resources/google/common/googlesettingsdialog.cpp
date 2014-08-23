@@ -57,8 +57,8 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotSaveSettings()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &GoogleSettingsDialog::slotSaveSettings);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &GoogleSettingsDialog::reject);
 
     QWidget *widget = new QWidget( this );
     topLayout->addWidget(widget);
