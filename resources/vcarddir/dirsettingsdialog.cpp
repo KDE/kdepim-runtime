@@ -56,8 +56,8 @@ SettingsDialog::SettingsDialog( WId windowId )
 
   connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
 
-  connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
-  connect( ui.kcfg_ReadOnly, SIGNAL(toggled(bool)), SLOT(validate()) );
+  connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
+  connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
   QTimer::singleShot( 0, this, SLOT(validate()) );
 
