@@ -17,7 +17,6 @@
 
 #include "global.h"
 
-#include <kglobal.h>
 #include <QDir>
 #include <kstandarddirs.h>
 #include <QDebug>
@@ -31,7 +30,7 @@ class GlobalPrivate
     QObject *parent;
 };
 
-K_GLOBAL_STATIC( GlobalPrivate, sInstance )
+Q_GLOBAL_STATIC( GlobalPrivate, sInstance )
 
 QString Global::basePath()
 {
