@@ -62,8 +62,8 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &SingleFileResourceConfigDialogBase::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &SingleFileResourceConfigDialogBase::reject);
   mainLayout->addWidget(buttonBox);
   
   if ( windowId )
@@ -71,10 +71,10 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId wind
 
   ui.ktabwidget->tabBar()->hide();
 
-  connect(mOkButton, SIGNAL(clicked()), SLOT(save()) );
+  connect(mOkButton, &QPushButton::clicked, this, &SingleFileResourceConfigDialogBase::save);
 
-  connect( ui.kcfg_Path, SIGNAL(textChanged(QString)), SLOT(validate()) );
-  connect( ui.kcfg_MonitorFile, SIGNAL(toggled(bool)), SLOT(validate()) );
+  connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SingleFileResourceConfigDialogBase::validate);
+  connect(ui.kcfg_MonitorFile, &QCheckBox::toggled, this, &SingleFileResourceConfigDialogBase::validate);
   ui.kcfg_Path->setFocus();
   QTimer::singleShot( 0, this, SLOT(validate()) );
   setMinimumSize(600, 540);
@@ -145,7 +145,7 @@ void SingleFileResourceConfigDialogBase::appendWidget( SingleFileValidatingWidge
 {
   widget->setParent( static_cast<QWidget*>( ui.tab ) );
   ui.tabLayout->addWidget( widget );
-  connect( widget, SIGNAL(changed()), SLOT(validate()) );
+  connect(widget, &SingleFileValidatingWidget::changed, this, &SingleFileResourceConfigDialogBase::validate);
   mAppendedWidget = widget;
 }
 

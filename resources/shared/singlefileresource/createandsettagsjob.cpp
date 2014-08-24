@@ -41,7 +41,7 @@ void CreateAndSetTagsJob::start()
   Q_FOREACH (const Akonadi::Tag &tag, mTags) {
     Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag, this);
     createJob->setMergeIfExisting(true);
-    connect(createJob, SIGNAL(result(KJob*)), this, SLOT(onCreateDone(KJob*)));
+    connect(createJob, &Akonadi::TagCreateJob::result, this, &CreateAndSetTagsJob::onCreateDone);
   }
 }
 
@@ -59,7 +59,7 @@ void CreateAndSetTagsJob::onCreateDone(KJob *job)
       mItem.setTag(tag);
     }
     Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mItem, this);
-    connect(modJob, SIGNAL(result(KJob*)), this, SLOT(onModifyDone(KJob*)));
+    connect(modJob, &Akonadi::ItemModifyJob::result, this, &CreateAndSetTagsJob::onModifyDone);
   }
 }
 
