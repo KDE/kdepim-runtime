@@ -26,7 +26,6 @@
 #include <agentfactory.h>
 
 #include <KLocalizedString>
-#include <KWindowSystem>
 
 #include <QtDBus/QDBusConnection>
 

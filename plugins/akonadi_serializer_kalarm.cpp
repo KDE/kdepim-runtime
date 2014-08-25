@@ -33,7 +33,6 @@
 #include <klocale.h>
 
 #include <QtCore/qplugin.h>
-#include <QDebug>
 
 using namespace Akonadi;
 using namespace KAlarmCal;

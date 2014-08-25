@@ -26,7 +26,6 @@
 #include <kglobal.h>
 #include <klocale.h>
 #include <kconfigskeleton.h>
-#include <QDebug>
 #include <KStandardDirs>
 
 using namespace Akonadi;

@@ -25,7 +25,6 @@
 #include <dbusconnectionpool.h>
 
 #include <KLocalizedString>
-#include <KWindowSystem>
 #include <QIcon>
 
 using namespace Akonadi;

@@ -27,7 +27,6 @@
 #include <KLocalizedString>
 
 #include <QtCore/QBuffer>
-#include <QtXmlPatterns/QXmlQuery>
 
 DavItemsListJob::DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent )
   : KJob( parent ), mUrl( url ), mSubJobCount( 0 )

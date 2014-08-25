@@ -34,13 +34,11 @@
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QRegExpValidator>
 #include <QTextBrowser>
 
-#include <QDebug>
 
 enum GroupwareServers
 {

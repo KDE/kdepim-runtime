@@ -33,7 +33,6 @@
 #include <KLocalizedString>
 #include <QDebug>
 
-#include <QTextDocument>
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>

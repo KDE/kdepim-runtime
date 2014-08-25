@@ -22,7 +22,6 @@
 
 #include <QtCore/qplugin.h>
 
-#include <QDebug>
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
