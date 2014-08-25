@@ -8,7 +8,7 @@ include_directories(${QJSON_INCLUDE_DIR} ${qjson_INCLUDE_DIR})
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
   include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})
   add_definitions(-DHAVE_ACCOUNTS)
-  set(facebookresource_SRCS ../shared/getcredentialsjob.cpp)
+  set(facebookresource_SRCS ../../shared/singlefileresource/getcredentialsjob.cpp)
 endif()
 
 set(facebookresource_SRCS

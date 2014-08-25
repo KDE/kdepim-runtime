@@ -23,7 +23,7 @@
 
 #include "settingsadaptor.h"
 #ifdef HAVE_ACCOUNTS
-#include "../shared/getcredentialsjob.h"
+#include "../../shared/singlefileresource/getcredentialsjob.h"
 #endif
 
 #include <kapplication.h>

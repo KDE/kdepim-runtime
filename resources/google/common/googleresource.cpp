@@ -32,7 +32,7 @@
 #include <KLocalizedString>
 
 #ifdef HAVE_ACCOUNTS
-#include "shared/getcredentialsjob.h"
+#include "../../shared/singlefileresource/getcredentialsjob.h"
 #endif
 
 #define ACCESS_TOKEN_PROPERTY "AccessToken"

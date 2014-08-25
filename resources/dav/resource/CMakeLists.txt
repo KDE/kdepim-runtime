@@ -55,7 +55,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
   if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
     include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})
     add_definitions(-DHAVE_ACCOUNTS)
-    set(davgroupwareresource_SRCS ../../shared/getcredentialsjob.cpp ${davgroupwareresource_SRCS})
+    set(davgroupwareresource_SRCS ../../shared/singlefileresource/getcredentialsjob.cpp ${davgroupwareresource_SRCS})
   endif()
 
   install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
