@@ -41,9 +41,6 @@
 #include <QIcon>
 
 #include <QDateTime>
-#include <QDir>
-#include <QInputDialog>
-#include <QLineEdit>
 
 #include <boost/shared_ptr.hpp>
 typedef boost::shared_ptr<KMime::Message> MessagePtr;

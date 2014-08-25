@@ -42,7 +42,6 @@
 #include <kwallet.h>
 #include <QDebug>
 #include <KGlobalSettings>
-#include <KConfigGroup>
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QVBoxLayout>

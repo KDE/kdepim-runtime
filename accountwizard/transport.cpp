@@ -21,7 +21,6 @@
 
 #include <mailtransport/transportmanager.h>
 
-#include <QDebug>
 #include <KLocalizedString>
 
 #define TABLE_SIZE x

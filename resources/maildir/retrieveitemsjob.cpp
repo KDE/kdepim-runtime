@@ -25,7 +25,6 @@
 #include <collectionmodifyjob.h>
 #include <transactionsequence.h>
 
-#include <QDateTime>
 #include <QDirIterator>
 #include <KMime/Message>
 

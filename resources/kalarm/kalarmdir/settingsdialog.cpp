@@ -24,7 +24,6 @@
 #include "alarmtypewidget.h"
 
 #include <KConfigDialogManager>
-#include <KConfigGroup>
 #include <KWindowSystem>
 
 #include <QUrl>

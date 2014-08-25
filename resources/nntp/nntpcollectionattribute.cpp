@@ -18,8 +18,7 @@
 */
 
 #include "nntpcollectionattribute.h"
-
-#include <QDataStream>
+#include <QByteArray>
 
 NntpCollectionAttribute::NntpCollectionAttribute()
   : Attribute(),

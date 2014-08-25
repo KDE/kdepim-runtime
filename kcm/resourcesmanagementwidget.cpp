@@ -32,7 +32,6 @@
 
 #include <kwindowsystem.h>
 
-#include <QDebug>
 #include <KMessageBox>
 #include <KLineEdit>
 #include <KLocalizedString>

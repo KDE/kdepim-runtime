@@ -33,7 +33,6 @@
 
 #include <QDebug>
 
-#include <QDateTime>
 #include <QApplication>
 #include <KAboutData>
 #include <KLocalizedString>
