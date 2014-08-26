@@ -48,8 +48,8 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
   mainLayout->addWidget(buttonBox);
 
   mModel = new QStandardItemModel();
@@ -69,17 +69,17 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
-  connect( mUi.kcfg_displayName, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
+  connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
   connect( mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
            this, SLOT(checkConfiguredUrlsButtonsState()) );
 
-  connect( mUi.addButton, SIGNAL(clicked()), this, SLOT(onAddButtonClicked()) );
-  connect( mUi.searchButton, SIGNAL(clicked()), this, SLOT(onSearchButtonClicked()) );
-  connect( mUi.removeButton, SIGNAL(clicked()), this, SLOT(onRemoveButtonClicked()) );
-  connect( mUi.editButton, SIGNAL(clicked()), this, SLOT(onEditButtonClicked()) );
+  connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
+  connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
+  connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigDialog::onRemoveButtonClicked);
+  connect(mUi.editButton, &QPushButton::clicked, this, &ConfigDialog::onEditButtonClicked);
 
-  connect(mOkButton, SIGNAL(clicked()), this, SLOT(onOkClicked()) );
-  connect(buttonBox->button(QDialogButtonBox::Cancel), SIGNAL(clicked()), this, SLOT(onCancelClicked()) );
+  connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::onOkClicked);
+  connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &ConfigDialog::onCancelClicked);
 
   checkUserInput();
 }

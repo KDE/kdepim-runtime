@@ -546,8 +546,8 @@ QString Settings::promptForPassword( const QString &user )
   QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
   okButton->setDefault(true);
   okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), dlg, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), dlg, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, dlg.data(), &QDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, dlg.data(), &QDialog::reject);
 
   QWidget *mainWidget = new QWidget( dlg );
   mainLayout->addWidget(mainWidget);

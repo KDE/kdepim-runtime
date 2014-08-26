@@ -40,7 +40,7 @@ void DavCollectionsFetchJob::start()
 {
   if ( DavManager::self()->davProtocol( mUrl.protocol() )->supportsPrincipals() ) {
     DavPrincipalHomeSetsFetchJob *job = new DavPrincipalHomeSetsFetchJob( mUrl );
-    connect( job, SIGNAL(result(KJob*)), SLOT(principalFetchFinished(KJob*)) );
+    connect(job, &DavPrincipalHomeSetsFetchJob::result, this, &DavCollectionsFetchJob::principalFetchFinished);
     job->start();
   } else {
     doCollectionsFetch( mUrl.url() );
@@ -64,7 +64,7 @@ void DavCollectionsFetchJob::doCollectionsFetch( const KUrl &url )
   const QDomDocument collectionQuery = DavManager::self()->davProtocol( mUrl.protocol() )->collectionsQuery();
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( url, collectionQuery );
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionsFetchFinished(KJob*)) );
+  connect(job, &DavPrincipalHomeSetsFetchJob::result, this, &DavCollectionsFetchJob::collectionsFetchFinished);
   job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
 }
 

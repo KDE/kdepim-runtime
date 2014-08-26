@@ -49,14 +49,14 @@ SearchDialog::SearchDialog( QWidget *parent )
   QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
   okButton->setDefault(true);
   okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &SearchDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &SearchDialog::reject);
   mainLayout->addWidget(buttonBox);
   buttonBox->button(QDialogButtonBox::Ok)->setText(i18n("Add Selected Items"));
 
-  connect( mUi.searchUrl, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
-  connect( mUi.searchParam, SIGNAL(textChanged(QString)), this, SLOT(checkUserInput()) );
-  connect( mUi.searchButton, SIGNAL(clicked()), this, SLOT(search()) );
+  connect(mUi.searchUrl, &KLineEdit::textChanged, this, &SearchDialog::checkUserInput);
+  connect(mUi.searchParam, &KLineEdit::textChanged, this, &SearchDialog::checkUserInput);
+  connect(mUi.searchButton, &QPushButton::clicked, this, &SearchDialog::search);
 
   checkUserInput();
 }
@@ -134,7 +134,7 @@ void SearchDialog::search()
   proto = DavManager::self()->davProtocol( DavUtils::CardDav );
   job->fetchProperty( proto->principalHomeSet(), proto->principalHomeSetNS() );
 
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(onSearchJobFinished(KJob*)) );
+  connect(job, &DavPrincipalSearchJob::result, this, &SearchDialog::onSearchJobFinished);
   job->start();
 }
 
@@ -169,7 +169,7 @@ void SearchDialog::onSearchJobFinished( KJob* job )
       davUrl.setProtocol( DavUtils::CardDav );
 
     DavCollectionsFetchJob *fetchJob = new DavCollectionsFetchJob( davUrl );
-    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(onCollectionsFetchJobFinished(KJob*)) );
+    connect(fetchJob, &DavCollectionsFetchJob::result, this, &SearchDialog::onCollectionsFetchJobFinished);
     fetchJob->start();
     ++mSubJobCount;
   }

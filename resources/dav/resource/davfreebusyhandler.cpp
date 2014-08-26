@@ -45,7 +45,7 @@ void DavFreeBusyHandler::canHandleFreeBusy( const QString& email )
       job->setProperty( "email", QVariant::fromValue( email ) );
       job->setProperty( "url", QVariant::fromValue( url.url().url() ) );
       job->fetchProperty( QLatin1String("schedule-inbox-URL"), QLatin1String("urn:ietf:params:xml:ns:caldav") );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(onPrincipalSearchJobFinished(KJob*)) );
+      connect(job, &DavPrincipalSearchJob::result, this, &DavFreeBusyHandler::onPrincipalSearchJobFinished);
       job->start();
     }
   }
@@ -75,7 +75,7 @@ void DavFreeBusyHandler::retrieveFreeBusy( const QString& email, const KDateTime
     job->addMetaData( QLatin1String("content-type"), QLatin1String("text/calendar") );
     job->setProperty( "email", QVariant::fromValue( email ) );
     job->setProperty( "request-id", QVariant::fromValue( requestId ) );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(onRetrieveFreeBusyJobFinished(KJob*)) );
+    connect(job, &DavPrincipalSearchJob::result, this, &DavFreeBusyHandler::onRetrieveFreeBusyJobFinished);
     job->start();
   }
 }
