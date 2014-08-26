@@ -70,7 +70,7 @@ void DavPrincipalSearchJob::start()
 
   KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), query );
   job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(principalCollectionSetSearchFinished(KJob*)) );
+  connect(job, &KIO::DavJob::result, this, &DavPrincipalSearchJob::principalCollectionSetSearchFinished);
   job->start();
 }
 
@@ -184,7 +184,7 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished( KJob* job )
     buildReportQuery( principalPropertySearchQuery );
     KIO::DavJob *reportJob = DavManager::self()->createReportJob( url, principalPropertySearchQuery );
     reportJob->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-    connect( reportJob, SIGNAL(result(KJob*)), this, SLOT(principalPropertySearchFinished(KJob*)) );
+    connect(reportJob, &KIO::DavJob::result, this, &DavPrincipalSearchJob::principalPropertySearchFinished);
     ++mPrincipalPropertySearchSubJobCount;
     reportJob->start();
   }

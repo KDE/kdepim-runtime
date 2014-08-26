@@ -45,7 +45,7 @@ void DavItemCreateJob::start()
   job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
   job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
 
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+  connect(job, &KIO::StoredTransferJob::result, this, &DavItemCreateJob::davJobFinished);
 }
 
 DavItem DavItemCreateJob::item() const
@@ -97,7 +97,7 @@ void DavItemCreateJob::davJobFinished( KJob *job )
   mItem.setUrl( url.prettyUrl() );
 
   DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
-  connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(itemRefreshed(KJob*)) );
+  connect(fetchJob, &DavItemFetchJob::result, this, &DavItemCreateJob::itemRefreshed);
   fetchJob->start();
 }
 

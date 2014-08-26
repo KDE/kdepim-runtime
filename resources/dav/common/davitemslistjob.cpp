@@ -49,13 +49,13 @@ void DavItemsListJob::start()
       job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
       job->setProperty( "davType", QLatin1String("report") );
       job->setProperty( "itemsMimeType", protocol->mimeTypeForQuery( queryIndex ) );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+      connect(job, &KIO::DavJob::result, this, &DavItemsListJob::davJobFinished);
     } else {
       KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), props );
       job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
       job->setProperty( "davType", QLatin1String("propFind") );
       job->setProperty( "itemsMimeType", protocol->mimeTypeForQuery( queryIndex ) );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+      connect(job, &KIO::DavJob::result, this, &DavItemsListJob::davJobFinished);
     }
 
     ++queryIndex;

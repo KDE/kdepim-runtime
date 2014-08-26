@@ -37,7 +37,7 @@ void DavItemDeleteJob::start()
   job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
   job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
 
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+  connect(job, &KIO::DeleteJob::result, this, &DavItemDeleteJob::davJobFinished);
 }
 
 void DavItemDeleteJob::davJobFinished( KJob *job )
