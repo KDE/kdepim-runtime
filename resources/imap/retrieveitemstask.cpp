@@ -229,9 +229,14 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     const QString mailBox = select->mailBox();
     const int messageCount = select->messageCount();
     const qint64 uidValidity = select->uidValidity();
-    const qint64 nextUid = select->nextUid();
+    qint64 nextUid = select->nextUid();
     quint64 highestModSeq = select->highestModSequence();
     const QList<QByteArray> flags = select->permanentFlags();
+
+    if (nextUid < 0) {
+        kWarning() << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value";
+        nextUid = 0;
+    }
 
     //The select job retrieves highestmodseq whenever it's available, but in case of no CONDSTORE support we ignore it
     if (!serverSupportsCondstore()) {
@@ -259,16 +264,15 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 
     // Get the current uid next value and store it
     int oldNextUid = 0;
-    if (!col.hasAttribute("uidnext")) {
-        UidNextAttribute* currentNextUid  = new UidNextAttribute(nextUid);
-        col.addAttribute(currentNextUid);
-        modifyNeeded = true;
-    } else {
-        UidNextAttribute* currentNextUid =
-        static_cast<UidNextAttribute*>(col.attribute("uidnext"));
-        oldNextUid = currentNextUid->uidNext();
-        if (oldNextUid != nextUid) {
-            currentNextUid->setUidNext(nextUid);
+    if (nextUid > 0) { //this can happen with faulty servers that don't deliver uidnext
+        if (UidNextAttribute* currentNextUid = col.attribute<UidNextAttribute>()) {
+            oldNextUid = currentNextUid->uidNext();
+            if (oldNextUid != nextUid) {
+                currentNextUid->setUidNext(nextUid);
+                modifyNeeded = true;
+            }
+        } else {
+            col.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(nextUid);
             modifyNeeded = true;
         }
     }
@@ -358,17 +362,17 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
             kDebug( 5327 ) << "No messages present so we are done";
         }
         taskComplete();
-    } else if (oldUidValidity != uidValidity) {
+    } else if (oldUidValidity != uidValidity || nextUid <= 0) {
         //If uidvalidity has changed our local cache is worthless and has to be refetched completely
-        if (oldUidValidity != 0) {
-            kDebug( 5327 ) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-                            << uidValidity << ") refetching " << mailBox;
-        } else {
-            kDebug( 5327 ) << "Fetching complete mailbox " << mailBox;
+        if (oldUidValidity != 0 && oldUidValidity != uidValidity) {
+            kDebug(5327) << "UIDVALIDITY check failed (" << oldUidValidity << "|" << uidValidity << ")";
         }
-
+        if (nextUid <= 0) {
+            kDebug(5327) << "Invalid UIDNEXT";
+        }
+        kDebug(5327) << "Fetching complete mailbox " << mailBox;
         setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
+        retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
     } else if (!m_messageUidsMissingBody.isEmpty()) {
         //fetch missing uids
         m_fetchedMissingBodies = 0;
@@ -393,7 +397,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         kWarning() << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
         kWarning() << "Refetching complete mailbox.";
         setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
+        retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
     } else if (nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
         kDebug( 5327 ) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
