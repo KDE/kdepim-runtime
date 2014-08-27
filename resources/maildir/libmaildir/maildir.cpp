@@ -28,7 +28,6 @@
 
 #include <qdebug.h>
 #include <KLocalizedString>
-#include <kpimutils/kfileio.h>
 #include <Akonadi/KMime/MessageFlags>
 
 #include <kde_file.h>
@@ -355,10 +354,10 @@ bool Maildir::removeSubFolder( const QString& folderName )
     if ( !dir.exists( folderName ) ) return false;
 
     // remove it recursively
-    bool result = KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + QLatin1Char( '/' ) + folderName );
+    bool result = QDir( dir.absolutePath() + QLatin1Char( '/' ) + folderName ).removeRecursively();
     QString subfolderName = subDirNameForFolderName(folderName);
     if ( dir.exists( subfolderName ) )
-      result &= KPIMUtils::removeDirAndContentsRecursively( dir.absolutePath() + QLatin1Char( '/' ) + subfolderName );
+      result &= QDir( dir.absolutePath() + QLatin1Char( '/' ) + subfolderName ).removeRecursively();
     return result;
 }
 

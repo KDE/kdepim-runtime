@@ -46,8 +46,6 @@
 #include <AkonadiCore/cachepolicy.h>
 #include <AkonadiCore/itemfetchscope.h>
 
-#include <kpimutils/kfileio.h>
-
 #include <KLocalizedString>
 
 #include <QDebug>
@@ -1078,7 +1076,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
       return false;
     }
   } else {
-    if ( !KPIMUtils::removeDirAndContentsRecursively( path ) ) {
+    if ( !QDir( path ).removeRecursively() ) {
       errorText = i18nc( "@info:status", "Cannot remove folder %1 from folder %2",
                           job->collection().name(), job->collection().parentCollection().name() );
       qCritical() << errorText << "FolderType=" << folderType;
@@ -1088,7 +1086,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionDeleteJob *job )
   }
 
   const QString subDirPath = Maildir::subDirPathForFolderPath( path );
-  KPIMUtils::removeDirAndContentsRecursively( subDirPath );
+  QDir( subDirPath ).removeRecursively();
 
   q->notifyCollectionsProcessed( Collection::List() << job->collection() );
   return true;
