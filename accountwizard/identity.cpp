@@ -20,8 +20,8 @@
 #include "identity.h"
 #include "transport.h"
 
-#include <kpimidentities/identitymanager.h>
-#include <kpimidentities/identity.h>
+#include <kidentitymanagement/identitymanager.h>
+#include <kidentitymanagement/identity.h>
 
 #include <KLocalizedString>
 
@@ -29,7 +29,7 @@ Identity::Identity( QObject *parent )
   : SetupObject( parent ),
   m_transport( 0 )
 {
-  m_manager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
+  m_manager = new KIdentityManagement::IdentityManager( false, this, "mIdentityManager" );
   m_identity = &m_manager->newFromScratch( QString() );
   Q_ASSERT( m_identity != 0 );
 }
@@ -52,7 +52,7 @@ void Identity::create()
   if ( m_transport && m_transport->transportId() > 0 )
     m_identity->setTransport( QString::number( m_transport->transportId() ) );
   if ( !m_signature.isEmpty() ) {
-    const KPIMIdentities::Signature sig( m_signature );
+    const KIdentityManagement::Signature sig( m_signature );
     m_identity->setSignature( sig );
   }
   if ( !m_prefCryptoFormat.isEmpty() )

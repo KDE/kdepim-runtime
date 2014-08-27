@@ -31,7 +31,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiMime
   KF5::AkonadiContact
   KF5::PimUtils
-  KF5::PimIdentities
+  KF5::IdentityManagement
   KF5::NotifyConfig
   KF5::AkonadiAgentBase
 )

@@ -27,7 +27,7 @@ target_link_libraries(akonadi_invitations_agent
   KF5::MailTransport
   KF5::CalendarCore
   KF5::AkonadiAgentBase
-  KF5::PimIdentities
+  KF5::IdentityManagement
 )
 
 if (Q_WS_MAC)

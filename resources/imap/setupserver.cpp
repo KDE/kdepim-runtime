@@ -56,8 +56,8 @@
 #include <solid/networking.h>
 #endif
 
-#include <kpimidentities/identitymanager.h>
-#include <kpimidentities/identitycombo.h>
+#include <kidentitymanagement/identitymanager.h>
+#include <kidentitymanagement/identitycombo.h>
 #include <QVBoxLayout>
 
 #include "imapaccount.h"
@@ -171,8 +171,8 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
     QStringList() << KMime::Message::mimeType() );
   m_ui->folderRequester->setAccessRightsFilter( Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem );
   m_ui->folderRequester->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
-  m_identityManager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
-  m_identityCombobox = new KPIMIdentities::IdentityCombo( m_identityManager, this );
+  m_identityManager = new KIdentityManagement::IdentityManager( false, this, "mIdentityManager" );
+  m_identityCombobox = new KIdentityManagement::IdentityCombo( m_identityManager, this );
   m_ui->identityLabel->setBuddy( m_identityCombobox );
   m_ui->identityLayout->addWidget( m_identityCombobox, 1 );
   m_ui->identityLabel->setBuddy( m_identityCombobox );

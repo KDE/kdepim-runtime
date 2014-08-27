@@ -41,7 +41,7 @@ target_link_libraries(akonadi_gmail_resource
     KF5::KIOCore
     KF5::Mime
     KF5::AkonadiMime
-    KF5::PimIdentities
+    KF5::IdentityManagement
     KF5::GAPICore
     imapresource
     folderarchivesettings

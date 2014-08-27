@@ -29,7 +29,7 @@
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifiersettingsdialog.h"
 
-#include <KPIMIdentities/IdentityManager>
+#include <KIdentityManagement/IdentityManager>
 
 #include <dbusconnectionpool.h>
 
@@ -60,7 +60,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );
 
-    mIdentityManager = new KPIMIdentities::IdentityManager( false, this );
+    mIdentityManager = new KIdentityManagement::IdentityManager( false, this );
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
 

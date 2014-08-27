@@ -29,7 +29,7 @@ namespace Ui
 class GmailConfigDialog;
 }
 
-namespace KPIMIdentities
+namespace KIdentityManagement
 {
 class IdentityCombo;
 class IdentityManager;
@@ -68,8 +68,8 @@ private:
     Ui::GmailConfigDialog *m_ui;
     bool m_subscriptionsChanged;
     bool m_shouldClearCache;
-    KPIMIdentities::IdentityManager *m_identityManager;
-    KPIMIdentities::IdentityCombo *m_identityCombobox;
+    KIdentityManagement::IdentityManager *m_identityManager;
+    KIdentityManagement::IdentityCombo *m_identityCombobox;
     QString m_oldResourceName;
     KGAPI2::AccountPtr m_account;
     FolderArchiveSettingPage *m_folderArchiveSettingPage;

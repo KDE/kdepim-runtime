@@ -37,7 +37,7 @@ namespace MailTransport
 {
 class ServerTest;
 }
-namespace KPIMIdentities
+namespace KIdentityManagement
 {
 class IdentityCombo;
 class IdentityManager;
@@ -89,8 +89,8 @@ private:
   bool m_subscriptionsChanged;
   bool m_shouldClearCache;
   QString m_vacationFileName;
-  KPIMIdentities::IdentityManager *m_identityManager;
-  KPIMIdentities::IdentityCombo *m_identityCombobox;
+  KIdentityManagement::IdentityManager *m_identityManager;
+  KIdentityManagement::IdentityCombo *m_identityCombobox;
   QString m_oldResourceName;
   QRegExpValidator mValidator;
   Akonadi::Collection mOldTrash;

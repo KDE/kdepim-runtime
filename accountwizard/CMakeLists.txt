@@ -103,7 +103,7 @@ set(accountwizard_libs
   KF5::KrossCore
   KF5::KIOCore
   KF5::Mime
-  KF5::PimIdentities
+  KF5::IdentityManagement
   KF5::WidgetsAddons
   KF5::NewStuff
   Qt5::UiTools

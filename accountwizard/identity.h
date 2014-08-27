@@ -24,7 +24,7 @@
 
 class Transport;
 
-namespace KPIMIdentities {
+namespace KIdentityManagement {
   class Identity;
   class IdentityManager;
 }
@@ -61,8 +61,8 @@ class Identity : public SetupObject
     QString m_prefCryptoFormat;
     QString m_xface;
     Transport *m_transport;
-    KPIMIdentities::IdentityManager *m_manager;
-    KPIMIdentities::Identity *m_identity;
+    KIdentityManagement::IdentityManager *m_manager;
+    KIdentityManagement::Identity *m_identity;
 };
 
 #endif

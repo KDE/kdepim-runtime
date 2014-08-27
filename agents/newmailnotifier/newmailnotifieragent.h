@@ -32,7 +32,7 @@ namespace Akonadi {
 class AgentInstance;
 }
 
-namespace KPIMIdentities {
+namespace KIdentityManagement {
 class IdentityManager;
 }
 
@@ -107,7 +107,7 @@ private:
     QHash<QString, QString> mCacheResourceName;
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
-    KPIMIdentities::IdentityManager *mIdentityManager;
+    KIdentityManagement::IdentityManager *mIdentityManager;
 };
 
 #endif

@@ -49,7 +49,7 @@
 #include <KLocalizedString>
 #include <KMime/Content>
 #include <KMime/Message>
-#include <kpimidentities/identitymanager.h>
+#include <kidentitymanagement/identitymanager.h>
 #include <KSystemTimeZones>
 
 #include <QtCore/QFileInfo>
@@ -301,10 +301,10 @@ Collection InvitationsAgent::collection()
 }
 
 #if 0
-KPIMIdentities::IdentityManager* InvitationsAgent::identityManager()
+KIdentityManagement::IdentityManager* InvitationsAgent::identityManager()
 {
   if ( !m_IdentityManager )
-    m_IdentityManager = new KPIMIdentities::IdentityManager( true /* readonly */, this );
+    m_IdentityManager = new KIdentityManagement::IdentityManager( true /* readonly */, this );
   return m_IdentityManager;
 }
 #endif

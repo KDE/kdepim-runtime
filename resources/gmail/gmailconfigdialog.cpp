@@ -25,8 +25,8 @@
 
 #include <mailtransport/transport.h>
 
-#include <kpimidentities/identitymanager.h>
-#include <kpimidentities/identitycombo.h>
+#include <kidentitymanagement/identitymanager.h>
+#include <kidentitymanagement/identitycombo.h>
 
 #include <AkonadiAgentBase/resourcesettings.h>
 
@@ -64,8 +64,8 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000 );
     m_ui->checkInterval->setSingleStep( 1 );
 
-    m_identityManager = new KPIMIdentities::IdentityManager( false, this, "mIdentityManager" );
-    m_identityCombobox = new KPIMIdentities::IdentityCombo( m_identityManager, this );
+    m_identityManager = new KIdentityManagement::IdentityManager( false, this, "mIdentityManager" );
+    m_identityCombobox = new KIdentityManagement::IdentityCombo( m_identityManager, this );
     m_ui->identityLabel->setBuddy( m_identityCombobox );
     m_ui->identityLayout->addWidget( m_identityCombobox, 1 );
     m_ui->identityLabel->setBuddy( m_identityCombobox );
