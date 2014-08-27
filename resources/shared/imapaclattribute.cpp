@@ -138,7 +138,7 @@ void ImapAclAttribute::deserialize( const QByteArray &data )
       parts << data.mid(lastPos, pos-lastPos);
       lastPos = pos + 4;
   }
-  parts << data.right(lastPos + 4);
+  parts << data.mid(lastPos);
 
   if (parts.size() < 2) {
       return;
