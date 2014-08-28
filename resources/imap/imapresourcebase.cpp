@@ -321,6 +321,9 @@ void ImapResourceBase::onConnectDone( int errorCode, const QString &errorString 
   case SessionPool::NoAvailableSessionError:
     kFatal() << "Shouldn't happen";
     return;
+  case SessionPool::CancelledError:
+    kWarning() << "Session login cancelled";
+    return;
   }
 }
 

@@ -218,6 +218,13 @@ void SessionPool::killSession( KIMAP::Session *session, SessionTermination termi
 
 void SessionPool::declareSessionReady( KIMAP::Session *session )
 {
+  //This can happen if we happen to disconnect while capabilities and namespace are being retrieved,
+  //resulting in us keeping a dangling pointer to a deleted session
+  if (!m_connectingPool.contains( session )) {
+    kWarning() << "Tried to declare a removed session ready";
+    return;
+  }
+
   m_pendingInitialSession = 0;
 
   if ( !m_initialConnectDone ) {
@@ -375,6 +382,11 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
 void SessionPool::onLoginDone( KJob *job )
 {
   KIMAP::LoginJob *login = static_cast<KIMAP::LoginJob*>( job );
+  //Can happen if we disonnected meanwhile
+  if (!m_connectingPool.contains(login->session())) {
+    emit connectDone( CancelledError, i18n( "Disconnected during login.") );
+    return;
+  }
 
   if ( job->error() == 0 ) {
     if ( m_initialConnectDone ) {
@@ -411,6 +423,11 @@ void SessionPool::onLoginDone( KJob *job )
 void SessionPool::onCapabilitiesTestDone( KJob *job )
 {
   KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
+  //Can happen if we disonnected meanwhile
+  if (!m_connectingPool.contains(capJob->session())) {
+    emit connectDone( CancelledError, i18n( "Disconnected during login.") );
+    return;
+  }
 
   if ( job->error() ) {
     if ( m_account ) {
@@ -465,6 +482,11 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
 void SessionPool::onNamespacesTestDone( KJob *job )
 {
   KIMAP::NamespaceJob *nsJob = qobject_cast<KIMAP::NamespaceJob*>( job );
+  //Can happen if we disonnected meanwhile
+  if (!m_connectingPool.contains(nsJob->session())) {
+    emit connectDone( CancelledError, i18n( "Disconnected during login.") );
+    return;
+  }
   m_personalNamespaces = nsJob->personalNamespaces();
   m_userNamespaces = nsJob->userNamespaces();
   m_sharedNamespaces = nsJob->sharedNamespaces();

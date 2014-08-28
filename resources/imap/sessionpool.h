@@ -52,7 +52,8 @@ public:
     CapabilitiesTestError,
     IncompatibleServerError,
     NoAvailableSessionError,
-    CouldNotConnectError
+    CouldNotConnectError,
+    CancelledError
   };
 
   enum SessionTermination {
