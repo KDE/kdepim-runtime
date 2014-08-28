@@ -385,9 +385,9 @@ ConnectionPage::ConnectionPage( QWidget *parent )
   registerField( QLatin1String("connectionUseSecureConnection"), mUseSecureConnection );
   mLayout->addRow( QString(), mUseSecureConnection );
 
-  connect( mHost, SIGNAL(textChanged(QString)), this, SLOT(urlElementChanged()) );
-  connect( mPath, SIGNAL(textChanged(QString)), this, SLOT(urlElementChanged()) );
-  connect( mUseSecureConnection, SIGNAL(toggled(bool)), this, SLOT(urlElementChanged()) );
+  connect(mHost, &KLineEdit::textChanged, this, &ConnectionPage::urlElementChanged);
+  connect(mPath, &KLineEdit::textChanged, this, &ConnectionPage::urlElementChanged);
+  connect(mUseSecureConnection, &QCheckBox::toggled, this, &ConnectionPage::urlElementChanged);
 }
 
 void ConnectionPage::initializePage()
@@ -485,7 +485,7 @@ CheckPage::CheckPage( QWidget *parent )
   mStatusLabel = new QTextBrowser;
   layout->addWidget( mStatusLabel );
 
-  connect( button, SIGNAL(clicked()), SLOT(checkConnection()) );
+  connect(button, &QRadioButton::clicked, this, &CheckPage::checkConnection);
 }
 
 void CheckPage::checkConnection()
@@ -510,7 +510,7 @@ void CheckPage::checkConnection()
 
   // start the dav collections fetch job to test connectivity
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( davUrls, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(onFetchDone(KJob*)) );
+  connect(job, &DavCollectionsMultiFetchJob::result, this, &CheckPage::onFetchDone);
   job->start();
 }
 
