@@ -330,8 +330,7 @@ ServerTypePage::ServerTypePage( QWidget *parent )
   layout->addLayout( hLayout );
 
   button = new QRadioButton( i18n( "Configure the resource manually" ) );
-  connect( button, SIGNAL(toggled(bool)),
-           this, SLOT(manualConfigToggled(bool)) );
+  connect(button, &QRadioButton::toggled, this, &ServerTypePage::manualConfigToggled);
   registerField( QLatin1String("manualConfiguration"), button );
   mServerGroup->addButton( button );
   mServerGroup->setId( button, 1 );

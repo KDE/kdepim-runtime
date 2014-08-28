@@ -54,8 +54,7 @@ UrlConfigurationDialog::UrlConfigurationDialog( QWidget *parent )
 
   mUi.discoveredUrls->setModel( mModel );
   mUi.discoveredUrls->setRootIsDecorated( false );
-  connect( mModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-           this, SLOT(onModelDataChanged(QModelIndex,QModelIndex)) );
+  connect(mModel, &QStandardItemModel::dataChanged, this, &UrlConfigurationDialog::onModelDataChanged);
 
   connect(mUi.remoteProtocol, &KButtonGroup::changed, this, &UrlConfigurationDialog::onConfigChanged);
   connect(mUi.remoteUrl, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);

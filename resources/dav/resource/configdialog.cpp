@@ -70,8 +70,7 @@ ConfigDialog::ConfigDialog( QWidget *parent )
   mManager->updateWidgets();
 
   connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
-  connect( mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-           this, SLOT(checkConfiguredUrlsButtonsState()) );
+  connect( mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(checkConfiguredUrlsButtonsState()) );
 
   connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
   connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);

@@ -39,8 +39,8 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
     mainLayout->addWidget(mainWidget);
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ServerInfoDialog::reject);
     setAttribute( Qt::WA_DeleteOnClose );
 
     mServerInfoWidget = new Ui::ServerInfo();
