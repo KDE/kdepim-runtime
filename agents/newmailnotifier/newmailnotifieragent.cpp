@@ -49,6 +49,7 @@
 #include <KNotification>
 #include <KLocalizedString>
 #include <KWindowSystem>
+#include <Kdelibs4ConfigMigrator>
 #include <QDebug>
 
 using namespace Akonadi;
@@ -56,6 +57,10 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     : AgentBase( id )
 {
+    Kdelibs4ConfigMigrator migrate(QLatin1String("newmailnotifieragent"));
+    migrate.setConfigFiles(QStringList() << QLatin1String("akonadi_newmailnotifier_agentrc") << QLatin1String("akonadi_newmailnotifier_agent.notifyrc"));
+    migrate.migrate();
+
     KLocalizedString::setApplicationDomain("akonadi_newmailnotifier_agent");
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor( this );

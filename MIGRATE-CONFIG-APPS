@@ -1,0 +1,3 @@
+Migrate configrc done:
+- agent/newmailnotifieragent: akonadi_newmailnotifier_agentrc, akonadi_newmailnotifier_agent.notifyrc
+
