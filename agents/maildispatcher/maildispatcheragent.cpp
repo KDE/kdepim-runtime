@@ -40,6 +40,7 @@
 #include <KMime/Message>
 #include <KNotification>
 #include <KLocale>
+#include <Kdelibs4ConfigMigrator>
 
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
@@ -182,6 +183,10 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   : AgentBase( id ),
     d( new Private( this ) )
 {
+    Kdelibs4ConfigMigrator migrate(QLatin1String("maildispatcheragent"));
+    migrate.setConfigFiles(QStringList() << QLatin1String("maildispatcheragentrc") << QLatin1String("akonadi_maildispatcher_agent.notifyrc"));
+    migrate.migrate();
+
   qDebug() << "maildispatcheragent: At your service, sir!";
   KLocalizedString::setApplicationDomain("akonadi_maildispatcher_agent");
 #ifdef KDEPIM_STATIC_LIBS
