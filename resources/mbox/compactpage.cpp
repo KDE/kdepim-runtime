@@ -50,8 +50,7 @@ void CompactPage::checkCollectionId()
     CollectionFetchJob *fetchJob =
         new CollectionFetchJob( collection, CollectionFetchJob::Base );
 
-    connect( fetchJob, SIGNAL(result(KJob*)),
-             this, SLOT(onCollectionFetchCheck(KJob*)) );
+    connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCheck);
   }
 }
 
@@ -64,8 +63,7 @@ void CompactPage::compact()
   CollectionFetchJob *fetchJob =
       new CollectionFetchJob( collection, CollectionFetchJob::Base );
 
-  connect( fetchJob, SIGNAL(result(KJob*)),
-           this, SLOT(onCollectionFetchCompact(KJob*)) );
+  connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCompact);
 }
 
 void CompactPage::onCollectionFetchCheck( KJob *job )
@@ -124,8 +122,7 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
       // of our stored DeletedItemsAttribute
       mboxCollection.removeAttribute<DeletedItemsAttribute>();
       CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
-      connect( modifyJob, SIGNAL(result(KJob*)),
-               this, SLOT(onCollectionModify(KJob*)) );
+      connect(modifyJob, &CollectionModifyJob::result, this, &CompactPage::onCollectionModify);
     } else
       ui.messageLabel->setText( i18n( "Failed to compact the mbox file." ) );
   }

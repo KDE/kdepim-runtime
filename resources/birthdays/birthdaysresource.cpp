@@ -55,12 +55,9 @@ BirthdaysResource::BirthdaysResource(const QString& id) :
   Monitor *monitor = new Monitor( this );
   monitor->setMimeTypeMonitored( Addressee::mimeType() );
   monitor->itemFetchScope().fetchFullPayload();
-  connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
-           SLOT(contactChanged(Akonadi::Item)) );
-  connect( monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
-           SLOT(contactChanged(Akonadi::Item)) );
-  connect( monitor, SIGNAL(itemRemoved(Akonadi::Item)),
-           SLOT(contactRemoved(Akonadi::Item)) );
+  connect( monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)), SLOT(contactChanged(Akonadi::Item)) );
+  connect( monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),  SLOT(contactChanged(Akonadi::Item)) );
+  connect( monitor, SIGNAL(itemRemoved(Akonadi::Item)), SLOT(contactRemoved(Akonadi::Item)) );
 
   connect(this, &BirthdaysResource::reloadConfiguration, this, &BirthdaysResource::doFullSearch);
 }
