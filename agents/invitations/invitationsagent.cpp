@@ -173,7 +173,7 @@ void InvitationsAgentItem::add( const Item &item )
   Q_ASSERT( collection.isValid() );
 
   ItemCreateJob *job = new ItemCreateJob( item, collection, this );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(createItemResult(KJob*)) );
+  connect(job, &InvitationsCollectionRequestJob::result, this, &InvitationsAgentItem::createItemResult);
 
   m_jobs << job;
 
@@ -193,7 +193,7 @@ void InvitationsAgentItem::createItemResult( KJob *job )
     return;
 
   ItemFetchJob *fetchJob = new ItemFetchJob( m_originalItem, this );
-  connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemDone(KJob*)) );
+  connect(fetchJob, &ItemFetchJob::result, this, &InvitationsAgentItem::fetchItemDone);
   fetchJob->start();
 }
 
@@ -212,7 +212,7 @@ void InvitationsAgentItem::fetchItemDone( KJob *job )
 
   modifiedItem.setFlag( Akonadi::MessageFlags::HasInvitation );
   ItemModifyJob *modifyJob = new ItemModifyJob( modifiedItem, this );
-  connect( modifyJob, SIGNAL(result(KJob*)), this, SLOT(modifyItemDone(KJob*)) );
+  connect(modifyJob, &ItemModifyJob::result, this, &InvitationsAgentItem::modifyItemDone);
   modifyJob->start();
 }
 
@@ -238,7 +238,7 @@ InvitationsAgent::InvitationsAgent( const QString &id )
   changeRecorder()->setMimeTypeMonitored( QLatin1String("message/rfc822"), true );
   //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 
-  connect( this, SIGNAL(reloadConfiguration()), this, SLOT(initStart()) );
+  connect(this, &InvitationsAgent::reloadConfiguration, this, &InvitationsAgent::initStart);
   QTimer::singleShot( 0, this, SLOT(initStart()) );
 }
 
@@ -256,7 +256,7 @@ void InvitationsAgent::initStart()
     initDone();
   } else {
     SpecialCollectionsRequestJob *job = m_invitationsCollection->reguestJob();
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(initDone(KJob*)) );
+    connect(job, &InvitationsCollectionRequestJob::result, this, &InvitationsAgent::initDone);
     job->start();
   }
 
@@ -274,7 +274,7 @@ void InvitationsAgent::initStart()
     emit status( AgentBase::Running, i18n( "Creating..." ) );
     AgentType type = AgentManager::self()->type( QLatin1String( "akonadi_ical_resource" ) );
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(createAgentResult(KJob*)) );
+    connect(job, &InvitationsCollectionRequestJob::result, this, &InvitationsAgent::createAgentResult);
     job->start();
   }
   */
@@ -364,7 +364,7 @@ void InvitationsAgent::createAgentResult( KJob *job )
   }
 
   ResourceSynchronizationJob *j = new ResourceSynchronizationJob( agent, this );
-  connect( j, SIGNAL(result(KJob*)), this, SLOT(resourceSyncResult(KJob*)) );
+  connect(j, &AgentInstanceCreateJob::result, this, &InvitationsAgent::resourceSyncResult);
   j->start();
 }
 
@@ -381,7 +381,7 @@ void InvitationsAgent::resourceSyncResult( KJob *job )
   CollectionFetchJob *fjob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::Recursive, this );
   fjob->fetchScope().setContentMimeTypes( QStringList() << "text/calendar" );
   fjob->fetchScope().setResource( m_resourceId );
-  connect( fjob, SIGNAL(result(KJob*)), this, SLOT(collectionFetchResult(KJob*)) );
+  connect(fjob, &CollectionFetchJob::result, this, &InvitationsAgent::collectionFetchResult);
   fjob->start();
 }
 
@@ -438,7 +438,7 @@ void InvitationsAgent::collectionFetchResult( KJob *job )
             << "application/x-vnd.akonadi.calendar.journal"
             << "application/x-vnd.akonadi.calendar.freebusy" );
   CollectionCreateJob *cj = new CollectionCreateJob( c, this );
-  connect( cj, SIGNAL(result(KJob*)), this, SLOT(collectionCreateResult(KJob*)) );
+  connect(cj, &CollectionCreateJob::result, this, &InvitationsAgent::collectionCreateResult);
   cj->start();
 }
 
