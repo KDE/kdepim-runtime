@@ -25,6 +25,7 @@
 #include <kjob.h>
 
 #include <QtCore/QSet>
+#include <QtCore/QStringList>
 
 /**
  * @short A job that lists all DAV items inside a DAV collection.
@@ -43,6 +44,15 @@ class DavItemsListJob : public KJob
     explicit DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
 
     /**
+     * Limits the mime types of the items requested.
+     *
+     * If no mime type is given then all will be requested.
+     *
+     * @param types The list of mime types to include
+     */
+    void setContentMimeTypes( const QStringList &types );
+
+    /**
      * Starts the job.
      */
     virtual void start();
@@ -57,6 +67,7 @@ class DavItemsListJob : public KJob
 
   private:
     DavUtils::DavUrl mUrl;
+    QStringList mMimeTypes;
     DavItem::List mItems;
     QSet<QString> mSeenUrls; // to prevent events duplication with some servers
     uint mSubJobCount;
