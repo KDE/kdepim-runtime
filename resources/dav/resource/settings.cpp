@@ -177,6 +177,9 @@ DavUtils::DavUrl::List Settings::configuredDavUrls()
 
 DavUtils::DavUrl Settings::configuredDavUrl( DavUtils::Protocol proto, const QString &searchUrl, const QString &finalUrl )
 {
+  if ( mUrls.isEmpty() )
+    buildUrlsList();
+
   KUrl fullUrl;
 
   if ( !finalUrl.isEmpty() )
