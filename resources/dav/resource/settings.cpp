@@ -415,13 +415,17 @@ void Settings::configureAccountService(Accounts::Account *acc, const Accounts::S
   setRemoteUrls( urls );
 }
 #endif
+
 void Settings::buildUrlsList()
 {
   foreach ( const QString &serializedUrl, remoteUrls() ) {
     UrlConfiguration *urlConfig = new UrlConfiguration( serializedUrl );
     QString key = urlConfig->mUrl + QLatin1Char(',') + DavUtils::protocolName( DavUtils::Protocol( urlConfig->mProtocol ) );
-    urlConfig->mPassword = loadPassword( key, urlConfig->mUser );
-    mUrls[ key ] = urlConfig;
+    QString pass = loadPassword( key, urlConfig->mUser );
+    if ( !pass.isNull() ) {
+      urlConfig->mPassword = pass;
+      mUrls[ key ] = urlConfig;
+    }
   }
 }
 
@@ -494,15 +498,11 @@ QString Settings::loadPassword( const QString &key, const QString &user )
     return mPasswordsCache[entry];
 
   KWallet::Wallet *wallet = KWallet::Wallet::openWallet( KWallet::Wallet::NetworkWallet(), mWinId );
-  if ( !wallet ) {
-    pass = promptForPassword( user );
-  } else {
+  if ( wallet ) {
     if ( !wallet->hasFolder( KWallet::Wallet::PasswordFolder() ) )
       wallet->createFolder( KWallet::Wallet::PasswordFolder() );
 
-    if ( !wallet->setFolder( KWallet::Wallet::PasswordFolder() ) ) {
-      pass = promptForPassword( user );
-    } else {
+    if ( wallet->setFolder( KWallet::Wallet::PasswordFolder() ) ) {
       if ( !wallet->hasEntry( entry ) ) {
         pass = promptForPassword( user );
         wallet->writePassword( entry, pass );
@@ -512,11 +512,15 @@ QString Settings::loadPassword( const QString &key, const QString &user )
     }
   }
 
-  if ( !pass.isEmpty() )
+  if ( pass.isNull() && !KWallet::Wallet::isEnabled() )
+    pass = promptForPassword( user );
+
+  if ( !pass.isNull() )
     mPasswordsCache[entry] = pass;
 
   return pass;
 }
+
 #ifdef HAVE_ACCOUNTS
 QString Settings::loadPasswordFromAccounts()
 {
@@ -538,6 +542,7 @@ QString Settings::accountsUsername() const
     return job->credentialsData().value("UserName").toString();
 }
 #endif
+
 QString Settings::promptForPassword( const QString &user )
 {
   QPointer<QDialog> dlg = new QDialog();
@@ -602,7 +607,9 @@ void Settings::updateToV2()
 
   setDefaultUsername( urlConfig.mUser );
   QString key = urlConfig.mUrl + QLatin1Char(',') + DavUtils::protocolName( DavUtils::Protocol( urlConfig.mProtocol ) );
-  setDefaultPassword( loadPassword( key, urlConfig.mUser ) );
+  QString pass = loadPassword( key, urlConfig.mUser );
+  if ( !pass.isNull() )
+    setDefaultPassword( pass );
   setRemoteUrls( urls );
   setSettingsVersion( 2 );
   save();

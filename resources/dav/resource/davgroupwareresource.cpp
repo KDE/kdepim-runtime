@@ -799,7 +799,7 @@ void DavGroupwareResource::onEtagChanged(const QString& itemUrl, const QString& 
 
 bool DavGroupwareResource::configurationIsValid()
 {
-  if ( Settings::self()->remoteUrls().empty() ) {
+  if ( Settings::self()->configuredDavUrls().empty() ) {
     emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return false;
