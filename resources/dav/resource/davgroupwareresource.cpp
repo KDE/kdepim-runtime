@@ -266,6 +266,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
 
   DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
+  job->setContentMimeTypes( collection.contentMimeTypes() );
   connect( job, SIGNAL(result(KJob*)), SLOT(onRetrieveItemsFinished(KJob*)) );
   job->start();
 }
