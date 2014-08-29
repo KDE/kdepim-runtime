@@ -33,6 +33,11 @@ DavItemsListJob::DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent )
 {
 }
 
+void DavItemsListJob::setContentMimeTypes( const QStringList &types )
+{
+  mMimeTypes = types;
+}
+
 void DavItemsListJob::start()
 {
   const DavProtocolBase *protocol = DavManager::self()->davProtocol( mUrl.protocol() );
@@ -41,21 +46,24 @@ void DavItemsListJob::start()
   int queryIndex = 0;
 
   while ( it.hasNext() ) {
-    ++mSubJobCount;
     const QDomDocument props = it.next();
+    const QString mimeType = protocol->mimeTypeForQuery( queryIndex );
 
-    if ( protocol->useReport() ) {
-      KIO::DavJob *job = DavManager::self()->createReportJob( mUrl.url(), props );
-      job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-      job->setProperty( "davType", QLatin1String("report") );
-      job->setProperty( "itemsMimeType", protocol->mimeTypeForQuery( queryIndex ) );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
-    } else {
-      KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), props );
-      job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-      job->setProperty( "davType", QLatin1String("propFind") );
-      job->setProperty( "itemsMimeType", protocol->mimeTypeForQuery( queryIndex ) );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+    if ( mMimeTypes.isEmpty() || mMimeTypes.contains( mimeType ) ) {
+      ++mSubJobCount;
+      if ( protocol->useReport() ) {
+        KIO::DavJob *job = DavManager::self()->createReportJob( mUrl.url(), props );
+        job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
+        job->setProperty( "davType", QLatin1String("report") );
+        job->setProperty( "itemsMimeType", mimeType );
+        connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+      } else {
+        KIO::DavJob *job = DavManager::self()->createPropFindJob( mUrl.url(), props );
+        job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
+        job->setProperty( "davType", QLatin1String("propFind") );
+        job->setProperty( "itemsMimeType", mimeType );
+        connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+      }
     }
 
     ++queryIndex;
