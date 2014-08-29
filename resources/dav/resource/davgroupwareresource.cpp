@@ -441,10 +441,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
     collection.setRemoteId( davCollection.url() );
-    if ( davCollection.displayName().isEmpty() ) {
-      collection.setName( name() + QLatin1String(" (") + davCollection.url() + QLatin1Char(')') );
-    } else {
-      collection.setName( davCollection.displayName() );
+    collection.setName( collection.remoteId() );
+
+    if ( !davCollection.displayName().isEmpty() ) {
+      EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+      attr->setDisplayName( davCollection.displayName() );
     }
 
     QStringList mimeTypes;
