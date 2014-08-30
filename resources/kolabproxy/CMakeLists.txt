@@ -9,7 +9,8 @@ include_directories(
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_kolabproxy_resource\")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS} -fPIC")
+kde_enable_exceptions()
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 ########### next target ###############
 
