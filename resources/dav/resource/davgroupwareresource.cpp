@@ -268,6 +268,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
 
   DavItemsListJob *job = new DavItemsListJob( davUrl );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
+  job->setContentMimeTypes( collection.contentMimeTypes() );
   connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
   job->start();
 }
@@ -443,10 +444,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
     Akonadi::Collection collection;
     collection.setParentCollection( mDavCollectionRoot );
     collection.setRemoteId( davCollection.url() );
-    if ( davCollection.displayName().isEmpty() ) {
-      collection.setName( name() + QLatin1String(" (") + davCollection.url() + QLatin1Char(')') );
-    } else {
-      collection.setName( davCollection.displayName() );
+    collection.setName( collection.remoteId() );
+
+    if ( !davCollection.displayName().isEmpty() ) {
+      EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );
+      attr->setDisplayName( davCollection.displayName() );
     }
 
     QStringList mimeTypes;
@@ -799,7 +801,7 @@ void DavGroupwareResource::onEtagChanged(const QString& itemUrl, const QString& 
 
 bool DavGroupwareResource::configurationIsValid()
 {
-  if ( Settings::self()->remoteUrls().empty() ) {
+  if ( Settings::self()->configuredDavUrls().empty() ) {
     emit status( NotConfigured, i18n( "The resource is not configured yet" ) );
     cancelTask( i18n( "The resource is not configured yet" ) );
     return false;
