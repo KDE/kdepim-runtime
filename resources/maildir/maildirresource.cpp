@@ -115,7 +115,7 @@ MaildirResource::MaildirResource( const QString &id )
   new MaildirSettingsAdaptor( mSettings );
   DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                               mSettings, QDBusConnection::ExportAdaptors );
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(configurationChanged()) );
+  connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 
   // We need to enable this here, otherwise we neither get the remote ID of the
   // parent collection when a collection changes, nor the full item when an item

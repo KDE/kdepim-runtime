@@ -123,28 +123,18 @@ void AccountDialog::setupWidgets()
   intervalSpin->setRange( ResourceSettings::self()->minimumCheckInterval(), 10000 );
   intervalSpin->setSingleStep( 1 );
   
-  connect( leaveOnServerCheck, SIGNAL(clicked()),
-           this, SLOT(slotLeaveOnServerClicked()) );
-  connect( leaveOnServerDaysCheck, SIGNAL(toggled(bool)),
-           this, SLOT(slotEnableLeaveOnServerDays(bool)) );
-  connect( leaveOnServerDaysSpin, SIGNAL(valueChanged(int)),
-           SLOT(slotLeaveOnServerDaysChanged(int)));
-  connect( leaveOnServerCountCheck, SIGNAL(toggled(bool)),
-           this, SLOT(slotEnableLeaveOnServerCount(bool)) );
-  connect( leaveOnServerCountSpin, SIGNAL(valueChanged(int)),
-           SLOT(slotLeaveOnServerCountChanged(int)));
-  connect( leaveOnServerSizeCheck, SIGNAL(toggled(bool)),
-           this, SLOT(slotEnableLeaveOnServerSize(bool)) );
+  connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountDialog::slotLeaveOnServerClicked);
+  connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerDays);
+  connect(leaveOnServerDaysSpin, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerDaysChanged);
+  connect(leaveOnServerCountCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerCount);
+  connect(leaveOnServerCountSpin, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerCountChanged);
+  connect(leaveOnServerSizeCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerSize);
 
-  connect(filterOnServerSizeSpin, SIGNAL(valueChanged(int)),
-          SLOT(slotFilterOnServerSizeChanged(int)));
-  connect( filterOnServerCheck, SIGNAL(toggled(bool)),
-           filterOnServerSizeSpin, SLOT(setEnabled(bool)) );
-  connect( filterOnServerCheck, SIGNAL(clicked()),
-           this, SLOT(slotFilterOnServerClicked()) );
+  connect(filterOnServerSizeSpin, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AccountDialog::slotFilterOnServerSizeChanged);
+  connect(filterOnServerCheck, &QCheckBox::toggled, filterOnServerSizeSpin, &QSpinBox::setEnabled);
+  connect(filterOnServerCheck, &QCheckBox::clicked, this, &AccountDialog::slotFilterOnServerClicked);
 
-  connect( checkCapabilities, SIGNAL(clicked()),
-           SLOT(slotCheckPopCapabilities()) );
+  connect(checkCapabilities, &QPushButton::clicked, this, &AccountDialog::slotCheckPopCapabilities);
   encryptionButtonGroup = new QButtonGroup();
   encryptionButtonGroup->addButton( encryptionNone,
                                     Transport::EnumEncryption::None );
@@ -153,10 +143,8 @@ void AccountDialog::setupWidgets()
   encryptionButtonGroup->addButton( encryptionTLS,
                                     Transport::EnumEncryption::TLS );
 
-  connect( encryptionButtonGroup, SIGNAL(buttonClicked(int)),
-           SLOT(slotPopEncryptionChanged(int)) );
-  connect( intervalCheck, SIGNAL(toggled(bool)),
-           this, SLOT(slotEnablePopInterval(bool)) );
+  connect(encryptionButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &AccountDialog::slotPopEncryptionChanged);
+  connect(intervalCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnablePopInterval);
 
   populateDefaultAuthenticationOptions();
 
