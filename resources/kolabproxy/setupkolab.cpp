@@ -100,8 +100,8 @@ void SetupKolab::slotShowUpgradeDialog()
 
   Kolab::Version v = readKolabVersion( instanceSelected.identifier() );
 
-  m_versionUi->formatVersion->insertItem( 0, QLatin1String("Kolab Format v2"), Kolab::KolabV2 );
-  m_versionUi->formatVersion->insertItem( 1, QLatin1String("Kolab Format v3"), Kolab::KolabV3 );
+  m_versionUi->formatVersion->insertItem( 0, i18n("Kolab Format v2"), Kolab::KolabV2 );
+  m_versionUi->formatVersion->insertItem( 1, i18n("Kolab Format v3"), Kolab::KolabV3 );
   if ( v == Kolab::KolabV2 ) {
     m_versionUi->formatVersion->setCurrentIndex( 0 );
   } else {
