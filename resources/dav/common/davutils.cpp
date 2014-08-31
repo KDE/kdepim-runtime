@@ -223,6 +223,15 @@ DavUtils::Protocol DavUtils::protocolByTranslatedName( const QString &name )
   return protocol;
 }
 
+QString DavUtils::createUniqueId()
+{
+  qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
+  int r = qrand() % 1000;
+  QString id = QLatin1String( "R" ) + QString::number( r );
+  QString uid = QString::number( time ) + QLatin1String( "." ) + id;
+  return uid;
+}
+
 DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
   QByteArray rawData;
@@ -233,12 +242,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
 
   if ( item.hasPayload<KABC::Addressee>() ) {
     const KABC::Addressee contact = item.payload<KABC::Addressee>();
-
-    const QString fileName = contact.uid();
-    if ( fileName.isEmpty() ) {
-      kError() << "Invalid contact uid";
-      return davItem;
-    }
+    const QString fileName = createUniqueId();
 
     url = KUrl( basePath + fileName + QLatin1String(".vcf") );
 
@@ -256,12 +260,7 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
     rawData = converter.exportVCard( contact, KABC::VCardConverter::v3_0 );
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const IncidencePtr ptr = item.payload<IncidencePtr>();
-
-    const QString fileName = ptr->instanceIdentifier();
-    if ( fileName.isEmpty() ) {
-      kError() << "Invalid incidence uid";
-      return davItem;
-    }
+    const QString fileName = createUniqueId();
 
     url = KUrl( basePath + fileName + QLatin1String(".ics") );
     mimeType = QLatin1String("text/calendar");
