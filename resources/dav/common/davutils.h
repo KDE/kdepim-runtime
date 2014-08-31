@@ -156,6 +156,11 @@ namespace DavUtils
   Privileges parsePrivilege( const QDomElement &element );
 
   /**
+   * Creates a unique identifier that can be used as a file name to upload the dav item
+   */
+  QString createUniqueId();
+
+  /**
    * Creates a new DavItem from the Akonadi::Item @p item.
    *
    * The returned item will have no payload (DavItem::data() will return an empty
