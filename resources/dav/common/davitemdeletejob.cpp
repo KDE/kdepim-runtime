@@ -25,7 +25,7 @@
 #include <KLocalizedString>
 
 DavItemDeleteJob::DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : KJob( parent ), mUrl( url ), mItem( item )
+  : DavJobBase( parent ), mUrl( url ), mItem( item )
 {
 }
 
@@ -56,6 +56,7 @@ void DavItemDeleteJob::davJobFinished( KJob *job )
       else
         err = deleteJob->errorText();
 
+      setLatestResponseCode( responseCode );
       setError( UserDefinedError + responseCode );
       setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server.\n"
                           "%1 (%2).", err, responseCode ) );

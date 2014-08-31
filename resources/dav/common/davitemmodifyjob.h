@@ -20,14 +20,13 @@
 #define DAVITEMMODIFYJOB_H
 
 #include "davitem.h"
+#include "davjobbase.h"
 #include "davutils.h"
-
-#include <kjob.h>
 
 /**
  * @short A job that modifies a DAV item on the DAV server.
  */
-class DavItemModifyJob : public KJob
+class DavItemModifyJob : public DavJobBase
 {
   Q_OBJECT
 

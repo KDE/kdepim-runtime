@@ -730,7 +730,12 @@ void DavGroupwareResource::onItemAddedFinished( KJob *job )
 
   if ( createJob->error() ) {
     qCritical() << "Error when uploading item:" << createJob->error() << createJob->errorString();
-    retryAfterFailure(createJob->errorString());
+    if ( createJob->canRetryLater() ) {
+      retryAfterFailure(createJob->errorString());
+    }
+    else {
+      cancelTask( i18n( "Unable to add item: %1", createJob->errorString() ) );
+    }
     return;
   }
 
@@ -758,7 +763,12 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
 
   if ( modifyJob->error() ) {
     qCritical() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
-    retryAfterFailure(modifyJob->errorString());
+    if ( modifyJob->canRetryLater() ) {
+      retryAfterFailure(modifyJob->errorString());
+    }
+    else {
+      cancelTask( i18n( "Unable to change item: %1", modifyJob->errorString() ) );
+    }
     return;
   }
 
@@ -778,7 +788,14 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
 void DavGroupwareResource::onItemRemovedFinished( KJob *job )
 {
   if ( job->error() ) {
-    retryAfterFailure(job->errorString());
+    const DavItemDeleteJob *deleteJob = qobject_cast<DavItemDeleteJob*>( job );
+
+    if ( deleteJob->canRetryLater() ) {
+      retryAfterFailure(job->errorString());
+    }
+    else {
+      cancelTask( i18n( "Unable to remove item: %1", job->errorString() ) );
+    }
   }
   else {
     Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();

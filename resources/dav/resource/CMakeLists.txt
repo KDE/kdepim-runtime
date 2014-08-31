@@ -18,6 +18,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
   ########### next target ###############
 
   set( davgroupwareresource_SRCS
+    ../common/davjobbase.cpp
     ../common/davcollection.cpp
     ../common/davcollectiondeletejob.cpp
     ../common/davcollectionsfetchjob.cpp

@@ -25,7 +25,7 @@
 #include <KLocalizedString>
 
 DavItemModifyJob::DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : KJob( parent ), mUrl( url ), mItem( item )
+  : DavJobBase( parent ), mUrl( url ), mItem( item )
 {
 }
 
@@ -65,6 +65,7 @@ void DavItemModifyJob::davJobFinished( KJob *job )
     else
       err = storedJob->errorText();
 
+    setLatestResponseCode( responseCode );
     setError( UserDefinedError + responseCode );
     setErrorText( i18n( "There was a problem with the request. The item was not modified on the server.\n"
                         "%1 (%2).", err, responseCode ) );

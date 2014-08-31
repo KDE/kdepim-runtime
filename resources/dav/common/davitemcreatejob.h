@@ -20,14 +20,13 @@
 #define DAVITEMCREATEJOB_H
 
 #include "davitem.h"
+#include "davjobbase.h"
 #include "davutils.h"
-
-#include <kjob.h>
 
 /**
  * @short A job to create a DAV item on the DAV server.
  */
-class DavItemCreateJob : public KJob
+class DavItemCreateJob : public DavJobBase
 {
   Q_OBJECT
 
