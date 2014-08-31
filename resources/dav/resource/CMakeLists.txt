@@ -21,6 +21,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
   ########### next target ###############
 
   set( davgroupwareresource_SRCS
+    ../common/davjobbase.cpp
     ../common/davcollection.cpp
     ../common/davcollectiondeletejob.cpp
     ../common/davcollectionsfetchjob.cpp

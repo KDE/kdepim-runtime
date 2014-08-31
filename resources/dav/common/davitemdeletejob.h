@@ -20,14 +20,13 @@
 #define DAVITEMDELETEJOB_H
 
 #include "davitem.h"
+#include "davjobbase.h"
 #include "davutils.h"
-
-#include <kjob.h>
 
 /**
  * @short A job to delete a DAV item on the DAV server.
  */
-class DavItemDeleteJob : public KJob
+class DavItemDeleteJob : public DavJobBase
 {
   Q_OBJECT
 
