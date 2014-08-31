@@ -44,6 +44,7 @@ Comment=Loads contact from vCard File
 Comment[ca]=Carrega els contactes des d'un fitxer vCard
 Comment[cs]=Načítá data ze souboru vizitek (vCard)
 Comment[en_GB]=Loads contact from vCard File
+Comment[ko]=vCard 파일에서 연락처를 가져옵니다
 Comment[nl]=Laadt contactpersoon uit een vCard-bestand
 Comment[pl]=Wczytuje kontakty z pliku vCard
 Comment[pt]=Carrega um contacto de um ficheiro vCard
