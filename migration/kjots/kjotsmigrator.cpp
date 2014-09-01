@@ -27,7 +27,6 @@
 #include <KLocalizedString>
 #include <krandom.h>
 #include <KConfig>
-#include <KGlobal>
 
 
 #include <KMime/Message>
