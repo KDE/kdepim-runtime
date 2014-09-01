@@ -122,6 +122,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
       // We can end up here when retrieving a homeset on
       // which a PROPFIND resulted in an error
       doCollectionsFetch( mUrl.url() );
+      --mSubJobCount;
       return;
     }
 
