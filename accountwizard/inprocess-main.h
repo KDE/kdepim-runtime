@@ -18,23 +18,21 @@
 */
 
 #include "dialog.h"
-#include "inprocess-main.h"
 #include "global.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QtPlugin>
 #include <QtCore/QStringList>
 
-AccountWizard::AccountWizard( QObject* parent) 
-  : QObject( parent ) 
+class AccountWizard : public QObject
 {
-}
+  Q_OBJECT
+  Q_PLUGIN_METADATA(IID "org.kde.akonadi.AccountWizard");
 
-void AccountWizard::run( const QStringList &types, QWidget *parent )
-{
-   if ( !types.isEmpty() )
-     Global::setTypeFilter( types );
-   Dialog dlg( parent );
-   dlg.exec();
-}
+  public:
+    explicit AccountWizard( QObject* parent = 0 );
+
+  public slots:
+    void run( const QStringList &types, QWidget *parent );
+};
 
