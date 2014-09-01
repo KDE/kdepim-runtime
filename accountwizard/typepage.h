@@ -27,19 +27,19 @@
 
 class TypePage : public Page
 {
-  Q_OBJECT
-  public:
-    explicit TypePage( KAssistantDialog* parent = 0 );
+    Q_OBJECT
+public:
+    explicit TypePage(KAssistantDialog *parent = 0);
 
     virtual void leavePageNext();
     QTreeView *treeview() const;
 
-  signals:
+signals:
     void ghnsWanted();
 
-  private slots:
+private slots:
     void selectionChanged();
-  private:
+private:
     Ui::TypePage ui;
     QStandardItemModel *m_model;
 };

@@ -32,32 +32,32 @@ class Ispdb;
 
 class PersonalDataPage : public Page
 {
-  Q_OBJECT
-  public:
-    explicit PersonalDataPage( Dialog* parent = 0 );
-    void setHideOptionInternetSearch( bool );
+    Q_OBJECT
+public:
+    explicit PersonalDataPage(Dialog *parent = 0);
+    void setHideOptionInternetSearch(bool);
 
     virtual void leavePageNext();
     virtual void leavePageNextRequested();
 
-  private slots:
-    void ispdbSearchFinished( bool ok );
+private slots:
+    void ispdbSearchFinished(bool ok);
     void slotTextChanged();
     void slotCreateAccountClicked();
-    void slotRadioButtonClicked( QAbstractButton* button);
-    void slotSearchType(const QString&);
+    void slotRadioButtonClicked(QAbstractButton *button);
+    void slotSearchType(const QString &);
 
-  signals:
-    void manualWanted( bool );
+signals:
+    void manualWanted(bool);
 
-  private:
+private:
     void automaticConfigureAccount();
     void configureSmtpAccount();
     void configureImapAccount();
     void configurePop3Account();
 
     Ui::PersonalDataPage ui;
-    Ispdb* mIspdb;
+    Ispdb *mIspdb;
     SetupManager *mSetupManager;
 };
 

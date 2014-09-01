@@ -19,17 +19,17 @@
 
 #include "setupobject.h"
 
-SetupObject::SetupObject(QObject* parent): QObject(parent), m_dependsOn( 0 )
+SetupObject::SetupObject(QObject *parent): QObject(parent), m_dependsOn(0)
 {
 }
 
-SetupObject* SetupObject::dependsOn() const
+SetupObject *SetupObject::dependsOn() const
 {
-  return m_dependsOn;
+    return m_dependsOn;
 }
 
-void SetupObject::setDependsOn(SetupObject* obj)
+void SetupObject::setDependsOn(SetupObject *obj)
 {
-  m_dependsOn = obj;
+    m_dependsOn = obj;
 }
 

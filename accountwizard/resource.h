@@ -28,22 +28,22 @@ class KJob;
 
 class Resource : public SetupObject
 {
-  Q_OBJECT
-  public:
-    explicit Resource( const QString &type, QObject *parent = 0 );
+    Q_OBJECT
+public:
+    explicit Resource(const QString &type, QObject *parent = 0);
     void create();
     void destroy();
 
-  public slots:
-    Q_SCRIPTABLE void setName( const QString &name );
-    Q_SCRIPTABLE void setOption( const QString &key, const QVariant &value );
+public slots:
+    Q_SCRIPTABLE void setName(const QString &name);
+    Q_SCRIPTABLE void setOption(const QString &key, const QVariant &value);
     Q_SCRIPTABLE QString identifier();
     Q_SCRIPTABLE void reconfigure();
 
-  private slots:
-    void instanceCreateResult( KJob* job );
+private slots:
+    void instanceCreateResult(KJob *job);
 
-  private:
+private:
     QString m_typeIdentifier, m_name;
     QMap<QString, QVariant> m_settings;
     Akonadi::AgentInstance m_instance;

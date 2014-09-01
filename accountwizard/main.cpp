@@ -32,48 +32,50 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
-  KLocalizedString::setApplicationDomain("accountwizard");
-  KAboutData aboutData( QLatin1String("accountwizard"),
-                        i18n( "Account Assistant" ),
-                        QLatin1String("0.1"),
-                        i18n( "Helps setting up PIM accounts" ),
-                        KAboutLicense::LGPL,
-                        i18n( "(c) 2009 the Akonadi developers" ),
-                        QLatin1String("http://pim.kde.org/akonadi/") );
-  aboutData.setProgramIconName( QLatin1String("akonadi") );
-  aboutData.addAuthor( i18n( "Volker Krause" ),  i18n( "Author" ), QLatin1String("vkrause@kde.org") );
-  aboutData.addAuthor( i18n( "Laurent Montel" ), QString() , QLatin1String("montel@kde.org") );
+    KLocalizedString::setApplicationDomain("accountwizard");
+    KAboutData aboutData(QLatin1String("accountwizard"),
+                         i18n("Account Assistant"),
+                         QLatin1String("0.1"),
+                         i18n("Helps setting up PIM accounts"),
+                         KAboutLicense::LGPL,
+                         i18n("(c) 2009 the Akonadi developers"),
+                         QLatin1String("http://pim.kde.org/akonadi/"));
+    aboutData.setProgramIconName(QLatin1String("akonadi"));
+    aboutData.addAuthor(i18n("Volker Krause"),  i18n("Author"), QLatin1String("vkrause@kde.org"));
+    aboutData.addAuthor(i18n("Laurent Montel"), QString() , QLatin1String("montel@kde.org"));
 
-  QApplication app(argc, argv);
-  app.setOrganizationDomain(QStringLiteral("kde.org"));
+    QApplication app(argc, argv);
+    app.setOrganizationDomain(QStringLiteral("kde.org"));
 
-  QCommandLineParser parser;
-  KAboutData::setApplicationData(aboutData);
-  parser.addVersionOption();
-  parser.addHelpOption();
-  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("type"), i18n( "Only offer accounts that support the given type." ), QLatin1String("type")));
-  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("assistant"), i18n( "Run the specified assistant." ), QLatin1String("assistant")));
-  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("package"), i18n( "unpack fullpath on startup and launch that assistant" ), QLatin1String("fullpath")));
+    QCommandLineParser parser;
+    KAboutData::setApplicationData(aboutData);
+    parser.addVersionOption();
+    parser.addHelpOption();
+    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("type"), i18n("Only offer accounts that support the given type."), QLatin1String("type")));
+    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("assistant"), i18n("Run the specified assistant."), QLatin1String("assistant")));
+    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("package"), i18n("unpack fullpath on startup and launch that assistant"), QLatin1String("fullpath")));
 
-  aboutData.setupCommandLine(&parser);
-  parser.process(app);
-  aboutData.processCommandLine(&parser);
-  KDBusService service(KDBusService::Unique);
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
+    KDBusService service(KDBusService::Unique);
 
-  Akonadi::Control::start( 0 );
+    Akonadi::Control::start(0);
 
-  if ( !parser.value( QLatin1String("package") ).isEmpty() ) {
-    Global::setAssistant( Global::unpackAssistant( QUrl::fromLocalFile( parser.value( QLatin1String("package") ) ) ) );
-  } else
-    Global::setAssistant( parser.value( QLatin1String("assistant") ) );
+    if (!parser.value(QLatin1String("package")).isEmpty()) {
+        Global::setAssistant(Global::unpackAssistant(QUrl::fromLocalFile(parser.value(QLatin1String("package")))));
+    } else {
+        Global::setAssistant(parser.value(QLatin1String("assistant")));
+    }
 
-  if ( !parser.value( QLatin1String("type") ).isEmpty() )
-     Global::setTypeFilter( parser.value( QLatin1String("type") ).split( QLatin1Char(',') ) );
-  
-  Dialog dlg( 0/*, Qt::WindowStaysOnTopHint*/ );
-  dlg.show();
+    if (!parser.value(QLatin1String("type")).isEmpty()) {
+        Global::setTypeFilter(parser.value(QLatin1String("type")).split(QLatin1Char(',')));
+    }
 
-  return app.exec();
+    Dialog dlg(0/*, Qt::WindowStaysOnTopHint*/);
+    dlg.show();
+
+    return app.exec();
 }

@@ -24,22 +24,22 @@
 
 class SetupObject : public QObject
 {
-  Q_OBJECT
-  public:
-    explicit SetupObject( QObject *parent );
+    Q_OBJECT
+public:
+    explicit SetupObject(QObject *parent);
 
     virtual void create() = 0;
     virtual void destroy() = 0;
 
-    SetupObject* dependsOn() const;
-    void setDependsOn( SetupObject* obj );
+    SetupObject *dependsOn() const;
+    void setDependsOn(SetupObject *obj);
 
-  signals:
-    void error( const QString &msg );
-    void info( const QString &msg );
-    void finished( const QString &msg );
+signals:
+    void error(const QString &msg);
+    void info(const QString &msg);
+    void finished(const QString &msg);
 
-  private:
+private:
     SetupObject *m_dependsOn;
 };
 

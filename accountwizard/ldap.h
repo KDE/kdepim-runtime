@@ -22,22 +22,21 @@
 
 #include "setupobject.h"
 
-
 class Ldap : public SetupObject
 {
-  Q_OBJECT
-  public:
-    explicit Ldap( QObject *parent = 0 );
+    Q_OBJECT
+public:
+    explicit Ldap(QObject *parent = 0);
     ~Ldap();
     void create();
     void destroy();
-  public slots:
-    Q_SCRIPTABLE void setUser( const QString & name );
-    Q_SCRIPTABLE void setServer( const QString &server );
-    Q_SCRIPTABLE void setAuthenticationMethod( const QString &meth );
-    Q_SCRIPTABLE void setBindDn( const QString &bindDn );
-    Q_SCRIPTABLE void setPassword( const QString &password );
-  private:
+public slots:
+    Q_SCRIPTABLE void setUser(const QString &name);
+    Q_SCRIPTABLE void setServer(const QString &server);
+    Q_SCRIPTABLE void setAuthenticationMethod(const QString &meth);
+    Q_SCRIPTABLE void setBindDn(const QString &bindDn);
+    Q_SCRIPTABLE void setPassword(const QString &password);
+private:
     QString m_user;
     QString m_server;
     QString m_bindDn;

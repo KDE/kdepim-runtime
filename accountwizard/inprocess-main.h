@@ -26,13 +26,13 @@
 
 class AccountWizard : public QObject
 {
-  Q_OBJECT
-  Q_PLUGIN_METADATA(IID "org.kde.akonadi.AccountWizard");
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.AccountWizard");
 
-  public:
-    explicit AccountWizard( QObject* parent = 0 );
+public:
+    explicit AccountWizard(QObject *parent = 0);
 
-  public slots:
-    void run( const QStringList &types, QWidget *parent );
+public slots:
+    void run(const QStringList &types, QWidget *parent);
 };
 

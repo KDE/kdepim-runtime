@@ -24,28 +24,29 @@
 
 #include "ui_loadpage.h"
 
-namespace Kross {
+namespace Kross
+{
 class Action;
 }
 
 class LoadPage : public Page
 {
-  Q_OBJECT
-  public:
-    explicit LoadPage( KAssistantDialog *parent );
+    Q_OBJECT
+public:
+    explicit LoadPage(KAssistantDialog *parent);
 
     virtual void enterPageNext();
     virtual void enterPageBack();
 
-    void exportObject( QObject *object, const QString &name );
+    void exportObject(QObject *object, const QString &name);
 
-  Q_SIGNALS:
+Q_SIGNALS:
     void aboutToStart();
 
-  private:
+private:
     Ui::LoadPage ui;
-    QVector< QPair< QObject*, QString > > m_exportedObjects;
-    Kross::Action* m_action;
+    QVector< QPair< QObject *, QString > > m_exportedObjects;
+    Kross::Action *m_action;
 };
 
 #endif

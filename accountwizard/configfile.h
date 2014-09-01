@@ -25,26 +25,26 @@
 class KConfig;
 
 struct Config {
-  QString group;
-  QString key;
-  QString value;
-  bool obscure;
+    QString group;
+    QString key;
+    QString value;
+    bool obscure;
 };
 
 class ConfigFile : public SetupObject
 {
-  Q_OBJECT
-  public:
-    explicit ConfigFile( const QString& configName, QObject *parent = 0 );
+    Q_OBJECT
+public:
+    explicit ConfigFile(const QString &configName, QObject *parent = 0);
     ~ConfigFile();
     void create();
     void destroy();
-  public slots:
+public slots:
     Q_SCRIPTABLE void write();
-    Q_SCRIPTABLE void setName( const QString & name );
-    Q_SCRIPTABLE void setConfig( const QString &group, const QString &key, const QString &value );
-    Q_SCRIPTABLE void setPassword( const QString &group, const QString &key, const QString &value );
-  private:
+    Q_SCRIPTABLE void setName(const QString &name);
+    Q_SCRIPTABLE void setConfig(const QString &group, const QString &key, const QString &value);
+    Q_SCRIPTABLE void setPassword(const QString &group, const QString &key, const QString &value);
+private:
     QList<Config> m_configData;
     QString m_name;
     KConfig *m_config;

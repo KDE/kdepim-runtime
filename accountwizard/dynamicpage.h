@@ -24,16 +24,16 @@
 
 class DynamicPage : public Page
 {
-  Q_OBJECT
-  public:
-    explicit DynamicPage( const QString &uiFile, KAssistantDialog* parent = 0 );
+    Q_OBJECT
+public:
+    explicit DynamicPage(const QString &uiFile, KAssistantDialog *parent = 0);
 
-  public slots:
+public slots:
     /// returns the top-level widget of the UI file
-    Q_SCRIPTABLE QObject* widget() const;
+    Q_SCRIPTABLE QObject *widget() const;
 
-  private:
-    QWidget* m_dynamicWidget;
+private:
+    QWidget *m_dynamicWidget;
 };
 
 #endif

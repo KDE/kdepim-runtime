@@ -27,64 +27,66 @@
 #include <KLocalizedString>
 #include <KLocalizedString>
 
-LoadPage::LoadPage(KAssistantDialog* parent) :
-  Page( parent ),
-  m_action( 0 )
+LoadPage::LoadPage(KAssistantDialog *parent) :
+    Page(parent),
+    m_action(0)
 {
-  ui.setupUi( this );
-  setValid( false );
+    ui.setupUi(this);
+    setValid(false);
 }
 
 void LoadPage::enterPageNext()
 {
-  setValid( false );
-  // FIXME: deletion seems to delete the exported objects as well, killing the entire wizard...
-  //delete m_action;
-  m_action = 0;
-  emit aboutToStart();
+    setValid(false);
+    // FIXME: deletion seems to delete the exported objects as well, killing the entire wizard...
+    //delete m_action;
+    m_action = 0;
+    emit aboutToStart();
 
-  const KConfig f( Global::assistant() );
-  KConfigGroup grp( &f, "Wizard" );
-  const QString scriptFile = grp.readEntry( "Script", QString() );
-  if ( scriptFile.isEmpty() ) {
-    ui.statusLabel->setText( i18n( "No script specified in '%1'.", Global::assistant() ) );
-    return;
-  }
-  if ( !QFile::exists( Global::assistantBasePath() + scriptFile ) ) {
-    ui.statusLabel->setText( i18n( "Unable to load assistant: File '%1' does not exist.", Global::assistantBasePath() + scriptFile ) );
-    return;
-  }
-  ui.statusLabel->setText( i18n( "Loading script '%1'...", Global::assistantBasePath() + scriptFile ) );
+    const KConfig f(Global::assistant());
+    KConfigGroup grp(&f, "Wizard");
+    const QString scriptFile = grp.readEntry("Script", QString());
+    if (scriptFile.isEmpty()) {
+        ui.statusLabel->setText(i18n("No script specified in '%1'.", Global::assistant()));
+        return;
+    }
+    if (!QFile::exists(Global::assistantBasePath() + scriptFile)) {
+        ui.statusLabel->setText(i18n("Unable to load assistant: File '%1' does not exist.", Global::assistantBasePath() + scriptFile));
+        return;
+    }
+    ui.statusLabel->setText(i18n("Loading script '%1'...", Global::assistantBasePath() + scriptFile));
 
-  m_action = new Kross::Action( this, QLatin1String("AccountWizard") );
-  typedef QPair<QObject*, QString> ObjectStringPair;
-  foreach ( const ObjectStringPair &exportedObject, m_exportedObjects )
-    m_action->addQObject( exportedObject.first, exportedObject.second );
+    m_action = new Kross::Action(this, QLatin1String("AccountWizard"));
+    typedef QPair<QObject *, QString> ObjectStringPair;
+    foreach (const ObjectStringPair &exportedObject, m_exportedObjects) {
+        m_action->addQObject(exportedObject.first, exportedObject.second);
+    }
 
-  if ( !m_action->setFile( Global::assistantBasePath() + scriptFile ) ) {
-    ui.statusLabel->setText( i18n( "Failed to load script: '%1'.", m_action->errorMessage() ) );
-    return;
-  }
+    if (!m_action->setFile(Global::assistantBasePath() + scriptFile)) {
+        ui.statusLabel->setText(i18n("Failed to load script: '%1'.", m_action->errorMessage()));
+        return;
+    }
 
-  KConfigGroup grpTranslate( &f, "Translate" );
-  const QString poFileName = grpTranslate.readEntry( "Filename" );
-  if ( !poFileName.isEmpty() )
-    //QT5 KLocalizedString::global()->insertCatalog( poFileName );
+    KConfigGroup grpTranslate(&f, "Translate");
+    const QString poFileName = grpTranslate.readEntry("Filename");
+    if (!poFileName.isEmpty())
+        //QT5 KLocalizedString::global()->insertCatalog( poFileName );
 
-  m_action->trigger();
+    {
+        m_action->trigger();
+    }
 
-  m_parent->next();
+    m_parent->next();
 }
 
 void LoadPage::enterPageBack()
 {
-  // TODO: if we are the first page, call enterPageNext(), hm, can we get here then at all?
-  m_parent->back();
+    // TODO: if we are the first page, call enterPageNext(), hm, can we get here then at all?
+    m_parent->back();
 }
 
-void LoadPage::exportObject(QObject* object, const QString& name)
+void LoadPage::exportObject(QObject *object, const QString &name)
 {
-  m_exportedObjects.push_back( qMakePair( object, name ) );
+    m_exportedObjects.push_back(qMakePair(object, name));
 }
-
 

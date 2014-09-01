@@ -23,31 +23,30 @@
 #include "setupobject.h"
 #include <mailtransport/transport.h>
 
-
 class Transport : public SetupObject
 {
-  Q_OBJECT
-  public:
-    explicit Transport( const QString &type, QObject *parent = 0 );
+    Q_OBJECT
+public:
+    explicit Transport(const QString &type, QObject *parent = 0);
     void create();
     void destroy();
 
     int transportId() const;
 
-  public slots:
-    Q_SCRIPTABLE void setName( const QString &name );
-    Q_SCRIPTABLE void setHost( const QString &host );
-    Q_SCRIPTABLE void setPort( int port );
-    Q_SCRIPTABLE void setUsername( const QString &user );
-    Q_SCRIPTABLE void setPassword( const QString &password );
-    Q_SCRIPTABLE void setEncryption( const QString &encryption );
-    Q_SCRIPTABLE void setAuthenticationType( const QString &authType );
+public slots:
+    Q_SCRIPTABLE void setName(const QString &name);
+    Q_SCRIPTABLE void setHost(const QString &host);
+    Q_SCRIPTABLE void setPort(int port);
+    Q_SCRIPTABLE void setUsername(const QString &user);
+    Q_SCRIPTABLE void setPassword(const QString &password);
+    Q_SCRIPTABLE void setEncryption(const QString &encryption);
+    Q_SCRIPTABLE void setAuthenticationType(const QString &authType);
 
-  private:
-    MailTransport::Transport::EnumEncryption stringToEncryption( const QString &encryptionString );
-    MailTransport::Transport::EnumAuthenticationType stringToAuthType( const QString &authString );
+private:
+    MailTransport::Transport::EnumEncryption stringToEncryption(const QString &encryptionString);
+    MailTransport::Transport::EnumAuthenticationType stringToAuthType(const QString &authString);
 
-  private:
+private:
     int m_transportId;
     MailTransport::Transport::EnumType::type m_transportType;
     QString m_name;

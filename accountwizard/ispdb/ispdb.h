@@ -54,7 +54,7 @@ public:
     enum length { Long = 0, Short };
 
     /** Constructor */
-    explicit Ispdb( QObject *parent = 0 );
+    explicit Ispdb(QObject *parent = 0);
 
     /** Destructor */
     ~Ispdb();
@@ -67,7 +67,7 @@ public:
     /** After finished() has been emitted you can
         get the name of the provider, you can get a long
         name and a short one */
-    QString name( length ) const;
+    QString name(length) const;
 
     /** After finished() has been emitted you can
         get a list of imap servers available for this provider */
@@ -83,27 +83,27 @@ public:
 
 public slots:
     /** Sets the emailaddress you want to servers for */
-    void setEmail( const QString& );
+    void setEmail(const QString &);
 
     /** Starts looking up the servers which belong to the e-mailaddress */
     void start();
 
 private slots:
-    void slotResult( KJob* );
-    void dataArrived( KIO::Job*, const QByteArray& data );
+    void slotResult(KJob *);
+    void dataArrived(KIO::Job *, const QByteArray &data);
 
 signals:
     /** emitted when done. **/
-    void finished( bool );
-    void searchType( const QString &type );
+    void finished(bool);
+    void searchType(const QString &type);
 
 private:
     enum searchServerType { IspAutoConfig = 0, IspWellKnow, DataBase };
 
-    server createServer( const QDomElement& n );
+    server createServer(const QDomElement &n);
     void lookupInDb();
-    QString replacePlaceholders( const QString& );
-    void startJob( const QUrl&url );
+    QString replacePlaceholders(const QString &);
+    void startJob(const QUrl &url);
 
     KMime::Types::AddrSpec mAddr; // emailaddress
     QByteArray mData;             // storage of incoming data from kio
@@ -116,13 +116,15 @@ private:
 };
 
 struct server {
-    server() {
-       port = -1;
-       authentication = Ispdb::Plain;
-       socketType = Ispdb::None;
+    server()
+    {
+        port = -1;
+        authentication = Ispdb::Plain;
+        socketType = Ispdb::None;
     }
-    bool isValid() const {
-       return (port != -1);
+    bool isValid() const
+    {
+        return (port != -1);
     }
     QString hostname;
     int port;

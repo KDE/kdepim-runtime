@@ -25,16 +25,17 @@
 #include <QtCore/QtPlugin>
 #include <QtCore/QStringList>
 
-AccountWizard::AccountWizard( QObject* parent) 
-  : QObject( parent ) 
+AccountWizard::AccountWizard(QObject *parent)
+    : QObject(parent)
 {
 }
 
-void AccountWizard::run( const QStringList &types, QWidget *parent )
+void AccountWizard::run(const QStringList &types, QWidget *parent)
 {
-   if ( !types.isEmpty() )
-     Global::setTypeFilter( types );
-   Dialog dlg( parent );
-   dlg.exec();
+    if (!types.isEmpty()) {
+        Global::setTypeFilter(types);
+    }
+    Dialog dlg(parent);
+    dlg.exec();
 }
 

@@ -27,11 +27,11 @@ class KPageWidgetItem;
 
 class Page : public QWidget
 {
-  Q_OBJECT
-  public:
-    explicit Page( KAssistantDialog *parent );
+    Q_OBJECT
+public:
+    explicit Page(KAssistantDialog *parent);
 
-    void setPageWidgetItem( KPageWidgetItem *item );
+    void setPageWidgetItem(KPageWidgetItem *item);
 
     virtual void enterPageNext();
     virtual void enterPageBack();
@@ -40,7 +40,7 @@ class Page : public QWidget
     virtual void leavePageNextRequested();
     virtual void leavePageBackRequested();
 
-  signals:
+signals:
     Q_SCRIPTABLE void pageEnteredNext();
     Q_SCRIPTABLE void pageEnteredBack();
     Q_SCRIPTABLE void pageLeftNext();
@@ -48,15 +48,15 @@ class Page : public QWidget
     Q_SCRIPTABLE void leavePageNextOk();
     Q_SCRIPTABLE void leavePageBackOk();
 
-  public slots:
-    Q_SCRIPTABLE void setValid( bool valid );
+public slots:
+    Q_SCRIPTABLE void setValid(bool valid);
     Q_SCRIPTABLE void nextPage();
 
-  protected:
+protected:
     KPageWidgetItem *m_item;
     KAssistantDialog *m_parent;
 
-  private:
+private:
     friend class Dialog;
     bool m_valid;
 };

@@ -27,26 +27,26 @@ class QStandardItemModel;
 
 class SetupPage : public Page
 {
-  Q_OBJECT
-  public:
-    explicit SetupPage( KAssistantDialog *parent );
+    Q_OBJECT
+public:
+    explicit SetupPage(KAssistantDialog *parent);
     virtual void enterPageNext();
 
     enum MessageType {
-      Success,
-      Info,
-      Error
+        Success,
+        Info,
+        Error
     };
-    void addMessage( MessageType type, const QString &msg );
-    void setStatus( const QString &msg );
-    void setProgress( int percent );
+    void addMessage(MessageType type, const QString &msg);
+    void setStatus(const QString &msg);
+    void setProgress(int percent);
 
-  private slots:
+private slots:
     void detailsClicked();
 
-  private:
+private:
     Ui::SetupPage ui;
-    QStandardItemModel* m_msgModel;
+    QStandardItemModel *m_msgModel;
 };
 
 #endif

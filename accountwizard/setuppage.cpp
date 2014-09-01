@@ -21,51 +21,51 @@
 #include <QIcon>
 #include <qstandarditemmodel.h>
 
-SetupPage::SetupPage(KAssistantDialog* parent) :
-  Page(parent),
-  m_msgModel( new QStandardItemModel( this ) )
+SetupPage::SetupPage(KAssistantDialog *parent) :
+    Page(parent),
+    m_msgModel(new QStandardItemModel(this))
 {
-  ui.setupUi( this );
-  ui.detailView->setModel( m_msgModel );
-  connect(ui.detailsButton, &QPushButton::clicked, this, &SetupPage::detailsClicked);
+    ui.setupUi(this);
+    ui.detailView->setModel(m_msgModel);
+    connect(ui.detailsButton, &QPushButton::clicked, this, &SetupPage::detailsClicked);
 }
 
 void SetupPage::enterPageNext()
 {
-  ui.stackWidget->setCurrentIndex( 0 );
+    ui.stackWidget->setCurrentIndex(0);
 }
 
 void SetupPage::detailsClicked()
 {
-  ui.stackWidget->setCurrentIndex( 1 );
+    ui.stackWidget->setCurrentIndex(1);
 }
 
-void SetupPage::addMessage(SetupPage::MessageType type, const QString& msg)
+void SetupPage::addMessage(SetupPage::MessageType type, const QString &msg)
 {
-  QStandardItem *item = new QStandardItem;
-  item->setText( msg );
-  item->setEditable( false );
-  switch ( type ) {
+    QStandardItem *item = new QStandardItem;
+    item->setText(msg);
+    item->setEditable(false);
+    switch (type) {
     case Success:
-      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-ok") ) );
-      break;
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok")));
+        break;
     case Info:
-      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-information" )) );
-      break;
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-information")));
+        break;
     case Error:
-      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-error") ) );
-      break;
-  }
-  m_msgModel->appendRow( item );
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-error")));
+        break;
+    }
+    m_msgModel->appendRow(item);
 }
 
-void SetupPage::setStatus(const QString& msg)
+void SetupPage::setStatus(const QString &msg)
 {
-  ui.progressLabel->setText( msg );
+    ui.progressLabel->setText(msg);
 }
 
 void SetupPage::setProgress(int percent)
 {
-  ui.progressBar->setValue( percent );
+    ui.progressBar->setValue(percent);
 }
 

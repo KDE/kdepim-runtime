@@ -25,39 +25,39 @@
 #include <kmessagebox.h>
 #include <KLocalizedString>
 
-ServerTest::ServerTest( QObject* parent) :
-  QObject(parent), m_serverTest( new MailTransport::ServerTest( 0 ) )
+ServerTest::ServerTest(QObject *parent) :
+    QObject(parent), m_serverTest(new MailTransport::ServerTest(0))
 {
-  qDebug() << "Welcome!";
-  connect(m_serverTest, &MailTransport::ServerTest::finished, this, &ServerTest::testFinished);
+    qDebug() << "Welcome!";
+    connect(m_serverTest, &MailTransport::ServerTest::finished, this, &ServerTest::testFinished);
 }
 
 ServerTest::~ServerTest()
 {
-  delete m_serverTest;
+    delete m_serverTest;
 }
 
-void ServerTest::test( const QString server, const QString protocol )
+void ServerTest::test(const QString server, const QString protocol)
 {
-  qDebug() << server << protocol;
-  m_serverTest->setServer( server );
-  m_serverTest->setProtocol( protocol );
-  m_serverTest->start();
+    qDebug() << server << protocol;
+    m_serverTest->setServer(server);
+    m_serverTest->setProtocol(protocol);
+    m_serverTest->start();
 }
 
-void ServerTest::testFinished( QList< int > list )
+void ServerTest::testFinished(QList< int > list)
 {
-  qDebug() << "types: " << list;
-  if ( list.contains( MailTransport::Transport::EnumEncryption::TLS ) ) {
-    emit testResult( QLatin1String("tls") );
-  } else if ( list.contains( MailTransport::Transport::EnumEncryption::SSL ) ) {
-    emit testResult( QLatin1String("ssl") );
-  } else {
-    KMessageBox::information( 0, i18n( "There seems to be a problem in reaching this server "
-          "or choosing a safe way to sent the credentials to server. We advise you to "
-          "check the settings of the account and adjust it manually if needed." ),
-          i18n( "Autodetecting settings failed" ) );
-    emit testFail();
-  }
+    qDebug() << "types: " << list;
+    if (list.contains(MailTransport::Transport::EnumEncryption::TLS)) {
+        emit testResult(QLatin1String("tls"));
+    } else if (list.contains(MailTransport::Transport::EnumEncryption::SSL)) {
+        emit testResult(QLatin1String("ssl"));
+    } else {
+        KMessageBox::information(0, i18n("There seems to be a problem in reaching this server "
+                                         "or choosing a safe way to sent the credentials to server. We advise you to "
+                                         "check the settings of the account and adjust it manually if needed."),
+                                 i18n("Autodetecting settings failed"));
+        emit testFail();
+    }
 }
 

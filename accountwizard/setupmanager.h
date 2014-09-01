@@ -22,8 +22,9 @@
 
 #include <QtCore/QObject>
 
-namespace KWallet {
-  class Wallet;
+namespace KWallet
+{
+class Wallet;
 }
 
 class SetupObject;
@@ -31,18 +32,18 @@ class SetupPage;
 
 class SetupManager : public QObject
 {
-  Q_OBJECT
-  public:
-    explicit SetupManager( QWidget *parent );
+    Q_OBJECT
+public:
+    explicit SetupManager(QWidget *parent);
     ~SetupManager();
-    void setSetupPage( SetupPage* page );
+    void setSetupPage(SetupPage *page);
 
-    void setName( const QString& );
-    void setEmail( const QString& );
-    void setPassword( const QString& );
-    void setPersonalDataAvailable( bool available );
+    void setName(const QString &);
+    void setEmail(const QString &);
+    void setPassword(const QString &);
+    void setPersonalDataAvailable(bool available);
 
-  public slots:
+public slots:
     Q_SCRIPTABLE bool personalDataAvailable();
     Q_SCRIPTABLE QString name();
     Q_SCRIPTABLE QString email();
@@ -50,34 +51,34 @@ class SetupManager : public QObject
     Q_SCRIPTABLE QString country();
     /** Ensures the wallet is open for subsequent sync wallet access in the resources. */
     Q_SCRIPTABLE void openWallet();
-    Q_SCRIPTABLE QObject* createResource( const QString &type );
-    Q_SCRIPTABLE QObject* createTransport( const QString &type );
-    Q_SCRIPTABLE QObject* createConfigFile( const QString &configName );
-    Q_SCRIPTABLE QObject* createLdap();
-    Q_SCRIPTABLE QObject* createIdentity();
+    Q_SCRIPTABLE QObject *createResource(const QString &type);
+    Q_SCRIPTABLE QObject *createTransport(const QString &type);
+    Q_SCRIPTABLE QObject *createConfigFile(const QString &configName);
+    Q_SCRIPTABLE QObject *createLdap();
+    Q_SCRIPTABLE QObject *createIdentity();
     Q_SCRIPTABLE void execute();
 
     void requestRollback();
 
-  signals:
+signals:
     void rollbackComplete();
 
-  private:
+private:
     void setupNext();
     void rollback();
-    SetupObject* connectObject( SetupObject* obj );
+    SetupObject *connectObject(SetupObject *obj);
 
-  private slots:
-    void setupSucceeded( const QString &msg );
-    void setupFailed( const QString &msg );
-    void setupInfo( const QString &msg );
+private slots:
+    void setupSucceeded(const QString &msg);
+    void setupFailed(const QString &msg);
+    void setupInfo(const QString &msg);
 
-  private:
+private:
     QString m_name, m_email, m_password;
-    QList<SetupObject*> m_objectToSetup;
-    QList<SetupObject*> m_setupObjects;
-    SetupObject* m_currentSetupObject;
-    SetupPage* m_page;
+    QList<SetupObject *> m_objectToSetup;
+    QList<SetupObject *> m_setupObjects;
+    SetupObject *m_currentSetupObject;
+    SetupPage *m_page;
     KWallet::Wallet *m_wallet;
     bool m_personalDataAvailable;
     bool m_rollbackRequested;

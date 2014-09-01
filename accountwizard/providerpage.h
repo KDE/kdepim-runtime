@@ -28,19 +28,20 @@
 #include <kns3/entry.h>
 
 struct Provider {
-  QString entryId;
-  QString entryProviderId;
+    QString entryId;
+    QString entryProviderId;
 };
 
-namespace KNS3 {
-  class DownloadManager;
+namespace KNS3
+{
+class DownloadManager;
 }
 
 class ProviderPage : public Page
 {
-  Q_OBJECT
-  public:
-    explicit ProviderPage( KAssistantDialog* parent = 0 );
+    Q_OBJECT
+public:
+    explicit ProviderPage(KAssistantDialog *parent = 0);
 
     virtual void leavePageNext();
     virtual void leavePageNextRequested();
@@ -48,19 +49,19 @@ class ProviderPage : public Page
 
     QTreeView *treeview() const;
 
-  signals:
+signals:
     void ghnsNotWanted();
 
-  public slots:
+public slots:
     void startFetchingData();
 
-  private slots:
-    void fillModel( const KNS3::Entry::List& );
+private slots:
+    void fillModel(const KNS3::Entry::List &);
     void selectionChanged();
-    void providerStatusChanged( const KNS3::Entry& );
+    void providerStatusChanged(const KNS3::Entry &);
 
-  private:
-    void findDesktopAndSetAssistant( const QStringList& list );
+private:
+    void findDesktopAndSetAssistant(const QStringList &list);
 
     Ui::ProviderPage ui;
     QStandardItemModel *m_model;

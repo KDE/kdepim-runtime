@@ -28,42 +28,42 @@ class TypePage;
 
 class Dialog : public KAssistantDialog
 {
-  Q_OBJECT
-  public:
-    explicit Dialog( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+    Q_OBJECT
+public:
+    explicit Dialog(QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
     /* reimpl */ void next();
     /* reimpl */ void back();
 
     // give room for certain pages to create objects too.
-    SetupManager* setupManager();
+    SetupManager *setupManager();
 
-  public slots:
-    Q_SCRIPTABLE QObject* addPage( const QString &uiFile, const QString &title );
+public slots:
+    Q_SCRIPTABLE QObject *addPage(const QString &uiFile, const QString &title);
 
     void reject();
 
-  private slots:
+private slots:
     void slotNextPage();
 #ifndef ACCOUNTWIZARD_NO_GHNS
     void slotGhnsWanted();
     void slotGhnsNotWanted();
 #endif
-    void slotManualConfigWanted( bool );
+    void slotManualConfigWanted(bool);
     void slotNextOk();
     void slotBackOk();
     void clearDynamicPages();
 
-  private:
-    KPageWidgetItem* addPage( Page* page, const QString &title );
+private:
+    KPageWidgetItem *addPage(Page *page, const QString &title);
 
-  private:
-    SetupManager* mSetupManager;
-    KPageWidgetItem* mLastPage;
-    KPageWidgetItem* mProviderPage;
-    KPageWidgetItem* mTypePage;
-    KPageWidgetItem* mLoadPage;
-    QVector<KPageWidgetItem*> mDynamicPages;
+private:
+    SetupManager *mSetupManager;
+    KPageWidgetItem *mLastPage;
+    KPageWidgetItem *mProviderPage;
+    KPageWidgetItem *mTypePage;
+    KPageWidgetItem *mLoadPage;
+    QVector<KPageWidgetItem *> mDynamicPages;
 };
 
 #endif

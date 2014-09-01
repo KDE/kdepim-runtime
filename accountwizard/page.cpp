@@ -21,33 +21,32 @@
 #include <kpagewidgetmodel.h>
 #include <kassistantdialog.h>
 
-Page::Page(KAssistantDialog* parent):
-  QWidget(parent),
-  m_item( 0 ),
-  m_parent( parent ),
-  m_valid( false )
+Page::Page(KAssistantDialog *parent):
+    QWidget(parent),
+    m_item(0),
+    m_parent(parent),
+    m_valid(false)
 {
 }
 
-
-void Page::setPageWidgetItem(KPageWidgetItem* item)
+void Page::setPageWidgetItem(KPageWidgetItem *item)
 {
-  m_item = item;
-  m_parent->setValid( m_item, m_valid );
+    m_item = item;
+    m_parent->setValid(m_item, m_valid);
 }
-
 
 void Page::setValid(bool valid)
 {
-  if ( !m_item )
-    m_valid = valid;
-  else
-    m_parent->setValid( m_item, valid );
+    if (!m_item) {
+        m_valid = valid;
+    } else {
+        m_parent->setValid(m_item, valid);
+    }
 }
 
 void Page::nextPage()
 {
-  m_parent->next();
+    m_parent->next();
 }
 
 void Page::enterPageBack() {}
@@ -55,6 +54,12 @@ void Page::enterPageNext() {}
 void Page::leavePageBack() {}
 void Page::leavePageNext() {}
 
-void Page::leavePageBackRequested() { emit leavePageBackOk(); }
-void Page::leavePageNextRequested() { emit leavePageNextOk(); }
+void Page::leavePageBackRequested()
+{
+    emit leavePageBackOk();
+}
+void Page::leavePageNextRequested()
+{
+    emit leavePageNextOk();
+}
 

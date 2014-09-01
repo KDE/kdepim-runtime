@@ -25,15 +25,15 @@
 
 namespace Global
 {
-  QStringList typeFilter();
-  void setTypeFilter( const QStringList &filter );
+QStringList typeFilter();
+void setTypeFilter(const QStringList &filter);
 
-  QString assistant();
-  void setAssistant( const QString &assistant );
+QString assistant();
+void setAssistant(const QString &assistant);
 
-  QString assistantBasePath();
+QString assistantBasePath();
 
-  QString unpackAssistant( const QUrl& remotePackageUrl );
+QString unpackAssistant(const QUrl &remotePackageUrl);
 }
 
 #endif
