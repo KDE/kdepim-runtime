@@ -29,8 +29,7 @@ ServerTest::ServerTest( QObject* parent) :
   QObject(parent), m_serverTest( new MailTransport::ServerTest( 0 ) )
 {
   qDebug() << "Welcome!";
-  connect( m_serverTest, SIGNAL(finished(QList<int>)),
-           SLOT(testFinished(QList<int>)) );
+  connect(m_serverTest, &MailTransport::ServerTest::finished, this, &ServerTest::testFinished);
 }
 
 ServerTest::~ServerTest()

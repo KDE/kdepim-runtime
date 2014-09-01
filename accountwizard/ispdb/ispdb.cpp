@@ -56,10 +56,8 @@ void Ispdb::startJob( const QUrl&url )
 
     KIO::TransferJob* job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
     job->setMetaData( map );
-    connect( job, SIGNAL(result(KJob*)),
-             this, SLOT(slotResult(KJob*)) );
-    connect( job, SIGNAL(data(KIO::Job*,QByteArray)),
-             this, SLOT(dataArrived(KIO::Job*,QByteArray)) );
+    connect(job, &KIO::TransferJob::result, this, &Ispdb::slotResult);
+    connect(job, &KIO::TransferJob::data, this, &Ispdb::dataArrived);
 }
 
 void Ispdb::lookupInDb()

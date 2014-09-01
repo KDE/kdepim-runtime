@@ -131,8 +131,7 @@ void PersonalDataPage::leavePageNext()
     mIspdb->setEmail( ui.emailEdit->text() );
     mIspdb->start();
 
-    connect( mIspdb, SIGNAL(finished(bool)),
-             SLOT(ispdbSearchFinished(bool)) );
+    connect(mIspdb, &Ispdb::finished, this, &PersonalDataPage::ispdbSearchFinished);
   } else {
     emit manualWanted( true );     // enable the manual page
     emit leavePageNextOk();  // go to the next page
