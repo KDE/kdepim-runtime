@@ -65,8 +65,8 @@ find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
 
 
-set(AkonadiServer_MIN_VERSION "1.70.41")
-find_package(Akonadi ${AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
+set(KF5AkonadiServer_MIN_VERSION "5.0.40")
+find_package(KF5AkonadiServer ${KF5AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
 
 # KF5 package
 find_package(KF5KCMUtils ${KF5_VERSION} CONFIG REQUIRED)
