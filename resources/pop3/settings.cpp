@@ -24,59 +24,61 @@
 
 class SettingsHelper
 {
-  public:
-    SettingsHelper() : q( 0 ) {}
-    ~SettingsHelper() {
-      qWarning() << q;
-      delete q;
-      q = 0;
+public:
+    SettingsHelper() : q(0) {}
+    ~SettingsHelper()
+    {
+        qWarning() << q;
+        delete q;
+        q = 0;
     }
     Settings *q;
 };
 
-Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
 Settings *Settings::self()
 {
-  if ( !s_globalSettings->q ) {
-    new Settings;
-    s_globalSettings->q->load();
-  }
-  return s_globalSettings->q;
+    if (!s_globalSettings->q) {
+        new Settings;
+        s_globalSettings->q->load();
+    }
+    return s_globalSettings->q;
 }
 
 Settings::Settings()
 {
-  Q_ASSERT( !s_globalSettings->q );
-  s_globalSettings->q = this;
+    Q_ASSERT(!s_globalSettings->q);
+    s_globalSettings->q = this;
 
-  new SettingsAdaptor( this );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
-                      QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+    new SettingsAdaptor(this);
+    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"), this,
+            QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
-void Settings::setWindowId( WId id )
+void Settings::setWindowId(WId id)
 {
-  mWinId = id;
+    mWinId = id;
 }
 
-void Settings::setResourceId( const QString &resourceIdentifier )
+void Settings::setResourceId(const QString &resourceIdentifier)
 {
-  mResourceId = resourceIdentifier;
+    mResourceId = resourceIdentifier;
 }
 
-void Settings::setPassword( const QString& password )
+void Settings::setPassword(const QString &password)
 {
-  using namespace KWallet;
-  Wallet *wallet = Wallet::openWallet( Wallet::NetworkWallet(), mWinId,
-                                       Wallet::Synchronous );
-  if ( wallet && wallet->isOpen() ) {
-    if ( !wallet->hasFolder( QLatin1String("pop3") ) )
-      wallet->createFolder( QLatin1String("pop3") );
-    wallet->setFolder( QLatin1String("pop3") );
-    wallet->writePassword( mResourceId, password );
-  } else {
-    qWarning() << "Unable to open wallet!";
-  }
-  delete wallet;
+    using namespace KWallet;
+    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId,
+                                        Wallet::Synchronous);
+    if (wallet && wallet->isOpen()) {
+        if (!wallet->hasFolder(QLatin1String("pop3"))) {
+            wallet->createFolder(QLatin1String("pop3"));
+        }
+        wallet->setFolder(QLatin1String("pop3"));
+        wallet->writePassword(mResourceId, password);
+    } else {
+        qWarning() << "Unable to open wallet!";
+    }
+    delete wallet;
 }

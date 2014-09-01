@@ -31,10 +31,10 @@
 
 class Pop3Test : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-    void replymMaildirSettingsInterface ( QString arg1 );
-  private slots:
+    void replymMaildirSettingsInterface(QString arg1);
+private slots:
     void initTestCase();
     void cleanupTestCase();
     void testSimpleDownload();
@@ -46,19 +46,19 @@ class Pop3Test : public QObject
     void testSizeBasedLeaveRule();
     void testMixedLeaveRules();
 
-  private:
-    void lowerTimeOfSeenMail( const QString &uidOfMail, int secondsToLower );
-    void cleanupMaildir( Akonadi::Item::List items );
-    void checkMailsInMaildir( const QList< QByteArray >& mails );
-    Akonadi::Item::List checkMailsOnAkonadiServer( const QList<QByteArray> &mails );
+private:
+    void lowerTimeOfSeenMail(const QString &uidOfMail, int secondsToLower);
+    void cleanupMaildir(Akonadi::Item::List items);
+    void checkMailsInMaildir(const QList< QByteArray > &mails);
+    Akonadi::Item::List checkMailsOnAkonadiServer(const QList<QByteArray> &mails);
     void syncAndWaitForFinish();
     QString loginSequence() const;
-    QString retrieveSequence( const QList< QByteArray >& mails,
-                              const QList<int> &exceptions = QList<int>() ) const;
-    QString deleteSequence( int numToDelete ) const;
+    QString retrieveSequence(const QList< QByteArray > &mails,
+                             const QList<int> &exceptions = QList<int>()) const;
+    QString deleteSequence(int numToDelete) const;
     QString quitSequence() const;
-    QString listSequence( const QList<QByteArray> &mails ) const;
-    QString uidSequence( const QStringList &uids ) const;
+    QString listSequence(const QList<QByteArray> &mails) const;
+    QString uidSequence(const QStringList &uids) const;
 
     FakeServerThread *mFakeServerThread;
 

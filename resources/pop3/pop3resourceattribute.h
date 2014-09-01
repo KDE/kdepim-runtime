@@ -31,15 +31,14 @@ public:
     Pop3ResourceAttribute *clone() const;
     QByteArray type() const;
     QByteArray serialized() const;
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
 
     QString pop3AccountName() const;
     void setPop3AccountName(const QString &accountName);
 
 private:
     friend class Pop3ResourceAttributePrivate;
-    Pop3ResourceAttributePrivate * const d;
+    Pop3ResourceAttributePrivate *const d;
 };
-
 
 #endif // POP3RESOURCEATTRIBUTE_H

@@ -26,79 +26,79 @@
 
 class FakeServer : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  FakeServer( QObject* parent = 0 );
-  ~FakeServer();
+    FakeServer(QObject *parent = 0);
+    ~FakeServer();
 
-  void setNextConversation( const QString &conversation,
-                            const QList<int> &exceptions = QList<int>() );
-  void setAllowedDeletions( const QString &deleteIds );
-  void setAllowedRetrieves( const QString &retrieveIds );
-  void setMails( const QList<QByteArray> &mails );
+    void setNextConversation(const QString &conversation,
+                             const QList<int> &exceptions = QList<int>());
+    void setAllowedDeletions(const QString &deleteIds);
+    void setAllowedRetrieves(const QString &retrieveIds);
+    void setMails(const QList<QByteArray> &mails);
 
-  // This is kind of a hack: The POP3 test needs to know when the POP3 client
-  // disconnects from the server. Normally, we could just use a QSignalSpy on the
-  // disconnected() signal, but that is not thread-safe. Therefore this hack with the
-  // state variable mGotDisconnected
-  bool gotDisconnected() const;
+    // This is kind of a hack: The POP3 test needs to know when the POP3 client
+    // disconnects from the server. Normally, we could just use a QSignalSpy on the
+    // disconnected() signal, but that is not thread-safe. Therefore this hack with the
+    // state variable mGotDisconnected
+    bool gotDisconnected() const;
 
-  // Returns an integer that is incremented each time the POP3 server receives some
-  // data
-  int progress() const;
+    // Returns an integer that is incremented each time the POP3 server receives some
+    // data
+    int progress() const;
 
 Q_SIGNALS:
-  void disconnected();
+    void disconnected();
 
 private Q_SLOTS:
 
-  void newConnection();
-  void dataAvailable();
-  void slotDisconnected();
+    void newConnection();
+    void dataAvailable();
+    void slotDisconnected();
 
 private:
 
-  QByteArray parseDeleteMark( const QByteArray& expectedData, const QByteArray& dataReceived );
-  QByteArray parseRetrMark( const QByteArray& expectedData, const QByteArray& dataReceived );
-  QByteArray parseResponse( const QByteArray& expectedData, const QByteArray& dataReceived );
+    QByteArray parseDeleteMark(const QByteArray &expectedData, const QByteArray &dataReceived);
+    QByteArray parseRetrMark(const QByteArray &expectedData, const QByteArray &dataReceived);
+    QByteArray parseResponse(const QByteArray &expectedData, const QByteArray &dataReceived);
 
-  QList<QByteArray> mReadData;
-  QList<QByteArray> mWriteData;
-  QList<QByteArray> mAllowedDeletions;
-  QList<QByteArray> mAllowedRetrieves;
-  QList<QByteArray> mMails;
-  QTcpServer *mTcpServer;
-  QTcpSocket* mTcpServerConnection;
-  int mConnections;
-  int mProgress;
-  bool mGotDisconnected;
+    QList<QByteArray> mReadData;
+    QList<QByteArray> mWriteData;
+    QList<QByteArray> mAllowedDeletions;
+    QList<QByteArray> mAllowedRetrieves;
+    QList<QByteArray> mMails;
+    QTcpServer *mTcpServer;
+    QTcpSocket *mTcpServerConnection;
+    int mConnections;
+    int mProgress;
+    bool mGotDisconnected;
 
-  // We use one big mutex to protect everything
-  // There shouldn't be deadlocks, as there are only 2 places where the functions
-  // are called: From the KTcpSocket signals, which are triggered by the POP3 ioslave,
-  //             and from the actual test.
-  mutable QMutex mMutex;
+    // We use one big mutex to protect everything
+    // There shouldn't be deadlocks, as there are only 2 places where the functions
+    // are called: From the KTcpSocket signals, which are triggered by the POP3 ioslave,
+    //             and from the actual test.
+    mutable QMutex mMutex;
 };
 
 class FakeServerThread : public QThread
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
 
-  explicit FakeServerThread( QObject *parent );
-  virtual void run();
+    explicit FakeServerThread(QObject *parent);
+    virtual void run();
 
-  // Returns the FakeServer use. Be careful when using this and make sure
-  // the methods you use are actually thread-safe!!
-  // This should however be the case because the FakeServer uses one big mutex
-  // to protect everything.
-  FakeServer *server() const;
+    // Returns the FakeServer use. Be careful when using this and make sure
+    // the methods you use are actually thread-safe!!
+    // This should however be the case because the FakeServer uses one big mutex
+    // to protect everything.
+    FakeServer *server() const;
 
 private:
 
-  FakeServer *mServer;
+    FakeServer *mServer;
 };
 
 #endif

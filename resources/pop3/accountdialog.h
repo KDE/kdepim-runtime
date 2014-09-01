@@ -25,11 +25,13 @@
 
 #include "ui_popsettings.h"
 
-namespace MailTransport {
+namespace MailTransport
+{
 class ServerTest;
 }
-namespace KWallet {
-  class Wallet;
+namespace KWallet
+{
+class Wallet;
 }
 
 class POP3Resource;
@@ -37,42 +39,42 @@ class KJob;
 
 class AccountDialog : public QDialog, private Ui::PopPage
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    AccountDialog( POP3Resource *parentResource, WId parentWindow );
+public:
+    AccountDialog(POP3Resource *parentResource, WId parentWindow);
     virtual ~AccountDialog();
 
-  private slots:
-    void slotEnablePopInterval( bool state );
+private slots:
+    void slotEnablePopInterval(bool state);
     void slotFontChanged();
     void slotLeaveOnServerClicked();
-    void slotEnableLeaveOnServerDays( bool state );
-    void slotEnableLeaveOnServerCount( bool state );
-    void slotEnableLeaveOnServerSize( bool state );
+    void slotEnableLeaveOnServerDays(bool state);
+    void slotEnableLeaveOnServerCount(bool state);
+    void slotEnableLeaveOnServerSize(bool state);
     void slotFilterOnServerClicked();
     void slotPipeliningClicked();
     void slotPopEncryptionChanged(int);
     void slotCheckPopCapabilities();
-    void slotPopCapabilities(const QList<int> & );
-    void slotLeaveOnServerDaysChanged( int value );
-    void slotLeaveOnServerCountChanged( int value );
-    void slotFilterOnServerSizeChanged( int value );
+    void slotPopCapabilities(const QList<int> &);
+    void slotLeaveOnServerDaysChanged(int value);
+    void slotLeaveOnServerCountChanged(int value);
+    void slotFilterOnServerSizeChanged(int value);
 
-    void targetCollectionReceived( Akonadi::Collection::List collections );
-    void localFolderRequestJobFinished( KJob *job );
-    void walletOpenedForLoading( bool success );
-    void walletOpenedForSaving( bool success );
+    void targetCollectionReceived(Akonadi::Collection::List collections);
+    void localFolderRequestJobFinished(KJob *job);
+    void walletOpenedForLoading(bool success);
+    void walletOpenedForSaving(bool success);
     void slotAccepted();
-  private:
+private:
     void setupWidgets();
     void loadSettings();
     void saveSettings();
-    void checkHighest( QButtonGroup * );
+    void checkHighest(QButtonGroup *);
     void enablePopFeatures();
     void populateDefaultAuthenticationOptions();
 
-  private:
+private:
     POP3Resource *mParentResource;
     QButtonGroup *encryptionButtonGroup;
     MailTransport::ServerTest *mServerTest;
@@ -82,6 +84,5 @@ class AccountDialog : public QDialog, private Ui::PopPage
     QString mInitalPassword;
     QPushButton *mOkButton;
 };
-
 
 #endif

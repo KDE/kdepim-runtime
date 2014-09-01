@@ -32,176 +32,171 @@
 
 namespace KIO
 {
-  class Slave;
-  class Job;
-  class TransferJob;
+class Slave;
+class Job;
+class TransferJob;
 }
 
 class SlaveBaseJob;
 
 class POPSession : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit POPSession( const QString &password );
-  ~POPSession();
-  bool connectSlave();
+    explicit POPSession(const QString &password);
+    ~POPSession();
+    bool connectSlave();
 
-  void abortCurrentJob();
-  void closeSession();
+    void abortCurrentJob();
+    void closeSession();
 
-  KIO::Slave* getSlave() const;
-  QUrl getUrl() const;
+    KIO::Slave *getSlave() const;
+    QUrl getUrl() const;
 
-  // Sets the current SlaveBaseJob that is using the POPSession.
-  // If there is a job, all slave errors will be forwared to that job
-  void setCurrentJob( SlaveBaseJob *job );
+    // Sets the current SlaveBaseJob that is using the POPSession.
+    // If there is a job, all slave errors will be forwared to that job
+    void setCurrentJob(SlaveBaseJob *job);
 
 private slots:
-  void slotSlaveError( KIO::Slave *slave , int, const QString & );
+    void slotSlaveError(KIO::Slave *slave , int, const QString &);
 
 signals:
 
-  // An error occurred within the slave. If there is a current job, this
-  // signal is not emitted, as the job deals with it.
-  void slaveError( int errorCode, const QString &errorMessage );
+    // An error occurred within the slave. If there is a current job, this
+    // signal is not emitted, as the job deals with it.
+    void slaveError(int errorCode, const QString &errorMessage);
 
 private:
-  KIO::MetaData slaveConfig() const;
-  QString authenticationToString( int type ) const;
+    KIO::MetaData slaveConfig() const;
+    QString authenticationToString(int type) const;
 
-  QPointer<KIO::Slave> mSlave;
-  SlaveBaseJob *mCurrentJob;
-  QString mPassword;
+    QPointer<KIO::Slave> mSlave;
+    SlaveBaseJob *mCurrentJob;
+    QString mPassword;
 };
-
 
 class SlaveBaseJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit SlaveBaseJob( POPSession *POPSession );
-  ~SlaveBaseJob();
+    explicit SlaveBaseJob(POPSession *POPSession);
+    ~SlaveBaseJob();
 
-  virtual void slaveError( int errorCode, const QString &errorMessage );
+    virtual void slaveError(int errorCode, const QString &errorMessage);
 
 protected slots:
-  virtual void slotSlaveData( KIO::Job *job, const QByteArray &data );
-  virtual void slotSlaveResult( KJob *job );
+    virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
+    virtual void slotSlaveResult(KJob *job);
 
 protected:
-  virtual QString errorString() const;
-  virtual bool doKill();
-  void startJob( const QString &path );
-  virtual void connectJob();
+    virtual QString errorString() const;
+    virtual bool doKill();
+    void startJob(const QString &path);
+    virtual void connectJob();
 
-  KIO::TransferJob *mJob;
-  POPSession *mPOPSession;
+    KIO::TransferJob *mJob;
+    POPSession *mPOPSession;
 };
 
 class LoginJob : public SlaveBaseJob
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  LoginJob( POPSession *popSession );
-  virtual void start();
+    LoginJob(POPSession *popSession);
+    virtual void start();
 
 protected:
-  virtual QString errorString() const;
+    virtual QString errorString() const;
 
 private slots:
-  void slaveConnected( KIO::Slave *slave );
+    void slaveConnected(KIO::Slave *slave);
 
 private:
-  virtual void slaveError( int errorCode, const QString &errorMessage );
+    virtual void slaveError(int errorCode, const QString &errorMessage);
 
-  QString mErrorString;
+    QString mErrorString;
 };
-
 
 class ListJob : public SlaveBaseJob
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ListJob( POPSession *popSession );
-  QMap<int,int> idList() const;
-  virtual void start();
+    ListJob(POPSession *popSession);
+    QMap<int, int> idList() const;
+    virtual void start();
 
 private:
-  virtual void slotSlaveData( KIO::Job *job, const QByteArray &data );
+    virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
 
 private:
-  QMap<int,int> mIdList;
+    QMap<int, int> mIdList;
 };
-
 
 class UIDListJob : public SlaveBaseJob
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  UIDListJob( POPSession *popSession );
-  QMap<int,QString> uidList() const;
-  QMap<QString,int> idList() const;
-  virtual void start();
+    UIDListJob(POPSession *popSession);
+    QMap<int, QString> uidList() const;
+    QMap<QString, int> idList() const;
+    virtual void start();
 
 private:
-  virtual void slotSlaveData( KIO::Job *job, const QByteArray &data );
+    virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
 
-  QMap<int,QString> mUidList;
-  QMap<QString,int> mIdList;
+    QMap<int, QString> mUidList;
+    QMap<QString, int> mIdList;
 };
 
 class DeleteJob : public SlaveBaseJob
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  DeleteJob( POPSession *popSession );
-  void setDeleteIds( const QList<int> ids );
-  virtual void start();
-  QList<int> deletedIDs() const;
+    DeleteJob(POPSession *popSession);
+    void setDeleteIds(const QList<int> ids);
+    virtual void start();
+    QList<int> deletedIDs() const;
 
 private:
 
-  QList<int> mIdsToDelete;
+    QList<int> mIdsToDelete;
 };
 
 class QuitJob : public SlaveBaseJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  QuitJob( POPSession *popSession );
-  virtual void start();
+    QuitJob(POPSession *popSession);
+    virtual void start();
 };
-
 
 class FetchJob : public SlaveBaseJob
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
 
-  FetchJob( POPSession *session );
-  void setFetchIds( const QList<int> ids, QList<int> sizes );
-  virtual void start();
+    FetchJob(POPSession *session);
+    void setFetchIds(const QList<int> ids, QList<int> sizes);
+    virtual void start();
 
 private slots:
-  void slotInfoMessage( KJob *job, const QString &infoMessage, const QString & );
+    void slotInfoMessage(KJob *job, const QString &infoMessage, const QString &);
 
 signals:
-  void messageFinished( int id, KMime::Message::Ptr message );
+    void messageFinished(int id, KMime::Message::Ptr message);
 
 private:
 
-  virtual void connectJob();
-  virtual void slotSlaveData( KIO::Job *job, const QByteArray &data );
+    virtual void connectJob();
+    virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
 
-  QList<int> mIdsPendingDownload;
-  QByteArray mCurrentMessage;
-  int mBytesDownloaded;
-  int mTotalBytesToDownload;
-  uint mDataCounter;
+    QList<int> mIdsPendingDownload;
+    QByteArray mCurrentMessage;
+    int mBytesDownloaded;
+    int mTotalBytesToDownload;
+    uint mDataCounter;
 };
-
 
 #endif // JOBS_H

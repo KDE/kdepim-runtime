@@ -15,7 +15,6 @@
   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #include "pop3resourceattribute.h"
 
 #include <QByteArray>
@@ -50,21 +49,21 @@ Pop3ResourceAttribute *Pop3ResourceAttribute::clone() const
 
 QByteArray Pop3ResourceAttribute::type() const
 {
-    static const QByteArray sType( "pop3resourceattribute" );
+    static const QByteArray sType("pop3resourceattribute");
     return sType;
 }
 
 QByteArray Pop3ResourceAttribute::serialized() const
 {
     QByteArray result;
-    QDataStream s( &result, QIODevice::WriteOnly );
+    QDataStream s(&result, QIODevice::WriteOnly);
     s << pop3AccountName();
     return result;
 }
 
-void Pop3ResourceAttribute::deserialize( const QByteArray &data )
+void Pop3ResourceAttribute::deserialize(const QByteArray &data)
 {
-    QDataStream s( data );
+    QDataStream s(data);
     QString value;
     s >> value;
     d->accountName = value;

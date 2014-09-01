@@ -29,17 +29,17 @@
  */
 class Settings : public SettingsBase
 {
-  Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.POP3.Wallet" )
-  public:
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.POP3.Wallet")
+public:
     Settings();
-    void setWindowId( WId id );
-    void setResourceId( const QString &resourceIdentifier );
+    void setWindowId(WId id);
+    void setResourceId(const QString &resourceIdentifier);
     static Settings *self();
 
-  public slots:
-    Q_SCRIPTABLE void setPassword( const QString &password );
-  private:
+public slots:
+    Q_SCRIPTABLE void setPassword(const QString &password);
+private:
     WId mWinId;
     QString mResourceId;
 };

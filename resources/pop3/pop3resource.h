@@ -23,10 +23,12 @@
 #include <KMime/Message>
 #include <KJob>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class ItemCreateJob;
 }
-namespace KWallet {
+namespace KWallet
+{
 class Wallet;
 }
 
@@ -34,106 +36,106 @@ class POPSession;
 class QTimer;
 
 class POP3Resource : public Akonadi::ResourceBase,
-                     public Akonadi::AgentBase::Observer
+    public Akonadi::AgentBase::Observer
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    POP3Resource( const QString &id );
+public:
+    POP3Resource(const QString &id);
     ~POP3Resource();
 
     void clearCachedPassword();
 
     void cleanup();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
+public Q_SLOTS:
+    virtual void configure(WId windowId);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems(const Akonadi::Collection &col);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-  protected:
+protected:
 
     virtual void aboutToQuit();
-    virtual void doSetOnline( bool online );
+    virtual void doSetOnline(bool online);
 
-  private Q_SLOTS:
+private Q_SLOTS:
 
     void slotAbortRequested();
     void intervalCheckTriggered();
     void configurationChanged();
 
     // Error unrelated to a state
-    void slotSessionError( int errorCode, const QString &errorMessage );
+    void slotSessionError(int errorCode, const QString &errorMessage);
 
     // For state FetchTargetCollection
-    void targetCollectionFetchJobFinished( KJob *job );
-    void localFolderRequestJobFinished( KJob *job );
+    void targetCollectionFetchJobFinished(KJob *job);
+    void localFolderRequestJobFinished(KJob *job);
 
     // For state Precommand
-    void precommandResult( KJob *job );
+    void precommandResult(KJob *job);
 
     // For state RequestPassword
-    void walletOpenedForLoading( bool success );
+    void walletOpenedForLoading(bool success);
 
     // For state Login
-    void loginJobResult( KJob *job );
+    void loginJobResult(KJob *job);
 
     // For state List
-    void listJobResult( KJob *job );
+    void listJobResult(KJob *job);
 
     // For state UIDList
-    void uidListJobResult( KJob *job );
+    void uidListJobResult(KJob *job);
 
     // For state Download
-    void messageFinished( int messageId, KMime::Message::Ptr message );
-    void fetchJobResult( KJob *job );
-    void messageDownloadProgress( KJob *job, KJob::Unit unit, qulonglong totalBytes );
+    void messageFinished(int messageId, KMime::Message::Ptr message);
+    void fetchJobResult(KJob *job);
+    void messageDownloadProgress(KJob *job, KJob::Unit unit, qulonglong totalBytes);
 
     // For state Save
-    void itemCreateJobResult( KJob *job );
+    void itemCreateJobResult(KJob *job);
 
     // For state Delete
-    void deleteJobResult( KJob *job );
+    void deleteJobResult(KJob *job);
 
     // For state Quit
-    void quitJobResult( KJob *job );
+    void quitJobResult(KJob *job);
 
     // For state SavePassword
-    void walletOpenedForSaving( bool success );
+    void walletOpenedForSaving(bool success);
 
-  private:
+private:
 
     enum State {
-      Idle,
-      FetchTargetCollection,
-      Precommand,
-      RequestPassword,
-      Connect,
-      Login,
-      List,
-      UIDList,
-      Download,
-      Save,
-      Delete,
-      Quit,
-      SavePassword
+        Idle,
+        FetchTargetCollection,
+        Precommand,
+        RequestPassword,
+        Connect,
+        Login,
+        List,
+        UIDList,
+        Download,
+        Save,
+        Delete,
+        Quit,
+        SavePassword
     };
 
     void resetState();
     void doStateStep();
-    void advanceState( State nextState );
-    void cancelSync( const QString &errorMessage, bool error = true );
+    void advanceState(State nextState);
+    void cancelSync(const QString &errorMessage, bool error = true);
     void saveSeenUIDList();
     QList<int> idsToDelete() const;
-    int idToTime( int id ) const;
-    int idOfOldestMessage( QList<int> &idList ) const;
+    int idToTime(int id) const;
+    int idOfOldestMessage(QList<int> &idList) const;
     void startMailCheck();
     void updateIntervalTimer();
-    void showPasswordDialog( const QString &queryText );
-    QString buildLabelForPasswordDialog( const QString &detailedError ) const;
+    void showPasswordDialog(const QString &queryText);
+    QString buildLabelForPasswordDialog(const QString &detailedError) const;
     void finish();
 
     State mState;
@@ -148,15 +150,15 @@ class POP3Resource : public Akonadi::ResourceBase,
     KWallet::Wallet *mWallet;
 
     // Maps IDs on the server to message sizes on the server
-    QMap<int,int> mIdsToSizeMap;
+    QMap<int, int> mIdsToSizeMap;
 
     // Maps IDs on the server to UIDs on the server.
     // This can be empty, if the server doesn't support UIDL
-    QMap<int,QString> mIdsToUidsMap;
+    QMap<int, QString> mIdsToUidsMap;
 
     // Maps UIDs on the server to IDs on the server.
     // This can be empty, if the server doesn't support UIDL
-    QMap<QString,int> mUidsToIdsMap;
+    QMap<QString, int> mUidsToIdsMap;
 
     // Whether we actually received a valid UID list from the server
     bool mUidListValid;
@@ -175,7 +177,7 @@ class POP3Resource : public Akonadi::ResourceBase,
     // POP3 IDs.
     // When an ItemCreateJob finished, it is removed from this map.
     // The Save state waits until this map becomes empty.
-    QMap<Akonadi::ItemCreateJob*,int> mPendingCreateJobs;
+    QMap<Akonadi::ItemCreateJob *, int> mPendingCreateJobs;
 
     // List of message IDs that were successfully stored in Akonadi
     QList<int> mIDsStored;
