@@ -56,8 +56,7 @@ ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QS
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
     connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
              SLOT(updateButtonState()) );
-    connect( d->ui.resourcesList, SIGNAL(doubleClicked(Akonadi::AgentInstance)),
-             SLOT(editClicked()) );
+    connect(d->ui.resourcesList, &Akonadi::AgentInstanceWidget::doubleClicked, this, &ResourcesManagementWidget::editClicked);
 
     connect(d->ui.addButton, &QPushButton::clicked, this, &ResourcesManagementWidget::addClicked);
     connect(d->ui.editButton, &QPushButton::clicked, this, &ResourcesManagementWidget::editClicked);
