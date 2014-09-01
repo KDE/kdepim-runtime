@@ -71,10 +71,8 @@ void GetCredentialsJob::getCredentials()
     m_authData[QLatin1String("AccountUsername")] = acc->value(QLatin1String("username")).toString();
     QPointer<SignOn::AuthSession> authSession = identity->createSession(authData.method());
 
-    connect(authSession, SIGNAL(response(SignOn::SessionData)),
-            SLOT(sessionResponse(SignOn::SessionData)));
-    connect(authSession, SIGNAL(error(SignOn::Error)),
-            SLOT(sessionError(SignOn::Error)));
+    connect(authSession, SIGNAL(response(SignOn::SessionData)), SLOT(sessionResponse(SignOn::SessionData)));
+    connect(authSession, SIGNAL(error(SignOn::Error)), SLOT(sessionError(SignOn::Error)));
 
     authSession->process(authData.parameters(), authData.mechanism());
 }

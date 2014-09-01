@@ -43,7 +43,7 @@ using namespace Akonadi;
 SingleFileResourceBase::SingleFileResourceBase( const QString & id )
   : ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )
 {
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(reloadFile()) );
+  connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
   QTimer::singleShot( 0, this, SLOT(readFile()) );
 
   changeRecorder()->itemFetchScope().fetchFullPayload();
@@ -51,8 +51,8 @@ SingleFileResourceBase::SingleFileResourceBase( const QString & id )
 
   connect( changeRecorder(), SIGNAL(changesAdded()), SLOT(scheduleWrite()) );
 
-  connect( KDirWatch::self(), SIGNAL(dirty(QString)), SLOT(fileChanged(QString)) );
-  connect( KDirWatch::self(), SIGNAL(created(QString)), SLOT(fileChanged(QString)) );
+  connect(KDirWatch::self(), &KDirWatch::dirty, this, &SingleFileResourceBase::fileChanged);
+  connect(KDirWatch::self(), &KDirWatch::created, this, &SingleFileResourceBase::fileChanged);
 
   //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_singlefile_resource") );
 }
