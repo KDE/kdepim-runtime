@@ -153,11 +153,9 @@ void AccountDialog::setupWidgets()
   folderRequester->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
   folderRequester->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
 
-  connect( usePipeliningCheck, SIGNAL(clicked()),
-           SLOT(slotPipeliningClicked()) );
+  connect(usePipeliningCheck, &QCheckBox::clicked, this, &AccountDialog::slotPipeliningClicked);
 
-  connect(KGlobalSettings::self(),SIGNAL(kdisplayFontChanged()),
-          SLOT(slotFontChanged()));
+  connect(KGlobalSettings::self(), &KGlobalSettings::kdisplayFontChanged, this, &AccountDialog::slotFontChanged);
 
   // FIXME: Hide widgets which are not supported yet
   filterOnServerCheck->hide();
@@ -220,8 +218,7 @@ void AccountDialog::loadSettings()
     CollectionFetchJob *fetchJob = new CollectionFetchJob( targetCollection,
                                                            CollectionFetchJob::Base,
                                                            this );
-    connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
-             this, SLOT(targetCollectionReceived(Akonadi::Collection::List)) );
+    connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &AccountDialog::targetCollectionReceived);
   }
   else {
     // FIXME: This is a bit duplicated from POP3Resource...
@@ -230,15 +227,13 @@ void AccountDialog::loadSettings()
     SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob( this );
     requestJob->requestDefaultCollection( SpecialMailCollections::Inbox );
     requestJob->start();
-    connect ( requestJob, SIGNAL(result(KJob*)),
-              this, SLOT(localFolderRequestJobFinished(KJob*)) );
+    connect ( requestJob, SIGNAL(result(KJob*)), this, SLOT(localFolderRequestJobFinished(KJob*)) );
   }
 
   mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
                                 Wallet::Asynchronous );
   if ( mWallet ) {
-    connect( mWallet, SIGNAL(walletOpened(bool)),
-             this, SLOT(walletOpenedForLoading(bool)) );
+    connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountDialog::walletOpenedForLoading);
   } else {
     passwordEdit->setPlaceholderText( i18n( "Wallet disabled in system settings" ) );
   }
@@ -410,10 +405,8 @@ void AccountDialog::slotCheckPopCapabilities()
   mServerTest->setPort( encryptionType, portEdit->value() );
   mServerTest->setServer( hostEdit->text() );
   mServerTest->setProtocol( QLatin1String("pop") );
-  connect( mServerTest, SIGNAL(finished(QList<int>)),
-           this, SLOT(slotPopCapabilities(QList<int>)) );
-  connect( mServerTest, SIGNAL(finished(QList<int>)),
-           busyCursorHelper, SLOT(deleteLater()) );
+  connect(mServerTest, &MailTransport::ServerTest::finished, this, &AccountDialog::slotPopCapabilities);
+  connect(mServerTest, &MailTransport::ServerTest::finished, busyCursorHelper, &BusyCursorHelper::deleteLater);
 
   mServerTest->start();
   mServerTestFailed = false;
@@ -620,8 +613,7 @@ void AccountDialog::saveSettings()
       mWallet = Wallet::openWallet( Wallet::NetworkWallet(), winId(),
                                     Wallet::Asynchronous );
       if ( mWallet ) {
-        connect( mWallet, SIGNAL(walletOpened(bool)),
-                this, SLOT(walletOpenedForSaving(bool)) );
+        connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountDialog::walletOpenedForSaving);
       } else {
         accept();
       }
