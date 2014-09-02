@@ -70,8 +70,6 @@ void initialise(QObject* parent)
 
     AttributeFactory::registerAttribute<CompatibilityAttribute>();
     AttributeFactory::registerAttribute<EventAttribute>();
-
-    //QT5 KLocalizedString::global()->insertCatalog(QLatin1String("akonadi_kalarm_resource"));
 }
 
 /******************************************************************************

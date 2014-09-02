@@ -24,7 +24,7 @@
 #include <KCalCore/FreeBusy>
 
 #include <QDebug>
-#include <klocale.h>
+#include <KLocalizedString>
 
 using namespace Akonadi;
 using namespace KCalCore;

@@ -23,10 +23,9 @@
 
 #include <KCalCore/Incidence>
 
-#include <kglobal.h>
-#include <klocale.h>
 #include <kconfigskeleton.h>
-#include <KStandardDirs>
+#include <QStandardPaths>
+
 
 using namespace Akonadi;
 using namespace KCalCore;
@@ -38,7 +37,7 @@ NotesResource::NotesResource( const QString &id )
 {
   KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath*>( mSettings->findItem( QLatin1String("Path") ) );
   if ( item ) {
-    item->setDefaultValue( KGlobal::dirs()->saveLocation( "data", QLatin1String("knotes/") ) + QLatin1String("notes.ics") );
+    item->setDefaultValue( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("knotes/"));
   }
 }
 

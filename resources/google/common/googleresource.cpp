@@ -48,10 +48,8 @@ GoogleResource::GoogleResource( const QString &id ):
     m_isConfiguring(false)
 {
     //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
-    connect( this, SIGNAL(abortRequested()),
-            this, SLOT(slotAbortRequested()) );
-    connect( this, SIGNAL(reloadConfiguration()),
-            this, SLOT(reloadConfig()) );
+    connect(this, &GoogleResource::abortRequested, this, &GoogleResource::slotAbortRequested);
+    connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
 
     setNeedsNetwork( true );
 
@@ -61,12 +59,9 @@ GoogleResource::GoogleResource( const QString &id ):
     changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
 
     m_accountMgr = new GoogleAccountManager( this );
-    connect( m_accountMgr, SIGNAL(accountChanged(KGAPI2::AccountPtr)),
-             this, SLOT(slotAccountChanged(KGAPI2::AccountPtr)) );
-    connect( m_accountMgr, SIGNAL(accountRemoved(QString)),
-             this, SLOT(slotAccountRemoved(QString)) );
-    connect( m_accountMgr, SIGNAL(managerReady(bool)),
-             this, SLOT(slotAccountManagerReady(bool)) );
+    connect(m_accountMgr, &GoogleAccountManager::accountChanged, this, &GoogleResource::slotAccountChanged);
+    connect(m_accountMgr, &GoogleAccountManager::accountRemoved, this, &GoogleResource::slotAccountRemoved);
+    connect(m_accountMgr, &GoogleAccountManager::managerReady, this, &GoogleResource::slotAccountManagerReady);
 
     emit status( NotConfigured, i18n( "Waiting for KWallet..." ) );
 }
@@ -142,8 +137,7 @@ void GoogleResource::updateAccountToken( const AccountPtr &account, KGAPI2::Job 
     } else if ( !settings()->account().isEmpty() ) {
         AuthJob *authJob = new AuthJob( account, settings()->clientId(), settings()->clientSecret(), this );
         authJob->setProperty( JOB_PROPERTY, QVariant::fromValue( restartJob ) );
-        connect( authJob, SIGNAL(finished(KGAPI2::Job*)),
-                 this, SLOT(slotAuthJobFinished(KGAPI2::Job*)) );
+        connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
     }
 }
 
@@ -218,8 +212,7 @@ void GoogleResource::slotKAccountsCredentialsReceived( KJob *job )
         if ( otherJob ) {
             aiJob->setProperty( JOB_PROPERTY, QVariant::fromValue( otherJob ) );
         }
-        connect( aiJob, SIGNAL(finished(KGAPI2::Job*)),
-                this, SLOT(slotKAccountsAccountInfoReceived(KGAPI2::Job*)) );
+        connect(aiJob, &AccountInfoFetchJob::finished, this, &GoogleResource::slotKAccountsAccountInfoReceived);
     } else {
         m_account = AccountPtr( new Account( settings()->accountName(),
                                              accessToken ) );
