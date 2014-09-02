@@ -33,8 +33,7 @@ void DavCollectionsMultiFetchJob::start()
   foreach ( const DavUtils::DavUrl &url, mUrls ) {
     DavCollectionsFetchJob *job = new DavCollectionsFetchJob( url, this );
     connect(job, &DavCollectionsFetchJob::result, this, &DavCollectionsMultiFetchJob::davJobFinished);
-    connect( job, SIGNAL(collectionDiscovered(int,QString,QString)),
-             SIGNAL(collectionDiscovered(int,QString,QString)) );
+    connect(job, &DavCollectionsFetchJob::collectionDiscovered, this, &DavCollectionsMultiFetchJob::collectionDiscovered);
     job->start();
   }
 }

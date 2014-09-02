@@ -106,7 +106,7 @@ TypePage::TypePage(KAssistantDialog *parent) :
     }
 
     connect(ui.listView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()));
-    connect(ui.ghnsButton, SIGNAL(clicked()), SIGNAL(ghnsWanted()));
+    connect(ui.ghnsButton, &QPushButton::clicked, this, &TypePage::ghnsWanted);
 }
 
 void TypePage::selectionChanged()

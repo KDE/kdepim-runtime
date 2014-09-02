@@ -55,7 +55,6 @@ using Akonadi::AgentInstanceCreateJob;
 
 #include <KIO/CopyJob>
 
-#include <KGlobal>
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDateTime>

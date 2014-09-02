@@ -222,8 +222,7 @@ void MboxResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray
       new CollectionFetchJob( Collection( collectionId( item.remoteId() ) )
                               , CollectionFetchJob::Base );
 
-    connect( fetchJob, SIGNAL(result(KJob*)),
-             this, SLOT(onCollectionFetch(KJob*)) );
+    connect(fetchJob, &CollectionFetchJob::result, this, &MboxResource::onCollectionFetch);
 
     mCurrentItemDeletions.insert( fetchJob, item );
 
@@ -348,8 +347,7 @@ void MboxResource::onCollectionFetch( KJob *job )
 
   CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
   mCurrentItemDeletions.insert( modifyJob, item );
-  connect( modifyJob, SIGNAL(result(KJob*)),
-           this, SLOT(onCollectionModify(KJob*)) );
+  connect(modifyJob, &CollectionModifyJob::result, this, &MboxResource::onCollectionModify);
   modifyJob->start();
 }
 

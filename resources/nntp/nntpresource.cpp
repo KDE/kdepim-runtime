@@ -66,7 +66,7 @@ bool NntpResource::retrieveItem(const Akonadi::Item& item, const QSet<QByteArray
   Q_UNUSED( parts );
   KIO::Job* job = KIO::storedGet( QUrl( item.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
   setupKioJob( job );
-  connect( job, SIGNAL(result(KJob*)), SLOT(fetchArticleResult(KJob*)) );
+  connect(job, &KIO::Job::result, this, &NntpResource::fetchArticleResult);
   return true;
 }
 
@@ -101,9 +101,8 @@ void NntpResource::retrieveCollections()
 
   KIO::ListJob* job = KIO::listDir( url, KIO::HideProgressInfo, true );
   setupKioJob( job );
-  connect( job, SIGNAL(entries(KIO::Job*,KIO::UDSEntryList)),
-           SLOT(listGroups(KIO::Job*,KIO::UDSEntryList)) );
-  connect( job, SIGNAL(result(KJob*)), SLOT(listGroupsResult(KJob*)) );
+  connect(job, &KIO::ListJob::entries, this, &NntpResource::listGroups);
+  connect(job, &KIO::ListJob::result, this, &NntpResource::listGroupsResult);
 }
 
 void NntpResource::retrieveItems( const Akonadi::Collection & col )
@@ -125,9 +124,8 @@ void NntpResource::retrieveItems( const Akonadi::Collection & col )
 
   KIO::ListJob* job = KIO::listDir( url, KIO::HideProgressInfo, true );
   setupKioJob( job );
-  connect( job, SIGNAL(entries(KIO::Job*,KIO::UDSEntryList)),
-           SLOT(listGroup(KIO::Job*,KIO::UDSEntryList)) );
-  connect( job, SIGNAL(result(KJob*)), SLOT(listGroupResult(KJob*)) );
+  connect(job, &KIO::ListJob::entries, this, &NntpResource::listGroup);
+  connect(job, &KIO::ListJob::result, this, &NntpResource::listGroupResult);
 }
 
 void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
