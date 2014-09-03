@@ -90,13 +90,12 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
   mUser1Button = new QPushButton;
   buttonBox->addButton(mUser1Button, QDialogButtonBox::ActionRole);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(slotAccepted()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &SubscriptionDialog::slotAccepted);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &SubscriptionDialog::reject);
 
   mUser1Button->setText(i18nc( "@action:button", "Reload &List" ));
   mUser1Button->setEnabled(false);
-  connect(mUser1Button, SIGNAL(clicked()),
-          this, SLOT(onReloadRequested()) );
+  connect(mUser1Button, &QPushButton::clicked, this, &SubscriptionDialog::onReloadRequested);
 
   QWidget *mainWidget = new QWidget( this );
   QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -118,8 +117,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
 
   m_lineEdit = new QLineEdit( mainWidget );
   m_lineEdit->setClearButtonEnabled( true );
-  connect( m_lineEdit, SIGNAL(textChanged(QString)),
-           this, SLOT(slotSearchPattern(QString)) );
+  connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::slotSearchPattern);
   filterBarLayout->addWidget( m_lineEdit );
   m_lineEdit->setFocus();
 
@@ -127,6 +125,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   QCheckBox *checkBox = new QCheckBox( i18nc( "@option:check", "Subscribed only" ), mainWidget );
   connect( checkBox, SIGNAL(stateChanged(int)),
            m_filter, SLOT(setIncludeCheckedOnly(int)) );
+
   filterBarLayout->addWidget( checkBox );
 
   m_treeView = new QTreeView( mainWidget );
@@ -136,8 +135,7 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   mainLayout->addWidget( m_treeView );
 #else
   m_lineEdit->hide();
-  connect( m_lineEdit, SIGNAL(textChanged(QString)),
-           this, SLOT(onMobileLineEditChanged(QString)) );
+  connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::onMobileLineEditChanged);
 
   m_listView = new QListView( mainWidget );
 
@@ -158,14 +156,13 @@ SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::Sub
   grabKeyboard();
 #endif
 
-  connect( m_model, SIGNAL(itemChanged(QStandardItem*)),
-           this, SLOT(onItemChanged(QStandardItem*)) );
+  connect(m_model, &QStandardItemModel::itemChanged, this, &SubscriptionDialog::onItemChanged);
 
   if ( option & SubscriptionDialog::AllowToEnableSubscription ) {
 #ifndef KDEPIM_MOBILE_UI
-    connect( m_enableSubscription, SIGNAL(clicked(bool)), m_treeView, SLOT(setEnabled(bool)) );
+    connect(m_enableSubscription, &QCheckBox::clicked, m_treeView, &QTreeView::setEnabled);
 #else
-    connect( m_enableSubscription, SIGNAL(clicked(bool)), m_listView, SLOT(setEnabled(bool)) );
+    connect(m_enableSubscription, &QCheckBox::clicked, m_listView, &QListView::setEnabled);
 #endif
   } else {
     m_enableSubscription->hide();
@@ -233,8 +230,7 @@ void SubscriptionDialog::connectAccount( const ImapAccount &account, const QStri
   login->setEncryptionMode( account.encryptionMode() );
   login->setAuthenticationMode( account.authenticationMode() );
 
-  connect( login, SIGNAL(result(KJob*)),
-           this, SLOT(onLoginDone(KJob*)) );
+  connect(login, &KIMAP::LoginJob::result, this, &SubscriptionDialog::onLoginDone);
   login->start();
 }
 
@@ -266,9 +262,8 @@ void SubscriptionDialog::onReloadRequested()
 
   KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
   list->setIncludeUnsubscribed( true );
-  connect( list, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-           this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
-  connect( list, SIGNAL(result(KJob*)), this, SLOT(onFullListingDone(KJob*)) );
+  connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onMailBoxesReceived);
+  connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onFullListingDone);
   list->start();
 }
 
@@ -334,9 +329,8 @@ void SubscriptionDialog::onFullListingDone( KJob *job )
 
   KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
   list->setIncludeUnsubscribed( false );
-  connect( list, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-           this, SLOT(onSubscribedMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
-  connect( list, SIGNAL(result(KJob*)), this, SLOT(onReloadDone(KJob*)) );
+  connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
+  connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
   list->start();
 }
 

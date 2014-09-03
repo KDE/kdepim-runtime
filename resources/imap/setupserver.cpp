@@ -135,8 +135,8 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &SetupServer::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &SetupServer::reject);
   mainLayout->addWidget(buttonBox);
 
 
@@ -147,12 +147,9 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
   m_ui->safeImapGroup->setId( m_ui->sslRadio, KIMAP::LoginJob::AnySslVersion );
   m_ui->safeImapGroup->setId( m_ui->tlsRadio, KIMAP::LoginJob::TlsV1 );
 
-  connect( m_ui->noRadio, SIGNAL(toggled(bool)),
-           this, SLOT(slotSafetyChanged()) );
-  connect( m_ui->sslRadio, SIGNAL(toggled(bool)),
-           this, SLOT(slotSafetyChanged()) );
-  connect( m_ui->tlsRadio, SIGNAL(toggled(bool)),
-           this, SLOT(slotSafetyChanged()) );
+  connect(m_ui->noRadio, &QRadioButton::toggled, this, &SetupServer::slotSafetyChanged);
+  connect(m_ui->sslRadio, &QRadioButton::toggled, this, &SetupServer::slotSafetyChanged);
+  connect(m_ui->tlsRadio, &QRadioButton::toggled, this, &SetupServer::slotSafetyChanged);
 
   m_ui->testInfo->hide();
   m_ui->testProgress->hide();
@@ -178,28 +175,23 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
   m_ui->identityLabel->setBuddy( m_identityCombobox );
 
 
-  connect( m_ui->testButton, SIGNAL(pressed()), SLOT(slotTest()) );
+  connect(m_ui->testButton, &QPushButton::pressed, this, &SetupServer::slotTest);
 
-  connect( m_ui->imapServer, SIGNAL(textChanged(QString)),
-           SLOT(slotTestChanged()) );
-  connect( m_ui->imapServer, SIGNAL(textChanged(QString)),
-           SLOT(slotComplete()) );
-  connect( m_ui->userName, SIGNAL(textChanged(QString)),
-           SLOT(slotComplete()) );
-  connect( m_ui->subscriptionEnabled, SIGNAL(toggled(bool)), this, SLOT(slotSubcriptionCheckboxChanged()) );
-  connect( m_ui->subscriptionButton, SIGNAL(pressed()), SLOT(slotManageSubscriptions()) );
+  connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotTestChanged);
+  connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotComplete);
+  connect(m_ui->userName, &KLineEdit::textChanged, this, &SetupServer::slotComplete);
+  connect(m_ui->subscriptionEnabled, &QCheckBox::toggled, this, &SetupServer::slotSubcriptionCheckboxChanged);
+  connect(m_ui->subscriptionButton, &QPushButton::pressed, this, &SetupServer::slotManageSubscriptions);
 
-  connect( m_ui->managesieveCheck, SIGNAL(toggled(bool)),
-           SLOT(slotEnableWidgets()) );
-  connect( m_ui->sameConfigCheck, SIGNAL(toggled(bool)),
-           SLOT(slotEnableWidgets()) );
+  connect(m_ui->managesieveCheck, &QCheckBox::toggled, this, &SetupServer::slotEnableWidgets);
+  connect(m_ui->sameConfigCheck, &QCheckBox::toggled, this, &SetupServer::slotEnableWidgets);
 
 
-  connect( m_ui->useDefaultIdentityCheck, SIGNAL(toggled(bool)), this, SLOT(slotIdentityCheckboxChanged()) );
-  connect( m_ui->enableMailCheckBox, SIGNAL(toggled(bool)), this, SLOT(slotMailCheckboxChanged()) );
+  connect(m_ui->useDefaultIdentityCheck, &QCheckBox::toggled, this, &SetupServer::slotIdentityCheckboxChanged);
+  connect(m_ui->enableMailCheckBox, &QCheckBox::toggled, this, &SetupServer::slotMailCheckboxChanged);
   connect( m_ui->safeImapGroup, SIGNAL(buttonClicked(int)), this, SLOT(slotEncryptionRadioChanged()) );
   connect( m_ui->customSieveGroup, SIGNAL(buttonClicked(int)), this, SLOT(slotCustomSieveChanged()) );
-  connect( m_ui->showServerInfo, SIGNAL(pressed()), this, SLOT(slotShowServerInfo()) );
+  connect(m_ui->showServerInfo, &QPushButton::pressed, this, &SetupServer::slotShowServerInfo);
 
   readSettings();
   slotTestChanged();
@@ -210,8 +202,7 @@ SetupServer::SetupServer( ImapResourceBase *parentResource, WId parent )
            SIGNAL(statusChanged(Solid::Networking::Status)),
            SLOT(slotTestChanged()) );
 #endif
-  connect(mOkButton, SIGNAL(clicked()),
-           SLOT(applySettings()) );
+  connect(mOkButton, &QPushButton::clicked, this, &SetupServer::applySettings);
 }
 
 SetupServer::~SetupServer()
@@ -417,12 +408,10 @@ void SetupServer::readSettings()
   Akonadi::Collection trashCollection( m_parentResource->settings()->trashCollection() );
   if ( trashCollection.isValid() ) {
     Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob( trashCollection,Akonadi::CollectionFetchJob::Base,this );
-    connect( fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
-             this, SLOT(targetCollectionReceived(Akonadi::Collection::List)) );
+    connect(fetchJob, &Akonadi::CollectionFetchJob::collectionsReceived, this, &SetupServer::targetCollectionReceived);
   } else {
     Akonadi::SpecialMailCollectionsRequestJob *requestJob = new Akonadi::SpecialMailCollectionsRequestJob( this );
-    connect ( requestJob, SIGNAL(result(KJob*)),
-              this, SLOT(localFolderRequestJobFinished(KJob*)) );
+    connect ( requestJob, SIGNAL(result(KJob*)), this, SLOT(localFolderRequestJobFinished(KJob*)) );
     requestJob->requestDefaultCollection( Akonadi::SpecialMailCollections::Trash );
     requestJob->start();
   }
@@ -488,8 +477,7 @@ void SetupServer::slotTest()
 
   m_serverTest->setProtocol( QLatin1String("imap") );
   m_serverTest->setProgressBar( m_ui->testProgress );
-  connect( m_serverTest, SIGNAL(finished(QList<int>)),
-           SLOT(slotFinished(QList<int>)) );
+  connect(m_serverTest, &MailTransport::ServerTest::finished, this, &SetupServer::slotFinished);
   mOkButton->setEnabled( false );
   m_serverTest->start();
 }
