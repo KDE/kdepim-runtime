@@ -24,11 +24,15 @@
 #include <KCalCore/Journal>
 #include <KCalCore/Todo>
 
+#include <QtCore/QDateTime>
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
 
 CaldavProtocol::CaldavProtocol()
 {
+  // Only fetch items for the last 3 months
+  QString startTime = QDateTime::currentDateTimeUtc().addMonths( -3 ).toString( "yyyyMMddTHHMMss" );
+
   /*
    * Create a document like the following:
    *
@@ -73,6 +77,13 @@ CaldavProtocol::CaldavProtocol()
     nameAttribute = document.createAttribute( QLatin1String("name") );
     nameAttribute.setValue( QLatin1String("VEVENT") );
     subcompfilterElement.setAttributeNode( nameAttribute );
+
+    QDomElement timeRangeElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("time-range") );
+    QDomAttr startAttribute = document.createAttribute( QLatin1String("start") );
+    startAttribute.setValue( startTime );
+    timeRangeElement.setAttributeNode( startAttribute );
+    subcompfilterElement.appendChild( timeRangeElement );
+
     compfilterElement.appendChild( subcompfilterElement );
 
     mItemsQueries << document;
@@ -123,6 +134,13 @@ CaldavProtocol::CaldavProtocol()
     nameAttribute = document.createAttribute( QLatin1String("name") );
     nameAttribute.setValue( QLatin1String("VTODO") );
     subcompfilterElement.setAttributeNode( nameAttribute );
+
+    QDomElement timeRangeElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("time-range") );
+    QDomAttr startAttribute = document.createAttribute( QLatin1String("start") );
+    startAttribute.setValue( startTime );
+    timeRangeElement.setAttributeNode( startAttribute );
+    subcompfilterElement.appendChild( timeRangeElement );
+
     compfilterElement.appendChild( subcompfilterElement );
 
     mItemsQueries << document;
@@ -173,6 +191,13 @@ CaldavProtocol::CaldavProtocol()
     nameAttribute = document.createAttribute( QLatin1String("name") );
     nameAttribute.setValue( QLatin1String("VJOURNAL") );
     subcompfilterElement.setAttributeNode( nameAttribute );
+
+    QDomElement timeRangeElement = document.createElementNS( QLatin1String("urn:ietf:params:xml:ns:caldav"), QLatin1String("time-range") );
+    QDomAttr startAttribute = document.createAttribute( QLatin1String("start") );
+    startAttribute.setValue( startTime );
+    timeRangeElement.setAttributeNode( startAttribute );
+    subcompfilterElement.appendChild( timeRangeElement );
+
     compfilterElement.appendChild( subcompfilterElement );
 
     mItemsQueries << document;

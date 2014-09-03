@@ -156,10 +156,10 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
 
         // NOTE: Test what happens with remotefile -> save, close before save is finished.
         mDownloadJob = KIO::file_copy( mCurrentUrl, QUrl::fromLocalFile( cacheFile() ), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
-        connect( mDownloadJob, SIGNAL( result( KJob * ) ),
-                SLOT( slotDownloadJobResult( KJob * ) ) );
-        connect( mDownloadJob, SIGNAL( percent( KJob *, unsigned long ) ),
-                 SLOT( handleProgress( KJob *, unsigned long ) ) );
+        connect( mDownloadJob, SIGNAL(result(KJob*)),
+                SLOT(slotDownloadJobResult(KJob*)) );
+        connect( mDownloadJob, SIGNAL(percent(KJob*,ulong)),
+                 SLOT(handleProgress(KJob*,ulong)) );
 
         emit status( Running, i18n( "Downloading remote file." ) );
       }
@@ -254,10 +254,10 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
         KGlobal::ref();
         // Start a job to upload the locally cached file to the remote location.
         mUploadJob = KIO::file_copy( QUrl::fromLocalFile( cacheFile() ), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo );
-        connect( mUploadJob, SIGNAL( result( KJob * ) ),
-                SLOT( slotUploadJobResult( KJob * ) ) );
-        connect( mUploadJob, SIGNAL( percent( KJob *, unsigned long ) ),
-                 SLOT( handleProgress( KJob *, unsigned long ) ) );
+        connect( mUploadJob, SIGNAL(result(KJob*)),
+                SLOT(slotUploadJobResult(KJob*)) );
+        connect( mUploadJob, SIGNAL(percent(KJob*,ulong)),
+                 SLOT(handleProgress(KJob*,ulong)) );
 
         emit status( Running, i18n( "Uploading cached file to remote location." ) );
       }
