@@ -21,7 +21,7 @@
 
 #include "oxutils.h"
 
-#include <kdatetime.h>
+#include <qdatetime.h>
 
 using namespace OXA;
 
