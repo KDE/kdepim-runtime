@@ -319,9 +319,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     const QStringList parentPath = pathParts.mid(0, pathParts.size() - 1);
     const Akonadi::Collection parentCollection = getOrCreateParent(parentPath.join(separator));
     c.setParentCollection(parentCollection);
-    //TODO get from ResourceState, and add KMime::Message::mimeType() for the normal imap resource by default
-    //We add a dummy mimetype, otherwise the itemsync doesn't even work (action is disabled and resourcebase aborts the operation)
-    c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType() << QLatin1String("application/x-kolab-objects"));
+    c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType() << KMime::Message::mimeType());
 
     //assume LRS, until myrights is executed
     if (serverCapabilities().contains(QLatin1String("ACL"))) {
@@ -429,6 +427,9 @@ void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray,
             Akonadi::Collection &collection = mMailCollections[mailbox];
             // kDebug() << "setting metadata: " << mailbox << metadata;
             collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing)->setAnnotations(metadata);
+            const QByteArray type = KolabHelpers::getFolderTypeAnnotation(metadata);
+            const Kolab::FolderType folderType = KolabHelpers::folderTypeFromString(type);
+            collection.setContentMimeTypes(KolabHelpers::getContentMimeTypes(folderType));
         }
     }
 }
