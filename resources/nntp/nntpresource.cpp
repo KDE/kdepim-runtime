@@ -176,7 +176,7 @@ void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
   Q_UNUSED( job );
   foreach ( const KIO::UDSEntry &entry, list ) {
     QUrl url = baseUrl();
-    url.setPath( currentCollection().remoteId() + '/' + entry.stringValue( KIO::UDSEntry::UDS_NAME ) );
+    url.setPath( currentCollection().remoteId() + QLatin1Char('/') + entry.stringValue( KIO::UDSEntry::UDS_NAME ) );
     Item item;
     item.setRemoteId( url.url() );
     item.setMimeType( "message/news" );

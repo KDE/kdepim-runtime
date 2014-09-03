@@ -343,7 +343,7 @@ void InvitationsAgent::createAgentResult( KJob *job )
                          QString::fromLatin1( "/Settings" ),
                          QString::fromLatin1( "org.kde.Akonadi.ICal.Settings" ) );
     QDBusReply<void> reply = conf.call( QString::fromLatin1( "setPath" ),
-                                        QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/' + "akonadi_ical_resource" );
+                                        QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + "akonadi_ical_resource" );
 
     if ( !reply.isValid() ) {
       qWarning() << "dbus call failed, m_resourceId=" << m_resourceId;

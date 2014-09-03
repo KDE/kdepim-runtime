@@ -28,6 +28,8 @@
 #include <QDateTime>
 #include <KGlobal>
 #include <QStandardPaths>
+#include <QFileInfo>
+#include <QDir>
 
 static QString messageTypeToString(MigratorBase::MessageType type)
 {
@@ -73,7 +75,9 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
     mMigrationState(None),
     mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QLatin1String("akonadi-migrationrc"))))
 {
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + KGlobal::mainComponent().componentName() + QLatin1String("/") + identifier + QLatin1String("migration.log");
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + KGlobal::mainComponent().componentName() + QLatin1String("/") + identifier + QLatin1String("migration.log");
+    QFileInfo fileInfo(logFileName);
+    QDir().mkpath(fileInfo.absolutePath());
     setLogfile(logFileName);
     connect(this, SIGNAL(message(MigratorBase::MessageType,QString)), SLOT(logMessage(MigratorBase::MessageType,QString)));
     loadState();

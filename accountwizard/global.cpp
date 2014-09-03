@@ -98,7 +98,7 @@ QString Global::unpackAssistant(const QUrl &remotePackageUrl)
     } else {
         QString remoteFileName = QFileInfo(remotePackageUrl.path()).fileName();
         localPackageFile = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/accountwizard/") + remoteFileName ;
-        KIO::Job *job = KIO::copy(remotePackageUrl, QUrl(localPackageFile), KIO::Overwrite | KIO::HideProgressInfo);
+        KIO::Job *job = KIO::copy(remotePackageUrl, QUrl::fromLocalFile(localPackageFile), KIO::Overwrite | KIO::HideProgressInfo);
         qDebug() << "downloading remote URL" << remotePackageUrl << "to" << localPackageFile;
         if (!KIO::NetAccess::synchronousRun(job, 0)) {
             return QString();

@@ -207,7 +207,7 @@ void ImapResourceBase::updateResourceName()
 {
   if ( name() == identifier() ) {
     const QString agentType = AgentManager::self()->instance( identifier() ).type().identifier();
-    const QString agentsrcFile = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + '/' + QLatin1String("akonadi/agentsrc");
+    const QString agentsrcFile = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1Char('/') + QLatin1String("akonadi/agentsrc");
 
     const QSettings agentsrc( agentsrcFile, QSettings::IniFormat );
     const int instanceCounter = agentsrc.value(

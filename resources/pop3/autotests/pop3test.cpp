@@ -68,7 +68,7 @@ void Pop3Test::initTestCase()
     //
     // Configure the maildir resource
     //
-    QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/' + QLatin1String("tester");
+    QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("tester");
     mMaildirPath = maildirRootPath + QLatin1String("/new");
     mMaildirSettingsInterface = new OrgKdeAkonadiMaildirSettingsInterface(
         QLatin1String("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier,

@@ -412,7 +412,7 @@ void MaildirTest::testMaildirFlagsWriting()
   // create an initialy new mail
   QFile file;
   QDir::setCurrent( m_temp->path() );
-  file.setFileName( origDir + '/' + origFileName );
+  file.setFileName( origDir + QLatin1Char('/') + origFileName );
   file.open( QIODevice::WriteOnly );
   file.write( testString );
   file.flush();
@@ -422,7 +422,7 @@ void MaildirTest::testMaildirFlagsWriting()
   Maildir d( m_temp->path() );
   const QStringList entries = d.entryList();
   QCOMPARE( entries.size(), 1 );
-  QVERIFY( QFile::exists( origDir + '/' + entries[0] ) );
+  QVERIFY( QFile::exists( origDir + QLatin1Char('/') + entries[0] ) );
   const QString newKey = d.changeEntryFlags( entries[0], Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen );
   // make sure the new key exists
   QCOMPARE( newKey, d.entryList()[0] );

@@ -172,7 +172,7 @@ void MaildirResource::attemptConfigRestoring( KJob * job )
     // test the path
     if ( path.isEmpty() ) {
       qDebug() << "build a new path";
-      const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/';
+      const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/');
       // we use "id" to get an unique path
       path = dataDir + id;
       qDebug() << "set the path" << path;
