@@ -74,7 +74,6 @@ void KolabResource::retrieveCollections()
 {
     emit status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
 
-    setKeepLocalCollectionChanges(QSet<QByteArray>() << "CONTENTMIMETYPES" << "AccessRights");
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
     synchronizeTags();
 }

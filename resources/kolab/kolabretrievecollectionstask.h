@@ -63,6 +63,14 @@ private:
     QSet<QByteArray> mRequestedMetadata;
     KIMAP::Session *mSession;
     QTime mTime;
+    //For implicit sharing
+    const QByteArray cContentMimeTypes;
+    const QByteArray cAccessRights;
+    const QByteArray cImapAcl;
+    const QByteArray cCollectionAnnotations;
+    const QSet<QByteArray> cDefaultKeepLocalChanges;
+    const QStringList cDefaultMimeTypes;
+    const QStringList cCollectionOnlyContentMimeTypes;
 };
 
 class RetrieveMetadataJob : public KJob

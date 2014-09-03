@@ -143,8 +143,15 @@ void RetrieveMetadataJob::checkDone()
 }
 
 KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject* parent)
-    : ResourceTask(CancelIfNoSession, resource, parent),
-    mJobs(0)
+    : ResourceTask(CancelIfNoSession, resource, parent)
+    , mJobs(0)
+    , cContentMimeTypes("CONTENTMIMETYPES")
+    , cAccessRights("AccessRights")
+    , cImapAcl("imapacl")
+    , cCollectionAnnotations("collectionannotations")
+    , cDefaultKeepLocalChanges(QSet<QByteArray>() << cContentMimeTypes << cAccessRights << cImapAcl << cCollectionAnnotations)
+    , cDefaultMimeTypes(QStringList() << Akonadi::Collection::mimeType() << QLatin1String("application/x-kolab-objects"))
+    , cCollectionOnlyContentMimeTypes(QStringList() << Akonadi::Collection::mimeType())
 {
     mRequestedMetadata << "/shared/vendor/kolab/folder-type";
     mRequestedMetadata << "/private/vendor/kolab/folder-type";
@@ -319,7 +326,10 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     const QStringList parentPath = pathParts.mid(0, pathParts.size() - 1);
     const Akonadi::Collection parentCollection = getOrCreateParent(parentPath.join(separator));
     c.setParentCollection(parentCollection);
-    c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType() << KMime::Message::mimeType());
+    //TODO get from ResourceState, and add KMime::Message::mimeType() for the normal imap resource by default
+    //We add a dummy mimetype, otherwise the itemsync doesn't even work (action is disabled and resourcebase aborts the operation)
+    c.setContentMimeTypes(cDefaultMimeTypes);
+    c.setKeepLocalChanges(cDefaultKeepLocalChanges);
 
     //assume LRS, until myrights is executed
     if (serverCapabilities().contains(QLatin1String("ACL"))) {
@@ -341,7 +351,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     // If this folder is a noselect folder, make some special settings.
     if (currentFlags.contains("\\noselect")) {
         c.addAttribute(new NoSelectAttribute(true));
-        c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType());
+        c.setContentMimeTypes(cCollectionOnlyContentMimeTypes);
         c.setRights( Akonadi::Collection::ReadOnly );
     } else {
         // remove the noselect attribute explicitly, in case we had set it before (eg. for non-subscribed non-leaf folders)
@@ -370,7 +380,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
     if (job->error()) {
         cancelTask(job->errorString());
     } else {
-        QStringList personalMailboxes;
+        QSet<QString> personalMailboxes;
         Q_FOREACH(const QString &mailbox, mMailCollections.keys()) {
             if (!isNamespaceFolder(mailbox, resourceState()->userNamespaces() + resourceState()->sharedNamespaces())) {
                 if (mailbox.isEmpty()) {
@@ -379,8 +389,9 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
                 personalMailboxes << mailbox;
             }
         }
+        const QStringList metadataMailboxes = personalMailboxes.unite( mSubscribedMailboxes.toList().toSet()).toList();
 
-        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, personalMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(), this);
+        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, metadataMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(), this);
         connect(metadata, SIGNAL(result(KJob*)), this, SLOT(onMetadataRetrieved(KJob*)));
         mJobs++;
         metadata->start();
@@ -430,6 +441,9 @@ void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray,
             const QByteArray type = KolabHelpers::getFolderTypeAnnotation(metadata);
             const Kolab::FolderType folderType = KolabHelpers::folderTypeFromString(type);
             collection.setContentMimeTypes(KolabHelpers::getContentMimeTypes(folderType));
+            QSet<QByteArray> keepLocalChanges = collection.keepLocalChanges();
+            keepLocalChanges.remove(cContentMimeTypes);
+            collection.setKeepLocalChanges(keepLocalChanges);
         }
     }
 }
