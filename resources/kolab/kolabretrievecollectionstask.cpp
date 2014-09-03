@@ -157,6 +157,8 @@ KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
 
 void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 {
+    kDebug() << "Starting collection retrieval";
+    mTime.start();
     mSession = session;
 
     Akonadi::Collection root;
@@ -356,7 +358,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     }
     c.setEnabled(isSubscribed);
 
-    kDebug() << "creating collection " << mailbox << " with parent " << parentPath;
+    // kDebug() << "creating collection " << mailbox << " with parent " << parentPath;
     mMailCollections.insert(mailbox, c);
     //This is no longer required
     mSubscribedMailboxes.remove(mailbox);
@@ -364,6 +366,8 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 
 void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
 {
+    kDebug() << "All mailboxes received: " << mTime.elapsed();
+    kDebug() << "in total: " << mMailCollections.size();
     mJobs--;
     if (job->error()) {
         cancelTask(job->errorString());
@@ -418,12 +422,12 @@ void KolabRetrieveCollectionsTask::applyRights(QHash<QString, KIMAP::Acl::Rights
 
 void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray, QByteArray> > metadataMap)
 {
-    kDebug() << metadataMap;
+    // kDebug() << metadataMap;
     Q_FOREACH(const QString &mailbox, metadataMap.keys()) {
         const QMap<QByteArray, QByteArray> metadata  = metadataMap.value(mailbox);
         if (mMailCollections.contains(mailbox)) {
             Akonadi::Collection &collection = mMailCollections[mailbox];
-            kDebug() << "setting metadata: " << mailbox << metadata;
+            // kDebug() << "setting metadata: " << mailbox << metadata;
             collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing)->setAnnotations(metadata);
         }
     }
@@ -431,7 +435,7 @@ void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray,
 
 void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
 {
-    kDebug();
+    kDebug() << mTime.elapsed();
     mJobs--;
     if (job->error()) {
         kWarning() << job->errorString();
@@ -448,6 +452,7 @@ void KolabRetrieveCollectionsTask::checkDone()
 {
     if (!mJobs) {
         collectionsRetrieved(mMailCollections.values());
+        kDebug() << "done " <<  mTime.elapsed();
     }
 }
 
@@ -462,6 +467,7 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::M
 
 void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob* job)
 {
+    kDebug() << "received subscribed collections " <<  mTime.elapsed();
     mJobs--;
     if (job->error()) {
         cancelTask(job->errorString());

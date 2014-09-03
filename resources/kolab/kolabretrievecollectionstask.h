@@ -62,6 +62,7 @@ private:
     QSet<QString> mSubscribedMailboxes;
     QSet<QByteArray> mRequestedMetadata;
     KIMAP::Session *mSession;
+    QTime mTime;
 };
 
 class RetrieveMetadataJob : public KJob
