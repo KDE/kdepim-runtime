@@ -55,7 +55,7 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(select->session());
 
     KIMAP::ImapSet set;
-    set.add(KIMAP::ImapInterval(1));
+    set.add(KIMAP::ImapInterval(1, 0));
     fetch->setSequenceSet(set);
     fetch->setUidBased(false);
 
