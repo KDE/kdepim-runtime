@@ -34,28 +34,28 @@ class SharedResourcePrivate : public ResourcePrivateBase
       : ResourcePrivateBase( idArbiter, parent ),
         mModel( this )
     {
-      connect( &mModel, SIGNAL( subResourceAdded( SubResourceBase* ) ),
-               SLOT( subResourceAdded( SubResourceBase* ) ) );
+      connect( &mModel, SIGNAL(subResourceAdded(SubResourceBase*)),
+               SLOT(subResourceAdded(SubResourceBase*)) );
 
-      connect( &mModel, SIGNAL( subResourceRemoved( SubResourceBase* ) ),
-               SLOT( subResourceRemoved( SubResourceBase* ) ) );
+      connect( &mModel, SIGNAL(subResourceRemoved(SubResourceBase*)),
+               SLOT(subResourceRemoved(SubResourceBase*)) );
 
-      connect( &mModel, SIGNAL( loadingResult( bool, QString ) ),
-               SLOT( loadingResult( bool, QString ) ) );
+      connect( &mModel, SIGNAL(loadingResult(bool,QString)),
+               SLOT(loadingResult(bool,QString)) );
     }
 
     SharedResourcePrivate( const KConfigGroup &config, IdArbiter *idArbiter, QObject *parent )
       : ResourcePrivateBase( config, idArbiter, parent ),
         mModel( this )
     {
-      connect( &mModel, SIGNAL( subResourceAdded( SubResourceBase* ) ),
-               SLOT( subResourceAdded( SubResourceBase* ) ) );
+      connect( &mModel, SIGNAL(subResourceAdded(SubResourceBase*)),
+               SLOT(subResourceAdded(SubResourceBase*)) );
 
-      connect( &mModel, SIGNAL( subResourceRemoved( SubResourceBase* ) ),
-               SLOT( subResourceRemoved( SubResourceBase* ) ) );
+      connect( &mModel, SIGNAL(subResourceRemoved(SubResourceBase*)),
+               SLOT(subResourceRemoved(SubResourceBase*)) );
 
-      connect( &mModel, SIGNAL( loadingResult( bool, QString ) ),
-               SLOT( loadingResult( bool, QString ) ) );
+      connect( &mModel, SIGNAL(loadingResult(bool,QString)),
+               SLOT(loadingResult(bool,QString)) );
     }
 
     QStringList subResourceIdentifiers() const
