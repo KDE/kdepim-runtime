@@ -52,7 +52,7 @@ void ObjectsRequestJob::start()
   const QString path = ObjectUtils::davPath( mFolder.module() );
 
   KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
-  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
+  connect(job, &KIO::DavJob::result, this, &ObjectsRequestJob::davJobFinished);
 }
 
 Object::List ObjectsRequestJob::objects() const

@@ -36,7 +36,7 @@ UserIdRequestJob::UserIdRequestJob( QObject *parent )
 void UserIdRequestJob::start()
 {
   FoldersRequestJob *job = new FoldersRequestJob( 0, FoldersRequestJob::Modified, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(davJobFinished(KJob*)) );
+  connect(job, &FoldersRequestJob::result, this, &UserIdRequestJob::davJobFinished);
 
   job->start();
 }

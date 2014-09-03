@@ -50,8 +50,8 @@ ConfigDialog::ConfigDialog( WId windowId )
   okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
   QPushButton *user1Button = new QPushButton;
   buttonBox->addButton(user1Button, QDialogButtonBox::ActionRole);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
   mainLayout->addWidget(buttonBox);
   user1Button->setText(i18n("About..."));
 
@@ -72,11 +72,11 @@ ConfigDialog::ConfigDialog( WId windowId )
   mManager = new KConfigDialogManager( this, Settings::self() );
   mManager->updateWidgets();
 
-  connect(okButton, SIGNAL(clicked()), SLOT(save()) );
-  connect(user1Button, SIGNAL(clicked()), this, SLOT(showAboutDialog()) );
-  connect( mServerEdit, SIGNAL(textChanged(QString)), SLOT(updateButtonState()) );
-  connect( mUserEdit, SIGNAL(textChanged(QString)), SLOT(updateButtonState()) );
-  connect( mCheckConnectionButton, SIGNAL(clicked()), SLOT(checkConnection()) );
+  connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
+  connect(user1Button, &QPushButton::clicked, this, &ConfigDialog::showAboutDialog);
+  connect(mServerEdit, &KLineEdit::textChanged, this, &ConfigDialog::updateButtonState);
+  connect(mUserEdit, &KLineEdit::textChanged, this, &ConfigDialog::updateButtonState);
+  connect(mCheckConnectionButton, &QPushButton::clicked, this, &ConfigDialog::checkConnection);
 
   resize( QSize( 410, 200 ) );
 }
@@ -111,7 +111,7 @@ void ConfigDialog::checkConnection()
 {
   OXA::ConnectionTestJob *job = new OXA::ConnectionTestJob( mServerEdit->text(), mUserEdit->text(),
                                                             mPasswordEdit->text(), this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(checkConnectionJobFinished(KJob*)) );
+  connect(job, &OXA::ConnectionTestJob::result, this, &ConfigDialog::checkConnectionJobFinished);
   job->start();
 
   QApplication::setOverrideCursor( Qt::WaitCursor );
