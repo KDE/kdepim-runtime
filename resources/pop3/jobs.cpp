@@ -32,9 +32,7 @@
 POPSession::POPSession(const QString &password)
     : mCurrentJob(0), mPassword(password)
 {
-    KIO::Scheduler::connect(
-        SIGNAL(slaveError(KIO::Slave*,int,QString)), this,
-        SLOT(slotSlaveError(KIO::Slave*,int,QString)));
+    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this,SLOT(slotSlaveError(KIO::Slave*,int,QString)));
 }
 
 POPSession::~POPSession()
@@ -245,10 +243,8 @@ void SlaveBaseJob::slaveError(int errorCode, const QString &errorMessage)
 
 void SlaveBaseJob::connectJob()
 {
-    connect(mJob, SIGNAL(data(KIO::Job*,QByteArray)),
-            SLOT(slotSlaveData(KIO::Job*,QByteArray)));
-    connect(mJob, SIGNAL(result(KJob*)),
-            SLOT(slotSlaveResult(KJob*)));
+    connect(mJob, &KIO::TransferJob::data, this, &SlaveBaseJob::slotSlaveData);
+    connect(mJob, &KIO::TransferJob::result, this, &SlaveBaseJob::slotSlaveResult);
 }
 
 void SlaveBaseJob::startJob(const QString &path)
@@ -277,8 +273,7 @@ LoginJob::LoginJob(POPSession *popSession)
 void LoginJob::start()
 {
     // This will create a connected slave, which means it will also try to login.
-    KIO::Scheduler::connect(SIGNAL(slaveConnected(KIO::Slave*)),
-                            this, SLOT(slaveConnected(KIO::Slave*)));
+    KIO::Scheduler::connect(SIGNAL(slaveConnected(KIO::Slave*)), this, SLOT(slaveConnected(KIO::Slave*)));
     if (!mPOPSession->connectSlave()) {
         setError(KJob::UserDefinedError);
         setErrorText(i18n("Unable to create POP3 slave, aborting mail check."));
@@ -473,8 +468,7 @@ void FetchJob::start()
 void FetchJob::connectJob()
 {
     SlaveBaseJob::connectJob();
-    connect(mJob, SIGNAL(infoMessage(KJob*,QString,QString)),
-            SLOT(slotInfoMessage(KJob*,QString,QString)));
+    connect(mJob, &KIO::TransferJob::infoMessage, this, &FetchJob::slotInfoMessage);
 }
 
 void FetchJob::slotSlaveData(KIO::Job *job, const QByteArray &data)

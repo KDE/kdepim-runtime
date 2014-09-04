@@ -79,7 +79,7 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
     setLogfile(logFileName);
-    connect(this, SIGNAL(message(MigratorBase::MessageType,QString)), SLOT(logMessage(MigratorBase::MessageType,QString)));
+    connect(this, &MigratorBase::message, this, &MigratorBase::logMessage);
     loadState();
 }
 
@@ -92,7 +92,7 @@ MigratorBase::MigratorBase(const QString &identifier, const QString &configFile,
         mConfig.reset(new KConfig(configFile));
     }
     setLogfile(logFile);
-    connect(this, SIGNAL(message(MigratorBase::MessageType,QString)), SLOT(logMessage(MigratorBase::MessageType,QString)));
+    connect(this, &MigratorBase::message, this, &MigratorBase::logMessage);
     loadState();
 }
 

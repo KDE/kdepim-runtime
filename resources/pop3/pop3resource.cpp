@@ -59,8 +59,7 @@ POP3Resource::POP3Resource(const QString &id)
     Settings::self()->setResourceId(identifier());
     resetState();
 
-    connect(this, SIGNAL(abortRequested()),
-            this, SLOT(slotAbortRequested()));
+    connect(this, &POP3Resource::abortRequested, this, &POP3Resource::slotAbortRequested);
     connect(mIntervalTimer, SIGNAL(timeout()),
             this, SLOT(intervalCheckTriggered()));
     connect(this, &POP3Resource::reloadConfiguration, this, &POP3Resource::configurationChanged);
@@ -250,14 +249,12 @@ void POP3Resource::doStateStep()
             SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob(this);
             requestJob->requestDefaultCollection(SpecialMailCollections::Inbox);
             requestJob->start();
-            connect(requestJob, SIGNAL(result(KJob*)),
-                    this, SLOT(localFolderRequestJobFinished(KJob*)));
+            connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &POP3Resource::localFolderRequestJobFinished);
         } else {
             CollectionFetchJob *fetchJob = new CollectionFetchJob(targetCollection,
                     CollectionFetchJob::Base);
             fetchJob->start();
-            connect(fetchJob, SIGNAL(result(KJob*)),
-                    this, SLOT(targetCollectionFetchJobFinished(KJob*)));
+            connect(fetchJob, &CollectionFetchJob::result, this, &POP3Resource::targetCollectionFetchJobFinished);
         }
         break;
     }
@@ -265,8 +262,7 @@ void POP3Resource::doStateStep()
         qDebug() << "================ Starting state Precommand =====================";
         if (!Settings::self()->precommand().isEmpty()) {
             PrecommandJob *precommandJob = new PrecommandJob(Settings::self()->precommand(), this);
-            connect(precommandJob, SIGNAL(result(KJob*)),
-                    this, SLOT(precommandResult(KJob*)));
+            connect(precommandJob, &PrecommandJob::result, this, &POP3Resource::precommandResult);
             precommandJob->start();
             emit status(Running, i18n("Executing precommand."));
         } else {
@@ -292,8 +288,7 @@ void POP3Resource::doStateStep()
                                          Wallet::Asynchronous);
         }
         if (loadPasswordFromWallet && mWallet) {
-            connect(mWallet, SIGNAL(walletOpened(bool)),
-                    this, SLOT(walletOpenedForLoading(bool)));
+            connect(mWallet, &KWallet::Wallet::walletOpened, this, &POP3Resource::walletOpenedForLoading);
         } else if (passwordNeeded && (mPassword.isEmpty() || mAskAgain)) {
             QString detail;
             if (mAskAgain) {
@@ -375,12 +370,12 @@ void POP3Resource::doStateStep()
         }
 
         fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
-        connect(fetchJob, SIGNAL(result(KJob*)),
-                this, SLOT(fetchJobResult(KJob*)));
+        connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
         connect(fetchJob, SIGNAL(messageFinished(int,KMime::Message::Ptr)),
                 this, SLOT(messageFinished(int,KMime::Message::Ptr)));
         connect(fetchJob, SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
                 this, SLOT(messageDownloadProgress(KJob*,KJob::Unit,qulonglong)));
+
         fetchJob->start();
     }
     break;
