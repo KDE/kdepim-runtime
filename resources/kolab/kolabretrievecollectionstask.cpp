@@ -55,6 +55,11 @@ RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringL
 
 void RetrieveMetadataJob::start()
 {
+    //Fill the map with empty entires so we set the mimetype to mail if no metadata is retrieved
+    Q_FOREACH (const QString &mailbox, mMailboxes) {
+        mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
+    }
+
     QSet<QString> toplevelMailboxes;
     Q_FOREACH (const QString &mailbox, mMailboxes) {
         const QStringList parts = mailbox.split(mSeparator);
@@ -368,8 +373,6 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 
     // kDebug() << "creating collection " << mailbox << " with parent " << parentPath;
     mMailCollections.insert(mailbox, c);
-    //This is no longer required
-    mSubscribedMailboxes.remove(mailbox);
 }
 
 void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
@@ -382,10 +385,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
     } else {
         QSet<QString> personalMailboxes;
         Q_FOREACH(const QString &mailbox, mMailCollections.keys()) {
-            if (!isNamespaceFolder(mailbox, resourceState()->userNamespaces() + resourceState()->sharedNamespaces())) {
-                if (mailbox.isEmpty()) {
-                    continue;
-                }
+            if (!mailbox.isEmpty() && !isNamespaceFolder(mailbox, resourceState()->userNamespaces() + resourceState()->sharedNamespaces())) {
                 personalMailboxes << mailbox;
             }
         }
