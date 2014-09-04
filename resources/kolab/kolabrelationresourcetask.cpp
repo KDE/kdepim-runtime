@@ -50,6 +50,7 @@ void KolabRelationResourceTask::doStart(KIMAP::Session *session)
     topLevelCollection.setParentCollection(Akonadi::Collection::root());
 
     Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(topLevelCollection, Akonadi::CollectionFetchJob::Recursive);
+    fetchJob->fetchScope().setResource(resourceState()->resourceIdentifier());
     fetchJob->fetchScope().setContentMimeTypes(QStringList() << KolabHelpers::getMimeType(Kolab::ConfigurationType));
     fetchJob->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     fetchJob->fetchScope().setListFilter(Akonadi::CollectionFetchScope::NoFilter);
