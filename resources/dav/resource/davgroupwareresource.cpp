@@ -48,8 +48,10 @@
 #include <akonadi/changerecorder.h>
 #include <akonadi/collectionfetchscope.h>
 #include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemdeletejob.h>
 #include <akonadi/itemfetchjob.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/recursiveitemfetchjob.h>
 
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
@@ -104,6 +106,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   connect( mFreeBusyHandler, SIGNAL(freeBusyRetrieved(QString,QString,bool,QString)), this, SLOT(onFreeBusyRetrieved(QString,QString,bool,QString)) );
 
   connect(this, SIGNAL(reloadConfiguration()), this, SLOT(onReloadConfig()));
+
+  scheduleCustomTask( this, "createInitialCache", QVariant(), ResourceBase::AfterChangeReplay );
 }
 
 DavGroupwareResource::~DavGroupwareResource()
@@ -390,6 +394,43 @@ void DavGroupwareResource::doSetOnline( bool online )
   ResourceBase::doSetOnline( online );
 }
 
+void DavGroupwareResource::createInitialCache()
+{
+  // Get all the items fetched by this resource
+  Akonadi::RecursiveItemFetchJob *job = new Akonadi::RecursiveItemFetchJob( mDavCollectionRoot, QStringList() );
+  job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(onCreateInitialCacheReady(KJob*)) );
+  job->start();
+}
+
+void DavGroupwareResource::onCreateInitialCacheReady( KJob *job )
+{
+  Akonadi::RecursiveItemFetchJob *fetchJob = qobject_cast<Akonadi::RecursiveItemFetchJob*>( job );
+
+  foreach ( const Akonadi::Item &item, fetchJob->items() ) {
+    const QString rid = item.remoteId();
+    if ( rid.isEmpty() )
+      continue;
+
+    const QString colRid = item.parentCollection().remoteId();
+    if ( colRid.isEmpty() )
+      continue;
+
+    const QString etag = item.remoteRevision();
+    if ( etag.isEmpty() )
+      continue;
+
+    mEtagCache.setEtag( rid, etag );
+
+    if ( !mItemsRidCache.contains( colRid ) )
+      mItemsRidCache.insert( colRid, QSet<QString>() );
+
+    mItemsRidCache[colRid].insert( rid );
+  }
+
+  taskDone();
+}
+
 void DavGroupwareResource::onReloadConfig()
 {
     Settings::self()->reloadConfig();
@@ -533,7 +574,6 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
   Akonadi::Item::List changedItems;
-  Akonadi::Item::List removedItems;
   QSet<QString> seenRids;
   QStringList changedRids;
 
@@ -567,10 +607,16 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   removedRids.subtract( seenRids );
   foreach ( const QString &rmd, removedRids ) {
     Akonadi::Item item;
+    item.setParentCollection( collection );
     item.setRemoteId( rmd );
-    removedItems << item;
     mEtagCache.removeEtag( rmd );
+
+    // Use a job to delete items as itemsRetrievedIncremental seem to choke
+    // when many items are given with just their RID.
+    Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob( item );
+    deleteJob->start();
   }
+
 
   // If the protocol supports multiget then deviate from the expected behavior
   // and fetch all items with payload now instead of waiting for Akonadi to
@@ -581,11 +627,10 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, changedRids );
     connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMultigetFinished(KJob*)) );
     fetchJob->setProperty( "items", QVariant::fromValue( changedItems ) );
-    fetchJob->setProperty( "removedItems", QVariant::fromValue( removedItems ) );
     fetchJob->start();
     // delay the call of itemsRetrieved() to onMultigetFinished()
   } else {
-    itemsRetrievedIncremental( changedItems, removedItems );
+    itemsRetrievedIncremental( changedItems, Akonadi::Item::List() );
   }
 }
 
@@ -603,7 +648,6 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
   }
 
   const Akonadi::Item::List origItems = job->property( "items" ).value<Akonadi::Item::List>();
-  const Akonadi::Item::List removedItems = job->property( "removedItems" ).value<Akonadi::Item::List>();
   const DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob*>( job );
 
   Akonadi::Item::List items;
@@ -649,7 +693,7 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
     items << item;
   }
 
-  itemsRetrievedIncremental( items, removedItems );
+  itemsRetrievedIncremental( items, Akonadi::Item::List() );
 }
 
 void DavGroupwareResource::onRetrieveItemFinished( KJob *job )

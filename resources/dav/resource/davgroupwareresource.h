@@ -62,6 +62,9 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     virtual void doSetOnline( bool online );
 
   private Q_SLOTS:
+    void createInitialCache();
+    void onCreateInitialCacheReady( KJob* );
+
     void onReloadConfig();
     void onCollectionRemovedFinished( KJob* );
 
