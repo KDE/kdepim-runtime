@@ -236,8 +236,7 @@ void DavGroupwareResource::retrieveCollections()
 
   DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob( Settings::self()->configuredDavUrls() );
   connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
-  connect( job, SIGNAL(collectionDiscovered(int,QString,QString)),
-           SLOT(onCollectionDiscovered(int,QString,QString)) );
+  connect(job, &DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
   job->start();
 }
 

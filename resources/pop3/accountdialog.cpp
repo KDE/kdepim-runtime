@@ -227,7 +227,7 @@ void AccountDialog::loadSettings()
         SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob(this);
         requestJob->requestDefaultCollection(SpecialMailCollections::Inbox);
         requestJob->start();
-        connect(requestJob, SIGNAL(result(KJob*)), this, SLOT(localFolderRequestJobFinished(KJob*)));
+        connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &AccountDialog::localFolderRequestJobFinished);
     }
 
     mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winId(),
