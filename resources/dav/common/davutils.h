@@ -24,6 +24,8 @@
 
 #include <KUrl>
 
+#include <Akonadi/Item>
+
 class DavItem;
 namespace Akonadi {
   class Collection;
@@ -166,7 +168,12 @@ namespace DavUtils
    * The returned item will have no payload (DavItem::data() will return an empty
    * QByteArray) if the @p item payload is not recognized.
    */
-  DavItem createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection );
+  DavItem createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems = Akonadi::Item::List() );
+
+  /**
+   * Parses the DAV data contained in @p source and puts it in @p target and @extraItems.
+   */
+  bool parseDavData( const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems );
 }
 
 #endif

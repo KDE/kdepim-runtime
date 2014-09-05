@@ -39,6 +39,7 @@
 #include <KCalCore/FreeBusy>
 #include <KCalCore/Incidence>
 #include <KCalCore/ICalFormat>
+#include <KCalCore/MemoryCalendar>
 #include <KCalCore/Todo>
 #include <kdatetime.h>
 #include <kjob.h>
@@ -50,6 +51,8 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
+#include <akonadi/recursiveitemfetchjob.h>
+#include <akonadi/itemmodifyjob.h>
 
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
@@ -106,6 +109,8 @@ DavGroupwareResource::DavGroupwareResource( const QString &id )
   connect(mFreeBusyHandler, &DavFreeBusyHandler::freeBusyRetrieved, this, &DavGroupwareResource::onFreeBusyRetrieved);
 
   connect(this, &DavGroupwareResource::reloadConfiguration, this, &DavGroupwareResource::onReloadConfig);
+
+  scheduleCustomTask( this, "createInitialCache", QVariant(), ResourceBase::AfterChangeReplay );
 }
 
 DavGroupwareResource::~DavGroupwareResource()
@@ -342,23 +347,61 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     return;
   }
 
-  DavItem davItem = DavUtils::createDavItem( item, item.parentCollection() );
+  QString ridBase = item.remoteId();
+  if ( ridBase.contains( QChar( '#' ) ) )
+    ridBase.truncate( ridBase.indexOf( QChar( '#' ) ) );
+
+  Akonadi::Item::List extraItems;
+  foreach ( const QString &rid, mEtagCache.etags() ) {
+    if ( rid.startsWith( ridBase ) && rid != item.remoteId() ) {
+      Akonadi::Item extraItem;
+      extraItem.setRemoteId( rid );
+      extraItems << extraItem;
+    }
+  }
+
+  if ( extraItems.isEmpty() ) {
+    doItemChange( item );
+  }
+  else {
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( extraItems );
+    job->setCollection( item.parentCollection() );
+    job->fetchScope().fetchFullPayload();
+    job->setProperty( "item", QVariant::fromValue( item ) );
+    connect( job, SIGNAL(result(KJob*)), this, SLOT(onItemChangePrepared(KJob*)) );
+  }
+}
+
+void DavGroupwareResource::onItemChangePrepared( KJob *job )
+{
+  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
+  Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
+  doItemChange( item, fetchJob->items() );
+}
+
+void DavGroupwareResource::doItemChange( const Akonadi::Item &item, const Akonadi::Item::List &dependentItems )
+{
+  DavItem davItem = DavUtils::createDavItem( item, item.parentCollection(), dependentItems );
   if ( davItem.data().isEmpty() ) {
     qCritical() << "Item " << item.id() << " doesn't has a valid payload";
     cancelTask();
     return;
   }
 
-  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+  QString url = item.remoteId();
+  if ( url.contains( QChar( '#' ) ) )
+    url.truncate( url.indexOf( QChar( '#' ) ) );
+  const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), url );
 
   // We have to re-set the URL as it's not necessarily valid after createDavItem()
-  davItem.setUrl( item.remoteId() );
+  davItem.setUrl( url );
   davItem.setEtag( item.remoteRevision() );
 
-  DavItemModifyJob *job = new DavItemModifyJob( davUrl, davItem );
-  job->setProperty( "item", QVariant::fromValue( item ) );
+  DavItemModifyJob *modJob = new DavItemModifyJob( davUrl, davItem );
+  modJob->setProperty( "item", QVariant::fromValue( item ) );
+  modJob->setProperty( "dependentItems", QVariant::fromValue( dependentItems ) );
   connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemChangedFinished);
-  job->start();
+  modJob->start();
 }
 
 void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
@@ -367,6 +410,84 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
     return;
   }
 
+  QString ridBase = item.remoteId();
+  if ( ridBase.contains( QChar( '#' ) ) ) {
+    // A bit tricky: we must remove an incidence contained in a resource
+    // containing multiple ones.
+    ridBase.truncate( ridBase.indexOf( QChar( '#' ) ) );
+
+    Akonadi::Item::List extraItems;
+    foreach ( const QString &rid, mEtagCache.etags() ) {
+      if ( rid.startsWith( ridBase ) && rid != item.remoteId() ) {
+        Akonadi::Item extraItem;
+        extraItem.setRemoteId( rid );
+        extraItems << extraItem;
+      }
+    }
+  
+    if ( extraItems.isEmpty() ) {
+      // Urrrr?
+      // Well, just delete the item.
+      doItemRemoval( item );
+    }
+    else {
+      Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( extraItems );
+      job->setCollection( item.parentCollection() );
+      job->fetchScope().fetchFullPayload();
+      job->setProperty( "item", QVariant::fromValue( item ) );
+      connect( job, SIGNAL(result(KJob*)), this, SLOT(onItemRemovalPrepared(KJob*)) );
+    }
+  }
+  else {
+    // easy as pie: just remove everything at the URL.
+    doItemRemoval( item );
+  }
+}
+
+void DavGroupwareResource::onItemRemovalPrepared( KJob *job )
+{
+  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
+  Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
+  Akonadi::Item::List keptItems = fetchJob->items();
+
+  if ( keptItems.isEmpty() ) {
+    // Urrrr? Not again!
+    doItemRemoval( item );
+  }
+  else {
+    Akonadi::Item mainItem;
+    Akonadi::Item::List extraItems;
+    QString ridBase = item.remoteId();
+    ridBase.truncate( ridBase.indexOf( QChar( '#' ) ) );
+
+    foreach ( const Akonadi::Item &kept, keptItems ) {
+      if ( kept.remoteId() == ridBase && extraItems.isEmpty() )
+        mainItem = kept;
+      else
+        extraItems << kept;
+    }
+
+    if ( !mainItem.hasPayload() )
+      mainItem = extraItems.takeFirst();
+
+    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), ridBase );
+
+    DavItem davItem = DavUtils::createDavItem( mainItem, mainItem.parentCollection(), extraItems );
+    davItem.setUrl( ridBase );
+    davItem.setEtag( item.remoteRevision() );
+
+    DavItemModifyJob *modJob = new DavItemModifyJob( davUrl, davItem );
+    modJob->setProperty( "item", QVariant::fromValue( mainItem ) );
+    modJob->setProperty( "dependentItems", QVariant::fromValue( extraItems ) );
+    modJob->setProperty( "isRemoval", QVariant::fromValue( true ) );
+    modJob->setProperty( "removedItem", QVariant::fromValue( item ) );
+    connect( modJob, SIGNAL(result(KJob*)), SLOT(onItemChangedFinished(KJob*)) );
+    modJob->start();
+  }
+}
+
+void DavGroupwareResource::doItemRemoval( const Akonadi::Item &item )
+{
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
 
   DavItem davItem;
@@ -389,6 +510,43 @@ void DavGroupwareResource::doSetOnline( bool online )
   }
 
   ResourceBase::doSetOnline( online );
+}
+
+void DavGroupwareResource::createInitialCache()
+{
+  // Get all the items fetched by this resource
+  Akonadi::RecursiveItemFetchJob *job = new Akonadi::RecursiveItemFetchJob( mDavCollectionRoot, QStringList() );
+  job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
+  connect( job, SIGNAL(result(KJob*)), this, SLOT(onCreateInitialCacheReady(KJob*)) );
+  job->start();
+}
+
+void DavGroupwareResource::onCreateInitialCacheReady( KJob *job )
+{
+  Akonadi::RecursiveItemFetchJob *fetchJob = qobject_cast<Akonadi::RecursiveItemFetchJob*>( job );
+
+  foreach ( const Akonadi::Item &item, fetchJob->items() ) {
+    const QString rid = item.remoteId();
+    if ( rid.isEmpty() )
+      continue;
+
+    const QString colRid = item.parentCollection().remoteId();
+    if ( colRid.isEmpty() )
+      continue;
+
+    const QString etag = item.remoteRevision();
+    if ( etag.isEmpty() )
+      continue;
+
+    mEtagCache.setEtag( rid, etag );
+
+    if ( !mItemsRidCache.contains( colRid ) )
+      mItemsRidCache.insert( colRid, QSet<QString>() );
+
+    mItemsRidCache[colRid].insert( rid );
+  }
+
+  taskDone();
 }
 
 void DavGroupwareResource::onReloadConfig()
@@ -534,7 +692,6 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   const DavItemsListJob *listJob = qobject_cast<DavItemsListJob*>( job );
 
   Akonadi::Item::List changedItems;
-  Akonadi::Item::List removedItems;
   QSet<QString> seenRids;
   QStringList changedRids;
 
@@ -568,10 +725,16 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
   removedRids.subtract( seenRids );
   foreach ( const QString &rmd, removedRids ) {
     Akonadi::Item item;
+    item.setParentCollection( collection );
     item.setRemoteId( rmd );
-    removedItems << item;
     mEtagCache.removeEtag( rmd );
+
+    // Use a job to delete items as itemsRetrievedIncremental seem to choke
+    // when many items are given with just their RID.
+    Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob( item );
+    deleteJob->start();
   }
+
 
   // If the protocol supports multiget then deviate from the expected behavior
   // and fetch all items with payload now instead of waiting for Akonadi to
@@ -582,11 +745,10 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
     DavItemsFetchJob *fetchJob = new DavItemsFetchJob( davUrl, changedRids );
     connect(fetchJob, &DavItemsFetchJob::result, this, &DavGroupwareResource::onMultigetFinished);
     fetchJob->setProperty( "items", QVariant::fromValue( changedItems ) );
-    fetchJob->setProperty( "removedItems", QVariant::fromValue( removedItems ) );
     fetchJob->start();
     // delay the call of itemsRetrieved() to onMultigetFinished()
   } else {
-    itemsRetrievedIncremental( changedItems, removedItems );
+    itemsRetrievedIncremental( changedItems, Akonadi::Item::List() );
   }
 }
 
@@ -604,7 +766,6 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
   }
 
   const Akonadi::Item::List origItems = job->property( "items" ).value<Akonadi::Item::List>();
-  const Akonadi::Item::List removedItems = job->property( "removedItems" ).value<Akonadi::Item::List>();
   const DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob*>( job );
 
   Akonadi::Item::List items;
@@ -618,52 +779,38 @@ void DavGroupwareResource::onMultigetFinished( KJob *job )
       continue;
     }
 
-    qDebug() << "Multiget'ed item at " << davItem.url() << item.remoteId();
-
-    // convert dav data into payload
-    const QString data = QString::fromUtf8( davItem.data() );
-
-    if ( item.mimeType() == KABC::Addressee::mimeType() ) {
-      KABC::VCardConverter converter;
-      const KABC::Addressee contact = converter.parseVCard( davItem.data() );
-
-      if ( contact.isEmpty() )
-        continue;
-
-      item.setPayloadFromData( davItem.data() );
-    } else {
-      KCalCore::ICalFormat formatter;
-      const IncidencePtr ptr( formatter.fromString( data ) );
-
-      if ( !ptr )
-        continue;
-
-      item.setPayload<IncidencePtr>( ptr );
-
-      // fix mime type for CalDAV collections
-      item.setMimeType( ptr->mimeType() );
-    }
+    Akonadi::Item::List extraItems;
+    if ( !DavUtils::parseDavData( davItem, item, extraItems ) )
+      continue;
 
     // update etag
     item.setRemoteRevision( davItem.etag() );
     mEtagCache.setEtag( item.remoteId(), davItem.etag() );
     items << item;
+    foreach ( const Akonadi::Item &extraItem, extraItems ) {
+      mEtagCache.setEtag( extraItem.remoteId(), davItem.etag() );
+      items << extraItem;
+    }
   }
 
-  itemsRetrievedIncremental( items, removedItems );
+  itemsRetrievedIncremental( items, Akonadi::Item::List() );
 }
 
 void DavGroupwareResource::onRetrieveItemFinished( KJob *job )
 {
-  onItemFetched( job, false );
+  onItemFetched( job, ItemUpdateAdd );
 }
 
 void DavGroupwareResource::onItemRefreshed( KJob* job )
 {
-  onItemFetched( job, true );
+  ItemFetchUpdateType update = ItemUpdateChange;
+  if ( job->property( "isRemoval" ).isValid() && job->property( "isRemoval" ).toBool() )
+    update = ItemUpdateNone;
+
+  onItemFetched( job, update );
 }
 
-void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
+void DavGroupwareResource::onItemFetched( KJob* job, ItemFetchUpdateType updateType )
 {
   if ( job->error() ) {
     if ( mSyncErrorNotified ) {
@@ -677,46 +824,26 @@ void DavGroupwareResource::onItemFetched( KJob* job, bool isRefresh )
   }
 
   const DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
-
   const DavItem davItem = fetchJob->item();
-
   Akonadi::Item item = fetchJob->property( "item" ).value<Akonadi::Item>();
 
-  // convert dav data into payload
-  const QString data = QString::fromUtf8( davItem.data() );
-
-  if ( item.mimeType() == KABC::Addressee::mimeType() ) {
-    KABC::VCardConverter converter;
-    const KABC::Addressee contact = converter.parseVCard( davItem.data() );
-
-    if ( contact.isEmpty() ) {
-      cancelTask( i18n( "The server returned invalid data" ) );
-      return;
-    }
-
-    item.setPayload<KABC::Addressee>( contact );
-  } else {
-    KCalCore::ICalFormat formatter;
-    const IncidencePtr ptr( formatter.fromString( data ) );
-
-    if ( !ptr ) {
-      cancelTask( i18n( "The server returned invalid data" ) );
-      return;
-    }
-
-    item.setPayload<IncidencePtr>( ptr );
-
-    // fix mime type for CalDAV collections
-    item.setMimeType( ptr->mimeType() );
-  }
+  Akonadi::Item::List extraItems;
+  if ( !DavUtils::parseDavData( davItem, item, extraItems ) )
+    return;
 
   // update etag
   item.setRemoteRevision( davItem.etag() );
   mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
-  if ( isRefresh )
+  for ( int i = 0; i < extraItems.size(); ++i )
+    mEtagCache.setEtag( extraItems.at( i ).remoteId(), davItem.etag() );
+
+  Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob( extraItems );
+  j->setIgnorePayload( true );
+
+  if ( updateType == ItemUpdateChange )
     changeCommitted( item );
-  else
+  else if ( updateType == ItemUpdateAdd )
     itemRetrieved( item );
 }
 
@@ -759,6 +886,8 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
   const DavItemModifyJob *modifyJob = qobject_cast<DavItemModifyJob*>( job );
   const DavItem davItem = modifyJob->item();
   Akonadi::Item item = modifyJob->property( "item" ).value<Akonadi::Item>();
+  Akonadi::Item::List dependentItems = modifyJob->property( "dependentItems" ).value<Akonadi::Item::List>();
+  bool isRemoval = modifyJob->property( "isRemoval" ).isValid() && modifyJob->property( "isRemoval" ).toBool();
 
   if ( modifyJob->error() ) {
     qCritical() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
@@ -771,16 +900,37 @@ void DavGroupwareResource::onItemChangedFinished( KJob *job )
     return;
   }
 
+  if ( isRemoval ) {
+    Akonadi::Item removedItem = job->property( "removedItem" ).value<Akonadi::Item>();
+    mEtagCache.removeEtag( removedItem.remoteId() );
+    mItemsRidCache[removedItem.parentCollection().remoteId()].remove( removedItem.remoteId() );
+    changeProcessed();
+  }
+
   if ( davItem.etag().isEmpty() ) {
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
     DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
     fetchJob->setProperty( "item", QVariant::fromValue( item ) );
+    fetchJob->setProperty( "dependentItems", QVariant::fromValue( dependentItems ) );
+    fetchJob->setProperty( "isRemoval", QVariant::fromValue( isRemoval ) );
     connect(fetchJob, &DavItemsFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
     fetchJob->start();
   } else {
-    item.setRemoteRevision( davItem.etag() );
-    mEtagCache.setEtag( davItem.url(), davItem.etag() );
-    changeCommitted( item );
+    if ( !isRemoval ) {
+      item.setRemoteRevision( davItem.etag() );
+      mEtagCache.setEtag( davItem.url(), davItem.etag() );
+      changeCommitted( item );
+    }
+
+    if ( !dependentItems.isEmpty() ) {
+      for ( int i = 0; i < dependentItems.size(); ++i ) {
+        dependentItems[i].setRemoteRevision( davItem.etag() );
+        mEtagCache.setEtag( dependentItems.at( i ).remoteId(), davItem.etag() );
+      }
+      
+      Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob( dependentItems );
+      j->setIgnorePayload( true );
+    }
   }
 }
 

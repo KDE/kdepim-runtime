@@ -169,6 +169,8 @@ void UrlConfigurationDialog::onFetchButtonClicked()
   if ( !remoteUrl().endsWith( QLatin1Char( '/' ) ) )
     setRemoteUrl( remoteUrl() + QLatin1Char( '/' ) );
 
+  if ( !remoteUrl().startsWith( QLatin1String( "https://" ) ) && !remoteUrl().startsWith( QLatin1String( "http://" ) ) )
+    setRemoteUrl( QString( "https://" ) + remoteUrl() );
 
   KUrl url( mUi.remoteUrl->text() );
   if ( mUi.useDefaultCreds->isChecked() ) {

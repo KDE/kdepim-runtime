@@ -70,6 +70,11 @@ void EtagCache::removeEtag( const QString &remoteId )
   mCache.remove( remoteId );
 }
 
+QStringList EtagCache::etags() const
+{
+  return mCache.keys();
+}
+
 QStringList EtagCache::changedRemoteIds() const
 {
   return mChangedRemoteIds.toList();

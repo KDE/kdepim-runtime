@@ -25,6 +25,7 @@
 #include <akonadi/calendar/freebusyproviderbase.h>
 
 class DavFreeBusyHandler;
+class DavItem;
 class KDateTime;
 
 #include <QtCore/QSet>
@@ -61,7 +62,17 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     virtual void itemRemoved( const Akonadi::Item &item );
     virtual void doSetOnline( bool online );
 
+  private:
+    enum ItemFetchUpdateType {
+      ItemUpdateNone,
+      ItemUpdateAdd,
+      ItemUpdateChange
+    };
+
   private Q_SLOTS:
+    void createInitialCache();
+    void onCreateInitialCacheReady( KJob* );
+
     void onReloadConfig();
     void onCollectionRemovedFinished( KJob* );
 
@@ -76,20 +87,25 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
       * Called when a new item has been fetched from the backend.
       *
       * @param job The job that fetched the item
-      * @param updatedItem Set to true if the item fetch has been requested
-      * by a refresh.
+      * @param updateType The type of update that triggered this call. The task notification sent
+      *        sent to Akonadi will depend on this flag.
       */
-    void onItemFetched( KJob* job, bool isRefresh = false );
+    void onItemFetched( KJob* job, ItemFetchUpdateType updateType );
     void onItemRefreshed( KJob* job );
 
     void onItemAddedFinished( KJob* );
+    void onItemChangePrepared( KJob* );
     void onItemChangedFinished( KJob* );
+    void onItemRemovalPrepared( KJob* );
     void onItemRemovedFinished( KJob* );
 
     void onCollectionDiscovered( int protocol, const QString &collectionUrl, const QString &configuredUrl );
     void onEtagChanged( const QString &itemUrl, const QString &etag );
 
   private:
+    void doItemChange( const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List() );
+    void doItemRemoval( const Akonadi::Item &item );
+
     bool configurationIsValid();
     void retryAfterFailure(const QString &errorMessage);
 

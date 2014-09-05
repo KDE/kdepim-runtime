@@ -87,6 +87,11 @@ class EtagCache : public QObject
     void removeEtag( const QString &remoteId );
 
     /**
+     * Returns the list of all etags.
+     */
+    QStringList etags() const;
+
+    /**
      * Returns the list of remote ids of items that have been changed
      * in the backend but not been refetched.
      */
