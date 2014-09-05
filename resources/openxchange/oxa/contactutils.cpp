@@ -167,7 +167,7 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
       } else if ( tagName == QLatin1String( "note" ) ) {
         contact.setNote( text );
       } else if ( tagName == QLatin1String( "url" ) ) {
-        contact.setUrl( QUrl::fromLocalFile(text) );
+        contact.setUrl( QUrl(text) );
       } else if ( tagName == QLatin1String( "image1" ) ) {
         const QByteArray data = text.toUtf8();
         contact.setPhoto( KABC::Picture( QImage::fromData( QByteArray::fromBase64( data ) ) ) );
