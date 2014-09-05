@@ -28,6 +28,7 @@
 #include <kabc/vcardconverter.h>
 #include <kcalcore/icalformat.h>
 #include <kcalcore/incidence.h>
+#include <kcalcore/memorycalendar.h>
 #include <klocale.h>
 
 #include <QtCore/QByteArray>
@@ -232,7 +233,7 @@ QString DavUtils::createUniqueId()
   return uid;
 }
 
-DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection )
+DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems )
 {
   QByteArray rawData;
   QString mimeType;
@@ -259,14 +260,19 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
     // rawData is already UTF-8
     rawData = converter.exportVCard( contact, KABC::VCardConverter::v3_0 );
   } else if ( item.hasPayload<IncidencePtr>() ) {
-    const IncidencePtr ptr = item.payload<IncidencePtr>();
+    const KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KDateTime::LocalZone ) );
+    calendar->addIncidence( item.payload<IncidencePtr>() );
+    foreach ( const Akonadi::Item &dependentItem, dependentItems ) {
+      calendar->addIncidence( dependentItem.payload<IncidencePtr>() );
+    }
+
     const QString fileName = createUniqueId();
 
     url = KUrl( basePath + fileName + QLatin1String(".ics") );
     mimeType = QLatin1String("text/calendar");
 
     KCalCore::ICalFormat formatter;
-    rawData = formatter.toICalString( ptr ).toUtf8();
+    rawData = formatter.toString( calendar, QString() ).toUtf8();
   }
 
   davItem.setContentType( mimeType );
@@ -275,4 +281,85 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
   davItem.setEtag( item.remoteRevision() );
 
   return davItem;
+}
+
+bool DavUtils::parseDavData( const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems )
+{
+  const QString data = QString::fromUtf8( source.data() );
+
+  if ( target.mimeType() == KABC::Addressee::mimeType() ) {
+    KABC::VCardConverter converter;
+    const KABC::Addressee contact = converter.parseVCard( source.data() );
+
+    if ( contact.isEmpty() )
+      return false;
+
+    target.setPayloadFromData( source.data() );
+  } else {
+    KCalCore::ICalFormat formatter;
+    const KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KDateTime::LocalZone ) );
+    formatter.fromString( calendar, data );
+    KCalCore::Incidence::List incidences = calendar->incidences();
+
+    if ( incidences.isEmpty() )
+      return false;
+
+    // All items must have the same uid in a single object.
+    // Find the main VEVENT (if that's indeed what we have,
+    // could be a VTODO or a VJOURNAL but that doesn't matter)
+    // and then apply the recurrence exceptions
+    IncidencePtr mainIncidence;
+    KCalCore::Incidence::List exceptions;
+
+    foreach ( const IncidencePtr &incidence, incidences ) {
+      if ( incidence->hasRecurrenceId() ) {
+        kDebug() << "Exception found with ID" << incidence->instanceIdentifier();
+        exceptions << incidence;
+      }
+      else {
+        mainIncidence = incidence;
+      }
+    }
+
+    if ( !mainIncidence )
+      return false;
+
+    foreach ( const IncidencePtr &exception, exceptions ) {
+      if ( exception->status() == KCalCore::Incidence::StatusCanceled ) {
+        KDateTime exDateTime = exception->recurrenceId();
+        mainIncidence->recurrence()->addExDateTime( exDateTime );
+      }
+      else {
+        // The exception remote id will contain a fragment pointing to
+        // its instance identifier to distinguish it from the main
+        // event.
+        QString rid = target.remoteId() + QLatin1String( "#" ) + exception->instanceIdentifier();
+        kDebug() << "Extra incidence at" << rid;
+        Akonadi::Item extraItem = target;
+        extraItem.setRemoteId( rid );
+        extraItem.setRemoteRevision( source.etag() );
+        extraItem.setMimeType( exception->mimeType() );
+        extraItem.setPayload<IncidencePtr>( exception );
+        extraItems << extraItem;
+      }
+    }
+
+    target.setPayload<IncidencePtr>( mainIncidence );
+    // fix mime type for CalDAV collections
+    target.setMimeType( mainIncidence->mimeType() );
+
+    /*
+    foreach ( const IncidencePtr &incidence, incidences ) {
+      QString rid = item.remoteId() + QLatin1String( "#" ) + incidence->instanceIdentifier();
+      Akonadi::Item extraItem = item;
+      extraItem.setRemoteId( rid );
+      extraItem.setRemoteRevision( davItem.etag() );
+      extraItem.setMimeType( incidence->mimeType() );
+      extraItem.setPayload<IncidencePtr>( incidence );
+      items << extraItem;
+    }
+    */
+  }
+
+  return true;
 }
