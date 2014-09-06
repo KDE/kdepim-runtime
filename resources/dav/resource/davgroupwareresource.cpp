@@ -51,8 +51,8 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
-#include <akonadi/recursiveitemfetchjob.h>
-#include <akonadi/itemmodifyjob.h>
+#include <AkonadiCore/recursiveitemfetchjob.h>
+#include <AkonadiCore/itemmodifyjob.h>
 
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
@@ -400,7 +400,7 @@ void DavGroupwareResource::doItemChange( const Akonadi::Item &item, const Akonad
   DavItemModifyJob *modJob = new DavItemModifyJob( davUrl, davItem );
   modJob->setProperty( "item", QVariant::fromValue( item ) );
   modJob->setProperty( "dependentItems", QVariant::fromValue( dependentItems ) );
-  connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemChangedFinished);
+  connect(modJob, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemChangedFinished);
   modJob->start();
 }
 

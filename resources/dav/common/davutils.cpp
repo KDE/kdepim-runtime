@@ -313,7 +313,7 @@ bool DavUtils::parseDavData( const DavItem &source, Akonadi::Item &target, Akona
 
     foreach ( const IncidencePtr &incidence, incidences ) {
       if ( incidence->hasRecurrenceId() ) {
-        kDebug() << "Exception found with ID" << incidence->instanceIdentifier();
+        qDebug() << "Exception found with ID" << incidence->instanceIdentifier();
         exceptions << incidence;
       }
       else {
@@ -334,7 +334,7 @@ bool DavUtils::parseDavData( const DavItem &source, Akonadi::Item &target, Akona
         // its instance identifier to distinguish it from the main
         // event.
         QString rid = target.remoteId() + QLatin1String( "#" ) + exception->instanceIdentifier();
-        kDebug() << "Extra incidence at" << rid;
+        qDebug() << "Extra incidence at" << rid;
         Akonadi::Item extraItem = target;
         extraItem.setRemoteId( rid );
         extraItem.setRemoteRevision( source.etag() );
