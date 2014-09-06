@@ -4,7 +4,7 @@ project(accountwizard)
 ########### Find packages ###########
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${accountwizard_SOURCE_DIR}")
-  find_package(ECM 1.1.0 CONFIG REQUIRED)
+  find_package(ECM 1.2.0 CONFIG REQUIRED)
   set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
   include(ECMPackageConfigHelpers)
