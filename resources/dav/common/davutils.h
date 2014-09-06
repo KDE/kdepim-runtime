@@ -24,7 +24,7 @@
 
 #include <KUrl>
 
-#include <Akonadi/Item>
+#include <AkonadiCore/Item>
 
 class DavItem;
 namespace Akonadi {
