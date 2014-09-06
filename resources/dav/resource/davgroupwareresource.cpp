@@ -53,7 +53,7 @@
 #include <itemfetchscope.h>
 #include <AkonadiCore/recursiveitemfetchjob.h>
 #include <AkonadiCore/itemmodifyjob.h>
-
+#include <AkonadiCore/itemdeletejob.h>
 #include <kabc/addressee.h>
 #include <kabc/vcardconverter.h>
 #include <kwindowsystem.h>
