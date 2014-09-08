@@ -311,8 +311,7 @@ void POP3Resource::doStateStep()
         qDebug() << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
         mPopSession = new POPSession(mPassword);
-        connect(mPopSession, SIGNAL(slaveError(int,QString)),
-                this, SLOT(slotSessionError(int,QString)));
+        connect(mPopSession, &POPSession::slaveError, this, &POP3Resource::slotSessionError);
         advanceState(Login);
         break;
     }
@@ -320,8 +319,7 @@ void POP3Resource::doStateStep()
         qDebug() << "================ Starting state Login ==========================";
 
         LoginJob *loginJob = new LoginJob(mPopSession);
-        connect(loginJob, SIGNAL(result(KJob*)),
-                this, SLOT(loginJobResult(KJob*)));
+        connect(loginJob, &LoginJob::result, this, &POP3Resource::loginJobResult);
         loginJob->start();
         break;
     }
@@ -329,16 +327,14 @@ void POP3Resource::doStateStep()
         qDebug() << "================ Starting state List ===========================";
         emit status(Running, i18n("Fetching mail listing."));
         ListJob *listJob = new ListJob(mPopSession);
-        connect(listJob, SIGNAL(result(KJob*)),
-                this, SLOT(listJobResult(KJob*)));
+        connect(listJob, &ListJob::result, this, &POP3Resource::listJobResult);
         listJob->start();
     }
     break;
     case UIDList: {
         qDebug() << "================ Starting state UIDList ========================";
         UIDListJob *uidListJob = new UIDListJob(mPopSession);
-        connect(uidListJob, SIGNAL(result(KJob*)),
-                this, SLOT(uidListJobResult(KJob*)));
+        connect(uidListJob, &UIDListJob::result, this, &POP3Resource::uidListJobResult);
         uidListJob->start();
     }
     break;
@@ -371,8 +367,7 @@ void POP3Resource::doStateStep()
 
         fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
         connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
-        connect(fetchJob, SIGNAL(messageFinished(int,KMime::Message::Ptr)),
-                this, SLOT(messageFinished(int,KMime::Message::Ptr)));
+        connect(fetchJob, &FetchJob::messageFinished, this, &POP3Resource::messageFinished);
         connect(fetchJob, SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
                 this, SLOT(messageDownloadProgress(KJob*,KJob::Unit,qulonglong)));
 
@@ -401,8 +396,7 @@ void POP3Resource::doStateStep()
             emit status(Running, i18n("Deleting messages from the server."));
             DeleteJob *deleteJob = new DeleteJob(mPopSession);
             deleteJob->setDeleteIds(idsToKill);
-            connect(deleteJob, SIGNAL(result(KJob*)),
-                    this, SLOT(deleteJobResult(KJob*)));
+            connect(deleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
             deleteJob->start();
         } else {
             advanceState(Quit);
@@ -412,8 +406,7 @@ void POP3Resource::doStateStep()
     case Quit: {
         qDebug() << "================ Starting state Quit ===========================";
         QuitJob *quitJob = new QuitJob(mPopSession);
-        connect(quitJob, SIGNAL(result(KJob*)),
-                this, SLOT(quitJobResult(KJob*)));
+        connect(quitJob, &QuitJob::result, this, &POP3Resource::quitJobResult);
         quitJob->start();
     }
     break;
@@ -427,8 +420,7 @@ void POP3Resource::doStateStep()
             mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winIdForDialogs(),
                                          Wallet::Asynchronous);
             if (mWallet) {
-                connect(mWallet, SIGNAL(walletOpened(bool)),
-                        this, SLOT(walletOpenedForSaving(bool)));
+                connect(mWallet, &KWallet::Wallet::walletOpened, this, &POP3Resource::walletOpenedForSaving);
             } else {
                 finish();
             }
@@ -607,8 +599,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
     ItemCreateJob *itemCreateJob = new ItemCreateJob(item, mTargetCollection);
 
     mPendingCreateJobs.insert(itemCreateJob, messageId);
-    connect(itemCreateJob, SIGNAL(result(KJob*)),
-            this, SLOT(itemCreateJobResult(KJob*)));
+    connect(itemCreateJob, &ItemCreateJob::result, this, &POP3Resource::itemCreateJobResult);
 
     mDownloadedIDs.append(messageId);
     mIdsToDownload.removeAll(messageId);
