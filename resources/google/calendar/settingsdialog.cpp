@@ -44,8 +44,7 @@ using namespace KGAPI2;
 SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent ):
     GoogleSettingsDialog( accountManager, windowId, parent )
 {
-    connect( this, SIGNAL(currentAccountChanged(QString)),
-             this, SLOT(slotCurrentAccountChanged(QString)) );
+    connect(this, &SettingsDialog::currentAccountChanged, this, &SettingsDialog::slotCurrentAccountChanged);
 
 
     m_calendarsBox = new QGroupBox( i18n( "Calendars" ), this );
@@ -58,8 +57,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
 
     m_reloadCalendarsBtn = new QPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_calendarsBox );
     vbox->addWidget( m_reloadCalendarsBtn );
-    connect( m_reloadCalendarsBtn, SIGNAL(clicked(bool)),
-             this, SLOT(slotReloadCalendars()) );
+    connect(m_reloadCalendarsBtn, &QPushButton::clicked, this, &SettingsDialog::slotReloadCalendars);
 
     QHBoxLayout *hbox = new QHBoxLayout;
     vbox->addLayout( hbox );
@@ -91,8 +89,7 @@ SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId window
 
     m_reloadTaskListsBtn = new QPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_taskListsBox );
     vbox->addWidget( m_reloadTaskListsBtn );
-    connect( m_reloadTaskListsBtn, SIGNAL(clicked(bool)),
-             this, SLOT(slotReloadTaskLists()) );
+    connect(m_reloadTaskListsBtn, &QPushButton::clicked, this, &SettingsDialog::slotReloadTaskLists);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -158,8 +155,7 @@ void SettingsDialog::slotReloadCalendars()
     }
 
     CalendarFetchJob *fetchJob = new CalendarFetchJob( account, this );
-    connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotCalendarsRetrieved(KGAPI2::Job*)) );
+    connect(fetchJob, &CalendarFetchJob::finished, this, &SettingsDialog::slotCalendarsRetrieved);
 
     m_calendarsBox->setDisabled( true );
     m_calendarsList->clear();
@@ -173,8 +169,7 @@ void SettingsDialog::slotReloadTaskLists()
     }
 
     TaskListFetchJob *fetchJob = new TaskListFetchJob( account, this );
-    connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotTaskListsRetrieved(KGAPI2::Job*)) );
+    connect(fetchJob, &CalendarFetchJob::finished, this, &SettingsDialog::slotTaskListsRetrieved);
 
     m_taskListsBox->setDisabled( true );
     m_taskListsList->clear();

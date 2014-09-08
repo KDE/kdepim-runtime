@@ -150,10 +150,8 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
     }
 
     job->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
-    connect( job, SIGNAL(progress(KGAPI2::Job*,int,int)),
-             this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotItemsRetrieved(KGAPI2::Job*)) );
+    connect( job, SIGNAL(progress(KGAPI2::Job*,int,int)), this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
+    connect( job, SIGNAL(finished(KGAPI2::Job*)), this, SLOT(slotItemsRetrieved(KGAPI2::Job*)) );
 }
 
 void CalendarResource::retrieveCollections()
@@ -163,8 +161,7 @@ void CalendarResource::retrieveCollections()
     }
 
     CalendarFetchJob *fetchJob = new CalendarFetchJob( account(), this );
-    connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotCalendarsRetrieved(KGAPI2::Job*)) );
+    connect(fetchJob, &EventFetchJob::finished, this, &CalendarResource::slotCalendarsRetrieved);
 }
 
 void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
@@ -202,8 +199,7 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
             fetchJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
             fetchJob->setProperty( TASK_PROPERTY, QVariant::fromValue( ktodo ) );
 
-            connect( fetchJob, SIGNAL(finished(KJob*)),
-                     this, SLOT(slotTaskAddedSearchFinished(KJob*)) );
+            connect(fetchJob, &ItemFetchJob::finished, this, &CalendarResource::slotTaskAddedSearchFinished);
             return;
         } else {
             job = new TaskCreateJob( ktodo, collection.remoteId(), account(), this );
@@ -214,8 +210,7 @@ void CalendarResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     }
 
     job->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotCreateJobFinished(KGAPI2::Job*)) );
+    connect(job, &EventCreateJob::finished, this, &CalendarResource::slotCreateJobFinished);
 }
 
 void CalendarResource::itemChanged( const Akonadi::Item &item,
@@ -235,8 +230,7 @@ void CalendarResource::itemChanged( const Akonadi::Item &item,
         kevent->setUid( item.remoteId() );
 
         job = new EventModifyJob( kevent, item.parentCollection().remoteId(), account(), this );
-        connect( job, SIGNAL(finished(KGAPI2::Job*)),
-                this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+        connect(job, &EventCreateJob::finished, this, &CalendarResource::slotGenericJobFinished);
 
     } else if ( item.hasPayload<KCalCore::Todo::Ptr>() ) {
         KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
@@ -244,8 +238,7 @@ void CalendarResource::itemChanged( const Akonadi::Item &item,
         QString parentUid = todo->relatedTo( KCalCore::Incidence::RelTypeParent );
         job = new TaskMoveJob( item.remoteId(), item.parentCollection().remoteId(), parentUid, account(), this );
         job->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-        connect( job, SIGNAL(finished(KGAPI2::Job*)),
-                 this, SLOT(slotModifyTaskReparentFinished(KGAPI2::Job*)) );
+        connect(job, &EventCreateJob::finished, this, &CalendarResource::slotModifyTaskReparentFinished);
     } else {
         cancelTask( i18n( "Invalid payload type" ) );
         return;
@@ -263,8 +256,7 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
     if ( item.mimeType() == KCalCore::Event::eventMimeType() ) {
         KGAPI2::Job *job = new EventDeleteJob( item.remoteId(), item.parentCollection().remoteId(), account(), this );
         job->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-        connect( job, SIGNAL(finished(KGAPI2::Job*)),
-                 this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+        connect(job, &EventCreateJob::finished, this, &CalendarResource::slotGenericJobFinished);
 
     } else if ( item.mimeType() == KCalCore::Todo::todoMimeType() ) {
         /* Google always automatically removes tasks with all their subtasks. In KOrganizer
@@ -275,8 +267,7 @@ void CalendarResource::itemRemoved( const Akonadi::Item &item )
         fetchJob->setAutoDelete( true );
         fetchJob->fetchScope().fetchFullPayload( true );
         fetchJob->setProperty( ITEM_PROPERTY, qVariantFromValue( item ) );
-        connect( fetchJob, SIGNAL(finished(KJob*)),
-                 this, SLOT(slotRemoveTaskFetchJobFinished(KJob*)) );
+        connect(fetchJob, &ItemFetchJob::finished, this, &CalendarResource::slotRemoveTaskFetchJobFinished);
         fetchJob->start();
 
     } else {
@@ -306,8 +297,7 @@ void CalendarResource::itemMoved( const Item &item,
                                          collectionDestination.remoteId(), account(),
                                          this );
     job->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+    connect(job, &EventCreateJob::finished, this, &CalendarResource::slotGenericJobFinished);
 }
 
 void CalendarResource::collectionAdded( const Collection &collection, const Collection &parent )
@@ -336,8 +326,7 @@ void CalendarResource::collectionAdded( const Collection &collection, const Coll
     }
 
     job->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+    connect(job, &KGAPI2::Job::finished, this, &CalendarResource::slotGenericJobFinished);
 }
 
 void CalendarResource::collectionChanged( const Collection &collection )
@@ -365,8 +354,7 @@ void CalendarResource::collectionChanged( const Collection &collection )
     }
 
     job->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+    connect(job, &KGAPI2::Job::finished, this, &CalendarResource::slotGenericJobFinished);
 }
 
 void CalendarResource::collectionRemoved( const Collection &collection )
@@ -388,8 +376,7 @@ void CalendarResource::collectionRemoved( const Collection &collection )
     }
 
     job->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+    connect(job, &KGAPI2::Job::finished, this, &CalendarResource::slotGenericJobFinished);
 }
 
 void CalendarResource::slotCalendarsRetrieved( KGAPI2::Job *job )
@@ -404,8 +391,7 @@ void CalendarResource::slotCalendarsRetrieved( KGAPI2::Job *job )
 
     TaskListFetchJob *fetchJob = new TaskListFetchJob( job->account(), this );
     fetchJob->setProperty( CALENDARS_PROPERTY, QVariant::fromValue( objects ) );
-    connect( fetchJob, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotCollectionsRetrieved(KGAPI2::Job*)) );
+    connect(fetchJob, &EventFetchJob::finished, this, &CalendarResource::slotCollectionsRetrieved);
 }
 
 
@@ -629,8 +615,7 @@ void CalendarResource::slotModifyTaskReparentFinished( KGAPI2::Job *job )
 
     job = new TaskModifyJob( ktodo, item.parentCollection().remoteId(), job->account(), this );
     job->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)),
-            this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+    connect(job, &KGAPI2::Job::finished, this, &CalendarResource::slotGenericJobFinished);
 }
 
 void CalendarResource::slotRemoveTaskFetchJobFinished( KJob *job )
@@ -672,8 +657,7 @@ void CalendarResource::slotRemoveTaskFetchJobFinished( KJob *job )
     ItemModifyJob *modifyJob = new ItemModifyJob( detachItems );
     modifyJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( removedItem ) );
     modifyJob->setAutoDelete( true );
-    connect( modifyJob, SIGNAL(finished(KJob*)),
-             this, SLOT(slotDoRemoveTask(KJob*)) );
+    connect(modifyJob, &ItemModifyJob::finished, this, &CalendarResource::slotDoRemoveTask);
 }
 
 void CalendarResource::slotDoRemoveTask( KJob *job )
@@ -693,8 +677,7 @@ void CalendarResource::slotDoRemoveTask( KJob *job )
     /* Now finally we can safely remove the task we wanted to */
     TaskDeleteJob *deleteJob = new TaskDeleteJob( item.remoteId(), item.parentCollection().remoteId(), account(), this);
     deleteJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( deleteJob, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotGenericJobFinished(KGAPI2::Job*)) );
+    connect(deleteJob, &TaskDeleteJob::finished, this, &CalendarResource::slotGenericJobFinished);
 }
 
 void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
@@ -729,8 +712,7 @@ void CalendarResource::slotTaskAddedSearchFinished( KJob *job )
     }
 
     newJob->setProperty( ITEM_PROPERTY, QVariant::fromValue( item ) );
-    connect( newJob, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotCreateJobFinished(KGAPI2::Job*)) );
+    connect(newJob, &KGAPI2::Job::finished, this, &CalendarResource::slotCreateJobFinished);
 }
 
 

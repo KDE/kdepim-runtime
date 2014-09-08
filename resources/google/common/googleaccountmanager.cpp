@@ -61,10 +61,8 @@ void GoogleAccountManager::initManager()
 //     connect( m_wallet, SIGNAL(walletOpened(bool)),
 //              this, SLOT(slotWalletOpened(bool)) );
     if ( m_wallet ) {
-        connect( m_wallet, SIGNAL(folderUpdated(QString)),
-                this, SLOT(slotFolderUpdated(QString)) );
-        connect( m_wallet, SIGNAL(walletClosed()),
-                this, SLOT(slotWalletClosed()) );
+        connect( m_wallet, SIGNAL(folderUpdated(QString)), this, SLOT(slotFolderUpdated(QString)) );
+        connect( m_wallet, SIGNAL(walletClosed()),  this, SLOT(slotWalletClosed()) );
     }
 }
 

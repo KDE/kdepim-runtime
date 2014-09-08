@@ -76,13 +76,11 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
 
     m_addAccButton = new QPushButton( QIcon::fromTheme( QLatin1String("list-add-user") ), i18n( "&Add" ), m_accGroupBox );
     accLayout->addWidget( m_addAccButton );
-    connect( m_addAccButton, SIGNAL(clicked(bool)),
-             this, SLOT(slotAddAccountClicked()) );
+    connect(m_addAccButton, &QPushButton::clicked, this, &GoogleSettingsDialog::slotAddAccountClicked);
 
     m_removeAccButton = new QPushButton( QIcon::fromTheme( QLatin1String("list-remove-user") ), i18n( "&Remove" ), m_accGroupBox );
     accLayout->addWidget( m_removeAccButton );
-    connect( m_removeAccButton, SIGNAL(clicked(bool)),
-             this, SLOT(slotRemoveAccountClicked()) );
+    connect(m_removeAccButton, &QPushButton::clicked, this, &GoogleSettingsDialog::slotRemoveAccountClicked);
 
     QGroupBox *refreshBox = new QGroupBox( i18n( "Refresh" ), this );
     mainLayout->addWidget( refreshBox );
@@ -103,8 +101,7 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
     m_refreshSpinBox->setSuffix( ki18np( " minute", " minutes" ) );
     m_refreshSpinBox->setEnabled( Settings::self()->enableIntervalCheck() );
     refreshLayout->addWidget( m_refreshSpinBox, 1, 1 );
-    connect( m_enableRefresh, SIGNAL(toggled(bool)),
-             m_refreshSpinBox, SLOT(setEnabled(bool)) );
+    connect(m_enableRefresh, &QCheckBox::toggled, m_refreshSpinBox, &KPluralHandlingSpinBox::setEnabled);
 
     if ( m_enableRefresh->isEnabled() ) {
         m_refreshSpinBox->setValue( Settings::self()->intervalCheckTime() );
@@ -168,8 +165,7 @@ void GoogleSettingsDialog::slotAddAccountClicked()
     AuthJob *authJob = new AuthJob( account,
                                     m_parentResource->settings()->clientId(),
                                     m_parentResource->settings()->clientSecret() );
-    connect( authJob, SIGNAL(finished(KGAPI2::Job*)),
-             this, SLOT(slotAccountAuthenticated(KGAPI2::Job*)) );
+    connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAccountAuthenticated);
 }
 
 void GoogleSettingsDialog::slotRemoveAccountClicked()
@@ -228,8 +224,7 @@ bool GoogleSettingsDialog::handleError( Job *job )
         AuthJob *authJob = new AuthJob( account, m_parentResource->settings()->clientId(), 
                                         m_parentResource->settings()->clientSecret(), this );
         authJob->setProperty( JOB_PROPERTY, QVariant::fromValue( job ) );
-        connect( authJob, SIGNAL(finished(KGAPI2::Job*)),
-                 this, SLOT(slotAuthJobFinished(KGAPI2::Job*)) );
+        connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 
         return false;
     }
