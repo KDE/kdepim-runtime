@@ -411,7 +411,7 @@ void SetupServer::readSettings()
     connect(fetchJob, &Akonadi::CollectionFetchJob::collectionsReceived, this, &SetupServer::targetCollectionReceived);
   } else {
     Akonadi::SpecialMailCollectionsRequestJob *requestJob = new Akonadi::SpecialMailCollectionsRequestJob( this );
-    connect ( requestJob, SIGNAL(result(KJob*)), this, SLOT(localFolderRequestJobFinished(KJob*)) );
+    connect(requestJob, &Akonadi::SpecialMailCollectionsRequestJob::result, this, &SetupServer::localFolderRequestJobFinished);
     requestJob->requestDefaultCollection( Akonadi::SpecialMailCollections::Trash );
     requestJob->start();
   }
