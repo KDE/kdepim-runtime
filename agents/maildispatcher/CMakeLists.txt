@@ -10,7 +10,6 @@ set( maildispatcheragent_SRCS
   sentactionhandler.cpp
   storeresultjob.cpp
   maildispatcherresourcefactory.cpp
-  #configdialog.cpp
 )
 
 ki18n_wrap_ui(maildispatcheragent_SRCS settings.ui)
