@@ -23,7 +23,7 @@
 #include <collectionmodifyjob.h>
 #include <kmbox/mbox.h>
 #include <KLocalizedString>
-#include <KUrl>
+#include <QUrl>
 
 #include "deleteditemsattribute.h"
 
@@ -107,7 +107,7 @@ void CompactPage::onCollectionFetchCompact( KJob *job )
 
   KMBox::MBox mbox;
   // TODO: Set lock method.
-  const QString fileName = KUrl(mCollectionId).toLocalFile();
+  const QString fileName = QUrl::fromLocalFile(mCollectionId).toLocalFile();
   if ( !mbox.load(fileName) ) {
     ui.messageLabel->setText( i18n( "Failed to load the mbox file" ) );
   } else {
