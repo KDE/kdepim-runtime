@@ -56,7 +56,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   qDebug() << "Sink from settings" << Settings::self()->sink();
 
   connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
-  connect( ui.sink, SIGNAL(collectionChanged(Akonadi::Collection)), this, SLOT(slotCollectionChanged(Akonadi::Collection)) );
+  connect(ui.sink, &Akonadi::CollectionRequester::collectionChanged, this, &ConfigDialog::slotCollectionChanged);
   mOkButton->setEnabled(false);
 }
 
