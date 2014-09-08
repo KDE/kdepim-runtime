@@ -4,14 +4,8 @@ cmake_minimum_required(VERSION 2.6)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
-# Not depending on KDE here for easier portability.
-find_package(Qt4 REQUIRED)
 
 include_directories(
-  ${QT_INCLUDES}
-  ${QT_QTGUI_INCLUDE_DIR}
-  ${QT_QTSQL_INCLUDE_DIR}
-  ${QT_QTDECLARATIVE_INCLUDE_DIR}
   ${PROJECT_BINARY_DIR}
 )
 
@@ -36,7 +30,7 @@ add_executable(qml_nav
 
 target_link_libraries(
   qml_nav
-  ${QT_QTCORE_LIBRARIES}
-  ${QT_QTGUI_LIBRARIES}
-  ${QT_QTDECLARATIVE_LIBRARIES}
+  Qt5::Core
+  Qt5::Gui
+  Qt5::Declarative
 )

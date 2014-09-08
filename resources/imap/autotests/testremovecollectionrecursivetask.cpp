@@ -217,7 +217,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
     RemoveCollectionRecursiveTask *task = new RemoveCollectionRecursiveTask( state );
     task->start( &pool );
     QEventLoop loop;
-    connect( task, SIGNAL(destroyed(QObject*)), &loop, SLOT(quit()) );
+    connect(task, &RemoveCollectionRecursiveTask::destroyed, &loop, &QEventLoop::quit);
     loop.exec();
 
     QCOMPARE( state->calls().count(), callNames.size() );

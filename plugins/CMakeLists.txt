@@ -63,7 +63,7 @@ install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR
 
 set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
 add_library(akonadi_serializer_microblog MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_microblog_SRCS})
-target_link_libraries(akonadi_serializer_microblog KF5::AkonadiCore   ${QT_QTXML_LIBRARY} KF5::PimUtils KF5::MicroBlog)
+target_link_libraries(akonadi_serializer_microblog KF5::AkonadiCore   Qt5::Xml KF5::PimUtils KF5::MicroBlog)
 install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp akonadi_serializer_kalarm_debug.cpp)

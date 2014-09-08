@@ -1,6 +1,5 @@
 include_directories(
     ${kdepim-runtime_SOURCE_DIR}
-    ${QT_QTDBUS_INCLUDE_DIR}
 )
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_icaldir_resource\")
