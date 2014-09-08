@@ -75,7 +75,7 @@ MixedMaildirResource::MixedMaildirResource( const QString &id )
   new SettingsAdaptor( Settings::self() );
   QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
                               Settings::self(), QDBusConnection::ExportAdaptors );
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(reapplyConfiguration()) );
+  connect(this, &MixedMaildirResource::reloadConfiguration, this, &MixedMaildirResource::reapplyConfiguration);
 
   // We need to enable this here, otherwise we neither get the remote ID of the
   // parent collection when a collection changes, nor the full item when an item
@@ -264,7 +264,7 @@ void MixedMaildirResource::retrieveItems( const Collection & col )
   }
   
   RetrieveItemsJob *job = new RetrieveItemsJob( col, mStore, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(retrieveItemsResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::retrieveItemsResult);
 
   status( Running, i18nc( "@info:status", "Synchronizing email folder %1", col.name() ) );
 }
@@ -281,7 +281,7 @@ bool MixedMaildirResource::retrieveItem( const Item &item, const QSet<QByteArray
       job->fetchScope().fetchPayloadPart( part, true );
     }
   }
-  connect( job, SIGNAL(result(KJob*)), SLOT(retrieveItemResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::retrieveItemResult);
 
   return true;
 }
@@ -296,7 +296,7 @@ void MixedMaildirResource::collectionAdded(const Collection &collection, const C
   }
 
   FileStore::CollectionCreateJob *job = mStore->createCollection( collection, parent );
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionAddedResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::collectionAddedResult);
 }
 
 void MixedMaildirResource::collectionChanged(const Collection &collection)
@@ -323,7 +323,7 @@ void MixedMaildirResource::collectionChanged(const Collection &collection)
   mCompactHelper->checkCollectionChanged( collection );
 
   FileStore::CollectionModifyJob *job = mStore->modifyCollection( collection );
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionChangedResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::collectionChangedResult);
 }
 
 void MixedMaildirResource::collectionChanged(const Collection &collection, const QSet<QByteArray> &changedAttributes )
@@ -352,7 +352,7 @@ void MixedMaildirResource::collectionChanged(const Collection &collection, const
   Q_UNUSED( changedAttributes );
 
   FileStore::CollectionModifyJob *job = mStore->modifyCollection( collection );
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionChangedResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::collectionChangedResult);
 }
 
 void MixedMaildirResource::collectionMoved( const Collection &collection, const Collection &source, const Collection &dest )
@@ -382,7 +382,7 @@ void MixedMaildirResource::collectionMoved( const Collection &collection, const 
   moveCollection.setParentCollection( source );
 
   FileStore::CollectionMoveJob *job = mStore->moveCollection( moveCollection, dest );
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionMovedResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::collectionMovedResult);
 }
 
 void MixedMaildirResource::collectionRemoved( const Collection &collection )
@@ -401,7 +401,7 @@ void MixedMaildirResource::collectionRemoved( const Collection &collection )
   }
 
   FileStore::CollectionDeleteJob *job = mStore->deleteCollection( collection );
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionRemovedResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::collectionRemovedResult);
 }
 
 bool MixedMaildirResource::ensureDirExists()
@@ -738,7 +738,7 @@ void MixedMaildirResource::compactStore( const QVariant &arg )
   Q_UNUSED( arg );
 
   FileStore::StoreCompactJob *job = mStore->compactStore();
-  connect( job, SIGNAL(result(KJob*)), SLOT(compactStoreResult(KJob*)) );
+  connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::compactStoreResult);
 }
 
 void MixedMaildirResource::compactStoreResult( KJob *job )
@@ -797,7 +797,7 @@ void MixedMaildirResource::processNextTagContext()
 
   ItemFetchJob *fetchJob = new ItemFetchJob( tagContext.mItem );
   fetchJob->setProperty( "tagList", tagContext.mTagList );
-  connect( fetchJob, SIGNAL(result(KJob*)), SLOT(tagFetchJobResult(KJob*)) );
+  connect(fetchJob, &ItemFetchJob::result, this, &MixedMaildirResource::tagFetchJobResult);
 }
 
 void MixedMaildirResource::tagFetchJobResult( KJob *job )

@@ -89,7 +89,7 @@ void RemoveItemsTask::triggerStoreJob( KIMAP::Session *session )
   store->setSequenceSet( set );
   store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
-  connect( store, SIGNAL(result(KJob*)), SLOT(onStoreFlagsDone(KJob*)) );
+  connect(store, &KIMAP::StoreJob::result, this, &RemoveItemsTask::onStoreFlagsDone);
   store->start();
 }
 

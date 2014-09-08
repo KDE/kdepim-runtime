@@ -56,7 +56,7 @@ QDialog* ImapResource::createConfigureDialog(WId windowId)
   SetupServer *dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
   dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
-  connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+  connect(dlg, &SetupServer::finished, this, &ImapResource::onConfigurationDone);
   return dlg;
 }
 

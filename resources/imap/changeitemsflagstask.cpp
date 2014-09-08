@@ -101,7 +101,7 @@ void ChangeItemsFlagsTask::triggerAppendFlagsJob(KIMAP::Session* session)
   KIMAP::StoreJob *store = prepareJob( session );
   store->setFlags( fromAkonadiToSupportedImapFlags( addedFlags().toList(), items().first().parentCollection() ) );
   store->setMode( KIMAP::StoreJob::AppendFlags );
-  connect( store, SIGNAL(result(KJob*)), SLOT(onAppendFlagsDone(KJob*)) );
+  connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onAppendFlagsDone);
   store->start();
 }
 
@@ -110,7 +110,7 @@ void ChangeItemsFlagsTask::triggerRemoveFlagsJob(KIMAP::Session* session)
   KIMAP::StoreJob *store = prepareJob( session );
   store->setFlags( fromAkonadiToSupportedImapFlags( removedFlags().toList(), items().first().parentCollection() ) );
   store->setMode( KIMAP::StoreJob::RemoveFlags );
-  connect( store, SIGNAL(result(KJob*)), SLOT(onRemoveFlagsDone(KJob*)) );
+  connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onRemoveFlagsDone);
   store->start();
 }
 

@@ -84,7 +84,7 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
     fullListJob->setQueriedNamespaces( serverNamespaces() );
     connect( fullListJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
              this, SLOT(onFullMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
-    connect( fullListJob, SIGNAL(result(KJob*)), SLOT(onFullMailBoxesReceiveDone(KJob*)) );
+    connect(fullListJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onFullMailBoxesReceiveDone);
     fullListJob->start();
   }
 
@@ -93,7 +93,7 @@ void RetrieveCollectionsTask::doStart( KIMAP::Session *session )
   listJob->setQueriedNamespaces( serverNamespaces() );
   connect( listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
            this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
-  connect( listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)) );
+  connect(listJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onMailBoxesReceiveDone);
   listJob->start();
 }
 

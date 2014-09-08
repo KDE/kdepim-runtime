@@ -54,7 +54,7 @@ void RemoveCollectionRecursiveTask::doStart( KIMAP::Session *session )
   listJob->setQueriedNamespaces( serverNamespaces() );
   connect( listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
            this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
-  connect( listJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
+  connect(listJob, &KIMAP::ListJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
   listJob->start();
 }
 
@@ -103,7 +103,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
   // first select the mailbox
   KIMAP::SelectJob *selectJob = new KIMAP::SelectJob( mSession );
   selectJob->setMailBox( descriptor.name );
-  connect( selectJob, SIGNAL(result(KJob*)), SLOT(onJobDone(KJob*)) );
+  connect(selectJob, &KIMAP::SelectJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
   selectJob->start();
 
   // mark all items as deleted
@@ -122,7 +122,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
   // also trigger EXPUNGE to take care of the messages deleted above
   KIMAP::CloseJob *closeJob = new KIMAP::CloseJob( mSession );
   closeJob->setProperty( "folderDescriptor", descriptor.name );
-  connect( closeJob, SIGNAL(result(KJob*)), SLOT(onCloseJobDone(KJob*)) );
+  connect(closeJob, &KIMAP::CloseJob::result, this, &RemoveCollectionRecursiveTask::onCloseJobDone);
   closeJob->start();
 }
 
@@ -136,7 +136,7 @@ void RemoveCollectionRecursiveTask::onCloseJobDone( KJob* job )
   } else {
     KIMAP::DeleteJob *deleteJob = new KIMAP::DeleteJob( mSession );
     deleteJob->setMailBox( job->property( "folderDescriptor" ).toString() );
-    connect( deleteJob, SIGNAL(result(KJob*)), SLOT(onDeleteJobDone(KJob*)) );
+    connect(deleteJob, &KIMAP::DeleteJob::result, this, &RemoveCollectionRecursiveTask::onDeleteJobDone);
     deleteJob->start();
   }
 }

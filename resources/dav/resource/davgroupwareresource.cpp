@@ -368,7 +368,7 @@ void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QB
     job->setCollection( item.parentCollection() );
     job->fetchScope().fetchFullPayload();
     job->setProperty( "item", QVariant::fromValue( item ) );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(onItemChangePrepared(KJob*)) );
+    connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemChangePrepared);
   }
 }
 
@@ -435,7 +435,7 @@ void DavGroupwareResource::itemRemoved( const Akonadi::Item &item )
       job->setCollection( item.parentCollection() );
       job->fetchScope().fetchFullPayload();
       job->setProperty( "item", QVariant::fromValue( item ) );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(onItemRemovalPrepared(KJob*)) );
+      connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemRemovalPrepared);
     }
   }
   else {
@@ -481,7 +481,7 @@ void DavGroupwareResource::onItemRemovalPrepared( KJob *job )
     modJob->setProperty( "dependentItems", QVariant::fromValue( extraItems ) );
     modJob->setProperty( "isRemoval", QVariant::fromValue( true ) );
     modJob->setProperty( "removedItem", QVariant::fromValue( item ) );
-    connect( modJob, SIGNAL(result(KJob*)), SLOT(onItemChangedFinished(KJob*)) );
+    connect(modJob, &DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
     modJob->start();
   }
 }
@@ -517,7 +517,7 @@ void DavGroupwareResource::createInitialCache()
   // Get all the items fetched by this resource
   Akonadi::RecursiveItemFetchJob *job = new Akonadi::RecursiveItemFetchJob( mDavCollectionRoot, QStringList() );
   job->fetchScope().setAncestorRetrieval( Akonadi::ItemFetchScope::Parent );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(onCreateInitialCacheReady(KJob*)) );
+  connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onCreateInitialCacheReady);
   job->start();
 }
 

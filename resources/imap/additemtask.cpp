@@ -71,7 +71,7 @@ void AddItemTask::doStart( KIMAP::Session *session )
   job->setFlags( fromAkonadiToSupportedImapFlags( item().flags().toList(), collection() ) );
   //TODO QT5 convert to KDateTime
   job->setInternalDate( KDateTime(msg->date()->dateTime()) );
-  connect( job, SIGNAL(result(KJob*)), SLOT(onAppendMessageDone(KJob*)) );
+  connect(job, &KIMAP::AppendJob::result, this, &AddItemTask::onAppendMessageDone);
   job->start();
 }
 
