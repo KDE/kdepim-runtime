@@ -38,7 +38,7 @@ install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp akonadi_serializer_mail_debug.cpp)
 add_library(akonadi_serializer_mail MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_mail_PART_SRCS})
-target_link_libraries(akonadi_serializer_mail  KF5::Mime KF5::AkonadiCore KF5::AkonadiMime KF5::AkonadiPrivate Qt5::DBus )
+target_link_libraries(akonadi_serializer_mail  KF5::Mime KF5::AkonadiCore KF5::AkonadiMime KF5::KF5AkonadiPrivate Qt5::DBus )
 install(TARGETS akonadi_serializer_mail DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kcalcore_SRCS akonadi_serializer_kcalcore.cpp)
