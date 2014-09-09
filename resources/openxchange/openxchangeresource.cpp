@@ -229,7 +229,7 @@ OpenXchangeResource::OpenXchangeResource( const QString &id )
 
   OXA::Users::self()->init( identifier() );
 
-  KUrl baseUrl = Settings::self()->baseUrl();
+  QUrl baseUrl = QUrl::fromLocalFile(Settings::self()->baseUrl());
   baseUrl.setUserName( Settings::self()->username() );
   baseUrl.setPassword( Settings::self()->password() );
   OXA::DavManager::self()->setBaseUrl( baseUrl );
@@ -338,7 +338,7 @@ void OpenXchangeResource::configure( WId windowId )
 
     clearCache();
 
-    KUrl baseUrl = Settings::self()->baseUrl();
+    QUrl baseUrl = QUrl::fromLocalFile(Settings::self()->baseUrl());
     baseUrl.setUserName( Settings::self()->username() );
     baseUrl.setPassword( Settings::self()->password() );
     OXA::DavManager::self()->setBaseUrl( baseUrl );

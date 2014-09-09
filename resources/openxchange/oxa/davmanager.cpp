@@ -45,19 +45,19 @@ DavManager* DavManager::self()
   return mSelf;
 }
 
-void DavManager::setBaseUrl( const KUrl &url )
+void DavManager::setBaseUrl( const QUrl &url )
 {
   mBaseUrl = url;
 }
 
-KUrl DavManager::baseUrl() const
+QUrl DavManager::baseUrl() const
 {
   return mBaseUrl;
 }
 
 KIO::DavJob* DavManager::createFindJob( const QString &path, const QDomDocument &document ) const
 {
-  KUrl url( mBaseUrl );
+  QUrl url( mBaseUrl );
   url.setPath( path );
 
   return KIO::davPropFind( url, document, "0", KIO::HideProgressInfo );
@@ -65,7 +65,7 @@ KIO::DavJob* DavManager::createFindJob( const QString &path, const QDomDocument 
 
 KIO::DavJob* DavManager::createPatchJob( const QString &path, const QDomDocument &document ) const
 {
-  KUrl url( mBaseUrl );
+  QUrl url( mBaseUrl );
   url.setPath( path );
 
   return KIO::davPropPatch( url, document, KIO::HideProgressInfo );

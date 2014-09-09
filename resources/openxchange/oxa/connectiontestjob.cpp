@@ -33,7 +33,7 @@ ConnectionTestJob::ConnectionTestJob( const QString &url, const QString &user, c
 
 void ConnectionTestJob::start()
 {
-  const KUrl url( mUrl + QString::fromLatin1( "/ajax/login?action=login&name=%1&password=%2" ).arg( mUser ).arg( mPassword ) );
+  const QUrl url( mUrl + QString::fromLatin1( "/ajax/login?action=login&name=%1&password=%2" ).arg( mUser ).arg( mPassword ) );
 
   KJob *job = KIO::storedGet( url, KIO::Reload, KIO::HideProgressInfo );
   connect(job, &KJob::result, this, &ConnectionTestJob::httpJobFinished);
@@ -68,7 +68,7 @@ void ConnectionTestJob::httpJobFinished( KJob *job )
     const QString sessionId = data.mid( index + 11, 33 ); // I assume here the session id is always 32  characters long :}
 
     // logout correctly...
-    const KUrl url( mUrl + QString::fromLatin1( "/ajax/login?action=logout&session=%1" ).arg( sessionId ) );
+    const QUrl url( mUrl + QString::fromLatin1( "/ajax/login?action=logout&session=%1" ).arg( sessionId ) );
     KIO::storedGet( url, KIO::Reload, KIO::HideProgressInfo );
   }
 

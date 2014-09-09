@@ -22,7 +22,7 @@
 #ifndef OXA_DAVMANAGER_H
 #define OXA_DAVMANAGER_H
 
-#include <kurl.h>
+#include <qurl.h>
 
 namespace KIO {
 class DavJob;
@@ -57,12 +57,12 @@ class DavManager
     /**
      * Sets the base @p url the DAV manager should use.
      */
-    void setBaseUrl( const KUrl &url );
+    void setBaseUrl( const QUrl &url );
 
     /**
      * Returns the base url the DAV manager uses.
      */
-    KUrl baseUrl() const;
+    QUrl baseUrl() const;
 
     /**
      * Returns a new DAV find job.
@@ -86,7 +86,7 @@ class DavManager
      */
     DavManager();
 
-    KUrl mBaseUrl;
+    QUrl mBaseUrl;
     static DavManager* mSelf;
 };
 
