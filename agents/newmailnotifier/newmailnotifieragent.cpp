@@ -73,14 +73,10 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
                                                            this, QDBusConnection::ExportAdaptors );
     DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
 
-    connect( Akonadi::AgentManager::self(), SIGNAL(instanceStatusChanged(Akonadi::AgentInstance)),
-             this, SLOT(slotInstanceStatusChanged(Akonadi::AgentInstance)) );
-    connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)),
-             this, SLOT(slotInstanceRemoved(Akonadi::AgentInstance)) );
-    connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)),
-             this, SLOT(slotInstanceAdded(Akonadi::AgentInstance)) );
-    connect( Akonadi::AgentManager::self(), SIGNAL(instanceNameChanged(Akonadi::AgentInstance)),
-             this, SLOT(slotInstanceNameChanged(Akonadi::AgentInstance)) );
+    connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceStatusChanged, this, &NewMailNotifierAgent::slotInstanceStatusChanged);
+    connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceRemoved, this, &NewMailNotifierAgent::slotInstanceRemoved);
+    connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceAdded, this, &NewMailNotifierAgent::slotInstanceAdded);
+    connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceNameChanged, this, &NewMailNotifierAgent::slotInstanceNameChanged);
 
 
     changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
@@ -463,7 +459,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         }
         if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
-            connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
+            connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
             mNewMails.clear();
             return;
         } else {
