@@ -89,17 +89,15 @@ void ConfigDialog::save()
 
 void ConfigDialog::showAboutDialog()
 {
-#if 0 //QT5
-  KAboutData aboutData( "ox", "", ki18n( "Open-Xchange" ), "0.1",
-                        ki18n( "Akonadi Open-Xchange Resource" ),
-                        KAboutData::License_LGPL,
-                        ki18n( "(c) 2009 by Tobias Koenig (credativ GmbH)" ) );
-  aboutData.addAuthor( ki18n( "Tobias Koenig" ), ki18n( "Current maintainer" ), "tokoe@kde.org" );
-  aboutData.addCredit( ki18n( "credativ GmbH" ), ki18n( "Funded and supported" ), 0, "http://www.credativ.com" );
+  KAboutData aboutData( QLatin1String("ox"), i18n( "Open-Xchange" ), QLatin1String("0.1"),
+                        i18n( "Akonadi Open-Xchange Resource" ),
+                        KAboutLicense::LGPL,
+                        i18n( "(c) 2009 by Tobias Koenig (credativ GmbH)" ) );
+  aboutData.addAuthor( i18n( "Tobias Koenig" ), i18n( "Current maintainer" ), QLatin1String("tokoe@kde.org") );
+  aboutData.addCredit( i18n( "credativ GmbH" ), i18n( "Funded and supported" ), QLatin1String("http://www.credativ.com") );
 
-  KAboutApplicationDialog dlg( &aboutData, this );
+  KAboutApplicationDialog dlg( aboutData, this );
   dlg.exec();
-#endif
 }
 
 void ConfigDialog::updateButtonState()
