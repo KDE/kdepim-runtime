@@ -39,7 +39,6 @@
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
-#include <KLocale>
 #include <Kdelibs4ConfigMigrator>
 
 #include <QtCore/QTimer>
