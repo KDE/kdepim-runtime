@@ -28,6 +28,7 @@
 #include <AkonadiCore/AgentManager>
 #include <AkonadiCore/Control>
 #include <qtest_akonadi.h>
+#include <QSignalSpy>
 
 #define TIMES 100 // How many times to sync.
 #define TIMEOUT 10 // How many seconds to wait before declaring the resource dead.
@@ -53,7 +54,8 @@ void SyncTest::testSync()
     QTime t;
     t.start();
     instance.synchronize();
-    QVERIFY( QTest::kWaitForSignal( interface, SIGNAL(synchronized()), TIMEOUT * 1000 ) );
+    QSignalSpy spy (interface, SIGNAL(synchronized()));
+    QVERIFY( spy.wait( TIMEOUT * 1000 ) );
     qDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
   }
 }

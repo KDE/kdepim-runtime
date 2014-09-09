@@ -49,6 +49,8 @@
 #include <kmime/kmime_message.h>
 #include <boost/shared_ptr.hpp>
 
+#include <QSignalSpy>
+
 #define SPAM_ADDRESS "idanoka@gmail.com"
 // NOTE: This test relies on a large SMTP message taking long enough to deliver,
 // for it to call abort.  So we need a valid receiver and a not-too-fast connection.
@@ -69,7 +71,8 @@ void AbortTest::initTestCase()
   // Get the outbox and clear it.
   SpecialMailCollectionsRequestJob *rjob = new SpecialMailCollectionsRequestJob( this );
   rjob->requestDefaultCollection( SpecialMailCollections::Outbox );
-  QTest::kWaitForSignal( rjob, SIGNAL(result(KJob*)) );
+  QSignalSpy spy(rjob,SIGNAL(result(KJob*)));
+  spy.wait(0);
   outbox = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::Outbox );
   QVERIFY( outbox.isValid() );
   ItemDeleteJob *djob = new ItemDeleteJob( outbox );
