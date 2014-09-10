@@ -22,8 +22,8 @@ macro(add_akonadiplugin_test _source _libs _additionalSources)
   ecm_mark_as_test(akonadiplugin-${_name})
 
   target_link_libraries(${_name} KF5::AkonadiCore KF5::AkonadiMime 
-                         Qt5::Test KF5::KF5AkonadiPrivate
-                         ${_libs})
+                         Qt5::Test KF5::AkonadiPrivate
+                        KF5::AkonadiPrivate ${_libs})
 endmacro()
 
 # qtestlib unit tests
