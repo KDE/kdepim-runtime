@@ -116,6 +116,13 @@ void BatchFetcher::fetchNextBatch()
 
         //Take a chunk from the set
         Q_FOREACH (const KIMAP::ImapInterval &interval, m_currentSet.intervals()) {
+            if (!interval.hasDefinedEnd()) {
+                //If we get an interval without a defined end we simply fetch everything
+                kDebug(5327) << "Received interval without defined end, fetching everything in one batch";
+                toFetch.add(interval);
+                newSet = KIMAP::ImapSet();
+                break;
+            }
             const qint64 wantedItems = m_batchSize - counter;
             if (counter < m_batchSize) {
                 if (interval.size() <= wantedItems) {

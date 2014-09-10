@@ -411,7 +411,6 @@ private slots:
              << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
              << "S: A000006 OK search done"
              << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
-             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 )"
              << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
                 "RFC822.SIZE 75 BODY[] {75}\r\n"
                 "From: Foo <foo@kde.org>\r\n"
@@ -523,6 +522,42 @@ private slots:
 
     //fetch only changed flags
     QTest::newRow( "remote message deleted" ) << collection << scenario << callNames;
+
+    collection = createCollectionChain(QLatin1String("/INBOX/Foo") );
+    collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+    collection.setCachePolicy( policy );
+    collection.attribute<UidNextAttribute>( Akonadi::Collection::AddIfMissing )->setUidNext( -1 );
+    collection.attribute<HighestModSeqAttribute>( Akonadi::Entity::AddIfMissing )->setHighestModSeq( 123456789 );
+    stats.setCount( 0 );
+    collection.setStatistics( stats );
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario()
+             << "C: A000003 SELECT \"INBOX/Foo\""
+             << "S: A000003 OK select done"
+             << "C: A000004 EXPUNGE"
+             << "S: A000004 OK expunge done"
+             << "C: A000005 SELECT \"INBOX/Foo\""
+             << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+             << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+             << "S: * 9 EXISTS"
+             << "S: * 0 RECENT"
+             << "S: * OK [ UIDVALIDITY 1149151135  ]"
+             << "S: A000005 OK select done"
+             << "C: A000006 FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
+             << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+                "RFC822.SIZE 75 BODY[] {75}\r\n"
+                "From: Foo <foo@kde.org>\r\n"
+                "To: Bar <bar@kde.org>\r\n"
+                "Subject: Test Mail\r\n"
+                "\r\n"
+                "Test\r\n"
+                " )"
+             << "S: A000006 OK fetch done";
+
+    callNames.clear();
+    callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone" ;
+
+    QTest::newRow( "missing uidnext" ) << collection << scenario << callNames;
 
   }
 
