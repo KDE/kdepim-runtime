@@ -237,7 +237,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     //This is known to happen with Courier IMAP. A better solution would be to issue STATUS in case UIDNEXT is not delivered on select,
     //but that would have to be implemented in KIMAP first. See Bug 338186.
     if (nextUid < 0) {
-        kWarning() << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value. This is a known problem with Courier IMAP.";
+        qWarning() << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value. This is a known problem with Courier IMAP.";
         nextUid = 0;
     }
 
@@ -379,7 +379,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     } else if (nextUid <= 0) {
         //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
-        kDebug() << "Running courier imap compatiblity codepath";
+        //qDebug() << "Running courier imap compatiblity codepath";
         if (messageCount > realMessageCount) {
             //Get new messages
             retrieveItems(KIMAP::ImapSet(realMessageCount + 1, messageCount), scope, false, false);
