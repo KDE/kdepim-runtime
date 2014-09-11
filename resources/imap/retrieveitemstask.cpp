@@ -230,9 +230,16 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     const QString mailBox = select->mailBox();
     const int messageCount = select->messageCount();
     const qint64 uidValidity = select->uidValidity();
-    const qint64 nextUid = select->nextUid();
+    qint64 nextUid = select->nextUid();
     quint64 highestModSeq = select->highestModSequence();
     const QList<QByteArray> flags = select->permanentFlags();
+
+    //This is known to happen with Courier IMAP. A better solution would be to issue STATUS in case UIDNEXT is not delivered on select,
+    //but that would have to be implemented in KIMAP first. See Bug 338186.
+    if (nextUid < 0) {
+        kWarning() << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value. This is a known problem with Courier IMAP.";
+        nextUid = 0;
+    }
 
     //The select job retrieves highestmodseq whenever it's available, but in case of no CONDSTORE support we ignore it
     if (!serverSupportsCondstore()) {
@@ -260,16 +267,15 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 
     // Get the current uid next value and store it
     int oldNextUid = 0;
-    if (!col.hasAttribute("uidnext")) {
-        UidNextAttribute* currentNextUid  = new UidNextAttribute(nextUid);
-        col.addAttribute(currentNextUid);
-        modifyNeeded = true;
-    } else {
-        UidNextAttribute* currentNextUid =
-        static_cast<UidNextAttribute*>(col.attribute("uidnext"));
-        oldNextUid = currentNextUid->uidNext();
-        if (oldNextUid != nextUid) {
-            currentNextUid->setUidNext(nextUid);
+    if (nextUid > 0) { //this can fail with faulty servers that don't deliver uidnext
+        if (UidNextAttribute* currentNextUid = col.attribute<UidNextAttribute>()) {
+            oldNextUid = currentNextUid->uidNext();
+            if (oldNextUid != nextUid) {
+                currentNextUid->setUidNext(nextUid);
+                modifyNeeded = true;
+            }
+        } else {
+            col.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(nextUid);
             modifyNeeded = true;
         }
     }
@@ -370,6 +376,24 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
+    } else if (nextUid <= 0) {
+        //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
+        //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
+        kDebug() << "Running courier imap compatiblity codepath";
+        if (messageCount > realMessageCount) {
+            //Get new messages
+            retrieveItems(KIMAP::ImapSet(realMessageCount + 1, messageCount), scope, false, false);
+        } else if (messageCount == realMessageCount) {
+            m_uidBasedFetch = false;
+            m_incremental = true;
+            setTotalItems(messageCount);
+            listFlagsForImapSet(KIMAP::ImapSet(1, messageCount));
+        } else {
+            m_uidBasedFetch = false;
+            m_incremental = false;
+            setTotalItems(messageCount);
+            listFlagsForImapSet(KIMAP::ImapSet(1, messageCount));
+        }
     } else if (!m_messageUidsMissingBody.isEmpty()) {
         //fetch missing uids
         m_fetchedMissingBodies = 0;
