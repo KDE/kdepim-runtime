@@ -263,8 +263,8 @@ QString KAEventFormatter::value(Parameter param) const
         case FgColour:          return mEvent.fgColour().name();
         case BgColour:          return mEvent.bgColour().name();
         case Font:              return mEvent.useDefaultFont() ? i18nc("@info Using default font", "Default") : mEvent.font().toString();
-        case PreActionCancel:   return trueFalse(mEvent.cancelOnPreActionError());
-        case PreActionNoError:  return trueFalse(mEvent.dontShowPreActionError());
+        case PreActionCancel:   return trueFalse(mEvent.extraActionOptions() & KAEvent::CancelOnPreActError);
+        case PreActionNoError:  return trueFalse(mEvent.extraActionOptions() & KAEvent::CancelOnPreActError);
         case PreAction:         return mEvent.preAction();
         case PostAction:        return mEvent.postAction();
         case Reminder:          return mEvent.reminderMinutes() ? minutesHoursDays(mEvent.reminderMinutes()) : trueFalse(false);

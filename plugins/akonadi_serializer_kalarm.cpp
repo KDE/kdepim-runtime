@@ -197,9 +197,9 @@ void SerializerPluginKAlarm::compare(AbstractDifferencesReporter* reporter, cons
         reportDifference(reporter, KAEventFormatter::Font);
     if (eventL.preAction() != eventR.preAction())
         reportDifference(reporter, KAEventFormatter::PreAction);
-    if (eventL.cancelOnPreActionError() != eventR.cancelOnPreActionError())
+    if ((eventL.extraActionOptions() & KAEvent::CancelOnPreActError) != (eventR.extraActionOptions() & KAEvent::CancelOnPreActError))
         reportDifference(reporter, KAEventFormatter::PreActionCancel);
-    if (eventL.dontShowPreActionError() != eventR.dontShowPreActionError())
+    if ((eventL.extraActionOptions() & KAEvent::DontShowPreActError) != (eventR.extraActionOptions() & KAEvent::DontShowPreActError))
         reportDifference(reporter, KAEventFormatter::PreActionNoError);
     if (eventL.postAction() != eventR.postAction())
         reportDifference(reporter, KAEventFormatter::PostAction);
