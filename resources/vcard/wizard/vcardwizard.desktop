@@ -43,6 +43,7 @@ Icon=text-directory
 Comment=Loads contact from vCard File
 Comment[ca]=Carrega els contactes des d'un fitxer vCard
 Comment[cs]=Načítá data ze souboru vizitek (vCard)
+Comment[de]=Lädt Kontakte aus einer vCard-Datei
 Comment[en_GB]=Loads contact from vCard File
 Comment[es]=Carga contactos desde un archivo vCard
 Comment[fi]=Lataa yhteystiedon vCard-tiedostosta
