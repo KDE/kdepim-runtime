@@ -20,7 +20,7 @@
 
 #include <Akonadi/Attribute>
 
-#include <KDateTime>
+#include <QDateTime>
 
 class NoteAlarmAttribute : public Akonadi::Attribute
 {
@@ -36,11 +36,11 @@ public:
 
     void deserialize( const QByteArray &data );
 
-    void setDateTime(const KDateTime &dateTime);
-    KDateTime dateTime() const;
+    void setDateTime(const QDateTime &dateTime);
+    QDateTime dateTime() const;
 
 private:
-    KDateTime mDateTime;
+    QDateTime mDateTime;
 };
 
 #endif

@@ -56,12 +56,12 @@ QByteArray NoteAlarmAttribute::type() const
     return "NoteAlarmAttribute";
 }
 
-void NoteAlarmAttribute::setDateTime(const KDateTime &dateTime)
+void NoteAlarmAttribute::setDateTime(const QDateTime &dateTime)
 {
     mDateTime = dateTime;
 }
 
-KDateTime NoteAlarmAttribute::dateTime() const
+QDateTime NoteAlarmAttribute::dateTime() const
 {
     return mDateTime;
 }
