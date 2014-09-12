@@ -71,7 +71,7 @@ KMigratorBase::KMigratorBase() : m_logFile( 0 )
     qWarning() << "Unable to open log file: " << logFileName;
   }
   logMessage( Info, QLatin1String("Starting migration...") );
-  connect( this, SIGNAL(message(KMigratorBase::MessageType,QString)), SLOT(logMessage(KMigratorBase::MessageType,QString)) );
+  connect(this, &KMigratorBase::message, this, &KMigratorBase::logMessage);
 
   // load the vtable before we continue
   QTimer::singleShot( 0, this, SLOT(migrate()) );

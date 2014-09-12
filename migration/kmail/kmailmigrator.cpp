@@ -183,7 +183,7 @@ void KMailMigrator::migrate()
                                    KIO::HideProgressInfo );
     job->setAutoSkip( true );
     job->setWriteIntoExistingDirectories( true );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(autoSaveCopyResult(KJob*)) );
+    connect(job, &KIO::CopyJob::result, this, &KMailMigrator::autoSaveCopyResult);
   }
 
   mAccounts = mConfig->groupList().filter( QRegExp( QLatin1String("Account \\d+") ) );

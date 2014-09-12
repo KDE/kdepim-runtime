@@ -186,7 +186,7 @@ EmptyResourceCleaner::EmptyResourceCleaner( const AgentInstance &resource, QObje
 {
   qDebug() << "Creating cleaner for resource"
                                    << d->mResource.identifier();
-  connect( this, SIGNAL(cleanupFinished(Akonadi::AgentInstance)), SLOT(deleteLater()) );
+  connect(this, &EmptyResourceCleaner::cleanupFinished, this, &EmptyResourceCleaner::deleteLater);
 
   CollectionFetchScope scope;
   scope.setResource( d->mResource.identifier() );

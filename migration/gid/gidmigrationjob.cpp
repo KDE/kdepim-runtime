@@ -44,7 +44,7 @@ void UpdateJob::doStart()
     fetchJob->fetchScope().setFetchRemoteIdentification(false);
     fetchJob->fetchScope().fetchFullPayload(true);
     //Limit scope to envelope only for mail
-    connect(fetchJob, SIGNAL(itemsReceived(Akonadi::Item::List)), this, SLOT(itemsReceived(Akonadi::Item::List)));
+    connect(fetchJob, &ItemFetchJob::itemsReceived, this, &UpdateJob::itemsReceived);
 }
 
 void UpdateJob::itemsReceived(const Akonadi::Item::List &items)
@@ -106,8 +106,8 @@ void GidMigrationJob::doStart()
 {
     CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive, this);
     fetchJob->fetchScope().setContentMimeTypes(mMimeTypeFilter);
-    connect(fetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), this, SLOT(collectionsReceived(Akonadi::Collection::List)));
-    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(collectionsFetched(KJob*)));
+    connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &GidMigrationJob::collectionsReceived);
+    connect(fetchJob, &CollectionFetchJob::result, this, &GidMigrationJob::collectionsFetched);
 }
 
 void GidMigrationJob::collectionsReceived(const Collection::List &collections)
@@ -131,7 +131,7 @@ void GidMigrationJob::processCollection()
     }
     const Collection col = mCollections.takeLast();
     UpdateJob *updateJob = new UpdateJob(col, this);
-    connect(updateJob, SIGNAL(result(KJob*)), this, SLOT(itemsUpdated(KJob*)));
+    connect(updateJob, &UpdateJob::result, this, &GidMigrationJob::itemsUpdated);
 }
 
 void GidMigrationJob::itemsUpdated(KJob *job)

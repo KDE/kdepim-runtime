@@ -140,7 +140,7 @@ void KNotesMigrator::notesResourceCreated(KJob * job)
     m_agentInstance.reconfigure();
 
     ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( m_agentInstance, this );
-    connect( syncJob, SIGNAL(result(KJob*)), SLOT(syncDone(KJob*)));
+    connect(syncJob, &ResourceSynchronizationJob::result, this, &KNotesMigrator::syncDone);
     syncJob->start();
 }
 
@@ -150,8 +150,8 @@ void KNotesMigrator::syncDone(KJob *job)
     emit message( Info, i18n( "Instance \"%1\" synchronized" , m_agentInstance.identifier() ) );
 
     CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
-    connect( collectionFetchJob, SIGNAL(collectionsReceived(Akonadi::Collection::List)), SLOT(rootCollectionsRecieved(Akonadi::Collection::List)) );
-    connect( collectionFetchJob, SIGNAL(result(KJob*)), SLOT(rootFetchFinished(KJob*)) );
+    connect(collectionFetchJob, &CollectionFetchJob::collectionsReceived, this, &KNotesMigrator::rootCollectionsRecieved);
+    connect(collectionFetchJob, &CollectionFetchJob::result, this, &KNotesMigrator::rootFetchFinished);
 }
 
 void KNotesMigrator::rootFetchFinished( KJob *job )
@@ -241,7 +241,7 @@ void KNotesMigrator::startMigration()
     }
 
     EntityTreeCreateJob *createJob = new EntityTreeCreateJob( QList<Akonadi::Collection::List>(), newItemsList,this );
-    connect(createJob, SIGNAL(result(KJob*)), SLOT(newResourceFilled(KJob*)));
+    connect(createJob, &EntityTreeCreateJob::result, this, &KNotesMigrator::newResourceFilled);
 }
 
 void KNotesMigrator::newResourceFilled(KJob* job)
@@ -255,7 +255,7 @@ void KNotesMigrator::showDefaultCollection()
     ShowFolderNotesAttribute *attribute = m_resourceCollection.attribute<ShowFolderNotesAttribute>( Akonadi::Collection::AddIfMissing );
     Q_UNUSED(attribute);
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( m_resourceCollection );
-    connect(job, SIGNAL(result(KJob*)), SLOT(slotCollectionModify(KJob*)));
+    connect(job, &Akonadi::CollectionModifyJob::result, this, &KNotesMigrator::slotCollectionModify);
 }
 
 void KNotesMigrator::slotCollectionModify(KJob* job)
