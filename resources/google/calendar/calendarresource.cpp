@@ -150,8 +150,8 @@ void CalendarResource::retrieveItems( const Akonadi::Collection &collection )
     }
 
     job->setProperty( COLLECTION_PROPERTY, QVariant::fromValue( collection ) );
-    connect( job, SIGNAL(progress(KGAPI2::Job*,int,int)), this, SLOT(emitPercent(KGAPI2::Job*,int,int)) );
-    connect( job, SIGNAL(finished(KGAPI2::Job*)), this, SLOT(slotItemsRetrieved(KGAPI2::Job*)) );
+    connect(job, &KGAPI2::Job::progress, this, &CalendarResource::emitPercent);
+    connect(job, &KGAPI2::Job::finished, this, &CalendarResource::slotItemsRetrieved);
 }
 
 void CalendarResource::retrieveCollections()

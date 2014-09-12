@@ -97,7 +97,7 @@ bool ImapTestBase::waitForSignal( QObject *obj, const char *member, int timeout 
   QEventLoop loop;
   QTimer timer;
 
-  connect( &timer, SIGNAL(timeout()), &loop, SLOT(quit()) );
+  connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
   QSignalSpy spy( obj, member );
   connect( obj, member, &loop, SLOT(quit()) );

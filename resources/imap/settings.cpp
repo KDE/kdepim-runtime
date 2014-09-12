@@ -147,7 +147,7 @@ void Settings::requestManualAuth()
   dlg->setPrompt( i18n( "Please enter password for user '%1' on IMAP server '%2'.",
                         userName(), imapServer() ) );
   dlg->setAttribute( Qt::WA_DeleteOnClose );
-  connect( dlg, SIGNAL(finished(int)), this, SLOT(onDialogFinished(int)) );
+  connect(dlg, &KPasswordDialog::finished, this, &Settings::onDialogFinished);
   dlg->show();
 }
 

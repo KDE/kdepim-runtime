@@ -94,8 +94,8 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
         fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
         fetchJob->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Body);
         fetchJob->fetchScope().setFetchModificationTime(false);
-        connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(fetchItemsWithoutBodiesDone(KJob*)));
-        connect(fetchJob, SIGNAL(result(KJob*)), session, SLOT(deleteLater()));
+        connect(fetchJob, &Akonadi::ItemFetchJob::result, this, &RetrieveItemsTask::fetchItemsWithoutBodiesDone);
+        connect(fetchJob, &Akonadi::ItemFetchJob::result, session, &Akonadi::Session::deleteLater);
     } else {
         startRetrievalTasks();
     }

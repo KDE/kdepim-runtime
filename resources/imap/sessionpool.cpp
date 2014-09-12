@@ -376,7 +376,7 @@ void SessionPool::onLoginDone( KJob *job )
     } else {
       // On initial connection we ask for capabilities
       KIMAP::CapabilitiesJob *capJob = new KIMAP::CapabilitiesJob( login->session() );
-      QObject::connect( capJob, SIGNAL(result(KJob*)), SLOT(onCapabilitiesTestDone(KJob*)) );
+      QObject::connect(capJob, &KIMAP::CapabilitiesJob::result, this, &SessionPool::onCapabilitiesTestDone);
       capJob->start();
     }
   } else {
@@ -448,7 +448,7 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
   // If the extension is supported, grab the namespaces from the server
   if ( m_capabilities.contains( QLatin1String("NAMESPACE") ) ) {
     KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob( capJob->session() );
-    QObject::connect( nsJob, SIGNAL(result(KJob*)), SLOT(onNamespacesTestDone(KJob*)) );
+    QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
     nsJob->start();
     return;
   } else {

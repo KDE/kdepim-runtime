@@ -159,7 +159,7 @@ void MixedMaildirResource::itemAdded( const Item &item, const Collection& collec
   }
 
   FileStore::ItemCreateJob *job = mStore->createItem( item, collection );
-  connect( job, SIGNAL(result(KJob*)), SLOT(itemAddedResult(KJob*)) );
+  connect(job, &FileStore::ItemCreateJob::result, this, &MixedMaildirResource::itemAddedResult);
 }
 
 void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>& parts )
@@ -185,7 +185,7 @@ void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>
   job->setIgnorePayload( !item.hasPayload<KMime::Message::Ptr>() );
   job->setParts( parts );
   job->setProperty( "originalRemoteId", storeItem.remoteId() );
-  connect( job, SIGNAL(result(KJob*)), SLOT(itemChangedResult(KJob*)) );
+  connect(job, &FileStore::ItemModifyJob::result, this, &MixedMaildirResource::itemChangedResult);
 }
 
 void MixedMaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
@@ -210,7 +210,7 @@ void MixedMaildirResource::itemMoved( const Item &item, const Collection &source
 
   FileStore::ItemMoveJob *job = mStore->moveItem( moveItem, destination );
   job->setProperty( "originalRemoteId", moveItem.remoteId() );
-  connect( job, SIGNAL(result(KJob*)), SLOT(itemMovedResult(KJob*)) );
+  connect(job, &FileStore::ItemMoveJob::result, this, &MixedMaildirResource::itemMovedResult);
 }
 
 void MixedMaildirResource::itemRemoved(const Item &item)
@@ -236,7 +236,7 @@ void MixedMaildirResource::itemRemoved(const Item &item)
   Item storeItem( item );
   storeItem.setRemoteId( mCompactHelper->currentRemoteId( item ) );
   FileStore::ItemDeleteJob *job = mStore->deleteItem( storeItem );
-  connect( job, SIGNAL(result(KJob*)), SLOT(itemRemovedResult(KJob*)) );
+  connect(job, &FileStore::ItemDeleteJob::result, this, &MixedMaildirResource::itemRemovedResult);
 }
 
 void MixedMaildirResource::retrieveCollections()
@@ -249,7 +249,7 @@ void MixedMaildirResource::retrieveCollections()
   }
 
   FileStore::CollectionFetchJob *job = mStore->fetchCollections( mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive );
-  connect( job, SIGNAL(result(KJob*)), SLOT(retrieveCollectionsResult(KJob*)) );
+  connect(job, &FileStore::CollectionFetchJob::result, this, &MixedMaildirResource::retrieveCollectionsResult);
 
   status( Running, i18nc( "@info:status", "Synchronizing email folders" ) );
 }

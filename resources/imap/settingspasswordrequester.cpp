@@ -73,8 +73,8 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
   dialog->setButtonText(KDialog::Yes, i18n( "Account Settings" ));
   dialog->setButtonText(KDialog::No, i18nc( "Input username/password manually and not store them", "Try Again" ));
   dialog->setAttribute(Qt::WA_DeleteOnClose);
-  connect(dialog, SIGNAL(buttonClicked(KDialog::ButtonCode)), this, SLOT(onButtonClicked(KDialog::ButtonCode)));
-  connect(dialog, SIGNAL(destroyed(QObject*)), this, SLOT(onDialogDestroyed()));
+  connect(dialog, &KDialog::buttonClicked, this, &SettingsPasswordRequester::onButtonClicked);
+  connect(dialog, &KDialog::destroyed, this, &SettingsPasswordRequester::onDialogDestroyed);
   m_requestDialog = dialog;
   KWindowSystem::setMainWindow(dialog, m_resource->winIdForDialogs());
   bool checkboxResult = false;
@@ -97,7 +97,7 @@ void SettingsPasswordRequester::onButtonClicked(KDialog::ButtonCode result)
   if ( result == KDialog::Yes ) {
     if (!m_settingsDialog) {
       QDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
-      connect(dialog, SIGNAL(finished(int)), this, SLOT(onSettingsDialogFinished(int)));
+      connect(dialog, &QDialog::finished, this, &SettingsPasswordRequester::onSettingsDialogFinished);
       m_settingsDialog = dialog;
       dialog->show();
     }

@@ -187,8 +187,8 @@ void FakeServer::newConnection()
 
     mTcpServerConnection = mTcpServer->nextPendingConnection();
     mTcpServerConnection->write(QByteArray("+OK Initech POP3 server ready.\r\n"));
-    connect(mTcpServerConnection, SIGNAL(readyRead()), this, SLOT(dataAvailable()));
-    connect(mTcpServerConnection, SIGNAL(disconnected()), this, SLOT(slotDisconnected()));
+    connect(mTcpServerConnection, &QTcpSocket::readyRead, this, &FakeServer::dataAvailable);
+    connect(mTcpServerConnection, &QTcpSocket::disconnected, this, &FakeServer::slotDisconnected);
 }
 
 void FakeServer::slotDisconnected()

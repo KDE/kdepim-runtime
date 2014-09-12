@@ -31,9 +31,9 @@ AlarmTypeRadioWidget::AlarmTypeRadioWidget(QWidget* parent)
     mButtonGroup->addButton(ui.activeRadio);
     mButtonGroup->addButton(ui.archivedRadio);
     mButtonGroup->addButton(ui.templateRadio);
-    connect(ui.activeRadio, SIGNAL(toggled(bool)), SIGNAL(changed()));
-    connect(ui.archivedRadio, SIGNAL(toggled(bool)), SIGNAL(changed()));
-    connect(ui.templateRadio, SIGNAL(toggled(bool)), SIGNAL(changed()));
+    connect(ui.activeRadio, &QRadioButton::toggled, this, &AlarmTypeRadioWidget::changed);
+    connect(ui.archivedRadio, &QRadioButton::toggled, this, &AlarmTypeRadioWidget::changed);
+    connect(ui.templateRadio, &QRadioButton::toggled, this, &AlarmTypeRadioWidget::changed);
 }
 
 void AlarmTypeRadioWidget::setAlarmType(CalEvent::Type type)

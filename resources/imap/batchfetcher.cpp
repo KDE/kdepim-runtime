@@ -67,7 +67,7 @@ void BatchFetcher::start()
         KIMAP::SearchJob *search = new KIMAP::SearchJob(m_session);
         search->setUidBased(true);
         search->setTerm(m_searchTerm);
-        connect(search, SIGNAL(result(KJob*)), this, SLOT(onUidSearchDone(KJob*)));
+        connect(search, &KIMAP::SearchJob::result, this, &BatchFetcher::onUidSearchDone);
         search->start();
     } else {
         fetchNextBatch();

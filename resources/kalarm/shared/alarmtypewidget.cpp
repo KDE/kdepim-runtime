@@ -27,9 +27,9 @@ AlarmTypeWidget::AlarmTypeWidget(QWidget* parent, QLayout* layout)
 {
     ui.setupUi(parent);
     layout->addWidget(ui.groupBox);
-    connect(ui.activeCheckBox, SIGNAL(toggled(bool)), SIGNAL(changed()));
-    connect(ui.archivedCheckBox, SIGNAL(toggled(bool)), SIGNAL(changed()));
-    connect(ui.templateCheckBox, SIGNAL(toggled(bool)), SIGNAL(changed()));
+    connect(ui.activeCheckBox, &QCheckBox::toggled, this, &AlarmTypeWidget::changed);
+    connect(ui.archivedCheckBox, &QCheckBox::toggled, this, &AlarmTypeWidget::changed);
+    connect(ui.templateCheckBox, &QCheckBox::toggled, this, &AlarmTypeWidget::changed);
 }
 
 void AlarmTypeWidget::setAlarmTypes(CalEvent::Types types)
