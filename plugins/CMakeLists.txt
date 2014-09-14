@@ -22,7 +22,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
  find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5MicroBlog ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 endif()
 
@@ -51,16 +50,10 @@ add_library(akonadi_serializer_bookmark MODULE ${SERIALIZER_TYPE} ${akonadi_seri
 target_link_libraries(akonadi_serializer_bookmark  KF5::KIOCore KF5::AkonadiCore)
 install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
 
-#REACTIVATE
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
 target_link_libraries(akonadi_serializer_contactgroup  KF5::Abc KF5::AkonadiCore KF5::AkonadiContact KF5::AkonadiAbc)
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
-
-set( akonadi_serializer_microblog_SRCS akonadi_serializer_microblog.cpp )
-add_library(akonadi_serializer_microblog MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_microblog_SRCS})
-target_link_libraries(akonadi_serializer_microblog KF5::AkonadiCore   Qt5::Xml KF5::PimUtils KF5::MicroBlog)
-install(TARGETS akonadi_serializer_microblog DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp akonadi_serializer_kalarm_debug.cpp)
 add_library(akonadi_serializer_kalarm MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
@@ -82,7 +75,6 @@ install( FILES
   akonadi_serializer_kcalcore.desktop
   akonadi_serializer_bookmark.desktop
   akonadi_serializer_contactgroup.desktop
-  akonadi_serializer_microblog.desktop
   akonadi_serializer_kalarm.desktop
 DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer)
 
