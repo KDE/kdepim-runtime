@@ -74,17 +74,12 @@ Kolab::Version SetupKolab::readKolabVersion( const QString &resourceIdentifier )
 
 void SetupKolab::initConnection()
 {
-  connect( m_ui->launchWizard, SIGNAL(clicked()), this, SLOT(slotLaunchWizard()) );
-  connect( m_ui->createKolabFolderButton, SIGNAL(clicked()),
-           this, SLOT(slotCreateDefaultKolabCollections()) );
-  connect( m_ui->upgradeFormatButton, SIGNAL(clicked()),
-           this, SLOT(slotShowUpgradeDialog()) );
-  connect( m_ui->imapAccountComboBox, SIGNAL(currentIndexChanged(QString)),
-           this, SLOT(slotSelectedAccountChanged()) );
-  connect( Akonadi::AgentManager::self(), SIGNAL(instanceAdded(Akonadi::AgentInstance)),
-           this, SLOT(slotInstanceAddedRemoved()) );
-  connect( Akonadi::AgentManager::self(), SIGNAL(instanceRemoved(Akonadi::AgentInstance)),
-           this, SLOT(slotInstanceAddedRemoved()) );
+  connect(m_ui->launchWizard, &QPushButton::clicked, this, &SetupKolab::slotLaunchWizard);
+  connect(m_ui->createKolabFolderButton, &QPushButton::clicked, this, &SetupKolab::slotCreateDefaultKolabCollections);
+  connect(m_ui->upgradeFormatButton, &QPushButton::clicked, this, &SetupKolab::slotShowUpgradeDialog);
+  connect(m_ui->imapAccountComboBox, static_cast<void (KComboBox::*)(const QString &)>(&KComboBox::currentIndexChanged), this, &SetupKolab::slotSelectedAccountChanged);
+  connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceAdded, this, &SetupKolab::slotInstanceAddedRemoved);
+  connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceRemoved, this, &SetupKolab::slotInstanceAddedRemoved);
 }
 
 void SetupKolab::slotShowUpgradeDialog()
@@ -96,7 +91,7 @@ void SetupKolab::slotShowUpgradeDialog()
   dialog->setButtons( Ok );
   m_versionUi->setupUi( dialog->mainWidget() );
   m_versionUi->progressBar->setDisabled( true );
-  connect( m_versionUi->pushButton, SIGNAL(clicked()), this, SLOT(slotDoUpgrade()) );
+  connect(m_versionUi->pushButton, &QPushButton::clicked, this, &SetupKolab::slotDoUpgrade);
 
   Kolab::Version v = readKolabVersion( instanceSelected.identifier() );
 
