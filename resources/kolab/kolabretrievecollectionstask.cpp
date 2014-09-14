@@ -33,9 +33,8 @@
 #include <Akonadi/KMime/MessageParts>
 
 #include <kmime/kmime_message.h>
-
+#include <KLocalizedString>
 #include <QDebug>
-#include <KLocale>
 
 KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject* parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
