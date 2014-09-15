@@ -8,7 +8,6 @@ endforeach()
 
 add_library(kolabresourcetest STATIC
     ${kolabproxy_shared_relative_SRCS}
-    ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
     testutils.cpp
 )
 
@@ -24,6 +23,7 @@ target_link_libraries(kolabconvertertest
     Qt5::Test
     KF5::Kolab
     KF5::CalendarCore
+    akonadi-singlefileresource
 )
 
 #akonadi_add_resourcetest( imap-kolab imaptest-kolab.es )

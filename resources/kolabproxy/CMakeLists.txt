@@ -39,7 +39,6 @@ set(kolabproxyresource_SRCS
   collectiontreebuilder.cpp
   setupkolab.cpp
   ${kolabproxyresource_shared_SRCS}
-  ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
 )
 
 qt5_add_dbus_adaptor(kolabproxyresource_SRCS org.freedesktop.Akonadi.kolabproxy.xml  kolabproxyresource.h KolabProxyResource)
