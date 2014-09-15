@@ -48,6 +48,8 @@ find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 # Extra package
 find_package(KF5GAPI "4.70.0" CONFIG)
 
+
+
 # Xsltproc
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
@@ -59,7 +61,7 @@ find_package(SignOnQt 8.56 QUIET CONFIG)
 set_package_properties(SignOnQt PROPERTIES DESCRIPTION "SignOn Qt bindings for accounts-sso" URL "https://code.google.com/p/accounts-sso/" TYPE OPTIONAL PURPOSE "Required to support SignOn in different resources")
 
 # Libkolab
-find_package(Libkolab 0.5 QUIET CONFIG)
+find_package(KF5Kolab "1.0.0" QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 # Libkolabxml
@@ -110,10 +112,10 @@ add_subdirectory( dav )
 add_subdirectory( ical )
 add_subdirectory( imap )
 add_subdirectory( kdeaccounts )
-#if (Libkolab_FOUND AND Libkolabxml_FOUND)
-#    add_subdirectory( kolabproxy )
-#    add_subdirectory( kolab )
-#endif()
+if (KF5Kolab_FOUND AND Libkolabxml_FOUND)
+    add_subdirectory( kolabproxy )
+    add_subdirectory( kolab )
+endif()
 
 add_subdirectory( localbookmarks )
 

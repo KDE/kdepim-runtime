@@ -77,7 +77,7 @@ void KolabResource::retrieveItems(const Akonadi::Collection &col)
 void KolabResource::onItemRetrievalCollectionFetchDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
+        qWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
         cancelTask(i18n("Failed to retrieve items."));
         return;
     }
@@ -112,7 +112,7 @@ void KolabResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collecti
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
-        kWarning() << "Failed to convert item";
+        qWarning() << "Failed to convert item";
         cancelTask();
         return;
     }
@@ -124,7 +124,7 @@ void KolabResource::itemChanged(const Akonadi::Item& item, const QSet< QByteArra
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
-        kWarning() << "Failed to convert item";
+        qWarning() << "Failed to convert item";
         cancelTask();
         return;
     }
@@ -136,7 +136,7 @@ void KolabResource::itemsMoved(const Akonadi::Item::List& items, const Akonadi::
     bool ok = true;
     const Akonadi::Item::List imapItems = KolabHelpers::translateToImap(items, ok);
     if (!ok) {
-        kWarning() << "Failed to convert item";
+        qWarning() << "Failed to convert item";
         cancelTask();
         return;
     }

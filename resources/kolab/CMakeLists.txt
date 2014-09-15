@@ -10,7 +10,6 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
-find_package(KF5Imap ${KF5_VERSION} CONFIG REQUIRED)
 
 ########### next target ###############
 
@@ -46,7 +45,7 @@ target_link_libraries(akonadi_kolab_resource
     KF5::IdentityManagement
     imapresource
     folderarchivesettings
-    ${Libkolab_LIBRARIES}
+    KF5::Kolab
     ${Libkolabxml_LIBRARIES}
     KF5::Abc
     KF5::CalendarCore

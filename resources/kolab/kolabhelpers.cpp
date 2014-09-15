@@ -23,7 +23,7 @@
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
-#include <Akonadi/notes/noteutils.h>
+#include <akonadi/notes/noteutils.h>
 #include <kolabobject.h>
 #include <errorhandler.h>
 
