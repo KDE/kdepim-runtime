@@ -11,7 +11,9 @@ add_library(kolabresourcetest STATIC
     testutils.cpp
 )
 
-kde4_add_unit_test(kolabconvertertest kolabconvertertest.cpp)
+add_executable(kolabconvertertest kolabconvertertest.cpp)
+add_test(kolabconvertertest kolabconvertertest)
+ecm_mark_as_test(kolabconvertertest)
 target_link_libraries(kolabconvertertest
     kolabresourcetest
     ${Libkolab_LIBRARIES}
