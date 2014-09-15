@@ -187,7 +187,6 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     migrate.migrate();
 
   qDebug() << "maildispatcheragent: At your service, sir!";
-  KLocalizedString::setApplicationDomain("akonadi_maildispatcher_agent");
 #ifdef KDEPIM_STATIC_LIBS
     ___MailTransport____INIT();
 #endif
