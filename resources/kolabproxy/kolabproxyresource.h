@@ -24,7 +24,7 @@
 #include "kolabhandler.h"
 #include "handlermanager.h"
 
-#include <Akonadi/ResourceBase>
+#include <AkonadiAgentBase/ResourceBase>
 
 class FreeBusyUpdateHandler;
 

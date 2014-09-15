@@ -28,6 +28,7 @@
 
 #include <KMessageBox>
 #include <KStandardDirs>
+#include <KGlobal>
 
 #include <QProcess>
 #include <QStandardPaths>
@@ -143,7 +144,7 @@ void SetupKolab::slotUpgradeProgress( KJob *job, ulong value )
 void SetupKolab::slotUpgradeDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
     m_versionUi->statusLabel->setText( i18n("Error") );
     KMessageBox::error(
       this,

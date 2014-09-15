@@ -38,7 +38,7 @@ Akonadi::Item::List AddressBookHandler::translateItems( const Akonadi::Item::Lis
   Akonadi::Item::List newItems;
   Q_FOREACH ( const Akonadi::Item &item, items ) {
     if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      kWarning() << "Payload is not a MessagePtr!";
+      qWarning() << "Payload is not a MessagePtr!";
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
@@ -137,7 +137,7 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( message );
   } else {
-    kWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";
+    qWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";
     return false;
   }
   return true;
@@ -161,7 +161,7 @@ QString AddressBookHandler::extractGid(const Akonadi::Item& kolabItem)
   } else if ( kolabItem.hasPayload<KABC::ContactGroup>() ) {
     return kolabItem.payload<KABC::ContactGroup>().id();
   }
-  kWarning() << "invalid payload type!";
+  qWarning() << "invalid payload type!";
   return QString();
 }
 

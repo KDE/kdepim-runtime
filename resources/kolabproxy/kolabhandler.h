@@ -22,8 +22,8 @@
 
 #include "kolabdefs.h"
 
-#include <Akonadi/Collection>
-#include <Akonadi/Item>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 
 #include <QSharedPointer>
 #include <QQueue>

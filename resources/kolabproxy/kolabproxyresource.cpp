@@ -43,9 +43,9 @@
 #include <AkonadiCore/CollectionFetchJob>
 #include <AkonadiCore/CollectionFetchScope>
 #include <AkonadiCore/CollectionModifyJob>
-#include <Akonadi/CollectionMoveJob>
+#include <AkonadiCore/CollectionMoveJob>
 #include <AkonadiCore/EntityDisplayAttribute>
-#include <Akonadi/EntityHiddenAttribute>
+#include <AkonadiCore/EntityHiddenAttribute>
 #include <AkonadiCore/ItemDeleteJob>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
@@ -53,6 +53,7 @@
 #include <AkonadiCore/Session>
 
 #include <KLocalizedString>
+#include <KGlobal>
 #include <KWindowSystem>
 #include <KNotification>
 #include <QDBusInterface>
@@ -165,7 +166,7 @@ void KolabProxyResource::showErrorMessage(const QString &msg)
 {
   KNotification *notification = new KNotification(QLatin1String("Error"), KNotification::CloseOnTimeout, 0);
   notification->setText(msg);
-  notification->setComponentData(KGlobal::mainComponent());
+  //PORT QT5 notification->setComponentData(KGlobal::mainComponent());
   notification->sendEvent();
 }
 
@@ -193,7 +194,7 @@ void KolabProxyResource::retrieveCollections()
 void KolabProxyResource::retrieveCollectionsTreeDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning( ) << "Error on collection fetch:" << job->errorText();
+    qWarning() << "Error on collection fetch:" << job->errorText();
     cancelTask( job->errorText() );
   } else {
     Akonadi::Collection::List imapCollections =
@@ -227,7 +228,7 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
 void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning( ) << "Error on item fetch:" << job->errorText();
+    qWarning() << "Error on item fetch:" << job->errorText();
     cancelTask();
     return;
   }
@@ -260,7 +261,7 @@ bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QBy
 void KolabProxyResource::retrieveItemFetchDone( KJob *job )
 {
   if ( job->error() ) {
-    kWarning( ) << "Error on item fetch:" << job->errorText();
+    qWarning() << "Error on item fetch:" << job->errorText();
     cancelTask();
     return;
   }

@@ -45,7 +45,7 @@ void ImapItemAddedJob::start()
 void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
 {
     if ( job->error() ) {
-        kWarning( ) << "Error on collection fetch:" << job->errorText();
+        qWarning() << "Error on collection fetch:" << job->errorText();
         return;
     }
     Akonadi::Collection::List collections =

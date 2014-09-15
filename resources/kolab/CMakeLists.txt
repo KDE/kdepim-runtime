@@ -49,6 +49,7 @@ target_link_libraries(akonadi_kolab_resource
     ${Libkolabxml_LIBRARIES}
     KF5::Abc
     KF5::CalendarCore
+    akonadi-singlefileresource
 )
 
 install(FILES kolabresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")

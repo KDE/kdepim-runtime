@@ -62,7 +62,7 @@ void ImapItemRemovedJob::onItemFetchJobDone(KJob* job)
 void ImapItemRemovedJob::onDeleteDone(KJob* job)
 {
     if (job->error()) {
-        kWarning() << "Delete job failed" << job->errorString();
+        qWarning() << "Delete job failed" << job->errorString();
     }
     emitResult();
 }

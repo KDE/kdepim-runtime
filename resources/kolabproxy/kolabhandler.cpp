@@ -151,7 +151,7 @@ bool KolabHandler::checkForErrors( Akonadi::Item::Id affectedItem )
     errorMsg.append( QLatin1String("\n") );
   }
 
-  kWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
+  qWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
   Kolab::ErrorHandler::instance().clear();
   return true;
 }
@@ -197,7 +197,7 @@ void KolabHandler::onItemAdded(KJob *job)
 {
   mItemAddJobInProgress = false;
   if (job->error()) {
-    kWarning() << job->errorString();
+    qWarning() << job->errorString();
   }
   processItemAddedQueue();
 }
@@ -219,7 +219,7 @@ void KolabHandler::imapItemRemoved(const Akonadi::Item& imapItem)
 void KolabHandler::checkResult(KJob* job)
 {
   if ( job->error() ) {
-    kWarning() << "Error occurred: " << job->errorString();
+    qWarning() << "Error occurred: " << job->errorString();
   }
 }
 

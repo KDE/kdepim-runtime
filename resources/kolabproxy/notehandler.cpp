@@ -19,7 +19,7 @@
 */
 
 #include "notehandler.h"
-#include <notes/noteutils.h>
+#include <akonadi/notes/noteutils.h>
 
 NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection )
   : JournalHandler( imapCollection )
@@ -43,7 +43,7 @@ bool NotesHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imap
     imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( msg );
   } else {
-    kWarning() << "Payload is not a note!";
+    qWarning() << "Payload is not a note!";
     return false;
   }
   return true;
@@ -54,7 +54,7 @@ Akonadi::Item::List NotesHandler::translateItems( const Akonadi::Item::List &kol
   Akonadi::Item::List newItems;
   foreach ( const Akonadi::Item &item, kolabItems ) {
     if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      kWarning() << "Payload is not a MessagePtr!";
+      qWarning() << "Payload is not a MessagePtr!";
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
@@ -67,7 +67,7 @@ Akonadi::Item::List NotesHandler::translateItems( const Akonadi::Item::List &kol
       noteItem.setRemoteId( QString::number( item.id() ) );
       newItems.append( noteItem );
     } else {
-      kWarning() << "Failed to convert kolab item ( id:" << item.id()
+      qWarning() << "Failed to convert kolab item ( id:" << item.id()
                  << "rid:" << item.remoteId() << ") to Note message";
       continue;
     }
@@ -94,7 +94,7 @@ bool NotesHandler::noteFromKolab( const KMime::Message::Ptr &kolabMsg, Akonadi::
 QString NotesHandler::extractGid(const Akonadi::Item& kolabItem)
 {
     if ( !kolabItem.hasPayload<KMime::Message::Ptr>() ) {
-      kWarning() << "Payload is not a MessagePtr!";
+      qWarning() << "Payload is not a MessagePtr!";
       return QString();
     }
     const KMime::Message::Ptr payload = kolabItem.payload<KMime::Message::Ptr>();

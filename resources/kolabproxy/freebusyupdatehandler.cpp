@@ -23,7 +23,7 @@
 #include <KLocalizedString>
 #include <KPassivePopup>
 #include <KIO/Job>
-
+#include <KUrl>
 #include <QTimer>
 
 FreeBusyUpdateHandler::FreeBusyUpdateHandler( QObject *parent )

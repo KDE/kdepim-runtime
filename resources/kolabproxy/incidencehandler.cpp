@@ -42,7 +42,7 @@ Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List 
   Akonadi::Item::List newItems;
   Q_FOREACH ( const Akonadi::Item &item, items ) {
     if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      kWarning() << "Payload is not a MessagePtr!";
+      qWarning() << "Payload is not a MessagePtr!";
       continue;
     }
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
@@ -52,7 +52,7 @@ Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List 
       continue;
     }
     if ( !incidencePtr ) {
-      kWarning() << "Failed to read incidence.";
+      qWarning() << "Failed to read incidence.";
       continue;
     }
     Akonadi::Item newItem( incidencePtr->mimeType() );
@@ -67,12 +67,12 @@ Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List 
 bool IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
 {
   if ( !item.hasPayload<KCalCore::Incidence::Ptr>() ) {
-    kWarning() << "item is not an incidence";
+    qWarning() << "item is not an incidence";
     return false;
   }
   KCalCore::Incidence::Ptr incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
   if ( !incidencePtr ) {
-    kWarning() << "invalid incidence";
+    qWarning() << "invalid incidence";
     return false;
   }
 
@@ -89,7 +89,7 @@ bool IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &
 QString IncidenceHandler::extractGid(const Akonadi::Item& kolabItem)
 {
   if ( !kolabItem.hasPayload<KCalCore::Incidence::Ptr>() ) {
-    kWarning() << "Invalid payload!";
+    qWarning() << "Invalid payload!";
     return QString();
   }
   return kolabItem.payload<KCalCore::Incidence::Ptr>()->instanceIdentifier();

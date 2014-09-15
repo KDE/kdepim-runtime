@@ -21,7 +21,7 @@
 #define KOLABPROXY_UPGRADEJOB_H
 
 #include <AkonadiCore/AgentInstance>
-#include <Akonadi/Job>
+#include <AkonadiCore/Job>
 
 #include <kolabobject.h> //libkolab
 

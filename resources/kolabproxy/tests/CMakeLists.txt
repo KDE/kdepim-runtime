@@ -22,7 +22,7 @@ target_link_libraries(kolabconvertertest
     KF5::AkonadiMime
     KF5::Mime
     Qt5::Test
-    kdepim-copy
+    KF5::Kolab
     KF5::CalendarCore
 )
 
