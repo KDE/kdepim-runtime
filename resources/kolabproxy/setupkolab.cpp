@@ -48,6 +48,7 @@ SetupKolab::SetupKolab( KolabProxyResource *parentResource )
 SetupKolab::~SetupKolab()
 {
   delete m_ui;
+  delete m_versionUi;
 }
 
 KConfigGroup SetupKolab::getConfigGroup()
