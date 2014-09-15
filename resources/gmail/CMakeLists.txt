@@ -30,7 +30,7 @@ set(gmailresource_SRCS
     gmailchangeitemslabelstask.cpp
 )
 
-qt5_wrap_ui(gmailresource_SRCS gmailconfigdialog.ui)
+ki18n_wrap_ui(gmailresource_SRCS gmailconfigdialog.ui)
 #kconfig_add_kcfg_files(gmailresource_SRCS settingsbase.kcfgc)
 
 add_executable(akonadi_gmail_resource ${gmailresource_SRCS})
