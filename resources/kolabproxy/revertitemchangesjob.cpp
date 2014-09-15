@@ -35,7 +35,7 @@ void RevertItemChangesJob::start()
     Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob(kolabToImap(mKolabItem), this);
     itemFetchJob->fetchScope().fetchFullPayload();
     itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
-    connect(itemFetchJob, SIGNAL(result(KJob*)), SLOT(onImapItemFetchDone(KJob*)));
+    connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &RevertItemChangesJob::onImapItemFetchDone);
 }
 
 void RevertItemChangesJob::onImapItemFetchDone(KJob* job)
@@ -50,7 +50,7 @@ void RevertItemChangesJob::onImapItemFetchDone(KJob* job)
     if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
         qDebug() << "item is not yet created in imap resource, deleting the kolab item";
         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(mKolabItem, this);
-        connect(deleteJob, SIGNAL(result(KJob*)), SLOT(onItemModifyDone(KJob*)));
+        connect(deleteJob, &Akonadi::ItemDeleteJob::result, this, &RevertItemChangesJob::onItemModifyDone);
     } else {
         qDebug() << "reverting to state of imap item";
         Akonadi::Item imapItem = fetchJob->items().first();
@@ -72,7 +72,7 @@ void RevertItemChangesJob::onImapItemFetchDone(KJob* job)
         Akonadi::Item kolabItem = translatedItems.first();
         kolabItem.setId(mKolabItem.id());
         Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob(kolabItem);
-        connect(mjob, SIGNAL(result(KJob*)), SLOT(onItemModifyDone(KJob*)));
+        connect(mjob, &Akonadi::ItemModifyJob::result, this, &RevertItemChangesJob::onItemModifyDone);
     }
 }
 

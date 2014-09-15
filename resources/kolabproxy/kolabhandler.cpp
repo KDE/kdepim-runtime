@@ -189,7 +189,7 @@ void KolabHandler::processItemAddedQueue()
   mItemAddJobInProgress = true;
   const QPair<Akonadi::Item, Akonadi::Collection> pair = mItemAddedQueue.dequeue();
   ImapItemAddedJob *addedJob = new ImapItemAddedJob( pair.first, pair.second, *this, this );
-  connect(addedJob, SIGNAL(result(KJob*)), this, SLOT(onItemAdded(KJob*)));
+  connect(addedJob, &ImapItemAddedJob::result, this, &KolabHandler::onItemAdded);
   addedJob->start();
 }
 
@@ -212,7 +212,7 @@ void KolabHandler::imapItemRemoved(const Akonadi::Item& imapItem)
 {
   //TODO delay this in case an imapItemAdded job is already running (it might reuse the item)
   ImapItemRemovedJob *job = new ImapItemRemovedJob(imapItem, this);
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  connect(job, &ImapItemRemovedJob::result, this, &KolabHandler::checkResult);
   job->start();
 }
 

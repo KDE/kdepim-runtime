@@ -33,10 +33,9 @@ void CollectionTreeBuilder::doStart()
     new Akonadi::CollectionFetchJob( Akonadi::Collection::root(),
                                      Akonadi::CollectionFetchJob::Recursive, this );
 
-  connect( job, SIGNAL(collectionsReceived(Akonadi::Collection::List)),
-           SLOT(collectionsReceived(Akonadi::Collection::List)) );
+  connect(job, &Akonadi::CollectionFetchJob::collectionsReceived, this, &CollectionTreeBuilder::collectionsReceived);
 
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)) );
+  connect(job, &Akonadi::CollectionFetchJob::result, this, &CollectionTreeBuilder::collectionFetchResult);
 }
 
 void CollectionTreeBuilder::collectionsReceived( const Akonadi::Collection::List &collections )

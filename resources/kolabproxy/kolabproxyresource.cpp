@@ -127,30 +127,23 @@ KolabProxyResource::KolabProxyResource( const QString &id )
 
   m_freeBusyUpdateHandler = new FreeBusyUpdateHandler( this );
 
-  connect( m_monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
-           this, SLOT(imapItemAdded(Akonadi::Item,Akonadi::Collection)) );
+  connect(m_monitor, &Akonadi::Monitor::itemAdded, this, &KolabProxyResource::imapItemAdded);
 
-  connect( m_monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
-           this, SLOT(imapItemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)) );
+  connect(m_monitor, &Akonadi::Monitor::itemMoved, this, &KolabProxyResource::imapItemMoved);
 
-  connect( m_monitor, SIGNAL(itemRemoved(Akonadi::Item)),
-           this, SLOT(imapItemRemoved(Akonadi::Item)) );
+  connect(m_monitor, &Akonadi::Monitor::itemRemoved, this, &KolabProxyResource::imapItemRemoved);
 
   //We don't connect to changed because an edit results in a new item (append/delete) on imap
 
-  connect( m_collectionMonitor, SIGNAL(collectionAdded(Akonadi::Collection,Akonadi::Collection)),
-           this, SLOT(imapCollectionAdded(Akonadi::Collection,Akonadi::Collection)) );
+  connect(m_collectionMonitor, &Akonadi::Monitor::collectionAdded, this, &KolabProxyResource::imapCollectionAdded);
 
-  connect( m_collectionMonitor, SIGNAL(collectionRemoved(Akonadi::Collection)),
-           this, SLOT(imapCollectionRemoved(Akonadi::Collection)) );
+  connect(m_collectionMonitor, &Akonadi::Monitor::collectionRemoved, this, &KolabProxyResource::imapCollectionRemoved);
 
   connect( m_collectionMonitor, SIGNAL(collectionChanged(Akonadi::Collection)),
            this, SLOT(imapCollectionChanged(Akonadi::Collection)) );
 
-  connect( m_collectionMonitor,
-           SIGNAL(collectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)),
-           this,
-           SLOT(imapCollectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)) );
+
+  connect(m_collectionMonitor, &Akonadi::Monitor::collectionMoved, this, &KolabProxyResource::imapCollectionMoved);
 
   setName( i18n( "Kolab" ) );
 
@@ -188,7 +181,7 @@ QString KolabProxyResource::imapResourceForCollection( Akonadi::Entity::Id  id)
 void KolabProxyResource::retrieveCollections()
 {
   CollectionTreeBuilder *job = new CollectionTreeBuilder( this );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveCollectionsTreeDone(KJob*)) );
+  connect(job, &CollectionTreeBuilder::result, this, &KolabProxyResource::retrieveCollectionsTreeDone);
 }
 
 void KolabProxyResource::retrieveCollectionsTreeDone( KJob *job )
@@ -222,7 +215,7 @@ void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setIgnoreRetrievalErrors( true );
 
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemsFetchDone(KJob*)) );
+  connect(job, &Akonadi::ItemFetchJob::result, this, &KolabProxyResource::retrieveItemsFetchDone);
 }
 
 void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
@@ -254,7 +247,7 @@ bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QBy
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( kolabToImap( item ) );
   job->fetchScope().fetchFullPayload();
   job->setProperty( "itemId", item.id() );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(retrieveItemFetchDone(KJob*)) );
+  connect(job, &Akonadi::ItemFetchJob::result, this, &KolabProxyResource::retrieveItemFetchDone);
   return true;
 }
 
@@ -331,7 +324,7 @@ void KolabProxyResource::itemAdded( const Akonadi::Item &kolabItem,
     return;
   }
   ItemAddedJob *itemAddedJob = new ItemAddedJob(kolabItem, collection, *handler, this);
-  connect(itemAddedJob, SIGNAL(result(KJob*)), this, SLOT(onItemAddedDone(KJob*)));
+  connect(itemAddedJob, &ItemAddedJob::result, this, &KolabProxyResource::onItemAddedDone);
   itemAddedJob->start();
 }
 
@@ -358,7 +351,7 @@ void KolabProxyResource::itemChanged( const Akonadi::Item &kolabItem,
 {
   Q_UNUSED( parts );
   ItemChangedJob *itemChangedJob = new ItemChangedJob(kolabItem, *mHandlerManager, this);
-  connect(itemChangedJob, SIGNAL(result(KJob*)), this, SLOT(onItemChangedDone(KJob*)));
+  connect(itemChangedJob, &ItemChangedJob::result, this, &KolabProxyResource::onItemChangedDone);
   itemChangedJob->start();
 }
 
@@ -370,7 +363,7 @@ void KolabProxyResource::onItemChangedDone(KJob* job)
     cancelTask( job->errorText() );
     qWarning() << "Failed to modify item, reverting to state of imap item: " << itemChangedJob->item().id();
     RevertItemChangesJob *revertJob = new RevertItemChangesJob(itemChangedJob->item(), *mHandlerManager, this);
-    connect(revertJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    connect(revertJob, &RevertItemChangesJob::result, this, &KolabProxyResource::checkResult);
     revertJob->start();
     return;
   }
@@ -383,7 +376,7 @@ void KolabProxyResource::itemMoved( const Akonadi::Item &item,
 {
   Q_UNUSED( collectionSource );
   KJob *job = new Akonadi::ItemMoveJob( kolabToImap( item ), kolabToImap( collectionDestination ), this );
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  connect(job, &KJob::result, this, &KolabProxyResource::checkResult);
   changeCommitted( item );
 }
 
@@ -425,7 +418,7 @@ void KolabProxyResource::collectionAdded( const Akonadi::Collection &collection,
 
   Akonadi::CollectionCreateJob *job = new Akonadi::CollectionCreateJob( imapCollection, this );
   job->setProperty( KOLAB_COLLECTION, QVariant::fromValue( collection ) );
-  connect( job, SIGNAL(result(KJob*)), SLOT(imapFolderCreateResult(KJob*)) );
+  connect(job, &Akonadi::CollectionCreateJob::result, this, &KolabProxyResource::imapFolderCreateResult);
 }
 
 void KolabProxyResource::imapFolderCreateResult( KJob *job )
@@ -583,7 +576,7 @@ void KolabProxyResource::collectionMoved( const Akonadi::Collection &collection,
 {
   Q_UNUSED( source );
   KJob *job = new Akonadi::CollectionMoveJob( kolabToImap( collection ), kolabToImap( destination ), this );
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  connect(job, &KJob::result, this, &KolabProxyResource::checkResult);
   changeCommitted( collection );
 }
 
@@ -626,7 +619,7 @@ void KolabProxyResource::imapItemRemoved( const Akonadi::Item &item )
     //The handler is already gone,
     qWarning() << "Couldn't find handler for collection " << item.storageCollectionId();
     ImapItemRemovedJob *job = new ImapItemRemovedJob(item, this);
-    connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    connect(job, &ImapItemRemovedJob::result, this, &KolabProxyResource::checkResult);
     job->start();
   }
 }
@@ -641,7 +634,7 @@ void KolabProxyResource::imapItemMoved( const Akonadi::Item &item,
     return;
   }
   KJob *job = new Akonadi::ItemMoveJob( imapToKolab( item ), imapToKolab( collectionDestination ), this );
-  connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  connect(job, &KJob::result, this, &KolabProxyResource::checkResult);
 }
 
 void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collection,
@@ -664,7 +657,7 @@ void KolabProxyResource::imapCollectionAdded( const Akonadi::Collection &collect
   if ( registerHandlerForCollection( collection ) ) {
     const Akonadi::Collection kolabCollection = createCollection( collection );
     Akonadi::CollectionCreateJob *job = new Akonadi::CollectionCreateJob( kolabCollection, this );
-    connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
+    connect(job, &Akonadi::CollectionCreateJob::result, this, &KolabProxyResource::kolabFolderChangeResult);
   }
 }
 
@@ -696,7 +689,7 @@ void KolabProxyResource::imapCollectionChanged( const Akonadi::Collection &colle
     // Kolab folder we already have in our tree, if the update fails, reload our tree
     Akonadi::Collection kolabCollection = createCollection( collection );
     Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( kolabCollection, this );
-    connect( job, SIGNAL(result(KJob*)), SLOT(kolabFolderChangeResult(KJob*)) );
+    connect(job, &Akonadi::CollectionModifyJob::result, this, &KolabProxyResource::kolabFolderChangeResult);
   }
 
   updateHiddenAttribute( collection );
@@ -714,7 +707,7 @@ void KolabProxyResource::imapCollectionMoved( const Akonadi::Collection &collect
   }
   if ( mHandlerManager->isMonitored( collection.id() ) ) {
     KJob *job = new Akonadi::CollectionMoveJob( imapToKolab( collection ), imapToKolab( destination ), this );
-    connect(job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+    connect(job, &KJob::result, this, &KolabProxyResource::checkResult);
   }
 }
 
@@ -732,7 +725,7 @@ void KolabProxyResource::kolabFolderChangeResult( KJob *job )
 void KolabProxyResource::removeFolder( const Akonadi::Collection &imapCollection )
 {
   KJob *deleteJob = new Akonadi::CollectionDeleteJob( imapToKolab( imapCollection ) );
-  connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)));
+  connect(deleteJob, &KJob::result, this, &KolabProxyResource::checkResult);
   mHandlerManager->removeFolder( imapCollection.id() );
   updateFreeBusyInformation( imapCollection );
 }
@@ -813,13 +806,13 @@ void KolabProxyResource::updateHiddenAttribute( const Akonadi::Collection &imapC
       Akonadi::Collection hiddenImapCol( imapCollection );
       hiddenImapCol.attribute<Akonadi::EntityHiddenAttribute>( Akonadi::Collection::AddIfMissing );
       KJob *job = new Akonadi::CollectionModifyJob( hiddenImapCol, this );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)) );
+      connect(job, &KJob::result, this, &KolabProxyResource::checkResult);
   }
   if ( !HandlerManager::isKolabFolder( imapCollection ) && imapCollection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
       Akonadi::Collection unhiddenImapCol( imapCollection );
       unhiddenImapCol.removeAttribute<Akonadi::EntityHiddenAttribute>();
       KJob *job = new Akonadi::CollectionModifyJob( unhiddenImapCol, this );
-      connect( job, SIGNAL(result(KJob*)), this, SLOT(checkResult(KJob*)) );
+      connect(job, &KJob::result, this, &KolabProxyResource::checkResult);
   }
 }
 

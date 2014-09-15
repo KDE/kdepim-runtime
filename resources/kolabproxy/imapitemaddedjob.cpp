@@ -39,7 +39,7 @@ void ImapItemAddedJob::start()
     //      having only the remoteId set
     Akonadi::CollectionFetchJob *job =
         new Akonadi::CollectionFetchJob(mKolabCollection, Akonadi::CollectionFetchJob::Base, this );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(onCollectionFetchDone(KJob*)) );
+    connect(job, &Akonadi::CollectionFetchJob::result, this, &ImapItemAddedJob::onCollectionFetchDone);
 }
 
 void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
@@ -71,11 +71,11 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
             itemFetchJob->fetchScope().fetchFullPayload(false);
             itemFetchJob->fetchScope().setFetchModificationTime(false);
             itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
-            connect(itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemFetchJobDone(KJob*)));
+            connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &ImapItemAddedJob::onItemFetchJobDone);
         } else {
             qDebug() << "no gid, creating directly";
             Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection);
-            connect( cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)) );
+            connect(cjob, &Akonadi::ItemCreateJob::result, this, &ImapItemAddedJob::itemCreatedDone);
         }
     }
 
@@ -112,11 +112,11 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
             qDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
             Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mTranslatedItem, this);
             modJob->disableRevisionCheck();
-            connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
+            connect(modJob, &Akonadi::ItemModifyJob::result, this, &ImapItemAddedJob::itemCreatedDone);
         } else {
             qDebug() << "creating new item";
             Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
-            connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
+            connect(cjob, &Akonadi::ItemCreateJob::result, this, &ImapItemAddedJob::itemCreatedDone);
         }
 }
 

@@ -37,7 +37,7 @@ void ImapItemRemovedJob::start()
     Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(mKolabItem, this);
     fetchJob->fetchScope().setFetchRemoteIdentification(true);
     fetchJob->fetchScope().setCacheOnly(true); //don't access the imap backend again
-    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemFetchJobDone(KJob*)));
+    connect(fetchJob, &Akonadi::ItemFetchJob::result, this, &ImapItemRemovedJob::onItemFetchJobDone);
 }
 
 void ImapItemRemovedJob::onItemFetchJobDone(KJob* job)
@@ -53,7 +53,7 @@ void ImapItemRemovedJob::onItemFetchJobDone(KJob* job)
     //Check if the currently relevant imap item was removed or just an outdated copy
     if (kolabItem.remoteId().toLongLong() == mImapItem.id()) {
         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(kolabItem, this );
-        connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(onDeleteDone(KJob*)));
+        connect(deleteJob, &Akonadi::ItemDeleteJob::result, this, &ImapItemRemovedJob::onDeleteDone);
     } else {
         emitResult();
     }

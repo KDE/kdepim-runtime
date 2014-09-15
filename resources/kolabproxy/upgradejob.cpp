@@ -51,7 +51,7 @@ void UpgradeJob::doStart()
     new Akonadi::CollectionFetchJob( Akonadi::Collection::root(),
                                      Akonadi::CollectionFetchJob::Recursive, this );
   job->fetchScope().setResource( m_agentInstance.identifier() );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(collectionFetchResult(KJob*)) );
+  connect(job, &Akonadi::CollectionFetchJob::result, this, &UpgradeJob::collectionFetchResult);
 }
 
 void UpgradeJob::collectionFetchResult( KJob *job )
@@ -94,7 +94,7 @@ void UpgradeJob::collectionFetchResult( KJob *job )
     itemFetchJob->fetchScope().setCacheOnly( false );
     itemFetchJob->setProperty( IMAP_COLLECTION, QVariant::fromValue( col ) );
     itemFetchJob->setProperty( FOLDER_TYPE, QVariant::fromValue( static_cast<int>(folderType) ) );
-    connect( itemFetchJob, SIGNAL(result(KJob*)), this, SLOT(itemFetchResult(KJob*)) );
+    connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &UpgradeJob::itemFetchResult);
   }
   //Percent is only emitted when Bytes is the unit
   setTotalAmount( Bytes, collCount );
@@ -152,7 +152,7 @@ void UpgradeJob::itemFetchResult( KJob *job )
     }
     handler->toKolabFormat( translatedItems.first(), imapItem );
     Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob( imapItem, this );
-    connect( modJob, SIGNAL(result(KJob*)), this, SLOT(itemModifyResult(KJob*)) );
+    connect(modJob, &Akonadi::ItemModifyJob::result, this, &UpgradeJob::itemModifyResult);
   }
   checkResult();
 }

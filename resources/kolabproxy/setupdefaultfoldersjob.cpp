@@ -46,7 +46,7 @@ void SetupDefaultFoldersJob::doStart()
     new Akonadi::CollectionFetchJob( Akonadi::Collection::root(),
                                      Akonadi::CollectionFetchJob::Recursive, this );
   job->fetchScope().setResource( m_agentInstance.identifier() );
-  connect( job, SIGNAL(result(KJob*)), SLOT(collectionFetchResult(KJob*)) );
+  connect(job, &Akonadi::CollectionFetchJob::result, this, &SetupDefaultFoldersJob::collectionFetchResult);
 }
 
 void SetupDefaultFoldersJob::collectionFetchResult( KJob *job )

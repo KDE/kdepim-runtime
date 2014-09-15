@@ -50,7 +50,7 @@ void ItemAddedJob::doStart()
     imapItem.setFlag(Akonadi::MessageFlags::Seen);
 
     Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(imapItem, imapCollection);
-    connect(cjob, SIGNAL(result(KJob*)), SLOT(onItemCreatedDone(KJob*)));
+    connect(cjob, &Akonadi::ItemCreateJob::result, this, &ItemAddedJob::onItemCreatedDone);
 }
 
 void ItemAddedJob::onItemCreatedDone(KJob* job)

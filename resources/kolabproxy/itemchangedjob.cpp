@@ -34,7 +34,7 @@ ItemChangedJob::ItemChangedJob(const Akonadi::Item& kolabItem, HandlerManager& h
 void ItemChangedJob::start()
 {
     Akonadi::CollectionFetchJob *collectionFetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection(mKolabItem.storageCollectionId()), Akonadi::CollectionFetchJob::Base);
-    connect(collectionFetchJob, SIGNAL(result(KJob*)), this, SLOT(onKolabCollectionFetched(KJob*)));
+    connect(collectionFetchJob, &Akonadi::CollectionFetchJob::result, this, &ItemChangedJob::onKolabCollectionFetched);
 }
 
 void ItemChangedJob::onKolabCollectionFetched(KJob* job)
@@ -56,7 +56,7 @@ void ItemChangedJob::onKolabCollectionFetched(KJob* job)
     }
 
     Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob(kolabToImap(mKolabItem), this);
-    connect(itemFetchJob, SIGNAL(result(KJob*)), SLOT(onImapItemFetchDone(KJob*)));
+    connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &ItemChangedJob::onImapItemFetchDone);
 }
 
 void ItemChangedJob::onImapItemFetchDone(KJob* job)
@@ -73,7 +73,7 @@ void ItemChangedJob::onImapItemFetchDone(KJob* job)
         Akonadi::CollectionFetchJob *fetch =
         new Akonadi::CollectionFetchJob( Akonadi::Collection( mKolabItem.storageCollectionId() ),
                                         Akonadi::CollectionFetchJob::Base, this );
-        connect( fetch, SIGNAL(result(KJob*)), SLOT(onCollectionFetchDone(KJob*)) );
+        connect(fetch, &Akonadi::CollectionFetchJob::result, this, &ItemChangedJob::onCollectionFetchDone);
     } else {
         qDebug() << "item is in imap resource";
         Akonadi::Item imapItem = fetchJob->items().first();
@@ -85,7 +85,7 @@ void ItemChangedJob::onImapItemFetchDone(KJob* job)
             return;
         }
         Akonadi::ItemModifyJob *mjob = new Akonadi::ItemModifyJob(imapItem);
-        connect(mjob, SIGNAL(result(KJob*)), SLOT(onItemModifyDone(KJob*)));
+        connect(mjob, &Akonadi::ItemModifyJob::result, this, &ItemChangedJob::onItemModifyDone);
     }
 }
 
@@ -101,7 +101,7 @@ void ItemChangedJob::onCollectionFetchDone(KJob *job)
 
     const Akonadi::Collection kolabCollection = fetchJob->collections().first();
     ItemAddedJob *itemAddedJob = new ItemAddedJob(mKolabItem, kolabCollection, *mHandler, this);
-    connect(itemAddedJob, SIGNAL(result(KJob*)), SLOT(onItemAddedDone(KJob*)) );
+    connect(itemAddedJob, &ItemAddedJob::result, this, &ItemChangedJob::onItemAddedDone);
     itemAddedJob->start();
 }
 

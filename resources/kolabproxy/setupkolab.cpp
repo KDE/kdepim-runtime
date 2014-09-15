@@ -128,11 +128,9 @@ void SetupKolab::slotDoUpgrade()
         m_versionUi->formatVersion->itemData(
           m_versionUi->formatVersion->currentIndex() ).toInt() ),
       instanceSelected, this );
-
   connect( job, SIGNAL(percent(KJob*,ulong)),
            this, SLOT(slotUpgradeProgress(KJob*,ulong)) );
-  connect( job, SIGNAL(result(KJob*)),
-           this, SLOT(slotUpgradeDone(KJob*)) );
+  connect(job, &UpgradeJob::result, this, &SetupKolab::slotUpgradeDone);
 }
 
 void SetupKolab::slotUpgradeProgress( KJob *job, ulong value )
