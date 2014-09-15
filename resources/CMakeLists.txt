@@ -43,6 +43,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
 endif()
 
 find_package(KF5AkonadiCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiNotes ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
 # Extra package
