@@ -6,7 +6,7 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
 
-  find_package(ECM 1.2.0 CONFIG REQUIRED)
+  find_package(ECM 1.3.0 CONFIG REQUIRED)
   set(CMAKE_MODULE_PATH ${agents_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
   include(ECMPackageConfigHelpers)
