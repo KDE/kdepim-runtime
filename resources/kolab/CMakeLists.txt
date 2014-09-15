@@ -1,7 +1,6 @@
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../imap
     ${CMAKE_CURRENT_BINARY_DIR}/../imap
-    ${Libkolab_INCLUDES}
     ${Libkolabxml_INCLUDES}
 )
 add_definitions( -DQT_NO_CAST_FROM_ASCII )

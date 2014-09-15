@@ -3,7 +3,6 @@ project(kolabproxy)
 include_directories(
   ${kdepim-runtime_SOURCE_DIR}
   ${Boost_INCLUDE_DIR}
-  ${Libkolab_INCLUDES}
   ${Libkolabxml_INCLUDES}
 )
 
