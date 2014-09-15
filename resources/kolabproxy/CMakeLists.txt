@@ -103,5 +103,5 @@ install(TARGETS akonadi_kolabproxy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 ecm_install_icons(ICONS hi64-apps-kolab.png DESTINATION ${ICON_INSTALL_DIR})
 
 #REACTIVATE IT
-#add_subdirectory(tests)
+#add_subdirectory(autotests)
 add_subdirectory(wizard)
