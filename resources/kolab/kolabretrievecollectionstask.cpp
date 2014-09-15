@@ -87,9 +87,8 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
         KIMAP::ListJob *fullListJob = new KIMAP::ListJob(session);
         fullListJob->setOption(KIMAP::ListJob::NoOption);
         fullListJob->setQueriedNamespaces(serverNamespaces());
-        connect( fullListJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-                this, SLOT(onFullMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
-        connect( fullListJob, SIGNAL(result(KJob*)), SLOT(onFullMailBoxesReceiveDone(KJob*)));
+        connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived, this, &KolabRetrieveCollectionsTask::onFullMailBoxesReceived);
+        connect(fullListJob, &KIMAP::ListJob::result, this, &KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone);
         mJobs++;
         fullListJob->start();
     }
@@ -97,9 +96,8 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
     listJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
-    connect(listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-            this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)));
-    connect(listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)));
+    connect(listJob, &KIMAP::ListJob::mailBoxesReceived, this, &KolabRetrieveCollectionsTask::onMailBoxesReceived);
+    connect(listJob, &KIMAP::ListJob::result, this, &KolabRetrieveCollectionsTask::onMailBoxesReceiveDone);
     mJobs++;
     listJob->start();
 }

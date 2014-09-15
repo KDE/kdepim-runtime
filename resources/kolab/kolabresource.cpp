@@ -71,7 +71,7 @@ void KolabResource::retrieveItems(const Akonadi::Collection &col)
     fetchJob->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     fetchJob->fetchScope().setIncludeStatistics(true);
     fetchJob->fetchScope().setIncludeUnsubscribed(true);
-    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemRetrievalCollectionFetchDone(KJob*)));
+    connect(fetchJob, &Akonadi::CollectionFetchJob::result, this, &KolabResource::onItemRetrievalCollectionFetchDone);
 }
 
 void KolabResource::onItemRetrievalCollectionFetchDone(KJob *job)
@@ -103,7 +103,7 @@ void KolabResource::onItemRetrievalCollectionFetchDone(KJob *job)
 
     RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(col)), this);
     connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-    connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
+    connect(this, &KolabResource::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
 }
 
