@@ -27,22 +27,36 @@
 #include <AkonadiCore/AgentManager>
 
 #include <KMessageBox>
-#include <KStandardDirs>
 #include <KGlobal>
 
 #include <QProcess>
 #include <QStandardPaths>
+#include <KConfigGroup>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 #define IMAP_RESOURCE_IDENTIFIER QLatin1String("akonadi_imap_resource")
 
 SetupKolab::SetupKolab( KolabProxyResource *parentResource )
-  :  KDialog(),
+  :  QDialog(),
      m_ui( new Ui::SetupKolabView ),
      m_versionUi( new Ui::ChangeFormatView ),
      m_parentResource( parentResource )
 {
-  m_ui->setupUi( mainWidget() );
-  setButtons( Ok );
+  QWidget *mainWidget = new QWidget(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  setLayout(mainLayout);
+  m_ui->setupUi(mainWidget);
+  mainLayout->addWidget(mainWidget);
+  m_ui->setupUi(mainWidget);
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+  okButton->setDefault(true);
+  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
   initConnection();
   updateCombobox();
 }
@@ -89,9 +103,20 @@ void SetupKolab::slotShowUpgradeDialog()
   const Akonadi::AgentInstance instanceSelected =
     m_agentList[m_ui->imapAccountComboBox->currentText()];
 
-  KDialog *dialog = new KDialog( this );
-  dialog->setButtons( Ok );
-  m_versionUi->setupUi( dialog->mainWidget() );
+  QDialog *dialog = new QDialog( this );
+  QWidget *mainWidget = new QWidget(dialog);
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  dialog->setLayout(mainLayout);
+  mainLayout->addWidget(mainWidget);
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+  okButton->setDefault(true);
+  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+  dialog->connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  dialog->connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  mainLayout->addWidget(buttonBox);
+  m_versionUi->setupUi( mainWidget );
   m_versionUi->progressBar->setDisabled( true );
   connect(m_versionUi->pushButton, &QPushButton::clicked, this, &SetupKolab::slotDoUpgrade);
 

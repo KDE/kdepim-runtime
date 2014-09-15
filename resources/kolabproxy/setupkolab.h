@@ -26,14 +26,15 @@
 
 #include <AkonadiCore/AgentInstance>
 
-#include <KDialog>
+#include <QDialog>
 #include <kolabdefinitions.h>
+#include <KConfigGroup>
 
 class KolabProxyResource;
 
 class KJob;
 
-class SetupKolab : public KDialog
+class SetupKolab : public QDialog
 {
   Q_OBJECT
 
