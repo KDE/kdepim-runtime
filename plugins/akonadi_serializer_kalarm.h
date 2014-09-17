@@ -45,7 +45,7 @@ class SerializerPluginKAlarm : public QObject,
         Q_INTERFACES(Akonadi::ItemSerializerPlugin)
         Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
         Q_INTERFACES(Akonadi::GidExtractorInterface)
-        Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKAlarm");
+        Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKAlarm")
     public:
         bool deserialize(Akonadi::Item& item, const QByteArray& label, QIODevice& data, int version);
         void serialize(const Akonadi::Item& item, const QByteArray& label, QIODevice& data, int& version);
