@@ -43,3 +43,8 @@ void AkonotesResource::configure( WId windowId )
   synchronize(); // heavy to do it in the MaildirResource method, which already has sync on demand working properly
 }
 
+QString AkonotesResource::defaultResourceType()
+{
+    return QLatin1String("notes");
+}
+
