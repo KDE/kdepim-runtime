@@ -964,6 +964,6 @@ void AbstractLocalStoreTest::testCompactStore()
 
 QTEST_MAIN( AbstractLocalStoreTest )
 
-#include "abstractlocalstoretest.moc"
+
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

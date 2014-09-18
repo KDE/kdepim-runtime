@@ -100,7 +100,7 @@ void TestDataTest::testInstall()
   QCOMPARE( (int)curDir.count(), 4 );
 }
 
-#include "testdatatest.moc"
+
 
 QTEST_MAIN( TestDataTest )
 

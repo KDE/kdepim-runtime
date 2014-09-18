@@ -117,4 +117,4 @@ class KolabConverterTest : public QObject
 
 QTEST_KDEMAIN( KolabConverterTest, NoGUI )
 
-#include "kolabconvertertest.moc"
+

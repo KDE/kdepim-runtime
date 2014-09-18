@@ -228,6 +228,6 @@ void TemplateMethodsTest::testCreateItem()
 
 QTEST_MAIN( TemplateMethodsTest )
 
-#include "templatemethodstest.moc"
+
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

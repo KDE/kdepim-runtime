@@ -154,4 +154,4 @@ private slots:
 
 QTEST_AKONADIMAIN( ProxyIntegrationTest, NoGUI )
 
-#include "proxyintegrationtest.moc"
+

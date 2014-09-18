@@ -626,6 +626,6 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
 QTEST_MAIN( CollectionModifyTest )
 
-#include "collectionmodifytest.moc"
+
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

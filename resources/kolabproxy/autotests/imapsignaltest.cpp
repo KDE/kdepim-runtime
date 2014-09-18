@@ -335,5 +335,5 @@ private slots:
 
 QTEST_AKONADIMAIN( ImapSignalTest, NoGUI )
 
-#include "imapsignaltest.moc"
+
 
