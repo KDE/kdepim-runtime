@@ -29,7 +29,8 @@ class AkonotesResource : public MaildirResource
     explicit AkonotesResource( const QString &id );
     ~AkonotesResource();
 
-  public Q_SLOTS:
+    virtual QString defaultResourceType();
+public Q_SLOTS:
     virtual void configure( WId windowId );
 
   protected:

@@ -174,7 +174,11 @@ void MaildirResource::attemptConfigRestoring( KJob * job )
       qDebug() << "build a new path";
       const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/');
       // we use "id" to get an unique path
-      path = dataDir + id;
+      path = dataDir;
+      if (!defaultResourceType().isEmpty()) {
+          path += defaultResourceType()  + QLatin1Char('/');
+      }
+      path += id;
       qDebug() << "set the path" << path;
       mSettings->setPath( path );
       // set the resource into container mode for its top level
@@ -238,6 +242,11 @@ void MaildirResource::aboutToQuit()
   // The settings may not have been saved if e.g. they have been modified via
   // DBus instead of the config dialog.
   mSettings->save();
+}
+
+QString MaildirResource::defaultResourceType()
+{
+    return QString();
 }
 
 void MaildirResource::configure( WId windowId )

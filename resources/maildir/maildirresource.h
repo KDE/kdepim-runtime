@@ -43,7 +43,8 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     MaildirResource( const QString &id );
     ~MaildirResource();
 
-  public Q_SLOTS:
+    virtual QString defaultResourceType();
+public Q_SLOTS:
     virtual void configure( WId windowId );
 
   protected Q_SLOTS:
