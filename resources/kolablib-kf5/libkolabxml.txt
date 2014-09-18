@@ -1,0 +1,308 @@
+commit 95cf42e2bc655edbdd4dc88b6421d7b3269c5e5a
+Author: Montel Laurent <montel@kde.org>
+Date:   Sat Aug 30 09:58:11 2014 +0200
+
+    Port to kf5
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 62c13eb..05e26e1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,6 +14,8 @@ option( PYTHON_BINDINGS "Build bindings for python" FALSE )
+ option( PHP_BINDINGS "Build bindings for php" FALSE )
+ option( CSHARP_BINDINGS "Build bindings for csharp" FALSE )
+ option( JAVA_BINDINGS "Build bindings for java" FALSE )
++option( QT5_BUILD "Build libkolabxml using the Qt5 framework" FALSE)
++
+ 
+ 
+ set(Libkolabxml_MODULE_DIR ${Libkolabxml_SOURCE_DIR}/cmake/modules)
+diff --git a/cmake/modules/ECMQt4To5Porting.cmake b/cmake/modules/ECMQt4To5Porting.cmake
+new file mode 100644
+index 0000000..7d6458a
+--- /dev/null
++++ b/cmake/modules/ECMQt4To5Porting.cmake
+@@ -0,0 +1,119 @@
++#=============================================================================
++# Copyright 2005-2011 Kitware, Inc.
++# All rights reserved.
++#
++# Redistribution and use in source and binary forms, with or without
++# modification, are permitted provided that the following conditions
++# are met:
++#
++# * Redistributions of source code must retain the above copyright
++#   notice, this list of conditions and the following disclaimer.
++#
++# * Redistributions in binary form must reproduce the above copyright
++#   notice, this list of conditions and the following disclaimer in the
++#   documentation and/or other materials provided with the distribution.
++#
++# * Neither the name of Kitware, Inc. nor the names of its
++#   contributors may be used to endorse or promote products derived
++#   from this software without specific prior written permission.
++#
++# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++# HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++#=============================================================================
++
++# Portability helpers.
++
++set(QT_QTGUI_LIBRARIES
++  ${Qt5Gui_LIBRARIES}
++  ${Qt5Widgets_LIBRARIES}
++  ${Qt5PrintSupport_LIBRARIES}
++  ${Qt5Svg_LIBRARIES}
++)
++
++set(QT_INCLUDES
++    ${Qt5Gui_INCLUDE_DIRS}
++    ${Qt5Widgets_INCLUDE_DIRS}
++    ${Qt5PrintSupport_INCLUDE_DIRS}
++    ${Qt5Svg_INCLUDE_DIRS}
++)
++
++set(_qt_modules
++  Core
++  Declarative
++  Widgets
++  Script
++  ScriptTools
++  DBus
++  Network
++  Test
++  Designer
++  Concurrent
++  Xml
++  UiTools
++  WebKit
++  Sql
++  OpenGL
++)
++
++foreach(_module ${_qt_modules})
++    string(TOUPPER ${_module} _module_upper)
++    set(QT_QT${_module_upper}_LIBRARIES ${Qt5${_module}_LIBRARIES})
++    set(QT_QT${_module_upper}_LIBRARY ${QT_QT${_module_upper}_LIBRARIES})
++    list(APPEND QT_INCLUDES ${Qt5${_module}_INCLUDE_DIRS})
++    set(QT_QT${_module_upper}_FOUND ${Qt5${_module}_FOUND})
++endforeach()
++
++get_target_property(QT_QMAKE_EXECUTABLE Qt5::qmake LOCATION)
++get_target_property(QT_RCC_EXECUTABLE Qt5::rcc LOCATION)
++if (TARGET Qt5::uic)
++    get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
++endif()
++
++if (TARGET Qt5::qdbuscpp2xml)
++    get_target_property(QT_QDBUSCPP2XML_EXECUTABLE Qt5::qdbuscpp2xml LOCATION)
++endif()
++
++if (TARGET Qt5::qdbusxml2cpp)
++    get_target_property(QT_QDBUSXML2CPP_EXECUTABLE Qt5::qdbusxml2cpp LOCATION)
++endif()
++
++macro(qt4_wrap_ui)
++  qt5_wrap_ui(${ARGN})
++endmacro()
++
++macro(qt4_wrap_cpp)
++  qt5_wrap_cpp(${ARGN})
++endmacro()
++
++macro(qt4_generate_moc)
++  qt5_generate_moc(${ARGN})
++endmacro()
++
++macro(qt4_add_dbus_adaptor)
++  qt5_add_dbus_adaptor(${ARGN})
++endmacro()
++
++macro(qt4_add_dbus_interfaces)
++  qt5_add_dbus_interfaces(${ARGN})
++endmacro()
++
++macro(qt4_add_dbus_interface)
++  qt5_add_dbus_interface(${ARGN})
++endmacro()
++
++macro(qt4_generate_dbus_interface)
++  qt5_generate_dbus_interface(${ARGN})
++endmacro()
++
++macro(qt4_add_resources)
++  qt5_add_resources(${ARGN})
++endmacro()
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 47f811a..6cebf33 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -1,4 +1,33 @@
+-find_package(Qt4)
++
++#### Qt 4 and 5 ####
++if(QT5_BUILD)
++  find_package(ECM 1.1.0 REQUIRED NO_MODULE)
++  set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
++
++  find_package(Qt5Core REQUIRED)
++  find_package(Qt5Test REQUIRED)
++
++  include("../cmake/modules/ECMQt4To5Porting.cmake")
++  include_directories(${QT_INCLUDES}) # TODO: Port away from this.
++
++  if(CMAKE_VERSION VERSION_LESS 2.8.9)
++    message(FATAL_ERROR "Akonadi Qt 5 build requires at least CMake version 2.8.9")
++  endif()
++
++  if (Qt5_POSITION_INDEPENDENT_CODE)
++    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
++  endif()
++
++  set(QT_QTTEST_LIBRARIES Qt5::Test)
++else()
++  set(QT_USE_IMPORTED_TARGETS TRUE) # Qt 4 only
++  set(QT_MIN_VERSION 4.8.0)         # Qt 4 only
++
++  find_package(Qt4 REQUIRED)
++  include(${QT_USE_FILE})
++endif()
++
++
+ add_definitions(-DTEST_DATA_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
+ 
+ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/.. )
+@@ -13,24 +42,32 @@ if(PHP_BINDINGS)
+     add_test(phptest php -d enable_dl=On -d include_path='.:/usr/share/pear:${CMAKE_BINARY_DIR}/src/php' -d extension=${CMAKE_BINARY_DIR}/src/php/kolabformat.so ${CMAKE_SOURCE_DIR}/src/php/test.php --verbose)
+ endif()
+ 
+-if (QT4_FOUND)
++if (QT4_FOUND OR Qt5Core_FOUND)
++    if (Qt5Core_FOUND)
++      set(CMAKE_AUTOMOC ON)
++      set(CMAKE_INCLUDE_CURRENT_DIR ON)
++    endif()
++
+     message("Buildings tests")
+-    QT4_AUTOMOC(bindingstest.cpp)
++    if (QT4_FOUND)
++      QT4_AUTOMOC(bindingstest.cpp)
++      QT4_AUTOMOC(conversiontest.cpp)
++      QT4_AUTOMOC(parsingtest.cpp)
++      QT4_AUTOMOC(validationtest.cpp)
++     endif()
++
+     add_executable(bindingstest bindingstest.cpp ${CMAKE_CURRENT_BINARY_DIR}/${BINDINGSTEST_MOC})
+     target_link_libraries(bindingstest ${QT_QTTEST_LIBRARY} ${QT_QTCORE_LIBRARY} kolabxml ${XERCES_C})
+     add_test(bindingstest ${CMAKE_CURRENT_BINARY_DIR}/bindingstest)
+ 
+-    QT4_AUTOMOC(conversiontest.cpp)
+     add_executable(conversiontest conversiontest.cpp ${CMAKE_CURRENT_BINARY_DIR}/${CONVERSIONTEST_MOC})
+     target_link_libraries(conversiontest ${QT_QTTEST_LIBRARY} ${QT_QTCORE_LIBRARY} kolabxml ${XERCES_C})
+     add_test(conversiontest ${CMAKE_CURRENT_BINARY_DIR}/conversiontest)
+ 
+-    QT4_AUTOMOC(parsingtest.cpp)
+     add_executable(parsingtest parsingtest.cpp ${CMAKE_CURRENT_BINARY_DIR}/${CONVERSIONTEST_MOC})
+     target_link_libraries(parsingtest ${QT_QTTEST_LIBRARY} ${QT_QTCORE_LIBRARY} kolabxml ${XERCES_C})
+     add_test(parsingtest ${CMAKE_CURRENT_BINARY_DIR}/parsingtest)
+ 
+-    QT4_AUTOMOC(validationtest.cpp)
+     add_executable(validationtest validationtest.cpp ${CMAKE_CURRENT_BINARY_DIR}/${CONVERSIONTEST_MOC})
+     target_link_libraries(validationtest ${QT_QTTEST_LIBRARY} ${QT_QTCORE_LIBRARY} kolabxml ${XERCES_C})
+     add_test(validationtest ${CMAKE_CURRENT_BINARY_DIR}/validationtest)
+diff --git a/tests/serializers.h b/tests/serializers.h
+index 2168f43..c266b71 100644
+--- a/tests/serializers.h
++++ b/tests/serializers.h
+@@ -12,7 +12,7 @@ namespace QTest {
+         QByteArray ba = "Kolab::cDateTime(";
+         ba += QByteArray::number(dt.year()) + ", " + QByteArray::number(dt.month())+ ", " + QByteArray::number(dt.day()) + ", ";
+         ba += QByteArray::number(dt.hour()) + ", " + QByteArray::number(dt.minute()) + ", " + QByteArray::number(dt.second())+ ", ";
+-        ba += QString(dt.isUTC()?QString("UTC"):QString("TZ: "+QString::fromStdString(dt.timezone()))).toAscii();
++        ba += QString(dt.isUTC()?QString("UTC"):QString("TZ: "+QString::fromStdString(dt.timezone()))).toLatin1();
+         ba += ")";
+         return qstrdup(ba.data());
+     }
+@@ -32,9 +32,9 @@ namespace QTest {
+     char *toString(const Kolab::Attendee &a)
+     {
+         QByteArray ba = "Kolab::Attendee(";
+-        ba += QString::fromStdString(a.contact().email()).toAscii() + ", " + QString::fromStdString(a.contact().name()).toAscii()+ ", " + 
++        ba += QString::fromStdString(a.contact().email()).toLatin1() + ", " + QString::fromStdString(a.contact().name()).toLatin1()+ ", " + 
+         QByteArray::number(a.partStat()) + ", " + QByteArray::number(a.role())  + ", " + QByteArray::number(a.rsvp())  + ", " + 
+-        QString::fromStdString(a.contact().uid()).toAscii();
++        QString::fromStdString(a.contact().uid()).toLatin1();
+         ba += ")";
+         return qstrdup(ba.data());
+     }
+@@ -54,7 +54,7 @@ namespace QTest {
+     char *toString(const std::string &s)
+     {
+         QByteArray ba = "string(";
+-        ba += QString::fromStdString(s).toAscii();
++        ba += QString::fromStdString(s).toLatin1();
+         ba += ")";
+         return qstrdup(ba.data());
+     }
+@@ -75,7 +75,7 @@ namespace QTest {
+     {
+         QByteArray ba = "vector<int>(";
+         for (std::size_t i = 0; i < v.size(); i++) {
+-            ba += QString::number(v.at(i)).toAscii()+ ", ";
++            ba += QString::number(v.at(i)).toLatin1()+ ", ";
+         }
+         ba += ")";
+         return qstrdup(ba.data());
+@@ -104,8 +104,8 @@ namespace QTest {
+     char *toString(const Kolab::Attachment &a)
+     {
+         QByteArray ba = "Kolab::Attachment(";
+-        ba += QString::fromStdString(a.uri()).toAscii() + ", " + QString::fromStdString(a.mimetype()).toAscii()+ ", " + 
+-        QString::fromStdString(a.label()).toAscii();
++        ba += QString::fromStdString(a.uri()).toLatin1() + ", " + QString::fromStdString(a.mimetype()).toLatin1()+ ", " + 
++        QString::fromStdString(a.label()).toLatin1();
+         ba += ")";
+         return qstrdup(ba.data());
+     }
+@@ -125,9 +125,9 @@ namespace QTest {
+     char *toString(const Kolab::ContactReference &a)
+     {
+         QByteArray ba = "Kolab::ContactReference(";
+-        ba += QString::fromStdString(a.email()).toAscii()+ ", ";
+-        ba += QString::fromStdString(a.name()).toAscii()+ ", ";
+-        ba += QString::fromStdString(a.uid()).toAscii();
++        ba += QString::fromStdString(a.email()).toLatin1()+ ", ";
++        ba += QString::fromStdString(a.name()).toLatin1()+ ", ";
++        ba += QString::fromStdString(a.uid()).toLatin1();
+         ba += ")";
+         return qstrdup(ba.data());
+     }
+@@ -169,8 +169,8 @@ namespace QTest {
+     char *toString(const Kolab::Related &a)
+     {
+         QByteArray ba = "Kolab::Related(";
+-        ba += QString::fromStdString(a.text()).toAscii()+ "\n " + 
+-        QString::fromStdString(a.uri()).toAscii()+"\n " +
++        ba += QString::fromStdString(a.text()).toLatin1()+ "\n " + 
++        QString::fromStdString(a.uri()).toLatin1()+"\n " +
+         QByteArray::number(a.relationTypes()) + "\n " +
+         QByteArray::number(a.type()) + "\n ";
+         ba += ")";
+@@ -192,7 +192,7 @@ namespace QTest {
+     char *toString(const Kolab::Affiliation &a)
+     {
+         QByteArray ba = "Kolab::Affiliation(";
+-        ba += QString::fromStdString(a.organisation()).toAscii()+ "\n " + 
++        ba += QString::fromStdString(a.organisation()).toLatin1()+ "\n " + 
+         QString::fromStdString(a.logo())+"\n " + "\n " + toString(a.roles())+  "\n " + toString(a.relateds()) + "\n " +
+         toString(a.addresses())  + "\n ";
+         ba += ")";
