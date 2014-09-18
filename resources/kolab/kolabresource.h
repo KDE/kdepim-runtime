@@ -50,7 +50,7 @@ protected:
     virtual void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts);
     //collectionRemoved & collectionMoved do not require adjustments since they don't change the annotations
 
-    virtual QString defaultName();
+    virtual QString defaultName() const;
 
 private Q_SLOTS:
     void onItemRetrievalCollectionFetchDone(KJob *job);

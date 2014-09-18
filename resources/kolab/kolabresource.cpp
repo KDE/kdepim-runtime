@@ -46,7 +46,7 @@ KolabResource::~KolabResource()
 
 }
 
-QString KolabResource::defaultName()
+QString KolabResource::defaultName() const
 {
     return i18n("Kolab Resource");
 }
