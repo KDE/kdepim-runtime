@@ -392,6 +392,6 @@ void StoreCompactTest::testCompact()
 
 QTEST_MAIN( StoreCompactTest )
 
-
+#include "storecompacttest.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

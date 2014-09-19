@@ -469,6 +469,6 @@ void CollectionFetchTest::testMixedTree()
 
 QTEST_MAIN( CollectionFetchTest )
 
-
+#include "collectionfetchtest.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

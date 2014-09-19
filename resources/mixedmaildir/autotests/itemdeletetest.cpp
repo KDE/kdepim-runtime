@@ -602,6 +602,6 @@ void ItemDeleteTest::testExpectedFailure()
 
 QTEST_MAIN( ItemDeleteTest )
 
-
+#include "itemdeletetest.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

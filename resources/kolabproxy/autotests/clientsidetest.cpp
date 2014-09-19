@@ -234,4 +234,4 @@ private slots:
 
 QTEST_AKONADIMAIN( ClientSideTest, NoGUI )
 
-
+#include "clientsidetest.moc"

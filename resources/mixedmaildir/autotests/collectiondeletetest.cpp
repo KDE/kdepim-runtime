@@ -463,6 +463,6 @@ void CollectionDeleteTest::testSubTrees()
 
 QTEST_MAIN( CollectionDeleteTest )
 
-
+#include "collectiondeletetest.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;

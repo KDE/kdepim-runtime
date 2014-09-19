@@ -533,6 +533,6 @@ void ItemCreateTest::testMaildir()
 
 QTEST_MAIN( ItemCreateTest )
 
-
+#include "itemcreatetest.moc"
 
 // kate: space-indent on; indent-width 2; replace-tabs on;
