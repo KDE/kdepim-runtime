@@ -42,6 +42,7 @@ void RevertItemChangesJob::onImapItemFetchDone(KJob* job)
 {
     if ( job->error() ) {
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
         emitResult();
         return;
     }
@@ -80,6 +81,7 @@ void RevertItemChangesJob::onItemModifyDone(KJob *job)
 {
     if (job->error()) {
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
     }
     emitResult();
 }

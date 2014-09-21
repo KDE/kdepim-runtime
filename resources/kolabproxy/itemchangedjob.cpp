@@ -22,6 +22,7 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemModifyJob>
+#include <klocale.h>
 
 ItemChangedJob::ItemChangedJob(const Akonadi::Item& kolabItem, HandlerManager& handler, QObject* parent)
 :   KJob(parent),
@@ -43,6 +44,7 @@ void ItemChangedJob::onKolabCollectionFetched(KJob* job)
     if (job->error() || fetchjob->collections().isEmpty()) {
         kWarning() << "collection fetch job failed " << job->errorString() << fetchjob->collections().isEmpty();
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
         emitResult();
         return;
     }
@@ -51,6 +53,7 @@ void ItemChangedJob::onKolabCollectionFetched(KJob* job)
     if (!mHandler) {
         kWarning() << "Couldn't find a handler for the collection, but we should have one: " << imapCollection.id();
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
         emitResult();
         return;
     }
@@ -62,7 +65,9 @@ void ItemChangedJob::onKolabCollectionFetched(KJob* job)
 void ItemChangedJob::onImapItemFetchDone(KJob* job)
 {
     if ( job->error() ) {
+        kWarning() << job->error() << job->errorString();
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
         emitResult();
         return;
     }
@@ -81,6 +86,7 @@ void ItemChangedJob::onImapItemFetchDone(KJob* job)
         if (!mHandler->toKolabFormat(mKolabItem, imapItem)) {
             kWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
             setError(KJob::UserDefinedError);
+            setErrorText(i18n("Failed to convert item %1 to kolab format", mKolabItem.id()));
             emitResult();
             return;
         }
@@ -95,6 +101,7 @@ void ItemChangedJob::onCollectionFetchDone(KJob *job)
     if ( job->error() || fetchJob->collections().isEmpty() ) {
         kWarning() << "Collection fetch job failed" << fetchJob->errorString();
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
         emitResult();
         return;
     }
@@ -109,6 +116,7 @@ void ItemChangedJob::onItemAddedDone(KJob* job)
 {
     if (job->error()) {
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
     }
     emitResult();
 }
@@ -117,6 +125,7 @@ void ItemChangedJob::onItemModifyDone(KJob *job)
 {
     if (job->error()) {
         setError(KJob::UserDefinedError);
+        setErrorText(job->errorText());
     }
     emitResult();
 }

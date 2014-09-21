@@ -20,6 +20,7 @@
 #include "itemaddedjob.h"
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/KMime/MessageFlags>
+#include <klocale.h>
 
 ItemAddedJob::ItemAddedJob(const Akonadi::Item& kolabItem, const Akonadi::Collection& col, KolabHandler& handler, QObject* parent)
     :KJob(parent),
@@ -43,6 +44,7 @@ void ItemAddedJob::doStart()
     if (!mHandler.toKolabFormat(mKolabItem, imapItem)) {
         kWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
         setError(KJob::UserDefinedError);
+        setErrorText(i18n("Failed to convert item %1 to kolab format", mKolabItem.id()));
         emitResult();
         return;
     }
