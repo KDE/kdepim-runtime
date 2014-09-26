@@ -31,7 +31,7 @@
 CaldavProtocol::CaldavProtocol()
 {
   // Only fetch items for the last 3 months
-  QString startTime = QDateTime::currentDateTimeUtc().addMonths( -3 ).toString( "yyyyMMddTHHMMss" );
+  QString startTime = QDateTime::currentDateTimeUtc().addMonths( -3 ).toString( "yyyyMMddTHHMMssZ" );
 
   /*
    * Create a document like the following:
