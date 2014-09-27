@@ -150,7 +150,7 @@ void KAlarmResource::collectionFetchResult(KJob* j)
             {
                 // Initialising a resource which seems to have no stored
                 // settings config file. Recreate the settings.
-                static Collection::Rights writableRights = Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem;
+                static const Collection::Rights writableRights = Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem;
                 qDebug() << "Recreating config for remote id:" << c.remoteId();
                 mSettings->setPath(c.remoteId());
                 mSettings->setDisplayName(c.name());

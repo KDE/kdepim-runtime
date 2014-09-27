@@ -30,7 +30,7 @@
 using namespace Akonadi;
 using namespace KCalCore;
 
-static QLatin1String sNotesType( "application/x-vnd.kde.notes" );
+static const QLatin1String sNotesType( "application/x-vnd.kde.notes" );
 
 NotesResource::NotesResource( const QString &id )
     : ICalResource( id, allMimeTypes(), QLatin1String("knotes") )
