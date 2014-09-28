@@ -54,8 +54,8 @@ SetupKolab::SetupKolab( KolabProxyResource *parentResource )
   QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
   okButton->setDefault(true);
   okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &SetupKolab::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &SetupKolab::reject);
   mainLayout->addWidget(buttonBox);
   initConnection();
   updateCombobox();
@@ -113,8 +113,8 @@ void SetupKolab::slotShowUpgradeDialog()
   QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
   okButton->setDefault(true);
   okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  dialog->connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-  dialog->connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+  dialog->connect(buttonBox, &QDialogButtonBox::accepted, this, &SetupKolab::accept);
+  dialog->connect(buttonBox, &QDialogButtonBox::rejected, this, &SetupKolab::reject);
   mainLayout->addWidget(buttonBox);
   m_versionUi->setupUi( mainWidget );
   m_versionUi->progressBar->setDisabled( true );

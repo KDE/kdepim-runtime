@@ -62,15 +62,13 @@ FakeServer::FakeServer(QObject *parent)
         qCritical() << "Unable to start the server";
     }
 
-    connect(mTcpServer, SIGNAL(newConnection()),
-            this, SLOT(newConnection()));
+    connect(mTcpServer, &QTcpServer::newConnection, this, &FakeServer::newConnection);
 }
 
 FakeServer::~FakeServer()
 {
     if (mConnections > 0)
-        disconnect(mTcpServerConnection, SIGNAL(readyRead()),
-                   this, SLOT(dataAvailable()));
+        disconnect(mTcpServerConnection, &QTcpSocket::readyRead, this, &FakeServer::dataAvailable);
 
     delete mTcpServer;
     mTcpServer = 0;

@@ -75,8 +75,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
     job->setFlags( flags );
     qCDebug(RESOURCE_IMAP_LOG) << "Appending new message: " << flags;
 
-    connect( job, SIGNAL(result(KJob*)),
-             this, SLOT(onAppendMessageDone(KJob*)) );
+    connect(job, &KIMAP::AppendJob::result, this, &ChangeItemTask::onAppendMessageDone);
 
     job->start();
 
@@ -86,8 +85,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
       KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
       select->setMailBox( mailBox );
 
-      connect( select, SIGNAL(result(KJob*)),
-             this, SLOT(onPreStoreSelectDone(KJob*)) );
+      connect(select, &KIMAP::SelectJob::result, this, &ChangeItemTask::onPreStoreSelectDone);
 
       select->start();
 
@@ -123,8 +121,7 @@ void ChangeItemTask::triggerStoreJob()
   store->setFlags( flags );
   store->setMode( KIMAP::StoreJob::SetFlags );
 
-  connect( store, SIGNAL(result(KJob*)),
-           this, SLOT(onStoreFlagsDone(KJob*)) );
+  connect(store, &KIMAP::StoreJob::result, this, &ChangeItemTask::onStoreFlagsDone);
 
   store->start();
 }
@@ -160,8 +157,7 @@ void ChangeItemTask::onAppendMessageDone( KJob *job )
     KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
     select->setMailBox( append->mailBox() );
 
-    connect( select, SIGNAL(result(KJob*)),
-             this, SLOT(onPreDeleteSelectDone(KJob*)) );
+    connect(select, &KIMAP::SelectJob::result, this, &ChangeItemTask::onPreDeleteSelectDone);
 
     select->start();
 
@@ -219,8 +215,7 @@ void ChangeItemTask::triggerSearchJob()
     search->addSearchCriteria( KIMAP::SearchJob::Uid, interval.toImapSequence() );
   }
 
-  connect( search, SIGNAL(result(KJob*)),
-           this, SLOT(onSearchDone(KJob*)) );
+  connect(search, &KIMAP::SearchJob::result, this, &ChangeItemTask::onSearchDone);
 
   search->start();
 }
@@ -254,8 +249,7 @@ void ChangeItemTask::triggerDeleteJob()
   store->setFlags( QList<QByteArray>() << ImapFlags::Deleted );
   store->setMode( KIMAP::StoreJob::AppendFlags );
 
-  connect( store, SIGNAL(result(KJob*)),
-           this, SLOT(onDeleteDone(KJob*)) );
+  connect(store, &KIMAP::StoreJob::result, this, &ChangeItemTask::onDeleteDone);
 
   store->start();
 }
