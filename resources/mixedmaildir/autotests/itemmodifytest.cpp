@@ -306,7 +306,7 @@ void ItemModifyTest::testModifyPayload()
 
   job = mStore->modifyItem( item1 );
   // changing subject, so indicate a header change
-  job->setParts( QSet<QByteArray>() << QByteArray( "PLD:" ) + MessagePart::Header );
+  job->setParts( QSet<QByteArray>() << QByteArray( "PLD:" ) + QByteArray( MessagePart::Header ) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -346,7 +346,7 @@ void ItemModifyTest::testModifyPayload()
 
   job = mStore->modifyItem( item2 );
   // changing subject, so indicate a header change
-  job->setParts( QSet<QByteArray>() << QByteArray( "PLD:" ) + MessagePart::Header );
+  job->setParts( QSet<QByteArray>() << QByteArray( "PLD:" ) + QByteArray( MessagePart::Header ) );
 
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
@@ -608,7 +608,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
   // setting \SEEN so indicate a flags change and
   // setting new subject so indicate a payload change
   job->setParts( QSet<QByteArray>() << "FLAGS"
-                                    << QByteArray( "PLD:" ) + MessagePart::Header );
+                                    << QByteArray( "PLD:" ) + QByteArray( MessagePart::Header ) );
     
   QVERIFY( job->exec() );
   QCOMPARE( job->error(), 0 );
