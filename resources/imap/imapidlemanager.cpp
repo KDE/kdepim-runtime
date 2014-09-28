@@ -44,8 +44,7 @@ ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
     m_idle( 0 ), m_resource( parent ), m_state( state ),
     m_lastMessageCount( -1 ), m_lastRecentCount( -1 )
 {
-  connect( pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)),
-           this, SLOT(onSessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
+  connect( pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)), this, SLOT(onSessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
   m_sessionRequestId = m_pool->requestSession();
 }
 
@@ -96,25 +95,19 @@ void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *se
   m_session = session;
   m_sessionRequestId = 0;
 
-  connect( m_pool, SIGNAL(connectionLost(KIMAP::Session*)),
-           this, SLOT(onConnectionLost(KIMAP::Session*)) );
-  connect( m_pool, SIGNAL(disconnectDone()),
-           this, SLOT(onPoolDisconnect()) );
+  connect(m_pool, &SessionPool::connectionLost, this, &ImapIdleManager::onConnectionLost);
+  connect(m_pool, &SessionPool::disconnectDone, this, &ImapIdleManager::onPoolDisconnect);
 
 
   KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
   select->setMailBox( m_state->mailBoxForCollection( m_state->collection() ) );
-  connect( select, SIGNAL(result(KJob*)),
-           this, SLOT(onSelectDone(KJob*)) );
+  connect(select, &KIMAP::SelectJob::result, this, &ImapIdleManager::onSelectDone);
   select->start();
 
   m_idle = new KIMAP::IdleJob( m_session );
-  connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*,QString,int,int)),
-           this, SLOT(onStatsReceived(KIMAP::IdleJob*,QString,int,int)) );
-  connect( m_idle, SIGNAL(mailBoxMessageFlagsChanged(KIMAP::IdleJob*,qint64)),
-           this, SLOT(onFlagsChanged(KIMAP::IdleJob*)) );
-  connect( m_idle, SIGNAL(result(KJob*)),
-           this, SLOT(onIdleStopped()) );
+  connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
+  connect(m_idle.data(), &KIMAP::IdleJob::mailBoxMessageFlagsChanged, this, &ImapIdleManager::onFlagsChanged);
+  connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
   m_idle->start();
 }
 
@@ -152,10 +145,8 @@ void ImapIdleManager::onIdleStopped()
   if ( m_session ) {
     qCDebug(RESOURCE_IMAP_LOG) << "Restarting the IDLE session!";
     m_idle = new KIMAP::IdleJob( m_session );
-    connect( m_idle, SIGNAL(mailBoxStats(KIMAP::IdleJob*,QString,int,int)),
-             this, SLOT(onStatsReceived(KIMAP::IdleJob*,QString,int,int)) );
-    connect( m_idle, SIGNAL(result(KJob*)),
-             this, SLOT(onIdleStopped()) );
+    connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
+    connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
     m_idle->start();
   }
 }

@@ -60,8 +60,7 @@ void ExpungeCollectionTask::doStart( KIMAP::Session *session )
     KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
     select->setMailBox( mailBox );
 
-    connect( select, SIGNAL(result(KJob*)),
-             this, SLOT(onSelectDone(KJob*)) );
+    connect(select, &KIMAP::SelectJob::result, this, &ExpungeCollectionTask::onSelectDone);
 
     select->start();
 
@@ -84,8 +83,7 @@ void ExpungeCollectionTask::triggerExpungeJob( KIMAP::Session *session )
 {
   KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( session );
 
-  connect( expunge, SIGNAL(result(KJob*)),
-           this, SLOT(onExpungeDone(KJob*)) );
+  connect(expunge, &KIMAP::ExpungeJob::result, this, &ExpungeCollectionTask::onExpungeDone);
 
   expunge->start();
 }

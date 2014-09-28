@@ -77,8 +77,7 @@ void MoveCollectionTask::doStart( KIMAP::Session *session )
   KIMAP::SelectJob *examine = new KIMAP::SelectJob( session );
   examine->setOpenReadOnly( true ); // use EXAMINE instead of SELECT
   examine->setMailBox( QString::fromLatin1( "IMAP Resource non existing folder %1" ).arg( QUuid::createUuid().toString() ) );
-  connect( examine, SIGNAL(result(KJob*)),
-           this, SLOT(onExamineDone(KJob*)) );
+  connect(examine, &KIMAP::SelectJob::result, this, &MoveCollectionTask::onExamineDone);
   examine->start();
 }
 
@@ -111,8 +110,7 @@ void MoveCollectionTask::doRename( KIMAP::Session *session )
     job->setSourceMailBox( oldMailBox );
     job->setDestinationMailBox( newMailBox );
 
-    connect( job, SIGNAL(result(KJob*)),
-             this, SLOT(onRenameDone(KJob*)) );
+    connect(job, &KIMAP::RenameJob::result, this, &MoveCollectionTask::onRenameDone);
 
     job->start();
 
@@ -132,8 +130,7 @@ void MoveCollectionTask::onRenameDone( KJob *job )
     KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( rename->session() );
     subscribe->setMailBox( rename->destinationMailBox() );
 
-    connect( subscribe, SIGNAL(result(KJob*)),
-             this, SLOT(onSubscribeDone(KJob*)) );
+    connect(subscribe, &KIMAP::SubscribeJob::result, this, &MoveCollectionTask::onSubscribeDone);
 
     subscribe->start();
   }
