@@ -25,7 +25,8 @@
 #include <kimap/storejob.h>
 
 ChangeItemsFlagsTask::ChangeItemsFlagsTask( ResourceStateInterface::Ptr resource, QObject* parent ):
-    ResourceTask( ResourceTask::DeferIfNoSession, resource, parent )
+    ResourceTask( ResourceTask::DeferIfNoSession, resource, parent ),
+    m_processedItems(0)
 {
 
 }
@@ -82,8 +83,14 @@ void ChangeItemsFlagsTask::onSelectDone(KJob* job)
 KIMAP::StoreJob* ChangeItemsFlagsTask::prepareJob( KIMAP::Session *session )
 {
   KIMAP::ImapSet set;
-  foreach( const Akonadi::Item &item, items() ) {
-    set.add( item.remoteId().toLong() );
+  const Akonadi::Item::List &allItems = items();
+  // Split the request to multiple smaller requests of 2000 UIDs each - various IMAP
+  // servers have various limits on maximum size of a request
+  // 2000 is a random number that sounds like a good compromise between performance
+  // and functionality (i.e. 2000 UIDs should be supported by any server out there)
+  for (int i = 0, count = qMin(2000, allItems.count() - m_processedItems); i < count; ++i) {
+      set.add( allItems[m_processedItems].remoteId().toLong() );
+      ++m_processedItems;
   }
 
   KIMAP::StoreJob *store = new KIMAP::StoreJob( session );
@@ -117,12 +124,15 @@ void ChangeItemsFlagsTask::onAppendFlagsDone(KJob* job)
     kWarning() << "Flag append failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
-    kDebug(5327) << removedFlags();
-    if ( removedFlags().isEmpty() ) {
-      changeProcessed();
+    KIMAP::Session *session = qobject_cast<KIMAP::Job*>(job)->session();
+    if ( m_processedItems < items().count() ) {
+        triggerAppendFlagsJob( session );
+    } else if ( removedFlags().isEmpty() ) {
+        changeProcessed();
     } else {
-      KIMAP::StoreJob *storeJob = qobject_cast<KIMAP::StoreJob*>( job );
-      triggerRemoveFlagsJob( storeJob->session() );
+        kDebug(5327) << removedFlags();
+        m_processedItems = 0;
+        triggerRemoveFlagsJob( session );
     }
   }
 }
@@ -133,7 +143,11 @@ void ChangeItemsFlagsTask::onRemoveFlagsDone(KJob* job)
     kWarning() << "Flag remove failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
-    changeProcessed();
+    if ( m_processedItems < items().count() ) {
+        triggerRemoveFlagsJob( qobject_cast<KIMAP::Job*>(job)->session() );
+    } else {
+        changeProcessed();
+    }
   }
 }
 

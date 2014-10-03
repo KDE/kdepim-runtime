@@ -48,6 +48,9 @@ protected:
   virtual void triggerAppendFlagsJob( KIMAP::Session *session );
   virtual void triggerRemoveFlagsJob( KIMAP::Session *session );
 
+protected:
+  int m_processedItems;
+
 };
 
 #endif
