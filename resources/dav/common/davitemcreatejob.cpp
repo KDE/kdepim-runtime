@@ -90,7 +90,7 @@ void DavItemCreateJob::davJobFinished( KJob *job )
     url = storedJob->url();
   else if ( location.startsWith( QLatin1Char('/') ) ) {
     url = storedJob->url();
-    url.setPath( location );
+    url.setEncodedPath( location.toLatin1() );
   } else
     url = location;
 
