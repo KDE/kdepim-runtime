@@ -28,7 +28,6 @@ set( imapresource_LIB_SRCS
   noinferiorsattribute.cpp
   passwordrequesterinterface.cpp
   removecollectionrecursivetask.cpp
-  removeitemstask.cpp
   resourcestateinterface.cpp
   resourcetask.cpp
   retrievecollectionmetadatatask.cpp

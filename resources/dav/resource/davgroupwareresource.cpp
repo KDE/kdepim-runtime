@@ -835,11 +835,13 @@ void DavGroupwareResource::onItemFetched( KJob* job, ItemFetchUpdateType updateT
   item.setRemoteRevision( davItem.etag() );
   mEtagCache.setEtag( item.remoteId(), davItem.etag() );
 
-  for ( int i = 0; i < extraItems.size(); ++i )
-    mEtagCache.setEtag( extraItems.at( i ).remoteId(), davItem.etag() );
+  if ( !extraItems.isEmpty() ) {
+    for ( int i = 0; i < extraItems.size(); ++i )
+      mEtagCache.setEtag( extraItems.at( i ).remoteId(), davItem.etag() );
 
-  Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob( extraItems );
-  j->setIgnorePayload( true );
+    Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob( extraItems );
+    j->setIgnorePayload( true );
+  }
 
   if ( updateType == ItemUpdateChange )
     changeCommitted( item );

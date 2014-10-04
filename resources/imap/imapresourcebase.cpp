@@ -73,7 +73,6 @@
 #include "movecollectiontask.h"
 #include "moveitemstask.h"
 #include "removecollectionrecursivetask.h"
-#include "removeitemstask.h"
 #include "retrievecollectionmetadatatask.h"
 #include "retrievecollectionstask.h"
 #include "retrieveitemtask.h"
@@ -83,6 +82,7 @@
 #include "settingspasswordrequester.h"
 #include "sessionpool.h"
 #include "sessionuiproxy.h"
+#include "imapflags.h"
 
 #include "resourceadaptor.h"
 
@@ -395,7 +395,7 @@ void ImapResourceBase::itemsRemoved( const Akonadi::Item::List &items )
 
   emit status( AgentBase::Running, i18nc( "@info:status", "Removing items" ) );
 
-  startTask(new RemoveItemsTask( createResourceState(TaskArguments(items)), this ));
+  startTask(new ChangeItemsFlagsTask( createResourceState(TaskArguments(items, QSet<QByteArray>() << ImapFlags::Deleted, QSet<QByteArray>())), this ));
 }
 
 void ImapResourceBase::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &source,
