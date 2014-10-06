@@ -54,6 +54,12 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(select->session());
 
+    if (select->messageCount() == 0) {
+        //Nothing to do
+        taskDone();
+        return;
+    }
+
     KIMAP::ImapSet set;
     set.add(KIMAP::ImapInterval(1, 0));
     fetch->setSequenceSet(set);
