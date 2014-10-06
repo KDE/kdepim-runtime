@@ -29,7 +29,6 @@
 #include <QUrl>
 #include <QTimer>
 
-#include <KGlobal>
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <QDialogButtonBox>
