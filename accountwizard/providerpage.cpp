@@ -40,6 +40,7 @@ ProviderPage::ProviderPage(KAssistantDialog* parent) :
   ui.searchLine->setProxy( proxy );
 
   m_fetchItem = new QStandardItem( i18n( "Fetching provider list..." ) );
+  m_fetchItem->setFlags(Qt::NoItemFlags);
   m_model->appendRow( m_fetchItem );
 
   // we can start the search, whenever the user reaches this page, chances
