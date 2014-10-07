@@ -50,13 +50,20 @@ TypePage::TypePage(KAssistantDialog *parent) :
     ui.listView->setModel(proxy);
     ui.searchLine->setProxy(proxy);
 
-    QStringList list;// = KGlobal::dirs()->findAllResources("data", QLatin1String( "akonadi/accountwizard/*.desktop" ), KStandardDirs::Recursive | KStandardDirs::NoDuplicates );
+ 
+    QStringList list;
     QStringList files;
+
     const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/accountwizard/"), QStandardPaths::LocateDirectory);
     Q_FOREACH (const QString &dir, dirs) {
-        const QStringList fileNames = QDir(dir).entryList(QStringList() << QStringLiteral("*.desktop"));
-        Q_FOREACH (const QString &file, fileNames) {
-            list.append(dir + QLatin1Char('/') + file);
+        const QStringList directories = QDir(dir).entryList(QDir::AllDirs);
+        Q_FOREACH (const QString &directory, directories) {
+           const QString fullPath = dir + QLatin1Char('/') + directory;
+           const QStringList fileNames = QDir(fullPath).entryList(QStringList() << QStringLiteral("*.desktop"));
+           Q_FOREACH (const QString &file, fileNames) {
+              list.append(fullPath + QLatin1Char('/') + file);
+
+           }
         }
     }
 
