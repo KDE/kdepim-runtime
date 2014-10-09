@@ -34,9 +34,6 @@
 #include <QDebug>
 
 #include <QTextDocument>
-#include <QDBusConnection>
-#include <QDBusInterface>
-#include <QDBusConnectionInterface>
 
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),
@@ -144,6 +141,8 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
+#if 0
+//PORT QT5: Use QtSpeech
             if (QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
                 QDBusInterface ktts(QLatin1String("org.kde.kttsd"), QLatin1String("/KSpeech"), QLatin1String("org.kde.KSpeech"));
                 QString message = NewMailNotifierAgentSettings::textToSpeak();
@@ -151,6 +150,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
                 message.replace(QLatin1String("%f"), mFrom.toHtmlEscaped());
                 ktts.asyncCall(QLatin1String("say"), message, 0);
             }
+#endif
         }
     }
 
