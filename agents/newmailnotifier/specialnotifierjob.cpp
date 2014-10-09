@@ -15,6 +15,7 @@
   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include "newmailnotifiershowmessagejob.h"
 #include "specialnotifierjob.h"
 #include "util.h"
 #include "newmailnotifieragentsettings.h"
@@ -28,15 +29,13 @@
 #include <KPIMUtils/Email>
 
 #include <KMime/Message>
-#include <KToolInvocation>
 
 #include <KLocalizedString>
 
 #include <QTextDocument>
-#include <QDBusInterface>
 #include <QDBusConnection>
+#include <QDBusInterface>
 #include <QDBusConnectionInterface>
-
 
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),
@@ -175,16 +174,6 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
 void SpecialNotifierJob::slotOpenMail()
 {
-    const QString kmailInterface = QLatin1String("org.kde.kmail");
-    QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(kmailInterface);
-    if (!reply.isValid() || !reply.value()) {
-        // Program is not already running, so start it
-        QString errmsg;
-        if (KToolInvocation::startServiceByDesktopName(QLatin1String("kmail2"), QString(), &errmsg)) {
-            qDebug()<<" Can not start kmail"<<errmsg;
-            return;
-        }
-    }
-    QDBusInterface kmail(kmailInterface, QLatin1String("/KMail"), QLatin1String("org.kde.kmail.kmail"));
-    kmail.call(QLatin1String("showMail"), mItemId);
+    NewMailNotifierShowMessageJob *job = new NewMailNotifierShowMessageJob(mItemId);
+    job->start();
 }
