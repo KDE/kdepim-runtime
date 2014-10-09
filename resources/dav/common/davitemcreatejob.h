@@ -58,6 +58,7 @@ class DavItemCreateJob : public DavJobBase
   private:
     DavUtils::DavUrl mUrl;
     DavItem mItem;
+    int mRedirectCount;
 };
 
 #endif

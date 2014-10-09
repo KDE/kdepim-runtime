@@ -28,7 +28,7 @@
 #include <QtCore/QDebug>
 
 DavItemCreateJob::DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : DavJobBase( parent ), mUrl( url ), mItem( item )
+  : DavJobBase( parent ), mUrl( url ), mItem( item ), mRedirectCount( 0 )
 {
 }
 
@@ -44,6 +44,7 @@ void DavItemCreateJob::start()
   job->addMetaData( QLatin1String("customHTTPHeader"), headers );
   job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
   job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
+  job->setRedirectionHandlingEnabled( false );
 
   connect(job, &KIO::StoredTransferJob::result, this, &DavItemCreateJob::davJobFinished);
 }
@@ -56,12 +57,12 @@ DavItem DavItemCreateJob::item() const
 void DavItemCreateJob::davJobFinished( KJob *job )
 {
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
+  const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
+                            0 :
+                            storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
+
 
   if ( storedJob->error() ) {
-    const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                              0 :
-                              storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
-
     QString err;
     if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
       err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
@@ -93,6 +94,25 @@ void DavItemCreateJob::davJobFinished( KJob *job )
     url.setEncodedPath( location.toLatin1() );
   } else
     url = location;
+
+  if ( responseCode == 301 || responseCode == 302 || responseCode == 307 || responseCode == 308 ) {
+    if ( mRedirectCount > 4 ) {
+      setLatestResponseCode( responseCode );
+      setError( UserDefinedError + responseCode );
+      emitResult();
+    }
+    else {
+      KUrl itemUrl( url );
+      itemUrl.setUser( mUrl.url().user() );
+      itemUrl.setPassword( mUrl.url().password() );
+      mUrl.setUrl( itemUrl );
+
+      ++mRedirectCount;
+      start();
+    }
+
+    return;
+  }
 
   url.setUser( QString() );
   mItem.setUrl( url.prettyUrl() );
