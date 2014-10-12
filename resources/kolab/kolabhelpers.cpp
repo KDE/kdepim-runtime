@@ -26,6 +26,7 @@
 #include <akonadi/notes/noteutils.h>
 #include <kolabobject.h>
 #include <errorhandler.h>
+#include <KLocalizedString>
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
@@ -43,6 +44,67 @@ bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
     kWarning() << "Error on item with id: " << item.id() << " remote id: " << item.remoteId() << ":\n" << errorMsg;
     Kolab::ErrorHandler::instance().clear();
     return true;
+}
+
+
+Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId)
+{
+    //TODO set title, text and icon
+    Akonadi::Item item;
+    item.setRemoteId(remoteId);
+    switch (folderType) {
+        case Kolab::EventType: {
+            KCalCore::Event::Ptr event(new KCalCore::Event);
+            //FIXME Use message creation date time
+            event->setDtStart(KDateTime::currentUtcDateTime());
+            event->setSummary(i18n("Corrupt Event"));
+            event->setDescription(i18n("Event could not be read. Delete this event to remove it from the server."));
+            item.setMimeType(KCalCore::Event::eventMimeType());
+            item.setPayload(event);
+        }
+            break;
+        case Kolab::TaskType: {
+            KCalCore::Todo::Ptr task(new KCalCore::Todo);
+            //FIXME Use message creation date time
+            task->setDtStart(KDateTime::currentUtcDateTime());
+            task->setSummary(i18n("Corrupt Task"));
+            task->setDescription(i18n("Task could not be read. Delete this task to remove it from the server."));
+            item.setMimeType(KCalCore::Todo::todoMimeType());
+            item.setPayload(task);
+        }
+            break;
+        case Kolab::JournalType: {
+            KCalCore::Journal::Ptr journal(new KCalCore::Journal);
+            //FIXME Use message creation date time
+            journal->setDtStart(KDateTime::currentUtcDateTime());
+            journal->setSummary(i18n("Corrupt journal"));
+            journal->setDescription(i18n("Journal could not be read. Delete this journal to remove it from the server."));
+            item.setMimeType(KCalCore::Journal::journalMimeType());
+            item.setPayload(journal);
+        }
+            break;
+        case Kolab::ContactType: {
+            KABC::Addressee addressee;
+            addressee.setName(i18n("Corrupt Contact"));
+            addressee.setNote(i18n("Contact could not be read. Delete this contact to remove it from the server."));
+            item.setMimeType(KABC::Addressee::mimeType());
+            item.setPayload(addressee);
+        }
+            break;
+        case Kolab::NoteType: {
+            Akonadi::NoteUtils::NoteMessageWrapper note;
+            note.setTitle(i18n("Corrupt Note"));
+            note.setText(i18n("Note could not be read. Delete this note to remove it from the server."));
+            item.setPayload(Akonadi::NoteUtils::noteMimeType());
+            item.setPayload(note.message());
+        }
+            break;
+        case Kolab::MailType:
+            //We don't convert mails, so that should never fail.
+        default:
+            kDebug() << "unhandled folder type: " << folderType;
+    }
+    return item;
 }
 
 Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, const Akonadi::Item &imapItem, bool &ok)
@@ -67,9 +129,9 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
     const KMime::Message::Ptr payload = imapItem.payload<KMime::Message::Ptr>();
     const Kolab::KolabObjectReader reader(payload);
     if (checkForErrors(imapItem)) {
-        //By not delivering items we cannot translate, they are simply deleted from local storage
-        ok = false;
-        return Akonadi::Item();
+        ok = true;
+        //We return an error object so the sync keeps working, and we can clean up the mess by simply deleting the object in the application.
+        return getErrorItem(folderType, imapItem.remoteId());
     }
     switch (reader.getType()) {
         case Kolab::EventObject:
