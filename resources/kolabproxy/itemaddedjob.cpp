@@ -42,9 +42,9 @@ void ItemAddedJob::doStart()
     qDebug() << imapCollection.id();
     Akonadi::Item imapItem( "message/rfc822" );
     if (!mHandler.toKolabFormat(mKolabItem, imapItem)) {
-        qWarning() << "Failed to convert item to kolab format: " << mKolabItem.id();
+        qWarning() << "Failed to convert item to Kolab format: " << mKolabItem.id();
         setError(KJob::UserDefinedError);
-        setErrorText(i18n("Failed to convert item %1 to kolab format", mKolabItem.id()));
+        setErrorText(i18n("Failed to convert item %1 to Kolab format", mKolabItem.id()));
         emitResult();
         return;
     }
