@@ -23,11 +23,15 @@
 
 #include <KMessageBox>
 #include <KLocalizedString>
-#include <KDialog>
+#include <QDialog>
 
 #include <mailtransport/transportbase.h>
 #include <kwindowsystem.h>
 #include <QDebug>
+#include <KConfigGroup>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 #include "imapresourcebase.h"
 #include "settings.h"
@@ -66,24 +70,26 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
                                                      "Do you want to go to the settings, have another attempt "
                                                      "at logging in, or do nothing?\n\n"
                                                      "%1", serverError, m_resource->name() );
-  KDialog *dialog = new KDialog(parent, Qt::Dialog);
-  dialog->setCaption(i18n( "Could Not Authenticate" ));
-  dialog->setButtons(KDialog::Yes|KDialog::No|KDialog::Cancel);
-  dialog->setDefaultButton(KDialog::Yes);
-  dialog->setButtonText(KDialog::Yes, i18n( "Account Settings" ));
-  dialog->setButtonText(KDialog::No, i18nc( "Input username/password manually and not store them", "Try Again" ));
+  QDialog *dialog = new QDialog(parent, Qt::Dialog);
+  dialog->setWindowTitle(i18n( "Could Not Authenticate" ));
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel|QDialogButtonBox::No|QDialogButtonBox::Yes);
+  buttonBox->button(QDialogButtonBox::Yes)->setDefault(true);
+
+  buttonBox->button(QDialogButtonBox::Yes)->setText(i18n( "Account Settings" ));
+  buttonBox->button(QDialogButtonBox::No)->setText(i18nc( "Input username/password manually and not store them", "Try Again" ));
   dialog->setAttribute(Qt::WA_DeleteOnClose);
-  connect(dialog, &KDialog::buttonClicked, this, &SettingsPasswordRequester::onButtonClicked);
-  connect(dialog, &KDialog::destroyed, this, &SettingsPasswordRequester::onDialogDestroyed);
+  connect(buttonBox->button(QDialogButtonBox::Yes), &QPushButton::clicked, this, &SettingsPasswordRequester::slotYesClicked);
+  connect(buttonBox->button(QDialogButtonBox::No), &QPushButton::clicked, this, &SettingsPasswordRequester::slotNoClicked);
+  connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &SettingsPasswordRequester::slotCancelClicked);
+
+  connect(dialog, &QDialog::destroyed, this, &SettingsPasswordRequester::onDialogDestroyed);
   m_requestDialog = dialog;
   KWindowSystem::setMainWindow(dialog, m_resource->winIdForDialogs());
   bool checkboxResult = false;
-#if 0 //QT5
-  KMessageBox::createKMessageBox(dialog, QMessageBox::Information,
+  KMessageBox::createKMessageBox(dialog, buttonBox, QMessageBox::Information,
                                        text, QStringList(),
                                        QString(),
                                        &checkboxResult, KMessageBox::NoExec);
-#endif
   dialog->show();
 }
 
@@ -92,23 +98,29 @@ void SettingsPasswordRequester::onDialogDestroyed()
   m_requestDialog = 0;
 }
 
-void SettingsPasswordRequester::onButtonClicked(KDialog::ButtonCode result)
+void SettingsPasswordRequester::slotNoClicked()
 {
-  if ( result == KDialog::Yes ) {
+    connect( m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
+             this, SLOT(onPasswordRequestCompleted(QString,bool)) );
+    m_resource->settings()->requestManualAuth();
+    m_requestDialog = 0;
+}
+
+void SettingsPasswordRequester::slotYesClicked()
+{
     if (!m_settingsDialog) {
       QDialog *dialog = m_resource->createConfigureDialog(m_resource->winIdForDialogs());
       connect(dialog, &QDialog::finished, this, &SettingsPasswordRequester::onSettingsDialogFinished);
       m_settingsDialog = dialog;
       dialog->show();
     }
-  } else if ( result == KDialog::No ) {
-    connect( m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
-             this, SLOT(onPasswordRequestCompleted(QString,bool)) );
-    m_resource->settings()->requestManualAuth();
-  } else {
+    m_requestDialog = 0;
+}
+
+void SettingsPasswordRequester::slotCancelClicked()
+{
     emit done( UserRejected );
-  }
-  m_requestDialog = 0;
+    m_requestDialog = 0;
 }
 
 void SettingsPasswordRequester::onSettingsDialogFinished(int result)
