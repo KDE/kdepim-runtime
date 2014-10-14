@@ -22,7 +22,7 @@
 
 #include "kmigratorbase.h"
 #include "migratorbase.h"
-
+#include <QEventLoopLocker>
 #include <QDialog>
 
 class QLabel;
@@ -56,6 +56,7 @@ class InfoDialog : public QDialog
     void scrollBarMoved( int value );
 
   private:
+    QEventLoopLocker eventLoopLocker;
     QDialogButtonBox *mButtonBox;
     QListWidget *mList;
     QLabel *mStatusLabel;

@@ -25,8 +25,8 @@
 
 #include <KSharedConfig>
 #include <KConfigGroup>
-#include <KGlobal>
 #include <KLocalizedString>
+#include <KGlobal>
 #include <QDebug>
 
 #include <QFile>
@@ -58,7 +58,6 @@ QString messageTypeToString( KMigratorBase::MessageType type )
 
 KMigratorBase::KMigratorBase() : m_logFile( 0 )
 {
-  KGlobal::ref();
 
   const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + KGlobal::mainComponent().componentName() + QLatin1String("/migration.log") ;
   QFileInfo fileInfo(logFileName);
@@ -81,7 +80,6 @@ KMigratorBase::~KMigratorBase()
 {
   logMessage( Info, QLatin1String("Migration finished.") );
   delete m_logFile;
-  KGlobal::deref();
 }
 
 KMigratorBase::MigrationState KMigratorBase::migrationState( const QString &identifier ) const

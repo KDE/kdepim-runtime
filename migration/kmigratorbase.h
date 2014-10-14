@@ -21,7 +21,7 @@
 #define KMIGRATORBASE_H
 
 #include <AkonadiCore/agentinstance.h>
-
+#include <QEventLoopLocker>
 #include <QObject>
 
 class QFile;
@@ -87,6 +87,7 @@ class KMigratorBase : public QObject
 
   private:
     QFile* m_logFile;
+    QEventLoopLocker eventLoopLocker;
 };
 
 #endif

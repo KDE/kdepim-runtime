@@ -21,7 +21,6 @@
 
 #include <KCursor>
 #include <QDebug>
-#include <KGlobal>
 #include <QIcon>
 
 #include <QApplication>
@@ -51,7 +50,6 @@ InfoDialog::InfoDialog( bool closeWhenDone ) :
 {
   setAttribute( Qt::WA_DeleteOnClose );
 
-  KGlobal::ref();
   mButtonBox = new QDialogButtonBox(QDialogButtonBox::Close);
   QWidget *mainWidget = new QWidget(this);
   QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -86,7 +84,6 @@ InfoDialog::InfoDialog( bool closeWhenDone ) :
 
 InfoDialog::~InfoDialog()
 {
-  KGlobal::deref();
 }
 
 static KMigratorBase::MessageType convertType( MigratorBase::MessageType type )
