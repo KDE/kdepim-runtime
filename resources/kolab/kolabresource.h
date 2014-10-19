@@ -35,7 +35,6 @@ public:
 
 protected Q_SLOTS:
     virtual void retrieveCollections();
-    virtual void retrieveItems(const Akonadi::Collection& col);
     virtual void delayedInit();
 
 protected:
@@ -59,7 +58,6 @@ protected:
     virtual QString defaultName();
 
 private Q_SLOTS:
-    void onItemRetrievalCollectionFetchDone(KJob *job);
     void retrieveTags();
 };
 

@@ -27,8 +27,6 @@
 #include <changecollectiontask.h>
 
 #include <KLocalizedString>
-#include <Akonadi/CollectionFetchJob>
-#include <Akonadi/CollectionFetchScope>
 #include <KLocale>
 
 #include "kolabretrievecollectionstask.h"
@@ -46,6 +44,8 @@ KolabResource::KolabResource(const QString& id)
 {
     //Load translations from imap resource
     KGlobal::locale()->insertCatalog(QLatin1String("akonadi_imap_resource"));
+    //Ensure we have up-to date metadata before attempting to sync folder
+    setScheduleAttributeSyncBeforeItemSync(true);
 }
 
 KolabResource::~KolabResource()
@@ -76,51 +76,6 @@ void KolabResource::retrieveCollections()
 
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
     synchronizeTags();
-}
-
-void KolabResource::retrieveItems(const Akonadi::Collection &col)
-{
-    //The collection that we receive was fetched when the task was scheduled, it is therefore possible that it is outdated.
-    //We refetch the collection since we rely on up-to-date annotations.
-    //FIXME: because this is async and not part of the resourcetask, it can't be killed. ResourceBase should just provide an up-to date copy of the collection.
-    Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(col, Akonadi::CollectionFetchJob::Base, this);
-    fetchJob->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
-    fetchJob->fetchScope().setIncludeStatistics(true);
-    fetchJob->fetchScope().setIncludeUnsubscribed(true);
-    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemRetrievalCollectionFetchDone(KJob*)));
-}
-
-void KolabResource::onItemRetrievalCollectionFetchDone(KJob *job)
-{
-    if (job->error()) {
-        kWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
-        cancelTask(i18n("Failed to retrieve items."));
-        return;
-    }
-
-    Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
-    Q_ASSERT(fetchJob->collections().size() == 1);
-    const Akonadi::Collection col = fetchJob->collections().first();
-
-    //This is the only part that differs form the imap resource: We make sure the annotations are up-to date before synchronizing
-    //HACK avoid infinite recursions, the metadatatask should be scheduled at most once per retrieveItemsJob
-    static QSet<Akonadi::Collection::Id> updatedCollections;
-    if (!updatedCollections.contains(col.id()) &&
-        (!col.attribute<TimestampAttribute>() ||
-        col.attribute<TimestampAttribute>()->timestamp() < QDateTime::currentDateTime().addSecs(-60).toTime_t())) {
-        updatedCollections.insert(col.id());
-        scheduleCustomTask(this, "triggerCollectionExtraInfoJobs", QVariant::fromValue(col), Akonadi::ResourceBase::Prepend);
-        deferTask();
-        return;
-    }
-    updatedCollections.remove(col.id());
-
-    setItemStreamingEnabled(true);
-
-    RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(col)), this);
-    connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-    connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
-    startTask(task);
 }
 
 void KolabResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
