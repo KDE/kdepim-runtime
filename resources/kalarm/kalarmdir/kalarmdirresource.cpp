@@ -482,6 +482,11 @@ KAEvent KAlarmDirResource::loadFile(const QString& path, const QString& file)
         return KAEvent();
     }
     const Event::List events = calendar->events();
+    if ( events.isEmpty() )
+    {
+        kDebug() << "Empty calendar in file" << path;
+        return KAEvent();
+    }
     if (events.count() > 1)
     {
         kWarning() << "Deleting" << events.count() - 1 << "excess events found in file" << path;
