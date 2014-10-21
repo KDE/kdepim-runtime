@@ -37,7 +37,8 @@ ResourceTask::ResourceTask( ActionIfNoSession action, ResourceStateInterface::Pt
     m_sessionRequestId( 0 ),
     m_session( 0 ),
     m_actionIfNoSession( action ),
-    m_resource( resource )
+    m_resource( resource ),
+    mCancelled( false )
 {
 
 }
@@ -248,106 +249,144 @@ QString ResourceTask::mailBoxForCollection( const Akonadi::Collection &collectio
 
 void ResourceTask::setIdleCollection( const Akonadi::Collection &collection )
 {
-  m_resource->setIdleCollection( collection );
+  if (!mCancelled) {
+    m_resource->setIdleCollection( collection );
+  }
 }
 
 void ResourceTask::applyCollectionChanges( const Akonadi::Collection &collection )
 {
-  m_resource->applyCollectionChanges( collection );
+  if (!mCancelled) {
+    m_resource->applyCollectionChanges( collection );
+  }
 }
 
 void ResourceTask::itemRetrieved( const Akonadi::Item &item )
 {
-  m_resource->itemRetrieved( item );
-  emitPercent(100);
+  if (!mCancelled) {
+    m_resource->itemRetrieved( item );
+    emitPercent(100);
+  }
   deleteLater();
 }
 
 void ResourceTask::itemsRetrieved( const Akonadi::Item::List &items )
 {
-  m_resource->itemsRetrieved( items );
+  if (!mCancelled) {
+    m_resource->itemsRetrieved( items );
+  }
 }
 
 void ResourceTask::itemsRetrievedIncremental( const Akonadi::Item::List &changed,
                                               const Akonadi::Item::List &removed )
 {
-  m_resource->itemsRetrievedIncremental( changed, removed );
+  if (!mCancelled) {
+    m_resource->itemsRetrievedIncremental( changed, removed );
+  }
 }
 
 void ResourceTask::itemsRetrievalDone()
 {
-  m_resource->itemsRetrievalDone();
+  if (!mCancelled) {
+    m_resource->itemsRetrievalDone();
+  }
   deleteLater();
 }
 
 void ResourceTask::setTotalItems(int totalItems)
 {
-  m_resource->setTotalItems(totalItems);
+  if (!mCancelled) {
+    m_resource->setTotalItems(totalItems);
+  }
 }
 
 void ResourceTask::changeCommitted( const Akonadi::Item &item )
 {
-  m_resource->itemChangeCommitted( item );
+  if (!mCancelled) {
+    m_resource->itemChangeCommitted( item );
+  }
   deleteLater();
 }
 
 void ResourceTask::changesCommitted(const Akonadi::Item::List& items)
 {
-  m_resource->itemsChangesCommitted( items );
+  if (!mCancelled) {
+    m_resource->itemsChangesCommitted( items );
+  }
   deleteLater();
 }
 
 void ResourceTask::searchFinished( const QVector<qint64> &result, bool isRid )
 {
-  m_resource->searchFinished( result, isRid );
+  if (!mCancelled) {
+    m_resource->searchFinished( result, isRid );
+  }
   deleteLater();
 }
 
 void ResourceTask::collectionsRetrieved( const Akonadi::Collection::List &collections )
 {
-  m_resource->collectionsRetrieved( collections );
+  if (!mCancelled) {
+    m_resource->collectionsRetrieved( collections );
+  }
   deleteLater();
 }
 
 void ResourceTask::collectionAttributesRetrieved(const Akonadi::Collection& col)
 {
-  m_resource->collectionAttributesRetrieved( col );
+  if (!mCancelled) {
+    m_resource->collectionAttributesRetrieved( col );
+  }
   deleteLater();
 }
 
 void ResourceTask::changeCommitted( const Akonadi::Collection &collection )
 {
-  m_resource->collectionChangeCommitted( collection );
+  if (!mCancelled) {
+    m_resource->collectionChangeCommitted( collection );
+  }
   deleteLater();
 }
 
 void ResourceTask::changeCommitted( const Akonadi::Tag &tag )
 {
+  if (!mCancelled) {
     m_resource->tagChangeCommitted( tag );
+  }
     deleteLater();
 }
 
 void ResourceTask::changeProcessed()
 {
-  m_resource->changeProcessed();
+  if (!mCancelled) {
+    m_resource->changeProcessed();
+  }
   deleteLater();
 }
 
 void ResourceTask::cancelTask( const QString &errorString )
 {
-  m_resource->cancelTask( errorString );
+  if (!mCancelled) {
+    mCancelled = true;
+    m_resource->cancelTask( errorString );
+  }
   deleteLater();
 }
 
 void ResourceTask::deferTask()
 {
-  m_resource->deferTask();
+  if (!mCancelled) {
+    mCancelled = true;
+    m_resource->deferTask();
+  }
   deleteLater();
 }
 
 void ResourceTask::restartItemRetrieval(Akonadi::Entity::Id col)
 {
-  m_resource->restartItemRetrieval(col);
+  if (!mCancelled) {
+    m_resource->restartItemRetrieval(col);
+  }
   deleteLater();
 }
 
