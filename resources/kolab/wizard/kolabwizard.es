@@ -143,6 +143,7 @@ function setup()
 {
     SetupManager.openWallet();
     smtp = SetupManager.createTransport("smtp");
+    smtp.setEditMode(page2.widget().checkBoxSmtpEdit.checked);
     smtp.setPassword(page.widget().passwordEdit.text);
 
     if (page2.widget().checkBoxSmtp.checked) {
@@ -177,6 +178,7 @@ function setup()
     }
 
     kolabRes = SetupManager.createResource("akonadi_kolab_resource");
+    kolabRes.setEditMode(page2.widget().checkBoxImapEdit.checked);
     kolabRes.setOption("Password", page.widget().passwordEdit.text);
     kolabRes.setOption("UseDefaultIdentity", false);
     kolabRes.setOption("AccountIdentity", identity.uoid());
@@ -195,19 +197,35 @@ function setup()
         kolabRes.setOption("Safety", "STARTTLS");
         kolabRes.setOption("ImapPort", 143);
     }
+
     if (page2.widget().checkBoxLdap.checked) {
         for (i = 0; i < ac_ldap.countLdapServers(); i++) {
             var ldap = SetupManager.createLdap();
+            ldap.setEditMode(page2.widget().checkBoxLdapEdit.checked);
             ac_ldap.fillLdapServer(i,ldap);
         }
-    } else if (page2.widget().checkBoxLdapEdit) {
-        SetupManager.createLdap();
+    } else if (page2.widget().checkBoxLdapEdit.checked) {
+        var ldap = SetupManager.createLdap();
+        ldap.setEditMode(page2.widget().checkBoxLdapEdit.checked);
+        ldap.setPassword(page.widget().passwordEdit.text);
+        ldap.setUser(page.widget().nameEdit.text);
+        ldap.setServer(guessServerName());
     }
 
     if (page2.widget().checkBoxFreebusy.checked) {
-        var korganizer = SetupManager.createConfigFile("korganizerrc");
+        var korganizer = SetupManager.createConfigFile("akonadi-calendarrc");
+        korganizer.setEditMode(page2.widget().checkBoxFreebusyEdit.checked);
+        korganizer.setEditName("freebusy");
         korganizer.setName("korganizer");
         ispdb.fillFreebusyServer(0,korganizer);
+    } else if (page2.widget().checkBoxFreebusyEdit.checked) {
+        var korganizer = SetupManager.createConfigFile("akonadi-calendarrc");
+        korganizer.setEditMode(page2.widget().checkBoxFreebusyEdit.checked);
+        korganizer.setEditName("freebusy");
+        korganizer.setName( "korganizer" );
+        korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyFullDomainRetrieval","true");
+        korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveAuto", "true" );
+        korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + guessServerName()  + "/freebusy/" );
     }
 
     SetupManager.execute();
