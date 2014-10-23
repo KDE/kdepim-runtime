@@ -18,6 +18,8 @@
 */
 
 #include "imaptestbase.h"
+#include <QTimer>
+#include <QSignalSpy>
 
 ImapTestBase::ImapTestBase( QObject *parent )
   : QObject( parent )

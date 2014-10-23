@@ -26,6 +26,7 @@
 #include <cachepolicy.h>
 #include <entitydisplayattribute.h>
 #include <akonadi/kmime/messageparts.h>
+#include <KLocalizedString>
 
 class TestRetrieveCollectionsTask : public ImapTestBase
 {

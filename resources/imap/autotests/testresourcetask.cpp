@@ -18,8 +18,9 @@
 */
 
 #include "imaptestbase.h"
-
+#include <QSignalSpy>
 #include "resourcetask.h"
+#include <KLocalizedString>
 
 Q_DECLARE_METATYPE( ResourceTask::ActionIfNoSession )
 

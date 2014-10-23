@@ -18,7 +18,7 @@
 */
 
 #include "imaptestbase.h"
-
+#include <QSignalSpy>
 #include <kimap/capabilitiesjob.h>
 
 class TestSessionPool : public ImapTestBase
