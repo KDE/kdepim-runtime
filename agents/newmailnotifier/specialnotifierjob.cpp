@@ -85,7 +85,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             deleteLater();
         }
     } else {
-        kdWarning()<<" Found item different from 1: "<<lst.count();
+        kWarning()<<" Found item different from 1: "<<lst.count();
         deleteLater();
         return;
     }
