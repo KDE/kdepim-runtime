@@ -3,7 +3,6 @@ include_directories(
     ${Boost_INCLUDE_DIR}
     ${kdepim-runtime_SOURCE_DIR}/migration
     ${kdepim-runtime_SOURCE_DIR}
-    tests
 )
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_migration_agent\")
