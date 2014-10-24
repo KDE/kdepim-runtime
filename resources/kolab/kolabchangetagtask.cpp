@@ -77,5 +77,5 @@ void KolabChangeTagTask::onCancelTask(const QString &errorText)
 
 void KolabChangeTagTask::onChangeCommitted()
 {
-    changeCommitted(resourceState()->tag());
+    changeProcessed();
 }
