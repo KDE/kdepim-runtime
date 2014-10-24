@@ -26,6 +26,7 @@ set(kolabresource_LIB_SRCS
     kolabremovetagtask.cpp
     tagchangehelper.cpp
     kolabretrievetagstask.cpp
+    kolabsettings.cpp
 )
 
 kde4_add_kcfg_files(kolabresource_LIB_SRCS ../imap/settingsbase.kcfgc)
@@ -56,14 +57,14 @@ set(kolabresource_SRCS
     kolabresourcestate.cpp
     ../imap/imapresource.cpp
     ../imap/settingspasswordrequester.cpp
-    ../imap/setupserver.cpp
+    setupserver.cpp
     ../imap/serverinfodialog.cpp
 )
 
 if (KDEPIM_MOBILE_UI)
-    kde4_add_ui_files(kolabresource_SRCS ../imap/setupserverview_mobile.ui)
+    kde4_add_ui_files(kolabresource_SRCS setupserverview_mobile.ui)
 else ()
-    kde4_add_ui_files(kolabresource_SRCS ../imap/setupserverview_desktop.ui)
+    kde4_add_ui_files(kolabresource_SRCS setupserverview_desktop.ui)
 endif ()
 kde4_add_ui_files(kolabresource_SRCS ../imap/serverinfo.ui)
 

@@ -151,6 +151,8 @@ protected:
   void queueTask( ResourceTask *task );
   SessionPool *m_pool;
 
+  mutable Settings *m_settings;
+
 private:
   friend class ResourceState;
 
@@ -164,7 +166,6 @@ private:
   ImapIdleManager *m_idle;
   QTimer *m_statusMessageTimer;
   QChar m_separatorCharacter;
-  mutable Settings *m_settings;
 };
 
 #endif

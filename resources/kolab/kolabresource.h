@@ -33,6 +33,9 @@ public:
     explicit KolabResource(const QString &id);
     ~KolabResource();
 
+    virtual KDialog *createConfigureDialog ( WId windowId );
+    virtual Settings* settings() const;
+
 protected Q_SLOTS:
     virtual void retrieveCollections();
     virtual void delayedInit();

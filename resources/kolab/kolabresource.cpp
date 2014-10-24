@@ -19,6 +19,7 @@
 
 #include "kolabresource.h"
 
+#include "setupserver.h"
 #include <resourcestateinterface.h>
 #include <resourcestate.h>
 #include <timestampattribute.h>
@@ -26,13 +27,14 @@
 #include <collectionannotationsattribute.h>
 #include <changecollectiontask.h>
 
+#include <KWindowSystem>
 #include <KLocalizedString>
 #include <KLocale>
 
 #include "kolabretrievecollectionstask.h"
 #include "kolabresourcestate.h"
 #include "kolabhelpers.h"
-#include "settings.h"
+#include "kolabsettings.h"
 #include "kolabaddtagtask.h"
 #include "kolabchangeitemstagstask.h"
 #include "kolabchangetagtask.h"
@@ -53,6 +55,15 @@ KolabResource::~KolabResource()
 
 }
 
+Settings *KolabResource::settings() const
+{
+  if (m_settings == 0) {
+    m_settings = new KolabSettings;
+  }
+
+  return m_settings;
+}
+
 void KolabResource::delayedInit()
 {
     ImapResource::delayedInit();
@@ -63,6 +74,15 @@ void KolabResource::delayedInit()
 QString KolabResource::defaultName()
 {
     return i18n("Kolab Resource");
+}
+
+KDialog *KolabResource::createConfigureDialog(WId windowId)
+{
+  SetupServer *dlg = new SetupServer( this, windowId );
+  KWindowSystem::setMainWindow( dlg, windowId );
+  dlg->setWindowIcon( KIcon( QLatin1String("kolab") ) );
+  connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+  return dlg;
 }
 
 ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArguments &args)
