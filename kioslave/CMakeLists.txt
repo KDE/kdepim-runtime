@@ -14,7 +14,7 @@ find_package(ECM 1.3.0 CONFIG REQUIRED)
  include(KDEFrameworkCompilerSettings)
 
  set(KDEPIMLIBS_LIB_VERSION "4.71.0")
- set(KF5_VERSION "5.3.0")
+ set(KF5_VERSION "5.4.0")
  set(QT_REQUIRED_VERSION "5.3.0")
 
 
