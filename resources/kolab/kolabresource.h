@@ -55,6 +55,10 @@ protected:
     virtual void tagRemoved(const Akonadi::Tag &tag);
     virtual void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags);
 
+    virtual void itemsRelationsChanged(const Akonadi::Item::List &items,
+                                       const Akonadi::Relation::List &addedRelations,
+                                       const Akonadi::Relation::List &removedRelations);
+
     virtual QString defaultName();
 
 private Q_SLOTS:
