@@ -240,6 +240,16 @@ QSet<Akonadi::Tag> DummyResourceState::removedTags() const
     return m_removedTags;
 }
 
+Akonadi::Relation::List DummyResourceState::addedRelations() const
+{
+    return Akonadi::Relation::List();
+}
+
+Akonadi::Relation::List DummyResourceState::removedRelations() const
+{
+    return Akonadi::Relation::List();
+}
+
 QString DummyResourceState::rootRemoteId() const
 {
   return QLatin1String("root-id");

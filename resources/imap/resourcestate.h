@@ -36,6 +36,7 @@ struct TaskArguments {
     TaskArguments(const Akonadi::Item::List &_items, const QSet<QByteArray> &_addedFlags, const QSet<QByteArray> &_removedFlags): items(_items), addedFlags(_addedFlags), removedFlags(_removedFlags) {}
     TaskArguments(const Akonadi::Item::List &_items, const Akonadi::Collection &_sourceCollection, const Akonadi::Collection &_targetCollection): items(_items), sourceCollection(_sourceCollection), targetCollection(_targetCollection){}
     TaskArguments(const Akonadi::Item::List &_items, const QSet<Akonadi::Tag> &_addedTags, const QSet<Akonadi::Tag> &_removedTags): items(_items), addedTags(_addedTags), removedTags(_removedTags) {}
+    TaskArguments(const Akonadi::Item::List &_items, const Akonadi::Relation::List &_addedRelations, const Akonadi::Relation::List &_removedRelations): items(_items), addedRelations(_addedRelations), removedRelations(_removedRelations) {}
     TaskArguments(const Akonadi::Collection &_collection): collection(_collection){}
     TaskArguments(const Akonadi::Collection &_collection, const Akonadi::Collection &_parentCollection): collection(_collection), parentCollection(_parentCollection){}
     TaskArguments(const Akonadi::Collection &_collection, const Akonadi::Collection &_sourceCollection, const Akonadi::Collection &_targetCollection): collection(_collection), sourceCollection(_sourceCollection), targetCollection(_targetCollection){}
@@ -52,6 +53,8 @@ struct TaskArguments {
     QSet<QByteArray> removedFlags;
     QSet<Akonadi::Tag> addedTags;
     QSet<Akonadi::Tag> removedTags;
+    Akonadi::Relation::List addedRelations;
+    Akonadi::Relation::List removedRelations;
 };
 
 class ResourceState : public ResourceStateInterface
@@ -92,6 +95,9 @@ public:
   virtual Akonadi::Tag tag() const;
   virtual QSet<Akonadi::Tag> addedTags() const;
   virtual QSet<Akonadi::Tag> removedTags() const;
+
+  virtual Akonadi::Relation::List addedRelations() const;
+  virtual Akonadi::Relation::List removedRelations() const;
 
   virtual QString rootRemoteId() const;
 

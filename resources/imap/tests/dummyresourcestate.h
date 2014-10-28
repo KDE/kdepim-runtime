@@ -90,6 +90,9 @@ public:
   void setRemovedTags( const QSet<Akonadi::Tag> &removedTags );
   virtual QSet<Akonadi::Tag> removedTags() const;
 
+  virtual Akonadi::Relation::List addedRelations() const;
+  virtual Akonadi::Relation::List removedRelations() const;
+
   virtual QString rootRemoteId() const;
 
   virtual void setIdleCollection( const Akonadi::Collection &collection );
