@@ -37,11 +37,6 @@ using namespace KCalCore;
 using namespace KCalUtils;
 using namespace Akonadi;
 
-SerializerPluginKCalCore::SerializerPluginKCalCore()
-    : mTimeZones(new ICalTimeZones)
-{
-}
-
 //// ItemSerializerPlugin interface
 
 bool SerializerPluginKCalCore::deserialize( Item &item, const QByteArray &label,
@@ -85,7 +80,7 @@ bool SerializerPluginKCalCore::deserialize( Item &item, const QByteArray &label,
     incidence = base.staticCast<KCalCore::Incidence>();
   } else {
     // Use the old format
-    incidence = mFormat.readIncidence(data.readAll(), mTimeZones.data());
+    incidence = mFormat.fromString( QString::fromUtf8( data.readAll() ) );
   }
 
   if ( !incidence ) {
