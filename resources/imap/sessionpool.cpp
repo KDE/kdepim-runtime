@@ -331,6 +331,7 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
     session = m_pendingInitialSession;
   } else {
     session = new KIMAP::Session( m_account->server(), m_account->port(), this );
+    QObject::connect(session, SIGNAL(destroyed(QObject*)), this, SLOT(onSessionDestroyed(QObject*)));
     session->setUiProxy( m_sessionUiProxy );
     session->setTimeout( m_account->timeout() );
     m_connectingPool << session;
@@ -493,5 +494,18 @@ void SessionPool::onConnectionLost()
   session->deleteLater();
   if ( session == m_pendingInitialSession )
       m_pendingInitialSession = 0;
+}
+
+void SessionPool::onSessionDestroyed(QObject *object)
+{
+  //Safety net for bugs that cause dangling session pointers
+  KIMAP::Session *session = static_cast<KIMAP::Session*>(object);
+  if (m_unusedPool.contains(session) || m_reservedPool.contains(session) || m_connectingPool.contains(session)) {
+    kWarning() << "Session destroyed while still in pool" << session;
+    m_unusedPool.removeAll(session);
+    m_reservedPool.removeAll(session);
+    m_connectingPool.removeAll(session);
+    Q_ASSERT(false);
+  }
 }
 

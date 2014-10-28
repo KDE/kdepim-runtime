@@ -99,6 +99,7 @@ private slots:
   void onNamespacesTestDone( KJob *job );
 
   void onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState);
+  void onSessionDestroyed(QObject*);
 
 private:
   void onConnectionLost();
