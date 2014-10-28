@@ -84,6 +84,7 @@ protected Q_SLOTS:
   void abortActivity();
 
   virtual void retrieveCollections();
+  void retrieveCollectionAttributes( const Akonadi::Collection &col );
 
   virtual void retrieveItems( const Akonadi::Collection &col );
   virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
@@ -129,14 +130,10 @@ private Q_SLOTS:
 
 
   void onIdleCollectionFetchDone( KJob *job );
-  void onItemRetrievalCollectionFetchDone( KJob *job );
-  void onMetadataCollectionFetchDone( KJob *job );
 
   void onExpungeCollectionFetchDone( KJob *job );
   void triggerCollectionExpunge( const QVariant &collectionVariant );
 
-
-  void triggerCollectionExtraInfoJobs( const QVariant &collection );
 
   void taskDestroyed( QObject *task );
 
