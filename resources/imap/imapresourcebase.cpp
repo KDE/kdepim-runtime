@@ -435,7 +435,7 @@ void ImapResourceBase::retrieveCollectionAttributes( const Akonadi::Collection &
 
 void ImapResourceBase::retrieveItems( const Collection &col )
 {
-  synchronizeCollectionAttributes(col);
+  synchronizeCollectionAttributes(col.id());
 
   setItemStreamingEnabled( true );
 

@@ -213,7 +213,7 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
 
       if ( !c.hasAttribute<NoSelectAttribute>()
         && !oldMailBoxes.contains( mailBox ) ) {
-        m_resource->synchronizeCollectionAttributes(c);
+        m_resource->synchronizeCollectionAttributes(c.id());
       }
 
       newMailBoxes << mailBox;
