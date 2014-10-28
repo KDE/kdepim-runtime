@@ -461,13 +461,45 @@ private slots:
     server.quit();
   }
 
+  void shouldCleanupOnClosingDuringLogin_data()
+  {
+    QTest::addColumn< QList<QByteArray> >( "scenario" );
+
+    {
+        QList<QByteArray> scenario;
+        scenario << FakeServer::greeting()
+                << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\"";
+
+        QTest::newRow( "during login" ) << scenario;
+    }
+    {
+        QList<QByteArray> scenario;
+        scenario << FakeServer::greeting()
+                << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+                << "S: A000001 OK User Logged in"
+                << "C: A000002 CAPABILITY";
+
+        QTest::newRow( "during capability" ) << scenario;
+    }
+    {
+        QList<QByteArray> scenario;
+        scenario << FakeServer::greeting()
+                << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+                << "S: A000001 OK User Logged in"
+                << "C: A000002 CAPABILITY"
+                << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
+                << "S: A000002 OK Completed"
+                << "C: A000003 NAMESPACE";
+        QTest::newRow( "during namespace" ) << scenario;
+    }
+  }
+
   void shouldCleanupOnClosingDuringLogin()
   {
+    QFETCH( QList<QByteArray>, scenario );
+
     FakeServer server;
-    server.addScenario( QList<QByteArray>()
-                        << FakeServer::greeting()
-                        << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
-    );
+    server.addScenario(scenario);
 
     server.startAndWait();
 
@@ -493,7 +525,7 @@ private slots:
 
     QTest::qWait( 100 );
     QCOMPARE( connectSpy.count(), 1 ); // We're informed that connect failed
-    QCOMPARE( connectSpy.at( 0 ).at( 0 ).toInt(), int(SessionPool::CouldNotConnectError) );
+    QCOMPARE( connectSpy.at( 0 ).at( 0 ).toInt(), int(SessionPool::CancelledError) );
     QCOMPARE( lostSpy.count(), 0 ); // We're not supposed to know the session pointer, so no connectionLost emitted
 
     // Make the session->deleteLater work, it can't happen in qWait (nested event loop)
