@@ -213,6 +213,13 @@ void SessionPool::killSession( KIMAP::Session *session, SessionTermination termi
 
 void SessionPool::declareSessionReady( KIMAP::Session *session )
 {
+  //This can happen if we happen to disconnect while capabilities and namespace are being retrieved,
+  //resulting in us keeping a dangling pointer to a deleted session
+  if (!m_connectingPool.contains( session )) {
+    qWarning() << "Tried to declare a removed session ready";
+    return;
+  }
+
   m_pendingInitialSession = 0;
 
   if ( !m_initialConnectDone ) {
@@ -347,6 +354,7 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
     session = m_pendingInitialSession;
   } else {
     session = new KIMAP::Session( m_account->server(), m_account->port(), this );
+    QObject::connect(session, SIGNAL(destroyed(QObject*)), this, SLOT(onSessionDestroyed(QObject*)));
     session->setUiProxy( m_sessionUiProxy );
     session->setTimeout( m_account->timeout() );
     m_connectingPool << session;
@@ -369,6 +377,11 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
 void SessionPool::onLoginDone( KJob *job )
 {
   KIMAP::LoginJob *login = static_cast<KIMAP::LoginJob*>( job );
+  //Can happen if we disonnected meanwhile
+  if (!m_connectingPool.contains(login->session())) {
+    emit connectDone( CancelledError, i18n( "Disconnected from server during login.") );
+    return;
+  }
 
   if ( job->error() == 0 ) {
     if ( m_initialConnectDone ) {
@@ -405,6 +418,11 @@ void SessionPool::onLoginDone( KJob *job )
 void SessionPool::onCapabilitiesTestDone( KJob *job )
 {
   KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob*>( job );
+  //Can happen if we disonnected meanwhile
+  if (!m_connectingPool.contains(capJob->session())) {
+    emit connectDone( CancelledError, i18n( "Disconnected from server during login.") );
+    return;
+  }
 
   if ( job->error() ) {
     if ( m_account ) {
@@ -459,9 +477,11 @@ void SessionPool::onCapabilitiesTestDone( KJob *job )
 void SessionPool::onNamespacesTestDone( KJob *job )
 {
   KIMAP::NamespaceJob *nsJob = qobject_cast<KIMAP::NamespaceJob*>( job );
-  m_personalNamespaces = nsJob->personalNamespaces();
-  m_userNamespaces = nsJob->userNamespaces();
-  m_sharedNamespaces = nsJob->sharedNamespaces();
+  // Can happen if we disconnect meanwhile
+  if (!m_connectingPool.contains(nsJob->session())) {
+    emit connectDone( CancelledError, i18n( "Disconnected from server during login.") );
+    return;
+  }
 
   if ( nsJob->containsEmptyNamespace() ) {
     // When we got the empty namespace here, we assume that the other
@@ -512,5 +532,18 @@ void SessionPool::onConnectionLost()
   session->deleteLater();
   if ( session == m_pendingInitialSession )
       m_pendingInitialSession = 0;
+}
+
+void SessionPool::onSessionDestroyed(QObject *object)
+{
+  //Safety net for bugs that cause dangling session pointers
+  KIMAP::Session *session = static_cast<KIMAP::Session*>(object);
+  if (m_unusedPool.contains(session) || m_reservedPool.contains(session) || m_connectingPool.contains(session)) {
+    qWarning() << "Session destroyed while still in pool" << session;
+    m_unusedPool.removeAll(session);
+    m_reservedPool.removeAll(session);
+    m_connectingPool.removeAll(session);
+    Q_ASSERT(false);
+  }
 }
 

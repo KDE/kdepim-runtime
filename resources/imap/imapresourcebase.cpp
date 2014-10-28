@@ -324,6 +324,9 @@ void ImapResourceBase::onConnectDone( int errorCode, const QString &errorString 
   case SessionPool::NoAvailableSessionError:
     qFatal("Shouldn't happen");
     return;
+  case SessionPool::CancelledError:
+    qWarning() << "Session login cancelled";
+    return;
   }
 }
 
@@ -427,66 +430,23 @@ void ImapResourceBase::retrieveCollections()
   startTask(new RetrieveCollectionsTask( createResourceState(TaskArguments()), this ));
 }
 
-void ImapResourceBase::triggerCollectionExtraInfoJobs( const QVariant &collectionVariant )
+void ImapResourceBase::retrieveCollectionAttributes( const Akonadi::Collection &col )
 {
-  const Collection collection( collectionVariant.value<Collection>() );
-  emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving extra folder information for '%1'", collection.name() ) );
-
-  //The collection that we received is potentially outdated.
-  //Using it would overwrite attributes with old values.
-  //FIXME: because this is async and not part of the resourcetask, it can't be killed. ResourceBase should just provide an up-to date copy of the collection.
-  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(collection, CollectionFetchJob::Base, this);
-  fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
-  fetchJob->fetchScope().setIncludeStatistics( true );
-  fetchJob->fetchScope().setIncludeUnsubscribed( true );
-  connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onMetadataCollectionFetchDone(KJob*)));
-}
-
-void ImapResourceBase::onMetadataCollectionFetchDone(KJob *job)
-{
-  if (job->error()) {
-    qWarning() << "Failed to retrieve collection before RetrieveCollectionMetadataTask " << job->errorString();
-    cancelTask(i18n("Failed to collect metadata."));
-    return;
-  }
-
-  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
-  Q_ASSERT(fetchJob->collections().size() == 1);
-
-  startTask(new RetrieveCollectionMetadataTask( createResourceState(TaskArguments(fetchJob->collections().first())), this ));
+  emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving extra folder information for '%1'", col.name() ) );
+  startTask(new RetrieveCollectionMetadataTask( createResourceState(TaskArguments(col)), this ));
 }
 
 void ImapResourceBase::retrieveItems( const Collection &col )
 {
-  scheduleCustomTask( this, "triggerCollectionExtraInfoJobs", QVariant::fromValue( col ), ResourceBase::Append );
-
-  //The collection that we receive was fetched when the task was scheduled, it is therefore possible that it is outdated.
-  //We refetch the collection since we rely on up-to-date annotations.
-  //FIXME: because this is async and not part of the resourcetask, it can't be killed. ResourceBase should just provide an up-to date copy of the collection.
-  Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(col, CollectionFetchJob::Base, this);
-  fetchJob->fetchScope().setAncestorRetrieval( CollectionFetchScope::All );
-  fetchJob->fetchScope().setIncludeStatistics( true );
-  fetchJob->fetchScope().setIncludeUnsubscribed( true );
-  connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemRetrievalCollectionFetchDone(KJob*)));
-}
-
-void ImapResourceBase::onItemRetrievalCollectionFetchDone(KJob *job)
-{
-  if (job->error()) {
-    qWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
-    cancelTask(i18n("Failed to retrieve items."));
-    return;
-  }
-
-  Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
-  Q_ASSERT(fetchJob->collections().size() == 1);
+  synchronizeCollectionAttributes(col.id());
 
   setItemStreamingEnabled( true );
 
-  RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(fetchJob->collections().first())), this);
+  RetrieveItemsTask *task = new RetrieveItemsTask( createResourceState(TaskArguments(col)), this);
   connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
   connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
   startTask(task);
+
 }
 
 void ImapResourceBase::collectionAdded( const Collection & collection, const Collection &parent )

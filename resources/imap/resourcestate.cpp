@@ -178,12 +178,7 @@ void ResourceState::applyCollectionChanges( const Akonadi::Collection &collectio
 
 void ResourceState::collectionAttributesRetrieved( const Akonadi::Collection &collection )
 {
-    //TODO use collection attributes retrieved properly. (Currently we're only emulating the behaviour)
-//   m_resource->collectionAttributesRetrieved( collection );
-  if (collection.isValid() || !collection.remoteId().isEmpty()) {
-    applyCollectionChanges(collection);
-  }
-  taskDone();
+  m_resource->collectionAttributesRetrieved( collection );
 }
 
 void ResourceState::itemRetrieved( const Akonadi::Item &item )
@@ -235,10 +230,7 @@ void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &colle
 
       if ( !c.hasAttribute<NoSelectAttribute>()
         && !oldMailBoxes.contains( mailBox ) ) {
-        m_resource->scheduleCustomTask( m_resource,
-                                        "triggerCollectionExtraInfoJobs",
-                                        QVariant::fromValue( c ),
-                                        Akonadi::ResourceBase::Append );
+        m_resource->synchronizeCollectionAttributes(c.id());
       }
 
       newMailBoxes << mailBox;
