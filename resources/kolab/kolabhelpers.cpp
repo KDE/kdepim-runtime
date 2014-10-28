@@ -402,7 +402,7 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
             contentTypes << QLatin1String(KOLAB_TYPE_RELATION);
             break;
         default:
-            kDebug() << "unhandled folder type: " << type;
+            break;
     }
     return contentTypes;
 }

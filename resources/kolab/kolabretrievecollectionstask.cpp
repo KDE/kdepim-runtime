@@ -407,11 +407,12 @@ void KolabRetrieveCollectionsTask::applyRights(QHash<QString, KIMAP::Acl::Rights
             QStringList parts = mailbox.split(separatorCharacter());
             parts.removeLast();
             QString parentMailbox = parts.join(separatorCharacter());
-            if (!parentMailbox.isEmpty() &&!rights.contains(parentMailbox)) {
-                kWarning() << "Couldn't find parent mailbox rights";
-            }
 
-            const KIMAP::Acl::Rights parentImapRights = rights.value(parentMailbox);
+            KIMAP::Acl::Rights parentImapRights;
+            //If the parent folder is not existing we cant rename
+            if (!parentMailbox.isEmpty() && rights.contains(parentMailbox)) {
+                parentImapRights = rights.value(parentMailbox);
+            }
             // kDebug() << mailbox << parentMailbox << imapRights << parentImapRights;
 
             Akonadi::Collection &collection = mMailCollections[mailbox];
