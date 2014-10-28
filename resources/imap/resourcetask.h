@@ -158,6 +158,7 @@ private:
   KIMAP::Session *m_session;
   ActionIfNoSession m_actionIfNoSession;
   ResourceStateInterface::Ptr m_resource;
+  bool mCancelled;
 };
 
 #endif
