@@ -38,6 +38,7 @@ public:
     virtual ~ImapResource();
 
     virtual KDialog *createConfigureDialog ( WId windowId );
+    virtual void cleanup();
 
 protected:
     virtual QString defaultName() const;
