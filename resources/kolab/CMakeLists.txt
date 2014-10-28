@@ -20,6 +20,7 @@ set(kolabresource_LIB_SRCS
     kolabhelpers.cpp
     kolabmessagehelper.cpp
     kolabaddtagtask.cpp
+    kolabchangeitemsrelationstask.cpp
     kolabchangeitemstagstask.cpp
     kolabchangetagtask.cpp
     kolabrelationresourcetask.cpp
