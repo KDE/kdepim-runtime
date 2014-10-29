@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>368</width>
-    <height>116</height>
+    <width>625</width>
+    <height>134</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,25 +37,31 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBoxImap">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+      <widget class="QLabel" name="lineEditImapLabel">
        <property name="text">
-        <string>Use Autoconfig</string>
+        <string>Imap Servername:</string>
        </property>
       </widget>
      </item>
      <item>
+      <widget class="QLineEdit" name="lineEditImap"/>
+     </item>
+     <item>
       <widget class="QCheckBox" name="checkBoxImapEdit">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
-        <string>Edit</string>
+        <string>Manuell Edit</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="labelFreebusySearch">
@@ -71,28 +77,18 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBoxFreebusy">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Use Autoconfig</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QCheckBox" name="checkBoxFreebusyEdit">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Edit</string>
+        <string>Create</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="labelFreebusy">
      <property name="text">
       <string>Freebusy:</string>
@@ -122,25 +118,31 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBoxSmtp">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
+      <widget class="QLabel" name="lineEditSmtpLabel">
        <property name="text">
-        <string>Use Autoconfig</string>
+        <string>Smtp Servername:</string>
        </property>
       </widget>
      </item>
      <item>
+      <widget class="QLineEdit" name="lineEditSmtp"/>
+     </item>
+     <item>
       <widget class="QCheckBox" name="checkBoxSmtpEdit">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
-        <string>Edit</string>
+        <string>Manuell Edit</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="labelLdapSearch">
@@ -156,25 +158,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBoxLdap">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Use Autoconfig</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QCheckBox" name="checkBoxLdapEdit">
        <property name="text">
-        <string>Edit</string>
+        <string>Create</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="labelLdap">
      <property name="text">
       <string>Ldap:</string>

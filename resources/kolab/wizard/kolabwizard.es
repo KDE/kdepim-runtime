@@ -30,9 +30,6 @@ page.widget().passwordEdit.text = SetupManager.password()
 
 function guessServerName()
 {
-    if (userChangedServerAddress == true) {
-        return;
-    }
     var email = page.widget().emailEdit.text;
     var pos = email.indexOf("@");
     if (pos >= 0 && (pos + 1) < email.length) {
@@ -41,18 +38,76 @@ function guessServerName()
     }
 }
 
-function emailChanged(arg)
-{
-  validateInput();
-}
-
 function validateInput()
 {
-  if (page.widget().emailEdit.text.trim() == "") {
+  if (page.widget().emailEdit.text.trim() == "" || page.widget().passwordEdit.text.trim() == "") {
     page.setValid(false);
   } else {
     page.setValid(true);
   }
+}
+
+//Server test
+servertest_running = false;
+//0 = not running, 1 = smtp, 2 = imap
+servertest_mode = 0;
+
+function testResultFail()
+{
+  testOk( -1 );
+}
+
+var imapRes;
+function testOk( arg )
+{
+    print("testOk arg =", arg);
+    if (servertest_mode == 1) {   //smtp
+        if ( arg == "ssl" ) {
+          // The ENUM used for authentication (in the imap resource only)
+          smtp.setPort(465);
+          smtp.setEncryption("SSL");
+        } else if ( arg == "tls" ) { // tls is really STARTTLS
+          smtp.setPort(25);
+          smtp.setEncryption("TLS");
+        } else if ( arg == "none" ) {
+          smtp.setPort(25);
+          smtp.setEncryption("NONE");
+          smtp.setEditMode(true);
+        } else {
+          // safe default fallback in case server test failed
+          smtp.setPort(25);
+          smtp.setEncryption("TLS");
+          smtp.setEditMode(true);
+        }
+        servertest_mode = 2;
+        if (page2.widget().lineEditImap.text) {
+            SetupManager.setupInfo(qsTr("Probing Imap server..."));
+            ServerTest.test(page2.widget().lineEditImap.text, "imap");
+        } else {
+            SetupManager.execute();
+        }
+    } else if (servertest_mode == 2) {   //imap
+        if ( arg == "ssl" ) {
+          // The ENUM used for authentication (in the kolab resource only)
+          kolabRes.setOption( "Safety", "SSL" ); // SSL/TLS
+          kolabRes.setOption( "ImapPort", 993 );
+        } else if ( arg == "tls" ) { // tls is really STARTTLS
+          kolabRes.setOption( "Safety", "STARTTLS" );  // STARTTLS
+          kolabRes.setOption( "ImapPort", 143 );
+        } else if ( arg == "none" ) {
+          kolabRes.setOption( "Safety", "NONE" );  // No encryption
+          kolabRes.setOption( "ImapPort", 143 );
+          kolabRes.setEditMode(true);
+        } else {
+          // safe default fallback in case server test failed
+          kolabRes.setOption( "Safety", "STARTTLS" );
+          kolabRes.setOption( "ImapPort", 143 );
+          kolabRes.setEditMode(true);
+        }
+        SetupManager.execute();
+    } else {
+        print ("Unknown servertest_mode = ", servertest_mode);
+    }
 }
 
 var identity; // global so it can be accesed in setup and testOk
@@ -65,8 +120,26 @@ var ac_mail;
 var ac_freebusy;
 var ac_ldap;
 
+var ac_mail_stat;
+var ac_freebusy_stat;
+var ac_ldap_stat;
+
 function checkAutoconfig()
 {
+    ac_mail_stat = false;
+    ac_freebusy_stat = false;
+    ac_ldap_stat = false;
+
+    page2.widget().lineEditImap.text = guessServerName();
+    page2.widget().lineEditSmtp.text = guessServerName();
+    page2.widget().lineEditImap.visible = false;
+    page2.widget().lineEditSmtp.visible = false;
+    page2.widget().lineEditImapLabel.visible = false;
+    page2.widget().lineEditSmtpLabel.visible = false;
+
+    page2.widget().checkBoxFreebusyEdit.text = qsTr("Create");
+    page2.widget().checkBoxLdapEdit.text = qsTr("Create");
+
     ac_mail = SetupManager.ispDB('autoconfigkolabmail');
     ac_mail.ispdbFinished.connect(mail_finished);
     ac_mail.info.connect(mail_text);
@@ -89,19 +162,18 @@ function checkAutoconfig()
     ac_ldap.start();
 }
 
-guessServerName();
-
 function mail_finished(stat) {
+    ac_mail_stat = stat;
     if (stat) {
-        page2.widget().checkBoxImap.checked = true;
-        page2.widget().checkBoxImap.enabled = true;
-        page2.widget().checkBoxSmtp.checked = true;
-        page2.widget().checkBoxSmtp.enabled = true;
+        page2.widget().lineEditImap.visible = false;
+        page2.widget().lineEditSmtp.visible = false;
+        page2.widget().lineEditImapLabel.visible = false;
+        page2.widget().lineEditSmtpLabel.visible = false;
     } else {
-        page2.widget().checkBoxImap.checked = false;
-        page2.widget().checkBoxImap.enabled = false;
-        page2.widget().checkBoxSmtp.checked = false;
-        page2.widget().checkBoxSmtp.enabled = false;
+        page2.widget().lineEditImap.visible = true;
+        page2.widget().lineEditSmtp.visible = true;
+        page2.widget().lineEditImapLabel.visible = true;
+        page2.widget().lineEditSmtpLabel.visible = true;
     }
 }
 
@@ -111,12 +183,9 @@ function mail_text(text) {
 }
 
 function freebusy_finished(stat) {
+    ac_freebusy_stat = stat;
     if (stat) {
-        page2.widget().checkBoxFreebusy.checked = true;
-        page2.widget().checkBoxFreebusy.enabled = true;
-    } else {
-        page2.widget().checkBoxFreebusy.checked = false;
-        page2.widget().checkBoxFreebusy.enabled = false;
+        page2.widget().checkBoxFreebusyEdit.text = qsTr("Manuell Edit");
     }
 }
 
@@ -124,14 +193,10 @@ function freebusy_text(text) {
     page2.widget().labelFreebusySearch.text = text;
 }
 
-
 function ldap_finished(stat) {
+    ac_ldap_stat = stat;
     if (stat) {
-        page2.widget().checkBoxLdap.checked = true;
-        page2.widget().checkBoxLdap.enabled = true;
-    } else {
-        page2.widget().checkBoxLdap.checked = false;
-        page2.widget().checkBoxLdap.enabled = false;
+        page2.widget().checkBoxLdapEdit.text = qsTr("Manuell Edit");
     }
 }
 
@@ -143,18 +208,22 @@ function setup()
 {
     SetupManager.openWallet();
     smtp = SetupManager.createTransport("smtp");
+    smtp.setEditMode(page2.widget().checkBoxSmtpEdit.checked);
     smtp.setPassword(page.widget().passwordEdit.text);
 
-    if (page2.widget().checkBoxSmtp.checked) {
+    if (ac_mail_stat) {
         ac_mail.fillSmtpServer(0, smtp);
-    } else if (guessServerName()) {
-        var serverAddress = guessServerName();
+    } else if (page2.widget().lineEditSmtp.text) {
+        var serverAddress = page2.widget().lineEditSmtp.text;
+        servertest_running = true;
+        servertest_mode = 1;
         smtp.setName(serverAddress);
         smtp.setHost(serverAddress);
-        smtp.setPort(465);
-        smtp.setEncryption("SSL");
-        smtp.setAuthenticationType("plain"); // using plain is ok, because we are using SSL.
         smtp.setUsername(page.widget().emailEdit.text);
+        smtp.setAuthenticationType("plain");
+
+        SetupManager.setupInfo(qsTr("Probing Smtp server..."));
+        ServerTest.test( serverAddress, "smtp" );   //probe port and encryption
     }
 
     for (i = 0; i < ac_mail.countIdentities(); i++) {
@@ -177,6 +246,7 @@ function setup()
     }
 
     kolabRes = SetupManager.createResource("akonadi_kolab_resource");
+    kolabRes.setEditMode(page2.widget().checkBoxImapEdit.checked);
     kolabRes.setOption("Password", page.widget().passwordEdit.text);
     kolabRes.setOption("UseDefaultIdentity", false);
     kolabRes.setOption("AccountIdentity", identity.uoid());
@@ -185,36 +255,63 @@ function setup()
     kolabRes.setOption("SubscriptionEnabled", true);
     kolabRes.setOption("SieveSupport", true);
 
-    if (page2.widget().checkBoxImap.checked) {
+    if (ac_mail_stat) {
         ac_mail.fillImapServer(0, kolabRes);
-    } else if (guessServerName()) {
-        var serverAddress = guessServerName();
+    } else if (page2.widget().lineEditImap.text) {
+        var serverAddress = page2.widget().lineEditImap.text;
         kolabRes.setOption("ImapServer", serverAddress);
         kolabRes.setOption("UserName", page.widget().emailEdit.text.trim());
-        kolabRes.setOption("Authentication", 7);
-        kolabRes.setOption("Safety", "STARTTLS");
-        kolabRes.setOption("ImapPort", 143);
+
+        if (!servertest_running) {
+            servertest_mode = 2;
+            servertest_running = true;
+            SetupManager.setupInfo(qsTr("Probing Imap server..."));
+            ServerTest.test(serverAddress, "imap");
+        }       kolabRes.setOption("Authentication", 7);
     }
-    if (page2.widget().checkBoxLdap.checked) {
+
+    if (ac_ldap_stat) {
         for (i = 0; i < ac_ldap.countLdapServers(); i++) {
             var ldap = SetupManager.createLdap();
+            ldap.setEditMode(page2.widget().checkBoxLdapEdit.checked);
             ac_ldap.fillLdapServer(i,ldap);
         }
-    } else if (page2.widget().checkBoxLdapEdit) {
-        SetupManager.createLdap();
+    } else if (page2.widget().checkBoxLdapEdit.checked) {
+        var ldap = SetupManager.createLdap();
+        ldap.setEditMode(page2.widget().checkBoxLdapEdit.checked);
+        ldap.setPassword(page.widget().passwordEdit.text);
+        ldap.setUser(page.widget().emailEdit.text);
+        ldap.setServer(guessServerName());
     }
 
-    if (page2.widget().checkBoxFreebusy.checked) {
-        var korganizer = SetupManager.createConfigFile("korganizerrc");
+    if (ac_freebusy_stat) {
+        var korganizer = SetupManager.createConfigFile("akonadi-calendarrc");
+        korganizer.setEditMode(page2.widget().checkBoxFreebusyEdit.checked);
+        korganizer.setEditName("freebusy");
         korganizer.setName("korganizer");
-        ispdb.fillFreebusyServer(0,korganizer);
+        ac_freebusy.fillFreebusyServer(0,korganizer);
+    } else if (page2.widget().checkBoxFreebusyEdit.checked) {
+        var korganizer = SetupManager.createConfigFile("akonadi-calendarrc");
+        korganizer.setEditMode(page2.widget().checkBoxFreebusyEdit.checked);
+        korganizer.setEditName("freebusy");
+        korganizer.setName( "korganizer" );
+        korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyFullDomainRetrieval","true");
+        korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveAuto", "true" );
+        korganizer.setConfig( "FreeBusy Retrieve", "FreeBusyRetrieveUrl", "https://" + guessServerName()  + "/freebusy/" );
     }
 
-    SetupManager.execute();
+    if (!servertest_running) {
+        SetupManager.execute();
+    }
 }
 
 try {
-  page.widget().emailEdit.textChanged.connect(emailChanged);
+  ServerTest.testFail.connect(testResultFail);
+  ServerTest.testResult.connect(testOk);
+
+  page.widget().emailEdit.textChanged.connect(validateInput);
+  page.widget().passwordEdit.textChanged.connect(validateInput);
+
   page.pageLeftNext.connect(checkAutoconfig);
   page2.pageLeftNext.connect(setup);
 } catch (e) {
