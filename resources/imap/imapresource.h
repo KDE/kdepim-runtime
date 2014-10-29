@@ -43,7 +43,7 @@ public:
 protected:
     virtual QString defaultName() const;
 
-private Q_SLOTS:
+protected Q_SLOTS:
     void onConfigurationDone( int result );
 };
 
