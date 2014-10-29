@@ -109,30 +109,36 @@ void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
                 Akonadi::Item::List members;
                 Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
                     Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
-                    //TODO implement fallback to search if uid is not available
                     //TODO should we create a dummy item if it isn't yet available?
-                    if (member.uid < 0) {
-                        kWarning() << "Failed to parse uid: " << memberUrl;
-                        continue;
-                    }
                     Akonadi::Item i;
-                    i.setRemoteId(QString::number(member.uid));
-                    kDebug() << "got member: " << member.uid << member.mailbox;
-                    Akonadi::Collection parent;
-                    {
-                        //The root collection is not part of the mailbox path
-                        Akonadi::Collection col;
-                        col.setRemoteId(rootRemoteId());
-                        col.setParentCollection(Akonadi::Collection::root());
-                        parent = col;
+                    if (!member.gid.isEmpty()) {
+                        //Reference by GID
+                        i.setGid(member.gid);
+                    } else {
+                        //Reference by imap uid
+                        if (member.uid < 0) {
+                            kWarning() << "Failed to parse uid: " << memberUrl;
+                            continue;
+                        }
+                        i.setRemoteId(QString::number(member.uid));
+                        kDebug() << "got member: " << member.uid << member.mailbox;
+                        Akonadi::Collection parent;
+                        {
+                            //The root collection is not part of the mailbox path
+                            Akonadi::Collection col;
+                            col.setRemoteId(rootRemoteId());
+                            col.setParentCollection(Akonadi::Collection::root());
+                            parent = col;
+                        }
+                        Q_FOREACH(const QByteArray part, member.mailbox) {
+                            Akonadi::Collection col;
+                            col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
+                            col.setParentCollection(parent);
+                            parent = col;
+                        }
+                        i.setParentCollection(parent);
                     }
-                    Q_FOREACH(const QByteArray part, member.mailbox) {
-                        Akonadi::Collection col;
-                        col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
-                        col.setParentCollection(parent);
-                        parent = col;
-                    }
-                    i.setParentCollection(parent);
+                    //TODO implement fallback to search if uid is not available
                     members << i;
                 }
                 mTagMembers.insert(QString::fromLatin1(tag.remoteId()), members);

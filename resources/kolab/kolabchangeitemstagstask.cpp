@@ -89,6 +89,7 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
     // fetch->fetchScope().setCacheOnly(true);
     // TODO: does the fetch already limit to resource local items?
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
+    fetch->fetchScope().setFetchGid(true);
     fetch->setProperty("tag", QVariant::fromValue(tags.first()));
     connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onItemsFetchDone(KJob*)));
 }

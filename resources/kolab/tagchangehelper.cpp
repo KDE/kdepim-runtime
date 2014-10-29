@@ -59,11 +59,21 @@ static QList<QByteArray> ancestorChain(const Akonadi::Collection &col)
 QString TagConverter::createMemberUrl(const Akonadi::Item &item)
 {
     Kolab::RelationMember member;
-    member.uid = item.remoteId().toLong();
-    member.user = QLatin1String("user@example.org");
-    member.subject = QLatin1String("subject");
-    member.messageId = QLatin1String("messageid");
-    member.mailbox = ancestorChain(item.parentCollection());
+    if (item.mimeType() == KMime::Message::mimeType()) {
+        KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+        member.uid = item.remoteId().toLong();
+        //FIXME get the user from somewhere
+        member.user = QLatin1String("user@example.org");
+        member.subject = msg->subject()->asUnicodeString();
+        member.messageId = msg->messageID()->asUnicodeString();
+        member.mailbox = ancestorChain(item.parentCollection());
+    } else {
+        if (item.gid().isEmpty()) {
+            kWarning() << "Groupware object without GID, failed to add to tag: " << item.id() << item.remoteId();
+            return QString();
+        }
+        member.gid = item.gid();
+    }
     return Kolab::generateMemberUrl(member);
 }
 
@@ -72,7 +82,10 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
     QStringList itemRemoteIds;
     itemRemoteIds.reserve(items.count());
     Q_FOREACH (const Akonadi::Item &item, items) {
-        itemRemoteIds << createMemberUrl(item);
+        const QString memberUrl = createMemberUrl(item);
+        if (!memberUrl.isEmpty()) {
+            itemRemoteIds << memberUrl;
+        }
     }
 
     // save message to the server.
