@@ -95,7 +95,7 @@ void KolabResource::onItemRetrievalCollectionFetchDone(KJob *job)
         (!col.attribute<TimestampAttribute>() ||
         col.attribute<TimestampAttribute>()->timestamp() < QDateTime::currentDateTime().addSecs(-60).toTime_t())) {
         updatedCollections.insert(col.id());
-        scheduleCustomTask(this, "triggerCollectionExtraInfoJobs", QVariant::fromValue(col), Akonadi::ResourceBase::Prepend);
+        synchronizeCollectionAttributes(col.id());
         deferTask();
         return;
     }
