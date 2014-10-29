@@ -55,8 +55,8 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(select->session());
 
     if (select->messageCount() == 0) {
-        //Nothing to do
-        taskDone();
+        resourceState()->tagsRetrieved(mTags, mTagMembers);
+        deleteLater();
         return;
     }
 
