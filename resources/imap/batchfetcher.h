@@ -43,7 +43,7 @@ public:
     virtual void start();
     void fetchNextBatch();
     void setUidBased(bool);
-    void setSearchTerm(const KIMAP::Term &);
+    void setSearchUids(const KIMAP::ImapInterval &);
     void setGmailExtensionsEnabled(bool enable);
 
 Q_SIGNALS:
@@ -70,8 +70,9 @@ private:
     const MessageHelper::Ptr m_messageHelper;
     bool m_fetchInProgress;
     bool m_continuationRequested;
-    KIMAP::Term m_searchTerm;
+    KIMAP::ImapInterval m_searchUidIntervall;
     bool m_gmailEnabled;
+    bool m_searchInChunks;
 };
 
 

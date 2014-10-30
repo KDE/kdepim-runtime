@@ -36,7 +36,8 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
     m_messageHelper(messageHelper),
     m_fetchInProgress(false),
     m_continuationRequested(false),
-    m_gmailEnabled(false)
+    m_gmailEnabled(false),
+    m_searchInChunks(false)
 {
 }
 
@@ -49,9 +50,15 @@ void BatchFetcher::setUidBased(bool uidBased)
     m_uidBased = uidBased;
 }
 
-void BatchFetcher::setSearchTerm(const KIMAP::Term &searchTerm)
+void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &intervall)
 {
-    m_searchTerm = searchTerm;
+    m_searchUidIntervall = intervall;
+
+    //We looup the UIDs ourselves
+    m_currentSet = KIMAP::ImapSet();
+
+    //MS Exchange can't handle big results so we have to split the search into small chunks
+    m_searchInChunks = m_session->serverGreeting().contains("Microsoft Exchange");
 }
 
 void BatchFetcher::setGmailExtensionsEnabled(bool enable)
@@ -59,13 +66,28 @@ void BatchFetcher::setGmailExtensionsEnabled(bool enable)
     m_gmailEnabled = enable;
 }
 
+static const int maxAmountOfUidToSearchInOneTime = 2000;
+
 void BatchFetcher::start()
 {
-    if (!m_searchTerm.isNull()) {
+    if (m_searchUidIntervall.size()) {
+        //Search in chunks also Exchange can handle
+        const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidIntervall.begin();
+        const KIMAP::ImapInterval::Id lastUidToSearch  = m_searchInChunks
+            ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidIntervall.end())
+            : m_searchUidIntervall.end();
+
+        //Prepare next chunk
+        m_searchUidIntervall.setBegin(lastUidToSearch + 1);
+        //Or are we already done?
+        if (m_searchUidIntervall.begin() > m_searchUidIntervall.end()) {
+            m_searchUidIntervall = KIMAP::ImapInterval();
+        }
+
         //Resolve the uid to sequence numbers
         KIMAP::SearchJob *search = new KIMAP::SearchJob(m_session);
         search->setUidBased(true);
-        search->setTerm(m_searchTerm);
+        search->setTerm(KIMAP::Term(KIMAP::Term::Uid, KIMAP::ImapSet(firstUidToSearch, lastUidToSearch)));
         connect(search, SIGNAL(result(KJob*)), this, SLOT(onUidSearchDone(KJob*)));
         search->start();
     } else {
@@ -81,13 +103,13 @@ void BatchFetcher::onUidSearchDone(KJob* job)
         emitResult();
         return;
     }
+
     KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>(job);
     m_uidBased = search->isUidBased();
+    m_currentSet.add(search->results());
 
-    KIMAP::ImapSet set;
-    set.add(search->results());
-    m_currentSet = set;
-    fetchNextBatch();
+    //More to search?
+    start();
 }
 
 void BatchFetcher::fetchNextBatch()
