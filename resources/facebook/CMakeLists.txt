@@ -67,7 +67,7 @@ target_link_libraries(akonadi_facebook_resource
   KF5::CalendarCore
   KF5::KF5AkonadiNotes
   KF5::Mime
-  ${LibKFbAPI_LIBRARY}
+  KF5::FbAPI
 )
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})

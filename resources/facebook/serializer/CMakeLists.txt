@@ -10,8 +10,9 @@ set(akonadi_serializer_socialnotification_SRCS
 add_library(akonadi_serializer_socialnotification MODULE ${akonadi_serializer_socialnotification_SRCS})
 
 target_link_libraries(akonadi_serializer_socialnotification
+  Qt5::Core
   KF5::AkonadiCore
-  ${LibKFbAPI_LIBRARY}
+  KF5::FbAPI
 )
 
 install(
