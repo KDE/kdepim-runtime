@@ -20,17 +20,15 @@
 
 #include "akonadi_serializer_socialnotification.h"
 
-#include <libkfbapi/postinfo.h>
-#include <libkfbapi/notificationinfo.h>
-#include <libkfbapi/userinfo.h>
+#include <KFbAPI/postinfo.h>
+#include <KFbAPI/notificationinfo.h>
+#include <KFbAPI/userinfo.h>
 
-#include <QtCore/qplugin.h>
-
-#include <Akonadi/Item>
-#include <qjson/serializer.h>
-#include <qjson/parser.h>
+#include <AkonadiCore/Item>
 
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 using namespace Akonadi;
 
@@ -43,25 +41,14 @@ bool SerializerPluginSocialNotification::deserialize( Item &item, const QByteArr
     return false;
   }
 
-  KFbAPI::NotificationInfo object;
 
-  //FIXME: Use   QJson::QObjectHelper::qvariant2qobject( item.toMap(), postInfo.data() );
-  QJson::Parser parser;
-  QVariantMap map = parser.parse( data.readAll() ).toMap();
+  QJsonDocument json = QJsonDocument::fromJson(data.readAll());
+  QJsonObject map = json.object();
 
-  object.setId( map[QLatin1String("id")].toString() );
-  object.setFrom( map[QLatin1String("from")].toMap() );
-  object.setTo( map[QLatin1String("to")].toMap() );
-  object.setCreatedTimeString( map[QLatin1String("created_time")].toString() );
-  object.setUpdatedTimeString( map[QLatin1String("updated_time")].toString() );
-  object.setTitle( map[QLatin1String("title")].toString() );
-  object.setMessage( map[QLatin1String("message")].toString() );
-  object.setLink( map[QLatin1String("link")].toUrl() );
-  object.setApplication( map[QLatin1String("application")].toMap() );
-  object.setUnread( map[QLatin1String("unread")].toBool() );
+  KFbAPI::NotificationInfo object(map);
 
-  item.setMimeType( QLatin1String("text/x-vnd.akonadi.socialnotification") );
-  item.setPayload< KFbAPI::NotificationInfo >( object );
+  item.setMimeType(QStringLiteral("text/x-vnd.akonadi.socialnotification"));
+  item.setPayload<KFbAPI::NotificationInfo>(object);
 
   return true;
 }
@@ -72,50 +59,44 @@ void SerializerPluginSocialNotification::serialize( const Item &item, const QByt
   Q_UNUSED( label )
   Q_UNUSED( version )
 
-  if ( !item.hasPayload< KFbAPI::NotificationInfo >() ) {
+  if ( !item.hasPayload< KFbAPI::NotificationInfo >()) {
     return;
   }
 
   KFbAPI::NotificationInfo notificationInfo = item.payload< KFbAPI::NotificationInfo >();
 
-  QVariantMap map;
+  QJsonObject map;
 
-  map[QLatin1String("id")] = notificationInfo.id();
+  map.insert(QStringLiteral("id"), notificationInfo.id());
 
-  QVariantMap fromMap;
-  if ( !notificationInfo.from().id().isEmpty() ) {
-    fromMap[QLatin1String("name")] = notificationInfo.from().name();
-    fromMap[QLatin1String("id")] = notificationInfo.from().id();
+  QJsonObject from;
+  if (!notificationInfo.from().id().isEmpty()) {
+    from.insert(QStringLiteral("name"), notificationInfo.from().name());
+    from.insert(QStringLiteral("id"), notificationInfo.from().id());
   }
 
-  map[QLatin1String("from")] = fromMap;
+ map.insert(QStringLiteral("from"), from);
 
-  QVariantMap toMap;
-  if ( !notificationInfo.to().id().isEmpty() ) {
-    toMap[QLatin1String("name")] = notificationInfo.to().name();
-    toMap[QLatin1String("id")] = notificationInfo.to().id();
+  QJsonObject to;
+  if (!notificationInfo.to().id().isEmpty()) {
+    to.insert(QStringLiteral("name"), notificationInfo.to().name());
+    to.insert(QStringLiteral("id"), notificationInfo.to().id());
   }
 
-  map[QLatin1String("to")] = toMap;
-  map[QLatin1String("created_time")] = notificationInfo.createdTimeString();
-  map[QLatin1String("updated_time")] = notificationInfo.updatedTimeString();
-  map[QLatin1String("title")] = notificationInfo.title();
-  map[QLatin1String("message")] = notificationInfo.message();
-  map[QLatin1String("link")] = notificationInfo.link();
+ map.insert(QStringLiteral("to"), to);
+ map.insert(QStringLiteral("created_time"), notificationInfo.createdTimeString());
+ map.insert(QStringLiteral("updated_time"), notificationInfo.updatedTimeString());
+ map.insert(QStringLiteral("title"), notificationInfo.title());
+ map.insert(QStringLiteral("link"), notificationInfo.link().toString());
 
-  QVariantMap appMap;
-  if ( !notificationInfo.application().id().isEmpty() ) {
-    appMap[QLatin1String("name")] = notificationInfo.application().name();
-    appMap[QLatin1String("id")] = notificationInfo.application().id();
+  QJsonObject app;
+  if (!notificationInfo.application().id().isEmpty()) {
+    app.insert(QStringLiteral("name"), notificationInfo.application().name());
+    app.insert(QStringLiteral("id"), notificationInfo.application().id());
   }
 
-  map[QLatin1String("app")] = appMap;
-  map[QLatin1String("unread")] = notificationInfo.unread();
+ map.insert(QStringLiteral("app"), app);
+ map.insert(QStringLiteral("unread"), notificationInfo.unread());
 
-  QJson::Serializer serializer;
-
-  data.write( serializer.serialize( map ) );
+  data.write(QJsonDocument(map).toJson(QJsonDocument::Indented));
 }
-
-Q_EXPORT_PLUGIN2( akonadi_serializer_socialnotification,
-                  Akonadi::SerializerPluginSocialNotification )

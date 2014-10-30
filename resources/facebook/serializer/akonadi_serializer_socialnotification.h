@@ -21,7 +21,7 @@
 #ifndef AKONADI_SERIALIZER_SOCIALNOTIFICATION_H
 #define AKONADI_SERIALIZER_SOCIALNOTIFICATION_H
 
-#include <Akonadi/ItemSerializerPlugin>
+#include <AkonadiCore/ItemSerializerPlugin>
 #include <QObject>
 
 namespace Akonadi {
