@@ -28,9 +28,6 @@
 #include "../shared/getcredentialsjob.h"
 #endif
 
-#include <libkfbapi/friendlistjob.h>
-#include <libkfbapi/friendjob.h>
-#include <libkfbapi/photojob.h>
 #include <libkfbapi/alleventslistjob.h>
 #include <libkfbapi/eventjob.h>
 #include <libkfbapi/allnoteslistjob.h>
@@ -138,12 +135,7 @@ void FacebookResource::abortWithError( const QString &errorMessage, bool authFai
 void FacebookResource::resetState()
 {
   mIdle = true;
-  mNumFriends = -1;
-  mNumPhotosFetched = 0;
   mCurrentJobs.clear();
-  mExistingFriends.clear();
-  mNewOrChangedFriends.clear();
-  mPendingFriends.clear();
 }
 
 void FacebookResource::slotAbortRequested()
@@ -173,16 +165,7 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
 {
   Q_ASSERT( mIdle );
 
-  if ( collection.remoteId() == friendsRID ) {
-    mIdle = false;
-    emit status( Running, i18n( "Preparing sync of friends list." ) );
-    emit percent( 0 );
-    ItemFetchJob * const fetchJob = new ItemFetchJob( collection );
-    fetchJob->fetchScope().fetchAttribute<TimeStampAttribute>();
-    fetchJob->fetchScope().fetchFullPayload( false );
-    mCurrentJobs << fetchJob;
-    connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(initialItemFetchFinished(KJob*)) );
-  } else if ( collection.remoteId() == eventsRID ) {
+  if ( collection.remoteId() == eventsRID ) {
     mIdle = false;
     emit status( Running, i18n( "Preparing sync of events list." ) );
     emit percent( 0 );
@@ -236,16 +219,7 @@ bool FacebookResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
 
   qDebug() << item.mimeType();
 
-  if ( item.mimeType() == KABC::Addressee::mimeType() ) {
-    // TODO: Is this ever called??
-    mIdle = false;
-    KFbAPI::FriendJob * const friendJob =
-      new KFbAPI::FriendJob( item.remoteId(), Settings::self()->accessToken(), this );
-    mCurrentJobs << friendJob;
-    friendJob->setProperty( "Item", QVariant::fromValue( item ) );
-    connect( friendJob, SIGNAL(result(KJob*)), this, SLOT(friendJobFinished(KJob*)) );
-    friendJob->start();
-  } else if ( item.mimeType() == Akonadi::NoteUtils::noteMimeType() ) {
+  if ( item.mimeType() == Akonadi::NoteUtils::noteMimeType() ) {
     mIdle = false;
     KFbAPI::NoteJob * const noteJob =
       new KFbAPI::NoteJob( item.remoteId(), Settings::self()->accessToken(), this );
@@ -271,18 +245,6 @@ bool FacebookResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
 void FacebookResource::retrieveCollections()
 {
   Collection::List collections;
-  if (Settings::self()->accountServices().contains(QLatin1String("facebook-contacts"))) {
-    Collection friends;
-    friends.setRemoteId( friendsRID );
-    friends.setName( i18nc( "@title: addressbook name", "Friends on Facebook" ) );
-    friends.setParentCollection( Akonadi::Collection::root() );
-    friends.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
-    friends.setRights( Collection::ReadOnly );
-    EntityDisplayAttribute * const friendsDisplayAttribute = new EntityDisplayAttribute();
-    friendsDisplayAttribute->setIconName( QLatin1String("facebookresource") );
-    friends.addAttribute( friendsDisplayAttribute );
-    collections << friends;
-  }
 
   if (Settings::self()->accountServices().contains(QLatin1String("facebook-events"))) {
     Collection events;

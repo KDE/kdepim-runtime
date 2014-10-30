@@ -22,8 +22,6 @@
 #ifndef FACEBOOK_FACEBOOKRESOURCE_H
 #define FACEBOOK_FACEBOOKRESOURCE_H
 
-#include <libkfbapi/userinfo.h>
-#include <libkfbapi/postinfo.h>
 #include <libkfbapi/notificationinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
@@ -34,7 +32,6 @@
 class KStatusNotifierItem;
 
 static const QLatin1String notificationsRID( "notifications" );
-static const QLatin1String friendsRID( "friends" );
 static const QLatin1String eventsRID( "events" );
 static const QLatin1String eventMimeType( "application/x-vnd.akonadi.calendar.event" );
 static const QLatin1String notesRID( "notes" );
@@ -72,10 +69,7 @@ class FacebookResource : public Akonadi::ResourceBase,
 
     void slotAbortRequested();
     void configurationChanged();
-    void friendListJobFinished( KJob *job );
-    void friendJobFinished( KJob *job );
     void photoJobFinished( KJob *job );
-    void detailedFriendListJobFinished( KJob *job );
     void initialItemFetchFinished( KJob *job );
     void eventListFetched( KJob *job );
     void detailedEventListJobFinished( KJob *job );
@@ -114,27 +108,13 @@ class FacebookResource : public Akonadi::ResourceBase,
 
     void displayNotificationsToUser(FbNotificationPresentation displayType);
 
-    void fetchNewOrChangedFriends();
-    void finishFriendFetching();
     void finishEventsFetching();
     void finishNotesFetching();
     void finishPostsFetching();
     void finishNotificationsFetching();
     Akonadi::SocialFeedItem convertToSocialFeedItem( const KFbAPI::PostInfo &postinfo );
 
-    // Friends that are already stored on the Akonadi server
-    QMap<QString, KDateTime> mExistingFriends;
-
-    // Pending new/changed friends we still need to download
-    QList<KFbAPI::UserInfo> mPendingFriends;
-
-    QList<KFbAPI::UserInfo> mNewOrChangedFriends;
-
     QList<KFbAPI::NotificationInfo> mDisplayedNotifications;
-
-    // Total number of new & changed friends
-    int mNumFriends;
-    int mNumPhotosFetched;
 
     bool mIdle;
     QList< QPointer<KJob> > mCurrentJobs;

@@ -14,7 +14,6 @@ endif()
 set(facebookresource_SRCS
   facebookresource.cpp
   facebookresource_events.cpp
-  facebookresource_friends.cpp
   facebookresource_notes.cpp
   facebookresource_posts.cpp
   facebookresource_notifications.cpp
