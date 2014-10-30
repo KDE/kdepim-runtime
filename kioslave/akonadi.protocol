@@ -1,5 +1,5 @@
 [Protocol]
-exec=kio_akonadi
+exec=kf5/kio/akonadi
 protocol=akonadi
 input=none
 output=filesystem

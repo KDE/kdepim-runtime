@@ -36,8 +36,9 @@ target_link_libraries(kio_akonadi
                       Qt5::DBus
                       Qt5::Widgets
                       )
+set_target_properties(kio_akonadi PROPERTIES OUTPUT_NAME "akonadi")
 
-install(TARGETS kio_akonadi DESTINATION ${PLUGIN_INSTALL_DIR} )
+install(TARGETS kio_akonadi DESTINATION ${PLUGIN_INSTALL_DIR}/kf5/kio )
 
 
 ########### install files ###############
