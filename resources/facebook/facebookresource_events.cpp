@@ -24,8 +24,12 @@
 #include "settingsdialog.h"
 #include "timestampattribute.h"
 
-#include <libkfbapi/alleventslistjob.h>
-#include <libkfbapi/eventjob.h>
+#include <KFbAPI/alleventslistjob.h>
+#include <KFbAPI/eventjob.h>
+#include <KFbAPI/eventinfo.h>
+
+#include <KPIMUtils/LinkLocator>
+#include <KCalCore/Attendee>
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
@@ -48,7 +52,7 @@ void FacebookResource::eventListFetched( KJob *job )
                     listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem );
   } else {
     QStringList eventIds;
-    foreach ( const KFbAPI::EventInfo &event, listJob->allEvents() ) {
+    Q_FOREACH ( const KFbAPI::EventInfo &event, listJob->allEvents() ) {
       eventIds.append( event.id() );
     }
     if ( eventIds.isEmpty() ) {
@@ -80,14 +84,14 @@ void FacebookResource::detailedEventListJobFinished( KJob *job )
     setItemStreamingEnabled( true );
 
     Item::List eventItems;
-    foreach ( const KFbAPI::EventInfo &eventInfo, eventJob->eventInfo() ) {
+    Q_FOREACH ( const KFbAPI::EventInfo &eventInfo, eventJob->eventInfo() ) {
       if (eventInfo.id().isEmpty()) {
         //skip invalid events
         continue;
       }
       Item event;
       event.setRemoteId( eventInfo.id() );
-      event.setPayload<KFbAPI::IncidencePtr>( eventInfo.asEvent() );
+      event.setPayload<KCalCore::Incidence::Ptr>(convertEventInfoToEventPtr(eventInfo));
       event.setMimeType( eventMimeType );
       eventItems.append( event );
     }
@@ -106,3 +110,71 @@ void FacebookResource::finishEventsFetching()
   emit status( Idle, i18n( "All events fetched from server." ) );
   resetState();
 }
+
+KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::EventInfo &eventInfo)
+{
+    KCalCore::Event::Ptr event(new KCalCore::Event);
+    QString desc = eventInfo.description();
+    desc = KPIMUtils::LinkLocator::convertToHtml(desc, KPIMUtils::LinkLocator::ReplaceSmileys);
+    if (!desc.isEmpty()) {
+        desc += "<br><br>";
+    }
+    desc += "<a href=\"" + QString("http://www.facebook.com/event.php?eid=%1").arg(id()) +
+            "\">" + i18n("View Event on Facebook") + "</a>";
+
+    event->setSummary(eventInfo.name());
+    event->setLastModified(eventInfo.updatedTime());
+    event->setCreated(eventInfo.updatedTime()); // That's a lie, but Facebook doesn't give us the created time
+    event->setDescription(desc, true);
+    event->setLocation(eventInfo.location());
+    event->setHasEndDate(eventInfo.endTime().isValid());
+    event->setOrganizer(eventInfo.organizer());
+    event->setUid(eventInfo.id());
+    if (eventInfo.startTime().isValid()) {
+        event->setDtStart(eventInfo.startTime());
+    } else {
+        qWarning() << "Event has no start date";
+    }
+    if (eventInfo.endTime().isValid()) {
+        event->setDtEnd(eventInfo.endTime());
+    } else if (eventInfo.startTime().isValid() && !eventInfo.endTime().isValid()) {
+        // Urgh...
+        QDateTime endDate;
+        endDate.setDate(eventInfo.startTime().date());
+        endDate.setTime(QTime::fromString("23:59:59"));
+        qWarning() << "Event without end time: " << event->summary() << event->dtStart();
+        qWarning() << "Making it an event until the end of the day.";
+        event->setDtEnd(endDate);
+        //kWarning() << "Using a duration of 2 hours";
+        //event->setDuration(KCalCore::Duration(2 * 60 * 60, KCalCore::Duration::Seconds));
+    }
+
+    auto attendeeRsvp = [](const QString &status) {
+        if (status == QLatin1String("noreply")) {
+            return KCalCore::Attendee::NeedsAction;
+        } else if (status == QLatin1String("maybe")) {
+            return KCalCore::Attendee::Tentative;
+        } else if (status == QLatin1String("attending")) {
+            return KCalCore::Attendee::Accepted;
+        } else if (status == QLatin1String("declined")) {
+            return KCalCore::Attendee::Declined;
+        }
+    };
+
+    // TODO: Organizer
+    //       Public/Private -> freebusy!
+    //       venue: add to location?
+    //       picture?
+    Q_FOREACH (const KFbAPI::AttendeeInfoPtr &attendeeInfo, eventInfo.attendees()) {
+        KCalCore::Attendee::Ptr attendee(new KCalCore::Attendee(attendeeInfo->name(),
+                                                                QStringLiteral("facebook@unkown.invalid"),
+                                                                false,
+                                                                attendeeRsvp(attendeeInfo->status()),
+                                                                KCalCore::Attendee::OptParticipant,
+                                                                attendeeInfo->id()));
+        event->addAttendee(attendee);
+    }
+
+    return event;
+}
+

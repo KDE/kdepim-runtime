@@ -23,11 +23,13 @@
 #define FACEBOOK_FACEBOOKRESOURCE_H
 
 #include <notificationinfo.h>
+#include <KFbAPI/eventinfo.h>
 #include <KFbAPI/noteinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
 
 #include <AkonadiAgentBase/ResourceBase>
+#include <KCalCore/KCalCore/Event>
 #include <KMime/KMime/Message>
 
 #include <QPointer>
@@ -98,6 +100,7 @@ class FacebookResource : public Akonadi::ResourceBase,
     void abortWithError( const QString &errorMessage, bool authFailure = false );
     void abort();
 
+    KCalCore::Event::Ptr convertEventInfoToEventPtr(const KFbAPI::EventInfo &eventInfo);
     KMime::Message::Ptr convertNoteIntoToKMimeMessage(const KFbAPI::NoteInfo &noteInfo);
 
     enum FormattingStringType {
