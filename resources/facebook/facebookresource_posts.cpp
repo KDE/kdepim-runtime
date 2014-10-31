@@ -23,11 +23,11 @@
 #include "settingsdialog.h"
 #include "timestampattribute.h"
 
-#include <libkfbapi/allpostslistjob.h>
-#include <libkfbapi/postslistjob.h>
-#include <libkfbapi/noteaddjob.h>
-#include <libkfbapi/postjob.h>
-#include <libkfbapi/postaddjob.h>
+#include <KFbAPI/allpostslistjob.h>
+#include <KFbAPI/postslistjob.h>
+// #include <KFbAPI/noteaddjob.h>
+#include <KFbAPI/postjob.h>
+// #include <KFbAPI/postaddjob.h>
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
@@ -109,8 +109,8 @@ SocialFeedItem FacebookResource::convertToSocialFeedItem( const KFbAPI::PostInfo
 
   QString infoString;
 
-  qlonglong commentsCount = postinfo.commentsMap().value( QLatin1String("count") ).toLongLong();
-  qlonglong likesCount = postinfo.likesMap().value( QLatin1String("count") ).toLongLong();
+  int commentsCount = 0; //postinfo.commentsMap().value( QLatin1String("count") ).toLongLong();
+  int likesCount = postinfo.likes().count();
 
   if ( commentsCount > 0 && likesCount > 0 ) {
     infoString =
@@ -161,37 +161,36 @@ SocialFeedItem FacebookResource::convertToSocialFeedItem( const KFbAPI::PostInfo
            "This string is defined by the resource and "
            "the whole sentence is composed in the UI.",
            "on Facebook" ) );
-  item.setAvatarUrl(
-    QString::fromLatin1( "https://graph.facebook.com/%1/picture?type=square" ).arg( user.id() ) );
+  item.setAvatarUrl(QUrl::fromUserInput(QString::fromLatin1("https://graph.facebook.com/%1/picture?type=square").arg(user.id())));
 
 //  item.setItemSourceMap( QJson::QObjectHelper::qobject2qvariant( postinfo.data() ) );
 
   return item;
 }
 
-void FacebookResource::postAddJobFinished( KJob *job )
-{
-  Q_ASSERT( !mIdle );
-  Q_ASSERT( mCurrentJobs.indexOf( job ) != -1 );
-  KFbAPI::PostAddJob * const addJob = dynamic_cast<KFbAPI::PostAddJob*>( job );
-  Q_ASSERT( addJob );
-  mCurrentJobs.removeAll( job );
-
-  if ( job->error() ) {
-    abortWithError( i18n( "Unable to post the status to server: %1", job->errorText() ) );
-  } else {
-    Item post = addJob->property( "Item" ).value<Item>();
-    //we fill in a random fake id to prevent duplicates - this post would be in the collection twice
-    //once the resource syncs again, filling a random id guarantees that this Item will be removed
-    //with the next sync and will be replaced by the real item from the server
-    post.setRemoteId( QLatin1String("non-existing-id") );
-    changeCommitted( post );
-    resetState();
-    qDebug() << "Status posted to server";
-  }
-
-  addJob->deleteLater();
-}
+// void FacebookResource::postAddJobFinished( KJob *job )
+// {
+//   Q_ASSERT( !mIdle );
+//   Q_ASSERT( mCurrentJobs.indexOf( job ) != -1 );
+//   KFbAPI::PostAddJob * const addJob = dynamic_cast<KFbAPI::PostAddJob*>( job );
+//   Q_ASSERT( addJob );
+//   mCurrentJobs.removeAll( job );
+//
+//   if ( job->error() ) {
+//     abortWithError( i18n( "Unable to post the status to server: %1", job->errorText() ) );
+//   } else {
+//     Item post = addJob->property( "Item" ).value<Item>();
+//     //we fill in a random fake id to prevent duplicates - this post would be in the collection twice
+//     //once the resource syncs again, filling a random id guarantees that this Item will be removed
+//     //with the next sync and will be replaced by the real item from the server
+//     post.setRemoteId( QLatin1String("non-existing-id") );
+//     changeCommitted( post );
+//     resetState();
+//     qDebug() << "Status posted to server";
+//   }
+//
+//   addJob->deleteLater();
+// }
 
 QString FacebookResource::formatI18nString( FormattingStringType type, int n )
 {

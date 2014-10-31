@@ -78,7 +78,7 @@ class FacebookResource : public Akonadi::ResourceBase,
     void noteAddJobFinished( KJob *job );
     void postJobFinished( KJob *job );
     void postsListFetched( KJob *job );
-    void postAddJobFinished( KJob *job );
+//     void postAddJobFinished( KJob *job );
     void notificationsListFetched( KJob *job );
     void notificationSNIActivated(bool active, const QPoint &position);
     void notificationLinkActivated();
