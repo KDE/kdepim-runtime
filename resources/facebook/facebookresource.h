@@ -22,11 +22,11 @@
 #ifndef FACEBOOK_FACEBOOKRESOURCE_H
 #define FACEBOOK_FACEBOOKRESOURCE_H
 
-#include <libkfbapi/notificationinfo.h>
+#include <notificationinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
 
-#include <Akonadi/ResourceBase>
+#include <AkonadiAgentBase/ResourceBase>
 #include <QPointer>
 
 class KStatusNotifierItem;

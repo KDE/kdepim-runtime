@@ -40,7 +40,7 @@ qt5_add_dbus_adaptor(facebookresource_SRCS
   Settings
 )
 
-add_executable(akonadi_facebook_resource RUN_UNINSTALLED ${facebookresource_SRCS})
+add_executable(akonadi_facebook_resource ${facebookresource_SRCS})
 
 if(Q_WS_MAC)
   set_target_properties(
@@ -64,9 +64,10 @@ target_link_libraries(akonadi_facebook_resource
   KF5::AkonadiCore
   KF5::Abc
   KF5::CalendarCore
-  KF5::KF5AkonadiNotes
+  KF5::AkonadiNotes
   KF5::Mime
   KF5::FbAPI
+  KF5::AkonadiSocialUtils
 )
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})

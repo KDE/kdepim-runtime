@@ -28,17 +28,17 @@
 #include "../shared/getcredentialsjob.h"
 #endif
 
-#include <libkfbapi/alleventslistjob.h>
-#include <libkfbapi/eventjob.h>
-#include <libkfbapi/allnoteslistjob.h>
-#include <libkfbapi/notejob.h>
-#include <libkfbapi/noteaddjob.h>
-#include <libkfbapi/facebookjobs.h>
-#include <libkfbapi/postslistjob.h>
-#include <libkfbapi/postjob.h>
-#include <libkfbapi/notificationslistjob.h>
-#include <libkfbapi/allpostslistjob.h>
-#include <libkfbapi/postaddjob.h>
+#include <alleventslistjob.h>
+#include <eventjob.h>
+#include <allnoteslistjob.h>
+#include <notejob.h>
+#include <noteaddjob.h>
+#include <facebookjobs.h>
+#include <postslistjob.h>
+#include <postjob.h>
+#include <notificationslistjob.h>
+#include <allpostslistjob.h>
+#include <postaddjob.h>
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>

@@ -20,7 +20,7 @@
 #ifndef FACEBOOK_TIMESTAMPATTRIBUTE_H
 #define FACEBOOK_TIMESTAMPATTRIBUTE_H
 
-#include <Akonadi/Attribute>
+#include <AkonadiCore/Attribute>
 #include <KDateTime>
 
 class TimeStampAttribute : public Akonadi::Attribute

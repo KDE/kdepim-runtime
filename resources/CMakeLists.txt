@@ -131,7 +131,8 @@ if( KF5GAPI_FOUND )
   #add_subdirectory( gmail )
 endif()
 
-#if( LibKFbAPI_FOUND )
+# Uncomment when api will fix
+#if( KF5FbAPI_FOUND )
 #  add_subdirectory( facebook )
 #endif()
 
