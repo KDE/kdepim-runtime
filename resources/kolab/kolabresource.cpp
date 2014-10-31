@@ -31,14 +31,16 @@
 #include <KLocalizedString>
 #include <KLocale>
 
-#include "kolabretrievecollectionstask.h"
+#include "kolabretrievetagstask.h"
 #include "kolabresourcestate.h"
 #include "kolabhelpers.h"
 #include "kolabsettings.h"
 #include "kolabaddtagtask.h"
 #include "kolabchangeitemstagstask.h"
+#include "kolabchangeitemsrelationstask.h"
 #include "kolabchangetagtask.h"
 #include "kolabremovetagtask.h"
+#include "kolabretrievecollectionstask.h"
 #include "kolabretrievetagstask.h"
 
 KolabResource::KolabResource(const QString& id)
@@ -197,6 +199,14 @@ void KolabResource::retrieveTags()
 {
     KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), this);
     startTask(task);
+}
+
+void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
+                                          const Akonadi::Relation::List &addedRelations,
+                                          const Akonadi::Relation::List &removedRelations)
+{
+    qDebug() << "WORKS .. relations added!" << items.count();
+    KolabChangeItemsRelationsTask *task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
 }
 
 AKONADI_RESOURCE_MAIN( KolabResource )

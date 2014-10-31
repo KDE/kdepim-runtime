@@ -170,6 +170,16 @@ QSet<Akonadi::Tag> ResourceState::removedTags() const
     return m_arguments.removedTags;
 }
 
+Akonadi::Relation::List ResourceState::addedRelations() const
+{
+    return m_arguments.addedRelations;
+}
+
+Akonadi::Relation::List ResourceState::removedRelations() const
+{
+    return m_arguments.removedRelations;
+}
+
 QString ResourceState::rootRemoteId() const
 {
   return m_resource->settings()->rootRemoteId();
