@@ -25,6 +25,7 @@
 #include <KFbAPI/notificationinfo.h>
 #include <KFbAPI/eventinfo.h>
 #include <KFbAPI/noteinfo.h>
+#include <KFbAPI/postinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
 #include <AkonadiAgentBase/ResourceBase>
@@ -95,7 +96,6 @@ class FacebookResource : public Akonadi::ResourceBase,
     void deleteJobFinished( KJob *job );
 
   private:
-    void fetchPhotos();
     void resetState();
     void abortWithError( const QString &errorMessage, bool authFailure = false );
     void abort();

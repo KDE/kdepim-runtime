@@ -23,8 +23,8 @@
 #include "settings.h"
 #include "akonadi-version.h"
 
-#include <libkfbapi/authenticationdialog.h>
-#include <libkfbapi/userinfojob.h>
+#include <KFbAPI/authenticationdialog.h>
+#include <KFbAPI/userinfojob.h>
 
 #include <KAboutApplicationDialog>
 #include <KAboutData>

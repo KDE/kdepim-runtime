@@ -28,17 +28,17 @@
 #include "../shared/getcredentialsjob.h"
 #endif
 
-#include <alleventslistjob.h>
-#include <eventjob.h>
-#include <allnoteslistjob.h>
-#include <notejob.h>
-#include <noteaddjob.h>
-#include <facebookjobs.h>
-#include <postslistjob.h>
-#include <postjob.h>
-#include <notificationslistjob.h>
-#include <allpostslistjob.h>
-#include <postaddjob.h>
+#include <KFbAPI/alleventslistjob.h>
+#include <KFbAPI/allnoteslistjob.h>
+#include <KFbAPI/allpostslistjob.h>
+#include <KFbAPI/eventjob.h>
+#include <KFbAPI/facebookjobs.h>
+// #include <KFbAPI/noteaddjob.h>
+#include <KFbAPI/notejob.h>
+#include <KFbAPI/notificationslistjob.h>
+// #include <KFbAPI/postaddjob.h>
+#include <KFbAPI/postjob.h>
+#include <KFbAPI/postslistjob.h>
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
@@ -171,7 +171,7 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     emit percent( 0 );
     KFbAPI::AllEventsListJob * const listJob =
       new KFbAPI::AllEventsListJob( Settings::self()->accessToken(), this );
-    listJob->setLowerLimit( KDateTime::fromString( Settings::self()->lowerLimit(), QLatin1String("%Y-%m-%d") ) );
+    listJob->setLowerLimit( QDateTime::fromString( Settings::self()->lowerLimit(), QLatin1String("%Y-%m-%d") ) );
     mCurrentJobs << listJob;
     connect( listJob, SIGNAL(result(KJob*)), this, SLOT(eventListFetched(KJob*)) );
     listJob->start();
@@ -181,7 +181,7 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     emit percent( 0 );
     KFbAPI::AllNotesListJob * const notesJob =
       new KFbAPI::AllNotesListJob( Settings::self()->accessToken(), this );
-    notesJob->setLowerLimit( KDateTime::fromString( Settings::self()->lowerLimit(), QLatin1String("%Y-%m-%d") ) );
+    notesJob->setLowerLimit( QDateTime::fromString( Settings::self()->lowerLimit(), QLatin1String("%Y-%m-%d") ) );
     mCurrentJobs << notesJob;
     connect( notesJob, SIGNAL(result(KJob*)), this, SLOT(noteListFetched(KJob*)) );
     notesJob->start();
@@ -192,8 +192,7 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     KFbAPI::AllPostsListJob * const postsJob =
       new KFbAPI::AllPostsListJob( Settings::self()->accessToken(), this );
     postsJob->setLowerLimit(
-      KDateTime::fromString(
-        KDateTime::currentLocalDateTime().addDays( -3 ).toString(), QLatin1String("%Y-%m-%d") ) );
+    QDateTime::currentDateTime().addDays(-3).toString(QStringLiteral("%Y-%m-%d")));
     mCurrentJobs << postsJob;
     connect( postsJob, SIGNAL(result(KJob*)), this, SLOT(postsListFetched(KJob*)) );
     postsJob->start();
