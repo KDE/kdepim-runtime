@@ -22,10 +22,10 @@
 #include "settings.h"
 #include "timestampattribute.h"
 
-#include <libkfbapi/postjob.h>
-#include <libkfbapi/notificationslistjob.h>
-#include <libkfbapi/notificationinfo.h>
-#include <libkfbapi/notificationsmarkreadjob.h>
+#include <KFbAPI/postjob.h>
+#include <KFbAPI/notificationslistjob.h>
+#include <KFbAPI/notificationinfo.h>
+#include <KFbAPI/notificationsmarkreadjob.h>
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
@@ -245,12 +245,7 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
                                      "%1 New Facebook Notifications",
                                      mDisplayedNotifications.size()));
         notification->setText(notificationString);
-        //we need to manually create the KAboutData because KGlobal::mainComponent() returns
-        //the name with appended resource id, ie "akonadi_facebook_resource_72"
-        //this in turn causes KNotification to not find the .notifyrc file
-        //so we must set it manually to the name of the .notifyrc file
-        KAboutData aboutData("akonadi_facebook_resource", 0, KLocalizedString(), 0);
-        notification->setComponentData(KComponentData(aboutData));
+        notification->setComponentName(QStringLiteral("akonadi_facebook_resource"));
         notification->sendEvent();
     }
 

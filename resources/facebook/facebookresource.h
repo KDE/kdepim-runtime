@@ -22,13 +22,13 @@
 #ifndef FACEBOOK_FACEBOOKRESOURCE_H
 #define FACEBOOK_FACEBOOKRESOURCE_H
 
-#include <notificationinfo.h>
+#include <KFbAPI/notificationinfo.h>
 #include <KFbAPI/eventinfo.h>
 #include <KFbAPI/noteinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
-
 #include <AkonadiAgentBase/ResourceBase>
+
 #include <KCalCore/KCalCore/Event>
 #include <KMime/KMime/Message>
 
