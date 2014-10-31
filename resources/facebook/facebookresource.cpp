@@ -344,45 +344,45 @@ void FacebookResource::deleteJobFinished( KJob *job )
 
 void FacebookResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  if ( collection.remoteId() == notesRID ) {
-    if ( item.hasPayload<KMime::Message::Ptr>() ) {
-      const KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
-      const QString subject = note->subject()->asUnicodeString();
-      const QString message = QString::fromUtf8(note->body());
-
-      mIdle = false;
-      KFbAPI::NoteAddJob * const addJob =
-        new KFbAPI::NoteAddJob( subject, message, Settings::self()->accessToken(), this );
-      mCurrentJobs << addJob;
-      addJob->setProperty( "Item", QVariant::fromValue( item ) );
-      connect( addJob, SIGNAL(result(KJob*)), this, SLOT(noteAddJobFinished(KJob*)) );
-      addJob->start();
-    } else {
-      Q_ASSERT( !"Note has wrong mimetype." );
-      cancelTask();
-    }
-  } else if ( collection.remoteId() == postsRID ) {
-    qDebug() << "Adding new status";
-    QString message;
-    if ( item.hasPayload<KFbAPI::PostInfo>() ) {
-      message = item.payload<KFbAPI::PostInfo>().message();
-      mIdle = false;
-    } else if ( item.hasPayload<Akonadi::SocialFeedItem>() ) {
-      message = item.payload<Akonadi::SocialFeedItem>().postText();
-      mIdle = false;
-    }
-
-    KFbAPI::PostAddJob * const addJob =
-      new KFbAPI::PostAddJob( message, Settings::self()->accessToken(), this );
-    mCurrentJobs << addJob;
-    addJob->setProperty( "Item", QVariant::fromValue( item ) );
-    connect( addJob, SIGNAL(result(KJob*)), this, SLOT(postAddJobFinished(KJob*)) );
-    addJob->start();
-
-  } else {
-    Q_ASSERT( !"Can not add this type of item!" );
-    cancelTask();
-  }
+//   if ( collection.remoteId() == notesRID ) {
+//     if ( item.hasPayload<KMime::Message::Ptr>() ) {
+//       const KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
+//       const QString subject = note->subject()->asUnicodeString();
+//       const QString message = QString::fromUtf8(note->body());
+//
+//       mIdle = false;
+//       KFbAPI::NoteAddJob * const addJob =
+//         new KFbAPI::NoteAddJob( subject, message, Settings::self()->accessToken(), this );
+//       mCurrentJobs << addJob;
+//       addJob->setProperty( "Item", QVariant::fromValue( item ) );
+//       connect( addJob, SIGNAL(result(KJob*)), this, SLOT(noteAddJobFinished(KJob*)) );
+//       addJob->start();
+//     } else {
+//       Q_ASSERT( !"Note has wrong mimetype." );
+//       cancelTask();
+//     }
+//   } else if ( collection.remoteId() == postsRID ) {
+//     qDebug() << "Adding new status";
+//     QString message;
+//     if ( item.hasPayload<KFbAPI::PostInfo>() ) {
+//       message = item.payload<KFbAPI::PostInfo>().message();
+//       mIdle = false;
+//     } else if ( item.hasPayload<Akonadi::SocialFeedItem>() ) {
+//       message = item.payload<Akonadi::SocialFeedItem>().postText();
+//       mIdle = false;
+//     }
+//
+//     KFbAPI::PostAddJob * const addJob =
+//       new KFbAPI::PostAddJob( message, Settings::self()->accessToken(), this );
+//     mCurrentJobs << addJob;
+//     addJob->setProperty( "Item", QVariant::fromValue( item ) );
+//     connect( addJob, SIGNAL(result(KJob*)), this, SLOT(postAddJobFinished(KJob*)) );
+//     addJob->start();
+//
+//   } else {
+//     Q_ASSERT( !"Can not add this type of item!" );
+//     cancelTask();
+//   }
 }
 
 AKONADI_RESOURCE_MAIN( FacebookResource )

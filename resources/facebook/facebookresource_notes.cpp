@@ -24,9 +24,9 @@
 #include "settingsdialog.h"
 #include "timestampattribute.h"
 
-#include <libkfbapi/allnoteslistjob.h>
-#include <libkfbapi/notejob.h>
-#include <libkfbapi/noteaddjob.h>
+#include <KFbAPI/allnoteslistjob.h>
+#include <KFbAPI/notejob.h>
+// #include <KFbAPI/noteaddjob.h>
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
@@ -51,10 +51,11 @@ void FacebookResource::noteListFetched( KJob *job )
 
     Item::List noteItems;
     foreach ( const KFbAPI::NoteInfo &noteInfo, listJob->allNotes() ) {
+        KMime::Message::Ptr payload = convertNoteIntoToKMimeMessage(noteInfo);
       Item note;
       note.setRemoteId( noteInfo.id() );
-      note.setPayload<KMime::Message::Ptr>( noteInfo.asNote() );
-      note.setSize( noteInfo.asNote()->size() );
+      note.setPayload<KMime::Message::Ptr>(payload);
+      note.setSize(payload->size());
       note.setMimeType( QLatin1String("text/x-vnd.akonadi.note") );
       noteItems.append( note );
     }
@@ -88,7 +89,7 @@ void FacebookResource::noteJobFinished( KJob *job )
                           noteJob->errorText() ) );
   } else {
     Item note = noteJob->property( "Item" ).value<Item>();
-    note.setPayload( noteJob->noteInfo().first().asNote() );
+    note.setPayload(convertNoteIntoToKMimeMessage(noteJob->noteInfo().first()));
     itemRetrieved( note );
     resetState();
   }
@@ -96,22 +97,44 @@ void FacebookResource::noteJobFinished( KJob *job )
   noteJob->deleteLater();
 }
 
-void FacebookResource::noteAddJobFinished( KJob *job )
+// void FacebookResource::noteAddJobFinished( KJob *job )
+// {
+//   Q_ASSERT( !mIdle );
+//   Q_ASSERT( mCurrentJobs.indexOf( job ) != -1 );
+//   KFbAPI::NoteAddJob * const addJob = dynamic_cast<KFbAPI::NoteAddJob*>( job );
+//   Q_ASSERT( addJob );
+//   mCurrentJobs.removeAll( job );
+//
+//   if ( job->error() ) {
+//     abortWithError( i18n( "Unable to get upload note to server: %1", job->errorText() ) );
+//   } else {
+//     Item note = addJob->property( "Item" ).value<Item>();
+//     note.setRemoteId( addJob->property( "id" ).value<QString>() );
+//     changeCommitted( note );
+//     resetState();
+//   }
+//
+//   addJob->deleteLater();
+// }
+
+KMime::Message::Ptr FacebookResource::convertNoteIntoToKMimeMessage(const KFbAPI::NoteInfo &noteInfo)
 {
-  Q_ASSERT( !mIdle );
-  Q_ASSERT( mCurrentJobs.indexOf( job ) != -1 );
-  KFbAPI::NoteAddJob * const addJob = dynamic_cast<KFbAPI::NoteAddJob*>( job );
-  Q_ASSERT( addJob );
-  mCurrentJobs.removeAll( job );
+    KMime::Message * const note = new KMime::Message();
 
-  if ( job->error() ) {
-    abortWithError( i18n( "Unable to get upload note to server: %1", job->errorText() ) );
-  } else {
-    Item note = addJob->property( "Item" ).value<Item>();
-    note.setRemoteId( addJob->property( "id" ).value<QString>() );
-    changeCommitted( note );
-    resetState();
-  }
+    QString m = QStringLiteral("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n");
+    m += QStringLiteral("<html><head></head><body>\n");
+    m += noteInfo.message();
+    m += QStringLiteral("</body>");
 
-  addJob->deleteLater();
+    note->contentType()->setMimeType("text/html");
+    note->contentType()->setCharset("utf-8");
+    note->fromUnicodeString(m);
+    note->date()->setDateTime(noteInfo.updatedTime());
+    note->subject()->fromUnicodeString(noteInfo.subject(), "utf-8");
+    note->from()->fromUnicodeString(QStringLiteral("you@facebook"), "utf-8");
+    note->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
+
+    note->assemble();
+
+    return KMime::Message::Ptr(note);
 }

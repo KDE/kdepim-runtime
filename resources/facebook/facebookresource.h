@@ -23,10 +23,13 @@
 #define FACEBOOK_FACEBOOKRESOURCE_H
 
 #include <notificationinfo.h>
+#include <KFbAPI/noteinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
 
 #include <AkonadiAgentBase/ResourceBase>
+#include <KMime/KMime/Message>
+
 #include <QPointer>
 
 class KStatusNotifierItem;
@@ -75,7 +78,7 @@ class FacebookResource : public Akonadi::ResourceBase,
     void detailedEventListJobFinished( KJob *job );
     void noteListFetched( KJob *job );
     void noteJobFinished( KJob *job );
-    void noteAddJobFinished( KJob *job );
+//     void noteAddJobFinished( KJob *job );
     void postJobFinished( KJob *job );
     void postsListFetched( KJob *job );
 //     void postAddJobFinished( KJob *job );
@@ -94,6 +97,8 @@ class FacebookResource : public Akonadi::ResourceBase,
     void resetState();
     void abortWithError( const QString &errorMessage, bool authFailure = false );
     void abort();
+
+    KMime::Message::Ptr convertNoteIntoToKMimeMessage(const KFbAPI::NoteInfo &noteInfo);
 
     enum FormattingStringType {
       FacebookComment = 0,
