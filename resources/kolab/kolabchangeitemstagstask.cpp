@@ -115,7 +115,7 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
 
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     Q_ASSERT(tag.isValid());
-    changeHelper->start(tag, mTagConverter->createMessage(resourceState()->tag(), items), mSession);
+    changeHelper->start(tag, mTagConverter->createMessage(tag, items), mSession);
 }
 
 void KolabChangeItemsTagsTask::onApplyCollectionChanged(const Akonadi::Collection &collection)
