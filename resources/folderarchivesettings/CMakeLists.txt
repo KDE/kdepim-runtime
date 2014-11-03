@@ -27,4 +27,5 @@ target_link_libraries(folderarchivesettings
 set_target_properties(folderarchivesettings PROPERTIES VERSION ${GENERIC_LIB_VERSION} SOVERSION ${GENERIC_LIB_SOVERSION} )
 
 install(TARGETS folderarchivesettings ${INSTALL_TARGETS_DEFAULT_ARGS})
+add_subdirectory(autotests)
 
