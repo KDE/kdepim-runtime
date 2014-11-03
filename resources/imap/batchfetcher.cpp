@@ -78,10 +78,12 @@ void BatchFetcher::start()
             : m_searchUidIntervall.end();
 
         //Prepare next chunk
-        m_searchUidIntervall.setBegin(lastUidToSearch + 1);
+        const KIMAP::ImapInterval::Id intervalBegin = lastUidToSearch + 1;
         //Or are we already done?
-        if (m_searchUidIntervall.begin() > m_searchUidIntervall.end()) {
+        if (intervalBegin > m_searchUidIntervall.end()) {
             m_searchUidIntervall = KIMAP::ImapInterval();
+        } else {
+            m_searchUidIntervall.setBegin(intervalBegin);
         }
 
         //Resolve the uid to sequence numbers
