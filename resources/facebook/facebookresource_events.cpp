@@ -123,28 +123,29 @@ KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::
     desc += "<a href=\"" + QString("http://www.facebook.com/event.php?eid=%1").arg(eventInfo.id()) +
             "\">" + i18n("View Event on Facebook") + "</a>";
 
+    //FIXME remove all the KDateTime once Event is ported away
     event->setSummary(eventInfo.name());
-    event->setLastModified(eventInfo.updatedTime());
-    event->setCreated(eventInfo.updatedTime()); // That's a lie, but Facebook doesn't give us the created time
+    event->setLastModified(KDateTime(eventInfo.updatedTime()));
+    event->setCreated(KDateTime(eventInfo.updatedTime())); // That's a lie, but Facebook doesn't give us the created time
     event->setDescription(desc, true);
     event->setLocation(eventInfo.location());
     event->setOrganizer(eventInfo.organizer());
     event->setUid(eventInfo.id());
     if (eventInfo.startTime().isValid()) {
-        event->setDtStart(eventInfo.startTime());
+        event->setDtStart(KDateTime(eventInfo.startTime()));
     } else {
         qWarning() << "Event has no start date";
     }
     if (eventInfo.endTime().isValid()) {
-        event->setDtEnd(eventInfo.endTime());
+        event->setDtEnd(KDateTime(eventInfo.endTime()));
     } else if (eventInfo.startTime().isValid() && !eventInfo.endTime().isValid()) {
         // Urgh...
         QDateTime endDate;
         endDate.setDate(eventInfo.startTime().date());
         endDate.setTime(QTime::fromString("23:59:59"));
-        qWarning() << "Event without end time: " << event->summary() << event->dtStart();
+        qWarning() << "Event without end time: " << event->summary() << event->dtStart().toString(KDateTime::ISODate);
         qWarning() << "Making it an event until the end of the day.";
-        event->setDtEnd(endDate);
+        event->setDtEnd(KDateTime(endDate));
         //kWarning() << "Using a duration of 2 hours";
         //event->setDuration(KCalCore::Duration(2 * 60 * 60, KCalCore::Duration::Seconds));
     }
