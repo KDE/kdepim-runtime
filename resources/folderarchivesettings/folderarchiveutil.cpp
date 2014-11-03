@@ -26,5 +26,5 @@ QString FolderArchiveUtil::groupConfigPattern()
 
 QString FolderArchiveUtil::configFileName()
 {
-    return QLatin1String(QLatin1String("foldermailarchiverc"));
+    return QLatin1String("foldermailarchiverc");
 }

@@ -32,6 +32,9 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QComboBox>
+#include <QDBusReply>
+#include <QDBusInterface>
+#include <QDBusConnectionInterface>
 
 static const KCatalogLoader loader( QLatin1String("libfolderarchivesettings") );
 
@@ -146,5 +149,14 @@ void FolderArchiveSettingPage::writeSettings()
 
     mInfo->setFolderArchiveType(mArchiveNamed->type());
     mInfo->writeConfig(grp);
+
+    //Update cache from KMail
+    const QString kmailInterface = QLatin1String("org.kde.kmail");
+    QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(kmailInterface);
+    if (!reply.isValid() || !reply.value()) {
+        return;
+    }
+    QDBusInterface kmail(kmailInterface, QLatin1String("/KMail"), QLatin1String("org.kde.kmail.kmail"));
+    kmail.asyncCall(QLatin1String("reloadFolderArchiveConfig"));
 }
 
