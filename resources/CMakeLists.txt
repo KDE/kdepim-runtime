@@ -22,7 +22,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
   set(KDEPIM_LIB_SOVERSION "5")
 
   # QT5 package
-  find_package(Qt5WebKitWidgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+  find_package(Qt5WebKitWidgets ${QT_REQUIRED_VERSION} REQUIRED NO_MODULE)
 
   # KF5 package
   find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
