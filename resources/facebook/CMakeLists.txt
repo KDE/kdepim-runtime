@@ -70,7 +70,7 @@ target_link_libraries(akonadi_facebook_resource
   KF5::CalendarCore
   KF5::AkonadiNotes
   KF5::Mime
-  KF5::PIMUtils
+  KF5::PimUtils
   KF5::FbAPI
   KF5::AkonadiSocialUtils
 )
