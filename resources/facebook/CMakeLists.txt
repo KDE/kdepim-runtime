@@ -60,12 +60,13 @@ endif()
 include_directories(${Boost_INCLUDE_DIR})
 
 target_link_libraries(akonadi_facebook_resource
-  Qt::Core
-  Qt::Gui
+  Qt5::Core
+  Qt5::Gui
   KF5::I18n
   KF5::Notifications
   KF5::Syndication
   KF5::AkonadiCore
+  KF5::AkonadiAgentBase
   KF5::Abc
   KF5::CalendarCore
   KF5::AkonadiNotes
