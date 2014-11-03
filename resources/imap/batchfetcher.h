@@ -70,7 +70,7 @@ private:
     const MessageHelper::Ptr m_messageHelper;
     bool m_fetchInProgress;
     bool m_continuationRequested;
-    KIMAP::ImapInterval m_searchUidIntervall;
+    KIMAP::ImapInterval m_searchUidInterval;
     bool m_gmailEnabled;
     bool m_searchInChunks;
 };

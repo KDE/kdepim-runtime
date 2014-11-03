@@ -52,9 +52,9 @@ void BatchFetcher::setUidBased(bool uidBased)
 
 void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &intervall)
 {
-    m_searchUidIntervall = intervall;
+    m_searchUidInterval = intervall;
 
-    //We looup the UIDs ourselves
+    //We look up the UIDs ourselves
     m_currentSet = KIMAP::ImapSet();
 
     //MS Exchange can't handle big results so we have to split the search into small chunks
@@ -70,20 +70,20 @@ static const int maxAmountOfUidToSearchInOneTime = 2000;
 
 void BatchFetcher::start()
 {
-    if (m_searchUidIntervall.size()) {
+    if (m_searchUidInterval.size()) {
         //Search in chunks also Exchange can handle
-        const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidIntervall.begin();
+        const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidInterval.begin();
         const KIMAP::ImapInterval::Id lastUidToSearch  = m_searchInChunks
-            ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidIntervall.end())
-            : m_searchUidIntervall.end();
+            ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidInterval.end())
+            : m_searchUidInterval.end();
 
         //Prepare next chunk
         const KIMAP::ImapInterval::Id intervalBegin = lastUidToSearch + 1;
         //Or are we already done?
-        if (intervalBegin > m_searchUidIntervall.end()) {
-            m_searchUidIntervall = KIMAP::ImapInterval();
+        if (intervalBegin > m_searchUidInterval.end()) {
+            m_searchUidInterval = KIMAP::ImapInterval();
         } else {
-            m_searchUidIntervall.setBegin(intervalBegin);
+            m_searchUidInterval.setBegin(intervalBegin);
         }
 
         //Resolve the uid to sequence numbers
