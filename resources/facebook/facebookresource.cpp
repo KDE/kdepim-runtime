@@ -22,7 +22,7 @@
 
 #include "facebookresource.h"
 #include "settings.h"
-#include "settingsdialog.h"
+// #include "settingsdialog.h"
 #include "timestampattribute.h"
 #ifdef HAVE_ACCOUNTS
 #include "../shared/getcredentialsjob.h"
@@ -153,14 +153,14 @@ void FacebookResource::slotAbortRequested()
 
 void FacebookResource::configure( WId windowId )
 {
-  const QPointer<SettingsDialog> settingsDialog( new SettingsDialog( this, windowId ) );
-  if ( settingsDialog->exec() == QDialog::Accepted ) {
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
-
-  delete settingsDialog;
+//   const QPointer<SettingsDialog> settingsDialog( new SettingsDialog( this, windowId ) );
+//   if ( settingsDialog->exec() == QDialog::Accepted ) {
+//     emit configurationDialogAccepted();
+//   } else {
+//     emit configurationDialogRejected();
+//   }
+//
+//   delete settingsDialog;
 }
 
 void FacebookResource::retrieveItems( const Akonadi::Collection &collection )

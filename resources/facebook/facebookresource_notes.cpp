@@ -21,7 +21,6 @@
 
 #include "facebookresource.h"
 #include "settings.h"
-#include "settingsdialog.h"
 #include "timestampattribute.h"
 
 #include <KFbAPI/allnoteslistjob.h>

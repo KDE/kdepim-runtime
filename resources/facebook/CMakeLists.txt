@@ -18,7 +18,7 @@ set(facebookresource_SRCS
   facebookresource_posts.cpp
   facebookresource_notifications.cpp
   settings.cpp
-  settingsdialog.cpp
+#   settingsdialog.cpp
   timestampattribute.cpp
   ${facebookresource_SRCS}
 )
