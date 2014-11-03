@@ -192,9 +192,8 @@ void FacebookResource::retrieveItems( const Akonadi::Collection &collection )
     emit status( Running, i18n( "Preparing sync of posts." ) );
     emit percent( 0 );
     KFbAPI::AllPostsListJob * const postsJob =
-      new KFbAPI::AllPostsListJob( Settings::self()->accessToken(), this );
-    postsJob->setLowerLimit(
-    QDateTime::currentDateTime().addDays(-3).toString(QStringLiteral("%Y-%m-%d")));
+      new KFbAPI::AllPostsListJob(KFbAPI::PostInfo::FetchCountsOnly, Settings::self()->accessToken(), this );
+    postsJob->setLowerLimit(QDateTime::currentDateTime().addDays(-3));
     mCurrentJobs << postsJob;
     connect( postsJob, SIGNAL(result(KJob*)), this, SLOT(postsListFetched(KJob*)) );
     postsJob->start();
