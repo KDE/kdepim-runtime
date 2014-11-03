@@ -29,6 +29,8 @@
 #include <KFbAPI/postjob.h>
 // #include <KFbAPI/postaddjob.h>
 
+#include <KLocalizedString>
+
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/ItemFetchJob>

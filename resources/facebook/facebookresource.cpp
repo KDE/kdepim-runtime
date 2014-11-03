@@ -40,12 +40,14 @@
 #include <KFbAPI/postjob.h>
 #include <KFbAPI/postslistjob.h>
 
+#include <KLocalizedString>
+
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/ChangeRecorder>
-#include <notes/noteutils.h> //krazy:exclude=camelcase wait for kdepimlibs 4.11
+#include <akonadi/notes/noteutils.h> //krazy:exclude=camelcase wait for kdepimlibs 4.11
 
 #include <Akonadi/SocialUtils/SocialNetworkAttributes>
 

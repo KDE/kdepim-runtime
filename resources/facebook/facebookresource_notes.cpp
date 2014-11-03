@@ -28,6 +28,8 @@
 #include <KFbAPI/notejob.h>
 // #include <KFbAPI/noteaddjob.h>
 
+#include <KLocalizedString>
+
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/ItemFetchJob>

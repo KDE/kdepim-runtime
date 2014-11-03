@@ -31,6 +31,8 @@
 #include <KPIMUtils/LinkLocator>
 #include <KCalCore/Attendee>
 
+#include <KLocalizedString>
+
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/ItemFetchJob>

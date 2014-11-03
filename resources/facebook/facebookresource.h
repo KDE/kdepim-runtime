@@ -28,6 +28,7 @@
 #include <KFbAPI/postinfo.h>
 
 #include <Akonadi/SocialUtils/SocialFeedItem>
+#include <AkonadiCore/Item>
 #include <AkonadiAgentBase/ResourceBase>
 
 #include <KCalCore/KCalCore/Event>
