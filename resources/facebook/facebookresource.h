@@ -76,8 +76,6 @@ class FacebookResource : public Akonadi::ResourceBase,
 
     void slotAbortRequested();
     void configurationChanged();
-    void photoJobFinished( KJob *job );
-    void initialItemFetchFinished( KJob *job );
     void eventListFetched( KJob *job );
     void detailedEventListJobFinished( KJob *job );
     void noteListFetched( KJob *job );

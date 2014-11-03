@@ -120,7 +120,7 @@ KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::
     if (!desc.isEmpty()) {
         desc += "<br><br>";
     }
-    desc += "<a href=\"" + QString("http://www.facebook.com/event.php?eid=%1").arg(id()) +
+    desc += "<a href=\"" + QString("http://www.facebook.com/event.php?eid=%1").arg(eventInfo.id()) +
             "\">" + i18n("View Event on Facebook") + "</a>";
 
     event->setSummary(eventInfo.name());
@@ -128,7 +128,6 @@ KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::
     event->setCreated(eventInfo.updatedTime()); // That's a lie, but Facebook doesn't give us the created time
     event->setDescription(desc, true);
     event->setLocation(eventInfo.location());
-    event->setHasEndDate(eventInfo.endTime().isValid());
     event->setOrganizer(eventInfo.organizer());
     event->setUid(eventInfo.id());
     if (eventInfo.startTime().isValid()) {
@@ -151,14 +150,14 @@ KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::
     }
 
     auto attendeeRsvp = [](const QString &status) {
-        if (status == QLatin1String("noreply")) {
-            return KCalCore::Attendee::NeedsAction;
-        } else if (status == QLatin1String("maybe")) {
+        if (status == QLatin1String("maybe")) {
             return KCalCore::Attendee::Tentative;
         } else if (status == QLatin1String("attending")) {
             return KCalCore::Attendee::Accepted;
         } else if (status == QLatin1String("declined")) {
             return KCalCore::Attendee::Declined;
+        } else {
+            return KCalCore::Attendee::NeedsAction;
         }
     };
 
