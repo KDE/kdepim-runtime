@@ -62,8 +62,8 @@ void SettingsDialog::setupWidgets()
   setMainWidget( page );
   updateAuthenticationWidgets();
   updateUserName();
-  connect( resetButton, SIGNAL(clicked(bool)), this, SLOT(resetAuthentication()) );
-  connect( authenticateButton, SIGNAL(clicked(bool)), this, SLOT(showAuthenticationDialog()) );
+  connect(resetButton, &QPushButton::clicked, this, &SettingsDialog::resetAuthentication);
+  connect(authenticateButton, &QPushButton::clicked, this, &SettingsDialog::showAuthenticationDialog);
 }
 
 void SettingsDialog::showAuthenticationDialog()
@@ -83,10 +83,8 @@ void SettingsDialog::showAuthenticationDialog()
   KFbAPI::AuthenticationDialog * const authDialog = new KFbAPI::AuthenticationDialog( this );
   authDialog->setAppId( Settings::self()->appID() );
   authDialog->setPermissions( permissions );
-  connect( authDialog, SIGNAL(authenticated(QString)),
-           this, SLOT(authenticationDone(QString)) );
-  connect( authDialog, SIGNAL(canceled()),
-           this, SLOT(authenticationCanceled()) );
+  connect(authDialog, &KFbAPI::AuthenticationDialog::authenticated, this, &SettingsDialog::authenticationDone);
+  connect(authDialog, &KFbAPI::AuthenticationDialog::canceled, this, &SettingsDialog::authenticationCanceled);
   authenticateButton->setEnabled( false );
   authDialog->start();
 }

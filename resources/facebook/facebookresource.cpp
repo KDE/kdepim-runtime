@@ -62,9 +62,8 @@ FacebookResource::FacebookResource( const QString &id )
   resetState();
   Settings::self()->setResourceId( identifier() );
 
-  connect( this, SIGNAL(abortRequested()),
-           this, SLOT(slotAbortRequested()) );
-  connect( this, SIGNAL(reloadConfiguration()), SLOT(configurationChanged()) );
+  connect(this, &FacebookResource::abortRequested, this, &FacebookResource::slotAbortRequested);
+  connect(this, &FacebookResource::reloadConfiguration, this, &FacebookResource::configurationChanged);
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload( true );
@@ -93,7 +92,7 @@ void FacebookResource::configureByAccount( int accountId )
 {
   qDebug() << "Starting credentials job";
   GetCredentialsJob *gc = new GetCredentialsJob( accountId, this );
-  connect(gc, SIGNAL(finished(KJob*)), SLOT(slotGetCredentials(KJob*)));
+  connect(gc, &GetCredentialsJob::finished, this, &FacebookResource::slotGetCredentials);
   gc->start();
 }
 
