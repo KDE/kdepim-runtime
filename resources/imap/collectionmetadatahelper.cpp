@@ -19,7 +19,6 @@
 
 #include "collectionmetadatahelper.h"
 #include <imapaclattribute.h>
-#include <timestampattribute.h>
 
 Akonadi::Collection::Rights CollectionMetadataHelper::convertRights(const KIMAP::Acl::Rights imapRights, KIMAP::Acl::Rights parentRights)
 {
@@ -67,11 +66,11 @@ bool CollectionMetadataHelper::applyRights(Akonadi::Collection &collection, cons
         newRights &= ~Akonadi::Collection::CanChangeCollection;
     }
 
-    const bool isNewCollection = !collection.hasAttribute<TimestampAttribute>();
+    //This can result in false positives for new collections with defaults access rights.
+    //The caller needs to handles those.
     bool accessRevoked = false;
     if ((collection.rights() & Akonadi::Collection::CanCreateItem) &&
-        !(newRights & Akonadi::Collection::CanCreateItem) &&
-        !isNewCollection) {
+        !(newRights & Akonadi::Collection::CanCreateItem)) {
         // write access revoked
         accessRevoked = true;
     }

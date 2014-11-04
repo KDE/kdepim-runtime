@@ -37,7 +37,6 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
-#include "timestampattribute.h"
 #include "collectionmetadatahelper.h"
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent )
@@ -190,7 +189,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 //                 << "newRights:" << newRights
 //                 << "oldRights:" << collection.rights();
 
-  const bool isNewCollection = !m_collection.hasAttribute<TimestampAttribute>();
+  const bool isNewCollection = !m_collection.hasAttribute<Akonadi::ImapAclAttribute>();
   const bool accessRevoked = CollectionMetadataHelper::applyRights(m_collection, imapRights, parentRights);
   if ( accessRevoked && !isNewCollection ) {
     // write access revoked
@@ -283,10 +282,6 @@ void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
 void RetrieveCollectionMetadataTask::endTaskIfNeeded()
 {
   if ( m_pendingMetaDataJobs <= 0 ) {
-    const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
-    TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>( Akonadi::Collection::AddIfMissing );
-    attr->setTimestamp( currentTimestamp );
-
     collectionAttributesRetrieved( m_collection );
   }
 }

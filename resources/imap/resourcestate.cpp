@@ -26,7 +26,6 @@
 #include "sessionpool.h"
 #include "settings.h"
 #include "noselectattribute.h"
-#include "timestampattribute.h"
 
 #include <akonadi/agentsearchinterface.h>
 #include <kmessagebox.h>
@@ -248,26 +247,6 @@ void ResourceState::itemsChangesCommitted(const Akonadi::Item::List& items)
 void ResourceState::collectionsRetrieved( const Akonadi::Collection::List &collections )
 {
   m_resource->collectionsRetrieved( collections );
-
-  //FIXME get rid of this. If we retrieve metadata before syncing a folder I think we can live without this code.
-  if ( m_resource->settings()->retrieveMetadataOnFolderListing() ) {
-    QStringList oldMailBoxes = m_resource->settings()->knownMailBoxes();
-    QStringList newMailBoxes;
-
-    foreach ( const Akonadi::Collection &c, collections ) {
-      const QString mailBox = mailBoxForCollection( c );
-
-      if ( !c.hasAttribute<NoSelectAttribute>()
-        && !oldMailBoxes.contains( mailBox ) ) {
-        m_resource->synchronizeCollectionAttributes(c);
-      }
-
-      newMailBoxes << mailBox;
-    }
-
-    m_resource->settings()->setKnownMailBoxes( newMailBoxes );
-  }
-
   m_resource->startIdleIfNeeded();
 }
 
@@ -296,48 +275,6 @@ void ResourceState::searchFinished( const QVector<qint64> &result, bool isRid )
 void ResourceState::cancelTask( const QString &errorString )
 {
   m_resource->cancelTask( errorString );
-
-  // We get here in case of some error during the task. In such a case that can have
-  // been provoked by the fact that some of the metadata we had was wrong (most notably
-  // ACL and we took a wrong decision.
-  // So reset the timestamp of all the collections involved in the task, and also
-  // remove them from the "known mailboxes" list so that we get a chance to refresh
-  // the metadata about them ASAP.
-
-  Akonadi::Collection::List collections;
-  collections << m_arguments.collection
-              << m_arguments.parentCollection
-              << m_arguments.sourceCollection
-              << m_arguments.targetCollection;
-
-  foreach ( const Akonadi::Item &item, m_arguments.items ) {
-    if  ( item.isValid() && item.parentCollection().isValid() ) {
-        collections << item.parentCollection();
-    }
-  }
-
-  if ( m_arguments.collection.isValid() && m_arguments.collection.parentCollection().isValid() ) {
-    collections << m_arguments.collection.parentCollection();
-  }
-
-  const QStringList oldMailBoxes = m_resource->settings()->knownMailBoxes();
-  QStringList newMailBoxes = oldMailBoxes;
-
-  foreach ( const Akonadi::Collection &collection, collections ) {
-    if ( collection.isValid()
-      && collection.hasAttribute<TimestampAttribute>() ) {
-
-      Akonadi::Collection c = collection;
-      c.removeAttribute<TimestampAttribute>();
-
-      m_resource->modifyCollection( c );
-      newMailBoxes.removeAll( mailBoxForCollection( c ) );
-    }
-  }
-
-  if ( oldMailBoxes.size()!=newMailBoxes.size() ) {
-    m_resource->settings()->setKnownMailBoxes( newMailBoxes );
-  }
 }
 
 void ResourceState::deferTask()

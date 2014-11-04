@@ -41,7 +41,6 @@ set( imapresource_LIB_SRCS
   retrieveitemstask.cpp
   searchtask.cpp
   sessionpool.cpp
-  timestampattribute.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
   settings.cpp

@@ -50,7 +50,6 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
-#include "timestampattribute.h"
 #include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
 #include "highestmodseqattribute.h"
@@ -110,7 +109,6 @@ ImapResourceBase::ImapResourceBase( const QString &id )
   Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
   Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
   Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
-  Akonadi::AttributeFactory::registerAttribute<TimestampAttribute>();
   Akonadi::AttributeFactory::registerAttribute<HighestModSeqAttribute>();
 
   Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
