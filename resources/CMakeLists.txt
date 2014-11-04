@@ -132,9 +132,9 @@ if( KF5GAPI_FOUND )
 endif()
 
 # Uncomment when api will fix
-#if( KF5FbAPI_FOUND )
-#  add_subdirectory( facebook )
-#endif()
+if( KF5FbAPI_FOUND )
+  add_subdirectory( facebook )
+endif()
 
 add_subdirectory( shared )
 add_subdirectory( birthdays )
