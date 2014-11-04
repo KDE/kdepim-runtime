@@ -469,7 +469,7 @@ void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::Fe
     m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), set, scope, batchSize(), m_session);
     m_batchFetcher->setUidBased(m_uidBasedFetch);
     if (m_uidBasedFetch && set.intervals().size() == 1) {
-        m_batchFetcher->setSearchTerm(KIMAP::Term(KIMAP::Term::Uid, set));
+        m_batchFetcher->setSearchUids(set.intervals().front());
     }
     m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
     connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
@@ -553,7 +553,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
   m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), set, scope, 10 * batchSize(), m_session);
   m_batchFetcher->setUidBased(m_uidBasedFetch);
   if (m_uidBasedFetch && scope.changedSince == 0 && set.intervals().size() == 1) {
-      m_batchFetcher->setSearchTerm(KIMAP::Term(KIMAP::Term::Uid, set));
+      m_batchFetcher->setSearchUids(set.intervals().front());
   }
   connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
           this, SLOT(onItemsRetrieved(Akonadi::Item::List)));

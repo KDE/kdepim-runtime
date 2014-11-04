@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2013, 2014 Montel Laurent <montel@kde.org>
+  Copyright (c) 2014 Montel Laurent <montel@kde.org>
 
   This program is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License, version 2, as
@@ -15,16 +15,26 @@
   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "folderarchiveutil.h"
+#ifndef FOLDERARCHIVEACCOUNTINFOTEST_H
+#define FOLDERARCHIVEACCOUNTINFOTEST_H
 
-using namespace FolderArchive;
+#include <QObject>
 
-QString FolderArchiveUtil::groupConfigPattern()
+
+class FolderArchiveAccountInfoTest : public QObject
 {
-    return QLatin1String("FolderArchiveAccount ");
-}
+    Q_OBJECT
+public:
+    explicit FolderArchiveAccountInfoTest(QObject *parent = 0);
+    ~FolderArchiveAccountInfoTest();
 
-QString FolderArchiveUtil::configFileName()
-{
-    return QLatin1String("foldermailarchiverc");
-}
+private Q_SLOTS:
+    void shouldHaveDefaultValue();
+    void shouldBeValid();
+    void shouldRestoreFromSettings();
+};
+
+
+
+#endif // FOLDERARCHIVEACCOUNTINFOTEST_H
+

@@ -19,7 +19,7 @@
 #define FOLDERARCHIVEACCOUNTINFO_H
 
 #include <KConfigGroup>
-#include <Collection>
+#include <AkonadiCore/Collection>
 
 class FolderArchiveAccountInfo
 {
@@ -53,6 +53,8 @@ public:
 
     void writeConfig(KConfigGroup &config );
     void readConfig(const KConfigGroup &config);
+
+    bool operator==( const FolderArchiveAccountInfo& other ) const;
 
 private:
     FolderArchiveAccountInfo::FolderArchiveType mArchiveType;
