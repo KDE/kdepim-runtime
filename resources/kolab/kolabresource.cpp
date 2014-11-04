@@ -22,7 +22,6 @@
 #include "setupserver.h"
 #include <resourcestateinterface.h>
 #include <resourcestate.h>
-#include <timestampattribute.h>
 #include <retrieveitemstask.h>
 #include <collectionannotationsattribute.h>
 #include <changecollectiontask.h>
