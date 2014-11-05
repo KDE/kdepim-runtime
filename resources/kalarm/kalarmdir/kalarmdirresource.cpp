@@ -34,7 +34,7 @@
 #include <KCalCore/MemoryCalendar>
 #include <agentfactory.h>
 #include <changerecorder.h>
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 #include <entitydisplayattribute.h>
 #include <collectionfetchjob.h>
 #include <collectionfetchscope.h>
@@ -83,7 +83,7 @@ KAlarmDirResource::KAlarmDirResource(const QString& id)
 
     // Set up the resource
     new KAlarmDirSettingsAdaptor(mSettings);
-    DBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
                                 mSettings, QDBusConnection::ExportAdaptors);
     connect(mSettings, &Akonadi_KAlarm_Dir_Resource::Settings::configChanged, this, &KAlarmDirResource::settingsChanged);
 

@@ -24,7 +24,7 @@
 #include <agentinstance.h>
 #include <agentmanager.h>
 #include <collection.h>
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 #include <item.h>
 #include <itemdeletejob.h>
 #include <itemmodifyjob.h>
@@ -144,7 +144,7 @@ void SendJob::Private::doAkonadiTransport()
   interface = new QDBusInterface(
       QLatin1String( "org.freedesktop.Akonadi.Resource." ) + resourceId,
       QLatin1String( "/Transport" ), QLatin1String( "org.freedesktop.Akonadi.Resource.Transport" ),
-      DBusConnectionPool::threadConnection(), q );
+      KDBusConnectionPool::threadConnection(), q );
 
   if ( !interface->isValid() ) {
     storeResult( false, i18n( "Failed to get D-Bus interface of resource %1.", resourceId ) );
@@ -324,7 +324,7 @@ bool SendJob::Private::filterItem( int filterset )
   mailfilterInterface = new QDBusInterface(
       QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent" ),
       QLatin1String( "/MailFilterAgent" ), QLatin1String( "org.freedesktop.Akonadi.MailFilterAgent" ),
-      DBusConnectionPool::threadConnection(), q );
+      KDBusConnectionPool::threadConnection(), q );
 
 
   if ( !mailfilterInterface->isValid() ) {

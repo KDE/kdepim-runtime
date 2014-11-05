@@ -22,7 +22,7 @@
 #include "vcardsettingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 #include <agentfactory.h>
 
 #include <KLocalizedString>
@@ -38,7 +38,7 @@ VCardResource::VCardResource( const QString &id )
   setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), QLatin1String("office-address-book") );
 
   new VCardSettingsAdaptor( mSettings );
-  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                                                          mSettings, QDBusConnection::ExportAdaptors );
 }
 

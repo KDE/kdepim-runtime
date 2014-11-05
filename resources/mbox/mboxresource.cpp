@@ -26,7 +26,7 @@
 #include <changerecorder.h>
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 #include <itemfetchscope.h>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
@@ -67,7 +67,7 @@ MboxResource::MboxResource( const QString &id )
   , mMBox( 0 )
 {
   new SettingsAdaptor( mSettings );
-  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                                                          mSettings, QDBusConnection::ExportAdaptors );
 
   QStringList mimeTypes;

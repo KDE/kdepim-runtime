@@ -22,7 +22,7 @@
 #include "settingsadaptor.h"
 #include "singlefileresourceconfigdialog.h"
 
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 
 #include <KLocalizedString>
 #include <QIcon>
@@ -37,7 +37,7 @@ KDEAccountsResource::KDEAccountsResource( const QString &id )
   setName( i18n( "KDE Accounts" ) );
 
   new SettingsAdaptor( mSettings );
-  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                                                          mSettings, QDBusConnection::ExportAdaptors );
 }
 

@@ -29,7 +29,7 @@
 #include "settingsadaptor.h"
 
 #include <agentfactory.h>
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 #include <itemfetchscope.h>
 #include <mailtransport/sentactionattribute.h>
 
@@ -194,12 +194,12 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
   new SettingsAdaptor( Settings::self() );
   new MailDispatcherAgentAdaptor( this );
 
-  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                                                          Settings::self(), QDBusConnection::ExportAdaptors );
 
-  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/MailDispatcherAgent" ),
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/MailDispatcherAgent" ),
                                                          this, QDBusConnection::ExportAdaptors );
-  DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
+  KDBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.MailDispatcherAgent" ) );
 
   d->queue = new OutboxQueue( this );
   connect( d->queue, SIGNAL(newItems()),

@@ -31,7 +31,7 @@
 
 #include <KIdentityManagement/IdentityManager>
 
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 
 #include <agentfactory.h>
 #include <changerecorder.h>
@@ -69,9 +69,9 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
 
-    DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
+    KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
                                                            this, QDBusConnection::ExportAdaptors );
-    DBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
+    KDBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
 
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceStatusChanged, this, &NewMailNotifierAgent::slotInstanceStatusChanged);
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceRemoved, this, &NewMailNotifierAgent::slotInstanceRemoved);

@@ -31,7 +31,7 @@
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 #include <agentfactory.h>
 #include <QDebug>
 
@@ -46,7 +46,7 @@ ContactsResource::ContactsResource( const QString &id )
 {
   // setup the resource
   new ContactsResourceSettingsAdaptor( mSettings );
-  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                             mSettings, QDBusConnection::ExportAdaptors );
 
   changeRecorder()->fetchCollection( true );

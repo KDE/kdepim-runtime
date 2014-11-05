@@ -16,7 +16,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
   include(KDECMakeSettings)
   include(KDEFrameworkCompilerSettings)
 
-  set(KDEPIMLIBS_LIB_VERSION "4.72.0")
+  set(KDEPIMLIBS_LIB_VERSION "4.73.0")
   set(KF5_VERSION "5.4.0")
   set(QT_REQUIRED_VERSION "5.3.0")
   # KF5 package

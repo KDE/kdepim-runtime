@@ -34,7 +34,7 @@
 #include <collectionfetchscope.h>
 #include <cachepolicy.h>
 #include <collectionfetchjob.h>
-#include <dbusconnectionpool.h>
+#include <kdbusconnectionpool.h>
 
 #include <kmime/kmime_message.h>
 
@@ -113,7 +113,7 @@ MaildirResource::MaildirResource( const QString &id )
     job->start();
   }
   new MaildirSettingsAdaptor( mSettings );
-  DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
                               mSettings, QDBusConnection::ExportAdaptors );
   connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 
