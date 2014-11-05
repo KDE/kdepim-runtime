@@ -3,7 +3,6 @@ project(facebookresource)
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_facebook_resource\")
 
 
-include_directories(${LibKFbAPI_INCLUDE_DIR})
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
   include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})
   add_definitions(-DHAVE_ACCOUNTS)
