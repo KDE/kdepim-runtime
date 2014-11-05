@@ -119,6 +119,7 @@ public:
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
 
   virtual void tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> & );
+  virtual void relationsRetrieved( const Akonadi::Relation::List &tags );
   virtual void tagChangeCommitted( const Akonadi::Tag &tag );
 
   virtual void searchFinished( const QVector<qint64> &result, bool isRid = true );

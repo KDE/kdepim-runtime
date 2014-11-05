@@ -332,6 +332,11 @@ void DummyResourceState::tagsRetrieved( const Akonadi::Tag::List &tags, const QH
   recordCall( "tagsRetrieved",  QVariant::fromValue( qMakePair(tags, items) ) );
 }
 
+void DummyResourceState::relationsRetrieved( const Akonadi::Relation::List &relations )
+{
+  recordCall( "relationsRetrieved",  QVariant::fromValue( relations ) );
+}
+
 void DummyResourceState::tagChangeCommitted(const Akonadi::Tag &tag)
 {
   recordCall( "tagChangeCommitted", QVariant::fromValue( tag ) );

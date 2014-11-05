@@ -120,6 +120,7 @@ public:
   virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
 
   virtual void tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> & );
+  virtual void relationsRetrieved( const Akonadi::Relation::List &tags);
 
   virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
 
