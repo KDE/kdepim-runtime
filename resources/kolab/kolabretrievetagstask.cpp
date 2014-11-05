@@ -101,53 +101,69 @@ void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
         const KMime::Message::Ptr msg = messages[number];
         const Kolab::KolabObjectReader reader(msg);
         switch (reader.getType()) {
-            case Kolab::RelationConfigurationObject: {
-                Akonadi::Tag tag = reader.getTag();
-                tag.setRemoteId(QByteArray::number(uids[number]));
-                mTags << tag;
-
-                Akonadi::Item::List members;
-                Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
-                    Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
-                    //TODO should we create a dummy item if it isn't yet available?
-                    Akonadi::Item i;
-                    if (!member.gid.isEmpty()) {
-                        //Reference by GID
-                        i.setGid(member.gid);
-                    } else {
-                        //Reference by imap uid
-                        if (member.uid < 0) {
-                            kWarning() << "Failed to parse uid: " << memberUrl;
-                            continue;
-                        }
-                        i.setRemoteId(QString::number(member.uid));
-                        kDebug() << "got member: " << member.uid << member.mailbox;
-                        Akonadi::Collection parent;
-                        {
-                            //The root collection is not part of the mailbox path
-                            Akonadi::Collection col;
-                            col.setRemoteId(rootRemoteId());
-                            col.setParentCollection(Akonadi::Collection::root());
-                            parent = col;
-                        }
-                        Q_FOREACH(const QByteArray part, member.mailbox) {
-                            Akonadi::Collection col;
-                            col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
-                            col.setParentCollection(parent);
-                            parent = col;
-                        }
-                        i.setParentCollection(parent);
-                    }
-                    //TODO implement fallback to search if uid is not available
-                    members << i;
+            case Kolab::RelationConfigurationObject:
+                if (reader.isTag()) {
+                    extractTag(reader, uids[number]);
+                } else if (reader.isRelation()) {
+                    extractRelation(reader, uids[number]);
                 }
-                mTagMembers.insert(QString::fromLatin1(tag.remoteId()), members);
-            }
                 break;
+
             default:
                 break;
         }
     }
+}
+
+void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qint64 remoteUid)
+{
+    Akonadi::Tag tag = reader.getTag();
+    tag.setRemoteId(QByteArray::number(remoteUid));
+    mTags << tag;
+
+    Akonadi::Item::List members;
+    Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
+        Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
+        //TODO should we create a dummy item if it isn't yet available?
+        Akonadi::Item i;
+        if (!member.gid.isEmpty()) {
+            //Reference by GID
+            i.setGid(member.gid);
+        } else {
+            //Reference by imap uid
+            if (member.uid < 0) {
+                kWarning() << "Failed to parse uid: " << memberUrl;
+                continue;
+            }
+            i.setRemoteId(QString::number(member.uid));
+            kDebug() << "got member: " << member.uid << member.mailbox;
+            Akonadi::Collection parent;
+            {
+                //The root collection is not part of the mailbox path
+                Akonadi::Collection col;
+                col.setRemoteId(rootRemoteId());
+                col.setParentCollection(Akonadi::Collection::root());
+                parent = col;
+            }
+            Q_FOREACH(const QByteArray part, member.mailbox) {
+                Akonadi::Collection col;
+                col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
+                col.setParentCollection(parent);
+                parent = col;
+            }
+            i.setParentCollection(parent);
+        }
+        //TODO implement fallback to search if uid is not available
+        members << i;
+    }
+    mTagMembers.insert(QString::fromLatin1(tag.remoteId()), members);
+}
+
+void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid)
+{
+    Akonadi::Relation relation = reader.getRelation();
+    relation.setRemoteId(QByteArray::number(remoteUid));
+    mRelations << relation;
 }
 
 void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
@@ -157,8 +173,17 @@ void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
         cancelTask(job->errorString());
         return;
     }
-    kDebug() << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
-    resourceState()->tagsRetrieved(mTags, mTagMembers);
+
+    if (!mTags.isEmpty() || !mTagMembers.isEmpty()) {
+        kDebug() << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
+        resourceState()->tagsRetrieved(mTags, mTagMembers);
+    }
+
+    if (!mRelations.isEmpty()) {
+        kDebug() << "Fetched relations:" << mRelations.size();
+        resourceState()->relationsRetrieved(mRelations);
+    }
+
     deleteLater();
 }
 
