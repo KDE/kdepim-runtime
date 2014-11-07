@@ -12,7 +12,7 @@ include_directories(
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
 
- set(KDEPIMLIBS_LIB_VERSION "4.73.0")
+ set(KDEPIMLIBS_LIB_VERSION "4.74.0")
  find_package(Qt5DBus ${KF5_VERSION} CONFIG REQUIRED)
  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)

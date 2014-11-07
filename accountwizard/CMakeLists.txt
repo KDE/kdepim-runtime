@@ -17,7 +17,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${accountwizard_SOURCE_DIR}")
   # FIXME: Do we want the same versions in kdepimlibs and kf5?
   set(KF5_VERSION "5.4.0")
   set(QT_REQUIRED_VERSION "5.3.0")
-  set(KDEPIMLIBS_LIB_VERSION "4.73.0")
+  set(KDEPIMLIBS_LIB_VERSION "4.74.0")
 
   # KF5 package
   find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
