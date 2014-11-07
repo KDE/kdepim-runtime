@@ -31,7 +31,6 @@
 #include "itemaddedjob.h"
 #include "itemchangedjob.h"
 #include "revertitemchangesjob.h"
-#include <dbusconnectionpool.h>
 
 #include "collectionannotationsattribute.h" //from shared
 
@@ -51,7 +50,7 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/ItemMoveJob>
 #include <AkonadiCore/Session>
-
+#include <KDBusConnectionPool>
 #include <KLocalizedString>
 #include <KGlobal>
 #include <KWindowSystem>
@@ -108,8 +107,8 @@ KolabProxyResource::KolabProxyResource( const QString &id )
     Settings::self(), QDBusConnection::ExportAdaptors );
 
   new KolabproxyAdaptor( this );
-  Akonadi::DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/KolabProxy" ), this, QDBusConnection::ExportAdaptors );
-  Akonadi::DBusConnectionPool::threadConnection().registerService( QLatin1String( "Agent.akonadi_kolabproxy_resource" ) );
+  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/KolabProxy" ), this, QDBusConnection::ExportAdaptors );
+  KDBusConnectionPool::threadConnection().registerService( QLatin1String( "Agent.akonadi_kolabproxy_resource" ) );
 
   changeRecorder()->fetchCollection( true );
   changeRecorder()->itemFetchScope().fetchFullPayload();
