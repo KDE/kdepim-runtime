@@ -58,6 +58,10 @@ set(KDEPIMLIBS_LIB_VERSION "4.74.0")
 set(KDEPIMRUNTIME_LIB_VERSION "4.70.0")
 set(KDEPIMRUNTIME_LIB_SOVERSION "5")
 
+set( SHARED_MIME_INFO_MINIMUM_VERSION "0.40" )
+find_package( SharedMimeInfo REQUIRED )
+
+
 find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Widgets Test Declarative XmlPatterns)
 
 # QT5 package
