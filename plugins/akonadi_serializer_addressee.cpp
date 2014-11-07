@@ -23,7 +23,7 @@
 #include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 
-#include <kabc/addressee.h>
+#include <kcontacts/addressee.h>
 #include <KLocalizedString>
 #include <QDebug>
 #include <QtCore/qplugin.h>
@@ -36,18 +36,18 @@ bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label
 {
     Q_UNUSED( version );
 
-    KABC::Addressee addr;
+    KContacts::Addressee addr;
     if ( label == Item::FullPayload ) {
         addr = m_converter.parseVCard( data.readAll() );
     } else if ( label == Akonadi::ContactPart::Standard ) {
         addr = m_converter.parseVCard( data.readAll() );
 
         // remove pictures and sound
-        addr.setPhoto( KABC::Picture() );
-        addr.setLogo( KABC::Picture() );
-        addr.setSound( KABC::Sound() );
+        addr.setPhoto( KContacts::Picture() );
+        addr.setLogo( KContacts::Picture() );
+        addr.setSound( KContacts::Sound() );
     } else if ( label == Akonadi::ContactPart::Lookup ) {
-        const KABC::Addressee temp = m_converter.parseVCard( data.readAll() );
+        const KContacts::Addressee temp = m_converter.parseVCard( data.readAll() );
 
         // copy only uid, name and email addresses
         addr.setUid( temp.uid() );
@@ -62,7 +62,7 @@ bool SerializerPluginAddressee::deserialize( Item& item, const QByteArray& label
     }
 
     if ( !addr.isEmpty() ) {
-        item.setPayload<KABC::Addressee>( addr );
+        item.setPayload<KContacts::Addressee>( addr );
     } else {
         qWarning( ) << "Empty addressee object!";
     }
@@ -77,12 +77,12 @@ void SerializerPluginAddressee::serialize( const Item& item, const QByteArray& l
     if ( label != Item::FullPayload && label != Akonadi::ContactPart::Standard && label != Akonadi::ContactPart::Lookup )
         return;
 
-    if ( !item.hasPayload<KABC::Addressee>() )
+    if ( !item.hasPayload<KContacts::Addressee>() )
         return;
 
-    KABC::Addressee addr, temp;
+    KContacts::Addressee addr, temp;
 
-    temp = item.payload<KABC::Addressee>();
+    temp = item.payload<KContacts::Addressee>();
 
     if ( label == Item::FullPayload ) {
         addr = temp;
@@ -90,9 +90,9 @@ void SerializerPluginAddressee::serialize( const Item& item, const QByteArray& l
         addr = temp;
 
         // remove pictures and sound
-        addr.setPhoto( KABC::Picture() );
-        addr.setLogo( KABC::Picture() );
-        addr.setSound( KABC::Sound() );
+        addr.setPhoto( KContacts::Picture() );
+        addr.setLogo( KContacts::Picture() );
+        addr.setSound( KContacts::Sound() );
     } else if ( label == Akonadi::ContactPart::Lookup ) {
         // copy only uid, name and email addresses
         addr.setUid( temp.uid() );
@@ -117,12 +117,12 @@ static bool compareString( const QString &left, const QString &right )
     return left == right;
 }
 
-static QString toString( const KABC::PhoneNumber &phoneNumber )
+static QString toString( const KContacts::PhoneNumber &phoneNumber )
 {
   return phoneNumber.number();
 }
 
-static QString toString( const KABC::Address &address )
+static QString toString( const KContacts::Address &address )
 {
   return address.toString();
 }
@@ -151,98 +151,98 @@ void SerializerPluginAddressee::compare( Akonadi::AbstractDifferencesReporter *r
                                          const Akonadi::Item &rightItem )
 {
   Q_ASSERT( reporter );
-  Q_ASSERT( leftItem.hasPayload<KABC::Addressee>() );
-  Q_ASSERT( rightItem.hasPayload<KABC::Addressee>() );
+  Q_ASSERT( leftItem.hasPayload<KContacts::Addressee>() );
+  Q_ASSERT( rightItem.hasPayload<KContacts::Addressee>() );
 
   reporter->setLeftPropertyValueTitle( i18n( "Changed Contact" ) );
   reporter->setRightPropertyValueTitle( i18n( "Conflicting Contact" ) );
 
-  const KABC::Addressee leftContact = leftItem.payload<KABC::Addressee>();
-  const KABC::Addressee rightContact = rightItem.payload<KABC::Addressee>();
+  const KContacts::Addressee leftContact = leftItem.payload<KContacts::Addressee>();
+  const KContacts::Addressee rightContact = rightItem.payload<KContacts::Addressee>();
 
   if ( !compareString( leftContact.uid(), rightContact.uid() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::uidLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::uidLabel(),
                             leftContact.uid(), rightContact.uid() );
 
   if ( !compareString( leftContact.name(), rightContact.name() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::nameLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::nameLabel(),
                             leftContact.name(), rightContact.name() );
 
   if ( !compareString( leftContact.formattedName(), rightContact.formattedName() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::formattedNameLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::formattedNameLabel(),
                             leftContact.formattedName(), rightContact.formattedName() );
 
   if ( !compareString( leftContact.familyName(), rightContact.familyName() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::familyNameLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::familyNameLabel(),
                             leftContact.familyName(), rightContact.familyName() );
 
   if ( !compareString( leftContact.givenName(), rightContact.givenName() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::givenNameLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::givenNameLabel(),
                             leftContact.givenName(), rightContact.givenName() );
 
   if ( !compareString( leftContact.additionalName(), rightContact.additionalName() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::additionalNameLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::additionalNameLabel(),
                             leftContact.additionalName(), rightContact.additionalName() );
 
   if ( !compareString( leftContact.prefix(), rightContact.prefix() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::prefixLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::prefixLabel(),
                             leftContact.prefix(), rightContact.prefix() );
 
   if ( !compareString( leftContact.suffix(), rightContact.suffix() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::suffixLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::suffixLabel(),
                             leftContact.suffix(), rightContact.suffix() );
 
   if ( !compareString( leftContact.nickName(), rightContact.nickName() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::nickNameLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::nickNameLabel(),
                             leftContact.nickName(), rightContact.nickName() );
 
   if ( leftContact.birthday() != rightContact.birthday() )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::birthdayLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::birthdayLabel(),
                             leftContact.birthday().toString(), rightContact.birthday().toString() );
 
   if ( !compareString( leftContact.mailer(), rightContact.mailer() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::mailerLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::mailerLabel(),
                             leftContact.mailer(), rightContact.mailer() );
 
   if ( leftContact.timeZone() != rightContact.timeZone() )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::timeZoneLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::timeZoneLabel(),
                             leftContact.timeZone().toString(), rightContact.timeZone().toString() );
 
   if ( leftContact.geo() != rightContact.geo() )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::geoLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::geoLabel(),
                             leftContact.geo().toString(), rightContact.geo().toString() );
 
   if ( !compareString( leftContact.title(), rightContact.title() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::titleLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::titleLabel(),
                             leftContact.title(), rightContact.title() );
 
   if ( !compareString( leftContact.role(), rightContact.role() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::roleLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::roleLabel(),
                             leftContact.role(), rightContact.role() );
 
   if ( !compareString( leftContact.organization(), rightContact.organization() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::organizationLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::organizationLabel(),
                             leftContact.organization(), rightContact.organization() );
 
   if ( !compareString( leftContact.note(), rightContact.note() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::noteLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::noteLabel(),
                             leftContact.note(), rightContact.note() );
 
   if ( !compareString( leftContact.productId(), rightContact.productId() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::productIdLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::productIdLabel(),
                             leftContact.productId(), rightContact.productId() );
 
   if ( !compareString( leftContact.sortString(), rightContact.sortString() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::sortStringLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::sortStringLabel(),
                             leftContact.sortString(), rightContact.sortString() );
 
   if ( leftContact.secrecy() != rightContact.secrecy() ) {
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::secrecyLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::secrecyLabel(),
                             leftContact.secrecy().toString(), rightContact.secrecy().toString() );
   }
 
   if ( leftContact.url() != rightContact.url() )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KABC::Addressee::urlLabel(),
+    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::urlLabel(),
                             leftContact.url().toDisplayString(), rightContact.url().toDisplayString() );
 
   compareList( reporter, i18n( "Emails" ), leftContact.emails(), rightContact.emails() );
@@ -256,10 +256,10 @@ void SerializerPluginAddressee::compare( Akonadi::AbstractDifferencesReporter *r
 
 QString SerializerPluginAddressee::extractGid( const Item& item ) const
 {
-  if ( !item.hasPayload<KABC::Addressee>() ) {
+  if ( !item.hasPayload<KContacts::Addressee>() ) {
     return QString();
   }
-  return item.payload<KABC::Addressee>().uid();
+  return item.payload<KContacts::Addressee>().uid();
 }
 
 

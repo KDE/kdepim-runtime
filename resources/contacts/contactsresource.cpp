@@ -56,7 +56,7 @@ ContactsResource::ContactsResource( const QString &id )
 
   setHierarchicalRemoteIdentifiersEnabled( true );
 
-  mSupportedMimeTypes << KABC::Addressee::mimeType() << KABC::ContactGroup::mimeType() << Collection::mimeType();
+  mSupportedMimeTypes << KContacts::Addressee::mimeType() << KContacts::ContactGroup::mimeType() << Collection::mimeType();
 
   if ( name().startsWith( QLatin1String( "akonadi_contacts_resource" ) ) )
     setName( i18n( "Personal Contacts" ) );
@@ -161,9 +161,9 @@ void ContactsResource::retrieveItems( const Akonadi::Collection &collection )
     item.setRemoteId( entry.fileName() );
 
     if ( entry.fileName().endsWith( QLatin1String( ".vcf" ) ) )
-      item.setMimeType( KABC::Addressee::mimeType() );
+      item.setMimeType( KContacts::Addressee::mimeType() );
     else if ( entry.fileName().endsWith( QLatin1String( ".ctg" ) ) )
-      item.setMimeType( KABC::ContactGroup::mimeType() );
+      item.setMimeType( KContacts::ContactGroup::mimeType() );
     else {
       cancelTask( i18n( "Found file of unknown format: '%1'", entry.absoluteFilePath() ) );
       return;
@@ -188,26 +188,26 @@ bool ContactsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
   }
 
   if ( filePath.endsWith( QLatin1String( ".vcf" ) ) ) {
-    KABC::VCardConverter converter;
+    KContacts::VCardConverter converter;
 
     const QByteArray content = file.readAll();
-    const KABC::Addressee contact = converter.parseVCard( content );
+    const KContacts::Addressee contact = converter.parseVCard( content );
     if ( contact.isEmpty() ) {
       cancelTask( i18n( "Found invalid contact in file '%1'", filePath ) );
       return false;
     }
 
-    newItem.setPayload<KABC::Addressee>( contact );
+    newItem.setPayload<KContacts::Addressee>( contact );
   } else if ( filePath.endsWith( QLatin1String( ".ctg" ) ) ) {
-    KABC::ContactGroup group;
+    KContacts::ContactGroup group;
     QString errorMessage;
 
-    if ( !KABC::ContactGroupTool::convertFromXml( &file, group, &errorMessage ) ) {
+    if ( !KContacts::ContactGroupTool::convertFromXml( &file, group, &errorMessage ) ) {
       cancelTask( i18n( "Found invalid contact group in file '%1': %2", filePath, errorMessage ) );
       return false;
     }
 
-    newItem.setPayload<KABC::ContactGroup>( group );
+    newItem.setPayload<KContacts::ContactGroup>( group );
   } else {
     cancelTask( i18n( "Found file of unknown format: '%1'", filePath ) );
     return false;
@@ -231,12 +231,12 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
   Item newItem( item );
 
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee contact = item.payload<KABC::Addressee>();
+  if ( item.hasPayload<KContacts::Addressee>() ) {
+    const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
 
     const QString fileName = directoryPath + QDir::separator() + contact.uid() + QLatin1String(".vcf");
 
-    KABC::VCardConverter converter;
+    KContacts::VCardConverter converter;
     const QByteArray content = converter.createVCard( contact );
 
     QFile file( fileName );
@@ -250,8 +250,8 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
 
     newItem.setRemoteId( contact.uid() + QLatin1String(".vcf") );
 
-  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
-    const KABC::ContactGroup group = item.payload<KABC::ContactGroup>();
+  } else if ( item.hasPayload<KContacts::ContactGroup>() ) {
+    const KContacts::ContactGroup group = item.payload<KContacts::ContactGroup>();
 
     const QString fileName = directoryPath + QDir::separator() + group.id() + QLatin1String(".ctg");
 
@@ -261,7 +261,7 @@ void ContactsResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
       return;
     }
 
-    KABC::ContactGroupTool::convertToXml( group, &file );
+    KContacts::ContactGroupTool::convertToXml( group, &file );
 
     file.close();
 
@@ -285,10 +285,10 @@ void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
 
   const QString fileName = directoryForCollection( item.parentCollection() ) + QDir::separator() + item.remoteId();
 
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee contact = item.payload<KABC::Addressee>();
+  if ( item.hasPayload<KContacts::Addressee>() ) {
+    const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
 
-    KABC::VCardConverter converter;
+    KContacts::VCardConverter converter;
     const QByteArray content = converter.createVCard( contact );
 
     QFile file( fileName );
@@ -301,8 +301,8 @@ void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
 
     newItem.setRemoteId( item.remoteId() );
 
-  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
-    const KABC::ContactGroup group = item.payload<KABC::ContactGroup>();
+  } else if ( item.hasPayload<KContacts::ContactGroup>() ) {
+    const KContacts::ContactGroup group = item.payload<KContacts::ContactGroup>();
 
     QFile file( fileName );
     if ( !file.open( QIODevice::WriteOnly ) ) {
@@ -310,7 +310,7 @@ void ContactsResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
       return;
     }
 
-    KABC::ContactGroupTool::convertToXml( group, &file );
+    KContacts::ContactGroupTool::convertToXml( group, &file );
 
     file.close();
 

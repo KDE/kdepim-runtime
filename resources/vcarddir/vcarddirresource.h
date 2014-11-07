@@ -22,8 +22,8 @@
 
 #include <resourcebase.h>
 
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/vcardconverter.h>
 
 class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
@@ -54,8 +54,8 @@ class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
     void initializeVCardDirectory() const;
 
   private:
-    QMap<QString, KABC::Addressee> mAddressees;
-    KABC::VCardConverter mConverter;
+    QMap<QString, KContacts::Addressee> mAddressees;
+    KContacts::VCardConverter mConverter;
 };
 
 #endif

@@ -23,7 +23,7 @@
 #include "migrationstatuswidget.h"
 
 #include <migration/gid/gidmigrator.h>
-#include <KABC/Addressee>
+#include <KContacts/Addressee>
 #include <KWindowSystem>
 #include <QDialog>
 #include <KLocalizedString>
@@ -38,7 +38,7 @@ MigrationAgent::MigrationAgent(const QString &id)
     mScheduler(new KUiServerJobTracker)
 {
     KLocalizedString::setApplicationDomain( "akonadi_migration_agent" );
-    mScheduler.addMigrator(QSharedPointer<GidMigrator>(new GidMigrator(KABC::Addressee::mimeType())));
+    mScheduler.addMigrator(QSharedPointer<GidMigrator>(new GidMigrator(KContacts::Addressee::mimeType())));
 }
 
 void MigrationAgent::configure(WId windowId)

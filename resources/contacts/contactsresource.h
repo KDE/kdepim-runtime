@@ -22,10 +22,10 @@
 
 #include <resourcebase.h>
 
-#include <kabc/addressee.h>
-#include <kabc/contactgroup.h>
-#include <kabc/contactgrouptool.h>
-#include <kabc/vcardconverter.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/contactgroup.h>
+#include <kcontacts/contactgrouptool.h>
+#include <kcontacts/vcardconverter.h>
 
 namespace Akonadi_Contacts_Resource {
 class ContactsResourceSettings;

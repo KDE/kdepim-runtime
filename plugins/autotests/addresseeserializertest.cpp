@@ -31,7 +31,7 @@ class AddresseeSerializerTest : public QObject
         void testGid()
         {
             const QString uid(QLatin1String("uid"));
-            KABC::Addressee addressee;
+            KContacts::Addressee addressee;
             addressee.setUid(uid);
             Akonadi::Item item;
             item.setMimeType(addressee.mimeType());

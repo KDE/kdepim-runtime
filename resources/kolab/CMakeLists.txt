@@ -46,7 +46,7 @@ target_link_libraries(akonadi_kolab_resource
     folderarchivesettings
     KF5::Kolab
     ${Libkolabxml_LIBRARIES}
-    KF5::Abc
+    KF5::Contacts
     KF5::CalendarCore
     akonadi-singlefileresource
 )

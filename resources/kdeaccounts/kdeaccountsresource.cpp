@@ -32,7 +32,7 @@ using namespace Akonadi;
 KDEAccountsResource::KDEAccountsResource( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), QLatin1String("kde") );
+  setSupportedMimetypes( QStringList() << KContacts::Addressee::mimeType(), QLatin1String("kde") );
 
   setName( i18n( "KDE Accounts" ) );
 
@@ -55,7 +55,7 @@ bool KDEAccountsResource::retrieveItem( const Akonadi::Item &item, const QSet<QB
   }
 
   Item newItem( item );
-  newItem.setPayload<KABC::Addressee>( mContacts.value( remoteId ) );
+  newItem.setPayload<KContacts::Addressee>( mContacts.value( remoteId ) );
   itemRetrieved( newItem );
 
   return true;
@@ -100,7 +100,7 @@ void KDEAccountsResource::retrieveItems( const Akonadi::Collection &collection )
   for ( ContactsMap::const_iterator it = mContacts.constBegin(); it != end; ++it ) {
     Item item;
     item.setRemoteId( it.key() );
-    item.setMimeType( KABC::Addressee::mimeType() );
+    item.setMimeType( KContacts::Addressee::mimeType() );
     item.setPayload( it.value() );
     items.append( item );
   }
@@ -142,7 +142,7 @@ bool KDEAccountsResource::readFromFile( const QString &fileName )
     const QString email = parts.takeLast();
     const QString fullName = parts.join( QLatin1String( " " ) );
 
-    KABC::Addressee contact;
+    KContacts::Addressee contact;
     contact.setNickName( nickName  );
     contact.setNameFromString( fullName );
     contact.setOrganization( i18n( "KDE Project" ) );

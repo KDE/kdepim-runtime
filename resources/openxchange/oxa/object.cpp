@@ -78,24 +78,24 @@ Folder::Module Object::module() const
   return mModule;
 }
 
-void Object::setContact( const KABC::Addressee &contact )
+void Object::setContact( const KContacts::Addressee &contact )
 {
   mModule = Folder::Contacts;
   mContact = contact;
 }
 
-KABC::Addressee Object::contact() const
+KContacts::Addressee Object::contact() const
 {
   return mContact;
 }
 
-void Object::setContactGroup( const KABC::ContactGroup &group )
+void Object::setContactGroup( const KContacts::ContactGroup &group )
 {
   mModule = Folder::Contacts;
   mContactGroup = group;
 }
 
-KABC::ContactGroup Object::contactGroup() const
+KContacts::ContactGroup Object::contactGroup() const
 {
   return mContactGroup;
 }

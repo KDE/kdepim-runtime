@@ -18,7 +18,7 @@
 
 #include "carddavprotocol.h"
 
-#include <kabc/addressee.h>
+#include <kcontacts/addressee.h>
 
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
@@ -38,7 +38,7 @@ CarddavProtocol::CarddavProtocol()
   propElement.appendChild( document.createElementNS( QLatin1String("DAV:"), QLatin1String("getetag") ) );
 
   mItemsQueries << document;
-  mItemsMimeTypes << KABC::Addressee::mimeType();
+  mItemsMimeTypes << KContacts::Addressee::mimeType();
 }
 
 bool CarddavProtocol::supportsPrincipals() const

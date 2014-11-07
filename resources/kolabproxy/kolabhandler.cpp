@@ -102,7 +102,7 @@ void KolabHandler::setKolabFormatVersion( Kolab::Version version )
 
 QByteArray KolabHandler::kolabTypeForMimeType( const QStringList &contentMimeTypes )
 {
-  if ( contentMimeTypes.contains( KABC::Addressee::mimeType() ) ) {
+  if ( contentMimeTypes.contains( KContacts::Addressee::mimeType() ) ) {
     return "contact";
   } else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) ) {
     return "event";
@@ -120,8 +120,8 @@ QByteArray KolabHandler::kolabTypeForMimeType( const QStringList &contentMimeTyp
 QStringList KolabHandler::allSupportedMimeTypes()
 {
   return QStringList()
-    << KABC::Addressee::mimeType()
-    << KABC::ContactGroup::mimeType()
+    << KContacts::Addressee::mimeType()
+    << KContacts::ContactGroup::mimeType()
     << KCalCore::Event::eventMimeType()
     << KCalCore::Todo::todoMimeType()
     << KCalCore::Journal::journalMimeType()

@@ -23,7 +23,7 @@
 #include "singlefileresource.h"
 #include "settings.h"
 
-#include <kabc/addressee.h>
+#include <kcontacts/addressee.h>
 
 class KDEAccountsResource : public Akonadi::SingleFileResource<Settings>
 {
@@ -57,7 +57,7 @@ class KDEAccountsResource : public Akonadi::SingleFileResource<Settings>
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
-    typedef QMap<QString, KABC::Addressee> ContactsMap;
+    typedef QMap<QString, KContacts::Addressee> ContactsMap;
     ContactsMap mContacts;
 };
 

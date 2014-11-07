@@ -42,7 +42,7 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
   }
 
   if ( isDistributionList ) {
-    KABC::ContactGroup contactGroup;
+    KContacts::ContactGroup contactGroup;
 
     QDomElement element = propElement.firstChildElement();
     while ( !element.isNull() ) {
@@ -60,14 +60,14 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
           if ( tagName == QLatin1String( "email" ) ) {
             const int emailField = OXUtils::readNumber( emailElement.attribute( QLatin1String( "emailfield" ) ) );
             if ( emailField == 0 ) { // internal data
-              KABC::ContactGroup::Data data;
+              KContacts::ContactGroup::Data data;
               data.setName( OXUtils::readString( emailElement.attribute( QLatin1String( "displayname" ) ) ) );
               data.setEmail( text );
 
               contactGroup.append( data );
             } else { // external reference
               // we convert them to internal data, seems like a more stable approach
-              KABC::ContactGroup::Data data;
+              KContacts::ContactGroup::Data data;
               const qlonglong uid = OXUtils::readNumber( emailElement.attribute( QLatin1String( "id" ) ) );
 
               const User user = Users::self()->lookupUid( uid );
@@ -92,10 +92,10 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
 
     object.setContactGroup( contactGroup );
   } else {
-    KABC::Addressee contact;
-    KABC::Address homeAddress( KABC::Address::Home );
-    KABC::Address workAddress( KABC::Address::Work );
-    KABC::Address otherAddress( KABC::Address::Dom );
+    KContacts::Addressee contact;
+    KContacts::Address homeAddress( KContacts::Address::Home );
+    KContacts::Address workAddress( KContacts::Address::Work );
+    KContacts::Address otherAddress( KContacts::Address::Dom );
 
     QDomElement element = propElement.firstChildElement();
     while ( !element.isNull() ) {
@@ -158,11 +158,11 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
       } else if ( tagName == QLatin1String( "defaultaddress" ) ) {
         const int number = text.toInt();
         if ( number == 1 )
-          workAddress.setType( workAddress.type() | KABC::Address::Pref );
+          workAddress.setType( workAddress.type() | KContacts::Address::Pref );
         else if ( number == 2 )
-          homeAddress.setType( homeAddress.type() | KABC::Address::Pref );
+          homeAddress.setType( homeAddress.type() | KContacts::Address::Pref );
         else if ( number == 3 )
-          otherAddress.setType( otherAddress.type() | KABC::Address::Pref );
+          otherAddress.setType( otherAddress.type() | KContacts::Address::Pref );
       // further information
       } else if ( tagName == QLatin1String( "note" ) ) {
         contact.setNote( text );
@@ -170,7 +170,7 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
         contact.setUrl( QUrl(text) );
       } else if ( tagName == QLatin1String( "image1" ) ) {
         const QByteArray data = text.toUtf8();
-        contact.setPhoto( KABC::Picture( QImage::fromData( QByteArray::fromBase64( data ) ) ) );
+        contact.setPhoto( KContacts::Picture( QImage::fromData( QByteArray::fromBase64( data ) ) ) );
       // company information
       } else if ( tagName == QLatin1String( "company" ) ) {
         contact.setOrganization( text );
@@ -193,50 +193,50 @@ void OXA::ContactUtils::parseContact( const QDomElement &propElement, Object &ob
                   tagName == QLatin1String( "email3" ) ) {
         contact.insertEmail( text );
       } else if ( tagName == QLatin1String( "mobile1" ) ) {
-        contact.insertPhoneNumber( KABC::PhoneNumber( text, KABC::PhoneNumber::Cell ) );
+        contact.insertPhoneNumber( KContacts::PhoneNumber( text, KContacts::PhoneNumber::Cell ) );
       } else if ( tagName == QLatin1String( "instant_messenger" ) ) {
         contact.insertCustom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-IMAddress" ), text );
       } else if ( tagName.startsWith( QLatin1String( "phone_" ) ) ) {
-        KABC::PhoneNumber number;
+        KContacts::PhoneNumber number;
         number.setNumber( text );
         bool supportedType = false;
 
         if ( tagName.endsWith( QLatin1String( "_business" ) ) ) {
-          number.setType( KABC::PhoneNumber::Work );
+          number.setType( KContacts::PhoneNumber::Work );
           supportedType = true;
         } else if ( tagName.endsWith( QLatin1String( "_home" ) ) ) {
-          number.setType( KABC::PhoneNumber::Home );
+          number.setType( KContacts::PhoneNumber::Home );
           supportedType = true;
         } else if ( tagName.endsWith( QLatin1String( "_other" ) ) ) {
-          number.setType( KABC::PhoneNumber::Voice );
+          number.setType( KContacts::PhoneNumber::Voice );
           supportedType = true;
         } else if ( tagName.endsWith( QLatin1String( "_car" ) ) ) {
-          number.setType( KABC::PhoneNumber::Car );
+          number.setType( KContacts::PhoneNumber::Car );
           supportedType = true;
         }
 
         if ( supportedType )
           contact.insertPhoneNumber( number );
       } else if ( tagName.startsWith( QLatin1String( "fax_" ) ) ) {
-        KABC::PhoneNumber number;
+        KContacts::PhoneNumber number;
         number.setNumber( text );
         bool supportedType = false;
 
         if ( tagName.endsWith( QLatin1String( "_business" ) ) ) {
-          number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Work );
+          number.setType( KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Work );
           supportedType = true;
         } else if ( tagName.endsWith( QLatin1String( "_home" ) ) ) {
-          number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home );
+          number.setType( KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Home );
           supportedType = true;
         } else if ( tagName.endsWith( QLatin1String( "_other" ) ) ) {
-          number.setType( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Voice );
+          number.setType( KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Voice );
           supportedType = true;
         }
 
         if ( supportedType )
           contact.insertPhoneNumber( number );
       } else if ( tagName == QLatin1String( "pager" ) ) {
-        contact.insertPhoneNumber( KABC::PhoneNumber( text, KABC::PhoneNumber::Pager ) );
+        contact.insertPhoneNumber( KContacts::PhoneNumber( text, KContacts::PhoneNumber::Pager ) );
       } else if ( tagName == QLatin1String( "categories" ) ) {
         contact.setCategories( text.split( QRegExp( QLatin1String( ",\\s*" ) ) ) );
       }
@@ -260,7 +260,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
   if ( !object.contact().isEmpty() ) {
     // it is a contact payload
 
-    const KABC::Addressee contact = object.contact();
+    const KContacts::Addressee contact = object.contact();
 
     // name
     DAVUtils::addOxElement( document, propElement, QLatin1String( "title" ), OXUtils::writeString( contact.title() ) );
@@ -286,7 +286,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
     DAVUtils::addOxElement( document, propElement, QLatin1String( "spouse_name" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-SpousesName" ) ) ) );
 
     // addresses
-    const KABC::Address homeAddress = contact.address( KABC::Address::Home );
+    const KContacts::Address homeAddress = contact.address( KContacts::Address::Home );
     if ( !homeAddress.isEmpty() ) {
       DAVUtils::addOxElement( document, propElement, QLatin1String( "street" ), OXUtils::writeString( homeAddress.street() ) );
       DAVUtils::addOxElement( document, propElement, QLatin1String( "postal_code" ), OXUtils::writeString( homeAddress.postalCode() ) );
@@ -294,7 +294,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
       DAVUtils::addOxElement( document, propElement, QLatin1String( "state" ), OXUtils::writeString( homeAddress.region() ) );
       DAVUtils::addOxElement( document, propElement, QLatin1String( "country" ), OXUtils::writeString( homeAddress.country() ) );
     }
-    const KABC::Address workAddress = contact.address( KABC::Address::Work );
+    const KContacts::Address workAddress = contact.address( KContacts::Address::Work );
     if ( !workAddress.isEmpty() ) {
       DAVUtils::addOxElement( document, propElement, QLatin1String( "business_street" ), OXUtils::writeString( workAddress.street() ) );
       DAVUtils::addOxElement( document, propElement, QLatin1String( "business_postal_code" ), OXUtils::writeString( workAddress.postalCode() ) );
@@ -302,7 +302,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
       DAVUtils::addOxElement( document, propElement, QLatin1String( "business_state" ), OXUtils::writeString( workAddress.region() ) );
       DAVUtils::addOxElement( document, propElement, QLatin1String( "business_country" ), OXUtils::writeString( workAddress.country() ) );
     }
-    const KABC::Address otherAddress = contact.address( KABC::Address::Dom );
+    const KContacts::Address otherAddress = contact.address( KContacts::Address::Dom );
     if ( !otherAddress.isEmpty() ) {
       DAVUtils::addOxElement( document, propElement, QLatin1String( "second_street" ), OXUtils::writeString( otherAddress.street() ) );
       DAVUtils::addOxElement( document, propElement, QLatin1String( "second_postal_code" ), OXUtils::writeString( otherAddress.postalCode() ) );
@@ -316,7 +316,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
     DAVUtils::addOxElement( document, propElement, QLatin1String( "url" ), OXUtils::writeString( contact.url().url() ) );
 
     // image
-    const KABC::Picture photo = contact.photo();
+    const KContacts::Picture photo = contact.photo();
     if ( !photo.data().isNull() ) {
       QByteArray imageData;
       QBuffer buffer( &imageData );
@@ -354,24 +354,24 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
       DAVUtils::addOxElement( document, propElement, QString::fromLatin1( "email%1" ).arg( i + 1 ), OXUtils::writeString( emails.at( i ) ) );
     }
 
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "mobile1" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Cell ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "mobile1" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Cell ).number() ) );
     DAVUtils::addOxElement( document, propElement, QLatin1String( "instant_messenger" ), OXUtils::writeString( contact.custom( QLatin1String( "KADDRESSBOOK" ), QLatin1String( "X-IMAddress" ) ) ) );
 
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_business" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Work ).number() ) );
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_home" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Home ).number() ) );
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_other" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Voice ).number() ) );
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_car" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Car ).number() ) );
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_business" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Work ).number() ) );
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_home" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Home ).number() ) );
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_other" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Fax | KABC::PhoneNumber::Voice ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_business" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Work ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_home" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Home ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_other" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Voice ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "phone_car" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Car ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_business" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Work ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_home" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Home ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "fax_other" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Voice ).number() ) );
 
-    DAVUtils::addOxElement( document, propElement, QLatin1String( "pager" ), OXUtils::writeString( contact.phoneNumber( KABC::PhoneNumber::Pager ).number() ) );
+    DAVUtils::addOxElement( document, propElement, QLatin1String( "pager" ), OXUtils::writeString( contact.phoneNumber( KContacts::PhoneNumber::Pager ).number() ) );
 
     DAVUtils::addOxElement( document, propElement, QLatin1String( "categories" ), OXUtils::writeString( contact.categories().join( QLatin1String( "," ) ) ) );
   } else {
     // it is a distribution list payload
 
-    const KABC::ContactGroup contactGroup = object.contactGroup();
+    const KContacts::ContactGroup contactGroup = object.contactGroup();
 
     DAVUtils::addOxElement( document, propElement, QLatin1String( "displayname" ), OXUtils::writeString( contactGroup.name() ) );
     DAVUtils::addOxElement( document, propElement, QLatin1String( "last_name" ), OXUtils::writeString( contactGroup.name() ) );
@@ -381,8 +381,8 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
 
     if ( preloadedData ) {
       // the contact group contains contact references that has been preloaded
-      KABC::Addressee::List *contacts = static_cast<KABC::Addressee::List*>( preloadedData );
-      foreach ( const KABC::Addressee &contact, *contacts ) {
+      KContacts::Addressee::List *contacts = static_cast<KContacts::Addressee::List*>( preloadedData );
+      foreach ( const KContacts::Addressee &contact, *contacts ) {
         QDomElement email = DAVUtils::addOxElement( document, distributionList, QLatin1String( "email" ),
                                                     OXUtils::writeString( contact.preferredEmail() ) );
 
@@ -396,7 +396,7 @@ void OXA::ContactUtils::addContactElements( QDomDocument &document, QDomElement 
     } else {
       // the contact group contains only internal contact data
       for ( uint i = 0; i < contactGroup.dataCount(); ++i ) {
-        const KABC::ContactGroup::Data &data = contactGroup.data( i );
+        const KContacts::ContactGroup::Data &data = contactGroup.data( i );
         QDomElement email = DAVUtils::addOxElement( document, distributionList, QLatin1String( "email" ),
                                                     OXUtils::writeString( data.email() ) );
 
@@ -420,5 +420,5 @@ void* OXA::ContactUtils::preloadData( const Object&, KJob *job )
   Akonadi::ContactGroupExpandJob *expandJob = qobject_cast<Akonadi::ContactGroupExpandJob*>( job );
   Q_ASSERT( expandJob );
 
-  return new KABC::Addressee::List( expandJob->contacts() );
+  return new KContacts::Addressee::List( expandJob->contacts() );
 }

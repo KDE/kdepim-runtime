@@ -26,7 +26,7 @@ add_executable(knotes-migrator ${knotes-migrator_srcs})
 
 target_link_libraries(knotes-migrator
     KF5::AkonadiCore
-    KF5::Abc
+    KF5::Contacts
     ${KDEPIMLIBS_KCAL_LIBS}
     KF5::Mime
     

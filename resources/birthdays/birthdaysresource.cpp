@@ -30,7 +30,7 @@
 #include <monitor.h>
 #include <entitydisplayattribute.h>
 
-#include <kabc/addressee.h>
+#include <kcontacts/addressee.h>
 
 #include <KPIMUtils/Email>
 
@@ -39,7 +39,7 @@
 #include <KWindowSystem>
 
 using namespace Akonadi;
-using namespace KABC;
+using namespace KContacts;
 using namespace KCalCore;
 
 
@@ -141,10 +141,10 @@ void BirthdaysResource::contactRetrieved(KJob* job)
 
 void BirthdaysResource::contactChanged( const Akonadi::Item& item )
 {
-  if ( !item.hasPayload<KABC::Addressee>() )
+  if ( !item.hasPayload<KContacts::Addressee>() )
     return;
 
-  KABC::Addressee contact = item.payload<KABC::Addressee>();
+  KContacts::Addressee contact = item.payload<KContacts::Addressee>();
 
   if ( Settings::self()->filterOnCategories() ) {
     bool hasCategory = false;
@@ -218,9 +218,9 @@ void BirthdaysResource::createEvents(const Akonadi::Item::List &items)
 
 KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item& contactItem)
 {
-  if ( !contactItem.hasPayload<KABC::Addressee>() )
+  if ( !contactItem.hasPayload<KContacts::Addressee>() )
     return KCalCore::Event::Ptr();
-  KABC::Addressee contact = contactItem.payload<KABC::Addressee>();
+  KContacts::Addressee contact = contactItem.payload<KContacts::Addressee>();
 
   const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
   if ( name.isEmpty() ) {
@@ -249,9 +249,9 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item& cont
 
 KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& contactItem)
 {
-  if ( !contactItem.hasPayload<KABC::Addressee>() )
+  if ( !contactItem.hasPayload<KContacts::Addressee>() )
     return KCalCore::Event::Ptr();
-  KABC::Addressee contact = contactItem.payload<KABC::Addressee>();
+  KContacts::Addressee contact = contactItem.payload<KContacts::Addressee>();
 
   const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
   if ( name.isEmpty() ) {
@@ -276,7 +276,7 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& c
         tname.truncate( tname.length() - 1 );
       }
       tname.remove( QLatin1Char('\\') ); // remove escape chars
-      KABC::Addressee spouse;
+      KContacts::Addressee spouse;
       spouse.setNameFromString( tname );
       QString name_2 = spouse.nickName();
       if ( name_2.isEmpty() ) {

@@ -22,7 +22,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-#include <kabc/vcardconverter.h>
+#include <kcontacts/vcardconverter.h>
 #include <kaboutdata.h>
 
 #include <kconfig.h>
@@ -35,34 +35,34 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-KABC::Addressee::List readContacts( bool *ok )
+KContacts::Addressee::List readContacts( bool *ok )
 {
   const QString fileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kabc/std.vcf") ;
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
     qDebug() << QString::fromLatin1("Unable to open file %1 for reading" ).arg( fileName );
     *ok = false;
-    return KABC::Addressee::List();
+    return KContacts::Addressee::List();
   }
 
   const QByteArray content = file.readAll();
   file.close();
 
-  KABC::VCardConverter converter;
+  KContacts::VCardConverter converter;
 
   *ok = true;
   return converter.parseVCards( content );
 }
 
-bool writeContacts( const KABC::Addressee::List &contacts )
+bool writeContacts( const KContacts::Addressee::List &contacts )
 {
   const QString path = QDir::home().absolutePath() + QLatin1String("/.local/share/contacts/");
   if ( !QDir::root().mkpath( path ) )
     return false;
 
-  KABC::VCardConverter converter;
+  KContacts::VCardConverter converter;
   for ( int i = 0; i < contacts.count(); ++i ) {
-    const KABC::Addressee contact = contacts.at( i );
+    const KContacts::Addressee contact = contacts.at( i );
     const QByteArray content = converter.createVCard( contact );
 
     const QString fileName = path + QDir::separator() + contact.uid() + QLatin1String(".vcf");
@@ -87,7 +87,7 @@ void convertAddressBook()
    */
 
   bool ok = false;
-  const KABC::Addressee::List contacts = readContacts( &ok );
+  const KContacts::Addressee::List contacts = readContacts( &ok );
   if ( !ok )
     return;
 

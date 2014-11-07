@@ -24,8 +24,8 @@
 #include <AkonadiCore/item.h>
 #include <akonadi/kabc/contactparts.h>
 
-#include <kabc/contactgroup.h>
-#include <kabc/contactgrouptool.h>
+#include <kcontacts/contactgroup.h>
+#include <kcontacts/contactgrouptool.h>
 #include <KLocalizedString>
 
 #include <QtCore/qplugin.h>
@@ -39,14 +39,14 @@ bool SerializerPluginContactGroup::deserialize( Item& item, const QByteArray& la
   Q_UNUSED( label );
   Q_UNUSED( version );
 
-  KABC::ContactGroup contactGroup;
+  KContacts::ContactGroup contactGroup;
 
-  if ( !KABC::ContactGroupTool::convertFromXml( &data, contactGroup ) ) {
+  if ( !KContacts::ContactGroupTool::convertFromXml( &data, contactGroup ) ) {
     // TODO: error reporting
     return false;
   }
 
-  item.setPayload<KABC::ContactGroup>( contactGroup );
+  item.setPayload<KContacts::ContactGroup>( contactGroup );
 
   return true;
 }
@@ -56,10 +56,10 @@ void SerializerPluginContactGroup::serialize( const Item& item, const QByteArray
   Q_UNUSED( label );
   Q_UNUSED( version );
 
-  if ( !item.hasPayload<KABC::ContactGroup>() )
+  if ( !item.hasPayload<KContacts::ContactGroup>() )
     return;
 
-  KABC::ContactGroupTool::convertToXml( item.payload<KABC::ContactGroup>(), &data );
+  KContacts::ContactGroupTool::convertToXml( item.payload<KContacts::ContactGroup>(), &data );
 }
 
 //// DifferencesAlgorithmInterface interface
@@ -72,7 +72,7 @@ static bool compareString( const QString &left, const QString &right )
     return left == right;
 }
 
-static QString toString( const KABC::Addressee &contact )
+static QString toString( const KContacts::Addressee &contact )
 {
   return contact.fullEmail();
 }
@@ -96,14 +96,14 @@ void SerializerPluginContactGroup::compare( Akonadi::AbstractDifferencesReporter
                                             const Akonadi::Item &rightItem )
 {
   Q_ASSERT( reporter );
-  Q_ASSERT( leftItem.hasPayload<KABC::ContactGroup>() );
-  Q_ASSERT( rightItem.hasPayload<KABC::ContactGroup>() );
+  Q_ASSERT( leftItem.hasPayload<KContacts::ContactGroup>() );
+  Q_ASSERT( rightItem.hasPayload<KContacts::ContactGroup>() );
 
   reporter->setLeftPropertyValueTitle( i18n( "Changed Contact Group" ) );
   reporter->setRightPropertyValueTitle( i18n( "Conflicting Contact Group" ) );
 
-  const KABC::ContactGroup leftContactGroup = leftItem.payload<KABC::ContactGroup>();
-  const KABC::ContactGroup rightContactGroup = rightItem.payload<KABC::ContactGroup>();
+  const KContacts::ContactGroup leftContactGroup = leftItem.payload<KContacts::ContactGroup>();
+  const KContacts::ContactGroup rightContactGroup = rightItem.payload<KContacts::ContactGroup>();
 
   if ( !compareString( leftContactGroup.name(), rightContactGroup.name() ) )
     reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Name" ),
@@ -123,10 +123,10 @@ void SerializerPluginContactGroup::compare( Akonadi::AbstractDifferencesReporter
 
 QString SerializerPluginContactGroup::extractGid( const Item &item ) const
 {
-  if ( !item.hasPayload<KABC::ContactGroup>() ) {
+  if ( !item.hasPayload<KContacts::ContactGroup>() ) {
     return QString();
   }
-  return item.payload<KABC::ContactGroup>().id();
+  return item.payload<KContacts::ContactGroup>().id();
 }
 
 //Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )

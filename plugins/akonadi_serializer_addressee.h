@@ -25,7 +25,7 @@
 #include <AkonadiCore/differencesalgorithminterface.h>
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
-#include <kabc/vcardconverter.h>
+#include <kcontacts/vcardconverter.h>
 
 namespace Akonadi {
 
@@ -50,7 +50,7 @@ class SerializerPluginAddressee : public QObject,
     QString extractGid( const Item& item ) const;
 
   private:
-    KABC::VCardConverter m_converter;
+    KContacts::VCardConverter m_converter;
 };
 
 }

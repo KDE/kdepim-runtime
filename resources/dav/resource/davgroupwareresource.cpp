@@ -54,8 +54,8 @@
 #include <AkonadiCore/recursiveitemfetchjob.h>
 #include <AkonadiCore/itemmodifyjob.h>
 #include <AkonadiCore/itemdeletejob.h>
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/vcardconverter.h>
 #include <kwindowsystem.h>
 #include <KLocalizedString>
 #include <QDebug>
@@ -622,7 +622,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
       mimeTypes << KCalCore::Todo::todoMimeType();
 
     if ( contentTypes & DavCollection::Contacts )
-      mimeTypes << KABC::Addressee::mimeType();
+      mimeTypes << KContacts::Addressee::mimeType();
 
     if ( contentTypes & DavCollection::FreeBusy )
       mimeTypes << KCalCore::FreeBusy::freeBusyMimeType();
@@ -1011,7 +1011,7 @@ void DavGroupwareResource::setCollectionIcon( Akonadi::Collection &collection )
     mapping.insert( KCalCore::Event::eventMimeType(), QLatin1String( "view-calendar" ) );
     mapping.insert( KCalCore::Todo::todoMimeType(), QLatin1String( "view-calendar-tasks" ) );
     mapping.insert( KCalCore::Journal::journalMimeType(), QLatin1String( "view-pim-journal" ) );
-    mapping.insert( KABC::Addressee::mimeType(), QLatin1String( "view-pim-contacts" ) );
+    mapping.insert( KContacts::Addressee::mimeType(), QLatin1String( "view-pim-contacts" ) );
 
     if ( mapping.contains( mimeTypes.first() ) ) {
       EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>( Collection::AddIfMissing );

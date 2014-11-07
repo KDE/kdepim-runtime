@@ -28,8 +28,8 @@
 #include <AkonadiCore/UnlinkJob>
 #include <AkonadiCore/CachePolicy>
 
-#include <KABC/Addressee>
-#include <KABC/Picture>
+#include <KContacts/Addressee>
+#include <KContacts/Picture>
 
 #include <KLocalizedString>
 #include <KDateTime>
@@ -152,11 +152,11 @@ void ContactsResource::retrieveCollections()
 
 void ContactsResource::itemAdded( const Item &item, const Collection &collection )
 {
-    if ( !canPerformTask<KABC::Addressee>( item, KABC::Addressee::mimeType() ) ) {
+    if ( !canPerformTask<KContacts::Addressee>( item, KContacts::Addressee::mimeType() ) ) {
         return;
     }
 
-    KABC::Addressee addressee = item.payload< KABC::Addressee >();
+    KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact( new Contact( addressee ) );
 
     /* If the contact has been moved into My Contacts group then modify the membership */
@@ -179,11 +179,11 @@ void ContactsResource::itemChanged( const Item &item, const QSet< QByteArray > &
 {
     Q_UNUSED( partIdentifiers );
 
-    if ( !canPerformTask<KABC::Addressee>( item, KABC::Addressee::mimeType() ) ) {
+    if ( !canPerformTask<KContacts::Addressee>( item, KContacts::Addressee::mimeType() ) ) {
         return;
     }
 
-    KABC::Addressee addressee = item.payload< KABC::Addressee >();
+    KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact( new Contact( addressee ) );
 
     if ( item.parentCollection().remoteId() == MYCONTACTS_REMOTEID ) {
@@ -199,11 +199,11 @@ void ContactsResource::itemChanged( const Item &item, const QSet< QByteArray > &
 void ContactsResource::itemMoved( const Item &item, const Collection &collectionSource,
                                   const Collection &collectionDestination )
 {
-    if ( !canPerformTask<KABC::Addressee>( item, KABC::Addressee::mimeType() ) ) {
+    if ( !canPerformTask<KContacts::Addressee>( item, KContacts::Addressee::mimeType() ) ) {
         return;
     }
 
-    KABC::Addressee addressee = item.payload< KABC::Addressee >();
+    KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact( new Contact( addressee ) );
 
     // MyContacts -> OtherContacts
@@ -243,11 +243,11 @@ void ContactsResource::itemRemoved( const Item &item )
 
 void ContactsResource::itemLinked( const Item &item, const Collection &collection )
 {
-    if ( !canPerformTask<KABC::Addressee>( item, KABC::Addressee::mimeType() ) ) {
+    if ( !canPerformTask<KContacts::Addressee>( item, KContacts::Addressee::mimeType() ) ) {
         return;
     }
 
-    KABC::Addressee addressee = item.payload<KABC::Addressee>();
+    KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
     ContactPtr contact( new Contact( addressee ) );
 
     contact->addGroup( collection.remoteId() );
@@ -258,11 +258,11 @@ void ContactsResource::itemLinked( const Item &item, const Collection &collectio
 
 void ContactsResource::itemUnlinked( const Item &item, const Collection &collection )
 {
-    if ( !canPerformTask<KABC::Addressee>( item, KABC::Addressee::mimeType() ) ) {
+    if ( !canPerformTask<KContacts::Addressee>( item, KContacts::Addressee::mimeType() ) ) {
         return;
     }
 
-    KABC::Addressee addressee = item.payload<KABC::Addressee>();
+    KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
     ContactPtr contact( new Contact( addressee ) );
 
     contact->removeGroup( collection.remoteId() );
@@ -335,7 +335,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
 
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes( QStringList() << Collection::virtualMimeType()
-                                                        << KABC::Addressee::mimeType() );
+                                                        << KContacts::Addressee::mimeType() );
     m_rootCollection.setRemoteId( MYCONTACTS_REMOTEID );
     m_rootCollection.setName( fetchJob->account()->accountName() );
     m_rootCollection.setParentCollection( Collection::root() );
@@ -374,7 +374,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
         }
 
         Collection collection;
-        collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
+        collection.setContentMimeTypes( QStringList() << KContacts::Addressee::mimeType() );
         collection.setName( group->id() );
         collection.setParentCollection( m_rootCollection );
         collection.setRights( Collection::CanLinkItem |
@@ -396,7 +396,7 @@ void ContactsResource::slotCollectionsRetrieved( KGAPI2::Job *job )
     }
 
     Collection otherCollection;
-    otherCollection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
+    otherCollection.setContentMimeTypes( QStringList() << KContacts::Addressee::mimeType() );
     otherCollection.setName( i18n( "Other Contacts" ) );
     otherCollection.setParentCollection( m_rootCollection );
     otherCollection.setRights( Collection::CanCreateItem |
@@ -436,11 +436,11 @@ void ContactsResource::slotItemsRetrieved( KGAPI2::Job *job )
         }
 
         Item item;
-        item.setMimeType( KABC::Addressee::mimeType() );
+        item.setMimeType( KContacts::Addressee::mimeType() );
         item.setParentCollection( m_collections[MYCONTACTS_REMOTEID] );
         item.setRemoteId( contact->uid() );
         item.setRemoteRevision( contact->etag() );
-        item.setPayload<KABC::Addressee>( *contact.dynamicCast<KABC::Addressee>() );
+        item.setPayload<KContacts::Addressee>( *contact.dynamicCast<KContacts::Addressee>() );
 
         if ( contact->deleted() ) {
             removedItems << item;
@@ -483,7 +483,7 @@ void ContactsResource::slotUpdatePhotosItemsRetrieved( KJob *job )
 
     foreach( const Item &item, items ) {
         if ( modifiedItems.contains( item.remoteId() )) {
-            const KABC::Addressee addressee = item.payload<KABC::Addressee>();
+            const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
             const ContactPtr contact( new Contact( addressee ) );
             contacts << contact;
         }
@@ -512,7 +512,7 @@ void ContactsResource::slotUpdatePhotoFinished( KGAPI2::Job *job, const ContactP
 
     foreach( Item item, items ) {
         if ( item.remoteId() == contact->uid() ) {
-            item.setPayload<KABC::Addressee>( *contact.dynamicCast<KABC::Addressee>() );
+            item.setPayload<KContacts::Addressee>( *contact.dynamicCast<KContacts::Addressee>() );
             new ItemModifyJob( item, this );
             return;
         }
@@ -541,7 +541,7 @@ void ContactsResource::slotCreateJobFinished( KGAPI2::Job* job )
         ContactsGroupPtr group = createJob->items().first().dynamicCast<ContactsGroup>();
 
         collection.setRemoteId( group->id() );
-        collection.setContentMimeTypes( QStringList() << KABC::Addressee::mimeType() );
+        collection.setContentMimeTypes( QStringList() << KContacts::Addressee::mimeType() );
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>( Entity::AddIfMissing );
         attr->setDisplayName( group->title() );

@@ -65,7 +65,7 @@ target_link_libraries(akonadi_facebook_resource
   KF5::Syndication
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
-  KF5::Abc
+  KF5::Contacts
   KF5::CalendarCore
   KF5::AkonadiNotes
   KF5::Mime

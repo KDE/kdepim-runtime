@@ -107,7 +107,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         break;
         case Kolab::ContactObject:
         {
-            Akonadi::Item newItem(KABC::Addressee::mimeType());
+            Akonadi::Item newItem(KContacts::Addressee::mimeType());
             newItem.setPayload(reader.getContact());
             newItem.setRemoteId(imapItem.remoteId());
             newItem.setGid(reader.getContact().uid());
@@ -116,21 +116,21 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         break;
         case Kolab::DistlistObject:
         {
-            KABC::ContactGroup contactGroup = reader.getDistlist();
+            KContacts::ContactGroup contactGroup = reader.getDistlist();
 
-            QList<KABC::ContactGroup::ContactReference> toAdd;
+            QList<KContacts::ContactGroup::ContactReference> toAdd;
             for (uint index = 0; index < contactGroup.contactReferenceCount(); ++index) {
-                const KABC::ContactGroup::ContactReference& reference = contactGroup.contactReference(index);
-                KABC::ContactGroup::ContactReference ref;
+                const KContacts::ContactGroup::ContactReference& reference = contactGroup.contactReference(index);
+                KContacts::ContactGroup::ContactReference ref;
                 ref.setGid(reference.uid()); //libkolab set a gid with setUid()
                 toAdd << ref;
             }
             contactGroup.removeAllContactReferences();
-            foreach (const KABC::ContactGroup::ContactReference &ref, toAdd) {
+            foreach (const KContacts::ContactGroup::ContactReference &ref, toAdd) {
                 contactGroup.append(ref);
             }
 
-            Akonadi::Item newItem(KABC::ContactGroup::mimeType());
+            Akonadi::Item newItem(KContacts::ContactGroup::mimeType());
             newItem.setPayload(contactGroup);
             newItem.setRemoteId(imapItem.remoteId());
             newItem.setGid(contactGroup.id());
@@ -158,11 +158,11 @@ Akonadi::Item::List KolabHelpers::translateToImap(const Akonadi::Item::List &ite
     return imapItems;
 }
 
-static KABC::ContactGroup convertToGidOnly(const KABC::ContactGroup &contactGroup)
+static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &contactGroup)
 {
-    QList<KABC::ContactGroup::ContactReference> toAdd;
+    QList<KContacts::ContactGroup::ContactReference> toAdd;
     for ( uint index = 0; index < contactGroup.contactReferenceCount(); ++index ) {
-        const KABC::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
+        const KContacts::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
         QString gid;
         if (!reference.gid().isEmpty()) {
             gid = reference.gid();
@@ -183,16 +183,16 @@ static KABC::ContactGroup convertToGidOnly(const KABC::ContactGroup &contactGrou
             if (items.count() != 1) {
                 continue;
             }
-            const KABC::Addressee addressee = job->items().first().payload<KABC::Addressee>();
+            const KContacts::Addressee addressee = job->items().first().payload<KContacts::Addressee>();
             gid = addressee.uid();
         }
-        KABC::ContactGroup::ContactReference ref;
+        KContacts::ContactGroup::ContactReference ref;
         ref.setUid(gid); //libkolab expects a gid for uid()
         toAdd << ref;
     }
-    KABC::ContactGroup gidOnlyContactGroup = contactGroup;
+    KContacts::ContactGroup gidOnlyContactGroup = contactGroup;
     gidOnlyContactGroup.removeAllContactReferences();
-    foreach ( const KABC::ContactGroup::ContactReference &ref, toAdd ) {
+    foreach ( const KContacts::ContactGroup::ContactReference &ref, toAdd ) {
       gidOnlyContactGroup.append( ref );
     }
     return gidOnlyContactGroup;
@@ -234,17 +234,17 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         break;
         case Kolab::ContactObject:
         {
-            Q_ASSERT(item.hasPayload<KABC::Addressee>());
+            Q_ASSERT(item.hasPayload<KContacts::Addressee>());
             qDebug() << "converted contact";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(
-                item.payload<KABC::Addressee>(), Kolab::KolabV3, productId);
+                item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
             imapItem.setPayload( message );
         }
         break;
         case Kolab::DistlistObject:
         {
-            Q_ASSERT(item.hasPayload<KABC::ContactGroup>());
-            const KABC::ContactGroup contactGroup = convertToGidOnly(item.payload<KABC::ContactGroup>());
+            Q_ASSERT(item.hasPayload<KContacts::ContactGroup>());
+            const KContacts::ContactGroup contactGroup = convertToGidOnly(item.payload<KContacts::ContactGroup>());
             qDebug() << "converted distlist";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(
                 contactGroup, Kolab::KolabV3, productId);
@@ -268,7 +268,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
 
 QByteArray KolabHelpers::kolabTypeForMimeType( const QStringList &contentMimeTypes )
 {
-    if (contentMimeTypes.contains(KABC::Addressee::mimeType())) {
+    if (contentMimeTypes.contains(KContacts::Addressee::mimeType())) {
         return "contact";
     } else if (contentMimeTypes.contains( KCalCore::Event::eventMimeType())) {
         return "event";
@@ -291,9 +291,9 @@ Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
         return Kolab::TodoObject;
     } else if (type == KCalCore::Journal::journalMimeType()) {
         return Kolab::JournalObject;
-    } else if (type == KABC::Addressee::mimeType()) {
+    } else if (type == KContacts::Addressee::mimeType()) {
         return Kolab::ContactObject;
-    } else if (type == KABC::ContactGroup::mimeType()) {
+    } else if (type == KContacts::ContactGroup::mimeType()) {
         return Kolab::DistlistObject;
     } else if (type == QLatin1String("text/x-vnd.akonadi.note") ||
                type == QLatin1String("application/x-vnd.akonadi.note")) {
@@ -313,7 +313,7 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
             contentTypes <<  KCalCore::Incidence::mimeTypes();
             break;
         case Kolab::ContactType:
-            contentTypes << KABC::Addressee::mimeType() << KABC::ContactGroup::mimeType();
+            contentTypes << KContacts::Addressee::mimeType() << KContacts::ContactGroup::mimeType();
             break;
         case Kolab::NoteType:
             contentTypes << QLatin1String("text/x-vnd.akonadi.note") << QLatin1String("application/x-vnd.akonadi.note");

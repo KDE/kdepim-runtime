@@ -24,8 +24,8 @@
 
 #include <collection.h>
 #include <item.h>
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/vcardconverter.h>
 #include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <KCalCore/MemoryCalendar>
@@ -241,8 +241,8 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
   DavItem davItem;
   const QString basePath = collection.remoteId();
 
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee contact = item.payload<KABC::Addressee>();
+  if ( item.hasPayload<KContacts::Addressee>() ) {
+    const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
     const QString fileName = createUniqueId();
 
     url = KUrl( basePath + fileName + QLatin1String(".vcf") );
@@ -253,12 +253,12 @@ DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Colle
         DavManager::self()->davProtocol(
           DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
     } else {
-      mimeType = KABC::Addressee::mimeType();
+      mimeType = KContacts::Addressee::mimeType();
     }
 
-    KABC::VCardConverter converter;
+    KContacts::VCardConverter converter;
     // rawData is already UTF-8
-    rawData = converter.exportVCard( contact, KABC::VCardConverter::v3_0 );
+    rawData = converter.exportVCard( contact, KContacts::VCardConverter::v3_0 );
   } else if ( item.hasPayload<IncidencePtr>() ) {
     const KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KDateTime::LocalZone ) );
     calendar->addIncidence( item.payload<IncidencePtr>() );
@@ -287,9 +287,9 @@ bool DavUtils::parseDavData( const DavItem &source, Akonadi::Item &target, Akona
 {
   const QString data = QString::fromUtf8( source.data() );
 
-  if ( target.mimeType() == KABC::Addressee::mimeType() ) {
-    KABC::VCardConverter converter;
-    const KABC::Addressee contact = converter.parseVCard( source.data() );
+  if ( target.mimeType() == KContacts::Addressee::mimeType() ) {
+    KContacts::VCardConverter converter;
+    const KContacts::Addressee contact = converter.parseVCard( source.data() );
 
     if ( contact.isEmpty() )
       return false;

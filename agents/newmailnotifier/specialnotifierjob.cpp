@@ -98,8 +98,8 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
         return;
     }
     if (!searchJob->contacts().isEmpty()) {
-        const KABC::Addressee addressee = searchJob->contacts().first();
-        const KABC::Picture photo = addressee.photo();
+        const KContacts::Addressee addressee = searchJob->contacts().first();
+        const KContacts::Picture photo = addressee.photo();
         const QImage image = photo.data();
         if (image.isNull()) {
             emitNotification(Util::defaultPixmap());

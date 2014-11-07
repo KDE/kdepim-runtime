@@ -30,7 +30,7 @@ target_link_libraries(akonadi_birthdays_resource
   KF5::CalendarCore
   KF5::PimUtils
   KF5::AkonadiAgentBase
-  KF5::Abc
+  KF5::Contacts
 )
 
 install( TARGETS akonadi_birthdays_resource ${INSTALL_TARGETS_DEFAULT_ARGS} )

@@ -88,7 +88,7 @@ bool VCardDirResource::loadAddressees()
         const QByteArray data = file.readAll();
         file.close();
 
-        const KABC::Addressee addr = mConverter.parseVCard( data );
+        const KContacts::Addressee addr = mConverter.parseVCard( data );
         if ( !addr.isEmpty() ) {
           mAddressees.insert( addr.uid(), addr );
         }
@@ -112,7 +112,7 @@ bool VCardDirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByte
   }
 
   Item newItem( item );
-  newItem.setPayload<KABC::Addressee>( mAddressees.value( remoteId ) );
+  newItem.setPayload<KContacts::Addressee>( mAddressees.value( remoteId ) );
   itemRetrieved( newItem );
 
   return true;
@@ -126,9 +126,9 @@ void VCardDirResource::itemAdded( const Akonadi::Item &item, const Akonadi::Coll
     return;
   }
 
-  KABC::Addressee addressee;
-  if ( item.hasPayload<KABC::Addressee>() )
-    addressee  = item.payload<KABC::Addressee>();
+  KContacts::Addressee addressee;
+  if ( item.hasPayload<KContacts::Addressee>() )
+    addressee  = item.payload<KContacts::Addressee>();
 
   if ( !addressee.isEmpty() ) {
     // add it to the cache...
@@ -160,9 +160,9 @@ void VCardDirResource::itemChanged( const Akonadi::Item &item, const QSet<QByteA
     return;
   }
 
-  KABC::Addressee addressee;
-  if ( item.hasPayload<KABC::Addressee>() )
-    addressee  = item.payload<KABC::Addressee>();
+  KContacts::Addressee addressee;
+  if ( item.hasPayload<KContacts::Addressee>() )
+    addressee  = item.payload<KContacts::Addressee>();
 
   if ( !addressee.isEmpty() ) {
     // change it in the cache...
@@ -213,7 +213,7 @@ void VCardDirResource::retrieveCollections()
   c.setRemoteId( vCardDirectoryName() );
   c.setName( name() );
   QStringList mimeTypes;
-  mimeTypes << KABC::Addressee::mimeType();
+  mimeTypes << KContacts::Addressee::mimeType();
   c.setContentMimeTypes( mimeTypes );
   if ( Settings::self()->readOnly() ) {
     c.setRights( Collection::CanChangeCollection );
@@ -239,10 +239,10 @@ void VCardDirResource::retrieveItems( const Akonadi::Collection& )
 {
   Item::List items;
 
-  foreach ( const KABC::Addressee &addressee, mAddressees ) {
+  foreach ( const KContacts::Addressee &addressee, mAddressees ) {
     Item item;
     item.setRemoteId( addressee.uid() );
-    item.setMimeType( KABC::Addressee::mimeType() );
+    item.setMimeType( KContacts::Addressee::mimeType() );
     items.append( item );
   }
 

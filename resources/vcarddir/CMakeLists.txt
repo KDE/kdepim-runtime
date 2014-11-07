@@ -32,7 +32,7 @@ endif ()
 target_link_libraries(akonadi_vcarddir_resource
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
-  KF5::Abc  
+  KF5::Contacts  
   KF5::KIOCore
 )
 

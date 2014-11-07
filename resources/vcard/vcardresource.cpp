@@ -35,7 +35,7 @@ using namespace Akonadi_VCard_Resource;
 VCardResource::VCardResource( const QString &id )
   : SingleFileResource<Settings>( id )
 {
-  setSupportedMimetypes( QStringList() << KABC::Addressee::mimeType(), QLatin1String("office-address-book") );
+  setSupportedMimetypes( QStringList() << KContacts::Addressee::mimeType(), QLatin1String("office-address-book") );
 
   new VCardSettingsAdaptor( mSettings );
   KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
@@ -56,7 +56,7 @@ bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArr
     return false;
   }
   Item i( item );
-  i.setPayload<KABC::Addressee>( mAddressees.value( rid ) );
+  i.setPayload<KContacts::Addressee>( mAddressees.value( rid ) );
   itemRetrieved( i );
   return true;
 }
@@ -77,9 +77,9 @@ void VCardResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settin
 
 void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
 {
-  KABC::Addressee addressee;
-  if ( item.hasPayload<KABC::Addressee>() )
-    addressee  = item.payload<KABC::Addressee>();
+  KContacts::Addressee addressee;
+  if ( item.hasPayload<KContacts::Addressee>() )
+    addressee  = item.payload<KContacts::Addressee>();
 
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
@@ -96,9 +96,9 @@ void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collect
 
 void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  KABC::Addressee addressee;
-  if ( item.hasPayload<KABC::Addressee>() )
-    addressee  = item.payload<KABC::Addressee>();
+  KContacts::Addressee addressee;
+  if ( item.hasPayload<KContacts::Addressee>() )
+    addressee  = item.payload<KContacts::Addressee>();
 
   if ( !addressee.isEmpty() ) {
     mAddressees.insert( addressee.uid(), addressee );
@@ -134,10 +134,10 @@ void VCardResource::retrieveItems( const Akonadi::Collection & col )
   // items, otherwise set a bool and in the result slot of the job send the
   // items if the bool is set.
 
-  foreach ( const KABC::Addressee &addressee, mAddressees ) {
+  foreach ( const KContacts::Addressee &addressee, mAddressees ) {
     Item item;
     item.setRemoteId( addressee.uid() );
-    item.setMimeType( KABC::Addressee::mimeType() );
+    item.setMimeType( KContacts::Addressee::mimeType() );
     item.setPayload( addressee );
     items.append( item );
   }
@@ -158,7 +158,7 @@ bool VCardResource::readFromFile( const QString &fileName )
   const QByteArray data = file.readAll();
   file.close();
 
-  const KABC::Addressee::List list = mConverter.parseVCards( data );
+  const KContacts::Addressee::List list = mConverter.parseVCards( data );
   const int numberOfElementInList = list.count();
   for ( int i = 0; i < numberOfElementInList; ++i ) {
     mAddressees.insert( list[ i ].uid(), list[ i ] );

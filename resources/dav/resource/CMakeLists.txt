@@ -82,7 +82,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
 
   target_link_libraries(akonadi_davgroupware_resource
           Qt5::XmlPatterns
-          KF5::Abc
+          KF5::Contacts
 	  KF5::AkonadiCalendar 
           KF5::KIOCore
 	  KF5::AkonadiAgentBase

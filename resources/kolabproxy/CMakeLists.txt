@@ -81,7 +81,7 @@ target_link_libraries(akonadi_kolabproxy_resource
   akonadi-singlefileresource
   KF5::AkonadiMime
   KF5::AkonadiCore
-  KF5::Abc
+  KF5::Contacts
   KF5::CalendarCore
   KF5::Mime
   KF5::KIOCore

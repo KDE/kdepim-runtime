@@ -36,8 +36,8 @@ class KolabConverterTest : public QObject
   private slots:
     void testContacts_data()
     {
-      QTest::addColumn<KABC::Addressee>( "addressee" );
-      KABC::Addressee contact;
+      QTest::addColumn<KContacts::Addressee>( "addressee" );
+      KContacts::Addressee contact;
       contact.setName(QLatin1String("John Doe"));
       contact.setEmails(QStringList() << QLatin1String("doe@example.org"));
 
@@ -46,7 +46,7 @@ class KolabConverterTest : public QObject
 
     void testContacts()
     {
-      QFETCH( KABC::Addressee, addressee );
+      QFETCH( KContacts::Addressee, addressee );
 
       KolabHandler::Ptr handler = KolabHandler::createHandler( Kolab::ContactType, Collection() );
       QVERIFY( handler );
@@ -62,7 +62,7 @@ class KolabConverterTest : public QObject
       //and back
       Item::List vcardItems = handler->translateItems( Akonadi::Item::List() << kolabItem );
       QCOMPARE( vcardItems.size(), 1 );
-      QVERIFY( vcardItems.first().hasPayload<KABC::Addressee>() );
+      QVERIFY( vcardItems.first().hasPayload<KContacts::Addressee>() );
     }
 
     void testIncidences_data()

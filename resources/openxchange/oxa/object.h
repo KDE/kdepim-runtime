@@ -24,8 +24,8 @@
 
 #include "folder.h"
 
-#include <kabc/addressee.h>
-#include <kabc/contactgroup.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/contactgroup.h>
 #include <KCalCore/Incidence>
 
 #include <QtCore/QList>
@@ -67,11 +67,11 @@ class Object
     void setModule( Folder::Module module );
     Folder::Module module() const;
 
-    void setContact( const KABC::Addressee &contact );
-    KABC::Addressee contact() const;
+    void setContact( const KContacts::Addressee &contact );
+    KContacts::Addressee contact() const;
 
-    void setContactGroup( const KABC::ContactGroup &group );
-    KABC::ContactGroup contactGroup() const;
+    void setContactGroup( const KContacts::ContactGroup &group );
+    KContacts::ContactGroup contactGroup() const;
 
     void setEvent( const KCalCore::Incidence::Ptr &event );
     KCalCore::Incidence::Ptr event() const;
@@ -85,8 +85,8 @@ class Object
     qlonglong mFolderId;
     QString mLastModified;
     Folder::Module mModule;
-    KABC::Addressee mContact;
-    KABC::ContactGroup mContactGroup;
+    KContacts::Addressee mContact;
+    KContacts::ContactGroup mContactGroup;
     KCalCore::Incidence::Ptr mEvent;
     KCalCore::Incidence::Ptr mTask;
 };

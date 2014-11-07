@@ -31,7 +31,7 @@ target_link_libraries(akonadi_migration_agent
     gidmigration
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
-    KF5::Abc
+    KF5::Contacts
 )
 
 install(TARGETS akonadi_migration_agent ${INSTALL_TARGETS_DEFAULT_ARGS})

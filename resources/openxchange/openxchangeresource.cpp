@@ -29,7 +29,7 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
-#include <kabc/addressee.h>
+#include <kcontacts/addressee.h>
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
 #include <KLocalizedString>
@@ -419,10 +419,10 @@ void OpenXchangeResource::itemAdded( const Akonadi::Item &item, const Akonadi::C
   object.setFolderId( remoteInformation.objectId() );
   object.setModule( remoteInformation.module() );
 
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    object.setContact( item.payload<KABC::Addressee>() );
-  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
-    object.setContactGroup( item.payload<KABC::ContactGroup>() );
+  if ( item.hasPayload<KContacts::Addressee>() ) {
+    object.setContact( item.payload<KContacts::Addressee>() );
+  } else if ( item.hasPayload<KContacts::ContactGroup>() ) {
+    object.setContactGroup( item.payload<KContacts::ContactGroup>() );
   } else if ( item.hasPayload<KCalCore::Event::Ptr>() ) {
     object.setEvent( item.payload<KCalCore::Incidence::Ptr>() );
   } else if ( item.hasPayload<KCalCore::Todo::Ptr>() ) {
@@ -448,10 +448,10 @@ void OpenXchangeResource::itemChanged( const Akonadi::Item &item, const QSet<QBy
   object.setFolderId( parentRemoteInformation.objectId() );
   object.setLastModified( remoteInformation.lastModified() );
 
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    object.setContact( item.payload<KABC::Addressee>() );
-  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
-    object.setContactGroup( item.payload<KABC::ContactGroup>() );
+  if ( item.hasPayload<KContacts::Addressee>() ) {
+    object.setContact( item.payload<KContacts::Addressee>() );
+  } else if ( item.hasPayload<KContacts::ContactGroup>() ) {
+    object.setContactGroup( item.payload<KContacts::ContactGroup>() );
   } else if ( item.hasPayload<KCalCore::Event::Ptr>() ) {
     object.setEvent( item.payload<KCalCore::Incidence::Ptr>() );
   } else if ( item.hasPayload<KCalCore::Todo::Ptr>() ) {
@@ -633,11 +633,11 @@ void OpenXchangeResource::onObjectsRequestJobFinished( KJob *job )
     switch ( object.module() ) {
       case OXA::Folder::Contacts:
         if ( !object.contact().isEmpty() ) {
-          item.setMimeType( KABC::Addressee::mimeType() );
-          item.setPayload<KABC::Addressee>( object.contact() );
+          item.setMimeType( KContacts::Addressee::mimeType() );
+          item.setPayload<KContacts::Addressee>( object.contact() );
         } else {
-          item.setMimeType( KABC::ContactGroup::mimeType() );
-          item.setPayload<KABC::ContactGroup>( object.contactGroup() );
+          item.setMimeType( KContacts::ContactGroup::mimeType() );
+          item.setPayload<KContacts::ContactGroup>( object.contactGroup() );
         }
         break;
       case OXA::Folder::Calendar:
@@ -685,11 +685,11 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished( KJob *job )
     switch ( object.module() ) {
       case OXA::Folder::Contacts:
         if ( !object.contact().isEmpty() ) {
-          item.setMimeType( KABC::Addressee::mimeType() );
-          item.setPayload<KABC::Addressee>( object.contact() );
+          item.setMimeType( KContacts::Addressee::mimeType() );
+          item.setPayload<KContacts::Addressee>( object.contact() );
         } else {
-          item.setMimeType( KABC::ContactGroup::mimeType() );
-          item.setPayload<KABC::ContactGroup>( object.contactGroup() );
+          item.setMimeType( KContacts::ContactGroup::mimeType() );
+          item.setPayload<KContacts::ContactGroup>( object.contactGroup() );
         }
         break;
       case OXA::Folder::Calendar:
@@ -759,11 +759,11 @@ void OpenXchangeResource::onObjectRequestJobFinished( KJob *job )
   switch ( object.module() ) {
     case OXA::Folder::Contacts:
       if ( !object.contact().isEmpty() ) {
-        item.setMimeType( KABC::Addressee::mimeType() );
-        item.setPayload<KABC::Addressee>( object.contact() );
+        item.setMimeType( KContacts::Addressee::mimeType() );
+        item.setPayload<KContacts::Addressee>( object.contact() );
       } else {
-        item.setMimeType( KABC::ContactGroup::mimeType() );
-        item.setPayload<KABC::ContactGroup>( object.contactGroup() );
+        item.setMimeType( KContacts::ContactGroup::mimeType() );
+        item.setPayload<KContacts::ContactGroup>( object.contactGroup() );
       }
       break;
     case OXA::Folder::Calendar:
@@ -893,8 +893,8 @@ static Collection folderToCollection( const OXA::Folder &folder, const Collectio
       attribute->setIconName( QString::fromLatin1( "view-calendar" ) );
       break;
     case OXA::Folder::Contacts:
-      mimeTypes.append( KABC::Addressee::mimeType() );
-      mimeTypes.append( KABC::ContactGroup::mimeType() );
+      mimeTypes.append( KContacts::Addressee::mimeType() );
+      mimeTypes.append( KContacts::ContactGroup::mimeType() );
       attribute->setIconName( QString::fromLatin1( "view-pim-contacts" ) );
       break;
     case OXA::Folder::Tasks:

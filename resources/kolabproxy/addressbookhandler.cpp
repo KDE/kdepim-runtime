@@ -44,26 +44,26 @@ Akonadi::Item::List AddressBookHandler::translateItems( const Akonadi::Item::Lis
     const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
     Kolab::KolabObjectReader reader( payload );
     if ( reader.getType() == Kolab::ContactObject ) {
-      Akonadi::Item newItem( KABC::Addressee::mimeType() );
+      Akonadi::Item newItem( KContacts::Addressee::mimeType() );
       newItem.setRemoteId( QString::number( item.id() ) );
       newItem.setPayload( reader.getContact() );
       newItems << newItem;
     } else if ( reader.getType() == Kolab::DistlistObject ) {
-      KABC::ContactGroup contactGroup = reader.getDistlist();
+      KContacts::ContactGroup contactGroup = reader.getDistlist();
 
-      QList<KABC::ContactGroup::ContactReference> toAdd;
+      QList<KContacts::ContactGroup::ContactReference> toAdd;
       for ( uint index = 0; index < contactGroup.contactReferenceCount(); ++index ) {
-        const KABC::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
-        KABC::ContactGroup::ContactReference ref;
+        const KContacts::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
+        KContacts::ContactGroup::ContactReference ref;
         ref.setGid( reference.uid() ); //libkolab set a gid with setUid()
         toAdd << ref;
       }
       contactGroup.removeAllContactReferences();
-      foreach ( const KABC::ContactGroup::ContactReference &ref, toAdd ) {
+      foreach ( const KContacts::ContactGroup::ContactReference &ref, toAdd ) {
         contactGroup.append( ref );
       }
 
-      Akonadi::Item newItem( KABC::ContactGroup::mimeType() );
+      Akonadi::Item newItem( KContacts::ContactGroup::mimeType() );
       newItem.setRemoteId( QString::number( item.id() ) );
       newItem.setPayload( contactGroup );
       newItems << newItem;
@@ -80,8 +80,8 @@ Akonadi::Item::List AddressBookHandler::translateItems( const Akonadi::Item::Lis
 
 bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
 {
-  if ( item.hasPayload<KABC::Addressee>() ) {
-    const KABC::Addressee &addressee = item.payload<KABC::Addressee>();
+  if ( item.hasPayload<KContacts::Addressee>() ) {
+    const KContacts::Addressee &addressee = item.payload<KContacts::Addressee>();
 
     const KMime::Message::Ptr &message =
       Kolab::KolabObjectWriter::writeContact( addressee, m_formatVersion, PRODUCT_ID );
@@ -91,16 +91,16 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     }
     imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( message );
-  } else if ( item.hasPayload<KABC::ContactGroup>() ) {
-    KABC::ContactGroup contactGroup = item.payload<KABC::ContactGroup>();
+  } else if ( item.hasPayload<KContacts::ContactGroup>() ) {
+    KContacts::ContactGroup contactGroup = item.payload<KContacts::ContactGroup>();
 
     // Replace all references with real data-sets
     // Hopefully all resources are available during saving, so we can look up
     // in the addressbook to get name+email from the UID.
     // TODO proxy should at least know the addressees it created
-    QList<KABC::ContactGroup::ContactReference> toAdd;
+    QList<KContacts::ContactGroup::ContactReference> toAdd;
     for ( uint index = 0; index < contactGroup.contactReferenceCount(); ++index ) {
-      const KABC::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
+      const KContacts::ContactGroup::ContactReference& reference = contactGroup.contactReference( index );
 
       QString gid;
       if (!reference.gid().isEmpty()) {
@@ -116,15 +116,15 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
         if ( items.count() != 1 )
             continue;
 
-        const KABC::Addressee addressee = job->items().first().payload<KABC::Addressee>();
+        const KContacts::Addressee addressee = job->items().first().payload<KContacts::Addressee>();
         gid = addressee.uid();
       }
-      KABC::ContactGroup::ContactReference ref;
+      KContacts::ContactGroup::ContactReference ref;
       ref.setUid(gid); //libkolab expects a gid for uid()
       toAdd << ref;
     }
     contactGroup.removeAllContactReferences();
-    foreach ( const KABC::ContactGroup::ContactReference &ref, toAdd ) {
+    foreach ( const KContacts::ContactGroup::ContactReference &ref, toAdd ) {
       contactGroup.append( ref );
     }
 
@@ -137,7 +137,7 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
     imapItem.setMimeType( QLatin1String("message/rfc822") );
     imapItem.setPayload( message );
   } else {
-    qWarning() << "Payload is neither a KABC::Addressee nor KABC::ContactGroup!";
+    qWarning() << "Payload is neither a KContacts::Addressee nor KContacts::ContactGroup!";
     return false;
   }
   return true;
@@ -145,8 +145,8 @@ bool AddressBookHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item
 
 QStringList AddressBookHandler::contentMimeTypes()
 {
-  return QStringList() << KABC::Addressee::mimeType()
-                       << KABC::ContactGroup::mimeType();
+  return QStringList() << KContacts::Addressee::mimeType()
+                       << KContacts::ContactGroup::mimeType();
 }
 
 QString AddressBookHandler::iconName() const
@@ -156,10 +156,10 @@ QString AddressBookHandler::iconName() const
 
 QString AddressBookHandler::extractGid(const Akonadi::Item& kolabItem)
 {
-  if ( kolabItem.hasPayload<KABC::Addressee>() ) {
-    return kolabItem.payload<KABC::Addressee>().uid();
-  } else if ( kolabItem.hasPayload<KABC::ContactGroup>() ) {
-    return kolabItem.payload<KABC::ContactGroup>().id();
+  if ( kolabItem.hasPayload<KContacts::Addressee>() ) {
+    return kolabItem.payload<KContacts::Addressee>().uid();
+  } else if ( kolabItem.hasPayload<KContacts::ContactGroup>() ) {
+    return kolabItem.payload<KContacts::ContactGroup>().id();
   }
   qWarning() << "invalid payload type!";
   return QString();

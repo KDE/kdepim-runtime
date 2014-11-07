@@ -41,7 +41,7 @@ endif()
 
 target_link_libraries(akonadi_googlecontacts_resource
   KF5::AkonadiCore
-  KF5::Abc
+  KF5::Contacts
   KF5::KIOCore
   KF5::GAPICore
   KF5::GAPIContacts

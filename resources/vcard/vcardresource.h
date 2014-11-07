@@ -23,8 +23,8 @@
 #include "singlefileresource.h"
 #include "settings.h"
 
-#include <kabc/addressee.h>
-#include <kabc/vcardconverter.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/vcardconverter.h>
 
 class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource::Settings>
 {
@@ -53,8 +53,8 @@ class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource:
     virtual void itemRemoved( const Akonadi::Item &item );
 
   private:
-    QMap<QString, KABC::Addressee> mAddressees;
-    KABC::VCardConverter mConverter;
+    QMap<QString, KContacts::Addressee> mAddressees;
+    KContacts::VCardConverter mConverter;
 };
 
 #endif

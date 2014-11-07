@@ -26,7 +26,7 @@ add_library(akonadi_contacts_resource MODULE ${contactsresource_SRCS})
 target_link_libraries(akonadi_contacts_resource
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
-  KF5::Abc
+  KF5::Contacts
   KF5::KIOCore
 )
 

@@ -19,7 +19,7 @@ target_link_libraries(kolabconvertertest
     ${Libkolab_LIBRARIES}
     KF5::AkonadiCore
     KF5::KIOCore
-    KF5::Abc
+    KF5::Contacts
     KF5::AkonadiMime
     KF5::Mime
     Qt5::Test
