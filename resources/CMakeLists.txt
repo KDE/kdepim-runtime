@@ -47,7 +47,7 @@ find_package(KF5AkonadiNotes ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 
 # Extra package
-find_package(KF5GAPI "4.70.0" CONFIG)
+find_package(KF5GAPI "4.72.0" CONFIG)
 
 
 
