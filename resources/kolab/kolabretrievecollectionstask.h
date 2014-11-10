@@ -52,7 +52,6 @@ private:
     void checkDone();
     Akonadi::Collection getOrCreateParent(const QString &parentPath);
     void createCollection(const QString &mailbox, const QList<QByteArray> &flags, bool isSubscribed);
-    bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces) const;
     void setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path);
     void applyRights(QHash<QString, KIMAP::Acl::Rights> rights);
     void applyMetadata(QHash<QString, QMap<QByteArray, QByteArray> > metadata);
@@ -77,7 +76,7 @@ class RetrieveMetadataJob : public KJob
 {
     Q_OBJECT
 public:
-    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, QObject *parent = 0);
+    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = 0);
     void start();
 
     QHash<QString, QMap<QByteArray, QByteArray> > mMetadata;
@@ -91,6 +90,8 @@ private:
     QStringList mMailboxes;
     KIMAP::Session *mSession;
     QString mSeparator;
+    QList <KIMAP::MailBoxDescriptor > mSharedNamespace;
+    QList <KIMAP::MailBoxDescriptor > mUserNamespace;
 
 private Q_SLOTS:
     void onGetMetaDataDone(KJob *job);
