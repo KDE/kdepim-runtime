@@ -25,14 +25,12 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 endif()
 
-find_package(KF5AkonadiAbc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_serializer_plugins\")
 
 
 set(akonadi_serializer_addressee_PART_SRCS akonadi_serializer_addressee.cpp )
 add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_addressee_PART_SRCS})
-target_link_libraries(akonadi_serializer_addressee  KF5::Contacts KF5::AkonadiCore KF5::AkonadiAbc)
+target_link_libraries(akonadi_serializer_addressee  KF5::Contacts KF5::AkonadiCore KF5::AkonadiContact)
 install(TARGETS akonadi_serializer_addressee DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp akonadi_serializer_mail_debug.cpp)
@@ -52,7 +50,7 @@ install(TARGETS akonadi_serializer_bookmark DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
-target_link_libraries(akonadi_serializer_contactgroup  KF5::Contacts KF5::AkonadiCore KF5::AkonadiContact KF5::AkonadiAbc)
+target_link_libraries(akonadi_serializer_contactgroup  KF5::Contacts KF5::AkonadiCore KF5::AkonadiContact)
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${PLUGIN_INSTALL_DIR})
 
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp akonadi_serializer_kalarm_debug.cpp)

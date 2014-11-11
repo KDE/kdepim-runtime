@@ -22,7 +22,7 @@
 #include <AkonadiCore/abstractdifferencesreporter.h>
 #include <Akonadi/Contact/ContactGroupExpandJob>
 #include <AkonadiCore/item.h>
-#include <akonadi/kabc/contactparts.h>
+#include <Akonadi/Contact/ContactParts>
 
 #include <kcontacts/contactgroup.h>
 #include <kcontacts/contactgrouptool.h>
