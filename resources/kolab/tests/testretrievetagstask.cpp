@@ -133,7 +133,7 @@ private slots:
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setServerCapabilities(QStringList() << "METADATA" << "ACL");
         state->setUserName("Hans");
-        KolabRetrieveTagTask *task = new KolabRetrieveTagTask(state);
+        KolabRetrieveTagTask *task = new KolabRetrieveTagTask(state, KolabRetrieveTagTask::RetrieveTags);
 
         task->start(&pool);
 

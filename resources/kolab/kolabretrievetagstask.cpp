@@ -25,9 +25,10 @@
 #include <kimap/fetchjob.h>
 #include <kolabobject.h>
 
-KolabRetrieveTagTask::KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, QObject *parent)
+KolabRetrieveTagTask::KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
     , mSession(0)
+    , mRetrieveType(type)
 {
 }
 
@@ -102,9 +103,9 @@ void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
         const Kolab::KolabObjectReader reader(msg);
         switch (reader.getType()) {
             case Kolab::RelationConfigurationObject:
-                if (reader.isTag()) {
+                if (mRetrieveType == RetrieveTags && reader.isTag()) {
                     extractTag(reader, uids[number]);
-                } else if (reader.isRelation()) {
+                } else if (mRetrieveType == RetrieveRelations && reader.isRelation()) {
                     extractRelation(reader, uids[number]);
                 }
                 break;
@@ -174,12 +175,10 @@ void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
         return;
     }
 
-    if (!mTags.isEmpty() || !mTagMembers.isEmpty()) {
+    if (mRetrieveType == RetrieveTags) {
         kDebug() << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
         resourceState()->tagsRetrieved(mTags, mTagMembers);
-    }
-
-    if (!mRelations.isEmpty()) {
+    } else if (mRetrieveType == RetrieveRelations) {
         kDebug() << "Fetched relations:" << mRelations.size();
         resourceState()->relationsRetrieved(mRelations);
     }

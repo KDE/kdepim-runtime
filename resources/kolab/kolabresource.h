@@ -66,6 +66,7 @@ protected:
 
 private Q_SLOTS:
     void retrieveTags();
+    void retrieveRelations();
 };
 
 #endif
