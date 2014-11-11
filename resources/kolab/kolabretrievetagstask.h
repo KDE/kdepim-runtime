@@ -32,7 +32,12 @@ class KolabRetrieveTagTask : public KolabRelationResourceTask
 {
     Q_OBJECT
 public:
-    explicit KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
+    enum RetrieveType {
+        RetrieveTags,
+        RetrieveRelations
+    };
+
+    explicit KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, RetrieveType type, QObject *parent = 0);
 
 protected:
     virtual void startRelationTask(KIMAP::Session *session);
@@ -42,6 +47,7 @@ private:
     Akonadi::Tag::List mTags;
     QHash<QString, Akonadi::Item::List> mTagMembers;
     Akonadi::Relation::List mRelations;
+    RetrieveType mRetrieveType;
 
 private Q_SLOTS:
     // void onItemsFetchDone(KJob *job);

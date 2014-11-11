@@ -98,6 +98,7 @@ void KolabResource::retrieveCollections()
 
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
     synchronizeTags();
+    synchronizeRelations();
 }
 
 void KolabResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
@@ -197,7 +198,13 @@ void KolabResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSe
 
 void KolabResource::retrieveTags()
 {
-    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), this);
+    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveTags, this);
+    startTask(task);
+}
+
+void KolabResource::retrieveRelations()
+{
+    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveRelations, this);
     startTask(task);
 }
 
