@@ -355,3 +355,9 @@ void ResourceState::tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<Q
 {
   m_resource->tagsRetrieved(tags, tagMembers);
 }
+
+
+void ResourceState::relationsRetrieved(const Akonadi::Relation::List &relations)
+{
+  m_resource->relationsRetrieved(relations);
+}

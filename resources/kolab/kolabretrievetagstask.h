@@ -23,6 +23,11 @@
 #include "kolabrelationresourcetask.h"
 #include <akonadi/tag.h>
 
+namespace Kolab
+{
+    class KolabObjectReader;
+} // namespace Kolab
+
 class KolabRetrieveTagTask : public KolabRelationResourceTask
 {
     Q_OBJECT
@@ -36,6 +41,7 @@ private:
     KIMAP::Session *mSession;
     Akonadi::Tag::List mTags;
     QHash<QString, Akonadi::Item::List> mTagMembers;
+    Akonadi::Relation::List mRelations;
 
 private Q_SLOTS:
     // void onItemsFetchDone(KJob *job);
@@ -47,6 +53,10 @@ private Q_SLOTS:
                             const QMap<qint64, KIMAP::MessageFlags> &flags,
                             const QMap<qint64, KIMAP::MessagePtr> &messages);
     void onHeadersFetchDone(KJob *job);
+
+private:
+    void extractTag(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
+    void extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
 
     // void onApplyCollectionChanged(const Akonadi::Collection &collection);
     // void onCancelTask(const QString &errorText);
