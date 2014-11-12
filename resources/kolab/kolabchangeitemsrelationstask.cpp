@@ -32,6 +32,8 @@
 
 #include <akonadi/relationfetchjob.h>
 
+#include "kolabhelpers.h"
+
 KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
 {
@@ -92,8 +94,14 @@ void KolabChangeItemsRelationsTask::onRelationFetchDone(KJob *job)
 
 void KolabChangeItemsRelationsTask::addRelation(const Akonadi::Relation &relation)
 {
+    //FIXME fetch items first?
+    QStringList members;
+    members.reserve(2);
+    members << KolabHelpers::createMemberUrl(relation.left(), QLatin1String("user@example.org"));
+    members << KolabHelpers::createMemberUrl(relation.right(), QLatin1String("user@example.org"));
+
     const QLatin1String productId("Akonadi-Kolab-Resource");
-    const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeRelation(relation, Kolab::KolabV3, productId);
+    const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeRelation(relation, members, Kolab::KolabV3, productId);
 
     KIMAP::AppendJob *job = new KIMAP::AppendJob(mSession);
     job->setMailBox(mailBoxForCollection(relationCollection()));

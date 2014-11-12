@@ -26,6 +26,7 @@
 namespace Kolab
 {
     class KolabObjectReader;
+    class RelationMember;
 } // namespace Kolab
 
 class KolabRetrieveTagTask : public KolabRelationResourceTask
@@ -50,7 +51,6 @@ private:
     RetrieveType mRetrieveType;
 
 private Q_SLOTS:
-    // void onItemsFetchDone(KJob *job);
     void onFinalSelectDone(KJob *job);
     void onHeadersReceived(const QString &mailBox,
                             const QMap<qint64, qint64> &uids,
@@ -63,10 +63,7 @@ private Q_SLOTS:
 private:
     void extractTag(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
     void extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
-
-    // void onApplyCollectionChanged(const Akonadi::Collection &collection);
-    // void onCancelTask(const QString &errorText);
-    // void onChangeCommitted();
+    Akonadi::Item extractMember(const Kolab::RelationMember &member);
 };
 
 #endif // KOLABCHANGETAGTASK_H

@@ -116,6 +116,39 @@ void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
     }
 }
 
+Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &member)
+{
+    //TODO should we create a dummy item if it isn't yet available?
+    Akonadi::Item i;
+    if (!member.gid.isEmpty()) {
+        //Reference by GID
+        i.setGid(member.gid);
+    } else {
+        //Reference by imap uid
+        if (member.uid < 0) {
+            return Akonadi::Item();
+        }
+        i.setRemoteId(QString::number(member.uid));
+        kDebug() << "got member: " << member.uid << member.mailbox;
+        Akonadi::Collection parent;
+        {
+            //The root collection is not part of the mailbox path
+            Akonadi::Collection col;
+            col.setRemoteId(rootRemoteId());
+            col.setParentCollection(Akonadi::Collection::root());
+            parent = col;
+        }
+        Q_FOREACH(const QByteArray part, member.mailbox) {
+            Akonadi::Collection col;
+            col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
+            col.setParentCollection(parent);
+            parent = col;
+        }
+        i.setParentCollection(parent);
+    }
+    return i;
+}
+
 void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qint64 remoteUid)
 {
     Akonadi::Tag tag = reader.getTag();
@@ -125,45 +158,40 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
     Akonadi::Item::List members;
     Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
-        //TODO should we create a dummy item if it isn't yet available?
-        Akonadi::Item i;
-        if (!member.gid.isEmpty()) {
-            //Reference by GID
-            i.setGid(member.gid);
-        } else {
-            //Reference by imap uid
-            if (member.uid < 0) {
-                kWarning() << "Failed to parse uid: " << memberUrl;
-                continue;
-            }
-            i.setRemoteId(QString::number(member.uid));
-            kDebug() << "got member: " << member.uid << member.mailbox;
-            Akonadi::Collection parent;
-            {
-                //The root collection is not part of the mailbox path
-                Akonadi::Collection col;
-                col.setRemoteId(rootRemoteId());
-                col.setParentCollection(Akonadi::Collection::root());
-                parent = col;
-            }
-            Q_FOREACH(const QByteArray part, member.mailbox) {
-                Akonadi::Collection col;
-                col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
-                col.setParentCollection(parent);
-                parent = col;
-            }
-            i.setParentCollection(parent);
-        }
+        const Akonadi::Item i = extractMember(member);
         //TODO implement fallback to search if uid is not available
-        members << i;
+        if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
+            members << i;
+        } else {
+            kWarning() << "Failed to parse member: " << memberUrl;
+        }
     }
     mTagMembers.insert(QString::fromLatin1(tag.remoteId()), members);
 }
 
 void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid)
 {
+    Akonadi::Item::List members;
+    Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
+        Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
+        const Akonadi::Item i = extractMember(member);
+        //TODO implement fallback to search if uid is not available
+        if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
+            members << i;
+        } else {
+            kWarning() << "Failed to parse member: " << memberUrl;
+        }
+    }
+    if (members.size() != 2) {
+        kWarning() << "Wrong numbers of members for a relation, expected 2: " << members.size();
+        return;
+    }
+
     Akonadi::Relation relation = reader.getRelation();
+    relation.setType(Akonadi::Relation::GENERIC);
     relation.setRemoteId(QByteArray::number(remoteUid));
+    relation.setLeft(members.at(0));
+    relation.setRight(members.at(1));
     mRelations << relation;
 }
 

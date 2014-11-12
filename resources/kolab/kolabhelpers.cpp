@@ -465,3 +465,35 @@ bool KolabHelpers::isHandledType(Kolab::FolderType type)
     return false;
 }
 
+QList<QByteArray> KolabHelpers::ancestorChain(const Akonadi::Collection &col)
+{
+    Q_ASSERT(col.isValid());
+    if (col.parentCollection() == Akonadi::Collection::root() || col == Akonadi::Collection::root() || !col.isValid()) {
+        return QList<QByteArray>();
+    }
+    QList<QByteArray> ancestors = ancestorChain(col.parentCollection());
+    Q_ASSERT(!col.remoteId().isEmpty());
+    ancestors << col.remoteId().toLatin1().mid(1); //We strip the first character which is always the separator
+    return ancestors;
+}
+
+QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &user)
+{
+    Kolab::RelationMember member;
+    if (item.mimeType() == KMime::Message::mimeType()) {
+        KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+        member.uid = item.remoteId().toLong();
+        member.user = user;
+        member.subject = msg->subject()->asUnicodeString();
+        member.messageId = msg->messageID()->asUnicodeString();
+        member.mailbox = ancestorChain(item.parentCollection());
+    } else {
+        if (item.gid().isEmpty()) {
+            kWarning() << "Groupware object without GID, failed to add to tag: " << item.id() << item.remoteId();
+            return QString();
+        }
+        member.gid = item.gid();
+    }
+    return Kolab::generateMemberUrl(member);
+}
+

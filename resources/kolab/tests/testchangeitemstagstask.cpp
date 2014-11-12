@@ -32,10 +32,10 @@ unsigned int qHash(const Akonadi::Tag &tag);
 #include <akonadi/collectioncreatejob.h>
 #include <akonadi/virtualresource.h>
 #include <akonadi/tagcreatejob.h>
-#include "kolabhelpers.h"
 #include <kolab/kolabobject.h>
 
 #include "kolabchangeitemstagstask.h"
+#include "kolabhelpers.h"
 
 using namespace Akonadi;
 
@@ -218,7 +218,7 @@ private slots:
         Akonadi::Item item;
         item.setRemoteId(QLatin1String("20"));
         item.setParentCollection(createCollectionChain("/INBOX"));
-        const QString member = TagConverter::createMemberUrl(item);
+        const QString member = KolabHelpers::createMemberUrl(item, QLatin1String("localuser@localhost"));
         const QString expected = QLatin1String("imap:/user/localuser@localhost/INBOX/20?message-id=messageid&subject=subject&date=");
         QCOMPARE(member, expected);
     }

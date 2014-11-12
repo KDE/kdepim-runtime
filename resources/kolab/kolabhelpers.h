@@ -40,6 +40,8 @@ public:
     static QString getIcon(Kolab::FolderType type);
     //Returns true if the folder type shouldn't be ignored
     static bool isHandledType(Kolab::FolderType type);
+    static QList<QByteArray> ancestorChain(const Akonadi::Collection &col);
+    static QString createMemberUrl(const Akonadi::Item &item, const QString &user);
 };
 
 #endif

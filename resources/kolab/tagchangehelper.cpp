@@ -22,6 +22,7 @@
 #include "tagchangehelper.h"
 
 #include "kolabrelationresourcetask.h"
+#include "kolabhelpers.h"
 
 #include <imapflags.h>
 #include <uidnextattribute.h>
@@ -44,45 +45,12 @@ TagChangeHelper::TagChangeHelper(KolabRelationResourceTask *parent)
 {
 }
 
-static QList<QByteArray> ancestorChain(const Akonadi::Collection &col)
-{
-    Q_ASSERT(col.isValid());
-    if (col.parentCollection() == Akonadi::Collection::root() || col == Akonadi::Collection::root() || !col.isValid()) {
-        return QList<QByteArray>();
-    }
-    QList<QByteArray> ancestors = ancestorChain(col.parentCollection());
-    Q_ASSERT(!col.remoteId().isEmpty());
-    ancestors << col.remoteId().toLatin1().mid(1); //We strip the first character which is always the separator
-    return ancestors;
-}
-
-QString TagConverter::createMemberUrl(const Akonadi::Item &item)
-{
-    Kolab::RelationMember member;
-    if (item.mimeType() == KMime::Message::mimeType()) {
-        KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-        member.uid = item.remoteId().toLong();
-        //FIXME get the user from somewhere
-        member.user = QLatin1String("user@example.org");
-        member.subject = msg->subject()->asUnicodeString();
-        member.messageId = msg->messageID()->asUnicodeString();
-        member.mailbox = ancestorChain(item.parentCollection());
-    } else {
-        if (item.gid().isEmpty()) {
-            kWarning() << "Groupware object without GID, failed to add to tag: " << item.id() << item.remoteId();
-            return QString();
-        }
-        member.gid = item.gid();
-    }
-    return Kolab::generateMemberUrl(member);
-}
-
 KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items)
 {
     QStringList itemRemoteIds;
     itemRemoteIds.reserve(items.count());
     Q_FOREACH (const Akonadi::Item &item, items) {
-        const QString memberUrl = createMemberUrl(item);
+        const QString memberUrl = KolabHelpers::createMemberUrl(item, QLatin1String("user@test.org"));
         if (!memberUrl.isEmpty()) {
             itemRemoteIds << memberUrl;
         }
