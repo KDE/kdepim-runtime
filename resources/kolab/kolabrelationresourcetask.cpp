@@ -73,6 +73,6 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
         }
     }
 
-    kWarning() << "Couldn't find collection for relations";
+    kDebug() << "Couldn't find collection for relations";
     cancelTask(i18n("No mailbox for storing relations available, cancelling tag operation."));
 }
