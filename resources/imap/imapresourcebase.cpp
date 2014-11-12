@@ -29,7 +29,6 @@
 #include <QSettings>
 
 #include <QIcon>
-#include <KGlobal>
 #include <qdebug.h>
 #include <KLocalizedString>
 
