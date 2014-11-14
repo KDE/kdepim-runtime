@@ -603,11 +603,11 @@ void ImapCacheCollectionMigrator::migrationProgress( int processedCollections, i
 QString ImapCacheCollectionMigrator::mapRemoteIdFromStore( const QString &storeRemotedId  ) const
 {
   const QString accountId = topLevelFolder();
-  const KConfigGroup accountGroup = kmailConfig()->group( QString::fromLatin1( "Account %1" ).arg( accountId ) );
+  const KConfigGroup accountGroup = kmailConfig()->group( QStringLiteral( "Account %1" ).arg( accountId ) );
 
   const QString folderId = currentStoreFolderId();
   const KConfigGroup folderGroup
-    = kmailConfig()->group( QString::fromLatin1( "Folder-%1" ).arg( folderId ) );
+    = kmailConfig()->group( QStringLiteral( "Folder-%1" ).arg( folderId ) );
 
   QString imapPath = folderGroup.readEntry( "ImapPath", QString() );
   imapPath.remove( 0, 1 );
@@ -628,7 +628,7 @@ QString ImapCacheCollectionMigrator::mapRemoteIdFromStore( const QString &storeR
         && imapPath.startsWith( imapNs ) ) {
 
         const QString potentialSeparator
-          = accountGroup.readEntry( QString::fromLatin1( "Namespace:%1" ).arg( ns ), QString() );
+          = accountGroup.readEntry( QStringLiteral( "Namespace:%1" ).arg( ns ), QString() );
 
         if ( !potentialSeparator.isEmpty() ) {
           namespaceLength = ns.size();

@@ -526,7 +526,7 @@ void CheckPage::onFetchDone( KJob *job )
     icon = QIcon::fromTheme( QLatin1String("dialog-ok-apply") ).pixmap( 16, 16 );
   }
 
-  mStatusLabel->setHtml( QString::fromLatin1( "<html><body><img src=\"icon\"> %1</body></html>" ).arg( msg ) );
+  mStatusLabel->setHtml( QStringLiteral( "<html><body><img src=\"icon\"> %1</body></html>" ).arg( msg ) );
   mStatusLabel->document()->addResource( QTextDocument::ImageResource, QUrl( QLatin1String("icon") ), QVariant( icon ) );
 }
 

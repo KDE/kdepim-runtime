@@ -94,7 +94,7 @@ bool Resource::createResource()
   // configure resource
   for ( QHash<QString, QVariant>::const_iterator it = mSettings.constBegin(); it != mSettings.constEnd(); ++it ) {
     qDebug() << "Setting up " << it.key() << " for agent " << identifier();
-    const QString methodName = QString::fromLatin1("set%1").arg( it.key() );
+    const QString methodName = QStringLiteral("set%1").arg( it.key() );
     const QVariant arg = it.value();
     QDBusReply<void> reply = iface.call( methodName, arg );
     if ( !reply.isValid() )

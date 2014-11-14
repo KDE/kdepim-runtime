@@ -183,7 +183,7 @@ QVariant MigratorModel::data(const QModelIndex &index, int role) const
                 case Name:
                     return migrator->displayName();
                 case Progress:
-                    return QString::fromLatin1("%1 %").arg(migrator->progress());
+                    return QStringLiteral("%1 %").arg(migrator->progress());
                 case State:
                     return migrator->status();
                 default:

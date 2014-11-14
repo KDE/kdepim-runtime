@@ -40,7 +40,7 @@ KContacts::Addressee::List readContacts( bool *ok )
   const QString fileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kabc/std.vcf") ;
   QFile file( fileName );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    qDebug() << QString::fromLatin1("Unable to open file %1 for reading" ).arg( fileName );
+    qDebug() << QStringLiteral("Unable to open file %1 for reading" ).arg( fileName );
     *ok = false;
     return KContacts::Addressee::List();
   }
@@ -68,7 +68,7 @@ bool writeContacts( const KContacts::Addressee::List &contacts )
     const QString fileName = path + QDir::separator() + contact.uid() + QLatin1String(".vcf");
     QFile file( fileName );
     if ( !file.open( QIODevice::WriteOnly ) ) {
-      qDebug() << QString::fromLatin1( "Unable to open file %1 for writing" ).arg( fileName );
+      qDebug() << QStringLiteral( "Unable to open file %1 for writing" ).arg( fileName );
       return false;
     }
 

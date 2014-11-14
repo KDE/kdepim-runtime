@@ -184,8 +184,8 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
 
         //include only up to 3 notifications in the KNotification/SNI tooltip
         if (tooltipCount < 3) {
-            sniTooltip.append(QString::fromLatin1("<li>%1</li>").arg(notification.title()));
-            tooltipCount++;
+            sniTooltip.append(QStringLiteral("<li>%1</li>").arg(notification.title()));
+            ++tooltipCount;
         }
 
         //create for each notification a qaction to put in SNI;
