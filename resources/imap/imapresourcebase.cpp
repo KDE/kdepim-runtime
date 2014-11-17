@@ -97,7 +97,8 @@ ImapResourceBase::ImapResourceBase( const QString &id )
     m_pool( new SessionPool( 2, this ) ),
     mSubscriptions( 0 ),
     m_idle( 0 ),
-    m_settings( 0 )
+    m_settings( 0 ),
+    m_startConnectInProgress( false )
 {
   QTimer::singleShot( 0, this, SLOT(updateResourceName()) );
 
@@ -240,6 +241,7 @@ void ImapResourceBase::startConnect( const QVariant& )
     taskDone();
     return;
   }
+  m_startConnectInProgress = true;
 
   m_pool->disconnect(); // reset all state, delete any old account
   ImapAccount *account = new ImapAccount;
@@ -287,15 +289,14 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
 
 void ImapResourceBase::onConnectDone( int errorCode, const QString &errorString )
 {
+  m_startConnectInProgress = false;
   switch ( errorCode ) {
   case SessionPool::NoError:
     setOnline( true );
     taskDone();
     emit status( Idle, i18n( "Connection established." ) );
-
     synchronizeCollectionTree();
     break;
-
   case SessionPool::PasswordRequestError:
   case SessionPool::EncryptionError:
   case SessionPool::LoginFailError:
@@ -304,24 +305,22 @@ void ImapResourceBase::onConnectDone( int errorCode, const QString &errorString 
     setOnline( false );
     emit status( Broken, errorString );
     cancelTask();
-    return;
-
+    break;
   case SessionPool::CouldNotConnectError:
     emit status( Idle, i18n( "Server is not available." ) );
     deferTask();
     setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
-    return;
-
+    break;
   case SessionPool::ReconnectNeededError:
     reconnect();
-    return;
-
+    break;
   case SessionPool::NoAvailableSessionError:
     kFatal() << "Shouldn't happen";
-    return;
+    break;
   case SessionPool::CancelledError:
     kWarning() << "Session login cancelled";
-    return;
+    cancelTask();
+    break;
   }
 }
 
@@ -518,9 +517,7 @@ void ImapResourceBase::scheduleConnectionAttempt()
 
 void ImapResourceBase::doSetOnline(bool online)
 {
-#ifndef IMAPRESOURCE_NO_SOLID
   kDebug() << "online=" << online;
-#endif
   if ( !online ) {
     Q_FOREACH(ResourceTask* task, m_taskList) {
       task->kill();
@@ -530,6 +527,10 @@ void ImapResourceBase::doSetOnline(bool online)
     m_pool->cancelPasswordRequests();
     if (m_pool->isConnected()) {
         m_pool->disconnect();
+    }
+    if (m_startConnectInProgress) {
+      cancelTask();
+      m_startConnectInProgress = false;
     }
     if (m_idle) {
       m_idle->stop();

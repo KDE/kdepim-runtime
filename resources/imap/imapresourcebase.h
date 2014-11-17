@@ -166,6 +166,7 @@ private:
   ImapIdleManager *m_idle;
   QTimer *m_statusMessageTimer;
   QChar m_separatorCharacter;
+  bool m_startConnectInProgress;
 };
 
 #endif
