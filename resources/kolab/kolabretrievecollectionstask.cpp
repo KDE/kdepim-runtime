@@ -41,7 +41,20 @@
 #include <KDE/KDebug>
 #include <KDE/KLocale>
 
-RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, QObject *parent)
+
+bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool complete = false)
+{
+    Q_FOREACH (const KIMAP::MailBoxDescriptor &desc, namespaces) {
+        if (path.startsWith(desc.name.left(desc.name.size() - 1))) { //Namespace ends with path separator and pathPart doesn't
+            if (!complete || path.size() - desc.name.size() <= 1) {      //We want to match only for the complete path
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList<KIMAP::MailBoxDescriptor> &sharedNamespace, const QList<KIMAP::MailBoxDescriptor> &userNamespace, QObject *parent)
     : KJob(parent)
     , mJobs(0)
     , mRequestedMetadata(requestedMetadata)
@@ -49,6 +62,8 @@ RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringL
     , mMailboxes(mailboxes)
     , mSession(session)
     , mSeparator(separator)
+    , mSharedNamespace(sharedNamespace)
+    , mUserNamespace(userNamespace)
 {
 
 }
@@ -60,15 +75,22 @@ void RetrieveMetadataJob::start()
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
 
-    QSet<QString> toplevelMailboxes;
-    Q_FOREACH (const QString &mailbox, mMailboxes) {
-        const QStringList parts = mailbox.split(mSeparator);
-        if (!parts.isEmpty()) {
-            toplevelMailboxes << parts.first();
-        }
-    }
-
     if ( mServerCapabilities.contains( QLatin1String("METADATA") ) || mServerCapabilities.contains( QLatin1String("ANNOTATEMORE") ) ) {
+        QSet<QString> toplevelMailboxes;
+        Q_FOREACH (const QString &mailbox, mMailboxes) {
+            const QStringList parts = mailbox.split(mSeparator);
+            if (!parts.isEmpty()) {
+                if (isNamespaceFolder(mailbox, mUserNamespace) && parts.length() >= 2) {
+                    // Other Users can be too big to request with a single command so we request Other Users/<user>/*
+                    toplevelMailboxes << parts.at(0) + mSeparator + parts.at(1) + mSeparator;
+                } else if (!isNamespaceFolder(mailbox, mSharedNamespace)) {
+                    toplevelMailboxes << parts.first();
+                }
+            }
+        }
+        Q_FOREACH (const KIMAP::MailBoxDescriptor &desc, mSharedNamespace) {
+            toplevelMailboxes << desc.name;
+        }
         //TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
         Q_FOREACH (const QString &mailbox, toplevelMailboxes) {
             {
@@ -95,6 +117,10 @@ void RetrieveMetadataJob::start()
     if ( mServerCapabilities.contains( QLatin1String("ACL") ) ) {
 
         Q_FOREACH (const QString &mailbox, mMailboxes) {
+            // "Shared Folders" is not a valid mailbox, so we have to skip the ACL request for this folder
+            if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
+                continue;
+            }
             KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob( mSession );
             rights->setMailBox(mailbox);
             connect( rights, SIGNAL(result(KJob*)), SLOT(onRightsReceived(KJob*)) );
@@ -108,14 +134,16 @@ void RetrieveMetadataJob::start()
 void RetrieveMetadataJob::onGetMetaDataDone( KJob *job )
 {
     mJobs--;
+    KIMAP::GetMetaDataJob *meta = static_cast<KIMAP::GetMetaDataJob*>( job );
     if ( job->error() ) {
         kWarning() << "Get metadata failed: " << job->errorString();
-        setError(KJob::UserDefinedError);
-        checkDone();
-        return;
+        if (!isNamespaceFolder(meta->mailBox(), mSharedNamespace)) {
+            setError(KJob::UserDefinedError);
+            checkDone();
+            return;
+        }
     }
 
-    KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>( job );
     const QHash<QString, QMap<QByteArray, QByteArray> > metadata = meta->allMetaDataForMailboxes();
     Q_FOREACH (const QString &folder, metadata.keys()) {
         mMetadata.insert(folder, metadata.value(folder));
@@ -263,16 +291,6 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
     return c;
 }
 
-bool KolabRetrieveCollectionsTask::isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces) const
-{
-    Q_FOREACH (const KIMAP::MailBoxDescriptor &desc, namespaces) {
-        if (path.startsWith(desc.name.left(desc.name.size() - 1))) { //Namespace ends with path separator and pathPart doesn't
-            return true;
-        }
-    }
-    return false;
-}
-
 void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path)
 {
 
@@ -383,15 +401,17 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
     if (job->error()) {
         cancelTask(job->errorString());
     } else {
-        QSet<QString> personalMailboxes;
+        QSet<QString> mailboxes;
         Q_FOREACH(const QString &mailbox, mMailCollections.keys()) {
             if (!mailbox.isEmpty() && !isNamespaceFolder(mailbox, resourceState()->userNamespaces() + resourceState()->sharedNamespaces())) {
-                personalMailboxes << mailbox;
+                mailboxes << mailbox;
             }
         }
-        const QStringList metadataMailboxes = personalMailboxes.unite( mSubscribedMailboxes.toList().toSet()).toList();
 
-        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, metadataMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(), this);
+        //Only request metadata for subscribed Other Users Folders
+        const QStringList metadataMailboxes = mailboxes.unite( mSubscribedMailboxes.toList().toSet()).toList();
+
+        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, metadataMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(), resourceState()->sharedNamespaces(), resourceState()->userNamespaces(), this);
         connect(metadata, SIGNAL(result(KJob*)), this, SLOT(onMetadataRetrieved(KJob*)));
         mJobs++;
         metadata->start();
