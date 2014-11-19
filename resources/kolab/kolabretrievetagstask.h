@@ -64,6 +64,7 @@ private:
     void extractTag(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
     void extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid);
     Akonadi::Item extractMember(const Kolab::RelationMember &member);
+    void taskComplete();
 };
 
 #endif // KOLABCHANGETAGTASK_H
