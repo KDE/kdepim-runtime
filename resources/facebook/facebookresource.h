@@ -57,10 +57,9 @@ class FacebookResource : public Akonadi::ResourceBase,
 
   public Q_SLOTS:
     void configure( WId windowId );
-#ifdef HAVE_ACCOUNTS
     void configureByAccount( int accountId );
     void slotGetCredentials(KJob *job);
-#endif
+
   protected Q_SLOTS:
     void retrieveCollections();
     void retrieveItems( const Akonadi::Collection &col );
