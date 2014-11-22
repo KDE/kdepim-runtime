@@ -136,9 +136,8 @@ if( KF5GAPI_FOUND )
   #add_subdirectory( gmail )
 endif()
 
-# Uncomment when api will fix
-if( KF5FbAPI_FOUND )
-  add_subdirectory( facebook )
+if (KF5FbAPI_FOUND AND KAccounts_FOUND AND AccountsQt5_FOUND)
+  add_subdirectory(facebook)
 endif()
 
 add_subdirectory( shared )
