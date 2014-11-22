@@ -76,16 +76,13 @@ FacebookResource::~FacebookResource()
 
 void FacebookResource::configurationChanged()
 {
-#ifdef HAVE_ACCOUNTS
   if ( Settings::self()->accountId() ) {
     configureByAccount( Settings::self()->accountId() );
   }
-#endif
   Settings::self()->save();
   synchronize();
 }
 
-#ifdef HAVE_ACCOUNTS
 void FacebookResource::configureByAccount( int accountId )
 {
   qDebug() << "Starting credentials job";
@@ -108,7 +105,6 @@ void FacebookResource::slotGetCredentials(KJob *job)
   synchronize();
 }
 
-#endif
 void FacebookResource::aboutToQuit()
 {
   slotAbortRequested();
