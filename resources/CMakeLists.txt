@@ -73,6 +73,11 @@ set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http:/
 find_package(KF5FbAPI 1.0 QUIET CONFIG)
 set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
 
+# KAccouunts bits
+find_package(KAccounts CONFIG)
+find_package(AccountsQt5 1.13 CONFIG)
+find_package(SignOnQt5 8.57 CONFIG)
+
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresource/
   ${CMAKE_CURRENT_BINARY_DIR}/shared/singlefileresource/
