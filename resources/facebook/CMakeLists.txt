@@ -2,12 +2,7 @@ project(facebookresource)
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_facebook_resource\")
 
-
-if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
-  include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})
-  add_definitions(-DHAVE_ACCOUNTS)
-  set(facebookresource_SRCS ../../shared/singlefileresource/getcredentialsjob.cpp)
-endif()
+include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})
 
 set(facebookresource_SRCS
   facebookresource.cpp
@@ -69,13 +64,10 @@ target_link_libraries(akonadi_facebook_resource
   KF5::PimUtils
   KF5::FbAPI
   KF5::AkonadiSocialUtils
+  KAccounts
+  ${ACCOUNTSQT_LIBRARIES}
+  ${SIGNONQT_LIBRARIES}
 )
-
-if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
-  target_link_libraries(akonadi_facebook_resource
-    ${ACCOUNTSQT_LIBRARIES}
-    ${SIGNONQT_LIBRARIES})
-endif()
 
 add_subdirectory(icons)
 add_subdirectory(serializer)
