@@ -11,7 +11,7 @@
     <entry name="UserName" type="String">
     </entry>
     <entry name="LowerLimit" type="String">
-      <default>2000-01-01</default>
+      <default>2014-06-01</default>
     </entry>
     <entry name="AccountId" type="UInt">
       <label>The account id in KAccounts framework.</label>
