@@ -45,7 +45,7 @@ void FacebookResource::postsListFetched( KJob *job )
   Q_ASSERT( listJob );
   mCurrentJobs.removeAll( job );
 
-  if ( listJob->error() ) {
+  if ( listJob->error() && listJob->allPosts().isEmpty() ) {
     abortWithError( i18n( "Unable to get posts from server: %1", listJob->errorString() ),
                     listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem );
   } else {
