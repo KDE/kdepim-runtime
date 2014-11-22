@@ -21,9 +21,6 @@ set(facebookresource_SRCS
   ${facebookresource_SRCS}
 )
 
-install(FILES facebookresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
-install(FILES akonadi_facebook_resource.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
-
 ki18n_wrap_ui(facebookresource_SRCS settingsdialog.ui)
 kconfig_add_kcfg_files(facebookresource_SRCS settingsbase.kcfgc)
 
@@ -84,3 +81,6 @@ add_subdirectory(icons)
 add_subdirectory(serializer)
 
 install(TARGETS akonadi_facebook_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+install(FILES facebookresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES akonadi_facebook_resource.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
