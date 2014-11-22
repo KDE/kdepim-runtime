@@ -24,9 +24,7 @@
 #include "settings.h"
 // #include "settingsdialog.h"
 #include "timestampattribute.h"
-#ifdef HAVE_ACCOUNTS
-#include "../shared/getcredentialsjob.h"
-#endif
+#include <KAccounts/getcredentialsjob.h>
 
 #include <KFbAPI/alleventslistjob.h>
 #include <KFbAPI/allnoteslistjob.h>
