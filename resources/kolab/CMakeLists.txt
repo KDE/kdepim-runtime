@@ -44,6 +44,7 @@ target_link_libraries(kolabresource
     ${KDE4_KIO_LIBS}
     ${KDEPIMLIBS_KMIME_LIBS}
     ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+    ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
     ${KDEPIMLIBS_KPIMIDENTITIES_LIBS}
     ${Libkolab_LIBRARIES}
     ${Libkolabxml_LIBRARIES}
@@ -81,6 +82,7 @@ target_link_libraries(akonadi_kolab_resource
     ${KDE4_KIO_LIBS}
     ${KDEPIMLIBS_KMIME_LIBS}
     ${KDEPIMLIBS_AKONADI_KMIME_LIBS}
+    ${KDEPIMLIBS_AKONADI_CALENDAR_LIBS}
     ${KDEPIMLIBS_KPIMIDENTITIES_LIBS}
     imapresource
     kolabresource

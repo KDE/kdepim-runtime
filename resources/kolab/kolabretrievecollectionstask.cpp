@@ -35,6 +35,7 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/collectionidentificationattribute.h>
+#include <akonadi/calendar/blockalarmsattribute.h>
 
 #include <kmime/kmime_message.h>
 
@@ -296,6 +297,12 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
 
     CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
     attr->setIdentifier(path.toLatin1());
+
+    // If the folder is a other users folder block all alarms from default
+    if (isNamespaceFolder(path, resourceState()->userNamespaces())) {
+        Akonadi::BlockAlarmsAttribute *attr = c.attribute<Akonadi::BlockAlarmsAttribute>(Akonadi::Collection::AddIfMissing);
+        attr->blockEverything(true);
+    }
 
     // If the folder is a other users top-level folder mark it accordingly
     if (pathParts.size() == 1 && isNamespaceFolder(path, resourceState()->userNamespaces())) {

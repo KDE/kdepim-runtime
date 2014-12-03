@@ -25,6 +25,7 @@
 #include <retrieveitemstask.h>
 #include <collectionannotationsattribute.h>
 #include <changecollectiontask.h>
+#include <akonadi/calendar/blockalarmsattribute.h>
 
 #include <KWindowSystem>
 #include <KLocalizedString>
@@ -49,6 +50,7 @@ KolabResource::KolabResource(const QString& id)
     KGlobal::locale()->insertCatalog(QLatin1String("akonadi_imap_resource"));
     //Ensure we have up-to date metadata before attempting to sync folder
     setScheduleAttributeSyncBeforeItemSync(true);
+    setKeepLocalCollectionChanges(QSet<QByteArray>() << "ENTITYDISPLAY" << Akonadi::BlockAlarmsAttribute().type());
 }
 
 KolabResource::~KolabResource()
