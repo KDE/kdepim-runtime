@@ -23,7 +23,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Account Type: Kolab Account</string>
+      <string>Account Type: Kolab account</string>
      </property>
     </widget>
    </item>
@@ -40,14 +40,14 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>The kolab resource needs an Imap resource.</string>
+          <string>The Kolab resource needs an IMAP resource.</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="launchWizard">
          <property name="text">
-          <string>Add Imap Resource</string>
+          <string>Add IMAP Resource</string>
          </property>
         </widget>
        </item>
@@ -60,7 +60,7 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Select IMAP-Account:</string>
+            <string>Select IMAP account:</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -70,7 +70,7 @@
          <item>
           <widget class="KComboBox" name="imapAccountComboBox">
            <property name="toolTip">
-            <string>IMAP-Account used for Kolab-Groupware.</string>
+            <string>IMAP account used for Kolab Groupware.</string>
            </property>
           </widget>
          </item>
@@ -97,14 +97,14 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Create/Recover KolabFolders in IMAP-Account:</string>
+             <string>Create/Recover Kolab folders in IMAP account:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
            <widget class="QPushButton" name="createKolabFolderButton">
             <property name="toolTip">
-             <string>Ensure that Kolab-Groupware-Folders are existing in IMAP-Account.</string>
+             <string>Ensure that Kolab Groupware Folders exist in IMAP account.</string>
             </property>
             <property name="text">
              <string>Create Kolab Folders</string>
@@ -121,14 +121,14 @@
           <item row="2" column="0">
            <widget class="QLabel" name="upgradeLabel">
             <property name="text">
-             <string>Change the Kolab-Format Version:</string>
+             <string>Change the Kolab format version:</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
            <widget class="QPushButton" name="upgradeFormatButton">
             <property name="toolTip">
-             <string>Convert Account to different format version.</string>
+             <string>Convert account to different format version.</string>
             </property>
             <property name="text">
              <string>Change Format Version</string>
@@ -148,7 +148,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Note that the Kolab-Resource will use all available IMAP accounts that contain Kolab folders to provide Groupware-Data. The selection below applies to the settings only.</string>
+          <string>Note that the Kolab resource will use all available IMAP accounts that contain Kolab folders to provide Groupware data. The selection below applies to the settings only.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
