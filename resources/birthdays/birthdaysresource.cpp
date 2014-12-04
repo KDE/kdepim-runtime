@@ -32,7 +32,7 @@
 
 #include <kcontacts/addressee.h>
 
-#include <KPIMUtils/Email>
+#include <KCodecs/KEmailAddress>
 
 #include <QDebug>
 #include <KLocalizedString>
@@ -269,8 +269,8 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& c
     QString summary;
     if ( !spouseName.isEmpty() ) {
       QString tname, temail;
-      KPIMUtils::extractEmailAddressAndName( spouseName, temail, tname );
-      tname = KPIMUtils::quoteNameIfNecessary( tname );
+      KEmailAddress::extractEmailAddressAndName( spouseName, temail, tname );
+      tname = KEmailAddress::quoteNameIfNecessary( tname );
       if ( ( tname[0] == QLatin1Char('"') ) && ( tname[tname.length() - 1] == QLatin1Char('"') ) ) {
         tname.remove( 0, 1 );
         tname.truncate( tname.length() - 1 );

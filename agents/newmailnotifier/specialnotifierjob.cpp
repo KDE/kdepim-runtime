@@ -26,7 +26,7 @@
 #include <Akonadi/KMime/MessageParts>
 
 #include <KNotification>
-#include <KPIMUtils/Email>
+#include <KEmailAddress>
 
 #include <KMime/Message>
 
@@ -76,7 +76,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         if (NewMailNotifierAgentSettings::showPhoto()) {
             Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob( this );
             job->setLimit( 1 );
-            job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
+            job->setQuery( Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
             connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
             emitNotification(Util::defaultPixmap());

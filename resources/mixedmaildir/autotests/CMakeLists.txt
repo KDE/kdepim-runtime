@@ -47,7 +47,6 @@ set( common_link_libraries
   KF5::AkonadiCore
   KF5::Mbox
   KF5::Mime
-  KF5::PimUtils
   Qt5::Test
 )
 

@@ -27,7 +27,7 @@
 #include <KFbAPI/eventjob.h>
 #include <KFbAPI/eventinfo.h>
 
-#include <KPIMUtils/LinkLocator>
+#include <KCoreAddons/KTextToHTML>
 #include <KCalCore/Attendee>
 
 #include <KLocalizedString>
@@ -116,7 +116,7 @@ KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::
 {
     KCalCore::Event::Ptr event(new KCalCore::Event);
     QString desc = eventInfo.description();
-    desc = KPIMUtils::LinkLocator::convertToHtml(desc, KPIMUtils::LinkLocator::ReplaceSmileys);
+    desc = KTextToHTML::convertToHtml(desc, KTextToHTML::ReplaceSmileys);
     if (!desc.isEmpty()) {
         desc += "<br><br>";
     }

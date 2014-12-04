@@ -41,7 +41,6 @@ target_link_libraries( akonadi_pop3_resource
   KF5::KIOCore
   KF5::Mime
   KF5::MailTransport
-  KF5::PimUtils
   KF5::AkonadiAgentBase
   KF5::AkonadiWidgets
 )

@@ -28,7 +28,7 @@ target_link_libraries(akonadi_birthdays_resource
   KF5::KIOCore
   KF5::AkonadiCore
   KF5::CalendarCore
-  KF5::PimUtils
+  KF5::Codecs
   KF5::AkonadiAgentBase
   KF5::Contacts
 )
