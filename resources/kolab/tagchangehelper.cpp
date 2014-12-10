@@ -45,12 +45,12 @@ TagChangeHelper::TagChangeHelper(KolabRelationResourceTask *parent)
 {
 }
 
-KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items)
+KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)
 {
     QStringList itemRemoteIds;
     itemRemoteIds.reserve(items.count());
     Q_FOREACH (const Akonadi::Item &item, items) {
-        const QString memberUrl = KolabHelpers::createMemberUrl(item, QLatin1String("user@test.org"));
+        const QString memberUrl = KolabHelpers::createMemberUrl(item, username);
         if (!memberUrl.isEmpty()) {
             itemRemoteIds << memberUrl;
         }

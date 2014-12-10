@@ -486,6 +486,7 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
         member.user = user;
         member.subject = msg->subject()->asUnicodeString();
         member.messageId = msg->messageID()->asUnicodeString();
+        member.date = msg->date()->asUnicodeString();
         member.mailbox = ancestorChain(item.parentCollection());
     } else {
         if (item.gid().isEmpty()) {

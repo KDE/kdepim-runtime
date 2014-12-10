@@ -40,7 +40,7 @@ class KolabRelationResourceTask;
 
 struct TagConverter
 {
-    virtual KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items);
+    virtual KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username);
 };
 
 class TagChangeHelper : public QObject

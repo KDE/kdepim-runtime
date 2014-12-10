@@ -90,6 +90,7 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
     // TODO: does the fetch already limit to resource local items?
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetch->fetchScope().setFetchGid(true);
+    fetch->fetchScope().fetchFullPayload(true);
     fetch->setProperty("tag", QVariant::fromValue(tags.first()));
     connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onItemsFetchDone(KJob*)));
 }
@@ -115,7 +116,7 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
 
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     Q_ASSERT(tag.isValid());
-    changeHelper->start(tag, mTagConverter->createMessage(tag, items), mSession);
+    changeHelper->start(tag, mTagConverter->createMessage(tag, items, resourceState()->userName()), mSession);
 }
 
 void KolabChangeItemsTagsTask::onApplyCollectionChanged(const Akonadi::Collection &collection)

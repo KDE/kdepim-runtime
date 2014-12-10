@@ -61,7 +61,7 @@ void KolabChangeTagTask::onItemsFetchDone(KJob *job)
     connect(changeHelper, SIGNAL(cancelTask(QString)), this, SLOT(onCancelTask(QString)));
     connect(changeHelper, SIGNAL(changeCommitted()), this, SLOT(onChangeCommitted()));
 
-    changeHelper->start(resourceState()->tag(), mTagConverter->createMessage(resourceState()->tag(), items), mSession);
+    changeHelper->start(resourceState()->tag(), mTagConverter->createMessage(resourceState()->tag(), items, resourceState()->userName()), mSession);
 }
 
 void KolabChangeTagTask::onApplyCollectionChanged(const Akonadi::Collection &collection)
