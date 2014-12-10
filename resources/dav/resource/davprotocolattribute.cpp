@@ -40,7 +40,8 @@ Akonadi::Attribute* DavProtocolAttribute::clone() const
 
 QByteArray DavProtocolAttribute::type() const
 {
-  return "davprotocol";
+    static const QByteArray sType( "davprotocol" );
+    return sType;
 }
 
 QByteArray DavProtocolAttribute::serialized() const

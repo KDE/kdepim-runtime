@@ -92,5 +92,6 @@ int DeletedItemsAttribute::offsetCount() const
 
 QByteArray DeletedItemsAttribute::type() const
 {
-  return "DeletedMboxItems";
+    static const QByteArray sType( "DeletedMboxItems" );
+    return sType;
 }

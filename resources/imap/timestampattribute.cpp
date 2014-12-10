@@ -42,7 +42,8 @@ uint TimestampAttribute::timestamp() const
 
 QByteArray TimestampAttribute::type() const
 {
-    return "timestamp";
+    static const QByteArray sType( "timestamp" );
+    return sType;
 }
 
 Akonadi::Attribute *TimestampAttribute::clone() const

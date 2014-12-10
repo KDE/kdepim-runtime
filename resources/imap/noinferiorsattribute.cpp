@@ -40,7 +40,8 @@ bool NoInferiorsAttribute::noInferiors() const
 
 QByteArray NoInferiorsAttribute::type() const
 {
-    return "noinferiors";
+    static const QByteArray sType( "noinferiors" );
+    return sType;
 }
 
 Akonadi::Attribute* NoInferiorsAttribute::clone() const

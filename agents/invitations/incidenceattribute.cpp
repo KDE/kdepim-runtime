@@ -45,7 +45,8 @@ IncidenceAttribute::~IncidenceAttribute()
 
 QByteArray IncidenceAttribute::type() const
 {
-  return "incidence";
+    static const QByteArray sType( "incidence" );
+    return sType;
 }
 
 Attribute* IncidenceAttribute::clone() const

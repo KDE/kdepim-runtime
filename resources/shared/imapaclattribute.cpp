@@ -51,7 +51,8 @@ QMap<QByteArray, KIMAP::Acl::Rights> ImapAclAttribute::oldRights() const
 
 QByteArray ImapAclAttribute::type() const
 {
-  return "imapacl";
+    static const QByteArray sType( "imapacl" );
+    return sType;
 }
 
 Akonadi::Attribute* ImapAclAttribute::clone() const

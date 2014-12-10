@@ -44,7 +44,8 @@ Akonadi::Attribute* HighestModSeqAttribute::clone() const
 
 QByteArray HighestModSeqAttribute::type() const
 {
-    return "highestmodseq";
+    static const QByteArray sType( "highestmodseq" );
+    return sType;
 }
 
 void HighestModSeqAttribute::deserialize( const QByteArray &data )

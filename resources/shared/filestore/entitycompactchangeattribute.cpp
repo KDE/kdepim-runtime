@@ -81,7 +81,8 @@ QString FileStore::EntityCompactChangeAttribute::remoteRevision() const
 
 QByteArray FileStore::EntityCompactChangeAttribute::type() const
 {
-  return "ENTITYCOMPACTCHANGE";
+    static const QByteArray sType( "ENTITYCOMPACTCHANGE" );
+    return sType;
 }
 
 FileStore::EntityCompactChangeAttribute* FileStore::EntityCompactChangeAttribute::clone() const
