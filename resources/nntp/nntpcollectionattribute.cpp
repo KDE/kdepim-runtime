@@ -28,7 +28,8 @@ NntpCollectionAttribute::NntpCollectionAttribute()
 
 QByteArray NntpCollectionAttribute::type() const
 {
-  return "NNTP";
+    static const QByteArray sType( "NNTP" );
+    return sType;
 }
 
 NntpCollectionAttribute * NntpCollectionAttribute::clone() const

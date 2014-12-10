@@ -40,7 +40,8 @@ int UidNextAttribute::uidNext() const
 
 QByteArray UidNextAttribute::type() const
 {
-    return "uidnext";
+    static const QByteArray sType( "uidnext" );
+    return sType;
 }
 
 Akonadi::Attribute* UidNextAttribute::clone() const

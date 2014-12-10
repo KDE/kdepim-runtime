@@ -110,7 +110,8 @@ QByteArray NoteDisplayAttribute::serialized() const
 
 QByteArray NoteDisplayAttribute::type() const
 {
-    return "NoteDisplayAttribute";
+    static const QByteArray sType( "NoteDisplayAttribute" );
+    return sType;
 }
 
 void NoteDisplayAttribute::setBackgroundColor(const QColor &color)

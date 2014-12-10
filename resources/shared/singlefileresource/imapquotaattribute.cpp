@@ -69,7 +69,8 @@ QList< QMap<QByteArray, qint64> > Akonadi::ImapQuotaAttribute::usages() const
 
 QByteArray ImapQuotaAttribute::type() const
 {
-  return "imapquota";
+    static const QByteArray sType( "imapquota" );
+    return sType;
 }
 
 Akonadi::Attribute* ImapQuotaAttribute::clone() const

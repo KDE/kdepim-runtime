@@ -40,7 +40,8 @@ int UidValidityAttribute::uidValidity() const
 
 QByteArray UidValidityAttribute::type() const
 {
-    return "uidvalidity";
+    static const QByteArray sType( "uidvalidity" );
+    return sType;
 }
 
 Akonadi::Attribute* UidValidityAttribute::clone() const

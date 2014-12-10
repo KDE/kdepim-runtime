@@ -110,6 +110,7 @@ KCalCore::Alarm::List DefaultReminderAttribute::alarms( KCalCore::Incidence *inc
 
 QByteArray DefaultReminderAttribute::type() const
 {
-    return "defaultReminders";
+    static const QByteArray sType( "defaultReminders" );
+    return sType;
 }
 

@@ -41,7 +41,8 @@ QList<QByteArray> CollectionFlagsAttribute::flags() const
 
 QByteArray CollectionFlagsAttribute::type() const
 {
-  return "collectionflags";
+    static const QByteArray sType( "collectionflags" );
+    return sType;
 }
 
 Akonadi::Attribute* CollectionFlagsAttribute::clone() const

@@ -46,7 +46,8 @@ QMap<QByteArray, QByteArray> CollectionAnnotationsAttribute::annotations() const
 
 QByteArray CollectionAnnotationsAttribute::type() const
 {
-  return "collectionannotations";
+    static const QByteArray sType( "collectionannotations" );
+    return sType;
 }
 
 Akonadi::Attribute* CollectionAnnotationsAttribute::clone() const

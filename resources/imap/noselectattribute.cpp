@@ -40,7 +40,8 @@ bool NoSelectAttribute::noSelect() const
 
 QByteArray NoSelectAttribute::type() const
 {
-    return "noselect";
+    static const QByteArray sType( "noselect" );
+    return sType;
 }
 
 Akonadi::Attribute* NoSelectAttribute::clone() const

@@ -52,7 +52,8 @@ QByteArray NoteLockAttribute::serialized() const
 QByteArray NoteLockAttribute::type() const
 {
     //We can't change this name!
-    return "KJotsLockAttribute";
+    static const QByteArray sType( "KJotsLockAttribute" );
+    return sType;
 }
 
 
