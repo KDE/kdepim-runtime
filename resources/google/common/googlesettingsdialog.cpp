@@ -71,8 +71,7 @@ GoogleSettingsDialog::GoogleSettingsDialog( GoogleAccountManager *accountManager
 
     m_accComboBox = new KComboBox( m_accGroupBox );
     accLayout->addWidget( m_accComboBox, 1 );
-    connect( m_accComboBox, SIGNAL(currentIndexChanged(QString)),
-             this, SIGNAL(currentAccountChanged(QString)) );
+    connect(m_accComboBox, static_cast<void (KComboBox::*)(const QString &)>(&KComboBox::currentIndexChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_addAccButton = new QPushButton( QIcon::fromTheme( QLatin1String("list-add-user") ), i18n( "&Add" ), m_accGroupBox );
     accLayout->addWidget( m_addAccButton );
