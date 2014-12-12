@@ -42,7 +42,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
     ../protocols/caldavprotocol.cpp
     ../protocols/carddavprotocol.cpp
     ../protocols/groupdavprotocol.cpp
-
+    davresource_debug.cpp
     configdialog.cpp
     davfreebusyhandler.cpp
     davgroupwareresource.cpp

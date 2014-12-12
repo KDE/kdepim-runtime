@@ -37,7 +37,7 @@
 #include <AkonadiCore/itemmodifyjob.h>
 #include <AkonadiCore/transactionsequence.h>
 
-#include <QDebug>
+#include "mixedmaildirresource_debug.h"
 
 #include <QDateTime>
 #include <QQueue>
@@ -151,7 +151,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
 
 void RetrieveItemsJob::Private::storeListResult( KJob *job )
 {
-  qDebug() << "storeList->error=" << job->error();
+  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "storeList->error=" << job->error();
   FileStore::ItemFetchJob *storeList = qobject_cast<FileStore::ItemFetchJob*>( job );
   Q_ASSERT( storeList != 0 );
 
@@ -236,7 +236,7 @@ void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
 
   if ( fetchJob->items().count() != 1 ) {
     const Item item = fetchJob->item();
-    qWarning() << "Store fetch for new item" << item.remoteId()
+    qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for new item" << item.remoteId()
                << "in collection" << item.parentCollection().id()
                << "," << item.parentCollection().remoteId()
                << "did not return the expected item. error="
@@ -293,7 +293,7 @@ void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
 
   if ( fetchJob->items().count() != 1 ) {
     const Item item = fetchJob->item();
-    qWarning() << "Store fetch for changed item" << item.remoteId()
+    qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for changed item" << item.remoteId()
                << "in collection" << item.parentCollection().id()
                << "," << item.parentCollection().remoteId()
                << "did not return the expected item. error="

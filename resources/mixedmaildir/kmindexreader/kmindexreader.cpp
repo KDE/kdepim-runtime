@@ -24,7 +24,7 @@
 
 #include "kmindexreader.h"
 
-#include <QDebug>
+#include "../mixedmaildirresource_debug.h"
 #include "../mixedmaildir_debug.h"
 #include <kde_file.h>
 #include <akonadi/kmime/messagestatus.h>
@@ -239,7 +239,7 @@ bool KMIndexReader::readHeader( int *version )
       *version = indexVersion;
   if ( indexVersion < 1505 ) {
       if( indexVersion == 1503 ) {
-        qWarning() << "Need to convert old index file" << mIndexFileName << "to utf-8";
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Need to convert old index file" << mIndexFileName << "to utf-8";
         mConvertToUtf8 = true;
       }
       return true;
@@ -259,7 +259,7 @@ bool KMIndexReader::readHeader( int *version )
       quint32 header_length = 0;
       KDE_fseek( mFp, sizeof( char ), SEEK_CUR );
       if ( fread( &header_length, sizeof( header_length ), readCount, mFp ) != readCount ) {
-         qWarning() << "Failed to read header_length";
+         qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read header_length";
          return false;
       }
       if ( header_length > 0xFFFF )
@@ -271,7 +271,7 @@ bool KMIndexReader::readHeader( int *version )
       // Process available header parts
       if ( header_length >= sizeof( byteOrder ) ) {
          if ( fread( &byteOrder, sizeof( byteOrder ), readCount, mFp ) != readCount ) {
-             qWarning() << "Failed to read byteOrder";
+             qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read byteOrder";
              return false;
          }
          mIndexSwapByteOrder = ( byteOrder == 0x78563412 );
@@ -279,7 +279,7 @@ bool KMIndexReader::readHeader( int *version )
 
          if ( header_length >= sizeof( sizeOfLong ) ) {
             if ( fread( &sizeOfLong, sizeof( sizeOfLong ), readCount, mFp ) != readCount ) {
-                qWarning() << "Failed to read sizeOfLong";
+                qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read sizeOfLong";
                 return false;
             }
             if ( mIndexSwapByteOrder )
@@ -358,7 +358,7 @@ bool KMIndexReader::readIndex()
       if ( *line.data() == '\0' ) {
         // really, i have no idea when or how this would occur
         // but we probably want to know if it does - Casey
-        qWarning() << "Unknowable bad occurred";
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Unknowable bad occurred";
         qCDebug(MIXEDMAILDIR_LOG) << "fclose(mFp = " << mFp << ")";
         fclose( mFp );
         mFp = 0;
@@ -461,7 +461,7 @@ namespace {
   template < typename T > void copy_from_stream( T & x ) {
     if( g_chunk_offset + int( sizeof( T ) ) > g_chunk_length ) {
       g_chunk_offset = g_chunk_length;
-      qWarning() << "This should never happen..";
+      qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "This should never happen..";
       x = 0;
     } else {
       // the memcpy is optimized out by the compiler for the values
@@ -483,7 +483,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
   off_t first_off = KDE_ftell( mFp );
   KDE_fseek( mFp, indexOff, SEEK_SET );
   if ( fread( g_chunk, indexLen, readCount, mFp ) != readCount ) {
-      qWarning() << "Failed to read index";
+      qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read index";
       return false;
   }
   KDE_fseek( mFp, first_off, SEEK_SET );
@@ -501,7 +501,7 @@ bool KMIndexReader::fillPartsCache( KMIndexData* msg, off_t indexOff, short int 
     }
     type = (MsgPartType) tmp;
     if ( g_chunk_offset + len > indexLen ) {
-      qWarning() << "g_chunk_offset + len > indexLen" << "This should never happen..";
+      qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "g_chunk_offset + len > indexLen" << "This should never happen..";
       return false;
     }
         // Only try to create strings if the part is really a string part, see declaration of

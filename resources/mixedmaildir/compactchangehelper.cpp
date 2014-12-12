@@ -19,7 +19,7 @@
 */
 
 #include "compactchangehelper.h"
-
+#include "mixedmaildirresource_debug.h"
 #include "filestore/entitycompactchangeattribute.h"
 
 #include <AkonadiCore/collection.h>
@@ -68,7 +68,7 @@ class CompactChangeHelper::Private
 
 void CompactChangeHelper::Private::processNextBatch()
 {
-  //qDebug() << "pendingUpdates.count=" << mPendingUpdates.count();
+  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "pendingUpdates.count=" << mPendingUpdates.count();
   if ( mPendingUpdates.isEmpty() ) {
     return;
   }
@@ -80,7 +80,7 @@ void CompactChangeHelper::Private::processNextBatch()
 
 void CompactChangeHelper::Private::processNextItem()
 {
-  //qDebug() << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
+  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
   if ( mCurrentUpdate.items.isEmpty() ) {
     CollectionModifyJob *job = new CollectionModifyJob( mCurrentUpdate.collection, mSession );
     QObject::connect( job, SIGNAL(result(KJob*)), q, SLOT(processNextBatch()) );
@@ -110,7 +110,7 @@ void CompactChangeHelper::Private::itemFetchResult( KJob *job )
   Q_ASSERT( !newRemoteId.isEmpty() );
 
   if ( fetchJob->error() != 0 ) {
-    //qFatal() << "Item fetch for remoteId=" << oldRemoteId
+    //qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Item fetch for remoteId=" << oldRemoteId
     //         << "new remoteId=" << newRemoteId << "failed:" << fetchJob->errorString();
     processNextItem();
     return;
@@ -149,7 +149,7 @@ void CompactChangeHelper::addChangedItems( const Item::List &items )
     return;
   }
 
-  qDebug() << "items.count=" << items.count()
+  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "items.count=" << items.count()
            << "pendingUpdates.count=" << d->mPendingUpdates.count();
   UpdateBatch updateBatch;
 
@@ -201,7 +201,7 @@ QString CompactChangeHelper::currentRemoteId( const Item &item ) const
   }
 
   if ( item.remoteId() != remoteId ) {
-    qDebug() << "item (id=" << item.id() << "remoteId=" << item.remoteId()
+    qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item (id=" << item.id() << "remoteId=" << item.remoteId()
              << "), col(id=" << collection.id() << ", name=" << collection.name()
              << ", revision=" << revision << ") in compact change set (revisions="
              << colIt->keys() << ": current remoteId=" << remoteId;
@@ -213,21 +213,21 @@ QString CompactChangeHelper::currentRemoteId( const Item &item ) const
 void CompactChangeHelper::checkCollectionChanged( const Collection &collection )
 {
   const qint64 revision = collection.remoteRevision().toLongLong();
-  //qDebug() << "col.id=" << collection.id() << ", remoteId=" << collection.remoteId()
+  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "col.id=" << collection.id() << ", remoteId=" << collection.remoteId()
   //         << "revision=" << revision;
 
   const CollectionRevisionMap::iterator colIt = d->mChangesByCollection.find( collection.id() );
   if ( colIt != d->mChangesByCollection.end() ) {
-    qDebug() << "matching change map found with" << colIt->count() << "entries";
+    qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "matching change map found with" << colIt->count() << "entries";
     // remove all revisions until the seen one appears
     RevisionChangeMap::iterator revIt = colIt->begin();
     while ( revIt != colIt->end() && revIt.key() <= revision ) {
-      qDebug() << "removing entry for revision" << revIt.key();
+      qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "removing entry for revision" << revIt.key();
       revIt = colIt->erase( revIt );
     }
 
     if ( revIt == colIt->end() ) {
-      qDebug() << "all change maps gone";
+      qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "all change maps gone";
       d->mChangesByCollection.erase( colIt );
     }
   }

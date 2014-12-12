@@ -1106,7 +1106,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
     QVERIFY( msgPtr != 0 );
 
     const QSet<QByteArray> parts = messageParts( msgPtr );
-    qDebug() << msgPtr->messageID()->identifier();
+    qCDebug(MIXEDMAILDIRRESOURCE_LOG) << msgPtr->messageID()->identifier();
     QVERIFY( !parts.isEmpty() );
     QVERIFY( parts.contains( MessagePart::Header ) );
     if ( msgPtr->messageID()->identifier() == messageIdOfEmptyBodyMsg )

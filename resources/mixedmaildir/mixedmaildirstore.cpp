@@ -48,7 +48,7 @@
 
 #include <KLocalizedString>
 
-#include <QDebug>
+#include "mixedmaildirresource_debug.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -331,7 +331,7 @@ class MaildirContext
         Q_ASSERT( mIndexData.value( result )->isEmpty() );
       } else {
         //TODO: use the error string?
-        qWarning() << mMaildir.lastError();
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << mMaildir.lastError();
       }
 
       return result;
@@ -365,7 +365,7 @@ class MaildirContext
         }
       } else {
         //TODO error handling?
-        qWarning() << mMaildir.lastError();
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << mMaildir.lastError();
       }
 
       return result;
@@ -539,7 +539,7 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
 
   if ( col.remoteId().isEmpty() ) {
     errorText = i18nc( "@info:status", "Given folder name is empty" );
-    qWarning() << "Incomplete ancestor chain for collection.";
+    qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Incomplete ancestor chain for collection.";
     Q_ASSERT( !col.remoteId().isEmpty() ); // abort! Look at backtrace to see where we came from.
     return InvalidFolder;
   }
@@ -547,7 +547,7 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
   if ( col.parentCollection() == Collection::root() ) {
     path = q->path();
     if ( col.remoteId() != path )
-      qWarning() << "RID mismatch, is" << col.remoteId() << "expected" << path;
+      qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "RID mismatch, is" << col.remoteId() << "expected" << path;
     return TopLevelFolder;
   }
 
@@ -746,13 +746,13 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
 
         quint64 uid = indexData->uid();
         if ( uid != 0 ) {
-          qDebug() << "item" << item.remoteId() << "has UID" << uid;
+          qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item" << item.remoteId() << "has UID" << uid;
           uidHash.insert( item.remoteId(), QString::number( uid ) );
         }
 
         const QStringList tagList = indexData->tagList();
         if ( !tagList.isEmpty() ) {
-          qDebug() << "item" << item.remoteId() << "has"
+          qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item" << item.remoteId() << "has"
                    << tagList.count() << "tags:" << tagList;
           tagListHash.insert( item.remoteId(), tagList );
         }
@@ -760,7 +760,7 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MBoxPtr &m
         Akonadi::MessageStatus status;
         status.setDeleted( true ),
         item.setFlags( status.statusFlags() );
-        qDebug() << "no index for item" << item.remoteId() << "in MBox" << mbox->fileName()
+        qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "no index for item" << item.remoteId() << "in MBox" << mbox->fileName()
                  << "so it has been deleted but not purged. Marking it as"
                  << item.flags();
       }
@@ -805,13 +805,13 @@ void MixedMaildirStore::Private::listCollection( FileStore::Job *job, MaildirPtr
 
         const quint64 uid = indexData->uid();
         if ( uid != 0 ) {
-          qDebug() << "item" << item.remoteId() << "has UID" << uid;
+          qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item" << item.remoteId() << "has UID" << uid;
           uidHash.insert( item.remoteId(), QString::number( uid ) );
         }
 
         const QStringList tagList = indexData->tagList();
         if ( !tagList.isEmpty() ) {
-          qDebug() << "item" << item.remoteId() << "has"
+          qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item" << item.remoteId() << "has"
                    << tagList.count() << "tags:" << tagList;
           tagListHash.insert( item.remoteId(), tagList );
         }
@@ -906,7 +906,7 @@ bool MixedMaildirStore::Private::fillItem( const MaildirPtr &md, bool includeHea
 
 void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, const QString &newPath )
 {
-  //qDebug() << "oldPath=" << oldPath << "newPath=" << newPath;
+  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "oldPath=" << oldPath << "newPath=" << newPath;
   const QString oldSubDirPath = Maildir::subDirPathForFolderPath( oldPath );
   const QString newSubDirPath = Maildir::subDirPathForFolderPath( newPath );
 
@@ -933,7 +933,7 @@ void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, co
       mboxes.insert( key, mboxPtr );
     }
   }
-  //qDebug() << "mbox: old keys=" << mMBoxes.keys() << "new keys" << mboxes.keys();
+  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mbox: old keys=" << mMBoxes.keys() << "new keys" << mboxes.keys();
   mMBoxes = mboxes;
 
   MaildirHash maildirs;
@@ -959,7 +959,7 @@ void MixedMaildirStore::Private::updateContextHashes( const QString &oldPath, co
       maildirs.insert( key, mdPtr );
     }
   }
-  //qDebug() << "maildir: old keys=" << mMaildirs.keys() << "new keys" << maildirs.keys();
+  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "maildir: old keys=" << mMaildirs.keys() << "new keys" << maildirs.keys();
   mMaildirs = maildirs;
 }
 
@@ -1171,7 +1171,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
 
   // we also only do renames
   if ( collection.remoteId() == collection.name() ) {
-    qWarning() << "CollectionModifyJob with name still identical to remoteId. Ignoring";
+    qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "CollectionModifyJob with name still identical to remoteId. Ignoring";
     return true;
   }
 
@@ -1213,7 +1213,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionModifyJob *job )
     if ( findIt == mMBoxes.constEnd() ) {
       mbox = MBoxPtr( new MBoxContext );
       if ( !mbox->load( path ) ) {
-        qWarning() << "Failed to load mbox" << path;
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to load mbox" << path;
       }
 
       mbox->mCollection = collection;
@@ -1354,7 +1354,7 @@ bool MixedMaildirStore::Private::visit( FileStore::CollectionMoveJob *job )
     if ( findIt == mMBoxes.constEnd() ) {
       mbox = MBoxPtr( new MBoxContext );
       if ( !mbox->load( movePath ) ) {
-        qWarning() << "Failed to load mbox" << movePath;
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to load mbox" << movePath;
       }
 
       mbox->mCollection = moveCollection;
@@ -2219,7 +2219,7 @@ bool MixedMaildirStore::Private::visit( FileStore::StoreCompactJob *job )
     if ( result > 0 ) {
       if ( movedEntries.count() > 0 ) {
         qint64 revision = mbox->mCollection.remoteRevision().toLongLong();
-        qDebug() << "purge of" << mbox->mCollection.name() << "caused item move: oldRevision="
+        qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "purge of" << mbox->mCollection.name() << "caused item move: oldRevision="
                 << revision << "(stored)," << mbox->mRevision << "(local)";
         revision = qMax( revision, mbox->mRevision ) + 1;
 

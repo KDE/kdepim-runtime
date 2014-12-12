@@ -58,7 +58,7 @@
 #include <kcontacts/vcardconverter.h>
 #include <kwindowsystem.h>
 #include <KLocalizedString>
-#include <QDebug>
+#include "davresource_debug.h"
 
 #include <QtCore/QSet>
 #include <QtDBus/QDBusConnection>
@@ -120,7 +120,7 @@ DavGroupwareResource::~DavGroupwareResource()
 
 void DavGroupwareResource::collectionRemoved( const Akonadi::Collection &collection )
 {
-  qDebug() << "Removing collection " << collection.remoteId();
+  qCDebug(DAVRESOURCE_LOG) << "Removing collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
     return;
@@ -230,7 +230,7 @@ void DavGroupwareResource::configure( WId windowId )
 
 void DavGroupwareResource::retrieveCollections()
 {
-  qDebug() << "Retrieving collections list";
+  qCDebug(DAVRESOURCE_LOG) << "Retrieving collections list";
   mSyncErrorNotified = false;
 
   if ( !configurationIsValid() ) {
@@ -247,7 +247,7 @@ void DavGroupwareResource::retrieveCollections()
 
 void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  qDebug() << "Retrieving items for collection " << collection.remoteId();
+  qCDebug(DAVRESOURCE_LOG) << "Retrieving items for collection " << collection.remoteId();
 
   if ( !configurationIsValid() ) {
     return;
@@ -279,7 +279,7 @@ void DavGroupwareResource::retrieveItems( const Akonadi::Collection &collection 
 
 bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  qDebug() << "Retrieving single item. Remote id = " << item.remoteId();
+  qCDebug(DAVRESOURCE_LOG) << "Retrieving single item. Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
     return false;
@@ -306,7 +306,7 @@ bool DavGroupwareResource::retrieveItem( const Akonadi::Item &item, const QSet<Q
 
 void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
 {
-  qDebug() << "Received notification for added item. Local id = "
+  qCDebug(DAVRESOURCE_LOG) << "Received notification for added item. Local id = "
       << item.id() << ". Remote id = " << item.remoteId()
       << ". Collection remote id = " << collection.remoteId();
 
@@ -329,7 +329,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
 
   QString urlStr = davItem.url();
   const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId(), urlStr );
-  qDebug() << "Item " << item.id() << " will be put to " << urlStr;
+  qCDebug(DAVRESOURCE_LOG) << "Item " << item.id() << " will be put to " << urlStr;
 
   DavItemCreateJob *job = new DavItemCreateJob( davUrl, davItem );
   job->setProperty( "collection", QVariant::fromValue( collection ) );
@@ -340,7 +340,7 @@ void DavGroupwareResource::itemAdded( const Akonadi::Item &item, const Akonadi::
 
 void DavGroupwareResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
 {
-  qDebug() << "Received notification for changed item. Local id = " << item.id()
+  qCDebug(DAVRESOURCE_LOG) << "Received notification for changed item. Local id = " << item.id()
       << ". Remote id = " << item.remoteId();
 
   if ( !configurationIsValid() ) {
@@ -503,7 +503,7 @@ void DavGroupwareResource::doItemRemoval( const Akonadi::Item &item )
 
 void DavGroupwareResource::doSetOnline( bool online )
 {
-  qDebug() << "Resource changed online status to" << online;
+  qCDebug(DAVRESOURCE_LOG) << "Resource changed online status to" << online;
 
   if ( online ) {
     synchronize();
@@ -577,7 +577,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished( KJob *job )
   const DavCollectionsMultiFetchJob *fetchJob = qobject_cast<DavCollectionsMultiFetchJob*>( job );
 
   if ( job->error() ) {
-    qWarning() << "Unable to fetch collections" << job->error() << job->errorText();
+    qCWarning(DAVRESOURCE_LOG) << "Unable to fetch collections" << job->error() << job->errorText();
     cancelTask( i18n( "Unable to retrieve collections: %1", job->errorText() ) );
     mSyncErrorNotified = true;
     return;
@@ -714,7 +714,7 @@ void DavGroupwareResource::onRetrieveItemsFinished( KJob *job )
       // do not use multiget, because in this case we fetch the complete payload
       // some lines below already.
       if ( !protocolSupportsMultiget ) {
-        qDebug() << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
+        qCDebug(DAVRESOURCE_LOG) << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
         item.clearPayload();
       }
     }

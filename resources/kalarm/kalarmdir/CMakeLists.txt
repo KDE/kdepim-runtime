@@ -8,6 +8,7 @@ include_directories(
 add_definitions(-DSETTINGS_NAMESPACE=Akonadi_KAlarm_Dir_Resource)
 
 set(kalarmdirresource_SRCS
+    kalarmdirresource_debug.cpp
     settingsdialog.cpp
     kalarmdirresource.cpp
     kalarmdirresourcefactory.cpp

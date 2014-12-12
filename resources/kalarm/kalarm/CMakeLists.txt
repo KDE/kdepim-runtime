@@ -13,6 +13,7 @@ add_definitions(-DSETTINGS_NAMESPACE=Akonadi_KAlarm_Resource)
 set(kalarmresource_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared/icalresourcebase.cpp
     kalarmresource.cpp
+    kalarmresource_debug.cpp
     kalarmresourcefactory.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtyperadiowidget.cpp

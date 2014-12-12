@@ -28,7 +28,7 @@
 #include <KLocalizedString>
 #include <kio/davjob.h>
 #include <kio/job.h>
-#include <qdebug.h>
+#include "davresource_debug.h"
 
 DavFreeBusyHandler::DavFreeBusyHandler( QObject* parent )
   : QObject( parent ), mNextRequestId( 0 )
@@ -103,7 +103,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished( KJob* job )
   mRequestsTracker[email].handlingJobSuccessful = true;
 
   foreach ( const DavPrincipalSearchJob::Result &result, results ) {
-    qDebug() << result.value;
+    qCDebug(DAVRESOURCE_LOG) << result.value;
     KUrl url( davJob->property( "url" ).toString() );
     if ( result.value.startsWith( QLatin1Char('/') ) ) {
       // href is only a path, use request url to complete

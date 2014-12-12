@@ -24,7 +24,7 @@
 #include "davprotocolbase.h"
 #include "davutils.h"
 
-#include <QDebug>
+#include "davresource_debug.h"
 #include <QIcon>
 #include <KMessageBox>
 #include <KUrl>

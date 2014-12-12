@@ -16,6 +16,7 @@ add_subdirectory(kmindexreader)
 ########### next target ###############
 
 set( mixedmaildirresource_SRCS
+  mixedmaildirresource_debug.cpp
   compactchangehelper.cpp
   configdialog.cpp
   mixedmaildirresource.cpp

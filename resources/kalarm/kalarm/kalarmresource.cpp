@@ -37,7 +37,7 @@
 #include <KCalCore/Incidence>
 
 #include <KLocalizedString>
-#include <qdebug.h>
+#include "kalarmresource_debug.h"
 
 using namespace Akonadi;
 using namespace Akonadi_KAlarm_Resource;
@@ -53,7 +53,7 @@ KAlarmResource::KAlarmResource(const QString& id)
       mHaveReadFile(false),
       mFetchedAttributes(false)
 {
-    qDebug() << id;
+    qCDebug(KALARMRESOURCE_LOG) << id;
     KAlarmResourceCommon::initialise(this);
     initialise(mSettings->alarmTypes(), QLatin1String("kalarm"));
     connect(mSettings, &Settings::configChanged, this, &KAlarmResource::settingsChanged);
@@ -115,7 +115,7 @@ void KAlarmResource::configDialogAcceptedActions(SingleFileResourceConfigDialog<
 */
 void KAlarmResource::retrieveCollections()
 {
-    qDebug();
+    qCDebug(KALARMRESOURCE_LOG);
     mSupportedMimetypes = mSettings->alarmTypes();
     ICalResourceBase::retrieveCollections();
     fetchCollection(SLOT(collectionFetchResult(KJob*)));
@@ -131,7 +131,7 @@ void KAlarmResource::collectionFetchResult(KJob* j)
     {
         // An error occurred. Note that if it's a new resource, it will complain
         // about an invalid collection if the collection has not yet been created.
-        qDebug() << "Error: " << j->errorString();
+        qCDebug(KALARMRESOURCE_LOG) << "Error: " << j->errorString();
     }
     else
     {
@@ -140,18 +140,18 @@ void KAlarmResource::collectionFetchResult(KJob* j)
         CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
         const Collection::List collections = job->collections();
         if (collections.isEmpty())
-            qDebug() << "Error: resource's collection not found";
+            qCDebug(KALARMRESOURCE_LOG) << "Error: resource's collection not found";
         else
         {
             // Check whether calendar file format needs to be updated
-            qDebug() << "Fetched collection";
+            qCDebug(KALARMRESOURCE_LOG) << "Fetched collection";
             const Collection& c(collections[0]);
             if (firstTime  &&  mSettings->path().isEmpty())
             {
                 // Initialising a resource which seems to have no stored
                 // settings config file. Recreate the settings.
                 static const Collection::Rights writableRights = Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem;
-                qDebug() << "Recreating config for remote id:" << c.remoteId();
+                qCDebug(KALARMRESOURCE_LOG) << "Recreating config for remote id:" << c.remoteId();
                 mSettings->setPath(c.remoteId());
                 mSettings->setDisplayName(c.name());
                 mSettings->setAlarmTypes(c.contentMimeTypes());
@@ -174,7 +174,7 @@ void KAlarmResource::collectionFetchResult(KJob* j)
 */
 bool KAlarmResource::readFromFile(const QString& fileName)
 {
-    qDebug() << fileName;
+    qCDebug(KALARMRESOURCE_LOG) << fileName;
 //TODO Notify user if error occurs on next line
     if (!ICalResourceBase::readFromFile(fileName))
         return false;
@@ -239,9 +239,9 @@ void KAlarmResource::setCompatibility(KJob* j)
 {
     CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
     if (j->error())
-        qDebug() << "Error: " << j->errorString();
+        qCDebug(KALARMRESOURCE_LOG) << "Error: " << j->errorString();
     else if (job->collections().isEmpty())
-        qDebug() << "Error: resource's collection not found";
+        qCDebug(KALARMRESOURCE_LOG) << "Error: resource's collection not found";
     else
         KAlarmResourceCommon::setCollectionCompatibility(job->collections()[0], mCompatibility, mVersion);
 }
@@ -252,7 +252,7 @@ void KAlarmResource::setCompatibility(KJob* j)
 */
 bool KAlarmResource::writeToFile(const QString& fileName)
 {
-    qDebug() << fileName;
+    qCDebug(KALARMRESOURCE_LOG) << fileName;
     if (calendar()->incidences().isEmpty())
     {
         // It's an empty file. Set up the KAlarm custom property.
@@ -274,14 +274,14 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item& item, const QSet<QByteA
     const KCalCore::Event::Ptr kcalEvent = calendar()->event(rid);
     if (!kcalEvent)
     {
-        qWarning() << "Event not found:" << rid;
+        qCWarning(KALARMRESOURCE_LOG) << "Event not found:" << rid;
         emit error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
         return false;
     }
 
     if (kcalEvent->alarms().isEmpty())
     {
-        qWarning() << "KCalCore::Event has no alarms:" << rid;
+        qCWarning(KALARMRESOURCE_LOG) << "KCalCore::Event has no alarms:" << rid;
         emit error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
         return false;
     }
@@ -290,7 +290,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item& item, const QSet<QByteA
     const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty())
     {
-        qWarning() << "KAEvent has no alarms:" << rid;
+        qCWarning(KALARMRESOURCE_LOG) << "KAEvent has no alarms:" << rid;
         emit error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
         return false;
     }
@@ -307,7 +307,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item& item, const QSet<QByteA
 */
 void KAlarmResource::settingsChanged()
 {
-    qDebug();
+    qCDebug(KALARMRESOURCE_LOG);
     const QStringList mimeTypes = mSettings->alarmTypes();
     if (mimeTypes != mSupportedMimetypes)
         mSupportedMimetypes = mimeTypes;
@@ -316,7 +316,7 @@ void KAlarmResource::settingsChanged()
     {
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
-        qDebug() << "Update storage format";
+        qCDebug(KALARMRESOURCE_LOG) << "Update storage format";
         fetchCollection(SLOT(updateFormat(KJob*)));
     }
 }
@@ -329,9 +329,9 @@ void KAlarmResource::updateFormat(KJob* j)
 {
     CollectionFetchJob* job = static_cast<CollectionFetchJob*>(j);
     if (j->error())
-        qDebug() << "Error: " << j->errorString();
+        qCDebug(KALARMRESOURCE_LOG) << "Error: " << j->errorString();
     else if (job->collections().isEmpty())
-        qDebug() << "Error: resource's collection not found";
+        qCDebug(KALARMRESOURCE_LOG) << "Error: resource's collection not found";
     else
     {
         const Collection c(job->collections()[0]);
@@ -339,32 +339,32 @@ void KAlarmResource::updateFormat(KJob* j)
         {
             const CompatibilityAttribute* attr = c.attribute<CompatibilityAttribute>();
             if (attr->compatibility() != mCompatibility)
-                qDebug()<<"Compatibility changed:"<<mCompatibility<<"->"<<attr->compatibility();
+                qCDebug(KALARMRESOURCE_LOG)<<"Compatibility changed:"<<mCompatibility<<"->"<<attr->compatibility();
         }
         switch (mCompatibility)
         {
             case KACalendar::Current:
-                qWarning() << "Already current storage format";
+                qCWarning(KALARMRESOURCE_LOG) << "Already current storage format";
                 break;
             case KACalendar::Incompatible:
             default:
-                qWarning() << "Incompatible storage format: compat=" << mCompatibility;
+                qCWarning(KALARMRESOURCE_LOG) << "Incompatible storage format: compat=" << mCompatibility;
                 break;
             case KACalendar::Converted:
             case KACalendar::Convertible:
             {
                 if (mSettings->readOnly())
                 {
-                    qWarning() << "Cannot update storage format for a read-only resource";
+                    qCWarning(KALARMRESOURCE_LOG) << "Cannot update storage format for a read-only resource";
                     break;
                 }
                 // Update the backend storage format to the current KAlarm format
                 const QString filename = fileStorage()->fileName();
-                qDebug() << "Updating storage for" << filename;
+                qCDebug(KALARMRESOURCE_LOG) << "Updating storage for" << filename;
                 KACalendar::setKAlarmVersion(fileStorage()->calendar());
                 if (!writeToFile(filename))
                 {
-                    qWarning() << "Error updating calendar storage format";
+                    qCWarning(KALARMRESOURCE_LOG) << "Error updating calendar storage format";
                     break;
                 }
                 // Prevent a new file read being triggered by writeToFile(), which
@@ -393,7 +393,7 @@ void KAlarmResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collect
         return;
     if (mCompatibility != KACalendar::Current)
     {
-        qWarning() << "Calendar not in current format";
+        qCWarning(KALARMRESOURCE_LOG) << "Calendar not in current format";
         cancelTask(errorMessage(KAlarmResourceCommon::NotCurrentFormat));
         return;
     }
@@ -425,7 +425,7 @@ void KAlarmResource::itemChanged(const Akonadi::Item& item, const QSet<QByteArra
     QString errorMsg;
     if (mCompatibility != KACalendar::Current)
     {
-        qWarning() << "Calendar not in current format";
+        qCWarning(KALARMRESOURCE_LOG) << "Calendar not in current format";
         cancelTask(errorMessage(KAlarmResourceCommon::NotCurrentFormat));
         return;
     }
@@ -444,7 +444,7 @@ void KAlarmResource::itemChanged(const Akonadi::Item& item, const QSet<QByteArra
     {
         if (incidence->isReadOnly())
         {
-            qWarning() << "Event is read only:" << event.id();
+            qCWarning(KALARMRESOURCE_LOG) << "Event is read only:" << event.id();
             cancelTask(errorMessage(KAlarmResourceCommon::EventReadOnly, event.id()));
             return;
         }
@@ -496,7 +496,7 @@ void KAlarmResource::collectionChanged(const Akonadi::Collection& collection)
 */
 void KAlarmResource::doRetrieveItems(const Akonadi::Collection& collection)
 {
-    qDebug();
+    qCDebug(KALARMRESOURCE_LOG);
 
     // Set the collection's compatibility status
     KAlarmResourceCommon::setCollectionCompatibility(collection, mCompatibility, mVersion);
@@ -508,7 +508,7 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection& collection)
     {
         if (kcalEvent->alarms().isEmpty())
         {
-            qWarning() << "KCalCore::Event has no alarms:" << kcalEvent->uid();
+            qCWarning(KALARMRESOURCE_LOG) << "KCalCore::Event has no alarms:" << kcalEvent->uid();
             continue;    // ignore events without alarms
         }
 
@@ -516,7 +516,7 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection& collection)
         const QString mime = CalEvent::mimeType(event.category());
         if (mime.isEmpty())
         {
-            qWarning() << "KAEvent has no alarms:" << event.id();
+            qCWarning(KALARMRESOURCE_LOG) << "KAEvent has no alarms:" << event.id();
             continue;   // event has no usable alarms
         }
 

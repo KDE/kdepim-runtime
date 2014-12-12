@@ -20,7 +20,7 @@
 
 #include "testdatautil.h"
 
-#include <QDebug>
+#include "mixedmaildirresource_debug.h"
 
 #include <QDir>
 #include <QFile>

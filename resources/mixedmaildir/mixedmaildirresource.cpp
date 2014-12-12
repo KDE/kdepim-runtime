@@ -56,7 +56,7 @@
 
 #include <kmime/kmime_message.h>
 
-#include <QDebug>
+#include "mixedmaildirresource_debug.h"
 #include <KLocalizedString>
 #include <KWindowSystem>
 
@@ -150,7 +150,7 @@ void MixedMaildirResource::configure( WId windowId )
 
 void MixedMaildirResource::itemAdded( const Item &item, const Collection& collection )
 {
-/*  qDebug() << "item.id=" << item.id() << "col=" << collection.remoteId();*/
+/*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << item.id() << "col=" << collection.remoteId();*/
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
     qCritical() << message;
@@ -164,7 +164,7 @@ void MixedMaildirResource::itemAdded( const Item &item, const Collection& collec
 
 void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>& parts )
 {
-/*  qDebug() << "item.id=" << item.id() << "col=" << item.parentCollection().remoteId()
+/*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << item.id() << "col=" << item.parentCollection().remoteId()
            << "parts=" << parts;*/
   if ( !ensureSaneConfiguration() ) {
     const QString message = i18nc( "@info:status", "Unusable configuration." );
@@ -190,7 +190,7 @@ void MixedMaildirResource::itemChanged( const Item &item, const QSet<QByteArray>
 
 void MixedMaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
 {
-/*  qDebug() << "item.id=" << item.id() << "remoteId=" << item.remoteId()
+/*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << item.id() << "remoteId=" << item.remoteId()
            << "source=" << source.remoteId() << "dest=" << destination.remoteId();*/
   if ( source == destination ) {
     changeProcessed();
@@ -215,7 +215,7 @@ void MixedMaildirResource::itemMoved( const Item &item, const Collection &source
 
 void MixedMaildirResource::itemRemoved(const Item &item)
 {
-/*  qDebug() << "item.id=" << item.id() << "col=" << collection.remoteId()
+/*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << item.id() << "col=" << collection.remoteId()
            << "collection.remoteRevision=" << item.parentCollection().remoteRevision();*/
   Q_ASSERT( !item.remoteId().isEmpty() );
   Q_ASSERT( item.parentCollection().isValid() );
@@ -312,7 +312,7 @@ void MixedMaildirResource::collectionChanged(const Collection &collection)
   // but rename the resource.
   if ( collection.remoteId() == mStore->topLevelCollection().remoteId() ) {
     if ( collection.name() != name() ) {
-      qDebug() << "TopLevel collection name differs from resource name: collection="
+      qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "TopLevel collection name differs from resource name: collection="
                << collection.name() << "resource=" << name() << ". Renaming resource";
       setName( collection.name() );
     }
@@ -339,7 +339,7 @@ void MixedMaildirResource::collectionChanged(const Collection &collection, const
   // but rename the resource.
   if ( collection.remoteId() == mStore->topLevelCollection().remoteId() ) {
     if ( collection.name() != name() ) {
-      qDebug() << "TopLevel collection name differs from resource name: collection="
+      qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "TopLevel collection name differs from resource name: collection="
                << collection.name() << "resource=" << name() << ". Renaming resource";
       setName( collection.name() );
     }
@@ -523,7 +523,7 @@ void MixedMaildirResource::retrieveItemsResult( KJob *job )
   if ( var.isValid() ) {
     const QHash<QString, QVariant> tagListHash = var.value< QHash<QString, QVariant> >();
     if ( !tagListHash.isEmpty() ) {
-      qDebug() << tagListHash.count() << "of" << items.count()
+      qCDebug(MIXEDMAILDIRRESOURCE_LOG) << tagListHash.count() << "of" << items.count()
                << "items in collection" << retrieveJob->collection().remoteId() << "have tags";
 
       TagContextList taggedItems;
@@ -583,7 +583,7 @@ void MixedMaildirResource::itemAddedResult( KJob *job )
   FileStore::ItemCreateJob *itemJob = qobject_cast<FileStore::ItemCreateJob*>( job );
   Q_ASSERT( itemJob != 0 );
 
-/*  qDebug() << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId();*/
+/*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId();*/
   changeCommitted( itemJob->item() );
 
   checkForInvalidatedIndexCollections( job );
@@ -628,7 +628,7 @@ void MixedMaildirResource::itemMovedResult( KJob *job )
   changeCommitted( itemJob->item() );
 
   const QString remoteId = itemJob->property( "originalRemoteId" ).value<QString>();
-//   qDebug() << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId()
+//   qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId()
 //            << "old remoteId=" << remoteId;
 
   const QVariant compactStoreVar = itemJob->property( "compactStore" );
@@ -787,7 +787,7 @@ void MixedMaildirResource::restoreTags( const QVariant &arg )
 
 void MixedMaildirResource::processNextTagContext()
 {
-  qDebug() << mPendingTagContexts.count() << "items to go";
+  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << mPendingTagContexts.count() << "items to go";
   if ( mPendingTagContexts.isEmpty() ) {
     return;
   }
@@ -815,12 +815,12 @@ void MixedMaildirResource::tagFetchJobResult( KJob *job )
 
   const Item item = fetchJob->items()[ 0 ];
   const QStringList tagList = job->property( "tagList" ).value<QStringList>();
-  qDebug() << "Tagging item" << item.url() << "with" << tagList;
+  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "Tagging item" << item.url() << "with" << tagList;
 
   Akonadi::Tag::List tags;
   Q_FOREACH( const QString &tag, tagList ) {
     if ( tag.isEmpty() ) {
-      qWarning() << "TagList for item" << item.url() << "contains an empty tag";
+      qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "TagList for item" << item.url() << "contains an empty tag";
     } else {
       tags << Akonadi::Tag(tag);
     }
