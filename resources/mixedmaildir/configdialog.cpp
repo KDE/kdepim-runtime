@@ -45,6 +45,7 @@ ConfigDialog::ConfigDialog(QWidget * parent) :
   ui.kcfg_Path->setUrl( QUrl::fromLocalFile( Settings::self()->path() ) );
 
   QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  mainLayout->addWidget(buttonBox);
   mOkButton = buttonBox->button(QDialogButtonBox::Ok);
   mOkButton->setDefault(true);
   mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
