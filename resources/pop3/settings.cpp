@@ -20,7 +20,7 @@
 #include "settingsadaptor.h"
 
 #include <kwallet.h>
-#include <QDebug>
+#include "pop3resource_debug.h"
 
 class SettingsHelper
 {
@@ -28,7 +28,7 @@ public:
     SettingsHelper() : q(0) {}
     ~SettingsHelper()
     {
-        qWarning() << q;
+        qCWarning(POP3RESOURCE_LOG) << q;
         delete q;
         q = 0;
     }
@@ -78,7 +78,7 @@ void Settings::setPassword(const QString &password)
         wallet->setFolder(QLatin1String("pop3"));
         wallet->writePassword(mResourceId, password);
     } else {
-        qWarning() << "Unable to open wallet!";
+        qCWarning(POP3RESOURCE_LOG) << "Unable to open wallet!";
     }
     delete wallet;
 }

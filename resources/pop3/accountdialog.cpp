@@ -40,7 +40,7 @@
 #include <KUser>
 #include <KWindowSystem>
 #include <kwallet.h>
-#include <QDebug>
+#include "pop3resource_debug.h"
 #include <KGlobalSettings>
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -255,10 +255,10 @@ void AccountDialog::walletOpenedForLoading(bool success)
             passwordEdit->setText(password);
             mInitalPassword = password;
         } else {
-            qWarning() << "Wallet not open or doesn't have pop3 folder.";
+            qCWarning(POP3RESOURCE_LOG) << "Wallet not open or doesn't have pop3 folder.";
         }
     } else {
-        qWarning() << "Failed to open wallet for loading the password.";
+        qCWarning(POP3RESOURCE_LOG) << "Failed to open wallet for loading the password.";
     }
 
     const bool walletError = !success || !mWallet->isOpen();
@@ -289,11 +289,11 @@ void AccountDialog::walletOpenedForSaving(bool success)
 
             mParentResource->clearCachedPassword();
         } else {
-            qWarning() << "Wallet not open.";
+            qCWarning(POP3RESOURCE_LOG) << "Wallet not open.";
         }
     } else {
         // Should we alert the user here?
-        qWarning() << "Failed to open wallet for saving the password.";
+        qCWarning(POP3RESOURCE_LOG) << "Failed to open wallet for saving the password.";
     }
 
     delete mWallet;
@@ -370,13 +370,13 @@ void AccountDialog::slotPipeliningClicked()
 
 void AccountDialog::slotPopEncryptionChanged(int id)
 {
-    qDebug() << "setting port";
+    qCDebug(POP3RESOURCE_LOG) << "setting port";
     // adjust port
     if (id == Transport::EnumEncryption::SSL || portEdit->value() == 995) {
         portEdit->setValue((id == Transport::EnumEncryption::SSL) ? 995 : 110);
     }
 
-    qDebug() << "port set ";
+    qCDebug(POP3RESOURCE_LOG) << "port set ";
     enablePopFeatures(); // removes invalid auth options from the combobox
 }
 
@@ -601,13 +601,13 @@ void AccountDialog::saveSettings()
 
     if ((!passwordEdit->text().isEmpty() && userChangedPassword) ||
             userWantsToDeletePassword) {
-        qDebug() << mWallet <<  mWallet->isOpen();
+        qCDebug(POP3RESOURCE_LOG) << mWallet <<  mWallet->isOpen();
         if (mWallet && mWallet->isOpen()) {
             // wallet is already open
             walletOpenedForSaving(true);
         } else {
             // we need to open the wallet
-            qDebug() << "we need to open the wallet";
+            qCDebug(POP3RESOURCE_LOG) << "we need to open the wallet";
             mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winId(),
                                          Wallet::Asynchronous);
             if (mWallet) {

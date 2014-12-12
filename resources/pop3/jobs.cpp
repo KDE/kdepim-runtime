@@ -26,7 +26,7 @@
 #include <KIO/Slave>
 #include <KIO/Job>
 #include <KIO/TransferJob>
-#include <QDebug>
+#include "pop3resource_debug.h"
 #include <KLocalizedString>
 
 POPSession::POPSession(const QString &password)
@@ -44,7 +44,7 @@ void POPSession::slotSlaveError(KIO::Slave *slave , int errorCode,
                                 const QString &errorMessage)
 {
     Q_UNUSED(slave);
-    qWarning() << "Got a slave error:" << errorMessage;
+    qCWarning(POP3RESOURCE_LOG) << "Got a slave error:" << errorMessage;
 
     if (slave != mSlave) {
         return;
@@ -227,7 +227,7 @@ void SlaveBaseJob::slotSlaveResult(KJob *job)
 void SlaveBaseJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
 {
     Q_UNUSED(job);
-    qWarning() << "Got unexpected slave data:" << data.data();
+    qCWarning(POP3RESOURCE_LOG) << "Got unexpected slave data:" << data.data();
 }
 
 void SlaveBaseJob::slaveError(int errorCode, const QString &errorMessage)
@@ -342,10 +342,10 @@ void ListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
         if (idIsNumber) {
             mIdList.insert(id, length);
         } else
-            qWarning() << "Got non-integer ID as part of the LIST response, ignoring"
+            qCWarning(POP3RESOURCE_LOG) << "Got non-integer ID as part of the LIST response, ignoring"
                        << idString.data();
     } else {
-        qWarning() << "Got invalid LIST response:" << data.data();
+        qCWarning(POP3RESOURCE_LOG) << "Got invalid LIST response:" << data.data();
     }
 }
 
@@ -377,8 +377,8 @@ void UIDListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
     const int space = cleanData.indexOf(' ');
 
     if (space <= 0) {
-        qWarning() << "Invalid response to the UIDL command:" << data.data();
-        qWarning() << "Ignoring this entry.";
+        qCWarning(POP3RESOURCE_LOG) << "Invalid response to the UIDL command:" << data.data();
+        qCWarning(POP3RESOURCE_LOG) << "Ignoring this entry.";
     } else {
         QByteArray idString = cleanData.left(space);
         QByteArray uidString = cleanData.mid(space + 1);
@@ -390,13 +390,13 @@ void UIDListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
                 mUidList.insert(id, uidQString);
                 mIdList.insert(uidQString, id);
             } else {
-                qWarning() << "Got invalid/empty UID from the UIDL command:"
+                qCWarning(POP3RESOURCE_LOG) << "Got invalid/empty UID from the UIDL command:"
                            << uidString.data();
-                qWarning() << "The whole response was:" << data.data();
+                qCWarning(POP3RESOURCE_LOG) << "The whole response was:" << data.data();
             }
         } else {
-            qWarning() << "Got invalid ID from the UIDL command:" << idString.data();
-            qWarning() << "The whole response was:" << data.data();
+            qCWarning(POP3RESOURCE_LOG) << "Got invalid ID from the UIDL command:" << idString.data();
+            qCWarning(POP3RESOURCE_LOG) << "The whole response was:" << data.data();
         }
     }
 }

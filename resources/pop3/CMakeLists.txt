@@ -12,6 +12,7 @@ set( pop3resource_SRCS
   jobs.cpp
   settings.cpp
   pop3resourceattribute.cpp
+  pop3resource_debug.cpp
 )
 
 

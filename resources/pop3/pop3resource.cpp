@@ -37,7 +37,7 @@
 #include <KPasswordDialog>
 #include <KMessageBox>
 #include <kwallet.h>
-#include <QDebug>
+#include "pop3resource_debug.h"
 
 #include <QTimer>
 
@@ -91,7 +91,7 @@ void POP3Resource::intervalCheckTriggered()
 {
     Q_ASSERT(mState == Idle);
     if (isOnline()) {
-        qDebug() << "Starting interval mail check.";
+        qCDebug(POP3RESOURCE_LOG) << "Starting interval mail check.";
         startMailCheck();
         mIntervalCheckInProgress = true;
     } else {
@@ -129,14 +129,14 @@ void POP3Resource::configure(WId windowId)
 void POP3Resource::retrieveItems(const Akonadi::Collection &collection)
 {
     Q_UNUSED(collection);
-    qWarning() << "This should never be called, we don't have a collection!";
+    qCWarning(POP3RESOURCE_LOG) << "This should never be called, we don't have a collection!";
 }
 
 bool POP3Resource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(item);
     Q_UNUSED(parts);
-    qWarning() << "This should never be called, we don't have any item!";
+    qCWarning(POP3RESOURCE_LOG) << "This should never be called, we don't have any item!";
     return false;
 }
 
@@ -186,7 +186,7 @@ void POP3Resource::walletOpenedForSaving(bool success)
             mWallet->writePassword(identifier(), mPassword);
         }
     } else {
-        qWarning() << "Unable to write the password to the wallet.";
+        qCWarning(POP3RESOURCE_LOG) << "Unable to write the password to the wallet.";
     }
 
     delete mWallet;
@@ -237,11 +237,11 @@ void POP3Resource::doStateStep()
     switch (mState) {
     case Idle: {
         Q_ASSERT(false);
-        qWarning() << "State machine should not be called in idle state!";
+        qCWarning(POP3RESOURCE_LOG) << "State machine should not be called in idle state!";
         break;
     }
     case FetchTargetCollection: {
-        qDebug() << "================ Starting state FetchTargetCollection ==========";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state FetchTargetCollection ==========";
         emit status(Running, i18n("Preparing transmission from \"%1\".", name()));
         Collection targetCollection(Settings::self()->targetCollection());
         if (!targetCollection.isValid()) {
@@ -259,7 +259,7 @@ void POP3Resource::doStateStep()
         break;
     }
     case Precommand: {
-        qDebug() << "================ Starting state Precommand =====================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Precommand =====================";
         if (!Settings::self()->precommand().isEmpty()) {
             PrecommandJob *precommandJob = new PrecommandJob(Settings::self()->precommand(), this);
             connect(precommandJob, &PrecommandJob::result, this, &POP3Resource::precommandResult);
@@ -271,7 +271,7 @@ void POP3Resource::doStateStep()
         break;
     }
     case RequestPassword: {
-        qDebug() << "================ Starting state RequestPassword ================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state RequestPassword ================";
 
         // Don't show any wallet or password prompts when we are unit-testing
         if (!Settings::self()->unitTestPassword().isEmpty()) {
@@ -308,7 +308,7 @@ void POP3Resource::doStateStep()
         break;
     }
     case Connect: {
-        qDebug() << "================ Starting state Connect ========================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
         mPopSession = new POPSession(mPassword);
         connect(mPopSession, &POPSession::slaveError, this, &POP3Resource::slotSessionError);
@@ -316,7 +316,7 @@ void POP3Resource::doStateStep()
         break;
     }
     case Login: {
-        qDebug() << "================ Starting state Login ==========================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Login ==========================";
 
         LoginJob *loginJob = new LoginJob(mPopSession);
         connect(loginJob, &LoginJob::result, this, &POP3Resource::loginJobResult);
@@ -324,7 +324,7 @@ void POP3Resource::doStateStep()
         break;
     }
     case List: {
-        qDebug() << "================ Starting state List ===========================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state List ===========================";
         emit status(Running, i18n("Fetching mail listing."));
         ListJob *listJob = new ListJob(mPopSession);
         connect(listJob, &ListJob::result, this, &POP3Resource::listJobResult);
@@ -332,14 +332,14 @@ void POP3Resource::doStateStep()
     }
     break;
     case UIDList: {
-        qDebug() << "================ Starting state UIDList ========================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state UIDList ========================";
         UIDListJob *uidListJob = new UIDListJob(mPopSession);
         connect(uidListJob, &UIDListJob::result, this, &POP3Resource::uidListJobResult);
         uidListJob->start();
     }
     break;
     case Download: {
-        qDebug() << "================ Starting state Download =======================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Download =======================";
         FetchJob *fetchJob = new FetchJob(mPopSession);
 
         // Determine which mails we want to download. Those are all mails which are
@@ -356,7 +356,7 @@ void POP3Resource::doStateStep()
             }
         }
         mIdsToDownload = idsToDownload;
-        qDebug() << "We are going to download" << mIdsToDownload.size() << "messages";
+        qCDebug(POP3RESOURCE_LOG) << "We are going to download" << mIdsToDownload.size() << "messages";
 
         // For proper progress, the job needs to know the sizes of the messages, so
         // put them into a list here
@@ -375,8 +375,8 @@ void POP3Resource::doStateStep()
     }
     break;
     case Save: {
-        qDebug() << "================ Starting state Save ===========================";
-        qDebug() << mPendingCreateJobs.size() << "item create jobs are pending";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Save ===========================";
+        qCDebug(POP3RESOURCE_LOG) << mPendingCreateJobs.size() << "item create jobs are pending";
         if (mPendingCreateJobs.size() > 0) {
             emit status(Running, i18n("Saving downloaded messages."));
         }
@@ -390,7 +390,7 @@ void POP3Resource::doStateStep()
     }
     break;
     case Delete: {
-        qDebug() << "================ Starting state Delete =========================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Delete =========================";
         QList<int> idsToKill = idsToDelete();
         if (!idsToKill.isEmpty()) {
             emit status(Running, i18n("Deleting messages from the server."));
@@ -404,18 +404,18 @@ void POP3Resource::doStateStep()
     }
     break;
     case Quit: {
-        qDebug() << "================ Starting state Quit ===========================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Quit ===========================";
         QuitJob *quitJob = new QuitJob(mPopSession);
         connect(quitJob, &QuitJob::result, this, &POP3Resource::quitJobResult);
         quitJob->start();
     }
     break;
     case SavePassword: {
-        qDebug() << "================ Starting state SavePassword ===================";
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state SavePassword ===================";
         if (!mSavePassword) {
             finish();
         } else {
-            qDebug() << "Writing password back to the wallet.";
+            qCDebug(POP3RESOURCE_LOG) << "Writing password back to the wallet.";
             emit status(Running, i18n("Saving password to the wallet."));
             mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winIdForDialogs(),
                                          Wallet::Asynchronous);
@@ -494,7 +494,7 @@ void POP3Resource::precommandResult(KJob *job)
 void POP3Resource::loginJobResult(KJob *job)
 {
     if (job->error()) {
-        qDebug() << job->error() << job->errorText();
+        qCDebug(POP3RESOURCE_LOG) << job->error() << job->errorText();
         if (job->error() == KIO::ERR_COULD_NOT_LOGIN) {
             mAskAgain = true;
         }
@@ -514,7 +514,7 @@ void POP3Resource::listJobResult(KJob *job)
         ListJob *listJob = dynamic_cast<ListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToSizeMap = listJob->idList();
-        qDebug() << "IdsToSizeMap:" << mIdsToSizeMap;
+        qCDebug(POP3RESOURCE_LOG) << "IdsToSizeMap:" << mIdsToSizeMap;
         advanceState(UIDList);
     }
 }
@@ -529,8 +529,8 @@ void POP3Resource::uidListJobResult(KJob *job)
         Q_ASSERT(listJob);
         mIdsToUidsMap = listJob->uidList();
         mUidsToIdsMap = listJob->idList();
-        qDebug() << "IdToUidMap:" << mIdsToUidsMap;
-        qDebug() << "UidToIdMap:" << mUidsToIdsMap;
+        qCDebug(POP3RESOURCE_LOG) << "IdToUidMap:" << mIdsToUidsMap;
+        qCDebug(POP3RESOURCE_LOG) << "UidToIdMap:" << mUidsToIdsMap;
 
         mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
         if (Settings::self()->leaveOnServer() && !mUidListValid) {
@@ -554,10 +554,10 @@ void POP3Resource::fetchJobResult(KJob *job)
                    QLatin1Char('\n') + job->errorString());
         return;
     } else {
-        qDebug() << "Downloaded" << mDownloadedIDs.size() << "mails";
+        qCDebug(POP3RESOURCE_LOG) << "Downloaded" << mDownloadedIDs.size() << "mails";
 
         if (!mIdsToDownload.isEmpty()) {
-            qWarning() << "We did not download all messages, there are still some remaining "
+            qCWarning(POP3RESOURCE_LOG) << "We did not download all messages, there are still some remaining "
                        "IDs, even though we requested their download:" << mIdsToDownload;
         }
 
@@ -573,7 +573,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
         return;
     }
 
-    //qDebug() << "Got message" << messageId
+    //qCDebug(POP3RESOURCE_LOG) << "Got message" << messageId
     //         << "with subject" << message->subject()->asUnicodeString();
 
     Akonadi::Item item;
@@ -659,7 +659,7 @@ void POP3Resource::itemCreateJobResult(KJob *job)
     Q_ASSERT(idOfMessageJustCreated != -1);
     mPendingCreateJobs.remove(createJob);
     mIDsStored.append(idOfMessageJustCreated);
-    //qDebug() << "Just stored message with ID" << idOfMessageJustCreated
+    //qCDebug(POP3RESOURCE_LOG) << "Just stored message with ID" << idOfMessageJustCreated
     //         << "on the Akonadi server";
 
     // Have all create jobs finished? Go to the next state, then
@@ -722,7 +722,7 @@ QList<int> POP3Resource::idsToDelete() const
                 if (msgTime >= timeLimit) {
                     idsToSave.append(idToDelete);
                 } else {
-                    qDebug() << "Message" << idToDelete << "is too old and will be deleted.";
+                    qCDebug(POP3RESOURCE_LOG) << "Message" << idToDelete << "is too old and will be deleted.";
                 }
             }
         }
@@ -775,7 +775,7 @@ QList<int> POP3Resource::idsToDelete() const
         }
     }
 
-    qDebug() << "Going to delete" << idsToDeleteFromServer.size() << idsToDeleteFromServer;
+    qCDebug(POP3RESOURCE_LOG) << "Going to delete" << idsToDeleteFromServer.size() << idsToDeleteFromServer;
     return idsToDeleteFromServer;
 }
 
@@ -802,7 +802,7 @@ void POP3Resource::deleteJobResult(KJob *job)
             int index = seenUIDs.indexOf(deletedUID);
             if (index != -1) {
                 // TEST
-                qDebug() << "Removing UID" << deletedUID << "from the seen UID list, as it was deleted.";
+                qCDebug(POP3RESOURCE_LOG) << "Removing UID" << deletedUID << "from the seen UID list, as it was deleted.";
                 seenUIDs.removeAt(index);
                 timeOfSeenUids.removeAt(index);
             }
@@ -817,7 +817,7 @@ void POP3Resource::deleteJobResult(KJob *job)
 
 void POP3Resource::finish()
 {
-    qDebug() << "================= Mail check finished. =============================";
+    qCDebug(POP3RESOURCE_LOG) << "================= Mail check finished. =============================";
     saveSeenUIDList();
     if (!mIntervalCheckInProgress) {
         collectionsRetrieved(Akonadi::Collection::List());
@@ -845,7 +845,7 @@ void POP3Resource::quitJobResult(KJob *job)
 
 void POP3Resource::slotSessionError(int errorCode, const QString &errorMessage)
 {
-    qWarning() << "Error in our session, unrelated to a currently running job!";
+    qCWarning(POP3RESOURCE_LOG) << "Error in our session, unrelated to a currently running job!";
     cancelSync(KIO::buildErrorString(errorCode, errorMessage));
 }
 
@@ -901,13 +901,13 @@ void POP3Resource::saveSeenUIDList()
             }
         }
     } else {
-        qWarning() << "UID list from server is not valid.";
+        qCWarning(POP3RESOURCE_LOG) << "UID list from server is not valid.";
     }
 
     //
     // Now save it in the settings
     //
-    qDebug() << "The seen UID list has" << seenUIDs.size() << "entries";
+    qCDebug(POP3RESOURCE_LOG) << "The seen UID list has" << seenUIDs.size() << "entries";
     Settings::self()->setSeenUidList(seenUIDs);
     Settings::self()->setSeenUidTimeList(timeOfSeenUIDs);
     Settings::self()->save();
@@ -917,10 +917,10 @@ void POP3Resource::cancelSync(const QString &errorMessage, bool error)
 {
     if (error) {
         cancelTask(errorMessage);
-        qWarning() << "============== ERROR DURING POP3 SYNC ==========================";
-        qWarning() << errorMessage;
+        qCWarning(POP3RESOURCE_LOG) << "============== ERROR DURING POP3 SYNC ==========================";
+        qCWarning(POP3RESOURCE_LOG) << errorMessage;
     } else {
-        qDebug() << "Canceled the sync, but no error.";
+        qCDebug(POP3RESOURCE_LOG) << "Canceled the sync, but no error.";
         cancelTask();
     }
     saveSeenUIDList();
