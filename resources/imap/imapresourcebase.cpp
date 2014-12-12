@@ -29,7 +29,7 @@
 #include <QSettings>
 
 #include <QIcon>
-#include <qdebug.h>
+#include "imapresource_debug.h"
 #include <KLocalizedString>
 
 #include <kwindowsystem.h>
@@ -324,7 +324,7 @@ void ImapResourceBase::onConnectDone( int errorCode, const QString &errorString 
     qFatal("Shouldn't happen");
     return;
   case SessionPool::CancelledError:
-    qWarning() << "Session login cancelled";
+    qCWarning(IMAPRESOURCE_LOG) << "Session login cancelled";
     return;
   }
 }
@@ -404,7 +404,7 @@ void ImapResourceBase::itemsMoved( const Akonadi::Item::List &items, const Akona
                                const Akonadi::Collection &destination )
 {
   if ( items.first().parentCollection() != destination ) { // should have been set by the server
-    qWarning() << "Collections don't match: destination=" << destination.id()
+    qCWarning(IMAPRESOURCE_LOG) << "Collections don't match: destination=" << destination.id()
                << "; items parent=" << items.first().parentCollection().id()
                << "; source collection=" << source.id();
     //Q_ASSERT( false );
@@ -524,7 +524,7 @@ void ImapResourceBase::scheduleConnectionAttempt()
 void ImapResourceBase::doSetOnline(bool online)
 {
 #ifndef IMAPRESOURCE_NO_SOLID
-  qDebug() << "online=" << online;
+  qCDebug(IMAPRESOURCE_LOG) << "online=" << online;
 #endif
   if ( !online ) {
     Q_FOREACH(ResourceTask* task, m_taskList) {
@@ -629,7 +629,7 @@ void ImapResourceBase::startIdle()
 void ImapResourceBase::onIdleCollectionFetchDone( KJob *job )
 {
   if (job->error()) {
-    qWarning() << "CollectionFetch for idling failed."
+    qCWarning(IMAPRESOURCE_LOG) << "CollectionFetch for idling failed."
                << "error=" << job->error()
                << ", errorString=" << job->errorString();
     return;
@@ -676,7 +676,7 @@ void ImapResourceBase::onExpungeCollectionFetchDone( KJob *job )
                         QVariant::fromValue( collection ) );
 
   } else {
-    qWarning() << "CollectionFetch for expunge failed."
+    qCWarning(IMAPRESOURCE_LOG) << "CollectionFetch for expunge failed."
                << "error=" << job->error()
                << ", errorString=" << job->errorString();
   }
@@ -763,7 +763,7 @@ void ImapResourceBase::modifyCollection(const Collection &col)
 void ImapResourceBase::onCollectionModifyDone(KJob* job)
 {
     if (job->error()) {
-        qWarning() << "Failed to modify collection: " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to modify collection: " << job->errorString();
     }
 }
 

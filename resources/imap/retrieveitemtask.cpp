@@ -23,7 +23,7 @@
 #include "messagehelper.h"
 
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 #include <KLocalizedString>
 
@@ -49,7 +49,7 @@ void RetrieveItemTask::doStart( KIMAP::Session *session )
   m_uid = item().remoteId().toLongLong();
 
   if ( m_uid == 0 ) {
-    qWarning() << "Remote id is " << item().remoteId();
+    qCWarning(IMAPRESOURCE_LOG) << "Remote id is " << item().remoteId();
     cancelTask( i18n("Remote id is empty or invalid") );
     return;
   }
@@ -120,7 +120,7 @@ void RetrieveItemTask::onMessagesReceived( const QString &mailBox,
   bool ok;
   const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(messages[number], uids[number], 0, attrs.values(number), QList<QByteArray>(), fetch->scope(), ok);
   if (!ok) {
-    qWarning() << "Failed to retrieve message " << uids[number];
+    qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve message " << uids[number];
     cancelTask( i18n( "No message retrieved, failed to read the message." ) );
     return;
   }

@@ -31,7 +31,7 @@
 #include <collectionmodifyjob.h>
 #include <agentsearchinterface.h>
 #include <kmessagebox.h>
-#include <QDebug>
+#include "imapresource_debug.h"
 
 ResourceState::ResourceState( ImapResourceBase *resource, const TaskArguments &args )
   : m_resource( resource ),
@@ -111,7 +111,7 @@ Akonadi::Collection ResourceState::collection() const
 Akonadi::Item ResourceState::item() const
 {
   if (m_arguments.items.count() > 1) {
-    qWarning() << "Called item() while state holds multiple items!";
+    qCWarning(IMAPRESOURCE_LOG) << "Called item() while state holds multiple items!";
   }
 
   return m_arguments.items.first();

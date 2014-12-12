@@ -24,7 +24,7 @@
 #include <Akonadi/KMime/MessageFlags>
 
 #include <KLocalizedString>
-#include <QDebug>
+#include "imapresource_debug.h"
 
 #include "collectionflagsattribute.h"
 #include "imapflags.h"
@@ -66,12 +66,12 @@ void ResourceTask::start( SessionPool *pool )
 
     switch ( m_actionIfNoSession ) {
     case CancelIfNoSession:
-      qDebug() << "Cancelling this request. Probably there is no connection.";
+      qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no connection.";
       m_resource->cancelTask( i18n( "There is currently no connection to the IMAP server." ) );
       break;
 
     case DeferIfNoSession:
-      qDebug() << "Defering this request. Probably there is no connection.";
+      qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no connection.";
       m_resource->deferTask();
       break;
     }
@@ -97,12 +97,12 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   if ( errorCode!=SessionPool::NoError ) {
     switch ( m_actionIfNoSession ) {
     case CancelIfNoSession:
-      qDebug() << "Cancelling this request. Probably there is no more session available.";
+      qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no more session available.";
       m_resource->cancelTask( i18n( "There is currently no session to the IMAP server available." ) );
       break;
 
     case DeferIfNoSession:
-      qDebug() << "Defering this request. Probably there is no more session available.";
+      qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no more session available.";
       m_resource->deferTask();
       break;
     }
@@ -425,7 +425,7 @@ QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags( const QList<QBy
       if ( flagAttr->flags().contains( *it ) ) {
         ++it;
       } else {
-        qDebug() << "Server does not support flag" << *it;
+        qCDebug(IMAPRESOURCE_LOG) << "Server does not support flag" << *it;
         it = imapFlags.erase( it );
       }
     }
@@ -481,7 +481,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
 
 void ResourceTask::kill()
 {
-  qDebug();
+  qCDebug(IMAPRESOURCE_LOG);
   cancelTask(i18n("killed"));
 }
 

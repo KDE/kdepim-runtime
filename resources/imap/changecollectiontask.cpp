@@ -34,7 +34,7 @@
 
 #include "resource_imap_debug.h"
 #include <KLocalizedString>
-#include <QDebug>
+#include "imapresource_debug.h"
 
 ChangeCollectionTask::ChangeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
   : ResourceTask( DeferIfNoSession, resource, parent ), m_pendingJobs(0)

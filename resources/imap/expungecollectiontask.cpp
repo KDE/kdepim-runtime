@@ -22,7 +22,7 @@
 #include "expungecollectiontask.h"
 
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 #include <KLocalizedString>
 

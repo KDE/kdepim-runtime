@@ -26,7 +26,7 @@
 #include "imapidlemanager.h"
 
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 
 #include <kimap/idlejob.h>
@@ -80,7 +80,7 @@ KIMAP::Session *ImapIdleManager::session() const
 
 void ImapIdleManager::reconnect()
 {
-  qDebug() << "attempting to reconnect IDLE session";
+  qCDebug(IMAPRESOURCE_LOG) << "attempting to reconnect IDLE session";
   if ( m_session == 0 && m_pool->isConnected() && m_sessionRequestId == 0 )
     m_sessionRequestId = m_pool->requestSession();
 }

@@ -39,7 +39,7 @@
 #include <AkonadiCore/session.h>
 
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 #include <KLocalizedString>
 
@@ -113,7 +113,7 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
 {
     QList<qint64> uids;
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
         return;
     } else {
@@ -121,13 +121,13 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
         Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob*>(job);
         Q_FOREACH(const Akonadi::Item &item, fetch->items())  {
             if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
-                qWarning() << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
+                qCWarning(IMAPRESOURCE_LOG) << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
                 uids.append(item.remoteId().toInt());
                 i++;
             }
         }
         if (i > 0) {
-            qWarning() << "Number of items missing the body: " << i;
+            qCWarning(IMAPRESOURCE_LOG) << "Number of items missing the body: " << i;
         }
     }
     onFetchItemsWithoutBodiesDone(uids);
@@ -173,7 +173,7 @@ void RetrieveItemsTask::triggerPreExpungeSelect(const QString &mailBox)
 void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
         KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
@@ -194,7 +194,7 @@ void RetrieveItemsTask::onExpungeDone(KJob *job)
     // We can ignore the error, we just had a wrong expunge so some old messages will just reappear.
     // TODO we should probably hide messages that are marked as deleted (skipping will not work because we rely on the message count)
     if (job->error()) {
-        qWarning() << "Expunge failed: " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Expunge failed: " << job->errorString();
     }
     // Except for network errors.
     if (job->error() && m_session->state() == KIMAP::Session::Disconnected) {
@@ -220,7 +220,7 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
 void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
         return;
     }
@@ -237,7 +237,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     //This is known to happen with Courier IMAP. A better solution would be to issue STATUS in case UIDNEXT is not delivered on select,
     //but that would have to be implemented in KIMAP first. See Bug 338186.
     if (nextUid < 0) {
-        qWarning() << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value. This is a known problem with Courier IMAP.";
+        qCWarning(IMAPRESOURCE_LOG) << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value. This is a known problem with Courier IMAP.";
         nextUid = 0;
     }
 
@@ -379,7 +379,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     } else if (nextUid <= 0) {
         //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
-        //qDebug() << "Running courier imap compatiblity codepath";
+        //qCDebug(IMAPRESOURCE_LOG) << "Running courier imap compatiblity codepath";
         if (messageCount > realMessageCount) {
             //Get new messages
             retrieveItems(KIMAP::ImapSet(realMessageCount + 1, messageCount), scope, false, false);
@@ -415,8 +415,8 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //New messages are available, but not enough to justify the difference between the local and remote message count.
         //This can be triggered if we i.e. clear the local cache, but the keep the annotations.
         //If we didn't catch this case, we end up inserting flags only for every missing message.
-        qWarning() << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
-        qWarning() << "Refetching complete mailbox.";
+        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
+        qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
     } else if (nextUid > oldNextUid) {
@@ -445,8 +445,8 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //Error recovery:
         //We didn't detect any new messages based on the uid, but according to the message count there are new ones.
         //Our local cache is invalid and has to be refetched.
-        qWarning() << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
-        qWarning() << "Refetching complete mailbox.";
+        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
+        qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
     } else {
@@ -508,7 +508,7 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
 {
     m_batchFetcher = 0;
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
         m_fetchedMissingBodies = -1;
         return;
@@ -566,7 +566,7 @@ void RetrieveItemsTask::onFlagsFetchDone(KJob *job)
 {
     m_batchFetcher = 0;
     if ( job->error() ) {
-        qWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
         taskComplete();

@@ -30,7 +30,7 @@
 
 #include <kmime/kmime_message.h>
 
-#include <QDebug>
+#include "imapresource_debug.h"
 #include <KLocalizedString>
 
 RetrieveCollectionsTask::RetrieveCollectionsTask( ResourceStateInterface::Ptr resource, QObject *parent )
@@ -114,7 +114,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 
     // skip phantom mailboxes contained in LSUB but not LIST
     if ( isSubscriptionEnabled() && !m_fullReportedCollections.contains( descriptor.name ) ) {
-      qDebug() << "Got phantom mailbox: " << descriptor.name;
+      qCDebug(IMAPRESOURCE_LOG) << "Got phantom mailbox: " << descriptor.name;
       continue;
     }
 
@@ -137,7 +137,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 
       if ( m_reportedCollections.contains( currentPath ) ) {
         if ( m_dummyCollections.contains( currentPath ) && !isDummy ) {
-          qDebug() << "Received the real collection for a dummy one : " << currentPath;
+          qCDebug(IMAPRESOURCE_LOG) << "Received the real collection for a dummy one : " << currentPath;
 
           //set the correct attributes for the collection, eg. noselect needs to be removed
           Akonadi::Collection c = m_reportedCollections.value( currentPath );
@@ -180,7 +180,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 
       // If this folder is a noselect folder, make some special settings.
       if ( currentFlags.contains( "\\noselect" ) ) {
-        qDebug() << "Dummy collection created: " << currentPath;
+        qCDebug(IMAPRESOURCE_LOG) << "Dummy collection created: " << currentPath;
         c.addAttribute( new NoSelectAttribute( true ) );
         c.setContentMimeTypes( QStringList() << Akonadi::Collection::mimeType() );
         c.setRights( Akonadi::Collection::ReadOnly );
@@ -191,7 +191,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDe
 
       // If this folder is a noinferiors folder, it is not allowed to create subfolders inside.
       if ( currentFlags.contains( "\\noinferiors" ) ) {
-          //qDebug() << "Noinferiors: " << currentPath;
+          //qCDebug(IMAPRESOURCE_LOG) << "Noinferiors: " << currentPath;
           c.addAttribute( new NoInferiorsAttribute( true ) );
           c.setRights( c.rights() & ~Akonadi::Collection::CanCreateCollection );
       }

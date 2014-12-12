@@ -10,6 +10,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 ########### next target ###############
 
 set( imapresource_LIB_SRCS
+  imapresource_debug.cpp
   addcollectiontask.cpp
   additemtask.cpp
   batchfetcher.cpp

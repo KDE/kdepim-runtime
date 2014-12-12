@@ -27,7 +27,7 @@
 #include <QKeyEvent>
 #include <QCheckBox>
 
-#include <qdebug.h>
+#include "imapresource_debug.h"
 #include <QLineEdit>
 #include <KSharedConfig>
 
@@ -255,7 +255,7 @@ void SubscriptionDialog::onReloadRequested()
   // we need a connection
   if ( !m_session
     || m_session->state() != KIMAP::Session::Authenticated ) {
-    qWarning() << "SubscriptionDialog - got no connection";
+    qCWarning(IMAPRESOURCE_LOG) << "SubscriptionDialog - got no connection";
     mUser1Button->setEnabled(true);
     return;
   }
@@ -379,12 +379,12 @@ void SubscriptionDialog::applyChanges()
 
     if ( item->checkState()!=item->data( InitialStateRole ).toInt() ) {
       if ( item->checkState() == Qt::Checked ) {
-        qDebug() << "Subscribing" << item->data( PathRole );
+        qCDebug(IMAPRESOURCE_LOG) << "Subscribing" << item->data( PathRole );
         KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_session );
         subscribe->setMailBox( item->data( PathRole ).toString() );
         subscribe->exec();
       } else {
-        qDebug() << "Unsubscribing" << item->data( PathRole );
+        qCDebug(IMAPRESOURCE_LOG) << "Unsubscribing" << item->data( PathRole );
         KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( m_session );
         unsubscribe->setMailBox( item->data( PathRole ).toString() );
         unsubscribe->exec();

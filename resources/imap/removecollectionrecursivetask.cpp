@@ -29,7 +29,7 @@
 #include <kimap/closejob.h>
 #include <KLocalizedString>
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 
 Q_DECLARE_METATYPE( KIMAP::DeleteJob* )
@@ -98,7 +98,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
 
   mFolderIterator->previous();
   const KIMAP::MailBoxDescriptor &descriptor = mFolderIterator->value();
-  qDebug() << descriptor.name;
+  qCDebug(IMAPRESOURCE_LOG) << descriptor.name;
 
   // first select the mailbox
   KIMAP::SelectJob *selectJob = new KIMAP::SelectJob( mSession );

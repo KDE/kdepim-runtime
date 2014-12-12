@@ -22,7 +22,7 @@
 #include "changeitemtask.h"
 
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 
 #include <KLocalizedString>
@@ -58,7 +58,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
 
   if ( parts().contains( "PLD:RFC822" ) ) {
     if ( !item().hasPayload<KMime::Message::Ptr>() ) {
-      qWarning() << "Payload changed, no payload available.";
+      qCWarning(IMAPRESOURCE_LOG) << "Payload changed, no payload available.";
       changeProcessed();
       return;
     }
@@ -102,7 +102,7 @@ void ChangeItemTask::doStart( KIMAP::Session *session )
 void ChangeItemTask::onPreStoreSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << "Select failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "Select failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     triggerStoreJob();
@@ -129,7 +129,7 @@ void ChangeItemTask::triggerStoreJob()
 void ChangeItemTask::onStoreFlagsDone( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << "Flag store failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "Flag store failed: " << job->errorString();
     cancelTask( job->errorString() );
   } else {
     changeProcessed();
@@ -139,7 +139,7 @@ void ChangeItemTask::onStoreFlagsDone( KJob *job )
 void ChangeItemTask::onAppendMessageDone( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << "Append failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "Append failed: " << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
@@ -173,7 +173,7 @@ void ChangeItemTask::onAppendMessageDone( KJob *job )
 void ChangeItemTask::onPreDeleteSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << "PreDelete select failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "PreDelete select failed: " << job->errorString();
     if ( m_newUid > 0 ) {
       recordNewUid();
     } else {
@@ -205,7 +205,7 @@ void ChangeItemTask::triggerSearchJob()
 
     UidNextAttribute *uidNext = item().parentCollection().attribute<UidNextAttribute>();
     if ( !uidNext ) {
-      qWarning() << "Failed to determine new uid.";
+      qCWarning(IMAPRESOURCE_LOG) << "Failed to determine new uid.";
       cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
       search->deleteLater();
       return;
@@ -223,7 +223,7 @@ void ChangeItemTask::triggerSearchJob()
 void ChangeItemTask::onSearchDone( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << "Search failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "Search failed: " << job->errorString();
     cancelTask( job->errorString() );
     return;
   }
@@ -231,7 +231,7 @@ void ChangeItemTask::onSearchDone( KJob *job )
   KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
 
   if ( search->results().count()!=1 ) {
-    qWarning() << "Failed to determine new uid.";
+    qCWarning(IMAPRESOURCE_LOG) << "Failed to determine new uid.";
     cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
     return;
   }

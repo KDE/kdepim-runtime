@@ -24,7 +24,7 @@
 #include <QtCore/QUuid>
 
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 #include <KLocalizedString>
 
 #include <kimap/appendjob.h>
@@ -56,7 +56,7 @@ void AddItemTask::doStart( KIMAP::Session *session )
 
   const QString mailBox = mailBoxForCollection( collection() );
   if ( mailBox.isEmpty() ) {
-    qWarning() << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
+    qCWarning(IMAPRESOURCE_LOG) << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
   }
 
   qCDebug(RESOURCE_IMAP_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
@@ -81,7 +81,7 @@ void AddItemTask::onAppendMessageDone( KJob *job )
   KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>( job );
 
   if ( append->error() ) {
-    qWarning() << append->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << append->errorString();
     cancelTask( append->errorString() );
     return;
   }
@@ -115,7 +115,7 @@ void AddItemTask::onAppendMessageDone( KJob *job )
 void AddItemTask::onPreSearchSelectDone( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << job->errorString();
     cancelTask( job->errorString() );
   } else {
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
@@ -158,7 +158,7 @@ void AddItemTask::triggerSearchJob( KIMAP::Session *session )
 void AddItemTask::onSearchDone( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << job->errorString();
     cancelTask( job->errorString() );
     return;
   }

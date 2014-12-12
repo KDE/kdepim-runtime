@@ -24,7 +24,7 @@
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslSocket>
 
-#include <QDebug>
+#include "imapresource_debug.h"
 #include <KLocalizedString>
 
 #include <kimap/capabilitiesjob.h>
@@ -216,7 +216,7 @@ void SessionPool::declareSessionReady( KIMAP::Session *session )
   //This can happen if we happen to disconnect while capabilities and namespace are being retrieved,
   //resulting in us keeping a dangling pointer to a deleted session
   if (!m_connectingPool.contains( session )) {
-    qWarning() << "Tried to declare a removed session ready";
+    qCWarning(IMAPRESOURCE_LOG) << "Tried to declare a removed session ready";
     return;
   }
 
@@ -341,7 +341,7 @@ void SessionPool::onPasswordRequestDone( int resultType, const QString &password
   }
 
   if ( m_account->encryptionMode() != KIMAP::LoginJob::Unencrypted && !QSslSocket::supportsSsl() ) {
-    qWarning() << "Crypto not supported!";
+    qCWarning(IMAPRESOURCE_LOG) << "Crypto not supported!";
     emit connectDone( EncryptionError,
                       i18n( "You requested TLS/SSL to connect to %1, but your "
                             "system does not seem to be set up for that.", m_account->server() ) );
@@ -539,7 +539,7 @@ void SessionPool::onSessionDestroyed(QObject *object)
   //Safety net for bugs that cause dangling session pointers
   KIMAP::Session *session = static_cast<KIMAP::Session*>(object);
   if (m_unusedPool.contains(session) || m_reservedPool.contains(session) || m_connectingPool.contains(session)) {
-    qWarning() << "Session destroyed while still in pool" << session;
+    qCWarning(IMAPRESOURCE_LOG) << "Session destroyed while still in pool" << session;
     m_unusedPool.removeAll(session);
     m_reservedPool.removeAll(session);
     m_connectingPool.removeAll(session);

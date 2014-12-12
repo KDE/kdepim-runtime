@@ -21,7 +21,7 @@
 
 #include "resource_imap_debug.h"
 #include <KImap/Session>
-#include <QDebug>
+#include "imapresource_debug.h"
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
                            const KIMAP::ImapSet &set,
                            const KIMAP::FetchJob::FetchScope &scope,
@@ -101,7 +101,7 @@ void BatchFetcher::start()
 void BatchFetcher::onUidSearchDone(KJob* job)
 {
     if (job->error()) {
-        qWarning() << "Search job failed: " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Search job failed: " << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -208,7 +208,7 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
             addedItems << item;
         }
     }
-//     qDebug() << addedItems.size();
+//     qCDebug(IMAPRESOURCE_LOG) << addedItems.size();
     if (!addedItems.isEmpty()) {
         emit itemsRetrieved(addedItems);
     }
@@ -218,7 +218,7 @@ void BatchFetcher::onHeadersFetchDone( KJob *job )
 {
     m_fetchInProgress = false;
     if (job->error()) {
-        qWarning() << "Fetch job failed " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Fetch job failed " << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;

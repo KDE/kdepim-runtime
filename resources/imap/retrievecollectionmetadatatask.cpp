@@ -32,7 +32,7 @@
 #include <KLocalizedString>
 
 #include "resource_imap_debug.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 #include <collectionquotaattribute.h>
 #include <entitydisplayattribute.h>
@@ -124,7 +124,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    qWarning() << "Get metadata failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "Get metadata failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -153,7 +153,7 @@ void RetrieveCollectionMetadataTask::onGetAclDone( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    qWarning() << "GetACL failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "GetACL failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -175,7 +175,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    qWarning() << "MyRights failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "MyRights failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }
@@ -253,7 +253,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    qWarning() << "Quota retrieval failed: " << job->errorString();
+    qCWarning(IMAPRESOURCE_LOG) << "Quota retrieval failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }

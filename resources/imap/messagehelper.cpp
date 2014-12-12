@@ -22,7 +22,7 @@
 
 #include "resourcetask.h"
 
-#include <QDebug>
+#include "imapresource_debug.h"
 
 MessageHelper::~MessageHelper()
 {
@@ -46,7 +46,7 @@ Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message,
         i.setFlags(Akonadi::Item::Flags::fromList(ResourceTask::toAkonadiFlags(flags)));
     } else {
         if (!message) {
-            qWarning() << "Got empty message: " << uid;
+            qCWarning(IMAPRESOURCE_LOG) << "Got empty message: " << uid;
             ok = false;
             return Akonadi::Item();
         }

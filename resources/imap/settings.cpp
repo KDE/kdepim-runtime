@@ -28,7 +28,7 @@ using KWallet::Wallet;
 
 #include <KLocalizedString>
 #include <kpassworddialog.h>
-#include <QDebug>
+#include "imapresource_debug.h"
 
 #include <QDBusConnection>
 
@@ -221,7 +221,7 @@ void Settings::setSieveCustomPassword(const QString & password)
             wallet->createFolder( QLatin1String("imap") );
         wallet->setFolder( QLatin1String("imap") );
         wallet->writePassword( QLatin1String("custom_sieve_") + config()->name(), password );
-        qDebug() << "Wallet save: " << wallet->sync();
+        qCDebug(IMAPRESOURCE_LOG) << "Wallet save: " << wallet->sync();
     }
     delete wallet;
 }
@@ -241,7 +241,7 @@ void Settings::setPassword( const QString & password )
             wallet->createFolder( QLatin1String("imap") );
         wallet->setFolder( QLatin1String("imap") );
         wallet->writePassword( config()->name(), password );
-        qDebug() << "Wallet save: " << wallet->sync();
+        qCDebug(IMAPRESOURCE_LOG) << "Wallet save: " << wallet->sync();
     }
     delete wallet;
 }
@@ -271,7 +271,7 @@ void Settings::loadAccount( ImapAccount *account ) const
   //(so we don't have to make the UI unnecessarily complex for properly working servers).
   const QString overrideEncryptionMode = overrideEncryption();
   if (!overrideEncryptionMode.isEmpty()) {
-    qWarning() << "Overriding encryption mode with: " << overrideEncryptionMode;
+    qCWarning(IMAPRESOURCE_LOG) << "Overriding encryption mode with: " << overrideEncryptionMode;
     if ( overrideEncryptionMode == QLatin1String("SSLV2") ) {
       account->setEncryptionMode( KIMAP::LoginJob::SslV2 );
     } else if (  overrideEncryptionMode == QLatin1String("SSLV3") ) {
@@ -285,7 +285,7 @@ void Settings::loadAccount( ImapAccount *account ) const
     } else if (  overrideEncryptionMode == QLatin1String("UNENCRYPTED") ) {
       account->setEncryptionMode( KIMAP::LoginJob::Unencrypted );
     } else {
-      qWarning() << "Tried to force invalid encryption mode: " << overrideEncryptionMode;
+      qCWarning(IMAPRESOURCE_LOG) << "Tried to force invalid encryption mode: " << overrideEncryptionMode;
     }
   }
 

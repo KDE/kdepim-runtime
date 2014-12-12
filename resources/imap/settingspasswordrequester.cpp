@@ -27,7 +27,7 @@
 
 #include <mailtransport/transportbase.h>
 #include <kwindowsystem.h>
-#include <QDebug>
+#include "imapresource_debug.h"
 #include <KConfigGroup>
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -62,7 +62,7 @@ void SettingsPasswordRequester::askUserInput( const QString &serverError )
 {
   // the credentials were not ok, allow to retry or change password
   if ( m_requestDialog ) {
-    qDebug() << "Password request dialog is already open";
+    qCDebug(IMAPRESOURCE_LOG) << "Password request dialog is already open";
     return;
   }
   QWidget *parent = QWidget::find(m_resource->winIdForDialogs());

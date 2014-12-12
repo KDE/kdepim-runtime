@@ -20,7 +20,7 @@
 */
 
 #include "resourcestateinterface.h"
-#include <QDebug>
+#include "imapresource_debug.h"
 
 ResourceStateInterface::~ResourceStateInterface()
 {
@@ -31,7 +31,7 @@ QString ResourceStateInterface::mailBoxForCollection( const Akonadi::Collection 
 {
   if ( collection.remoteId().isEmpty() ) { //This should never happen, investigate why a collection without remoteId made it this far
     if ( showWarnings )
-      qWarning() << "Got incomplete ancestor chain due to empty remoteId:" << collection;
+      qCWarning(IMAPRESOURCE_LOG) << "Got incomplete ancestor chain due to empty remoteId:" << collection;
     return QString();
   }
 
