@@ -34,7 +34,7 @@
 #include <Akonadi/KMime/MessageParts>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <transportresourcebase.h>
-#include <qdebug.h>
+#include "maildispatcher_debug.h"
 #include <klocalizedstring.h>
 #include <kmime/kmime_message.h>
 #include <mailtransport/sentbehaviourattribute.h>
@@ -99,10 +99,10 @@ class SendJob::Private
 
 void SendJob::Private::doTransport()
 {
-  qDebug() << "Transporting message.";
+  qCDebug(MAILDISPATCHER_LOG) << "Transporting message.";
 
   if ( aborting ) {
-    qDebug() << "Marking message as aborted.";
+    qCDebug(MAILDISPATCHER_LOG) << "Marking message as aborted.";
     q->setError( UserDefinedError );
     q->setErrorText( i18n( "Message sending aborted." ) );
     storeResult( false, i18n( "Message sending aborted." ) );
@@ -217,7 +217,7 @@ void SendJob::Private::doTraditionalTransport()
 void SendJob::Private::transportPercent( KJob *job, unsigned long )
 {
   Q_ASSERT( currentJob == job );
-  qDebug() << "Processed amount" << job->processedAmount( KJob::Bytes )
+  qCDebug(MAILDISPATCHER_LOG) << "Processed amount" << job->processedAmount( KJob::Bytes )
            << "total amount" << job->totalAmount( KJob::Bytes );
 
   q->setTotalAmount( KJob::Bytes, job->totalAmount( KJob::Bytes ) ); // Is not set at the time of start().
@@ -235,7 +235,7 @@ void SendJob::Private::resourceProgress( const AgentInstance &instance )
 {
   if ( !interface ) {
     // We might have gotten a very late signal.
-    qWarning() << "called but no resource job running!";
+    qCWarning(MAILDISPATCHER_LOG) << "called but no resource job running!";
     return;
   }
 
@@ -267,7 +267,7 @@ void SendJob::Private::abortPostJob()
 {
   // We were unlucky and LocalFolders is recreating its stuff right now.
   // We will not wait for it.
-  qWarning() << "Default sent mail collection unavailable, not moving the mail after sending.";
+  qCWarning(MAILDISPATCHER_LOG) << "Default sent mail collection unavailable, not moving the mail after sending.";
   q->setError( UserDefinedError );
   q->setErrorText( i18n( "Default sent-mail folder unavailable. Keeping message in outbox." ) );
   storeResult( false, q->errorString() );
@@ -275,10 +275,10 @@ void SendJob::Private::abortPostJob()
 
 void SendJob::Private::doPostJob( bool transportSuccess, const QString &transportMessage )
 {
-  qDebug() << "success" << transportSuccess << "message" << transportMessage;
+  qCDebug(MAILDISPATCHER_LOG) << "success" << transportSuccess << "message" << transportMessage;
 
   if ( !transportSuccess ) {
-    qDebug() << "Error transporting.";
+    qCDebug(MAILDISPATCHER_LOG) << "Error transporting.";
     q->setError( UserDefinedError );
 
     const QString error = aborting ? i18n( "Message transport aborted." )
@@ -287,14 +287,14 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
     q->setErrorText( error + QLatin1Char(' ') + transportMessage );
     storeResult( false, q->errorString() );
   } else {
-    qDebug() << "Success transporting.";
+    qCDebug(MAILDISPATCHER_LOG) << "Success transporting.";
 
     // Delete or move to sent-mail.
     const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
     Q_ASSERT( attribute );
 
     if ( attribute->sentBehaviour() == SentBehaviourAttribute::Delete ) {
-      qDebug() << "Deleting item from outbox.";
+      qCDebug(MAILDISPATCHER_LOG) << "Deleting item from outbox.";
       currentJob = new ItemDeleteJob( item );
       QObject::connect( currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)) );
     } else {
@@ -306,7 +306,7 @@ void SendJob::Private::doPostJob( bool transportSuccess, const QString &transpor
           abortPostJob();
         }
       } else {
-        qDebug() << "sentBehaviour=" << attribute->sentBehaviour() << "using collection from attribute";
+        qCDebug(MAILDISPATCHER_LOG) << "sentBehaviour=" << attribute->sentBehaviour() << "using collection from attribute";
         currentJob = new CollectionFetchJob( attribute->moveToCollection(), Akonadi::CollectionFetchJob::Base );
         QObject::connect( currentJob, SIGNAL(result(KJob*)),
                           q, SLOT(slotSentMailCollectionFetched(KJob*)) );
@@ -379,7 +379,7 @@ void SendJob::Private::postJobResult( KJob *job )
 
 
   if ( job->error() ) {
-    qDebug() << "Error deleting or moving to sent-mail.";
+    qCDebug(MAILDISPATCHER_LOG) << "Error deleting or moving to sent-mail.";
 
     QString errorString;
     switch( attribute->sentBehaviour() ) {
@@ -396,7 +396,7 @@ void SendJob::Private::postJobResult( KJob *job )
     q->setErrorText( errorString + QLatin1Char(' ') + job->errorString() );
     storeResult( false, q->errorString() );
   } else {
-    qDebug() << "Success deleting or moving to sent-mail.";
+    qCDebug(MAILDISPATCHER_LOG) << "Success deleting or moving to sent-mail.";
     if ( !filterItem( 2 ) ) //Outbound
       return;
     if ( attribute->sentBehaviour() == SentBehaviourAttribute::Delete )
@@ -408,7 +408,7 @@ void SendJob::Private::postJobResult( KJob *job )
 
 void SendJob::Private::storeResult( bool success, const QString &message )
 {
-  qDebug() << "success" << success << "message" << message;
+  qCDebug(MAILDISPATCHER_LOG) << "success" << success << "message" << message;
 
   Q_ASSERT( currentJob == 0 );
   currentJob = new StoreResultJob( item, success, message );
@@ -421,11 +421,11 @@ void SendJob::Private::doEmitResult( KJob *job )
   currentJob = 0;
 
   if ( job->error() ) {
-    qWarning() << "Error storing result.";
+    qCWarning(MAILDISPATCHER_LOG) << "Error storing result.";
     q->setError( UserDefinedError );
     q->setErrorText( q->errorString() + QLatin1Char(' ') + i18n( "Failed to store result in item." ) + QLatin1Char(' ') + job->errorString() );
   } else {
-    qDebug() << "Success storing result.";
+    qCDebug(MAILDISPATCHER_LOG) << "Success storing result.";
     // It is still possible that the transport failed.
     StoreResultJob* srJob = static_cast<StoreResultJob *>( job );
     if ( !srJob->success() ) {
@@ -465,16 +465,16 @@ void SendJob::abort()
   setMarkAborted();
 
   if ( dynamic_cast<TransportJob*>( d->currentJob ) ) {
-    qDebug() << "Abort called, active transport job.";
+    qCDebug(MAILDISPATCHER_LOG) << "Abort called, active transport job.";
     // Abort transport.
     d->currentJob->kill( KJob::EmitResult );
   } else if ( d->interface != 0 ) {
-    qDebug() << "Abort called, propagating to resource.";
+    qCDebug(MAILDISPATCHER_LOG) << "Abort called, propagating to resource.";
     // Abort resource doing transport.
     AgentInstance instance = AgentManager::self()->instance( d->resourceId );
     instance.abortCurrentTask();
   } else {
-    qDebug() << "Abort called, but no transport job is active.";
+    qCDebug(MAILDISPATCHER_LOG) << "Abort called, but no transport job is active.";
     // Either transport has not started, in which case doTransport will
     // mark the item as aborted, or the item has already been sent, in which
     // case there is nothing we can do.

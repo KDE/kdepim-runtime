@@ -23,7 +23,7 @@
 #include <ItemFetchJob>
 #include <ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>
-#include <QDebug>
+#include "maildispatcher_debug.h"
 #include <KLocalizedString>
 #include <mailtransport/errorattribute.h>
 #include <mailtransport/dispatchmodeattribute.h>
@@ -58,7 +58,7 @@ void StoreResultJob::Private::fetchDone( KJob *job )
   if ( job->error() )
     return;
 
-  qDebug();
+  qCDebug(MAILDISPATCHER_LOG);
 
   const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
   Q_ASSERT( fetchJob );
@@ -100,7 +100,7 @@ void StoreResultJob::Private::modifyDone( KJob *job )
   if ( job->error() )
     return;
 
-  qDebug();
+  qCDebug(MAILDISPATCHER_LOG);
 
   q->commit();
 }

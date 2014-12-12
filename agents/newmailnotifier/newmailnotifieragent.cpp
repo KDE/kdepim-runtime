@@ -50,7 +50,7 @@
 #include <KLocalizedString>
 #include <KWindowSystem>
 #include <Kdelibs4ConfigMigrator>
-#include <QDebug>
+#include "newmailnotifier_debug.h"
 
 using namespace Akonadi;
 
@@ -469,7 +469,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         message = i18n( "New mail arrived" );
     }
 
-    qDebug() << message;
+    qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
     slotDisplayNotification(Util::defaultPixmap(), message);
 
@@ -546,7 +546,7 @@ void NewMailNotifierAgent::slotInstanceAdded(const Akonadi::AgentInstance &insta
 
 void NewMailNotifierAgent::printDebug()
 {
-    qDebug()<<"instance in progress: "<<mInstanceNameInProgress
+    qCDebug(NEWMAILNOTIFIER_LOG)<<"instance in progress: "<<mInstanceNameInProgress
             <<"\n notifier enabled : "<<NewMailNotifierAgentSettings::enabled()
             <<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty()
             <<"\n beep on new mails: "<<NewMailNotifierAgentSettings::beepOnNewMails();

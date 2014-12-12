@@ -35,7 +35,7 @@
 #include <KLocalizedString>
 #include <QPushButton>
 #include <KLineEdit>
-#include <QDebug>
+#include "newmailnotifier_debug.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -208,11 +208,11 @@ void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob* job)
     Akonadi::CollectionModifyJob *modifyJob = qobject_cast<Akonadi::CollectionModifyJob*>(job);
     if (modifyJob && job->error()) {
         if (job->property("AttributeAdded").toBool()) {
-            qWarning() << "Failed to append NewMailNotifierAttribute to collection"
+            qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to append NewMailNotifierAttribute to collection"
                        << modifyJob->collection().id() << ":"
                        << job->errorString();
         } else {
-            qWarning() << "Failed to remove NewMailNotifierAttribute from collection"
+            qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to remove NewMailNotifierAttribute from collection"
                        << modifyJob->collection().id() << ":"
                        << job->errorString();
         }

@@ -6,6 +6,7 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 set(newmailnotifieragent_SRCS
+  newmailnotifier_debug.cpp
   newmailnotifiersettingsdialog.cpp
   newmailnotifieragent.cpp
   newmailnotifierattribute.cpp

@@ -31,7 +31,7 @@
 #include <KMime/Message>
 
 #include <KLocalizedString>
-#include <QDebug>
+#include "newmailnotifier_debug.h"
 
 #include <QTextDocument>
 
@@ -56,7 +56,7 @@ SpecialNotifierJob::~SpecialNotifierJob()
 void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 {
     if ( job->error() ) {
-        qWarning() << job->errorString();
+        qCWarning(NEWMAILNOTIFIER_LOG) << job->errorString();
         deleteLater();
         return;
     }
@@ -65,7 +65,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
     if (lst.count() == 1) {
         const Akonadi::Item item = lst.first();
         if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-            qDebug()<<" message has not payload.";
+            qCDebug(NEWMAILNOTIFIER_LOG)<<" message has not payload.";
             deleteLater();
             return;
         }
@@ -83,7 +83,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             deleteLater();
         }
     } else {
-        qWarning()<<" Found item different from 1: "<<lst.count();
+        qCWarning(NEWMAILNOTIFIER_LOG)<<" Found item different from 1: "<<lst.count();
         deleteLater();
         return;
     }
@@ -93,7 +93,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 {
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
     if ( searchJob->error() ) {
-        qWarning() << "Unable to fetch contact:" << searchJob->errorText();
+        qCWarning(NEWMAILNOTIFIER_LOG) << "Unable to fetch contact:" << searchJob->errorText();
         emitNotification(Util::defaultPixmap());
         return;
     }

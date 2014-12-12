@@ -24,7 +24,7 @@
 #include <itemfetchjob.h>
 #include <itemmodifyjob.h>
 #include <Akonadi/KMime/MessageFlags>
-#include <QDebug>
+#include "maildispatcher_debug.h"
 
 using namespace MailTransport;
 
@@ -48,7 +48,7 @@ void SentActionHandler::runAction( const SentActionAttribute::Action &action )
 void SentActionHandler::itemFetchResult( KJob *job )
 {
   if ( job->error() ) {
-    qWarning() << job->errorText();
+    qCWarning(MAILDISPATCHER_LOG) << job->errorText();
     return;
   }
 

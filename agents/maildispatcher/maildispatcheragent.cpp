@@ -34,7 +34,7 @@
 #include <mailtransport/sentactionattribute.h>
 
 #include <knotifyconfigwidget.h>
-#include <QDebug>
+#include "maildispatcher_debug.h"
 #include <KLocalizedString>
 #include <KLocalizedString>
 #include <KMime/Message>
@@ -101,20 +101,20 @@ class MailDispatcherAgent::Private
 void MailDispatcherAgent::Private::abort()
 {
   if ( !q->isOnline() ) {
-    qDebug() << "Offline. Ignoring call.";
+    qCDebug(MAILDISPATCHER_LOG) << "Offline. Ignoring call.";
     return;
   }
 
   if ( aborting ) {
-    qDebug() << "Already aborting.";
+    qCDebug(MAILDISPATCHER_LOG) << "Already aborting.";
     return;
   }
 
   if ( !sendingInProgress && queue->isEmpty() ) {
-    qDebug() << "MDA is idle.";
+    qCDebug(MAILDISPATCHER_LOG) << "MDA is idle.";
     Q_ASSERT( q->status() == AgentBase::Idle );
   } else {
-    qDebug() << "Aborting...";
+    qCDebug(MAILDISPATCHER_LOG) << "Aborting...";
     aborting = true;
     if ( currentJob ) {
       currentJob->abort();
@@ -128,7 +128,7 @@ void MailDispatcherAgent::Private::dispatch()
   Q_ASSERT( queue );
 
   if ( !q->isOnline() || sendingInProgress ) {
-    qDebug() << "Offline or busy. See you later.";
+    qCDebug(MAILDISPATCHER_LOG) << "Offline or busy. See you later.";
     return;
   }
 
@@ -141,11 +141,11 @@ void MailDispatcherAgent::Private::dispatch()
     emit q->status( AgentBase::Running,
         i18np( "Sending messages (1 item in queue)...",
                "Sending messages (%1 items in queue)...", queue->count() ) );
-    qDebug() << "Attempting to dispatch the next message.";
+    qCDebug(MAILDISPATCHER_LOG) << "Attempting to dispatch the next message.";
     sendingInProgress = true;
     queue->fetchOne(); // will trigger itemFetched
   } else {
-    qDebug() << "Empty queue.";
+    qCDebug(MAILDISPATCHER_LOG) << "Empty queue.";
     if ( aborting ) {
       // Finished marking messages as 'aborted'.
       aborting = false;
@@ -186,7 +186,7 @@ MailDispatcherAgent::MailDispatcherAgent( const QString &id )
     migrate.setConfigFiles(QStringList() << QLatin1String("maildispatcheragentrc") << QLatin1String("akonadi_maildispatcher_agent.notifyrc"));
     migrate.migrate();
 
-  qDebug() << "maildispatcheragent: At your service, sir!";
+  qCDebug(MAILDISPATCHER_LOG) << "maildispatcheragent: At your service, sir!";
 #ifdef KDEPIM_STATIC_LIBS
     ___MailTransport____INIT();
 #endif
@@ -233,11 +233,11 @@ void MailDispatcherAgent::doSetOnline( bool online )
 {
   Q_ASSERT( d->queue );
   if ( online ) {
-    qDebug() << "Online. Dispatching messages.";
+    qCDebug(MAILDISPATCHER_LOG) << "Online. Dispatching messages.";
     emit status( AgentBase::Idle, i18n( "Online, sending messages in queue." ) );
     QTimer::singleShot( 0, this, SLOT(dispatch()) );
   } else {
-    qDebug() << "Offline.";
+    qCDebug(MAILDISPATCHER_LOG) << "Offline.";
     emit status( AgentBase::Idle, i18n( "Offline, message sending suspended." ) );
 
     // TODO: This way, the OutboxQueue will continue to react to changes in
@@ -250,7 +250,7 @@ void MailDispatcherAgent::doSetOnline( bool online )
 
 void MailDispatcherAgent::Private::itemFetched( const Item &item )
 {
-  qDebug() << "Fetched item" << item.id() << "; creating SendJob.";
+  qCDebug(MAILDISPATCHER_LOG) << "Fetched item" << item.id() << "; creating SendJob.";
   Q_ASSERT( sendingInProgress );
   Q_ASSERT( !currentItem.isValid() );
   currentItem = item;
@@ -294,7 +294,7 @@ void MailDispatcherAgent::Private::sendPercent( KJob *job, unsigned long )
   const int percent = 100 * ( sentItemsSize + job->processedAmount( KJob::Bytes ) * transportWeight )
                           / ( sentItemsSize + currentItem.size() + queue->totalSize() );
 
-  qDebug() << "sentItemsSize" << sentItemsSize
+  qCDebug(MAILDISPATCHER_LOG) << "sentItemsSize" << sentItemsSize
            << "this job processed" << job->processedAmount( KJob::Bytes )
            << "queue totalSize" << queue->totalSize()
            << "total total size (sent+current+queue)" << ( sentItemsSize + currentItem.size() + queue->totalSize() )
@@ -328,7 +328,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
   if ( job->error() ) {
     // The SendJob gave the item an ErrorAttribute, so we don't have to
     // do anything.
-    qDebug() << "Sending failed. error:" << job->errorString();
+    qCDebug(MAILDISPATCHER_LOG) << "Sending failed. error:" << job->errorString();
 
     KNotification *notify = new KNotification( QLatin1String("sendingfailed") );
     notify->setComponentName( QLatin1String("akonadi_maildispatcher_agent") );
@@ -338,7 +338,7 @@ void MailDispatcherAgent::Private::sendResult( KJob *job )
 
     errorOccurred = true;
   } else {
-    qDebug() << "Sending succeeded.";
+    qCDebug(MAILDISPATCHER_LOG) << "Sending succeeded.";
 
     // handle possible sent actions
     const MailTransport::SentActionAttribute *attribute = sentItem.attribute<MailTransport::SentActionAttribute>();

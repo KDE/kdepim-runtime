@@ -4,6 +4,7 @@ add_subdirectory( autotests )
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildispatcher_agent\")
 
 set( maildispatcheragent_SRCS
+  maildispatcher_debug.cpp
   maildispatcheragent.cpp
   outboxqueue.cpp
   sendjob.cpp
