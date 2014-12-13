@@ -10,6 +10,7 @@ set(kmail-migrator_srcs
   ${MIGRATION_AKONADI_SHARED_SOURCES}
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildirstore.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildir_debug.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/mixedmaildir/mixedmaildirresource_debug.cpp
 )
 
 include_directories(
