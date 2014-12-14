@@ -44,7 +44,7 @@ class DavItemFetchJob : public KJob
     /**
      * Starts the job.
      */
-    virtual void start() Q_DECL_OVERRIDE;
+    void start() Q_DECL_OVERRIDE;
 
     /**
      * Returns the fetched item including current etag information.

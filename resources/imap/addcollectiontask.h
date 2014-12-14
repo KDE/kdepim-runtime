@@ -42,7 +42,7 @@ private Q_SLOTS:
   void onSetMetaDataDone( KJob *job );
 
 protected:
-  virtual void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
+  void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
 
 private:
   Akonadi::Collection m_collection;

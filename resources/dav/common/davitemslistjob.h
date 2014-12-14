@@ -55,7 +55,7 @@ class DavItemsListJob : public KJob
     /**
      * Starts the job.
      */
-    virtual void start() Q_DECL_OVERRIDE;
+    void start() Q_DECL_OVERRIDE;
 
     /**
      * Returns the list of items including identifier url and etag information.

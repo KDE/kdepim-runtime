@@ -41,15 +41,15 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     explicit DavGroupwareResource( const QString &id );
     ~DavGroupwareResource();
 
-    virtual void collectionRemoved( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    virtual void cleanup() Q_DECL_OVERRIDE;
+    void collectionRemoved( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    void cleanup() Q_DECL_OVERRIDE;
 
     KDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
-    virtual void canHandleFreeBusy( const QString &email ) const Q_DECL_OVERRIDE;
-    virtual void retrieveFreeBusy( const QString &email, const KDateTime &start, const KDateTime &end ) Q_DECL_OVERRIDE;
+    void canHandleFreeBusy( const QString &email ) const Q_DECL_OVERRIDE;
+    void retrieveFreeBusy( const QString &email, const KDateTime &start, const KDateTime &end ) Q_DECL_OVERRIDE;
 
   public Q_SLOTS:
-    virtual void configure( WId windowId ) Q_DECL_OVERRIDE;
+    void configure( WId windowId ) Q_DECL_OVERRIDE;
 
   protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
@@ -57,10 +57,10 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
 
   protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
-    virtual void itemRemoved( const Akonadi::Item &item ) Q_DECL_OVERRIDE;
-    virtual void doSetOnline( bool online ) Q_DECL_OVERRIDE;
+    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    void itemRemoved( const Akonadi::Item &item ) Q_DECL_OVERRIDE;
+    void doSetOnline( bool online ) Q_DECL_OVERRIDE;
 
   private:
     enum ItemFetchUpdateType {

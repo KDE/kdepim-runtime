@@ -80,7 +80,7 @@ class DavPrincipalSearchJob : public KJob
     /**
      * Starts the job
      */
-    virtual void start() Q_DECL_OVERRIDE;
+    void start() Q_DECL_OVERRIDE;
 
     /**
      * Return the DavUrl used by this job
