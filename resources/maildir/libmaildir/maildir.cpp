@@ -26,7 +26,7 @@
 #include <QHostInfo>
 #include <QUuid>
 
-#include <qdebug.h>
+#include "libmaildir_debug.h"
 #include <KLocalizedString>
 #include <Akonadi/KMime/MessageFlags>
 
@@ -122,7 +122,7 @@ public:
         if (keyCache->isNewKey(path, key)) {
 #ifdef DEBUG_KEYCACHE_CONSITENCY
             if (!QFile::exists(path + QString::fromLatin1("/new/") + key)) {
-                qDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/new/") + key;
+                qCDebug(LIBMAILDIR_LOG) << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/new/") + key;
             }
 #endif
             return path + QString::fromLatin1("/new/") + key;
@@ -130,7 +130,7 @@ public:
         if (keyCache->isCurKey(path, key)) {
 #ifdef DEBUG_KEYCACHE_CONSITENCY
             if (!QFile::exists(path + QString::fromLatin1("/cur/") + key)) {
-                qDebug() << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/cur/") + key;
+                qCDebug(LIBMAILDIR_LOG) << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/cur/") + key;
             }
 #endif
             return path + QString::fromLatin1("/cur/") + key;
@@ -167,21 +167,21 @@ public:
     bool moveAndRename(QDir &dest, const QString &newName)
     {
         if (!dest.exists()) {
-            qDebug() << "Destination does not exist";
+            qCDebug(LIBMAILDIR_LOG) << "Destination does not exist";
             return false;
         }
         if (dest.exists(newName) || dest.exists(subDirNameForFolderName(newName))) {
-            qDebug() << "New name already in use";
+            qCDebug(LIBMAILDIR_LOG) << "New name already in use";
             return false;
         }
 
         if (!dest.rename(path, newName)) {
-            qDebug() << "Failed to rename maildir";
+            qCDebug(LIBMAILDIR_LOG) << "Failed to rename maildir";
             return false;
         }
         const QDir subDirs(Maildir::subDirPathForFolderPath(path));
         if (subDirs.exists() && !dest.rename(subDirs.path(), subDirNameForFolderName(newName))) {
-            qDebug() << "Failed to rename subfolders";
+            qCDebug(LIBMAILDIR_LOG) << "Failed to rename subfolders";
             return false;
         }
 
@@ -405,7 +405,7 @@ QStringList Maildir::entryList() const
         result += d->listNew();
         result += d->listCurrent();
     }
-    //  qDebug() <<"Maildir::entryList()" << result;
+    //  qCDebug(LIBMAILDIR_LOG) <<"Maildir::entryList()" << result;
     return result;
 }
 
@@ -482,7 +482,7 @@ QByteArray Maildir::readEntry(const QString &key) const
     QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
         // FIXME error handling?
-        qWarning() << "Maildir::readEntry unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::readEntry unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1." , key);
         return result;
     }
@@ -503,7 +503,7 @@ qint64 Maildir::size(const QString &key) const
     QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
         // FIXME error handling?
-        qWarning() << "Maildir::size unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::size unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1." , key);
         return -1;
     }
@@ -521,7 +521,7 @@ QDateTime Maildir::lastModified(const QString &key) const
 {
     const QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
-        qWarning() << "Maildir::lastModified unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::lastModified unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1." , key);
         return QDateTime();
     }
@@ -541,7 +541,7 @@ QByteArray Maildir::readEntryHeadersFromFile(const QString &file) const
     QFile f(file);
     if (!f.open(QIODevice::ReadOnly)) {
         // FIXME error handling?
-        qWarning() << "Maildir::readEntryHeaders unable to find: " << file;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::readEntryHeaders unable to find: " << file;
         d->lastError = i18n("Cannot locate mail file %1." , file);
         return result;
     }
@@ -561,7 +561,7 @@ QByteArray Maildir::readEntryHeaders(const QString &key) const
 {
     const QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
-        qWarning() << "Maildir::readEntryHeaders unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::readEntryHeaders unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1." , key);
         return QByteArray();
     }
@@ -585,7 +585,7 @@ bool Maildir::writeEntry(const QString &key, const QByteArray &data)
     QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
         // FIXME error handling?
-        qWarning() << "Maildir::writeEntry unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::writeEntry unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1." , key);
         return false;
     }
@@ -634,7 +634,7 @@ QString Maildir::addEntry(const QByteArray &data)
      * For reference: http://trolltech.com/developer/task-tracker/index_html?method=entry&id=211215
      */
     if (!f.rename(finalKey)) {
-        qWarning() << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
+        qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
         d->lastError = i18n("Failed to create mail file %1. The error was: %2" , finalKey, f.errorString());
         return QString();
     }
@@ -648,7 +648,7 @@ bool Maildir::removeEntry(const QString &key)
 {
     QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
-        qWarning() << "Maildir::removeEntry unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::removeEntry unable to find: " << key;
         return false;
     }
     KeyCache *keyCache = KeyCache::self();
@@ -660,7 +660,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
 {
     QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
-        qWarning() << "Maildir::changeEntryFlags unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Maildir::changeEntryFlags unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1." , key);
         return QString();
     }
@@ -731,7 +731,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     }
 
     if (!f.rename(finalKey)) {
-        qWarning() << "Maildir: Failed to rename entry: " << f.fileName() << " to "  << finalKey  << "! Error: " << f.errorString();
+        qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to rename entry: " << f.fileName() << " to "  << finalKey  << "! Error: " << f.errorString();
         d->lastError = i18n("Failed to update the file name %1 to %2 on the disk. The error was: %3." , f.fileName(), finalKey, f.errorString());
         return QString();
     }
@@ -812,7 +812,7 @@ QString Maildir::moveEntryTo(const QString &key, const Maildir &destination)
 {
     const QString realKey(d->findRealKey(key));
     if (realKey.isEmpty()) {
-        qWarning() << "Unable to find: " << key;
+        qCWarning(LIBMAILDIR_LOG) << "Unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1." , key);
         return QString();
     }
@@ -820,7 +820,7 @@ QString Maildir::moveEntryTo(const QString &key, const Maildir &destination)
     // ### is this safe regarding the maildir locking scheme?
     const QString targetKey = destination.path() + QDir::separator() + QLatin1String("new") + QDir::separator() + key;
     if (!f.rename(targetKey)) {
-        qDebug() << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();;
+        qCDebug(LIBMAILDIR_LOG) << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();;
         d->lastError = f.errorString();
         return QString();
     }
