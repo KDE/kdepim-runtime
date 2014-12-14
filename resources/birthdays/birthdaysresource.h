@@ -38,12 +38,12 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
     ~BirthdaysResource();
 
   public Q_SLOTS:
-    virtual void configure( WId windowId );
+    virtual void configure( WId windowId ) Q_DECL_OVERRIDE;
 
   protected:
-    void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &collection );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
 
   private:
     void addPendingEvent( const KCalCore::Event::Ptr &event, const QString &remoteId );

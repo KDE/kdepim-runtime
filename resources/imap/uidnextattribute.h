@@ -28,10 +28,10 @@ public:
     explicit UidNextAttribute( int uidnext = 0 );
     void setUidNext( int uidnext );
     int uidNext() const;
-    virtual QByteArray type() const;
-    virtual Attribute* clone() const;
-    virtual QByteArray serialized() const;
-    virtual void deserialize( const QByteArray &data );
+    virtual QByteArray type() const Q_DECL_OVERRIDE;
+    virtual Attribute* clone() const Q_DECL_OVERRIDE;
+    virtual QByteArray serialized() const Q_DECL_OVERRIDE;
+    virtual void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
 
 private:
     int mUidNext;

@@ -43,7 +43,7 @@ class DavItemCreateJob : public DavJobBase
     /**
      * Starts the job.
      */
-    virtual void start();
+    virtual void start() Q_DECL_OVERRIDE;
 
     /**
      * Returns the created DAV item including the correct identifier url

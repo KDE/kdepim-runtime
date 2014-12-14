@@ -36,18 +36,18 @@ class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     ~ICalDirResource();
 
   public Q_SLOTS:
-    virtual void configure( WId windowId );
-    virtual void aboutToQuit();
+    virtual void configure( WId windowId ) Q_DECL_OVERRIDE;
+    virtual void aboutToQuit() Q_DECL_OVERRIDE;
 
   protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems( const Akonadi::Collection &col ) Q_DECL_OVERRIDE;
+    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
 
   protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    virtual void itemRemoved( const Akonadi::Item &item ) Q_DECL_OVERRIDE;
 
   private:
     bool loadIncidences();

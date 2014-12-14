@@ -41,26 +41,26 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     explicit DavGroupwareResource( const QString &id );
     ~DavGroupwareResource();
 
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
-    virtual void cleanup();
+    virtual void collectionRemoved( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    virtual void cleanup() Q_DECL_OVERRIDE;
 
-    virtual KDateTime lastCacheUpdate() const;
-    virtual void canHandleFreeBusy( const QString &email ) const;
-    virtual void retrieveFreeBusy( const QString &email, const KDateTime &start, const KDateTime &end );
+    KDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
+    virtual void canHandleFreeBusy( const QString &email ) const Q_DECL_OVERRIDE;
+    virtual void retrieveFreeBusy( const QString &email, const KDateTime &start, const KDateTime &end ) Q_DECL_OVERRIDE;
 
   public Q_SLOTS:
-    virtual void configure( WId windowId );
+    virtual void configure( WId windowId ) Q_DECL_OVERRIDE;
 
   protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &collection );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
 
   protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
-    virtual void doSetOnline( bool online );
+    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    virtual void itemRemoved( const Akonadi::Item &item ) Q_DECL_OVERRIDE;
+    virtual void doSetOnline( bool online ) Q_DECL_OVERRIDE;
 
   private:
     enum ItemFetchUpdateType {

@@ -37,11 +37,11 @@ public:
     explicit ImapResource( const QString &id );
     virtual ~ImapResource();
 
-    virtual QDialog *createConfigureDialog ( WId windowId );
-    virtual void cleanup();
+    virtual QDialog *createConfigureDialog ( WId windowId ) Q_DECL_OVERRIDE;
+    virtual void cleanup() Q_DECL_OVERRIDE;
 
 protected:
-    virtual QString defaultName() const;
+    virtual QString defaultName() const Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onConfigurationDone( int result );

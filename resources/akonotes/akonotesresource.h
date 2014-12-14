@@ -29,11 +29,11 @@ class AkonotesResource : public MaildirResource
     explicit AkonotesResource( const QString &id );
     ~AkonotesResource();
 
-    virtual QString defaultResourceType();
+    QString defaultResourceType() Q_DECL_OVERRIDE;
 public Q_SLOTS:
-    virtual void configure( WId windowId );
+    void configure( WId windowId ) Q_DECL_OVERRIDE;
 
   protected:
-    virtual QString itemMimeType() const;
+    QString itemMimeType() const Q_DECL_OVERRIDE;
 };
 #endif

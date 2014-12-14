@@ -33,10 +33,10 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionAnnotationsAttribute : public 
     CollectionAnnotationsAttribute( const QMap<QByteArray, QByteArray> &annotations );
     void setAnnotations( const QMap<QByteArray, QByteArray> &annotations );
     QMap<QByteArray, QByteArray> annotations() const;
-    virtual QByteArray type() const;
-    virtual Attribute *clone() const;
-    virtual QByteArray serialized() const;
-    virtual void deserialize( const QByteArray &data );
+    virtual QByteArray type() const Q_DECL_OVERRIDE;
+    virtual Attribute *clone() const Q_DECL_OVERRIDE;
+    virtual QByteArray serialized() const Q_DECL_OVERRIDE;
+    virtual void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
 
   private:
     QMap<QByteArray, QByteArray> mAnnotations;

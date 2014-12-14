@@ -38,10 +38,10 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT ImapAclAttribute : public Akonadi::Attri
     void setRights( const QMap<QByteArray, KIMAP::Acl::Rights> &rights );
     QMap<QByteArray, KIMAP::Acl::Rights> rights() const;
     QMap<QByteArray, KIMAP::Acl::Rights> oldRights() const;
-    virtual QByteArray type() const;
-    virtual Attribute *clone() const;
-    virtual QByteArray serialized() const;
-    virtual void deserialize( const QByteArray &data );
+    virtual QByteArray type() const Q_DECL_OVERRIDE;
+    virtual Attribute *clone() const Q_DECL_OVERRIDE;
+    virtual QByteArray serialized() const Q_DECL_OVERRIDE;
+    virtual void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
 
   private:
     QMap<QByteArray, KIMAP::Acl::Rights> mRights;

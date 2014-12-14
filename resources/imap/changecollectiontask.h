@@ -41,7 +41,7 @@ private slots:
   void onSetMetaDataDone( KJob *job );
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+  virtual void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
 
 private:
   void endTaskIfNeeded();

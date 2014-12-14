@@ -43,7 +43,7 @@ private slots:
   void onSearchDone( KJob *job );
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+  void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
 
 private:
   void triggerCopyJob( KIMAP::Session *session );

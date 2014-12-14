@@ -46,7 +46,7 @@ class DavCollectionsFetchJob : public KJob
     /**
      * Starts the job.
      */
-    virtual void start();
+    virtual void start() Q_DECL_OVERRIDE;
 
     /**
      * Returns the list of fetched DAV collections.

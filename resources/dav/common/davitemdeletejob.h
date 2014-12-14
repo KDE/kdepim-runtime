@@ -43,7 +43,7 @@ class DavItemDeleteJob : public DavJobBase
     /**
      * Starts the job.
      */
-    virtual void start();
+    virtual void start() Q_DECL_OVERRIDE;
 
   private Q_SLOTS:
     void davJobFinished( KJob* );

@@ -41,11 +41,11 @@ class ICalResource : public ICalResourceBase
      */
     ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon );
 
-    virtual bool doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void doRetrieveItems( const Akonadi::Collection &col );
+    virtual bool doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    virtual void doRetrieveItems( const Akonadi::Collection &col ) Q_DECL_OVERRIDE;
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection& );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection& ) Q_DECL_OVERRIDE;
+    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
 
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
