@@ -46,7 +46,7 @@ class FolderDeleteJob : public KJob
      *
      * @note The folder needs the objectId, folderId and lastModified property set.
      */
-    explicit FolderDeleteJob( const Folder &folder, QObject *parent = 0 );
+    explicit FolderDeleteJob( const Folder &folder, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

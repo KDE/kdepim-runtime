@@ -33,7 +33,7 @@ class Testmigrator: public MigratorBase
 {
     Q_OBJECT
 public:
-    explicit Testmigrator(const QString &identifier, QObject *parent = 0): 
+    explicit Testmigrator(const QString &identifier, QObject *parent = Q_NULLPTR): 
         MigratorBase(QLatin1String("testmigrator") + identifier, QString(), QString(), parent), mAutostart(false)
     {}
 

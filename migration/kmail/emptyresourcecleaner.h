@@ -46,7 +46,7 @@ class EmptyResourceCleaner : public QObject
 
     Q_DECLARE_FLAGS( CleaningOptions, CleaningOption )
 
-    explicit EmptyResourceCleaner( const Akonadi::AgentInstance &resource, QObject *parent = 0 );
+    explicit EmptyResourceCleaner( const Akonadi::AgentInstance &resource, QObject *parent = Q_NULLPTR );
     ~EmptyResourceCleaner();
 
     void setCleaningOptions( CleaningOptions options );

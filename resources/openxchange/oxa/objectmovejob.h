@@ -34,7 +34,7 @@ class ObjectMoveJob : public KJob
   Q_OBJECT
 
   public:
-    ObjectMoveJob( const Object &object, const Folder &destinationFolder, QObject *parent = 0 );
+    ObjectMoveJob( const Object &object, const Folder &destinationFolder, QObject *parent = Q_NULLPTR );
 
     virtual void start();
 

@@ -39,7 +39,7 @@ class DavCollectionDeleteJob : public KJob
      * @param url The dav url of the collection to delete
      * @param parent The parent object.
      */
-    explicit DavCollectionDeleteJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    explicit DavCollectionDeleteJob( const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

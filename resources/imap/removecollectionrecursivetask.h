@@ -31,7 +31,7 @@ class RemoveCollectionRecursiveTask : public ResourceTask
   Q_OBJECT
 
 public:
-  explicit RemoveCollectionRecursiveTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit RemoveCollectionRecursiveTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
   virtual ~RemoveCollectionRecursiveTask();
 
 private slots:

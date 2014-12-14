@@ -32,7 +32,7 @@ class TestRetrieveCollectionsTask : public ImapTestBase
 {
   Q_OBJECT
 public:
-  TestRetrieveCollectionsTask( QObject *parent = 0 )
+  TestRetrieveCollectionsTask( QObject *parent = Q_NULLPTR )
     : ImapTestBase( parent ), m_nextCollectionId( 1 )
   {
   }

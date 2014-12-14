@@ -31,7 +31,7 @@ class ConnectionTestJob : public KJob
   Q_OBJECT
 
   public:
-    ConnectionTestJob( const QString &url, const QString &user, const QString &password, QObject *parent = 0 );
+    ConnectionTestJob( const QString &url, const QString &user, const QString &password, QObject *parent = Q_NULLPTR );
 
     virtual void start();
 

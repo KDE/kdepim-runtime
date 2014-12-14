@@ -33,7 +33,7 @@ class UsersRequestJob : public KJob
   Q_OBJECT
 
   public:
-    explicit UsersRequestJob( QObject *parent = 0 );
+    explicit UsersRequestJob( QObject *parent = Q_NULLPTR );
 
     virtual void start();
 

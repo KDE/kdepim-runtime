@@ -41,7 +41,7 @@ class ImapTestBase : public QObject
   Q_OBJECT
 
 public:
-  ImapTestBase( QObject *parent = 0 );
+  ImapTestBase( QObject *parent = Q_NULLPTR );
 
 protected:
   QString defaultUserName() const;

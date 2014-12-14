@@ -47,7 +47,7 @@ class StoreResultJob : public Akonadi::TransactionSequence
      * @param message An error message in case the mail could not be dispatched.
      * @param parent The parent object.
      */
-    explicit StoreResultJob( const Akonadi::Item &item, bool success, const QString &message, QObject *parent = 0 );
+    explicit StoreResultJob( const Akonadi::Item &item, bool success, const QString &message, QObject *parent = Q_NULLPTR );
 
     /**
      * Destroys the store result job.

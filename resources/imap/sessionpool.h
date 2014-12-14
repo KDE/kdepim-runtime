@@ -61,7 +61,7 @@ public:
     CloseSession
   };
 
-  explicit SessionPool( int maxPoolSize, QObject *parent = 0 );
+  explicit SessionPool( int maxPoolSize, QObject *parent = Q_NULLPTR );
   ~SessionPool();
 
   PasswordRequesterInterface *passwordRequester() const;

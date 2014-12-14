@@ -31,7 +31,7 @@ class UserIdRequestJob : public KJob
   Q_OBJECT
 
   public:
-    explicit UserIdRequestJob( QObject *parent = 0 );
+    explicit UserIdRequestJob( QObject *parent = Q_NULLPTR );
 
     virtual void start();
 

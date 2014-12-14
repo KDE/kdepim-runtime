@@ -33,7 +33,7 @@ class UpdateUsersJob : public KJob
   Q_OBJECT
 
   public:
-    explicit UpdateUsersJob( QObject *parent = 0 );
+    explicit UpdateUsersJob( QObject *parent = Q_NULLPTR );
 
     virtual void start();
 

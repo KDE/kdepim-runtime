@@ -48,7 +48,7 @@ class FolderMoveJob : public KJob
      * @note The folder needs the objectId, folderId and lastModified property set, the
      *       destinationFolder the objectId property.
      */
-    FolderMoveJob( const Folder &folder, const Folder &destinationFolder, QObject *parent = 0 );
+    FolderMoveJob( const Folder &folder, const Folder &destinationFolder, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

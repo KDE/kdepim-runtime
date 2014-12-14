@@ -35,7 +35,7 @@ class ImapCacheLocalImporter : public QObject
   Q_OBJECT
 
   public:
-    explicit ImapCacheLocalImporter( MixedMaildirStore *store, QObject *parent = 0 );
+    explicit ImapCacheLocalImporter( MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
 
     ~ImapCacheLocalImporter();
 

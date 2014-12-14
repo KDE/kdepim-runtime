@@ -46,7 +46,7 @@ class FolderRequestJob : public KJob
      *
      * @note The folder needs the objectId property set.
      */
-    explicit FolderRequestJob( const Folder &folder, QObject *parent = 0 );
+    explicit FolderRequestJob( const Folder &folder, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

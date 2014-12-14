@@ -31,7 +31,7 @@ class RetrieveItemTask : public ResourceTask
   Q_OBJECT
 
 public:
-  explicit RetrieveItemTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit RetrieveItemTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
   virtual ~RetrieveItemTask();
 
 private slots:

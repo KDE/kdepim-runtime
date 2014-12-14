@@ -43,7 +43,7 @@ class AbstractCollectionMigrator : public QObject
   Q_OBJECT
 
   public:
-    AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = 0 );
+    AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
     ~AbstractCollectionMigrator();
 
     virtual void setTopLevelFolder( const QString &topLevelFolder, const QString &name, const QString &remoteId = QString() );

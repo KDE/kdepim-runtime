@@ -42,7 +42,7 @@ public:
      * @param mimeTypeFilter The list of mimetypes of objects to be migrated.
      * @param parent The parent object.
      */
-    explicit GidMigrationJob(const QStringList &mimeTypeFilter, QObject *parent = 0);
+    explicit GidMigrationJob(const QStringList &mimeTypeFilter, QObject *parent = Q_NULLPTR);
 
     /**
      * Destroys the item fetch job.
@@ -69,7 +69,7 @@ class UpdateJob: public Akonadi::Job
 {
     Q_OBJECT
 public:
-    explicit UpdateJob(const Akonadi::Collection &col, QObject *parent = 0);
+    explicit UpdateJob(const Akonadi::Collection &col, QObject *parent = Q_NULLPTR);
     virtual ~UpdateJob();
 
     virtual void doStart();

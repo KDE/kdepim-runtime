@@ -29,7 +29,7 @@ class DavJobBase : public KJob
   Q_OBJECT
 
   public:
-    explicit DavJobBase( QObject *parent = 0 );
+    explicit DavJobBase( QObject *parent = Q_NULLPTR );
 
     /**
      * Get the latest response code.

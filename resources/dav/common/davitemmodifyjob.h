@@ -38,7 +38,7 @@ class DavItemModifyJob : public DavJobBase
      * @param item The item that shall be modified.
      * @param parent The parent object.
      */
-    DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
+    DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

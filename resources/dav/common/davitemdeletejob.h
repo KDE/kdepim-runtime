@@ -38,7 +38,7 @@ class DavItemDeleteJob : public DavJobBase
      * @param item The item that shall be deleted.
      * @param parent The parent object.
      */
-    DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
+    DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

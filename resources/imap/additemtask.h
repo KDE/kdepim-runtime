@@ -29,7 +29,7 @@ class AddItemTask : public ResourceTask
   Q_OBJECT
 
 public:
-  explicit AddItemTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit AddItemTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
   virtual ~AddItemTask();
 
 private slots:

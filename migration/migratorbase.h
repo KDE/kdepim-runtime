@@ -85,14 +85,14 @@ public:
     /**
      * Default constructor with default config and logfile
      */
-    explicit MigratorBase(const QString &identifier, QObject *parent = 0);
+    explicit MigratorBase(const QString &identifier, QObject *parent = Q_NULLPTR);
 
     /**
      * Constructor that allows to inject a configfile and logfile.
      *
      * Pass and empty string to disable config and log.
      */
-    explicit MigratorBase(const QString &identifier, const QString &configFile, const QString &logFile, QObject *parent = 0);
+    explicit MigratorBase(const QString &identifier, const QString &configFile, const QString &logFile, QObject *parent = Q_NULLPTR);
 
     virtual ~MigratorBase();
 

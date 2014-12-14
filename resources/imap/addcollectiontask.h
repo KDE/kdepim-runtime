@@ -33,7 +33,7 @@ class AddCollectionTask : public ResourceTask
   Q_OBJECT
 
 public:
-  explicit AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
   virtual ~AddCollectionTask();
 
 private Q_SLOTS:

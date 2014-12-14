@@ -36,7 +36,7 @@ class Test : public QObject
     void alert( const QString &msg );
 
   private:
-    Test( QObject *parent = 0 );
+    Test( QObject *parent = Q_NULLPTR );
 
     static Test* mSelf;
 };

@@ -38,7 +38,7 @@ class DavItemCreateJob : public DavJobBase
      * @param item The item that shall be created.
      * @param parent The parent object.
      */
-    DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
+    DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

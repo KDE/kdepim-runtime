@@ -67,7 +67,7 @@ class DavPrincipalSearchJob : public KJob
      * @param filter The filter that will be used to match the displayname attribute.
      * @param parent The parent object.
      */
-    explicit DavPrincipalSearchJob( const DavUtils::DavUrl &url, FilterType type, const QString &filter, QObject *parent = 0 );
+    explicit DavPrincipalSearchJob( const DavUtils::DavUrl &url, FilterType type, const QString &filter, QObject *parent = Q_NULLPTR );
 
     /**
      * Add a new property to fetch from the server.

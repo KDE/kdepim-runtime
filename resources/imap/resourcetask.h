@@ -49,7 +49,7 @@ public:
     DeferIfNoSession
   };
 
-  explicit ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
   virtual ~ResourceTask();
 
   void start( SessionPool *pool );

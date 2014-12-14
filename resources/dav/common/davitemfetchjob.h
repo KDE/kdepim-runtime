@@ -39,7 +39,7 @@ class DavItemFetchJob : public KJob
      * @param item The item that shall be fetched.
      * @param parent The parent object.
      */
-    DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = 0 );
+    DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

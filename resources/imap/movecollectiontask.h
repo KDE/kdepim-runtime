@@ -29,7 +29,7 @@ class MoveCollectionTask : public ResourceTask
   Q_OBJECT
 
 public:
-  explicit MoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit MoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
   virtual ~MoveCollectionTask();
 
 private slots:

@@ -39,7 +39,7 @@ class DavPrincipalHomeSetsFetchJob : public KJob
      * @param url The DAV url of the DAV principal.
      * @param parent The parent object.
      */
-    explicit DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    explicit DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR );
 
     /**
      * Starts the job.

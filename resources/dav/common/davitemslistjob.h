@@ -41,7 +41,7 @@ class DavItemsListJob : public KJob
      * @param url The url of the DAV collection.
      * @param parent The parent object.
      */
-    explicit DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = 0 );
+    explicit DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR );
 
     /**
      * Limits the mime types of the items requested.

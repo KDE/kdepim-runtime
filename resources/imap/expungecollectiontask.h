@@ -29,7 +29,7 @@ class ExpungeCollectionTask : public ResourceTask
   Q_OBJECT
 
 public:
-  explicit ExpungeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = 0 );
+  explicit ExpungeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
   virtual ~ExpungeCollectionTask();
 
 private slots:

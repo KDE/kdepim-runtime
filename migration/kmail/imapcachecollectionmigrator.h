@@ -39,7 +39,7 @@ class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 
     Q_DECLARE_FLAGS( MigrationOptions, MigrationOption )
 
-    ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = 0 );
+    ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
 
     ~ImapCacheCollectionMigrator();
 

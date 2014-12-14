@@ -42,7 +42,7 @@ class OutboxQueue : public QObject
      *
      * @param parent The parent object.
      */
-    explicit OutboxQueue( QObject *parent = 0 );
+    explicit OutboxQueue( QObject *parent = Q_NULLPTR );
 
     /**
      * Destroys the outbox queue.

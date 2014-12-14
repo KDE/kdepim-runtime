@@ -30,7 +30,7 @@ class ImapCacheAdapter : public QObject
   Q_OBJECT
 
   public:
-    explicit ImapCacheAdapter( MixedMaildirStore *store, QObject *parent = 0 );
+    explicit ImapCacheAdapter( MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
     ~ImapCacheAdapter();
 
     void addAccount( const QString &topLevelFolder, const QString &accountName );

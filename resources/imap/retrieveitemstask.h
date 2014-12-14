@@ -37,7 +37,7 @@ class RetrieveItemsTask : public ResourceTask
   Q_OBJECT
 
 public:
-    explicit RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
+    explicit RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~RetrieveItemsTask();
     void setFetchMissingItemBodies(bool enabled);
 
