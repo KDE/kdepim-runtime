@@ -42,57 +42,58 @@ class Job;
 class GoogleSettings;
 
 class GoogleResource : public Akonadi::ResourceBase,
-                       public Akonadi::AgentBase::ObserverV2
+    public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 
-  public:
-    explicit GoogleResource( const QString &id );
+public:
+    explicit GoogleResource(const QString &id);
     virtual ~GoogleResource();
 
-    virtual GoogleSettings* settings() const = 0;
+    virtual GoogleSettings *settings() const = 0;
     virtual QList<QUrl> scopes() const = 0;
 
     void cleanup();
 
 public Q_SLOTS:
-    virtual void configure( WId windowId );
+    virtual void configure(WId windowId);
 
     void reloadConfig();
 
-  protected Q_SLOTS:
-    virtual bool retrieveItem( const Akonadi::Item &item, const QSet< QByteArray > &parts );
+protected Q_SLOTS:
+    virtual bool retrieveItem(const Akonadi::Item &item, const QSet< QByteArray > &parts);
 
-    bool handleError( KGAPI2::Job *job );
+    bool handleError(KGAPI2::Job *job);
 
-    virtual void slotAuthJobFinished( KGAPI2::Job *job );
-    virtual void slotGenericJobFinished( KGAPI2::Job *job );
+    virtual void slotAuthJobFinished(KGAPI2::Job *job);
+    virtual void slotGenericJobFinished(KGAPI2::Job *job);
 
-    void emitPercent( KGAPI2::Job* job, int processedCount, int totalCount );
+    void emitPercent(KGAPI2::Job *job, int processedCount, int totalCount);
 
     virtual void slotAbortRequested();
-    virtual void slotAccountManagerReady( bool success );
-    virtual void slotAccountChanged( const KGAPI2::AccountPtr &account );
-    virtual void slotAccountRemoved( const QString &accountName );
+    virtual void slotAccountManagerReady(bool success);
+    virtual void slotAccountChanged(const KGAPI2::AccountPtr &account);
+    virtual void slotAccountRemoved(const QString &accountName);
 
 #ifdef HAVE_ACCOUNTS
-    void slotKAccountsCredentialsReceived( KJob *job );
-    void slotKAccountsAccountInfoReceived( KGAPI2::Job *job );
-    void finishKAccountsAuthentication( KGAPI2::Job* job );
+    void slotKAccountsCredentialsReceived(KJob *job);
+    void slotKAccountsAccountInfoReceived(KGAPI2::Job *job);
+    void finishKAccountsAuthentication(KGAPI2::Job *job);
 #endif // HAVE_ACCOUNTS
 
-  protected:
-    bool configureKAccounts( int accountId, KGAPI2::Job *restartJob = 0 );
-    bool configureKGAPIAccount( const KGAPI2::AccountPtr &account );
-    void updateAccountToken( const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = 0 );
+protected:
+    bool configureKAccounts(int accountId, KGAPI2::Job *restartJob = 0);
+    bool configureKGAPIAccount(const KGAPI2::AccountPtr &account);
+    void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = 0);
 
     template <typename T>
-    bool canPerformTask( const Akonadi::Item &item, const QString &mimeType = QString() ) {
-        if ( item.isValid() && !item.hasPayload<T>()) {
-            cancelTask( i18n( "Invalid item payload." ) );
+    bool canPerformTask(const Akonadi::Item &item, const QString &mimeType = QString())
+    {
+        if (item.isValid() && !item.hasPayload<T>()) {
+            cancelTask(i18n("Invalid item payload."));
             return false;
-        } else if ( item.isValid() && mimeType != item.mimeType() ) {
-            cancelTask( i18n( "Invalid payload mimetype. Expected %1, found %2", mimeType, item.mimeType() ) );
+        } else if (item.isValid() && mimeType != item.mimeType()) {
+            cancelTask(i18n("Invalid payload mimetype. Expected %1, found %2", mimeType, item.mimeType()));
             return false;
         }
 
@@ -109,16 +110,14 @@ public Q_SLOTS:
      */
     int accountId() const;
 
-
-    GoogleAccountManager* accountManager() const;
+    GoogleAccountManager *accountManager() const;
 
     virtual void aboutToQuit();
 
-
-    virtual int runConfigurationDialog( WId windowId ) = 0;
+    virtual int runConfigurationDialog(WId windowId) = 0;
     virtual void updateResourceName() = 0;
 
-  private:
+private:
     void abort();
 
     bool m_isConfiguring;

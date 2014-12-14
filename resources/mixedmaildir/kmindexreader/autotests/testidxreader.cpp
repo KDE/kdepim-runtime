@@ -34,72 +34,75 @@ using Akonadi::MessageStatus;
 
 #include <boost/shared_ptr.hpp>
 
-QTEST_MAIN ( TestIdxReader )
+QTEST_MAIN(TestIdxReader)
 
-
-TestIdxReader::TestIdxReader() {
+TestIdxReader::TestIdxReader()
+{
 }
 
-void TestIdxReader::testError() {
-    KMIndexReader reader ( "IDoNotExist" );
+void TestIdxReader::testError()
+{
+    KMIndexReader reader("IDoNotExist");
 
-    QVERIFY ( reader.error() == true );
+    QVERIFY(reader.error() == true);
 }
 
-void TestIdxReader::testReadHeader() {
+void TestIdxReader::testReadHeader()
+{
     QTemporaryFile tmp;
-    if ( !tmp.open() ) {
+    if (!tmp.open()) {
         qDebug() << "Could not open temp file.";
         return;
     }
-    tmp.write ( QByteArray::fromBase64 ( mailDirOneEmail ) );
+    tmp.write(QByteArray::fromBase64(mailDirOneEmail));
     tmp.close();
-    KMIndexReader reader ( tmp.fileName() );
+    KMIndexReader reader(tmp.fileName());
 
-    QVERIFY ( reader.error() == false );
+    QVERIFY(reader.error() == false);
 
     int version = 0;
-    bool success = reader.readHeader ( &version );
+    bool success = reader.readHeader(&version);
 
-    QVERIFY ( success == true );
-    QCOMPARE ( version, 1506 );
+    QVERIFY(success == true);
+    QCOMPARE(version, 1506);
 
-    QVERIFY ( reader.error() == false );
+    QVERIFY(reader.error() == false);
 }
 
-void TestIdxReader::testRead() {
+void TestIdxReader::testRead()
+{
     QTemporaryFile tmp;
-    if ( !tmp.open() ) {
+    if (!tmp.open()) {
         qDebug() << "Could not open temp file.";
         return;
     }
-    tmp.write ( QByteArray::fromBase64 ( mailDirTwoEmailOneTagFlags ) );
+    tmp.write(QByteArray::fromBase64(mailDirTwoEmailOneTagFlags));
     tmp.close();
-    KMIndexReader reader ( tmp.fileName() );
-    QVERIFY ( reader.error() == false );
+    KMIndexReader reader(tmp.fileName());
+    QVERIFY(reader.error() == false);
     bool success = reader.readIndex();
-    QVERIFY ( success == true );
+    QVERIFY(success == true);
 
-    QVERIFY ( reader.messages().size() == 2 );
+    QVERIFY(reader.messages().size() == 2);
 
     KMIndexDataPtr msg = reader.messages().front();
 
     QString subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
     MessageStatus status;
-    status.fromQInt32 ( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
-    QCOMPARE ( subject, QString ( "hello from kmail" ) );
-    QVERIFY ( !status.isImportant() );
-    QVERIFY ( !msg->status().isImportant() );
-    QVERIFY ( msg->status().isRead() );
-    QVERIFY ( msg->tagList().contains( "N5tUHPOZFf" ) );
+    status.fromQInt32(msg->mCachedLongParts[KMIndexReader::MsgStatusPart]);
+    QCOMPARE(subject, QString("hello from kmail"));
+    QVERIFY(!status.isImportant());
+    QVERIFY(!msg->status().isImportant());
+    QVERIFY(msg->status().isRead());
+    QVERIFY(msg->tagList().contains("N5tUHPOZFf"));
 
     msg = reader.messages().back();
-    status.fromQInt32 ( msg->mCachedLongParts[KMIndexReader::MsgStatusPart] );
+    status.fromQInt32(msg->mCachedLongParts[KMIndexReader::MsgStatusPart]);
     subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
-    QCOMPARE ( subject, QString ( "foo bar" ) );
-    QVERIFY ( status.isImportant() );
-    QVERIFY ( msg->status().isImportant() );
-    QVERIFY ( !msg->status().isRead() );
-    QVERIFY ( msg->tagList().size() == 0 );
+    QCOMPARE(subject, QString("foo bar"));
+    QVERIFY(status.isImportant());
+    QVERIFY(msg->status().isImportant());
+    QVERIFY(!msg->status().isRead());
+    QVERIFY(msg->tagList().size() == 0);
 }
 

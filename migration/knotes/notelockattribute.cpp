@@ -34,14 +34,14 @@ NoteLockAttribute::~NoteLockAttribute()
 
 }
 
-NoteLockAttribute* NoteLockAttribute::clone() const
+NoteLockAttribute *NoteLockAttribute::clone() const
 {
     return new NoteLockAttribute();
 }
 
-void NoteLockAttribute::deserialize(const QByteArray& data)
+void NoteLockAttribute::deserialize(const QByteArray &data)
 {
-    Q_UNUSED( data );
+    Q_UNUSED(data);
 }
 
 QByteArray NoteLockAttribute::serialized() const
@@ -52,8 +52,7 @@ QByteArray NoteLockAttribute::serialized() const
 QByteArray NoteLockAttribute::type() const
 {
     //We can't change this name!
-    static const QByteArray sType( "KJotsLockAttribute" );
+    static const QByteArray sType("KJotsLockAttribute");
     return sType;
 }
-
 

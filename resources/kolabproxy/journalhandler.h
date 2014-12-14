@@ -29,15 +29,15 @@
 */
 class JournalHandler : public IncidenceHandler
 {
-  public:
-    explicit JournalHandler( const Akonadi::Collection &imapCollection );
+public:
+    explicit JournalHandler(const Akonadi::Collection &imapCollection);
     virtual ~JournalHandler();
 
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
 
-  private:
-    virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence );
+private:
+    virtual KMime::Message::Ptr incidenceToMime(const KCalCore::Incidence::Ptr &incidence);
 };
 
 #endif

@@ -32,57 +32,57 @@ class KDateTime;
 #include <QtCore/QStringList>
 
 class DavGroupwareResource : public Akonadi::ResourceBase,
-                             public Akonadi::AgentBase::Observer,
-                             public Akonadi::FreeBusyProviderBase
+    public Akonadi::AgentBase::Observer,
+    public Akonadi::FreeBusyProviderBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit DavGroupwareResource( const QString &id );
+public:
+    explicit DavGroupwareResource(const QString &id);
     ~DavGroupwareResource();
 
-    void collectionRemoved( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     void cleanup() Q_DECL_OVERRIDE;
 
     KDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
-    void canHandleFreeBusy( const QString &email ) const Q_DECL_OVERRIDE;
-    void retrieveFreeBusy( const QString &email, const KDateTime &start, const KDateTime &end ) Q_DECL_OVERRIDE;
+    void canHandleFreeBusy(const QString &email) const Q_DECL_OVERRIDE;
+    void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end) Q_DECL_OVERRIDE;
 
-  public Q_SLOTS:
-    void configure( WId windowId ) Q_DECL_OVERRIDE;
+public Q_SLOTS:
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
-  protected:
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
-    void itemRemoved( const Akonadi::Item &item ) Q_DECL_OVERRIDE;
-    void doSetOnline( bool online ) Q_DECL_OVERRIDE;
+protected:
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void doSetOnline(bool online) Q_DECL_OVERRIDE;
 
-  private:
+private:
     enum ItemFetchUpdateType {
-      ItemUpdateNone,
-      ItemUpdateAdd,
-      ItemUpdateChange
+        ItemUpdateNone,
+        ItemUpdateAdd,
+        ItemUpdateChange
     };
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void createInitialCache();
-    void onCreateInitialCacheReady( KJob* );
+    void onCreateInitialCacheReady(KJob *);
 
     void onReloadConfig();
-    void onCollectionRemovedFinished( KJob* );
+    void onCollectionRemovedFinished(KJob *);
 
-    void onHandlesFreeBusy( const QString &email, bool handles );
-    void onFreeBusyRetrieved( const QString &email, const QString &freeBusy, bool success, const QString &errorText );
+    void onHandlesFreeBusy(const QString &email, bool handles);
+    void onFreeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText);
 
-    void onRetrieveCollectionsFinished( KJob* );
-    void onRetrieveItemsFinished( KJob* );
-    void onMultigetFinished( KJob* );
-    void onRetrieveItemFinished( KJob* );
+    void onRetrieveCollectionsFinished(KJob *);
+    void onRetrieveItemsFinished(KJob *);
+    void onMultigetFinished(KJob *);
+    void onRetrieveItemFinished(KJob *);
     /**
       * Called when a new item has been fetched from the backend.
       *
@@ -90,21 +90,21 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
       * @param updateType The type of update that triggered this call. The task notification sent
       *        sent to Akonadi will depend on this flag.
       */
-    void onItemFetched( KJob* job, ItemFetchUpdateType updateType );
-    void onItemRefreshed( KJob* job );
+    void onItemFetched(KJob *job, ItemFetchUpdateType updateType);
+    void onItemRefreshed(KJob *job);
 
-    void onItemAddedFinished( KJob* );
-    void onItemChangePrepared( KJob* );
-    void onItemChangedFinished( KJob* );
-    void onItemRemovalPrepared( KJob* );
-    void onItemRemovedFinished( KJob* );
+    void onItemAddedFinished(KJob *);
+    void onItemChangePrepared(KJob *);
+    void onItemChangedFinished(KJob *);
+    void onItemRemovalPrepared(KJob *);
+    void onItemRemovedFinished(KJob *);
 
-    void onCollectionDiscovered( int protocol, const QString &collectionUrl, const QString &configuredUrl );
-    void onEtagChanged( const QString &itemUrl, const QString &etag );
+    void onCollectionDiscovered(int protocol, const QString &collectionUrl, const QString &configuredUrl);
+    void onEtagChanged(const QString &itemUrl, const QString &etag);
 
-  private:
-    void doItemChange( const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List() );
-    void doItemRemoval( const Akonadi::Item &item );
+private:
+    void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
+    void doItemRemoval(const Akonadi::Item &item);
 
     bool configurationIsValid();
     void retryAfterFailure(const QString &errorMessage);
@@ -112,7 +112,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase,
     /**
      * Collections which only support one mime type have an icon indicating what they support.
      */
-    static void setCollectionIcon( Akonadi::Collection &collection );
+    static void setCollectionIcon(Akonadi::Collection &collection);
 
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;

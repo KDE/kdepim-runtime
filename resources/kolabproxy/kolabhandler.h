@@ -36,23 +36,23 @@ class KJob;
 */
 class KolabHandler : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     typedef QSharedPointer<KolabHandler>  Ptr;
 
-    static Ptr createHandler( Kolab::FolderType type,
-                              const Akonadi::Collection &imapCollection );
-    
-    static bool hasHandler( Kolab::FolderType type );
+    static Ptr createHandler(Kolab::FolderType type,
+                             const Akonadi::Collection &imapCollection);
 
-    static Ptr createHandler( const KolabV2::FolderType &type,
-                              const Akonadi::Collection &imapCollection );
+    static bool hasHandler(Kolab::FolderType type);
+
+    static Ptr createHandler(const KolabV2::FolderType &type,
+                             const Akonadi::Collection &imapCollection);
 
     /**
      * Returns the Kolab folder type for the given collection.
      */
-    static QByteArray kolabTypeForMimeType( const QStringList &mimetypes );
+    static QByteArray kolabTypeForMimeType(const QStringList &mimetypes);
 
     /**
      * Returns all mime types supported by Kolab.
@@ -66,16 +66,16 @@ class KolabHandler : public QObject
      *
      * Used for conflict detection.
      */
-    virtual QString extractGid( const Akonadi::Item &kolabItem ) = 0;
+    virtual QString extractGid(const Akonadi::Item &kolabItem) = 0;
 
-    Akonadi::Item::List resolveConflicts( const Akonadi::Item::List &kolabItems );
+    Akonadi::Item::List resolveConflicts(const Akonadi::Item::List &kolabItems);
 
     /**
      * Translates Kolab items into the items supported by the handler.
      * @param addrs
      * @return the translated items
      */
-    virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &addrs ) = 0;
+    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List &addrs) = 0;
 
     /**
      * Translates an item into Kolab format.
@@ -83,7 +83,7 @@ class KolabHandler : public QObject
      * @param imapItem the item that will hold the Kolab format payload data.
      * @return false if the conversion failed
      */
-    virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem ) = 0;
+    virtual bool toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem) = 0;
 
     /**
      * Return the mimetypes for the collections managed by the handler.
@@ -97,7 +97,7 @@ class KolabHandler : public QObject
 
     virtual QByteArray mimeType() const;
 
-    void setKolabFormatVersion( Kolab::Version );
+    void setKolabFormatVersion(Kolab::Version);
 
     /**
      * Returns true if the current operation should be aborted and false
@@ -112,49 +112,48 @@ class KolabHandler : public QObject
      *
      * @param affectedItem The item which is currently being processed.
      */
-    bool checkForErrors( Akonadi::Item::Id affectedItem );
+    bool checkForErrors(Akonadi::Item::Id affectedItem);
 
     void imapItemAdded(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection);
     void imapItemRemoved(const Akonadi::Item &imapItem);
 
-  protected:
-    explicit KolabHandler( const Akonadi::Collection &imapCollection );
+protected:
+    explicit KolabHandler(const Akonadi::Collection &imapCollection);
 
     QByteArray m_mimeType;
     Akonadi::Collection m_imapCollection;
     Kolab::Version m_formatVersion;
     int m_warningDisplayLevel;
 
-  private slots:
-    void onItemAdded(KJob*);
-    void checkResult(KJob*);
+private slots:
+    void onItemAdded(KJob *);
+    void checkResult(KJob *);
 
-  private:
+private:
     void processItemAddedQueue();
     QQueue<QPair<Akonadi::Item, Akonadi::Collection> > mItemAddedQueue;
     bool mItemAddJobInProgress;
 };
 
 template <typename T>
-static inline T kolabToImap( const T &kolabObject )
+static inline T kolabToImap(const T &kolabObject)
 {
-    return T( kolabObject.remoteId().toLongLong() );
+    return T(kolabObject.remoteId().toLongLong());
 }
 
 template <typename T>
-static inline T imapToKolab( const T &imapObject, T &kolabObject)
+static inline T imapToKolab(const T &imapObject, T &kolabObject)
 {
-    kolabObject.setRemoteId( QString::number( imapObject.id() ) );
+    kolabObject.setRemoteId(QString::number(imapObject.id()));
     return kolabObject;
 }
 
 template <typename T>
-static inline T imapToKolab( const T &imapObject )
+static inline T imapToKolab(const T &imapObject)
 {
     T kolabObject;
-    imapToKolab( imapObject, kolabObject );
+    imapToKolab(imapObject, kolabObject);
     return kolabObject;
 }
-
 
 #endif

@@ -40,76 +40,76 @@
 
 using namespace Akonadi;
 
-void FacebookResource::eventListFetched( KJob *job )
+void FacebookResource::eventListFetched(KJob *job)
 {
-  Q_ASSERT( !mIdle );
-  Q_ASSERT( mCurrentJobs.indexOf( job ) != -1 );
-  KFbAPI::AllEventsListJob * const listJob = qobject_cast<KFbAPI::AllEventsListJob*>( job );
-  Q_ASSERT( listJob );
-  mCurrentJobs.removeAll( job );
+    Q_ASSERT(!mIdle);
+    Q_ASSERT(mCurrentJobs.indexOf(job) != -1);
+    KFbAPI::AllEventsListJob *const listJob = qobject_cast<KFbAPI::AllEventsListJob *>(job);
+    Q_ASSERT(listJob);
+    mCurrentJobs.removeAll(job);
 
-  if ( listJob->error() ) {
-    abortWithError( i18n( "Unable to get events from server: %1", listJob->errorString() ),
-                    listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem );
-  } else {
-    QStringList eventIds;
-    Q_FOREACH ( const KFbAPI::EventInfo &event, listJob->allEvents() ) {
-      eventIds.append( event.id() );
+    if (listJob->error()) {
+        abortWithError(i18n("Unable to get events from server: %1", listJob->errorString()),
+                       listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem);
+    } else {
+        QStringList eventIds;
+        Q_FOREACH (const KFbAPI::EventInfo &event, listJob->allEvents()) {
+            eventIds.append(event.id());
+        }
+        if (eventIds.isEmpty()) {
+            itemsRetrievalDone();
+            finishEventsFetching();
+            return;
+        }
+        KFbAPI::EventJob *const eventJob =
+            new KFbAPI::EventJob(eventIds, Settings::self()->accessToken(), this);
+        mCurrentJobs << eventJob;
+        connect(eventJob, SIGNAL(result(KJob*)), this, SLOT(detailedEventListJobFinished(KJob*)));
+        eventJob->start();
     }
-    if ( eventIds.isEmpty() ) {
-      itemsRetrievalDone();
-      finishEventsFetching();
-      return;
-    }
-    KFbAPI::EventJob * const eventJob =
-      new KFbAPI::EventJob( eventIds, Settings::self()->accessToken(), this );
-    mCurrentJobs << eventJob;
-    connect( eventJob, SIGNAL(result(KJob*)), this, SLOT(detailedEventListJobFinished(KJob*)) );
-    eventJob->start();
-  }
 
-  listJob->deleteLater();
+    listJob->deleteLater();
 }
 
-void FacebookResource::detailedEventListJobFinished( KJob *job )
+void FacebookResource::detailedEventListJobFinished(KJob *job)
 {
-  Q_ASSERT( !mIdle );
-  Q_ASSERT( mCurrentJobs.indexOf( job ) != -1 );
-  KFbAPI::EventJob * const eventJob = qobject_cast<KFbAPI::EventJob*>( job );
-  Q_ASSERT( eventJob );
-  mCurrentJobs.removeAll( job );
+    Q_ASSERT(!mIdle);
+    Q_ASSERT(mCurrentJobs.indexOf(job) != -1);
+    KFbAPI::EventJob *const eventJob = qobject_cast<KFbAPI::EventJob *>(job);
+    Q_ASSERT(eventJob);
+    mCurrentJobs.removeAll(job);
 
-  if ( job->error() ) {
-    abortWithError( i18n( "Unable to get list of events from server: %1", eventJob->errorText() ) );
-  } else {
-    setItemStreamingEnabled( true );
+    if (job->error()) {
+        abortWithError(i18n("Unable to get list of events from server: %1", eventJob->errorText()));
+    } else {
+        setItemStreamingEnabled(true);
 
-    Item::List eventItems;
-    Q_FOREACH ( const KFbAPI::EventInfo &eventInfo, eventJob->eventInfo() ) {
-      if (eventInfo.id().isEmpty()) {
-        //skip invalid events
-        continue;
-      }
-      Item event;
-      event.setRemoteId( eventInfo.id() );
-      event.setPayload<KCalCore::Incidence::Ptr>(convertEventInfoToEventPtr(eventInfo));
-      event.setMimeType( eventMimeType );
-      eventItems.append( event );
+        Item::List eventItems;
+        Q_FOREACH (const KFbAPI::EventInfo &eventInfo, eventJob->eventInfo()) {
+            if (eventInfo.id().isEmpty()) {
+                //skip invalid events
+                continue;
+            }
+            Item event;
+            event.setRemoteId(eventInfo.id());
+            event.setPayload<KCalCore::Incidence::Ptr>(convertEventInfoToEventPtr(eventInfo));
+            event.setMimeType(eventMimeType);
+            eventItems.append(event);
+        }
+        itemsRetrieved(eventItems);
+        itemsRetrievalDone();
+        finishEventsFetching();
     }
-    itemsRetrieved( eventItems );
-    itemsRetrievalDone();
-    finishEventsFetching();
-  }
 
-  eventJob->deleteLater();
+    eventJob->deleteLater();
 }
 
 void FacebookResource::finishEventsFetching()
 {
-  emit percent( 100 );
-  // TODO: Use an actual number here
-  emit status( Idle, i18n( "All events fetched from server." ) );
-  resetState();
+    emit percent(100);
+    // TODO: Use an actual number here
+    emit status(Idle, i18n("All events fetched from server."));
+    resetState();
 }
 
 KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::EventInfo &eventInfo)
@@ -150,7 +150,7 @@ KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::
         //event->setDuration(KCalCore::Duration(2 * 60 * 60, KCalCore::Duration::Seconds));
     }
 
-    auto attendeeRsvp = [](const QString &status) {
+    auto attendeeRsvp = [](const QString & status) {
         if (status == QLatin1String("maybe")) {
             return KCalCore::Attendee::Tentative;
         } else if (status == QLatin1String("attending")) {
@@ -168,11 +168,11 @@ KCalCore::Event::Ptr FacebookResource::convertEventInfoToEventPtr(const KFbAPI::
     //       picture?
     Q_FOREACH (const KFbAPI::AttendeeInfoPtr &attendeeInfo, eventInfo.attendees()) {
         KCalCore::Attendee::Ptr attendee(new KCalCore::Attendee(attendeeInfo->name(),
-                                                                QStringLiteral("facebook@unkown.invalid"),
-                                                                false,
-                                                                attendeeRsvp(attendeeInfo->status()),
-                                                                KCalCore::Attendee::OptParticipant,
-                                                                attendeeInfo->id()));
+                                         QStringLiteral("facebook@unkown.invalid"),
+                                         false,
+                                         attendeeRsvp(attendeeInfo->status()),
+                                         KCalCore::Attendee::OptParticipant,
+                                         attendeeInfo->id()));
         event->addAttendee(attendee);
     }
 

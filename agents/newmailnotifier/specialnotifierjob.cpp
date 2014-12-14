@@ -42,8 +42,8 @@ SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QStr
       mItemId(id)
 {
     Akonadi::Item item(mItemId);
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item, this );
-    job->fetchScope().fetchPayloadPart( Akonadi::MessagePart::Envelope, true );
+    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(item, this);
+    job->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Envelope, true);
 
     connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotItemFetchJobDone);
 }
@@ -55,17 +55,17 @@ SpecialNotifierJob::~SpecialNotifierJob()
 
 void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 {
-    if ( job->error() ) {
+    if (job->error()) {
         qCWarning(NEWMAILNOTIFIER_LOG) << job->errorString();
         deleteLater();
         return;
     }
 
-    const Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob*>( job )->items();
+    const Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob *>(job)->items();
     if (lst.count() == 1) {
         const Akonadi::Item item = lst.first();
-        if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-            qCDebug(NEWMAILNOTIFIER_LOG)<<" message has not payload.";
+        if (!item.hasPayload<KMime::Message::Ptr>()) {
+            qCDebug(NEWMAILNOTIFIER_LOG) << " message has not payload.";
             deleteLater();
             return;
         }
@@ -74,25 +74,25 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         mFrom = mb->from()->asUnicodeString();
         mSubject = mb->subject()->asUnicodeString();
         if (NewMailNotifierAgentSettings::showPhoto()) {
-            Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob( this );
-            job->setLimit( 1 );
-            job->setQuery( Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
+            Akonadi::ContactSearchJob *job = new Akonadi::ContactSearchJob(this);
+            job->setLimit(1);
+            job->setQuery(Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch);
             connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
             emitNotification(Util::defaultPixmap());
             deleteLater();
         }
     } else {
-        qCWarning(NEWMAILNOTIFIER_LOG)<<" Found item different from 1: "<<lst.count();
+        qCWarning(NEWMAILNOTIFIER_LOG) << " Found item different from 1: " << lst.count();
         deleteLater();
         return;
     }
 }
 
-void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
+void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
 {
-    const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
-    if ( searchJob->error() ) {
+    const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob *>(job);
+    if (searchJob->error()) {
         qCWarning(NEWMAILNOTIFIER_LOG) << "Unable to fetch contact:" << searchJob->errorText();
         emitNotification(Util::defaultPixmap());
         return;
@@ -114,7 +114,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
     if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
-        Q_FOREACH( const QString &email, mListEmails) {
+        Q_FOREACH (const QString &email, mListEmails) {
             if (mFrom.contains(email)) {
                 //Exclude this notification
                 deleteLater();
@@ -129,7 +129,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
     if (NewMailNotifierAgentSettings::showSubject()) {
         QString subject(mSubject);
-        if (subject.length()> 80) {
+        if (subject.length() > 80) {
             subject.truncate(80);
             subject += QLatin1String("...");
         }
@@ -155,16 +155,16 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
 
     if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
-        KNotification *notification= new KNotification ( QLatin1String("new-email"), 0, KNotification::CloseOnTimeout);
-        notification->setText( result.join(QLatin1String("\n")) );
-        notification->setPixmap( pixmap );
-        notification->setActions( QStringList() << i18n( "Show mail..." ) );
+        KNotification *notification = new KNotification(QLatin1String("new-email"), 0, KNotification::CloseOnTimeout);
+        notification->setText(result.join(QLatin1String("\n")));
+        notification->setPixmap(pixmap);
+        notification->setActions(QStringList() << i18n("Show mail..."));
 
         connect(notification, static_cast<void (KNotification::*)(unsigned int)>(&KNotification::activated), this, &SpecialNotifierJob::slotOpenMail);
         connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
 
         notification->sendEvent();
-        if ( NewMailNotifierAgentSettings::beepOnNewMails() ) {
+        if (NewMailNotifierAgentSettings::beepOnNewMails()) {
             KNotification::beep();
         }
     } else {

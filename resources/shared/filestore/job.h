@@ -31,73 +31,72 @@ namespace Akonadi
 
 namespace FileStore
 {
-  class AbstractJobSession;
-  class CollectionCreateJob;
-  class CollectionDeleteJob;
-  class CollectionFetchJob;
-  class CollectionModifyJob;
-  class CollectionMoveJob;
-  class ItemCreateJob;
-  class ItemDeleteJob;
-  class ItemFetchJob;
-  class ItemModifyJob;
-  class ItemMoveJob;
-  class StoreCompactJob;
+class AbstractJobSession;
+class CollectionCreateJob;
+class CollectionDeleteJob;
+class CollectionFetchJob;
+class CollectionModifyJob;
+class CollectionMoveJob;
+class ItemCreateJob;
+class ItemDeleteJob;
+class ItemFetchJob;
+class ItemModifyJob;
+class ItemMoveJob;
+class StoreCompactJob;
 
 /**
  */
 class AKONADI_FILESTORE_EXPORT Job : public KJob
 {
-  friend class AbstractJobSession;
+    friend class AbstractJobSession;
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     class Visitor
     {
-      public:
+    public:
         virtual ~Visitor() {}
 
-        virtual bool visit( Job *job ) = 0;
+        virtual bool visit(Job *job) = 0;
 
-        virtual bool visit( CollectionCreateJob *job ) = 0;
+        virtual bool visit(CollectionCreateJob *job) = 0;
 
-        virtual bool visit( CollectionDeleteJob *job ) = 0;
+        virtual bool visit(CollectionDeleteJob *job) = 0;
 
-        virtual bool visit( CollectionFetchJob *job ) = 0;
+        virtual bool visit(CollectionFetchJob *job) = 0;
 
-        virtual bool visit( CollectionModifyJob *job ) = 0;
+        virtual bool visit(CollectionModifyJob *job) = 0;
 
-        virtual bool visit( CollectionMoveJob *job ) = 0;
+        virtual bool visit(CollectionMoveJob *job) = 0;
 
-        virtual bool visit( ItemCreateJob *job ) = 0;
+        virtual bool visit(ItemCreateJob *job) = 0;
 
-        virtual bool visit( ItemDeleteJob *job ) = 0;
+        virtual bool visit(ItemDeleteJob *job) = 0;
 
-        virtual bool visit( ItemFetchJob *job ) = 0;
+        virtual bool visit(ItemFetchJob *job) = 0;
 
-        virtual bool visit( ItemModifyJob *job ) = 0;
+        virtual bool visit(ItemModifyJob *job) = 0;
 
-        virtual bool visit( ItemMoveJob *job ) = 0;
+        virtual bool visit(ItemMoveJob *job) = 0;
 
-        virtual bool visit( StoreCompactJob *job ) = 0;
+        virtual bool visit(StoreCompactJob *job) = 0;
     };
 
-    enum ErrorCodes
-    {
-      InvalidStoreState = KJob::UserDefinedError + 1,
-      InvalidJobContext
+    enum ErrorCodes {
+        InvalidStoreState = KJob::UserDefinedError + 1,
+        InvalidJobContext
     };
 
-    explicit Job( AbstractJobSession *session = 0 );
+    explicit Job(AbstractJobSession *session = 0);
 
     virtual ~Job();
 
     virtual void start();
 
-    virtual bool accept( Visitor *visitor );
+    virtual bool accept(Visitor *visitor);
 
-  private:
+private:
     class Private;
     Private *d;
 };
@@ -107,4 +106,3 @@ class AKONADI_FILESTORE_EXPORT Job : public KJob
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

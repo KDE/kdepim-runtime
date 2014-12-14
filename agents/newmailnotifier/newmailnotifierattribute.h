@@ -20,7 +20,6 @@
 
 #include <attribute.h>
 
-
 class NewMailNotifierAttributePrivate;
 class NewMailNotifierAttribute : public Akonadi::Attribute
 {
@@ -32,14 +31,14 @@ public:
     NewMailNotifierAttribute *clone() const;
     QByteArray type() const;
     QByteArray serialized() const;
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
 
     bool ignoreNewMail() const;
     void setIgnoreNewMail(bool b);
 
 private:
     friend class NewMailNotifierAttributePrivate;
-    NewMailNotifierAttributePrivate * const d;
+    NewMailNotifierAttributePrivate *const d;
 };
 
 #endif // NEWMAILNOTIFIERATTRIBUTE_H

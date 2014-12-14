@@ -29,7 +29,6 @@
 
 #include <AkonadiCore/agentinstance.h>
 
-
 /**
   @short A widget to manage imaplib
   @author Tom Albers <tomalbers@kde.nl>
@@ -45,8 +44,8 @@ public:
       @param filter The mimetypes which you want shown in the widget. Leave
                     it empty to see them all.
     */
-    explicit ResourcesManagementWidget( QWidget *parent = 0,
-                                        const QStringList &filter=QStringList() );
+    explicit ResourcesManagementWidget(QWidget *parent = 0,
+                                       const QStringList &filter = QStringList());
 
     /**
       Destroys the widget.
@@ -61,7 +60,7 @@ private Q_SLOTS:
 
 private:
     class Private;
-    Private * const d;
+    Private *const d;
 };
 
 #endif

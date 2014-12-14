@@ -28,175 +28,174 @@
 using namespace TestDataUtil;
 
 // use this instead of QFile::copy() because we want overwrite in case it exists
-static bool copyFile( const QString &sourceFileName, const QString &targetFileName )
+static bool copyFile(const QString &sourceFileName, const QString &targetFileName)
 {
-  QFile sourceFile( sourceFileName );
-  QFile targetFile( targetFileName );
+    QFile sourceFile(sourceFileName);
+    QFile targetFile(targetFileName);
 
-  if ( !sourceFile.open( QIODevice::ReadOnly ) ) {
-    qCritical() << "Cannot open source file" << sourceFileName;
-    return false;
-  }
-
-  if ( !targetFile.open( QIODevice::WriteOnly ) ) {
-    qCritical() << "Cannot open target file" << targetFileName;
-    return false;
-  }
-
-  return targetFile.write( sourceFile.readAll() ) != -1;
-}
-
-static bool copyFiles( const QDir &sourceDir, const QDir &targetDir )
-{
-  const QStringList files = sourceDir.entryList( QStringList(), QDir::Files );
-  Q_FOREACH( const QString &file, files ) {
-    const QFileInfo sourceFileInfo( sourceDir, file );
-    const QFileInfo targetFileInfo( targetDir, file );
-    if ( !copyFile( sourceFileInfo.absoluteFilePath(), targetFileInfo.absoluteFilePath() ) ) {
-      qCritical() << "Failed to copy" << sourceFileInfo.absoluteFilePath()
-               << "to" << targetFileInfo.absoluteFilePath();
-      return false;
+    if (!sourceFile.open(QIODevice::ReadOnly)) {
+        qCritical() << "Cannot open source file" << sourceFileName;
+        return false;
     }
-  }
 
-  return true;
+    if (!targetFile.open(QIODevice::WriteOnly)) {
+        qCritical() << "Cannot open target file" << targetFileName;
+        return false;
+    }
+
+    return targetFile.write(sourceFile.readAll()) != -1;
 }
 
-FolderType TestDataUtil::folderType( const QString &testDataName )
+static bool copyFiles(const QDir &sourceDir, const QDir &targetDir)
 {
-  const QDir dir( QLatin1String( ":/data" ) );
-  const QString indexFilePattern = QLatin1String( ".%1.index" );
+    const QStringList files = sourceDir.entryList(QStringList(), QDir::Files);
+    Q_FOREACH (const QString &file, files) {
+        const QFileInfo sourceFileInfo(sourceDir, file);
+        const QFileInfo targetFileInfo(targetDir, file);
+        if (!copyFile(sourceFileInfo.absoluteFilePath(), targetFileInfo.absoluteFilePath())) {
+            qCritical() << "Failed to copy" << sourceFileInfo.absoluteFilePath()
+                        << "to" << targetFileInfo.absoluteFilePath();
+            return false;
+        }
+    }
 
-  if ( !dir.exists( testDataName ) || !dir.exists( indexFilePattern.arg( testDataName ) ) ) {
-    return InvalidFolder;
-  }
+    return true;
+}
 
-  const QFileInfo fileInfo( dir, testDataName );
-  return ( fileInfo.isDir() ? MaildirFolder : MBoxFolder );
+FolderType TestDataUtil::folderType(const QString &testDataName)
+{
+    const QDir dir(QLatin1String(":/data"));
+    const QString indexFilePattern = QLatin1String(".%1.index");
+
+    if (!dir.exists(testDataName) || !dir.exists(indexFilePattern.arg(testDataName))) {
+        return InvalidFolder;
+    }
+
+    const QFileInfo fileInfo(dir, testDataName);
+    return (fileInfo.isDir() ? MaildirFolder : MBoxFolder);
 }
 
 QStringList TestDataUtil::testDataNames()
 {
-  const QDir dir( QLatin1String( ":/data" ) );
-  const QFileInfoList dirEntries = dir.entryInfoList();
+    const QDir dir(QLatin1String(":/data"));
+    const QFileInfoList dirEntries = dir.entryInfoList();
 
-  const QString indexFilePattern = QLatin1String( ".%1.index" );
+    const QString indexFilePattern = QLatin1String(".%1.index");
 
-  QStringList result;
-  Q_FOREACH( const QFileInfo& fileInfo, dirEntries ) {
-    if ( dir.exists( indexFilePattern.arg( fileInfo.fileName() ) ) ) {
-      result << fileInfo.fileName();
+    QStringList result;
+    Q_FOREACH (const QFileInfo &fileInfo, dirEntries) {
+        if (dir.exists(indexFilePattern.arg(fileInfo.fileName()))) {
+            result << fileInfo.fileName();
+        }
     }
-  }
 
-  result.sort();
-  return result;
+    result.sort();
+    return result;
 }
 
-bool TestDataUtil::installFolder( const QString &testDataName, const QString &installPath, const QString &folderName )
+bool TestDataUtil::installFolder(const QString &testDataName, const QString &installPath, const QString &folderName)
 {
-  const FolderType type = TestDataUtil::folderType( testDataName );
-  if ( type == InvalidFolder ) {
-    qCritical() << "testDataName" << testDataName << "is not a valid mail folder type";
-    return false;
-  }
-
-  if ( !QDir::current().mkpath( installPath ) ) {
-    qCritical() << "Couldn't create installPath" << installPath;
-    return false;
-  }
-
-  const QDir installDir( installPath );
-  const QFileInfo installFileInfo( installDir, folderName );
-  if ( installDir.exists( folderName ) ) {
-    switch ( type ) {
-      case MaildirFolder:
-        if ( !installFileInfo.isDir() ) {
-          qCritical() << "Target file name" << folderName << "already exists but is not a directory";
-          return false;
-        }
-        break;
-
-      case MBoxFolder:
-        if ( !installFileInfo.isFile() ) {
-          qCritical() << "Target file name" << folderName << "already exists but is not a directory";
-          return false;
-        }
-        break;
-
-      default:
-        // already handled at beginning
-        Q_ASSERT( false );
+    const FolderType type = TestDataUtil::folderType(testDataName);
+    if (type == InvalidFolder) {
+        qCritical() << "testDataName" << testDataName << "is not a valid mail folder type";
         return false;
     }
-  }
 
-  const QDir testDataDir( QLatin1String( ":/data" ) );
-
-  switch ( type ) {
-    case MaildirFolder: {
-      const QString subPathPattern = QLatin1String( "%1/%2" );
-      if ( !installDir.mkpath( subPathPattern.arg( folderName, QLatin1String( "new" ) ) ) ||
-           !installDir.mkpath( subPathPattern.arg( folderName, QLatin1String( "cur" ) ) ) ||
-           !installDir.mkpath( subPathPattern.arg( folderName, QLatin1String( "tmp" ) ) ) ) {
-        qCritical() << "Couldn't create maildir directory structure";
+    if (!QDir::current().mkpath(installPath)) {
+        qCritical() << "Couldn't create installPath" << installPath;
         return false;
-      }
+    }
 
-      QDir sourceDir = testDataDir;
-      QDir targetDir = installDir;
+    const QDir installDir(installPath);
+    const QFileInfo installFileInfo(installDir, folderName);
+    if (installDir.exists(folderName)) {
+        switch (type) {
+        case MaildirFolder:
+            if (!installFileInfo.isDir()) {
+                qCritical() << "Target file name" << folderName << "already exists but is not a directory";
+                return false;
+            }
+            break;
 
-      sourceDir.cd( testDataName );
-      targetDir.cd( folderName );
+        case MBoxFolder:
+            if (!installFileInfo.isFile()) {
+                qCritical() << "Target file name" << folderName << "already exists but is not a directory";
+                return false;
+            }
+            break;
 
-      if ( sourceDir.cd( QLatin1String( "new" ) ) ) {
-        targetDir.cd( QLatin1String( "new" ) );
-        if ( !copyFiles( sourceDir, targetDir ) ) {
-          return false;
+        default:
+            // already handled at beginning
+            Q_ASSERT(false);
+            return false;
         }
-        sourceDir.cdUp();
-        targetDir.cdUp();
-      }
+    }
 
-      if ( sourceDir.cd( QLatin1String( "cur" ) ) ) {
-        targetDir.cd( QLatin1String( "cur" ) );
-        if ( !copyFiles( sourceDir, targetDir ) ) {
-          return false;
-        }
-        sourceDir.cdUp();
-        targetDir.cdUp();
-      }
+    const QDir testDataDir(QLatin1String(":/data"));
 
-      if ( sourceDir.cd( QLatin1String( "tmp" ) ) ) {
-        targetDir.cd( QLatin1String( "tmp" ) );
-        if ( !copyFiles( sourceDir, targetDir ) ) {
-          return false;
+    switch (type) {
+    case MaildirFolder: {
+        const QString subPathPattern = QLatin1String("%1/%2");
+        if (!installDir.mkpath(subPathPattern.arg(folderName, QLatin1String("new"))) ||
+                !installDir.mkpath(subPathPattern.arg(folderName, QLatin1String("cur"))) ||
+                !installDir.mkpath(subPathPattern.arg(folderName, QLatin1String("tmp")))) {
+            qCritical() << "Couldn't create maildir directory structure";
+            return false;
         }
-      }
-      break;
+
+        QDir sourceDir = testDataDir;
+        QDir targetDir = installDir;
+
+        sourceDir.cd(testDataName);
+        targetDir.cd(folderName);
+
+        if (sourceDir.cd(QLatin1String("new"))) {
+            targetDir.cd(QLatin1String("new"));
+            if (!copyFiles(sourceDir, targetDir)) {
+                return false;
+            }
+            sourceDir.cdUp();
+            targetDir.cdUp();
+        }
+
+        if (sourceDir.cd(QLatin1String("cur"))) {
+            targetDir.cd(QLatin1String("cur"));
+            if (!copyFiles(sourceDir, targetDir)) {
+                return false;
+            }
+            sourceDir.cdUp();
+            targetDir.cdUp();
+        }
+
+        if (sourceDir.cd(QLatin1String("tmp"))) {
+            targetDir.cd(QLatin1String("tmp"));
+            if (!copyFiles(sourceDir, targetDir)) {
+                return false;
+            }
+        }
+        break;
     }
 
     case MBoxFolder: {
-      const QFileInfo mboxFileInfo( testDataDir, testDataName );
-      if ( !copyFile( mboxFileInfo.absoluteFilePath(), installFileInfo.absoluteFilePath() ) ) {
-        qCritical() << "Failed to copy" << mboxFileInfo.absoluteFilePath()
-                 << "to" << installFileInfo.absoluteFilePath();
-        return false;
-      }
-      break;
+        const QFileInfo mboxFileInfo(testDataDir, testDataName);
+        if (!copyFile(mboxFileInfo.absoluteFilePath(), installFileInfo.absoluteFilePath())) {
+            qCritical() << "Failed to copy" << mboxFileInfo.absoluteFilePath()
+                        << "to" << installFileInfo.absoluteFilePath();
+            return false;
+        }
+        break;
     }
 
     default:
-      // already handled at beginning
-      Q_ASSERT( false );
-      return false;
-  }
+        // already handled at beginning
+        Q_ASSERT(false);
+        return false;
+    }
 
-  const QString indexFilePattern = QLatin1String( ".%1.index" );
-  const QFileInfo indexFileInfo( testDataDir, indexFilePattern.arg( testDataName ) );
-  const QFileInfo indexInstallFileInfo( installDir, indexFilePattern.arg( folderName ) );
+    const QString indexFilePattern = QLatin1String(".%1.index");
+    const QFileInfo indexFileInfo(testDataDir, indexFilePattern.arg(testDataName));
+    const QFileInfo indexInstallFileInfo(installDir, indexFilePattern.arg(folderName));
 
-  return copyFile( indexFileInfo.absoluteFilePath(), indexInstallFileInfo.absoluteFilePath() );
+    return copyFile(indexFileInfo.absoluteFilePath(), indexInstallFileInfo.absoluteFilePath());
 }
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

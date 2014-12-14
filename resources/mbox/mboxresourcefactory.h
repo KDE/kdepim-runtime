@@ -18,15 +18,15 @@
 #ifndef MBOXRESOURCEFACTORY_H
 #define MBOXRESOURCEFACTORY_H
 
-#include <agentfactory.h> 
+#include <agentfactory.h>
 #include <mboxresource.h>
- 
+
 class MboxResourceFactory : public Akonadi::AgentFactory<MboxResource>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.MboxResource");
-public: 
-    explicit MboxResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.MboxResource");
+public:
+    explicit MboxResourceFactory(QObject *parent = 0);
 
 };
 #endif

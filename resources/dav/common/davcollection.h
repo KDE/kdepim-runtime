@@ -33,7 +33,7 @@
  */
 class DavCollection
 {
-  public:
+public:
     /**
      * Defines a list of DAV collection objects.
      */
@@ -43,14 +43,14 @@ class DavCollection
      * Describes the possible content type of the DAV collection.
      */
     enum ContentType {
-      Events = 1,    ///< The collection can contain event DAV resources.
-      Todos = 2,     ///< The collection can contain todo DAV resources.
-      Contacts = 4,  ///< The collection can contain contact DAV resources.
-      FreeBusy = 8,  ///< The collection can contain free/busy information.
-      Journal = 16,  ///< The collection can contain journal DAV resources.
-      Calendar = 32  ///< The collection can contain anything calendar-related.
+        Events = 1,    ///< The collection can contain event DAV resources.
+        Todos = 2,     ///< The collection can contain todo DAV resources.
+        Contacts = 4,  ///< The collection can contain contact DAV resources.
+        FreeBusy = 8,  ///< The collection can contain free/busy information.
+        Journal = 16,  ///< The collection can contain journal DAV resources.
+        Calendar = 32  ///< The collection can contain anything calendar-related.
     };
-    Q_DECLARE_FLAGS( ContentTypes, ContentType )
+    Q_DECLARE_FLAGS(ContentTypes, ContentType)
 
     /**
      * Creates an empty DAV collection.
@@ -65,12 +65,12 @@ class DavCollection
      * @param displayName The display name of the collection.
      * @param contentTypes The possible content types of the collection.
      */
-    DavCollection( DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes );
+    DavCollection(DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes);
 
     /**
      * Sets the DAV @p protocol dialect the collection comes from.
      */
-    void setProtocol( DavUtils::Protocol protocol );
+    void setProtocol(DavUtils::Protocol protocol);
 
     /**
      * Returns the DAV protocol dialect the collection comes from.
@@ -80,7 +80,7 @@ class DavCollection
     /**
      * Sets the @p url that identifies the collection.
      */
-    void setUrl( const QString &url );
+    void setUrl(const QString &url);
 
     /**
      * Returns the url that identifies the collection.
@@ -90,7 +90,7 @@ class DavCollection
     /**
      * Sets the display @p name of the collection.
      */
-    void setDisplayName( const QString &name );
+    void setDisplayName(const QString &name);
 
     /**
      * Returns the display name of the collection.
@@ -100,7 +100,7 @@ class DavCollection
     /**
      * Sets the color for this collection
      */
-    void setColor( const QColor &color );
+    void setColor(const QColor &color);
 
     /**
      * Return the color of the collection, or an empty string if
@@ -111,7 +111,7 @@ class DavCollection
     /**
      * Sets the possible content @p types of the collection.
      */
-    void setContentTypes( ContentTypes types );
+    void setContentTypes(ContentTypes types);
 
     /**
      * Returns the possible content types of the collection.
@@ -121,14 +121,14 @@ class DavCollection
     /**
      * Sets the privileges on this collection.
      */
-    void setPrivileges( DavUtils::Privileges privs );
+    void setPrivileges(DavUtils::Privileges privs);
 
     /**
      * Returns the privileges on this collection.
      */
     DavUtils::Privileges privileges() const;
 
-  private:
+private:
     DavUtils::Protocol mProtocol;
     QString mUrl;
     QString mDisplayName;
@@ -137,6 +137,6 @@ class DavCollection
     DavUtils::Privileges mPrivileges;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( DavCollection::ContentTypes )
+Q_DECLARE_OPERATORS_FOR_FLAGS(DavCollection::ContentTypes)
 
 #endif

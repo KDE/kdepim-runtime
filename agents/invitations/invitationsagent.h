@@ -36,47 +36,47 @@ class InvitationsCollection;
 
 class InvitationsAgentItem : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     InvitationsAgentItem(InvitationsAgent *a, const Akonadi::Item &originalItem);
     virtual ~InvitationsAgentItem();
     void add(const Akonadi::Item &newItem);
 
-  private Q_SLOTS:
-    void createItemResult( KJob *job );
-    void fetchItemDone( KJob* );
-    void modifyItemDone( KJob *job );
+private Q_SLOTS:
+    void createItemResult(KJob *job);
+    void fetchItemDone(KJob *);
+    void modifyItemDone(KJob *job);
 
-  private:
+private:
     InvitationsAgent *m_agent;
     const Akonadi::Item m_originalItem;
-    QList<Akonadi::ItemCreateJob*> m_jobs;
+    QList<Akonadi::ItemCreateJob *> m_jobs;
 };
 
 class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit InvitationsAgent( const QString &id );
+public:
+    explicit InvitationsAgent(const QString &id);
     virtual ~InvitationsAgent();
 
     Akonadi::Collection collection();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
+public Q_SLOTS:
+    virtual void configure(WId windowId);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void initStart();
-    void initDone( KJob *job = 0 );
+    void initDone(KJob *job = 0);
 
-  private:
-    Akonadi::Item handleContent( const QString &vcal,
-                                 const KCalCore::MemoryCalendar::Ptr &calendar,
-                                 const Akonadi::Item &item );
+private:
+    Akonadi::Item handleContent(const QString &vcal,
+                                const KCalCore::MemoryCalendar::Ptr &calendar,
+                                const Akonadi::Item &item);
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
 
     /*
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
@@ -92,7 +92,7 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
     virtual void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes );
     */
 
-  private:
+private:
     QString m_resourceId;
     InvitationsCollection *m_invitationsCollection;
     Akonadi::Collection m_collection;

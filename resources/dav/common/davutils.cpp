@@ -36,330 +36,333 @@
 
 typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
-QDomElement DavUtils::firstChildElementNS( const QDomElement &parent, const QString &namespaceUri, const QString &tagName )
+QDomElement DavUtils::firstChildElementNS(const QDomElement &parent, const QString &namespaceUri, const QString &tagName)
 {
-  for ( QDomNode child = parent.firstChild(); !child.isNull(); child = child.nextSibling() ) {
-    if ( child.isElement() ) {
-      const QDomElement elt = child.toElement();
-      if ( tagName.isEmpty() || ( elt.tagName() == tagName && elt.namespaceURI() == namespaceUri ) )
-        return elt;
+    for (QDomNode child = parent.firstChild(); !child.isNull(); child = child.nextSibling()) {
+        if (child.isElement()) {
+            const QDomElement elt = child.toElement();
+            if (tagName.isEmpty() || (elt.tagName() == tagName && elt.namespaceURI() == namespaceUri)) {
+                return elt;
+            }
+        }
     }
-  }
 
-  return QDomElement();
+    return QDomElement();
 }
 
-QDomElement DavUtils::nextSiblingElementNS( const QDomElement &element, const QString &namespaceUri, const QString &tagName )
+QDomElement DavUtils::nextSiblingElementNS(const QDomElement &element, const QString &namespaceUri, const QString &tagName)
 {
-  for ( QDomNode sib = element.nextSibling(); !sib.isNull(); sib = sib.nextSibling() ) {
-    if ( sib.isElement() ) {
-      const QDomElement elt = sib.toElement();
-      if ( tagName.isEmpty() || ( elt.tagName() == tagName && elt.namespaceURI() == namespaceUri ) )
-        return elt;
+    for (QDomNode sib = element.nextSibling(); !sib.isNull(); sib = sib.nextSibling()) {
+        if (sib.isElement()) {
+            const QDomElement elt = sib.toElement();
+            if (tagName.isEmpty() || (elt.tagName() == tagName && elt.namespaceURI() == namespaceUri)) {
+                return elt;
+            }
+        }
     }
-  }
 
-  return QDomElement();
+    return QDomElement();
 }
 
-DavUtils::Privileges DavUtils::extractPrivileges( const QDomElement &element )
+DavUtils::Privileges DavUtils::extractPrivileges(const QDomElement &element)
 {
-  Privileges final = None;
-  QDomElement privElement = firstChildElementNS( element, QLatin1String("DAV:"), QLatin1String("privilege"));
+    Privileges final = None;
+    QDomElement privElement = firstChildElementNS(element, QLatin1String("DAV:"), QLatin1String("privilege"));
 
-  while ( !privElement.isNull() ) {
-    QDomElement child = privElement.firstChildElement();
+    while (!privElement.isNull()) {
+        QDomElement child = privElement.firstChildElement();
 
-    while ( !child.isNull() ) {
-      final |= parsePrivilege( child );
-      child = child.nextSiblingElement();
+        while (!child.isNull()) {
+            final |= parsePrivilege(child);
+            child = child.nextSiblingElement();
+        }
+
+        privElement = DavUtils::nextSiblingElementNS(privElement, QLatin1String("DAV:"), QLatin1String("privilege"));
     }
 
-    privElement = DavUtils::nextSiblingElementNS( privElement, QLatin1String("DAV:"), QLatin1String("privilege") );
-  }
-
-  return final;
+    return final;
 }
 
-DavUtils::Privileges DavUtils::parsePrivilege( const QDomElement &element )
+DavUtils::Privileges DavUtils::parsePrivilege(const QDomElement &element)
 {
-  Privileges final = None;
+    Privileges final = None;
 
-  if ( !element.childNodes().isEmpty() ) {
-    // This is an aggregate privilege, parse each of its children
-    QDomElement child = element.firstChildElement();
-    while ( !child.isNull() ) {
-      final |= parsePrivilege( child );
-      child = child.nextSiblingElement();
+    if (!element.childNodes().isEmpty()) {
+        // This is an aggregate privilege, parse each of its children
+        QDomElement child = element.firstChildElement();
+        while (!child.isNull()) {
+            final |= parsePrivilege(child);
+            child = child.nextSiblingElement();
+        }
+    } else {
+        // This is a normal privilege
+        const QString privname = element.localName();
+
+        if (privname == QLatin1String("read")) {
+            final |= DavUtils::Read;
+        } else if (privname == QLatin1String("write")) {
+            final |= DavUtils::Write;
+        } else if (privname == QLatin1String("write-properties")) {
+            final |= DavUtils::WriteProperties;
+        } else if (privname == QLatin1String("write-content")) {
+            final |= DavUtils::WriteContent;
+        } else if (privname == QLatin1String("unlock")) {
+            final |= DavUtils::Unlock;
+        } else if (privname == QLatin1String("read-acl")) {
+            final |= DavUtils::ReadAcl;
+        } else if (privname == QLatin1String("read-current-user-privilege-set")) {
+            final |= DavUtils::ReadCurrentUserPrivilegeSet;
+        } else if (privname == QLatin1String("write-acl")) {
+            final |= DavUtils::WriteAcl;
+        } else if (privname == QLatin1String("bind")) {
+            final |= DavUtils::Bind;
+        } else if (privname == QLatin1String("unbind")) {
+            final |= DavUtils::Unbind;
+        } else if (privname == QLatin1String("all")) {
+            final |= DavUtils::All;
+        }
     }
-  }
-  else {
-    // This is a normal privilege
-    const QString privname = element.localName();
 
-    if ( privname == QLatin1String("read") )
-      final |= DavUtils::Read;
-    else if ( privname == QLatin1String("write") )
-      final |= DavUtils::Write;
-    else if ( privname == QLatin1String("write-properties") )
-      final |= DavUtils::WriteProperties;
-    else if ( privname == QLatin1String("write-content") )
-      final |= DavUtils::WriteContent;
-    else if ( privname == QLatin1String("unlock") )
-      final |= DavUtils::Unlock;
-    else if ( privname == QLatin1String("read-acl") )
-      final |= DavUtils::ReadAcl;
-    else if ( privname == QLatin1String("read-current-user-privilege-set") )
-      final |= DavUtils::ReadCurrentUserPrivilegeSet;
-    else if ( privname == QLatin1String("write-acl") )
-      final |= DavUtils::WriteAcl;
-    else if ( privname == QLatin1String("bind") )
-      final |= DavUtils::Bind;
-    else if ( privname == QLatin1String("unbind") )
-      final |= DavUtils::Unbind;
-    else if ( privname == QLatin1String("all") )
-      final |= DavUtils::All;
-  }
-
-  return final;
+    return final;
 }
 
 DavUtils::DavUrl::DavUrl()
-  : mProtocol( CalDav )
+    : mProtocol(CalDav)
 {
 }
 
-DavUtils::DavUrl::DavUrl( const KUrl &url, DavUtils::Protocol protocol )
-  : mUrl( url ), mProtocol( protocol )
+DavUtils::DavUrl::DavUrl(const KUrl &url, DavUtils::Protocol protocol)
+    : mUrl(url), mProtocol(protocol)
 {
 }
 
-void DavUtils::DavUrl::setUrl( const KUrl &url )
+void DavUtils::DavUrl::setUrl(const KUrl &url)
 {
-  mUrl = url;
+    mUrl = url;
 }
 
 KUrl DavUtils::DavUrl::url() const
 {
-  return mUrl;
+    return mUrl;
 }
 
-void DavUtils::DavUrl::setProtocol( DavUtils::Protocol protocol )
+void DavUtils::DavUrl::setProtocol(DavUtils::Protocol protocol)
 {
-  mProtocol = protocol;
+    mProtocol = protocol;
 }
 
 DavUtils::Protocol DavUtils::DavUrl::protocol() const
 {
-  return mProtocol;
+    return mProtocol;
 }
 
-QLatin1String DavUtils::protocolName( DavUtils::Protocol protocol )
+QLatin1String DavUtils::protocolName(DavUtils::Protocol protocol)
 {
-  QLatin1String protocolName( "" );
+    QLatin1String protocolName("");
 
-  switch( protocol ) {
+    switch (protocol) {
     case DavUtils::CalDav:
-      protocolName = QLatin1String( "CalDav" );
-      break;
+        protocolName = QLatin1String("CalDav");
+        break;
     case DavUtils::CardDav:
-      protocolName = QLatin1String( "CardDav" );
-      break;
+        protocolName = QLatin1String("CardDav");
+        break;
     case DavUtils::GroupDav:
-      protocolName = QLatin1String( "GroupDav" );
-      break;
-  }
+        protocolName = QLatin1String("GroupDav");
+        break;
+    }
 
-  return protocolName;
+    return protocolName;
 }
 
-QString DavUtils::translatedProtocolName( DavUtils::Protocol protocol )
+QString DavUtils::translatedProtocolName(DavUtils::Protocol protocol)
 {
-  QString protocolName;
+    QString protocolName;
 
-  switch( protocol ) {
+    switch (protocol) {
     case DavUtils::CalDav:
-      protocolName = i18n( "CalDav" );
-      break;
+        protocolName = i18n("CalDav");
+        break;
     case DavUtils::CardDav:
-      protocolName = i18n( "CardDav" );
-      break;
+        protocolName = i18n("CardDav");
+        break;
     case DavUtils::GroupDav:
-      protocolName = i18n( "GroupDav" );
-      break;
-  }
+        protocolName = i18n("GroupDav");
+        break;
+    }
 
-  return protocolName;
+    return protocolName;
 }
 
-DavUtils::Protocol DavUtils::protocolByName( const QString &name )
+DavUtils::Protocol DavUtils::protocolByName(const QString &name)
 {
-  DavUtils::Protocol protocol = DavUtils::CalDav;
+    DavUtils::Protocol protocol = DavUtils::CalDav;
 
-  if ( name == QLatin1String("CalDav") ) {
-    protocol = DavUtils::CalDav;
-  } else if ( name == QLatin1String("CardDav") ) {
-    protocol = DavUtils::CardDav;
-  } else if ( name == QLatin1String("GroupDav") ) {
-    protocol = DavUtils::GroupDav;
-  } else {
-    qCritical() << "Unexpected protocol name : " << name;
-  }
+    if (name == QLatin1String("CalDav")) {
+        protocol = DavUtils::CalDav;
+    } else if (name == QLatin1String("CardDav")) {
+        protocol = DavUtils::CardDav;
+    } else if (name == QLatin1String("GroupDav")) {
+        protocol = DavUtils::GroupDav;
+    } else {
+        qCritical() << "Unexpected protocol name : " << name;
+    }
 
-  return protocol;
+    return protocol;
 }
 
-DavUtils::Protocol DavUtils::protocolByTranslatedName( const QString &name )
+DavUtils::Protocol DavUtils::protocolByTranslatedName(const QString &name)
 {
-  DavUtils::Protocol protocol;
+    DavUtils::Protocol protocol;
 
-  if ( name == i18n( "CalDav" ) ) {
-    protocol = DavUtils::CalDav;
-  } else if ( name == i18n( "CardDav" ) ) {
-    protocol = DavUtils::CardDav;
-  } else if ( name == i18n( "GroupDav" ) ) {
-    protocol = DavUtils::GroupDav;
-  }
+    if (name == i18n("CalDav")) {
+        protocol = DavUtils::CalDav;
+    } else if (name == i18n("CardDav")) {
+        protocol = DavUtils::CardDav;
+    } else if (name == i18n("GroupDav")) {
+        protocol = DavUtils::GroupDav;
+    }
 
-  return protocol;
+    return protocol;
 }
 
 QString DavUtils::createUniqueId()
 {
-  qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
-  int r = qrand() % 1000;
-  QString id = QLatin1String( "R" ) + QString::number( r );
-  QString uid = QString::number( time ) + QLatin1String( "." ) + id;
-  return uid;
+    qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
+    int r = qrand() % 1000;
+    QString id = QLatin1String("R") + QString::number(r);
+    QString uid = QString::number(time) + QLatin1String(".") + id;
+    return uid;
 }
 
-DavItem DavUtils::createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems )
+DavItem DavUtils::createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems)
 {
-  QByteArray rawData;
-  QString mimeType;
-  KUrl url;
-  DavItem davItem;
-  const QString basePath = collection.remoteId();
+    QByteArray rawData;
+    QString mimeType;
+    KUrl url;
+    DavItem davItem;
+    const QString basePath = collection.remoteId();
 
-  if ( item.hasPayload<KContacts::Addressee>() ) {
-    const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
-    const QString fileName = createUniqueId();
+    if (item.hasPayload<KContacts::Addressee>()) {
+        const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
+        const QString fileName = createUniqueId();
 
-    url = KUrl( basePath + fileName + QLatin1String(".vcf") );
+        url = KUrl(basePath + fileName + QLatin1String(".vcf"));
 
-    const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
-    if ( protoAttr ) {
-      mimeType =
-        DavManager::self()->davProtocol(
-          DavUtils::Protocol( protoAttr->davProtocol() ) )->contactsMimeType();
+        const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
+        if (protoAttr) {
+            mimeType =
+                DavManager::self()->davProtocol(
+                    DavUtils::Protocol(protoAttr->davProtocol()))->contactsMimeType();
+        } else {
+            mimeType = KContacts::Addressee::mimeType();
+        }
+
+        KContacts::VCardConverter converter;
+        // rawData is already UTF-8
+        rawData = converter.exportVCard(contact, KContacts::VCardConverter::v3_0);
+    } else if (item.hasPayload<IncidencePtr>()) {
+        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(KDateTime::LocalZone));
+        calendar->addIncidence(item.payload<IncidencePtr>());
+        foreach (const Akonadi::Item &dependentItem, dependentItems) {
+            calendar->addIncidence(dependentItem.payload<IncidencePtr>());
+        }
+
+        const QString fileName = createUniqueId();
+
+        url = KUrl(basePath + fileName + QLatin1String(".ics"));
+        mimeType = QLatin1String("text/calendar");
+
+        KCalCore::ICalFormat formatter;
+        rawData = formatter.toString(calendar, QString()).toUtf8();
+    }
+
+    davItem.setContentType(mimeType);
+    davItem.setData(rawData);
+    davItem.setUrl(url.prettyUrl());
+    davItem.setEtag(item.remoteRevision());
+
+    return davItem;
+}
+
+bool DavUtils::parseDavData(const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems)
+{
+    const QString data = QString::fromUtf8(source.data());
+
+    if (target.mimeType() == KContacts::Addressee::mimeType()) {
+        KContacts::VCardConverter converter;
+        const KContacts::Addressee contact = converter.parseVCard(source.data());
+
+        if (contact.isEmpty()) {
+            return false;
+        }
+
+        target.setPayloadFromData(source.data());
     } else {
-      mimeType = KContacts::Addressee::mimeType();
+        KCalCore::ICalFormat formatter;
+        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(KDateTime::LocalZone));
+        formatter.fromString(calendar, data);
+        KCalCore::Incidence::List incidences = calendar->incidences();
+
+        if (incidences.isEmpty()) {
+            return false;
+        }
+
+        // All items must have the same uid in a single object.
+        // Find the main VEVENT (if that's indeed what we have,
+        // could be a VTODO or a VJOURNAL but that doesn't matter)
+        // and then apply the recurrence exceptions
+        IncidencePtr mainIncidence;
+        KCalCore::Incidence::List exceptions;
+
+        foreach (const IncidencePtr &incidence, incidences) {
+            if (incidence->hasRecurrenceId()) {
+                qDebug() << "Exception found with ID" << incidence->instanceIdentifier();
+                exceptions << incidence;
+            } else {
+                mainIncidence = incidence;
+            }
+        }
+
+        if (!mainIncidence) {
+            return false;
+        }
+
+        foreach (const IncidencePtr &exception, exceptions) {
+            if (exception->status() == KCalCore::Incidence::StatusCanceled) {
+                KDateTime exDateTime = exception->recurrenceId();
+                mainIncidence->recurrence()->addExDateTime(exDateTime);
+            } else {
+                // The exception remote id will contain a fragment pointing to
+                // its instance identifier to distinguish it from the main
+                // event.
+                QString rid = target.remoteId() + QLatin1String("#") + exception->instanceIdentifier();
+                qDebug() << "Extra incidence at" << rid;
+                Akonadi::Item extraItem = target;
+                extraItem.setRemoteId(rid);
+                extraItem.setRemoteRevision(source.etag());
+                extraItem.setMimeType(exception->mimeType());
+                extraItem.setPayload<IncidencePtr>(exception);
+                extraItems << extraItem;
+            }
+        }
+
+        target.setPayload<IncidencePtr>(mainIncidence);
+        // fix mime type for CalDAV collections
+        target.setMimeType(mainIncidence->mimeType());
+
+        /*
+        foreach ( const IncidencePtr &incidence, incidences ) {
+          QString rid = item.remoteId() + QLatin1String( "#" ) + incidence->instanceIdentifier();
+          Akonadi::Item extraItem = item;
+          extraItem.setRemoteId( rid );
+          extraItem.setRemoteRevision( davItem.etag() );
+          extraItem.setMimeType( incidence->mimeType() );
+          extraItem.setPayload<IncidencePtr>( incidence );
+          items << extraItem;
+        }
+        */
     }
 
-    KContacts::VCardConverter converter;
-    // rawData is already UTF-8
-    rawData = converter.exportVCard( contact, KContacts::VCardConverter::v3_0 );
-  } else if ( item.hasPayload<IncidencePtr>() ) {
-    const KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KDateTime::LocalZone ) );
-    calendar->addIncidence( item.payload<IncidencePtr>() );
-    foreach ( const Akonadi::Item &dependentItem, dependentItems ) {
-      calendar->addIncidence( dependentItem.payload<IncidencePtr>() );
-    }
-
-    const QString fileName = createUniqueId();
-
-    url = KUrl( basePath + fileName + QLatin1String(".ics") );
-    mimeType = QLatin1String("text/calendar");
-
-    KCalCore::ICalFormat formatter;
-    rawData = formatter.toString( calendar, QString() ).toUtf8();
-  }
-
-  davItem.setContentType( mimeType );
-  davItem.setData( rawData );
-  davItem.setUrl( url.prettyUrl() );
-  davItem.setEtag( item.remoteRevision() );
-
-  return davItem;
-}
-
-bool DavUtils::parseDavData( const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems )
-{
-  const QString data = QString::fromUtf8( source.data() );
-
-  if ( target.mimeType() == KContacts::Addressee::mimeType() ) {
-    KContacts::VCardConverter converter;
-    const KContacts::Addressee contact = converter.parseVCard( source.data() );
-
-    if ( contact.isEmpty() )
-      return false;
-
-    target.setPayloadFromData( source.data() );
-  } else {
-    KCalCore::ICalFormat formatter;
-    const KCalCore::MemoryCalendar::Ptr calendar( new KCalCore::MemoryCalendar( KDateTime::LocalZone ) );
-    formatter.fromString( calendar, data );
-    KCalCore::Incidence::List incidences = calendar->incidences();
-
-    if ( incidences.isEmpty() )
-      return false;
-
-    // All items must have the same uid in a single object.
-    // Find the main VEVENT (if that's indeed what we have,
-    // could be a VTODO or a VJOURNAL but that doesn't matter)
-    // and then apply the recurrence exceptions
-    IncidencePtr mainIncidence;
-    KCalCore::Incidence::List exceptions;
-
-    foreach ( const IncidencePtr &incidence, incidences ) {
-      if ( incidence->hasRecurrenceId() ) {
-        qDebug() << "Exception found with ID" << incidence->instanceIdentifier();
-        exceptions << incidence;
-      }
-      else {
-        mainIncidence = incidence;
-      }
-    }
-
-    if ( !mainIncidence )
-      return false;
-
-    foreach ( const IncidencePtr &exception, exceptions ) {
-      if ( exception->status() == KCalCore::Incidence::StatusCanceled ) {
-        KDateTime exDateTime = exception->recurrenceId();
-        mainIncidence->recurrence()->addExDateTime( exDateTime );
-      }
-      else {
-        // The exception remote id will contain a fragment pointing to
-        // its instance identifier to distinguish it from the main
-        // event.
-        QString rid = target.remoteId() + QLatin1String( "#" ) + exception->instanceIdentifier();
-        qDebug() << "Extra incidence at" << rid;
-        Akonadi::Item extraItem = target;
-        extraItem.setRemoteId( rid );
-        extraItem.setRemoteRevision( source.etag() );
-        extraItem.setMimeType( exception->mimeType() );
-        extraItem.setPayload<IncidencePtr>( exception );
-        extraItems << extraItem;
-      }
-    }
-
-    target.setPayload<IncidencePtr>( mainIncidence );
-    // fix mime type for CalDAV collections
-    target.setMimeType( mainIncidence->mimeType() );
-
-    /*
-    foreach ( const IncidencePtr &incidence, incidences ) {
-      QString rid = item.remoteId() + QLatin1String( "#" ) + incidence->instanceIdentifier();
-      Akonadi::Item extraItem = item;
-      extraItem.setRemoteId( rid );
-      extraItem.setRemoteRevision( davItem.etag() );
-      extraItem.setMimeType( incidence->mimeType() );
-      extraItem.setPayload<IncidencePtr>( incidence );
-      items << extraItem;
-    }
-    */
-  }
-
-  return true;
+    return true;
 }

@@ -26,52 +26,52 @@
 
 using namespace OXA;
 
-ConnectionTestJob::ConnectionTestJob( const QString &url, const QString &user, const QString &password, QObject *parent )
-  : KJob( parent ), mUrl( url ), mUser( user ), mPassword( password )
+ConnectionTestJob::ConnectionTestJob(const QString &url, const QString &user, const QString &password, QObject *parent)
+    : KJob(parent), mUrl(url), mUser(user), mPassword(password)
 {
 }
 
 void ConnectionTestJob::start()
 {
-  const QUrl url( mUrl + QString::fromLatin1( "/ajax/login?action=login&name=%1&password=%2" ).arg( mUser ).arg( mPassword ) );
+    const QUrl url(mUrl + QString::fromLatin1("/ajax/login?action=login&name=%1&password=%2").arg(mUser).arg(mPassword));
 
-  KJob *job = KIO::storedGet( url, KIO::Reload, KIO::HideProgressInfo );
-  connect(job, &KJob::result, this, &ConnectionTestJob::httpJobFinished);
+    KJob *job = KIO::storedGet(url, KIO::Reload, KIO::HideProgressInfo);
+    connect(job, &KJob::result, this, &ConnectionTestJob::httpJobFinished);
 }
 
-void ConnectionTestJob::httpJobFinished( KJob *job )
+void ConnectionTestJob::httpJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
+
+    KIO::StoredTransferJob *transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
+    Q_ASSERT(transferJob);
+
+    const QString data = QString::fromUtf8(transferJob->data());
+
+    // on success data contains something like: {"session":"e530578bca504aa89738fadde9e44b3d","random":"ac9090d2cc284fed926fa3c7e316c43b"}
+    // on failure data contains something like: {"category":1,"error_params":[],"error":"Invalid credentials.","error_id":"-1529642166-37","code":"LGI-0006"}
+    const int index = data.indexOf(QLatin1String("\"session\":\""));
+    if (index == -1) {   // error case
+        const int errorIndex = data.indexOf(QLatin1String("\"error\":\""));
+        const QString errorText = data.mid(errorIndex + 9, data.indexOf(QLatin1Char('"'), errorIndex + 10) - errorIndex - 9);
+
+        setError(UserDefinedError);
+        setErrorText(errorText);
+        emitResult();
+        return;
+    } else { // success case
+        const QString sessionId = data.mid(index + 11, 33);   // I assume here the session id is always 32  characters long :}
+
+        // logout correctly...
+        const QUrl url(mUrl + QString::fromLatin1("/ajax/login?action=logout&session=%1").arg(sessionId));
+        KIO::storedGet(url, KIO::Reload, KIO::HideProgressInfo);
+    }
+
     emitResult();
-    return;
-  }
-
-  KIO::StoredTransferJob *transferJob = qobject_cast<KIO::StoredTransferJob*>( job );
-  Q_ASSERT( transferJob );
-
-  const QString data = QString::fromUtf8( transferJob->data() );
-
-  // on success data contains something like: {"session":"e530578bca504aa89738fadde9e44b3d","random":"ac9090d2cc284fed926fa3c7e316c43b"}
-  // on failure data contains something like: {"category":1,"error_params":[],"error":"Invalid credentials.","error_id":"-1529642166-37","code":"LGI-0006"}
-  const int index = data.indexOf( QLatin1String( "\"session\":\"" ) );
-  if ( index == -1 ) { // error case
-    const int errorIndex = data.indexOf( QLatin1String( "\"error\":\"" ) );
-    const QString errorText = data.mid( errorIndex + 9, data.indexOf( QLatin1Char( '"' ), errorIndex + 10 ) - errorIndex - 9 );
-
-    setError( UserDefinedError );
-    setErrorText( errorText );
-    emitResult();
-    return;
-  } else { // success case
-    const QString sessionId = data.mid( index + 11, 33 ); // I assume here the session id is always 32  characters long :}
-
-    // logout correctly...
-    const QUrl url( mUrl + QString::fromLatin1( "/ajax/login?action=logout&session=%1" ).arg( sessionId ) );
-    KIO::storedGet( url, KIO::Reload, KIO::HideProgressInfo );
-  }
-
-  emitResult();
 }
 

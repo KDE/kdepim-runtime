@@ -25,27 +25,28 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
-namespace OXA {
+namespace OXA
+{
 
 class User
 {
-  public:
+public:
     typedef QList<User> List;
 
     User();
 
     bool isValid() const;
 
-    void setUid( qlonglong uid );
+    void setUid(qlonglong uid);
     qlonglong uid() const;
 
-    void setEmail( const QString &email );
+    void setEmail(const QString &email);
     QString email() const;
 
-    void setName( const QString &name );
+    void setName(const QString &name);
     QString name() const;
 
-  private:
+private:
     qlonglong mUid;
     QString mEmail;
     QString mName;

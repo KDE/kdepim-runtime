@@ -19,16 +19,15 @@
 #define KALARMRESOURCEFACTORY_H
 
 #include "kalarmresource.h"
-#include <agentfactory.h> 
- 
+#include <agentfactory.h>
+
 class KalarmResourceFactory : public Akonadi::AgentFactory<KAlarmResource>
 {
-        Q_OBJECT
-        Q_PLUGIN_METADATA(IID "org.kde.akonadi.KalarmResource");
-    public: 
-        explicit KalarmResourceFactory(QObject* parent = 0);
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.KalarmResource");
+public:
+    explicit KalarmResourceFactory(QObject *parent = 0);
 };
 
 #endif
 
-// vim: et sw=4:

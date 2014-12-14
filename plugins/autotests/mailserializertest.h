@@ -24,8 +24,8 @@
 
 class MailSerializerTest : public QObject
 {
-  Q_OBJECT
-  private slots:
+    Q_OBJECT
+private slots:
     void testEnvelopeDeserialize();
     void testEnvelopeDeserializeWithReferencesHeader();
     void testEnvelopeSerialize();
@@ -33,6 +33,5 @@ class MailSerializerTest : public QObject
     void testHeaderFetch();
     void testMultiDeserialize();
 };
-
 
 #endif

@@ -32,154 +32,158 @@
 using namespace Akonadi;
 using namespace Akonadi_VCard_Resource;
 
-VCardResource::VCardResource( const QString &id )
-  : SingleFileResource<Settings>( id )
+VCardResource::VCardResource(const QString &id)
+    : SingleFileResource<Settings>(id)
 {
-  setSupportedMimetypes( QStringList() << KContacts::Addressee::mimeType(), QLatin1String("office-address-book") );
+    setSupportedMimetypes(QStringList() << KContacts::Addressee::mimeType(), QLatin1String("office-address-book"));
 
-  new VCardSettingsAdaptor( mSettings );
-  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
-                                                         mSettings, QDBusConnection::ExportAdaptors );
+    new VCardSettingsAdaptor(mSettings);
+    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+            mSettings, QDBusConnection::ExportAdaptors);
 }
 
 VCardResource::~VCardResource()
 {
-  mAddressees.clear();
+    mAddressees.clear();
 }
 
-bool VCardResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool VCardResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-  Q_UNUSED( parts );
-  const QString rid = item.remoteId();
-  if ( !mAddressees.contains( rid ) ) {
-    emit error( i18n( "Contact with uid '%1' not found." ,rid ) );
-    return false;
-  }
-  Item i( item );
-  i.setPayload<KContacts::Addressee>( mAddressees.value( rid ) );
-  itemRetrieved( i );
-  return true;
+    Q_UNUSED(parts);
+    const QString rid = item.remoteId();
+    if (!mAddressees.contains(rid)) {
+        emit error(i18n("Contact with uid '%1' not found." , rid));
+        return false;
+    }
+    Item i(item);
+    i.setPayload<KContacts::Addressee>(mAddressees.value(rid));
+    itemRetrieved(i);
+    return true;
 }
 
 void VCardResource::aboutToQuit()
 {
-  if ( !mSettings->readOnly() )
-    writeFile();
-  mSettings->save();
+    if (!mSettings->readOnly()) {
+        writeFile();
+    }
+    mSettings->save();
 }
 
-void VCardResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
+void VCardResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
 {
-  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("text-directory") ) );
-  dlg->setFilter( QLatin1String("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File" ) );
-  dlg->setWindowTitle( i18n("Select Address Book") );
+    dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("text-directory")));
+    dlg->setFilter(QLatin1String("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File"));
+    dlg->setWindowTitle(i18n("Select Address Book"));
 }
 
-void VCardResource::itemAdded( const Akonadi::Item &item, const Akonadi::Collection& )
+void VCardResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)
 {
-  KContacts::Addressee addressee;
-  if ( item.hasPayload<KContacts::Addressee>() )
-    addressee  = item.payload<KContacts::Addressee>();
+    KContacts::Addressee addressee;
+    if (item.hasPayload<KContacts::Addressee>()) {
+        addressee  = item.payload<KContacts::Addressee>();
+    }
 
-  if ( !addressee.isEmpty() ) {
-    mAddressees.insert( addressee.uid(), addressee );
+    if (!addressee.isEmpty()) {
+        mAddressees.insert(addressee.uid(), addressee);
 
-    Item i( item );
-    i.setRemoteId( addressee.uid() );
-    changeCommitted( i );
+        Item i(item);
+        i.setRemoteId(addressee.uid());
+        changeCommitted(i);
+
+        scheduleWrite();
+    } else {
+        changeProcessed();
+    }
+}
+
+void VCardResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
+{
+    KContacts::Addressee addressee;
+    if (item.hasPayload<KContacts::Addressee>()) {
+        addressee  = item.payload<KContacts::Addressee>();
+    }
+
+    if (!addressee.isEmpty()) {
+        mAddressees.insert(addressee.uid(), addressee);
+
+        Item i(item);
+        i.setRemoteId(addressee.uid());
+        changeCommitted(i);
+
+        scheduleWrite();
+    } else {
+        changeProcessed();
+    }
+}
+
+void VCardResource::itemRemoved(const Akonadi::Item &item)
+{
+    if (mAddressees.contains(item.remoteId())) {
+        mAddressees.remove(item.remoteId());
+    }
 
     scheduleWrite();
-  } else {
+
     changeProcessed();
-  }
 }
 
-void VCardResource::itemChanged( const Akonadi::Item &item, const QSet<QByteArray>& )
+void VCardResource::retrieveItems(const Akonadi::Collection &col)
 {
-  KContacts::Addressee addressee;
-  if ( item.hasPayload<KContacts::Addressee>() )
-    addressee  = item.payload<KContacts::Addressee>();
+    // VCard does not support folders so we can safely ignore the collection
+    Q_UNUSED(col);
 
-  if ( !addressee.isEmpty() ) {
-    mAddressees.insert( addressee.uid(), addressee );
+    Item::List items;
 
-    Item i( item );
-    i.setRemoteId( addressee.uid() );
-    changeCommitted( i );
+    // FIXME: Check if the KIO::Job is done and was successful, if so send the
+    // items, otherwise set a bool and in the result slot of the job send the
+    // items if the bool is set.
 
-    scheduleWrite();
-  } else {
-    changeProcessed();
-  }
+    foreach (const KContacts::Addressee &addressee, mAddressees) {
+        Item item;
+        item.setRemoteId(addressee.uid());
+        item.setMimeType(KContacts::Addressee::mimeType());
+        item.setPayload(addressee);
+        items.append(item);
+    }
+
+    itemsRetrieved(items);
 }
 
-void VCardResource::itemRemoved(const Akonadi::Item & item)
+bool VCardResource::readFromFile(const QString &fileName)
 {
-  if ( mAddressees.contains( item.remoteId() ) )
-    mAddressees.remove( item.remoteId() );
+    mAddressees.clear();
 
-  scheduleWrite();
+    QFile file(QUrl::fromLocalFile(fileName).toLocalFile());
+    if (!file.open(QIODevice::ReadOnly)) {
+        emit status(Broken, i18n("Unable to open vCard file '%1'.", fileName));
+        return false;
+    }
 
-  changeProcessed();
+    const QByteArray data = file.readAll();
+    file.close();
+
+    const KContacts::Addressee::List list = mConverter.parseVCards(data);
+    const int numberOfElementInList = list.count();
+    for (int i = 0; i < numberOfElementInList; ++i) {
+        mAddressees.insert(list[ i ].uid(), list[ i ]);
+    }
+
+    return true;
 }
 
-void VCardResource::retrieveItems( const Akonadi::Collection & col )
+bool VCardResource::writeToFile(const QString &fileName)
 {
-  // VCard does not support folders so we can safely ignore the collection
-  Q_UNUSED( col );
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        emit status(Broken, i18n("Unable to open vCard file '%1'.", fileName));
+        return false;
+    }
 
-  Item::List items;
+    const QByteArray data = mConverter.createVCards(mAddressees.values());
 
-  // FIXME: Check if the KIO::Job is done and was successful, if so send the
-  // items, otherwise set a bool and in the result slot of the job send the
-  // items if the bool is set.
+    file.write(data);
+    file.close();
 
-  foreach ( const KContacts::Addressee &addressee, mAddressees ) {
-    Item item;
-    item.setRemoteId( addressee.uid() );
-    item.setMimeType( KContacts::Addressee::mimeType() );
-    item.setPayload( addressee );
-    items.append( item );
-  }
-
-  itemsRetrieved( items );
-}
-
-bool VCardResource::readFromFile( const QString &fileName )
-{
-  mAddressees.clear();
-
-  QFile file( QUrl::fromLocalFile( fileName ).toLocalFile() );
-  if ( !file.open( QIODevice::ReadOnly ) ) {
-    emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
-    return false;
-  }
-
-  const QByteArray data = file.readAll();
-  file.close();
-
-  const KContacts::Addressee::List list = mConverter.parseVCards( data );
-  const int numberOfElementInList = list.count();
-  for ( int i = 0; i < numberOfElementInList; ++i ) {
-    mAddressees.insert( list[ i ].uid(), list[ i ] );
-  }
-
-  return true;
-}
-
-bool VCardResource::writeToFile( const QString &fileName )
-{
-  QFile file( fileName );
-  if ( !file.open( QIODevice::WriteOnly ) ) {
-    emit status( Broken, i18n( "Unable to open vCard file '%1'.", fileName ) );
-    return false;
-  }
-
-  const QByteArray data = mConverter.createVCards( mAddressees.values() );
-
-  file.write( data );
-  file.close();
-
-  return true;
+    return true;
 }
 

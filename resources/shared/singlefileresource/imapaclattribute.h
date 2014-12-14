@@ -27,23 +27,24 @@
 
 #include <kimap/acl.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class AKONADI_SINGLEFILERESOURCE_EXPORT ImapAclAttribute : public Akonadi::Attribute
 {
-  public:
+public:
     ImapAclAttribute();
-    ImapAclAttribute( const QMap<QByteArray, KIMAP::Acl::Rights> &rights,
-                      const QMap<QByteArray, KIMAP::Acl::Rights> &oldRights );
-    void setRights( const QMap<QByteArray, KIMAP::Acl::Rights> &rights );
+    ImapAclAttribute(const QMap<QByteArray, KIMAP::Acl::Rights> &rights,
+                     const QMap<QByteArray, KIMAP::Acl::Rights> &oldRights);
+    void setRights(const QMap<QByteArray, KIMAP::Acl::Rights> &rights);
     QMap<QByteArray, KIMAP::Acl::Rights> rights() const;
     QMap<QByteArray, KIMAP::Acl::Rights> oldRights() const;
     QByteArray type() const Q_DECL_OVERRIDE;
     Attribute *clone() const Q_DECL_OVERRIDE;
     QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
-  private:
+private:
     QMap<QByteArray, KIMAP::Acl::Rights> mRights;
     QMap<QByteArray, KIMAP::Acl::Rights> mOldRights;
 };

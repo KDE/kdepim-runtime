@@ -26,29 +26,28 @@
 
 namespace Akonadi
 {
-  class CollectionFetchScope;
+class CollectionFetchScope;
 
 namespace FileStore
 {
-  class AbstractJobSession;
+class AbstractJobSession;
 
 /**
  */
 class AKONADI_FILESTORE_EXPORT CollectionFetchJob : public Job
 {
-  friend class AbstractJobSession;
+    friend class AbstractJobSession;
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    enum Type
-    {
-      Base,
-      FirstLevel,
-      Recursive
+public:
+    enum Type {
+        Base,
+        FirstLevel,
+        Recursive
     };
 
-    explicit CollectionFetchJob( const Collection &collection, Type type = FirstLevel, AbstractJobSession *session = 0 );
+    explicit CollectionFetchJob(const Collection &collection, Type type = FirstLevel, AbstractJobSession *session = 0);
 
     virtual ~CollectionFetchJob();
 
@@ -56,21 +55,21 @@ class AKONADI_FILESTORE_EXPORT CollectionFetchJob : public Job
 
     Collection collection() const;
 
-    void setFetchScope( const CollectionFetchScope &fetchScope );
+    void setFetchScope(const CollectionFetchScope &fetchScope);
 
     CollectionFetchScope &fetchScope();
 
     Collection::List collections() const;
 
-    virtual bool accept( Visitor *visitor );
+    virtual bool accept(Visitor *visitor);
 
-  Q_SIGNALS:
-    void collectionsReceived( const Akonadi::Collection::List &items );
+Q_SIGNALS:
+    void collectionsReceived(const Akonadi::Collection::List &items);
 
-  private:
-    void handleCollectionsReceived( const Akonadi::Collection::List &collections );
+private:
+    void handleCollectionsReceived(const Akonadi::Collection::List &collections);
 
-  private:
+private:
     class Private;
     Private *const d;
 };
@@ -80,4 +79,3 @@ class AKONADI_FILESTORE_EXPORT CollectionFetchJob : public Job
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

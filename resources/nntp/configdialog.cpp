@@ -25,34 +25,35 @@
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 
-ConfigDialog::ConfigDialog(QWidget * parent) :
-    QDialog( parent )
+ConfigDialog::ConfigDialog(QWidget *parent) :
+    QDialog(parent)
 {
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  ui.setupUi(mainWidget);
-  mManager = new KConfigDialogManager( this, Settings::self() );
-  mManager->updateWidgets();
-  ui.password->setText( Settings::self()->password() );
-  ui.kcfg_MaxDownload->setSuffix( ki18np( " article", " articles" ) );
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    ui.setupUi(mainWidget);
+    mManager = new KConfigDialogManager(this, Settings::self());
+    mManager->updateWidgets();
+    ui.password->setText(Settings::self()->password());
+    ui.kcfg_MaxDownload->setSuffix(ki18np(" article", " articles"));
 
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-  okButton->setDefault(true);
-  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-  mainLayout->addWidget(buttonBox);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setDefault(true);
+    okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    mainLayout->addWidget(buttonBox);
 
-  connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
+    connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
 }
 
 void ConfigDialog::save()
 {
-  if ( ui.kcfg_StorePassword->isChecked() )
-    Settings::self()->setPassword( ui.password->text() );
-  mManager->updateSettings();
+    if (ui.kcfg_StorePassword->isChecked()) {
+        Settings::self()->setPassword(ui.password->text());
+    }
+    mManager->updateSettings();
 }
 

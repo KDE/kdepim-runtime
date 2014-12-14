@@ -21,8 +21,9 @@
 #define MIXEDTREECONVERTER_H
 #include <qobject.h>
 
-namespace KPIM {
-  class Maildir;
+namespace KPIM
+{
+class Maildir;
 }
 
 /**
@@ -30,18 +31,18 @@ namespace KPIM {
 */
 class MixedTreeConverter : public QObject
 {
-  Q_OBJECT
-  public:
-    explicit MixedTreeConverter( QObject *parent = 0 );
+    Q_OBJECT
+public:
+    explicit MixedTreeConverter(QObject *parent = 0);
 
-    void convert( const QString &basePath );
+    void convert(const QString &basePath);
 
-  signals:
-    void conversionDone( const QString &error );
+signals:
+    void conversionDone(const QString &error);
 
-  private:
-    void convert( const KPIM::Maildir &md );
-    void convertMbox( const QString &path );
+private:
+    void convert(const KPIM::Maildir &md);
+    void convertMbox(const QString &path);
 };
 
 #endif

@@ -24,90 +24,92 @@
 #include <kio/job.h>
 #include <KLocalizedString>
 
-DavItemModifyJob::DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : DavJobBase( parent ), mUrl( url ), mItem( item )
+DavItemModifyJob::DavItemModifyJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent)
+    : DavJobBase(parent), mUrl(url), mItem(item)
 {
 }
 
 void DavItemModifyJob::start()
 {
-  QString headers = QLatin1String("Content-Type: ");
-  headers += mItem.contentType();
-  headers += QLatin1String("\r\n");
-  headers += QLatin1String("If-Match: ") + mItem.etag();
+    QString headers = QLatin1String("Content-Type: ");
+    headers += mItem.contentType();
+    headers += QLatin1String("\r\n");
+    headers += QLatin1String("If-Match: ") + mItem.etag();
 
-  KIO::StoredTransferJob *job = KIO::storedPut( mItem.data(), mUrl.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags );
-  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-  job->addMetaData( QLatin1String("customHTTPHeader"), headers );
-  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
-  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
+    KIO::StoredTransferJob *job = KIO::storedPut(mItem.data(), mUrl.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags);
+    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    job->addMetaData(QLatin1String("customHTTPHeader"), headers);
+    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
 
-  connect(job, &KIO::StoredTransferJob::result, this, &DavItemModifyJob::davJobFinished);
+    connect(job, &KIO::StoredTransferJob::result, this, &DavItemModifyJob::davJobFinished);
 }
 
 DavItem DavItemModifyJob::item() const
 {
-  return mItem;
+    return mItem;
 }
 
-void DavItemModifyJob::davJobFinished( KJob *job )
+void DavItemModifyJob::davJobFinished(KJob *job)
 {
-  KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
+    KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
 
-  if ( storedJob->error() ) {
-    const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                              0 :
-                              storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
+    if (storedJob->error()) {
+        const int responseCode = storedJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+                                 0 :
+                                 storedJob->queryMetaData(QLatin1String("responsecode")).toInt();
 
-    QString err;
-    if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
-      err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
-    else
-      err = storedJob->errorText();
+        QString err;
+        if (storedJob->error() != KIO::ERR_SLAVE_DEFINED) {
+            err = KIO::buildErrorString(storedJob->error(), storedJob->errorText());
+        } else {
+            err = storedJob->errorText();
+        }
 
-    setLatestResponseCode( responseCode );
-    setError( UserDefinedError + responseCode );
-    setErrorText( i18n( "There was a problem with the request. The item was not modified on the server.\n"
-                        "%1 (%2).", err, responseCode ) );
+        setLatestResponseCode(responseCode);
+        setError(UserDefinedError + responseCode);
+        setErrorText(i18n("There was a problem with the request. The item was not modified on the server.\n"
+                          "%1 (%2).", err, responseCode));
 
+        emitResult();
+        return;
+    }
+
+    // The 'Location:' HTTP header is used to indicate the new URL
+    const QStringList allHeaders = storedJob->queryMetaData(QLatin1String("HTTP-Headers")).split(QLatin1Char('\n'));
+    QString location;
+    foreach (const QString &header, allHeaders) {
+        if (header.startsWith(QLatin1String("location:"), Qt::CaseInsensitive)) {
+            location = header.section(QLatin1Char(' '), 1);
+        }
+    }
+
+    KUrl url;
+    if (location.isEmpty()) {
+        url = storedJob->url();
+    } else if (location.startsWith(QLatin1Char('/'))) {
+        url = storedJob->url();
+        url.setEncodedPath(location.toLatin1());
+    } else {
+        url = location;
+    }
+
+    url.setUser(QString());
+    mItem.setUrl(url.prettyUrl());
+
+    DavItemFetchJob *fetchJob = new DavItemFetchJob(mUrl, mItem);
+    connect(fetchJob, &DavItemFetchJob::result, this, &DavItemModifyJob::itemRefreshed);
+    fetchJob->start();
+}
+
+void DavItemModifyJob::itemRefreshed(KJob *job)
+{
+    if (!job->error()) {
+        DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob *>(job);
+        mItem.setEtag(fetchJob->item().etag());
+    } else {
+        mItem.setEtag(QString());
+    }
     emitResult();
-    return;
-  }
-
-  // The 'Location:' HTTP header is used to indicate the new URL
-  const QStringList allHeaders = storedJob->queryMetaData( QLatin1String("HTTP-Headers") ).split( QLatin1Char('\n') );
-  QString location;
-  foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( QLatin1String( "location:" ), Qt::CaseInsensitive  ) )
-      location = header.section( QLatin1Char(' '), 1 );
-  }
-
-  KUrl url;
-  if ( location.isEmpty() )
-    url = storedJob->url();
-  else if ( location.startsWith( QLatin1Char('/') ) ) {
-    url = storedJob->url();
-    url.setEncodedPath( location.toLatin1() );
-  } else
-    url = location;
-
-  url.setUser( QString() );
-  mItem.setUrl( url.prettyUrl() );
-
-  DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
-  connect(fetchJob, &DavItemFetchJob::result, this, &DavItemModifyJob::itemRefreshed);
-  fetchJob->start();
-}
-
-void DavItemModifyJob::itemRefreshed( KJob *job )
-{
-  if ( !job->error() ) {
-    DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
-    mItem.setEtag( fetchJob->item().etag() );
-  }
-  else {
-    mItem.setEtag( QString() );
-  }
-  emitResult();
 }
 

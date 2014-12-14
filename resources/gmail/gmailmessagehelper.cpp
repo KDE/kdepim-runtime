@@ -28,14 +28,13 @@ GmailMessageHelper::GmailMessageHelper(const Akonadi::Collection &collection, Re
 
 }
 
-
 Akonadi::Item GmailMessageHelper::createItemFromMessage(KMime::Message::Ptr message,
-                                                        const qint64 uid,
-                                                        const qint64 size,
-                                                        const QList<KIMAP::MessageAttribute> &attrs,
-                                                        const QList<QByteArray> &flags,
-                                                        const KIMAP::FetchJob::FetchScope &scope,
-                                                        bool &ok) const
+        const qint64 uid,
+        const qint64 size,
+        const QList<KIMAP::MessageAttribute> &attrs,
+        const QList<QByteArray> &flags,
+        const KIMAP::FetchJob::FetchScope &scope,
+        bool &ok) const
 {
     Akonadi::Item item = MessageHelper::createItemFromMessage(message, uid, size, attrs, flags, scope, ok);
     if (!ok) {
@@ -45,59 +44,59 @@ Akonadi::Item GmailMessageHelper::createItemFromMessage(KMime::Message::Ptr mess
 
     Q_FOREACH (const KIMAP::MessageAttribute &attr, attrs) {
         if (attr.first == "X-GM-LABELS") {
-          if (mTask) {
-              QVector<QByteArray> labels;
+            if (mTask) {
+                QVector<QByteArray> labels;
 
-              QByteArray labelStr = attr.second.toByteArray();
-              int lastPos = 0;
-              bool isQuoted = false;
-              int i = 0;
-              while (i < labelStr.size()) {
-                  if (labelStr[i] == '(') {
-                      lastPos = i;
-                      i++;
-                      continue;
-                  }
+                QByteArray labelStr = attr.second.toByteArray();
+                int lastPos = 0;
+                bool isQuoted = false;
+                int i = 0;
+                while (i < labelStr.size()) {
+                    if (labelStr[i] == '(') {
+                        lastPos = i;
+                        i++;
+                        continue;
+                    }
 
-                  if (labelStr[i] == '\"') {
-                      lastPos = i;
-                      isQuoted = true;
-                      i++;
-                  }
+                    if (labelStr[i] == '\"') {
+                        lastPos = i;
+                        isQuoted = true;
+                        i++;
+                    }
 
-                  if (isQuoted) {
-                      while (labelStr[i] != '\"') {
-                          if (i == labelStr.size()) {
-                              // huh? Broken string?
-                              break;
-                          }
-                          i++;
-                      }
-                      QByteArray mid = labelStr.mid(lastPos + 1, i - lastPos - 1).trimmed();
-                      if (!mid.isEmpty() && mid != "\\\\All") {
-                          labels.append(mid.replace("\\\\", "\\"));
-                      }
-                      isQuoted = false;
-                      lastPos = i;
-                  } else {
-                      if (labelStr[i] == ' ' || labelStr[i] == ')') {
-                          QByteArray mid = labelStr.mid(lastPos + 1, i - lastPos - 1).trimmed();
-                          if (!mid.isEmpty() && mid != "\\\\All") {
-                              labels.append(mid.replace("\\\\", "\\"));
-                          }
-                          lastPos = i;
-                      }
-                  }
-                  ++i;
-               }
-               if (!labels.isEmpty()) {
-                  GmailRetrieveItemsTask *task = qobject_cast<GmailRetrieveItemsTask*>(mTask);
-                  Q_ASSERT(task);
-                  task->linkItem(item.remoteId(), labels);
-               }
-          }
+                    if (isQuoted) {
+                        while (labelStr[i] != '\"') {
+                            if (i == labelStr.size()) {
+                                // huh? Broken string?
+                                break;
+                            }
+                            i++;
+                        }
+                        QByteArray mid = labelStr.mid(lastPos + 1, i - lastPos - 1).trimmed();
+                        if (!mid.isEmpty() && mid != "\\\\All") {
+                            labels.append(mid.replace("\\\\", "\\"));
+                        }
+                        isQuoted = false;
+                        lastPos = i;
+                    } else {
+                        if (labelStr[i] == ' ' || labelStr[i] == ')') {
+                            QByteArray mid = labelStr.mid(lastPos + 1, i - lastPos - 1).trimmed();
+                            if (!mid.isEmpty() && mid != "\\\\All") {
+                                labels.append(mid.replace("\\\\", "\\"));
+                            }
+                            lastPos = i;
+                        }
+                    }
+                    ++i;
+                }
+                if (!labels.isEmpty()) {
+                    GmailRetrieveItemsTask *task = qobject_cast<GmailRetrieveItemsTask *>(mTask);
+                    Q_ASSERT(task);
+                    task->linkItem(item.remoteId(), labels);
+                }
+            }
         } else if (attr.first == "X-GM-THRID") {
-           // TODO: Store thread information
+            // TODO: Store thread information
         } else if (attr.first == "X-GM-MSGID") {
             item.setGid(attr.second.toString());
         }

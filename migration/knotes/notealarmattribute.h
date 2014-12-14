@@ -30,11 +30,11 @@ public:
 
     QByteArray type() const;
 
-    NoteAlarmAttribute* clone() const;
+    NoteAlarmAttribute *clone() const;
 
     QByteArray serialized() const;
 
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
 
     void setDateTime(const QDateTime &dateTime);
     QDateTime dateTime() const;

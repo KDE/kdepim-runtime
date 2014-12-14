@@ -33,40 +33,41 @@
 using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
 
-SettingsDialog::SettingsDialog( ContactsResourceSettings *settings, WId windowId )
-  : QDialog(),
-  mSettings( settings )
+SettingsDialog::SettingsDialog(ContactsResourceSettings *settings, WId windowId)
+    : QDialog(),
+      mSettings(settings)
 {
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  ui.setupUi(mainWidget);
-  setWindowIcon( QIcon::fromTheme( QLatin1String("text-directory") ) );
-  ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    ui.setupUi(mainWidget);
+    setWindowIcon(QIcon::fromTheme(QLatin1String("text-directory")));
+    ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
 
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-  mOkButton->setDefault(true);
-  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::accept);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::reject);
-  mainLayout->addWidget(buttonBox);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::reject);
+    mainLayout->addWidget(buttonBox);
 
-  if ( windowId )
-    KWindowSystem::setMainWindow( this, windowId );
+    if (windowId) {
+        KWindowSystem::setMainWindow(this, windowId);
+    }
 
-  connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
+    connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
 
-  connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
-  connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
+    connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
+    connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
-  QTimer::singleShot( 0, this, SLOT(validate()) );
+    QTimer::singleShot(0, this, SLOT(validate()));
 
-  ui.kcfg_Path->setUrl( QUrl::fromLocalFile( mSettings->path() ) );
-  mManager = new KConfigDialogManager( this, mSettings );
-  mManager->updateWidgets();
-  readConfig();
+    ui.kcfg_Path->setUrl(QUrl::fromLocalFile(mSettings->path()));
+    mManager = new KConfigDialogManager(this, mSettings);
+    mManager->updateWidgets();
+    readConfig();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -76,41 +77,41 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::save()
 {
-  mManager->updateSettings();
-  mSettings->setPath( ui.kcfg_Path->url().toLocalFile() );
-  mSettings->save();
+    mManager->updateSettings();
+    mSettings->setPath(ui.kcfg_Path->url().toLocalFile());
+    mSettings->save();
 }
 
 void SettingsDialog::validate()
 {
-  const QUrl currentUrl = ui.kcfg_Path->url();
-  if ( currentUrl.isEmpty() ) {
-    mOkButton->setEnabled(false);
-    return;
-  }
+    const QUrl currentUrl = ui.kcfg_Path->url();
+    if (currentUrl.isEmpty()) {
+        mOkButton->setEnabled(false);
+        return;
+    }
 
-  const QFileInfo file( currentUrl.toLocalFile() );
-  if ( file.exists() && !file.isWritable() ) {
-    ui.kcfg_ReadOnly->setEnabled( false );
-    ui.kcfg_ReadOnly->setChecked( true );
-  } else {
-    ui.kcfg_ReadOnly->setEnabled( true );
-  }
-  mOkButton->setEnabled(true);
+    const QFileInfo file(currentUrl.toLocalFile());
+    if (file.exists() && !file.isWritable()) {
+        ui.kcfg_ReadOnly->setEnabled(false);
+        ui.kcfg_ReadOnly->setChecked(true);
+    } else {
+        ui.kcfg_ReadOnly->setEnabled(true);
+    }
+    mOkButton->setEnabled(true);
 }
 
 void SettingsDialog::readConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), "SettingsDialog" );
-    const QSize size = group.readEntry( "Size", QSize(600, 400) );
-    if ( size.isValid() ) {
-        resize( size );
+    KConfigGroup group(KSharedConfig::openConfig(), "SettingsDialog");
+    const QSize size = group.readEntry("Size", QSize(600, 400));
+    if (size.isValid()) {
+        resize(size);
     }
 }
 
 void SettingsDialog::writeConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), "SettingsDialog" );
-    group.writeEntry( "Size", size() );
+    KConfigGroup group(KSharedConfig::openConfig(), "SettingsDialog");
+    group.writeEntry("Size", size());
     group.sync();
 }

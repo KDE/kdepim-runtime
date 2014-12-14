@@ -26,7 +26,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that modifies a folder on the OX server.
@@ -35,9 +36,9 @@ namespace OXA {
  */
 class FolderModifyJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new folder modify job.
      *
@@ -46,7 +47,7 @@ class FolderModifyJob : public KJob
      *
      * @note The folder needs at least the objectId and lastModified property set.
      */
-    explicit FolderModifyJob( const Folder &folder, QObject *parent = Q_NULLPTR );
+    explicit FolderModifyJob(const Folder &folder, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -58,10 +59,10 @@ class FolderModifyJob : public KJob
      */
     Folder folder() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Folder mFolder;
 };
 

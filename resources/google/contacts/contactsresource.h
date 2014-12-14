@@ -34,44 +34,44 @@ class ContactsResource: public GoogleResource
 {
     Q_OBJECT
 
-  public:
-    explicit ContactsResource( const QString &id );
+public:
+    explicit ContactsResource(const QString &id);
 
     ~ContactsResource();
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     virtual void retrieveCollections();
 
-    virtual void retrieveItems( const Akonadi::Collection &collection );
-    virtual void retrieveContactsPhotos( const QVariant &argument );
+    virtual void retrieveItems(const Akonadi::Collection &collection);
+    virtual void retrieveContactsPhotos(const QVariant &argument);
 
-    virtual void itemRemoved( const Akonadi::Item &item );
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers );
-    virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                            const Akonadi::Collection &collectionDestination );
+    virtual void itemRemoved(const Akonadi::Item &item);
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers);
+    virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                           const Akonadi::Collection &collectionDestination);
 
-    virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
+    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
+    virtual void collectionChanged(const Akonadi::Collection &collection);
+    virtual void collectionRemoved(const Akonadi::Collection &collection);
 
-    virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemUnlinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    virtual void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection);
 
-    void slotItemsRetrieved( KGAPI2::Job *job );
-    void slotCollectionsRetrieved( KGAPI2::Job *job );
+    void slotItemsRetrieved(KGAPI2::Job *job);
+    void slotCollectionsRetrieved(KGAPI2::Job *job);
 
-    void slotUpdatePhotosItemsRetrieved( KJob *job );
-    void slotUpdatePhotoFinished( KGAPI2::Job *job, const KGAPI2::ContactPtr &contact );
+    void slotUpdatePhotosItemsRetrieved(KJob *job);
+    void slotUpdatePhotoFinished(KGAPI2::Job *job, const KGAPI2::ContactPtr &contact);
 
-    void slotCreateJobFinished( KGAPI2::Job *job );
+    void slotCreateJobFinished(KGAPI2::Job *job);
 
     virtual GoogleSettings *settings() const;
-    virtual int runConfigurationDialog( WId windowId );
+    virtual int runConfigurationDialog(WId windowId);
     virtual void updateResourceName();
     virtual QList< QUrl > scopes() const;
 
-  private:
+private:
 
     QMap<QString, Akonadi::Collection> m_collections;
     Akonadi::Collection m_rootCollection;

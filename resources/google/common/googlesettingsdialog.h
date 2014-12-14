@@ -42,32 +42,32 @@ class GoogleSettingsDialog : public QDialog
 {
     Q_OBJECT
 
-  public:
-    explicit GoogleSettingsDialog( GoogleAccountManager *accountManager, WId wId, GoogleResource *parent );
+public:
+    explicit GoogleSettingsDialog(GoogleAccountManager *accountManager, WId wId, GoogleResource *parent);
     virtual ~GoogleSettingsDialog();
 
-    GoogleAccountManager* accountManager() const;
+    GoogleAccountManager *accountManager() const;
     KGAPI2::AccountPtr currentAccount() const;
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void reloadAccounts();
 
-  Q_SIGNALS:
-    void currentAccountChanged( const QString &accountName );
+Q_SIGNALS:
+    void currentAccountChanged(const QString &accountName);
 
-  protected:
-    bool handleError( KGAPI2::Job *job );
+protected:
+    bool handleError(KGAPI2::Job *job);
     virtual void saveSettings() = 0;
     QVBoxLayout *mainLayout() const;
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void slotSaveSettings();
     void slotAddAccountClicked();
     void slotRemoveAccountClicked();
-    void slotAuthJobFinished( KGAPI2::Job *job );
-    void slotAccountAuthenticated( KGAPI2::Job *job );
+    void slotAuthJobFinished(KGAPI2::Job *job);
+    void slotAccountAuthenticated(KGAPI2::Job *job);
 
-  private:
+private:
     GoogleResource *m_parentResource;
     GoogleAccountManager *m_accountManager;
 

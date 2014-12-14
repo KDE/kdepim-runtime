@@ -30,21 +30,21 @@
  */
 class UpgradeJob : public Akonadi::Job
 {
-  Q_OBJECT
-  public:
-    explicit UpgradeJob( Kolab::Version targetVersion,
-                         const Akonadi::AgentInstance &instance,
-                         QObject *parent = 0 );
+    Q_OBJECT
+public:
+    explicit UpgradeJob(Kolab::Version targetVersion,
+                        const Akonadi::AgentInstance &instance,
+                        QObject *parent = 0);
 
-  protected:
+protected:
     void doStart();
 
-  private slots:
-    void collectionFetchResult( KJob *job );
-    void itemFetchResult( KJob *job );
-    void itemModifyResult( KJob *job );
+private slots:
+    void collectionFetchResult(KJob *job);
+    void itemFetchResult(KJob *job);
+    void itemModifyResult(KJob *job);
 
-  private:
+private:
     void checkResult();
     Akonadi::AgentInstance m_agentInstance;
     Kolab::Version m_targetVersion;

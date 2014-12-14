@@ -29,138 +29,138 @@
 
 using namespace Akonadi;
 
-KDEAccountsResource::KDEAccountsResource( const QString &id )
-  : SingleFileResource<Settings>( id )
+KDEAccountsResource::KDEAccountsResource(const QString &id)
+    : SingleFileResource<Settings>(id)
 {
-  setSupportedMimetypes( QStringList() << KContacts::Addressee::mimeType(), QLatin1String("kde") );
+    setSupportedMimetypes(QStringList() << KContacts::Addressee::mimeType(), QLatin1String("kde"));
 
-  setName( i18n( "KDE Accounts" ) );
+    setName(i18n("KDE Accounts"));
 
-  new SettingsAdaptor( mSettings );
-  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
-                                                         mSettings, QDBusConnection::ExportAdaptors );
+    new SettingsAdaptor(mSettings);
+    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+            mSettings, QDBusConnection::ExportAdaptors);
 }
 
 KDEAccountsResource::~KDEAccountsResource()
 {
-  mContacts.clear();
+    mContacts.clear();
 }
 
-bool KDEAccountsResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray>& )
+bool KDEAccountsResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-  const QString remoteId = item.remoteId();
-  if ( !mContacts.contains( remoteId ) ) {
-    cancelTask( i18n( "Contact with uid '%1' not found.", remoteId ) );
-    return false;
-  }
+    const QString remoteId = item.remoteId();
+    if (!mContacts.contains(remoteId)) {
+        cancelTask(i18n("Contact with uid '%1' not found.", remoteId));
+        return false;
+    }
 
-  Item newItem( item );
-  newItem.setPayload<KContacts::Addressee>( mContacts.value( remoteId ) );
-  itemRetrieved( newItem );
+    Item newItem(item);
+    newItem.setPayload<KContacts::Addressee>(mContacts.value(remoteId));
+    itemRetrieved(newItem);
 
-  return true;
+    return true;
 }
 
-void KDEAccountsResource::customizeConfigDialog( SingleFileResourceConfigDialog<Settings>* dlg )
+void KDEAccountsResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
 {
-  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("kde") ) );
-  dlg->setWindowTitle( i18n( "Select KDE Accounts File" ) );
+    dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("kde")));
+    dlg->setWindowTitle(i18n("Select KDE Accounts File"));
 }
 
-void KDEAccountsResource::configDialogAcceptedActions( SingleFileResourceConfigDialog<Settings>* )
+void KDEAccountsResource::configDialogAcceptedActions(SingleFileResourceConfigDialog<Settings> *)
 {
     // We can't hide the GUI element but we can enforce that the
     // resource is read-only
-    mSettings->setReadOnly( true );
+    mSettings->setReadOnly(true);
     mSettings->save();
 }
 
-void KDEAccountsResource::itemAdded( const Akonadi::Item&, const Akonadi::Collection& )
+void KDEAccountsResource::itemAdded(const Akonadi::Item &, const Akonadi::Collection &)
 {
-  cancelTask( i18n( "KDE Accounts file is read-only" ) );
+    cancelTask(i18n("KDE Accounts file is read-only"));
 }
 
-void KDEAccountsResource::itemChanged( const Akonadi::Item&, const QSet<QByteArray>& )
+void KDEAccountsResource::itemChanged(const Akonadi::Item &, const QSet<QByteArray> &)
 {
-  cancelTask( i18n( "KDE Accounts file is read-only" ) );
+    cancelTask(i18n("KDE Accounts file is read-only"));
 }
 
-void KDEAccountsResource::itemRemoved( const Akonadi::Item& )
+void KDEAccountsResource::itemRemoved(const Akonadi::Item &)
 {
-  cancelTask( i18n( "KDE Accounts file is read-only" ) );
+    cancelTask(i18n("KDE Accounts file is read-only"));
 }
 
-void KDEAccountsResource::retrieveItems( const Akonadi::Collection &collection )
+void KDEAccountsResource::retrieveItems(const Akonadi::Collection &collection)
 {
-  // KDEAccounts does not support folders so we can safely ignore the collection
-  Q_UNUSED( collection );
+    // KDEAccounts does not support folders so we can safely ignore the collection
+    Q_UNUSED(collection);
 
-  Akonadi::Item::List items;
-  ContactsMap::const_iterator end(mContacts.constEnd());
-  for ( ContactsMap::const_iterator it = mContacts.constBegin(); it != end; ++it ) {
-    Item item;
-    item.setRemoteId( it.key() );
-    item.setMimeType( KContacts::Addressee::mimeType() );
-    item.setPayload( it.value() );
-    items.append( item );
-  }
+    Akonadi::Item::List items;
+    ContactsMap::const_iterator end(mContacts.constEnd());
+    for (ContactsMap::const_iterator it = mContacts.constBegin(); it != end; ++it) {
+        Item item;
+        item.setRemoteId(it.key());
+        item.setMimeType(KContacts::Addressee::mimeType());
+        item.setPayload(it.value());
+        items.append(item);
+    }
 
-  itemsRetrieved( items );
+    itemsRetrieved(items);
 }
 
-bool KDEAccountsResource::readFromFile( const QString &fileName )
+bool KDEAccountsResource::readFromFile(const QString &fileName)
 {
-  mContacts.clear();
+    mContacts.clear();
 
-  QFile file( QUrl::fromLocalFile( fileName ).toLocalFile() );
-  if ( !file.open( QIODevice::ReadOnly ) ) {
-    emit status( Broken, i18n( "Unable to open KDE accounts file '%1'.", fileName ) );
+    QFile file(QUrl::fromLocalFile(fileName).toLocalFile());
+    if (!file.open(QIODevice::ReadOnly)) {
+        emit status(Broken, i18n("Unable to open KDE accounts file '%1'.", fileName));
+        return false;
+    }
+
+    while (!file.atEnd()) {
+        QString line = QString::fromUtf8(file.readLine());
+        // We have a line like the following now, which consists of a nickname,
+        // the full name and an email address
+        // 'tokoe     Tobias Koenig     tokoe@kde.org'
+
+        // remove all leading, trailing and duplicated white spaces
+        line = line.trimmed().simplified();
+        if (line.isEmpty()) {
+            continue;
+        }
+
+        QStringList parts = line.split(QLatin1Char(' '));
+        if (parts.count() < 3) {
+            qWarning() << "Failed to parse line \"" << line << "\", invalid format";
+            continue;
+        }
+
+        // The first part is the nick name, the last one the email address and
+        // everything else in between the full name
+        const QString nickName = parts.takeFirst();
+        const QString email = parts.takeLast();
+        const QString fullName = parts.join(QLatin1String(" "));
+
+        KContacts::Addressee contact;
+        contact.setNickName(nickName);
+        contact.setNameFromString(fullName);
+        contact.setOrganization(i18n("KDE Project"));
+        contact.insertCategory(i18n("KDE Developer"));
+        contact.insertEmail(email);
+
+        mContacts.insert(nickName, contact);
+    }
+
+    return true;
+}
+
+bool KDEAccountsResource::writeToFile(const QString &)
+{
+    Q_ASSERT(false);   // this method should never be called
+
     return false;
-  }
-
-  while ( !file.atEnd() ) {
-    QString line = QString::fromUtf8( file.readLine() );
-    // We have a line like the following now, which consists of a nickname,
-    // the full name and an email address
-    // 'tokoe     Tobias Koenig     tokoe@kde.org'
-
-    // remove all leading, trailing and duplicated white spaces
-    line = line.trimmed().simplified();
-    if (line.isEmpty()) {
-        continue;
-    }
-
-    QStringList parts = line.split( QLatin1Char( ' ' ) );
-    if ( parts.count() < 3 ) {
-        qWarning() << "Failed to parse line \"" << line << "\", invalid format";
-        continue;
-    }
-
-    // The first part is the nick name, the last one the email address and
-    // everything else in between the full name
-    const QString nickName = parts.takeFirst();
-    const QString email = parts.takeLast();
-    const QString fullName = parts.join( QLatin1String( " " ) );
-
-    KContacts::Addressee contact;
-    contact.setNickName( nickName  );
-    contact.setNameFromString( fullName );
-    contact.setOrganization( i18n( "KDE Project" ) );
-    contact.insertCategory( i18n( "KDE Developer" ) );
-    contact.insertEmail( email  );
-
-    mContacts.insert( nickName, contact );
-  }
-
-  return true;
 }
 
-bool KDEAccountsResource::writeToFile( const QString& )
-{
-  Q_ASSERT( false ); // this method should never be called
-
-  return false;
-}
-
-AKONADI_RESOURCE_MAIN( KDEAccountsResource )
+AKONADI_RESOURCE_MAIN(KDEAccountsResource)
 

@@ -34,20 +34,20 @@ class QTimer;
  */
 class FreeBusyUpdateHandler : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit FreeBusyUpdateHandler( QObject *parent = 0 );
+public:
+    explicit FreeBusyUpdateHandler(QObject *parent = 0);
     ~FreeBusyUpdateHandler();
 
-    void updateFolder( const QString &path, const QString &userName,
-                       const QString &password, const QString &host );
+    void updateFolder(const QString &path, const QString &userName,
+                      const QString &password, const QString &host);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void timeout();
-    void slotFreeBusyTriggerResult( KJob * );
+    void slotFreeBusyTriggerResult(KJob *);
 
-  private:
+private:
     QSet<KUrl> mUrls;
     QTimer *mTimer;
 };

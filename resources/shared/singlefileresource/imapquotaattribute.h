@@ -25,19 +25,20 @@
 
 #include <QtCore/QMap>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class AKONADI_SINGLEFILERESOURCE_EXPORT ImapQuotaAttribute : public Akonadi::Attribute
 {
-  public:
+public:
     ImapQuotaAttribute();
-    ImapQuotaAttribute( const QList<QByteArray> &roots,
-                        const QList< QMap<QByteArray, qint64> > &limits,
-                        const QList< QMap<QByteArray, qint64> > &usages );
+    ImapQuotaAttribute(const QList<QByteArray> &roots,
+                       const QList< QMap<QByteArray, qint64> > &limits,
+                       const QList< QMap<QByteArray, qint64> > &usages);
 
-    void setQuotas( const QList<QByteArray> &roots,
-                    const QList< QMap<QByteArray, qint64> > &limits,
-                    const QList< QMap<QByteArray, qint64> > &usages );
+    void setQuotas(const QList<QByteArray> &roots,
+                   const QList< QMap<QByteArray, qint64> > &limits,
+                   const QList< QMap<QByteArray, qint64> > &usages);
 
     QList<QByteArray> roots() const;
     QList< QMap<QByteArray, qint64> > limits() const;
@@ -46,9 +47,9 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT ImapQuotaAttribute : public Akonadi::Att
     QByteArray type() const Q_DECL_OVERRIDE;
     Attribute *clone() const Q_DECL_OVERRIDE;
     QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
-  private:
+private:
     QList<QByteArray> mRoots;
     QList< QMap<QByteArray, qint64> > mLimits;
     QList< QMap<QByteArray, qint64> > mUsages;

@@ -29,11 +29,11 @@ class RevertItemChangesJob: public KJob
 {
     Q_OBJECT
 public:
-    RevertItemChangesJob(const Akonadi::Item &kolabItem, HandlerManager &handlerManager, QObject* parent);
+    RevertItemChangesJob(const Akonadi::Item &kolabItem, HandlerManager &handlerManager, QObject *parent);
     virtual void start();
 
 private slots:
-    void onImapItemFetchDone(KJob* job);
+    void onImapItemFetchDone(KJob *job);
     void onItemModifyDone(KJob *job);
 
 private:

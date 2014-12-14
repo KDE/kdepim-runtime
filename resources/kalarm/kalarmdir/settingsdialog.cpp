@@ -35,20 +35,20 @@
 namespace Akonadi_KAlarm_Dir_Resource
 {
 
-SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
+SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     : QDialog(),
       mSettings(settings),
       mReadOnlySelected(false)
 {
-    QWidget* mainWidget = new QWidget(this);
-    QVBoxLayout* mainLayout = new QVBoxLayout;
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     mTypeSelector = new AlarmTypeWidget(ui.tab, ui.tabLayout);
     ui.ktabwidget->tabBar()->hide();
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -57,14 +57,16 @@ SettingsDialog::SettingsDialog(WId windowId, Settings* settings)
     mainLayout->addWidget(buttonBox);
     setWindowTitle(i18nc("@title", "Configure Calendar"));
 
-    if (windowId)
+    if (windowId) {
         KWindowSystem::setMainWindow(this, windowId);
+    }
 
     // Make directory path read-only if the resource already exists
     QUrl path = QUrl::fromLocalFile(mSettings->path());
     ui.kcfg_Path->setUrl(path);
-    if (!path.isEmpty())
+    if (!path.isEmpty()) {
         ui.kcfg_Path->setEnabled(false);
+    }
 
     mTypeSelector->setAlarmTypes(CalEvent::types(mSettings->alarmTypes()));
     mManager = new KConfigDialogManager(this, mSettings);
@@ -95,8 +97,7 @@ void SettingsDialog::textChanged()
 {
     bool oldReadOnly = ui.kcfg_ReadOnly->isEnabled();
     validate();
-    if (ui.kcfg_ReadOnly->isEnabled()  &&  !oldReadOnly)
-    {
+    if (ui.kcfg_ReadOnly->isEnabled()  &&  !oldReadOnly) {
         // If read-only was only set earlier by validating the input path,
         // and the path is now ok to be read-write, clear the read-only status.
         ui.kcfg_ReadOnly->setChecked(mReadOnlySelected);
@@ -107,34 +108,29 @@ void SettingsDialog::validate()
 {
     bool enableOk = false;
     // At least one alarm type must be selected
-    if (mTypeSelector->alarmTypes() != CalEvent::EMPTY)
-    {
+    if (mTypeSelector->alarmTypes() != CalEvent::EMPTY) {
         // The entered URL must be valid and local
         const QUrl currentUrl = ui.kcfg_Path->url();
-        if (currentUrl.isEmpty())
+        if (currentUrl.isEmpty()) {
             ui.kcfg_ReadOnly->setEnabled(true);
-        else if (currentUrl.isLocalFile())
-        {
+        } else if (currentUrl.isLocalFile()) {
             QFileInfo file(currentUrl.toLocalFile());
             // It must either be an existing directory, or in a writable
             // directory, and it must not be an existing file.
-            if (file.exists())
-            {
-                if (file.isDir())
-                    enableOk = true;   // it's an existing directory
-            }
-            else
-            {
+            if (file.exists()) {
+                if (file.isDir()) {
+                    enableOk = true;    // it's an existing directory
+                }
+            } else {
                 // Specified directory doesn't already exist.
                 // Find the first level of parent directory which exists,
                 // and check that it is writable.
-                for ( ; ; )
-                {
+                for (; ;) {
                     file.setFile(file.dir().absolutePath());   // get parent dir's file info
-                    if (file.exists())
-                    {
-                        if (file.isDir()  &&  file.isWritable())
-                            enableOk = true;   // it's possible to create the directory
+                    if (file.exists()) {
+                        if (file.isDir()  &&  file.isWritable()) {
+                            enableOk = true;    // it's possible to create the directory
+                        }
                         break;
                     }
                 }
@@ -146,4 +142,3 @@ void SettingsDialog::validate()
 
 }
 
-// vim: et sw=4:

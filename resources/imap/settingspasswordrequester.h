@@ -29,29 +29,29 @@ class ImapResourceBase;
 
 class SettingsPasswordRequester : public PasswordRequesterInterface
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit SettingsPasswordRequester( ImapResourceBase *resource, QObject *parent = Q_NULLPTR );
-  virtual ~SettingsPasswordRequester();
+    explicit SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent = Q_NULLPTR);
+    virtual ~SettingsPasswordRequester();
 
-  virtual void requestPassword( RequestType request = StandardRequest,
-                                const QString &serverError = QString() );
-  virtual void cancelPasswordRequests();
+    virtual void requestPassword(RequestType request = StandardRequest,
+                                 const QString &serverError = QString());
+    virtual void cancelPasswordRequests();
 
 private slots:
-  void askUserInput( const QString &serverError );
-  void onPasswordRequestCompleted( const QString &password, bool userRejected );
-  void onDialogDestroyed();
-  void slotCancelClicked();
-  void slotYesClicked();
-  void slotNoClicked();
-  void onSettingsDialogFinished(int result);
+    void askUserInput(const QString &serverError);
+    void onPasswordRequestCompleted(const QString &password, bool userRejected);
+    void onDialogDestroyed();
+    void slotCancelClicked();
+    void slotYesClicked();
+    void slotNoClicked();
+    void onSettingsDialogFinished(int result);
 
 private:
-  ImapResourceBase *m_resource;
-  QDialog *m_requestDialog;
-  QDialog *m_settingsDialog;
+    ImapResourceBase *m_resource;
+    QDialog *m_requestDialog;
+    QDialog *m_settingsDialog;
 };
 
 #endif

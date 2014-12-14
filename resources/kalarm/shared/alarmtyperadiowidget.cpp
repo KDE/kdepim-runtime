@@ -21,8 +21,7 @@
 
 #include "alarmtyperadiowidget.h"
 
-
-AlarmTypeRadioWidget::AlarmTypeRadioWidget(QWidget* parent)
+AlarmTypeRadioWidget::AlarmTypeRadioWidget(QWidget *parent)
     : Akonadi::SingleFileValidatingWidget(parent)
 {
     ui.setupUi(this);
@@ -38,30 +37,32 @@ AlarmTypeRadioWidget::AlarmTypeRadioWidget(QWidget* parent)
 
 void AlarmTypeRadioWidget::setAlarmType(CalEvent::Type type)
 {
-    switch (type)
-    {
-        case CalEvent::ACTIVE:
-            ui.activeRadio->setChecked(true);
-            break;
-        case CalEvent::ARCHIVED:
-            ui.archivedRadio->setChecked(true);
-            break;
-        case CalEvent::TEMPLATE:
-            ui.templateRadio->setChecked(true);
-            break;
-        default:
-            break;
+    switch (type) {
+    case CalEvent::ACTIVE:
+        ui.activeRadio->setChecked(true);
+        break;
+    case CalEvent::ARCHIVED:
+        ui.archivedRadio->setChecked(true);
+        break;
+    case CalEvent::TEMPLATE:
+        ui.templateRadio->setChecked(true);
+        break;
+    default:
+        break;
     }
 }
 
 CalEvent::Type AlarmTypeRadioWidget::alarmType() const
 {
-    if (ui.activeRadio->isChecked())
+    if (ui.activeRadio->isChecked()) {
         return CalEvent::ACTIVE;
-    if (ui.archivedRadio->isChecked())
+    }
+    if (ui.archivedRadio->isChecked()) {
         return CalEvent::ARCHIVED;
-    if (ui.templateRadio->isChecked())
+    }
+    if (ui.templateRadio->isChecked()) {
         return CalEvent::TEMPLATE;
+    }
     return CalEvent::EMPTY;
 }
 
@@ -70,4 +71,3 @@ bool AlarmTypeRadioWidget::validate() const
     return static_cast<bool>(mButtonGroup->checkedButton());
 }
 
-// vim: et sw=4:

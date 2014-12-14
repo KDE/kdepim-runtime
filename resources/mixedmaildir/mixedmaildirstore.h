@@ -25,30 +25,29 @@
 
 class MixedMaildirStore : public Akonadi::FileStore::AbstractLocalStore
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     MixedMaildirStore();
 
     ~MixedMaildirStore();
 
-  protected:
-    void setTopLevelCollection( const Akonadi::Collection &collection );
-    void processJob( Akonadi::FileStore::Job *job );
+protected:
+    void setTopLevelCollection(const Akonadi::Collection &collection);
+    void processJob(Akonadi::FileStore::Job *job);
 
-    void checkCollectionMove( Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const;
+    void checkCollectionMove(Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const;
 
-    void checkItemCreate( Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText ) const;
+    void checkItemCreate(Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const;
 
-    void checkItemModify( Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText ) const;
+    void checkItemModify(Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText) const;
 
-    void checkItemFetch( Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText ) const;
+    void checkItemFetch(Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const;
 
-  private:
+private:
     class Private;
     Private *const d;
 };
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

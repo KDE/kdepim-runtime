@@ -25,37 +25,37 @@
 
 template <typename T> class QList;
 
-namespace Akonadi {
-  class Collection;
-  class Item;
+namespace Akonadi
+{
+class Collection;
+class Item;
 
-  typedef QList<Item> ItemList;
+typedef QList<Item> ItemList;
 }
 
 class CompactChangeHelper : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit CompactChangeHelper( const QByteArray &sessionId, QObject *parent = Q_NULLPTR );
+public:
+    explicit CompactChangeHelper(const QByteArray &sessionId, QObject *parent = Q_NULLPTR);
 
     ~CompactChangeHelper();
 
-    void addChangedItems( const Akonadi::ItemList &items );
+    void addChangedItems(const Akonadi::ItemList &items);
 
-    QString currentRemoteId( const Akonadi::Item &item ) const;
+    QString currentRemoteId(const Akonadi::Item &item) const;
 
-    void checkCollectionChanged( const Akonadi::Collection &collection );
+    void checkCollectionChanged(const Akonadi::Collection &collection);
 
-  private:
+private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void processNextBatch() )
-    Q_PRIVATE_SLOT( d, void processNextItem() )
-    Q_PRIVATE_SLOT( d, void itemFetchResult( KJob* ) )
+    Q_PRIVATE_SLOT(d, void processNextBatch())
+    Q_PRIVATE_SLOT(d, void processNextItem())
+    Q_PRIVATE_SLOT(d, void itemFetchResult(KJob *))
 };
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

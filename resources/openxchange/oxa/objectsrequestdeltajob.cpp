@@ -27,67 +27,69 @@
 
 using namespace OXA;
 
-ObjectsRequestDeltaJob::ObjectsRequestDeltaJob( const Folder &folder, qulonglong lastSync, QObject *parent )
-  : KJob( parent ), mFolder( folder ), mLastSync( lastSync ), mJobFinishedCount( 0 )
+ObjectsRequestDeltaJob::ObjectsRequestDeltaJob(const Folder &folder, qulonglong lastSync, QObject *parent)
+    : KJob(parent), mFolder(folder), mLastSync(lastSync), mJobFinishedCount(0)
 {
 }
 
 void ObjectsRequestDeltaJob::start()
 {
-  ObjectsRequestJob *modifiedJob = new ObjectsRequestJob( mFolder, mLastSync, ObjectsRequestJob::Modified, this );
-  connect(modifiedJob, &ObjectsRequestJob::result, this, &ObjectsRequestDeltaJob::fetchModifiedJobFinished);
-  modifiedJob->start();
+    ObjectsRequestJob *modifiedJob = new ObjectsRequestJob(mFolder, mLastSync, ObjectsRequestJob::Modified, this);
+    connect(modifiedJob, &ObjectsRequestJob::result, this, &ObjectsRequestDeltaJob::fetchModifiedJobFinished);
+    modifiedJob->start();
 
-  ObjectsRequestJob *deletedJob = new ObjectsRequestJob( mFolder, mLastSync, ObjectsRequestJob::Deleted, this );
-  connect(deletedJob, &ObjectsRequestJob::result, this, &ObjectsRequestDeltaJob::fetchDeletedJobFinished);
-  deletedJob->start();
+    ObjectsRequestJob *deletedJob = new ObjectsRequestJob(mFolder, mLastSync, ObjectsRequestJob::Deleted, this);
+    connect(deletedJob, &ObjectsRequestJob::result, this, &ObjectsRequestDeltaJob::fetchDeletedJobFinished);
+    deletedJob->start();
 }
 
 Object::List ObjectsRequestDeltaJob::modifiedObjects() const
 {
-  return mModifiedObjects;
+    return mModifiedObjects;
 }
 
 Object::List ObjectsRequestDeltaJob::deletedObjects() const
 {
-  return mDeletedObjects;
+    return mDeletedObjects;
 }
 
-void ObjectsRequestDeltaJob::fetchModifiedJobFinished( KJob *job )
+void ObjectsRequestDeltaJob::fetchModifiedJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-    emitResult();
-    return;
-  }
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
 
-  const ObjectsRequestJob *requestJob = qobject_cast<ObjectsRequestJob*>( job );
+    const ObjectsRequestJob *requestJob = qobject_cast<ObjectsRequestJob *>(job);
 
-  mModifiedObjects << requestJob->objects();
+    mModifiedObjects << requestJob->objects();
 
-  mJobFinishedCount++;
+    mJobFinishedCount++;
 
-  if ( mJobFinishedCount == 2 )
-    emitResult();
+    if (mJobFinishedCount == 2) {
+        emitResult();
+    }
 }
 
-void ObjectsRequestDeltaJob::fetchDeletedJobFinished( KJob *job )
+void ObjectsRequestDeltaJob::fetchDeletedJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-    emitResult();
-    return;
-  }
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
 
-  const ObjectsRequestJob *requestJob = qobject_cast<ObjectsRequestJob*>( job );
+    const ObjectsRequestJob *requestJob = qobject_cast<ObjectsRequestJob *>(job);
 
-  mDeletedObjects << requestJob->objects();
+    mDeletedObjects << requestJob->objects();
 
-  mJobFinishedCount++;
+    mJobFinishedCount++;
 
-  if ( mJobFinishedCount == 2 )
-    emitResult();
+    if (mJobFinishedCount == 2) {
+        emitResult();
+    }
 }
 

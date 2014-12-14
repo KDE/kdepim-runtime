@@ -24,7 +24,8 @@
 
 #include <QtCore/QString>
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * Namespace that contains methods for handling OX errors.
@@ -34,7 +35,7 @@ namespace OXA {
 namespace OXErrors
 {
 
-  enum EditErrorID {
+enum EditErrorID {
     EditErrorUndefined = 0,
     ConcurrentModification,
     ObjectNotFound,
@@ -43,12 +44,12 @@ namespace OXErrors
     MissingMandatoryFields,
     AppointmentConflicts,
     InternalServerError
-  };
+};
 
-  /**
-   * Parse error id from edit error text string @p errorText
-   */
-  EditErrorID getEditErrorID( const QString& errorText );
+/**
+ * Parse error id from edit error text string @p errorText
+ */
+EditErrorID getEditErrorID(const QString &errorText);
 
 }
 

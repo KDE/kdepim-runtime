@@ -24,50 +24,50 @@
 
 using namespace Akonadi;
 
-CreateAndSetTagsJob::CreateAndSetTagsJob(const Item& item, const Akonadi::Tag::List& tags, QObject* parent)
-: KJob(parent),
-  mItem(item),
-  mTags(tags),
-  mCount(0)
+CreateAndSetTagsJob::CreateAndSetTagsJob(const Item &item, const Akonadi::Tag::List &tags, QObject *parent)
+    : KJob(parent),
+      mItem(item),
+      mTags(tags),
+      mCount(0)
 {
 
 }
 
 void CreateAndSetTagsJob::start()
 {
-  if (mTags.isEmpty()) {
-    emitResult();
-  }
-  Q_FOREACH (const Akonadi::Tag &tag, mTags) {
-    Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag, this);
-    createJob->setMergeIfExisting(true);
-    connect(createJob, &Akonadi::TagCreateJob::result, this, &CreateAndSetTagsJob::onCreateDone);
-  }
+    if (mTags.isEmpty()) {
+        emitResult();
+    }
+    Q_FOREACH (const Akonadi::Tag &tag, mTags) {
+        Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag, this);
+        createJob->setMergeIfExisting(true);
+        connect(createJob, &Akonadi::TagCreateJob::result, this, &CreateAndSetTagsJob::onCreateDone);
+    }
 }
 
 void CreateAndSetTagsJob::onCreateDone(KJob *job)
 {
-  mCount++;
-  if (job->error()) {
-      qWarning() << "Failed to create tag " << job->errorString();
-  } else {
-    Akonadi::TagCreateJob *createJob = static_cast<Akonadi::TagCreateJob*>(job);
-    mCreatedTags << createJob->tag();
-  }
-  if (mCount == mTags.size()) {
-    Q_FOREACH (const Akonadi::Tag &tag, mCreatedTags) {
-      mItem.setTag(tag);
+    mCount++;
+    if (job->error()) {
+        qWarning() << "Failed to create tag " << job->errorString();
+    } else {
+        Akonadi::TagCreateJob *createJob = static_cast<Akonadi::TagCreateJob *>(job);
+        mCreatedTags << createJob->tag();
     }
-    Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mItem, this);
-    connect(modJob, &Akonadi::ItemModifyJob::result, this, &CreateAndSetTagsJob::onModifyDone);
-  }
+    if (mCount == mTags.size()) {
+        Q_FOREACH (const Akonadi::Tag &tag, mCreatedTags) {
+            mItem.setTag(tag);
+        }
+        Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mItem, this);
+        connect(modJob, &Akonadi::ItemModifyJob::result, this, &CreateAndSetTagsJob::onModifyDone);
+    }
 }
 
 void CreateAndSetTagsJob::onModifyDone(KJob *job)
 {
-  if (job->error()) {
-    qWarning() << "Failed to modify item " << job->errorString();
-    setError(KJob::UserDefinedError);
-  }
-  emitResult();
+    if (job->error()) {
+        qWarning() << "Failed to modify item " << job->errorString();
+        setError(KJob::UserDefinedError);
+    }
+    emitResult();
 }

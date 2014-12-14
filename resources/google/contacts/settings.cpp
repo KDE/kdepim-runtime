@@ -22,40 +22,40 @@
 
 class SettingsHelper
 {
-  public:
-    SettingsHelper() : q( 0 )
+public:
+    SettingsHelper() : q(0)
     {
     }
 
     ~SettingsHelper()
     {
-      delete q;
-      q = 0;
+        delete q;
+        q = 0;
     }
 
     Settings *q;
 };
 
-Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
 Settings::Settings():
     GoogleSettings()
 {
-  Q_ASSERT( !s_globalSettings->q );
-  s_globalSettings->q = this;
+    Q_ASSERT(!s_globalSettings->q);
+    s_globalSettings->q = this;
 
-  new SettingsAdaptor( this );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ), this,
-      QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+    new SettingsAdaptor(this);
+    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"), this,
+            QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
 Settings *Settings::self()
 {
-  if ( !s_globalSettings->q ) {
-    new Settings;
-    s_globalSettings->q->load();
-  }
+    if (!s_globalSettings->q) {
+        new Settings;
+        s_globalSettings->q->load();
+    }
 
-  return s_globalSettings->q;
+    return s_globalSettings->q;
 
 }

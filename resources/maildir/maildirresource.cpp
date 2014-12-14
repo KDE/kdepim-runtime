@@ -52,196 +52,197 @@ using namespace Akonadi_Maildir_Resource;
 
 #define CLEANER_TIMEOUT 2*6000
 
-Maildir MaildirResource::maildirForCollection( const Collection& col )
+Maildir MaildirResource::maildirForCollection(const Collection &col)
 {
-  const QString path = maildirPathForCollection( col );
-  if ( mMaildirsForCollection.contains( path ) ) {
-      return mMaildirsForCollection.value( path );
-  }
+    const QString path = maildirPathForCollection(col);
+    if (mMaildirsForCollection.contains(path)) {
+        return mMaildirsForCollection.value(path);
+    }
 
-  if ( col.remoteId().isEmpty() ) {
-    qWarning() << "Got incomplete ancestor chain:" << col;
-    return Maildir();
-  }
+    if (col.remoteId().isEmpty()) {
+        qWarning() << "Got incomplete ancestor chain:" << col;
+        return Maildir();
+    }
 
-  if ( col.parentCollection() == Collection::root() ) {
-    if (col.remoteId() != mSettings->path())
-      qWarning() << "RID mismatch, is " << col.remoteId() << " expected " << mSettings->path();
-    Maildir maildir( col.remoteId(), mSettings->topLevelIsContainer() );
-    mMaildirsForCollection.insert( path, maildir );
+    if (col.parentCollection() == Collection::root()) {
+        if (col.remoteId() != mSettings->path()) {
+            qWarning() << "RID mismatch, is " << col.remoteId() << " expected " << mSettings->path();
+        }
+        Maildir maildir(col.remoteId(), mSettings->topLevelIsContainer());
+        mMaildirsForCollection.insert(path, maildir);
+        return maildir;
+    }
+    Maildir parentMd = maildirForCollection(col.parentCollection());
+    Maildir maildir = parentMd.subFolder(col.remoteId());
+    mMaildirsForCollection.insert(path, maildir);
     return maildir;
-  }
-  Maildir parentMd = maildirForCollection( col.parentCollection() );
-  Maildir maildir = parentMd.subFolder( col.remoteId() );
-  mMaildirsForCollection.insert( path, maildir );
-  return maildir;
 }
 
-Collection MaildirResource::collectionForMaildir(const Maildir& md) const
+Collection MaildirResource::collectionForMaildir(const Maildir &md) const
 {
-  if ( !md.isValid() )
-    return Collection();
-
-  Collection col;
-  if ( md.path() == mSettings->path() ) {
-    col.setRemoteId( md.path() );
-    col.setParentCollection( Collection::root() );
-  } else {
-    const Collection parent = collectionForMaildir( md.parent() );
-    col.setRemoteId( md.name() );
-    col.setParentCollection( parent );
-  }
-
-  return col;
-}
-
-MaildirResource::MaildirResource( const QString &id )
-    :ResourceBase( id ),
-    mSettings( new MaildirSettings( componentData().config() ) ),
-     mFsWatcher( new KDirWatch( this ) )
-{
-  // we cannot be sure that a config file is existing
-  // the MaildirResource will always be build
-  // look for a resource of this name
-  QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc" );
-  // if not present, create it
-  if ( configFile.isEmpty() ) {
-    // check if the resource was used before
-    CollectionFetchJob *job = new CollectionFetchJob( Collection::root(), Akonadi::CollectionFetchJob::FirstLevel, this );
-    job->fetchScope().setResource( id );
-    connect(job, &CollectionFetchJob::result, this, &MaildirResource::attemptConfigRestoring);
-    job->start();
-  }
-  new MaildirSettingsAdaptor( mSettings );
-  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
-                              mSettings, QDBusConnection::ExportAdaptors );
-  connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
-
-  // We need to enable this here, otherwise we neither get the remote ID of the
-  // parent collection when a collection changes, nor the full item when an item
-  // is added.
-  changeRecorder()->fetchCollection( true );
-  changeRecorder()->itemFetchScope().fetchFullPayload( true );
-  changeRecorder()->itemFetchScope().setAncestorRetrieval( ItemFetchScope::All );
-  changeRecorder()->itemFetchScope().setFetchModificationTime( false );
-  changeRecorder()->collectionFetchScope().setAncestorRetrieval( CollectionFetchScope::All );
-  changeRecorder()->fetchChangedOnly( true );
-
-  setHierarchicalRemoteIdentifiersEnabled( true );
-
-  ItemFetchScope scope( changeRecorder()->itemFetchScope() );
-  scope.fetchFullPayload( false );
-  scope.fetchPayloadPart( MessagePart::Header );
-  scope.setAncestorRetrieval( ItemFetchScope::None );
-  setItemSynchronizationFetchScope( scope );
-
-  connect(mFsWatcher, &KDirWatch::dirty, this, &MaildirResource::slotDirChanged);
-  if (!ensureSaneConfiguration()) {
-     emit error( i18n( "Unusable configuration." ) );
-  } else {
-     synchronizeCollectionTree();
-  }
-
-  mChangedCleanerTimer = new QTimer( this );
-  connect(mChangedCleanerTimer, &QTimer::timeout, this, &MaildirResource::changedCleaner);
-}
-
-void MaildirResource::attemptConfigRestoring( KJob * job )
-{
-  if ( job->error() ) {
-    qDebug() << job->errorString();
-    return;
-  }
-  // we cannot be sure that a config file is existing
-  const QString id = identifier();
-  const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc" );
-  // we test it again, to be sure
-  if ( configFile.isEmpty() ) {
-    // it is still empty, create it
-    qWarning() << "the resource is not properly configured:";
-    qWarning() << "there is no config file for the resource.";
-    qWarning() << "we create a new one.";
-    const Collection::List cols = qobject_cast<CollectionFetchJob*>( job )->collections();
-    QString path;
-    if ( !cols.isEmpty() ) {
-      qDebug() << "the collections list is not empty";
-      Collection col = cols.first();
-      // get the path of the collection
-      path = col.remoteId();
+    if (!md.isValid()) {
+        return Collection();
     }
-    // test the path
-    if ( path.isEmpty() ) {
-      qDebug() << "build a new path";
-      const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/');
-      // we use "id" to get an unique path
-      path = dataDir;
-      if (!defaultResourceType().isEmpty()) {
-          path += defaultResourceType()  + QLatin1Char('/');
-      }
-      path += id;
-      qDebug() << "set the path" << path;
-      mSettings->setPath( path );
-      // set the resource into container mode for its top level
-      mSettings->setTopLevelIsContainer( true );
+
+    Collection col;
+    if (md.path() == mSettings->path()) {
+        col.setRemoteId(md.path());
+        col.setParentCollection(Collection::root());
     } else {
-      // check how the directory looks like the actual check is missing.
-      Maildir root( mSettings->path(), true );
-      mSettings->setTopLevelIsContainer( root.isValid() );
+        const Collection parent = collectionForMaildir(md.parent());
+        col.setRemoteId(md.name());
+        col.setParentCollection(parent);
     }
-    qDebug() << "synchronize";
-    configurationChanged();
-  }
+
+    return col;
+}
+
+MaildirResource::MaildirResource(const QString &id)
+    : ResourceBase(id),
+      mSettings(new MaildirSettings(componentData().config())),
+      mFsWatcher(new KDirWatch(this))
+{
+    // we cannot be sure that a config file is existing
+    // the MaildirResource will always be build
+    // look for a resource of this name
+    QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc");
+    // if not present, create it
+    if (configFile.isEmpty()) {
+        // check if the resource was used before
+        CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), Akonadi::CollectionFetchJob::FirstLevel, this);
+        job->fetchScope().setResource(id);
+        connect(job, &CollectionFetchJob::result, this, &MaildirResource::attemptConfigRestoring);
+        job->start();
+    }
+    new MaildirSettingsAdaptor(mSettings);
+    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+            mSettings, QDBusConnection::ExportAdaptors);
+    connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
+
+    // We need to enable this here, otherwise we neither get the remote ID of the
+    // parent collection when a collection changes, nor the full item when an item
+    // is added.
+    changeRecorder()->fetchCollection(true);
+    changeRecorder()->itemFetchScope().fetchFullPayload(true);
+    changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
+    changeRecorder()->itemFetchScope().setFetchModificationTime(false);
+    changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
+    changeRecorder()->fetchChangedOnly(true);
+
+    setHierarchicalRemoteIdentifiersEnabled(true);
+
+    ItemFetchScope scope(changeRecorder()->itemFetchScope());
+    scope.fetchFullPayload(false);
+    scope.fetchPayloadPart(MessagePart::Header);
+    scope.setAncestorRetrieval(ItemFetchScope::None);
+    setItemSynchronizationFetchScope(scope);
+
+    connect(mFsWatcher, &KDirWatch::dirty, this, &MaildirResource::slotDirChanged);
+    if (!ensureSaneConfiguration()) {
+        emit error(i18n("Unusable configuration."));
+    } else {
+        synchronizeCollectionTree();
+    }
+
+    mChangedCleanerTimer = new QTimer(this);
+    connect(mChangedCleanerTimer, &QTimer::timeout, this, &MaildirResource::changedCleaner);
+}
+
+void MaildirResource::attemptConfigRestoring(KJob *job)
+{
+    if (job->error()) {
+        qDebug() << job->errorString();
+        return;
+    }
+    // we cannot be sure that a config file is existing
+    const QString id = identifier();
+    const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc");
+    // we test it again, to be sure
+    if (configFile.isEmpty()) {
+        // it is still empty, create it
+        qWarning() << "the resource is not properly configured:";
+        qWarning() << "there is no config file for the resource.";
+        qWarning() << "we create a new one.";
+        const Collection::List cols = qobject_cast<CollectionFetchJob *>(job)->collections();
+        QString path;
+        if (!cols.isEmpty()) {
+            qDebug() << "the collections list is not empty";
+            Collection col = cols.first();
+            // get the path of the collection
+            path = col.remoteId();
+        }
+        // test the path
+        if (path.isEmpty()) {
+            qDebug() << "build a new path";
+            const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/');
+            // we use "id" to get an unique path
+            path = dataDir;
+            if (!defaultResourceType().isEmpty()) {
+                path += defaultResourceType()  + QLatin1Char('/');
+            }
+            path += id;
+            qDebug() << "set the path" << path;
+            mSettings->setPath(path);
+            // set the resource into container mode for its top level
+            mSettings->setTopLevelIsContainer(true);
+        } else {
+            // check how the directory looks like the actual check is missing.
+            Maildir root(mSettings->path(), true);
+            mSettings->setTopLevelIsContainer(root.isValid());
+        }
+        qDebug() << "synchronize";
+        configurationChanged();
+    }
 }
 
 MaildirResource::~ MaildirResource()
 {
-  delete mSettings;
+    delete mSettings;
 }
 
-bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool MaildirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-  Q_UNUSED( parts );
+    Q_UNUSED(parts);
 
-  const Maildir md = maildirForCollection( item.parentCollection() );
-  if ( !md.isValid() ) {
-    cancelTask( i18n( "Unable to fetch item: The maildir folder \"%1\" is not valid.",
-                      md.path() ) );
-    return false;
-  }
+    const Maildir md = maildirForCollection(item.parentCollection());
+    if (!md.isValid()) {
+        cancelTask(i18n("Unable to fetch item: The maildir folder \"%1\" is not valid.",
+                        md.path()));
+        return false;
+    }
 
-  const QByteArray data = md.readEntry( item.remoteId() );
-  KMime::Message *mail = new KMime::Message();
-  mail->setContent( KMime::CRLFtoLF( data ) );
-  mail->parse();
+    const QByteArray data = md.readEntry(item.remoteId());
+    KMime::Message *mail = new KMime::Message();
+    mail->setContent(KMime::CRLFtoLF(data));
+    mail->parse();
 
-  Item i( item );
-  i.setPayload( KMime::Message::Ptr( mail ) );
-  itemRetrieved( i );
-  return true;
+    Item i(item);
+    i.setPayload(KMime::Message::Ptr(mail));
+    itemRetrieved(i);
+    return true;
 }
 
 QString MaildirResource::itemMimeType() const
 {
-  return KMime::Message::mimeType();
+    return KMime::Message::mimeType();
 }
 
 void MaildirResource::configurationChanged()
 {
-  mSettings->save();
-  bool configValid = ensureSaneConfiguration();
-  configValid &= ensureDirExists();
-  if ( configValid ) {
-    emit status( Idle );
-    setOnline( true );
-  }
+    mSettings->save();
+    bool configValid = ensureSaneConfiguration();
+    configValid &= ensureDirExists();
+    if (configValid) {
+        emit status(Idle);
+        setOnline(true);
+    }
 }
-
 
 void MaildirResource::aboutToQuit()
 {
-  // The settings may not have been saved if e.g. they have been modified via
-  // DBus instead of the config dialog.
-  mSettings->save();
+    // The settings may not have been saved if e.g. they have been modified via
+    // DBus instead of the config dialog.
+    mSettings->save();
 }
 
 QString MaildirResource::defaultResourceType()
@@ -249,629 +250,637 @@ QString MaildirResource::defaultResourceType()
     return QString();
 }
 
-void MaildirResource::configure( WId windowId )
+void MaildirResource::configure(WId windowId)
 {
-  ConfigDialog dlg( mSettings, identifier() );
-  if ( windowId )
-    KWindowSystem::setMainWindow( &dlg, windowId );
-  dlg.setWindowIcon( QIcon::fromTheme( QLatin1String("message-rfc822") ) );
-  if ( dlg.exec() ) {
-    // if we have no name, or the default one,
-    // better use the name of the top level collection
-    // that looks nicer
-    if ( name().isEmpty() || name() == identifier() ) {
-      Maildir md( mSettings->path() );
-      setName( md.name() );
+    ConfigDialog dlg(mSettings, identifier());
+    if (windowId) {
+        KWindowSystem::setMainWindow(&dlg, windowId);
     }
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
+    dlg.setWindowIcon(QIcon::fromTheme(QLatin1String("message-rfc822")));
+    if (dlg.exec()) {
+        // if we have no name, or the default one,
+        // better use the name of the top level collection
+        // that looks nicer
+        if (name().isEmpty() || name() == identifier()) {
+            Maildir md(mSettings->path());
+            setName(md.name());
+        }
+        emit configurationDialogAccepted();
+    } else {
+        emit configurationDialogRejected();
+    }
 
-  configurationChanged();
-  synchronizeCollectionTree();
+    configurationChanged();
+    synchronizeCollectionTree();
 }
 
-void MaildirResource::itemAdded( const Akonadi::Item & item, const Akonadi::Collection& collection )
+void MaildirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
-    if ( !ensureSaneConfiguration() ) {
-      cancelTask( i18n( "Unusable configuration." ) );
-      return;
+    if (!ensureSaneConfiguration()) {
+        cancelTask(i18n("Unusable configuration."));
+        return;
     }
-    Maildir dir = maildirForCollection( collection );
-    if ( mSettings->readOnly() || !dir.isValid() ) {
-      cancelTask( dir.lastError() );
-      return;
+    Maildir dir = maildirForCollection(collection);
+    if (mSettings->readOnly() || !dir.isValid()) {
+        cancelTask(dir.lastError());
+        return;
     }
 
     // we can only deal with mail
-    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      cancelTask( i18n( "Error: Unsupported type." ) );
-      return;
+    if (!item.hasPayload<KMime::Message::Ptr>()) {
+        cancelTask(i18n("Error: Unsupported type."));
+        return;
     }
     const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
 
-    stopMaildirScan( dir );
+    stopMaildirScan(dir);
 
-    const QString rid = dir.addEntry( mail->encodedContent() );
-    mChangedFiles.insert( rid );
-    mChangedCleanerTimer->start( CLEANER_TIMEOUT );
+    const QString rid = dir.addEntry(mail->encodedContent());
+    mChangedFiles.insert(rid);
+    mChangedCleanerTimer->start(CLEANER_TIMEOUT);
 
-    if ( rid.isEmpty() ) {
-      restartMaildirScan( dir );
-      cancelTask( dir.lastError() );
-      return;
+    if (rid.isEmpty()) {
+        restartMaildirScan(dir);
+        cancelTask(dir.lastError());
+        return;
     }
 
-    restartMaildirScan( dir );
+    restartMaildirScan(dir);
 
-    Item i( item );
-    i.setRemoteId( rid );
-    changeCommitted( i );
+    Item i(item);
+    i.setRemoteId(rid);
+    changeCommitted(i);
 }
 
-void MaildirResource::itemChanged( const Akonadi::Item& item, const QSet<QByteArray>& parts )
+void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    if ( !ensureSaneConfiguration() ) {
-      cancelTask( i18n( "Unusable configuration." ) );
-      return;
+    if (!ensureSaneConfiguration()) {
+        cancelTask(i18n("Unusable configuration."));
+        return;
     }
-
 
     bool bodyChanged = false;
     bool flagsChanged = false;
     bool headChanged = false;
-    Q_FOREACH ( const QByteArray &part, parts )  {
-      if ( part.startsWith( "PLD:RFC822" ) ) {
-        bodyChanged = true;
-      } else if ( part.startsWith( "PLD:HEAD" ) ) {
-        headChanged = true;
-      }
-      if ( part.contains( "FLAGS" ) ) {
-        flagsChanged = true;
-      }
+    Q_FOREACH (const QByteArray &part, parts)  {
+        if (part.startsWith("PLD:RFC822")) {
+            bodyChanged = true;
+        } else if (part.startsWith("PLD:HEAD")) {
+            headChanged = true;
+        }
+        if (part.contains("FLAGS")) {
+            flagsChanged = true;
+        }
     }
 
-    if ( mSettings->readOnly() || ( !bodyChanged && !flagsChanged && !headChanged ) ) {
-      changeProcessed();
-      return;
-    }
-
-    Maildir dir = maildirForCollection( item.parentCollection() );
-    if ( !dir.isValid() ) {
-        cancelTask( dir.lastError() );
+    if (mSettings->readOnly() || (!bodyChanged && !flagsChanged && !headChanged)) {
+        changeProcessed();
         return;
     }
 
-    Item newItem( item );
+    Maildir dir = maildirForCollection(item.parentCollection());
+    if (!dir.isValid()) {
+        cancelTask(dir.lastError());
+        return;
+    }
 
-    if ( flagsChanged || bodyChanged || headChanged ) { //something has changed that we can deal with
-      stopMaildirScan( dir );
+    Item newItem(item);
 
-      if ( flagsChanged ) { //flags changed, store in file name and get back the new filename (id)
-        const QString newKey = dir.changeEntryFlags( item.remoteId(), item.flags() );
-        if ( newKey.isEmpty() ) {
-          restartMaildirScan( dir );
-          cancelTask( i18n( "Failed to change the flags for the mail. %1" ).arg( dir.lastError() ) );
-          return;
-        }
-        newItem.setRemoteId( newKey );
-      }
+    if (flagsChanged || bodyChanged || headChanged) {   //something has changed that we can deal with
+        stopMaildirScan(dir);
 
-      if ( bodyChanged || headChanged ) { //head or body changed
-        // we can only deal with mail
-        if ( item.hasPayload<KMime::Message::Ptr>() ) {
-          const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
-          QByteArray data = mail->encodedContent();
-          if ( headChanged && !bodyChanged ) {
-            //only the head has changed, get the current version of the mail
-            //replace the head and store the new mail in the file
-            const QByteArray currentData = dir.readEntry( newItem.remoteId() );
-            if ( currentData.isEmpty() && !dir.lastError().isEmpty() ) {
-              restartMaildirScan( dir );
-              cancelTask( dir.lastError() );
-              return;
+        if (flagsChanged) {   //flags changed, store in file name and get back the new filename (id)
+            const QString newKey = dir.changeEntryFlags(item.remoteId(), item.flags());
+            if (newKey.isEmpty()) {
+                restartMaildirScan(dir);
+                cancelTask(i18n("Failed to change the flags for the mail. %1").arg(dir.lastError()));
+                return;
             }
-            const QByteArray newHead = mail->head();
-            mail->setContent( currentData );
-            mail->setHead( newHead );
-            mail->parse();
-            data = mail->encodedContent();
-          }
-          if ( !dir.writeEntry( newItem.remoteId(), data ) ) {
-            restartMaildirScan( dir );
-            cancelTask( dir.lastError() );
-            return;
-          }
-          mChangedFiles.insert( newItem.remoteId() );
-          mChangedCleanerTimer->start( CLEANER_TIMEOUT );
-        } else {
-            restartMaildirScan( dir );
-            cancelTask( i18n( "Maildir resource got a non-mail content!" ) );
-            return;
+            newItem.setRemoteId(newKey);
         }
-      }
 
-      restartMaildirScan( dir );
+        if (bodyChanged || headChanged) {   //head or body changed
+            // we can only deal with mail
+            if (item.hasPayload<KMime::Message::Ptr>()) {
+                const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
+                QByteArray data = mail->encodedContent();
+                if (headChanged && !bodyChanged) {
+                    //only the head has changed, get the current version of the mail
+                    //replace the head and store the new mail in the file
+                    const QByteArray currentData = dir.readEntry(newItem.remoteId());
+                    if (currentData.isEmpty() && !dir.lastError().isEmpty()) {
+                        restartMaildirScan(dir);
+                        cancelTask(dir.lastError());
+                        return;
+                    }
+                    const QByteArray newHead = mail->head();
+                    mail->setContent(currentData);
+                    mail->setHead(newHead);
+                    mail->parse();
+                    data = mail->encodedContent();
+                }
+                if (!dir.writeEntry(newItem.remoteId(), data)) {
+                    restartMaildirScan(dir);
+                    cancelTask(dir.lastError());
+                    return;
+                }
+                mChangedFiles.insert(newItem.remoteId());
+                mChangedCleanerTimer->start(CLEANER_TIMEOUT);
+            } else {
+                restartMaildirScan(dir);
+                cancelTask(i18n("Maildir resource got a non-mail content!"));
+                return;
+            }
+        }
 
-      changeCommitted( newItem );
+        restartMaildirScan(dir);
+
+        changeCommitted(newItem);
     } else {
-      emit changeProcessed();
+        emit changeProcessed();
     }
 }
 
-void MaildirResource::itemMoved( const Item &item, const Collection &source, const Collection &destination )
+void MaildirResource::itemMoved(const Item &item, const Collection &source, const Collection &destination)
 {
-  if ( source == destination ) { // should not happen but would confuse Maildir::moveEntryTo
+    if (source == destination) {   // should not happen but would confuse Maildir::moveEntryTo
+        changeProcessed();
+        return;
+    }
+
+    if (!ensureSaneConfiguration()) {
+        cancelTask(i18n("Unusable configuration."));
+        return;
+    }
+
+    Maildir sourceDir = maildirForCollection(source);
+    if (!sourceDir.isValid()) {
+        cancelTask(i18n("Source folder is invalid: '%1'.", sourceDir.lastError()));
+        return;
+    }
+
+    Maildir destDir = maildirForCollection(destination);
+    if (!destDir.isValid()) {
+        cancelTask(i18n("Destination folder is invalid: '%1'.", destDir.lastError()));
+        return;
+    }
+
+    stopMaildirScan(sourceDir);
+    stopMaildirScan(destDir);
+
+    const QString newRid = sourceDir.moveEntryTo(item.remoteId(), destDir);
+
+    mChangedFiles.insert(newRid);
+    mChangedCleanerTimer->start(CLEANER_TIMEOUT);
+
+    restartMaildirScan(sourceDir);
+    restartMaildirScan(destDir);
+
+    if (newRid.isEmpty()) {
+        cancelTask(i18n("Could not move message '%1' from '%2' to '%3'. The error was %4.", item.remoteId(), sourceDir.path(), destDir.path(), sourceDir.lastError()));
+        return;
+    }
+
+    Item i(item);
+    i.setRemoteId(newRid);
+    changeCommitted(i);
+}
+
+void MaildirResource::itemRemoved(const Akonadi::Item &item)
+{
+    if (!ensureSaneConfiguration()) {
+        cancelTask(i18n("Unusable configuration."));
+        return;
+    }
+
+    if (!mSettings->readOnly()) {
+        Maildir dir = maildirForCollection(item.parentCollection());
+        // !dir.isValid() means that our parent folder has been deleted already,
+        // so we don't care at all as that one will be recursive anyway
+        stopMaildirScan(dir);
+        if (dir.isValid() && !dir.removeEntry(item.remoteId())) {
+            emit error(i18n("Failed to delete message: %1", item.remoteId()));
+        }
+        restartMaildirScan(dir);
+    }
+    qDebug() << "Item removed" << item.id() << " in collection :" << item.parentCollection().id();
     changeProcessed();
-    return;
-  }
-
-  if ( !ensureSaneConfiguration() ) {
-    cancelTask( i18n( "Unusable configuration." ) );
-    return;
-  }
-
-  Maildir sourceDir = maildirForCollection( source );
-  if ( !sourceDir.isValid() ) {
-    cancelTask( i18n( "Source folder is invalid: '%1'.", sourceDir.lastError() ) );
-    return;
-  }
-
-  Maildir destDir = maildirForCollection( destination );
-  if ( !destDir.isValid() ) {
-    cancelTask( i18n( "Destination folder is invalid: '%1'.", destDir.lastError() ) );
-    return;
-  }
-
-  stopMaildirScan( sourceDir );
-  stopMaildirScan( destDir );
-
-  const QString newRid = sourceDir.moveEntryTo( item.remoteId(), destDir );
-
-  mChangedFiles.insert( newRid );
-  mChangedCleanerTimer->start( CLEANER_TIMEOUT );
-
-  restartMaildirScan( sourceDir );
-  restartMaildirScan( destDir );
-
-  if ( newRid.isEmpty() ) {
-    cancelTask( i18n( "Could not move message '%1' from '%2' to '%3'. The error was %4.", item.remoteId(), sourceDir.path(), destDir.path(), sourceDir.lastError() ) );
-    return;
-  }
-
-  Item i( item );
-  i.setRemoteId( newRid );
-  changeCommitted( i );
 }
 
-void MaildirResource::itemRemoved(const Akonadi::Item & item)
+Collection::List MaildirResource::listRecursive(const Collection &root, const Maildir &dir)
 {
-  if ( !ensureSaneConfiguration() ) {
-    cancelTask( i18n( "Unusable configuration." ) );
-    return;
-  }
-
-  if ( !mSettings->readOnly() ) {
-    Maildir dir = maildirForCollection( item.parentCollection() );
-    // !dir.isValid() means that our parent folder has been deleted already,
-    // so we don't care at all as that one will be recursive anyway
-    stopMaildirScan( dir );
-    if ( dir.isValid() && !dir.removeEntry( item.remoteId() ) ) {
-      emit error( i18n( "Failed to delete message: %1", item.remoteId() ) );
+    if (mSettings->monitorFilesystem()) {
+        mFsWatcher->addDir(dir.path() + QDir::separator() + QLatin1String("new"));
+        mFsWatcher->addDir(dir.path() + QDir::separator() + QLatin1String("cur"));
+        mFsWatcher->addDir(dir.subDirPath());
+        if (dir.isRoot()) {
+            mFsWatcher->addDir(dir.path());
+        }
     }
-    restartMaildirScan( dir );
-  }
-  qDebug() << "Item removed" << item.id() << " in collection :" << item.parentCollection().id();
-  changeProcessed();
-}
 
-Collection::List MaildirResource::listRecursive( const Collection &root, const Maildir &dir )
-{
-  if ( mSettings->monitorFilesystem() ) {
-        mFsWatcher->addDir( dir.path() + QDir::separator() + QLatin1String( "new" ) );
-        mFsWatcher->addDir( dir.path() + QDir::separator() + QLatin1String( "cur" ) );
-        mFsWatcher->addDir( dir.subDirPath() );
-    if ( dir.isRoot() ) {
-            mFsWatcher->addDir( dir.path() );
+    Collection::List list;
+    const QStringList mimeTypes = QStringList() << itemMimeType() << Collection::mimeType();
+    foreach (const QString &sub, dir.subFolderList()) {
+        Collection c;
+        c.setName(sub);
+        c.setRemoteId(sub);
+        c.setParentCollection(root);
+        c.setContentMimeTypes(mimeTypes);
+
+        const Maildir md = maildirForCollection(c);
+        if (!md.isValid()) {
+            continue;
+        }
+
+        list << c;
+        list += listRecursive(c, md);
     }
-  }
-
-  Collection::List list;
-  const QStringList mimeTypes = QStringList() << itemMimeType() << Collection::mimeType();
-  foreach ( const QString &sub, dir.subFolderList() ) {
-    Collection c;
-    c.setName( sub );
-    c.setRemoteId( sub );
-    c.setParentCollection( root );
-    c.setContentMimeTypes( mimeTypes );
-
-    const Maildir md = maildirForCollection( c );
-    if ( !md.isValid() )
-      continue;
-
-    list << c;
-    list += listRecursive( c, md );
-  }
-  return list;
+    return list;
 }
 
 void MaildirResource::retrieveCollections()
 {
-  Maildir dir( mSettings->path(), mSettings->topLevelIsContainer() );
-  if ( !dir.isValid() ) {
-    emit error( dir.lastError() );
-    collectionsRetrieved( Collection::List() );
-    return;
-  }
+    Maildir dir(mSettings->path(), mSettings->topLevelIsContainer());
+    if (!dir.isValid()) {
+        emit error(dir.lastError());
+        collectionsRetrieved(Collection::List());
+        return;
+    }
 
-  Collection root;
-  root.setParentCollection( Collection::root() );
-  root.setRemoteId( mSettings->path() );
-  root.setName( name() );
-  if ( mSettings->readOnly() ) {
-    root.setRights( Collection::ReadOnly );
-  } else {
-    if ( mSettings->topLevelIsContainer() ) {
-      root.setRights( Collection::ReadOnly | Collection::CanCreateCollection );
+    Collection root;
+    root.setParentCollection(Collection::root());
+    root.setRemoteId(mSettings->path());
+    root.setName(name());
+    if (mSettings->readOnly()) {
+        root.setRights(Collection::ReadOnly);
     } else {
-      root.setRights( Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
-                    | Collection::CanCreateCollection );
-    }
-  }
-
-  CachePolicy policy;
-  policy.setInheritFromParent( false );
-  policy.setSyncOnDemand( true );
-  policy.setLocalParts( QStringList() << MessagePart::Envelope );
-  policy.setCacheTimeout( 1 );
-  policy.setIntervalCheckTime( -1 );
-  root.setCachePolicy( policy );
-
-  QStringList mimeTypes;
-  mimeTypes << Collection::mimeType();
-  mimeTypes << itemMimeType();
-  root.setContentMimeTypes( mimeTypes );
-
-
-  Collection::List list;
-  list << root;
-  list += listRecursive( root, dir );
-  collectionsRetrieved( list );
-}
-
-void MaildirResource::retrieveItems( const Akonadi::Collection & col )
-{
-  const Maildir md = maildirForCollection( col );
-  if ( !md.isValid() ) {
-    cancelTask( i18n( "Maildir '%1' for collection '%2' is invalid.", md.path(), col.remoteId() ) );
-    return;
-  }
-
-  RetrieveItemsJob *job = new RetrieveItemsJob( col, md, this );
-  job->setMimeType( itemMimeType() );
-  connect(job, &RetrieveItemsJob::result, this, &MaildirResource::slotItemsRetrievalResult);
-}
-
-void MaildirResource::slotItemsRetrievalResult ( KJob* job )
-{
-  if ( job->error() )
-    cancelTask( job->errorString() );
-  else
-    itemsRetrievalDone();
-}
-
-void MaildirResource::collectionAdded(const Collection & collection, const Collection &parent)
-{
-  if ( !ensureSaneConfiguration() ) {
-    emit error( i18n( "Unusable configuration." ) );
-    changeProcessed();
-    return;
-  }
-
-  Maildir md = maildirForCollection( parent );
-  qDebug() << md.subFolderList() << md.entryList();
-  if ( mSettings->readOnly() || !md.isValid() ) {
-    changeProcessed();
-    return;
-  } else {
-    const QString collectionName( collection.name().replace( QDir::separator(), QString() ) );
-    const QString newFolderPath = md.addSubFolder( collectionName );
-    if ( newFolderPath.isEmpty() ) {
-      changeProcessed();
-      return;
+        if (mSettings->topLevelIsContainer()) {
+            root.setRights(Collection::ReadOnly | Collection::CanCreateCollection);
+        } else {
+            root.setRights(Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
+                           | Collection::CanCreateCollection);
+        }
     }
 
+    CachePolicy policy;
+    policy.setInheritFromParent(false);
+    policy.setSyncOnDemand(true);
+    policy.setLocalParts(QStringList() << MessagePart::Envelope);
+    policy.setCacheTimeout(1);
+    policy.setIntervalCheckTime(-1);
+    root.setCachePolicy(policy);
+
+    QStringList mimeTypes;
+    mimeTypes << Collection::mimeType();
+    mimeTypes << itemMimeType();
+    root.setContentMimeTypes(mimeTypes);
+
+    Collection::List list;
+    list << root;
+    list += listRecursive(root, dir);
+    collectionsRetrieved(list);
+}
+
+void MaildirResource::retrieveItems(const Akonadi::Collection &col)
+{
+    const Maildir md = maildirForCollection(col);
+    if (!md.isValid()) {
+        cancelTask(i18n("Maildir '%1' for collection '%2' is invalid.", md.path(), col.remoteId()));
+        return;
+    }
+
+    RetrieveItemsJob *job = new RetrieveItemsJob(col, md, this);
+    job->setMimeType(itemMimeType());
+    connect(job, &RetrieveItemsJob::result, this, &MaildirResource::slotItemsRetrievalResult);
+}
+
+void MaildirResource::slotItemsRetrievalResult(KJob *job)
+{
+    if (job->error()) {
+        cancelTask(job->errorString());
+    } else {
+        itemsRetrievalDone();
+    }
+}
+
+void MaildirResource::collectionAdded(const Collection &collection, const Collection &parent)
+{
+    if (!ensureSaneConfiguration()) {
+        emit error(i18n("Unusable configuration."));
+        changeProcessed();
+        return;
+    }
+
+    Maildir md = maildirForCollection(parent);
     qDebug() << md.subFolderList() << md.entryList();
+    if (mSettings->readOnly() || !md.isValid()) {
+        changeProcessed();
+        return;
+    } else {
+        const QString collectionName(collection.name().replace(QDir::separator(), QString()));
+        const QString newFolderPath = md.addSubFolder(collectionName);
+        if (newFolderPath.isEmpty()) {
+            changeProcessed();
+            return;
+        }
 
-    Collection col = collection;
-    col.setRemoteId( collectionName );
-    col.setName( collectionName );
-    changeCommitted( col );
-  }
+        qDebug() << md.subFolderList() << md.entryList();
+
+        Collection col = collection;
+        col.setRemoteId(collectionName);
+        col.setName(collectionName);
+        changeCommitted(col);
+    }
 
 }
 
-void MaildirResource::collectionChanged(const Collection & collection)
+void MaildirResource::collectionChanged(const Collection &collection)
 {
-  if ( !ensureSaneConfiguration() ) {
-    emit error( i18n( "Unusable configuration." ) );
-    changeProcessed();
-    return;
-  }
+    if (!ensureSaneConfiguration()) {
+        emit error(i18n("Unusable configuration."));
+        changeProcessed();
+        return;
+    }
 
-  if ( collection.parentCollection() == Collection::root() ) {
-    if ( collection.name() != name() )
-      setName( collection.name() );
-    changeProcessed();
-    return;
-  }
+    if (collection.parentCollection() == Collection::root()) {
+        if (collection.name() != name()) {
+            setName(collection.name());
+        }
+        changeProcessed();
+        return;
+    }
 
-  if ( collection.remoteId() == collection.name() ) {
-    changeProcessed();
-    return;
-  }
+    if (collection.remoteId() == collection.name()) {
+        changeProcessed();
+        return;
+    }
 
-  Maildir md = maildirForCollection( collection );
-  if ( !md.isValid() ) {
-    assert( !collection.remoteId().isEmpty() ); // caught in resourcebase
-    // we don't have a maildir for this collection yet, probably due to a race
-    // make one, otherwise the rename below will fail
-    md.create();
-  }
+    Maildir md = maildirForCollection(collection);
+    if (!md.isValid()) {
+        assert(!collection.remoteId().isEmpty());   // caught in resourcebase
+        // we don't have a maildir for this collection yet, probably due to a race
+        // make one, otherwise the rename below will fail
+        md.create();
+    }
 
-  const QString collectionName( collection.name().replace( QDir::separator(), QString() ) );
-  if ( !md.rename( collectionName ) ) {
-    emit error( i18n( "Unable to rename maildir folder '%1'.", collection.name() ) );
-    changeProcessed();
-    return;
-  }
-  Collection c( collection );
-  c.setRemoteId( collectionName );
-  c.setName( collectionName );
-  changeCommitted( c );
+    const QString collectionName(collection.name().replace(QDir::separator(), QString()));
+    if (!md.rename(collectionName)) {
+        emit error(i18n("Unable to rename maildir folder '%1'.", collection.name()));
+        changeProcessed();
+        return;
+    }
+    Collection c(collection);
+    c.setRemoteId(collectionName);
+    c.setName(collectionName);
+    changeCommitted(c);
 }
 
-void MaildirResource::collectionMoved( const Collection &collection, const Collection &source, const Collection &dest )
+void MaildirResource::collectionMoved(const Collection &collection, const Collection &source, const Collection &dest)
 {
-  qDebug() << collection << source << dest;
+    qDebug() << collection << source << dest;
 
-  if ( !ensureSaneConfiguration() ) {
-    emit error( i18n( "Unusable configuration." ) );
-    changeProcessed();
-    return;
-  }
+    if (!ensureSaneConfiguration()) {
+        emit error(i18n("Unusable configuration."));
+        changeProcessed();
+        return;
+    }
 
-  if ( collection.parentCollection() == Collection::root() ) {
-    emit error( i18n( "Cannot move root maildir folder '%1'." ,collection.remoteId() ) );
-    changeProcessed();
-    return;
-  }
+    if (collection.parentCollection() == Collection::root()) {
+        emit error(i18n("Cannot move root maildir folder '%1'." , collection.remoteId()));
+        changeProcessed();
+        return;
+    }
 
-  if ( source == dest ) { // should not happen, but who knows...
-    changeProcessed();
-    return;
-  }
+    if (source == dest) {   // should not happen, but who knows...
+        changeProcessed();
+        return;
+    }
 
-  Collection c( collection );
-  c.setParentCollection( source );
-  Maildir md = maildirForCollection( c );
-  Maildir destMd = maildirForCollection( dest );
-  if ( !md.moveTo( destMd ) ) {
-    emit error( i18n( "Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId() ) );
-    changeProcessed();
-  } else {
-    const QString path = maildirPathForCollection( c );
-    mMaildirsForCollection.remove( path );
-    changeCommitted( collection );
-  }
+    Collection c(collection);
+    c.setParentCollection(source);
+    Maildir md = maildirForCollection(c);
+    Maildir destMd = maildirForCollection(dest);
+    if (!md.moveTo(destMd)) {
+        emit error(i18n("Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId()));
+        changeProcessed();
+    } else {
+        const QString path = maildirPathForCollection(c);
+        mMaildirsForCollection.remove(path);
+        changeCommitted(collection);
+    }
 }
 
-void MaildirResource::collectionRemoved( const Akonadi::Collection &collection )
+void MaildirResource::collectionRemoved(const Akonadi::Collection &collection)
 {
-   if ( !ensureSaneConfiguration() ) {
-    emit error( i18n( "Unusable configuration." ) );
+    if (!ensureSaneConfiguration()) {
+        emit error(i18n("Unusable configuration."));
+        changeProcessed();
+        return;
+    }
+
+    if (collection.parentCollection() == Collection::root()) {
+        emit error(i18n("Cannot delete top-level maildir folder '%1'.", mSettings->path()));
+        changeProcessed();
+        return;
+    }
+
+    Maildir md = maildirForCollection(collection.parentCollection());
+    // !md.isValid() means that our parent folder has been deleted already,
+    // so we don't care at all as that one will be recursive anyway
+    if (md.isValid() && !md.removeSubFolder(collection.remoteId())) {
+        emit error(i18n("Failed to delete sub-folder '%1'.", collection.remoteId()));
+    }
+
+    const QString path = maildirPathForCollection(collection);
+    mMaildirsForCollection.remove(path);
+
     changeProcessed();
-    return;
-  }
-
-  if ( collection.parentCollection() == Collection::root() ) {
-    emit error( i18n( "Cannot delete top-level maildir folder '%1'.", mSettings->path() ) );
-    changeProcessed();
-    return;
-  }
-
-  Maildir md = maildirForCollection( collection.parentCollection() );
-  // !md.isValid() means that our parent folder has been deleted already,
-  // so we don't care at all as that one will be recursive anyway
-  if ( md.isValid() && !md.removeSubFolder( collection.remoteId() ) ) {
-    emit error( i18n( "Failed to delete sub-folder '%1'.", collection.remoteId() ) );
-  }
-
-  const QString path = maildirPathForCollection( collection );
-  mMaildirsForCollection.remove( path );
-
-  changeProcessed();
 }
 
 bool MaildirResource::ensureDirExists()
 {
-  Maildir root( mSettings->path() );
-  if ( !root.isValid( false ) && !mSettings->topLevelIsContainer() ) {
-    if ( !root.create() )
-      emit status( Broken, i18n( "Unable to create maildir '%1'.", mSettings->path() ) );
-    return false;
-  }
-  return true;
+    Maildir root(mSettings->path());
+    if (!root.isValid(false) && !mSettings->topLevelIsContainer()) {
+        if (!root.create()) {
+            emit status(Broken, i18n("Unable to create maildir '%1'.", mSettings->path()));
+        }
+        return false;
+    }
+    return true;
 }
 
 bool MaildirResource::ensureSaneConfiguration()
 {
-  if ( mSettings->path().isEmpty() ) {
-    emit status( NotConfigured, i18n( "No usable storage location configured." ) );
-    setOnline( false );
-    return false;
-  }
-  return true;
+    if (mSettings->path().isEmpty()) {
+        emit status(NotConfigured, i18n("No usable storage location configured."));
+        setOnline(false);
+        return false;
+    }
+    return true;
 }
 
-
-void MaildirResource::slotDirChanged(const QString& dir)
+void MaildirResource::slotDirChanged(const QString &dir)
 {
-  QFileInfo fileInfo( dir );
-  if ( fileInfo.isFile() ) {
-    slotFileChanged( fileInfo );
-    return;
-  }
+    QFileInfo fileInfo(dir);
+    if (fileInfo.isFile()) {
+        slotFileChanged(fileInfo);
+        return;
+    }
 
-  if ( dir == mSettings->path() ) {
-    synchronizeCollectionTree();
-   synchronizeCollection( Collection::root().id() );
-    return;
-  }
+    if (dir == mSettings->path()) {
+        synchronizeCollectionTree();
+        synchronizeCollection(Collection::root().id());
+        return;
+    }
 
-  if ( dir.endsWith( QLatin1String( ".directory" ) ) ) {
-    synchronizeCollectionTree(); //might be too much, but this is not a common case anyway
-    return;
-  }
+    if (dir.endsWith(QLatin1String(".directory"))) {
+        synchronizeCollectionTree(); //might be too much, but this is not a common case anyway
+        return;
+    }
 
-  QDir d( dir );
-  if ( !d.cdUp() )
-    return;
+    QDir d(dir);
+    if (!d.cdUp()) {
+        return;
+    }
 
-  Maildir md( d.path() );
-  if ( !md.isValid() )
-    return;
+    Maildir md(d.path());
+    if (!md.isValid()) {
+        return;
+    }
 
-  md.refreshKeyCache();
+    md.refreshKeyCache();
 
-  const Collection col = collectionForMaildir( md );
-  if ( col.remoteId().isEmpty() ) {
-    qDebug() << "unable to find collection for path" << dir;
-    return;
-  }
+    const Collection col = collectionForMaildir(md);
+    if (col.remoteId().isEmpty()) {
+        qDebug() << "unable to find collection for path" << dir;
+        return;
+    }
 
-  CollectionFetchJob *job = new CollectionFetchJob( col, Akonadi::CollectionFetchJob::Base, this );
-  connect(job, &CollectionFetchJob::result, this, &MaildirResource::fsWatchDirFetchResult);
+    CollectionFetchJob *job = new CollectionFetchJob(col, Akonadi::CollectionFetchJob::Base, this);
+    connect(job, &CollectionFetchJob::result, this, &MaildirResource::fsWatchDirFetchResult);
 }
 
-void MaildirResource::fsWatchDirFetchResult(KJob* job)
+void MaildirResource::fsWatchDirFetchResult(KJob *job)
 {
-  if ( job->error() ) {
-    qDebug() << job->errorString();
-    return;
-  }
-  const Collection::List cols = qobject_cast<CollectionFetchJob*>( job )->collections();
-  if ( cols.isEmpty() )
-    return;
+    if (job->error()) {
+        qDebug() << job->errorString();
+        return;
+    }
+    const Collection::List cols = qobject_cast<CollectionFetchJob *>(job)->collections();
+    if (cols.isEmpty()) {
+        return;
+    }
 
-  synchronizeCollection( cols.first().id() );
+    synchronizeCollection(cols.first().id());
 }
 
-void MaildirResource::slotFileChanged( const QFileInfo& fileInfo )
+void MaildirResource::slotFileChanged(const QFileInfo &fileInfo)
 {
-  const QString key = fileInfo.fileName();
-  if ( mChangedFiles.contains( key ) ) {
-    mChangedFiles.remove( key );
-    return;
-  }
+    const QString key = fileInfo.fileName();
+    if (mChangedFiles.contains(key)) {
+        mChangedFiles.remove(key);
+        return;
+    }
 
-  QString path = fileInfo.path();
-  if ( path.endsWith( QLatin1String( "/new" ) ) ) {
-    path.remove( path.length() - 4, 4 );
-  } else if ( path.endsWith( QLatin1String( "/cur" ) ) ) {
-    path.remove( path.length() - 4, 4 );
-  }
+    QString path = fileInfo.path();
+    if (path.endsWith(QLatin1String("/new"))) {
+        path.remove(path.length() - 4, 4);
+    } else if (path.endsWith(QLatin1String("/cur"))) {
+        path.remove(path.length() - 4, 4);
+    }
 
-  const Maildir md( path );
-  if ( !md.isValid() )
-    return;
+    const Maildir md(path);
+    if (!md.isValid()) {
+        return;
+    }
 
-  const Collection col = collectionForMaildir( md );
-  if ( col.remoteId().isEmpty() ) {
-    qDebug() << "unable to find collection for path" << fileInfo.path();
-    return;
-  }
+    const Collection col = collectionForMaildir(md);
+    if (col.remoteId().isEmpty()) {
+        qDebug() << "unable to find collection for path" << fileInfo.path();
+        return;
+    }
 
-  Item item;
-  item.setRemoteId( key );
-  item.setParentCollection( col );
+    Item item;
+    item.setRemoteId(key);
+    item.setParentCollection(col);
 
-  ItemFetchJob *job = new ItemFetchJob( item, this );
-  job->setProperty( "entry", key );
-  job->setProperty( "dir", path );
-  connect(job, &ItemFetchJob::result, this, &MaildirResource::fsWatchFileFetchResult);
+    ItemFetchJob *job = new ItemFetchJob(item, this);
+    job->setProperty("entry", key);
+    job->setProperty("dir", path);
+    connect(job, &ItemFetchJob::result, this, &MaildirResource::fsWatchFileFetchResult);
 }
 
-void MaildirResource::fsWatchFileFetchResult( KJob* job )
+void MaildirResource::fsWatchFileFetchResult(KJob *job)
 {
-  if ( job->error() ) {
-    qDebug() << job->errorString();
-    return;
-  }
-  Item::List items = qobject_cast<ItemFetchJob*>( job )->items();
-  if ( items.isEmpty() )
-    return;
+    if (job->error()) {
+        qDebug() << job->errorString();
+        return;
+    }
+    Item::List items = qobject_cast<ItemFetchJob *>(job)->items();
+    if (items.isEmpty()) {
+        return;
+    }
 
-  const QString fileName = job->property( "entry" ).toString();
-  const QString path = job->property( "dir" ).toString();
+    const QString fileName = job->property("entry").toString();
+    const QString path = job->property("dir").toString();
 
-  const Maildir md( path );
+    const Maildir md(path);
 
-  QString entry = fileName;
-  Item item( items.at( 0 ) );
-  const qint64 entrySize = md.size( entry );
-  if ( entrySize >= 0 )
-    item.setSize( entrySize );
+    QString entry = fileName;
+    Item item(items.at(0));
+    const qint64 entrySize = md.size(entry);
+    if (entrySize >= 0) {
+        item.setSize(entrySize);
+    }
 
-  Item::Flags flags = md.readEntryFlags( entry );
-  Q_FOREACH ( const Item::Flag &flag, flags ) {
-    item.setFlag( flag );
-  }
+    Item::Flags flags = md.readEntryFlags(entry);
+    Q_FOREACH (const Item::Flag &flag, flags) {
+        item.setFlag(flag);
+    }
 
-  const QByteArray data = md.readEntry( entry );
-  KMime::Message *mail = new KMime::Message();
-  mail->setContent( KMime::CRLFtoLF( data ) );
-  mail->parse();
+    const QByteArray data = md.readEntry(entry);
+    KMime::Message *mail = new KMime::Message();
+    mail->setContent(KMime::CRLFtoLF(data));
+    mail->parse();
 
-  item.setPayload( KMime::Message::Ptr( mail ) );
+    item.setPayload(KMime::Message::Ptr(mail));
 
-  ItemModifyJob *mjob = new ItemModifyJob( item );
-  connect(mjob, &ItemModifyJob::result, this, &MaildirResource::fsWatchFileModifyResult);
+    ItemModifyJob *mjob = new ItemModifyJob(item);
+    connect(mjob, &ItemModifyJob::result, this, &MaildirResource::fsWatchFileModifyResult);
 }
 
-void MaildirResource::fsWatchFileModifyResult(KJob* job)
+void MaildirResource::fsWatchFileModifyResult(KJob *job)
 {
-  if ( job->error() ) {
-    qDebug() << job->errorString();
-    return;
-  }
+    if (job->error()) {
+        qDebug() << job->errorString();
+        return;
+    }
 }
 
-QString MaildirResource::maildirPathForCollection(const Collection& collection) const
+QString MaildirResource::maildirPathForCollection(const Collection &collection) const
 {
-  QString path = collection.remoteId();
-  Akonadi::Collection parent = collection.parentCollection();
-  while ( !parent.remoteId().isEmpty() ) {
-    path.prepend( parent.remoteId() + QLatin1Char('/') );
-    parent = parent.parentCollection();
-  }
+    QString path = collection.remoteId();
+    Akonadi::Collection parent = collection.parentCollection();
+    while (!parent.remoteId().isEmpty()) {
+        path.prepend(parent.remoteId() + QLatin1Char('/'));
+        parent = parent.parentCollection();
+    }
 
-  return path;
+    return path;
 }
 
 void MaildirResource::stopMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->stopDirScan( path + QLatin1Literal( "/new" ) );
-    mFsWatcher->stopDirScan( path + QLatin1Literal( "/cur" ) );
+    mFsWatcher->stopDirScan(path + QLatin1Literal("/new"));
+    mFsWatcher->stopDirScan(path + QLatin1Literal("/cur"));
 }
 
 void MaildirResource::restartMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->restartDirScan( path + QLatin1Literal( "/new" ) );
-    mFsWatcher->restartDirScan( path + QLatin1Literal( "/cur" ) );
+    mFsWatcher->restartDirScan(path + QLatin1Literal("/new"));
+    mFsWatcher->restartDirScan(path + QLatin1Literal("/cur"));
 }
 
 void MaildirResource::changedCleaner()

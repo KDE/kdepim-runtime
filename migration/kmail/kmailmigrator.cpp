@@ -23,7 +23,6 @@
 
 #include "kmailmigrator.h"
 
-
 // avoid metatype.h from interfering
 #define POP3_METATYPE_H
 
@@ -79,1277 +78,1290 @@ enum MboxLocking { Procmail, MuttDotLock, MuttDotLockPrivileged, MboxNone };
 
 #define SPECIALCOLLECTIONS_LOCK_SERVICE QLatin1String( "org.kde.pim.SpecialCollections" )
 
-static MixedMaildirStore *createStoreFromBasePath( const QString &basePath )
+static MixedMaildirStore *createStoreFromBasePath(const QString &basePath)
 {
-  MixedMaildirStore *store = 0;
-  const QFileInfo baseDir( basePath );
-  if ( baseDir.exists() && baseDir.isDir() ) {
-    store = new MixedMaildirStore;
-    store->setPath( baseDir.absoluteFilePath() );
-  }
+    MixedMaildirStore *store = 0;
+    const QFileInfo baseDir(basePath);
+    if (baseDir.exists() && baseDir.isDir()) {
+        store = new MixedMaildirStore;
+        store->setPath(baseDir.absoluteFilePath());
+    }
 
-  return store;
+    return store;
 }
 
-static void backupConfig( const QString &name, const QDir &backupDir )
+static void backupConfig(const QString &name, const QDir &backupDir)
 {
-  const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, name );
-  if ( !configFile.isEmpty() ) {
-    QFile::copy( configFile, QFileInfo( backupDir, name ).absoluteFilePath() );
-  }
+    const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, name);
+    if (!configFile.isEmpty()) {
+        QFile::copy(configFile, QFileInfo(backupDir, name).absoluteFilePath());
+    }
 }
 
 KMailMigrator::KMailMigrator() :
-  KMigratorBase(),
-  mWallet( 0 ),
-  mDImapCache( 0 ),
-  mImapCache( 0 ),
-  mForwardResourceNotifications( false ),
-  mImapCacheAdapter( 0 )
+    KMigratorBase(),
+    mWallet(0),
+    mDImapCache(0),
+    mImapCache(0),
+    mForwardResourceNotifications(false),
+    mImapCacheAdapter(0)
 {
-  Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionAnnotationsAttribute>();
-  connect( AgentManager::self(), SIGNAL(instanceStatusChanged(Akonadi::AgentInstance)),
-           this, SLOT(instanceStatusChanged(Akonadi::AgentInstance)) );
-  connect( AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
-           this, SLOT(instanceProgressChanged(Akonadi::AgentInstance)) );
+    Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionAnnotationsAttribute>();
+    connect(AgentManager::self(), SIGNAL(instanceStatusChanged(Akonadi::AgentInstance)),
+            this, SLOT(instanceStatusChanged(Akonadi::AgentInstance)));
+    connect(AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
+            this, SLOT(instanceProgressChanged(Akonadi::AgentInstance)));
 }
 
 KMailMigrator::~KMailMigrator()
 {
-  delete mWallet;
-  delete mDImapCache;
-  delete mImapCache;
+    delete mWallet;
+    delete mDImapCache;
+    delete mImapCache;
 }
 
 void KMailMigrator::migrate()
 {
-  emit message( Info, i18n( "Beginning KMail migration..." ) );
+    emit message(Info, i18n("Beginning KMail migration..."));
 
-  // copy config files to backup locations
-  const KDateTime now = KDateTime::currentLocalDateTime();
-  const QDir backupDir( QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + now.toString());
+    // copy config files to backup locations
+    const KDateTime now = KDateTime::currentLocalDateTime();
+    const QDir backupDir(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1Char('/') + now.toString());
 
-  // copy current configs to backup location
-  // strickly speaking neither kmailrc not mailtransports are changed by the migrator
-  // but copy them anyway as the belong conceptually to the KMail1 -> KMail2 migration
-  backupConfig( QLatin1String("kmailrc"), backupDir );
-  backupConfig( QLatin1String("mailtransports"), backupDir );
-  backupConfig( QLatin1String("emailidentities"), backupDir );
-  backupConfig( QLatin1String("kcmkmailsummaryrc"), backupDir );
-  backupConfig( QLatin1String("templatesconfigurationrc"), backupDir );
+    // copy current configs to backup location
+    // strickly speaking neither kmailrc not mailtransports are changed by the migrator
+    // but copy them anyway as the belong conceptually to the KMail1 -> KMail2 migration
+    backupConfig(QLatin1String("kmailrc"), backupDir);
+    backupConfig(QLatin1String("mailtransports"), backupDir);
+    backupConfig(QLatin1String("emailidentities"), backupDir);
+    backupConfig(QLatin1String("kcmkmailsummaryrc"), backupDir);
+    backupConfig(QLatin1String("templatesconfigurationrc"), backupDir);
 
-  KSharedConfigPtr oldConfig = KSharedConfig::openConfig( QLatin1String( "kmailrc" ) );
-  mConfig = KSharedConfig::openConfig( QLatin1String( "kmail2rc" ) );
+    KSharedConfigPtr oldConfig = KSharedConfig::openConfig(QLatin1String("kmailrc"));
+    mConfig = KSharedConfig::openConfig(QLatin1String("kmail2rc"));
 
-  const QFileInfo migratorConfigInfo( QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1Char('/') + KSharedConfig::openConfig()->name() ) ;
+    const QFileInfo migratorConfigInfo(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1Char('/') + KSharedConfig::openConfig()->name()) ;
 
-  const QString &newKMailCfgFile = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kmail2rc" ) ;
+    const QString &newKMailCfgFile = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kmail2rc") ;
 
-  // copy old config into new config, if
-  bool copy = false;
-  // there is no migrator config (no migration happened yet or full rerun)
-  copy = copy || !migratorConfigInfo.exists();
-  // new config does not exist yet
-  copy = copy || !QFileInfo( newKMailCfgFile ).exists();
-  // new config is empty
-  copy = copy || mConfig->groupList().isEmpty();
-  // new config does not contain any account groups
-  copy = copy || mConfig->groupList().filter( QRegExp( QLatin1String("Account \\d+") ) ).isEmpty();
+    // copy old config into new config, if
+    bool copy = false;
+    // there is no migrator config (no migration happened yet or full rerun)
+    copy = copy || !migratorConfigInfo.exists();
+    // new config does not exist yet
+    copy = copy || !QFileInfo(newKMailCfgFile).exists();
+    // new config is empty
+    copy = copy || mConfig->groupList().isEmpty();
+    // new config does not contain any account groups
+    copy = copy || mConfig->groupList().filter(QRegExp(QLatin1String("Account \\d+"))).isEmpty();
 
-  if ( copy ) {
-    qCDebug(KMAILMIGRATION_LOG) << "Copying content from kmailrc";
-    oldConfig->copyTo( newKMailCfgFile, mConfig.data() );
-  } else {
-    qCDebug(KMAILMIGRATION_LOG) << "Ignoring kmailrc, just using contents from kmail2rc";
-  }
+    if (copy) {
+        qCDebug(KMAILMIGRATION_LOG) << "Copying content from kmailrc";
+        oldConfig->copyTo(newKMailCfgFile, mConfig.data());
+    } else {
+        qCDebug(KMAILMIGRATION_LOG) << "Ignoring kmailrc, just using contents from kmail2rc";
+    }
 
-  mEmailIdentityConfig = KSharedConfig::openConfig( QLatin1String( "emailidentities" ) );
+    mEmailIdentityConfig = KSharedConfig::openConfig(QLatin1String("emailidentities"));
 
-  mKcmKmailSummaryConfig = KSharedConfig::openConfig( QLatin1String( "kcmkmailsummaryrc" ) );
+    mKcmKmailSummaryConfig = KSharedConfig::openConfig(QLatin1String("kcmkmailsummaryrc"));
 
-  mTemplatesConfig = KSharedConfig::openConfig( QLatin1String( "templatesconfigurationrc" ) );
+    mTemplatesConfig = KSharedConfig::openConfig(QLatin1String("templatesconfigurationrc"));
 
-  deleteOldGroup();
-  migrateTags();
-  migrateRCFiles();
-  migrateNotifyFile();
+    deleteOldGroup();
+    migrateTags();
+    migrateRCFiles();
+    migrateNotifyFile();
 
-  // copy autosave files if there are any
-  const QString autoSaveDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail/autosave");
-  if ( !autoSaveDir.isEmpty() ) {
-    const QString destDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail2");
-    KIO::CopyJob *job = KIO::copy( QUrl::fromLocalFile( autoSaveDir ),
-                                   QUrl::fromLocalFile( destDir ),
-                                   KIO::HideProgressInfo );
-    job->setAutoSkip( true );
-    job->setWriteIntoExistingDirectories( true );
-    connect(job, &KIO::CopyJob::result, this, &KMailMigrator::autoSaveCopyResult);
-  }
+    // copy autosave files if there are any
+    const QString autoSaveDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail/autosave");
+    if (!autoSaveDir.isEmpty()) {
+        const QString destDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("kmail2");
+        KIO::CopyJob *job = KIO::copy(QUrl::fromLocalFile(autoSaveDir),
+                                      QUrl::fromLocalFile(destDir),
+                                      KIO::HideProgressInfo);
+        job->setAutoSkip(true);
+        job->setWriteIntoExistingDirectories(true);
+        connect(job, &KIO::CopyJob::result, this, &KMailMigrator::autoSaveCopyResult);
+    }
 
-  mAccounts = mConfig->groupList().filter( QRegExp( QLatin1String("Account \\d+") ) );
+    mAccounts = mConfig->groupList().filter(QRegExp(QLatin1String("Account \\d+")));
 
-  mIt = mAccounts.begin();
-  migrateNext();
+    mIt = mAccounts.begin();
+    migrateNext();
 }
 
-void KMailMigrator::autoSaveCopyResult( KJob *job )
+void KMailMigrator::autoSaveCopyResult(KJob *job)
 {
-  if ( job->error() ) {
-    qCDebug(KMAILMIGRATION_LOG) << "error=" << job->error()
-      << "text=" << job->errorString();
-  }
+    if (job->error()) {
+        qCDebug(KMAILMIGRATION_LOG) << "error=" << job->error()
+                                    << "text=" << job->errorString();
+    }
 }
 
 void KMailMigrator::deleteOldGroup()
 {
-  deleteOldGroup( QLatin1String("GroupwareFolderInfo") );
-  deleteOldGroup( QLatin1String("Groupware") );
-  deleteOldGroup( QLatin1String("IMAP Resource") );
-  deleteOldGroup( QLatin1String("Folder_local_root") );
-  deleteOldGroup( QLatin1String("Folder_search") );
+    deleteOldGroup(QLatin1String("GroupwareFolderInfo"));
+    deleteOldGroup(QLatin1String("Groupware"));
+    deleteOldGroup(QLatin1String("IMAP Resource"));
+    deleteOldGroup(QLatin1String("Folder_local_root"));
+    deleteOldGroup(QLatin1String("Folder_search"));
 }
 
-void KMailMigrator::deleteOldGroup( const QString& name ) {
-  if ( mConfig->hasGroup( name ) ) {
-    KConfigGroup groupName( mConfig, name );
-    groupName.deleteGroup();
-  }
+void KMailMigrator::deleteOldGroup(const QString &name)
+{
+    if (mConfig->hasGroup(name)) {
+        KConfigGroup groupName(mConfig, name);
+        groupName.deleteGroup();
+    }
 }
 
 void KMailMigrator::migrateNotifyFile()
 {
-    const QString notifyFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, QLatin1String("kmail.notifyrc") );
-    if ( !notifyFile.isEmpty() ) {
-        QFile::copy( notifyFile, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kmail2.notifyrc" )) ;
+    const QString notifyFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, QLatin1String("kmail.notifyrc"));
+    if (!notifyFile.isEmpty()) {
+        QFile::copy(notifyFile, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kmail2.notifyrc")) ;
     }
 
 }
 
 void KMailMigrator::migrateTags()
 {
-  KConfigGroup tagMigrationConfig( KSharedConfig::openConfig(), QLatin1String( "MessageTags" ) );
-  const QStringList migratedTags = tagMigrationConfig.readEntry( "MigratedTags", QStringList() );
+    KConfigGroup tagMigrationConfig(KSharedConfig::openConfig(), QLatin1String("MessageTags"));
+    const QStringList migratedTags = tagMigrationConfig.readEntry("MigratedTags", QStringList());
 
-  const QStringList tagGroups = mConfig->groupList().filter( QRegExp( QLatin1String("MessageTag #\\d+") ) );
+    const QStringList tagGroups = mConfig->groupList().filter(QRegExp(QLatin1String("MessageTag #\\d+")));
 
-  QSet<QString> groupNames = tagGroups.toSet();
-  groupNames.subtract( migratedTags.toSet() );
+    QSet<QString> groupNames = tagGroups.toSet();
+    groupNames.subtract(migratedTags.toSet());
 
-  qCDebug(KMAILMIGRATION_LOG) << "Tag Groups:" << tagGroups << "MigratedTags:" << migratedTags
-           << "Unmigrated Tags:" << groupNames;
+    qCDebug(KMAILMIGRATION_LOG) << "Tag Groups:" << tagGroups << "MigratedTags:" << migratedTags
+                                << "Unmigrated Tags:" << groupNames;
 
-  QStringList newlyMigratedTags;
-  Q_FOREACH ( const QString &groupName, groupNames ) {
-    const KConfigGroup group( mConfig, groupName );
+    QStringList newlyMigratedTags;
+    Q_FOREACH (const QString &groupName, groupNames) {
+        const KConfigGroup group(mConfig, groupName);
 
-    const QString label = group.readEntry( QLatin1String( "Label" ), QString() );
-    if ( label.isEmpty() ) {
-      continue;
+        const QString label = group.readEntry(QLatin1String("Label"), QString());
+        if (label.isEmpty()) {
+            continue;
+        }
+        const QString name = group.readEntry(QLatin1String("Name"), QString());
+        if (name.isEmpty()) {
+            continue;
+        }
+
+        const QColor textColor = group.readEntry(QLatin1String("text-color"), QColor());
+        const QColor backgroundColor = group.readEntry(QLatin1String("background-color"), QColor());
+        const bool hasFont = group.hasKey(QLatin1String("text-font"));
+        const QFont textFont = group.readEntry(QLatin1String("text-font"), QFont());
+
+        const bool inToolbar = group.readEntry(QLatin1String("toolbar"), false);
+        const QString iconName = group.readEntry(QLatin1String("icon"), QString::fromLatin1("mail-tagged"));
+
+        const QString shortcut = group.readEntry(QLatin1String("shortcut"), QString());
+
+        Akonadi::Tag tag(label);
+        Akonadi::TagAttribute *attr = tag.attribute<Akonadi::TagAttribute>(Akonadi::AttributeEntity::AddIfMissing);
+        attr->setDisplayName(name);
+        attr->setIconName(iconName);
+        attr->setInToolbar(inToolbar);
+        if (hasFont) {
+            attr->setFont(textFont.toString());
+        }
+        attr->setBackgroundColor(backgroundColor);
+        attr->setTextColor(textColor);
+        attr->setShortcut(shortcut);
+
+        Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag);
+        createJob->setMergeIfExisting(true);
+
+        qCDebug(KMAILMIGRATION_LOG) << "Tag: label=" << label << "name=" << name
+                                    << "textColor=" << textColor << "backgroundColor=" << backgroundColor
+                                    << "hasFont=" << hasFont << "font=" << textFont
+                                    << "icon=" << iconName << "inToolbar=" << inToolbar
+                                    << "shortcut=" << shortcut;
+
+        newlyMigratedTags << groupName;
     }
-    const QString name = group.readEntry( QLatin1String( "Name" ), QString() );
-    if ( name.isEmpty() ) {
-      continue;
+
+    //Cleanup migrated group
+    Q_FOREACH (const QString &groupName, newlyMigratedTags) {
+        deleteOldGroup(groupName);
     }
 
-    const QColor textColor = group.readEntry( QLatin1String( "text-color" ), QColor() );
-    const QColor backgroundColor = group.readEntry( QLatin1String( "background-color" ), QColor() );
-    const bool hasFont = group.hasKey( QLatin1String( "text-font" ) );
-    const QFont textFont = group.readEntry( QLatin1String( "text-font" ), QFont() );
-
-    const bool inToolbar = group.readEntry( QLatin1String( "toolbar" ), false );
-    const QString iconName = group.readEntry( QLatin1String( "icon" ), QString::fromLatin1( "mail-tagged" ) );
-
-    const QString shortcut = group.readEntry( QLatin1String( "shortcut" ), QString() );
-
-    Akonadi::Tag tag(label);
-    Akonadi::TagAttribute *attr = tag.attribute<Akonadi::TagAttribute>(Akonadi::AttributeEntity::AddIfMissing);
-    attr->setDisplayName(name);
-    attr->setIconName( iconName );
-    attr->setInToolbar( inToolbar );
-    if (hasFont) {
-        attr->setFont( textFont.toString() );
+    if (!newlyMigratedTags.isEmpty()) {
+        tagMigrationConfig.writeEntry("MigratedTags", migratedTags + newlyMigratedTags);
+        tagMigrationConfig.sync();
     }
-    attr->setBackgroundColor( backgroundColor );
-    attr->setTextColor( textColor );
-    attr->setShortcut( shortcut );
-
-    Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag);
-    createJob->setMergeIfExisting(true);
-
-    qCDebug(KMAILMIGRATION_LOG) << "Tag: label=" << label << "name=" << name
-             << "textColor=" << textColor << "backgroundColor=" << backgroundColor
-             << "hasFont=" << hasFont << "font=" << textFont
-             << "icon=" << iconName << "inToolbar=" << inToolbar
-             << "shortcut=" << shortcut;
-
-    newlyMigratedTags << groupName;
-  }
-
-  //Cleanup migrated group
-  Q_FOREACH ( const QString &groupName, newlyMigratedTags ) {
-    deleteOldGroup( groupName );
-  }
-
-  if ( !newlyMigratedTags.isEmpty() ) {
-    tagMigrationConfig.writeEntry( "MigratedTags", migratedTags + newlyMigratedTags );
-    tagMigrationConfig.sync();
-  }
 }
 
 void KMailMigrator::migrateRCFiles()
 {
-  const QDir sourceDir( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail") ) ;
-  const QDir targetDir( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail2") ) ;
-  QDir().mkpath( targetDir.absolutePath() );
+    const QDir sourceDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail")) ;
+    const QDir targetDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail2")) ;
+    QDir().mkpath(targetDir.absolutePath());
 
-  const QFileInfoList files = sourceDir.entryInfoList( QStringList() << QLatin1String( "*.rc" ),
-                                                       QDir::Files | QDir::Readable );
-  Q_FOREACH ( const QFileInfo &fileInfo, files ) {
-    QFile file( fileInfo.absoluteFilePath() );
-    file.copy( QFileInfo( targetDir, fileInfo.fileName() ).absoluteFilePath() );
-  }
+    const QFileInfoList files = sourceDir.entryInfoList(QStringList() << QLatin1String("*.rc"),
+                                QDir::Files | QDir::Readable);
+    Q_FOREACH (const QFileInfo &fileInfo, files) {
+        QFile file(fileInfo.absoluteFilePath());
+        file.copy(QFileInfo(targetDir, fileInfo.fileName()).absoluteFilePath());
+    }
 }
 
 void KMailMigrator::migrateNext()
 {
-  while ( mIt != mAccounts.end() ) {
-    mCurrentAccount = *mIt;
-    const KConfigGroup group( mConfig, mCurrentAccount );
+    while (mIt != mAccounts.end()) {
+        mCurrentAccount = *mIt;
+        const KConfigGroup group(mConfig, mCurrentAccount);
 
-    const QString name = group.readEntry( "Name" );
-    const QString idString = group.readEntry( "Id" );
-    if ( migrationState( idString ) == None ) {
-      ++mIt;
-      if ( !migrateCurrentAccount() ) {
-        emit message( Error, i18n( "No backend for '%1' available.", name ) );
-        migrateNext();
-      }
-      return;
+        const QString name = group.readEntry("Name");
+        const QString idString = group.readEntry("Id");
+        if (migrationState(idString) == None) {
+            ++mIt;
+            if (!migrateCurrentAccount()) {
+                emit message(Error, i18n("No backend for '%1' available.", name));
+                migrateNext();
+            }
+            return;
+        }
+
+        if (migrationState(idString) == Complete) {
+            emit message(Skip, i18n("'%1' has been already migrated.", name));
+        }
+
+        ++mIt;
     }
-
-    if ( migrationState( idString ) == Complete )
-      emit message( Skip, i18n( "'%1' has been already migrated.", name ) );
-
-    ++mIt;
-  }
-  if ( mIt == mAccounts.end() ) {
-    if ( mImapCacheAdapter != 0 ) {
-      emit message( Info, i18n( "Enabling access to the disconnected IMAP cache of the previous KMail version" ) );
-      emit status( QString() );
-      mImapCacheAdapter->start();
-    } else {
-      migrateLocalFolders();
+    if (mIt == mAccounts.end()) {
+        if (mImapCacheAdapter != 0) {
+            emit message(Info, i18n("Enabling access to the disconnected IMAP cache of the previous KMail version"));
+            emit status(QString());
+            mImapCacheAdapter->start();
+        } else {
+            migrateLocalFolders();
+        }
     }
-  }
 }
 
 void KMailMigrator::migrateLocalFolders()
 {
-  if ( migrationState( QLatin1String("LocalFolders") ) == Complete ) {
-    emit message( Skip, i18n( "Local folders have already been migrated." ) );
-    emit status( QString() );
-    migrationDone();
-    return;
-  }
+    if (migrationState(QLatin1String("LocalFolders")) == Complete) {
+        emit message(Skip, i18n("Local folders have already been migrated."));
+        emit status(QString());
+        migrationDone();
+        return;
+    }
 
-  KConfigGroup cfgGroup( mConfig, "General" );
-  cfgGroup.deleteEntry( "QuotaUnit" );
-  cfgGroup.deleteEntry( "default-mailbox-format" );
-  mConfig->sync();
-  const QString localMaildirDefaultPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/mail" ) ;
-  mLocalMaildirPath = cfgGroup.readPathEntry( "folders", localMaildirDefaultPath );
-  const QFileInfo fileInfo( mLocalMaildirPath );
-  if ( !fileInfo.exists() || !fileInfo.isDir() ) {
-    emit status( QString() );
-    migrationDone();
-  } else {
-    qCDebug(KMAILMIGRATION_LOG) << mLocalMaildirPath;
+    KConfigGroup cfgGroup(mConfig, "General");
+    cfgGroup.deleteEntry("QuotaUnit");
+    cfgGroup.deleteEntry("default-mailbox-format");
+    mConfig->sync();
+    const QString localMaildirDefaultPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/mail") ;
+    mLocalMaildirPath = cfgGroup.readPathEntry("folders", localMaildirDefaultPath);
+    const QFileInfo fileInfo(mLocalMaildirPath);
+    if (!fileInfo.exists() || !fileInfo.isDir()) {
+        emit status(QString());
+        migrationDone();
+    } else {
+        qCDebug(KMAILMIGRATION_LOG) << mLocalMaildirPath;
 
-    emit message( Info, i18nc( "@info:status", "Migrating local folders in '%1'...", mLocalMaildirPath ) );
+        emit message(Info, i18nc("@info:status", "Migrating local folders in '%1'...", mLocalMaildirPath));
 
-    // show status/progress info of resources in our dialog
-    mForwardResourceNotifications = true;
+        // show status/progress info of resources in our dialog
+        mForwardResourceNotifications = true;
 
-    createAgentInstance( QLatin1String("akonadi_mixedmaildir_resource"), this,
-                         SLOT(localMaildirCreated(KJob*)) );
-  }
+        createAgentInstance(QLatin1String("akonadi_mixedmaildir_resource"), this,
+                            SLOT(localMaildirCreated(KJob*)));
+    }
 }
 
 void KMailMigrator::migrationDone()
 {
-  emit message( Success, i18n( "Migration successfully completed." ) );
+    emit message(Success, i18n("Migration successfully completed."));
 
-  migrateInstanceTrashFolder();
+    migrateInstanceTrashFolder();
 
-  mConfig->sync();
-  qCDebug(KMAILMIGRATION_LOG) << "Deleting" << mFailedInstances.count() << "failed resource instances";
-  Q_FOREACH ( const AgentInstance &instance, mFailedInstances ) {
-    if ( instance.isValid() ) {
-      AgentManager::self()->removeInstance( instance );
+    mConfig->sync();
+    qCDebug(KMAILMIGRATION_LOG) << "Deleting" << mFailedInstances.count() << "failed resource instances";
+    Q_FOREACH (const AgentInstance &instance, mFailedInstances) {
+        if (instance.isValid()) {
+            AgentManager::self()->removeInstance(instance);
+        }
     }
-  }
-  cleanupConfigFile();
-  migrateConfigurationDialogRestriction();
-  deleteLater();
+    cleanupConfigFile();
+    migrateConfigurationDialogRestriction();
+    deleteLater();
 }
 
-OrgKdeAkonadiImapSettingsInterface* KMailMigrator::createImapSettingsInterface( const Akonadi::AgentInstance& instance )
+OrgKdeAkonadiImapSettingsInterface *KMailMigrator::createImapSettingsInterface(const Akonadi::AgentInstance &instance)
 {
-  OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
-    QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
-    QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
-  if ( !iface->isValid() ) {
-    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
-    delete iface;
-    return 0;
-  }
-  return iface;
+    OrgKdeAkonadiImapSettingsInterface *iface = new OrgKdeAkonadiImapSettingsInterface(
+        QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
+    if (!iface->isValid()) {
+        migrationFailed(i18n("Failed to obtain D-Bus interface for remote configuration."), instance);
+        delete iface;
+        return 0;
+    }
+    return iface;
 }
 
-OrgKdeAkonadiPOP3SettingsInterface* KMailMigrator::createPop3SettingsInterface( const Akonadi::AgentInstance& instance )
+OrgKdeAkonadiPOP3SettingsInterface *KMailMigrator::createPop3SettingsInterface(const Akonadi::AgentInstance &instance)
 {
-  OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
-    QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
-    QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
-  if ( !iface->isValid() ) {
-    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
-    delete iface;
-    return 0;
-  }
-  return iface;
+    OrgKdeAkonadiPOP3SettingsInterface *iface = new OrgKdeAkonadiPOP3SettingsInterface(
+        QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
+    if (!iface->isValid()) {
+        migrationFailed(i18n("Failed to obtain D-Bus interface for remote configuration."), instance);
+        delete iface;
+        return 0;
+    }
+    return iface;
 }
 
 void KMailMigrator::migrateConfigurationDialogRestriction()
 {
-  if ( mConfig->hasGroup( "ConfigurationDialogRestrictions" ) ) {
-    KSharedConfigPtr resourcebaseconfig = KSharedConfig::openConfig( QLatin1String( "resourcebaserc" ) );
-    KConfigGroup oldGroup = mConfig->group( "ConfigurationDialogRestrictions" );
-    KConfigGroup newGroup = resourcebaseconfig->group( "ConfigurationDialogRestrictions" );
-    oldGroup.copyTo( &newGroup );
-    oldGroup.deleteGroup();
-  }
+    if (mConfig->hasGroup("ConfigurationDialogRestrictions")) {
+        KSharedConfigPtr resourcebaseconfig = KSharedConfig::openConfig(QLatin1String("resourcebaserc"));
+        KConfigGroup oldGroup = mConfig->group("ConfigurationDialogRestrictions");
+        KConfigGroup newGroup = resourcebaseconfig->group("ConfigurationDialogRestrictions");
+        oldGroup.copyTo(&newGroup);
+        oldGroup.deleteGroup();
+    }
 
 }
 
 void KMailMigrator::cleanupConfigFile()
 {
-  mIt = mAccounts.begin();
-  AccountIterator end( mAccounts.end() ) ;
+    mIt = mAccounts.begin();
+    AccountIterator end(mAccounts.end()) ;
 
-  while ( mIt != end ) {
-    const QString accountName = *mIt;
-    deleteOldGroup( accountName );
-    ++mIt;
-  }
+    while (mIt != end) {
+        const QString accountName = *mIt;
+        deleteOldGroup(accountName);
+        ++mIt;
+    }
 
-  deleteOldGroup( QLatin1String("FavoriteFolderView") );
+    deleteOldGroup(QLatin1String("FavoriteFolderView"));
 
-  if ( mConfig->hasGroup( "Internal" ) ) {
-    KConfigGroup cfgGroup( mConfig, "General" );
-    cfgGroup.deleteEntry( "MsgDictSizeHint" );
-  }
+    if (mConfig->hasGroup("Internal")) {
+        KConfigGroup cfgGroup(mConfig, "General");
+        cfgGroup.deleteEntry("MsgDictSizeHint");
+    }
 }
 
 void KMailMigrator::migrateInstanceTrashFolder()
 {
-  mIt = mAccounts.begin();
-  while ( mIt != mAccounts.end() ) {
-    const QString accountName = *mIt;
-    const KConfigGroup group( mConfig, accountName );
-    if ( mAccountInstance.contains( accountName ) ) {
-      AccountConfig accountConf = mAccountInstance.value( accountName );
-      Akonadi::AgentInstance instance = accountConf.instance;
-      if ( accountConf.imapAccount ) { //Imap
-        OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
-        if ( iface ) {
-          const qint64 value = group.readEntry( "trash", -1 );
-          if ( value != -1 ) {
-            iface->setTrashCollection( value );
-            // make sure the config is saved
-            iface->save();
-            instance.reconfigure();
-          }
+    mIt = mAccounts.begin();
+    while (mIt != mAccounts.end()) {
+        const QString accountName = *mIt;
+        const KConfigGroup group(mConfig, accountName);
+        if (mAccountInstance.contains(accountName)) {
+            AccountConfig accountConf = mAccountInstance.value(accountName);
+            Akonadi::AgentInstance instance = accountConf.instance;
+            if (accountConf.imapAccount) {   //Imap
+                OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface(instance);
+                if (iface) {
+                    const qint64 value = group.readEntry("trash", -1);
+                    if (value != -1) {
+                        iface->setTrashCollection(value);
+                        // make sure the config is saved
+                        iface->save();
+                        instance.reconfigure();
+                    }
+                }
+            } else { //Pop3
+                OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface(instance);
+                if (iface) {
+                    const qint64 value = group.readEntry("Folder", -1);
+                    if (value != -1) {
+                        iface->setTargetCollection(value);
+                        // make sure the config is saved
+                        iface->save();
+                        instance.reconfigure();
+                    }
+                }
+            }
         }
-      } else { //Pop3
-        OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface( instance );
-        if ( iface ) {
-          const qint64 value = group.readEntry( "Folder", -1 );
-          if ( value != -1 ) {
-            iface->setTargetCollection( value );
-            // make sure the config is saved
-            iface->save();
-            instance.reconfigure();
-          }
+        ++mIt;
+    }
+}
+
+void KMailMigrator::migrationFailed(const QString &errorMsg,
+                                    bool doMigrateNext,
+                                    const AgentInstance &instance)
+{
+    const KConfigGroup group(mConfig, mCurrentAccount);
+    emit message(Error, i18n("Migration of '%1' to Akonadi resource failed: %2",
+                             group.readEntry("Name"), errorMsg));
+
+    if (instance.isValid()) {
+        mFailedInstances << instance;
+    }
+
+    mCurrentAccount.clear();
+    mCurrentInstance = AgentInstance();
+
+    if (doMigrateNext) {
+        migrateNext();
+    }
+}
+
+void KMailMigrator::migrationCompleted(const AgentInstance &instance, bool doMigrateNext)
+{
+    const KConfigGroup group(mConfig, mCurrentAccount);
+    const QString accountId = group.readEntry(QLatin1String("Id"));
+
+    // check if the account is used in filters
+    const QStringList filterGroups = mConfig->groupList().filter(QRegExp(QLatin1String("Filter #\\d+")));
+    //qCDebug(KMAILMIGRATION_LOG) << "filterGroups=" << filterGroups;
+    Q_FOREACH (const QString &groupName, filterGroups) {
+        KConfigGroup filterGroup(mConfig, groupName);
+
+        QStringList accountsSet = filterGroup.readEntry(QLatin1String("accounts-set"), QStringList());
+        //if ( !accountsSet.isEmpty() ) {
+        //  qCDebug(KMAILMIGRATION_LOG) << "accountsSet=" << accountsSet;
+        //}
+        const int index = accountsSet.indexOf(accountId);
+        if (index != -1) {
+            qCDebug(KMAILMIGRATION_LOG) << "replacing account id" << accountId
+                                        << "in filter" << groupName
+                                        << "with resource id" << instance.identifier();
+            accountsSet.replace(index, instance.identifier());
+            filterGroup.writeEntry(QLatin1String("accounts-set"), accountsSet);
         }
-      }
-    }
-    ++mIt;
-  }
-}
-
-void KMailMigrator::migrationFailed( const QString &errorMsg,
-                                     bool doMigrateNext,
-                                     const AgentInstance &instance )
-{
-  const KConfigGroup group( mConfig, mCurrentAccount );
-  emit message( Error, i18n( "Migration of '%1' to Akonadi resource failed: %2",
-                             group.readEntry( "Name" ), errorMsg ) );
-
-  if ( instance.isValid() ) {
-    mFailedInstances << instance;
-  }
-
-  mCurrentAccount.clear();
-  mCurrentInstance = AgentInstance();
-
-  if ( doMigrateNext ) {
-    migrateNext();
-  }
-}
-
-void KMailMigrator::migrationCompleted( const AgentInstance &instance, bool doMigrateNext )
-{
-  const KConfigGroup group( mConfig, mCurrentAccount );
-  const QString accountId = group.readEntry( QLatin1String( "Id" ) );
-
-  // check if the account is used in filters
-  const QStringList filterGroups = mConfig->groupList().filter( QRegExp( QLatin1String("Filter #\\d+") ) );
-  //qCDebug(KMAILMIGRATION_LOG) << "filterGroups=" << filterGroups;
-  Q_FOREACH ( const QString &groupName, filterGroups ) {
-    KConfigGroup filterGroup( mConfig, groupName );
-
-    QStringList accountsSet = filterGroup.readEntry( QLatin1String( "accounts-set" ), QStringList() );
-    //if ( !accountsSet.isEmpty() ) {
-    //  qCDebug(KMAILMIGRATION_LOG) << "accountsSet=" << accountsSet;
-    //}
-    const int index = accountsSet.indexOf( accountId );
-    if ( index != -1 ) {
-      qCDebug(KMAILMIGRATION_LOG) << "replacing account id" << accountId
-                                       << "in filter" << groupName
-                                       << "with resource id" << instance.identifier();
-      accountsSet.replace( index, instance.identifier() );
-      filterGroup.writeEntry( QLatin1String( "accounts-set" ), accountsSet );
-    }
-  }
-
-  setMigrationState( group.readEntry( "Id" ), Complete, instance.identifier(),
-                     group.readEntry( "Type" ).toLower() );
-  emit message( Success, i18n( "Migration of '%1' succeeded.", group.readEntry( "Name" ) ) );
-  mCurrentAccount.clear();
-  mCurrentInstance = AgentInstance();
-
-  if ( doMigrateNext ) {
-    migrateNext();
-  }
-}
-
-void KMailMigrator::connectCollectionMigrator( AbstractCollectionMigrator *migrator )
-{
-  connect( migrator, SIGNAL(message(int,QString)),
-           SLOT (collectionMigratorMessage(int,QString)) );
-  connect( migrator, SIGNAL(status(QString)), SIGNAL (status(QString)) );
-  connect( migrator, SIGNAL(progress(int)), SIGNAL (progress(int)) );
-  connect( migrator, SIGNAL(progress(int,int,int)), SIGNAL (progress(int,int,int)) );
-  connect( migrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
-           this, SLOT(collectionMigratorFinished()) );
-  connect( migrator, SIGNAL(status(QString)),
-           SLOT (collectionMigratorEmittedNotification()) );
-  connect( migrator, SIGNAL(progress(int)),
-           SLOT (collectionMigratorEmittedNotification()) );
-  connect( migrator, SIGNAL(progress(int,int,int)),
-           SLOT (collectionMigratorEmittedNotification()) );
-}
-
-void KMailMigrator::migratePassword( const QString &idString, const AgentInstance &instance,
-                                     const QString &newFolder, const QString& passwordFromFilePassword )
-{
-  QString password;
-  if ( mWallet == 0 ) {
-    mWallet = Wallet::openWallet( Wallet::NetworkWallet(), 0 );
-  }
-  if ( mWallet && mWallet->isOpen() ) {
-    if ( !passwordFromFilePassword.isEmpty() )
-      password = passwordFromFilePassword;
-
-    if ( password.isEmpty() &&  mWallet->hasFolder( QLatin1String("kmail") ) ) {
-      mWallet->setFolder( QLatin1String("kmail") );
-      mWallet->readPassword( QLatin1String("account-") + idString, password );
     }
 
-    if ( !password.isEmpty() ) {
-      if ( !mWallet->hasFolder( newFolder ) )
-        mWallet->createFolder( newFolder );
-      mWallet->setFolder( newFolder );
+    setMigrationState(group.readEntry("Id"), Complete, instance.identifier(),
+                      group.readEntry("Type").toLower());
+    emit message(Success, i18n("Migration of '%1' succeeded.", group.readEntry("Name")));
+    mCurrentAccount.clear();
+    mCurrentInstance = AgentInstance();
 
-      mWallet->writePassword( instance.identifier() + QLatin1String("rc") , password );
+    if (doMigrateNext) {
+        migrateNext();
     }
-  }
+}
+
+void KMailMigrator::connectCollectionMigrator(AbstractCollectionMigrator *migrator)
+{
+    connect(migrator, SIGNAL(message(int,QString)),
+            SLOT(collectionMigratorMessage(int,QString)));
+    connect(migrator, SIGNAL(status(QString)), SIGNAL(status(QString)));
+    connect(migrator, SIGNAL(progress(int)), SIGNAL(progress(int)));
+    connect(migrator, SIGNAL(progress(int,int,int)), SIGNAL(progress(int,int,int)));
+    connect(migrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
+            this, SLOT(collectionMigratorFinished()));
+    connect(migrator, SIGNAL(status(QString)),
+            SLOT(collectionMigratorEmittedNotification()));
+    connect(migrator, SIGNAL(progress(int)),
+            SLOT(collectionMigratorEmittedNotification()));
+    connect(migrator, SIGNAL(progress(int,int,int)),
+            SLOT(collectionMigratorEmittedNotification()));
+}
+
+void KMailMigrator::migratePassword(const QString &idString, const AgentInstance &instance,
+                                    const QString &newFolder, const QString &passwordFromFilePassword)
+{
+    QString password;
+    if (mWallet == 0) {
+        mWallet = Wallet::openWallet(Wallet::NetworkWallet(), 0);
+    }
+    if (mWallet && mWallet->isOpen()) {
+        if (!passwordFromFilePassword.isEmpty()) {
+            password = passwordFromFilePassword;
+        }
+
+        if (password.isEmpty() &&  mWallet->hasFolder(QLatin1String("kmail"))) {
+            mWallet->setFolder(QLatin1String("kmail"));
+            mWallet->readPassword(QLatin1String("account-") + idString, password);
+        }
+
+        if (!password.isEmpty()) {
+            if (!mWallet->hasFolder(newFolder)) {
+                mWallet->createFolder(newFolder);
+            }
+            mWallet->setFolder(newFolder);
+
+            mWallet->writePassword(instance.identifier() + QLatin1String("rc") , password);
+        }
+    }
 }
 
 bool KMailMigrator::migrateCurrentAccount()
 {
-  if ( mCurrentAccount.isEmpty() )
-    return false;
-  const KConfigGroup group( mConfig, mCurrentAccount );
-
-  emit message( Info, i18n( "Trying to migrate '%1' to resource...", group.readEntry( "Name" ) ) );
-
-  // show status/progress info of resources in our dialog
-  mForwardResourceNotifications = true;
-
-  const QString type = group.readEntry( "Type" ).toLower();
-  if ( type == QLatin1String( "imap" ) ) {
-    createAgentInstance( QLatin1String("akonadi_imap_resource"), this,
-                         SLOT(imapAccountCreated(KJob*)) );
-  } else if ( type == QLatin1String( "dimap" ) ) {
-    createAgentInstance( QLatin1String("akonadi_imap_resource"), this,
-                         SLOT(imapDisconnectedAccountCreated(KJob*)) );
-
-  } else if ( type == QLatin1String( "pop" ) ) {
-    createAgentInstance( QLatin1String("akonadi_pop3_resource"), this,
-                         SLOT(pop3AccountCreated(KJob*)) );
-  } else if ( type == QLatin1String( "maildir" ) ) {
-    createAgentInstance( QLatin1String("akonadi_maildir_resource"), this,
-                         SLOT(maildirAccountCreated(KJob*)) );
-  } else if ( type == QLatin1String( "local" ) ) {
-    createAgentInstance( QLatin1String("akonadi_mbox_resource"), this,
-                         SLOT(mboxAccountCreated(KJob*)) );
-  } else {
-    return false;
-  }
-
-  return true;
-}
-
-void KMailMigrator::imapDisconnectedAccountCreated( KJob * job )
-{
-  if ( job->error() ) {
-    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
-    return;
-  }
-  emit message( Info, i18n( "Created disconnected imap resource" ) );
-  migrateImapAccount( job, true );
-}
-
-void KMailMigrator::imapAccountCreated( KJob *job )
-{
-  if ( job->error() ) {
-    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
-    return;
-  }
-  emit message( Info, i18n( "Created imap resource" ) );
-  migrateImapAccount( job, false );
-}
-
-
-void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
-{
-  AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  mCurrentInstance = instance;
-
-  AccountConfig conf;
-  conf.instance = instance;
-  conf.imapAccount = true;
-  conf.disconnectedImap = disconnected;
-  mAccountInstance.insert( mCurrentAccount, conf );
-
-  KConfigGroup config( mConfig, mCurrentAccount );
-
-  const QString nameAccount = config.readEntry( "Name" );
-  instance.setName( nameAccount );
-  emit status( nameAccount );
-
-  ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportNewMessages;
-  if ( disconnected ) {
-    const KConfigGroup dimapConfig( KSharedConfig::openConfig(), QLatin1String( "Disconnected IMAP" ) );
-    if ( dimapConfig.isValid() ) {
-      options = ImapCacheCollectionMigrator::ConfigOnly;
-
-      if ( dimapConfig.readEntry( QLatin1String( "ImportNewMessages" ), false ) ) {
-        options |= ImapCacheCollectionMigrator::ImportNewMessages;
-      }
-
-      if ( dimapConfig.readEntry( QLatin1String( "ImportCachedMessages" ), false ) ) {
-        options |= ImapCacheCollectionMigrator::ImportCachedMessages;
-      }
-
-      if ( dimapConfig.readEntry( QLatin1String( "RemoveDeletedMessages" ), false ) ) {
-        options |= ImapCacheCollectionMigrator::RemoveDeletedMessages;
-      }
+    if (mCurrentAccount.isEmpty()) {
+        return false;
     }
-  }
+    const KConfigGroup group(mConfig, mCurrentAccount);
 
-  MixedMaildirStore *store = 0;
-  if ( disconnected ) {
-#if 0
-    if ( mDeleteCacheAfterImport ) {
-      options |= ImapCacheCollectionMigrator::DeleteImportedMessages;
-    }
-#endif
-    if ( mDImapCache == 0 ) {
-      mDImapCache = createStoreFromBasePath( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/dimap" ) ) ;
-    }
-    store = mDImapCache;
-  } else {
-    if ( mImapCache == 0 ) {
-      mImapCache = createStoreFromBasePath( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/imap" ) ) ;
-    }
-    store = mImapCache;
-  }
+    emit message(Info, i18n("Trying to migrate '%1' to resource...", group.readEntry("Name")));
 
-  ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator( instance, nameAccount, store, this );
-  QString topLevelFolder = config.readEntry( "Folder" );
-  if ( topLevelFolder.isEmpty() ) {
-    topLevelFolder = config.readEntry( "Id" );
-  }
+    // show status/progress info of resources in our dialog
+    mForwardResourceNotifications = true;
 
-  const QString topLevelRemoteId =
-    QLatin1String("imap://") + config.readEntry( "login" ) + QLatin1Char('@') + config.readEntry( "host" ) + QLatin1Char('/');
+    const QString type = group.readEntry("Type").toLower();
+    if (type == QLatin1String("imap")) {
+        createAgentInstance(QLatin1String("akonadi_imap_resource"), this,
+                            SLOT(imapAccountCreated(KJob*)));
+    } else if (type == QLatin1String("dimap")) {
+        createAgentInstance(QLatin1String("akonadi_imap_resource"), this,
+                            SLOT(imapDisconnectedAccountCreated(KJob*)));
 
-  collectionMigrator->setTopLevelFolder( topLevelFolder, nameAccount, topLevelRemoteId );
-  collectionMigrator->setMigrationOptions( options );
-
-  qCDebug(KMAILMIGRATION_LOG) << "Starting IMAP collection migration: options="
-           << collectionMigrator->migrationOptions();
-  collectionMigrator->setKMailConfig( mConfig );
-  collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
-  collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
-  collectionMigrator->setTemplatesConfig( mTemplatesConfig );
-
-  if ( config.readEntry( "locally-subscribed-folders", false ) ) {
-    collectionMigrator->setUnsubscribedImapFolders( config.readEntry( "locallyUnsubscribedFolders", QStringList() ) );
-  }
-
-  if ( disconnected && store ) {
-    if ( mImapCacheAdapter == 0 ) {
-      mImapCacheAdapter = new ImapCacheAdapter( store, this );
-      connect( mImapCacheAdapter, SIGNAL(finished(int,QString)),
-               SLOT(imapCacheAdaptionFinished(int,QString)) );
-    }
-    mImapCacheAdapter->addAccount( topLevelFolder, nameAccount );
-  }
-
-  connect( collectionMigrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
-           SLOT(imapFoldersMigrationFinished(Akonadi::AgentInstance,QString)) );
-
-  connectCollectionMigrator( collectionMigrator );
-
-  collectionMigrator->startMigration();
-}
-
-void KMailMigrator::pop3AccountCreated( KJob *job )
-{
-  if ( job->error() ) {
-    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
-    return;
-  }
-  emit message( Info, i18n( "Created pop3 resource" ) );
-
-  AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  mCurrentInstance = instance;
-  KConfigGroup config( mConfig, mCurrentAccount );
-
-  OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface( instance );
-  if ( !iface ) {
-    return;
-  }
-
-  AccountConfig conf;
-  conf.instance = instance;
-  conf.imapAccount = false;
-  mAccountInstance.insert( mCurrentAccount, conf );
-
-  iface->setHost( config.readEntry( "host", QString() ) );
-  iface->setPort( config.readEntry( "port", 110u ) );
-  iface->setLogin( config.readEntry( "login", QString() ) );
-  if ( config.readEntry( "use-ssl", true ) )
-    iface->setUseSSL( true );
-  if ( config.readEntry( "use-tls", true ) )
-    iface->setUseTLS( true );
-  if ( config.readEntry( "pipelining", false ) )
-    iface->setPipelining( true );
-  if ( config.readEntry( "leave-on-server", true ) ) {
-    iface->setLeaveOnServer( true );
-    iface->setLeaveOnServerDays( config.readEntry( "leave-on-server-days", -1 ) );
-    iface->setLeaveOnServerCount( config.readEntry( "leave-on-server-count", -1 ) );
-    iface->setLeaveOnServerSize( config.readEntry( "leave-on-server-size", -1 ) );
-  }
-  if ( config.readEntry( "filter-on-server", false ) ) {
-    iface->setFilterOnServer( true );
-    iface->setFilterCheckSize( config.readEntry( "filter-os-check-size" ).toUInt() );
-  }
-  const int checkInterval = config.readEntry( "check-interval", 0 );
-  if ( checkInterval == 0 )
-    iface->setIntervalCheckEnabled( false );
-  else {
-    iface->setIntervalCheckEnabled( true );
-    iface->setIntervalCheckInterval( checkInterval );
-  }
-
-  // check-exclude in Account section means that this account should not be included
-  // in manual checks. In KMail UI this is called "Include in manual checks"
-  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
-  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
-  const KConfigGroup generalGroup( mConfig, "General" );
-  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
-  resourceGroup.writeEntry( "OfflineOnShutdown", true );
-
-  // Akonadi kmail uses enums for storing auth options
-  // so we have to convert from the old string representations
-  typedef MailTransport::Transport::EnumAuthenticationType AuthType;
-  QString authOpt = config.readEntry( "auth" );
-  if ( authOpt.contains( QLatin1String("PLAIN"), Qt::CaseInsensitive ) )
-    iface->setAuthenticationMethod( AuthType::PLAIN );
-  else if ( authOpt.contains( QLatin1String("CRAM"), Qt::CaseInsensitive ) )
-    iface->setAuthenticationMethod( AuthType::CRAM_MD5 );
-  else if ( authOpt.contains( QLatin1String("DIGEST"), Qt::CaseInsensitive ) )
-    iface->setAuthenticationMethod( AuthType::DIGEST_MD5);
-  else if ( authOpt.contains( QLatin1String("GSSAPI"), Qt::CaseInsensitive ) )
-    iface->setAuthenticationMethod( AuthType::GSSAPI );
-  else if ( authOpt.contains( QLatin1String("NTLM"), Qt::CaseInsensitive ) )
-    iface->setAuthenticationMethod( AuthType::NTLM);
-  else if ( authOpt.contains( QLatin1String("APOP"), Qt::CaseInsensitive ) )
-    iface->setAuthenticationMethod( AuthType::APOP );
-  else
-    iface->setAuthenticationMethod( AuthType::CLEAR );
-  iface->setPrecommand( config.readPathEntry( "precommand", QString() ) );
-
-  QString encpasswd;
-
-  if ( config.readEntry( "store-passwd", false ) ) {
-    encpasswd = config.readEntry( "pass" );
-    if ( encpasswd.isEmpty() ) {
-      encpasswd = config.readEntry( "passwd" );
-      if ( !encpasswd.isEmpty() )
-        encpasswd = importPassword( encpasswd );
-    }
-
-    if ( !encpasswd.isEmpty() ) {
-      encpasswd = KStringHandler::obscure( encpasswd );
-    }
-    config.deleteEntry( "store-passwd" );
-    config.deleteEntry( "passwd" );
-  }
-  migratePassword( config.readEntry( "Id" ), instance, QLatin1String("pop3"), encpasswd );
-
-  // POP3 filter from files in kmail appdata
-  const QString popFilterFileName = QString::fromLatin1( "kmail/%1:@%2:%3" )
-                                      .arg( config.readEntry( "login", QString() ) )
-                                      .arg( config.readEntry( "host", QString() ) )
-                                      .arg( config.readEntry( "port", 110u ) );
-
-  const KConfig popFilterConfig( popFilterFileName, KConfig::SimpleConfig, QStandardPaths::GenericDataLocation );
-  const KConfigGroup popFilterGroup( &popFilterConfig, QString() );
-  iface->setDownloadLater( popFilterGroup.readEntry( "downloadLater", QStringList() ) );
-  iface->setSeenUidList( popFilterGroup.readEntry( "seenUidList", QStringList() ) );
-  iface->setSeenUidTimeList( popFilterGroup.readEntry( "seenUidTimeList", QList<int>() ) );
-
-  // make sure the config is saved
-  iface->save();
-
-  //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
-  config.deleteEntry( "trash" );
-  config.deleteEntry( "use-default-identity" );
-  const QString nameAccount = config.readEntry( "Name" );
-  instance.setName( nameAccount );
-  emit status( nameAccount );
-  instance.reconfigure();
-  config.sync();
-  migrationCompleted( instance );
-}
-
-void KMailMigrator::mboxAccountCreated( KJob *job )
-{
-  if ( job->error() ) {
-    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
-    return;
-  }
-  emit message( Info, i18n( "Created mbox resource" ) );
-
-  AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  mCurrentInstance = instance;
-  KConfigGroup config( mConfig, mCurrentAccount );
-
-  OrgKdeAkonadiMboxSettingsInterface *iface = new OrgKdeAkonadiMboxSettingsInterface(
-    QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
-    QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
-
-  if ( !iface->isValid() ) {
-    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
-    delete iface;
-    return;
-  }
-
-  iface->setPath( config.readEntry( "Location" ) );
-  const QString lockType = config.readEntry( "LockType" ).toLower();
-  if ( lockType == QLatin1String( "procmail_locktype" ) ) {
-    iface->setLockfileMethod( Procmail );
-    iface->setLockfile( config.readEntry( "ProcmailLockFile" ) );
-  } else if ( lockType == QLatin1String( "mutt_dotlock" ) )
-    iface->setLockfileMethod( MuttDotLock );
-  else if ( lockType == QLatin1String( "mutt_dotlock_privileged" ) )
-    iface->setLockfileMethod( MuttDotLockPrivileged );
-  else if ( lockType == QLatin1String( "none" ) )
-    iface->setLockfileMethod( MboxNone );
-
-  // make sure the config is saved
-  iface->save();
-
-  // check-exclude in Account section means that this account should not be included
-  // in manual checks. In KMail UI this is called "Include in manual checks"
-  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
-  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
-  const KConfigGroup generalGroup( mConfig, "General" );
-  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
-  resourceGroup.writeEntry( "OfflineOnShutdown", false );
-
-  //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
-  config.deleteEntry( "trash" );
-  config.deleteEntry( "identity-id" );
-  config.deleteEntry( "use-default-identity" );
-  //We can't specify folder in akonadi
-  config.deleteEntry( "Folder" );
-
-  //TODO check-interval for the moment mbox doesn't support it
-
-  const QString nameAccount = config.readEntry( "Name" );
-  instance.setName( nameAccount );
-  emit status( nameAccount );
-  instance.reconfigure();
-  config.sync();
-  migrationCompleted( instance );
-}
-
-void KMailMigrator::maildirAccountCreated( KJob *job )
-{
-  if ( job->error() ) {
-    migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
-    return;
-  }
-  emit message( Info, i18n( "Created maildir resource" ) );
-
-  AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  mCurrentInstance = instance;
-  KConfigGroup config( mConfig, mCurrentAccount );
-
-  OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
-    QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
-    QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
-
-  if ( !iface->isValid() ) {
-    migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), instance );
-    delete iface;
-    return;
-  }
-
-  iface->setPath( config.readEntry( "Location" ) );
-
-  // make sure the config is saved
-  iface->save();
-
-  // check-exclude in Account section means that this account should not be included
-  // in manual checks. In KMail UI this is called "Include in manual checks"
-  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
-  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
-  const KConfigGroup generalGroup( mConfig, "General" );
-  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
-  resourceGroup.writeEntry( "OfflineOnShutdown", false );
-
-  //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
-  config.deleteEntry( "trash" );
-  config.deleteEntry( "identity-id" );
-  config.deleteEntry( "use-default-identity" );
-  //Now in akonadi we can't specify a folder where we put email, it's a specific top root
-  config.deleteEntry( "Folder" );
-
-  //TODO: check-interval for the moment maildir doesn't support check-interval.
-
-  const QString nameAccount = config.readEntry( "Name" );
-  instance.setName( nameAccount );
-  emit status( nameAccount );
-  instance.reconfigure();
-  config.sync();
-  migrationCompleted( instance );
-}
-
-void KMailMigrator::localMaildirCreated( KJob *job )
-{
-  if ( job->error() ) {
-    emit message( Error, i18n( "Failed to create resource for local folders: %1", job->errorText() ) );
-    deleteLater();
-    return;
-  }
-  emit message( Info, i18n( "Created local maildir resource." ) );
-
-  AgentInstance instance = static_cast< AgentInstanceCreateJob* >( job )->instance();
-  mCurrentInstance = instance;
-
-  // do not include KMail folders in manual checks by default
-  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
-  resourceGroup.writeEntry( "IncludeInManualChecks", false );
-  // do not synchronize on startup
-  resourceGroup.writeEntry( "CheckOnStartup", false );
-  resourceGroup.writeEntry( "OfflineOnShutdown", false );
-
-  const bool specialCollectionsLock =
-    QDBusConnection::sessionBus().registerService( SPECIALCOLLECTIONS_LOCK_SERVICE );
-
-  KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
-  KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
-
-  QString defaultInstanceName;
-  QString defaultResourceId = specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
-  if ( defaultResourceId.isEmpty() ) {
-    qCDebug(KMAILMIGRATION_LOG) << "No resource configured for special mail collections, using the migrated"
-             << instance.identifier();
-    defaultResourceId = instance.identifier();
-  } else {
-    const AgentInstance defaultInstance = AgentManager::self()->instance( defaultResourceId );
-    if ( !defaultInstance.isValid() ) {
-      qCDebug(KMAILMIGRATION_LOG) << "Resource" << defaultResourceId
-               << " configured for special mail collections does not exist, using the migrated"
-               << instance.identifier();
-      defaultResourceId = instance.identifier();
+    } else if (type == QLatin1String("pop")) {
+        createAgentInstance(QLatin1String("akonadi_pop3_resource"), this,
+                            SLOT(pop3AccountCreated(KJob*)));
+    } else if (type == QLatin1String("maildir")) {
+        createAgentInstance(QLatin1String("akonadi_maildir_resource"), this,
+                            SLOT(maildirAccountCreated(KJob*)));
+    } else if (type == QLatin1String("local")) {
+        createAgentInstance(QLatin1String("akonadi_mbox_resource"), this,
+                            SLOT(mboxAccountCreated(KJob*)));
     } else {
-      defaultInstanceName = defaultInstance.name();
+        return false;
     }
-  }
 
-  const QString instanceName = i18n( "KMail Folders" );
-
-  if ( defaultInstanceName.isEmpty() && specialCollectionsLock ) {
-    specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), defaultResourceId );
-    specialMailCollectionsGroup.sync();
-
-    emit message( Info,
-                  i18nc( "@info:status resource that will provide folder such as outbox, sent",
-                         "Using '%1' for default outbox, sent mail, trash, etc.",
-                         instanceName ) );
-  } else {
-    emit message( Info,
-                  i18nc( "@info:status resource that will provide folder such as outbox, sent",
-                         "Keeping '%1' for default outbox, sent mail, trash, etc.",
-                         defaultInstanceName ) );
-  }
-
-  if ( specialCollectionsLock ) {
-    QDBusConnection::sessionBus().unregisterService( SPECIALCOLLECTIONS_LOCK_SERVICE );
-  }
-
-  instance.setName( instanceName );
-  emit status( instanceName );
-
-  MixedMaildirStore *store = createStoreFromBasePath( mLocalMaildirPath );
-
-  LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator( instance, instanceName, store, this );
-  collectionMigrator->setTopLevelFolder( QString(), instanceName );
-  collectionMigrator->setKMailConfig( mConfig );
-  collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
-  collectionMigrator->setKcmKmailSummaryConfig( mKcmKmailSummaryConfig );
-  collectionMigrator->setTemplatesConfig( mTemplatesConfig );
-
-  connect( collectionMigrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
-           SLOT(localFoldersMigrationFinished(Akonadi::AgentInstance,QString)) );
-  connectCollectionMigrator( collectionMigrator );
-
-  collectionMigrator->startMigration();
+    return true;
 }
 
-void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
+void KMailMigrator::imapDisconnectedAccountCreated(KJob *job)
 {
-  OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
-    QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
-    QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
-
-  if ( !iface->isValid() ) {
-    migrationFailed( i18n("Failed to obtain D-Bus interface for remote configuration."), instance );
-    delete iface;
-    return;
-  }
-
-  iface->setPath( mLocalMaildirPath );
-
-  // make sure the config is saved
-  iface->save();
-
-  AgentInstance resource = instance;
-  resource.reconfigure();
-
-  if ( error.isEmpty() ) {
-    KConfigGroup config( KSharedConfig::openConfig(), QLatin1String( "SpecialMailCollections" ) );
-    if ( config.readEntry( QLatin1String( "TakeOverIfDefaultIsTotallyEmpty" ), false ) ) {
-      KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
-      KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
-
-      QString defaultResourceId = specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
-
-      AgentInstance defaultResource = AgentManager::self()->instance( defaultResourceId );
-      if ( defaultResource.isValid() && defaultResourceId != instance.identifier() ) {
-        qCDebug(KMAILMIGRATION_LOG) << "Attempting take over of special mail collections role from"
-                 << defaultResourceId;
-
-        EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( defaultResource, this );
-        cleaner->setCleaningOptions( EmptyResourceCleaner::CheckOnly );
-        connect( cleaner, SIGNAL(cleanupFinished(Akonadi::AgentInstance)),
-                 SLOT(specialColDefaultResourceCheckFinished(Akonadi::AgentInstance)) );
+    if (job->error()) {
+        migrationFailed(i18n("Failed to create resource: %1", job->errorText()));
         return;
-      }
     }
-
-    mCurrentInstance = AgentInstance();
-
-    setMigrationState( QLatin1String("LocalFolders"), Complete, instance.identifier(), QLatin1String("LocalFolders") );
-    emit message( Success, i18n( "Local folders migrated successfully." ) );
-    emit status( QString() );
-    migrationDone();
-
-  } else {
-    mCurrentInstance = AgentInstance();
-
-    migrationFailed( error, instance );
-  }
+    emit message(Info, i18n("Created disconnected imap resource"));
+    migrateImapAccount(job, true);
 }
 
-void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
+void KMailMigrator::imapAccountCreated(KJob *job)
 {
-  qCDebug(KMAILMIGRATION_LOG) << "imapMigrationFinished: instance=" << instance.identifier()
-           << "error=" << error;
-
-  OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
-  if ( !iface ) {
-    return;
-  }
-
-  const bool disconnected = mAccountInstance[ mCurrentAccount ].disconnectedImap;
-
-  KConfigGroup config( mConfig, mCurrentAccount );
-  const QString nameAccount = config.readEntry( "Name" );
-
-  iface->setImapServer( config.readEntry( "host" ) );
-  iface->setImapPort( config.readEntry( "port", 143 ) );
-  iface->setUserName( config.readEntry( "login" ) );
-  if ( config.readEntry( "use-ssl" ).toLower() == QLatin1String("true") )
-    iface->setSafety( QLatin1String("SSL") );
-  else if ( config.readEntry( "use-tls" ).toLower() == QLatin1String("true") )
-    iface->setSafety( QLatin1String("STARTTLS") );
-  else
-    iface->setSafety( QLatin1String("NONE") );
-  const QString authentication = config.readEntry( "auth" ).toUpper();
-  if ( authentication == QLatin1String( "LOGIN" ) )
-    iface->setAuthentication(  MailTransport::Transport::EnumAuthenticationType::LOGIN );
-  else if ( authentication == QLatin1String( "PLAIN" ) )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::PLAIN );
-  else if ( authentication == QLatin1String( "CRAM-MD5" ) )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CRAM_MD5 );
-  else if ( authentication == QLatin1String( "DIGEST-MD5" ) )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5 );
-  else if ( authentication == QLatin1String( "NTLM" ) )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::NTLM );
-  else if ( authentication == QLatin1String( "GSSAPI" ) )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::GSSAPI );
-  else if ( authentication == QLatin1String( "ANONYMOUS" ) )
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::ANONYMOUS );
-  else {
-    iface->setAuthentication( MailTransport::Transport::EnumAuthenticationType::CLEAR );
-  }
-  if ( config.readEntry( "subscribed-folders" ).toLower() == QLatin1String("true") )
-    iface->setSubscriptionEnabled( true );
-
-  // skip interval checking so it doesn't interfere with cache importing
-  iface->setIntervalCheckTime( -1 ); //exclude
-
-  // check-exclude in Account section means that this account should not be included
-  // in manual checks. In KMail UI this is called "Include in manual checks"
-  KConfigGroup resourceGroup( mConfig, QString::fromLatin1( "Resource %1" ).arg( instance.identifier() ) );
-  resourceGroup.writeEntry( "IncludeInManualChecks", !config.readEntry( "check-exclude", false ) );
-  const KConfigGroup generalGroup( mConfig, "General" );
-  resourceGroup.writeEntry( "CheckOnStartup", generalGroup.readEntry( "checkmail-startup", false ) );
-  resourceGroup.writeEntry( "OfflineOnShutdown", true );
-
-  iface->setSieveSupport( config.readEntry( "sieve-support", false ) );
-  iface->setSieveReuseConfig( config.readEntry( "sieve-reuse-config", true ) );
-  iface->setSievePort( config.readEntry( "sieve-port", 2000 ) );
-  iface->setSieveAlternateUrl( config.readEntry( "sieve-alternate-url" ) );
-  iface->setSieveVacationFilename( config.readEntry( "sieve-vacation-filename", "kmail-vacation.siv" ) );
-  iface->setDisconnectedModeEnabled( disconnected );
-  if ( !disconnected ) {
-    iface->setAutomaticExpungeEnabled( config.readEntry( "auto-expunge", true ) );
-  }
-  const bool useDefaultIdentity = config.readEntry( "use-default-identity", true );
-  iface->setUseDefaultIdentity( useDefaultIdentity );
-  if ( !useDefaultIdentity )
-    iface->setAccountIdentity( config.readEntry( "identity-id" ).toInt() );
-
-  QString encpasswd ;
-  if ( config.readEntry( "store-passwd", false ) ) {
-    encpasswd = config.readEntry( "pass" );
-    if ( encpasswd.isEmpty() ) {
-      encpasswd = config.readEntry( "passwd" );
-      if ( !encpasswd.isEmpty() )
-        encpasswd = importPassword( encpasswd );
+    if (job->error()) {
+        migrationFailed(i18n("Failed to create resource: %1", job->errorText()));
+        return;
     }
-
-    if ( !encpasswd.isEmpty() ) {
-      encpasswd = KStringHandler::obscure( encpasswd );
-    }
-    config.deleteEntry( "store-passwd" );
-    config.deleteEntry( "passwd" );
-  }
-  migratePassword( config.readEntry( "Id" ), instance, QLatin1String("imap"), encpasswd );
-
-  // enable interval checking in case this had been configured
-  const int checkInterval = config.readEntry( "check-interval", 0 );
-  if ( checkInterval != 0 ) {
-    iface->setIntervalCheckEnabled( true );
-    iface->setIntervalCheckTime( checkInterval );
-  }
-
-  // make sure the config is saved
-  iface->save();
-
-  AgentInstance resource = instance;
-  resource.reconfigure();
-
-  config.deleteEntry( "locally-subscribed-folders" );
-  config.deleteEntry( "locallyUnsubscribedFolders" );
-
-  config.deleteEntry( "capabilities" );
-
-  if ( error.isEmpty() ) {
-    migrationCompleted( instance );
-  } else {
-    migrationFailed( error, true, instance );
-  }
+    emit message(Info, i18n("Created imap resource"));
+    migrateImapAccount(job, false);
 }
 
-void KMailMigrator::collectionMigratorMessage( int type, const QString &msg )
+void KMailMigrator::migrateImapAccount(KJob *job, bool disconnected)
 {
-  switch ( type ) {
+    AgentInstance instance = static_cast< AgentInstanceCreateJob * >(job)->instance();
+    mCurrentInstance = instance;
+
+    AccountConfig conf;
+    conf.instance = instance;
+    conf.imapAccount = true;
+    conf.disconnectedImap = disconnected;
+    mAccountInstance.insert(mCurrentAccount, conf);
+
+    KConfigGroup config(mConfig, mCurrentAccount);
+
+    const QString nameAccount = config.readEntry("Name");
+    instance.setName(nameAccount);
+    emit status(nameAccount);
+
+    ImapCacheCollectionMigrator::MigrationOptions options = ImapCacheCollectionMigrator::ImportNewMessages;
+    if (disconnected) {
+        const KConfigGroup dimapConfig(KSharedConfig::openConfig(), QLatin1String("Disconnected IMAP"));
+        if (dimapConfig.isValid()) {
+            options = ImapCacheCollectionMigrator::ConfigOnly;
+
+            if (dimapConfig.readEntry(QLatin1String("ImportNewMessages"), false)) {
+                options |= ImapCacheCollectionMigrator::ImportNewMessages;
+            }
+
+            if (dimapConfig.readEntry(QLatin1String("ImportCachedMessages"), false)) {
+                options |= ImapCacheCollectionMigrator::ImportCachedMessages;
+            }
+
+            if (dimapConfig.readEntry(QLatin1String("RemoveDeletedMessages"), false)) {
+                options |= ImapCacheCollectionMigrator::RemoveDeletedMessages;
+            }
+        }
+    }
+
+    MixedMaildirStore *store = 0;
+    if (disconnected) {
+#if 0
+        if (mDeleteCacheAfterImport) {
+            options |= ImapCacheCollectionMigrator::DeleteImportedMessages;
+        }
+#endif
+        if (mDImapCache == 0) {
+            mDImapCache = createStoreFromBasePath(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/dimap")) ;
+        }
+        store = mDImapCache;
+    } else {
+        if (mImapCache == 0) {
+            mImapCache = createStoreFromBasePath(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kmail/imap")) ;
+        }
+        store = mImapCache;
+    }
+
+    ImapCacheCollectionMigrator *collectionMigrator = new ImapCacheCollectionMigrator(instance, nameAccount, store, this);
+    QString topLevelFolder = config.readEntry("Folder");
+    if (topLevelFolder.isEmpty()) {
+        topLevelFolder = config.readEntry("Id");
+    }
+
+    const QString topLevelRemoteId =
+        QLatin1String("imap://") + config.readEntry("login") + QLatin1Char('@') + config.readEntry("host") + QLatin1Char('/');
+
+    collectionMigrator->setTopLevelFolder(topLevelFolder, nameAccount, topLevelRemoteId);
+    collectionMigrator->setMigrationOptions(options);
+
+    qCDebug(KMAILMIGRATION_LOG) << "Starting IMAP collection migration: options="
+                                << collectionMigrator->migrationOptions();
+    collectionMigrator->setKMailConfig(mConfig);
+    collectionMigrator->setEmailIdentityConfig(mEmailIdentityConfig);
+    collectionMigrator->setKcmKmailSummaryConfig(mKcmKmailSummaryConfig);
+    collectionMigrator->setTemplatesConfig(mTemplatesConfig);
+
+    if (config.readEntry("locally-subscribed-folders", false)) {
+        collectionMigrator->setUnsubscribedImapFolders(config.readEntry("locallyUnsubscribedFolders", QStringList()));
+    }
+
+    if (disconnected && store) {
+        if (mImapCacheAdapter == 0) {
+            mImapCacheAdapter = new ImapCacheAdapter(store, this);
+            connect(mImapCacheAdapter, SIGNAL(finished(int,QString)),
+                    SLOT(imapCacheAdaptionFinished(int,QString)));
+        }
+        mImapCacheAdapter->addAccount(topLevelFolder, nameAccount);
+    }
+
+    connect(collectionMigrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
+            SLOT(imapFoldersMigrationFinished(Akonadi::AgentInstance,QString)));
+
+    connectCollectionMigrator(collectionMigrator);
+
+    collectionMigrator->startMigration();
+}
+
+void KMailMigrator::pop3AccountCreated(KJob *job)
+{
+    if (job->error()) {
+        migrationFailed(i18n("Failed to create resource: %1", job->errorText()));
+        return;
+    }
+    emit message(Info, i18n("Created pop3 resource"));
+
+    AgentInstance instance = static_cast< AgentInstanceCreateJob * >(job)->instance();
+    mCurrentInstance = instance;
+    KConfigGroup config(mConfig, mCurrentAccount);
+
+    OrgKdeAkonadiPOP3SettingsInterface *iface = createPop3SettingsInterface(instance);
+    if (!iface) {
+        return;
+    }
+
+    AccountConfig conf;
+    conf.instance = instance;
+    conf.imapAccount = false;
+    mAccountInstance.insert(mCurrentAccount, conf);
+
+    iface->setHost(config.readEntry("host", QString()));
+    iface->setPort(config.readEntry("port", 110u));
+    iface->setLogin(config.readEntry("login", QString()));
+    if (config.readEntry("use-ssl", true)) {
+        iface->setUseSSL(true);
+    }
+    if (config.readEntry("use-tls", true)) {
+        iface->setUseTLS(true);
+    }
+    if (config.readEntry("pipelining", false)) {
+        iface->setPipelining(true);
+    }
+    if (config.readEntry("leave-on-server", true)) {
+        iface->setLeaveOnServer(true);
+        iface->setLeaveOnServerDays(config.readEntry("leave-on-server-days", -1));
+        iface->setLeaveOnServerCount(config.readEntry("leave-on-server-count", -1));
+        iface->setLeaveOnServerSize(config.readEntry("leave-on-server-size", -1));
+    }
+    if (config.readEntry("filter-on-server", false)) {
+        iface->setFilterOnServer(true);
+        iface->setFilterCheckSize(config.readEntry("filter-os-check-size").toUInt());
+    }
+    const int checkInterval = config.readEntry("check-interval", 0);
+    if (checkInterval == 0) {
+        iface->setIntervalCheckEnabled(false);
+    } else {
+        iface->setIntervalCheckEnabled(true);
+        iface->setIntervalCheckInterval(checkInterval);
+    }
+
+    // check-exclude in Account section means that this account should not be included
+    // in manual checks. In KMail UI this is called "Include in manual checks"
+    KConfigGroup resourceGroup(mConfig, QString::fromLatin1("Resource %1").arg(instance.identifier()));
+    resourceGroup.writeEntry("IncludeInManualChecks", !config.readEntry("check-exclude", false));
+    const KConfigGroup generalGroup(mConfig, "General");
+    resourceGroup.writeEntry("CheckOnStartup", generalGroup.readEntry("checkmail-startup", false));
+    resourceGroup.writeEntry("OfflineOnShutdown", true);
+
+    // Akonadi kmail uses enums for storing auth options
+    // so we have to convert from the old string representations
+    typedef MailTransport::Transport::EnumAuthenticationType AuthType;
+    QString authOpt = config.readEntry("auth");
+    if (authOpt.contains(QLatin1String("PLAIN"), Qt::CaseInsensitive)) {
+        iface->setAuthenticationMethod(AuthType::PLAIN);
+    } else if (authOpt.contains(QLatin1String("CRAM"), Qt::CaseInsensitive)) {
+        iface->setAuthenticationMethod(AuthType::CRAM_MD5);
+    } else if (authOpt.contains(QLatin1String("DIGEST"), Qt::CaseInsensitive)) {
+        iface->setAuthenticationMethod(AuthType::DIGEST_MD5);
+    } else if (authOpt.contains(QLatin1String("GSSAPI"), Qt::CaseInsensitive)) {
+        iface->setAuthenticationMethod(AuthType::GSSAPI);
+    } else if (authOpt.contains(QLatin1String("NTLM"), Qt::CaseInsensitive)) {
+        iface->setAuthenticationMethod(AuthType::NTLM);
+    } else if (authOpt.contains(QLatin1String("APOP"), Qt::CaseInsensitive)) {
+        iface->setAuthenticationMethod(AuthType::APOP);
+    } else {
+        iface->setAuthenticationMethod(AuthType::CLEAR);
+    }
+    iface->setPrecommand(config.readPathEntry("precommand", QString()));
+
+    QString encpasswd;
+
+    if (config.readEntry("store-passwd", false)) {
+        encpasswd = config.readEntry("pass");
+        if (encpasswd.isEmpty()) {
+            encpasswd = config.readEntry("passwd");
+            if (!encpasswd.isEmpty()) {
+                encpasswd = importPassword(encpasswd);
+            }
+        }
+
+        if (!encpasswd.isEmpty()) {
+            encpasswd = KStringHandler::obscure(encpasswd);
+        }
+        config.deleteEntry("store-passwd");
+        config.deleteEntry("passwd");
+    }
+    migratePassword(config.readEntry("Id"), instance, QLatin1String("pop3"), encpasswd);
+
+    // POP3 filter from files in kmail appdata
+    const QString popFilterFileName = QString::fromLatin1("kmail/%1:@%2:%3")
+                                      .arg(config.readEntry("login", QString()))
+                                      .arg(config.readEntry("host", QString()))
+                                      .arg(config.readEntry("port", 110u));
+
+    const KConfig popFilterConfig(popFilterFileName, KConfig::SimpleConfig, QStandardPaths::GenericDataLocation);
+    const KConfigGroup popFilterGroup(&popFilterConfig, QString());
+    iface->setDownloadLater(popFilterGroup.readEntry("downloadLater", QStringList()));
+    iface->setSeenUidList(popFilterGroup.readEntry("seenUidList", QStringList()));
+    iface->setSeenUidTimeList(popFilterGroup.readEntry("seenUidTimeList", QList<int>()));
+
+    // make sure the config is saved
+    iface->save();
+
+    //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
+    config.deleteEntry("trash");
+    config.deleteEntry("use-default-identity");
+    const QString nameAccount = config.readEntry("Name");
+    instance.setName(nameAccount);
+    emit status(nameAccount);
+    instance.reconfigure();
+    config.sync();
+    migrationCompleted(instance);
+}
+
+void KMailMigrator::mboxAccountCreated(KJob *job)
+{
+    if (job->error()) {
+        migrationFailed(i18n("Failed to create resource: %1", job->errorText()));
+        return;
+    }
+    emit message(Info, i18n("Created mbox resource"));
+
+    AgentInstance instance = static_cast< AgentInstanceCreateJob * >(job)->instance();
+    mCurrentInstance = instance;
+    KConfigGroup config(mConfig, mCurrentAccount);
+
+    OrgKdeAkonadiMboxSettingsInterface *iface = new OrgKdeAkonadiMboxSettingsInterface(
+        QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
+
+    if (!iface->isValid()) {
+        migrationFailed(i18n("Failed to obtain D-Bus interface for remote configuration."), instance);
+        delete iface;
+        return;
+    }
+
+    iface->setPath(config.readEntry("Location"));
+    const QString lockType = config.readEntry("LockType").toLower();
+    if (lockType == QLatin1String("procmail_locktype")) {
+        iface->setLockfileMethod(Procmail);
+        iface->setLockfile(config.readEntry("ProcmailLockFile"));
+    } else if (lockType == QLatin1String("mutt_dotlock")) {
+        iface->setLockfileMethod(MuttDotLock);
+    } else if (lockType == QLatin1String("mutt_dotlock_privileged")) {
+        iface->setLockfileMethod(MuttDotLockPrivileged);
+    } else if (lockType == QLatin1String("none")) {
+        iface->setLockfileMethod(MboxNone);
+    }
+
+    // make sure the config is saved
+    iface->save();
+
+    // check-exclude in Account section means that this account should not be included
+    // in manual checks. In KMail UI this is called "Include in manual checks"
+    KConfigGroup resourceGroup(mConfig, QString::fromLatin1("Resource %1").arg(instance.identifier()));
+    resourceGroup.writeEntry("IncludeInManualChecks", !config.readEntry("check-exclude", false));
+    const KConfigGroup generalGroup(mConfig, "General");
+    resourceGroup.writeEntry("CheckOnStartup", generalGroup.readEntry("checkmail-startup", false));
+    resourceGroup.writeEntry("OfflineOnShutdown", false);
+
+    //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
+    config.deleteEntry("trash");
+    config.deleteEntry("identity-id");
+    config.deleteEntry("use-default-identity");
+    //We can't specify folder in akonadi
+    config.deleteEntry("Folder");
+
+    //TODO check-interval for the moment mbox doesn't support it
+
+    const QString nameAccount = config.readEntry("Name");
+    instance.setName(nameAccount);
+    emit status(nameAccount);
+    instance.reconfigure();
+    config.sync();
+    migrationCompleted(instance);
+}
+
+void KMailMigrator::maildirAccountCreated(KJob *job)
+{
+    if (job->error()) {
+        migrationFailed(i18n("Failed to create resource: %1", job->errorText()));
+        return;
+    }
+    emit message(Info, i18n("Created maildir resource"));
+
+    AgentInstance instance = static_cast< AgentInstanceCreateJob * >(job)->instance();
+    mCurrentInstance = instance;
+    KConfigGroup config(mConfig, mCurrentAccount);
+
+    OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
+        QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
+
+    if (!iface->isValid()) {
+        migrationFailed(i18n("Failed to obtain D-Bus interface for remote configuration."), instance);
+        delete iface;
+        return;
+    }
+
+    iface->setPath(config.readEntry("Location"));
+
+    // make sure the config is saved
+    iface->save();
+
+    // check-exclude in Account section means that this account should not be included
+    // in manual checks. In KMail UI this is called "Include in manual checks"
+    KConfigGroup resourceGroup(mConfig, QString::fromLatin1("Resource %1").arg(instance.identifier()));
+    resourceGroup.writeEntry("IncludeInManualChecks", !config.readEntry("check-exclude", false));
+    const KConfigGroup generalGroup(mConfig, "General");
+    resourceGroup.writeEntry("CheckOnStartup", generalGroup.readEntry("checkmail-startup", false));
+    resourceGroup.writeEntry("OfflineOnShutdown", false);
+
+    //Info: there is trash item in config which is default and we can't configure it => don't look at it in pop account.
+    config.deleteEntry("trash");
+    config.deleteEntry("identity-id");
+    config.deleteEntry("use-default-identity");
+    //Now in akonadi we can't specify a folder where we put email, it's a specific top root
+    config.deleteEntry("Folder");
+
+    //TODO: check-interval for the moment maildir doesn't support check-interval.
+
+    const QString nameAccount = config.readEntry("Name");
+    instance.setName(nameAccount);
+    emit status(nameAccount);
+    instance.reconfigure();
+    config.sync();
+    migrationCompleted(instance);
+}
+
+void KMailMigrator::localMaildirCreated(KJob *job)
+{
+    if (job->error()) {
+        emit message(Error, i18n("Failed to create resource for local folders: %1", job->errorText()));
+        deleteLater();
+        return;
+    }
+    emit message(Info, i18n("Created local maildir resource."));
+
+    AgentInstance instance = static_cast< AgentInstanceCreateJob * >(job)->instance();
+    mCurrentInstance = instance;
+
+    // do not include KMail folders in manual checks by default
+    KConfigGroup resourceGroup(mConfig, QString::fromLatin1("Resource %1").arg(instance.identifier()));
+    resourceGroup.writeEntry("IncludeInManualChecks", false);
+    // do not synchronize on startup
+    resourceGroup.writeEntry("CheckOnStartup", false);
+    resourceGroup.writeEntry("OfflineOnShutdown", false);
+
+    const bool specialCollectionsLock =
+        QDBusConnection::sessionBus().registerService(SPECIALCOLLECTIONS_LOCK_SERVICE);
+
+    KConfig specialMailCollectionsConfig(QLatin1String("specialmailcollectionsrc"));
+    KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group(QLatin1String("SpecialCollections"));
+
+    QString defaultInstanceName;
+    QString defaultResourceId = specialMailCollectionsGroup.readEntry(QLatin1String("DefaultResourceId"));
+    if (defaultResourceId.isEmpty()) {
+        qCDebug(KMAILMIGRATION_LOG) << "No resource configured for special mail collections, using the migrated"
+                                    << instance.identifier();
+        defaultResourceId = instance.identifier();
+    } else {
+        const AgentInstance defaultInstance = AgentManager::self()->instance(defaultResourceId);
+        if (!defaultInstance.isValid()) {
+            qCDebug(KMAILMIGRATION_LOG) << "Resource" << defaultResourceId
+                                        << " configured for special mail collections does not exist, using the migrated"
+                                        << instance.identifier();
+            defaultResourceId = instance.identifier();
+        } else {
+            defaultInstanceName = defaultInstance.name();
+        }
+    }
+
+    const QString instanceName = i18n("KMail Folders");
+
+    if (defaultInstanceName.isEmpty() && specialCollectionsLock) {
+        specialMailCollectionsGroup.writeEntry(QLatin1String("DefaultResourceId"), defaultResourceId);
+        specialMailCollectionsGroup.sync();
+
+        emit message(Info,
+                     i18nc("@info:status resource that will provide folder such as outbox, sent",
+                           "Using '%1' for default outbox, sent mail, trash, etc.",
+                           instanceName));
+    } else {
+        emit message(Info,
+                     i18nc("@info:status resource that will provide folder such as outbox, sent",
+                           "Keeping '%1' for default outbox, sent mail, trash, etc.",
+                           defaultInstanceName));
+    }
+
+    if (specialCollectionsLock) {
+        QDBusConnection::sessionBus().unregisterService(SPECIALCOLLECTIONS_LOCK_SERVICE);
+    }
+
+    instance.setName(instanceName);
+    emit status(instanceName);
+
+    MixedMaildirStore *store = createStoreFromBasePath(mLocalMaildirPath);
+
+    LocalFoldersCollectionMigrator *collectionMigrator = new LocalFoldersCollectionMigrator(instance, instanceName, store, this);
+    collectionMigrator->setTopLevelFolder(QString(), instanceName);
+    collectionMigrator->setKMailConfig(mConfig);
+    collectionMigrator->setEmailIdentityConfig(mEmailIdentityConfig);
+    collectionMigrator->setKcmKmailSummaryConfig(mKcmKmailSummaryConfig);
+    collectionMigrator->setTemplatesConfig(mTemplatesConfig);
+
+    connect(collectionMigrator, SIGNAL(migrationFinished(Akonadi::AgentInstance,QString)),
+            SLOT(localFoldersMigrationFinished(Akonadi::AgentInstance,QString)));
+    connectCollectionMigrator(collectionMigrator);
+
+    collectionMigrator->startMigration();
+}
+
+void KMailMigrator::localFoldersMigrationFinished(const AgentInstance &instance, const QString &error)
+{
+    OrgKdeAkonadiMixedMaildirSettingsInterface *iface = new OrgKdeAkonadiMixedMaildirSettingsInterface(
+        QLatin1String("org.freedesktop.Akonadi.Resource.") + instance.identifier(),
+        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
+
+    if (!iface->isValid()) {
+        migrationFailed(i18n("Failed to obtain D-Bus interface for remote configuration."), instance);
+        delete iface;
+        return;
+    }
+
+    iface->setPath(mLocalMaildirPath);
+
+    // make sure the config is saved
+    iface->save();
+
+    AgentInstance resource = instance;
+    resource.reconfigure();
+
+    if (error.isEmpty()) {
+        KConfigGroup config(KSharedConfig::openConfig(), QLatin1String("SpecialMailCollections"));
+        if (config.readEntry(QLatin1String("TakeOverIfDefaultIsTotallyEmpty"), false)) {
+            KConfig specialMailCollectionsConfig(QLatin1String("specialmailcollectionsrc"));
+            KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group(QLatin1String("SpecialCollections"));
+
+            QString defaultResourceId = specialMailCollectionsGroup.readEntry(QLatin1String("DefaultResourceId"));
+
+            AgentInstance defaultResource = AgentManager::self()->instance(defaultResourceId);
+            if (defaultResource.isValid() && defaultResourceId != instance.identifier()) {
+                qCDebug(KMAILMIGRATION_LOG) << "Attempting take over of special mail collections role from"
+                                            << defaultResourceId;
+
+                EmptyResourceCleaner *cleaner = new EmptyResourceCleaner(defaultResource, this);
+                cleaner->setCleaningOptions(EmptyResourceCleaner::CheckOnly);
+                connect(cleaner, SIGNAL(cleanupFinished(Akonadi::AgentInstance)),
+                        SLOT(specialColDefaultResourceCheckFinished(Akonadi::AgentInstance)));
+                return;
+            }
+        }
+
+        mCurrentInstance = AgentInstance();
+
+        setMigrationState(QLatin1String("LocalFolders"), Complete, instance.identifier(), QLatin1String("LocalFolders"));
+        emit message(Success, i18n("Local folders migrated successfully."));
+        emit status(QString());
+        migrationDone();
+
+    } else {
+        mCurrentInstance = AgentInstance();
+
+        migrationFailed(error, instance);
+    }
+}
+
+void KMailMigrator::imapFoldersMigrationFinished(const AgentInstance &instance, const QString &error)
+{
+    qCDebug(KMAILMIGRATION_LOG) << "imapMigrationFinished: instance=" << instance.identifier()
+                                << "error=" << error;
+
+    OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface(instance);
+    if (!iface) {
+        return;
+    }
+
+    const bool disconnected = mAccountInstance[ mCurrentAccount ].disconnectedImap;
+
+    KConfigGroup config(mConfig, mCurrentAccount);
+    const QString nameAccount = config.readEntry("Name");
+
+    iface->setImapServer(config.readEntry("host"));
+    iface->setImapPort(config.readEntry("port", 143));
+    iface->setUserName(config.readEntry("login"));
+    if (config.readEntry("use-ssl").toLower() == QLatin1String("true")) {
+        iface->setSafety(QLatin1String("SSL"));
+    } else if (config.readEntry("use-tls").toLower() == QLatin1String("true")) {
+        iface->setSafety(QLatin1String("STARTTLS"));
+    } else {
+        iface->setSafety(QLatin1String("NONE"));
+    }
+    const QString authentication = config.readEntry("auth").toUpper();
+    if (authentication == QLatin1String("LOGIN")) {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::LOGIN);
+    } else if (authentication == QLatin1String("PLAIN")) {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::PLAIN);
+    } else if (authentication == QLatin1String("CRAM-MD5")) {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::CRAM_MD5);
+    } else if (authentication == QLatin1String("DIGEST-MD5")) {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5);
+    } else if (authentication == QLatin1String("NTLM")) {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::NTLM);
+    } else if (authentication == QLatin1String("GSSAPI")) {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::GSSAPI);
+    } else if (authentication == QLatin1String("ANONYMOUS")) {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::ANONYMOUS);
+    } else {
+        iface->setAuthentication(MailTransport::Transport::EnumAuthenticationType::CLEAR);
+    }
+    if (config.readEntry("subscribed-folders").toLower() == QLatin1String("true")) {
+        iface->setSubscriptionEnabled(true);
+    }
+
+    // skip interval checking so it doesn't interfere with cache importing
+    iface->setIntervalCheckTime(-1);   //exclude
+
+    // check-exclude in Account section means that this account should not be included
+    // in manual checks. In KMail UI this is called "Include in manual checks"
+    KConfigGroup resourceGroup(mConfig, QString::fromLatin1("Resource %1").arg(instance.identifier()));
+    resourceGroup.writeEntry("IncludeInManualChecks", !config.readEntry("check-exclude", false));
+    const KConfigGroup generalGroup(mConfig, "General");
+    resourceGroup.writeEntry("CheckOnStartup", generalGroup.readEntry("checkmail-startup", false));
+    resourceGroup.writeEntry("OfflineOnShutdown", true);
+
+    iface->setSieveSupport(config.readEntry("sieve-support", false));
+    iface->setSieveReuseConfig(config.readEntry("sieve-reuse-config", true));
+    iface->setSievePort(config.readEntry("sieve-port", 2000));
+    iface->setSieveAlternateUrl(config.readEntry("sieve-alternate-url"));
+    iface->setSieveVacationFilename(config.readEntry("sieve-vacation-filename", "kmail-vacation.siv"));
+    iface->setDisconnectedModeEnabled(disconnected);
+    if (!disconnected) {
+        iface->setAutomaticExpungeEnabled(config.readEntry("auto-expunge", true));
+    }
+    const bool useDefaultIdentity = config.readEntry("use-default-identity", true);
+    iface->setUseDefaultIdentity(useDefaultIdentity);
+    if (!useDefaultIdentity) {
+        iface->setAccountIdentity(config.readEntry("identity-id").toInt());
+    }
+
+    QString encpasswd ;
+    if (config.readEntry("store-passwd", false)) {
+        encpasswd = config.readEntry("pass");
+        if (encpasswd.isEmpty()) {
+            encpasswd = config.readEntry("passwd");
+            if (!encpasswd.isEmpty()) {
+                encpasswd = importPassword(encpasswd);
+            }
+        }
+
+        if (!encpasswd.isEmpty()) {
+            encpasswd = KStringHandler::obscure(encpasswd);
+        }
+        config.deleteEntry("store-passwd");
+        config.deleteEntry("passwd");
+    }
+    migratePassword(config.readEntry("Id"), instance, QLatin1String("imap"), encpasswd);
+
+    // enable interval checking in case this had been configured
+    const int checkInterval = config.readEntry("check-interval", 0);
+    if (checkInterval != 0) {
+        iface->setIntervalCheckEnabled(true);
+        iface->setIntervalCheckTime(checkInterval);
+    }
+
+    // make sure the config is saved
+    iface->save();
+
+    AgentInstance resource = instance;
+    resource.reconfigure();
+
+    config.deleteEntry("locally-subscribed-folders");
+    config.deleteEntry("locallyUnsubscribedFolders");
+
+    config.deleteEntry("capabilities");
+
+    if (error.isEmpty()) {
+        migrationCompleted(instance);
+    } else {
+        migrationFailed(error, true, instance);
+    }
+}
+
+void KMailMigrator::collectionMigratorMessage(int type, const QString &msg)
+{
+    switch (type) {
     case Success:
-      emit message( Success, msg );
-      break;
+        emit message(Success, msg);
+        break;
 
     case Skip:
-      emit message( Skip, msg );
-      break;
+        emit message(Skip, msg);
+        break;
 
     case Warning:
-      emit message( Warning, msg );
-      break;
+        emit message(Warning, msg);
+        break;
 
     case Info:
-      emit message( Info, msg );
-      break;
+        emit message(Info, msg);
+        break;
 
     case Error:
-      emit message( Error, msg );
-      break;
+        emit message(Error, msg);
+        break;
 
     default:
-      qCritical() << "Unknown message type" << type << "msg=" << msg;
-      break;
-  }
+        qCritical() << "Unknown message type" << type << "msg=" << msg;
+        break;
+    }
 }
 
 void KMailMigrator::collectionMigratorFinished()
 {
-  emit status( QString() );
+    emit status(QString());
 }
 
 void KMailMigrator::collectionMigratorEmittedNotification()
 {
-  mForwardResourceNotifications = false;
+    mForwardResourceNotifications = false;
 }
 
-void KMailMigrator::instanceStatusChanged( const AgentInstance &instance )
+void KMailMigrator::instanceStatusChanged(const AgentInstance &instance)
 {
-  if ( !mForwardResourceNotifications ) {
-    return;
-  }
+    if (!mForwardResourceNotifications) {
+        return;
+    }
 
-  if ( instance.identifier() != mCurrentInstance.identifier() ) {
-    return;
-  }
+    if (instance.identifier() != mCurrentInstance.identifier()) {
+        return;
+    }
 
-  if ( instance.status() == AgentInstance::Idle ) {
-    emit status( QString() );
-  } else {
-    emit status( instance.statusMessage() );
-  }
+    if (instance.status() == AgentInstance::Idle) {
+        emit status(QString());
+    } else {
+        emit status(instance.statusMessage());
+    }
 }
 
-void KMailMigrator::instanceProgressChanged( const AgentInstance &instance )
+void KMailMigrator::instanceProgressChanged(const AgentInstance &instance)
 {
-  if ( !mForwardResourceNotifications ) {
-    return;
-  }
+    if (!mForwardResourceNotifications) {
+        return;
+    }
 
-  if ( instance.identifier() != mCurrentInstance.identifier() ) {
-    return;
-  }
+    if (instance.identifier() != mCurrentInstance.identifier()) {
+        return;
+    }
 
-  emit progress( 0, 100, instance.progress() );
+    emit progress(0, 100, instance.progress());
 }
 
-void KMailMigrator::imapCacheAdaptionFinished( int messageType, const QString &messageText )
+void KMailMigrator::imapCacheAdaptionFinished(int messageType, const QString &messageText)
 {
-  emit message( (KMigratorBase::MessageType)messageType, messageText );
+    emit message((KMigratorBase::MessageType)messageType, messageText);
 
-  mImapCacheAdapter = 0;
+    mImapCacheAdapter = 0;
 
-  migrateNext();
+    migrateNext();
 }
 
-void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance &instance )
+void KMailMigrator::specialColDefaultResourceCheckFinished(const AgentInstance &instance)
 {
-  KConfig specialMailCollectionsConfig( QLatin1String( "specialmailcollectionsrc" ) );
-  KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group( QLatin1String( "SpecialCollections" ) );
+    KConfig specialMailCollectionsConfig(QLatin1String("specialmailcollectionsrc"));
+    KConfigGroup specialMailCollectionsGroup = specialMailCollectionsConfig.group(QLatin1String("SpecialCollections"));
 
-  const EmptyResourceCleaner *cleaner = qobject_cast<const EmptyResourceCleaner*>( QObject::sender() );
+    const EmptyResourceCleaner *cleaner = qobject_cast<const EmptyResourceCleaner *>(QObject::sender());
 
-  const bool specialCollectionsLock =
-    QDBusConnection::sessionBus().registerService( SPECIALCOLLECTIONS_LOCK_SERVICE );
+    const bool specialCollectionsLock =
+        QDBusConnection::sessionBus().registerService(SPECIALCOLLECTIONS_LOCK_SERVICE);
 
-  const QString localFoldersIdentifier = mCurrentInstance.identifier();
-  if ( cleaner->isResourceDeletable() && specialCollectionsLock ) {
-    specialMailCollectionsGroup.writeEntry( QLatin1String( "DefaultResourceId" ), localFoldersIdentifier );
-    specialMailCollectionsGroup.sync();
-    AgentManager::self()->removeInstance( instance );
+    const QString localFoldersIdentifier = mCurrentInstance.identifier();
+    if (cleaner->isResourceDeletable() && specialCollectionsLock) {
+        specialMailCollectionsGroup.writeEntry(QLatin1String("DefaultResourceId"), localFoldersIdentifier);
+        specialMailCollectionsGroup.sync();
+        AgentManager::self()->removeInstance(instance);
 
-    qCDebug(KMAILMIGRATION_LOG) << "Former special mail collection resource" << instance.identifier()
-             << "successfully delete, now using" << specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
-  } else {
-    qCDebug(KMAILMIGRATION_LOG) << "Former special mail collection resource" << instance.identifier()
-             << "still valid";
-  }
+        qCDebug(KMAILMIGRATION_LOG) << "Former special mail collection resource" << instance.identifier()
+                                    << "successfully delete, now using" << specialMailCollectionsGroup.readEntry(QLatin1String("DefaultResourceId"));
+    } else {
+        qCDebug(KMAILMIGRATION_LOG) << "Former special mail collection resource" << instance.identifier()
+                                    << "still valid";
+    }
 
-  if ( specialCollectionsLock ) {
-    QDBusConnection::sessionBus().unregisterService( SPECIALCOLLECTIONS_LOCK_SERVICE );
-  }
+    if (specialCollectionsLock) {
+        QDBusConnection::sessionBus().unregisterService(SPECIALCOLLECTIONS_LOCK_SERVICE);
+    }
 
-  mCurrentInstance = AgentInstance();
+    mCurrentInstance = AgentInstance();
 
-  setMigrationState( QLatin1String("LocalFolders"), Complete, localFoldersIdentifier, QLatin1String("LocalFolders") );
-  emit message( Success, i18n( "Local folders migrated successfully." ) );
-  emit status( QString() );
-  migrationDone();
+    setMigrationState(QLatin1String("LocalFolders"), Complete, localFoldersIdentifier, QLatin1String("LocalFolders"));
+    emit message(Success, i18n("Local folders migrated successfully."));
+    emit status(QString());
+    migrationDone();
 }
 
 QString KMailMigrator::importPassword(const QString &aStr)
 {
-  unsigned int i, val;
-  unsigned int len = aStr.length();
-  QByteArray result;
-  result.resize( len );
+    unsigned int i, val;
+    unsigned int len = aStr.length();
+    QByteArray result;
+    result.resize(len);
 
-  for ( i = 0; i < len; i++ ) {
-    val = aStr[i].toLatin1() - ' ';
-    val = ( 255-' ') - val;
-    result[i] = (char)( val + ' ');
-  }
-  result[i] = '\0';
+    for (i = 0; i < len; i++) {
+        val = aStr[i].toLatin1() - ' ';
+        val = (255 - ' ') - val;
+        result[i] = (char)(val + ' ');
+    }
+    result[i] = '\0';
 
-  return KStringHandler::obscure( QString::fromLatin1(result) );
+    return KStringHandler::obscure(QString::fromLatin1(result));
 }
-
 

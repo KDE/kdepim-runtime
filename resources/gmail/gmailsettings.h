@@ -24,7 +24,8 @@
 
 #include <KGAPI/Types>
 
-namespace KGAPI2 {
+namespace KGAPI2
+{
 class Job;
 class AuthJob;
 }
@@ -34,7 +35,7 @@ class KJob;
 
 class GmailSettings : public Settings
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit GmailSettings(WId wid = 0);

@@ -18,15 +18,15 @@
 #ifndef CONTACTSRESOURCEFACTORY_H
 #define CONTACTSRESOURCEFACTORY_H
 
-#include <agentfactory.h> 
+#include <agentfactory.h>
 #include <contactsresource.h>
- 
+
 class ContactsResourceFactory : public Akonadi::AgentFactory<ContactsResource>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.ContactsResource");
-public: 
-    explicit ContactsResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.ContactsResource");
+public:
+    explicit ContactsResourceFactory(QObject *parent = 0);
 
 };
 #endif

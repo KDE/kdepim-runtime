@@ -47,56 +47,59 @@ using namespace Akonadi;
 
 class TestStore : public MixedMaildirStore
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    TestStore() : mLastCheckedJob( 0 ), mErrorCode( 0 ) {}
+public:
+    TestStore() : mLastCheckedJob(0), mErrorCode(0) {}
 
-  public:
+public:
     Collection mTopLevelCollection;
 
     mutable FileStore::Job *mLastCheckedJob;
     mutable int mErrorCode;
     mutable QString mErrorText;
 
-  protected:
-    void setTopLevelCollection( const Collection &collection )
+protected:
+    void setTopLevelCollection(const Collection &collection)
     {
-      MixedMaildirStore::setTopLevelCollection( collection );
+        MixedMaildirStore::setTopLevelCollection(collection);
     }
 
-    void checkCollectionMove( FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText ) const
+    void checkCollectionMove(FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const
     {
-      MixedMaildirStore::checkCollectionMove( job, errorCode, errorText );
+        MixedMaildirStore::checkCollectionMove(job, errorCode, errorText);
 
-      mLastCheckedJob = job;
-      mErrorCode = errorCode;
-      mErrorText = errorText;
+        mLastCheckedJob = job;
+        mErrorCode = errorCode;
+        mErrorText = errorText;
     }
 
-    void checkItemCreate( FileStore::ItemCreateJob *job, int &errorCode, QString &errorText ) const
+    void checkItemCreate(FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const
     {
-      MixedMaildirStore::checkItemCreate( job, errorCode, errorText );
+        MixedMaildirStore::checkItemCreate(job, errorCode, errorText);
 
-      mLastCheckedJob = job;
-      mErrorCode = errorCode;
-      mErrorText = errorText;
+        mLastCheckedJob = job;
+        mErrorCode = errorCode;
+        mErrorText = errorText;
     }
 };
 
 class TemplateMethodsTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    TemplateMethodsTest() : QObject(), mStore( 0 ) {}
-    ~TemplateMethodsTest() { delete mStore; }
+public:
+    TemplateMethodsTest() : QObject(), mStore(0) {}
+    ~TemplateMethodsTest()
+    {
+        delete mStore;
+    }
 
-  private:
+private:
     QTemporaryDir mDir;
     TestStore *mStore;
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void init();
     void testSetTopLevelCollection();
     void testMoveCollection();
@@ -105,129 +108,128 @@ class TemplateMethodsTest : public QObject
 
 void TemplateMethodsTest::init()
 {
-  delete mStore;
-  mStore = new TestStore;
-  QVERIFY( mDir.isValid() );
-  QVERIFY( QDir(mDir.path()).exists() );
+    delete mStore;
+    mStore = new TestStore;
+    QVERIFY(mDir.isValid());
+    QVERIFY(QDir(mDir.path()).exists());
 }
 
 void TemplateMethodsTest::testSetTopLevelCollection()
 {
-  const QString file = KRandom::randomString( 10 );
-  const QString path = mDir.path() + file;
+    const QString file = KRandom::randomString(10);
+    const QString path = mDir.path() + file;
 
-  mStore->setPath( path );
+    mStore->setPath(path);
 
-  // check the adjustments on the top level collection
-  const Collection collection = mStore->topLevelCollection();
-  QCOMPARE( collection.contentMimeTypes(), QStringList() << Collection::mimeType() );
-  QCOMPARE( collection.rights(), Collection::CanCreateCollection |
-                                 Collection::CanChangeCollection |
-                                 Collection::CanDeleteCollection );
-  const CachePolicy cachePolicy = collection.cachePolicy();
-  QVERIFY( !cachePolicy.inheritFromParent() );
-  QCOMPARE( cachePolicy.localParts(), QStringList() << MessagePart::Envelope );
-  QVERIFY( cachePolicy.syncOnDemand() );
+    // check the adjustments on the top level collection
+    const Collection collection = mStore->topLevelCollection();
+    QCOMPARE(collection.contentMimeTypes(), QStringList() << Collection::mimeType());
+    QCOMPARE(collection.rights(), Collection::CanCreateCollection |
+             Collection::CanChangeCollection |
+             Collection::CanDeleteCollection);
+    const CachePolicy cachePolicy = collection.cachePolicy();
+    QVERIFY(!cachePolicy.inheritFromParent());
+    QCOMPARE(cachePolicy.localParts(), QStringList() << MessagePart::Envelope);
+    QVERIFY(cachePolicy.syncOnDemand());
 }
 
 void TemplateMethodsTest::testMoveCollection()
 {
-  mStore->setPath( mDir.path() );
+    mStore->setPath(mDir.path());
 
-  FileStore::CollectionMoveJob *job = 0;
+    FileStore::CollectionMoveJob *job = 0;
 
-  // test moving into itself
-  Collection collection( KRandom::random() );
-  collection.setParentCollection( mStore->topLevelCollection() );
-  collection.setRemoteId( "collection" );
-  job = mStore->moveCollection( collection, collection );
-  QVERIFY( job != 0 );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
-  QVERIFY( !job->errorText().isEmpty() );
-  QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( mStore->mErrorCode, job->error() );
-  QCOMPARE( mStore->mErrorText, job->errorText() );
+    // test moving into itself
+    Collection collection(KRandom::random());
+    collection.setParentCollection(mStore->topLevelCollection());
+    collection.setRemoteId("collection");
+    job = mStore->moveCollection(collection, collection);
+    QVERIFY(job != 0);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
+    QVERIFY(!job->errorText().isEmpty());
+    QCOMPARE(mStore->mLastCheckedJob, job);
+    QCOMPARE(mStore->mErrorCode, job->error());
+    QCOMPARE(mStore->mErrorText, job->errorText());
 
-  QVERIFY( !job->exec() );
+    QVERIFY(!job->exec());
 
-  // test moving into child
-  Collection childCollection( collection.id() + 1 );
-  childCollection.setParentCollection( collection );
-  childCollection.setRemoteId( "child" );
-  job = mStore->moveCollection( collection, childCollection );
-  QVERIFY( job != 0 );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
-  QVERIFY( !job->errorText().isEmpty() );
-  QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( mStore->mErrorCode, job->error() );
-  QCOMPARE( mStore->mErrorText, job->errorText() );
+    // test moving into child
+    Collection childCollection(collection.id() + 1);
+    childCollection.setParentCollection(collection);
+    childCollection.setRemoteId("child");
+    job = mStore->moveCollection(collection, childCollection);
+    QVERIFY(job != 0);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
+    QVERIFY(!job->errorText().isEmpty());
+    QCOMPARE(mStore->mLastCheckedJob, job);
+    QCOMPARE(mStore->mErrorCode, job->error());
+    QCOMPARE(mStore->mErrorText, job->errorText());
 
-  QVERIFY( !job->exec() );
+    QVERIFY(!job->exec());
 
-  // test moving into grand child child
-  Collection grandChildCollection( collection.id() + 2 );
-  grandChildCollection.setParentCollection( childCollection );
-  grandChildCollection.setRemoteId( "grandchild" );
-  job = mStore->moveCollection( collection, grandChildCollection );
-  QVERIFY( job != 0 );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
-  QVERIFY( !job->errorText().isEmpty() );
-  QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( mStore->mErrorCode, job->error() );
-  QCOMPARE( mStore->mErrorText, job->errorText() );
+    // test moving into grand child child
+    Collection grandChildCollection(collection.id() + 2);
+    grandChildCollection.setParentCollection(childCollection);
+    grandChildCollection.setRemoteId("grandchild");
+    job = mStore->moveCollection(collection, grandChildCollection);
+    QVERIFY(job != 0);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
+    QVERIFY(!job->errorText().isEmpty());
+    QCOMPARE(mStore->mLastCheckedJob, job);
+    QCOMPARE(mStore->mErrorCode, job->error());
+    QCOMPARE(mStore->mErrorText, job->errorText());
 
-  QVERIFY( !job->exec() );
+    QVERIFY(!job->exec());
 
-  // test moving into unrelated collection
-  Collection otherCollection( collection.id() + KRandom::random() );
-  otherCollection.setParentCollection( mStore->topLevelCollection() );
-  otherCollection.setRemoteId( "other" );
-  job = mStore->moveCollection( collection, otherCollection );
-  QVERIFY( job != 0 );
-  QCOMPARE( job->error(), 0 );
-  QVERIFY( job->errorText().isEmpty() );
-  QCOMPARE( mStore->mLastCheckedJob, job );
+    // test moving into unrelated collection
+    Collection otherCollection(collection.id() + KRandom::random());
+    otherCollection.setParentCollection(mStore->topLevelCollection());
+    otherCollection.setRemoteId("other");
+    job = mStore->moveCollection(collection, otherCollection);
+    QVERIFY(job != 0);
+    QCOMPARE(job->error(), 0);
+    QVERIFY(job->errorText().isEmpty());
+    QCOMPARE(mStore->mLastCheckedJob, job);
 
-  // collections don't exist in the store, so processing still fails
-  QVERIFY( !job->exec() );
+    // collections don't exist in the store, so processing still fails
+    QVERIFY(!job->exec());
 }
 
 void TemplateMethodsTest::testCreateItem()
 {
-  mStore->setPath( mDir.path() );
+    mStore->setPath(mDir.path());
 
-  Collection collection( KRandom::random() );
-  collection.setParentCollection( mStore->topLevelCollection() );
-  collection.setRemoteId( "collection" );
+    Collection collection(KRandom::random());
+    collection.setParentCollection(mStore->topLevelCollection());
+    collection.setRemoteId("collection");
 
-  FileStore::ItemCreateJob *job = 0;
+    FileStore::ItemCreateJob *job = 0;
 
-  // test item without payload
-  Item item( KMime::Message::mimeType() );
-  job = mStore->createItem( item, collection );
-  QVERIFY( job != 0 );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
-  QVERIFY( !job->errorText().isEmpty() );
-  QCOMPARE( mStore->mLastCheckedJob, job );
-  QCOMPARE( mStore->mErrorCode, job->error() );
-  QCOMPARE( mStore->mErrorText, job->errorText() );
+    // test item without payload
+    Item item(KMime::Message::mimeType());
+    job = mStore->createItem(item, collection);
+    QVERIFY(job != 0);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
+    QVERIFY(!job->errorText().isEmpty());
+    QCOMPARE(mStore->mLastCheckedJob, job);
+    QCOMPARE(mStore->mErrorCode, job->error());
+    QCOMPARE(mStore->mErrorText, job->errorText());
 
-  QVERIFY( !job->exec() );
+    QVERIFY(!job->exec());
 
-  // test item with payload
-  item.setPayloadFromData( "Subject: dummy payload\n\nwith some content" );
-  job = mStore->createItem( item, collection );
-  QVERIFY( job != 0 );
-  QCOMPARE( job->error(), 0 );
-  QVERIFY( job->errorText().isEmpty() );
-  QCOMPARE( mStore->mLastCheckedJob, job );
+    // test item with payload
+    item.setPayloadFromData("Subject: dummy payload\n\nwith some content");
+    job = mStore->createItem(item, collection);
+    QVERIFY(job != 0);
+    QCOMPARE(job->error(), 0);
+    QVERIFY(job->errorText().isEmpty());
+    QCOMPARE(mStore->mLastCheckedJob, job);
 
-  // collections don't exist in the store, so processing still fails
-  QVERIFY( !job->exec() );
+    // collections don't exist in the store, so processing still fails
+    QVERIFY(!job->exec());
 }
 
-QTEST_MAIN( TemplateMethodsTest )
+QTEST_MAIN(TemplateMethodsTest)
 
 #include "templatemethodstest.moc"
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

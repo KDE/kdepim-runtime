@@ -17,9 +17,9 @@
 
 #include "contactsresourcefactory.h"
 
-ContactsResourceFactory::ContactsResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< ContactsResource >( "akonadi_contacts_resource", parent )
+ContactsResourceFactory::ContactsResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< ContactsResource >("akonadi_contacts_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_contacts_resource") );
+    setObjectName(QLatin1String("akonadi_contacts_resource"));
 }
 

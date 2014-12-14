@@ -39,12 +39,11 @@
 #endif
 
 #ifdef WIN32
-BOOL APIENTRY DllMain( HANDLE hModule,
-                       DWORD ul_reason_for_call,
-                       LPVOID lpReserved)
+BOOL APIENTRY DllMain(HANDLE hModule,
+                      DWORD ul_reason_for_call,
+                      LPVOID lpReserved)
 {
-    switch (ul_reason_for_call)
-    {
+    switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH:
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
@@ -55,4 +54,4 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 }
 #endif
 
-SASL_CLIENT_PLUG_INIT( xoauth2 )
+SASL_CLIENT_PLUG_INIT(xoauth2)

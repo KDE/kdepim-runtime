@@ -24,17 +24,18 @@
 #include <kolabdefinitions.h> //libkolab
 #include <formathelpers.h> //libkolab
 
-class KolabHelpers {
+class KolabHelpers
+{
 public:
     static bool checkForErrors(const Akonadi::Item &affectedItem);
     static Akonadi::Item translateFromImap(Kolab::FolderType folderType, const Akonadi::Item &item, bool &ok);
     static Akonadi::Item::List translateToImap(const Akonadi::Item::List &items, bool &ok);
     static Akonadi::Item translateToImap(const Akonadi::Item &item, bool &ok);
-    static Kolab::FolderType folderTypeFromString( const QByteArray &folderTypeName );
-    static QByteArray getFolderTypeAnnotation( const QMap<QByteArray, QByteArray> &annotations);
-    static void setFolderTypeAnnotation( QMap<QByteArray, QByteArray> &annotations, const QByteArray &value);
+    static Kolab::FolderType folderTypeFromString(const QByteArray &folderTypeName);
+    static QByteArray getFolderTypeAnnotation(const QMap<QByteArray, QByteArray> &annotations);
+    static void setFolderTypeAnnotation(QMap<QByteArray, QByteArray> &annotations, const QByteArray &value);
     static Kolab::ObjectType getKolabTypeFromMimeType(const QString &type);
-    static QByteArray kolabTypeForMimeType( const QStringList &contentMimeTypes );
+    static QByteArray kolabTypeForMimeType(const QStringList &contentMimeTypes);
     static QStringList getContentMimeTypes(Kolab::FolderType type);
     static QString getIcon(Kolab::FolderType type);
     //Returns true if the folder type shouldn't be ignored

@@ -40,55 +40,53 @@
 
 using namespace KGAPI2;
 
-
-SettingsDialog::SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent ):
-    GoogleSettingsDialog( accountManager, windowId, parent )
+SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent):
+    GoogleSettingsDialog(accountManager, windowId, parent)
 {
     connect(this, &SettingsDialog::currentAccountChanged, this, &SettingsDialog::slotCurrentAccountChanged);
 
+    m_calendarsBox = new QGroupBox(i18n("Calendars"), this);
+    mainLayout()->addWidget(m_calendarsBox);
 
-    m_calendarsBox = new QGroupBox( i18n( "Calendars" ), this );
-    mainLayout()->addWidget( m_calendarsBox );
+    QVBoxLayout *vbox = new QVBoxLayout(m_calendarsBox);
 
-    QVBoxLayout *vbox = new QVBoxLayout( m_calendarsBox );
+    m_calendarsList = new QListWidget(m_calendarsBox);
+    vbox->addWidget(m_calendarsList, 1);
 
-    m_calendarsList = new QListWidget( m_calendarsBox );
-    vbox->addWidget( m_calendarsList, 1 );
-
-    m_reloadCalendarsBtn = new QPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_calendarsBox );
-    vbox->addWidget( m_reloadCalendarsBtn );
+    m_reloadCalendarsBtn = new QPushButton(QIcon::fromTheme(QLatin1String("view-refresh")), i18n("Reload"), m_calendarsBox);
+    vbox->addWidget(m_reloadCalendarsBtn);
     connect(m_reloadCalendarsBtn, &QPushButton::clicked, this, &SettingsDialog::slotReloadCalendars);
 
     QHBoxLayout *hbox = new QHBoxLayout;
-    vbox->addLayout( hbox );
+    vbox->addLayout(hbox);
 
-    m_eventsLimitLabel = new QLabel( i18nc( "Followed by a date picker widget", "&Fetch only new events since" ), this );
-    hbox->addWidget( m_eventsLimitLabel );
+    m_eventsLimitLabel = new QLabel(i18nc("Followed by a date picker widget", "&Fetch only new events since"), this);
+    hbox->addWidget(m_eventsLimitLabel);
 
-    m_eventsLimitCombo = new KDateComboBox( this );
-    m_eventsLimitLabel->setBuddy( m_eventsLimitCombo );
-    m_eventsLimitCombo->setMaximumDate( QDate::currentDate() );
-    m_eventsLimitCombo->setMinimumDate( QDate::fromString( QLatin1String( "2000-01-01" ), Qt::ISODate ) );
-    m_eventsLimitCombo->setOptions( KDateComboBox::EditDate | KDateComboBox::SelectDate |
-                                    KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid );
-    if( Settings::self()->eventsSince().isEmpty() ) {
-        const QString ds = QString::fromLatin1( "%1-01-01" ).arg( QString::number( QDate::currentDate().year() - 3 ) );
-        m_eventsLimitCombo->setDate( QDate::fromString( ds, Qt::ISODate ) );
+    m_eventsLimitCombo = new KDateComboBox(this);
+    m_eventsLimitLabel->setBuddy(m_eventsLimitCombo);
+    m_eventsLimitCombo->setMaximumDate(QDate::currentDate());
+    m_eventsLimitCombo->setMinimumDate(QDate::fromString(QLatin1String("2000-01-01"), Qt::ISODate));
+    m_eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate |
+                                   KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
+    if (Settings::self()->eventsSince().isEmpty()) {
+        const QString ds = QString::fromLatin1("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
+        m_eventsLimitCombo->setDate(QDate::fromString(ds, Qt::ISODate));
     } else {
-        m_eventsLimitCombo->setDate( QDate::fromString( Settings::self()->eventsSince(), Qt::ISODate ) );
+        m_eventsLimitCombo->setDate(QDate::fromString(Settings::self()->eventsSince(), Qt::ISODate));
     }
-    hbox->addWidget( m_eventsLimitCombo );
+    hbox->addWidget(m_eventsLimitCombo);
 
-    m_taskListsBox = new QGroupBox( i18n( "Tasklists" ), this );
-    mainLayout()->addWidget( m_taskListsBox );
+    m_taskListsBox = new QGroupBox(i18n("Tasklists"), this);
+    mainLayout()->addWidget(m_taskListsBox);
 
-    vbox = new QVBoxLayout( m_taskListsBox );
+    vbox = new QVBoxLayout(m_taskListsBox);
 
-    m_taskListsList = new QListWidget( m_taskListsBox );
-    vbox->addWidget( m_taskListsList, 1 );
+    m_taskListsList = new QListWidget(m_taskListsBox);
+    vbox->addWidget(m_taskListsList, 1);
 
-    m_reloadTaskListsBtn = new QPushButton( QIcon::fromTheme( QLatin1String("view-refresh") ), i18n( "Reload" ), m_taskListsBox );
-    vbox->addWidget( m_reloadTaskListsBtn );
+    m_reloadTaskListsBtn = new QPushButton(QIcon::fromTheme(QLatin1String("view-refresh")), i18n("Reload"), m_taskListsBox);
+    vbox->addWidget(m_reloadTaskListsBtn);
     connect(m_reloadTaskListsBtn, &QPushButton::clicked, this, &SettingsDialog::slotReloadTaskLists);
 }
 
@@ -99,47 +97,46 @@ SettingsDialog::~SettingsDialog()
 void SettingsDialog::saveSettings()
 {
     const AccountPtr account = currentAccount();
-    if ( !currentAccount() ) {
-        Settings::self()->setAccount( QString() );
-        Settings::self()->setCalendars( QStringList() );
-        Settings::self()->setTaskLists( QStringList() );
-        Settings::self()->setEventsSince( QString() );
+    if (!currentAccount()) {
+        Settings::self()->setAccount(QString());
+        Settings::self()->setCalendars(QStringList());
+        Settings::self()->setTaskLists(QStringList());
+        Settings::self()->setEventsSince(QString());
         Settings::self()->save();
         return;
     }
 
-    Settings::self()->setAccount( account->accountName() );
+    Settings::self()->setAccount(account->accountName());
 
     QStringList calendars;
-    for ( int i = 0; i < m_calendarsList->count(); i++ ) {
-        QListWidgetItem *item = m_calendarsList->item( i );
+    for (int i = 0; i < m_calendarsList->count(); i++) {
+        QListWidgetItem *item = m_calendarsList->item(i);
 
-        if ( item->checkState() == Qt::Checked ) {
-            calendars.append( item->data( Qt::UserRole ).toString() );
+        if (item->checkState() == Qt::Checked) {
+            calendars.append(item->data(Qt::UserRole).toString());
         }
     }
-    Settings::self()->setCalendars( calendars );
-    if ( m_eventsLimitCombo->isValid() ) {
-        Settings::self()->setEventsSince( m_eventsLimitCombo->date().toString( Qt::ISODate ) );
+    Settings::self()->setCalendars(calendars);
+    if (m_eventsLimitCombo->isValid()) {
+        Settings::self()->setEventsSince(m_eventsLimitCombo->date().toString(Qt::ISODate));
     }
 
     QStringList taskLists;
-    for ( int i = 0; i < m_taskListsList->count(); i++ ) {
-        QListWidgetItem *item = m_taskListsList->item( i );
+    for (int i = 0; i < m_taskListsList->count(); i++) {
+        QListWidgetItem *item = m_taskListsList->item(i);
 
-        if ( item->checkState() == Qt::Checked ) {
-            taskLists.append( item->data( Qt::UserRole ).toString() );
+        if (item->checkState() == Qt::Checked) {
+            taskLists.append(item->data(Qt::UserRole).toString());
         }
     }
-    Settings::self()->setTaskLists( taskLists );
-
+    Settings::self()->setTaskLists(taskLists);
 
     Settings::self()->save();
 }
 
-void SettingsDialog::slotCurrentAccountChanged( const QString &accountName )
+void SettingsDialog::slotCurrentAccountChanged(const QString &accountName)
 {
-    if ( accountName.isEmpty() ) {
+    if (accountName.isEmpty()) {
         return;
     }
 
@@ -150,82 +147,82 @@ void SettingsDialog::slotCurrentAccountChanged( const QString &accountName )
 void SettingsDialog::slotReloadCalendars()
 {
     const AccountPtr account = currentAccount();
-    if ( !account ) {
+    if (!account) {
         return;
     }
 
-    CalendarFetchJob *fetchJob = new CalendarFetchJob( account, this );
+    CalendarFetchJob *fetchJob = new CalendarFetchJob(account, this);
     connect(fetchJob, &CalendarFetchJob::finished, this, &SettingsDialog::slotCalendarsRetrieved);
 
-    m_calendarsBox->setDisabled( true );
+    m_calendarsBox->setDisabled(true);
     m_calendarsList->clear();
 }
 
 void SettingsDialog::slotReloadTaskLists()
 {
     const AccountPtr account = currentAccount();
-    if ( !account ) {
+    if (!account) {
         return;
     }
 
-    TaskListFetchJob *fetchJob = new TaskListFetchJob( account, this );
+    TaskListFetchJob *fetchJob = new TaskListFetchJob(account, this);
     connect(fetchJob, &CalendarFetchJob::finished, this, &SettingsDialog::slotTaskListsRetrieved);
 
-    m_taskListsBox->setDisabled( true );
+    m_taskListsBox->setDisabled(true);
     m_taskListsList->clear();
 }
 
-void SettingsDialog::slotCalendarsRetrieved( Job *job )
+void SettingsDialog::slotCalendarsRetrieved(Job *job)
 {
-    if ( !handleError( job ) || !currentAccount() ) {
-        m_calendarsBox->setEnabled( true );
+    if (!handleError(job) || !currentAccount()) {
+        m_calendarsBox->setEnabled(true);
         return;
     }
 
-    FetchJob *fetchJob = qobject_cast<FetchJob*>(job);
+    FetchJob *fetchJob = qobject_cast<FetchJob *>(job);
     ObjectsList objects = fetchJob->items();
 
     QStringList activeCalendars;
-    if ( currentAccount()->accountName() == Settings::self()->account() ) {
+    if (currentAccount()->accountName() == Settings::self()->account()) {
         activeCalendars = Settings::self()->calendars();
     }
-    Q_FOREACH( const ObjectPtr &object, objects ) {
+    Q_FOREACH (const ObjectPtr &object, objects) {
         CalendarPtr calendar = object.dynamicCast<Calendar>();
 
-        QListWidgetItem *item = new QListWidgetItem( calendar->title() );
-        item->setData( Qt::UserRole, calendar->uid() );
-        item->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable );
-        item->setCheckState( ( activeCalendars.isEmpty() || activeCalendars.contains( calendar->uid() ) ) ? Qt::Checked : Qt::Unchecked );
-        m_calendarsList->addItem( item );
+        QListWidgetItem *item = new QListWidgetItem(calendar->title());
+        item->setData(Qt::UserRole, calendar->uid());
+        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+        item->setCheckState((activeCalendars.isEmpty() || activeCalendars.contains(calendar->uid())) ? Qt::Checked : Qt::Unchecked);
+        m_calendarsList->addItem(item);
 
     }
 
-    m_calendarsBox->setEnabled( true );
+    m_calendarsBox->setEnabled(true);
 }
 
-void SettingsDialog::slotTaskListsRetrieved( Job *job )
+void SettingsDialog::slotTaskListsRetrieved(Job *job)
 {
-    if ( !handleError( job ) || !currentAccount() ) {
-        m_taskListsBox->setEnabled( true );
+    if (!handleError(job) || !currentAccount()) {
+        m_taskListsBox->setEnabled(true);
         return;
     }
 
-    FetchJob *fetchJob = qobject_cast<FetchJob*>(job);
+    FetchJob *fetchJob = qobject_cast<FetchJob *>(job);
     ObjectsList objects = fetchJob->items();
 
     QStringList activeTaskLists;
-    if ( currentAccount()->accountName() == Settings::self()->account()) {
+    if (currentAccount()->accountName() == Settings::self()->account()) {
         activeTaskLists = Settings::self()->taskLists();
     }
-    Q_FOREACH( const ObjectPtr &object, objects ) {
+    Q_FOREACH (const ObjectPtr &object, objects) {
         TaskListPtr taskList = object.dynamicCast<TaskList>();
 
-        QListWidgetItem *item = new QListWidgetItem( taskList->title() );
-        item->setData( Qt::UserRole, taskList->uid() );
-        item->setFlags( Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable );
-        item->setCheckState( ( activeTaskLists.isEmpty() || activeTaskLists.contains( taskList->uid() ) ) ? Qt::Checked : Qt::Unchecked );
-        m_taskListsList->addItem( item );
+        QListWidgetItem *item = new QListWidgetItem(taskList->title());
+        item->setData(Qt::UserRole, taskList->uid());
+        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+        item->setCheckState((activeTaskLists.isEmpty() || activeTaskLists.contains(taskList->uid())) ? Qt::Checked : Qt::Unchecked);
+        m_taskListsList->addItem(item);
     }
 
-    m_taskListsBox->setEnabled( true );
+    m_taskListsBox->setEnabled(true);
 }

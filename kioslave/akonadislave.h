@@ -22,40 +22,41 @@
 
 #include <kio/slavebase.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Item;
 class Collection;
 }
 
 class AkonadiSlave : public KIO::SlaveBase
 {
-  public:
-    AkonadiSlave( const QByteArray &pool_socket, const QByteArray &app_socket );
+public:
+    AkonadiSlave(const QByteArray &pool_socket, const QByteArray &app_socket);
     virtual ~AkonadiSlave();
 
     /**
      * Reimplemented from SlaveBase
      */
-    void get( const QUrl &url ) Q_DECL_OVERRIDE;
+    void get(const QUrl &url) Q_DECL_OVERRIDE;
 
     /**
      * Reimplemented from SlaveBase
      */
-    void stat( const QUrl &url ) Q_DECL_OVERRIDE;
+    void stat(const QUrl &url) Q_DECL_OVERRIDE;
 
     /**
      * Reimplemented from SlaveBase
      */
-    void listDir( const QUrl &url ) Q_DECL_OVERRIDE;
+    void listDir(const QUrl &url) Q_DECL_OVERRIDE;
 
     /**
      * Reimplemented from SlaveBase
      */
-    void del( const QUrl &url, bool isFile ) Q_DECL_OVERRIDE;
+    void del(const QUrl &url, bool isFile) Q_DECL_OVERRIDE;
 
-  private:
-    static KIO::UDSEntry entryForItem( const Akonadi::Item &item );
-    static KIO::UDSEntry entryForCollection( const Akonadi::Collection &collection );
+private:
+    static KIO::UDSEntry entryForItem(const Akonadi::Item &item);
+    static KIO::UDSEntry entryForCollection(const Akonadi::Collection &collection);
 };
 
 #endif

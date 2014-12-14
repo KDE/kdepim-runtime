@@ -27,21 +27,21 @@ using namespace Akonadi;
 class AddresseeSerializerTest : public QObject
 {
     Q_OBJECT
-    private slots:
-        void testGid()
-        {
-            const QString uid(QLatin1String("uid"));
-            KContacts::Addressee addressee;
-            addressee.setUid(uid);
-            Akonadi::Item item;
-            item.setMimeType(addressee.mimeType());
-            item.setPayload(addressee);
-            SerializerPluginAddressee plugin;
-            const QString gid = plugin.extractGid(item);
-            QCOMPARE(gid, uid);
-        }
+private slots:
+    void testGid()
+    {
+        const QString uid(QLatin1String("uid"));
+        KContacts::Addressee addressee;
+        addressee.setUid(uid);
+        Akonadi::Item item;
+        item.setMimeType(addressee.mimeType());
+        item.setPayload(addressee);
+        SerializerPluginAddressee plugin;
+        const QString gid = plugin.extractGid(item);
+        QCOMPARE(gid, uid);
+    }
 };
 
-QTEST_MAIN( AddresseeSerializerTest )
+QTEST_MAIN(AddresseeSerializerTest)
 
 #include "addresseeserializertest.moc"

@@ -22,158 +22,152 @@
 #include "resourcetask.h"
 #include <KLocalizedString>
 
-Q_DECLARE_METATYPE( ResourceTask::ActionIfNoSession )
+Q_DECLARE_METATYPE(ResourceTask::ActionIfNoSession)
 
 class DummyResourceTask : public ResourceTask
 {
 public:
-  explicit DummyResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR )
-    : ResourceTask( action, resource, parent )
-  {
+    explicit DummyResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR)
+        : ResourceTask(action, resource, parent)
+    {
 
-  }
+    }
 
-  void doStart( KIMAP::Session */*session*/ )
-  {
-    cancelTask( "Dummy task" );
-  }
+    void doStart(KIMAP::Session */*session*/)
+    {
+        cancelTask("Dummy task");
+    }
 };
-
 
 class TestResourceTask : public ImapTestBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
 private slots:
-  void shouldRequestSession_data()
-  {
-    QTest::addColumn<DummyResourceState::Ptr>( "state" );
-    QTest::addColumn< QList<QByteArray> >( "scenario" );
-    QTest::addColumn<bool>( "shouldConnect" );
-    QTest::addColumn<bool>( "shouldRequestSession" );
-    QTest::addColumn<ResourceTask::ActionIfNoSession>( "actionIfNoSession" );
-    QTest::addColumn<QStringList>( "callNames" );
-    QTest::addColumn<QVariant>( "firstCallParameter" );
+    void shouldRequestSession_data()
+    {
+        QTest::addColumn<DummyResourceState::Ptr>("state");
+        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<bool>("shouldConnect");
+        QTest::addColumn<bool>("shouldRequestSession");
+        QTest::addColumn<ResourceTask::ActionIfNoSession>("actionIfNoSession");
+        QTest::addColumn<QStringList>("callNames");
+        QTest::addColumn<QVariant>("firstCallParameter");
 
-    DummyResourceState::Ptr state;
-    QList<QByteArray> scenario;
-    QStringList callNames;
+        DummyResourceState::Ptr state;
+        QList<QByteArray> scenario;
+        QStringList callNames;
 
-    state = DummyResourceState::Ptr( new DummyResourceState );
-    scenario.clear();
-    scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
-             << "S: A000001 OK User Logged in"
-             << "C: A000002 CAPABILITY"
-             << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-             << "S: A000002 OK Completed";
-    callNames.clear();
-    callNames << "cancelTask";
-    QTest::newRow( "normal case" ) << state << scenario
-                                   << true << false
-                                   << ResourceTask::DeferIfNoSession
-                                   << callNames << QVariant( "Dummy task" );
+        state = DummyResourceState::Ptr(new DummyResourceState);
+        scenario.clear();
+        scenario << FakeServer::greeting()
+                 << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+                 << "S: A000001 OK User Logged in"
+                 << "C: A000002 CAPABILITY"
+                 << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                 << "S: A000002 OK Completed";
+        callNames.clear();
+        callNames << "cancelTask";
+        QTest::newRow("normal case") << state << scenario
+                                     << true << false
+                                     << ResourceTask::DeferIfNoSession
+                                     << callNames << QVariant("Dummy task");
 
+        state = DummyResourceState::Ptr(new DummyResourceState);
+        callNames.clear();
+        callNames << "deferTask";
+        QTest::newRow("all sessions allocated (defer)") << state << scenario
+                << true << true
+                << ResourceTask::DeferIfNoSession
+                << callNames << QVariant();
 
-    state = DummyResourceState::Ptr( new DummyResourceState );
-    callNames.clear();
-    callNames << "deferTask";
-    QTest::newRow( "all sessions allocated (defer)" ) << state << scenario
-                                                      << true << true
-                                                      << ResourceTask::DeferIfNoSession
-                                                      << callNames << QVariant();
+        state = DummyResourceState::Ptr(new DummyResourceState);
+        callNames.clear();
+        callNames << "cancelTask";
+        QTest::newRow("all sessions allocated (cancel)") << state << scenario
+                << true << true
+                << ResourceTask::CancelIfNoSession
+                << callNames << QVariant();
 
+        state = DummyResourceState::Ptr(new DummyResourceState);
+        scenario.clear();
+        callNames.clear();
+        callNames << "deferTask" << "scheduleConnectionAttempt";
+        QTest::newRow("disconnected pool (defer)") << state << scenario
+                << false << false
+                << ResourceTask::DeferIfNoSession
+                << callNames << QVariant();
 
-    state = DummyResourceState::Ptr( new DummyResourceState );
-    callNames.clear();
-    callNames << "cancelTask";
-    QTest::newRow( "all sessions allocated (cancel)" ) << state << scenario
-                                                       << true << true
-                                                       << ResourceTask::CancelIfNoSession
-                                                       << callNames << QVariant();
-
-
-    state = DummyResourceState::Ptr( new DummyResourceState );
-    scenario.clear();
-    callNames.clear();
-    callNames << "deferTask" << "scheduleConnectionAttempt";
-    QTest::newRow( "disconnected pool (defer)" ) << state << scenario
-                                                 << false << false
-                                                 << ResourceTask::DeferIfNoSession
-                                                 << callNames << QVariant();
-
-
-    state = DummyResourceState::Ptr( new DummyResourceState );
-    scenario.clear();
-    callNames.clear();
-    callNames << "cancelTask" << "scheduleConnectionAttempt";
-    QTest::newRow( "disconnected pool (cancel)" ) << state << scenario
-                                                  << false << false
-                                                  << ResourceTask::CancelIfNoSession
-                                                  << callNames << QVariant();
-  }
-
-  void shouldRequestSession()
-  {
-    QFETCH( DummyResourceState::Ptr, state );
-    QFETCH( QList<QByteArray>, scenario );
-    QFETCH( bool, shouldConnect );
-    QFETCH( bool, shouldRequestSession );
-    QFETCH( ResourceTask::ActionIfNoSession, actionIfNoSession );
-    QFETCH( QStringList, callNames );
-    QFETCH( QVariant, firstCallParameter );
-
-    FakeServer server;
-    server.setScenario( scenario );
-    server.startAndWait();
-
-    SessionPool pool( 1 );
-
-    if ( shouldConnect ) {
-      QSignalSpy poolSpy( &pool, SIGNAL(connectDone(int,QString)) );
-
-      pool.setPasswordRequester( createDefaultRequester() );
-      QVERIFY( pool.connect( createDefaultAccount() ) );
-
-      QTRY_COMPARE( poolSpy.count(), 1 );
-      QCOMPARE( poolSpy.at( 0 ).at( 0 ).toInt(), (int)SessionPool::NoError );
+        state = DummyResourceState::Ptr(new DummyResourceState);
+        scenario.clear();
+        callNames.clear();
+        callNames << "cancelTask" << "scheduleConnectionAttempt";
+        QTest::newRow("disconnected pool (cancel)") << state << scenario
+                << false << false
+                << ResourceTask::CancelIfNoSession
+                << callNames << QVariant();
     }
 
+    void shouldRequestSession()
+    {
+        QFETCH(DummyResourceState::Ptr, state);
+        QFETCH(QList<QByteArray>, scenario);
+        QFETCH(bool, shouldConnect);
+        QFETCH(bool, shouldRequestSession);
+        QFETCH(ResourceTask::ActionIfNoSession, actionIfNoSession);
+        QFETCH(QStringList, callNames);
+        QFETCH(QVariant, firstCallParameter);
 
-    if ( shouldRequestSession ) {
-      QSignalSpy requestSpy( &pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
-      pool.requestSession();
-      QTRY_COMPARE( requestSpy.count(), 1 );
+        FakeServer server;
+        server.setScenario(scenario);
+        server.startAndWait();
+
+        SessionPool pool(1);
+
+        if (shouldConnect) {
+            QSignalSpy poolSpy(&pool, SIGNAL(connectDone(int,QString)));
+
+            pool.setPasswordRequester(createDefaultRequester());
+            QVERIFY(pool.connect(createDefaultAccount()));
+
+            QTRY_COMPARE(poolSpy.count(), 1);
+            QCOMPARE(poolSpy.at(0).at(0).toInt(), (int)SessionPool::NoError);
+        }
+
+        if (shouldRequestSession) {
+            QSignalSpy requestSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+            pool.requestSession();
+            QTRY_COMPARE(requestSpy.count(), 1);
+        }
+
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        DummyResourceTask *task = new DummyResourceTask(actionIfNoSession, state);
+        task->start(&pool);
+
+        if (shouldConnect) {
+            QTRY_COMPARE(sessionSpy.count(), 1);
+        } else {
+            //We want to ensure the signal isn't emitted, so we have to wait
+            QTest::qWait(500);
+            QCOMPARE(sessionSpy.count(), 0);
+        }
+
+        QCOMPARE(state->calls().count(), callNames.size());
+        for (int i = 0; i < callNames.size(); i++) {
+            QString command = QString::fromUtf8(state->calls().at(i).first);
+            QCOMPARE(command, callNames[i]);
+        }
+
+        if (firstCallParameter.toString() == "Dummy task") {
+            QCOMPARE(state->calls().first().second, firstCallParameter);
+        }
+
+        QVERIFY(server.isAllScenarioDone());
+
+        server.quit();
     }
-
-    QSignalSpy sessionSpy( &pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
-    DummyResourceTask *task = new DummyResourceTask( actionIfNoSession, state );
-    task->start( &pool );
-
-    if ( shouldConnect ) {
-      QTRY_COMPARE( sessionSpy.count(), 1 );
-    } else {
-      //We want to ensure the signal isn't emitted, so we have to wait
-      QTest::qWait( 500 );
-      QCOMPARE( sessionSpy.count(), 0 );
-    }
-
-    QCOMPARE( state->calls().count(), callNames.size() );
-    for ( int i = 0; i < callNames.size(); i++ ) {
-      QString command = QString::fromUtf8(state->calls().at( i ).first);
-      QCOMPARE( command, callNames[i] );
-    }
-
-    if ( firstCallParameter.toString() == "Dummy task" ) {
-      QCOMPARE( state->calls().first().second, firstCallParameter );
-    }
-
-    QVERIFY( server.isAllScenarioDone() );
-
-    server.quit();
-  }
 };
 
-QTEST_GUILESS_MAIN( TestResourceTask )
+QTEST_GUILESS_MAIN(TestResourceTask)
 
 #include "testresourcetask.moc"

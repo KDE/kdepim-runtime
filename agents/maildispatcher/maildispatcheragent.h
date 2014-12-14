@@ -23,7 +23,8 @@
 
 #include <AgentBase>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Item;
 }
 
@@ -32,43 +33,43 @@ class Item;
  */
 class MailDispatcherAgent : public Akonadi::AgentBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  Q_CLASSINFO( "D-Bus Interface", "org.freedesktop.Akonadi.MailDispatcherAgent" )
+    Q_CLASSINFO("D-Bus Interface", "org.freedesktop.Akonadi.MailDispatcherAgent")
 
-  public:
-    explicit MailDispatcherAgent( const QString &id );
+public:
+    explicit MailDispatcherAgent(const QString &id);
     ~MailDispatcherAgent();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
+public Q_SLOTS:
+    virtual void configure(WId windowId);
 
-  Q_SIGNALS:
+Q_SIGNALS:
     /**
      * Emitted when the MDA has attempted to send an item.
      */
-    void itemProcessed( const Akonadi::Item &item, bool result );
+    void itemProcessed(const Akonadi::Item &item, bool result);
 
     /**
      * Emitted when the MDA has begun processing an item
      */
     Q_SCRIPTABLE void itemDispatchStarted();
 
-  protected:
-    virtual void doSetOnline( bool online );
+protected:
+    virtual void doSetOnline(bool online);
 
-  private:
+private:
     //@cond PRIVATE
     class Private;
-    Private* const d;
+    Private *const d;
 
-    Q_PRIVATE_SLOT( d, void abort() )
-    Q_PRIVATE_SLOT( d, void dispatch() )
-    Q_PRIVATE_SLOT( d, void itemFetched( const Akonadi::Item& ) )
-    Q_PRIVATE_SLOT( d, void queueError( const QString& ) )
-    Q_PRIVATE_SLOT( d, void sendPercent( KJob*, unsigned long ) )
-    Q_PRIVATE_SLOT( d, void sendResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void emitStatusReady() )
+    Q_PRIVATE_SLOT(d, void abort())
+    Q_PRIVATE_SLOT(d, void dispatch())
+    Q_PRIVATE_SLOT(d, void itemFetched(const Akonadi::Item &))
+    Q_PRIVATE_SLOT(d, void queueError(const QString &))
+    Q_PRIVATE_SLOT(d, void sendPercent(KJob *, unsigned long))
+    Q_PRIVATE_SLOT(d, void sendResult(KJob *))
+    Q_PRIVATE_SLOT(d, void emitStatusReady())
     //@endcond
 };
 

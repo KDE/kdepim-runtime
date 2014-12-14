@@ -32,16 +32,18 @@
 
 using namespace Akonadi;
 
-Akonadi::Item TestUtils::createImapItem(const KCalCore::Event::Ptr &event) {
-    const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC") );
+Akonadi::Item TestUtils::createImapItem(const KCalCore::Event::Ptr &event)
+{
+    const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC"));
     Q_ASSERT(message);
     Akonadi::Item imapItem1;
-    imapItem1.setMimeType( QLatin1String("message/rfc822") );
-    imapItem1.setPayload( message );
+    imapItem1.setMimeType(QLatin1String("message/rfc822"));
+    imapItem1.setPayload(message);
     return imapItem1;
 }
 
-TestUtils::MonitorPair TestUtils::monitor(Akonadi::Collection col, const char *signal) {
+TestUtils::MonitorPair TestUtils::monitor(Akonadi::Collection col, const char *signal)
+{
     QSharedPointer<Akonadi::Monitor> monitor(new Akonadi::Monitor);
     monitor->setCollectionMonitored(col);
     QSharedPointer<QSignalSpy> spy(new QSignalSpy(monitor.data(), signal));
@@ -49,8 +51,9 @@ TestUtils::MonitorPair TestUtils::monitor(Akonadi::Collection col, const char *s
     return qMakePair<QSharedPointer<QSignalSpy>, QSharedPointer<Akonadi::Monitor> >(spy, monitor);
 }
 
-bool TestUtils::wait(const MonitorPair &pair) {
-    for (int i = 0; i < TIMEOUT/10 ; i++) {
+bool TestUtils::wait(const MonitorPair &pair)
+{
+    for (int i = 0; i < TIMEOUT / 10 ; i++) {
         if (pair.first->count() >= 1) {
             qDebug() << pair.first->first();
             return true;
@@ -60,7 +63,8 @@ bool TestUtils::wait(const MonitorPair &pair) {
     return false;
 }
 
-bool TestUtils::ensure(Akonadi::Collection col, const char *signal, Akonadi::Job *job) {
+bool TestUtils::ensure(Akonadi::Collection col, const char *signal, Akonadi::Job *job)
+{
     MonitorPair m = monitor(col, signal);
     if (!job->exec()) {
         return false;
@@ -68,8 +72,9 @@ bool TestUtils::ensure(Akonadi::Collection col, const char *signal, Akonadi::Job
     return wait(m);
 }
 
-bool TestUtils::ensurePopulated(QString agentinstance, int count) {
-    for (int i = 0; i < TIMEOUT/10 ; i++) {
+bool TestUtils::ensurePopulated(QString agentinstance, int count)
+{
+    for (int i = 0; i < TIMEOUT / 10 ; i++) {
         Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
         fetchJob->fetchScope().setResource(agentinstance);
         if (!fetchJob->exec()) {
@@ -83,7 +88,8 @@ bool TestUtils::ensurePopulated(QString agentinstance, int count) {
     return false;
 }
 
-Akonadi::Collection TestUtils::findCollection(QString agentinstance, QString name) {
+Akonadi::Collection TestUtils::findCollection(QString agentinstance, QString name)
+{
     for (int i = 0; i < 500 ; i++) {
         Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
         fetchJob->fetchScope().setResource(agentinstance);

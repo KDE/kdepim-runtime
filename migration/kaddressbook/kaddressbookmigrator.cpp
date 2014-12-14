@@ -35,91 +35,93 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-KContacts::Addressee::List readContacts( bool *ok )
+KContacts::Addressee::List readContacts(bool *ok)
 {
-  const QString fileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kabc/std.vcf") ;
-  QFile file( fileName );
-  if ( !file.open( QIODevice::ReadOnly ) ) {
-    qDebug() << QStringLiteral("Unable to open file %1 for reading" ).arg( fileName );
-    *ok = false;
-    return KContacts::Addressee::List();
-  }
-
-  const QByteArray content = file.readAll();
-  file.close();
-
-  KContacts::VCardConverter converter;
-
-  *ok = true;
-  return converter.parseVCards( content );
-}
-
-bool writeContacts( const KContacts::Addressee::List &contacts )
-{
-  const QString path = QDir::home().absolutePath() + QLatin1String("/.local/share/contacts/");
-  if ( !QDir::root().mkpath( path ) )
-    return false;
-
-  KContacts::VCardConverter converter;
-  for ( int i = 0; i < contacts.count(); ++i ) {
-    const KContacts::Addressee contact = contacts.at( i );
-    const QByteArray content = converter.createVCard( contact );
-
-    const QString fileName = path + QDir::separator() + contact.uid() + QLatin1String(".vcf");
-    QFile file( fileName );
-    if ( !file.open( QIODevice::WriteOnly ) ) {
-      qDebug() << QStringLiteral( "Unable to open file %1 for writing" ).arg( fileName );
-      return false;
+    const QString fileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/kabc/std.vcf") ;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << QStringLiteral("Unable to open file %1 for reading").arg(fileName);
+        *ok = false;
+        return KContacts::Addressee::List();
     }
 
-    file.write( content );
+    const QByteArray content = file.readAll();
     file.close();
-  }
 
-  return true;
+    KContacts::VCardConverter converter;
+
+    *ok = true;
+    return converter.parseVCards(content);
+}
+
+bool writeContacts(const KContacts::Addressee::List &contacts)
+{
+    const QString path = QDir::home().absolutePath() + QLatin1String("/.local/share/contacts/");
+    if (!QDir::root().mkpath(path)) {
+        return false;
+    }
+
+    KContacts::VCardConverter converter;
+    for (int i = 0; i < contacts.count(); ++i) {
+        const KContacts::Addressee contact = contacts.at(i);
+        const QByteArray content = converter.createVCard(contact);
+
+        const QString fileName = path + QDir::separator() + contact.uid() + QLatin1String(".vcf");
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly)) {
+            qDebug() << QStringLiteral("Unable to open file %1 for writing").arg(fileName);
+            return false;
+        }
+
+        file.write(content);
+        file.close();
+    }
+
+    return true;
 }
 
 void convertAddressBook()
 {
-  /* The conversion is done by reading the file based default kresource address book
-   * $HOME/.kde/share/apps/kabc/std.vcf and creating a directory based address book
-   * under $HOME/.local/share/contacts.
-   */
+    /* The conversion is done by reading the file based default kresource address book
+     * $HOME/.kde/share/apps/kabc/std.vcf and creating a directory based address book
+     * under $HOME/.local/share/contacts.
+     */
 
-  bool ok = false;
-  const KContacts::Addressee::List contacts = readContacts( &ok );
-  if ( !ok )
-    return;
+    bool ok = false;
+    const KContacts::Addressee::List contacts = readContacts(&ok);
+    if (!ok) {
+        return;
+    }
 
-  writeContacts( contacts );
+    writeContacts(contacts);
 }
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
-  KLocalizedString::setApplicationDomain("kaddressbookmigrator");
+    KLocalizedString::setApplicationDomain("kaddressbookmigrator");
 
-  KAboutData aboutData( QLatin1String("kaddressbookmigrator"), i18n( "Migration tool for the KDE address book" ), QLatin1String("0.1") );
-  aboutData.addAuthor( i18n( "Tobias Koenig" ), i18n( "Author" ), QLatin1String("tokoe@kde.org") );
+    KAboutData aboutData(QLatin1String("kaddressbookmigrator"), i18n("Migration tool for the KDE address book"), QLatin1String("0.1"));
+    aboutData.addAuthor(i18n("Tobias Koenig"), i18n("Author"), QLatin1String("tokoe@kde.org"));
 
     QCoreApplication app(argc, argv);
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
     parser.addVersionOption();
     parser.addHelpOption();
-  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("disable-autostart"), i18n( "Disable automatic startup on login" )));
+    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("disable-autostart"), i18n("Disable automatic startup on login")));
 
     //PORTING SCRIPT: adapt aboutdata variable if necessary
     aboutData.setupCommandLine(&parser);
     parser.process(app);
     aboutData.processCommandLine(&parser);
 
-  if ( parser.isSet( QLatin1String("disable-autostart") ) ) {
-    KSharedConfigPtr config = KSharedConfig::openConfig();
-    KConfigGroup group( config, "Startup" );
-    group.writeEntry( "EnableAutostart", false );
-  }
-  
-  convertAddressBook();
+    if (parser.isSet(QLatin1String("disable-autostart"))) {
+        KSharedConfigPtr config = KSharedConfig::openConfig();
+        KConfigGroup group(config, "Startup");
+        group.writeEntry("EnableAutostart", false);
+    }
 
-  return 0;
+    convertAddressBook();
+
+    return 0;
 }

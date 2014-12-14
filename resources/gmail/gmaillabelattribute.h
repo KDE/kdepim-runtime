@@ -44,7 +44,7 @@ public:
 
     void deserialize(const QByteArray &data);
     QByteArray serialized() const;
-    Akonadi::Attribute* clone() const;
+    Akonadi::Attribute *clone() const;
     QByteArray type() const;
 
 private:

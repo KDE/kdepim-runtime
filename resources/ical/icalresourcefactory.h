@@ -18,15 +18,15 @@
 #ifndef ICALRESOURCEFACTORY_H
 #define ICALRESOURCEFACTORY_H
 
-#include <agentfactory.h> 
+#include <agentfactory.h>
 #include <icalresource.h>
- 
+
 class IcalResourceFactory : public Akonadi::AgentFactory<ICalResource>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.IcalResource");
-public: 
-    explicit IcalResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.IcalResource");
+public:
+    explicit IcalResourceFactory(QObject *parent = 0);
 
 };
 #endif

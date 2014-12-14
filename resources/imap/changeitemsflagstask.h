@@ -17,39 +17,39 @@
     02110-1301, USA.
 */
 
-
 #ifndef CHANGEITEMSFLAGSTASK_H
 #define CHANGEITEMSFLAGSTASK_H
 
 #include "resourcetask.h"
 
-namespace KIMAP {
+namespace KIMAP
+{
 class StoreJob;
 }
 
 class ChangeItemsFlagsTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit ChangeItemsFlagsTask( ResourceStateInterface::Ptr resource, QObject* parent = 0 );
-  virtual ~ChangeItemsFlagsTask();
+    explicit ChangeItemsFlagsTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
+    virtual ~ChangeItemsFlagsTask();
 
 protected Q_SLOTS:
-  void onSelectDone( KJob *job );
-  void onAppendFlagsDone( KJob *job );
-  void onRemoveFlagsDone( KJob *job );
+    void onSelectDone(KJob *job);
+    void onAppendFlagsDone(KJob *job);
+    void onRemoveFlagsDone(KJob *job);
 
 protected:
-  KIMAP::StoreJob* prepareJob( KIMAP::Session *session );
+    KIMAP::StoreJob *prepareJob(KIMAP::Session *session);
 
-  void doStart( KIMAP::Session* session ) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
-  virtual void triggerAppendFlagsJob( KIMAP::Session *session );
-  virtual void triggerRemoveFlagsJob( KIMAP::Session *session );
+    virtual void triggerAppendFlagsJob(KIMAP::Session *session);
+    virtual void triggerRemoveFlagsJob(KIMAP::Session *session);
 
 protected:
-  int m_processedItems;
+    int m_processedItems;
 
 };
 

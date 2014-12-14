@@ -26,68 +26,68 @@ using namespace Akonadi;
 
 class IncidenceAttribute::Private
 {
-  public:
+public:
     QString status;
     Akonadi::Item::Id referenceId;
 
-    explicit Private() : referenceId( -1 ) {}
+    explicit Private() : referenceId(-1) {}
 };
 
 IncidenceAttribute::IncidenceAttribute()
-  : Attribute(), d( new Private )
+    : Attribute(), d(new Private)
 {
 }
 
 IncidenceAttribute::~IncidenceAttribute()
 {
-  delete d;
+    delete d;
 }
 
 QByteArray IncidenceAttribute::type() const
 {
-    static const QByteArray sType( "incidence" );
+    static const QByteArray sType("incidence");
     return sType;
 }
 
-Attribute* IncidenceAttribute::clone() const
+Attribute *IncidenceAttribute::clone() const
 {
-  IncidenceAttribute *other = new IncidenceAttribute;
-  return other;
+    IncidenceAttribute *other = new IncidenceAttribute;
+    return other;
 }
 
 QByteArray IncidenceAttribute::serialized() const
 {
-  QString data;
-  QTextStream out( &data );
-  out << d->status;
-  out << d->referenceId;
-  return data.toUtf8();
+    QString data;
+    QTextStream out(&data);
+    out << d->status;
+    out << d->referenceId;
+    return data.toUtf8();
 }
 
-void IncidenceAttribute::deserialize( const QByteArray &data )
+void IncidenceAttribute::deserialize(const QByteArray &data)
 {
-  QString s( QString::fromUtf8( data ) );
-  QTextStream in( &s );
-  in >> d->status;
-  in >> d->referenceId;
+    QString s(QString::fromUtf8(data));
+    QTextStream in(&s);
+    in >> d->status;
+    in >> d->referenceId;
 }
 
 QString IncidenceAttribute::status() const
 {
-  return d->status;
+    return d->status;
 }
 
-void IncidenceAttribute::setStatus( const QString &newstatus ) const
+void IncidenceAttribute::setStatus(const QString &newstatus) const
 {
-  d->status = newstatus;
+    d->status = newstatus;
 }
 
 Akonadi::Item::Id IncidenceAttribute::reference() const
 {
-  return d->referenceId;
+    return d->referenceId;
 }
 
-void IncidenceAttribute::setReference( Akonadi::Item::Id id )
+void IncidenceAttribute::setReference(Akonadi::Item::Id id)
 {
-  d->referenceId = id;
+    d->referenceId = id;
 }

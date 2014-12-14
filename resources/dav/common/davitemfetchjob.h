@@ -29,9 +29,9 @@
  */
 class DavItemFetchJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav item fetch job.
      *
@@ -39,7 +39,7 @@ class DavItemFetchJob : public KJob
      * @param item The item that shall be fetched.
      * @param parent The parent object.
      */
-    DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
+    DavItemFetchJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -51,10 +51,10 @@ class DavItemFetchJob : public KJob
      */
     DavItem item() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
     DavItem mItem;
 };

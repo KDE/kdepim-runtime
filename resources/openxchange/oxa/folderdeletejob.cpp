@@ -31,48 +31,48 @@
 
 using namespace OXA;
 
-FolderDeleteJob::FolderDeleteJob( const Folder &folder, QObject *parent )
-  : KJob( parent ), mFolder( folder )
+FolderDeleteJob::FolderDeleteJob(const Folder &folder, QObject *parent)
+    : KJob(parent), mFolder(folder)
 {
 }
 
 void FolderDeleteJob::start()
 {
-  QDomDocument document;
-  QDomElement propertyupdate = DAVUtils::addDavElement( document, document, QLatin1String( "propertyupdate" ) );
-  QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
-  QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "method" ), OXUtils::writeString( QLatin1String( "DELETE" ) ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "last_modified" ), OXUtils::writeString( mFolder.lastModified() ) );
+    QDomDocument document;
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
+    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mFolder.objectId()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("method"), OXUtils::writeString(QLatin1String("DELETE")));
+    DAVUtils::addOxElement(document, prop, QLatin1String("last_modified"), OXUtils::writeString(mFolder.lastModified()));
 
-  const QString path = QLatin1String( "/servlet/webdav.folders" );
+    const QString path = QLatin1String("/servlet/webdav.folders");
 
-  KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-  connect(job, &KIO::DavJob::result, this, &FolderDeleteJob::davJobFinished);
+    KIO::DavJob *job = DavManager::self()->createPatchJob(path, document);
+    connect(job, &KIO::DavJob::result, this, &FolderDeleteJob::davJobFinished);
 }
 
-void FolderDeleteJob::davJobFinished( KJob *job )
+void FolderDeleteJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
+
+    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
+
+    const QDomDocument document = davJob->response();
+
+    QString errorText, errorStatus;
+    if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
+        setError(UserDefinedError);
+        setErrorText(errorText);
+        emitResult();
+        return;
+    }
+
     emitResult();
-    return;
-  }
-
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const QDomDocument document = davJob->response();
-
-  QString errorText, errorStatus;
-  if ( DAVUtils::davErrorOccurred( document, errorText, errorStatus ) ) {
-    setError( UserDefinedError );
-    setErrorText( errorText );
-    emitResult();
-    return;
-  }
-
-  emitResult();
 }
 

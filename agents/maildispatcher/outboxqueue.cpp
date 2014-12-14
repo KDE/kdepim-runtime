@@ -54,14 +54,14 @@ static const int OUTBOX_DISCOVERY_WAIT_TIME = 5000; // number of ms to wait befo
  */
 class OutboxQueue::Private
 {
-  public:
-    Private( OutboxQueue *qq )
-      : q( qq ),
-        outbox( -1 ),
-        monitor( 0 ),
-        futureTimer( 0 ),
-        totalSize( 0 ),
-        outboxDiscoveryRetries( 0 )
+public:
+    Private(OutboxQueue *qq)
+        : q(qq),
+          outbox(-1),
+          monitor(0),
+          futureTimer(0),
+          totalSize(0),
+          outboxDiscoveryRetries(0)
     {
     }
 
@@ -92,368 +92,366 @@ class OutboxQueue::Private
     QSet<Item::Id> ignore;
 
     void initQueue();
-    void addIfComplete( const Item &item );
+    void addIfComplete(const Item &item);
 
     // slots:
     void checkFuture();
-    void collectionFetched( KJob *job );
-    void itemFetched( KJob *job );
+    void collectionFetched(KJob *job);
+    void itemFetched(KJob *job);
     void localFoldersChanged();
-    void localFoldersRequestResult( KJob *job );
-    void itemAdded( const Item &item );
-    void itemChanged( const Item &item );
-    void itemMoved( const Item &item, const Collection &source, const Collection &dest );
-    void itemRemoved( const Item &item );
-    void itemProcessed( const Item &item, bool result );
+    void localFoldersRequestResult(KJob *job);
+    void itemAdded(const Item &item);
+    void itemChanged(const Item &item);
+    void itemMoved(const Item &item, const Collection &source, const Collection &dest);
+    void itemRemoved(const Item &item);
+    void itemProcessed(const Item &item, bool result);
 };
-
 
 void OutboxQueue::Private::initQueue()
 {
-  totalSize = 0;
-  queue.clear();
+    totalSize = 0;
+    queue.clear();
 
-  qCDebug(MAILDISPATCHER_LOG) << "Fetching items in collection" << outbox.id();
-  ItemFetchJob *job = new ItemFetchJob( outbox );
-  job->fetchScope().fetchAllAttributes();
-  job->fetchScope().fetchFullPayload( false );
-  connect( job, SIGNAL(result(KJob*)), q, SLOT(collectionFetched(KJob*)) );
+    qCDebug(MAILDISPATCHER_LOG) << "Fetching items in collection" << outbox.id();
+    ItemFetchJob *job = new ItemFetchJob(outbox);
+    job->fetchScope().fetchAllAttributes();
+    job->fetchScope().fetchFullPayload(false);
+    connect(job, SIGNAL(result(KJob*)), q, SLOT(collectionFetched(KJob*)));
 }
 
-void OutboxQueue::Private::addIfComplete( const Item &item )
+void OutboxQueue::Private::addIfComplete(const Item &item)
 {
-  if ( ignore.contains( item.id() ) ) {
-    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is ignored.";
-    return;
-  }
+    if (ignore.contains(item.id())) {
+        qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is ignored.";
+        return;
+    }
 
-  if ( queue.contains( item ) ) {
-    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "already in queue!";
-    return;
-  }
+    if (queue.contains(item)) {
+        qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "already in queue!";
+        return;
+    }
 
-  if ( !item.hasAttribute<AddressAttribute>() ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute Address.";
-    return;
-  }
+    if (!item.hasAttribute<AddressAttribute>()) {
+        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute Address.";
+        return;
+    }
 
-  if ( !item.hasAttribute<DispatchModeAttribute>() ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute DispatchMode.";
-    return;
-  }
+    if (!item.hasAttribute<DispatchModeAttribute>()) {
+        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute DispatchMode.";
+        return;
+    }
 
-  if ( !item.hasAttribute<SentBehaviourAttribute>() ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute SentBehaviour.";
-    return;
-  }
+    if (!item.hasAttribute<SentBehaviourAttribute>()) {
+        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute SentBehaviour.";
+        return;
+    }
 
-  if ( !item.hasAttribute<TransportAttribute>() ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute Transport.";
-    return;
-  }
+    if (!item.hasAttribute<TransportAttribute>()) {
+        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute Transport.";
+        return;
+    }
 
-  if ( !item.hasFlag( Akonadi::MessageFlags::Queued ) ) {
-    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "has no '$QUEUED' flag.";
-    return;
-  }
+    if (!item.hasFlag(Akonadi::MessageFlags::Queued)) {
+        qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "has no '$QUEUED' flag.";
+        return;
+    }
 
-  const DispatchModeAttribute *dispatchModeAttribute = item.attribute<DispatchModeAttribute>();
-  Q_ASSERT( dispatchModeAttribute );
-  if ( dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Manual ) {
-    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is queued to be sent manually.";
-    return;
-  }
+    const DispatchModeAttribute *dispatchModeAttribute = item.attribute<DispatchModeAttribute>();
+    Q_ASSERT(dispatchModeAttribute);
+    if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Manual) {
+        qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is queued to be sent manually.";
+        return;
+    }
 
-  const TransportAttribute *transportAttribute = item.attribute<TransportAttribute>();
-  Q_ASSERT( transportAttribute );
-  if ( transportAttribute->transport() == 0 ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid transport.";
-    return;
-  }
+    const TransportAttribute *transportAttribute = item.attribute<TransportAttribute>();
+    Q_ASSERT(transportAttribute);
+    if (transportAttribute->transport() == 0) {
+        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid transport.";
+        return;
+    }
 
-  const SentBehaviourAttribute *sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
-  Q_ASSERT( sentBehaviourAttribute );
-  if ( sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection &&
-      !sentBehaviourAttribute->moveToCollection().isValid() ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid sent-mail collection.";
-    return;
-  }
+    const SentBehaviourAttribute *sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
+    Q_ASSERT(sentBehaviourAttribute);
+    if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection &&
+            !sentBehaviourAttribute->moveToCollection().isValid()) {
+        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid sent-mail collection.";
+        return;
+    }
 
-  // This check requires fetchFullPayload. -> slow (?)
-  /*
-  if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have KMime::Message::Ptr payload.";
-    return;
-  }
-  */
+    // This check requires fetchFullPayload. -> slow (?)
+    /*
+    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
+      qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have KMime::Message::Ptr payload.";
+      return;
+    }
+    */
 
-  if ( dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Automatic &&
-       dispatchModeAttribute->sendAfter().isValid() &&
-       dispatchModeAttribute->sendAfter() > QDateTime::currentDateTime() ) {
-    // All the above was OK, so accept it for the future.
-    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is accepted to be sent in the future.";
-    futureMap.insert( dispatchModeAttribute->sendAfter(), item );
-    Q_ASSERT( !futureItems.contains( item ) );
-    futureItems.insert( item );
-    checkFuture();
-    return;
-  }
+    if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Automatic &&
+            dispatchModeAttribute->sendAfter().isValid() &&
+            dispatchModeAttribute->sendAfter() > QDateTime::currentDateTime()) {
+        // All the above was OK, so accept it for the future.
+        qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is accepted to be sent in the future.";
+        futureMap.insert(dispatchModeAttribute->sendAfter(), item);
+        Q_ASSERT(!futureItems.contains(item));
+        futureItems.insert(item);
+        checkFuture();
+        return;
+    }
 
-  qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is accepted into the queue (size" << item.size() << ").";
-  Q_ASSERT( !queue.contains( item ) );
-  totalSize += item.size();
-  queue.append( item );
-  emit q->newItems();
+    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is accepted into the queue (size" << item.size() << ").";
+    Q_ASSERT(!queue.contains(item));
+    totalSize += item.size();
+    queue.append(item);
+    emit q->newItems();
 }
 
 void OutboxQueue::Private::checkFuture()
 {
-  qCDebug(MAILDISPATCHER_LOG) << "The future is here." << futureMap.count() << "items in futureMap.";
-  Q_ASSERT( futureTimer );
-  futureTimer->stop();
-  // By default, re-check in one hour.
-  futureTimer->setInterval( 60 * 60 * 1000 );
+    qCDebug(MAILDISPATCHER_LOG) << "The future is here." << futureMap.count() << "items in futureMap.";
+    Q_ASSERT(futureTimer);
+    futureTimer->stop();
+    // By default, re-check in one hour.
+    futureTimer->setInterval(60 * 60 * 1000);
 
-  // Check items in ascending order of date.
-  while ( !futureMap.isEmpty() ) {
-    QMap<QDateTime, Item>::iterator it = futureMap.begin();
-    qCDebug(MAILDISPATCHER_LOG) << "Item with due date" << it.key();
-    if ( it.key() > QDateTime::currentDateTime() ) {
-      const int secs = QDateTime::currentDateTime().secsTo( it.key() ) + 1;
-      qCDebug(MAILDISPATCHER_LOG) << "Future, in" << secs << "seconds.";
-      Q_ASSERT( secs >= 0 );
-      if ( secs < 60 * 60 ) {
-        futureTimer->setInterval( secs * 1000 );
-      }
-      break; // all others are in the future too
+    // Check items in ascending order of date.
+    while (!futureMap.isEmpty()) {
+        QMap<QDateTime, Item>::iterator it = futureMap.begin();
+        qCDebug(MAILDISPATCHER_LOG) << "Item with due date" << it.key();
+        if (it.key() > QDateTime::currentDateTime()) {
+            const int secs = QDateTime::currentDateTime().secsTo(it.key()) + 1;
+            qCDebug(MAILDISPATCHER_LOG) << "Future, in" << secs << "seconds.";
+            Q_ASSERT(secs >= 0);
+            if (secs < 60 * 60) {
+                futureTimer->setInterval(secs * 1000);
+            }
+            break; // all others are in the future too
+        }
+        if (!futureItems.contains(it.value())) {
+            qCDebug(MAILDISPATCHER_LOG) << "Item disappeared.";
+        } else {
+            qCDebug(MAILDISPATCHER_LOG) << "Due date is here. Queuing.";
+            addIfComplete(it.value());
+            futureItems.remove(it.value());
+        }
+        futureMap.erase(it);
     }
-    if ( !futureItems.contains( it.value() ) ) {
-      qCDebug(MAILDISPATCHER_LOG) << "Item disappeared.";
-    } else {
-      qCDebug(MAILDISPATCHER_LOG) << "Due date is here. Queuing.";
-      addIfComplete( it.value() );
-      futureItems.remove( it.value() );
-    }
-    futureMap.erase( it );
-  }
 
-  qCDebug(MAILDISPATCHER_LOG) << "Timer set to checkFuture again in" << futureTimer->interval() / 1000 << "seconds"
-    << "(that is" << futureTimer->interval() / 1000 / 60 << "minutes).";
+    qCDebug(MAILDISPATCHER_LOG) << "Timer set to checkFuture again in" << futureTimer->interval() / 1000 << "seconds"
+                                << "(that is" << futureTimer->interval() / 1000 / 60 << "minutes).";
 
-  futureTimer->start();
+    futureTimer->start();
 }
 
-void OutboxQueue::Private::collectionFetched( KJob *job )
+void OutboxQueue::Private::collectionFetched(KJob *job)
 {
-  if ( job->error() ) {
-    qCWarning(MAILDISPATCHER_LOG) << "Failed to fetch outbox collection.  Queue will be empty until the outbox changes.";
-    return;
-  }
+    if (job->error()) {
+        qCWarning(MAILDISPATCHER_LOG) << "Failed to fetch outbox collection.  Queue will be empty until the outbox changes.";
+        return;
+    }
 
-  const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob );
-  qCDebug(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << "items.";
+    const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
+    Q_ASSERT(fetchJob);
+    qCDebug(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << "items.";
 
-  foreach ( const Item &item, fetchJob->items() ) {
-    addIfComplete( item );
-  }
+    foreach (const Item &item, fetchJob->items()) {
+        addIfComplete(item);
+    }
 }
 
-void OutboxQueue::Private::itemFetched( KJob *job )
+void OutboxQueue::Private::itemFetched(KJob *job)
 {
-  if ( job->error() ) {
-    qCDebug(MAILDISPATCHER_LOG) << "Error fetching item:" << job->errorString() << ". Trying next item in queue.";
-    q->fetchOne();
-  }
+    if (job->error()) {
+        qCDebug(MAILDISPATCHER_LOG) << "Error fetching item:" << job->errorString() << ". Trying next item in queue.";
+        q->fetchOne();
+    }
 
-  const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob );
-  if ( fetchJob->items().count() != 1 ) {
-    qCDebug(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << ", expected 1. Trying next item in queue.";
-    q->fetchOne();
-  }
+    const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
+    Q_ASSERT(fetchJob);
+    if (fetchJob->items().count() != 1) {
+        qCDebug(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << ", expected 1. Trying next item in queue.";
+        q->fetchOne();
+    }
 
-  if ( !fetchJob->items().isEmpty() ) {
-    emit q->itemReady( fetchJob->items().first() );
-  }
+    if (!fetchJob->items().isEmpty()) {
+        emit q->itemReady(fetchJob->items().first());
+    }
 }
 
 void OutboxQueue::Private::localFoldersChanged()
 {
-  // Called on startup, and whenever the local folders change.
+    // Called on startup, and whenever the local folders change.
 
-  if ( SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::Outbox ) ) {
-    // Outbox is ready, init the queue from it.
-    const Collection collection = SpecialMailCollections::self()->defaultCollection( SpecialMailCollections::Outbox );
-    Q_ASSERT( collection.isValid() );
+    if (SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::Outbox)) {
+        // Outbox is ready, init the queue from it.
+        const Collection collection = SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::Outbox);
+        Q_ASSERT(collection.isValid());
 
-    if ( outbox != collection ) {
-      monitor->setCollectionMonitored( outbox, false );
-      monitor->setCollectionMonitored( collection, true );
-      outbox = collection;
-      qCDebug(MAILDISPATCHER_LOG) << "Changed outbox to" << outbox.id();
-      initQueue();
-    }
-  } else {
-    // Outbox is not ready. Request it, since otherwise we will not know when
-    // new messages appear.
-    // (Note that we are a separate process, so we get no notification when
-    // MessageQueueJob requests the Outbox.)
-    monitor->setCollectionMonitored( outbox, false );
-    outbox = Collection( -1 );
-
-    SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob( q );
-    job->requestDefaultCollection( SpecialMailCollections::Outbox );
-    connect( job, SIGNAL(result(KJob*)), q, SLOT(localFoldersRequestResult(KJob*)) );
-
-    qCDebug(MAILDISPATCHER_LOG) << "Requesting outbox folder.";
-    job->start();
-  }
-
-  // make sure we have a place to dump the sent mails as well
-  if ( !SpecialMailCollections::self()->hasDefaultCollection( SpecialMailCollections::SentMail ) ) {
-    SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob( q );
-    job->requestDefaultCollection( SpecialMailCollections::SentMail );
-
-    qCDebug(MAILDISPATCHER_LOG) << "Requesting sent-mail folder";
-    job->start();
-  }
-}
-
-void OutboxQueue::Private::localFoldersRequestResult( KJob *job )
-{
-  if ( job->error() ) {
-    // We tried to create the outbox, but that failed. This could be because some
-    // other process, the mail app, for example, tried to create it at the
-    // same time. So try again, once or twice, but wait a little in between, longer
-    // each time. If we still haven't managed to create it after a few retries,
-    // error hard.
-
-    if ( ++outboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES ) {
-      const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * outboxDiscoveryRetries;
-      qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Retrying in: " << timeout;
-      QTimer::singleShot( timeout, q, SLOT(localFoldersChanged()) );
+        if (outbox != collection) {
+            monitor->setCollectionMonitored(outbox, false);
+            monitor->setCollectionMonitored(collection, true);
+            outbox = collection;
+            qCDebug(MAILDISPATCHER_LOG) << "Changed outbox to" << outbox.id();
+            initQueue();
+        }
     } else {
-      qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up."; ;
-      emit q->error( i18n( "Could not access the outbox folder (%1).", job->errorString() ) );
+        // Outbox is not ready. Request it, since otherwise we will not know when
+        // new messages appear.
+        // (Note that we are a separate process, so we get no notification when
+        // MessageQueueJob requests the Outbox.)
+        monitor->setCollectionMonitored(outbox, false);
+        outbox = Collection(-1);
+
+        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(q);
+        job->requestDefaultCollection(SpecialMailCollections::Outbox);
+        connect(job, SIGNAL(result(KJob*)), q, SLOT(localFoldersRequestResult(KJob*)));
+
+        qCDebug(MAILDISPATCHER_LOG) << "Requesting outbox folder.";
+        job->start();
     }
-    return;
-  }
 
-  localFoldersChanged();
+    // make sure we have a place to dump the sent mails as well
+    if (!SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::SentMail)) {
+        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(q);
+        job->requestDefaultCollection(SpecialMailCollections::SentMail);
+
+        qCDebug(MAILDISPATCHER_LOG) << "Requesting sent-mail folder";
+        job->start();
+    }
 }
 
-void OutboxQueue::Private::itemAdded( const Item &item )
+void OutboxQueue::Private::localFoldersRequestResult(KJob *job)
 {
-  addIfComplete( item );
+    if (job->error()) {
+        // We tried to create the outbox, but that failed. This could be because some
+        // other process, the mail app, for example, tried to create it at the
+        // same time. So try again, once or twice, but wait a little in between, longer
+        // each time. If we still haven't managed to create it after a few retries,
+        // error hard.
+
+        if (++outboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES) {
+            const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * outboxDiscoveryRetries;
+            qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Retrying in: " << timeout;
+            QTimer::singleShot(timeout, q, SLOT(localFoldersChanged()));
+        } else {
+            qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up."; ;
+            emit q->error(i18n("Could not access the outbox folder (%1).", job->errorString()));
+        }
+        return;
+    }
+
+    localFoldersChanged();
 }
 
-void OutboxQueue::Private::itemChanged( const Item &item )
+void OutboxQueue::Private::itemAdded(const Item &item)
 {
-  addIfComplete( item );
-  // TODO: if the item is moved out of the outbox, will I get itemChanged?
+    addIfComplete(item);
 }
 
-void OutboxQueue::Private::itemMoved( const Item &item, const Collection &source, const Collection &destination )
+void OutboxQueue::Private::itemChanged(const Item &item)
 {
-  if ( source == outbox ) {
-    itemRemoved( item );
-  } else if ( destination == outbox ) {
-    addIfComplete( item );
-  }
+    addIfComplete(item);
+    // TODO: if the item is moved out of the outbox, will I get itemChanged?
 }
 
-void OutboxQueue::Private::itemRemoved( const Item &removedItem )
+void OutboxQueue::Private::itemMoved(const Item &item, const Collection &source, const Collection &destination)
 {
-  // @p item has size=0, so get the size from our own copy.
-  const int index = queue.indexOf( removedItem );
-  if ( index == -1 ) {
-    // Item was not in queue at all.
-    return;
-  }
-
-  Item item( queue.takeAt( index ) );
-  qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "(size" << item.size() << ") was removed from the queue.";
-  totalSize -= item.size();
-
-  futureItems.remove( removedItem );
+    if (source == outbox) {
+        itemRemoved(item);
+    } else if (destination == outbox) {
+        addIfComplete(item);
+    }
 }
 
-void OutboxQueue::Private::itemProcessed( const Item &item, bool result )
+void OutboxQueue::Private::itemRemoved(const Item &removedItem)
 {
-  Q_ASSERT( ignore.contains( item.id() ) );
-  if ( !result ) {
-    // Give the user a chance to re-send the item if it failed.
-    ignore.remove( item.id() );
-  }
+    // @p item has size=0, so get the size from our own copy.
+    const int index = queue.indexOf(removedItem);
+    if (index == -1) {
+        // Item was not in queue at all.
+        return;
+    }
+
+    Item item(queue.takeAt(index));
+    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "(size" << item.size() << ") was removed from the queue.";
+    totalSize -= item.size();
+
+    futureItems.remove(removedItem);
 }
 
-
-OutboxQueue::OutboxQueue( QObject *parent )
-  : QObject( parent ),
-    d( new Private( this ) )
+void OutboxQueue::Private::itemProcessed(const Item &item, bool result)
 {
-  d->monitor = new Monitor( this );
-  d->monitor->itemFetchScope().fetchAllAttributes();
-  d->monitor->itemFetchScope().fetchFullPayload( false );
-  connect( d->monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
-           this, SLOT(itemAdded(Akonadi::Item)) );
-  connect( d->monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
-           this, SLOT(itemChanged(Akonadi::Item)) );
-  connect( d->monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
-           this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)) );
-  connect( d->monitor, SIGNAL(itemRemoved(Akonadi::Item)),
-           this, SLOT(itemRemoved(Akonadi::Item)) );
+    Q_ASSERT(ignore.contains(item.id()));
+    if (!result) {
+        // Give the user a chance to re-send the item if it failed.
+        ignore.remove(item.id());
+    }
+}
 
-  connect( SpecialMailCollections::self(), SIGNAL(defaultCollectionsChanged()), this, SLOT(localFoldersChanged()) );
-  d->localFoldersChanged();
+OutboxQueue::OutboxQueue(QObject *parent)
+    : QObject(parent),
+      d(new Private(this))
+{
+    d->monitor = new Monitor(this);
+    d->monitor->itemFetchScope().fetchAllAttributes();
+    d->monitor->itemFetchScope().fetchFullPayload(false);
+    connect(d->monitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
+            this, SLOT(itemAdded(Akonadi::Item)));
+    connect(d->monitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
+            this, SLOT(itemChanged(Akonadi::Item)));
+    connect(d->monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
+            this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)));
+    connect(d->monitor, SIGNAL(itemRemoved(Akonadi::Item)),
+            this, SLOT(itemRemoved(Akonadi::Item)));
 
-  d->futureTimer = new QTimer( this );
-  connect( d->futureTimer, SIGNAL(timeout()), this, SLOT(checkFuture()) );
-  d->futureTimer->start( 60 * 60 * 1000 ); // 1 hour
+    connect(SpecialMailCollections::self(), SIGNAL(defaultCollectionsChanged()), this, SLOT(localFoldersChanged()));
+    d->localFoldersChanged();
+
+    d->futureTimer = new QTimer(this);
+    connect(d->futureTimer, SIGNAL(timeout()), this, SLOT(checkFuture()));
+    d->futureTimer->start(60 * 60 * 1000);   // 1 hour
 }
 
 OutboxQueue::~OutboxQueue()
 {
-  delete d;
+    delete d;
 }
 
 bool OutboxQueue::isEmpty() const
 {
-  return d->queue.isEmpty();
+    return d->queue.isEmpty();
 }
 
 int OutboxQueue::count() const
 {
-  if ( d->queue.count() == 0 ) {
-    // TODO Is this asking for too much?
-    Q_ASSERT( d->totalSize == 0 );
-  }
-  return d->queue.count();
+    if (d->queue.count() == 0) {
+        // TODO Is this asking for too much?
+        Q_ASSERT(d->totalSize == 0);
+    }
+    return d->queue.count();
 }
 
 qulonglong OutboxQueue::totalSize() const
 {
-  return d->totalSize;
+    return d->totalSize;
 }
 
 void OutboxQueue::fetchOne()
 {
-  if ( isEmpty() ) {
-    qCDebug(MAILDISPATCHER_LOG) << "Empty queue.";
-    return;
-  }
+    if (isEmpty()) {
+        qCDebug(MAILDISPATCHER_LOG) << "Empty queue.";
+        return;
+    }
 
-  const Item item = d->queue.takeFirst();
+    const Item item = d->queue.takeFirst();
 
-  d->totalSize -= item.size();
-  Q_ASSERT( !d->ignore.contains( item.id() ) );
-  d->ignore.insert( item.id() );
+    d->totalSize -= item.size();
+    Q_ASSERT(!d->ignore.contains(item.id()));
+    d->ignore.insert(item.id());
 
-  ItemFetchJob *job = new ItemFetchJob( item );
-  job->fetchScope().fetchAllAttributes();
-  job->fetchScope().fetchFullPayload();
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(itemFetched(KJob*)) );
+    ItemFetchJob *job = new ItemFetchJob(item);
+    job->fetchScope().fetchAllAttributes();
+    job->fetchScope().fetchFullPayload();
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(itemFetched(KJob*)));
 }
 
 #include "moc_outboxqueue.cpp"

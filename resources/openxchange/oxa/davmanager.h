@@ -24,13 +24,15 @@
 
 #include <qurl.h>
 
-namespace KIO {
+namespace KIO
+{
 class DavJob;
 }
 
 class QDomDocument;
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A class that manages DAV specific information.
@@ -43,7 +45,7 @@ namespace OXA {
  */
 class DavManager
 {
-  public:
+public:
     /**
      * Destroys the DAV manager.
      */
@@ -52,12 +54,12 @@ class DavManager
     /**
      * Returns the global instance of the DAV manager.
      */
-    static DavManager* self();
+    static DavManager *self();
 
     /**
      * Sets the base @p url the DAV manager should use.
      */
-    void setBaseUrl( const QUrl &url );
+    void setBaseUrl(const QUrl &url);
 
     /**
      * Returns the base url the DAV manager uses.
@@ -70,7 +72,7 @@ class DavManager
      * @param path The path that is appended to the base url.
      * @param document The request XML document.
      */
-    KIO::DavJob* createFindJob( const QString &path, const QDomDocument &document ) const;
+    KIO::DavJob *createFindJob(const QString &path, const QDomDocument &document) const;
 
     /**
      * Returns a new DAV patch job.
@@ -78,16 +80,16 @@ class DavManager
      * @param path The path that is appended to the base url.
      * @param document The request XML document.
      */
-    KIO::DavJob* createPatchJob( const QString &path, const QDomDocument &document ) const;
+    KIO::DavJob *createPatchJob(const QString &path, const QDomDocument &document) const;
 
-  private:
+private:
     /**
      * Creates a new DAV manager.
      */
     DavManager();
 
     QUrl mBaseUrl;
-    static DavManager* mSelf;
+    static DavManager *mSelf;
 };
 
 }

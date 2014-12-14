@@ -27,67 +27,68 @@
 
 using namespace OXA;
 
-UpdateUsersJob::UpdateUsersJob( QObject *parent )
-  : KJob( parent ), mUserIdRequestFinished( false ), mUsersRequestFinished( false ), mUserId( -1 )
+UpdateUsersJob::UpdateUsersJob(QObject *parent)
+    : KJob(parent), mUserIdRequestFinished(false), mUsersRequestFinished(false), mUserId(-1)
 {
 }
 
 void UpdateUsersJob::start()
 {
-  UserIdRequestJob *userIdJob = new UserIdRequestJob( this );
-  connect(userIdJob, &UserIdRequestJob::result, this, &UpdateUsersJob::userIdRequestJobFinished);
+    UserIdRequestJob *userIdJob = new UserIdRequestJob(this);
+    connect(userIdJob, &UserIdRequestJob::result, this, &UpdateUsersJob::userIdRequestJobFinished);
 
-  UsersRequestJob *usersJob = new UsersRequestJob( this );
-  connect(usersJob, &UsersRequestJob::result, this, &UpdateUsersJob::usersRequestJobFinished);
+    UsersRequestJob *usersJob = new UsersRequestJob(this);
+    connect(usersJob, &UsersRequestJob::result, this, &UpdateUsersJob::usersRequestJobFinished);
 
-  userIdJob->start();
-  usersJob->start();
+    userIdJob->start();
+    usersJob->start();
 }
 
-void UpdateUsersJob::userIdRequestJobFinished( KJob *job )
+void UpdateUsersJob::userIdRequestJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-  } else {
-    mUserIdRequestFinished = true;
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+    } else {
+        mUserIdRequestFinished = true;
 
-    UserIdRequestJob *requestJob = qobject_cast<UserIdRequestJob*>( job );
-    mUserId = requestJob->userId();
+        UserIdRequestJob *requestJob = qobject_cast<UserIdRequestJob *>(job);
+        mUserId = requestJob->userId();
 
-    finish();
-  }
+        finish();
+    }
 }
 
-void UpdateUsersJob::usersRequestJobFinished( KJob *job )
+void UpdateUsersJob::usersRequestJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-  } else {
-    mUsersRequestFinished = true;
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+    } else {
+        mUsersRequestFinished = true;
 
-    UsersRequestJob *requestJob = qobject_cast<UsersRequestJob*>( job );
-    mUsers = requestJob->users();
+        UsersRequestJob *requestJob = qobject_cast<UsersRequestJob *>(job);
+        mUsers = requestJob->users();
 
-    finish();
-  }
+        finish();
+    }
 }
 
 void UpdateUsersJob::finish()
 {
-  // check if both sub-jobs have finished
-  if ( !(mUserIdRequestFinished && mUsersRequestFinished) )
-    return;
+    // check if both sub-jobs have finished
+    if (!(mUserIdRequestFinished && mUsersRequestFinished)) {
+        return;
+    }
 
-  if ( error() ) {
+    if (error()) {
+        emitResult();
+        return;
+    }
+
+    Users::self()->setCurrentUserId(mUserId);
+    Users::self()->setUsers(mUsers);
+
     emitResult();
-    return;
-  }
-
-  Users::self()->setCurrentUserId( mUserId );
-  Users::self()->setUsers( mUsers );
-
-  emitResult();
 }
 

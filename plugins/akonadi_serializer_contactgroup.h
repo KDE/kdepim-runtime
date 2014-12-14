@@ -26,33 +26,33 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 /**
  * @since 4.2
  */
 class SerializerPluginContactGroup : public QObject,
-                                     public ItemSerializerPlugin,
-                                     public DifferencesAlgorithmInterface,
-                                     public GidExtractorInterface
+    public ItemSerializerPlugin,
+    public DifferencesAlgorithmInterface,
+    public GidExtractorInterface
 {
-  Q_OBJECT
-  Q_INTERFACES( Akonadi::ItemSerializerPlugin )
-  Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
-  Q_INTERFACES( Akonadi::GidExtractorInterface )
-  Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginContactGroup")
-  public:
-    bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
-    void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+    Q_OBJECT
+    Q_INTERFACES(Akonadi::ItemSerializerPlugin)
+    Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
+    Q_INTERFACES(Akonadi::GidExtractorInterface)
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginContactGroup")
+public:
+    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version);
+    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version);
 
-    void compare( Akonadi::AbstractDifferencesReporter *reporter,
-                  const Akonadi::Item &leftItem,
-                  const Akonadi::Item &rightItem );
+    void compare(Akonadi::AbstractDifferencesReporter *reporter,
+                 const Akonadi::Item &leftItem,
+                 const Akonadi::Item &rightItem);
 
-    QString extractGid( const Item& item ) const;
+    QString extractGid(const Item &item) const;
 };
 
 }
 
 #endif
-// kate: space-indent on; indent-width 2; replace-tabs on;

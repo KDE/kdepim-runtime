@@ -28,9 +28,9 @@
  */
 class DavItemDeleteJob : public DavJobBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav item delete job.
      *
@@ -38,17 +38,17 @@ class DavItemDeleteJob : public DavJobBase
      * @param item The item that shall be deleted.
      * @param parent The parent object.
      */
-    DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
+    DavItemDeleteJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
      */
     void start() Q_DECL_OVERRIDE;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
     DavItem mItem;
 };

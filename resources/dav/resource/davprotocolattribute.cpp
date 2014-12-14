@@ -18,38 +18,38 @@
 
 #include "davprotocolattribute.h"
 
-DavProtocolAttribute::DavProtocolAttribute( int protocol )
-  : mDavProtocol( protocol )
+DavProtocolAttribute::DavProtocolAttribute(int protocol)
+    : mDavProtocol(protocol)
 {
 }
 
 int DavProtocolAttribute::davProtocol() const
 {
-  return mDavProtocol;
+    return mDavProtocol;
 }
 
-void DavProtocolAttribute::setDavProtocol( int protocol )
+void DavProtocolAttribute::setDavProtocol(int protocol)
 {
-  mDavProtocol = protocol;
+    mDavProtocol = protocol;
 }
 
-Akonadi::Attribute* DavProtocolAttribute::clone() const
+Akonadi::Attribute *DavProtocolAttribute::clone() const
 {
-  return new DavProtocolAttribute( mDavProtocol );
+    return new DavProtocolAttribute(mDavProtocol);
 }
 
 QByteArray DavProtocolAttribute::type() const
 {
-    static const QByteArray sType( "davprotocol" );
+    static const QByteArray sType("davprotocol");
     return sType;
 }
 
 QByteArray DavProtocolAttribute::serialized() const
 {
-  return QByteArray::number( mDavProtocol );
+    return QByteArray::number(mDavProtocol);
 }
 
-void DavProtocolAttribute::deserialize( const QByteArray &data )
+void DavProtocolAttribute::deserialize(const QByteArray &data)
 {
-  mDavProtocol = data.toInt();
+    mDavProtocol = data.toInt();
 }

@@ -17,9 +17,9 @@
 
 #include "notesresourcefactory.h"
 
-NotesResourceFactory::NotesResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< NotesResource >( "akonadi_notes_resource", parent )
+NotesResourceFactory::NotesResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< NotesResource >("akonadi_notes_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_notes_resource") );
+    setObjectName(QLatin1String("akonadi_notes_resource"));
 }
 

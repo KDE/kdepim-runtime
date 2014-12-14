@@ -24,10 +24,11 @@
 
 #include <QObject>
 #include <KSharedConfig>
-namespace Akonadi {
-  class AgentInstance;
-  class Collection;
-  class Session;
+namespace Akonadi
+{
+class AgentInstance;
+class Collection;
+class Session;
 }
 
 class KJob;
@@ -40,44 +41,44 @@ class MixedMaildirStore;
 
 class AbstractCollectionMigrator : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    AbstractCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
+public:
+    AbstractCollectionMigrator(const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR);
     ~AbstractCollectionMigrator();
 
-    virtual void setTopLevelFolder( const QString &topLevelFolder, const QString &name, const QString &remoteId = QString() );
+    virtual void setTopLevelFolder(const QString &topLevelFolder, const QString &name, const QString &remoteId = QString());
 
     QString topLevelFolder() const;
 
-    virtual void setKMailConfig( const KSharedConfigPtr &config );
-    virtual void setEmailIdentityConfig( const KSharedConfigPtr &config );
-    virtual void setKcmKmailSummaryConfig( const KSharedConfigPtr &config );
-    virtual void setTemplatesConfig( const KSharedConfigPtr &config );
+    virtual void setKMailConfig(const KSharedConfigPtr &config);
+    virtual void setEmailIdentityConfig(const KSharedConfigPtr &config);
+    virtual void setKcmKmailSummaryConfig(const KSharedConfigPtr &config);
+    virtual void setTemplatesConfig(const KSharedConfigPtr &config);
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void startMigration();
 
-  Q_SIGNALS:
-    void migrationFinished( const Akonadi::AgentInstance &resource, const QString &error );
+Q_SIGNALS:
+    void migrationFinished(const Akonadi::AgentInstance &resource, const QString &error);
 
-    void message( int type, const QString &msg );
+    void message(int type, const QString &msg);
 
-    void status( const QString &msg );
-    void progress( int value );
-    void progress( int min, int max, int value );
+    void status(const QString &msg);
+    void progress(int value);
+    void progress(int min, int max, int value);
 
-  protected:
-    virtual void migrateCollection( const Akonadi::Collection &collection, const QString &folderId ) = 0;
+protected:
+    virtual void migrateCollection(const Akonadi::Collection &collection, const QString &folderId) = 0;
 
     // override if subclass wants to do its own reporting
-    virtual void migrationProgress( int processedCollections, int seenCollections );
+    virtual void migrationProgress(int processedCollections, int seenCollections);
 
-    virtual QString mapRemoteIdFromStore( const QString &storeRemotedId ) const;
+    virtual QString mapRemoteIdFromStore(const QString &storeRemotedId) const;
 
     void collectionProcessed();
     void migrationDone();
-    void migrationCancelled( const QString &error );
+    void migrationCancelled(const QString &error);
 
     const Akonadi::AgentInstance resource() const;
     QString resourceName() const;
@@ -86,7 +87,7 @@ class AbstractCollectionMigrator : public QObject
 
     // TODO SpecialMailCollections doesn't export its enum to bytearray mapping
     // so we use an int for the enum value
-    void registerAsSpecialCollection( int type );
+    void registerAsSpecialCollection(int type);
 
     MixedMaildirStore *store();
 
@@ -96,16 +97,15 @@ class AbstractCollectionMigrator : public QObject
 
     QString currentStoreFolderId() const;
 
-  private:
+private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void modifyResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void processNextCollection() )
+    Q_PRIVATE_SLOT(d, void collectionFetchResult(KJob *))
+    Q_PRIVATE_SLOT(d, void collectionCreateResult(KJob *))
+    Q_PRIVATE_SLOT(d, void modifyResult(KJob *))
+    Q_PRIVATE_SLOT(d, void processNextCollection())
 };
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

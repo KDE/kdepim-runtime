@@ -24,45 +24,46 @@
 #include <kio/job.h>
 #include <KLocalizedString>
 
-DavItemDeleteJob::DavItemDeleteJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : DavJobBase( parent ), mUrl( url ), mItem( item )
+DavItemDeleteJob::DavItemDeleteJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent)
+    : DavJobBase(parent), mUrl(url), mItem(item)
 {
 }
 
 void DavItemDeleteJob::start()
 {
-  KIO::DeleteJob *job = KIO::del( mUrl.url(), KIO::HideProgressInfo | KIO::DefaultFlags );
-  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-  job->addMetaData( QLatin1String("customHTTPHeader"), QLatin1String("If-Match: ") + mItem.etag() );
-  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
-  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
+    KIO::DeleteJob *job = KIO::del(mUrl.url(), KIO::HideProgressInfo | KIO::DefaultFlags);
+    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    job->addMetaData(QLatin1String("customHTTPHeader"), QLatin1String("If-Match: ") + mItem.etag());
+    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
 
-  connect(job, &KIO::DeleteJob::result, this, &DavItemDeleteJob::davJobFinished);
+    connect(job, &KIO::DeleteJob::result, this, &DavItemDeleteJob::davJobFinished);
 }
 
-void DavItemDeleteJob::davJobFinished( KJob *job )
+void DavItemDeleteJob::davJobFinished(KJob *job)
 {
-  KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
+    KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob *>(job);
 
-  if ( deleteJob->error() && deleteJob->error() != KIO::ERR_NO_CONTENT ) {
-    const int responseCode = deleteJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                              0 :
-                              deleteJob->queryMetaData( QLatin1String("responsecode") ).toInt();
+    if (deleteJob->error() && deleteJob->error() != KIO::ERR_NO_CONTENT) {
+        const int responseCode = deleteJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+                                 0 :
+                                 deleteJob->queryMetaData(QLatin1String("responsecode")).toInt();
 
-    if ( responseCode != 404 && responseCode != 410 ) {
-      QString err;
-      if ( deleteJob->error() != KIO::ERR_SLAVE_DEFINED )
-        err = KIO::buildErrorString( deleteJob->error(), deleteJob->errorText() );
-      else
-        err = deleteJob->errorText();
+        if (responseCode != 404 && responseCode != 410) {
+            QString err;
+            if (deleteJob->error() != KIO::ERR_SLAVE_DEFINED) {
+                err = KIO::buildErrorString(deleteJob->error(), deleteJob->errorText());
+            } else {
+                err = deleteJob->errorText();
+            }
 
-      setLatestResponseCode( responseCode );
-      setError( UserDefinedError + responseCode );
-      setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server.\n"
-                          "%1 (%2).", err, responseCode ) );
+            setLatestResponseCode(responseCode);
+            setError(UserDefinedError + responseCode);
+            setErrorText(i18n("There was a problem with the request. The item has not been deleted from the server.\n"
+                              "%1 (%2).", err, responseCode));
+        }
     }
-  }
 
-  emitResult();
+    emitResult();
 }
 

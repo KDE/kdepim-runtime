@@ -28,9 +28,9 @@
  */
 class DavItemCreateJob : public DavJobBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav item create job.
      *
@@ -38,7 +38,7 @@ class DavItemCreateJob : public DavJobBase
      * @param item The item that shall be created.
      * @param parent The parent object.
      */
-    DavItemCreateJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
+    DavItemCreateJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -51,11 +51,11 @@ class DavItemCreateJob : public DavJobBase
      */
     DavItem item() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
-    void itemRefreshed( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
+    void itemRefreshed(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
     DavItem mItem;
     int mRedirectCount;

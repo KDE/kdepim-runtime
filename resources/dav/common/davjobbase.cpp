@@ -18,67 +18,58 @@
 
 #include "davjobbase.h"
 
-DavJobBase::DavJobBase( QObject *parent )
-  : KJob( parent ), mLatestResponseCode( 0 )
+DavJobBase::DavJobBase(QObject *parent)
+    : KJob(parent), mLatestResponseCode(0)
 {
 }
 
 unsigned int DavJobBase::latestResponseCode() const
 {
-  return mLatestResponseCode;
+    return mLatestResponseCode;
 }
 
 bool DavJobBase::canRetryLater() const
 {
-  bool ret = false;
+    bool ret = false;
 
-  // Be explicit and readable by splitting the if/else if clauses
+    // Be explicit and readable by splitting the if/else if clauses
 
-  if ( latestResponseCode() == 0 && error() ) {
-    // Likely a timeout or a connection failure.
-    ret = true;
-  }
-  else if ( latestResponseCode() == 401 ) {
-    // Authentication required
-    ret = true;
-  }
-  else if ( latestResponseCode() == 402 ) {
-    // Payment required
-    ret = true;
-  }
-  else if ( latestResponseCode() == 407 ) {
-    // Proxy authentication required
-    ret = true;
-  }
-  else if ( latestResponseCode() == 408 ) {
-    // Request timeout
-    ret = true;
-  }
-  else if ( latestResponseCode() == 423 ) {
-    // Locked
-    ret = true;
-  }
-  else if ( latestResponseCode() == 429 ) {
-    // Too many requests
-    ret = true;
-  }
-  else if ( latestResponseCode() >= 501 && latestResponseCode() <= 504 ) {
-    // Various server-side errors
-    ret = true;
-  }
-  else if ( latestResponseCode() == 507 ) {
-    // Insufficient storage
-    ret = true;
-  }
-  else if ( latestResponseCode() == 511 ) {
-    // Network authentication required
-    ret = true;
-  }
+    if (latestResponseCode() == 0 && error()) {
+        // Likely a timeout or a connection failure.
+        ret = true;
+    } else if (latestResponseCode() == 401) {
+        // Authentication required
+        ret = true;
+    } else if (latestResponseCode() == 402) {
+        // Payment required
+        ret = true;
+    } else if (latestResponseCode() == 407) {
+        // Proxy authentication required
+        ret = true;
+    } else if (latestResponseCode() == 408) {
+        // Request timeout
+        ret = true;
+    } else if (latestResponseCode() == 423) {
+        // Locked
+        ret = true;
+    } else if (latestResponseCode() == 429) {
+        // Too many requests
+        ret = true;
+    } else if (latestResponseCode() >= 501 && latestResponseCode() <= 504) {
+        // Various server-side errors
+        ret = true;
+    } else if (latestResponseCode() == 507) {
+        // Insufficient storage
+        ret = true;
+    } else if (latestResponseCode() == 511) {
+        // Network authentication required
+        ret = true;
+    }
 
-  return ret;
+    return ret;
 }
 
-void DavJobBase::setLatestResponseCode( unsigned int code )
+void DavJobBase::setLatestResponseCode(unsigned int code)
 {
-  mLatestResponseCode = code;
+    mLatestResponseCode = code;
 }

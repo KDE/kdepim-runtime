@@ -24,21 +24,22 @@
 
 #include <kjob.h>
 
-namespace OXA {
+namespace OXA
+{
 
 class ConnectionTestJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    ConnectionTestJob( const QString &url, const QString &user, const QString &password, QObject *parent = Q_NULLPTR );
+public:
+    ConnectionTestJob(const QString &url, const QString &user, const QString &password, QObject *parent = Q_NULLPTR);
 
     virtual void start();
 
-  private Q_SLOTS:
-    void httpJobFinished( KJob* );
+private Q_SLOTS:
+    void httpJobFinished(KJob *);
 
-  private:
+private:
     QString mUrl;
     QString mUser;
     QString mPassword;

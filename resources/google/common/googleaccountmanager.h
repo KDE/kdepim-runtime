@@ -26,41 +26,42 @@
 
 #include <KGAPI/Types>
 
-namespace KWallet {
-    class Wallet;
+namespace KWallet
+{
+class Wallet;
 }
 
 class GoogleAccountManager : public QObject
 {
     Q_OBJECT
 
-  public:
-    explicit GoogleAccountManager( QObject* parent = 0 );
+public:
+    explicit GoogleAccountManager(QObject *parent = 0);
     virtual ~GoogleAccountManager();
 
     bool isReady() const;
 
-    bool storeAccount( const KGAPI2::AccountPtr &account );
-    KGAPI2::AccountPtr findAccount( const QString &accountName ) const;
-    bool removeAccount( const QString &accountName );
+    bool storeAccount(const KGAPI2::AccountPtr &account);
+    KGAPI2::AccountPtr findAccount(const QString &accountName) const;
+    bool removeAccount(const QString &accountName);
     KGAPI2::AccountsList listAccounts() const;
 
     void cleanup(const QString &accountName);
 
-  Q_SIGNALS:
-    void managerReady( bool ready );
-    void accountAdded( const KGAPI2::AccountPtr &account );
-    void accountChanged( const KGAPI2::AccountPtr &account );
-    void accountRemoved( const QString &accountName );
+Q_SIGNALS:
+    void managerReady(bool ready);
+    void accountAdded(const KGAPI2::AccountPtr &account);
+    void accountChanged(const KGAPI2::AccountPtr &account);
+    void accountRemoved(const QString &accountName);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void initManager();
-    void slotWalletOpened( bool success );
+    void slotWalletOpened(bool success);
     void slotWalletClosed();
-    void slotFolderUpdated( const QString &folder );
-    KGAPI2::AccountPtr findAccountInWallet( const QString &accountName ) const;
+    void slotFolderUpdated(const QString &folder);
+    KGAPI2::AccountPtr findAccountInWallet(const QString &accountName) const;
 
-  private:
+private:
     bool m_isReady;
     QPointer<KWallet::Wallet> m_wallet;
     mutable QMap<QString, KGAPI2::AccountPtr> m_accounts;

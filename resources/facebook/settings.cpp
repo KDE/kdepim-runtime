@@ -21,62 +21,62 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-
 class SettingsHelper
 {
-  public:
-    SettingsHelper() : q( 0 ) {}
-    ~SettingsHelper() {
-      delete q;
-      q = 0;
+public:
+    SettingsHelper() : q(0) {}
+    ~SettingsHelper()
+    {
+        delete q;
+        q = 0;
     }
     Settings *q;
 };
 
-Q_GLOBAL_STATIC( SettingsHelper, s_globalSettings )
+Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
 Settings *Settings::self()
 {
-  if ( !s_globalSettings->q ) {
-    new Settings;
-    s_globalSettings->q->load();
-  }
-  return s_globalSettings->q;
+    if (!s_globalSettings->q) {
+        new Settings;
+        s_globalSettings->q->load();
+    }
+    return s_globalSettings->q;
 }
 
 Settings::Settings()
 {
-  Q_ASSERT( !s_globalSettings->q );
-  s_globalSettings->q = this;
+    Q_ASSERT(!s_globalSettings->q);
+    s_globalSettings->q = this;
 
-  new SettingsAdaptor( this );
-  QDBusConnection::sessionBus().registerObject(
-    QLatin1String( "/Settings" ),
-    this,
-    QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents );
+    new SettingsAdaptor(this);
+    QDBusConnection::sessionBus().registerObject(
+        QLatin1String("/Settings"),
+        this,
+        QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
-void Settings::setWindowId( WId id )
+void Settings::setWindowId(WId id)
 {
-  mWinId = id;
+    mWinId = id;
 }
 
-void Settings::setResourceId( const QString &resourceIdentifier )
+void Settings::setResourceId(const QString &resourceIdentifier)
 {
-  mResourceId = resourceIdentifier;
+    mResourceId = resourceIdentifier;
 }
 
 QString Settings::apiKey() const
 {
-  return QLatin1String("9c41511dae89d7dfb4cde6be07365475");
+    return QLatin1String("9c41511dae89d7dfb4cde6be07365475");
 }
 
 QString Settings::appID() const
 {
-  return QLatin1String("175243235841602");
+    return QLatin1String("175243235841602");
 }
 
 QString Settings::appSecret() const
 {
-  return QLatin1String("57b6eadd130bb9ecff7dcb701558833d");
+    return QLatin1String("57b6eadd130bb9ecff7dcb701558833d");
 }

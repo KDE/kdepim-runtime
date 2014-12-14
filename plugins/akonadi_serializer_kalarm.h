@@ -32,35 +32,34 @@
 
 namespace Akonadi
 {
-    class Item;
-    class AbstractDifferencesReporter;
+class Item;
+class AbstractDifferencesReporter;
 }
 
 class SerializerPluginKAlarm : public QObject,
-                               public Akonadi::ItemSerializerPlugin,
-                               public Akonadi::DifferencesAlgorithmInterface,
-                               public Akonadi::GidExtractorInterface
+    public Akonadi::ItemSerializerPlugin,
+    public Akonadi::DifferencesAlgorithmInterface,
+    public Akonadi::GidExtractorInterface
 {
-        Q_OBJECT
-        Q_INTERFACES(Akonadi::ItemSerializerPlugin)
-        Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
-        Q_INTERFACES(Akonadi::GidExtractorInterface)
-        Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKAlarm")
-    public:
-        bool deserialize(Akonadi::Item& item, const QByteArray& label, QIODevice& data, int version);
-        void serialize(const Akonadi::Item& item, const QByteArray& label, QIODevice& data, int& version);
-        void compare(Akonadi::AbstractDifferencesReporter*, const Akonadi::Item& left, const Akonadi::Item& right);
-        QString extractGid(const Akonadi::Item& item) const;
+    Q_OBJECT
+    Q_INTERFACES(Akonadi::ItemSerializerPlugin)
+    Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
+    Q_INTERFACES(Akonadi::GidExtractorInterface)
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKAlarm")
+public:
+    bool deserialize(Akonadi::Item &item, const QByteArray &label, QIODevice &data, int version);
+    void serialize(const Akonadi::Item &item, const QByteArray &label, QIODevice &data, int &version);
+    void compare(Akonadi::AbstractDifferencesReporter *, const Akonadi::Item &left, const Akonadi::Item &right);
+    QString extractGid(const Akonadi::Item &item) const;
 
-    private:
-        void reportDifference(Akonadi::AbstractDifferencesReporter*, KAEventFormatter::Parameter);
+private:
+    void reportDifference(Akonadi::AbstractDifferencesReporter *, KAEventFormatter::Parameter);
 
-        KCalCore::ICalFormat mFormat;
-        KAEventFormatter mValueL;
-        KAEventFormatter mValueR;
-        QString mRegistered;
+    KCalCore::ICalFormat mFormat;
+    KAEventFormatter mValueL;
+    KAEventFormatter mValueR;
+    QString mRegistered;
 };
 
 #endif // AKONADI_SERIALIZER_KALARM_H
 
-// vim: et sw=4:

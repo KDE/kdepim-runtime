@@ -23,106 +23,105 @@
 
 class TestExpungeCollectionTask : public ImapTestBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
 private slots:
-  void shouldDeleteMailBox_data()
-  {
-    QTest::addColumn<Akonadi::Collection>( "collection" );
-    QTest::addColumn< QList<QByteArray> >( "scenario" );
-    QTest::addColumn<QStringList>( "callNames" );
+    void shouldDeleteMailBox_data()
+    {
+        QTest::addColumn<Akonadi::Collection>("collection");
+        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QStringList>("callNames");
 
-    Akonadi::Collection collection;
-    QSet<QByteArray> parts;
-    QString messageContent;
-    QList<QByteArray> scenario;
-    QStringList callNames;
+        Akonadi::Collection collection;
+        QSet<QByteArray> parts;
+        QString messageContent;
+        QList<QByteArray> scenario;
+        QStringList callNames;
 
-    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
 
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 SELECT \"INBOX/Foo\""
-             << "S: A000003 OK select done"
-             << "C: A000004 EXPUNGE"
-             << "S: A000004 OK expunge done";
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario()
+                 << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 OK expunge done";
 
-    callNames.clear();
-    callNames << "taskDone";
+        callNames.clear();
+        callNames << "taskDone";
 
-    QTest::newRow( "normal case" ) << collection << scenario << callNames;
+        QTest::newRow("normal case") << collection << scenario << callNames;
 
+        // We keep the same collection
 
-    // We keep the same collection
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario()
+                 << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 NO select failed";
 
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 SELECT \"INBOX/Foo\""
-             << "S: A000003 NO select failed";
+        callNames.clear();
+        callNames << "cancelTask";
 
-    callNames.clear();
-    callNames << "cancelTask";
+        QTest::newRow("select failed") << collection << scenario << callNames;
 
-    QTest::newRow( "select failed" ) << collection << scenario << callNames;
+        // We keep the same collection
 
-    // We keep the same collection
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario()
+                 << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK select done"
+                 << "C: A000004 EXPUNGE"
+                 << "S: A000004 NO expunge failed";
 
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario()
-             << "C: A000003 SELECT \"INBOX/Foo\""
-             << "S: A000003 OK select done"
-             << "C: A000004 EXPUNGE"
-             << "S: A000004 NO expunge failed";
+        callNames.clear();
+        callNames << "cancelTask";
 
-    callNames.clear();
-    callNames << "cancelTask";
-
-    QTest::newRow( "expunge failed" ) << collection << scenario << callNames;
-  }
-
-  void shouldDeleteMailBox()
-  {
-    QFETCH( Akonadi::Collection, collection );
-    QFETCH( QList<QByteArray>, scenario );
-    QFETCH( QStringList, callNames );
-
-    FakeServer server;
-    server.setScenario( scenario );
-    server.startAndWait();
-
-    SessionPool pool( 1 );
-
-    pool.setPasswordRequester( createDefaultRequester() );
-    QVERIFY( pool.connect( createDefaultAccount() ) );
-    QVERIFY( waitForSignal( &pool, SIGNAL(connectDone(int,QString)) ) );
-
-    DummyResourceState::Ptr state = DummyResourceState::Ptr( new DummyResourceState );
-    state->setCollection( collection );
-    ExpungeCollectionTask *task = new ExpungeCollectionTask( state );
-    task->start( &pool );
-
-    QTRY_COMPARE( state->calls().count(), callNames.size() );
-    for ( int i = 0; i < callNames.size(); i++ ) {
-      QString command = QString::fromUtf8(state->calls().at( i ).first);
-      QVariant parameter = state->calls().at( i ).second;
-
-      if ( command == "cancelTask" && callNames[i] != "cancelTask" ) {
-        qDebug() << "Got a cancel:" << parameter.toString();
-      }
-
-      QCOMPARE( command, callNames[i] );
-
-      if ( command == "cancelTask" ) {
-        QVERIFY( !parameter.toString().isEmpty() );
-      }
+        QTest::newRow("expunge failed") << collection << scenario << callNames;
     }
 
-    QVERIFY( server.isAllScenarioDone() );
+    void shouldDeleteMailBox()
+    {
+        QFETCH(Akonadi::Collection, collection);
+        QFETCH(QList<QByteArray>, scenario);
+        QFETCH(QStringList, callNames);
 
-    server.quit();
-  }
+        FakeServer server;
+        server.setScenario(scenario);
+        server.startAndWait();
+
+        SessionPool pool(1);
+
+        pool.setPasswordRequester(createDefaultRequester());
+        QVERIFY(pool.connect(createDefaultAccount()));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+
+        DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
+        state->setCollection(collection);
+        ExpungeCollectionTask *task = new ExpungeCollectionTask(state);
+        task->start(&pool);
+
+        QTRY_COMPARE(state->calls().count(), callNames.size());
+        for (int i = 0; i < callNames.size(); i++) {
+            QString command = QString::fromUtf8(state->calls().at(i).first);
+            QVariant parameter = state->calls().at(i).second;
+
+            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+                qDebug() << "Got a cancel:" << parameter.toString();
+            }
+
+            QCOMPARE(command, callNames[i]);
+
+            if (command == "cancelTask") {
+                QVERIFY(!parameter.toString().isEmpty());
+            }
+        }
+
+        QVERIFY(server.isAllScenarioDone());
+
+        server.quit();
+    }
 };
 
-QTEST_GUILESS_MAIN( TestExpungeCollectionTask )
+QTEST_GUILESS_MAIN(TestExpungeCollectionTask)
 
 #include "testexpungecollectiontask.moc"

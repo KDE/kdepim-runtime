@@ -48,7 +48,7 @@ void GmailPasswordRequester::requestPassword(PasswordRequesterInterface::Request
         connect(mResource->settings(), SIGNAL(accountRequestCompleted(KGAPI2::AccountPtr,bool)),
                 this, SLOT(onAuthFinished(KGAPI2::AccountPtr,bool)),
                 Qt::UniqueConnection);
-        static_cast<GmailSettings*>(mResource->settings())->requestAccount(true);
+        static_cast<GmailSettings *>(mResource->settings())->requestAccount(true);
     } else {
         QMetaObject::invokeMethod(this, "done", Qt::QueuedConnection,
                                   Q_ARG(int, PasswordRetrieved),
@@ -66,7 +66,7 @@ bool GmailPasswordRequester::isTokenExpired(const QString &serverError)
     }
     const QVariant json = document.toVariant();
     if (!json.isValid()) {
-       return false;
+        return false;
     }
     const QVariantMap map = json.toMap();
     if (map[QLatin1String("status")].toString().toInt() == KGAPI2::Unauthorized) {

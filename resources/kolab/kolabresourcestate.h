@@ -27,10 +27,10 @@ class ImapResource;
 class KolabResourceState : public ::ResourceState
 {
 public:
-    explicit KolabResourceState(ImapResource* resource, const TaskArguments& arguments);
+    explicit KolabResourceState(ImapResource *resource, const TaskArguments &arguments);
 
 private:
-    virtual void collectionAttributesRetrieved(const Akonadi::Collection& collection);
+    virtual void collectionAttributesRetrieved(const Akonadi::Collection &collection);
     virtual MessageHelper::Ptr messageHelper() const;
 };
 

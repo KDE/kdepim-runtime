@@ -27,36 +27,36 @@
 
 class KDEAccountsResource : public Akonadi::SingleFileResource<Settings>
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    KDEAccountsResource( const QString &id );
+public:
+    KDEAccountsResource(const QString &id);
     ~KDEAccountsResource();
 
-  protected Q_SLOTS:
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    void retrieveItems( const Akonadi::Collection &collection );
+protected Q_SLOTS:
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void retrieveItems(const Akonadi::Collection &collection);
 
-  protected:
+protected:
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg);
 
     /*
      * Do stuff when the configuration dialog has been accepted, before
      * reloadFile() is called.
      */
-    virtual void configDialogAcceptedActions( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+    virtual void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg);
 
-    bool readFromFile( const QString &fileName );
-    bool writeToFile( const QString &fileName );
+    bool readFromFile(const QString &fileName);
+    bool writeToFile(const QString &fileName);
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void itemRemoved(const Akonadi::Item &item);
 
-  private:
+private:
     typedef QMap<QString, KContacts::Addressee> ContactsMap;
     ContactsMap mContacts;
 };

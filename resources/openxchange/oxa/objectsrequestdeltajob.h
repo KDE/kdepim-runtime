@@ -26,7 +26,8 @@
 
 #include "object.h"
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that requests the delta for objects changes from the OX server.
@@ -35,9 +36,9 @@ namespace OXA {
  */
 class ObjectsRequestDeltaJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new objects request delta job.
      *
@@ -46,7 +47,7 @@ class ObjectsRequestDeltaJob : public KJob
      *                 after this date will be requested. 0 will request all available objects.
      * @param parent The parent object.
      */
-    ObjectsRequestDeltaJob( const Folder &folder, qulonglong lastSync, QObject *parent = Q_NULLPTR );
+    ObjectsRequestDeltaJob(const Folder &folder, qulonglong lastSync, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -63,11 +64,11 @@ class ObjectsRequestDeltaJob : public KJob
      */
     Object::List deletedObjects() const;
 
-  private Q_SLOTS:
-    void fetchModifiedJobFinished( KJob* );
-    void fetchDeletedJobFinished( KJob* );
+private Q_SLOTS:
+    void fetchModifiedJobFinished(KJob *);
+    void fetchDeletedJobFinished(KJob *);
 
-  private:
+private:
     Folder mFolder;
     qulonglong mLastSync;
     Object::List mModifiedObjects;

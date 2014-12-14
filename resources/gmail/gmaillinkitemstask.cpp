@@ -59,7 +59,6 @@ void GmailLinkItemsTask::emitDone()
     deleteLater();
 }
 
-
 void GmailLinkItemsTask::linkItem(const QString &remoteId, const QVector<QByteArray> &labels)
 {
     mLinkMap.insert(remoteId, labels);
@@ -69,7 +68,6 @@ void GmailLinkItemsTask::linkItem(const QString &remoteId, const QVector<QByteAr
         }
     }
 }
-
 
 void GmailLinkItemsTask::onRetrievalDone()
 {
@@ -121,7 +119,7 @@ void GmailLinkItemsTask::resolveNextLabel()
 void GmailLinkItemsTask::onLabelResolved(KJob *job)
 {
     Akonadi::CollectionPathResolver *resolver
-        = qobject_cast<Akonadi::CollectionPathResolver*>(job);
+        = qobject_cast<Akonadi::CollectionPathResolver *>(job);
     const QString collectionName = resolver->property(COLLECTION_NAME_PROPERTY).toString();
     const QByteArray label = resolver->property(LABEL_PROPERTY).toByteArray();
     if (resolver->error() && resolver->collection() < 0) {
@@ -171,7 +169,7 @@ void GmailLinkItemsTask::onVirtualReferencesRetrieved(KJob *job)
         return;
     }
 
-    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
+    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
 
     QMap<Akonadi::Collection, Akonadi::Item::List> toLink;
     QMap<Akonadi::Collection, Akonadi::Item::List> toUnlink;

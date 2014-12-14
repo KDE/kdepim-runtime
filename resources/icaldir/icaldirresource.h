@@ -29,33 +29,33 @@
 
 class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ICalDirResource( const QString &id );
+public:
+    explicit ICalDirResource(const QString &id);
     ~ICalDirResource();
 
-  public Q_SLOTS:
-    void configure( WId windowId ) Q_DECL_OVERRIDE;
+public Q_SLOTS:
+    void configure(WId windowId) Q_DECL_OVERRIDE;
     void aboutToQuit() Q_DECL_OVERRIDE;
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems( const Akonadi::Collection &col ) Q_DECL_OVERRIDE;
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
-  protected:
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
-    void itemRemoved( const Akonadi::Item &item ) Q_DECL_OVERRIDE;
+protected:
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
-  private:
+private:
     bool loadIncidences();
     QString iCalDirectoryName() const;
-    QString iCalDirectoryFileName( const QString &file ) const;
+    QString iCalDirectoryFileName(const QString &file) const;
     void initializeICalDirectory() const;
 
-  private:
+private:
     QHash<QString, KCalCore::Incidence::Ptr> mIncidences;
 };
 

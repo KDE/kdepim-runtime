@@ -20,7 +20,6 @@
 #include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifierattribute.h"
 
-
 #include <CollectionModifyJob>
 #include <CollectionFilterProxyModel>
 #include <KRecursiveFilterProxyModel>
@@ -53,33 +52,31 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     vbox->addWidget(label);
 
     // Create a new change recorder.
-    mChangeRecorder = new Akonadi::ChangeRecorder( this );
-    mChangeRecorder->setMimeTypeMonitored( KMime::Message::mimeType() );
-    mChangeRecorder->fetchCollection( true );
-    mChangeRecorder->setAllMonitored( true );
+    mChangeRecorder = new Akonadi::ChangeRecorder(this);
+    mChangeRecorder->setMimeTypeMonitored(KMime::Message::mimeType());
+    mChangeRecorder->fetchCollection(true);
+    mChangeRecorder->setAllMonitored(true);
 
-    mModel = new Akonadi::EntityTreeModel( mChangeRecorder, this );
+    mModel = new Akonadi::EntityTreeModel(mChangeRecorder, this);
     // Set the model to show only collections, not items.
-    mModel->setItemPopulationStrategy( Akonadi::EntityTreeModel::NoItemPopulation );
+    mModel->setItemPopulationStrategy(Akonadi::EntityTreeModel::NoItemPopulation);
     connect(mModel, &Akonadi::EntityTreeModel::collectionTreeFetched, this, &NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched);
 
-    Akonadi::CollectionFilterProxyModel *mimeTypeProxy = new Akonadi::CollectionFilterProxyModel( this );
-    mimeTypeProxy->setExcludeVirtualCollections( true );
-    mimeTypeProxy->addMimeTypeFilters( QStringList() << KMime::Message::mimeType() );
-    mimeTypeProxy->setSourceModel( mModel );
+    Akonadi::CollectionFilterProxyModel *mimeTypeProxy = new Akonadi::CollectionFilterProxyModel(this);
+    mimeTypeProxy->setExcludeVirtualCollections(true);
+    mimeTypeProxy->addMimeTypeFilters(QStringList() << KMime::Message::mimeType());
+    mimeTypeProxy->setSourceModel(mModel);
 
     // Create the Check proxy model.
-    mSelectionModel = new QItemSelectionModel( mimeTypeProxy );
-    mCheckProxy = new KCheckableProxyModel( this );
-    mCheckProxy->setSelectionModel( mSelectionModel );
-    mCheckProxy->setSourceModel( mimeTypeProxy );
-
+    mSelectionModel = new QItemSelectionModel(mimeTypeProxy);
+    mCheckProxy = new KCheckableProxyModel(this);
+    mCheckProxy->setSelectionModel(mSelectionModel);
+    mCheckProxy->setSourceModel(mimeTypeProxy);
 
     mCollectionFilter = new KRecursiveFilterProxyModel(this);
     mCollectionFilter->setSourceModel(mCheckProxy);
     mCollectionFilter->setDynamicSortFilter(true);
     mCollectionFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-
 
     KLineEdit *searchLine = new KLineEdit(this);
     searchLine->setPlaceholderText(i18n("Search..."));
@@ -94,7 +91,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mFolderView->setAlternatingRowColors(true);
     vbox->addWidget(mFolderView);
 
-    mFolderView->setModel( mCollectionFilter );
+    mFolderView->setModel(mCollectionFilter);
 
     QHBoxLayout *hbox = new QHBoxLayout;
     vbox->addLayout(hbox);
@@ -147,44 +144,44 @@ void NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections()
 
 void NewMailNotifierSelectCollectionWidget::updateStatus(const QModelIndex &parent)
 {
-    const int nbCol = mCheckProxy->rowCount( parent );
-    for ( int i = 0; i < nbCol; ++i ) {
-        const QModelIndex child = mCheckProxy->index( i, 0, parent );
+    const int nbCol = mCheckProxy->rowCount(parent);
+    for (int i = 0; i < nbCol; ++i) {
+        const QModelIndex child = mCheckProxy->index(i, 0, parent);
 
         const Akonadi::Collection collection =
-                mCheckProxy->data( child, Akonadi::EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
+            mCheckProxy->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
 
         NewMailNotifierAttribute *attr = collection.attribute<NewMailNotifierAttribute>();
         if (!attr || !attr->ignoreNewMail()) {
-            mCheckProxy->setData( child, Qt::Checked, Qt::CheckStateRole );
+            mCheckProxy->setData(child, Qt::Checked, Qt::CheckStateRole);
         }
-        updateStatus( child );
+        updateStatus(child);
     }
     mNeedUpdate = false;
 }
 
 void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &parent, bool status)
 {
-    const int nbCol = mCheckProxy->rowCount( parent );
-    for ( int i = 0; i < nbCol; ++i ) {
-        const QModelIndex child = mCheckProxy->index( i, 0, parent );
-        mCheckProxy->setData( child, status ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole );
-        forceStatus( child, status );
+    const int nbCol = mCheckProxy->rowCount(parent);
+    for (int i = 0; i < nbCol; ++i) {
+        const QModelIndex child = mCheckProxy->index(i, 0, parent);
+        mCheckProxy->setData(child, status ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
+        forceStatus(child, status);
     }
 }
 
 void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QModelIndex &parent)
 {
-    const int nbCol = mCheckProxy->rowCount( parent );
-    for ( int i = 0; i < nbCol; ++i ) {
-        const QModelIndex child = mCheckProxy->index( i, 0, parent );
+    const int nbCol = mCheckProxy->rowCount(parent);
+    for (int i = 0; i < nbCol; ++i) {
+        const QModelIndex child = mCheckProxy->index(i, 0, parent);
 
         Akonadi::Collection collection =
-                mCheckProxy->data( child, Akonadi::EntityTreeModel::CollectionRole ).value<Akonadi::Collection>();
+            mCheckProxy->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
 
         NewMailNotifierAttribute *attr = collection.attribute<NewMailNotifierAttribute>();
         Akonadi::CollectionModifyJob *modifyJob = 0;
-        const bool selected = (mCheckProxy->data( child, Qt::CheckStateRole ).value<int>() != 0);
+        const bool selected = (mCheckProxy->data(child, Qt::CheckStateRole).value<int>() != 0);
         if (selected && attr && attr->ignoreNewMail()) {
             collection.removeAttribute<NewMailNotifierAttribute>();
             modifyJob = new Akonadi::CollectionModifyJob(collection);
@@ -203,20 +200,19 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QMo
     }
 }
 
-void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob* job)
+void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
 {
-    Akonadi::CollectionModifyJob *modifyJob = qobject_cast<Akonadi::CollectionModifyJob*>(job);
+    Akonadi::CollectionModifyJob *modifyJob = qobject_cast<Akonadi::CollectionModifyJob *>(job);
     if (modifyJob && job->error()) {
         if (job->property("AttributeAdded").toBool()) {
             qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to append NewMailNotifierAttribute to collection"
-                       << modifyJob->collection().id() << ":"
-                       << job->errorString();
+                                           << modifyJob->collection().id() << ":"
+                                           << job->errorString();
         } else {
             qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to remove NewMailNotifierAttribute from collection"
-                       << modifyJob->collection().id() << ":"
-                       << job->errorString();
+                                           << modifyJob->collection().id() << ":"
+                                           << job->errorString();
         }
     }
 }
-
 

@@ -25,49 +25,53 @@
 
 #include <AkonadiCore/item.h>
 
-
 using namespace Akonadi;
 
 #ifndef KIO_KBOOKMARK_METATYPE_DEFINED
-Q_DECLARE_METATYPE( KBookmark )
+Q_DECLARE_METATYPE(KBookmark)
 #endif
 
-bool SerializerPluginBookmark::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
+bool SerializerPluginBookmark::deserialize(Item &item, const QByteArray &label, QIODevice &data, int version)
 {
-  Q_UNUSED( version );
+    Q_UNUSED(version);
 
-  if ( label != Item::FullPayload )
-    return false;
+    if (label != Item::FullPayload) {
+        return false;
+    }
 
-  KBookmark bk;
-  QMimeData *mimeData = new QMimeData();
-  mimeData->setData( QString::fromLatin1( "application/x-xbel" ), data.readAll() );
-  QDomDocument doc;
-  KBookmark::List bkl = KBookmark::List::fromMimeData( mimeData, doc );
+    KBookmark bk;
+    QMimeData *mimeData = new QMimeData();
+    mimeData->setData(QString::fromLatin1("application/x-xbel"), data.readAll());
+    QDomDocument doc;
+    KBookmark::List bkl = KBookmark::List::fromMimeData(mimeData, doc);
 
-  if ( !bkl.isEmpty() )
-    item.setPayload<KBookmark>( bkl[0] );
-  return true;
+    if (!bkl.isEmpty()) {
+        item.setPayload<KBookmark>(bkl[0]);
+    }
+    return true;
 }
 
-void SerializerPluginBookmark::serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version )
+void SerializerPluginBookmark::serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version)
 {
-  Q_UNUSED( version );
+    Q_UNUSED(version);
 
-  if ( label != Item::FullPayload )
-    return;
+    if (label != Item::FullPayload) {
+        return;
+    }
 
-  if ( item.mimeType() != QString::fromLatin1( "application/x-xbel" ) )
-    return;
+    if (item.mimeType() != QString::fromLatin1("application/x-xbel")) {
+        return;
+    }
 
-  KBookmark bk;
-  if ( item.hasPayload() )
-    bk = item.payload<KBookmark>();
+    KBookmark bk;
+    if (item.hasPayload()) {
+        bk = item.payload<KBookmark>();
+    }
 
-  QMimeData *mimeData = new QMimeData();
-  bk.populateMimeData( mimeData );
+    QMimeData *mimeData = new QMimeData();
+    bk.populateMimeData(mimeData);
 
-  data.write( mimeData->data( QString::fromLatin1( "application/x-xbel" ) ) );
+    data.write(mimeData->data(QString::fromLatin1("application/x-xbel")));
 
 }
 

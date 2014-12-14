@@ -26,21 +26,21 @@
 
 class ExpungeCollectionTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit ExpungeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~ExpungeCollectionTask();
+    explicit ExpungeCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~ExpungeCollectionTask();
 
 private slots:
-  void onSelectDone( KJob *job );
-  void onExpungeDone( KJob *job );
+    void onSelectDone(KJob *job);
+    void onExpungeDone(KJob *job);
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+    virtual void doStart(KIMAP::Session *session);
 
 private:
-  void triggerExpungeJob( KIMAP::Session *session );
+    void triggerExpungeJob(KIMAP::Session *session);
 };
 
 #endif

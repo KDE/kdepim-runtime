@@ -23,5 +23,5 @@
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(BIRTHDAYS_LOG)
 
-#endif 
+#endif
 

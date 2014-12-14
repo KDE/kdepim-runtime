@@ -20,4 +20,3 @@
 #include "davresource_debug.h"
 Q_LOGGING_CATEGORY(DAVRESOURCE_LOG, "log_davresource")
 
-

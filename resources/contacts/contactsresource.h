@@ -27,54 +27,55 @@
 #include <kcontacts/contactgrouptool.h>
 #include <kcontacts/vcardconverter.h>
 
-namespace Akonadi_Contacts_Resource {
+namespace Akonadi_Contacts_Resource
+{
 class ContactsResourceSettings;
 }
 class QDir;
 
 class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    ContactsResource( const QString &id );
+public:
+    ContactsResource(const QString &id);
     ~ContactsResource();
 
-  public Q_SLOTS:
-    void configure( WId windowId ) Q_DECL_OVERRIDE;
+public Q_SLOTS:
+    void configure(WId windowId) Q_DECL_OVERRIDE;
     void aboutToQuit() Q_DECL_OVERRIDE;
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
-  protected:
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
-    void itemRemoved( const Akonadi::Item &item ) Q_DECL_OVERRIDE;
+protected:
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
-    void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent ) Q_DECL_OVERRIDE;
-    void collectionChanged( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
+    void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     // do not hide the other variant, use implementation from base class
     // which just forwards to the one above
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
-    void collectionRemoved( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
+    void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-    virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                            const Akonadi::Collection &collectionDestination ) Q_DECL_OVERRIDE;
-    virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
-                                  const Akonadi::Collection &collectionDestination ) Q_DECL_OVERRIDE;
+    virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                           const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
+    virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
+                                 const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
 
-  private:
-    Akonadi::Collection::List createCollectionsForDirectory( const QDir &parentDirectory,
-                                                             const Akonadi::Collection &parentCollection ) const;
+private:
+    Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory,
+            const Akonadi::Collection &parentCollection) const;
     QString baseDirectoryPath() const;
-    void initializeDirectory( const QString &path ) const;
-    Akonadi::Collection::Rights supportedRights( bool isResourceCollection ) const;
-    QString directoryForCollection( const Akonadi::Collection& collection ) const;
+    void initializeDirectory(const QString &path) const;
+    Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;
+    QString directoryForCollection(const Akonadi::Collection &collection) const;
 
-  private:
+private:
     QStringList mSupportedMimeTypes;
     Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings;
 };

@@ -26,22 +26,23 @@
 
 #include "user.h"
 
-namespace OXA {
+namespace OXA
+{
 
 class UpdateUsersJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit UpdateUsersJob( QObject *parent = Q_NULLPTR );
+public:
+    explicit UpdateUsersJob(QObject *parent = Q_NULLPTR);
 
     virtual void start();
 
-  private Q_SLOTS:
-    void userIdRequestJobFinished( KJob* );
-    void usersRequestJobFinished( KJob* );
+private Q_SLOTS:
+    void userIdRequestJobFinished(KJob *);
+    void usersRequestJobFinished(KJob *);
 
-  private:
+private:
     void finish();
 
     bool mUserIdRequestFinished;

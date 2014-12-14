@@ -36,138 +36,137 @@ using namespace Akonadi;
 using namespace KCalCore;
 using namespace SETTINGS_NAMESPACE;
 
-ICalResourceBase::ICalResourceBase( const QString &id )
-  : SingleFileResource<Settings>( id )
+ICalResourceBase::ICalResourceBase(const QString &id)
+    : SingleFileResource<Settings>(id)
 {
 }
 
-void ICalResourceBase::initialise( const QStringList &mimeTypes, const QString &icon )
+void ICalResourceBase::initialise(const QStringList &mimeTypes, const QString &icon)
 {
-  setSupportedMimetypes( mimeTypes, icon );
-  new ICalSettingsAdaptor( mSettings );
-  KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/Settings" ),
-                                                         mSettings, QDBusConnection::ExportAdaptors );
+    setSupportedMimetypes(mimeTypes, icon);
+    new ICalSettingsAdaptor(mSettings);
+    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+            mSettings, QDBusConnection::ExportAdaptors);
 }
 
 ICalResourceBase::~ICalResourceBase()
 {
 }
 
-bool ICalResourceBase::retrieveItem( const Akonadi::Item &item,
-                                     const QSet<QByteArray> &parts )
+bool ICalResourceBase::retrieveItem(const Akonadi::Item &item,
+                                    const QSet<QByteArray> &parts)
 {
-  qDebug() << "Item:" << item.url();
+    qDebug() << "Item:" << item.url();
 
-  if ( !mCalendar ) {
-    qCritical() << "akonadi_ical_resource: Calendar not loaded";
-    emit error( i18n( "Calendar not loaded.") );
-    return false;
-  }
+    if (!mCalendar) {
+        qCritical() << "akonadi_ical_resource: Calendar not loaded";
+        emit error(i18n("Calendar not loaded."));
+        return false;
+    }
 
-  return doRetrieveItem( item, parts );
+    return doRetrieveItem(item, parts);
 }
 
 void ICalResourceBase::aboutToQuit()
 {
-  if ( !mSettings->readOnly() ) {
-    writeFile();
-  }
-  mSettings->save();
+    if (!mSettings->readOnly()) {
+        writeFile();
+    }
+    mSettings->save();
 }
 
-void ICalResourceBase::customizeConfigDialog( SingleFileResourceConfigDialog<Settings> *dlg )
+void ICalResourceBase::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
 {
 #ifndef KDEPIM_MOBILE_UI
-  dlg->setFilter( QLatin1String("text/calendar") );
+    dlg->setFilter(QLatin1String("text/calendar"));
 #else
-  dlg->setFilter( QLatin1String("*.ics *.vcs") );
+    dlg->setFilter(QLatin1String("*.ics *.vcs"));
 #endif
-  dlg->setWindowTitle( i18n( "Select Calendar" ) );
+    dlg->setWindowTitle(i18n("Select Calendar"));
 }
 
-bool ICalResourceBase::readFromFile( const QString &fileName )
+bool ICalResourceBase::readFromFile(const QString &fileName)
 {
-  mCalendar = KCalCore::MemoryCalendar::Ptr( new KCalCore::MemoryCalendar( QLatin1String( "UTC" ) ) );
-  mFileStorage = KCalCore::FileStorage::Ptr( new KCalCore::FileStorage( mCalendar, fileName,
-                                                                        new KCalCore::ICalFormat() ) );
-  const bool result = mFileStorage->load();
-  if ( !result ) {
-    qCritical() << "akonadi_ical_resource: Error loading file " << fileName;
-  }
-
-  return result;
-}
-
-void ICalResourceBase::itemRemoved( const Akonadi::Item &item )
-{
-  if ( !mCalendar ) {
-    qCritical() << "akonadi_ical_resource: mCalendar is 0!";
-    cancelTask( i18n( "Calendar not loaded." ) );
-    return;
-  }
-
-  Incidence::Ptr i = mCalendar->instance( item.remoteId() );
-  if ( i ) {
-    if ( !mCalendar->deleteIncidence( i ) ) {
-      qCritical() << "akonadi_ical_resource: Can't delete incidence with instance identifier "
-               << item.remoteId() << "; item.id() = " << item.id();
-      cancelTask();
-      return;
+    mCalendar = KCalCore::MemoryCalendar::Ptr(new KCalCore::MemoryCalendar(QLatin1String("UTC")));
+    mFileStorage = KCalCore::FileStorage::Ptr(new KCalCore::FileStorage(mCalendar, fileName,
+                   new KCalCore::ICalFormat()));
+    const bool result = mFileStorage->load();
+    if (!result) {
+        qCritical() << "akonadi_ical_resource: Error loading file " << fileName;
     }
-  } else {
-    qCritical() << "akonadi_ical_resource: itemRemoved(): Can't find incidence with instance identifier "
-             << item.remoteId() << "; item.id() = " << item.id();
-  }
-  scheduleWrite();
-  changeProcessed();
+
+    return result;
 }
 
-void ICalResourceBase::retrieveItems( const Akonadi::Collection &col )
+void ICalResourceBase::itemRemoved(const Akonadi::Item &item)
 {
-  reloadFile();
-  if ( mCalendar ) {
-    doRetrieveItems( col );
-  } else {
-    qCritical() << "akonadi_ical_resource: retrieveItems(): mCalendar is 0!";
-  }
+    if (!mCalendar) {
+        qCritical() << "akonadi_ical_resource: mCalendar is 0!";
+        cancelTask(i18n("Calendar not loaded."));
+        return;
+    }
+
+    Incidence::Ptr i = mCalendar->instance(item.remoteId());
+    if (i) {
+        if (!mCalendar->deleteIncidence(i)) {
+            qCritical() << "akonadi_ical_resource: Can't delete incidence with instance identifier "
+                        << item.remoteId() << "; item.id() = " << item.id();
+            cancelTask();
+            return;
+        }
+    } else {
+        qCritical() << "akonadi_ical_resource: itemRemoved(): Can't find incidence with instance identifier "
+                    << item.remoteId() << "; item.id() = " << item.id();
+    }
+    scheduleWrite();
+    changeProcessed();
 }
 
-bool ICalResourceBase::writeToFile( const QString &fileName )
+void ICalResourceBase::retrieveItems(const Akonadi::Collection &col)
 {
-  if ( !mCalendar ) {
-    qCritical() << "akonadi_ical_resource: writeToFile() mCalendar is 0!";
-    return false;
-  }
+    reloadFile();
+    if (mCalendar) {
+        doRetrieveItems(col);
+    } else {
+        qCritical() << "akonadi_ical_resource: retrieveItems(): mCalendar is 0!";
+    }
+}
 
-  KCalCore::FileStorage *fileStorage = mFileStorage.data();
-  if ( fileName != mFileStorage->fileName() ) {
-    fileStorage = new KCalCore::FileStorage( mCalendar,
-                                             fileName,
-                                             new KCalCore::ICalFormat() );
-  }
+bool ICalResourceBase::writeToFile(const QString &fileName)
+{
+    if (!mCalendar) {
+        qCritical() << "akonadi_ical_resource: writeToFile() mCalendar is 0!";
+        return false;
+    }
 
-  bool success = true;
-  if ( !fileStorage->save() ) {
-    qCritical() << QLatin1String("akonadi_ical_resource: Failed to save calendar to file ") + fileName;
-    emit error( i18n( "Failed to save calendar file to %1", fileName ) );
-    success = false;
-  }
+    KCalCore::FileStorage *fileStorage = mFileStorage.data();
+    if (fileName != mFileStorage->fileName()) {
+        fileStorage = new KCalCore::FileStorage(mCalendar,
+                                                fileName,
+                                                new KCalCore::ICalFormat());
+    }
 
-  if ( fileStorage != mFileStorage.data() ) {
-    delete fileStorage;
-  }
+    bool success = true;
+    if (!fileStorage->save()) {
+        qCritical() << QLatin1String("akonadi_ical_resource: Failed to save calendar to file ") + fileName;
+        emit error(i18n("Failed to save calendar file to %1", fileName));
+        success = false;
+    }
 
-  return success;
+    if (fileStorage != mFileStorage.data()) {
+        delete fileStorage;
+    }
+
+    return success;
 }
 
 KCalCore::MemoryCalendar::Ptr ICalResourceBase::calendar() const
 {
-  return mCalendar;
+    return mCalendar;
 }
 
 KCalCore::FileStorage::Ptr ICalResourceBase::fileStorage() const
 {
-  return mFileStorage;
+    return mFileStorage;
 }
-
 

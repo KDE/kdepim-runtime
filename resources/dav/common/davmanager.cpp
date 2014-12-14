@@ -27,7 +27,7 @@
 
 #include <QtXml/QDomDocument>
 
-DavManager* DavManager::mSelf = 0;
+DavManager *DavManager::mSelf = 0;
 
 DavManager::DavManager()
 {
@@ -35,86 +35,89 @@ DavManager::DavManager()
 
 DavManager::~DavManager()
 {
-  QMapIterator<DavUtils::Protocol, DavProtocolBase*> it( mProtocols );
-  while ( it.hasNext() ) {
-    it.next();
-    delete it.value();
-  }
+    QMapIterator<DavUtils::Protocol, DavProtocolBase *> it(mProtocols);
+    while (it.hasNext()) {
+        it.next();
+        delete it.value();
+    }
 }
 
-DavManager* DavManager::self()
+DavManager *DavManager::self()
 {
-  if ( !mSelf )
-    mSelf = new DavManager();
+    if (!mSelf) {
+        mSelf = new DavManager();
+    }
 
-  return mSelf;
+    return mSelf;
 }
 
-KIO::DavJob* DavManager::createPropFindJob( const KUrl &url, const QDomDocument &document, const QString &depth ) const
+KIO::DavJob *DavManager::createPropFindJob(const KUrl &url, const QDomDocument &document, const QString &depth) const
 {
-  KIO::DavJob *job = KIO::davPropFind( url, document, depth, KIO::HideProgressInfo | KIO::DefaultFlags );
+    KIO::DavJob *job = KIO::davPropFind(url, document, depth, KIO::HideProgressInfo | KIO::DefaultFlags);
 
-  // workaround needed, Depth: header doesn't seem to be correctly added
-  const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
-  job->addMetaData( QLatin1String("customHTTPHeader"), header );
-  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
-  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
-  job->setProperty( "extraDavDepth", QVariant::fromValue( depth ) );
+    // workaround needed, Depth: header doesn't seem to be correctly added
+    const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
+    job->addMetaData(QLatin1String("customHTTPHeader"), header);
+    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
+    job->setProperty("extraDavDepth", QVariant::fromValue(depth));
 
-  return job;
+    return job;
 }
 
-KIO::DavJob* DavManager::createReportJob( const KUrl &url, const QDomDocument &document, const QString &depth ) const
+KIO::DavJob *DavManager::createReportJob(const KUrl &url, const QDomDocument &document, const QString &depth) const
 {
-  KIO::DavJob *job = KIO::davReport( url, document.toString(), depth, KIO::HideProgressInfo | KIO::DefaultFlags );
+    KIO::DavJob *job = KIO::davReport(url, document.toString(), depth, KIO::HideProgressInfo | KIO::DefaultFlags);
 
-  // workaround needed, Depth: header doesn't seem to be correctly added
-  const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
-  job->addMetaData( QLatin1String("customHTTPHeader"), header );
-  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
-  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
-  job->setProperty( "extraDavDepth", QVariant::fromValue( depth ) );
+    // workaround needed, Depth: header doesn't seem to be correctly added
+    const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
+    job->addMetaData(QLatin1String("customHTTPHeader"), header);
+    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
+    job->setProperty("extraDavDepth", QVariant::fromValue(depth));
 
-  return job;
+    return job;
 }
 
-KIO::DavJob* DavManager::createPropPatchJob( const KUrl &url, const QDomDocument &document ) const
+KIO::DavJob *DavManager::createPropPatchJob(const KUrl &url, const QDomDocument &document) const
 {
-  KIO::DavJob *job = KIO::davPropPatch( url, document, KIO::HideProgressInfo | KIO::DefaultFlags );
-  const QString header = QLatin1String("Content-Type: text/xml");
-  job->addMetaData( QLatin1String("customHTTPHeader"), header );
-  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
-  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
-  return job;
+    KIO::DavJob *job = KIO::davPropPatch(url, document, KIO::HideProgressInfo | KIO::DefaultFlags);
+    const QString header = QLatin1String("Content-Type: text/xml");
+    job->addMetaData(QLatin1String("customHTTPHeader"), header);
+    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
+    return job;
 }
 
-const DavProtocolBase* DavManager::davProtocol( DavUtils::Protocol protocol )
+const DavProtocolBase *DavManager::davProtocol(DavUtils::Protocol protocol)
 {
-  if ( createProtocol( protocol ) )
-    return mProtocols[ protocol ];
-  else
-    return 0;
+    if (createProtocol(protocol)) {
+        return mProtocols[ protocol ];
+    } else {
+        return 0;
+    }
 }
 
-bool DavManager::createProtocol( DavUtils::Protocol protocol )
+bool DavManager::createProtocol(DavUtils::Protocol protocol)
 {
-  if ( mProtocols.contains( protocol ) )
-    return true;
+    if (mProtocols.contains(protocol)) {
+        return true;
+    }
 
-  switch( protocol ) {
+    switch (protocol) {
     case DavUtils::CalDav:
-      mProtocols.insert( DavUtils::CalDav, new CaldavProtocol() );
-      break;
+        mProtocols.insert(DavUtils::CalDav, new CaldavProtocol());
+        break;
     case DavUtils::CardDav:
-      mProtocols.insert( DavUtils::CardDav, new CarddavProtocol() );
-      break;
+        mProtocols.insert(DavUtils::CardDav, new CarddavProtocol());
+        break;
     case DavUtils::GroupDav:
-      mProtocols.insert( DavUtils::GroupDav, new GroupdavProtocol() );
-      break;
+        mProtocols.insert(DavUtils::GroupDav, new GroupdavProtocol());
+        break;
     default:
-      qCritical() << "Unknown protocol: " << static_cast<int>( protocol );
-      return false;
-  }
+        qCritical() << "Unknown protocol: " << static_cast<int>(protocol);
+        return false;
+    }
 
-  return true;
+    return true;
 }

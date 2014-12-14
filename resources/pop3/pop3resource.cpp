@@ -558,7 +558,7 @@ void POP3Resource::fetchJobResult(KJob *job)
 
         if (!mIdsToDownload.isEmpty()) {
             qCWarning(POP3RESOURCE_LOG) << "We did not download all messages, there are still some remaining "
-                       "IDs, even though we requested their download:" << mIdsToDownload;
+                                        "IDs, even though we requested their download:" << mIdsToDownload;
         }
 
         advanceState(Save);

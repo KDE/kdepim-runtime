@@ -31,7 +31,7 @@
 
 namespace KIMAP
 {
-  class MailBoxDescriptor;
+class MailBoxDescriptor;
 }
 
 class ImapAccount;
@@ -39,101 +39,101 @@ class PasswordRequesterInterface;
 
 class SessionPool : public QObject
 {
-  Q_OBJECT
-  Q_ENUMS( ConnectError )
+    Q_OBJECT
+    Q_ENUMS(ConnectError)
 
 public:
-  enum ErrorCodes {
-    NoError,
-    PasswordRequestError,
-    ReconnectNeededError,
-    EncryptionError,
-    LoginFailError,
-    CapabilitiesTestError,
-    IncompatibleServerError,
-    NoAvailableSessionError,
-    CouldNotConnectError,
-    CancelledError
-  };
+    enum ErrorCodes {
+        NoError,
+        PasswordRequestError,
+        ReconnectNeededError,
+        EncryptionError,
+        LoginFailError,
+        CapabilitiesTestError,
+        IncompatibleServerError,
+        NoAvailableSessionError,
+        CouldNotConnectError,
+        CancelledError
+    };
 
-  enum SessionTermination {
-    LogoutSession,
-    CloseSession
-  };
+    enum SessionTermination {
+        LogoutSession,
+        CloseSession
+    };
 
-  explicit SessionPool( int maxPoolSize, QObject *parent = Q_NULLPTR );
-  ~SessionPool();
+    explicit SessionPool(int maxPoolSize, QObject *parent = Q_NULLPTR);
+    ~SessionPool();
 
-  PasswordRequesterInterface *passwordRequester() const;
-  void setPasswordRequester( PasswordRequesterInterface *requester );
-  void cancelPasswordRequests();
+    PasswordRequesterInterface *passwordRequester() const;
+    void setPasswordRequester(PasswordRequesterInterface *requester);
+    void cancelPasswordRequests();
 
-  KIMAP::SessionUiProxy::Ptr sessionUiProxy() const;
-  void setSessionUiProxy( KIMAP::SessionUiProxy::Ptr proxy );
+    KIMAP::SessionUiProxy::Ptr sessionUiProxy() const;
+    void setSessionUiProxy(KIMAP::SessionUiProxy::Ptr proxy);
 
-  bool isConnected() const;
-  bool connect( ImapAccount *account );
-  void disconnect( SessionTermination termination = LogoutSession );
+    bool isConnected() const;
+    bool connect(ImapAccount *account);
+    void disconnect(SessionTermination termination = LogoutSession);
 
-  qint64 requestSession();
-  void cancelSessionRequest( qint64 id );
-  void releaseSession( KIMAP::Session *session );
+    qint64 requestSession();
+    void cancelSessionRequest(qint64 id);
+    void releaseSession(KIMAP::Session *session);
 
-  ImapAccount *account() const;
-  QStringList serverCapabilities() const;
-  QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
-  enum Namespace {
-      Personal,
-      User,
-      Shared
-  };
-  QList<KIMAP::MailBoxDescriptor> serverNamespaces(Namespace) const;
+    ImapAccount *account() const;
+    QStringList serverCapabilities() const;
+    QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+    enum Namespace {
+        Personal,
+        User,
+        Shared
+    };
+    QList<KIMAP::MailBoxDescriptor> serverNamespaces(Namespace) const;
 
 signals:
-  void connectionLost( KIMAP::Session *session );
+    void connectionLost(KIMAP::Session *session);
 
-  void sessionRequestDone( qint64 requestNumber, KIMAP::Session *session,
-                           int errorCode = NoError, const QString &errorString = QString() );
-  void connectDone( int errorCode = NoError, const QString &errorString = QString() );
-  void disconnectDone();
+    void sessionRequestDone(qint64 requestNumber, KIMAP::Session *session,
+                            int errorCode = NoError, const QString &errorString = QString());
+    void connectDone(int errorCode = NoError, const QString &errorString = QString());
+    void disconnectDone();
 
 private slots:
-  void processPendingRequests();
+    void processPendingRequests();
 
-  void onPasswordRequestDone(int resultType, const QString &password);
-  void onLoginDone( KJob *job );
-  void onCapabilitiesTestDone( KJob *job );
-  void onNamespacesTestDone( KJob *job );
+    void onPasswordRequestDone(int resultType, const QString &password);
+    void onLoginDone(KJob *job);
+    void onCapabilitiesTestDone(KJob *job);
+    void onNamespacesTestDone(KJob *job);
 
-  void onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState);
-  void onSessionDestroyed(QObject*);
+    void onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState);
+    void onSessionDestroyed(QObject *);
 
 private:
-  void onConnectionLost();
-  void killSession( KIMAP::Session *session, SessionTermination termination );
-  void declareSessionReady( KIMAP::Session *session );
-  void cancelSessionCreation( KIMAP::Session *session, int errorCode, const QString &errorString );
+    void onConnectionLost();
+    void killSession(KIMAP::Session *session, SessionTermination termination);
+    void declareSessionReady(KIMAP::Session *session);
+    void cancelSessionCreation(KIMAP::Session *session, int errorCode, const QString &errorString);
 
-  static qint64 m_requestCounter;
+    static qint64 m_requestCounter;
 
-  int m_maxPoolSize;
-  ImapAccount *m_account;
-  PasswordRequesterInterface *m_passwordRequester;
-  KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;
+    int m_maxPoolSize;
+    ImapAccount *m_account;
+    PasswordRequesterInterface *m_passwordRequester;
+    KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;
 
-  bool m_initialConnectDone;
-  KIMAP::Session *m_pendingInitialSession;
+    bool m_initialConnectDone;
+    KIMAP::Session *m_pendingInitialSession;
 
-  QList<qint64> m_pendingRequests;
-  QList<KIMAP::Session*> m_connectingPool; // in preparation
-  QList<KIMAP::Session*> m_unusedPool;     // ready to be used
-  QList<KIMAP::Session*> m_reservedPool;   // currently used
+    QList<qint64> m_pendingRequests;
+    QList<KIMAP::Session *> m_connectingPool; // in preparation
+    QList<KIMAP::Session *> m_unusedPool;    // ready to be used
+    QList<KIMAP::Session *> m_reservedPool;  // currently used
 
-  QStringList m_capabilities;
-  QList<KIMAP::MailBoxDescriptor> m_namespaces;
-  QList<KIMAP::MailBoxDescriptor> m_personalNamespaces;
-  QList<KIMAP::MailBoxDescriptor> m_userNamespaces;
-  QList<KIMAP::MailBoxDescriptor> m_sharedNamespaces;
+    QStringList m_capabilities;
+    QList<KIMAP::MailBoxDescriptor> m_namespaces;
+    QList<KIMAP::MailBoxDescriptor> m_personalNamespaces;
+    QList<KIMAP::MailBoxDescriptor> m_userNamespaces;
+    QList<KIMAP::MailBoxDescriptor> m_sharedNamespaces;
 };
 
 #endif

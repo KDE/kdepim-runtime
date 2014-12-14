@@ -26,29 +26,29 @@
 
 class ChangeCollectionTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit ChangeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~ChangeCollectionTask();
+    explicit ChangeCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~ChangeCollectionTask();
 
-  void syncEnabledState(bool);
+    void syncEnabledState(bool);
 
 private slots:
-  void onRenameDone( KJob *job );
-  void onSubscribeDone( KJob *job );
-  void onSetAclDone( KJob *job );
-  void onSetMetaDataDone( KJob *job );
+    void onRenameDone(KJob *job);
+    void onSubscribeDone(KJob *job);
+    void onSetAclDone(KJob *job);
+    void onSetMetaDataDone(KJob *job);
 
 protected:
-  void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
-  void endTaskIfNeeded();
+    void endTaskIfNeeded();
 
-  int m_pendingJobs;
-  Akonadi::Collection m_collection;
-  bool m_syncEnabledState;
+    int m_pendingJobs;
+    Akonadi::Collection m_collection;
+    bool m_syncEnabledState;
 };
 
 #endif

@@ -25,86 +25,86 @@ using namespace Akonadi;
 
 typedef QMap<QByteArray, KIMAP::Acl::Rights> ImapAcl;
 
-Q_DECLARE_METATYPE( ImapAcl )
+Q_DECLARE_METATYPE(ImapAcl)
 
 class ImapAclAttributeTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  private Q_SLOTS:
+private Q_SLOTS:
 
     void testSerializeDeserialize_data()
     {
-      QTest::addColumn<ImapAcl>( "rights" );
-      QTest::addColumn<QByteArray>( "serialized" );
-      QTest::addColumn<QByteArray>( "oldSerialized" );
+        QTest::addColumn<ImapAcl>("rights");
+        QTest::addColumn<QByteArray>("serialized");
+        QTest::addColumn<QByteArray>("oldSerialized");
 
-      ImapAcl acl;
-      QTest::newRow( "empty" ) << acl << QByteArray( " %% " ) << QByteArray( "testme@host l %% " );
+        ImapAcl acl;
+        QTest::newRow("empty") << acl << QByteArray(" %% ") << QByteArray("testme@host l %% ");
 
-      acl.insert( "user@host", KIMAP::Acl::None );
-      QTest::newRow( "none" ) << acl << QByteArray( "user@host  %% " ) << QByteArray( "testme@host l %% user@host " );
+        acl.insert("user@host", KIMAP::Acl::None);
+        QTest::newRow("none") << acl << QByteArray("user@host  %% ") << QByteArray("testme@host l %% user@host ");
 
-      acl.insert( "user@host", KIMAP::Acl::Lookup );
-      QTest::newRow( "lookup" ) << acl << QByteArray( "user@host l %% " ) << QByteArray( "testme@host l %% user@host l" );
+        acl.insert("user@host", KIMAP::Acl::Lookup);
+        QTest::newRow("lookup") << acl << QByteArray("user@host l %% ") << QByteArray("testme@host l %% user@host l");
 
-      acl.insert( "user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
-      QTest::newRow( "lookup/read" ) << acl << QByteArray( "user@host lr %% " ) << QByteArray( "testme@host l %% user@host lr" );
+        acl.insert("user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
+        QTest::newRow("lookup/read") << acl << QByteArray("user@host lr %% ") << QByteArray("testme@host l %% user@host lr");
 
-      acl.insert( "otheruser@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
-      QTest::newRow( "lookup/read" ) << acl << QByteArray( "otheruser@host lr % user@host lr %% " )
-                                     << QByteArray( "testme@host l %% otheruser@host lr % user@host lr" );
+        acl.insert("otheruser@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
+        QTest::newRow("lookup/read") << acl << QByteArray("otheruser@host lr % user@host lr %% ")
+                                     << QByteArray("testme@host l %% otheruser@host lr % user@host lr");
     }
 
     void testSerializeDeserialize()
     {
-      QFETCH( ImapAcl, rights );
-      QFETCH( QByteArray, serialized );
-      QFETCH( QByteArray, oldSerialized );
+        QFETCH(ImapAcl, rights);
+        QFETCH(QByteArray, serialized);
+        QFETCH(QByteArray, oldSerialized);
 
-      ImapAclAttribute *attr = new ImapAclAttribute();
-      attr->setRights( rights );
-      QCOMPARE( attr->serialized(), serialized );
+        ImapAclAttribute *attr = new ImapAclAttribute();
+        attr->setRights(rights);
+        QCOMPARE(attr->serialized(), serialized);
 
-      ImapAcl acl;
-      acl.insert( "testme@host", KIMAP::Acl::Lookup );
-      attr->setRights( acl );
+        ImapAcl acl;
+        acl.insert("testme@host", KIMAP::Acl::Lookup);
+        attr->setRights(acl);
 
-      QCOMPARE( attr->serialized(), oldSerialized );
+        QCOMPARE(attr->serialized(), oldSerialized);
 
-      delete attr;
+        delete attr;
 
-      ImapAclAttribute deserializeAttr;
-      deserializeAttr.deserialize( serialized );
-      QCOMPARE( deserializeAttr.rights(), rights );
+        ImapAclAttribute deserializeAttr;
+        deserializeAttr.deserialize(serialized);
+        QCOMPARE(deserializeAttr.rights(), rights);
     }
 
     void testOldRights()
     {
-      ImapAcl acls;
-      acls.insert( "first_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
-      acls.insert( "second_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
-      acls.insert( "third_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read );
+        ImapAcl acls;
+        acls.insert("first_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
+        acls.insert("second_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
+        acls.insert("third_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
 
-      ImapAclAttribute *attr = new ImapAclAttribute();
-      attr->setRights( acls );
+        ImapAclAttribute *attr = new ImapAclAttribute();
+        attr->setRights(acls);
 
-      ImapAcl oldAcls = acls;
+        ImapAcl oldAcls = acls;
 
-      acls.remove( "first_user@host" );
-      acls.remove( "third_user@host" );
+        acls.remove("first_user@host");
+        acls.remove("third_user@host");
 
-      attr->setRights( acls );
+        attr->setRights(acls);
 
-      QCOMPARE( attr->oldRights(), oldAcls );
+        QCOMPARE(attr->oldRights(), oldAcls);
 
-      attr->setRights( acls );
+        attr->setRights(acls);
 
-      QCOMPARE( attr->oldRights(), acls );
-      delete attr;
+        QCOMPARE(attr->oldRights(), acls);
+        delete attr;
     }
 };
 
-QTEST_MAIN( ImapAclAttributeTest )
+QTEST_MAIN(ImapAclAttributeTest)
 
 #include "imapaclattributetest.moc"

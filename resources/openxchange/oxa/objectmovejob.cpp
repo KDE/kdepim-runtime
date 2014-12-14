@@ -30,67 +30,68 @@
 
 using namespace OXA;
 
-ObjectMoveJob::ObjectMoveJob( const Object &object, const Folder &destinationFolder, QObject *parent )
-  : KJob( parent ), mObject( object ), mDestinationFolder( destinationFolder )
+ObjectMoveJob::ObjectMoveJob(const Object &object, const Folder &destinationFolder, QObject *parent)
+    : KJob(parent), mObject(object), mDestinationFolder(destinationFolder)
 {
 }
 
 void ObjectMoveJob::start()
 {
-  QDomDocument document;
-  QDomElement propertyupdate = DAVUtils::addDavElement( document, document, QLatin1String( "propertyupdate" ) );
-  QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
-  QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mObject.objectId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "folder_id" ), OXUtils::writeNumber( mObject.folderId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "last_modified" ), OXUtils::writeString( mObject.lastModified() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "folder" ), OXUtils::writeNumber( mDestinationFolder.objectId() ) );
+    QDomDocument document;
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
+    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mObject.objectId()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("folder_id"), OXUtils::writeNumber(mObject.folderId()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("last_modified"), OXUtils::writeString(mObject.lastModified()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("folder"), OXUtils::writeNumber(mDestinationFolder.objectId()));
 
-  const QString path = ObjectUtils::davPath( mObject.module() );
+    const QString path = ObjectUtils::davPath(mObject.module());
 
-  KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-  connect(job, &KIO::DavJob::result, this, &ObjectMoveJob::davJobFinished);
+    KIO::DavJob *job = DavManager::self()->createPatchJob(path, document);
+    connect(job, &KIO::DavJob::result, this, &ObjectMoveJob::davJobFinished);
 }
 
 Object ObjectMoveJob::object() const
 {
-  return mObject;
+    return mObject;
 }
 
-void ObjectMoveJob::davJobFinished( KJob *job )
+void ObjectMoveJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
+
+    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
+
+    const QDomDocument document = davJob->response();
+
+    QString errorText, errorStatus;
+    if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
+        setError(UserDefinedError);
+        setErrorText(errorText);
+        emitResult();
+        return;
+    }
+
+    QDomElement multistatus = document.documentElement();
+    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    const QDomNodeList props = response.elementsByTagName("prop");
+    const QDomElement prop = props.at(0).toElement();
+
+    QDomElement element = prop.firstChildElement();
+    while (!element.isNull()) {
+        if (element.tagName() == QLatin1String("last_modified")) {
+            mObject.setLastModified(OXUtils::readString(element.text()));
+        }
+
+        element = element.nextSiblingElement();
+    }
+
     emitResult();
-    return;
-  }
-
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const QDomDocument document = davJob->response();
-
-  QString errorText, errorStatus;
-  if ( DAVUtils::davErrorOccurred( document, errorText, errorStatus ) ) {
-    setError( UserDefinedError );
-    setErrorText( errorText );
-    emitResult();
-    return;
-  }
-
-  QDomElement multistatus = document.documentElement();
-  QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  const QDomNodeList props = response.elementsByTagName( "prop" );
-  const QDomElement prop = props.at( 0 ).toElement();
-
-  QDomElement element = prop.firstChildElement();
-  while ( !element.isNull() ) {
-    if ( element.tagName() == QLatin1String( "last_modified" ) )
-      mObject.setLastModified( OXUtils::readString( element.text() ) );
-
-    element = element.nextSiblingElement();
-  }
-
-  emitResult();
 }
 

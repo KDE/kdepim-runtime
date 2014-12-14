@@ -30,13 +30,13 @@
 #include <Akonadi/KMime/MessageParts>
 #include <QDebug>
 
-KolabResourceState::KolabResourceState(ImapResource* resource, const TaskArguments& arguments)
+KolabResourceState::KolabResourceState(ImapResource *resource, const TaskArguments &arguments)
     : ResourceState(resource, arguments)
 {
 
 }
 
-void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection& collection)
+void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection &collection)
 {
     if (!collection.isValid() && collection.remoteId().isEmpty()) {
         ResourceState::collectionAttributesRetrieved(collection);

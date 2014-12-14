@@ -32,22 +32,22 @@ class QStackedWidget;
 
 class ServerConfigModule : public KCModule
 {
-  Q_OBJECT
-  public:
-    explicit ServerConfigModule( QWidget * parent, const QVariantList & args );
+    Q_OBJECT
+public:
+    explicit ServerConfigModule(QWidget *parent, const QVariantList &args);
 
     void load();
     void save();
     void defaults();
 
-  private slots:
+private slots:
     void updateStatus();
     void startStopClicked();
     void restartClicked();
     void selfTestClicked();
     void driverChanged(int);
 
-  private:
+private:
     Ui::ServerConfigModule ui;
     Ui::StorageDriver ui_driver;
     Ui::MySQLStoragePage ui_mysql;

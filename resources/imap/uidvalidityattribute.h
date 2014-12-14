@@ -25,13 +25,13 @@
 class UidValidityAttribute : public Akonadi::Attribute
 {
 public:
-    explicit UidValidityAttribute( int uidvalidity = 0 );
-    void setUidValidity( int uidvalidity );
+    explicit UidValidityAttribute(int uidvalidity = 0);
+    void setUidValidity(int uidvalidity);
     int uidValidity() const;
     QByteArray type() const Q_DECL_OVERRIDE;
-    Attribute* clone() const Q_DECL_OVERRIDE;
+    Attribute *clone() const Q_DECL_OVERRIDE;
     QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
 private:
     int mUidValidity;

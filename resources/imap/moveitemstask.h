@@ -28,31 +28,31 @@
 
 class MoveItemsTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit MoveItemsTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~MoveItemsTask();
+    explicit MoveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~MoveItemsTask();
 
 private slots:
-  void onSelectDone( KJob *job );
-  void onCopyDone( KJob *job );
-  void onStoreFlagsDone( KJob *job );
+    void onSelectDone(KJob *job);
+    void onCopyDone(KJob *job);
+    void onStoreFlagsDone(KJob *job);
 
-  void onPreSearchSelectDone( KJob *job );
-  void onSearchDone( KJob *job );
+    void onPreSearchSelectDone(KJob *job);
+    void onSearchDone(KJob *job);
 
 protected:
-  void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
-  void triggerCopyJob( KIMAP::Session *session );
-  void recordNewUid();
-  QList<qint64> imapSetToList( const KIMAP::ImapSet &set );
+    void triggerCopyJob(KIMAP::Session *session);
+    void recordNewUid();
+    QList<qint64> imapSetToList(const KIMAP::ImapSet &set);
 
-  KIMAP::ImapSet m_oldSet;
-  QList<qint64> m_newUids;
-  QMap<Akonadi::Entity::Id /* original ID */, QByteArray> m_messageIds;
+    KIMAP::ImapSet m_oldSet;
+    QList<qint64> m_newUids;
+    QMap<Akonadi::Entity::Id /* original ID */, QByteArray> m_messageIds;
 };
 
 #endif

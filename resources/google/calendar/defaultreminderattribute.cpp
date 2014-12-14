@@ -31,39 +31,40 @@ DefaultReminderAttribute::DefaultReminderAttribute()
 Akonadi::Attribute *DefaultReminderAttribute::clone() const
 {
     DefaultReminderAttribute *attr = new DefaultReminderAttribute();
-    attr->setReminders( m_reminders );
+    attr->setReminders(m_reminders);
 
     return attr;
 }
 
-void DefaultReminderAttribute::setReminders( const RemindersList &reminders )
+void DefaultReminderAttribute::setReminders(const RemindersList &reminders)
 {
     m_reminders = reminders;
 }
 
-void DefaultReminderAttribute::deserialize( const QByteArray &data )
+void DefaultReminderAttribute::deserialize(const QByteArray &data)
 {
     QJsonDocument json = QJsonDocument::fromJson(data);
-    if (json.isNull())
-       return;
+    if (json.isNull()) {
+        return;
+    }
 
     QVariant var = json.toVariant();
     QVariantList list;
 
     list = var.toList();
-    Q_FOREACH( const QVariant & l, list ) {
+    Q_FOREACH (const QVariant &l, list) {
         QVariantMap reminder = l.toMap();
 
-        KGAPI2::ReminderPtr rem( new KGAPI2::Reminder );
+        KGAPI2::ReminderPtr rem(new KGAPI2::Reminder);
 
-        if ( reminder[QLatin1String("type")].toString() == QLatin1String("display") ) {
-            rem->setType( KCalCore::Alarm::Display );
-        } else if ( reminder[QLatin1String("type")].toString() == QLatin1String("email") ) {
-            rem->setType( KCalCore::Alarm::Email );
+        if (reminder[QLatin1String("type")].toString() == QLatin1String("display")) {
+            rem->setType(KCalCore::Alarm::Display);
+        } else if (reminder[QLatin1String("type")].toString() == QLatin1String("email")) {
+            rem->setType(KCalCore::Alarm::Email);
         }
 
-        KCalCore::Duration offset( reminder[QLatin1String("time")].toInt(), KCalCore::Duration::Seconds );
-        rem->setStartOffset( offset );
+        KCalCore::Duration offset(reminder[QLatin1String("time")].toInt(), KCalCore::Duration::Seconds);
+        rem->setStartOffset(offset);
 
         m_reminders << rem;
     }
@@ -73,12 +74,12 @@ QByteArray DefaultReminderAttribute::serialized() const
 {
     QVariantList list;
 
-    Q_FOREACH( const ReminderPtr & rem, m_reminders ) {
+    Q_FOREACH (const ReminderPtr &rem, m_reminders) {
         QVariantMap reminder;
 
-        if ( rem->type() == KCalCore::Alarm::Display ) {
+        if (rem->type() == KCalCore::Alarm::Display) {
             reminder[QLatin1String("type")] = QLatin1String("display");
-        } else if ( rem->type() == KCalCore::Alarm::Email ) {
+        } else if (rem->type() == KCalCore::Alarm::Email) {
             reminder[QLatin1String("type")] = QLatin1String("email");
         }
 
@@ -90,17 +91,17 @@ QByteArray DefaultReminderAttribute::serialized() const
     return serialized.toJson();
 }
 
-KCalCore::Alarm::List DefaultReminderAttribute::alarms( KCalCore::Incidence *incidence ) const
+KCalCore::Alarm::List DefaultReminderAttribute::alarms(KCalCore::Incidence *incidence) const
 {
     KCalCore::Alarm::List alarms;
 
-    Q_FOREACH( const ReminderPtr & reminder, m_reminders ) {
-        KCalCore::Alarm::Ptr alarm( new KCalCore::Alarm( incidence ) );
+    Q_FOREACH (const ReminderPtr &reminder, m_reminders) {
+        KCalCore::Alarm::Ptr alarm(new KCalCore::Alarm(incidence));
 
-        alarm->setType( reminder->type() );
-        alarm->setTime( incidence->dtStart() );
-        alarm->setStartOffset( reminder->startOffset() );
-        alarm->setEnabled( true );
+        alarm->setType(reminder->type());
+        alarm->setTime(incidence->dtStart());
+        alarm->setStartOffset(reminder->startOffset());
+        alarm->setEnabled(true);
 
         alarms << alarm;
     }
@@ -110,7 +111,7 @@ KCalCore::Alarm::List DefaultReminderAttribute::alarms( KCalCore::Incidence *inc
 
 QByteArray DefaultReminderAttribute::type() const
 {
-    static const QByteArray sType( "defaultReminders" );
+    static const QByteArray sType("defaultReminders");
     return sType;
 }
 

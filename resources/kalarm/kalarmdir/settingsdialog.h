@@ -41,29 +41,28 @@ class Settings;
 
 class SettingsDialog : public QDialog
 {
-        Q_OBJECT
-    public:
-        SettingsDialog(WId windowId, Settings*);
-        void setAlarmTypes(CalEvent::Types);
-        CalEvent::Types alarmTypes() const;
+    Q_OBJECT
+public:
+    SettingsDialog(WId windowId, Settings *);
+    void setAlarmTypes(CalEvent::Types);
+    CalEvent::Types alarmTypes() const;
 
-    private Q_SLOTS:
-        void save();
-        void validate();
-        void textChanged();
-        void readOnlyClicked(bool);
+private Q_SLOTS:
+    void save();
+    void validate();
+    void textChanged();
+    void readOnlyClicked(bool);
 
-    private:
-        Ui::SettingsDialog    ui;
-        AlarmTypeWidget*      mTypeSelector;
-        QPushButton*          mOkButton;
-        KConfigDialogManager* mManager;
-        Akonadi_KAlarm_Dir_Resource::Settings* mSettings;
-        bool                  mReadOnlySelected;   // read-only was set by user (not by validate())
+private:
+    Ui::SettingsDialog    ui;
+    AlarmTypeWidget      *mTypeSelector;
+    QPushButton          *mOkButton;
+    KConfigDialogManager *mManager;
+    Akonadi_KAlarm_Dir_Resource::Settings *mSettings;
+    bool                  mReadOnlySelected;   // read-only was set by user (not by validate())
 };
 
 }
 
 #endif // KALARMDIR_SETTINGSDIALOG_H
 
-// vim: et sw=4:

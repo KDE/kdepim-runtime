@@ -36,11 +36,13 @@ class KConfigDialogManager;
 class KJob;
 class QPushButton;
 
-namespace KIO {
-  class StatJob;
+namespace KIO
+{
+class StatJob;
 }
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class SingleFileValidatingWidget;
 
@@ -51,27 +53,27 @@ class SingleFileValidatingWidget;
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : public QDialog
 {
     Q_OBJECT
-  public:
-    explicit SingleFileResourceConfigDialogBase( WId windowId );
+public:
+    explicit SingleFileResourceConfigDialogBase(WId windowId);
     ~SingleFileResourceConfigDialogBase();
 
     /**
      * Adds @param page to the tabwidget. This can be used to add custom
      * settings for a specific single file resource.
      */
-    void addPage( const QString &title, QWidget *page );
+    void addPage(const QString &title, QWidget *page);
 
     /**
      * Set file extension filter.
      */
-    void setFilter( const QString &filter );
+    void setFilter(const QString &filter);
 
     /**
      * Enable and show, or disable and hide, the monitor option.
      * If the option is disabled, its value will not be saved.
      * By default, the monitor option is enabled.
      */
-    void setMonitorEnabled( bool enable );
+    void setMonitorEnabled(bool enable);
 
     /**
      * Return the file URL.
@@ -81,35 +83,35 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : pub
     /**
      * Set the file URL.
      */
-    void setUrl( const QUrl& url );
+    void setUrl(const QUrl &url);
 
     /**
      * Specify whether the file must be local.
      * The default is to allow both local and remote files.
      */
-    void setLocalFileOnly( bool local );
+    void setLocalFileOnly(bool local);
 
     /**
      * Add a widget to the dialog.
      */
-    void appendWidget(SingleFileValidatingWidget* widget);
+    void appendWidget(SingleFileValidatingWidget *widget);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     virtual void save() = 0;
 
-  protected:
+protected:
     Ui::SingleFileResourceConfigDialog ui;
-    KConfigDialogManager* mManager;
+    KConfigDialogManager *mManager;
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void validate();
-    void slotStatJobResult( KJob * );
+    void slotStatJobResult(KJob *);
 
-  private:
+private:
     void writeConfig();
     void readConfig();
-    KIO::StatJob* mStatJob;
-    SingleFileValidatingWidget* mAppendedWidget;
+    KIO::StatJob *mStatJob;
+    SingleFileValidatingWidget *mAppendedWidget;
     bool mDirUrlChecked;
     bool mMonitorEnabled;
     bool mLocalFileOnly;
@@ -126,8 +128,8 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : pub
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileValidatingWidget : public QWidget
 {
     Q_OBJECT
-  public:
-    explicit SingleFileValidatingWidget( QWidget* parent = 0 );
+public:
+    explicit SingleFileValidatingWidget(QWidget *parent = 0);
 
     /**
      * Return whether the widget's value is valid when the dialog is
@@ -135,7 +137,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileValidatingWidget : public QWid
      */
     virtual bool validate() const = 0;
 
-  signals:
+signals:
     /**
      * Signal emitted when the widget's value changes in a way which
      * might affect the result of validate().

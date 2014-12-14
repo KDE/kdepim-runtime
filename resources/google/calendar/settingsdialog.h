@@ -26,22 +26,22 @@ class KDateComboBox;
 
 class SettingsDialog : public GoogleSettingsDialog
 {
-  Q_OBJECT
-  public:
-    explicit SettingsDialog( GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent );
+    Q_OBJECT
+public:
+    explicit SettingsDialog(GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent);
     ~SettingsDialog();
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void slotReloadCalendars();
     void slotReloadTaskLists();
-    void slotCurrentAccountChanged( const QString &accountName );
+    void slotCurrentAccountChanged(const QString &accountName);
 
-    void slotTaskListsRetrieved( KGAPI2::Job *job );
-    void slotCalendarsRetrieved( KGAPI2::Job *job );
+    void slotTaskListsRetrieved(KGAPI2::Job *job);
+    void slotCalendarsRetrieved(KGAPI2::Job *job);
 
     void saveSettings();
 
-  private:
+private:
     QGroupBox *m_calendarsBox;
     QListWidget *m_calendarsList;
     QPushButton *m_reloadCalendarsBtn;

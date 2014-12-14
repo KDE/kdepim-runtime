@@ -26,55 +26,53 @@ using namespace Akonadi;
 
 class FileStore::CollectionMoveJob::Private
 {
-  public:
-    explicit Private( FileStore::CollectionMoveJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::CollectionMoveJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     Collection mCollection;
     Collection mTargetParent;
 
-  private:
+private:
     FileStore::CollectionMoveJob *mParent;
 };
 
-FileStore::CollectionMoveJob::CollectionMoveJob( const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::CollectionMoveJob::CollectionMoveJob(const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  Q_ASSERT( session != 0 );
+    Q_ASSERT(session != 0);
 
-  d->mCollection = collection;
-  d->mTargetParent = targetParent;
+    d->mCollection = collection;
+    d->mTargetParent = targetParent;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::CollectionMoveJob::~CollectionMoveJob()
 {
-  delete d;
+    delete d;
 }
 
 Collection FileStore::CollectionMoveJob::collection() const
 {
-  return d->mCollection;
+    return d->mCollection;
 }
 
 Collection FileStore::CollectionMoveJob::targetParent() const
 {
-  return d->mTargetParent;
+    return d->mTargetParent;
 }
 
-bool FileStore::CollectionMoveJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::CollectionMoveJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::CollectionMoveJob::handleCollectionMoved( const Collection &collection )
+void FileStore::CollectionMoveJob::handleCollectionMoved(const Collection &collection)
 {
-  d->mCollection = collection;
+    d->mCollection = collection;
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

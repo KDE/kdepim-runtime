@@ -29,51 +29,53 @@
 using namespace KAlarmCal;
 
 class KJob;
-namespace Akonadi { class CollectionFetchJob; }
+namespace Akonadi
+{
+class CollectionFetchJob;
+}
 class AlarmTypeRadioWidget;
 
 class KAlarmResource : public ICalResourceBase
 {
-        Q_OBJECT
-    public:
-        explicit KAlarmResource(const QString& id);
-        virtual ~KAlarmResource();
+    Q_OBJECT
+public:
+    explicit KAlarmResource(const QString &id);
+    virtual ~KAlarmResource();
 
-    protected:
-        /**
-         * Customize the configuration dialog before it is displayed.
-         */
-        virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings>*);
-        virtual void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings>*);
+protected:
+    /**
+     * Customize the configuration dialog before it is displayed.
+     */
+    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *);
+    virtual void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *);
 
-        virtual void doRetrieveItems(const Akonadi::Collection&);
-        virtual bool doRetrieveItem(const Akonadi::Item&, const QSet<QByteArray>& parts);
-        virtual bool readFromFile(const QString& fileName);
-        virtual bool writeToFile(const QString& fileName);
-        virtual void itemAdded(const Akonadi::Item&, const Akonadi::Collection&);
-        virtual void itemChanged(const Akonadi::Item&, const QSet<QByteArray>& parts);
-        virtual void collectionChanged(const Akonadi::Collection&);
-        virtual void retrieveCollections();
+    virtual void doRetrieveItems(const Akonadi::Collection &);
+    virtual bool doRetrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts);
+    virtual bool readFromFile(const QString &fileName);
+    virtual bool writeToFile(const QString &fileName);
+    virtual void itemAdded(const Akonadi::Item &, const Akonadi::Collection &);
+    virtual void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts);
+    virtual void collectionChanged(const Akonadi::Collection &);
+    virtual void retrieveCollections();
 
-    private Q_SLOTS:
-        void settingsChanged();
-        void collectionFetchResult(KJob*);
-        void updateFormat(KJob*);
-        void setCompatibility(KJob*);
+private Q_SLOTS:
+    void settingsChanged();
+    void collectionFetchResult(KJob *);
+    void updateFormat(KJob *);
+    void setCompatibility(KJob *);
 
-    private:
-        void checkFileCompatibility(const Akonadi::Collection& = Akonadi::Collection(), bool createAttribute = false);
-        Akonadi::CollectionFetchJob* fetchCollection(const char* slot);
+private:
+    void checkFileCompatibility(const Akonadi::Collection & = Akonadi::Collection(), bool createAttribute = false);
+    Akonadi::CollectionFetchJob *fetchCollection(const char *slot);
 
-        AlarmTypeRadioWidget* mTypeSelector;
-        KACalendar::Compat    mCompatibility;
-        KACalendar::Compat    mFileCompatibility;  // calendar file compatibility found by readFromFile()
-        int                   mVersion;            // calendar format version
-        int                   mFileVersion;        // calendar format version found by readFromFile()
-        bool                  mHaveReadFile;       // the calendar file has been read
-        bool                  mFetchedAttributes;  // attributes have been fetched after initialisation
+    AlarmTypeRadioWidget *mTypeSelector;
+    KACalendar::Compat    mCompatibility;
+    KACalendar::Compat    mFileCompatibility;  // calendar file compatibility found by readFromFile()
+    int                   mVersion;            // calendar format version
+    int                   mFileVersion;        // calendar format version found by readFromFile()
+    bool                  mHaveReadFile;       // the calendar file has been read
+    bool                  mFetchedAttributes;  // attributes have been fetched after initialisation
 };
 
 #endif
 
-// vim: et sw=4:

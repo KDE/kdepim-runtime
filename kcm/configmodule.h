@@ -29,8 +29,8 @@
 class ConfigModule : public KCModule
 {
 public:
-    explicit ConfigModule( QWidget *parent = 0,
-                           const QVariantList &args = QVariantList() );
+    explicit ConfigModule(QWidget *parent = 0,
+                          const QVariantList &args = QVariantList());
 };
 
 #endif

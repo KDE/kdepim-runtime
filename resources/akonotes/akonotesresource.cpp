@@ -21,8 +21,8 @@
 
 #include <KLocalizedString>
 
-AkonotesResource::AkonotesResource( const QString &id )
-    : MaildirResource( id )
+AkonotesResource::AkonotesResource(const QString &id)
+    : MaildirResource(id)
 {
 }
 
@@ -32,13 +32,13 @@ AkonotesResource::~AkonotesResource()
 
 QString AkonotesResource::itemMimeType() const
 {
-  return QLatin1String( "text/x-vnd.akonadi.note" );
+    return QLatin1String("text/x-vnd.akonadi.note");
 }
 
-void AkonotesResource::configure( WId windowId )
+void AkonotesResource::configure(WId windowId)
 {
-  MaildirResource::configure( windowId );
-  synchronize(); // heavy to do it in the MaildirResource method, which already has sync on demand working properly
+    MaildirResource::configure(windowId);
+    synchronize(); // heavy to do it in the MaildirResource method, which already has sync on demand working properly
 }
 
 QString AkonotesResource::defaultResourceType()

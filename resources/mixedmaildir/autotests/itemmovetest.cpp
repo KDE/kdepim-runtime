@@ -43,44 +43,46 @@
 using namespace Akonadi;
 using namespace KMBox;
 
-static bool fullEntryCompare( const MBoxEntry &a, const MBoxEntry &b )
+static bool fullEntryCompare(const MBoxEntry &a, const MBoxEntry &b)
 {
-  return a.messageOffset() == b.messageOffset() &&
-         a.separatorSize() == b.separatorSize() &&
-         a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset() &&
+           a.separatorSize() == b.separatorSize() &&
+           a.messageSize() == b.messageSize();
 }
 
-static quint64 changedOffset( const Item &item ) {
-  Q_ASSERT( item.hasAttribute<FileStore::EntityCompactChangeAttribute>() );
+static quint64 changedOffset(const Item &item)
+{
+    Q_ASSERT(item.hasAttribute<FileStore::EntityCompactChangeAttribute>());
 
-  const QString remoteId = item.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId();
-  Q_ASSERT( !remoteId.isEmpty() );
+    const QString remoteId = item.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId();
+    Q_ASSERT(!remoteId.isEmpty());
 
-  bool ok = false;
-  const quint64 result = remoteId.toULongLong( &ok );
-  Q_ASSERT( ok );
+    bool ok = false;
+    const quint64 result = remoteId.toULongLong(&ok);
+    Q_ASSERT(ok);
 
-  return result;
+    return result;
 }
 
 class ItemMoveTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     ItemMoveTest()
-      : QObject(), mStore( 0 ), mDir( 0 ) {}
+        : QObject(), mStore(0), mDir(0) {}
 
-    ~ItemMoveTest() {
-      delete mStore;
-      delete mDir;
+    ~ItemMoveTest()
+    {
+        delete mStore;
+        delete mDir;
     }
 
-  private:
+private:
     MixedMaildirStore *mStore;
     QTemporaryDir *mDir;
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void init();
     void cleanup();
     void testExpectedFail();
@@ -90,586 +92,585 @@ class ItemMoveTest : public QObject
 
 void ItemMoveTest::init()
 {
-  mStore = new MixedMaildirStore;
+    mStore = new MixedMaildirStore;
 
-  mDir = new QTemporaryDir;
-  QVERIFY( mDir->isValid() );
-  QVERIFY( QDir(mDir->path()).exists() );
+    mDir = new QTemporaryDir;
+    QVERIFY(mDir->isValid());
+    QVERIFY(QDir(mDir->path()).exists());
 }
 
 void ItemMoveTest::cleanup()
 {
-  delete mStore;
-  mStore = 0;
-  delete mDir;
-  mDir = 0;
+    delete mStore;
+    mStore = 0;
+    delete mDir;
+    mDir = 0;
 }
 
 void ItemMoveTest::testExpectedFail()
 {
-  QDir topDir( mDir->path() );
+    QDir topDir(mDir->path());
 
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
 
-  KPIM::Maildir topLevelMd( topDir.path(), true );
+    KPIM::Maildir topLevelMd(topDir.path(), true);
 
-  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
-  QSet<QString> entrySet1 = QSet<QString>::fromList( md1.entryList() );
-  QCOMPARE( (int)entrySet1.count(), 4 );
+    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    QCOMPARE((int)entrySet1.count(), 4);
 
-  QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
-  MBox mbox2;
-  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  MBoxEntry::List entryList2 = mbox2.entries();
-  QCOMPARE( (int)entryList2.count(), 4 );
+    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    MBox mbox2;
+    QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
+    MBoxEntry::List entryList2 = mbox2.entries();
+    QCOMPARE((int)entryList2.count(), 4);
 
-  QSet<qint64> entrySet2;
-  Q_FOREACH( const MBoxEntry &entry, entryList2 ) {
-    entrySet2 << entry.messageOffset();
-  }
+    QSet<qint64> entrySet2;
+    Q_FOREACH (const MBoxEntry &entry, entryList2) {
+        entrySet2 << entry.messageOffset();
+    }
 
-  mStore->setPath( topDir.path() );
+    mStore->setPath(topDir.path());
 
-  // common variables
-  FileStore::ItemMoveJob *job = 0;
+    // common variables
+    FileStore::ItemMoveJob *job = 0;
 
-  // test failure of moving from a non-existant collection
-  Collection collection1;
-  collection1.setName( QLatin1String( "collection1" ) );
-  collection1.setRemoteId( QLatin1String( "collection1" ) );
-  collection1.setParentCollection( mStore->topLevelCollection() );
+    // test failure of moving from a non-existant collection
+    Collection collection1;
+    collection1.setName(QLatin1String("collection1"));
+    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setParentCollection(mStore->topLevelCollection());
 
-  Collection collection3;
-  collection3.setName( QLatin1String( "collection3" ) );
-  collection3.setRemoteId( QLatin1String( "collection3" ) );
-  collection3.setParentCollection( mStore->topLevelCollection() );
+    Collection collection3;
+    collection3.setName(QLatin1String("collection3"));
+    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setParentCollection(mStore->topLevelCollection());
 
-  Item item3;
-  item3.setRemoteId( QLatin1String( "item3" ) );
-  item3.setParentCollection( collection3 );
+    Item item3;
+    item3.setRemoteId(QLatin1String("item3"));
+    item3.setParentCollection(collection3);
 
-  job = mStore->moveItem( item3, collection1 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+    job = mStore->moveItem(item3, collection1);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-  // test failure of moving from maildir to non-existant collection
-  Item item1;
-  item1.setId( KRandom::random() );
-  item1.setRemoteId( entrySet1.values().first() );
-  item1.setParentCollection( collection1 );
+    // test failure of moving from maildir to non-existant collection
+    Item item1;
+    item1.setId(KRandom::random());
+    item1.setRemoteId(entrySet1.values().first());
+    item1.setParentCollection(collection1);
 
-  job = mStore->moveItem( item1, collection3 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+    job = mStore->moveItem(item1, collection3);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-  // test failure of moving from mbox to non-existant collection
-  Collection collection2;
-  collection2.setName( QLatin1String( "collection2" ) );
-  collection2.setRemoteId( QLatin1String( "collection2" ) );
-  collection2.setParentCollection( mStore->topLevelCollection() );
+    // test failure of moving from mbox to non-existant collection
+    Collection collection2;
+    collection2.setName(QLatin1String("collection2"));
+    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setParentCollection(mStore->topLevelCollection());
 
-  Item item2;
-  item2.setId( KRandom::random() );
-  item2.setRemoteId( QLatin1String( "0" ) );
-  item2.setParentCollection( collection2 );
+    Item item2;
+    item2.setId(KRandom::random());
+    item2.setRemoteId(QLatin1String("0"));
+    item2.setParentCollection(collection2);
 
-  job = mStore->moveItem( item1, collection3 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+    job = mStore->moveItem(item1, collection3);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  MBoxEntry::List tmpEntryList = mbox2.entries();
-  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
+    QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
+    MBoxEntry::List tmpEntryList = mbox2.entries();
+    QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
 
-  // test failure of moving from maildir to top level collection
-  job = mStore->moveItem( item1, mStore->topLevelCollection() );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+    // test failure of moving from maildir to top level collection
+    job = mStore->moveItem(item1, mStore->topLevelCollection());
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-  // test failure of moving from mbox to top level collection
-  job = mStore->moveItem( item1, mStore->topLevelCollection() );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+    // test failure of moving from mbox to top level collection
+    job = mStore->moveItem(item1, mStore->topLevelCollection());
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  tmpEntryList = mbox2.entries();
-  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
+    QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
+    tmpEntryList = mbox2.entries();
+    QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
 
-  // test failure of moving a non-existant maildir entry
-  QString remoteId1;
-  do {
-    remoteId1 = KRandom::randomString( 20 );
-  } while ( entrySet1.contains( remoteId1 ) );
+    // test failure of moving a non-existant maildir entry
+    QString remoteId1;
+    do {
+        remoteId1 = KRandom::randomString(20);
+    } while (entrySet1.contains(remoteId1));
 
-  item1.setRemoteId( remoteId1 );
+    item1.setRemoteId(remoteId1);
 
-  job = mStore->moveItem( item1, collection2 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+    job = mStore->moveItem(item1, collection2);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
-  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  tmpEntryList = mbox2.entries();
-  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
+    tmpEntryList = mbox2.entries();
+    QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
 
-  // test failure of moving a non-existant mbox entry
-  quint64 remoteId2;
-  do {
-    remoteId2 = KRandom::random();
-  } while ( entrySet2.contains( remoteId2 ) );
+    // test failure of moving a non-existant mbox entry
+    quint64 remoteId2;
+    do {
+        remoteId2 = KRandom::random();
+    } while (entrySet2.contains(remoteId2));
 
-  item2.setRemoteId( QString::number( remoteId2 ) );
+    item2.setRemoteId(QString::number(remoteId2));
 
-  job = mStore->moveItem( item2, collection1 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int)FileStore::Job::InvalidJobContext );
+    job = mStore->moveItem(item2, collection1);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
-  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  tmpEntryList = mbox2.entries();
-  QVERIFY( std::equal( tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare ) );
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
+    tmpEntryList = mbox2.entries();
+    QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
 }
 
 void ItemMoveTest::testMaildirItem()
 {
-  QDir topDir( mDir->path() );
+    QDir topDir(mDir->path());
 
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection1" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection2" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection5" ) ) );
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection5")));
 
-  KPIM::Maildir topLevelMd( topDir.path(), true );
+    KPIM::Maildir topLevelMd(topDir.path(), true);
 
-  KPIM::Maildir md1 = topLevelMd.subFolder( QLatin1String( "collection1" ) );
-  QSet<QString> entrySet1 = QSet<QString>::fromList( md1.entryList() );
-  QCOMPARE( (int)entrySet1.count(), 4 );
+    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    QCOMPARE((int)entrySet1.count(), 4);
 
-  QFileInfo fileInfo2( topDir.path(), QLatin1String( "collection2" ) );
-  MBox mbox2;
-  QVERIFY( mbox2.load( fileInfo2.absoluteFilePath() ) );
-  MBoxEntry::List entryList2 = mbox2.entries();
-  QCOMPARE( (int)entryList2.count(), 4 );
+    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    MBox mbox2;
+    QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
+    MBoxEntry::List entryList2 = mbox2.entries();
+    QCOMPARE((int)entryList2.count(), 4);
 
-  KPIM::Maildir md3( topLevelMd.addSubFolder( QLatin1String( "collection3" ) ), false );
-  QVERIFY( md3.isValid() );
-  QSet<QString> entrySet3 = QSet<QString>::fromList( md3.entryList() );
-  QCOMPARE( (int)entrySet3.count(), 0 );
+    KPIM::Maildir md3(topLevelMd.addSubFolder(QLatin1String("collection3")), false);
+    QVERIFY(md3.isValid());
+    QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
+    QCOMPARE((int)entrySet3.count(), 0);
 
-  QFileInfo fileInfo4( topDir.path(), QLatin1String( "collection4" ) );
-  QFile file4( fileInfo4.absoluteFilePath() );
-  QVERIFY( file4.open( QIODevice::WriteOnly ) );
-  file4.close();
-  fileInfo4.refresh();
-  QVERIFY( fileInfo4.exists() );
-  MBox mbox4;
-  QVERIFY( mbox4.load( fileInfo4.absoluteFilePath() ) );
-  MBoxEntry::List entryList4 = mbox4.entries();
-  QCOMPARE( (int)entryList4.count(), 0 );
+    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFile file4(fileInfo4.absoluteFilePath());
+    QVERIFY(file4.open(QIODevice::WriteOnly));
+    file4.close();
+    fileInfo4.refresh();
+    QVERIFY(fileInfo4.exists());
+    MBox mbox4;
+    QVERIFY(mbox4.load(fileInfo4.absoluteFilePath()));
+    MBoxEntry::List entryList4 = mbox4.entries();
+    QCOMPARE((int)entryList4.count(), 0);
 
-  KPIM::Maildir md5 = topLevelMd.subFolder( QLatin1String( "collection5" ) );
-  QSet<QString> entrySet5 = QSet<QString>::fromList( md5.entryList() );
-  QCOMPARE( (int)entrySet5.count(), 4 );
+    KPIM::Maildir md5 = topLevelMd.subFolder(QLatin1String("collection5"));
+    QSet<QString> entrySet5 = QSet<QString>::fromList(md5.entryList());
+    QCOMPARE((int)entrySet5.count(), 4);
 
-  mStore->setPath( topDir.path() );
+    mStore->setPath(topDir.path());
 
-  // common variables
-  FileStore::ItemMoveJob *job = 0;
+    // common variables
+    FileStore::ItemMoveJob *job = 0;
 
-  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
-  QVariant var;
-  Collection::List collections;
-  Item movedItem;
-  MBoxEntry::List entryList;
+    const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
+    QVariant var;
+    Collection::List collections;
+    Item movedItem;
+    MBoxEntry::List entryList;
 
-  // test moving to an empty maildir
-  Collection collection1;
-  collection1.setName( QLatin1String( "collection1" ) );
-  collection1.setRemoteId( QLatin1String( "collection1" ) );
-  collection1.setParentCollection( mStore->topLevelCollection() );
+    // test moving to an empty maildir
+    Collection collection1;
+    collection1.setName(QLatin1String("collection1"));
+    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setParentCollection(mStore->topLevelCollection());
 
-  Collection collection3;
-  collection3.setName( QLatin1String( "collection3" ) );
-  collection3.setRemoteId( QLatin1String( "collection3" ) );
-  collection3.setParentCollection( mStore->topLevelCollection() );
+    Collection collection3;
+    collection3.setName(QLatin1String("collection3"));
+    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setParentCollection(mStore->topLevelCollection());
 
-  Item item1;
-  item1.setId( KRandom::random() );
-  item1.setRemoteId( entrySet1.values().first() );
-  item1.setParentCollection( collection1 );
+    Item item1;
+    item1.setId(KRandom::random());
+    item1.setRemoteId(entrySet1.values().first());
+    item1.setParentCollection(collection1);
 
-  job = mStore->moveItem( item1, collection3 );
+    job = mStore->moveItem(item1, collection3);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection3 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection3);
 
-  entrySet3 << movedItem.remoteId();
-  QCOMPARE( QSet<QString>::fromList( md3.entryList() ), entrySet3 );
-  entrySet1.remove( item1.remoteId() );
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+    entrySet3 << movedItem.remoteId();
+    QCOMPARE(QSet<QString>::fromList(md3.entryList()), entrySet3);
+    entrySet1.remove(item1.remoteId());
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-  // check for index preservation
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    // check for index preservation
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 1 );
-  QCOMPARE( collections.first(), collection1 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 1);
+    QCOMPARE(collections.first(), collection1);
 
-  // test moving to a non empty maildir
-  item1.setRemoteId( entrySet1.values().first() );
+    // test moving to a non empty maildir
+    item1.setRemoteId(entrySet1.values().first());
 
-  Collection collection5;
-  collection5.setName( QLatin1String( "collection5" ) );
-  collection5.setRemoteId( QLatin1String( "collection5" ) );
-  collection5.setParentCollection( mStore->topLevelCollection() );
+    Collection collection5;
+    collection5.setName(QLatin1String("collection5"));
+    collection5.setRemoteId(QLatin1String("collection5"));
+    collection5.setParentCollection(mStore->topLevelCollection());
 
-  job = mStore->moveItem( item1, collection5 );
+    job = mStore->moveItem(item1, collection5);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection5 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection5);
 
-  entrySet5 << movedItem.remoteId();
-  QCOMPARE( QSet<QString>::fromList( md5.entryList() ), entrySet5 );
-  entrySet1.remove( item1.remoteId() );
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+    entrySet5 << movedItem.remoteId();
+    QCOMPARE(QSet<QString>::fromList(md5.entryList()), entrySet5);
+    entrySet1.remove(item1.remoteId());
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-  // check for index preservation
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    // check for index preservation
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 2 );
-  QCOMPARE( collections, Collection::List() << collection1 << collection5 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 2);
+    QCOMPARE(collections, Collection::List() << collection1 << collection5);
 
-  // test moving to an empty mbox
-  Collection collection4;
-  collection4.setName( QLatin1String( "collection4" ) );
-  collection4.setRemoteId( QLatin1String( "collection4" ) );
-  collection4.setParentCollection( mStore->topLevelCollection() );
+    // test moving to an empty mbox
+    Collection collection4;
+    collection4.setName(QLatin1String("collection4"));
+    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setParentCollection(mStore->topLevelCollection());
 
-  item1.setRemoteId( entrySet1.values().first() );
+    item1.setRemoteId(entrySet1.values().first());
 
-  job = mStore->moveItem( item1, collection4 );
+    job = mStore->moveItem(item1, collection4);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection4 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection4);
 
-  QVERIFY( mbox4.load( mbox4.fileName() ) );
-  entryList = mbox4.entries();
-  QCOMPARE( (int)entryList.count(), 1 );
+    QVERIFY(mbox4.load(mbox4.fileName()));
+    entryList = mbox4.entries();
+    QCOMPARE((int)entryList.count(), 1);
 
-  QCOMPARE( entryList.last().messageOffset(), movedItem.remoteId().toULongLong() );
-  entrySet1.remove( item1.remoteId() );
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+    QCOMPARE(entryList.last().messageOffset(), movedItem.remoteId().toULongLong());
+    entrySet1.remove(item1.remoteId());
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-  // check for index preservation
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    // check for index preservation
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 1 );
-  QCOMPARE( collections.first(), collection1 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 1);
+    QCOMPARE(collections.first(), collection1);
 
-  // test moving to a non empty mbox
-  item1.setRemoteId( entrySet1.values().first() );
+    // test moving to a non empty mbox
+    item1.setRemoteId(entrySet1.values().first());
 
-  Collection collection2;
-  collection2.setName( QLatin1String( "collection2" ) );
-  collection2.setRemoteId( QLatin1String( "collection2" ) );
-  collection2.setParentCollection( mStore->topLevelCollection() );
+    Collection collection2;
+    collection2.setName(QLatin1String("collection2"));
+    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setParentCollection(mStore->topLevelCollection());
 
-  job = mStore->moveItem( item1, collection2 );
+    job = mStore->moveItem(item1, collection2);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection2 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection2);
 
-  QVERIFY( mbox2.load( mbox2.fileName() ) );
-  entryList = mbox2.entries();
-  QCOMPARE( (int)entryList.count(), 5 );
+    QVERIFY(mbox2.load(mbox2.fileName()));
+    entryList = mbox2.entries();
+    QCOMPARE((int)entryList.count(), 5);
 
-  QCOMPARE( entryList.last().messageOffset(), movedItem.remoteId().toULongLong() );
-  entrySet1.remove( item1.remoteId() );
-  QCOMPARE( QSet<QString>::fromList( md1.entryList() ), entrySet1 );
+    QCOMPARE(entryList.last().messageOffset(), movedItem.remoteId().toULongLong());
+    entrySet1.remove(item1.remoteId());
+    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-  // check for index preservation
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    // check for index preservation
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 2 );
-  QCOMPARE( collections, Collection::List() << collection1 << collection2 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 2);
+    QCOMPARE(collections, Collection::List() << collection1 << collection2);
 }
 
 void ItemMoveTest::testMBoxItem()
 {
-  QDir topDir( mDir->path() );
+    QDir topDir(mDir->path());
 
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection1" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), topDir.path(), QLatin1String( "collection2" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), topDir.path(), QLatin1String( "collection5" ) ) );
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection5")));
 
-  QFileInfo fileInfo1( topDir.path(), QLatin1String( "collection1" ) );
-  MBox mbox1;
-  QVERIFY( mbox1.load( fileInfo1.absoluteFilePath() ) );
-  MBoxEntry::List entryList1 = mbox1.entries();
-  QCOMPARE( (int)entryList1.count(), 4 );
+    QFileInfo fileInfo1(topDir.path(), QLatin1String("collection1"));
+    MBox mbox1;
+    QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
+    MBoxEntry::List entryList1 = mbox1.entries();
+    QCOMPARE((int)entryList1.count(), 4);
 
-  KPIM::Maildir topLevelMd( topDir.path(), true );
+    KPIM::Maildir topLevelMd(topDir.path(), true);
 
-  KPIM::Maildir md2 = topLevelMd.subFolder( QLatin1String( "collection2" ) );
-  QSet<QString> entrySet2 = QSet<QString>::fromList( md2.entryList() );
-  QCOMPARE( (int)entrySet2.count(), 4 );
+    KPIM::Maildir md2 = topLevelMd.subFolder(QLatin1String("collection2"));
+    QSet<QString> entrySet2 = QSet<QString>::fromList(md2.entryList());
+    QCOMPARE((int)entrySet2.count(), 4);
 
-  KPIM::Maildir md3( topLevelMd.addSubFolder( QLatin1String( "collection3" ) ), false );
-  QVERIFY( md3.isValid() );
-  QSet<QString> entrySet3 = QSet<QString>::fromList( md3.entryList() );
-  QCOMPARE( (int)entrySet3.count(), 0 );
+    KPIM::Maildir md3(topLevelMd.addSubFolder(QLatin1String("collection3")), false);
+    QVERIFY(md3.isValid());
+    QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
+    QCOMPARE((int)entrySet3.count(), 0);
 
-  QFileInfo fileInfo4( topDir.path(), QLatin1String( "collection4" ) );
-  QFile file4( fileInfo4.absoluteFilePath() );
-  QVERIFY( file4.open( QIODevice::WriteOnly ) );
-  file4.close();
-  fileInfo4.refresh();
-  QVERIFY( fileInfo4.exists() );
-  MBox mbox4;
-  QVERIFY( mbox4.load( fileInfo4.absoluteFilePath() ) );
-  MBoxEntry::List entryList4 = mbox4.entries();
-  QCOMPARE( (int)entryList4.count(), 0 );
+    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFile file4(fileInfo4.absoluteFilePath());
+    QVERIFY(file4.open(QIODevice::WriteOnly));
+    file4.close();
+    fileInfo4.refresh();
+    QVERIFY(fileInfo4.exists());
+    MBox mbox4;
+    QVERIFY(mbox4.load(fileInfo4.absoluteFilePath()));
+    MBoxEntry::List entryList4 = mbox4.entries();
+    QCOMPARE((int)entryList4.count(), 0);
 
-  QFileInfo fileInfo5( topDir.path(), QLatin1String( "collection5" ) );
-  MBox mbox5;
-  QVERIFY( mbox5.load( fileInfo5.absoluteFilePath() ) );
-  MBoxEntry::List entryList5 = mbox5.entries();
-  QCOMPARE( (int)entryList5.count(), 4 );
+    QFileInfo fileInfo5(topDir.path(), QLatin1String("collection5"));
+    MBox mbox5;
+    QVERIFY(mbox5.load(fileInfo5.absoluteFilePath()));
+    MBoxEntry::List entryList5 = mbox5.entries();
+    QCOMPARE((int)entryList5.count(), 4);
 
-  mStore->setPath( topDir.path() );
+    mStore->setPath(topDir.path());
 
-  // common variables
-  FileStore::ItemMoveJob *job = 0;
-  FileStore::StoreCompactJob *compactStore = 0;
+    // common variables
+    FileStore::ItemMoveJob *job = 0;
+    FileStore::StoreCompactJob *compactStore = 0;
 
-  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
-  QVariant var;
-  Collection::List collections;
-  Item movedItem;
-  MBoxEntry::List entryList;
-  Item::List items;
+    const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
+    QVariant var;
+    Collection::List collections;
+    Item movedItem;
+    MBoxEntry::List entryList;
+    Item::List items;
 
-  // test moving to an empty maildir
-  Collection collection1;
-  collection1.setName( QLatin1String( "collection1" ) );
-  collection1.setRemoteId( QLatin1String( "collection1" ) );
-  collection1.setParentCollection( mStore->topLevelCollection() );
+    // test moving to an empty maildir
+    Collection collection1;
+    collection1.setName(QLatin1String("collection1"));
+    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setParentCollection(mStore->topLevelCollection());
 
-  Collection collection3;
-  collection3.setName( QLatin1String( "collection3" ) );
-  collection3.setRemoteId( QLatin1String( "collection3" ) );
-  collection3.setParentCollection( mStore->topLevelCollection() );
+    Collection collection3;
+    collection3.setName(QLatin1String("collection3"));
+    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setParentCollection(mStore->topLevelCollection());
 
-  Item item1;
-  item1.setId( KRandom::random() );
-  item1.setRemoteId( QString::number( entryList1.first().messageOffset() ) );
-  item1.setParentCollection( collection1 );
+    Item item1;
+    item1.setId(KRandom::random());
+    item1.setRemoteId(QString::number(entryList1.first().messageOffset()));
+    item1.setParentCollection(collection1);
 
-  job = mStore->moveItem( item1, collection3 );
+    job = mStore->moveItem(item1, collection3);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection3 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection3);
 
-  var = job->property( "compactStore" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.type(), QVariant::Bool );
-  QCOMPARE( var.toBool(), true );
+    var = job->property("compactStore");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.type(), QVariant::Bool);
+    QCOMPARE(var.toBool(), true);
 
-  compactStore = mStore->compactStore();
-  QVERIFY( compactStore->exec() );
+    compactStore = mStore->compactStore();
+    QVERIFY(compactStore->exec());
 
-  items = compactStore->changedItems();
-  QCOMPARE( (int)items.count(), 3 );
+    items = compactStore->changedItems();
+    QCOMPARE((int)items.count(), 3);
 
-  entrySet3 << movedItem.remoteId();
-  QCOMPARE( QSet<QString>::fromList( md3.entryList() ), entrySet3 );
+    entrySet3 << movedItem.remoteId();
+    QCOMPARE(QSet<QString>::fromList(md3.entryList()), entrySet3);
 
-  entryList1.removeAt( 0 );
-  entryList1[ 0 ] = MBoxEntry( changedOffset( items[ 0 ] ) );
-  entryList1[ 1 ] = MBoxEntry( changedOffset( items[ 1 ] ) );
-  entryList1[ 2 ] = MBoxEntry( changedOffset( items[ 2 ] ) );
-  QVERIFY( mbox1.load( mbox1.fileName() ) );
-  QCOMPARE( mbox1.entries(), entryList1 );
+    entryList1.removeAt(0);
+    entryList1[ 0 ] = MBoxEntry(changedOffset(items[ 0 ]));
+    entryList1[ 1 ] = MBoxEntry(changedOffset(items[ 1 ]));
+    entryList1[ 2 ] = MBoxEntry(changedOffset(items[ 2 ]));
+    QVERIFY(mbox1.load(mbox1.fileName()));
+    QCOMPARE(mbox1.entries(), entryList1);
 
-  // test moving to a non empty mbox
-  Collection collection5;
-  collection5.setName( QLatin1String( "collection5" ) );
-  collection5.setRemoteId( QLatin1String( "collection5" ) );
-  collection5.setParentCollection( mStore->topLevelCollection() );
+    // test moving to a non empty mbox
+    Collection collection5;
+    collection5.setName(QLatin1String("collection5"));
+    collection5.setRemoteId(QLatin1String("collection5"));
+    collection5.setParentCollection(mStore->topLevelCollection());
 
-  job = mStore->moveItem( item1, collection5 );
+    job = mStore->moveItem(item1, collection5);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection5 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection5);
 
-  var = job->property( "compactStore" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.type(), QVariant::Bool );
-  QCOMPARE( var.toBool(), true );
+    var = job->property("compactStore");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.type(), QVariant::Bool);
+    QCOMPARE(var.toBool(), true);
 
-  // check for index preservation
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    // check for index preservation
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 2 );
-  QCOMPARE( collections, Collection::List() << collection1 << collection5 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 2);
+    QCOMPARE(collections, Collection::List() << collection1 << collection5);
 
-  compactStore = mStore->compactStore();
-  QVERIFY( compactStore->exec() );
+    compactStore = mStore->compactStore();
+    QVERIFY(compactStore->exec());
 
-  items = compactStore->changedItems();
-  QCOMPARE( (int)items.count(), 2 );
+    items = compactStore->changedItems();
+    QCOMPARE((int)items.count(), 2);
 
-  QVERIFY( mbox5.load( mbox5.fileName() ) );
-  QCOMPARE( mbox5.entries().count(), entryList5.count() + 1 );
-  QCOMPARE( mbox5.entries().last().messageOffset(), movedItem.remoteId().toULongLong() );
+    QVERIFY(mbox5.load(mbox5.fileName()));
+    QCOMPARE(mbox5.entries().count(), entryList5.count() + 1);
+    QCOMPARE(mbox5.entries().last().messageOffset(), movedItem.remoteId().toULongLong());
 
-  entryList1.removeAt( 0 );
-  entryList1[ 0 ] = MBoxEntry( changedOffset( items[ 0 ] ) );
-  entryList1[ 1 ] = MBoxEntry( changedOffset( items[ 1 ] ) );
-  QVERIFY( mbox1.load( mbox1.fileName() ) );
-  QCOMPARE( mbox1.entries(), entryList1 );
+    entryList1.removeAt(0);
+    entryList1[ 0 ] = MBoxEntry(changedOffset(items[ 0 ]));
+    entryList1[ 1 ] = MBoxEntry(changedOffset(items[ 1 ]));
+    QVERIFY(mbox1.load(mbox1.fileName()));
+    QCOMPARE(mbox1.entries(), entryList1);
 
-  // test moving to an empty mbox
-  Collection collection4;
-  collection4.setName( QLatin1String( "collection4" ) );
-  collection4.setRemoteId( QLatin1String( "collection4" ) );
-  collection4.setParentCollection( mStore->topLevelCollection() );
+    // test moving to an empty mbox
+    Collection collection4;
+    collection4.setName(QLatin1String("collection4"));
+    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setParentCollection(mStore->topLevelCollection());
 
-  job = mStore->moveItem( item1, collection4 );
+    job = mStore->moveItem(item1, collection4);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection4 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection4);
 
-  QVERIFY( mbox4.load( mbox4.fileName() ) );
-  entryList = mbox4.entries();
-  QCOMPARE( (int)entryList.count(), 1 );
+    QVERIFY(mbox4.load(mbox4.fileName()));
+    entryList = mbox4.entries();
+    QCOMPARE((int)entryList.count(), 1);
 
-  QCOMPARE( entryList.last().messageOffset(), movedItem.remoteId().toULongLong() );
+    QCOMPARE(entryList.last().messageOffset(), movedItem.remoteId().toULongLong());
 
-  var = job->property( "compactStore" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.type(), QVariant::Bool );
-  QCOMPARE( var.toBool(), true );
+    var = job->property("compactStore");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.type(), QVariant::Bool);
+    QCOMPARE(var.toBool(), true);
 
-  // check for index preservation
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    // check for index preservation
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 1 );
-  QCOMPARE( collections.first(), collection1 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 1);
+    QCOMPARE(collections.first(), collection1);
 
-  compactStore = mStore->compactStore();
-  QVERIFY( compactStore->exec() );
+    compactStore = mStore->compactStore();
+    QVERIFY(compactStore->exec());
 
-  items = compactStore->changedItems();
-  QCOMPARE( (int)items.count(), 1 );
+    items = compactStore->changedItems();
+    QCOMPARE((int)items.count(), 1);
 
-  QCOMPARE( mbox4.entries().count(), entryList4.count() + 1 );
-  QCOMPARE( mbox4.entries().last().messageOffset(), movedItem.remoteId().toULongLong() );
+    QCOMPARE(mbox4.entries().count(), entryList4.count() + 1);
+    QCOMPARE(mbox4.entries().last().messageOffset(), movedItem.remoteId().toULongLong());
 
-  entryList1.removeAt( 0 );
-  entryList1[ 0 ] = MBoxEntry( changedOffset( items[ 0 ] ) );
-  QVERIFY( mbox1.load( mbox1.fileName() ) );
-  QCOMPARE( mbox1.entries(), entryList1 );
+    entryList1.removeAt(0);
+    entryList1[ 0 ] = MBoxEntry(changedOffset(items[ 0 ]));
+    QVERIFY(mbox1.load(mbox1.fileName()));
+    QCOMPARE(mbox1.entries(), entryList1);
 
-  // test moving to a non empty maildir
-  Collection collection2;
-  collection2.setName( QLatin1String( "collection2" ) );
-  collection2.setRemoteId( QLatin1String( "collection2" ) );
-  collection2.setParentCollection( mStore->topLevelCollection() );
+    // test moving to a non empty maildir
+    Collection collection2;
+    collection2.setName(QLatin1String("collection2"));
+    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setParentCollection(mStore->topLevelCollection());
 
-  job = mStore->moveItem( item1, collection2 );
+    job = mStore->moveItem(item1, collection2);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  movedItem = job->item();
-  QCOMPARE( movedItem.id(), item1.id() );
-  QCOMPARE( movedItem.parentCollection(), collection2 );
+    movedItem = job->item();
+    QCOMPARE(movedItem.id(), item1.id());
+    QCOMPARE(movedItem.parentCollection(), collection2);
 
-  QSet<QString> entrySet = QSet<QString>::fromList( md2.entryList() );
-  QCOMPARE( (int)entrySet.count(), 5 );
+    QSet<QString> entrySet = QSet<QString>::fromList(md2.entryList());
+    QCOMPARE((int)entrySet.count(), 5);
 
-  QVERIFY( entrySet.contains( movedItem.remoteId() ) );
+    QVERIFY(entrySet.contains(movedItem.remoteId()));
 
-  var = job->property( "compactStore" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.type(), QVariant::Bool );
-  QCOMPARE( var.toBool(), true );
+    var = job->property("compactStore");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.type(), QVariant::Bool);
+    QCOMPARE(var.toBool(), true);
 
-  // check for index preservation
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    // check for index preservation
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 2 );
-  QCOMPARE( collections.first(), collection1 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 2);
+    QCOMPARE(collections.first(), collection1);
 
-  compactStore = mStore->compactStore();
-  QVERIFY( compactStore->exec() );
+    compactStore = mStore->compactStore();
+    QVERIFY(compactStore->exec());
 
-  items = compactStore->changedItems();
-  QCOMPARE( (int)items.count(), 0 );
+    items = compactStore->changedItems();
+    QCOMPARE((int)items.count(), 0);
 
-  entryList1.removeAt( 0 );
-  QVERIFY( mbox1.load( mbox1.fileName() ) );
-  const MBoxEntry::List newEntryList = mbox1.entries();
-  QVERIFY( std::equal( newEntryList.begin(), newEntryList.end(), entryList1.begin(), fullEntryCompare ) );
+    entryList1.removeAt(0);
+    QVERIFY(mbox1.load(mbox1.fileName()));
+    const MBoxEntry::List newEntryList = mbox1.entries();
+    QVERIFY(std::equal(newEntryList.begin(), newEntryList.end(), entryList1.begin(), fullEntryCompare));
 }
 
-QTEST_MAIN( ItemMoveTest )
+QTEST_MAIN(ItemMoveTest)
 
 #include "itemmovetest.moc"
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

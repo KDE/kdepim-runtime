@@ -31,19 +31,19 @@
 */
 class IncidenceHandler : public KolabHandler
 {
-  Q_OBJECT
-  public:
-    explicit IncidenceHandler( const Akonadi::Collection &imapCollection );
+    Q_OBJECT
+public:
+    explicit IncidenceHandler(const Akonadi::Collection &imapCollection);
 
     virtual ~IncidenceHandler();
 
-    virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &addrs );
-    virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
+    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List &addrs);
+    virtual bool toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
 
-    virtual QString extractGid(const Akonadi::Item& imapItem);
+    virtual QString extractGid(const Akonadi::Item &imapItem);
 
-  protected:
-    virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence ) = 0;
+protected:
+    virtual KMime::Message::Ptr incidenceToMime(const KCalCore::Incidence::Ptr &incidence) = 0;
 };
 
 #endif

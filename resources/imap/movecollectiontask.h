@@ -26,25 +26,25 @@
 
 class MoveCollectionTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit MoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~MoveCollectionTask();
+    explicit MoveCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~MoveCollectionTask();
 
 private slots:
-  void onExamineDone( KJob *job );
-  void onRenameDone( KJob *job );
-  void onSubscribeDone( KJob *job );
+    void onExamineDone(KJob *job);
+    void onRenameDone(KJob *job);
+    void onSubscribeDone(KJob *job);
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+    virtual void doStart(KIMAP::Session *session);
 
 private:
-  void doRename( KIMAP::Session *session );
-  QString mailBoxForCollections( const Akonadi::Collection &parent, const Akonadi::Collection &child ) const;
+    void doRename(KIMAP::Session *session);
+    QString mailBoxForCollections(const Akonadi::Collection &parent, const Akonadi::Collection &child) const;
 
-  Akonadi::Collection m_collection;
+    Akonadi::Collection m_collection;
 };
 
 #endif

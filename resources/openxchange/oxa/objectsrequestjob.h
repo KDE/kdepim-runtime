@@ -27,20 +27,20 @@
 #include "folder.h"
 #include "object.h"
 
-namespace OXA {
+namespace OXA
+{
 
 class ObjectsRequestJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Describes the mode of the request job.
      */
-    enum Mode
-    {
-      Modified,  ///< Fetches all new and modified objects
-      Deleted    ///< Fetches all deleted objects
+    enum Mode {
+        Modified,  ///< Fetches all new and modified objects
+        Deleted    ///< Fetches all deleted objects
     };
 
     /**
@@ -52,16 +52,16 @@ class ObjectsRequestJob : public KJob
      * @param mode The mode of objects to request.
      * @param parent The parent object.
      */
-    explicit ObjectsRequestJob( const Folder &folder, qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = Q_NULLPTR );
+    explicit ObjectsRequestJob(const Folder &folder, qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = Q_NULLPTR);
 
     virtual void start();
 
     Object::List objects() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Folder mFolder;
     qulonglong mLastSync;
     Mode mMode;

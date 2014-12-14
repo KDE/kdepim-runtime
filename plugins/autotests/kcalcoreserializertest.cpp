@@ -27,107 +27,107 @@ using namespace KCalCore;
 
 class KCalCoreSerializerTest : public QObject
 {
-  Q_OBJECT
-  private slots:
+    Q_OBJECT
+private slots:
     void testEventSerialize_data()
     {
-      QTest::addColumn<QString>( "mimeType" );
-      QTest::newRow( "specific" ) << "application/x-vnd.akonadi.calendar.event";
-      QTest::newRow( "generic" ) << "text/calendar";
+        QTest::addColumn<QString>("mimeType");
+        QTest::newRow("specific") << "application/x-vnd.akonadi.calendar.event";
+        QTest::newRow("generic") << "text/calendar";
     }
     void testCharsets_data()
     {
-      testEventSerialize_data();
+        testEventSerialize_data();
     }
 
     void testEventSerialize()
     {
-      QFETCH( QString, mimeType );
+        QFETCH(QString, mimeType);
 
-      QByteArray serialized =
-        "BEGIN:VCALENDAR\n"
-        "PRODID:-//K Desktop Environment//NONSGML libkcal 3.5//EN\n"
-        "VERSION:2.0\n"
-        "BEGIN:VEVENT\n"
-        "DTSTAMP:20070109T100625Z\n"
-        "ORGANIZER;CN=\"Volker Krause\":MAILTO:vkrause@kde.org\n"
-        "CREATED:20070109T100553Z\n"
-        "UID:libkcal-1135684253.945\n"
-        "SEQUENCE:1\n"
-        "LAST-MODIFIED:20070109T100625Z\n"
-        "SUMMARY:Test event\n"
-        "LOCATION:here\n"
-        "CLASS:PUBLIC\n"
-        "PRIORITY:5\n"
-        "CATEGORIES:KDE\n"
-        "DTSTART:20070109T183000Z\n"
-        "DTEND:20070109T225900Z\n"
-        "TRANSP:OPAQUE\n"
-        "BEGIN:VALARM\n"
-        "DESCRIPTION:\n"
-        "ACTION:DISPLAY\n"
-        "TRIGGER;VALUE=DURATION:-PT45M\n"
-        "END:VALARM\n"
-        "END:VEVENT\n"
-        "END:VCALENDAR\n";
+        QByteArray serialized =
+            "BEGIN:VCALENDAR\n"
+            "PRODID:-//K Desktop Environment//NONSGML libkcal 3.5//EN\n"
+            "VERSION:2.0\n"
+            "BEGIN:VEVENT\n"
+            "DTSTAMP:20070109T100625Z\n"
+            "ORGANIZER;CN=\"Volker Krause\":MAILTO:vkrause@kde.org\n"
+            "CREATED:20070109T100553Z\n"
+            "UID:libkcal-1135684253.945\n"
+            "SEQUENCE:1\n"
+            "LAST-MODIFIED:20070109T100625Z\n"
+            "SUMMARY:Test event\n"
+            "LOCATION:here\n"
+            "CLASS:PUBLIC\n"
+            "PRIORITY:5\n"
+            "CATEGORIES:KDE\n"
+            "DTSTART:20070109T183000Z\n"
+            "DTEND:20070109T225900Z\n"
+            "TRANSP:OPAQUE\n"
+            "BEGIN:VALARM\n"
+            "DESCRIPTION:\n"
+            "ACTION:DISPLAY\n"
+            "TRIGGER;VALUE=DURATION:-PT45M\n"
+            "END:VALARM\n"
+            "END:VEVENT\n"
+            "END:VCALENDAR\n";
 
-      // deserializing
-      Item item;
-      item.setMimeType( mimeType );
-      item.setPayloadFromData( serialized );
+        // deserializing
+        Item item;
+        item.setMimeType(mimeType);
+        item.setPayloadFromData(serialized);
 
-      QVERIFY( item.hasPayload<Event::Ptr>() );
-      const Event::Ptr event = item.payload<Event::Ptr>();
-      QVERIFY( event != 0 );
+        QVERIFY(item.hasPayload<Event::Ptr>());
+        const Event::Ptr event = item.payload<Event::Ptr>();
+        QVERIFY(event != 0);
 
-      QCOMPARE( event->summary(), QLatin1String( "Test event" ) );
-      QCOMPARE( event->location(), QLatin1String( "here" ) );
+        QCOMPARE(event->summary(), QLatin1String("Test event"));
+        QCOMPARE(event->location(), QLatin1String("here"));
 
-      // serializing
-      const QByteArray data = item.payloadData();
-      QVERIFY( !data.isEmpty() );
+        // serializing
+        const QByteArray data = item.payloadData();
+        QVERIFY(!data.isEmpty());
     }
 
     void testCharsets()
     {
-      QFETCH( QString, mimeType );
+        QFETCH(QString, mimeType);
 
-      // 0 defaults to latin1.
-      //QT5 QVERIFY( QTextCodec::codecForCStrings() == 0 );
+        // 0 defaults to latin1.
+        //QT5 QVERIFY( QTextCodec::codecForCStrings() == 0 );
 
-      const QDate currentDate = QDate::currentDate();
+        const QDate currentDate = QDate::currentDate();
 
-      Event::Ptr event = Event::Ptr( new Event() );
-      event->setUid( QLatin1String("12345") );
-      event->setDtStart( KDateTime( currentDate ) );
-      event->setDtEnd( KDateTime( currentDate.addDays( 1 ) ) );
+        Event::Ptr event = Event::Ptr(new Event());
+        event->setUid(QLatin1String("12345"));
+        event->setDtStart(KDateTime(currentDate));
+        event->setDtEnd(KDateTime(currentDate.addDays(1)));
 
-      // ü
-      const char latin1_umlaut[] = { static_cast<char>(0xFC), '\0' };
-      event->setSummary( QLatin1String(latin1_umlaut) );
+        // ü
+        const char latin1_umlaut[] = { static_cast<char>(0xFC), '\0' };
+        event->setSummary(QLatin1String(latin1_umlaut));
 
-      Item item;
-      item.setMimeType( mimeType );
-      item.setPayload( event );
+        Item item;
+        item.setMimeType(mimeType);
+        item.setPayload(event);
 
-      // Serializer the item, the serialization should be in UTF-8:
-      const char utf_umlaut[] = { static_cast<char>(0xC3), static_cast<char>(0XBC), '\0' };
-      const QByteArray bytes = item.payloadData();
-      QVERIFY( bytes.contains( utf_umlaut ) );
-      QVERIFY( !bytes.contains( latin1_umlaut ) );
+        // Serializer the item, the serialization should be in UTF-8:
+        const char utf_umlaut[] = { static_cast<char>(0xC3), static_cast<char>(0XBC), '\0' };
+        const QByteArray bytes = item.payloadData();
+        QVERIFY(bytes.contains(utf_umlaut));
+        QVERIFY(!bytes.contains(latin1_umlaut));
 
-      // Deserialize the data:
-      Item item2;
-      item2.setMimeType( mimeType );
-      item2.setPayloadFromData( bytes );
+        // Deserialize the data:
+        Item item2;
+        item2.setMimeType(mimeType);
+        item2.setPayloadFromData(bytes);
 
-      Event::Ptr event2 = item2.payload<Event::Ptr>();
-      QVERIFY( event2 != 0 );
-      QVERIFY( event2->summary().toUtf8() == QByteArray( utf_umlaut ) );
-      QVERIFY( event2->summary().toLatin1() == QByteArray( latin1_umlaut ) );
+        Event::Ptr event2 = item2.payload<Event::Ptr>();
+        QVERIFY(event2 != 0);
+        QVERIFY(event2->summary().toUtf8() == QByteArray(utf_umlaut));
+        QVERIFY(event2->summary().toLatin1() == QByteArray(latin1_umlaut));
     }
 };
 
-QTEST_MAIN( KCalCoreSerializerTest )
+QTEST_MAIN(KCalCoreSerializerTest)
 
 #include "kcalcoreserializertest.moc"

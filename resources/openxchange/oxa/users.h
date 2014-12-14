@@ -27,33 +27,33 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
-
-namespace OXA {
+namespace OXA
+{
 
 class Users : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     ~Users();
 
-    static Users* self();
+    static Users *self();
 
-    void init( const QString &identifier );
+    void init(const QString &identifier);
 
     qlonglong currentUserId() const;
 
-    User lookupUid( qlonglong uid ) const;
-    User lookupEmail( const QString &email ) const;
+    User lookupUid(qlonglong uid) const;
+    User lookupEmail(const QString &email) const;
 
     QString cacheFilePath() const;
 
-  private:
+private:
     friend class UpdateUsersJob;
 
     Users();
-    void setCurrentUserId( qlonglong );
-    void setUsers( const User::List& );
+    void setCurrentUserId(qlonglong);
+    void setUsers(const User::List &);
 
     void loadFromCache();
     void saveToCache();
@@ -62,7 +62,7 @@ class Users : public QObject
     QMap<qlonglong, User> mUsers;
     QString mIdentifier;
 
-    static Users* mSelf;
+    static Users *mSelf;
 };
 
 }

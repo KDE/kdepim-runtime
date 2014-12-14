@@ -27,13 +27,13 @@ using namespace Akonadi;
 
 class FileStore::ItemFetchJob::Private
 {
-  public:
-    explicit Private( FileStore::ItemFetchJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::ItemFetchJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     ItemFetchScope mFetchScope;
 
     Item::List mItems;
@@ -41,67 +41,65 @@ class FileStore::ItemFetchJob::Private
     Collection mCollection;
     Item mItem;
 
-  private:
+private:
     FileStore::ItemFetchJob *mParent;
 };
 
-FileStore::ItemFetchJob::ItemFetchJob( const Collection &collection, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::ItemFetchJob::ItemFetchJob(const Collection &collection, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  d->mCollection = collection;
+    d->mCollection = collection;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
-FileStore::ItemFetchJob::ItemFetchJob( const Item &item, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::ItemFetchJob::ItemFetchJob(const Item &item, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  d->mItem = item;
+    d->mItem = item;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::ItemFetchJob::~ItemFetchJob()
 {
-  delete d;
+    delete d;
 }
 
 Collection FileStore::ItemFetchJob::collection() const
 {
-  return d->mCollection;
+    return d->mCollection;
 }
 
 Item FileStore::ItemFetchJob::item() const
 {
-  return d->mItem;
+    return d->mItem;
 }
 
-void FileStore::ItemFetchJob::setFetchScope( const ItemFetchScope &fetchScope )
+void FileStore::ItemFetchJob::setFetchScope(const ItemFetchScope &fetchScope)
 {
-  d->mFetchScope = fetchScope;
+    d->mFetchScope = fetchScope;
 }
 
 ItemFetchScope &FileStore::ItemFetchJob::fetchScope()
 {
-  return d->mFetchScope;
+    return d->mFetchScope;
 }
 
 Item::List FileStore::ItemFetchJob::items() const
 {
-  return d->mItems;
+    return d->mItems;
 }
 
-bool FileStore::ItemFetchJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::ItemFetchJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::ItemFetchJob::handleItemsReceived( const Item::List &items )
+void FileStore::ItemFetchJob::handleItemsReceived(const Item::List &items)
 {
-  d->mItems << items;
+    d->mItems << items;
 
-  emit itemsReceived( items );
+    emit itemsReceived(items);
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

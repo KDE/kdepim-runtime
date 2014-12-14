@@ -23,50 +23,50 @@
 
 using namespace OXA;
 
-QDomElement DAVUtils::addDavElement( QDomDocument &document, QDomNode &parentNode, const QString &tag )
+QDomElement DAVUtils::addDavElement(QDomDocument &document, QDomNode &parentNode, const QString &tag)
 {
-  const QDomElement element = document.createElementNS( QLatin1String( "DAV:" ), QLatin1String( "D:" ) + tag );
-  parentNode.appendChild( element );
+    const QDomElement element = document.createElementNS(QLatin1String("DAV:"), QLatin1String("D:") + tag);
+    parentNode.appendChild(element);
 
-  return element;
+    return element;
 }
 
-QDomElement DAVUtils::addOxElement( QDomDocument &document, QDomNode &parentNode, const QString &tag, const QString &text )
+QDomElement DAVUtils::addOxElement(QDomDocument &document, QDomNode &parentNode, const QString &tag, const QString &text)
 {
-  QDomElement element = document.createElementNS( QLatin1String( "http://www.open-xchange.org" ), QLatin1String( "ox:" ) + tag );
+    QDomElement element = document.createElementNS(QLatin1String("http://www.open-xchange.org"), QLatin1String("ox:") + tag);
 
-  if ( !text.isEmpty() ) {
-    const QDomText textNode = document.createTextNode( text );
-    element.appendChild( textNode );
-  }
-
-  parentNode.appendChild( element );
-
-  return element;
-}
-
-void DAVUtils::setOxAttribute( QDomElement &element, const QString &name, const QString &value )
-{
-  element.setAttributeNS( QLatin1String( "http://www.open-xchange.org" ), QLatin1String( "ox:" ) + name, value );
-}
-
-bool DAVUtils::davErrorOccurred( const QDomDocument &document, QString &errorText, QString &errorStatus )
-{
-  const QDomElement documentElement = document.documentElement();
-  const QDomNodeList propStats = documentElement.elementsByTagNameNS( QLatin1String( "DAV:" ),
-                                                                      QLatin1String( "propstat" ) );
-
-  for ( int i = 0; i < propStats.count(); ++i ) {
-    const QDomElement propStat = propStats.at( i ).toElement();
-    const QDomElement status = propStat.firstChildElement( QLatin1String( "status" ) );
-    const QDomElement description = propStat.firstChildElement( QLatin1String( "responsedescription" ) );
-
-    if ( status.text() != QLatin1String( "200" ) ) {
-      errorText = description.text();
-      errorStatus = status.text();
-      return true;
+    if (!text.isEmpty()) {
+        const QDomText textNode = document.createTextNode(text);
+        element.appendChild(textNode);
     }
-  }
 
-  return false;
+    parentNode.appendChild(element);
+
+    return element;
+}
+
+void DAVUtils::setOxAttribute(QDomElement &element, const QString &name, const QString &value)
+{
+    element.setAttributeNS(QLatin1String("http://www.open-xchange.org"), QLatin1String("ox:") + name, value);
+}
+
+bool DAVUtils::davErrorOccurred(const QDomDocument &document, QString &errorText, QString &errorStatus)
+{
+    const QDomElement documentElement = document.documentElement();
+    const QDomNodeList propStats = documentElement.elementsByTagNameNS(QLatin1String("DAV:"),
+                                   QLatin1String("propstat"));
+
+    for (int i = 0; i < propStats.count(); ++i) {
+        const QDomElement propStat = propStats.at(i).toElement();
+        const QDomElement status = propStat.firstChildElement(QLatin1String("status"));
+        const QDomElement description = propStat.firstChildElement(QLatin1String("responsedescription"));
+
+        if (status.text() != QLatin1String("200")) {
+            errorText = description.text();
+            errorStatus = status.text();
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -23,12 +23,12 @@
 #include <AkonadiCore/ItemCreateJob>
 #include <AkonadiCore/CollectionFetchJob>
 
-ImapItemAddedJob::ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, KolabHandler &handler, QObject* parent)
-    :KJob(parent),
-    mHandler(handler),
-    mImapItem(imapItem),
-    mKolabCollection(imapToKolab(imapCollection)),
-    mImapCollection(imapCollection)
+ImapItemAddedJob::ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, KolabHandler &handler, QObject *parent)
+    : KJob(parent),
+      mHandler(handler),
+      mImapItem(imapItem),
+      mKolabCollection(imapToKolab(imapCollection)),
+      mImapCollection(imapCollection)
 {
 
 }
@@ -38,86 +38,86 @@ void ImapItemAddedJob::start()
     //TODO: slow, would be nice if ItemCreateJob would work with a Collection
     //      having only the remoteId set
     Akonadi::CollectionFetchJob *job =
-        new Akonadi::CollectionFetchJob(mKolabCollection, Akonadi::CollectionFetchJob::Base, this );
+        new Akonadi::CollectionFetchJob(mKolabCollection, Akonadi::CollectionFetchJob::Base, this);
     connect(job, &Akonadi::CollectionFetchJob::result, this, &ImapItemAddedJob::onCollectionFetchDone);
 }
 
-void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
+void ImapItemAddedJob::onCollectionFetchDone(KJob *job)
 {
-    if ( job->error() ) {
+    if (job->error()) {
         qWarning() << "Error on collection fetch:" << job->errorText();
         return;
     }
     Akonadi::Collection::List collections =
-        qobject_cast<Akonadi::CollectionFetchJob*>(job)->collections();
+        qobject_cast<Akonadi::CollectionFetchJob *>(job)->collections();
     Q_ASSERT(collections.size() == 1);
     mKolabCollection = collections.first();
 
-        const Akonadi::Item::List newItems = mHandler.translateItems(Akonadi::Item::List() << mImapItem);
-        if (newItems.isEmpty()) {
-            setError(KJob::UserDefinedError);
-            setErrorText("Failed to translate item");
-            emitResult();
-            return;
-        }
-        mTranslatedItem = newItems.first();
+    const Akonadi::Item::List newItems = mHandler.translateItems(Akonadi::Item::List() << mImapItem);
+    if (newItems.isEmpty()) {
+        setError(KJob::UserDefinedError);
+        setErrorText("Failed to translate item");
+        emitResult();
+        return;
+    }
+    mTranslatedItem = newItems.first();
 
-        const QString &gid = mHandler.extractGid(mTranslatedItem);
-        if (!gid.isEmpty()) {
-            //We have a gid, let's see if this item already exists
-            Akonadi::Item item;
-            item.setGid(gid);
-            Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob(item);
-            itemFetchJob->fetchScope().fetchFullPayload(false);
-            itemFetchJob->fetchScope().setFetchModificationTime(false);
-            itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
-            connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &ImapItemAddedJob::onItemFetchJobDone);
-        } else {
-            qDebug() << "no gid, creating directly";
-            Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection);
-            connect(cjob, &Akonadi::ItemCreateJob::result, this, &ImapItemAddedJob::itemCreatedDone);
+    const QString &gid = mHandler.extractGid(mTranslatedItem);
+    if (!gid.isEmpty()) {
+        //We have a gid, let's see if this item already exists
+        Akonadi::Item item;
+        item.setGid(gid);
+        Akonadi::ItemFetchJob *itemFetchJob = new Akonadi::ItemFetchJob(item);
+        itemFetchJob->fetchScope().fetchFullPayload(false);
+        itemFetchJob->fetchScope().setFetchModificationTime(false);
+        itemFetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
+        connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &ImapItemAddedJob::onItemFetchJobDone);
+    } else {
+        qDebug() << "no gid, creating directly";
+        Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection);
+        connect(cjob, &Akonadi::ItemCreateJob::result, this, &ImapItemAddedJob::itemCreatedDone);
+    }
+}
+
+Akonadi::Item ImapItemAddedJob::getTranslatedItem()
+{
+    return Akonadi::Item();
+}
+
+void ImapItemAddedJob::onItemFetchJobDone(KJob *job)
+{
+    Akonadi::ItemFetchJob *const fetchJob = static_cast<Akonadi::ItemFetchJob *>(job);
+
+    Akonadi::Item::List conflictingItems;
+    foreach (const Akonadi::Item &item, fetchJob->items()) {
+        Q_ASSERT(item.parentCollection().isValid());
+        //The same object may be in other collection, just not in this one.
+        if (item.parentCollection().id() != mKolabCollection.id()) {
+            continue;
+        }
+        conflictingItems << item;
+    }
+    if (conflictingItems.size() > 1) {
+        qWarning() << "Multiple conflicting items detected in col " << mKolabCollection.id() << ", this should never happen: ";
+        foreach (const Akonadi::Item &item, conflictingItems) {
+            qWarning() << "Conflicting kolab item: " << item.id();
         }
     }
-
-    Akonadi::Item ImapItemAddedJob::getTranslatedItem()
-    {
-        return Akonadi::Item();
+    if (!conflictingItems.isEmpty()) {
+        //This is a conflict
+        const Akonadi::Item conflictingKolabItem = conflictingItems.first();
+        mTranslatedItem.setId(conflictingKolabItem.id());
+        imapToKolab(mImapItem, mTranslatedItem);
+        //TODO ensure the modifyjob doesn't collide with a removejob due to the original imap item vanishing.
+        qDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
+        Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mTranslatedItem, this);
+        modJob->disableRevisionCheck();
+        connect(modJob, &Akonadi::ItemModifyJob::result, this, &ImapItemAddedJob::itemCreatedDone);
+    } else {
+        qDebug() << "creating new item";
+        Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
+        connect(cjob, &Akonadi::ItemCreateJob::result, this, &ImapItemAddedJob::itemCreatedDone);
     }
-
-    void ImapItemAddedJob::onItemFetchJobDone(KJob *job)
-    {
-        Akonadi::ItemFetchJob * const fetchJob = static_cast<Akonadi::ItemFetchJob*>(job);
-
-        Akonadi::Item::List conflictingItems;
-        foreach (const Akonadi::Item &item, fetchJob->items()) {
-            Q_ASSERT(item.parentCollection().isValid());
-            //The same object may be in other collection, just not in this one.
-            if (item.parentCollection().id() != mKolabCollection.id()) {
-                continue;
-            }
-            conflictingItems << item;
-        }
-        if (conflictingItems.size() > 1) {
-            qWarning() << "Multiple conflicting items detected in col " << mKolabCollection.id() << ", this should never happen: ";
-            foreach (const Akonadi::Item &item, conflictingItems) {
-                qWarning() << "Conflicting kolab item: " << item.id();
-            }
-        }
-        if (!conflictingItems.isEmpty()) {
-            //This is a conflict
-            const Akonadi::Item conflictingKolabItem = conflictingItems.first();
-            mTranslatedItem.setId(conflictingKolabItem.id());
-            imapToKolab(mImapItem, mTranslatedItem);
-            //TODO ensure the modifyjob doesn't collide with a removejob due to the original imap item vanishing.
-            qDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
-            Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mTranslatedItem, this);
-            modJob->disableRevisionCheck();
-            connect(modJob, &Akonadi::ItemModifyJob::result, this, &ImapItemAddedJob::itemCreatedDone);
-        } else {
-            qDebug() << "creating new item";
-            Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
-            connect(cjob, &Akonadi::ItemCreateJob::result, this, &ImapItemAddedJob::itemCreatedDone);
-        }
 }
 
 void ImapItemAddedJob::itemCreatedDone(KJob *job)

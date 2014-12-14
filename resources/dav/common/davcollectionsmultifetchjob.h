@@ -35,16 +35,16 @@
  */
 class DavCollectionsMultiFetchJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav collections multi fetch job.
      *
      * @param urls The list of DAV urls whose sub collections shall be fetched.
      * @param parent The parent object.
      */
-    explicit DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent = Q_NULLPTR );
+    explicit DavCollectionsMultiFetchJob(const DavUtils::DavUrl::List &urls, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -56,19 +56,19 @@ class DavCollectionsMultiFetchJob : public KJob
      */
     DavCollection::List collections() const;
 
-  Q_SIGNALS:
+Q_SIGNALS:
     /**
      * This signal is emitted every time a new collection has been discovered.
      *
      * @param collectionUrl The URL of the discovered collection
      * @param configuredUrl The URL given to the job
      */
-    void collectionDiscovered( int protocol, const QString &collectionUrl, const QString &configuredUrl );
+    void collectionDiscovered(int protocol, const QString &collectionUrl, const QString &configuredUrl);
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl::List mUrls;
     DavCollection::List mCollections;
     uint mSubJobCount;

@@ -20,4 +20,3 @@
 #include "resource_imap_debug.h"
 Q_LOGGING_CATEGORY(RESOURCE_IMAP_LOG, "resource_imap_smtp")
 
-

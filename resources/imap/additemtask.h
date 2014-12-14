@@ -26,25 +26,25 @@
 
 class AddItemTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit AddItemTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~AddItemTask();
+    explicit AddItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~AddItemTask();
 
 private slots:
-  void onAppendMessageDone( KJob *job );
-  void onPreSearchSelectDone( KJob *job );
-  void onSearchDone( KJob *job );
+    void onAppendMessageDone(KJob *job);
+    void onPreSearchSelectDone(KJob *job);
+    void onSearchDone(KJob *job);
 
 protected:
-  void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
-  void triggerSearchJob( KIMAP::Session *session );
-  void applyFoundUid( qint64 uid );
+    void triggerSearchJob(KIMAP::Session *session);
+    void applyFoundUid(qint64 uid);
 
-  QByteArray m_messageId;
+    QByteArray m_messageId;
 };
 
 #endif

@@ -24,17 +24,17 @@
 
 class NotesResource : public ICalResource
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit NotesResource( const QString &id );
+public:
+    explicit NotesResource(const QString &id);
     ~NotesResource();
 
-  protected:
+protected:
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
     */
-    virtual QString mimeType( const KCalCore::IncidenceBase::Ptr &incidence ) const;
+    virtual QString mimeType(const KCalCore::IncidenceBase::Ptr &incidence) const;
 
     /**
       Returns a list of all calendar component sub MIME types.

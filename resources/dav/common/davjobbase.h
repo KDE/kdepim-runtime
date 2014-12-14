@@ -26,10 +26,10 @@
  */
 class DavJobBase : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit DavJobBase( QObject *parent = Q_NULLPTR );
+public:
+    explicit DavJobBase(QObject *parent = Q_NULLPTR);
 
     /**
      * Get the latest response code.
@@ -60,7 +60,7 @@ class DavJobBase : public KJob
      */
     bool canRetryLater() const;
 
-  protected:
+protected:
     /**
      * Sets the latest response code received.
      *
@@ -69,9 +69,9 @@ class DavJobBase : public KJob
      *
      * @param code The code to set, should be a valid HTTP response code or zero.
      */
-    void setLatestResponseCode( unsigned int code );
+    void setLatestResponseCode(unsigned int code);
 
-  private:
+private:
     unsigned int mLatestResponseCode;
 };
 

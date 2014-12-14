@@ -26,21 +26,22 @@
 
 #include <kjob.h>
 
-namespace OXA {
+namespace OXA
+{
 
 class ObjectDeleteJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ObjectDeleteJob( const Object &object, QObject *parent = Q_NULLPTR );
+public:
+    explicit ObjectDeleteJob(const Object &object, QObject *parent = Q_NULLPTR);
 
     virtual void start();
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Object mObject;
 };
 

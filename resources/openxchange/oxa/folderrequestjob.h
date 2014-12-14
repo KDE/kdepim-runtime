@@ -26,7 +26,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that requests a folder from the OX server.
@@ -35,9 +36,9 @@ namespace OXA {
  */
 class FolderRequestJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new folder request job.
      *
@@ -46,7 +47,7 @@ class FolderRequestJob : public KJob
      *
      * @note The folder needs the objectId property set.
      */
-    explicit FolderRequestJob( const Folder &folder, QObject *parent = Q_NULLPTR );
+    explicit FolderRequestJob(const Folder &folder, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -58,10 +59,10 @@ class FolderRequestJob : public KJob
      */
     Folder folder() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Folder mFolder;
 };
 

@@ -32,30 +32,36 @@ class QDialogButtonBox;
 
 class InfoDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-    InfoDialog( bool closeWhenDone = true );
+    Q_OBJECT
+public:
+    InfoDialog(bool closeWhenDone = true);
     ~InfoDialog();
 
-  public slots:
-    void message( KMigratorBase::MessageType type, const QString &msg );
-    void message( MigratorBase::MessageType type, const QString &msg );
+public slots:
+    void message(KMigratorBase::MessageType type, const QString &msg);
+    void message(MigratorBase::MessageType type, const QString &msg);
 
     void migratorAdded();
     void migratorDone();
 
-    static bool hasError() { return mError; }
-    bool hasChange() const { return mChange; }
+    static bool hasError()
+    {
+        return mError;
+    }
+    bool hasChange() const
+    {
+        return mChange;
+    }
 
-    void status( const QString &msg );
+    void status(const QString &msg);
 
-    void progress( int value );
-    void progress( int min, int max, int value );
+    void progress(int value);
+    void progress(int min, int max, int value);
 
-  private slots:
-    void scrollBarMoved( int value );
+private slots:
+    void scrollBarMoved(int value);
 
-  private:
+private:
     QEventLoopLocker eventLoopLocker;
     QDialogButtonBox *mButtonBox;
     QListWidget *mList;

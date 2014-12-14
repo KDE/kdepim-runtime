@@ -23,8 +23,9 @@
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
 
-namespace Akonadi {
-  class Collection;
+namespace Akonadi
+{
+class Collection;
 }
 
 class KJob;
@@ -39,9 +40,9 @@ class KJob;
  */
 class EtagCache : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new etag cache.
      */
@@ -50,41 +51,41 @@ class EtagCache : public QObject
     /**
      * Populates the cache with the items found in @p collection.
      */
-    void sync( const Akonadi::Collection &collection );
+    void sync(const Akonadi::Collection &collection);
 
     /**
      * Sets the ETag for the remote ID. If the remote ID is marked as
      * changed (is contained in the return of changedRemoteIds), remove
      * it from the changed list.
      */
-    void setEtag( const QString &remoteId, const QString &etag );
+    void setEtag(const QString &remoteId, const QString &etag);
 
     /**
      * Checks if the given item is in the cache
      */
-    bool contains( const QString &remoteId );
+    bool contains(const QString &remoteId);
 
     /**
      * Check if the known ETag for the remote ID is equal to @p refEtag and, if not,
      * mark it as changed.
      */
-    bool etagChanged( const QString &remoteId, const QString &refEtag );
+    bool etagChanged(const QString &remoteId, const QString &refEtag);
 
     /**
      * Mark an item as changed in the backend.
      */
-    void markAsChanged( const QString &remoteId );
+    void markAsChanged(const QString &remoteId);
 
     /**
      * Returns true if the remote ID is marked as changed (is contained in the
      * return of changedRemoteIds)
      */
-    bool isOutOfDate( const QString &remoteId ) const;
+    bool isOutOfDate(const QString &remoteId) const;
 
     /**
      * Removes the entry for item with remote ID @p remoteId.
      */
-    void removeEtag( const QString &remoteId );
+    void removeEtag(const QString &remoteId);
 
     /**
      * Returns the list of all etags.
@@ -97,10 +98,10 @@ class EtagCache : public QObject
      */
     QStringList changedRemoteIds() const;
 
-  private Q_SLOTS:
-    void onItemFetchJobFinished( KJob *job );
+private Q_SLOTS:
+    void onItemFetchJobFinished(KJob *job);
 
-  private:
+private:
     QMap<QString, QString> mCache;
     QSet<QString> mChangedRemoteIds;
 };

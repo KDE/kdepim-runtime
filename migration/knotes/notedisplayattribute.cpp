@@ -19,15 +19,14 @@
 #include <QByteArray>
 #include <QFontDatabase>
 
-
 NoteDisplayAttribute::NoteDisplayAttribute()
     : Akonadi::Attribute(),
       mFont(QFontDatabase::systemFont(QFontDatabase::GeneralFont)),
       mTitleFont(QFontDatabase::systemFont(QFontDatabase::TitleFont)),
       mBackgroundColor(Qt::yellow),
       mForegroundgroundColor(Qt::black),
-      mSize(300,300),
-      mPosition(QPoint( -10000, -10000 )),
+      mSize(300, 300),
+      mPosition(QPoint(-10000, -10000)),
       mTabSize(4),
       mDesktop(-10),
       mRememberDesktop(true),
@@ -46,7 +45,7 @@ NoteDisplayAttribute::~NoteDisplayAttribute()
 
 }
 
-NoteDisplayAttribute* NoteDisplayAttribute::clone() const
+NoteDisplayAttribute *NoteDisplayAttribute::clone() const
 {
     NoteDisplayAttribute *attr = new NoteDisplayAttribute();
     attr->setBackgroundColor(backgroundColor());
@@ -66,9 +65,9 @@ NoteDisplayAttribute* NoteDisplayAttribute::clone() const
     return attr;
 }
 
-void NoteDisplayAttribute::deserialize(const QByteArray& data)
+void NoteDisplayAttribute::deserialize(const QByteArray &data)
 {
-    QDataStream s( data );
+    QDataStream s(data);
     s >> mFont;
     s >> mTitleFont;
     s >> mBackgroundColor;
@@ -89,7 +88,7 @@ void NoteDisplayAttribute::deserialize(const QByteArray& data)
 QByteArray NoteDisplayAttribute::serialized() const
 {
     QByteArray result;
-    QDataStream s( &result, QIODevice::WriteOnly );
+    QDataStream s(&result, QIODevice::WriteOnly);
     s << mFont;
     s << mTitleFont;
     s << mBackgroundColor;
@@ -110,7 +109,7 @@ QByteArray NoteDisplayAttribute::serialized() const
 
 QByteArray NoteDisplayAttribute::type() const
 {
-    static const QByteArray sType( "NoteDisplayAttribute" );
+    static const QByteArray sType("NoteDisplayAttribute");
     return sType;
 }
 

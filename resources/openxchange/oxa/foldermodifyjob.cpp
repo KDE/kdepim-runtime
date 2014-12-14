@@ -29,67 +29,68 @@
 
 using namespace OXA;
 
-FolderModifyJob::FolderModifyJob( const Folder &folder, QObject *parent )
-  : KJob( parent ), mFolder( folder )
+FolderModifyJob::FolderModifyJob(const Folder &folder, QObject *parent)
+    : KJob(parent), mFolder(folder)
 {
 }
 
 void FolderModifyJob::start()
 {
-  QDomDocument document;
-  QDomElement propertyupdate = DAVUtils::addDavElement( document, document, QLatin1String( "propertyupdate" ) );
-  QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
-  QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "title" ), OXUtils::writeString( mFolder.title() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "folder_id" ), OXUtils::writeNumber( mFolder.folderId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "last_modified" ), OXUtils::writeString( mFolder.lastModified() ) );
+    QDomDocument document;
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
+    DAVUtils::addOxElement(document, prop, QLatin1String("title"), OXUtils::writeString(mFolder.title()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mFolder.objectId()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("folder_id"), OXUtils::writeNumber(mFolder.folderId()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("last_modified"), OXUtils::writeString(mFolder.lastModified()));
 
-  const QString path = QLatin1String( "/servlet/webdav.folders" );
+    const QString path = QLatin1String("/servlet/webdav.folders");
 
-  KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-  connect(job, &KIO::DavJob::result, this, &FolderModifyJob::davJobFinished);
+    KIO::DavJob *job = DavManager::self()->createPatchJob(path, document);
+    connect(job, &KIO::DavJob::result, this, &FolderModifyJob::davJobFinished);
 }
 
 Folder FolderModifyJob::folder() const
 {
-  return mFolder;
+    return mFolder;
 }
 
-void FolderModifyJob::davJobFinished( KJob *job )
+void FolderModifyJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
+
+    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
+
+    const QDomDocument document = davJob->response();
+
+    QString errorText, errorStatus;
+    if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
+        setError(UserDefinedError);
+        setErrorText(errorText);
+        emitResult();
+        return;
+    }
+
+    QDomElement multistatus = document.documentElement();
+    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    const QDomNodeList props = response.elementsByTagName("prop");
+    const QDomElement prop = props.at(0).toElement();
+
+    QDomElement element = prop.firstChildElement();
+    while (!element.isNull()) {
+        if (element.tagName() == QLatin1String("last_modified")) {
+            mFolder.setLastModified(OXUtils::readString(element.text()));
+        }
+
+        element = element.nextSiblingElement();
+    }
+
     emitResult();
-    return;
-  }
-
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const QDomDocument document = davJob->response();
-
-  QString errorText, errorStatus;
-  if ( DAVUtils::davErrorOccurred( document, errorText, errorStatus ) ) {
-    setError( UserDefinedError );
-    setErrorText( errorText );
-    emitResult();
-    return;
-  }
-
-  QDomElement multistatus = document.documentElement();
-  QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  const QDomNodeList props = response.elementsByTagName( "prop" );
-  const QDomElement prop = props.at( 0 ).toElement();
-
-  QDomElement element = prop.firstChildElement();
-  while ( !element.isNull() ) {
-    if ( element.tagName() == QLatin1String( "last_modified" ) )
-      mFolder.setLastModified( OXUtils::readString( element.text() ) );
-
-    element = element.nextSiblingElement();
-  }
-
-  emitResult();
 }
 

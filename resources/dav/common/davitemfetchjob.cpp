@@ -26,68 +26,69 @@
 
 #include <QtCore/QDebug>
 
-static QString etagFromHeaders( const QString &headers )
+static QString etagFromHeaders(const QString &headers)
 {
-  const QStringList allHeaders = headers.split( QLatin1Char('\n') );
+    const QStringList allHeaders = headers.split(QLatin1Char('\n'));
 
-  QString etag;
-  foreach ( const QString &header, allHeaders ) {
-    if ( header.startsWith( QLatin1String( "etag:" ), Qt::CaseInsensitive ) )
-      etag = header.section( QLatin1Char(' '), 1 );
-  }
+    QString etag;
+    foreach (const QString &header, allHeaders) {
+        if (header.startsWith(QLatin1String("etag:"), Qt::CaseInsensitive)) {
+            etag = header.section(QLatin1Char(' '), 1);
+        }
+    }
 
-  return etag;
+    return etag;
 }
 
-
-DavItemFetchJob::DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : KJob( parent ), mUrl( url ), mItem( item )
+DavItemFetchJob::DavItemFetchJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent)
+    : KJob(parent), mUrl(url), mItem(item)
 {
 }
 
 void DavItemFetchJob::start()
 {
-  KIO::StoredTransferJob *job = KIO::storedGet( mUrl.url(), KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags );
-  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-  // Work around a strange bug in Zimbra (seen at least on CE 5.0.18) : if the user-agent
-  // contains "Mozilla", some strange debug data is displayed in the shared calendars.
-  // This kinda mess up the events parsing...
-  job->addMetaData( QLatin1String("UserAgent"), QLatin1String("KDE DAV groupware client") );
-  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
-  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
+    KIO::StoredTransferJob *job = KIO::storedGet(mUrl.url(), KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags);
+    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    // Work around a strange bug in Zimbra (seen at least on CE 5.0.18) : if the user-agent
+    // contains "Mozilla", some strange debug data is displayed in the shared calendars.
+    // This kinda mess up the events parsing...
+    job->addMetaData(QLatin1String("UserAgent"), QLatin1String("KDE DAV groupware client"));
+    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
 
-  connect(job, &KIO::StoredTransferJob::result, this, &DavItemFetchJob::davJobFinished);
+    connect(job, &KIO::StoredTransferJob::result, this, &DavItemFetchJob::davJobFinished);
 }
 
 DavItem DavItemFetchJob::item() const
 {
-  return mItem;
+    return mItem;
 }
 
-void DavItemFetchJob::davJobFinished( KJob *job )
+void DavItemFetchJob::davJobFinished(KJob *job)
 {
-  KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
+    KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
 
-  if ( storedJob->error() ) {
-    const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                              0 :
-                              storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
+    if (storedJob->error()) {
+        const int responseCode = storedJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+                                 0 :
+                                 storedJob->queryMetaData(QLatin1String("responsecode")).toInt();
 
-    QString err;
-    if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
-      err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
-    else
-      err = storedJob->errorText();
+        QString err;
+        if (storedJob->error() != KIO::ERR_SLAVE_DEFINED) {
+            err = KIO::buildErrorString(storedJob->error(), storedJob->errorText());
+        } else {
+            err = storedJob->errorText();
+        }
 
-    setError( UserDefinedError + responseCode );
-    setErrorText( i18n( "There was a problem with the request.\n"
-                        "%1 (%2).", err, responseCode ) );
-  } else {
-    mItem.setData( storedJob->data() );
-    mItem.setContentType( storedJob->queryMetaData( QLatin1String("content-type") ) );
-    mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( QLatin1String("HTTP-Headers") ) ) );
-  }
+        setError(UserDefinedError + responseCode);
+        setErrorText(i18n("There was a problem with the request.\n"
+                          "%1 (%2).", err, responseCode));
+    } else {
+        mItem.setData(storedJob->data());
+        mItem.setContentType(storedJob->queryMetaData(QLatin1String("content-type")));
+        mItem.setEtag(etagFromHeaders(storedJob->queryMetaData(QLatin1String("HTTP-Headers"))));
+    }
 
-  emitResult();
+    emitResult();
 }
 

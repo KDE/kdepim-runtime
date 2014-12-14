@@ -28,29 +28,29 @@
 
 class RetrieveItemTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit RetrieveItemTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~RetrieveItemTask();
+    explicit RetrieveItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~RetrieveItemTask();
 
 private slots:
-  void onSelectDone( KJob *job );
-  void onMessagesReceived( const QString &mailBox,
-                           const QMap<qint64, qint64> &uids,
-                           const QMap<qint64, KIMAP::MessageAttribute> &attrs,
-                           const QMap<qint64, KIMAP::MessagePtr> &messages );
-  void onContentFetchDone( KJob *job );
+    void onSelectDone(KJob *job);
+    void onMessagesReceived(const QString &mailBox,
+                            const QMap<qint64, qint64> &uids,
+                            const QMap<qint64, KIMAP::MessageAttribute> &attrs,
+                            const QMap<qint64, KIMAP::MessagePtr> &messages);
+    void onContentFetchDone(KJob *job);
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+    virtual void doStart(KIMAP::Session *session);
 
 private:
-  void triggerFetchJob();
+    void triggerFetchJob();
 
-  KIMAP::Session *m_session;
-  qint64 m_uid;
-  bool m_messageReceived;
+    KIMAP::Session *m_session;
+    qint64 m_uid;
+    bool m_messageReceived;
 };
 
 #endif

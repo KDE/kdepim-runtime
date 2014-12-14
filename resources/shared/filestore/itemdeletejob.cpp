@@ -25,46 +25,44 @@ using namespace Akonadi;
 
 class FileStore::ItemDeleteJob::Private
 {
-  public:
-    explicit Private( FileStore::ItemDeleteJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::ItemDeleteJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     Item mItem;
 
-  private:
+private:
     FileStore::ItemDeleteJob *mParent;
 };
 
-FileStore::ItemDeleteJob::ItemDeleteJob( const Item &item, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::ItemDeleteJob::ItemDeleteJob(const Item &item, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  d->mItem = item;
+    d->mItem = item;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::ItemDeleteJob::~ItemDeleteJob()
 {
-  delete d;
+    delete d;
 }
 
 Item FileStore::ItemDeleteJob::item() const
 {
-  return d->mItem;
+    return d->mItem;
 }
 
-bool FileStore::ItemDeleteJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::ItemDeleteJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::ItemDeleteJob::handleItemDeleted( const Item &item )
+void FileStore::ItemDeleteJob::handleItemDeleted(const Item &item)
 {
-  d->mItem = item;
+    d->mItem = item;
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

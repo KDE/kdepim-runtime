@@ -24,45 +24,45 @@
 
 using namespace Akonadi;
 
-CollectionFlagsAttribute::CollectionFlagsAttribute( const QList<QByteArray> &flags )
-  : mFlags( flags )
+CollectionFlagsAttribute::CollectionFlagsAttribute(const QList<QByteArray> &flags)
+    : mFlags(flags)
 {
 }
 
-void CollectionFlagsAttribute::setFlags( const QList<QByteArray> &flags )
+void CollectionFlagsAttribute::setFlags(const QList<QByteArray> &flags)
 {
-  mFlags = flags;
+    mFlags = flags;
 }
 
 QList<QByteArray> CollectionFlagsAttribute::flags() const
 {
-  return mFlags;
+    return mFlags;
 }
 
 QByteArray CollectionFlagsAttribute::type() const
 {
-    static const QByteArray sType( "collectionflags" );
+    static const QByteArray sType("collectionflags");
     return sType;
 }
 
-Akonadi::Attribute* CollectionFlagsAttribute::clone() const
+Akonadi::Attribute *CollectionFlagsAttribute::clone() const
 {
-  return new CollectionFlagsAttribute( mFlags );
+    return new CollectionFlagsAttribute(mFlags);
 }
 
 QByteArray CollectionFlagsAttribute::serialized() const
 {
-  QByteArray result;
+    QByteArray result;
 
-  foreach ( const QByteArray &flag, mFlags ) {
-    result+= flag+' ';
-  }
-  result.chop( 1 );
+    foreach (const QByteArray &flag, mFlags) {
+        result += flag + ' ';
+    }
+    result.chop(1);
 
-  return result;
+    return result;
 }
 
-void CollectionFlagsAttribute::deserialize( const QByteArray &data )
+void CollectionFlagsAttribute::deserialize(const QByteArray &data)
 {
-  mFlags = data.split( ' ' );
+    mFlags = data.split(' ');
 }

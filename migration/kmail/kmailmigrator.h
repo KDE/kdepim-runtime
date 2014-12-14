@@ -38,7 +38,7 @@ class OrgKdeAkonadiPOP3SettingsInterface;
 
 namespace KWallet
 {
-  class Wallet;
+class Wallet;
 }
 
 namespace KMail
@@ -49,9 +49,9 @@ namespace KMail
  */
 class KMailMigrator : public KMigratorBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     KMailMigrator();
     virtual ~KMailMigrator();
 
@@ -66,68 +66,68 @@ class KMailMigrator : public KMigratorBase
     void deleteOldGroup();
     void migrateConfigurationDialogRestriction();
 
-  Q_SIGNALS:
-    void status( const QString &msg );
-    void progress( int value );
-    void progress( int min, int max, int value );
+Q_SIGNALS:
+    void status(const QString &msg);
+    void progress(int value);
+    void progress(int min, int max, int value);
 
-  private Q_SLOTS:
-    void imapAccountCreated( KJob *job );
-    void imapDisconnectedAccountCreated( KJob *job );
-    void pop3AccountCreated( KJob *job );
-    void mboxAccountCreated( KJob *job );
-    void maildirAccountCreated( KJob *job );
-    void localMaildirCreated( KJob *job );
+private Q_SLOTS:
+    void imapAccountCreated(KJob *job);
+    void imapDisconnectedAccountCreated(KJob *job);
+    void pop3AccountCreated(KJob *job);
+    void mboxAccountCreated(KJob *job);
+    void maildirAccountCreated(KJob *job);
+    void localMaildirCreated(KJob *job);
 
-    void localFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
-    void imapFoldersMigrationFinished( const Akonadi::AgentInstance &instance, const QString &error );
+    void localFoldersMigrationFinished(const Akonadi::AgentInstance &instance, const QString &error);
+    void imapFoldersMigrationFinished(const Akonadi::AgentInstance &instance, const QString &error);
 
-    void collectionMigratorMessage( int type, const QString &msg );
+    void collectionMigratorMessage(int type, const QString &msg);
     void collectionMigratorFinished();
     void collectionMigratorEmittedNotification();
 
-    void instanceStatusChanged( const Akonadi::AgentInstance &instance );
-    void instanceProgressChanged( const Akonadi::AgentInstance &instance );
+    void instanceStatusChanged(const Akonadi::AgentInstance &instance);
+    void instanceProgressChanged(const Akonadi::AgentInstance &instance);
 
 #if 0
-    void imapCacheImportFinished( const Akonadi::AgentInstance &instance, const QString &error );
-    void imapCacheCleanupFinished( const Akonadi::AgentInstance &instance );
+    void imapCacheImportFinished(const Akonadi::AgentInstance &instance, const QString &error);
+    void imapCacheCleanupFinished(const Akonadi::AgentInstance &instance);
 #endif
-    void imapCacheAdaptionFinished( int messageType, const QString &message );
+    void imapCacheAdaptionFinished(int messageType, const QString &message);
 
-    void specialColDefaultResourceCheckFinished( const Akonadi::AgentInstance &instance );
+    void specialColDefaultResourceCheckFinished(const Akonadi::AgentInstance &instance);
 
-    void autoSaveCopyResult( KJob* );
+    void autoSaveCopyResult(KJob *);
 
-  private:
-    void deleteOldGroup( const QString& );
-    void migrateImapAccount( KJob *job, bool disconnected );
+private:
+    void deleteOldGroup(const QString &);
+    void migrateImapAccount(KJob *job, bool disconnected);
     bool migrateCurrentAccount();
-    void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
-                          = Akonadi::AgentInstance() )
+    void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance
+                         = Akonadi::AgentInstance())
     {
-      migrationFailed( errorMsg, true, instance );
+        migrationFailed(errorMsg, true, instance);
     }
 
-    void migrationFailed( const QString &errorMsg, bool doMigrateNext,
-                          const Akonadi::AgentInstance &instance = Akonadi::AgentInstance() );
-    void migrationCompleted( const Akonadi::AgentInstance &instance, bool doMigrateNext = true );
+    void migrationFailed(const QString &errorMsg, bool doMigrateNext,
+                         const Akonadi::AgentInstance &instance = Akonadi::AgentInstance());
+    void migrationCompleted(const Akonadi::AgentInstance &instance, bool doMigrateNext = true);
 
-    void connectCollectionMigrator( AbstractCollectionMigrator *migrator );
+    void connectCollectionMigrator(AbstractCollectionMigrator *migrator);
 
     void migrateInstanceTrashFolder();
 
-    void migratePassword( const QString &idString, const Akonadi::AgentInstance &instance,
-                          const QString &newFolder, const QString &passwordFromFilePassword );
+    void migratePassword(const QString &idString, const Akonadi::AgentInstance &instance,
+                         const QString &newFolder, const QString &passwordFromFilePassword);
 
-    OrgKdeAkonadiImapSettingsInterface* createImapSettingsInterface( const Akonadi::AgentInstance& instance );
-    OrgKdeAkonadiPOP3SettingsInterface* createPop3SettingsInterface( const Akonadi::AgentInstance& instance );
+    OrgKdeAkonadiImapSettingsInterface *createImapSettingsInterface(const Akonadi::AgentInstance &instance);
+    OrgKdeAkonadiPOP3SettingsInterface *createPop3SettingsInterface(const Akonadi::AgentInstance &instance);
 
     //code from kmaccount
-    QString importPassword( const QString &aStr );
+    QString importPassword(const QString &aStr);
     void cleanupConfigFile();
 
-  private:
+private:
     KWallet::Wallet *mWallet;
     KSharedConfigPtr mConfig;
     KSharedConfigPtr mEmailIdentityConfig;
@@ -143,10 +143,10 @@ class KMailMigrator : public KMigratorBase
     MixedMaildirStore *mImapCache;
 
     struct AccountConfig {
-      AccountConfig() : imapAccount( false ), disconnectedImap( false ) { }
-      Akonadi::AgentInstance instance;
-      bool imapAccount;
-      bool disconnectedImap;
+        AccountConfig() : imapAccount(false), disconnectedImap(false) { }
+        Akonadi::AgentInstance instance;
+        bool imapAccount;
+        bool disconnectedImap;
     };
     QHash<QString, AccountConfig> mAccountInstance;
     QList<Akonadi::AgentInstance> mFailedInstances;

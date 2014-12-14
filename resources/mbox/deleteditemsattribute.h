@@ -31,21 +31,21 @@
  */
 class DeletedItemsAttribute : public Akonadi::Attribute
 {
-  public:
+public:
     DeletedItemsAttribute();
 
-    DeletedItemsAttribute( const DeletedItemsAttribute &other );
+    DeletedItemsAttribute(const DeletedItemsAttribute &other);
 
     ~DeletedItemsAttribute();
 
-    void addDeletedItemOffset( quint64 );
+    void addDeletedItemOffset(quint64);
 
     Attribute *clone() const Q_DECL_OVERRIDE;
 
     QSet<quint64> deletedItemOffsets() const;
     KMBox::MBoxEntry::List deletedItemEntries() const;
 
-    void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
     /**
      * Returns the number of offsets stored in this attribute.
@@ -56,7 +56,7 @@ class DeletedItemsAttribute : public Akonadi::Attribute
 
     QByteArray type() const Q_DECL_OVERRIDE;
 
-  private:
+private:
     QSet<quint64> mDeletedItemOffsets;
 };
 

@@ -28,29 +28,29 @@
 
 class RemoveCollectionRecursiveTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit RemoveCollectionRecursiveTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~RemoveCollectionRecursiveTask();
+    explicit RemoveCollectionRecursiveTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~RemoveCollectionRecursiveTask();
 
 private slots:
-  void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                            const QList< QList<QByteArray> > &flags );
-  void onCloseJobDone( KJob *job );
-  void onDeleteJobDone( KJob *job );
-  void onJobDone( KJob *job );
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
+                             const QList< QList<QByteArray> > &flags);
+    void onCloseJobDone(KJob *job);
+    void onDeleteJobDone(KJob *job);
+    void onJobDone(KJob *job);
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+    virtual void doStart(KIMAP::Session *session);
 
 private:
-  void deleteNextMailbox();
+    void deleteNextMailbox();
 
-  KIMAP::Session *mSession;
-  bool mFolderFound;
+    KIMAP::Session *mSession;
+    bool mFolderFound;
 
-  QScopedPointer< QMapIterator<int, KIMAP::MailBoxDescriptor > > mFolderIterator;
+    QScopedPointer< QMapIterator<int, KIMAP::MailBoxDescriptor > > mFolderIterator;
 };
 
 #endif

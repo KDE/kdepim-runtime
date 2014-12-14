@@ -40,164 +40,175 @@ using namespace Akonadi;
 
 class AbstractEnqueueVisitor : public FileStore::Job::Visitor
 {
-  public:
-    bool visit( FileStore::Job *job ) {
-      enqueue( job, "Job" );
-      return true;
+public:
+    bool visit(FileStore::Job *job)
+    {
+        enqueue(job, "Job");
+        return true;
     }
 
-    bool visit( FileStore::CollectionCreateJob *job ) {
-      enqueue( job, "CollectionCreateJob" );
-      return true;
+    bool visit(FileStore::CollectionCreateJob *job)
+    {
+        enqueue(job, "CollectionCreateJob");
+        return true;
     }
 
-    bool visit( FileStore::CollectionDeleteJob *job ) {
-      enqueue( job, "CollectionDeleteJob" );
-      return true;
+    bool visit(FileStore::CollectionDeleteJob *job)
+    {
+        enqueue(job, "CollectionDeleteJob");
+        return true;
     }
 
-    bool visit( FileStore::CollectionFetchJob *job ) {
-      enqueue( job, "CollectionFetchJob" );
-      return true;
+    bool visit(FileStore::CollectionFetchJob *job)
+    {
+        enqueue(job, "CollectionFetchJob");
+        return true;
     }
 
-    bool visit( FileStore::CollectionModifyJob *job ) {
-      enqueue( job, "CollectionModifyJob" );
-      return true;
+    bool visit(FileStore::CollectionModifyJob *job)
+    {
+        enqueue(job, "CollectionModifyJob");
+        return true;
     }
 
-    bool visit( FileStore::CollectionMoveJob *job ) {
-      enqueue( job, "CollectionMoveJob" );
-      return true;
+    bool visit(FileStore::CollectionMoveJob *job)
+    {
+        enqueue(job, "CollectionMoveJob");
+        return true;
     }
 
-    bool visit( FileStore::ItemCreateJob *job ) {
-      enqueue( job, "ItemCreateJob" );
-      return true;
+    bool visit(FileStore::ItemCreateJob *job)
+    {
+        enqueue(job, "ItemCreateJob");
+        return true;
     }
 
-    bool visit( FileStore::ItemDeleteJob *job ) {
-      enqueue( job, "ItemDeleteJob" );
-      return true;
+    bool visit(FileStore::ItemDeleteJob *job)
+    {
+        enqueue(job, "ItemDeleteJob");
+        return true;
     }
 
-    bool visit( FileStore::ItemFetchJob *job ) {
-      enqueue( job, "ItemFetchJob" );
-      return true;
+    bool visit(FileStore::ItemFetchJob *job)
+    {
+        enqueue(job, "ItemFetchJob");
+        return true;
     }
 
-    bool visit( FileStore::ItemModifyJob *job ) {
-      enqueue( job, "ItemModifyJob" );
-      return true;
+    bool visit(FileStore::ItemModifyJob *job)
+    {
+        enqueue(job, "ItemModifyJob");
+        return true;
     }
 
-    bool visit( FileStore::ItemMoveJob *job ) {
-      enqueue( job, "ItemMoveJob" );
-      return true;
+    bool visit(FileStore::ItemMoveJob *job)
+    {
+        enqueue(job, "ItemMoveJob");
+        return true;
     }
 
-    bool visit( FileStore::StoreCompactJob *job ) {
-      enqueue( job, "StoreCompactJob" );
-      return true;
+    bool visit(FileStore::StoreCompactJob *job)
+    {
+        enqueue(job, "StoreCompactJob");
+        return true;
     }
 
-  protected:
-    virtual void enqueue( FileStore::Job *job, const char* className ) = 0;
+protected:
+    virtual void enqueue(FileStore::Job *job, const char *className) = 0;
 };
 
 class FileStore::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
 {
-  public:
-    explicit Private( FileStore::FiFoQueueJobSession *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::FiFoQueueJobSession *parent)
+        : mParent(parent)
     {
-      QObject::connect( &mJobRunTimer, SIGNAL(timeout()), mParent, SLOT(runNextJob()) );
+        QObject::connect(&mJobRunTimer, SIGNAL(timeout()), mParent, SLOT(runNextJob()));
     }
 
     void runNextJob()
     {
-/*      qDebug() << "Queue with" << mJobQueue.count() << "entries";*/
-      if ( mJobQueue.isEmpty() ) {
-        mJobRunTimer.stop();
-        return;
-      }
-
-      FileStore::Job *job = mJobQueue.dequeue();
-      while ( job != 0 && job->error() != 0 ) {
-/*        qDebug() << "Dequeued job" << job << "has error ("
-                 << job->error() << "," << job->errorText() << ")";*/
-        mParent->emitResult( job );
-        if ( !mJobQueue.isEmpty() ) {
-          job = mJobQueue.dequeue();
-        } else {
-          job = 0;
+        /*      qDebug() << "Queue with" << mJobQueue.count() << "entries";*/
+        if (mJobQueue.isEmpty()) {
+            mJobRunTimer.stop();
+            return;
         }
-      }
 
-      if ( job != 0 ) {
-/*        qDebug() << "Dequeued job" << job << "is ready";*/
-        QList<FileStore::Job*> jobs;
-        jobs << job;
+        FileStore::Job *job = mJobQueue.dequeue();
+        while (job != 0 && job->error() != 0) {
+            /*        qDebug() << "Dequeued job" << job << "has error ("
+                             << job->error() << "," << job->errorText() << ")";*/
+            mParent->emitResult(job);
+            if (!mJobQueue.isEmpty()) {
+                job = mJobQueue.dequeue();
+            } else {
+                job = 0;
+            }
+        }
 
-        emit mParent->jobsReady( jobs );
-      } else {
-/*        qDebug() << "Queue now empty";*/
-        mJobRunTimer.stop();
-      }
+        if (job != 0) {
+            /*        qDebug() << "Dequeued job" << job << "is ready";*/
+            QList<FileStore::Job *> jobs;
+            jobs << job;
+
+            emit mParent->jobsReady(jobs);
+        } else {
+            /*        qDebug() << "Queue now empty";*/
+            mJobRunTimer.stop();
+        }
     }
 
-  public:
-    QQueue<FileStore::Job*> mJobQueue;
+public:
+    QQueue<FileStore::Job *> mJobQueue;
 
     QTimer mJobRunTimer;
 
-  protected:
-    virtual void enqueue( FileStore::Job *job, const char* className )
+protected:
+    virtual void enqueue(FileStore::Job *job, const char *className)
     {
-      Q_UNUSED( className );
-      mJobQueue.enqueue( job );
+        Q_UNUSED(className);
+        mJobQueue.enqueue(job);
 
 //       qDebug() << "adding" << className << ". Queue now with"
 //                << mJobQueue.count() << "entries";
 
-      mJobRunTimer.start( 0 );
+        mJobRunTimer.start(0);
     }
 
-  private:
+private:
     FileStore::FiFoQueueJobSession *mParent;
 };
 
-FileStore::FiFoQueueJobSession::FiFoQueueJobSession( QObject *parent )
-  : FileStore::AbstractJobSession( parent ), d( new Private( this ) )
+FileStore::FiFoQueueJobSession::FiFoQueueJobSession(QObject *parent)
+    : FileStore::AbstractJobSession(parent), d(new Private(this))
 {
 }
 
 FileStore::FiFoQueueJobSession::~FiFoQueueJobSession()
 {
-  cancelAllJobs();
-  delete d;
+    cancelAllJobs();
+    delete d;
 }
 
-void FileStore::FiFoQueueJobSession::addJob( FileStore::Job *job )
+void FileStore::FiFoQueueJobSession::addJob(FileStore::Job *job)
 {
-  job->accept( d );
+    job->accept(d);
 }
 
 void FileStore::FiFoQueueJobSession::cancelAllJobs()
 {
-  // KJob::kill() also deletes the job
-  foreach( FileStore::Job *job, d->mJobQueue ) {
-    job->kill( KJob::EmitResult );
-  }
+    // KJob::kill() also deletes the job
+    foreach (FileStore::Job *job, d->mJobQueue) {
+        job->kill(KJob::EmitResult);
+    }
 
-  d->mJobQueue.clear();
+    d->mJobQueue.clear();
 }
 
-void FileStore::FiFoQueueJobSession::removeJob( FileStore::Job *job )
+void FileStore::FiFoQueueJobSession::removeJob(FileStore::Job *job)
 {
-  d->mJobQueue.removeAll( job );
+    d->mJobQueue.removeAll(job);
 }
 
 #include "moc_sessionimpls_p.cpp"
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

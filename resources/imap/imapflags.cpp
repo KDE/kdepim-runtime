@@ -20,7 +20,7 @@
 
 #include "imapflags.h"
 
-const char* ImapFlags::Seen = "\\Seen";
-const char* ImapFlags::Deleted = "\\Deleted";
-const char* ImapFlags::Answered = "\\Answered";
-const char* ImapFlags::Flagged = "\\Flagged";
+const char *ImapFlags::Seen = "\\Seen";
+const char *ImapFlags::Deleted = "\\Deleted";
+const char *ImapFlags::Answered = "\\Answered";
+const char *ImapFlags::Flagged = "\\Flagged";

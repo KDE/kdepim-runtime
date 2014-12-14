@@ -20,13 +20,13 @@
 
 #include <agentfactory.h>
 #include <maildispatcheragent.h>
- 
+
 class MaildispatcherResourceFactory : public Akonadi::AgentFactory<MailDispatcherAgent>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.MaildispatcherResource");
-public: 
-    explicit MaildispatcherResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.MaildispatcherResource");
+public:
+    explicit MaildispatcherResourceFactory(QObject *parent = 0);
 
 };
 #endif

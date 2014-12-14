@@ -29,17 +29,17 @@
 */
 class AddressBookHandler : public KolabHandler
 {
-  public:
-    explicit AddressBookHandler( const Akonadi::Collection &imapCollection );
+public:
+    explicit AddressBookHandler(const Akonadi::Collection &imapCollection);
 
     virtual ~AddressBookHandler();
 
-    virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &addrs );
-    virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
+    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List &addrs);
+    virtual bool toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
 
-    virtual QString extractGid(const Akonadi::Item& kolabItem);
+    virtual QString extractGid(const Akonadi::Item &kolabItem);
 };
 
 #endif

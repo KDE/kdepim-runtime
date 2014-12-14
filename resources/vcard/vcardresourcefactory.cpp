@@ -17,9 +17,9 @@
 
 #include "vcardresourcefactory.h"
 
-VcardResourceFactory::VcardResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< VCardResource >( "akonadi_vcard_resource", parent )
+VcardResourceFactory::VcardResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< VCardResource >("akonadi_vcard_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_vcard_resource") );
+    setObjectName(QLatin1String("akonadi_vcard_resource"));
 }
 

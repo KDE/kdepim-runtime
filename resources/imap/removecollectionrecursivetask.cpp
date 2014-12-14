@@ -31,12 +31,11 @@
 #include "resource_imap_debug.h"
 #include "imapresource_debug.h"
 
+Q_DECLARE_METATYPE(KIMAP::DeleteJob *)
 
-Q_DECLARE_METATYPE( KIMAP::DeleteJob* )
-
-RemoveCollectionRecursiveTask::RemoveCollectionRecursiveTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent ),
-    mSession( 0 ), mFolderFound( false )
+RemoveCollectionRecursiveTask::RemoveCollectionRecursiveTask(ResourceStateInterface::Ptr resource, QObject *parent)
+    : ResourceTask(CancelIfNoSession, resource, parent),
+      mSession(0), mFolderFound(false)
 {
 }
 
@@ -44,130 +43,129 @@ RemoveCollectionRecursiveTask::~RemoveCollectionRecursiveTask()
 {
 }
 
-void RemoveCollectionRecursiveTask::doStart( KIMAP::Session *session )
+void RemoveCollectionRecursiveTask::doStart(KIMAP::Session *session)
 {
-  mSession = session;
+    mSession = session;
 
-  mFolderFound = false;
-  KIMAP::ListJob *listJob = new KIMAP::ListJob( session );
-  listJob->setIncludeUnsubscribed( !isSubscriptionEnabled() );
-  listJob->setQueriedNamespaces( serverNamespaces() );
-  connect( listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-           this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)) );
-  connect(listJob, &KIMAP::ListJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
-  listJob->start();
+    mFolderFound = false;
+    KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
+    listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
+    listJob->setQueriedNamespaces(serverNamespaces());
+    connect(listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
+            this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)));
+    connect(listJob, &KIMAP::ListJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
+    listJob->start();
 }
 
-void RemoveCollectionRecursiveTask::onMailBoxesReceived( const QList< KIMAP::MailBoxDescriptor > &descriptors,
-                                                         const QList< QList<QByteArray> >& )
+void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
+        const QList< QList<QByteArray> > &)
 {
-  const QString mailBox = mailBoxForCollection( collection() );
+    const QString mailBox = mailBoxForCollection(collection());
 
-  // We have to delete the deepest-nested folders first, so
-  // we use a map here that has the level of nesting as key.
-  QMultiMap<int, KIMAP::MailBoxDescriptor > foldersToDelete;
+    // We have to delete the deepest-nested folders first, so
+    // we use a map here that has the level of nesting as key.
+    QMultiMap<int, KIMAP::MailBoxDescriptor > foldersToDelete;
 
-  for ( int i = 0; i < descriptors.size(); ++i ) {
-    const KIMAP::MailBoxDescriptor descriptor = descriptors[ i ];
+    for (int i = 0; i < descriptors.size(); ++i) {
+        const KIMAP::MailBoxDescriptor descriptor = descriptors[ i ];
 
-    if ( descriptor.name == mailBox || descriptor.name.startsWith( mailBox + descriptor.separator ) ) { // a sub folder to delete
-      const QStringList pathParts = descriptor.name.split( descriptor.separator );
-      foldersToDelete.insert( pathParts.count(), descriptor );
+        if (descriptor.name == mailBox || descriptor.name.startsWith(mailBox + descriptor.separator)) {     // a sub folder to delete
+            const QStringList pathParts = descriptor.name.split(descriptor.separator);
+            foldersToDelete.insert(pathParts.count(), descriptor);
+        }
     }
-  }
 
-  if  ( foldersToDelete.isEmpty() ) {
-      return;
-  }
+    if (foldersToDelete.isEmpty()) {
+        return;
+    }
 
-  mFolderFound = true;
+    mFolderFound = true;
 
-  // Now start the actual deletion work
-  mFolderIterator.reset( new QMapIterator<int, KIMAP::MailBoxDescriptor >( foldersToDelete ) );
-  mFolderIterator->toBack(); // we start with largest nesting value first
+    // Now start the actual deletion work
+    mFolderIterator.reset(new QMapIterator<int, KIMAP::MailBoxDescriptor >(foldersToDelete));
+    mFolderIterator->toBack(); // we start with largest nesting value first
 
-  deleteNextMailbox();
+    deleteNextMailbox();
 }
 
 void RemoveCollectionRecursiveTask::deleteNextMailbox()
 {
-  if ( !mFolderIterator->hasPrevious() ) {
-      changeProcessed(); // finish the job
-      return;
-  }
+    if (!mFolderIterator->hasPrevious()) {
+        changeProcessed(); // finish the job
+        return;
+    }
 
-  mFolderIterator->previous();
-  const KIMAP::MailBoxDescriptor &descriptor = mFolderIterator->value();
-  qCDebug(IMAPRESOURCE_LOG) << descriptor.name;
+    mFolderIterator->previous();
+    const KIMAP::MailBoxDescriptor &descriptor = mFolderIterator->value();
+    qCDebug(IMAPRESOURCE_LOG) << descriptor.name;
 
-  // first select the mailbox
-  KIMAP::SelectJob *selectJob = new KIMAP::SelectJob( mSession );
-  selectJob->setMailBox( descriptor.name );
-  connect(selectJob, &KIMAP::SelectJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
-  selectJob->start();
+    // first select the mailbox
+    KIMAP::SelectJob *selectJob = new KIMAP::SelectJob(mSession);
+    selectJob->setMailBox(descriptor.name);
+    connect(selectJob, &KIMAP::SelectJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
+    selectJob->start();
 
-  // mark all items as deleted
-  // This step shouldn't be required, but apparently some servers don't allow deleting, non empty mailboxes (although they should).
-  KIMAP::ImapSet allItems;
-  allItems.add( KIMAP::ImapInterval( 1, 0 ) ); // means 1:*
-  KIMAP::StoreJob *storeJob = new KIMAP::StoreJob( mSession );
-  storeJob->setSequenceSet( allItems );
-  storeJob->setFlags( KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted );
-  storeJob->setMode( KIMAP::StoreJob::AppendFlags );
-  // The result is explicitly ignored, since this can fail in the case of an empty folder
-  storeJob->start();
+    // mark all items as deleted
+    // This step shouldn't be required, but apparently some servers don't allow deleting, non empty mailboxes (although they should).
+    KIMAP::ImapSet allItems;
+    allItems.add(KIMAP::ImapInterval(1, 0));     // means 1:*
+    KIMAP::StoreJob *storeJob = new KIMAP::StoreJob(mSession);
+    storeJob->setSequenceSet(allItems);
+    storeJob->setFlags(KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted);
+    storeJob->setMode(KIMAP::StoreJob::AppendFlags);
+    // The result is explicitly ignored, since this can fail in the case of an empty folder
+    storeJob->start();
 
-  // Some IMAP servers don't allow deleting an opened mailbox, so make sure
-  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932). CLOSE will
-  // also trigger EXPUNGE to take care of the messages deleted above
-  KIMAP::CloseJob *closeJob = new KIMAP::CloseJob( mSession );
-  closeJob->setProperty( "folderDescriptor", descriptor.name );
-  connect(closeJob, &KIMAP::CloseJob::result, this, &RemoveCollectionRecursiveTask::onCloseJobDone);
-  closeJob->start();
+    // Some IMAP servers don't allow deleting an opened mailbox, so make sure
+    // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932). CLOSE will
+    // also trigger EXPUNGE to take care of the messages deleted above
+    KIMAP::CloseJob *closeJob = new KIMAP::CloseJob(mSession);
+    closeJob->setProperty("folderDescriptor", descriptor.name);
+    connect(closeJob, &KIMAP::CloseJob::result, this, &RemoveCollectionRecursiveTask::onCloseJobDone);
+    closeJob->start();
 }
 
-void RemoveCollectionRecursiveTask::onCloseJobDone( KJob* job )
+void RemoveCollectionRecursiveTask::onCloseJobDone(KJob *job)
 {
-  if ( job->error() ) {
-    changeProcessed();
-    qCDebug(RESOURCE_IMAP_LOG) << "Failed to close the folder, resync the folder tree";
-    emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
-    synchronizeCollectionTree();
-  } else {
-    KIMAP::DeleteJob *deleteJob = new KIMAP::DeleteJob( mSession );
-    deleteJob->setMailBox( job->property( "folderDescriptor" ).toString() );
-    connect(deleteJob, &KIMAP::DeleteJob::result, this, &RemoveCollectionRecursiveTask::onDeleteJobDone);
-    deleteJob->start();
-  }
+    if (job->error()) {
+        changeProcessed();
+        qCDebug(RESOURCE_IMAP_LOG) << "Failed to close the folder, resync the folder tree";
+        emitWarning(i18n("Failed to delete the folder, restoring folder list."));
+        synchronizeCollectionTree();
+    } else {
+        KIMAP::DeleteJob *deleteJob = new KIMAP::DeleteJob(mSession);
+        deleteJob->setMailBox(job->property("folderDescriptor").toString());
+        connect(deleteJob, &KIMAP::DeleteJob::result, this, &RemoveCollectionRecursiveTask::onDeleteJobDone);
+        deleteJob->start();
+    }
 }
 
-
-void RemoveCollectionRecursiveTask::onDeleteJobDone( KJob* job )
+void RemoveCollectionRecursiveTask::onDeleteJobDone(KJob *job)
 {
-  if ( job->error() ) {
-    changeProcessed();
+    if (job->error()) {
+        changeProcessed();
 
-    qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
-    emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
-    synchronizeCollectionTree();
-  } else {
-    deleteNextMailbox();
-  }
+        qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
+        emitWarning(i18n("Failed to delete the folder, restoring folder list."));
+        synchronizeCollectionTree();
+    } else {
+        deleteNextMailbox();
+    }
 }
 
-void RemoveCollectionRecursiveTask::onJobDone( KJob* job )
+void RemoveCollectionRecursiveTask::onJobDone(KJob *job)
 {
-  if ( job->error() ) {
-    changeProcessed();
+    if (job->error()) {
+        changeProcessed();
 
-    qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
-    emitWarning( i18n( "Failed to delete the folder, restoring folder list." ) );
-    synchronizeCollectionTree();
-  } else if ( !mFolderFound ) {
-    changeProcessed();
-    qCDebug(RESOURCE_IMAP_LOG) << "Failed to find the folder to be deleted, resync the folder tree";
-    emitWarning( i18n( "Failed to find the folder to be deleted, restoring folder list." ) );
-    synchronizeCollectionTree();
-  }
+        qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
+        emitWarning(i18n("Failed to delete the folder, restoring folder list."));
+        synchronizeCollectionTree();
+    } else if (!mFolderFound) {
+        changeProcessed();
+        qCDebug(RESOURCE_IMAP_LOG) << "Failed to find the folder to be deleted, resync the folder tree";
+        emitWarning(i18n("Failed to find the folder to be deleted, restoring folder list."));
+        synchronizeCollectionTree();
+    }
 }
 

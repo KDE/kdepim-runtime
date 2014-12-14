@@ -20,7 +20,6 @@
 #ifndef MAILDIR_H
 #define MAILDIR_H
 
-
 #include "maildir_export.h"
 
 #include <QString>
@@ -29,7 +28,8 @@
 
 class QDateTime;
 
-namespace KPIM {
+namespace KPIM
+{
 
 class MAILDIR_EXPORT Maildir
 {
@@ -42,13 +42,13 @@ public:
       @param isRoot Indicate whether this is a maildir containing mails and various
       sub-folders or a container only containing maildirs.
     */
-    explicit Maildir( const QString& path = QString(), bool isRoot = false );
+    explicit Maildir(const QString &path = QString(), bool isRoot = false);
     /* Copy constructor */
-    Maildir(const Maildir & rhs);
+    Maildir(const Maildir &rhs);
     /* Copy operator */
-    Maildir& operator=(const Maildir & rhs);
+    Maildir &operator=(const Maildir &rhs);
     /** Equality comparison */
-    bool operator==(const Maildir & rhs) const;
+    bool operator==(const Maildir &rhs) const;
     /* Destructor */
     ~Maildir();
 
@@ -56,7 +56,7 @@ public:
      * that they are readable, etc.
      * @param createMissingFolders if true (the default), the cur/new/tmp folders are created if they are missing
      */
-    bool isValid( bool createMissingFolders = true ) const;
+    bool isValid(bool createMissingFolders = true) const;
 
     /**
      * Returns whether this is a normal maildir or a container containing maildirs.
@@ -114,7 +114,7 @@ public:
     /**
      * Return the full path to the file identified by key (it can be either in the "new" or "cur" folder
      **/
-    QString findRealKey( const QString& key ) const;
+    QString findRealKey(const QString &key) const;
 
     /**
      * Returns the list of subfolders, as names (relative paths). Use the
@@ -127,19 +127,19 @@ public:
      * @return an empty string on failure or the full path of the new subfolder
      *         on success
      */
-    QString addSubFolder( const QString& folderName );
+    QString addSubFolder(const QString &folderName);
 
     /**
      * Removes subfolder with the given @p folderName. Returns success or failure.
      */
-    bool removeSubFolder( const QString& folderName );
+    bool removeSubFolder(const QString &folderName);
 
     /**
      * Returns a Maildir object for the given @p folderName. If such a folder
      * exists, the Maildir object will be valid, otherwise you can call create()
      * on it, to make a subfolder with that name.
      */
-    Maildir subFolder( const QString& folderName ) const;
+    Maildir subFolder(const QString &folderName) const;
 
     /**
      * Returns the parent Maildir object for this Maildir, if there is one (ie. this is not the root).
@@ -150,72 +150,72 @@ public:
      * Returns the size of the file in the maildir with the given @p key or \c -1 if key is not valid.
      * @since 4.2
      */
-    qint64 size( const QString& key ) const;
+    qint64 size(const QString &key) const;
 
     /**
      * Returns the modification time of the file in the maildir with the given @p key.
      * @since 4.7
      */
-    QDateTime lastModified( const QString &key ) const;
+    QDateTime lastModified(const QString &key) const;
 
     /**
      * Return the contents of the file in the maildir with the given @p key.
      */
-    QByteArray readEntry( const QString& key ) const;
+    QByteArray readEntry(const QString &key) const;
 
     /**
      * Return the flags encoded in the maildir file name for an entry
      **/
-    Akonadi::Item::Flags readEntryFlags( const QString& key ) const;
+    Akonadi::Item::Flags readEntryFlags(const QString &key) const;
 
     /**
      * Return the contents of the headers section of the file the maildir with the given @p file, that
      * is a full path to the file. You can get it by using findRealKey(key) .
      */
-    QByteArray readEntryHeadersFromFile( const QString& file ) const;
+    QByteArray readEntryHeadersFromFile(const QString &file) const;
 
     /**
      * Return the contents of the headers section of the file the maildir with the given @p key.
      */
-    QByteArray readEntryHeaders( const QString& key ) const;
+    QByteArray readEntryHeaders(const QString &key) const;
 
     /**
      * Write the given @p data to a file in the maildir with the given  @p key.
      * Returns true in case of success, false in case of any error.
      */
-    bool writeEntry( const QString& key, const QByteArray& data );
+    bool writeEntry(const QString &key, const QByteArray &data);
 
     /**
      * Adds the given @p data to the maildir. Returns the key of the entry.
      */
-    QString addEntry( const QByteArray& data );
+    QString addEntry(const QByteArray &data);
 
     /**
      * Removes the entry with the given @p key. Returns success or failure.
      */
-    bool removeEntry( const QString& key );
+    bool removeEntry(const QString &key);
 
     /**
      * Change the flags for an entry specified by @p key. Returns the new key of the entry (the key might change because
      * flags are stored in the unique filename).
      */
-    QString changeEntryFlags( const QString& key, const Akonadi::Item::Flags& flags );
+    QString changeEntryFlags(const QString &key, const Akonadi::Item::Flags &flags);
 
     /**
      * Moves this maildir into @p destination.
      */
-    bool moveTo( const Maildir &destination );
+    bool moveTo(const Maildir &destination);
 
     /**
      * Renames this maildir to @p newName.
      */
-    bool rename( const QString &newName );
+    bool rename(const QString &newName);
 
     /**
      * Moves the file with the given @p key into the Maildir @p destination.
      * @returns The new file name inside @p destination.
      */
-    QString moveEntryTo( const QString& key, const KPIM::Maildir& destination );
+    QString moveEntryTo(const QString &key, const KPIM::Maildir &destination);
 
     /**
      * Creates the maildir tree structure specific directory path that the
@@ -225,7 +225,7 @@ public:
      *
      * @see subDirNameForFolderName()
      */
-    static QString subDirPathForFolderPath( const QString &folderPath );
+    static QString subDirPathForFolderPath(const QString &folderPath);
 
     /**
      * Creates the maildir tree structure specific directory name that the
@@ -235,11 +235,10 @@ public:
      *
      * @see subDirPathForFolderPath()
      */
-    static QString subDirNameForFolderName( const QString &folderName );
+    static QString subDirNameForFolderName(const QString &folderName);
 
     /** Removes the listed keys from the key cache */
-    void removeCachedKeys(const QStringList & keys);
-
+    void removeCachedKeys(const QStringList &keys);
 
     /** Reloads the keys associated with the maildir in the key cache*/
     void refreshKeyCache();
@@ -250,7 +249,7 @@ public:
     QString lastError() const;
 
 private:
-    void swap( const Maildir& );
+    void swap(const Maildir &);
     class Private;
     Private *d;
 };

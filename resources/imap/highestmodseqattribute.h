@@ -24,17 +24,17 @@
 
 class HighestModSeqAttribute : public Akonadi::Attribute
 {
-  public:
-    explicit HighestModSeqAttribute( qint64 highestModSequence = -1 );
-    void setHighestModSeq( qint64 highestModSequence );
+public:
+    explicit HighestModSeqAttribute(qint64 highestModSequence = -1);
+    void setHighestModSeq(qint64 highestModSequence);
     qint64 highestModSequence() const;
 
-    virtual void deserialize(const QByteArray& data);
+    virtual void deserialize(const QByteArray &data);
     virtual QByteArray serialized() const;
-    virtual Akonadi::Attribute* clone() const;
+    virtual Akonadi::Attribute *clone() const;
     virtual QByteArray type() const;
 
-  private:
+private:
     qint64 m_highestModSeq;
 };
 

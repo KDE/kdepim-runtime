@@ -35,8 +35,8 @@
 
 namespace KIMAP
 {
-  class IdleJob;
-  class Session;
+class IdleJob;
+class Session;
 }
 
 class ImapResourceBase;
@@ -46,37 +46,37 @@ class KJob;
 
 class ImapIdleManager : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  ImapIdleManager( ResourceStateInterface::Ptr state, SessionPool *pool, ImapResourceBase *parent );
-  ~ImapIdleManager();
-  void stop();
+    ImapIdleManager(ResourceStateInterface::Ptr state, SessionPool *pool, ImapResourceBase *parent);
+    ~ImapIdleManager();
+    void stop();
 
-  KIMAP::Session *session() const;
+    KIMAP::Session *session() const;
 
 private slots:
-  void onConnectionLost( KIMAP::Session *session );
-  void onPoolDisconnect();
+    void onConnectionLost(KIMAP::Session *session);
+    void onPoolDisconnect();
 
-  void onSessionRequestDone( qint64 requestId, KIMAP::Session *session,
-                             int errorCode, const QString &errorString );
-  void onSelectDone( KJob *job );
-  void onIdleStopped();
-  void onStatsReceived( KIMAP::IdleJob *job, const QString &mailBox,
-                        int messageCount, int recentCount );
-  void onFlagsChanged( KIMAP::IdleJob *job );
-  void reconnect();
+    void onSessionRequestDone(qint64 requestId, KIMAP::Session *session,
+                              int errorCode, const QString &errorString);
+    void onSelectDone(KJob *job);
+    void onIdleStopped();
+    void onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
+                         int messageCount, int recentCount);
+    void onFlagsChanged(KIMAP::IdleJob *job);
+    void reconnect();
 
 private:
-  qint64 m_sessionRequestId;
-  SessionPool *m_pool;
-  KIMAP::Session *m_session;
-  QPointer<KIMAP::IdleJob> m_idle;
-  ImapResourceBase *m_resource;
-  ResourceStateInterface::Ptr m_state;
-  qint64 m_lastMessageCount;
-  qint64 m_lastRecentCount;
+    qint64 m_sessionRequestId;
+    SessionPool *m_pool;
+    KIMAP::Session *m_session;
+    QPointer<KIMAP::IdleJob> m_idle;
+    ImapResourceBase *m_resource;
+    ResourceStateInterface::Ptr m_state;
+    qint64 m_lastMessageCount;
+    qint64 m_lastRecentCount;
 };
 
 #endif

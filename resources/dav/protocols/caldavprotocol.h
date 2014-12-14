@@ -23,7 +23,7 @@
 
 class CaldavProtocol : public DavMultigetProtocol
 {
-  public:
+public:
     CaldavProtocol();
     virtual bool supportsPrincipals() const;
     virtual bool useReport() const;
@@ -33,15 +33,15 @@ class CaldavProtocol : public DavMultigetProtocol
     virtual QDomDocument collectionsQuery() const;
     virtual QString collectionsXQuery() const;
     virtual QList<QDomDocument> itemsQueries() const;
-    virtual QString mimeTypeForQuery( int index ) const;
-    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const;
+    virtual QString mimeTypeForQuery(int index) const;
+    virtual QDomDocument itemsReportQuery(const QStringList &urls) const;
     virtual QString responseNamespace() const;
     virtual QString dataTagName() const;
 
-    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const;
+    virtual DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const;
     virtual QString contactsMimeType() const;
 
-  private:
+private:
     QList<QDomDocument> mItemsQueries;
     QStringList mItemsMimeTypes;
 };

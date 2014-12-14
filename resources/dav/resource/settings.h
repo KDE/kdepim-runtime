@@ -29,23 +29,24 @@
 #include <QtCore/QMap>
 
 #ifdef HAVE_ACCOUNTS
-namespace Accounts {
-  class Service;
-  class Account;
-  class Manager;
+namespace Accounts
+{
+class Service;
+class Account;
+class Manager;
 };
 #endif
 
 class Settings : public SettingsBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     class UrlConfiguration
     {
-      public:
+    public:
         UrlConfiguration();
-        explicit UrlConfiguration( const QString &serialized );
+        explicit UrlConfiguration(const QString &serialized);
 
         /**
          * Serializes the object.
@@ -63,12 +64,12 @@ class Settings : public SettingsBase
 
     Settings();
     virtual ~Settings();
-    static Settings* self();
-    void setWinId( WId wid );
+    static Settings *self();
+    void setWinId(WId wid);
     void cleanup();
 
-    void setResourceIdentifier( const QString &identifier );
-    void setDefaultPassword( const QString &password );
+    void setResourceIdentifier(const QString &identifier);
+    void setDefaultPassword(const QString &password);
     QString defaultPassword();
 
     DavUtils::DavUrl::List configuredDavUrls();
@@ -77,27 +78,27 @@ class Settings : public SettingsBase
      * Creates and returns the DavUrl that corresponds to the configuration for searchUrl.
      * If finalUrl is supplied, then it will be used in the returned object instead of the searchUrl.
      */
-    DavUtils::DavUrl configuredDavUrl( DavUtils::Protocol protocol, const QString &searchUrl, const QString &finalUrl = QString() );
+    DavUtils::DavUrl configuredDavUrl(DavUtils::Protocol protocol, const QString &searchUrl, const QString &finalUrl = QString());
 
-        /**
-         * Creates and return the DavUrl from the configured URL that has a mapping with @p collectionUrl.
-         * If @p finalUrl is supplied it will be used in the returned object, else @p collectionUrl will
-         * be used.
-         * If no configured URL can be found the returned DavUrl will have an empty url().
-         */
-     DavUtils::DavUrl davUrlFromCollectionUrl( const QString &collectionUrl, const QString &finalUrl = QString() );
+    /**
+     * Creates and return the DavUrl from the configured URL that has a mapping with @p collectionUrl.
+     * If @p finalUrl is supplied it will be used in the returned object, else @p collectionUrl will
+     * be used.
+     * If no configured URL can be found the returned DavUrl will have an empty url().
+     */
+    DavUtils::DavUrl davUrlFromCollectionUrl(const QString &collectionUrl, const QString &finalUrl = QString());
 
     /**
      * Add a new mapping between the collection URL, as seen on the backend, and the
      * URL configured by the user. A mapping here means that the collectionUrl has
      * been discovered by a DavCollectionsFetchJob on the configuredUrl.
      */
-    void addCollectionUrlMapping( DavUtils::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl );
+    void addCollectionUrlMapping(DavUtils::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl);
 
     /**
      * Returns the collections URLs mapped behing @p configuredUrl and @p protocol.
      */
-    QStringList mappedCollections( DavUtils::Protocol protocol, const QString &configuredUrl );
+    QStringList mappedCollections(DavUtils::Protocol protocol, const QString &configuredUrl);
 
     /**
      * Reloads the resource configuration taking into account any new modification
@@ -108,15 +109,15 @@ class Settings : public SettingsBase
      */
     void reloadConfig();
 
-    void newUrlConfiguration( UrlConfiguration *urlConfig );
-    void removeUrlConfiguration( DavUtils::Protocol protocol, const QString &url );
-    UrlConfiguration * urlConfiguration( DavUtils::Protocol protocol, const QString &url );
+    void newUrlConfiguration(UrlConfiguration *urlConfig);
+    void removeUrlConfiguration(DavUtils::Protocol protocol, const QString &url);
+    UrlConfiguration *urlConfiguration(DavUtils::Protocol protocol, const QString &url);
 
     //DavUtils::Protocol protocol( const QString &url ) const;
-    QString username( DavUtils::Protocol protocol, const QString &url ) const;
-    QString password( DavUtils::Protocol protocol, const QString &url );
+    QString username(DavUtils::Protocol protocol, const QString &url) const;
+    QString password(DavUtils::Protocol protocol, const QString &url);
 
-  private:
+private:
 #ifdef HAVE_ACCOUNTS
     void addAccountsEnabledServices();
     void removeAccountsDisabledServices();
@@ -128,9 +129,9 @@ class Settings : public SettingsBase
     void buildUrlsList();
     void loadMappings();
     void updateRemoteUrls();
-    void savePassword( const QString &key, const QString &user, const QString &password );
-    QString loadPassword( const QString &key, const QString &user );
-    QString promptForPassword( const QString &user );
+    void savePassword(const QString &key, const QString &user, const QString &password);
+    QString loadPassword(const QString &key, const QString &user);
+    QString promptForPassword(const QString &user);
 
     void updateToV2();
     void updateToV3();
@@ -140,11 +141,11 @@ class Settings : public SettingsBase
     Accounts::Manager *m_manager;
 #endif
     QString mResourceIdentifier;
-    QMap<QString, UrlConfiguration*> mUrls;
+    QMap<QString, UrlConfiguration *> mUrls;
     QMap<QString, QString> mPasswordsCache;
     QString mCollectionsUrlsMappingCache;
     QMap<QString, QString> mCollectionsUrlsMapping;
-    QList<UrlConfiguration*> mToDeleteUrlConfigs;
+    QList<UrlConfiguration *> mToDeleteUrlConfigs;
 };
 
 #endif

@@ -31,37 +31,37 @@ class QDate;
 
 class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    BirthdaysResource( const QString &id );
+public:
+    BirthdaysResource(const QString &id);
     ~BirthdaysResource();
 
-  public Q_SLOTS:
-    void configure( WId windowId ) Q_DECL_OVERRIDE;
+public Q_SLOTS:
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
-  protected:
+protected:
     void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems( const Akonadi::Collection &collection ) Q_DECL_OVERRIDE;
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
-  private:
-    void addPendingEvent( const KCalCore::Event::Ptr &event, const QString &remoteId );
+private:
+    void addPendingEvent(const KCalCore::Event::Ptr &event, const QString &remoteId);
 
-    KCalCore::Event::Ptr createBirthday( const Akonadi::Item &contactItem );
-    KCalCore::Event::Ptr createAnniversary( const Akonadi::Item &contactItem );
-    KCalCore::Event::Ptr createEvent( const QDate &date );
+    KCalCore::Event::Ptr createBirthday(const Akonadi::Item &contactItem);
+    KCalCore::Event::Ptr createAnniversary(const Akonadi::Item &contactItem);
+    KCalCore::Event::Ptr createEvent(const QDate &date);
 
-  private slots:
+private slots:
     void doFullSearch();
-    void listContacts( const Akonadi::Collection::List &cols );
-    void createEvents( const Akonadi::Item::List &items );
+    void listContacts(const Akonadi::Collection::List &cols);
+    void createEvents(const Akonadi::Item::List &items);
 
-    void contactChanged( const Akonadi::Item &item );
-    void contactRemoved( const Akonadi::Item &item );
+    void contactChanged(const Akonadi::Item &item);
+    void contactRemoved(const Akonadi::Item &item);
 
-    void contactRetrieved( KJob *job );
-  private:
+    void contactRetrieved(KJob *job);
+private:
     QHash<QString, Akonadi::Item> mPendingItems;
     QHash<QString, Akonadi::Item> mDeletedItems;
 };

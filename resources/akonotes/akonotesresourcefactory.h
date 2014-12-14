@@ -18,15 +18,15 @@
 #ifndef AKONOTESRESOURCEFACTORY_H
 #define AKONOTESRESOURCEFACTORY_H
 
-#include <agentfactory.h> 
+#include <agentfactory.h>
 #include <akonotesresource.h>
- 
+
 class AkonotesResourceFactory : public Akonadi::AgentFactory<AkonotesResource>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.AkonotesResource");
-public: 
-    explicit AkonotesResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.AkonotesResource");
+public:
+    explicit AkonotesResourceFactory(QObject *parent = 0);
 
 };
 #endif

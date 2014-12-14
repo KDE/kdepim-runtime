@@ -25,12 +25,12 @@
 
 #include <attribute.h>
 
-TimestampAttribute::TimestampAttribute( uint timestamp )
-        : mTimestamp( timestamp )
+TimestampAttribute::TimestampAttribute(uint timestamp)
+    : mTimestamp(timestamp)
 {
 }
 
-void TimestampAttribute::setTimestamp( uint timestamp )
+void TimestampAttribute::setTimestamp(uint timestamp)
 {
     mTimestamp = timestamp;
 }
@@ -42,21 +42,21 @@ uint TimestampAttribute::timestamp() const
 
 QByteArray TimestampAttribute::type() const
 {
-    static const QByteArray sType( "timestamp" );
+    static const QByteArray sType("timestamp");
     return sType;
 }
 
 Akonadi::Attribute *TimestampAttribute::clone() const
 {
-    return new TimestampAttribute( mTimestamp );
+    return new TimestampAttribute(mTimestamp);
 }
 
 QByteArray TimestampAttribute::serialized() const
 {
-    return QByteArray::number( mTimestamp );
+    return QByteArray::number(mTimestamp);
 }
 
-void TimestampAttribute::deserialize( const QByteArray &data )
+void TimestampAttribute::deserialize(const QByteArray &data)
 {
     mTimestamp = data.toInt();
 }

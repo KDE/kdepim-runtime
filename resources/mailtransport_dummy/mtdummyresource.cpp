@@ -33,13 +33,13 @@
 
 using namespace Akonadi;
 
-MTDummyResource::MTDummyResource( const QString &id )
-  : ResourceBase( id )
+MTDummyResource::MTDummyResource(const QString &id)
+    : ResourceBase(id)
 {
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                            Settings::self(), QDBusConnection::ExportAdaptors );
-  currentlySending = -1;
+    new SettingsAdaptor(Settings::self());
+    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
+            Settings::self(), QDBusConnection::ExportAdaptors);
+    currentlySending = -1;
 }
 
 MTDummyResource::~MTDummyResource()
@@ -48,61 +48,62 @@ MTDummyResource::~MTDummyResource()
 
 void MTDummyResource::retrieveCollections()
 {
-  // we have no collections of our own
-  collectionsRetrieved( Collection::List() );
+    // we have no collections of our own
+    collectionsRetrieved(Collection::List());
 }
 
-void MTDummyResource::retrieveItems( const Akonadi::Collection &collection )
+void MTDummyResource::retrieveItems(const Akonadi::Collection &collection)
 {
-  Q_UNUSED( collection );
-  // we have no collections of our own
-  Q_ASSERT( false );
+    Q_UNUSED(collection);
+    // we have no collections of our own
+    Q_ASSERT(false);
 }
 
-bool MTDummyResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
+bool MTDummyResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-  Q_UNUSED( item );
-  Q_UNUSED( parts );
-  // we have no collections of our own
-  Q_ASSERT( false );
-  return false;
+    Q_UNUSED(item);
+    Q_UNUSED(parts);
+    // we have no collections of our own
+    Q_ASSERT(false);
+    return false;
 }
 
 void MTDummyResource::aboutToQuit()
 {
 }
 
-void MTDummyResource::configure( WId windowId )
+void MTDummyResource::configure(WId windowId)
 {
-  ConfigDialog dlg;
-  if ( windowId )
-    KWindowSystem::setMainWindow( &dlg, windowId );
+    ConfigDialog dlg;
+    if (windowId) {
+        KWindowSystem::setMainWindow(&dlg, windowId);
+    }
 
-  if ( dlg.exec() ) {
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
+    if (dlg.exec()) {
+        emit configurationDialogAccepted();
+    } else {
+        emit configurationDialogRejected();
+    }
 }
 
-void MTDummyResource::sendItem( const Item &message )
+void MTDummyResource::sendItem(const Item &message)
 {
-  qDebug() << "id" << message.id();
-  Q_ASSERT( currentlySending == -1 );
-  currentlySending = message.id();
-  ItemCopyJob *job = new ItemCopyJob( message, Collection( Settings::self()->sink() ) );
-  connect(job, &ItemCopyJob::result, this, &MTDummyResource::jobResult);
+    qDebug() << "id" << message.id();
+    Q_ASSERT(currentlySending == -1);
+    currentlySending = message.id();
+    ItemCopyJob *job = new ItemCopyJob(message, Collection(Settings::self()->sink()));
+    connect(job, &ItemCopyJob::result, this, &MTDummyResource::jobResult);
 }
 
-void MTDummyResource::jobResult( KJob *job )
+void MTDummyResource::jobResult(KJob *job)
 {
-  if( job->error() ) {
-    itemSent( Item( currentlySending ), TransportFailed, job->errorString() );
-  } else {
-    itemSent( Item( currentlySending ), TransportSucceeded );
-  }
-  currentlySending = -1;
+    if (job->error()) {
+        itemSent(Item(currentlySending), TransportFailed, job->errorString());
+    } else {
+        itemSent(Item(currentlySending), TransportSucceeded);
+    }
+    currentlySending = -1;
 }
 
-AKONADI_RESOURCE_MAIN( MTDummyResource )
+AKONADI_RESOURCE_MAIN(MTDummyResource)
 

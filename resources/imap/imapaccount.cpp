@@ -26,11 +26,11 @@
 #include "imapaccount.h"
 
 ImapAccount::ImapAccount()
-  : m_port( 0 ),
-    m_timeout( 30 ),
-    m_encryption( KIMAP::LoginJob::Unencrypted ),
-    m_authentication( KIMAP::LoginJob::ClearText ),
-    m_subscriptionEnabled( false )
+    : m_port(0),
+      m_timeout(30),
+      m_encryption(KIMAP::LoginJob::Unencrypted),
+      m_authentication(KIMAP::LoginJob::ClearText),
+      m_subscriptionEnabled(false)
 {
 }
 
@@ -38,72 +38,72 @@ ImapAccount::~ImapAccount()
 {
 }
 
-void ImapAccount::setServer( const QString &server )
+void ImapAccount::setServer(const QString &server)
 {
-  m_server = server;
+    m_server = server;
 }
 
 QString ImapAccount::server() const
 {
-  return m_server;
+    return m_server;
 }
 
-void ImapAccount::setPort( quint16 port )
+void ImapAccount::setPort(quint16 port)
 {
-  m_port = port;
+    m_port = port;
 }
 
 quint16 ImapAccount::port() const
 {
-  return m_port;
+    return m_port;
 }
 
-void ImapAccount::setUserName( const QString &userName )
+void ImapAccount::setUserName(const QString &userName)
 {
-  m_userName = userName;
+    m_userName = userName;
 }
 
 QString ImapAccount::userName() const
 {
-  return m_userName;
+    return m_userName;
 }
 
-void ImapAccount::setEncryptionMode( KIMAP::LoginJob::EncryptionMode mode)
+void ImapAccount::setEncryptionMode(KIMAP::LoginJob::EncryptionMode mode)
 {
-  m_encryption = mode;
+    m_encryption = mode;
 }
 
 KIMAP::LoginJob::EncryptionMode ImapAccount::encryptionMode() const
 {
-  return m_encryption;
+    return m_encryption;
 }
 
-void ImapAccount::setAuthenticationMode( KIMAP::LoginJob::AuthenticationMode mode)
+void ImapAccount::setAuthenticationMode(KIMAP::LoginJob::AuthenticationMode mode)
 {
-  m_authentication = mode;
+    m_authentication = mode;
 }
 
 KIMAP::LoginJob::AuthenticationMode ImapAccount::authenticationMode() const
 {
-  return m_authentication;
+    return m_authentication;
 }
 
-void ImapAccount::setSubscriptionEnabled( bool enabled )
+void ImapAccount::setSubscriptionEnabled(bool enabled)
 {
-  m_subscriptionEnabled = enabled;
+    m_subscriptionEnabled = enabled;
 }
 
 bool ImapAccount::isSubscriptionEnabled() const
 {
-  return m_subscriptionEnabled;
+    return m_subscriptionEnabled;
 }
 
 void ImapAccount::setTimeout(int timeout)
 {
-  m_timeout = timeout;
+    m_timeout = timeout;
 }
 
 int ImapAccount::timeout() const
 {
-  return m_timeout;
+    return m_timeout;
 }

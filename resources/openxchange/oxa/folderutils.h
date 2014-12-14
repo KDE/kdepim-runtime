@@ -25,7 +25,8 @@
 class QDomDocument;
 class QDomElement;
 
-namespace OXA {
+namespace OXA
+{
 
 class Folder;
 
@@ -36,15 +37,15 @@ class Folder;
  */
 namespace FolderUtils
 {
-  /**
-   * Parses the XML tree under @p propElement and return the folder.
-   */
-  Folder parseFolder( const QDomElement &propElement );
+/**
+ * Parses the XML tree under @p propElement and return the folder.
+ */
+Folder parseFolder(const QDomElement &propElement);
 
-  /**
-   * Adds the @p folder data to the @p document under the @p propElement.
-   */
-  void addFolderElements( QDomDocument &document, QDomElement &propElement, const Folder &folder );
+/**
+ * Adds the @p folder data to the @p document under the @p propElement.
+ */
+void addFolderElements(QDomDocument &document, QDomElement &propElement, const Folder &folder);
 }
 
 }

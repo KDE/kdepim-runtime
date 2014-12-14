@@ -21,8 +21,8 @@
 
 #include "passwordrequesterinterface.h"
 
-PasswordRequesterInterface::PasswordRequesterInterface( QObject *parent )
-  : QObject( parent )
+PasswordRequesterInterface::PasswordRequesterInterface(QObject *parent)
+    : QObject(parent)
 {
 
 }

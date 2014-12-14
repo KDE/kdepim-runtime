@@ -42,7 +42,6 @@
 
 static const char plugin_id[] = "$Id: plain.c,v 1.64 2004/09/08 11:06:11 mel Exp $";
 
-
 /***************************** Client Section *****************************/
 
 typedef struct client_context {
@@ -125,7 +124,7 @@ static int xoauth2_client_mech_step(void *conn_context,
     }
 
     /* if there are prompts not filled in */
-    if ((auth_result == SASL_INTERACT) ||(token_result == SASL_INTERACT)) {
+    if ((auth_result == SASL_INTERACT) || (token_result == SASL_INTERACT)) {
         /* make the prompt list */
         result =
             _plug_make_prompts(utils, prompt_need,
@@ -158,11 +157,11 @@ static int xoauth2_client_mech_step(void *conn_context,
 
     /* https://developers.google.com/gmail/xoauth2_protocol#the_sasl_xoauth2_mechanism */
     *clientoutlen = 5                                               /* user=*/
-                  + ((authid && *authid) ? strlen(authid) : 0)      /* %s */
-                  + 1                                               /* \001 */
-                  + 12                                              /* auth=Bearer{space} */
-                  + ((token && *token) ? strlen(token) : 0)         /* %s */
-                  + 2;                                              /* \001\001 */
+                    + ((authid && *authid) ? strlen(authid) : 0)      /* %s */
+                    + 1                                               /* \001 */
+                    + 12                                              /* auth=Bearer{space} */
+                    + ((token && *token) ? strlen(token) : 0)         /* %s */
+                    + 2;                                              /* \001\001 */
 
     /* remember the extra NUL on the end for stupid clients */
     result = _plug_buf_alloc(params->utils, &(context->out_buf),
@@ -203,8 +202,7 @@ static void xoauth2_client_mech_dispose(void *conn_context,
     utils->free(context);
 }
 
-static sasl_client_plug_t xoauth2_client_plugins[] =
-{
+static sasl_client_plug_t xoauth2_client_plugins[] = {
     {
         "XOAUTH2",                      /* mech_name */
         0,                              /* max_ssf */

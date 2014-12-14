@@ -45,9 +45,9 @@ public:
 
     void clear();
 
-    static bool isKolabFolder( const Akonadi::Collection &collection );
-    static bool isHandledKolabFolder( const Akonadi::Collection &collection );
-    static Kolab::FolderType getFolderType( const Akonadi::Collection &collection );
+    static bool isKolabFolder(const Akonadi::Collection &collection);
+    static bool isHandledKolabFolder(const Akonadi::Collection &collection);
+    static Kolab::FolderType getFolderType(const Akonadi::Collection &collection);
 private:
     QMap<Akonadi::Collection::Id, KolabHandler::Ptr> mMonitoredCollections;
     QMap<Akonadi::Collection::Id, QString> mResourceIdentifiers;

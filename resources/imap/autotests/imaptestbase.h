@@ -30,33 +30,33 @@
 #include "resourcetask.h"
 #include "sessionpool.h"
 
-Q_DECLARE_METATYPE(ImapAccount*)
-Q_DECLARE_METATYPE(DummyPasswordRequester*)
+Q_DECLARE_METATYPE(ImapAccount *)
+Q_DECLARE_METATYPE(DummyPasswordRequester *)
 Q_DECLARE_METATYPE(DummyResourceState::Ptr)
-Q_DECLARE_METATYPE(KIMAP::Session*)
+Q_DECLARE_METATYPE(KIMAP::Session *)
 Q_DECLARE_METATYPE(QVariant)
 
 class ImapTestBase : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  ImapTestBase( QObject *parent = Q_NULLPTR );
+    ImapTestBase(QObject *parent = Q_NULLPTR);
 
 protected:
-  QString defaultUserName() const;
-  QString defaultPassword() const;
-  ImapAccount *createDefaultAccount() const;
-  DummyPasswordRequester *createDefaultRequester();
-  QList<QByteArray> defaultAuthScenario() const;
-  QList<QByteArray> defaultPoolConnectionScenario( const QList<QByteArray> &customCapabilities = QList<QByteArray>() ) const;
+    QString defaultUserName() const;
+    QString defaultPassword() const;
+    ImapAccount *createDefaultAccount() const;
+    DummyPasswordRequester *createDefaultRequester();
+    QList<QByteArray> defaultAuthScenario() const;
+    QList<QByteArray> defaultPoolConnectionScenario(const QList<QByteArray> &customCapabilities = QList<QByteArray>()) const;
 
-  bool waitForSignal( QObject *obj, const char *member, int timeout = 500 ) const;
+    bool waitForSignal(QObject *obj, const char *member, int timeout = 500) const;
 
-  Akonadi::Collection createCollectionChain( const QString &remoteId ) const;
+    Akonadi::Collection createCollectionChain(const QString &remoteId) const;
 
 private slots:
-  void setupTestCase();
+    void setupTestCase();
 };
 
 #endif

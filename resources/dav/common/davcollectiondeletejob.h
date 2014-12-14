@@ -30,30 +30,28 @@
  */
 class DavCollectionDeleteJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new DAV collection delete job.
      *
      * @param url The dav url of the collection to delete
      * @param parent The parent object.
      */
-    explicit DavCollectionDeleteJob( const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR );
+    explicit DavCollectionDeleteJob(const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
      */
     void start();
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
 };
 
 #endif
-
-
 

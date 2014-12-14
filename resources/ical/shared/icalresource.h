@@ -27,30 +27,30 @@
 
 class ICalResource : public ICalResourceBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ICalResource( const QString &id );
+public:
+    explicit ICalResource(const QString &id);
     ~ICalResource();
 
-  protected:
+protected:
     /**
      * Constructor for derived classes.
      * @param mimeTypes mimeTypes to be handled by the resource.
      * @param icon icon name to use.
      */
-    ICalResource( const QString &id, const QStringList &mimeTypes, const QString& icon );
+    ICalResource(const QString &id, const QStringList &mimeTypes, const QString &icon);
 
-    bool doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
-    void doRetrieveItems( const Akonadi::Collection &col ) Q_DECL_OVERRIDE;
+    bool doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void doRetrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
 
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection& ) Q_DECL_OVERRIDE;
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
     */
-    virtual QString mimeType( const KCalCore::IncidenceBase::Ptr &incidence ) const;
+    virtual QString mimeType(const KCalCore::IncidenceBase::Ptr &incidence) const;
 
     /**
       Returns a list of all calendar component sub MIME types.

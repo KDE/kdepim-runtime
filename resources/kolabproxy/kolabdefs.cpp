@@ -26,91 +26,91 @@
 using namespace KolabV2;
 
 static const struct {
-  const char *name;
-  const char *label;
+    const char *name;
+    const char *label;
 } folderTypeData[] = {
-  { KOLAB_FOLDER_TYPE_MAIL,    ""                      },
-  { KOLAB_FOLDER_TYPE_CONTACT, I18N_NOOP( "Contacts" ) },
-  { KOLAB_FOLDER_TYPE_EVENT,   I18N_NOOP( "Calendar" ) },
-  { KOLAB_FOLDER_TYPE_TASK,    I18N_NOOP( "Tasks" )    },
-  { KOLAB_FOLDER_TYPE_JOURNAL, I18N_NOOP( "Journal" )  },
-  { KOLAB_FOLDER_TYPE_NOTE,    I18N_NOOP( "Notes" )    }
+    { KOLAB_FOLDER_TYPE_MAIL,    ""                      },
+    { KOLAB_FOLDER_TYPE_CONTACT, I18N_NOOP("Contacts") },
+    { KOLAB_FOLDER_TYPE_EVENT,   I18N_NOOP("Calendar") },
+    { KOLAB_FOLDER_TYPE_TASK,    I18N_NOOP("Tasks")    },
+    { KOLAB_FOLDER_TYPE_JOURNAL, I18N_NOOP("Journal")  },
+    { KOLAB_FOLDER_TYPE_NOTE,    I18N_NOOP("Notes")    }
 };
-static const int numFolderTypeData = sizeof folderTypeData / sizeof *folderTypeData;
+static const int numFolderTypeData = sizeof folderTypeData / sizeof * folderTypeData;
 
-BOOST_STATIC_ASSERT( numFolderTypeData == KolabV2::FolderTypeSize );
+BOOST_STATIC_ASSERT(numFolderTypeData == KolabV2::FolderTypeSize);
 
-FolderType KolabV2::folderTypeFromString( const QByteArray &folderTypeName )
+FolderType KolabV2::folderTypeFromString(const QByteArray &folderTypeName)
 {
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_CONTACT ||
-       folderTypeName == KOLAB_FOLDER_TYPE_CONTACT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return KolabV2::Contact;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_EVENT ||
-       folderTypeName == KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return KolabV2::Event;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_TASK ||
-       folderTypeName == KOLAB_FOLDER_TYPE_TASK KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return KolabV2::Task;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL ||
-       folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return KolabV2::Journal;
-  }
-
-  if ( folderTypeName == KOLAB_FOLDER_TYPE_NOTE ||
-       folderTypeName == KOLAB_FOLDER_TYPE_NOTE KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX ) {
-    return KolabV2::Note;
-  }
-
-  return KolabV2::Mail;
-}
-
-QByteArray KolabV2::folderTypeToString( FolderType type, bool isDefault )
-{
-  Q_ASSERT( type >= 0 && type < FolderTypeSize );
-  QByteArray result = folderTypeData[ type ].name;
-  if ( isDefault ) {
-    result += KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX;
-  }
-  return result;
-}
-
-KolabV2::FolderType KolabV2::guessFolderTypeFromName( const QString &name )
-{
-  for ( int i = 0; i < numFolderTypeData; ++i ) {
-    if ( name == i18n( folderTypeData[ i ].label ) ||
-         name == QString::fromLatin1( folderTypeData[ i ].label ) ) {
-      return static_cast<FolderType>( i );
+    if (folderTypeName == KOLAB_FOLDER_TYPE_CONTACT ||
+            folderTypeName == KOLAB_FOLDER_TYPE_CONTACT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX) {
+        return KolabV2::Contact;
     }
-  }
-  return KolabV2::Mail;
+
+    if (folderTypeName == KOLAB_FOLDER_TYPE_EVENT ||
+            folderTypeName == KOLAB_FOLDER_TYPE_EVENT KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX) {
+        return KolabV2::Event;
+    }
+
+    if (folderTypeName == KOLAB_FOLDER_TYPE_TASK ||
+            folderTypeName == KOLAB_FOLDER_TYPE_TASK KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX) {
+        return KolabV2::Task;
+    }
+
+    if (folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL ||
+            folderTypeName == KOLAB_FOLDER_TYPE_JOURNAL KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX) {
+        return KolabV2::Journal;
+    }
+
+    if (folderTypeName == KOLAB_FOLDER_TYPE_NOTE ||
+            folderTypeName == KOLAB_FOLDER_TYPE_NOTE KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX) {
+        return KolabV2::Note;
+    }
+
+    return KolabV2::Mail;
 }
 
-QString KolabV2::nameForFolderType( FolderType type )
+QByteArray KolabV2::folderTypeToString(FolderType type, bool isDefault)
 {
-  Q_ASSERT( type >= 0 && type < FolderTypeSize );
-  return i18n( folderTypeData[ type ].label );
+    Q_ASSERT(type >= 0 && type < FolderTypeSize);
+    QByteArray result = folderTypeData[ type ].name;
+    if (isDefault) {
+        result += KOLAB_FOLDER_TYPE_DEFAULT_SUFFIX;
+    }
+    return result;
 }
 
-Kolab::FolderType Kolab::folderTypeFromString(const QByteArray& folderTypeName)
+KolabV2::FolderType KolabV2::guessFolderTypeFromName(const QString &name)
 {
-  return Kolab::folderTypeFromString( std::string(folderTypeName.data(), folderTypeName.size()) );
+    for (int i = 0; i < numFolderTypeData; ++i) {
+        if (name == i18n(folderTypeData[ i ].label) ||
+                name == QString::fromLatin1(folderTypeData[ i ].label)) {
+            return static_cast<FolderType>(i);
+        }
+    }
+    return KolabV2::Mail;
+}
+
+QString KolabV2::nameForFolderType(FolderType type)
+{
+    Q_ASSERT(type >= 0 && type < FolderTypeSize);
+    return i18n(folderTypeData[ type ].label);
+}
+
+Kolab::FolderType Kolab::folderTypeFromString(const QByteArray &folderTypeName)
+{
+    return Kolab::folderTypeFromString(std::string(folderTypeName.data(), folderTypeName.size()));
 }
 
 QByteArray Kolab::getFolderTypeAnnotation(const QMap< QByteArray, QByteArray > &annotations)
 {
-    if ( annotations.contains( "/shared" KOLAB_FOLDER_TYPE_ANNOTATION ) ) {
-        return annotations.value( "/shared" KOLAB_FOLDER_TYPE_ANNOTATION );
+    if (annotations.contains("/shared" KOLAB_FOLDER_TYPE_ANNOTATION)) {
+        return annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION);
     }
     return annotations.value(KOLAB_FOLDER_TYPE_ANNOTATION);
 }
 
-void Kolab::setFolderTypeAnnotation(QMap< QByteArray, QByteArray >& annotations, const QByteArray& value)
+void Kolab::setFolderTypeAnnotation(QMap< QByteArray, QByteArray > &annotations, const QByteArray &value)
 {
     annotations["/shared" KOLAB_FOLDER_TYPE_ANNOTATION] = value;
 }

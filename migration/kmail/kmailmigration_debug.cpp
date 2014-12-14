@@ -20,4 +20,3 @@
 #include "kmailmigration_debug.h"
 Q_LOGGING_CATEGORY(KMAILMIGRATION_LOG, "log_kmailmigration")
 
-

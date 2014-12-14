@@ -28,7 +28,7 @@ class ResourceTask;
 class GmailResourceState : public ResourceState
 {
 public:
-    explicit GmailResourceState (GmailResource *resource, const TaskArguments &arguments);
+    explicit GmailResourceState(GmailResource *resource, const TaskArguments &arguments);
 
     void setCurrentTask(ResourceTask *task);
     ResourceTask *currentTask() const;

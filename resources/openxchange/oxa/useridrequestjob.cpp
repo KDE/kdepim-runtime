@@ -28,51 +28,51 @@
 
 using namespace OXA;
 
-UserIdRequestJob::UserIdRequestJob( QObject *parent )
-  : KJob( parent ), mUserId( -1 )
+UserIdRequestJob::UserIdRequestJob(QObject *parent)
+    : KJob(parent), mUserId(-1)
 {
 }
 
 void UserIdRequestJob::start()
 {
-  FoldersRequestJob *job = new FoldersRequestJob( 0, FoldersRequestJob::Modified, this );
-  connect(job, &FoldersRequestJob::result, this, &UserIdRequestJob::davJobFinished);
+    FoldersRequestJob *job = new FoldersRequestJob(0, FoldersRequestJob::Modified, this);
+    connect(job, &FoldersRequestJob::result, this, &UserIdRequestJob::davJobFinished);
 
-  job->start();
+    job->start();
 }
 
 qlonglong UserIdRequestJob::userId() const
 {
-  return mUserId;
+    return mUserId;
 }
 
-void UserIdRequestJob::davJobFinished( KJob *job )
+void UserIdRequestJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-    emitResult();
-    return;
-  }
-
-  FoldersRequestJob *requestJob = qobject_cast<FoldersRequestJob*>( job );
-  Q_ASSERT( requestJob );
-
-  const Folder::List folders = requestJob->folders();
-  foreach ( const Folder &folder, folders ) {
-    if ( folder.folderId() == 1 ) {
-      // Found folder with 'Private Folders' as parent, so the owner must
-      // be the user that is currently logged in.
-      mUserId = folder.owner();
-      break;
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
     }
-  }
 
-  if ( mUserId == -1 ) {
-    setError( UserDefinedError );
-    setErrorText( "No private folder found" );
-  }
+    FoldersRequestJob *requestJob = qobject_cast<FoldersRequestJob *>(job);
+    Q_ASSERT(requestJob);
 
-  emitResult();
+    const Folder::List folders = requestJob->folders();
+    foreach (const Folder &folder, folders) {
+        if (folder.folderId() == 1) {
+            // Found folder with 'Private Folders' as parent, so the owner must
+            // be the user that is currently logged in.
+            mUserId = folder.owner();
+            break;
+        }
+    }
+
+    if (mUserId == -1) {
+        setError(UserDefinedError);
+        setErrorText("No private folder found");
+    }
+
+    emitResult();
 }
 

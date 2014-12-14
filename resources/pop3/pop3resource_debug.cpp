@@ -20,4 +20,3 @@
 #include "pop3resource_debug.h"
 Q_LOGGING_CATEGORY(POP3RESOURCE_LOG, "log_pop3resource")
 
-

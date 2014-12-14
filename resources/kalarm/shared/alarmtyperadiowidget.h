@@ -33,18 +33,17 @@ class QButtonGroup;
 
 class AlarmTypeRadioWidget : public Akonadi::SingleFileValidatingWidget
 {
-        Q_OBJECT
-    public:
-        explicit AlarmTypeRadioWidget(QWidget* parent = 0);
-        void setAlarmType(CalEvent::Type);
-        CalEvent::Type alarmType() const;
-        virtual bool validate() const;
+    Q_OBJECT
+public:
+    explicit AlarmTypeRadioWidget(QWidget *parent = 0);
+    void setAlarmType(CalEvent::Type);
+    CalEvent::Type alarmType() const;
+    virtual bool validate() const;
 
-    private:
-        Ui::AlarmTypeRadioWidget ui;
-        QButtonGroup* mButtonGroup;
+private:
+    Ui::AlarmTypeRadioWidget ui;
+    QButtonGroup *mButtonGroup;
 };
 
 #endif // ALARMTYPERADIOWIDGET_H
 
-// vim: et sw=4:

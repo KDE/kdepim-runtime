@@ -32,7 +32,7 @@
 POPSession::POPSession(const QString &password)
     : mCurrentJob(0), mPassword(password)
 {
-    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this,SLOT(slotSlaveError(KIO::Slave*,int,QString)));
+    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));
 }
 
 POPSession::~POPSession()
@@ -343,7 +343,7 @@ void ListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
             mIdList.insert(id, length);
         } else
             qCWarning(POP3RESOURCE_LOG) << "Got non-integer ID as part of the LIST response, ignoring"
-                       << idString.data();
+                                        << idString.data();
     } else {
         qCWarning(POP3RESOURCE_LOG) << "Got invalid LIST response:" << data.data();
     }
@@ -391,7 +391,7 @@ void UIDListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
                 mIdList.insert(uidQString, id);
             } else {
                 qCWarning(POP3RESOURCE_LOG) << "Got invalid/empty UID from the UIDL command:"
-                           << uidString.data();
+                                            << uidString.data();
                 qCWarning(POP3RESOURCE_LOG) << "The whole response was:" << data.data();
             }
         } else {

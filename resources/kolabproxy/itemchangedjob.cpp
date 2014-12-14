@@ -24,10 +24,10 @@
 #include <AkonadiCore/ItemModifyJob>
 #include <KLocalizedString>
 
-ItemChangedJob::ItemChangedJob(const Akonadi::Item& kolabItem, HandlerManager& handler, QObject* parent)
-:   KJob(parent),
-    mHandlerManager(handler),
-    mKolabItem(kolabItem)
+ItemChangedJob::ItemChangedJob(const Akonadi::Item &kolabItem, HandlerManager &handler, QObject *parent)
+    :   KJob(parent),
+        mHandlerManager(handler),
+        mKolabItem(kolabItem)
 {
 
 }
@@ -38,9 +38,9 @@ void ItemChangedJob::start()
     connect(collectionFetchJob, &Akonadi::CollectionFetchJob::result, this, &ItemChangedJob::onKolabCollectionFetched);
 }
 
-void ItemChangedJob::onKolabCollectionFetched(KJob* job)
+void ItemChangedJob::onKolabCollectionFetched(KJob *job)
 {
-    Akonadi::CollectionFetchJob *fetchjob = static_cast<Akonadi::CollectionFetchJob*>(job);
+    Akonadi::CollectionFetchJob *fetchjob = static_cast<Akonadi::CollectionFetchJob *>(job);
     if (job->error() || fetchjob->collections().isEmpty()) {
         qWarning() << "collection fetch job failed " << job->errorString() << fetchjob->collections().isEmpty();
         setError(KJob::UserDefinedError);
@@ -62,9 +62,9 @@ void ItemChangedJob::onKolabCollectionFetched(KJob* job)
     connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &ItemChangedJob::onImapItemFetchDone);
 }
 
-void ItemChangedJob::onImapItemFetchDone(KJob* job)
+void ItemChangedJob::onImapItemFetchDone(KJob *job)
 {
-    if ( job->error() ) {
+    if (job->error()) {
         qWarning() << job->error() << job->errorString();
         setError(KJob::UserDefinedError);
         setErrorText(job->errorText());
@@ -72,12 +72,12 @@ void ItemChangedJob::onImapItemFetchDone(KJob* job)
         return;
     }
 
-    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
+    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
     if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
         qDebug() << "item is not yet created in imap resource";
         Akonadi::CollectionFetchJob *fetch =
-        new Akonadi::CollectionFetchJob( Akonadi::Collection( mKolabItem.storageCollectionId() ),
-                                        Akonadi::CollectionFetchJob::Base, this );
+            new Akonadi::CollectionFetchJob(Akonadi::Collection(mKolabItem.storageCollectionId()),
+                                            Akonadi::CollectionFetchJob::Base, this);
         connect(fetch, &Akonadi::CollectionFetchJob::result, this, &ItemChangedJob::onCollectionFetchDone);
     } else {
         qDebug() << "item is in imap resource";
@@ -97,8 +97,8 @@ void ItemChangedJob::onImapItemFetchDone(KJob* job)
 
 void ItemChangedJob::onCollectionFetchDone(KJob *job)
 {
-    Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob*>(job);
-    if ( job->error() || fetchJob->collections().isEmpty() ) {
+    Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob *>(job);
+    if (job->error() || fetchJob->collections().isEmpty()) {
         qWarning() << "Collection fetch job failed" << fetchJob->errorString();
         setError(KJob::UserDefinedError);
         setErrorText(job->errorText());
@@ -112,7 +112,7 @@ void ItemChangedJob::onCollectionFetchDone(KJob *job)
     itemAddedJob->start();
 }
 
-void ItemChangedJob::onItemAddedDone(KJob* job)
+void ItemChangedJob::onItemAddedDone(KJob *job)
 {
     if (job->error()) {
         setError(KJob::UserDefinedError);

@@ -26,14 +26,14 @@
 
 class LockMethodPage : public QWidget
 {
-  Q_OBJECT
-  public:
-    explicit LockMethodPage( QWidget *parent = 0 );
+    Q_OBJECT
+public:
+    explicit LockMethodPage(QWidget *parent = 0);
 
-  private:
+private:
     void checkAvailableLockMethods();
 
-  private:
+private:
     Ui::LockFilePage ui;
 };
 

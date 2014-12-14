@@ -30,16 +30,16 @@
  */
 class DavPrincipalHomeSetsFetchJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav principals home sets fetch job.
      *
      * @param url The DAV url of the DAV principal.
      * @param parent The parent object.
      */
-    explicit DavPrincipalHomeSetsFetchJob( const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR );
+    explicit DavPrincipalHomeSetsFetchJob(const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -51,23 +51,23 @@ class DavPrincipalHomeSetsFetchJob : public KJob
      */
     QStringList homeSets() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     /**
      * Start the fetch process.
-     * 
+     *
      * There may be two rounds necessary if the first request
      * does not returns the home sets, but only the current-user-principal
      * or the principal-URL. The bool flag is here to prevent requesting
      * those last two on each request, as they are only fetched in
      * the first round.
-     * 
+     *
      * @param fetchHomeSetsOnly If set to true the request will not include
      *        the current-user-principal and principal-URL props.
      */
-    void fetchHomeSets( bool fetchHomeSetsOnly );
+    void fetchHomeSets(bool fetchHomeSetsOnly);
 
     DavUtils::DavUrl mUrl;
     QStringList mHomeSets;

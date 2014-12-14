@@ -40,7 +40,7 @@ public:
 
     KConfigGroup &configGroup()
     {
-        return mConfigGroup; 
+        return mConfigGroup;
     }
 
     template <typename T>

@@ -32,17 +32,17 @@ class MaildirSettings;
 class FolderArchiveSettingPage;
 class ConfigDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-    explicit ConfigDialog( Akonadi_Maildir_Resource::MaildirSettings *settings, const QString &identifier, QWidget *parent = 0 );
+    Q_OBJECT
+public:
+    explicit ConfigDialog(Akonadi_Maildir_Resource::MaildirSettings *settings, const QString &identifier, QWidget *parent = 0);
 
-  private slots:
+private slots:
     void checkPath();
     void save();
 
-  private:
+private:
     Ui::ConfigDialog ui;
-    KConfigDialogManager* mManager;
+    KConfigDialogManager *mManager;
     FolderArchiveSettingPage *mFolderArchiveSettingPage;
     Akonadi_Maildir_Resource::MaildirSettings *mSettings;
     bool mToplevelIsContainer;

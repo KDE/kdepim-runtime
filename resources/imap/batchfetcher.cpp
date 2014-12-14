@@ -28,17 +28,17 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
                            int batchSize,
                            KIMAP::Session *session)
     : KJob(session),
-    m_currentSet(set),
-    m_scope(scope),
-    m_session(session),
-    m_batchSize(batchSize),
-    m_uidBased(false),
-    m_fetchedItemsInCurrentBatch(0),
-    m_messageHelper(messageHelper),
-    m_fetchInProgress(false),
-    m_continuationRequested(false),
-    m_gmailEnabled(false),
-    m_searchInChunks(false)
+      m_currentSet(set),
+      m_scope(scope),
+      m_session(session),
+      m_batchSize(batchSize),
+      m_uidBased(false),
+      m_fetchedItemsInCurrentBatch(0),
+      m_messageHelper(messageHelper),
+      m_fetchInProgress(false),
+      m_continuationRequested(false),
+      m_gmailEnabled(false),
+      m_searchInChunks(false)
 {
 }
 
@@ -75,8 +75,8 @@ void BatchFetcher::start()
         //Search in chunks also Exchange can handle
         const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidInterval.begin();
         const KIMAP::ImapInterval::Id lastUidToSearch  = m_searchInChunks
-            ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidInterval.end())
-            : m_searchUidInterval.end();
+                ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidInterval.end())
+                : m_searchUidInterval.end();
 
         //Prepare next chunk
         const KIMAP::ImapInterval::Id intervalBegin = lastUidToSearch + 1;
@@ -98,7 +98,7 @@ void BatchFetcher::start()
     }
 }
 
-void BatchFetcher::onUidSearchDone(KJob* job)
+void BatchFetcher::onUidSearchDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Search job failed: " << job->errorString();
@@ -107,7 +107,7 @@ void BatchFetcher::onUidSearchDone(KJob* job)
         return;
     }
 
-    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>(job);
+    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
     m_uidBased = search->isUidBased();
     m_currentSet.add(search->results());
 
@@ -171,17 +171,17 @@ void BatchFetcher::fetchNextBatch()
     fetch->setScope(m_scope);
     fetch->setGmailExtensionsEnabled(m_gmailEnabled);
     connect(fetch, SIGNAL(headersReceived(QString,
-                                          QMap<qint64,qint64>,
-                                          QMap<qint64,qint64>,
-                                          QMap<qint64,KIMAP::MessageAttribute>,
-                                          QMap<qint64,KIMAP::MessageFlags>,
-                                          QMap<qint64,KIMAP::MessagePtr>)),
+                                          QMap<qint64, qint64>,
+                                          QMap<qint64, qint64>,
+                                          QMap<qint64, KIMAP::MessageAttribute>,
+                                          QMap<qint64, KIMAP::MessageFlags>,
+                                          QMap<qint64, KIMAP::MessagePtr>)),
             this, SLOT(onHeadersReceived(QString,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,KIMAP::MessageAttribute>,
-                                         QMap<qint64,KIMAP::MessageFlags>,
-                                         QMap<qint64,KIMAP::MessagePtr>)) );
+                                         QMap<qint64, qint64>,
+                                         QMap<qint64, qint64>,
+                                         QMap<qint64, KIMAP::MessageAttribute>,
+                                         QMap<qint64, KIMAP::MessageFlags>,
+                                         QMap<qint64, KIMAP::MessagePtr>)));
     connect(fetch, SIGNAL(result(KJob*)),
             this, SLOT(onHeadersFetchDone(KJob*)));
     m_fetchInProgress = true;
@@ -195,8 +195,8 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
                                      const QMap<qint64, KIMAP::MessageFlags> &flags,
                                      const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
-    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( sender() );
-    Q_ASSERT( fetch );
+    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
+    Q_ASSERT(fetch);
 
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
@@ -214,7 +214,7 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
     }
 }
 
-void BatchFetcher::onHeadersFetchDone( KJob *job )
+void BatchFetcher::onHeadersFetchDone(KJob *job)
 {
     m_fetchInProgress = false;
     if (job->error()) {

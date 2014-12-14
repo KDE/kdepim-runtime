@@ -17,9 +17,9 @@
 
 #include "icalresourcefactory.h"
 
-IcalResourceFactory::IcalResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< ICalResource >( "akonadi_ical_resource", parent )
+IcalResourceFactory::IcalResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< ICalResource >("akonadi_ical_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_ical_resource") );
+    setObjectName(QLatin1String("akonadi_ical_resource"));
 }
 

@@ -26,23 +26,22 @@
 
 class LocalFoldersCollectionMigrator : public AbstractCollectionMigrator
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    LocalFoldersCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
+public:
+    LocalFoldersCollectionMigrator(const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR);
 
-    void setKMailConfig( const KSharedConfigPtr &config );
+    void setKMailConfig(const KSharedConfigPtr &config);
 
     ~LocalFoldersCollectionMigrator();
 
-  protected:
-    void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
+protected:
+    void migrateCollection(const Akonadi::Collection &collection, const QString &folderId);
 
-  private:
+private:
     class Private;
     Private *const d;
 };
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

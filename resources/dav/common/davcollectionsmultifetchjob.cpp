@@ -20,42 +20,43 @@
 
 #include "davcollectionsfetchjob.h"
 
-DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob( const DavUtils::DavUrl::List &urls, QObject *parent )
-  : KJob( parent ), mUrls( urls ), mSubJobCount( urls.size() )
+DavCollectionsMultiFetchJob::DavCollectionsMultiFetchJob(const DavUtils::DavUrl::List &urls, QObject *parent)
+    : KJob(parent), mUrls(urls), mSubJobCount(urls.size())
 {
 }
 
 void DavCollectionsMultiFetchJob::start()
 {
-  if ( mUrls.isEmpty() )
-    emitResult();
+    if (mUrls.isEmpty()) {
+        emitResult();
+    }
 
-  foreach ( const DavUtils::DavUrl &url, mUrls ) {
-    DavCollectionsFetchJob *job = new DavCollectionsFetchJob( url, this );
-    connect(job, &DavCollectionsFetchJob::result, this, &DavCollectionsMultiFetchJob::davJobFinished);
-    connect(job, &DavCollectionsFetchJob::collectionDiscovered, this, &DavCollectionsMultiFetchJob::collectionDiscovered);
-    job->start();
-  }
+    foreach (const DavUtils::DavUrl &url, mUrls) {
+        DavCollectionsFetchJob *job = new DavCollectionsFetchJob(url, this);
+        connect(job, &DavCollectionsFetchJob::result, this, &DavCollectionsMultiFetchJob::davJobFinished);
+        connect(job, &DavCollectionsFetchJob::collectionDiscovered, this, &DavCollectionsMultiFetchJob::collectionDiscovered);
+        job->start();
+    }
 }
 
 DavCollection::List DavCollectionsMultiFetchJob::collections() const
 {
-  return mCollections;
+    return mCollections;
 }
 
-void DavCollectionsMultiFetchJob::davJobFinished( KJob *job )
+void DavCollectionsMultiFetchJob::davJobFinished(KJob *job)
 {
-  DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob*>( job );
+    DavCollectionsFetchJob *fetchJob = qobject_cast<DavCollectionsFetchJob *>(job);
 
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-  }
-  else {
-    mCollections << fetchJob->collections();
-  }
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+    } else {
+        mCollections << fetchJob->collections();
+    }
 
-  if ( --mSubJobCount == 0 )
-    emitResult();
+    if (--mSubJobCount == 0) {
+        emitResult();
+    }
 }
 

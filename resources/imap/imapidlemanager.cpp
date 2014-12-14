@@ -28,7 +28,6 @@
 #include "resource_imap_debug.h"
 #include "imapresource_debug.h"
 
-
 #include <kimap/idlejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
@@ -38,141 +37,139 @@
 #include "imapresource.h"
 #include "sessionpool.h"
 
-ImapIdleManager::ImapIdleManager( ResourceStateInterface::Ptr state,
-                                  SessionPool *pool, ImapResourceBase *parent )
-  : QObject( parent ), m_sessionRequestId( 0 ), m_pool( pool ), m_session( 0 ),
-    m_idle( 0 ), m_resource( parent ), m_state( state ),
-    m_lastMessageCount( -1 ), m_lastRecentCount( -1 )
+ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state,
+                                 SessionPool *pool, ImapResourceBase *parent)
+    : QObject(parent), m_sessionRequestId(0), m_pool(pool), m_session(0),
+      m_idle(0), m_resource(parent), m_state(state),
+      m_lastMessageCount(-1), m_lastRecentCount(-1)
 {
-  connect( pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)), this, SLOT(onSessionRequestDone(qint64,KIMAP::Session*,int,QString)) );
-  m_sessionRequestId = m_pool->requestSession();
+    connect(pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)), this, SLOT(onSessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+    m_sessionRequestId = m_pool->requestSession();
 }
 
 ImapIdleManager::~ImapIdleManager()
 {
-  stop();
-  if ( m_pool ) {
-    if ( m_sessionRequestId ) {
-      m_pool->cancelSessionRequest( m_sessionRequestId );
+    stop();
+    if (m_pool) {
+        if (m_sessionRequestId) {
+            m_pool->cancelSessionRequest(m_sessionRequestId);
+        }
+        if (m_session) {
+            m_pool->releaseSession(m_session);
+        }
     }
-    if ( m_session ) {
-      m_pool->releaseSession( m_session );
-    }
-  }
 }
 
 void ImapIdleManager::stop()
 {
-  if ( m_idle ) {
-    m_idle->stop();
-    disconnect(m_idle, 0, this, 0);
-    m_idle = 0;
-  }
-  if ( m_pool ) {
-    disconnect(m_pool, 0, this, 0);
-  }
+    if (m_idle) {
+        m_idle->stop();
+        disconnect(m_idle, 0, this, 0);
+        m_idle = 0;
+    }
+    if (m_pool) {
+        disconnect(m_pool, 0, this, 0);
+    }
 }
 
 KIMAP::Session *ImapIdleManager::session() const
 {
-  return m_session;
+    return m_session;
 }
 
 void ImapIdleManager::reconnect()
 {
-  qCDebug(IMAPRESOURCE_LOG) << "attempting to reconnect IDLE session";
-  if ( m_session == 0 && m_pool->isConnected() && m_sessionRequestId == 0 )
-    m_sessionRequestId = m_pool->requestSession();
+    qCDebug(IMAPRESOURCE_LOG) << "attempting to reconnect IDLE session";
+    if (m_session == 0 && m_pool->isConnected() && m_sessionRequestId == 0) {
+        m_sessionRequestId = m_pool->requestSession();
+    }
 }
 
-void ImapIdleManager::onSessionRequestDone( qint64 requestId, KIMAP::Session *session,
-                                            int errorCode, const QString &/*errorString*/ )
+void ImapIdleManager::onSessionRequestDone(qint64 requestId, KIMAP::Session *session,
+        int errorCode, const QString &/*errorString*/)
 {
-  if ( requestId!=m_sessionRequestId || session==0 || errorCode!=SessionPool::NoError ) {
-    return;
-  }
+    if (requestId != m_sessionRequestId || session == 0 || errorCode != SessionPool::NoError) {
+        return;
+    }
 
-  m_session = session;
-  m_sessionRequestId = 0;
+    m_session = session;
+    m_sessionRequestId = 0;
 
-  connect(m_pool, &SessionPool::connectionLost, this, &ImapIdleManager::onConnectionLost);
-  connect(m_pool, &SessionPool::disconnectDone, this, &ImapIdleManager::onPoolDisconnect);
+    connect(m_pool, &SessionPool::connectionLost, this, &ImapIdleManager::onConnectionLost);
+    connect(m_pool, &SessionPool::disconnectDone, this, &ImapIdleManager::onPoolDisconnect);
 
+    KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+    select->setMailBox(m_state->mailBoxForCollection(m_state->collection()));
+    connect(select, &KIMAP::SelectJob::result, this, &ImapIdleManager::onSelectDone);
+    select->start();
 
-  KIMAP::SelectJob *select = new KIMAP::SelectJob( m_session );
-  select->setMailBox( m_state->mailBoxForCollection( m_state->collection() ) );
-  connect(select, &KIMAP::SelectJob::result, this, &ImapIdleManager::onSelectDone);
-  select->start();
-
-  m_idle = new KIMAP::IdleJob( m_session );
-  connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
-  connect(m_idle.data(), &KIMAP::IdleJob::mailBoxMessageFlagsChanged, this, &ImapIdleManager::onFlagsChanged);
-  connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
-  m_idle->start();
+    m_idle = new KIMAP::IdleJob(m_session);
+    connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
+    connect(m_idle.data(), &KIMAP::IdleJob::mailBoxMessageFlagsChanged, this, &ImapIdleManager::onFlagsChanged);
+    connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
+    m_idle->start();
 }
 
-void ImapIdleManager::onConnectionLost( KIMAP::Session *session )
+void ImapIdleManager::onConnectionLost(KIMAP::Session *session)
 {
-  if ( session == m_session ) {
-    // Our session becomes invalid, so get ride of
-    // the pointer, we don't need to release it once the
-    // task is done
-    m_session = 0;
-    QMetaObject::invokeMethod( this, "reconnect", Qt::QueuedConnection );
-  }
+    if (session == m_session) {
+        // Our session becomes invalid, so get ride of
+        // the pointer, we don't need to release it once the
+        // task is done
+        m_session = 0;
+        QMetaObject::invokeMethod(this, "reconnect", Qt::QueuedConnection);
+    }
 }
 
 void ImapIdleManager::onPoolDisconnect()
 {
-  // All the sessions in the pool we used changed,
-  // so get ride of the pointer, we don't need to
-  // release our session anymore
-  m_pool = 0;
+    // All the sessions in the pool we used changed,
+    // so get ride of the pointer, we don't need to
+    // release our session anymore
+    m_pool = 0;
 }
 
-void ImapIdleManager::onSelectDone( KJob *job )
+void ImapIdleManager::onSelectDone(KJob *job)
 {
-  KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
+    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
 
-  m_lastMessageCount = select->messageCount();
-  m_lastRecentCount = select->recentCount();
+    m_lastMessageCount = select->messageCount();
+    m_lastRecentCount = select->recentCount();
 }
 
 void ImapIdleManager::onIdleStopped()
 {
-  qCDebug(RESOURCE_IMAP_LOG) << "IDLE dropped maybe we should reconnect?";
-  m_idle = 0;
-  if ( m_session ) {
-    qCDebug(RESOURCE_IMAP_LOG) << "Restarting the IDLE session!";
-    m_idle = new KIMAP::IdleJob( m_session );
-    connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
-    connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
-    m_idle->start();
-  }
+    qCDebug(RESOURCE_IMAP_LOG) << "IDLE dropped maybe we should reconnect?";
+    m_idle = 0;
+    if (m_session) {
+        qCDebug(RESOURCE_IMAP_LOG) << "Restarting the IDLE session!";
+        m_idle = new KIMAP::IdleJob(m_session);
+        connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
+        connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
+        m_idle->start();
+    }
 }
 
 void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
                                       int messageCount, int recentCount)
 {
-  qCDebug(RESOURCE_IMAP_LOG) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
-  qCDebug(RESOURCE_IMAP_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
-                 << m_lastMessageCount << m_lastRecentCount;
+    qCDebug(RESOURCE_IMAP_LOG) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
+    qCDebug(RESOURCE_IMAP_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
+                               << m_lastMessageCount << m_lastRecentCount;
 
-  // It seems we're not in sync with the cache, resync is needed
-  if ( messageCount!=m_lastMessageCount || recentCount!=m_lastRecentCount ) {
-    m_lastMessageCount = messageCount;
-    m_lastRecentCount = recentCount;
+    // It seems we're not in sync with the cache, resync is needed
+    if (messageCount != m_lastMessageCount || recentCount != m_lastRecentCount) {
+        m_lastMessageCount = messageCount;
+        m_lastRecentCount = recentCount;
 
-    qCDebug(RESOURCE_IMAP_LOG) << "Resync needed for" << mailBox << m_state->collection().id();
-    m_resource->synchronizeCollection( m_state->collection().id() );
-  }
+        qCDebug(RESOURCE_IMAP_LOG) << "Resync needed for" << mailBox << m_state->collection().id();
+        m_resource->synchronizeCollection(m_state->collection().id());
+    }
 }
 
-void ImapIdleManager::onFlagsChanged( KIMAP::IdleJob *job )
+void ImapIdleManager::onFlagsChanged(KIMAP::IdleJob *job)
 {
-  qCDebug(RESOURCE_IMAP_LOG) << "IDLE flags changed in" << m_session->selectedMailBox();
-  m_resource->synchronizeCollection( m_state->collection().id() );
+    qCDebug(RESOURCE_IMAP_LOG) << "IDLE flags changed in" << m_session->selectedMailBox();
+    m_resource->synchronizeCollection(m_state->collection().id());
 }
-
-
 

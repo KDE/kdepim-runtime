@@ -17,7 +17,6 @@
     02110-1301, USA.
 */
 
-
 #ifndef ENTITYTREECREATEJOB_H
 #define ENTITYTREECREATEJOB_H
 
@@ -28,23 +27,23 @@
 
 class EntityTreeCreateJob : public Akonadi::TransactionSequence
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit EntityTreeCreateJob( const QList<Akonadi::Collection::List> &collections, const Akonadi::Item::List &items, QObject* parent = 0 );
+    explicit EntityTreeCreateJob(const QList<Akonadi::Collection::List> &collections, const Akonadi::Item::List &items, QObject *parent = 0);
 
-  /* reimp */ void doStart();
+    /* reimp */ void doStart();
 
 private slots:
-  void collectionCreateJobDone( KJob * );
+    void collectionCreateJobDone(KJob *);
 
 private:
-  void createNextLevelOfCollections();
-  void createReadyItems();
+    void createNextLevelOfCollections();
+    void createReadyItems();
 
 private:
-  QList<Akonadi::Collection::List> m_collections;
-  Akonadi::Item::List m_items;
-  int m_pendingJobs;
+    QList<Akonadi::Collection::List> m_collections;
+    Akonadi::Item::List m_items;
+    int m_pendingJobs;
 };
 
 #endif

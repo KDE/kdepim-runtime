@@ -25,114 +25,113 @@
 
 using namespace OXA;
 
-QString OXUtils::writeBoolean( bool value )
+QString OXUtils::writeBoolean(bool value)
 {
-  return (value ? QLatin1String( "true" ) : QLatin1String( "false" ));
+    return (value ? QLatin1String("true") : QLatin1String("false"));
 }
 
-QString OXUtils::writeNumber( qlonglong value )
+QString OXUtils::writeNumber(qlonglong value)
 {
-  return QString::number( value );
+    return QString::number(value);
 }
 
-QString OXUtils::writeString( const QString &value )
+QString OXUtils::writeString(const QString &value)
 {
-  QStringList lines = value.split( '\n' );
+    QStringList lines = value.split('\n');
 
-  for ( int i = 0; i < lines.count(); ++i )
-  {
-    lines[i].replace( '\\', "\\\\" );
-    lines[i].replace( '"', "\\\"" );
-  }
+    for (int i = 0; i < lines.count(); ++i) {
+        lines[i].replace('\\', "\\\\");
+        lines[i].replace('"', "\\\"");
+    }
 
-  return lines.join( "\n" );
+    return lines.join("\n");
 }
 
-QString OXUtils::writeName( const QString &value )
+QString OXUtils::writeName(const QString &value)
 {
-  //TODO: assert on invalid names
-  return value;
+    //TODO: assert on invalid names
+    return value;
 }
 
-QString OXUtils::writeDateTime( const QDateTime &value )
+QString OXUtils::writeDateTime(const QDateTime &value)
 {
-  QString result;
+    QString result;
 
-  //workaround, as QDateTime does not support negative time_t values
-  QDateTime Time_t_S( QDate( 1970, 1, 1 ), QTime( 0, 0, 0 ), Qt::UTC);
+    //workaround, as QDateTime does not support negative time_t values
+    QDateTime Time_t_S(QDate(1970, 1, 1), QTime(0, 0, 0), Qt::UTC);
 
-  if ( value < Time_t_S ) {
+    if (value < Time_t_S) {
 
-    result = QString::number( Time_t_S.secsTo( value ) );
+        result = QString::number(Time_t_S.secsTo(value));
 
-  } else {
+    } else {
 
-    result = QString::number( value.toUTC().toTime_t() );
+        result = QString::number(value.toUTC().toTime_t());
 
-  }
+    }
 
-  return QString( result + QLatin1String( "000" ) );
+    return QString(result + QLatin1String("000"));
 
 }
 
-QString OXUtils::writeDate( const QDate &value )
+QString OXUtils::writeDate(const QDate &value)
 {
-  return writeDateTime( QDateTime( value, QTime( 0, 0, 0 ), Qt::UTC ) );
+    return writeDateTime(QDateTime(value, QTime(0, 0, 0), Qt::UTC));
 }
 
-bool OXUtils::readBoolean( const QString &text )
+bool OXUtils::readBoolean(const QString &text)
 {
-  if ( text == QLatin1String( "true" ) )
-    return true;
-  else if ( text == QLatin1String( "false" ) )
-    return false;
-  else {
-    Q_ASSERT( false );
-    return false;
-  }
+    if (text == QLatin1String("true")) {
+        return true;
+    } else if (text == QLatin1String("false")) {
+        return false;
+    } else {
+        Q_ASSERT(false);
+        return false;
+    }
 }
 
-qlonglong OXUtils::readNumber( const QString &text )
+qlonglong OXUtils::readNumber(const QString &text)
 {
-  return text.toLongLong();
+    return text.toLongLong();
 }
 
-QString OXUtils::readString( const QString &text )
+QString OXUtils::readString(const QString &text)
 {
-  QString value( text );
-  value.replace( "\\\"", "\"" );
-  value.replace( "\\\\", "\\" );
+    QString value(text);
+    value.replace("\\\"", "\"");
+    value.replace("\\\\", "\\");
 
-  return value;
+    return value;
 }
 
-QString OXUtils::readName( const QString &text )
+QString OXUtils::readName(const QString &text)
 {
-  return text;
+    return text;
 }
 
-QDateTime OXUtils::readDateTime( const QString &text )
+QDateTime OXUtils::readDateTime(const QString &text)
 {
-  // remove the trailing '000', they exceed the integer dimension
-  const int ticks = text.mid( 0, text.length() - 3 ).toLongLong();
+    // remove the trailing '000', they exceed the integer dimension
+    const int ticks = text.mid(0, text.length() - 3).toLongLong();
 
-  //workaround, as QDateTime does not support negative time_t values
-  QDateTime value;
-  if ( ticks < 0 ) {
+    //workaround, as QDateTime does not support negative time_t values
+    QDateTime value;
+    if (ticks < 0) {
 
-    value.setTime_t( 0 );
-    value = value.addSecs( ticks );
+        value.setTime_t(0);
+        value = value.addSecs(ticks);
 
-  } else {
+    } else {
 
-    value.setTime_t( ticks );
+        value.setTime_t(ticks);
 
-  }
+    }
 
-  return value;
+    return value;
 }
 
-QDate OXUtils::readDate( const QString &text )
+QDate OXUtils::readDate(const QString &text)
 {
-  return readDateTime( text ).date();
+    return readDateTime(text).date();
 }

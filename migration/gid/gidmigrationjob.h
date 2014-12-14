@@ -53,8 +53,8 @@ public:
 
 private slots:
     void collectionsReceived(const Akonadi::Collection::List &);
-    void collectionsFetched(KJob*);
-    void itemsUpdated(KJob*);
+    void collectionsFetched(KJob *);
+    void itemsUpdated(KJob *);
 
 private:
     void processCollection();

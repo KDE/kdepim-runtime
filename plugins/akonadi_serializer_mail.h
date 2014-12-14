@@ -17,7 +17,6 @@
     02110-1301, USA.
 */
 
-
 #ifndef __AKONADI_SERIALIZER_MAIL_H__
 #define __AKONADI_SERIALIZER_MAIL_H__
 
@@ -27,7 +26,8 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 /**
  * Levare QString implicit sharing to decrease memory consumption.
@@ -43,7 +43,7 @@ public:
      * to reuse it and leverage the implicit sharing. Otherwise
      * add the value to the pool and return it again.
      */
-    QString sharedValue(const QString& value);
+    QString sharedValue(const QString &value);
 private:
     QMutex m_mutex;
     QSet<QString> m_pool;
@@ -52,17 +52,16 @@ private:
 class SerializerPluginMail : public QObject, public ItemSerializerPlugin, public GidExtractorInterface
 {
     Q_OBJECT
-    Q_INTERFACES( Akonadi::ItemSerializerPlugin Akonadi::GidExtractorInterface)
+    Q_INTERFACES(Akonadi::ItemSerializerPlugin Akonadi::GidExtractorInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginMail")
 public:
-    bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
-    void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
-    QSet<QByteArray> parts( const Item &item ) const;
-    QString extractGid(const Item& item) const;
+    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version);
+    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version);
+    QSet<QByteArray> parts(const Item &item) const;
+    QString extractGid(const Item &item) const;
 private:
     StringPool m_stringPool;
 };
-
 
 }
 

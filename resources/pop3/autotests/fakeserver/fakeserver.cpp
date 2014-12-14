@@ -67,8 +67,9 @@ FakeServer::FakeServer(QObject *parent)
 
 FakeServer::~FakeServer()
 {
-    if (mConnections > 0)
+    if (mConnections > 0) {
         disconnect(mTcpServerConnection, &QTcpSocket::readyRead, this, &FakeServer::dataAvailable);
+    }
 
     delete mTcpServer;
     mTcpServer = 0;

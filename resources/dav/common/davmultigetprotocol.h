@@ -26,7 +26,7 @@
  */
 class DavMultigetProtocol : public DavProtocolBase
 {
-  public:
+public:
     /**
      * Destroys the DAV protocol
      */
@@ -36,7 +36,7 @@ class DavMultigetProtocol : public DavProtocolBase
      * Returns the XML document that represents a MULTIGET DAV query to
      * list all DAV resources with the given @p urls.
      */
-    virtual QDomDocument itemsReportQuery( const QStringList &urls ) const = 0;
+    virtual QDomDocument itemsReportQuery(const QStringList &urls) const = 0;
 
     /**
      * Returns the namespace used by protocol-specific elements found in responses.

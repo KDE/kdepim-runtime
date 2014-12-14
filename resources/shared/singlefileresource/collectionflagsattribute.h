@@ -23,20 +23,21 @@
 #include <attribute.h>
 #include "akonadi-singlefileresource_export.h"
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionFlagsAttribute : public Akonadi::Attribute
 {
-  public:
-    explicit CollectionFlagsAttribute( const QList<QByteArray> &flags = QList<QByteArray>() );
-    void setFlags( const QList<QByteArray> &flags );
+public:
+    explicit CollectionFlagsAttribute(const QList<QByteArray> &flags = QList<QByteArray>());
+    void setFlags(const QList<QByteArray> &flags);
     QList<QByteArray> flags() const;
     QByteArray type() const Q_DECL_OVERRIDE;
     Attribute *clone() const Q_DECL_OVERRIDE;
     QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
-  private:
+private:
     QList<QByteArray> mFlags;
 };
 

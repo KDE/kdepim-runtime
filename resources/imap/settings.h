@@ -31,39 +31,39 @@ class ImapAccount;
 
 class Settings : public SettingsBase
 {
-  Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Wallet" )
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Wallet")
 public:
-    static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap( MailTransport::Transport::EnumAuthenticationType::type authType );
+    static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap(MailTransport::Transport::EnumAuthenticationType::type authType);
 
-    explicit Settings( WId = 0 );
-    void setWinId( WId );
+    explicit Settings(WId = 0);
+    void setWinId(WId);
 
     virtual void requestPassword();
     virtual void requestManualAuth();
 
-    virtual void loadAccount( ImapAccount *account ) const;
+    virtual void loadAccount(ImapAccount *account) const;
 
     QString rootRemoteId() const;
-    virtual void renameRootCollection( const QString &newName );
+    virtual void renameRootCollection(const QString &newName);
 
     virtual void clearCachedPassword();
     virtual void cleanup();
 
 signals:
-    void passwordRequestCompleted( const QString &password, bool userRejected );
+    void passwordRequestCompleted(const QString &password, bool userRejected);
 
 public slots:
-    Q_SCRIPTABLE virtual QString password( bool *userRejected = 0 ) const;
-    Q_SCRIPTABLE virtual void setPassword( const QString &password );
-    Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString & password);
-    Q_SCRIPTABLE virtual QString sieveCustomPassword( bool *userRejected = 0 ) const;
+    Q_SCRIPTABLE virtual QString password(bool *userRejected = 0) const;
+    Q_SCRIPTABLE virtual void setPassword(const QString &password);
+    Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString &password);
+    Q_SCRIPTABLE virtual QString sieveCustomPassword(bool *userRejected = 0) const;
 
 protected slots:
-    virtual void onWalletOpened( bool success );
-    virtual void onDialogFinished( int result );
+    virtual void onWalletOpened(bool success);
+    virtual void onDialogFinished(int result);
 
-    void onRootCollectionFetched( KJob *job );
+    void onRootCollectionFetched(KJob *job);
 
 protected:
     WId m_winId;

@@ -37,21 +37,22 @@ using namespace Akonadi;
 
 class CollectionModifyTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    CollectionModifyTest() : QObject(), mStore( 0 ), mDir( 0 ) {}
+public:
+    CollectionModifyTest() : QObject(), mStore(0), mDir(0) {}
 
-    ~CollectionModifyTest() {
-      delete mStore;
-      delete mDir;
+    ~CollectionModifyTest()
+    {
+        delete mStore;
+        delete mDir;
     }
 
-  private:
+private:
     MixedMaildirStore *mStore;
     QTemporaryDir *mDir;
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void init();
     void cleanup();
     void testRename();
@@ -61,571 +62,570 @@ class CollectionModifyTest : public QObject
 
 void CollectionModifyTest::init()
 {
-  mStore = new MixedMaildirStore;
+    mStore = new MixedMaildirStore;
 
-  mDir = new QTemporaryDir;
-  QVERIFY( mDir->isValid() );
-  QVERIFY( QDir(mDir->path()).exists() );
+    mDir = new QTemporaryDir;
+    QVERIFY(mDir->isValid());
+    QVERIFY(QDir(mDir->path()).exists());
 }
 
 void CollectionModifyTest::cleanup()
 {
-  delete mStore;
-  mStore = 0;
-  delete mDir;
-  mDir = 0;
+    delete mStore;
+    mStore = 0;
+    delete mDir;
+    mDir = 0;
 }
 
 void CollectionModifyTest::testRename()
 {
-  QDir topDir( mDir->path() );
-  QVERIFY( topDir.mkdir( QLatin1String( "topLevel" ) ) );
-  QVERIFY( topDir.cd( QLatin1String( "topLevel" ) ) );
+    QDir topDir(mDir->path());
+    QVERIFY(topDir.mkdir(QLatin1String("topLevel")));
+    QVERIFY(topDir.cd(QLatin1String("topLevel")));
 
-  KPIM::Maildir topLevelMd( topDir.path(), true );
-  QVERIFY( topLevelMd.isValid( false ) );
+    KPIM::Maildir topLevelMd(topDir.path(), true);
+    QVERIFY(topLevelMd.isValid(false));
 
-  KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
-  KPIM::Maildir md1_2( md1.addSubFolder( "collection1_2" ), false );
+    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
+    KPIM::Maildir md1_2(md1.addSubFolder("collection1_2"), false);
 
-  // simulate second level mbox in maildir parent
-  QFileInfo fileInfo1_1( KPIM::Maildir::subDirPathForFolderPath( md1.path() ),
-                         QLatin1String( "collection1_1" ) );
-  QFile file1_1( fileInfo1_1.absoluteFilePath() );
-  file1_1.open( QIODevice::WriteOnly );
-  file1_1.close();
-  QVERIFY( fileInfo1_1.exists() );
+    // simulate second level mbox in maildir parent
+    QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
+                          QLatin1String("collection1_1"));
+    QFile file1_1(fileInfo1_1.absoluteFilePath());
+    file1_1.open(QIODevice::WriteOnly);
+    file1_1.close();
+    QVERIFY(fileInfo1_1.exists());
 
-  KPIM::Maildir md2( topLevelMd.addSubFolder( "collection2" ), false );
+    KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
 
-  // simulate first level mbox
-  QFileInfo fileInfo3( topDir.path(), QLatin1String( "collection3" ) );
-  QFile file3( fileInfo3.absoluteFilePath() );
-  file3.open( QIODevice::WriteOnly );
-  file3.close();
-  QVERIFY( fileInfo3.exists() );
+    // simulate first level mbox
+    QFileInfo fileInfo3(topDir.path(), QLatin1String("collection3"));
+    QFile file3(fileInfo3.absoluteFilePath());
+    file3.open(QIODevice::WriteOnly);
+    file3.close();
+    QVERIFY(fileInfo3.exists());
 
-  // simulate first level mbox with subtree
-  QFileInfo fileInfo4( topDir.path(), QLatin1String( "collection4" ) );
-  QFile file4( fileInfo4.absoluteFilePath() );
-  file4.open( QIODevice::WriteOnly );
-  file4.close();
-  QVERIFY( fileInfo4.exists() );
+    // simulate first level mbox with subtree
+    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFile file4(fileInfo4.absoluteFilePath());
+    file4.open(QIODevice::WriteOnly);
+    file4.close();
+    QVERIFY(fileInfo4.exists());
 
-  QFileInfo subDirInfo4( KPIM::Maildir::subDirPathForFolderPath( fileInfo4.absoluteFilePath() ) );
-  QVERIFY( topDir.mkpath( subDirInfo4.absoluteFilePath() ) );
+    QFileInfo subDirInfo4(KPIM::Maildir::subDirPathForFolderPath(fileInfo4.absoluteFilePath()));
+    QVERIFY(topDir.mkpath(subDirInfo4.absoluteFilePath()));
 
-  KPIM::Maildir md4( subDirInfo4.absoluteFilePath(), true );
-  KPIM::Maildir md4_1( md4.addSubFolder( "collection4_1" ), false );
+    KPIM::Maildir md4(subDirInfo4.absoluteFilePath(), true);
+    KPIM::Maildir md4_1(md4.addSubFolder("collection4_1"), false);
 
-  // simulate second level mbox in mbox parent
-  QFileInfo fileInfo4_2( subDirInfo4.absoluteFilePath(),
-                         QLatin1String( "collection4_2" ) );
-  QFile file4_2( fileInfo4_2.absoluteFilePath() );
-  file4_2.open( QIODevice::WriteOnly );
-  file4_2.close();
-  QVERIFY( fileInfo4_2.exists() );
+    // simulate second level mbox in mbox parent
+    QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),
+                          QLatin1String("collection4_2"));
+    QFile file4_2(fileInfo4_2.absoluteFilePath());
+    file4_2.open(QIODevice::WriteOnly);
+    file4_2.close();
+    QVERIFY(fileInfo4_2.exists());
 
-  mStore->setPath( topDir.path() );
+    mStore->setPath(topDir.path());
 
-  FileStore::CollectionModifyJob *job = 0;
-  Collection collection;
+    FileStore::CollectionModifyJob *job = 0;
+    Collection collection;
 
-  // test renaming top level collection
-  topDir.cdUp();
-  QVERIFY( !topDir.exists( QLatin1String( "newTopLevel" ) ) );
+    // test renaming top level collection
+    topDir.cdUp();
+    QVERIFY(!topDir.exists(QLatin1String("newTopLevel")));
 
-  Collection topLevelCollection = mStore->topLevelCollection();
-  topLevelCollection.setName( QLatin1String( "newTopLevel" ) );
-  job = mStore->modifyCollection( topLevelCollection );
+    Collection topLevelCollection = mStore->topLevelCollection();
+    topLevelCollection.setName(QLatin1String("newTopLevel"));
+    job = mStore->modifyCollection(topLevelCollection);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  QVERIFY( topDir.exists( QLatin1String( "newTopLevel" ) ) );
-  QVERIFY( !topDir.exists( QLatin1String( "topLevel" ) ) );
-  QVERIFY( topDir.cd( QLatin1String( "newTopLevel" ) ) );
-  QCOMPARE( mStore->path(), topDir.path() );
+    QVERIFY(topDir.exists(QLatin1String("newTopLevel")));
+    QVERIFY(!topDir.exists(QLatin1String("topLevel")));
+    QVERIFY(topDir.cd(QLatin1String("newTopLevel")));
+    QCOMPARE(mStore->path(), topDir.path());
 
-  collection = job->collection();
-  QCOMPARE( collection.remoteId(), mStore->path() );
-  QCOMPARE( collection, mStore->topLevelCollection() );
+    collection = job->collection();
+    QCOMPARE(collection.remoteId(), mStore->path());
+    QCOMPARE(collection, mStore->topLevelCollection());
 
-  // test failure of renaming again
-  job = mStore->modifyCollection( topLevelCollection );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int) FileStore::Job::InvalidJobContext );
-  QCOMPARE( collection.remoteId(), mStore->path() );
-  QCOMPARE( collection, mStore->topLevelCollection() );
+    // test failure of renaming again
+    job = mStore->modifyCollection(topLevelCollection);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(collection.remoteId(), mStore->path());
+    QCOMPARE(collection, mStore->topLevelCollection());
 
-  // adjust local handles
-  topLevelMd = KPIM::Maildir( topDir.path(), true );
-  QVERIFY( topLevelMd.isValid( false ) );
+    // adjust local handles
+    topLevelMd = KPIM::Maildir(topDir.path(), true);
+    QVERIFY(topLevelMd.isValid(false));
 
-  md1 = topLevelMd.subFolder( "collection1" );
-  QVERIFY( md1.isValid( false ) );
-  md1_2 = md1.subFolder( "collection1_2" );
+    md1 = topLevelMd.subFolder("collection1");
+    QVERIFY(md1.isValid(false));
+    md1_2 = md1.subFolder("collection1_2");
 
-  fileInfo1_1 = QFileInfo( KPIM::Maildir::subDirPathForFolderPath( md1.path() ),
-                           QLatin1String( "collection1_1" ) );
-  QVERIFY( fileInfo1_1.exists() );
+    fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
+                            QLatin1String("collection1_1"));
+    QVERIFY(fileInfo1_1.exists());
 
-  md2 = topLevelMd.subFolder( "collection2" );
+    md2 = topLevelMd.subFolder("collection2");
 
-  fileInfo3 = QFileInfo( topDir.path(), QLatin1String( "collection3" ) );
-  QVERIFY( fileInfo3.exists() );
+    fileInfo3 = QFileInfo(topDir.path(), QLatin1String("collection3"));
+    QVERIFY(fileInfo3.exists());
 
-  fileInfo4 = QFileInfo( topDir.path(), QLatin1String( "collection4" ) );
-  QVERIFY( fileInfo4.exists() );
+    fileInfo4 = QFileInfo(topDir.path(), QLatin1String("collection4"));
+    QVERIFY(fileInfo4.exists());
 
-  subDirInfo4 = QFileInfo( KPIM::Maildir::subDirPathForFolderPath( fileInfo4.absoluteFilePath() ) );
-  QVERIFY( subDirInfo4.exists() );
+    subDirInfo4 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(fileInfo4.absoluteFilePath()));
+    QVERIFY(subDirInfo4.exists());
 
-  md4 = KPIM::Maildir( subDirInfo4.absoluteFilePath(), true );
-  QVERIFY( md4.isValid( false ) );
-  md4_1 = md4.subFolder( "collection4_1" );
+    md4 = KPIM::Maildir(subDirInfo4.absoluteFilePath(), true);
+    QVERIFY(md4.isValid(false));
+    md4_1 = md4.subFolder("collection4_1");
 
-  fileInfo4_2 = QFileInfo( subDirInfo4.absoluteFilePath(),
-                           QLatin1String( "collection4_2" ) );
-  QVERIFY( fileInfo4_2.exists() );
+    fileInfo4_2 = QFileInfo(subDirInfo4.absoluteFilePath(),
+                            QLatin1String("collection4_2"));
+    QVERIFY(fileInfo4_2.exists());
 
-  QCOMPARE( topLevelMd.subFolderList(), QStringList() << QLatin1String( "collection1" ) << QLatin1String( "collection2" ) );
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2"));
 
-  // test rename first level maildir leaf
-  Collection collection2;
-  collection2.setRemoteId( QLatin1String( "collection2" ) );
-  collection2.setParentCollection( mStore->topLevelCollection() );
-  collection2.setName( QLatin1String( "collection2_renamed" ) );
+    // test rename first level maildir leaf
+    Collection collection2;
+    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setParentCollection(mStore->topLevelCollection());
+    collection2.setName(QLatin1String("collection2_renamed"));
 
-  job = mStore->modifyCollection( collection2 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    job = mStore->modifyCollection(collection2);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
-  QCOMPARE( collection.remoteId(), collection.name() );
-  QCOMPARE( collection, collection2 );
-  QCOMPARE( topLevelMd.subFolderList(), QStringList() << QLatin1String( "collection1" ) << QLatin1String( "collection2_renamed" ) );
-  QVERIFY( !md2.isValid( false ) );
-  md2 = topLevelMd.subFolder( collection.remoteId() );
-  QVERIFY( md2.isValid( false ) );
+    collection = job->collection();
+    QCOMPARE(collection.remoteId(), collection.name());
+    QCOMPARE(collection, collection2);
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2_renamed"));
+    QVERIFY(!md2.isValid(false));
+    md2 = topLevelMd.subFolder(collection.remoteId());
+    QVERIFY(md2.isValid(false));
 
-  // test failure of renaming again
-  job = mStore->modifyCollection( collection2 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int) FileStore::Job::InvalidJobContext );
-  QCOMPARE( topLevelMd.subFolderList(), QStringList() << QLatin1String( "collection1" ) << QLatin1String( "collection2_renamed" ) );
-  QVERIFY( md2.isValid( false ) );
+    // test failure of renaming again
+    job = mStore->modifyCollection(collection2);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2_renamed"));
+    QVERIFY(md2.isValid(false));
 
-  // test renaming of first level mbox leaf
-  Collection collection3;
-  collection3.setRemoteId( QLatin1String( "collection3" ) );
-  collection3.setParentCollection( mStore->topLevelCollection() );
-  collection3.setName( QLatin1String( "collection3_renamed" ) );
+    // test renaming of first level mbox leaf
+    Collection collection3;
+    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setParentCollection(mStore->topLevelCollection());
+    collection3.setName(QLatin1String("collection3_renamed"));
 
-  job = mStore->modifyCollection( collection3 );
+    job = mStore->modifyCollection(collection3);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
-  QCOMPARE( collection.remoteId(), collection.name() );
-  QCOMPARE( collection, collection3 );
-  fileInfo3.refresh();
-  QVERIFY( !fileInfo3.exists() );
-  fileInfo3 = QFileInfo( topDir.path(), collection.remoteId() );
-  QVERIFY( fileInfo3.exists() );
+    collection = job->collection();
+    QCOMPARE(collection.remoteId(), collection.name());
+    QCOMPARE(collection, collection3);
+    fileInfo3.refresh();
+    QVERIFY(!fileInfo3.exists());
+    fileInfo3 = QFileInfo(topDir.path(), collection.remoteId());
+    QVERIFY(fileInfo3.exists());
 
-  // test failure of renaming again
-  job = mStore->modifyCollection( collection3 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int) FileStore::Job::InvalidJobContext );
-  fileInfo3.refresh();
-  QVERIFY( fileInfo3.exists() );
+    // test failure of renaming again
+    job = mStore->modifyCollection(collection3);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    fileInfo3.refresh();
+    QVERIFY(fileInfo3.exists());
 
-  // test renaming second level maildir in mbox parent
-  Collection collection4;
-  collection4.setRemoteId( QLatin1String( "collection4" ) );
-  collection4.setParentCollection( mStore->topLevelCollection() );
-  collection4.setName( QLatin1String( "collection4" ) );
+    // test renaming second level maildir in mbox parent
+    Collection collection4;
+    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setParentCollection(mStore->topLevelCollection());
+    collection4.setName(QLatin1String("collection4"));
 
-  Collection collection4_1;
-  collection4_1.setRemoteId( QLatin1String( "collection4_1" ) );
-  collection4_1.setParentCollection( collection4 );
-  collection4_1.setName( QLatin1String( "collection4_1_renamed" ) );
+    Collection collection4_1;
+    collection4_1.setRemoteId(QLatin1String("collection4_1"));
+    collection4_1.setParentCollection(collection4);
+    collection4_1.setName(QLatin1String("collection4_1_renamed"));
 
-  job = mStore->modifyCollection( collection4_1 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    job = mStore->modifyCollection(collection4_1);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
-  QCOMPARE( collection.remoteId(), collection.name() );
-  QCOMPARE( collection, collection4_1 );
-  QCOMPARE( md4.subFolderList(), QStringList() << QLatin1String( "collection4_1_renamed" ) );
-  QVERIFY( !md4_1.isValid( false ) );
-  md4_1 = md4.subFolder( collection.remoteId() );
-  QVERIFY( md4_1.isValid( false ) );
+    collection = job->collection();
+    QCOMPARE(collection.remoteId(), collection.name());
+    QCOMPARE(collection, collection4_1);
+    QCOMPARE(md4.subFolderList(), QStringList() << QLatin1String("collection4_1_renamed"));
+    QVERIFY(!md4_1.isValid(false));
+    md4_1 = md4.subFolder(collection.remoteId());
+    QVERIFY(md4_1.isValid(false));
 
-  // test failure of renaming again
-  job = mStore->modifyCollection( collection4_1 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int) FileStore::Job::InvalidJobContext );
-  QCOMPARE( md4.subFolderList(), QStringList() << QLatin1String( "collection4_1_renamed" ) );
-  QVERIFY( md4_1.isValid( false ) );
+    // test failure of renaming again
+    job = mStore->modifyCollection(collection4_1);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(md4.subFolderList(), QStringList() << QLatin1String("collection4_1_renamed"));
+    QVERIFY(md4_1.isValid(false));
 
-  // test renaming of second level mbox in mbox parent
-  Collection collection4_2;
-  collection4_2.setRemoteId( QLatin1String( "collection4_2" ) );
-  collection4_2.setParentCollection( collection4 );
-  collection4_2.setName( QLatin1String( "collection4_2_renamed" ) );
+    // test renaming of second level mbox in mbox parent
+    Collection collection4_2;
+    collection4_2.setRemoteId(QLatin1String("collection4_2"));
+    collection4_2.setParentCollection(collection4);
+    collection4_2.setName(QLatin1String("collection4_2_renamed"));
 
-  job = mStore->modifyCollection( collection4_2 );
+    job = mStore->modifyCollection(collection4_2);
 
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
-  QCOMPARE( collection.remoteId(), collection.name() );
-  QCOMPARE( collection, collection4_2 );
-  fileInfo4_2.refresh();
-  QVERIFY( !fileInfo4_2.exists() );
-  fileInfo4_2 = QFileInfo( md4.path(), collection.remoteId() );
-  QVERIFY( fileInfo4_2.exists() );
+    collection = job->collection();
+    QCOMPARE(collection.remoteId(), collection.name());
+    QCOMPARE(collection, collection4_2);
+    fileInfo4_2.refresh();
+    QVERIFY(!fileInfo4_2.exists());
+    fileInfo4_2 = QFileInfo(md4.path(), collection.remoteId());
+    QVERIFY(fileInfo4_2.exists());
 
-  // test failure of renaming again
-  job = mStore->modifyCollection( collection4_2 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int) FileStore::Job::InvalidJobContext );
-  fileInfo4_2.refresh();
-  QVERIFY( fileInfo4_2.exists() );
+    // test failure of renaming again
+    job = mStore->modifyCollection(collection4_2);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    fileInfo4_2.refresh();
+    QVERIFY(fileInfo4_2.exists());
 
-  // test renaming of maildir with subtree
-  Collection collection1;
-  collection1.setRemoteId( QLatin1String( "collection1" ) );
-  collection1.setParentCollection( mStore->topLevelCollection() );
-  collection1.setName( QLatin1String( "collection1_renamed" ) );
+    // test renaming of maildir with subtree
+    Collection collection1;
+    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setParentCollection(mStore->topLevelCollection());
+    collection1.setName(QLatin1String("collection1_renamed"));
 
-  job = mStore->modifyCollection( collection1 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    job = mStore->modifyCollection(collection1);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
-  QCOMPARE( collection.remoteId(), collection.name() );
-  QCOMPARE( collection, collection1 );
-  QCOMPARE( topLevelMd.subFolderList(), QStringList() << QLatin1String( "collection1_renamed" ) << QLatin1String( "collection2_renamed" ) );
-  QVERIFY( !md1.isValid( false ) );
-  md1 = topLevelMd.subFolder( collection.remoteId() );
-  QVERIFY( md1.isValid( false ) );
-  fileInfo1_1.refresh();
-  QVERIFY( !fileInfo1_1.exists() );
-  QVERIFY( !md1_2.isValid( false ) );
-  fileInfo1_1 = QFileInfo( KPIM::Maildir::subDirPathForFolderPath( md1.path() ),
-                           QLatin1String( "collection1_1" ) );
-  QVERIFY( fileInfo1_1.exists() );
-  md1_2 = md1.subFolder( QLatin1String( "collection1_2" ) );
-  QVERIFY( md1_2.isValid( false ) );
+    collection = job->collection();
+    QCOMPARE(collection.remoteId(), collection.name());
+    QCOMPARE(collection, collection1);
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1_renamed") << QLatin1String("collection2_renamed"));
+    QVERIFY(!md1.isValid(false));
+    md1 = topLevelMd.subFolder(collection.remoteId());
+    QVERIFY(md1.isValid(false));
+    fileInfo1_1.refresh();
+    QVERIFY(!fileInfo1_1.exists());
+    QVERIFY(!md1_2.isValid(false));
+    fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
+                            QLatin1String("collection1_1"));
+    QVERIFY(fileInfo1_1.exists());
+    md1_2 = md1.subFolder(QLatin1String("collection1_2"));
+    QVERIFY(md1_2.isValid(false));
 
-  // test failure of renaming again
-  job = mStore->modifyCollection( collection1 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int) FileStore::Job::InvalidJobContext );
-  QCOMPARE( topLevelMd.subFolderList(), QStringList() << QLatin1String( "collection1_renamed" ) << QLatin1String( "collection2_renamed" ) );
-  QVERIFY( md2.isValid( false ) );
-  QVERIFY( fileInfo1_1.exists() );
-  QVERIFY( md1_2.isValid( false ) );
+    // test failure of renaming again
+    job = mStore->modifyCollection(collection1);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1_renamed") << QLatin1String("collection2_renamed"));
+    QVERIFY(md2.isValid(false));
+    QVERIFY(fileInfo1_1.exists());
+    QVERIFY(md1_2.isValid(false));
 
-  // test renaming of mbox with subtree
-  collection4.setName( QLatin1String( "collection4_renamed" ) );
-  job = mStore->modifyCollection( collection4 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    // test renaming of mbox with subtree
+    collection4.setName(QLatin1String("collection4_renamed"));
+    job = mStore->modifyCollection(collection4);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
-  QCOMPARE( collection.remoteId(), collection.name() );
-  QCOMPARE( collection, collection4 );
-  fileInfo4.refresh();
-  QVERIFY( !fileInfo4.exists() );
-  fileInfo4 = QFileInfo( topDir.path(), collection.remoteId() );
-  QVERIFY( fileInfo4.exists() );
-  md4 = KPIM::Maildir( KPIM::Maildir::subDirPathForFolderPath( fileInfo4.absoluteFilePath() ), true );
-  QVERIFY( md4.isValid( false ) );
+    collection = job->collection();
+    QCOMPARE(collection.remoteId(), collection.name());
+    QCOMPARE(collection, collection4);
+    fileInfo4.refresh();
+    QVERIFY(!fileInfo4.exists());
+    fileInfo4 = QFileInfo(topDir.path(), collection.remoteId());
+    QVERIFY(fileInfo4.exists());
+    md4 = KPIM::Maildir(KPIM::Maildir::subDirPathForFolderPath(fileInfo4.absoluteFilePath()), true);
+    QVERIFY(md4.isValid(false));
 
-  QVERIFY( !md4_1.isValid( false ) );
-  fileInfo4_2.refresh();
-  QVERIFY( !fileInfo4_2.exists() );
-  md4_1 = md4.subFolder( QLatin1String( "collection4_1_renamed" ) );
-  QVERIFY( md4_1.isValid( false ) );
-  fileInfo4_2 = QFileInfo( md4.path(), QLatin1String( "collection4_2_renamed" ) );
-  QVERIFY( fileInfo4_2.exists() );
+    QVERIFY(!md4_1.isValid(false));
+    fileInfo4_2.refresh();
+    QVERIFY(!fileInfo4_2.exists());
+    md4_1 = md4.subFolder(QLatin1String("collection4_1_renamed"));
+    QVERIFY(md4_1.isValid(false));
+    fileInfo4_2 = QFileInfo(md4.path(), QLatin1String("collection4_2_renamed"));
+    QVERIFY(fileInfo4_2.exists());
 
-  // test failure of renaming again
-  job = mStore->modifyCollection( collection4 );
-  QVERIFY( !job->exec() );
-  QCOMPARE( job->error(), (int) FileStore::Job::InvalidJobContext );
-  fileInfo4.refresh();
-  QVERIFY( fileInfo4.exists() );
+    // test failure of renaming again
+    job = mStore->modifyCollection(collection4);
+    QVERIFY(!job->exec());
+    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    fileInfo4.refresh();
+    QVERIFY(fileInfo4.exists());
 }
 
 void CollectionModifyTest::testIndexPreservation()
 {
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), mDir->path(), QLatin1String( "collection1" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), mDir->path(), QLatin1String( "collection2" ) ) );
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), mDir->path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), mDir->path(), QLatin1String("collection2")));
 
-  mStore->setPath( mDir->path() );
+    mStore->setPath(mDir->path());
 
-  const QVariant colListVar = QVariant::fromValue<Collection::List>( Collection::List() );
-  FileStore::CollectionModifyJob *job = 0;
-  FileStore::ItemFetchJob *itemFetch = 0;
-  QVariant var;
-  Collection::List collections;
-  Item::List items;
+    const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
+    FileStore::CollectionModifyJob *job = 0;
+    FileStore::ItemFetchJob *itemFetch = 0;
+    QVariant var;
+    Collection::List collections;
+    Item::List items;
 
-  QMap<QByteArray, int> flagCounts;
+    QMap<QByteArray, int> flagCounts;
 
-  // test renaming mbox
-  Collection collection1;
-  collection1.setRemoteId( QLatin1String( "collection1" ) );
-  collection1.setParentCollection( mStore->topLevelCollection() );
-  collection1.setName( QLatin1String( "collection1_renamed" ) );
+    // test renaming mbox
+    Collection collection1;
+    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setParentCollection(mStore->topLevelCollection());
+    collection1.setName(QLatin1String("collection1_renamed"));
 
-  job = mStore->modifyCollection( collection1 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    job = mStore->modifyCollection(collection1);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 1 );
-  QCOMPARE( collections.first(), collection1 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 1);
+    QCOMPARE(collections.first(), collection1);
 
-  const QFileInfo indexFileInfo1( mDir->path(), QLatin1String( ".collection1_renamed.index" ) );
-  QVERIFY( !indexFileInfo1.exists() );
+    const QFileInfo indexFileInfo1(mDir->path(), QLatin1String(".collection1_renamed.index"));
+    QVERIFY(!indexFileInfo1.exists());
 
-  // get the items and check the flags (see data/README)
-  itemFetch = mStore->fetchItems( collections.first() );
-  QVERIFY( itemFetch->exec() );
-  QCOMPARE( itemFetch->error(), 0 );
+    // get the items and check the flags (see data/README)
+    itemFetch = mStore->fetchItems(collections.first());
+    QVERIFY(itemFetch->exec());
+    QCOMPARE(itemFetch->error(), 0);
 
-  items = itemFetch->items();
-  QCOMPARE( (int)items.count(), 4 );
-  Q_FOREACH( const Item &item, items ) {
-    Q_FOREACH( const QByteArray &flag, item.flags() ) {
-      ++flagCounts[ flag ];
+    items = itemFetch->items();
+    QCOMPARE((int)items.count(), 4);
+    Q_FOREACH (const Item &item, items) {
+        Q_FOREACH (const QByteArray &flag, item.flags()) {
+            ++flagCounts[ flag ];
+        }
     }
-  }
 
-  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
-  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
-  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
+    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
+    QCOMPARE(flagCounts[ "$TODO" ], 1);
 
-  // test renaming maildir
-  Collection collection2;
-  collection2.setRemoteId( QLatin1String( "collection2" ) );
-  collection2.setParentCollection( mStore->topLevelCollection() );
-  collection2.setName( QLatin1String( "collection2_renamed" ) );
+    // test renaming maildir
+    Collection collection2;
+    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setParentCollection(mStore->topLevelCollection());
+    collection2.setName(QLatin1String("collection2_renamed"));
 
-  job = mStore->modifyCollection( collection2 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    job = mStore->modifyCollection(collection2);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  var = job->property( "onDiskIndexInvalidated" );
-  QVERIFY( var.isValid() );
-  QCOMPARE( var.userType(), colListVar.userType() );
+    var = job->property("onDiskIndexInvalidated");
+    QVERIFY(var.isValid());
+    QCOMPARE(var.userType(), colListVar.userType());
 
-  collections = var.value<Collection::List>();
-  QCOMPARE( (int)collections.count(), 1 );
-  QCOMPARE( collections.first(), collection2 );
+    collections = var.value<Collection::List>();
+    QCOMPARE((int)collections.count(), 1);
+    QCOMPARE(collections.first(), collection2);
 
-  const QFileInfo indexFileInfo2( mDir->path(), QLatin1String( ".collection2_renamed.index" ) );
-  QVERIFY( !indexFileInfo2.exists() );
+    const QFileInfo indexFileInfo2(mDir->path(), QLatin1String(".collection2_renamed.index"));
+    QVERIFY(!indexFileInfo2.exists());
 
-  // get the items and check the flags (see data/README)
-  itemFetch = mStore->fetchItems( collections.first() );
-  QVERIFY( itemFetch->exec() );
-  QCOMPARE( itemFetch->error(), 0 );
+    // get the items and check the flags (see data/README)
+    itemFetch = mStore->fetchItems(collections.first());
+    QVERIFY(itemFetch->exec());
+    QCOMPARE(itemFetch->error(), 0);
 
-  items = itemFetch->items();
-  QCOMPARE( (int)items.count(), 4 );
+    items = itemFetch->items();
+    QCOMPARE((int)items.count(), 4);
 
-  flagCounts.clear();
-  Q_FOREACH( const Item &item, items ) {
-    Q_FOREACH( const QByteArray &flag, item.flags() ) {
-      ++flagCounts[ flag ];
+    flagCounts.clear();
+    Q_FOREACH (const Item &item, items) {
+        Q_FOREACH (const QByteArray &flag, item.flags()) {
+            ++flagCounts[ flag ];
+        }
     }
-  }
 
-  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
-  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
-  QCOMPARE( flagCounts[ "$TODO" ], 1 );
+    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
+    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
+    QCOMPARE(flagCounts[ "$TODO" ], 1);
 }
 
 void CollectionModifyTest::testIndexCacheUpdate()
 {
-  KPIM::Maildir topLevelMd( mDir->path(), true );
-  QVERIFY( topLevelMd.isValid( false ) );
+    KPIM::Maildir topLevelMd(mDir->path(), true);
+    QVERIFY(topLevelMd.isValid(false));
 
-  KPIM::Maildir md1( topLevelMd.addSubFolder( "collection1" ), false );
+    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
 
-  // simulate first level mbox
-  QFileInfo fileInfo2( mDir->path(), QLatin1String( "collection2" ) );
-  QFile file2( fileInfo2.absoluteFilePath() );
-  file2.open( QIODevice::WriteOnly );
-  file2.close();
-  QVERIFY( fileInfo2.exists() );
+    // simulate first level mbox
+    QFileInfo fileInfo2(mDir->path(), QLatin1String("collection2"));
+    QFile file2(fileInfo2.absoluteFilePath());
+    file2.open(QIODevice::WriteOnly);
+    file2.close();
+    QVERIFY(fileInfo2.exists());
 
-  const QString colSubDir1 = KPIM::Maildir::subDirPathForFolderPath( md1.path() );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), colSubDir1, QLatin1String( "collection1_1" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), colSubDir1, QLatin1String( "collection1_2" ) ) );
+    const QString colSubDir1 = KPIM::Maildir::subDirPathForFolderPath(md1.path());
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir1, QLatin1String("collection1_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir1, QLatin1String("collection1_2")));
 
-  const QString colSubDir2 = KPIM::Maildir::subDirPathForFolderPath( fileInfo2.absoluteFilePath() );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "mbox" ), colSubDir2, QLatin1String( "collection2_1" ) ) );
-  QVERIFY( TestDataUtil::installFolder( QLatin1String( "maildir" ), colSubDir2, QLatin1String( "collection2_2" ) ) );
+    const QString colSubDir2 = KPIM::Maildir::subDirPathForFolderPath(fileInfo2.absoluteFilePath());
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir2, QLatin1String("collection2_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir2, QLatin1String("collection2_2")));
 
-  mStore->setPath( mDir->path() );
+    mStore->setPath(mDir->path());
 
-  FileStore::CollectionModifyJob *job = 0;
-  FileStore::ItemFetchJob *itemFetch = 0;
-  Collection collection;
-  Item::List items;
-  QMap<QByteArray, int> flagCounts;
+    FileStore::CollectionModifyJob *job = 0;
+    FileStore::ItemFetchJob *itemFetch = 0;
+    Collection collection;
+    Item::List items;
+    QMap<QByteArray, int> flagCounts;
 
-  // preparation: load all second level items to make sure respective index data is cached
-  Collection collection1;
-  collection1.setRemoteId( QLatin1String( "collection1" ) );
-  collection1.setParentCollection( mStore->topLevelCollection() );
-  collection1.setName( QLatin1String( "collection1" ) );
+    // preparation: load all second level items to make sure respective index data is cached
+    Collection collection1;
+    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setParentCollection(mStore->topLevelCollection());
+    collection1.setName(QLatin1String("collection1"));
 
-  Collection collection1_1;
-  collection1_1.setRemoteId( QLatin1String( "collection1_1" ) );
-  collection1_1.setParentCollection( collection1 );
-  collection1_1.setName( QLatin1String( "collection1_1" ) );
+    Collection collection1_1;
+    collection1_1.setRemoteId(QLatin1String("collection1_1"));
+    collection1_1.setParentCollection(collection1);
+    collection1_1.setName(QLatin1String("collection1_1"));
 
-  itemFetch = mStore->fetchItems( collection1_1 );
-  QVERIFY( itemFetch->exec() );
+    itemFetch = mStore->fetchItems(collection1_1);
+    QVERIFY(itemFetch->exec());
 
-  Collection collection1_2;
-  collection1_2.setRemoteId( QLatin1String( "collection1_2" ) );
-  collection1_2.setParentCollection( collection1 );
-  collection1_2.setName( QLatin1String( "collection1_2" ) );
+    Collection collection1_2;
+    collection1_2.setRemoteId(QLatin1String("collection1_2"));
+    collection1_2.setParentCollection(collection1);
+    collection1_2.setName(QLatin1String("collection1_2"));
 
-  itemFetch = mStore->fetchItems( collection1_2 );
-  QVERIFY( itemFetch->exec() );
-  Collection collection2;
-  collection2.setRemoteId( QLatin1String( "collection2" ) );
-  collection2.setParentCollection( mStore->topLevelCollection() );
-  collection2.setName( QLatin1String( "collection2" ) );
+    itemFetch = mStore->fetchItems(collection1_2);
+    QVERIFY(itemFetch->exec());
+    Collection collection2;
+    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setParentCollection(mStore->topLevelCollection());
+    collection2.setName(QLatin1String("collection2"));
 
-  Collection collection2_1;
-  collection2_1.setRemoteId( QLatin1String( "collection2_1" ) );
-  collection2_1.setParentCollection( collection2 );
-  collection2_1.setName( QLatin1String( "collection2_1" ) );
+    Collection collection2_1;
+    collection2_1.setRemoteId(QLatin1String("collection2_1"));
+    collection2_1.setParentCollection(collection2);
+    collection2_1.setName(QLatin1String("collection2_1"));
 
-  itemFetch = mStore->fetchItems( collection2_1 );
-  QVERIFY( itemFetch->exec() );
-  Collection collection2_2;
-  collection2_2.setRemoteId( QLatin1String( "collection2_2" ) );
-  collection2_2.setParentCollection( collection2 );
-  collection2_2.setName( QLatin1String( "collection2_2" ) );
+    itemFetch = mStore->fetchItems(collection2_1);
+    QVERIFY(itemFetch->exec());
+    Collection collection2_2;
+    collection2_2.setRemoteId(QLatin1String("collection2_2"));
+    collection2_2.setParentCollection(collection2);
+    collection2_2.setName(QLatin1String("collection2_2"));
 
-  itemFetch = mStore->fetchItems( collection2_2 );
-  QVERIFY( itemFetch->exec() );
+    itemFetch = mStore->fetchItems(collection2_2);
+    QVERIFY(itemFetch->exec());
 
-  // test renaming the maildir parent
-  collection1.setName( QLatin1String( "collection1_renamed" ) );
+    // test renaming the maildir parent
+    collection1.setName(QLatin1String("collection1_renamed"));
 
-  job = mStore->modifyCollection( collection1 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    job = mStore->modifyCollection(collection1);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
+    collection = job->collection();
 
-  // get the items of the children and check the flags (see data/README)
-  collection1_1.setParentCollection( collection );
-  itemFetch = mStore->fetchItems( collection1_1 );
-  QVERIFY( itemFetch->exec() );
-  QCOMPARE( itemFetch->error(), 0 );
+    // get the items of the children and check the flags (see data/README)
+    collection1_1.setParentCollection(collection);
+    itemFetch = mStore->fetchItems(collection1_1);
+    QVERIFY(itemFetch->exec());
+    QCOMPARE(itemFetch->error(), 0);
 
-  items = itemFetch->items();
-  QCOMPARE( (int)items.count(), 4 );
-  Q_FOREACH( const Item &item, items ) {
-    Q_FOREACH( const QByteArray &flag, item.flags() ) {
-      ++flagCounts[ flag ];
+    items = itemFetch->items();
+    QCOMPARE((int)items.count(), 4);
+    Q_FOREACH (const Item &item, items) {
+        Q_FOREACH (const QByteArray &flag, item.flags()) {
+            ++flagCounts[ flag ];
+        }
     }
-  }
 
-  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
-  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
-  QCOMPARE( flagCounts[ "$TODO" ], 1 );
-  flagCounts.clear();
+    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
+    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
+    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    flagCounts.clear();
 
-  collection1_2.setParentCollection( collection );
-  itemFetch = mStore->fetchItems( collection1_2 );
-  QVERIFY( itemFetch->exec() );
-  QCOMPARE( itemFetch->error(), 0 );
+    collection1_2.setParentCollection(collection);
+    itemFetch = mStore->fetchItems(collection1_2);
+    QVERIFY(itemFetch->exec());
+    QCOMPARE(itemFetch->error(), 0);
 
-  items = itemFetch->items();
-  QCOMPARE( (int)items.count(), 4 );
-  Q_FOREACH( const Item &item, items ) {
-    Q_FOREACH( const QByteArray &flag, item.flags() ) {
-      ++flagCounts[ flag ];
+    items = itemFetch->items();
+    QCOMPARE((int)items.count(), 4);
+    Q_FOREACH (const Item &item, items) {
+        Q_FOREACH (const QByteArray &flag, item.flags()) {
+            ++flagCounts[ flag ];
+        }
     }
-  }
 
-  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
-  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
-  QCOMPARE( flagCounts[ "$TODO" ], 1 );
-  flagCounts.clear();
+    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
+    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
+    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    flagCounts.clear();
 
-  // test renaming the mbox parent
-  collection2.setName( QLatin1String( "collection2_renamed" ) );
+    // test renaming the mbox parent
+    collection2.setName(QLatin1String("collection2_renamed"));
 
-  job = mStore->modifyCollection( collection2 );
-  QVERIFY( job->exec() );
-  QCOMPARE( job->error(), 0 );
+    job = mStore->modifyCollection(collection2);
+    QVERIFY(job->exec());
+    QCOMPARE(job->error(), 0);
 
-  collection = job->collection();
+    collection = job->collection();
 
-  // get the items of the children and check the flags (see data/README)
-  collection2_1.setParentCollection( collection );
-  itemFetch = mStore->fetchItems( collection2_1 );
-  QVERIFY( itemFetch->exec() );
-  QCOMPARE( itemFetch->error(), 0 );
+    // get the items of the children and check the flags (see data/README)
+    collection2_1.setParentCollection(collection);
+    itemFetch = mStore->fetchItems(collection2_1);
+    QVERIFY(itemFetch->exec());
+    QCOMPARE(itemFetch->error(), 0);
 
-  items = itemFetch->items();
-  QCOMPARE( (int)items.count(), 4 );
-  Q_FOREACH( const Item &item, items ) {
-    Q_FOREACH( const QByteArray &flag, item.flags() ) {
-      ++flagCounts[ flag ];
+    items = itemFetch->items();
+    QCOMPARE((int)items.count(), 4);
+    Q_FOREACH (const Item &item, items) {
+        Q_FOREACH (const QByteArray &flag, item.flags()) {
+            ++flagCounts[ flag ];
+        }
     }
-  }
 
-  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
-  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
-  QCOMPARE( flagCounts[ "$TODO" ], 1 );
-  flagCounts.clear();
+    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
+    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
+    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    flagCounts.clear();
 
-  collection2_2.setParentCollection( collection );
-  itemFetch = mStore->fetchItems( collection2_2 );
-  QVERIFY( itemFetch->exec() );
-  QCOMPARE( itemFetch->error(), 0 );
+    collection2_2.setParentCollection(collection);
+    itemFetch = mStore->fetchItems(collection2_2);
+    QVERIFY(itemFetch->exec());
+    QCOMPARE(itemFetch->error(), 0);
 
-  items = itemFetch->items();
-  QCOMPARE( (int)items.count(), 4 );
-  Q_FOREACH( const Item &item, items ) {
-    Q_FOREACH( const QByteArray &flag, item.flags() ) {
-      ++flagCounts[ flag ];
+    items = itemFetch->items();
+    QCOMPARE((int)items.count(), 4);
+    Q_FOREACH (const Item &item, items) {
+        Q_FOREACH (const QByteArray &flag, item.flags()) {
+            ++flagCounts[ flag ];
+        }
     }
-  }
 
-  QCOMPARE( flagCounts[ "\\SEEN" ], 2 );
-  QCOMPARE( flagCounts[ "\\FLAGGED" ], 1 );
-  QCOMPARE( flagCounts[ "$TODO" ], 1 );
-  flagCounts.clear();
+    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
+    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
+    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    flagCounts.clear();
 }
 
-QTEST_MAIN( CollectionModifyTest )
+QTEST_MAIN(CollectionModifyTest)
 
 #include "collectionmodifytest.moc"
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

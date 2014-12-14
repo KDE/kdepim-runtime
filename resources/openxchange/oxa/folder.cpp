@@ -24,176 +24,175 @@
 using namespace OXA;
 
 Folder::Permissions::Permissions()
-  : mFolderPermission( NoPermission ),
-    mObjectReadPermission( NoReadPermission ),
-    mObjectWritePermission( NoWritePermission ),
-    mObjectDeletePermission( NoDeletePermission ),
-    mAdminFlag( false )
+    : mFolderPermission(NoPermission),
+      mObjectReadPermission(NoReadPermission),
+      mObjectWritePermission(NoWritePermission),
+      mObjectDeletePermission(NoDeletePermission),
+      mAdminFlag(false)
 {
 }
 
-void Folder::Permissions::setFolderPermission( FolderPermission permission )
+void Folder::Permissions::setFolderPermission(FolderPermission permission)
 {
-  mFolderPermission = permission;
+    mFolderPermission = permission;
 }
 
 Folder::Permissions::FolderPermission Folder::Permissions::folderPermission() const
 {
-  return mFolderPermission;
+    return mFolderPermission;
 }
 
-void Folder::Permissions::setObjectReadPermission( ObjectReadPermission permission )
+void Folder::Permissions::setObjectReadPermission(ObjectReadPermission permission)
 {
-  mObjectReadPermission = permission;
+    mObjectReadPermission = permission;
 }
 
 Folder::Permissions::ObjectReadPermission Folder::Permissions::objectReadPermission() const
 {
-  return mObjectReadPermission;
+    return mObjectReadPermission;
 }
 
-void Folder::Permissions::setObjectWritePermission( ObjectWritePermission permission )
+void Folder::Permissions::setObjectWritePermission(ObjectWritePermission permission)
 {
-  mObjectWritePermission = permission;
+    mObjectWritePermission = permission;
 }
 
 Folder::Permissions::ObjectWritePermission Folder::Permissions::objectWritePermission() const
 {
-  return mObjectWritePermission;
+    return mObjectWritePermission;
 }
 
-void Folder::Permissions::setObjectDeletePermission( ObjectDeletePermission permission )
+void Folder::Permissions::setObjectDeletePermission(ObjectDeletePermission permission)
 {
-  mObjectDeletePermission = permission;
+    mObjectDeletePermission = permission;
 }
 
 Folder::Permissions::ObjectDeletePermission Folder::Permissions::objectDeletePermission() const
 {
-  return mObjectDeletePermission;
+    return mObjectDeletePermission;
 }
 
-void Folder::Permissions::setAdminFlag( bool value )
+void Folder::Permissions::setAdminFlag(bool value)
 {
-  mAdminFlag = value;
+    mAdminFlag = value;
 }
 
 bool Folder::Permissions::adminFlag() const
 {
-  return mAdminFlag;
+    return mAdminFlag;
 }
-
 
 Folder::Folder()
-  : mObjectId( -1 ), mFolderId( -1 )
+    : mObjectId(-1), mFolderId(-1)
 {
 }
 
-void Folder::setObjectStatus( ObjectStatus status )
+void Folder::setObjectStatus(ObjectStatus status)
 {
-  mObjectStatus = status;
+    mObjectStatus = status;
 }
 
 Folder::ObjectStatus Folder::objectStatus() const
 {
-  return mObjectStatus;
+    return mObjectStatus;
 }
 
-void Folder::setTitle( const QString &title )
+void Folder::setTitle(const QString &title)
 {
-  mTitle = title;
+    mTitle = title;
 }
 
 QString Folder::title() const
 {
-  return mTitle;
+    return mTitle;
 }
 
-void Folder::setType( Type type )
+void Folder::setType(Type type)
 {
-  mType = type;
+    mType = type;
 }
 
 Folder::Type Folder::type() const
 {
-  return mType;
+    return mType;
 }
 
-void Folder::setModule( Module module )
+void Folder::setModule(Module module)
 {
-  mModule = module;
+    mModule = module;
 }
 
 Folder::Module Folder::module() const
 {
-  return mModule;
+    return mModule;
 }
 
-void Folder::setObjectId( qlonglong id )
+void Folder::setObjectId(qlonglong id)
 {
-  mObjectId = id;
+    mObjectId = id;
 }
 
 qlonglong Folder::objectId() const
 {
-  return mObjectId;
+    return mObjectId;
 }
 
-void Folder::setFolderId( qlonglong id )
+void Folder::setFolderId(qlonglong id)
 {
-  mFolderId = id;
+    mFolderId = id;
 }
 
 qlonglong Folder::folderId() const
 {
-  return mFolderId;
+    return mFolderId;
 }
 
-void Folder::setIsDefaultFolder( bool value )
+void Folder::setIsDefaultFolder(bool value)
 {
-  mIsDefaultFolder = value;
+    mIsDefaultFolder = value;
 }
 
 bool Folder::isDefaultFolder() const
 {
-  return mIsDefaultFolder;
+    return mIsDefaultFolder;
 }
 
-void Folder::setOwner( qlonglong id )
+void Folder::setOwner(qlonglong id)
 {
-  mOwner = id;
+    mOwner = id;
 }
 
 qlonglong Folder::owner() const
 {
-  return mOwner;
+    return mOwner;
 }
 
-void Folder::setLastModified( const QString &timeStamp )
+void Folder::setLastModified(const QString &timeStamp)
 {
-  mLastModified = timeStamp;
+    mLastModified = timeStamp;
 }
 
 QString Folder::lastModified() const
 {
-  return mLastModified;
+    return mLastModified;
 }
 
-void Folder::setUserPermissions( const UserPermissions &permissions )
+void Folder::setUserPermissions(const UserPermissions &permissions)
 {
-  mUserPermissions = permissions;
+    mUserPermissions = permissions;
 }
 
 Folder::UserPermissions Folder::userPermissions() const
 {
-  return mUserPermissions;
+    return mUserPermissions;
 }
 
-void Folder::setGroupPermissions( const GroupPermissions &permissions )
+void Folder::setGroupPermissions(const GroupPermissions &permissions)
 {
-  mGroupPermissions = permissions;
+    mGroupPermissions = permissions;
 }
 
 Folder::GroupPermissions Folder::groupPermissions() const
 {
-  return mGroupPermissions;
+    return mGroupPermissions;
 }

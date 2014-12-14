@@ -30,19 +30,18 @@ using namespace KAlarmCal;
 
 class AlarmTypeWidget : public QWidget
 {
-        Q_OBJECT
-    public:
-        AlarmTypeWidget(QWidget* parent, QLayout* layout);
-        void setAlarmTypes(CalEvent::Types);
-        CalEvent::Types alarmTypes() const;
+    Q_OBJECT
+public:
+    AlarmTypeWidget(QWidget *parent, QLayout *layout);
+    void setAlarmTypes(CalEvent::Types);
+    CalEvent::Types alarmTypes() const;
 
-    signals:
-        void changed();
+signals:
+    void changed();
 
-    private:
-        Ui::AlarmTypeWidget ui;
+private:
+    Ui::AlarmTypeWidget ui;
 };
 
 #endif // ALARMTYPEWIDGET_H
 
-// vim: et sw=4:

@@ -26,24 +26,25 @@
 
 #include "object.h"
 
-namespace OXA {
+namespace OXA
+{
 
 class ObjectModifyJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ObjectModifyJob( const Object &object, QObject *parent = Q_NULLPTR );
+public:
+    explicit ObjectModifyJob(const Object &object, QObject *parent = Q_NULLPTR);
 
     virtual void start();
 
     Object object() const;
 
-  private Q_SLOTS:
-    void preloadingJobFinished( KJob* );
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void preloadingJobFinished(KJob *);
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Object mObject;
 };
 

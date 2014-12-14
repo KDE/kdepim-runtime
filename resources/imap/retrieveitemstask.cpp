@@ -51,12 +51,12 @@
 
 RetrieveItemsTask::RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
-    m_session(0),
-    m_fetchedMissingBodies(-1),
-    m_fetchMissingBodies(false),
-    m_batchFetcher(0),
-    m_uidBasedFetch(true),
-    m_flagsChanged(false)
+      m_session(0),
+      m_fetchedMissingBodies(-1),
+      m_fetchMissingBodies(false),
+      m_batchFetcher(0),
+      m_uidBasedFetch(true),
+      m_flagsChanged(false)
 {
 
 }
@@ -75,7 +75,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     emitPercent(0);
     // Prevent fetching items from noselect folders.
     if (collection().hasAttribute("noselect")) {
-        NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>(collection().attribute("noselect"));
+        NoSelectAttribute *noselect = static_cast<NoSelectAttribute *>(collection().attribute("noselect"));
         if (noselect->noSelect()) {
             qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
             itemsRetrievalDone();
@@ -87,7 +87,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
 
     const Akonadi::Collection col = collection();
     if (m_fetchMissingBodies && col.cachePolicy()
-        .localParts().contains( QLatin1String(Akonadi::MessagePart::Body))) { //disconnected mode, make sure we really have the body cached
+            .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {  //disconnected mode, make sure we really have the body cached
 
         Akonadi::Session *session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
         Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(col, session);
@@ -101,10 +101,10 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     }
 }
 
-BatchFetcher* RetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
-                                                    const KIMAP::ImapSet &set,
-                                                    const KIMAP::FetchJob::FetchScope &scope,
-                                                    int batchSize, KIMAP::Session* session)
+BatchFetcher *RetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
+        const KIMAP::ImapSet &set,
+        const KIMAP::FetchJob::FetchScope &scope,
+        int batchSize, KIMAP::Session *session)
 {
     return new BatchFetcher(messageHelper, set, scope, batchSize, session);
 }
@@ -118,8 +118,8 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
         return;
     } else {
         int i = 0;
-        Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob*>(job);
-        Q_FOREACH(const Akonadi::Item &item, fetch->items())  {
+        Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob *>(job);
+        Q_FOREACH (const Akonadi::Item &item, fetch->items())  {
             if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
                 qCWarning(IMAPRESOURCE_LOG) << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
                 uids.append(item.remoteId().toInt());
@@ -138,7 +138,6 @@ void RetrieveItemsTask::onFetchItemsWithoutBodiesDone(const QList<qint64> &items
     m_messageUidsMissingBody = items;
     startRetrievalTasks();
 }
-
 
 void RetrieveItemsTask::startRetrievalTasks()
 {
@@ -176,7 +175,7 @@ void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
-        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
+        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
         triggerExpunge(select->mailBox());
     }
 }
@@ -198,7 +197,7 @@ void RetrieveItemsTask::onExpungeDone(KJob *job)
     }
     // Except for network errors.
     if (job->error() && m_session->state() == KIMAP::Session::Disconnected) {
-        cancelTask( job->errorString() );
+        cancelTask(job->errorString());
         return;
     }
 
@@ -212,8 +211,8 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
     KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
     select->setMailBox(mailBox);
     select->setCondstoreEnabled(serverSupportsCondstore());
-    connect( select, SIGNAL(result(KJob*)),
-            this, SLOT(onFinalSelectDone(KJob*)) );
+    connect(select, SIGNAL(result(KJob*)),
+            this, SLOT(onFinalSelectDone(KJob*)));
     select->start();
 }
 
@@ -225,7 +224,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         return;
     }
 
-    KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob*>(job);
+    KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob *>(job);
 
     const QString mailBox = select->mailBox();
     const int messageCount = select->messageCount();
@@ -252,12 +251,12 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     // Get the current uid validity value and store it
     int oldUidValidity = 0;
     if (!col.hasAttribute("uidvalidity")) {
-        UidValidityAttribute* currentUidValidity  = new UidValidityAttribute(uidValidity);
+        UidValidityAttribute *currentUidValidity  = new UidValidityAttribute(uidValidity);
         col.addAttribute(currentUidValidity);
         modifyNeeded = true;
     } else {
-        UidValidityAttribute* currentUidValidity =
-        static_cast<UidValidityAttribute*>(col.attribute("uidvalidity" ));
+        UidValidityAttribute *currentUidValidity =
+            static_cast<UidValidityAttribute *>(col.attribute("uidvalidity"));
         oldUidValidity = currentUidValidity->uidValidity();
         if (oldUidValidity != uidValidity) {
             currentUidValidity->setUidValidity(uidValidity);
@@ -268,7 +267,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     // Get the current uid next value and store it
     int oldNextUid = 0;
     if (nextUid > 0) { //this can fail with faulty servers that don't deliver uidnext
-        if (UidNextAttribute* currentNextUid = col.attribute<UidNextAttribute>()) {
+        if (UidNextAttribute *currentNextUid = col.attribute<UidNextAttribute>()) {
             oldNextUid = currentNextUid->uidNext();
             if (oldNextUid != nextUid) {
                 currentNextUid->setUidNext(nextUid);
@@ -287,7 +286,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         modifyNeeded = true;
     } else {
         Akonadi::CollectionFlagsAttribute *flagsAttribute =
-        static_cast<Akonadi::CollectionFlagsAttribute*>(col.attribute("collectionflags"));
+            static_cast<Akonadi::CollectionFlagsAttribute *>(col.attribute("collectionflags"));
         const QList<QByteArray> oldFlags = flagsAttribute->flags();
         if (oldFlags != flags) {
             flagsAttribute->setFlags(flags);
@@ -319,7 +318,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     }
     m_highestModseq = oldHighestModSeq;
 
-    if ( modifyNeeded ) {
+    if (modifyNeeded) {
         m_modifiedCollection = col;
     }
 
@@ -327,8 +326,8 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::FullHeaders;
 
-    if ( col.cachePolicy()
-        .localParts().contains( QLatin1String(Akonadi::MessagePart::Body) ) ) {
+    if (col.cachePolicy()
+            .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {
         scope.mode = KIMAP::FetchJob::FetchScope::Full;
     }
 
@@ -336,8 +335,8 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 
     qCDebug(RESOURCE_IMAP_LOG) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
     qCDebug(RESOURCE_IMAP_LOG) << "MessageCount: " << messageCount << "Local message count: " << realMessageCount;
-    qCDebug(RESOURCE_IMAP_LOG) << "UidNext: " << nextUid << "Local UidNext: "<< oldNextUid;
-    qCDebug(RESOURCE_IMAP_LOG) << "HighestModSeq: " << highestModSeq << "Local HighestModSeq: "<< oldHighestModSeq;
+    qCDebug(RESOURCE_IMAP_LOG) << "UidNext: " << nextUid << "Local UidNext: " << oldNextUid;
+    qCDebug(RESOURCE_IMAP_LOG) << "HighestModSeq: " << highestModSeq << "Local HighestModSeq: " << oldHighestModSeq;
 
     /*
     * A synchronization has 3 mandatory steps:
@@ -369,7 +368,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //If uidvalidity has changed our local cache is worthless and has to be refetched completely
         if (oldUidValidity != 0) {
             qCDebug(RESOURCE_IMAP_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-                            << uidValidity << ") refetching " << mailBox;
+                                       << uidValidity << ") refetching " << mailBox;
         } else {
             qCDebug(RESOURCE_IMAP_LOG) << "Fetching complete mailbox " << mailBox;
         }
@@ -415,7 +414,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //New messages are available, but not enough to justify the difference between the local and remote message count.
         //This can be triggered if we i.e. clear the local cache, but the keep the annotations.
         //If we didn't catch this case, we end up inserting flags only for every missing message.
-        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
+        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: " << realMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
@@ -445,7 +444,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //Error recovery:
         //We didn't detect any new messages based on the uid, but according to the message count there are new ones.
         //Our local cache is invalid and has to be refetched.
-        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: "<< realMessageCount;
+        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: " << realMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
@@ -459,7 +458,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     }
 }
 
-void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental, bool uidBased)
+void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, bool incremental, bool uidBased)
 {
     Q_ASSERT(set.intervals().size() == 1);
 
@@ -500,7 +499,7 @@ void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
         const QString mailBox = mailBoxForCollection(collection());
         m_fetchedMissingBodies += addedItems.count();
         emit status(Akonadi::AgentBase::Running,
-                    i18nc( "@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
+                    i18nc("@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
     }
 }
 
@@ -531,41 +530,41 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
     listFlagsForImapSet(KIMAP::ImapSet(1, alreadyFetchedBegin - 1));
 }
 
-void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet& set)
+void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
 {
-  qCDebug(RESOURCE_IMAP_LOG) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
-  qCDebug(RESOURCE_IMAP_LOG) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
+    qCDebug(RESOURCE_IMAP_LOG) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
+    qCDebug(RESOURCE_IMAP_LOG) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
 
-  KIMAP::FetchJob::FetchScope scope;
-  scope.parts.clear();
-  scope.mode = KIMAP::FetchJob::FetchScope::Flags;
-  // Only use changeSince when doing incremental listings,
-  // otherwise we would overwrite our local data with an incomplete dataset
-  if(m_incremental && serverSupportsCondstore()) {
-      scope.changedSince = m_highestModseq;
-      if (!m_flagsChanged) {
-          qCDebug(RESOURCE_IMAP_LOG)  << "No flag changes.";
-          taskComplete();
-          return;
-      }
-  }
+    KIMAP::FetchJob::FetchScope scope;
+    scope.parts.clear();
+    scope.mode = KIMAP::FetchJob::FetchScope::Flags;
+    // Only use changeSince when doing incremental listings,
+    // otherwise we would overwrite our local data with an incomplete dataset
+    if (m_incremental && serverSupportsCondstore()) {
+        scope.changedSince = m_highestModseq;
+        if (!m_flagsChanged) {
+            qCDebug(RESOURCE_IMAP_LOG)  << "No flag changes.";
+            taskComplete();
+            return;
+        }
+    }
 
-  m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), set, scope, 10 * batchSize(), m_session);
-  m_batchFetcher->setUidBased(m_uidBasedFetch);
-  if (m_uidBasedFetch && scope.changedSince == 0 && set.intervals().size() == 1) {
-      m_batchFetcher->setSearchUids(set.intervals().front());
-  }
-  connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
-          this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
-  connect(m_batchFetcher, SIGNAL(result(KJob*)),
-          this, SLOT(onFlagsFetchDone(KJob*)));
-  m_batchFetcher->start();
+    m_batchFetcher = createBatchFetcher(resourceState()->messageHelper(), set, scope, 10 * batchSize(), m_session);
+    m_batchFetcher->setUidBased(m_uidBasedFetch);
+    if (m_uidBasedFetch && scope.changedSince == 0 && set.intervals().size() == 1) {
+        m_batchFetcher->setSearchUids(set.intervals().front());
+    }
+    connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
+            this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
+    connect(m_batchFetcher, SIGNAL(result(KJob*)),
+            this, SLOT(onFlagsFetchDone(KJob*)));
+    m_batchFetcher->start();
 }
 
 void RetrieveItemsTask::onFlagsFetchDone(KJob *job)
 {
     m_batchFetcher = 0;
-    if ( job->error() ) {
+    if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {

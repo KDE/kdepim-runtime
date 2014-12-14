@@ -32,11 +32,11 @@ public:
 
     QByteArray type() const;
 
-    NoteLockAttribute* clone() const;
+    NoteLockAttribute *clone() const;
 
     QByteArray serialized() const;
 
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
 };
 
 #endif

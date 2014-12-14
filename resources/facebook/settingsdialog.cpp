@@ -32,193 +32,192 @@
 
 using namespace Akonadi;
 
-SettingsDialog::SettingsDialog( FacebookResource *parentResource, WId parentWindow )
-  : KDialog(),
-    mParentResource( parentResource ),
-    mTriggerSync( false )
+SettingsDialog::SettingsDialog(FacebookResource *parentResource, WId parentWindow)
+    : KDialog(),
+      mParentResource(parentResource),
+      mTriggerSync(false)
 {
-  KWindowSystem::setMainWindow( this, parentWindow );
-  setButtons( Ok|Cancel|User1 );
-  setButtonText( User1, i18n( "About" ) );
-  setButtonIcon( User1, QIcon::fromTheme( QLatin1String("help-about") ) );
-  setWindowIcon( QIcon::fromTheme( QLatin1String("facebookresource") ) );
-  setWindowTitle( i18n( "Facebook Settings" ) );
+    KWindowSystem::setMainWindow(this, parentWindow);
+    setButtons(Ok | Cancel | User1);
+    setButtonText(User1, i18n("About"));
+    setButtonIcon(User1, QIcon::fromTheme(QLatin1String("help-about")));
+    setWindowIcon(QIcon::fromTheme(QLatin1String("facebookresource")));
+    setWindowTitle(i18n("Facebook Settings"));
 
-  setupWidgets();
-  loadSettings();
+    setupWidgets();
+    loadSettings();
 }
 
 SettingsDialog::~SettingsDialog()
 {
-  if ( mTriggerSync ) {
-    mParentResource->synchronize();
-  }
+    if (mTriggerSync) {
+        mParentResource->synchronize();
+    }
 }
 
 void SettingsDialog::setupWidgets()
 {
-  QWidget * const page = new QWidget( this );
-  setupUi( page );
-  setMainWidget( page );
-  updateAuthenticationWidgets();
-  updateUserName();
-  connect(resetButton, &QPushButton::clicked, this, &SettingsDialog::resetAuthentication);
-  connect(authenticateButton, &QPushButton::clicked, this, &SettingsDialog::showAuthenticationDialog);
+    QWidget *const page = new QWidget(this);
+    setupUi(page);
+    setMainWidget(page);
+    updateAuthenticationWidgets();
+    updateUserName();
+    connect(resetButton, &QPushButton::clicked, this, &SettingsDialog::resetAuthentication);
+    connect(authenticateButton, &QPushButton::clicked, this, &SettingsDialog::showAuthenticationDialog);
 }
 
 void SettingsDialog::showAuthenticationDialog()
 {
-  QStringList permissions;
-  permissions << QLatin1String("offline_access")
-              << QLatin1String("friends_birthday")
-              << QLatin1String("friends_website")
-              << QLatin1String("friends_location")
-              << QLatin1String("friends_work_history")
-              << QLatin1String("friends_relationships")
-              << QLatin1String("manage_notifications")
-              << QLatin1String("publish_actions")
-              << QLatin1String("read_stream")
-              << QLatin1String("user_events")
-              << QLatin1String("user_notes");
-  KFbAPI::AuthenticationDialog * const authDialog = new KFbAPI::AuthenticationDialog( this );
-  authDialog->setAppId( Settings::self()->appID() );
-  authDialog->setPermissions( permissions );
-  connect(authDialog, &KFbAPI::AuthenticationDialog::authenticated, this, &SettingsDialog::authenticationDone);
-  connect(authDialog, &KFbAPI::AuthenticationDialog::canceled, this, &SettingsDialog::authenticationCanceled);
-  authenticateButton->setEnabled( false );
-  authDialog->start();
+    QStringList permissions;
+    permissions << QLatin1String("offline_access")
+                << QLatin1String("friends_birthday")
+                << QLatin1String("friends_website")
+                << QLatin1String("friends_location")
+                << QLatin1String("friends_work_history")
+                << QLatin1String("friends_relationships")
+                << QLatin1String("manage_notifications")
+                << QLatin1String("publish_actions")
+                << QLatin1String("read_stream")
+                << QLatin1String("user_events")
+                << QLatin1String("user_notes");
+    KFbAPI::AuthenticationDialog *const authDialog = new KFbAPI::AuthenticationDialog(this);
+    authDialog->setAppId(Settings::self()->appID());
+    authDialog->setPermissions(permissions);
+    connect(authDialog, &KFbAPI::AuthenticationDialog::authenticated, this, &SettingsDialog::authenticationDone);
+    connect(authDialog, &KFbAPI::AuthenticationDialog::canceled, this, &SettingsDialog::authenticationCanceled);
+    authenticateButton->setEnabled(false);
+    authDialog->start();
 }
 
 void SettingsDialog::authenticationCanceled()
 {
-  authenticateButton->setEnabled( true );
+    authenticateButton->setEnabled(true);
 }
 
-void SettingsDialog::authenticationDone( const QString &accessToken )
+void SettingsDialog::authenticationDone(const QString &accessToken)
 {
-  if ( Settings::self()->accessToken() != accessToken && !accessToken.isEmpty() ) {
-    mTriggerSync = true;
-  }
-  Settings::self()->setAccessToken( accessToken );
-  updateAuthenticationWidgets();
-  updateUserName();
+    if (Settings::self()->accessToken() != accessToken && !accessToken.isEmpty()) {
+        mTriggerSync = true;
+    }
+    Settings::self()->setAccessToken(accessToken);
+    updateAuthenticationWidgets();
+    updateUserName();
 }
 
 void SettingsDialog::updateAuthenticationWidgets()
 {
-  if ( Settings::self()->accessToken().isEmpty() ) {
-    authenticationStack->setCurrentIndex( 0 );
-  } else {
-    authenticationStack->setCurrentIndex( 1 );
-    if ( Settings::self()->userName().isEmpty() ) {
-      authenticationLabel->setText( i18n( "Authenticated." ) );
+    if (Settings::self()->accessToken().isEmpty()) {
+        authenticationStack->setCurrentIndex(0);
     } else {
-      authenticationLabel->setText( i18n( "Authenticated as <b>%1</b>.",
-                                          Settings::self()->userName() ) );
+        authenticationStack->setCurrentIndex(1);
+        if (Settings::self()->userName().isEmpty()) {
+            authenticationLabel->setText(i18n("Authenticated."));
+        } else {
+            authenticationLabel->setText(i18n("Authenticated as <b>%1</b>.",
+                                              Settings::self()->userName()));
+        }
     }
-  }
 }
 
 void SettingsDialog::resetAuthentication()
 {
-  Settings::self()->setAccessToken( QString() );
-  Settings::self()->setUserName( QString() );
-  updateAuthenticationWidgets();
+    Settings::self()->setAccessToken(QString());
+    Settings::self()->setUserName(QString());
+    updateAuthenticationWidgets();
 }
 
 void SettingsDialog::updateUserName()
 {
-  if ( Settings::self()->userName().isEmpty() && ! Settings::self()->accessToken().isEmpty() ) {
-    KFbAPI::UserInfoJob * const job =
-      new KFbAPI::UserInfoJob( Settings::self()->accessToken(), this );
-    connect( job, SIGNAL(result(KJob*)), this, SLOT(userInfoJobDone(KJob*)) );
-    job->start();
-  }
+    if (Settings::self()->userName().isEmpty() && ! Settings::self()->accessToken().isEmpty()) {
+        KFbAPI::UserInfoJob *const job =
+            new KFbAPI::UserInfoJob(Settings::self()->accessToken(), this);
+        connect(job, SIGNAL(result(KJob*)), this, SLOT(userInfoJobDone(KJob*)));
+        job->start();
+    }
 }
 
-void SettingsDialog::userInfoJobDone( KJob *job )
+void SettingsDialog::userInfoJobDone(KJob *job)
 {
-  KFbAPI::UserInfoJob * const userInfoJob = dynamic_cast<KFbAPI::UserInfoJob*>( job );
-  Q_ASSERT( userInfoJob );
-  if ( !userInfoJob->error() ) {
-    Settings::self()->setUserName( userInfoJob->userInfo().name() );
-    updateAuthenticationWidgets();
-  } else {
-    kWarning() << "Can't get user info: " << userInfoJob->errorText();
-  }
+    KFbAPI::UserInfoJob *const userInfoJob = dynamic_cast<KFbAPI::UserInfoJob *>(job);
+    Q_ASSERT(userInfoJob);
+    if (!userInfoJob->error()) {
+        Settings::self()->setUserName(userInfoJob->userInfo().name());
+        updateAuthenticationWidgets();
+    } else {
+        kWarning() << "Can't get user info: " << userInfoJob->errorText();
+    }
 }
 
 void SettingsDialog::loadSettings()
 {
-  if ( mParentResource->name() == mParentResource->identifier() ) {
-    mParentResource->setName( i18n( "Facebook" ) );
-  }
+    if (mParentResource->name() == mParentResource->identifier()) {
+        mParentResource->setName(i18n("Facebook"));
+    }
 
-  nameEdit->setText( mParentResource->name() );
-  nameEdit->setFocus();
-  enableNotificationsCheckBox->setChecked( Settings::self()->displayNotifications() );
+    nameEdit->setText(mParentResource->name());
+    nameEdit->setFocus();
+    enableNotificationsCheckBox->setChecked(Settings::self()->displayNotifications());
 
 }
 
 void SettingsDialog::saveSettings()
 {
-  mParentResource->setName( nameEdit->text() );
-  Settings::self()->setDisplayNotifications( enableNotificationsCheckBox->isChecked() );
-  if ( !Settings::self()->accountId() ) {
-    QStringList services;
-    services << QLatin1String("facebook-contacts")
-            << QLatin1String("facebook-feed")
-            << QLatin1String("facebook-events")
-            << QLatin1String("facebook-notes")
-            << QLatin1String("facebook-notifications");
-    Settings::self()->setAccountServices(services);
-  }
-  Settings::self()->save();
+    mParentResource->setName(nameEdit->text());
+    Settings::self()->setDisplayNotifications(enableNotificationsCheckBox->isChecked());
+    if (!Settings::self()->accountId()) {
+        QStringList services;
+        services << QLatin1String("facebook-contacts")
+                 << QLatin1String("facebook-feed")
+                 << QLatin1String("facebook-events")
+                 << QLatin1String("facebook-notes")
+                 << QLatin1String("facebook-notifications");
+        Settings::self()->setAccountServices(services);
+    }
+    Settings::self()->save();
 }
 
-void SettingsDialog::slotButtonClicked( int button )
+void SettingsDialog::slotButtonClicked(int button)
 {
-  switch( button ) {
-  case Ok:
-    saveSettings();
-    accept();
-    break;
-  case Cancel:
-    reject();
-    return;
-  case User1:
-  {
-    KAboutData aboutData(
-      QByteArray( "akonadi_facebook_resource" ),
-      QByteArray(),
-      ki18n( "Akonadi Facebook Resource" ),
-      QByteArray( AKONADI_VERSION ),
-      ki18n( "Makes your friends, events, notes, posts and messages on Facebook "
-             "available in KDE via Akonadi." ),
-      KAboutData::License_GPL_V2,
-      ki18n( "Copyright (C) 2010,2011,2012,2013,2014 Akonadi Facebook Resource Developers" ) );
+    switch (button) {
+    case Ok:
+        saveSettings();
+        accept();
+        break;
+    case Cancel:
+        reject();
+        return;
+    case User1: {
+        KAboutData aboutData(
+            QByteArray("akonadi_facebook_resource"),
+            QByteArray(),
+            ki18n("Akonadi Facebook Resource"),
+            QByteArray(AKONADI_VERSION),
+            ki18n("Makes your friends, events, notes, posts and messages on Facebook "
+                  "available in KDE via Akonadi."),
+            KAboutData::License_GPL_V2,
+            ki18n("Copyright (C) 2010,2011,2012,2013,2014 Akonadi Facebook Resource Developers"));
 
-    aboutData.addAuthor( ki18n( "Martin Klapetek" ),
-                         ki18n( "Developer" ), "mklapetek@kde.org" );
+        aboutData.addAuthor(ki18n("Martin Klapetek"),
+                            ki18n("Developer"), "mklapetek@kde.org");
 
-    aboutData.addAuthor( ki18n( "Thomas McGuire" ),
-                         ki18n( "Past Maintainer" ), "mcguire@kde.org" );
+        aboutData.addAuthor(ki18n("Thomas McGuire"),
+                            ki18n("Past Maintainer"), "mcguire@kde.org");
 
-    aboutData.addAuthor( ki18n( "Roeland Jago Douma" ),
-                         ki18n( "Past Developer" ), "unix@rullzer.com" );
+        aboutData.addAuthor(ki18n("Roeland Jago Douma"),
+                            ki18n("Past Developer"), "unix@rullzer.com");
 
-    aboutData.addCredit( ki18n( "Till Adam" ),
-                         ki18n( "MacOS Support" ), "adam@kde.org" );
+        aboutData.addCredit(ki18n("Till Adam"),
+                            ki18n("MacOS Support"), "adam@kde.org");
 
-    aboutData.setProgramIconName( QLatin1String("facebookresource") );
-    aboutData.setTranslator( ki18nc( "NAME OF TRANSLATORS", "Your names" ),
-                             ki18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
+        aboutData.setProgramIconName(QLatin1String("facebookresource"));
+        aboutData.setTranslator(ki18nc("NAME OF TRANSLATORS", "Your names"),
+                                ki18nc("EMAIL OF TRANSLATORS", "Your emails"));
 
-    KAboutApplicationDialog *dialog = new KAboutApplicationDialog( &aboutData, this );
-    dialog->setAttribute( Qt::WA_DeleteOnClose, true );
-    dialog->show();
-    break;
-  }
-  }
+        KAboutApplicationDialog *dialog = new KAboutApplicationDialog(&aboutData, this);
+        dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+        dialog->show();
+        break;
+    }
+    }
 }
 

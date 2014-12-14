@@ -24,16 +24,16 @@
 
 class AkonotesResource : public MaildirResource
 {
-  Q_OBJECT
-  public:
-    explicit AkonotesResource( const QString &id );
+    Q_OBJECT
+public:
+    explicit AkonotesResource(const QString &id);
     ~AkonotesResource();
 
     QString defaultResourceType() Q_DECL_OVERRIDE;
 public Q_SLOTS:
-    void configure( WId windowId ) Q_DECL_OVERRIDE;
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
-  protected:
+protected:
     QString itemMimeType() const Q_DECL_OVERRIDE;
 };
 #endif

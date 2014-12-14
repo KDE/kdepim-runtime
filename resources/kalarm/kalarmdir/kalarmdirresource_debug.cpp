@@ -20,4 +20,3 @@
 #include "kalarmdirresource_debug.h"
 Q_LOGGING_CATEGORY(KALARMDIRRESOURCE_LOG, "log_kalarmdirresource")
 
-

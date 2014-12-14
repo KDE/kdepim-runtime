@@ -27,67 +27,69 @@
 
 using namespace OXA;
 
-FoldersRequestDeltaJob::FoldersRequestDeltaJob( qulonglong lastSync, QObject *parent )
-  : KJob( parent ), mLastSync( lastSync ), mJobFinishedCount( 0 )
+FoldersRequestDeltaJob::FoldersRequestDeltaJob(qulonglong lastSync, QObject *parent)
+    : KJob(parent), mLastSync(lastSync), mJobFinishedCount(0)
 {
 }
 
 void FoldersRequestDeltaJob::start()
 {
-  FoldersRequestJob *modifiedJob = new FoldersRequestJob( mLastSync, FoldersRequestJob::Modified, this );
-  connect(modifiedJob, &FoldersRequestJob::result, this, &FoldersRequestDeltaJob::fetchModifiedJobFinished);
-  modifiedJob->start();
+    FoldersRequestJob *modifiedJob = new FoldersRequestJob(mLastSync, FoldersRequestJob::Modified, this);
+    connect(modifiedJob, &FoldersRequestJob::result, this, &FoldersRequestDeltaJob::fetchModifiedJobFinished);
+    modifiedJob->start();
 
-  FoldersRequestJob *deletedJob = new FoldersRequestJob( mLastSync, FoldersRequestJob::Deleted, this );
-  connect(deletedJob, &FoldersRequestJob::result, this, &FoldersRequestDeltaJob::fetchDeletedJobFinished);
-  deletedJob->start();
+    FoldersRequestJob *deletedJob = new FoldersRequestJob(mLastSync, FoldersRequestJob::Deleted, this);
+    connect(deletedJob, &FoldersRequestJob::result, this, &FoldersRequestDeltaJob::fetchDeletedJobFinished);
+    deletedJob->start();
 }
 
 Folder::List FoldersRequestDeltaJob::modifiedFolders() const
 {
-  return mModifiedFolders;
+    return mModifiedFolders;
 }
 
 Folder::List FoldersRequestDeltaJob::deletedFolders() const
 {
-  return mDeletedFolders;
+    return mDeletedFolders;
 }
 
-void FoldersRequestDeltaJob::fetchModifiedJobFinished( KJob *job )
+void FoldersRequestDeltaJob::fetchModifiedJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-    emitResult();
-    return;
-  }
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
 
-  const FoldersRequestJob *requestJob = qobject_cast<FoldersRequestJob*>( job );
+    const FoldersRequestJob *requestJob = qobject_cast<FoldersRequestJob *>(job);
 
-  mModifiedFolders << requestJob->folders();
+    mModifiedFolders << requestJob->folders();
 
-  mJobFinishedCount++;
+    mJobFinishedCount++;
 
-  if ( mJobFinishedCount == 2 )
-    emitResult();
+    if (mJobFinishedCount == 2) {
+        emitResult();
+    }
 }
 
-void FoldersRequestDeltaJob::fetchDeletedJobFinished( KJob *job )
+void FoldersRequestDeltaJob::fetchDeletedJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-    emitResult();
-    return;
-  }
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
 
-  const FoldersRequestJob *requestJob = qobject_cast<FoldersRequestJob*>( job );
+    const FoldersRequestJob *requestJob = qobject_cast<FoldersRequestJob *>(job);
 
-  mDeletedFolders << requestJob->folders();
+    mDeletedFolders << requestJob->folders();
 
-  mJobFinishedCount++;
+    mJobFinishedCount++;
 
-  if ( mJobFinishedCount == 2 )
-    emitResult();
+    if (mJobFinishedCount == 2) {
+        emitResult();
+    }
 }
 

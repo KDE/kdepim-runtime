@@ -26,19 +26,19 @@
 
 class Settings : public SettingsBase
 {
-  Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Facebook.ExtendedSettings" )
-  public:
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Facebook.ExtendedSettings")
+public:
     Settings();
-    void setWindowId( WId id );
-    void setResourceId( const QString &resourceIdentifier );
+    void setWindowId(WId id);
+    void setResourceId(const QString &resourceIdentifier);
     static Settings *self();
 
     QString appID() const;
     QString apiKey() const;
     QString appSecret() const;
 
-  private:
+private:
     WId mWinId;
     QString mResourceId;
 };

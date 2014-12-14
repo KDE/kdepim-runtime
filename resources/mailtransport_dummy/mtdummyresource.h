@@ -27,30 +27,30 @@
 
 class MTDummyResource : public Akonadi::ResourceBase, public Akonadi::TransportResourceBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit MTDummyResource( const QString &id );
+public:
+    explicit MTDummyResource(const QString &id);
     ~MTDummyResource();
 
-  public:
-    virtual void configure( WId windowId );
+public:
+    virtual void configure(WId windowId);
 
     /* reimpl from ResourceBase::Transport */
-    virtual void sendItem( const Akonadi::Item &message );
+    virtual void sendItem(const Akonadi::Item &message);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems(const Akonadi::Collection &col);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-  protected:
+protected:
     virtual void aboutToQuit();
 
-  private Q_SLOTS:
-    void jobResult( KJob *job );
+private Q_SLOTS:
+    void jobResult(KJob *job);
 
-  private:
+private:
     Akonadi::Item::Id currentlySending;
 
 };

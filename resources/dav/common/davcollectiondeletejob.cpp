@@ -22,42 +22,42 @@
 #include <kio/job.h>
 #include <KLocalizedString>
 
-
-DavCollectionDeleteJob::DavCollectionDeleteJob(const DavUtils::DavUrl &url, QObject *parent )
-  : KJob( parent ), mUrl( url )
+DavCollectionDeleteJob::DavCollectionDeleteJob(const DavUtils::DavUrl &url, QObject *parent)
+    : KJob(parent), mUrl(url)
 {
 }
 
 void DavCollectionDeleteJob::start()
 {
-  KIO::DeleteJob *job = KIO::del( mUrl.url(), KIO::HideProgressInfo | KIO::DefaultFlags );
-  job->addMetaData( QLatin1String("PropagateHttpHeader"), QLatin1String("true") );
-  job->addMetaData( QLatin1String("cookies"), QLatin1String("none") );
-  job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
+    KIO::DeleteJob *job = KIO::del(mUrl.url(), KIO::HideProgressInfo | KIO::DefaultFlags);
+    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
 
-  connect(job, &KIO::DeleteJob::result, this, &DavCollectionDeleteJob::davJobFinished);
+    connect(job, &KIO::DeleteJob::result, this, &DavCollectionDeleteJob::davJobFinished);
 }
 
-void DavCollectionDeleteJob::davJobFinished( KJob *job )
+void DavCollectionDeleteJob::davJobFinished(KJob *job)
 {
-  KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob*>( job );
+    KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob *>(job);
 
-  if ( deleteJob->error() && deleteJob->error() != KIO::ERR_NO_CONTENT ) {
-    const int responseCode = deleteJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                              0 :
-                              deleteJob->queryMetaData( QLatin1String("responsecode") ).toInt();
+    if (deleteJob->error() && deleteJob->error() != KIO::ERR_NO_CONTENT) {
+        const int responseCode = deleteJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+                                 0 :
+                                 deleteJob->queryMetaData(QLatin1String("responsecode")).toInt();
 
-    QString err;
-    if ( deleteJob->error() != KIO::ERR_SLAVE_DEFINED )
-      err = KIO::buildErrorString( deleteJob->error(), deleteJob->errorText() );
-    else
-      err = deleteJob->errorText();
+        QString err;
+        if (deleteJob->error() != KIO::ERR_SLAVE_DEFINED) {
+            err = KIO::buildErrorString(deleteJob->error(), deleteJob->errorText());
+        } else {
+            err = deleteJob->errorText();
+        }
 
-    setError( UserDefinedError + responseCode );
-    setErrorText( i18n( "There was a problem with the request. The collection has not been deleted from the server.\n"
-                        "%1 (%2).", err, responseCode ) );
-  }
+        setError(UserDefinedError + responseCode);
+        setErrorText(i18n("There was a problem with the request. The collection has not been deleted from the server.\n"
+                          "%1 (%2).", err, responseCode));
+    }
 
-  emitResult();
+    emitResult();
 }
 

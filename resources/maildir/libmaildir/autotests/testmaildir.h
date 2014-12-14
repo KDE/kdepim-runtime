@@ -28,8 +28,8 @@ class QTemporaryDir;
 
 class MaildirTest : public QObject
 {
-  Q_OBJECT
-  private Q_SLOTS:
+    Q_OBJECT
+private Q_SLOTS:
     void init();
     void testMaildirInstantiation();
     void testMaildirCreation();
@@ -49,7 +49,7 @@ class MaildirTest : public QObject
     void testMaildirFlagsWriting();
     void cleanup();
 private:
-    void fillDirectory(const QString &name, int limit );
+    void fillDirectory(const QString &name, int limit);
     void fillNewDirectory();
     void fillCurrentDirectory();
     void createSubFolders();

@@ -25,18 +25,18 @@
 
 class DavProtocolAttribute : public Akonadi::Attribute
 {
-  public:
-    explicit DavProtocolAttribute( int protocol = 0 );
+public:
+    explicit DavProtocolAttribute(int protocol = 0);
 
-    void setDavProtocol( int protocol );
+    void setDavProtocol(int protocol);
     int davProtocol() const;
 
-    Akonadi::Attribute* clone() const Q_DECL_OVERRIDE;
+    Akonadi::Attribute *clone() const Q_DECL_OVERRIDE;
     QByteArray type() const Q_DECL_OVERRIDE;
     QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
-  private:
+private:
     int mDavProtocol;
 };
 

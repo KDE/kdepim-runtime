@@ -29,17 +29,17 @@ class KConfigDialogManager;
 
 class ConfigDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-    explicit ConfigDialog( QWidget *parent = 0 );
+    Q_OBJECT
+public:
+    explicit ConfigDialog(QWidget *parent = 0);
 
-  private slots:
+private slots:
     void checkPath();
     void save();
 
-  private:
+private:
     Ui::ConfigDialog ui;
-    KConfigDialogManager* mManager;
+    KConfigDialogManager *mManager;
     QPushButton *mOkButton;
     bool mToplevelIsContainer;
 };

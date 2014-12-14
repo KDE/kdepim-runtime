@@ -23,12 +23,12 @@
 
 #include <attribute.h>
 
-UidValidityAttribute::UidValidityAttribute( int uidvalidity )
-        : mUidValidity( uidvalidity )
+UidValidityAttribute::UidValidityAttribute(int uidvalidity)
+    : mUidValidity(uidvalidity)
 {
 }
 
-void UidValidityAttribute::setUidValidity( int uidvalidity )
+void UidValidityAttribute::setUidValidity(int uidvalidity)
 {
     mUidValidity = uidvalidity;
 }
@@ -40,21 +40,21 @@ int UidValidityAttribute::uidValidity() const
 
 QByteArray UidValidityAttribute::type() const
 {
-    static const QByteArray sType( "uidvalidity" );
+    static const QByteArray sType("uidvalidity");
     return sType;
 }
 
-Akonadi::Attribute* UidValidityAttribute::clone() const
+Akonadi::Attribute *UidValidityAttribute::clone() const
 {
-    return new UidValidityAttribute( mUidValidity );
+    return new UidValidityAttribute(mUidValidity);
 }
 
 QByteArray UidValidityAttribute::serialized() const
 {
-    return QByteArray::number( mUidValidity );
+    return QByteArray::number(mUidValidity);
 }
 
-void UidValidityAttribute::deserialize( const QByteArray &data )
+void UidValidityAttribute::deserialize(const QByteArray &data)
 {
     mUidValidity = data.toInt();
 }

@@ -26,36 +26,36 @@
 
 class ChangeItemTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit ChangeItemTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~ChangeItemTask();
+    explicit ChangeItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~ChangeItemTask();
 
 private slots:
-  void onAppendMessageDone( KJob *job );
+    void onAppendMessageDone(KJob *job);
 
-  void onPreStoreSelectDone( KJob *job );
-  void onStoreFlagsDone( KJob *job );
+    void onPreStoreSelectDone(KJob *job);
+    void onStoreFlagsDone(KJob *job);
 
-  void onPreDeleteSelectDone( KJob *job );
-  void onSearchDone( KJob *job );
-  void onDeleteDone( KJob *job );
+    void onPreDeleteSelectDone(KJob *job);
+    void onSearchDone(KJob *job);
+    void onDeleteDone(KJob *job);
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+    virtual void doStart(KIMAP::Session *session);
 
 private:
-  void triggerStoreJob();
-  void triggerSearchJob();
-  void triggerDeleteJob();
+    void triggerStoreJob();
+    void triggerSearchJob();
+    void triggerDeleteJob();
 
-  void recordNewUid();
+    void recordNewUid();
 
-  KIMAP::Session *m_session;
-  QByteArray m_messageId;
-  qint64 m_oldUid;
-  qint64 m_newUid;
+    KIMAP::Session *m_session;
+    QByteArray m_messageId;
+    qint64 m_oldUid;
+    qint64 m_newUid;
 };
 
 #endif

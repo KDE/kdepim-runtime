@@ -38,12 +38,12 @@ int main(int argc, char **argv)
 {
     KLocalizedString::setApplicationDomain("gid-migrator");
     KAboutData aboutData(QStringLiteral("gid-migrator"),
-                            i18n("GID Migration Tool"),
-                            QStringLiteral("0.1"),
-                            i18n("Migration of Akonadi Items to support GID"),
-                            KAboutLicense::LGPL,
-                            i18n("(c) 2013 the Akonadi developers"),
-                            QStringLiteral("http://pim.kde.org/akonadi/"));
+                         i18n("GID Migration Tool"),
+                         QStringLiteral("0.1"),
+                         i18n("Migration of Akonadi Items to support GID"),
+                         KAboutLicense::LGPL,
+                         i18n("(c) 2013 the Akonadi developers"),
+                         QStringLiteral("http://pim.kde.org/akonadi/"));
     aboutData.setProgramIconName(QLatin1String("akonadi"));
     aboutData.addAuthor(i18n("Christian Mollekopf"),  i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     if (infoDialog && migrator) {
         infoDialog->migratorAdded();
         QObject::connect(migrator, SIGNAL(message(MigratorBase::MessageType,QString)),
-                        infoDialog, SLOT(message(MigratorBase::MessageType,QString)));
+                         infoDialog, SLOT(message(MigratorBase::MessageType,QString)));
         QObject::connect(migrator, SIGNAL(destroyed()), infoDialog, SLOT(migratorDone()));
         QObject::connect(migrator, SIGNAL(progress(int)), infoDialog, SLOT(progress(int)));
     }

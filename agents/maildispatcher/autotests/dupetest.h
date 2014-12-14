@@ -25,7 +25,6 @@
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Monitor>
 
-
 /**
   This queues a bunch of messages very quickly one after the other, lets the
   MDA send them via the dummy mailtransport resource, and then verify that the
@@ -33,18 +32,17 @@
  */
 class DupeTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void initTestCase();
     void testDupes_data();
     void testDupes();
 
-  private:
+private:
     Akonadi::Collection sink;
     Akonadi::Monitor *monitor;
 
 };
-
 
 #endif

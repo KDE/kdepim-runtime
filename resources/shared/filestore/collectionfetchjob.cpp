@@ -27,14 +27,14 @@ using namespace Akonadi;
 
 class FileStore::CollectionFetchJob::Private
 {
-  public:
-    explicit Private( FileStore::CollectionFetchJob *parent )
-      : mType( FileStore::CollectionFetchJob::Base ),
-        mParent( parent )
+public:
+    explicit Private(FileStore::CollectionFetchJob *parent)
+        : mType(FileStore::CollectionFetchJob::Base),
+          mParent(parent)
     {
     }
 
-  public:
+public:
     FileStore::CollectionFetchJob::Type mType;
     Collection mCollection;
 
@@ -42,62 +42,60 @@ class FileStore::CollectionFetchJob::Private
 
     Collection::List mCollections;
 
-  private:
+private:
     FileStore::CollectionFetchJob *mParent;
 };
 
-FileStore::CollectionFetchJob::CollectionFetchJob( const Collection &collection, Type type, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::CollectionFetchJob::CollectionFetchJob(const Collection &collection, Type type, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  Q_ASSERT( session != 0 );
+    Q_ASSERT(session != 0);
 
-  d->mType = type;
-  d->mCollection = collection;
+    d->mType = type;
+    d->mCollection = collection;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::CollectionFetchJob::~CollectionFetchJob()
 {
-  delete d;
+    delete d;
 }
 
 FileStore::CollectionFetchJob::Type FileStore::CollectionFetchJob::type() const
 {
-  return d->mType;
+    return d->mType;
 }
 
 Collection FileStore::CollectionFetchJob::collection() const
 {
-  return d->mCollection;
+    return d->mCollection;
 }
 
-void FileStore::CollectionFetchJob::setFetchScope( const CollectionFetchScope &fetchScope )
+void FileStore::CollectionFetchJob::setFetchScope(const CollectionFetchScope &fetchScope)
 {
-  d->mFetchScope = fetchScope;
+    d->mFetchScope = fetchScope;
 }
 
 CollectionFetchScope &FileStore::CollectionFetchJob::fetchScope()
 {
-  return d->mFetchScope;
+    return d->mFetchScope;
 }
 
 Collection::List FileStore::CollectionFetchJob::collections() const
 {
-  return d->mCollections;
+    return d->mCollections;
 }
 
-bool FileStore::CollectionFetchJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::CollectionFetchJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::CollectionFetchJob::handleCollectionsReceived( const Collection::List &collections )
+void FileStore::CollectionFetchJob::handleCollectionsReceived(const Collection::List &collections)
 {
-  d->mCollections << collections;
+    d->mCollections << collections;
 
-  emit collectionsReceived( collections );
+    emit collectionsReceived(collections);
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

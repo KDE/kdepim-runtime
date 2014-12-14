@@ -39,35 +39,36 @@
 
 using namespace Akonadi;
 
-static QString remoteIdPath( const Collection& collection ) {
-  const Collection parent = collection.parentCollection();
-  if ( parent.remoteId().isEmpty() ) {
-    return collection.remoteId();
-  }
+static QString remoteIdPath(const Collection &collection)
+{
+    const Collection parent = collection.parentCollection();
+    if (parent.remoteId().isEmpty()) {
+        return collection.remoteId();
+    }
 
-  return remoteIdPath( parent ) + QLatin1Char( '/' ) + collection.remoteId();
+    return remoteIdPath(parent) + QLatin1Char('/') + collection.remoteId();
 }
 
 class ImapCacheLocalImporter::Private
 {
-  ImapCacheLocalImporter *const q;
+    ImapCacheLocalImporter *const q;
 
-  public:
-    Private( ImapCacheLocalImporter *parent, MixedMaildirStore *store )
-      : q( parent ), mStore( store ), mHiddenSession( 0 ),
-        mItemProgress( -1 )
+public:
+    Private(ImapCacheLocalImporter *parent, MixedMaildirStore *store)
+        : q(parent), mStore(store), mHiddenSession(0),
+          mItemProgress(-1)
     {
     }
 
     ~Private()
     {
-      delete mHiddenSession;
+        delete mHiddenSession;
     }
 
     void processNextCollection();
     void processNextItem();
 
-  public:
+public:
     MixedMaildirStore *mStore;
     Session *mHiddenSession;
 
@@ -86,263 +87,262 @@ class ImapCacheLocalImporter::Private
     Collection mCurrentCollection;
     int mItemProgress;
 
-  public: // slots
-    void createResourceResult( KJob *job );
+public: // slots
+    void createResourceResult(KJob *job);
     void configureResource();
-    void collectionFetchResult( KJob *job );
-    void collectionCreateResult( KJob *job );
-    void itemFetchResult( KJob *job );
-    void itemCreateResult( KJob *job );
+    void collectionFetchResult(KJob *job);
+    void collectionCreateResult(KJob *job);
+    void itemFetchResult(KJob *job);
+    void itemCreateResult(KJob *job);
 };
 
 void ImapCacheLocalImporter::Private::processNextCollection()
 {
-  if ( mPendingCollections.isEmpty() ) {
-    configureResource();
-    return;
-  }
+    if (mPendingCollections.isEmpty()) {
+        configureResource();
+        return;
+    }
 
-  const Collection storeCollection = mPendingCollections.front();
-  mPendingCollections.pop_front();
+    const Collection storeCollection = mPendingCollections.front();
+    mPendingCollections.pop_front();
 
-  const QString idPath = remoteIdPath( storeCollection );
-  mStoreCollectionsByPath.insert( idPath, storeCollection );
+    const QString idPath = remoteIdPath(storeCollection);
+    mStoreCollectionsByPath.insert(idPath, storeCollection);
 //   qCDebug(KMAILMIGRATION_LOG) << "inserting storeCollection" << storeCollection.remoteId()
 //                                    << "at idPath" << idPath;
 
-  // create on Akonadi server
-  Collection collection = storeCollection;
-  const Collection parent = collection.parentCollection();
-  if ( parent.remoteId() == mStore->topLevelCollection().remoteId() ) {
-    collection.setParentCollection( Collection::root() );
+    // create on Akonadi server
+    Collection collection = storeCollection;
+    const Collection parent = collection.parentCollection();
+    if (parent.remoteId() == mStore->topLevelCollection().remoteId()) {
+        collection.setParentCollection(Collection::root());
 
-    const QFileInfo pathInfo( QDir( mStore->path() ), mTopLevelFolder );
-    collection.setRemoteId( pathInfo.absoluteFilePath() );
-    collection.setName( i18nc( "@title account name", "Local Copies of %1", mAccountName ) );
-  } else {
-    CollectionHash::const_iterator findIt = mAkonadiCollectionsByPath.constFind( remoteIdPath( parent ) );
-    if ( findIt != mAkonadiCollectionsByPath.constEnd() ) {
-      collection.setParentCollection( findIt.value() );
+        const QFileInfo pathInfo(QDir(mStore->path()), mTopLevelFolder);
+        collection.setRemoteId(pathInfo.absoluteFilePath());
+        collection.setName(i18nc("@title account name", "Local Copies of %1", mAccountName));
     } else {
-      qCritical() << "storeCollection with idPath" << idPath << "parent=" << parent.remoteId()
-               << "does not have parent in Akonadi collection hash";
+        CollectionHash::const_iterator findIt = mAkonadiCollectionsByPath.constFind(remoteIdPath(parent));
+        if (findIt != mAkonadiCollectionsByPath.constEnd()) {
+            collection.setParentCollection(findIt.value());
+        } else {
+            qCritical() << "storeCollection with idPath" << idPath << "parent=" << parent.remoteId()
+                        << "does not have parent in Akonadi collection hash";
+        }
     }
-  }
 
-  qCDebug(KMAILMIGRATION_LOG) << "Processing collection" << collection.remoteId()
-                                   << "remoteIdPath=" << idPath
-                                   << ", " << mPendingCollections.count() << "remaining";
+    qCDebug(KMAILMIGRATION_LOG) << "Processing collection" << collection.remoteId()
+                                << "remoteIdPath=" << idPath
+                                << ", " << mPendingCollections.count() << "remaining";
 
-  CollectionCreateJob *createJob = new CollectionCreateJob( collection, mHiddenSession );
-  createJob->setProperty( "remoteIdPath", idPath );
-  QObject::connect( createJob, SIGNAL(result(KJob*)), q, SLOT(collectionCreateResult(KJob*)) );
+    CollectionCreateJob *createJob = new CollectionCreateJob(collection, mHiddenSession);
+    createJob->setProperty("remoteIdPath", idPath);
+    QObject::connect(createJob, SIGNAL(result(KJob*)), q, SLOT(collectionCreateResult(KJob*)));
 }
 
 void ImapCacheLocalImporter::Private::processNextItem()
 {
-  emit q->progress( ++mItemProgress );
-  emit q->status( i18ncp( "@info:status folder name and number of messages to import before finished",
+    emit q->progress(++mItemProgress);
+    emit q->status(i18ncp("@info:status folder name and number of messages to import before finished",
                           "%1: one message left to import", "%1: %2 messages left to import",
-                          mCurrentCollection.name(), mPendingItems.count() ) );
+                          mCurrentCollection.name(), mPendingItems.count()));
 
-  if ( mPendingItems.isEmpty() ) {
-    processNextCollection();
-    return;
-  }
+    if (mPendingItems.isEmpty()) {
+        processNextCollection();
+        return;
+    }
 
-  const Item item = mPendingItems.front();
-  mPendingItems.pop_front();
+    const Item item = mPendingItems.front();
+    mPendingItems.pop_front();
 
 //   qCDebug(KMAILMIGRATION_LOG) << "Processing item" << item.remoteId()
 //                                    << "parentCollection" << item.parentCollection().id()
 //                                    << "remoteIdPath=" << remoteIdPath( item.parentCollection() )
 //                                    << ", " << mPendingCollections.count() << "remaining";
 
-  ItemCreateJob *createJob = new ItemCreateJob( item, item.parentCollection(), mHiddenSession );
-  QObject::connect( createJob, SIGNAL(result(KJob*)), q, SLOT(itemCreateResult(KJob*)) );
+    ItemCreateJob *createJob = new ItemCreateJob(item, item.parentCollection(), mHiddenSession);
+    QObject::connect(createJob, SIGNAL(result(KJob*)), q, SLOT(itemCreateResult(KJob*)));
 }
 
-void ImapCacheLocalImporter::Private::createResourceResult( KJob *job )
+void ImapCacheLocalImporter::Private::createResourceResult(KJob *job)
 {
-  if ( job->error() != 0 ) {
-    qCritical() << "Creation of Maildir resource for local cache copy of account"
-             << mAccountName << "failed:" << job->errorString();
-    emit q->importFinished( mResource,
-                            i18n( "Cannot provide access to local copies of "
-                                            "disconnected IMAP account %1",
-                                            mAccountName ) );
-    return;
-  }
+    if (job->error() != 0) {
+        qCritical() << "Creation of Maildir resource for local cache copy of account"
+                    << mAccountName << "failed:" << job->errorString();
+        emit q->importFinished(mResource,
+                               i18n("Cannot provide access to local copies of "
+                                    "disconnected IMAP account %1",
+                                    mAccountName));
+        return;
+    }
 
-  AgentInstanceCreateJob *createJob = qobject_cast<AgentInstanceCreateJob*>( job );
-  mResource = createJob->instance();
+    AgentInstanceCreateJob *createJob = qobject_cast<AgentInstanceCreateJob *>(job);
+    mResource = createJob->instance();
 
-  mHiddenSession = new Session( mResource.identifier().toLatin1() );
+    mHiddenSession = new Session(mResource.identifier().toLatin1());
 
-  Collection topLevelCollection;
-  topLevelCollection.setRemoteId( mTopLevelFolder );
-  topLevelCollection.setParentCollection( mStore->topLevelCollection() );
-  topLevelCollection.setContentMimeTypes( QStringList() << Collection::mimeType() );
-  topLevelCollection.setRights( Collection::CanChangeCollection |
-                                Collection::CanCreateCollection |
-                                Collection::CanDeleteCollection );
+    Collection topLevelCollection;
+    topLevelCollection.setRemoteId(mTopLevelFolder);
+    topLevelCollection.setParentCollection(mStore->topLevelCollection());
+    topLevelCollection.setContentMimeTypes(QStringList() << Collection::mimeType());
+    topLevelCollection.setRights(Collection::CanChangeCollection |
+                                 Collection::CanCreateCollection |
+                                 Collection::CanDeleteCollection);
 
-  mPendingCollections << topLevelCollection;
+    mPendingCollections << topLevelCollection;
 
-  FileStore::CollectionFetchJob *fetchJob = mStore->fetchCollections( topLevelCollection, FileStore::CollectionFetchJob::Recursive );
-  QObject::connect( fetchJob, SIGNAL(result(KJob*)), q, SLOT(collectionFetchResult(KJob*)) );
+    FileStore::CollectionFetchJob *fetchJob = mStore->fetchCollections(topLevelCollection, FileStore::CollectionFetchJob::Recursive);
+    QObject::connect(fetchJob, SIGNAL(result(KJob*)), q, SLOT(collectionFetchResult(KJob*)));
 }
 
 void ImapCacheLocalImporter::Private::configureResource()
 {
-  OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
-    QLatin1String("org.freedesktop.Akonadi.Resource.") + mResource.identifier(),
-    QLatin1String("/Settings"), QDBusConnection::sessionBus(), q );
+    OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
+        QLatin1String("org.freedesktop.Akonadi.Resource.") + mResource.identifier(),
+        QLatin1String("/Settings"), QDBusConnection::sessionBus(), q);
 
-  if ( !iface->isValid() ) {
-    q->importFinished( mResource, i18n( "Failed to obtain D-Bus interface for remote configuration." ) );
-    delete iface;
-    return;
-  }
+    if (!iface->isValid()) {
+        q->importFinished(mResource, i18n("Failed to obtain D-Bus interface for remote configuration."));
+        delete iface;
+        return;
+    }
 
-  const QFileInfo pathInfo( QDir( mStore->path() ), mTopLevelFolder );
-  qCDebug(KMAILMIGRATION_LOG) << "resource working path=" << pathInfo.absoluteFilePath();
-  iface->setPath( pathInfo.absoluteFilePath()  );
+    const QFileInfo pathInfo(QDir(mStore->path()), mTopLevelFolder);
+    qCDebug(KMAILMIGRATION_LOG) << "resource working path=" << pathInfo.absoluteFilePath();
+    iface->setPath(pathInfo.absoluteFilePath());
 
-  // make sure the config is saved
-  iface->save();
+    // make sure the config is saved
+    iface->save();
 
-  mResource.setName( i18nc( "@title account name", "Local Copies of %1", mAccountName ) );
-  mResource.reconfigure();
+    mResource.setName(i18nc("@title account name", "Local Copies of %1", mAccountName));
+    mResource.reconfigure();
 
-  emit q->status( QString() );
-  emit q->importFinished( mResource, QString() );
+    emit q->status(QString());
+    emit q->importFinished(mResource, QString());
 }
 
-void ImapCacheLocalImporter::Private::collectionFetchResult( KJob *job )
+void ImapCacheLocalImporter::Private::collectionFetchResult(KJob *job)
 {
-  if ( job->error() != 0 ) {
-    qCritical() << "Store CollectionFetch failed:" << job->errorString();
-  } else {
-    FileStore::CollectionFetchJob *fetchJob = qobject_cast<FileStore::CollectionFetchJob*>( job );
-    Q_ASSERT( fetchJob != 0 );
+    if (job->error() != 0) {
+        qCritical() << "Store CollectionFetch failed:" << job->errorString();
+    } else {
+        FileStore::CollectionFetchJob *fetchJob = qobject_cast<FileStore::CollectionFetchJob *>(job);
+        Q_ASSERT(fetchJob != 0);
 
-    mPendingCollections << fetchJob->collections();
-  }
+        mPendingCollections << fetchJob->collections();
+    }
 
-  processNextCollection();
-}
-
-void ImapCacheLocalImporter::Private::collectionCreateResult( KJob *job )
-{
-  const QString idPath = job->property( "remoteIdPath" ).value<QString>();
-  if ( job->error() != 0 ) {
-    qCritical() << "Akonadi CollectionCreate for" << idPath << "failed:" << job->errorString();
     processNextCollection();
-    return;
-  }
-
-  CollectionCreateJob *createJob = qobject_cast<CollectionCreateJob*>( job );
-  Q_ASSERT( createJob != 0 );
-
-  const Collection collection = createJob->collection();
-  mCurrentCollection = collection;
-/*  qCDebug(KMAILMIGRATION_LOG) << "inserting collection" << collection.id()
-                                   << collection.remoteId()
-                                   << "at idPath" << idPath;*/
-  mAkonadiCollectionsByPath.insert( idPath, collection );
-
-/*  qCDebug(KMAILMIGRATION_LOG) << "Checking for storeCollection with idPath" << idPath;*/
-  const Collection storeCollection = mStoreCollectionsByPath[ idPath ];
-  Q_ASSERT( !storeCollection.remoteId().isEmpty() );
-
-  FileStore::ItemFetchJob *fetchJob = mStore->fetchItems( storeCollection );
-  fetchJob->setProperty( "remoteIdPath", idPath );
-  QObject::connect( fetchJob, SIGNAL(result(KJob*)), q, SLOT(itemFetchResult(KJob*)) );
-
-  emit q->status( i18nc( "@info:status foldername", "%1: listing messages...", collection.name() ) );
 }
 
-void ImapCacheLocalImporter::Private::itemFetchResult( KJob *job )
+void ImapCacheLocalImporter::Private::collectionCreateResult(KJob *job)
 {
-  const QString idPath = job->property( "remoteIdPath" ).value<QString>();
-  if ( job->error() != 0 ) {
-    qCritical() << "Store ItemFetch for" << idPath << "failed:" << job->errorString();
-    processNextCollection();
-    return;
-  }
+    const QString idPath = job->property("remoteIdPath").value<QString>();
+    if (job->error() != 0) {
+        qCritical() << "Akonadi CollectionCreate for" << idPath << "failed:" << job->errorString();
+        processNextCollection();
+        return;
+    }
 
-  FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob != 0 );
+    CollectionCreateJob *createJob = qobject_cast<CollectionCreateJob *>(job);
+    Q_ASSERT(createJob != 0);
 
-  const Collection collection = mAkonadiCollectionsByPath[ idPath ];
-  Q_ASSERT( collection.isValid() );
+    const Collection collection = createJob->collection();
+    mCurrentCollection = collection;
+    /*  qCDebug(KMAILMIGRATION_LOG) << "inserting collection" << collection.id()
+                                       << collection.remoteId()
+                                       << "at idPath" << idPath;*/
+    mAkonadiCollectionsByPath.insert(idPath, collection);
 
-  Item::List items = fetchJob->items();
-  Item::List::iterator it    = items.begin();
-  Item::List::iterator endIt = items.end();
-  for ( ; it != endIt; ++it ) {
-    ( *it ).setParentCollection( collection );
-  }
+    /*  qCDebug(KMAILMIGRATION_LOG) << "Checking for storeCollection with idPath" << idPath;*/
+    const Collection storeCollection = mStoreCollectionsByPath[ idPath ];
+    Q_ASSERT(!storeCollection.remoteId().isEmpty());
 
-  mPendingItems << items;
+    FileStore::ItemFetchJob *fetchJob = mStore->fetchItems(storeCollection);
+    fetchJob->setProperty("remoteIdPath", idPath);
+    QObject::connect(fetchJob, SIGNAL(result(KJob*)), q, SLOT(itemFetchResult(KJob*)));
 
-  mItemProgress = -1;
-  emit q->progress( 0, mPendingItems.count(), 0 );
-  processNextItem();
+    emit q->status(i18nc("@info:status foldername", "%1: listing messages...", collection.name()));
 }
 
-void ImapCacheLocalImporter::Private::itemCreateResult( KJob *job )
+void ImapCacheLocalImporter::Private::itemFetchResult(KJob *job)
 {
-  ItemCreateJob *createJob = qobject_cast<ItemCreateJob*>( job );
-  Q_ASSERT( createJob != 0 );
-  if ( createJob->error() != 0 ) {
-    const Item item = createJob->item();
-    qCritical() << "Akonadi ItemCreate for" << item.parentCollection().remoteId()
-             << "/" << item.remoteId() << "failed:" << job->errorString();
-    return;
-  }
+    const QString idPath = job->property("remoteIdPath").value<QString>();
+    if (job->error() != 0) {
+        qCritical() << "Store ItemFetch for" << idPath << "failed:" << job->errorString();
+        processNextCollection();
+        return;
+    }
 
-  processNextItem();
+    FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
+    Q_ASSERT(fetchJob != 0);
+
+    const Collection collection = mAkonadiCollectionsByPath[ idPath ];
+    Q_ASSERT(collection.isValid());
+
+    Item::List items = fetchJob->items();
+    Item::List::iterator it    = items.begin();
+    Item::List::iterator endIt = items.end();
+    for (; it != endIt; ++it) {
+        (*it).setParentCollection(collection);
+    }
+
+    mPendingItems << items;
+
+    mItemProgress = -1;
+    emit q->progress(0, mPendingItems.count(), 0);
+    processNextItem();
 }
 
-ImapCacheLocalImporter::ImapCacheLocalImporter( MixedMaildirStore *store, QObject *parent )
-  : QObject( parent ), d( new Private( this, store ) )
+void ImapCacheLocalImporter::Private::itemCreateResult(KJob *job)
 {
-  Q_ASSERT( store != 0 );
+    ItemCreateJob *createJob = qobject_cast<ItemCreateJob *>(job);
+    Q_ASSERT(createJob != 0);
+    if (createJob->error() != 0) {
+        const Item item = createJob->item();
+        qCritical() << "Akonadi ItemCreate for" << item.parentCollection().remoteId()
+                    << "/" << item.remoteId() << "failed:" << job->errorString();
+        return;
+    }
+
+    processNextItem();
+}
+
+ImapCacheLocalImporter::ImapCacheLocalImporter(MixedMaildirStore *store, QObject *parent)
+    : QObject(parent), d(new Private(this, store))
+{
+    Q_ASSERT(store != 0);
 }
 
 ImapCacheLocalImporter::~ImapCacheLocalImporter()
 {
-  delete d;
+    delete d;
 }
 
-void ImapCacheLocalImporter::setTopLevelFolder( const QString &topLevelFolder )
+void ImapCacheLocalImporter::setTopLevelFolder(const QString &topLevelFolder)
 {
-  d->mTopLevelFolder = topLevelFolder;
+    d->mTopLevelFolder = topLevelFolder;
 }
 
-void ImapCacheLocalImporter::setAccountName( const QString &accountName )
+void ImapCacheLocalImporter::setAccountName(const QString &accountName)
 {
-  d->mAccountName = accountName;
+    d->mAccountName = accountName;
 }
 
 QString ImapCacheLocalImporter::accountName() const
 {
-  return d->mAccountName;
+    return d->mAccountName;
 }
 
 void ImapCacheLocalImporter::startImport()
 {
-  Q_ASSERT( !d->mTopLevelFolder.isEmpty() );
-  Q_ASSERT( !d->mAccountName.isEmpty() );
+    Q_ASSERT(!d->mTopLevelFolder.isEmpty());
+    Q_ASSERT(!d->mAccountName.isEmpty());
 
-  const QString typeId = QLatin1String( "akonadi_maildir_resource" );
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( typeId, this );
-  connect( job, SIGNAL(result(KJob*)), SLOT(createResourceResult(KJob*)) );
-  job->start();
+    const QString typeId = QLatin1String("akonadi_maildir_resource");
+    AgentInstanceCreateJob *job = new AgentInstanceCreateJob(typeId, this);
+    connect(job, SIGNAL(result(KJob*)), SLOT(createResourceResult(KJob*)));
+    job->start();
 }
 
 #include "moc_imapcachelocalimporter.cpp"
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

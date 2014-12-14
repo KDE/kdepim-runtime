@@ -42,21 +42,20 @@
 #include <krandom.h>
 #include <QStandardPaths>
 
-
 using namespace Akonadi;
 
 KNotesMigrator::KNotesMigrator() :
-    KMigratorBase(), mIndexResource(-1), m_notesResource( 0 )
+    KMigratorBase(), mIndexResource(-1), m_notesResource(0)
 {
     Akonadi::AttributeFactory::registerAttribute<NoteLockAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteAlarmAttribute>();
     Akonadi::AttributeFactory::registerAttribute<NoteDisplayAttribute>();
     Akonadi::AttributeFactory::registerAttribute<ShowFolderNotesAttribute>();
-    const QString kresCfgFile = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String( "/kresources/notes/stdrc" ) ;
-    mConfig = new KConfig( kresCfgFile );
-    const KConfigGroup generalGroup( mConfig, QLatin1String( "General" ) );
-    mUnknownTypeResources = generalGroup.readEntry( QLatin1String( "ResourceKeys" ), QStringList() );
-    m_notesResource = new KCal::CalendarLocal( QString() );
+    const QString kresCfgFile = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1String("/kresources/notes/stdrc") ;
+    mConfig = new KConfig(kresCfgFile);
+    const KConfigGroup generalGroup(mConfig, QLatin1String("General"));
+    mUnknownTypeResources = generalGroup.readEntry(QLatin1String("ResourceKeys"), QStringList());
+    m_notesResource = new KCal::CalendarLocal(QString());
 }
 
 KNotesMigrator::~KNotesMigrator()
@@ -67,7 +66,7 @@ KNotesMigrator::~KNotesMigrator()
 
 void KNotesMigrator::migrate()
 {
-    emit message( Info, i18n( "Beginning KNotes migration..." ) );
+    emit message(Info, i18n("Beginning KNotes migration..."));
     migrateNext();
 }
 
@@ -76,103 +75,102 @@ void KNotesMigrator::migrateNext()
     ++mIndexResource;
 
     if (mUnknownTypeResources.isEmpty() || mIndexResource >= mUnknownTypeResources.count()) {
-        emit message( Info, i18n( "KNotes migration finished" ) );
+        emit message(Info, i18n("KNotes migration finished"));
         deleteLater();
         return;
     }
 
-    const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1" ).arg( mUnknownTypeResources.at(mIndexResource) ) );
-    const QString resourceType = kresCfgGroup.readEntry( QLatin1String( "ResourceType" ), QString() );
+    const KConfigGroup kresCfgGroup(mConfig, QString::fromLatin1("Resource_%1").arg(mUnknownTypeResources.at(mIndexResource)));
+    const QString resourceType = kresCfgGroup.readEntry(QLatin1String("ResourceType"), QString());
     if (resourceType == QLatin1String("file")) {
-        createAgentInstance( QLatin1String("akonadi_akonotes_resource"), this, SLOT(notesResourceCreated(KJob*)) );
+        createAgentInstance(QLatin1String("akonadi_akonotes_resource"), this, SLOT(notesResourceCreated(KJob*)));
     } else {
         migrateNext();
     }
 }
 
-void KNotesMigrator::notesResourceCreated(KJob * job)
+void KNotesMigrator::notesResourceCreated(KJob *job)
 {
-    if ( job->error() ) {
-        migrationFailed( i18n( "Failed to create resource: %1", job->errorText() ) );
+    if (job->error()) {
+        migrationFailed(i18n("Failed to create resource: %1", job->errorText()));
         migrateNext();
         return;
     }
 
-    const KConfigGroup kresCfgGroup( mConfig, QString::fromLatin1( "Resource_%1" ).arg( mUnknownTypeResources.at(mIndexResource) ) );
+    const KConfigGroup kresCfgGroup(mConfig, QString::fromLatin1("Resource_%1").arg(mUnknownTypeResources.at(mIndexResource)));
 
-    m_agentInstance = static_cast<AgentInstanceCreateJob*>( job )->instance();
-    m_agentInstance.setName( kresCfgGroup.readEntry( "ResourceName", "Migrated Notes" ) );
+    m_agentInstance = static_cast<AgentInstanceCreateJob *>(job)->instance();
+    m_agentInstance.setName(kresCfgGroup.readEntry("ResourceName", "Migrated Notes"));
 
-    const QString resourcePath = kresCfgGroup.readEntry( "NotesURL" );
-    KUrl url( resourcePath );
+    const QString resourcePath = kresCfgGroup.readEntry("NotesURL");
+    KUrl url(resourcePath);
 
-    if ( !QFile::exists( url.toLocalFile() ) ) {
+    if (!QFile::exists(url.toLocalFile())) {
         migrateNext();
         return;
     }
 
-
-    const bool success = m_notesResource->load( url.toLocalFile() );
-    if ( !success ) {
-        migrationFailed( i18n( "Failed to open file for reading: %1" , resourcePath ) );
+    const bool success = m_notesResource->load(url.toLocalFile());
+    if (!success) {
+        migrationFailed(i18n("Failed to open file for reading: %1" , resourcePath));
         migrateNext();
         return;
     }
 
     OrgKdeAkonadiMaildirSettingsInterface *iface = new OrgKdeAkonadiMaildirSettingsInterface(
-                QLatin1String("org.freedesktop.Akonadi.Resource.") + m_agentInstance.identifier(),
-                QLatin1String("/Settings"), QDBusConnection::sessionBus(), this );
+        QLatin1String("org.freedesktop.Akonadi.Resource.") + m_agentInstance.identifier(),
+        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
 
-    if ( !iface->isValid() ) {
-        migrationFailed( i18n( "Failed to obtain D-Bus interface for remote configuration." ), m_agentInstance );
+    if (!iface->isValid()) {
+        migrationFailed(i18n("Failed to obtain D-Bus interface for remote configuration."), m_agentInstance);
         delete iface;
         migrateNext();
         return;
     }
     const bool isReadOnly = kresCfgGroup.readEntry("ResourceIsReadOnly", false);
-    iface->setReadOnly( isReadOnly );
+    iface->setReadOnly(isReadOnly);
 
-    QDBusPendingReply<void> response = iface->setPath( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/notes/") + KRandom::randomString( 10 ) );
+    QDBusPendingReply<void> response = iface->setPath(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1String("/notes/") + KRandom::randomString(10));
 
     // make sure the config is saved
     iface->writeConfig();
 
     m_agentInstance.reconfigure();
 
-    ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( m_agentInstance, this );
+    ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob(m_agentInstance, this);
     connect(syncJob, &ResourceSynchronizationJob::result, this, &KNotesMigrator::syncDone);
     syncJob->start();
 }
 
 void KNotesMigrator::syncDone(KJob *job)
 {
-    Q_UNUSED( job );
-    emit message( Info, i18n( "Instance \"%1\" synchronized" , m_agentInstance.identifier() ) );
+    Q_UNUSED(job);
+    emit message(Info, i18n("Instance \"%1\" synchronized" , m_agentInstance.identifier()));
 
-    CollectionFetchJob *collectionFetchJob = new CollectionFetchJob( Collection::root(), CollectionFetchJob::FirstLevel, this );
+    CollectionFetchJob *collectionFetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel, this);
     connect(collectionFetchJob, &CollectionFetchJob::collectionsReceived, this, &KNotesMigrator::rootCollectionsRecieved);
     connect(collectionFetchJob, &CollectionFetchJob::result, this, &KNotesMigrator::rootFetchFinished);
 }
 
-void KNotesMigrator::rootFetchFinished( KJob *job )
+void KNotesMigrator::rootFetchFinished(KJob *job)
 {
-    emit message( Info, i18n( "Root fetch finished" ) );
-    if ( job->error() ) {
-        emit message( Error, i18nc( "A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" , job->errorString() ) );
+    emit message(Info, i18n("Root fetch finished"));
+    if (job->error()) {
+        emit message(Error, i18nc("A job to fetch akonadi resources failed. %1 is the error string.", "Fetching resources failed: %1" , job->errorString()));
     }
 }
 
-void KNotesMigrator::rootCollectionsRecieved( const Akonadi::Collection::List &list )
+void KNotesMigrator::rootCollectionsRecieved(const Akonadi::Collection::List &list)
 {
-    emit message( Info, i18n( "Received root collections" ) );
-    foreach ( const Collection &collection, list ) {
-        if ( collection.resource() == m_agentInstance.identifier() ) {
+    emit message(Info, i18n("Received root collections"));
+    foreach (const Collection &collection, list) {
+        if (collection.resource() == m_agentInstance.identifier()) {
             m_resourceCollection = collection;
             startMigration();
             return;
         }
     }
-    emit message( Error, i18n( "Could not find root collection for resource \"%1\"" ,m_agentInstance.identifier() ) );
+    emit message(Error, i18n("Could not find root collection for resource \"%1\"" , m_agentInstance.identifier()));
     migrateNext();
 }
 
@@ -185,25 +183,25 @@ void KNotesMigrator::startMigration()
     grp.writeEntry("DefaultFolder", m_resourceCollection.id());
     config.sync();
 
-    emit message( Info, i18np( "Starting migration of %1 note", "Starting migration of %1 notes", oldNotesList.size() ) );
+    emit message(Info, i18np("Starting migration of %1 note", "Starting migration of %1 notes", oldNotesList.size()));
 
-    foreach ( KCal::Journal *journal, oldNotesList ) {
+    foreach (KCal::Journal *journal, oldNotesList) {
         Item newItem;
-        newItem.setMimeType( QLatin1String("text/x-vnd.akonadi.note") );
-        newItem.setParentCollection( m_resourceCollection );
-        KMime::Message::Ptr note( new KMime::Message() );
+        newItem.setMimeType(QLatin1String("text/x-vnd.akonadi.note"));
+        newItem.setParentCollection(m_resourceCollection);
+        KMime::Message::Ptr note(new KMime::Message());
 
-        QByteArray encoding( "utf-8" );
-        note->subject( true )->fromUnicodeString( journal->summary(), encoding );
-        note->mainBodyPart()->fromUnicodeString( journal->description() );
-        note->contentType( true )->setMimeType( journal->descriptionIsRich() ? "text/html" : "text/plain" );
+        QByteArray encoding("utf-8");
+        note->subject(true)->fromUnicodeString(journal->summary(), encoding);
+        note->mainBodyPart()->fromUnicodeString(journal->description());
+        note->contentType(true)->setMimeType(journal->descriptionIsRich() ? "text/html" : "text/plain");
 
         note->assemble();
         KNotesMigratorConfig *config = new KNotesMigratorConfig(journal);
         if (config) {
 
             if (config->readOnly()) {
-                newItem.addAttribute( new NoteLockAttribute() );
+                newItem.addAttribute(new NoteLockAttribute());
             }
 
             //Position/Editor/Color etc.
@@ -222,7 +220,7 @@ void KNotesMigrator::startMigration()
             displayAttribute->setKeepAbove(config->noteConfig()->keepAbove());
             displayAttribute->setKeepBelow(config->noteConfig()->keepBelow());
             displayAttribute->setAutoIndent(config->noteConfig()->autoIndent());
-            newItem.addAttribute( displayAttribute );
+            newItem.addAttribute(displayAttribute);
             delete config;
         }
 
@@ -233,40 +231,40 @@ void KNotesMigrator::startMigration()
             if (alarm->hasTime()) {
                 NoteAlarmAttribute *alarmAttribute = new NoteAlarmAttribute;
                 alarmAttribute->setDateTime(alarm->time());
-                newItem.addAttribute( alarmAttribute );
+                newItem.addAttribute(alarmAttribute);
             }
         }
-        newItem.setPayload( note );
-        newItemsList.append( newItem );
+        newItem.setPayload(note);
+        newItemsList.append(newItem);
     }
 
-    EntityTreeCreateJob *createJob = new EntityTreeCreateJob( QList<Akonadi::Collection::List>(), newItemsList,this );
+    EntityTreeCreateJob *createJob = new EntityTreeCreateJob(QList<Akonadi::Collection::List>(), newItemsList, this);
     connect(createJob, &EntityTreeCreateJob::result, this, &KNotesMigrator::newResourceFilled);
 }
 
-void KNotesMigrator::newResourceFilled(KJob* job)
+void KNotesMigrator::newResourceFilled(KJob *job)
 {
-    Q_UNUSED( job );
+    Q_UNUSED(job);
     showDefaultCollection();
 }
 
 void KNotesMigrator::showDefaultCollection()
 {
-    ShowFolderNotesAttribute *attribute = m_resourceCollection.attribute<ShowFolderNotesAttribute>( Akonadi::Collection::AddIfMissing );
+    ShowFolderNotesAttribute *attribute = m_resourceCollection.attribute<ShowFolderNotesAttribute>(Akonadi::Collection::AddIfMissing);
     Q_UNUSED(attribute);
-    Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob( m_resourceCollection );
+    Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob(m_resourceCollection);
     connect(job, &Akonadi::CollectionModifyJob::result, this, &KNotesMigrator::slotCollectionModify);
 }
 
-void KNotesMigrator::slotCollectionModify(KJob* job)
+void KNotesMigrator::slotCollectionModify(KJob *job)
 {
-    Q_UNUSED( job );
+    Q_UNUSED(job);
     migrateNext();
 }
 
-void KNotesMigrator::migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance )
+void KNotesMigrator::migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance)
 {
-    Q_UNUSED( instance )
-    emit message( Error, i18n( "Migration failed: %1" ,errorMsg ) );
+    Q_UNUSED(instance)
+    emit message(Error, i18n("Migration failed: %1" , errorMsg));
 }
 

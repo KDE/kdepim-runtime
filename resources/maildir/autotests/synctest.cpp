@@ -37,28 +37,28 @@ using namespace Akonadi;
 
 void SyncTest::initTestCase()
 {
-  QVERIFY( Control::start() );
-  QTest::qWait( 1000 );
+    QVERIFY(Control::start());
+    QTest::qWait(1000);
 }
 
 void SyncTest::testSync()
 {
-  AgentInstance instance = AgentManager::self()->instance( "akonadi_maildir_resource_0" );
-  QVERIFY( instance.isValid() );
+    AgentInstance instance = AgentManager::self()->instance("akonadi_maildir_resource_0");
+    QVERIFY(instance.isValid());
 
-  for ( int i = 0; i < 100; i++ ) {
-    QDBusInterface *interface = new QDBusInterface(
-        QString::fromLatin1( "org.freedesktop.Akonadi.Resource.%1" ).arg( instance.identifier() ),
-        "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this );
-    QVERIFY( interface->isValid() );
-    QTime t;
-    t.start();
-    instance.synchronize();
-    QSignalSpy spy (interface, SIGNAL(synchronized()));
-    QVERIFY( spy.wait( TIMEOUT * 1000 ) );
-    qDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
-  }
+    for (int i = 0; i < 100; i++) {
+        QDBusInterface *interface = new QDBusInterface(
+            QString::fromLatin1("org.freedesktop.Akonadi.Resource.%1").arg(instance.identifier()),
+            "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this);
+        QVERIFY(interface->isValid());
+        QTime t;
+        t.start();
+        instance.synchronize();
+        QSignalSpy spy(interface, SIGNAL(synchronized()));
+        QVERIFY(spy.wait(TIMEOUT * 1000));
+        qDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
+    }
 }
 
-QTEST_AKONADIMAIN( SyncTest )
+QTEST_AKONADIMAIN(SyncTest)
 

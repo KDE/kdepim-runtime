@@ -22,68 +22,68 @@ DavCollection::DavCollection()
 {
 }
 
-DavCollection::DavCollection( DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes )
-  : mProtocol( protocol ), mUrl( url ), mDisplayName( displayName ), mContentTypes( contentTypes ), mPrivileges( DavUtils::All )
+DavCollection::DavCollection(DavUtils::Protocol protocol, const QString &url, const QString &displayName, ContentTypes contentTypes)
+    : mProtocol(protocol), mUrl(url), mDisplayName(displayName), mContentTypes(contentTypes), mPrivileges(DavUtils::All)
 {
 }
 
-void DavCollection::setProtocol( DavUtils::Protocol protocol )
+void DavCollection::setProtocol(DavUtils::Protocol protocol)
 {
-  mProtocol = protocol;
+    mProtocol = protocol;
 }
 
 DavUtils::Protocol DavCollection::protocol() const
 {
-  return mProtocol;
+    return mProtocol;
 }
 
-void DavCollection::setUrl( const QString &url )
+void DavCollection::setUrl(const QString &url)
 {
-  mUrl = url;
+    mUrl = url;
 }
 
 QString DavCollection::url() const
 {
-  return mUrl;
+    return mUrl;
 }
 
-void DavCollection::setDisplayName( const QString &displayName )
+void DavCollection::setDisplayName(const QString &displayName)
 {
-  mDisplayName = displayName;
+    mDisplayName = displayName;
 }
 
 QString DavCollection::displayName() const
 {
-  return mDisplayName;
+    return mDisplayName;
 }
 
-void DavCollection::setColor( const QColor &color )
+void DavCollection::setColor(const QColor &color)
 {
-  mColor = color;
+    mColor = color;
 }
 
 QColor DavCollection::color() const
 {
-  return mColor;
+    return mColor;
 }
 
-void DavCollection::setContentTypes( ContentTypes contentTypes )
+void DavCollection::setContentTypes(ContentTypes contentTypes)
 {
-  mContentTypes = contentTypes;
+    mContentTypes = contentTypes;
 }
 
 DavCollection::ContentTypes DavCollection::contentTypes() const
 {
-  return mContentTypes;
+    return mContentTypes;
 }
 
-void DavCollection::setPrivileges( DavUtils::Privileges privs )
+void DavCollection::setPrivileges(DavUtils::Privileges privs)
 {
-  mPrivileges = privs;
+    mPrivileges = privs;
 }
 
 DavUtils::Privileges DavCollection::privileges() const
 {
-  return mPrivileges;
+    return mPrivileges;
 }
 

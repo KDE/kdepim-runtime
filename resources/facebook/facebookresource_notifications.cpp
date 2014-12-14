@@ -43,61 +43,61 @@
 
 using namespace Akonadi;
 
-void FacebookResource::notificationsListFetched( KJob *job )
+void FacebookResource::notificationsListFetched(KJob *job)
 {
-  Q_ASSERT( !mIdle );
-  KFbAPI::NotificationsListJob * const listJob = dynamic_cast<KFbAPI::NotificationsListJob*>( job );
-  Q_ASSERT( listJob );
-  mCurrentJobs.removeAll( job );
+    Q_ASSERT(!mIdle);
+    KFbAPI::NotificationsListJob *const listJob = dynamic_cast<KFbAPI::NotificationsListJob *>(job);
+    Q_ASSERT(listJob);
+    mCurrentJobs.removeAll(job);
 
-  if ( listJob->error() ) {
-    abortWithError( i18n( "Unable to get notifications from server: %1", listJob->errorString() ),
-                    listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem );
-  } else {
-    setItemStreamingEnabled( true );
+    if (listJob->error()) {
+        abortWithError(i18n("Unable to get notifications from server: %1", listJob->errorString()),
+                       listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem);
+    } else {
+        setItemStreamingEnabled(true);
 
-    Item::List notificationItems;
+        Item::List notificationItems;
 
-    //clear any notifications cached for display
-    mDisplayedNotifications.clear();
+        //clear any notifications cached for display
+        mDisplayedNotifications.clear();
 
-    KSharedConfigPtr knotificationHistory = KSharedConfig::openConfig(QLatin1String("facebook-notificationsrc"));
+        KSharedConfigPtr knotificationHistory = KSharedConfig::openConfig(QLatin1String("facebook-notificationsrc"));
 
-    Q_FOREACH ( const KFbAPI::NotificationInfo &notificationInfo, listJob->notifications() ) {
-      Item notification;
-      notification.setRemoteId( notificationInfo.id() );
-      notification.setMimeType( QLatin1String("text/x-vnd.akonadi.socialnotification") );
-      notification.setPayload<KFbAPI::NotificationInfo>( notificationInfo );
-      notificationItems.append( notification );
+        Q_FOREACH (const KFbAPI::NotificationInfo &notificationInfo, listJob->notifications()) {
+            Item notification;
+            notification.setRemoteId(notificationInfo.id());
+            notification.setMimeType(QLatin1String("text/x-vnd.akonadi.socialnotification"));
+            notification.setPayload<KFbAPI::NotificationInfo>(notificationInfo);
+            notificationItems.append(notification);
 
-      if (Settings::self()->displayNotifications()) {
-        if (notificationInfo.unread()) {
-            mDisplayedNotifications.append(notificationInfo);
-        } else {
-            //if the notification is marked as read, remove it from saved notifications
-            //to keep it small
-            knotificationHistory->deleteGroup(notificationInfo.id());
+            if (Settings::self()->displayNotifications()) {
+                if (notificationInfo.unread()) {
+                    mDisplayedNotifications.append(notificationInfo);
+                } else {
+                    //if the notification is marked as read, remove it from saved notifications
+                    //to keep it small
+                    knotificationHistory->deleteGroup(notificationInfo.id());
+                }
+            }
         }
-      }
+
+        if (Settings::self()->displayNotifications()) {
+            displayNotificationsToUser(FacebookResource::KSNIandKNotification);
+        }
+
+        itemsRetrieved(notificationItems);
+        itemsRetrievalDone();
+        finishNotificationsFetching();
     }
 
-    if (Settings::self()->displayNotifications()) {
-        displayNotificationsToUser(FacebookResource::KSNIandKNotification);
-    }
-
-    itemsRetrieved( notificationItems );
-    itemsRetrievalDone();
-    finishNotificationsFetching();
-  }
-
-  listJob->deleteLater();
+    listJob->deleteLater();
 }
 
 void FacebookResource::finishNotificationsFetching()
 {
-  emit percent( 100 );
-  emit status( Idle, i18n( "All notifications fetched from server." ) );
-  resetState();
+    emit percent(100);
+    emit status(Idle, i18n("All notifications fetched from server."));
+    resetState();
 }
 
 void FacebookResource::displayNotificationsToUser(FbNotificationPresentation displayType)
@@ -231,8 +231,8 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
     //if we have more than 3 notifications, append "...and N more" at the end of the string
     if (mDisplayedNotifications.size() > 3) {
         sniTooltip.append(i18ncp("This string is appended at the end of Facebook notifications "
-                                        "displayed in the system notifications, indicating there are more "
-                                        "notifications, which are not displayed.",
+                                 "displayed in the system notifications, indicating there are more "
+                                 "notifications, which are not displayed.",
                                  "...and 1 more",
                                  "...and %1 more",
                                  mDisplayedNotifications.size() - 3));
@@ -257,8 +257,8 @@ void FacebookResource::displayNotificationsToUser(FbNotificationPresentation dis
     if (mDisplayedNotifications.size() == 1) {
         mNotificationSNI->setProperty("notificationLink", mDisplayedNotifications.first().link());
         mNotificationSNI->setToolTip(QLatin1String("facebookresource"),
-                                            mDisplayedNotifications.first().title(),
-                                            QString());
+                                     mDisplayedNotifications.first().title(),
+                                     QString());
     } else {
         mNotificationSNI->setToolTip(QLatin1String("facebookresource"),
                                      i18np("You have one new Facebook notification",
@@ -272,7 +272,7 @@ void FacebookResource::notificationSNIActivated(bool active, const QPoint &point
 {
     Q_UNUSED(active);
 
-    KStatusNotifierItem *sni = qobject_cast<KStatusNotifierItem*>(sender());
+    KStatusNotifierItem *sni = qobject_cast<KStatusNotifierItem *>(sender());
 
     Q_ASSERT(sni);
     if (!sni) {
@@ -318,7 +318,7 @@ void FacebookResource::notificationLinkActivated()
     }
 
     //mark the notification as read on the server
-    KFbAPI::NotificationsMarkReadJob * const markNotificationJob =
+    KFbAPI::NotificationsMarkReadJob *const markNotificationJob =
         new KFbAPI::NotificationsMarkReadJob(id, Settings::self()->accessToken(), this);
 
     mCurrentJobs << markNotificationJob;
@@ -337,7 +337,7 @@ void FacebookResource::notificationMarkAsReadJobFinished(KJob *job)
         qWarning() << job->errorString() << job->errorText();
     }
 
-    mCurrentJobs.removeAll( job );
+    mCurrentJobs.removeAll(job);
 
     //only refetch the notifications if there are no more jobs running
     if (mCurrentJobs.isEmpty()) {
@@ -355,9 +355,9 @@ void FacebookResource::notificationMarkAsReadJobFinished(KJob *job)
 
 void FacebookResource::notificationCollectionFetchJobFinished(KJob *job)
 {
-    CollectionFetchJob *collectionJob = qobject_cast<CollectionFetchJob*>(job);
+    CollectionFetchJob *collectionJob = qobject_cast<CollectionFetchJob *>(job);
 
-    Q_FOREACH(const Akonadi::Collection &collection, collectionJob->collections()) {
+    Q_FOREACH (const Akonadi::Collection &collection, collectionJob->collections()) {
         if (collection.remoteId() == notificationsRID) {
             synchronizeCollection(collection.id());
             //there is only one notifications collection, bail out if it was found
@@ -369,10 +369,10 @@ void FacebookResource::notificationCollectionFetchJobFinished(KJob *job)
 void FacebookResource::markNotificationsAsReadTriggered()
 {
     for (int i = 0; i < mDisplayedNotifications.size(); i++) {
-        KFbAPI::NotificationsMarkReadJob * const markNotificationJob =
-        new KFbAPI::NotificationsMarkReadJob(mDisplayedNotifications.at(i).id(),
-                                             Settings::self()->accessToken(),
-                                             this);
+        KFbAPI::NotificationsMarkReadJob *const markNotificationJob =
+            new KFbAPI::NotificationsMarkReadJob(mDisplayedNotifications.at(i).id(),
+                    Settings::self()->accessToken(),
+                    this);
 
         mCurrentJobs << markNotificationJob;
         connect(markNotificationJob, SIGNAL(result(KJob*)),

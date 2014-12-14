@@ -26,87 +26,87 @@
 #include <KUrl>
 #include <QTimer>
 
-FreeBusyUpdateHandler::FreeBusyUpdateHandler( QObject *parent )
-  : QObject( parent ), mTimer( new QTimer( this ) )
+FreeBusyUpdateHandler::FreeBusyUpdateHandler(QObject *parent)
+    : QObject(parent), mTimer(new QTimer(this))
 {
-  mTimer->setInterval( 2000 );
-  connect(mTimer, &QTimer::timeout, this, &FreeBusyUpdateHandler::timeout);
+    mTimer->setInterval(2000);
+    connect(mTimer, &QTimer::timeout, this, &FreeBusyUpdateHandler::timeout);
 }
 
 FreeBusyUpdateHandler::~FreeBusyUpdateHandler()
 {
-  mTimer->stop();
+    mTimer->stop();
 }
 
-void FreeBusyUpdateHandler::updateFolder( const QString &folderPath, const QString &userName,
-                                          const QString &password, const QString &host )
+void FreeBusyUpdateHandler::updateFolder(const QString &folderPath, const QString &userName,
+        const QString &password, const QString &host)
 {
-  QString path( folderPath );
+    QString path(folderPath);
 
-  /* Steffen said: you must issue an authenticated HTTP GET request to
-     https://kolabserver/freebusy/trigger/user@domain/Folder/NestedFolder.pfb
-     (replace .pfb with .xpfb for extended fb lists). */
+    /* Steffen said: you must issue an authenticated HTTP GET request to
+       https://kolabserver/freebusy/trigger/user@domain/Folder/NestedFolder.pfb
+       (replace .pfb with .xpfb for extended fb lists). */
 
-  KUrl httpUrl;
-  httpUrl.setUser( userName );
-  httpUrl.setPassword( password );
-  httpUrl.setHost( host );
-  httpUrl.setProtocol( QLatin1String( "https" ) );
+    KUrl httpUrl;
+    httpUrl.setUser(userName);
+    httpUrl.setPassword(password);
+    httpUrl.setHost(host);
+    httpUrl.setProtocol(QLatin1String("https"));
 
-  // IMAP path is either /INBOX/<path> or /user/someone/<path>
-  //FIXME this assumption is no longer true. Kolabfolders can also be toplevel.
-  if ( !path.startsWith( QLatin1Char('/') ) ) {
-    //The path separator can i.e. also be '.' on a different imap server
-    qWarning() << "Unsupported path separator";
-    return;
-  }
-  const int secondSlash = path.indexOf( QLatin1Char('/'), 1 );
-  if ( secondSlash == -1 ) {
-    qWarning() << "path is too short: " << path;
-    return;
-  }
+    // IMAP path is either /INBOX/<path> or /user/someone/<path>
+    //FIXME this assumption is no longer true. Kolabfolders can also be toplevel.
+    if (!path.startsWith(QLatin1Char('/'))) {
+        //The path separator can i.e. also be '.' on a different imap server
+        qWarning() << "Unsupported path separator";
+        return;
+    }
+    const int secondSlash = path.indexOf(QLatin1Char('/'), 1);
+    if (secondSlash == -1) {
+        qWarning() << "path is too short: " << path;
+        return;
+    }
 
-  if ( path.startsWith( QLatin1String( "/INBOX/" ), Qt::CaseInsensitive ) ) {
-    // If INBOX, replace it with the username (which is user@domain)
-    path = path.mid( secondSlash );
-    path.prepend( userName );
-  } else {
-    // If user, just remove it. So we keep the IMAP-returned username.
-    // This assumes it's a known user on the same domain.
-    path = path.mid( secondSlash );
-  }
+    if (path.startsWith(QLatin1String("/INBOX/"), Qt::CaseInsensitive)) {
+        // If INBOX, replace it with the username (which is user@domain)
+        path = path.mid(secondSlash);
+        path.prepend(userName);
+    } else {
+        // If user, just remove it. So we keep the IMAP-returned username.
+        // This assumes it's a known user on the same domain.
+        path = path.mid(secondSlash);
+    }
 
-  if ( path.startsWith( QLatin1Char('/') ) ) {
-    httpUrl.setPath( QLatin1String("/freebusy/trigger") + path + QLatin1String(".pfb") );
-  } else {
-    httpUrl.setPath( QLatin1String("/freebusy/trigger/") + path + QLatin1String(".pfb") );
-  }
+    if (path.startsWith(QLatin1Char('/'))) {
+        httpUrl.setPath(QLatin1String("/freebusy/trigger") + path + QLatin1String(".pfb"));
+    } else {
+        httpUrl.setPath(QLatin1String("/freebusy/trigger/") + path + QLatin1String(".pfb"));
+    }
 
-  mUrls.insert( httpUrl );
-  mTimer->start();
+    mUrls.insert(httpUrl);
+    mTimer->start();
 }
 
 void FreeBusyUpdateHandler::timeout()
 {
-  foreach ( const KUrl &url, mUrls ) {
-    qDebug() << "Triggering PFB update for " << url;
+    foreach (const KUrl &url, mUrls) {
+        qDebug() << "Triggering PFB update for " << url;
 
-    KIO::Job *job = KIO::get( url, KIO::NoReload, KIO::HideProgressInfo );
-    // we want an error in case of 404
-    job->addMetaData( QLatin1String( "errorPage" ), QLatin1String( "false" ) );
-    connect(job, &KIO::Job::result, this, &FreeBusyUpdateHandler::slotFreeBusyTriggerResult);
-  }
+        KIO::Job *job = KIO::get(url, KIO::NoReload, KIO::HideProgressInfo);
+        // we want an error in case of 404
+        job->addMetaData(QLatin1String("errorPage"), QLatin1String("false"));
+        connect(job, &KIO::Job::result, this, &FreeBusyUpdateHandler::slotFreeBusyTriggerResult);
+    }
 
-  mUrls.clear();
+    mUrls.clear();
 }
 
-void FreeBusyUpdateHandler::slotFreeBusyTriggerResult( KJob *job )
+void FreeBusyUpdateHandler::slotFreeBusyTriggerResult(KJob *job)
 {
-  if ( job->error() ) {
-    KUrl url( job->errorText() );
-    KPassivePopup::message(
-      i18n( "Could not trigger Free/Busy information update: %1.", url.prettyUrl() ),
-      (QWidget*)0 );
-  }
+    if (job->error()) {
+        KUrl url(job->errorText());
+        KPassivePopup::message(
+            i18n("Could not trigger Free/Busy information update: %1.", url.prettyUrl()),
+            (QWidget *)0);
+    }
 }
 

@@ -27,12 +27,12 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 
-ConfigDialog::ConfigDialog(QWidget* parent)
-  : QDialog( parent )
+ConfigDialog::ConfigDialog(QWidget *parent)
+    : QDialog(parent)
 {
-  QWidget *mainWidget = new QWidget(this);
+    QWidget *mainWidget = new QWidget(this);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -40,22 +40,22 @@ ConfigDialog::ConfigDialog(QWidget* parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
     okButton->setDefault(true);
 
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  mainLayout->addWidget(buttonBox);
-  ui.setupUi(mainWidget);
-  setWindowIcon( QIcon::fromTheme( QLatin1String("view-calendar-birthday") ) );
-  mManager = new KConfigDialogManager( this, Settings::self() );
-  mManager->updateWidgets();
-  ui.kcfg_AlarmDays->setSuffix( ki18np( " day", " days" ) );
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    mainLayout->addWidget(buttonBox);
+    ui.setupUi(mainWidget);
+    setWindowIcon(QIcon::fromTheme(QLatin1String("view-calendar-birthday")));
+    mManager = new KConfigDialogManager(this, Settings::self());
+    mManager->updateWidgets();
+    ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));
 
-  connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
+    connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
 }
 
 void ConfigDialog::save()
 {
-  mManager->updateSettings();
-  Settings::self()->save();
+    mManager->updateSettings();
+    Settings::self()->save();
 }
 

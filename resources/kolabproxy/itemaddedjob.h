@@ -25,7 +25,7 @@ class ItemAddedJob: public KJob
 {
     Q_OBJECT
 public:
-    ItemAddedJob(const Akonadi::Item &kolabItem, const Akonadi::Collection &col, KolabHandler &handler, QObject* parent);
+    ItemAddedJob(const Akonadi::Item &kolabItem, const Akonadi::Collection &col, KolabHandler &handler, QObject *parent);
     virtual void start();
     Akonadi::Item kolabItem() const;
     Akonadi::Item imapItem() const;

@@ -26,7 +26,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that creates a new folder on the OX server.
@@ -35,16 +36,16 @@ namespace OXA {
  */
 class FolderCreateJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new folder create job.
      *
      * @param folder The folder to create.
      * @param parent The parent object.
      */
-    explicit FolderCreateJob( const Folder &folder, QObject *parent = Q_NULLPTR );
+    explicit FolderCreateJob(const Folder &folder, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -56,10 +57,10 @@ class FolderCreateJob : public KJob
      */
     Folder folder() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Folder mFolder;
 };
 

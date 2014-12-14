@@ -24,41 +24,41 @@
 using namespace OXA;
 
 User::User()
-  : mUid( -1 )
+    : mUid(-1)
 {
 }
 
 bool User::isValid() const
 {
-  return (mUid != -1);
+    return (mUid != -1);
 }
 
-void User::setUid( qlonglong uid )
+void User::setUid(qlonglong uid)
 {
-  mUid = uid;
+    mUid = uid;
 }
 
 qlonglong User::uid() const
 {
-  return mUid;
+    return mUid;
 }
 
-void User::setEmail( const QString &email )
+void User::setEmail(const QString &email)
 {
-  mEmail = email;
+    mEmail = email;
 }
 
 QString User::email() const
 {
-  return mEmail;
+    return mEmail;
 }
 
-void User::setName( const QString &name )
+void User::setName(const QString &name)
 {
-  mName = name;
+    mName = name;
 }
 
 QString User::name() const
 {
-  return mName;
+    return mName;
 }

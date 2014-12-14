@@ -21,81 +21,81 @@
 #include "notehandler.h"
 #include <akonadi/notes/noteutils.h>
 
-NotesHandler::NotesHandler( const Akonadi::Collection &imapCollection )
-  : JournalHandler( imapCollection )
+NotesHandler::NotesHandler(const Akonadi::Collection &imapCollection)
+    : JournalHandler(imapCollection)
 {
-  m_mimeType = "application/x-vnd.kolab.note";
+    m_mimeType = "application/x-vnd.kolab.note";
 }
 
 QStringList NotesHandler::contentMimeTypes()
 {
-  return QStringList() << QLatin1String( "text/x-vnd.akonadi.note" );
+    return QStringList() << QLatin1String("text/x-vnd.akonadi.note");
 }
 
-bool NotesHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
+bool NotesHandler::toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem)
 {
-  if ( item.hasPayload<KMime::Message::Ptr>() ) {
-    KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
-    KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeNote( note, m_formatVersion );
-    if ( checkForErrors( item.id() ) ) {
-      return false;
-    }
-    imapItem.setMimeType( QLatin1String("message/rfc822") );
-    imapItem.setPayload( msg );
-  } else {
-    qWarning() << "Payload is not a note!";
-    return false;
-  }
-  return true;
-}
-
-Akonadi::Item::List NotesHandler::translateItems( const Akonadi::Item::List &kolabItems )
-{
-  Akonadi::Item::List newItems;
-  foreach ( const Akonadi::Item &item, kolabItems ) {
-    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      qWarning() << "Payload is not a MessagePtr!";
-      continue;
-    }
-    const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
-    Akonadi::Item noteItem( QLatin1String("text/x-vnd.akonadi.note") );
-    bool ret = noteFromKolab( payload, noteItem );
-    if ( checkForErrors( item.id() ) ) {
-      continue;
-    }
-    if ( ret ) {
-      noteItem.setRemoteId( QString::number( item.id() ) );
-      newItems.append( noteItem );
+    if (item.hasPayload<KMime::Message::Ptr>()) {
+        KMime::Message::Ptr note = item.payload<KMime::Message::Ptr>();
+        KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeNote(note, m_formatVersion);
+        if (checkForErrors(item.id())) {
+            return false;
+        }
+        imapItem.setMimeType(QLatin1String("message/rfc822"));
+        imapItem.setPayload(msg);
     } else {
-      qWarning() << "Failed to convert kolab item ( id:" << item.id()
-                 << "rid:" << item.remoteId() << ") to Note message";
-      continue;
+        qWarning() << "Payload is not a note!";
+        return false;
     }
-  }
+    return true;
+}
 
-  return newItems;
+Akonadi::Item::List NotesHandler::translateItems(const Akonadi::Item::List &kolabItems)
+{
+    Akonadi::Item::List newItems;
+    foreach (const Akonadi::Item &item, kolabItems) {
+        if (!item.hasPayload<KMime::Message::Ptr>()) {
+            qWarning() << "Payload is not a MessagePtr!";
+            continue;
+        }
+        const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
+        Akonadi::Item noteItem(QLatin1String("text/x-vnd.akonadi.note"));
+        bool ret = noteFromKolab(payload, noteItem);
+        if (checkForErrors(item.id())) {
+            continue;
+        }
+        if (ret) {
+            noteItem.setRemoteId(QString::number(item.id()));
+            newItems.append(noteItem);
+        } else {
+            qWarning() << "Failed to convert kolab item ( id:" << item.id()
+                       << "rid:" << item.remoteId() << ") to Note message";
+            continue;
+        }
+    }
+
+    return newItems;
 }
 
 QString NotesHandler::iconName() const
 {
-  return QString::fromLatin1( "view-pim-notes" );
+    return QString::fromLatin1("view-pim-notes");
 }
 
-bool NotesHandler::noteFromKolab( const KMime::Message::Ptr &kolabMsg, Akonadi::Item &noteItem )
+bool NotesHandler::noteFromKolab(const KMime::Message::Ptr &kolabMsg, Akonadi::Item &noteItem)
 {
-  Kolab::KolabObjectReader reader( kolabMsg );
-  if ( reader.getType() != Kolab::NoteObject ) {
-    return false;
-  }
-  noteItem.setPayload( reader.getNote() );
-  return true;
+    Kolab::KolabObjectReader reader(kolabMsg);
+    if (reader.getType() != Kolab::NoteObject) {
+        return false;
+    }
+    noteItem.setPayload(reader.getNote());
+    return true;
 }
 
-QString NotesHandler::extractGid(const Akonadi::Item& kolabItem)
+QString NotesHandler::extractGid(const Akonadi::Item &kolabItem)
 {
-    if ( !kolabItem.hasPayload<KMime::Message::Ptr>() ) {
-      qWarning() << "Payload is not a MessagePtr!";
-      return QString();
+    if (!kolabItem.hasPayload<KMime::Message::Ptr>()) {
+        qWarning() << "Payload is not a MessagePtr!";
+        return QString();
     }
     const KMime::Message::Ptr payload = kolabItem.payload<KMime::Message::Ptr>();
     const Akonadi::NoteUtils::NoteMessageWrapper note(payload);

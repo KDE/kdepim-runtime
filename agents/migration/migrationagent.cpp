@@ -31,13 +31,14 @@
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 MigrationAgent::MigrationAgent(const QString &id)
-:   AgentBase(id),
-    mScheduler(new KUiServerJobTracker)
+    :   AgentBase(id),
+        mScheduler(new KUiServerJobTracker)
 {
-    KLocalizedString::setApplicationDomain( "akonadi_migration_agent" );
+    KLocalizedString::setApplicationDomain("akonadi_migration_agent");
     mScheduler.addMigrator(QSharedPointer<GidMigrator>(new GidMigrator(KContacts::Addressee::mimeType())));
 }
 
@@ -46,7 +47,6 @@ void MigrationAgent::configure(WId windowId)
     QDialog *dlg = new QDialog();
     QVBoxLayout *topLayout = new QVBoxLayout;
     dlg->setLayout(topLayout);
-
 
     MigrationStatusWidget *widget = new MigrationStatusWidget(mScheduler, dlg);
     topLayout->addWidget(widget);
@@ -60,11 +60,11 @@ void MigrationAgent::configure(WId windowId)
     dlg->resize(600, 300);
 
     if (windowId) {
-    #ifndef Q_OS_WIN
+#ifndef Q_OS_WIN
         KWindowSystem::setMainWindow(dlg, windowId);
-    #else
+#else
         KWindowSystem::setMainWindow(dlg, (HWND)windowId);
-    #endif
+#endif
     }
     dlg->show();
 }

@@ -37,26 +37,26 @@
  */
 class DavPrincipalSearchJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Types of search that are supported by this job.
      * DisplayName will match on the DAV displayname property.
      * EmailAddress will match on the CalDav calendar-user-address-set property.
      */
     enum FilterType {
-      DisplayName,
-      EmailAddress
+        DisplayName,
+        EmailAddress
     };
 
     /**
      * Simple struct to hold the search job results
      */
     struct Result {
-      QString propertyNamespace;
-      QString property;
-      QString value;
+        QString propertyNamespace;
+        QString property;
+        QString value;
     };
 
     /**
@@ -67,7 +67,7 @@ class DavPrincipalSearchJob : public KJob
      * @param filter The filter that will be used to match the displayname attribute.
      * @param parent The parent object.
      */
-    explicit DavPrincipalSearchJob( const DavUtils::DavUrl &url, FilterType type, const QString &filter, QObject *parent = Q_NULLPTR );
+    explicit DavPrincipalSearchJob(const DavUtils::DavUrl &url, FilterType type, const QString &filter, QObject *parent = Q_NULLPTR);
 
     /**
      * Add a new property to fetch from the server.
@@ -75,7 +75,7 @@ class DavPrincipalSearchJob : public KJob
      * @param name The name of the property.
      * @param ns The namespace of this property, defaults to 'DAV:'.
      */
-    void fetchProperty( const QString &name, const QString &ns = QString() );
+    void fetchProperty(const QString &name, const QString &ns = QString());
 
     /**
      * Starts the job
@@ -92,14 +92,14 @@ class DavPrincipalSearchJob : public KJob
      */
     QList<Result> results() const;
 
-  private slots:
-    void principalCollectionSetSearchFinished( KJob *job );
-    void principalPropertySearchFinished( KJob *job );
+private slots:
+    void principalCollectionSetSearchFinished(KJob *job);
+    void principalPropertySearchFinished(KJob *job);
 
-  private:
-    void buildReportQuery( QDomDocument &query );
+private:
+    void buildReportQuery(QDomDocument &query);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
     FilterType mType;
     QString mFilter;

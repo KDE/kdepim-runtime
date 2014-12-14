@@ -25,13 +25,13 @@
 class UidNextAttribute : public Akonadi::Attribute
 {
 public:
-    explicit UidNextAttribute( int uidnext = 0 );
-    void setUidNext( int uidnext );
+    explicit UidNextAttribute(int uidnext = 0);
+    void setUidNext(int uidnext);
     int uidNext() const;
     QByteArray type() const Q_DECL_OVERRIDE;
-    Attribute* clone() const Q_DECL_OVERRIDE;
+    Attribute *clone() const Q_DECL_OVERRIDE;
     QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize( const QByteArray &data ) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
 private:
     int mUidNext;

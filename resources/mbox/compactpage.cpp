@@ -31,108 +31,110 @@
 
 using namespace Akonadi;
 
-CompactPage::CompactPage( const QString &collectionId, QWidget *parent )
-  : QWidget( parent )
-  , mCollectionId( collectionId )
+CompactPage::CompactPage(const QString &collectionId, QWidget *parent)
+    : QWidget(parent)
+    , mCollectionId(collectionId)
 {
-  ui.setupUi( this );
+    ui.setupUi(this);
 
-  connect(ui.compactButton, &QPushButton::clicked, this, &CompactPage::compact);
+    connect(ui.compactButton, &QPushButton::clicked, this, &CompactPage::compact);
 
-  checkCollectionId();
+    checkCollectionId();
 }
 
 void CompactPage::checkCollectionId()
 {
-  if ( !mCollectionId.isEmpty() ) {
-    Collection collection;
-    collection.setRemoteId( mCollectionId );
-    CollectionFetchJob *fetchJob =
-        new CollectionFetchJob( collection, CollectionFetchJob::Base );
+    if (!mCollectionId.isEmpty()) {
+        Collection collection;
+        collection.setRemoteId(mCollectionId);
+        CollectionFetchJob *fetchJob =
+            new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
-    connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCheck);
-  }
+        connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCheck);
+    }
 }
 
 void CompactPage::compact()
 {
-  ui.compactButton->setEnabled( false );
+    ui.compactButton->setEnabled(false);
 
-  Collection collection;
-  collection.setRemoteId( mCollectionId );
-  CollectionFetchJob *fetchJob =
-      new CollectionFetchJob( collection, CollectionFetchJob::Base );
+    Collection collection;
+    collection.setRemoteId(mCollectionId);
+    CollectionFetchJob *fetchJob =
+        new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
-  connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCompact);
+    connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCompact);
 }
 
-void CompactPage::onCollectionFetchCheck( KJob *job )
+void CompactPage::onCollectionFetchCheck(KJob *job)
 {
-  if ( job->error() ) {
-    // If we cannot fetch the collection, than also disable compacting.
-    ui.compactButton->setEnabled( false );
-    return;
-  }
+    if (job->error()) {
+        // If we cannot fetch the collection, than also disable compacting.
+        ui.compactButton->setEnabled(false);
+        return;
+    }
 
-  CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
-  Q_ASSERT( fetchJob );
-  Q_ASSERT( fetchJob->collections().size() == 1 );
+    CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob *>(job);
+    Q_ASSERT(fetchJob);
+    Q_ASSERT(fetchJob->collections().size() == 1);
 
-  Collection mboxCollection = fetchJob->collections().first();
-  DeletedItemsAttribute *attr
-    = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
+    Collection mboxCollection = fetchJob->collections().first();
+    DeletedItemsAttribute *attr
+        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Entity::AddIfMissing);
 
-  if ( attr->deletedItemOffsets().size() > 0 ) {
-    ui.compactButton->setEnabled( true );
-    ui.messageLabel->setText( i18np( "(1 message marked for deletion)",
-     "(%1 messages marked for deletion)", attr->deletedItemOffsets().size() ) );
-  }
+    if (attr->deletedItemOffsets().size() > 0) {
+        ui.compactButton->setEnabled(true);
+        ui.messageLabel->setText(i18np("(1 message marked for deletion)",
+                                       "(%1 messages marked for deletion)", attr->deletedItemOffsets().size()));
+    }
 }
 
-void CompactPage::onCollectionFetchCompact( KJob *job )
+void CompactPage::onCollectionFetchCompact(KJob *job)
 {
-  if ( job->error() ) {
-    ui.messageLabel->setText( i18n( "Failed to fetch the collection." ) );
-    ui.compactButton->setEnabled( true );
-    return;
-  }
+    if (job->error()) {
+        ui.messageLabel->setText(i18n("Failed to fetch the collection."));
+        ui.compactButton->setEnabled(true);
+        return;
+    }
 
-  CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob*>( job );
-  Q_ASSERT( fetchJob );
-  Q_ASSERT( fetchJob->collections().size() == 1 );
+    CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob *>(job);
+    Q_ASSERT(fetchJob);
+    Q_ASSERT(fetchJob->collections().size() == 1);
 
-  Collection mboxCollection = fetchJob->collections().first();
-  DeletedItemsAttribute *attr
-    = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
+    Collection mboxCollection = fetchJob->collections().first();
+    DeletedItemsAttribute *attr
+        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Entity::AddIfMissing);
 
-  KMBox::MBox mbox;
-  // TODO: Set lock method.
-  const QString fileName = QUrl::fromLocalFile(mCollectionId).toLocalFile();
-  if ( !mbox.load(fileName) ) {
-    ui.messageLabel->setText( i18n( "Failed to load the mbox file" ) );
-  } else {
-    ui.messageLabel->setText( i18np( "(Deleting 1 message)",
-      "(Deleting %1 messages)", attr->offsetCount() ) );
-    // TODO: implement and connect to messageProcessed signal.
-    if ( mbox.purge(attr->deletedItemEntries()) ||
-         (QFileInfo(fileName).size() == 0) ) {
-      // even if purge() failed but the file is now empty.
-      // it was probably deleted/emptied by an external prog. For whatever reason
-      // doesn't matter here. We know the file is empty so we can get rid
-      // of our stored DeletedItemsAttribute
-      mboxCollection.removeAttribute<DeletedItemsAttribute>();
-      CollectionModifyJob *modifyJob = new CollectionModifyJob( mboxCollection );
-      connect(modifyJob, &CollectionModifyJob::result, this, &CompactPage::onCollectionModify);
-    } else
-      ui.messageLabel->setText( i18n( "Failed to compact the mbox file." ) );
-  }
+    KMBox::MBox mbox;
+    // TODO: Set lock method.
+    const QString fileName = QUrl::fromLocalFile(mCollectionId).toLocalFile();
+    if (!mbox.load(fileName)) {
+        ui.messageLabel->setText(i18n("Failed to load the mbox file"));
+    } else {
+        ui.messageLabel->setText(i18np("(Deleting 1 message)",
+                                       "(Deleting %1 messages)", attr->offsetCount()));
+        // TODO: implement and connect to messageProcessed signal.
+        if (mbox.purge(attr->deletedItemEntries()) ||
+                (QFileInfo(fileName).size() == 0)) {
+            // even if purge() failed but the file is now empty.
+            // it was probably deleted/emptied by an external prog. For whatever reason
+            // doesn't matter here. We know the file is empty so we can get rid
+            // of our stored DeletedItemsAttribute
+            mboxCollection.removeAttribute<DeletedItemsAttribute>();
+            CollectionModifyJob *modifyJob = new CollectionModifyJob(mboxCollection);
+            connect(modifyJob, &CollectionModifyJob::result, this, &CompactPage::onCollectionModify);
+        } else {
+            ui.messageLabel->setText(i18n("Failed to compact the mbox file."));
+        }
+    }
 }
 
-void CompactPage::onCollectionModify( KJob *job )
+void CompactPage::onCollectionModify(KJob *job)
 {
-  if ( job->error() )
-    ui.messageLabel->setText( i18n( "Failed to compact the mbox file." ) );
-  else
-    ui.messageLabel->setText( i18n( "MBox file compacted." ) );
+    if (job->error()) {
+        ui.messageLabel->setText(i18n("Failed to compact the mbox file."));
+    } else {
+        ui.messageLabel->setText(i18n("MBox file compacted."));
+    }
 }
 

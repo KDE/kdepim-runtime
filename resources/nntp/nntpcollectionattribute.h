@@ -28,12 +28,12 @@
 */
 class NntpCollectionAttribute : public Akonadi::Attribute
 {
-  public:
+public:
     NntpCollectionAttribute();
     QByteArray type() const;
-    NntpCollectionAttribute* clone() const;
+    NntpCollectionAttribute *clone() const;
     QByteArray serialized() const;
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
 
     /**
       Returns the serial number of the last fetched article.
@@ -44,9 +44,9 @@ class NntpCollectionAttribute : public Akonadi::Attribute
       Sets the serial number of the last fetched serial number.
       @param last Serial number of the last fetched article.
     */
-    void setLastArticle( int last );
+    void setLastArticle(int last);
 
-  private:
+private:
     qint32 mLastArticleId;
 };
 

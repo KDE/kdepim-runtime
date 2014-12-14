@@ -28,22 +28,23 @@
 #include <KLocalizedString>
 #include <AkonadiCore/control.h>
 
-K_PLUGIN_FACTORY( ResourcesConfigFactory, registerPlugin<ConfigModule>(); )
+K_PLUGIN_FACTORY(ResourcesConfigFactory, registerPlugin<ConfigModule>();)
 
-ConfigModule::ConfigModule( QWidget * parent, const QVariantList & args ) :
-        KCModule( parent, args )
+ConfigModule::ConfigModule(QWidget *parent, const QVariantList &args) :
+    KCModule(parent, args)
 {
     Akonadi::Control::widgetNeedsAkonadi(this);
-    setButtons( KCModule::Default | KCModule::Apply );
-    QVBoxLayout *l = new QVBoxLayout( this );
-    l->setMargin( 0 );
+    setButtons(KCModule::Default | KCModule::Apply);
+    QVBoxLayout *l = new QVBoxLayout(this);
+    l->setMargin(0);
 
     QStringList args2;
-    foreach ( const QVariant& item, args )
-      args2 << item.toString();
+    foreach (const QVariant &item, args) {
+        args2 << item.toString();
+    }
 
-    ResourcesManagementWidget *tmw = new ResourcesManagementWidget( this, args2 );
-    l->addWidget( tmw );
+    ResourcesManagementWidget *tmw = new ResourcesManagementWidget(this, args2);
+    l->addWidget(tmw);
 }
 #include "configmodule.moc"
 

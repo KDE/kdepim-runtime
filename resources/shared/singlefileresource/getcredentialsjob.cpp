@@ -29,9 +29,9 @@
 #include <KLocalizedString>
 
 GetCredentialsJob::GetCredentialsJob(const Accounts::AccountId &id, QObject *parent)
-: KJob(parent)
-, m_id(id)
-, m_manager(new Accounts::Manager(this))
+    : KJob(parent)
+    , m_id(id)
+    , m_manager(new Accounts::Manager(this))
 {
 
 }

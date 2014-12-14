@@ -31,39 +31,39 @@
 class ImapAccount
 {
 public:
-  explicit ImapAccount();
-  ~ImapAccount();
+    explicit ImapAccount();
+    ~ImapAccount();
 
-  void setServer( const QString &server );
-  QString server() const;
+    void setServer(const QString &server);
+    QString server() const;
 
-  void setPort( quint16 port );
-  quint16 port() const;
+    void setPort(quint16 port);
+    quint16 port() const;
 
-  void setUserName( const QString &userName );
-  QString userName() const;
+    void setUserName(const QString &userName);
+    QString userName() const;
 
-  void setEncryptionMode( KIMAP::LoginJob::EncryptionMode mode );
-  KIMAP::LoginJob::EncryptionMode encryptionMode() const;
+    void setEncryptionMode(KIMAP::LoginJob::EncryptionMode mode);
+    KIMAP::LoginJob::EncryptionMode encryptionMode() const;
 
-  void setAuthenticationMode( KIMAP::LoginJob::AuthenticationMode mode );
-  KIMAP::LoginJob::AuthenticationMode authenticationMode() const;
+    void setAuthenticationMode(KIMAP::LoginJob::AuthenticationMode mode);
+    KIMAP::LoginJob::AuthenticationMode authenticationMode() const;
 
-  void setSubscriptionEnabled( bool enabled );
-  bool isSubscriptionEnabled() const;
+    void setSubscriptionEnabled(bool enabled);
+    bool isSubscriptionEnabled() const;
 
-  void setTimeout( int timeout );
-  int timeout() const;
+    void setTimeout(int timeout);
+    int timeout() const;
 
 private:
-  QString m_name;
-  QString m_server;
-  quint16 m_port;
-  QString m_userName;
-  int m_timeout;
-  KIMAP::LoginJob::EncryptionMode m_encryption;
-  KIMAP::LoginJob::AuthenticationMode m_authentication;
-  bool m_subscriptionEnabled;
+    QString m_name;
+    QString m_server;
+    quint16 m_port;
+    QString m_userName;
+    int m_timeout;
+    KIMAP::LoginJob::EncryptionMode m_encryption;
+    KIMAP::LoginJob::AuthenticationMode m_authentication;
+    bool m_subscriptionEnabled;
 };
 
 #endif

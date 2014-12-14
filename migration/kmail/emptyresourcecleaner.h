@@ -25,8 +25,8 @@
 
 namespace Akonadi
 {
-  class AgentInstance;
-  class Collection;
+class AgentInstance;
+class Collection;
 }
 
 class KJob;
@@ -35,21 +35,21 @@ template <typename T> class QList;
 
 class EmptyResourceCleaner : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     enum CleaningOption {
-      CheckOnly = 0x00,
-      DeleteEmptyCollections = 0x01,
-      DeleteEmptyResource = 0x02
+        CheckOnly = 0x00,
+        DeleteEmptyCollections = 0x01,
+        DeleteEmptyResource = 0x02
     };
 
-    Q_DECLARE_FLAGS( CleaningOptions, CleaningOption )
+    Q_DECLARE_FLAGS(CleaningOptions, CleaningOption)
 
-    explicit EmptyResourceCleaner( const Akonadi::AgentInstance &resource, QObject *parent = Q_NULLPTR );
+    explicit EmptyResourceCleaner(const Akonadi::AgentInstance &resource, QObject *parent = Q_NULLPTR);
     ~EmptyResourceCleaner();
 
-    void setCleaningOptions( CleaningOptions options );
+    void setCleaningOptions(CleaningOptions options);
 
     CleaningOptions cleaningOptions() const;
 
@@ -57,19 +57,18 @@ class EmptyResourceCleaner : public QObject
 
     bool isResourceDeletable() const;
 
-  Q_SIGNALS:
-    void cleanupFinished( const Akonadi::AgentInstance &resource );
+Q_SIGNALS:
+    void cleanupFinished(const Akonadi::AgentInstance &resource);
 
-  private:
+private:
     class Private;
     Private *const d;
 
-  Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
-  Q_PRIVATE_SLOT( d, void collectionDeleteResult( KJob* ) )
+    Q_PRIVATE_SLOT(d, void collectionFetchResult(KJob *))
+    Q_PRIVATE_SLOT(d, void collectionDeleteResult(KJob *))
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( EmptyResourceCleaner::CleaningOptions )
+Q_DECLARE_OPERATORS_FOR_FLAGS(EmptyResourceCleaner::CleaningOptions)
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

@@ -32,94 +32,93 @@
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
-ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget * parent) :
-    QDialog( parent ),
-    mSettings( settings ),
-    mToplevelIsContainer( false )
+ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget *parent) :
+    QDialog(parent),
+    mSettings(settings),
+    mToplevelIsContainer(false)
 {
-  setWindowTitle( i18n( "Select a MailDir folder" ) );
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  ui.setupUi(mainWidget);
-  mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier);
-  mFolderArchiveSettingPage->loadSettings();
-  ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Folder Archive"));
+    setWindowTitle(i18n("Select a MailDir folder"));
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    ui.setupUi(mainWidget);
+    mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier);
+    mFolderArchiveSettingPage->loadSettings();
+    ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Folder Archive"));
 
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-  mOkButton->setDefault(true);
-  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-  mainLayout->addWidget(buttonBox);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    mainLayout->addWidget(buttonBox);
 
+    mManager = new KConfigDialogManager(this, mSettings);
+    mManager->updateWidgets();
+    ui.kcfg_Path->setMode(KFile::Directory | KFile::ExistingOnly);
+    ui.kcfg_Path->setUrl(QUrl::fromLocalFile(mSettings->path()));
 
-  mManager = new KConfigDialogManager( this, mSettings );
-  mManager->updateWidgets();
-  ui.kcfg_Path->setMode( KFile::Directory | KFile::ExistingOnly );
-  ui.kcfg_Path->setUrl( QUrl::fromLocalFile( mSettings->path() ) );
-
-  connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
-  connect( ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()) );
-  ui.kcfg_Path->lineEdit()->setFocus();
-  checkPath();
+    connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
+    connect(ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()));
+    ui.kcfg_Path->lineEdit()->setFocus();
+    checkPath();
 }
 
 void ConfigDialog::checkPath()
 {
-  if ( ui.kcfg_Path->url().isEmpty() ) {
-    ui.statusLabel->setText( i18n( "The selected path is empty." ) );
-    mOkButton->setEnabled( false );
-    return;
-  }
-  bool ok = false;
-  mToplevelIsContainer = false;
-  QDir d( ui.kcfg_Path->url().toLocalFile() );
+    if (ui.kcfg_Path->url().isEmpty()) {
+        ui.statusLabel->setText(i18n("The selected path is empty."));
+        mOkButton->setEnabled(false);
+        return;
+    }
+    bool ok = false;
+    mToplevelIsContainer = false;
+    QDir d(ui.kcfg_Path->url().toLocalFile());
 
-  if ( d.exists() ) {
-    Maildir md( d.path() );
-    if ( !md.isValid( false ) ) {
-      Maildir md2( d.path(), true );
-      if ( md2.isValid( false ) ) {
-        ui.statusLabel->setText( i18n( "The selected path contains valid Maildir folders." ) );
-        mToplevelIsContainer = true;
-        ok = true;
-      } else {
-        ui.statusLabel->setText( md.lastError() );
-      }
+    if (d.exists()) {
+        Maildir md(d.path());
+        if (!md.isValid(false)) {
+            Maildir md2(d.path(), true);
+            if (md2.isValid(false)) {
+                ui.statusLabel->setText(i18n("The selected path contains valid Maildir folders."));
+                mToplevelIsContainer = true;
+                ok = true;
+            } else {
+                ui.statusLabel->setText(md.lastError());
+            }
+        } else {
+            ui.statusLabel->setText(i18n("The selected path is a valid Maildir."));
+            ok = true;
+        }
     } else {
-      ui.statusLabel->setText( i18n( "The selected path is a valid Maildir." ) );
-      ok = true;
+        d.cdUp();
+        if (d.exists()) {
+            ui.statusLabel->setText(i18n("The selected path does not exist yet, a new Maildir will be created."));
+            mToplevelIsContainer = true;
+            ok = true;
+        } else {
+            ui.statusLabel->setText(i18n("The selected path does not exist."));
+        }
     }
-  } else {
-    d.cdUp();
-    if ( d.exists() ) {
-      ui.statusLabel->setText( i18n( "The selected path does not exist yet, a new Maildir will be created." ) );
-      mToplevelIsContainer = true;
-      ok = true;
-    } else {
-      ui.statusLabel->setText( i18n( "The selected path does not exist." ) );
-    }
-  }
-  mOkButton->setEnabled( ok );
+    mOkButton->setEnabled(ok);
 }
 
 void ConfigDialog::save()
 {
-  mFolderArchiveSettingPage->writeSettings();
-  mManager->updateSettings();
-  QString path = ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path();
-  mSettings->setPath( path );
-  mSettings->setTopLevelIsContainer( mToplevelIsContainer );
-  mSettings->save();
+    mFolderArchiveSettingPage->writeSettings();
+    mManager->updateSettings();
+    QString path = ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path();
+    mSettings->setPath(path);
+    mSettings->setTopLevelIsContainer(mToplevelIsContainer);
+    mSettings->save();
 
-  if ( ui.kcfg_Path->url().isLocalFile() ) {
-    QDir d( path );
-    if ( !d.exists() ) {
-      d.mkpath( ui.kcfg_Path->url().toLocalFile() );
+    if (ui.kcfg_Path->url().isLocalFile()) {
+        QDir d(path);
+        if (!d.exists()) {
+            d.mkpath(ui.kcfg_Path->url().toLocalFile());
+        }
     }
-  }
 }
 

@@ -20,4 +20,3 @@
 #include "akonadislave_debug.h"
 Q_LOGGING_CATEGORY(AKONADISLAVE_LOG, "log_akonadislave")
 
-

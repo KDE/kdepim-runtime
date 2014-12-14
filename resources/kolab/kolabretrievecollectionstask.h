@@ -39,7 +39,7 @@ public:
 
 private slots:
     void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                                const QList< QList<QByteArray> > &flags);
+                             const QList< QList<QByteArray> > &flags);
     void onMailBoxesReceiveDone(KJob *job);
     void onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);
     void onFullMailBoxesReceiveDone(KJob *job);

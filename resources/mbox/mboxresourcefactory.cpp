@@ -17,9 +17,9 @@
 
 #include "mboxresourcefactory.h"
 
-MboxResourceFactory::MboxResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< MboxResource >( "akonadi_mbox_resource", parent )
+MboxResourceFactory::MboxResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< MboxResource >("akonadi_mbox_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_mbox_resource") );
+    setObjectName(QLatin1String("akonadi_mbox_resource"));
 }
 

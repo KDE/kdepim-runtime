@@ -26,21 +26,21 @@
 
 class AKONADI_SINGLEFILERESOURCE_EXPORT CreateAndSetTagsJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit CreateAndSetTagsJob(const Akonadi::Item &item, const Akonadi::Tag::List &tags, QObject* parent = 0);
+    explicit CreateAndSetTagsJob(const Akonadi::Item &item, const Akonadi::Tag::List &tags, QObject *parent = 0);
 
-  virtual void start();
+    virtual void start();
 
 private Q_SLOTS:
-  void onCreateDone(KJob*);
-  void onModifyDone(KJob*);
+    void onCreateDone(KJob *);
+    void onModifyDone(KJob *);
 
 private:
-  Akonadi::Item mItem;
-  Akonadi::Tag::List mTags;
-  Akonadi::Tag::List mCreatedTags;
-  int mCount;
+    Akonadi::Item mItem;
+    Akonadi::Tag::List mTags;
+    Akonadi::Tag::List mCreatedTags;
+    int mCount;
 };
 
 #endif

@@ -26,27 +26,27 @@
 
 class RetrieveCollectionMetadataTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit RetrieveCollectionMetadataTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~RetrieveCollectionMetadataTask();
+    explicit RetrieveCollectionMetadataTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~RetrieveCollectionMetadataTask();
 
 private slots:
-  void onGetMetaDataDone( KJob *job );
-  void onGetAclDone( KJob *job );
-  void onRightsReceived( KJob *job );
-  void onQuotasReceived( KJob *job );
+    void onGetMetaDataDone(KJob *job);
+    void onGetAclDone(KJob *job);
+    void onRightsReceived(KJob *job);
+    void onQuotasReceived(KJob *job);
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+    virtual void doStart(KIMAP::Session *session);
 
 private:
-  void endTaskIfNeeded();
+    void endTaskIfNeeded();
 
-  int m_pendingMetaDataJobs;
+    int m_pendingMetaDataJobs;
 
-  Akonadi::Collection m_collection;
+    Akonadi::Collection m_collection;
 };
 
 #endif

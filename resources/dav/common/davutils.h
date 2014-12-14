@@ -27,9 +27,10 @@
 #include <AkonadiCore/Item>
 
 class DavItem;
-namespace Akonadi {
-  class Collection;
-  class Item;
+namespace Akonadi
+{
+class Collection;
+class Item;
 }
 
 /**
@@ -37,19 +38,19 @@ namespace Akonadi {
  */
 namespace DavUtils
 {
-  /**
-   * Describes the DAV protocol dialect.
-   */
-  enum Protocol {
+/**
+ * Describes the DAV protocol dialect.
+ */
+enum Protocol {
     CalDav = 0,   ///< The CalDav protocol as defined in http://caldav.calconnect.org
     CardDav,      ///< The CardDav protocol as defined in http://carddav.calconnect.org
     GroupDav      ///< The GroupDav protocol as defined in http://www.groupdav.org
-  };
+};
 
-  /**
-   * Describes the DAV privileges on a resource (see RFC3744)
-   */
-  enum Privilege {
+/**
+ * Describes the DAV privileges on a resource (see RFC3744)
+ */
+enum Privilege {
     None = 0x0,
     Read = 0x1,
     Write = 0x2,
@@ -62,118 +63,118 @@ namespace DavUtils
     Bind = 0x100,
     Unbind = 0x200,
     All = 0x400
-  };
-  Q_DECLARE_FLAGS( Privileges, Privilege )
-  Q_DECLARE_OPERATORS_FOR_FLAGS( Privileges )
+};
+Q_DECLARE_FLAGS(Privileges, Privilege)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Privileges)
 
-  /**
-   * Returns the untranslated name of the given DAV @p protocol dialect.
-   */
-  QLatin1String protocolName( Protocol protocol );
+/**
+ * Returns the untranslated name of the given DAV @p protocol dialect.
+ */
+QLatin1String protocolName(Protocol protocol);
 
-  /**
-   * Returns the i18n'ed name of the given DAV @p protocol dialect.
-   */
-  QString translatedProtocolName( Protocol protocol );
+/**
+ * Returns the i18n'ed name of the given DAV @p protocol dialect.
+ */
+QString translatedProtocolName(Protocol protocol);
 
-  /**
-   * Returns the protocol matching the given name. This is the opposite of
-   * DavUtils::protocolName().
-   */
-  Protocol protocolByName( const QString &name );
+/**
+ * Returns the protocol matching the given name. This is the opposite of
+ * DavUtils::protocolName().
+ */
+Protocol protocolByName(const QString &name);
 
-  /**
-   * Returns the protocol matching the given i18n'ed @p name. This is the opposite
-   * of DavUtils::translatedProtocolName().
-   */
-  Protocol protocolByTranslatedName( const QString &name );
+/**
+ * Returns the protocol matching the given i18n'ed @p name. This is the opposite
+ * of DavUtils::translatedProtocolName().
+ */
+Protocol protocolByTranslatedName(const QString &name);
 
-  /**
-   * @short A helper class to combine url and protocol of a DAV url.
-   */
-  class DavUrl
-  {
-    public:
-      /**
-       * Defines a list of DAV url objects.
-       */
-      typedef QList<DavUrl> List;
+/**
+ * @short A helper class to combine url and protocol of a DAV url.
+ */
+class DavUrl
+{
+public:
+    /**
+     * Defines a list of DAV url objects.
+     */
+    typedef QList<DavUrl> List;
 
-      /**
-       * Creates an empty DAV url.
-       */
-      DavUrl();
+    /**
+     * Creates an empty DAV url.
+     */
+    DavUrl();
 
-      /**
-       * Creates a new DAV url.
-       *
-       * @param url The url that identifies the DAV object.
-       * @param protocol The DAV protocol dialect that is used to retrieve the DAV object.
-       */
-      DavUrl( const KUrl &url, Protocol protocol );
+    /**
+     * Creates a new DAV url.
+     *
+     * @param url The url that identifies the DAV object.
+     * @param protocol The DAV protocol dialect that is used to retrieve the DAV object.
+     */
+    DavUrl(const KUrl &url, Protocol protocol);
 
-      /**
-       * Sets the @p url that identifies the DAV object.
-       */
-      void setUrl( const KUrl &url );
+    /**
+     * Sets the @p url that identifies the DAV object.
+     */
+    void setUrl(const KUrl &url);
 
-      /**
-       * Returns the url that identifies the DAV object.
-       */
-      KUrl url() const;
+    /**
+     * Returns the url that identifies the DAV object.
+     */
+    KUrl url() const;
 
-      /**
-       * Sets the DAV @p protocol dialect that is used to retrieve the DAV object.
-       */
-      void setProtocol( Protocol protocol );
+    /**
+     * Sets the DAV @p protocol dialect that is used to retrieve the DAV object.
+     */
+    void setProtocol(Protocol protocol);
 
-      /**
-       * Returns the DAV protocol dialect that is used to retrieve the DAV object.
-       */
-      Protocol protocol() const;
+    /**
+     * Returns the DAV protocol dialect that is used to retrieve the DAV object.
+     */
+    Protocol protocol() const;
 
-    private:
-      KUrl mUrl;
-      Protocol mProtocol;
-  };
+private:
+    KUrl mUrl;
+    Protocol mProtocol;
+};
 
-  /**
-   * Returns the first child element of @p parent that has the given @p tagName and is part of the @p namespaceUri.
-   */
-  QDomElement firstChildElementNS( const QDomElement &parent, const QString &namespaceUri, const QString &tagName );
+/**
+ * Returns the first child element of @p parent that has the given @p tagName and is part of the @p namespaceUri.
+ */
+QDomElement firstChildElementNS(const QDomElement &parent, const QString &namespaceUri, const QString &tagName);
 
-  /**
-   * Returns the next sibling element of @p element that has the given @p tagName and is part of the @p namespaceUri.
-   */
-  QDomElement nextSiblingElementNS( const QDomElement &element, const QString &namespaceUri, const QString &tagName );
+/**
+ * Returns the next sibling element of @p element that has the given @p tagName and is part of the @p namespaceUri.
+ */
+QDomElement nextSiblingElementNS(const QDomElement &element, const QString &namespaceUri, const QString &tagName);
 
-  /**
-   * Extracts privileges from @p element. The <privilege/> tags are expected to be first level children of @p element.
-   */
-  Privileges extractPrivileges( const QDomElement &element );
+/**
+ * Extracts privileges from @p element. The <privilege/> tags are expected to be first level children of @p element.
+ */
+Privileges extractPrivileges(const QDomElement &element);
 
-  /**
-   * Parses a single <privilege/> tag and returns the final Privileges.
-   */
-  Privileges parsePrivilege( const QDomElement &element );
+/**
+ * Parses a single <privilege/> tag and returns the final Privileges.
+ */
+Privileges parsePrivilege(const QDomElement &element);
 
-  /**
-   * Creates a unique identifier that can be used as a file name to upload the dav item
-   */
-  QString createUniqueId();
+/**
+ * Creates a unique identifier that can be used as a file name to upload the dav item
+ */
+QString createUniqueId();
 
-  /**
-   * Creates a new DavItem from the Akonadi::Item @p item.
-   *
-   * The returned item will have no payload (DavItem::data() will return an empty
-   * QByteArray) if the @p item payload is not recognized.
-   */
-  DavItem createDavItem( const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems = Akonadi::Item::List() );
+/**
+ * Creates a new DavItem from the Akonadi::Item @p item.
+ *
+ * The returned item will have no payload (DavItem::data() will return an empty
+ * QByteArray) if the @p item payload is not recognized.
+ */
+DavItem createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
 
-  /**
-   * Parses the DAV data contained in @p source and puts it in @p target and @extraItems.
-   */
-  bool parseDavData( const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems );
+/**
+ * Parses the DAV data contained in @p source and puts it in @p target and @extraItems.
+ */
+bool parseDavData(const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems);
 }
 
 #endif

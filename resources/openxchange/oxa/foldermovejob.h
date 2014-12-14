@@ -26,7 +26,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that moves a folder on the OX server.
@@ -35,9 +36,9 @@ namespace OXA {
  */
 class FolderMoveJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new folder move job.
      *
@@ -48,7 +49,7 @@ class FolderMoveJob : public KJob
      * @note The folder needs the objectId, folderId and lastModified property set, the
      *       destinationFolder the objectId property.
      */
-    FolderMoveJob( const Folder &folder, const Folder &destinationFolder, QObject *parent = Q_NULLPTR );
+    FolderMoveJob(const Folder &folder, const Folder &destinationFolder, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -60,10 +61,10 @@ class FolderMoveJob : public KJob
      */
     Folder folder() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Folder mFolder;
     Folder mDestinationFolder;
 };

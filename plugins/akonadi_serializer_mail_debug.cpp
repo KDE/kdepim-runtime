@@ -20,4 +20,3 @@
 #include "akonadi_serializer_mail_debug.h"
 Q_LOGGING_CATEGORY(AKONADI_SERIALIZER_MAIL_LOG, "log_akonadi_serializer_mail")
 
-

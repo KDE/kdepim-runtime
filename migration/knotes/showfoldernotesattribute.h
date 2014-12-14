@@ -30,7 +30,7 @@ public:
     ShowFolderNotesAttribute *clone() const;
     QByteArray type() const;
     QByteArray serialized() const;
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
 };
 
 #endif // SHOWFOLDERNOTESATTRIBUTE_H

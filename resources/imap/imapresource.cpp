@@ -35,11 +35,11 @@
 #include <KWindowSystem>
 #include <KLocalizedString>
 
-ImapResource::ImapResource( const QString &id )
-    : ImapResourceBase( id )
+ImapResource::ImapResource(const QString &id)
+    : ImapResourceBase(id)
 {
-  m_pool->setPasswordRequester( new SettingsPasswordRequester( this, m_pool ) );
-  m_pool->setSessionUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
+    m_pool->setPasswordRequester(new SettingsPasswordRequester(this, m_pool));
+    m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
 }
 
 ImapResource::~ImapResource()
@@ -48,29 +48,28 @@ ImapResource::~ImapResource()
 
 QString ImapResource::defaultName() const
 {
-  return i18n( "IMAP Account" );
+    return i18n("IMAP Account");
 }
 
-
-QDialog* ImapResource::createConfigureDialog(WId windowId)
+QDialog *ImapResource::createConfigureDialog(WId windowId)
 {
-  SetupServer *dlg = new SetupServer( this, windowId );
-  KWindowSystem::setMainWindow( dlg, windowId );
-  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("network-server") ) );
-  connect(dlg, &SetupServer::finished, this, &ImapResource::onConfigurationDone);
-  return dlg;
+    SetupServer *dlg = new SetupServer(this, windowId);
+    KWindowSystem::setMainWindow(dlg, windowId);
+    dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
+    connect(dlg, &SetupServer::finished, this, &ImapResource::onConfigurationDone);
+    return dlg;
 }
 
 void ImapResource::onConfigurationDone(int result)
 {
-  SetupServer *dlg = qobject_cast<SetupServer*>(sender());
-  if (result) {
-    if ( dlg->shouldClearCache() ) {
-      clearCache();
+    SetupServer *dlg = qobject_cast<SetupServer *>(sender());
+    if (result) {
+        if (dlg->shouldClearCache()) {
+            clearCache();
+        }
+        settings()->save();
     }
-    settings()->save();
-  }
-  dlg->deleteLater();
+    dlg->deleteLater();
 }
 
 void ImapResource::cleanup()

@@ -18,7 +18,6 @@
 #ifndef SPECIALNOTIFIERJOB_H
 #define SPECIALNOTIFIERJOB_H
 
-
 #include <QObject>
 #include <Item>
 #include <QStringList>
@@ -35,8 +34,8 @@ Q_SIGNALS:
     void displayNotification(const QPixmap &pixmap, const QString &message);
 
 private Q_SLOTS:
-    void slotSearchJobFinished( KJob *job );
-    void slotItemFetchJobDone(KJob*);
+    void slotSearchJobFinished(KJob *job);
+    void slotItemFetchJobDone(KJob *);
     void slotOpenMail();
 private:
     void emitNotification(const QPixmap &pixmap);

@@ -20,4 +20,3 @@
 #include "birthdays_debug.h"
 Q_LOGGING_CATEGORY(BIRTHDAYS_LOG, "log_birthdays")
 
-

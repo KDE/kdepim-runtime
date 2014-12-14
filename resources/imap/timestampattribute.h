@@ -27,13 +27,13 @@
 class TimestampAttribute : public Akonadi::Attribute
 {
 public:
-    explicit TimestampAttribute( uint timestamp = 0 );
-    void setTimestamp( uint timestamp );
+    explicit TimestampAttribute(uint timestamp = 0);
+    void setTimestamp(uint timestamp);
     uint timestamp() const;
     virtual QByteArray type() const;
     virtual Attribute *clone() const;
     virtual QByteArray serialized() const;
-    virtual void deserialize( const QByteArray &data );
+    virtual void deserialize(const QByteArray &data);
 
 private:
     uint mTimestamp;

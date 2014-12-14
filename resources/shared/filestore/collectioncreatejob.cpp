@@ -26,55 +26,53 @@ using namespace Akonadi;
 
 class FileStore::CollectionCreateJob::Private
 {
-  public:
-    explicit Private( FileStore::CollectionCreateJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::CollectionCreateJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     Collection mCollection;
     Collection mTargetParent;
 
-  private:
+private:
     FileStore::CollectionCreateJob *mParent;
 };
 
-FileStore::CollectionCreateJob::CollectionCreateJob( const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::CollectionCreateJob::CollectionCreateJob(const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  Q_ASSERT( session != 0 );
+    Q_ASSERT(session != 0);
 
-  d->mCollection = collection;
-  d->mTargetParent = targetParent;
+    d->mCollection = collection;
+    d->mTargetParent = targetParent;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::CollectionCreateJob::~CollectionCreateJob()
 {
-  delete d;
+    delete d;
 }
 
 Collection FileStore::CollectionCreateJob::collection() const
 {
-  return d->mCollection;
+    return d->mCollection;
 }
 
 Collection FileStore::CollectionCreateJob::targetParent() const
 {
-  return d->mTargetParent;
+    return d->mTargetParent;
 }
 
-bool FileStore::CollectionCreateJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::CollectionCreateJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::CollectionCreateJob::handleCollectionCreated( const Collection &collection )
+void FileStore::CollectionCreateJob::handleCollectionCreated(const Collection &collection)
 {
-  d->mCollection = collection;
+    d->mCollection = collection;
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

@@ -34,258 +34,265 @@
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 
-ConfigDialog::ConfigDialog( QWidget *parent )
-  : QDialog( parent )
+ConfigDialog::ConfigDialog(QWidget *parent)
+    : QDialog(parent)
 {
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  mUi.setupUi(mainWidget);
-  setWindowIcon( QIcon::fromTheme( QLatin1String("folder-remote") ) );
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    mUi.setupUi(mainWidget);
+    setWindowIcon(QIcon::fromTheme(QLatin1String("folder-remote")));
 
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-  mOkButton->setDefault(true);
-  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-  mainLayout->addWidget(buttonBox);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    mainLayout->addWidget(buttonBox);
 
-  mModel = new QStandardItemModel();
-  QStringList headers;
-  headers << i18n( "Protocol" ) << i18n( "URL" );
-  mModel->setHorizontalHeaderLabels( headers );
+    mModel = new QStandardItemModel();
+    QStringList headers;
+    headers << i18n("Protocol") << i18n("URL");
+    mModel->setHorizontalHeaderLabels(headers);
 
-  mUi.configuredUrls->setModel( mModel );
-  mUi.configuredUrls->setRootIsDecorated( false );
+    mUi.configuredUrls->setModel(mModel);
+    mUi.configuredUrls->setRootIsDecorated(false);
 
-  foreach ( const DavUtils::DavUrl &url, Settings::self()->configuredDavUrls() ) {
-    KUrl displayUrl = url.url();
-    displayUrl.setUser( QString() );
-    addModelRow( DavUtils::translatedProtocolName( url.protocol() ), displayUrl.prettyUrl() );
-  }
+    foreach (const DavUtils::DavUrl &url, Settings::self()->configuredDavUrls()) {
+        KUrl displayUrl = url.url();
+        displayUrl.setUser(QString());
+        addModelRow(DavUtils::translatedProtocolName(url.protocol()), displayUrl.prettyUrl());
+    }
 
-  mManager = new KConfigDialogManager( this, Settings::self() );
-  mManager->updateWidgets();
+    mManager = new KConfigDialogManager(this, Settings::self());
+    mManager->updateWidgets();
 
-  connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
-  connect( mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(checkConfiguredUrlsButtonsState()) );
+    connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
+    connect(mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(checkConfiguredUrlsButtonsState()));
 
-  connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
-  connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
-  connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigDialog::onRemoveButtonClicked);
-  connect(mUi.editButton, &QPushButton::clicked, this, &ConfigDialog::onEditButtonClicked);
+    connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
+    connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
+    connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigDialog::onRemoveButtonClicked);
+    connect(mUi.editButton, &QPushButton::clicked, this, &ConfigDialog::onEditButtonClicked);
 
-  connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::onOkClicked);
-  connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &ConfigDialog::onCancelClicked);
+    connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::onOkClicked);
+    connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &ConfigDialog::onCancelClicked);
 
-  checkUserInput();
+    checkUserInput();
 }
 
 ConfigDialog::~ConfigDialog()
 {
 }
 
-void ConfigDialog::setPassword(const QString& password)
+void ConfigDialog::setPassword(const QString &password)
 {
-  mUi.password->setText( password );
+    mUi.password->setText(password);
 }
 
 void ConfigDialog::checkUserInput()
 {
-  checkConfiguredUrlsButtonsState();
+    checkConfiguredUrlsButtonsState();
 
-  if ( !mUi.kcfg_displayName->text().isEmpty() && !( mModel->invisibleRootItem()->rowCount() == 0 ) )
-    mOkButton->setEnabled( true );
-  else
-    mOkButton->setEnabled( false );
+    if (!mUi.kcfg_displayName->text().isEmpty() && !(mModel->invisibleRootItem()->rowCount() == 0)) {
+        mOkButton->setEnabled(true);
+    } else {
+        mOkButton->setEnabled(false);
+    }
 }
 
 void ConfigDialog::onAddButtonClicked()
 {
-  QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
-  dlg->setDefaultUsername( mUi.kcfg_defaultUsername->text() );
-  dlg->setDefaultPassword( mUi.password->text() );
-  const int result = dlg->exec();
+    QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog(this);
+    dlg->setDefaultUsername(mUi.kcfg_defaultUsername->text());
+    dlg->setDefaultPassword(mUi.password->text());
+    const int result = dlg->exec();
 
-  if ( result == QDialog::Accepted && !dlg.isNull() ) {
-    if ( Settings::self()->urlConfiguration( DavUtils::Protocol( dlg->protocol() ), dlg->remoteUrl() ) ) {
-      KMessageBox::error( this, i18n( "Another configuration entry already uses the same URL/protocol couple.\n"
-                                      "Please use a different URL" ) );
-    } else {
-      Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
+    if (result == QDialog::Accepted && !dlg.isNull()) {
+        if (Settings::self()->urlConfiguration(DavUtils::Protocol(dlg->protocol()), dlg->remoteUrl())) {
+            KMessageBox::error(this, i18n("Another configuration entry already uses the same URL/protocol couple.\n"
+                                          "Please use a different URL"));
+        } else {
+            Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
-      urlConfig->mUrl = dlg->remoteUrl();
-      if ( dlg->useDefaultCredentials() ) {
-        urlConfig->mUser = QLatin1String("$default$");
-      } else {
-        urlConfig->mUser = dlg->username();
-        urlConfig->mPassword = dlg->password();
-      }
-      urlConfig->mProtocol = dlg->protocol();
+            urlConfig->mUrl = dlg->remoteUrl();
+            if (dlg->useDefaultCredentials()) {
+                urlConfig->mUser = QLatin1String("$default$");
+            } else {
+                urlConfig->mUser = dlg->username();
+                urlConfig->mPassword = dlg->password();
+            }
+            urlConfig->mProtocol = dlg->protocol();
 
-      Settings::self()->newUrlConfiguration( urlConfig );
+            Settings::self()->newUrlConfiguration(urlConfig);
 
-      const QString protocolName = DavUtils::translatedProtocolName( dlg->protocol() );
+            const QString protocolName = DavUtils::translatedProtocolName(dlg->protocol());
 
-      addModelRow( protocolName, dlg->remoteUrl() );
-      mAddedUrls << QPair<QString, DavUtils::Protocol>( dlg->remoteUrl(), DavUtils::Protocol( dlg->protocol() ) );
-      checkUserInput();
+            addModelRow(protocolName, dlg->remoteUrl());
+            mAddedUrls << QPair<QString, DavUtils::Protocol>(dlg->remoteUrl(), DavUtils::Protocol(dlg->protocol()));
+            checkUserInput();
+        }
     }
-  }
 
-  delete dlg;
+    delete dlg;
 }
 
 void ConfigDialog::onSearchButtonClicked()
 {
-  QPointer<SearchDialog> dlg = new SearchDialog( this );
-  dlg->setUsername( mUi.kcfg_defaultUsername->text() );
-  dlg->setPassword( mUi.password->text() );
-  const int result = dlg->exec();
+    QPointer<SearchDialog> dlg = new SearchDialog(this);
+    dlg->setUsername(mUi.kcfg_defaultUsername->text());
+    dlg->setPassword(mUi.password->text());
+    const int result = dlg->exec();
 
-  if ( result == QDialog::Accepted && !dlg.isNull() ) {
-    QStringList results = dlg->selection();
-    foreach ( const QString &result, results ) {
-      QStringList split = result.split( QLatin1Char('|') );
-      DavUtils::Protocol protocol = DavUtils::protocolByName( split.at( 0 ) );
-      if ( !Settings::self()->urlConfiguration( protocol, split.at( 1 ) ) ) {
-        Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
+    if (result == QDialog::Accepted && !dlg.isNull()) {
+        QStringList results = dlg->selection();
+        foreach (const QString &result, results) {
+            QStringList split = result.split(QLatin1Char('|'));
+            DavUtils::Protocol protocol = DavUtils::protocolByName(split.at(0));
+            if (!Settings::self()->urlConfiguration(protocol, split.at(1))) {
+                Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
-        urlConfig->mUrl = split.at( 1 );
-        if ( dlg->useDefaultCredentials() ) {
-          urlConfig->mUser = QLatin1String("$default$");
-        } else {
-          urlConfig->mUser = dlg->username();
-          urlConfig->mPassword = dlg->password();
+                urlConfig->mUrl = split.at(1);
+                if (dlg->useDefaultCredentials()) {
+                    urlConfig->mUser = QLatin1String("$default$");
+                } else {
+                    urlConfig->mUser = dlg->username();
+                    urlConfig->mPassword = dlg->password();
+                }
+                urlConfig->mProtocol = protocol;
+
+                Settings::self()->newUrlConfiguration(urlConfig);
+
+                addModelRow(DavUtils::translatedProtocolName(protocol), split.at(1));
+                mAddedUrls << QPair<QString, DavUtils::Protocol>(split.at(1), protocol);
+                checkUserInput();
+            }
         }
-        urlConfig->mProtocol = protocol;
-
-        Settings::self()->newUrlConfiguration( urlConfig );
-
-        addModelRow( DavUtils::translatedProtocolName( protocol ), split.at( 1 ) );
-        mAddedUrls << QPair<QString, DavUtils::Protocol>( split.at( 1 ), protocol );
-        checkUserInput();
-      }
     }
-  }
 
-  delete dlg;
+    delete dlg;
 }
 
 void ConfigDialog::onRemoveButtonClicked()
 {
-  const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
-  if ( indexes.size() == 0 )
-    return;
+    const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
+    if (indexes.size() == 0) {
+        return;
+    }
 
-  QString proto = mModel->index( indexes.at( 0 ).row(), 0 ).data().toString();
-  QString url = mModel->index( indexes.at( 0 ).row(), 1 ).data().toString();
+    QString proto = mModel->index(indexes.at(0).row(), 0).data().toString();
+    QString url = mModel->index(indexes.at(0).row(), 1).data().toString();
 
-  mRemovedUrls << QPair<QString, DavUtils::Protocol>( url, DavUtils::protocolByTranslatedName( proto ) );
-  mModel->removeRow( indexes.at( 0 ).row() );
+    mRemovedUrls << QPair<QString, DavUtils::Protocol>(url, DavUtils::protocolByTranslatedName(proto));
+    mModel->removeRow(indexes.at(0).row());
 
-  checkUserInput();
+    checkUserInput();
 }
 
 void ConfigDialog::onEditButtonClicked()
 {
-  const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
-  if ( indexes.size() == 0 )
-    return;
-
-  const int row = indexes.at( 0 ).row();
-  const QString proto = mModel->index( row, 0 ).data().toString();
-  const QString url = mModel->index( row, 1 ).data().toString();
-
-  Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration( DavUtils::protocolByTranslatedName( proto ), url );
-  if ( !urlConfig )
-    return;
-
-  QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog( this );
-  dlg->setRemoteUrl( urlConfig->mUrl );
-  dlg->setProtocol( DavUtils::Protocol( urlConfig->mProtocol ) );
-
-  if ( urlConfig->mUser == QLatin1String( "$default$" ) ) {
-    dlg->setUseDefaultCredentials( true );
-  } else {
-    dlg->setUseDefaultCredentials( false );
-    dlg->setUsername( urlConfig->mUser );
-    dlg->setPassword( urlConfig->mPassword );
-  }
-  dlg->setDefaultUsername( mUi.kcfg_defaultUsername->text() );
-  dlg->setDefaultPassword( mUi.password->text() );
-
-  const int result = dlg->exec();
-
-  if ( result == QDialog::Accepted && !dlg.isNull() ) {
-    Settings::self()->removeUrlConfiguration( DavUtils::protocolByTranslatedName( proto ), url );
-    Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
-    urlConfigAccepted->mUrl = dlg->remoteUrl();
-    if ( dlg->useDefaultCredentials() ) {
-      urlConfigAccepted->mUser = QLatin1String("$default$");
-    } else {
-      urlConfigAccepted->mUser = dlg->username();
-      urlConfigAccepted->mPassword = dlg->password();
+    const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
+    if (indexes.size() == 0) {
+        return;
     }
-    urlConfigAccepted->mProtocol = dlg->protocol();
-    Settings::self()->newUrlConfiguration( urlConfigAccepted );
 
-    mModel->removeRow( row );
-    insertModelRow( row, DavUtils::translatedProtocolName( dlg->protocol() ), dlg->remoteUrl() );
-  }
-  delete dlg;
+    const int row = indexes.at(0).row();
+    const QString proto = mModel->index(row, 0).data().toString();
+    const QString url = mModel->index(row, 1).data().toString();
+
+    Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration(DavUtils::protocolByTranslatedName(proto), url);
+    if (!urlConfig) {
+        return;
+    }
+
+    QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog(this);
+    dlg->setRemoteUrl(urlConfig->mUrl);
+    dlg->setProtocol(DavUtils::Protocol(urlConfig->mProtocol));
+
+    if (urlConfig->mUser == QLatin1String("$default$")) {
+        dlg->setUseDefaultCredentials(true);
+    } else {
+        dlg->setUseDefaultCredentials(false);
+        dlg->setUsername(urlConfig->mUser);
+        dlg->setPassword(urlConfig->mPassword);
+    }
+    dlg->setDefaultUsername(mUi.kcfg_defaultUsername->text());
+    dlg->setDefaultPassword(mUi.password->text());
+
+    const int result = dlg->exec();
+
+    if (result == QDialog::Accepted && !dlg.isNull()) {
+        Settings::self()->removeUrlConfiguration(DavUtils::protocolByTranslatedName(proto), url);
+        Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
+        urlConfigAccepted->mUrl = dlg->remoteUrl();
+        if (dlg->useDefaultCredentials()) {
+            urlConfigAccepted->mUser = QLatin1String("$default$");
+        } else {
+            urlConfigAccepted->mUser = dlg->username();
+            urlConfigAccepted->mPassword = dlg->password();
+        }
+        urlConfigAccepted->mProtocol = dlg->protocol();
+        Settings::self()->newUrlConfiguration(urlConfigAccepted);
+
+        mModel->removeRow(row);
+        insertModelRow(row, DavUtils::translatedProtocolName(dlg->protocol()), dlg->remoteUrl());
+    }
+    delete dlg;
 }
 
 void ConfigDialog::onOkClicked()
 {
-  typedef QPair<QString, DavUtils::Protocol> UrlPair;
-  foreach ( const UrlPair &url, mRemovedUrls )
-    Settings::self()->removeUrlConfiguration( url.second, url.first );
+    typedef QPair<QString, DavUtils::Protocol> UrlPair;
+    foreach (const UrlPair &url, mRemovedUrls) {
+        Settings::self()->removeUrlConfiguration(url.second, url.first);
+    }
 
-  mManager->updateSettings();
-  Settings::self()->setDefaultPassword( mUi.password->text() );
+    mManager->updateSettings();
+    Settings::self()->setDefaultPassword(mUi.password->text());
 }
 
 void ConfigDialog::onCancelClicked()
 {
-  mRemovedUrls.clear();
+    mRemovedUrls.clear();
 
-  typedef QPair<QString, DavUtils::Protocol> UrlPair;
-  foreach ( const UrlPair &url, mAddedUrls )
-    Settings::self()->removeUrlConfiguration( url.second, url.first );
+    typedef QPair<QString, DavUtils::Protocol> UrlPair;
+    foreach (const UrlPair &url, mAddedUrls) {
+        Settings::self()->removeUrlConfiguration(url.second, url.first);
+    }
 }
 
 void ConfigDialog::checkConfiguredUrlsButtonsState()
 {
-  const bool enabled = mUi.configuredUrls->selectionModel()->hasSelection();
+    const bool enabled = mUi.configuredUrls->selectionModel()->hasSelection();
 
-  mUi.removeButton->setEnabled( enabled );
-  mUi.editButton->setEnabled( enabled );
+    mUi.removeButton->setEnabled(enabled);
+    mUi.editButton->setEnabled(enabled);
 }
 
-void ConfigDialog::addModelRow( const QString &protocol, const QString &url )
+void ConfigDialog::addModelRow(const QString &protocol, const QString &url)
 {
-  insertModelRow( -1, protocol, url );
+    insertModelRow(-1, protocol, url);
 }
 
-void ConfigDialog::insertModelRow( int index, const QString &protocol, const QString &url )
+void ConfigDialog::insertModelRow(int index, const QString &protocol, const QString &url)
 {
-  QStandardItem *rootItem = mModel->invisibleRootItem();
-  QList<QStandardItem*> items;
+    QStandardItem *rootItem = mModel->invisibleRootItem();
+    QList<QStandardItem *> items;
 
-  QStandardItem *protocolStandardItem = new QStandardItem( protocol );
-  protocolStandardItem->setEditable( false );
-  items << protocolStandardItem;
+    QStandardItem *protocolStandardItem = new QStandardItem(protocol);
+    protocolStandardItem->setEditable(false);
+    items << protocolStandardItem;
 
-  QStandardItem *urlStandardItem = new QStandardItem( url );
-  urlStandardItem->setEditable( false );
-  items << urlStandardItem;
+    QStandardItem *urlStandardItem = new QStandardItem(url);
+    urlStandardItem->setEditable(false);
+    items << urlStandardItem;
 
-  if ( index == -1 )
-    rootItem->appendRow( items );
-  else
-    rootItem->insertRow( index, items );
+    if (index == -1) {
+        rootItem->appendRow(items);
+    } else {
+        rootItem->insertRow(index, items);
+    }
 }
 

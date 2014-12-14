@@ -26,11 +26,11 @@ class ItemChangedJob: public KJob
 {
     Q_OBJECT
 public:
-    ItemChangedJob(const Akonadi::Item &kolabItem, HandlerManager &handler, QObject* parent);
+    ItemChangedJob(const Akonadi::Item &kolabItem, HandlerManager &handler, QObject *parent);
     virtual void start();
     Akonadi::Item item() const;
 private slots:
-    void onKolabCollectionFetched(KJob* job);
+    void onKolabCollectionFetched(KJob *job);
     void onImapItemFetchDone(KJob *job);
     void onCollectionFetchDone(KJob *job);
     void onItemAddedDone(KJob *job);

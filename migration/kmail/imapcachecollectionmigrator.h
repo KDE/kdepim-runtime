@@ -26,55 +26,54 @@
 
 class ImapCacheCollectionMigrator : public AbstractCollectionMigrator
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     enum MigrationOption {
-      ConfigOnly = 0x0,
-      ImportNewMessages = 0x01,
-      ImportCachedMessages = 0x02,
-      RemoveDeletedMessages = 0x04,
-      DeleteImportedMessages = 0x08
+        ConfigOnly = 0x0,
+        ImportNewMessages = 0x01,
+        ImportCachedMessages = 0x02,
+        RemoveDeletedMessages = 0x04,
+        DeleteImportedMessages = 0x08
     };
 
-    Q_DECLARE_FLAGS( MigrationOptions, MigrationOption )
+    Q_DECLARE_FLAGS(MigrationOptions, MigrationOption)
 
-    ImapCacheCollectionMigrator( const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
+    ImapCacheCollectionMigrator(const Akonadi::AgentInstance &resource, const QString &resourceName, MixedMaildirStore *store, QObject *parent = Q_NULLPTR);
 
     ~ImapCacheCollectionMigrator();
 
-    void setMigrationOptions( const MigrationOptions &options );
+    void setMigrationOptions(const MigrationOptions &options);
 
     MigrationOptions migrationOptions() const;
 
-    void setUnsubscribedImapFolders( const QStringList &imapFolders );
+    void setUnsubscribedImapFolders(const QStringList &imapFolders);
 
-  protected:
-    void migrateCollection( const Akonadi::Collection &collection, const QString &folderId );
+protected:
+    void migrateCollection(const Akonadi::Collection &collection, const QString &folderId);
 
     // overridden because of own reporting
-    void migrationProgress( int processedCollections, int seenCollections );
+    void migrationProgress(int processedCollections, int seenCollections);
 
-    QString mapRemoteIdFromStore( const QString &storeRemotedId ) const;
+    QString mapRemoteIdFromStore(const QString &storeRemotedId) const;
 
-  private:
+private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void fetchItemsResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void processNextItem() )
-    Q_PRIVATE_SLOT( d, void processNextDeletedUid() )
-    Q_PRIVATE_SLOT( d, void fetchItemResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemCreateResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemDeletePhase1Result( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemDeletePhase2Result( KJob* ) )
-    Q_PRIVATE_SLOT( d, void cacheItemDeleteResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void unsubscribeCollections() )
-    Q_PRIVATE_SLOT( d, void unsubscribeCollectionsResult( KJob* ) )
+    Q_PRIVATE_SLOT(d, void fetchItemsResult(KJob *))
+    Q_PRIVATE_SLOT(d, void processNextItem())
+    Q_PRIVATE_SLOT(d, void processNextDeletedUid())
+    Q_PRIVATE_SLOT(d, void fetchItemResult(KJob *))
+    Q_PRIVATE_SLOT(d, void itemCreateResult(KJob *))
+    Q_PRIVATE_SLOT(d, void itemDeletePhase1Result(KJob *))
+    Q_PRIVATE_SLOT(d, void itemDeletePhase2Result(KJob *))
+    Q_PRIVATE_SLOT(d, void cacheItemDeleteResult(KJob *))
+    Q_PRIVATE_SLOT(d, void unsubscribeCollections())
+    Q_PRIVATE_SLOT(d, void unsubscribeCollectionsResult(KJob *))
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( ImapCacheCollectionMigrator::MigrationOptions )
+Q_DECLARE_OPERATORS_FOR_FLAGS(ImapCacheCollectionMigrator::MigrationOptions)
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

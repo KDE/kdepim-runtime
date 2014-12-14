@@ -26,7 +26,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that requests the delta for folders changes from the OX server.
@@ -35,9 +36,9 @@ namespace OXA {
  */
 class FoldersRequestDeltaJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new folders request delta job.
      *
@@ -45,7 +46,7 @@ class FoldersRequestDeltaJob : public KJob
      *                 after this date will be requested. 0 will request all available folders.
      * @param parent The parent object.
      */
-    explicit FoldersRequestDeltaJob( qulonglong lastSync, QObject *parent = Q_NULLPTR );
+    explicit FoldersRequestDeltaJob(qulonglong lastSync, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -62,11 +63,11 @@ class FoldersRequestDeltaJob : public KJob
      */
     Folder::List deletedFolders() const;
 
-  private Q_SLOTS:
-    void fetchModifiedJobFinished( KJob* );
-    void fetchDeletedJobFinished( KJob* );
+private Q_SLOTS:
+    void fetchModifiedJobFinished(KJob *);
+    void fetchDeletedJobFinished(KJob *);
 
-  private:
+private:
     qulonglong mLastSync;
     Folder::List mModifiedFolders;
     Folder::List mDeletedFolders;

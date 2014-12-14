@@ -24,7 +24,7 @@
 #include <QDebug>
 
 DummyMigrator::DummyMigrator(const QString &identifier)
-:   MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
+    :   MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
 {}
 
 QString DummyMigrator::displayName() const

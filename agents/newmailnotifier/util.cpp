@@ -30,45 +30,44 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 
-
 void Util::testJovieService()
 {
     if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
         QString error;
         if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
-            KNotification::event( QLatin1String("text-to-speak-not-found"),
-                                  i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
-                                  Util::defaultPixmap(),
-                                  0,
-                                  KNotification::CloseOnTimeout,
-                                  QLatin1String("akonadi_newmailnotifier_agent"));
+            KNotification::event(QLatin1String("text-to-speak-not-found"),
+                                 i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
+                                 Util::defaultPixmap(),
+                                 0,
+                                 KNotification::CloseOnTimeout,
+                                 QLatin1String("akonadi_newmailnotifier_agent"));
         }
     }
 }
 
 void Util::showNotification(const QPixmap &pixmap, const QString &message)
 {
-    KNotification::event( QLatin1String("new-email"),
-                          message,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          QLatin1String("akonadi_newmailnotifier_agent"));
+    KNotification::event(QLatin1String("new-email"),
+                         message,
+                         pixmap,
+                         0,
+                         KNotification::CloseOnTimeout,
+                         QLatin1String("akonadi_newmailnotifier_agent"));
 }
 
 QPixmap Util::defaultPixmap()
 {
-    const QPixmap pixmap = QIcon::fromTheme( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
+    const QPixmap pixmap = QIcon::fromTheme(QLatin1String("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
     return pixmap;
 }
 
 bool Util::excludeAgentType(const Akonadi::AgentInstance &instance)
 {
-    if ( instance.type().mimeTypes().contains( KMime::Message::mimeType() ) ) {
-        const QStringList capabilities( instance.type().capabilities() );
-        if ( capabilities.contains( QLatin1String("Resource") ) &&
-             !capabilities.contains( QLatin1String("Virtual") ) &&
-             !capabilities.contains( QLatin1String("MailTransport") ) ) {
+    if (instance.type().mimeTypes().contains(KMime::Message::mimeType())) {
+        const QStringList capabilities(instance.type().capabilities());
+        if (capabilities.contains(QLatin1String("Resource")) &&
+                !capabilities.contains(QLatin1String("Virtual")) &&
+                !capabilities.contains(QLatin1String("MailTransport"))) {
             return false;
         } else {
             return true;

@@ -25,56 +25,54 @@ using namespace Akonadi;
 
 class FileStore::StoreCompactJob::Private
 {
-  public:
-    explicit Private( FileStore::StoreCompactJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::StoreCompactJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     FileStore::StoreCompactJob *mParent;
 
     Collection::List mCollections;
     Item::List mItems;
 };
 
-FileStore::StoreCompactJob::StoreCompactJob( FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::StoreCompactJob::StoreCompactJob(FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::StoreCompactJob::~StoreCompactJob()
 {
-  delete d;
+    delete d;
 }
 
-bool FileStore::StoreCompactJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::StoreCompactJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
 Item::List FileStore::StoreCompactJob::changedItems() const
 {
-  return d->mItems;
+    return d->mItems;
 }
 
 Collection::List FileStore::StoreCompactJob::changedCollections() const
 {
-  return d->mCollections;
+    return d->mCollections;
 }
 
-void FileStore::StoreCompactJob::handleCollectionsChanged( const Collection::List &collections )
+void FileStore::StoreCompactJob::handleCollectionsChanged(const Collection::List &collections)
 {
-  d->mCollections << collections;
-  emit collectionsChanged( collections );
+    d->mCollections << collections;
+    emit collectionsChanged(collections);
 }
 
-void FileStore::StoreCompactJob::handleItemsChanged( const Item::List &items )
+void FileStore::StoreCompactJob::handleItemsChanged(const Item::List &items)
 {
-  d->mItems << items;
-  emit itemsChanged( items );
+    d->mItems << items;
+    emit itemsChanged(items);
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

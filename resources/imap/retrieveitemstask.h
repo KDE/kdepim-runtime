@@ -28,13 +28,14 @@
 #include "resourcetask.h"
 
 class BatchFetcher;
-namespace Akonadi {
-    class Session;
+namespace Akonadi
+{
+class Session;
 }
 
 class RetrieveItemsTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
@@ -52,22 +53,22 @@ private slots:
     void onFinalSelectDone(KJob *job);
     void onItemsRetrieved(const Akonadi::Item::List &addedItems);
     void onRetrievalDone(KJob *job);
-    void onFlagsFetchDone( KJob *job );
+    void onFlagsFetchDone(KJob *job);
 
 protected:
     virtual void doStart(KIMAP::Session *session);
 
-    virtual BatchFetcher* createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set,
-                                             const KIMAP::FetchJob::FetchScope &scope, int batchSize,
-                                             KIMAP::Session *session);
+    virtual BatchFetcher *createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set,
+            const KIMAP::FetchJob::FetchScope &scope, int batchSize,
+            KIMAP::Session *session);
 
 private:
     void startRetrievalTasks();
     void triggerPreExpungeSelect(const QString &mailBox);
     void triggerExpunge(const QString &mailBox);
     void triggerFinalSelect(const QString &mailBox);
-    void retrieveItems(const KIMAP::ImapSet& set, const KIMAP::FetchJob::FetchScope &scope, bool incremental = false, bool uidBased = false);
-    void listFlagsForImapSet(const KIMAP::ImapSet& set);
+    void retrieveItems(const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, bool incremental = false, bool uidBased = false);
+    void listFlagsForImapSet(const KIMAP::ImapSet &set);
     void taskComplete();
 
     KIMAP::Session *m_session;

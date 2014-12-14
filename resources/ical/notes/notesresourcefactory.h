@@ -18,15 +18,15 @@
 #ifndef NOTESRESOURCEFACTORY_H
 #define NOTESRESOURCEFACTORY_H
 
-#include <agentfactory.h> 
+#include <agentfactory.h>
 #include <notesresource.h>
- 
+
 class NotesResourceFactory : public Akonadi::AgentFactory<NotesResource>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.NotesResource");
-public: 
-    explicit NotesResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.NotesResource");
+public:
+    explicit NotesResourceFactory(QObject *parent = 0);
 
 };
 #endif

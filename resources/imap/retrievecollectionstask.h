@@ -30,26 +30,26 @@
 
 class RetrieveCollectionsTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit RetrieveCollectionsTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~RetrieveCollectionsTask();
+    explicit RetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~RetrieveCollectionsTask();
 
 private slots:
-  void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                            const QList< QList<QByteArray> > &flags );
-  void onMailBoxesReceiveDone( KJob *job );
-  void onFullMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags );
-  void onFullMailBoxesReceiveDone( KJob *job );
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
+                             const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceiveDone(KJob *job);
+    void onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);
+    void onFullMailBoxesReceiveDone(KJob *job);
 
 protected:
-  virtual void doStart( KIMAP::Session *session );
+    virtual void doStart(KIMAP::Session *session);
 
 protected:
-  QHash<QString, Akonadi::Collection> m_reportedCollections;
-  QHash<QString, Akonadi::Collection> m_dummyCollections;
-  QSet<QString> m_fullReportedCollections;
+    QHash<QString, Akonadi::Collection> m_reportedCollections;
+    QHash<QString, Akonadi::Collection> m_dummyCollections;
+    QSet<QString> m_fullReportedCollections;
 };
 
 #endif

@@ -24,19 +24,18 @@
 
 #include "ui_settings.h"
 
-
 class QPushButton;
 
 class ConfigDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-    ConfigDialog( QWidget *parent = 0 );
+    Q_OBJECT
+public:
+    ConfigDialog(QWidget *parent = 0);
 
-  private slots:
+private slots:
     void save();
-    void slotCollectionChanged(const Akonadi::Collection& );
-  private:
+    void slotCollectionChanged(const Akonadi::Collection &);
+private:
     Ui::ConfigDialog ui;
     QPushButton *mOkButton;
 };

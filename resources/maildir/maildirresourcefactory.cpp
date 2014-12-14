@@ -17,9 +17,9 @@
 
 #include "maildirresourcefactory.h"
 
-MaildirResourceFactory::MaildirResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< MaildirResource >( "akonadi_maildir_resource", parent )
+MaildirResourceFactory::MaildirResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< MaildirResource >("akonadi_maildir_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_maildir_resource") );
+    setObjectName(QLatin1String("akonadi_maildir_resource"));
 }
 

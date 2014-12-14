@@ -25,8 +25,7 @@
 
 using namespace Akonadi;
 #define TIMEOUT 1000
-struct TestUtils
-{
+struct TestUtils {
     static Akonadi::Item createImapItem(const KCalCore::Event::Ptr &event);
 
     typedef QPair<QSharedPointer<QSignalSpy>, QSharedPointer<Akonadi::Monitor> > MonitorPair;

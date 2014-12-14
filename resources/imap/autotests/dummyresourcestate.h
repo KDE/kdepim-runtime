@@ -30,131 +30,130 @@
 class DummyResourceState : public ResourceStateInterface
 {
 public:
-  typedef boost::shared_ptr<DummyResourceState> Ptr;
+    typedef boost::shared_ptr<DummyResourceState> Ptr;
 
-  explicit DummyResourceState();
-  ~DummyResourceState();
+    explicit DummyResourceState();
+    ~DummyResourceState();
 
-  void setUserName( const QString &name );
-  virtual QString userName() const;
+    void setUserName(const QString &name);
+    virtual QString userName() const;
 
-  void setResourceName( const QString &name );
-  virtual QString resourceName() const;
+    void setResourceName(const QString &name);
+    virtual QString resourceName() const;
 
-  void setServerCapabilities( const QStringList &capabilities );
-  virtual QStringList serverCapabilities() const;
+    void setServerCapabilities(const QStringList &capabilities);
+    virtual QStringList serverCapabilities() const;
 
-  void setServerNamespaces( const QList<KIMAP::MailBoxDescriptor> &namespaces );
-  virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
-  virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const;
-  virtual QList<KIMAP::MailBoxDescriptor> userNamespaces() const;
-  virtual QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const;
+    void setServerNamespaces(const QList<KIMAP::MailBoxDescriptor> &namespaces);
+    virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+    virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const;
+    virtual QList<KIMAP::MailBoxDescriptor> userNamespaces() const;
+    virtual QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const;
 
-  void setAutomaticExpungeEnagled( bool enabled );
-  virtual bool isAutomaticExpungeEnabled() const;
+    void setAutomaticExpungeEnagled(bool enabled);
+    virtual bool isAutomaticExpungeEnabled() const;
 
-  void setSubscriptionEnabled( bool enabled );
-  virtual bool isSubscriptionEnabled() const;
-  void setDisconnectedModeEnabled( bool enabled );
-  virtual bool isDisconnectedModeEnabled() const;
-  void setIntervalCheckTime( int interval );
-  virtual int intervalCheckTime() const;
+    void setSubscriptionEnabled(bool enabled);
+    virtual bool isSubscriptionEnabled() const;
+    void setDisconnectedModeEnabled(bool enabled);
+    virtual bool isDisconnectedModeEnabled() const;
+    void setIntervalCheckTime(int interval);
+    virtual int intervalCheckTime() const;
 
+    void setCollection(const Akonadi::Collection &collection);
+    virtual Akonadi::Collection collection() const;
+    void setItem(const Akonadi::Item &item);
+    virtual Akonadi::Item item() const;
+    virtual Akonadi::Item::List items() const;
 
-  void setCollection( const Akonadi::Collection &collection );
-  virtual Akonadi::Collection collection() const;
-  void setItem( const Akonadi::Item &item );
-  virtual Akonadi::Item item() const;
-  virtual Akonadi::Item::List items() const;
+    void setParentCollection(const Akonadi::Collection &collection);
+    virtual Akonadi::Collection parentCollection() const;
 
-  void setParentCollection( const Akonadi::Collection &collection );
-  virtual Akonadi::Collection parentCollection() const;
+    void setSourceCollection(const Akonadi::Collection &collection);
+    virtual Akonadi::Collection sourceCollection() const;
+    void setTargetCollection(const Akonadi::Collection &collection);
+    virtual Akonadi::Collection targetCollection() const;
 
-  void setSourceCollection( const Akonadi::Collection &collection );
-  virtual Akonadi::Collection sourceCollection() const;
-  void setTargetCollection( const Akonadi::Collection &collection );
-  virtual Akonadi::Collection targetCollection() const;
+    void setParts(const QSet<QByteArray> &parts);
+    virtual QSet<QByteArray> parts() const;
 
-  void setParts( const QSet<QByteArray> &parts );
-  virtual QSet<QByteArray> parts() const;
+    virtual QString rootRemoteId() const;
 
-  virtual QString rootRemoteId() const;
+    virtual void setIdleCollection(const Akonadi::Collection &collection);
+    virtual void applyCollectionChanges(const Akonadi::Collection &collection);
 
-  virtual void setIdleCollection( const Akonadi::Collection &collection );
-  virtual void applyCollectionChanges( const Akonadi::Collection &collection );
+    virtual void collectionAttributesRetrieved(const Akonadi::Collection &collection);
 
-  virtual void collectionAttributesRetrieved( const Akonadi::Collection &collection );
+    virtual void itemRetrieved(const Akonadi::Item &item);
 
-  virtual void itemRetrieved( const Akonadi::Item &item );
+    virtual void itemsRetrieved(const Akonadi::Item::List &items);
+    virtual void itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed);
+    virtual void itemsRetrievalDone();
 
-  virtual void itemsRetrieved( const Akonadi::Item::List &items );
-  virtual void itemsRetrievedIncremental( const Akonadi::Item::List &changed, const Akonadi::Item::List &removed );
-  virtual void itemsRetrievalDone();
+    virtual void setTotalItems(int);
 
-  virtual void setTotalItems(int);
+    virtual QSet< QByteArray > addedFlags() const;
+    virtual QSet< QByteArray > removedFlags() const;
 
-  virtual QSet< QByteArray > addedFlags() const;
-  virtual QSet< QByteArray > removedFlags() const;
+    virtual void itemChangeCommitted(const Akonadi::Item &item);
+    virtual void itemsChangesCommitted(const Akonadi::Item::List &items);
 
-  virtual void itemChangeCommitted( const Akonadi::Item &item );
-  virtual void itemsChangesCommitted(const Akonadi::Item::List& items);
+    virtual void collectionsRetrieved(const Akonadi::Collection::List &collections);
 
-  virtual void collectionsRetrieved( const Akonadi::Collection::List &collections );
+    virtual void collectionChangeCommitted(const Akonadi::Collection &collection);
 
-  virtual void collectionChangeCommitted( const Akonadi::Collection &collection );
+    virtual void searchFinished(const QVector<qint64> &result, bool isRid = true);
 
-  virtual void searchFinished( const QVector<qint64> &result, bool isRid = true );
+    virtual void changeProcessed();
 
-  virtual void changeProcessed();
+    virtual void cancelTask(const QString &errorString);
+    virtual void deferTask();
+    virtual void restartItemRetrieval(Akonadi::Collection::Id col);
+    virtual void taskDone();
 
-  virtual void cancelTask( const QString &errorString );
-  virtual void deferTask();
-  virtual void restartItemRetrieval(Akonadi::Collection::Id col);
-  virtual void taskDone();
+    virtual void emitError(const QString &message);
+    virtual void emitWarning(const QString &message);
+    virtual void emitPercent(int percent);
 
-  virtual void emitError( const QString &message );
-  virtual void emitWarning( const QString &message );
-  virtual void emitPercent( int percent );
+    virtual void synchronizeCollectionTree();
+    virtual void scheduleConnectionAttempt();
 
-  virtual void synchronizeCollectionTree();
-  virtual void scheduleConnectionAttempt();
+    virtual QChar separatorCharacter() const;
+    virtual void setSeparatorCharacter(const QChar &separator);
 
-  virtual QChar separatorCharacter() const;
-  virtual void setSeparatorCharacter( const QChar &separator );
+    virtual void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName);
 
-  virtual void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
+    virtual int batchSize() const;
 
-  virtual int batchSize() const;
+    virtual MessageHelper::Ptr messageHelper() const;
 
-  virtual MessageHelper::Ptr messageHelper() const;
-
-  QList< QPair<QByteArray, QVariant> > calls() const;
+    QList< QPair<QByteArray, QVariant> > calls() const;
 
 private:
-  void recordCall( const QByteArray callName, const QVariant &parameter = QVariant() );
+    void recordCall(const QByteArray callName, const QVariant &parameter = QVariant());
 
-  QString m_userName;
-  QString m_resourceName;
-  QStringList m_capabilities;
-  QList<KIMAP::MailBoxDescriptor> m_namespaces;
+    QString m_userName;
+    QString m_resourceName;
+    QStringList m_capabilities;
+    QList<KIMAP::MailBoxDescriptor> m_namespaces;
 
-  bool m_automaticExpunge;
-  bool m_subscriptionEnabled;
-  bool m_disconnectedMode;
-  int m_intervalCheckTime;
-  QChar m_separator;
+    bool m_automaticExpunge;
+    bool m_subscriptionEnabled;
+    bool m_disconnectedMode;
+    int m_intervalCheckTime;
+    QChar m_separator;
 
-  Akonadi::Collection m_collection;
-  Akonadi::Item::List m_items;
+    Akonadi::Collection m_collection;
+    Akonadi::Item::List m_items;
 
-  Akonadi::Collection m_parentCollection;
+    Akonadi::Collection m_parentCollection;
 
-  Akonadi::Collection m_sourceCollection;
-  Akonadi::Collection m_targetCollection;
+    Akonadi::Collection m_sourceCollection;
+    Akonadi::Collection m_targetCollection;
 
-  QSet<QByteArray> m_parts;
+    QSet<QByteArray> m_parts;
 
-  QList< QPair<QByteArray, QVariant> > m_calls;
+    QList< QPair<QByteArray, QVariant> > m_calls;
 };
 
 #endif

@@ -32,25 +32,25 @@ namespace FileStore
  */
 class FiFoQueueJobSession : public AbstractJobSession
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit FiFoQueueJobSession( QObject *parent = 0 );
+public:
+    explicit FiFoQueueJobSession(QObject *parent = 0);
 
     virtual ~FiFoQueueJobSession();
 
-    virtual void addJob( Job *job );
+    virtual void addJob(Job *job);
 
     virtual void cancelAllJobs();
 
-  protected:
-    virtual void removeJob( Job *job );
+protected:
+    virtual void removeJob(Job *job);
 
-  private:
+private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void runNextJob() )
+    Q_PRIVATE_SLOT(d, void runNextJob())
 };
 
 }
@@ -58,4 +58,3 @@ class FiFoQueueJobSession : public AbstractJobSession
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

@@ -30,45 +30,44 @@
 
 using namespace Akonadi;
 
-ConfigDialog::ConfigDialog(QWidget * parent) :
-    QDialog( parent )
+ConfigDialog::ConfigDialog(QWidget *parent) :
+    QDialog(parent)
 {
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  ui.setupUi(mainWidget);
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    ui.setupUi(mainWidget);
 
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-  mOkButton->setDefault(true);
-  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-  mainLayout->addWidget(buttonBox);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    mainLayout->addWidget(buttonBox);
 
+    ui.sink->setMimeTypeFilter(QStringList() << QLatin1String("message/rfc822"));
+    ui.sink->setAccessRightsFilter(Akonadi::Collection::CanCreateItem);
+    // Don't bother fetching the collection. Will have an empty name :-/
+    ui.sink->setCollection(Collection(Settings::self()->sink()));
+    ui.sink->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
+    qDebug() << "Sink from settings" << Settings::self()->sink();
 
-  ui.sink->setMimeTypeFilter( QStringList() << QLatin1String( "message/rfc822" ) );
-  ui.sink->setAccessRightsFilter( Akonadi::Collection::CanCreateItem );
-  // Don't bother fetching the collection. Will have an empty name :-/
-  ui.sink->setCollection( Collection( Settings::self()->sink() ) );
-  ui.sink->changeCollectionDialogOptions( Akonadi::CollectionDialog::AllowToCreateNewChildCollection );
-  qDebug() << "Sink from settings" << Settings::self()->sink();
-
-  connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
-  connect(ui.sink, &Akonadi::CollectionRequester::collectionChanged, this, &ConfigDialog::slotCollectionChanged);
-  mOkButton->setEnabled(false);
+    connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
+    connect(ui.sink, &Akonadi::CollectionRequester::collectionChanged, this, &ConfigDialog::slotCollectionChanged);
+    mOkButton->setEnabled(false);
 }
 
-void ConfigDialog::slotCollectionChanged( const Akonadi::Collection& col )
+void ConfigDialog::slotCollectionChanged(const Akonadi::Collection &col)
 {
-  mOkButton->setEnabled(col.isValid());
+    mOkButton->setEnabled(col.isValid());
 }
 
 void ConfigDialog::save()
 {
-  qDebug() << "Sink changed to" << ui.sink->collection().id();
-  Settings::self()->setSink( ui.sink->collection().id() );
-  Settings::self()->save();
+    qDebug() << "Sink changed to" << ui.sink->collection().id();
+    Settings::self()->setSink(ui.sink->collection().id());
+    Settings::self()->save();
 }
 

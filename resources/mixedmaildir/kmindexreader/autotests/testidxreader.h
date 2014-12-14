@@ -25,7 +25,7 @@
 
 class TestIdxReader : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     TestIdxReader();
 private slots:

@@ -46,14 +46,14 @@ public:
     /* reimp */ void migrate();
     /* reimp */ void migrateNext();
 protected:
-  /* reimp */ void migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance = Akonadi::AgentInstance() );
+    /* reimp */ void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance());
 
 private slots:
-    void notesResourceCreated( KJob* job );
+    void notesResourceCreated(KJob *job);
     void syncDone(KJob *job);
-    void rootFetchFinished( KJob *job );
-    void rootCollectionsRecieved( const Akonadi::Collection::List &list );
-    void newResourceFilled( KJob *job );    
+    void rootFetchFinished(KJob *job);
+    void rootCollectionsRecieved(const Akonadi::Collection::List &list);
+    void newResourceFilled(KJob *job);
     void slotCollectionModify(KJob *job);
 
 private:

@@ -17,9 +17,9 @@
 
 #include "akonotesresourcefactory.h"
 
-AkonotesResourceFactory::AkonotesResourceFactory( QObject * parent ) 
-  : Akonadi::AgentFactory< AkonotesResource >( "akonadi_akonotes_resource", parent ) 
+AkonotesResourceFactory::AkonotesResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< AkonotesResource >("akonadi_akonotes_resource", parent)
 {
-   setObjectName(QLatin1String("akonadi_akonotes_resource") );
+    setObjectName(QLatin1String("akonadi_akonotes_resource"));
 }
 

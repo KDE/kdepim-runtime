@@ -29,72 +29,72 @@
 
 using namespace OXA;
 
-UsersRequestJob::UsersRequestJob( QObject *parent )
-  : KJob( parent )
+UsersRequestJob::UsersRequestJob(QObject *parent)
+    : KJob(parent)
 {
 }
 
 void UsersRequestJob::start()
 {
-  QDomDocument document;
-  QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
-  QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "user" ), QLatin1String( "*" ) );
+    QDomDocument document;
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
+    DAVUtils::addOxElement(document, prop, QLatin1String("user"), QLatin1String("*"));
 
-  const QString path = QLatin1String( "/servlet/webdav.groupuser" );
+    const QString path = QLatin1String("/servlet/webdav.groupuser");
 
-  KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
-  connect(job, &KIO::DavJob::result, this, &UsersRequestJob::davJobFinished);
+    KIO::DavJob *job = DavManager::self()->createFindJob(path, document);
+    connect(job, &KIO::DavJob::result, this, &UsersRequestJob::davJobFinished);
 
-  job->start();
+    job->start();
 }
 
 User::List UsersRequestJob::users() const
 {
-  return mUsers;
+    return mUsers;
 }
 
-void UsersRequestJob::davJobFinished( KJob *job )
+void UsersRequestJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
-    emitResult();
-    return;
-  }
-
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const QDomDocument document = davJob->response();
-
-  QDomElement multistatus = document.documentElement();
-  QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  QDomElement propstat = response.firstChildElement( QLatin1String( "propstat" ) );
-  QDomElement prop = propstat.firstChildElement( QLatin1String( "prop" ) );
-  QDomElement users = prop.firstChildElement( QLatin1String( "users" ) );
-
-  QDomElement userElement = users.firstChildElement( QLatin1String( "user" ) );
-  while ( !userElement.isNull() ) {
-    User user;
-
-    QDomElement element = userElement.firstChildElement();
-    while ( !element.isNull() ) {
-      if ( element.tagName() == QLatin1String( "uid" ) ) {
-        user.setUid( OXUtils::readNumber( element.text() ) );
-      } else if ( element.tagName() == QLatin1String( "email1" ) ) {
-        user.setEmail( OXUtils::readString( element.text() ) );
-      } else if ( element.tagName() == QLatin1String( "displayname" ) ) {
-        user.setName( OXUtils::readString( element.text() ) );
-      }
-
-      element = element.nextSiblingElement();
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
     }
 
-    mUsers.append( user );
+    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
 
-    userElement = userElement.nextSiblingElement( QLatin1String( "user" ) );
-  }
+    const QDomDocument document = davJob->response();
 
-  emitResult();
+    QDomElement multistatus = document.documentElement();
+    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement propstat = response.firstChildElement(QLatin1String("propstat"));
+    QDomElement prop = propstat.firstChildElement(QLatin1String("prop"));
+    QDomElement users = prop.firstChildElement(QLatin1String("users"));
+
+    QDomElement userElement = users.firstChildElement(QLatin1String("user"));
+    while (!userElement.isNull()) {
+        User user;
+
+        QDomElement element = userElement.firstChildElement();
+        while (!element.isNull()) {
+            if (element.tagName() == QLatin1String("uid")) {
+                user.setUid(OXUtils::readNumber(element.text()));
+            } else if (element.tagName() == QLatin1String("email1")) {
+                user.setEmail(OXUtils::readString(element.text()));
+            } else if (element.tagName() == QLatin1String("displayname")) {
+                user.setName(OXUtils::readString(element.text()));
+            }
+
+            element = element.nextSiblingElement();
+        }
+
+        mUsers.append(user);
+
+        userElement = userElement.nextSiblingElement(QLatin1String("user"));
+    }
+
+    emitResult();
 }
 

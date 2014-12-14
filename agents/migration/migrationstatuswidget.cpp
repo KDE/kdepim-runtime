@@ -33,8 +33,8 @@
 #include <QDialogButtonBox>
 
 MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWidget *parent)
-    :QWidget(parent),
-    mScheduler(scheduler)
+    : QWidget(parent),
+      mScheduler(scheduler)
 {
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     {
@@ -101,7 +101,6 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
 
-
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     {
         QListView *listView = new QListView(widget);
@@ -125,5 +124,4 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     dlg->resize(600, 300);
     dlg->show();
 }
-
 

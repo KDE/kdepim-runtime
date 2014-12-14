@@ -24,7 +24,8 @@
 #include <QComboBox>
 
 class QCheckBox;
-namespace Akonadi {
+namespace Akonadi
+{
 class CollectionRequester;
 }
 
@@ -47,7 +48,7 @@ class FOLDERARCHIVESETTINGS_EXPORT FolderArchiveSettingPage : public QWidget
 {
     Q_OBJECT
 public:
-    explicit FolderArchiveSettingPage(const QString &instanceName, QWidget *parent=0);
+    explicit FolderArchiveSettingPage(const QString &instanceName, QWidget *parent = 0);
     ~FolderArchiveSettingPage();
 
     void loadSettings();

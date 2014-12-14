@@ -54,8 +54,8 @@
 
 using namespace Akonadi;
 
-NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
-    : AgentBase( id )
+NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
+    : AgentBase(id)
 {
     Kdelibs4ConfigMigrator migrate(QLatin1String("newmailnotifieragent"));
     migrate.setConfigFiles(QStringList() << QLatin1String("akonadi_newmailnotifier_agentrc") << QLatin1String("akonadi_newmailnotifier_agent.notifyrc"));
@@ -63,38 +63,38 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
 
     KLocalizedString::setApplicationDomain("akonadi_newmailnotifier_agent");
     Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
-    new NewMailNotifierAdaptor( this );
+    new NewMailNotifierAdaptor(this);
 
-    mIdentityManager = new KIdentityManagement::IdentityManager( false, this );
+    mIdentityManager = new KIdentityManagement::IdentityManager(false, this);
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
 
-    KDBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
-                                                           this, QDBusConnection::ExportAdaptors );
-    KDBusConnectionPool::threadConnection().registerService( QLatin1String( "org.freedesktop.Akonadi.NewMailNotifierAgent" ) );
+    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/NewMailNotifierAgent"),
+            this, QDBusConnection::ExportAdaptors);
+    KDBusConnectionPool::threadConnection().registerService(QLatin1String("org.freedesktop.Akonadi.NewMailNotifierAgent"));
 
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceStatusChanged, this, &NewMailNotifierAgent::slotInstanceStatusChanged);
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceRemoved, this, &NewMailNotifierAgent::slotInstanceRemoved);
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceAdded, this, &NewMailNotifierAgent::slotInstanceAdded);
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceNameChanged, this, &NewMailNotifierAgent::slotInstanceNameChanged);
 
-
-    changeRecorder()->setMimeTypeMonitored( KMime::Message::mimeType() );
-    changeRecorder()->itemFetchScope().setCacheOnly( true );
-    changeRecorder()->itemFetchScope().setFetchModificationTime( false );
-    changeRecorder()->fetchCollection( true );
-    changeRecorder()->setChangeRecordingEnabled( false );
-    changeRecorder()->ignoreSession( Akonadi::Session::defaultSession() );
-    changeRecorder()->collectionFetchScope().setAncestorRetrieval( Akonadi::CollectionFetchScope::All );
+    changeRecorder()->setMimeTypeMonitored(KMime::Message::mimeType());
+    changeRecorder()->itemFetchScope().setCacheOnly(true);
+    changeRecorder()->itemFetchScope().setFetchModificationTime(false);
+    changeRecorder()->fetchCollection(true);
+    changeRecorder()->setChangeRecordingEnabled(false);
+    changeRecorder()->ignoreSession(Akonadi::Session::defaultSession());
+    changeRecorder()->collectionFetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
-    mTimer.setInterval( 5 * 1000 );
-    connect( &mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()) );
+    mTimer.setInterval(5 * 1000);
+    connect(&mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()));
 
-    if (NewMailNotifierAgentSettings::textToSpeakEnabled())
+    if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         Util::testJovieService();
+    }
 
     if (isActive()) {
-        mTimer.setSingleShot( true );
+        mTimer.setSingleShot(true);
     }
 }
 
@@ -240,20 +240,19 @@ void NewMailNotifierAgent::setShowButtonToDisplayMail(bool b)
     NewMailNotifierAgentSettings::self()->save();
 }
 
-
 void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
 {
-    configure( windowId );
+    configure(windowId);
 }
 
-void NewMailNotifierAgent::configure( WId windowId )
+void NewMailNotifierAgent::configure(WId windowId)
 {
     QPointer<NewMailNotifierSettingsDialog> dialog = new NewMailNotifierSettingsDialog;
     if (windowId) {
 #ifndef Q_OS_WIN
-        KWindowSystem::setMainWindow( dialog, windowId );
+        KWindowSystem::setMainWindow(dialog, windowId);
 #else
-        KWindowSystem::setMainWindow( dialog, (HWND)windowId );
+        KWindowSystem::setMainWindow(dialog, (HWND)windowId);
 #endif
     }
     dialog->exec();
@@ -262,21 +261,22 @@ void NewMailNotifierAgent::configure( WId windowId )
 
 bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const
 {
-    if ( collection.hasAttribute<Akonadi::EntityHiddenAttribute>() )
+    if (collection.hasAttribute<Akonadi::EntityHiddenAttribute>()) {
         return true;
+    }
 
-    if ( collection.hasAttribute<NewMailNotifierAttribute>() ) {
+    if (collection.hasAttribute<NewMailNotifierAttribute>()) {
         if (collection.attribute<NewMailNotifierAttribute>()->ignoreNewMail()) {
             return true;
         }
     }
 
-    if (!collection.contentMimeTypes().contains( KMime::Message::mimeType()) ) {
+    if (!collection.contentMimeTypes().contains(KMime::Message::mimeType())) {
         return true;
     }
 
     SpecialMailCollections::Type type = SpecialMailCollections::self()->specialCollectionType(collection);
-    switch(type) {
+    switch (type) {
     case SpecialMailCollections::Invalid: //Not a special collection
     case SpecialMailCollections::Inbox:
         return false;
@@ -286,24 +286,25 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
 
 }
 
-void NewMailNotifierAgent::itemsRemoved(const Item::List &items )
+void NewMailNotifierAgent::itemsRemoved(const Item::List &items)
 {
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
 
     QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
-    for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
+    for (QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it) {
         QList<Akonadi::Item::Id> idList = it.value();
         bool itemFound = false;
-        Q_FOREACH( const Item &item, items ) {
+        Q_FOREACH (const Item &item, items) {
             if (idList.contains(item.id())) {
-                idList.removeAll( item.id() );
+                idList.removeAll(item.id());
                 itemFound = true;
             }
         }
         if (itemFound) {
             if (mNewMails[it.key()].isEmpty()) {
-                mNewMails.remove( it.key() );
+                mNewMails.remove(it.key());
             } else {
                 mNewMails[it.key()] = idList;
             }
@@ -311,18 +312,19 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items )
     }
 }
 
-void NewMailNotifierAgent::itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags )
+void NewMailNotifierAgent::itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags)
 {
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
     Q_FOREACH (const Akonadi::Item &item, items) {
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator end(mNewMails.end());
-        for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it ) {
-            QList<Akonadi::Item::Id> idList= it.value();
+        for (QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::iterator it = mNewMails.begin(); it != end; ++it) {
+            QList<Akonadi::Item::Id> idList = it.value();
             if (idList.contains(item.id()) && addedFlags.contains("\\SEEN")) {
-                idList.removeAll( item.id() );
-                if ( idList.isEmpty() ) {
-                    mNewMails.remove( it.key() );
+                idList.removeAll(item.id());
+                if (idList.isEmpty()) {
+                    mNewMails.remove(it.key());
                     break;
                 } else {
                     (*it) = idList;
@@ -332,33 +334,34 @@ void NewMailNotifierAgent::itemsFlagsChanged( const Akonadi::Item::List &items, 
     }
 }
 
-void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination )
+void NewMailNotifierAgent::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
 
     Q_FOREACH (const Akonadi::Item &item, items) {
         if (ignoreStatusMail(item)) {
             continue;
         }
 
-        if ( excludeSpecialCollection(collectionSource) ) {
+        if (excludeSpecialCollection(collectionSource)) {
             continue; // outbox, sent-mail, trash, drafts or templates.
         }
 
-        if ( mNewMails.contains( collectionSource ) ) {
+        if (mNewMails.contains(collectionSource)) {
             QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
-            if ( idListFrom.contains( item.id() ) ) {
-                idListFrom.removeAll( item.id() );
+            if (idListFrom.contains(item.id())) {
+                idListFrom.removeAll(item.id());
 
-                if ( idListFrom.isEmpty() ) {
-                    mNewMails.remove( collectionSource );
+                if (idListFrom.isEmpty()) {
+                    mNewMails.remove(collectionSource);
                 } else {
                     mNewMails[ collectionSource ] = idListFrom;
                 }
-                if ( !excludeSpecialCollection(collectionDestination) ) {
+                if (!excludeSpecialCollection(collectionDestination)) {
                     QList<Akonadi::Item::Id> idListTo = mNewMails[ collectionDestination ];
-                    idListTo.append( item.id() );
+                    idListTo.append(item.id());
                     mNewMails[ collectionDestination ] = idListTo;
                 }
             }
@@ -369,18 +372,20 @@ void NewMailNotifierAgent::itemsMoved( const Akonadi::Item::List &items, const A
 bool NewMailNotifierAgent::ignoreStatusMail(const Akonadi::Item &item)
 {
     Akonadi::MessageStatus status;
-    status.setStatusFromFlags( item.flags() );
-    if ( status.isRead() || status.isSpam() || status.isIgnored() )
+    status.setStatusFromFlags(item.flags());
+    if (status.isRead() || status.isSpam() || status.isIgnored()) {
         return true;
+    }
     return false;
 }
 
-void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection )
+void NewMailNotifierAgent::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
 
-    if ( excludeSpecialCollection(collection) ) {
+    if (excludeSpecialCollection(collection)) {
         return; // outbox, sent-mail, trash, drafts or templates.
     }
 
@@ -388,19 +393,21 @@ void NewMailNotifierAgent::itemAdded( const Akonadi::Item &item, const Akonadi::
         return;
     }
 
-    if ( !mTimer.isActive() ) {
+    if (!mTimer.isActive()) {
         mTimer.start();
     }
-    mNewMails[ collection ].append( item.id() );
+    mNewMails[ collection ].append(item.id());
 }
 
 void NewMailNotifierAgent::slotShowNotifications()
 {
-    if (mNewMails.isEmpty())
+    if (mNewMails.isEmpty()) {
         return;
+    }
 
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
 
     if (!mInstanceNameInProgress.isEmpty()) {
         //Restart timer until all is done.
@@ -416,22 +423,24 @@ void NewMailNotifierAgent::slotShowNotifications()
         QStringList texts;
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
         const int numberOfCollection(mNewMails.count());
-        if (numberOfCollection > 1)
+        if (numberOfCollection > 1) {
             hasUniqMessage = false;
+        }
 
-        for ( QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it ) {
+        for (QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it) {
             Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
             QString displayName;
-            if ( attr && !attr->displayName().isEmpty() )
+            if (attr && !attr->displayName().isEmpty()) {
                 displayName = attr->displayName();
-            else
+            } else {
                 displayName = it.key().name();
+            }
 
             if (hasUniqMessage) {
                 if (it.value().count() == 0) {
                     //You can have an unique folder with 0 message
                     return;
-                } else if (it.value().count() == 1 ) {
+                } else if (it.value().count() == 1) {
                     item = it.value().first();
                     currentPath = displayName;
                     break;
@@ -441,7 +450,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
             QString resourceName;
             if (!mCacheResourceName.contains(it.key().resource())) {
-                Q_FOREACH ( const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances() ) {
+                Q_FOREACH (const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances()) {
                     if (instance.identifier() == it.key().resource()) {
                         mCacheResourceName.insert(instance.identifier(), instance.name());
                         resourceName = instance.name();
@@ -452,9 +461,9 @@ void NewMailNotifierAgent::slotShowNotifications()
                 resourceName = mCacheResourceName.value(it.key().resource());
             }
             const int numberOfEmails(it.value().count());
-            if (numberOfEmails>0) {
-                texts.append( i18np( "One new email in %2 from \"%3\"", "%1 new emails in %2 from \"%3\"", numberOfEmails, displayName,
-                                 resourceName ) );
+            if (numberOfEmails > 0) {
+                texts.append(i18np("One new email in %2 from \"%3\"", "%1 new emails in %2 from \"%3\"", numberOfEmails, displayName,
+                                   resourceName));
             }
         }
         if (hasUniqMessage) {
@@ -463,10 +472,10 @@ void NewMailNotifierAgent::slotShowNotifications()
             mNewMails.clear();
             return;
         } else {
-            message = texts.join( QLatin1String("<br>") );
+            message = texts.join(QLatin1String("<br>"));
         }
     } else {
-        message = i18n( "New mail arrived" );
+        message = i18n("New mail arrived");
     }
 
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
@@ -476,20 +485,20 @@ void NewMailNotifierAgent::slotShowNotifications()
     mNewMails.clear();
 }
 
-
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
     Util::showNotification(pixmap, message);
 
-    if ( NewMailNotifierAgentSettings::beepOnNewMails() ) {
+    if (NewMailNotifierAgentSettings::beepOnNewMails()) {
         KNotification::beep();
     }
 }
 
 void NewMailNotifierAgent::slotInstanceNameChanged(const Akonadi::AgentInstance &instance)
 {
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
 
     const QString identifier(instance.identifier());
     if (mCacheResourceName.contains(identifier)) {
@@ -500,21 +509,20 @@ void NewMailNotifierAgent::slotInstanceNameChanged(const Akonadi::AgentInstance 
 
 void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstance &instance)
 {
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
 
     const QString identifier(instance.identifier());
-    switch(instance.status()) {
+    switch (instance.status()) {
     case Akonadi::AgentInstance::Broken:
-    case Akonadi::AgentInstance::Idle:
-    {
+    case Akonadi::AgentInstance::Idle: {
         if (mInstanceNameInProgress.contains(identifier)) {
             mInstanceNameInProgress.removeAll(identifier);
         }
         break;
     }
-    case Akonadi::AgentInstance::Running:
-    {
+    case Akonadi::AgentInstance::Running: {
         if (!Util::excludeAgentType(instance)) {
             if (!mInstanceNameInProgress.contains(identifier)) {
                 mInstanceNameInProgress.append(identifier);
@@ -530,8 +538,9 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
 
 void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &instance)
 {
-    if (!isActive())
+    if (!isActive()) {
         return;
+    }
 
     const QString identifier(instance.identifier());
     if (mInstanceNameInProgress.contains(identifier)) {
@@ -546,10 +555,10 @@ void NewMailNotifierAgent::slotInstanceAdded(const Akonadi::AgentInstance &insta
 
 void NewMailNotifierAgent::printDebug()
 {
-    qCDebug(NEWMAILNOTIFIER_LOG)<<"instance in progress: "<<mInstanceNameInProgress
-            <<"\n notifier enabled : "<<NewMailNotifierAgentSettings::enabled()
-            <<"\n check in progress : "<<!mInstanceNameInProgress.isEmpty()
-            <<"\n beep on new mails: "<<NewMailNotifierAgentSettings::beepOnNewMails();
+    qCDebug(NEWMAILNOTIFIER_LOG) << "instance in progress: " << mInstanceNameInProgress
+                                 << "\n notifier enabled : " << NewMailNotifierAgentSettings::enabled()
+                                 << "\n check in progress : " << !mInstanceNameInProgress.isEmpty()
+                                 << "\n beep on new mails: " << NewMailNotifierAgentSettings::beepOnNewMails();
 }
 
 bool NewMailNotifierAgent::isActive() const
@@ -557,6 +566,5 @@ bool NewMailNotifierAgent::isActive() const
     return isOnline() && NewMailNotifierAgentSettings::enabled();
 }
 
-AKONADI_AGENT_MAIN( NewMailNotifierAgent )
-
+AKONADI_AGENT_MAIN(NewMailNotifierAgent)
 

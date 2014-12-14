@@ -15,7 +15,6 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #ifndef GOOGLESETTINGS_H
 #define GOOGLESETTINGS_H
 
@@ -33,12 +32,12 @@
  */
 class GoogleSettings: public SettingsBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     GoogleSettings();
-    void setWindowId( WId id );
-    void setResourceId( const QString &resourceIdentifier );
+    void setWindowId(WId id);
+    void setResourceId(const QString &resourceIdentifier);
 
     QString appId() const;
 
@@ -48,11 +47,10 @@ class GoogleSettings: public SettingsBase
     virtual QString account() const;
     virtual void setAccount(const QString &account);
 
-  private:
+private:
     WId m_winId;
     QString m_resourceId;
 
 };
-
 
 #endif // GOOGLESETTINGS_H

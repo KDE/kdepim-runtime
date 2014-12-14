@@ -28,16 +28,16 @@ class KConfigDialogManager;
 
 class ConfigDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-    explicit ConfigDialog( QWidget *parent = 0 );
+    Q_OBJECT
+public:
+    explicit ConfigDialog(QWidget *parent = 0);
 
-  private slots:
+private slots:
     void save();
 
-  private:
+private:
     Ui::ConfigDialog ui;
-    KConfigDialogManager* mManager;
+    KConfigDialogManager *mManager;
 };
 
 #endif

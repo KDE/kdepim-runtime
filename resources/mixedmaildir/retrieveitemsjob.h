@@ -25,7 +25,7 @@
 
 namespace Akonadi
 {
-  class Collection;
+class Collection;
 }
 
 class MixedMaildirStore;
@@ -36,36 +36,35 @@ class MixedMaildirStore;
  */
 class RetrieveItemsJob : public Akonadi::Job
 {
-  Q_OBJECT
-  public:
-    RetrieveItemsJob( const Akonadi::Collection &collection, MixedMaildirStore *store, QObject* parent = 0 );
-    
+    Q_OBJECT
+public:
+    RetrieveItemsJob(const Akonadi::Collection &collection, MixedMaildirStore *store, QObject *parent = 0);
+
     ~RetrieveItemsJob();
 
     Akonadi::Collection collection() const;
 
     Akonadi::Item::List availableItems() const;
-    
+
     Akonadi::Item::List itemsMarkedAsDeleted() const;
-    
-  protected:
+
+protected:
     void doStart();
 
-  private:
+private:
     class Private;
     Private *const d;
 
-  Q_PRIVATE_SLOT( d, void itemModifyJobResult( KJob* ) )
-  Q_PRIVATE_SLOT( d, void itemCreateJobResult( KJob* ) )
-  Q_PRIVATE_SLOT( d, void akonadiFetchResult( KJob* ) )
-  Q_PRIVATE_SLOT( d, void transactionResult( KJob* ) )
-  Q_PRIVATE_SLOT( d, void storeListResult( KJob* ) )
-  Q_PRIVATE_SLOT( d, void processNewItem() )
-  Q_PRIVATE_SLOT( d, void fetchNewResult( KJob* ) )
-  Q_PRIVATE_SLOT( d, void processChangedItem() )
-  Q_PRIVATE_SLOT( d, void fetchChangedResult( KJob* ) )
+    Q_PRIVATE_SLOT(d, void itemModifyJobResult(KJob *))
+    Q_PRIVATE_SLOT(d, void itemCreateJobResult(KJob *))
+    Q_PRIVATE_SLOT(d, void akonadiFetchResult(KJob *))
+    Q_PRIVATE_SLOT(d, void transactionResult(KJob *))
+    Q_PRIVATE_SLOT(d, void storeListResult(KJob *))
+    Q_PRIVATE_SLOT(d, void processNewItem())
+    Q_PRIVATE_SLOT(d, void fetchNewResult(KJob *))
+    Q_PRIVATE_SLOT(d, void processChangedItem())
+    Q_PRIVATE_SLOT(d, void fetchChangedResult(KJob *))
 };
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

@@ -30,7 +30,7 @@ KNotesMigratorConfig::KNotesMigratorConfig(KCal::Journal *journal)
 {
     const QString configPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + '/' + QLatin1String("knotes/";
     if (!configPath.isEmpty()) {
-        mConfig = new KNoteConfig( KSharedConfig::openConfig( configPath, KConfig::NoGlobals ) );
+    mConfig = new KNoteConfig(KSharedConfig::openConfig(configPath, KConfig::NoGlobals));
         mConfig->readConfig();
     }
 }
@@ -42,8 +42,9 @@ KNotesMigratorConfig::~KNotesMigratorConfig()
 
 bool KNotesMigratorConfig::readOnly() const
 {
-    if (mConfig)
+    if (mConfig) {
         return mConfig->readOnly();
+    }
     return false;
 }
 

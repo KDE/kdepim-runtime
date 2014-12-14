@@ -25,35 +25,33 @@ using namespace Akonadi;
 
 class FileStore::Job::Private
 {
-  public:
-    explicit Private( FileStore::Job *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::Job *parent)
+        : mParent(parent)
     {
     }
 
-  private:
+private:
     FileStore::Job *mParent;
 };
 
-FileStore::Job::Job( FileStore::AbstractJobSession *session )
-  : KJob( session ), d( new Private( this ) )
+FileStore::Job::Job(FileStore::AbstractJobSession *session)
+    : KJob(session), d(new Private(this))
 {
-  setAutoDelete( true );
+    setAutoDelete(true);
 }
 
 FileStore::Job::~Job()
 {
-  delete d;
+    delete d;
 }
 
 void FileStore::Job::start()
 {
 }
 
-bool FileStore::Job::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::Job::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

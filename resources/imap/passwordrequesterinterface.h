@@ -26,32 +26,32 @@
 
 class PasswordRequesterInterface : public QObject
 {
-  Q_OBJECT
-  Q_ENUMS( ResultType RequestType )
+    Q_OBJECT
+    Q_ENUMS(ResultType RequestType)
 
 public:
-  enum ResultType {
-    PasswordRetrieved,
-    ReconnectNeeded,
-    UserRejected,
-    EmptyPasswordEntered
-  };
+    enum ResultType {
+        PasswordRetrieved,
+        ReconnectNeeded,
+        UserRejected,
+        EmptyPasswordEntered
+    };
 
-  enum RequestType {
-    StandardRequest,
-    WrongPasswordRequest
-  };
+    enum RequestType {
+        StandardRequest,
+        WrongPasswordRequest
+    };
 
 protected:
-  PasswordRequesterInterface( QObject *parent = Q_NULLPTR );
+    PasswordRequesterInterface(QObject *parent = Q_NULLPTR);
 
 public:
-  virtual void requestPassword( RequestType request = StandardRequest,
-                                const QString &serverError = QString() ) = 0;
-  virtual void cancelPasswordRequests();
+    virtual void requestPassword(RequestType request = StandardRequest,
+                                 const QString &serverError = QString()) = 0;
+    virtual void cancelPasswordRequests();
 
 signals:
-  void done( int resultType, const QString &password = QString() );
+    void done(int resultType, const QString &password = QString());
 };
 
 #endif

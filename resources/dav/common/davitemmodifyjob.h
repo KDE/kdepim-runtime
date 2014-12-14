@@ -28,9 +28,9 @@
  */
 class DavItemModifyJob : public DavJobBase
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav item modify job.
      *
@@ -38,7 +38,7 @@ class DavItemModifyJob : public DavJobBase
      * @param item The item that shall be modified.
      * @param parent The parent object.
      */
-    DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR );
+    DavItemModifyJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -50,11 +50,11 @@ class DavItemModifyJob : public DavJobBase
      */
     DavItem item() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
-    void itemRefreshed( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
+    void itemRefreshed(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
     DavItem mItem;
 };

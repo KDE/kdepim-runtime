@@ -40,33 +40,34 @@ class ResourcesManagementWidget::Private
 {
 public:
     Ui::ResourcesManagementWidget   ui;
-    QHash<QAction*, Akonadi::AgentType>        menuOptions;
+    QHash<QAction *, Akonadi::AgentType>        menuOptions;
     QStringList                     wantedMimeTypes;
 };
 
-ResourcesManagementWidget::ResourcesManagementWidget( QWidget *parent,  const QStringList &args ) :
-        QWidget( parent ),
-        d( new Private )
+ResourcesManagementWidget::ResourcesManagementWidget(QWidget *parent,  const QStringList &args) :
+    QWidget(parent),
+    d(new Private)
 {
     d->wantedMimeTypes = args;
-    d->ui.setupUi( this );
+    d->ui.setupUi(this);
 
-    d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter( QLatin1String("Resource") );
-    foreach ( const QString& type, d->wantedMimeTypes )
-        d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter( type );
-    connect( d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-             SLOT(updateButtonState()) );
+    d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter(QLatin1String("Resource"));
+    foreach (const QString &type, d->wantedMimeTypes) {
+        d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter(type);
+    }
+    connect(d->ui.resourcesList->view()->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            SLOT(updateButtonState()));
     connect(d->ui.resourcesList, &Akonadi::AgentInstanceWidget::doubleClicked, this, &ResourcesManagementWidget::editClicked);
 
     connect(d->ui.addButton, &QPushButton::clicked, this, &ResourcesManagementWidget::addClicked);
     connect(d->ui.editButton, &QPushButton::clicked, this, &ResourcesManagementWidget::editClicked);
     connect(d->ui.removeButton, &QPushButton::clicked, this, &ResourcesManagementWidget::removeClicked);
-    
-    d->ui.mFilterAccount->setProxy( d->ui.resourcesList->agentFilterProxyModel() );
+
+    d->ui.mFilterAccount->setProxy(d->ui.resourcesList->agentFilterProxyModel());
     //QT5 d->ui.mFilterAccount->lineEdit()->setTrapReturnKey( true );
 
     updateButtonState();
-    Akonadi::Control::widgetNeedsAkonadi( this );
+    Akonadi::Control::widgetNeedsAkonadi(this);
 }
 
 ResourcesManagementWidget::~ResourcesManagementWidget()
@@ -77,28 +78,29 @@ ResourcesManagementWidget::~ResourcesManagementWidget()
 void ResourcesManagementWidget::updateButtonState()
 {
     const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
-    if ( instanceList.isEmpty() ) {
-        d->ui.editButton->setEnabled( false );
-        d->ui.removeButton->setEnabled( false );
+    if (instanceList.isEmpty()) {
+        d->ui.editButton->setEnabled(false);
+        d->ui.removeButton->setEnabled(false);
     } else {
         const Akonadi::AgentInstance current = instanceList.first();
-        d->ui.editButton->setEnabled( !current.type().capabilities().contains( QLatin1String( "NoConfig" ) ) );
-        d->ui.removeButton->setEnabled( true );
+        d->ui.editButton->setEnabled(!current.type().capabilities().contains(QLatin1String("NoConfig")));
+        d->ui.removeButton->setEnabled(true);
     }
 }
 
 void ResourcesManagementWidget::addClicked()
 {
-    Akonadi::AgentTypeDialog dlg( this );
-    Akonadi::AgentFilterProxyModel* filter = dlg.agentFilterProxyModel();
-    foreach ( const QString& type, d->wantedMimeTypes )
-        filter->addMimeTypeFilter( type );
+    Akonadi::AgentTypeDialog dlg(this);
+    Akonadi::AgentFilterProxyModel *filter = dlg.agentFilterProxyModel();
+    foreach (const QString &type, d->wantedMimeTypes) {
+        filter->addMimeTypeFilter(type);
+    }
 
-    if ( dlg.exec() ) {
+    if (dlg.exec()) {
         const Akonadi::AgentType agentType = dlg.agentType();
-        if ( agentType.isValid() ) {
-            Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob( agentType, this );
-            job->configure( this );
+        if (agentType.isValid()) {
+            Akonadi::AgentInstanceCreateJob *job = new Akonadi::AgentInstanceCreateJob(agentType, this);
+            job->configure(this);
             job->start();
         }
     }
@@ -107,30 +109,31 @@ void ResourcesManagementWidget::addClicked()
 void ResourcesManagementWidget::editClicked()
 {
     const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
-    if ( !instanceList.isEmpty() && instanceList.first().isValid() ) {
+    if (!instanceList.isEmpty() && instanceList.first().isValid()) {
         KWindowSystem::allowExternalProcessWindowActivation();
         Akonadi::AgentInstance instance = instanceList.first();
-        instance.configure( this );
+        instance.configure(this);
     }
 }
 
 void ResourcesManagementWidget::removeClicked()
 {
     const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
-    if ( !instanceList.isEmpty() ) {
-        if ( KMessageBox::questionYesNo( this,
-                                         i18np( "Do you really want to delete the selected agent instance?",
-                                                "Do you really want to delete these %1 agent instances?",
-                                                instanceList.size() ),
-                                         i18n( "Multiple Agent Deletion" ),
-                                         KStandardGuiItem::del(),
-                                         KStandardGuiItem::cancel(),
-                                         QString(),
-                                         KMessageBox::Dangerous )
-             == KMessageBox::Yes ) {
-          foreach ( const Akonadi::AgentInstance &agent, instanceList )
-              Akonadi::AgentManager::self()->removeInstance( agent );
-          updateButtonState();
+    if (!instanceList.isEmpty()) {
+        if (KMessageBox::questionYesNo(this,
+                                       i18np("Do you really want to delete the selected agent instance?",
+                                             "Do you really want to delete these %1 agent instances?",
+                                             instanceList.size()),
+                                       i18n("Multiple Agent Deletion"),
+                                       KStandardGuiItem::del(),
+                                       KStandardGuiItem::cancel(),
+                                       QString(),
+                                       KMessageBox::Dangerous)
+                == KMessageBox::Yes) {
+            foreach (const Akonadi::AgentInstance &agent, instanceList) {
+                Akonadi::AgentManager::self()->removeInstance(agent);
+            }
+            updateButtonState();
         }
     }
 }

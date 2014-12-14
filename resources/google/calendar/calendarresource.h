@@ -25,44 +25,44 @@
 
 class CalendarResource : public GoogleResource
 {
-  Q_OBJECT
-  public:
-    explicit CalendarResource( const QString &id );
+    Q_OBJECT
+public:
+    explicit CalendarResource(const QString &id);
     ~CalendarResource();
 
-  public:
+public:
     virtual GoogleSettings *settings() const;
     virtual QList< QUrl > scopes() const;
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     virtual void retrieveCollections();
-    virtual void retrieveItems( const Akonadi::Collection &collection );
+    virtual void retrieveItems(const Akonadi::Collection &collection);
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet< QByteArray >& partIdentifiers );
-    virtual void itemRemoved( const Akonadi::Item &item );
-    virtual void itemMoved( const Akonadi::Item &item,
-                            const Akonadi::Collection &collectionSource,
-                            const Akonadi::Collection &collectionDestination );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers);
+    virtual void itemRemoved(const Akonadi::Item &item);
+    virtual void itemMoved(const Akonadi::Item &item,
+                           const Akonadi::Collection &collectionSource,
+                           const Akonadi::Collection &collectionDestination);
 
-    virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
+    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
+    virtual void collectionChanged(const Akonadi::Collection &collection);
+    virtual void collectionRemoved(const Akonadi::Collection &collection);
 
-    void slotItemsRetrieved( KGAPI2::Job *job );
-    void slotCollectionsRetrieved( KGAPI2::Job *job );
-    void slotCalendarsRetrieved( KGAPI2::Job *job );
-    void slotRemoveTaskFetchJobFinished( KJob *job );
-    void slotDoRemoveTask( KJob *job );
-    void slotModifyTaskReparentFinished( KGAPI2::Job *job );
-    void slotTaskAddedSearchFinished( KJob * );
-    void slotCreateJobFinished( KGAPI2::Job *job );
+    void slotItemsRetrieved(KGAPI2::Job *job);
+    void slotCollectionsRetrieved(KGAPI2::Job *job);
+    void slotCalendarsRetrieved(KGAPI2::Job *job);
+    void slotRemoveTaskFetchJobFinished(KJob *job);
+    void slotDoRemoveTask(KJob *job);
+    void slotModifyTaskReparentFinished(KGAPI2::Job *job);
+    void slotTaskAddedSearchFinished(KJob *);
+    void slotCreateJobFinished(KGAPI2::Job *job);
 
-  protected:
-    virtual int runConfigurationDialog( WId windowId );
+protected:
+    virtual int runConfigurationDialog(WId windowId);
     virtual void updateResourceName();
 
-  private:
+private:
     QMap<QString, Akonadi::Collection> m_collections;
     Akonadi::Collection m_rootCollection;
 

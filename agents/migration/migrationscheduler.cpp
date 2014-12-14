@@ -30,7 +30,7 @@
 
 void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 {
-    switch ( type ) {
+    switch (type) {
     case MigratorBase::Success: {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QLatin1String("dialog-ok-apply")), msg);
         item->setEditable(false);
@@ -66,11 +66,10 @@ void LogModel::message(MigratorBase::MessageType type, const QString &msg)
     }
 }
 
-
 Row::Row(const QSharedPointer<MigratorBase> &migrator, MigratorModel &model)
-:   QObject(),
-    mMigrator(migrator),
-    mModel(model)
+    :   QObject(),
+        mMigrator(migrator),
+        mModel(model)
 {
     connect(migrator.data(), SIGNAL(stateChanged(MigratorBase::MigrationState)), this, SLOT(stateChanged(MigratorBase::MigrationState)));
     connect(migrator.data(), SIGNAL(progress(int)), this, SLOT(progress(int)));
@@ -144,7 +143,7 @@ QModelIndex MigratorModel::index(int row, int column, const QModelIndex &parent)
     if (row >= rowCount(parent) || row < 0) {
         return QModelIndex();
     }
-    return createIndex(row, column, static_cast<void*>(mMigrators.at(row).data()));
+    return createIndex(row, column, static_cast<void *>(mMigrators.at(row).data()));
 }
 
 QModelIndex MigratorModel::parent(const QModelIndex &/*child*/) const
@@ -156,14 +155,14 @@ QVariant MigratorModel::headerData(int section, Qt::Orientation /*orientation*/,
 {
     if (role == Qt::DisplayRole) {
         switch (section) {
-            case Name:
-                return i18nc("Name of the migrator in this row", "Name");
-            case Progress:
-                return i18nc("Progress of the mgirator in %", "Progress");
-            case State:
-                return i18nc("Current status of the migrator (done, in progress, ...)", "Status");
-            default:
-                Q_ASSERT(false);
+        case Name:
+            return i18nc("Name of the migrator in this row", "Name");
+        case Progress:
+            return i18nc("Progress of the mgirator in %", "Progress");
+        case State:
+            return i18nc("Current status of the migrator (done, in progress, ...)", "Status");
+        default:
+            Q_ASSERT(false);
         }
     }
     return QVariant();
@@ -171,32 +170,32 @@ QVariant MigratorModel::headerData(int section, Qt::Orientation /*orientation*/,
 
 QVariant MigratorModel::data(const QModelIndex &index, int role) const
 {
-    const Row *row = static_cast<Row*>(index.internalPointer());
+    const Row *row = static_cast<Row *>(index.internalPointer());
     const QSharedPointer<MigratorBase> migrator(row->mMigrator);
     if (!migrator) {
         qWarning() << "migrator not found";
         return QVariant();
     }
     switch (role) {
-        case Qt::DisplayRole:
-            switch (index.column()) {
-                case Name:
-                    return migrator->displayName();
-                case Progress:
-                    return QStringLiteral("%1 %").arg(migrator->progress());
-                case State:
-                    return migrator->status();
-                default:
-                    Q_ASSERT(false);
-            }
-        case IdentifierRole:
-            return migrator->identifier();
-        case LogfileRole:
-            return migrator->logfile();
-        case Qt::ToolTipRole:
-            return migrator->description();
+    case Qt::DisplayRole:
+        switch (index.column()) {
+        case Name:
+            return migrator->displayName();
+        case Progress:
+            return QStringLiteral("%1 %").arg(migrator->progress());
+        case State:
+            return migrator->status();
         default:
-            break;
+            Q_ASSERT(false);
+        }
+    case IdentifierRole:
+        return migrator->identifier();
+    case LogfileRole:
+        return migrator->logfile();
+    case Qt::ToolTipRole:
+        return migrator->description();
+    default:
+        break;
     }
     return QVariant();
 }
@@ -221,9 +220,9 @@ QList< QSharedPointer<MigratorBase> > MigratorModel::migrators() const
 }
 
 MigrationScheduler::MigrationScheduler(KJobTrackerInterface *jobTracker, QObject *parent)
-    :QObject(parent),
-    mModel(new MigratorModel),
-    mJobTracker(jobTracker)
+    : QObject(parent),
+      mModel(new MigratorModel),
+      mJobTracker(jobTracker)
 {
 }
 
@@ -244,12 +243,12 @@ void MigrationScheduler::addMigrator(const QSharedPointer<MigratorBase> &migrato
     }
 }
 
-QAbstractItemModel& MigrationScheduler::model()
+QAbstractItemModel &MigrationScheduler::model()
 {
     return *mModel;
 }
 
-QStandardItemModel& MigrationScheduler::logModel(const QString &identifier)
+QStandardItemModel &MigrationScheduler::logModel(const QString &identifier)
 {
     Q_ASSERT(mLogModel.contains(identifier));
     return *mLogModel.value(identifier);

@@ -35,30 +35,30 @@ namespace FileStore
  */
 class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
 {
-  friend class AbstractJobSession;
+    friend class AbstractJobSession;
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit StoreCompactJob( AbstractJobSession *session = 0 );
+public:
+    explicit StoreCompactJob(AbstractJobSession *session = 0);
 
     virtual ~StoreCompactJob();
 
-    virtual bool accept( Visitor *visitor );
+    virtual bool accept(Visitor *visitor);
 
     Item::List changedItems() const;
 
     Collection::List changedCollections() const;
 
-  Q_SIGNALS:
-    void collectionsChanged( const Akonadi::Collection::List &collections );
-    void itemsChanged( const Akonadi::Item::List &items );
+Q_SIGNALS:
+    void collectionsChanged(const Akonadi::Collection::List &collections);
+    void itemsChanged(const Akonadi::Item::List &items);
 
-  private:
-    void handleCollectionsChanged( const Collection::List &collections );
-    void handleItemsChanged( const Item::List &items );
+private:
+    void handleCollectionsChanged(const Collection::List &collections);
+    void handleItemsChanged(const Item::List &items);
 
-  private:
+private:
     class Private;
     Private *d;
 };
@@ -68,4 +68,3 @@ class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

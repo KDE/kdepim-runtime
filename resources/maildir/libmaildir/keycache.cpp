@@ -16,73 +16,72 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #include "keycache.h"
 
 #include <QDir>
 
-KeyCache* KeyCache::mSelf = 0;
+KeyCache *KeyCache::mSelf = 0;
 
-void KeyCache::addKeys( const QString& dir )
+void KeyCache::addKeys(const QString &dir)
 {
-  if ( !mNewKeys.contains( dir ) ) {
-    mNewKeys.insert( dir, listNew( dir ) );
-    //qDebug() << "Added new keys for: " << dir;
-  }
+    if (!mNewKeys.contains(dir)) {
+        mNewKeys.insert(dir, listNew(dir));
+        //qDebug() << "Added new keys for: " << dir;
+    }
 
-  if ( !mCurKeys.contains( dir ) ) {
-    mCurKeys.insert( dir, listCurrent( dir ) );
-    //qDebug() << "Added cur keys for: " << dir;
-  }
+    if (!mCurKeys.contains(dir)) {
+        mCurKeys.insert(dir, listCurrent(dir));
+        //qDebug() << "Added cur keys for: " << dir;
+    }
 }
 
-void KeyCache::refreshKeys( const QString& dir )
+void KeyCache::refreshKeys(const QString &dir)
 {
-    mNewKeys.remove( dir );
-    mCurKeys.remove( dir );
-    addKeys( dir );
+    mNewKeys.remove(dir);
+    mCurKeys.remove(dir);
+    addKeys(dir);
 }
 
-void KeyCache::addNewKey( const QString& dir, const QString& key )
+void KeyCache::addNewKey(const QString &dir, const QString &key)
 {
-    mNewKeys[dir].insert( key );
-  // qDebug() << "Added new key for : " << dir << " key: " << key;
+    mNewKeys[dir].insert(key);
+    // qDebug() << "Added new key for : " << dir << " key: " << key;
 }
 
-void KeyCache::addCurKey( const QString& dir, const QString& key )
+void KeyCache::addCurKey(const QString &dir, const QString &key)
 {
-    mCurKeys[dir].insert( key );
-  // qDebug() << "Added cur key for : " << dir << " key:" << key;
+    mCurKeys[dir].insert(key);
+    // qDebug() << "Added cur key for : " << dir << " key:" << key;
 }
 
-void KeyCache::removeKey( const QString& dir, const QString& key )
+void KeyCache::removeKey(const QString &dir, const QString &key)
 {
-  //qDebug() << "Removed new and cur key for: " << dir << " key:" << key;
-    mNewKeys[dir].remove( key );
-    mCurKeys[dir].remove( key );
+    //qDebug() << "Removed new and cur key for: " << dir << " key:" << key;
+    mNewKeys[dir].remove(key);
+    mCurKeys[dir].remove(key);
 }
 
-bool KeyCache::isCurKey( const QString& dir, const QString& key ) const
+bool KeyCache::isCurKey(const QString &dir, const QString &key) const
 {
-    return mCurKeys.value( dir ).contains( key  );
+    return mCurKeys.value(dir).contains(key);
 }
 
-bool KeyCache::isNewKey( const QString& dir, const QString& key ) const
+bool KeyCache::isNewKey(const QString &dir, const QString &key) const
 {
-    return mNewKeys.value( dir ).contains( key );
+    return mNewKeys.value(dir).contains(key);
 }
 
-QSet< QString > KeyCache::listNew( const QString& dir ) const
+QSet< QString > KeyCache::listNew(const QString &dir) const
 {
-    QDir d( dir + QString::fromLatin1( "/new" ) );
+    QDir d(dir + QString::fromLatin1("/new"));
     d.setSorting(QDir::NoSort);
-    return d.entryList( QDir::Files ).toSet();
+    return d.entryList(QDir::Files).toSet();
 }
 
-QSet< QString > KeyCache::listCurrent( const QString& dir ) const
+QSet< QString > KeyCache::listCurrent(const QString &dir) const
 {
-    QDir d( dir + QString::fromLatin1( "/cur"  ) );
+    QDir d(dir + QString::fromLatin1("/cur"));
     d.setSorting(QDir::NoSort);
-    return d.entryList( QDir::Files ).toSet();
+    return d.entryList(QDir::Files).toSet();
 }
 

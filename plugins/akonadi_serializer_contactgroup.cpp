@@ -34,101 +34,104 @@ using namespace Akonadi;
 
 //// ItemSerializerPlugin interface
 
-bool SerializerPluginContactGroup::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
+bool SerializerPluginContactGroup::deserialize(Item &item, const QByteArray &label, QIODevice &data, int version)
 {
-  Q_UNUSED( label );
-  Q_UNUSED( version );
+    Q_UNUSED(label);
+    Q_UNUSED(version);
 
-  KContacts::ContactGroup contactGroup;
+    KContacts::ContactGroup contactGroup;
 
-  if ( !KContacts::ContactGroupTool::convertFromXml( &data, contactGroup ) ) {
-    // TODO: error reporting
-    return false;
-  }
+    if (!KContacts::ContactGroupTool::convertFromXml(&data, contactGroup)) {
+        // TODO: error reporting
+        return false;
+    }
 
-  item.setPayload<KContacts::ContactGroup>( contactGroup );
+    item.setPayload<KContacts::ContactGroup>(contactGroup);
 
-  return true;
+    return true;
 }
 
-void SerializerPluginContactGroup::serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version )
+void SerializerPluginContactGroup::serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version)
 {
-  Q_UNUSED( label );
-  Q_UNUSED( version );
+    Q_UNUSED(label);
+    Q_UNUSED(version);
 
-  if ( !item.hasPayload<KContacts::ContactGroup>() )
-    return;
+    if (!item.hasPayload<KContacts::ContactGroup>()) {
+        return;
+    }
 
-  KContacts::ContactGroupTool::convertToXml( item.payload<KContacts::ContactGroup>(), &data );
+    KContacts::ContactGroupTool::convertToXml(item.payload<KContacts::ContactGroup>(), &data);
 }
 
 //// DifferencesAlgorithmInterface interface
 
-static bool compareString( const QString &left, const QString &right )
+static bool compareString(const QString &left, const QString &right)
 {
-  if ( left.isEmpty() && right.isEmpty() )
-    return true;
-  else
-    return left == right;
+    if (left.isEmpty() && right.isEmpty()) {
+        return true;
+    } else {
+        return left == right;
+    }
 }
 
-static QString toString( const KContacts::Addressee &contact )
+static QString toString(const KContacts::Addressee &contact)
 {
-  return contact.fullEmail();
+    return contact.fullEmail();
 }
 
 template <class T>
-static void compareList( AbstractDifferencesReporter *reporter, const QString &id, const QList<T> &left, const QList<T> &right )
+static void compareList(AbstractDifferencesReporter *reporter, const QString &id, const QList<T> &left, const QList<T> &right)
 {
-  for ( int i = 0; i < left.count(); ++i ) {
-    if ( !right.contains( left[ i ] )  )
-      reporter->addProperty( AbstractDifferencesReporter::AdditionalLeftMode, id, toString( left[ i ] ), QString() );
-  }
+    for (int i = 0; i < left.count(); ++i) {
+        if (!right.contains(left[ i ])) {
+            reporter->addProperty(AbstractDifferencesReporter::AdditionalLeftMode, id, toString(left[ i ]), QString());
+        }
+    }
 
-  for ( int i = 0; i < right.count(); ++i ) {
-    if ( !left.contains( right[ i ] )  )
-      reporter->addProperty( AbstractDifferencesReporter::AdditionalRightMode, id, QString(), toString( right[ i ] ) );
-  }
+    for (int i = 0; i < right.count(); ++i) {
+        if (!left.contains(right[ i ])) {
+            reporter->addProperty(AbstractDifferencesReporter::AdditionalRightMode, id, QString(), toString(right[ i ]));
+        }
+    }
 }
 
-void SerializerPluginContactGroup::compare( Akonadi::AbstractDifferencesReporter *reporter,
-                                            const Akonadi::Item &leftItem,
-                                            const Akonadi::Item &rightItem )
+void SerializerPluginContactGroup::compare(Akonadi::AbstractDifferencesReporter *reporter,
+        const Akonadi::Item &leftItem,
+        const Akonadi::Item &rightItem)
 {
-  Q_ASSERT( reporter );
-  Q_ASSERT( leftItem.hasPayload<KContacts::ContactGroup>() );
-  Q_ASSERT( rightItem.hasPayload<KContacts::ContactGroup>() );
+    Q_ASSERT(reporter);
+    Q_ASSERT(leftItem.hasPayload<KContacts::ContactGroup>());
+    Q_ASSERT(rightItem.hasPayload<KContacts::ContactGroup>());
 
-  reporter->setLeftPropertyValueTitle( i18n( "Changed Contact Group" ) );
-  reporter->setRightPropertyValueTitle( i18n( "Conflicting Contact Group" ) );
+    reporter->setLeftPropertyValueTitle(i18n("Changed Contact Group"));
+    reporter->setRightPropertyValueTitle(i18n("Conflicting Contact Group"));
 
-  const KContacts::ContactGroup leftContactGroup = leftItem.payload<KContacts::ContactGroup>();
-  const KContacts::ContactGroup rightContactGroup = rightItem.payload<KContacts::ContactGroup>();
+    const KContacts::ContactGroup leftContactGroup = leftItem.payload<KContacts::ContactGroup>();
+    const KContacts::ContactGroup rightContactGroup = rightItem.payload<KContacts::ContactGroup>();
 
-  if ( !compareString( leftContactGroup.name(), rightContactGroup.name() ) )
-    reporter->addProperty( AbstractDifferencesReporter::ConflictMode, i18n( "Name" ),
-                           leftContactGroup.name(), rightContactGroup.name() );
+    if (!compareString(leftContactGroup.name(), rightContactGroup.name()))
+        reporter->addProperty(AbstractDifferencesReporter::ConflictMode, i18n("Name"),
+                              leftContactGroup.name(), rightContactGroup.name());
 
-  // using job->exec() is ok here, not a hot path
-  Akonadi::ContactGroupExpandJob *leftJob = new Akonadi::ContactGroupExpandJob( leftContactGroup );
-  leftJob->exec();
+    // using job->exec() is ok here, not a hot path
+    Akonadi::ContactGroupExpandJob *leftJob = new Akonadi::ContactGroupExpandJob(leftContactGroup);
+    leftJob->exec();
 
-  Akonadi::ContactGroupExpandJob *rightJob = new Akonadi::ContactGroupExpandJob( rightContactGroup );
-  rightJob->exec();
+    Akonadi::ContactGroupExpandJob *rightJob = new Akonadi::ContactGroupExpandJob(rightContactGroup);
+    rightJob->exec();
 
-  compareList( reporter, i18n( "Member" ), leftJob->contacts(), rightJob->contacts() );
+    compareList(reporter, i18n("Member"), leftJob->contacts(), rightJob->contacts());
 }
 
 //// GidExtractorInterface
 
-QString SerializerPluginContactGroup::extractGid( const Item &item ) const
+QString SerializerPluginContactGroup::extractGid(const Item &item) const
 {
-  if ( !item.hasPayload<KContacts::ContactGroup>() ) {
-    return QString();
-  }
-  return item.payload<KContacts::ContactGroup>().id();
+    if (!item.hasPayload<KContacts::ContactGroup>()) {
+        return QString();
+    }
+    return item.payload<KContacts::ContactGroup>().id();
 }
 
 //Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

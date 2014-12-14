@@ -22,7 +22,8 @@
 
 #include <KJob>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Item;
 }
 
@@ -35,16 +36,16 @@ class Item;
  */
 class SendJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new send job.
      *
      * @param item The item to send.
      * @param parent The parent object.
      */
-    explicit SendJob( const Akonadi::Item &item, QObject *parent = Q_NULLPTR );
+    explicit SendJob(const Akonadi::Item &item, QObject *parent = Q_NULLPTR);
 
     /**
      * Destroys the send job.
@@ -71,21 +72,20 @@ class SendJob : public KJob
      */
     void abort();
 
-  private:
+private:
     //@cond PRIVATE
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void doTransport() )
-    Q_PRIVATE_SLOT( d, void transportPercent( KJob*, unsigned long ) )
-    Q_PRIVATE_SLOT( d, void transportResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void resourceProgress( const Akonadi::AgentInstance& ) )
-    Q_PRIVATE_SLOT( d, void resourceResult( qlonglong, int, const QString& ) )
-    Q_PRIVATE_SLOT( d, void postJobResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void doEmitResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void slotSentMailCollectionFetched( KJob* ) )
+    Q_PRIVATE_SLOT(d, void doTransport())
+    Q_PRIVATE_SLOT(d, void transportPercent(KJob *, unsigned long))
+    Q_PRIVATE_SLOT(d, void transportResult(KJob *))
+    Q_PRIVATE_SLOT(d, void resourceProgress(const Akonadi::AgentInstance &))
+    Q_PRIVATE_SLOT(d, void resourceResult(qlonglong, int, const QString &))
+    Q_PRIVATE_SLOT(d, void postJobResult(KJob *))
+    Q_PRIVATE_SLOT(d, void doEmitResult(KJob *))
+    Q_PRIVATE_SLOT(d, void slotSentMailCollectionFetched(KJob *))
     //@endcond
 };
-
 
 #endif

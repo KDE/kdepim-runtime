@@ -26,30 +26,30 @@
 
 class CollectionTreeBuilder : public Akonadi::Job
 {
-  Q_OBJECT
-  public:
-    explicit CollectionTreeBuilder( KolabProxyResource *parent = 0 );
+    Q_OBJECT
+public:
+    explicit CollectionTreeBuilder(KolabProxyResource *parent = 0);
 
     Akonadi::Collection::List allCollections() const;
 
-  protected:
+protected:
     virtual void doStart();
 
-  private:
+private:
     inline KolabProxyResource *resource() const
     {
-      return m_resource;
+        return m_resource;
     }
 
-    static Akonadi::Collection::List treeToList( const QHash<Akonadi::Collection::Id,
-                                                 Akonadi::Collection::List> &tree,
-                                                 const Akonadi::Collection &current );
+    static Akonadi::Collection::List treeToList(const QHash<Akonadi::Collection::Id,
+            Akonadi::Collection::List> &tree,
+            const Akonadi::Collection &current);
 
-  private slots:
-    void collectionsReceived( const Akonadi::Collection::List &collections );
-    void collectionFetchResult( KJob *job );
+private slots:
+    void collectionsReceived(const Akonadi::Collection::List &collections);
+    void collectionFetchResult(KJob *job);
 
-  private:
+private:
     KolabProxyResource *m_resource;
     Akonadi::Collection::List m_resultCollections;
     Akonadi::Collection::List m_kolabCollections;

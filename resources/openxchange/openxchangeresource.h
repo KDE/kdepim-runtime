@@ -24,60 +24,59 @@
 
 class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit OpenXchangeResource( const QString &id );
+public:
+    explicit OpenXchangeResource(const QString &id);
     ~OpenXchangeResource();
 
     virtual void cleanup();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
+public Q_SLOTS:
+    virtual void configure(WId windowId);
     virtual void aboutToQuit();
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &collection );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems(const Akonadi::Collection &collection);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-  protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
-    virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                            const Akonadi::Collection &collectionDestination );
+protected:
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void itemRemoved(const Akonadi::Item &item);
+    virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                           const Akonadi::Collection &collectionDestination);
 
-
-    virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    virtual void collectionChanged( const Akonadi::Collection &collection );
+    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
+    virtual void collectionChanged(const Akonadi::Collection &collection);
     // do not hide the other variant, use implementation from base class
     // which just forwards to the one above
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
-    virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
-                                  const Akonadi::Collection &collectionDestination );
+    virtual void collectionRemoved(const Akonadi::Collection &collection);
+    virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
+                                 const Akonadi::Collection &collectionDestination);
 
-  private Q_SLOTS:
-    void onUpdateUsersJobFinished( KJob* );
-    void onFoldersRequestJobFinished( KJob* );
-    void onFoldersRequestDeltaJobFinished( KJob* );
-    void onFolderCreateJobFinished( KJob* );
-    void onFolderModifyJobFinished( KJob* );
-    void onFolderMoveJobFinished( KJob* );
-    void onFolderDeleteJobFinished( KJob* );
+private Q_SLOTS:
+    void onUpdateUsersJobFinished(KJob *);
+    void onFoldersRequestJobFinished(KJob *);
+    void onFoldersRequestDeltaJobFinished(KJob *);
+    void onFolderCreateJobFinished(KJob *);
+    void onFolderModifyJobFinished(KJob *);
+    void onFolderMoveJobFinished(KJob *);
+    void onFolderDeleteJobFinished(KJob *);
 
-    void onObjectsRequestJobFinished( KJob* );
-    void onObjectsRequestDeltaJobFinished( KJob* );
-    void onObjectRequestJobFinished( KJob* );
-    void onObjectCreateJobFinished( KJob* );
-    void onObjectModifyJobFinished( KJob* );
-    void onObjectMoveJobFinished( KJob* );
-    void onObjectDeleteJobFinished( KJob* );
+    void onObjectsRequestJobFinished(KJob *);
+    void onObjectsRequestDeltaJobFinished(KJob *);
+    void onObjectRequestJobFinished(KJob *);
+    void onObjectCreateJobFinished(KJob *);
+    void onObjectModifyJobFinished(KJob *);
+    void onObjectMoveJobFinished(KJob *);
+    void onObjectDeleteJobFinished(KJob *);
 
-    void onFetchResourceCollectionsFinished( KJob* );
+    void onFetchResourceCollectionsFinished(KJob *);
 
-  private:
+private:
     void syncCollectionsRemoteIdCache();
     QMap<qlonglong, Akonadi::Collection> mCollectionsMap;
 

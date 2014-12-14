@@ -27,7 +27,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTimer>
 
-namespace KIO {
+namespace KIO
+{
 class FileCopyJob;
 class Job;
 }
@@ -41,18 +42,18 @@ namespace Akonadi
  */
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public ResourceBase, public AgentBase::Observer
 {
-  Q_OBJECT
-  public:
-    explicit SingleFileResourceBase( const QString &id );
+    Q_OBJECT
+public:
+    explicit SingleFileResourceBase(const QString &id);
 
     /**
      * Set the mimetypes supported by this resource and an optional icon for the collection.
      */
-    void setSupportedMimetypes( const QStringList &mimeTypes, const QString &icon = QString() );
+    void setSupportedMimetypes(const QStringList &mimeTypes, const QString &icon = QString());
 
-    void collectionChanged( const Akonadi::Collection &collection );
+    void collectionChanged(const Akonadi::Collection &collection);
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void reloadFile();
 
     /*
@@ -61,28 +62,27 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
      * @p taskContext specifies whether the method is being
      * called from within a task or not.
      */
-    virtual void readFile( bool taskContext = false ) = 0;
+    virtual void readFile(bool taskContext = false) = 0;
     /*
      * Writes the current state out to a file. This can happen
      * from direct callers, or as part of a scheduled task.
      * @p taskContext specifies whether the method is being
      * called from within a task or not.
      */
-    virtual void writeFile( bool taskContext = false ) = 0;
+    virtual void writeFile(bool taskContext = false) = 0;
 
-     /*
-      * Same method as above, but uses a QVariant so it can
-      * be called from Akonadi::ResourceScheduler.
-      */
-    virtual void writeFile( const QVariant &taskContext ) = 0;
+    /*
+     * Same method as above, but uses a QVariant so it can
+     * be called from Akonadi::ResourceScheduler.
+     */
+    virtual void writeFile(const QVariant &taskContext) = 0;
 
-  protected:
+protected:
     /**
      * Returns a pointer to the KConfig object which is used to store runtime
      * information of the resource.
      */
     KSharedConfig::Ptr runtimeConfig() const;
-
 
     /**
      * Handles everything needed when the hash of a file has changed between the
@@ -92,21 +92,21 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
      * and calls synchronize.
      * Returns true on succes, false otherwise.
      */
-    bool readLocalFile( const QString &fileName );
+    bool readLocalFile(const QString &fileName);
 
     /**
      * Reimplement to read your data from the given file.
      * The file is always local, loading from the network is done
      * automatically if needed.
      */
-    virtual bool readFromFile( const QString &fileName ) = 0;
+    virtual bool readFromFile(const QString &fileName) = 0;
 
     /**
      * Reimplement to write your data to the given file.
      * The file is always local, storing back to the network url is done
      * automatically when needed.
      */
-    virtual bool writeToFile( const QString &fileName ) = 0;
+    virtual bool writeToFile(const QString &fileName) = 0;
 
     /**
      * It is not always needed to parse the file when a resources is started.
@@ -121,7 +121,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
      *
      * @p fileName This will always be a path to a local file.
      */
-    virtual void setLocalFileName( const QString &fileName );
+    virtual void setLocalFileName(const QString &fileName);
 
     /**
      * Generates the full path for the cache file in the case that a remote file
@@ -133,7 +133,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
      * Calculates an MD5 hash for given file. If the file does not exists
      * or the path is empty, this will return an empty QByteArray.
      */
-    QByteArray calculateHash( const QString &fileName ) const;
+    QByteArray calculateHash(const QString &fileName) const;
 
     /**
      * This method is called when the hash of the file has changed between the
@@ -154,7 +154,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
     /**
      * Stores the given hash into a cache file.
      */
-    void saveHash( const QByteArray &hash ) const;
+    void saveHash(const QByteArray &hash) const;
 
     /**
      * Returns whether the resource can be written to.
@@ -166,7 +166,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
      */
     virtual Collection rootCollection() const = 0;
 
-  protected:
+protected:
     QUrl mCurrentUrl;
     QStringList mSupportedMimetypes;
     QString mCollectionIcon;
@@ -174,14 +174,14 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceBase : public Resource
     KIO::FileCopyJob *mUploadJob;
     QByteArray mCurrentHash;
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void scheduleWrite(); /// Called when changes are added to the ChangeRecorder.
 
-  private Q_SLOTS:
-    void handleProgress( KJob *, unsigned long );
-    void fileChanged( const QString &fileName );
-    void slotDownloadJobResult( KJob * );
-    void slotUploadJobResult( KJob * );
+private Q_SLOTS:
+    void handleProgress(KJob *, unsigned long);
+    void fileChanged(const QString &fileName);
+    void slotDownloadJobResult(KJob *);
+    void slotUploadJobResult(KJob *);
 };
 
 }

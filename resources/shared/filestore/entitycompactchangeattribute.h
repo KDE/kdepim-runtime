@@ -33,29 +33,29 @@ namespace FileStore
 
 class AKONADI_FILESTORE_EXPORT EntityCompactChangeAttribute : public Attribute
 {
-  public:
+public:
     EntityCompactChangeAttribute();
 
     ~EntityCompactChangeAttribute();
 
-    void setRemoteId( const QString &remoteId );
+    void setRemoteId(const QString &remoteId);
 
     QString remoteId() const;
 
-    void setRemoteRevision( const QString &remoteRev );
+    void setRemoteRevision(const QString &remoteRev);
 
     QString remoteRevision() const;
 
-  public: /* reimpl */
+public: /* reimpl */
     QByteArray type() const;
 
-    EntityCompactChangeAttribute* clone() const;
+    EntityCompactChangeAttribute *clone() const;
 
     QByteArray serialized() const;
 
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
 
-  private:
+private:
     //@cond PRIVATE
     class Private;
     Private *const d;
@@ -68,4 +68,3 @@ class AKONADI_FILESTORE_EXPORT EntityCompactChangeAttribute : public Attribute
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

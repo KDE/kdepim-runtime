@@ -47,286 +47,298 @@ typedef boost::shared_ptr<KMime::Message> MessagePtr;
 
 using namespace Akonadi;
 
-NntpResource::NntpResource(const QString & id)
-  : ResourceBase( id )
+NntpResource::NntpResource(const QString &id)
+    : ResourceBase(id)
 {
-  AttributeFactory::registerAttribute<NntpCollectionAttribute>();
-  changeRecorder()->fetchCollection( true );
-  new SettingsAdaptor( Settings::self() );
-  QDBusConnection::sessionBus().registerObject( QLatin1String( "/Settings" ),
-                              Settings::self(), QDBusConnection::ExportAdaptors );
+    AttributeFactory::registerAttribute<NntpCollectionAttribute>();
+    changeRecorder()->fetchCollection(true);
+    new SettingsAdaptor(Settings::self());
+    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
+            Settings::self(), QDBusConnection::ExportAdaptors);
 }
 
 NntpResource::~ NntpResource()
 {
 }
 
-bool NntpResource::retrieveItem(const Akonadi::Item& item, const QSet<QByteArray> &parts)
+bool NntpResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-  Q_UNUSED( parts );
-  KIO::Job* job = KIO::storedGet( QUrl( item.remoteId() ), KIO::NoReload, KIO::HideProgressInfo );
-  setupKioJob( job );
-  connect(job, &KIO::Job::result, this, &NntpResource::fetchArticleResult);
-  return true;
+    Q_UNUSED(parts);
+    KIO::Job *job = KIO::storedGet(QUrl(item.remoteId()), KIO::NoReload, KIO::HideProgressInfo);
+    setupKioJob(job);
+    connect(job, &KIO::Job::result, this, &NntpResource::fetchArticleResult);
+    return true;
 }
 
 void NntpResource::retrieveCollections()
 {
-  remoteCollections.clear();
-  Collection rootCollection;
-  rootCollection.setParentCollection( Collection::root() );
-  rootCollection.setRemoteId( baseUrl().url() );
-  rootCollection.setName( Settings::self()->name() );
-  CachePolicy policy;
-  policy.setInheritFromParent( false );
-  policy.setSyncOnDemand( true );
-  policy.setLocalParts( QStringList( MessagePart::Envelope ) );
-  rootCollection.setCachePolicy( policy );
-  QStringList contentTypes;
-  contentTypes << Collection::mimeType();
-  rootCollection.setContentMimeTypes( contentTypes );
-  remoteCollections << rootCollection;
+    remoteCollections.clear();
+    Collection rootCollection;
+    rootCollection.setParentCollection(Collection::root());
+    rootCollection.setRemoteId(baseUrl().url());
+    rootCollection.setName(Settings::self()->name());
+    CachePolicy policy;
+    policy.setInheritFromParent(false);
+    policy.setSyncOnDemand(true);
+    policy.setLocalParts(QStringList(MessagePart::Envelope));
+    rootCollection.setCachePolicy(policy);
+    QStringList contentTypes;
+    contentTypes << Collection::mimeType();
+    rootCollection.setContentMimeTypes(contentTypes);
+    remoteCollections << rootCollection;
 
-  QUrl url = baseUrl();
-  QDate lastList = Settings::self()->lastGroupList().date();
-  if ( lastList.isValid() ) {
-    mIncremental = true;
-    url.addQueryItem( "since",  QString( "%1%2%3 000000" )
-        .arg( lastList.year() % 100, 2, 10, QChar( '0' ) )
-        .arg( lastList.month(), 2, 10, QChar( '0' ) )
-        .arg( lastList.day(), 2, 10, QChar( '0' ) ) );
-  } else {
-    mIncremental = false;
-  }
-
-  KIO::ListJob* job = KIO::listDir( url, KIO::HideProgressInfo, true );
-  setupKioJob( job );
-  connect(job, &KIO::ListJob::entries, this, &NntpResource::listGroups);
-  connect(job, &KIO::ListJob::result, this, &NntpResource::listGroupsResult);
-}
-
-void NntpResource::retrieveItems( const Akonadi::Collection & col )
-{
-  if ( !(col.contentMimeTypes().count() == 1 && col.contentMimeTypes().first() == "message/news" ) ) {
-    // not a newsgroup, skip it
-    itemsRetrievalDone();
-    return;
-  }
-
-  QUrl url = baseUrl();
-  url.setPath( col.remoteId() );
-
-  NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>();
-  if ( attr && attr->lastArticle() > 0 )
-    url.addQueryItem( "first", QString::number( attr->lastArticle() + 1 ) );
-  else
-    url.addQueryItem( "max", QString::number( Settings::self()->maxDownload() ) );
-
-  KIO::ListJob* job = KIO::listDir( url, KIO::HideProgressInfo, true );
-  setupKioJob( job );
-  connect(job, &KIO::ListJob::entries, this, &NntpResource::listGroup);
-  connect(job, &KIO::ListJob::result, this, &NntpResource::listGroupResult);
-}
-
-void NntpResource::listGroups(KIO::Job * job, const KIO::UDSEntryList & list)
-{
-  Q_UNUSED( job );
-  QString name;
-  QStringList contentTypes;
-  contentTypes << "message/news";
-  for( KIO::UDSEntryList::ConstIterator it = list.constBegin(); it != list.constEnd(); ++it ) {
-    name = (*it).stringValue( KIO::UDSEntry::UDS_NAME );
-    if ( name.isEmpty() )
-      continue;
-
-    Collection c;
-    c.setRemoteId( name );
-    c.setContentMimeTypes( contentTypes );
-
-    if ( Settings::self()->flatHierarchy() ) {
-      c.setName( name );
-      c.parentCollection().setRemoteId( baseUrl().url() );
-    } else {
-      const QStringList path = name.split( '.' );
-      Q_ASSERT( !path.isEmpty() );
-      c.setName( path.last() );
-      c.parentCollection().setRemoteId( findParent( path ) );
-    }
-
-    remoteCollections << c;
-  }
-}
-
-void NntpResource::listGroupsResult(KJob * job)
-{
-  if ( job->error() ) {
-    emit error( job->errorString() );
-    return;
-  } else {
-    Settings::self()->setLastGroupList( QDateTime::currentDateTime() );
-  }
-  if ( mIncremental )
-    collectionsRetrievedIncremental( remoteCollections, Collection::List() );
-  else
-    collectionsRetrieved( remoteCollections );
-}
-
-void NntpResource::listGroup(KIO::Job * job, const KIO::UDSEntryList & list)
-{
-  Q_UNUSED( job );
-  foreach ( const KIO::UDSEntry &entry, list ) {
     QUrl url = baseUrl();
-    url.setPath( currentCollection().remoteId() + QLatin1Char('/') + entry.stringValue( KIO::UDSEntry::UDS_NAME ) );
-    Item item;
-    item.setRemoteId( url.url() );
-    item.setMimeType( "message/news" );
-
-    KMime::NewsArticle *art = new KMime::NewsArticle();
-    foreach ( uint field, entry.listFields() ) {
-      if ( field >= KIO::UDSEntry::UDS_EXTRA && field <= KIO::UDSEntry::UDS_EXTRA_END ) {
-        const QString value = entry.stringValue( field );
-        int pos = value.indexOf( ':' );
-        if ( pos >= value.length() - 1 )
-          continue; // value is empty
-        const QString hdrName = value.left( pos );
-        const QString hdrValue = value.right( value.length() - ( hdrName.length() + 2 ) );
-
-        if ( hdrName == "Subject" ) {
-          art->subject()->from7BitString( hdrValue.toLatin1() );
-          if ( art->subject()->isEmpty() )
-            art->subject()->fromUnicodeString( i18n( "no subject" ), art->defaultCharset() );
-        } else if ( hdrName == "From" ) {
-          art->from()->from7BitString( hdrValue.toLatin1() );
-        } else if ( hdrName == "Date" ) {
-          art->date()->from7BitString( hdrValue.toLatin1() );
-        } else if ( hdrName == "Message-ID" ) {
-          art->messageID()->from7BitString( hdrValue.simplified().toLatin1() );
-        } else if ( hdrName == "References" ) {
-          if ( !hdrValue.isEmpty() )
-            art->references()->from7BitString( hdrValue.toLatin1() );
-        } else if ( hdrName == "Lines" ) {
-          art->lines()->setNumberOfLines( hdrValue.toInt() );
-        } else {
-          // optional extra headers
-          art->setHeader( new KMime::Headers::Generic( hdrName.toLatin1(), art, hdrValue.toLatin1() ) );
-        }
-      }
+    QDate lastList = Settings::self()->lastGroupList().date();
+    if (lastList.isValid()) {
+        mIncremental = true;
+        url.addQueryItem("since",  QString("%1%2%3 000000")
+                         .arg(lastList.year() % 100, 2, 10, QChar('0'))
+                         .arg(lastList.month(), 2, 10, QChar('0'))
+                         .arg(lastList.day(), 2, 10, QChar('0')));
+    } else {
+        mIncremental = false;
     }
 
-    item.setPayload( MessagePtr( art ) );
-    ItemCreateJob *append = new ItemCreateJob( item, currentCollection() );
-    // TODO: check error
-    Q_UNUSED( append )
-  }
+    KIO::ListJob *job = KIO::listDir(url, KIO::HideProgressInfo, true);
+    setupKioJob(job);
+    connect(job, &KIO::ListJob::entries, this, &NntpResource::listGroups);
+    connect(job, &KIO::ListJob::result, this, &NntpResource::listGroupsResult);
 }
 
-void NntpResource::listGroupResult(KJob * job)
+void NntpResource::retrieveItems(const Akonadi::Collection &col)
 {
-  if ( job->error() ) {
-    emit error( job->errorString() );
-  } else {
-    // store last serial number
-    Collection col = currentCollection();
-    NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>( Collection::AddIfMissing );
-    KIO::Job *j = static_cast<KIO::Job*>( job );
-    if ( j->metaData().contains( "LastSerialNumber" ) )
-      attr->setLastArticle( j->metaData().value( "LastSerialNumber" ).toInt() );
-    CollectionModifyJob *modify = new CollectionModifyJob( col );
-    // TODO: check result signal
-    Q_UNUSED( modify )
-  }
+    if (!(col.contentMimeTypes().count() == 1 && col.contentMimeTypes().first() == "message/news")) {
+        // not a newsgroup, skip it
+        itemsRetrievalDone();
+        return;
+    }
 
-  itemsRetrievalDone();
+    QUrl url = baseUrl();
+    url.setPath(col.remoteId());
+
+    NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>();
+    if (attr && attr->lastArticle() > 0) {
+        url.addQueryItem("first", QString::number(attr->lastArticle() + 1));
+    } else {
+        url.addQueryItem("max", QString::number(Settings::self()->maxDownload()));
+    }
+
+    KIO::ListJob *job = KIO::listDir(url, KIO::HideProgressInfo, true);
+    setupKioJob(job);
+    connect(job, &KIO::ListJob::entries, this, &NntpResource::listGroup);
+    connect(job, &KIO::ListJob::result, this, &NntpResource::listGroupResult);
+}
+
+void NntpResource::listGroups(KIO::Job *job, const KIO::UDSEntryList &list)
+{
+    Q_UNUSED(job);
+    QString name;
+    QStringList contentTypes;
+    contentTypes << "message/news";
+    for (KIO::UDSEntryList::ConstIterator it = list.constBegin(); it != list.constEnd(); ++it) {
+        name = (*it).stringValue(KIO::UDSEntry::UDS_NAME);
+        if (name.isEmpty()) {
+            continue;
+        }
+
+        Collection c;
+        c.setRemoteId(name);
+        c.setContentMimeTypes(contentTypes);
+
+        if (Settings::self()->flatHierarchy()) {
+            c.setName(name);
+            c.parentCollection().setRemoteId(baseUrl().url());
+        } else {
+            const QStringList path = name.split('.');
+            Q_ASSERT(!path.isEmpty());
+            c.setName(path.last());
+            c.parentCollection().setRemoteId(findParent(path));
+        }
+
+        remoteCollections << c;
+    }
+}
+
+void NntpResource::listGroupsResult(KJob *job)
+{
+    if (job->error()) {
+        emit error(job->errorString());
+        return;
+    } else {
+        Settings::self()->setLastGroupList(QDateTime::currentDateTime());
+    }
+    if (mIncremental) {
+        collectionsRetrievedIncremental(remoteCollections, Collection::List());
+    } else {
+        collectionsRetrieved(remoteCollections);
+    }
+}
+
+void NntpResource::listGroup(KIO::Job *job, const KIO::UDSEntryList &list)
+{
+    Q_UNUSED(job);
+    foreach (const KIO::UDSEntry &entry, list) {
+        QUrl url = baseUrl();
+        url.setPath(currentCollection().remoteId() + QLatin1Char('/') + entry.stringValue(KIO::UDSEntry::UDS_NAME));
+        Item item;
+        item.setRemoteId(url.url());
+        item.setMimeType("message/news");
+
+        KMime::NewsArticle *art = new KMime::NewsArticle();
+        foreach (uint field, entry.listFields()) {
+            if (field >= KIO::UDSEntry::UDS_EXTRA && field <= KIO::UDSEntry::UDS_EXTRA_END) {
+                const QString value = entry.stringValue(field);
+                int pos = value.indexOf(':');
+                if (pos >= value.length() - 1) {
+                    continue;    // value is empty
+                }
+                const QString hdrName = value.left(pos);
+                const QString hdrValue = value.right(value.length() - (hdrName.length() + 2));
+
+                if (hdrName == "Subject") {
+                    art->subject()->from7BitString(hdrValue.toLatin1());
+                    if (art->subject()->isEmpty()) {
+                        art->subject()->fromUnicodeString(i18n("no subject"), art->defaultCharset());
+                    }
+                } else if (hdrName == "From") {
+                    art->from()->from7BitString(hdrValue.toLatin1());
+                } else if (hdrName == "Date") {
+                    art->date()->from7BitString(hdrValue.toLatin1());
+                } else if (hdrName == "Message-ID") {
+                    art->messageID()->from7BitString(hdrValue.simplified().toLatin1());
+                } else if (hdrName == "References") {
+                    if (!hdrValue.isEmpty()) {
+                        art->references()->from7BitString(hdrValue.toLatin1());
+                    }
+                } else if (hdrName == "Lines") {
+                    art->lines()->setNumberOfLines(hdrValue.toInt());
+                } else {
+                    // optional extra headers
+                    art->setHeader(new KMime::Headers::Generic(hdrName.toLatin1(), art, hdrValue.toLatin1()));
+                }
+            }
+        }
+
+        item.setPayload(MessagePtr(art));
+        ItemCreateJob *append = new ItemCreateJob(item, currentCollection());
+        // TODO: check error
+        Q_UNUSED(append)
+    }
+}
+
+void NntpResource::listGroupResult(KJob *job)
+{
+    if (job->error()) {
+        emit error(job->errorString());
+    } else {
+        // store last serial number
+        Collection col = currentCollection();
+        NntpCollectionAttribute *attr = col.attribute<NntpCollectionAttribute>(Collection::AddIfMissing);
+        KIO::Job *j = static_cast<KIO::Job *>(job);
+        if (j->metaData().contains("LastSerialNumber")) {
+            attr->setLastArticle(j->metaData().value("LastSerialNumber").toInt());
+        }
+        CollectionModifyJob *modify = new CollectionModifyJob(col);
+        // TODO: check result signal
+        Q_UNUSED(modify)
+    }
+
+    itemsRetrievalDone();
 }
 
 QUrl NntpResource::baseUrl() const
 {
-  QUrl url;
- if ( Settings::self()->encryption() == Settings::SSL )
-    url.setScheme( "nntps" );
-  else
-    url.setScheme( "nntp" );
-  url.setHost( Settings::self()->server() );
-  url.setPort( Settings::self()->port() );
-  if ( Settings::self()->requiresAuthentication() ) {
-    url.setUserName( Settings::self()->userName() );
-    url.setPassword( Settings::self()->password() );
-  }
-  return url;
+    QUrl url;
+    if (Settings::self()->encryption() == Settings::SSL) {
+        url.setScheme("nntps");
+    } else {
+        url.setScheme("nntp");
+    }
+    url.setHost(Settings::self()->server());
+    url.setPort(Settings::self()->port());
+    if (Settings::self()->requiresAuthentication()) {
+        url.setUserName(Settings::self()->userName());
+        url.setPassword(Settings::self()->password());
+    }
+    return url;
 }
 
-void NntpResource::fetchArticleResult(KJob * job)
+void NntpResource::fetchArticleResult(KJob *job)
 {
-  if ( job->error() ) {
-    emit error( job->errorString() );
-    return;
-  }
-  KIO::StoredTransferJob *j = static_cast<KIO::StoredTransferJob*>( job );
-  KMime::Message *msg = new KMime::Message();
-  msg->setContent( KMime::CRLFtoLF( j->data() ) );
-  msg->parse();
-  Item item = currentItem();
-  item.setMimeType( "message/news" );
-  item.setPayload( MessagePtr( msg ) );
-  itemRetrieved( item );
+    if (job->error()) {
+        emit error(job->errorString());
+        return;
+    }
+    KIO::StoredTransferJob *j = static_cast<KIO::StoredTransferJob *>(job);
+    KMime::Message *msg = new KMime::Message();
+    msg->setContent(KMime::CRLFtoLF(j->data()));
+    msg->parse();
+    Item item = currentItem();
+    item.setMimeType("message/news");
+    item.setPayload(MessagePtr(msg));
+    itemRetrieved(item);
 }
 
-void NntpResource::configure( WId windowId )
+void NntpResource::configure(WId windowId)
 {
-  ConfigDialog dlg;
-  if ( windowId ) {
-    KWindowSystem::setMainWindow( &dlg, windowId );
-  }
-  dlg.setWindowIcon( QIcon::fromTheme( "message-news" ) );
-  if ( dlg.exec() ) {
-    emit configurationDialogAccepted();
-  } else {
-    emit configurationDialogRejected();
-  }
+    ConfigDialog dlg;
+    if (windowId) {
+        KWindowSystem::setMainWindow(&dlg, windowId);
+    }
+    dlg.setWindowIcon(QIcon::fromTheme("message-news"));
+    if (dlg.exec()) {
+        emit configurationDialogAccepted();
+    } else {
+        emit configurationDialogRejected();
+    }
 
-  if ( !Settings::self()->name().isEmpty() )
-    setName( Settings::self()->name() );
+    if (!Settings::self()->name().isEmpty()) {
+        setName(Settings::self()->name());
+    }
 }
 
-void NntpResource::setupKioJob(KIO::Job * job) const
+void NntpResource::setupKioJob(KIO::Job *job) const
 {
-  Q_ASSERT( job );
-  if ( Settings::self()->encryption() == Settings::TLS )
-    job->addMetaData( "tls", "on" );
-  else
-    job->addMetaData( "tls", "off" );
-  // TODO connect percent and status message signals to something
+    Q_ASSERT(job);
+    if (Settings::self()->encryption() == Settings::TLS) {
+        job->addMetaData("tls", "on");
+    } else {
+        job->addMetaData("tls", "off");
+    }
+    // TODO connect percent and status message signals to something
 }
 
-QString NntpResource::findParent(const QStringList & _path)
+QString NntpResource::findParent(const QStringList &_path)
 {
-  QStringList path = _path;
-  path.removeLast();
-  if ( path.isEmpty() )
-    return baseUrl().url();
-  QString rid = path.join( "." );
-  foreach ( const Collection &col, remoteCollections )
-    if ( col.remoteId() == rid )
-      return col.remoteId();
-  Collection parent;
-  parent.setRemoteId( rid );
-  QStringList ct;
-  ct << Collection::mimeType();
-  parent.setContentMimeTypes( ct );
-  parent.parentCollection().setRemoteId( findParent( path ) );
-  parent.setName( path.last() );
-  remoteCollections << parent;
-  return parent.remoteId();
+    QStringList path = _path;
+    path.removeLast();
+    if (path.isEmpty()) {
+        return baseUrl().url();
+    }
+    QString rid = path.join(".");
+    foreach (const Collection &col, remoteCollections)
+        if (col.remoteId() == rid) {
+            return col.remoteId();
+        }
+    Collection parent;
+    parent.setRemoteId(rid);
+    QStringList ct;
+    ct << Collection::mimeType();
+    parent.setContentMimeTypes(ct);
+    parent.parentCollection().setRemoteId(findParent(path));
+    parent.setName(path.last());
+    remoteCollections << parent;
+    return parent.remoteId();
 }
 
-void NntpResource::collectionChanged(const Akonadi::Collection & collection)
+void NntpResource::collectionChanged(const Akonadi::Collection &collection)
 {
-  if ( collection.remoteId() == baseUrl().url() && !collection.name().isEmpty() ) {
-    Settings::self()->setName( collection.name() );
-    setName( collection.name() );
-  }
-  changeCommitted( collection );
+    if (collection.remoteId() == baseUrl().url() && !collection.name().isEmpty()) {
+        Settings::self()->setName(collection.name());
+        setName(collection.name());
+    }
+    changeCommitted(collection);
 }
 
-AKONADI_RESOURCE_MAIN( NntpResource )
+AKONADI_RESOURCE_MAIN(NntpResource)
 

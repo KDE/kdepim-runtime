@@ -29,67 +29,70 @@ CollectionAnnotationsAttribute::CollectionAnnotationsAttribute()
 {
 }
 
-CollectionAnnotationsAttribute::CollectionAnnotationsAttribute( const QMap<QByteArray, QByteArray> &annotations )
-  : mAnnotations( annotations )
+CollectionAnnotationsAttribute::CollectionAnnotationsAttribute(const QMap<QByteArray, QByteArray> &annotations)
+    : mAnnotations(annotations)
 {
 }
 
-void CollectionAnnotationsAttribute::setAnnotations( const QMap<QByteArray, QByteArray> &annotations )
+void CollectionAnnotationsAttribute::setAnnotations(const QMap<QByteArray, QByteArray> &annotations)
 {
-  mAnnotations = annotations;
+    mAnnotations = annotations;
 }
 
 QMap<QByteArray, QByteArray> CollectionAnnotationsAttribute::annotations() const
 {
-  return mAnnotations;
+    return mAnnotations;
 }
 
 QByteArray CollectionAnnotationsAttribute::type() const
 {
-    static const QByteArray sType( "collectionannotations" );
+    static const QByteArray sType("collectionannotations");
     return sType;
 }
 
-Akonadi::Attribute* CollectionAnnotationsAttribute::clone() const
+Akonadi::Attribute *CollectionAnnotationsAttribute::clone() const
 {
-  return new CollectionAnnotationsAttribute( mAnnotations );
+    return new CollectionAnnotationsAttribute(mAnnotations);
 }
 
 QByteArray CollectionAnnotationsAttribute::serialized() const
 {
-  QByteArray result = "";
+    QByteArray result = "";
 
-  foreach ( const QByteArray &key, mAnnotations.keys() ) {
-    result+= key;
-    result+= ' ';
-    result+= mAnnotations[key];
-    result+= " % "; // We use this separator as '%' is not allowed in keys or values
-  }
-  result.chop( 3 );
+    foreach (const QByteArray &key, mAnnotations.keys()) {
+        result += key;
+        result += ' ';
+        result += mAnnotations[key];
+        result += " % "; // We use this separator as '%' is not allowed in keys or values
+    }
+    result.chop(3);
 
-  return result;
+    return result;
 }
 
-void CollectionAnnotationsAttribute::deserialize( const QByteArray &data )
+void CollectionAnnotationsAttribute::deserialize(const QByteArray &data)
 {
-  mAnnotations.clear();
-  const QList<QByteArray> lines = data.split( '%' );
+    mAnnotations.clear();
+    const QList<QByteArray> lines = data.split('%');
 
-  for ( int i = 0; i < lines.size(); ++i ) {
-    QByteArray line = lines[i];
-    if ( i != 0 && line.startsWith( ' ' ) )
-      line = line.mid( 1 );
-    if ( i != lines.size() - 1 && line.endsWith( ' ' ) )
-      line.chop( 1 );
-    if ( line.trimmed().isEmpty() )
-      continue;
-    int wsIndex = line.indexOf( ' ' );
-    if ( wsIndex > 0 ) {
-      const QByteArray key = line.mid( 0, wsIndex );
-      const QByteArray value = line.mid( wsIndex+1 );
-      mAnnotations[key] = value;
-    } else {
-      mAnnotations.insert( line, QByteArray() );
+    for (int i = 0; i < lines.size(); ++i) {
+        QByteArray line = lines[i];
+        if (i != 0 && line.startsWith(' ')) {
+            line = line.mid(1);
+        }
+        if (i != lines.size() - 1 && line.endsWith(' ')) {
+            line.chop(1);
+        }
+        if (line.trimmed().isEmpty()) {
+            continue;
+        }
+        int wsIndex = line.indexOf(' ');
+        if (wsIndex > 0) {
+            const QByteArray key = line.mid(0, wsIndex);
+            const QByteArray value = line.mid(wsIndex + 1);
+            mAnnotations[key] = value;
+        } else {
+            mAnnotations.insert(line, QByteArray());
+        }
     }
-  }
 }

@@ -60,7 +60,6 @@ QString GmailSettings::secretKey() const
     return QLatin1String("mdT1DjzohxN3npUUzkENT0gO");
 }
 
-
 void GmailSettings::clearCachedPassword()
 {
     mAccount = KGAPI2::AccountPtr();
@@ -68,7 +67,7 @@ void GmailSettings::clearCachedPassword()
 
 void GmailSettings::cleanup()
 {
-    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
+    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QLatin1String("gmail"))) {
             wallet->setFolder(QLatin1String("gmail"));
@@ -130,7 +129,7 @@ void GmailSettings::onAuthFinished(KGAPI2::Job *job)
         return;
     }
 
-    KGAPI2::AuthJob *auth = qobject_cast<KGAPI2::AuthJob*>(job);
+    KGAPI2::AuthJob *auth = qobject_cast<KGAPI2::AuthJob *>(job);
     const KGAPI2::AccountPtr account = auth->account();
     storeAccount(account);
     setImapServer(QLatin1String("imap.gmail.com"));
@@ -138,13 +137,12 @@ void GmailSettings::onAuthFinished(KGAPI2::Job *job)
     Q_EMIT accountRequestCompleted(account, false);
 }
 
-
 void GmailSettings::onWalletOpened(bool success)
 {
     if (!success) {
         emit passwordRequestCompleted(QString(), true);
     } else {
-        Wallet *wallet = qobject_cast<Wallet*>( sender() );
+        Wallet *wallet = qobject_cast<Wallet *>(sender());
         bool passwordNotStoredInWallet = true;
         if (wallet && wallet->hasFolder(QLatin1String("gmail"))) {
             loadAccountFromKWallet();
@@ -169,18 +167,18 @@ void GmailSettings::loadAccountFromKWallet(bool *userRejected) const
         *userRejected = false;
     }
 
-    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
+    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QLatin1String("gmail"))) {
             wallet->setFolder(QLatin1String("gmail"));
             QMap<QString, QString> map;
             wallet->readMap(config()->name(), map);
             mAccount = KGAPI2::AccountPtr(new KGAPI2::Account(map[QLatin1String("accountName")],
-                                                              map[QLatin1String("accessToken")],
-                                                              map[QLatin1String("refreshToken")],
-                                                              QList<QUrl>() << QUrl(QLatin1String("https://mail.google.com"))
-                                                                            << KGAPI2::Account::accountInfoScopeUrl()
-                                                                            << KGAPI2::Account::accountInfoEmailScopeUrl()));
+                                          map[QLatin1String("accessToken")],
+                                          map[QLatin1String("refreshToken")],
+                                          QList<QUrl>() << QUrl(QLatin1String("https://mail.google.com"))
+                                          << KGAPI2::Account::accountInfoScopeUrl()
+                                          << KGAPI2::Account::accountInfoEmailScopeUrl()));
         } else {
             wallet->createFolder(QLatin1String("gmail"));
             mAccount = KGAPI2::AccountPtr();
@@ -195,7 +193,7 @@ void GmailSettings::loadAccountFromKWallet(bool *userRejected) const
 
 void GmailSettings::saveAccountToKWallet()
 {
-    Wallet* wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
+    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (!wallet->hasFolder(QLatin1String("gmail"))) {
             wallet->createFolder(QLatin1String("gmail"));
@@ -210,7 +208,6 @@ void GmailSettings::saveAccountToKWallet()
     }
     delete wallet;
 }
-
 
 QString GmailSettings::accountName(bool *userRejected) const
 {
@@ -236,8 +233,9 @@ QString GmailSettings::password(bool *userRejected) const
     if (!mAccount) {
         loadAccountFromKWallet(userRejected);
     }
-    if (mAccount)
+    if (mAccount) {
         return mAccount->accessToken();
+    }
     return QString();
 }
 
@@ -270,7 +268,6 @@ void GmailSettings::setRefreshToken(const QString &refreshToken)
     saveAccountToKWallet();
 }
 
-
 void GmailSettings::loadAccount(ImapAccount *account) const
 {
     qDebug() << userName();
@@ -283,7 +280,7 @@ void GmailSettings::loadAccount(ImapAccount *account) const
     account->setEncryptionMode(KIMAP::LoginJob::SslV3);
     account->setAuthenticationMode(KIMAP::LoginJob::XOAuth2);
 
-    account->setTimeout( sessionTimeout() );
+    account->setTimeout(sessionTimeout());
 }
 
 void GmailSettings::storeAccount(const KGAPI2::AccountPtr &account)

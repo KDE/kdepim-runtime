@@ -24,8 +24,9 @@
 
 #include <AkonadiCore/collection.h>
 
-namespace Akonadi {
-  class Monitor;
+namespace Akonadi
+{
+class Monitor;
 }
 
 /**
@@ -34,14 +35,14 @@ namespace Akonadi {
  */
 class AbortTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void initTestCase();
     void testAbort();
     void testAbortWhileIdle();
 
-  private:
+private:
     int akoTid;
     int smtpTid;
     Akonadi::Collection outbox;
@@ -49,6 +50,5 @@ class AbortTest : public QObject
     Akonadi::Monitor *monitor;
 
 };
-
 
 #endif

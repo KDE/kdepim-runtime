@@ -31,8 +31,8 @@
 
 #include <QtCore/QUuid>
 
-MoveCollectionTask::MoveCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( DeferIfNoSession, resource, parent )
+MoveCollectionTask::MoveCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent)
+    : ResourceTask(DeferIfNoSession, resource, parent)
 {
 
 }
@@ -41,111 +41,109 @@ MoveCollectionTask::~MoveCollectionTask()
 {
 }
 
-void MoveCollectionTask::doStart( KIMAP::Session *session )
+void MoveCollectionTask::doStart(KIMAP::Session *session)
 {
-  if ( collection().remoteId().isEmpty() ) {
-    emitError( i18n( "Cannot move IMAP folder '%1', it does not exist on the server.",
-                     collection().name() ) );
-    changeProcessed();
-    return;
-  }
+    if (collection().remoteId().isEmpty()) {
+        emitError(i18n("Cannot move IMAP folder '%1', it does not exist on the server.",
+                       collection().name()));
+        changeProcessed();
+        return;
+    }
 
-  if ( sourceCollection().remoteId().isEmpty() ) {
-    emitError( i18n( "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server.",
-                     collection().name(),
-                     sourceCollection().name() ) );
-    changeProcessed();
-    return;
-  }
+    if (sourceCollection().remoteId().isEmpty()) {
+        emitError(i18n("Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server.",
+                       collection().name(),
+                       sourceCollection().name()));
+        changeProcessed();
+        return;
+    }
 
-  if ( targetCollection().remoteId().isEmpty() ) {
-    emitError( i18n( "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server.",
-                     collection().name(),
-                     sourceCollection().name() ) );
-    changeProcessed();
-    return;
-  }
+    if (targetCollection().remoteId().isEmpty()) {
+        emitError(i18n("Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server.",
+                       collection().name(),
+                       sourceCollection().name()));
+        changeProcessed();
+        return;
+    }
 
-  if ( session->selectedMailBox() != mailBoxForCollection( collection() ) ) {
-    doRename( session );
-    return;
-  }
+    if (session->selectedMailBox() != mailBoxForCollection(collection())) {
+        doRename(session);
+        return;
+    }
 
-  // Some IMAP servers don't allow moving an opened mailbox, so make sure
-  // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932) by examining
-  // a non-existent mailbox. We don't use CLOSE in order not to trigger EXPUNGE
-  KIMAP::SelectJob *examine = new KIMAP::SelectJob( session );
-  examine->setOpenReadOnly( true ); // use EXAMINE instead of SELECT
-  examine->setMailBox( QString::fromLatin1( "IMAP Resource non existing folder %1" ).arg( QUuid::createUuid().toString() ) );
-  connect(examine, &KIMAP::SelectJob::result, this, &MoveCollectionTask::onExamineDone);
-  examine->start();
+    // Some IMAP servers don't allow moving an opened mailbox, so make sure
+    // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932) by examining
+    // a non-existent mailbox. We don't use CLOSE in order not to trigger EXPUNGE
+    KIMAP::SelectJob *examine = new KIMAP::SelectJob(session);
+    examine->setOpenReadOnly(true);   // use EXAMINE instead of SELECT
+    examine->setMailBox(QString::fromLatin1("IMAP Resource non existing folder %1").arg(QUuid::createUuid().toString()));
+    connect(examine, &KIMAP::SelectJob::result, this, &MoveCollectionTask::onExamineDone);
+    examine->start();
 }
 
-void MoveCollectionTask::onExamineDone( KJob* job )
+void MoveCollectionTask::onExamineDone(KJob *job)
 {
-  // We deliberately ignore any error here, because the SelectJob will always fail
-  // when examining a non-existent mailbox
+    // We deliberately ignore any error here, because the SelectJob will always fail
+    // when examining a non-existent mailbox
 
-  KIMAP::SelectJob *examine = static_cast<KIMAP::SelectJob*>( job );
-  doRename( examine->session() );
+    KIMAP::SelectJob *examine = static_cast<KIMAP::SelectJob *>(job);
+    doRename(examine->session());
 }
 
-QString MoveCollectionTask::mailBoxForCollections( const Akonadi::Collection& parent, const Akonadi::Collection& child ) const
+QString MoveCollectionTask::mailBoxForCollections(const Akonadi::Collection &parent, const Akonadi::Collection &child) const
 {
-  const QString parentMailbox = mailBoxForCollection( parent );
-  if ( parentMailbox.isEmpty() ) {
-      return child.remoteId().mid(1); //Strip separator on toplevel mailboxes
-  }
-  return parentMailbox + child.remoteId();
+    const QString parentMailbox = mailBoxForCollection(parent);
+    if (parentMailbox.isEmpty()) {
+        return child.remoteId().mid(1); //Strip separator on toplevel mailboxes
+    }
+    return parentMailbox + child.remoteId();
 }
 
-void MoveCollectionTask::doRename( KIMAP::Session *session )
+void MoveCollectionTask::doRename(KIMAP::Session *session)
 {
-  // collection.remoteId() already includes the separator
-  const QString oldMailBox = mailBoxForCollections( sourceCollection(), collection() );
-  const QString newMailBox = mailBoxForCollections( targetCollection(), collection() );
+    // collection.remoteId() already includes the separator
+    const QString oldMailBox = mailBoxForCollections(sourceCollection(), collection());
+    const QString newMailBox = mailBoxForCollections(targetCollection(), collection());
 
-  if ( oldMailBox != newMailBox ) {
-    KIMAP::RenameJob *job = new KIMAP::RenameJob( session );
-    job->setSourceMailBox( oldMailBox );
-    job->setDestinationMailBox( newMailBox );
+    if (oldMailBox != newMailBox) {
+        KIMAP::RenameJob *job = new KIMAP::RenameJob(session);
+        job->setSourceMailBox(oldMailBox);
+        job->setDestinationMailBox(newMailBox);
 
-    connect(job, &KIMAP::RenameJob::result, this, &MoveCollectionTask::onRenameDone);
+        connect(job, &KIMAP::RenameJob::result, this, &MoveCollectionTask::onRenameDone);
 
-    job->start();
+        job->start();
 
-  } else {
-    changeProcessed();
-  }
+    } else {
+        changeProcessed();
+    }
 }
 
-void MoveCollectionTask::onRenameDone( KJob *job )
+void MoveCollectionTask::onRenameDone(KJob *job)
 {
-  if ( job->error() ) {
-    cancelTask( job->errorString() );
-  } else {
-    // Automatically subscribe to the new mailbox name
-    KIMAP::RenameJob *rename = static_cast<KIMAP::RenameJob*>( job );
+    if (job->error()) {
+        cancelTask(job->errorString());
+    } else {
+        // Automatically subscribe to the new mailbox name
+        KIMAP::RenameJob *rename = static_cast<KIMAP::RenameJob *>(job);
 
-    KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( rename->session() );
-    subscribe->setMailBox( rename->destinationMailBox() );
+        KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob(rename->session());
+        subscribe->setMailBox(rename->destinationMailBox());
 
-    connect(subscribe, &KIMAP::SubscribeJob::result, this, &MoveCollectionTask::onSubscribeDone);
+        connect(subscribe, &KIMAP::SubscribeJob::result, this, &MoveCollectionTask::onSubscribeDone);
 
-    subscribe->start();
-  }
+        subscribe->start();
+    }
 }
 
-void MoveCollectionTask::onSubscribeDone( KJob *job )
+void MoveCollectionTask::onSubscribeDone(KJob *job)
 {
-  if ( job->error() ) {
-    emitWarning( i18n( "Failed to subscribe to the folder '%1' on the IMAP server. "
-                       "It will disappear on next sync. Use the subscription dialog to overcome that",
-                       collection().name() ) );
-  }
+    if (job->error()) {
+        emitWarning(i18n("Failed to subscribe to the folder '%1' on the IMAP server. "
+                         "It will disappear on next sync. Use the subscription dialog to overcome that",
+                         collection().name()));
+    }
 
-  changeCommitted( collection() );
+    changeCommitted(collection());
 }
-
-
 

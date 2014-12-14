@@ -22,10 +22,10 @@
 #include <AkonadiCore/ItemModifyJob>
 #include <AkonadiCore/ItemDeleteJob>
 
-RevertItemChangesJob::RevertItemChangesJob(const Akonadi::Item& kolabItem, HandlerManager &handlerManager, QObject* parent)
-    :KJob(parent),
-    mHandlerManager(handlerManager),
-    mKolabItem(kolabItem)
+RevertItemChangesJob::RevertItemChangesJob(const Akonadi::Item &kolabItem, HandlerManager &handlerManager, QObject *parent)
+    : KJob(parent),
+      mHandlerManager(handlerManager),
+      mKolabItem(kolabItem)
 {
 
 }
@@ -38,16 +38,16 @@ void RevertItemChangesJob::start()
     connect(itemFetchJob, &Akonadi::ItemFetchJob::result, this, &RevertItemChangesJob::onImapItemFetchDone);
 }
 
-void RevertItemChangesJob::onImapItemFetchDone(KJob* job)
+void RevertItemChangesJob::onImapItemFetchDone(KJob *job)
 {
-    if ( job->error() ) {
+    if (job->error()) {
         setError(KJob::UserDefinedError);
         setErrorText(job->errorText());
         emitResult();
         return;
     }
 
-    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>(job);
+    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
     if (fetchJob->items().isEmpty()) { //The corresponding imap item hasn't been created yet
         qDebug() << "item is not yet created in imap resource, deleting the kolab item";
         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(mKolabItem, this);

@@ -23,17 +23,19 @@
 
 using namespace OXA;
 
-OXErrors::EditErrorID OXErrors::getEditErrorID( const QString& errorText )
+OXErrors::EditErrorID OXErrors::getEditErrorID(const QString &errorText)
 {
-  int b1Pos = errorText.indexOf( '[' );
-  int b2Pos = errorText.indexOf( ']' );
-  QString errorID = errorText.mid( b1Pos+1, b2Pos-b1Pos-1 );
+    int b1Pos = errorText.indexOf('[');
+    int b2Pos = errorText.indexOf(']');
+    QString errorID = errorText.mid(b1Pos + 1, b2Pos - b1Pos - 1);
 
-  bool ok;
-  int eid = errorID.toInt( &ok );
-  if ( !ok ) return OXErrors::EditErrorUndefined;
+    bool ok;
+    int eid = errorID.toInt(&ok);
+    if (!ok) {
+        return OXErrors::EditErrorUndefined;
+    }
 
-  switch ( eid ) {
+    switch (eid) {
     case 1000 : return OXErrors::ConcurrentModification;
     case 1001 : return OXErrors::ObjectNotFound;
     case 1002 : return OXErrors::NoPermissionForThisAction;
@@ -42,7 +44,7 @@ OXErrors::EditErrorID OXErrors::getEditErrorID( const QString& errorText )
     case 1006 : return OXErrors::AppointmentConflicts;
     case 1500 : return OXErrors::InternalServerError;
     default : ;
-  }
+    }
 
-  return OXErrors::EditErrorUndefined;
+    return OXErrors::EditErrorUndefined;
 }

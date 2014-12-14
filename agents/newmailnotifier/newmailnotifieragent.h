@@ -28,11 +28,13 @@
 #include <QTimer>
 #include <QStringList>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class AgentInstance;
 }
 
-namespace KIdentityManagement {
+namespace KIdentityManagement
+{
 class IdentityManager;
 }
 
@@ -41,7 +43,7 @@ class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBas
     Q_OBJECT
 
 public:
-    explicit NewMailNotifierAgent( const QString &id );
+    explicit NewMailNotifierAgent(const QString &id);
 
     void showConfigureDialog(qlonglong windowId = 0);
 
@@ -81,10 +83,10 @@ public:
     void setShowButtonToDisplayMail(bool b);
 
 protected:
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection );
-    void itemsRemoved( const Akonadi::Item::List &items );
-    void itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags );
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection);
+    void itemsRemoved(const Akonadi::Item::List &items);
+    void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags);
     void doSetOnline(bool online);
 
 private Q_SLOTS:

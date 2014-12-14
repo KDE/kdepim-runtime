@@ -35,50 +35,50 @@
 #include <QPushButton>
 
 enum {
-  // The max value of the scrollbar. Don't change this without making the kmail
-  // migrator use this. It still uses hardcoded "100".
-  MAX_PROGRESS = 100
+    // The max value of the scrollbar. Don't change this without making the kmail
+    // migrator use this. It still uses hardcoded "100".
+    MAX_PROGRESS = 100
 };
 
 bool InfoDialog::mError = false;
 
-InfoDialog::InfoDialog( bool closeWhenDone ) :
-    mMigratorCount( 0 ),
-    mChange( false ),
-    mCloseWhenDone( closeWhenDone ),
-    mAutoScrollList( true )
+InfoDialog::InfoDialog(bool closeWhenDone) :
+    mMigratorCount(0),
+    mChange(false),
+    mCloseWhenDone(closeWhenDone),
+    mAutoScrollList(true)
 {
-  setAttribute( Qt::WA_DeleteOnClose );
+    setAttribute(Qt::WA_DeleteOnClose);
 
-  mButtonBox = new QDialogButtonBox(QDialogButtonBox::Close);
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  connect(mButtonBox, &QDialogButtonBox::accepted, this, &InfoDialog::accept);
-  connect(mButtonBox, &QDialogButtonBox::rejected, this, &InfoDialog::reject);
-  mButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
+    mButtonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    connect(mButtonBox, &QDialogButtonBox::accepted, this, &InfoDialog::accept);
+    connect(mButtonBox, &QDialogButtonBox::rejected, this, &InfoDialog::reject);
+    mButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
 
-  QWidget *widget = new QWidget( this );
-  QVBoxLayout *widgetLayout = new QVBoxLayout( widget );
+    QWidget *widget = new QWidget(this);
+    QVBoxLayout *widgetLayout = new QVBoxLayout(widget);
 
-  mList = new QListWidget( widget );
-  mList->setMinimumWidth( 640 );
-  widgetLayout->addWidget( mList );
+    mList = new QListWidget(widget);
+    mList->setMinimumWidth(640);
+    widgetLayout->addWidget(mList);
 
-  QHBoxLayout *statusLayout = new QHBoxLayout;
-  widgetLayout->addLayout( statusLayout );
+    QHBoxLayout *statusLayout = new QHBoxLayout;
+    widgetLayout->addLayout(statusLayout);
 
-  mStatusLabel = new QLabel( widget );
-  mStatusLabel->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::Preferred );
-  statusLayout->addWidget( mStatusLabel );
+    mStatusLabel = new QLabel(widget);
+    mStatusLabel->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+    statusLayout->addWidget(mStatusLabel);
 
-  mProgressBar = new QProgressBar( widget );
-  mProgressBar->setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Preferred );
-  mProgressBar->setMinimumWidth( 200 );
-  statusLayout->addWidget( mProgressBar );
-  mainLayout->addWidget(widget);
-  mainLayout->addWidget(mButtonBox);
+    mProgressBar = new QProgressBar(widget);
+    mProgressBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+    mProgressBar->setMinimumWidth(200);
+    statusLayout->addWidget(mProgressBar);
+    mainLayout->addWidget(widget);
+    mainLayout->addWidget(mButtonBox);
 
 }
 
@@ -86,109 +86,110 @@ InfoDialog::~InfoDialog()
 {
 }
 
-static KMigratorBase::MessageType convertType( MigratorBase::MessageType type )
+static KMigratorBase::MessageType convertType(MigratorBase::MessageType type)
 {
-  switch ( type ) {
+    switch (type) {
     case MigratorBase::Success: return KMigratorBase::Success;
     case MigratorBase::Error: return KMigratorBase::Error;
     case MigratorBase::Skip: return KMigratorBase::Skip;
     case MigratorBase::Warning: return KMigratorBase::Warning;
     case MigratorBase::Info: return KMigratorBase::Info;
-  }
-  return KMigratorBase::Info;
+    }
+    return KMigratorBase::Info;
 }
 
-void InfoDialog::message( MigratorBase::MessageType type, const QString& msg )
+void InfoDialog::message(MigratorBase::MessageType type, const QString &msg)
 {
-  message( convertType(type), msg );
+    message(convertType(type), msg);
 }
 
-void InfoDialog::message(KMigratorBase::MessageType type, const QString & msg)
+void InfoDialog::message(KMigratorBase::MessageType type, const QString &msg)
 {
-  bool autoScroll = mAutoScrollList;
+    bool autoScroll = mAutoScrollList;
 
-  QListWidgetItem *item = new QListWidgetItem( msg, mList );
-  switch ( type ) {
+    QListWidgetItem *item = new QListWidgetItem(msg, mList);
+    switch (type) {
     case KMigratorBase::Success:
-      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-ok-apply") ) );
-      mChange = true;
-      qDebug() << msg;
-      break;
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok-apply")));
+        mChange = true;
+        qDebug() << msg;
+        break;
     case KMigratorBase::Skip:
-      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-ok") ) );
-      qDebug() << msg;
-      break;
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok")));
+        qDebug() << msg;
+        break;
     case KMigratorBase::Info:
-      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-information") ) );
-      qDebug() << msg;
-      break;
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-information")));
+        qDebug() << msg;
+        break;
     case KMigratorBase::Warning:
-      item->setIcon( QIcon::fromTheme( QLatin1String("dialog-warning") ) );
-      qDebug() << msg;
-      break;
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-warning")));
+        qDebug() << msg;
+        break;
     case KMigratorBase::Error: {
-        item->setIcon( QIcon::fromTheme( QLatin1String("dialog-error") ) );
+        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-error")));
         QFont currentFont = font();
-        currentFont.setBold( true );
-        item->setFont( currentFont );
+        currentFont.setBold(true);
+        item->setFont(currentFont);
         mError = true;
         qCritical() << msg;
-      }
-      break;
+    }
+    break;
     default:
-      qCritical() << "WTF?";
-  }
+        qCritical() << "WTF?";
+    }
 
-  mAutoScrollList = autoScroll;
+    mAutoScrollList = autoScroll;
 
-  if ( autoScroll ) {
-    mList->scrollToItem( item );
-  }
+    if (autoScroll) {
+        mList->scrollToItem(item);
+    }
 }
 
 void InfoDialog::migratorAdded()
 {
-  ++mMigratorCount;
-  QApplication::setOverrideCursor( QCursor( Qt::WaitCursor ) );
+    ++mMigratorCount;
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 }
 
 void InfoDialog::migratorDone()
 {
-  QApplication::restoreOverrideCursor();
+    QApplication::restoreOverrideCursor();
 
-  --mMigratorCount;
-  if ( mMigratorCount == 0 ) {
-    mButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
-    status( QString() );
-    if ( mCloseWhenDone && !hasError() && !hasChange() )
-      accept();
-  }
+    --mMigratorCount;
+    if (mMigratorCount == 0) {
+        mButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
+        status(QString());
+        if (mCloseWhenDone && !hasError() && !hasChange()) {
+            accept();
+        }
+    }
 }
 
-void InfoDialog::status( const QString &msg )
+void InfoDialog::status(const QString &msg)
 {
-  mStatusLabel->setText( msg );
-  if ( msg.isEmpty() ) {
-    progress( 0, MAX_PROGRESS, MAX_PROGRESS );
-    mProgressBar->setFormat( QString() );
-  }
+    mStatusLabel->setText(msg);
+    if (msg.isEmpty()) {
+        progress(0, MAX_PROGRESS, MAX_PROGRESS);
+        mProgressBar->setFormat(QString());
+    }
 }
 
-void InfoDialog::progress( int value )
+void InfoDialog::progress(int value)
 {
-  mProgressBar->setFormat( QLatin1String( "%p%" ) );
-  mProgressBar->setValue( value );
+    mProgressBar->setFormat(QLatin1String("%p%"));
+    mProgressBar->setValue(value);
 }
 
-void InfoDialog::progress( int min, int max, int value )
+void InfoDialog::progress(int min, int max, int value)
 {
-  mProgressBar->setFormat( QLatin1String( "%p%" ) );
-  mProgressBar->setRange( min, max );
-  mProgressBar->setValue( value );
+    mProgressBar->setFormat(QLatin1String("%p%"));
+    mProgressBar->setRange(min, max);
+    mProgressBar->setValue(value);
 }
 
-void InfoDialog::scrollBarMoved( int value )
+void InfoDialog::scrollBarMoved(int value)
 {
-  mAutoScrollList = ( value == mList->verticalScrollBar()->maximum() );
+    mAutoScrollList = (value == mList->verticalScrollBar()->maximum());
 }
 

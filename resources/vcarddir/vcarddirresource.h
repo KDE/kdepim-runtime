@@ -27,33 +27,33 @@
 
 class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    VCardDirResource( const QString &id );
+public:
+    VCardDirResource(const QString &id);
     ~VCardDirResource();
 
-  public Q_SLOTS:
-    void configure( WId windowId ) Q_DECL_OVERRIDE;
+public Q_SLOTS:
+    void configure(WId windowId) Q_DECL_OVERRIDE;
     void aboutToQuit() Q_DECL_OVERRIDE;
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems( const Akonadi::Collection &col ) Q_DECL_OVERRIDE;
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
-  protected:
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+protected:
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void itemRemoved(const Akonadi::Item &item);
 
-  private:
+private:
     bool loadAddressees();
     QString vCardDirectoryName() const;
-    QString vCardDirectoryFileName( const QString &file ) const;
+    QString vCardDirectoryFileName(const QString &file) const;
     void initializeVCardDirectory() const;
 
-  private:
+private:
     QMap<QString, KContacts::Addressee> mAddressees;
     KContacts::VCardConverter mConverter;
 };

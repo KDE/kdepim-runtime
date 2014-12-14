@@ -36,13 +36,13 @@ public:
     explicit GmailResource(const QString &id);
     ~GmailResource();
 
-    QDialog *createConfigureDialog (WId windowId);
+    QDialog *createConfigureDialog(WId windowId);
     Akonadi::Collection allMailCollection() const;
     Akonadi::Collection rootCollection() const;
 
     QString defaultName() const;
 
-    ResourceStateInterface::Ptr createResourceState (const TaskArguments &args);
+    ResourceStateInterface::Ptr createResourceState(const TaskArguments &args);
 
     void retrieveCollections();
     void retrieveItems(const Akonadi::Collection &col);
@@ -62,7 +62,5 @@ private Q_SLOTS:
 private:
     mutable GmailSettings *m_settings;
 };
-
-
 
 #endif // GMAILRESOURCE_H

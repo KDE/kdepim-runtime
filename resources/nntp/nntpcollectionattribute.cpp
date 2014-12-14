@@ -21,41 +21,41 @@
 #include <QByteArray>
 
 NntpCollectionAttribute::NntpCollectionAttribute()
-  : Attribute(),
-  mLastArticleId( 0 )
+    : Attribute(),
+      mLastArticleId(0)
 {
 }
 
 QByteArray NntpCollectionAttribute::type() const
 {
-    static const QByteArray sType( "NNTP" );
+    static const QByteArray sType("NNTP");
     return sType;
 }
 
-NntpCollectionAttribute * NntpCollectionAttribute::clone() const
+NntpCollectionAttribute *NntpCollectionAttribute::clone() const
 {
-  NntpCollectionAttribute *attr = new NntpCollectionAttribute();
-  attr->mLastArticleId = mLastArticleId;
-  return attr;
+    NntpCollectionAttribute *attr = new NntpCollectionAttribute();
+    attr->mLastArticleId = mLastArticleId;
+    return attr;
 }
 
 QByteArray NntpCollectionAttribute::serialized() const
 {
-  QByteArray data = QByteArray::number( mLastArticleId );
-  return data;
+    QByteArray data = QByteArray::number(mLastArticleId);
+    return data;
 }
 
-void NntpCollectionAttribute::deserialize(const QByteArray & data)
+void NntpCollectionAttribute::deserialize(const QByteArray &data)
 {
-  mLastArticleId = data.toInt();
+    mLastArticleId = data.toInt();
 }
 
 int NntpCollectionAttribute::lastArticle() const
 {
-  return mLastArticleId;
+    return mLastArticleId;
 }
 
 void NntpCollectionAttribute::setLastArticle(int last)
 {
-  mLastArticleId = last;
+    mLastArticleId = last;
 }

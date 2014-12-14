@@ -21,30 +21,30 @@
 
 #include "journalhandler.h"
 
-JournalHandler::JournalHandler( const Akonadi::Collection &imapCollection )
-  : IncidenceHandler( imapCollection )
+JournalHandler::JournalHandler(const Akonadi::Collection &imapCollection)
+    : IncidenceHandler(imapCollection)
 {
-  m_mimeType = "application/x-vnd.kolab.journal";
+    m_mimeType = "application/x-vnd.kolab.journal";
 }
 
 JournalHandler::~JournalHandler()
 {
 }
 
-KMime::Message::Ptr JournalHandler::incidenceToMime( const KCalCore::Incidence::Ptr &incidence )
+KMime::Message::Ptr JournalHandler::incidenceToMime(const KCalCore::Incidence::Ptr &incidence)
 {
-  return
-    Kolab::KolabObjectWriter::writeJournal(
-      incidence.dynamicCast<KCalCore::Journal>(),
-      m_formatVersion, PRODUCT_ID, QLatin1String("UTC") );
+    return
+        Kolab::KolabObjectWriter::writeJournal(
+            incidence.dynamicCast<KCalCore::Journal>(),
+            m_formatVersion, PRODUCT_ID, QLatin1String("UTC"));
 }
 
 QStringList  JournalHandler::contentMimeTypes()
 {
-  return QStringList() << KCalCore::Journal::journalMimeType();
+    return QStringList() << KCalCore::Journal::journalMimeType();
 }
 
 QString JournalHandler::iconName() const
 {
-  return QString::fromLatin1( "view-pim-journal" );
+    return QString::fromLatin1("view-pim-journal");
 }

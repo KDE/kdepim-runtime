@@ -29,7 +29,8 @@ class KJob;
 class QDomDocument;
 class QDomElement;
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * Namespace that contains helper methods for handling contacts.
@@ -38,18 +39,18 @@ namespace OXA {
  */
 namespace ContactUtils
 {
-  /**
-   * Parses the XML tree under @p propElement and fills the contact data of @p object.
-   */
-  void parseContact( const QDomElement &propElement, Object &object );
+/**
+ * Parses the XML tree under @p propElement and fills the contact data of @p object.
+ */
+void parseContact(const QDomElement &propElement, Object &object);
 
-  /**
-   * Adds the contact data of @p object to the @p document under the @p propElement.
-   */
-  void addContactElements( QDomDocument &document, QDomElement &propElement, const Object &object, void *preloadedData );
+/**
+ * Adds the contact data of @p object to the @p document under the @p propElement.
+ */
+void addContactElements(QDomDocument &document, QDomElement &propElement, const Object &object, void *preloadedData);
 
-  KJob* preloadJob( const Object &object );
-  void* preloadData( const Object &object, KJob *job );
+KJob *preloadJob(const Object &object);
+void *preloadData(const Object &object, KJob *job);
 }
 
 }

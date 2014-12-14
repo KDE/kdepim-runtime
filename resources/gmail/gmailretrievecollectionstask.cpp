@@ -33,13 +33,13 @@
 #include <KLocalizedString>
 
 GmailRetrieveCollectionsTask::GmailRetrieveCollectionsTask(ResourceStateInterface::Ptr resource,
-                                                           QObject *parent)
+        QObject *parent)
     : RetrieveCollectionsTask(resource, parent)
 {
 }
 
 void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                                                       const QList<QList<QByteArray> > &flags)
+        const QList<QList<QByteArray> > &flags)
 {
     Akonadi::Collection &rootCollection = m_reportedCollections[QString()];
     Akonadi::EntityDisplayAttribute *attr = rootCollection.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
@@ -67,7 +67,7 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
          * folder. We should re-enable it at some point so that people can't
          * complain, but until then the folder will not be synced.
          */
-         if (boxName == QLatin1String("[Gmail]/Chats")) {
+        if (boxName == QLatin1String("[Gmail]/Chats")) {
             continue;
         }
 
@@ -76,7 +76,7 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
         QString parentPath;
         QString currentPath;
 
-        for (int j = 0, partsCnt = pathParts.count(); j < partsCnt; ++j ) {
+        for (int j = 0, partsCnt = pathParts.count(); j < partsCnt; ++j) {
             const bool isDummy = j != pathParts.size() - 1;
             const QString pathPart = pathParts.at(j);
             currentPath += separatorCharacter() + pathPart;
@@ -180,11 +180,10 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
             qDebug() << currentPath << currentFlags;
             // Special treating of Gmail system collections (and INBOX)
             if (currentPath == QLatin1String("/INBOX") ||
-                currentFlags.contains("\\drafts") ||
-                currentFlags.contains("\\important") ||
-                currentFlags.contains("\\sent") ||
-                currentFlags.contains("\\flagged"))
-            {
+                    currentFlags.contains("\\drafts") ||
+                    currentFlags.contains("\\important") ||
+                    currentFlags.contains("\\sent") ||
+                    currentFlags.contains("\\flagged")) {
                 // Keep [Gmail] in remoteID, so that we can reference them correctly
                 // even though they have different parent in Akonadi
                 c.setRemoteId(currentPath);
@@ -192,9 +191,9 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                 c.setParentCollection(m_reportedCollections.value(QString()));
                 // None of these can actually have subcollections, cannot be modified and
                 // cannot be removed.
-                c.setRights( c.rights() & ~Akonadi::Collection::CanDeleteCollection
-                                        & ~Akonadi::Collection::CanChangeCollection
-                                        & ~Akonadi::Collection::CanCreateCollection );
+                c.setRights(c.rights() & ~Akonadi::Collection::CanDeleteCollection
+                            & ~Akonadi::Collection::CanChangeCollection
+                            & ~Akonadi::Collection::CanCreateCollection);
             }
 
             // I am the king of non-generic code!
@@ -240,7 +239,6 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
 
     // Remove the [Gmail] folder. We inserted it only to get remoteIDs for it's subcollections right
     // FIXME GMAIL: Don't hardcode this, try to have some detection or at least a constant
-    m_reportedCollections.remove( separatorCharacter() + QLatin1String( "[Gmail]" ) );
+    m_reportedCollections.remove(separatorCharacter() + QLatin1String("[Gmail]"));
 }
-
 

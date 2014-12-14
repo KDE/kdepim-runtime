@@ -30,15 +30,15 @@ class KJob;
 
 class SentActionHandler : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit SentActionHandler( QObject *parent = Q_NULLPTR );
+public:
+    explicit SentActionHandler(QObject *parent = Q_NULLPTR);
 
-    void runAction( const MailTransport::SentActionAttribute::Action &action );
+    void runAction(const MailTransport::SentActionAttribute::Action &action);
 
-  private Q_SLOTS:
-    void itemFetchResult( KJob *job );
+private Q_SLOTS:
+    void itemFetchResult(KJob *job);
 };
 
 #endif

@@ -38,7 +38,7 @@ class QTimer;
 class ResourceTask;
 namespace KIMAP
 {
-  class Session;
+class Session;
 }
 
 class ImapIdleManager;
@@ -48,124 +48,121 @@ class SubscriptionDialog;
 class Settings;
 
 class ImapResourceBase : public Akonadi::ResourceBase,
-                         public Akonadi::AgentBase::ObserverV3,
-                        public Akonadi::AgentSearchInterface
+    public Akonadi::AgentBase::ObserverV3,
+    public Akonadi::AgentSearchInterface
 {
-  Q_OBJECT
-  Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.ImapResourceBase")
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.ImapResourceBase")
 protected:
-  using Akonadi::AgentBase::Observer::collectionChanged;
+    using Akonadi::AgentBase::Observer::collectionChanged;
 
 public:
-  explicit ImapResourceBase( const QString &id );
-  ~ImapResourceBase();
+    explicit ImapResourceBase(const QString &id);
+    ~ImapResourceBase();
 
-  virtual QDialog *createConfigureDialog( WId windowId ) = 0;
+    virtual QDialog *createConfigureDialog(WId windowId) = 0;
 
-  QStringList serverCapabilities() const;
-  void cleanup();
+    QStringList serverCapabilities() const;
+    void cleanup();
 
-  virtual Settings* settings() const;
+    virtual Settings *settings() const;
 
 public Q_SLOTS:
-  virtual void configure( WId windowId );
+    virtual void configure(WId windowId);
 
-  // DBus methods
-  Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
-  Q_SCRIPTABLE int configureSubscription( qlonglong windowId = 0 );
+    // DBus methods
+    Q_SCRIPTABLE void requestManualExpunge(qint64 collectionId);
+    Q_SCRIPTABLE int configureSubscription(qlonglong windowId = 0);
 
-  // pseudo-virtual called by ResourceBase
-  QString dumpResourceToString() const;
+    // pseudo-virtual called by ResourceBase
+    QString dumpResourceToString() const;
 
 protected Q_SLOTS:
-  void startIdleIfNeeded();
-  void startIdle();
+    void startIdleIfNeeded();
+    void startIdle();
 
-  void abortActivity();
+    void abortActivity();
 
-  virtual void retrieveCollections();
-  void retrieveCollectionAttributes( const Akonadi::Collection &col );
+    virtual void retrieveCollections();
+    void retrieveCollectionAttributes(const Akonadi::Collection &col);
 
-  virtual void retrieveItems( const Akonadi::Collection &col );
-  virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual void retrieveItems(const Akonadi::Collection &col);
+    virtual bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
 protected:
-  virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-  virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-  virtual void itemsFlagsChanged( const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags );
-  virtual void itemsRemoved( const Akonadi::Item::List &items );
-  virtual void itemsMoved( const Akonadi::Item::List &item, const Akonadi::Collection &source,
-                           const Akonadi::Collection &destination );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags);
+    virtual void itemsRemoved(const Akonadi::Item::List &items);
+    virtual void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source,
+                            const Akonadi::Collection &destination);
 
+    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
+    virtual void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts);
+    virtual void collectionRemoved(const Akonadi::Collection &collection);
+    virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source,
+                                 const Akonadi::Collection &destination);
 
-  virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-  virtual void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &parts );
-  virtual void collectionRemoved( const Akonadi::Collection &collection );
-  virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source,
-                                const Akonadi::Collection &destination );
+    virtual void addSearch(const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection);
+    virtual void removeSearch(const Akonadi::Collection &resultCollection);
+    virtual void search(const QString &query, const Akonadi::Collection &collection);
 
-  virtual void addSearch( const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection );
-  virtual void removeSearch( const Akonadi::Collection &resultCollection );
-  virtual void search( const QString &query, const Akonadi::Collection &collection );
+    virtual void doSetOnline(bool online);
 
-  virtual void doSetOnline(bool online);
+    QChar separatorCharacter() const;
+    void setSeparatorCharacter(const QChar &separator);
 
-  QChar separatorCharacter() const;
-  void setSeparatorCharacter( const QChar &separator );
+    virtual void aboutToQuit();
 
-  virtual void aboutToQuit();
-
-  virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
-  virtual QString defaultName() const = 0;
+    virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
+    virtual QString defaultName() const = 0;
 
 private Q_SLOTS:
-  void doSearch( const QVariant &arg );
+    void doSearch(const QVariant &arg);
 
-  void reconnect();
+    void reconnect();
 
-  void scheduleConnectionAttempt();
-  void startConnect( const QVariant & ); // the parameter is necessary, since this method is used by the task scheduler
-  void onConnectDone( int errorCode, const QString &errorMessage );
-  void onConnectionLost( KIMAP::Session *session );
+    void scheduleConnectionAttempt();
+    void startConnect(const QVariant &);   // the parameter is necessary, since this method is used by the task scheduler
+    void onConnectDone(int errorCode, const QString &errorMessage);
+    void onConnectionLost(KIMAP::Session *session);
 
+    void onIdleCollectionFetchDone(KJob *job);
 
-  void onIdleCollectionFetchDone( KJob *job );
+    void onExpungeCollectionFetchDone(KJob *job);
+    void triggerCollectionExpunge(const QVariant &collectionVariant);
 
-  void onExpungeCollectionFetchDone( KJob *job );
-  void triggerCollectionExpunge( const QVariant &collectionVariant );
+    void taskDestroyed(QObject *task);
 
+    void showError(const QString &message);
+    void clearStatusMessage();
 
-  void taskDestroyed( QObject *task );
+    void updateResourceName();
 
-  void showError( const QString &message );
-  void clearStatusMessage();
+    void onCollectionModifyDone(KJob *job);
 
-  void updateResourceName();
-
-  void onCollectionModifyDone( KJob *job );
-
-  void delayedInit();
+    void delayedInit();
 
 protected:
-  //Starts and queues a task
-  void startTask( ResourceTask *task );
-  void queueTask( ResourceTask *task );
-  SessionPool *m_pool;
+    //Starts and queues a task
+    void startTask(ResourceTask *task);
+    void queueTask(ResourceTask *task);
+    SessionPool *m_pool;
 
 private:
-  friend class ResourceState;
+    friend class ResourceState;
 
-  bool needsNetwork() const;
-  void modifyCollection(const Akonadi::Collection &);
+    bool needsNetwork() const;
+    void modifyCollection(const Akonadi::Collection &);
 
-  friend class ImapIdleManager;
+    friend class ImapIdleManager;
 
-  QList<ResourceTask*> m_taskList; //used to be able to kill tasks
-  QPointer<SubscriptionDialog> mSubscriptions;
-  ImapIdleManager *m_idle;
-  QTimer *m_statusMessageTimer;
-  QChar m_separatorCharacter;
-  mutable Settings *m_settings;
+    QList<ResourceTask *> m_taskList; //used to be able to kill tasks
+    QPointer<SubscriptionDialog> mSubscriptions;
+    ImapIdleManager *m_idle;
+    QTimer *m_statusMessageTimer;
+    QChar m_separatorCharacter;
+    mutable Settings *m_settings;
 };
 
 #endif

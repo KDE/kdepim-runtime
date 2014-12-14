@@ -33,42 +33,42 @@ class QDomElement;
 
 class KJotsMigrator : public KMigratorBase
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  KJotsMigrator();
-  virtual ~KJotsMigrator();
+    KJotsMigrator();
+    virtual ~KJotsMigrator();
 
-  /* reimp */ void migrate();
-  /* reimp */ void migrateNext();
+    /* reimp */ void migrate();
+    /* reimp */ void migrateNext();
 
 protected:
-  /* reimp */ void migrationFailed( const QString& errorMsg, const Akonadi::AgentInstance& instance = Akonadi::AgentInstance() );
+    /* reimp */ void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance());
 
 private slots:
-  void notesResourceCreated( KJob *job );
-  void bookMigrateJobFinished( KJob *job );
-  void rootCollectionsRecieved( const Akonadi::Collection::List &list );
-  void rootFetchFinished( KJob *job );
-  void syncDone(KJob *job);
+    void notesResourceCreated(KJob *job);
+    void bookMigrateJobFinished(KJob *job);
+    void rootCollectionsRecieved(const Akonadi::Collection::List &list);
+    void rootFetchFinished(KJob *job);
+    void syncDone(KJob *job);
 
 private:
-  void migrateLegacyBook( const QString &filename );
-  void parsePageXml( QDomElement&, bool, const Akonadi::Collection &parentCollection );
-  void parseBookXml( QDomElement&, bool, const Akonadi::Collection &parentCollection, int depth );
+    void migrateLegacyBook(const QString &filename);
+    void parsePageXml(QDomElement &, bool, const Akonadi::Collection &parentCollection);
+    void parseBookXml(QDomElement &, bool, const Akonadi::Collection &parentCollection, int depth);
 
-  void migrationFinished();
-  void startMigration();
+    void migrationFinished();
+    void startMigration();
 
 private:
-  QDir m_backupDir;
-  QDir m_dataDir;
-  QStringList m_bookFiles;
-  bool unicode;
-  QString m_resourceIdentifier;
+    QDir m_backupDir;
+    QDir m_dataDir;
+    QStringList m_bookFiles;
+    bool unicode;
+    QString m_resourceIdentifier;
 
-  Akonadi::Item::List m_items;
-  QList<Akonadi::Collection::List> m_collectionLists;
-  Akonadi::Collection m_resourceCollection;
+    Akonadi::Item::List m_items;
+    QList<Akonadi::Collection::List> m_collectionLists;
+    Akonadi::Collection m_resourceCollection;
 
 };
 

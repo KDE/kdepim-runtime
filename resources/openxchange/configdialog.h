@@ -28,19 +28,19 @@ class KLineEdit;
 
 class ConfigDialog : public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ConfigDialog( WId windowId );
+public:
+    explicit ConfigDialog(WId windowId);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void save();
     void showAboutDialog();
     void updateButtonState();
     void checkConnection();
-    void checkConnectionJobFinished( KJob* );
+    void checkConnectionJobFinished(KJob *);
 
-  private:
+private:
     KConfigDialogManager *mManager;
     KLineEdit *mServerEdit;
     KLineEdit *mUserEdit;

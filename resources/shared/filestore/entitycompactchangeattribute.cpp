@@ -26,88 +26,87 @@ using namespace Akonadi;
 
 class FileStore::EntityCompactChangeAttribute::Private
 {
-  FileStore::EntityCompactChangeAttribute *const q;
+    FileStore::EntityCompactChangeAttribute *const q;
 
-  public:
-    explicit Private( FileStore::EntityCompactChangeAttribute *parent ) : q( parent )
+public:
+    explicit Private(FileStore::EntityCompactChangeAttribute *parent) : q(parent)
     {
     }
 
-    Private& operator=( const Private &other )
+    Private &operator=(const Private &other)
     {
-      if ( &other == this ) {
+        if (&other == this) {
+            return *this;
+        }
+
+        mRemoteId  = other.mRemoteId;
+        mRemoteRev = other.mRemoteRev;
         return *this;
-      }
-
-      mRemoteId  = other.mRemoteId;
-      mRemoteRev = other.mRemoteRev;
-      return *this;
     }
 
-  public:
+public:
     QString mRemoteId;
     QString mRemoteRev;
 };
 
 FileStore::EntityCompactChangeAttribute::EntityCompactChangeAttribute()
-  : Attribute(), d( new Private( this ) )
+    : Attribute(), d(new Private(this))
 {
 }
 
 FileStore::EntityCompactChangeAttribute::~EntityCompactChangeAttribute()
 {
-  delete d;
+    delete d;
 }
 
-void FileStore::EntityCompactChangeAttribute::setRemoteId( const QString &remoteId )
+void FileStore::EntityCompactChangeAttribute::setRemoteId(const QString &remoteId)
 {
-  d->mRemoteId = remoteId;
+    d->mRemoteId = remoteId;
 }
 
 QString FileStore::EntityCompactChangeAttribute::remoteId() const
 {
-  return d->mRemoteId;
+    return d->mRemoteId;
 }
 
-void FileStore::EntityCompactChangeAttribute::setRemoteRevision( const QString &remoteRev )
+void FileStore::EntityCompactChangeAttribute::setRemoteRevision(const QString &remoteRev)
 {
-  d->mRemoteRev = remoteRev;
+    d->mRemoteRev = remoteRev;
 }
 
 QString FileStore::EntityCompactChangeAttribute::remoteRevision() const
 {
-  return d->mRemoteRev;
+    return d->mRemoteRev;
 }
 
 QByteArray FileStore::EntityCompactChangeAttribute::type() const
 {
-    static const QByteArray sType( "ENTITYCOMPACTCHANGE" );
+    static const QByteArray sType("ENTITYCOMPACTCHANGE");
     return sType;
 }
 
-FileStore::EntityCompactChangeAttribute* FileStore::EntityCompactChangeAttribute::clone() const
+FileStore::EntityCompactChangeAttribute *FileStore::EntityCompactChangeAttribute::clone() const
 {
-  FileStore::EntityCompactChangeAttribute *copy = new FileStore::EntityCompactChangeAttribute();
-  *(copy->d) = *d;
-  return copy;
+    FileStore::EntityCompactChangeAttribute *copy = new FileStore::EntityCompactChangeAttribute();
+    *(copy->d) = *d;
+    return copy;
 }
 
 QByteArray FileStore::EntityCompactChangeAttribute::serialized() const
 {
-  QByteArray data;
-  QDataStream stream( &data, QIODevice::WriteOnly );
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
 
-  stream << d->mRemoteId;
-  stream << d->mRemoteRev;
+    stream << d->mRemoteId;
+    stream << d->mRemoteRev;
 
-  return data;
+    return data;
 }
 
-void FileStore::EntityCompactChangeAttribute::deserialize( const QByteArray &data )
+void FileStore::EntityCompactChangeAttribute::deserialize(const QByteArray &data)
 {
-  QDataStream stream( data );
-  stream >> d->mRemoteId;
-  stream >> d->mRemoteRev;
+    QDataStream stream(data);
+    stream >> d->mRemoteId;
+    stream >> d->mRemoteRev;
 }
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

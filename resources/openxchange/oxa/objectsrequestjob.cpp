@@ -32,64 +32,65 @@
 
 using namespace OXA;
 
-ObjectsRequestJob::ObjectsRequestJob( const Folder &folder, qulonglong lastSync, Mode mode, QObject *parent )
-  : KJob( parent ), mFolder( folder ), mLastSync( lastSync ), mMode( mode )
+ObjectsRequestJob::ObjectsRequestJob(const Folder &folder, qulonglong lastSync, Mode mode, QObject *parent)
+    : KJob(parent), mFolder(folder), mLastSync(lastSync), mMode(mode)
 {
 }
 
 void ObjectsRequestJob::start()
 {
-  QDomDocument document;
-  QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
-  QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "folder_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "lastsync" ), OXUtils::writeNumber( mLastSync ) );
-  if ( mMode == Modified )
-    DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "MODIFIED" ) );
-  else
-    DAVUtils::addOxElement( document, prop, QLatin1String( "objectmode" ), QLatin1String( "DELETED" ) );
+    QDomDocument document;
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
+    DAVUtils::addOxElement(document, prop, QLatin1String("folder_id"), OXUtils::writeNumber(mFolder.objectId()));
+    DAVUtils::addOxElement(document, prop, QLatin1String("lastsync"), OXUtils::writeNumber(mLastSync));
+    if (mMode == Modified) {
+        DAVUtils::addOxElement(document, prop, QLatin1String("objectmode"), QLatin1String("MODIFIED"));
+    } else {
+        DAVUtils::addOxElement(document, prop, QLatin1String("objectmode"), QLatin1String("DELETED"));
+    }
 
-  const QString path = ObjectUtils::davPath( mFolder.module() );
+    const QString path = ObjectUtils::davPath(mFolder.module());
 
-  KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
-  connect(job, &KIO::DavJob::result, this, &ObjectsRequestJob::davJobFinished);
+    KIO::DavJob *job = DavManager::self()->createFindJob(path, document);
+    connect(job, &KIO::DavJob::result, this, &ObjectsRequestJob::davJobFinished);
 }
 
 Object::List ObjectsRequestJob::objects() const
 {
-  return mObjects;
+    return mObjects;
 }
 
-void ObjectsRequestJob::davJobFinished( KJob *job )
+void ObjectsRequestJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
+
+    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
+
+    const QDomDocument document = davJob->response();
+
+    QString errorText, errorStatus;
+    if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
+        setError(UserDefinedError);
+        setErrorText(errorText);
+        emitResult();
+        return;
+    }
+
+    QDomElement multistatus = document.documentElement();
+    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    while (!response.isNull()) {
+        const QDomNodeList props = response.elementsByTagName("prop");
+        const QDomElement prop = props.at(0).toElement();
+        mObjects.append(ObjectUtils::parseObject(prop, mFolder.module()));
+        response = response.nextSiblingElement();
+    }
+
     emitResult();
-    return;
-  }
-
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const QDomDocument document = davJob->response();
-
-  QString errorText, errorStatus;
-  if ( DAVUtils::davErrorOccurred( document, errorText, errorStatus ) ) {
-    setError( UserDefinedError );
-    setErrorText( errorText );
-    emitResult();
-    return;
-  }
-
-  QDomElement multistatus = document.documentElement();
-  QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  while ( !response.isNull() ) {
-    const QDomNodeList props = response.elementsByTagName( "prop" );
-    const QDomElement prop = props.at( 0 ).toElement();
-    mObjects.append( ObjectUtils::parseObject( prop, mFolder.module() ) );
-    response = response.nextSiblingElement();
-  }
-
-  emitResult();
 }
 

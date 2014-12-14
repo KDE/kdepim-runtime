@@ -26,19 +26,18 @@
 #include <kconfigskeleton.h>
 #include <QStandardPaths>
 
-
 using namespace Akonadi;
 using namespace KCalCore;
 
-static const QLatin1String sNotesType( "application/x-vnd.kde.notes" );
+static const QLatin1String sNotesType("application/x-vnd.kde.notes");
 
-NotesResource::NotesResource( const QString &id )
-    : ICalResource( id, allMimeTypes(), QLatin1String("knotes") )
+NotesResource::NotesResource(const QString &id)
+    : ICalResource(id, allMimeTypes(), QLatin1String("knotes"))
 {
-  KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath*>( mSettings->findItem( QLatin1String("Path") ) );
-  if ( item ) {
-    item->setDefaultValue( QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("knotes/"));
-  }
+    KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath *>(mSettings->findItem(QLatin1String("Path")));
+    if (item) {
+        item->setDefaultValue(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("knotes/"));
+    }
 }
 
 NotesResource::~NotesResource()
@@ -50,9 +49,8 @@ QStringList NotesResource::allMimeTypes() const
     return QStringList() << sNotesType;
 }
 
-QString NotesResource::mimeType( const KCalCore::IncidenceBase::Ptr &  ) const
+QString NotesResource::mimeType(const KCalCore::IncidenceBase::Ptr &) const
 {
-  return sNotesType;
+    return sNotesType;
 }
-
 

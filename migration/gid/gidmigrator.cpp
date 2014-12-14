@@ -11,7 +11,6 @@
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
     License for more details.
 
-
     You should have received a copy of the GNU Library General Public License
     along with this library; see the file COPYING.LIB.  If not, write to
     the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
@@ -24,8 +23,8 @@
 #include "gidmigrationjob.h"
 
 GidMigrator::GidMigrator(const QString &mimeType)
-    :MigratorBase(QLatin1String("gidmigrator") + mimeType),
-    mMimeType(mimeType)
+    : MigratorBase(QLatin1String("gidmigrator") + mimeType),
+      mMimeType(mimeType)
 {
 }
 
@@ -41,7 +40,7 @@ QString GidMigrator::displayName() const
 
 QString GidMigrator::description() const
 {
-    return i18n("Ensures that all items with the mimetype %1 have a GID if a GID extractor is available.",mMimeType);
+    return i18n("Ensures that all items with the mimetype %1 have a GID if a GID extractor is available.", mMimeType);
 }
 
 bool GidMigrator::canStart()

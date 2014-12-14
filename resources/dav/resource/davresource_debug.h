@@ -23,5 +23,5 @@
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(DAVRESOURCE_LOG)
 
-#endif 
+#endif
 

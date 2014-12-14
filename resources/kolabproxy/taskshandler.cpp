@@ -21,30 +21,30 @@
 
 #include "taskshandler.h"
 
-TasksHandler::TasksHandler( const Akonadi::Collection &imapCollection )
-  : IncidenceHandler( imapCollection )
+TasksHandler::TasksHandler(const Akonadi::Collection &imapCollection)
+    : IncidenceHandler(imapCollection)
 {
-  m_mimeType = "application/x-vnd.kolab.task";
+    m_mimeType = "application/x-vnd.kolab.task";
 }
 
 TasksHandler::~TasksHandler()
 {
 }
 
-KMime::Message::Ptr TasksHandler::incidenceToMime( const KCalCore::Incidence::Ptr &incidence )
+KMime::Message::Ptr TasksHandler::incidenceToMime(const KCalCore::Incidence::Ptr &incidence)
 {
-  return
-    Kolab::KolabObjectWriter::writeTodo(
-      incidence.dynamicCast<KCalCore::Todo>(),
-      m_formatVersion, PRODUCT_ID, QLatin1String("UTC") );
+    return
+        Kolab::KolabObjectWriter::writeTodo(
+            incidence.dynamicCast<KCalCore::Todo>(),
+            m_formatVersion, PRODUCT_ID, QLatin1String("UTC"));
 }
 
 QStringList TasksHandler::contentMimeTypes()
 {
-  return QStringList() << KCalCore::Todo::todoMimeType();
+    return QStringList() << KCalCore::Todo::todoMimeType();
 }
 
 QString TasksHandler::iconName() const
 {
-  return QString::fromLatin1( "view-calendar-tasks" );
+    return QString::fromLatin1("view-calendar-tasks");
 }

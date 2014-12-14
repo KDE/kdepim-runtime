@@ -31,7 +31,7 @@ class NewMailNotifierSettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit NewMailNotifierSettingsDialog(QWidget *parent=0);
+    explicit NewMailNotifierSettingsDialog(QWidget *parent = 0);
     ~NewMailNotifierSettingsDialog();
 
 private Q_SLOTS:

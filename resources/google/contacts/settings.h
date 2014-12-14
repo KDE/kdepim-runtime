@@ -22,9 +22,9 @@
 
 class Settings: public GoogleSettings
 {
-  Q_OBJECT
-  Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.GoogleContacts.ExtendedSettings" )
-  public:
+    Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.GoogleContacts.ExtendedSettings")
+public:
     Settings();
     static Settings *self();
 

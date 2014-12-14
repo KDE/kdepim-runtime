@@ -22,72 +22,72 @@ DavItem::DavItem()
 {
 }
 
-DavItem::DavItem( const QString &url, const QString &contentType, const QByteArray &data, const QString &etag )
-  : mUrl( url ), mContentType( contentType ), mData( data ), mEtag( etag )
+DavItem::DavItem(const QString &url, const QString &contentType, const QByteArray &data, const QString &etag)
+    : mUrl(url), mContentType(contentType), mData(data), mEtag(etag)
 {
 }
 
-void DavItem::setUrl( const QString &url )
+void DavItem::setUrl(const QString &url)
 {
-  mUrl = url;
+    mUrl = url;
 }
 
 QString DavItem::url() const
 {
-  return mUrl;
+    return mUrl;
 }
 
-void DavItem::setContentType( const QString &contentType )
+void DavItem::setContentType(const QString &contentType)
 {
-  mContentType = contentType;
+    mContentType = contentType;
 }
 
 QString DavItem::contentType() const
 {
-  return mContentType;
+    return mContentType;
 }
 
-void DavItem::setData( const QByteArray &data )
+void DavItem::setData(const QByteArray &data)
 {
-  mData = data;
+    mData = data;
 }
 
 QByteArray DavItem::data() const
 {
-  return mData;
+    return mData;
 }
 
-void DavItem::setEtag( const QString &etag )
+void DavItem::setEtag(const QString &etag)
 {
-  mEtag = etag;
+    mEtag = etag;
 }
 
 QString DavItem::etag() const
 {
-  return mEtag;
+    return mEtag;
 }
 
-QDataStream& operator<<( QDataStream &stream, const DavItem &item )
+QDataStream &operator<<(QDataStream &stream, const DavItem &item)
 {
-  stream << item.url();
-  stream << item.contentType();
-  stream << item.data();
-  stream << item.etag();
+    stream << item.url();
+    stream << item.contentType();
+    stream << item.data();
+    stream << item.etag();
 
-  return stream;
+    return stream;
 }
 
-QDataStream& operator>>( QDataStream &stream, DavItem &item )
+QDataStream &operator>>(QDataStream &stream, DavItem &item)
 {
-  QString url, contentType, etag;
-  QByteArray data;
+    QString url, contentType, etag;
+    QByteArray data;
 
-  stream >> url;
-  stream >> contentType;
-  stream >> data;
-  stream >> etag;
+    stream >> url;
+    stream >> contentType;
+    stream >> data;
+    stream >> etag;
 
-  item = DavItem( url, contentType, data, etag );
+    item = DavItem(url, contentType, data, etag);
 
-  return stream;
+    return stream;
 }

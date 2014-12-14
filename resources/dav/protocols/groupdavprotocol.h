@@ -23,7 +23,7 @@
 
 class GroupdavProtocol : public DavProtocolBase
 {
-  public:
+public:
     GroupdavProtocol();
     virtual bool supportsPrincipals() const;
     virtual bool useReport() const;
@@ -31,12 +31,12 @@ class GroupdavProtocol : public DavProtocolBase
     virtual QDomDocument collectionsQuery() const;
     virtual QString collectionsXQuery() const;
     virtual QList<QDomDocument> itemsQueries() const;
-    virtual QString mimeTypeForQuery( int index ) const;
+    virtual QString mimeTypeForQuery(int index) const;
 
-    virtual DavCollection::ContentTypes collectionContentTypes( const QDomElement &propstat ) const;
+    virtual DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const;
     virtual QString contactsMimeType() const;
 
-  private:
+private:
     QList<QDomDocument> mItemsQueries;
 };
 

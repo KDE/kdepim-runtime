@@ -30,88 +30,89 @@
 
 using namespace OXA;
 
-ObjectModifyJob::ObjectModifyJob( const Object &object, QObject *parent )
-  : KJob( parent ), mObject( object )
+ObjectModifyJob::ObjectModifyJob(const Object &object, QObject *parent)
+    : KJob(parent), mObject(object)
 {
 }
 
 void ObjectModifyJob::start()
 {
-  if ( ObjectUtils::needsPreloading( mObject ) ) {
-    KJob *job = ObjectUtils::preloadJob( mObject );
-    connect(job, &KJob::result, this, &ObjectModifyJob::preloadingJobFinished);
-    job->start();
-  } else {
-    QDomDocument document;
-    QDomElement propertyupdate = DAVUtils::addDavElement( document, document, QLatin1String( "propertyupdate" ) );
-    QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
-    QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
+    if (ObjectUtils::needsPreloading(mObject)) {
+        KJob *job = ObjectUtils::preloadJob(mObject);
+        connect(job, &KJob::result, this, &ObjectModifyJob::preloadingJobFinished);
+        job->start();
+    } else {
+        QDomDocument document;
+        QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
+        QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
+        QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
 
-    ObjectUtils::addObjectElements( document, prop, mObject );
+        ObjectUtils::addObjectElements(document, prop, mObject);
 
-    const QString path = ObjectUtils::davPath( mObject.module() );
+        const QString path = ObjectUtils::davPath(mObject.module());
 
-    KIO::DavJob *job = DavManager::self()->createPatchJob( path, document );
-    connect(job, &KJob::result, this, &ObjectModifyJob::davJobFinished);
-  }
+        KIO::DavJob *job = DavManager::self()->createPatchJob(path, document);
+        connect(job, &KJob::result, this, &ObjectModifyJob::davJobFinished);
+    }
 }
 
 Object ObjectModifyJob::object() const
 {
-  return mObject;
+    return mObject;
 }
 
-void ObjectModifyJob::preloadingJobFinished( KJob *job )
+void ObjectModifyJob::preloadingJobFinished(KJob *job)
 {
-  void *preloadedData = ObjectUtils::preloadData( mObject, job );
+    void *preloadedData = ObjectUtils::preloadData(mObject, job);
 
-  QDomDocument document;
-  QDomElement propertyupdate = DAVUtils::addDavElement( document, document, QLatin1String( "propertyupdate" ) );
-  QDomElement set = DAVUtils::addDavElement( document, propertyupdate, QLatin1String( "set" ) );
-  QDomElement prop = DAVUtils::addDavElement( document, set, QLatin1String( "prop" ) );
+    QDomDocument document;
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
 
-  ObjectUtils::addObjectElements( document, prop, mObject, preloadedData );
+    ObjectUtils::addObjectElements(document, prop, mObject, preloadedData);
 
-  const QString path = ObjectUtils::davPath( mObject.module() );
+    const QString path = ObjectUtils::davPath(mObject.module());
 
-  KIO::DavJob *davJob = DavManager::self()->createPatchJob( path, document );
-  connect(davJob, &KIO::DavJob::result, this, &ObjectModifyJob::davJobFinished);
+    KIO::DavJob *davJob = DavManager::self()->createPatchJob(path, document);
+    connect(davJob, &KIO::DavJob::result, this, &ObjectModifyJob::davJobFinished);
 }
 
-void ObjectModifyJob::davJobFinished( KJob *job )
+void ObjectModifyJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
+
+    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
+
+    const QDomDocument document = davJob->response();
+
+    QString errorText, errorStatus;
+    if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
+        setError(UserDefinedError);
+        setErrorText(errorText);
+        emitResult();
+        return;
+    }
+
+    QDomElement multistatus = document.documentElement();
+    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    const QDomNodeList props = response.elementsByTagName("prop");
+    const QDomElement prop = props.at(0).toElement();
+
+    QDomElement element = prop.firstChildElement();
+    while (!element.isNull()) {
+        if (element.tagName() == QLatin1String("last_modified")) {
+            mObject.setLastModified(OXUtils::readString(element.text()));
+        }
+
+        element = element.nextSiblingElement();
+    }
+
     emitResult();
-    return;
-  }
-
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const QDomDocument document = davJob->response();
-
-  QString errorText, errorStatus;
-  if ( DAVUtils::davErrorOccurred( document, errorText, errorStatus ) ) {
-    setError( UserDefinedError );
-    setErrorText( errorText );
-    emitResult();
-    return;
-  }
-
-  QDomElement multistatus = document.documentElement();
-  QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  const QDomNodeList props = response.elementsByTagName( "prop" );
-  const QDomElement prop = props.at( 0 ).toElement();
-
-  QDomElement element = prop.firstChildElement();
-  while ( !element.isNull() ) {
-    if ( element.tagName() == QLatin1String( "last_modified" ) )
-      mObject.setLastModified( OXUtils::readString( element.text() ) );
-
-    element = element.nextSiblingElement();
-  }
-
-  emitResult();
 }
 

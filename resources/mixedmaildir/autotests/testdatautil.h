@@ -26,19 +26,18 @@ class QStringList;
 
 namespace TestDataUtil
 {
-  enum FolderType {
+enum FolderType {
     InvalidFolder,
     MaildirFolder,
     MBoxFolder
-  };
+};
 
-  FolderType folderType( const QString &testDataName );
+FolderType folderType(const QString &testDataName);
 
-  QStringList testDataNames();
+QStringList testDataNames();
 
-  bool installFolder( const QString &testDataName, const QString &installPath, const QString &folderName );
+bool installFolder(const QString &testDataName, const QString &installPath, const QString &folderName);
 }
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

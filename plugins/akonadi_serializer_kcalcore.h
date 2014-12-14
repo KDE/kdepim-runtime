@@ -27,30 +27,31 @@
 #include <AkonadiCore/gidextractorinterface.h>
 #include <KCalCore/ICalFormat>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class SerializerPluginKCalCore : public QObject,
-                             public ItemSerializerPlugin,
-                             public DifferencesAlgorithmInterface,
-                             public GidExtractorInterface
+    public ItemSerializerPlugin,
+    public DifferencesAlgorithmInterface,
+    public GidExtractorInterface
 
 {
     Q_OBJECT
-    Q_INTERFACES( Akonadi::ItemSerializerPlugin )
-    Q_INTERFACES( Akonadi::DifferencesAlgorithmInterface )
-    Q_INTERFACES( Akonadi::GidExtractorInterface )
+    Q_INTERFACES(Akonadi::ItemSerializerPlugin)
+    Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
+    Q_INTERFACES(Akonadi::GidExtractorInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKCalCore")
-  public:
-    bool deserialize( Item& item, const QByteArray& label, QIODevice& data, int version );
-    void serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version );
+public:
+    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version);
+    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version);
 
-    void compare( Akonadi::AbstractDifferencesReporter *reporter,
-                  const Akonadi::Item &leftItem,
-                  const Akonadi::Item &rightItem );
+    void compare(Akonadi::AbstractDifferencesReporter *reporter,
+                 const Akonadi::Item &leftItem,
+                 const Akonadi::Item &rightItem);
 
-    QString extractGid( const Item &item ) const;
+    QString extractGid(const Item &item) const;
 
-  private:
+private:
     KCalCore::ICalFormat mFormat;
 };
 

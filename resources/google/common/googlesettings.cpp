@@ -33,12 +33,12 @@ QString GoogleSettings::clientSecret() const
     return QLatin1String("mdT1DjzohxN3npUUzkENT0gO");
 }
 
-void GoogleSettings::setWindowId( WId id )
+void GoogleSettings::setWindowId(WId id)
 {
     m_winId = id;
 }
 
-void GoogleSettings::setResourceId( const QString &resourceIdentificator )
+void GoogleSettings::setResourceId(const QString &resourceIdentificator)
 {
     m_resourceId = resourceIdentificator;
 }
@@ -48,8 +48,8 @@ QString GoogleSettings::account() const
     return SettingsBase::account();
 }
 
-void GoogleSettings::setAccount( const QString &account )
+void GoogleSettings::setAccount(const QString &account)
 {
-    SettingsBase::setAccount( account );
+    SettingsBase::setAccount(account);
 }
 

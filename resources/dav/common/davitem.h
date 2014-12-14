@@ -35,7 +35,7 @@
  */
 class DavItem
 {
-  public:
+public:
     /**
      * Defines a list of DAV item objects.
      */
@@ -54,12 +54,12 @@ class DavItem
      * @param data The actual raw content data of the item.
      * @param etag The etag of the item.
      */
-    DavItem( const QString &url, const QString &contentType, const QByteArray &data, const QString &etag );
+    DavItem(const QString &url, const QString &contentType, const QByteArray &data, const QString &etag);
 
     /**
      * Sets the @p url that identifies the item.
      */
-    void setUrl( const QString &url );
+    void setUrl(const QString &url);
 
     /**
      * Returns the url that identifies the item.
@@ -69,7 +69,7 @@ class DavItem
     /**
      * Sets the content @p type of the item.
      */
-    void setContentType( const QString &type );
+    void setContentType(const QString &type);
 
     /**
      * Returns the content type of the item.
@@ -79,7 +79,7 @@ class DavItem
     /**
      * Sets the raw content @p data of the item.
      */
-    void setData( const QByteArray &data );
+    void setData(const QByteArray &data);
 
     /**
      * Returns the raw content data of the item.
@@ -89,21 +89,21 @@ class DavItem
     /**
      * Sets the @p etag of the item.
      */
-    void setEtag( const QString &etag );
+    void setEtag(const QString &etag);
 
     /**
      * Returns the etag of the item.
      */
     QString etag() const;
 
-  private:
+private:
     QString mUrl;
     QString mContentType;
     QByteArray mData;
     QString mEtag;
 };
 
-QDataStream& operator<<( QDataStream &out, const DavItem &item );
-QDataStream& operator>>( QDataStream &in, DavItem &item);
+QDataStream &operator<<(QDataStream &out, const DavItem &item);
+QDataStream &operator>>(QDataStream &in, DavItem &item);
 
 #endif

@@ -23,45 +23,45 @@
 #include "settings.h"
 #include "singlefileresource.h"
 
-namespace KMBox {
+namespace KMBox
+{
 class MBox;
 }
 
 class MboxResource : public Akonadi::SingleFileResource<Settings>
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit MboxResource( const QString &id );
+public:
+    explicit MboxResource(const QString &id);
     ~MboxResource();
 
-  protected Q_SLOTS:
-    virtual bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void retrieveItems( const Akonadi::Collection &col );
+protected Q_SLOTS:
+    virtual bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void retrieveItems(const Akonadi::Collection &col);
 
-  protected:
+protected:
     virtual void aboutToQuit();
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void itemRemoved(const Akonadi::Item &item);
 
     // From SingleFileResourceBase
     virtual void handleHashChange();
-    virtual bool readFromFile( const QString &fileName );
-    virtual bool writeToFile( const QString &fileName );
+    virtual bool readFromFile(const QString &fileName);
+    virtual bool writeToFile(const QString &fileName);
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Settings>* dlg );
+    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg);
 
+private Q_SLOTS:
+    void onCollectionFetch(KJob *job);
+    void onCollectionModify(KJob *job);
 
-  private Q_SLOTS:
-    void onCollectionFetch( KJob *job );
-    void onCollectionModify( KJob *job );
-
-  private:
-    QMap<KJob*, Akonadi::Item> mCurrentItemDeletions;
+private:
+    QMap<KJob *, Akonadi::Item> mCurrentItemDeletions;
     KMBox::MBox *mMBox;
 };
 

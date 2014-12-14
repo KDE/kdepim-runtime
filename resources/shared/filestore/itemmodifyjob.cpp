@@ -25,68 +25,66 @@ using namespace Akonadi;
 
 class FileStore::ItemModifyJob::Private
 {
-  public:
-    explicit Private( FileStore::ItemModifyJob *parent )
-      : mIgnorePayload( false ), mParent( parent )
+public:
+    explicit Private(FileStore::ItemModifyJob *parent)
+        : mIgnorePayload(false), mParent(parent)
     {
     }
 
-  public:
+public:
     bool mIgnorePayload;
     Item mItem;
     QSet<QByteArray> mParts;
 
-  private:
+private:
     FileStore::ItemModifyJob *mParent;
 };
 
-FileStore::ItemModifyJob::ItemModifyJob( const Item &item, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::ItemModifyJob::ItemModifyJob(const Item &item, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  d->mItem = item;
+    d->mItem = item;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::ItemModifyJob::~ItemModifyJob()
 {
-  delete d;
+    delete d;
 }
 
-void FileStore::ItemModifyJob::setIgnorePayload( bool ignorePayload )
+void FileStore::ItemModifyJob::setIgnorePayload(bool ignorePayload)
 {
-  d->mIgnorePayload = ignorePayload;
+    d->mIgnorePayload = ignorePayload;
 }
 
 bool FileStore::ItemModifyJob::ignorePayload() const
 {
-  return d->mIgnorePayload;
+    return d->mIgnorePayload;
 }
 
 Item FileStore::ItemModifyJob::item() const
 {
-  return d->mItem;
+    return d->mItem;
 }
 
-void FileStore::ItemModifyJob::setParts( const QSet<QByteArray>& parts )
+void FileStore::ItemModifyJob::setParts(const QSet<QByteArray> &parts)
 {
     d->mParts = parts;
 }
 
-const QSet<QByteArray>& FileStore::ItemModifyJob::parts() const
+const QSet<QByteArray> &FileStore::ItemModifyJob::parts() const
 {
-  return d->mParts;
+    return d->mParts;
 }
 
-bool FileStore::ItemModifyJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::ItemModifyJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::ItemModifyJob::handleItemModified( const Item &item )
+void FileStore::ItemModifyJob::handleItemModified(const Item &item)
 {
-  d->mItem = item;
+    d->mItem = item;
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

@@ -24,7 +24,8 @@
 #include <QDialog>
 
 class ImapResourceBase;
-namespace Ui {
+namespace Ui
+{
 class ServerInfo;
 }
 

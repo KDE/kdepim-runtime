@@ -27,28 +27,27 @@ class MixedMaildirStore;
 
 class ImapCacheAdapter : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ImapCacheAdapter( MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
+public:
+    explicit ImapCacheAdapter(MixedMaildirStore *store, QObject *parent = Q_NULLPTR);
     ~ImapCacheAdapter();
 
-    void addAccount( const QString &topLevelFolder, const QString &accountName );
+    void addAccount(const QString &topLevelFolder, const QString &accountName);
 
-  Q_SIGNALS:
-    void finished( int messageType, const QString &message );
+Q_SIGNALS:
+    void finished(int messageType, const QString &message);
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void start();
 
-  private:
+private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void createResourceResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void collectionModifyResult( KJob* ) )
+    Q_PRIVATE_SLOT(d, void createResourceResult(KJob *))
+    Q_PRIVATE_SLOT(d, void collectionModifyResult(KJob *))
 };
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

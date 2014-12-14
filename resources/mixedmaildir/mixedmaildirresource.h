@@ -31,73 +31,72 @@ class MixedMaildirStore;
 
 class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit MixedMaildirResource( const QString &id );
+public:
+    explicit MixedMaildirResource(const QString &id);
     ~MixedMaildirResource();
 
-  public Q_SLOTS:
-    void configure( WId windowId );
+public Q_SLOTS:
+    void configure(WId windowId);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems(const Akonadi::Collection &col);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-  protected:
+protected:
     void aboutToQuit();
 
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &source, const Akonadi::Collection &dest );
-    void itemRemoved( const Akonadi::Item &item );
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &source, const Akonadi::Collection &dest);
+    void itemRemoved(const Akonadi::Item &item);
 
-    void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    void collectionChanged( const Akonadi::Collection &collection );
-    void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes );
-    void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &dest );
-    void collectionRemoved( const Akonadi::Collection &collection );
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
+    void collectionChanged(const Akonadi::Collection &collection);
+    void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes);
+    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &dest);
+    void collectionRemoved(const Akonadi::Collection &collection);
 
-  private:
+private:
     bool ensureDirExists();
     bool ensureSaneConfiguration();
 
-    void checkForInvalidatedIndexCollections( KJob * job );
+    void checkForInvalidatedIndexCollections(KJob *job);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void reapplyConfiguration();
 
-    void retrieveCollectionsResult( KJob *job );
-    void retrieveItemsResult( KJob *job );
-    void retrieveItemResult( KJob *job );
+    void retrieveCollectionsResult(KJob *job);
+    void retrieveItemsResult(KJob *job);
+    void retrieveItemResult(KJob *job);
 
-    void itemAddedResult( KJob *job );
-    void itemChangedResult( KJob *job );
-    void itemMovedResult( KJob *job );
-    void itemRemovedResult( KJob *job );
+    void itemAddedResult(KJob *job);
+    void itemChangedResult(KJob *job);
+    void itemMovedResult(KJob *job);
+    void itemRemovedResult(KJob *job);
 
-    void itemsDeleted( KJob *job );
+    void itemsDeleted(KJob *job);
 
-    void collectionAddedResult( KJob *job );
-    void collectionChangedResult( KJob *job );
-    void collectionMovedResult( KJob *job );
-    void collectionRemovedResult( KJob *job );
+    void collectionAddedResult(KJob *job);
+    void collectionChangedResult(KJob *job);
+    void collectionMovedResult(KJob *job);
+    void collectionRemovedResult(KJob *job);
 
-    void compactStore( const QVariant &arg );
-    void compactStoreResult( KJob *job );
+    void compactStore(const QVariant &arg);
+    void compactStoreResult(KJob *job);
 
-    void restoreTags( const QVariant &arg );
+    void restoreTags(const QVariant &arg);
     void processNextTagContext();
-    void tagFetchJobResult( KJob *job );
+    void tagFetchJobResult(KJob *job);
 
-  private:
+private:
     MixedMaildirStore *mStore;
 
-    struct TagContext
-    {
-      Akonadi::Item mItem;
-      QStringList mTagList;
+    struct TagContext {
+        Akonadi::Item mItem;
+        QStringList mTagList;
     };
 
     typedef QList<TagContext> TagContextList;
@@ -112,4 +111,3 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

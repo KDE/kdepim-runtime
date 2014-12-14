@@ -27,30 +27,29 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/FileStorage>
 
-
 class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::Settings>
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ICalResourceBase( const QString &id );
+public:
+    explicit ICalResourceBase(const QString &id);
     ~ICalResourceBase();
 
-  protected Q_SLOTS:
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    void retrieveItems( const Akonadi::Collection &col );
+protected Q_SLOTS:
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void retrieveItems(const Akonadi::Collection &col);
 
-  protected:
+protected:
     enum CheckType { CheckForAdded, CheckForChanged };
 
-    void initialise( const QStringList &mimeTypes, const QString &icon );
-    bool readFromFile( const QString &fileName );
-    bool writeToFile( const QString &fileName );
+    void initialise(const QStringList &mimeTypes, const QString &icon);
+    bool readFromFile(const QString &fileName);
+    bool writeToFile(const QString &fileName);
 
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings>* dlg );
+    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings> *dlg);
 
     virtual void aboutToQuit();
 
@@ -60,13 +59,13 @@ class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::
      * @param item the incidence ID to retrieve is provided by @c item.remoteId()
      * @return true if item retrieved, false if not.
      */
-    virtual bool doRetrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts ) = 0;
+    virtual bool doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) = 0;
 
     /**
      * Retrieve all incidences from the calendar, and set each into a new item's payload.
      * Retrieval of the items should be signalled by calling @p itemsRetrieved().
      */
-    virtual void doRetrieveItems( const Akonadi::Collection &col ) = 0;
+    virtual void doRetrieveItems(const Akonadi::Collection &col) = 0;
 
     /**
      * To be called at the start of derived class implementations of itemAdded()
@@ -76,9 +75,9 @@ class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::
      *         false if a check failed, in which case itemAdded() or itemChanged()
      *               should stop processing.
      */
-    template <typename PayloadPtr> bool checkItemAddedChanged( const Akonadi::Item &item, CheckType type );
+    template <typename PayloadPtr> bool checkItemAddedChanged(const Akonadi::Item &item, CheckType type);
 
-    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemRemoved(const Akonadi::Item &item);
 
     /** Return the local calendar. */
     KCalCore::MemoryCalendar::Ptr calendar() const;
@@ -86,26 +85,26 @@ class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::
     /** Return the calendar file storage. */
     KCalCore::FileStorage::Ptr fileStorage() const;
 
-  private:
+private:
     KCalCore::MemoryCalendar::Ptr mCalendar;
     KCalCore::FileStorage::Ptr mFileStorage;
 };
 
 template <typename PayloadPtr>
-bool ICalResourceBase::checkItemAddedChanged( const Akonadi::Item &item, CheckType type )
+bool ICalResourceBase::checkItemAddedChanged(const Akonadi::Item &item, CheckType type)
 {
-  if ( !mCalendar ) {
-    cancelTask( i18n( "Calendar not loaded." ) );
-    return false;
-  }
-  if ( !item.hasPayload<PayloadPtr>() ) {
-    QString msg = ( type == CheckForAdded )
-                          ? i18n( "Unable to retrieve added item %1.", item.id() )
-                          : i18n( "Unable to retrieve modified item %1.", item.id() );
-    cancelTask( msg );
-    return false;
-  }
-  return true;
+    if (!mCalendar) {
+        cancelTask(i18n("Calendar not loaded."));
+        return false;
+    }
+    if (!item.hasPayload<PayloadPtr>()) {
+        QString msg = (type == CheckForAdded)
+                      ? i18n("Unable to retrieve added item %1.", item.id())
+                      : i18n("Unable to retrieve modified item %1.", item.id());
+        cancelTask(msg);
+        return false;
+    }
+    return true;
 }
 
 #endif

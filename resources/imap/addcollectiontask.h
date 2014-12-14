@@ -24,30 +24,31 @@
 
 #include "resourcetask.h"
 
-namespace KIMAP {
+namespace KIMAP
+{
 class Session;
 }
 
 class AddCollectionTask : public ResourceTask
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit AddCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~AddCollectionTask();
+    explicit AddCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~AddCollectionTask();
 
 private Q_SLOTS:
-  void onCreateDone( KJob *job );
-  void onSubscribeDone( KJob *job );
-  void onSetMetaDataDone( KJob *job );
+    void onCreateDone(KJob *job);
+    void onSubscribeDone(KJob *job);
+    void onSetMetaDataDone(KJob *job);
 
 protected:
-  void doStart( KIMAP::Session *session ) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
-  Akonadi::Collection m_collection;
-  uint m_pendingJobs;
-  KIMAP::Session *m_session;
+    Akonadi::Collection m_collection;
+    uint m_pendingJobs;
+    KIMAP::Session *m_session;
 };
 
 #endif

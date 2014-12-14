@@ -30,12 +30,12 @@ MessageHelper::~MessageHelper()
 }
 
 Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message,
-                                                   const qint64 uid,
-                                                   const qint64 size,
-                                                   const QList<KIMAP::MessageAttribute> &attrs,
-                                                   const QList<QByteArray> &flags,
-                                                   const KIMAP::FetchJob::FetchScope &scope,
-                                                   bool &ok) const
+        const qint64 uid,
+        const qint64 size,
+        const QList<KIMAP::MessageAttribute> &attrs,
+        const QList<QByteArray> &flags,
+        const KIMAP::FetchJob::FetchScope &scope,
+        bool &ok) const
 {
     Q_UNUSED(attrs);
 
@@ -54,7 +54,7 @@ Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message,
         if (message->body().isEmpty() && (scope.mode == KIMAP::FetchJob::FetchScope::Full || scope.mode == KIMAP::FetchJob::FetchScope::Content)) {
             // In that case put a space in as body so that it gets cached
             // otherwise we'll wrongly believe the body part is missing from the cache
-            message->setBody( " " );
+            message->setBody(" ");
         }
         i.setRemoteId(QString::number(uid));
         i.setMimeType(KMime::Message::mimeType());

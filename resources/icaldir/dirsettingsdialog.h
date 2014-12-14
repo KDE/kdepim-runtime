@@ -27,21 +27,22 @@
 
 class KConfigDialogManager;
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class SettingsDialog : public QDialog
 {
-  Q_OBJECT
-  public:
-    explicit SettingsDialog( WId windowId );
+    Q_OBJECT
+public:
+    explicit SettingsDialog(WId windowId);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void save();
     void validate();
 
-  private:
+private:
     Ui::SettingsDialog ui;
-    KConfigDialogManager* mManager;
+    KConfigDialogManager *mManager;
     QPushButton *mOkButton;
 };
 

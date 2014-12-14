@@ -18,7 +18,8 @@
 #ifndef KNOTESMIGRATORCONFIG_H
 #define KNOTESMIGRATORCONFIG_H
 
-namespace KCal {
+namespace KCal
+{
 class Journal;
 }
 class KNoteConfig;

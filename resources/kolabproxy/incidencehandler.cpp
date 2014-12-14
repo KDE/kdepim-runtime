@@ -28,8 +28,8 @@
 
 #include <KLocalizedString>
 
-IncidenceHandler::IncidenceHandler( const Akonadi::Collection &imapCollection )
-  : KolabHandler( imapCollection )
+IncidenceHandler::IncidenceHandler(const Akonadi::Collection &imapCollection)
+    : KolabHandler(imapCollection)
 {
 }
 
@@ -37,61 +37,61 @@ IncidenceHandler::~IncidenceHandler()
 {
 }
 
-Akonadi::Item::List IncidenceHandler::translateItems( const Akonadi::Item::List &items )
+Akonadi::Item::List IncidenceHandler::translateItems(const Akonadi::Item::List &items)
 {
-  Akonadi::Item::List newItems;
-  Q_FOREACH ( const Akonadi::Item &item, items ) {
-    if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-      qWarning() << "Payload is not a MessagePtr!";
-      continue;
-    }
-    const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
+    Akonadi::Item::List newItems;
+    Q_FOREACH (const Akonadi::Item &item, items) {
+        if (!item.hasPayload<KMime::Message::Ptr>()) {
+            qWarning() << "Payload is not a MessagePtr!";
+            continue;
+        }
+        const KMime::Message::Ptr payload = item.payload<KMime::Message::Ptr>();
 
-    KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
-    if ( checkForErrors( item.id() ) ) {
-      continue;
+        KCalCore::Incidence::Ptr incidencePtr = Kolab::KolabObjectReader(payload).getIncidence();
+        if (checkForErrors(item.id())) {
+            continue;
+        }
+        if (!incidencePtr) {
+            qWarning() << "Failed to read incidence.";
+            continue;
+        }
+        Akonadi::Item newItem(incidencePtr->mimeType());
+        newItem.setPayload(incidencePtr);
+        newItem.setRemoteId(QString::number(item.id()));
+        newItems << newItem;
     }
-    if ( !incidencePtr ) {
-      qWarning() << "Failed to read incidence.";
-      continue;
-    }
-    Akonadi::Item newItem( incidencePtr->mimeType() );
-    newItem.setPayload( incidencePtr );
-    newItem.setRemoteId( QString::number( item.id() ) );
-    newItems << newItem;
-  }
 
-  return newItems;
+    return newItems;
 }
 
-bool IncidenceHandler::toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem )
+bool IncidenceHandler::toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem)
 {
-  if ( !item.hasPayload<KCalCore::Incidence::Ptr>() ) {
-    qWarning() << "item is not an incidence";
-    return false;
-  }
-  KCalCore::Incidence::Ptr incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
-  if ( !incidencePtr ) {
-    qWarning() << "invalid incidence";
-    return false;
-  }
+    if (!item.hasPayload<KCalCore::Incidence::Ptr>()) {
+        qWarning() << "item is not an incidence";
+        return false;
+    }
+    KCalCore::Incidence::Ptr incidencePtr = item.payload<KCalCore::Incidence::Ptr>();
+    if (!incidencePtr) {
+        qWarning() << "invalid incidence";
+        return false;
+    }
 
-  const KMime::Message::Ptr &message = incidenceToMime( incidencePtr );
-  imapItem.setMimeType( QLatin1String("message/rfc822") );
-  imapItem.setPayload( message );
+    const KMime::Message::Ptr &message = incidenceToMime(incidencePtr);
+    imapItem.setMimeType(QLatin1String("message/rfc822"));
+    imapItem.setPayload(message);
 
-  if ( checkForErrors( item.id() ) ) {
-    return false;
-  }
-  return true;
+    if (checkForErrors(item.id())) {
+        return false;
+    }
+    return true;
 }
 
-QString IncidenceHandler::extractGid(const Akonadi::Item& kolabItem)
+QString IncidenceHandler::extractGid(const Akonadi::Item &kolabItem)
 {
-  if ( !kolabItem.hasPayload<KCalCore::Incidence::Ptr>() ) {
-    qWarning() << "Invalid payload!";
-    return QString();
-  }
-  return kolabItem.payload<KCalCore::Incidence::Ptr>()->instanceIdentifier();
+    if (!kolabItem.hasPayload<KCalCore::Incidence::Ptr>()) {
+        qWarning() << "Invalid payload!";
+        return QString();
+    }
+    return kolabItem.payload<KCalCore::Incidence::Ptr>()->instanceIdentifier();
 }
 

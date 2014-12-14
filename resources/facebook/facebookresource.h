@@ -38,52 +38,52 @@
 
 class KStatusNotifierItem;
 
-static const QLatin1String notificationsRID( "notifications" );
-static const QLatin1String eventsRID( "events" );
-static const QLatin1String eventMimeType( "application/x-vnd.akonadi.calendar.event" );
-static const QLatin1String notesRID( "notes" );
-static const QLatin1String postsRID( "posts" );
+static const QLatin1String notificationsRID("notifications");
+static const QLatin1String eventsRID("events");
+static const QLatin1String eventMimeType("application/x-vnd.akonadi.calendar.event");
+static const QLatin1String notesRID("notes");
+static const QLatin1String postsRID("posts");
 
 class FacebookResource : public Akonadi::ResourceBase,
-                         public Akonadi::AgentBase::Observer
+    public Akonadi::AgentBase::Observer
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit FacebookResource( const QString &id );
+public:
+    explicit FacebookResource(const QString &id);
     ~FacebookResource();
 
     using ResourceBase::synchronize;
 
-  public Q_SLOTS:
-    void configure( WId windowId );
-    void configureByAccount( int accountId );
+public Q_SLOTS:
+    void configure(WId windowId);
+    void configureByAccount(int accountId);
     void slotGetCredentials(KJob *job);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems(const Akonadi::Collection &col);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-    void itemRemoved( const Akonadi::Item &item );
-    void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void itemRemoved(const Akonadi::Item &item);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
 
-  protected:
+protected:
     void aboutToQuit();
 
-  private Q_SLOTS:
+private Q_SLOTS:
 
     void slotAbortRequested();
     void configurationChanged();
-    void eventListFetched( KJob *job );
-    void detailedEventListJobFinished( KJob *job );
-    void noteListFetched( KJob *job );
-    void noteJobFinished( KJob *job );
+    void eventListFetched(KJob *job);
+    void detailedEventListJobFinished(KJob *job);
+    void noteListFetched(KJob *job);
+    void noteJobFinished(KJob *job);
 //     void noteAddJobFinished( KJob *job );
-    void postJobFinished( KJob *job );
-    void postsListFetched( KJob *job );
+    void postJobFinished(KJob *job);
+    void postsListFetched(KJob *job);
 //     void postAddJobFinished( KJob *job );
-    void notificationsListFetched( KJob *job );
+    void notificationsListFetched(KJob *job);
     void notificationSNIActivated(bool active, const QPoint &position);
     void notificationLinkActivated();
     void notificationMarkAsReadJobFinished(KJob *job);
@@ -91,21 +91,21 @@ class FacebookResource : public Akonadi::ResourceBase,
     void markNotificationsAsReadTriggered();
     void hideNotificationsSNITriggered();
 
-    void deleteJobFinished( KJob *job );
+    void deleteJobFinished(KJob *job);
 
-  private:
+private:
     void resetState();
-    void abortWithError( const QString &errorMessage, bool authFailure = false );
+    void abortWithError(const QString &errorMessage, bool authFailure = false);
     void abort();
 
     KCalCore::Event::Ptr convertEventInfoToEventPtr(const KFbAPI::EventInfo &eventInfo);
     KMime::Message::Ptr convertNoteIntoToKMimeMessage(const KFbAPI::NoteInfo &noteInfo);
 
     enum FormattingStringType {
-      FacebookComment = 0,
-      FacebookLike = 1
+        FacebookComment = 0,
+        FacebookLike = 1
     };
-    QString formatI18nString( FormattingStringType type, int n );
+    QString formatI18nString(FormattingStringType type, int n);
 
     enum FbNotificationPresentation {
         KSNIonly = 0,
@@ -118,7 +118,7 @@ class FacebookResource : public Akonadi::ResourceBase,
     void finishNotesFetching();
     void finishPostsFetching();
     void finishNotificationsFetching();
-    Akonadi::SocialFeedItem convertToSocialFeedItem( const KFbAPI::PostInfo &postinfo );
+    Akonadi::SocialFeedItem convertToSocialFeedItem(const KFbAPI::PostInfo &postinfo);
 
     QList<KFbAPI::NotificationInfo> mDisplayedNotifications;
 

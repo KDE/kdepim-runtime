@@ -30,56 +30,56 @@
 
 using namespace OXA;
 
-FolderRequestJob::FolderRequestJob( const Folder &folder, QObject *parent )
-  : KJob( parent ), mFolder( folder )
+FolderRequestJob::FolderRequestJob(const Folder &folder, QObject *parent)
+    : KJob(parent), mFolder(folder)
 {
 }
 
 void FolderRequestJob::start()
 {
-  QDomDocument document;
-  QDomElement multistatus = DAVUtils::addDavElement( document, document, QLatin1String( "multistatus" ) );
-  QDomElement prop = DAVUtils::addDavElement( document, multistatus, QLatin1String( "prop" ) );
-  DAVUtils::addOxElement( document, prop, QLatin1String( "object_id" ), OXUtils::writeNumber( mFolder.objectId() ) );
+    QDomDocument document;
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
+    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mFolder.objectId()));
 
-  const QString path = QLatin1String( "/servlet/webdav.folders" );
+    const QString path = QLatin1String("/servlet/webdav.folders");
 
-  KIO::DavJob *job = DavManager::self()->createFindJob( path, document );
-  connect(job, &KIO::DavJob::result, this, &FolderRequestJob::davJobFinished);
+    KIO::DavJob *job = DavManager::self()->createFindJob(path, document);
+    connect(job, &KIO::DavJob::result, this, &FolderRequestJob::davJobFinished);
 }
 
 Folder FolderRequestJob::folder() const
 {
-  return mFolder;
+    return mFolder;
 }
 
-void FolderRequestJob::davJobFinished( KJob *job )
+void FolderRequestJob::davJobFinished(KJob *job)
 {
-  if ( job->error() ) {
-    setError( job->error() );
-    setErrorText( job->errorText() );
+    if (job->error()) {
+        setError(job->error());
+        setErrorText(job->errorText());
+        emitResult();
+        return;
+    }
+
+    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
+
+    const QDomDocument document = davJob->response();
+
+    QString errorText, errorStatus;
+    if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
+        setError(UserDefinedError);
+        setErrorText(errorText);
+        emitResult();
+        return;
+    }
+
+    QDomElement multistatus = document.documentElement();
+    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    const QDomNodeList props = response.elementsByTagName("prop");
+    const QDomElement prop = props.at(0).toElement();
+    mFolder = FolderUtils::parseFolder(prop);
+
     emitResult();
-    return;
-  }
-
-  KIO::DavJob *davJob = qobject_cast<KIO::DavJob*>( job );
-
-  const QDomDocument document = davJob->response();
-
-  QString errorText, errorStatus;
-  if ( DAVUtils::davErrorOccurred( document, errorText, errorStatus ) ) {
-    setError( UserDefinedError );
-    setErrorText( errorText );
-    emitResult();
-    return;
-  }
-
-  QDomElement multistatus = document.documentElement();
-  QDomElement response = multistatus.firstChildElement( QLatin1String( "response" ) );
-  const QDomNodeList props = response.elementsByTagName( "prop" );
-  const QDomElement prop = props.at( 0 ).toElement();
-  mFolder = FolderUtils::parseFolder( prop );
-
-  emitResult();
 }
 

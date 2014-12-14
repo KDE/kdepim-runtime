@@ -32,203 +32,217 @@
 using namespace Akonadi;
 using namespace KMime;
 
-QString StringPool::sharedValue( const QString &value )
+QString StringPool::sharedValue(const QString &value)
 {
     QMutexLocker lock(&m_mutex);
     QSet<QString>::const_iterator it = m_pool.constFind(value);
-    if ( it != m_pool.constEnd() )
+    if (it != m_pool.constEnd()) {
         return *it;
+    }
     m_pool.insert(value);
     return value;
 }
 
-template <typename T> static void parseAddrList( const QVarLengthArray<QByteArray, 16> &addrList, T *hdr,
-                                                 int version, StringPool& pool )
+template <typename T> static void parseAddrList(const QVarLengthArray<QByteArray, 16> &addrList, T *hdr,
+        int version, StringPool &pool)
 {
-  hdr->clear();
-  const int count = addrList.count();
-  QVarLengthArray<QByteArray, 16> addr;
-  for ( int i = 0; i < count; ++i ) {
-    ImapParser::parseParenthesizedList( addrList[ i ], addr );
-    if ( addr.count() != 4 ) {
-      qCWarning(AKONADI_SERIALIZER_MAIL_LOG) << "Error parsing envelope address field: " << addrList[ i ];
-      continue;
+    hdr->clear();
+    const int count = addrList.count();
+    QVarLengthArray<QByteArray, 16> addr;
+    for (int i = 0; i < count; ++i) {
+        ImapParser::parseParenthesizedList(addrList[ i ], addr);
+        if (addr.count() != 4) {
+            qCWarning(AKONADI_SERIALIZER_MAIL_LOG) << "Error parsing envelope address field: " << addrList[ i ];
+            continue;
+        }
+        KMime::Types::Mailbox addrField;
+        if (version == 0) {
+            addrField.setNameFrom7Bit(addr[0]);
+        } else if (version == 1) {
+            addrField.setName(pool.sharedValue(QString::fromUtf8(addr[0])));
+        }
+        KMime::Types::AddrSpec addrSpec;
+        addrSpec.localPart = pool.sharedValue(QString::fromUtf8(addr[2]));
+        addrSpec.domain = pool.sharedValue(QString::fromUtf8(addr[3]));
+        addrField.setAddress(addrSpec);
+        hdr->addAddress(addrField);
     }
-    KMime::Types::Mailbox addrField;
-    if ( version == 0 )
-      addrField.setNameFrom7Bit( addr[0] );
-    else if ( version == 1 )
-      addrField.setName( pool.sharedValue( QString::fromUtf8( addr[0] ) ) );
-    KMime::Types::AddrSpec addrSpec;
-    addrSpec.localPart = pool.sharedValue( QString::fromUtf8( addr[2] ) );
-    addrSpec.domain = pool.sharedValue( QString::fromUtf8( addr[3] ) );
-    addrField.setAddress( addrSpec );
-    hdr->addAddress( addrField );
-  }
 }
 
-
-bool SerializerPluginMail::deserialize( Item& item, const QByteArray& label, QIODevice& data, int version )
+bool SerializerPluginMail::deserialize(Item &item, const QByteArray &label, QIODevice &data, int version)
 {
-    if ( label != MessagePart::Body && label != MessagePart::Envelope && label != MessagePart::Header )
-      return false;
+    if (label != MessagePart::Body && label != MessagePart::Envelope && label != MessagePart::Header) {
+        return false;
+    }
 
     KMime::Message::Ptr msg;
-    if ( !item.hasPayload() ) {
+    if (!item.hasPayload()) {
         Message *m = new  Message();
-        msg = KMime::Message::Ptr( m );
-        item.setPayload( msg );
+        msg = KMime::Message::Ptr(m);
+        item.setPayload(msg);
     } else {
         msg = item.payload<KMime::Message::Ptr>();
     }
 
     QByteArray buffer = data.readAll();
-    if ( buffer.isEmpty() )
-      return true;
-    if ( label == MessagePart::Body ) {
-      msg->setContent( buffer );
-      msg->parse();
-    } else if ( label == MessagePart::Header ) {
-      if ( msg->body().isEmpty() && msg->contents().isEmpty() ) {
-        msg->setHead( buffer );
+    if (buffer.isEmpty()) {
+        return true;
+    }
+    if (label == MessagePart::Body) {
+        msg->setContent(buffer);
         msg->parse();
-      }
-    } else if ( label == MessagePart::Envelope ) {
-        QVarLengthArray<QByteArray, 16> env;
-        ImapParser::parseParenthesizedList( buffer, env );
-        if ( env.count() < 10 ) {
-          qCWarning(AKONADI_SERIALIZER_MAIL_LOG) << "Akonadi KMime Deserializer: Got invalid envelope: " << buffer;
-          return false;
+    } else if (label == MessagePart::Header) {
+        if (msg->body().isEmpty() && msg->contents().isEmpty()) {
+            msg->setHead(buffer);
+            msg->parse();
         }
-        Q_ASSERT( env.count() >= 10 );
+    } else if (label == MessagePart::Envelope) {
+        QVarLengthArray<QByteArray, 16> env;
+        ImapParser::parseParenthesizedList(buffer, env);
+        if (env.count() < 10) {
+            qCWarning(AKONADI_SERIALIZER_MAIL_LOG) << "Akonadi KMime Deserializer: Got invalid envelope: " << buffer;
+            return false;
+        }
+        Q_ASSERT(env.count() >= 10);
         // date
-        msg->date()->from7BitString( env[0] );
+        msg->date()->from7BitString(env[0]);
         // subject
-        msg->subject()->from7BitString( env[1] );
+        msg->subject()->from7BitString(env[1]);
         // from
         QVarLengthArray<QByteArray, 16> addrList;
-        ImapParser::parseParenthesizedList( env[2], addrList );
-        if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->from(), version, m_stringPool );
+        ImapParser::parseParenthesizedList(env[2], addrList);
+        if (!addrList.isEmpty()) {
+            parseAddrList(addrList, msg->from(), version, m_stringPool);
+        }
         // sender
-        ImapParser::parseParenthesizedList( env[3], addrList );
-        if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->sender(), version, m_stringPool );
+        ImapParser::parseParenthesizedList(env[3], addrList);
+        if (!addrList.isEmpty()) {
+            parseAddrList(addrList, msg->sender(), version, m_stringPool);
+        }
         // reply-to
-        ImapParser::parseParenthesizedList( env[4], addrList );
-        if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->replyTo(), version, m_stringPool );
+        ImapParser::parseParenthesizedList(env[4], addrList);
+        if (!addrList.isEmpty()) {
+            parseAddrList(addrList, msg->replyTo(), version, m_stringPool);
+        }
         // to
-        ImapParser::parseParenthesizedList( env[5], addrList );
-        if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->to(), version, m_stringPool );
+        ImapParser::parseParenthesizedList(env[5], addrList);
+        if (!addrList.isEmpty()) {
+            parseAddrList(addrList, msg->to(), version, m_stringPool);
+        }
         // cc
-        ImapParser::parseParenthesizedList( env[6], addrList );
-        if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->cc(), version, m_stringPool );
+        ImapParser::parseParenthesizedList(env[6], addrList);
+        if (!addrList.isEmpty()) {
+            parseAddrList(addrList, msg->cc(), version, m_stringPool);
+        }
         // bcc
-        ImapParser::parseParenthesizedList( env[7], addrList );
-        if ( !addrList.isEmpty() )
-          parseAddrList( addrList, msg->bcc(), version, m_stringPool );
+        ImapParser::parseParenthesizedList(env[7], addrList);
+        if (!addrList.isEmpty()) {
+            parseAddrList(addrList, msg->bcc(), version, m_stringPool);
+        }
         // in-reply-to
-        msg->inReplyTo()->from7BitString( env[8] );
+        msg->inReplyTo()->from7BitString(env[8]);
         // message id
-        msg->messageID()->from7BitString( env[9] );
+        msg->messageID()->from7BitString(env[9]);
         // references
-        if ( env.count() > 10 )
-          msg->references()->from7BitString( env[10] );
+        if (env.count() > 10) {
+            msg->references()->from7BitString(env[10]);
+        }
     }
 
     return true;
 }
 
-static QByteArray quoteImapListEntry( const QByteArray &b )
+static QByteArray quoteImapListEntry(const QByteArray &b)
 {
-  if ( b.isEmpty() )
-    return "NIL";
-  return ImapParser::quote( b );
-}
-
-static QByteArray buildImapList( const QList<QByteArray> &list )
-{
-  if ( list.isEmpty() )
-    return "NIL";
-  return QByteArray( "(" ) + ImapParser::join( list, " " ) + QByteArray( ")" );
-}
-
-template <typename T> static QByteArray buildAddrStruct( T const *hdr )
-{
-  QList<QByteArray> addrList;
-  KMime::Types::Mailbox::List mb = hdr->mailboxes();
-  foreach ( const KMime::Types::Mailbox &mbox, mb ) {
-    QList<QByteArray> addrStruct;
-    addrStruct << quoteImapListEntry( mbox.name().toUtf8() );
-    addrStruct << quoteImapListEntry( QByteArray() );
-    addrStruct << quoteImapListEntry( mbox.addrSpec().localPart.toUtf8() );
-    addrStruct << quoteImapListEntry( mbox.addrSpec().domain.toUtf8() );
-    addrList << buildImapList( addrStruct );
-  }
-  return buildImapList( addrList );
-}
-
-void SerializerPluginMail::serialize( const Item& item, const QByteArray& label, QIODevice& data, int &version )
-{
-  version = 1;
-
-  boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
-  if ( label == MessagePart::Body ) {
-    data.write( m->encodedContent() );
-  } else if ( label == MessagePart::Envelope ) {
-    QList<QByteArray> env;
-    env << quoteImapListEntry( m->date()->as7BitString( false ) );
-    env << quoteImapListEntry( m->subject()->as7BitString( false ) );
-    env << buildAddrStruct( m->from() );
-    env << buildAddrStruct( m->sender() );
-    env << buildAddrStruct( m->replyTo() );
-    env << buildAddrStruct( m->to() );
-    env << buildAddrStruct( m->cc() );
-    env << buildAddrStruct( m->bcc() );
-    env << quoteImapListEntry( m->inReplyTo()->as7BitString( false ) );
-    env << quoteImapListEntry( m->messageID()->as7BitString( false ) );
-    env << quoteImapListEntry( m->references()->as7BitString( false ) );
-    data.write( buildImapList( env ) );
-  } else if ( label == MessagePart::Header ) {
-    data.write( m->head() );
-  }
-}
-
-QSet<QByteArray> SerializerPluginMail::parts( const Item &item ) const
-{
-  QSet<QByteArray> set;
-
-  if ( !item.hasPayload<KMime::Message::Ptr>() ) {
-    return set;
-  }
-
-  KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-  if ( !msg ) {
-    return set;
-  }
-
-  // FIXME: we really want "has any header" here, but the kmime api doesn't offer that yet
-  if ( msg->hasContent() || msg->hasHeader( "Message-ID" ) ) {
-    set << MessagePart::Envelope << MessagePart::Header;
-    if ( !msg->body().isEmpty() || !msg->contents().isEmpty() ) {
-      set << MessagePart::Body;
+    if (b.isEmpty()) {
+        return "NIL";
     }
-  }
-  return set;
+    return ImapParser::quote(b);
 }
 
-QString SerializerPluginMail::extractGid(const Item& item) const
+static QByteArray buildImapList(const QList<QByteArray> &list)
 {
-  if (!item.hasPayload<KMime::Message::Ptr>())
+    if (list.isEmpty()) {
+        return "NIL";
+    }
+    return QByteArray("(") + ImapParser::join(list, " ") + QByteArray(")");
+}
+
+template <typename T> static QByteArray buildAddrStruct(T const *hdr)
+{
+    QList<QByteArray> addrList;
+    KMime::Types::Mailbox::List mb = hdr->mailboxes();
+    foreach (const KMime::Types::Mailbox &mbox, mb) {
+        QList<QByteArray> addrStruct;
+        addrStruct << quoteImapListEntry(mbox.name().toUtf8());
+        addrStruct << quoteImapListEntry(QByteArray());
+        addrStruct << quoteImapListEntry(mbox.addrSpec().localPart.toUtf8());
+        addrStruct << quoteImapListEntry(mbox.addrSpec().domain.toUtf8());
+        addrList << buildImapList(addrStruct);
+    }
+    return buildImapList(addrList);
+}
+
+void SerializerPluginMail::serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version)
+{
+    version = 1;
+
+    boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
+    if (label == MessagePart::Body) {
+        data.write(m->encodedContent());
+    } else if (label == MessagePart::Envelope) {
+        QList<QByteArray> env;
+        env << quoteImapListEntry(m->date()->as7BitString(false));
+        env << quoteImapListEntry(m->subject()->as7BitString(false));
+        env << buildAddrStruct(m->from());
+        env << buildAddrStruct(m->sender());
+        env << buildAddrStruct(m->replyTo());
+        env << buildAddrStruct(m->to());
+        env << buildAddrStruct(m->cc());
+        env << buildAddrStruct(m->bcc());
+        env << quoteImapListEntry(m->inReplyTo()->as7BitString(false));
+        env << quoteImapListEntry(m->messageID()->as7BitString(false));
+        env << quoteImapListEntry(m->references()->as7BitString(false));
+        data.write(buildImapList(env));
+    } else if (label == MessagePart::Header) {
+        data.write(m->head());
+    }
+}
+
+QSet<QByteArray> SerializerPluginMail::parts(const Item &item) const
+{
+    QSet<QByteArray> set;
+
+    if (!item.hasPayload<KMime::Message::Ptr>()) {
+        return set;
+    }
+
+    KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+    if (!msg) {
+        return set;
+    }
+
+    // FIXME: we really want "has any header" here, but the kmime api doesn't offer that yet
+    if (msg->hasContent() || msg->hasHeader("Message-ID")) {
+        set << MessagePart::Envelope << MessagePart::Header;
+        if (!msg->body().isEmpty() || !msg->contents().isEmpty()) {
+            set << MessagePart::Body;
+        }
+    }
+    return set;
+}
+
+QString SerializerPluginMail::extractGid(const Item &item) const
+{
+    if (!item.hasPayload<KMime::Message::Ptr>()) {
+        return QString();
+    }
+    const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+    KMime::Headers::MessageID *mid = msg->messageID(false);
+    if (mid) {
+        return mid->asUnicodeString();
+    }
     return QString();
-  const KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-  KMime::Headers::MessageID *mid = msg->messageID( false );
-  if (mid)
-    return mid->asUnicodeString();
-  return QString();
 }
 
 #include "moc_akonadi_serializer_mail.cpp"

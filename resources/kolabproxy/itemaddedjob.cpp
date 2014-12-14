@@ -22,11 +22,11 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <klocale.h>
 
-ItemAddedJob::ItemAddedJob(const Akonadi::Item& kolabItem, const Akonadi::Collection& col, KolabHandler& handler, QObject* parent)
-    :KJob(parent),
-    mHandler(handler),
-    mKolabItem(kolabItem),
-    mParentCollection(col)
+ItemAddedJob::ItemAddedJob(const Akonadi::Item &kolabItem, const Akonadi::Collection &col, KolabHandler &handler, QObject *parent)
+    : KJob(parent),
+      mHandler(handler),
+      mKolabItem(kolabItem),
+      mParentCollection(col)
 {
 
 }
@@ -40,7 +40,7 @@ void ItemAddedJob::doStart()
 {
     const Akonadi::Collection imapCollection = kolabToImap(mParentCollection);
     qDebug() << imapCollection.id();
-    Akonadi::Item imapItem( "message/rfc822" );
+    Akonadi::Item imapItem("message/rfc822");
     if (!mHandler.toKolabFormat(mKolabItem, imapItem)) {
         qWarning() << "Failed to convert item to Kolab format: " << mKolabItem.id();
         setError(KJob::UserDefinedError);
@@ -55,12 +55,12 @@ void ItemAddedJob::doStart()
     connect(cjob, &Akonadi::ItemCreateJob::result, this, &ItemAddedJob::onItemCreatedDone);
 }
 
-void ItemAddedJob::onItemCreatedDone(KJob* job)
+void ItemAddedJob::onItemCreatedDone(KJob *job)
 {
     if (job->error()) {
         setError(KJob::UserDefinedError);
     } else {
-        Akonadi::ItemCreateJob *cjob = static_cast<Akonadi::ItemCreateJob*>(job);
+        Akonadi::ItemCreateJob *cjob = static_cast<Akonadi::ItemCreateJob *>(job);
         mImapItem = cjob->item();
     }
     emitResult();

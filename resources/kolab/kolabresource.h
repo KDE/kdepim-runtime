@@ -35,15 +35,15 @@ public:
 
 protected Q_SLOTS:
     virtual void retrieveCollections();
-    virtual void retrieveItems(const Akonadi::Collection& col);
+    virtual void retrieveItems(const Akonadi::Collection &col);
 
 protected:
     virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemsMoved( const Akonadi::Item::List &item, const Akonadi::Collection &source,
-                           const Akonadi::Collection &destination );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source,
+                            const Akonadi::Collection &destination);
     //itemsRemoved and itemsFlags changed do not require translation, because they don't use the payload
 
     virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);

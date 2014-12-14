@@ -24,15 +24,15 @@
 
 class Settings : public SettingsBase
 {
-  public:
+public:
     Settings();
     static Settings *self();
 
     // TODO: temporary, wallet support
     QString password() const;
-    void setPassword( const QString &password );
+    void setPassword(const QString &password);
 
-  private:
+private:
     QString mPassword;
 };
 

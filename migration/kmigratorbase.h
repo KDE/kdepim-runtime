@@ -32,61 +32,61 @@ class KJob;
  */
 class KMigratorBase : public QObject
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     enum MigrationState {
-      None,
-      Bridged,
-      Complete
+        None,
+        Bridged,
+        Complete
     };
 
     enum MessageType {
-      Success,
-      Skip,
-      Info,
-      Warning,
-      Error
+        Success,
+        Skip,
+        Info,
+        Warning,
+        Error
     };
 
-    Q_ENUMS( MigrationState )
+    Q_ENUMS(MigrationState)
 
     KMigratorBase();
     virtual ~KMigratorBase();
 
     /**
      * Read resource migration state.
-     * 
+     *
      * @return MigrationState and None if the resource with @param identifier as identifier is not available.
      */
-    MigrationState migrationState( const QString &identifier ) const;
+    MigrationState migrationState(const QString &identifier) const;
     /**
      * Set resource migration state.
-     * 
+     *
      * Persists migration state in the resource config.
      * @param resId and @param state is registered under @param identifier.
      * Additionally all bridged resources are registered in the @param type and @param identifier.
      */
-    void setMigrationState( const QString &identifier, MigrationState state,
-                            const QString &resId, const QString &type );
+    void setMigrationState(const QString &identifier, MigrationState state,
+                           const QString &resId, const QString &type);
 
     virtual void migrateNext() = 0;
 
-  protected:
-    KJob *createAgentInstance( const QString &typeId, QObject *receiver, const char* slot );
-    virtual void migrationFailed( const QString &errorMsg, const Akonadi::AgentInstance &instance
-                                  = Akonadi::AgentInstance() ) = 0;
+protected:
+    KJob *createAgentInstance(const QString &typeId, QObject *receiver, const char *slot);
+    virtual void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance
+                                 = Akonadi::AgentInstance()) = 0;
 
-  signals:
-    void message( KMigratorBase::MessageType type, const QString &msg );
+signals:
+    void message(KMigratorBase::MessageType type, const QString &msg);
 
-  protected slots:
+protected slots:
     virtual void migrate() = 0;
 
-  private slots:
-    void logMessage( KMigratorBase::MessageType type, const QString &msg );
+private slots:
+    void logMessage(KMigratorBase::MessageType type, const QString &msg);
 
-  private:
-    QFile* m_logFile;
+private:
+    QFile *m_logFile;
     QEventLoopLocker eventLoopLocker;
 };
 

@@ -32,16 +32,16 @@
  */
 class DavItemsListJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav items list job.
      *
      * @param url The url of the DAV collection.
      * @param parent The parent object.
      */
-    explicit DavItemsListJob( const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR );
+    explicit DavItemsListJob(const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR);
 
     /**
      * Limits the mime types of the items requested.
@@ -50,7 +50,7 @@ class DavItemsListJob : public KJob
      *
      * @param types The list of mime types to include
      */
-    void setContentMimeTypes( const QStringList &types );
+    void setContentMimeTypes(const QStringList &types);
 
     /**
      * Starts the job.
@@ -62,10 +62,10 @@ class DavItemsListJob : public KJob
      */
     DavItem::List items() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
     QStringList mMimeTypes;
     DavItem::List mItems;

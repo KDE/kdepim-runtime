@@ -28,44 +28,45 @@
 
 using namespace MailTransport;
 
-SentActionHandler::SentActionHandler( QObject *parent )
-  : QObject( parent )
+SentActionHandler::SentActionHandler(QObject *parent)
+    : QObject(parent)
 {
 }
 
-void SentActionHandler::runAction( const SentActionAttribute::Action &action )
+void SentActionHandler::runAction(const SentActionAttribute::Action &action)
 {
-  if ( action.type() == SentActionAttribute::Action::MarkAsReplied ||
-       action.type() == SentActionAttribute::Action::MarkAsForwarded ) {
+    if (action.type() == SentActionAttribute::Action::MarkAsReplied ||
+            action.type() == SentActionAttribute::Action::MarkAsForwarded) {
 
-    const Akonadi::Item item( action.value().toLongLong() );
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( item );
-    connect(job, &Akonadi::ItemFetchJob::result, this, &SentActionHandler::itemFetchResult);
-    job->setProperty( "type", static_cast<int>( action.type() ) );
-  }
+        const Akonadi::Item item(action.value().toLongLong());
+        Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(item);
+        connect(job, &Akonadi::ItemFetchJob::result, this, &SentActionHandler::itemFetchResult);
+        job->setProperty("type", static_cast<int>(action.type()));
+    }
 }
 
-void SentActionHandler::itemFetchResult( KJob *job )
+void SentActionHandler::itemFetchResult(KJob *job)
 {
-  if ( job->error() ) {
-    qCWarning(MAILDISPATCHER_LOG) << job->errorText();
-    return;
-  }
+    if (job->error()) {
+        qCWarning(MAILDISPATCHER_LOG) << job->errorText();
+        return;
+    }
 
-  Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob*>( job );
-  if ( fetchJob->items().isEmpty() )
-    return;
+    Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+    if (fetchJob->items().isEmpty()) {
+        return;
+    }
 
-  Akonadi::Item item = fetchJob->items().first();
+    Akonadi::Item item = fetchJob->items().first();
 
-  const SentActionAttribute::Action::Type type = static_cast<SentActionAttribute::Action::Type>( job->property( "type" ).toInt() );
-  if ( type == SentActionAttribute::Action::MarkAsReplied ) {
-    item.setFlag( Akonadi::MessageFlags::Replied );
-  } else if ( type == SentActionAttribute::Action::MarkAsForwarded ) {
-    item.setFlag( Akonadi::MessageFlags::Forwarded );
-  }
+    const SentActionAttribute::Action::Type type = static_cast<SentActionAttribute::Action::Type>(job->property("type").toInt());
+    if (type == SentActionAttribute::Action::MarkAsReplied) {
+        item.setFlag(Akonadi::MessageFlags::Replied);
+    } else if (type == SentActionAttribute::Action::MarkAsForwarded) {
+        item.setFlag(Akonadi::MessageFlags::Forwarded);
+    }
 
-  Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob( item );
-  modifyJob->setIgnorePayload( true );
+    Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(item);
+    modifyJob->setIgnorePayload(true);
 }
 

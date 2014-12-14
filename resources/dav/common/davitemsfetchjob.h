@@ -33,9 +33,9 @@
  */
 class DavItemsFetchJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new items fetch job.
      *
@@ -43,7 +43,7 @@ class DavItemsFetchJob : public KJob
      * @param urls The list of urls to fetch
      * @param parent The parent object
      */
-    DavItemsFetchJob( const DavUtils::DavUrl &collectionUrl, const QStringList &urls, QObject *parent = Q_NULLPTR );
+    DavItemsFetchJob(const DavUtils::DavUrl &collectionUrl, const QStringList &urls, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -58,12 +58,12 @@ class DavItemsFetchJob : public KJob
     /**
      * Return the item found at @p url
      */
-    DavItem item( const QString &url ) const;
+    DavItem item(const QString &url) const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     DavUtils::DavUrl mCollectionUrl;
     QStringList mUrls;
     QMap<QString, DavItem> mItems;

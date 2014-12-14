@@ -20,4 +20,3 @@
 #include "newmailnotifier_debug.h"
 Q_LOGGING_CATEGORY(NEWMAILNOTIFIER_LOG, "log_newmailnotifier")
 
-

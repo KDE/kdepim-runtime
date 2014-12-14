@@ -60,17 +60,17 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(resource->identifier());
     m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
 
-    m_ui->checkInterval->setSuffix( ki18np( " minute", " minutes" ) );
-    m_ui->checkInterval->setRange( Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000 );
-    m_ui->checkInterval->setSingleStep( 1 );
+    m_ui->checkInterval->setSuffix(ki18np(" minute", " minutes"));
+    m_ui->checkInterval->setRange(Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000);
+    m_ui->checkInterval->setSingleStep(1);
 
-    m_identityManager = new KIdentityManagement::IdentityManager( false, this, "mIdentityManager" );
-    m_identityCombobox = new KIdentityManagement::IdentityCombo( m_identityManager, this );
-    m_ui->identityLabel->setBuddy( m_identityCombobox );
-    m_ui->identityLayout->addWidget( m_identityCombobox, 1 );
-    m_ui->identityLabel->setBuddy( m_identityCombobox );
+    m_identityManager = new KIdentityManagement::IdentityManager(false, this, "mIdentityManager");
+    m_identityCombobox = new KIdentityManagement::IdentityCombo(m_identityManager, this);
+    m_ui->identityLabel->setBuddy(m_identityCombobox);
+    m_ui->identityLayout->addWidget(m_identityCombobox, 1);
+    m_ui->identityLabel->setBuddy(m_identityCombobox);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -79,7 +79,7 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     mainLayout->addWidget(buttonBox);
 
     connect(m_ui->subscriptionEnabled, SIGNAL(toggled(bool)),
-            this, SLOT(slotSubcriptionCheckboxChanged()) );
+            this, SLOT(slotSubcriptionCheckboxChanged()));
     connect(m_ui->subscriptionButton, SIGNAL(clicked(bool)),
             this, SLOT(slotManageSubscriptions()));
 
@@ -89,7 +89,7 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
             this, SLOT(slotAuthenticate()));
 
     connect(m_ui->useDefaultIdentityCheck, SIGNAL(toggled(bool)),
-             this, SLOT(slotIdentityCheckboxChanged()));
+            this, SLOT(slotIdentityCheckboxChanged()));
     connect(m_ui->enableMailCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(slotMailCheckboxChanged()));
 
@@ -102,9 +102,9 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     slotIdentityCheckboxChanged();
 
     //connect(this, SIGNAL(applyClicked()),
-            //this, SLOT(applySettings()) );
+    //this, SLOT(applySettings()) );
     connect(mOkButton, SIGNAL(clicked()),
-            this, SLOT(applySettings()) );
+            this, SLOT(applySettings()));
 }
 
 GmailConfigDialog::~GmailConfigDialog()
@@ -137,7 +137,7 @@ void GmailConfigDialog::applySettings()
     m_folderArchiveSettingPage->writeSettings();
     m_parentResource->setName(m_ui->usernameLabel->text());
 
-    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+    GmailSettings *settings = static_cast<GmailSettings *>(m_parentResource->settings());
     settings->setImapServer(QLatin1String("imap.gmail.com"));
     settings->setImapPort(993);
     settings->setUserName(m_account->accountName());
@@ -159,7 +159,7 @@ void GmailConfigDialog::applySettings()
 
     settings->setIntervalCheckEnabled(m_ui->enableMailCheckBox->isChecked());
     if (m_ui->enableMailCheckBox->isChecked()) {
-        settings->setIntervalCheckTime( m_ui->checkInterval->value() );
+        settings->setIntervalCheckTime(m_ui->checkInterval->value());
     }
 
     settings->save();
@@ -175,7 +175,7 @@ void GmailConfigDialog::readSettings()
     m_ui->usernameLabel->setText(m_parentResource->name());
     m_oldResourceName = m_parentResource->name();
 
-    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+    GmailSettings *settings = static_cast<GmailSettings *>(m_parentResource->settings());
 
     m_account = KGAPI2::AccountPtr(new KGAPI2::Account);
     if (!m_parentResource->name().startsWith(m_parentResource->defaultName())) {
@@ -187,7 +187,7 @@ void GmailConfigDialog::readSettings()
         bool rejected = false;
         const QString accessToken = settings->password(&rejected);
         const QString refreshToken = settings->refreshToken(&rejected);
-        if ( rejected ) {
+        if (rejected) {
             //m_ui->password->setEnabled( false );
             KMessageBox::information(0, i18n("Could not access KWallet. If you want to use Gmail resource, you have to activate it."));
         } else {
@@ -207,9 +207,9 @@ void GmailConfigDialog::readSettings()
     m_ui->disconnectedModeEnabled->setChecked(settings->disconnectedModeEnabled());
 
     m_ui->useDefaultIdentityCheck->setChecked(settings->useDefaultIdentity());
-    if (!m_ui->useDefaultIdentityCheck->isChecked())
+    if (!m_ui->useDefaultIdentityCheck->isChecked()) {
         m_identityCombobox->setCurrentIdentity(settings->accountIdentity());
-
+    }
 
     m_ui->autoExpungeCheck->setChecked(settings->automaticExpungeEnabled());
 }
@@ -232,7 +232,7 @@ void GmailConfigDialog::slotManageSubscriptions()
     account.setEncryptionMode(KIMAP::LoginJob::SslV3);
     account.setAuthenticationMode(KIMAP::LoginJob::XOAuth2);
 
-    QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog( this );
+    QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog(this);
     subscriptions->setWindowTitle(i18n("Serverside Subscription"));
     subscriptions->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
     subscriptions->connectAccount(account, m_account->accessToken());
@@ -246,7 +246,7 @@ void GmailConfigDialog::slotManageSubscriptions()
 
 void GmailConfigDialog::slotAuthenticate()
 {
-    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+    GmailSettings *settings = static_cast<GmailSettings *>(m_parentResource->settings());
     settings->clearCachedPassword();
     settings->storeAccount(KGAPI2::AccountPtr());
     settings->requestAccount(true);
@@ -267,7 +267,7 @@ void GmailConfigDialog::onAccountRequestCompleted(const KGAPI2::AccountPtr &acco
         m_ui->authenticateButton->setVisible(false);
     }
 
-    GmailSettings *settings = static_cast<GmailSettings*>(m_parentResource->settings());
+    GmailSettings *settings = static_cast<GmailSettings *>(m_parentResource->settings());
     settings->storeAccount(m_account);
     slotComplete();
 }

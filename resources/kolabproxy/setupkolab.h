@@ -36,30 +36,30 @@ class KJob;
 
 class SetupKolab : public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit SetupKolab( KolabProxyResource *parentResource );
+public:
+    explicit SetupKolab(KolabProxyResource *parentResource);
     ~SetupKolab();
-    
-    static KConfigGroup getConfigGroup();
-    static Kolab::Version readKolabVersion( const QString &resourceIdentifier );
 
-  protected:
+    static KConfigGroup getConfigGroup();
+    static Kolab::Version readKolabVersion(const QString &resourceIdentifier);
+
+protected:
     void initConnection();
     void updateCombobox();
 
-  protected slots:
+protected slots:
     void slotLaunchWizard();
     void slotInstanceAddedRemoved();
     void slotCreateDefaultKolabCollections();
     void slotShowUpgradeDialog();
     void slotDoUpgrade();
     void slotSelectedAccountChanged();
-    void slotUpgradeProgress( KJob *, ulong );
-    void slotUpgradeDone( KJob * );
+    void slotUpgradeProgress(KJob *, ulong);
+    void slotUpgradeDone(KJob *);
 
-  private:
+private:
     QMap<QString, Akonadi::AgentInstance> m_agentList;
     Ui::SetupKolabView *m_ui;
     Ui::ChangeFormatView *m_versionUi;

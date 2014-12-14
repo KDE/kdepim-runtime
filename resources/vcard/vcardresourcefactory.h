@@ -18,15 +18,15 @@
 #ifndef VCARDRESOURCEFACTORY_H
 #define VCARDRESOURCEFACTORY_H
 
-#include <agentfactory.h> 
+#include <agentfactory.h>
 #include <vcardresource.h>
- 
+
 class VcardResourceFactory : public Akonadi::AgentFactory<VCardResource>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.VcardResource");
-public: 
-    explicit VcardResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.VcardResource");
+public:
+    explicit VcardResourceFactory(QObject *parent = 0);
 
 };
 #endif

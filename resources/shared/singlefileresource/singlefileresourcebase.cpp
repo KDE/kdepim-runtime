@@ -40,243 +40,251 @@
 
 using namespace Akonadi;
 
-SingleFileResourceBase::SingleFileResourceBase( const QString & id )
-  : ResourceBase( id ), mDownloadJob( 0 ), mUploadJob( 0 )
+SingleFileResourceBase::SingleFileResourceBase(const QString &id)
+    : ResourceBase(id), mDownloadJob(0), mUploadJob(0)
 {
-  connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
-  QTimer::singleShot( 0, this, SLOT(readFile()) );
+    connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
+    QTimer::singleShot(0, this, SLOT(readFile()));
 
-  changeRecorder()->itemFetchScope().fetchFullPayload();
-  changeRecorder()->fetchCollection( true );
+    changeRecorder()->itemFetchScope().fetchFullPayload();
+    changeRecorder()->fetchCollection(true);
 
-  connect( changeRecorder(), SIGNAL(changesAdded()), SLOT(scheduleWrite()) );
+    connect(changeRecorder(), SIGNAL(changesAdded()), SLOT(scheduleWrite()));
 
-  connect(KDirWatch::self(), &KDirWatch::dirty, this, &SingleFileResourceBase::fileChanged);
-  connect(KDirWatch::self(), &KDirWatch::created, this, &SingleFileResourceBase::fileChanged);
+    connect(KDirWatch::self(), &KDirWatch::dirty, this, &SingleFileResourceBase::fileChanged);
+    connect(KDirWatch::self(), &KDirWatch::created, this, &SingleFileResourceBase::fileChanged);
 
-  //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_singlefile_resource") );
+    //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_singlefile_resource") );
 }
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
 {
-  return KSharedConfig::openConfig( name() + QLatin1String("rc"), KConfig::SimpleConfig, QStandardPaths::CacheLocation );
+    return KSharedConfig::openConfig(name() + QLatin1String("rc"), KConfig::SimpleConfig, QStandardPaths::CacheLocation);
 }
 
-bool SingleFileResourceBase::readLocalFile( const QString &fileName )
+bool SingleFileResourceBase::readLocalFile(const QString &fileName)
 {
-  const QByteArray newHash = calculateHash( fileName );
-  if ( mCurrentHash != newHash ) {
-    if ( !mCurrentHash.isEmpty() ) {
-      // There was a hash stored in the config file or a chached one from
-      // a previous read and it is different from the hash we just read.
-      handleHashChange();
+    const QByteArray newHash = calculateHash(fileName);
+    if (mCurrentHash != newHash) {
+        if (!mCurrentHash.isEmpty()) {
+            // There was a hash stored in the config file or a chached one from
+            // a previous read and it is different from the hash we just read.
+            handleHashChange();
+        }
+
+        if (!readFromFile(fileName)) {
+            mCurrentHash.clear();
+            mCurrentUrl = QUrl(); // reset so we don't accidentally overwrite the file
+            return false;
+        }
+
+        if (mCurrentHash.isEmpty()) {
+            // This is the very first time we read the file so make sure to store
+            // the hash as writeFile() might not be called at all (e.g in case of
+            // read only resources).
+            saveHash(newHash);
+        }
+
+        // Only synchronize when the contents of the file have changed wrt to
+        // the last time this file was read. Before we synchronize first
+        // clearCache is called to make sure that the cached items get the
+        // actual values as present in the file.
+        invalidateCache(rootCollection());
+        synchronize();
+    } else {
+        // The hash didn't change, notify implementing resources about the
+        // actual file name that should be used when reading the file is
+        // necessary.
+        setLocalFileName(fileName);
     }
 
-    if ( !readFromFile( fileName ) ) {
-      mCurrentHash.clear();
-      mCurrentUrl = QUrl(); // reset so we don't accidentally overwrite the file
-      return false;
-    }
-
-    if ( mCurrentHash.isEmpty() ) {
-      // This is the very first time we read the file so make sure to store
-      // the hash as writeFile() might not be called at all (e.g in case of
-      // read only resources).
-      saveHash( newHash );
-    }
-
-    // Only synchronize when the contents of the file have changed wrt to
-    // the last time this file was read. Before we synchronize first
-    // clearCache is called to make sure that the cached items get the
-    // actual values as present in the file.
-    invalidateCache( rootCollection() );
-    synchronize();
-  } else {
-    // The hash didn't change, notify implementing resources about the
-    // actual file name that should be used when reading the file is
-    // necessary.
-    setLocalFileName( fileName );
-  }
-
-  mCurrentHash = newHash;
-  return true;
+    mCurrentHash = newHash;
+    return true;
 }
 
-void SingleFileResourceBase::setLocalFileName( const QString &fileName )
+void SingleFileResourceBase::setLocalFileName(const QString &fileName)
 {
-  // Default implementation.
-  if ( !readFromFile( fileName ) ) {
-    mCurrentHash.clear();
-    mCurrentUrl = QUrl(); // reset so we don't accidentally overwrite the file
-    return;
-  }
+    // Default implementation.
+    if (!readFromFile(fileName)) {
+        mCurrentHash.clear();
+        mCurrentUrl = QUrl(); // reset so we don't accidentally overwrite the file
+        return;
+    }
 }
 
 QString SingleFileResourceBase::cacheFile() const
 {
-  return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/") + identifier() ;
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/") + identifier() ;
 }
 
-QByteArray SingleFileResourceBase::calculateHash( const QString &fileName ) const
+QByteArray SingleFileResourceBase::calculateHash(const QString &fileName) const
 {
-  QFile file( fileName );
-  if ( !file.exists() )
-    return QByteArray();
+    QFile file(fileName);
+    if (!file.exists()) {
+        return QByteArray();
+    }
 
-  if ( !file.open( QIODevice::ReadOnly ) )
-    return QByteArray();
+    if (!file.open(QIODevice::ReadOnly)) {
+        return QByteArray();
+    }
 
-  QCryptographicHash hash( QCryptographicHash::Md5 );
-  qint64 blockSize = 512 * 1024; // Read blocks of 512K
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    qint64 blockSize = 512 * 1024; // Read blocks of 512K
 
-  while ( !file.atEnd() ) {
-    hash.addData( file.read( blockSize ) );
-  }
+    while (!file.atEnd()) {
+        hash.addData(file.read(blockSize));
+    }
 
-  file.close();
+    file.close();
 
-  return hash.result();
+    return hash.result();
 }
 
 void SingleFileResourceBase::handleHashChange()
 {
-  // Default implementation does nothing.
-  qDebug() << "The hash has changed.";
+    // Default implementation does nothing.
+    qDebug() << "The hash has changed.";
 }
 
 QByteArray SingleFileResourceBase::loadHash() const
 {
-  KConfigGroup generalGroup( runtimeConfig(), "General" );
-  return QByteArray::fromHex( generalGroup.readEntry<QByteArray>( "hash", QByteArray() ) );
+    KConfigGroup generalGroup(runtimeConfig(), "General");
+    return QByteArray::fromHex(generalGroup.readEntry<QByteArray>("hash", QByteArray()));
 }
 
-void SingleFileResourceBase::saveHash( const QByteArray &hash ) const
+void SingleFileResourceBase::saveHash(const QByteArray &hash) const
 {
-  KSharedConfig::Ptr config = runtimeConfig();
-  KConfigGroup generalGroup( config, "General" );
-  generalGroup.writeEntry( "hash", hash.toHex() );
-  config->sync();
+    KSharedConfig::Ptr config = runtimeConfig();
+    KConfigGroup generalGroup(config, "General");
+    generalGroup.writeEntry("hash", hash.toHex());
+    config->sync();
 }
 
-void SingleFileResourceBase::setSupportedMimetypes( const QStringList & mimeTypes, const QString &icon )
+void SingleFileResourceBase::setSupportedMimetypes(const QStringList &mimeTypes, const QString &icon)
 {
-  mSupportedMimetypes = mimeTypes;
-  mCollectionIcon = icon;
+    mSupportedMimetypes = mimeTypes;
+    mCollectionIcon = icon;
 }
 
-void SingleFileResourceBase::collectionChanged( const Akonadi::Collection & collection )
+void SingleFileResourceBase::collectionChanged(const Akonadi::Collection &collection)
 {
-  const QString newName = collection.displayName();
-  if ( collection.hasAttribute<EntityDisplayAttribute>() ) {
-    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
-    if ( !attr->iconName().isEmpty() )
-      mCollectionIcon = attr->iconName();
-  }
+    const QString newName = collection.displayName();
+    if (collection.hasAttribute<EntityDisplayAttribute>()) {
+        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+        if (!attr->iconName().isEmpty()) {
+            mCollectionIcon = attr->iconName();
+        }
+    }
 
-  if ( newName != name() )
-    setName( newName );
+    if (newName != name()) {
+        setName(newName);
+    }
 
-  changeCommitted( collection );
+    changeCommitted(collection);
 }
 
 void SingleFileResourceBase::reloadFile()
 {
-  // Update the network setting.
-  setNeedsNetwork( !mCurrentUrl.isEmpty() && !mCurrentUrl.isLocalFile() );
+    // Update the network setting.
+    setNeedsNetwork(!mCurrentUrl.isEmpty() && !mCurrentUrl.isLocalFile());
 
-  // if we have something loaded already, make sure we write that back in case
-  // the settings changed
-  if ( !mCurrentUrl.isEmpty() && !readOnly() )
-    writeFile();
+    // if we have something loaded already, make sure we write that back in case
+    // the settings changed
+    if (!mCurrentUrl.isEmpty() && !readOnly()) {
+        writeFile();
+    }
 
-  readFile();
+    readFile();
 
-  // name or rights could have changed
-  synchronizeCollectionTree();
+    // name or rights could have changed
+    synchronizeCollectionTree();
 }
 
-void SingleFileResourceBase::handleProgress( KJob *, unsigned long pct )
+void SingleFileResourceBase::handleProgress(KJob *, unsigned long pct)
 {
-  emit percent( pct );
+    emit percent(pct);
 }
 
-void SingleFileResourceBase::fileChanged( const QString & fileName )
+void SingleFileResourceBase::fileChanged(const QString &fileName)
 {
-  if ( fileName != mCurrentUrl.toLocalFile() )
-    return;
+    if (fileName != mCurrentUrl.toLocalFile()) {
+        return;
+    }
 
-  const QByteArray newHash = calculateHash( fileName );
+    const QByteArray newHash = calculateHash(fileName);
 
-  // There is only a need to synchronize when the file was changed by another
-  // process. At this point we're sure that it is the file that the resource
-  // was configured for because of the check at the beginning of this function.
-  if ( newHash == mCurrentHash )
-    return;
+    // There is only a need to synchronize when the file was changed by another
+    // process. At this point we're sure that it is the file that the resource
+    // was configured for because of the check at the beginning of this function.
+    if (newHash == mCurrentHash) {
+        return;
+    }
 
-  if ( !mCurrentUrl.isEmpty() ) {
-    QString lostFoundFileName;
-    const QUrl prevUrl = mCurrentUrl;
-    int i = 0;
-    do {
-      lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-') + QString::number( ++i ) ;
-    } while ( QFile( lostFoundFileName ).exists() );
+    if (!mCurrentUrl.isEmpty()) {
+        QString lostFoundFileName;
+        const QUrl prevUrl = mCurrentUrl;
+        int i = 0;
+        do {
+            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-') + QString::number(++i) ;
+        } while (QFile(lostFoundFileName).exists());
 
-    // create the directory if it doesn't exist yet
-    QDir dir = QFileInfo(lostFoundFileName).dir();
-    if ( !dir.exists() )
-      dir.mkpath( dir.path() );
+        // create the directory if it doesn't exist yet
+        QDir dir = QFileInfo(lostFoundFileName).dir();
+        if (!dir.exists()) {
+            dir.mkpath(dir.path());
+        }
 
-    mCurrentUrl = QUrl::fromLocalFile( lostFoundFileName );
-    writeFile();
-    mCurrentUrl = prevUrl;
+        mCurrentUrl = QUrl::fromLocalFile(lostFoundFileName);
+        writeFile();
+        mCurrentUrl = prevUrl;
 
-    const QString message = i18n( "The file '%1' was changed on disk. "
-      "As a precaution, a backup of its previous contents has been created at '%2'.",
-      prevUrl.toDisplayString(), QUrl::fromLocalFile( lostFoundFileName ).toDisplayString() );
-    emit warning( message );
-  }
+        const QString message = i18n("The file '%1' was changed on disk. "
+                                     "As a precaution, a backup of its previous contents has been created at '%2'.",
+                                     prevUrl.toDisplayString(), QUrl::fromLocalFile(lostFoundFileName).toDisplayString());
+        emit warning(message);
+    }
 
-  readFile();
+    readFile();
 
-  // Notify resources, so that information bound to the file like indexes etc.
-  // can be updated.
-  handleHashChange();
-  invalidateCache( rootCollection() );
-  synchronize();
+    // Notify resources, so that information bound to the file like indexes etc.
+    // can be updated.
+    handleHashChange();
+    invalidateCache(rootCollection());
+    synchronize();
 }
 
 void SingleFileResourceBase::scheduleWrite()
 {
-  scheduleCustomTask(this, "writeFile", QVariant(true), ResourceBase::AfterChangeReplay);
+    scheduleCustomTask(this, "writeFile", QVariant(true), ResourceBase::AfterChangeReplay);
 }
 
-void SingleFileResourceBase::slotDownloadJobResult( KJob *job )
+void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
 {
-  if ( job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST ) {
-    const QString message = i18n( "Could not load file '%1'.", mCurrentUrl.toDisplayString() );
-    qWarning() << message;
-    emit status( Broken, message );
-  } else {
-    readLocalFile( QUrl::fromLocalFile( cacheFile() ).toLocalFile() );
-  }
+    if (job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST) {
+        const QString message = i18n("Could not load file '%1'.", mCurrentUrl.toDisplayString());
+        qWarning() << message;
+        emit status(Broken, message);
+    } else {
+        readLocalFile(QUrl::fromLocalFile(cacheFile()).toLocalFile());
+    }
 
-  mDownloadJob = 0;
-  KGlobal::deref();
+    mDownloadJob = 0;
+    KGlobal::deref();
 
-  emit status( Idle, i18nc( "@info:status", "Ready" ) );
+    emit status(Idle, i18nc("@info:status", "Ready"));
 }
 
-void SingleFileResourceBase::slotUploadJobResult( KJob *job )
+void SingleFileResourceBase::slotUploadJobResult(KJob *job)
 {
-  if ( job->error() ) {
-    const QString message = i18n( "Could not save file '%1'.", mCurrentUrl.toDisplayString() );
-    qWarning() << message;
-    emit status( Broken, message );
-  }
+    if (job->error()) {
+        const QString message = i18n("Could not save file '%1'.", mCurrentUrl.toDisplayString());
+        qWarning() << message;
+        emit status(Broken, message);
+    }
 
-  mUploadJob = 0;
-  KGlobal::deref();
+    mUploadJob = 0;
+    KGlobal::deref();
 
-  emit status( Idle, i18nc( "@info:status", "Ready" ) );
+    emit status(Idle, i18nc("@info:status", "Ready"));
 }
 

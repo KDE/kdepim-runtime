@@ -24,12 +24,12 @@ class GoogleAccountManager;
 
 class SettingsDialog : public GoogleSettingsDialog
 {
-  Q_OBJECT
-  public:
-    explicit SettingsDialog( GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent );
+    Q_OBJECT
+public:
+    explicit SettingsDialog(GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent);
     ~SettingsDialog();
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void saveSettings();
 
 };

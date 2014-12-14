@@ -24,100 +24,100 @@
 using namespace OXA;
 
 Object::Object()
-  : mObjectStatus( Created ), mObjectId( -1 ), mFolderId( -1 )
+    : mObjectStatus(Created), mObjectId(-1), mFolderId(-1)
 {
 }
 
-void Object::setObjectStatus( ObjectStatus status )
+void Object::setObjectStatus(ObjectStatus status)
 {
-  mObjectStatus = status;
+    mObjectStatus = status;
 }
 
 Object::ObjectStatus Object::objectStatus() const
 {
-  return mObjectStatus;
+    return mObjectStatus;
 }
 
-void Object::setObjectId( qlonglong id )
+void Object::setObjectId(qlonglong id)
 {
-  mObjectId = id;
+    mObjectId = id;
 }
 
 qlonglong Object::objectId() const
 {
-  return mObjectId;
+    return mObjectId;
 }
 
-void Object::setFolderId( qlonglong id )
+void Object::setFolderId(qlonglong id)
 {
-  mFolderId = id;
+    mFolderId = id;
 }
 
 qlonglong Object::folderId() const
 {
-  return mFolderId;
+    return mFolderId;
 }
 
-void Object::setLastModified( const QString &timeStamp )
+void Object::setLastModified(const QString &timeStamp)
 {
-  mLastModified = timeStamp;
+    mLastModified = timeStamp;
 }
 
 QString Object::lastModified() const
 {
-  return mLastModified;
+    return mLastModified;
 }
 
-void Object::setModule( Folder::Module module )
+void Object::setModule(Folder::Module module)
 {
-  mModule = module;
+    mModule = module;
 }
 
 Folder::Module Object::module() const
 {
-  return mModule;
+    return mModule;
 }
 
-void Object::setContact( const KContacts::Addressee &contact )
+void Object::setContact(const KContacts::Addressee &contact)
 {
-  mModule = Folder::Contacts;
-  mContact = contact;
+    mModule = Folder::Contacts;
+    mContact = contact;
 }
 
 KContacts::Addressee Object::contact() const
 {
-  return mContact;
+    return mContact;
 }
 
-void Object::setContactGroup( const KContacts::ContactGroup &group )
+void Object::setContactGroup(const KContacts::ContactGroup &group)
 {
-  mModule = Folder::Contacts;
-  mContactGroup = group;
+    mModule = Folder::Contacts;
+    mContactGroup = group;
 }
 
 KContacts::ContactGroup Object::contactGroup() const
 {
-  return mContactGroup;
+    return mContactGroup;
 }
 
-void Object::setEvent( const KCalCore::Incidence::Ptr &event )
+void Object::setEvent(const KCalCore::Incidence::Ptr &event)
 {
-  mModule = Folder::Calendar;
-  mEvent = event;
+    mModule = Folder::Calendar;
+    mEvent = event;
 }
 
 KCalCore::Incidence::Ptr Object::event() const
 {
-  return mEvent;
+    return mEvent;
 }
 
-void Object::setTask( const KCalCore::Incidence::Ptr &task )
+void Object::setTask(const KCalCore::Incidence::Ptr &task)
 {
-  mModule = Folder::Tasks;
-  mTask = task;
+    mModule = Folder::Tasks;
+    mTask = task;
 }
 
 KCalCore::Incidence::Ptr Object::task() const
 {
-  return mTask;
+    return mTask;
 }

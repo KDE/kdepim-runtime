@@ -46,8 +46,8 @@
 #include <QIcon>
 
 GmailResource::GmailResource(const QString &id)
-  : ImapResourceBase(id)
-  , m_settings(0)
+    : ImapResourceBase(id)
+    , m_settings(0)
 {
     setSeparatorCharacter(QLatin1Char('/'));
 
@@ -70,7 +70,6 @@ Settings *GmailResource::settings() const
     return m_settings;
 }
 
-
 QString GmailResource::defaultName() const
 {
     return i18n("Gmail Resource");
@@ -87,9 +86,9 @@ QDialog *GmailResource::createConfigureDialog(WId windowId)
 
 void GmailResource::onConfigurationDone(int result)
 {
-    GmailConfigDialog *dlg = qobject_cast<GmailConfigDialog*>(sender());
+    GmailConfigDialog *dlg = qobject_cast<GmailConfigDialog *>(sender());
     if (result) {
-        if ( dlg->shouldClearCache() ) {
+        if (dlg->shouldClearCache()) {
             clearCache();
         }
         settings()->save();
@@ -139,7 +138,7 @@ void GmailResource::updateTrashFolder()
 
 void GmailResource::onUpdateTrashFolderCollectionsRetrieved(KJob *job)
 {
-    Akonadi::CollectionFetchJob *fetch = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+    Akonadi::CollectionFetchJob *fetch = qobject_cast<Akonadi::CollectionFetchJob *>(job);
     if (job->error()) {
         kError() << fetch->errorString();
         return;
@@ -198,7 +197,7 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
         return;
     }
 
-    Akonadi::CollectionFetchJob *fetch = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+    Akonadi::CollectionFetchJob *fetch = qobject_cast<Akonadi::CollectionFetchJob *>(job);
     if (fetch->collections().count() != 1) {
         qWarning() << "Got" << fetch->collections().count() << "collections, expected only one!";
         cancelTask();

@@ -38,25 +38,25 @@ class TransactionSequence;
  */
 class RetrieveItemsJob : public Akonadi::Job
 {
-  Q_OBJECT
-  public:
-    RetrieveItemsJob( const Akonadi::Collection &collection, const KPIM::Maildir &md, QObject* parent = 0 );
-    void setMimeType( const QString &mimeType );
+    Q_OBJECT
+public:
+    RetrieveItemsJob(const Akonadi::Collection &collection, const KPIM::Maildir &md, QObject *parent = 0);
+    void setMimeType(const QString &mimeType);
 
-  protected:
+protected:
     void doStart();
 
-  private:
+private:
     void entriesProcessed();
-    Akonadi::TransactionSequence* transaction();
+    Akonadi::TransactionSequence *transaction();
 
-  private slots:
-    void localListDone( KJob *job );
-    void transactionDone( KJob *job );
+private slots:
+    void localListDone(KJob *job);
+    void transactionDone(KJob *job);
     void processEntry();
-    void processEntryDone( KJob * );
+    void processEntryDone(KJob *);
 
-  private:
+private:
     Akonadi::Collection m_collection;
     KPIM::Maildir m_maildir;
     QHash<QString, Akonadi::Item> m_localItems;

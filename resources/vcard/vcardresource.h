@@ -28,31 +28,31 @@
 
 class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource::Settings>
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit VCardResource( const QString &id );
+public:
+    explicit VCardResource(const QString &id);
     ~VCardResource();
 
-  protected Q_SLOTS:
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    void retrieveItems( const Akonadi::Collection &col );
+protected Q_SLOTS:
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void retrieveItems(const Akonadi::Collection &col);
 
-  protected:
+protected:
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog( Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings>* dlg );
+    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings> *dlg);
 
-    bool readFromFile( const QString &fileName );
-    bool writeToFile( const QString &fileName );
+    bool readFromFile(const QString &fileName);
+    bool writeToFile(const QString &fileName);
     virtual void aboutToQuit();
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
-    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    virtual void itemRemoved(const Akonadi::Item &item);
 
-  private:
+private:
     QMap<QString, KContacts::Addressee> mAddressees;
     KContacts::VCardConverter mConverter;
 };

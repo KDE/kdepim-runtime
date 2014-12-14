@@ -17,9 +17,9 @@
 
 #include "maildispatcherresourcefactory.h"
 
-MaildispatcherResourceFactory::MaildispatcherResourceFactory( QObject * parent )
-  : Akonadi::AgentFactory< MailDispatcherAgent >( "akonadi_maildispatcher_agent", parent )
+MaildispatcherResourceFactory::MaildispatcherResourceFactory(QObject *parent)
+    : Akonadi::AgentFactory< MailDispatcherAgent >("akonadi_maildispatcher_agent", parent)
 {
-   setObjectName(QLatin1String("akonadi_maildispatcher_agent") );
+    setObjectName(QLatin1String("akonadi_maildispatcher_agent"));
 }
 

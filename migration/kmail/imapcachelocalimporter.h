@@ -25,48 +25,47 @@
 
 namespace Akonadi
 {
-  class AgentInstance;
+class AgentInstance;
 }
 
 class MixedMaildirStore;
 
 class ImapCacheLocalImporter : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ImapCacheLocalImporter( MixedMaildirStore *store, QObject *parent = Q_NULLPTR );
+public:
+    explicit ImapCacheLocalImporter(MixedMaildirStore *store, QObject *parent = Q_NULLPTR);
 
     ~ImapCacheLocalImporter();
 
-    void setTopLevelFolder( const QString &topLevelFolder );
+    void setTopLevelFolder(const QString &topLevelFolder);
 
-    void setAccountName( const QString &accountName );
+    void setAccountName(const QString &accountName);
 
     QString accountName() const;
 
-  Q_SIGNALS:
-    void status( const QString &msg );
-    void progress( int value );
-    void progress( int min, int max, int value );
+Q_SIGNALS:
+    void status(const QString &msg);
+    void progress(int value);
+    void progress(int min, int max, int value);
 
-    void importFinished( const Akonadi::AgentInstance &resource, const QString &error );
+    void importFinished(const Akonadi::AgentInstance &resource, const QString &error);
 
-  public Q_SLOTS:
+public Q_SLOTS:
     void startImport();
 
-  private:
+private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void createResourceResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void configureResource() )
-    Q_PRIVATE_SLOT( d, void collectionFetchResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void collectionCreateResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemFetchResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemCreateResult( KJob* ) )
+    Q_PRIVATE_SLOT(d, void createResourceResult(KJob *))
+    Q_PRIVATE_SLOT(d, void configureResource())
+    Q_PRIVATE_SLOT(d, void collectionFetchResult(KJob *))
+    Q_PRIVATE_SLOT(d, void collectionCreateResult(KJob *))
+    Q_PRIVATE_SLOT(d, void itemFetchResult(KJob *))
+    Q_PRIVATE_SLOT(d, void itemCreateResult(KJob *))
 };
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

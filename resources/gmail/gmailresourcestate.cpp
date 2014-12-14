@@ -44,5 +44,5 @@ ResourceTask *GmailResourceState::currentTask() const
 MessageHelper::Ptr GmailResourceState::messageHelper() const
 {
     return MessageHelper::Ptr(new GmailMessageHelper(collection(),
-                                                     qobject_cast<GmailRetrieveItemsTask*>(mTask)));
+                              qobject_cast<GmailRetrieveItemsTask *>(mTask)));
 }

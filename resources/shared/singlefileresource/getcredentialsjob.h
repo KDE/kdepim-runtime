@@ -27,11 +27,13 @@
 #include <Accounts/AuthData>
 #include <SignOn/SessionData>
 
-namespace Accounts {
-    class Manager;
+namespace Accounts
+{
+class Manager;
 };
-namespace SignOn {
-    class Error;
+namespace SignOn
+{
+class Error;
 };
 
 class AKONADI_SINGLEFILERESOURCE_EXPORT GetCredentialsJob : public KJob

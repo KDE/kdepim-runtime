@@ -24,29 +24,29 @@
 
 class DummyPasswordRequester : public PasswordRequesterInterface
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  DummyPasswordRequester( QObject *parent = Q_NULLPTR );
+    DummyPasswordRequester(QObject *parent = Q_NULLPTR);
 
-  QString password() const;
-  void setPassword( const QString &password );
+    QString password() const;
+    void setPassword(const QString &password);
 
-  void setScenario( const QList<RequestType> &expectedCalls,
-                    const QList<ResultType> &results );
-  void setDelays( const QList<int> &delays );
+    void setScenario(const QList<RequestType> &expectedCalls,
+                     const QList<ResultType> &results);
+    void setDelays(const QList<int> &delays);
 
 public:
-  virtual void requestPassword( RequestType request = StandardRequest,
-                                const QString &serverError = QString() );
+    virtual void requestPassword(RequestType request = StandardRequest,
+                                 const QString &serverError = QString());
 
 private slots:
-  void emitResult();
+    void emitResult();
 
 private:
-  QString m_password;
-  QList<RequestType> m_expectedCalls;
-  QList<ResultType> m_results;
-  QList<int> m_delays;
+    QString m_password;
+    QList<RequestType> m_expectedCalls;
+    QList<ResultType> m_results;
+    QList<int> m_delays;
 };
 
 #endif

@@ -24,7 +24,8 @@
 
 #include <QtCore/QString>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Item;
 }
 
@@ -36,9 +37,9 @@ class Item;
  */
 class StoreResultJob : public Akonadi::TransactionSequence
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new store result job.
      *
@@ -47,7 +48,7 @@ class StoreResultJob : public Akonadi::TransactionSequence
      * @param message An error message in case the mail could not be dispatched.
      * @param parent The parent object.
      */
-    explicit StoreResultJob( const Akonadi::Item &item, bool success, const QString &message, QObject *parent = Q_NULLPTR );
+    explicit StoreResultJob(const Akonadi::Item &item, bool success, const QString &message, QObject *parent = Q_NULLPTR);
 
     /**
      * Destroys the store result job.
@@ -57,17 +58,17 @@ class StoreResultJob : public Akonadi::TransactionSequence
     bool success() const;
     QString message() const;
 
-  protected:
+protected:
     // reimpl from TransactionSequence
     virtual void doStart();
 
-  private:
+private:
     //@cond PRIVATE
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void fetchDone( KJob *job ) )
-    Q_PRIVATE_SLOT( d, void modifyDone( KJob *job ) )
+    Q_PRIVATE_SLOT(d, void fetchDone(KJob *job))
+    Q_PRIVATE_SLOT(d, void modifyDone(KJob *job))
     //@endcond
 };
 

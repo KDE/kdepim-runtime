@@ -24,14 +24,12 @@
 #include <QtCore/QFile>
 #include <QStandardPaths>
 
-
-
 using namespace OXA;
 
-Users* Users::mSelf = 0;
+Users *Users::mSelf = 0;
 
 Users::Users()
-  : mCurrentUserId( -1 )
+    : mCurrentUserId(-1)
 {
 }
 
@@ -39,117 +37,122 @@ Users::~Users()
 {
 }
 
-Users* Users::self()
+Users *Users::self()
 {
-  if ( !mSelf )
-    mSelf = new Users();
+    if (!mSelf) {
+        mSelf = new Users();
+    }
 
-  return mSelf;
+    return mSelf;
 }
 
-void Users::init( const QString &identifier )
+void Users::init(const QString &identifier)
 {
-  mIdentifier = identifier;
+    mIdentifier = identifier;
 
-  loadFromCache();
+    loadFromCache();
 }
 
 qlonglong Users::currentUserId() const
 {
-  return mCurrentUserId;
+    return mCurrentUserId;
 }
 
-User Users::lookupUid( qlonglong uid ) const
+User Users::lookupUid(qlonglong uid) const
 {
-  return mUsers.value( uid );
+    return mUsers.value(uid);
 }
 
-User Users::lookupEmail( const QString &email ) const
+User Users::lookupEmail(const QString &email) const
 {
-  QMapIterator<qlonglong, User> it( mUsers );
-  while ( it.hasNext() ) {
-    it.next();
+    QMapIterator<qlonglong, User> it(mUsers);
+    while (it.hasNext()) {
+        it.next();
 
-    if ( it.value().email() == email )
-      return it.value();
-  }
+        if (it.value().email() == email) {
+            return it.value();
+        }
+    }
 
-  return User();
+    return User();
 }
 
 QString Users::cacheFilePath() const
 {
-  return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + "openxchangeresource_" + mIdentifier ;
+    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + "openxchangeresource_" + mIdentifier ;
 }
 
-void Users::setCurrentUserId( qlonglong id )
+void Users::setCurrentUserId(qlonglong id)
 {
-  mCurrentUserId = id;
+    mCurrentUserId = id;
 
-  saveToCache();
+    saveToCache();
 }
 
-void Users::setUsers( const User::List &users )
+void Users::setUsers(const User::List &users)
 {
-  mUsers.clear();
+    mUsers.clear();
 
-  foreach ( const User &user, users )
-    mUsers.insert( user.uid(), user );
+    foreach (const User &user, users) {
+        mUsers.insert(user.uid(), user);
+    }
 
-  saveToCache();
+    saveToCache();
 }
 
 void Users::loadFromCache()
 {
-  QFile cacheFile( cacheFilePath() );
-  if ( !cacheFile.open( QIODevice::ReadOnly ) )
-    return;
+    QFile cacheFile(cacheFilePath());
+    if (!cacheFile.open(QIODevice::ReadOnly)) {
+        return;
+    }
 
-  QDataStream stream( &cacheFile );
-  stream.setVersion( QDataStream::Qt_4_6 );
+    QDataStream stream(&cacheFile);
+    stream.setVersion(QDataStream::Qt_4_6);
 
-  mUsers.clear();
+    mUsers.clear();
 
-  stream >> mCurrentUserId;
+    stream >> mCurrentUserId;
 
-  qulonglong count;
-  stream >> count;
+    qulonglong count;
+    stream >> count;
 
-  qlonglong uid;
-  QString name;
-  QString email;
-  for ( qulonglong i = 0; i < count; ++i ) {
-    stream >> uid >> name >> email;
+    qlonglong uid;
+    QString name;
+    QString email;
+    for (qulonglong i = 0; i < count; ++i) {
+        stream >> uid >> name >> email;
 
-    User user;
-    user.setUid( uid );
-    user.setName( name );
-    user.setEmail( email );
-    mUsers.insert( user.uid(), user );
-  }
+        User user;
+        user.setUid(uid);
+        user.setName(name);
+        user.setEmail(email);
+        mUsers.insert(user.uid(), user);
+    }
 }
 
 void Users::saveToCache()
 {
-  QFile cacheFile( cacheFilePath() );
-  if ( !cacheFile.open( QIODevice::WriteOnly ) )
-    return;
+    QFile cacheFile(cacheFilePath());
+    if (!cacheFile.open(QIODevice::WriteOnly)) {
+        return;
+    }
 
-  QDataStream stream( &cacheFile );
-  stream.setVersion( QDataStream::Qt_4_6 );
+    QDataStream stream(&cacheFile);
+    stream.setVersion(QDataStream::Qt_4_6);
 
-  // write current user id
-  stream << mCurrentUserId;
+    // write current user id
+    stream << mCurrentUserId;
 
-  // write number of users
-  stream << (qulonglong)mUsers.count();
+    // write number of users
+    stream << (qulonglong)mUsers.count();
 
-  // write uid, name and email address for each user
-  QMapIterator<qlonglong, User> it( mUsers );
-  while ( it.hasNext() ) {
-    it.next();
+    // write uid, name and email address for each user
+    QMapIterator<qlonglong, User> it(mUsers);
+    while (it.hasNext()) {
+        it.next();
 
-    stream << it.value().uid() << it.value().name() << it.value().email();
-  }
+        stream << it.value().uid() << it.value().name() << it.value().email();
+    }
 }
 

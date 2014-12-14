@@ -27,18 +27,18 @@
 
 class DefaultReminderAttribute : public Akonadi::Attribute
 {
-  public:
-    explicit DefaultReminderAttribute( );
+public:
+    explicit DefaultReminderAttribute();
 
     Attribute *clone() const;
-    void deserialize( const QByteArray &data );
+    void deserialize(const QByteArray &data);
     QByteArray serialized() const;
     QByteArray type() const;
 
-    void setReminders( const KGAPI2::RemindersList &reminders );
-    KCalCore::Alarm::List alarms( KCalCore::Incidence *incidence ) const;
+    void setReminders(const KGAPI2::RemindersList &reminders);
+    KCalCore::Alarm::List alarms(KCalCore::Incidence *incidence) const;
 
-  private:
+private:
     KGAPI2::RemindersList m_reminders;
 };
 

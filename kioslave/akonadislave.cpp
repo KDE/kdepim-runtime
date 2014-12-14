@@ -27,9 +27,8 @@
 #include <collectiondeletejob.h>
 #include <entitydisplayattribute.h>
 
-#include <QDebug> 
+#include <QDebug>
 #include "akonadislave_debug.h"
-
 
 #include <QDebug>
 
@@ -39,204 +38,211 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-extern "C" { int Q_DECL_EXPORT kdemain(int argc, char **argv); }
+extern "C" {
+    int Q_DECL_EXPORT kdemain(int argc, char **argv);
+}
 
-int kdemain(int argc, char **argv) {
+int kdemain(int argc, char **argv)
+{
 
-  KAboutData aboutData( QLatin1String("kio_akonadi"), QString(), QLatin1String( "0" ));
-  QApplication app(argc, argv);
-  QCommandLineParser parser;
-  KAboutData::setApplicationData(aboutData);
-  parser.addVersionOption();
-  parser.addHelpOption();
-  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+protocol"), i18n( "Protocol name" )));
-  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+pool"), i18n( "Socket name" )));
-  parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+app"), i18n( "Socket name" )));
+    KAboutData aboutData(QLatin1String("kio_akonadi"), QString(), QLatin1String("0"));
+    QApplication app(argc, argv);
+    QCommandLineParser parser;
+    KAboutData::setApplicationData(aboutData);
+    parser.addVersionOption();
+    parser.addHelpOption();
+    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+protocol"), i18n("Protocol name")));
+    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+pool"), i18n("Socket name")));
+    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+app"), i18n("Socket name")));
 
-  aboutData.setupCommandLine(&parser);
-  parser.process(app);
-  aboutData.processCommandLine(&parser);
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
 
-  AkonadiSlave slave( parser.positionalArguments().at(1).toLocal8Bit(), parser.positionalArguments().at(2).toLocal8Bit() );
-  slave.dispatchLoop();
+    AkonadiSlave slave(parser.positionalArguments().at(1).toLocal8Bit(), parser.positionalArguments().at(2).toLocal8Bit());
+    slave.dispatchLoop();
 
-  return 0;
+    return 0;
 }
 
 using namespace Akonadi;
 
-AkonadiSlave::AkonadiSlave(const QByteArray & pool_socket, const QByteArray & app_socket) :
-    KIO::SlaveBase( "akonadi", pool_socket, app_socket )
+AkonadiSlave::AkonadiSlave(const QByteArray &pool_socket, const QByteArray &app_socket) :
+    KIO::SlaveBase("akonadi", pool_socket, app_socket)
 {
-  qCDebug(AKONADISLAVE_LOG) << "kio_akonadi starting up";
+    qCDebug(AKONADISLAVE_LOG) << "kio_akonadi starting up";
 }
 
 AkonadiSlave::~ AkonadiSlave()
 {
-  qCDebug(AKONADISLAVE_LOG) << "kio_akonadi shutting down";
+    qCDebug(AKONADISLAVE_LOG) << "kio_akonadi shutting down";
 }
 
-void AkonadiSlave::get(const QUrl & url)
+void AkonadiSlave::get(const QUrl &url)
 {
-  const Item item = Item::fromUrl( url );
-  ItemFetchJob *job = new ItemFetchJob( item );
-  job->fetchScope().fetchFullPayload();
+    const Item item = Item::fromUrl(url);
+    ItemFetchJob *job = new ItemFetchJob(item);
+    job->fetchScope().fetchFullPayload();
 
-  if ( !job->exec() ) {
-    error( KIO::ERR_INTERNAL, job->errorString() );
-    return;
-  }
+    if (!job->exec()) {
+        error(KIO::ERR_INTERNAL, job->errorString());
+        return;
+    }
 
-  if ( job->items().count() != 1 ) {
-    error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such item." ) );
-  } else {
-    const Item item = job->items().first();
-    QByteArray tmp = item.payloadData();
-    data( tmp );
-    data( QByteArray() );
+    if (job->items().count() != 1) {
+        error(KIO::ERR_DOES_NOT_EXIST, i18n("No such item."));
+    } else {
+        const Item item = job->items().first();
+        QByteArray tmp = item.payloadData();
+        data(tmp);
+        data(QByteArray());
+        finished();
+    }
+
     finished();
-  }
-
-  finished();
 }
 
-void AkonadiSlave::stat(const QUrl & url)
+void AkonadiSlave::stat(const QUrl &url)
 {
-  qCDebug(AKONADISLAVE_LOG) << url;
+    qCDebug(AKONADISLAVE_LOG) << url;
 
-  // Stats for a collection
-  if ( Collection::fromUrl( url ).isValid() ) {
-      Collection collection = Collection::fromUrl( url );
+    // Stats for a collection
+    if (Collection::fromUrl(url).isValid()) {
+        Collection collection = Collection::fromUrl(url);
 
-      if ( collection != Collection::root() ) {
-        // Check that the collection exists.
-        CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::Base );
-        if ( !job->exec() ) {
-          error( KIO::ERR_INTERNAL, job->errorString() );
-          return;
+        if (collection != Collection::root()) {
+            // Check that the collection exists.
+            CollectionFetchJob *job = new CollectionFetchJob(collection, CollectionFetchJob::Base);
+            if (!job->exec()) {
+                error(KIO::ERR_INTERNAL, job->errorString());
+                return;
+            }
+
+            if (job->collections().count() != 1) {
+                error(KIO::ERR_DOES_NOT_EXIST, i18n("No such item."));
+                return;
+            }
+
+            collection = job->collections().first();
         }
 
-        if ( job->collections().count() != 1 ) {
-          error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such item." ) );
-          return;
+        statEntry(entryForCollection(collection));
+        finished();
+    }
+    // Stats for an item
+    else if (Item::fromUrl(url).isValid()) {
+        ItemFetchJob *job = new ItemFetchJob(Item::fromUrl(url));
+
+        if (!job->exec()) {
+            error(KIO::ERR_INTERNAL, job->errorString());
+            return;
         }
 
-        collection = job->collections().first();
-      }
+        if (job->items().count() != 1) {
+            error(KIO::ERR_DOES_NOT_EXIST, i18n("No such item."));
+            return;
+        }
 
-      statEntry( entryForCollection( collection ) );
-      finished();
-  }
-  // Stats for an item
-  else if ( Item::fromUrl( url ).isValid() ) {
-    ItemFetchJob *job = new ItemFetchJob( Item::fromUrl( url ) );
+        const Item item = job->items().first();
+        statEntry(entryForItem(item));
+        finished();
+    }
+}
 
-    if ( !job->exec() ) {
-      error( KIO::ERR_INTERNAL, job->errorString() );
-      return;
+void AkonadiSlave::del(const QUrl &url, bool isFile)
+{
+    qCDebug(AKONADISLAVE_LOG) << url;
+
+    if (!isFile) {                   // It's a directory
+        Collection collection = Collection::fromUrl(url);
+        CollectionDeleteJob *job = new CollectionDeleteJob(collection);
+        if (!job->exec()) {
+            error(KIO::ERR_INTERNAL, job->errorString());
+            return;
+        }
+        finished();
+    } else {                         // It's a file
+        ItemDeleteJob *job = new ItemDeleteJob(Item::fromUrl(url));
+        if (!job->exec()) {
+            error(KIO::ERR_INTERNAL, job->errorString());
+            return;
+        }
+        finished();
+    }
+}
+
+void AkonadiSlave::listDir(const QUrl &url)
+{
+    qCDebug(AKONADISLAVE_LOG) << url;
+
+    if (!Collection::fromUrl(url).isValid()) {
+        error(KIO::ERR_DOES_NOT_EXIST, i18n("No such collection."));
+        return;
     }
 
-    if ( job->items().count() != 1 ) {
-      error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such item." ) );
-      return;
+    // Fetching collections
+    Collection collection = Collection::fromUrl(url);
+    if (!collection.isValid()) {
+        error(KIO::ERR_DOES_NOT_EXIST, i18n("No such collection."));
+        return;
+    }
+    CollectionFetchJob *job = new CollectionFetchJob(collection, CollectionFetchJob::FirstLevel);
+    if (!job->exec()) {
+        error(KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString());
+        return;
     }
 
-    const Item item = job->items().first();
-    statEntry( entryForItem( item ) );
+    Collection::List collections = job->collections();
+    foreach (const Collection &col, collections) {
+        listEntry(entryForCollection(col), false);
+    }
+
+    // Fetching items
+    if (collection != Collection::root()) {
+        ItemFetchJob *fjob = new ItemFetchJob(collection);
+        if (!fjob->exec()) {
+            error(KIO::ERR_INTERNAL, job->errorString());
+            return;
+        }
+        Item::List items = fjob->items();
+        totalSize(collections.count() + items.count());
+        foreach (const Item &item, items) {
+            listEntry(entryForItem(item), false);
+        }
+    }
+
+    listEntry(KIO::UDSEntry(), true);
     finished();
-  }
 }
 
-void AkonadiSlave::del( const QUrl &url, bool isFile )
+KIO::UDSEntry AkonadiSlave::entryForItem(const Akonadi::Item &item)
 {
-  qCDebug(AKONADISLAVE_LOG) << url;
+    KIO::UDSEntry entry;
+    entry.insert(KIO::UDSEntry::UDS_NAME, QString::number(item.id()));
+    entry.insert(KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType());
+    entry.insert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG);
+    entry.insert(KIO::UDSEntry::UDS_URL, item.url().url());
+    entry.insert(KIO::UDSEntry::UDS_SIZE, item.size());
+    entry.insert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
+    entry.insert(KIO::UDSEntry::UDS_MODIFICATION_TIME, item.modificationTime().toTime_t());
+    return entry;
+}
 
-  if ( !isFile ) {                 // It's a directory
-    Collection collection = Collection::fromUrl( url );
-    CollectionDeleteJob *job = new CollectionDeleteJob( collection );
-    if ( !job->exec() ) {
-      error( KIO::ERR_INTERNAL, job->errorString() );
-      return;
+KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection &collection)
+{
+    KIO::UDSEntry entry;
+    entry.insert(KIO::UDSEntry::UDS_NAME, collection.name());
+    entry.insert(KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType());
+    entry.insert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR);
+    entry.insert(KIO::UDSEntry::UDS_URL, collection.url().url());
+    entry.insert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
+    if (EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>()) {
+        if (!attr->iconName().isEmpty()) {
+            entry.insert(KIO::UDSEntry::UDS_ICON_NAME, attr->iconName());
+        }
+        if (!attr->displayName().isEmpty()) {
+            entry.insert(KIO::UDSEntry::UDS_DISPLAY_NAME, attr->displayName());
+        }
     }
-    finished();
-  } else {                         // It's a file
-    ItemDeleteJob* job = new ItemDeleteJob( Item::fromUrl( url ) );
-    if ( !job->exec() ) {
-      error( KIO::ERR_INTERNAL, job->errorString() );
-      return;
-    }
-    finished();
-  }
-}
-
-void AkonadiSlave::listDir( const QUrl &url )
-{
-  qCDebug(AKONADISLAVE_LOG) << url;
-
-  if ( !Collection::fromUrl( url ).isValid() ) {
-    error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such collection." ) );
-    return;
-  }
-
-  // Fetching collections
-  Collection collection = Collection::fromUrl( url );
-  if ( !collection.isValid() ) {
-    error( KIO::ERR_DOES_NOT_EXIST, i18n( "No such collection." ) );
-    return;
-  }
-  CollectionFetchJob *job = new CollectionFetchJob( collection, CollectionFetchJob::FirstLevel );
-  if ( !job->exec() ) {
-    error( KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString() );
-    return;
-  }
-
-  Collection::List collections = job->collections();
-  foreach ( const Collection &col, collections )
-    listEntry( entryForCollection( col ), false );
-
-  // Fetching items
-  if ( collection != Collection::root() ) {
-    ItemFetchJob* fjob = new ItemFetchJob( collection );
-    if ( !fjob->exec() ) {
-      error( KIO::ERR_INTERNAL, job->errorString() );
-      return;
-    }
-    Item::List items = fjob->items();
-    totalSize( collections.count() + items.count() );
-    foreach ( const Item &item, items )
-      listEntry( entryForItem( item ), false );
-  }
-
-  listEntry( KIO::UDSEntry(), true );
-  finished();
-}
-
-KIO::UDSEntry AkonadiSlave::entryForItem(const Akonadi::Item& item)
-{
-  KIO::UDSEntry entry;
-  entry.insert( KIO::UDSEntry::UDS_NAME, QString::number( item.id() ) );
-  entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType() );
-  entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG );
-  entry.insert( KIO::UDSEntry::UDS_URL, item.url().url() );
-  entry.insert( KIO::UDSEntry::UDS_SIZE, item.size() );
-  entry.insert( KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH );
-  entry.insert( KIO::UDSEntry::UDS_MODIFICATION_TIME, item.modificationTime().toTime_t() );
-  return entry;
-}
-
-KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection& collection)
-{
-  KIO::UDSEntry entry;
-  entry.insert( KIO::UDSEntry::UDS_NAME, collection.name()  );
-  entry.insert( KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType() );
-  entry.insert( KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR );
-  entry.insert( KIO::UDSEntry::UDS_URL, collection.url().url() );
-  entry.insert( KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH );
-  if ( EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>() ) {
-    if ( !attr->iconName().isEmpty() )
-      entry.insert( KIO::UDSEntry::UDS_ICON_NAME, attr->iconName() );
-    if ( !attr->displayName().isEmpty() )
-      entry.insert( KIO::UDSEntry::UDS_DISPLAY_NAME, attr->displayName() );
-  }
-  return entry;
+    return entry;
 }

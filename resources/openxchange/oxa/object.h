@@ -31,11 +31,12 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
-namespace OXA {
+namespace OXA
+{
 
 class Object
 {
-  public:
+public:
     /**
      * Describes a list of objects.
      */
@@ -44,42 +45,41 @@ class Object
     /**
      * Describes the status of the object.
      */
-    enum ObjectStatus
-    {
-      Created, ///< The object has been created or modified.
-      Deleted  ///< The object has been deleted.
+    enum ObjectStatus {
+        Created, ///< The object has been created or modified.
+        Deleted  ///< The object has been deleted.
     };
 
     Object();
 
-    void setObjectStatus( ObjectStatus status );
+    void setObjectStatus(ObjectStatus status);
     ObjectStatus objectStatus() const;
 
-    void setObjectId( qlonglong id );
+    void setObjectId(qlonglong id);
     qlonglong objectId() const;
 
-    void setFolderId( qlonglong id );
+    void setFolderId(qlonglong id);
     qlonglong folderId() const;
 
-    void setLastModified( const QString &timeStamp );
+    void setLastModified(const QString &timeStamp);
     QString lastModified() const;
 
-    void setModule( Folder::Module module );
+    void setModule(Folder::Module module);
     Folder::Module module() const;
 
-    void setContact( const KContacts::Addressee &contact );
+    void setContact(const KContacts::Addressee &contact);
     KContacts::Addressee contact() const;
 
-    void setContactGroup( const KContacts::ContactGroup &group );
+    void setContactGroup(const KContacts::ContactGroup &group);
     KContacts::ContactGroup contactGroup() const;
 
-    void setEvent( const KCalCore::Incidence::Ptr &event );
+    void setEvent(const KCalCore::Incidence::Ptr &event);
     KCalCore::Incidence::Ptr event() const;
 
-    void setTask( const KCalCore::Incidence::Ptr &task );
+    void setTask(const KCalCore::Incidence::Ptr &task);
     KCalCore::Incidence::Ptr task() const;
 
-  private:
+private:
     ObjectStatus mObjectStatus;
     qlonglong mObjectId;
     qlonglong mFolderId;

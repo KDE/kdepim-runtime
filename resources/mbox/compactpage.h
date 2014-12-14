@@ -28,21 +28,21 @@ class KJob;
 
 class CompactPage : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit CompactPage( const QString &collectionId, QWidget *parent = 0 );
+public:
+    explicit CompactPage(const QString &collectionId, QWidget *parent = 0);
 
-  private slots:
+private slots:
     void compact();
-    void onCollectionFetchCheck( KJob* );
-    void onCollectionFetchCompact( KJob* );
-    void onCollectionModify( KJob* );
+    void onCollectionFetchCheck(KJob *);
+    void onCollectionFetchCompact(KJob *);
+    void onCollectionModify(KJob *);
 
-  private: // Methods
+private: // Methods
     void checkCollectionId();
 
-  private: // Members
+private: // Members
     QString mCollectionId;
     Ui::CompactPage ui;
 };

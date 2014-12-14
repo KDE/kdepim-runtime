@@ -23,5 +23,5 @@
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(AKONADI_SERIALIZER_MAIL_LOG)
 
-#endif 
+#endif
 

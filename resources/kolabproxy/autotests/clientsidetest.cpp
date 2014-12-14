@@ -67,7 +67,8 @@ public:
         qRegisterMetaType<QSet<QByteArray> >();
     }
 
-    void cleanup() {
+    void cleanup()
+    {
         //cleanup
         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(imapCollection);
         deleteJob->exec();
@@ -77,7 +78,8 @@ public:
     }
 
 private slots:
-    void initTestCase() {
+    void initTestCase()
+    {
         AkonadiTest::checkTestIsIsolated();
         AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
 
@@ -91,7 +93,7 @@ private slots:
 
         Akonadi::CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("res1/Calendar"), this);
         AKVERIFYEXEC(resolver);
-        imapCollection = Akonadi::Collection( resolver->collection() );
+        imapCollection = Akonadi::Collection(resolver->collection());
         QVERIFY(imapCollection.isValid());
 
         kolabCollection = TestUtils::findCollection(mInstance.identifier(), "Calendar");
@@ -100,7 +102,7 @@ private slots:
 
     void testItemCreate()
     {
-        KDateTime date(QDate(2013,10,10), KDateTime::ClockTime);
+        KDateTime date(QDate(2013, 10, 10), KDateTime::ClockTime);
         date.setDateOnly(true);
 
         KCalCore::Event::Ptr event(new KCalCore::Event());
@@ -150,9 +152,9 @@ private slots:
 
     void testItemModify()
     {
-        KDateTime date1(QDate(2013,10,10), KDateTime::ClockTime);
+        KDateTime date1(QDate(2013, 10, 10), KDateTime::ClockTime);
         date1.setDateOnly(true);
-        KDateTime date2(QDate(2014,10,10), KDateTime::ClockTime);
+        KDateTime date2(QDate(2014, 10, 10), KDateTime::ClockTime);
         date2.setDateOnly(true);
 
         KCalCore::Event::Ptr event(new KCalCore::Event());
@@ -192,7 +194,7 @@ private slots:
 
     void testItemModifyFailure()
     {
-        KDateTime date1(QDate(2013,10,10), KDateTime::ClockTime);
+        KDateTime date1(QDate(2013, 10, 10), KDateTime::ClockTime);
         date1.setDateOnly(true);
 
         KCalCore::Event::Ptr event(new KCalCore::Event());
@@ -232,6 +234,6 @@ private slots:
 
 };
 
-QTEST_AKONADIMAIN( ClientSideTest, NoGUI )
+QTEST_AKONADIMAIN(ClientSideTest, NoGUI)
 
 #include "clientsidetest.moc"

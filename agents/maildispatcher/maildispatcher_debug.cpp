@@ -20,4 +20,3 @@
 #include "maildispatcher_debug.h"
 Q_LOGGING_CATEGORY(MAILDISPATCHER_LOG, "log_maildispatcher")
 
-

@@ -25,7 +25,8 @@
 #include <agentbase.h>
 #include "migrationscheduler.h"
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class MigrationAgent : public AgentBase, public AgentBase::ObserverV2
 {

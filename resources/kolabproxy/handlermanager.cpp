@@ -19,10 +19,10 @@
 #include "handlermanager.h"
 #include <collectionannotationsattribute.h>
 
-Kolab::FolderType HandlerManager::getFolderType( const Akonadi::Collection& collection )
+Kolab::FolderType HandlerManager::getFolderType(const Akonadi::Collection &collection)
 {
-    if (Akonadi::CollectionAnnotationsAttribute *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>() ) {
-        return Kolab::folderTypeFromString( Kolab::getFolderTypeAnnotation(attr->annotations()));
+    if (Akonadi::CollectionAnnotationsAttribute *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>()) {
+        return Kolab::folderTypeFromString(Kolab::getFolderTypeAnnotation(attr->annotations()));
     }
     return Kolab::MailType;
 }
@@ -32,7 +32,7 @@ bool HandlerManager::isKolabFolder(const Akonadi::Collection &collection)
     return (getFolderType(collection) != Kolab::MailType);
 }
 
-bool HandlerManager::isHandledKolabFolder(const Akonadi::Collection& collection)
+bool HandlerManager::isHandledKolabFolder(const Akonadi::Collection &collection)
 {
     return KolabHandler::hasHandler(getFolderType(collection));
 }
@@ -42,16 +42,16 @@ KolabHandler::Ptr HandlerManager::getHandler(Akonadi::Entity::Id collectionId)
     return mMonitoredCollections.value(collectionId);
 }
 
-QString HandlerManager::imapResourceForCollection( Akonadi::Collection::Id id )
+QString HandlerManager::imapResourceForCollection(Akonadi::Collection::Id id)
 {
     return mResourceIdentifiers.value(id);
 }
 
-bool HandlerManager::registerHandlerForCollection( const Akonadi::Collection &imapCollection, Kolab::Version version )
+bool HandlerManager::registerHandlerForCollection(const Akonadi::Collection &imapCollection, Kolab::Version version)
 {
     if (isHandledKolabFolder(imapCollection)) {
         KolabHandler::Ptr handler =
-        KolabHandler::createHandler(getFolderType(imapCollection), imapCollection);
+            KolabHandler::createHandler(getFolderType(imapCollection), imapCollection);
         if (handler) {
             handler->setKolabFormatVersion(version);
             mMonitoredCollections.insert(imapCollection.id(), handler);

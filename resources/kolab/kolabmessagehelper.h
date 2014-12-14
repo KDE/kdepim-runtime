@@ -23,17 +23,18 @@
 #include <messagehelper.h>
 #include <AkonadiCore/Collection>
 
-class KolabMessageHelper : public MessageHelper {
+class KolabMessageHelper : public MessageHelper
+{
 public:
     explicit KolabMessageHelper(const Akonadi::Collection &collection);
     virtual ~KolabMessageHelper();
     virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message,
-                                                const qint64 uid,
-                                                const qint64 size,
-                                                const QList<KIMAP::MessageAttribute> &attrs,
-                                                const QList<QByteArray> &flags,
-                                                const KIMAP::FetchJob::FetchScope &scope,
-                                                bool &ok) const;
+            const qint64 uid,
+            const qint64 size,
+            const QList<KIMAP::MessageAttribute> &attrs,
+            const QList<QByteArray> &flags,
+            const KIMAP::FetchJob::FetchScope &scope,
+            bool &ok) const;
 
 private:
     Akonadi::Collection mCollection;

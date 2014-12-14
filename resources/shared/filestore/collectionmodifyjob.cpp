@@ -26,48 +26,46 @@ using namespace Akonadi;
 
 class FileStore::CollectionModifyJob::Private
 {
-  public:
-    explicit Private( FileStore::CollectionModifyJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::CollectionModifyJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     Collection mCollection;
 
-  private:
+private:
     FileStore::CollectionModifyJob *mParent;
 };
 
-FileStore::CollectionModifyJob::CollectionModifyJob( const Collection &collection, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::CollectionModifyJob::CollectionModifyJob(const Collection &collection, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  Q_ASSERT( session != 0 );
+    Q_ASSERT(session != 0);
 
-  d->mCollection = collection;
+    d->mCollection = collection;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::CollectionModifyJob::~CollectionModifyJob()
 {
-  delete d;
+    delete d;
 }
 
 Collection FileStore::CollectionModifyJob::collection() const
 {
-  return d->mCollection;
+    return d->mCollection;
 }
 
-bool FileStore::CollectionModifyJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::CollectionModifyJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::CollectionModifyJob::handleCollectionModified( const Collection &collection )
+void FileStore::CollectionModifyJob::handleCollectionModified(const Collection &collection)
 {
-  d->mCollection = collection;
+    d->mCollection = collection;
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

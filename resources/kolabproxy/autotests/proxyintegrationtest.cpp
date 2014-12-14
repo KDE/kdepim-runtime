@@ -46,7 +46,7 @@ class ProxyIntegrationTest : public QObject
         Collection col;
         col.setName(name);
         QMap<QByteArray, QByteArray> annotations;
-        Kolab::setFolderTypeAnnotation( annotations, annotation );
+        Kolab::setFolderTypeAnnotation(annotations, annotation);
         col.addAttribute(new CollectionAnnotationsAttribute(annotations));
         col.setRights(Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem | Collection::CanCreateCollection | Collection::CanChangeCollection | Collection::CanDeleteCollection);
         return col;
@@ -55,7 +55,8 @@ class ProxyIntegrationTest : public QObject
     AgentInstance mInstance;
 
 private slots:
-    void initTestCase() {
+    void initTestCase()
+    {
         AkonadiTest::checkTestIsIsolated();
         AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
 
@@ -68,7 +69,8 @@ private slots:
         QVERIFY(TestUtils::ensurePopulated(mInstance.identifier(), 6));
     }
 
-    void setupKolabProxy() {
+    void setupKolabProxy()
+    {
         //Check that all collections in the kolab proxy have been created
         CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
         fetchJob->fetchScope().setResource(mInstance.identifier());
@@ -105,7 +107,8 @@ private slots:
     /**
      * All kolab folders, if handled by kolab proxy or not, should receive an entity hidden attribute
      */
-    void ensureHiddenAttribute() {
+    void ensureHiddenAttribute()
+    {
         CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
         fetchJob->fetchScope().setResource("akonadi_knut_resource_0");
         AKVERIFYEXEC(fetchJob);
@@ -121,7 +124,8 @@ private slots:
         }
     }
 
-    void testRemoval() {
+    void testRemoval()
+    {
         Akonadi::AgentInstance instance = AgentManager::self()->instance("akonadi_knut_resource_0");
         AgentManager::self()->removeInstance(instance);
 
@@ -129,7 +133,7 @@ private slots:
         QTest::qWait(10);
         bool kolabCollectionsAreGone = false;
         Akonadi::Collection::List rootCollections;
-        for (int i = 0; i < TIMEOUT/10; i++) {
+        for (int i = 0; i < TIMEOUT / 10; i++) {
             Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root());
             AKVERIFYEXEC(fetchJob);
             rootCollections.clear();
@@ -152,6 +156,6 @@ private slots:
 
 };
 
-QTEST_AKONADIMAIN( ProxyIntegrationTest, NoGUI )
+QTEST_AKONADIMAIN(ProxyIntegrationTest, NoGUI)
 
 #include "proxyintegrationtest.moc"

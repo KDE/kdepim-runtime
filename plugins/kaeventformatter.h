@@ -29,84 +29,85 @@ using namespace KAlarmCal;
 
 class KAEventFormatter
 {
-    public:
-        // KAEvent parameter identifiers.
-        // Note that parameters stored in Akonadi attributes are not included.
-        enum Parameter
-        {
-            Id,
-            AlarmType,
-            AlarmCategory,
-            TemplateName,
-            CreatedTime,
-            StartTime,
-            TemplateAfterTime,
-            Recurs,             // does the event recur?
-            Recurrence,
-            NextRecurrence,     // next alarm time excluding repetitions, including reminder/deferral
-            SubRepetition,      // is there a sub-repetition?
-            RepeatInterval,
-            RepeatCount,
-            NextRepetition,     // next repetition count
-            LateCancel,
-            AutoClose,
-            WorkTimeOnly,
-            HolidaysExcluded,
-            CopyKOrganizer,
-            Enabled,
-            ReadOnly,
-            Archive,
-            Revision,
-            CustomProperties,
-        
-            MessageText,
-            MessageFile,
-            FgColour,
-            BgColour,
-            Font,
-            PreAction,
-            PreActionCancel,
-            PreActionNoError,
-            PostAction,
-            ConfirmAck,
-            KMailSerial,
-            Sound,
-            SoundRepeat,
-            SoundVolume,
-            SoundFadeVolume,
-            SoundFadeTime,
-            Reminder,
-            ReminderOnce,
-            DeferralType,
-            DeferralTime,
-            DeferDefault,
-            DeferDefaultDate,
-        
-            Command,
-            LogFile,
-            CommandXTerm,
-        
-            EmailSubject,
-            EmailFromId,
-            EmailTo,
-            EmailBcc,
-            EmailBody,
-            EmailAttachments
-            
-        };
+public:
+    // KAEvent parameter identifiers.
+    // Note that parameters stored in Akonadi attributes are not included.
+    enum Parameter {
+        Id,
+        AlarmType,
+        AlarmCategory,
+        TemplateName,
+        CreatedTime,
+        StartTime,
+        TemplateAfterTime,
+        Recurs,             // does the event recur?
+        Recurrence,
+        NextRecurrence,     // next alarm time excluding repetitions, including reminder/deferral
+        SubRepetition,      // is there a sub-repetition?
+        RepeatInterval,
+        RepeatCount,
+        NextRepetition,     // next repetition count
+        LateCancel,
+        AutoClose,
+        WorkTimeOnly,
+        HolidaysExcluded,
+        CopyKOrganizer,
+        Enabled,
+        ReadOnly,
+        Archive,
+        Revision,
+        CustomProperties,
 
-        KAEventFormatter() {}
-        KAEventFormatter(const KAEvent& e, bool falseForUnspecified);
-        bool           isApplicable(Parameter) const;
-        QString        value(Parameter) const;
-        const KAEvent& event() const   { return mEvent; }
-        static QString label(Parameter);
+        MessageText,
+        MessageFile,
+        FgColour,
+        BgColour,
+        Font,
+        PreAction,
+        PreActionCancel,
+        PreActionNoError,
+        PostAction,
+        ConfirmAck,
+        KMailSerial,
+        Sound,
+        SoundRepeat,
+        SoundVolume,
+        SoundFadeVolume,
+        SoundFadeTime,
+        Reminder,
+        ReminderOnce,
+        DeferralType,
+        DeferralTime,
+        DeferDefault,
+        DeferDefaultDate,
 
-    private:
-        KAEvent mEvent;
-        QString mUnspecifiedValue;
+        Command,
+        LogFile,
+        CommandXTerm,
+
+        EmailSubject,
+        EmailFromId,
+        EmailTo,
+        EmailBcc,
+        EmailBody,
+        EmailAttachments
+
+    };
+
+    KAEventFormatter() {}
+    KAEventFormatter(const KAEvent &e, bool falseForUnspecified);
+    bool           isApplicable(Parameter) const;
+    QString        value(Parameter) const;
+    const KAEvent &event() const
+    {
+        return mEvent;
+    }
+    static QString label(Parameter);
+
+private:
+    KAEvent mEvent;
+    QString mUnspecifiedValue;
 };
 
 #endif // KAEVENTFORMATTER_H
 
-// vim: et sw=4:

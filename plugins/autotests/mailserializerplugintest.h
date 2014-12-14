@@ -24,11 +24,10 @@
 
 class MailSerializerPluginTest : public QObject
 {
-  Q_OBJECT
-  private slots:
+    Q_OBJECT
+private slots:
     void testMailPlugin();
     void testMessageIntegrity();
 };
-
 
 #endif

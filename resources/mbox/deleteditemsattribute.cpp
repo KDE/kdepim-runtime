@@ -23,75 +23,77 @@ DeletedItemsAttribute::DeletedItemsAttribute()
 {
 }
 
-DeletedItemsAttribute::DeletedItemsAttribute( const DeletedItemsAttribute &other )
-  : Akonadi::Attribute()
+DeletedItemsAttribute::DeletedItemsAttribute(const DeletedItemsAttribute &other)
+    : Akonadi::Attribute()
 {
-  if ( &other == this )
-    return;
+    if (&other == this) {
+        return;
+    }
 
-  mDeletedItemOffsets = other.mDeletedItemOffsets;
+    mDeletedItemOffsets = other.mDeletedItemOffsets;
 }
 
 DeletedItemsAttribute::~DeletedItemsAttribute()
 {
 }
 
-void DeletedItemsAttribute::addDeletedItemOffset( quint64 offset )
+void DeletedItemsAttribute::addDeletedItemOffset(quint64 offset)
 {
-  mDeletedItemOffsets.insert( offset );
+    mDeletedItemOffsets.insert(offset);
 }
 
 Akonadi::Attribute *DeletedItemsAttribute::clone() const
 {
-  return new DeletedItemsAttribute( *this );
+    return new DeletedItemsAttribute(*this);
 }
 
 QSet<quint64> DeletedItemsAttribute::deletedItemOffsets() const
 {
-  return mDeletedItemOffsets;
+    return mDeletedItemOffsets;
 }
 
 KMBox::MBoxEntry::List DeletedItemsAttribute::deletedItemEntries() const
 {
-  KMBox::MBoxEntry::List entries;
+    KMBox::MBoxEntry::List entries;
 
-  foreach ( quint64 offset, mDeletedItemOffsets )
-    entries << KMBox::MBoxEntry( offset );
+    foreach (quint64 offset, mDeletedItemOffsets) {
+        entries << KMBox::MBoxEntry(offset);
+    }
 
-  return entries;
+    return entries;
 }
 
-void DeletedItemsAttribute::deserialize( const QByteArray &data )
+void DeletedItemsAttribute::deserialize(const QByteArray &data)
 {
-  QList<QByteArray> offsets = data.split(',');
-  mDeletedItemOffsets.clear();
+    QList<QByteArray> offsets = data.split(',');
+    mDeletedItemOffsets.clear();
 
-  foreach( const QByteArray& offset, offsets ) {
-    mDeletedItemOffsets.insert( offset.toULongLong() );
-  }
+    foreach (const QByteArray &offset, offsets) {
+        mDeletedItemOffsets.insert(offset.toULongLong());
+    }
 }
 
 QByteArray DeletedItemsAttribute::serialized() const
 {
-  QByteArray serialized;
+    QByteArray serialized;
 
-  foreach( quint64 offset, mDeletedItemOffsets ) {
-    serialized += QByteArray::number(offset);
-    serialized += ',';
-  }
+    foreach (quint64 offset, mDeletedItemOffsets) {
+        serialized += QByteArray::number(offset);
+        serialized += ',';
+    }
 
-  serialized.chop( 1 ); // Remove the last ','
+    serialized.chop(1);   // Remove the last ','
 
-  return serialized;
+    return serialized;
 }
 
 int DeletedItemsAttribute::offsetCount() const
 {
-  return mDeletedItemOffsets.size();
+    return mDeletedItemOffsets.size();
 }
 
 QByteArray DeletedItemsAttribute::type() const
 {
-    static const QByteArray sType( "DeletedMboxItems" );
+    static const QByteArray sType("DeletedMboxItems");
     return sType;
 }

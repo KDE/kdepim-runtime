@@ -25,53 +25,51 @@ using namespace Akonadi;
 
 class FileStore::ItemCreateJob::Private
 {
-  public:
-    explicit Private( FileStore::ItemCreateJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::ItemCreateJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     Item mItem;
     Collection mCollection;
 
-  private:
+private:
     FileStore::ItemCreateJob *mParent;
 };
 
-FileStore::ItemCreateJob::ItemCreateJob( const Item &item, const Collection &collection, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::ItemCreateJob::ItemCreateJob(const Item &item, const Collection &collection, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  d->mItem = item;
-  d->mCollection = collection;
+    d->mItem = item;
+    d->mCollection = collection;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::ItemCreateJob::~ItemCreateJob()
 {
-  delete d;
+    delete d;
 }
 
 Collection FileStore::ItemCreateJob::collection() const
 {
-  return d->mCollection;
+    return d->mCollection;
 }
 
 Item FileStore::ItemCreateJob::item() const
 {
-  return d->mItem;
+    return d->mItem;
 }
 
-bool FileStore::ItemCreateJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::ItemCreateJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::ItemCreateJob::handleItemCreated( const Item &item )
+void FileStore::ItemCreateJob::handleItemCreated(const Item &item)
 {
-  d->mItem = item;
+    d->mItem = item;
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

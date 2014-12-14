@@ -16,19 +16,18 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #include "noinferiorsattribute.h"
 
 #include <QByteArray>
 
 #include <attribute.h>
 
-NoInferiorsAttribute::NoInferiorsAttribute( bool noInferiors )
-: mNoInferiors( noInferiors )
+NoInferiorsAttribute::NoInferiorsAttribute(bool noInferiors)
+    : mNoInferiors(noInferiors)
 {
 }
 
-void NoInferiorsAttribute::setNoInferiors( bool noInferiors )
+void NoInferiorsAttribute::setNoInferiors(bool noInferiors)
 {
     mNoInferiors = noInferiors;
 }
@@ -40,21 +39,21 @@ bool NoInferiorsAttribute::noInferiors() const
 
 QByteArray NoInferiorsAttribute::type() const
 {
-    static const QByteArray sType( "noinferiors" );
+    static const QByteArray sType("noinferiors");
     return sType;
 }
 
-Akonadi::Attribute* NoInferiorsAttribute::clone() const
+Akonadi::Attribute *NoInferiorsAttribute::clone() const
 {
-    return new NoInferiorsAttribute( mNoInferiors );
+    return new NoInferiorsAttribute(mNoInferiors);
 }
 
 QByteArray NoInferiorsAttribute::serialized() const
 {
-    return mNoInferiors ? QByteArray::number( 1 ) :  QByteArray::number( 0 );
+    return mNoInferiors ? QByteArray::number(1) :  QByteArray::number(0);
 }
 
-void NoInferiorsAttribute::deserialize( const QByteArray &data )
+void NoInferiorsAttribute::deserialize(const QByteArray &data)
 {
-    mNoInferiors = ( data.toInt() == 0 ) ? false : true;
+    mNoInferiors = (data.toInt() == 0) ? false : true;
 }

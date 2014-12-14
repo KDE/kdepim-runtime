@@ -28,17 +28,18 @@
 
 class FreeBusyUpdateHandler;
 
-namespace Akonadi {
-  class Monitor;
+namespace Akonadi
+{
+class Monitor;
 }
 
 class KolabProxyResource : public Akonadi::ResourceBase,
-                           public Akonadi::AgentBase::ObserverV2
+    public Akonadi::AgentBase::ObserverV2
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit KolabProxyResource( const QString &id );
+public:
+    explicit KolabProxyResource(const QString &id);
     ~KolabProxyResource();
 
     /**
@@ -47,93 +48,93 @@ class KolabProxyResource : public Akonadi::ResourceBase,
      *
      * @return @c true if @p imapCollection is a Kolab folder, @c false otherwise.
      */
-    bool registerHandlerForCollection( const Akonadi::Collection &imapCollection );
+    bool registerHandlerForCollection(const Akonadi::Collection &imapCollection);
 
-    QString imapResourceForCollection( Akonadi::Collection::Id id );
+    QString imapResourceForCollection(Akonadi::Collection::Id id);
 
-    void updateHiddenAttribute( const Akonadi::Collection &imapCollection );
+    void updateHiddenAttribute(const Akonadi::Collection &imapCollection);
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
+public Q_SLOTS:
+    virtual void configure(WId windowId);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
 
-    void retrieveItems( const Akonadi::Collection &col );
+    void retrieveItems(const Akonadi::Collection &col);
 
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-    void imapItemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
+    void imapItemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
 
-    void imapItemMoved( const Akonadi::Item &item,
-                        const Akonadi::Collection &collectionSource,
-                        const Akonadi::Collection &collectionDestination );
+    void imapItemMoved(const Akonadi::Item &item,
+                       const Akonadi::Collection &collectionSource,
+                       const Akonadi::Collection &collectionDestination);
 
-    void imapItemRemoved( const Akonadi::Item &item );
+    void imapItemRemoved(const Akonadi::Item &item);
 
-    void imapCollectionAdded( const Akonadi::Collection &collection,
-                              const Akonadi::Collection &parent );
+    void imapCollectionAdded(const Akonadi::Collection &collection,
+                             const Akonadi::Collection &parent);
 
-    void imapCollectionRemoved( const Akonadi::Collection &collection );
+    void imapCollectionRemoved(const Akonadi::Collection &collection);
 
-    void imapCollectionChanged( const Akonadi::Collection &collection );
+    void imapCollectionChanged(const Akonadi::Collection &collection);
 
-    void imapCollectionMoved( const Akonadi::Collection &collection,
-                              const Akonadi::Collection &source,
-                              const Akonadi::Collection &destination );
+    void imapCollectionMoved(const Akonadi::Collection &collection,
+                             const Akonadi::Collection &source,
+                             const Akonadi::Collection &destination);
 
-    void retrieveItemFetchDone( KJob * );
-    void retrieveItemsFetchDone( KJob * );
-    void retrieveCollectionsTreeDone( KJob *job );
+    void retrieveItemFetchDone(KJob *);
+    void retrieveItemsFetchDone(KJob *);
+    void retrieveCollectionsTreeDone(KJob *job);
 
-  protected:
+protected:
     virtual void aboutToQuit();
 
-    virtual void itemAdded( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-    virtual void itemMoved( const Akonadi::Item &item,
-                            const Akonadi::Collection &collectionSource,
-                            const Akonadi::Collection &collectionDestination );
+    virtual void itemMoved(const Akonadi::Item &item,
+                           const Akonadi::Collection &collectionSource,
+                           const Akonadi::Collection &collectionDestination);
 
-    virtual void itemRemoved( const Akonadi::Item &item );
+    virtual void itemRemoved(const Akonadi::Item &item);
 
-    virtual void collectionAdded( const Akonadi::Collection &collection,
-                                  const Akonadi::Collection &parent );
+    virtual void collectionAdded(const Akonadi::Collection &collection,
+                                 const Akonadi::Collection &parent);
 
-    virtual void collectionChanged( const Akonadi::Collection &collection );
+    virtual void collectionChanged(const Akonadi::Collection &collection);
 
     // do not hide the other variant, use implementation from base class
     // which just forwards to the one above
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
-    virtual void collectionMoved( const Akonadi::Collection &collection,
-                                  const Akonadi::Collection &source,
-                                  const Akonadi::Collection &destination );
+    virtual void collectionMoved(const Akonadi::Collection &collection,
+                                 const Akonadi::Collection &source,
+                                 const Akonadi::Collection &destination);
 
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
+    virtual void collectionRemoved(const Akonadi::Collection &collection);
 
-  private:
-    Akonadi::Collection createCollection( const Akonadi::Collection &imapCollection );
-    void createItem( const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem );
+private:
+    Akonadi::Collection createCollection(const Akonadi::Collection &imapCollection);
+    void createItem(const Akonadi::Collection &imapCollection, const Akonadi::Item &kolabItem);
 
-    void applyAttributesToImap( Akonadi::Collection &imapCollection,
-                                const Akonadi::Collection &kolabCollection );
+    void applyAttributesToImap(Akonadi::Collection &imapCollection,
+                               const Akonadi::Collection &kolabCollection);
 
-    void applyAttributesFromImap( Akonadi::Collection &kolabCollection,
-                                  const Akonadi::Collection &imapCollection );
+    void applyAttributesFromImap(Akonadi::Collection &kolabCollection,
+                                 const Akonadi::Collection &imapCollection);
 
-    void updateFreeBusyInformation( const Akonadi::Collection &imapCollection );
+    void updateFreeBusyInformation(const Akonadi::Collection &imapCollection);
 
-  private slots:
+private slots:
     void onItemAddedDone(KJob *job);
     void onItemChangedDone(KJob *job);
-    void imapFolderCreateResult( KJob *job );
-    void kolabFolderChangeResult( KJob *job );
-    void checkResult( KJob *job );
+    void imapFolderCreateResult(KJob *job);
+    void kolabFolderChangeResult(KJob *job);
+    void checkResult(KJob *job);
 
-  private:
+private:
     void showErrorMessage(const QString &);
-    void removeFolder( const Akonadi::Collection &imapCollection );
+    void removeFolder(const Akonadi::Collection &imapCollection);
     Akonadi::Monitor *m_monitor;
     Akonadi::Monitor *m_collectionMonitor;
     QList<Akonadi::Item::Id> m_excludeAppend;

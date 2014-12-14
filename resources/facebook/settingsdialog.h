@@ -27,21 +27,21 @@ class KJob;
 
 class SettingsDialog : public KDialog, private Ui::SettingsDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    SettingsDialog( FacebookResource *parentResource, WId parentWindow );
+public:
+    SettingsDialog(FacebookResource *parentResource, WId parentWindow);
     ~SettingsDialog();
 
-  private slots:
-    virtual void slotButtonClicked( int button );
+private slots:
+    virtual void slotButtonClicked(int button);
     void resetAuthentication();
     void showAuthenticationDialog();
-    void authenticationDone( const QString &accessToken );
+    void authenticationDone(const QString &accessToken);
     void authenticationCanceled();
-    void userInfoJobDone( KJob *job );
+    void userInfoJobDone(KJob *job);
 
-  private:
+private:
     void setupWidgets();
     void loadSettings();
     void saveSettings();

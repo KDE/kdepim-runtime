@@ -26,7 +26,8 @@
 
 class QItemSelectionModel;
 class KRecursiveFilterProxyModel;
-namespace Akonadi {
+namespace Akonadi
+{
 class EntityTreeModel;
 class ChangeRecorder;
 }
@@ -38,7 +39,7 @@ class NewMailNotifierSelectCollectionWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NewMailNotifierSelectCollectionWidget(QWidget *parent=0);
+    explicit NewMailNotifierSelectCollectionWidget(QWidget *parent = 0);
     ~NewMailNotifierSelectCollectionWidget();
 
     void updateCollectionsRecursive(const QModelIndex &parent);
@@ -46,9 +47,9 @@ public:
 private Q_SLOTS:
     void slotSelectAllCollections();
     void slotUnselectAllCollections();
-    void slotModifyJobDone(KJob* job);
+    void slotModifyJobDone(KJob *job);
     void slotUpdateCollectionStatus();
-    void slotSetCollectionFilter(const QString&);
+    void slotSetCollectionFilter(const QString &);
 
     void slotCollectionTreeFetched();
 

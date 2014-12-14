@@ -25,19 +25,19 @@
 
 class NotesHandler : public JournalHandler
 {
-  public:
-    explicit NotesHandler( const Akonadi::Collection &imapCollection );
+public:
+    explicit NotesHandler(const Akonadi::Collection &imapCollection);
 
-    virtual Akonadi::Item::List translateItems( const Akonadi::Item::List &kolabItems );
-    virtual bool toKolabFormat( const Akonadi::Item &item, Akonadi::Item &imapItem );
+    virtual Akonadi::Item::List translateItems(const Akonadi::Item::List &kolabItems);
+    virtual bool toKolabFormat(const Akonadi::Item &item, Akonadi::Item &imapItem);
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
 
-    virtual QString extractGid(const Akonadi::Item& kolabItem);
+    virtual QString extractGid(const Akonadi::Item &kolabItem);
 
-  private:
-    bool noteFromKolab( const KMime::Message::Ptr &kolabMsg, Akonadi::Item &noteItem );
-    void noteToKolab( const KMime::Message::Ptr &note, Akonadi::Item &kolabItem );
+private:
+    bool noteFromKolab(const KMime::Message::Ptr &kolabMsg, Akonadi::Item &noteItem);
+    void noteToKolab(const KMime::Message::Ptr &note, Akonadi::Item &kolabItem);
 
 };
 

@@ -38,46 +38,47 @@
 
 using namespace Akonadi;
 
-SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase( WId windowId ) :
+SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windowId) :
     QDialog(),
-    mManager( 0 ),
-    mStatJob( 0 ),
-    mAppendedWidget( 0 ),
-    mDirUrlChecked( false ),
-    mMonitorEnabled( true ),
-    mLocalFileOnly( false )
+    mManager(0),
+    mStatJob(0),
+    mAppendedWidget(0),
+    mDirUrlChecked(false),
+    mMonitorEnabled(true),
+    mLocalFileOnly(false)
 {
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  ui.setupUi(mainWidget);
-  ui.kcfg_Path->setMode( KFile::File );
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    ui.setupUi(mainWidget);
+    ui.kcfg_Path->setMode(KFile::File);
 #ifndef KDEPIM_MOBILE_UI
-  ui.statusLabel->setText( QString() );
+    ui.statusLabel->setText(QString());
 #endif
 
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-  mOkButton->setDefault(true);
-  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &SingleFileResourceConfigDialogBase::accept);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &SingleFileResourceConfigDialogBase::reject);
-  mainLayout->addWidget(buttonBox);
-  
-  if ( windowId )
-    KWindowSystem::setMainWindow( this, windowId );
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &SingleFileResourceConfigDialogBase::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &SingleFileResourceConfigDialogBase::reject);
+    mainLayout->addWidget(buttonBox);
 
-  ui.ktabwidget->tabBar()->hide();
+    if (windowId) {
+        KWindowSystem::setMainWindow(this, windowId);
+    }
 
-  connect(mOkButton, &QPushButton::clicked, this, &SingleFileResourceConfigDialogBase::save);
+    ui.ktabwidget->tabBar()->hide();
 
-  connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SingleFileResourceConfigDialogBase::validate);
-  connect(ui.kcfg_MonitorFile, &QCheckBox::toggled, this, &SingleFileResourceConfigDialogBase::validate);
-  ui.kcfg_Path->setFocus();
-  QTimer::singleShot( 0, this, SLOT(validate()) );
-  setMinimumSize(600, 540);
-  readConfig();
+    connect(mOkButton, &QPushButton::clicked, this, &SingleFileResourceConfigDialogBase::save);
+
+    connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SingleFileResourceConfigDialogBase::validate);
+    connect(ui.kcfg_MonitorFile, &QCheckBox::toggled, this, &SingleFileResourceConfigDialogBase::validate);
+    ui.kcfg_Path->setFocus();
+    QTimer::singleShot(0, this, SLOT(validate()));
+    setMinimumSize(600, 540);
+    readConfig();
 }
 
 SingleFileResourceConfigDialogBase::~SingleFileResourceConfigDialogBase()
@@ -87,160 +88,160 @@ SingleFileResourceConfigDialogBase::~SingleFileResourceConfigDialogBase()
 
 void SingleFileResourceConfigDialogBase::writeConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase" );
-    group.writeEntry( "Size", size() );
+    KConfigGroup group(KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase");
+    group.writeEntry("Size", size());
 }
 
 void SingleFileResourceConfigDialogBase::readConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase" );
-    const QSize sizeDialog = group.readEntry( "Size", QSize(600,540) );
-    if ( sizeDialog.isValid() ) {
-        resize( sizeDialog );
+    KConfigGroup group(KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase");
+    const QSize sizeDialog = group.readEntry("Size", QSize(600, 540));
+    if (sizeDialog.isValid()) {
+        resize(sizeDialog);
     }
 }
 
-
-void SingleFileResourceConfigDialogBase::addPage( const QString &title, QWidget *page )
+void SingleFileResourceConfigDialogBase::addPage(const QString &title, QWidget *page)
 {
-  ui.ktabwidget->tabBar()->show();
-  ui.ktabwidget->addTab( page, title );
-  mManager->addWidget( page );
-  mManager->updateWidgets();
+    ui.ktabwidget->tabBar()->show();
+    ui.ktabwidget->addTab(page, title);
+    mManager->addWidget(page);
+    mManager->updateWidgets();
 }
 
-void SingleFileResourceConfigDialogBase::setFilter(const QString & filter)
+void SingleFileResourceConfigDialogBase::setFilter(const QString &filter)
 {
-  ui.kcfg_Path->setFilter( filter );
+    ui.kcfg_Path->setFilter(filter);
 }
 
 void SingleFileResourceConfigDialogBase::setMonitorEnabled(bool enable)
 {
-  mMonitorEnabled = enable;
+    mMonitorEnabled = enable;
 #ifdef KDEPIM_MOBILE_UI
-  ui.kcfg_MonitorFile->setVisible( mMonitorEnabled );
+    ui.kcfg_MonitorFile->setVisible(mMonitorEnabled);
 #else
-  ui.groupBox_MonitorFile->setVisible( mMonitorEnabled );
+    ui.groupBox_MonitorFile->setVisible(mMonitorEnabled);
 #endif
 }
 
-void SingleFileResourceConfigDialogBase::setUrl(const QUrl &url )
+void SingleFileResourceConfigDialogBase::setUrl(const QUrl &url)
 {
-  ui.kcfg_Path->setUrl( url );
+    ui.kcfg_Path->setUrl(url);
 }
 
 QUrl SingleFileResourceConfigDialogBase::url() const
 {
-  return ui.kcfg_Path->url();
+    return ui.kcfg_Path->url();
 }
 
-void SingleFileResourceConfigDialogBase::setLocalFileOnly( bool local )
+void SingleFileResourceConfigDialogBase::setLocalFileOnly(bool local)
 {
-  mLocalFileOnly = local;
-  ui.kcfg_Path->setMode( mLocalFileOnly ? KFile::File | KFile::LocalOnly : KFile::File );
+    mLocalFileOnly = local;
+    ui.kcfg_Path->setMode(mLocalFileOnly ? KFile::File | KFile::LocalOnly : KFile::File);
 }
 
-void SingleFileResourceConfigDialogBase::appendWidget( SingleFileValidatingWidget* widget )
+void SingleFileResourceConfigDialogBase::appendWidget(SingleFileValidatingWidget *widget)
 {
-  widget->setParent( static_cast<QWidget*>( ui.tab ) );
-  ui.tabLayout->addWidget( widget );
-  connect(widget, &SingleFileValidatingWidget::changed, this, &SingleFileResourceConfigDialogBase::validate);
-  mAppendedWidget = widget;
+    widget->setParent(static_cast<QWidget *>(ui.tab));
+    ui.tabLayout->addWidget(widget);
+    connect(widget, &SingleFileValidatingWidget::changed, this, &SingleFileResourceConfigDialogBase::validate);
+    mAppendedWidget = widget;
 }
 
 void SingleFileResourceConfigDialogBase::validate()
 {
-  if ( mAppendedWidget && !mAppendedWidget->validate() ) {
-    mOkButton->setEnabled(false);
-    return;
-  }
-
-  const QUrl currentUrl = ui.kcfg_Path->url();
-  if ( currentUrl.isEmpty() ) {
-    mOkButton->setEnabled(false);
-    return;
-  }
-
-  if ( currentUrl.isLocalFile() ) {
-    if ( mMonitorEnabled ) {
-      ui.kcfg_MonitorFile->setEnabled( true );
+    if (mAppendedWidget && !mAppendedWidget->validate()) {
+        mOkButton->setEnabled(false);
+        return;
     }
+
+    const QUrl currentUrl = ui.kcfg_Path->url();
+    if (currentUrl.isEmpty()) {
+        mOkButton->setEnabled(false);
+        return;
+    }
+
+    if (currentUrl.isLocalFile()) {
+        if (mMonitorEnabled) {
+            ui.kcfg_MonitorFile->setEnabled(true);
+        }
 #ifndef KDEPIM_MOBILE_UI
-    ui.statusLabel->setText( QString() );
+        ui.statusLabel->setText(QString());
 #endif
 
-    // The read-only checkbox used to be disabled if the file is read-only,
-    // but it is then impossible to know at a later date if the file
-    // permissions change, whether the user actually wanted the resource to be
-    // read-only or not. So just leave the read-only checkbox untouched.
-    mOkButton->setEnabled(true);
-  } else {
-    // Not a local file.
-    if ( mLocalFileOnly ) {
-      mOkButton->setEnabled(false);
-      return;
-    }
-    if ( mMonitorEnabled ) {
-      ui.kcfg_MonitorFile->setEnabled( false );
-    }
+        // The read-only checkbox used to be disabled if the file is read-only,
+        // but it is then impossible to know at a later date if the file
+        // permissions change, whether the user actually wanted the resource to be
+        // read-only or not. So just leave the read-only checkbox untouched.
+        mOkButton->setEnabled(true);
+    } else {
+        // Not a local file.
+        if (mLocalFileOnly) {
+            mOkButton->setEnabled(false);
+            return;
+        }
+        if (mMonitorEnabled) {
+            ui.kcfg_MonitorFile->setEnabled(false);
+        }
 #ifndef KDEPIM_MOBILE_UI
-    ui.statusLabel->setText( i18nc( "@info:status", "Checking file information..." ) );
+        ui.statusLabel->setText(i18nc("@info:status", "Checking file information..."));
 #endif
 
-    if ( mStatJob )
-      mStatJob->kill();
+        if (mStatJob) {
+            mStatJob->kill();
+        }
 
-    mStatJob = KIO::stat( currentUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
-    mStatJob->setDetails( 2 ); // All details.
-    mStatJob->setSide( KIO::StatJob::SourceSide );
+        mStatJob = KIO::stat(currentUrl, KIO::DefaultFlags | KIO::HideProgressInfo);
+        mStatJob->setDetails(2);   // All details.
+        mStatJob->setSide(KIO::StatJob::SourceSide);
 
-    connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigDialogBase::slotStatJobResult);
+        connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigDialogBase::slotStatJobResult);
 
-    // Allow the OK button to be disabled until the MetaJob is finished.
-    mOkButton->setEnabled(false);
-  }
+        // Allow the OK button to be disabled until the MetaJob is finished.
+        mOkButton->setEnabled(false);
+    }
 }
 
-void SingleFileResourceConfigDialogBase::slotStatJobResult( KJob* job )
+void SingleFileResourceConfigDialogBase::slotStatJobResult(KJob *job)
 {
-  if ( job->error() == KIO::ERR_DOES_NOT_EXIST && !mDirUrlChecked ) {
-    // The file did not exist, so let's see if the directory the file should
-    // reside in supports writing.
+    if (job->error() == KIO::ERR_DOES_NOT_EXIST && !mDirUrlChecked) {
+        // The file did not exist, so let's see if the directory the file should
+        // reside in supports writing.
 
-    QUrl dirUrl(ui.kcfg_Path->url());
-    dirUrl = KIO::upUrl(dirUrl);
+        QUrl dirUrl(ui.kcfg_Path->url());
+        dirUrl = KIO::upUrl(dirUrl);
 
-    mStatJob = KIO::stat( dirUrl, KIO::DefaultFlags | KIO::HideProgressInfo );
-    mStatJob->setDetails( 2 ); // All details.
-    mStatJob->setSide( KIO::StatJob::SourceSide );
+        mStatJob = KIO::stat(dirUrl, KIO::DefaultFlags | KIO::HideProgressInfo);
+        mStatJob->setDetails(2);   // All details.
+        mStatJob->setSide(KIO::StatJob::SourceSide);
 
-    connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigDialogBase::slotStatJobResult);
+        connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigDialogBase::slotStatJobResult);
 
-    // Make sure we don't check the whole path upwards.
-    mDirUrlChecked = true;
-    return;
-  } else if ( job->error() ) {
-    // It doesn't seem possible to read nor write from the location so leave the
-    // ok button disabled
+        // Make sure we don't check the whole path upwards.
+        mDirUrlChecked = true;
+        return;
+    } else if (job->error()) {
+        // It doesn't seem possible to read nor write from the location so leave the
+        // ok button disabled
 #ifndef KDEPIM_MOBILE_UI
-    ui.statusLabel->setText( QString() );
+        ui.statusLabel->setText(QString());
 #endif
-    mOkButton->setEnabled(false);
+        mOkButton->setEnabled(false);
+        mDirUrlChecked = false;
+        mStatJob = 0;
+        return;
+    }
+
+#ifndef KDEPIM_MOBILE_UI
+    ui.statusLabel->setText(QString());
+#endif
+    mOkButton->setEnabled(true);
+
     mDirUrlChecked = false;
     mStatJob = 0;
-    return;
-  }
-
-#ifndef KDEPIM_MOBILE_UI
-  ui.statusLabel->setText( QString() );
-#endif
-  mOkButton->setEnabled(true);
-
-  mDirUrlChecked = false;
-  mStatJob = 0;
 }
 
-SingleFileValidatingWidget::SingleFileValidatingWidget( QWidget* parent )
-  : QWidget( parent )
+SingleFileValidatingWidget::SingleFileValidatingWidget(QWidget *parent)
+    : QWidget(parent)
 {
 }

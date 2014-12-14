@@ -27,9 +27,9 @@
 using namespace Akonadi;
 
 UpdateJob::UpdateJob(const Collection &col, QObject *parent)
-:   Job(parent),
-    mCollection(col),
-    mModJobRunning(false)
+    :   Job(parent),
+        mCollection(col),
+        mModJobRunning(false)
 {}
 
 UpdateJob::~UpdateJob()
@@ -62,7 +62,7 @@ void UpdateJob::slotResult(KJob *job)
     //This slot is automatically called for all subjobs by KCompositeJob
     //FIXME the fetch job emits result before itemsReceived, because itemsReceived is triggered using the result signal (which is wrong IMO). See ItemFetchJob::timeout
     //If result was emitted at the end we could avoid having to call processNext in itemsReceived and locking it.
-    ItemFetchJob * const fetchJob = dynamic_cast<ItemFetchJob*>(job);
+    ItemFetchJob *const fetchJob = dynamic_cast<ItemFetchJob *>(job);
     const bool fetchReturnedNoItems = fetchJob && fetchJob->items().isEmpty();
     Job::slotResult(job);
     if (fetchReturnedNoItems) {
@@ -91,10 +91,9 @@ bool UpdateJob::processNext()
     return true;
 }
 
-
 GidMigrationJob::GidMigrationJob(const QStringList &mimeTypeFilter, QObject *parent)
-:   Job(parent),
-    mMimeTypeFilter(mimeTypeFilter)
+    :   Job(parent),
+        mMimeTypeFilter(mimeTypeFilter)
 {
 }
 
@@ -115,7 +114,7 @@ void GidMigrationJob::collectionsReceived(const Collection::List &collections)
     mCollections << collections;
 }
 
-void GidMigrationJob::collectionsFetched( KJob *job )
+void GidMigrationJob::collectionsFetched(KJob *job)
 {
     //Errors are propagated by KCompositeJob
     if (!job->error()) {

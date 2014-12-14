@@ -27,19 +27,19 @@
 class SearchTask : public ResourceTask
 {
     Q_OBJECT
-  public:
-    SearchTask( ResourceStateInterface::Ptr state, const QString &query, QObject *parent );
+public:
+    SearchTask(ResourceStateInterface::Ptr state, const QString &query, QObject *parent);
     ~SearchTask();
 
-  protected:
-    virtual void doStart( KIMAP::Session *session );
+protected:
+    virtual void doStart(KIMAP::Session *session);
 
-  private Q_SLOTS:
-    void onSelectDone( KJob *job );
-    void onSearchDone( KJob *job );
+private Q_SLOTS:
+    void onSelectDone(KJob *job);
+    void onSearchDone(KJob *job);
 
-  private:
-    void doSearch( KIMAP::Session *session );
+private:
+    void doSearch(KIMAP::Session *session);
 
     QString m_query;
 

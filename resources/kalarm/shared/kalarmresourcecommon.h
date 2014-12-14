@@ -27,34 +27,36 @@
 
 #include <QObject>
 
-namespace KCalCore { class FileStorage; }
-namespace Akonadi {
-    class Collection;
-    class Item;
+namespace KCalCore
+{
+class FileStorage;
+}
+namespace Akonadi
+{
+class Collection;
+class Item;
 }
 using namespace KAlarmCal;
 
 namespace KAlarmResourceCommon
 {
-    void          initialise(QObject* parent);
+void          initialise(QObject *parent);
 //    void          customizeConfigDialog(SingleFileResourceConfigDialog<Settings>*);
-    KACalendar::Compat getCompatibility(const KCalCore::FileStorage::Ptr&, int& version);
-    Akonadi::Item retrieveItem(const Akonadi::Item&, KAEvent&);
-    KAEvent       checkItemChanged(const Akonadi::Item&, QString& errorMsg);
-    void          setCollectionCompatibility(const Akonadi::Collection&, KACalendar::Compat, int version);
+KACalendar::Compat getCompatibility(const KCalCore::FileStorage::Ptr &, int &version);
+Akonadi::Item retrieveItem(const Akonadi::Item &, KAEvent &);
+KAEvent       checkItemChanged(const Akonadi::Item &, QString &errorMsg);
+void          setCollectionCompatibility(const Akonadi::Collection &, KACalendar::Compat, int version);
 
-    enum ErrorCode
-    {
-        UidNotFound,
-        NotCurrentFormat,
-        EventNotCurrentFormat,
-        EventNoAlarms,
-        EventReadOnly,
-        CalendarAdd
-    };
-    QString       errorMessage(ErrorCode, const QString& param = QString());
+enum ErrorCode {
+    UidNotFound,
+    NotCurrentFormat,
+    EventNotCurrentFormat,
+    EventNoAlarms,
+    EventReadOnly,
+    CalendarAdd
+};
+QString       errorMessage(ErrorCode, const QString &param = QString());
 }
 
 #endif // KALARMRESOURCECOMMON_H
 
-// vim: et sw=4:

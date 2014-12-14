@@ -37,65 +37,65 @@
 
 using namespace Akonadi;
 
-void FacebookResource::noteListFetched( KJob *job )
+void FacebookResource::noteListFetched(KJob *job)
 {
-  Q_ASSERT( !mIdle );
-  KFbAPI::AllNotesListJob * const listJob = dynamic_cast<KFbAPI::AllNotesListJob*>( job );
-  Q_ASSERT( listJob );
-  mCurrentJobs.removeAll( job );
+    Q_ASSERT(!mIdle);
+    KFbAPI::AllNotesListJob *const listJob = dynamic_cast<KFbAPI::AllNotesListJob *>(job);
+    Q_ASSERT(listJob);
+    mCurrentJobs.removeAll(job);
 
-  if ( listJob->error() ) {
-    abortWithError( i18n( "Unable to get notes from server: %1", listJob->errorString() ),
-                    listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem );
-  } else {
-    setItemStreamingEnabled( true );
+    if (listJob->error()) {
+        abortWithError(i18n("Unable to get notes from server: %1", listJob->errorString()),
+                       listJob->error() == KFbAPI::FacebookJob::AuthenticationProblem);
+    } else {
+        setItemStreamingEnabled(true);
 
-    Item::List noteItems;
-    foreach ( const KFbAPI::NoteInfo &noteInfo, listJob->allNotes() ) {
-        KMime::Message::Ptr payload = convertNoteIntoToKMimeMessage(noteInfo);
-      Item note;
-      note.setRemoteId( noteInfo.id() );
-      note.setPayload<KMime::Message::Ptr>(payload);
-      note.setSize(payload->size());
-      note.setMimeType( QLatin1String("text/x-vnd.akonadi.note") );
-      noteItems.append( note );
+        Item::List noteItems;
+        foreach (const KFbAPI::NoteInfo &noteInfo, listJob->allNotes()) {
+            KMime::Message::Ptr payload = convertNoteIntoToKMimeMessage(noteInfo);
+            Item note;
+            note.setRemoteId(noteInfo.id());
+            note.setPayload<KMime::Message::Ptr>(payload);
+            note.setSize(payload->size());
+            note.setMimeType(QLatin1String("text/x-vnd.akonadi.note"));
+            noteItems.append(note);
+        }
+
+        itemsRetrieved(noteItems);
+        itemsRetrievalDone();
+        finishNotesFetching();
     }
 
-    itemsRetrieved( noteItems );
-    itemsRetrievalDone();
-    finishNotesFetching();
-  }
-
-  listJob->deleteLater();
+    listJob->deleteLater();
 }
 
 void FacebookResource::finishNotesFetching()
 {
-  emit percent( 100 );
-  emit status( Idle, i18n( "All notes fetched from server." ) );
-  resetState();
+    emit percent(100);
+    emit status(Idle, i18n("All notes fetched from server."));
+    resetState();
 }
 
-void FacebookResource::noteJobFinished( KJob *job )
+void FacebookResource::noteJobFinished(KJob *job)
 {
-  Q_ASSERT( !mIdle );
-  Q_ASSERT( mCurrentJobs.indexOf( job ) != -1 );
-  KFbAPI::NoteJob * const noteJob = dynamic_cast<KFbAPI::NoteJob*>( job );
-  Q_ASSERT( noteJob );
-  Q_ASSERT( noteJob->noteInfo().size() == 1 );
-  mCurrentJobs.removeAll( job );
+    Q_ASSERT(!mIdle);
+    Q_ASSERT(mCurrentJobs.indexOf(job) != -1);
+    KFbAPI::NoteJob *const noteJob = dynamic_cast<KFbAPI::NoteJob *>(job);
+    Q_ASSERT(noteJob);
+    Q_ASSERT(noteJob->noteInfo().size() == 1);
+    mCurrentJobs.removeAll(job);
 
-  if ( noteJob->error() ) {
-    abortWithError( i18n( "Unable to get information about note from server: %1",
-                          noteJob->errorText() ) );
-  } else {
-    Item note = noteJob->property( "Item" ).value<Item>();
-    note.setPayload(convertNoteIntoToKMimeMessage(noteJob->noteInfo().first()));
-    itemRetrieved( note );
-    resetState();
-  }
+    if (noteJob->error()) {
+        abortWithError(i18n("Unable to get information about note from server: %1",
+                            noteJob->errorText()));
+    } else {
+        Item note = noteJob->property("Item").value<Item>();
+        note.setPayload(convertNoteIntoToKMimeMessage(noteJob->noteInfo().first()));
+        itemRetrieved(note);
+        resetState();
+    }
 
-  noteJob->deleteLater();
+    noteJob->deleteLater();
 }
 
 // void FacebookResource::noteAddJobFinished( KJob *job )
@@ -120,7 +120,7 @@ void FacebookResource::noteJobFinished( KJob *job )
 
 KMime::Message::Ptr FacebookResource::convertNoteIntoToKMimeMessage(const KFbAPI::NoteInfo &noteInfo)
 {
-    KMime::Message * const note = new KMime::Message();
+    KMime::Message *const note = new KMime::Message();
 
     QString m = QStringLiteral("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n");
     m += QStringLiteral("<html><head></head><body>\n");

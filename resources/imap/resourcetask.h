@@ -33,132 +33,131 @@
 
 namespace KIMAP
 {
-  class Session;
+class Session;
 }
 
 class SessionPool;
 
 class ResourceTask : public QObject
 {
-  Q_OBJECT
-  Q_ENUMS( ActionIfNoSession )
+    Q_OBJECT
+    Q_ENUMS(ActionIfNoSession)
 
 public:
-  enum ActionIfNoSession {
-    CancelIfNoSession,
-    DeferIfNoSession
-  };
+    enum ActionIfNoSession {
+        CancelIfNoSession,
+        DeferIfNoSession
+    };
 
-  explicit ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR );
-  virtual ~ResourceTask();
+    explicit ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    virtual ~ResourceTask();
 
-  void start( SessionPool *pool );
+    void start(SessionPool *pool);
 
-  void kill();
+    void kill();
 
-  static QList<QByteArray> fromAkonadiToSupportedImapFlags( const QList<QByteArray> &flags, const Akonadi::Collection &collection );
+    static QList<QByteArray> fromAkonadiToSupportedImapFlags(const QList<QByteArray> &flags, const Akonadi::Collection &collection);
 
-  static QList<QByteArray> toAkonadiFlags( const QList<QByteArray> &flags );
+    static QList<QByteArray> toAkonadiFlags(const QList<QByteArray> &flags);
 
 Q_SIGNALS:
-  void status( int status, const QString &message = QString() );
+    void status(int status, const QString &message = QString());
 
 protected:
-  virtual void doStart( KIMAP::Session *session ) = 0;
+    virtual void doStart(KIMAP::Session *session) = 0;
 
 protected:
-  QString userName() const;
-  QString resourceName() const;
-  QStringList serverCapabilities() const;
-  QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
+    QString userName() const;
+    QString resourceName() const;
+    QStringList serverCapabilities() const;
+    QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
 
-  bool isAutomaticExpungeEnabled() const;
-  bool isSubscriptionEnabled() const;
-  bool isDisconnectedModeEnabled() const;
-  int intervalCheckTime() const;
+    bool isAutomaticExpungeEnabled() const;
+    bool isSubscriptionEnabled() const;
+    bool isDisconnectedModeEnabled() const;
+    int intervalCheckTime() const;
 
-  Akonadi::Collection collection() const;
-  Akonadi::Item item() const;
-  Akonadi::Item::List items() const;
+    Akonadi::Collection collection() const;
+    Akonadi::Item item() const;
+    Akonadi::Item::List items() const;
 
-  Akonadi::Collection parentCollection() const;
+    Akonadi::Collection parentCollection() const;
 
-  Akonadi::Collection sourceCollection() const;
-  Akonadi::Collection targetCollection() const;
+    Akonadi::Collection sourceCollection() const;
+    Akonadi::Collection targetCollection() const;
 
-  QSet<QByteArray> parts() const;
-  QSet<QByteArray> addedFlags() const;
-  QSet<QByteArray> removedFlags() const;
+    QSet<QByteArray> parts() const;
+    QSet<QByteArray> addedFlags() const;
+    QSet<QByteArray> removedFlags() const;
 
-  QString rootRemoteId() const;
-  QString mailBoxForCollection( const Akonadi::Collection &collection ) const;
+    QString rootRemoteId() const;
+    QString mailBoxForCollection(const Akonadi::Collection &collection) const;
 
-  void setIdleCollection( const Akonadi::Collection &collection );
-  void applyCollectionChanges( const Akonadi::Collection &collection );
+    void setIdleCollection(const Akonadi::Collection &collection);
+    void applyCollectionChanges(const Akonadi::Collection &collection);
 
-  void itemRetrieved( const Akonadi::Item &item );
+    void itemRetrieved(const Akonadi::Item &item);
 
-  void itemsRetrieved( const Akonadi::Item::List &items );
-  void itemsRetrievedIncremental( const Akonadi::Item::List &changed,
-                                  const Akonadi::Item::List &removed );
-  void itemsRetrievalDone();
+    void itemsRetrieved(const Akonadi::Item::List &items);
+    void itemsRetrievedIncremental(const Akonadi::Item::List &changed,
+                                   const Akonadi::Item::List &removed);
+    void itemsRetrievalDone();
 
-  void setTotalItems(int);
+    void setTotalItems(int);
 
-  void changeCommitted( const Akonadi::Item &item );
-  void changesCommitted( const Akonadi::Item::List &items );
+    void changeCommitted(const Akonadi::Item &item);
+    void changesCommitted(const Akonadi::Item::List &items);
 
-  void collectionsRetrieved( const Akonadi::Collection::List &collections );
+    void collectionsRetrieved(const Akonadi::Collection::List &collections);
 
-  void collectionAttributesRetrieved( const Akonadi::Collection &col );
+    void collectionAttributesRetrieved(const Akonadi::Collection &col);
 
-  void changeCommitted( const Akonadi::Collection &collection );
+    void changeCommitted(const Akonadi::Collection &collection);
 
-  void changeProcessed();
+    void changeProcessed();
 
-  void searchFinished( const QVector<qint64> &result, bool isRid = true );
+    void searchFinished(const QVector<qint64> &result, bool isRid = true);
 
-  void cancelTask( const QString &errorString );
-  void deferTask();
-  void restartItemRetrieval(Akonadi::Collection::Id col);
-  void taskDone();
-  void emitPercent( int percent );
-  void emitError( const QString &message );
-  void emitWarning( const QString &message );
+    void cancelTask(const QString &errorString);
+    void deferTask();
+    void restartItemRetrieval(Akonadi::Collection::Id col);
+    void taskDone();
+    void emitPercent(int percent);
+    void emitError(const QString &message);
+    void emitWarning(const QString &message);
 
-  void synchronizeCollectionTree();
+    void synchronizeCollectionTree();
 
-  void showInformationDialog( const QString &message, const QString &title, const QString &dontShowAgainName );
+    void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName);
 
-  const QChar separatorCharacter() const;
-  void setSeparatorCharacter( const QChar &separator );
+    const QChar separatorCharacter() const;
+    void setSeparatorCharacter(const QChar &separator);
 
-  virtual bool serverSupportsAnnotations() const;
-  virtual bool serverSupportsCondstore() const;
+    virtual bool serverSupportsAnnotations() const;
+    virtual bool serverSupportsCondstore() const;
 
-  int batchSize() const;
+    int batchSize() const;
 
-  ResourceStateInterface::Ptr resourceState();
+    ResourceStateInterface::Ptr resourceState();
 
 private:
 
-  static QList<QByteArray> fromAkonadiFlags( const QList<QByteArray> &flags );
+    static QList<QByteArray> fromAkonadiFlags(const QList<QByteArray> &flags);
 
 private Q_SLOTS:
-  void onSessionRequested( qint64 requestId, KIMAP::Session *session,
-                           int errorCode, const QString &errorString );
-  void onConnectionLost( KIMAP::Session *session );
-  void onPoolDisconnect();
-
+    void onSessionRequested(qint64 requestId, KIMAP::Session *session,
+                            int errorCode, const QString &errorString);
+    void onConnectionLost(KIMAP::Session *session);
+    void onPoolDisconnect();
 
 private:
-  SessionPool *m_pool;
-  qint64 m_sessionRequestId;
+    SessionPool *m_pool;
+    qint64 m_sessionRequestId;
 
-  KIMAP::Session *m_session;
-  ActionIfNoSession m_actionIfNoSession;
-  ResourceStateInterface::Ptr m_resource;
-  bool mCancelled;
+    KIMAP::Session *m_session;
+    ActionIfNoSession m_actionIfNoSession;
+    ResourceStateInterface::Ptr m_resource;
+    bool mCancelled;
 };
 
 #endif

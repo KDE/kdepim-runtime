@@ -33,7 +33,7 @@ class Testmigrator: public MigratorBase
 {
     Q_OBJECT
 public:
-    explicit Testmigrator(const QString &identifier, QObject *parent = Q_NULLPTR): 
+    explicit Testmigrator(const QString &identifier, QObject *parent = Q_NULLPTR):
         MigratorBase(QLatin1String("testmigrator") + identifier, QString(), QString(), parent), mAutostart(false)
     {}
 
@@ -79,29 +79,29 @@ public:
     TestJobTracker() : mPercent(0)
     {}
 
-    virtual void registerJob(KJob* job)
+    virtual void registerJob(KJob *job)
     {
         KJobTrackerInterface::registerJob(job);
         mJobs << job;
     }
 
-    virtual void unregisterJob(KJob* job)
+    virtual void unregisterJob(KJob *job)
     {
         mJobs.removeAll(job);
     }
 
-    virtual void finished(KJob* job)
+    virtual void finished(KJob *job)
     {
         mJobs.removeAll(job);
     }
 
-    virtual void percent(KJob* job, long unsigned int percent)
+    virtual void percent(KJob *job, long unsigned int percent)
     {
         Q_UNUSED(job);
         mPercent = percent;
     }
 
-    QList<KJob*> mJobs;
+    QList<KJob *> mJobs;
     int mPercent;
 };
 

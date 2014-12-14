@@ -37,8 +37,8 @@
 
 #include "uidnextattribute.h"
 
-AddItemTask::AddItemTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( DeferIfNoSession, resource, parent )
+AddItemTask::AddItemTask(ResourceStateInterface::Ptr resource, QObject *parent)
+    : ResourceTask(DeferIfNoSession, resource, parent)
 {
 
 }
@@ -47,170 +47,169 @@ AddItemTask::~AddItemTask()
 {
 }
 
-void AddItemTask::doStart( KIMAP::Session *session )
+void AddItemTask::doStart(KIMAP::Session *session)
 {
-  if ( !item().hasPayload<KMime::Message::Ptr>() ) {
-    changeProcessed();
-    return;
-  }
+    if (!item().hasPayload<KMime::Message::Ptr>()) {
+        changeProcessed();
+        return;
+    }
 
-  const QString mailBox = mailBoxForCollection( collection() );
-  if ( mailBox.isEmpty() ) {
-    qCWarning(IMAPRESOURCE_LOG) << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
-  }
+    const QString mailBox = mailBoxForCollection(collection());
+    if (mailBox.isEmpty()) {
+        qCWarning(IMAPRESOURCE_LOG) << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
+    }
 
-  qCDebug(RESOURCE_IMAP_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
+    qCDebug(RESOURCE_IMAP_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
 
-  // save message to the server.
-  KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
-  m_messageId = msg->messageID()->asUnicodeString().toUtf8();
+    // save message to the server.
+    KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
+    m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
-  KIMAP::AppendJob *job = new KIMAP::AppendJob( session );
-  job->setMailBox( mailBox );
-  job->setContent( msg->encodedContent( true ) );
-  job->setFlags( fromAkonadiToSupportedImapFlags( item().flags().toList(), collection() ) );
-  //TODO QT5 convert to KDateTime
-  job->setInternalDate( KDateTime(msg->date()->dateTime()) );
-  connect(job, &KIMAP::AppendJob::result, this, &AddItemTask::onAppendMessageDone);
-  job->start();
+    KIMAP::AppendJob *job = new KIMAP::AppendJob(session);
+    job->setMailBox(mailBox);
+    job->setContent(msg->encodedContent(true));
+    job->setFlags(fromAkonadiToSupportedImapFlags(item().flags().toList(), collection()));
+    //TODO QT5 convert to KDateTime
+    job->setInternalDate(KDateTime(msg->date()->dateTime()));
+    connect(job, &KIMAP::AppendJob::result, this, &AddItemTask::onAppendMessageDone);
+    job->start();
 }
 
-
-void AddItemTask::onAppendMessageDone( KJob *job )
+void AddItemTask::onAppendMessageDone(KJob *job)
 {
-  KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>( job );
+    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob *>(job);
 
-  if ( append->error() ) {
-    qCWarning(IMAPRESOURCE_LOG) << append->errorString();
-    cancelTask( append->errorString() );
-    return;
-  }
+    if (append->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << append->errorString();
+        cancelTask(append->errorString());
+        return;
+    }
 
-  qint64 uid = append->uid();
+    qint64 uid = append->uid();
 
-  if ( uid > 0 ) {
-    // We got it directly if UIDPLUS is supported...
-    applyFoundUid( uid );
-
-  } else {
-    // ... otherwise prepare searching for the message
-    KIMAP::Session *session = append->session();
-    const QString mailBox = append->mailBox();
-
-    if ( session->selectedMailBox() != mailBox ) {
-      KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
-      select->setMailBox( mailBox );
-
-      connect( select, SIGNAL(result(KJob*)),
-               this, SLOT(onPreSearchSelectDone(KJob*)) );
-
-      select->start();
+    if (uid > 0) {
+        // We got it directly if UIDPLUS is supported...
+        applyFoundUid(uid);
 
     } else {
-      triggerSearchJob( session );
+        // ... otherwise prepare searching for the message
+        KIMAP::Session *session = append->session();
+        const QString mailBox = append->mailBox();
+
+        if (session->selectedMailBox() != mailBox) {
+            KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+            select->setMailBox(mailBox);
+
+            connect(select, SIGNAL(result(KJob*)),
+                    this, SLOT(onPreSearchSelectDone(KJob*)));
+
+            select->start();
+
+        } else {
+            triggerSearchJob(session);
+        }
     }
-  }
 }
 
-void AddItemTask::onPreSearchSelectDone( KJob *job )
+void AddItemTask::onPreSearchSelectDone(KJob *job)
 {
-  if ( job->error() ) {
-    qCWarning(IMAPRESOURCE_LOG) << job->errorString();
-    cancelTask( job->errorString() );
-  } else {
-    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
-    triggerSearchJob( select->session() );
-  }
-}
-
-void AddItemTask::triggerSearchJob( KIMAP::Session *session )
-{
-  KIMAP::SearchJob *search = new KIMAP::SearchJob( session );
-
-  search->setUidBased( true );
-  search->setSearchLogic( KIMAP::SearchJob::And );
-
-  if ( !m_messageId.isEmpty() ) {
-    QByteArray header = "Message-ID ";
-    header+= m_messageId;
-
-    search->addSearchCriteria( KIMAP::SearchJob::Header, header );
-  } else {
-    search->addSearchCriteria( KIMAP::SearchJob::New );
-
-    UidNextAttribute *uidNext = collection().attribute<UidNextAttribute>();
-    if ( !uidNext ) {
-      cancelTask( i18n( "Could not determine the UID for the newly created message on the server" ) );
-      search->deleteLater();
-      return;
-    }
-    KIMAP::ImapInterval interval( uidNext->uidNext() );
-
-    search->addSearchCriteria( KIMAP::SearchJob::Uid, interval.toImapSequence() );
-  }
-
-  connect( search, SIGNAL(result(KJob*)),
-           this, SLOT(onSearchDone(KJob*)) );
-
-  search->start();
-}
-
-void AddItemTask::onSearchDone( KJob *job )
-{
-  if ( job->error() ) {
-    qCWarning(IMAPRESOURCE_LOG) << job->errorString();
-    cancelTask( job->errorString() );
-    return;
-  }
-
-  KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>( job );
-
-  qint64 uid = 0;
-  if ( search->results().count() == 1 )
-    uid = search->results().first();
-
-  applyFoundUid( uid );
-}
-
-void AddItemTask::applyFoundUid( qint64 uid )
-{
-  Akonadi::Item i = item();
-
-  // if we didn't manage to get a valid UID from the server, use a random RID instead
-  // this will make ItemSync clean up the mess during the next sync (while empty RIDs are protected as not yet existing on the server)
-  if ( uid > 0 )
-    i.setRemoteId( QString::number( uid ) );
-  else
-    i.setRemoteId( QUuid::createUuid().toString() );
-  qCDebug(RESOURCE_IMAP_LOG) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
-
-  changeCommitted( i );
-
-  Akonadi::Collection c = collection();
-
-  // Get the current uid next value and store it
-  UidNextAttribute *uidAttr = 0;
-  int oldNextUid = 0;
-  if ( c.hasAttribute( "uidnext" ) ) {
-    uidAttr = static_cast<UidNextAttribute*>( c.attribute( "uidnext" ) );
-    oldNextUid = uidAttr->uidNext();
-  }
-
-  // If the uid we just got back is the expected next one of the box
-  // then update the property to the probable next uid to keep the cache in sync.
-  // If not something happened in our back, so we don't update and a refetch will
-  // happen at some point.
-  if ( uid==oldNextUid ) {
-    if ( uidAttr==0 ) {
-      uidAttr = new UidNextAttribute( uid+1 );
-      c.addAttribute( uidAttr );
+    if (job->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
     } else {
-      uidAttr->setUidNext( uid+1 );
+        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        triggerSearchJob(select->session());
     }
-
-    applyCollectionChanges( c );
-  }
 }
 
+void AddItemTask::triggerSearchJob(KIMAP::Session *session)
+{
+    KIMAP::SearchJob *search = new KIMAP::SearchJob(session);
 
+    search->setUidBased(true);
+    search->setSearchLogic(KIMAP::SearchJob::And);
+
+    if (!m_messageId.isEmpty()) {
+        QByteArray header = "Message-ID ";
+        header += m_messageId;
+
+        search->addSearchCriteria(KIMAP::SearchJob::Header, header);
+    } else {
+        search->addSearchCriteria(KIMAP::SearchJob::New);
+
+        UidNextAttribute *uidNext = collection().attribute<UidNextAttribute>();
+        if (!uidNext) {
+            cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
+            search->deleteLater();
+            return;
+        }
+        KIMAP::ImapInterval interval(uidNext->uidNext());
+
+        search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
+    }
+
+    connect(search, SIGNAL(result(KJob*)),
+            this, SLOT(onSearchDone(KJob*)));
+
+    search->start();
+}
+
+void AddItemTask::onSearchDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    }
+
+    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
+
+    qint64 uid = 0;
+    if (search->results().count() == 1) {
+        uid = search->results().first();
+    }
+
+    applyFoundUid(uid);
+}
+
+void AddItemTask::applyFoundUid(qint64 uid)
+{
+    Akonadi::Item i = item();
+
+    // if we didn't manage to get a valid UID from the server, use a random RID instead
+    // this will make ItemSync clean up the mess during the next sync (while empty RIDs are protected as not yet existing on the server)
+    if (uid > 0) {
+        i.setRemoteId(QString::number(uid));
+    } else {
+        i.setRemoteId(QUuid::createUuid().toString());
+    }
+    qCDebug(RESOURCE_IMAP_LOG) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
+
+    changeCommitted(i);
+
+    Akonadi::Collection c = collection();
+
+    // Get the current uid next value and store it
+    UidNextAttribute *uidAttr = 0;
+    int oldNextUid = 0;
+    if (c.hasAttribute("uidnext")) {
+        uidAttr = static_cast<UidNextAttribute *>(c.attribute("uidnext"));
+        oldNextUid = uidAttr->uidNext();
+    }
+
+    // If the uid we just got back is the expected next one of the box
+    // then update the property to the probable next uid to keep the cache in sync.
+    // If not something happened in our back, so we don't update and a refetch will
+    // happen at some point.
+    if (uid == oldNextUid) {
+        if (uidAttr == 0) {
+            uidAttr = new UidNextAttribute(uid + 1);
+            c.addAttribute(uidAttr);
+        } else {
+            uidAttr->setUidNext(uid + 1);
+        }
+
+        applyCollectionChanges(c);
+    }
+}
 

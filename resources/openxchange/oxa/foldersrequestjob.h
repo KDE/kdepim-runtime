@@ -26,7 +26,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that requests all folders from the OX server.
@@ -35,16 +36,15 @@ namespace OXA {
  */
 class FoldersRequestJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Describes the mode of the request job.
      */
-    enum Mode
-    {
-      Modified,  ///< Fetches all new and modified folders
-      Deleted    ///< Fetches all deleted folders
+    enum Mode {
+        Modified,  ///< Fetches all new and modified folders
+        Deleted    ///< Fetches all deleted folders
     };
 
     /**
@@ -55,7 +55,7 @@ class FoldersRequestJob : public KJob
      * @param mode The mode of folders to request.
      * @param parent The parent object.
      */
-    explicit FoldersRequestJob( qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = Q_NULLPTR );
+    explicit FoldersRequestJob(qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
@@ -67,10 +67,10 @@ class FoldersRequestJob : public KJob
      */
     Folder::List folders() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     qulonglong mLastSync;
     Mode mMode;
     Folder::List mFolders;

@@ -32,21 +32,21 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     : QDialog(parent)
 {
     setWindowTitle(
-      i18nc( "@title:window Dialog title for dialog showing information about a server",
-             "Server Info" ) );
+        i18nc("@title:window Dialog title for dialog showing information about a server",
+              "Server Info"));
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ServerInfoDialog::reject);
-    setAttribute( Qt::WA_DeleteOnClose );
+    setAttribute(Qt::WA_DeleteOnClose);
 
     mServerInfoWidget = new Ui::ServerInfo();
-    mServerInfoWidget->setupUi( this );
+    mServerInfoWidget->setupUi(this);
     mainLayout->addWidget(mServerInfoWidget->serverInfo);
     mainLayout->addWidget(buttonBox);
     mServerInfoWidget->serverInfo->setPlainText(
-      parentResource->serverCapabilities().join( QLatin1String( "\n" ) ) );
+        parentResource->serverCapabilities().join(QLatin1String("\n")));
 }
 
 ServerInfoDialog::~ServerInfoDialog()

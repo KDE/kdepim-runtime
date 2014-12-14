@@ -26,23 +26,24 @@
 
 #include "user.h"
 
-namespace OXA {
+namespace OXA
+{
 
 class UsersRequestJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit UsersRequestJob( QObject *parent = Q_NULLPTR );
+public:
+    explicit UsersRequestJob(QObject *parent = Q_NULLPTR);
 
     virtual void start();
 
     User::List users() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     User::List mUsers;
 };
 

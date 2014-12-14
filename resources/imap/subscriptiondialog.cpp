@@ -57,416 +57,411 @@
 class CheckableFilterProxyModel : public QSortFilterProxyModel
 {
 public:
-  CheckableFilterProxyModel( QObject *parent = Q_NULLPTR )
-    : QSortFilterProxyModel( parent ) { }
+    CheckableFilterProxyModel(QObject *parent = Q_NULLPTR)
+        : QSortFilterProxyModel(parent) { }
 
 protected:
-  /*reimp*/ bool filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent ) const
-  {
-    QModelIndex sourceIndex = sourceModel()->index( sourceRow, 0, sourceParent );
-    return sourceModel()->flags(sourceIndex) & Qt::ItemIsUserCheckable;
-  }
+    /*reimp*/ bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+    {
+        QModelIndex sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
+        return sourceModel()->flags(sourceIndex) & Qt::ItemIsUserCheckable;
+    }
 };
 
-
 #endif
 
-
-
-SubscriptionDialog::SubscriptionDialog( QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option )
-  : QDialog( parent ),
-    m_session( 0 ),
-    m_subscriptionChanged( false ),
-    m_lineEdit( 0 ),
-    m_filter( new SubscriptionFilterProxyModel( this ) ),
-    m_model( new QStandardItemModel( this ) )
+SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option)
+    : QDialog(parent),
+      m_session(0),
+      m_subscriptionChanged(false),
+      m_lineEdit(0),
+      m_filter(new SubscriptionFilterProxyModel(this)),
+      m_model(new QStandardItemModel(this))
 {
-  setModal( true );
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  QVBoxLayout *topLayout = new QVBoxLayout;
-  setLayout(topLayout);
-  QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-  okButton->setDefault(true);
-  okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  mUser1Button = new QPushButton;
-  buttonBox->addButton(mUser1Button, QDialogButtonBox::ActionRole);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &SubscriptionDialog::slotAccepted);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &SubscriptionDialog::reject);
+    setModal(true);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    QVBoxLayout *topLayout = new QVBoxLayout;
+    setLayout(topLayout);
+    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
+    okButton->setDefault(true);
+    okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    mUser1Button = new QPushButton;
+    buttonBox->addButton(mUser1Button, QDialogButtonBox::ActionRole);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &SubscriptionDialog::slotAccepted);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &SubscriptionDialog::reject);
 
-  mUser1Button->setText(i18nc( "@action:button", "Reload &List" ));
-  mUser1Button->setEnabled(false);
-  connect(mUser1Button, &QPushButton::clicked, this, &SubscriptionDialog::onReloadRequested);
+    mUser1Button->setText(i18nc("@action:button", "Reload &List"));
+    mUser1Button->setEnabled(false);
+    connect(mUser1Button, &QPushButton::clicked, this, &SubscriptionDialog::onReloadRequested);
 
-  QWidget *mainWidget = new QWidget( this );
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  mainWidget->setLayout( mainLayout );
-  topLayout->addWidget(mainWidget);
-  topLayout->addWidget(buttonBox);
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainWidget->setLayout(mainLayout);
+    topLayout->addWidget(mainWidget);
+    topLayout->addWidget(buttonBox);
 
-  m_enableSubscription = new QCheckBox( i18nc( "@option:check",
-                                               "Enable server-side subscriptions" ) );
-  mainLayout->addWidget( m_enableSubscription );
+    m_enableSubscription = new QCheckBox(i18nc("@option:check",
+                                         "Enable server-side subscriptions"));
+    mainLayout->addWidget(m_enableSubscription);
 
-  QHBoxLayout *filterBarLayout = new QHBoxLayout;
-  mainLayout->addLayout( filterBarLayout );
+    QHBoxLayout *filterBarLayout = new QHBoxLayout;
+    mainLayout->addLayout(filterBarLayout);
 
 #ifndef KDEPIM_MOBILE_UI
-  filterBarLayout->addWidget( new QLabel( i18nc( "@label search for a subscription",
-                                                 "Search:" ) ) );
+    filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription",
+                                          "Search:")));
 #endif
 
-  m_lineEdit = new QLineEdit( mainWidget );
-  m_lineEdit->setClearButtonEnabled( true );
-  connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::slotSearchPattern);
-  filterBarLayout->addWidget( m_lineEdit );
-  m_lineEdit->setFocus();
+    m_lineEdit = new QLineEdit(mainWidget);
+    m_lineEdit->setClearButtonEnabled(true);
+    connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::slotSearchPattern);
+    filterBarLayout->addWidget(m_lineEdit);
+    m_lineEdit->setFocus();
 
 #ifndef KDEPIM_MOBILE_UI
-  QCheckBox *checkBox = new QCheckBox( i18nc( "@option:check", "Subscribed only" ), mainWidget );
-  connect( checkBox, SIGNAL(stateChanged(int)),
-           m_filter, SLOT(setIncludeCheckedOnly(int)) );
+    QCheckBox *checkBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), mainWidget);
+    connect(checkBox, SIGNAL(stateChanged(int)),
+            m_filter, SLOT(setIncludeCheckedOnly(int)));
 
-  filterBarLayout->addWidget( checkBox );
+    filterBarLayout->addWidget(checkBox);
 
-  m_treeView = new QTreeView( mainWidget );
-  m_treeView->header()->hide();
-  m_filter->setSourceModel( m_model );
-  m_treeView->setModel( m_filter );
-  mainLayout->addWidget( m_treeView );
+    m_treeView = new QTreeView(mainWidget);
+    m_treeView->header()->hide();
+    m_filter->setSourceModel(m_model);
+    m_treeView->setModel(m_filter);
+    mainLayout->addWidget(m_treeView);
 #else
-  m_lineEdit->hide();
-  connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::onMobileLineEditChanged);
+    m_lineEdit->hide();
+    connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::onMobileLineEditChanged);
 
-  m_listView = new QListView( mainWidget );
+    m_listView = new QListView(mainWidget);
 
-  KDescendantsProxyModel *flatModel = new KDescendantsProxyModel( m_listView );
-  flatModel->setDisplayAncestorData( true );
-  flatModel->setAncestorSeparator( QLatin1String("/") );
-  flatModel->setSourceModel( m_model );
+    KDescendantsProxyModel *flatModel = new KDescendantsProxyModel(m_listView);
+    flatModel->setDisplayAncestorData(true);
+    flatModel->setAncestorSeparator(QLatin1String("/"));
+    flatModel->setSourceModel(m_model);
 
-  CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel( m_listView );
-  checkableModel->setSourceModel( flatModel );
+    CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel(m_listView);
+    checkableModel->setSourceModel(flatModel);
 
-  m_filter->setSourceModel( checkableModel );
+    m_filter->setSourceModel(checkableModel);
 
-  m_listView->setModel( m_filter );
-  mainLayout->addWidget( m_listView );
+    m_listView->setModel(m_filter);
+    mainLayout->addWidget(m_listView);
 
-  // We want to get all the keyboard input all the time
-  grabKeyboard();
+    // We want to get all the keyboard input all the time
+    grabKeyboard();
 #endif
 
-  connect(m_model, &QStandardItemModel::itemChanged, this, &SubscriptionDialog::onItemChanged);
+    connect(m_model, &QStandardItemModel::itemChanged, this, &SubscriptionDialog::onItemChanged);
 
-  if ( option & SubscriptionDialog::AllowToEnableSubscription ) {
+    if (option & SubscriptionDialog::AllowToEnableSubscription) {
 #ifndef KDEPIM_MOBILE_UI
-    connect(m_enableSubscription, &QCheckBox::clicked, m_treeView, &QTreeView::setEnabled);
+        connect(m_enableSubscription, &QCheckBox::clicked, m_treeView, &QTreeView::setEnabled);
 #else
-    connect(m_enableSubscription, &QCheckBox::clicked, m_listView, &QListView::setEnabled);
+        connect(m_enableSubscription, &QCheckBox::clicked, m_listView, &QListView::setEnabled);
 #endif
-  } else {
-    m_enableSubscription->hide();
-  }
-  readConfig();
+    } else {
+        m_enableSubscription->hide();
+    }
+    readConfig();
 }
 
 SubscriptionDialog::~SubscriptionDialog()
 {
-  writeConfig();
+    writeConfig();
 }
 
 void SubscriptionDialog::slotSearchPattern(const QString &pattern)
 {
 #ifndef KDEPIM_MOBILE_UI
-  m_treeView->expandAll();
+    m_treeView->expandAll();
 #endif
-  m_filter->setSearchPattern(pattern);
+    m_filter->setSearchPattern(pattern);
 }
 
 void SubscriptionDialog::readConfig()
 {
-  KConfigGroup group( KSharedConfig::openConfig(), "SubscriptionDialog" );
+    KConfigGroup group(KSharedConfig::openConfig(), "SubscriptionDialog");
 
-  const QSize size = group.readEntry( "Size", QSize() );
-  if ( size.isValid() ) {
-      resize( size );
-  } else {
-      resize( 500, 300 );
-  }
+    const QSize size = group.readEntry("Size", QSize());
+    if (size.isValid()) {
+        resize(size);
+    } else {
+        resize(500, 300);
+    }
 }
 
 void SubscriptionDialog::writeConfig()
 {
-  KConfigGroup group( KSharedConfig::openConfig(), "SubscriptionDialog" );
-  group.writeEntry( "Size", size() );
-  group.sync();
+    KConfigGroup group(KSharedConfig::openConfig(), "SubscriptionDialog");
+    group.writeEntry("Size", size());
+    group.sync();
 }
 
-
-void SubscriptionDialog::setSubscriptionEnabled( bool enabled )
+void SubscriptionDialog::setSubscriptionEnabled(bool enabled)
 {
-  m_enableSubscription->setChecked( enabled );
+    m_enableSubscription->setChecked(enabled);
 #ifndef KDEPIM_MOBILE_UI
-  m_treeView->setEnabled( enabled );
+    m_treeView->setEnabled(enabled);
 #else
-  m_listView->setEnabled( enabled );
+    m_listView->setEnabled(enabled);
 #endif
 }
 
 bool SubscriptionDialog::subscriptionEnabled() const
 {
-  return m_enableSubscription->isChecked();
+    return m_enableSubscription->isChecked();
 }
 
-
-void SubscriptionDialog::connectAccount( const ImapAccount &account, const QString &password )
+void SubscriptionDialog::connectAccount(const ImapAccount &account, const QString &password)
 {
-  m_session = new KIMAP::Session( account.server(), account.port(), this );
-  m_session->setUiProxy( SessionUiProxy::Ptr( new SessionUiProxy ) );
+    m_session = new KIMAP::Session(account.server(), account.port(), this);
+    m_session->setUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
 
-  KIMAP::LoginJob *login = new KIMAP::LoginJob( m_session );
-  login->setUserName( account.userName() );
-  login->setPassword( password );
-  login->setEncryptionMode( account.encryptionMode() );
-  login->setAuthenticationMode( account.authenticationMode() );
+    KIMAP::LoginJob *login = new KIMAP::LoginJob(m_session);
+    login->setUserName(account.userName());
+    login->setPassword(password);
+    login->setEncryptionMode(account.encryptionMode());
+    login->setAuthenticationMode(account.authenticationMode());
 
-  connect(login, &KIMAP::LoginJob::result, this, &SubscriptionDialog::onLoginDone);
-  login->start();
+    connect(login, &KIMAP::LoginJob::result, this, &SubscriptionDialog::onLoginDone);
+    login->start();
 }
 
 bool SubscriptionDialog::isSubscriptionChanged() const
 {
-  return m_subscriptionChanged;
+    return m_subscriptionChanged;
 }
 
-void SubscriptionDialog::onLoginDone( KJob *job )
+void SubscriptionDialog::onLoginDone(KJob *job)
 {
-  if ( !job->error() ) {
-    onReloadRequested();
-  }
+    if (!job->error()) {
+        onReloadRequested();
+    }
 }
 
 void SubscriptionDialog::onReloadRequested()
 {
-  mUser1Button->setEnabled(false);
-  m_itemsMap.clear();
-  m_model->clear();
+    mUser1Button->setEnabled(false);
+    m_itemsMap.clear();
+    m_model->clear();
 
-  // we need a connection
-  if ( !m_session
-    || m_session->state() != KIMAP::Session::Authenticated ) {
-    qCWarning(IMAPRESOURCE_LOG) << "SubscriptionDialog - got no connection";
-    mUser1Button->setEnabled(true);
-    return;
-  }
+    // we need a connection
+    if (!m_session
+            || m_session->state() != KIMAP::Session::Authenticated) {
+        qCWarning(IMAPRESOURCE_LOG) << "SubscriptionDialog - got no connection";
+        mUser1Button->setEnabled(true);
+        return;
+    }
 
-  KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
-  list->setIncludeUnsubscribed( true );
-  connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onMailBoxesReceived);
-  connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onFullListingDone);
-  list->start();
+    KIMAP::ListJob *list = new KIMAP::ListJob(m_session);
+    list->setIncludeUnsubscribed(true);
+    connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onMailBoxesReceived);
+    connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onFullListingDone);
+    list->start();
 }
 
-void SubscriptionDialog::onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-                                              const QList< QList<QByteArray> > &flags )
+void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+        const QList< QList<QByteArray> > &flags)
 {
-  const int numberOfMailBoxes( mailBoxes.size() );
-  for ( int i = 0; i<numberOfMailBoxes; i++ ) {
-    KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
+    const int numberOfMailBoxes(mailBoxes.size());
+    for (int i = 0; i < numberOfMailBoxes; i++) {
+        KIMAP::MailBoxDescriptor mailBox = mailBoxes[i];
 
-    const QStringList pathParts = mailBox.name.split( mailBox.separator );
-    const QString separator = mailBox.separator;
-    Q_ASSERT( separator.size() == 1 ); // that's what the spec says
+        const QStringList pathParts = mailBox.name.split(mailBox.separator);
+        const QString separator = mailBox.separator;
+        Q_ASSERT(separator.size() == 1);   // that's what the spec says
 
-    QString parentPath;
-    QString currentPath;
-    const int numberOfPath( pathParts.size() );
-    for ( int j = 0; j < pathParts.size(); ++j ) {
-      const bool isDummy = ( j != ( numberOfPath - 1 ) );
-      const bool isCheckable = !isDummy && !flags[i].contains( "\\noselect" );
+        QString parentPath;
+        QString currentPath;
+        const int numberOfPath(pathParts.size());
+        for (int j = 0; j < pathParts.size(); ++j) {
+            const bool isDummy = (j != (numberOfPath - 1));
+            const bool isCheckable = !isDummy && !flags[i].contains("\\noselect");
 
-      const QString pathPart = pathParts.at( j );
-      currentPath += separator + pathPart;
+            const QString pathPart = pathParts.at(j);
+            currentPath += separator + pathPart;
 
-      if ( m_itemsMap.contains( currentPath ) ) {
-        if ( !isDummy ) {
-          QStandardItem *item = m_itemsMap[currentPath];
-          item->setCheckable( isCheckable );
+            if (m_itemsMap.contains(currentPath)) {
+                if (!isDummy) {
+                    QStandardItem *item = m_itemsMap[currentPath];
+                    item->setCheckable(isCheckable);
+                }
+
+            } else if (!parentPath.isEmpty()) {
+                Q_ASSERT(m_itemsMap.contains(parentPath));
+
+                QStandardItem *parentItem = m_itemsMap[parentPath];
+
+                QStandardItem *item = new QStandardItem(pathPart);
+                item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+                item->setCheckable(isCheckable);
+                item->setData(currentPath.mid(1), PathRole);
+                parentItem->appendRow(item);
+                m_itemsMap[currentPath] = item;
+
+            } else {
+                QStandardItem *item = new QStandardItem(pathPart);
+                item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+                item->setCheckable(isCheckable);
+                item->setData(currentPath.mid(1), PathRole);
+                m_model->appendRow(item);
+                m_itemsMap[currentPath] = item;
+            }
+
+            parentPath = currentPath;
         }
-
-      } else if ( !parentPath.isEmpty() ) {
-        Q_ASSERT( m_itemsMap.contains( parentPath ) );
-
-        QStandardItem *parentItem = m_itemsMap[parentPath];
-
-        QStandardItem *item = new QStandardItem( pathPart );
-        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        item->setCheckable( isCheckable );
-        item->setData( currentPath.mid( 1 ), PathRole );
-        parentItem->appendRow( item );
-        m_itemsMap[currentPath] = item;
-
-      } else {
-        QStandardItem *item = new QStandardItem( pathPart );
-        item->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled );
-        item->setCheckable( isCheckable );
-        item->setData( currentPath.mid( 1 ), PathRole );
-        m_model->appendRow( item );
-        m_itemsMap[currentPath] = item;
-      }
-
-      parentPath = currentPath;
     }
-  }
 }
 
-void SubscriptionDialog::onFullListingDone( KJob *job )
+void SubscriptionDialog::onFullListingDone(KJob *job)
 {
-  if ( job->error() ) {
+    if (job->error()) {
+        mUser1Button->setEnabled(true);
+        return;
+    }
+
+    KIMAP::ListJob *list = new KIMAP::ListJob(m_session);
+    list->setIncludeUnsubscribed(false);
+    connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
+    connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
+    list->start();
+}
+
+void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+        const QList< QList<QByteArray> > &flags)
+{
+    Q_UNUSED(flags);
+    const int numberOfMailBoxes(mailBoxes.size());
+    for (int i = 0; i < numberOfMailBoxes; ++i) {
+        KIMAP::MailBoxDescriptor mailBox = mailBoxes.at(i);
+        QString descriptor = mailBox.separator + mailBox.name;
+
+        if (m_itemsMap.contains(descriptor)) {
+            QStandardItem *item = m_itemsMap[mailBox.separator + mailBox.name];
+            item->setCheckState(Qt::Checked);
+            item->setData(Qt::Checked, InitialStateRole);
+        }
+    }
+}
+
+void SubscriptionDialog::onReloadDone(KJob *job)
+{
+    Q_UNUSED(job);
     mUser1Button->setEnabled(true);
-    return;
-  }
-
-  KIMAP::ListJob *list = new KIMAP::ListJob( m_session );
-  list->setIncludeUnsubscribed( false );
-  connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
-  connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
-  list->start();
 }
 
-void SubscriptionDialog::onSubscribedMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-                                                        const QList< QList<QByteArray> > &flags )
+void SubscriptionDialog::onItemChanged(QStandardItem *item)
 {
-  Q_UNUSED( flags );
-  const int numberOfMailBoxes( mailBoxes.size() );
-  for ( int i = 0; i<numberOfMailBoxes; ++i ) {
-    KIMAP::MailBoxDescriptor mailBox = mailBoxes.at(i);
-    QString descriptor = mailBox.separator + mailBox.name;
-
-    if ( m_itemsMap.contains( descriptor ) ) {
-      QStandardItem *item = m_itemsMap[mailBox.separator + mailBox.name];
-      item->setCheckState( Qt::Checked );
-      item->setData( Qt::Checked, InitialStateRole );
-    }
-  }
-}
-
-void SubscriptionDialog::onReloadDone( KJob *job )
-{
-  Q_UNUSED( job );
-  mUser1Button->setEnabled(true);
-}
-
-void SubscriptionDialog::onItemChanged( QStandardItem *item )
-{
-  QFont font = item->font();
-  font.setBold( item->checkState()!=item->data( InitialStateRole ).toInt() );
-  item->setFont( font );
+    QFont font = item->font();
+    font.setBold(item->checkState() != item->data(InitialStateRole).toInt());
+    item->setFont(font);
 }
 
 void SubscriptionDialog::slotAccepted()
 {
-  applyChanges();
-  accept();
+    applyChanges();
+    accept();
 }
 
 void SubscriptionDialog::applyChanges()
 {
-  QList<QStandardItem*> items = m_itemsMap.values();
+    QList<QStandardItem *> items = m_itemsMap.values();
 
-  while ( !items.isEmpty() ) {
-    QStandardItem *item = items.takeFirst();
+    while (!items.isEmpty()) {
+        QStandardItem *item = items.takeFirst();
 
-    if ( item->checkState()!=item->data( InitialStateRole ).toInt() ) {
-      if ( item->checkState() == Qt::Checked ) {
-        qCDebug(IMAPRESOURCE_LOG) << "Subscribing" << item->data( PathRole );
-        KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob( m_session );
-        subscribe->setMailBox( item->data( PathRole ).toString() );
-        subscribe->exec();
-      } else {
-        qCDebug(IMAPRESOURCE_LOG) << "Unsubscribing" << item->data( PathRole );
-        KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob( m_session );
-        unsubscribe->setMailBox( item->data( PathRole ).toString() );
-        unsubscribe->exec();
-      }
+        if (item->checkState() != item->data(InitialStateRole).toInt()) {
+            if (item->checkState() == Qt::Checked) {
+                qCDebug(IMAPRESOURCE_LOG) << "Subscribing" << item->data(PathRole);
+                KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob(m_session);
+                subscribe->setMailBox(item->data(PathRole).toString());
+                subscribe->exec();
+            } else {
+                qCDebug(IMAPRESOURCE_LOG) << "Unsubscribing" << item->data(PathRole);
+                KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob(m_session);
+                unsubscribe->setMailBox(item->data(PathRole).toString());
+                unsubscribe->exec();
+            }
 
-      m_subscriptionChanged = true;
+            m_subscriptionChanged = true;
+        }
     }
-  }
 }
 
-SubscriptionFilterProxyModel::SubscriptionFilterProxyModel( QObject* parent )
-  : KRecursiveFilterProxyModel( parent ), m_checkedOnly( false )
+SubscriptionFilterProxyModel::SubscriptionFilterProxyModel(QObject *parent)
+    : KRecursiveFilterProxyModel(parent), m_checkedOnly(false)
 {
 
 }
 
-void SubscriptionFilterProxyModel::setSearchPattern( const QString &pattern )
+void SubscriptionFilterProxyModel::setSearchPattern(const QString &pattern)
 {
-  if(m_pattern != pattern) {
-    m_pattern = pattern;
+    if (m_pattern != pattern) {
+        m_pattern = pattern;
+        invalidate();
+    }
+}
+
+void SubscriptionFilterProxyModel::setIncludeCheckedOnly(bool checkedOnly)
+{
+    if (m_checkedOnly != checkedOnly) {
+        m_checkedOnly = checkedOnly;
+        invalidate();
+    }
+}
+
+void SubscriptionFilterProxyModel::setIncludeCheckedOnly(int checkedOnlyState)
+{
+    m_checkedOnly = (checkedOnlyState == Qt::Checked);
     invalidate();
-  }
-}
-
-void SubscriptionFilterProxyModel::setIncludeCheckedOnly( bool checkedOnly )
-{
-  if (m_checkedOnly != checkedOnly) {
-    m_checkedOnly = checkedOnly;
-    invalidate();
-  }
-}
-
-void SubscriptionFilterProxyModel::setIncludeCheckedOnly( int checkedOnlyState )
-{
-  m_checkedOnly = (checkedOnlyState == Qt::Checked);
-  invalidate();
 }
 
 bool SubscriptionFilterProxyModel::acceptRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-  QModelIndex sourceIndex = sourceModel()->index( sourceRow, 0, sourceParent );
+    QModelIndex sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
 
-  const bool checked = sourceIndex.data(Qt::CheckStateRole).toInt()==Qt::Checked;
+    const bool checked = sourceIndex.data(Qt::CheckStateRole).toInt() == Qt::Checked;
 
-  if ( m_checkedOnly && !checked ) {
-    return false;
-  } else if ( !m_pattern.isEmpty() ) {
-    const QString text = sourceIndex.data(Qt::DisplayRole).toString();
-    return text.contains( m_pattern, Qt::CaseInsensitive );
-  } else {
-    return true;
-  }
-}
-
-void SubscriptionDialog::onMobileLineEditChanged( const QString &text )
-{
-    if ( !text.isEmpty() && !m_lineEdit->isVisible() ) {
-      m_lineEdit->show();
-      m_lineEdit->setFocus();
-      m_lineEdit->grabKeyboard(); // Now the line edit runs the show
-    } else if ( text.isEmpty() && m_lineEdit->isVisible() ) {
-      m_lineEdit->hide();
-      grabKeyboard(); // Line edit gone, so let's get all the events for us again
+    if (m_checkedOnly && !checked) {
+        return false;
+    } else if (!m_pattern.isEmpty()) {
+        const QString text = sourceIndex.data(Qt::DisplayRole).toString();
+        return text.contains(m_pattern, Qt::CaseInsensitive);
+    } else {
+        return true;
     }
 }
 
-void SubscriptionDialog::keyPressEvent( QKeyEvent *event )
+void SubscriptionDialog::onMobileLineEditChanged(const QString &text)
+{
+    if (!text.isEmpty() && !m_lineEdit->isVisible()) {
+        m_lineEdit->show();
+        m_lineEdit->setFocus();
+        m_lineEdit->grabKeyboard(); // Now the line edit runs the show
+    } else if (text.isEmpty() && m_lineEdit->isVisible()) {
+        m_lineEdit->hide();
+        grabKeyboard(); // Line edit gone, so let's get all the events for us again
+    }
+}
+
+void SubscriptionDialog::keyPressEvent(QKeyEvent *event)
 {
 #ifndef KDEPIM_MOBILE_UI
-  QDialog::keyPressEvent( event );
+    QDialog::keyPressEvent(event);
 #else
-  static bool isSendingEvent = false;
+    static bool isSendingEvent = false;
 
-  if ( !isSendingEvent
-    && !event->text().isEmpty()
-    && !m_lineEdit->isVisible() ) {
-    isSendingEvent = true;
-    QCoreApplication::sendEvent( m_lineEdit, event );
-    isSendingEvent = false;
-  } else {
-    QDialog::keyPressEvent( event );
-  }
+    if (!isSendingEvent
+            && !event->text().isEmpty()
+            && !m_lineEdit->isVisible()) {
+        isSendingEvent = true;
+        QCoreApplication::sendEvent(m_lineEdit, event);
+        isSendingEvent = false;
+    } else {
+        QDialog::keyPressEvent(event);
+    }
 #endif
 }
 

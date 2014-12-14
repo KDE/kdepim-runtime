@@ -29,36 +29,36 @@ namespace Akonadi
 
 namespace FileStore
 {
-  class AbstractJobSession;
+class AbstractJobSession;
 
 /**
  */
 class AKONADI_FILESTORE_EXPORT ItemModifyJob : public Job
 {
-  friend class AbstractJobSession;
+    friend class AbstractJobSession;
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ItemModifyJob( const Item &item, AbstractJobSession *session = 0 );
+public:
+    explicit ItemModifyJob(const Item &item, AbstractJobSession *session = 0);
 
     virtual ~ItemModifyJob();
 
-    void setIgnorePayload( bool ignorePayload );
+    void setIgnorePayload(bool ignorePayload);
 
     bool ignorePayload() const;
 
     Item item() const;
 
-    const QSet<QByteArray>& parts() const;
-    void setParts( const QSet<QByteArray>& parts );
+    const QSet<QByteArray> &parts() const;
+    void setParts(const QSet<QByteArray> &parts);
 
-    virtual bool accept( Visitor *visitor );
+    virtual bool accept(Visitor *visitor);
 
-  private:
-    void handleItemModified( const Akonadi::Item &item );
+private:
+    void handleItemModified(const Akonadi::Item &item);
 
-  private:
+private:
     class Private;
     Private *const d;
 };
@@ -68,4 +68,3 @@ class AKONADI_FILESTORE_EXPORT ItemModifyJob : public Job
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

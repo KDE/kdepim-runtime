@@ -68,16 +68,18 @@ public:
     }
 
 private:
-    static Akonadi::Item createImapItem(const KCalCore::Event::Ptr &event) {
-        const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC") );
+    static Akonadi::Item createImapItem(const KCalCore::Event::Ptr &event)
+    {
+        const KMime::Message::Ptr &message = Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV3, "Proxytest", QLatin1String("UTC"));
         Q_ASSERT(message);
         Akonadi::Item imapItem1;
-        imapItem1.setMimeType( QLatin1String("message/rfc822") );
-        imapItem1.setPayload( message );
+        imapItem1.setMimeType(QLatin1String("message/rfc822"));
+        imapItem1.setPayload(message);
         return imapItem1;
     }
 
-    void cleanup() {
+    void cleanup()
+    {
         //cleanup
 //         Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(imapCollection);
 //         AKVERIFYEXEC(deleteJob);
@@ -87,7 +89,8 @@ private:
     }
 
 private slots:
-    void initTestCase() {
+    void initTestCase()
+    {
         AkonadiTest::checkTestIsIsolated();
         AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
 
@@ -101,18 +104,18 @@ private slots:
 
         Akonadi::CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("res1/Calendar"), this);
         AKVERIFYEXEC(resolver);
-        imapCollection = Akonadi::Collection( resolver->collection() );
+        imapCollection = Akonadi::Collection(resolver->collection());
         QVERIFY(imapCollection.isValid());
 
         kolabCollection = TestUtils::findCollection(mInstance.identifier(), "Calendar");
         QVERIFY(kolabCollection.isValid());
     }
 
-
-    void itemAddedSignal() {
+    void itemAddedSignal()
+    {
         KCalCore::Event::Ptr event(new KCalCore::Event);
         event->setSummary("summary1");
-        event->setDtStart(KDateTime(QDate(2013,02,01), QTime(1,1), KDateTime::ClockTime));
+        event->setDtStart(KDateTime(QDate(2013, 02, 01), QTime(1, 1), KDateTime::ClockTime));
 
         //Create item in imap resource
         {
@@ -176,10 +179,11 @@ private slots:
         cleanup();
     }
 
-    void twoItemAddedSignals() {
+    void twoItemAddedSignals()
+    {
         KCalCore::Event::Ptr event(new KCalCore::Event);
         event->setSummary("summary1");
-        event->setDtStart(KDateTime(QDate(2013,02,01), QTime(1,1), KDateTime::ClockTime));
+        event->setDtStart(KDateTime(QDate(2013, 02, 01), QTime(1, 1), KDateTime::ClockTime));
 
         //Create item in imap resource
         {
@@ -208,11 +212,12 @@ private slots:
 
     }
 
-    void itemRemovedSignal() {
+    void itemRemovedSignal()
+    {
 
         KCalCore::Event::Ptr event(new KCalCore::Event);
         event->setSummary("summary1");
-        event->setDtStart(KDateTime(QDate(2013,02,01), QTime(1,1), KDateTime::ClockTime));
+        event->setDtStart(KDateTime(QDate(2013, 02, 01), QTime(1, 1), KDateTime::ClockTime));
 
         Akonadi::Item firstImapItem;
         {
@@ -262,7 +267,8 @@ private slots:
         }
     }
 
-    void collectionAddedRemovedSignal() {
+    void collectionAddedRemovedSignal()
+    {
         Akonadi::Collection createdCollection;
         {
             Akonadi::Collection col;
@@ -292,7 +298,8 @@ private slots:
         }
     }
 
-    void collectionChangedSignal() {
+    void collectionChangedSignal()
+    {
         Akonadi::Collection createdCollection;
         {
             Akonadi::Collection col;
@@ -333,7 +340,7 @@ private slots:
 
 };
 
-QTEST_AKONADIMAIN( ImapSignalTest, NoGUI )
+QTEST_AKONADIMAIN(ImapSignalTest, NoGUI)
 
 #include "imapsignaltest.moc"
 

@@ -50,22 +50,22 @@
 #include <QDialogButtonBox>
 #include <KConfigGroup>
 
-static const char * textToSpeakMessage =
-        I18N_NOOP( "<qt>"
+static const char *textToSpeakMessage =
+    I18N_NOOP("<qt>"
               "<p>Here you can define message. "
               "You can use:</p>"
               "<ul>"
               "<li>%s set subject</li>"
               "<li>%f set from</li>"
               "</ul>"
-              "</qt>" );
+              "</qt>");
 
 NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
-    setWindowTitle( i18n("New Mail Notifier settings") );
-    setWindowIcon( QIcon::fromTheme( QLatin1String("kmail") ) );
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Help);
+    setWindowTitle(i18n("New Mail Notifier settings"));
+    setWindowIcon(QIcon::fromTheme(QLatin1String("kmail")));
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -118,7 +118,6 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
-
     QWidget *textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
@@ -126,7 +125,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mTextToSpeak->setChecked(NewMailNotifierAgentSettings::textToSpeakEnabled());
     vbox->addWidget(mTextToSpeak);
 
-    QLabel *howIsItWork = new QLabel(i18n( "<a href=\"whatsthis\">How does this work?</a>" ));
+    QLabel *howIsItWork = new QLabel(i18n("<a href=\"whatsthis\">How does this work?</a>"));
     howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     howIsItWork->setContextMenuPolicy(Qt::NoContextMenu);
     vbox->addWidget(howIsItWork);
@@ -154,20 +153,19 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mSelectCollection = new NewMailNotifierSelectCollectionWidget;
     tab->addTab(mSelectCollection, i18n("Folders"));
 
-
     KAboutData aboutData = KAboutData(
-                QLatin1String( "newmailnotifieragent" ),
-                i18n( "New Mail Notifier Agent" ),
-                QLatin1String( KDEPIM_RUNTIME_VERSION ),
-                i18n( "Notifies about new mail." ),
-                KAboutLicense::GPL_V2,
-                i18n( "Copyright (C) 2013 Laurent Montel" ) );
+                               QLatin1String("newmailnotifieragent"),
+                               i18n("New Mail Notifier Agent"),
+                               QLatin1String(KDEPIM_RUNTIME_VERSION),
+                               i18n("Notifies about new mail."),
+                               KAboutLicense::GPL_V2,
+                               i18n("Copyright (C) 2013 Laurent Montel"));
 
-    aboutData.addAuthor( i18n( "Laurent Montel" ),
-                         i18n( "Maintainer" ), QLatin1String("montel@kde.org") );
-    aboutData.setProgramIconName( QLatin1String("kmail") );
-    aboutData.setTranslator( i18nc( "NAME OF TRANSLATORS", "Your names" ),
-                             i18nc( "EMAIL OF TRANSLATORS", "Your emails" ) );
+    aboutData.addAuthor(i18n("Laurent Montel"),
+                        i18n("Maintainer"), QLatin1String("montel@kde.org"));
+    aboutData.setProgramIconName(QLatin1String("kmail"));
+    aboutData.setTranslator(i18nc("NAME OF TRANSLATORS", "Your names"),
+                            i18nc("EMAIL OF TRANSLATORS", "Your emails"));
 
     KHelpMenu *helpMenu = new KHelpMenu(this, aboutData, true);
     //Initialize menu
@@ -186,28 +184,27 @@ static const char *myConfigGroupName = "NewMailNotifierDialog";
 
 void NewMailNotifierSettingsDialog::readConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), myConfigGroupName );
+    KConfigGroup group(KSharedConfig::openConfig(), myConfigGroupName);
 
-    const QSize size = group.readEntry( "Size", QSize(500, 300) );
-    if ( size.isValid() ) {
-        resize( size );
+    const QSize size = group.readEntry("Size", QSize(500, 300));
+    if (size.isValid()) {
+        resize(size);
     }
 }
 
 void NewMailNotifierSettingsDialog::writeConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), myConfigGroupName );
-    group.writeEntry( "Size", size() );
+    KConfigGroup group(KSharedConfig::openConfig(), myConfigGroupName);
+    group.writeEntry("Size", size());
     group.sync();
 }
-
 
 void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
 {
     const QString help =
-            i18n( textToSpeakMessage);
+        i18n(textToSpeakMessage);
 
-    QWhatsThis::showText( QCursor::pos(), help );
+    QWhatsThis::showText(QCursor::pos(), help);
 }
 
 void NewMailNotifierSettingsDialog::slotOkClicked()
@@ -226,6 +223,4 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     mNotify->save();
     accept();
 }
-
-
 

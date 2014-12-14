@@ -42,84 +42,83 @@ class QPushButton;
 
 class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit SubscriptionFilterProxyModel( QObject* parent = 0 );
+    explicit SubscriptionFilterProxyModel(QObject *parent = 0);
 
 public slots:
-  void setSearchPattern( const QString &pattern );
-  void setIncludeCheckedOnly( bool checkedOnly );
-  void setIncludeCheckedOnly( int checkedOnlyState );
+    void setSearchPattern(const QString &pattern);
+    void setIncludeCheckedOnly(bool checkedOnly);
+    void setIncludeCheckedOnly(int checkedOnlyState);
 
 protected:
-  /*reimp*/ bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const;
+    /*reimp*/ bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 private:
-  QString m_pattern;
-  bool m_checkedOnly;
+    QString m_pattern;
+    bool m_checkedOnly;
 };
-
 
 class SubscriptionDialog : public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  enum Roles {
-    InitialStateRole = Qt::UserRole + 1,
-    PathRole
-  };
-  enum SubscriptionDialogOption {
-    None = 0,
-    AllowToEnableSubscription = 1
-  };
-  Q_DECLARE_FLAGS( SubscriptionDialogOptions, SubscriptionDialogOption )
+    enum Roles {
+        InitialStateRole = Qt::UserRole + 1,
+        PathRole
+    };
+    enum SubscriptionDialogOption {
+        None = 0,
+        AllowToEnableSubscription = 1
+    };
+    Q_DECLARE_FLAGS(SubscriptionDialogOptions, SubscriptionDialogOption)
 
-  explicit SubscriptionDialog( QWidget *parent = 0, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None );
-  ~SubscriptionDialog();
+    explicit SubscriptionDialog(QWidget *parent = 0, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None);
+    ~SubscriptionDialog();
 
-  void connectAccount( const ImapAccount &account, const QString &password );
-  bool isSubscriptionChanged() const;
-  void setSubscriptionEnabled( bool enabled );
-  bool subscriptionEnabled() const;
+    void connectAccount(const ImapAccount &account, const QString &password);
+    bool isSubscriptionChanged() const;
+    void setSubscriptionEnabled(bool enabled);
+    bool subscriptionEnabled() const;
 
 private slots:
-  void onLoginDone( KJob *job );
-  void onReloadRequested();
-  void onMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-                            const QList< QList<QByteArray> > &flags );
-  void onFullListingDone( KJob *job );
-  void onSubscribedMailBoxesReceived( const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-                                      const QList< QList<QByteArray> > &flags );
-  void onReloadDone( KJob *job );
-  void onItemChanged( QStandardItem *item );
-  void onMobileLineEditChanged( const QString &text );
+    void onLoginDone(KJob *job);
+    void onReloadRequested();
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+                             const QList< QList<QByteArray> > &flags);
+    void onFullListingDone(KJob *job);
+    void onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
+                                       const QList< QList<QByteArray> > &flags);
+    void onReloadDone(KJob *job);
+    void onItemChanged(QStandardItem *item);
+    void onMobileLineEditChanged(const QString &text);
 
-  void slotSearchPattern(const QString &pattern);
+    void slotSearchPattern(const QString &pattern);
 protected:
-  /* reimp */ void keyPressEvent( QKeyEvent *event );
+    /* reimp */ void keyPressEvent(QKeyEvent *event);
 
 protected slots:
-  void slotAccepted();
+    void slotAccepted();
 private:
-  void readConfig();
-  void writeConfig();
-  void applyChanges();
+    void readConfig();
+    void writeConfig();
+    void applyChanges();
 
-  KIMAP::Session *m_session;
-  bool m_subscriptionChanged;
+    KIMAP::Session *m_session;
+    bool m_subscriptionChanged;
 
 #ifndef KDEPIM_MOBILE_UI
-  QTreeView *m_treeView;
+    QTreeView *m_treeView;
 #else
-  QListView* m_listView;
+    QListView *m_listView;
 #endif
 
-  QLineEdit *m_lineEdit;
-  QCheckBox *m_enableSubscription;
-  SubscriptionFilterProxyModel *m_filter;
-  QStandardItemModel *m_model;
-  QMap<QString, QStandardItem*> m_itemsMap;
-  QPushButton *mUser1Button;
+    QLineEdit *m_lineEdit;
+    QCheckBox *m_enableSubscription;
+    SubscriptionFilterProxyModel *m_filter;
+    QStandardItemModel *m_model;
+    QMap<QString, QStandardItem *> m_itemsMap;
+    QPushButton *mUser1Button;
 };
 
 #endif

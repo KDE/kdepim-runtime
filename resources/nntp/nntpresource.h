@@ -27,44 +27,44 @@
 
 class NntpResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit NntpResource( const QString &id );
+public:
+    explicit NntpResource(const QString &id);
     ~NntpResource();
 
-  public Q_SLOTS:
-    virtual void configure( WId windowId );
+public Q_SLOTS:
+    virtual void configure(WId windowId);
 
-  protected Q_SLOTS:
+protected Q_SLOTS:
     void retrieveCollections();
-    void retrieveItems( const Akonadi::Collection &col );
-    bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
+    void retrieveItems(const Akonadi::Collection &col);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
 
-  protected:
-    void collectionChanged( const Akonadi::Collection &collection );
+protected:
+    void collectionChanged(const Akonadi::Collection &collection);
 
-  private:
+private:
     /**
       Returns the base url used for all KIO operations, containing
       protocol, hostname and port.
     */
     QUrl baseUrl() const;
 
-    void setupKioJob( KIO::Job *job ) const;
+    void setupKioJob(KIO::Job *job) const;
 
-    QString findParent( const QStringList &_path );
+    QString findParent(const QStringList &_path);
 
-  private slots:
-    void listGroups( KIO::Job* job, const KIO::UDSEntryList &list );
-    void listGroupsResult( KJob* job );
+private slots:
+    void listGroups(KIO::Job *job, const KIO::UDSEntryList &list);
+    void listGroupsResult(KJob *job);
 
-    void listGroup( KIO::Job* job, const KIO::UDSEntryList &list );
-    void listGroupResult( KJob* job );
+    void listGroup(KIO::Job *job, const KIO::UDSEntryList &list);
+    void listGroupResult(KJob *job);
 
-    void fetchArticleResult( KJob* job );
+    void fetchArticleResult(KJob *job);
 
-  private:
+private:
     Akonadi::Collection::List remoteCollections;
 
     bool mIncremental;

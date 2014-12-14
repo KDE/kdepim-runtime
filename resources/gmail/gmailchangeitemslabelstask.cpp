@@ -23,7 +23,6 @@
 #include <KImap/StoreJob>
 #include <KImap/SelectJob>
 
-
 GmailChangeItemsLabelsTask::GmailChangeItemsLabelsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : ChangeItemsFlagsTask(resource, parent)
 {
@@ -46,7 +45,7 @@ void GmailChangeItemsLabelsTask::doStart(KIMAP::Session *session)
         if (!addedFlags().isEmpty()) {
             triggerAppendFlagsJob(session);
         } else if (!removedFlags().isEmpty()) {
-          triggerRemoveFlagsJob(session);
+            triggerRemoveFlagsJob(session);
         } else {
             changeProcessed();
         }

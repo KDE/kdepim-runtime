@@ -23,12 +23,12 @@
 
 #include <attribute.h>
 
-NoSelectAttribute::NoSelectAttribute( bool noSelect )
-        : mNoSelect( noSelect )
+NoSelectAttribute::NoSelectAttribute(bool noSelect)
+    : mNoSelect(noSelect)
 {
 }
 
-void NoSelectAttribute::setNoSelect( bool noSelect )
+void NoSelectAttribute::setNoSelect(bool noSelect)
 {
     mNoSelect = noSelect;
 }
@@ -40,21 +40,21 @@ bool NoSelectAttribute::noSelect() const
 
 QByteArray NoSelectAttribute::type() const
 {
-    static const QByteArray sType( "noselect" );
+    static const QByteArray sType("noselect");
     return sType;
 }
 
-Akonadi::Attribute* NoSelectAttribute::clone() const
+Akonadi::Attribute *NoSelectAttribute::clone() const
 {
-    return new NoSelectAttribute( mNoSelect );
+    return new NoSelectAttribute(mNoSelect);
 }
 
 QByteArray NoSelectAttribute::serialized() const
 {
-    return mNoSelect ? QByteArray::number( 1 ) :  QByteArray::number( 0 );
+    return mNoSelect ? QByteArray::number(1) :  QByteArray::number(0);
 }
 
-void NoSelectAttribute::deserialize( const QByteArray &data )
+void NoSelectAttribute::deserialize(const QByteArray &data)
 {
-    mNoSelect = ( data.toInt() == 0 ) ? false : true;
+    mNoSelect = (data.toInt() == 0) ? false : true;
 }

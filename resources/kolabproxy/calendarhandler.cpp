@@ -20,30 +20,30 @@
 
 #include "calendarhandler.h"
 
-CalendarHandler::CalendarHandler( const Akonadi::Collection &imapCollection )
-  : IncidenceHandler( imapCollection )
+CalendarHandler::CalendarHandler(const Akonadi::Collection &imapCollection)
+    : IncidenceHandler(imapCollection)
 {
-  m_mimeType = "application/x-vnd.kolab.event";
+    m_mimeType = "application/x-vnd.kolab.event";
 }
 
 CalendarHandler::~CalendarHandler()
 {
 }
 
-KMime::Message::Ptr CalendarHandler::incidenceToMime( const KCalCore::Incidence::Ptr &incidence )
+KMime::Message::Ptr CalendarHandler::incidenceToMime(const KCalCore::Incidence::Ptr &incidence)
 {
-  return
-    Kolab::KolabObjectWriter::writeEvent(
-      incidence.dynamicCast<KCalCore::Event>(),
-     m_formatVersion, PRODUCT_ID, QLatin1String("UTC") );
+    return
+        Kolab::KolabObjectWriter::writeEvent(
+            incidence.dynamicCast<KCalCore::Event>(),
+            m_formatVersion, PRODUCT_ID, QLatin1String("UTC"));
 }
 
 QStringList CalendarHandler::contentMimeTypes()
 {
-  return QStringList() << KCalCore::Event::eventMimeType();
+    return QStringList() << KCalCore::Event::eventMimeType();
 }
 
 QString CalendarHandler::iconName() const
 {
-  return QString::fromLatin1( "view-calendar" );
+    return QString::fromLatin1("view-calendar");
 }

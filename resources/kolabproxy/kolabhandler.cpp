@@ -32,101 +32,101 @@
 #include <KLocalizedString>
 #include <QQueue>
 
-KolabHandler::KolabHandler( const Akonadi::Collection &imapCollection )
-  : m_imapCollection( imapCollection ),
-    m_formatVersion ( Kolab::KolabV3 ),
-    m_warningDisplayLevel( Kolab::ErrorHandler::Error ),
-    mItemAddJobInProgress( false )
+KolabHandler::KolabHandler(const Akonadi::Collection &imapCollection)
+    : m_imapCollection(imapCollection),
+      m_formatVersion(Kolab::KolabV3),
+      m_warningDisplayLevel(Kolab::ErrorHandler::Error),
+      mItemAddJobInProgress(false)
 {
 }
 
-KolabHandler::Ptr KolabHandler::createHandler( Kolab::FolderType type,
-                                               const Akonadi::Collection &imapCollection )
+KolabHandler::Ptr KolabHandler::createHandler(Kolab::FolderType type,
+        const Akonadi::Collection &imapCollection)
 {
-  switch (type) {
-  case Kolab::ContactType:
-    return Ptr( new AddressBookHandler( imapCollection ) );
-  case Kolab::EventType:
-    return Ptr( new CalendarHandler( imapCollection ) );
-  case Kolab::TaskType:
-    return Ptr( new TasksHandler( imapCollection ) );
-  case Kolab::JournalType:
-    return Ptr( new JournalHandler( imapCollection ) );
-  case Kolab::NoteType:
-    return Ptr( new NotesHandler( imapCollection ) );
-  default:
-    qWarning() << "invalid type";
-  }
-  return KolabHandler::Ptr();
+    switch (type) {
+    case Kolab::ContactType:
+        return Ptr(new AddressBookHandler(imapCollection));
+    case Kolab::EventType:
+        return Ptr(new CalendarHandler(imapCollection));
+    case Kolab::TaskType:
+        return Ptr(new TasksHandler(imapCollection));
+    case Kolab::JournalType:
+        return Ptr(new JournalHandler(imapCollection));
+    case Kolab::NoteType:
+        return Ptr(new NotesHandler(imapCollection));
+    default:
+        qWarning() << "invalid type";
+    }
+    return KolabHandler::Ptr();
 }
 
-bool KolabHandler::hasHandler( Kolab::FolderType type )
+bool KolabHandler::hasHandler(Kolab::FolderType type)
 {
-  switch (type) {
-  case Kolab::ContactType:
-  case Kolab::EventType:
-  case Kolab::TaskType:
-  case Kolab::JournalType:
-  case Kolab::NoteType:
-    return true;
-  default:
+    switch (type) {
+    case Kolab::ContactType:
+    case Kolab::EventType:
+    case Kolab::TaskType:
+    case Kolab::JournalType:
+    case Kolab::NoteType:
+        return true;
+    default:
+        return false;
+    }
     return false;
-  }
-  return false;
 }
 
-KolabHandler::Ptr KolabHandler::createHandler( const KolabV2::FolderType &type,
-                                               const Akonadi::Collection &imapCollection )
+KolabHandler::Ptr KolabHandler::createHandler(const KolabV2::FolderType &type,
+        const Akonadi::Collection &imapCollection)
 {
-  switch (type) {
-  case KolabV2::Contact:
-    return Ptr( new AddressBookHandler( imapCollection ) );
-  case KolabV2::Event:
-    return Ptr( new CalendarHandler( imapCollection ) );
-  case KolabV2::Task:
-    return Ptr( new TasksHandler( imapCollection ) );
-  case KolabV2::Journal:
-    return Ptr( new JournalHandler( imapCollection ) );
-  case KolabV2::Note:
-    return Ptr( new NotesHandler( imapCollection ) );
-  default:
-    qWarning() << "invalid type";
-  }
-  return KolabHandler::Ptr();
+    switch (type) {
+    case KolabV2::Contact:
+        return Ptr(new AddressBookHandler(imapCollection));
+    case KolabV2::Event:
+        return Ptr(new CalendarHandler(imapCollection));
+    case KolabV2::Task:
+        return Ptr(new TasksHandler(imapCollection));
+    case KolabV2::Journal:
+        return Ptr(new JournalHandler(imapCollection));
+    case KolabV2::Note:
+        return Ptr(new NotesHandler(imapCollection));
+    default:
+        qWarning() << "invalid type";
+    }
+    return KolabHandler::Ptr();
 }
 
-void KolabHandler::setKolabFormatVersion( Kolab::Version version )
+void KolabHandler::setKolabFormatVersion(Kolab::Version version)
 {
-  m_formatVersion = version;
+    m_formatVersion = version;
 }
 
-QByteArray KolabHandler::kolabTypeForMimeType( const QStringList &contentMimeTypes )
+QByteArray KolabHandler::kolabTypeForMimeType(const QStringList &contentMimeTypes)
 {
-  if ( contentMimeTypes.contains( KContacts::Addressee::mimeType() ) ) {
-    return "contact";
-  } else if ( contentMimeTypes.contains( KCalCore::Event::eventMimeType() ) ) {
-    return "event";
-  } else if ( contentMimeTypes.contains( KCalCore::Todo::todoMimeType() ) ) {
-    return "task";
-  } else if ( contentMimeTypes.contains( KCalCore::Journal::journalMimeType() ) ) {
-    return "journal";
-  } else if ( contentMimeTypes.contains( QLatin1String("application/x-vnd.akonadi.note") ) ||
-              contentMimeTypes.contains( QLatin1String("text/x-vnd.akonadi.note") ) ) {
-    return "note";
-  }
-  return QByteArray();
+    if (contentMimeTypes.contains(KContacts::Addressee::mimeType())) {
+        return "contact";
+    } else if (contentMimeTypes.contains(KCalCore::Event::eventMimeType())) {
+        return "event";
+    } else if (contentMimeTypes.contains(KCalCore::Todo::todoMimeType())) {
+        return "task";
+    } else if (contentMimeTypes.contains(KCalCore::Journal::journalMimeType())) {
+        return "journal";
+    } else if (contentMimeTypes.contains(QLatin1String("application/x-vnd.akonadi.note")) ||
+               contentMimeTypes.contains(QLatin1String("text/x-vnd.akonadi.note"))) {
+        return "note";
+    }
+    return QByteArray();
 }
 
 QStringList KolabHandler::allSupportedMimeTypes()
 {
-  return QStringList()
-    << KContacts::Addressee::mimeType()
-    << KContacts::ContactGroup::mimeType()
-    << KCalCore::Event::eventMimeType()
-    << KCalCore::Todo::todoMimeType()
-    << KCalCore::Journal::journalMimeType()
-    << QLatin1String( "application/x-vnd.akonadi.note" )
-    << QLatin1String( "text/x-vnd.akonadi.note" );
+    return QStringList()
+           << KContacts::Addressee::mimeType()
+           << KContacts::ContactGroup::mimeType()
+           << KCalCore::Event::eventMimeType()
+           << KCalCore::Todo::todoMimeType()
+           << KCalCore::Journal::journalMimeType()
+           << QLatin1String("application/x-vnd.akonadi.note")
+           << QLatin1String("text/x-vnd.akonadi.note");
 }
 
 KolabHandler::~KolabHandler()
@@ -135,91 +135,91 @@ KolabHandler::~KolabHandler()
 
 QByteArray KolabHandler::mimeType() const
 {
-  return m_mimeType;
+    return m_mimeType;
 }
 
-bool KolabHandler::checkForErrors( Akonadi::Item::Id affectedItem )
+bool KolabHandler::checkForErrors(Akonadi::Item::Id affectedItem)
 {
-  if ( Kolab::ErrorHandler::instance().error() < m_warningDisplayLevel ) {
+    if (Kolab::ErrorHandler::instance().error() < m_warningDisplayLevel) {
+        Kolab::ErrorHandler::instance().clear();
+        return false;
+    }
+
+    QString errorMsg;
+    foreach (const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
+        errorMsg.append(error.message);
+        errorMsg.append(QLatin1String("\n"));
+    }
+
+    qWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
     Kolab::ErrorHandler::instance().clear();
-    return false;
-  }
-
-  QString errorMsg;
-  foreach ( const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors() ) {
-    errorMsg.append( error.message );
-    errorMsg.append( QLatin1String("\n") );
-  }
-
-  qWarning() << "Error on item " << affectedItem << ":\n" << errorMsg;
-  Kolab::ErrorHandler::instance().clear();
-  return true;
+    return true;
 }
 
-Akonadi::Item::List KolabHandler::resolveConflicts(const Akonadi::Item::List& kolabItems)
+Akonadi::Item::List KolabHandler::resolveConflicts(const Akonadi::Item::List &kolabItems)
 {
-  //we should preserve the order here
-  Akonadi::Item::List finalItems;
-  QMap<QString, Akonadi::Item::List> gidItemMap;
-  foreach (const Akonadi::Item &item, kolabItems) {
-      const QString gid = extractGid(item);
-      if (!gid.isEmpty()) {
-        gidItemMap[gid] << item;
-      }
-  }
-  foreach (const Akonadi::Item &item, kolabItems) {
-      const QString gid = extractGid(item);
-      if (gid.isEmpty()) {
-        finalItems << item;
-      } else if (gidItemMap.contains(gid)) {
-        //TODO assuming the items are in revers imap uid order (newest first)
-        finalItems << gidItemMap.value(gid).first();
-        gidItemMap.remove(gid);
-      }
-  }
-  return finalItems;
+    //we should preserve the order here
+    Akonadi::Item::List finalItems;
+    QMap<QString, Akonadi::Item::List> gidItemMap;
+    foreach (const Akonadi::Item &item, kolabItems) {
+        const QString gid = extractGid(item);
+        if (!gid.isEmpty()) {
+            gidItemMap[gid] << item;
+        }
+    }
+    foreach (const Akonadi::Item &item, kolabItems) {
+        const QString gid = extractGid(item);
+        if (gid.isEmpty()) {
+            finalItems << item;
+        } else if (gidItemMap.contains(gid)) {
+            //TODO assuming the items are in revers imap uid order (newest first)
+            finalItems << gidItemMap.value(gid).first();
+            gidItemMap.remove(gid);
+        }
+    }
+    return finalItems;
 }
 
 void KolabHandler::processItemAddedQueue()
 {
-  if (mItemAddedQueue.isEmpty() || mItemAddJobInProgress) {
-    return;
-  }
-  //TODO we would only have to serialize add jobs for items with the same GID
-  mItemAddJobInProgress = true;
-  const QPair<Akonadi::Item, Akonadi::Collection> pair = mItemAddedQueue.dequeue();
-  ImapItemAddedJob *addedJob = new ImapItemAddedJob( pair.first, pair.second, *this, this );
-  connect(addedJob, &ImapItemAddedJob::result, this, &KolabHandler::onItemAdded);
-  addedJob->start();
+    if (mItemAddedQueue.isEmpty() || mItemAddJobInProgress) {
+        return;
+    }
+    //TODO we would only have to serialize add jobs for items with the same GID
+    mItemAddJobInProgress = true;
+    const QPair<Akonadi::Item, Akonadi::Collection> pair = mItemAddedQueue.dequeue();
+    ImapItemAddedJob *addedJob = new ImapItemAddedJob(pair.first, pair.second, *this, this);
+    connect(addedJob, &ImapItemAddedJob::result, this, &KolabHandler::onItemAdded);
+    addedJob->start();
 }
 
 void KolabHandler::onItemAdded(KJob *job)
 {
-  mItemAddJobInProgress = false;
-  if (job->error()) {
-    qWarning() << job->errorString();
-  }
-  processItemAddedQueue();
+    mItemAddJobInProgress = false;
+    if (job->error()) {
+        qWarning() << job->errorString();
+    }
+    processItemAddedQueue();
 }
 
-void KolabHandler::imapItemAdded(const Akonadi::Item& imapItem, const Akonadi::Collection& imapCollection)
+void KolabHandler::imapItemAdded(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection)
 {
-  mItemAddedQueue.enqueue(qMakePair<Akonadi::Item, Akonadi::Collection>(imapItem, imapCollection));
-  processItemAddedQueue();
+    mItemAddedQueue.enqueue(qMakePair<Akonadi::Item, Akonadi::Collection>(imapItem, imapCollection));
+    processItemAddedQueue();
 }
 
-void KolabHandler::imapItemRemoved(const Akonadi::Item& imapItem)
+void KolabHandler::imapItemRemoved(const Akonadi::Item &imapItem)
 {
-  //TODO delay this in case an imapItemAdded job is already running (it might reuse the item)
-  ImapItemRemovedJob *job = new ImapItemRemovedJob(imapItem, this);
-  connect(job, &ImapItemRemovedJob::result, this, &KolabHandler::checkResult);
-  job->start();
+    //TODO delay this in case an imapItemAdded job is already running (it might reuse the item)
+    ImapItemRemovedJob *job = new ImapItemRemovedJob(imapItem, this);
+    connect(job, &ImapItemRemovedJob::result, this, &KolabHandler::checkResult);
+    job->start();
 }
 
-void KolabHandler::checkResult(KJob* job)
+void KolabHandler::checkResult(KJob *job)
 {
-  if ( job->error() ) {
-    qWarning() << "Error occurred: " << job->errorString();
-  }
+    if (job->error()) {
+        qWarning() << "Error occurred: " << job->errorString();
+    }
 }
 

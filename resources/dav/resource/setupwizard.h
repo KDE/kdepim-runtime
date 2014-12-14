@@ -38,22 +38,22 @@ class QRadioButton;
 
 class SetupWizard : public QWizard
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit SetupWizard( QWidget *parent = 0 );
+public:
+    explicit SetupWizard(QWidget *parent = 0);
 
     enum {
-      W_CredentialsPage,
-      W_PredefinedProviderPage,
-      W_ServerTypePage,
-      W_ConnectionPage,
-      W_CheckPage
+        W_CredentialsPage,
+        W_PredefinedProviderPage,
+        W_ServerTypePage,
+        W_ConnectionPage,
+        W_CheckPage
     };
 
     class Url
     {
-      public:
+    public:
         typedef QList<Url> List;
 
         DavUtils::Protocol protocol;
@@ -68,13 +68,13 @@ class SetupWizard : public QWizard
 
 class PredefinedProviderPage : public QWizardPage
 {
-  public:
-    PredefinedProviderPage( QWidget* parent = 0 );
+public:
+    PredefinedProviderPage(QWidget *parent = 0);
 
     virtual void initializePage();
     virtual int nextId() const;
 
-  private:
+private:
     QLabel *mLabel;
     QButtonGroup *mProviderGroup;
     QRadioButton *mUseProvider;
@@ -83,46 +83,46 @@ class PredefinedProviderPage : public QWizardPage
 
 class CredentialsPage : public QWizardPage
 {
-  public:
-    CredentialsPage( QWidget *parent = 0 );
+public:
+    CredentialsPage(QWidget *parent = 0);
     virtual int nextId() const;
 
-  private:
+private:
     KLineEdit *mUserName;
     KLineEdit *mPassword;
 };
 
 class ServerTypePage : public QWizardPage
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    ServerTypePage( QWidget *parent = 0 );
+public:
+    ServerTypePage(QWidget *parent = 0);
 
     virtual bool validatePage();
 
-  private slots:
-    void manualConfigToggled( bool toggled );
+private slots:
+    void manualConfigToggled(bool toggled);
 
-  private:
+private:
     QButtonGroup *mServerGroup;
     QComboBox *mProvidersCombo;
 };
 
 class ConnectionPage : public QWizardPage
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    ConnectionPage( QWidget *parent = 0 );
+public:
+    ConnectionPage(QWidget *parent = 0);
 
     virtual void initializePage();
     virtual void cleanupPage();
 
-  private slots:
+private slots:
     void urlElementChanged();
 
-  private:
+private:
     QFormLayout *mLayout;
     KLineEdit *mHost;
     KLineEdit *mPath;
@@ -138,16 +138,16 @@ class ConnectionPage : public QWizardPage
 
 class CheckPage : public QWizardPage
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    CheckPage( QWidget *parent = 0 );
+public:
+    CheckPage(QWidget *parent = 0);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void checkConnection();
-    void onFetchDone( KJob* );
+    void onFetchDone(KJob *);
 
-  private:
+private:
     QTextBrowser *mStatusLabel;
 };
 

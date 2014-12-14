@@ -27,22 +27,21 @@
 
 class KJob;
 
-
 /**
  * @short Monitors the outbox collection and provides a queue of messages for the MDA to send.
  */
 class OutboxQueue : public QObject
 {
-  Q_OBJECT
-  friend class MailDispatcherAgent;
+    Q_OBJECT
+    friend class MailDispatcherAgent;
 
-  public:
+public:
     /**
      * Creates a new outbox queue.
      *
      * @param parent The parent object.
      */
-    explicit OutboxQueue( QObject *parent = Q_NULLPTR );
+    explicit OutboxQueue(QObject *parent = Q_NULLPTR);
 
     /**
      * Destroys the outbox queue.
@@ -69,28 +68,27 @@ class OutboxQueue : public QObject
      */
     void fetchOne();
 
-  Q_SIGNALS:
-    void itemReady( const Akonadi::Item &item );
+Q_SIGNALS:
+    void itemReady(const Akonadi::Item &item);
     void newItems();
-    void error( const QString &error );
+    void error(const QString &error);
 
-  private:
+private:
     //@cond PRIVATE
     class Private;
-    Private* const d;
+    Private *const d;
 
-    Q_PRIVATE_SLOT( d, void checkFuture() )
-    Q_PRIVATE_SLOT( d, void collectionFetched( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemFetched( KJob* ) )
-    Q_PRIVATE_SLOT( d, void localFoldersChanged() )
-    Q_PRIVATE_SLOT( d, void localFoldersRequestResult( KJob* ) )
-    Q_PRIVATE_SLOT( d, void itemAdded( Akonadi::Item ) )
-    Q_PRIVATE_SLOT( d, void itemChanged( Akonadi::Item ) )
-    Q_PRIVATE_SLOT( d, void itemMoved( Akonadi::Item, Akonadi::Collection, Akonadi::Collection ) )
-    Q_PRIVATE_SLOT( d, void itemRemoved( Akonadi::Item ) )
-    Q_PRIVATE_SLOT( d, void itemProcessed( Akonadi::Item, bool ) )
+    Q_PRIVATE_SLOT(d, void checkFuture())
+    Q_PRIVATE_SLOT(d, void collectionFetched(KJob *))
+    Q_PRIVATE_SLOT(d, void itemFetched(KJob *))
+    Q_PRIVATE_SLOT(d, void localFoldersChanged())
+    Q_PRIVATE_SLOT(d, void localFoldersRequestResult(KJob *))
+    Q_PRIVATE_SLOT(d, void itemAdded(Akonadi::Item))
+    Q_PRIVATE_SLOT(d, void itemChanged(Akonadi::Item))
+    Q_PRIVATE_SLOT(d, void itemMoved(Akonadi::Item, Akonadi::Collection, Akonadi::Collection))
+    Q_PRIVATE_SLOT(d, void itemRemoved(Akonadi::Item))
+    Q_PRIVATE_SLOT(d, void itemProcessed(Akonadi::Item, bool))
     //@endcond
 };
-
 
 #endif

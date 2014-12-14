@@ -26,7 +26,8 @@
 
 #include <kjob.h>
 
-namespace OXA {
+namespace OXA
+{
 
 /**
  * @short A job that deletes a folder on the OX server.
@@ -35,9 +36,9 @@ namespace OXA {
  */
 class FolderDeleteJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new folder delete job.
      *
@@ -46,17 +47,17 @@ class FolderDeleteJob : public KJob
      *
      * @note The folder needs the objectId, folderId and lastModified property set.
      */
-    explicit FolderDeleteJob( const Folder &folder, QObject *parent = Q_NULLPTR );
+    explicit FolderDeleteJob(const Folder &folder, QObject *parent = Q_NULLPTR);
 
     /**
      * Starts the job.
      */
     virtual void start();
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     Folder mFolder;
 };
 

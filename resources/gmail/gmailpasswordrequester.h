@@ -27,7 +27,7 @@
 class GmailResource;
 class GmailPasswordRequester : public PasswordRequesterInterface
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
     GmailPasswordRequester(GmailResource *resource, QObject *parent);

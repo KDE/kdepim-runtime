@@ -24,10 +24,10 @@
 #include <AkonadiCore/CollectionFetchJob>
 #include <AkonadiCore/ItemDeleteJob>
 
-ImapItemRemovedJob::ImapItemRemovedJob(const Akonadi::Item& imapItem, QObject* parent)
-    :KJob(parent),
-    mImapItem(imapItem),
-    mKolabItem(imapToKolab(imapItem))
+ImapItemRemovedJob::ImapItemRemovedJob(const Akonadi::Item &imapItem, QObject *parent)
+    : KJob(parent),
+      mImapItem(imapItem),
+      mKolabItem(imapToKolab(imapItem))
 {
 
 }
@@ -40,10 +40,10 @@ void ImapItemRemovedJob::start()
     connect(fetchJob, &Akonadi::ItemFetchJob::result, this, &ImapItemRemovedJob::onItemFetchJobDone);
 }
 
-void ImapItemRemovedJob::onItemFetchJobDone(KJob* job)
+void ImapItemRemovedJob::onItemFetchJobDone(KJob *job)
 {
     //This fetch job can fail if the kolab item has already been removed, so we ignore errors
-    Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob*>(job);
+    Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob *>(job);
     Q_ASSERT(fetchJob->items().size() <= 1);
     if (fetchJob->items().isEmpty()) {
         emitResult();
@@ -52,21 +52,18 @@ void ImapItemRemovedJob::onItemFetchJobDone(KJob* job)
     const Akonadi::Item kolabItem = fetchJob->items().first();
     //Check if the currently relevant imap item was removed or just an outdated copy
     if (kolabItem.remoteId().toLongLong() == mImapItem.id()) {
-        Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(kolabItem, this );
+        Akonadi::ItemDeleteJob *deleteJob = new Akonadi::ItemDeleteJob(kolabItem, this);
         connect(deleteJob, &Akonadi::ItemDeleteJob::result, this, &ImapItemRemovedJob::onDeleteDone);
     } else {
         emitResult();
     }
 }
 
-void ImapItemRemovedJob::onDeleteDone(KJob* job)
+void ImapItemRemovedJob::onDeleteDone(KJob *job)
 {
     if (job->error()) {
         qWarning() << "Delete job failed" << job->errorString();
     }
     emitResult();
 }
-
-
-
 

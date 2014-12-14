@@ -31,20 +31,20 @@
 class ImapResource : public ImapResourceBase
 {
     Q_OBJECT
-    Q_CLASSINFO( "D-Bus Interface", "org.kde.Akonadi.Imap.Resource" )
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Resource")
 
 public:
-    explicit ImapResource( const QString &id );
+    explicit ImapResource(const QString &id);
     virtual ~ImapResource();
 
-    QDialog *createConfigureDialog ( WId windowId ) Q_DECL_OVERRIDE;
+    QDialog *createConfigureDialog(WId windowId) Q_DECL_OVERRIDE;
     void cleanup() Q_DECL_OVERRIDE;
 
 protected:
     QString defaultName() const Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-    void onConfigurationDone( int result );
+    void onConfigurationDone(int result);
 
 };
 

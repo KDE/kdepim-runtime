@@ -29,7 +29,7 @@ GmailRetrieveItemsTask::GmailRetrieveItemsTask(ResourceStateInterface::Ptr resou
     : RetrieveItemsTask(resource, parent)
 {
     qDebug();
-    dynamic_cast<GmailResourceState*>(resource.get())->setCurrentTask(this);
+    dynamic_cast<GmailResourceState *>(resource.get())->setCurrentTask(this);
 }
 
 GmailRetrieveItemsTask::~GmailRetrieveItemsTask()
@@ -38,10 +38,10 @@ GmailRetrieveItemsTask::~GmailRetrieveItemsTask()
 }
 
 BatchFetcher *GmailRetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
-                                                         const KIMAP::ImapSet &set,
-                                                         const KIMAP::FetchJob::FetchScope &scope,
-                                                         int batchSize,
-                                                         KIMAP::Session *session)
+        const KIMAP::ImapSet &set,
+        const KIMAP::FetchJob::FetchScope &scope,
+        int batchSize,
+        KIMAP::Session *session)
 {
     qDebug();
     KIMAP::FetchJob::FetchScope gmailScope = scope;

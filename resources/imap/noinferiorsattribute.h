@@ -16,7 +16,6 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #ifndef NOINFERIORSATTRIBUTE_H
 #define NOINFERIORSATTRIBUTE_H
 
@@ -25,13 +24,13 @@
 class NoInferiorsAttribute : public Akonadi::Attribute
 {
 public:
-    explicit NoInferiorsAttribute( bool noInferiors = false );
-    void setNoInferiors( bool noInferiors );
+    explicit NoInferiorsAttribute(bool noInferiors = false);
+    void setNoInferiors(bool noInferiors);
     bool noInferiors() const;
     virtual QByteArray type() const;
-    virtual Attribute* clone() const;
+    virtual Attribute *clone() const;
     virtual QByteArray serialized() const;
-    virtual void deserialize( const QByteArray &data );
+    virtual void deserialize(const QByteArray &data);
 
 private:
     bool mNoInferiors;

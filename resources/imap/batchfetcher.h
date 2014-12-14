@@ -31,7 +31,8 @@
  * A job that retrieves a set of messages in reverse-ordered batches.
  * After each batch fetchNextBatch() needs to be called (for throttling the download speed)
  */
-class BatchFetcher : public KJob {
+class BatchFetcher : public KJob
+{
     Q_OBJECT
 public:
     BatchFetcher(MessageHelper::Ptr messageHelper,
@@ -57,7 +58,7 @@ private Q_SLOTS:
                            const QMap<qint64, KIMAP::MessageFlags> &flags,
                            const QMap<qint64, KIMAP::MessagePtr> &messages);
     void onHeadersFetchDone(KJob *job);
-    void onUidSearchDone(KJob* job);
+    void onUidSearchDone(KJob *job);
 
 private:
     //Batch fetching
@@ -74,6 +75,5 @@ private:
     bool m_gmailEnabled;
     bool m_searchInChunks;
 };
-
 
 #endif // BATCHFETCHER_H

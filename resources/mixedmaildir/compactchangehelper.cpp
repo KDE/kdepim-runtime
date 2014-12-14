@@ -39,200 +39,198 @@ typedef QMap<QString, Item> OldIdItemMap;
 typedef QMap<qint64, OldIdItemMap> RevisionChangeMap;
 typedef QMap<Collection::Id, RevisionChangeMap> CollectionRevisionMap;
 
-struct UpdateBatch
-{
-  QQueue<Item> items;
-  Collection collection;
+struct UpdateBatch {
+    QQueue<Item> items;
+    Collection collection;
 };
 
 class CompactChangeHelper::Private
 {
-  CompactChangeHelper *const q;
+    CompactChangeHelper *const q;
 
-  public:
-    explicit Private( CompactChangeHelper *parent ) : q( parent ), mSession( 0 )
+public:
+    explicit Private(CompactChangeHelper *parent) : q(parent), mSession(0)
     {
     }
 
-  public:
+public:
     Session *mSession;
     CollectionRevisionMap mChangesByCollection;
     QQueue<UpdateBatch> mPendingUpdates;
     UpdateBatch mCurrentUpdate;
 
-  public: // slots
+public: // slots
     void processNextBatch();
     void processNextItem();
-    void itemFetchResult( KJob *job );
+    void itemFetchResult(KJob *job);
 };
 
 void CompactChangeHelper::Private::processNextBatch()
 {
-  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "pendingUpdates.count=" << mPendingUpdates.count();
-  if ( mPendingUpdates.isEmpty() ) {
-    return;
-  }
+    //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "pendingUpdates.count=" << mPendingUpdates.count();
+    if (mPendingUpdates.isEmpty()) {
+        return;
+    }
 
-  mCurrentUpdate = mPendingUpdates.dequeue();
+    mCurrentUpdate = mPendingUpdates.dequeue();
 
-  processNextItem();
+    processNextItem();
 }
 
 void CompactChangeHelper::Private::processNextItem()
 {
-  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
-  if ( mCurrentUpdate.items.isEmpty() ) {
-    CollectionModifyJob *job = new CollectionModifyJob( mCurrentUpdate.collection, mSession );
-    QObject::connect( job, SIGNAL(result(KJob*)), q, SLOT(processNextBatch()) );
-    return;
-  }
+    //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
+    if (mCurrentUpdate.items.isEmpty()) {
+        CollectionModifyJob *job = new CollectionModifyJob(mCurrentUpdate.collection, mSession);
+        QObject::connect(job, SIGNAL(result(KJob*)), q, SLOT(processNextBatch()));
+        return;
+    }
 
-  const Item nextItem = mCurrentUpdate.items.dequeue();
+    const Item nextItem = mCurrentUpdate.items.dequeue();
 
-  Item item;
-  item.setRemoteId( nextItem.remoteId() );
+    Item item;
+    item.setRemoteId(nextItem.remoteId());
 
-  ItemFetchJob *job = new ItemFetchJob( item );
-  job->setProperty( "oldRemoteId", item.remoteId() );
-  job->setProperty( "newRemoteId", nextItem.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId() );
-  QObject::connect( job, SIGNAL(result(KJob*)), q, SLOT(itemFetchResult(KJob*)) );
+    ItemFetchJob *job = new ItemFetchJob(item);
+    job->setProperty("oldRemoteId", item.remoteId());
+    job->setProperty("newRemoteId", nextItem.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId());
+    QObject::connect(job, SIGNAL(result(KJob*)), q, SLOT(itemFetchResult(KJob*)));
 }
 
-void CompactChangeHelper::Private::itemFetchResult( KJob *job )
+void CompactChangeHelper::Private::itemFetchResult(KJob *job)
 {
-  ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob != 0 );
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
+    Q_ASSERT(fetchJob != 0);
 
-  const QString oldRemoteId = fetchJob->property( "oldRemoteId" ).value<QString>();
-  Q_ASSERT( !oldRemoteId.isEmpty() );
+    const QString oldRemoteId = fetchJob->property("oldRemoteId").value<QString>();
+    Q_ASSERT(!oldRemoteId.isEmpty());
 
-  const QString newRemoteId = fetchJob->property( "newRemoteId" ).value<QString>();
-  Q_ASSERT( !newRemoteId.isEmpty() );
+    const QString newRemoteId = fetchJob->property("newRemoteId").value<QString>();
+    Q_ASSERT(!newRemoteId.isEmpty());
 
-  if ( fetchJob->error() != 0 ) {
-    //qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Item fetch for remoteId=" << oldRemoteId
-    //         << "new remoteId=" << newRemoteId << "failed:" << fetchJob->errorString();
-    processNextItem();
-    return;
-  }
+    if (fetchJob->error() != 0) {
+        //qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Item fetch for remoteId=" << oldRemoteId
+        //         << "new remoteId=" << newRemoteId << "failed:" << fetchJob->errorString();
+        processNextItem();
+        return;
+    }
 
-  // since we only need the item to modify its remote ID, we don't care
-  // if it does not exist (anymore)
-  if ( fetchJob->items().isEmpty() ) {
-    processNextItem();
-    return;
-  }
+    // since we only need the item to modify its remote ID, we don't care
+    // if it does not exist (anymore)
+    if (fetchJob->items().isEmpty()) {
+        processNextItem();
+        return;
+    }
 
-  const Item item = fetchJob->items().first();
+    const Item item = fetchJob->items().first();
 
-  Item updatedItem( item );
-  updatedItem.setRemoteId( newRemoteId );
+    Item updatedItem(item);
+    updatedItem.setRemoteId(newRemoteId);
 
-  ItemModifyJob *modifyJob = new ItemModifyJob( updatedItem );
-  QObject::connect( modifyJob, SIGNAL(result(KJob*)), q, SLOT(processNextItem()) );
+    ItemModifyJob *modifyJob = new ItemModifyJob(updatedItem);
+    QObject::connect(modifyJob, SIGNAL(result(KJob*)), q, SLOT(processNextItem()));
 }
 
-CompactChangeHelper::CompactChangeHelper( const QByteArray &sessionId, QObject *parent )
-  : QObject( parent ), d( new Private( this ) )
+CompactChangeHelper::CompactChangeHelper(const QByteArray &sessionId, QObject *parent)
+    : QObject(parent), d(new Private(this))
 {
-  d->mSession = new Session( sessionId, this );
+    d->mSession = new Session(sessionId, this);
 }
 
 CompactChangeHelper::~CompactChangeHelper()
 {
-  delete d;
+    delete d;
 }
 
-void CompactChangeHelper::addChangedItems( const Item::List &items )
+void CompactChangeHelper::addChangedItems(const Item::List &items)
 {
-  if ( items.isEmpty() ) {
-    return;
-  }
+    if (items.isEmpty()) {
+        return;
+    }
 
-  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "items.count=" << items.count()
-           << "pendingUpdates.count=" << d->mPendingUpdates.count();
-  UpdateBatch updateBatch;
+    qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "items.count=" << items.count()
+                                      << "pendingUpdates.count=" << d->mPendingUpdates.count();
+    UpdateBatch updateBatch;
 
-  Q_FOREACH( const Item &item, items ) {
+    Q_FOREACH (const Item &item, items) {
+        const Collection collection = item.parentCollection();
+        const qint64 revision = collection.remoteRevision().toLongLong();
+
+        RevisionChangeMap &changesByRevision = d->mChangesByCollection[ collection.id() ];
+        OldIdItemMap &changes = changesByRevision[ revision ];
+        changes.insert(item.remoteId(), item);
+
+        if (!updateBatch.collection.isValid()) {
+            updateBatch.collection = collection;
+        } else if (updateBatch.collection != collection) {
+            d->mPendingUpdates << updateBatch;
+            updateBatch.items.clear();
+            updateBatch.collection = collection;
+        }
+
+        updateBatch.items << item;
+    }
+
+    if (updateBatch.collection.isValid()) {
+        d->mPendingUpdates << updateBatch;
+    }
+
+    QMetaObject::invokeMethod(this, "processNextBatch", Qt::QueuedConnection);
+}
+
+QString CompactChangeHelper::currentRemoteId(const Item &item) const
+{
     const Collection collection = item.parentCollection();
     const qint64 revision = collection.remoteRevision().toLongLong();
 
-    RevisionChangeMap &changesByRevision = d->mChangesByCollection[ collection.id() ];
-    OldIdItemMap &changes = changesByRevision[ revision ];
-    changes.insert( item.remoteId(), item );
+    QString remoteId = item.remoteId();
 
-    if ( !updateBatch.collection.isValid() ) {
-      updateBatch.collection = collection;
-    } else if ( updateBatch.collection != collection ) {
-      d->mPendingUpdates << updateBatch;
-      updateBatch.items.clear();
-      updateBatch.collection = collection;
+    const CollectionRevisionMap::const_iterator colIt = d->mChangesByCollection.constFind(collection.id());
+    if (colIt != d->mChangesByCollection.constEnd()) {
+        // find revision and iterate until the highest available one
+        RevisionChangeMap::const_iterator revIt = colIt->constFind(revision);
+        for (; revIt != colIt->constEnd(); ++revIt) {
+            const OldIdItemMap::const_iterator idIt = revIt->constFind(remoteId);
+            if (idIt != revIt->constEnd()) {
+                remoteId = idIt.value().attribute<FileStore::EntityCompactChangeAttribute>()->remoteId();
+            } else {
+                break;
+            }
+        }
     }
 
-    updateBatch.items << item;
-  }
+    if (item.remoteId() != remoteId) {
+        qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item (id=" << item.id() << "remoteId=" << item.remoteId()
+                                          << "), col(id=" << collection.id() << ", name=" << collection.name()
+                                          << ", revision=" << revision << ") in compact change set (revisions="
+                                          << colIt->keys() << ": current remoteId=" << remoteId;
+    }
 
-  if ( updateBatch.collection.isValid() ) {
-    d->mPendingUpdates << updateBatch;
-  }
-
-  QMetaObject::invokeMethod( this, "processNextBatch", Qt::QueuedConnection );
+    return remoteId;
 }
 
-QString CompactChangeHelper::currentRemoteId( const Item &item ) const
+void CompactChangeHelper::checkCollectionChanged(const Collection &collection)
 {
-  const Collection collection = item.parentCollection();
-  const qint64 revision = collection.remoteRevision().toLongLong();
+    const qint64 revision = collection.remoteRevision().toLongLong();
+    //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "col.id=" << collection.id() << ", remoteId=" << collection.remoteId()
+    //         << "revision=" << revision;
 
-  QString remoteId = item.remoteId();
+    const CollectionRevisionMap::iterator colIt = d->mChangesByCollection.find(collection.id());
+    if (colIt != d->mChangesByCollection.end()) {
+        qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "matching change map found with" << colIt->count() << "entries";
+        // remove all revisions until the seen one appears
+        RevisionChangeMap::iterator revIt = colIt->begin();
+        while (revIt != colIt->end() && revIt.key() <= revision) {
+            qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "removing entry for revision" << revIt.key();
+            revIt = colIt->erase(revIt);
+        }
 
-  const CollectionRevisionMap::const_iterator colIt = d->mChangesByCollection.constFind( collection.id() );
-  if ( colIt != d->mChangesByCollection.constEnd() ) {
-    // find revision and iterate until the highest available one
-    RevisionChangeMap::const_iterator revIt = colIt->constFind( revision );
-    for ( ; revIt != colIt->constEnd(); ++revIt ) {
-      const OldIdItemMap::const_iterator idIt = revIt->constFind( remoteId );
-      if ( idIt != revIt->constEnd() ) {
-        remoteId = idIt.value().attribute<FileStore::EntityCompactChangeAttribute>()->remoteId();
-      } else {
-        break;
-      }
+        if (revIt == colIt->end()) {
+            qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "all change maps gone";
+            d->mChangesByCollection.erase(colIt);
+        }
     }
-  }
-
-  if ( item.remoteId() != remoteId ) {
-    qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item (id=" << item.id() << "remoteId=" << item.remoteId()
-             << "), col(id=" << collection.id() << ", name=" << collection.name()
-             << ", revision=" << revision << ") in compact change set (revisions="
-             << colIt->keys() << ": current remoteId=" << remoteId;
-  }
-
-  return remoteId;
-}
-
-void CompactChangeHelper::checkCollectionChanged( const Collection &collection )
-{
-  const qint64 revision = collection.remoteRevision().toLongLong();
-  //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "col.id=" << collection.id() << ", remoteId=" << collection.remoteId()
-  //         << "revision=" << revision;
-
-  const CollectionRevisionMap::iterator colIt = d->mChangesByCollection.find( collection.id() );
-  if ( colIt != d->mChangesByCollection.end() ) {
-    qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "matching change map found with" << colIt->count() << "entries";
-    // remove all revisions until the seen one appears
-    RevisionChangeMap::iterator revIt = colIt->begin();
-    while ( revIt != colIt->end() && revIt.key() <= revision ) {
-      qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "removing entry for revision" << revIt.key();
-      revIt = colIt->erase( revIt );
-    }
-
-    if ( revIt == colIt->end() ) {
-      qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "all change maps gone";
-      d->mChangesByCollection.erase( colIt );
-    }
-  }
 }
 
 #include "moc_compactchangehelper.cpp"
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

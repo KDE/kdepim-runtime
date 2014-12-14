@@ -26,7 +26,8 @@
 
 #include <KConfigDialogManager>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 /**
  * Configuration dialog for single file resources.
@@ -34,24 +35,24 @@ namespace Akonadi {
 template <typename Settings>
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
 {
-  Settings *mSettings;
+    Settings *mSettings;
 
-  public:
-    explicit SingleFileResourceConfigDialog( WId windowId, Settings *settings )
-        : SingleFileResourceConfigDialogBase( windowId )
-        , mSettings( settings )
+public:
+    explicit SingleFileResourceConfigDialog(WId windowId, Settings *settings)
+        : SingleFileResourceConfigDialogBase(windowId)
+        , mSettings(settings)
     {
-      ui.kcfg_Path->setUrl( QUrl::fromLocalFile( mSettings->path() ) );
-      mManager = new KConfigDialogManager( this, mSettings );
-      mManager->updateWidgets();
+        ui.kcfg_Path->setUrl(QUrl::fromLocalFile(mSettings->path()));
+        mManager = new KConfigDialogManager(this, mSettings);
+        mManager->updateWidgets();
     }
 
-  protected:
+protected:
     void save()
     {
-      mManager->updateSettings();
-      mSettings->setPath( ui.kcfg_Path->url().url() );
-      mSettings->save();
+        mManager->updateSettings();
+        mSettings->setPath(ui.kcfg_Path->url().url());
+        mSettings->save();
     }
 };
 

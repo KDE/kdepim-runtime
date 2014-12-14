@@ -32,42 +32,42 @@ class QStandardItemModel;
 class QPushButton;
 class UrlConfigurationDialog : public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit UrlConfigurationDialog( QWidget *parent = 0 );
+public:
+    explicit UrlConfigurationDialog(QWidget *parent = 0);
     ~UrlConfigurationDialog();
 
     DavUtils::Protocol protocol() const;
-    void setProtocol( DavUtils::Protocol protocol );
+    void setProtocol(DavUtils::Protocol protocol);
 
     QString remoteUrl() const;
-    void setRemoteUrl( const QString &url );
+    void setRemoteUrl(const QString &url);
 
     bool useDefaultCredentials() const;
-    void setUseDefaultCredentials( bool defaultCreds );
+    void setUseDefaultCredentials(bool defaultCreds);
 
     QString username() const;
-    void setDefaultUsername( const QString &name );
-    void setUsername( const QString &name );
+    void setDefaultUsername(const QString &name);
+    void setUsername(const QString &name);
 
     QString password() const;
-    void setDefaultPassword( const QString &password );
-    void setPassword( const QString &password );
+    void setDefaultPassword(const QString &password);
+    void setPassword(const QString &password);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void onConfigChanged();
     void checkUserInput();
     void onFetchButtonClicked();
     void onOkButtonClicked();
-    void onCollectionsFetchDone( KJob *job );
-    void onModelDataChanged( const QModelIndex &topLeft, const QModelIndex &bottomRight );
-    void onChangeDisplayNameFinished( KJob *job );
+    void onCollectionsFetchDone(KJob *job);
+    void onModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void onChangeDisplayNameFinished(KJob *job);
 
-  private:
+private:
     void initModel();
     bool checkUserAuthInput();
-    void addModelRow( const QString &displayName, const QString &url );
+    void addModelRow(const QString &displayName, const QString &url);
 
     Ui::UrlConfigurationDialog mUi;
     QStandardItemModel *mModel;

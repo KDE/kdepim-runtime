@@ -37,15 +37,16 @@ using Akonadi::MessageStatus;
 
 namespace boost
 {
-  template <typename T> class shared_ptr;
+template <typename T> class shared_ptr;
 }
 
-class KMINDEXREADER_EXPORT KMIndexData {
-    Q_DISABLE_COPY( KMIndexData )
+class KMINDEXREADER_EXPORT KMIndexData
+{
+    Q_DISABLE_COPY(KMIndexData)
 public:
     KMIndexData();
     /** Status object of the message. */
-    MessageStatus& status();
+    MessageStatus &status();
     QStringList  tagList() const ;
     quint64 uid() const;
     bool isEmpty() const;
@@ -69,10 +70,11 @@ typedef boost::shared_ptr<KMIndexData> KMIndexDataPtr;
  * It uses old kmfolderindex code, authors attributed as appropriate.
  * @author Casey Link <unnamedrambler@gmail.com>
  */
-class KMINDEXREADER_EXPORT KMIndexReader {
+class KMINDEXREADER_EXPORT KMIndexReader
+{
 public:
-    explicit KMIndexReader ( const QString &indexFile );
-   ~KMIndexReader();
+    explicit KMIndexReader(const QString &indexFile);
+    ~KMIndexReader();
 
     bool error() const;
 
@@ -111,30 +113,29 @@ public:
         MsgTagPart = 19
     };
 
-    KMIndexDataPtr dataByOffset( quint64 offset ) const;
+    KMIndexDataPtr dataByOffset(quint64 offset) const;
 
-    KMIndexDataPtr dataByFileName( const QString &fileName ) const;
+    KMIndexDataPtr dataByFileName(const QString &fileName) const;
 
 private:
-
 
     /**
      * Reads the header of an index
      */
-    bool readHeader ( int *version );
+    bool readHeader(int *version);
 
     /**
      * creates a message object from an old index files
      */
-    bool fromOldIndexString ( KMIndexData* msg, const QByteArray& str, bool toUtf8 );
+    bool fromOldIndexString(KMIndexData *msg, const QByteArray &str, bool toUtf8);
 
-    bool fillPartsCache ( KMIndexData* msg, off_t off, short int len );
+    bool fillPartsCache(KMIndexData *msg, off_t off, short int len);
 
     QList<KMIndexDataPtr> messages();
 
     QString mIndexFileName;
     QFile mIndexFile;
-    FILE* mFp;
+    FILE *mFp;
 
     bool mConvertToUtf8;
     bool mIndexSwapByteOrder; // Index file was written with swapped byte order

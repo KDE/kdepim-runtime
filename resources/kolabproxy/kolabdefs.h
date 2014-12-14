@@ -26,17 +26,19 @@
 #include <kolabdefinitions.h> //libkolab
 #include <formathelpers.h> //libkolab
 
-namespace Kolab {
-  FolderType folderTypeFromString( const QByteArray &folderTypeName );
-  QByteArray getFolderTypeAnnotation( const QMap<QByteArray, QByteArray> &annotations);
-  void setFolderTypeAnnotation( QMap<QByteArray, QByteArray> &annotations, const QByteArray &value);
+namespace Kolab
+{
+FolderType folderTypeFromString(const QByteArray &folderTypeName);
+QByteArray getFolderTypeAnnotation(const QMap<QByteArray, QByteArray> &annotations);
+void setFolderTypeAnnotation(QMap<QByteArray, QByteArray> &annotations, const QByteArray &value);
 }
 
-namespace KolabV2 {
+namespace KolabV2
+{
 
 #define PRODUCT_ID QLatin1String("Akonadi-KolabResource")
 
-  enum FolderType {
+enum FolderType {
     Mail = 0,
     Contact,
     Event,
@@ -44,12 +46,12 @@ namespace KolabV2 {
     Journal,
     Note,
     FolderTypeSize = Note + 1
-  };
+};
 
-  FolderType folderTypeFromString( const QByteArray &folderTypeName );
-  QByteArray folderTypeToString( FolderType type, bool isDefault = false );
-  FolderType guessFolderTypeFromName( const QString &name );
-  QString nameForFolderType( FolderType type );
+FolderType folderTypeFromString(const QByteArray &folderTypeName);
+QByteArray folderTypeToString(FolderType type, bool isDefault = false);
+FolderType guessFolderTypeFromName(const QString &name);
+QString nameForFolderType(FolderType type);
 }
 
 #endif

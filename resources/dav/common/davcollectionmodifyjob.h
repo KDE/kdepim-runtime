@@ -33,16 +33,16 @@
  */
 class DavCollectionModifyJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Creates a new dav collection modify job.
      *
      * @param url The DAV url that identifies the collection.
      * @param parent The parent object.
      */
-    explicit DavCollectionModifyJob( const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR );
+    explicit DavCollectionModifyJob(const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR);
 
     /**
      * Sets the property that shall be modified by the job.
@@ -51,7 +51,7 @@ class DavCollectionModifyJob : public KJob
      * @param value The value of the property.
      * @param ns The XML namespace that shall be used for the property name.
      */
-    void setProperty( const QString &property, const QString &value, const QString &ns = QString() );
+    void setProperty(const QString &property, const QString &value, const QString &ns = QString());
 
     /**
      * Sets the property that shall be removed by the job.
@@ -59,17 +59,17 @@ class DavCollectionModifyJob : public KJob
      * @param property The name of the property.
      * @param ns The XML namespace that shall be used for the property name.
      */
-    void removeProperty( const QString &property, const QString &ns );
+    void removeProperty(const QString &property, const QString &ns);
 
     /**
      * Starts the job.
      */
     void start() Q_DECL_OVERRIDE;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob *job );
+private Q_SLOTS:
+    void davJobFinished(KJob *job);
 
-  private:
+private:
     DavUtils::DavUrl mUrl;
     QDomDocument mQuery;
 

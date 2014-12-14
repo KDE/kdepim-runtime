@@ -46,33 +46,33 @@
 using namespace Akonadi;
 
 enum {
-  MaxItemCreateJobs = 100,
-  MaxItemModifyJobs = 100
+    MaxItemCreateJobs = 100,
+    MaxItemModifyJobs = 100
 };
 
 class RetrieveItemsJob::Private
 {
-  RetrieveItemsJob *const q;
+    RetrieveItemsJob *const q;
 
-  public:
-    Private( RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store )
-      : q( parent ), mCollection( collection ), mStore( store ),
-        mTransaction( 0 ), mHighestModTime( -1 ), mNumItemCreateJobs( 0 ), mNumItemModifyJobs( 0 )
+public:
+    Private(RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store)
+        : q(parent), mCollection(collection), mStore(store),
+          mTransaction(0), mHighestModTime(-1), mNumItemCreateJobs(0), mNumItemModifyJobs(0)
     {
     }
 
     TransactionSequence *transaction()
     {
-      if ( !mTransaction ) {
-        mTransaction = new TransactionSequence( q );
-        mTransaction->setAutomaticCommittingEnabled( false );
-        connect( mTransaction, SIGNAL(result(KJob*)),
-                 q, SLOT(transactionResult(KJob*)) );
-      }
-      return mTransaction;
+        if (!mTransaction) {
+            mTransaction = new TransactionSequence(q);
+            mTransaction->setAutomaticCommittingEnabled(false);
+            connect(mTransaction, SIGNAL(result(KJob*)),
+                    q, SLOT(transactionResult(KJob*)));
+        }
+        return mTransaction;
     }
 
-  public:
+public:
     const Collection mCollection;
     MixedMaildirStore *const mStore;
     TransactionSequence *mTransaction;
@@ -87,276 +87,279 @@ class RetrieveItemsJob::Private
     int mNumItemCreateJobs;
     int mNumItemModifyJobs;
 
-  public: // slots
-    void akonadiFetchResult( KJob *job );
-    void transactionResult( KJob *job );
-    void storeListResult( KJob* );
+public: // slots
+    void akonadiFetchResult(KJob *job);
+    void transactionResult(KJob *job);
+    void storeListResult(KJob *);
     void processNewItem();
-    void fetchNewResult( KJob* );
+    void fetchNewResult(KJob *);
     void processChangedItem();
-    void fetchChangedResult( KJob* );
-    void itemCreateJobResult( KJob* );
-    void itemModifyJobResult( KJob* );
+    void fetchChangedResult(KJob *);
+    void itemCreateJobResult(KJob *);
+    void itemModifyJobResult(KJob *);
 };
 
-void RetrieveItemsJob::Private::itemCreateJobResult( KJob *job )
+void RetrieveItemsJob::Private::itemCreateJobResult(KJob *job)
 {
-  if ( job->error() ) {
-    qCritical() << "Error running ItemCreateJob: " << job->errorText();
-  }
-
-  mNumItemCreateJobs--;
-  QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
-}
-
-void RetrieveItemsJob::Private::itemModifyJobResult( KJob *job )
-{
-  if ( job->error() ) {
-    qCritical() << "Error running ItemModifyJob: " << job->errorText();
-  }
-
-  mNumItemModifyJobs--;
-  QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
-}
-
-void RetrieveItemsJob::Private::akonadiFetchResult( KJob *job )
-{
-  if ( job->error() != 0 ) return; // handled by base class
-
-  ItemFetchJob *itemFetch = qobject_cast<ItemFetchJob*>( job );
-  Q_ASSERT( itemFetch != 0 );
-
-  Item::List items = itemFetch->items();
-  itemFetch->clearItems(); // save memory
-  qCDebug(MIXEDMAILDIR_LOG) << "Akonadi fetch got" << items.count() << "items";
-
-  mServerItemsByRemoteId.reserve( items.size() );
-  for ( int i = 0 ; i < items.count() ; ++i ) {
-    Item &item = items[i];
-    // items without remoteId have not been written to the resource yet
-    if ( !item.remoteId().isEmpty() ) {
-      // set the parent collection (with all ancestors) in every item
-      item.setParentCollection( mCollection );
-      mServerItemsByRemoteId.insert( item.remoteId(), item );
-    }
-  }
-
-  qCDebug(MIXEDMAILDIR_LOG) << "of which" << mServerItemsByRemoteId.count() << "have remoteId";
-
-  FileStore::ItemFetchJob *storeFetch = mStore->fetchItems( mCollection );
-  // just basic items, no data
-
-  connect( storeFetch, SIGNAL(result(KJob*)), q, SLOT(storeListResult(KJob*)) );
-}
-
-void RetrieveItemsJob::Private::storeListResult( KJob *job )
-{
-  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "storeList->error=" << job->error();
-  FileStore::ItemFetchJob *storeList = qobject_cast<FileStore::ItemFetchJob*>( job );
-  Q_ASSERT( storeList != 0 );
-
-  if ( storeList->error() != 0 ) {
-    q->setError( storeList->error() );
-    q->setErrorText( storeList->errorText() );
-    q->emitResult();
-    return;
-  }
-
-  // if some items have tags, we need to complete the retrieval and schedule tagging
-  // to a later time so we can then fetch the items to get their Akonadi URLs
-  // forward the property to this instance so the resource can take care of that
-  const QVariant var = storeList->property( "remoteIdToTagList" );
-  if ( var.isValid() ) {
-    q->setProperty( "remoteIdToTagList", var );
-  }
-
-  const qint64 collectionTimestamp = mCollection.remoteRevision().toLongLong();
-
-  const Item::List storedItems = storeList->items();
-  Q_FOREACH( const Item &item, storedItems ) {
-    // messages marked as deleted have been deleted from mbox files but never got purged
-    Akonadi::MessageStatus status;
-    status.setStatusFromFlags( item.flags() );
-    if ( status.isDeleted() ) {
-      mItemsMarkedAsDeleted << item;
-      continue;
+    if (job->error()) {
+        qCritical() << "Error running ItemCreateJob: " << job->errorText();
     }
 
-    mAvailableItems << item;
+    mNumItemCreateJobs--;
+    QMetaObject::invokeMethod(q, "processNewItem", Qt::QueuedConnection);
+}
 
-    const QHash<QString, Item>::iterator it = mServerItemsByRemoteId.find( item.remoteId() );
-    if ( it == mServerItemsByRemoteId.end() ) {
-      // item not in server items -> new
-      mNewItems << item;
-    } else {
-      // item both on server and in store, check modification time
-      const QDateTime modTime = item.modificationTime();
-      if ( !modTime.isValid() || modTime.toMSecsSinceEpoch() > collectionTimestamp ) {
-        mChangedItems << it.value();
-      }
-
-      // remove from hash so only no longer existing items remain
-      mServerItemsByRemoteId.erase( it );
+void RetrieveItemsJob::Private::itemModifyJobResult(KJob *job)
+{
+    if (job->error()) {
+        qCritical() << "Error running ItemModifyJob: " << job->errorText();
     }
-  }
 
-  qCDebug(MIXEDMAILDIR_LOG) << "Store fetch got" << storedItems.count() << "items"
-                                   << "of which" << mNewItems.count() << "are new and" << mChangedItems.count()
-                                   << "are changed and" << mServerItemsByRemoteId.count()
-                                   << "need to be removed";
+    mNumItemModifyJobs--;
+    QMetaObject::invokeMethod(q, "processChangedItem", Qt::QueuedConnection);
+}
 
-  // all items remaining in mServerItemsByRemoteId are no longer in the store
+void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
+{
+    if (job->error() != 0) {
+        return;    // handled by base class
+    }
 
-  if ( !mServerItemsByRemoteId.isEmpty() ) {
-    ItemDeleteJob *deleteJob = new ItemDeleteJob( mServerItemsByRemoteId.values(), transaction() );
-    transaction()->setIgnoreJobFailure( deleteJob );
-  }
+    ItemFetchJob *itemFetch = qobject_cast<ItemFetchJob *>(job);
+    Q_ASSERT(itemFetch != 0);
 
-  processNewItem();
+    Item::List items = itemFetch->items();
+    itemFetch->clearItems(); // save memory
+    qCDebug(MIXEDMAILDIR_LOG) << "Akonadi fetch got" << items.count() << "items";
+
+    mServerItemsByRemoteId.reserve(items.size());
+    for (int i = 0 ; i < items.count() ; ++i) {
+        Item &item = items[i];
+        // items without remoteId have not been written to the resource yet
+        if (!item.remoteId().isEmpty()) {
+            // set the parent collection (with all ancestors) in every item
+            item.setParentCollection(mCollection);
+            mServerItemsByRemoteId.insert(item.remoteId(), item);
+        }
+    }
+
+    qCDebug(MIXEDMAILDIR_LOG) << "of which" << mServerItemsByRemoteId.count() << "have remoteId";
+
+    FileStore::ItemFetchJob *storeFetch = mStore->fetchItems(mCollection);
+    // just basic items, no data
+
+    connect(storeFetch, SIGNAL(result(KJob*)), q, SLOT(storeListResult(KJob*)));
+}
+
+void RetrieveItemsJob::Private::storeListResult(KJob *job)
+{
+    qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "storeList->error=" << job->error();
+    FileStore::ItemFetchJob *storeList = qobject_cast<FileStore::ItemFetchJob *>(job);
+    Q_ASSERT(storeList != 0);
+
+    if (storeList->error() != 0) {
+        q->setError(storeList->error());
+        q->setErrorText(storeList->errorText());
+        q->emitResult();
+        return;
+    }
+
+    // if some items have tags, we need to complete the retrieval and schedule tagging
+    // to a later time so we can then fetch the items to get their Akonadi URLs
+    // forward the property to this instance so the resource can take care of that
+    const QVariant var = storeList->property("remoteIdToTagList");
+    if (var.isValid()) {
+        q->setProperty("remoteIdToTagList", var);
+    }
+
+    const qint64 collectionTimestamp = mCollection.remoteRevision().toLongLong();
+
+    const Item::List storedItems = storeList->items();
+    Q_FOREACH (const Item &item, storedItems) {
+        // messages marked as deleted have been deleted from mbox files but never got purged
+        Akonadi::MessageStatus status;
+        status.setStatusFromFlags(item.flags());
+        if (status.isDeleted()) {
+            mItemsMarkedAsDeleted << item;
+            continue;
+        }
+
+        mAvailableItems << item;
+
+        const QHash<QString, Item>::iterator it = mServerItemsByRemoteId.find(item.remoteId());
+        if (it == mServerItemsByRemoteId.end()) {
+            // item not in server items -> new
+            mNewItems << item;
+        } else {
+            // item both on server and in store, check modification time
+            const QDateTime modTime = item.modificationTime();
+            if (!modTime.isValid() || modTime.toMSecsSinceEpoch() > collectionTimestamp) {
+                mChangedItems << it.value();
+            }
+
+            // remove from hash so only no longer existing items remain
+            mServerItemsByRemoteId.erase(it);
+        }
+    }
+
+    qCDebug(MIXEDMAILDIR_LOG) << "Store fetch got" << storedItems.count() << "items"
+                              << "of which" << mNewItems.count() << "are new and" << mChangedItems.count()
+                              << "are changed and" << mServerItemsByRemoteId.count()
+                              << "need to be removed";
+
+    // all items remaining in mServerItemsByRemoteId are no longer in the store
+
+    if (!mServerItemsByRemoteId.isEmpty()) {
+        ItemDeleteJob *deleteJob = new ItemDeleteJob(mServerItemsByRemoteId.values(), transaction());
+        transaction()->setIgnoreJobFailure(deleteJob);
+    }
+
+    processNewItem();
 }
 
 void RetrieveItemsJob::Private::processNewItem()
 {
-  if ( mNewItems.isEmpty() ) {
-    processChangedItem();
-    return;
-  }
+    if (mNewItems.isEmpty()) {
+        processChangedItem();
+        return;
+    }
 
-  const Item item = mNewItems.dequeue();
-  FileStore::ItemFetchJob *storeFetch = mStore->fetchItem( item );
-  storeFetch->fetchScope().fetchPayloadPart( MessagePart::Envelope );
+    const Item item = mNewItems.dequeue();
+    FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
+    storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-  connect( storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchNewResult(KJob*)) );
+    connect(storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchNewResult(KJob*)));
 }
 
-void RetrieveItemsJob::Private::fetchNewResult( KJob *job )
+void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
 {
-  FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob != 0 );
+    FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
+    Q_ASSERT(fetchJob != 0);
 
-  if ( fetchJob->items().count() != 1 ) {
-    const Item item = fetchJob->item();
-    qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for new item" << item.remoteId()
-               << "in collection" << item.parentCollection().id()
-               << "," << item.parentCollection().remoteId()
-               << "did not return the expected item. error="
-               << fetchJob->error() << "," << fetchJob->errorText();
-    processNewItem();
-    return;
-  }
+    if (fetchJob->items().count() != 1) {
+        const Item item = fetchJob->item();
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for new item" << item.remoteId()
+                                            << "in collection" << item.parentCollection().id()
+                                            << "," << item.parentCollection().remoteId()
+                                            << "did not return the expected item. error="
+                                            << fetchJob->error() << "," << fetchJob->errorText();
+        processNewItem();
+        return;
+    }
 
-  const Item item = fetchJob->items().first();
-  const QDateTime modTime = item.modificationTime();
-  if ( modTime.isValid() ) {
-    mHighestModTime = qMax( modTime.toMSecsSinceEpoch(), mHighestModTime );
-  }
+    const Item item = fetchJob->items().first();
+    const QDateTime modTime = item.modificationTime();
+    if (modTime.isValid()) {
+        mHighestModTime = qMax(modTime.toMSecsSinceEpoch(), mHighestModTime);
+    }
 
-  ItemCreateJob *itemCreate = new ItemCreateJob( item, mCollection, transaction() );
-  mNumItemCreateJobs++;
-  connect( itemCreate, SIGNAL(result(KJob*)), q, SLOT(itemCreateJobResult(KJob*)) );
+    ItemCreateJob *itemCreate = new ItemCreateJob(item, mCollection, transaction());
+    mNumItemCreateJobs++;
+    connect(itemCreate, SIGNAL(result(KJob*)), q, SLOT(itemCreateJobResult(KJob*)));
 
-  if (mNumItemCreateJobs < MaxItemCreateJobs ) {
-    QMetaObject::invokeMethod( q, "processNewItem", Qt::QueuedConnection );
-  }
+    if (mNumItemCreateJobs < MaxItemCreateJobs) {
+        QMetaObject::invokeMethod(q, "processNewItem", Qt::QueuedConnection);
+    }
 }
 
 void RetrieveItemsJob::Private::processChangedItem()
 {
-  if ( mChangedItems.isEmpty() ) {
-    if ( !mTransaction ) {
-      // no jobs created here -> done
-      q->emitResult();
-      return;
-    } 
-    
-    if ( mHighestModTime > -1 ) {
-      Collection collection( mCollection );
-      collection.setRemoteRevision( QString::number( mHighestModTime ) );
-      CollectionModifyJob *job = new CollectionModifyJob( collection, transaction() );
-      transaction()->setIgnoreJobFailure( job );
+    if (mChangedItems.isEmpty()) {
+        if (!mTransaction) {
+            // no jobs created here -> done
+            q->emitResult();
+            return;
+        }
+
+        if (mHighestModTime > -1) {
+            Collection collection(mCollection);
+            collection.setRemoteRevision(QString::number(mHighestModTime));
+            CollectionModifyJob *job = new CollectionModifyJob(collection, transaction());
+            transaction()->setIgnoreJobFailure(job);
+        }
+        transaction()->commit();
+        return;
     }
-    transaction()->commit();
-    return;
-  }
 
-  const Item item = mChangedItems.dequeue();
-  FileStore::ItemFetchJob *storeFetch = mStore->fetchItem( item );
-  storeFetch->fetchScope().fetchPayloadPart( MessagePart::Envelope );
+    const Item item = mChangedItems.dequeue();
+    FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
+    storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-  connect( storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchChangedResult(KJob*)) );
+    connect(storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchChangedResult(KJob*)));
 }
 
-void RetrieveItemsJob::Private::fetchChangedResult( KJob *job )
+void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
 {
-  FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob*>( job );
-  Q_ASSERT( fetchJob != 0 );
+    FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
+    Q_ASSERT(fetchJob != 0);
 
-  if ( fetchJob->items().count() != 1 ) {
-    const Item item = fetchJob->item();
-    qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for changed item" << item.remoteId()
-               << "in collection" << item.parentCollection().id()
-               << "," << item.parentCollection().remoteId()
-               << "did not return the expected item. error="
-               << fetchJob->error() << "," << fetchJob->errorText();
-    processChangedItem();
-    return;
-  }
+    if (fetchJob->items().count() != 1) {
+        const Item item = fetchJob->item();
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for changed item" << item.remoteId()
+                                            << "in collection" << item.parentCollection().id()
+                                            << "," << item.parentCollection().remoteId()
+                                            << "did not return the expected item. error="
+                                            << fetchJob->error() << "," << fetchJob->errorText();
+        processChangedItem();
+        return;
+    }
 
-  const Item item = fetchJob->items().first();
-  const QDateTime modTime = item.modificationTime();
-  if ( modTime.isValid() ) {
-    mHighestModTime = qMax( modTime.toMSecsSinceEpoch(), mHighestModTime );
-  }
+    const Item item = fetchJob->items().first();
+    const QDateTime modTime = item.modificationTime();
+    if (modTime.isValid()) {
+        mHighestModTime = qMax(modTime.toMSecsSinceEpoch(), mHighestModTime);
+    }
 
-  ItemModifyJob *itemModify = new ItemModifyJob( item, transaction() );
-  connect( itemModify, SIGNAL(result(KJob*)), q, SLOT(itemModifyJobResult(KJob*)) );
-  mNumItemModifyJobs++;
-  if ( mNumItemModifyJobs < MaxItemModifyJobs ) {
-    QMetaObject::invokeMethod( q, "processChangedItem", Qt::QueuedConnection );
-  }
+    ItemModifyJob *itemModify = new ItemModifyJob(item, transaction());
+    connect(itemModify, SIGNAL(result(KJob*)), q, SLOT(itemModifyJobResult(KJob*)));
+    mNumItemModifyJobs++;
+    if (mNumItemModifyJobs < MaxItemModifyJobs) {
+        QMetaObject::invokeMethod(q, "processChangedItem", Qt::QueuedConnection);
+    }
 }
 
-void RetrieveItemsJob::Private::transactionResult( KJob *job )
+void RetrieveItemsJob::Private::transactionResult(KJob *job)
 {
-  if ( job->error() != 0 ) return; // handled by base class
+    if (job->error() != 0) {
+        return;    // handled by base class
+    }
 
-  q->emitResult();
+    q->emitResult();
 }
 
-RetrieveItemsJob::RetrieveItemsJob( const Akonadi::Collection &collection, MixedMaildirStore *store, QObject* parent )
-  : Job( parent ), d( new Private( this, collection, store ) )
+RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, MixedMaildirStore *store, QObject *parent)
+    : Job(parent), d(new Private(this, collection, store))
 {
-  Q_ASSERT( d->mCollection.isValid() );
-  Q_ASSERT( !d->mCollection.remoteId().isEmpty() );
-  Q_ASSERT( d->mStore != 0 );
+    Q_ASSERT(d->mCollection.isValid());
+    Q_ASSERT(!d->mCollection.remoteId().isEmpty());
+    Q_ASSERT(d->mStore != 0);
 }
 
 RetrieveItemsJob::~RetrieveItemsJob()
 {
-  delete d;
+    delete d;
 }
 
 Collection RetrieveItemsJob::collection() const
 {
-  return d->mCollection;
+    return d->mCollection;
 }
 
 Item::List RetrieveItemsJob::availableItems() const
 {
-  return d->mAvailableItems;
+    return d->mAvailableItems;
 }
 
 Item::List RetrieveItemsJob::itemsMarkedAsDeleted() const
 {
-  return d->mItemsMarkedAsDeleted;
+    return d->mItemsMarkedAsDeleted;
 }
 
 void RetrieveItemsJob::doStart()
 {
-  ItemFetchJob *job = new Akonadi::ItemFetchJob( d->mCollection, this );
-  connect( job, SIGNAL(result(KJob*)), this, SLOT(akonadiFetchResult(KJob*)) );
+    ItemFetchJob *job = new Akonadi::ItemFetchJob(d->mCollection, this);
+    connect(job, SIGNAL(result(KJob*)), this, SLOT(akonadiFetchResult(KJob*)));
 }
 
 #include "moc_retrieveitemsjob.cpp"
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

@@ -25,22 +25,22 @@
 
 namespace Akonadi
 {
-  class Collection;
+class Collection;
 
 namespace FileStore
 {
-  class AbstractJobSession;
+class AbstractJobSession;
 
 /**
  */
 class AKONADI_FILESTORE_EXPORT CollectionMoveJob : public Job
 {
-  friend class AbstractJobSession;
+    friend class AbstractJobSession;
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit CollectionMoveJob( const Collection &collection, const Collection &targetParent, AbstractJobSession *session = 0 );
+public:
+    explicit CollectionMoveJob(const Collection &collection, const Collection &targetParent, AbstractJobSession *session = 0);
 
     virtual ~CollectionMoveJob();
 
@@ -48,12 +48,12 @@ class AKONADI_FILESTORE_EXPORT CollectionMoveJob : public Job
 
     Collection targetParent() const;
 
-    virtual bool accept( Visitor *visitor );
+    virtual bool accept(Visitor *visitor);
 
-  private:
-    void handleCollectionMoved( const Collection &collection );
+private:
+    void handleCollectionMoved(const Collection &collection);
 
-  private:
+private:
     class Private;
     Private *const d;
 };
@@ -63,4 +63,3 @@ class AKONADI_FILESTORE_EXPORT CollectionMoveJob : public Job
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

@@ -40,82 +40,82 @@ namespace FileStore
  */
 class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public StoreInterface
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     AbstractLocalStore();
     ~AbstractLocalStore();
 
-    virtual void setPath( const QString &path );
+    virtual void setPath(const QString &path);
     QString path() const;
 
     Collection topLevelCollection() const;
 
-    CollectionCreateJob *createCollection( const Collection &collection, const Collection &targetParent );
+    CollectionCreateJob *createCollection(const Collection &collection, const Collection &targetParent);
 
-    CollectionFetchJob *fetchCollections( const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel ) const;
+    CollectionFetchJob *fetchCollections(const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel) const;
 
-    CollectionDeleteJob *deleteCollection( const Collection &collection );
+    CollectionDeleteJob *deleteCollection(const Collection &collection);
 
-    CollectionModifyJob *modifyCollection( const Collection &collection );
+    CollectionModifyJob *modifyCollection(const Collection &collection);
 
-    CollectionMoveJob *moveCollection( const Collection &collection, const Collection &targetParent );
+    CollectionMoveJob *moveCollection(const Collection &collection, const Collection &targetParent);
 
-    ItemFetchJob *fetchItems( const Collection &collection ) const;
+    ItemFetchJob *fetchItems(const Collection &collection) const;
 
-    ItemFetchJob *fetchItem( const Item &item ) const;
+    ItemFetchJob *fetchItem(const Item &item) const;
 
-    ItemCreateJob *createItem( const Item &item, const Collection &collection );
+    ItemCreateJob *createItem(const Item &item, const Collection &collection);
 
-    ItemModifyJob *modifyItem( const Item &item );
+    ItemModifyJob *modifyItem(const Item &item);
 
-    ItemDeleteJob *deleteItem( const Item &item );
+    ItemDeleteJob *deleteItem(const Item &item);
 
-    ItemMoveJob *moveItem( const Item &item, const Collection &targetParent );
+    ItemMoveJob *moveItem(const Item &item, const Collection &targetParent);
 
     StoreCompactJob *compactStore();
 
-  protected: // job processing
-    virtual void processJob( Job *job ) = 0;
+protected: // job processing
+    virtual void processJob(Job *job) = 0;
 
     Job *currentJob() const;
 
-    void notifyError( int errorCode, const QString &errorText ) const;
+    void notifyError(int errorCode, const QString &errorText) const;
 
-    void notifyCollectionsProcessed( const Collection::List &collections ) const;
+    void notifyCollectionsProcessed(const Collection::List &collections) const;
 
-    void notifyItemsProcessed( const Item::List &items ) const;
+    void notifyItemsProcessed(const Item::List &items) const;
 
-  protected: // template methods
-    void setTopLevelCollection( const Collection &collection );
+protected: // template methods
+    void setTopLevelCollection(const Collection &collection);
 
-    virtual void checkCollectionCreate( CollectionCreateJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkCollectionCreate(CollectionCreateJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkCollectionDelete( CollectionDeleteJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkCollectionDelete(CollectionDeleteJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkCollectionFetch( CollectionFetchJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkCollectionFetch(CollectionFetchJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkCollectionModify( CollectionModifyJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkCollectionModify(CollectionModifyJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkCollectionMove( CollectionMoveJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkCollectionMove(CollectionMoveJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkItemCreate( ItemCreateJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkItemCreate(ItemCreateJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkItemDelete( ItemDeleteJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkItemDelete(ItemDeleteJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkItemFetch( ItemFetchJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkItemFetch(ItemFetchJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkItemModify( ItemModifyJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkItemModify(ItemModifyJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkItemMove( ItemMoveJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkItemMove(ItemMoveJob *job, int &errorCode, QString &errorText) const;
 
-    virtual void checkStoreCompact( StoreCompactJob *job, int &errorCode, QString &errorText ) const;
+    virtual void checkStoreCompact(StoreCompactJob *job, int &errorCode, QString &errorText) const;
 
-  private:
+private:
     class Private;
     Private *const d;
 
-    Q_PRIVATE_SLOT( d, void processJobs( const QList<FileStore::Job*> &jobs ) )
+    Q_PRIVATE_SLOT(d, void processJobs(const QList<FileStore::Job *> &jobs))
 };
 
 }
@@ -123,4 +123,3 @@ class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public Store
 
 #endif
 
-// kate: space-indent on; indent-width 2; replace-tabs on;

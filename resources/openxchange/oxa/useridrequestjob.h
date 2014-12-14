@@ -24,23 +24,24 @@
 
 #include <kjob.h>
 
-namespace OXA {
+namespace OXA
+{
 
 class UserIdRequestJob : public KJob
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit UserIdRequestJob( QObject *parent = Q_NULLPTR );
+public:
+    explicit UserIdRequestJob(QObject *parent = Q_NULLPTR);
 
     virtual void start();
 
     qlonglong userId() const;
 
-  private Q_SLOTS:
-    void davJobFinished( KJob* );
+private Q_SLOTS:
+    void davJobFinished(KJob *);
 
-  private:
+private:
     qlonglong mUserId;
 };
 

@@ -26,7 +26,7 @@ class ImapItemRemovedJob: public KJob
 {
     Q_OBJECT
 public:
-    ImapItemRemovedJob(const Akonadi::Item &imapItem, QObject* parent);
+    ImapItemRemovedJob(const Akonadi::Item &imapItem, QObject *parent);
     virtual void start();
 private slots:
     void onItemFetchJobDone(KJob *job);

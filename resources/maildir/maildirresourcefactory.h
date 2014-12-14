@@ -18,15 +18,15 @@
 #ifndef MAILDIRRESOURCEFACTORY_H
 #define MAILDIRRESOURCEFACTORY_H
 
-#include <agentfactory.h> 
+#include <agentfactory.h>
 #include <maildirresource.h>
- 
+
 class MaildirResourceFactory : public Akonadi::AgentFactory<MaildirResource>
 {
-   Q_OBJECT
-   Q_PLUGIN_METADATA(IID "org.kde.akonadi.MaildirResource");
-public: 
-    explicit MaildirResourceFactory( QObject * parent = 0 );
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.akonadi.MaildirResource");
+public:
+    explicit MaildirResourceFactory(QObject *parent = 0);
 
 };
 #endif

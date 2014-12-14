@@ -33,20 +33,20 @@ class KJob;
  */
 class DavFreeBusyHandler : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     /**
      * Constructs a new DavFreeBusyHandler
      */
-    explicit DavFreeBusyHandler( QObject *parent = Q_NULLPTR );
+    explicit DavFreeBusyHandler(QObject *parent = Q_NULLPTR);
 
     /**
      * Checks if the free-busy info for @p email can be handled
      *
      * @param email The email address of the contact.
      */
-    void canHandleFreeBusy( const QString &email );
+    void canHandleFreeBusy(const QString &email);
 
     /**
      * Retrieve the free-busy info for @p email between @p start and @p end
@@ -55,40 +55,40 @@ class DavFreeBusyHandler : public QObject
      * @param start The start of the free-busy period to report
      * @param end The end of the free-busy period to report
      */
-    void retrieveFreeBusy( const QString &email, const KDateTime &start, const KDateTime &end );
+    void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end);
 
-  signals:
+signals:
     /**
      * Emitted once we know if the free-busy info for @p email
      * can be handled or not.
      */
-    void handlesFreeBusy( const QString &email, bool handles );
+    void handlesFreeBusy(const QString &email, bool handles);
 
     /**
      * Emitted once the free-busy has been retrieved
      */
-    void freeBusyRetrieved( const QString &email, const QString &freeBusy, bool success, const QString &errorText );
+    void freeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText);
 
-  private slots:
-    void onPrincipalSearchJobFinished( KJob *job );
-    void onRetrieveFreeBusyJobFinished( KJob *job );
+private slots:
+    void onPrincipalSearchJobFinished(KJob *job);
+    void onRetrieveFreeBusyJobFinished(KJob *job);
 
-  private:
+private:
     /**
      * Simple struct to track the state of requests
      */
     struct RequestTracker {
-      RequestTracker()
-        : handlingJobCount( 0 ), handlingJobSuccessful( false ),
-          retrievalJobCount( 0 ), retrievalJobSuccessful( false )
-      {
-      }
+        RequestTracker()
+            : handlingJobCount(0), handlingJobSuccessful(false),
+              retrievalJobCount(0), retrievalJobSuccessful(false)
+        {
+        }
 
-      int handlingJobCount;
-      bool handlingJobSuccessful;
-      int retrievalJobCount;
-      bool retrievalJobSuccessful;
-      QMap<uint, KCalCore::FreeBusy::Ptr> resultingFreeBusy;
+        int handlingJobCount;
+        bool handlingJobSuccessful;
+        int retrievalJobCount;
+        bool retrievalJobSuccessful;
+        QMap<uint, KCalCore::FreeBusy::Ptr> resultingFreeBusy;
     };
 
     QMap<QString, RequestTracker> mRequestsTracker;

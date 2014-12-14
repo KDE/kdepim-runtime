@@ -30,7 +30,6 @@ GmailLabelAttribute::GmailLabelAttribute(const QByteArray &label)
 {
 }
 
-
 GmailLabelAttribute::~GmailLabelAttribute()
 {
 }

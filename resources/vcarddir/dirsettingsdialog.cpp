@@ -33,60 +33,61 @@
 
 using namespace Akonadi;
 
-SettingsDialog::SettingsDialog( WId windowId )
-  : QDialog()
+SettingsDialog::SettingsDialog(WId windowId)
+    : QDialog()
 {
-  QWidget *mainWidget = new QWidget(this);
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  setLayout(mainLayout);
-  mainLayout->addWidget(mainWidget);
-  ui.setupUi(mainWidget);
-  ui.kcfg_Path->setMode( KFile::LocalOnly | KFile::Directory );
-  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
-  mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-  mOkButton->setDefault(true);
-  mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-  connect(buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::accept);
-  connect(buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::reject);
-  mainLayout->addWidget(buttonBox);
+    QWidget *mainWidget = new QWidget(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(mainWidget);
+    ui.setupUi(mainWidget);
+    ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::reject);
+    mainLayout->addWidget(buttonBox);
 
-  if ( windowId )
-    KWindowSystem::setMainWindow( this, windowId );
+    if (windowId) {
+        KWindowSystem::setMainWindow(this, windowId);
+    }
 
-  connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
+    connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
 
-  connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
-  connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
+    connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
+    connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
-  QTimer::singleShot( 0, this, SLOT(validate()) );
+    QTimer::singleShot(0, this, SLOT(validate()));
 
-  ui.kcfg_Path->setUrl( QUrl::fromLocalFile( Settings::self()->path() ) );
-  ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
-  mManager = new KConfigDialogManager( this, Settings::self() );
-  mManager->updateWidgets();
+    ui.kcfg_Path->setUrl(QUrl::fromLocalFile(Settings::self()->path()));
+    ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
+    mManager = new KConfigDialogManager(this, Settings::self());
+    mManager->updateWidgets();
 }
 
 void SettingsDialog::save()
 {
-  mManager->updateSettings();
-  Settings::self()->setPath( ui.kcfg_Path->url().toLocalFile() );
-  Settings::self()->save();
+    mManager->updateSettings();
+    Settings::self()->setPath(ui.kcfg_Path->url().toLocalFile());
+    Settings::self()->save();
 }
 
 void SettingsDialog::validate()
 {
-  const QUrl currentUrl = ui.kcfg_Path->url();
-  if ( currentUrl.isEmpty() ) {
-    mOkButton->setEnabled(false);
-    return;
-  }
+    const QUrl currentUrl = ui.kcfg_Path->url();
+    if (currentUrl.isEmpty()) {
+        mOkButton->setEnabled(false);
+        return;
+    }
 
-  const QFileInfo file( currentUrl.toLocalFile() );
-  if ( file.exists() && !file.isWritable() ) {
-    ui.kcfg_ReadOnly->setEnabled( false );
-    ui.kcfg_ReadOnly->setChecked( true );
-  } else {
-    ui.kcfg_ReadOnly->setEnabled( true );
-  }
-  mOkButton->setEnabled(true);
+    const QFileInfo file(currentUrl.toLocalFile());
+    if (file.exists() && !file.isWritable()) {
+        ui.kcfg_ReadOnly->setEnabled(false);
+        ui.kcfg_ReadOnly->setChecked(true);
+    } else {
+        ui.kcfg_ReadOnly->setEnabled(true);
+    }
+    mOkButton->setEnabled(true);
 }

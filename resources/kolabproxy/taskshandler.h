@@ -29,14 +29,14 @@
 */
 class TasksHandler : public IncidenceHandler
 {
-  public:
-    explicit TasksHandler( const Akonadi::Collection &imapCollection );
+public:
+    explicit TasksHandler(const Akonadi::Collection &imapCollection);
     virtual ~TasksHandler();
     virtual QStringList contentMimeTypes();
     virtual QString iconName() const;
 
-  private:
-    virtual KMime::Message::Ptr incidenceToMime( const KCalCore::Incidence::Ptr &incidence );
+private:
+    virtual KMime::Message::Ptr incidenceToMime(const KCalCore::Incidence::Ptr &incidence);
 
 };
 

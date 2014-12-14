@@ -23,19 +23,20 @@
 #include <item.h>
 #include <attribute.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 
 class IncidenceAttribute : public Akonadi::Attribute
 {
-  public:
+public:
     explicit IncidenceAttribute();
     ~IncidenceAttribute();
 
     virtual QByteArray type() const;
-    virtual Attribute* clone() const;
+    virtual Attribute *clone() const;
 
     virtual QByteArray serialized() const;
-    virtual void deserialize( const QByteArray &data );
+    virtual void deserialize(const QByteArray &data);
 
     /**
      * The status the invitation is in.
@@ -44,16 +45,16 @@ class IncidenceAttribute : public Akonadi::Attribute
      * "new", "accepted", "tentative", "counter", "cancel", "reply", "delegated"
      */
     QString status() const;
-    void setStatus( const QString &newstatus ) const;
+    void setStatus(const QString &newstatus) const;
 
     /**
      * The referenced item. This is used e.g. in the invitationagent to
      * let users know where the original mail message is.
      */
     Akonadi::Item::Id reference() const;
-    void setReference( Akonadi::Item::Id id );
+    void setReference(Akonadi::Item::Id id);
 
-  private:
+private:
     class Private;
     Private *const d;
 };

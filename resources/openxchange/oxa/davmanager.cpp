@@ -27,7 +27,7 @@
 
 using namespace OXA;
 
-DavManager* DavManager::mSelf = 0;
+DavManager *DavManager::mSelf = 0;
 
 DavManager::DavManager()
 {
@@ -37,36 +37,37 @@ DavManager::~DavManager()
 {
 }
 
-DavManager* DavManager::self()
+DavManager *DavManager::self()
 {
-  if ( !mSelf )
-    mSelf = new DavManager();
+    if (!mSelf) {
+        mSelf = new DavManager();
+    }
 
-  return mSelf;
+    return mSelf;
 }
 
-void DavManager::setBaseUrl( const QUrl &url )
+void DavManager::setBaseUrl(const QUrl &url)
 {
-  mBaseUrl = url;
+    mBaseUrl = url;
 }
 
 QUrl DavManager::baseUrl() const
 {
-  return mBaseUrl;
+    return mBaseUrl;
 }
 
-KIO::DavJob* DavManager::createFindJob( const QString &path, const QDomDocument &document ) const
+KIO::DavJob *DavManager::createFindJob(const QString &path, const QDomDocument &document) const
 {
-  QUrl url( mBaseUrl );
-  url.setPath( path );
+    QUrl url(mBaseUrl);
+    url.setPath(path);
 
-  return KIO::davPropFind( url, document, "0", KIO::HideProgressInfo );
+    return KIO::davPropFind(url, document, "0", KIO::HideProgressInfo);
 }
 
-KIO::DavJob* DavManager::createPatchJob( const QString &path, const QDomDocument &document ) const
+KIO::DavJob *DavManager::createPatchJob(const QString &path, const QDomDocument &document) const
 {
-  QUrl url( mBaseUrl );
-  url.setPath( path );
+    QUrl url(mBaseUrl);
+    url.setPath(path);
 
-  return KIO::davPropPatch( url, document, KIO::HideProgressInfo );
+    return KIO::davPropPatch(url, document, KIO::HideProgressInfo);
 }

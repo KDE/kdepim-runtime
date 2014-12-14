@@ -32,8 +32,8 @@
 
 #include "noselectattribute.h"
 
-ExpungeCollectionTask::ExpungeCollectionTask( ResourceStateInterface::Ptr resource, QObject *parent )
-  : ResourceTask( CancelIfNoSession, resource, parent )
+ExpungeCollectionTask::ExpungeCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent)
+    : ResourceTask(CancelIfNoSession, resource, parent)
 {
 
 }
@@ -42,60 +42,58 @@ ExpungeCollectionTask::~ExpungeCollectionTask()
 {
 }
 
-void ExpungeCollectionTask::doStart( KIMAP::Session *session )
+void ExpungeCollectionTask::doStart(KIMAP::Session *session)
 {
-  // Prevent expunging items from noselect folders.
-  if ( collection().hasAttribute( "noselect" ) ) {
-    NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>( collection().attribute( "noselect" ) );
-    if ( noselect->noSelect() ) {
-      qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
-      taskDone();
-      return;
+    // Prevent expunging items from noselect folders.
+    if (collection().hasAttribute("noselect")) {
+        NoSelectAttribute *noselect = static_cast<NoSelectAttribute *>(collection().attribute("noselect"));
+        if (noselect->noSelect()) {
+            qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
+            taskDone();
+            return;
+        }
     }
-  }
 
-  const QString mailBox = mailBoxForCollection( collection() );
+    const QString mailBox = mailBoxForCollection(collection());
 
-  if ( session->selectedMailBox() != mailBox ) {
-    KIMAP::SelectJob *select = new KIMAP::SelectJob( session );
-    select->setMailBox( mailBox );
+    if (session->selectedMailBox() != mailBox) {
+        KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+        select->setMailBox(mailBox);
 
-    connect(select, &KIMAP::SelectJob::result, this, &ExpungeCollectionTask::onSelectDone);
+        connect(select, &KIMAP::SelectJob::result, this, &ExpungeCollectionTask::onSelectDone);
 
-    select->start();
+        select->start();
 
-  } else {
-    triggerExpungeJob( session );
-  }
+    } else {
+        triggerExpungeJob(session);
+    }
 }
 
-void ExpungeCollectionTask::onSelectDone( KJob *job )
+void ExpungeCollectionTask::onSelectDone(KJob *job)
 {
-  if ( job->error() ) {
-    cancelTask( job->errorString() );
-  } else {
-    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>( job );
-    triggerExpungeJob( select->session() );
-  }
+    if (job->error()) {
+        cancelTask(job->errorString());
+    } else {
+        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        triggerExpungeJob(select->session());
+    }
 }
 
-void ExpungeCollectionTask::triggerExpungeJob( KIMAP::Session *session )
+void ExpungeCollectionTask::triggerExpungeJob(KIMAP::Session *session)
 {
-  KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob( session );
+    KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob(session);
 
-  connect(expunge, &KIMAP::ExpungeJob::result, this, &ExpungeCollectionTask::onExpungeDone);
+    connect(expunge, &KIMAP::ExpungeJob::result, this, &ExpungeCollectionTask::onExpungeDone);
 
-  expunge->start();
+    expunge->start();
 }
 
-void ExpungeCollectionTask::onExpungeDone( KJob *job )
+void ExpungeCollectionTask::onExpungeDone(KJob *job)
 {
-  if ( job->error() ) {
-    cancelTask( job->errorString() );
-  } else {
-    taskDone();
-  }
+    if (job->error()) {
+        cancelTask(job->errorString());
+    } else {
+        taskDone();
+    }
 }
-
-
 

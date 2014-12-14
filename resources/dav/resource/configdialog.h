@@ -34,15 +34,15 @@ class QStandardItemModel;
 
 class ConfigDialog : public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit ConfigDialog( QWidget *parent = 0 );
+public:
+    explicit ConfigDialog(QWidget *parent = 0);
     virtual ~ConfigDialog();
 
-    void setPassword( const QString &password );
+    void setPassword(const QString &password);
 
-  private Q_SLOTS:
+private Q_SLOTS:
     void checkUserInput();
     void onAddButtonClicked();
     void onSearchButtonClicked();
@@ -52,9 +52,9 @@ class ConfigDialog : public QDialog
     void onOkClicked();
     void onCancelClicked();
 
-  private:
-    void addModelRow( const QString &protocol, const QString &url );
-    void insertModelRow( int index, const QString &protocol, const QString &url );
+private:
+    void addModelRow(const QString &protocol, const QString &url);
+    void insertModelRow(int index, const QString &protocol, const QString &url);
 
     Ui::ConfigDialog mUi;
     KConfigDialogManager *mManager;

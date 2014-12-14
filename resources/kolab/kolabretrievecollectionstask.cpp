@@ -36,9 +36,9 @@
 #include <KLocalizedString>
 #include <QDebug>
 
-KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject* parent)
+KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
-    mJobs(0)
+      mJobs(0)
 {
 
 }
@@ -64,7 +64,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 
     QStringList localParts;
     localParts << QLatin1String(Akonadi::MessagePart::Envelope)
-                << QLatin1String(Akonadi::MessagePart::Header);
+               << QLatin1String(Akonadi::MessagePart::Header);
     int cacheTimeout = 60;
 
     if (isDisconnectedModeEnabled()) {
@@ -103,9 +103,9 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 }
 
 void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
-                                                   const QList< QList<QByteArray> > &flags)
+        const QList< QList<QByteArray> > &flags)
 {
-    for (int i=0; i<descriptors.size(); ++i) {
+    for (int i = 0; i < descriptors.size(); ++i) {
         const KIMAP::MailBoxDescriptor descriptor = descriptors[i];
         createCollection(descriptor.name, flags.at(i), !isSubscriptionEnabled() || mSubscribedMailboxes.contains(descriptor.name));
     }
@@ -122,8 +122,8 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
     const QStringList pathParts = path.split(separator);
     const QString pathPart = pathParts.last();
     Akonadi::Collection c;
-    c.setName( pathPart );
-    c.setRemoteId( separator + pathPart );
+    c.setName(pathPart);
+    c.setRemoteId(separator + pathPart);
     const QStringList parentPath = pathParts.mid(0, pathParts.size() - 1);
     const Akonadi::Collection parentCollection = getOrCreateParent(parentPath.join(separator));
     c.setParentCollection(parentCollection);
@@ -186,10 +186,10 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 {
     const QString separator = separatorCharacter();
     Q_ASSERT(separator.size() == 1);
-    const QString boxName = mailbox.endsWith( separator )
-                          ? mailbox.left( mailbox.size()-1 )
-                          : mailbox;
-    const QStringList pathParts = boxName.split( separator );
+    const QString boxName = mailbox.endsWith(separator)
+                            ? mailbox.left(mailbox.size() - 1)
+                            : mailbox;
+    const QStringList pathParts = boxName.split(separator);
     const QString pathPart = pathParts.last();
 
     Akonadi::Collection c;
@@ -197,8 +197,8 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     if (mMailCollections.contains(mailbox)) {
         c = mMailCollections.value(mailbox);
     }
-    c.setName( pathPart );
-    c.setRemoteId( separator + pathPart );
+    c.setName(pathPart);
+    c.setRemoteId(separator + pathPart);
     const QStringList parentPath = pathParts.mid(0, pathParts.size() - 1);
     const Akonadi::Collection parentCollection = getOrCreateParent(parentPath.join(separator));
     c.setParentCollection(parentCollection);
@@ -227,7 +227,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     if (currentFlags.contains("\\noselect")) {
         c.addAttribute(new NoSelectAttribute(true));
         c.setContentMimeTypes(QStringList() << Akonadi::Collection::mimeType());
-        c.setRights( Akonadi::Collection::ReadOnly );
+        c.setRights(Akonadi::Collection::ReadOnly);
     } else {
         // remove the noselect attribute explicitly, in case we had set it before (eg. for non-subscribed non-leaf folders)
         c.removeAttribute<NoSelectAttribute>();
@@ -247,7 +247,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     mSubscribedMailboxes.remove(mailbox);
 }
 
-void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
+void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
 {
     mJobs--;
     if (job->error()) {
@@ -264,8 +264,8 @@ void KolabRetrieveCollectionsTask::checkDone()
     }
 }
 
-void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor >& descriptors,
-                                                       const QList< QList< QByteArray > >& flags)
+void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
+        const QList< QList< QByteArray > > &flags)
 {
     Q_UNUSED(flags);
     foreach (const KIMAP::MailBoxDescriptor &descriptor, descriptors) {
@@ -273,7 +273,7 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::M
     }
 }
 
-void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob* job)
+void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
 {
     mJobs--;
     if (job->error()) {

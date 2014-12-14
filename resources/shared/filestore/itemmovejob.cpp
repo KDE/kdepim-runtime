@@ -26,53 +26,51 @@ using namespace Akonadi;
 
 class FileStore::ItemMoveJob::Private
 {
-  public:
-    explicit Private( FileStore::ItemMoveJob *parent )
-      : mParent( parent )
+public:
+    explicit Private(FileStore::ItemMoveJob *parent)
+        : mParent(parent)
     {
     }
 
-  public:
+public:
     Item mItem;
     Collection mTargetParent;
 
-  private:
+private:
     FileStore::ItemMoveJob *mParent;
 };
 
-FileStore::ItemMoveJob::ItemMoveJob( const Item &item, const Collection &targetParent, FileStore::AbstractJobSession *session )
-  : FileStore::Job( session ), d( new Private( this ) )
+FileStore::ItemMoveJob::ItemMoveJob(const Item &item, const Collection &targetParent, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private(this))
 {
-  d->mItem = item;
-  d->mTargetParent = targetParent;
+    d->mItem = item;
+    d->mTargetParent = targetParent;
 
-  session->addJob( this );
+    session->addJob(this);
 }
 
 FileStore::ItemMoveJob::~ItemMoveJob()
 {
-  delete d;
+    delete d;
 }
 
 Collection FileStore::ItemMoveJob::targetParent() const
 {
-  return d->mTargetParent;
+    return d->mTargetParent;
 }
 
 Item FileStore::ItemMoveJob::item() const
 {
-  return d->mItem;
+    return d->mItem;
 }
 
-bool FileStore::ItemMoveJob::accept( FileStore::Job::Visitor *visitor )
+bool FileStore::ItemMoveJob::accept(FileStore::Job::Visitor *visitor)
 {
-  return visitor->visit( this );
+    return visitor->visit(this);
 }
 
-void FileStore::ItemMoveJob::handleItemMoved( const Item &item )
+void FileStore::ItemMoveJob::handleItemMoved(const Item &item)
 {
-  d->mItem = item;
+    d->mItem = item;
 }
 
-
-// kate: space-indent on; indent-width 2; replace-tabs on;

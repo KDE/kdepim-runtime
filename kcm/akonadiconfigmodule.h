@@ -24,8 +24,8 @@
 
 class AkonadiConfigModule : public KCModuleContainer
 {
-  public:
-    explicit AkonadiConfigModule( QWidget *parent = 0, const QVariantList &args = QVariantList() );
+public:
+    explicit AkonadiConfigModule(QWidget *parent = 0, const QVariantList &args = QVariantList());
 };
 
 #endif

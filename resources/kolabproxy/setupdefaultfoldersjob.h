@@ -26,17 +26,17 @@
 
 class SetupDefaultFoldersJob : public Akonadi::Job
 {
-  Q_OBJECT
-  public:
-    explicit SetupDefaultFoldersJob( const Akonadi::AgentInstance &instance, QObject *parent = 0 );
+    Q_OBJECT
+public:
+    explicit SetupDefaultFoldersJob(const Akonadi::AgentInstance &instance, QObject *parent = 0);
 
-  protected:
+protected:
     void doStart();
 
-  private slots:
-    void collectionFetchResult( KJob *job );
+private slots:
+    void collectionFetchResult(KJob *job);
 
-  private:
+private:
     Akonadi::AgentInstance m_agentInstance;
 };
 

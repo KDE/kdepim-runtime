@@ -21,8 +21,7 @@
 
 #include "alarmtypewidget.h"
 
-
-AlarmTypeWidget::AlarmTypeWidget(QWidget* parent, QLayout* layout)
+AlarmTypeWidget::AlarmTypeWidget(QWidget *parent, QLayout *layout)
     : QWidget()
 {
     ui.setupUi(parent);
@@ -34,24 +33,29 @@ AlarmTypeWidget::AlarmTypeWidget(QWidget* parent, QLayout* layout)
 
 void AlarmTypeWidget::setAlarmTypes(CalEvent::Types types)
 {
-    if (types & CalEvent::ACTIVE)
+    if (types & CalEvent::ACTIVE) {
         ui.activeCheckBox->setChecked(true);
-    if (types & CalEvent::ARCHIVED)
+    }
+    if (types & CalEvent::ARCHIVED) {
         ui.archivedCheckBox->setChecked(true);
-    if (types & CalEvent::TEMPLATE)
+    }
+    if (types & CalEvent::TEMPLATE) {
         ui.templateCheckBox->setChecked(true);
+    }
 }
 
 CalEvent::Types AlarmTypeWidget::alarmTypes() const
 {
     CalEvent::Types types = CalEvent::EMPTY;
-    if (ui.activeCheckBox->isChecked())
+    if (ui.activeCheckBox->isChecked()) {
         types |= CalEvent::ACTIVE;
-    if (ui.archivedCheckBox->isChecked())
+    }
+    if (ui.archivedCheckBox->isChecked()) {
         types |= CalEvent::ARCHIVED;
-    if (ui.templateCheckBox->isChecked())
+    }
+    if (ui.templateCheckBox->isChecked()) {
         types |= CalEvent::TEMPLATE;
+    }
     return types;
 }
 
-// vim: et sw=4:

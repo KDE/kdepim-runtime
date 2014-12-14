@@ -23,10 +23,10 @@
 #include <KLocalizedString>
 
 MigrationExecutor::MigrationExecutor()
-:   KJob(),
-    mSuspended(false),
-    mTotalAmount(0),
-    mAlreadyProcessed(0)
+    :   KJob(),
+        mSuspended(false),
+        mTotalAmount(0),
+        mAlreadyProcessed(0)
 {
     setCapabilities(Suspendable);
 }
@@ -71,7 +71,7 @@ void MigrationExecutor::onStoppedProcessing()
     mAlreadyProcessed++;
     Q_ASSERT(mTotalAmount > 0);
     //TODO: setProcessedAmount would be better, but we need support for suitable units first (there's only files, folders, bytes).
-    setPercent(mAlreadyProcessed*100.0/mTotalAmount);
+    setPercent(mAlreadyProcessed * 100.0 / mTotalAmount);
     mCurrentMigrator.clear();
     executeNext();
 }

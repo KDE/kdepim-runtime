@@ -23,12 +23,12 @@
 
 #include <attribute.h>
 
-UidNextAttribute::UidNextAttribute( int uidnext )
-        : mUidNext( uidnext )
+UidNextAttribute::UidNextAttribute(int uidnext)
+    : mUidNext(uidnext)
 {
 }
 
-void UidNextAttribute::setUidNext( int uidnext )
+void UidNextAttribute::setUidNext(int uidnext)
 {
     mUidNext = uidnext;
 }
@@ -40,21 +40,21 @@ int UidNextAttribute::uidNext() const
 
 QByteArray UidNextAttribute::type() const
 {
-    static const QByteArray sType( "uidnext" );
+    static const QByteArray sType("uidnext");
     return sType;
 }
 
-Akonadi::Attribute* UidNextAttribute::clone() const
+Akonadi::Attribute *UidNextAttribute::clone() const
 {
-    return new UidNextAttribute( mUidNext );
+    return new UidNextAttribute(mUidNext);
 }
 
 QByteArray UidNextAttribute::serialized() const
 {
-    return QByteArray::number( mUidNext );
+    return QByteArray::number(mUidNext);
 }
 
-void UidNextAttribute::deserialize( const QByteArray &data )
+void UidNextAttribute::deserialize(const QByteArray &data)
 {
     mUidNext = data.toInt();
 }

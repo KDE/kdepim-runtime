@@ -27,8 +27,8 @@
 
 using namespace KGAPI2;
 
-SettingsDialog::SettingsDialog( GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent ):
-    GoogleSettingsDialog( accountMgr, windowId, parent )
+SettingsDialog::SettingsDialog(GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent):
+    GoogleSettingsDialog(accountMgr, windowId, parent)
 {
 }
 
@@ -39,12 +39,12 @@ SettingsDialog::~SettingsDialog()
 void SettingsDialog::saveSettings()
 {
     const AccountPtr account = currentAccount();
-    if ( !account ) {
-        Settings::self()->setAccount( QString() );
+    if (!account) {
+        Settings::self()->setAccount(QString());
         Settings::self()->save();
         return;
     }
 
-    Settings::self()->setAccount( account->accountName() );
+    Settings::self()->setAccount(account->accountName());
     Settings::self()->save();
 }

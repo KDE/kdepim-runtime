@@ -25,15 +25,16 @@
 #include <kio/sslui.h>
 #include <kimap/sessionuiproxy.h>
 
-
-class SessionUiProxy : public KIMAP::SessionUiProxy {
-  public:
-    bool ignoreSslError( const KSslErrorUiData &errorData ) {
-      if ( KIO::SslUi::askIgnoreSslErrors( errorData, KIO::SslUi::RecallAndStoreRules) ) {
-        return true;
-      } else {
-        return false;
-      }
+class SessionUiProxy : public KIMAP::SessionUiProxy
+{
+public:
+    bool ignoreSslError(const KSslErrorUiData &errorData)
+    {
+        if (KIO::SslUi::askIgnoreSslErrors(errorData, KIO::SslUi::RecallAndStoreRules)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 };
 
