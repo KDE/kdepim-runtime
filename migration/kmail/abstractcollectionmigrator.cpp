@@ -41,7 +41,7 @@
 #include <KConfig>
 #include <KConfigGroup>
 #include <KLocalizedString>
-#include <QDebug>
+#include "kmailmigration_debug.h"
 
 #include <QHash>
 #include <QQueue>
@@ -138,7 +138,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   if ( mCurrentFolderId.isEmpty() || !mCurrentCollection.isValid() ) {
     return;
   }
-//   qDebug() << "migrating config for folderId" << mCurrentFolderId
+//   qCDebug(KMAILMIGRATION_LOG) << "migrating config for folderId" << mCurrentFolderId
 //                                    << "to collectionId" << mCurrentCollection.id();
 
   // general folder specific settings
@@ -151,7 +151,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.writeEntry( "ConvertedFrom", mCurrentFolderId );
     if ( newGroup.readEntry( "UseCustomIcons", false ) ) {
       EntityDisplayAttribute *attribute = mCurrentCollection.attribute<EntityDisplayAttribute>( Akonadi::Collection::AddIfMissing );
-      //qDebug()<<" NormalIconPath :"<<newGroup.readEntry( "NormalIconPath" )<<" UnreadIconPath :"<<newGroup.readEntry( "UnreadIconPath" );
+      //qCDebug(KMAILMIGRATION_LOG)<<" NormalIconPath :"<<newGroup.readEntry( "NormalIconPath" )<<" UnreadIconPath :"<<newGroup.readEntry( "UnreadIconPath" );
       attribute->setIconName( newGroup.readEntry( "NormalIconPath" ) );
       attribute->setActiveIconName( newGroup.readEntry( "UnreadIconPath" ) );
 
@@ -172,7 +172,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
     newGroup.deleteEntry( "SharedSeenFlags" );
     if ( newGroup.hasKey( "IncidencesFor" ) ) {
       const QString incidenceFor = newGroup.readEntry( "IncidencesFor" );
-      //qDebug() << "IncidencesFor=" << incidenceFor;
+      //qCDebug(KMAILMIGRATION_LOG) << "IncidencesFor=" << incidenceFor;
       if ( incidenceFor == QLatin1String("nobody") ) {
         annotations[ KOLAB_INCIDENCESFOR ] = "nobody";
       } else if ( incidenceFor == QLatin1String("admins") ) {
@@ -265,7 +265,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
         oldFavoriteGroup.copyTo( &newFavoriteGroup );
         oldFavoriteGroup.deleteGroup();
 
-        //qDebug() << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;
+        //qCDebug(KMAILMIGRATION_LOG) << "FAVORITE COLLECTION lIds=" << lIds<<" lNames="<<lNames;
         newFavoriteGroup.writeEntry( "FavoriteCollectionIds", lIds );
         newFavoriteGroup.writeEntry( "FavoriteCollectionLabels", lNames );
 
@@ -303,7 +303,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   // check emailidentity
   const QStringList identityGroups = mEmailIdentityConfig->groupList().filter( QRegExp( QLatin1String("Identity #\\d+") ) );
-  //qDebug() << "identityGroups=" << identityGroups;
+  //qCDebug(KMAILMIGRATION_LOG) << "identityGroups=" << identityGroups;
   Q_FOREACH ( const QString &groupName, identityGroups ) {
     KConfigGroup identityGroup( mEmailIdentityConfig, groupName );
     if ( identityGroup.readEntry( "Drafts" ) == mCurrentFolderId )
@@ -367,7 +367,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   // check all expire folder
   const QStringList folderGroups = mKMailConfig->groupList().filter( QLatin1String("Folder-") );
-  //qDebug() << "folderGroups=" << folderGroups;
+  //qCDebug(KMAILMIGRATION_LOG) << "folderGroups=" << folderGroups;
   Q_FOREACH ( const QString &groupName, folderGroups ) {
     KConfigGroup filterGroup( mKMailConfig, groupName );
     if ( filterGroup.readEntry( "ExpireToFolder" ) == mCurrentFolderId )
@@ -376,7 +376,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   // check all account folder
   const QStringList accountGroups = mKMailConfig->groupList().filter( QRegExp( QLatin1String("Account \\d+") ) );
-  //qDebug() << "accountGroups=" << accountGroups;
+  //qCDebug(KMAILMIGRATION_LOG) << "accountGroups=" << accountGroups;
   Q_FOREACH ( const QString &groupName, accountGroups ) {
     KConfigGroup accountGroup( mKMailConfig, groupName );
 
@@ -398,16 +398,16 @@ void AbstractCollectionMigrator::Private::migrateConfig()
 
   // check all filters
   const QStringList filterGroups = mKMailConfig->groupList().filter( QRegExp( QLatin1String("Filter #\\d+") ) );
-  //qDebug() << "filterGroups=" << filterGroups;
+  //qCDebug(KMAILMIGRATION_LOG) << "filterGroups=" << filterGroups;
   Q_FOREACH ( const QString &groupName, filterGroups ) {
     KConfigGroup filterGroup( mKMailConfig, groupName );
 
     const QStringList actionKeys = filterGroup.keyList().filter( QRegExp( QLatin1String("action-args-\\d+") ) );
-    //qDebug() << "actionKeys=" << actionKeys;
+    //qCDebug(KMAILMIGRATION_LOG) << "actionKeys=" << actionKeys;
 
     Q_FOREACH ( const QString &actionKey, actionKeys ) {
       if ( filterGroup.readEntry( actionKey, QString() ) == mCurrentFolderId ) {
-        qDebug() << "replacing folder id for action" << actionKey
+        qCDebug(KMAILMIGRATION_LOG) << "replacing folder id for action" << actionKey
                                          << "in group" << groupName;
         filterGroup.writeEntry( actionKey, mCurrentCollection.id() );
       }
@@ -470,7 +470,7 @@ void AbstractCollectionMigrator::Private::migrateConfig()
   KConfigGroup selectedMessagesGroup( mKMailConfig, QLatin1String( "MessageListView::StorageModelSelectedMessages" ) );
   const QString storageModelPattern = QLatin1String( "MessageUniqueIdForStorageModel%1" );
   if ( selectedMessagesGroup.hasKey( storageModelPattern.arg( mCurrentFolderId ) ) ) {
-    //qDebug() << "replacing selected message entry for"
+    //qCDebug(KMAILMIGRATION_LOG) << "replacing selected message entry for"
     //                                 << mCurrentFolderId;
     const qulonglong defValue = 0;
     const qulonglong value = selectedMessagesGroup.readEntry( storageModelPattern.arg( mCurrentFolderId ), defValue );
@@ -539,9 +539,9 @@ void AbstractCollectionMigrator::Private::collectionCreateResult( KJob *job )
   mCurrentCollection = collection;
   mNeedModifyJob = false;
 
-//   qDebug() << "Store Collection:" << mCurrentStoreCollection
+//   qCDebug(KMAILMIGRATION_LOG) << "Store Collection:" << mCurrentStoreCollection
 //                                    << "Akonadi Collection:" << collection;
-  qDebug() << "Store Collection: remoteId=" << mCurrentStoreCollection.remoteId()
+  qCDebug(KMAILMIGRATION_LOG) << "Store Collection: remoteId=" << mCurrentStoreCollection.remoteId()
     << "parent=" << mCurrentStoreCollection.parentCollection().remoteId()
     << "\nStore Collection: id=" << collection.id() << "remoteId=" << collection.remoteId()
     << "parent=" << collection.parentCollection().remoteId()
@@ -576,7 +576,7 @@ void AbstractCollectionMigrator::Private::processNextCollection()
   const QString idPath = remoteIdPath( storeCollection );
 
 //  mStoreCollectionsByPath.insert( idPath, storeCollection );
-//   qDebug() << "inserting storeCollection" << storeCollection.remoteId()
+//   qCDebug(KMAILMIGRATION_LOG) << "inserting storeCollection" << storeCollection.remoteId()
 //                                    << "at idPath" << idPath;
 
   // create on Akonadi server
@@ -600,7 +600,7 @@ void AbstractCollectionMigrator::Private::processNextCollection()
     collection.setRemoteId( q->mapRemoteIdFromStore( collection.remoteId() ) );
   }
 
-  qDebug() << "Processing collection" << collection.remoteId()
+  qCDebug(KMAILMIGRATION_LOG) << "Processing collection" << collection.remoteId()
                                    << "remoteIdPath=" << idPath
                                    << ", " << mCollectionQueue.count() << "remaining";
 
@@ -648,7 +648,7 @@ QString AbstractCollectionMigrator::Private::folderIdentifierForCollection( cons
 void AbstractCollectionMigrator::Private::processingDone()
 {
   if ( mOverallCollectionsCount == 0 ) {
-    qDebug() << "Resource" << mResourceName
+    qCDebug(KMAILMIGRATION_LOG) << "Resource" << mResourceName
                                      << "did not have any local collections";
 /*    q->migrationCancelled( i18nc( "@info:status", "Resource '%1' did not have any folders",
                                   mResource.name() ) );*/
@@ -747,7 +747,7 @@ void AbstractCollectionMigrator::collectionProcessed()
 
 void AbstractCollectionMigrator::migrationDone()
 {
-  qDebug() << "processed" << d->mProcessedCollectionsCount << "collections"
+  qCDebug(KMAILMIGRATION_LOG) << "processed" << d->mProcessedCollectionsCount << "collections"
                                    << "seen" << d->mOverallCollectionsCount;
 
   emit migrationFinished( d->mResource, QString() );
@@ -755,7 +755,7 @@ void AbstractCollectionMigrator::migrationDone()
 
 void AbstractCollectionMigrator::migrationCancelled( const QString &error )
 {
-  qDebug() << "processed" << d->mProcessedCollectionsCount << "collections"
+  qCDebug(KMAILMIGRATION_LOG) << "processed" << d->mProcessedCollectionsCount << "collections"
                                    << "seen" << d->mOverallCollectionsCount;
 
   emit migrationFinished( d->mResource, error );
@@ -787,7 +787,7 @@ void AbstractCollectionMigrator::registerAsSpecialCollection( int type )
 
   SpecialMailCollections::Type colType = (SpecialMailCollections::Type)type;
 
-  qDebug() << "Registering collection" << d->mCurrentCollection.name() << "for type" << type;
+  qCDebug(KMAILMIGRATION_LOG) << "Registering collection" << d->mCurrentCollection.name() << "for type" << type;
   SpecialMailCollections::self()->registerCollection( colType, d->mCurrentCollection );
 
   if ( Private::mIconNamesBySpecialType.isEmpty() ) {

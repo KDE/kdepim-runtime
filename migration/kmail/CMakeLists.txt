@@ -1,4 +1,5 @@
 set(kmail-migrator_srcs
+  kmailmigration_debug.cpp 
   abstractcollectionmigrator.cpp
   emptyresourcecleaner.cpp
   imapcacheadapter.cpp

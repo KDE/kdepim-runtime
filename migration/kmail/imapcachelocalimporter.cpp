@@ -34,7 +34,7 @@
 #include <AkonadiCore/itemcreatejob.h>
 #include <AkonadiCore/session.h>
 
-#include <QDebug>
+#include "kmailmigration_debug.h"
 #include <KLocalizedString>
 
 using namespace Akonadi;
@@ -107,7 +107,7 @@ void ImapCacheLocalImporter::Private::processNextCollection()
 
   const QString idPath = remoteIdPath( storeCollection );
   mStoreCollectionsByPath.insert( idPath, storeCollection );
-//   qDebug() << "inserting storeCollection" << storeCollection.remoteId()
+//   qCDebug(KMAILMIGRATION_LOG) << "inserting storeCollection" << storeCollection.remoteId()
 //                                    << "at idPath" << idPath;
 
   // create on Akonadi server
@@ -129,7 +129,7 @@ void ImapCacheLocalImporter::Private::processNextCollection()
     }
   }
 
-  qDebug() << "Processing collection" << collection.remoteId()
+  qCDebug(KMAILMIGRATION_LOG) << "Processing collection" << collection.remoteId()
                                    << "remoteIdPath=" << idPath
                                    << ", " << mPendingCollections.count() << "remaining";
 
@@ -153,7 +153,7 @@ void ImapCacheLocalImporter::Private::processNextItem()
   const Item item = mPendingItems.front();
   mPendingItems.pop_front();
 
-//   qDebug() << "Processing item" << item.remoteId()
+//   qCDebug(KMAILMIGRATION_LOG) << "Processing item" << item.remoteId()
 //                                    << "parentCollection" << item.parentCollection().id()
 //                                    << "remoteIdPath=" << remoteIdPath( item.parentCollection() )
 //                                    << ", " << mPendingCollections.count() << "remaining";
@@ -206,7 +206,7 @@ void ImapCacheLocalImporter::Private::configureResource()
   }
 
   const QFileInfo pathInfo( QDir( mStore->path() ), mTopLevelFolder );
-  qDebug() << "resource working path=" << pathInfo.absoluteFilePath();
+  qCDebug(KMAILMIGRATION_LOG) << "resource working path=" << pathInfo.absoluteFilePath();
   iface->setPath( pathInfo.absoluteFilePath()  );
 
   // make sure the config is saved
@@ -247,12 +247,12 @@ void ImapCacheLocalImporter::Private::collectionCreateResult( KJob *job )
 
   const Collection collection = createJob->collection();
   mCurrentCollection = collection;
-/*  qDebug() << "inserting collection" << collection.id()
+/*  qCDebug(KMAILMIGRATION_LOG) << "inserting collection" << collection.id()
                                    << collection.remoteId()
                                    << "at idPath" << idPath;*/
   mAkonadiCollectionsByPath.insert( idPath, collection );
 
-/*  qDebug() << "Checking for storeCollection with idPath" << idPath;*/
+/*  qCDebug(KMAILMIGRATION_LOG) << "Checking for storeCollection with idPath" << idPath;*/
   const Collection storeCollection = mStoreCollectionsByPath[ idPath ];
   Q_ASSERT( !storeCollection.remoteId().isEmpty() );
 

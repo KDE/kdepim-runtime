@@ -29,7 +29,7 @@
 #include <AkonadiCore/collectionstatistics.h>
 #include <AkonadiCore/itemfetchjob.h>
 
-#include <QDebug>
+#include "kmailmigration_debug.h"
 
 #include <QHash>
 #include <QVariant>
@@ -77,7 +77,7 @@ void EmptyResourceCleaner::Private::deleteCollections()
       mDeletedCollections.insert( collection.id(), collection );
       it = mDeletableCollections.erase( it );
     } else {
-      qDebug() << "Removing collection: id=" << collection.id()
+      qCDebug(KMAILMIGRATION_LOG) << "Removing collection: id=" << collection.id()
                                        << "remoteId=" << collection.remoteId();
       CollectionDeleteJob *deleteJob = new CollectionDeleteJob( collection );
       deleteJob->setProperty( "collection", QVariant::fromValue<Collection>( collection ) );
@@ -98,7 +98,7 @@ void EmptyResourceCleaner::Private::deleteCollections()
 
 void EmptyResourceCleaner::Private::deleteResource()
 {
-  qDebug() << "Removing resource" << mResource.identifier();
+  qCDebug(KMAILMIGRATION_LOG) << "Removing resource" << mResource.identifier();
 
   AgentManager::self()->removeInstance( mResource );
 
@@ -128,7 +128,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
       }
     }
 
-    qDebug() << "collection" << collection.name()
+    qCDebug(KMAILMIGRATION_LOG) << "collection" << collection.name()
                                      << "has" << itemCount
                                      << "items";
     if ( itemCount == 0 ) {
@@ -138,7 +138,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
     }
   }
 
-  qDebug() << mDeletableCollections.count()
+  qCDebug(KMAILMIGRATION_LOG) << mDeletableCollections.count()
                                    << "potenially deletable collections"
                                    << nonEmptyCollections.count() << "not empty";
 
@@ -150,7 +150,7 @@ void EmptyResourceCleaner::Private::collectionFetchResult( KJob *job )
     }
   }
 
-  qDebug() << mDeletableCollections.count() << "of"
+  qCDebug(KMAILMIGRATION_LOG) << mDeletableCollections.count() << "of"
                                    << mAllCollections.count() << "are empty";
 
   if ( mOptions.testFlag( DeleteEmptyCollections ) ) {
@@ -184,7 +184,7 @@ void EmptyResourceCleaner::Private::collectionDeleteResult( KJob *job )
 EmptyResourceCleaner::EmptyResourceCleaner( const AgentInstance &resource, QObject *parent )
   : QObject( parent ), d( new Private( this, resource ) )
 {
-  qDebug() << "Creating cleaner for resource"
+  qCDebug(KMAILMIGRATION_LOG) << "Creating cleaner for resource"
                                    << d->mResource.identifier();
   connect(this, &EmptyResourceCleaner::cleanupFinished, this, &EmptyResourceCleaner::deleteLater);
 

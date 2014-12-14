@@ -58,7 +58,7 @@ using Akonadi::AgentInstanceCreateJob;
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDateTime>
-#include <QDebug>
+#include "kmailmigration_debug.h"
 #include <KSharedConfig>
 #include <kwallet.h>
 #include <kstringhandler.h>
@@ -157,10 +157,10 @@ void KMailMigrator::migrate()
   copy = copy || mConfig->groupList().filter( QRegExp( QLatin1String("Account \\d+") ) ).isEmpty();
 
   if ( copy ) {
-    qDebug() << "Copying content from kmailrc";
+    qCDebug(KMAILMIGRATION_LOG) << "Copying content from kmailrc";
     oldConfig->copyTo( newKMailCfgFile, mConfig.data() );
   } else {
-    qDebug() << "Ignoring kmailrc, just using contents from kmail2rc";
+    qCDebug(KMAILMIGRATION_LOG) << "Ignoring kmailrc, just using contents from kmail2rc";
   }
 
   mEmailIdentityConfig = KSharedConfig::openConfig( QLatin1String( "emailidentities" ) );
@@ -195,7 +195,7 @@ void KMailMigrator::migrate()
 void KMailMigrator::autoSaveCopyResult( KJob *job )
 {
   if ( job->error() ) {
-    qDebug() << "error=" << job->error()
+    qCDebug(KMAILMIGRATION_LOG) << "error=" << job->error()
       << "text=" << job->errorString();
   }
 }
@@ -235,7 +235,7 @@ void KMailMigrator::migrateTags()
   QSet<QString> groupNames = tagGroups.toSet();
   groupNames.subtract( migratedTags.toSet() );
 
-  qDebug() << "Tag Groups:" << tagGroups << "MigratedTags:" << migratedTags
+  qCDebug(KMAILMIGRATION_LOG) << "Tag Groups:" << tagGroups << "MigratedTags:" << migratedTags
            << "Unmigrated Tags:" << groupNames;
 
   QStringList newlyMigratedTags;
@@ -276,7 +276,7 @@ void KMailMigrator::migrateTags()
     Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag);
     createJob->setMergeIfExisting(true);
 
-    qDebug() << "Tag: label=" << label << "name=" << name
+    qCDebug(KMAILMIGRATION_LOG) << "Tag: label=" << label << "name=" << name
              << "textColor=" << textColor << "backgroundColor=" << backgroundColor
              << "hasFont=" << hasFont << "font=" << textFont
              << "icon=" << iconName << "inToolbar=" << inToolbar
@@ -363,7 +363,7 @@ void KMailMigrator::migrateLocalFolders()
     emit status( QString() );
     migrationDone();
   } else {
-    qDebug() << mLocalMaildirPath;
+    qCDebug(KMAILMIGRATION_LOG) << mLocalMaildirPath;
 
     emit message( Info, i18nc( "@info:status", "Migrating local folders in '%1'...", mLocalMaildirPath ) );
 
@@ -382,7 +382,7 @@ void KMailMigrator::migrationDone()
   migrateInstanceTrashFolder();
 
   mConfig->sync();
-  qDebug() << "Deleting" << mFailedInstances.count() << "failed resource instances";
+  qCDebug(KMAILMIGRATION_LOG) << "Deleting" << mFailedInstances.count() << "failed resource instances";
   Q_FOREACH ( const AgentInstance &instance, mFailedInstances ) {
     if ( instance.isValid() ) {
       AgentManager::self()->removeInstance( instance );
@@ -514,17 +514,17 @@ void KMailMigrator::migrationCompleted( const AgentInstance &instance, bool doMi
 
   // check if the account is used in filters
   const QStringList filterGroups = mConfig->groupList().filter( QRegExp( QLatin1String("Filter #\\d+") ) );
-  //qDebug() << "filterGroups=" << filterGroups;
+  //qCDebug(KMAILMIGRATION_LOG) << "filterGroups=" << filterGroups;
   Q_FOREACH ( const QString &groupName, filterGroups ) {
     KConfigGroup filterGroup( mConfig, groupName );
 
     QStringList accountsSet = filterGroup.readEntry( QLatin1String( "accounts-set" ), QStringList() );
     //if ( !accountsSet.isEmpty() ) {
-    //  qDebug() << "accountsSet=" << accountsSet;
+    //  qCDebug(KMAILMIGRATION_LOG) << "accountsSet=" << accountsSet;
     //}
     const int index = accountsSet.indexOf( accountId );
     if ( index != -1 ) {
-      qDebug() << "replacing account id" << accountId
+      qCDebug(KMAILMIGRATION_LOG) << "replacing account id" << accountId
                                        << "in filter" << groupName
                                        << "with resource id" << instance.identifier();
       accountsSet.replace( index, instance.identifier() );
@@ -709,7 +709,7 @@ void KMailMigrator::migrateImapAccount( KJob *job, bool disconnected )
   collectionMigrator->setTopLevelFolder( topLevelFolder, nameAccount, topLevelRemoteId );
   collectionMigrator->setMigrationOptions( options );
 
-  qDebug() << "Starting IMAP collection migration: options="
+  qCDebug(KMAILMIGRATION_LOG) << "Starting IMAP collection migration: options="
            << collectionMigrator->migrationOptions();
   collectionMigrator->setKMailConfig( mConfig );
   collectionMigrator->setEmailIdentityConfig( mEmailIdentityConfig );
@@ -1000,13 +1000,13 @@ void KMailMigrator::localMaildirCreated( KJob *job )
   QString defaultInstanceName;
   QString defaultResourceId = specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
   if ( defaultResourceId.isEmpty() ) {
-    qDebug() << "No resource configured for special mail collections, using the migrated"
+    qCDebug(KMAILMIGRATION_LOG) << "No resource configured for special mail collections, using the migrated"
              << instance.identifier();
     defaultResourceId = instance.identifier();
   } else {
     const AgentInstance defaultInstance = AgentManager::self()->instance( defaultResourceId );
     if ( !defaultInstance.isValid() ) {
-      qDebug() << "Resource" << defaultResourceId
+      qCDebug(KMAILMIGRATION_LOG) << "Resource" << defaultResourceId
                << " configured for special mail collections does not exist, using the migrated"
                << instance.identifier();
       defaultResourceId = instance.identifier();
@@ -1085,7 +1085,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
       AgentInstance defaultResource = AgentManager::self()->instance( defaultResourceId );
       if ( defaultResource.isValid() && defaultResourceId != instance.identifier() ) {
-        qDebug() << "Attempting take over of special mail collections role from"
+        qCDebug(KMAILMIGRATION_LOG) << "Attempting take over of special mail collections role from"
                  << defaultResourceId;
 
         EmptyResourceCleaner *cleaner = new EmptyResourceCleaner( defaultResource, this );
@@ -1112,7 +1112,7 @@ void KMailMigrator::localFoldersMigrationFinished( const AgentInstance &instance
 
 void KMailMigrator::imapFoldersMigrationFinished( const AgentInstance &instance, const QString &error )
 {
-  qDebug() << "imapMigrationFinished: instance=" << instance.identifier()
+  qCDebug(KMAILMIGRATION_LOG) << "imapMigrationFinished: instance=" << instance.identifier()
            << "error=" << error;
 
   OrgKdeAkonadiImapSettingsInterface *iface = createImapSettingsInterface( instance );
@@ -1316,10 +1316,10 @@ void KMailMigrator::specialColDefaultResourceCheckFinished( const AgentInstance 
     specialMailCollectionsGroup.sync();
     AgentManager::self()->removeInstance( instance );
 
-    qDebug() << "Former special mail collection resource" << instance.identifier()
+    qCDebug(KMAILMIGRATION_LOG) << "Former special mail collection resource" << instance.identifier()
              << "successfully delete, now using" << specialMailCollectionsGroup.readEntry( QLatin1String( "DefaultResourceId" ) );
   } else {
-    qDebug() << "Former special mail collection resource" << instance.identifier()
+    qCDebug(KMAILMIGRATION_LOG) << "Former special mail collection resource" << instance.identifier()
              << "still valid";
   }
 

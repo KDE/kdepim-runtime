@@ -21,7 +21,7 @@
 
 #include <libmaildir/maildir.h>
 #include <libmbox/mbox.h>
-#include <QDebug>
+#include "kmailmigration_debug.h"
 #include <QtCore/QDir>
 
 MixedTreeConverter::MixedTreeConverter(QObject* parent): QObject(parent)
@@ -43,13 +43,13 @@ void MixedTreeConverter::convert(const QString& basePath)
 
 void MixedTreeConverter::convert(const KPIM::Maildir& md)
 {
-  qDebug() << md.path();
+  qCDebug(KMAILMIGRATION_LOG) << md.path();
   if ( !md.isValid() )
     return;
 
   // recurse into maildirs, nothing to do there
   foreach ( const QString &subFolder, md.subFolderList() ) {
-    qDebug() << subFolder;
+    qCDebug(KMAILMIGRATION_LOG) << subFolder;
     convert( md.subFolder( subFolder ) );
   }
 
@@ -83,7 +83,7 @@ void MixedTreeConverter::convert(const KPIM::Maildir& md)
 
 void MixedTreeConverter::convertMbox(const QString& path)
 {
-  qDebug() << path;
+  qCDebug(KMAILMIGRATION_LOG) << path;
 
   // (0) check if this mbox has been converted before already
   if ( path.endsWith( ".kmail-migrator-backup" ) )

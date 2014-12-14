@@ -27,7 +27,7 @@
 #include <KAboutData>
 #include <QApplication>
 #include <KGlobal>
-#include <QDebug>
+#include "kmailmigration_debug.h"
 #include <KSharedConfig>
 #include <KLocalizedString>
 #include <QCommandLineParser>
@@ -81,7 +81,7 @@ int main( int argc, char **argv )
   const int currentVersion = migrationCfg.readEntry( "Version", 0 );
   const int targetVersion = migrationCfg.readEntry( "TargetVersion", 1 );
   if ( !enabled || currentVersion >= targetVersion ) {
-    qWarning() << "Migration of kmailrc has already run, not running it again";
+    qCWarning(KMAILMIGRATION_LOG) << "Migration of kmailrc has already run, not running it again";
     return 4;
   }
 

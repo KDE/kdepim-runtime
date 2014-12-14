@@ -33,7 +33,7 @@
 
 #include <KLocalizedString>
 
-#include <QDebug>
+#include "kmailmigration_debug.h"
 
 #include <QQueue>
 
@@ -65,7 +65,7 @@ class ImapCacheAdapter::Private
 
 void ImapCacheAdapter::Private::processNextCollection()
 {
-  qDebug() << mPendingCollections.count() << "pending collections";
+  qCDebug(KMAILMIGRATION_LOG) << mPendingCollections.count() << "pending collections";
 
   if ( mPendingCollections.isEmpty() ) {
     createResource();
@@ -73,7 +73,7 @@ void ImapCacheAdapter::Private::processNextCollection()
   }
 
   const Collection collection = mPendingCollections.dequeue();
-  qDebug() << "processing: name=" << collection.name()
+  qCDebug(KMAILMIGRATION_LOG) << "processing: name=" << collection.name()
            << "remoteId=" << collection.remoteId()
            << "parent=" << collection.parentCollection().remoteId();
 
