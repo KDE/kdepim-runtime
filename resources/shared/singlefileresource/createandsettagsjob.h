@@ -30,7 +30,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT CreateAndSetTagsJob : public KJob
 public:
     explicit CreateAndSetTagsJob(const Akonadi::Item &item, const Akonadi::Tag::List &tags, QObject *parent = 0);
 
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onCreateDone(KJob *);

@@ -34,7 +34,7 @@ class UserIdRequestJob : public KJob
 public:
     explicit UserIdRequestJob(QObject *parent = Q_NULLPTR);
 
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
     qlonglong userId() const;
 

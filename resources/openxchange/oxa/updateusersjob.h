@@ -36,7 +36,7 @@ class UpdateUsersJob : public KJob
 public:
     explicit UpdateUsersJob(QObject *parent = Q_NULLPTR);
 
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void userIdRequestJobFinished(KJob *);

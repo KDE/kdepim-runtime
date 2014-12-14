@@ -44,7 +44,7 @@ private slots:
     void onFullMailBoxesReceiveDone(KJob *job);
 
 protected:
-    virtual void doStart(KIMAP::Session *session);
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 protected:
     QHash<QString, Akonadi::Collection> m_reportedCollections;

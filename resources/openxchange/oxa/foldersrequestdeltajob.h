@@ -51,7 +51,7 @@ public:
     /**
      * Starts the job.
      */
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
     /**
      * Returns the list of all added and modified folders.

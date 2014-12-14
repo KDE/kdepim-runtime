@@ -30,10 +30,10 @@ public:
     explicit TimestampAttribute(uint timestamp = 0);
     void setTimestamp(uint timestamp);
     uint timestamp() const;
-    virtual QByteArray type() const;
-    virtual Attribute *clone() const;
-    virtual QByteArray serialized() const;
-    virtual void deserialize(const QByteArray &data);
+    QByteArray type() const Q_DECL_OVERRIDE;
+    Attribute *clone() const Q_DECL_OVERRIDE;
+    QByteArray serialized() const Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
 private:
     uint mTimestamp;

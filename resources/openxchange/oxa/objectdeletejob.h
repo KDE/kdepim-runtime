@@ -36,7 +36,7 @@ class ObjectDeleteJob : public KJob
 public:
     explicit ObjectDeleteJob(const Object &object, QObject *parent = Q_NULLPTR);
 
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void davJobFinished(KJob *);

@@ -49,17 +49,17 @@ public:
     void cleanup();
 
 public Q_SLOTS:
-    virtual void configure(WId windowId);
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems(const Akonadi::Collection &col);
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
 
-    virtual void aboutToQuit();
-    virtual void doSetOnline(bool online);
+    void aboutToQuit() Q_DECL_OVERRIDE;
+    void doSetOnline(bool online) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
 

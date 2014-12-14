@@ -32,11 +32,11 @@ public:
     explicit IncidenceAttribute();
     ~IncidenceAttribute();
 
-    virtual QByteArray type() const;
-    virtual Attribute *clone() const;
+    QByteArray type() const Q_DECL_OVERRIDE;
+    Attribute *clone() const Q_DECL_OVERRIDE;
 
-    virtual QByteArray serialized() const;
-    virtual void deserialize(const QByteArray &data);
+    QByteArray serialized() const Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
     /**
      * The status the invitation is in.

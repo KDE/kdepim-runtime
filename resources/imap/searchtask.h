@@ -32,7 +32,7 @@ public:
     ~SearchTask();
 
 protected:
-    virtual void doStart(KIMAP::Session *session);
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onSelectDone(KJob *job);

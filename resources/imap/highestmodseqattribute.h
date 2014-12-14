@@ -29,10 +29,10 @@ public:
     void setHighestModSeq(qint64 highestModSequence);
     qint64 highestModSequence() const;
 
-    virtual void deserialize(const QByteArray &data);
-    virtual QByteArray serialized() const;
-    virtual Akonadi::Attribute *clone() const;
-    virtual QByteArray type() const;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
+    QByteArray serialized() const Q_DECL_OVERRIDE;
+    Akonadi::Attribute *clone() const Q_DECL_OVERRIDE;
+    QByteArray type() const Q_DECL_OVERRIDE;
 
 private:
     qint64 m_highestModSeq;

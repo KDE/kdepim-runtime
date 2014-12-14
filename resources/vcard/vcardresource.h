@@ -44,13 +44,13 @@ protected:
      */
     virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings> *dlg);
 
-    bool readFromFile(const QString &fileName);
-    bool writeToFile(const QString &fileName);
-    virtual void aboutToQuit();
+    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
+    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    virtual void itemRemoved(const Akonadi::Item &item);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
 private:
     QMap<QString, KContacts::Addressee> mAddressees;

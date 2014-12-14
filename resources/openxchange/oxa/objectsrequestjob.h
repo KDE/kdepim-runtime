@@ -54,7 +54,7 @@ public:
      */
     explicit ObjectsRequestJob(const Folder &folder, qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = Q_NULLPTR);
 
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
     Object::List objects() const;
 

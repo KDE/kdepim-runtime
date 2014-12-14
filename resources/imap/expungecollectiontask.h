@@ -37,7 +37,7 @@ private slots:
     void onExpungeDone(KJob *job);
 
 protected:
-    virtual void doStart(KIMAP::Session *session);
+    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
     void triggerExpungeJob(KIMAP::Session *session);
