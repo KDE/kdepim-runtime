@@ -4,6 +4,7 @@ include_directories( ${Boost_INCLUDE_DIR} )
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_birthdays_resource\")
 
 set( birthdayresource_srcs
+  birthdays_debug.cpp
   birthdaysresource.cpp
   configdialog.cpp
 )

@@ -34,7 +34,7 @@
 
 #include <KCodecs/KEmailAddress>
 
-#include <QDebug>
+#include "birthdays_debug.h"
 #include <KLocalizedString>
 #include <KWindowSystem>
 
@@ -224,7 +224,7 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item& cont
 
   const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
   if ( name.isEmpty() ) {
-    qDebug() << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
+    qCDebug(BIRTHDAYS_LOG) << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
     return KCalCore::Event::Ptr();
   }
 
@@ -255,7 +255,7 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& c
 
   const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
   if ( name.isEmpty() ) {
-    qDebug() << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
+    qCDebug(BIRTHDAYS_LOG) << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
     return KCalCore::Event::Ptr();
   }
 
