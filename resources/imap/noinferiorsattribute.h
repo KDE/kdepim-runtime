@@ -27,10 +27,10 @@ public:
     explicit NoInferiorsAttribute(bool noInferiors = false);
     void setNoInferiors(bool noInferiors);
     bool noInferiors() const;
-    virtual QByteArray type() const;
-    virtual Attribute *clone() const;
-    virtual QByteArray serialized() const;
-    virtual void deserialize(const QByteArray &data);
+    QByteArray type() const Q_DECL_OVERRIDE;
+    Attribute *clone() const Q_DECL_OVERRIDE;
+    QByteArray serialized() const Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
 private:
     bool mNoInferiors;

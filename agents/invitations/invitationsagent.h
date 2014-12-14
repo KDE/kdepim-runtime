@@ -65,7 +65,7 @@ public:
     Akonadi::Collection collection();
 
 public Q_SLOTS:
-    virtual void configure(WId windowId);
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void initStart();
@@ -76,7 +76,7 @@ private:
                                 const KCalCore::MemoryCalendar::Ptr &calendar,
                                 const Akonadi::Item &item);
 
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
     /*
     virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );

@@ -68,7 +68,7 @@ public:
     virtual Settings *settings() const;
 
 public Q_SLOTS:
-    virtual void configure(WId windowId);
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
     // DBus methods
     Q_SCRIPTABLE void requestManualExpunge(qint64 collectionId);
