@@ -34,7 +34,7 @@ public:
     ~NntpResource();
 
 public Q_SLOTS:
-    virtual void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;

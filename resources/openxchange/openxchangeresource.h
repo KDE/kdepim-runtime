@@ -33,8 +33,8 @@ public:
     virtual void cleanup();
 
 public Q_SLOTS:
-    virtual void configure(WId windowId) Q_DECL_OVERRIDE;
-    virtual void aboutToQuit() Q_DECL_OVERRIDE;
+    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
@@ -42,18 +42,18 @@ protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    virtual void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
     virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
                            const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
 
-    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
-    virtual void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
+    void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     // do not hide the other variant, use implementation from base class
     // which just forwards to the one above
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
-    virtual void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
                                  const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
 

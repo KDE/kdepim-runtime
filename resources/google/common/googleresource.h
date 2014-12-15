@@ -56,7 +56,7 @@ public:
     void cleanup();
 
 public Q_SLOTS:
-    virtual void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
     void reloadConfig();
 
