@@ -28,7 +28,7 @@ public:
     explicit NewMailNotifierShowMessageJob(Akonadi::Item::Id id, QObject *parent = 0);
     ~NewMailNotifierShowMessageJob();
 
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 private:
     Akonadi::Item::Id mId;

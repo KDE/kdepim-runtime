@@ -28,10 +28,10 @@ public:
     ~NewMailNotifierAttribute();
 
     /* reimpl */
-    NewMailNotifierAttribute *clone() const;
-    QByteArray type() const;
-    QByteArray serialized() const;
-    void deserialize(const QByteArray &data);
+    NewMailNotifierAttribute *clone() const Q_DECL_OVERRIDE;
+    QByteArray type() const Q_DECL_OVERRIDE;
+    QByteArray serialized() const Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
     bool ignoreNewMail() const;
     void setIgnoreNewMail(bool b);

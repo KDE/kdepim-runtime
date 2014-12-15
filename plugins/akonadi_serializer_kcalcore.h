@@ -42,14 +42,14 @@ class SerializerPluginKCalCore : public QObject,
     Q_INTERFACES(Akonadi::GidExtractorInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKCalCore")
 public:
-    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version);
-    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version);
+    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) Q_DECL_OVERRIDE;
+    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) Q_DECL_OVERRIDE;
 
     void compare(Akonadi::AbstractDifferencesReporter *reporter,
                  const Akonadi::Item &leftItem,
-                 const Akonadi::Item &rightItem);
+                 const Akonadi::Item &rightItem) Q_DECL_OVERRIDE;
 
-    QString extractGid(const Item &item) const;
+    QString extractGid(const Item &item) const Q_DECL_OVERRIDE;
 
 private:
     KCalCore::ICalFormat mFormat;

@@ -32,7 +32,7 @@ class ConfigDialog : public QDialog
     Q_OBJECT
 public:
     ConfigDialog(QWidget *parent = 0);
-    ~ConfigDialog() {};
+    ~ConfigDialog() {}
 
 private slots:
     void save();

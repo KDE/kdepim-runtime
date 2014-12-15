@@ -34,12 +34,12 @@ public:
     ~NntpResource();
 
 public Q_SLOTS:
-    virtual void configure(WId windowId);
+    virtual void configure(WId windowId) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems(const Akonadi::Collection &col);
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
     void collectionChanged(const Akonadi::Collection &collection);

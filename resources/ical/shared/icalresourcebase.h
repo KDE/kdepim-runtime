@@ -36,15 +36,15 @@ public:
     ~ICalResourceBase();
 
 protected Q_SLOTS:
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    void retrieveItems(const Akonadi::Collection &col);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
 
 protected:
     enum CheckType { CheckForAdded, CheckForChanged };
 
     void initialise(const QStringList &mimeTypes, const QString &icon);
-    bool readFromFile(const QString &fileName);
-    bool writeToFile(const QString &fileName);
+    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
+    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
 
     /**
      * Customize the configuration dialog before it is displayed.
