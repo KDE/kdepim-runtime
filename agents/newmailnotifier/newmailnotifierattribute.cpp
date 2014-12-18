@@ -78,3 +78,8 @@ void NewMailNotifierAttribute::setIgnoreNewMail(bool b)
 {
     d->ignoreNewMail = b;
 }
+
+bool NewMailNotifierAttribute::operator==(const NewMailNotifierAttribute &other) const
+{
+    return d->ignoreNewMail == other.ignoreNewMail();
+}

@@ -57,3 +57,4 @@ install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/
 install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotifier_agent" )
 
 add_subdirectory(kconf_update)
+add_subdirectory(autotests)
