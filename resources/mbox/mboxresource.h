@@ -37,15 +37,15 @@ public:
     ~MboxResource();
 
 protected Q_SLOTS:
-    virtual bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    virtual void retrieveItems(const Akonadi::Collection &col);
+    virtual bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    virtual void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void aboutToQuit();
+    virtual void aboutToQuit() Q_DECL_OVERRIDE;
 
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    virtual void itemRemoved(const Akonadi::Item &item);
+    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    virtual void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
     // From SingleFileResourceBase
     virtual void handleHashChange();

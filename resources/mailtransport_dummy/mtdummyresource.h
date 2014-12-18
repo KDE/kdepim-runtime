@@ -34,18 +34,18 @@ public:
     ~MTDummyResource();
 
 public:
-    virtual void configure(WId windowId);
+    void configure(WId windowId) Q_DECL_OVERRIDE;
 
     /* reimpl from ResourceBase::Transport */
-    virtual void sendItem(const Akonadi::Item &message);
+    void sendItem(const Akonadi::Item &message) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems(const Akonadi::Collection &col);
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void aboutToQuit();
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void jobResult(KJob *job);

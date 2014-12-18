@@ -41,19 +41,19 @@ public:
     ~KAlarmDirResource();
 
 public Q_SLOTS:
-    virtual void configure(WId windowId);
-    virtual void aboutToQuit();
+    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
-    void retrieveCollections();
-    void retrieveItems(const Akonadi::Collection &);
-    bool retrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts);
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void collectionChanged(const Akonadi::Collection &);
-    virtual void itemAdded(const Akonadi::Item &, const Akonadi::Collection &);
-    virtual void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts);
-    virtual void itemRemoved(const Akonadi::Item &);
+    void collectionChanged(const Akonadi::Collection &) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &, const Akonadi::Collection &) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void    settingsChanged();
