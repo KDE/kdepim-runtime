@@ -179,7 +179,7 @@ bool VCardResource::writeToFile(const QString &fileName)
         return false;
     }
 
-    const QByteArray data = mConverter.createVCards(mAddressees.values());
+    const QByteArray data = mConverter.createVCards(mAddressees.values().toVector());
 
     file.write(data);
     file.close();
