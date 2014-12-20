@@ -80,7 +80,7 @@ static QString toString(const KContacts::Addressee &contact)
 }
 
 template <class T>
-static void compareList(AbstractDifferencesReporter *reporter, const QString &id, const QList<T> &left, const QList<T> &right)
+static void compareVector(AbstractDifferencesReporter *reporter, const QString &id, const QVector<T> &left, const QVector<T> &right)
 {
     for (int i = 0; i < left.count(); ++i) {
         if (!right.contains(left[ i ])) {
@@ -120,7 +120,7 @@ void SerializerPluginContactGroup::compare(Akonadi::AbstractDifferencesReporter 
     Akonadi::ContactGroupExpandJob *rightJob = new Akonadi::ContactGroupExpandJob(rightContactGroup);
     rightJob->exec();
 
-    compareList(reporter, i18n("Member"), leftJob->contacts(), rightJob->contacts());
+    compareVector(reporter, i18n("Member"), leftJob->contacts(), rightJob->contacts());
 }
 
 //// GidExtractorInterface

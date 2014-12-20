@@ -151,6 +151,23 @@ static void compareList(Akonadi::AbstractDifferencesReporter *reporter, const QS
     }
 }
 
+
+template <class T>
+static void compareVector(Akonadi::AbstractDifferencesReporter *reporter, const QString &id, const QVector<T> &left, const QVector<T> &right)
+{
+    for (int i = 0; i < left.count(); ++i) {
+        if (!right.contains(left[ i ])) {
+            reporter->addProperty(AbstractDifferencesReporter::AdditionalLeftMode, id, toString(left[ i ]), QString());
+        }
+    }
+
+    for (int i = 0; i < right.count(); ++i) {
+        if (!left.contains(right[ i ])) {
+            reporter->addProperty(AbstractDifferencesReporter::AdditionalRightMode, id, QString(), toString(right[ i ]));
+        }
+    }
+}
+
 void SerializerPluginAddressee::compare(Akonadi::AbstractDifferencesReporter *reporter,
                                         const Akonadi::Item &leftItem,
                                         const Akonadi::Item &rightItem)
@@ -251,8 +268,8 @@ void SerializerPluginAddressee::compare(Akonadi::AbstractDifferencesReporter *re
                               leftContact.url().toDisplayString(), rightContact.url().toDisplayString());
 
     compareList(reporter, i18n("Emails"), leftContact.emails(), rightContact.emails());
-    compareList(reporter, i18n("Phone Numbers"), leftContact.phoneNumbers(), rightContact.phoneNumbers());
-    compareList(reporter, i18n("Addresses"), leftContact.addresses(), rightContact.addresses());
+    compareVector(reporter, i18n("Phone Numbers"), leftContact.phoneNumbers(), rightContact.phoneNumbers());
+    compareVector(reporter, i18n("Addresses"), leftContact.addresses(), rightContact.addresses());
 
     //TODO: logo/photo/custom entries
 }
