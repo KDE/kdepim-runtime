@@ -9,7 +9,6 @@ set(newmailnotifieragent_SRCS
   newmailnotifier_debug.cpp
   newmailnotifiersettingsdialog.cpp
   newmailnotifieragent.cpp
-  newmailnotifierattribute.cpp
   specialnotifierjob.cpp
   newmailnotifierselectcollectionwidget.cpp
   newmailnotifiershowmessagejob.cpp
@@ -52,4 +51,3 @@ install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/
 install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR} )
 
 add_subdirectory(kconf_update)
-add_subdirectory(autotests)

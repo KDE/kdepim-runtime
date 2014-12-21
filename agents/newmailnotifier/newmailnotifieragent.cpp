@@ -23,7 +23,7 @@
 
 #include "util.h"
 
-#include "newmailnotifierattribute.h"
+#include <AkonadiCore/NewMailNotifierAttribute>
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
@@ -62,7 +62,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     migrate.migrate();
 
     KLocalizedString::setApplicationDomain("akonadi_newmailnotifier_agent");
-    Akonadi::AttributeFactory::registerAttribute<NewMailNotifierAttribute>();
+    Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor(this);
 
     mIdentityManager = new KIdentityManagement::IdentityManager(false, this);
@@ -265,8 +265,8 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
         return true;
     }
 
-    if (collection.hasAttribute<NewMailNotifierAttribute>()) {
-        if (collection.attribute<NewMailNotifierAttribute>()->ignoreNewMail()) {
+    if (collection.hasAttribute<Akonadi::NewMailNotifierAttribute>()) {
+        if (collection.attribute<Akonadi::NewMailNotifierAttribute>()->ignoreNewMail()) {
             return true;
         }
     }

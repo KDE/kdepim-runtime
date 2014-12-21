@@ -18,7 +18,7 @@
 */
 
 #include "newmailnotifierselectcollectionwidget.h"
-#include "newmailnotifierattribute.h"
+#include <AkonadiCore/NewMailNotifierAttribute>
 
 #include <CollectionModifyJob>
 #include <CollectionFilterProxyModel>
@@ -151,7 +151,7 @@ void NewMailNotifierSelectCollectionWidget::updateStatus(const QModelIndex &pare
         const Akonadi::Collection collection =
             mCheckProxy->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
 
-        NewMailNotifierAttribute *attr = collection.attribute<NewMailNotifierAttribute>();
+        Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
         if (!attr || !attr->ignoreNewMail()) {
             mCheckProxy->setData(child, Qt::Checked, Qt::CheckStateRole);
         }
@@ -179,15 +179,15 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QMo
         Akonadi::Collection collection =
             mCheckProxy->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
 
-        NewMailNotifierAttribute *attr = collection.attribute<NewMailNotifierAttribute>();
+        Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
         Akonadi::CollectionModifyJob *modifyJob = 0;
         const bool selected = (mCheckProxy->data(child, Qt::CheckStateRole).value<int>() != 0);
         if (selected && attr && attr->ignoreNewMail()) {
-            collection.removeAttribute<NewMailNotifierAttribute>();
+            collection.removeAttribute<Akonadi::NewMailNotifierAttribute>();
             modifyJob = new Akonadi::CollectionModifyJob(collection);
             modifyJob->setProperty("AttributeAdded", true);
         } else if (!selected && (!attr || !attr->ignoreNewMail())) {
-            attr = collection.attribute<NewMailNotifierAttribute>(Akonadi::Entity::AddIfMissing);
+            attr = collection.attribute<Akonadi::NewMailNotifierAttribute>(Akonadi::Entity::AddIfMissing);
             attr->setIgnoreNewMail(true);
             modifyJob = new Akonadi::CollectionModifyJob(collection);
             modifyJob->setProperty("AttributeAdded", false);
