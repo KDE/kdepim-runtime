@@ -51,7 +51,7 @@ set( common_link_libraries
 )
 
 # test for overwritten methods
-add_executable(templatemethodstest ../mixedmaildirstore.cpp templatemethodstest.cpp ../mixedmaildir_debug.cpp)
+add_executable(templatemethodstest ../mixedmaildirstore.cpp templatemethodstest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
 add_test(templatemethodstest templatemethodstest)
 ecm_mark_as_test(mixedmaildir-templatemethodtest)
 
@@ -62,7 +62,7 @@ target_link_libraries(
 )
 
 # test for collection creation handling
-add_executable(collectioncreatetest  ../mixedmaildirstore.cpp collectioncreatetest.cpp ../mixedmaildir_debug.cpp)
+add_executable(collectioncreatetest  ../mixedmaildirstore.cpp collectioncreatetest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
 add_test(collectioncreatetest collectioncreatetest)
 ecm_mark_as_test(mixedmaildir-collectioncreatetest)
 
@@ -73,7 +73,7 @@ target_link_libraries(
 )
 
 # test for collection deletion handling
-add_executable(collectiondeletetest   ../mixedmaildirstore.cpp collectiondeletetest.cpp ../mixedmaildir_debug.cpp)
+add_executable(collectiondeletetest   ../mixedmaildirstore.cpp collectiondeletetest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
 add_test(collectiondeletetest collectiondeletetest)
 ecm_mark_as_test(mixedmaildir-collectiondeletetest)
 
@@ -83,7 +83,7 @@ target_link_libraries(
 )
 
 # test for collection fetching handling
-add_executable( collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp ../mixedmaildir_debug.cpp)
+add_executable( collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
 add_test(collectionfetchtest collectionfetchtest)
 ecm_mark_as_test(mixedmaildir-collectionfetchtest)
 
@@ -95,7 +95,7 @@ target_link_libraries(
 
 # test for collection modification handling
 add_executable( collectionmodifytest  ../mixedmaildirstore.cpp
- collectionmodifytest.cpp ../mixedmaildir_debug.cpp
+ collectionmodifytest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
 add_test(collectionmodifytest collectionmodifytest)
@@ -109,7 +109,7 @@ target_link_libraries(
 
 # test for collection move handling
 add_executable( collectionmovetest  ../mixedmaildirstore.cpp ../mixedmaildir_debug.cpp
- collectionmovetest.cpp
+ collectionmovetest.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
 add_test(collectionmovetest collectionmovetest)
@@ -121,7 +121,7 @@ target_link_libraries(
 )
 
 # test for item creation handling
-add_executable(itemcreatetest   ../mixedmaildirstore.cpp ../mixedmaildir_debug.cpp
+add_executable(itemcreatetest   ../mixedmaildirstore.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp
  itemcreatetest.cpp
  ${testdata_SRCS}
 )
@@ -136,7 +136,7 @@ target_link_libraries(
 
 # test for item creation handling
 add_executable(itemdeletetest  ../mixedmaildirstore.cpp
- itemdeletetest.cpp
+ itemdeletetest.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
 add_test(itemdeletetest itemdeletetest)
@@ -149,7 +149,7 @@ target_link_libraries(
 )
 
 # test for item retrieval handling
-add_executable(itemfetchtest   ../mixedmaildirstore.cpp
+add_executable(itemfetchtest   ../mixedmaildirstore.cpp ../mixedmaildirresource_debug.cpp
  itemfetchtest.cpp
  ${testdata_SRCS}
 )
@@ -162,7 +162,7 @@ target_link_libraries(
 )
 
 # test for item modification handling
-add_executable(itemmodifytest   ../mixedmaildirstore.cpp
+add_executable(itemmodifytest   ../mixedmaildirstore.cpp ../mixedmaildirresource_debug.cpp
  itemmodifytest.cpp
  ${testdata_SRCS}
 )
@@ -175,7 +175,7 @@ target_link_libraries(
 )
 
 # test for item move handling
-add_executable(itemmovetest  ../mixedmaildirstore.cpp
+add_executable(itemmovetest  ../mixedmaildirstore.cpp ../mixedmaildirresource_debug.cpp
  itemmovetest.cpp
  ${testdata_SRCS}
 )
@@ -189,7 +189,7 @@ target_link_libraries(
 )
 
 # test for store compact handling
-add_executable(storecompacttest  ../mixedmaildirstore.cpp
+add_executable(storecompacttest  ../mixedmaildirstore.cpp  ../mixedmaildirresource_debug.cpp
  storecompacttest.cpp
  ${testdata_SRCS}
 )
