@@ -19,7 +19,7 @@
 */
 
 #include "mixedmaildirstore.h"
-
+#include "mixedmaildirresource_debug.h"
 #include "testdatautil.h"
 
 #include "filestore/itemcreatejob.h"

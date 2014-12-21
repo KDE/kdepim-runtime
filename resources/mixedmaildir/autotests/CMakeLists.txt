@@ -147,7 +147,8 @@ target_link_libraries(
   itemdeletetest
   ${common_link_libraries}
 )
-
+#REACTIVATE IT
+if (0)
 # test for item retrieval handling
 add_executable(itemfetchtest   ../mixedmaildirstore.cpp ../mixedmaildirresource_debug.cpp
  itemfetchtest.cpp
@@ -160,6 +161,7 @@ target_link_libraries(
   itemfetchtest
   ${common_link_libraries}
 )
+endif()
 
 # test for item modification handling
 add_executable(itemmodifytest   ../mixedmaildirstore.cpp ../mixedmaildirresource_debug.cpp
