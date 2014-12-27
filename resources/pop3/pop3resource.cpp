@@ -20,7 +20,7 @@
 #include "accountdialog.h"
 #include "settings.h"
 #include "jobs.h"
-#include "pop3resourceattribute.h"
+#include <AkonadiCore/Pop3ResourceAttribute>
 
 #include <CollectionFetchJob>
 #include <ItemCreateJob>
@@ -54,7 +54,7 @@ POP3Resource::POP3Resource(const QString &id)
       mTestLocalInbox(false),
       mWallet(0)
 {
-    Akonadi::AttributeFactory::registerAttribute<Pop3ResourceAttribute>();
+    Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
     setNeedsNetwork(true);
     Settings::self()->setResourceId(identifier());
     resetState();
@@ -580,7 +580,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
     item.setMimeType(QLatin1String("message/rfc822"));
     item.setPayload<KMime::Message::Ptr>(message);
 
-    Pop3ResourceAttribute *attr  = item.attribute<Pop3ResourceAttribute>(Akonadi::Entity::AddIfMissing);
+    Akonadi::Pop3ResourceAttribute *attr  = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Entity::AddIfMissing);
     attr->setPop3AccountName(identifier());
     // update status flags
     if (KMime::isSigned(message.get())) {

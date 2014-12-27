@@ -11,7 +11,6 @@ set( pop3resource_SRCS
   accountdialog.cpp
   jobs.cpp
   settings.cpp
-  pop3resourceattribute.cpp
   pop3resource_debug.cpp
 )
 
