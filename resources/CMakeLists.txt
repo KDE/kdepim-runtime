@@ -1,49 +1,12 @@
 project(resources)
 cmake_minimum_required(VERSION 2.8.12)
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
-  find_package(ECM 1.3.0 CONFIG REQUIRED)
-  set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
+set(AKONADICALENDAR_LIB_VERSION "4.78.0")
+set(KMBOX_LIB_VERSION "4.78.0")
 
-  include(ECMPackageConfigHelpers)
-  include(ECMSetupVersion)
-  include(FeatureSummary)
-  include(KDEInstallDirs)
-  include(KDECMakeSettings)
-  include(KDEFrameworkCompilerSettings)
-  include(ECMInstallIcons)
 
-  set(KF5_VERSION "5.4.0")
-  set(QT_REQUIRED_VERSION "5.3.0")
-
-  set(KDEPIMLIBS_LIB_VERSION "4.75.0")
-
-  set(KDEPIM_LIB_VERSION "4.70.0")
-  set(KDEPIM_LIB_SOVERSION "5")
-
-  # QT5 package
-  find_package(Qt5WebKitWidgets ${QT_REQUIRED_VERSION} REQUIRED NO_MODULE)
-
-  # KF5 package
-  find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
-  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
-
-  # Kdepimlibs package
-  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5PimIdentities ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5Imap ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-
-endif()
-
-find_package(KF5AkonadiCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5AkonadiNotes ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Mbox ${KMBOX_LIB_VERSION} CONFIG REQUIRED)
 
 # Extra package
 find_package(KF5GAPI "4.72.0" CONFIG)
