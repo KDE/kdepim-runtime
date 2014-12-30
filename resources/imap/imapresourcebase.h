@@ -62,7 +62,6 @@ public:
 
   virtual KDialog *createConfigureDialog( WId windowId ) = 0;
 
-  QStringList serverCapabilities() const;
   void cleanup();
 
   virtual Settings* settings() const;
@@ -73,6 +72,7 @@ public Q_SLOTS:
   // DBus methods
   Q_SCRIPTABLE void requestManualExpunge( qint64 collectionId );
   Q_SCRIPTABLE int configureSubscription( qlonglong windowId = 0 );
+  Q_SCRIPTABLE QStringList serverCapabilities() const;
 
   // pseudo-virtual called by ResourceBase
   QString dumpResourceToString() const;
