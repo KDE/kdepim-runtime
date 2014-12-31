@@ -96,5 +96,7 @@ target_link_libraries(akonadi_kolab_resource
 install(FILES kolabresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
+kde4_install_icons(${ICON_INSTALL_DIR})
+
 add_subdirectory(wizard)
 add_subdirectory(tests)
