@@ -159,7 +159,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
                                QLatin1String(KDEPIM_RUNTIME_VERSION),
                                i18n("Notifies about new mail."),
                                KAboutLicense::GPL_V2,
-                               i18n("Copyright (C) 2013 Laurent Montel"));
+                               i18n("Copyright (C) 2013-2015 Laurent Montel"));
 
     aboutData.addAuthor(i18n("Laurent Montel"),
                         i18n("Maintainer"), QLatin1String("montel@kde.org"));
