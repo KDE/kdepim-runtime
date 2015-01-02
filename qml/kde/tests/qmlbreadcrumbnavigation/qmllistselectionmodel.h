@@ -26,41 +26,40 @@
 
 class QMLListSelectionModel : public QObject
 {
-  Q_OBJECT
-  Q_PROPERTY(QList<int> selection READ selection NOTIFY selectionChanged)
+    Q_OBJECT
+    Q_PROPERTY(QList<int> selection READ selection NOTIFY selectionChanged)
 public:
-  enum SelectionFlag {
-      NoUpdate       = 0x0000,
-      Clear          = 0x0001,
-      Select         = 0x0002,
-      Deselect       = 0x0004,
-      Toggle         = 0x0008,
-      Current        = 0x0010,
-      Rows           = 0x0020,
-      Columns        = 0x0040,
-      SelectCurrent  = Select | Current,
-      ToggleCurrent  = Toggle | Current,
-      ClearAndSelect = Clear | Select
-  };
-  //Q_DECLARE_FLAGS(SelectionFlags, SelectionFlag)
+    enum SelectionFlag {
+        NoUpdate       = 0x0000,
+        Clear          = 0x0001,
+        Select         = 0x0002,
+        Deselect       = 0x0004,
+        Toggle         = 0x0008,
+        Current        = 0x0010,
+        Rows           = 0x0020,
+        Columns        = 0x0040,
+        SelectCurrent  = Select | Current,
+        ToggleCurrent  = Toggle | Current,
+        ClearAndSelect = Clear | Select
+    };
+    //Q_DECLARE_FLAGS(SelectionFlags, SelectionFlag)
 
-  explicit QMLListSelectionModel(QItemSelectionModel *selectionModel, QObject* parent = 0);
-  explicit QMLListSelectionModel(QAbstractItemModel *model, QObject* parent = 0);
+    explicit QMLListSelectionModel(QItemSelectionModel *selectionModel, QObject *parent = 0);
+    explicit QMLListSelectionModel(QAbstractItemModel *model, QObject *parent = 0);
 
-  QItemSelectionModel* selectionModel() const;
+    QItemSelectionModel *selectionModel() const;
 
-  QList<int> selection() const;
-
+    QList<int> selection() const;
 
 public slots:
-  void clearSelection();
-  void select(int row, int command);
+    void clearSelection();
+    void select(int row, int command);
 
 signals:
-  void selectionChanged();
+    void selectionChanged();
 
 private:
-  QItemSelectionModel * const m_selectionModel;
+    QItemSelectionModel *const m_selectionModel;
 };
 
 #endif

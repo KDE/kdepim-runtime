@@ -27,27 +27,27 @@
 
 class ItemTest : public QObject, protected WrappedObject
 {
-  Q_OBJECT
-  public:
-    explicit ItemTest( QObject *parent = Q_NULLPTR );
+    Q_OBJECT
+public:
+    explicit ItemTest(QObject *parent = Q_NULLPTR);
 
-    void setParentCollection( const Akonadi::Collection &parent );
+    void setParentCollection(const Akonadi::Collection &parent);
 
-  public slots:
-    QObject* newInstance();
+public slots:
+    QObject *newInstance();
 
-    void setParentCollection( const QString &path );
+    void setParentCollection(const QString &path);
     QString mimeType() const;
-    void setMimeType( const QString &mimeType );
-    void setPayloadFromFile( const QString &fileName );
+    void setMimeType(const QString &mimeType);
+    void setPayloadFromFile(const QString &fileName);
 
     void create();
 
-  private:
+private:
     Akonadi::Collection mParent;
     Akonadi::Item mItem;
 };
 
-Q_DECLARE_METATYPE( ItemTest* )
+Q_DECLARE_METATYPE(ItemTest *)
 
 #endif

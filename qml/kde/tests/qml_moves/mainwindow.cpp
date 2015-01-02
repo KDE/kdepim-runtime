@@ -32,51 +32,51 @@
 
 #include "dynamictreemodel.h"
 
-MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
-  : QWidget(parent, f)
+MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f)
 {
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  QSplitter *splitter = new QSplitter;
-  layout->addWidget(splitter);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    QSplitter *splitter = new QSplitter;
+    layout->addWidget(splitter);
 
-  m_treeModel = new DynamicTreeModel(this);
-  ModelInsertCommand *insert = new ModelInsertCommand(m_treeModel, this);
-  insert->setStartRow(0);
-  insert->interpret(
-    "- 1"
-    "- 1"
-    "- 1"
-    "- 1"
-    "- 1"
-  );
-  insert->doCommand();
+    m_treeModel = new DynamicTreeModel(this);
+    ModelInsertCommand *insert = new ModelInsertCommand(m_treeModel, this);
+    insert->setStartRow(0);
+    insert->interpret(
+        "- 1"
+        "- 1"
+        "- 1"
+        "- 1"
+        "- 1"
+    );
+    insert->doCommand();
 
-  QTreeView *view = new QTreeView(splitter);
-  view->setModel(m_treeModel);
+    QTreeView *view = new QTreeView(splitter);
+    view->setModel(m_treeModel);
 
-  m_declarativeView = new QDeclarativeView(splitter);
+    m_declarativeView = new QDeclarativeView(splitter);
 
-  QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
+    QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
 
-  context->setContextProperty( "_model", m_treeModel );
+    context->setContextProperty("_model", m_treeModel);
 
-  context->setContextProperty( "application", QVariant::fromValue( static_cast<QObject*>( this ) ) );
+    context->setContextProperty("application", QVariant::fromValue(static_cast<QObject *>(this)));
 
-  m_declarativeView->setResizeMode( QDeclarativeView::SizeRootObjectToView );
-  m_declarativeView->setSource( QUrl( "./mainview.qml" ) );
+    m_declarativeView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    m_declarativeView->setSource(QUrl("./mainview.qml"));
 
-  splitter->setSizes(QList<int>() << 1 << 1);
-  QTimer::singleShot(2000, this, SLOT(doMove()));
+    splitter->setSizes(QList<int>() << 1 << 1);
+    QTimer::singleShot(2000, this, SLOT(doMove()));
 
 }
 
 void MainWindow::doMove()
 {
-  qDebug() << "MOV";
-  ModelMoveCommand *command = new ModelMoveCommand(m_treeModel, this);
-  command->setStartRow(0);
-  command->setEndRow(0);
-  command->setDestRow(2);
-  command->doCommand();
+    qDebug() << "MOV";
+    ModelMoveCommand *command = new ModelMoveCommand(m_treeModel, this);
+    command->setStartRow(0);
+    command->setEndRow(0);
+    command->setDestRow(2);
+    command->doCommand();
 }
 

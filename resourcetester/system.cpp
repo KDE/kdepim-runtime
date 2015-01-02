@@ -25,21 +25,22 @@
 #include <QFile>
 #include <qtest.h>
 
-System::System(QObject* parent) :
-  QObject( parent )
+System::System(QObject *parent) :
+    QObject(parent)
 {
 }
 
-void System::exec(const QString &_program, const QStringList& args)
+void System::exec(const QString &_program, const QStringList &args)
 {
-  QString program = _program;
-  if ( QFile::exists( Global::basePath() + _program ) )
-    program = Global::basePath() + _program;
-  Test::instance()->verify( KProcess::execute( program, args ) == 0 );
+    QString program = _program;
+    if (QFile::exists(Global::basePath() + _program)) {
+        program = Global::basePath() + _program;
+    }
+    Test::instance()->verify(KProcess::execute(program, args) == 0);
 }
 
 void System::sleep(int secs)
 {
-  QTest::qWait( secs * 1000 );
+    QTest::qWait(secs * 1000);
 }
 

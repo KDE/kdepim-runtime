@@ -19,7 +19,6 @@
     USA.
 */
 
-
 #include "checkableitemproxymodel.h"
 
 #include <QItemSelectionModel>
@@ -27,96 +26,97 @@
 
 class CheckableItemProxyModelPrivate
 {
-  Q_DECLARE_PUBLIC(CheckableItemProxyModel)
-  CheckableItemProxyModel *q_ptr;
+    Q_DECLARE_PUBLIC(CheckableItemProxyModel)
+    CheckableItemProxyModel *q_ptr;
 
-  CheckableItemProxyModelPrivate(CheckableItemProxyModel *checkableModel)
-    : q_ptr(checkableModel),
-      m_itemSelectionModel(0)
-  {
+    CheckableItemProxyModelPrivate(CheckableItemProxyModel *checkableModel)
+        : q_ptr(checkableModel),
+          m_itemSelectionModel(0)
+    {
 
-  }
+    }
 
-  QItemSelectionModel *m_itemSelectionModel;
+    QItemSelectionModel *m_itemSelectionModel;
 
-  void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 };
 
-CheckableItemProxyModel::CheckableItemProxyModel(QObject* parent)
-  : QSortFilterProxyModel(parent), d_ptr(new CheckableItemProxyModelPrivate(this))
+CheckableItemProxyModel::CheckableItemProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent), d_ptr(new CheckableItemProxyModelPrivate(this))
 {
 
 }
 
-void CheckableItemProxyModel::setSelectionModel(QItemSelectionModel* itemSelectionModel)
+void CheckableItemProxyModel::setSelectionModel(QItemSelectionModel *itemSelectionModel)
 {
-  Q_D(CheckableItemProxyModel);
-  d->m_itemSelectionModel = itemSelectionModel;
-  Q_ASSERT(sourceModel() ? d->m_itemSelectionModel->model() == sourceModel() : true);
-  connect(itemSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)));
+    Q_D(CheckableItemProxyModel);
+    d->m_itemSelectionModel = itemSelectionModel;
+    Q_ASSERT(sourceModel() ? d->m_itemSelectionModel->model() == sourceModel() : true);
+    connect(itemSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)));
 }
 
-Qt::ItemFlags CheckableItemProxyModel::flags(const QModelIndex& index) const
+Qt::ItemFlags CheckableItemProxyModel::flags(const QModelIndex &index) const
 {
-  return QSortFilterProxyModel::flags(index) | Qt::ItemIsUserCheckable;
+    return QSortFilterProxyModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
-QVariant CheckableItemProxyModel::data(const QModelIndex& index, int role) const
+QVariant CheckableItemProxyModel::data(const QModelIndex &index, int role) const
 {
-  Q_D(const CheckableItemProxyModel);
+    Q_D(const CheckableItemProxyModel);
 
-  if (role == Qt::CheckStateRole)
-  {
-    if (!d->m_itemSelectionModel)
-      return Qt::Unchecked;
+    if (role == Qt::CheckStateRole) {
+        if (!d->m_itemSelectionModel) {
+            return Qt::Unchecked;
+        }
 
-    return d->m_itemSelectionModel->selection().contains(mapToSource(index)) ? Qt::Checked : Qt::Unchecked;
-  }
-  return QSortFilterProxyModel::data(index, role);
+        return d->m_itemSelectionModel->selection().contains(mapToSource(index)) ? Qt::Checked : Qt::Unchecked;
+    }
+    return QSortFilterProxyModel::data(index, role);
 }
 
-bool CheckableItemProxyModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool CheckableItemProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-  Q_D(CheckableItemProxyModel);
-  if (role == Qt::CheckStateRole)
-  {
-    if (!d->m_itemSelectionModel)
-      return false;
+    Q_D(CheckableItemProxyModel);
+    if (role == Qt::CheckStateRole) {
+        if (!d->m_itemSelectionModel) {
+            return false;
+        }
 
-    Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
-    const QModelIndex srcIndex = mapToSource(index);
-    bool result = select(QItemSelection(srcIndex, srcIndex), state == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
-    qDebug() << "DC";
-    emit dataChanged(srcIndex, srcIndex);
-    return result;
-  }
-  return QSortFilterProxyModel::setData(index, value, role);
+        Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
+        const QModelIndex srcIndex = mapToSource(index);
+        bool result = select(QItemSelection(srcIndex, srcIndex), state == Qt::Checked ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
+        qDebug() << "DC";
+        emit dataChanged(srcIndex, srcIndex);
+        return result;
+    }
+    return QSortFilterProxyModel::setData(index, value, role);
 }
 
-void CheckableItemProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
+void CheckableItemProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
-  QSortFilterProxyModel::setSourceModel(sourceModel);
-  Q_ASSERT(d_ptr->m_itemSelectionModel ? d_ptr->m_itemSelectionModel->model() == sourceModel : true);
+    QSortFilterProxyModel::setSourceModel(sourceModel);
+    Q_ASSERT(d_ptr->m_itemSelectionModel ? d_ptr->m_itemSelectionModel->model() == sourceModel : true);
 }
 
 void CheckableItemProxyModelPrivate::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-  qDebug()<< "SEL CH" << selected << deselected;
-  Q_Q(CheckableItemProxyModel);
-  foreach (const QItemSelectionRange &range, q->mapSelectionFromSource(selected))
-    q->dataChanged(range.topLeft(), range.bottomRight());
-  foreach (const QItemSelectionRange &range, q->mapSelectionFromSource(deselected))
-    q->dataChanged(range.topLeft(), range.bottomRight());
+    qDebug() << "SEL CH" << selected << deselected;
+    Q_Q(CheckableItemProxyModel);
+    foreach (const QItemSelectionRange &range, q->mapSelectionFromSource(selected)) {
+        q->dataChanged(range.topLeft(), range.bottomRight());
+    }
+    foreach (const QItemSelectionRange &range, q->mapSelectionFromSource(deselected)) {
+        q->dataChanged(range.topLeft(), range.bottomRight());
+    }
 }
 
-bool CheckableItemProxyModel::select(const QItemSelection& selection, QItemSelectionModel::SelectionFlags command)
+bool CheckableItemProxyModel::select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command)
 {
-  Q_D(CheckableItemProxyModel);
-  d->m_itemSelectionModel->select(selection, command);
-  return true;
+    Q_D(CheckableItemProxyModel);
+    d->m_itemSelectionModel->select(selection, command);
+    return true;
 }
-
 
 #include "moc_checkableitemproxymodel.cpp"
 

@@ -23,163 +23,166 @@
 
 #include <QStringList>
 
-KBreadcrumbNavigationProxyModel::KBreadcrumbNavigationProxyModel(QItemSelectionModel* selectionModel, QObject* parent)
-  : KSelectionProxyModel(selectionModel, parent)
+KBreadcrumbNavigationProxyModel::KBreadcrumbNavigationProxyModel(QItemSelectionModel *selectionModel, QObject *parent)
+    : KSelectionProxyModel(selectionModel, parent)
 {
 
 }
 
-QVariant KBreadcrumbNavigationProxyModel::data(const QModelIndex& index, int role) const
+QVariant KBreadcrumbNavigationProxyModel::data(const QModelIndex &index, int role) const
 {
-  if (rowCount() > 2 && index.row() == 0 && role == Qt::DisplayRole)
-  {
-    QModelIndex sourceIndex = mapToSource(index);
-    QStringList dataList;
-    while (sourceIndex.isValid())
-    {
-      dataList.prepend(sourceIndex.data().toString());
-      sourceIndex = sourceIndex.parent();
+    if (rowCount() > 2 && index.row() == 0 && role == Qt::DisplayRole) {
+        QModelIndex sourceIndex = mapToSource(index);
+        QStringList dataList;
+        while (sourceIndex.isValid()) {
+            dataList.prepend(sourceIndex.data().toString());
+            sourceIndex = sourceIndex.parent();
+        }
+        return dataList.join(" > ");
     }
-    return dataList.join(" > ");
-  }
-  return KSelectionProxyModel::data(index, role);
+    return KSelectionProxyModel::data(index, role);
 }
 
 void KBreadcrumbNavigationProxyModel::setShowHiddenAscendantData(bool showHiddenAscendantData)
 {
-  m_showHiddenAscendantData = showHiddenAscendantData;
+    m_showHiddenAscendantData = showHiddenAscendantData;
 }
 
 bool KBreadcrumbNavigationProxyModel::showHiddenAscendantData() const
 {
-  return m_showHiddenAscendantData;
+    return m_showHiddenAscendantData;
 }
 
-KNavigatingProxyModel::KNavigatingProxyModel(KForwardingItemSelectionModel* selectionModel, QObject* parent)
-  : KSelectionProxyModel(selectionModel, parent), m_selectionModel(selectionModel)
+KNavigatingProxyModel::KNavigatingProxyModel(KForwardingItemSelectionModel *selectionModel, QObject *parent)
+    : KSelectionProxyModel(selectionModel, parent), m_selectionModel(selectionModel)
 {
 }
 
-void KNavigatingProxyModel::silentSelect(const QItemSelection& selection, QItemSelectionModel::SelectionFlags command)
+void KNavigatingProxyModel::silentSelect(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command)
 {
-  disconnect( m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-      this, SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)) );
-  m_selectionModel->select( selection, command);
-  connect( m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-      SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)) );
+    disconnect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+               this, SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
+    m_selectionModel->select(selection, command);
+    connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
 }
 
-void KNavigatingProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
+void KNavigatingProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
-  connect( m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-      SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)) );
-  connect( m_selectionModel, SIGNAL(resetNavigation()), SLOT(updateNavigation()) );
+    connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+            SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
+    connect(m_selectionModel, SIGNAL(resetNavigation()), SLOT(updateNavigation()));
 
-  disconnect(sourceModel, SIGNAL(modelReset()), this, SLOT(updateNavigation()));
-  disconnect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(_sourceRowsInserted(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(_sourceRowsRemoved(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(modelReset()), this, SLOT(updateNavigation()));
+    disconnect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(_sourceRowsInserted(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(_sourceRowsRemoved(QModelIndex,int,int)));
 
-  KSelectionProxyModel::setSourceModel(sourceModel);
-  updateNavigation();
-
-  connect(sourceModel, SIGNAL(modelReset()), SLOT(updateNavigation()));
-  connect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(_sourceRowsInserted(QModelIndex,int,int)));
-  connect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(_sourceRowsRemoved(QModelIndex,int,int)));
-}
-
-void KNavigatingProxyModel::_sourceRowsInserted(const QModelIndex& parent, int start, int end)
-{
-  if (filterBehavior() != ExactSelection || parent.isValid())
-    return;
-  QItemSelection sel( sourceModel()->index(start, 0, parent),
-                      sourceModel()->index(end, sourceModel()->columnCount(parent) - 1, parent));
-
-  silentSelect(sel, QItemSelectionModel::Select);
-}
-
-void KNavigatingProxyModel::_sourceRowsRemoved(const QModelIndex& parent, int start, int end)
-{
-  if (filterBehavior() != ExactSelection || parent.isValid())
-    return;
-
-  m_selectionModel->select(QItemSelection( sourceModel()->index(start, 0, parent),
-                                           sourceModel()->index(end, sourceModel()->columnCount(parent), parent)), QItemSelectionModel::Deselect);
-
-  if ( m_selectionModel->selection().isEmpty() )
+    KSelectionProxyModel::setSourceModel(sourceModel);
     updateNavigation();
+
+    connect(sourceModel, SIGNAL(modelReset()), SLOT(updateNavigation()));
+    connect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(_sourceRowsInserted(QModelIndex,int,int)));
+    connect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(_sourceRowsRemoved(QModelIndex,int,int)));
 }
 
-void KNavigatingProxyModel::navigationSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void KNavigatingProxyModel::_sourceRowsInserted(const QModelIndex &parent, int start, int end)
 {
-  updateNavigation();
+    if (filterBehavior() != ExactSelection || parent.isValid()) {
+        return;
+    }
+    QItemSelection sel(sourceModel()->index(start, 0, parent),
+                       sourceModel()->index(end, sourceModel()->columnCount(parent) - 1, parent));
+
+    silentSelect(sel, QItemSelectionModel::Select);
+}
+
+void KNavigatingProxyModel::_sourceRowsRemoved(const QModelIndex &parent, int start, int end)
+{
+    if (filterBehavior() != ExactSelection || parent.isValid()) {
+        return;
+    }
+
+    m_selectionModel->select(QItemSelection(sourceModel()->index(start, 0, parent),
+                                            sourceModel()->index(end, sourceModel()->columnCount(parent), parent)), QItemSelectionModel::Deselect);
+
+    if (m_selectionModel->selection().isEmpty()) {
+        updateNavigation();
+    }
+}
+
+void KNavigatingProxyModel::navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    updateNavigation();
 }
 
 void KNavigatingProxyModel::updateNavigation()
 {
-  beginResetModel();
-  if (!sourceModel())
-  {
-    setFilterBehavior(KSelectionProxyModel::ChildrenOfExactSelection);
+    beginResetModel();
+    if (!sourceModel()) {
+        setFilterBehavior(KSelectionProxyModel::ChildrenOfExactSelection);
+        endResetModel();
+        return;
+    }
+
+    if (m_selectionModel->selection().isEmpty()) {
+        setFilterBehavior(KSelectionProxyModel::ExactSelection);
+        QModelIndex top = sourceModel()->index(0, 0);
+        QModelIndex bottom = sourceModel()->index(sourceModel()->rowCount() - 1, 0);
+        silentSelect(QItemSelection(top, bottom), QItemSelectionModel::Select);
+    } else if (filterBehavior() != KSelectionProxyModel::ChildrenOfExactSelection) {
+        setFilterBehavior(KSelectionProxyModel::ChildrenOfExactSelection);
+    }
     endResetModel();
-    return;
-  }
-
-  if (m_selectionModel->selection().isEmpty())
-  {
-    setFilterBehavior(KSelectionProxyModel::ExactSelection);
-    QModelIndex top = sourceModel()->index(0, 0);
-    QModelIndex bottom = sourceModel()->index(sourceModel()->rowCount() - 1, 0);
-    silentSelect(QItemSelection(top, bottom), QItemSelectionModel::Select);
-  } else if (filterBehavior() != KSelectionProxyModel::ChildrenOfExactSelection) {
-    setFilterBehavior(KSelectionProxyModel::ChildrenOfExactSelection);
-  }
-  endResetModel();
 }
 
-KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel* model, QItemSelectionModel* selectionModel, QObject *parent)
-  : QItemSelectionModel(model, parent), m_selectionModel(selectionModel), m_direction(Forward)
+KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, QObject *parent)
+    : QItemSelectionModel(model, parent), m_selectionModel(selectionModel), m_direction(Forward)
 {
-  Q_ASSERT(model == selectionModel->model());
-  connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-          SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
-}
-
-KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel* model, QItemSelectionModel* selectionModel, Direction direction, QObject *parent)
-  : QItemSelectionModel(model, parent), m_selectionModel(selectionModel), m_direction(direction)
-{
-  Q_ASSERT(model == selectionModel->model());
-  if (m_direction == Forward)
+    Q_ASSERT(model == selectionModel->model());
     connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
 }
 
-void KForwardingItemSelectionModel::select(const QModelIndex& index, QItemSelectionModel::SelectionFlags command)
+KForwardingItemSelectionModel::KForwardingItemSelectionModel(QAbstractItemModel *model, QItemSelectionModel *selectionModel, Direction direction, QObject *parent)
+    : QItemSelectionModel(model, parent), m_selectionModel(selectionModel), m_direction(direction)
 {
-  if (m_direction == Reverse)
-    m_selectionModel->select(index, command);
-  else
-    QItemSelectionModel::select(index, command);
+    Q_ASSERT(model == selectionModel->model());
+    if (m_direction == Forward)
+        connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+                SLOT(navigationSelectionChanged(QItemSelection,QItemSelection)));
 }
 
-void KForwardingItemSelectionModel::select(const QItemSelection& selection, QItemSelectionModel::SelectionFlags command)
+void KForwardingItemSelectionModel::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command)
 {
-  if (m_direction == Reverse)
-    m_selectionModel->select(selection, command);
-  else
-    QItemSelectionModel::select(selection, command);
+    if (m_direction == Reverse) {
+        m_selectionModel->select(index, command);
+    } else {
+        QItemSelectionModel::select(index, command);
+    }
 }
 
-void KForwardingItemSelectionModel::navigationSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+void KForwardingItemSelectionModel::select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command)
 {
-  // ### The KNavigatingProxyModel selects all top level items if there is 'no selection'.
-  // This slot is called when we newly get a selection, so we can unselect all.
-  if (selectedRows().size() == model()->rowCount())
-    select(selected, ClearAndSelect);
-  else
-    select(selected, Select);
+    if (m_direction == Reverse) {
+        m_selectionModel->select(selection, command);
+    } else {
+        QItemSelectionModel::select(selection, command);
+    }
+}
 
-  select(deselected, Deselect);
-  if (selected == selection())
-    resetNavigation();
+void KForwardingItemSelectionModel::navigationSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    // ### The KNavigatingProxyModel selects all top level items if there is 'no selection'.
+    // This slot is called when we newly get a selection, so we can unselect all.
+    if (selectedRows().size() == model()->rowCount()) {
+        select(selected, ClearAndSelect);
+    } else {
+        select(selected, Select);
+    }
+
+    select(deselected, Deselect);
+    if (selected == selection()) {
+        resetNavigation();
+    }
 }
 

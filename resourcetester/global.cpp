@@ -23,53 +23,57 @@
 
 class GlobalPrivate
 {
-  public:
-    GlobalPrivate() : parent( new QObject() ) {}
+public:
+    GlobalPrivate() : parent(new QObject()) {}
     QString basePath;
     QString vmPath;
     QObject *parent;
 };
 
-Q_GLOBAL_STATIC( GlobalPrivate, sInstance )
+Q_GLOBAL_STATIC(GlobalPrivate, sInstance)
 
 QString Global::basePath()
 {
-  return sInstance->basePath;
+    return sInstance->basePath;
 }
 
-void Global::setBasePath(const QString& path)
+void Global::setBasePath(const QString &path)
 {
-  sInstance->basePath = path;
-  if ( !path.endsWith( QDir::separator() ) )
-    sInstance->basePath += QDir::separator();
+    sInstance->basePath = path;
+    if (!path.endsWith(QDir::separator())) {
+        sInstance->basePath += QDir::separator();
+    }
 }
 
 QString Global::vmPath()
 {
-  if ( sInstance->vmPath.isEmpty() )
-    setVMPath( KStandardDirs::locateLocal( "cache", "akonadi-resourcetester/", true ) );
-  return sInstance->vmPath;
+    if (sInstance->vmPath.isEmpty()) {
+        setVMPath(KStandardDirs::locateLocal("cache", "akonadi-resourcetester/", true));
+    }
+    return sInstance->vmPath;
 }
 
-void Global::setVMPath(const QString& path)
+void Global::setVMPath(const QString &path)
 {
-  qDebug() << path;
-  sInstance->vmPath = path;
-  if ( !path.endsWith( QDir::separator() ) )
-    sInstance->vmPath += QDir::separator();
-  const QDir dir( path );
-  if ( !dir.exists() )
-    QDir::root().mkpath( path );
+    qDebug() << path;
+    sInstance->vmPath = path;
+    if (!path.endsWith(QDir::separator())) {
+        sInstance->vmPath += QDir::separator();
+    }
+    const QDir dir(path);
+    if (!dir.exists()) {
+        QDir::root().mkpath(path);
+    }
 }
 
-QObject* Global::parent()
+QObject *Global::parent()
 {
-  Q_ASSERT( sInstance->parent );
-  return sInstance->parent;
+    Q_ASSERT(sInstance->parent);
+    return sInstance->parent;
 }
 
 void Global::cleanup()
 {
-  delete sInstance->parent;
-  sInstance->parent = 0;
+    delete sInstance->parent;
+    sInstance->parent = 0;
 }

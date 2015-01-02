@@ -189,8 +189,8 @@ void SendJob::Private::doTraditionalTransport()
         message->removeHeader("X-KMail-Identity");
         needAssemble = true;
     }
-    if ( message->hasHeader( "X-KMail-Dictionary") ) {
-        message->removeHeader( "X-KMail-Dictionary" );
+    if (message->hasHeader("X-KMail-Dictionary")) {
+        message->removeHeader("X-KMail-Dictionary");
         needAssemble = true;
     }
 

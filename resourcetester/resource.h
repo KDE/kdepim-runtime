@@ -30,20 +30,20 @@
 
 class Resource: public QObject, protected WrappedObject
 {
-  Q_OBJECT
-  public:
-    explicit Resource( QObject *parent );
+    Q_OBJECT
+public:
+    explicit Resource(QObject *parent);
     ~Resource();
 
-  public slots:
-    QObject* newInstance();
-    QObject* newInstance( const QString &type );
+public slots:
+    QObject *newInstance();
+    QObject *newInstance(const QString &type);
 
-    void setType( const QString &type );
+    void setType(const QString &type);
     QString identifier() const;
 
-    void setOption( const QString &key, const QVariant &value );
-    void setPathOption( const QString &key, const QString &path );
+    void setOption(const QString &key, const QVariant &value);
+    void setPathOption(const QString &key, const QString &path);
 
     bool createResource();
     void create();
@@ -51,7 +51,7 @@ class Resource: public QObject, protected WrappedObject
     void write();
     void recreate();
 
-  private:
+private:
     QString mTypeIdentifier;
     Akonadi::AgentInstance mInstance;
     QHash<QString, QVariant> mSettings;

@@ -27,7 +27,6 @@
 
 #include <AkonadiCore/control.h>
 
-
 #include <KAboutData>
 
 #include <QDebug>
@@ -42,62 +41,64 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-void sigHandler( int signal)
+void sigHandler(int signal)
 {
-  Q_UNUSED( signal );
-  QCoreApplication::quit();
+    Q_UNUSED(signal);
+    QCoreApplication::quit();
 }
 
 int main(int argc, char *argv[])
 {
-  QString path;
+    QString path;
 
-  KAboutData aboutData( QLatin1String("akonadi-RT"),
-                        i18n( "Akonadi Resource Tester" ),
-                        QLatin1String("1.0"),
-                        i18n( "Resource Tester" ),
-                        KAboutLicense::GPL,
-                        i18n( "(c) 2009 Igor Trindade Oliveira" ) );
+    KAboutData aboutData(QLatin1String("akonadi-RT"),
+                         i18n("Akonadi Resource Tester"),
+                         QLatin1String("1.0"),
+                         i18n("Resource Tester"),
+                         KAboutLicense::GPL,
+                         i18n("(c) 2009 Igor Trindade Oliveira"));
 
     QApplication app(argc, argv);
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
     parser.addVersionOption();
     parser.addHelpOption();
-  parser.addOption(QCommandLineOption(QStringList() << QLatin1String("c") << QLatin1String("config"), i18n( "Configuration file to open" ), QLatin1String("configfile"), QLatin1String("script.js/py/rb" )));
+    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("c") << QLatin1String("config"), i18n("Configuration file to open"), QLatin1String("configfile"), QLatin1String("script.js/py/rb")));
 
     //PORTING SCRIPT: adapt aboutdata variable if necessary
     aboutData.setupCommandLine(&parser);
     parser.process(app);
     aboutData.processCommandLine(&parser);
 
-  if ( parser.isSet( QLatin1String("config") ) )
-    path.append(parser.value( QLatin1String("config") )) ;
-  else
-    return -1;
-  Global::setBasePath( QFileInfo( path ).absolutePath() );
+    if (parser.isSet(QLatin1String("config"))) {
+        path.append(parser.value(QLatin1String("config"))) ;
+    } else {
+        return -1;
+    }
+    Global::setBasePath(QFileInfo(path).absolutePath());
 
 #ifdef Q_OS_UNIX
-  signal( SIGINT, sigHandler );
-  signal( SIGQUIT, sigHandler );
+    signal(SIGINT, sigHandler);
+    signal(SIGQUIT, sigHandler);
 #endif
 
-  if ( !Akonadi::Control::start() )
-    qFatal( "Unable to start Akonadi!" );
+    if (!Akonadi::Control::start()) {
+        qFatal("Unable to start Akonadi!");
+    }
 
-  Script *script = new Script();
+    Script *script = new Script();
 
-  script->configure(path);
-  script->insertObject( new XmlOperations( Global::parent() ), "XmlOperations" );
-  script->insertObject( new Resource( Global::parent() ), "Resource" );
-  script->insertObject( Test::instance(), "Test" );
-  script->insertObject( new CollectionTest( Global::parent() ), "CollectionTest" );
-  script->insertObject( new ItemTest( Global::parent() ), "ItemTest" );
-  script->insertObject( new System( Global::parent() ), "System" );
-  script->insertObject( new QEmu( Global::parent() ), "QEmu" );
-  QTimer::singleShot( 0, script, SLOT(start()) );
+    script->configure(path);
+    script->insertObject(new XmlOperations(Global::parent()), "XmlOperations");
+    script->insertObject(new Resource(Global::parent()), "Resource");
+    script->insertObject(Test::instance(), "Test");
+    script->insertObject(new CollectionTest(Global::parent()), "CollectionTest");
+    script->insertObject(new ItemTest(Global::parent()), "ItemTest");
+    script->insertObject(new System(Global::parent()), "System");
+    script->insertObject(new QEmu(Global::parent()), "QEmu");
+    QTimer::singleShot(0, script, SLOT(start()));
 
-  const int result = app.exec();
-  Global::cleanup();
-  return result;
+    const int result = app.exec();
+    Global::cleanup();
+    return result;
 }

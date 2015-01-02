@@ -16,18 +16,18 @@ class KBreadcrumbNavigationFactory;
 
 class MainWindow : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MainWindow(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    MainWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 public slots:
-  void doMove();
+    void doMove();
 
 private:
-  QTreeView *m_treeView;
-  DynamicTreeModel *m_treeModel;
-  QDeclarativeView *m_declarativeView;
-  KBreadcrumbNavigationFactory *m_bnf;
+    QTreeView *m_treeView;
+    DynamicTreeModel *m_treeModel;
+    QDeclarativeView *m_declarativeView;
+    KBreadcrumbNavigationFactory *m_bnf;
 };
 
 #endif

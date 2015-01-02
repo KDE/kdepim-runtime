@@ -37,269 +37,269 @@
 #include <Windows.h>
 #endif
 
-static QString translate( const KLocalizedString &msg,
-                          const QScriptContext *context, const int start, bool plural = false )
+static QString translate(const KLocalizedString &msg,
+                         const QScriptContext *context, const int start, bool plural = false)
 {
-  KLocalizedString string( msg );
-  const int numArgs = context->argumentCount();
+    KLocalizedString string(msg);
+    const int numArgs = context->argumentCount();
 
-  for (int i = start; i < numArgs; ++i) {
-    const QVariant arg = context->argument(i).toVariant();
+    for (int i = start; i < numArgs; ++i) {
+        const QVariant arg = context->argument(i).toVariant();
 
-    // numbers provided from javascript seem to arrive always as double, which does not work for plural handling
-    if ( i == start && plural ) {
-      string = string.subs( arg.toInt() );
-      continue;
+        // numbers provided from javascript seem to arrive always as double, which does not work for plural handling
+        if (i == start && plural) {
+            string = string.subs(arg.toInt());
+            continue;
+        }
+
+        switch (arg.type()) {
+        case QVariant::Char:
+            string = string.subs(arg.toChar());
+            break;
+        case QVariant::Int:
+            string = string.subs(arg.toInt());
+            break;
+        case QVariant::UInt:
+            string = string.subs(arg.toUInt());
+            break;
+        case QVariant::LongLong:
+            string = string.subs(arg.toLongLong());
+            break;
+        case QVariant::ULongLong:
+            string = string.subs(arg.toULongLong());
+            break;
+        case QVariant::Double:
+            string = string.subs(arg.toDouble());
+            break;
+        case QVariant::String:
+            string = string.subs(arg.toString());
+            break;
+        default:
+            qWarning() << "Unknown i18n argument type:" << arg;
+        }
+
     }
 
-    switch ( arg.type() ) {
-      case QVariant::Char:
-        string = string.subs( arg.toChar() );
-        break;
-      case QVariant::Int:
-        string = string.subs( arg.toInt() );
-        break;
-      case QVariant::UInt:
-        string = string.subs( arg.toUInt() );
-        break;
-      case QVariant::LongLong:
-        string = string.subs( arg.toLongLong() );
-        break;
-      case QVariant::ULongLong:
-        string = string.subs( arg.toULongLong() );
-        break;
-      case QVariant::Double:
-        string = string.subs( arg.toDouble() );
-        break;
-      case QVariant::String:
-        string = string.subs( arg.toString() );
-        break;
-      default:
-        qWarning() << "Unknown i18n argument type:" << arg;
+    return string.toString();
+}
+
+KDEIntegration::KDEIntegration(QObject *parent) : QObject(parent)
+{
+}
+
+QScriptContext *KDEIntegration::getContext(const QScriptValue &v)
+{
+    QScriptEngine *engine = v.engine();
+
+    if (!engine) {
+        return 0;
     }
 
-  }
+    QScriptContext *context = engine->currentContext();
+    if (!context) {
+        return 0;
+    }
 
-  return string.toString();
+    return context;
 }
 
-KDEIntegration::KDEIntegration( QObject *parent ) : QObject( parent )
+QString KDEIntegration::i18n(const QScriptValue &array)
 {
+    QScriptContext *context = getContext(array);
+
+    if (!context) {
+        qWarning() << "No context !";
+        return QString();
+    }
+
+    if (context->argumentCount() < 1) {
+        // ## TODO: (new str): context->throwError(i18n("i18n() takes at least one argument"));
+        return QString();
+    }
+
+    KLocalizedString message = ki18n(context->argument(0).toString().toUtf8());
+    return translate(message, context, 1);
 }
 
-QScriptContext *KDEIntegration::getContext( const QScriptValue &v )
+QString KDEIntegration::i18nc(const QScriptValue &array)
 {
-  QScriptEngine *engine = v.engine();
+    QScriptContext *context = getContext(array);
 
-  if (!engine) {
-      return 0;
-  }
+    if (!context) {
+        qWarning() << "No context !";
+        return QString();
+    }
 
-  QScriptContext *context = engine->currentContext();
-  if (!context) {
-      return 0;
-  }
+    if (context->argumentCount() < 2) {
+        qWarning() << "i18nc() takes at least two arguments";
+        //### TODO (new str): context->throwError(i18n("i18nc() takes at least two arguments"));
+        return QString();
+    }
 
-  return context;
+    KLocalizedString message = ki18nc(context->argument(0).toString().toUtf8(),
+                                      context->argument(1).toString().toUtf8());
+
+    return translate(message, context, 2);
 }
 
-QString KDEIntegration::i18n( const QScriptValue &array )
+QString KDEIntegration::i18np(const QScriptValue &array)
 {
-  QScriptContext *context = getContext(array);
+    QScriptContext *context = getContext(array);
 
-  if (!context) {
-      qWarning() << "No context !";
-      return QString();
-  }
+    if (!context) {
+        qWarning() << "No context !";
+        return QString();
+    }
 
-  if (context->argumentCount() < 1) {
-      // ## TODO: (new str): context->throwError(i18n("i18n() takes at least one argument"));
-      return QString();
-  }
+    if (context->argumentCount() < 2) {
+        qWarning() << "i18np() takes at least two arguments";
+        //### TODO (new str): context->throwError(i18n("i18np() takes at least two arguments"));
+        return QString();
+    }
 
-  KLocalizedString message = ki18n(context->argument(0).toString().toUtf8());
-  return translate(message, context, 1);
+    KLocalizedString message = ki18np(context->argument(0).toString().toUtf8(),
+                                      context->argument(1).toString().toUtf8());
+
+    return translate(message, context, 2, true);
 }
 
-
-QString KDEIntegration::i18nc( const QScriptValue &array )
+QString KDEIntegration::i18ncp(const QScriptValue &array)
 {
-  QScriptContext *context = getContext(array);
+    QScriptContext *context = getContext(array);
 
-  if (!context) {
-      qWarning() << "No context !";
-      return QString();
-  }
+    if (!context) {
+        qWarning() << "No context !";
+        return QString();
+    }
 
-  if (context->argumentCount() < 2) {
-      qWarning() << "i18nc() takes at least two arguments";
-      //### TODO (new str): context->throwError(i18n("i18nc() takes at least two arguments"));
-      return QString();
-  }
+    if (context->argumentCount() < 3) {
+        qWarning() << "i18ncp() takes at least three arguments";
+        //### TODO (new str): context->throwError(i18n("i18ncp() takes at least three arguments"));
+        return QString();
+    }
 
-  KLocalizedString message = ki18nc(context->argument(0).toString().toUtf8(),
-                                    context->argument(1).toString().toUtf8());
+    KLocalizedString message = ki18ncp(context->argument(0).toString().toUtf8(),
+                                       context->argument(1).toString().toUtf8(),
+                                       context->argument(2).toString().toUtf8());
 
-  return translate(message, context, 2);
+    return translate(message, context, 3, true);
 }
 
-QString KDEIntegration::i18np( const QScriptValue &array )
+QString KDEIntegration::iconPath(const QString &iconName, int iconSize)
 {
-  QScriptContext *context = getContext(array);
-
-  if (!context) {
-      qWarning() << "No context !";
-      return QString();
-  }
-
-  if (context->argumentCount() < 2) {
-      qWarning() << "i18np() takes at least two arguments";
-      //### TODO (new str): context->throwError(i18n("i18np() takes at least two arguments"));
-      return QString();
-  }
-
-  KLocalizedString message = ki18np(context->argument(0).toString().toUtf8(),
-                                    context->argument(1).toString().toUtf8());
-
-  return translate(message, context, 2, true);
+    return KIconLoader::global()->iconPath(iconName, -iconSize);   // yes, the minus there is correct...
 }
 
-QString KDEIntegration::i18ncp( const QScriptValue &array )
+QPixmap KDEIntegration::iconToPixmap(const QIcon &icon, int size)
 {
-  QScriptContext *context = getContext(array);
-
-  if (!context) {
-      qWarning() << "No context !";
-      return QString();
-  }
-
-  if (context->argumentCount() < 3) {
-      qWarning() << "i18ncp() takes at least three arguments";
-      //### TODO (new str): context->throwError(i18n("i18ncp() takes at least three arguments"));
-      return QString();
-  }
-
-  KLocalizedString message = ki18ncp(context->argument(0).toString().toUtf8(),
-                                     context->argument(1).toString().toUtf8(),
-                                     context->argument(2).toString().toUtf8());
-
-  return translate(message, context, 3, true);
+    if (icon.isNull()) {
+        return QPixmap();
+    }
+    return icon.pixmap(size);
 }
 
-QString KDEIntegration::iconPath( const QString &iconName, int iconSize )
+QString KDEIntegration::locate(const QString &type, const QString &filename)
 {
-  return KIconLoader::global()->iconPath( iconName, -iconSize ); // yes, the minus there is correct...
-}
-
-QPixmap KDEIntegration::iconToPixmap(const QIcon& icon, int size )
-{
-  if ( icon.isNull() )
-    return QPixmap();
-  return icon.pixmap( size );
-}
-
-QString KDEIntegration::locate(const QString& type, const QString& filename)
-{
-  return KStandardDirs::locate( type.toLatin1(), filename );
+    return KStandardDirs::locate(type.toLatin1(), filename);
 }
 
 qreal KDEIntegration::mm2px(qreal mm)
 {
 #ifdef _WIN32
 //TODO: Cache value
-  HMONITOR mon = MonitorFromWindow(QApplication::desktop()->winId(), MONITOR_DEFAULTTONEAREST);
-  MONITORINFOEX moninfo;
-  moninfo.cbSize = sizeof(MONITORINFOEX);
-  GetMonitorInfo(mon, &moninfo);
+    HMONITOR mon = MonitorFromWindow(QApplication::desktop()->winId(), MONITOR_DEFAULTTONEAREST);
+    MONITORINFOEX moninfo;
+    moninfo.cbSize = sizeof(MONITORINFOEX);
+    GetMonitorInfo(mon, &moninfo);
 
-  long monitorWidthInPixel = moninfo.rcMonitor.right - moninfo.rcMonitor.left;
-  long monitorHeightinPixel = moninfo.rcMonitor.bottom - moninfo.rcMonitor.top;
+    long monitorWidthInPixel = moninfo.rcMonitor.right - moninfo.rcMonitor.left;
+    long monitorHeightinPixel = moninfo.rcMonitor.bottom - moninfo.rcMonitor.top;
 
-  DISPLAY_DEVICE dd;
-  dd.cb = sizeof(DISPLAY_DEVICE);
-  EnumDisplayDevices(moninfo.szDevice, 0, &dd, 0);
+    DISPLAY_DEVICE dd;
+    dd.cb = sizeof(DISPLAY_DEVICE);
+    EnumDisplayDevices(moninfo.szDevice, 0, &dd, 0);
 
-  const QString deviceID = QString::fromUtf16( ( const unsigned short *)dd.DeviceID);
+    const QString deviceID = QString::fromUtf16((const unsigned short *)dd.DeviceID);
 
-  QRegExp rx(QLatin1String("^MONITOR\\\\(\\w+)\\\\"));
+    QRegExp rx(QLatin1String("^MONITOR\\\\(\\w+)\\\\"));
 
-  if (rx.indexIn(deviceID) != -1) {
-    const QString devID = rx.cap(1);
+    if (rx.indexIn(deviceID) != -1) {
+        const QString devID = rx.cap(1);
 
-    const QString baseRegKey =
-      QLatin1String("SYSTEM\\CurrentControlSet\\Enum\\DISPLAY\\") + devID;
+        const QString baseRegKey =
+            QLatin1String("SYSTEM\\CurrentControlSet\\Enum\\DISPLAY\\") + devID;
 
-    HKEY registryHandle;
-    LONG res = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-                            reinterpret_cast<const wchar_t *>(baseRegKey.utf16()),
-                            0,
-                            KEY_READ,
-                            &registryHandle);
-    if (res != ERROR_SUCCESS) {
+        HKEY registryHandle;
+        LONG res = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                                reinterpret_cast<const wchar_t *>(baseRegKey.utf16()),
+                                0,
+                                KEY_READ,
+                                &registryHandle);
+        if (res != ERROR_SUCCESS) {
+            RegCloseKey(registryHandle);
+            return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+        }
+
+        DWORD keyLength = 0;
+        res = RegQueryInfoKey(registryHandle, 0, 0, 0, 0, &keyLength, 0, 0, 0, 0, 0, 0);
+        if (res != ERROR_SUCCESS) {
+            RegCloseKey(registryHandle);
+            return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+        }
+
+        //Utf16 so 2 Bytes per Character
+        QByteArray buf(keyLength * 2, 0);
+        keyLength++; //keyLength including the terminating 0, which is already in a QByteArray
+
+        res = RegEnumKeyEx(registryHandle,
+                           0,
+                           reinterpret_cast<wchar_t *>(buf.data()),
+                           &keyLength,
+                           0,
+                           0,
+                           0,
+                           0);
+        if (res != ERROR_SUCCESS) {
+            RegCloseKey(registryHandle);
+            return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+        }
         RegCloseKey(registryHandle);
-        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
-    }
 
-    DWORD keyLength = 0;
-    res = RegQueryInfoKey(registryHandle, 0, 0, 0, 0, &keyLength, 0, 0, 0, 0, 0, 0);
-    if (res != ERROR_SUCCESS) {
+        const QString guidString =  QString::fromWCharArray(reinterpret_cast<const wchar_t *>(buf.data()));
+
+        const QString edidRegString = QLatin1String("SYSTEM\\CurrentControlSet\\Enum\\DISPLAY\\")
+                                      + devID + QLatin1String("\\") + guidString + QLatin1String("\\Device Parameters");
+        RegOpenKeyEx(HKEY_LOCAL_MACHINE, reinterpret_cast<const wchar_t *>(edidRegString.utf16()),
+                     0, KEY_READ, &registryHandle);
+
+        DWORD dataSize;
+        res = RegQueryValueEx(registryHandle, L"EDID", 0, 0, 0, &dataSize);
+        if (res != ERROR_SUCCESS) {
+            RegCloseKey(registryHandle);
+            return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+        }
+
+        QByteArray data(dataSize, 0);
+        res = RegQueryValueEx(registryHandle, L"EDID", 0, 0,
+                              reinterpret_cast<unsigned char *>(data.data()), &dataSize);
         RegCloseKey(registryHandle);
-        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+
+        const int monitorWidthInCM = data.at(21);
+        //int monitorHeightInCM = data.at(22);
+
+        return (monitorWidthInPixel * mm) / (monitorWidthInCM * 10.0);
+        //int pixelPerMM = monitorHeightinPixel / (monitorHeightInCM * 10.0);
     }
-
-    //Utf16 so 2 Bytes per Character
-    QByteArray buf(keyLength * 2, 0);
-    keyLength++; //keyLength including the terminating 0, which is already in a QByteArray
-
-    res = RegEnumKeyEx(registryHandle,
-                       0,
-                       reinterpret_cast<wchar_t *>(buf.data()),
-                       &keyLength,
-                       0,
-                       0,
-                       0,
-                       0);
-    if (res != ERROR_SUCCESS) {
-        RegCloseKey(registryHandle);
-        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
-    }
-    RegCloseKey(registryHandle);
-
-    const QString guidString =  QString::fromWCharArray(reinterpret_cast<const wchar_t *>(buf.data()));
-
-    const QString edidRegString = QLatin1String("SYSTEM\\CurrentControlSet\\Enum\\DISPLAY\\")
-                        + devID + QLatin1String("\\") + guidString + QLatin1String("\\Device Parameters");
-    RegOpenKeyEx(HKEY_LOCAL_MACHINE, reinterpret_cast<const wchar_t *>(edidRegString.utf16()),
-                 0, KEY_READ, &registryHandle);
-
-    DWORD dataSize;
-    res = RegQueryValueEx(registryHandle, L"EDID", 0, 0, 0, &dataSize);
-    if (res != ERROR_SUCCESS) {
-        RegCloseKey(registryHandle);
-        return mm * QApplication::desktop()->logicalDpiX() / 25.4;
-    }
-
-    QByteArray data(dataSize, 0);
-    res = RegQueryValueEx(registryHandle, L"EDID", 0, 0,
-                          reinterpret_cast<unsigned char*>(data.data()), &dataSize);
-    RegCloseKey(registryHandle);
-
-    const int monitorWidthInCM = data.at(21);
-    //int monitorHeightInCM = data.at(22);
-
-    return (monitorWidthInPixel * mm) / (monitorWidthInCM * 10.0);
-    //int pixelPerMM = monitorHeightinPixel / (monitorHeightInCM * 10.0);
-  }
 #endif
 
 #ifdef Q_OS_MAEMO_5
-  // N900 (which is the only thing actually running Maemo5) reports 96 dpi while its screen actually has 267 dpi
-  return mm * 267 / 25.4;
+    // N900 (which is the only thing actually running Maemo5) reports 96 dpi while its screen actually has 267 dpi
+    return mm * 267 / 25.4;
 #elif defined(MEEGO_EDITION_HARMATTAN)
-  // N9[50] (which is the only thing actually running Maemo6) reports 96 dpi as well while its screen actually has 251 dpi
-  return mm * 251 / 25.4;
+    // N9[50] (which is the only thing actually running Maemo6) reports 96 dpi as well while its screen actually has 251 dpi
+    return mm * 251 / 25.4;
 #endif
-  return mm * QApplication::desktop()->logicalDpiX() / 25.4;
+    return mm * QApplication::desktop()->logicalDpiX() / 25.4;
 }
 
 #include "moc_kdeintegration.cpp"

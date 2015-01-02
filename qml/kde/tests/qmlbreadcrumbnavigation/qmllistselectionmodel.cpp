@@ -23,49 +23,50 @@
 
 #include <QDebug>
 
-QMLListSelectionModel::QMLListSelectionModel(QItemSelectionModel *selectionModel, QObject* parent)
-  : QObject(parent), m_selectionModel(selectionModel)
+QMLListSelectionModel::QMLListSelectionModel(QItemSelectionModel *selectionModel, QObject *parent)
+    : QObject(parent), m_selectionModel(selectionModel)
 {
 
 }
 
-QMLListSelectionModel::QMLListSelectionModel(QAbstractItemModel* model, QObject* parent)
-  : QObject(parent), m_selectionModel(new QItemSelectionModel(model, this))
+QMLListSelectionModel::QMLListSelectionModel(QAbstractItemModel *model, QObject *parent)
+    : QObject(parent), m_selectionModel(new QItemSelectionModel(model, this))
 {
 
 }
 
-QItemSelectionModel* QMLListSelectionModel::selectionModel() const
+QItemSelectionModel *QMLListSelectionModel::selectionModel() const
 {
-  return m_selectionModel;
+    return m_selectionModel;
 }
 
 QList< int > QMLListSelectionModel::selection() const
 {
-  QList< int > list;
-  const QModelIndexList indexes = m_selectionModel->selectedRows();
-  foreach (const QModelIndex &index, indexes)
-    list << index.row();
-  return list;
+    QList< int > list;
+    const QModelIndexList indexes = m_selectionModel->selectedRows();
+    foreach (const QModelIndex &index, indexes) {
+        list << index.row();
+    }
+    return list;
 }
 
 void QMLListSelectionModel::select(int row, int command)
 {
-  qDebug() << row << command;
-  Q_ASSERT(row >= 0);
-  static const int column = 0;
-  const QModelIndex idx = m_selectionModel->model()->index(row, column);
-  Q_ASSERT(idx.isValid());
-  qDebug() << idx << idx.data();
-  QItemSelection sel(idx, idx);
-  QItemSelectionModel::SelectionFlags flags = static_cast<QItemSelectionModel::SelectionFlags>(command);
-  m_selectionModel->select(sel, flags);
-  emit selectionChanged();
+    qDebug() << row << command;
+    Q_ASSERT(row >= 0);
+    static const int column = 0;
+    const QModelIndex idx = m_selectionModel->model()->index(row, column);
+    Q_ASSERT(idx.isValid());
+    qDebug() << idx << idx.data();
+    QItemSelection sel(idx, idx);
+    QItemSelectionModel::SelectionFlags flags = static_cast<QItemSelectionModel::SelectionFlags>(command);
+    m_selectionModel->select(sel, flags);
+    emit selectionChanged();
 }
 
 void QMLListSelectionModel::clearSelection()
 {
-  m_selectionModel->clearSelection();
-  emit selectionChanged();
+    m_selectionModel->clearSelection();
+    emit selectionChanged();
 }
 

@@ -23,5 +23,5 @@
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(LIBMAILDIR_LOG)
 
-#endif 
+#endif
 

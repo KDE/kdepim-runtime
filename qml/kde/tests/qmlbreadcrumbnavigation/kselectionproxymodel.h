@@ -23,7 +23,6 @@
 #include <QAbstractProxyModel>
 #include <QItemSelectionModel>
 
-
 #include "kmodelindexproxymapper.h"
 #include "kbihash_p.h"
 
@@ -43,7 +42,7 @@ public:
     KSelectionProxyModelPrivate(KSelectionProxyModel *model, QItemSelectionModel *selectionModel);
 
     Q_DECLARE_PUBLIC(KSelectionProxyModel)
-    KSelectionProxyModel * const q_ptr;
+    KSelectionProxyModel *const q_ptr;
 
     // A unique id is generated for each parent. It is used for the internalId of its children in the proxy
     // This is used to store a unique id for QModelIndexes in the proxy which have children.
@@ -78,7 +77,7 @@ public:
      */
     void updateInternalTopIndexes(int start, int offset);
 
-    void updateFirstChildMapping(const QModelIndex& parent, int offset);
+    void updateFirstChildMapping(const QModelIndex &parent, int offset);
 
     /**
       Creates mappings in m_parentIds and m_mappedParents between the source and the proxy.
@@ -173,7 +172,7 @@ public:
     /**
       Inserts the indexes in @p list into the proxy model.
     */
-    void insertSelectionIntoProxy(const QItemSelection& selection);
+    void insertSelectionIntoProxy(const QItemSelection &selection);
 
     /**
       Returns true if @p sourceIndex or one of its ascendants is already part of the proxy model.
@@ -191,7 +190,7 @@ public:
     bool m_resetting;
     bool m_ignoreNextLayoutAboutToBeChanged;
     bool m_ignoreNextLayoutChanged;
-    QItemSelectionModel * const m_selectionModel;
+    QItemSelectionModel *const m_selectionModel;
     mutable qint64 m_nextId;
 
     int m_filterBehavior;
@@ -208,7 +207,6 @@ public:
     QList<QPersistentModelIndex> m_sourcePersistentParents;
     QList<QPersistentModelIndex> m_sourcePersistentFirstChilds;
 };
-
 
 /**
   @brief A Proxy Model which presents a subset of its source model to observers.
@@ -285,7 +283,7 @@ public:
     /**
     reimp.
     */
-    virtual void setSourceModel(QAbstractItemModel * sourceModel);
+    virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
     QItemSelectionModel *selectionModel() const;
 
@@ -415,25 +413,25 @@ public:
     void setFilterBehavior(FilterBehavior behavior);
     FilterBehavior filterBehavior() const;
 
-    QModelIndex mapFromSource(const QModelIndex & sourceIndex) const;
-    QModelIndex mapToSource(const QModelIndex & proxyIndex) const;
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
 
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-    virtual int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-    virtual QMimeData* mimeData(const QModelIndexList & indexes) const;
+    virtual QMimeData *mimeData(const QModelIndexList &indexes) const;
     virtual QStringList mimeTypes() const;
     virtual Qt::DropActions supportedDropActions() const;
-    virtual bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent);
+    virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
-    virtual bool hasChildren(const QModelIndex & parent = QModelIndex()) const;
-    virtual QModelIndex index(int, int, const QModelIndex& = QModelIndex()) const;
-    virtual QModelIndex parent(const QModelIndex&) const;
-    virtual int columnCount(const QModelIndex& = QModelIndex()) const;
+    virtual bool hasChildren(const QModelIndex &parent = QModelIndex()) const;
+    virtual QModelIndex index(int, int, const QModelIndex & = QModelIndex()) const;
+    virtual QModelIndex parent(const QModelIndex &) const;
+    virtual int columnCount(const QModelIndex & = QModelIndex()) const;
 
-    virtual QModelIndexList match(const QModelIndex& start, int role, const QVariant& value, int hits = 1,
+    virtual QModelIndexList match(const QModelIndex &start, int role, const QVariant &value, int hits = 1,
                                   Qt::MatchFlags flags = Qt::MatchFlags(Qt::MatchStartsWith | Qt::MatchWrap)) const;
 
 Q_SIGNALS:
@@ -490,9 +488,8 @@ private:
     Q_PRIVATE_SLOT(d_func(), void sourceLayoutAboutToBeChanged())
     Q_PRIVATE_SLOT(d_func(), void sourceLayoutChanged())
     Q_PRIVATE_SLOT(d_func(), void sourceDataChanged(const QModelIndex &, const QModelIndex &))
-    Q_PRIVATE_SLOT(d_func(), void selectionChanged(const QItemSelection & selected, const QItemSelection & deselected))
+    Q_PRIVATE_SLOT(d_func(), void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected))
     Q_PRIVATE_SLOT(d_func(), void sourceModelDestroyed())
-
 
     //@endcond
 

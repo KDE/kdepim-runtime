@@ -25,23 +25,22 @@
 #include <qdeclarativecontext.h>
 #include <qdeclarativeengine.h>
 
-KDEIntegrationPlugin::KDEIntegrationPlugin(QObject* parent) : QDeclarativeExtensionPlugin( parent )
+KDEIntegrationPlugin::KDEIntegrationPlugin(QObject *parent) : QDeclarativeExtensionPlugin(parent)
 {
-  qDebug() << Q_FUNC_INFO;
-  qDebug(); 
+    qDebug() << Q_FUNC_INFO;
+    qDebug();
 }
 
-void KDEIntegrationPlugin::registerTypes(const char* uri)
+void KDEIntegrationPlugin::registerTypes(const char *uri)
 {
-  qDebug() << uri;
+    qDebug() << uri;
 //  qmlRegisterType<KDEIntegration>( uri, 4, 5, "KDE" );
 }
 
-void KDEIntegrationPlugin::initializeEngine(QDeclarativeEngine *engine, const char* uri)
+void KDEIntegrationPlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
 {
-  qDebug() << engine << uri;
-  engine->rootContext()->setContextProperty( QLatin1String("KDE"), new KDEIntegration( engine ) );
+    qDebug() << engine << uri;
+    engine->rootContext()->setContextProperty(QLatin1String("KDE"), new KDEIntegration(engine));
 }
-
 
 //QT5 Q_EXPORT_PLUGIN2( kdeintegrationplugin, KDEIntegrationPlugin )

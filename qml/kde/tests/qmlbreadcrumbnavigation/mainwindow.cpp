@@ -40,131 +40,128 @@
 #include "kselectionproxymodel.h"
 #include "checkableitemproxymodel.h"
 
-MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
-  : QWidget(parent, f)
+MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f)
 {
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  QSplitter *splitter = new QSplitter;
-  layout->addWidget(splitter);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    QSplitter *splitter = new QSplitter;
+    layout->addWidget(splitter);
 
-  m_treeModel = new DynamicTreeModel(this);
+    m_treeModel = new DynamicTreeModel(this);
 
-  DynamicTreeWidget *widget = new DynamicTreeWidget(m_treeModel, splitter);
+    DynamicTreeWidget *widget = new DynamicTreeWidget(m_treeModel, splitter);
 
-  QString initialTree;
-  if (qApp->arguments().size() == 2)
-  {
-    QString filename = qApp->arguments().at(1);
-    QFile f(filename);
-    if (f.open(QFile::ReadOnly))
-    {
-      initialTree = f.readAll();
+    QString initialTree;
+    if (qApp->arguments().size() == 2) {
+        QString filename = qApp->arguments().at(1);
+        QFile f(filename);
+        if (f.open(QFile::ReadOnly)) {
+            initialTree = f.readAll();
+        }
+        f.close();
     }
-    f.close();
-  }
-  if (initialTree.isEmpty()){
-    initialTree =
-    "- 1"
-    "- - 1"
-    "- - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - -1"
-    "- - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - -1"
-    "- - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - - 1"
-    "- - - - - - 1"
-    "- - - - - 1"
-    "- - - - - 1"
-    "- - - - 1"
-    "- - - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - - 1"
-    "- 1"
-    "- - 1"
-    "- - 1"
-    "- - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - 1"
-    "- 1"
-    "- - 1"
-    "- - - 1"
-    "- - - 1"
-    "- - 1"
-    "- - 1"
-    "- - 1"
-    "- 1";
-  }
+    if (initialTree.isEmpty()) {
+        initialTree =
+            "- 1"
+            "- - 1"
+            "- - 1"
+            "- - - 1"
+            "- - - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - - 1"
+            "- - - - 1"
+            "- - - - - 1"
+            "- - - - - - 1"
+            "- - - - - 1"
+            "- - - - - -1"
+            "- - - - - - 1"
+            "- - - - - - - 1"
+            "- - - - - - - 1"
+            "- - - - - - 1"
+            "- - - - - 1"
+            "- - - - - 1"
+            "- - - - 1"
+            "- - - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - - 1"
+            "- - - - 1"
+            "- - - - - 1"
+            "- - - - - - 1"
+            "- - - - - 1"
+            "- - - - - -1"
+            "- - - - - - 1"
+            "- - - - - - - 1"
+            "- - - - - - - 1"
+            "- - - - - - 1"
+            "- - - - - 1"
+            "- - - - - 1"
+            "- - - - 1"
+            "- - - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - - 1"
+            "- 1"
+            "- - 1"
+            "- - 1"
+            "- - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - 1"
+            "- 1"
+            "- - 1"
+            "- - - 1"
+            "- - - 1"
+            "- - 1"
+            "- - 1"
+            "- - 1"
+            "- 1";
+    }
 
-  widget->setInitialTree(initialTree);
-  m_declarativeView = new QDeclarativeView(splitter);
+    widget->setInitialTree(initialTree);
+    m_declarativeView = new QDeclarativeView(splitter);
 
-  QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
+    QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
 
-  m_bnf = new KBreadcrumbNavigationFactory(this);
-  m_bnf->setBreadcrumbDepth(1);
-  m_bnf->createCheckableBreadcrumbContext( m_treeModel, this );
+    m_bnf = new KBreadcrumbNavigationFactory(this);
+    m_bnf->setBreadcrumbDepth(1);
+    m_bnf->createCheckableBreadcrumbContext(m_treeModel, this);
 
-  context->setContextProperty( "_breadcrumbNavigationFactory", m_bnf );
+    context->setContextProperty("_breadcrumbNavigationFactory", m_bnf);
 
 //   widget->treeView()->setSelectionModel( m_bnf->selectionModel() );
 
-  context->setContextProperty( "application", QVariant::fromValue( static_cast<QObject*>( this ) ) );
+    context->setContextProperty("application", QVariant::fromValue(static_cast<QObject *>(this)));
 
-  m_declarativeView->setResizeMode( QDeclarativeView::SizeRootObjectToView );
-  m_declarativeView->setSource( QUrl( "./mainview.qml" ) );
+    m_declarativeView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    m_declarativeView->setSource(QUrl("./mainview.qml"));
 
-  splitter->setSizes(QList<int>() << 1 << 1);
+    splitter->setSizes(QList<int>() << 1 << 1);
 
 }
 
-bool MainWindow::childCollectionHasChildren( int row )
+bool MainWindow::childCollectionHasChildren(int row)
 {
-  return m_bnf->childCollectionHasChildren(row);
+    return m_bnf->childCollectionHasChildren(row);
 }
 
 int MainWindow::selectedCollectionRow()
 {
-  const QModelIndexList list = m_bnf->selectionModel()->selectedRows();
-  if (list.size() != 1)
-    return -1;
-  return list.first().row();
+    const QModelIndexList list = m_bnf->selectionModel()->selectedRows();
+    if (list.size() != 1) {
+        return -1;
+    }
+    return list.first().row();
 }
-
-
 

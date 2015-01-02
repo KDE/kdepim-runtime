@@ -36,123 +36,131 @@
 
 using namespace Akonadi;
 
-Resource::Resource(QObject* parent) :
-  QObject( parent )
+Resource::Resource(QObject *parent) :
+    QObject(parent)
 {
-  Q_ASSERT( parent );
+    Q_ASSERT(parent);
 }
 
 Resource::~Resource()
 {
-  destroy();
+    destroy();
 }
 
-void Resource::setType(const QString& type)
+void Resource::setType(const QString &type)
 {
-  mTypeIdentifier = type;
+    mTypeIdentifier = type;
 }
 
 QString Resource::identifier() const
 {
-  return mInstance.identifier();
+    return mInstance.identifier();
 }
 
-void Resource::setOption(const QString& key, const QVariant& value)
+void Resource::setOption(const QString &key, const QVariant &value)
 {
-  mSettings.insert( key, value );
+    mSettings.insert(key, value);
 }
 
-void Resource::setPathOption(const QString& key, const QString& path)
+void Resource::setPathOption(const QString &key, const QString &path)
 {
-  if ( QFileInfo( path ).isAbsolute() )
-    setOption( key, path );
-  else
-    setOption( key, QString(Global::basePath() + QDir::separator() + path) );
+    if (QFileInfo(path).isAbsolute()) {
+        setOption(key, path);
+    } else {
+        setOption(key, QString(Global::basePath() + QDir::separator() + path));
+    }
 }
-
 
 bool Resource::createResource()
 {
-  if ( mInstance.isValid() )
-    return false;
+    if (mInstance.isValid()) {
+        return false;
+    }
 
-  const AgentType type = AgentManager::self()->type( mTypeIdentifier );
-  if ( !type.isValid() )
-    return false;
+    const AgentType type = AgentManager::self()->type(mTypeIdentifier);
+    if (!type.isValid()) {
+        return false;
+    }
 
-  AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
-  if ( !job->exec() ) {
-    qWarning() << job->errorText();
-    return false;
-  }
-  mInstance = job->instance();
+    AgentInstanceCreateJob *job = new AgentInstanceCreateJob(type, this);
+    if (!job->exec()) {
+        qWarning() << job->errorText();
+        return false;
+    }
+    mInstance = job->instance();
 
-  QDBusInterface iface( "org.freedesktop.Akonadi.Resource." + identifier(), "/Settings" );
-  if ( !iface.isValid() )
-    return false;
+    QDBusInterface iface("org.freedesktop.Akonadi.Resource." + identifier(), "/Settings");
+    if (!iface.isValid()) {
+        return false;
+    }
 
-  // configure resource
-  for ( QHash<QString, QVariant>::const_iterator it = mSettings.constBegin(); it != mSettings.constEnd(); ++it ) {
-    qDebug() << "Setting up " << it.key() << " for agent " << identifier();
-    const QString methodName = QStringLiteral("set%1").arg( it.key() );
-    const QVariant arg = it.value();
-    QDBusReply<void> reply = iface.call( methodName, arg );
-    if ( !reply.isValid() )
-      qCritical() << "Setting " << it.key() << " failed for agent " << identifier() << ":" << reply.error().message();
-  }
-  mInstance.reconfigure();
+    // configure resource
+    for (QHash<QString, QVariant>::const_iterator it = mSettings.constBegin(); it != mSettings.constEnd(); ++it) {
+        qDebug() << "Setting up " << it.key() << " for agent " << identifier();
+        const QString methodName = QStringLiteral("set%1").arg(it.key());
+        const QVariant arg = it.value();
+        QDBusReply<void> reply = iface.call(methodName, arg);
+        if (!reply.isValid()) {
+            qCritical() << "Setting " << it.key() << " failed for agent " << identifier() << ":" << reply.error().message();
+        }
+    }
+    mInstance.reconfigure();
 
-  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( mInstance, this );
-  if ( !syncJob->exec() )
-    qCritical() << "Synching resource failed: " << syncJob->errorString();
+    ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob(mInstance, this);
+    if (!syncJob->exec()) {
+        qCritical() << "Synching resource failed: " << syncJob->errorString();
+    }
 
-  return true;
+    return true;
 }
 
 void Resource::create()
 {
-  if ( !createResource() )
-    Test::instance()->fail( "Creating resource failed." );
+    if (!createResource()) {
+        Test::instance()->fail("Creating resource failed.");
+    }
 }
-
 
 void Resource::destroy()
 {
-  if ( !mInstance.isValid() )
-    return;
-  AgentManager::self()->removeInstance( mInstance );
-  mInstance = AgentInstance();
+    if (!mInstance.isValid()) {
+        return;
+    }
+    AgentManager::self()->removeInstance(mInstance);
+    mInstance = AgentInstance();
 }
 
 void Resource::write()
 {
-  QDBusInterface iface( "org.freedesktop.Akonadi", "/notifications/debug", "org.freedesktop.Akonadi.NotificationManager" );
-  Q_ASSERT( iface.isValid() );
-  QDBusReply<void> result = iface.call( "emitPendingNotifications" );
-  if ( !result.isValid() )
-    Test::instance()->fail( result.error().message() );
-  ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob( mInstance, this );
-  if ( !syncJob->exec() )
-    qCritical() << "Synching resource failed: " << syncJob->errorString();
+    QDBusInterface iface("org.freedesktop.Akonadi", "/notifications/debug", "org.freedesktop.Akonadi.NotificationManager");
+    Q_ASSERT(iface.isValid());
+    QDBusReply<void> result = iface.call("emitPendingNotifications");
+    if (!result.isValid()) {
+        Test::instance()->fail(result.error().message());
+    }
+    ResourceSynchronizationJob *syncJob = new ResourceSynchronizationJob(mInstance, this);
+    if (!syncJob->exec()) {
+        qCritical() << "Synching resource failed: " << syncJob->errorString();
+    }
 }
 
 void Resource::recreate()
 {
-  write();
-  destroy();
-  create();
+    write();
+    destroy();
+    create();
 }
 
-QObject* Resource::newInstance()
+QObject *Resource::newInstance()
 {
-  return createNewInstance<Resource>( this );
+    return createNewInstance<Resource>(this);
 }
 
-QObject* Resource::newInstance(const QString& type)
+QObject *Resource::newInstance(const QString &type)
 {
-  Resource* r = qobject_cast<Resource*>( createNewInstance<Resource>( this ) );
-  Q_ASSERT( r );
-  r->setType( type );
-  return r;
+    Resource *r = qobject_cast<Resource *>(createNewInstance<Resource>(this));
+    Q_ASSERT(r);
+    r->setType(type);
+    return r;
 }
 

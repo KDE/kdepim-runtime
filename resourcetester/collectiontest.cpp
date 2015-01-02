@@ -29,71 +29,76 @@
 
 using namespace Akonadi;
 
-CollectionTest::CollectionTest(QObject* parent) :
-  QObject( parent )
+CollectionTest::CollectionTest(QObject *parent) :
+    QObject(parent)
 {
 }
 
-void CollectionTest::setParent(const Akonadi::Collection& parent)
+void CollectionTest::setParent(const Akonadi::Collection &parent)
 {
-  mParent = parent;
+    mParent = parent;
 }
 
-void CollectionTest::setCollection(const Akonadi::Collection& collection)
+void CollectionTest::setCollection(const Akonadi::Collection &collection)
 {
-  mCollection = collection;
+    mCollection = collection;
 }
 
-void CollectionTest::setParent(const QString& parentPath)
+void CollectionTest::setParent(const QString &parentPath)
 {
-  CollectionPathResolver* resolver = new CollectionPathResolver( parentPath, this );
-  if ( !resolver->exec() )
-    Test::instance()->fail( resolver->errorString() );
-  setParent( Collection( resolver->collection() ) );
+    CollectionPathResolver *resolver = new CollectionPathResolver(parentPath, this);
+    if (!resolver->exec()) {
+        Test::instance()->fail(resolver->errorString());
+    }
+    setParent(Collection(resolver->collection()));
 }
 
-void CollectionTest::setCollection(const QString& path)
+void CollectionTest::setCollection(const QString &path)
 {
-  CollectionPathResolver* resolver = new CollectionPathResolver( path, this );
-  if ( !resolver->exec() )
-    Test::instance()->fail( resolver->errorString() );
-  setCollection( Collection( resolver->collection() ) );
+    CollectionPathResolver *resolver = new CollectionPathResolver(path, this);
+    if (!resolver->exec()) {
+        Test::instance()->fail(resolver->errorString());
+    }
+    setCollection(Collection(resolver->collection()));
 }
 
-void CollectionTest::setName(const QString& name)
+void CollectionTest::setName(const QString &name)
 {
-  mCollection.setName( name );
+    mCollection.setName(name);
 }
 
-void CollectionTest::addContentType(const QString& type)
+void CollectionTest::addContentType(const QString &type)
 {
-  mCollection.setContentMimeTypes( mCollection.contentMimeTypes() << type );
+    mCollection.setContentMimeTypes(mCollection.contentMimeTypes() << type);
 }
 
 void CollectionTest::create()
 {
-  mCollection.setParentCollection( mParent );
-  CollectionCreateJob* job = new CollectionCreateJob( mCollection, this );
-  if ( !job->exec() )
-    Test::instance()->fail( job->errorString() );
+    mCollection.setParentCollection(mParent);
+    CollectionCreateJob *job = new CollectionCreateJob(mCollection, this);
+    if (!job->exec()) {
+        Test::instance()->fail(job->errorString());
+    }
 }
 
 void CollectionTest::update()
 {
-  CollectionModifyJob* job = new CollectionModifyJob( mCollection, this );
-  if ( !job->exec() )
-    Test::instance()->fail( job->errorString() );
+    CollectionModifyJob *job = new CollectionModifyJob(mCollection, this);
+    if (!job->exec()) {
+        Test::instance()->fail(job->errorString());
+    }
 }
 
 void CollectionTest::remove()
 {
-  CollectionDeleteJob* job = new CollectionDeleteJob( mCollection, this );
-  if ( !job->exec() )
-    Test::instance()->fail( job->errorString() );
+    CollectionDeleteJob *job = new CollectionDeleteJob(mCollection, this);
+    if (!job->exec()) {
+        Test::instance()->fail(job->errorString());
+    }
 }
 
-QObject* CollectionTest::newInstance()
+QObject *CollectionTest::newInstance()
 {
-  return createNewInstance<CollectionTest>( this );
+    return createNewInstance<CollectionTest>(this);
 }
 

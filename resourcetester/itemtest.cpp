@@ -30,53 +30,56 @@
 
 using namespace Akonadi;
 
-ItemTest::ItemTest( QObject *parent ) :
-  QObject( parent )
+ItemTest::ItemTest(QObject *parent) :
+    QObject(parent)
 {
-  setObjectName( "global" );
+    setObjectName("global");
 }
 
-void ItemTest::setParentCollection(const Akonadi::Collection& parent)
+void ItemTest::setParentCollection(const Akonadi::Collection &parent)
 {
-  mParent = parent;
+    mParent = parent;
 }
 
-void ItemTest::setParentCollection(const QString& path)
+void ItemTest::setParentCollection(const QString &path)
 {
-  CollectionPathResolver* resolver = new CollectionPathResolver( path, this );
-  if ( !resolver->exec() )
-    Test::instance()->fail( resolver->errorString() );
-  setParentCollection( Collection( resolver->collection() ) );
+    CollectionPathResolver *resolver = new CollectionPathResolver(path, this);
+    if (!resolver->exec()) {
+        Test::instance()->fail(resolver->errorString());
+    }
+    setParentCollection(Collection(resolver->collection()));
 }
 
 QString ItemTest::mimeType() const
 {
-  return mItem.mimeType();
+    return mItem.mimeType();
 }
 
-void ItemTest::setMimeType(const QString& mimeType)
+void ItemTest::setMimeType(const QString &mimeType)
 {
-  mItem.setMimeType( mimeType );
+    mItem.setMimeType(mimeType);
 }
 
-void ItemTest::setPayloadFromFile(const QString& fileName)
+void ItemTest::setPayloadFromFile(const QString &fileName)
 {
-  QFile file( Global::basePath() + fileName );
-  if ( !file.open( QFile::ReadOnly ) )
-    Test::instance()->fail( file.errorString() );
-  mItem.setPayloadFromData( file.readAll() );
+    QFile file(Global::basePath() + fileName);
+    if (!file.open(QFile::ReadOnly)) {
+        Test::instance()->fail(file.errorString());
+    }
+    mItem.setPayloadFromData(file.readAll());
 }
 
 void ItemTest::create()
 {
-  ItemCreateJob* job = new ItemCreateJob( mItem, mParent, this );
-  if ( !job->exec() )
-    Test::instance()->fail( job->errorString() );
-  mItem = job->item();
+    ItemCreateJob *job = new ItemCreateJob(mItem, mParent, this);
+    if (!job->exec()) {
+        Test::instance()->fail(job->errorString());
+    }
+    mItem = job->item();
 }
 
-QObject* ItemTest::newInstance()
+QObject *ItemTest::newInstance()
 {
-  return createNewInstance<ItemTest>( this );
+    return createNewInstance<ItemTest>(this);
 }
 

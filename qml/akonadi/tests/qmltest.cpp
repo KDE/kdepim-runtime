@@ -43,77 +43,77 @@
 #include <KLocalizedString>
 #include <QCommandLineParser>
 
-
 class QmlTestWidget : public QWidget
 {
-  Q_OBJECT
-  Q_PROPERTY( int collectionRow READ selectedCollectionRow WRITE collectionRowSelected )
+    Q_OBJECT
+    Q_PROPERTY(int collectionRow READ selectedCollectionRow WRITE collectionRowSelected)
 
 public:
-  QmlTestWidget( QWidget *parent = 0 );
+    QmlTestWidget(QWidget *parent = 0);
 
-  public:
-    int selectedCollectionRow() const { return 0; }
-    void collectionRowSelected( int row );
+public:
+    int selectedCollectionRow() const
+    {
+        return 0;
+    }
+    void collectionRowSelected(int row);
 
 };
 
-
-
-QmlTestWidget::QmlTestWidget(QWidget* parent)
-  : QWidget(parent)
+QmlTestWidget::QmlTestWidget(QWidget *parent)
+    : QWidget(parent)
 {
 
-  QHBoxLayout *mainLayout = new QHBoxLayout( this );
+    QHBoxLayout *mainLayout = new QHBoxLayout(this);
 
-  Akonadi::ChangeRecorder *changeRecorder = new Akonadi::ChangeRecorder();
-  changeRecorder->setCollectionMonitored( Akonadi::Collection::root() );
+    Akonadi::ChangeRecorder *changeRecorder = new Akonadi::ChangeRecorder();
+    changeRecorder->setCollectionMonitored(Akonadi::Collection::root());
 
-  Akonadi::EntityTreeModel *etm = new Akonadi::EntityTreeModel( changeRecorder );
+    Akonadi::EntityTreeModel *etm = new Akonadi::EntityTreeModel(changeRecorder);
 
-  Akonadi::EntityMimeTypeFilterModel *collectionFilter = new Akonadi::EntityMimeTypeFilterModel();
-  collectionFilter->setHeaderGroup( Akonadi::EntityTreeModel::CollectionTreeHeaders );
-  collectionFilter->setSourceModel( etm );
-  collectionFilter->addMimeTypeInclusionFilter( Akonadi::Collection::mimeType() );
+    Akonadi::EntityMimeTypeFilterModel *collectionFilter = new Akonadi::EntityMimeTypeFilterModel();
+    collectionFilter->setHeaderGroup(Akonadi::EntityTreeModel::CollectionTreeHeaders);
+    collectionFilter->setSourceModel(etm);
+    collectionFilter->addMimeTypeInclusionFilter(Akonadi::Collection::mimeType());
 
 #if 0
-  KDescendantsProxyModel *flatProxy = new KDescendantsProxyModel( this );
-  flatProxy->setSourceModel( collectionFilter );
-  flatProxy->setAncestorSeparator( QLatin1String(" / ") );
-  flatProxy->setDisplayAncestorData( true );
+    KDescendantsProxyModel *flatProxy = new KDescendantsProxyModel(this);
+    flatProxy->setSourceModel(collectionFilter);
+    flatProxy->setAncestorSeparator(QLatin1String(" / "));
+    flatProxy->setDisplayAncestorData(true);
 #endif
 
-  QDeclarativeView *view = new QDeclarativeView( this );
-  mainLayout->addWidget( view );
-  
-  view->engine()->rootContext()->setContextProperty( QLatin1String("collectionModel"), QVariant::fromValue( static_cast<QObject*>( collectionFilter ) ) );
-  view->engine()->rootContext()->setContextProperty( QLatin1String("application"), QVariant::fromValue( static_cast<QObject*>( this ) ) );
-  view->setSource( QUrl( QLatin1String("collectionviewtest.qml") ) ); // TODO make this a command line argument so this test can be used for other qml components as well
+    QDeclarativeView *view = new QDeclarativeView(this);
+    mainLayout->addWidget(view);
+
+    view->engine()->rootContext()->setContextProperty(QLatin1String("collectionModel"), QVariant::fromValue(static_cast<QObject *>(collectionFilter)));
+    view->engine()->rootContext()->setContextProperty(QLatin1String("application"), QVariant::fromValue(static_cast<QObject *>(this)));
+    view->setSource(QUrl(QLatin1String("collectionviewtest.qml")));     // TODO make this a command line argument so this test can be used for other qml components as well
 }
 
 void QmlTestWidget::collectionRowSelected(int row)
 {
-  qDebug() << row;
+    qDebug() << row;
 }
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
-  const QString ba = QLatin1String( "akonadi_qml" );
-  const QString name = i18n( "Akonadi QML Test" );
-  KAboutData aboutData( ba, name, ba );
-  QApplication app(argc, argv);
-  QCommandLineParser parser;
-  KAboutData::setApplicationData(aboutData);
-  parser.addVersionOption();
-  parser.addHelpOption();
-  aboutData.setupCommandLine(&parser);
-  parser.process(app);
-  aboutData.processCommandLine(&parser);
+    const QString ba = QLatin1String("akonadi_qml");
+    const QString name = i18n("Akonadi QML Test");
+    KAboutData aboutData(ba, name, ba);
+    QApplication app(argc, argv);
+    QCommandLineParser parser;
+    KAboutData::setApplicationData(aboutData);
+    parser.addVersionOption();
+    parser.addHelpOption();
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
 
-  QmlTestWidget testWidget;
-  testWidget.show();
+    QmlTestWidget testWidget;
+    testWidget.show();
 
-  return app.exec();
+    return app.exec();
 }
 
 #include "qmltest.moc"

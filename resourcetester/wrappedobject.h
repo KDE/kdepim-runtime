@@ -24,16 +24,16 @@
 
 class WrappedObject
 {
-  protected:
+protected:
     template <typename T>
-    QObject* createNewInstance( QObject *parent )
+    QObject *createNewInstance(QObject *parent)
     {
-      T* instance = new T( parent );
-      instance->setObjectName( instance->metaObject()->className() + QString::number( ++mInstanceCounter ) );
-      return instance;
+        T *instance = new T(parent);
+        instance->setObjectName(instance->metaObject()->className() + QString::number(++mInstanceCounter));
+        return instance;
     }
 
-  private:
+private:
     static int mInstanceCounter;
 };
 

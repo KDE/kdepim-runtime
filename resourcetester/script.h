@@ -23,21 +23,21 @@
 
 class Script : public QObject
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     Script();
     void configure(const QString &path);
     void insertObject(QObject *object, const QString &objectName);
 
-  public slots:
-    Q_SCRIPTABLE void include( const QString &path );
-    Q_SCRIPTABLE QString absoluteFileName( const QString &path );
+public slots:
+    Q_SCRIPTABLE void include(const QString &path);
+    Q_SCRIPTABLE QString absoluteFileName(const QString &path);
 
-  private slots:
+private slots:
     void start();
-    void finished( Kross::Action *action );
+    void finished(Kross::Action *action);
 
-  private:
+private:
     Kross::Action *action;
 };
 

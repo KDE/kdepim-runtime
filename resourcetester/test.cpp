@@ -25,56 +25,59 @@
 #include <KMessageBox>
 #include <stdlib.h>
 
-Test* Test::mSelf = 0;
+Test *Test::mSelf = 0;
 
-Test::Test(QObject* parent) :
-  QObject( parent )
+Test::Test(QObject *parent) :
+    QObject(parent)
 {
 }
 
 void Test::verify(bool value)
 {
-  if ( !value )
-    fail( "Assertion failed." );
+    if (!value) {
+        fail("Assertion failed.");
+    }
 }
 
-void Test::verify( QObject* object, const QString &slot )
+void Test::verify(QObject *object, const QString &slot)
 {
-  qDebug() << object << slot;
-  bool result = false;
-  if ( !QMetaObject::invokeMethod( object, slot.toLatin1(), Q_RETURN_ARG( bool, result ) ) )
-    fail( "Unable to call method " + slot );
+    qDebug() << object << slot;
+    bool result = false;
+    if (!QMetaObject::invokeMethod(object, slot.toLatin1(), Q_RETURN_ARG(bool, result))) {
+        fail("Unable to call method " + slot);
+    }
 
-  if ( result )
-    return;
+    if (result) {
+        return;
+    }
 
-  QString lastError = QString( "Call to method " + slot + " returned false." );
-  QMetaObject::invokeMethod( object, "lastError", Q_RETURN_ARG( QString, lastError ) );
-  fail( lastError );
+    QString lastError = QString("Call to method " + slot + " returned false.");
+    QMetaObject::invokeMethod(object, "lastError", Q_RETURN_ARG(QString, lastError));
+    fail(lastError);
 }
 
-void Test::fail(const QString& error)
+void Test::fail(const QString &error)
 {
-  qCritical() << error;
-  abort();
+    qCritical() << error;
+    abort();
 }
 
 void Test::abort()
 {
-  Global::cleanup();
-  exit( -1 );
+    Global::cleanup();
+    exit(-1);
 }
 
-void Test::alert(const QString& msg)
+void Test::alert(const QString &msg)
 {
-  KMessageBox::information( 0, msg );
+    KMessageBox::information(0, msg);
 }
 
-Test* Test::instance()
+Test *Test::instance()
 {
-  if ( !mSelf )
-    mSelf = new Test( Global::parent() );
-  return mSelf;
+    if (!mSelf) {
+        mSelf = new Test(Global::parent());
+    }
+    return mSelf;
 }
-
 

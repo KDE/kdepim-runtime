@@ -20,4 +20,3 @@
 #include "libmaildir_debug.h"
 Q_LOGGING_CATEGORY(LIBMAILDIR_LOG, "log_libmaildir")
 
-

@@ -24,21 +24,21 @@
 
 class Test : public QObject
 {
-  Q_OBJECT
-  public:
-    static Test* instance();
+    Q_OBJECT
+public:
+    static Test *instance();
 
-  public slots:
-    void verify( bool value );
-    void verify( QObject *object, const QString &slot );
-    void fail( const QString &error );
+public slots:
+    void verify(bool value);
+    void verify(QObject *object, const QString &slot);
+    void fail(const QString &error);
     void abort();
-    void alert( const QString &msg );
+    void alert(const QString &msg);
 
-  private:
-    Test( QObject *parent = Q_NULLPTR );
+private:
+    Test(QObject *parent = Q_NULLPTR);
 
-    static Test* mSelf;
+    static Test *mSelf;
 };
 
 #endif

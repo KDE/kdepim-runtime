@@ -26,27 +26,27 @@ class KConfig;
 
 class QEmu : public QObject
 {
-  Q_OBJECT
-  public:
-    explicit QEmu( QObject *parent );
+    Q_OBJECT
+public:
+    explicit QEmu(QObject *parent);
     ~QEmu();
 
-  public slots:
-    void setVMConfig( const QString &configFileName );
+public slots:
+    void setVMConfig(const QString &configFileName);
     void start();
     void stop();
     int portOffset() const;
 
-  private:
+private:
     QString vmImage() const;
-    void waitForPort( int port );
+    void waitForPort(int port);
 
-  private slots:
-    void vmFinished( int exitCode, QProcess::ExitStatus exitStatus );
+private slots:
+    void vmFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
-  private:
-    KConfig* mVMConfig;
-    KProcess* mVMProcess;
+private:
+    KConfig *mVMConfig;
+    KProcess *mVMProcess;
     int mPortOffset;
     int mMonitorPort;
     bool mStarted;

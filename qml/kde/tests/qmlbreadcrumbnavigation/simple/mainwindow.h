@@ -33,20 +33,20 @@ class KBreadcrumbNavigationFactory;
 
 class MainWindow : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MainWindow(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    MainWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
 public slots:
-  void appendRow();
-  void removeTopRow();
-  void removeBottomRow();
-  void prependNewRow();
+    void appendRow();
+    void removeTopRow();
+    void removeBottomRow();
+    void prependNewRow();
 
 private:
-  QTreeView *m_treeView;
-  QDeclarativeView *m_declarativeView;
-  QStandardItemModel *m_model;
+    QTreeView *m_treeView;
+    QDeclarativeView *m_declarativeView;
+    QStandardItemModel *m_model;
 };
 
 #endif

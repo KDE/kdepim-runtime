@@ -32,34 +32,34 @@
 
 #include <QStandardItemModel>
 
-MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f )
-  : QWidget(parent, f)
+MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f)
 {
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  QSplitter *splitter = new QSplitter;
-  layout->addWidget(splitter);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    QSplitter *splitter = new QSplitter;
+    layout->addWidget(splitter);
 
-  QTreeView *treeView = new QTreeView(splitter);
+    QTreeView *treeView = new QTreeView(splitter);
 
-  m_model = new QStandardItemModel(this);
-  treeView->setModel(m_model);
+    m_model = new QStandardItemModel(this);
+    treeView->setModel(m_model);
 
-  appendRow();
-  appendRow();
+    appendRow();
+    appendRow();
 
-  m_declarativeView = new QDeclarativeView(splitter);
+    m_declarativeView = new QDeclarativeView(splitter);
 
-  QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
+    QDeclarativeContext *context = m_declarativeView->engine()->rootContext();
 
-  context->setContextProperty( "myModel", QVariant::fromValue( static_cast<QObject*>( m_model ) ) );
+    context->setContextProperty("myModel", QVariant::fromValue(static_cast<QObject *>(m_model)));
 
-  m_declarativeView->setResizeMode( QDeclarativeView::SizeRootObjectToView );
-  m_declarativeView->setSource( QUrl( "./mainview.qml" ) );
+    m_declarativeView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    m_declarativeView->setSource(QUrl("./mainview.qml"));
 
-  splitter->setSizes(QList<int>() << 1 << 1);
+    splitter->setSizes(QList<int>() << 1 << 1);
 
 //   QTimer::singleShot(4000, this, SLOT(removeBottomRow()));
-  QTimer::singleShot(8000, this, SLOT(prependNewRow()));
+    QTimer::singleShot(8000, this, SLOT(prependNewRow()));
 
 }
 
@@ -67,24 +67,23 @@ static int sCount = 1;
 
 void MainWindow::appendRow()
 {
-  QStandardItem *item = new QStandardItem(QString::fromLatin1("Item %1").arg(sCount++));
-  m_model->appendRow(item);
+    QStandardItem *item = new QStandardItem(QString::fromLatin1("Item %1").arg(sCount++));
+    m_model->appendRow(item);
 }
 
 void MainWindow::prependNewRow()
 {
-  QStandardItem *item = new QStandardItem(QString::fromLatin1("Item %1").arg(sCount++));
-  m_model->insertRow(0, item);
+    QStandardItem *item = new QStandardItem(QString::fromLatin1("Item %1").arg(sCount++));
+    m_model->insertRow(0, item);
 }
 
 void MainWindow::removeTopRow()
 {
-  m_model->removeRow(0);
+    m_model->removeRow(0);
 }
 
 void MainWindow::removeBottomRow()
 {
-  m_model->removeRow(1);
+    m_model->removeRow(1);
 }
-
 

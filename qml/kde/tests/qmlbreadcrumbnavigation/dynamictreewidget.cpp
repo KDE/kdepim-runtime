@@ -29,174 +29,175 @@
 
 #include "dynamictreemodel.h"
 
-static const char * const treePredefinesNames[] = {
-  "Flat List",
-  "Straight Line Tree",
-  "Dragon Teeth 1",
-  "Dragon Teeth 2",
-  "Random Tree 1"
+static const char *const treePredefinesNames[] = {
+    "Flat List",
+    "Straight Line Tree",
+    "Dragon Teeth 1",
+    "Dragon Teeth 2",
+    "Random Tree 1"
 };
 
-static const char * const treePredefinesContent[] = {
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1"
-  " - 1",
+static const char *const treePredefinesContent[] = {
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1"
+    " - 1",
 
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - - - - - 1"
-  " - - - - - - 1"
-  " - - - - - - - 1"
-  " - - - - - - - - 1"
-  " - - - - - - - - - 1"
-  " - - - - - - - - - - 1"
-  " - - - - - - - - - - - 1"
-  " - - - - - - - - - - - - 1"
-  " - - - - - - - - - - - - - 1"
-  " - - - - - - - - - - - - - - 1"
-  " - - - - - - - - - - - - - - - 1"
-  " - - - - - - - - - - - - - - - - 1",
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - - - - - 1"
+    " - - - - - - 1"
+    " - - - - - - - 1"
+    " - - - - - - - - 1"
+    " - - - - - - - - - 1"
+    " - - - - - - - - - - 1"
+    " - - - - - - - - - - - 1"
+    " - - - - - - - - - - - - 1"
+    " - - - - - - - - - - - - - 1"
+    " - - - - - - - - - - - - - - 1"
+    " - - - - - - - - - - - - - - - 1"
+    " - - - - - - - - - - - - - - - - 1",
 
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1",
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1",
 
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - - - - - 1"
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - - - - - 1"
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - - - - - 1"
-  " - 1"
-  " - - 1"
-  " - - - 1"
-  " - - - - 1"
-  " - - - - - 1",
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - - - - - 1"
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - - - - - 1"
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - - - - - 1"
+    " - 1"
+    " - - 1"
+    " - - - 1"
+    " - - - - 1"
+    " - - - - - 1",
 
-  " - 1"
-  " - 2"
-  " - - 3"
-  " - - - 4"
-  " - 5"
-  " - 6"
-  " - 7"
-  " - - 8"
-  " - - - 9"
-  " - - - 10"
-  " - - - - 11"
-  " - - - 12"
-  " - - - - 13"
-  " - 14"
-  " - 15"
+    " - 1"
+    " - 2"
+    " - - 3"
+    " - - - 4"
+    " - 5"
+    " - 6"
+    " - 7"
+    " - - 8"
+    " - - - 9"
+    " - - - 10"
+    " - - - - 11"
+    " - - - 12"
+    " - - - - 13"
+    " - 14"
+    " - 15"
 };
 
-static const char * const insertSubTreePredefinesNames[] = {
-  "Flat List",
-  "Straight Line Tree",
-  "Dragon Teeth 1",
-  "Dragon Teeth 2",
-  "Random Tree 1"
+static const char *const insertSubTreePredefinesNames[] = {
+    "Flat List",
+    "Straight Line Tree",
+    "Dragon Teeth 1",
+    "Dragon Teeth 2",
+    "Random Tree 1"
 };
 
-static const char * const insertSubTreePredefinesContent[] = {
-  " - 1\n"
-  " - 1\n"
-  " - 1\n"
-  " - 1\n",
+static const char *const insertSubTreePredefinesContent[] = {
+    " - 1\n"
+    " - 1\n"
+    " - 1\n"
+    " - 1\n",
 
-  " - 1\n"
-  " - - 1\n"
-  " - - - 1\n"
-  " - - - - 1\n",
+    " - 1\n"
+    " - - 1\n"
+    " - - - 1\n"
+    " - - - - 1\n",
 
-  " - 1\n"
-  " - - 1\n"
-  " - 1\n"
-  " - - 1\n",
+    " - 1\n"
+    " - - 1\n"
+    " - 1\n"
+    " - - 1\n",
 
-  " - 1\n"
-  " - - 1\n"
-  " - - - 1\n"
-  " - 1\n"
-  " - - 1\n"
-  " - - - 1\n",
+    " - 1\n"
+    " - - 1\n"
+    " - - - 1\n"
+    " - 1\n"
+    " - - 1\n"
+    " - - - 1\n",
 
-  " - 1\n"
-  " - 2\n"
-  " - - 3\n"
-  " - - - 4\n"
-  " - 5\n"
+    " - 1\n"
+    " - 2\n"
+    " - - 3\n"
+    " - - - 4\n"
+    " - 5\n"
 };
 
-DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget* parent, Qt::WindowFlags f)
-  : QWidget(parent, f), m_dynamicTreeModel(rootModel)
+DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget *parent, Qt::WindowFlags f)
+    : QWidget(parent, f), m_dynamicTreeModel(rootModel)
 {
-  QTabWidget *tabWidget = new QTabWidget(this);
+    QTabWidget *tabWidget = new QTabWidget(this);
 
-  QHBoxLayout *layout = new QHBoxLayout(this);
-  layout->addWidget(tabWidget);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(tabWidget);
 
-  QWidget *editContainer = new QWidget(tabWidget);
-  QVBoxLayout *editLayout = new QVBoxLayout(editContainer);
+    QWidget *editContainer = new QWidget(tabWidget);
+    QVBoxLayout *editLayout = new QVBoxLayout(editContainer);
 
-  m_treePredefines = new QComboBox(editContainer);
-  for (uint i = 0; i < sizeof treePredefinesNames / sizeof *treePredefinesNames; ++i)
-    m_treePredefines->addItem(*(treePredefinesNames + i), *(treePredefinesContent + i));
-  editLayout->addWidget(m_treePredefines);
-  connect(m_treePredefines, SIGNAL(currentIndexChanged(int)), SLOT(setTreePredefine(int)));
+    m_treePredefines = new QComboBox(editContainer);
+    for (uint i = 0; i < sizeof treePredefinesNames / sizeof * treePredefinesNames; ++i) {
+        m_treePredefines->addItem(*(treePredefinesNames + i), *(treePredefinesContent + i));
+    }
+    editLayout->addWidget(m_treePredefines);
+    connect(m_treePredefines, SIGNAL(currentIndexChanged(int)), SLOT(setTreePredefine(int)));
 
-  m_textEdit = new QPlainTextEdit(editContainer);
-  editLayout->addWidget(m_textEdit);
+    m_textEdit = new QPlainTextEdit(editContainer);
+    editLayout->addWidget(m_textEdit);
 
-  QWidget *viewContainer = new QWidget(tabWidget);
+    QWidget *viewContainer = new QWidget(tabWidget);
 
-  QVBoxLayout *viewLayout = new QVBoxLayout(viewContainer);
+    QVBoxLayout *viewLayout = new QVBoxLayout(viewContainer);
 
-  m_treeView = new QTreeView(tabWidget);
-  m_treeView->setModel(rootModel);
-  m_treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-  m_treeView->setDragDropMode(QAbstractItemView::InternalMove);
-  m_treeView->setDragEnabled(true);
-  m_treeView->setAcceptDrops(true);
-  m_treeView->setDropIndicatorShown(true);
-  m_treeView->viewport()->installEventFilter(this);
+    m_treeView = new QTreeView(tabWidget);
+    m_treeView->setModel(rootModel);
+    m_treeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    m_treeView->setDragDropMode(QAbstractItemView::InternalMove);
+    m_treeView->setDragEnabled(true);
+    m_treeView->setAcceptDrops(true);
+    m_treeView->setDropIndicatorShown(true);
+    m_treeView->viewport()->installEventFilter(this);
 
 //   QPushButton *m_removeButton = new QPushButton("Remove", tabWidget);
 
@@ -225,7 +226,7 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget* paren
 
 //   connect(m_resetButton, SIGNAL(clicked(bool)), SLOT(resetModel()));
 
-  viewLayout->addWidget(m_treeView);
+    viewLayout->addWidget(m_treeView);
 
 //   viewLayout->addWidget(m_removeButton);
 
@@ -237,162 +238,162 @@ DynamicTreeWidget::DynamicTreeWidget(DynamicTreeModel *rootModel, QWidget* paren
 //   viewLayout->addWidget(m_insertButton);
 //   viewLayout->addWidget(m_resetButton);
 
-  tabWidget->addTab(editContainer, "Edit");
-  tabWidget->addTab(viewContainer, "View");
+    tabWidget->addTab(editContainer, "Edit");
+    tabWidget->addTab(viewContainer, "View");
 
-  tabWidget->setCurrentIndex(ViewTab);
+    tabWidget->setCurrentIndex(ViewTab);
 
-  connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
-  stringToModel(
-    " - 1"
-    " - 2"
-    " - - 3"
-    " - - 4"
-    " - - 5"
-    " - 6"
-    " - 7"
-    " - - 8"
-    " - - - 9"
-    " - - - 10"
-    " - - 11"
-    " - - 12"
-    " - 13"
-    " - 14"
-    " - 15"
-    " - - 16"
-    " - - - 17"
-    " - - - 18"
-    " - 19"
-    " - 20"
-    " - 21"
+    connect(tabWidget, SIGNAL(currentChanged(int)), SLOT(currentChanged(int)));
+    stringToModel(
+        " - 1"
+        " - 2"
+        " - - 3"
+        " - - 4"
+        " - - 5"
+        " - 6"
+        " - 7"
+        " - - 8"
+        " - - - 9"
+        " - - - 10"
+        " - - 11"
+        " - - 12"
+        " - 13"
+        " - 14"
+        " - 15"
+        " - - 16"
+        " - - - 17"
+        " - - - 18"
+        " - 19"
+        " - 20"
+        " - 21"
     );
 }
 
 void DynamicTreeWidget::setInitialTree(const QString &treeString)
 {
-  stringToModel(treeString);
+    stringToModel(treeString);
 }
 
 void DynamicTreeWidget::currentChanged(int index)
 {
-  switch(index)
-  {
-  case EditTab:
-    m_textEdit->setPlainText(modelTreeToString(0, QModelIndex()));
-    break;
-  case ViewTab:
-    if (m_textEdit->document()->isModified())
-      stringToModel(m_textEdit->toPlainText());
-    m_textEdit->document()->setModified(false);
-    break;
-  }
+    switch (index) {
+    case EditTab:
+        m_textEdit->setPlainText(modelTreeToString(0, QModelIndex()));
+        break;
+    case ViewTab:
+        if (m_textEdit->document()->isModified()) {
+            stringToModel(m_textEdit->toPlainText());
+        }
+        m_textEdit->document()->setModified(false);
+        break;
+    }
 }
 
 void DynamicTreeWidget::stringToModel(const QString &treeString)
 {
-  if (treeString.isEmpty())
-    return;
+    if (treeString.isEmpty()) {
+        return;
+    }
 
-  m_dynamicTreeModel->clear();
-  ModelInsertCommand *command = new ModelInsertCommand(m_dynamicTreeModel);
-  command->setStartRow(0);
-  command->interpret(treeString);
-  command->doCommand();
-  m_treeView->expandAll();
+    m_dynamicTreeModel->clear();
+    ModelInsertCommand *command = new ModelInsertCommand(m_dynamicTreeModel);
+    command->setStartRow(0);
+    command->interpret(treeString);
+    command->doCommand();
+    m_treeView->expandAll();
 }
 
 QString DynamicTreeWidget::modelTreeToString(int depth, const QModelIndex &parent)
 {
-  QString result;
-  QModelIndex idx;
-  static const int column = 0;
-  QString prefix;
+    QString result;
+    QModelIndex idx;
+    static const int column = 0;
+    QString prefix;
 
-  for (int i = 0; i <= depth; ++i)
-    prefix.append(" -");
+    for (int i = 0; i <= depth; ++i) {
+        prefix.append(" -");
+    }
 
-  for (int row = 0; row < m_dynamicTreeModel->rowCount(parent); ++row)
-  {
-    idx = m_dynamicTreeModel->index(row, column, parent);
-    result.append(prefix + " " + idx.data().toString() + "\n");
-    if (m_dynamicTreeModel->hasChildren(idx))
-      result.append(modelTreeToString(depth+1, idx));
-  }
-  return result;
+    for (int row = 0; row < m_dynamicTreeModel->rowCount(parent); ++row) {
+        idx = m_dynamicTreeModel->index(row, column, parent);
+        result.append(prefix + " " + idx.data().toString() + "\n");
+        if (m_dynamicTreeModel->hasChildren(idx)) {
+            result.append(modelTreeToString(depth + 1, idx));
+        }
+    }
+    return result;
 }
 
 void DynamicTreeWidget::removeSelected()
 {
-  QModelIndex parent;
-  ModelRemoveCommand *removeCommand = new ModelRemoveCommand(m_dynamicTreeModel, this);
-  QItemSelection selection = m_treeView->selectionModel()->selection();
-  while (!selection.isEmpty())
-  {
-    const QItemSelectionRange &range = selection.takeFirst(); // The selection model will take care of updating persistent indexes.
-    Q_ASSERT(range.isValid());
+    QModelIndex parent;
+    ModelRemoveCommand *removeCommand = new ModelRemoveCommand(m_dynamicTreeModel, this);
+    QItemSelection selection = m_treeView->selectionModel()->selection();
+    while (!selection.isEmpty()) {
+        const QItemSelectionRange &range = selection.takeFirst(); // The selection model will take care of updating persistent indexes.
+        Q_ASSERT(range.isValid());
 //     qDebug() << range.parent() << range.top() << range.bottom();
-    removeCommand->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(range.parent()));
-    removeCommand->setStartRow(range.top());
-    removeCommand->setEndRow(range.bottom());
+        removeCommand->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(range.parent()));
+        removeCommand->setStartRow(range.top());
+        removeCommand->setEndRow(range.bottom());
 
 //     qDebug() << m_dynamicTreeModel->indexToPath(range.parent());
 
-    removeCommand->doCommand();
-  }
+        removeCommand->doCommand();
+    }
 }
 
 void DynamicTreeWidget::insertSelected()
 {
-  const QModelIndexList selectedRows = m_treeView->selectionModel()->selectedRows();
+    const QModelIndexList selectedRows = m_treeView->selectionModel()->selectedRows();
 
-  if (selectedRows.size() != 1)
-    return;
+    if (selectedRows.size() != 1) {
+        return;
+    }
 
-  const QModelIndex selectedRow = selectedRows.first();
+    const QModelIndex selectedRow = selectedRows.first();
 
-  ModelInsertCommand *ins = new ModelInsertCommand(m_dynamicTreeModel, this);
-  if (m_insertChildren->isChecked())
-  {
-    ins->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(selectedRow));
-    ins->setStartRow(0);
-  } else if (m_insertSiblingsAbove->isChecked())
-  {
-    ins->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(selectedRow.parent()));
-    ins->setStartRow(selectedRow.row());
-  } else {
-    Q_ASSERT(m_insertSiblingsBelow->isChecked());
-    ins->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(selectedRow.parent()));
-    ins->setStartRow(selectedRow.row() + 1);
-  }
-  ins->interpret(m_insertPatternTextEdit->toPlainText());
-  ins->doCommand();
+    ModelInsertCommand *ins = new ModelInsertCommand(m_dynamicTreeModel, this);
+    if (m_insertChildren->isChecked()) {
+        ins->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(selectedRow));
+        ins->setStartRow(0);
+    } else if (m_insertSiblingsAbove->isChecked()) {
+        ins->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(selectedRow.parent()));
+        ins->setStartRow(selectedRow.row());
+    } else {
+        Q_ASSERT(m_insertSiblingsBelow->isChecked());
+        ins->setAncestorRowNumbers(m_dynamicTreeModel->indexToPath(selectedRow.parent()));
+        ins->setStartRow(selectedRow.row() + 1);
+    }
+    ins->interpret(m_insertPatternTextEdit->toPlainText());
+    ins->doCommand();
 }
 
 void DynamicTreeWidget::resetModel()
 {
-  ModelResetCommand *resetCommand = new ModelResetCommand(m_dynamicTreeModel, this);
+    ModelResetCommand *resetCommand = new ModelResetCommand(m_dynamicTreeModel, this);
 
-  resetCommand->setInitialTree(m_insertPatternTextEdit->toPlainText().trimmed());
-  resetCommand->doCommand();
+    resetCommand->setInitialTree(m_insertPatternTextEdit->toPlainText().trimmed());
+    resetCommand->doCommand();
 }
 
 void DynamicTreeWidget::setTreePredefine(int index)
 {
-  stringToModel(m_treePredefines->itemData(index).toString());
-  m_textEdit->setPlainText(modelTreeToString(0, QModelIndex()));
+    stringToModel(m_treePredefines->itemData(index).toString());
+    m_textEdit->setPlainText(modelTreeToString(0, QModelIndex()));
 }
 
 void DynamicTreeWidget::setInsertSubTreePredefine(int index)
 {
-  m_insertPatternTextEdit->setPlainText(m_insertSubTreePredefines->itemData(index).toString());
+    m_insertPatternTextEdit->setPlainText(m_insertSubTreePredefines->itemData(index).toString());
 }
 
-bool DynamicTreeWidget::eventFilter(QObject* o, QEvent* e)
+bool DynamicTreeWidget::eventFilter(QObject *o, QEvent *e)
 {
 
-  if (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonDblClick || e->type() == QEvent::MouseButtonRelease)
-    return true;
-  return QObject::eventFilter( o, e);
+    if (e->type() == QEvent::MouseButtonPress || e->type() == QEvent::MouseButtonDblClick || e->type() == QEvent::MouseButtonRelease) {
+        return true;
+    }
+    return QObject::eventFilter(o, e);
 }
-
 

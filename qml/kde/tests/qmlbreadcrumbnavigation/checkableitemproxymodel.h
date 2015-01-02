@@ -32,28 +32,28 @@ class CheckableItemProxyModelPrivate;
 
 class CheckableItemProxyModel : public QSortFilterProxyModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  CheckableItemProxyModel(QObject* parent = 0);
+    CheckableItemProxyModel(QObject *parent = 0);
 
-  void setSelectionModel(QItemSelectionModel *itemSelectionModel);
+    void setSelectionModel(QItemSelectionModel *itemSelectionModel);
 
-  /* reimp */ Qt::ItemFlags flags(const QModelIndex& index) const;
+    /* reimp */ Qt::ItemFlags flags(const QModelIndex &index) const;
 
-  /* reimp */ QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    /* reimp */ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-  /* reimp */ bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
+    /* reimp */ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-  /* reimp */ void setSourceModel(QAbstractItemModel* sourceModel);
+    /* reimp */ void setSourceModel(QAbstractItemModel *sourceModel);
 
 protected:
-  virtual bool select( const QItemSelection &selection, QItemSelectionModel::SelectionFlags command );
+    virtual bool select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 
 private:
-  Q_DECLARE_PRIVATE(CheckableItemProxyModel)
-  CheckableItemProxyModelPrivate * const d_ptr;
+    Q_DECLARE_PRIVATE(CheckableItemProxyModel)
+    CheckableItemProxyModelPrivate *const d_ptr;
 
-  Q_PRIVATE_SLOT(d_func(), void selectionChanged(const QItemSelection &, const QItemSelection &) )
+    Q_PRIVATE_SLOT(d_func(), void selectionChanged(const QItemSelection &, const QItemSelection &))
 };
 
 #endif

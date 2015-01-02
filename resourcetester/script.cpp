@@ -22,48 +22,48 @@
 
 Script::Script()
 {
-  action = new Kross::Action(this, "ResourceTester");
-  connect(action, &Kross::Action::finished, this, &Script::finished);
-  action->addObject( this, QLatin1String( "Script" ) );
+    action = new Kross::Action(this, "ResourceTester");
+    connect(action, &Kross::Action::finished, this, &Script::finished);
+    action->addObject(this, QLatin1String("Script"));
 }
 
 void Script::configure(const QString &path)
 {
-  action->setFile(path);
+    action->setFile(path);
 }
 
 void Script::insertObject(QObject *object, const QString &objectName)
 {
-  action->addObject(object, objectName);
+    action->addObject(object, objectName);
 }
 
-void Script::include(const QString& path)
+void Script::include(const QString &path)
 {
-  QFile f( Global::basePath() + path );
-  if ( !f.open( QFile::ReadOnly ) )
-    qCritical() << "Unable to open file" << Global::basePath() + path;
-  else
-    action->evaluate( f.readAll() );
+    QFile f(Global::basePath() + path);
+    if (!f.open(QFile::ReadOnly)) {
+        qCritical() << "Unable to open file" << Global::basePath() + path;
+    } else {
+        action->evaluate(f.readAll());
+    }
 }
 
-QString Script::absoluteFileName(const QString& path)
+QString Script::absoluteFileName(const QString &path)
 {
-  return Global::basePath() + path;
+    return Global::basePath() + path;
 }
 
 void Script::start()
 {
-  action->trigger();
+    action->trigger();
 }
 
-void Script::finished(Kross::Action* action)
+void Script::finished(Kross::Action *action)
 {
-  if ( action->hadError() ) {
-    qCritical() << action->errorMessage() << action->errorTrace();
-    QCoreApplication::instance()->exit( 1 );
-  } else {
-    QCoreApplication::instance()->quit();
-  }
+    if (action->hadError()) {
+        qCritical() << action->errorMessage() << action->errorTrace();
+        QCoreApplication::instance()->exit(1);
+    } else {
+        QCoreApplication::instance()->quit();
+    }
 }
-
 

@@ -24,13 +24,13 @@
 
 class System : public QObject
 {
-  Q_OBJECT
-  public:
-    explicit System( QObject *parent = Q_NULLPTR );
+    Q_OBJECT
+public:
+    explicit System(QObject *parent = Q_NULLPTR);
 
-  public slots:
-    void exec( const QString& program, const QStringList& args );
-    void sleep( int secs );
+public slots:
+    void exec(const QString &program, const QStringList &args);
+    void sleep(int secs);
 };
 
 #endif

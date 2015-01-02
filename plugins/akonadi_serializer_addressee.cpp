@@ -151,7 +151,6 @@ static void compareList(Akonadi::AbstractDifferencesReporter *reporter, const QS
     }
 }
 
-
 template <class T>
 static void compareVector(Akonadi::AbstractDifferencesReporter *reporter, const QString &id, const QVector<T> &left, const QVector<T> &right)
 {

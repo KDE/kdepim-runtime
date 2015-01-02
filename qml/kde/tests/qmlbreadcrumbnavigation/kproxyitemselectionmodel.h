@@ -45,33 +45,33 @@ class KLinkItemSelectionModelPrivate;
 */
 class KLinkItemSelectionModel : public QItemSelectionModel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  /**
-    Constructor.
-  */
-  KLinkItemSelectionModel( QAbstractItemModel *targetModel, QItemSelectionModel *proxySelector, QObject *parent = 0);
+    /**
+      Constructor.
+    */
+    KLinkItemSelectionModel(QAbstractItemModel *targetModel, QItemSelectionModel *proxySelector, QObject *parent = 0);
 
-  /* reimp */ void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
-  /* reimp */ void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
+    /* reimp */ void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
+    /* reimp */ void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
 
 private:
-  /**
-    Maps the @p sourceIndex though the proxy models to a selection in the proxySelector
-  */
-  QItemSelection mapSelectionFromSource( const QModelIndex &sourceIndex ) const;
-  QItemSelection mapSelectionFromSource( const QItemSelection &sourceSelection ) const;
-  QItemSelection mapSelectionToSource( const QModelIndex &sourceIndex ) const;
-  QItemSelection mapSelectionToSource( const QItemSelection &sourceSelection ) const;
+    /**
+      Maps the @p sourceIndex though the proxy models to a selection in the proxySelector
+    */
+    QItemSelection mapSelectionFromSource(const QModelIndex &sourceIndex) const;
+    QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection) const;
+    QItemSelection mapSelectionToSource(const QModelIndex &sourceIndex) const;
+    QItemSelection mapSelectionToSource(const QItemSelection &sourceSelection) const;
 
 private slots:
-  void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void sourceSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 protected:
-  KLinkItemSelectionModelPrivate * const d_ptr;
+    KLinkItemSelectionModelPrivate *const d_ptr;
 
 private:
-  Q_DECLARE_PRIVATE(KLinkItemSelectionModel)
+    Q_DECLARE_PRIVATE(KLinkItemSelectionModel)
 };
 
 #endif

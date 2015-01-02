@@ -34,171 +34,179 @@
 #include <QFile>
 #include <QTcpSocket>
 
-QEmu::QEmu(QObject* parent) :
-  QObject( parent ),
-  mVMConfig( 0 ),
-  mVMProcess( 0 ),
-  mPortOffset( 42000 ), // TODO should be somewhat dynamic to allo running multiple instances in parallel
-  mMonitorPort( -1 ),
-  mStarted( false )
+QEmu::QEmu(QObject *parent) :
+    QObject(parent),
+    mVMConfig(0),
+    mVMProcess(0),
+    mPortOffset(42000),   // TODO should be somewhat dynamic to allo running multiple instances in parallel
+    mMonitorPort(-1),
+    mStarted(false)
 {
-  Q_ASSERT( parent );
+    Q_ASSERT(parent);
 }
 
 QEmu::~QEmu()
 {
-  if ( mVMProcess && mVMProcess->state() == QProcess::Running )
-    stop();
-  delete mVMConfig;
+    if (mVMProcess && mVMProcess->state() == QProcess::Running) {
+        stop();
+    }
+    delete mVMConfig;
 }
 
-void QEmu::setVMConfig(const QString& configFileName)
+void QEmu::setVMConfig(const QString &configFileName)
 {
-  delete mVMConfig;
-  mVMConfig = new KConfig( Global::basePath() + QLatin1Char('/') + configFileName );
+    delete mVMConfig;
+    mVMConfig = new KConfig(Global::basePath() + QLatin1Char('/') + configFileName);
 }
 
 void QEmu::start()
 {
-  Q_ASSERT( mVMConfig );
-  if ( mVMProcess ) {
-    qWarning() << "VM already running.";
-    return;
-  }
+    Q_ASSERT(mVMConfig);
+    if (mVMProcess) {
+        qWarning() << "VM already running.";
+        return;
+    }
 
-  KConfigGroup emuConf( mVMConfig, "Emulator" );
-  QStringList args = KShell::splitArgs( emuConf.readEntry( "Arguments", QString() ) );
-  const QList<int> ports = emuConf.readEntry( "Ports", QList<int>() );
-  foreach ( int port, ports ) {
-    args << "-redir" << QString::fromLatin1( "tcp:%1::%2" ).arg( port + mPortOffset ).arg( port );
-  }
-  mMonitorPort = emuConf.readEntry( "MonitorPort", 23 ) + mPortOffset;
-  args << "-monitor" << QString::fromLatin1( "tcp:127.0.0.1:%1,server,nowait" ).arg( mMonitorPort );
-  args << "-hda" << vmImage();
+    KConfigGroup emuConf(mVMConfig, "Emulator");
+    QStringList args = KShell::splitArgs(emuConf.readEntry("Arguments", QString()));
+    const QList<int> ports = emuConf.readEntry("Ports", QList<int>());
+    foreach (int port, ports) {
+        args << "-redir" << QString::fromLatin1("tcp:%1::%2").arg(port + mPortOffset).arg(port);
+    }
+    mMonitorPort = emuConf.readEntry("MonitorPort", 23) + mPortOffset;
+    args << "-monitor" << QString::fromLatin1("tcp:127.0.0.1:%1,server,nowait").arg(mMonitorPort);
+    args << "-hda" << vmImage();
 
-  // If a SnapshotName is given in the configuration, load that snapshot
-  // with -loadvm and assume that it's OK to write to he image file.
-  // Othewise, use the -snapshot option to avoid changing the image
-  // file.
-  QString snapshotName = emuConf.readEntry( "SnapshotName", "" );
-  if ( snapshotName.isEmpty() ) {
-    args << "-snapshot";
-  } else {
-    args << "-loadvm" << snapshotName;
-  }
+    // If a SnapshotName is given in the configuration, load that snapshot
+    // with -loadvm and assume that it's OK to write to he image file.
+    // Othewise, use the -snapshot option to avoid changing the image
+    // file.
+    QString snapshotName = emuConf.readEntry("SnapshotName", "");
+    if (snapshotName.isEmpty()) {
+        args << "-snapshot";
+    } else {
+        args << "-loadvm" << snapshotName;
+    }
 
-  qDebug() << "Starting QEMU with arguments" << args << "...";
+    qDebug() << "Starting QEMU with arguments" << args << "...";
 
-  mVMProcess = new KProcess( this );
-  connect( mVMProcess, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(vmFinished(int,QProcess::ExitStatus)) );
-  mVMProcess->setProgram( "qemu", args );
-  mVMProcess->start();
-  mVMProcess->waitForStarted();
-  mStarted = true;
-  qDebug() << "QEMU started.";
+    mVMProcess = new KProcess(this);
+    connect(mVMProcess, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(vmFinished(int,QProcess::ExitStatus)));
+    mVMProcess->setProgram("qemu", args);
+    mVMProcess->start();
+    mVMProcess->waitForStarted();
+    mStarted = true;
+    qDebug() << "QEMU started.";
 
-  if ( emuConf.readEntry( "WaitForPorts", true ) ) {
-    const QList<int> waitPorts = emuConf.readEntry( "WaitForPorts", QList<int>() );
-    foreach ( int port, waitPorts )
-      waitForPort( port );
-  }
+    if (emuConf.readEntry("WaitForPorts", true)) {
+        const QList<int> waitPorts = emuConf.readEntry("WaitForPorts", QList<int>());
+        foreach (int port, waitPorts) {
+            waitForPort(port);
+        }
+    }
 }
 
 void QEmu::stop()
 {
-  mStarted = false;
-  if ( !mVMProcess )
-    return;
-  qDebug() << "Stopping QEMU...";
+    mStarted = false;
+    if (!mVMProcess) {
+        return;
+    }
+    qDebug() << "Stopping QEMU...";
 
-  // send stop command via QEMU monitor
-  QTcpSocket socket;
-  socket.connectToHost( "localhost", mMonitorPort );
-  if ( socket.waitForConnected() ) {
-    socket.write( "quit\n");
-    socket.flush();
-    socket.waitForBytesWritten();
-    mVMProcess->waitForFinished(10000);
-  } else {
-    qDebug() << "Unable to connect to QEMU monitor:" << socket.errorString();
-  }
+    // send stop command via QEMU monitor
+    QTcpSocket socket;
+    socket.connectToHost("localhost", mMonitorPort);
+    if (socket.waitForConnected()) {
+        socket.write("quit\n");
+        socket.flush();
+        socket.waitForBytesWritten();
+        mVMProcess->waitForFinished(10000);
+    } else {
+        qDebug() << "Unable to connect to QEMU monitor:" << socket.errorString();
+    }
 
-  if ( mVMProcess->state() == QProcess::Running ) {
-    qDebug() << "qemu is still running. terminating";
-    mVMProcess->terminate();
-  }
+    if (mVMProcess->state() == QProcess::Running) {
+        qDebug() << "qemu is still running. terminating";
+        mVMProcess->terminate();
+    }
 
-  delete mVMProcess;
-  mVMProcess = 0;
-  qDebug() << "QEMU stopped.";
+    delete mVMProcess;
+    mVMProcess = 0;
+    qDebug() << "QEMU stopped.";
 }
 
 QString QEmu::vmImage() const
 {
-  KConfigGroup conf( mVMConfig, "Image" );
+    KConfigGroup conf(mVMConfig, "Image");
 
-  const QUrl imageUrl = QUrl::fromLocalFile(conf.readEntry( "Source", QString() ));
-  Q_ASSERT( !imageUrl.isEmpty() );
+    const QUrl imageUrl = QUrl::fromLocalFile(conf.readEntry("Source", QString()));
+    Q_ASSERT(!imageUrl.isEmpty());
 
-  const QString imageArchiveFileName = imageUrl.fileName();
-  Q_ASSERT( !imageArchiveFileName.isEmpty() );
+    const QString imageArchiveFileName = imageUrl.fileName();
+    Q_ASSERT(!imageArchiveFileName.isEmpty());
 
-  // check if the image has been downloaded already
-  const QString localArchiveFileName = Global::vmPath() + imageArchiveFileName;
-  if ( !QFile::exists( localArchiveFileName ) ) {
-    qDebug() << "Downloading VM image from" << imageUrl << "to" << localArchiveFileName << "...";
-    const bool result = KIO::NetAccess::file_copy( imageUrl, QUrl::fromLocalFile(localArchiveFileName), 0 );
-    if ( !result )
-      qCritical() << "Downloading" << imageUrl << "failed!";
-    qDebug() << "Downloading VM image complete.";
-  }
+    // check if the image has been downloaded already
+    const QString localArchiveFileName = Global::vmPath() + imageArchiveFileName;
+    if (!QFile::exists(localArchiveFileName)) {
+        qDebug() << "Downloading VM image from" << imageUrl << "to" << localArchiveFileName << "...";
+        const bool result = KIO::NetAccess::file_copy(imageUrl, QUrl::fromLocalFile(localArchiveFileName), 0);
+        if (!result) {
+            qCritical() << "Downloading" << imageUrl << "failed!";
+        }
+        qDebug() << "Downloading VM image complete.";
+    }
 
-  // check if the image archive has been extracted yet
-  const QString extractedDirName = Global::vmPath() + imageArchiveFileName + ".directory";
-  if ( !QDir::root().exists( extractedDirName ) ) {
-    qDebug() << "Extracting VM image...";
-    QDir::root().mkpath( extractedDirName );
-    KProcess proc;
-    proc.setWorkingDirectory( extractedDirName );
-    proc.setProgram( "tar", QStringList() << "xvf" << localArchiveFileName );
-    proc.execute();
-    qDebug() << "Extracting VM image complete.";
-  }
+    // check if the image archive has been extracted yet
+    const QString extractedDirName = Global::vmPath() + imageArchiveFileName + ".directory";
+    if (!QDir::root().exists(extractedDirName)) {
+        qDebug() << "Extracting VM image...";
+        QDir::root().mkpath(extractedDirName);
+        KProcess proc;
+        proc.setWorkingDirectory(extractedDirName);
+        proc.setProgram("tar", QStringList() << "xvf" << localArchiveFileName);
+        proc.execute();
+        qDebug() << "Extracting VM image complete.";
+    }
 
-  // check if the actual image file is there and return it
-  const QString imageFile = extractedDirName + QDir::separator() + conf.readEntry( "File", QString() );
-  if ( !QFile::exists( imageFile ) )
-    qCritical() << "Image file" << imageFile << "does not exist.";
+    // check if the actual image file is there and return it
+    const QString imageFile = extractedDirName + QDir::separator() + conf.readEntry("File", QString());
+    if (!QFile::exists(imageFile)) {
+        qCritical() << "Image file" << imageFile << "does not exist.";
+    }
 
-  return imageFile;
+    return imageFile;
 }
 
 void QEmu::waitForPort(int port)
 {
-  qDebug() << "Waiting for port" << (port + mPortOffset) << "...";
-  forever {
+    qDebug() << "Waiting for port" << (port + mPortOffset) << "...";
+    forever {
     QTcpSocket socket;
-    socket.connectToHost( "localhost", port + mPortOffset );
-    if ( !socket.waitForConnected( 5000 ) ) {
-      QTest::qWait( 5000 );
-      continue;
+    socket.connectToHost("localhost", port + mPortOffset);
+        if (!socket.waitForConnected(5000))
+        {
+            QTest::qWait(5000);
+            continue;
+        }
+        if (socket.waitForReadyRead(5000))
+        {
+            break;
+        }
     }
-    if ( socket.waitForReadyRead( 5000 ) )
-      break;
-  }
 }
 
 int QEmu::portOffset() const
 {
-  return mPortOffset;
+    return mPortOffset;
 }
 
 void QEmu::vmFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-  Q_UNUSED( exitCode );
-  Q_UNUSED( exitStatus );
-  if ( mStarted )
-    Test::instance()->fail( "QEMU termineated!" );
+    Q_UNUSED(exitCode);
+    Q_UNUSED(exitStatus);
+    if (mStarted) {
+        Test::instance()->fail("QEMU termineated!");
+    }
 }
-
 

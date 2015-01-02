@@ -24,14 +24,14 @@ class QObject;
 
 namespace Global
 {
-  QString basePath();
-  void setBasePath( const QString &path );
+QString basePath();
+void setBasePath(const QString &path);
 
-  QString vmPath();
-  void setVMPath( const QString &path );
+QString vmPath();
+void setVMPath(const QString &path);
 
-  QObject *parent();
-  void cleanup();
+QObject *parent();
+void cleanup();
 }
 
 #endif

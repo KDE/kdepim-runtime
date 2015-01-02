@@ -31,27 +31,27 @@ class QScriptContext;
 
 class KDEIntegration : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit KDEIntegration(QObject* parent = Q_NULLPTR);
+public:
+    explicit KDEIntegration(QObject *parent = Q_NULLPTR);
 
-  public slots:
-    QString i18n( const QScriptValue &array );
-    QString i18nc( const QScriptValue &array );
-    QString i18np( const QScriptValue &array );
-    QString i18ncp( const QScriptValue &array );
+public slots:
+    QString i18n(const QScriptValue &array);
+    QString i18nc(const QScriptValue &array);
+    QString i18np(const QScriptValue &array);
+    QString i18ncp(const QScriptValue &array);
 
-    QString iconPath( const QString &iconName, int size );
-    QPixmap iconToPixmap( const QIcon &icon, int size );
+    QString iconPath(const QString &iconName, int size);
+    QPixmap iconToPixmap(const QIcon &icon, int size);
 
-    QString locate( const QString &type, const QString &filename );
+    QString locate(const QString &type, const QString &filename);
 
     /// convert millimeters into pixels
-    qreal mm2px( qreal mm );
+    qreal mm2px(qreal mm);
 
-  private:
-    QScriptContext *getContext( const QScriptValue &v );
+private:
+    QScriptContext *getContext(const QScriptValue &v);
 };
 
 #endif

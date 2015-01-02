@@ -21,34 +21,34 @@
 
 #include "kresettingproxymodel.h"
 
-KResettingProxyModel::KResettingProxyModel(QObject* parent)
-  : QSortFilterProxyModel(parent)
+KResettingProxyModel::KResettingProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent)
 {
 
 }
 
-void KResettingProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
+void KResettingProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
-  connect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(slotBeginReset()));
-  connect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(slotEndReset()));
-  connect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(slotBeginReset()));
-  connect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(slotEndReset()));
+    connect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(slotBeginReset()));
+    connect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(slotEndReset()));
+    connect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(slotBeginReset()));
+    connect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(slotEndReset()));
 
-  QSortFilterProxyModel::setSourceModel(sourceModel);
-  disconnect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(_q_sourceRowsAboutToBeInserted(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(_q_sourceRowsInserted(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(_q_sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
-  disconnect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(_q_sourceRowsRemoved(QModelIndex,int,int)));
+    QSortFilterProxyModel::setSourceModel(sourceModel);
+    disconnect(sourceModel, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(_q_sourceRowsAboutToBeInserted(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(_q_sourceRowsInserted(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(_q_sourceRowsAboutToBeRemoved(QModelIndex,int,int)));
+    disconnect(sourceModel, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(_q_sourceRowsRemoved(QModelIndex,int,int)));
 
 }
 
 void KResettingProxyModel::slotBeginReset()
 {
-  QMetaObject::invokeMethod(this, "_q_sourceAboutToBeReset", Qt::DirectConnection);
+    QMetaObject::invokeMethod(this, "_q_sourceAboutToBeReset", Qt::DirectConnection);
 }
 
 void KResettingProxyModel::slotEndReset()
 {
-  QMetaObject::invokeMethod(this, "_q_sourceReset", Qt::DirectConnection);
+    QMetaObject::invokeMethod(this, "_q_sourceReset", Qt::DirectConnection);
 }
 

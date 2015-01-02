@@ -26,26 +26,26 @@
 
 class CollectionTest : public QObject, protected WrappedObject
 {
-  Q_OBJECT
-  public:
-    explicit CollectionTest( QObject *parent = Q_NULLPTR );
+    Q_OBJECT
+public:
+    explicit CollectionTest(QObject *parent = Q_NULLPTR);
 
-    void setParent( const Akonadi::Collection &parent );
-    void setCollection( const Akonadi::Collection &collection );
+    void setParent(const Akonadi::Collection &parent);
+    void setCollection(const Akonadi::Collection &collection);
 
-  public slots:
-    QObject* newInstance();
+public slots:
+    QObject *newInstance();
 
-    void setParent( const QString &parentPath );
-    void setCollection( const QString &path );
-    void setName( const QString &name );
-    void addContentType( const QString &type );
+    void setParent(const QString &parentPath);
+    void setCollection(const QString &path);
+    void setName(const QString &name);
+    void addContentType(const QString &type);
 
     void create();
     void update();
     void remove();
 
-  private:
+private:
     Akonadi::Collection mParent;
     Akonadi::Collection mCollection;
 };
