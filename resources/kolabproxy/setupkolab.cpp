@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2010 Laurent Montel <montel@kde.org>
+  Copyright (c) 2010-2015 Laurent Montel <montel@kde.org>
   Copyright (c) 2012 Christian Mollekopf <mollekopf@kolabsys.com>
 
   This library is free software; you can redistribute it and/or modify it
