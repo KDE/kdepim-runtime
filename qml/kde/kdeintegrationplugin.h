@@ -27,7 +27,7 @@ class Q_DECL_EXPORT KDEIntegrationPlugin : public QDeclarativeExtensionPlugin
   Q_OBJECT
   Q_PLUGIN_METADATA(IID "org.kde.kdeqmlplugin");
   public:
-    explicit KDEIntegrationPlugin(QObject* parent = 0);
+    explicit KDEIntegrationPlugin(QObject* parent = Q_NULLPTR);
     virtual void registerTypes(const char* uri);
     virtual void initializeEngine(QDeclarativeEngine* engine, const char* uri);
 };

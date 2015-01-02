@@ -26,7 +26,7 @@ class AkonotesResourceFactory : public Akonadi::AgentFactory<AkonotesResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.AkonotesResource");
 public:
-    explicit AkonotesResourceFactory(QObject *parent = 0);
+    explicit AkonotesResourceFactory(QObject *parent = Q_NULLPTR);
 
 };
 #endif

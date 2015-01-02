@@ -34,7 +34,7 @@ class KDEIntegration : public QObject
   Q_OBJECT
 
   public:
-    explicit KDEIntegration(QObject* parent = 0);
+    explicit KDEIntegration(QObject* parent = Q_NULLPTR);
 
   public slots:
     QString i18n( const QScriptValue &array );

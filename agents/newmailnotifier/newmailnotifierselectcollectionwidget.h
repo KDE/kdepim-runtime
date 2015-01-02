@@ -39,7 +39,7 @@ class NewMailNotifierSelectCollectionWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NewMailNotifierSelectCollectionWidget(QWidget *parent = 0);
+    explicit NewMailNotifierSelectCollectionWidget(QWidget *parent = Q_NULLPTR);
     ~NewMailNotifierSelectCollectionWidget();
 
     void updateCollectionsRecursive(const QModelIndex &parent);

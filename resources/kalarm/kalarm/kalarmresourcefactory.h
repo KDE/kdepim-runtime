@@ -26,7 +26,7 @@ class KalarmResourceFactory : public Akonadi::AgentFactory<KAlarmResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.KalarmResource");
 public:
-    explicit KalarmResourceFactory(QObject *parent = 0);
+    explicit KalarmResourceFactory(QObject *parent = Q_NULLPTR);
 };
 
 #endif

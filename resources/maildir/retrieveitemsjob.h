@@ -40,7 +40,7 @@ class RetrieveItemsJob : public Akonadi::Job
 {
     Q_OBJECT
 public:
-    RetrieveItemsJob(const Akonadi::Collection &collection, const KPIM::Maildir &md, QObject *parent = 0);
+    RetrieveItemsJob(const Akonadi::Collection &collection, const KPIM::Maildir &md, QObject *parent = Q_NULLPTR);
     void setMimeType(const QString &mimeType);
 
 protected:

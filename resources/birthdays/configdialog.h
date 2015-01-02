@@ -31,7 +31,7 @@ class ConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    ConfigDialog(QWidget *parent = 0);
+    ConfigDialog(QWidget *parent = Q_NULLPTR);
     ~ConfigDialog() {}
 
 private slots:

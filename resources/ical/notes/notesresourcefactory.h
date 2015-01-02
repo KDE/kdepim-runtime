@@ -26,7 +26,7 @@ class NotesResourceFactory : public Akonadi::AgentFactory<NotesResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.NotesResource");
 public:
-    explicit NotesResourceFactory(QObject *parent = 0);
+    explicit NotesResourceFactory(QObject *parent = Q_NULLPTR);
 
 };
 #endif

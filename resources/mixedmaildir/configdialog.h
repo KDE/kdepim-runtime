@@ -31,7 +31,7 @@ class ConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ConfigDialog(QWidget *parent = 0);
+    explicit ConfigDialog(QWidget *parent = Q_NULLPTR);
 
 private slots:
     void checkPath();

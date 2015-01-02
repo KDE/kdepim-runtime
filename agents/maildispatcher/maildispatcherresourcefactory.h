@@ -26,7 +26,7 @@ class MaildispatcherResourceFactory : public Akonadi::AgentFactory<MailDispatche
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.MaildispatcherResource");
 public:
-    explicit MaildispatcherResourceFactory(QObject *parent = 0);
+    explicit MaildispatcherResourceFactory(QObject *parent = Q_NULLPTR);
 
 };
 #endif

@@ -31,7 +31,7 @@ class CompactPage : public QWidget
     Q_OBJECT
 
 public:
-    explicit CompactPage(const QString &collectionId, QWidget *parent = 0);
+    explicit CompactPage(const QString &collectionId, QWidget *parent = Q_NULLPTR);
 
 private slots:
     void compact();

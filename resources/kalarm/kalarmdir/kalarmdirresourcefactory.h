@@ -26,7 +26,7 @@ class KalarmdirResourceFactory : public Akonadi::AgentFactory<KAlarmDirResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.KalarmdirResource");
 public:
-    explicit KalarmdirResourceFactory(QObject *parent = 0);
+    explicit KalarmdirResourceFactory(QObject *parent = Q_NULLPTR);
 };
 
 #endif

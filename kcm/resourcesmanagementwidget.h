@@ -44,7 +44,7 @@ public:
       @param filter The mimetypes which you want shown in the widget. Leave
                     it empty to see them all.
     */
-    explicit ResourcesManagementWidget(QWidget *parent = 0,
+    explicit ResourcesManagementWidget(QWidget *parent = Q_NULLPTR,
                                        const QStringList &filter = QStringList());
 
     /**

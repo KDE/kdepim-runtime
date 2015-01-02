@@ -129,7 +129,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileValidatingWidget : public QWid
 {
     Q_OBJECT
 public:
-    explicit SingleFileValidatingWidget(QWidget *parent = 0);
+    explicit SingleFileValidatingWidget(QWidget *parent = Q_NULLPTR);
 
     /**
      * Return whether the widget's value is valid when the dialog is

@@ -33,7 +33,7 @@ class FolderArchiveComboBox : public QComboBox
 {
     Q_OBJECT
 public:
-    explicit FolderArchiveComboBox(QWidget *parent = 0);
+    explicit FolderArchiveComboBox(QWidget *parent = Q_NULLPTR);
     ~FolderArchiveComboBox();
 
     void setType(FolderArchiveAccountInfo::FolderArchiveType type);
@@ -48,7 +48,7 @@ class FOLDERARCHIVESETTINGS_EXPORT FolderArchiveSettingPage : public QWidget
 {
     Q_OBJECT
 public:
-    explicit FolderArchiveSettingPage(const QString &instanceName, QWidget *parent = 0);
+    explicit FolderArchiveSettingPage(const QString &instanceName, QWidget *parent = Q_NULLPTR);
     ~FolderArchiveSettingPage();
 
     void loadSettings();

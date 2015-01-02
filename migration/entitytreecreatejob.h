@@ -29,7 +29,7 @@ class EntityTreeCreateJob : public Akonadi::TransactionSequence
 {
     Q_OBJECT
 public:
-    explicit EntityTreeCreateJob(const QList<Akonadi::Collection::List> &collections, const Akonadi::Item::List &items, QObject *parent = 0);
+    explicit EntityTreeCreateJob(const QList<Akonadi::Collection::List> &collections, const Akonadi::Item::List &items, QObject *parent = Q_NULLPTR);
 
     /* reimp */ void doStart();
 

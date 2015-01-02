@@ -26,7 +26,7 @@ class IcalResourceFactory : public Akonadi::AgentFactory<ICalResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.IcalResource");
 public:
-    explicit IcalResourceFactory(QObject *parent = 0);
+    explicit IcalResourceFactory(QObject *parent = Q_NULLPTR);
 
 };
 #endif

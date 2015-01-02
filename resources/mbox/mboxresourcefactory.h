@@ -26,7 +26,7 @@ class MboxResourceFactory : public Akonadi::AgentFactory<MboxResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.MboxResource");
 public:
-    explicit MboxResourceFactory(QObject *parent = 0);
+    explicit MboxResourceFactory(QObject *parent = Q_NULLPTR);
 
 };
 #endif

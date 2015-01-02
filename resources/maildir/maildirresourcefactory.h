@@ -26,7 +26,7 @@ class MaildirResourceFactory : public Akonadi::AgentFactory<MaildirResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.MaildirResource");
 public:
-    explicit MaildirResourceFactory(QObject *parent = 0);
+    explicit MaildirResourceFactory(QObject *parent = Q_NULLPTR);
 
 };
 #endif

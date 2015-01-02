@@ -26,7 +26,7 @@ class ContactsResourceFactory : public Akonadi::AgentFactory<ContactsResource>
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.ContactsResource");
 public:
-    explicit ContactsResourceFactory(QObject *parent = 0);
+    explicit ContactsResourceFactory(QObject *parent = Q_NULLPTR);
 
 };
 #endif
