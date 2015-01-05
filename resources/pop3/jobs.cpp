@@ -416,7 +416,7 @@ DeleteJob::DeleteJob(POPSession *popSession)
 {
 }
 
-void DeleteJob::setDeleteIds(const QList<int> ids)
+void DeleteJob::setDeleteIds(const QList<int> &ids)
 {
     mIdsToDelete = ids;
 }
@@ -451,7 +451,7 @@ FetchJob::FetchJob(POPSession *session)
 {
 }
 
-void FetchJob::setFetchIds(const QList<int> ids, QList<int> sizes)
+void FetchJob::setFetchIds(const QList<int> &ids, const QList<int> &sizes)
 {
     mIdsPendingDownload = ids;
     foreach (int size, sizes) {
