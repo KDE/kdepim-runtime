@@ -104,7 +104,7 @@ class LoginJob : public SlaveBaseJob
     Q_OBJECT
 public:
     LoginJob(POPSession *popSession);
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
 protected:
     virtual QString errorString() const;
@@ -155,7 +155,7 @@ class DeleteJob : public SlaveBaseJob
 public:
     DeleteJob(POPSession *popSession);
     void setDeleteIds(const QList<int> ids);
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
     QList<int> deletedIDs() const;
 
 private:
@@ -169,7 +169,7 @@ class QuitJob : public SlaveBaseJob
 
 public:
     QuitJob(POPSession *popSession);
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 };
 
 class FetchJob : public SlaveBaseJob
@@ -179,7 +179,7 @@ public:
 
     FetchJob(POPSession *session);
     void setFetchIds(const QList<int> ids, QList<int> sizes);
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
 private slots:
     void slotInfoMessage(KJob *job, const QString &infoMessage, const QString &);

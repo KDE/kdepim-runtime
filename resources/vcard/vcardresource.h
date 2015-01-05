@@ -42,7 +42,7 @@ protected:
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings> *dlg);
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings> *dlg) Q_DECL_OVERRIDE;
 
     bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
     bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
