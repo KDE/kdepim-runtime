@@ -157,7 +157,7 @@ class DeleteJob : public SlaveBaseJob
   Q_OBJECT
 public:
   DeleteJob( POPSession *popSession );
-  void setDeleteIds( const QList<int> ids );
+  void setDeleteIds( const QList<int> &ids );
   virtual void start();
   QList<int> deletedIDs() const;
 
@@ -182,7 +182,7 @@ class FetchJob : public SlaveBaseJob
 public:
 
   FetchJob( POPSession *session );
-  void setFetchIds( const QList<int> ids, QList<int> sizes );
+  void setFetchIds( const QList<int> &ids, const QList<int> &sizes );
   virtual void start();
 
 private slots:
