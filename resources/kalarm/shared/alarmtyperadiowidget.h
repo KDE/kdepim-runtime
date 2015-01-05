@@ -38,7 +38,7 @@ public:
     explicit AlarmTypeRadioWidget(QWidget *parent = Q_NULLPTR);
     void setAlarmType(CalEvent::Type);
     CalEvent::Type alarmType() const;
-    virtual bool validate() const;
+    bool validate() const Q_DECL_OVERRIDE;
 
 private:
     Ui::AlarmTypeRadioWidget ui;

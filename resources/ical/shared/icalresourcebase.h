@@ -49,9 +49,9 @@ protected:
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings> *dlg);
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings> *dlg) Q_DECL_OVERRIDE;
 
-    virtual void aboutToQuit();
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
     /**
      * Retrieve an incidence from the calendar, and set it into a new item's payload.
@@ -77,7 +77,7 @@ protected:
      */
     template <typename PayloadPtr> bool checkItemAddedChanged(const Akonadi::Item &item, CheckType type);
 
-    virtual void itemRemoved(const Akonadi::Item &item);
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
     /** Return the local calendar. */
     KCalCore::MemoryCalendar::Ptr calendar() const;

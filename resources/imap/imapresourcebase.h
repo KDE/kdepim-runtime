@@ -81,13 +81,13 @@ protected Q_SLOTS:
     void startIdleIfNeeded();
     void startIdle();
 
-    void abortActivity();
+    void abortActivity() Q_DECL_OVERRIDE;
 
-    virtual void retrieveCollections();
-    void retrieveCollectionAttributes(const Akonadi::Collection &col);
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveCollectionAttributes(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
 
-    virtual void retrieveItems(const Akonadi::Collection &col);
-    virtual bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
+    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
     virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);

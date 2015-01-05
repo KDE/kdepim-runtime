@@ -62,9 +62,9 @@ protected:
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
     void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-    virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
                            const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
-    virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
+    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
                                  const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
 
 private:

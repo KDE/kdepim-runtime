@@ -40,23 +40,22 @@ public:
     ~ContactsResource();
 
 protected Q_SLOTS:
-    virtual void retrieveCollections();
-
-    virtual void retrieveItems(const Akonadi::Collection &collection);
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     virtual void retrieveContactsPhotos(const QVariant &argument);
 
-    virtual void itemRemoved(const Akonadi::Item &item);
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    virtual void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers);
-    virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                           const Akonadi::Collection &collectionDestination);
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) Q_DECL_OVERRIDE;
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
+                           const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
 
-    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
-    virtual void collectionChanged(const Akonadi::Collection &collection);
-    virtual void collectionRemoved(const Akonadi::Collection &collection);
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
+    void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-    virtual void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    virtual void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
     void slotItemsRetrieved(KGAPI2::Job *job);
     void slotCollectionsRetrieved(KGAPI2::Job *job);

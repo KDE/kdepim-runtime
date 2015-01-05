@@ -61,7 +61,7 @@ public Q_SLOTS:
     void reloadConfig();
 
 protected Q_SLOTS:
-    virtual bool retrieveItem(const Akonadi::Item &item, const QSet< QByteArray > &parts);
+    bool retrieveItem(const Akonadi::Item &item, const QSet< QByteArray > &parts) Q_DECL_OVERRIDE;
 
     bool handleError(KGAPI2::Job *job);
 

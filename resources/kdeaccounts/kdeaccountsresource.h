@@ -34,14 +34,14 @@ public:
     ~KDEAccountsResource();
 
 protected Q_SLOTS:
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    void retrieveItems(const Akonadi::Collection &collection);
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
 protected:
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg);
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg) Q_DECL_OVERRIDE;
 
     /*
      * Do stuff when the configuration dialog has been accepted, before
