@@ -42,3 +42,4 @@ endif ()
 target_link_libraries(akonadi_mbox_resource ${KDEPIMLIBS_KMBOX_LIBS} ${KDEPIMLIBS_AKONADI_LIBS} ${KDEPIMLIBS_AKONADI_KMIME_LIBS} ${QT_QTDBUS_LIBRARY} ${KDE4_KIO_LIBS} ${KDEPIMLIBS_KMIME_LIBS})
 
 install(TARGETS akonadi_mbox_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+add_subdirectory(autotests)

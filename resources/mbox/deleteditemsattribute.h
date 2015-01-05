@@ -26,7 +26,7 @@
 #include <QtCore/QSet>
 
 /**
- * This attribute stores a list of offdets in the mbox file of mails which are
+ * This attribute stores a list of offsets in the mbox file of mails which are
  * deleted but not yet actually removed from the file yet.
  */
 class DeletedItemsAttribute : public Akonadi::Attribute
@@ -40,7 +40,7 @@ class DeletedItemsAttribute : public Akonadi::Attribute
 
     void addDeletedItemOffset( quint64 );
 
-    virtual Attribute *clone() const;
+    virtual DeletedItemsAttribute *clone() const;
 
     QSet<quint64> deletedItemOffsets() const;
     KMBox::MBoxEntry::List deletedItemEntries() const;
@@ -56,7 +56,8 @@ class DeletedItemsAttribute : public Akonadi::Attribute
 
     virtual QByteArray type() const;
 
-  private:
+    bool operator ==(const DeletedItemsAttribute &other) const;
+private:
     QSet<quint64> mDeletedItemOffsets;
 };
 
