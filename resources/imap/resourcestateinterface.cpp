@@ -37,8 +37,8 @@ QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &
     }
 
     if (collection.parentCollection() == Akonadi::Collection::root()) {
-        /*if ( showWarnings )
-          kWarning( collection.remoteId() != rootRemoteId() ) << "RID mismatch, is " << collection.remoteId() << " expected " << rootRemoteId();
+        /*if ( showWarnings  && collection.remoteId() != rootRemoteId())
+          qCWarning(IMAPRESOURCE_LOG) << "RID mismatch, is " << collection.remoteId() << " expected " << rootRemoteId();
         */
         return QLatin1String("");   // see below, this intentionally not just QString()!
     }
