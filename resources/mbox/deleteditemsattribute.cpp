@@ -42,7 +42,7 @@ void DeletedItemsAttribute::addDeletedItemOffset(quint64 offset)
     mDeletedItemOffsets.insert(offset);
 }
 
-Akonadi::Attribute *DeletedItemsAttribute::clone() const
+DeletedItemsAttribute *DeletedItemsAttribute::clone() const
 {
     return new DeletedItemsAttribute(*this);
 }
@@ -96,4 +96,9 @@ QByteArray DeletedItemsAttribute::type() const
 {
     static const QByteArray sType("DeletedMboxItems");
     return sType;
+}
+
+bool DeletedItemsAttribute::operator==(const DeletedItemsAttribute &other) const
+{
+    return mDeletedItemOffsets == other.deletedItemOffsets();
 }
