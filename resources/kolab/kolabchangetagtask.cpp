@@ -41,6 +41,7 @@ void KolabChangeTagTask::startRelationTask(KIMAP::Session *session)
     fetch->fetchScope().setCacheOnly(true);
     // TODO: does the fetch already limit to resource local items?
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
+    fetch->fetchScope().fetchFullPayload(true);
     connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onItemsFetchDone(KJob*)));
 }
 
