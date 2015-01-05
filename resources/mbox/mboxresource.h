@@ -61,7 +61,7 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
     void onCollectionModify( KJob *job );
 
   private:
-    QMap<KJob*, Akonadi::Item> mCurrentItemDeletions;
+    QHash<KJob*, Akonadi::Item> mCurrentItemDeletions;
     KMBox::MBox *mMBox;
 };
 
