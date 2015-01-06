@@ -48,6 +48,9 @@ private:
 
 private Q_SLOTS:
     void onCollectionFetchResult(KJob *job);
+    void onCreateDone(KJob *job);
+    void onSetMetaDataDone(KJob *job);
+    void onLocalCreateDone(KJob *job);
 };
 
 #endif // KOLABRELATIONRESOURCETASK_H
