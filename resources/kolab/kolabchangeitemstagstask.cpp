@@ -87,7 +87,6 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
 
     Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(tags.first());
     // fetch->fetchScope().setCacheOnly(true);
-    // TODO: does the fetch already limit to resource local items?
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetch->fetchScope().setFetchGid(true);
     fetch->fetchScope().fetchFullPayload(true);
@@ -104,7 +103,13 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob*>(job)->items();
+    Akonadi::Item::List items;
+    //Filter by resource as all other references make no sense
+    Q_FOREACH (const Akonadi::Item &i, static_cast<Akonadi::ItemFetchJob*>(job)->items()) {
+        if (i.parentCollection().resource() == resourceState()->resourceIdentifier()) {
+            items << i;
+        }
+    }
     kDebug() << items.size();
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);

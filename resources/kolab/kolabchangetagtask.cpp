@@ -39,7 +39,6 @@ void KolabChangeTagTask::startRelationTask(KIMAP::Session *session)
 
     Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(resourceState()->tag());
     fetch->fetchScope().setCacheOnly(true);
-    // TODO: does the fetch already limit to resource local items?
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetch->fetchScope().fetchFullPayload(true);
     connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onItemsFetchDone(KJob*)));
@@ -53,7 +52,13 @@ void KolabChangeTagTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob*>(job)->items();
+    Akonadi::Item::List items;
+    //Filter by resource as all other references make no sense
+    Q_FOREACH (const Akonadi::Item &i, static_cast<Akonadi::ItemFetchJob*>(job)->items()) {
+        if (i.parentCollection().resource() == resourceState()->resourceIdentifier()) {
+            items << i;
+        }
+    }
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
 
