@@ -53,6 +53,8 @@
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KWindowSystem>
+#include <KToolInvocation>
+
 
 using namespace Akonadi;
 
@@ -65,6 +67,7 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     mIdentityManager = new KPIMIdentities::IdentityManager( false, this );
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
+    mDefaultPixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
 
     DBusConnectionPool::threadConnection().registerObject( QLatin1String( "/NewMailNotifierAgent" ),
                                                            this, QDBusConnection::ExportAdaptors );
@@ -91,9 +94,19 @@ NewMailNotifierAgent::NewMailNotifierAgent( const QString &id )
     mTimer.setInterval( 5 * 1000 );
     connect( &mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()) );
 
-    if (NewMailNotifierAgentSettings::textToSpeakEnabled())
-        Util::testJovieService();
-
+    if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
+        if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
+            QString error;
+            if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
+                KNotification::event( QLatin1String("text-to-speak-not-found"),
+                                      i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
+                                      mDefaultPixmap,
+                                      0,
+                                      KNotification::CloseOnTimeout,
+                                      KGlobal::mainComponent());
+            }
+        }
+    }
     if (isActive()) {
         mTimer.setSingleShot( true );
     }
@@ -460,6 +473,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         }
         if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
+            job->setDefaultPixmap(mDefaultPixmap);
             connect(job, SIGNAL(displayNotification(QPixmap,QString)), SLOT(slotDisplayNotification(QPixmap,QString)));
             mNewMails.clear();
             return;
@@ -472,7 +486,7 @@ void NewMailNotifierAgent::slotShowNotifications()
 
     kDebug() << message;
 
-    slotDisplayNotification(Util::defaultPixmap(), message);
+    slotDisplayNotification(mDefaultPixmap, message);
 
     mNewMails.clear();
 }

@@ -27,9 +27,7 @@ class AgentInstance;
 
 namespace Util {
 void showNotification(const QPixmap &pixmap, const QString &message);
-QPixmap defaultPixmap();
 bool excludeAgentType(const Akonadi::AgentInstance &instance);
-void testJovieService();
 }
 
 #endif // UTIL_H

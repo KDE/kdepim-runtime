@@ -20,33 +20,11 @@
 #include <KNotification>
 #include <KLocalizedString>
 #include <KGlobal>
-#include <KIcon>
-#include <KIconLoader>
-#include <KToolInvocation>
 
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentType>
 #include <KMime/Message>
 
-#include <QDBusInterface>
-#include <QDBusConnection>
-#include <QDBusConnectionInterface>
-
-
-void Util::testJovieService()
-{
-    if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
-        QString error;
-        if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
-            KNotification::event( QLatin1String("text-to-speak-not-found"),
-                                  i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
-                                  Util::defaultPixmap(),
-                                  0,
-                                  KNotification::CloseOnTimeout,
-                                  KGlobal::mainComponent());
-        }
-    }
-}
 
 void Util::showNotification(const QPixmap &pixmap, const QString &message)
 {
@@ -56,12 +34,6 @@ void Util::showNotification(const QPixmap &pixmap, const QString &message)
                           0,
                           KNotification::CloseOnTimeout,
                           KGlobal::mainComponent());
-}
-
-QPixmap Util::defaultPixmap()
-{
-    const QPixmap pixmap = KIcon( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
-    return pixmap;
 }
 
 bool Util::excludeAgentType(const Akonadi::AgentInstance &instance)

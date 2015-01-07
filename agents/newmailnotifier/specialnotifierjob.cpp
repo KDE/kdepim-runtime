@@ -55,6 +55,11 @@ SpecialNotifierJob::~SpecialNotifierJob()
 
 }
 
+void SpecialNotifierJob::setDefaultPixmap(const QPixmap &pixmap)
+{
+    mDefaultPixmap = pixmap;
+}
+
 void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 {
     if ( job->error() ) {
@@ -81,7 +86,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             job->setQuery( Akonadi::ContactSearchJob::Email, KPIMUtils::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch );
             connect( job, SIGNAL(result(KJob*)), SLOT(slotSearchJobFinished(KJob*)) );
         } else {
-            emitNotification(Util::defaultPixmap());
+            emitNotification(mDefaultPixmap);
             deleteLater();
         }
     } else {
@@ -96,7 +101,7 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob*>( job );
     if ( searchJob->error() ) {
         kWarning() << "Unable to fetch contact:" << searchJob->errorText();
-        emitNotification(Util::defaultPixmap());
+        emitNotification(mDefaultPixmap);
         return;
     }
     if (!searchJob->contacts().isEmpty()) {
@@ -104,12 +109,12 @@ void SpecialNotifierJob::slotSearchJobFinished( KJob *job )
         const KABC::Picture photo = addressee.photo();
         const QImage image = photo.data();
         if (image.isNull()) {
-            emitNotification(Util::defaultPixmap());
+            emitNotification(mDefaultPixmap);
         } else {
             emitNotification(QPixmap::fromImage(image));
         }
     } else {
-        emitNotification(Util::defaultPixmap());
+        emitNotification(mDefaultPixmap);
     }
 }
 

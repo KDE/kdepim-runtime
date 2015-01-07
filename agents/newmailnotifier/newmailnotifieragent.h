@@ -27,7 +27,7 @@
 
 #include <QTimer>
 #include <QStringList>
-
+#include <QPixmap>
 namespace Akonadi {
 class AgentInstance;
 }
@@ -102,6 +102,7 @@ private:
     bool isActive() const;
     void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
+    QPixmap mDefaultPixmap;
     QStringList mListEmails;
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
     QHash<QString, QString> mCacheResourceName;

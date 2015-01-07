@@ -22,6 +22,7 @@
 #include <QObject>
 #include <Akonadi/Item>
 #include <QStringList>
+#include <QPixmap>
 class KJob;
 
 class SpecialNotifierJob : public QObject
@@ -30,6 +31,8 @@ class SpecialNotifierJob : public QObject
 public:
     explicit SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent = 0);
     ~SpecialNotifierJob();
+
+    void setDefaultPixmap(const QPixmap &pixmap);
 
 Q_SIGNALS:
     void displayNotification(const QPixmap &pixmap, const QString &message);
@@ -40,6 +43,7 @@ private Q_SLOTS:
     void slotOpenMail();
 private:
     void emitNotification(const QPixmap &pixmap);
+    QPixmap mDefaultPixmap;
     QStringList mListEmails;
     QString mSubject;
     QString mFrom;
