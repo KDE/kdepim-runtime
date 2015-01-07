@@ -100,6 +100,7 @@ private Q_SLOTS:
     void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
 
 private:
+    bool excludeAgentType(const Akonadi::AgentInstance &instance);
     bool ignoreStatusMail(const Akonadi::Item &item);
     bool isActive() const;
     void clearAll();

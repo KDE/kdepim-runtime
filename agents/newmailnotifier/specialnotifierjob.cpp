@@ -17,7 +17,6 @@
 
 #include "newmailnotifiershowmessagejob.h"
 #include "specialnotifierjob.h"
-#include "util.h"
 #include "newmailnotifieragentsettings.h"
 
 #include <Akonadi/Contact/ContactSearchJob>

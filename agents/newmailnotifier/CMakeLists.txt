@@ -12,7 +12,6 @@ set(newmailnotifieragent_SRCS
   specialnotifierjob.cpp
   newmailnotifierselectcollectionwidget.cpp
   newmailnotifiershowmessagejob.cpp
-  util.cpp
 )
 
 kconfig_add_kcfg_files(newmailnotifieragent_SRCS
