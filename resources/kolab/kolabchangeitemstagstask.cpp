@@ -86,7 +86,7 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
     }
 
     Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(tags.first());
-    // fetch->fetchScope().setCacheOnly(true);
+    fetch->fetchScope().setCacheOnly(true);
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetch->fetchScope().setFetchGid(true);
     fetch->fetchScope().fetchFullPayload(true);
