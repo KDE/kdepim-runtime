@@ -82,7 +82,7 @@ void CompactPage::onCollectionFetchCheck( KJob *job )
   DeletedItemsAttribute *attr
     = mboxCollection.attribute<DeletedItemsAttribute>( Akonadi::Entity::AddIfMissing );
 
-  if ( attr->deletedItemOffsets().size() > 0 ) {
+  if ( !attr->deletedItemOffsets().isEmpty() ) {
     ui.compactButton->setEnabled( true );
     ui.messageLabel->setText( i18np( "(1 message marked for deletion)",
      "(%1 messages marked for deletion)", attr->deletedItemOffsets().size() ) );
