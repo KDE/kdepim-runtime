@@ -16,7 +16,6 @@ set(newmailnotifieragent_SRCS
   specialnotifierjob.cpp
   newmailnotifierselectcollectionwidget.cpp
   newmailnotifiershowmessagejob.cpp
-  util.cpp
 )
 
 kde4_add_kcfg_files(newmailnotifieragent_SRCS

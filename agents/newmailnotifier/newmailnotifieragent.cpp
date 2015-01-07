@@ -21,8 +21,6 @@
 
 #include "newmailnotifieragent.h"
 
-#include "util.h"
-
 #include "newmailnotifierattribute.h"
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
@@ -494,7 +492,12 @@ void NewMailNotifierAgent::slotShowNotifications()
 
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
-    Util::showNotification(pixmap, message);
+    KNotification::event( QLatin1String("new-email"),
+                          message,
+                          pixmap,
+                          0,
+                          KNotification::CloseOnTimeout,
+                          KGlobal::mainComponent());
 
     if ( NewMailNotifierAgentSettings::beepOnNewMails() ) {
         KNotification::beep();
@@ -530,7 +533,7 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
     }
     case Akonadi::AgentInstance::Running:
     {
-        if (!Util::excludeAgentType(instance)) {
+        if (!excludeAgentType(instance)) {
             if (!mInstanceNameInProgress.contains(identifier)) {
                 mInstanceNameInProgress.append(identifier);
             }
@@ -541,6 +544,21 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
         //Nothing
         break;
     }
+}
+
+bool NewMailNotifierAgent::excludeAgentType(const Akonadi::AgentInstance &instance)
+{
+    if ( instance.type().mimeTypes().contains( KMime::Message::mimeType() ) ) {
+        const QStringList capabilities( instance.type().capabilities() );
+        if ( capabilities.contains( QLatin1String("Resource") ) &&
+             !capabilities.contains( QLatin1String("Virtual") ) &&
+             !capabilities.contains( QLatin1String("MailTransport") ) ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    return true;
 }
 
 void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &instance)
