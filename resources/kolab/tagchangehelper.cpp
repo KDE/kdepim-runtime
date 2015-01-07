@@ -113,8 +113,11 @@ void TagChangeHelper::recordNewUid(qint64 newUid, Akonadi::Tag tag)
 
     const QByteArray remoteId =  QByteArray::number(newUid);
     kDebug(5327) << "Setting remote ID to " << remoteId << " on tag with local id: " << tag.id();
-    tag.setRemoteId(remoteId);
-    Akonadi::TagModifyJob *modJob = new Akonadi::TagModifyJob(tag);
+    //Make sure we only update the id and send nothing else
+    Akonadi::Tag updateTag;
+    updateTag.setId(tag.id());
+    updateTag.setRemoteId(remoteId);
+    Akonadi::TagModifyJob *modJob = new Akonadi::TagModifyJob(updateTag);
     connect(modJob, SIGNAL(result(KJob*)), this, SLOT(onModifyDone(KJob*)));
 }
 
