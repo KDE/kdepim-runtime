@@ -52,6 +52,8 @@ void NewMailNotifierShowMessageJob::start()
         }
     }
     QDBusInterface kmail(kmailInterface, QLatin1String("/KMail"), QLatin1String("org.kde.kmail.kmail"));
-    kmail.call(QLatin1String("showMail"), mId);
+    if (kmail.isValid()) {
+        kmail.call(QLatin1String("showMail"), mId);
+    }
     Q_EMIT emitResult();
 }
