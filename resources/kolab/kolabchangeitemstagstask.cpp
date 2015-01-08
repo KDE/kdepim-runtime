@@ -103,13 +103,7 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-    Akonadi::Item::List items;
-    //Filter by resource as all other references make no sense
-    Q_FOREACH (const Akonadi::Item &i, static_cast<Akonadi::ItemFetchJob*>(job)->items()) {
-        if (i.parentCollection().resource() == resourceState()->resourceIdentifier()) {
-            items << i;
-        }
-    }
+    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob*>(job)->items();
     kDebug() << items.size();
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
