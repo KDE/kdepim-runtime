@@ -157,6 +157,7 @@ void RetrieveMetadataJob::onRightsReceived( KJob *job )
     mJobs--;
     if ( job->error() ) {
         kWarning() << "MyRights failed: " << job->errorString();
+        kWarning() << "mailbox " << static_cast<KIMAP::MyRightsJob*>( job )->mailBox();
         setError(KJob::UserDefinedError);
         checkDone();
         return; // Well, no metadata for us then...
