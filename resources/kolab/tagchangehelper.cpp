@@ -23,6 +23,7 @@
 
 #include "kolabrelationresourcetask.h"
 #include "kolabhelpers.h"
+#include "updatemessagejob.h"
 
 #include <imapflags.h>
 #include <uidnextattribute.h>
@@ -62,6 +63,13 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
     return message;
 }
 
+struct TagMerger : public Merger {
+    virtual KMime::Message::Ptr merge(KMime::Message::Ptr newMessage, QList<KMime::Message::Ptr> conflictingMessages) const
+    {
+        return newMessage;
+    }
+};
+
 void TagChangeHelper::start(const Akonadi::Tag &tag, const KMime::Message::Ptr &message, KIMAP::Session *session)
 {
     Q_ASSERT(tag.isValid());
@@ -69,13 +77,9 @@ void TagChangeHelper::start(const Akonadi::Tag &tag, const KMime::Message::Ptr &
     const qint64 oldUid = tag.remoteId().toLongLong();
     kDebug(5327) << mailBox << oldUid;
 
-    qint64 uidNext = -1;
-    // Using uidnext here is mutually exclusive with doing the item sync
-    // if (UidNextAttribute *uidNextAttr = mTask->relationCollection().attribute<UidNextAttribute>()) {
-    //     uidNext = uidNextAttr->uidNext();
-    // }
+    const qint64 uidNext = -1;
 
-    ReplaceMessageJob *append = new ReplaceMessageJob(message, session, mailBox, uidNext, oldUid, this);
+    UpdateMessageJob *append = new UpdateMessageJob(message, session, tag.gid(), QSharedPointer<TagMerger>(new TagMerger), mailBox, uidNext, oldUid, this);
     connect(append, SIGNAL(result(KJob*)), this, SLOT(onReplaceDone(KJob*)));
     append->setProperty("tag", QVariant::fromValue(tag));
     append->start();
@@ -85,31 +89,6 @@ void TagChangeHelper::recordNewUid(qint64 newUid, Akonadi::Tag tag)
 {
     Q_ASSERT(newUid > 0);
     Q_ASSERT(tag.isValid());
-
-    Akonadi::Collection c = mTask->relationCollection();
-
-    // Get the current uid next value and store it
-    // UidNextAttribute *uidAttr = 0;
-    // int oldNextUid = 0;
-    // if (c.hasAttribute("uidnext")) {
-    //     uidAttr = static_cast<UidNextAttribute*>(c.attribute("uidnext"));
-    //     oldNextUid = uidAttr->uidNext();
-    // }
-
-    // If the uid we just got back is the expected next one of the box
-    // then update the property to the probable next uid to keep the cache in sync.
-    // If not something happened in our back, so we don't update and a refetch will
-    // happen at some point.
-    // if (newUid == oldNextUid) {
-    //     if (uidAttr == 0) {
-    //         uidAttr = new UidNextAttribute(newUid + 1);
-    //         c.addAttribute(uidAttr);
-    //     } else {
-    //         uidAttr->setUidNext(newUid + 1);
-    //     }
-
-    //     emit applyCollectionChanges(c);
-    // }
 
     const QByteArray remoteId =  QByteArray::number(newUid);
     kDebug(5327) << "Setting remote ID to " << remoteId << " on tag with local id: " << tag.id();

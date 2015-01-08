@@ -28,6 +28,7 @@ set(kolabresource_LIB_SRCS
     tagchangehelper.cpp
     kolabretrievetagstask.cpp
     kolabsettings.cpp
+    updatemessagejob.cpp
 )
 
 kde4_add_kcfg_files(kolabresource_LIB_SRCS ../imap/settingsbase.kcfgc)
