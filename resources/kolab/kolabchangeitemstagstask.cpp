@@ -120,6 +120,12 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
     connect(changeHelper, SIGNAL(changeCommitted()), this, SLOT(onChangeCommitted()));
 
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
+    {
+        kDebug() << "Writing " << tag.name() << " with " << items.size() << " members to the server: ";
+        foreach (const Akonadi::Item &item, items) {
+            kDebug() << "member(localid, remoteid): " << item.id() << item.remoteId();
+        }
+    }
     Q_ASSERT(tag.isValid());
     changeHelper->start(tag, mTagConverter->createMessage(tag, items, resourceState()->userName()), mSession);
 }
