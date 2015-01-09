@@ -72,6 +72,7 @@ private:
     const QString mMailbox;
     qint64 mUidNext;
     qint64 mOldUid;
+    KIMAP::ImapSet mOldUids;
     qint64 mNewUid;
     const QByteArray mMessageId;
     const QByteArray mKolabUid;

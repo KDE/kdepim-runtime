@@ -66,6 +66,7 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
 struct TagMerger : public Merger {
     virtual KMime::Message::Ptr merge(KMime::Message::Ptr newMessage, QList<KMime::Message::Ptr> conflictingMessages) const
     {
+        kDebug() << "Got " << conflictingMessages.size() << " conflicting relation configuration objects. Overwriting with local version.";
         return newMessage;
     }
 };

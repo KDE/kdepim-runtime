@@ -29,13 +29,13 @@
 
 #include "imapflags.h"
 
-ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext, qint64 oldUid, QObject *parent)
+ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext, KIMAP::ImapSet oldUids, QObject *parent)
     : KJob(parent),
     mSession(session),
     mMessage(msg),
     mMailbox(mailbox),
     mUidNext(uidNext),
-    mOldUid(oldUid),
+    mOldUids(oldUids),
     mNewUid(-1),
     mMessageId(msg->messageID()->asUnicodeString().toUtf8())
 {
@@ -65,7 +65,7 @@ void ReplaceMessageJob::onAppendMessageDone(KJob *job)
     // We get it directly if UIDPLUS is supported...
     mNewUid = append->uid();
 
-    if (mNewUid > 0 && mOldUid <= 0) {
+    if (mNewUid > 0 && mOldUids.isEmpty()) {
         //We have the uid an no message to delete, we're done
         emitResult();
         return;
@@ -156,13 +156,13 @@ void ReplaceMessageJob::onSearchDone(KJob *job)
 
 void ReplaceMessageJob::triggerDeleteJobIfNecessary()
 {
-    if (mOldUid <= 0) {
+    if (mOldUids.isEmpty()) {
         //Nothing to do, we're done
         emitResult();
     } else {
         KIMAP::StoreJob *store = new KIMAP::StoreJob(mSession);
         store->setUidBased(true);
-        store->setSequenceSet(KIMAP::ImapSet(mOldUid));
+        store->setSequenceSet(mOldUids);
         store->setFlags(QList<QByteArray>() << ImapFlags::Deleted);
         store->setMode(KIMAP::StoreJob::AppendFlags);
         connect(store, SIGNAL(result(KJob*)), this, SLOT(onDeleteDone(KJob*)));

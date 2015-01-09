@@ -46,6 +46,7 @@ UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Sessio
     mKolabUid(kolabUid),
     mMerger(merger)
 {
+    mOldUids.add(oldUid);
 }
 
 void UpdateMessageJob::start()
@@ -149,11 +150,13 @@ void UpdateMessageJob::onSearchDone(KJob *job)
     KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>(job);
 
     if (search->results().count() >= 1) {
-        mOldUid = search->results().first();
-        //TODO deal with all of them
+        mOldUids = KIMAP::ImapSet();
+        foreach (qint64 id, search->results()) {
+            mOldUids.add(id);
+        }
 
         KIMAP::FetchJob * fetchJob = new KIMAP::FetchJob(mSession);
-        fetchJob->setSequenceSet(KIMAP::ImapSet(mOldUid));
+        fetchJob->setSequenceSet(mOldUids);
         fetchJob->setUidBased(true);
 
         KIMAP::FetchJob::FetchScope scope;
@@ -208,7 +211,7 @@ void UpdateMessageJob::onConflictingMessageFetchDone(KJob *job)
 void UpdateMessageJob::appendMessage()
 {
     const qint64 uidNext = -1;
-    ReplaceMessageJob *replace = new ReplaceMessageJob(mMessage, mSession, mMailbox, uidNext, mOldUid, this);
+    ReplaceMessageJob *replace = new ReplaceMessageJob(mMessage, mSession, mMailbox, uidNext, mOldUids, this);
     connect(replace, SIGNAL(result(KJob*)), this, SLOT(onReplaceDone(KJob*)));
     replace->start();
 }
