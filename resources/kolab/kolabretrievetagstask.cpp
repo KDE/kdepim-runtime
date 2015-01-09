@@ -23,6 +23,7 @@
 
 #include <kimap/selectjob.h>
 #include <kimap/fetchjob.h>
+#include <imapflags.h>
 #include <kolabobject.h>
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, RetrieveType type, QObject *parent)
@@ -98,6 +99,9 @@ void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
     Q_ASSERT(fetch);
 
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
+        if (flags[number].contains(ImapFlags::Deleted)) {
+            continue;
+        }
         const KMime::Message::Ptr msg = messages[number];
         const Kolab::KolabObjectReader reader(msg);
         switch (reader.getType()) {
