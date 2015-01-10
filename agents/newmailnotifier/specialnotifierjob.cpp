@@ -138,6 +138,9 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         if (subject.length()> 80) {
             subject.truncate(80);
             subject += QLatin1String("...");
+        } else {
+            subject.remove(QLatin1String("\n"));
+            subject.remove(QLatin1String("\r"));
         }
         result << i18n("Subject: %1", Qt::escape(subject));
     }
