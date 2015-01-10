@@ -49,7 +49,7 @@ function validateInput()
 
 //Server test
 servertest_running = false;
-//0 = not running, 1 = smtp, 2 = imap
+//0 = not running, 1=submission, 2 = smtp, 3 = imap
 servertest_mode = 0;
 
 function testResultFail()
@@ -61,32 +61,37 @@ var imapRes;
 function testOk( arg )
 {
     print("testOk arg =", arg);
-    if (servertest_mode == 1) {   //smtp
-        if ( arg == "ssl" ) {
-          // The ENUM used for authentication (in the imap resource only)
-          smtp.setPort(465);
-          smtp.setEncryption("SSL");
-        } else if ( arg == "tls" ) { // tls is really STARTTLS
-          smtp.setPort(25);
+
+    if (servertest_mode < 3) {   // submission & smtp
+        if (arg == "tls" ) { // tls is really STARTTLS
           smtp.setEncryption("TLS");
-        } else if ( arg == "none" ) {
-          smtp.setPort(25);
-          smtp.setEncryption("NONE");
-          smtp.setEditMode(true);
-        } else {
-          // safe default fallback in case server test failed
-          smtp.setPort(25);
-          smtp.setEncryption("TLS");
-          smtp.setEditMode(true);
+          if (servertest_mode == 1) {   //submission port 587
+              smtp.setPort(587);
+          } else {
+              smtp.setPort(25);
+          }
+        } else if ( arg == "ssl" ) {    //only possible as smtps
+            smtp.setPort(465);
+            smtp.setEncryption("SSL");
+        } else if (servertest_mode == 2) { //test submission and smtp failed or only possible unencrypted -> set to standard value and open editor
+            smtp.setPort(587);
+            smtp.setEncryption("TLS");
+            smtp.setEditMode(true);
+        } else if (servertest_mode == 1) { // submission test failed -> start smtp request
+            servertest_mode = 2;
+            ServerTest.test(page2.widget().lineEditSmtp.text, "smtp");
+            return;
         }
-        servertest_mode = 2;
+
+        // start imap test
+        servertest_mode = 3;
         if (page2.widget().lineEditImap.text) {
             SetupManager.setupInfo(qsTr("Probing Imap server..."));
             ServerTest.test(page2.widget().lineEditImap.text, "imap");
         } else {
             SetupManager.execute();
         }
-    } else if (servertest_mode == 2) {   //imap
+    } else if (servertest_mode == 3) {   //imap
         if ( arg == "ssl" ) {
           // The ENUM used for authentication (in the kolab resource only)
           kolabRes.setOption( "Safety", "SSL" ); // SSL/TLS
@@ -94,10 +99,6 @@ function testOk( arg )
         } else if ( arg == "tls" ) { // tls is really STARTTLS
           kolabRes.setOption( "Safety", "STARTTLS" );  // STARTTLS
           kolabRes.setOption( "ImapPort", 143 );
-        } else if ( arg == "none" ) {
-          kolabRes.setOption( "Safety", "NONE" );  // No encryption
-          kolabRes.setOption( "ImapPort", 143 );
-          kolabRes.setEditMode(true);
         } else {
           // safe default fallback in case server test failed
           kolabRes.setOption( "Safety", "STARTTLS" );
@@ -223,7 +224,7 @@ function setup()
         smtp.setAuthenticationType("plain");
 
         SetupManager.setupInfo(qsTr("Probing Smtp server..."));
-        ServerTest.test( serverAddress, "smtp" );   //probe port and encryption
+        ServerTest.test( serverAddress, "submission" );   //probe port and encryption
     }
 
     for (i = 0; i < ac_mail.countIdentities(); i++) {
