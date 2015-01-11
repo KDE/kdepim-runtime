@@ -36,9 +36,9 @@ add_library(akonadi_maildir_resource MODULE ${maildirresource_SRCS})
 
 target_link_libraries(akonadi_maildir_resource KF5::AkonadiCore KF5::AkonadiMime maildir  KF5::KIOCore KF5::Mime folderarchivesettings KF5::AkonadiAgentBase)
 
-install(TARGETS akonadi_maildir_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS akonadi_maildir_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
-        DESTINATION ${DBUS_INTERFACES_INSTALL_DIR})
+        DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 
 install( FILES maildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 

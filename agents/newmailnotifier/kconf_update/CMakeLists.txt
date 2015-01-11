@@ -1,1 +1,1 @@
-install( FILES newmailnotifier.upd  DESTINATION ${KCONF_UPDATE_INSTALL_DIR})
+install( FILES newmailnotifier.upd  DESTINATION ${KDE_INSTALL_KCONFUPDATEDIR})

@@ -31,5 +31,5 @@ endif ()
 
 target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore KF5::KIOCore   KF5::AkonadiAgentBase KF5::Contacts akonadi-singlefileresource)
 
-install(TARGETS akonadi_vcard_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS akonadi_vcard_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
 

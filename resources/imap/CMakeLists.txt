@@ -111,7 +111,7 @@ if( NOT IMAPRESOURCE_NO_SOLID)
 target_link_libraries(akonadi_imap_resource )
 endif()
 
-install(TARGETS akonadi_imap_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )
 add_subdirectory( autotests )

@@ -62,7 +62,7 @@ if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
 endif()
 
 
-install(TARGETS akonadi_googlecalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_googlecalendar_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(
   FILES googlecalendarresource.desktop

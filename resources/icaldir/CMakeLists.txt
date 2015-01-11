@@ -37,4 +37,4 @@ target_link_libraries(akonadi_icaldir_resource
   KF5::KIOCore
 )
 
-install(TARGETS akonadi_icaldir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

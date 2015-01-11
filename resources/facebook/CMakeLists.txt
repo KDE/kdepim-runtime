@@ -71,7 +71,7 @@ target_link_libraries(akonadi_facebook_resource
 add_subdirectory(icons)
 add_subdirectory(serializer)
 
-install(TARGETS akonadi_facebook_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_facebook_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES facebookresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
-install(FILES akonadi_facebook_resource.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR})
+install(FILES akonadi_facebook_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR})

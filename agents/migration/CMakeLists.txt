@@ -34,7 +34,7 @@ target_link_libraries(akonadi_migration_agent
     KF5::Contacts
 )
 
-install(TARGETS akonadi_migration_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_migration_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES migrationagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
 
 add_subdirectory(autotests)

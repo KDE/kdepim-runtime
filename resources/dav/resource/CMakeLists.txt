@@ -4,10 +4,10 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
 
 #if (QT_QTXMLPATTERNS_LIBRARY)
   if(WIN32)
-      set(LIB_INSTALL_DIR ${LIB_INSTALL_DIR}
-                          RUNTIME DESTINATION ${BIN_INSTALL_DIR}
-                          LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-                          ARCHIVE DESTINATION ${LIB_INSTALL_DIR} )
+      set(LIB_INSTALL_DIR ${KDE_INSTALL_LIBDIR}
+                          RUNTIME DESTINATION ${KDE_INSTALL_BINDIR}
+                          LIBRARY DESTINATION ${KDE_INSTALL_LIBDIR}
+                          ARCHIVE DESTINATION ${KDE_INSTALL_LIBDIR} )
   endif()
 
   include_directories(
@@ -60,10 +60,10 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
   endif()
 
   install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
-  install( FILES davgroupwareprovider.desktop DESTINATION ${SERVICETYPES_INSTALL_DIR} )
+  install( FILES davgroupwareprovider.desktop DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR} )
 
   file( GLOB providersFiles "../services/*.desktop" )
-  install( FILES ${providersFiles} DESTINATION "${SERVICES_INSTALL_DIR}/akonadi/davgroupware-providers" )
+  install( FILES ${providersFiles} DESTINATION "${KDE_INSTALL_KSERVICES5DIR}/akonadi/davgroupware-providers" )
 
   kconfig_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
   ki18n_wrap_ui(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
@@ -95,7 +95,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
                         ${ACCOUNTSQT_LIBRARIES}
                         ${SIGNONQT_LIBRARIES})
   endif()
-  install(TARGETS akonadi_davgroupware_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+  install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 #else()
 #  add_feature_info("Davgroupware resource" QT_QTXMLPATTERNS_LIBRARY "The QtXmlPatterns library was not found. It is needed for building the davgroupware resource.")
 #endif()

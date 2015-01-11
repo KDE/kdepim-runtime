@@ -58,5 +58,5 @@ target_link_libraries(kmail-migrator
   akonadi-singlefileresource
 )
 
-install(TARGETS kmail-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES kmail-migratorrc DESTINATION ${CONFIG_INSTALL_DIR})
+install(TARGETS kmail-migrator ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES kmail-migratorrc DESTINATION ${KDE_INSTALL_CONFDIR})

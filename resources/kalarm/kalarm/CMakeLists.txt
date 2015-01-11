@@ -45,4 +45,4 @@ target_link_libraries(akonadi_kalarm_resource
                       akonadi-singlefileresource
                      )
 
-install(TARGETS akonadi_kalarm_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS akonadi_kalarm_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})

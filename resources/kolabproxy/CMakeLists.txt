@@ -63,7 +63,7 @@ if(RUNTIME_PLUGINS_STATIC)
 endif()
 
 add_executable(akonadi_kolabproxy_resource ${kolabproxyresource_SRCS})
-install(FILES akonadi_kolabproxy_resource.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR} )
+install(FILES akonadi_kolabproxy_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR} )
 
 if(Q_WS_MAC)
   set_target_properties(akonadi_kolabproxy_resource PROPERTIES
@@ -98,9 +98,9 @@ if(RUNTIME_PLUGINS_STATIC)
   )
 endif()
 
-install(TARGETS akonadi_kolabproxy_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_kolabproxy_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-ecm_install_icons(ICONS hi64-apps-kolab.png DESTINATION ${ICON_INSTALL_DIR})
+ecm_install_icons(ICONS hi64-apps-kolab.png DESTINATION ${KDE_INSTALL_ICONDIR})
 
 #REACTIVATE IT
 #add_subdirectory(autotests)

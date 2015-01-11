@@ -40,4 +40,4 @@ endif ()
 
 target_link_libraries(akonadi_ical_resource KF5::AkonadiCore   KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
-install(TARGETS akonadi_ical_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS akonadi_ical_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})

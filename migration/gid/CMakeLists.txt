@@ -17,4 +17,4 @@ target_link_libraries(gidmigrator
   KF5::AkonadiCore
   KF5::Mime
 )
-install(TARGETS gidmigrator ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS gidmigrator ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

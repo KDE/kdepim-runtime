@@ -28,5 +28,5 @@ endif ()
 
 target_link_libraries(akonadi_localbookmarks_resource KF5::AkonadiCore   KF5::KIOCore KF5::AkonadiAgentBase)
 
-install(TARGETS akonadi_localbookmarks_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_localbookmarks_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

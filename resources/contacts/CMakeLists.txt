@@ -30,4 +30,4 @@ target_link_libraries(akonadi_contacts_resource
   KF5::KIOCore
 )
 
-install(TARGETS akonadi_contacts_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS akonadi_contacts_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})

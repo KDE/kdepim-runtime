@@ -58,6 +58,6 @@ endif ()
 
 target_link_libraries(akonadi_openxchange_resource KF5::AkonadiAgentBase KF5::AkonadiCore KF5::Contacts     KF5::KIOCore KF5::CalendarCore  KF5::AkonadiContact )
 
-install(TARGETS akonadi_openxchange_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_openxchange_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory(icons)

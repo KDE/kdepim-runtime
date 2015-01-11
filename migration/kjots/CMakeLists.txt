@@ -30,4 +30,4 @@ target_link_libraries(kjotsmigrator
   maildir
 )
 
-install(TARGETS kjotsmigrator ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kjotsmigrator ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

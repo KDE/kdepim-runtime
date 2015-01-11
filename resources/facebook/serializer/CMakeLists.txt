@@ -17,17 +17,17 @@ target_link_libraries(akonadi_serializer_socialnotification
 
 install(
   TARGETS akonadi_serializer_socialnotification
-  DESTINATION ${PLUGIN_INSTALL_DIR}
+  DESTINATION ${KDE_INSTALL_PLUGINDIR}
 )
 
 install(
   FILES akonadi_serializer_socialnotification.desktop
-  DESTINATION ${DATA_INSTALL_DIR}/akonadi/plugins/serializer
+  DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/plugins/serializer
 )
 
 install(
   FILES x-vnd.akonadi.socialnotification.xml
-  DESTINATION ${XDG_MIME_INSTALL_DIR}
+  DESTINATION ${KDE_INSTALL_MIMEDIR}
 )
 
-update_xdg_mimetypes(${XDG_MIME_INSTALL_DIR})
+update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})

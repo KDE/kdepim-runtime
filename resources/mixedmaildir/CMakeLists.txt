@@ -58,9 +58,9 @@ target_link_libraries(akonadi_mixedmaildir_resource
   akonadi-singlefileresource
 )
 
-install(TARGETS akonadi_mixedmaildir_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_mixedmaildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.xml
-        DESTINATION ${DBUS_INTERFACES_INSTALL_DIR})
+        DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 
 # unit tests
 if (KDE4_BUILD_TESTS)

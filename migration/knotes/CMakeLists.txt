@@ -33,5 +33,5 @@ target_link_libraries(knotes-migrator
     
 )
 
-install(TARGETS knotes-migrator ${INSTALL_TARGETS_DEFAULT_ARGS})
-#install(FILES knotes-migratorrc DESTINATION ${CONFIG_INSTALL_DIR})
+install(TARGETS knotes-migrator ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+#install(FILES knotes-migratorrc DESTINATION ${KDE_INSTALL_CONFDIR})

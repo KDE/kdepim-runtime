@@ -35,12 +35,12 @@ install(TARGETS
   kcm_akonadi_resources
   kcm_akonadi_server
   kcm_akonadi
-  DESTINATION ${PLUGIN_INSTALL_DIR})
+  DESTINATION ${KDE_INSTALL_PLUGINDIR})
 install(FILES
   kcm_akonadi_resources.desktop
   kcm_akonadi_server.desktop
   kcm_akonadi.desktop
-  DESTINATION ${SERVICES_INSTALL_DIR})
+  DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kcmakonadi_SOURCE_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

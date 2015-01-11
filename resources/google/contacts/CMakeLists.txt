@@ -55,7 +55,7 @@ if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
     ${SIGNONQT_LIBRARIES})
 endif()
 
-install(TARGETS akonadi_googlecontacts_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_googlecontacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(
   FILES googlecontactsresource.desktop

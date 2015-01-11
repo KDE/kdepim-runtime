@@ -30,4 +30,4 @@ add_library(akonadi_notes_resource MODULE ${notesresource_SRCS})
 
 target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
-install(TARGETS akonadi_notes_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS akonadi_notes_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})

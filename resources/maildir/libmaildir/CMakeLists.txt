@@ -12,4 +12,4 @@ target_link_libraries(maildir KF5::Codecs KF5::AkonadiMime KF5::AkonadiCore)
 
 set_target_properties(maildir PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
-install(TARGETS maildir ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS maildir ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

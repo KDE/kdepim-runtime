@@ -41,4 +41,4 @@ target_link_libraries(akonadi_kalarm_dir_resource
                       KF5::AkonadiAgentBase 
                      )
 
-install(TARGETS akonadi_kalarm_dir_resource DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS akonadi_kalarm_dir_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})

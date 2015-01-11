@@ -1,2 +1,2 @@
 
-install ( FILES pop3wizard.desktop pop3wizard.es pop3wizard.ui DESTINATION ${DATA_INSTALL_DIR}/akonadi/accountwizard/pop3 )
+install ( FILES pop3wizard.desktop pop3wizard.es pop3wizard.ui DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/accountwizard/pop3 )

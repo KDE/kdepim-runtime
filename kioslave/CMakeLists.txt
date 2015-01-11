@@ -38,12 +38,12 @@ target_link_libraries(kio_akonadi
                       )
 set_target_properties(kio_akonadi PROPERTIES OUTPUT_NAME "akonadi")
 
-install(TARGETS kio_akonadi DESTINATION ${PLUGIN_INSTALL_DIR}/kf5/kio )
+install(TARGETS kio_akonadi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf5/kio )
 
 
 ########### install files ###############
 
-install( FILES akonadi.protocol  DESTINATION  ${SERVICES_INSTALL_DIR} )
+install( FILES akonadi.protocol  DESTINATION  ${KDE_INSTALL_KSERVICES5DIR} )
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kioslave_SOURCE_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

@@ -34,5 +34,5 @@ target_link_libraries(akonadi_birthdays_resource
   KF5::Contacts
 )
 
-install( TARGETS akonadi_birthdays_resource ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install( TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES birthdaysresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )

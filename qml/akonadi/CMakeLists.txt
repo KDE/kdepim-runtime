@@ -8,7 +8,7 @@ install(FILES
   check.png
   sliderbackground.png
   transparentplus.png
-  DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde/akonadi
+  DESTINATION ${KDE_INSTALL_PLUGINDIR}/imports/org/kde/akonadi
 )
 
 add_subdirectory( tests )

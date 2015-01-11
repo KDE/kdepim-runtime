@@ -48,4 +48,4 @@ target_link_libraries( akonadi_pop3_resource
 add_subdirectory( autotests )
 add_subdirectory( wizard )
 
-install(TARGETS akonadi_pop3_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_pop3_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

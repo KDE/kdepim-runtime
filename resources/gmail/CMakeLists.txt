@@ -48,4 +48,4 @@ target_link_libraries(akonadi_gmail_resource
 )
 
 install(FILES gmailresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
-install(TARGETS akonadi_gmail_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_gmail_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

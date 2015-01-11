@@ -31,4 +31,4 @@ endif ()
 
 target_link_libraries(akonadi_kdeaccounts_resource KF5::AkonadiCore  KF5::Contacts KF5::KIOCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
-install(TARGETS akonadi_kdeaccounts_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_kdeaccounts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

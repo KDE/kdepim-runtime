@@ -28,4 +28,4 @@ endif ()
 
 target_link_libraries(akonadi_nntp_resource KF5::AkonadiCore KF5::AkonadiMime KF5::KIOCore KF5::Mime KF5::AkonadiAgentBase)
 
-install(TARGETS akonadi_nntp_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_nntp_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

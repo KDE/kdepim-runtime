@@ -13,9 +13,9 @@ add_library(kdeqmlplugin MODULE ${LIBRARY_TYPE}
 target_link_libraries(kdeqmlplugin  Qt5::Declarative KF5::I18n KF5::IconThemes KF5::KDELibs4Support ${QT_QTSCRIPT_LIBRARY})
 
 if (KDEQMLPLUGIN_STATIC)
-  install( FILES qmldir_without_kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde RENAME qmldir)
+  install( FILES qmldir_without_kdeqmlplugin DESTINATION ${KDE_INSTALL_PLUGINDIR}/imports/org/kde RENAME qmldir)
 else()
-  install( FILES qmldir DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
+  install( FILES qmldir DESTINATION ${KDE_INSTALL_PLUGINDIR}/imports/org/kde )
 endif ()
 
 install( FILES
@@ -36,9 +36,9 @@ install( FILES
   flap-expanded-top.png
   flap-expanded-mid.png
   flap-expanded-bottom.png
-  DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
+  DESTINATION ${KDE_INSTALL_PLUGINDIR}/imports/org/kde )
 
-install( TARGETS kdeqmlplugin DESTINATION ${PLUGIN_INSTALL_DIR}/imports/org/kde )
+install( TARGETS kdeqmlplugin DESTINATION ${KDE_INSTALL_PLUGINDIR}/imports/org/kde )
 
 #add_subdirectory(tests)
 

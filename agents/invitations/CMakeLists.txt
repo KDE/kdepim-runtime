@@ -37,5 +37,5 @@ if (Q_WS_MAC)
 endif ()
 
 
-install(TARGETS akonadi_invitations_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi_invitations_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES invitationsagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
