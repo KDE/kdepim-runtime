@@ -134,13 +134,10 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         result << i18n("From: %1", Qt::escape(mFrom));
     }
     if (NewMailNotifierAgentSettings::showSubject()) {
-        QString subject(mSubject);
+        QString subject = mSubject.simplified();
         if (subject.length()> 80) {
             subject.truncate(80);
             subject += QLatin1String("...");
-        } else {
-            subject.remove(QLatin1String("\n"));
-            subject.remove(QLatin1String("\r"));
         }
         result << i18n("Subject: %1", Qt::escape(subject));
     }
