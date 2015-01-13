@@ -75,6 +75,7 @@
 #include "retrieveitemtask.h"
 #include "retrieveitemstask.h"
 #include "searchtask.h"
+#include "tracer.h"
 
 #include "settingspasswordrequester.h"
 #include "sessionpool.h"
@@ -146,11 +147,13 @@ ImapResourceBase::ImapResourceBase( const QString &id )
   connect( m_statusMessageTimer, SIGNAL(timeout()), SLOT(clearStatusMessage()) );
   connect( this, SIGNAL(error(QString)), SLOT(showError(QString)) );
 
+  Trace() << "foobar";
   QMetaObject::invokeMethod( this, "delayedInit", Qt::QueuedConnection );
 }
 
 void ImapResourceBase::delayedInit()
 {
+  Trace();
   settings(); // make sure the D-Bus settings interface is up
   new ImapResourceBaseAdaptor( this );
   setNeedsNetwork( needsNetwork() );
@@ -350,6 +353,7 @@ Settings *ImapResourceBase::settings() const
 
 bool ImapResourceBase::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
 {
+  Trace() << item.id() << parts;
   // The collection name is empty here...
   //emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving item in '%1'", item.parentCollection().name() ) );
 
@@ -398,6 +402,7 @@ void ImapResourceBase::itemsRemoved( const Akonadi::Item::List &items )
 void ImapResourceBase::itemsMoved( const Akonadi::Item::List &items, const Akonadi::Collection &source,
                                const Akonadi::Collection &destination )
 {
+  Trace() << items.size() << source.id() << destination.id();
   if ( items.first().parentCollection() != destination ) { // should have been set by the server
     kWarning() << "Collections don't match: destination=" << destination.id()
                << "; items parent=" << items.first().parentCollection().id()
@@ -419,6 +424,7 @@ void ImapResourceBase::itemsMoved( const Akonadi::Item::List &items, const Akona
 
 void ImapResourceBase::retrieveCollections()
 {
+  Trace();
   emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving folders" ) );
 
   startTask(new RetrieveCollectionsTask( createResourceState(TaskArguments()), this ));
@@ -752,6 +758,7 @@ void ImapResourceBase::clearStatusMessage()
 
 void ImapResourceBase::modifyCollection(const Collection &col)
 {
+    Trace() << col.id();
     Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(col, this);
     connect(modJob, SIGNAL(result(KJob*)), this, SLOT(onCollectionModifyDone(KJob*)));
 }

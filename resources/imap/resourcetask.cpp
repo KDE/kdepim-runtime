@@ -30,6 +30,7 @@
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
+#include "tracer.h"
 
 ResourceTask::ResourceTask( ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent )
   : QObject( parent ),
@@ -55,6 +56,7 @@ ResourceTask::~ResourceTask()
 
 void ResourceTask::start( SessionPool *pool )
 {
+  Trace() << metaObject()->className();
   m_pool = pool;
   connect( m_pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)),
            this, SLOT(onSessionRequested(qint64,KIMAP::Session*,int,QString)) );
@@ -95,6 +97,7 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   m_sessionRequestId = 0;
 
   if ( errorCode!=SessionPool::NoError ) {
+    Trace() << "Error on: " << metaObject()->className();
     switch ( m_actionIfNoSession ) {
     case CancelIfNoSession:
       kDebug() << "Cancelling this request. Probably there is no more session available.";
@@ -118,6 +121,7 @@ void ResourceTask::onSessionRequested( qint64 requestId, KIMAP::Session *session
   connect( m_pool, SIGNAL(disconnectDone()),
            this, SLOT(onPoolDisconnect()) );
 
+  Trace() << "starting: " << metaObject()->className();
   doStart( m_session );
 }
 
@@ -128,6 +132,8 @@ void ResourceTask::onConnectionLost( KIMAP::Session *session )
     // the pointer, we don't need to release it once the
     // task is done
     m_session = 0;
+
+    Trace() << metaObject()->className();
     cancelTask( i18n( "Connection lost" ) );
   }
 }
@@ -139,6 +145,7 @@ void ResourceTask::onPoolDisconnect()
   // release our session anymore
   m_pool = 0;
 
+  Trace() << metaObject()->className();
   cancelTask( i18n( "Connection lost" ) );
 }
 
@@ -366,6 +373,7 @@ void ResourceTask::changeProcessed()
 
 void ResourceTask::cancelTask( const QString &errorString )
 {
+  kDebug() << "Cancel task: " << errorString;
   if (!mCancelled) {
     mCancelled = true;
     m_resource->cancelTask( errorString );
@@ -489,6 +497,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags( const QList<QByteArray> &flags )
 
 void ResourceTask::kill()
 {
+  Trace() << metaObject()->className();
   kDebug();
   cancelTask(i18n("killed"));
 }

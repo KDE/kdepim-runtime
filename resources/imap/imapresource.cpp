@@ -29,6 +29,7 @@
 #include "sessionpool.h"
 #include "settingspasswordrequester.h"
 #include "sessionuiproxy.h"
+#include "tracer.h"
 
 #include <KWindowSystem>
 #include <KLocalizedString>
