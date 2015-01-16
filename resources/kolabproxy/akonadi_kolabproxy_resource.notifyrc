@@ -34,6 +34,7 @@ Comment[sv]=Kolab-proxy resursunderrättelser
 Comment[tr]=Kolab Vekil Sunucu Kaynak Bildirimleri
 Comment[uk]=Сповіщення ресурсу проксі-сервера Kolab
 Comment[x-test]=xxKolab Proxy Resource Notificationsxx
+Comment[zh_CN]=Kolab 代理资源提醒
 Comment[zh_TW]=Kolab Proxy 資源通知
 Name=Kolab Resource
 Name[bs]=Kolab resurs
@@ -70,6 +71,7 @@ Name[sv]=Kolab-resurs
 Name[tr]=Kolab Kaynağı
 Name[uk]=Ресурс Kolab
 Name[x-test]=xxKolab Resourcexx
+Name[zh_CN]=Kolab 资源
 Name[zh_TW]=Kolab 資源
 
 [Event/Error]
@@ -108,5 +110,6 @@ Name[sv]=Ett fel uppstod
 Name[tr]=Bir hata oluştu
 Name[uk]=Сталася помилка
 Name[x-test]=xxAn error occurredxx
+Name[zh_CN]=发生了一个错误
 Name[zh_TW]=發生錯誤
 Action=Popup

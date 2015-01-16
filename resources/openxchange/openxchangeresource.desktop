@@ -78,6 +78,7 @@ Comment[sv]="Ger tillgång till möten, uppgifter och kontakter lagrade på en O
 Comment[tr]="Open-Xchange groupware sunucusundaki toplantı, yapılacak iş ve kişilere erişimi sağlar."
 Comment[uk]="Надає доступ до записів зустрічей, завдань і контактів, які зберігаються на сервері групової роботи Open-Xchange."
 Comment[x-test]=xx"Provides access to the appointments, tasks, and contacts of an Open-Xchange groupware server."xx
+Comment[zh_CN]=“提供对存储在 Open-Xchange 服务器上的约会、任务和联系人的访问支持。”
 Comment[zh_TW]=「提供存取儲存在 Open-Xchange 群組伺服器上的約會、工作與聯絡人的功能。」
 Type=AkonadiResource
 Exec=akonadi_openxchange_resource
