@@ -63,6 +63,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
 
 # unit tests
-if (KDE4_BUILD_TESTS)
+if (BUILD_TESTING)
   add_subdirectory( autotests )
 endif ()

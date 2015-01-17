@@ -1,8 +1,9 @@
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
-add_subdirectory(autotests)
+if (BUILD_TESTING)
+   add_subdirectory(autotests)
+endif()
 
 ########### next target ###############
 

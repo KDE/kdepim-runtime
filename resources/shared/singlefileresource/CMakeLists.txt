@@ -54,4 +54,6 @@ target_link_libraries(akonadi-singlefileresource
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 install(TARGETS akonadi-singlefileresource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-add_subdirectory(autotests)
+if (BUILD_TESTING)
+   add_subdirectory(autotests)
+endif()

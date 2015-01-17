@@ -76,7 +76,9 @@ install( FILES
   akonadi_serializer_kalarm.desktop
 DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/plugins/serializer)
 
-add_subdirectory( autotests ) 
+if (BUILD_TESTING)
+   add_subdirectory( autotests ) 
+endif()
 
 if ("${CMAKE_BINARY_DIR}" STREQUAL "${plugins_BINARY_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

@@ -22,5 +22,7 @@ target_link_libraries(folderarchivesettings
 set_target_properties(folderarchivesettings PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
 install(TARGETS folderarchivesettings ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-add_subdirectory(autotests)
+if (BUILD_TESTING)
+   add_subdirectory(autotests)
+endif()
 

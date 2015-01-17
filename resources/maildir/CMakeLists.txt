@@ -5,7 +5,9 @@ include_directories(
 )
 
 
-add_subdirectory( autotests )
+if (BUILD_TESTING)
+   add_subdirectory( autotests )
+endif()
 add_subdirectory( wizard )
 
 # maildir access library
