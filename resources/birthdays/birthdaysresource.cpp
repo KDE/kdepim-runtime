@@ -244,7 +244,7 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item &cont
         ev->setCustomProperty("KABC", "BIRTHDAY", QLatin1String("YES"));
         ev->setCustomProperty("KABC", "UID-1", contact.uid());
         ev->setCustomProperty("KABC", "NAME-1", name);
-        ev->setCustomProperty("KABC", "EMAIL-1", contact.fullEmail());
+        ev->setCustomProperty("KABC", "EMAIL-1", contact.preferredEmail());
         ev->setSummary(summary);
 
         ev->setCategories(i18n("Birthday"));
