@@ -44,11 +44,11 @@
 #include <KDE/KLocale>
 
 
-bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool complete = false)
+bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool matchCompletePath = false)
 {
     Q_FOREACH (const KIMAP::MailBoxDescriptor &desc, namespaces) {
         if (path.startsWith(desc.name.left(desc.name.size() - 1))) { //Namespace ends with path separator and pathPart doesn't
-            if (!complete || path.size() - desc.name.size() <= 1) {      //We want to match only for the complete path
+            if (!matchCompletePath || path.size() - desc.name.size() <= 1) {      //We want to match only for the complete path
                 return true;
             }
         }
@@ -139,12 +139,13 @@ void RetrieveMetadataJob::onGetMetaDataDone( KJob *job )
     mJobs--;
     KIMAP::GetMetaDataJob *meta = static_cast<KIMAP::GetMetaDataJob*>( job );
     if ( job->error() ) {
-        kWarning() << "Get metadata failed: " << job->errorString();
+        kDebug() << "No metadata for for mailbox: " << meta->mailBox();
         if (!isNamespaceFolder(meta->mailBox(), mSharedNamespace)) {
-            setError(KJob::UserDefinedError);
-            checkDone();
-            return;
+            kWarning() << "Get metadata failed: " << job->errorString();
+            //We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
         }
+        checkDone();
+        return;
     }
 
     const QHash<QString, QMap<QByteArray, QByteArray> > metadata = meta->allMetaDataForMailboxes();
@@ -157,17 +158,19 @@ void RetrieveMetadataJob::onGetMetaDataDone( KJob *job )
 void RetrieveMetadataJob::onRightsReceived( KJob *job )
 {
     mJobs--;
+    KIMAP::MyRightsJob *rights = static_cast<KIMAP::MyRightsJob*>(job);
     if ( job->error() ) {
-        kWarning() << "MyRights failed: " << job->errorString();
-        kWarning() << "mailbox " << static_cast<KIMAP::MyRightsJob*>( job )->mailBox();
-        setError(KJob::UserDefinedError);
+        kDebug() << "No rights for mailbox: " << rights->mailBox();
+        if (!isNamespaceFolder(rights->mailBox(), mSharedNamespace)) {
+            kWarning() << "MyRights failed: " << job->errorString();
+            //We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
+        }
         checkDone();
-        return; // Well, no metadata for us then...
+        return;
     }
 
-    KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>( job );
-    const KIMAP::Acl::Rights imapRights = rightsJob->rights();
-    mRights.insert(rightsJob->mailBox(), imapRights);
+    const KIMAP::Acl::Rights imapRights = rights->rights();
+    mRights.insert(rights->mailBox(), imapRights);
     checkDone();
 }
 
@@ -490,7 +493,7 @@ void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
     kDebug() << mTime.elapsed();
     mJobs--;
     if (job->error()) {
-        kWarning() << job->errorString();
+        kWarning() << "Error while retrieving metadata, aborting collection retrieval: " << job->errorString();
         cancelTask(job->errorString());
     } else {
         RetrieveMetadataJob *metadata = static_cast<RetrieveMetadataJob*>(job);
