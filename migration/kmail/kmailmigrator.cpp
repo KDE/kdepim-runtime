@@ -45,6 +45,7 @@
 #include <AkonadiCore/agentinstance.h>
 #include <AkonadiCore/agentinstancecreatejob.h>
 #include <AkonadiCore/attributefactory.h>
+#include <AkonadiCore/control.h>
 #include <AkonadiCore/tag.h>
 #include <AkonadiCore/tagcreatejob.h>
 #include <AkonadiCore/tagattribute.h>
@@ -392,6 +393,8 @@ void KMailMigrator::migrationDone()
     cleanupConfigFile();
     migrateConfigurationDialogRestriction();
     deleteLater();
+    qDebug() << "Restarting Akonadi";
+    Akonadi::Control::restart();
 }
 
 OrgKdeAkonadiImapSettingsInterface *KMailMigrator::createImapSettingsInterface(const Akonadi::AgentInstance &instance)
