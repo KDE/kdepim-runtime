@@ -23,7 +23,7 @@ install( FILES icaldirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/shar
 
 add_executable(akonadi_icaldir_resource ${icaldirresource_SRCS})
 
-if (Q_OS_OSX)
+if( APPLE )
   set_target_properties(akonadi_icaldir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_icaldir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.ICalDirectory")
   set_target_properties(akonadi_icaldir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi ICalDirectory Resource")

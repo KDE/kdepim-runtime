@@ -65,7 +65,7 @@ endif()
 add_executable(akonadi_kolabproxy_resource ${kolabproxyresource_SRCS})
 install(FILES akonadi_kolabproxy_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR} )
 
-if(Q_OS_OSX)
+if( APPLE )
   set_target_properties(akonadi_kolabproxy_resource PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template
   )

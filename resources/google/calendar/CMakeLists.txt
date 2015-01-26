@@ -28,7 +28,7 @@ qt5_add_dbus_adaptor(calendarresource_SRCS
 
 add_executable(akonadi_googlecalendar_resource ${calendarresource_SRCS})
 
-if(Q_OS_OSX)
+if( APPLE )
   set_target_properties(akonadi_googlecalendar_resource PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template
   )

@@ -19,7 +19,7 @@ qt5_add_dbus_adaptor(birthdayresource_srcs
 )
 add_executable(akonadi_birthdays_resource ${birthdayresource_srcs})
 
-if (Q_OS_OSX)
+if( APPLE )
   set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Birthdays")
   set_target_properties(akonadi_birthdays_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Birthdays Resource")

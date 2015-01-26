@@ -22,7 +22,7 @@ install( FILES vcarddirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/sha
 
 add_executable(akonadi_vcarddir_resource ${vcarddirresource_SRCS})
 
-if (Q_OS_OSX)
+if( APPLE )
   set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.VCardDirectory")
   set_target_properties(akonadi_vcarddir_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCardDirectory Resource")

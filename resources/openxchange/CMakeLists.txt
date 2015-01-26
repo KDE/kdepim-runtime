@@ -49,7 +49,7 @@ qt5_add_dbus_adaptor(openxchangeresource_SRCS
 
 add_executable(akonadi_openxchange_resource ${openxchangeresource_SRCS})
 
-if (Q_OS_OSX)
+if( APPLE )
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.OpenXchange")
   set_target_properties(akonadi_openxchange_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi OpenXchange Resource")

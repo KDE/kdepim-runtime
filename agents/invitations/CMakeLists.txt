@@ -30,7 +30,7 @@ target_link_libraries(akonadi_invitations_agent
   KF5::IdentityManagement
 )
 
-if (Q_OS_OSX)
+if( APPLE )
   set_target_properties(akonadi_invitations_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_invitations_agent PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.invitationsagent")
   set_target_properties(akonadi_invitations_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Invitations Calendar")
