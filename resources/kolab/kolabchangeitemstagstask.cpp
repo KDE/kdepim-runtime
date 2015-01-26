@@ -77,7 +77,6 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
     }
 
     const Akonadi::Tag::List tags = static_cast<Akonadi::TagFetchJob*>(job)->tags();
-    Q_ASSERT(tags.size() == 1);
     if (tags.size() != 1) {
         kWarning() << "Invalid number of tags retrieved: " << tags.size();
         // TODO: we could continue for the other tags?
