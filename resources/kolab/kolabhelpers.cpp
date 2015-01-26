@@ -27,6 +27,7 @@
 #include <kolabobject.h>
 #include <errorhandler.h>
 #include <KLocalizedString>
+#include "tracer.h"
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
@@ -479,8 +480,13 @@ QList<QByteArray> KolabHelpers::ancestorChain(const Akonadi::Collection &col)
 
 QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &user)
 {
+    Trace() << item.id() << item.mimeType() << item.gid() << item.hasPayload();
     Kolab::RelationMember member;
     if (item.mimeType() == KMime::Message::mimeType()) {
+        if (!item.hasPayload<KMime::Message::Ptr>()) {
+            kWarning() << "Email without payload, failed to add to tag: " << item.id() << item.remoteId();
+            return QString();
+        }
         KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
         member.uid = item.remoteId().toLong();
         member.user = user;

@@ -32,6 +32,7 @@
 
 #include <akonadi/relationfetchjob.h>
 
+#include "tracer.h"
 #include "kolabhelpers.h"
 
 KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(ResourceStateInterface::Ptr resource, QObject *parent)
@@ -41,6 +42,7 @@ KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(ResourceStateInterf
 
 void KolabChangeItemsRelationsTask::startRelationTask(KIMAP::Session *session)
 {
+    Trace();
     mSession = session;
     mAddedRelations = resourceState()->addedRelations();
     mRemovedRelations = resourceState()->removedRelations();
@@ -50,6 +52,7 @@ void KolabChangeItemsRelationsTask::startRelationTask(KIMAP::Session *session)
 
 void KolabChangeItemsRelationsTask::processNextRelation()
 {
+    Trace() << mAddedRelations.size() << mRemovedRelations.size();
     Akonadi::Relation relation;
     if (!mAddedRelations.isEmpty()) {
         relation = mAddedRelations.takeFirst();
@@ -61,6 +64,7 @@ void KolabChangeItemsRelationsTask::processNextRelation()
         changeProcessed();
         return;
     }
+    Trace() << "Processing " << (mAdding ? " add " : " remove ") << relation;
 
     //We have to fetch it again in case it changed since the notification was emitted (which is likely)
     //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
@@ -70,6 +74,7 @@ void KolabChangeItemsRelationsTask::processNextRelation()
 
 void KolabChangeItemsRelationsTask::onRelationFetchDone(KJob *job)
 {
+    Trace();
     if (job->error()) {
         kWarning() << "RelatonFetch failed: " << job->errorString();
         processNextRelation();
@@ -112,6 +117,7 @@ void KolabChangeItemsRelationsTask::addRelation(const Akonadi::Relation &relatio
 
 void KolabChangeItemsRelationsTask::removeRelation(const Akonadi::Relation &relation)
 {
+    Trace();
     mCurrentRelation = relation;
     const QString mailBox = mailBoxForCollection(relationCollection());
 
@@ -142,6 +148,8 @@ void KolabChangeItemsRelationsTask::triggerStoreJob()
     KIMAP::ImapSet set;
     set.add(mCurrentRelation.remoteId().toLong());
 
+    Trace() << set.toImapSequenceSet();
+
     KIMAP::StoreJob *store = new KIMAP::StoreJob(mSession);
     store->setUidBased(true);
     store->setSequenceSet(set);
@@ -154,6 +162,7 @@ void KolabChangeItemsRelationsTask::triggerStoreJob()
 void KolabChangeItemsRelationsTask::onChangeCommitted(KJob *job)
 {
     if (job->error()) {
+        kWarning() << "Error while storing change";
         cancelTask(job->errorString());
     } else {
         processNextRelation();
