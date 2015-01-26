@@ -20,7 +20,7 @@ kconfig_add_kcfg_files(nntpresource_SRCS settingsbase.kcfgc)
 add_executable(akonadi_nntp_resource ${nntpresource_SRCS})
 
 
-if (Q_WS_MAC)
+if (Q_OS_OSX)
   set_target_properties(akonadi_nntp_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_nntp_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.NNTP")
   set_target_properties(akonadi_nntp_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi NNTP Resource")

@@ -26,7 +26,7 @@ qt5_add_dbus_adaptor(mboxresource_SRCS
 
 add_library(akonadi_mbox_resource MODULE ${mboxresource_SRCS})
 
-if (Q_WS_MAC)
+if (Q_OS_OSX)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Mbox")
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Mbox Resource")

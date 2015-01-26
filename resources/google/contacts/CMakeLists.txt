@@ -26,7 +26,7 @@ qt5_add_dbus_adaptor(contactsresource_SRCS
 
 add_executable(akonadi_googlecontacts_resource ${contactsresource_SRCS})
 
-if(Q_WS_MAC)
+if(Q_OS_OSX)
   set_target_properties(akonadi_googlecontacts_resource PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../../Info.plist.template
   )
