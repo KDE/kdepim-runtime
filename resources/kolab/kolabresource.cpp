@@ -229,6 +229,7 @@ void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
 {
     Trace() << items.size() << addedRelations.size() << removedRelations.size();
     KolabChangeItemsRelationsTask *task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
+    startTask(task);
 }
 
 AKONADI_RESOURCE_MAIN( KolabResource )

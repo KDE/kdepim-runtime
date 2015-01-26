@@ -31,6 +31,8 @@
 #include <kimap/storejob.h>
 
 #include <akonadi/relationfetchjob.h>
+#include <akonadi/itemfetchjob.h>
+#include <akonadi/itemfetchscope.h>
 
 #include "tracer.h"
 #include "kolabhelpers.h"
@@ -61,6 +63,7 @@ void KolabChangeItemsRelationsTask::processNextRelation()
         relation = mRemovedRelations.takeFirst();
         mAdding = false;
     } else {
+        Trace() << "Processing done";
         changeProcessed();
         return;
     }
@@ -82,7 +85,6 @@ void KolabChangeItemsRelationsTask::onRelationFetchDone(KJob *job)
     }
 
     const Akonadi::Relation::List relations = static_cast<Akonadi::RelationFetchJob *>(job)->relations();
-    Q_ASSERT(relations.size() == 1);
     if (relations.size() != 1) {
         kWarning() << "Invalid number of relations retrieved: " << relations.size();
         processNextRelation();
@@ -99,20 +101,54 @@ void KolabChangeItemsRelationsTask::onRelationFetchDone(KJob *job)
 
 void KolabChangeItemsRelationsTask::addRelation(const Akonadi::Relation &relation)
 {
-    //FIXME fetch items first?
+    Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(Akonadi::Item::List() << relation.left() << relation.right());
+    fetchJob->fetchScope().setCacheOnly(true);
+    fetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
+    fetchJob->fetchScope().setFetchGid(true);
+    fetchJob->fetchScope().fetchFullPayload(true);
+    fetchJob->setProperty("relation", QVariant::fromValue(relation));
+    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemsFetched(KJob*)));
+}
+
+void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
+{
+    if (job->error()) {
+        kWarning() << "Failed to fetch items for relation: " << job->errorString();
+        processNextRelation();
+        return;
+    }
+    Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob*>(job);
+    if (fetchJob->items().size() != 2) {
+        kWarning() << "Invalid number of items retrieved: " << fetchJob->items().size();
+        processNextRelation();
+        return;
+    }
+
+
+    const Akonadi::Item::List items = fetchJob->items();
+    const Akonadi::Relation relation = job->property("relation").value<Akonadi::Relation>();
+    Akonadi::Item leftItem = items[0] == relation.left() ? items[0] : items[1];
+    Akonadi::Item rightItem = items[0] == relation.right() ? items[0] : items[1];
+    const QString left = KolabHelpers::createMemberUrl(leftItem, resourceState()->userName());
+    const QString right =  KolabHelpers::createMemberUrl(rightItem, resourceState()->userName());
+    if (left.isEmpty() || right.isEmpty()) {
+        kWarning() << "Failed to add relation, invalid member: " << left << " : " << right;
+        processNextRelation();
+        return;
+    }
     QStringList members;
     members.reserve(2);
-    members << KolabHelpers::createMemberUrl(relation.left(), resourceState()->userName());
-    members << KolabHelpers::createMemberUrl(relation.right(), resourceState()->userName());
+    members << left << right;
 
     const QLatin1String productId("Akonadi-Kolab-Resource");
     const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeRelation(relation, members, Kolab::KolabV3, productId);
 
-    KIMAP::AppendJob *job = new KIMAP::AppendJob(mSession);
-    job->setMailBox(mailBoxForCollection(relationCollection()));
-    job->setContent(message->encodedContent(true));
-    job->setInternalDate(message->date()->dateTime());
-    connect(job, SIGNAL(result(KJob*)), SLOT(onChangeCommitted(KJob*)));
+    KIMAP::AppendJob *appendJob = new KIMAP::AppendJob(mSession);
+    appendJob->setMailBox(mailBoxForCollection(relationCollection()));
+    appendJob->setContent(message->encodedContent(true));
+    appendJob->setInternalDate(message->date()->dateTime());
+    connect(appendJob, SIGNAL(result(KJob*)), SLOT(onChangeCommitted(KJob*)));
+    appendJob->start();
 }
 
 void KolabChangeItemsRelationsTask::removeRelation(const Akonadi::Relation &relation)

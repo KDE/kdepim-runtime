@@ -37,6 +37,7 @@ private Q_SLOTS:
     void onRelationFetchDone(KJob *job);
 
     void addRelation(const Akonadi::Relation &relation);
+    void onItemsFetched(KJob *job);
     void removeRelation(const Akonadi::Relation &relation);
     void onSelectDone(KJob *job);
     void triggerStoreJob();
