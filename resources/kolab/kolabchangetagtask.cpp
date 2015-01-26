@@ -39,6 +39,7 @@ void KolabChangeTagTask::startRelationTask(KIMAP::Session *session)
 
     Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(resourceState()->tag());
     fetch->fetchScope().setCacheOnly(true);
+    fetch->fetchScope().setFetchGid(true);
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetch->fetchScope().fetchFullPayload(true);
     connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onItemsFetchDone(KJob*)));

@@ -97,8 +97,8 @@ void KolabChangeItemsRelationsTask::addRelation(const Akonadi::Relation &relatio
     //FIXME fetch items first?
     QStringList members;
     members.reserve(2);
-    members << KolabHelpers::createMemberUrl(relation.left(), QLatin1String("user@example.org"));
-    members << KolabHelpers::createMemberUrl(relation.right(), QLatin1String("user@example.org"));
+    members << KolabHelpers::createMemberUrl(relation.left(), resourceState()->userName());
+    members << KolabHelpers::createMemberUrl(relation.right(), resourceState()->userName());
 
     const QLatin1String productId("Akonadi-Kolab-Resource");
     const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeRelation(relation, members, Kolab::KolabV3, productId);

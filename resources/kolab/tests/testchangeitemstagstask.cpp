@@ -215,11 +215,17 @@ private slots:
     void testTagConverter()
     {
         TagConverter converter;
-        Akonadi::Item item;
+        Akonadi::Item item(KMime::Message::mimeType());
+        KMime::Message::Ptr msg= KMime::Message::Ptr(new KMime::Message());
+        msg->subject(true)->from7BitString("subject");
+
+        msg->messageID(true)->from7BitString("<messageid@example.com>");
+        msg->date(true)->setDateTime(KDateTime(QDate(2014,12,10), QTime(9,8,7)));
+        item.setPayload<KMime::Message::Ptr>(msg);
         item.setRemoteId(QLatin1String("20"));
         item.setParentCollection(createCollectionChain("/INBOX"));
         const QString member = KolabHelpers::createMemberUrl(item, QLatin1String("localuser@localhost"));
-        const QString expected = QLatin1String("imap:/user/localuser@localhost/INBOX/20?message-id=messageid&subject=subject&date=");
+        const QString expected = QLatin1String("imap:///user/localuser%40localhost/INBOX/20?message-id=%3Cmessageid%40example.com%3E&subject=subject&date=Wed%2C%2010%20Dec%202014%2009%3A08%3A07%20%2B0000");
         QCOMPARE(member, expected);
     }
 };
