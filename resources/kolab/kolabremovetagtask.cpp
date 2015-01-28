@@ -26,6 +26,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/storejob.h>
+#include "tracer.h"
 
 KolabRemoveTagTask::KolabRemoveTagTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
@@ -40,6 +41,7 @@ void KolabRemoveTagTask::startRelationTask(KIMAP::Session *session)
 
     const QString mailBox = mailBoxForCollection(relationCollection());
 
+    Trace() << mailBox;
     kDebug(5327) << "Deleting tag " << resourceState()->tag().name() << " from " << mailBox;
 
     if (session->selectedMailBox() != mailBox) {
@@ -60,6 +62,7 @@ void KolabRemoveTagTask::triggerStoreJob(KIMAP::Session *session)
 {
     KIMAP::ImapSet set;
     set.add(resourceState()->tag().remoteId().toLong());
+    Trace() << set.toImapSequenceSet();
 
     KIMAP::StoreJob *store = new KIMAP::StoreJob(session);
     store->setUidBased(true);
@@ -83,6 +86,7 @@ void KolabRemoveTagTask::onSelectDone(KJob *job)
 
 void KolabRemoveTagTask::onStoreFlagsDone(KJob *job)
 {
+    Trace();
     //TODO use UID EXPUNGE if available
     if (job->error()) {
       kWarning() << "Failed to append flags: " << job->errorString();
