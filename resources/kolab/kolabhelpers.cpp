@@ -386,9 +386,13 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
     contentTypes << Akonadi::Collection::mimeType();
     switch (type) {
         case Kolab::EventType:
+            contentTypes <<  KCalCore::Event().mimeType();
+            break;
         case Kolab::TaskType:
+            contentTypes <<  KCalCore::Todo().mimeType();
+            break;
         case Kolab::JournalType:
-            contentTypes <<  KCalCore::Incidence::mimeTypes();
+            contentTypes <<  KCalCore::Journal().mimeType();
             break;
         case Kolab::ContactType:
             contentTypes << KABC::Addressee::mimeType() << KABC::ContactGroup::mimeType();
