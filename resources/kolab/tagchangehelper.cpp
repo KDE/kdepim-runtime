@@ -106,7 +106,7 @@ void TagChangeHelper::onReplaceDone(KJob *job)
     if (job->error()) {
         kWarning() << "Replace failed: " << job->errorString();
     }
-    ReplaceMessageJob *replaceJob = static_cast<ReplaceMessageJob*>(job);
+    UpdateMessageJob *replaceJob = static_cast<UpdateMessageJob*>(job);
     const qint64 newUid = replaceJob->newUid();
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     if (newUid > 0) {
