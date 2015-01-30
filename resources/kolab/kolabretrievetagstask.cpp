@@ -25,6 +25,7 @@
 #include <kimap/fetchjob.h>
 #include <imapflags.h>
 #include <kolabobject.h>
+#include "tracer.h"
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
@@ -157,6 +158,8 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
     Akonadi::Tag tag = reader.getTag();
     tag.setRemoteId(QByteArray::number(remoteUid));
     mTags << tag;
+
+    Trace() << "Extracted tag: " << tag.gid() << " remoteId: " << remoteUid << tag.remoteId();
 
     Akonadi::Item::List members;
     Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
