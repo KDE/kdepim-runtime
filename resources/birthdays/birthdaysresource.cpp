@@ -146,7 +146,6 @@ void BirthdaysResource::contactChanged( const Akonadi::Item& item )
 {
   if ( !item.hasPayload<KABC::Addressee>() )
     return;
-
   KABC::Addressee contact = item.payload<KABC::Addressee>();
 
   if ( Settings::self()->filterOnCategories() ) {
@@ -162,14 +161,24 @@ void BirthdaysResource::contactChanged( const Akonadi::Item& item )
     if ( !hasCategory )
       return;
   }
-
   Event::Ptr event = createBirthday( item );
-  if ( event )
+  if ( event ) {
     addPendingEvent( event, QString::fromLatin1( "b%1" ).arg( item.id() ) );
-
+  } else {
+    Item i( KCalCore::Event::eventMimeType() );
+    i.setRemoteId( QString::fromLatin1( "b%1" ).arg( item.id() ) );
+    mDeletedItems[ i.remoteId() ] = i;
+  }
+ 
   event = createAnniversary( item );
-  if ( event )
+  if ( event ) {
     addPendingEvent( event, QString::fromLatin1( "a%1" ).arg( item.id() ) );
+  } else {
+    Item i( KCalCore::Event::eventMimeType() );
+    i.setRemoteId( QString::fromLatin1( "a%1" ).arg( item.id() ) );
+    mDeletedItems[ i.remoteId() ] = i;
+  }
+  synchronize();
 }
 
 void BirthdaysResource::addPendingEvent( const KCalCore::Event::Ptr &event, const QString &remoteId )
@@ -179,7 +188,6 @@ void BirthdaysResource::addPendingEvent( const KCalCore::Event::Ptr &event, cons
   i.setRemoteId( remoteId );
   i.setPayload( evptr );
   mPendingItems[ remoteId ] = i;
-  synchronize();
 }
 
 
