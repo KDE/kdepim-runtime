@@ -35,6 +35,7 @@
 #include <akonadi/cachepolicy.h>
 #include <akonadi/collectionfetchjob.h>
 #include <akonadi/dbusconnectionpool.h>
+#include <akonadi/kmime/messageflags.h>
 
 #include <kmime/kmime_message.h>
 
@@ -217,6 +218,7 @@ bool MaildirResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteA
 
   Item i( item );
   i.setPayload( KMime::Message::Ptr( mail ) );
+  Akonadi::MessageFlags::copyMessageFlags(*mail, i);
   itemRetrieved( i );
   return true;
 }
@@ -836,6 +838,7 @@ void MaildirResource::fsWatchFileFetchResult( KJob* job )
   mail->parse();
 
   item.setPayload( KMime::Message::Ptr( mail ) );
+  Akonadi::MessageFlags::copyMessageFlags(*mail, item);
 
   ItemModifyJob *mjob = new ItemModifyJob( item );
   connect( mjob, SIGNAL(result(KJob*)), SLOT(fsWatchFileModifyResult(KJob*)) );

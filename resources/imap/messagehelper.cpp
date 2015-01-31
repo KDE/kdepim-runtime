@@ -59,19 +59,7 @@ Akonadi::Item MessageHelper::createItemFromMessage(KMime::Message::Ptr message,
         i.setPayload(KMime::Message::Ptr(message));
         i.setSize(size);
 
-        // update status flags
-        if (KMime::isSigned(message.get())) {
-            i.setFlag(Akonadi::MessageFlags::Signed);
-        }
-        if (KMime::isEncrypted(message.get())) {
-            i.setFlag(Akonadi::MessageFlags::Encrypted);
-        }
-        if (KMime::isInvitation(message.get())) {
-            i.setFlag(Akonadi::MessageFlags::HasInvitation);
-        }
-        if (KMime::hasAttachment(message.get())) {
-            i.setFlag(Akonadi::MessageFlags::HasAttachment);
-        }
+        Akonadi::MessageFlags::copyMessageFlags(*message, i);
 
         foreach (const QByteArray &flag, ResourceTask::toAkonadiFlags(flags)) {
             i.setFlag(flag);

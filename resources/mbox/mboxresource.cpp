@@ -28,6 +28,7 @@
 #include <akonadi/collectionmodifyjob.h>
 #include <akonadi/dbusconnectionpool.h>
 #include <akonadi/itemfetchscope.h>
+#include <akonadi/kmime/messageflags.h>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
@@ -134,6 +135,8 @@ void MboxResource::retrieveItems( const Akonadi::Collection &col )
     item.setSize( entry.messageSize() );
     item.setPayload( KMime::Message::Ptr( mail ) );
 
+    Akonadi::MessageFlags::copyMessageFlags(*mail, item);
+
     emit percent(count++ / entryListSize);
     items << item;
   }
@@ -166,6 +169,9 @@ bool MboxResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArra
 
   Item i( item );
   i.setPayload( KMime::Message::Ptr( mail ) );
+
+  Akonadi::MessageFlags::copyMessageFlags(*mail, i);
+
   itemRetrieved( i );
   return true;
 }
