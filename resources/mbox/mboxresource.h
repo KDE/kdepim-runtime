@@ -61,7 +61,7 @@ private Q_SLOTS:
     void onCollectionModify(KJob *job);
 
 private:
-    QHash<KJob*, Akonadi::Item> mCurrentItemDeletions;
+    QHash<KJob *, Akonadi::Item> mCurrentItemDeletions;
     KMBox::MBox *mMBox;
 };
 

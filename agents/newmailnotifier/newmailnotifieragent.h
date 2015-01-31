@@ -28,7 +28,7 @@
 #include <QTimer>
 #include <QStringList>
 #include <QPixmap>
-namespace Akonadi 
+namespace Akonadi
 {
 class AgentInstance;
 }

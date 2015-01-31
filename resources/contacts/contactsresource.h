@@ -63,9 +63,9 @@ protected:
     void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
     void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                           const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
+                   const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
     void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
-                                 const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
+                         const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
 
 private:
     Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory,

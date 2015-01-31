@@ -48,7 +48,7 @@ protected Q_SLOTS:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) Q_DECL_OVERRIDE;
     void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                           const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
+                   const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
     void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;

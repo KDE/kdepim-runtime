@@ -19,7 +19,6 @@
 #include "../deleteditemsattribute.h"
 #include <qtest_kde.h>
 
-
 DeleteItemsAttributeTest::DeleteItemsAttributeTest(QObject *parent)
     : QObject(parent)
 {

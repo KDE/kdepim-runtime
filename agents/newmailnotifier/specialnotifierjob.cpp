@@ -133,7 +133,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
     if (NewMailNotifierAgentSettings::showSubject()) {
         QString subject = mSubject.simplified();
-        if (subject.length()> 80) {
+        if (subject.length() > 80) {
             subject.truncate(80);
             subject += QLatin1String("...");
         }

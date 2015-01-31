@@ -21,7 +21,6 @@
 
 #include "newmailnotifieragent.h"
 
-
 #include <AkonadiCore/NewMailNotifierAttribute>
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
@@ -71,7 +70,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     mIdentityManager = new KIdentityManagement::IdentityManager(false, this);
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
-    mDefaultPixmap = QIcon::fromTheme( QLatin1String("kmail") ).pixmap( KIconLoader::SizeMedium, KIconLoader::SizeMedium );
+    mDefaultPixmap = QIcon::fromTheme(QLatin1String("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
 
     KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/NewMailNotifierAgent"),
             this, QDBusConnection::ExportAdaptors);
@@ -97,12 +96,12 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
         if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
             QString error;
             if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
-                KNotification::event( QLatin1String("text-to-speak-not-found"),
-                                      i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
-                                      mDefaultPixmap,
-                                      0,
-                                      KNotification::CloseOnTimeout,
-                                      QLatin1String("akonadi_newmailnotifier_agent"));
+                KNotification::event(QLatin1String("text-to-speak-not-found"),
+                                     i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
+                                     mDefaultPixmap,
+                                     0,
+                                     KNotification::CloseOnTimeout,
+                                     QLatin1String("akonadi_newmailnotifier_agent"));
             }
         }
     }
@@ -502,12 +501,12 @@ void NewMailNotifierAgent::slotShowNotifications()
 
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
-    KNotification::event( QLatin1String("new-email"),
-                          message,
-                          pixmap,
-                          0,
-                          KNotification::CloseOnTimeout,
-                          QLatin1String("akonadi_newmailnotifier_agent"));
+    KNotification::event(QLatin1String("new-email"),
+                         message,
+                         pixmap,
+                         0,
+                         KNotification::CloseOnTimeout,
+                         QLatin1String("akonadi_newmailnotifier_agent"));
 
     if (NewMailNotifierAgentSettings::beepOnNewMails()) {
         KNotification::beep();
@@ -542,8 +541,7 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
         }
         break;
     }
-    case Akonadi::AgentInstance::Running:
-    {
+    case Akonadi::AgentInstance::Running: {
         if (!excludeAgentType(instance)) {
             if (!mInstanceNameInProgress.contains(identifier)) {
                 mInstanceNameInProgress.append(identifier);
@@ -559,11 +557,11 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
 
 bool NewMailNotifierAgent::excludeAgentType(const Akonadi::AgentInstance &instance)
 {
-    if ( instance.type().mimeTypes().contains( KMime::Message::mimeType() ) ) {
-        const QStringList capabilities( instance.type().capabilities() );
-        if ( capabilities.contains( QLatin1String("Resource") ) &&
-             !capabilities.contains( QLatin1String("Virtual") ) &&
-             !capabilities.contains( QLatin1String("MailTransport") ) ) {
+    if (instance.type().mimeTypes().contains(KMime::Message::mimeType())) {
+        const QStringList capabilities(instance.type().capabilities());
+        if (capabilities.contains(QLatin1String("Resource")) &&
+                !capabilities.contains(QLatin1String("Virtual")) &&
+                !capabilities.contains(QLatin1String("MailTransport"))) {
             return false;
         } else {
             return true;
