@@ -582,20 +582,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
 
     Akonadi::Pop3ResourceAttribute *attr  = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Entity::AddIfMissing);
     attr->setPop3AccountName(identifier());
-    // update status flags
-    if (KMime::isSigned(message.get())) {
-        item.setFlag(Akonadi::MessageFlags::Signed);
-    }
-    if (KMime::isEncrypted(message.get())) {
-        item.setFlag(Akonadi::MessageFlags::Encrypted);
-    }
-    if (KMime::isInvitation(message.get())) {
-        item.setFlag(Akonadi::MessageFlags::HasInvitation);
-    }
-    if (KMime::hasAttachment(message.get())) {
-        item.setFlag(Akonadi::MessageFlags::HasAttachment);
-    }
-
+    Akonadi::MessageFlags::copyMessageFlags(*message, item);
     ItemCreateJob *itemCreateJob = new ItemCreateJob(item, mTargetCollection);
 
     mPendingCreateJobs.insert(itemCreateJob, messageId);

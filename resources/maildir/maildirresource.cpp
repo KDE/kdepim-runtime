@@ -35,7 +35,7 @@
 #include <cachepolicy.h>
 #include <collectionfetchjob.h>
 #include <kdbusconnectionpool.h>
-
+#include <Akonadi/KMime/MessageFlags>
 #include <kmime/kmime_message.h>
 
 #include <QDebug>
@@ -218,6 +218,7 @@ bool MaildirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteAr
 
     Item i(item);
     i.setPayload(KMime::Message::Ptr(mail));
+    Akonadi::MessageFlags::copyMessageFlags(*mail, i);
     itemRetrieved(i);
     return true;
 }
@@ -844,6 +845,7 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
     mail->parse();
 
     item.setPayload(KMime::Message::Ptr(mail));
+    Akonadi::MessageFlags::copyMessageFlags(*mail, item);
 
     ItemModifyJob *mjob = new ItemModifyJob(item);
     connect(mjob, &ItemModifyJob::result, this, &MaildirResource::fsWatchFileModifyResult);

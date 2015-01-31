@@ -42,7 +42,7 @@
 #include <kmime/kmime_message.h>
 
 #include <Akonadi/KMime/MessageParts>
-
+#include <Akonadi/KMime/MessageFlags>
 #include <AkonadiCore/cachepolicy.h>
 #include <AkonadiCore/itemfetchscope.h>
 
@@ -885,6 +885,7 @@ bool MixedMaildirStore::Private::fillItem(MBoxPtr &mbox, bool includeHeaders, bo
         messagePtr->parse();
 
         item.setPayload<KMime::Message::Ptr>(messagePtr);
+        Akonadi::MessageFlags::copyMessageFlags(*messagePtr, item);
     }
     return true;
 }
@@ -921,6 +922,7 @@ bool MixedMaildirStore::Private::fillItem(const MaildirPtr &md, bool includeHead
         messagePtr->parse();
 
         item.setPayload<KMime::Message::Ptr>(messagePtr);
+        Akonadi::MessageFlags::copyMessageFlags(*messagePtr, item);
     }
     return true;
 }

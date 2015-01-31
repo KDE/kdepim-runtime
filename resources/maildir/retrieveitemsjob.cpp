@@ -24,7 +24,7 @@
 #include <itemcreatejob.h>
 #include <collectionmodifyjob.h>
 #include <transactionsequence.h>
-
+#include <Akonadi/KMime/MessageFlags>
 #include <QDirIterator>
 #include <KMime/Message>
 
@@ -127,7 +127,7 @@ void RetrieveItemsJob::processEntry()
     }
 
     item.setPayload(KMime::Message::Ptr(msg));
-
+    Akonadi::MessageFlags::copyMessageFlags(*msg, item);
     KJob *job = 0;
     if (m_localItems.contains(fileName)) {     // modification
         item.setId(m_localItems.value(fileName).id());

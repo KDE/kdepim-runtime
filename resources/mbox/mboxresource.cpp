@@ -28,6 +28,7 @@
 #include <collectionmodifyjob.h>
 #include <kdbusconnectionpool.h>
 #include <itemfetchscope.h>
+#include <Akonadi/KMime/MessageFlags>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <KWindowSystem>
@@ -134,7 +135,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
         item.setMimeType(QLatin1String("message/rfc822"));
         item.setSize(entry.messageSize());
         item.setPayload(KMime::Message::Ptr(mail));
-
+        Akonadi::MessageFlags::copyMessageFlags(*mail, item);
         emit percent(count++ / entryListSize);
         items << item;
     }
@@ -167,6 +168,7 @@ bool MboxResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray
 
     Item i(item);
     i.setPayload(KMime::Message::Ptr(mail));
+    Akonadi::MessageFlags::copyMessageFlags(*mail, i);
     itemRetrieved(i);
     return true;
 }
