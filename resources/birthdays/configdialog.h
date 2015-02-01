@@ -32,12 +32,14 @@ class ConfigDialog : public KDialog
   Q_OBJECT
   public:
     ConfigDialog( QWidget *parent = 0 );
-    ~ConfigDialog() {};
+    ~ConfigDialog();
 
   private slots:
     void save();
 
   private:
+    void readConfig();
+    void writeConfig();
     Ui::ConfigDialog ui;
     KConfigDialogManager* mManager;
 };

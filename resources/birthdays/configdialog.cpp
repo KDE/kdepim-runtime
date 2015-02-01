@@ -33,6 +33,12 @@ ConfigDialog::ConfigDialog(QWidget* parent)
   ui.kcfg_AlarmDays->setSuffix( ki18np( " day", " days" ) );
 
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  readConfig();
+}
+
+ConfigDialog::~ConfigDialog()
+{
+    writeConfig();
 }
 
 void ConfigDialog::save()
@@ -41,3 +47,18 @@ void ConfigDialog::save()
   Settings::self()->writeConfig();
 }
 
+void ConfigDialog::readConfig()
+{
+    KConfigGroup group( KGlobal::config(), "ConfigDialog" );
+    const QSize size = group.readEntry( "Size", QSize(600, 400) );
+    if ( size.isValid() ) {
+        resize( size );
+    }
+}
+
+void ConfigDialog::writeConfig()
+{
+    KConfigGroup group( KGlobal::config(), "ConfigDialog" );
+    group.writeEntry( "Size", size() );
+    group.sync();
+}
