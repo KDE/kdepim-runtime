@@ -69,7 +69,7 @@
        </widget>
       </item>
       <item>
-       <widget class="Akonadi::TagSelectWidget" name="kcfg_FilterCategories" >
+       <widget class="Akonadi::TagSelectWidget" name="FilterCategories" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -142,7 +142,7 @@
   <connection>
    <sender>kcfg_FilterOnCategories</sender>
    <signal>toggled(bool)</signal>
-   <receiver>kcfg_FilterCategories</receiver>
+   <receiver>FilterCategories</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >

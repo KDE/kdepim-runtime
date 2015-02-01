@@ -38,6 +38,7 @@ class ConfigDialog : public KDialog
     void save();
 
   private:
+    void loadTags();
     void readConfig();
     void writeConfig();
     Ui::ConfigDialog ui;

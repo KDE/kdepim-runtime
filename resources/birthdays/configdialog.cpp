@@ -23,6 +23,8 @@
 
 #include <kconfigdialogmanager.h>
 
+#include <Akonadi/Tag>
+
 ConfigDialog::ConfigDialog(QWidget* parent)
   : KDialog( parent )
 {
@@ -33,6 +35,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
   ui.kcfg_AlarmDays->setSuffix( ki18np( " day", " days" ) );
 
   connect( this, SIGNAL(okClicked()), SLOT(save()) );
+  loadTags();
   readConfig();
 }
 
@@ -41,9 +44,26 @@ ConfigDialog::~ConfigDialog()
     writeConfig();
 }
 
+void ConfigDialog::loadTags()
+{
+    Akonadi::Tag::List tags;
+
+    const QStringList categories = Settings::self()->filterCategories();
+    foreach (const QString &category, categories) {
+        tags.append(Akonadi::Tag::fromUrl(category));
+    }
+    ui.FilterCategories->setSelection(tags);
+}
+
 void ConfigDialog::save()
 {
   mManager->updateSettings();
+
+  QStringList list;
+  Q_FOREACH (const Akonadi::Tag &tag, ui.FilterCategories->selection()) {
+      list << tag.name();
+  }
+  Settings::self()->setFilterCategories(list);
   Settings::self()->writeConfig();
 }
 
