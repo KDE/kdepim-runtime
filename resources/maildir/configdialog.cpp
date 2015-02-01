@@ -64,6 +64,28 @@ ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier,
     connect(ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()));
     ui.kcfg_Path->lineEdit()->setFocus();
     checkPath();
+    readConfig();
+}
+
+ConfigDialog::~ConfigDialog()
+{
+    writeConfig();
+}
+
+void ConfigDialog::readConfig()
+{
+    KConfigGroup group( KSharedConfig::openConfig(), "ConfigDialog" );
+    const QSize size = group.readEntry( "Size", QSize(600, 400) );
+    if ( size.isValid() ) {
+        resize( size );
+    }
+}
+
+void ConfigDialog::writeConfig()
+{
+    KConfigGroup group( KSharedConfig::openConfig(), "ConfigDialog" );
+    group.writeEntry( "Size", size() );
+    group.sync();
 }
 
 void ConfigDialog::checkPath()

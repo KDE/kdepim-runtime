@@ -35,12 +35,15 @@ class ConfigDialog : public QDialog
     Q_OBJECT
 public:
     explicit ConfigDialog(Akonadi_Maildir_Resource::MaildirSettings *settings, const QString &identifier, QWidget *parent = Q_NULLPTR);
+    ~ConfigDialog();
 
 private slots:
     void checkPath();
     void save();
 
 private:
+    void readConfig();
+    void writeConfig();
     Ui::ConfigDialog ui;
     KConfigDialogManager *mManager;
     FolderArchiveSettingPage *mFolderArchiveSettingPage;
