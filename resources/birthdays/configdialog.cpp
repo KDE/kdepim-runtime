@@ -60,8 +60,9 @@ void ConfigDialog::save()
   mManager->updateSettings();
 
   QStringList list;
-  Q_FOREACH (const Akonadi::Tag &tag, ui.FilterCategories->selection()) {
-      list << tag.name();
+  const Akonadi::Tag::List tags = ui.FilterCategories->selection();
+  foreach (const Akonadi::Tag &tag, tags) {
+      list.append(tag.url().url());
   }
   Settings::self()->setFilterCategories(list);
   Settings::self()->writeConfig();
