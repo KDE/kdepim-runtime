@@ -32,6 +32,7 @@ target_link_libraries(akonadi_birthdays_resource
   KF5::Codecs
   KF5::AkonadiAgentBase
   KF5::Contacts
+  KF5::AkonadiWidgets
 )
 
 install( TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )

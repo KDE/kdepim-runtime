@@ -69,12 +69,9 @@
        </widget>
       </item>
       <item>
-       <widget class="KEditListWidget" name="kcfg_FilterCategories" >
+       <widget class="Akonadi::TagSelectWidget" name="FilterCategories" >
         <property name="enabled" >
          <bool>false</bool>
-        </property>
-        <property name="buttons" >
-         <set>KEditListWidget::Add|KEditListWidget::Remove</set>
         </property>
        </widget>
       </item>
@@ -98,9 +95,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KEditListWidget</class>
-   <extends>QGroupBox</extends>
-   <header>keditlistwidget.h</header>
+   <class>Akonadi::TagSelectWidget</class>
+   <extends>QWidget</extends>
+   <header>AkonadiWidgets/tagselectwidget.h</header>
   </customwidget>
   <customwidget>
    <class>KPluralHandlingSpinBox</class>
@@ -145,7 +142,7 @@
   <connection>
    <sender>kcfg_FilterOnCategories</sender>
    <signal>toggled(bool)</signal>
-   <receiver>kcfg_FilterCategories</receiver>
+   <receiver>FilterCategories</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >

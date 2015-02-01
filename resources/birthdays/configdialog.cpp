@@ -20,7 +20,7 @@
 
 #include "configdialog.h"
 #include "settings.h"
-
+#include <AkonadiCore/Tag>
 #include <kconfigdialogmanager.h>
 #include <QIcon>
 #include <KLocalizedString>
@@ -51,11 +51,51 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));
 
     connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
+    loadTags();
+    readConfig();
+}
+
+ConfigDialog::~ConfigDialog()
+{
+    writeConfig();
+}
+
+void ConfigDialog::loadTags()
+{
+    Akonadi::Tag::List tags;
+
+    const QStringList categories = Settings::self()->filterCategories();
+    foreach (const QString &category, categories) {
+        tags.append(Akonadi::Tag::fromUrl(QUrl(category)));
+    }
+    ui.FilterCategories->setSelection(tags);
 }
 
 void ConfigDialog::save()
 {
-    mManager->updateSettings();
-    Settings::self()->save();
+  mManager->updateSettings();
+
+  QStringList list;
+  Q_FOREACH (const Akonadi::Tag &tag, ui.FilterCategories->selection()) {
+      list << tag.name();
+  }
+  Settings::self()->setFilterCategories(list);
+  Settings::self()->save();
+}
+
+void ConfigDialog::readConfig()
+{
+    KConfigGroup group( KSharedConfig::openConfig(), "ConfigDialog" );
+    const QSize size = group.readEntry( "Size", QSize(600, 400) );
+    if ( size.isValid() ) {
+        resize( size );
+    }
+}
+
+void ConfigDialog::writeConfig()
+{
+    KConfigGroup group( KSharedConfig::openConfig(), "ConfigDialog" );
+    group.writeEntry( "Size", size() );
+    group.sync();
 }
 

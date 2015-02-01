@@ -32,12 +32,15 @@ class ConfigDialog : public QDialog
     Q_OBJECT
 public:
     ConfigDialog(QWidget *parent = Q_NULLPTR);
-    ~ConfigDialog() {}
+    ~ConfigDialog();
 
 private slots:
     void save();
 
 private:
+    void loadTags();
+    void readConfig();
+    void writeConfig();
     Ui::ConfigDialog ui;
     KConfigDialogManager *mManager;
 };
