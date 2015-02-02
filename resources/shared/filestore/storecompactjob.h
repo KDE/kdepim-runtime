@@ -40,11 +40,11 @@ class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
     Q_OBJECT
 
 public:
-    explicit StoreCompactJob(AbstractJobSession *session = 0);
+    explicit StoreCompactJob(AbstractJobSession *session = Q_NULLPTR);
 
     virtual ~StoreCompactJob();
 
-    virtual bool accept(Visitor *visitor);
+    bool accept(Visitor *visitor) Q_DECL_OVERRIDE;
 
     Item::List changedItems() const;
 

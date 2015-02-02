@@ -24,7 +24,7 @@ class DeleteItemsAttributeTest : public QObject
 {
     Q_OBJECT
 public:
-    explicit DeleteItemsAttributeTest(QObject *parent = 0);
+    explicit DeleteItemsAttributeTest(QObject *parent = Q_NULLPTR);
     ~DeleteItemsAttributeTest();
 
 private Q_SLOTS:

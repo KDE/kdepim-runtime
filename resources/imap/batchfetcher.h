@@ -41,7 +41,7 @@ public:
                  int batchSize,
                  KIMAP::Session *session);
     virtual ~BatchFetcher();
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
     void fetchNextBatch();
     void setUidBased(bool);
     void setSearchUids(const KIMAP::ImapInterval &);

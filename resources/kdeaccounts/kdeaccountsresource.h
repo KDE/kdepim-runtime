@@ -52,9 +52,9 @@ protected:
     bool readFromFile(const QString &fileName);
     bool writeToFile(const QString &fileName);
 
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    virtual void itemRemoved(const Akonadi::Item &item);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
 private:
     typedef QMap<QString, KContacts::Addressee> ContactsMap;

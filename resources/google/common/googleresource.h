@@ -82,9 +82,9 @@ protected Q_SLOTS:
 #endif // HAVE_ACCOUNTS
 
 protected:
-    bool configureKAccounts(int accountId, KGAPI2::Job *restartJob = 0);
+    bool configureKAccounts(int accountId, KGAPI2::Job *restartJob = Q_NULLPTR);
     bool configureKGAPIAccount(const KGAPI2::AccountPtr &account);
-    void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = 0);
+    void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = Q_NULLPTR);
 
     template <typename T>
     bool canPerformTask(const Akonadi::Item &item, const QString &mimeType = QString())

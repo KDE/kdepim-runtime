@@ -40,7 +40,7 @@ class AKONADI_FILESTORE_EXPORT CollectionDeleteJob : public Job
     Q_OBJECT
 
 public:
-    explicit CollectionDeleteJob(const Collection &collection, AbstractJobSession *session = 0);
+    explicit CollectionDeleteJob(const Collection &collection, AbstractJobSession *session = Q_NULLPTR);
 
     virtual ~CollectionDeleteJob();
 

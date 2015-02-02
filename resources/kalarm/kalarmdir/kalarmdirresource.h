@@ -82,7 +82,7 @@ private:
     void    setCompatibility(bool writeAttr = true);
     void    removeEvent(const QString &eventId, bool deleteFile);
     void    addEventFile(const KAEvent &, const QString &file);
-    QString removeEventFile(const QString &eventId, const QString &file, KAEvent * = 0);
+    QString removeEventFile(const QString &eventId, const QString &file, KAEvent * = Q_NULLPTR);
     bool    createItemAndIndex(const QString &path, const QString &file);
     bool    createItem(const KAEvent &);
     bool    modifyItem(const KAEvent &);

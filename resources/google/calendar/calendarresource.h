@@ -31,8 +31,8 @@ public:
     ~CalendarResource();
 
 public:
-    virtual GoogleSettings *settings() const;
-    virtual QList< QUrl > scopes() const;
+    GoogleSettings *settings() const Q_DECL_OVERRIDE;
+    QList< QUrl > scopes() const Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;

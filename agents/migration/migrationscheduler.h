@@ -106,7 +106,7 @@ class MigrationScheduler : public QObject
 {
     Q_OBJECT
 public:
-    explicit MigrationScheduler(KJobTrackerInterface *jobTracker = 0, QObject *parent = Q_NULLPTR);
+    explicit MigrationScheduler(KJobTrackerInterface *jobTracker = Q_NULLPTR, QObject *parent = Q_NULLPTR);
     virtual ~MigrationScheduler();
 
     void addMigrator(const QSharedPointer<MigratorBase> &migrator);

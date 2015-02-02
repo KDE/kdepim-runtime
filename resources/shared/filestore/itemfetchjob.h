@@ -42,9 +42,9 @@ class AKONADI_FILESTORE_EXPORT ItemFetchJob : public Job
     Q_OBJECT
 
 public:
-    explicit ItemFetchJob(const Collection &collection, AbstractJobSession *session = 0);
+    explicit ItemFetchJob(const Collection &collection, AbstractJobSession *session = Q_NULLPTR);
 
-    explicit ItemFetchJob(const Item &item, AbstractJobSession *session = 0);
+    explicit ItemFetchJob(const Item &item, AbstractJobSession *session = Q_NULLPTR);
 
     virtual ~ItemFetchJob();
 
