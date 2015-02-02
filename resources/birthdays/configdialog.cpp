@@ -46,25 +46,15 @@ ConfigDialog::~ConfigDialog()
 
 void ConfigDialog::loadTags()
 {
-    Akonadi::Tag::List tags;
-
     const QStringList categories = Settings::self()->filterCategories();
-    foreach (const QString &category, categories) {
-        tags.append(Akonadi::Tag::fromUrl(category));
-    }
-    ui.FilterCategories->setSelection(tags);
+    ui.FilterCategories->setSelectionFromStringList(categories);
 }
 
 void ConfigDialog::save()
 {
   mManager->updateSettings();
 
-  QStringList list;
-  const Akonadi::Tag::List tags = ui.FilterCategories->selection();
-  foreach (const Akonadi::Tag &tag, tags) {
-      list.append(tag.url().url());
-  }
-  Settings::self()->setFilterCategories(list);
+  Settings::self()->setFilterCategories(ui.FilterCategories->tagToStringList());
   Settings::self()->writeConfig();
 }
 
