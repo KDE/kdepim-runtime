@@ -30,10 +30,10 @@ class NntpCollectionAttribute : public Akonadi::Attribute
 {
 public:
     NntpCollectionAttribute();
-    QByteArray type() const;
-    NntpCollectionAttribute *clone() const;
-    QByteArray serialized() const;
-    void deserialize(const QByteArray &data);
+    QByteArray type() const Q_DECL_OVERRIDE;
+    NntpCollectionAttribute *clone() const Q_DECL_OVERRIDE;
+    QByteArray serialized() const Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
     /**
       Returns the serial number of the last fetched article.

@@ -25,21 +25,21 @@ class CaldavProtocol : public DavMultigetProtocol
 {
 public:
     CaldavProtocol();
-    virtual bool supportsPrincipals() const;
-    virtual bool useReport() const;
-    virtual bool useMultiget() const;
-    virtual QString principalHomeSet() const;
-    virtual QString principalHomeSetNS() const;
-    virtual QDomDocument collectionsQuery() const;
-    virtual QString collectionsXQuery() const;
-    virtual QList<QDomDocument> itemsQueries() const;
-    virtual QString mimeTypeForQuery(int index) const;
-    virtual QDomDocument itemsReportQuery(const QStringList &urls) const;
-    virtual QString responseNamespace() const;
-    virtual QString dataTagName() const;
+    bool supportsPrincipals() const Q_DECL_OVERRIDE;
+    bool useReport() const Q_DECL_OVERRIDE;
+    bool useMultiget() const Q_DECL_OVERRIDE;
+    QString principalHomeSet() const Q_DECL_OVERRIDE;
+    QString principalHomeSetNS() const Q_DECL_OVERRIDE;
+    QDomDocument collectionsQuery() const Q_DECL_OVERRIDE;
+    QString collectionsXQuery() const Q_DECL_OVERRIDE;
+    QList<QDomDocument> itemsQueries() const Q_DECL_OVERRIDE;
+    QString mimeTypeForQuery(int index) const Q_DECL_OVERRIDE;
+    QDomDocument itemsReportQuery(const QStringList &urls) const Q_DECL_OVERRIDE;
+    QString responseNamespace() const Q_DECL_OVERRIDE;
+    QString dataTagName() const Q_DECL_OVERRIDE;
 
-    virtual DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const;
-    virtual QString contactsMimeType() const;
+    DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const Q_DECL_OVERRIDE;
+    QString contactsMimeType() const Q_DECL_OVERRIDE;
 
 private:
     QList<QDomDocument> mItemsQueries;

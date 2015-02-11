@@ -107,7 +107,7 @@ void Pop3Test::initTestCase()
     mFakeServerThread = new FakeServerThread(this);
     mFakeServerThread->start();
     QTest::qWait(100);
-    QVERIFY(mFakeServerThread->server() != 0);
+    QVERIFY(mFakeServerThread->server() != Q_NULLPTR);
 
     //
     // Configure the pop3 resource
@@ -572,7 +572,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     foreach (int seenTime, mPOP3SettingsInterface->seenUidTimeList().value()) {
         // Those message were just downloaded from the fake server, so they are at maximum
         // 10 minutes old (for slooooow running tests)
-        QVERIFY(seenTime >= time(0) - 10 * 60);
+        QVERIFY(seenTime >= time(Q_NULLPTR) - 10 * 60);
     }
 
     //
@@ -686,7 +686,7 @@ void Pop3Test::testTimeBasedLeaveRule()
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() ==
             mPOP3SettingsInterface->seenUidList().value().size());
     foreach (int seenTime, mPOP3SettingsInterface->seenUidTimeList().value()) {
-        QVERIFY(seenTime >= time(0) - 10 * 60);
+        QVERIFY(seenTime >= time(Q_NULLPTR) - 10 * 60);
     }
 
     mPOP3SettingsInterface->setLeaveOnServer(false);

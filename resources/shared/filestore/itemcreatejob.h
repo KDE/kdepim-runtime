@@ -48,7 +48,7 @@ public:
 
     Item item() const;
 
-    virtual bool accept(Visitor *visitor);
+    bool accept(Visitor *visitor) Q_DECL_OVERRIDE;
 
 private:
     void handleItemCreated(const Akonadi::Item &item);

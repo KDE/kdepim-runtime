@@ -40,9 +40,9 @@ using namespace Akonadi;
 
 SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windowId) :
     QDialog(),
-    mManager(0),
-    mStatJob(0),
-    mAppendedWidget(0),
+    mManager(Q_NULLPTR),
+    mStatJob(Q_NULLPTR),
+    mAppendedWidget(Q_NULLPTR),
     mDirUrlChecked(false),
     mMonitorEnabled(true),
     mLocalFileOnly(false)
@@ -228,7 +228,7 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult(KJob *job)
 #endif
         mOkButton->setEnabled(false);
         mDirUrlChecked = false;
-        mStatJob = 0;
+        mStatJob = Q_NULLPTR;
         return;
     }
 
@@ -238,7 +238,7 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult(KJob *job)
     mOkButton->setEnabled(true);
 
     mDirUrlChecked = false;
-    mStatJob = 0;
+    mStatJob = Q_NULLPTR;
 }
 
 SingleFileValidatingWidget::SingleFileValidatingWidget(QWidget *parent)

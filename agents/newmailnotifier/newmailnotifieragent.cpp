@@ -99,7 +99,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
                 KNotification::event(QLatin1String("text-to-speak-not-found"),
                                      i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
                                      mDefaultPixmap,
-                                     0,
+                                     Q_NULLPTR,
                                      KNotification::CloseOnTimeout,
                                      QLatin1String("akonadi_newmailnotifier_agent"));
             }
@@ -504,7 +504,7 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
     KNotification::event(QLatin1String("new-email"),
                          message,
                          pixmap,
-                         0,
+                         Q_NULLPTR,
                          KNotification::CloseOnTimeout,
                          QLatin1String("akonadi_newmailnotifier_agent"));
 

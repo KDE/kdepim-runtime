@@ -65,10 +65,10 @@ protected Q_SLOTS:
 
     void slotCreateJobFinished(KGAPI2::Job *job);
 
-    virtual GoogleSettings *settings() const;
-    virtual int runConfigurationDialog(WId windowId);
-    virtual void updateResourceName();
-    virtual QList< QUrl > scopes() const;
+    GoogleSettings *settings() const Q_DECL_OVERRIDE;
+    int runConfigurationDialog(WId windowId) Q_DECL_OVERRIDE;
+    void updateResourceName() Q_DECL_OVERRIDE;
+    QList< QUrl > scopes() const Q_DECL_OVERRIDE;
 
 private:
 

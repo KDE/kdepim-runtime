@@ -60,14 +60,14 @@ class MailDispatcherAgent::Private
 public:
     Private(MailDispatcherAgent *parent)
         : q(parent),
-          queue(0),
-          currentJob(0),
+          queue(Q_NULLPTR),
+          currentJob(Q_NULLPTR),
           aborting(false),
           sendingInProgress(false),
           sentAnything(false),
           errorOccurred(false),
           sentItemsSize(0),
-          sentActionHandler(0)
+          sentActionHandler(Q_NULLPTR)
     {
     }
 
@@ -224,7 +224,7 @@ MailDispatcherAgent::~MailDispatcherAgent()
 void MailDispatcherAgent::configure(WId windowId)
 {
     Q_UNUSED(windowId);
-    KNotifyConfigWidget::configure(0);
+    KNotifyConfigWidget::configure(Q_NULLPTR);
 }
 
 void MailDispatcherAgent::doSetOnline(bool online)
@@ -314,7 +314,7 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
     Q_ASSERT(sendingInProgress);
     Q_ASSERT(job == currentJob);
     currentJob->disconnect(q);
-    currentJob = 0;
+    currentJob = Q_NULLPTR;
 
     Q_ASSERT(currentItem.isValid());
     sentItemsSize += currentItem.size();

@@ -98,9 +98,9 @@ using namespace Akonadi;
 ImapResourceBase::ImapResourceBase(const QString &id)
     : ResourceBase(id),
       m_pool(new SessionPool(2, this)),
-      mSubscriptions(0),
-      m_idle(0),
-      m_settings(0)
+      mSubscriptions(Q_NULLPTR),
+      m_idle(Q_NULLPTR),
+      m_settings(Q_NULLPTR)
 {
     QTimer::singleShot(0, this, SLOT(updateResourceName()));
 
@@ -174,7 +174,7 @@ ImapResourceBase::~ImapResourceBase()
 
     if (m_idle) {
         delete m_idle;
-        m_idle = 0;
+        m_idle = Q_NULLPTR;
     }
 
     Q_FOREACH (ResourceTask *task, m_taskList) {
@@ -265,7 +265,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
         return -1;
     }
 
-    mSubscriptions = new SubscriptionDialog(0, SubscriptionDialog::AllowToEnableSubscription);
+    mSubscriptions = new SubscriptionDialog(Q_NULLPTR, SubscriptionDialog::AllowToEnableSubscription);
     if (windowId) {
 #ifndef Q_OS_WIN
         KWindowSystem::setMainWindow(mSubscriptions, windowId);
@@ -343,7 +343,7 @@ ResourceStateInterface::Ptr ImapResourceBase::createResourceState(const TaskArgu
 
 Settings *ImapResourceBase::settings() const
 {
-    if (m_settings == 0) {
+    if (m_settings == Q_NULLPTR) {
         m_settings = new Settings;
     }
 
@@ -533,7 +533,7 @@ void ImapResourceBase::doSetOnline(bool online)
         if (m_idle) {
             m_idle->stop();
             delete m_idle;
-            m_idle = 0;
+            m_idle = Q_NULLPTR;
         }
         settings()->clearCachedPassword();
     } else if (online && !m_pool->isConnected()) {
@@ -583,7 +583,7 @@ void ImapResourceBase::startIdleIfNeeded()
 void ImapResourceBase::startIdle()
 {
     delete m_idle;
-    m_idle = 0;
+    m_idle = Q_NULLPTR;
 
     if (!m_pool->serverCapabilities().contains(QLatin1String("IDLE"))) {
         return;

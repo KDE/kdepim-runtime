@@ -180,7 +180,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QMo
             mCheckProxy->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
 
         Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
-        Akonadi::CollectionModifyJob *modifyJob = 0;
+        Akonadi::CollectionModifyJob *modifyJob = Q_NULLPTR;
         const bool selected = (mCheckProxy->data(child, Qt::CheckStateRole).value<int>() != 0);
         if (selected && attr && attr->ignoreNewMail()) {
             collection.removeAttribute<Akonadi::NewMailNotifierAttribute>();

@@ -46,7 +46,7 @@ public:
 
     void clearCachedPassword();
 
-    void cleanup();
+    void cleanup() Q_DECL_OVERRIDE;
 
 public Q_SLOTS:
     void configure(WId windowId) Q_DECL_OVERRIDE;

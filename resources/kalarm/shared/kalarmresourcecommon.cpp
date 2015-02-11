@@ -49,7 +49,7 @@ public:
 private slots:
     void modifyCollectionJobDone(KJob *);
 };
-Private *Private::mInstance = 0;
+Private *Private::mInstance = Q_NULLPTR;
 
 namespace KAlarmResourceCommon
 {

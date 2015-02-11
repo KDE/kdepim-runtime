@@ -90,8 +90,8 @@ protected slots:
     virtual void slotSlaveResult(KJob *job);
 
 protected:
-    virtual QString errorString() const;
-    virtual bool doKill();
+    QString errorString() const Q_DECL_OVERRIDE;
+    bool doKill() Q_DECL_OVERRIDE;
     void startJob(const QString &path);
     virtual void connectJob();
 
@@ -107,13 +107,13 @@ public:
     void start() Q_DECL_OVERRIDE;
 
 protected:
-    virtual QString errorString() const;
+    QString errorString() const Q_DECL_OVERRIDE;
 
 private slots:
     void slaveConnected(KIO::Slave *slave);
 
 private:
-    virtual void slaveError(int errorCode, const QString &errorMessage);
+    void slaveError(int errorCode, const QString &errorMessage) Q_DECL_OVERRIDE;
 
     QString mErrorString;
 };
@@ -124,10 +124,10 @@ class ListJob : public SlaveBaseJob
 public:
     ListJob(POPSession *popSession);
     QMap<int, int> idList() const;
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
 private:
-    virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
+    void slotSlaveData(KIO::Job *job, const QByteArray &data) Q_DECL_OVERRIDE;
 
 private:
     QMap<int, int> mIdList;
@@ -140,10 +140,10 @@ public:
     UIDListJob(POPSession *popSession);
     QMap<int, QString> uidList() const;
     QMap<QString, int> idList() const;
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
 private:
-    virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
+    void slotSlaveData(KIO::Job *job, const QByteArray &data) Q_DECL_OVERRIDE;
 
     QMap<int, QString> mUidList;
     QMap<QString, int> mIdList;
@@ -189,8 +189,8 @@ signals:
 
 private:
 
-    virtual void connectJob();
-    virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
+    void connectJob() Q_DECL_OVERRIDE;
+    void slotSlaveData(KIO::Job *job, const QByteArray &data) Q_DECL_OVERRIDE;
 
     QList<int> mIdsPendingDownload;
     QByteArray mCurrentMessage;

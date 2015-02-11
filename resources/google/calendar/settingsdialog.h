@@ -39,7 +39,7 @@ private Q_SLOTS:
     void slotTaskListsRetrieved(KGAPI2::Job *job);
     void slotCalendarsRetrieved(KGAPI2::Job *job);
 
-    void saveSettings();
+    void saveSettings() Q_DECL_OVERRIDE;
 
 private:
     QGroupBox *m_calendarsBox;

@@ -47,13 +47,13 @@ public:
     QString remoteRevision() const;
 
 public: /* reimpl */
-    QByteArray type() const;
+    QByteArray type() const Q_DECL_OVERRIDE;
 
-    EntityCompactChangeAttribute *clone() const;
+    EntityCompactChangeAttribute *clone() const Q_DECL_OVERRIDE;
 
-    QByteArray serialized() const;
+    QByteArray serialized() const Q_DECL_OVERRIDE;
 
-    void deserialize(const QByteArray &data);
+    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
 
 private:
     //@cond PRIVATE

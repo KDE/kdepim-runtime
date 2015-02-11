@@ -48,13 +48,13 @@ protected:
     void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
     // From SingleFileResourceBase
-    virtual void handleHashChange();
-    virtual bool readFromFile(const QString &fileName);
-    virtual bool writeToFile(const QString &fileName);
+    void handleHashChange() Q_DECL_OVERRIDE;
+    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
+    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    virtual void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg);
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onCollectionFetch(KJob *job);

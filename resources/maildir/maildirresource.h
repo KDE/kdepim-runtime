@@ -55,7 +55,7 @@ protected Q_SLOTS:
 protected:
     virtual QString itemMimeType() const;
 
-    virtual void aboutToQuit();
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;

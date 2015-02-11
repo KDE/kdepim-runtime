@@ -40,7 +40,7 @@ class AbstractJobSession : public QObject
     Q_OBJECT
 
 public:
-    explicit AbstractJobSession(QObject *parent = 0);
+    explicit AbstractJobSession(QObject *parent = Q_NULLPTR);
 
     virtual ~AbstractJobSession();
 

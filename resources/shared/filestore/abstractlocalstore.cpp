@@ -51,73 +51,73 @@ public:
     }
 
 public: // Job::Visitor interface implementation
-    bool visit(FileStore::Job *job)
+    bool visit(FileStore::Job *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionCreateJob *job)
+    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job)
+    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job)
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job)
+    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job)
+    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemCreateJob *job)
+    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemDeleteJob *job)
+    bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemFetchJob *job)
+    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemModifyJob *job)
+    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemMoveJob *job)
+    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::StoreCompactJob *job)
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE
     {
         Q_UNUSED(job);
         return false ;
@@ -143,7 +143,7 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::CollectionFetchJob *job)
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE
     {
         if (job->type() == FileStore::CollectionFetchJob::Base &&
                 job->collection().remoteId() == mTopLevelCollection.remoteId()) {
@@ -174,7 +174,7 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::CollectionCreateJob *job)
+    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
@@ -186,7 +186,7 @@ public:
         return true;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job)
+    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
@@ -198,13 +198,13 @@ public:
         return true;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job)
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE
     {
         mSession->notifyCollectionsReceived(job, mCollections);
         return true;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job)
+    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
@@ -216,7 +216,7 @@ public:
         return true;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job)
+    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
@@ -228,7 +228,7 @@ public:
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job)
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE
     {
         mSession->notifyCollectionsChanged(job, mCollections);
         return true;
@@ -259,7 +259,7 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::ItemCreateJob *job)
+    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE
     {
         Q_ASSERT(!mItems.isEmpty());
         if (mItems.count() > 1) {
@@ -271,13 +271,13 @@ public:
         return true;
     }
 
-    bool visit(FileStore::ItemFetchJob *job)
+    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE
     {
         mSession->notifyItemsReceived(job, mItems);
         return true;
     }
 
-    bool visit(FileStore::ItemModifyJob *job)
+    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE
     {
         Q_ASSERT(!mItems.isEmpty());
         if (mItems.count() > 1) {
@@ -289,7 +289,7 @@ public:
         return true;
     }
 
-    bool visit(FileStore::ItemMoveJob *job)
+    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE
     {
         Q_ASSERT(!mItems.isEmpty());
         if (mItems.count() > 1) {
@@ -301,7 +301,7 @@ public:
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job)
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE
     {
         mSession->notifyItemsChanged(job, mItems);
         return true;
@@ -317,7 +317,7 @@ class FileStore::AbstractLocalStore::Private
 
 public:
     explicit Private(FileStore::AbstractLocalStore *parent)
-        : q(parent), mSession(new FileStore::FiFoQueueJobSession(q)), mCurrentJob(0),
+        : q(parent), mSession(new FileStore::FiFoQueueJobSession(q)), mCurrentJob(Q_NULLPTR),
           mTopLevelCollectionFetcher(mSession), mCollectionsProcessedNotifier(mSession),
           mItemsProcessedNotifier(mSession)
     {
@@ -349,7 +349,7 @@ void FileStore::AbstractLocalStore::Private::processJobs(const QList<FileStore::
             }
         }
         mSession->emitResult(job);
-        mCurrentJob = 0;
+        mCurrentJob = Q_NULLPTR;
     }
 }
 
@@ -383,7 +383,7 @@ void FileStore::AbstractLocalStore::setPath(const QString &path)
     collection.setName(d->mPathFileInfo.fileName());
 
     EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>();
-    if (attribute != 0) {
+    if (attribute != Q_NULLPTR) {
         attribute->setDisplayName(d->mPathFileInfo.fileName());
     }
 

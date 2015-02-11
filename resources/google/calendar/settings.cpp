@@ -25,14 +25,14 @@
 class SettingsHelper
 {
 public:
-    SettingsHelper() : q(0)
+    SettingsHelper() : q(Q_NULLPTR)
     {
     }
 
     ~SettingsHelper()
     {
         delete q;
-        q = 0;
+        q = Q_NULLPTR;
     }
 
     Settings *q;

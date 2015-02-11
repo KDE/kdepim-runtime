@@ -305,7 +305,7 @@ void MBoxContext::readIndexData()
     Q_FOREACH (const KMBox::MBoxEntry &entry, entries) {
         const quint64 indexOffset = entry.messageOffset() + entry.separatorSize();
         const KMIndexDataPtr data = indexReader.dataByOffset(indexOffset);
-        if (data != 0) {
+        if (data != Q_NULLPTR) {
             mIndexData.insert(entry.messageOffset(), data);
         }
     }
@@ -488,7 +488,7 @@ void MaildirContext::readIndexData()
     const QStringList entries = mMaildir.entryList();
     Q_FOREACH (const QString &entry, entries) {
         const KMIndexDataPtr data = indexReader.dataByFileName(entry);
-        if (data != 0) {
+        if (data != Q_NULLPTR) {
             mIndexData.insert(entry, data);
         }
     }
@@ -530,18 +530,18 @@ public:
     void updateContextHashes(const QString &oldPath, const QString &newPath);
 
 public: // visitor interface implementation
-    bool visit(FileStore::Job *job);
-    bool visit(FileStore::CollectionCreateJob *job);
-    bool visit(FileStore::CollectionDeleteJob *job);
-    bool visit(FileStore::CollectionFetchJob *job);
-    bool visit(FileStore::CollectionModifyJob *job);
-    bool visit(FileStore::CollectionMoveJob *job);
-    bool visit(FileStore::ItemCreateJob *job);
-    bool visit(FileStore::ItemDeleteJob *job);
-    bool visit(FileStore::ItemFetchJob *job);
-    bool visit(FileStore::ItemModifyJob *job);
-    bool visit(FileStore::ItemMoveJob *job);
-    bool visit(FileStore::StoreCompactJob *job);
+    bool visit(FileStore::Job *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE;
 
 public:
     typedef QHash<QString, MBoxPtr> MBoxHash;
@@ -761,7 +761,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mb
 
         if (mbox->hasIndexData()) {
             const KMIndexDataPtr indexData = mbox->indexData(entry.messageOffset());
-            if (indexData != 0 && !indexData->isEmpty()) {
+            if (indexData != Q_NULLPTR && !indexData->isEmpty()) {
                 item.setFlags(indexData->status().statusFlags());
 
                 quint64 uid = indexData->uid();
@@ -776,7 +776,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mb
                                                       << tagList.count() << "tags:" << tagList;
                     tagListHash.insert(item.remoteId(), tagList);
                 }
-            } else if (indexData == 0) {
+            } else if (indexData == Q_NULLPTR) {
                 Akonadi::MessageStatus status;
                 status.setDeleted(true),
                                   item.setFlags(status.statusFlags());
@@ -820,7 +820,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MaildirPtr 
 
         if (md->hasIndexData()) {
             const KMIndexDataPtr indexData = md->indexData(entry);
-            if (indexData != 0 && !indexData->isEmpty()) {
+            if (indexData != Q_NULLPTR && !indexData->isEmpty()) {
                 item.setFlags(indexData->status().statusFlags());
 
                 const quint64 uid = indexData->uid();

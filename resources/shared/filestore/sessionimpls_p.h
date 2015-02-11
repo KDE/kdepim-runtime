@@ -35,16 +35,16 @@ class FiFoQueueJobSession : public AbstractJobSession
     Q_OBJECT
 
 public:
-    explicit FiFoQueueJobSession(QObject *parent = 0);
+    explicit FiFoQueueJobSession(QObject *parent = Q_NULLPTR);
 
     virtual ~FiFoQueueJobSession();
 
-    virtual void addJob(Job *job);
+    void addJob(Job *job) Q_DECL_OVERRIDE;
 
-    virtual void cancelAllJobs();
+    void cancelAllJobs() Q_DECL_OVERRIDE;
 
 protected:
-    virtual void removeJob(Job *job);
+    void removeJob(Job *job) Q_DECL_OVERRIDE;
 
 private:
     class Private;

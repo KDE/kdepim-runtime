@@ -42,7 +42,7 @@ protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
-    void collectionChanged(const Akonadi::Collection &collection);
+    void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
 private:
     /**

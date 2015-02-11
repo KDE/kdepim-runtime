@@ -184,7 +184,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
 
     Akonadi::ImapAclAttribute *const parentAclAttribute =
         collection().parentCollection().attribute<Akonadi::ImapAclAttribute>();
-    KIMAP::Acl::Rights parentRights = 0;
+    KIMAP::Acl::Rights parentRights = Q_NULLPTR;
     if (parentAclAttribute) {
         parentRights = parentAclAttribute->rights()[userName().toUtf8()];
     }

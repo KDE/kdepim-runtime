@@ -44,7 +44,7 @@ public:
     /**
      * Starts the job.
      */
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void davJobFinished(KJob *);

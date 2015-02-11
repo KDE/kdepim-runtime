@@ -28,7 +28,7 @@
 class SessionUiProxy : public KIMAP::SessionUiProxy
 {
 public:
-    bool ignoreSslError(const KSslErrorUiData &errorData)
+    bool ignoreSslError(const KSslErrorUiData &errorData) Q_DECL_OVERRIDE
     {
         if (KIO::SslUi::askIgnoreSslErrors(errorData, KIO::SslUi::RecallAndStoreRules)) {
             return true;

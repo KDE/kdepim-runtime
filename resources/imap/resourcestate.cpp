@@ -367,7 +367,7 @@ void ResourceState::setSeparatorCharacter(const QChar &separator)
 
 void ResourceState::showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName)
 {
-    KMessageBox::information(0, message, title, dontShowAgainName);
+    KMessageBox::information(Q_NULLPTR, message, title, dontShowAgainName);
 }
 
 int ResourceState::batchSize() const

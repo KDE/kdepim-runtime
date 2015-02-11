@@ -33,9 +33,9 @@
 
 ResourceTask::ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent),
-      m_pool(0),
+      m_pool(Q_NULLPTR),
       m_sessionRequestId(0),
-      m_session(0),
+      m_session(Q_NULLPTR),
       m_actionIfNoSession(action),
       m_resource(resource),
       mCancelled(false)
@@ -129,7 +129,7 @@ void ResourceTask::onConnectionLost(KIMAP::Session *session)
         // Our session becomes invalid, so get rid of
         // the pointer, we don't need to release it once the
         // task is done
-        m_session = 0;
+        m_session = Q_NULLPTR;
         cancelTask(i18n("Connection lost"));
     }
 }
@@ -139,7 +139,7 @@ void ResourceTask::onPoolDisconnect()
     // All the sessions in the pool we used changed,
     // so get rid of the pointer, we don't need to
     // release our session anymore
-    m_pool = 0;
+    m_pool = Q_NULLPTR;
 
     cancelTask(i18n("Connection lost"));
 }

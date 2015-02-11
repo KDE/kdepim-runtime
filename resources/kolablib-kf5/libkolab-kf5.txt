@@ -6223,12 +6223,12 @@ index 71a0e4b..0000000
 -    ObjectType parseMimeMessage(const KMime::Message::Ptr &msg);
 -
 -    /**
--     * Set to override the autodetected object type, before parsing the message.
+-     * Set to Q_DECL_OVERRIDE the autodetected object type, before parsing the message.
 -     */
 -    void setObjectType(ObjectType);
 -    
 -    /**
--     * Set to override the autodetected version, before parsing the message.
+-     * Set to Q_DECL_OVERRIDE the autodetected version, before parsing the message.
 -     */
 -    void setVersion(Version);
 -    
@@ -19154,12 +19154,12 @@ index 0000000..c94f97d
 +    ObjectType parseMimeMessage(const KMime::Message::Ptr &msg);
 +
 +    /**
-+     * Set to override the autodetected object type, before parsing the message.
++     * Set to Q_DECL_OVERRIDE the autodetected object type, before parsing the message.
 +     */
 +    void setObjectType(ObjectType);
 +    
 +    /**
-+     * Set to override the autodetected version, before parsing the message.
++     * Set to Q_DECL_OVERRIDE the autodetected version, before parsing the message.
 +     */
 +    void setVersion(Version);
 +    

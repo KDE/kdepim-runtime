@@ -67,7 +67,7 @@
 using namespace Akonadi;
 
 MixedMaildirResource::MixedMaildirResource(const QString &id)
-    : ResourceBase(id), mStore(new MixedMaildirStore()), mCompactHelper(0)
+    : ResourceBase(id), mStore(new MixedMaildirStore()), mCompactHelper(Q_NULLPTR)
 {
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
@@ -499,14 +499,14 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
 
     // messages marked as deleted have been deleted from mbox files but never got purged
     // TODO FileStore could provide deleteItems() to deleted all filtered items in one go
-    KJob *deleteJob = 0;
+    KJob *deleteJob = Q_NULLPTR;
     qCDebug(MIXEDMAILDIR_LOG) << retrieveJob->itemsMarkedAsDeleted().count()
                               << "items marked as Deleted";
     Q_FOREACH (const Item &item, retrieveJob->itemsMarkedAsDeleted()) {
         deleteJob = mStore->deleteItem(item);
     }
 
-    if (deleteJob != 0) {
+    if (deleteJob != Q_NULLPTR) {
         // last item delete triggers mbox purge, i.e. store compact
         const bool connected = connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(itemsDeleted(KJob*)));
         Q_ASSERT(connected);

@@ -126,7 +126,7 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
         lastSyncDelta = QDateTime::currentDateTimeUtc().toTime_t() - collection.remoteRevision().toUInt();
     }
 
-    KGAPI2::Job *job = 0;
+    KGAPI2::Job *job = Q_NULLPTR;
     if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
         EventFetchJob *fetchJob = new EventFetchJob(collection.remoteId(), account(), this);
         if (lastSyncDelta > -1 && lastSyncDelta < 25 * 24 * 3600) {
@@ -177,7 +177,7 @@ void CalendarResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         return;
     }
 
-    KGAPI2::Job *job = 0;
+    KGAPI2::Job *job = Q_NULLPTR;
     if (item.hasPayload<KCalCore::Event::Ptr>()) {
         KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
         EventPtr kevent(new Event(*event));
@@ -222,7 +222,7 @@ void CalendarResource::itemChanged(const Akonadi::Item &item,
         return;
     }
 
-    KGAPI2::Job *job = 0;
+    KGAPI2::Job *job = Q_NULLPTR;
     if (item.hasPayload<KCalCore::Event::Ptr>()) {
         KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
         EventPtr kevent(new Event(*event));
@@ -442,7 +442,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
                                  Collection::CanChangeItem |
                                  Collection::CanDeleteItem);
         } else {
-            collection.setRights(0);
+            collection.setRights(Q_NULLPTR);
         }
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);

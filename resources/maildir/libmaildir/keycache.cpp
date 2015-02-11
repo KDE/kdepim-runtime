@@ -20,7 +20,7 @@
 
 #include <QDir>
 
-KeyCache *KeyCache::mSelf = 0;
+KeyCache *KeyCache::mSelf = Q_NULLPTR;
 
 void KeyCache::addKeys(const QString &dir)
 {

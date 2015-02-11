@@ -47,7 +47,7 @@ static void initRandomSeed()
         if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed)) {
             // No /dev/urandom... try something else.
             srand(getpid());
-            seed = rand() + time(0);
+            seed = rand() + time(Q_NULLPTR);
         }
 
         if (fd >= 0) {

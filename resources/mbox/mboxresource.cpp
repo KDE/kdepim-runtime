@@ -65,7 +65,7 @@ static quint64 itemOffset(const QString &remoteItemId)
 
 MboxResource::MboxResource(const QString &id)
     : SingleFileResource<Settings>(id)
-    , mMBox(0)
+    , mMBox(Q_NULLPTR)
 {
     new SettingsAdaptor(mSettings);
     KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),

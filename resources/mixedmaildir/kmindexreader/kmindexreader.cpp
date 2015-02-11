@@ -334,7 +334,7 @@ bool KMIndexReader::readIndex()
     // loop through the entire index
     while (!feof(mFp)) {
         //qCDebug(MIXEDMAILDIR_LOG) << "NEW MSG!";
-        msg = 0;
+        msg = Q_NULLPTR;
         // check version (parsed by readHeader)
         // because different versions must be
         // parsed differently
@@ -362,7 +362,7 @@ bool KMIndexReader::readIndex()
             //////////////////////
             //parse verions < 1505
             QByteArray line(MAX_LINE, '\0');
-            if (fgets(line.data(), MAX_LINE, mFp) == NULL) {
+            if (fgets(line.data(), MAX_LINE, mFp) == Q_NULLPTR) {
                 break;
             }
             if (feof(mFp)) {
@@ -374,7 +374,7 @@ bool KMIndexReader::readIndex()
                 qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Unknowable bad occurred";
                 qCDebug(MIXEDMAILDIR_LOG) << "fclose(mFp = " << mFp << ")";
                 fclose(mFp);
-                mFp = 0;
+                mFp = Q_NULLPTR;
                 mMsgList.clear();
                 mMsgByFileName.clear();
                 mMsgByOffset.clear();
@@ -470,7 +470,7 @@ static void swapEndian(QString &str)
 }
 
 static int g_chunk_length = 0, g_chunk_offset = 0;
-static uchar *g_chunk = 0;
+static uchar *g_chunk = Q_NULLPTR;
 
 namespace
 {

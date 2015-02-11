@@ -25,16 +25,16 @@ class GroupdavProtocol : public DavProtocolBase
 {
 public:
     GroupdavProtocol();
-    virtual bool supportsPrincipals() const;
-    virtual bool useReport() const;
-    virtual bool useMultiget() const;
-    virtual QDomDocument collectionsQuery() const;
-    virtual QString collectionsXQuery() const;
-    virtual QList<QDomDocument> itemsQueries() const;
-    virtual QString mimeTypeForQuery(int index) const;
+    bool supportsPrincipals() const Q_DECL_OVERRIDE;
+    bool useReport() const Q_DECL_OVERRIDE;
+    bool useMultiget() const Q_DECL_OVERRIDE;
+    QDomDocument collectionsQuery() const Q_DECL_OVERRIDE;
+    QString collectionsXQuery() const Q_DECL_OVERRIDE;
+    QList<QDomDocument> itemsQueries() const Q_DECL_OVERRIDE;
+    QString mimeTypeForQuery(int index) const Q_DECL_OVERRIDE;
 
-    virtual DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const;
-    virtual QString contactsMimeType() const;
+    DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const Q_DECL_OVERRIDE;
+    QString contactsMimeType() const Q_DECL_OVERRIDE;
 
 private:
     QList<QDomDocument> mItemsQueries;

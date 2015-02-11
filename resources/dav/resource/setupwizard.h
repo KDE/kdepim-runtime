@@ -71,8 +71,8 @@ class PredefinedProviderPage : public QWizardPage
 public:
     PredefinedProviderPage(QWidget *parent = Q_NULLPTR);
 
-    virtual void initializePage();
-    virtual int nextId() const;
+    void initializePage() Q_DECL_OVERRIDE;
+    int nextId() const Q_DECL_OVERRIDE;
 
 private:
     QLabel *mLabel;
@@ -85,7 +85,7 @@ class CredentialsPage : public QWizardPage
 {
 public:
     CredentialsPage(QWidget *parent = Q_NULLPTR);
-    virtual int nextId() const;
+    int nextId() const Q_DECL_OVERRIDE;
 
 private:
     KLineEdit *mUserName;
@@ -99,7 +99,7 @@ class ServerTypePage : public QWizardPage
 public:
     ServerTypePage(QWidget *parent = Q_NULLPTR);
 
-    virtual bool validatePage();
+    bool validatePage() Q_DECL_OVERRIDE;
 
 private slots:
     void manualConfigToggled(bool toggled);
@@ -116,8 +116,8 @@ class ConnectionPage : public QWizardPage
 public:
     ConnectionPage(QWidget *parent = Q_NULLPTR);
 
-    virtual void initializePage();
-    virtual void cleanupPage();
+    void initializePage() Q_DECL_OVERRIDE;
+    void cleanupPage() Q_DECL_OVERRIDE;
 
 private slots:
     void urlElementChanged();

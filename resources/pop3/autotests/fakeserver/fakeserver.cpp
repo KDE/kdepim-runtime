@@ -29,7 +29,7 @@
 
 FakeServerThread::FakeServerThread(QObject *parent)
     : QThread(parent),
-      mServer(0)
+      mServer(Q_NULLPTR)
 {
 }
 
@@ -42,7 +42,7 @@ void FakeServerThread::run()
     exec();
 
     delete mServer;
-    mServer = 0;
+    mServer = Q_NULLPTR;
 }
 
 FakeServer *FakeServerThread::server() const
@@ -72,7 +72,7 @@ FakeServer::~FakeServer()
     }
 
     delete mTcpServer;
-    mTcpServer = 0;
+    mTcpServer = Q_NULLPTR;
 }
 
 QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData,

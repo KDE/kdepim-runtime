@@ -190,7 +190,7 @@ void AddItemTask::applyFoundUid(qint64 uid)
     Akonadi::Collection c = collection();
 
     // Get the current uid next value and store it
-    UidNextAttribute *uidAttr = 0;
+    UidNextAttribute *uidAttr = Q_NULLPTR;
     int oldNextUid = 0;
     if (c.hasAttribute("uidnext")) {
         uidAttr = static_cast<UidNextAttribute *>(c.attribute("uidnext"));
@@ -202,7 +202,7 @@ void AddItemTask::applyFoundUid(qint64 uid)
     // If not something happened in our back, so we don't update and a refetch will
     // happen at some point.
     if (uid == oldNextUid) {
-        if (uidAttr == 0) {
+        if (uidAttr == Q_NULLPTR) {
             uidAttr = new UidNextAttribute(uid + 1);
             c.addAttribute(uidAttr);
         } else {

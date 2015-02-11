@@ -123,7 +123,7 @@ static void addAuthenticationItem(QComboBox *authCombo, MailTransport::Transport
 }
 
 SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
-    : QDialog(), m_parentResource(parentResource), m_ui(new Ui::SetupServerView), m_serverTest(0),
+    : QDialog(), m_parentResource(parentResource), m_ui(new Ui::SetupServerView), m_serverTest(Q_NULLPTR),
       m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator(this)
 {
     m_parentResource->settings()->setWinId(parent);
@@ -383,7 +383,7 @@ void SetupServer::readSettings()
     const QString password = m_parentResource->settings()->password(&rejected);
     if (rejected) {
         m_ui->password->setEnabled(false);
-        KMessageBox::information(0, i18n("Could not access KWallet. "
+        KMessageBox::information(Q_NULLPTR, i18n("Could not access KWallet. "
                                          "If you want to store the password permanently then you have to "
                                          "activate it. If you do not "
                                          "want to use KWallet, check the box below, but note that you will be "
@@ -531,7 +531,7 @@ void SetupServer::slotFinished(const QList<int> &testResult)
 void SetupServer::slotTestChanged()
 {
     delete m_serverTest;
-    m_serverTest = 0;
+    m_serverTest = Q_NULLPTR;
     slotSafetyChanged();
 
     // do not use imapConnectionPossible, as the data is not yet saved.
@@ -558,7 +558,7 @@ void SetupServer::slotComplete()
 
 void SetupServer::slotSafetyChanged()
 {
-    if (m_serverTest == 0) {
+    if (m_serverTest == Q_NULLPTR) {
         qCDebug(IMAPRESOURCE_LOG) << "serverTest null";
         m_ui->noRadio->setEnabled(true);
         m_ui->sslRadio->setEnabled(true);

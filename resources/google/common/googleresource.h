@@ -53,7 +53,7 @@ public:
     virtual GoogleSettings *settings() const = 0;
     virtual QList<QUrl> scopes() const = 0;
 
-    void cleanup();
+    void cleanup() Q_DECL_OVERRIDE;
 
 public Q_SLOTS:
     void configure(WId windowId) Q_DECL_OVERRIDE;
@@ -112,7 +112,7 @@ protected:
 
     GoogleAccountManager *accountManager() const;
 
-    virtual void aboutToQuit();
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
     virtual int runConfigurationDialog(WId windowId) = 0;
     virtual void updateResourceName() = 0;

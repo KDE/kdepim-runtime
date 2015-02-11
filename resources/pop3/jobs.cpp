@@ -30,7 +30,7 @@
 #include <KLocalizedString>
 
 POPSession::POPSession(const QString &password)
-    : mCurrentJob(0), mPassword(password)
+    : mCurrentJob(Q_NULLPTR), mPassword(password)
 {
     KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));
 }
@@ -51,13 +51,13 @@ void POPSession::slotSlaveError(KIO::Slave *slave , int errorCode,
     }
 
     if (errorCode == KIO::ERR_SLAVE_DIED) {
-        mSlave = 0;
+        mSlave = Q_NULLPTR;
     }
 
     // Explicitly disconnect the slave if the connection went down
     if (errorCode == KIO::ERR_CONNECTION_BROKEN && mSlave) {
         KIO::Scheduler::disconnectSlave(mSlave);
-        mSlave = 0;
+        mSlave = Q_NULLPTR;
     }
 
     if (!mCurrentJob) {
@@ -146,14 +146,14 @@ QUrl POPSession::getUrl() const
 bool POPSession::connectSlave()
 {
     mSlave = KIO::Scheduler::getConnectedSlave(getUrl(), slaveConfig());
-    return mSlave != 0;
+    return mSlave != Q_NULLPTR;
 }
 
 void POPSession::abortCurrentJob()
 {
     if (mCurrentJob) {
         mCurrentJob->kill(KJob::Quietly);
-        mCurrentJob = 0;
+        mCurrentJob = Q_NULLPTR;
     }
 }
 
@@ -191,7 +191,7 @@ static QString intListToString(const QList<int> &intList)
 }
 
 SlaveBaseJob::SlaveBaseJob(POPSession *POPSession)
-    : mJob(0),
+    : mJob(Q_NULLPTR),
       mPOPSession(POPSession)
 {
     mPOPSession->setCurrentJob(this);
@@ -215,13 +215,13 @@ bool SlaveBaseJob::doKill()
 
 void SlaveBaseJob::slotSlaveResult(KJob *job)
 {
-    mPOPSession->setCurrentJob(0);
+    mPOPSession->setCurrentJob(Q_NULLPTR);
     if (job->error()) {
         setError(job->error());
         setErrorText(job->errorText());
     }
     emitResult();
-    mJob = 0;
+    mJob = Q_NULLPTR;
 }
 
 void SlaveBaseJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
@@ -238,7 +238,7 @@ void SlaveBaseJob::slaveError(int errorCode, const QString &errorMessage)
     setError(errorCode);
     setErrorText(errorMessage);
     emitResult();
-    mJob = 0;
+    mJob = Q_NULLPTR;
 }
 
 void SlaveBaseJob::connectJob()

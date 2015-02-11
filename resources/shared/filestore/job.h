@@ -88,11 +88,11 @@ public:
         InvalidJobContext
     };
 
-    explicit Job(AbstractJobSession *session = 0);
+    explicit Job(AbstractJobSession *session = Q_NULLPTR);
 
     virtual ~Job();
 
-    virtual void start();
+    void start() Q_DECL_OVERRIDE;
 
     virtual bool accept(Visitor *visitor);
 

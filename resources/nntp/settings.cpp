@@ -22,7 +22,7 @@
 class SettingsHelper
 {
 public:
-    SettingsHelper() : q(0) {}
+    SettingsHelper() : q(Q_NULLPTR) {}
     ~SettingsHelper()
     {
         delete q;

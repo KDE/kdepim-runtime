@@ -33,8 +33,8 @@ RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, const 
     m_collection(collection),
     m_maildir(md),
     m_mimeType(KMime::Message::mimeType()),
-    m_transaction(0),
-    m_entryIterator(0),
+    m_transaction(Q_NULLPTR),
+    m_entryIterator(Q_NULLPTR),
     m_previousMtime(0),
     m_highestMtime(0)
 {
@@ -128,7 +128,7 @@ void RetrieveItemsJob::processEntry()
 
     item.setPayload(KMime::Message::Ptr(msg));
     Akonadi::MessageFlags::copyMessageFlags(*msg, item);
-    KJob *job = 0;
+    KJob *job = Q_NULLPTR;
     if (m_localItems.contains(fileName)) {     // modification
         item.setId(m_localItems.value(fileName).id());
         job = new Akonadi::ItemModifyJob(item, transaction());
@@ -147,7 +147,7 @@ void RetrieveItemsJob::processEntryDone(KJob *)
 void RetrieveItemsJob::entriesProcessed()
 {
     delete m_entryIterator;
-    m_entryIterator = 0;
+    m_entryIterator = Q_NULLPTR;
     if (!m_localItems.isEmpty()) {
         Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(m_localItems.values(), transaction());
         m_maildir.removeCachedKeys(m_localItems.keys());

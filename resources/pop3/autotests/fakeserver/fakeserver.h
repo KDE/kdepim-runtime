@@ -88,7 +88,7 @@ class FakeServerThread : public QThread
 public:
 
     explicit FakeServerThread(QObject *parent);
-    virtual void run();
+    void run() Q_DECL_OVERRIDE;
 
     // Returns the FakeServer use. Be careful when using this and make sure
     // the methods you use are actually thread-safe!!

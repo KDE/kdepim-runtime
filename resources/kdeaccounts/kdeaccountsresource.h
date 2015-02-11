@@ -47,10 +47,10 @@ protected:
      * Do stuff when the configuration dialog has been accepted, before
      * reloadFile() is called.
      */
-    virtual void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg);
+    void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg) Q_DECL_OVERRIDE;
 
-    bool readFromFile(const QString &fileName);
-    bool writeToFile(const QString &fileName);
+    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
+    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;

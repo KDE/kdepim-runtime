@@ -36,7 +36,7 @@ namespace OXA
 namespace ObjectUtils
 {
 Object parseObject(const QDomElement &propElement, Folder::Module module);
-void addObjectElements(QDomDocument &document, QDomElement &propElement, const Object &object, void *preloadedData = 0);
+void addObjectElements(QDomDocument &document, QDomElement &propElement, const Object &object, void *preloadedData = Q_NULLPTR);
 
 /**
  * Returns the dav path that is used for the given @p module.

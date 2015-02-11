@@ -34,14 +34,14 @@ class DummyMigrator : public MigratorBase
 public:
     explicit DummyMigrator(const QString &identifier);
 
-    virtual QString displayName() const;
-    virtual void startWork();
+    QString displayName() const Q_DECL_OVERRIDE;
+    void startWork() Q_DECL_OVERRIDE;
 
-    virtual bool shouldAutostart() const;
-    virtual bool canStart();
-    virtual void pause();
+    bool shouldAutostart() const Q_DECL_OVERRIDE;
+    bool canStart() Q_DECL_OVERRIDE;
+    void pause() Q_DECL_OVERRIDE;
 
-    virtual void abort();
+    void abort() Q_DECL_OVERRIDE;
 private slots:
     void onTimerElapsed();
 };

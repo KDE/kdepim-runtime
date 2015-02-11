@@ -63,7 +63,7 @@ public:
     /**
      * Read changes from the backend file.
      */
-    void readFile(bool taskContext = false)
+    void readFile(bool taskContext = false) Q_DECL_OVERRIDE
     {
         if (KDirWatch::self()->contains(mCurrentUrl.toLocalFile())) {
             KDirWatch::self()->removeFile(mCurrentUrl.toLocalFile());
@@ -173,7 +173,7 @@ public:
         }
     }
 
-    void writeFile(const QVariant &task_context)
+    void writeFile(const QVariant &task_context) Q_DECL_OVERRIDE
     {
         writeFile(task_context.canConvert<bool>() && task_context.toBool());
     }
@@ -181,7 +181,7 @@ public:
     /**
      * Write changes to the backend file.
      */
-    void writeFile(bool taskContext = false)
+    void writeFile(bool taskContext = false) Q_DECL_OVERRIDE
     {
         if (mSettings->readOnly()) {
             const QString message = i18n("Trying to write to a read-only file: '%1'.", mSettings->path());
@@ -273,7 +273,7 @@ public:
         }
     }
 
-    virtual void collectionChanged(const Collection &collection)
+    virtual void collectionChanged(const Collection &collection) Q_DECL_OVERRIDE
     {
         QString newName;
         if (collection.hasAttribute<EntityDisplayAttribute>()) {
@@ -288,7 +288,7 @@ public:
         SingleFileResourceBase::collectionChanged(collection);
     }
 
-    virtual Collection rootCollection() const
+    virtual Collection rootCollection() const Q_DECL_OVERRIDE
     {
         Collection c;
         c.setParentCollection(Collection::root());
@@ -317,7 +317,7 @@ public Q_SLOTS:
     /**
      * Display the configuration dialog for the resource.
      */
-    void configure(WId windowId)
+    void configure(WId windowId) Q_DECL_OVERRIDE
     {
         QPointer<SingleFileResourceConfigDialog<Settings> > dlg
             = new SingleFileResourceConfigDialog<Settings>(windowId, mSettings);
@@ -354,14 +354,14 @@ protected:
         Q_UNUSED(dlg);
     }
 
-    void retrieveCollections()
+    void retrieveCollections() Q_DECL_OVERRIDE
     {
         Collection::List list;
         list << rootCollection();
         collectionsRetrieved(list);
     }
 
-    bool readOnly() const
+    bool readOnly() const Q_DECL_OVERRIDE
     {
         return mSettings->readOnly();
     }

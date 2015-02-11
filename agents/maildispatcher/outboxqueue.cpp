@@ -58,8 +58,8 @@ public:
     Private(OutboxQueue *qq)
         : q(qq),
           outbox(-1),
-          monitor(0),
-          futureTimer(0),
+          monitor(Q_NULLPTR),
+          futureTimer(Q_NULLPTR),
           totalSize(0),
           outboxDiscoveryRetries(0)
     {
@@ -165,7 +165,7 @@ void OutboxQueue::Private::addIfComplete(const Item &item)
 
     const TransportAttribute *transportAttribute = item.attribute<TransportAttribute>();
     Q_ASSERT(transportAttribute);
-    if (transportAttribute->transport() == 0) {
+    if (transportAttribute->transport() == Q_NULLPTR) {
         qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid transport.";
         return;
     }

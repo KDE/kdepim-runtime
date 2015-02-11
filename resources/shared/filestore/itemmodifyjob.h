@@ -53,7 +53,7 @@ public:
     const QSet<QByteArray> &parts() const;
     void setParts(const QSet<QByteArray> &parts);
 
-    virtual bool accept(Visitor *visitor);
+    bool accept(Visitor *visitor) Q_DECL_OVERRIDE;
 
 private:
     void handleItemModified(const Akonadi::Item &item);

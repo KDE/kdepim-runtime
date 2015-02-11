@@ -26,7 +26,7 @@
 
 using namespace OXA;
 
-Users *Users::mSelf = 0;
+Users *Users::mSelf = Q_NULLPTR;
 
 Users::Users()
     : mCurrentUserId(-1)

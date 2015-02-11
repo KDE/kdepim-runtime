@@ -44,7 +44,7 @@ FileStore::AbstractJobSession::~AbstractJobSession()
 void FileStore::AbstractJobSession::notifyCollectionsReceived(FileStore::Job *job, const Collection::List &collections)
 {
     FileStore::CollectionFetchJob *fetchJob = dynamic_cast<FileStore::CollectionFetchJob *>(job);
-    if (fetchJob != 0) {
+    if (fetchJob != Q_NULLPTR) {
         fetchJob->handleCollectionsReceived(collections);
     }
 }
@@ -52,7 +52,7 @@ void FileStore::AbstractJobSession::notifyCollectionsReceived(FileStore::Job *jo
 void FileStore::AbstractJobSession::notifyCollectionCreated(FileStore::Job *job, const Collection &collection)
 {
     FileStore::CollectionCreateJob *createJob = dynamic_cast<FileStore::CollectionCreateJob *>(job);
-    if (createJob != 0) {
+    if (createJob != Q_NULLPTR) {
         createJob->handleCollectionCreated(collection);
     }
 }
@@ -60,7 +60,7 @@ void FileStore::AbstractJobSession::notifyCollectionCreated(FileStore::Job *job,
 void FileStore::AbstractJobSession::notifyCollectionDeleted(FileStore::Job *job, const Collection &collection)
 {
     FileStore::CollectionDeleteJob *deleteJob = dynamic_cast<FileStore::CollectionDeleteJob *>(job);
-    if (deleteJob != 0) {
+    if (deleteJob != Q_NULLPTR) {
         deleteJob->handleCollectionDeleted(collection);
     }
 }
@@ -68,7 +68,7 @@ void FileStore::AbstractJobSession::notifyCollectionDeleted(FileStore::Job *job,
 void FileStore::AbstractJobSession::notifyCollectionModified(FileStore::Job *job, const Collection &collection)
 {
     FileStore::CollectionModifyJob *modifyJob = dynamic_cast<FileStore::CollectionModifyJob *>(job);
-    if (modifyJob != 0) {
+    if (modifyJob != Q_NULLPTR) {
         modifyJob->handleCollectionModified(collection);
     }
 }
@@ -76,7 +76,7 @@ void FileStore::AbstractJobSession::notifyCollectionModified(FileStore::Job *job
 void FileStore::AbstractJobSession::notifyCollectionMoved(FileStore::Job *job, const Collection &collection)
 {
     FileStore::CollectionMoveJob *moveJob = dynamic_cast<FileStore::CollectionMoveJob *>(job);
-    if (moveJob != 0) {
+    if (moveJob != Q_NULLPTR) {
         moveJob->handleCollectionMoved(collection);
     }
 }
@@ -84,7 +84,7 @@ void FileStore::AbstractJobSession::notifyCollectionMoved(FileStore::Job *job, c
 void FileStore::AbstractJobSession::notifyItemsReceived(FileStore::Job *job, const Item::List &items)
 {
     FileStore::ItemFetchJob *fetchJob = dynamic_cast<FileStore::ItemFetchJob *>(job);
-    if (fetchJob != 0) {
+    if (fetchJob != Q_NULLPTR) {
         fetchJob->handleItemsReceived(items);
     }
 }
@@ -92,7 +92,7 @@ void FileStore::AbstractJobSession::notifyItemsReceived(FileStore::Job *job, con
 void FileStore::AbstractJobSession::notifyItemCreated(FileStore::Job *job, const Item &item)
 {
     FileStore::ItemCreateJob *createJob = dynamic_cast<FileStore::ItemCreateJob *>(job);
-    if (createJob != 0) {
+    if (createJob != Q_NULLPTR) {
         createJob->handleItemCreated(item);
     }
 }
@@ -100,7 +100,7 @@ void FileStore::AbstractJobSession::notifyItemCreated(FileStore::Job *job, const
 void FileStore::AbstractJobSession::notifyItemModified(FileStore::Job *job, const Item &item)
 {
     FileStore::ItemModifyJob *modifyJob = dynamic_cast<FileStore::ItemModifyJob *>(job);
-    if (modifyJob != 0) {
+    if (modifyJob != Q_NULLPTR) {
         modifyJob->handleItemModified(item);
     }
 }
@@ -108,7 +108,7 @@ void FileStore::AbstractJobSession::notifyItemModified(FileStore::Job *job, cons
 void FileStore::AbstractJobSession::notifyItemMoved(FileStore::Job *job, const Item &item)
 {
     FileStore::ItemMoveJob *moveJob = dynamic_cast<FileStore::ItemMoveJob *>(job);
-    if (moveJob != 0) {
+    if (moveJob != Q_NULLPTR) {
         moveJob->handleItemMoved(item);
     }
 }
@@ -116,7 +116,7 @@ void FileStore::AbstractJobSession::notifyItemMoved(FileStore::Job *job, const I
 void FileStore::AbstractJobSession::notifyCollectionsChanged(FileStore::Job *job, const Collection::List &collections)
 {
     FileStore::StoreCompactJob *compactJob = dynamic_cast<FileStore::StoreCompactJob *>(job);
-    if (compactJob != 0) {
+    if (compactJob != Q_NULLPTR) {
         compactJob->handleCollectionsChanged(collections);
     }
 }
@@ -124,7 +124,7 @@ void FileStore::AbstractJobSession::notifyCollectionsChanged(FileStore::Job *job
 void FileStore::AbstractJobSession::notifyItemsChanged(FileStore::Job *job, const Item::List &items)
 {
     FileStore::StoreCompactJob *compactJob = dynamic_cast<FileStore::StoreCompactJob *>(job);
-    if (compactJob != 0) {
+    if (compactJob != Q_NULLPTR) {
         compactJob->handleItemsChanged(items);
     }
 }

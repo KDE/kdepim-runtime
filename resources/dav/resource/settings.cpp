@@ -56,7 +56,7 @@ class SettingsHelper
 {
 public:
     SettingsHelper()
-        : q(0)
+        : q(Q_NULLPTR)
     {
     }
 
@@ -290,7 +290,7 @@ Settings::UrlConfiguration *Settings::urlConfiguration(DavUtils::Protocol proto,
 {
     QString key = url + QLatin1Char(',') + DavUtils::protocolName(proto);
 
-    UrlConfiguration *ret = 0;
+    UrlConfiguration *ret = Q_NULLPTR;
     if (mUrls.contains(key)) {
         ret = mUrls[ key ];
     }

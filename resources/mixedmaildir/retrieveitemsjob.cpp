@@ -57,7 +57,7 @@ class RetrieveItemsJob::Private
 public:
     Private(RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store)
         : q(parent), mCollection(collection), mStore(store),
-          mTransaction(0), mHighestModTime(-1), mNumItemCreateJobs(0), mNumItemModifyJobs(0)
+          mTransaction(Q_NULLPTR), mHighestModTime(-1), mNumItemCreateJobs(0), mNumItemModifyJobs(0)
     {
     }
 

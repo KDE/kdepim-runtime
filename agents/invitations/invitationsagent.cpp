@@ -521,7 +521,7 @@ void InvitationsAgent::itemAdded(const Item &item, const Collection &collection)
     if (message->contentType()->isMultipart()) {
         qDebug() << "message is multipart:" << message->attachments().size();
 
-        InvitationsAgentItem *it = 0;
+        InvitationsAgentItem *it = Q_NULLPTR;
         foreach (KMime::Content *content, message->contents()) {
 
             KMime::Headers::ContentType *ct = content->contentType();

@@ -39,10 +39,10 @@ qint64 SessionPool::m_requestCounter = 0;
 SessionPool::SessionPool(int maxPoolSize, QObject *parent)
     : QObject(parent),
       m_maxPoolSize(maxPoolSize),
-      m_account(0),
-      m_passwordRequester(0),
+      m_account(Q_NULLPTR),
+      m_passwordRequester(Q_NULLPTR),
       m_initialConnectDone(false),
-      m_pendingInitialSession(0)
+      m_pendingInitialSession(Q_NULLPTR)
 {
 }
 
@@ -117,11 +117,11 @@ void SessionPool::disconnect(SessionTermination termination)
     m_unusedPool.clear();
     m_reservedPool.clear();
     m_connectingPool.clear();
-    m_pendingInitialSession = 0;
+    m_pendingInitialSession = Q_NULLPTR;
     m_passwordRequester->cancelPasswordRequests();
 
     delete m_account;
-    m_account = 0;
+    m_account = Q_NULLPTR;
     m_namespaces.clear();
     m_capabilities.clear();
 
@@ -220,7 +220,7 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
         return;
     }
 
-    m_pendingInitialSession = 0;
+    m_pendingInitialSession = Q_NULLPTR;
 
     if (!m_initialConnectDone) {
         m_initialConnectDone = true;
@@ -244,7 +244,7 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
 void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode,
                                         const QString &errorMessage)
 {
-    m_pendingInitialSession = 0;
+    m_pendingInitialSession = Q_NULLPTR;
 
     QString msg;
     if (m_account) {
@@ -260,7 +260,7 @@ void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode,
     } else {
         killSession(session, LogoutSession);
         if (!m_pendingRequests.isEmpty()) {
-            emit sessionRequestDone(m_pendingRequests.takeFirst(), 0, errorCode, errorMessage);
+            emit sessionRequestDone(m_pendingRequests.takeFirst(), Q_NULLPTR, errorCode, errorMessage);
             if (!m_pendingRequests.isEmpty()) {
                 QTimer::singleShot(0, this, SLOT(processPendingRequests()));
             }
@@ -290,7 +290,7 @@ void SessionPool::processPendingRequests()
         // No session available, and max pool size reached
         if (!m_pendingRequests.isEmpty()) {
             emit sessionRequestDone(
-                m_pendingRequests.takeFirst(), 0, NoAvailableSessionError,
+                m_pendingRequests.takeFirst(), Q_NULLPTR, NoAvailableSessionError,
                 i18n("Could not create another extra connection to the IMAP-server %1.",
                      m_account->server()));
             if (!m_pendingRequests.isEmpty()) {
@@ -308,7 +308,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         // it looks like the connection was lost while we were waiting
         // for the password, we should fail all the pending requests and stop there
         foreach (int request, m_pendingRequests) {
-            emit sessionRequestDone(request, 0,
+            emit sessionRequestDone(request, Q_NULLPTR,
                                     LoginFailError, i18n("Disconnected from server during login."));
         }
         return;
@@ -349,7 +349,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         return;
     }
 
-    KIMAP::Session *session = 0;
+    KIMAP::Session *session = Q_NULLPTR;
     if (m_pendingInitialSession) {
         session = m_pendingInitialSession;
     } else {
@@ -520,7 +520,7 @@ void SessionPool::onConnectionLost()
     if (m_unusedPool.isEmpty() && m_reservedPool.isEmpty()) {
         m_passwordRequester->cancelPasswordRequests();
         delete m_account;
-        m_account = 0;
+        m_account = Q_NULLPTR;
         m_namespaces.clear();
         m_capabilities.clear();
 
@@ -531,7 +531,7 @@ void SessionPool::onConnectionLost()
 
     session->deleteLater();
     if (session == m_pendingInitialSession) {
-        m_pendingInitialSession = 0;
+        m_pendingInitialSession = Q_NULLPTR;
     }
 }
 

@@ -72,9 +72,9 @@ protected:
 
 SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option)
     : QDialog(parent),
-      m_session(0),
+      m_session(Q_NULLPTR),
       m_subscriptionChanged(false),
-      m_lineEdit(0),
+      m_lineEdit(Q_NULLPTR),
       m_filter(new SubscriptionFilterProxyModel(this)),
       m_model(new QStandardItemModel(this))
 {

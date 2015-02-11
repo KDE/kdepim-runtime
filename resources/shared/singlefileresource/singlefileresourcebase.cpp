@@ -41,7 +41,7 @@
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase(const QString &id)
-    : ResourceBase(id), mDownloadJob(0), mUploadJob(0)
+    : ResourceBase(id), mDownloadJob(Q_NULLPTR), mUploadJob(Q_NULLPTR)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
     QTimer::singleShot(0, this, SLOT(readFile()));
@@ -268,7 +268,7 @@ void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
         readLocalFile(QUrl::fromLocalFile(cacheFile()).toLocalFile());
     }
 
-    mDownloadJob = 0;
+    mDownloadJob = Q_NULLPTR;
     KGlobal::deref();
 
     emit status(Idle, i18nc("@info:status", "Ready"));
@@ -282,7 +282,7 @@ void SingleFileResourceBase::slotUploadJobResult(KJob *job)
         emit status(Broken, message);
     }
 
-    mUploadJob = 0;
+    mUploadJob = Q_NULLPTR;
     KGlobal::deref();
 
     emit status(Idle, i18nc("@info:status", "Ready"));

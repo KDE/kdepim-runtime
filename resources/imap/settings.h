@@ -54,10 +54,10 @@ signals:
     void passwordRequestCompleted(const QString &password, bool userRejected);
 
 public slots:
-    Q_SCRIPTABLE virtual QString password(bool *userRejected = 0) const;
+    Q_SCRIPTABLE virtual QString password(bool *userRejected = Q_NULLPTR) const;
     Q_SCRIPTABLE virtual void setPassword(const QString &password);
     Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString &password);
-    Q_SCRIPTABLE virtual QString sieveCustomPassword(bool *userRejected = 0) const;
+    Q_SCRIPTABLE virtual QString sieveCustomPassword(bool *userRejected = Q_NULLPTR) const;
 
 protected slots:
     virtual void onWalletOpened(bool success);

@@ -62,7 +62,7 @@ public:
 
     virtual QDialog *createConfigureDialog(WId windowId) = 0;
 
-    void cleanup();
+    void cleanup() Q_DECL_OVERRIDE;
 
     virtual Settings *settings() const;
 
@@ -75,7 +75,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE QStringList serverCapabilities() const;
 
     // pseudo-virtual called by ResourceBase
-    QString dumpResourceToString() const;
+    QString dumpResourceToString() const Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void startIdleIfNeeded();
@@ -90,29 +90,29 @@ protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    virtual void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags);
-    virtual void itemsRemoved(const Akonadi::Item::List &items);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags) Q_DECL_OVERRIDE;
+    void itemsRemoved(const Akonadi::Item::List &items) Q_DECL_OVERRIDE;
     virtual void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source,
-                            const Akonadi::Collection &destination);
+                            const Akonadi::Collection &destination) Q_DECL_OVERRIDE;
 
-    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
-    virtual void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts);
-    virtual void collectionRemoved(const Akonadi::Collection &collection);
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
+    void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source,
-                                 const Akonadi::Collection &destination);
+                                 const Akonadi::Collection &destination) Q_DECL_OVERRIDE;
 
-    virtual void addSearch(const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection);
-    virtual void removeSearch(const Akonadi::Collection &resultCollection);
-    virtual void search(const QString &query, const Akonadi::Collection &collection);
+    void addSearch(const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection) Q_DECL_OVERRIDE;
+    void removeSearch(const Akonadi::Collection &resultCollection) Q_DECL_OVERRIDE;
+    void search(const QString &query, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-    virtual void doSetOnline(bool online);
+    void doSetOnline(bool online) Q_DECL_OVERRIDE;
 
     QChar separatorCharacter() const;
     void setSeparatorCharacter(const QChar &separator);
 
-    virtual void aboutToQuit();
+    void aboutToQuit() Q_DECL_OVERRIDE;
 
     virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
     virtual QString defaultName() const = 0;
