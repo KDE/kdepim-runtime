@@ -74,6 +74,7 @@ Comment[tr]=Kolab grup yazılımı klasörlerine ve Kolab IMAP Sunucusu'na eriş
 Comment[uk]=Надає доступ до тек групової роботи та електронної пошти на серверів IMAP Kolab.
 Comment[x-test]=xxProvides access to Kolab groupware folders and e-mail on a Kolab IMAP Server.xx
 Comment[zh_CN]=提供了对 Kolab 群件文件夹 和 Kolab IMAP 服务器上的电子邮件的访问功能。
+Comment[zh_TW]=提供存取某 Kolab IMAP 伺服器上的 Kolab 群組資料夾與電子郵件
 Type=AkonadiResource
 Exec=akonadi_kolab_resource
 Icon=kolab
