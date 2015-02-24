@@ -70,7 +70,7 @@ MixedMaildirResource::MixedMaildirResource(const QString &id)
     : ResourceBase(id), mStore(new MixedMaildirStore()), mCompactHelper(Q_NULLPTR)
 {
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
             Settings::self(), QDBusConnection::ExportAdaptors);
     connect(this, &MixedMaildirResource::reloadConfiguration, this, &MixedMaildirResource::reapplyConfiguration);
 

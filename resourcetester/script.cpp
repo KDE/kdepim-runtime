@@ -24,7 +24,7 @@ Script::Script()
 {
     action = new Kross::Action(this, "ResourceTester");
     connect(action, &Kross::Action::finished, this, &Script::finished);
-    action->addObject(this, QLatin1String("Script"));
+    action->addObject(this, QStringLiteral("Script"));
 }
 
 void Script::configure(const QString &path)

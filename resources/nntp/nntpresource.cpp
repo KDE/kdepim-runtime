@@ -53,7 +53,7 @@ NntpResource::NntpResource(const QString &id)
     AttributeFactory::registerAttribute<NntpCollectionAttribute>();
     changeRecorder()->fetchCollection(true);
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
             Settings::self(), QDBusConnection::ExportAdaptors);
 }
 

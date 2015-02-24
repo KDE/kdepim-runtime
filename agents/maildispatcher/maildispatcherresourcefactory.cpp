@@ -20,6 +20,6 @@
 MaildispatcherResourceFactory::MaildispatcherResourceFactory(QObject *parent)
     : Akonadi::AgentFactory< MailDispatcherAgent >("akonadi_maildispatcher_agent", parent)
 {
-    setObjectName(QLatin1String("akonadi_maildispatcher_agent"));
+    setObjectName(QStringLiteral("akonadi_maildispatcher_agent"));
 }
 

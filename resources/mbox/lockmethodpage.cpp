@@ -36,7 +36,7 @@ void LockMethodPage::checkAvailableLockMethods()
     // FIXME: I guess this whole checking makes only sense on linux machines.
 
     // Check for procmail lock method.
-    if (QStandardPaths::findExecutable(QLatin1String("lockfile")).isEmpty()) {
+    if (QStandardPaths::findExecutable(QStringLiteral("lockfile")).isEmpty()) {
         ui.procmail->setEnabled(false);
         if (ui.procmail->isChecked()) { // Select another lock method if necessary
             ui.mutt_dotlock->setChecked(true);
@@ -44,7 +44,7 @@ void LockMethodPage::checkAvailableLockMethods()
     }
 
     // Check for mutt lock method.
-    if (QStandardPaths::findExecutable(QLatin1String("mutt_dotlock")).isEmpty()) {
+    if (QStandardPaths::findExecutable(QStringLiteral("mutt_dotlock")).isEmpty()) {
         ui.mutt_dotlock->setEnabled(false);
         ui.mutt_dotlock_privileged->setEnabled(false);
         if (ui.mutt_dotlock->isChecked() || ui.mutt_dotlock_privileged->isChecked()) {

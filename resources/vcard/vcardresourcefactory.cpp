@@ -20,6 +20,6 @@
 VcardResourceFactory::VcardResourceFactory(QObject *parent)
     : Akonadi::AgentFactory< VCardResource >("akonadi_vcard_resource", parent)
 {
-    setObjectName(QLatin1String("akonadi_vcard_resource"));
+    setObjectName(QStringLiteral("akonadi_vcard_resource"));
 }
 
