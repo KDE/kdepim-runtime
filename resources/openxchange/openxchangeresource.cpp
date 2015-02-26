@@ -894,16 +894,16 @@ static Collection folderToCollection(const OXA::Folder &folder, const Collection
     switch (folder.module()) {
     case OXA::Folder::Calendar:
         mimeTypes.append(KCalCore::Event::eventMimeType());
-        attribute->setIconName(QString::fromLatin1("view-calendar"));
+        attribute->setIconName(QStringLiteral("view-calendar"));
         break;
     case OXA::Folder::Contacts:
         mimeTypes.append(KContacts::Addressee::mimeType());
         mimeTypes.append(KContacts::ContactGroup::mimeType());
-        attribute->setIconName(QString::fromLatin1("view-pim-contacts"));
+        attribute->setIconName(QStringLiteral("view-pim-contacts"));
         break;
     case OXA::Folder::Tasks:
         mimeTypes.append(KCalCore::Todo::todoMimeType());
-        attribute->setIconName(QString::fromLatin1("view-pim-tasks"));
+        attribute->setIconName(QStringLiteral("view-pim-tasks"));
         break;
     case OXA::Folder::Unbound:
         break;
@@ -1036,13 +1036,13 @@ void OpenXchangeResource::onFolderCreateJobFinished(KJob *job)
     EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     switch (folder.module()) {
     case OXA::Folder::Calendar:
-        attribute->setIconName(QString::fromLatin1("view-calendar"));
+        attribute->setIconName(QStringLiteral("view-calendar"));
         break;
     case OXA::Folder::Contacts:
-        attribute->setIconName(QString::fromLatin1("view-pim-contacts"));
+        attribute->setIconName(QStringLiteral("view-pim-contacts"));
         break;
     case OXA::Folder::Tasks:
-        attribute->setIconName(QString::fromLatin1("view-pim-tasks"));
+        attribute->setIconName(QStringLiteral("view-pim-tasks"));
         break;
     case OXA::Folder::Unbound:
         break;
