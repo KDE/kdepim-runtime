@@ -42,7 +42,8 @@ add_resource_iface( maildir/maildirresource.kcfg
 add_resource_iface( mixedmaildir/mixedmaildirresource.kcfg
                     org.kde.Akonadi.MixedMaildir.Settings MixedMaildirSettings )
 
-kde4_add_app_icon(kmail-migrator_srcs "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
+#file(GLOB ICONS_SRCS "${KDE4_ICON_DIR}/oxygen/*/apps/akonadi.png")
+#ecm_add_app_icon(kmail-migrator_srcs ICONS ${ICONS_SRCS})
 add_executable(kmail-migrator ${kmail-migrator_srcs} )
 target_link_libraries(kmail-migrator
   KF5::Mbox
