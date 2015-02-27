@@ -6,7 +6,7 @@ else()
   set(LIBRARY_TYPE)
 endif ()
 
-add_library(kdeqmlplugin MODULE ${LIBRARY_TYPE} 
+add_library(kdeqmlplugin MODULE  
   kdeintegration.cpp
   kdeintegrationplugin.cpp
 )

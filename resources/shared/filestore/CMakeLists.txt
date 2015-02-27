@@ -22,7 +22,7 @@ set(akonadi-filestore_SRCS
   storecompactjob.cpp
 )
 
-add_library(akonadi-filestore ${LIBRARY_TYPE} ${akonadi-filestore_SRCS} )
+add_library(akonadi-filestore  ${akonadi-filestore_SRCS} )
 generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
 
 target_link_libraries(akonadi-filestore

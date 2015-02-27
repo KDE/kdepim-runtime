@@ -13,7 +13,7 @@ set(kmindexreader_LIB_SRCS
  ../mixedmaildirresource_debug.cpp
 )
 
-add_library(kmindexreader ${LIBRARY_TYPE} ${kmindexreader_LIB_SRCS})
+add_library(kmindexreader  ${kmindexreader_LIB_SRCS})
 generate_export_header(kmindexreader BASE_NAME kmindexreader)
 
 target_link_libraries(kmindexreader

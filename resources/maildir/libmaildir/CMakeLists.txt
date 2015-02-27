@@ -7,7 +7,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
 
 set(maildir_LIB_SRCS keycache.cpp maildir.cpp libmaildir_debug.cpp)
 
-add_library(maildir ${LIBRARY_TYPE} ${maildir_LIB_SRCS})
+add_library(maildir  ${maildir_LIB_SRCS})
 generate_export_header(maildir BASE_NAME maildir)
 
 target_link_libraries(maildir KF5::Codecs KF5::AkonadiMime KF5::AkonadiCore)

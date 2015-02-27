@@ -41,7 +41,7 @@ set(akonadi-singlefileresource_SRCS
 
 ki18n_wrap_ui(akonadi-singlefileresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI} settingsdialog.ui)
 
-add_library(akonadi-singlefileresource ${LIBRARY_TYPE} ${akonadi-singlefileresource_SRCS} )
+add_library(akonadi-singlefileresource  ${akonadi-singlefileresource_SRCS} )
 generate_export_header(akonadi-singlefileresource BASE_NAME akonadi-singlefileresource)
 
 target_link_libraries(akonadi-singlefileresource

@@ -10,7 +10,7 @@ set(folderarchivesettings_SRCS
    folderarchiveaccountinfo.cpp 
 )
 
-add_library(folderarchivesettings ${LIBRARY_TYPE} ${folderarchivesettings_SRCS} )
+add_library(folderarchivesettings  ${folderarchivesettings_SRCS} )
 generate_export_header(folderarchivesettings BASE_NAME folderarchivesettings)
 
 target_link_libraries(folderarchivesettings
