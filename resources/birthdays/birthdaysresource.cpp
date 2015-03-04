@@ -325,7 +325,6 @@ KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
     Event::Ptr event(new Event());
     event->setDtStart(KDateTime(date, KDateTime::ClockTime));
     event->setDtEnd(KDateTime(date, KDateTime::ClockTime));
-    event->setHasEndDate(true);
     event->setAllDay(true);
     event->setTransparency(Event::Transparent);
 
