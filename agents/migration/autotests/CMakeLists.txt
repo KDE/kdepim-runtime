@@ -6,11 +6,7 @@ include_directories(
 add_executable(schedulertest schedulertest.cpp ../migrationscheduler.cpp ../migrationexecutor.cpp)
 target_link_libraries(schedulertest
     gidmigration
-    
-    
     KF5::AkonadiCore
-    
-    
     Qt5::Test
 )
 add_test(schedulertest schedulertest)

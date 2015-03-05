@@ -1,6 +1,3 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-)
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_icaldir_resource\")
 

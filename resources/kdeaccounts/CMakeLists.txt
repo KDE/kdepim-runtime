@@ -1,8 +1,3 @@
-include_directories(
-    ${kdepim-runtime_SOURCE_DIR}
-)
-
-
 
 ########### next target ###############
 
