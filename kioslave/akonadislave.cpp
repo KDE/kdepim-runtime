@@ -27,10 +27,7 @@
 #include <collectiondeletejob.h>
 #include <entitydisplayattribute.h>
 
-#include <QDebug>
 #include "akonadislave_debug.h"
-
-#include <QDebug>
 
 #include <QApplication>
 #include <KAboutData>
