@@ -41,6 +41,7 @@ Name[zh_TW]=vCard 目錄
 Icon=text-directory
 Comment=Loads contact from VCard Directory
 Comment[ca]=Carrega els contactes des d'un directori VCard
+Comment[cs]=Načítá data z adresáře vizitek
 Comment[en_GB]=Loads contact from VCard Directory
 Comment[es]=Carga contactos desde un directorio VCard
 Comment[fr]=Charge des données depuis un dossier « vCard »
