@@ -195,7 +195,7 @@ void SettingsDialog::slotButtonClicked(int button)
             ki18n("Makes your friends, events, notes, posts and messages on Facebook "
                   "available in KDE via Akonadi."),
             KAboutData::License_GPL_V2,
-            ki18n("Copyright (C) 2010,2011,2012,2013,2014 Akonadi Facebook Resource Developers"));
+            ki18n("Copyright (C) 2010,2011,2012,2013,2014,2015 Akonadi Facebook Resource Developers"));
 
         aboutData.addAuthor(ki18n("Martin Klapetek"),
                             ki18n("Developer"), "mklapetek@kde.org");
