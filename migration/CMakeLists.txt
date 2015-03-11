@@ -2,7 +2,7 @@ project(migration)
 
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${migration_SOURCE_DIR}")
-  find_package(ECM 1.3.0 CONFIG REQUIRED)
+  find_package(ECM 1.7.0 CONFIG REQUIRED)
   set(CMAKE_MODULE_PATH ${migration_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
   include(ECMPackageConfigHelpers)
@@ -12,8 +12,8 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${migration_SOURCE_DIR}")
   include(KDECMakeSettings)
   include(KDEFrameworkCompilerSettings)
   set(KDEPIMLIBS_LIB_VERSION "4.75.0")
-  set(KF5_VERSION "5.4.0")
-  set(QT_REQUIRED_VERSION "5.3.0")
+  set(KF5_VERSION "5.7.0")
+  set(QT_REQUIRED_VERSION "5.4.0")
 
   find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
   find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)

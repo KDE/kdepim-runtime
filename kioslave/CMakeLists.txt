@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.12)
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${kioslave_SOURCE_DIR}")
 
-find_package(ECM 1.3.0 CONFIG REQUIRED)
+find_package(ECM 1.7.0 CONFIG REQUIRED)
  set(CMAKE_MODULE_PATH ${resources_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
  include(ECMPackageConfigHelpers)
@@ -15,7 +15,7 @@ find_package(ECM 1.3.0 CONFIG REQUIRED)
 
  set(KDEPIMLIBS_LIB_VERSION "4.75.0")
  set(KF5_VERSION "5.4.0")
- set(QT_REQUIRED_VERSION "5.3.0")
+ set(QT_REQUIRED_VERSION "5.4.0")
 
 
  find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
