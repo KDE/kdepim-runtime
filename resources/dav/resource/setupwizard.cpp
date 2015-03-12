@@ -70,6 +70,7 @@ static QString settingsToUrl( const QWizard *wizard, const QString &protocol )
 
   QString pathPattern;
 
+
   QString pathPropertyName( QLatin1String("X-DavGroupware-") + protocol + QLatin1String("Path") );
   if ( service->property( pathPropertyName ).isNull() )
     return QString();
@@ -81,15 +82,24 @@ static QString settingsToUrl( const QWizard *wizard, const QString &protocol )
   localPart.remove( QRegExp( QLatin1String("@.*$") ) );
   pathPattern.replace( QLatin1String("$user$"), username );
   pathPattern.replace( QLatin1String("$localpart$"), localPart );
-
+  QString providerName;
+  if (!service->property("X-DavGroupware-Provider").isNull()) {
+      providerName = service->property("X-DavGroupware-Provider").toString();
+  }
   QString localPath = wizard->field( QLatin1String("installationPath") ).toString();
   if ( !localPath.isEmpty() ) {
-    if ( !localPath.startsWith( QLatin1Char('/') ) )
-      pathPattern.prepend( QLatin1Char('/') + localPath );
-    else
-      pathPattern.prepend( localPath );
+      if (providerName == QLatin1String("davical")) {
+          if (!localPath.endsWith(QLatin1Char('/') ))
+              pathPattern.append( localPath + QLatin1Char('/') );
+          else
+              pathPattern.append( localPath );
+      } else {
+          if ( !localPath.startsWith( QLatin1Char('/') ) )
+              pathPattern.prepend( QLatin1Char('/') + localPath );
+          else
+              pathPattern.prepend( localPath );
+      }
   }
-
   QUrl url;
 
   if ( !wizard->property( "usePredefinedProvider" ).isNull() ) {
@@ -123,7 +133,6 @@ static QString settingsToUrl( const QWizard *wizard, const QString &protocol )
         url.setPort( port );
     }
   }
-
   return url.toString();
 }
 
