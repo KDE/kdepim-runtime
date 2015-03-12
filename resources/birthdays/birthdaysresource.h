@@ -47,6 +47,7 @@ protected:
 
 private:
     void addPendingEvent(const KCalCore::Event::Ptr &event, const QString &remoteId);
+    void checkForUnknownCategories(const QString &categoryToCheck, KCalCore::Event::Ptr &event);
 
     KCalCore::Event::Ptr createBirthday(const Akonadi::Item &contactItem);
     KCalCore::Event::Ptr createAnniversary(const Akonadi::Item &contactItem);
