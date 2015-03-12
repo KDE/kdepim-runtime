@@ -46,6 +46,7 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
     bool retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts );
 
   private:
+    void checkForUnknownCategories(const QString &categoryToCheck, KCalCore::Event::Ptr &event);
     void addPendingEvent( const KCalCore::Event::Ptr &event, const QString &remoteId );
 
     KCalCore::Event::Ptr createBirthday( const Akonadi::Item &contactItem );

@@ -38,6 +38,8 @@
 #include <KLocalizedString>
 #include <KWindowSystem>
 
+#include <Akonadi/TagCreateJob>
+
 using namespace Akonadi;
 using namespace KABC;
 using namespace KCalCore;
@@ -252,7 +254,7 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item& cont
     ev->setCustomProperty( "KABC", "EMAIL-1", contact.preferredEmail() );
     ev->setSummary( summary );
 
-    ev->setCategories( i18n( "Birthday" ) );
+    checkForUnknownCategories(i18n( "Birthday" ), ev);
     return ev;
   }
   return KCalCore::Event::Ptr();
@@ -309,7 +311,7 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item& c
     event->setCustomProperty( "KABC", "EMAIL-1", contact.fullEmail() );
     event->setCustomProperty( "KABC", "ANNIVERSARY", QLatin1String("YES") );
     // insert category
-    event->setCategories( i18n( "Anniversary" ) );
+    checkForUnknownCategories(i18n( "Anniversary" ), event);
     return event;
   }
   return KCalCore::Event::Ptr();
@@ -346,6 +348,12 @@ KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate& date)
   return event;
 }
 
+void BirthdaysResource::checkForUnknownCategories(const QString &categoryToCheck, Event::Ptr &event)
+{
+    Akonadi::TagCreateJob *tagCreateJob = new Akonadi::TagCreateJob(Akonadi::Tag(categoryToCheck), this);
+    tagCreateJob->setMergeIfExisting(true);
+    event->setCategories(categoryToCheck);
+}
 
 AKONADI_RESOURCE_MAIN( BirthdaysResource )
 
