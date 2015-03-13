@@ -46,5 +46,7 @@ Name[zh_TW]=Davical
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 
+X-DavGroupware-Provider=davical
 X-DavGroupware-SupportedProtocols=CalDav
 X-DavGroupware-CalDavPath=/caldav.php
+

@@ -66,3 +66,7 @@ Type=QString
 
 [PropertyDef::X-DavGroupware-GroupDavPath]
 Type=QString
+
+[PropertyDef::X-DavGroupware-Provider]
+Type=QString
+

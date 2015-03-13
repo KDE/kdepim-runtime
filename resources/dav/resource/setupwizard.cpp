@@ -52,85 +52,84 @@ enum GroupwareServers {
 
 static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 {
-    QString desktopFilePath = wizard->property("providerDesktopFilePath").toString();
-    if (desktopFilePath.isEmpty()) {
-        return QString();
+  QString desktopFilePath = wizard->property( "providerDesktopFilePath" ).toString();
+  if ( desktopFilePath.isEmpty() )
+    return QString();
+
+  KService::Ptr service = KService::serviceByStorageId( desktopFilePath );
+  if ( !service )
+    return QString();
+
+  QStringList supportedProtocols = service->property( QLatin1String("X-DavGroupware-SupportedProtocols") ).toStringList();
+  if ( !supportedProtocols.contains( protocol ) )
+    return QString();
+
+  QString pathPattern;
+
+
+  QString pathPropertyName( QLatin1String("X-DavGroupware-") + protocol + QLatin1String("Path") );
+  if ( service->property( pathPropertyName ).isNull() )
+    return QString();
+
+  pathPattern.append( service->property( pathPropertyName ).toString() + QLatin1Char('/') );
+
+  QString username = wizard->field( QLatin1String("credentialsUserName") ).toString();
+  QString localPart( username );
+  localPart.remove( QRegExp( QLatin1String("@.*$") ) );
+  pathPattern.replace( QLatin1String("$user$"), username );
+  pathPattern.replace( QLatin1String("$localpart$"), localPart );
+  QString providerName;
+  if (!service->property("X-DavGroupware-Provider").isNull()) {
+      providerName = service->property("X-DavGroupware-Provider").toString();
+  }
+  QString localPath = wizard->field( QLatin1String("installationPath") ).toString();
+  if ( !localPath.isEmpty() ) {
+      if (providerName == QLatin1String("davical")) {
+          if (!localPath.endsWith(QLatin1Char('/') ))
+              pathPattern.append( localPath + QLatin1Char('/') );
+          else
+              pathPattern.append( localPath );
+      } else {
+          if ( !localPath.startsWith( QLatin1Char('/') ) )
+              pathPattern.prepend( QLatin1Char('/') + localPath );
+          else
+              pathPattern.prepend( localPath );
+      }
+  }
+  QUrl url;
+
+  if ( !wizard->property( "usePredefinedProvider" ).isNull() ) {
+    if ( service->property( QLatin1String("X-DavGroupware-ProviderUsesSSL") ).toBool() )
+      url.setScheme( QLatin1String("https") );
+    else
+      url.setScheme( QLatin1String("http") );
+
+    QString hostPropertyName( QLatin1String("X-DavGroupware-") + protocol + QLatin1String("Host") );
+    if ( service->property( hostPropertyName ).isNull() )
+      return QString();
+
+    url.setHost( service->property( hostPropertyName ).toString() );
+    url.setPath( pathPattern );
+  } else {
+    if ( wizard->field( QLatin1String("connectionUseSecureConnection") ).toBool() )
+      url.setScheme( QLatin1String("https") );
+    else
+      url.setScheme( QLatin1String("http") );
+
+    QString host = wizard->field( QLatin1String("connectionHost") ).toString();
+    if ( host.isEmpty() )
+      return QString();
+    QStringList hostParts = host.split( QLatin1Char(':') );
+    url.setHost( hostParts.at( 0 ) );
+    url.setPath( pathPattern );
+
+    if ( hostParts.size() == 2 ) {
+      int port = hostParts.at( 1 ).toInt();
+      if ( port )
+        url.setPort( port );
     }
-
-    KService::Ptr service = KService::serviceByStorageId(desktopFilePath);
-    if (!service) {
-        return QString();
-    }
-
-    QStringList supportedProtocols = service->property(QLatin1String("X-DavGroupware-SupportedProtocols")).toStringList();
-    if (!supportedProtocols.contains(protocol)) {
-        return QString();
-    }
-
-    QString pathPattern;
-
-    QString pathPropertyName(QLatin1String("X-DavGroupware-") + protocol + QLatin1String("Path"));
-    if (service->property(pathPropertyName).isNull()) {
-        return QString();
-    }
-
-    pathPattern.append(service->property(pathPropertyName).toString() + QLatin1Char('/'));
-
-    QString username = wizard->field(QLatin1String("credentialsUserName")).toString();
-    QString localPart(username);
-    localPart.remove(QRegExp(QLatin1String("@.*$")));
-    pathPattern.replace(QLatin1String("$user$"), username);
-    pathPattern.replace(QLatin1String("$localpart$"), localPart);
-
-    QString localPath = wizard->field(QLatin1String("installationPath")).toString();
-    if (!localPath.isEmpty()) {
-        if (!localPath.startsWith(QLatin1Char('/'))) {
-            pathPattern.prepend(QLatin1Char('/') + localPath);
-        } else {
-            pathPattern.prepend(localPath);
-        }
-    }
-
-    QUrl url;
-
-    if (!wizard->property("usePredefinedProvider").isNull()) {
-        if (service->property(QLatin1String("X-DavGroupware-ProviderUsesSSL")).toBool()) {
-            url.setScheme(QLatin1String("https"));
-        } else {
-            url.setScheme(QLatin1String("http"));
-        }
-
-        QString hostPropertyName(QLatin1String("X-DavGroupware-") + protocol + QLatin1String("Host"));
-        if (service->property(hostPropertyName).isNull()) {
-            return QString();
-        }
-
-        url.setHost(service->property(hostPropertyName).toString());
-        url.setPath(pathPattern);
-    } else {
-        if (wizard->field(QLatin1String("connectionUseSecureConnection")).toBool()) {
-            url.setScheme(QLatin1String("https"));
-        } else {
-            url.setScheme(QLatin1String("http"));
-        }
-
-        QString host = wizard->field(QLatin1String("connectionHost")).toString();
-        if (host.isEmpty()) {
-            return QString();
-        }
-        QStringList hostParts = host.split(QLatin1Char(':'));
-        url.setHost(hostParts.at(0));
-        url.setPath(pathPattern);
-
-        if (hostParts.size() == 2) {
-            int port = hostParts.at(1).toInt();
-            if (port) {
-                url.setPort(port);
-            }
-        }
-    }
-
-    return url.toString();
+  }
+  return url.toString();
 }
 
 /*
