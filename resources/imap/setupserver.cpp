@@ -384,10 +384,10 @@ void SetupServer::readSettings()
     if (rejected) {
         m_ui->password->setEnabled(false);
         KMessageBox::information(Q_NULLPTR, i18n("Could not access KWallet. "
-                                         "If you want to store the password permanently then you have to "
-                                         "activate it. If you do not "
-                                         "want to use KWallet, check the box below, but note that you will be "
-                                         "prompted for your password when needed."),
+                                 "If you want to store the password permanently then you have to "
+                                 "activate it. If you do not "
+                                 "want to use KWallet, check the box below, but note that you will be "
+                                 "prompted for your password when needed."),
                                  i18n("Do not use KWallet"), QLatin1String("warning_kwallet_disabled"));
     } else {
         m_ui->password->insert(password);

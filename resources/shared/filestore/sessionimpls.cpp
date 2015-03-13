@@ -41,74 +41,62 @@ using namespace Akonadi;
 class AbstractEnqueueVisitor : public FileStore::Job::Visitor
 {
 public:
-    bool visit(FileStore::Job *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::Job *job) Q_DECL_OVERRIDE {
         enqueue(job, "Job");
         return true;
     }
 
-    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "CollectionCreateJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "CollectionDeleteJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "CollectionFetchJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "CollectionModifyJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "CollectionMoveJob");
         return true;
     }
 
-    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "ItemCreateJob");
         return true;
     }
 
-    bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "ItemDeleteJob");
         return true;
     }
 
-    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "ItemFetchJob");
         return true;
     }
 
-    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "ItemModifyJob");
         return true;
     }
 
-    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "ItemMoveJob");
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE {
         enqueue(job, "StoreCompactJob");
         return true;
     }
@@ -164,8 +152,7 @@ public:
     QTimer mJobRunTimer;
 
 protected:
-    virtual void enqueue(FileStore::Job *job, const char *className) Q_DECL_OVERRIDE
-    {
+    virtual void enqueue(FileStore::Job *job, const char *className) Q_DECL_OVERRIDE {
         Q_UNUSED(className);
         mJobQueue.enqueue(job);
 

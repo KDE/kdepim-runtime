@@ -51,74 +51,62 @@ public:
     }
 
 public: // Job::Visitor interface implementation
-    bool visit(FileStore::Job *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::Job *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         return false ;
     }
@@ -143,10 +131,10 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE {
         if (job->type() == FileStore::CollectionFetchJob::Base &&
-                job->collection().remoteId() == mTopLevelCollection.remoteId()) {
+        job->collection().remoteId() == mTopLevelCollection.remoteId())
+        {
             mSession->notifyCollectionsReceived(job, Collection::List() << mTopLevelCollection);
             return true;
         }
@@ -174,62 +162,60 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1) {
+        if (mCollections.count() > 1)
+        {
             qCritical() << "Processing collections for CollectionCreateJob "
-                        "encountered more than one collection. Just processing the first one.";
+            "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionCreated(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1) {
+        if (mCollections.count() > 1)
+        {
             qCritical() << "Processing collections for CollectionDeleteJob "
-                        "encountered more than one collection. Just processing the first one.";
+            "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionDeleted(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE {
         mSession->notifyCollectionsReceived(job, mCollections);
         return true;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1) {
+        if (mCollections.count() > 1)
+        {
             qCritical() << "Processing collections for CollectionModifyJob "
-                        "encountered more than one collection. Just processing the first one.";
+            "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionModified(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1) {
+        if (mCollections.count() > 1)
+        {
             qCritical() << "Processing collections for CollectionMoveJob "
-                        "encountered more than one collection. Just processing the first one.";
+            "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionMoved(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE {
         mSession->notifyCollectionsChanged(job, mCollections);
         return true;
     }
@@ -259,50 +245,48 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE {
         Q_ASSERT(!mItems.isEmpty());
-        if (mItems.count() > 1) {
+        if (mItems.count() > 1)
+        {
             qCritical() << "Processing items for ItemCreateJob encountered more than one item. "
-                        "Just processing the first one.";
+            "Just processing the first one.";
         }
 
         mSession->notifyItemCreated(job, mItems[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE {
         mSession->notifyItemsReceived(job, mItems);
         return true;
     }
 
-    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE {
         Q_ASSERT(!mItems.isEmpty());
-        if (mItems.count() > 1) {
+        if (mItems.count() > 1)
+        {
             qCritical() << "Processing items for ItemModifyJob encountered more than one item. "
-                        "Just processing the first one.";
+            "Just processing the first one.";
         }
 
         mSession->notifyItemModified(job, mItems[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE {
         Q_ASSERT(!mItems.isEmpty());
-        if (mItems.count() > 1) {
+        if (mItems.count() > 1)
+        {
             qCritical() << "Processing items for ItemMoveJob encountered more than one item. "
-                        "Just processing the first one.";
+            "Just processing the first one.";
         }
 
         mSession->notifyItemMoved(job, mItems[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE
-    {
+    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE {
         mSession->notifyItemsChanged(job, mItems);
         return true;
     }

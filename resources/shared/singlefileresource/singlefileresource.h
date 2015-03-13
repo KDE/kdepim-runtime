@@ -63,13 +63,14 @@ public:
     /**
      * Read changes from the backend file.
      */
-    void readFile(bool taskContext = false) Q_DECL_OVERRIDE
-    {
-        if (KDirWatch::self()->contains(mCurrentUrl.toLocalFile())) {
+    void readFile(bool taskContext = false) Q_DECL_OVERRIDE {
+        if (KDirWatch::self()->contains(mCurrentUrl.toLocalFile()))
+        {
             KDirWatch::self()->removeFile(mCurrentUrl.toLocalFile());
         }
 
-        if (mSettings->path().isEmpty()) {
+        if (mSettings->path().isEmpty())
+        {
             const QString message = i18n("No file selected.");
             qWarning() << message;
             emit status(NotConfigured, i18n("The resource not configured yet"));
@@ -80,14 +81,16 @@ public:
         }
 
         mCurrentUrl = QUrl::fromLocalFile(mSettings->path());
-        if (mCurrentHash.isEmpty()) {
+        if (mCurrentHash.isEmpty())
+        {
             // First call to readFile() lets see if there is a hash stored in a
             // cache file. If both are the same than there is no need to load the
             // file and synchronize the resource.
             mCurrentHash = loadHash();
         }
 
-        if (mCurrentUrl.isLocalFile()) {
+        if (mCurrentUrl.isLocalFile())
+        {
             if (mSettings->displayName().isEmpty()
                     && (name().isEmpty() || name() == identifier()) && !mCurrentUrl.isEmpty()) {
                 setName(mCurrentUrl.fileName());
@@ -135,7 +138,8 @@ public:
 
             emit status(Idle, i18nc("@info:status", "Ready"));
         } else { // !mCurrentUrl.isLocalFile()
-            if (mDownloadJob) {
+            if (mDownloadJob)
+            {
                 const QString message = i18n("Another download is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -145,7 +149,8 @@ public:
                 return;
             }
 
-            if (mUploadJob) {
+            if (mUploadJob)
+            {
                 const QString message = i18n("Another file upload is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -168,22 +173,22 @@ public:
         }
 
         const QString display =  mSettings->displayName();
-        if (!display.isEmpty()) {
+        if (!display.isEmpty())
+        {
             setName(display);
         }
     }
 
-    void writeFile(const QVariant &task_context) Q_DECL_OVERRIDE
-    {
-        writeFile(task_context.canConvert<bool>() && task_context.toBool());
+    void writeFile(const QVariant &task_context) Q_DECL_OVERRIDE {
+        writeFile(task_context.canConvert<bool>()  &&task_context.toBool());
     }
 
     /**
      * Write changes to the backend file.
      */
-    void writeFile(bool taskContext = false) Q_DECL_OVERRIDE
-    {
-        if (mSettings->readOnly()) {
+    void writeFile(bool taskContext = false) Q_DECL_OVERRIDE {
+        if (mSettings->readOnly())
+        {
             const QString message = i18n("Trying to write to a read-only file: '%1'.", mSettings->path());
             qWarning() << message;
             emit error(message);
@@ -195,7 +200,8 @@ public:
 
         // We don't use the Settings::self()->path() here as that might have changed
         // and in that case it would probably cause data lose.
-        if (mCurrentUrl.isEmpty()) {
+        if (mCurrentUrl.isEmpty())
+        {
             const QString message = i18n("No file specified.");
             qWarning() << message;
             emit status(Broken, message);
@@ -205,7 +211,8 @@ public:
             return;
         }
 
-        if (mCurrentUrl.isLocalFile()) {
+        if (mCurrentUrl.isLocalFile())
+        {
             KDirWatch::self()->stopScan();
             const bool writeResult = writeToFile(mCurrentUrl.toLocalFile());
             // Update the hash so we can detect at fileChanged() if the file actually
@@ -224,7 +231,8 @@ public:
 
         } else {
             // Check if there is a download or an upload in progress.
-            if (mDownloadJob) {
+            if (mDownloadJob)
+            {
                 const QString message = i18n("A download is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -234,7 +242,8 @@ public:
                 return;
             }
 
-            if (mUploadJob) {
+            if (mUploadJob)
+            {
                 const QString message = i18n("Another file upload is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -245,7 +254,8 @@ public:
             }
 
             // Write te items to the locally cached file.
-            if (!writeToFile(cacheFile())) {
+            if (!writeToFile(cacheFile()))
+            {
                 qWarning() << "Error writing to file";
                 if (taskContext) {
                     cancelTask();
@@ -268,20 +278,22 @@ public:
 
             emit status(Running, i18n("Uploading cached file to remote location."));
         }
-        if (taskContext) {
+        if (taskContext)
+        {
             taskDone();
         }
     }
 
-    virtual void collectionChanged(const Collection &collection) Q_DECL_OVERRIDE
-    {
+    virtual void collectionChanged(const Collection &collection) Q_DECL_OVERRIDE {
         QString newName;
-        if (collection.hasAttribute<EntityDisplayAttribute>()) {
+        if (collection.hasAttribute<EntityDisplayAttribute>())
+        {
             EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
             newName = attr->displayName();
         }
         const QString oldName = mSettings->displayName();
-        if (newName != oldName) {
+        if (newName != oldName)
+        {
             mSettings->setDisplayName(newName);
             mSettings->save();
         }
@@ -317,12 +329,12 @@ public Q_SLOTS:
     /**
      * Display the configuration dialog for the resource.
      */
-    void configure(WId windowId) Q_DECL_OVERRIDE
-    {
+    void configure(WId windowId) Q_DECL_OVERRIDE {
         QPointer<SingleFileResourceConfigDialog<Settings> > dlg
-            = new SingleFileResourceConfigDialog<Settings>(windowId, mSettings);
+        = new SingleFileResourceConfigDialog<Settings>(windowId, mSettings);
         customizeConfigDialog(dlg);
-        if (dlg->exec() == QDialog::Accepted) {
+        if (dlg->exec() == QDialog::Accepted)
+        {
             if (dlg) {     // in case is got destroyed
                 configDialogAcceptedActions(dlg);
             }
@@ -354,8 +366,7 @@ protected:
         Q_UNUSED(dlg);
     }
 
-    void retrieveCollections() Q_DECL_OVERRIDE
-    {
+    void retrieveCollections() Q_DECL_OVERRIDE {
         Collection::List list;
         list << rootCollection();
         collectionsRetrieved(list);

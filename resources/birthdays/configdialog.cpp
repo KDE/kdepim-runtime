@@ -68,25 +68,25 @@ void ConfigDialog::loadTags()
 
 void ConfigDialog::save()
 {
-  mManager->updateSettings();
+    mManager->updateSettings();
 
-  Settings::self()->setFilterCategories(ui.FilterCategories->tagToStringList());
-  Settings::self()->save();
+    Settings::self()->setFilterCategories(ui.FilterCategories->tagToStringList());
+    Settings::self()->save();
 }
 
 void ConfigDialog::readConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), "ConfigDialog" );
-    const QSize size = group.readEntry( "Size", QSize(600, 400) );
-    if ( size.isValid() ) {
-        resize( size );
+    KConfigGroup group(KSharedConfig::openConfig(), "ConfigDialog");
+    const QSize size = group.readEntry("Size", QSize(600, 400));
+    if (size.isValid()) {
+        resize(size);
     }
 }
 
 void ConfigDialog::writeConfig()
 {
-    KConfigGroup group( KSharedConfig::openConfig(), "ConfigDialog" );
-    group.writeEntry( "Size", size() );
+    KConfigGroup group(KSharedConfig::openConfig(), "ConfigDialog");
+    group.writeEntry("Size", size());
     group.sync();
 }
 

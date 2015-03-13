@@ -257,7 +257,7 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item &cont
         ev->setCustomProperty("KABC", "EMAIL-1", contact.preferredEmail());
         ev->setSummary(summary);
 
-        checkForUnknownCategories(i18n( "Birthday" ), ev);
+        checkForUnknownCategories(i18n("Birthday"), ev);
         return ev;
     }
     return KCalCore::Event::Ptr();
@@ -316,7 +316,7 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &c
         event->setCustomProperty("KABC", "EMAIL-1", contact.fullEmail());
         event->setCustomProperty("KABC", "ANNIVERSARY", QLatin1String("YES"));
         // insert category
-        checkForUnknownCategories(i18n( "Anniversary" ), event);
+        checkForUnknownCategories(i18n("Anniversary"), event);
         return event;
     }
     return KCalCore::Event::Ptr();
@@ -359,7 +359,6 @@ void BirthdaysResource::checkForUnknownCategories(const QString &categoryToCheck
     tagCreateJob->setMergeIfExisting(true);
     event->setCategories(categoryToCheck);
 }
-
 
 AKONADI_RESOURCE_MAIN(BirthdaysResource)
 
