@@ -100,7 +100,7 @@ endif()
 
 install(TARGETS akonadi_kolabproxy_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-ecm_install_icons(ICONS hi64-apps-kolab.png DESTINATION ${KDE_INSTALL_ICONDIR})
+ecm_install_icons(ICONS 64-apps-kolab.png DESTINATION ${KDE_INSTALL_ICONDIR} THEME hicolor)
 
 #REACTIVATE IT
 if (BUILD_TESTING)
