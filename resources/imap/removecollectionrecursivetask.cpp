@@ -51,8 +51,8 @@ void RemoveCollectionRecursiveTask::doStart(KIMAP::Session *session)
     KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
     listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
     listJob->setQueriedNamespaces(serverNamespaces());
-    connect(listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-            this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)));
+    connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
+            this, &RemoveCollectionRecursiveTask::onMailBoxesReceived);
     connect(listJob, &KIMAP::ListJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
     listJob->start();
 }

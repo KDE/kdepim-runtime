@@ -67,7 +67,7 @@ int main(int argc, char **argv)
         return 2;
     }
 
-    InfoDialog *infoDialog = 0;
+    InfoDialog *infoDialog = Q_NULLPTR;
     if (parser.isSet(QLatin1String("interactive")) || parser.isSet(QLatin1String("interactive-on-change"))) {
         infoDialog = new InfoDialog(parser.isSet(QLatin1String("interactive-on-change")));
         Akonadi::Control::widgetNeedsAkonadi(infoDialog);
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
         infoDialog->migratorAdded();
         QObject::connect(migrator, SIGNAL(message(MigratorBase::MessageType,QString)),
                          infoDialog, SLOT(message(MigratorBase::MessageType,QString)));
-        QObject::connect(migrator, SIGNAL(destroyed()), infoDialog, SLOT(migratorDone()));
+        QObject::connect(migrator, &QObject::destroyed, infoDialog, &InfoDialog::migratorDone);
         QObject::connect(migrator, SIGNAL(progress(int)), infoDialog, SLOT(progress(int)));
     }
     QObject::connect(migrator, SIGNAL(stoppedProcessing()), &app, SLOT(quit));

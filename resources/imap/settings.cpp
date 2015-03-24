@@ -319,8 +319,8 @@ void Settings::renameRootCollection(const QString &newName)
     Akonadi::CollectionFetchJob *fetchJob =
         new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
     fetchJob->setProperty("collectionName", newName);
-    connect(fetchJob, SIGNAL(result(KJob*)),
-            this, SLOT(onRootCollectionFetched(KJob*)));
+    connect(fetchJob, &KJob::result,
+            this, &Settings::onRootCollectionFetched);
 }
 
 void Settings::onRootCollectionFetched(KJob *job)

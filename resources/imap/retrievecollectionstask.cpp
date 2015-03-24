@@ -82,8 +82,8 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
         KIMAP::ListJob *fullListJob = new KIMAP::ListJob(session);
         fullListJob->setIncludeUnsubscribed(true);
         fullListJob->setQueriedNamespaces(serverNamespaces());
-        connect(fullListJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-                this, SLOT(onFullMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)));
+        connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
+                this, &RetrieveCollectionsTask::onFullMailBoxesReceived);
         connect(fullListJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onFullMailBoxesReceiveDone);
         fullListJob->start();
     }
@@ -91,8 +91,8 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
     listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
     listJob->setQueriedNamespaces(serverNamespaces());
-    connect(listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-            this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)));
+    connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
+            this, &RetrieveCollectionsTask::onMailBoxesReceived);
     connect(listJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onMailBoxesReceiveDone);
     listJob->start();
 }

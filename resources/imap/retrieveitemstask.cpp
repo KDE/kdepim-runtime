@@ -164,8 +164,8 @@ void RetrieveItemsTask::triggerPreExpungeSelect(const QString &mailBox)
     KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
     select->setMailBox(mailBox);
     select->setCondstoreEnabled(serverSupportsCondstore());
-    connect(select, SIGNAL(result(KJob*)),
-            this, SLOT(onPreExpungeSelectDone(KJob*)));
+    connect(select, &KJob::result,
+            this, &RetrieveItemsTask::onPreExpungeSelectDone);
     select->start();
 }
 
@@ -183,8 +183,8 @@ void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
 void RetrieveItemsTask::triggerExpunge(const QString &mailBox)
 {
     KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob(m_session);
-    connect(expunge, SIGNAL(result(KJob*)),
-            this, SLOT(onExpungeDone(KJob*)));
+    connect(expunge, &KJob::result,
+            this, &RetrieveItemsTask::onExpungeDone);
     expunge->start();
 }
 
@@ -211,8 +211,8 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
     KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
     select->setMailBox(mailBox);
     select->setCondstoreEnabled(serverSupportsCondstore());
-    connect(select, SIGNAL(result(KJob*)),
-            this, SLOT(onFinalSelectDone(KJob*)));
+    connect(select, &KJob::result,
+            this, &RetrieveItemsTask::onFinalSelectDone);
     select->start();
 }
 

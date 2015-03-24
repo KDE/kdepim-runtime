@@ -81,8 +81,8 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     KLineEdit *searchLine = new KLineEdit(this);
     searchLine->setPlaceholderText(i18n("Search..."));
     searchLine->setClearButtonShown(true);
-    connect(searchLine, SIGNAL(textChanged(QString)),
-            this, SLOT(slotSetCollectionFilter(QString)));
+    connect(searchLine, &QLineEdit::textChanged,
+            this, &NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter);
 
     vbox->addWidget(searchLine);
 

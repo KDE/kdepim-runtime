@@ -58,8 +58,8 @@ ResourceTask::~ResourceTask()
 void ResourceTask::start(SessionPool *pool)
 {
     m_pool = pool;
-    connect(m_pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)),
-            this, SLOT(onSessionRequested(qint64,KIMAP::Session*,int,QString)));
+    connect(m_pool, &SessionPool::sessionRequestDone,
+            this, &ResourceTask::onSessionRequested);
 
     m_sessionRequestId = m_pool->requestSession();
 
@@ -92,8 +92,8 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
         return;
     }
 
-    disconnect(m_pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)),
-               this, SLOT(onSessionRequested(qint64,KIMAP::Session*,int,QString)));
+    disconnect(m_pool, &SessionPool::sessionRequestDone,
+               this, &ResourceTask::onSessionRequested);
     m_sessionRequestId = 0;
 
     if (errorCode != SessionPool::NoError) {
@@ -115,10 +115,10 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
 
     m_session = session;
 
-    connect(m_pool, SIGNAL(connectionLost(KIMAP::Session*)),
-            this, SLOT(onConnectionLost(KIMAP::Session*)));
-    connect(m_pool, SIGNAL(disconnectDone()),
-            this, SLOT(onPoolDisconnect()));
+    connect(m_pool, &SessionPool::connectionLost,
+            this, &ResourceTask::onConnectionLost);
+    connect(m_pool, &SessionPool::disconnectDone,
+            this, &ResourceTask::onPoolDisconnect);
 
     doStart(m_session);
 }

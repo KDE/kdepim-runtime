@@ -653,8 +653,8 @@ void ImapResourceBase::requestManualExpunge(qint64 collectionId)
                                               this);
         fetch->setFetchScope(scope);
 
-        connect(fetch, SIGNAL(result(KJob*)),
-                this, SLOT(onExpungeCollectionFetchDone(KJob*)));
+        connect(fetch, &KJob::result,
+                this, &ImapResourceBase::onExpungeCollectionFetchDone);
     }
 }
 
@@ -695,8 +695,8 @@ void ImapResourceBase::abortActivity()
 
 void ImapResourceBase::queueTask(ResourceTask *task)
 {
-    connect(task, SIGNAL(destroyed(QObject*)),
-            this, SLOT(taskDestroyed(QObject*)));
+    connect(task, &QObject::destroyed,
+            this, &ImapResourceBase::taskDestroyed);
     m_taskList << task;
 }
 
@@ -747,7 +747,7 @@ void ImapResourceBase::clearStatusMessage()
 void ImapResourceBase::modifyCollection(const Collection &col)
 {
     Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(col, this);
-    connect(modJob, SIGNAL(result(KJob*)), this, SLOT(onCollectionModifyDone(KJob*)));
+    connect(modJob, &KJob::result, this, &ImapResourceBase::onCollectionModifyDone);
 }
 
 void ImapResourceBase::onCollectionModifyDone(KJob *job)

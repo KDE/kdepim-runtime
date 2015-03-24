@@ -52,8 +52,8 @@ void SearchTask::doStart(KIMAP::Session *session)
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
     select->setMailBox(mailbox);
-    connect(select, SIGNAL(finished(KJob*)),
-            this, SLOT(onSelectDone(KJob*)));
+    connect(select, &KJob::finished,
+            this, &SearchTask::onSelectDone);
     select->start();
 }
 
@@ -201,8 +201,8 @@ void SearchTask::doSearch(KIMAP::Session *session)
     }
     searchJob->setTerm(term);
 
-    connect(searchJob, SIGNAL(finished(KJob*)),
-            this, SLOT(onSearchDone(KJob*)));
+    connect(searchJob, &KJob::finished,
+            this, &SearchTask::onSearchDone);
     searchJob->start();
 }
 

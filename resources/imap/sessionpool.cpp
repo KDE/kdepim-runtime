@@ -202,8 +202,8 @@ void SessionPool::killSession(KIMAP::Session *session, SessionTermination termin
 
     if (session->state() != KIMAP::Session::Disconnected && termination == LogoutSession) {
         KIMAP::LogoutJob *logout = new KIMAP::LogoutJob(session);
-        QObject::connect(logout, SIGNAL(result(KJob*)),
-                         session, SLOT(deleteLater()));
+        QObject::connect(logout, &KJob::result,
+                         session, &QObject::deleteLater);
         logout->start();
     } else {
         session->close();

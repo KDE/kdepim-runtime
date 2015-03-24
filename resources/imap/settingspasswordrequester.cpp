@@ -52,8 +52,8 @@ void SettingsPasswordRequester::requestPassword(RequestType request, const QStri
     if (request == WrongPasswordRequest) {
         QMetaObject::invokeMethod(this, "askUserInput", Qt::QueuedConnection, Q_ARG(QString, serverError));
     } else {
-        connect(m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
-                this, SLOT(onPasswordRequestCompleted(QString,bool)));
+        connect(m_resource->settings(), &Settings::passwordRequestCompleted,
+                this, &SettingsPasswordRequester::onPasswordRequestCompleted);
         m_resource->settings()->requestPassword();
     }
 }
@@ -100,8 +100,8 @@ void SettingsPasswordRequester::onDialogDestroyed()
 
 void SettingsPasswordRequester::slotNoClicked()
 {
-    connect(m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
-            this, SLOT(onPasswordRequestCompleted(QString,bool)));
+    connect(m_resource->settings(), &Settings::passwordRequestCompleted,
+            this, &SettingsPasswordRequester::onPasswordRequestCompleted);
     m_resource->settings()->requestManualAuth();
     m_requestDialog = Q_NULLPTR;
 }
@@ -144,8 +144,8 @@ void SettingsPasswordRequester::cancelPasswordRequests()
 
 void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &password, bool userRejected)
 {
-    disconnect(m_resource->settings(), SIGNAL(passwordRequestCompleted(QString,bool)),
-               this, SLOT(onPasswordRequestCompleted(QString,bool)));
+    disconnect(m_resource->settings(), &Settings::passwordRequestCompleted,
+               this, &SettingsPasswordRequester::onPasswordRequestCompleted);
 
     if (userRejected) {
         emit done(UserRejected);
