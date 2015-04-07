@@ -6,7 +6,7 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
 
-  find_package(ECM 1.7.0 CONFIG REQUIRED)
+  find_package(ECM 5.9.0 CONFIG REQUIRED)
   set(CMAKE_MODULE_PATH ${agents_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
 
   include(ECMPackageConfigHelpers)
@@ -17,7 +17,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
   include(KDEFrameworkCompilerSettings)
 
   set(KDEPIMLIBS_LIB_VERSION "4.75.0")
-  set(KF5_VERSION "5.7.0")
+  set(KF5_VERSION "5.9.0")
   set(QT_REQUIRED_VERSION "5.4.0")
   # KF5 package
   find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
