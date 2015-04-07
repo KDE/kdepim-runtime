@@ -1,1 +1,1 @@
-ecm_install_icons(ICONS hi128-apps-ox.png  hi16-apps-ox.png  hi32-apps-ox.png  hi48-apps-ox.png  hi64-apps-ox.png DESTINATION ${KDE_INSTALL_ICONDIR})
+ecm_install_icons(ICONS 128-apps-ox.png  16-apps-ox.png  32-apps-ox.png  48-apps-ox.png  64-apps-ox.png DESTINATION ${KDE_INSTALL_ICONDIR} THEME hicolor)
