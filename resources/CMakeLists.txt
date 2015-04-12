@@ -80,7 +80,6 @@ add_subdirectory( dav )
 add_subdirectory( ical )
 add_subdirectory( imap )
 if (KF5Kolab_FOUND AND Libkolabxml_FOUND)
-    add_subdirectory( kolabproxy )
     add_subdirectory( kolab )
 endif()
 
