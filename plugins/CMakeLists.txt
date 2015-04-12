@@ -43,11 +43,6 @@ add_library(akonadi_serializer_kcalcore MODULE ${SERIALIZER_TYPE} ${akonadi_seri
 target_link_libraries(akonadi_serializer_kcalcore  KF5::CalendarUtils KF5::CalendarCore KF5::AkonadiCore)
 install(TARGETS akonadi_serializer_kcalcore DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
-set(akonadi_serializer_bookmark_SRCS akonadi_serializer_bookmark.cpp)
-add_library(akonadi_serializer_bookmark MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_bookmark_SRCS})
-target_link_libraries(akonadi_serializer_bookmark  KF5::KIOCore KF5::AkonadiCore)
-install(TARGETS akonadi_serializer_bookmark DESTINATION ${KDE_INSTALL_PLUGINDIR})
-
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
 target_link_libraries(akonadi_serializer_contactgroup  KF5::Contacts KF5::AkonadiCore KF5::AkonadiContact)
@@ -71,7 +66,6 @@ install( FILES
   akonadi_serializer_addressee.desktop
   akonadi_serializer_mail.desktop
   akonadi_serializer_kcalcore.desktop
-  akonadi_serializer_bookmark.desktop
   akonadi_serializer_contactgroup.desktop
   akonadi_serializer_kalarm.desktop
 DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/plugins/serializer)
