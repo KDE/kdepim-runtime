@@ -31,10 +31,6 @@ set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mi
 find_package(Libkolabxml 1.0 QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
-# Libkfbapi
-find_package(KF5FbAPI 1.0 QUIET CONFIG)
-set_package_properties(LibKFbAPI PROPERTIES DESCRIPTION "A library to access Facebook services" URL "http://projects.kde.org/libkfbapi" TYPE OPTIONAL PURPOSE "LibKFbAPI is required to build Akonadi resources to access Facebook's contacts, events, notes and posts" )
-
 # KAccouunts bits
 find_package(KAccounts CONFIG)
 find_package(AccountsQt5 1.13 CONFIG)
@@ -92,10 +88,6 @@ if( KF5GAPI_FOUND )
   add_subdirectory( google )
   # Disabled in KDE 4.14 - too many issues for stable release
   #add_subdirectory( gmail )
-endif()
-
-if (KF5FbAPI_FOUND AND KAccounts_FOUND AND AccountsQt5_FOUND)
-  add_subdirectory(facebook)
 endif()
 
 add_subdirectory( shared )
