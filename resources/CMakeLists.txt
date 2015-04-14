@@ -17,12 +17,6 @@ find_package(KF5GAPI "4.72.0" CONFIG)
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 
-find_package(AccountsQt5 1.11 QUIET CONFIG)
-set_package_properties(AccountsQt PROPERTIES DESCRIPTION "Qt bindings for accounts-sso" URL "https://code.google.com/p/accounts-sso/" TYPE OPTIONAL PURPOSE "Required to support AccountsQt in different resources")
-
-find_package(SignOnQt5 8.56 QUIET CONFIG)
-set_package_properties(SignOnQt PROPERTIES DESCRIPTION "SignOn Qt bindings for accounts-sso" URL "https://code.google.com/p/accounts-sso/" TYPE OPTIONAL PURPOSE "Required to support SignOn in different resources")
-
 # Libkolab
 find_package(KF5Kolab "1.0.0" QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
@@ -30,11 +24,6 @@ set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mi
 # Libkolabxml
 find_package(Libkolabxml 1.0 QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
-
-# KAccouunts bits
-find_package(KAccounts CONFIG)
-find_package(AccountsQt5 1.13 CONFIG)
-find_package(SignOnQt5 8.57 CONFIG)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresource/
