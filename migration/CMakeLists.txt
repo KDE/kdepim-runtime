@@ -49,11 +49,7 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
 )
 
 
-add_subdirectory( kmail )
-add_subdirectory( kaddressbook )
 add_subdirectory( gid )
-#TODO port away kcal
-#add_subdirectory( knotes )
 
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${migration_SOURCE_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
