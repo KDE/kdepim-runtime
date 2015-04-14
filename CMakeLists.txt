@@ -133,9 +133,6 @@ set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "h
 option(KDEPIM_MOBILE_UI "Build UI for mobile devices instead of for desktops" FALSE)
 if (KDEPIM_MOBILE_UI)
   add_definitions( -DKDEPIM_MOBILE_UI )
-  if(NOT QT_QTDECLARATIVE_FOUND)
-    message(FATAL_ERROR "The QtDeclarative library is required for building the mobile UI")
-  endif()
 endif ()
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
@@ -148,7 +145,6 @@ add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(kcm)
 add_subdirectory(migration)
-add_subdirectory(qml)
 
 
 ## install the MIME type spec file for KDEPIM specific MIME types
