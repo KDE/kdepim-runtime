@@ -514,3 +514,4 @@ CollectionFetchJob *KAlarmResource::fetchCollection(const char *slot)
     return job;
 }
 
+AKONADI_RESOURCE_MAIN(KAlarmResource)

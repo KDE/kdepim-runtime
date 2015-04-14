@@ -14,7 +14,6 @@ set(kalarmresource_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared/icalresourcebase.cpp
     kalarmresource.cpp
     kalarmresource_debug.cpp
-    kalarmresourcefactory.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtyperadiowidget.cpp
 )
@@ -28,7 +27,7 @@ qt5_add_dbus_adaptor(kalarmresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
 add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml)
 
-add_library(akonadi_kalarm_resource MODULE ${kalarmresource_SRCS})
+add_executable(akonadi_kalarm_resource ${kalarmresource_SRCS})
 
 if( APPLE )
     set_target_properties(akonadi_kalarm_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -45,4 +44,4 @@ target_link_libraries(akonadi_kalarm_resource
                       akonadi-singlefileresource
                      )
 
-install(TARGETS akonadi_kalarm_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_kalarm_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

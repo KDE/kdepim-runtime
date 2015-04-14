@@ -40,17 +40,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
 
 endif()
 
-macro(kdepim_add_agent _target)
-    if(KDEPIM_BUILD_AGENTS_AS_PLUGINS)
-      add_definitions(-DKDEPIM_PLUGIN_AGENT)
-      add_library(${_target} MODULE ${ARGN})
-      install( TARGETS ${_target} DESTINATION ${KDE_INSTALL_PLUGINDIR}/ )
-    else()
-      add_executable(${_target} ${ARGN})
-      install(TARGETS ${_target} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-    endif()
-endmacro()
-
 add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
 add_subdirectory( migration )

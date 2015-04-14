@@ -9,7 +9,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_contacts_resource\")
 set( contactsresource_SRCS
   contactsresource.cpp
   settingsdialog.cpp
-  contactsresourcefactory.cpp
 )
 
 ki18n_wrap_ui(contactsresource_SRCS settingsdialog.ui)
@@ -21,7 +20,7 @@ qt5_add_dbus_adaptor(contactsresource_SRCS
 
 install( FILES contactsresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-add_library(akonadi_contacts_resource MODULE ${contactsresource_SRCS})
+add_executable(akonadi_contacts_resource ${contactsresource_SRCS})
 
 target_link_libraries(akonadi_contacts_resource
   KF5::AkonadiCore
@@ -30,4 +29,4 @@ target_link_libraries(akonadi_contacts_resource
   KF5::KIOCore
 )
 
-install(TARGETS akonadi_contacts_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

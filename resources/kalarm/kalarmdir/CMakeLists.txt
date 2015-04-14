@@ -11,7 +11,6 @@ set(kalarmdirresource_SRCS
     kalarmdirresource_debug.cpp
     settingsdialog.cpp
     kalarmdirresource.cpp
-    kalarmdirresourcefactory.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtypewidget.cpp
 )
@@ -25,7 +24,7 @@ qt5_add_dbus_adaptor(kalarmdirresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml settings.h Akonadi_KAlarm_Dir_Resource::Settings kalarmdirsettingsadaptor KAlarmDirSettingsAdaptor)
 add_custom_target(kalarmdir_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml)
 
-add_library(akonadi_kalarm_dir_resource MODULE ${kalarmdirresource_SRCS})
+add_executable(akonadi_kalarm_dir_resource ${kalarmdirresource_SRCS})
 
 if( APPLE )
     set_target_properties(akonadi_kalarm_dir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -41,4 +40,4 @@ target_link_libraries(akonadi_kalarm_dir_resource
                       KF5::AkonadiAgentBase 
                      )
 
-install(TARGETS akonadi_kalarm_dir_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_kalarm_dir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

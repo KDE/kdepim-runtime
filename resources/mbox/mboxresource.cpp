@@ -374,3 +374,4 @@ void MboxResource::onCollectionModify(KJob *job)
     itemAdded(item, c);
 }
 
+AKONADI_RESOURCE_MAIN(MboxResource)

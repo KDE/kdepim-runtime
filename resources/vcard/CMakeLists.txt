@@ -8,7 +8,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_vcard_resource\")
 
 set( vcardresource_SRCS
   vcardresource.cpp
-  vcardresourcefactory.cpp
 )
 
 install( FILES vcardresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -19,7 +18,7 @@ qt5_add_dbus_adaptor(vcardresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCard.Settings.xml settings.h Akonadi_VCard_Resource::Settings vcardsettingsadaptor VCardSettingsAdaptor
 )
 
-add_library(akonadi_vcard_resource MODULE ${vcardresource_SRCS})
+add_executable(akonadi_vcard_resource ${vcardresource_SRCS})
 
 add_subdirectory( wizard )
 
@@ -31,5 +30,5 @@ endif ()
 
 target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore KF5::KIOCore   KF5::AkonadiAgentBase KF5::Contacts akonadi-singlefileresource)
 
-install(TARGETS akonadi_vcard_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

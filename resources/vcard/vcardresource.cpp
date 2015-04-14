@@ -187,3 +187,4 @@ bool VCardResource::writeToFile(const QString &fileName)
     return true;
 }
 
+AKONADI_RESOURCE_MAIN(VCardResource)

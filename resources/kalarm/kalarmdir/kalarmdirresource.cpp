@@ -1155,3 +1155,5 @@ bool isFileValid(const QString &file)
            &&  file != QLatin1String(warningFile);
 }
 
+
+AKONADI_RESOURCE_MAIN(KAlarmDirResource)

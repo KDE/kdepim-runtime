@@ -17,9 +17,9 @@ add_subdirectory( autotests )
 add_definitions( -DSETTINGS_NAMESPACE=Akonadi_ICal_Resource )
 
 set( icalresource_SRCS
+  icalresource.cpp
   shared/icalresourcebase.cpp
   shared/icalresource.cpp
-  icalresourcefactory.cpp
 )
 
 install( FILES icalresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -30,7 +30,7 @@ qt5_add_dbus_adaptor(icalresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Akonadi_ICal_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
 )
 
-add_library(akonadi_ical_resource MODULE ${icalresource_SRCS})
+add_executable(akonadi_ical_resource ${icalresource_SRCS})
 
 if( APPLE )
   set_target_properties(akonadi_ical_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -40,4 +40,4 @@ endif ()
 
 target_link_libraries(akonadi_ical_resource KF5::AkonadiCore   KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
-install(TARGETS akonadi_ical_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_ical_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

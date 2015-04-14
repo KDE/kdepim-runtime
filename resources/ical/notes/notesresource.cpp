@@ -54,3 +54,4 @@ QString NotesResource::mimeType(const KCalCore::IncidenceBase::Ptr &) const
     return sNotesType;
 }
 
+AKONADI_RESOURCE_MAIN(NotesResource)

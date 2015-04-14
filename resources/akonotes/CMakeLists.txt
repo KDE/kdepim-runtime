@@ -17,7 +17,6 @@ set( akonotesresource_SRCS
   ../maildir/configdialog.cpp
   ../maildir/retrieveitemsjob.cpp
   akonotesresource.cpp
-  akonotesresourcefactory.cpp
 )
 
 
@@ -33,9 +32,9 @@ qt5_add_dbus_adaptor(akonotesresource_SRCS
 
 install( FILES akonotesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 
-add_library(akonadi_akonotes_resource MODULE ${akonotesresource_SRCS})
+add_executable(akonadi_akonotes_resource ${akonotesresource_SRCS})
 
 target_link_libraries(akonadi_akonotes_resource KF5::AkonadiCore KF5::AkonadiMime maildir  KF5::KIOCore KF5::Mime folderarchivesettings KF5::AkonadiAgentBase)
 
-install(TARGETS akonadi_akonotes_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_akonotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

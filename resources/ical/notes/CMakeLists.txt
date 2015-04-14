@@ -15,7 +15,6 @@ set( notesresource_SRCS
   ../shared/icalresourcebase.cpp
   ../shared/icalresource.cpp
   notesresource.cpp
-  notesresourcefactory.cpp
 )
 
 install( FILES notesresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -26,8 +25,8 @@ qt5_add_dbus_adaptor(notesresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Notes.Settings.xml settings.h Akonadi_Aknotes_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
 )
 
-add_library(akonadi_notes_resource MODULE ${notesresource_SRCS})
+add_executable(akonadi_notes_resource ${notesresource_SRCS})
 
 target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
-install(TARGETS akonadi_notes_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_notes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

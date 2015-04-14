@@ -12,7 +12,6 @@ set( maildispatcheragent_SRCS
   sendjob.cpp
   sentactionhandler.cpp
   storeresultjob.cpp
-  maildispatcherresourcefactory.cpp
 )
 
 ki18n_wrap_ui(maildispatcheragent_SRCS settings.ui)
@@ -29,7 +28,7 @@ if (RUNTIME_PLUGINS_STATIC)
   add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
 endif ()
 
-kdepim_add_agent(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
+add_executable(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_maildispatcher_agent akonadi_serializer_mail)
@@ -43,5 +42,6 @@ endif ()
 
 target_link_libraries(akonadi_maildispatcher_agent KF5::AkonadiCore KF5::AkonadiMime KF5::KIOCore KF5::Mime KF5::MailTransport KF5::AkonadiAgentBase KF5::NotifyConfig)
 
+install( TARGETS akonadi_maildispatcher_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES maildispatcheragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
 install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR} )

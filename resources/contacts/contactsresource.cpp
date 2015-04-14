@@ -547,3 +547,4 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
     return directory;
 }
 
+AKONADI_RESOURCE_MAIN(ContactsResource)

@@ -9,7 +9,6 @@ set( mboxresource_SRCS
   lockmethodpage.cpp
   deleteditemsattribute.cpp
   mboxresource.cpp
-  mboxresourcefactory.cpp
 )
 
 install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
@@ -24,7 +23,7 @@ qt5_add_dbus_adaptor(mboxresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Mbox.Settings.xml settings.h Settings
 )
 
-add_library(akonadi_mbox_resource MODULE ${mboxresource_SRCS})
+add_executable(akonadi_mbox_resource ${mboxresource_SRCS})
 
 if( APPLE )
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -34,7 +33,7 @@ endif ()
 
 target_link_libraries(akonadi_mbox_resource KF5::Mbox KF5::AkonadiCore KF5::AkonadiMime  KF5::KIOCore KF5::Mime KF5::AkonadiAgentBase akonadi-singlefileresource)
 
-install(TARGETS akonadi_mbox_resource DESTINATION ${KDE_INSTALL_PLUGINDIR})
+install(TARGETS akonadi_mbox_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 if (BUILD_TESTING)
    add_subdirectory(autotests)
 endif()

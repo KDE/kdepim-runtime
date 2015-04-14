@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2007 Till Adam <adam@kde.org>
+    Copyright (c) 2015 Daniel Vrátil <dvratil@redhat.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,33 +17,6 @@
     02110-1301, USA.
 */
 
-#include "akonotesresource.h"
+#include "shared/icalresource.h"
 
-#include <KLocalizedString>
-
-AkonotesResource::AkonotesResource(const QString &id)
-    : MaildirResource(id)
-{
-}
-
-AkonotesResource::~AkonotesResource()
-{
-}
-
-QString AkonotesResource::itemMimeType() const
-{
-    return QLatin1String("text/x-vnd.akonadi.note");
-}
-
-void AkonotesResource::configure(WId windowId)
-{
-    MaildirResource::configure(windowId);
-    synchronize(); // heavy to do it in the MaildirResource method, which already has sync on demand working properly
-}
-
-QString AkonotesResource::defaultResourceType()
-{
-    return QLatin1String("notes");
-}
-
-AKONADI_RESOURCE_MAIN(AkonotesResource)
+AKONADI_RESOURCE_MAIN(ICalResource)
