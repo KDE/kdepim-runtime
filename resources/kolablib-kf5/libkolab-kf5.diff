@@ -1,11 +1,11 @@
-commit ed1b57c7dbbbee2d7e385ae935f596764e8bd90d
+commit 7a6f2c9fdf8928e7ae392ebf105ed9f5983db616
 Author: Montel Laurent <montel@kde.org>
 Date:   Sun Sep 14 16:25:57 2014 +0200
 
     Port to KF5
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 89a555a..f89c661 100644
+index 89a555a..ed50237 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,26 +1,28 @@
@@ -16,7 +16,7 @@ index 89a555a..f89c661 100644
 +
 +# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
 +
-+find_package(ECM 1.3.0 CONFIG REQUIRED)
++find_package(ECM 5.9.0 CONFIG REQUIRED)
 +set(CMAKE_MODULE_PATH "${Libkolab_SOURCE_DIR}/cmake/modules/" ${ECM_MODULE_PATH})
 +include(GenerateExportHeader)
 +include(ECMGenerateHeaders)
@@ -52,7 +52,7 @@ index 89a555a..f89c661 100644
  # Versioning
  # x.y.z scheme
  # Development versions are only x.y
-@@ -30,57 +32,40 @@ endif()
+@@ -30,57 +32,39 @@ endif()
  # 0.1.0 (first release)
  # 0.1.1 (patch release for 0.1.0)
  # 0.2 (0.2 development version towards 0.2.0)
@@ -105,8 +105,7 @@ index 89a555a..f89c661 100644
 -    find_package(KdepimLibs 4.8 REQUIRED)
 +    set(KDEPIMLIBS_LIB_VERSION "4.71.0")
 +    find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-+    find_package(KF5Abc ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-+    find_package(KF5PimUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
++    find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 +    find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 +    find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 +    find_package(KF5AkonadiNotes ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
@@ -128,7 +127,7 @@ index 89a555a..f89c661 100644
  
  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -DQT_NO_EXCEPTIONS -fno-common -Woverloaded-virtual -fno-threadsafe-statics -fvisibility=hidden -Werror=return-type -fvisibility-inlines-hidden -fexceptions -UQT_NO_EXCEPTIONS -fPIC -g" )
  # message("${CMAKE_CXX_FLAGS}")
-@@ -91,123 +76,64 @@ if (USE_LIBCALENDARING)
+@@ -91,123 +75,63 @@ if (USE_LIBCALENDARING)
      set( KDE_LIBRARIES ${Libcalendaring_LIBRARIES} )
      message("${Libcalendaring_INCLUDE_DIRS} ${Libcalendaring_LIBRARIES}")
  else()
@@ -144,12 +143,11 @@ index 89a555a..f89c661 100644
 -        ${KDE4_KDECORE_LIBRARY}
 -        ${KDE4_KIO_LIBRARY}
 +        KF5::CalendarCore
-+        KF5::Abc
++        KF5::Contacts
 +        KF5::Mime
 +        KF5::AkonadiCore
 +        KF5::AkonadiNotes
 +        KF5::CalendarUtils
-+        KF5::PimUtils
 +        KF5::KIOCore
          )
  endif()
@@ -1275,6 +1273,48 @@ index 2a49bea..0000000
 -include(SWIGUtils)
 -generatePythonBindings(calendaring ../calendaring.i)
 \ No newline at end of file
+diff --git a/cmake/modules/LibkolabConfig.cmake.in b/cmake/modules/LibkolabConfig.cmake.in
+deleted file mode 100644
+index f80e6e2..0000000
+--- a/cmake/modules/LibkolabConfig.cmake.in
++++ /dev/null
+@@ -1,16 +0,0 @@
+-get_filename_component(Libkolab_CMAKE_DIR ${CMAKE_CURRENT_LIST_FILE} PATH) #get the directory where this *Config.cmake file is installed 
+-
+-# set the version
+-set(Libkolab_VERSION_MAJOR @Libkolab_VERSION_MAJOR@)
+-set(Libkolab_VERSION_MINOR @Libkolab_VERSION_MINOR@)
+-set(Libkolab_VERSION_PATCH @Libkolab_VERSION_PATCH@)
+-set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR}.${Libkolab_VERSION_PATCH} )
+-
+-# Set the include directory
+-set(Libkolab_INCLUDES "@CONF_INCLUDE_DIRS@")
+-
+-# import the exported targets
+-include(${Libkolab_CMAKE_DIR}/LibkolabTargets.cmake)
+-
+-# set the expected library variable
+-set(Libkolab_LIBRARIES kolab )
+diff --git a/cmake/modules/LibkolabConfigVersion.cmake.in b/cmake/modules/LibkolabConfigVersion.cmake.in
+deleted file mode 100644
+index fbd4d77..0000000
+--- a/cmake/modules/LibkolabConfigVersion.cmake.in
++++ /dev/null
+@@ -1,14 +0,0 @@
+-# Sets PACKAGE_VERSION_EXACT if the current version string and the requested
+-# version string are exactly the same and it sets PACKAGE_VERSION_COMPATIBLE
+-# if the current version is >= requested version.
+-
+-set(PACKAGE_VERSION @Libkolab_VERSION_MAJOR@.@Libkolab_VERSION_MINOR@.@Libkolab_VERSION_PATCH@)
+-
+-if("${PACKAGE_VERSION}" VERSION_LESS "${PACKAGE_FIND_VERSION}" )
+-   set(PACKAGE_VERSION_COMPATIBLE FALSE)
+-else("${PACKAGE_VERSION}" VERSION_LESS "${PACKAGE_FIND_VERSION}" )
+-   set(PACKAGE_VERSION_COMPATIBLE TRUE)
+-   if( "${PACKAGE_FIND_VERSION}" STREQUAL "${PACKAGE_VERSION}")
+-      set(PACKAGE_VERSION_EXACT TRUE)
+-   endif( "${PACKAGE_FIND_VERSION}" STREQUAL "${PACKAGE_VERSION}")
+-endif("${PACKAGE_VERSION}" VERSION_LESS "${PACKAGE_FIND_VERSION}" )
 diff --git a/conversion/CMakeLists.txt b/conversion/CMakeLists.txt
 deleted file mode 100644
 index 683de63..0000000
@@ -6223,12 +6263,12 @@ index 71a0e4b..0000000
 -    ObjectType parseMimeMessage(const KMime::Message::Ptr &msg);
 -
 -    /**
--     * Set to Q_DECL_OVERRIDE the autodetected object type, before parsing the message.
+-     * Set to override the autodetected object type, before parsing the message.
 -     */
 -    void setObjectType(ObjectType);
 -    
 -    /**
--     * Set to Q_DECL_OVERRIDE the autodetected version, before parsing the message.
+-     * Set to override the autodetected version, before parsing the message.
 -     */
 -    void setVersion(Version);
 -    
@@ -13161,10 +13201,10 @@ index 1941daa..0000000
 -};
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
 new file mode 100644
-index 0000000..17ea432
+index 0000000..9bdeee4
 --- /dev/null
 +++ b/src/CMakeLists.txt
-@@ -0,0 +1,106 @@
+@@ -0,0 +1,104 @@
 +
 +set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -DQT_NO_EXCEPTIONS -fno-common -Woverloaded-virtual -fno-threadsafe-statics -fvisibility=hidden -Werror=return-type -fvisibility-inlines-hidden -fexceptions -UQT_NO_EXCEPTIONS -fPIC -g" )
 +# message("${CMAKE_CXX_FLAGS}")
@@ -13246,8 +13286,6 @@ index 0000000..17ea432
 +    conversion/kabcconversion.h
 +    conversion/commonconversion.h
 +    freebusy/freebusy.h
-+
-+
 +    ${Kolab_HEADERS}
 +    DESTINATION ${KF5_INCLUDE_INSTALL_DIR}/Kolab/kolab
 +    COMPONENT Devel
@@ -14520,7 +14558,7 @@ index 0000000..fd4c191
 \ No newline at end of file
 diff --git a/src/conversion/kabcconversion.cpp b/src/conversion/kabcconversion.cpp
 new file mode 100644
-index 0000000..21be037
+index 0000000..64d8311
 --- /dev/null
 +++ b/src/conversion/kabcconversion.cpp
 @@ -0,0 +1,894 @@
@@ -14714,41 +14752,41 @@ index 0000000..21be037
 +int fromAddressType(int kabcType, bool &pref)
 +{
 +    int type = 0;
-+    if (kabcType & KABC::Address::Dom) {
++    if (kabcType & KContacts::Address::Dom) {
 +        Warning() << "domestic address is not supported";
 +    } 
-+    if (kabcType & KABC::Address::Intl) {
++    if (kabcType & KContacts::Address::Intl) {
 +        Warning() << "international address is not supported";
 +    } 
-+    if (kabcType & KABC::Address::Pref) {
++    if (kabcType & KContacts::Address::Pref) {
 +        pref = true;
 +    } 
-+    if (kabcType & KABC::Address::Postal) {
++    if (kabcType & KContacts::Address::Postal) {
 +        Warning() << "postal address is not supported";
 +    } 
-+    if (kabcType & KABC::Address::Parcel) {
++    if (kabcType & KContacts::Address::Parcel) {
 +        Warning() << "parcel is not supported";
 +    } 
-+    if (kabcType & KABC::Address::Home) {
++    if (kabcType & KContacts::Address::Home) {
 +        type |= Kolab::Address::Home;
 +    } 
-+    if (kabcType & KABC::Address::Work) {
++    if (kabcType & KContacts::Address::Work) {
 +        type |= Kolab::Address::Work;
 +    } 
 +    return type;
 +}
 +
-+KABC::Address::Type toAddressType(int types, bool pref)
++KContacts::Address::Type toAddressType(int types, bool pref)
 +{
-+    KABC::Address::Type type = 0;
++    KContacts::Address::Type type = 0;
 +    if (pref) {
-+        type |= KABC::Address::Pref;
++        type |= KContacts::Address::Pref;
 +    } 
 +    if (types & Kolab::Address::Home) {
-+        type |= KABC::Address::Home;
++        type |= KContacts::Address::Home;
 +    } 
 +    if (types & Kolab::Address::Work) {
-+        type |= KABC::Address::Work;
++        type |= KContacts::Address::Work;
 +    } 
 +    return type;
 +}
@@ -14756,91 +14794,91 @@ index 0000000..21be037
 +int fromPhoneType(int kabcType, bool &pref)
 +{
 +    int type = 0;
-+    if (kabcType & KABC::PhoneNumber::Home) {
++    if (kabcType & KContacts::PhoneNumber::Home) {
 +        type |= Kolab::Telephone::Home;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Work) {
++    if (kabcType & KContacts::PhoneNumber::Work) {
 +        type |= Kolab::Telephone::Work;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Msg) {
++    if (kabcType & KContacts::PhoneNumber::Msg) {
 +        type |= Kolab::Telephone::Text;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Pref) {
++    if (kabcType & KContacts::PhoneNumber::Pref) {
 +        pref = true;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Voice) {
++    if (kabcType & KContacts::PhoneNumber::Voice) {
 +        type |= Kolab::Telephone::Voice;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Fax) {
++    if (kabcType & KContacts::PhoneNumber::Fax) {
 +        type |= Kolab::Telephone::Fax;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Cell) {
++    if (kabcType & KContacts::PhoneNumber::Cell) {
 +        type |= Kolab::Telephone::Cell;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Video) {
++    if (kabcType & KContacts::PhoneNumber::Video) {
 +        type |= Kolab::Telephone::Video;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Bbs) {
++    if (kabcType & KContacts::PhoneNumber::Bbs) {
 +        Warning() << "mailbox number is not supported";
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Modem) {
++    if (kabcType & KContacts::PhoneNumber::Modem) {
 +        Warning() << "modem is not supported";
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Car) {
++    if (kabcType & KContacts::PhoneNumber::Car) {
 +        type |= Kolab::Telephone::Car;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Isdn) {
++    if (kabcType & KContacts::PhoneNumber::Isdn) {
 +        Warning() << "isdn number is not supported";
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Pcs) {
++    if (kabcType & KContacts::PhoneNumber::Pcs) {
 +        type |= Kolab::Telephone::Text;
 +    } 
-+    if (kabcType & KABC::PhoneNumber::Pager) {
++    if (kabcType & KContacts::PhoneNumber::Pager) {
 +        type |= Kolab::Telephone::Pager;
 +    }
 +    return type;
 +}
 +
-+KABC::PhoneNumber::Type toPhoneType(int types, bool pref)
++KContacts::PhoneNumber::Type toPhoneType(int types, bool pref)
 +{
-+    KABC::PhoneNumber::Type type = 0;
++    KContacts::PhoneNumber::Type type = 0;
 +    if (types & Kolab::Telephone::Home) {
-+        type |= KABC::PhoneNumber::Home;
++        type |= KContacts::PhoneNumber::Home;
 +    } 
 +    if (types & Kolab::Telephone::Work) {
-+        type |= KABC::PhoneNumber::Work;
++        type |= KContacts::PhoneNumber::Work;
 +    } 
 +    if (types & Kolab::Telephone::Text) {
-+        type |= KABC::PhoneNumber::Msg;
++        type |= KContacts::PhoneNumber::Msg;
 +    } 
 +    if (pref) {
-+        type |= KABC::PhoneNumber::Pref;
++        type |= KContacts::PhoneNumber::Pref;
 +    } 
 +    if (types & Kolab::Telephone::Voice) {
-+        type |= KABC::PhoneNumber::Voice;
++        type |= KContacts::PhoneNumber::Voice;
 +    } 
 +    if (types & Kolab::Telephone::Fax) {
-+        type |= KABC::PhoneNumber::Fax;
++        type |= KContacts::PhoneNumber::Fax;
 +    } 
 +    if (types & Kolab::Telephone::Cell) {
-+        type |= KABC::PhoneNumber::Cell;
++        type |= KContacts::PhoneNumber::Cell;
 +    } 
 +    if (types & Kolab::Telephone::Video) {
-+        type |= KABC::PhoneNumber::Video;
++        type |= KContacts::PhoneNumber::Video;
 +    } 
 +    if (types & Kolab::Telephone::Car) {
-+        type |= KABC::PhoneNumber::Car;
++        type |= KContacts::PhoneNumber::Car;
 +    } 
 +    if (types & Kolab::Telephone::Text) {
-+        type |= KABC::PhoneNumber::Pcs;
++        type |= KContacts::PhoneNumber::Pcs;
 +    } 
 +    if (types & Kolab::Telephone::Pager) {
-+        type |= KABC::PhoneNumber::Pager;
++        type |= KContacts::PhoneNumber::Pager;
 +    }
 +    return type;
 +}
 +
-+std::string fromPicture(const KABC::Picture &pic, std::string &mimetype)
++std::string fromPicture(const KContacts::Picture &pic, std::string &mimetype)
 +{    
 +    QByteArray input;
 +    QBuffer buffer( &input );
@@ -14881,7 +14919,7 @@ index 0000000..21be037
 +    return std::string(input.data(), input.size());
 +}
 +
-+KABC::Picture toPicture(const std::string &data, const std::string &mimetype) {
++KContacts::Picture toPicture(const std::string &data, const std::string &mimetype) {
 +    QImage img;
 +    bool ret = false;
 +    QByteArray type(mimetype.data(), mimetype.size());
@@ -14893,13 +14931,13 @@ index 0000000..21be037
 +    }
 +    if (!ret) {
 +        Warning() << "failed to load picture";
-+        return KABC::Picture();
++        return KContacts::Picture();
 +    }
 +    
-+    KABC::Picture logo(img);
++    KContacts::Picture logo(img);
 +    if (logo.isEmpty()) {
 +        Warning() << "failed to read picture";
-+        return KABC::Picture();
++        return KContacts::Picture();
 +    }
 +    return logo;
 +}
@@ -14946,9 +14984,9 @@ index 0000000..21be037
 +    return emailTypes;
 +}
 +
-+KABC::Addressee toKABC(const Kolab::Contact &contact)
++KContacts::Addressee toKABC(const Kolab::Contact &contact)
 +{
-+  KABC::Addressee addressee;
++  KContacts::Addressee addressee;
 +  addressee.setUid(fromStdString(contact.uid()));
 +  addressee.setCategories(toStringList(contact.categories()));
 +  //addressee.setName(fromStdString(contact.name()));//This one is only for compatiblity (and results in a non-existing name property)
@@ -14973,7 +15011,7 @@ index 0000000..21be037
 +  
 +  addressee.setNote(fromStdString(contact.note()));
 +  
-+  addressee.setSecrecy(KABC::Secrecy::Public); //We don't have any privacy setting in xCard
++  addressee.setSecrecy(KContacts::Secrecy::Public); //We don't have any privacy setting in xCard
 +  
 +  
 +  QString preferredEmail;
@@ -15076,7 +15114,7 @@ index 0000000..21be037
 +          if (index == contact.telephonesPreferredIndex()) {
 +              pref = true;
 +          }
-+          KABC::PhoneNumber number(fromStdString(tel.number()), toPhoneType(tel.types(), pref));
++          KContacts::PhoneNumber number(fromStdString(tel.number()), toPhoneType(tel.types(), pref));
 +          index++;
 +          addressee.insertPhoneNumber(number);
 +      }
@@ -15089,7 +15127,7 @@ index 0000000..21be037
 +          if (index == contact.addressPreferredIndex()) {
 +              pref = true;
 +          }
-+          KABC::Address adr(toAddressType(a.types(), pref));          
++          KContacts::Address adr(toAddressType(a.types(), pref));          
 +          adr.setLabel(fromStdString(a.label()));
 +          adr.setStreet(fromStdString(a.street()));
 +          adr.setLocality(fromStdString(a.locality()));
@@ -15128,7 +15166,7 @@ index 0000000..21be037
 +  return addressee;
 +}
 +
-+Kolab::Contact fromKABC(const KABC::Addressee &addressee)
++Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
 +{
 +    int prefNum = -1;
 +    int prefCounter = -1;
@@ -15203,7 +15241,7 @@ index 0000000..21be037
 +    std::vector<Kolab::Address> addresses;
 +    prefNum = -1;
 +    prefCounter = -1;
-+    foreach(const KABC::Address &a, addressee.addresses()) {
++    foreach(const KContacts::Address &a, addressee.addresses()) {
 +        Kolab::Address adr;
 +        bool pref = false;
 +        adr.setTypes(fromAddressType(a.type(), pref));
@@ -15243,7 +15281,7 @@ index 0000000..21be037
 +    std::vector <Kolab::Telephone> phones;
 +    prefNum = -1;
 +    prefCounter = -1;
-+    foreach (const KABC::PhoneNumber &n, addressee.phoneNumbers()) {
++    foreach (const KContacts::PhoneNumber &n, addressee.phoneNumbers()) {
 +        Kolab::Telephone p;
 +        p.setNumber(toStdString(n.number()));
 +        bool pref = false;
@@ -15370,7 +15408,7 @@ index 0000000..21be037
 +    return c;
 +}
 +
-+DistList fromKABC(const KABC::ContactGroup &cg)
++DistList fromKABC(const KContacts::ContactGroup &cg)
 +{
 +    DistList dl;
 +    dl.setName(toStdString(cg.name()));
@@ -15378,11 +15416,11 @@ index 0000000..21be037
 +    
 +    std::vector <Kolab::ContactReference > members;
 +    for (unsigned int i = 0; i < cg.dataCount(); i++) {
-+        const KABC::ContactGroup::Data &data = cg.data(i);
++        const KContacts::ContactGroup::Data &data = cg.data(i);
 +        members.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(data.email()), toStdString(data.name())));
 +    }
 +    for (unsigned int i = 0; i < cg.contactReferenceCount(); i++) {
-+        const KABC::ContactGroup::ContactReference &ref = cg.contactReference(i);
++        const KContacts::ContactGroup::ContactReference &ref = cg.contactReference(i);
 +        members.push_back(Kolab::ContactReference(Kolab::ContactReference::UidReference, toStdString(ref.uid())));
 +    }
 +    
@@ -15395,17 +15433,17 @@ index 0000000..21be037
 +    return dl;
 +}
 +
-+KABC::ContactGroup toKABC(const DistList &dl)
++KContacts::ContactGroup toKABC(const DistList &dl)
 +{
-+    KABC::ContactGroup cg(fromStdString(dl.name()));
++    KContacts::ContactGroup cg(fromStdString(dl.name()));
 +    cg.setId(fromStdString(dl.uid()));
 +    foreach(const Kolab::ContactReference &m, dl.members()) {
 +        switch (m.type()) {
 +            case Kolab::ContactReference::EmailReference:
-+                cg.append(KABC::ContactGroup::Data(fromStdString(m.name()), fromStdString(m.email())));
++                cg.append(KContacts::ContactGroup::Data(fromStdString(m.name()), fromStdString(m.email())));
 +                break;
 +            case Kolab::ContactReference::UidReference:
-+                cg.append(KABC::ContactGroup::ContactReference(fromStdString(m.uid())));
++                cg.append(KContacts::ContactGroup::ContactReference(fromStdString(m.uid())));
 +                break;
 +            default:
 +                Error() << "invalid contact reference";
@@ -15420,7 +15458,7 @@ index 0000000..21be037
 +} //Namespace
 diff --git a/src/conversion/kabcconversion.h b/src/conversion/kabcconversion.h
 new file mode 100644
-index 0000000..0b7863a
+index 0000000..648006b
 --- /dev/null
 +++ b/src/conversion/kabcconversion.h
 @@ -0,0 +1,43 @@
@@ -15447,8 +15485,8 @@ index 0000000..0b7863a
 +#include "kolab_export.h"
 +
 +#include <kolabcontact.h>
-+#include <kabc/addressee.h>
-+#include <kabc/contactgroup.h>
++#include <kcontacts/addressee.h>
++#include <kcontacts/contactgroup.h>
 +
 +namespace Kolab {
 +    /**
@@ -15457,11 +15495,11 @@ index 0000000..0b7863a
 +     */
 +    namespace Conversion {
 +
-+        KOLAB_EXPORT KABC::Addressee toKABC(const Kolab::Contact &);
-+        KOLAB_EXPORT Kolab::Contact fromKABC(const KABC::Addressee &);
++        KOLAB_EXPORT KContacts::Addressee toKABC(const Kolab::Contact &);
++        KOLAB_EXPORT Kolab::Contact fromKABC(const KContacts::Addressee &);
 +        
-+        KOLAB_EXPORT KABC::ContactGroup toKABC(const Kolab::DistList &);
-+        KOLAB_EXPORT Kolab::DistList fromKABC(const KABC::ContactGroup &);
++        KOLAB_EXPORT KContacts::ContactGroup toKABC(const Kolab::DistList &);
++        KOLAB_EXPORT Kolab::DistList fromKABC(const KContacts::ContactGroup &);
 +
 +    };
 +};
@@ -17483,7 +17521,7 @@ index 0000000..62156e7
 \ No newline at end of file
 diff --git a/src/icalendar/imip.cpp b/src/icalendar/imip.cpp
 new file mode 100644
-index 0000000..d7cea55
+index 0000000..93183ec
 --- /dev/null
 +++ b/src/icalendar/imip.cpp
 @@ -0,0 +1,239 @@
@@ -17510,7 +17548,7 @@ index 0000000..d7cea55
 +#include "imip.h"
 +
 +#include <kcalutils/incidenceformatter.h>
-+#include <kpimutils/email.h>
++#include <KEmailAddress>
 +#include <kmime/kmime_message.h>
 +#include <QDebug>
 +// #include <klocalizedstring.h>
@@ -17659,10 +17697,10 @@ index 0000000..d7cea55
 +
 +    // Build a nice address for this attendee including the CN.
 +    QString tname, temail;
-+    const QString username = KPIMUtils::quoteNameIfNecessary( a->name() );
++    const QString username =  KEmailAddress::quoteNameIfNecessary( a->name() );
 +    // ignore the return value from extractEmailAddressAndName() because
 +    // it will always be false since tusername does not contain "@domain".
-+    KPIMUtils::extractEmailAddressAndName( username, temail/*byref*/, tname/*byref*/ );
++    KEmailAddress::extractEmailAddressAndName( username, temail/*byref*/, tname/*byref*/ );
 +    tname += QLatin1String( " <" ) + email + QLatin1Char( '>' );
 +
 +    // Optional Participants and Non-Participants are copied on the email
@@ -18321,7 +18359,7 @@ index 0000000..e1d8e93
 +#endif
 diff --git a/src/kolabformat/kolabobject.cpp b/src/kolabformat/kolabobject.cpp
 new file mode 100644
-index 0000000..3fbe74a
+index 0000000..707b684
 --- /dev/null
 +++ b/src/kolabformat/kolabobject.cpp
 @@ -0,0 +1,755 @@
@@ -18456,15 +18494,15 @@ index 0000000..3fbe74a
 +        mOverrideObjectType(InvalidObject),
 +        mDoOverrideVersion(false)
 +    {
-+        mAddressee = KABC::Addressee();
++        mAddressee = KContacts::Addressee();
 +    }
 +
 +    ObjectType readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
 +    ObjectType readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
 +    
 +    KCalCore::Incidence::Ptr mIncidence;
-+    KABC::Addressee mAddressee;
-+    KABC::ContactGroup mContactGroup;
++    KContacts::Addressee mAddressee;
++    KContacts::ContactGroup mContactGroup;
 +    KMime::Message::Ptr mNote;
 +    QStringList mDictionary;
 +    QString mDictionaryLanguage;
@@ -18834,12 +18872,12 @@ index 0000000..3fbe74a
 +    return d->mIncidence;
 +}
 +
-+KABC::Addressee KolabObjectReader::getContact() const
++KContacts::Addressee KolabObjectReader::getContact() const
 +{
 +    return d->mAddressee;
 +}
 +
-+KABC::ContactGroup KolabObjectReader::getDistlist() const
++KContacts::ContactGroup KolabObjectReader::getDistlist() const
 +{
 +    return d->mContactGroup;
 +}
@@ -18881,9 +18919,9 @@ index 0000000..3fbe74a
 +    return i;
 +}
 +/*
-+KABC::Addressee normalizeContact(const KABC::Addressee &a)
++KContacts::Addressee normalizeContact(const KContacts::Addressee &a)
 +{
-+    KABC::Addressee addresee = a;
++    KContacts::Addressee addresee = a;
 +    Q_FOREACH (KCalCore::Attachment::Ptr attachment, addresee.photo()) {
 +        attachment->setUri(QString::fromLatin1("cid:")+QString::fromLatin1(KMime::uniqueString() + '@' + "kolab.resource.akonadi")); //Serialize the attachment as attachment with uri, referencing the created mime-part
 +    }
@@ -18975,7 +19013,7 @@ index 0000000..3fbe74a
 +}
 +
 +
-+KMime::Message::Ptr KolabObjectWriter::writeContact(const KABC::Addressee &addressee, Version v, const QString &productId)
++KMime::Message::Ptr KolabObjectWriter::writeContact(const KContacts::Addressee &addressee, Version v, const QString &productId)
 +{
 +    ErrorHandler::clearErrors();
 +    if (v == KolabV3) {
@@ -18988,7 +19026,7 @@ index 0000000..3fbe74a
 +    return contactToKolabFormat(contact, getProductId(productId));
 +}
 +
-+KMime::Message::Ptr KolabObjectWriter::writeDistlist(const KABC::ContactGroup &distlist, Version v, const QString &productId)
++KMime::Message::Ptr KolabObjectWriter::writeDistlist(const KContacts::ContactGroup &distlist, Version v, const QString &productId)
 +{
 +    ErrorHandler::clearErrors();
 +    if (v == KolabV3) {
@@ -19082,7 +19120,7 @@ index 0000000..3fbe74a
 +
 diff --git a/src/kolabformat/kolabobject.h b/src/kolabformat/kolabobject.h
 new file mode 100644
-index 0000000..c94f97d
+index 0000000..43d0c8b
 --- /dev/null
 +++ b/src/kolabformat/kolabobject.h
 @@ -0,0 +1,134 @@
@@ -19109,8 +19147,8 @@ index 0000000..c94f97d
 +#include <kolab_export.h>
 +
 +#include <AkonadiCore/tag.h>
-+#include <kabc/addressee.h>
-+#include <kabc/contactgroup.h>
++#include <kcontacts/addressee.h>
++#include <kcontacts/contactgroup.h>
 +#include <kcalcore/incidence.h>
 +#include <kcalcore/event.h>
 +#include <kcalcore/journal.h>
@@ -19154,12 +19192,12 @@ index 0000000..c94f97d
 +    ObjectType parseMimeMessage(const KMime::Message::Ptr &msg);
 +
 +    /**
-+     * Set to Q_DECL_OVERRIDE the autodetected object type, before parsing the message.
++     * Set to override the autodetected object type, before parsing the message.
 +     */
 +    void setObjectType(ObjectType);
 +    
 +    /**
-+     * Set to Q_DECL_OVERRIDE the autodetected version, before parsing the message.
++     * Set to override the autodetected version, before parsing the message.
 +     */
 +    void setVersion(Version);
 +    
@@ -19182,8 +19220,8 @@ index 0000000..c94f97d
 +    KCalCore::Todo::Ptr getTodo() const;
 +    KCalCore::Journal::Ptr getJournal() const;
 +    KCalCore::Incidence::Ptr getIncidence() const;
-+    KABC::Addressee getContact() const;
-+    KABC::ContactGroup getDistlist() const;
++    KContacts::Addressee getContact() const;
++    KContacts::ContactGroup getDistlist() const;
 +    KMime::Message::Ptr getNote() const;
 +    QStringList getDictionary(QString &lang) const;
 +    Freebusy getFreebusy() const;
@@ -19208,8 +19246,8 @@ index 0000000..c94f97d
 +    static KMime::Message::Ptr writeTodo(const KCalCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(),const QString &tz = QString());
 +    static KMime::Message::Ptr writeJournal(const KCalCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(),const QString &tz = QString());
 +    static KMime::Message::Ptr writeIncidence(const KCalCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(),const QString &tz = QString());
-+    static KMime::Message::Ptr writeContact(const KABC::Addressee &, Version v = KolabV3, const QString &productId = QString());
-+    static KMime::Message::Ptr writeDistlist(const KABC::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
++    static KMime::Message::Ptr writeContact(const KContacts::Addressee &, Version v = KolabV3, const QString &productId = QString());
++    static KMime::Message::Ptr writeDistlist(const KContacts::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
 +    static KMime::Message::Ptr writeNote(const KMime::Message::Ptr &, Version v = KolabV3, const QString &productId = QString());
 +    static KMime::Message::Ptr writeDictionary(const QStringList &, const QString &lang, Version v = KolabV3, const QString &productId = QString());
 +    static KMime::Message::Ptr writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
@@ -19246,7 +19284,7 @@ index 0000000..6de018d
 +%include "../kolabformat/mimeobject.h"
 diff --git a/src/kolabformat/mimeobject.cpp b/src/kolabformat/mimeobject.cpp
 new file mode 100644
-index 0000000..559cf75
+index 0000000..336104b
 --- /dev/null
 +++ b/src/kolabformat/mimeobject.cpp
 @@ -0,0 +1,162 @@
@@ -19370,7 +19408,7 @@ index 0000000..559cf75
 +}
 +
 +std::string MIMEObject::writeContact(const Contact &contact, Version version, const std::string &productId){
-+    KABC::Addressee kContact = Conversion::toKABC(contact);
++    KContacts::Addressee kContact = Conversion::toKABC(contact);
 +
 +    KMime::Message::Ptr msg = KolabObjectWriter().writeContact(kContact, version, QString::fromStdString(productId));
 +    msg->assemble();
@@ -19385,13 +19423,13 @@ index 0000000..559cf75
 +    msg->setContent(QByteArray(s.c_str()));
 +    msg->parse();
 +    
-+    KABC::Addressee contact = KolabObjectReader(msg).getContact();
++    KContacts::Addressee contact = KolabObjectReader(msg).getContact();
 +    
 +    return Conversion::fromKABC(contact);
 +}
 +
 +std::string MIMEObject::writeDistlist(const DistList &distlist, Version version, const std::string &productId){
-+    KABC::ContactGroup kDistlist = Conversion::toKABC(distlist);
++    KContacts::ContactGroup kDistlist = Conversion::toKABC(distlist);
 +
 +    KMime::Message::Ptr msg = KolabObjectWriter().writeDistlist(kDistlist, version, QString::fromStdString(productId));
 +    msg->assemble();
@@ -19406,7 +19444,7 @@ index 0000000..559cf75
 +    msg->setContent(QByteArray(s.c_str()));
 +    msg->parse();
 +    
-+    KABC::ContactGroup distlist = KolabObjectReader(msg).getDistlist();
++    KContacts::ContactGroup distlist = KolabObjectReader(msg).getDistlist();
 +    
 +    return Conversion::fromKABC(distlist);
 +}
@@ -19594,7 +19632,7 @@ index 0000000..5ff8bfe
 +
 diff --git a/src/kolabformat/v2helpers.cpp b/src/kolabformat/v2helpers.cpp
 new file mode 100644
-index 0000000..22b3cde
+index 0000000..ad3b7dc
 --- /dev/null
 +++ b/src/kolabformat/v2helpers.cpp
 @@ -0,0 +1,279 @@
@@ -19629,7 +19667,7 @@ index 0000000..22b3cde
 +#include "mime/mimeutils.h"
 +#include "kolabformat/errorhandler.h"
 +
-+#include <kabc/contactgroup.h>
++#include <kcontacts/contactgroup.h>
 +
 +#include <qdom.h>
 +#include <kdebug.h>
@@ -19681,13 +19719,13 @@ index 0000000..22b3cde
 +    return image;
 +}
 +
-+KABC::Addressee addresseeFromKolab( const QByteArray &xmlData, const KMime::Message::Ptr &data)
++KContacts::Addressee addresseeFromKolab( const QByteArray &xmlData, const KMime::Message::Ptr &data)
 +{
 +    if (!data) {
 +        Critical() << "empty message";
-+        return KABC::Addressee();
++        return KContacts::Addressee();
 +    }
-+    KABC::Addressee addressee;
++    KContacts::Addressee addressee;
 +//     Debug() << "xmlData " << xmlData;
 +    KolabV2::Contact contact(QString::fromUtf8(xmlData));
 +    QByteArray type;
@@ -19717,9 +19755,9 @@ index 0000000..22b3cde
 +    return addressee;
 +}
 +
-+KABC::Addressee addresseeFromKolab(const QByteArray &xmlData, QString &pictureAttachmentName, QString &logoAttachmentName, QString &soundAttachmentName)
++KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, QString &pictureAttachmentName, QString &logoAttachmentName, QString &soundAttachmentName)
 +{
-+    KABC::Addressee addressee;
++    KContacts::Addressee addressee;
 +    KolabV2::Contact contact(QString::fromUtf8(xmlData));
 +    pictureAttachmentName = contact.pictureAttachmentName();
 +    logoAttachmentName = contact.logoAttachmentName();
@@ -19781,9 +19819,9 @@ index 0000000..22b3cde
 +    return message;
 +}
 +
-+KABC::ContactGroup contactGroupFromKolab(const QByteArray &xmlData)
++KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData)
 +{
-+    KABC::ContactGroup contactGroup;
++    KContacts::ContactGroup contactGroup;
 +    //     kDebug() << "xmlData " << xmlData;
 +    KolabV2::DistributionList distList(QString::fromUtf8(xmlData));
 +    distList.saveTo(&contactGroup);
@@ -19879,7 +19917,7 @@ index 0000000..22b3cde
 +}
 diff --git a/src/kolabformat/v2helpers.h b/src/kolabformat/v2helpers.h
 new file mode 100644
-index 0000000..e047d35
+index 0000000..a6d1a61
 --- /dev/null
 +++ b/src/kolabformat/v2helpers.h
 @@ -0,0 +1,96 @@
@@ -19915,7 +19953,7 @@ index 0000000..e047d35
 +#include "mime/mimeutils.h"
 +#include "kolabformat/errorhandler.h"
 +
-+#include <kabc/contactgroup.h>
++#include <kcontacts/contactgroup.h>
 +
 +#include <qdom.h>
 +#include <qbuffer.h>
@@ -19961,12 +19999,12 @@ index 0000000..e047d35
 +    return ptr;
 +}
 +
-+KABC::Addressee addresseeFromKolab( const QByteArray &xmlData, const KMime::Message::Ptr &data);
-+KABC::Addressee addresseeFromKolab( const QByteArray &xmlData, QString &pictureAttachmentName, QString &logoAttachmentName, QString &soundAttachmentName);
++KContacts::Addressee addresseeFromKolab( const QByteArray &xmlData, const KMime::Message::Ptr &data);
++KContacts::Addressee addresseeFromKolab( const QByteArray &xmlData, QString &pictureAttachmentName, QString &logoAttachmentName, QString &soundAttachmentName);
 +
 +KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact& contact, const QString &productId);
 +
-+KABC::ContactGroup contactGroupFromKolab(const QByteArray &xmlData);
++KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData);
 +
 +KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList& distList, const QString &productId);
 +KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &creationDate);
@@ -19981,7 +20019,7 @@ index 0000000..e047d35
 +#endif
 diff --git a/src/kolabformat/xmlobject.cpp b/src/kolabformat/xmlobject.cpp
 new file mode 100644
-index 0000000..e9e2f7a
+index 0000000..884f600
 --- /dev/null
 +++ b/src/kolabformat/xmlobject.cpp
 @@ -0,0 +1,352 @@
@@ -20197,7 +20235,7 @@ index 0000000..e9e2f7a
 +        QString pictureAttachmentName;
 +        QString logoAttachmentName;
 +        QString soundAttachmentName;
-+        const KABC::Addressee addressee = addresseeFromKolab(xmlData, pictureAttachmentName, logoAttachmentName, soundAttachmentName);
++        const KContacts::Addressee addressee = addresseeFromKolab(xmlData, pictureAttachmentName, logoAttachmentName, soundAttachmentName);
 +        mPictureAttachmentName = Conversion::toStdString(pictureAttachmentName);
 +        mLogoAttachmentName = Conversion::toStdString(logoAttachmentName);
 +        mSoundAttachmentName = Conversion::toStdString(soundAttachmentName);
@@ -20211,7 +20249,7 @@ index 0000000..e9e2f7a
 +    mWrittenUID.clear();
 +    if (version == KolabV2) {
 +        //FIXME attachment names are hardcoded for now
-+        KABC::Addressee addressee = Conversion::toKABC(contact);
++        KContacts::Addressee addressee = Conversion::toKABC(contact);
 +        if (addressee.uid().isEmpty()) {
 +            addressee.setUid(createUuid());
 +        }
@@ -20228,7 +20266,7 @@ index 0000000..e9e2f7a
 +{
 +    if (version == KolabV2) {        
 +        const QByteArray xmlData(s.c_str(), s.size());
-+        const KABC::ContactGroup contactGroup = contactGroupFromKolab(xmlData);
++        const KContacts::ContactGroup contactGroup = contactGroupFromKolab(xmlData);
 +        return Conversion::fromKABC(contactGroup);
 +    }
 +    return Kolab::readDistlist(s, false);
@@ -20238,7 +20276,7 @@ index 0000000..e9e2f7a
 +{
 +    mWrittenUID.clear();
 +    if (version == KolabV2) {
-+        KABC::ContactGroup contactGroup = Conversion::toKABC(distlist);
++        KContacts::ContactGroup contactGroup = Conversion::toKABC(distlist);
 +        if (contactGroup.id().isEmpty()) {
 +            contactGroup.setId(createUuid());
 +        }
@@ -20464,7 +20502,7 @@ index 0000000..7c3071f
 +    PARENT_SCOPE)
 diff --git a/src/kolabformatV2/contact.cpp b/src/kolabformatV2/contact.cpp
 new file mode 100644
-index 0000000..0e59709
+index 0000000..e25bdfb
 --- /dev/null
 +++ b/src/kolabformatV2/contact.cpp
 @@ -0,0 +1,1214 @@
@@ -20502,7 +20540,7 @@ index 0000000..0e59709
 +
 +#include "contact.h"
 +
-+#include <kabc/addressee.h>
++#include <kcontacts/addressee.h>
 +#include <kdebug.h>
 +#include <QFile>
 +#include <float.h>
@@ -20515,7 +20553,7 @@ index 0000000..0e59709
 +static const char* s_unhandledTagAppName = "KOLABUNHANDLED"; // no hyphens in appnames!
 +
 +// saving (addressee->xml)
-+Contact::Contact( const KABC::Addressee* addr )
++Contact::Contact( const KContacts::Addressee* addr )
 +  : mHasGeo( false )
 +{
 +  setFields( addr );
@@ -21274,11 +21312,11 @@ index 0000000..0e59709
 +  return document.toString();
 +}
 +
-+static QString addressTypeToString( int /*KABC::Address::Type*/ type )
++static QString addressTypeToString( int /*KContacts::Address::Type*/ type )
 +{
-+  if ( type & KABC::Address::Home )
++  if ( type & KContacts::Address::Home )
 +    return "home";
-+  if ( type & KABC::Address::Work )
++  if ( type & KContacts::Address::Work )
 +    return "business";
 +  return "other";
 +}
@@ -21286,110 +21324,110 @@ index 0000000..0e59709
 +static int addressTypeFromString( const QString& type )
 +{
 +  if ( type == "home" )
-+    return KABC::Address::Home;
++    return KContacts::Address::Home;
 +  if ( type == "business" )
-+    return KABC::Address::Work;
++    return KContacts::Address::Work;
 +  // well, this shows "other" in the editor, which is what we want...
-+  return KABC::Address::Dom | KABC::Address::Intl | KABC::Address::Postal | KABC::Address::Parcel;
++  return KContacts::Address::Dom | KContacts::Address::Intl | KContacts::Address::Postal | KContacts::Address::Parcel;
 +}
 +
-+static QStringList phoneTypeToString( KABC::PhoneNumber::Type type )
++static QStringList phoneTypeToString( KContacts::PhoneNumber::Type type )
 +{
 +  // KABC has a bitfield, i.e. the same phone number can be used for work and home
 +  // and fax and cellphone etc. etc.
 +  // So when saving we need to create as many tags as bits that were set.
 +  QStringList types;
-+  if ( type & KABC::PhoneNumber::Fax ) {
-+    if ( type & KABC::PhoneNumber::Home )
++  if ( type & KContacts::PhoneNumber::Fax ) {
++    if ( type & KContacts::PhoneNumber::Home )
 +      types << "homefax";
-+    else // assume work -- if ( type & KABC::PhoneNumber::Work )
++    else // assume work -- if ( type & KContacts::PhoneNumber::Work )
 +      types << "businessfax";
-+    type = type & ~KABC::PhoneNumber::Home;
-+    type = type & ~KABC::PhoneNumber::Work;
++    type = type & ~KContacts::PhoneNumber::Home;
++    type = type & ~KContacts::PhoneNumber::Work;
 +  }
 +
 +  // To support both "home1" and "home2", map Home+Pref to home1
-+  if ( ( type & KABC::PhoneNumber::Home ) && ( type & KABC::PhoneNumber::Pref ) )
++  if ( ( type & KContacts::PhoneNumber::Home ) && ( type & KContacts::PhoneNumber::Pref ) )
 +  {
 +      types << "home1";
-+      type = type & ~KABC::PhoneNumber::Home;
-+      type = type & ~KABC::PhoneNumber::Pref;
++      type = type & ~KContacts::PhoneNumber::Home;
++      type = type & ~KContacts::PhoneNumber::Pref;
 +  }
 +  // To support both "business1" and "business2", map Work+Pref to business1
-+  if ( ( type & KABC::PhoneNumber::Work ) && ( type & KABC::PhoneNumber::Pref ) )
++  if ( ( type & KContacts::PhoneNumber::Work ) && ( type & KContacts::PhoneNumber::Pref ) )
 +  {
 +      types << "business1";
-+      type = type & ~KABC::PhoneNumber::Work;
-+      type = type & ~KABC::PhoneNumber::Pref;
++      type = type & ~KContacts::PhoneNumber::Work;
++      type = type & ~KContacts::PhoneNumber::Pref;
 +  }
 +
 +
-+  if ( type & KABC::PhoneNumber::Home )
++  if ( type & KContacts::PhoneNumber::Home )
 +    types << "home2";
-+  if ( type & KABC::PhoneNumber::Msg ) // Msg==messaging
++  if ( type & KContacts::PhoneNumber::Msg ) // Msg==messaging
 +    types << "company";
-+  if ( type & KABC::PhoneNumber::Work )
++  if ( type & KContacts::PhoneNumber::Work )
 +    types << "business2";
-+  if ( type & KABC::PhoneNumber::Pref )
++  if ( type & KContacts::PhoneNumber::Pref )
 +    types << "primary";
-+  if ( type & KABC::PhoneNumber::Voice )
++  if ( type & KContacts::PhoneNumber::Voice )
 +    types << "callback"; // ##
-+  if ( type & KABC::PhoneNumber::Cell )
++  if ( type & KContacts::PhoneNumber::Cell )
 +    types << "mobile";
-+  if ( type & KABC::PhoneNumber::Video )
++  if ( type & KContacts::PhoneNumber::Video )
 +    types << "radio"; // ##
-+  if ( type & KABC::PhoneNumber::Bbs )
++  if ( type & KContacts::PhoneNumber::Bbs )
 +    types << "ttytdd";
-+  if ( type & KABC::PhoneNumber::Modem )
++  if ( type & KContacts::PhoneNumber::Modem )
 +    types << "telex"; // #
-+  if ( type & KABC::PhoneNumber::Car )
++  if ( type & KContacts::PhoneNumber::Car )
 +    types << "car";
-+  if ( type & KABC::PhoneNumber::Isdn )
++  if ( type & KContacts::PhoneNumber::Isdn )
 +    types << "isdn";
-+  if ( type & KABC::PhoneNumber::Pcs )
++  if ( type & KContacts::PhoneNumber::Pcs )
 +    types << "assistant"; // ## Assistant is e.g. secretary
-+  if ( type & KABC::PhoneNumber::Pager )
++  if ( type & KContacts::PhoneNumber::Pager )
 +    types << "pager";
 +  return types;
 +}
 +
-+static KABC::PhoneNumber::Type phoneTypeFromString( const QString& type )
++static KContacts::PhoneNumber::Type phoneTypeFromString( const QString& type )
 +{
 +  if ( type == "homefax" )
-+    return KABC::PhoneNumber::Home | KABC::PhoneNumber::Fax;
++    return KContacts::PhoneNumber::Home | KContacts::PhoneNumber::Fax;
 +  if ( type == "businessfax" )
-+    return KABC::PhoneNumber::Work | KABC::PhoneNumber::Fax;
++    return KContacts::PhoneNumber::Work | KContacts::PhoneNumber::Fax;
 +  if ( type == "business1" )
-+    return KABC::PhoneNumber::Work | KABC::PhoneNumber::Pref;
++    return KContacts::PhoneNumber::Work | KContacts::PhoneNumber::Pref;
 +  if ( type == "business2" )
-+    return KABC::PhoneNumber::Work;
++    return KContacts::PhoneNumber::Work;
 +  if ( type == "home1" )
-+    return KABC::PhoneNumber::Home | KABC::PhoneNumber::Pref;
++    return KContacts::PhoneNumber::Home | KContacts::PhoneNumber::Pref;
 +  if ( type == "home2" )
-+    return KABC::PhoneNumber::Home;
++    return KContacts::PhoneNumber::Home;
 +  if ( type == "company" )
-+    return KABC::PhoneNumber::Msg;
++    return KContacts::PhoneNumber::Msg;
 +  if ( type == "primary" )
-+    return KABC::PhoneNumber::Pref;
++    return KContacts::PhoneNumber::Pref;
 +  if ( type == "callback" )
-+    return KABC::PhoneNumber::Voice;
++    return KContacts::PhoneNumber::Voice;
 +  if ( type == "mobile" )
-+    return KABC::PhoneNumber::Cell;
++    return KContacts::PhoneNumber::Cell;
 +  if ( type == "radio" )
-+    return KABC::PhoneNumber::Video;
++    return KContacts::PhoneNumber::Video;
 +  if ( type == "ttytdd" )
-+    return KABC::PhoneNumber::Bbs;
++    return KContacts::PhoneNumber::Bbs;
 +  if ( type == "telex" )
-+    return KABC::PhoneNumber::Modem;
++    return KContacts::PhoneNumber::Modem;
 +  if ( type == "car" )
-+    return KABC::PhoneNumber::Car;
++    return KContacts::PhoneNumber::Car;
 +  if ( type == "isdn" )
-+    return KABC::PhoneNumber::Isdn;
++    return KContacts::PhoneNumber::Isdn;
 +  if ( type == "assistant" )
-+    return KABC::PhoneNumber::Pcs;
++    return KContacts::PhoneNumber::Pcs;
 +  if ( type == "pager" )
-+    return KABC::PhoneNumber::Pager;
-+  return KABC::PhoneNumber::Home; // whatever
++    return KContacts::PhoneNumber::Pager;
++  return KContacts::PhoneNumber::Home; // whatever
 +}
 +
 +static const char* s_knownCustomFields[] = {
@@ -21406,7 +21444,7 @@ index 0000000..0e59709
 +
 +
 +// The saving is addressee -> Contact -> xml, this is the first part
-+void Contact::setFields( const KABC::Addressee* addressee )
++void Contact::setFields( const KContacts::Addressee* addressee )
 +{
 +  KolabBase::setFields( addressee );
 +
@@ -21436,7 +21474,7 @@ index 0000000..0e59709
 +
 +  const QStringList emails = addressee->emails();
 +  // Conversion problem here:
-+  // KABC::Addressee has only one full name and N addresses, but the XML format
++  // KContacts::Addressee has only one full name and N addresses, but the XML format
 +  // has N times (fullname+address). So we just copy the fullname over and ignore it on loading.
 +  for ( QStringList::ConstIterator it = emails.constBegin(); it != emails.constEnd(); ++it ) {
 +    Email email;
@@ -21450,8 +21488,8 @@ index 0000000..0e59709
 +
 +  // Now the real-world addresses
 +  QString preferredAddress = "home";
-+  const KABC::Address::List addresses = addressee->addresses();
-+  for ( KABC::Address::List::ConstIterator it = addresses.constBegin() ; it != addresses.constEnd(); ++it ) {
++  const KContacts::Address::List addresses = addressee->addresses();
++  for ( KContacts::Address::List::ConstIterator it = addresses.constBegin() ; it != addresses.constEnd(); ++it ) {
 +    Address address;
 +    address.kdeAddressType = (*it).type();
 +    address.type = addressTypeToString( address.kdeAddressType );
@@ -21464,14 +21502,14 @@ index 0000000..0e59709
 +    // ## TODO not in the XML format: extended address info.
 +    // ## KDE-specific tags? Or hiding those fields? Or adding a warning?
 +    addAddress( address );
-+    if ( address.kdeAddressType & KABC::Address::Pref ) {
++    if ( address.kdeAddressType & KContacts::Address::Pref ) {
 +      preferredAddress = address.type; // home, business or other
 +    }
 +  }
 +  setPreferredAddress( preferredAddress );
 +
-+  const KABC::PhoneNumber::List phones = addressee->phoneNumbers();
-+  for ( KABC::PhoneNumber::List::ConstIterator it = phones.constBegin(); it != phones.constEnd(); ++it ) {
++  const KContacts::PhoneNumber::List phones = addressee->phoneNumbers();
++  for ( KContacts::PhoneNumber::List::ConstIterator it = phones.constBegin(); it != phones.constEnd(); ++it ) {
 +    // Create a tag per phone type set in the bitfield
 +    QStringList types = phoneTypeToString( (*it).type() );
 +    for( QStringList::ConstIterator typit = types.constBegin(); typit != types.constEnd(); ++typit ) {
@@ -21510,7 +21548,7 @@ index 0000000..0e59709
 +    knownCustoms << QString::fromLatin1( *p );
 +  QStringList customs = addressee->customs();
 +  for( QStringList::ConstIterator it = customs.constBegin(); it != customs.constEnd(); ++it ) {
-+    // KABC::Addressee doesn't offer a real way to iterate over customs, other than splitting strings ourselves
++    // KContacts::Addressee doesn't offer a real way to iterate over customs, other than splitting strings ourselves
 +    // The format is "app-name:value".
 +    int pos = (*it).indexOf( '-' );
 +    if ( pos == -1 ) continue;
@@ -21548,7 +21586,7 @@ index 0000000..0e59709
 +
 +
 +// The loading is: xml -> Contact -> addressee, this is the second part
-+void Contact::saveTo( KABC::Addressee* addressee )
++void Contact::saveTo( KContacts::Addressee* addressee )
 +{
 +  // TODO: This needs the same set of TODOs as the setFields method
 +  KolabBase::saveTo( addressee );
@@ -21585,23 +21623,23 @@ index 0000000..0e59709
 +  // We need to store both the original attachment name and the picture data into the addressee.
 +  // This is important, otherwise we would save the image under another attachment name w/o deleting the original one!
 +  if ( !mPicture.isNull() ) {
-+    KABC::Picture picture( mPicture );
++    KContacts::Picture picture( mPicture );
 +    addressee->setPhoto( picture );
 +  }
 +  // Note that we must save the filename in all cases, so that removing the picture
 +  // actually deletes the attachment.
 +  addressee->insertCustom( "KOLAB", "PictureAttachmentName", mPictureAttachmentName );
 +  if ( !mLogo.isNull() ) {
-+    KABC::Picture picture( mLogo );
++    KContacts::Picture picture( mLogo );
 +    addressee->setLogo( picture );
 +  }
 +  addressee->insertCustom( "KOLAB", "LogoAttachmentName", mLogoAttachmentName );
 +  if ( !mSound.isNull() )
-+    addressee->setSound( KABC::Sound( mSound ) );
++    addressee->setSound( KContacts::Sound( mSound ) );
 +  addressee->insertCustom( "KOLAB", "SoundAttachmentName", mSoundAttachmentName );
 +
 +  if ( mHasGeo )
-+    addressee->setGeo( KABC::Geo( mLatitude, mLongitude ) );
++    addressee->setGeo( KContacts::Geo( mLatitude, mLongitude ) );
 +
 +  QStringList emailAddresses;
 +  for ( QList<Email>::ConstIterator it = mEmails.constBegin(); it != mEmails.constEnd(); ++it ) {
@@ -21611,14 +21649,14 @@ index 0000000..0e59709
 +  addressee->setEmails( emailAddresses );
 +
 +  for ( QList<Address>::ConstIterator it = mAddresses.constBegin(); it != mAddresses.constEnd(); ++it ) {
-+    KABC::Address address;
++    KContacts::Address address;
 +    int type = (*it).kdeAddressType;
 +    if ( type == -1 ) { // no kde-specific type available
 +      type = addressTypeFromString( (*it).type );
 +      if ( (*it).type == mPreferredAddress )
-+        type |= KABC::Address::Pref;
++        type |= KContacts::Address::Pref;
 +    }
-+    address.setType( static_cast<KABC::Address::Type>(type) );
++    address.setType( static_cast<KContacts::Address::Type>(type) );
 +    address.setStreet( (*it).street );
 +    address.setPostOfficeBox( (*it).pobox );
 +    address.setLocality( (*it).locality );
@@ -21629,7 +21667,7 @@ index 0000000..0e59709
 +  }
 +
 +  for ( QList<PhoneNumber>::ConstIterator it = mPhoneNumbers.constBegin(); it != mPhoneNumbers.constEnd(); ++it ) {
-+    KABC::PhoneNumber number;
++    KContacts::PhoneNumber number;
 +    number.setType( phoneTypeFromString( (*it).type ) );
 +    number.setNumber( (*it).number );
 +    addressee->insertPhoneNumber( number );
@@ -21642,7 +21680,7 @@ index 0000000..0e59709
 +  //kDebug() << addressee->customs();
 +}
 +
-+QImage Contact::loadPictureFromAddressee( const KABC::Picture& picture )
++QImage Contact::loadPictureFromAddressee( const KContacts::Picture& picture )
 +{
 +  QImage img;
 +  if ( !picture.isIntern() && !picture.url().isEmpty() ) {
@@ -21658,7 +21696,7 @@ index 0000000..0e59709
 +  return img;
 +}
 +
-+QByteArray KolabV2::Contact::loadSoundFromAddressee( const KABC::Sound& sound )
++QByteArray KolabV2::Contact::loadSoundFromAddressee( const KContacts::Sound& sound )
 +{
 +  QByteArray data;
 +  if ( !sound.isIntern() && !sound.url().isEmpty() ) {
@@ -21684,7 +21722,7 @@ index 0000000..0e59709
 +}
 diff --git a/src/kolabformatV2/contact.h b/src/kolabformatV2/contact.h
 new file mode 100644
-index 0000000..44ef26d
+index 0000000..a1bf620
 --- /dev/null
 +++ b/src/kolabformatV2/contact.h
 @@ -0,0 +1,278 @@
@@ -21726,7 +21764,7 @@ index 0000000..44ef26d
 +#include "kolabbase.h"
 +#include <qimage.h>
 +
-+namespace KABC {
++namespace KContacts {
 +  class Addressee;
 +  class Picture;
 +  class Sound;
@@ -21747,7 +21785,7 @@ index 0000000..44ef26d
 +    Address() : kdeAddressType( -1 )
 +    {
 +    }
-+    int kdeAddressType; // KABC::Address::Type
++    int kdeAddressType; // KContacts::Address::Type
 +    QString type;       // kolab-compliant address type: home, work or other
 +    QString street;
 +    QString pobox;
@@ -21757,11 +21795,11 @@ index 0000000..44ef26d
 +    QString country;
 +  };
 +
-+  explicit Contact( const KABC::Addressee* address );
++  explicit Contact( const KContacts::Addressee* address );
 +  Contact( const QString& xml );
 +  ~Contact();
 +
-+  void saveTo( KABC::Addressee* address );
++  void saveTo( KContacts::Addressee* address );
 +
 +  QString type() const { return "Contact"; }
 +
@@ -21891,7 +21929,7 @@ index 0000000..44ef26d
 +  QString saveXML() const;
 +
 +protected:
-+  void setFields( const KABC::Addressee* );
++  void setFields( const KContacts::Addressee* );
 +
 +private:
 +  bool loadNameAttribute( QDomElement& element );
@@ -21908,9 +21946,9 @@ index 0000000..44ef26d
 +  void loadCustomAttributes( QDomElement& element );
 +  void saveCustomAttributes( QDomElement& element ) const;
 +
-+  QImage loadPictureFromAddressee( const KABC::Picture& picture );
++  QImage loadPictureFromAddressee( const KContacts::Picture& picture );
 +
-+  QByteArray loadSoundFromAddressee( const KABC::Sound& sound );
++  QByteArray loadSoundFromAddressee( const KContacts::Sound& sound );
 +
 +  QString productID() const;
 +
@@ -21968,7 +22006,7 @@ index 0000000..44ef26d
 +#endif // KOLABCONTACT_H
 diff --git a/src/kolabformatV2/distributionlist.cpp b/src/kolabformatV2/distributionlist.cpp
 new file mode 100644
-index 0000000..6fe6873
+index 0000000..6f7a3c5
 --- /dev/null
 +++ b/src/kolabformatV2/distributionlist.cpp
 @@ -0,0 +1,231 @@
@@ -22005,8 +22043,8 @@ index 0000000..6fe6873
 +
 +#include "distributionlist.h"
 +
-+#include <kabc/addressee.h>
-+#include <kabc/contactgroup.h>
++#include <kcontacts/addressee.h>
++#include <kcontacts/contactgroup.h>
 +#include <kdebug.h>
 +
 +using namespace KolabV2;
@@ -22014,7 +22052,7 @@ index 0000000..6fe6873
 +static const char* s_unhandledTagAppName = "KOLABUNHANDLED"; // no hyphens in appnames!
 +
 +// saving (contactgroup->xml)
-+DistributionList::DistributionList( const KABC::ContactGroup* contactGroup )
++DistributionList::DistributionList( const KContacts::ContactGroup* contactGroup )
 +{
 +  setFields( contactGroup );
 +}
@@ -22156,7 +22194,7 @@ index 0000000..6fe6873
 +}
 +
 +// The saving is contactgroup -> DistributionList -> xml, this is the first part
-+void DistributionList::setFields( const KABC::ContactGroup* contactGroup )
++void DistributionList::setFields( const KContacts::ContactGroup* contactGroup )
 +{
 +  KolabBase::setFields( contactGroup );
 +
@@ -22164,7 +22202,7 @@ index 0000000..6fe6873
 +
 +  // explicit contact data
 +  for ( uint index = 0; index < contactGroup->dataCount(); ++index ) {
-+    const KABC::ContactGroup::Data& data = contactGroup->data( index );
++    const KContacts::ContactGroup::Data& data = contactGroup->data( index );
 +
 +    Member m;
 +    m.displayName = data.name();
@@ -22173,7 +22211,7 @@ index 0000000..6fe6873
 +    mDistrListMembers.append( m );
 +  }
 +  for ( uint index = 0; index < contactGroup->contactReferenceCount(); ++index ) {
-+    const KABC::ContactGroup::ContactReference& data = contactGroup->contactReference( index );
++    const KContacts::ContactGroup::ContactReference& data = contactGroup->contactReference( index );
 +
 +    Member m;
 +    m.uid = data.uid();
@@ -22186,7 +22224,7 @@ index 0000000..6fe6873
 +}
 +
 +// The loading is: xml -> DistributionList -> contactgroup, this is the second part
-+void DistributionList::saveTo( KABC::ContactGroup* contactGroup )
++void DistributionList::saveTo( KContacts::ContactGroup* contactGroup )
 +{
 +  KolabBase::saveTo( contactGroup );
 +
@@ -22195,9 +22233,9 @@ index 0000000..6fe6873
 +  QList<Member>::ConstIterator mit = mDistrListMembers.constBegin();
 +  for ( ; mit != mDistrListMembers.constEnd(); ++mit ) {
 +    if (!(*mit).uid.isEmpty()) {
-+      contactGroup->append(KABC::ContactGroup::ContactReference( (*mit).uid ));
++      contactGroup->append(KContacts::ContactGroup::ContactReference( (*mit).uid ));
 +    } else {
-+      contactGroup->append(KABC::ContactGroup::Data( (*mit).displayName, (*mit).email ));
++      contactGroup->append(KContacts::ContactGroup::Data( (*mit).displayName, (*mit).email ));
 +    }
 +  }
 +}
@@ -22205,7 +22243,7 @@ index 0000000..6fe6873
 +// kate: space-indent on; indent-width 2; replace-tabs on;
 diff --git a/src/kolabformatV2/distributionlist.h b/src/kolabformatV2/distributionlist.h
 new file mode 100644
-index 0000000..f646540
+index 0000000..088706b
 --- /dev/null
 +++ b/src/kolabformatV2/distributionlist.h
 @@ -0,0 +1,97 @@
@@ -22245,7 +22283,7 @@ index 0000000..f646540
 +
 +#include "kolabbase.h"
 +
-+namespace KABC {
++namespace KContacts {
 +  class ContactGroup;
 +}
 +
@@ -22253,11 +22291,11 @@ index 0000000..f646540
 +
 +class DistributionList : public KolabBase {
 +public:
-+  explicit DistributionList( const KABC::ContactGroup* contactGroup );
++  explicit DistributionList( const KContacts::ContactGroup* contactGroup );
 +  DistributionList( const QString& xml );
 +  ~DistributionList();
 +
-+  void saveTo( KABC::ContactGroup* contactGroup );
++  void saveTo( KContacts::ContactGroup* contactGroup );
 +
 +  QString type() const { return "DistributionList"; }
 +
@@ -22279,7 +22317,7 @@ index 0000000..f646540
 +  QString productID() const;
 +
 +protected:
-+  void setFields( const KABC::ContactGroup* );
++  void setFields( const KContacts::ContactGroup* );
 +
 +private:
 +  void loadDistrListMember( const QDomElement& element );
@@ -22308,7 +22346,7 @@ index 0000000..f646540
 +// kate: space-indent on; indent-width 2; replace-tabs on;
 diff --git a/src/kolabformatV2/event.cpp b/src/kolabformatV2/event.cpp
 new file mode 100644
-index 0000000..b09612d
+index 0000000..b439f8c
 --- /dev/null
 +++ b/src/kolabformatV2/event.cpp
 @@ -0,0 +1,221 @@
@@ -22523,7 +22561,7 @@ index 0000000..b09612d
 +{
 +  Incidence::saveTo( event );
 +
-+  event->setHasEndDate( mHasEndDate );
++  //PORT KF5 ? method removed event->setHasEndDate( mHasEndDate );
 +  if ( mHasEndDate ) {
 +    if ( mFloatingStatus == AllDay )
 +      // This is an all-day event. Don't timezone move this one
@@ -24133,7 +24171,7 @@ index 0000000..670c67a
 +#endif // KOLAB_JOURNAL_H
 diff --git a/src/kolabformatV2/kolabbase.cpp b/src/kolabformatV2/kolabbase.cpp
 new file mode 100644
-index 0000000..a51d254
+index 0000000..2d753b5
 --- /dev/null
 +++ b/src/kolabformatV2/kolabbase.cpp
 @@ -0,0 +1,500 @@
@@ -24172,8 +24210,8 @@ index 0000000..a51d254
 +
 +#include "kolabbase.h"
 +
-+#include <kabc/addressee.h>
-+#include <kabc/contactgroup.h>
++#include <kcontacts/addressee.h>
++#include <kcontacts/contactgroup.h>
 +#include <kcalcore/incidence.h>
 +#include <kcalcore/journal.h>
 +#include <ksystemtimezone.h>
@@ -24230,7 +24268,7 @@ index 0000000..a51d254
 +  // TODO: Attachments
 +}
 +
-+void KolabBase::setFields( const KABC::Addressee* addressee )
++void KolabBase::setFields( const KContacts::Addressee* addressee )
 +{
 +  // An addressee does not have a creation date, so somehow we should
 +  // make one, if this is a new entry
@@ -24264,16 +24302,16 @@ index 0000000..a51d254
 +  const QString newCreationDate = dateTimeToString( creationDate );
 +  if ( creationString != newCreationDate ) {
 +    // We modified the creation date, so store it for future reference
-+    const_cast<KABC::Addressee*>( addressee )
++    const_cast<KContacts::Addressee*>( addressee )
 +      ->insertCustom( "KOLAB", "CreationDate", newCreationDate );
 +    kDebug() <<"Creation date modified. New one:" << newCreationDate;
 +  }
 +
 +  switch( addressee->secrecy().type() ) {
-+  case KABC::Secrecy::Private:
++  case KContacts::Secrecy::Private:
 +    setSensitivity( Private );
 +    break;
-+  case KABC::Secrecy::Confidential:
++  case KContacts::Secrecy::Confidential:
 +    setSensitivity( Confidential );
 +    break;
 +  default:
@@ -24283,7 +24321,7 @@ index 0000000..a51d254
 +  // TODO: Attachments
 +}
 +
-+void KolabBase::saveTo( KABC::Addressee* addressee ) const
++void KolabBase::saveTo( KContacts::Addressee* addressee ) const
 +{
 +  addressee->setUid( uid() );
 +  addressee->setNote( body() );
@@ -24294,19 +24332,19 @@ index 0000000..a51d254
 +
 +  switch( sensitivity() ) {
 +  case Private:
-+    addressee->setSecrecy( KABC::Secrecy( KABC::Secrecy::Private ) );
++    addressee->setSecrecy( KContacts::Secrecy( KContacts::Secrecy::Private ) );
 +    break;
 +  case Confidential:
-+    addressee->setSecrecy( KABC::Secrecy( KABC::Secrecy::Confidential ) );
++    addressee->setSecrecy( KContacts::Secrecy( KContacts::Secrecy::Confidential ) );
 +    break;
 +  default:
-+    addressee->setSecrecy( KABC::Secrecy( KABC::Secrecy::Public ) );
++    addressee->setSecrecy( KContacts::Secrecy( KContacts::Secrecy::Public ) );
 +    break;
 +  }
 +  // TODO: Attachments
 +}
 +
-+void KolabBase::setFields( const KABC::ContactGroup* contactGroup )
++void KolabBase::setFields( const KContacts::ContactGroup* contactGroup )
 +{
 +  // A contactgroup does not have a creation date, so somehow we should
 +  // make one, if this is a new entry
@@ -24327,7 +24365,7 @@ index 0000000..a51d254
 +  setCreationDate( creationDate );
 +}
 +
-+void KolabBase::saveTo( KABC::ContactGroup* contactGroup ) const
++void KolabBase::saveTo( KContacts::ContactGroup* contactGroup ) const
 +{
 +  contactGroup->setId( uid() );
 +}
@@ -24639,7 +24677,7 @@ index 0000000..a51d254
 +}
 diff --git a/src/kolabformatV2/kolabbase.h b/src/kolabformatV2/kolabbase.h
 new file mode 100644
-index 0000000..5bdfdec
+index 0000000..001e1c6
 --- /dev/null
 +++ b/src/kolabformatV2/kolabbase.h
 @@ -0,0 +1,183 @@
@@ -24688,7 +24726,7 @@ index 0000000..5bdfdec
 +#include <QColor>
 +#include <qdom.h>
 +
-+namespace KABC {
++namespace KContacts {
 +  class Addressee;
 +  class ContactGroup;
 +}
@@ -24775,16 +24813,16 @@ index 0000000..5bdfdec
 +  void saveTo( const KCalCore::Incidence::Ptr & ) const;
 +
 +  /// Read all known fields from this contact
-+  void setFields( const KABC::Addressee* );
++  void setFields( const KContacts::Addressee* );
 +
 +  /// Save all known fields into this contact
-+  void saveTo( KABC::Addressee* ) const;
++  void saveTo( KContacts::Addressee* ) const;
 +
 +  /// Read all known fields from this contact group
-+  void setFields( const KABC::ContactGroup* );
++  void setFields( const KContacts::ContactGroup* );
 +
 +  /// Save all known fields into this contact groupd
-+  void saveTo( KABC::ContactGroup* ) const;
++  void saveTo( KContacts::ContactGroup* ) const;
 +
 +  // This just makes the initial dom tree with version and doctype
 +  static QDomDocument domTree();
@@ -25179,7 +25217,7 @@ index 0000000..3406ecc
 +#endif // KOLAB_NOTE_H
 diff --git a/src/kolabformatV2/task.cpp b/src/kolabformatV2/task.cpp
 new file mode 100644
-index 0000000..0e6772f
+index 0000000..80a2df3
 --- /dev/null
 +++ b/src/kolabformatV2/task.cpp
 @@ -0,0 +1,349 @@
@@ -25520,8 +25558,8 @@ index 0000000..0e6772f
 +
 +  task->setPercentComplete( percentCompleted() );
 +  task->setStatus( status() );
-+  task->setHasStartDate( hasStartDate() );
-+  task->setHasDueDate( hasDueDate() );
++  //PORT KF5 task->setHasStartDate( hasStartDate() );
++  //PORT KF5 task->setHasDueDate( hasDueDate() );
 +  if ( hasDueDate() )
 +    task->setDtDue( utcToLocal( dueDate() ) );
 +
@@ -25667,7 +25705,7 @@ index 0000000..da45caf
 +#endif // KOLAB_TASK_H
 diff --git a/src/mime/mimeutils.cpp b/src/mime/mimeutils.cpp
 new file mode 100644
-index 0000000..bc3e25c
+index 0000000..0eed3ba
 --- /dev/null
 +++ b/src/mime/mimeutils.cpp
 @@ -0,0 +1,303 @@
@@ -25693,7 +25731,7 @@ index 0000000..bc3e25c
 +#include <QtCore/qfile.h>
 +#include <qdom.h>
 +#include <kdebug.h>
-+#include <kabc/addressee.h>
++#include <kcontacts/addressee.h>
 +#include "kolabformat/kolabdefinitions.h"
 +#include "kolabformat/errorhandler.h"
 +#include "kolab_version.h"
@@ -25795,7 +25833,7 @@ index 0000000..bc3e25c
 +    return message;
 +}
 +
-+KMime::Message::Ptr createMessage(const KABC::Addressee &contact, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid)
++KMime::Message::Ptr createMessage(const KContacts::Addressee &contact, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid)
 +{
 +    KMime::Message::Ptr message = Mime::createMessage( xKolabType, v3, prodid );
 +    message->subject()->fromUnicodeString( contact.uid(), "utf-8" );
@@ -25976,7 +26014,7 @@ index 0000000..bc3e25c
 +}; //Namespace
 diff --git a/src/mime/mimeutils.h b/src/mime/mimeutils.h
 new file mode 100644
-index 0000000..c3053a9
+index 0000000..85436ec
 --- /dev/null
 +++ b/src/mime/mimeutils.h
 @@ -0,0 +1,59 @@
@@ -26005,7 +26043,7 @@ index 0000000..c3053a9
 +#include <kcalcore/incidence.h>
 +#include <kcalcore/event.h>
 +#include <kmime/kmime_message.h>
-+#include <kabc/addressee.h>
++#include <kcontacts/addressee.h>
 +class QDomDocument;
 +
 +namespace Kolab {
@@ -26027,7 +26065,7 @@ index 0000000..c3053a9
 +
 +///Generic serializing functions
 +KMime::Message::Ptr createMessage(const KCalCore::Incidence::Ptr &incidencePtr, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid);
-+KMime::Message::Ptr createMessage(const KABC::Addressee &contact, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid);
++KMime::Message::Ptr createMessage(const KContacts::Addressee &contact, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid);
 +KMime::Message::Ptr createMessage(const QString &subject, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid);
 +
 +KMime::Content* createExplanationPart();
@@ -26203,10 +26241,180 @@ index ef7a37f..8fb9e7d 100644
  
  addTest(formattest)
  addTest(upgradetest)
+diff --git a/tests/formattest.cpp b/tests/formattest.cpp
+index 84086ba..05689a5 100644
+--- a/tests/formattest.cpp
++++ b/tests/formattest.cpp
+@@ -29,8 +29,8 @@
+ #include <kolabformat.h>
+ 
+ #include <kcalcore/icalformat.h>
+-#include <kabc/vcardconverter.h>
+-#include <kabc/contactgrouptool.h>
++#include <kcontacts/vcardconverter.h>
++#include <kcontacts/contactgrouptool.h>
+ #include <akonadi/notes/noteutils.h>
+ 
+ #include "testutils.h"
+@@ -242,15 +242,15 @@ void FormatTest::testContact()
+     QCOMPARE(reader.getVersion(), version);
+     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
+     
+-    KABC::Addressee convertedAddressee = reader.getContact();
++    KContacts::Addressee convertedAddressee = reader.getContact();
+     QVERIFY(!convertedAddressee.isEmpty());
+     
+     //Parse vcard
+     QFile vcardFile( vcardFileName );
+     QVERIFY( vcardFile.open( QFile::ReadOnly ) );
+-    KABC::VCardConverter converter;
++    KContacts::VCardConverter converter;
+     const QByteArray &c = vcardFile.readAll();
+-    KABC::Addressee realAddressee = converter.parseVCard( c );
++    KContacts::Addressee realAddressee = converter.parseVCard( c );
+ 
+     // fix up the converted addressee for comparisson
+     convertedAddressee.setName( realAddressee.name() ); // name() apparently is something strange
+@@ -313,27 +313,27 @@ void FormatTest::testDistlist()
+     QCOMPARE(reader.getVersion(), version);
+     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
+     
+-    KABC::ContactGroup convertedAddressee = reader.getDistlist();
++    KContacts::ContactGroup convertedAddressee = reader.getDistlist();
+     
+     //Parse vcard
+     QFile vcardFile( vcardFileName );
+     QVERIFY( vcardFile.open( QFile::ReadOnly ) );
+-    KABC::VCardConverter converter;
++    KContacts::VCardConverter converter;
+     QByteArray c = vcardFile.readAll();
+     QBuffer data(&c);
+     data.open(QIODevice::ReadOnly);
+     
+-    KABC::ContactGroup realAddressee;
+-    KABC::ContactGroupTool::convertFromXml( &data, realAddressee );
++    KContacts::ContactGroup realAddressee;
++    KContacts::ContactGroupTool::convertFromXml( &data, realAddressee );
+ 
+     {
+         QBuffer expected;
+         expected.open(QIODevice::WriteOnly);
+-        KABC::ContactGroupTool::convertToXml(realAddressee, &expected);
++        KContacts::ContactGroupTool::convertToXml(realAddressee, &expected);
+         
+         QBuffer converted;
+         converted.open(QIODevice::WriteOnly);
+-        KABC::ContactGroupTool::convertToXml(convertedAddressee, &converted);
++        KContacts::ContactGroupTool::convertToXml(convertedAddressee, &converted);
+         
+         showDiff(expected.buffer(), converted.buffer());
+     }
+@@ -425,8 +425,8 @@ void FormatTest::generateMimefile()
+     
+ //     QFile vcardFile( getPath("v3/contacts/complex.vcf") );
+ //     QVERIFY( vcardFile.open( QFile::ReadOnly ) );
+-//     KABC::VCardConverter converter;
+-//     const KABC::Addressee realAddressee = converter.parseVCard( vcardFile.readAll() );
++//     KContacts::VCardConverter converter;
++//     const KContacts::Addressee realAddressee = converter.parseVCard( vcardFile.readAll() );
+ // 
+ //     kDebug() << realAddressee.photo().data();
+ // 
+@@ -446,8 +446,8 @@ void FormatTest::generateVCard()
+ //     Kolab::KolabObjectReader reader;
+ //     Kolab::ObjectType t = reader.parseMimeMessage(msg);
+ // 
+-//     KABC::Addressee convertedAddressee = reader.getContact();
+-//     KABC::VCardConverter converter;
++//     KContacts::Addressee convertedAddressee = reader.getContact();
++//     KContacts::VCardConverter converter;
+ //     qDebug() << converter.createVCard(convertedAddressee);
+ 
+ //     bool ok = false;
+@@ -456,10 +456,10 @@ void FormatTest::generateVCard()
+ //     Kolab::KolabObjectReader reader;
+ //     Kolab::ObjectType t = reader.parseMimeMessage(msg);
+ // 
+-//     KABC::ContactGroup convertedAddressee = reader.getDistlist();
++//     KContacts::ContactGroup convertedAddressee = reader.getDistlist();
+ //     QBuffer buf;
+ //     buf.open(QIODevice::WriteOnly);
+-//     KABC::ContactGroupTool::convertToXml(convertedAddressee, &buf);
++//     KContacts::ContactGroupTool::convertToXml(convertedAddressee, &buf);
+ //     qDebug() << buf.buffer();
+ }
+ 
+diff --git a/tests/kcalconversiontest.cpp b/tests/kcalconversiontest.cpp
+index c62a8e0..2b3fa73 100644
+--- a/tests/kcalconversiontest.cpp
++++ b/tests/kcalconversiontest.cpp
+@@ -23,7 +23,7 @@
+ #include <ksystemtimezone.h>
+ #include <kolabcontact.h>
+ #include <kcalcore/recurrence.h>
+-#include <kabc/addressee.h>
++#include <kcontacts/addressee.h>
+ 
+ #include "conversion/kcalconversion.h"
+ #include "conversion/kcalconversion.cpp"
+@@ -501,11 +501,11 @@ void KCalConversionTest::testJournalConversion()
+ 
+ void KCalConversionTest::testContactConversion_data()
+ {
+-    QTest::addColumn<KABC::Addressee>( "kcal" );
++    QTest::addColumn<KContacts::Addressee>( "kcal" );
+     QTest::addColumn<Kolab::Contact>( "kolab" );
+     
+     {
+-        KABC::Addressee kcal;
++        KContacts::Addressee kcal;
+         kcal.setUid("uid");
+         kcal.setFormattedName("name");
+ 
+@@ -516,7 +516,7 @@ void KCalConversionTest::testContactConversion_data()
+         QTest::newRow("basic") << kcal << kolab;
+     }
+     {
+-        KABC::Addressee kcal;
++        KContacts::Addressee kcal;
+         kcal.setUid("uid");
+         kcal.setFormattedName("name");
+         kcal.setBirthday(QDateTime(QDate(2012,2,2)));
+@@ -530,7 +530,7 @@ void KCalConversionTest::testContactConversion_data()
+         QTest::newRow("bday") << kcal << kolab;
+     }
+     {
+-        KABC::Addressee kcal;
++        KContacts::Addressee kcal;
+         kcal.setUid("uid");
+         //The first address is always the preferred
+         kcal.setEmails(QStringList() << "email1@example.org" << "email2@example.org");
+@@ -554,10 +554,10 @@ void KCalConversionTest::testContactConversion_data()
+ 
+ void KCalConversionTest::testContactConversion()
+ {
+-    QFETCH(KABC::Addressee, kcal);
++    QFETCH(KContacts::Addressee, kcal);
+     QFETCH(Kolab::Contact, kolab);
+     
+-    const KABC::Addressee &e = toKABC(kolab);
++    const KContacts::Addressee &e = toKABC(kolab);
+     
+     QCOMPARE(e.uid(), kcal.uid());
+     QCOMPARE(e.formattedName(), kcal.formattedName());
 diff --git a/tests/testhelpers.h b/tests/testhelpers.h
-index f0e3889..1a0a20f 100644
+index f0e3889..ca2f49b 100644
 --- a/tests/testhelpers.h
 +++ b/tests/testhelpers.h
+@@ -26,7 +26,7 @@
+ #include <kcalcore/event.h>
+ #include <kcalcore/todo.h>
+ #include <kcalcore/journal.h>
+-#include <kabc/addressee.h>
++#include <kcontacts/addressee.h>
+ 
+ #include <kolabformat.h>
+ 
 @@ -45,13 +45,7 @@ Q_DECLARE_METATYPE(KCalCore::Event);
  Q_DECLARE_METATYPE(KCalCore::Todo);
  Q_DECLARE_METATYPE(KCalCore::Journal);
@@ -26221,6 +26429,122 @@ index f0e3889..1a0a20f 100644
  
  namespace QTest {
      
+diff --git a/tests/testutils.h b/tests/testutils.h
+index b118d86..6be04fd 100644
+--- a/tests/testutils.h
++++ b/tests/testutils.h
+@@ -142,18 +142,18 @@ static bool LexicographicalCompare( const T &_x, const T &_y )
+     return op( x.toString(), y.toString() );
+ }
+ 
+-bool normalizePhoneNumbers( KABC::Addressee &addressee, KABC::Addressee &refAddressee )
++bool normalizePhoneNumbers( KContacts::Addressee &addressee, KContacts::Addressee &refAddressee )
+ {
+-    KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers();
+-    KABC::PhoneNumber::List refPhoneNumbers = refAddressee.phoneNumbers();
++    KContacts::PhoneNumber::List phoneNumbers = addressee.phoneNumbers();
++    KContacts::PhoneNumber::List refPhoneNumbers = refAddressee.phoneNumbers();
+     if ( phoneNumbers.size() != refPhoneNumbers.size() )
+         return false;
+-    std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalCompare<std::less, KABC::PhoneNumber> );
+-    std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalCompare<std::less, KABC::PhoneNumber> );
++    std::sort( phoneNumbers.begin(), phoneNumbers.end(), LexicographicalCompare<std::less, KContacts::PhoneNumber> );
++    std::sort( refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalCompare<std::less, KContacts::PhoneNumber> );
+ 
+     for ( int i = 0; i < phoneNumbers.size(); ++i ) {
+-        KABC::PhoneNumber phoneNumber = phoneNumbers.at( i );
+-        const KABC::PhoneNumber refPhoneNumber = refPhoneNumbers.at( i );
++        KContacts::PhoneNumber phoneNumber = phoneNumbers.at( i );
++        const KContacts::PhoneNumber refPhoneNumber = refPhoneNumbers.at( i );
+         KCOMPARE( LexicographicalCompare<std::equal_to>( phoneNumber, refPhoneNumber ), true );
+         addressee.removePhoneNumber( phoneNumber );
+         phoneNumber.setId( refPhoneNumber.id() );
+@@ -171,18 +171,18 @@ bool normalizePhoneNumbers( KABC::Addressee &addressee, KABC::Addressee &refAddr
+     return true;
+ }
+ 
+-bool normalizeAddresses( KABC::Addressee &addressee, const KABC::Addressee &refAddressee )
++bool normalizeAddresses( KContacts::Addressee &addressee, const KContacts::Addressee &refAddressee )
+ {
+-    KABC::Address::List addresses = addressee.addresses();
+-    KABC::Address::List refAddresses = refAddressee.addresses();
++    KContacts::Address::List addresses = addressee.addresses();
++    KContacts::Address::List refAddresses = refAddressee.addresses();
+     if ( addresses.size() != refAddresses.size() )
+         return false;
+-    std::sort( addresses.begin(), addresses.end(), LexicographicalCompare<std::less, KABC::Address> );
+-    std::sort( refAddresses.begin(), refAddresses.end(), LexicographicalCompare<std::less, KABC::Address> );
++    std::sort( addresses.begin(), addresses.end(), LexicographicalCompare<std::less, KContacts::Address> );
++    std::sort( refAddresses.begin(), refAddresses.end(), LexicographicalCompare<std::less, KContacts::Address> );
+ 
+     for ( int i = 0; i < addresses.size(); ++i ) {
+-        KABC::Address address = addresses.at( i );
+-        const KABC::Address refAddress = refAddresses.at( i );
++        KContacts::Address address = addresses.at( i );
++        const KContacts::Address refAddress = refAddresses.at( i );
+         KCOMPARE( LexicographicalCompare<std::equal_to>( address, refAddress ), true );
+         addressee.removeAddress( address );
+         address.setId( refAddress.id() );
+@@ -192,16 +192,16 @@ bool normalizeAddresses( KABC::Addressee &addressee, const KABC::Addressee &refA
+     return true;
+ }
+ 
+-void normalizeContact(KABC::Addressee &addressee)
++void normalizeContact(KContacts::Addressee &addressee)
+ {
+-    KABC::Address::List addresses = addressee.addresses();
++    KContacts::Address::List addresses = addressee.addresses();
+     
+-    foreach(KABC::Address a, addresses) {
++    foreach(KContacts::Address a, addresses) {
+         addressee.removeAddress(a);
+         a.setPostOfficeBox(QString()); //Not supported anymore
+         addressee.insertAddress(a);
+     }
+-    addressee.setSound(KABC::Sound()); //Sound is not supported
++    addressee.setSound(KContacts::Sound()); //Sound is not supported
+     
+     addressee.removeCustom("KOLAB", "CreationDate"); //The creation date is no longer existing
+ 
+diff --git a/tests/upgradetest.cpp b/tests/upgradetest.cpp
+index 0e943ac..f32985e 100644
+--- a/tests/upgradetest.cpp
++++ b/tests/upgradetest.cpp
+@@ -27,7 +27,7 @@
+ #include "kolabformat/kolabobject.h"
+ #include <conversion/commonconversion.h>
+ #include <kcalcore/icalformat.h>
+-#include <kabc/vcardconverter.h>
++#include <kcontacts/vcardconverter.h>
+ 
+ void UpgradeTest::testIncidence_data()
+ {
+@@ -157,7 +157,7 @@ void UpgradeTest::testContact()
+     QCOMPARE(reader.getVersion(), Kolab::KolabV2);
+     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
+     
+-    KABC::Addressee v2Addressee = reader.getContact();
++    KContacts::Addressee v2Addressee = reader.getContact();
+     QVERIFY(!v2Addressee.isEmpty());
+     
+     //Write
+@@ -166,14 +166,14 @@ void UpgradeTest::testContact()
+     //load V3
+     Kolab::KolabObjectReader reader2;
+     QCOMPARE(reader2.parseMimeMessage(v3message), type);
+-    KABC::Addressee v3result = reader2.getContact();
++    KContacts::Addressee v3result = reader2.getContact();
+     QVERIFY(!v3result.isEmpty());
+     
+     normalizeContact(v2Addressee);
+     QVERIFY( normalizePhoneNumbers( v3result, v2Addressee ) ); // phone number ids are random
+     QVERIFY( normalizeAddresses( v3result, v2Addressee ) ); // same here
+     
+-    KABC::VCardConverter converter;
++    KContacts::VCardConverter converter;
+     if ( v2Addressee != v3result ) {
+         showDiff(converter.createVCard(v2Addressee), converter.createVCard(v3result));
+         QVERIFY( false );
 diff --git a/utils/CMakeLists.txt b/utils/CMakeLists.txt
 deleted file mode 100644
 index 19d34d1..0000000
