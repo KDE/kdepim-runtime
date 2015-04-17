@@ -29,6 +29,7 @@ set( imapresource_LIB_SRCS
   noinferiorsattribute.cpp
   passwordrequesterinterface.cpp
   removecollectionrecursivetask.cpp
+  removeitemstask.cpp
   resourcestateinterface.cpp
   resourcetask.cpp
   retrievecollectionmetadatatask.cpp
@@ -37,7 +38,6 @@ set( imapresource_LIB_SRCS
   retrieveitemstask.cpp
   searchtask.cpp
   sessionpool.cpp
-  timestampattribute.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
   settings.cpp
@@ -45,6 +45,11 @@ set( imapresource_LIB_SRCS
   imapidlemanager.cpp
   resourcestate.cpp
   resource_imap_debug.cpp
+  collectionmetadatahelper.cpp
+  replacemessagejob.cpp
+  tracer.cpp
+  ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
+  ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
 

@@ -41,6 +41,9 @@
 #include "resource_imap_debug.h"
 #include "imapresource_debug.h"
 
+#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
+
 #include <KLocalizedString>
 
 #include <kimap/expungejob.h>
@@ -147,7 +150,7 @@ void RetrieveItemsTask::startRetrievalTasks()
 
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
     // We assume that we can only expunge if we can delete items (correct would be to check for "e" ACL right).
-    if (isAutomaticExpungeEnabled() && (collection().rights() & Akonadi::Collection::CanDeleteItem)) {
+    if (isAutomaticExpungeEnabled() && (!serverCapabilities().contains(QLatin1String("ACL")) || (myRights(collection()) & KIMAP::Acl::Expunge))) {
         if (m_session->selectedMailBox() != mailBox) {
             triggerPreExpungeSelect(mailBox);
         } else {
@@ -364,17 +367,17 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
             qCDebug(RESOURCE_IMAP_LOG) << "No messages present so we are done";
         }
         taskComplete();
-    } else if (oldUidValidity != uidValidity) {
+    } else if (oldUidValidity != uidValidity || nextUid <= 0) {
         //If uidvalidity has changed our local cache is worthless and has to be refetched completely
-        if (oldUidValidity != 0) {
-            qCDebug(RESOURCE_IMAP_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|"
-                                       << uidValidity << ") refetching " << mailBox;
-        } else {
-            qCDebug(RESOURCE_IMAP_LOG) << "Fetching complete mailbox " << mailBox;
+        if (oldUidValidity != 0 && oldUidValidity != uidValidity) {
+            qCDebug(RESOURCE_IMAP_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|" << uidValidity << ")";
         }
-
+        if (nextUid <= 0) {
+            qCDebug(RESOURCE_IMAP_LOG) << "Invalid UIDNEXT";
+        }
+        qCDebug(RESOURCE_IMAP_LOG) << "Fetching complete mailbox " << mailBox;
         setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
+        retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
     } else if (nextUid <= 0) {
         //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
@@ -417,7 +420,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: " << realMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
         setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
+        retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
     } else if (nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
         qCDebug(RESOURCE_IMAP_LOG) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;

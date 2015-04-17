@@ -26,12 +26,67 @@ using namespace Akonadi;
 typedef QMap<QByteArray, KIMAP::Acl::Rights> ImapAcl;
 
 Q_DECLARE_METATYPE(ImapAcl)
+Q_DECLARE_METATYPE(KIMAP::Acl::Rights)
 
 class ImapAclAttributeTest : public QObject
 {
     Q_OBJECT
 
 private Q_SLOTS:
+    void testDeserialize_data()
+    {
+        QTest::addColumn<ImapAcl>("rights");
+        QTest::addColumn<KIMAP::Acl::Rights>("myRights");
+        QTest::addColumn<QByteArray>("serialized");
+
+        KIMAP::Acl::Rights rights = KIMAP::Acl::None;
+
+        {
+            ImapAcl acl;
+            QTest::newRow("empty") << acl << KIMAP::Acl::Rights(KIMAP::Acl::None) << QByteArray(" %% ");
+        }
+
+        {
+            ImapAcl acl;
+            acl.insert("user@host", rights);
+            QTest::newRow("none") << acl << KIMAP::Acl::Rights(KIMAP::Acl::None) << QByteArray("user@host  %% ");
+        }
+
+        {
+            ImapAcl acl;
+            acl.insert("user@host", KIMAP::Acl::Lookup);
+            QTest::newRow("lookup") << acl << KIMAP::Acl::Rights(KIMAP::Acl::None) << QByteArray("user@host l %% ");
+        }
+
+        {
+            ImapAcl acl;
+            acl.insert("user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
+            QTest::newRow("lookup/read") << acl << KIMAP::Acl::Rights(KIMAP::Acl::None) << QByteArray("user@host lr %% ");
+        }
+
+        {
+            ImapAcl acl;
+            acl.insert("user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
+            acl.insert("otheruser@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
+            QTest::newRow("lookup/read") << acl << KIMAP::Acl::Rights(KIMAP::Acl::None) << QByteArray("otheruser@host lr % user@host lr %% ");
+        }
+
+        {
+            QTest::newRow("myrights") << ImapAcl() << KIMAP::Acl::rightsFromString("lrswipckxtdaen") << QByteArray(" %%  %% lrswipckxtdaen");
+        }
+    }
+
+    void testDeserialize()
+    {
+        QFETCH(ImapAcl, rights);
+        QFETCH(KIMAP::Acl::Rights, myRights);
+        QFETCH(QByteArray, serialized);
+
+        ImapAclAttribute deserializeAttr;
+        deserializeAttr.deserialize(serialized);
+        QCOMPARE(deserializeAttr.rights(), rights);
+        QCOMPARE(deserializeAttr.myRights(), myRights);
+    }
 
     void testSerializeDeserialize_data()
     {

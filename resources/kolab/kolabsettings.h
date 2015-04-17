@@ -1,7 +1,5 @@
 /*
-    Copyright (c) 2010 Klar‰lvdalens Datakonsult AB,
-                       a KDAB Group company <info@kdab.com>
-    Author: Kevin Ottens <kevin@kdab.com>
+    Copyright (c) 2014 Sandro Knau√ü <knauss@kolabsys.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,24 +17,20 @@
     02110-1301, USA.
 */
 
-#ifndef TIMESTAMPATTRIBUTE_H
-#define TIMESTAMPATTRIBUTE_H
+#ifndef KOLABSETTINGS_H
+#define KOLABSETTINGS_H
 
-#include <attribute.h>
+#include "settings.h"
 
-class TimestampAttribute : public Akonadi::Attribute
+
+class KolabSettings : public Settings
 {
+  Q_OBJECT
 public:
-    explicit TimestampAttribute(uint timestamp = 0);
-    void setTimestamp(uint timestamp);
-    uint timestamp() const;
-    QByteArray type() const Q_DECL_OVERRIDE;
-    Attribute *clone() const Q_DECL_OVERRIDE;
-    QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
+    explicit KolabSettings( WId = 0 );
 
-private:
-    uint mTimestamp;
+protected:
+    virtual void changeDefaults();
 };
 
 #endif

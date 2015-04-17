@@ -1,7 +1,7 @@
 /*
-    Copyright (c) 2010 Klarälvdalens Datakonsult AB,
+    Copyright (c) 2014 Klarälvdalens Datakonsult AB,
                        a KDAB Group company <info@kdab.com>
-    Author: Kevin Ottens <kevin@kdab.com>
+    Author: Kevin Krammer <kevin.krammer@kdab.com>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -19,44 +19,26 @@
     02110-1301, USA.
 */
 
-#include "timestampattribute.h"
+#ifndef KOLABREMOVETAGTASK_H
+#define KOLABREMOVETAGTASK_H
 
-#include <QByteArray>
+#include "kolabrelationresourcetask.h"
 
-#include <attribute.h>
-
-TimestampAttribute::TimestampAttribute(uint timestamp)
-    : mTimestamp(timestamp)
+class KolabRemoveTagTask : public KolabRelationResourceTask
 {
-}
+    Q_OBJECT
+public:
+    explicit KolabRemoveTagTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
 
-void TimestampAttribute::setTimestamp(uint timestamp)
-{
-    mTimestamp = timestamp;
-}
+protected:
+    virtual void startRelationTask(KIMAP::Session *session);
 
-uint TimestampAttribute::timestamp() const
-{
-    return mTimestamp;
-}
+private:
+    void triggerStoreJob(KIMAP::Session *session);
 
-QByteArray TimestampAttribute::type() const
-{
-    static const QByteArray sType("timestamp");
-    return sType;
-}
+private Q_SLOTS:
+    void onSelectDone(KJob *job);
+    void onStoreFlagsDone(KJob *job);
+};
 
-Akonadi::Attribute *TimestampAttribute::clone() const
-{
-    return new TimestampAttribute(mTimestamp);
-}
-
-QByteArray TimestampAttribute::serialized() const
-{
-    return QByteArray::number(mTimestamp);
-}
-
-void TimestampAttribute::deserialize(const QByteArray &data)
-{
-    mTimestamp = data.toInt();
-}
+#endif // KOLABREMOVETAGTASK_H

@@ -27,7 +27,6 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
-#include "timestampattribute.h"
 #include <noinferiorsattribute.h>
 
 typedef QMap<QByteArray, QByteArray> QBYTEARRAYMAP;
@@ -64,7 +63,6 @@ private slots:
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
         collection.setRights(0);
-        collection.addAttribute(new TimestampAttribute(QDateTime::currentDateTime().toTime_t()));
 
         capabilities.clear();
         capabilities << "ANNOTATEMORE" << "ACL" << "QUOTA";
@@ -74,16 +72,16 @@ private slots:
                  << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
                  << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
-                 << "C: A000004 GETACL \"INBOX/Foo\""
-                 << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
-                 << "S: A000004 OK acl retrieved"
-                 << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+                 << "C: A000004 MYRIGHTS \"INBOX/Foo\""
                  << "S: * MYRIGHTS \"INBOX/Foo\" lrswipkxtecda"
-                 << "S: A000005 OK rights retrieved"
-                 << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+                 << "S: A000004 OK rights retrieved"
+                 << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
                  << "S: * QUOTAROOT INBOX/Foo user/foo"
                  << "S: * QUOTA user/foo ( )"
-                 << "S: A000006 OK quota retrieved";
+                 << "S: A000005 OK quota retrieved"
+                 << "C: A000006 GETACL \"INBOX/Foo\""
+                 << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
+                 << "S: A000006 OK acl retrieved";
 
         callNames.clear();
         callNames << "collectionAttributesRetrieved";
@@ -108,7 +106,6 @@ private slots:
         aclAttribute->setRights(rightsMap);
         parentCollection.addAttribute(aclAttribute);
         collection.setParentCollection(parentCollection);
-        collection.removeAttribute<TimestampAttribute>();
         rights = Akonadi::Collection::AllRights;
         rights &= ~Akonadi::Collection::CanChangeCollection;
         QTest::newRow("parent without create rights") << collection << capabilities << scenario
@@ -136,16 +133,13 @@ private slots:
                  << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
                  << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
-                 << "C: A000004 GETACL \"INBOX/Foo\""
-                 << "S: * ACL INBOX/Foo foo@kde.org wi"
-                 << "S: A000004 OK acl retrieved"
-                 << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+                 << "C: A000004 MYRIGHTS \"INBOX/Foo\""
                  << "S: * MYRIGHTS \"INBOX/Foo\" wi"
-                 << "S: A000005 OK rights retrieved"
-                 << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+                 << "S: A000004 OK rights retrieved"
+                 << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
                  << "S: * QUOTAROOT INBOX/Foo user/foo"
                  << "S: * QUOTA user/foo ( )"
-                 << "S: A000006 OK quota retrieved";
+                 << "S: A000005 OK quota retrieved";
         rights = Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanChangeItem |
                  Akonadi::Collection::CanChangeCollection;
         QTest::newRow("only some rights") << collection << capabilities << scenario
@@ -155,7 +149,6 @@ private slots:
         // Test that a warning is issued if the insert rights of a folder have been revoked on the server.
         //
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.addAttribute(new TimestampAttribute(QDateTime::currentDateTime().toTime_t()));
         collection.setParentCollection(parentCollection);
         collection.setRights(Akonadi::Collection::CanCreateItem);
 
@@ -167,16 +160,13 @@ private slots:
                  << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
                  << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
-                 << "C: A000004 GETACL \"INBOX/Foo\""
-                 << "S: * ACL INBOX/Foo foo@kde.org wi"
-                 << "S: A000004 OK acl retrieved"
-                 << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+                 << "C: A000004 MYRIGHTS \"INBOX/Foo\""
                  << "S: * MYRIGHTS \"INBOX/Foo\" w"
-                 << "S: A000005 OK rights retrieved"
-                 << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+                 << "S: A000004 OK rights retrieved"
+                 << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
                  << "S: * QUOTAROOT INBOX/Foo user/foo"
                  << "S: * QUOTA user/foo ( )"
-                 << "S: A000006 OK quota retrieved";
+                 << "S: A000005 OK quota retrieved";
 
         callNames.clear();
         callNames << "showInformationDialog";
@@ -193,22 +183,18 @@ private slots:
         collection.setRemoteId("/INBOX");
         collection.setRights(Akonadi::Collection::AllRights);
         collection.addAttribute(new NoInferiorsAttribute(true));
-        collection.removeAttribute<TimestampAttribute>();
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 GETANNOTATION \"INBOX\" \"*\" \"value.shared\""
                  << "S: * ANNOTATION INBOX /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
-                 << "C: A000004 GETACL \"INBOX\""
-                 << "S: * ACL INBOX foo@kde.org wik"
-                 << "S: A000004 OK acl retrieved"
-                 << "C: A000005 MYRIGHTS \"INBOX\""
+                 << "C: A000004 MYRIGHTS \"INBOX\""
                  << "S: * MYRIGHTS \"INBOX\" wk"
-                 << "S: A000005 OK rights retrieved"
-                 << "C: A000006 GETQUOTAROOT \"INBOX\""
+                 << "S: A000004 OK rights retrieved"
+                 << "C: A000005 GETQUOTAROOT \"INBOX\""
                  << "S: * QUOTAROOT INBOX user"
                  << "S: * QUOTA user ( )"
-                 << "S: A000006 OK quota retrieved";
+                 << "S: A000005 OK quota retrieved";
 
         callNames.clear();
         callNames << "collectionAttributesRetrieved";
@@ -220,7 +206,6 @@ private slots:
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
         collection.setRights(0);
-        collection.removeAttribute<TimestampAttribute>();
 
         capabilities.clear();
         capabilities << "METADATA" << "ACL" << "QUOTA";
@@ -236,16 +221,16 @@ private slots:
                  << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test2 \"NIL\")"
                  << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/cmu/cyrus-imapd/lastupdate \"true\")"
                  << "S: A000003 OK GETMETADATA complete"
-                 << "C: A000004 GETACL \"INBOX/Foo\""
-                 << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
-                 << "S: A000004 OK acl retrieved"
-                 << "C: A000005 MYRIGHTS \"INBOX/Foo\""
+                 << "C: A000004 MYRIGHTS \"INBOX/Foo\""
                  << "S: * MYRIGHTS \"INBOX/Foo\" lrswipkxtecda"
-                 << "S: A000005 OK rights retrieved"
-                 << "C: A000006 GETQUOTAROOT \"INBOX/Foo\""
+                 << "S: A000004 OK rights retrieved"
+                 << "C: A000005 GETQUOTAROOT \"INBOX/Foo\""
                  << "S: * QUOTAROOT INBOX/Foo user/Foo"
                  << "S: * QUOTA user/Foo ( )"
-                 << "S: A000006 OK quota retrieved";
+                 << "S: A000005 OK quota retrieved"
+                 << "C: A000006 GETACL \"INBOX/Foo\""
+                 << "S: * ACL INBOX/Foo foo@kde.org lrswipcda"
+                 << "S: A000006 OK acl retrieved";
 
         callNames.clear();
         callNames << "collectionAttributesRetrieved";
@@ -254,22 +239,22 @@ private slots:
         QTest::newRow("METADATA") << collection << capabilities << scenario
                                   << callNames << rights << expectedAnnotations;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.setRights(0);
-        collection.addAttribute(new TimestampAttribute(QDateTime::currentDateTime().toTime_t()));
+    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
+    collection.setRights( 0 );
 
-        capabilities.clear();
-        expectedAnnotations.clear();
+    capabilities.clear();
+    expectedAnnotations.clear();
 
-        callNames.clear();
-        callNames << "collectionAttributesRetrieved";
+    callNames.clear();
+    callNames << "collectionAttributesRetrieved";
 
-        rights = 0;
+    rights = 0;
 
-        scenario.clear();
-        scenario << defaultPoolConnectionScenario();
+    scenario.clear();
+    scenario << defaultPoolConnectionScenario();
 
-        QTest::newRow("no capabilities") << collection << capabilities << scenario
+    QTest::newRow( "no capabilities" ) << collection << capabilities << scenario
+                                       << callNames << rights << expectedAnnotations;
                                          << callNames << rights << expectedAnnotations;
     }
 
@@ -318,11 +303,6 @@ private slots:
             if (command == "collectionAttributesRetrieved") {
                 Akonadi::Collection collection = parameter.value<Akonadi::Collection>();
                 QCOMPARE(collection.rights(), expectedRights);
-                QVERIFY(collection.hasAttribute<TimestampAttribute>());
-
-                const qint64 timestamp = collection.attribute<TimestampAttribute>()->timestamp();
-                const qint64 currentTimestamp = QDateTime::currentDateTime().toTime_t();
-                QVERIFY(qAbs(currentTimestamp - timestamp) < 5);
 
                 if (!expectedAnnotations.isEmpty()) {
                     QVERIFY(collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>());

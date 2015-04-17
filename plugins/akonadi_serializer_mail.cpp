@@ -241,6 +241,8 @@ QString SerializerPluginMail::extractGid(const Item &item) const
     KMime::Headers::MessageID *mid = msg->messageID(false);
     if (mid) {
         return mid->asUnicodeString();
+    } else if (KMime::Headers::Base *uid = msg->headerByType("X-Akonotes-UID")) {
+        return uid->asUnicodeString();
     }
     return QString();
 }

@@ -49,6 +49,16 @@ QMap<QByteArray, KIMAP::Acl::Rights> ImapAclAttribute::oldRights() const
     return mOldRights;
 }
 
+void ImapAclAttribute::setMyRights(KIMAP::Acl::Rights rights)
+{
+  mMyRights = rights;
+}
+
+KIMAP::Acl::Rights ImapAclAttribute::myRights() const
+{
+  return mMyRights;
+}
+
 QByteArray ImapAclAttribute::type() const
 {
     static const QByteArray sType("imapacl");
@@ -57,7 +67,9 @@ QByteArray ImapAclAttribute::type() const
 
 Akonadi::Attribute *ImapAclAttribute::clone() const
 {
-    return new ImapAclAttribute(mRights, mOldRights);
+    ImapAclAttribute *attr = new ImapAclAttribute(mRights, mOldRights);
+    attr->setMyRights(mMyRights);
+    return attr;
 }
 
 QByteArray ImapAclAttribute::serialized() const
@@ -92,6 +104,9 @@ QByteArray ImapAclAttribute::serialized() const
         result.chop(3);
     }
 
+    result+= " %% ";
+    result+= KIMAP::Acl::rightsToString(mMyRights);
+
     return result;
 }
 
@@ -117,13 +132,23 @@ void ImapAclAttribute::deserialize(const QByteArray &data)
 {
     mRights.clear();
     mOldRights.clear();
-    const int pos = data.indexOf(" %% ");
-    if (pos == -1) {
+    mMyRights = KIMAP::Acl::None;
+
+    QList<QByteArray> parts;
+    int lastPos = 0;
+    int pos;
+    while ((pos = data.indexOf(" %% ", lastPos)) != -1) {
+        parts << data.mid(lastPos, pos-lastPos);
+        lastPos = pos + 4;
+    }
+    parts << data.mid(lastPos);
+
+    if (parts.size() < 2) {
         return;
     }
-
-    const QByteArray leftPart = data.left(pos);
-    const QByteArray rightPart = data.mid(pos + 4);
-    fillRightsMap(leftPart.split('%'), mRights);
-    fillRightsMap(rightPart.split('%'), mOldRights);
+    fillRightsMap(parts.at(0).split('%'), mRights);
+    fillRightsMap(parts.at(1).split('%'), mOldRights);
+    if (parts.size() >= 3) {
+        mMyRights = KIMAP::Acl::rightsFromString(parts.at(2));
+    }
 }

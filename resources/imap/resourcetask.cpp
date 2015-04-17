@@ -27,9 +27,11 @@
 #include "imapresource_debug.h"
 
 #include "collectionflagsattribute.h"
+#include <imapaclattribute.h>
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
+#include "tracer.h"
 
 ResourceTask::ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent),
@@ -57,6 +59,7 @@ ResourceTask::~ResourceTask()
 
 void ResourceTask::start(SessionPool *pool)
 {
+    Trace() << metaObject()->className();
     m_pool = pool;
     connect(m_pool, &SessionPool::sessionRequestDone,
             this, &ResourceTask::onSessionRequested);
@@ -115,11 +118,32 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
 
     m_session = session;
 
+    if (errorCode!=SessionPool::NoError) {
+        Trace() << "Error on: " << metaObject()->className();
+        switch ( m_actionIfNoSession ) {
+            case CancelIfNoSession:
+                qDebug() << "Cancelling this request. Probably there is no more session available.";
+                m_resource->cancelTask( i18n( "There is currently no session to the IMAP server available." ) );
+                break;
+
+            case DeferIfNoSession:
+                qDebug() << "Defering this request. Probably there is no more session available.";
+                m_resource->deferTask();
+                break;
+        }
+
+        deleteLater();
+        return;
+    }
+
+    m_session = session;
+
     connect(m_pool, &SessionPool::connectionLost,
             this, &ResourceTask::onConnectionLost);
     connect(m_pool, &SessionPool::disconnectDone,
             this, &ResourceTask::onPoolDisconnect);
 
+    Trace() << "starting: " << metaObject()->className();
     doStart(m_session);
 }
 
@@ -130,6 +154,7 @@ void ResourceTask::onConnectionLost(KIMAP::Session *session)
         // the pointer, we don't need to release it once the
         // task is done
         m_session = Q_NULLPTR;
+        Trace() << metaObject()->className();
         cancelTask(i18n("Connection lost"));
     }
 }
@@ -141,6 +166,7 @@ void ResourceTask::onPoolDisconnect()
     // release our session anymore
     m_pool = Q_NULLPTR;
 
+    Trace() << metaObject()->className();
     cancelTask(i18n("Connection lost"));
 }
 
@@ -278,6 +304,14 @@ void ResourceTask::itemsRetrieved(const Akonadi::Item::List &items)
         m_resource->itemsRetrieved(items);
     }
 }
+}
+
+void ResourceTask::itemsRetrieved(const Akonadi::Item::List &items)
+{
+    if (!mCancelled) {
+        m_resource->itemsRetrieved(items);
+    }
+}
 
 void ResourceTask::itemsRetrievedIncremental(const Akonadi::Item::List &changed,
         const Akonadi::Item::List &removed)
@@ -300,6 +334,13 @@ void ResourceTask::setTotalItems(int totalItems)
     if (!mCancelled) {
         m_resource->setTotalItems(totalItems);
     }
+
+void ResourceTask::changeCommitted(const Akonadi::Item &item)
+{
+    if (!mCancelled) {
+        m_resource->itemChangeCommitted(item);
+    }
+    deleteLater();
 }
 
 void ResourceTask::changeCommitted(const Akonadi::Item &item)
@@ -350,6 +391,14 @@ void ResourceTask::changeCommitted(const Akonadi::Collection &collection)
     deleteLater();
 }
 
+void ResourceTask::changeCommitted(const Akonadi::Tag &tag)
+{
+    if (!mCancelled) {
+        m_resource->tagChangeCommitted(tag);
+    }
+    deleteLater();
+}
+
 void ResourceTask::changeProcessed()
 {
     if (!mCancelled) {
@@ -360,6 +409,7 @@ void ResourceTask::changeProcessed()
 
 void ResourceTask::cancelTask(const QString &errorString)
 {
+    qDebug() << "Cancel task: " << errorString;
     if (!mCancelled) {
         mCancelled = true;
         m_resource->cancelTask(errorString);
@@ -483,6 +533,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags(const QList<QByteArray> &flags)
 
 void ResourceTask::kill()
 {
+    Trace() << metaObject()->className();
     qCDebug(IMAPRESOURCE_LOG);
     cancelTask(i18n("killed"));
 }
@@ -539,4 +590,19 @@ int ResourceTask::batchSize() const
 ResourceStateInterface::Ptr ResourceTask::resourceState()
 {
     return m_resource;
+}
+
+KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
+{
+    Akonadi::ImapAclAttribute *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
+    if (aclAttribute) {
+        //HACK, only return myrights if they are available
+        if (aclAttribute->myRights() != KIMAP::Acl::None) {
+            return aclAttribute->myRights();
+        } else {
+            //This should be removed after 4.14, and myrights should be always used.
+            return aclAttribute->rights().value(userName().toUtf8());
+        }
+    }
+    return KIMAP::Acl::None;
 }

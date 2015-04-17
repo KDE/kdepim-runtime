@@ -39,6 +39,8 @@ public:
     void setRights(const QMap<QByteArray, KIMAP::Acl::Rights> &rights);
     QMap<QByteArray, KIMAP::Acl::Rights> rights() const;
     QMap<QByteArray, KIMAP::Acl::Rights> oldRights() const;
+    void setMyRights(KIMAP::Acl::Rights rights);
+    KIMAP::Acl::Rights myRights() const;
     QByteArray type() const Q_DECL_OVERRIDE;
     Attribute *clone() const Q_DECL_OVERRIDE;
     QByteArray serialized() const Q_DECL_OVERRIDE;
@@ -47,6 +49,7 @@ public:
 private:
     QMap<QByteArray, KIMAP::Acl::Rights> mRights;
     QMap<QByteArray, KIMAP::Acl::Rights> mOldRights;
+    KIMAP::Acl::Rights mMyRights;
 };
 
 }

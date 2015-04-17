@@ -196,7 +196,6 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
                                      const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
-    Q_ASSERT(fetch);
 
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach

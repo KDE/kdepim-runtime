@@ -33,9 +33,12 @@ public:
     explicit KolabResource(const QString &id);
     ~KolabResource();
 
+    virtual KDialog *createConfigureDialog ( WId windowId );
+    virtual Settings* settings() const;
+
 protected Q_SLOTS:
     virtual void retrieveCollections();
-    virtual void retrieveItems(const Akonadi::Collection &col);
+    virtual void delayedInit();
 
 protected:
     virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
@@ -50,10 +53,20 @@ protected:
     virtual void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts);
     //collectionRemoved & collectionMoved do not require adjustments since they don't change the annotations
 
-    virtual QString defaultName() const;
+    virtual void tagAdded(const Akonadi::Tag &tag);
+    virtual void tagChanged(const Akonadi::Tag &tag);
+    virtual void tagRemoved(const Akonadi::Tag &tag);
+    virtual void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags);
+
+    virtual void itemsRelationsChanged(const Akonadi::Item::List &items,
+                                       const Akonadi::Relation::List &addedRelations,
+                                       const Akonadi::Relation::List &removedRelations);
+
+    virtual QString defaultName();
 
 private Q_SLOTS:
-    void onItemRetrievalCollectionFetchDone(KJob *job);
+    void retrieveTags();
+    void retrieveRelations();
 };
 
 #endif
