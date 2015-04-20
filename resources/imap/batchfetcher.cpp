@@ -20,7 +20,7 @@
 #include "batchfetcher.h"
 
 #include "resource_imap_debug.h"
-#include <KImap/Session>
+#include <KIMAP/Session>
 #include "imapresource_debug.h"
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
                            const KIMAP::ImapSet &set,

@@ -304,14 +304,6 @@ void ResourceTask::itemsRetrieved(const Akonadi::Item::List &items)
         m_resource->itemsRetrieved(items);
     }
 }
-}
-
-void ResourceTask::itemsRetrieved(const Akonadi::Item::List &items)
-{
-    if (!mCancelled) {
-        m_resource->itemsRetrieved(items);
-    }
-}
 
 void ResourceTask::itemsRetrievedIncremental(const Akonadi::Item::List &changed,
         const Akonadi::Item::List &removed)
@@ -334,13 +326,6 @@ void ResourceTask::setTotalItems(int totalItems)
     if (!mCancelled) {
         m_resource->setTotalItems(totalItems);
     }
-
-void ResourceTask::changeCommitted(const Akonadi::Item &item)
-{
-    if (!mCancelled) {
-        m_resource->itemChangeCommitted(item);
-    }
-    deleteLater();
 }
 
 void ResourceTask::changeCommitted(const Akonadi::Item &item)

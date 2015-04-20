@@ -21,9 +21,9 @@
 #define BATCHFETCHER_H
 
 #include <KJob>
-#include <KImap/ImapSet>
-#include <KImap/FetchJob>
-#include <KImap/SearchJob>
+#include <KIMAP/ImapSet>
+#include <KIMAP/FetchJob>
+#include <KIMAP/SearchJob>
 
 #include "messagehelper.h"
 

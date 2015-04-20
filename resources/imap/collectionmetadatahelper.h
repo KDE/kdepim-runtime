@@ -19,7 +19,7 @@
 #ifndef COLLECTIONMETADATAHELPER_H
 #define COLLECTIONMETADATAHELPER_H
 
-#include <akonadi/collection.h>
+#include <AkonadiCore/Collection>
 #include <kimap/acl.h>
 
 class CollectionMetadataHelper

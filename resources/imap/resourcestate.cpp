@@ -84,21 +84,6 @@ QList<KIMAP::MailBoxDescriptor> ResourceState::sharedNamespaces() const
     return m_resource->m_pool->serverNamespaces(SessionPool::Shared);
 }
 
-QList<KIMAP::MailBoxDescriptor> ResourceState::personalNamespaces() const
-{
-    return m_resource->m_pool->serverNamespaces(SessionPool::Personal);
-}
-
-QList<KIMAP::MailBoxDescriptor> ResourceState::userNamespaces() const
-{
-    return m_resource->m_pool->serverNamespaces(SessionPool::User);
-}
-
-QList<KIMAP::MailBoxDescriptor> ResourceState::sharedNamespaces() const
-{
-    return m_resource->m_pool->serverNamespaces(SessionPool::Shared);
-}
-
 bool ResourceState::isAutomaticExpungeEnabled() const
 {
     return m_resource->settings()->automaticExpungeEnabled();
@@ -291,18 +276,7 @@ void ResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
 
 void ResourceState::cancelTask(const QString &errorString)
 {
-    m_resource->changesCommitted(items);
-}
-
-void ResourceState::changeProcessed()
-{
-    m_resource->changeProcessed();
-}
-
-
-void ResourceState::cancelTask( const QString &errorString )
-{
-    m_resource->cancelTask( errorString );
+    m_resource->cancelTask(errorString);
 }
 
 void ResourceState::deferTask()
@@ -367,16 +341,6 @@ void ResourceState::setSeparatorCharacter(const QChar &separator)
 void ResourceState::showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName)
 {
     KMessageBox::information(Q_NULLPTR, message, title, dontShowAgainName);
-}
-
-int ResourceState::batchSize() const
-{
-    return m_resource->itemSyncBatchSize();
-}
-
-MessageHelper::Ptr ResourceState::messageHelper() const
-{
-    return MessageHelper::Ptr(new MessageHelper());
 }
 
 int ResourceState::batchSize() const

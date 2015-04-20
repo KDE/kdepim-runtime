@@ -156,7 +156,7 @@ void RetrieveCollectionMetadataTask::onGetAclDone(KJob *job)
     KIMAP::GetAclJob *acl = qobject_cast<KIMAP::GetAclJob *>(job);
 
     // Store the mailbox ACLs
-    Akonadi::ImapAclAttribute *const aclAttribute =
+    Akonadi::ImapAclAttribute *const aclAttribute
         = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
     if (oldRights != acl->allRights()) {
@@ -175,16 +175,9 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob *>(job);
-
-    Akonadi::ImapAclAttribute *const parentAclAttribute =
-        collection().parentCollection().attribute<Akonadi::ImapAclAttribute>();
-    KIMAP::Acl::Rights parentRights = Q_NULLPTR;
-    if (parentAclAttribute) {
-        parentRights = parentAclAttribute->rights()[userName().toUtf8()];
-    }
-
     KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>(job);
+
+    const KIMAP::Acl::Rights imapRights = rightsJob->rights();
 
     //Default value in case we have nothing better available
     KIMAP::Acl::Rights parentRights = KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create;
@@ -192,14 +185,6 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
     //FIXME I don't think we have the parent's acl's available
     if (collection().parentCollection().attribute<Akonadi::ImapAclAttribute>()) {
         parentRights = myRights(collection().parentCollection());
-    }
-
-    if (imapRights & (KIMAP::Acl::DeleteMessage | KIMAP::Acl::Delete)) {
-        newRights |= Akonadi::Collection::CanDeleteItem;
-    }
-
-    if (!m_collection.hasAttribute("noinferiors") && imapRights & (KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create)) {
-        newRights |= Akonadi::Collection::CanCreateCollection;
     }
 
 //  qCDebug(RESOURCE_IMAP_LOG) << collection.remoteId()

@@ -1,5 +1,4 @@
 
-
 option(IMAPRESOURCE_NO_SOLID "Disable the use of solid in the imap resource" FALSE)
 if(IMAPRESOURCE_NO_SOLID)
   add_definitions( -DIMAPRESOURCE_NO_SOLID=1 )
@@ -29,7 +28,6 @@ set( imapresource_LIB_SRCS
   noinferiorsattribute.cpp
   passwordrequesterinterface.cpp
   removecollectionrecursivetask.cpp
-  removeitemstask.cpp
   resourcestateinterface.cpp
   resourcetask.cpp
   retrievecollectionmetadatatask.cpp
