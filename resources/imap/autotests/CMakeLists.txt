@@ -22,7 +22,7 @@ if(KIMAPTEST_INCLUDE_DIR AND KIMAPTEST_LIBRARY)
       ecm_mark_as_test(imap-${_testname})
 
       target_link_libraries(${_testname} 
-            KF5::Imap Qt5::Gui Qt5::Core ${KIMAPTEST_LIBRARY} Qt5::Test imapresource akonadi-singlefileresource)
+            KF5::IMAP Qt5::Gui Qt5::Core ${KIMAPTEST_LIBRARY} Qt5::Test imapresource akonadi-singlefileresource)
       add_definitions(-DTEST_DATA="\\"${CMAKE_CURRENT_SOURCE_DIR}\\"")
     ENDFOREACH(_testname)
   ENDMACRO(IMAP_RESOURCE_UNIT_TESTS)

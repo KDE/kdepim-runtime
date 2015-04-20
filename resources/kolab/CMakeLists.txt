@@ -36,7 +36,7 @@ add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 
 target_link_libraries(akonadi_kolab_resource
     KF5::AkonadiCore
-    KF5::Imap    
+    KF5::IMAP
     KF5::MailTransport
     KF5::KIOCore
     KF5::Mime
