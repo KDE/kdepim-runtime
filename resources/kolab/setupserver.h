@@ -21,9 +21,9 @@
 #ifndef SETUPSERVER_H
 #define SETUPSERVER_H
 
-#include <klineedit.h>
-#include <kdialog.h>
-#include <akonadi/collection.h>
+#include <KLineEdit>
+#include <KDialog>
+#include <collection.h>
 #include <KJob>
 
 #include <QRegExpValidator>

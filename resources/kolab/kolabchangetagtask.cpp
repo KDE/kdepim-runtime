@@ -23,8 +23,8 @@
 
 #include "tagchangehelper.h"
 
-#include <akonadi/itemfetchjob.h>
-#include <akonadi/itemfetchscope.h>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 
 KolabChangeTagTask::KolabChangeTagTask(ResourceStateInterface::Ptr resource, QSharedPointer<TagConverter> tagConverter, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
@@ -48,7 +48,7 @@ void KolabChangeTagTask::startRelationTask(KIMAP::Session *session)
 void KolabChangeTagTask::onItemsFetchDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << "ItemFetch failed: " << job->errorString();
+        qWarning() << "ItemFetch failed: " << job->errorString();
         cancelTask(job->errorString());
         return;
     }

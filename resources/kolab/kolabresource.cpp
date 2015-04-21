@@ -47,8 +47,6 @@
 KolabResource::KolabResource(const QString &id)
     : ImapResource(id)
 {
-    //Load translations from imap resource
-    KGlobal::locale()->insertCatalog(QLatin1String("akonadi_imap_resource"));
     //Ensure we have up-to date metadata before attempting to sync folder
     setScheduleAttributeSyncBeforeItemSync(true);
     setKeepLocalCollectionChanges(QSet<QByteArray>() << "ENTITYDISPLAY" << Akonadi::BlockAlarmsAttribute().type());
@@ -75,16 +73,16 @@ void KolabResource::delayedInit()
     Q_ASSERT(!settings()->retrieveMetadataOnFolderListing());
 }
 
-QString KolabResource::defaultName()
+QString KolabResource::defaultName() const
 {
     return i18n("Kolab Resource");
 }
 
-KDialog *KolabResource::createConfigureDialog(WId windowId)
+QDialog *KolabResource::createConfigureDialog(WId windowId)
 {
   SetupServer *dlg = new SetupServer( this, windowId );
   KWindowSystem::setMainWindow( dlg, windowId );
-  dlg->setWindowIcon( KIcon( QLatin1String("kolab") ) );
+  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("kolab") ) );
   connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
   return dlg;
 }

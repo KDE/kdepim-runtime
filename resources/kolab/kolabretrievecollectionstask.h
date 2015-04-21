@@ -25,7 +25,7 @@
 
 #include <resourcetask.h>
 
-#include <AkonadiCore/collection.h>
+#include <AkonadiCore/Collection>
 
 #include <kimap/listjob.h>
 

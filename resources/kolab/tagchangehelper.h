@@ -22,8 +22,8 @@
 #ifndef TAGCHANGEHELPER_H
 #define TAGCHANGEHELPER_H
 
-#include <akonadi/collection.h>
-#include <akonadi/item.h>
+#include <collection.h>
+#include <item.h>
 #include <kmime/kmime_message.h>
 
 #include <QObject>
@@ -40,7 +40,7 @@ class KolabRelationResourceTask;
 
 struct TagConverter
 {
-    virtual KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username);
+    KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username);
 };
 
 class TagChangeHelper : public QObject

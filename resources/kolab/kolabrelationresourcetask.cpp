@@ -23,9 +23,9 @@
 
 #include "kolabhelpers.h"
 
-#include <akonadi/collectionfetchjob.h>
-#include <akonadi/collectionfetchscope.h>
-#include <akonadi/collectioncreatejob.h>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchScope>
+#include <AkonadiCore/CollectionCreateJob>
 #include <kimap/createjob.h>
 #include <kimap/setmetadatajob.h>
 
@@ -76,14 +76,14 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
         }
     }
 
-    kDebug() << "Couldn't find collection for relations, creating one.";
+    qDebug() << "Couldn't find collection for relations, creating one.";
 
     const QChar separator = separatorCharacter();
     mRelationCollection = Akonadi::Collection();
-    mRelationCollection.setName("Configuration");
+    mRelationCollection.setName(QStringLiteral("Configuration"));
     mRelationCollection.setContentMimeTypes(QStringList() << KolabHelpers::getMimeType(Kolab::ConfigurationType));
     mRelationCollection.setRemoteId(separator + mRelationCollection.name());
-    const QString newMailBox = "Configuration";
+    const QString newMailBox = QStringLiteral("Configuration");
     KIMAP::CreateJob *imapCreateJob = new KIMAP::CreateJob(mImapSession);
     imapCreateJob->setMailBox(newMailBox);
     connect(imapCreateJob, SIGNAL(result(KJob*)),
@@ -94,7 +94,7 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
 void KolabRelationResourceTask::onCreateDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << "Failed to create configuration folder: " << job->errorString();
+        qWarning() << "Failed to create configuration folder: " << job->errorString();
         cancelTask(i18n("Failed to create configuration folder on server"));
         return;
     }
@@ -105,7 +105,7 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
     } else {
         setMetadataJob->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
     }
-    setMetadataJob->setMailBox("Configuration");
+    setMetadataJob->setMailBox(QStringLiteral("Configuration"));
     setMetadataJob->addMetaData("/shared/vendor/kolab/folder-type", "configuration.default");
     connect(setMetadataJob, SIGNAL(result(KJob*)),
             this, SLOT(onSetMetaDataDone(KJob*)));
@@ -115,7 +115,7 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
 void KolabRelationResourceTask::onSetMetaDataDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << "Failed to write annotations: " << job->errorString();
+        qWarning() << "Failed to write annotations: " << job->errorString();
         cancelTask(i18n("Failed to write some annotations for '%1' on the IMAP server. %2",
                         collection().name(), job->errorText()));
         return;
@@ -128,7 +128,7 @@ void KolabRelationResourceTask::onSetMetaDataDone(KJob *job)
 void KolabRelationResourceTask::onLocalCreateDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << "Failed to create local folder: " << job->errorString();
+        qWarning() << "Failed to create local folder: " << job->errorString();
         cancelTask(i18n("Failed to create configuration folder"));
         return;
     }

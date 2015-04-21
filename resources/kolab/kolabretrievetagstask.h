@@ -21,7 +21,7 @@
 #define KOLABRETRIEVETAGSTASK_H
 
 #include "kolabrelationresourcetask.h"
-#include <akonadi/tag.h>
+#include <tag.h>
 
 namespace Kolab
 {

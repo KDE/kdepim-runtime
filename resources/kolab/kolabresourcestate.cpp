@@ -47,7 +47,7 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
 
         const QString icon = KolabHelpers::getIcon(folderType);
         if (!icon.isEmpty()) {
-            // kDebug() << " setting icon " << icon;
+            // qDebug() << " setting icon " << icon;
             Akonadi::EntityDisplayAttribute *attr = col.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
             attr->setIconName(icon);
         }

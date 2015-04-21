@@ -49,7 +49,7 @@ void KolabRetrieveTagTask::startRelationTask(KIMAP::Session *session)
 void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << job->errorString();
+        qWarning() << job->errorString();
         cancelTask(job->errorString());
         return;
     }
@@ -133,7 +133,7 @@ Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &m
             return Akonadi::Item();
         }
         i.setRemoteId(QString::number(member.uid));
-        kDebug() << "got member: " << member.uid << member.mailbox;
+        qDebug() << "got member: " << member.uid << member.mailbox;
         Akonadi::Collection parent;
         {
             //The root collection is not part of the mailbox path
@@ -169,7 +169,7 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
         if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
             members << i;
         } else {
-            kWarning() << "Failed to parse member: " << memberUrl;
+            qWarning() << "Failed to parse member: " << memberUrl;
         }
     }
     mTagMembers.insert(QString::fromLatin1(tag.remoteId()), members);
@@ -185,11 +185,11 @@ void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reade
         if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
             members << i;
         } else {
-            kWarning() << "Failed to parse member: " << memberUrl;
+            qWarning() << "Failed to parse member: " << memberUrl;
         }
     }
     if (members.size() != 2) {
-        kWarning() << "Wrong numbers of members for a relation, expected 2: " << members.size();
+        qWarning() << "Wrong numbers of members for a relation, expected 2: " << members.size();
         return;
     }
 
@@ -204,7 +204,7 @@ void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reade
 void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << "Fetch job failed " << job->errorString();
+        qWarning() << "Fetch job failed " << job->errorString();
         cancelTask(job->errorString());
         return;
     }
@@ -215,10 +215,10 @@ void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
 void KolabRetrieveTagTask::taskComplete()
 {
     if (mRetrieveType == RetrieveTags) {
-        kDebug() << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
+        qDebug() << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
         resourceState()->tagsRetrieved(mTags, mTagMembers);
     } else if (mRetrieveType == RetrieveRelations) {
-        kDebug() << "Fetched relations:" << mRelations.size();
+        qDebug() << "Fetched relations:" << mRelations.size();
         resourceState()->relationsRetrieved(mRelations);
     }
 
