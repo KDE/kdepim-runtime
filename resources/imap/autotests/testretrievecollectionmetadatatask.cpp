@@ -149,7 +149,9 @@ private slots:
         // Test that a warning is issued if the insert rights of a folder have been revoked on the server.
         //
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.setParentCollection(parentCollection);
+        collection.setParentCollection(createCollectionChain(QLatin1String("/INBOX")));
+        //We use the aclattribute to determine if a collection already has acl's or not
+        collection.addAttribute(new Akonadi::ImapAclAttribute());
         collection.setRights(Akonadi::Collection::CanCreateItem);
 
         capabilities.clear();
@@ -179,6 +181,7 @@ private slots:
         //
         // Test that NoInferiors overrides acl rights and disallows creating new mailboxes
         //
+        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
         collection.setParentCollection(createCollectionChain(QString()));
         collection.setRemoteId("/INBOX");
         collection.setRights(Akonadi::Collection::AllRights);
