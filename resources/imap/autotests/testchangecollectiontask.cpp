@@ -170,9 +170,9 @@ private slots:
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
                  << "S: A000003 OK acl changed"
-                 << "C: A000004 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test\"   {5}\r\nfalse)"
+                 << "C: A000004 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test\" \"false\")"
                  << "S: A000004 OK SETMETADATA complete"
-                 << "C: A000005 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test2\"   {4}\r\ntrue)"
+                 << "C: A000005 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test2\" \"true\")"
                  << "S: A000005 OK SETMETADATA complete"
                  << "C: A000006 SETACL \"Foo\" \"foo@kde.org\" \"lrswipcda\""
                  << "S: A000006 OK acl changed"

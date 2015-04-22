@@ -110,7 +110,7 @@ private slots:
                  << "S: A000003 OK create done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Foo/Bar\""
                  << "S: A000004 OK subscribe done"
-                 << "C: A000005 SETMETADATA \"INBOX/Foo/Bar\" (\"/shared/vendor/foobar/foo\"   {5}\r\nvalue)"
+                 << "C: A000005 SETMETADATA \"INBOX/Foo/Bar\" (\"/shared/vendor/foobar/foo\" \"value\")"
                  << "S: A000005 OK SETMETADATA complete";
 
         callNames.clear();
