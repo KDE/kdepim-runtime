@@ -255,7 +255,6 @@ private slots:
 
     QTest::newRow( "no capabilities" ) << collection << capabilities << scenario
                                        << callNames << rights << expectedAnnotations;
-                                         << callNames << rights << expectedAnnotations;
     }
 
     void shouldCollectionRetrieveMetadata()
