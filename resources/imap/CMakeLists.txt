@@ -1,9 +1,3 @@
-
-option(IMAPRESOURCE_NO_SOLID "Disable the use of solid in the imap resource" FALSE)
-if(IMAPRESOURCE_NO_SOLID)
-  add_definitions( -DIMAPRESOURCE_NO_SOLID=1 )
-endif()
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
 ########### next target ###############
@@ -69,9 +63,6 @@ add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
 target_link_libraries(imapresource KF5::AkonadiCore KF5::IMAP KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::IdentityManagement KF5::AkonadiAgentBase KF5::I18n)
 
-if( NOT IMAPRESOURCE_NO_SOLID)
-  target_link_libraries(imapresource )
-endif()
 ########### next target ###############
 
 set( akonadi_imap_resource_SRCS
@@ -109,10 +100,6 @@ target_link_libraries(akonadi_imap_resource KF5::AkonadiCore     KF5::IMAP KF5::
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)
 endif ()
-
-if( NOT IMAPRESOURCE_NO_SOLID)
-target_link_libraries(akonadi_imap_resource )
-endif()
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

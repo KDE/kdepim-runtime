@@ -515,9 +515,7 @@ void ImapResourceBase::scheduleConnectionAttempt()
 
 void ImapResourceBase::doSetOnline(bool online)
 {
-#ifndef IMAPRESOURCE_NO_SOLID
     qCDebug(IMAPRESOURCE_LOG) << "online=" << online;
-#endif
     if (!online) {
         Q_FOREACH (ResourceTask *task, m_taskList) {
             task->kill();

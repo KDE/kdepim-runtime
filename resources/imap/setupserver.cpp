@@ -51,9 +51,7 @@
 #include <kmessagebox.h>
 #include <kuser.h>
 #include "imapresource_debug.h"
-#ifndef IMAPRESOURCE_NO_SOLID
 #include <solid/networking.h>
-#endif
 
 #include <kidentitymanagement/identitymanager.h>
 #include <kidentitymanagement/identitycombo.h>
@@ -193,11 +191,9 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     slotTestChanged();
     slotComplete();
     slotCustomSieveChanged();
-#ifndef IMAPRESOURCE_NO_SOLID
     connect(Solid::Networking::notifier(),
             SIGNAL(statusChanged(Solid::Networking::Status)),
             SLOT(slotTestChanged()));
-#endif
     connect(mOkButton, &QPushButton::clicked, this, &SetupServer::applySettings);
 }
 
