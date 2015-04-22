@@ -7,7 +7,7 @@ find_package(Qt5Test CONFIG REQUIRED)
 
 
 # if kdepimlibs was built without -DKDE4_BUILD_TESTS, kimaptest doesn't exist.
-find_path(KIMAPTEST_INCLUDE_DIR NAMES kimaptest/fakeserver.h)
+find_path(KIMAPTEST_INCLUDE_DIR NAMES KF5/kimaptest/fakeserver.h)
 find_library(KIMAPTEST_LIBRARY NAMES kimaptest)
 
 MESSAGE( STATUS "KIMAPTEST_INCLUDE_DIR :${KIMAPTEST_INCLUDE_DIR}")
