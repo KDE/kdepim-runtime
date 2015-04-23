@@ -64,6 +64,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     topLayout->addWidget(widget);
     topLayout->addWidget(buttonBox);
     QVBoxLayout *mainLayout = new QVBoxLayout(widget);
+    m_mainLayout = mainLayout;
 
     m_accGroupBox = new QGroupBox(i18n("Accounts"), this);
     mainLayout->addWidget(m_accGroupBox);
