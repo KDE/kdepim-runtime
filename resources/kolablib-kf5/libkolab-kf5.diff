@@ -1,11 +1,5 @@
-commit 7a6f2c9fdf8928e7ae392ebf105ed9f5983db616
-Author: Montel Laurent <montel@kde.org>
-Date:   Sun Sep 14 16:25:57 2014 +0200
-
-    Port to KF5
-
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 89a555a..ed50237 100644
+index b1bd6e5..3aab78e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,26 +1,28 @@
@@ -52,12 +46,12 @@ index 89a555a..ed50237 100644
  # Versioning
  # x.y.z scheme
  # Development versions are only x.y
-@@ -30,57 +32,39 @@ endif()
+@@ -30,54 +32,39 @@ endif()
  # 0.1.0 (first release)
  # 0.1.1 (patch release for 0.1.0)
  # 0.2 (0.2 development version towards 0.2.0)
 -set(Libkolab_VERSION_MAJOR 0)
--set(Libkolab_VERSION_MINOR 6)
+-set(Libkolab_VERSION_MINOR 7)
  # Enable the full x.y.z version only for release versions
 -#set(Libkolab_VERSION_PATCH 1)
 -#set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR}.${Libkolab_VERSION_PATCH} )
@@ -70,7 +64,7 @@ index 89a555a..ed50237 100644
 -set(INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/kolab)
 -set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/Libkolab )
  
--# Make relative paths absolute (needed later on)
+ # Make relative paths absolute (needed later on)
 -foreach(p LIB INCLUDE CMAKECONFIG)
 -    set(var ${p}_INSTALL_DIR)
 -    if(NOT IS_ABSOLUTE "${${var}}")
@@ -81,11 +75,10 @@ index 89a555a..ed50237 100644
 +
 +set(KOLAB_VERSION "1.0.0")
 +ecm_setup_version(${KOLAB_VERSION} VARIABLE_PREFIX KOLAB
-+                        VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/src/kolab_version.h"
-+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfigVersion.cmake"
-+                        SOVERSION 1
++                    VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/src/kolab_version.h"
++                    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfigVersion.cmake"
++                    SOVERSION 1
 +)
-+
  
 -include(MacroLogFeature)
  
@@ -94,12 +87,12 @@ index 89a555a..ed50237 100644
 -macro_log_feature(Libkolabxml_FOUND "Libkolabxml" "Kolab XML Format 3 serializing library" "http://git.kolab.org/libkolabxml/" TRUE "1.0" "Required for reading/writing Kolab XML Objects")
 -
 -find_package(Qt4 4.6.0 REQUIRED)
-+set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolab XML Format 3 serializing library" TYPE REQUIRED PURPOSE "Required for reading/writing Kolab XML Objects.")
++set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolab XML Format 3 serializing library" TYPE REQUIRED PURPOSE "Required for reading/writing Kolab XML Objects")
  
  if (USE_LIBCALENDARING)
      find_package(Libcalendaring)
 -    macro_log_feature(LIBCALENDARING_FOUND "Libcalendaring" "KDE Calendaring-Dependencies Library" "http://git.kolab.org/libcalendaring/" TRUE "" "Required if KDE libraries are not available.")
-+    set_package_properties(Libcalendaring PROPERTIES DESCRIPTION "KDE Calendaring-Dependencies Librar" TYPE REQUIRED PURPOSE "Required if KDE libraries are not available.")
++    set_package_properties(LIBCALENDARING PROPERTIES DESCRIPTION "KDE Calendaring-Dependencies Library" TYPE REQUIRED PURPOSE "Required if KDE libraries are not available.")
  else()
 -    find_package(KDE4 4.8 REQUIRED)
 -    find_package(KdepimLibs 4.8 REQUIRED)
@@ -121,17 +114,14 @@ index 89a555a..ed50237 100644
 -add_definitions( -DKDEPIMLIBS_VERSION_MINOR=${KdepimLibs_VERSION_MINOR} )
 -add_definitions( -DKDEPIMLIBS_VERSION_PATCH=${KdepimLibs_VERSION_PATCH} )
 -
--if("${KdepimLibs_VERSION}" VERSION_GREATER "4.8.40" OR USE_LIBCALENDARING)
--    add_definitions(-DKDEPIMLIBS_VERSION_DEVEL)
--endif()
- 
- set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -DQT_NO_EXCEPTIONS -fno-common -Woverloaded-virtual -fno-threadsafe-statics -fvisibility=hidden -Werror=return-type -fvisibility-inlines-hidden -fexceptions -UQT_NO_EXCEPTIONS -fPIC -g" )
- # message("${CMAKE_CXX_FLAGS}")
-@@ -91,123 +75,63 @@ if (USE_LIBCALENDARING)
+ #Tag::GENERIC is only available at the moment at the kolab/integration branches
+ if (KDEPIMLIBS_HAS_GENERIC_TAG)
+     add_definitions( -DKDEPIMLIBS_HAS_GENERIC_TAG)
+@@ -100,136 +87,51 @@ if (USE_LIBCALENDARING)
      set( KDE_LIBRARIES ${Libcalendaring_LIBRARIES} )
      message("${Libcalendaring_INCLUDE_DIRS} ${Libcalendaring_LIBRARIES}")
  else()
--    set( KDE_INCLUDES ${KDEPIMLIBS_INCLUDE_DIRS} ${KDE4_INCLUDE_DIR})
+-    set( KDE_INCLUDES ${KDEPIMLIBS_INCLUDE_DIRS} ${KDE4_INCLUDES} )
      set( KDE_LIBRARIES
 -        ${KDEPIMLIBS_KCALCORE_LIBS}
 -        ${KDEPIMLIBS_KABC_LIBS}
@@ -166,6 +156,17 @@ index 89a555a..ed50237 100644
 -
 -configure_file(libkolab-version.h.cmake "${CMAKE_BINARY_DIR}/libkolab-version.h" @ONLY)
 -
+-set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
+-set(CMAKE_REQUIRED_INCLUDES "/opt/devel/kolab/include/")
+-# include(CheckIncludeFileCXX)
+-# check_include_file_cxx(akonadi/tag.h HAVE_TAG_H)
+-#check_include_file_cxx doesn't work for some reason, so we use find_path instead.
+-#we have to make sure that we only search in KDE_INCLUDES though, to not accidentally include a system akonadi/tag.h
+-#when we're searching for one in libcalendaring.
+-find_path(HAVE_TAG_H akonadi/tag.h PATHS ${KDE_INCLUDES} NO_DEFAULT_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_PATH NO_CMAKE_ENVIRONMENT_PATH)
+-find_path(HAVE_RELATION_H akonadi/relation.h PATHS ${KDE_INCLUDES} NO_DEFAULT_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_PATH NO_CMAKE_ENVIRONMENT_PATH)
+-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/libkolab_config.h.in ${CMAKE_CURRENT_BINARY_DIR}/libkolab_config.h)
+-
 -add_subdirectory(kolabformatV2)
 -add_subdirectory(conversion)
 -add_subdirectory(calendaring)
@@ -192,9 +193,9 @@ index 89a555a..ed50237 100644
 -    ${CONVERSION_MOC}
 -    ${FREEBUSY_SRCS}
 +ecm_configure_package_config_file(
-+  "${CMAKE_CURRENT_SOURCE_DIR}/src/KF5KolabConfig.cmake.in"
-+  "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfig.cmake"
-+  INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
++    "${CMAKE_CURRENT_SOURCE_DIR}/src/KF5KolabConfig.cmake.in"
++    "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfig.cmake"
++    INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
  )
  
 -set(KOLAB_LINK_LIBRARIES
@@ -222,10 +223,10 @@ index 89a555a..ed50237 100644
 -    LIBRARY DESTINATION ${LIB_INSTALL_DIR}
 -    ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
 +install(FILES
-+  "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfig.cmake"
-+  "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfigVersion.cmake"
-+  DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-+  COMPONENT Devel
++    "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfig.cmake"
++    "${CMAKE_CURRENT_BINARY_DIR}/src/KF5KolabConfigVersion.cmake"
++    DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
++    COMPONENT Devel
  )
  
  install(FILES
@@ -236,54 +237,44 @@ index 89a555a..ed50237 100644
 -    kolabformat/errorhandler.h
 -    kolabformat/xmlobject.h
 -    kolabformat/mimeobject.h
+-    ${CMAKE_CURRENT_BINARY_DIR}/libkolab_config.h
 -    conversion/kcalconversion.h
 -    conversion/kabcconversion.h
 -    conversion/commonconversion.h
 -    freebusy/freebusy.h
 -    DESTINATION ${INCLUDE_INSTALL_DIR}
-+   ${CMAKE_CURRENT_BINARY_DIR}/src/kolab_version.h
-+   DESTINATION ${KF5_INCLUDE_INSTALL_DIR}
-+   COMPONENT Devel
++    ${CMAKE_CURRENT_BINARY_DIR}/src/kolab_version.h
++    DESTINATION ${KF5_INCLUDE_INSTALL_DIR}
++    COMPONENT Devel
  )
  
 -#Get the include directory relative to CMAKECONFIG_INSTALL_DIR
 -file(RELATIVE_PATH REL_INCLUDE_DIR "${CMAKECONFIG_INSTALL_DIR}" "${INCLUDE_INSTALL_DIR}")
 -#Assemble the full relative path. This will be used in the LibkolabConfig.cmake, which will be installed in CMAKECONFIG_INSTALL_DIR
 -set(CONF_INCLUDE_DIRS "\${Libkolab_CMAKE_DIR}/${REL_INCLUDE_DIR}")
- 
+-
 -install(EXPORT LibkolabExport DESTINATION ${CMAKECONFIG_INSTALL_DIR} FILE LibkolabTargets.cmake )
-+install(EXPORT KF5KolabTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5KolabTargets.cmake NAMESPACE KF5::)
++install(EXPORT KF5KolabTargets DESTINATION ${CMAKECONFIG_INSTALL_DIR} FILE KF5KolabTargets.cmake NAMESPACE KF5::)
  
 -configure_file(${Libkolab_MODULE_DIR}/LibkolabConfig.cmake.in ${Libkolab_BINARY_DIR}/LibkolabConfig.cmake @ONLY )
 -configure_file(${Libkolab_MODULE_DIR}/LibkolabConfigVersion.cmake.in ${Libkolab_BINARY_DIR}/LibkolabConfigVersion.cmake @ONLY )
 -# Install these two files into the same directory as the generated exports-file.
 -install(FILES ${Libkolab_BINARY_DIR}/LibkolabConfig.cmake ${Libkolab_BINARY_DIR}/LibkolabConfigVersion.cmake
 -        DESTINATION ${CMAKECONFIG_INSTALL_DIR} )
- 
- 
--include(SWIGUtils)
--if(PYTHON_BINDINGS)
--    generatePythonBindings(shared shared.i)
--    add_subdirectory(kolabformat/python)
--endif(PYTHON_BINDINGS)
 +set(KOLAB_LINK_LIBRARIES
 +    ${Libkolabxml_LIBRARIES}
 +    Qt5::Core
 +    Qt5::Xml
 +    Qt5::Gui
 +)
-+
-+#REACTIVATE
-+#if(BUILD_TESTS)
-+#    #for tests only
-+#    enable_testing()
-+#    add_library(kolab_static STATIC ${KOLAB_SRCS})
-+#    target_link_libraries(kolab_static ${KOLAB_LINK_LIBRARIES})
-+#    add_subdirectory(tests)
-+#endif(BUILD_TESTS)
-+
+ 
 +add_subdirectory(src)
-+
+ 
+-include(SWIGUtils)
+-if(PYTHON_BINDINGS)
+-    generatePythonBindings(shared shared.i)
+-    add_subdirectory(kolabformat/python)
+-endif(PYTHON_BINDINGS)
 +feature_summary(WHAT ALL
 +                INCLUDE_QUIET_PACKAGES
 +                FATAL_ON_MISSING_REQUIRED_PACKAGES
@@ -291,6 +282,7 @@ index 89a555a..ed50237 100644
  
 -if(PHP_BINDINGS)
 -    generatePHPBindings(kolabshared shared.i)
+-    generatePHPBindings(dummy dummy.i)
 -    add_subdirectory(kolabformat/php)
 -endif(PHP_BINDINGS)
 diff --git a/calendaring/CMakeLists.txt b/calendaring/CMakeLists.txt
@@ -2522,10 +2514,10 @@ index 0b7863a..0000000
 -#endif
 diff --git a/conversion/kcalconversion.cpp b/conversion/kcalconversion.cpp
 deleted file mode 100644
-index a82b6a2..0000000
+index b06a5d0..0000000
 --- a/conversion/kcalconversion.cpp
 +++ /dev/null
-@@ -1,858 +0,0 @@
+@@ -1,859 +0,0 @@
 -/*
 - * Copyright (C) 2011  Christian Mollekopf <mollekopf@kolabsys.com>
 - *
@@ -3189,7 +3181,8 @@ index a82b6a2..0000000
 -        i.setNonKDECustomProperty(CUSTOM_KOLAB_URL, fromStdString(e.url()));
 -    }
 -    if (e.recurrenceID().isValid()) {
--        i.setRecurrenceId(toDate(e.recurrenceID())); //TODO THISANDFUTURE
+-        i.setRecurrenceId(toDate(e.recurrenceID()));
+-        i.setThisAndFuture(e.thisAndFuture());
 -    }
 -    setRecurrence(i, e);
 -    foreach (const Kolab::Alarm a, e.alarms()) {
@@ -3227,7 +3220,7 @@ index a82b6a2..0000000
 -        alarm->setSnoozeTime(toDuration(a.duration()));
 -        alarm->setRepeatCount(a.numrepeat());
 -        alarm->setEnabled(true);
--        i.addAlarm(alarm);       
+-        i.addAlarm(alarm);
 -    }
 -}
 -
@@ -3240,7 +3233,7 @@ index a82b6a2..0000000
 -        i.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(e.organizer()->email()), toStdString(e.organizer()->name()))); //TODO handle uid too
 -    }
 -    i.setUrl(toStdString(e.nonKDECustomProperty(CUSTOM_KOLAB_URL)));
--    i.setRecurrenceID(fromDate(e.recurrenceId()), false); //TODO THISANDFUTURE
+-    i.setRecurrenceID(fromDate(e.recurrenceId()), e.thisAndFuture());
 -    getRecurrence(i, e);
 -    std::vector <Kolab::Alarm> alarms;
 -    foreach (const KCalCore::Alarm::Ptr &a, e.alarms()) {
@@ -4259,10 +4252,10 @@ index ee276d6..0000000
 -endif(PHP_BINDINGS)
 diff --git a/icalendar/icalendar.cpp b/icalendar/icalendar.cpp
 deleted file mode 100644
-index be7c0e6..0000000
+index 3ed41ae..0000000
 --- a/icalendar/icalendar.cpp
 +++ /dev/null
-@@ -1,169 +0,0 @@
+@@ -1,197 +0,0 @@
 -/*
 -    <one line to give the library's name and an idea of what it does.>
 -    Copyright (C) 2012  Christian Mollekopf <chrigi_1@fastmail.fm>
@@ -4304,13 +4297,21 @@ index be7c0e6..0000000
 -    KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
 -    foreach (const Event &event, events) {
 -        KCalCore::Event::Ptr kcalEvent = Conversion::toKCalCore(event);
--        kcalEvent->setCreated(KDateTime::currentUtcDateTime()); //sets dtstamp
+-        if (!kcalEvent->created().isValid()) {
+-            kcalEvent->setCreated(KDateTime::currentUtcDateTime()); //sets dtstamp
+-        }
 -        calendar->addEvent(kcalEvent);
+-        foreach(const Event &exception, event.exceptions()) {
+-            KCalCore::Event::Ptr kcalException = Conversion::toKCalCore(exception);
+-            if (!kcalException->created().isValid()) {
+-                kcalException->setCreated(KDateTime::currentUtcDateTime()); //sets dtstamp
+-            }
+-            calendar->addEvent(kcalException);
+-        }
 -    }
 -    KCalCore::ICalFormat format;
 -    format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
 -//     qDebug() << format.createScheduleMessage(calendar->events().first(), KCalCore::iTIPRequest);
--
 -    return Conversion::toStdString(format.toString(calendar));
 -    
 -}
@@ -4322,8 +4323,28 @@ index be7c0e6..0000000
 -    format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
 -    format.fromString(calendar, Conversion::fromStdString(input));
 -    std::vector<Event> events;
+-    QMap< QString, int > uidMap;
 -    foreach (const KCalCore::Event::Ptr &event, calendar->events()) {
--        events.push_back(Conversion::fromKCalCore(*event));
+-        Event e = Conversion::fromKCalCore(*event);
+-        if (!e.recurrenceID().isValid()) {
+-            if (uidMap.contains(event->uid())) {
+-                e.setExceptions(events.at(uidMap[event->uid()]).exceptions());
+-                events[uidMap[event->uid()]] = e;
+-            } else {
+-                events.push_back(e);
+-                uidMap.insert(event->uid(), events.size()-1);
+-            }
+-        } else {
+-            if (!uidMap.contains(event->uid())) {
+-                Event e;
+-                e.setUid("");
+-                events.push_back(e);
+-                uidMap.insert(event->uid(), events.size()-1);
+-            }
+-            std::vector<Event> exceptions = events.at( uidMap[event->uid()]).exceptions();
+-            exceptions.push_back(e);
+-            events.at(uidMap[event->uid()]).setExceptions(exceptions);
+-        }
 -    }
 -    return events;
 -}
@@ -5434,10 +5455,10 @@ index e1d8e93..0000000
 -#endif
 diff --git a/kolabformat/kolabobject.cpp b/kolabformat/kolabobject.cpp
 deleted file mode 100644
-index 90b4e78..0000000
+index e5c404d..0000000
 --- a/kolabformat/kolabobject.cpp
 +++ /dev/null
-@@ -1,751 +0,0 @@
+@@ -1,858 +0,0 @@
 -/*
 - * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
 - *
@@ -5502,29 +5523,49 @@ index 90b4e78..0000000
 -    return fromXML<KCalCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
 -}
 -
+-QString ownUrlDecode(QByteArray encodedParam)
+-{
+-    encodedParam.replace('+', ' ');
+-    return QUrl::fromPercentEncoding(encodedParam);
+-}
+-
 -RelationMember parseMemberUrl(const QString &string)
 -{
--    RelationMember member;
--    QUrl url(QUrl::fromPercentEncoding(string.toLatin1()));
--    QList<QByteArray> path = url.encodedPath().split('/');
+-    if (string.startsWith("urn:uuid:")) {
+-        RelationMember member;
+-        member.gid = string.mid(9);
+-        return member;
+-    }
+-    QUrl url(QUrl::fromEncoded(string.toLatin1()));
+-    QList<QByteArray> path;
+-    Q_FOREACH(const QByteArray &fragment, url.encodedPath().split('/')) {
+-        path.append(ownUrlDecode(fragment).toUtf8());
+-    }
 -    // qDebug() << path;
+-    bool isShared = false;
 -    int start = path.indexOf("user");
 -    if (start < 0) {
--        kWarning() << "Couldn't find \"user\" in path: " << path;
+-        start = path.indexOf("shared");
+-        isShared = true;
+-    }
+-    if (start < 0) {
+-        Warning() << "Couldn't find \"user\" or \"shared\" in path: " << path;
 -        return RelationMember();
 -    }
 -    path = path.mid(start + 1);
 -    if (path.size() < 2) {
--        kWarning() << "Incomplete path: " << path;
+-        Warning() << "Incomplete path: " << path;
 -        return RelationMember();
 -    }
--    // user-name
--    path.removeFirst();
+-    RelationMember member;
+-    if (!isShared) {
+-        member.user = path.takeFirst();
+-    }
 -    member.uid = path.takeLast().toLong();
 -    member.mailbox = path;
--    member.messageId = url.queryItemValue("message-id");
--    member.subject = url.queryItemValue("subject");
--    member.date = url.queryItemValue("date");
+-    member.messageId = ownUrlDecode(url.encodedQueryItemValue("message-id"));
+-    member.subject = ownUrlDecode(url.encodedQueryItemValue("subject"));
+-    member.date = ownUrlDecode(url.encodedQueryItemValue("date"));
 -    // qDebug() << member.uid << member.mailbox;
 -    return member;
 -}
@@ -5541,20 +5582,30 @@ index 90b4e78..0000000
 -
 -KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
 -{
+-    if (!member.gid.isEmpty()) {
+-        return QString("urn:uuid:%1").arg(member.gid);
+-    }
 -    QUrl url;
 -    url.setScheme("imap");
 -    QList<QByteArray> path;
--    path << "user";
--    path << "localuser@localhost";
--    path << member.mailbox;
+-    path << "/";
+-    if (!member.user.isEmpty()) {
+-        path << "user";
+-        path << QUrl::toPercentEncoding(member.user.toLatin1());
+-    } else {
+-        path << "shared";
+-    }
+-    Q_FOREACH(const QByteArray &mb, member.mailbox) {
+-        path << QUrl::toPercentEncoding(mb);
+-    }
 -    path << QByteArray::number(member.uid);
--    url.setPath("/" + join(path, "/"));
+-    url.setEncodedPath("/" + join(path, "/"));
 -
--    QList<QPair<QString, QString> > queryItems;
--    queryItems.append(qMakePair(QString::fromLatin1("message-id"), member.messageId));
--    queryItems.append(qMakePair(QString::fromLatin1("subject"), member.subject));
--    queryItems.append(qMakePair(QString::fromLatin1("date"), member.date));
--    url.setQueryItems(queryItems);
+-    QList<QPair<QByteArray, QByteArray> > queryItems;
+-    queryItems.append(qMakePair(QString::fromLatin1("message-id").toLatin1(), QUrl::toPercentEncoding(member.messageId)));
+-    queryItems.append(qMakePair(QString::fromLatin1("subject").toLatin1(), QUrl::toPercentEncoding(member.subject)));
+-    queryItems.append(qMakePair(QString::fromLatin1("date").toLatin1(), QUrl::toPercentEncoding(member.date)));
+-    url.setEncodedQueryItems(queryItems);
 -
 -    return QString::fromLatin1(url.toEncoded());
 -}
@@ -5574,7 +5625,7 @@ index 90b4e78..0000000
 -
 -    ObjectType readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
 -    ObjectType readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
--    
+-
 -    KCalCore::Incidence::Ptr mIncidence;
 -    KABC::Addressee mAddressee;
 -    KABC::ContactGroup mContactGroup;
@@ -5584,11 +5635,17 @@ index 90b4e78..0000000
 -    ObjectType mObjectType;
 -    Version mVersion;
 -    Kolab::Freebusy mFreebusy;
--    Akonadi::Tag mTag;
--    QStringList mTagMembers;
 -    ObjectType mOverrideObjectType;
 -    Version mOverrideVersion;
 -    bool mDoOverrideVersion;
+-
+-#ifdef HAVE_RELATION_H
+-    Akonadi::Relation mRelation;
+-#endif
+-#ifdef HAVE_TAG_H
+-    Akonadi::Tag mTag;
+-    QStringList mTagMembers;
+-#endif
 -};
 -//@endcond
 -
@@ -5830,22 +5887,47 @@ index 90b4e78..0000000
 -            mFreebusy = fb;
 -        }
 -            break;
+-#ifdef HAVE_TAG_H
 -        case RelationConfigurationObject: {
 -            const Kolab::Configuration &configuration = Kolab::readConfiguration(xml, false);
 -            const Kolab::Relation &relation = configuration.relation();
 -
--            mTag = Akonadi::Tag();
--            mTag.setName(Conversion::fromStdString(relation.name()));
--            mTag.setGid(Conversion::fromStdString(configuration.uid()).toLatin1());
--            mTag.setType(Akonadi::Tag::PLAIN);
+-            if (relation.type() == "tag") {
+-                mTag = Akonadi::Tag();
+-                mTag.setName(Conversion::fromStdString(relation.name()));
+-                mTag.setGid(Conversion::fromStdString(configuration.uid()).toLatin1());
+-#ifdef KDEPIMLIBS_HAS_GENERIC_TAG
+-                mTag.setType(Akonadi::Tag::GENERIC);
+-#else
+-                mTag.setType(Akonadi::Tag::PLAIN);
+-#endif
+-                mTagMembers.reserve(relation.members().size());
+-                foreach (const std::string &member, relation.members()) {
+-                    mTagMembers << Conversion::fromStdString(member);
+-                }
+-            } else if (relation.type() == "generic") {
+-#ifdef HAVE_RELATION_H
+-                if (relation.members().size() == 2) {
+-                    mRelation = Akonadi::Relation();
+-                    mRelation.setRemoteId(Conversion::fromStdString(configuration.uid()).toLatin1());
+-                    mRelation.setType(Akonadi::Relation::GENERIC);
 -
--            mTagMembers.reserve(relation.members().size());
--            foreach (const std::string &member, relation.members()) {
--                mTagMembers << Conversion::fromStdString(member);
+-                    mTagMembers.reserve(relation.members().size());
+-                    foreach (const std::string &member, relation.members()) {
+-                        mTagMembers << Conversion::fromStdString(member);
+-                    }
+-                } else {
+-                    Critical() << "generic relation had wrong number of members:" << relation.members().size();
+-                    printMessageDebugInfo(msg);
+-                }
+-#endif
+-            } else {
+-                Critical() << "unknown configuration object type" << relation.type();
+-                printMessageDebugInfo(msg);
 -            }
--
 -        }
 -            break;
+-#endif
 -        default:
 -            Critical() << "no kolab object found ";
 -            printMessageDebugInfo(msg);
@@ -5972,6 +6054,12 @@ index 90b4e78..0000000
 -    return d->mFreebusy;
 -}
 -
+-#ifdef HAVE_TAG_H
+-bool KolabObjectReader::isTag() const
+-{
+-    return !d->mTag.gid().isEmpty();
+-}
+-
 -Akonadi::Tag KolabObjectReader::getTag() const
 -{
 -    return d->mTag;
@@ -5981,6 +6069,19 @@ index 90b4e78..0000000
 -{
 -    return d->mTagMembers;
 -}
+-#endif
+-
+-#ifdef HAVE_RELATION_H
+-bool KolabObjectReader::isRelation() const
+-{
+-    return d->mRelation.isValid();
+-}
+-
+-Akonadi::Relation KolabObjectReader::getRelation() const
+-{
+-    return d->mRelation;
+-}
+-#endif
 -
 -
 -//Normalize incidences before serializing them
@@ -6160,6 +6261,16 @@ index 90b4e78..0000000
 -    return  Mime::createMessage(Conversion::fromStdString(freebusy.uid()), xCalMimeType(), freebusyKolabType(), Conversion::fromStdString(v3String).toUtf8(), true, getProductId(productId));
 -}
 -
+-#ifdef HAVE_TAG_H
+-KMime::Message::Ptr writeRelationHelper(const Kolab::Relation &relation, const QByteArray &uid, const QString &productId)
+-{
+-    Kolab::Configuration configuration(relation); //TODO preserve creation/lastModified date
+-    configuration.setUid(uid.constData());
+-    const std::string &v3String = Kolab::writeConfiguration(configuration, Conversion::toStdString(getProductId(productId)));
+-    ErrorHandler::handleLibkolabxmlErrors();
+-    return  Mime::createMessage(Conversion::fromStdString(configuration.uid()), kolabMimeType(), relationKolabType(), Conversion::fromStdString(v3String).toUtf8(), true, getProductId(productId));
+-}
+-
 -KMime::Message::Ptr KolabObjectWriter::writeTag(const Akonadi::Tag &tag, const QStringList &members, Version v, const QString &productId)
 -{
 -    ErrorHandler::clearErrors();
@@ -6175,26 +6286,43 @@ index 90b4e78..0000000
 -    }
 -    relation.setMembers(m);
 -
--    Kolab::Configuration configuration(relation); //TODO preserve creation/lastModified date
--    configuration.setUid(tag.gid().constData());
--    const std::string &v3String = Kolab::writeConfiguration(configuration, Conversion::toStdString(getProductId(productId)));
--    ErrorHandler::handleLibkolabxmlErrors();
--    return  Mime::createMessage(Conversion::fromStdString(configuration.uid()), kolabMimeType(), relationKolabType(), Conversion::fromStdString(v3String).toUtf8(), true, getProductId(productId));
+-    return writeRelationHelper(relation, tag.gid(), productId);
 -}
+-#endif
 -
+-#ifdef HAVE_RELATION_H
+-KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &relation, const QStringList &items, Version v, const QString &productId)
+-{
+-    ErrorHandler::clearErrors();
+-    if (v != KolabV3) {
+-        Critical() << "only v3 implementation available";
+-    }
 -
+-    if (items.size() != 2) {
+-        Critical() << "Wrong number of members for generic relation.";
+-        return KMime::Message::Ptr();
+-    }
 -
+-    Kolab::Relation kolabRelation(std::string(), "generic");
+-    std::vector<std::string> m;
+-    m.reserve(2);
+-    m.push_back(Conversion::toStdString(items.at(0)));
+-    m.push_back(Conversion::toStdString(items.at(1)));
+-    kolabRelation.setMembers(m);
 -
+-    return writeRelationHelper(kolabRelation, relation.remoteId(), productId);
+-}
+-#endif
 -
 -
 -}; //Namespace
 -
 diff --git a/kolabformat/kolabobject.h b/kolabformat/kolabobject.h
 deleted file mode 100644
-index 71a0e4b..0000000
+index b3ec9c0..0000000
 --- a/kolabformat/kolabobject.h
 +++ /dev/null
-@@ -1,134 +0,0 @@
+@@ -1,157 +0,0 @@
 -/*
 - * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
 - *
@@ -6217,7 +6345,15 @@ index 71a0e4b..0000000
 -
 -#include <kolab_export.h>
 -
+-#include <libkolab_config.h>
+-
+-#ifdef HAVE_TAG_H
+-#include <akonadi/item.h>
 -#include <akonadi/tag.h>
+-#endif
+-#ifdef HAVE_RELATION_H
+-#include <akonadi/relation.h>
+-#endif
 -#include <kabc/addressee.h>
 -#include <kabc/contactgroup.h>
 -#include <kcalcore/incidence.h>
@@ -6242,6 +6378,7 @@ index 71a0e4b..0000000
 -    QList<QByteArray> mailbox;
 -    QString user;
 -    qint64 uid;
+-    QString gid;
 -};
 -KOLAB_EXPORT RelationMember parseMemberUrl(const QString &url);
 -KOLAB_EXPORT QString generateMemberUrl(const RelationMember &url);
@@ -6296,11 +6433,20 @@ index 71a0e4b..0000000
 -    KMime::Message::Ptr getNote() const;
 -    QStringList getDictionary(QString &lang) const;
 -    Freebusy getFreebusy() const;
+-#ifdef HAVE_TAG_H
+-    bool isTag() const;
 -    Akonadi::Tag getTag() const;
 -    QStringList getTagMembers() const;
+-#endif
+-#ifdef HAVE_RELATION_H
+-    bool isRelation() const;
+-    Akonadi::Relation getRelation() const;
+-#endif
 -
 -private:
 -    //@cond PRIVATE
+-    KolabObjectReader(const KolabObjectReader &other);
+-    KolabObjectReader &operator=(const KolabObjectReader &rhs);
 -    class Private;
 -    Private *const d;
 -    //@endcond
@@ -6322,7 +6468,12 @@ index 71a0e4b..0000000
 -    static KMime::Message::Ptr writeNote(const KMime::Message::Ptr &, Version v = KolabV3, const QString &productId = QString());
 -    static KMime::Message::Ptr writeDictionary(const QStringList &, const QString &lang, Version v = KolabV3, const QString &productId = QString());
 -    static KMime::Message::Ptr writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
+-#ifdef HAVE_TAG_H
 -    static KMime::Message::Ptr writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
+-#endif
+-#ifdef HAVE_RELATION_H
+-    static KMime::Message::Ptr writeRelation(const Akonadi::Relation &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
+-#endif
 -    
 -};
 -
@@ -9751,10 +9902,10 @@ index be0d4bf..0000000
 -#endif // KOLAB_EVENT_H
 diff --git a/kolabformatV2/incidence.cpp b/kolabformatV2/incidence.cpp
 deleted file mode 100644
-index 9f0e381..0000000
+index d46beb1..0000000
 --- a/kolabformatV2/incidence.cpp
 +++ /dev/null
-@@ -1,1010 +0,0 @@
+@@ -1,1025 +0,0 @@
 -/*
 -    This file is part of the kolab resource - the implementation of the
 -    Kolab storage format. See www.kolab.org for documentation on this.
@@ -9798,6 +9949,8 @@ index 9f0e381..0000000
 -#include <kurl.h>
 -
 -#include <QBitArray>
+-#include <string>
+-#include <boost/algorithm/string.hpp>
 -
 -using namespace KolabV2;
 -
@@ -10114,7 +10267,20 @@ index 9f0e381..0000000
 -        mRecurrence.rangeType = e.attribute( "type" );
 -        mRecurrence.range = e.text();
 -      } else if ( tagName == "exclusion" ) {
--        mRecurrence.exclusions.append( stringToDate( e.text() ) );
+-        std::string exclusionDate = e.text().toStdString();
+-        // need to fix the date, eg. 2013-1-1 to ISO format 2013-01-01
+-        if (exclusionDate.length() != 10) {
+-          std::vector<std::string> strs;
+-          boost::split(strs, exclusionDate, boost::is_any_of("-"));
+-          char buff[100];
+-          sprintf(buff, "%04d-%02d-%02d",
+-              QString::fromStdString(strs[0]).toInt(),
+-              QString::fromStdString(strs[1]).toInt(),
+-              QString::fromStdString(strs[2]).toInt()
+-            );
+-          exclusionDate = buff;
+-        }
+-        mRecurrence.exclusions.append( stringToDate( QString::fromStdString(exclusionDate) ) );
 -      } else
 -        // TODO: Unhandled tag - save for later storage
 -        kDebug() <<"Warning: Unhandled tag" << e.tagName();
@@ -12806,6 +12972,18 @@ index 1e921f9..0000000
 -
 -#endif
 \ No newline at end of file
+diff --git a/libkolab_config.h.in b/libkolab_config.h.in
+deleted file mode 100644
+index 7cf8522..0000000
+--- a/libkolab_config.h.in
++++ /dev/null
+@@ -1,6 +0,0 @@
+-/* This file is generated from libkolab_config.h.cmake. */
+-
+-/* Whether akonadi/tag.h exists. */
+-#cmakedefine HAVE_TAG_H 1
+-/* Whether akonadi/relation.h exists. */
+-#cmakedefine HAVE_RELATION_H 1
 diff --git a/mime/mimeutils.cpp b/mime/mimeutils.cpp
 deleted file mode 100644
 index e259773..0000000
@@ -13201,14 +13379,25 @@ index 1941daa..0000000
 -};
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
 new file mode 100644
-index 0000000..9bdeee4
+index 0000000..27b626b
 --- /dev/null
 +++ b/src/CMakeLists.txt
-@@ -0,0 +1,104 @@
+@@ -0,0 +1,116 @@
 +
-+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -DQT_NO_EXCEPTIONS -fno-common -Woverloaded-virtual -fno-threadsafe-statics -fvisibility=hidden -Werror=return-type -fvisibility-inlines-hidden -fexceptions -UQT_NO_EXCEPTIONS -fPIC -g" )
++set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -DQT_NO_EXCEPTIONS -fno-common -Woverloaded-virtual -fno-threadsafe-statics -fvisibility=hidden -Werror=return-type -fvisibility-inlines-hidden -fexceptions -UQT_NO_EXCEPTIONS -fPIC -g --std=c++11" )
 +# message("${CMAKE_CXX_FLAGS}")
 +set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DQT_NO_DEBUG")
++
++# include(CheckIncludeFileCXX)
++# check_include_file_cxx(akonadi/tag.h HAVE_TAG_H)
++#check_include_file_cxx doesn't work for some reason, so we use find_path instead.
++#we have to make sure that we only search in KDE_INCLUDES though, to not accidentally include a system akonadi/tag.h
++#when we're searching for one in libcalendaring.
++get_target_property(KF5Akonadi_INCLUDE_DIRS KF5::AkonadiCore INTERFACE_INCLUDE_DIRECTORIES)
++find_path(HAVE_TAG_H tag.h PATHS ${KF5Akonadi_INCLUDE_DIRS} NO_DEFAULT_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_PATH NO_CMAKE_ENVIRONMENT_PATH)
++find_path(HAVE_RELATION_H relation.h PATHS ${KF5Akonadi_INCLUDE_DIRS} NO_DEFAULT_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_PATH NO_CMAKE_ENVIRONMENT_PATH)
++configure_file(${CMAKE_CURRENT_SOURCE_DIR}/kolab_config.h.in ${CMAKE_CURRENT_BINARY_DIR}/kolab_config.h)
++
 +
 +include_directories(
 +  ${CMAKE_SOURCE_DIR}/src/kolabformatV2/
@@ -13276,6 +13465,7 @@ index 0000000..9bdeee4
 +
 +install(FILES
 +    ${CMAKE_CURRENT_BINARY_DIR}/kolab_export.h
++    ${CMAKE_CURRENT_BINARY_DIR}/kolab_config.h
 +    kolabformat/kolabdefinitions.h
 +    kolabformat/formathelpers.h
 +    kolabformat/kolabobject.h
@@ -14558,7 +14748,7 @@ index 0000000..fd4c191
 \ No newline at end of file
 diff --git a/src/conversion/kabcconversion.cpp b/src/conversion/kabcconversion.cpp
 new file mode 100644
-index 0000000..64d8311
+index 0000000..eef3313
 --- /dev/null
 +++ b/src/conversion/kabcconversion.cpp
 @@ -0,0 +1,894 @@
@@ -15268,7 +15458,7 @@ index 0000000..64d8311
 +        c.setRelateds(std::vector<Kolab::Related>() << Kolab::Related(Kolab::Related::Text, toStdString(spouse), Kolab::Related::Spouse));
 +    }
 +    c.setBDay(fromDate(KDateTime(addressee.birthday(), KDateTime::ClockTime)));
-+    c.setAnniversary(fromDate(KDateTime(QDate::fromString( addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Anniversary")), Qt::ISODate ), KDateTime::ClockTime)));
++    c.setAnniversary(fromDate(KDateTime(QDate::fromString( addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Anniversary")), Qt::ISODate ), KDateTime::Spec(KDateTime::ClockTime))));
 +    if (!addressee.photo().isEmpty()) {
 +        std::string mimetype;
 +        const std::string &photo = fromPicture(addressee.photo(), mimetype);
@@ -15507,10 +15697,10 @@ index 0000000..648006b
 +#endif
 diff --git a/src/conversion/kcalconversion.cpp b/src/conversion/kcalconversion.cpp
 new file mode 100644
-index 0000000..bec4478
+index 0000000..f8920b0
 --- /dev/null
 +++ b/src/conversion/kcalconversion.cpp
-@@ -0,0 +1,859 @@
+@@ -0,0 +1,860 @@
 +/*
 + * Copyright (C) 2011  Christian Mollekopf <mollekopf@kolabsys.com>
 + *
@@ -16175,7 +16365,8 @@ index 0000000..bec4478
 +        i.setNonKDECustomProperty(CUSTOM_KOLAB_URL, fromStdString(e.url()));
 +    }
 +    if (e.recurrenceID().isValid()) {
-+        i.setRecurrenceId(toDate(e.recurrenceID())); //TODO THISANDFUTURE
++        i.setRecurrenceId(toDate(e.recurrenceID()));
++        i.setThisAndFuture(e.thisAndFuture());
 +    }
 +    setRecurrence(i, e);
 +    foreach (const Kolab::Alarm a, e.alarms()) {
@@ -16213,7 +16404,7 @@ index 0000000..bec4478
 +        alarm->setSnoozeTime(toDuration(a.duration()));
 +        alarm->setRepeatCount(a.numrepeat());
 +        alarm->setEnabled(true);
-+        i.addAlarm(alarm);       
++        i.addAlarm(alarm);
 +    }
 +}
 +
@@ -16226,7 +16417,7 @@ index 0000000..bec4478
 +        i.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(e.organizer()->email()), toStdString(e.organizer()->name()))); //TODO handle uid too
 +    }
 +    i.setUrl(toStdString(e.nonKDECustomProperty(CUSTOM_KOLAB_URL)));
-+    i.setRecurrenceID(fromDate(e.recurrenceId()), false); //TODO THISANDFUTURE
++    i.setRecurrenceID(fromDate(e.recurrenceId()), e.thisAndFuture());
 +    getRecurrence(i, e);
 +    std::vector <Kolab::Alarm> alarms;
 +    foreach (const KCalCore::Alarm::Ptr &a, e.alarms()) {
@@ -17240,10 +17431,10 @@ index 0000000..ee276d6
 +endif(PHP_BINDINGS)
 diff --git a/src/icalendar/icalendar.cpp b/src/icalendar/icalendar.cpp
 new file mode 100644
-index 0000000..b94f5e9
+index 0000000..2c2b263
 --- /dev/null
 +++ b/src/icalendar/icalendar.cpp
-@@ -0,0 +1,169 @@
+@@ -0,0 +1,197 @@
 +/*
 +    <one line to give the library's name and an idea of what it does.>
 +    Copyright (C) 2012  Christian Mollekopf <chrigi_1@fastmail.fm>
@@ -17285,13 +17476,21 @@ index 0000000..b94f5e9
 +    KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
 +    foreach (const Event &event, events) {
 +        KCalCore::Event::Ptr kcalEvent = Conversion::toKCalCore(event);
-+        kcalEvent->setCreated(KDateTime::currentUtcDateTime()); //sets dtstamp
++        if (!kcalEvent->created().isValid()) {
++            kcalEvent->setCreated(KDateTime::currentUtcDateTime()); //sets dtstamp
++        }
 +        calendar->addEvent(kcalEvent);
++        foreach(const Event &exception, event.exceptions()) {
++            KCalCore::Event::Ptr kcalException = Conversion::toKCalCore(exception);
++            if (!kcalException->created().isValid()) {
++                kcalException->setCreated(KDateTime::currentUtcDateTime()); //sets dtstamp
++            }
++            calendar->addEvent(kcalException);
++        }
 +    }
 +    KCalCore::ICalFormat format;
 +    format.setApplication("libkolab", KOLAB_VERSION_STRING);
 +//     qDebug() << format.createScheduleMessage(calendar->events().first(), KCalCore::iTIPRequest);
-+
 +    return Conversion::toStdString(format.toString(calendar));
 +    
 +}
@@ -17303,8 +17502,28 @@ index 0000000..b94f5e9
 +    format.setApplication("libkolab", KOLAB_VERSION_STRING);
 +    format.fromString(calendar, Conversion::fromStdString(input));
 +    std::vector<Event> events;
++    QMap< QString, int > uidMap;
 +    foreach (const KCalCore::Event::Ptr &event, calendar->events()) {
-+        events.push_back(Conversion::fromKCalCore(*event));
++        Event e = Conversion::fromKCalCore(*event);
++        if (!e.recurrenceID().isValid()) {
++            if (uidMap.contains(event->uid())) {
++                e.setExceptions(events.at(uidMap[event->uid()]).exceptions());
++                events[uidMap[event->uid()]] = e;
++            } else {
++                events.push_back(e);
++                uidMap.insert(event->uid(), events.size()-1);
++            }
++        } else {
++            if (!uidMap.contains(event->uid())) {
++                Event e;
++                e.setUid("");
++                events.push_back(e);
++                uidMap.insert(event->uid(), events.size()-1);
++            }
++            std::vector<Event> exceptions = events.at( uidMap[event->uid()]).exceptions();
++            exceptions.push_back(e);
++            events.at(uidMap[event->uid()]).setExceptions(exceptions);
++        }
 +    }
 +    return events;
 +}
@@ -17823,6 +18042,18 @@ index 0000000..0b842a4
 +include_directories(../)
 +include(SWIGUtils)
 +generatePythonBindings(icalendar ../icalendar.i)
+diff --git a/src/kolab_config.h.in b/src/kolab_config.h.in
+new file mode 100644
+index 0000000..7cf8522
+--- /dev/null
++++ b/src/kolab_config.h.in
+@@ -0,0 +1,6 @@
++/* This file is generated from libkolab_config.h.cmake. */
++
++/* Whether akonadi/tag.h exists. */
++#cmakedefine HAVE_TAG_H 1
++/* Whether akonadi/relation.h exists. */
++#cmakedefine HAVE_RELATION_H 1
 diff --git a/src/kolabformat/errorhandler.cpp b/src/kolabformat/errorhandler.cpp
 new file mode 100644
 index 0000000..91021f4
@@ -18359,10 +18590,10 @@ index 0000000..e1d8e93
 +#endif
 diff --git a/src/kolabformat/kolabobject.cpp b/src/kolabformat/kolabobject.cpp
 new file mode 100644
-index 0000000..707b684
+index 0000000..c75f2f2
 --- /dev/null
 +++ b/src/kolabformat/kolabobject.cpp
-@@ -0,0 +1,755 @@
+@@ -0,0 +1,858 @@
 +/*
 + * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
 + *
@@ -18387,7 +18618,7 @@ index 0000000..707b684
 +#include "errorhandler.h"
 +#include "kolab_version.h"
 +
-+#include "kolabbase.h"
++#include <kolabbase.h>
 +#include <kolabformatV2/journal.h>
 +#include <kolabformatV2/task.h>
 +#include <kolabformatV2/event.h>
@@ -18401,8 +18632,8 @@ index 0000000..707b684
 +#include <conversion/commonconversion.h>
 +#include <akonadi/notes/noteutils.h>
 +#include <kolabformat.h>
-+#include <KDebug>
-+#include <kolabconfiguration.h>
++
++
 +namespace Kolab {
 +
 +
@@ -18427,29 +18658,49 @@ index 0000000..707b684
 +    return fromXML<KCalCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
 +}
 +
++QString ownUrlDecode(QByteArray encodedParam)
++{
++    encodedParam.replace('+', ' ');
++    return QUrl::fromPercentEncoding(encodedParam);
++}
++
 +RelationMember parseMemberUrl(const QString &string)
 +{
-+    RelationMember member;
-+    QUrl url(QUrl::fromPercentEncoding(string.toLatin1()));
-+    QList<QByteArray> path = url.encodedPath().split('/');
++    if (string.startsWith("urn:uuid:")) {
++        RelationMember member;
++        member.gid = string.mid(9);
++        return member;
++    }
++    QUrl url(QUrl::fromEncoded(string.toLatin1()));
++    QList<QByteArray> path;
++    Q_FOREACH(const QByteArray &fragment, url.encodedPath().split('/')) {
++        path.append(ownUrlDecode(fragment).toUtf8());
++    }
 +    // qDebug() << path;
++    bool isShared = false;
 +    int start = path.indexOf("user");
 +    if (start < 0) {
-+        kWarning() << "Couldn't find \"user\" in path: " << path;
++        start = path.indexOf("shared");
++        isShared = true;
++    }
++    if (start < 0) {
++        Warning() << "Couldn't find \"user\" or \"shared\" in path: " << path;
 +        return RelationMember();
 +    }
 +    path = path.mid(start + 1);
 +    if (path.size() < 2) {
-+        kWarning() << "Incomplete path: " << path;
++        Warning() << "Incomplete path: " << path;
 +        return RelationMember();
 +    }
-+    // user-name
-+    path.removeFirst();
++    RelationMember member;
++    if (!isShared) {
++        member.user = path.takeFirst();
++    }
 +    member.uid = path.takeLast().toLong();
 +    member.mailbox = path;
-+    member.messageId = url.queryItemValue("message-id");
-+    member.subject = url.queryItemValue("subject");
-+    member.date = url.queryItemValue("date");
++    member.messageId = ownUrlDecode(url.encodedQueryItemValue("message-id"));
++    member.subject = ownUrlDecode(url.encodedQueryItemValue("subject"));
++    member.date = ownUrlDecode(url.encodedQueryItemValue("date"));
 +    // qDebug() << member.uid << member.mailbox;
 +    return member;
 +}
@@ -18466,20 +18717,30 @@ index 0000000..707b684
 +
 +KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
 +{
++    if (!member.gid.isEmpty()) {
++        return QString("urn:uuid:%1").arg(member.gid);
++    }
 +    QUrl url;
 +    url.setScheme("imap");
 +    QList<QByteArray> path;
-+    path << "user";
-+    path << "localuser@localhost";
-+    path << member.mailbox;
++    path << "/";
++    if (!member.user.isEmpty()) {
++        path << "user";
++        path << QUrl::toPercentEncoding(member.user.toLatin1());
++    } else {
++        path << "shared";
++    }
++    Q_FOREACH(const QByteArray &mb, member.mailbox) {
++        path << QUrl::toPercentEncoding(mb);
++    }
 +    path << QByteArray::number(member.uid);
-+    url.setPath(QLatin1String("/") + join(path, "/"));
++    url.setEncodedPath("/" + join(path, "/"));
 +
-+    QList<QPair<QString, QString> > queryItems;
-+    queryItems.append(qMakePair(QString::fromLatin1("message-id"), member.messageId));
-+    queryItems.append(qMakePair(QString::fromLatin1("subject"), member.subject));
-+    queryItems.append(qMakePair(QString::fromLatin1("date"), member.date));
-+    url.setQueryItems(queryItems);
++    QList<QPair<QByteArray, QByteArray> > queryItems;
++    queryItems.append(qMakePair(QString::fromLatin1("message-id").toLatin1(), QUrl::toPercentEncoding(member.messageId)));
++    queryItems.append(qMakePair(QString::fromLatin1("subject").toLatin1(), QUrl::toPercentEncoding(member.subject)));
++    queryItems.append(qMakePair(QString::fromLatin1("date").toLatin1(), QUrl::toPercentEncoding(member.date)));
++    url.setEncodedQueryItems(queryItems);
 +
 +    return QString::fromLatin1(url.toEncoded());
 +}
@@ -18499,7 +18760,7 @@ index 0000000..707b684
 +
 +    ObjectType readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
 +    ObjectType readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
-+    
++
 +    KCalCore::Incidence::Ptr mIncidence;
 +    KContacts::Addressee mAddressee;
 +    KContacts::ContactGroup mContactGroup;
@@ -18509,11 +18770,17 @@ index 0000000..707b684
 +    ObjectType mObjectType;
 +    Version mVersion;
 +    Kolab::Freebusy mFreebusy;
-+    Akonadi::Tag mTag;
-+    QStringList mTagMembers;
 +    ObjectType mOverrideObjectType;
 +    Version mOverrideVersion;
 +    bool mDoOverrideVersion;
++
++#ifdef HAVE_RELATION_H
++    Akonadi::Relation mRelation;
++#endif
++#ifdef HAVE_TAG_H
++    Akonadi::Tag mTag;
++    QStringList mTagMembers;
++#endif
 +};
 +//@endcond
 +
@@ -18755,23 +19022,47 @@ index 0000000..707b684
 +            mFreebusy = fb;
 +        }
 +            break;
++#ifdef HAVE_TAG_H
 +        case RelationConfigurationObject: {
-+#if 0 //QT5
 +            const Kolab::Configuration &configuration = Kolab::readConfiguration(xml, false);
 +            const Kolab::Relation &relation = configuration.relation();
 +
-+            mTag = Akonadi::Tag();
-+            mTag.setName(Conversion::fromStdString(relation.name()));
-+            mTag.setGid(Conversion::fromStdString(configuration.uid()).toLatin1());
-+            mTag.setType(Akonadi::Tag::PLAIN);
-+
-+            mTagMembers.reserve(relation.members().size());
-+            foreach (const std::string &member, relation.members()) {
-+                mTagMembers << Conversion::fromStdString(member);
-+            }
++            if (relation.type() == "tag") {
++                mTag = Akonadi::Tag();
++                mTag.setName(Conversion::fromStdString(relation.name()));
++                mTag.setGid(Conversion::fromStdString(configuration.uid()).toLatin1());
++#ifdef KDEPIMLIBS_HAS_GENERIC_TAG
++                mTag.setType(Akonadi::Tag::GENERIC);
++#else
++                mTag.setType(Akonadi::Tag::PLAIN);
 +#endif
++                mTagMembers.reserve(relation.members().size());
++                foreach (const std::string &member, relation.members()) {
++                    mTagMembers << Conversion::fromStdString(member);
++                }
++            } else if (relation.type() == "generic") {
++#ifdef HAVE_RELATION_H
++                if (relation.members().size() == 2) {
++                    mRelation = Akonadi::Relation();
++                    mRelation.setRemoteId(Conversion::fromStdString(configuration.uid()).toLatin1());
++                    mRelation.setType(Akonadi::Relation::GENERIC);
++
++                    mTagMembers.reserve(relation.members().size());
++                    foreach (const std::string &member, relation.members()) {
++                        mTagMembers << Conversion::fromStdString(member);
++                    }
++                } else {
++                    Critical() << "generic relation had wrong number of members:" << relation.members().size();
++                    printMessageDebugInfo(msg);
++                }
++#endif
++            } else {
++                Critical() << "unknown configuration object type" << relation.type();
++                printMessageDebugInfo(msg);
++            }
 +        }
 +            break;
++#endif
 +        default:
 +            Critical() << "no kolab object found ";
 +            printMessageDebugInfo(msg);
@@ -18898,6 +19189,12 @@ index 0000000..707b684
 +    return d->mFreebusy;
 +}
 +
++#ifdef HAVE_TAG_H
++bool KolabObjectReader::isTag() const
++{
++    return !d->mTag.gid().isEmpty();
++}
++
 +Akonadi::Tag KolabObjectReader::getTag() const
 +{
 +    return d->mTag;
@@ -18907,6 +19204,19 @@ index 0000000..707b684
 +{
 +    return d->mTagMembers;
 +}
++#endif
++
++#ifdef HAVE_RELATION_H
++bool KolabObjectReader::isRelation() const
++{
++    return d->mRelation.isValid();
++}
++
++Akonadi::Relation KolabObjectReader::getRelation() const
++{
++    return d->mRelation;
++}
++#endif
 +
 +
 +//Normalize incidences before serializing them
@@ -19086,13 +19396,23 @@ index 0000000..707b684
 +    return  Mime::createMessage(Conversion::fromStdString(freebusy.uid()), xCalMimeType(), freebusyKolabType(), Conversion::fromStdString(v3String).toUtf8(), true, getProductId(productId));
 +}
 +
++#ifdef HAVE_TAG_H
++KMime::Message::Ptr writeRelationHelper(const Kolab::Relation &relation, const QByteArray &uid, const QString &productId)
++{
++    Kolab::Configuration configuration(relation); //TODO preserve creation/lastModified date
++    configuration.setUid(uid.constData());
++    const std::string &v3String = Kolab::writeConfiguration(configuration, Conversion::toStdString(getProductId(productId)));
++    ErrorHandler::handleLibkolabxmlErrors();
++    return  Mime::createMessage(Conversion::fromStdString(configuration.uid()), kolabMimeType(), relationKolabType(), Conversion::fromStdString(v3String).toUtf8(), true, getProductId(productId));
++}
++
 +KMime::Message::Ptr KolabObjectWriter::writeTag(const Akonadi::Tag &tag, const QStringList &members, Version v, const QString &productId)
 +{
 +    ErrorHandler::clearErrors();
 +    if (v != KolabV3) {
 +        Critical() << "only v3 implementation available";
 +    }
-+#if  0 //QT5
++
 +    Kolab::Relation relation(Conversion::toStdString(tag.name()), "tag");
 +    std::vector<std::string> m;
 +    m.reserve(members.count());
@@ -19101,29 +19421,43 @@ index 0000000..707b684
 +    }
 +    relation.setMembers(m);
 +
-+    Kolab::Configuration configuration(relation); //TODO preserve creation/lastModified date
-+    configuration.setUid(tag.gid().constData());
-+    const std::string &v3String = Kolab::writeConfiguration(configuration, Conversion::toStdString(getProductId(productId)));
-+    ErrorHandler::handleLibkolabxmlErrors();
-+    return  Mime::createMessage(Conversion::fromStdString(configuration.uid()), kolabMimeType(), relationKolabType(), Conversion::fromStdString(v3String).toUtf8(), true, getProductId(productId));
-+#else
-+    return KMime::Message::Ptr();
-+#endif
++    return writeRelationHelper(relation, tag.gid(), productId);
 +}
++#endif
 +
++#ifdef HAVE_RELATION_H
++KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &relation, const QStringList &items, Version v, const QString &productId)
++{
++    ErrorHandler::clearErrors();
++    if (v != KolabV3) {
++        Critical() << "only v3 implementation available";
++    }
 +
++    if (items.size() != 2) {
++        Critical() << "Wrong number of members for generic relation.";
++        return KMime::Message::Ptr();
++    }
 +
++    Kolab::Relation kolabRelation(std::string(), "generic");
++    std::vector<std::string> m;
++    m.reserve(2);
++    m.push_back(Conversion::toStdString(items.at(0)));
++    m.push_back(Conversion::toStdString(items.at(1)));
++    kolabRelation.setMembers(m);
 +
++    return writeRelationHelper(kolabRelation, relation.remoteId(), productId);
++}
++#endif
 +
 +
 +}; //Namespace
 +
 diff --git a/src/kolabformat/kolabobject.h b/src/kolabformat/kolabobject.h
 new file mode 100644
-index 0000000..43d0c8b
+index 0000000..33c463b
 --- /dev/null
 +++ b/src/kolabformat/kolabobject.h
-@@ -0,0 +1,134 @@
+@@ -0,0 +1,157 @@
 +/*
 + * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
 + *
@@ -19146,9 +19480,17 @@ index 0000000..43d0c8b
 +
 +#include <kolab_export.h>
 +
-+#include <AkonadiCore/tag.h>
-+#include <kcontacts/addressee.h>
-+#include <kcontacts/contactgroup.h>
++#include <kolab_config.h>
++
++#ifdef HAVE_TAG_H
++#include <AkonadiCore/Item>
++#include <AkonadiCore/Tag>
++#endif
++#ifdef HAVE_RELATION_H
++#include <AkonadiCore/Relation>
++#endif
++#include <KContacts/Addressee>
++#include <KContacts/ContactGroup>
 +#include <kcalcore/incidence.h>
 +#include <kcalcore/event.h>
 +#include <kcalcore/journal.h>
@@ -19171,6 +19513,7 @@ index 0000000..43d0c8b
 +    QList<QByteArray> mailbox;
 +    QString user;
 +    qint64 uid;
++    QString gid;
 +};
 +KOLAB_EXPORT RelationMember parseMemberUrl(const QString &url);
 +KOLAB_EXPORT QString generateMemberUrl(const RelationMember &url);
@@ -19225,11 +19568,20 @@ index 0000000..43d0c8b
 +    KMime::Message::Ptr getNote() const;
 +    QStringList getDictionary(QString &lang) const;
 +    Freebusy getFreebusy() const;
++#ifdef HAVE_TAG_H
++    bool isTag() const;
 +    Akonadi::Tag getTag() const;
 +    QStringList getTagMembers() const;
++#endif
++#ifdef HAVE_RELATION_H
++    bool isRelation() const;
++    Akonadi::Relation getRelation() const;
++#endif
 +
 +private:
 +    //@cond PRIVATE
++    KolabObjectReader(const KolabObjectReader &other);
++    KolabObjectReader &operator=(const KolabObjectReader &rhs);
 +    class Private;
 +    Private *const d;
 +    //@endcond
@@ -19251,7 +19603,12 @@ index 0000000..43d0c8b
 +    static KMime::Message::Ptr writeNote(const KMime::Message::Ptr &, Version v = KolabV3, const QString &productId = QString());
 +    static KMime::Message::Ptr writeDictionary(const QStringList &, const QString &lang, Version v = KolabV3, const QString &productId = QString());
 +    static KMime::Message::Ptr writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
++#ifdef HAVE_TAG_H
 +    static KMime::Message::Ptr writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
++#endif
++#ifdef HAVE_RELATION_H
++    static KMime::Message::Ptr writeRelation(const Akonadi::Relation &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
++#endif
 +    
 +};
 +
@@ -22680,10 +23037,10 @@ index 0000000..be0d4bf
 +#endif // KOLAB_EVENT_H
 diff --git a/src/kolabformatV2/incidence.cpp b/src/kolabformatV2/incidence.cpp
 new file mode 100644
-index 0000000..d77f6da
+index 0000000..e11876e
 --- /dev/null
 +++ b/src/kolabformatV2/incidence.cpp
-@@ -0,0 +1,1010 @@
+@@ -0,0 +1,1025 @@
 +/*
 +    This file is part of the kolab resource - the implementation of the
 +    Kolab storage format. See www.kolab.org for documentation on this.
@@ -22727,6 +23084,8 @@ index 0000000..d77f6da
 +#include <kurl.h>
 +
 +#include <QBitArray>
++#include <string>
++#include <boost/algorithm/string.hpp>
 +
 +using namespace KolabV2;
 +
@@ -23043,7 +23402,20 @@ index 0000000..d77f6da
 +        mRecurrence.rangeType = e.attribute( "type" );
 +        mRecurrence.range = e.text();
 +      } else if ( tagName == "exclusion" ) {
-+        mRecurrence.exclusions.append( stringToDate( e.text() ) );
++        std::string exclusionDate = e.text().toStdString();
++        // need to fix the date, eg. 2013-1-1 to ISO format 2013-01-01
++        if (exclusionDate.length() != 10) {
++          std::vector<std::string> strs;
++          boost::split(strs, exclusionDate, boost::is_any_of("-"));
++          char buff[100];
++          sprintf(buff, "%04d-%02d-%02d",
++              QString::fromStdString(strs[0]).toInt(),
++              QString::fromStdString(strs[1]).toInt(),
++              QString::fromStdString(strs[2]).toInt()
++            );
++          exclusionDate = buff;
++        }
++        mRecurrence.exclusions.append( stringToDate( QString::fromStdString(exclusionDate) ) );
 +      } else
 +        // TODO: Unhandled tag - save for later storage
 +        kDebug() <<"Warning: Unhandled tag" << e.tagName();
@@ -26345,7 +26717,7 @@ index 84086ba..05689a5 100644
  }
  
 diff --git a/tests/kcalconversiontest.cpp b/tests/kcalconversiontest.cpp
-index c62a8e0..2b3fa73 100644
+index e1d4ca9..4336902 100644
 --- a/tests/kcalconversiontest.cpp
 +++ b/tests/kcalconversiontest.cpp
 @@ -23,7 +23,7 @@
@@ -26357,7 +26729,7 @@ index c62a8e0..2b3fa73 100644
  
  #include "conversion/kcalconversion.h"
  #include "conversion/kcalconversion.cpp"
-@@ -501,11 +501,11 @@ void KCalConversionTest::testJournalConversion()
+@@ -517,11 +517,11 @@ void KCalConversionTest::testJournalConversion()
  
  void KCalConversionTest::testContactConversion_data()
  {
@@ -26371,7 +26743,7 @@ index c62a8e0..2b3fa73 100644
          kcal.setUid("uid");
          kcal.setFormattedName("name");
  
-@@ -516,7 +516,7 @@ void KCalConversionTest::testContactConversion_data()
+@@ -532,7 +532,7 @@ void KCalConversionTest::testContactConversion_data()
          QTest::newRow("basic") << kcal << kolab;
      }
      {
@@ -26380,7 +26752,7 @@ index c62a8e0..2b3fa73 100644
          kcal.setUid("uid");
          kcal.setFormattedName("name");
          kcal.setBirthday(QDateTime(QDate(2012,2,2)));
-@@ -530,7 +530,7 @@ void KCalConversionTest::testContactConversion_data()
+@@ -546,7 +546,7 @@ void KCalConversionTest::testContactConversion_data()
          QTest::newRow("bday") << kcal << kolab;
      }
      {
@@ -26389,7 +26761,7 @@ index c62a8e0..2b3fa73 100644
          kcal.setUid("uid");
          //The first address is always the preferred
          kcal.setEmails(QStringList() << "email1@example.org" << "email2@example.org");
-@@ -554,10 +554,10 @@ void KCalConversionTest::testContactConversion_data()
+@@ -570,10 +570,10 @@ void KCalConversionTest::testContactConversion_data()
  
  void KCalConversionTest::testContactConversion()
  {
@@ -26403,7 +26775,7 @@ index c62a8e0..2b3fa73 100644
      QCOMPARE(e.uid(), kcal.uid());
      QCOMPARE(e.formattedName(), kcal.formattedName());
 diff --git a/tests/testhelpers.h b/tests/testhelpers.h
-index f0e3889..ca2f49b 100644
+index 822f9bc..e56126b 100644
 --- a/tests/testhelpers.h
 +++ b/tests/testhelpers.h
 @@ -26,7 +26,7 @@
@@ -26415,20 +26787,6 @@ index f0e3889..ca2f49b 100644
  
  #include <kolabformat.h>
  
-@@ -45,13 +45,7 @@ Q_DECLARE_METATYPE(KCalCore::Event);
- Q_DECLARE_METATYPE(KCalCore::Todo);
- Q_DECLARE_METATYPE(KCalCore::Journal);
- 
--#if KDEPIMLIBS_VERSION_MAJOR <= 4
--#if KDEPIMLIBS_VERSION_MINOR <= 11
--#if KDEPIMLIBS_VERSION_PATCH < 52
- Q_DECLARE_METATYPE(KCalCore::Duration);
--#endif
--#endif
--#endif
- 
- namespace QTest {
-     
 diff --git a/tests/testutils.h b/tests/testutils.h
 index b118d86..6be04fd 100644
 --- a/tests/testutils.h
