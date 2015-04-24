@@ -29,7 +29,6 @@
 #include <KGAPI/AccountInfoFetchJob>
 #include <KGAPI/AccountInfo>
 #include <KGAPI/AuthJob>
-#include <KLocalizedString>
 
 #ifdef HAVE_ACCOUNTS
 #include "../../shared/singlefileresource/getcredentialsjob.h"

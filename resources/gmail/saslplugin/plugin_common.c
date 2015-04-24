@@ -315,7 +315,7 @@ void _plug_free_secret(const sasl_utils_t *utils, sasl_secret_t **secret)
 }
 
 /*
- * Trys to find the prompt with the lookingfor id in the prompt list
+ * Tries to find the prompt with the lookingfor id in the prompt list
  * Returns it if found. NULL otherwise
  */
 sasl_interact_t *_plug_find_prompt(sasl_interact_t **promptlist,

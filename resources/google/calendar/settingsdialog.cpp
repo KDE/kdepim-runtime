@@ -25,7 +25,6 @@
 
 #include <QPixmap>
 #include <QIcon>
-#include <QListWidget>
 #include <QGroupBox>
 #include <QLayout>
 #include <QLabel>

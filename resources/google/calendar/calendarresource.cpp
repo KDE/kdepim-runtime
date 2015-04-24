@@ -33,7 +33,6 @@
 #include <KCalCore/Calendar>
 
 #include <KLocalizedString>
-#include <KLocalizedString>
 #include <QDialog>
 #include <QIcon>
 
@@ -61,7 +60,6 @@
 #include <KGAPI/Tasks/TaskListModifyJob>
 
 #include <KGAPI/Account>
-#include <KLocalizedString>
 
 #define ROOT_COLLECTION_REMOTEID QLatin1String("RootCollection")
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"

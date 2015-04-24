@@ -128,7 +128,7 @@ void ItemModifyTest::testExpectedFail()
     // common variables
     FileStore::ItemModifyJob *job = 0;
 
-    // test failure of modifying a non-existant maildir entry
+    // test failure of modifying a non-existent maildir entry
     Collection collection1;
     collection1.setName(QLatin1String("collection1"));
     collection1.setRemoteId(QLatin1String("collection1"));
@@ -155,7 +155,7 @@ void ItemModifyTest::testExpectedFail()
     QSet<QString> entrySet = QSet<QString>::fromList(md1.entryList());
     QCOMPARE(entrySet, entrySet1);
 
-    // test failure of modifying a non-existant mbox entry
+    // test failure of modifying a non-existent mbox entry
     Collection collection2;
     collection2.setName(QLatin1String("collection2"));
     collection2.setRemoteId(QLatin1String("collection2"));
@@ -206,7 +206,7 @@ void ItemModifyTest::testIgnorePayload()
     // common variables
     FileStore::ItemModifyJob *job = 0;
 
-    // test failure of modifying a non-existant maildir entry
+    // test failure of modifying a non-existent maildir entry
     Collection collection1;
     collection1.setName(QLatin1String("collection1"));
     collection1.setRemoteId(QLatin1String("collection1"));
@@ -233,7 +233,7 @@ void ItemModifyTest::testIgnorePayload()
     QCOMPARE(md1.entryList(), entryList1);
     QCOMPARE(md1.readEntry(entryList1.first()), data1);
 
-    // test failure of modifying a non-existant mbox entry
+    // test failure of modifying a non-existent mbox entry
     Collection collection2;
     collection2.setName(QLatin1String("collection2"));
     collection2.setRemoteId(QLatin1String("collection2"));

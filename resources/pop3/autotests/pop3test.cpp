@@ -338,7 +338,7 @@ void Pop3Test::syncAndWaitForFinish()
         }
 
         // Assert when nothing happens for a certain timeout, that indicates something went
-        // wrong and is stucked somewhere
+        // wrong and is stuck somewhere
         if (time.elapsed() >= 60000)
         {
             Q_ASSERT_X(false, "poptest", "FakeServer timed out.");

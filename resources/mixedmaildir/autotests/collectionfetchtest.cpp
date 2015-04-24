@@ -144,7 +144,7 @@ void CollectionFetchTest::testEmptyDir()
     QCOMPARE(collections.count(), 0);
     QCOMPARE(job->collections(), collections);
 
-    // test fail of base fetching non existant collection
+    // test fail of base fetching non existent collection
     Collection collection;
     collection.setName(QLatin1String("collection"));
     collection.setRemoteId(QLatin1String("collection"));
@@ -162,7 +162,7 @@ void CollectionFetchTest::testEmptyDir()
     QCOMPARE(collections.count(), 0);
     QCOMPARE(job->collections(), collections);
 
-    // test fail of first level fetching non existant collection
+    // test fail of first level fetching non existent collection
     job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::FirstLevel);
 
     spy = new QSignalSpy(job, SIGNAL(collectionsReceived(Akonadi::Collection::List)));
@@ -175,7 +175,7 @@ void CollectionFetchTest::testEmptyDir()
     QCOMPARE(collections.count(), 0);
     QCOMPARE(job->collections(), collections);
 
-    // test fail of recursive fetching non existant collection
+    // test fail of recursive fetching non existent collection
     job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::FirstLevel);
 
     spy = new QSignalSpy(job, SIGNAL(collectionsReceived(Akonadi::Collection::List)));

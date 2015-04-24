@@ -28,7 +28,6 @@
 #include <qdebug.h>
 #include <QApplication>
 #include <infodialog.h>
-#include <KLocalizedString>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 

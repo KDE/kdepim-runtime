@@ -350,7 +350,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     * have been deleted remotely, if we locally have messages that were not yet uploaded.
     * We cannot differentiate that from remotely removed messages, so we have to do a full flag
     * listing in that case. This can be optimized once we support QRESYNC and therefore have a way
-    * to determine wether messages have been removed.
+    * to determine whether messages have been removed.
     */
 
     if (messageCount == 0) {
@@ -378,7 +378,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     } else if (nextUid <= 0) {
         //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
-        //qCDebug(IMAPRESOURCE_LOG) << "Running courier imap compatiblity codepath";
+        //qCDebug(IMAPRESOURCE_LOG) << "Running courier imap compatibility codepath";
         if (messageCount > realMessageCount) {
             //Get new messages
             retrieveItems(KIMAP::ImapSet(realMessageCount + 1, messageCount), scope, false, false);

@@ -25,7 +25,6 @@
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 #include <qboxlayout.h>
-#include <KLocalizedString>
 #include <AkonadiCore/control.h>
 
 K_PLUGIN_FACTORY(ResourcesConfigFactory, registerPlugin<ConfigModule>();)

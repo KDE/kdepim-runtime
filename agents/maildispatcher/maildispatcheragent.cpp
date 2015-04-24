@@ -36,7 +36,6 @@
 #include <knotifyconfigwidget.h>
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
-#include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
 #include <Kdelibs4ConfigMigrator>

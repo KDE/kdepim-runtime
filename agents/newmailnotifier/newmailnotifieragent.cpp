@@ -45,7 +45,6 @@
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
-#include <KLocalizedString>
 #include <KWindowSystem>
 #include <Kdelibs4ConfigMigrator>
 #include "newmailnotifier_debug.h"

@@ -112,7 +112,7 @@ void ItemCreateTest::testExpectedFail()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    // test failure of adding item to non existant collection
+    // test failure of adding item to non existent collection
     Collection collection;
     collection.setName(QLatin1String("collection"));
     collection.setRemoteId(QLatin1String("collection"));

@@ -24,9 +24,6 @@
 #include <QDebug>
 #include <QTcpServer>
 
-// KDE
-#include <QDebug>
-
 FakeServerThread::FakeServerThread(QObject *parent)
     : QThread(parent),
       mServer(Q_NULLPTR)

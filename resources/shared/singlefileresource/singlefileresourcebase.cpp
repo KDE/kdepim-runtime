@@ -29,7 +29,6 @@
 #include <QDebug>
 #include <KDirWatch>
 #include <KLocalizedString>
-#include <KLocalizedString>
 
 #include <KGlobal>
 #include <KConfigGroup>

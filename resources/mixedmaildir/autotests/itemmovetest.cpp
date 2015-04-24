@@ -136,7 +136,7 @@ void ItemMoveTest::testExpectedFail()
     // common variables
     FileStore::ItemMoveJob *job = 0;
 
-    // test failure of moving from a non-existant collection
+    // test failure of moving from a non-existent collection
     Collection collection1;
     collection1.setName(QLatin1String("collection1"));
     collection1.setRemoteId(QLatin1String("collection1"));
@@ -157,7 +157,7 @@ void ItemMoveTest::testExpectedFail()
 
     QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-    // test failure of moving from maildir to non-existant collection
+    // test failure of moving from maildir to non-existent collection
     Item item1;
     item1.setId(KRandom::random());
     item1.setRemoteId(entrySet1.values().first());
@@ -169,7 +169,7 @@ void ItemMoveTest::testExpectedFail()
 
     QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
 
-    // test failure of moving from mbox to non-existant collection
+    // test failure of moving from mbox to non-existent collection
     Collection collection2;
     collection2.setName(QLatin1String("collection2"));
     collection2.setRemoteId(QLatin1String("collection2"));
@@ -204,7 +204,7 @@ void ItemMoveTest::testExpectedFail()
     tmpEntryList = mbox2.entries();
     QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
 
-    // test failure of moving a non-existant maildir entry
+    // test failure of moving a non-existent maildir entry
     QString remoteId1;
     do {
         remoteId1 = KRandom::randomString(20);
@@ -221,7 +221,7 @@ void ItemMoveTest::testExpectedFail()
     tmpEntryList = mbox2.entries();
     QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
 
-    // test failure of moving a non-existant mbox entry
+    // test failure of moving a non-existent mbox entry
     quint64 remoteId2;
     do {
         remoteId2 = KRandom::random();

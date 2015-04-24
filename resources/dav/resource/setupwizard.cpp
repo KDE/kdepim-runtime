@@ -37,7 +37,6 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QRegExpValidator>
-#include <QTextBrowser>
 
 enum GroupwareServers {
     Citadel,

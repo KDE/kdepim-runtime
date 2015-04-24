@@ -163,7 +163,7 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
         if (!reference.gid().isEmpty()) {
             gid = reference.gid();
         } else {
-            // WARNING: this is an ugly hack for backwards compatiblity. Normally this codepath shouldn't be hit.
+            // WARNING: this is an ugly hack for backwards compatibility. Normally this codepath shouldn't be hit.
             // Replace all references with real data-sets
             // Hopefully all resources are available during saving, so we can look up
             // in the addressbook to get name+email from the UID.
@@ -251,7 +251,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
     }
 
     if (checkForErrors(item)) {
-        qWarning() << "an error occured while trying to translate the item to the kolab format: " << item.id();
+        qWarning() << "an error occurred while trying to translate the item to the kolab format: " << item.id();
         ok = false;
         return Akonadi::Item();
     }

@@ -193,7 +193,7 @@ void CollectionDeleteTest::testNonExisting()
     QVERIFY(fileInfo2.exists());
     QVERIFY(subDirInfo2.exists());
 
-    // test fail of deleting second level collection with non existant parent
+    // test fail of deleting second level collection with non existent parent
     Collection collection5_1;
     collection5_1.setName(QLatin1String("collection5_1"));
     collection5_1.setRemoteId(QLatin1String("collection5_1"));
