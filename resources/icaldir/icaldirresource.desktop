@@ -67,6 +67,7 @@ Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado 
 Comment[pt_BR]="Fornece acesso aos itens do calendário, cada um armazenado em um único arquivo na pasta indicada"
 Comment[ru]="Обеспечивает доступ к элементам календаря, каждый из которых хранится в отдельном файле в указанном каталоге"
 Comment[sk]="Poskytuje prístup do položiek kalendára, každá uložená v jednom súbore v danom adresári"
+Comment[sl]=»Nudi dostop do koledarskih vnosov, ki so shranjeni vsak posebej v svoji datoteki, v dani mapi«
 Comment[sr]="Омогућава приступ календарским ставкама, складиштеним у по једном фајлу у датој фасцикли"
 Comment[sr@ijekavian]="Омогућава приступ календарским ставкама, складиштеним у по једном фајлу у датој фасцикли"
 Comment[sr@ijekavianlatin]="Omogućava pristup kalendarskim stavkama, skladištenim u po jednom fajlu u datoj fascikli"
