@@ -67,5 +67,5 @@ install(FILES kolabresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/a
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 if (BUILD_TESTING)
-   add_subdirectory( autotests )
+    #add_subdirectory(autotests)
 endif()
