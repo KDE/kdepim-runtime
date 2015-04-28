@@ -1,10 +1,3 @@
-
-
-option(IMAPRESOURCE_NO_SOLID "Disable the use of solid in the imap resource" FALSE)
-if(IMAPRESOURCE_NO_SOLID)
-  add_definitions( -DIMAPRESOURCE_NO_SOLID=1 )
-endif()
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
 ########### next target ###############
@@ -37,7 +30,6 @@ set( imapresource_LIB_SRCS
   retrieveitemstask.cpp
   searchtask.cpp
   sessionpool.cpp
-  timestampattribute.cpp
   uidvalidityattribute.cpp
   uidnextattribute.cpp
   settings.cpp
@@ -45,6 +37,11 @@ set( imapresource_LIB_SRCS
   imapidlemanager.cpp
   resourcestate.cpp
   resource_imap_debug.cpp
+  collectionmetadatahelper.cpp
+  replacemessagejob.cpp
+  tracer.cpp
+  ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
+  ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
 
@@ -64,11 +61,8 @@ qt5_add_dbus_adaptor( imapresource_LIB_SRCS
 
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
-target_link_libraries(imapresource KF5::AkonadiCore KF5::Imap KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::IdentityManagement KF5::AkonadiAgentBase KF5::I18n)
+target_link_libraries(imapresource KF5::AkonadiCore KF5::IMAP KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::IdentityManagement KF5::AkonadiAgentBase KF5::I18n)
 
-if( NOT IMAPRESOURCE_NO_SOLID)
-  target_link_libraries(imapresource )
-endif()
 ########### next target ###############
 
 set( akonadi_imap_resource_SRCS
@@ -101,15 +95,11 @@ if( APPLE )
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi IMAP Resource")
 endif ()
 
-target_link_libraries(akonadi_imap_resource KF5::AkonadiCore     KF5::Imap KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::IdentityManagement imapresource folderarchivesettings KF5::I18n akonadi-singlefileresource)
+target_link_libraries(akonadi_imap_resource KF5::AkonadiCore     KF5::IMAP KF5::MailTransport KF5::KIOCore KF5::Mime KF5::AkonadiMime KF5::IdentityManagement imapresource folderarchivesettings KF5::I18n akonadi-singlefileresource)
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)
 endif ()
-
-if( NOT IMAPRESOURCE_NO_SOLID)
-target_link_libraries(akonadi_imap_resource )
-endif()
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

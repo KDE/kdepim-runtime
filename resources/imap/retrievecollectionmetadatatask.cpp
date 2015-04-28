@@ -40,7 +40,7 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
-#include "timestampattribute.h"
+#include "collectionmetadatahelper.h"
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
@@ -58,7 +58,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
 
     // Prevent fetching metadata from noselect folders.
     if (collection().hasAttribute("noselect")) {
-        NoSelectAttribute *noselect = static_cast<NoSelectAttribute *>(collection().attribute("noselect"));
+        NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>(collection().attribute("noselect"));
         if (noselect->noSelect()) {
             qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
             endTaskIfNeeded();
@@ -66,6 +66,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
         }
     }
 
+    m_session = session;
     m_collection = collection();
     const QString mailBox = mailBoxForCollection(m_collection);
     const QStringList capabilities = serverCapabilities();
@@ -84,22 +85,16 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
             meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
             meta->addEntry("*", "value.shared");
         }
-        connect(meta, &KIMAP::GetMetaDataJob::result, this, &RetrieveCollectionMetadataTask::onGetMetaDataDone);
+        connect(meta, SIGNAL(result(KJob*)), SLOT(onGetMetaDataDone(KJob*)));
         m_pendingMetaDataJobs++;
         meta->start();
     }
 
     // Get the ACLs from the mailbox if it's supported
     if (capabilities.contains(QLatin1String("ACL"))) {
-        KIMAP::GetAclJob *acl = new KIMAP::GetAclJob(session);
-        acl->setMailBox(mailBox);
-        connect(acl, &KIMAP::GetAclJob::result, this, &RetrieveCollectionMetadataTask::onGetAclDone);
-        m_pendingMetaDataJobs++;
-        acl->start();
-
         KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob(session);
         rights->setMailBox(mailBox);
-        connect(rights, &KIMAP::MyRightsJob::result, this, &RetrieveCollectionMetadataTask::onRightsReceived);
+        connect(rights, SIGNAL(result(KJob*)), SLOT(onRightsReceived(KJob*)));
         m_pendingMetaDataJobs++;
         rights->start();
     }
@@ -108,7 +103,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
     if (capabilities.contains(QLatin1String("QUOTA"))) {
         KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob(session);
         quota->setMailBox(mailBox);
-        connect(quota, &KIMAP::GetQuotaRootJob::result, this, &RetrieveCollectionMetadataTask::onQuotasReceived);
+        connect(quota, SIGNAL(result(KJob*)), SLOT(onQuotasReceived(KJob*)));
         m_pendingMetaDataJobs++;
         quota->start();
     }
@@ -129,7 +124,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob *>(job);
+    KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>(job);
     QMap<QByteArray, QByteArray> rawAnnotations = meta->allMetaData();
 
     // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
@@ -161,7 +156,7 @@ void RetrieveCollectionMetadataTask::onGetAclDone(KJob *job)
     KIMAP::GetAclJob *acl = qobject_cast<KIMAP::GetAclJob *>(job);
 
     // Store the mailbox ACLs
-    Akonadi::ImapAclAttribute *aclAttribute
+    Akonadi::ImapAclAttribute *const aclAttribute
         = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
     if (oldRights != acl->allRights()) {
@@ -180,48 +175,16 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob *>(job);
+    KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>(job);
 
-    Akonadi::ImapAclAttribute *const parentAclAttribute =
-        collection().parentCollection().attribute<Akonadi::ImapAclAttribute>();
-    KIMAP::Acl::Rights parentRights = Q_NULLPTR;
-    if (parentAclAttribute) {
-        parentRights = parentAclAttribute->rights()[userName().toUtf8()];
-    }
+    const KIMAP::Acl::Rights imapRights = rightsJob->rights();
 
-    KIMAP::Acl::Rights imapRights = rightsJob->rights();
-    Akonadi::Collection::Rights newRights = Akonadi::Collection::ReadOnly;
+    //Default value in case we have nothing better available
+    KIMAP::Acl::Rights parentRights = KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create;
 
-    // For renaming, the parent folder needs to have the CreateMailbox or Create permission.
-    // We map renaming to CanChangeCollection here, which is not entirely correct, but we have no
-    // CanRenameCollection flag.
-    // If the ACL of the parent folder hasn't been retrieved yet, allow changing, since we don't know
-    // better. If the parent folder is a noselect folder though, don't allow it, since for those we have
-    // no CreateMailbox right.
-    if ((!parentAclAttribute && !collection().parentCollection().hasAttribute("noselect")) ||
-            parentRights & KIMAP::Acl::CreateMailbox ||
-            parentRights & KIMAP::Acl::Create) {
-        newRights |= Akonadi::Collection::CanChangeCollection;
-    }
-
-    if (imapRights & KIMAP::Acl::Write) {
-        newRights |= Akonadi::Collection::CanChangeItem;
-    }
-
-    if (imapRights & KIMAP::Acl::Insert) {
-        newRights |= Akonadi::Collection::CanCreateItem;
-    }
-
-    if (imapRights & (KIMAP::Acl::DeleteMessage | KIMAP::Acl::Delete)) {
-        newRights |= Akonadi::Collection::CanDeleteItem;
-    }
-
-    if (!m_collection.hasAttribute("noinferiors") && imapRights & (KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create)) {
-        newRights |= Akonadi::Collection::CanCreateCollection;
-    }
-
-    if (imapRights & (KIMAP::Acl::DeleteMailbox | KIMAP::Acl::Delete)) {
-        newRights |= Akonadi::Collection::CanDeleteCollection;
+    //FIXME I don't think we have the parent's acl's available
+    if (collection().parentCollection().attribute<Akonadi::ImapAclAttribute>()) {
+        parentRights = myRights(collection().parentCollection());
     }
 
 //  qCDebug(RESOURCE_IMAP_LOG) << collection.remoteId()
@@ -229,21 +192,33 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
 //                 << "newRights:" << newRights
 //                 << "oldRights:" << collection.rights();
 
-    const bool isNewCollection = !m_collection.hasAttribute<TimestampAttribute>();
-    if ((m_collection.rights() & Akonadi::Collection::CanCreateItem) &&
-            !(newRights & Akonadi::Collection::CanCreateItem) &&
-            !isNewCollection) {
+    const bool isNewCollection = !m_collection.hasAttribute<Akonadi::ImapAclAttribute>();
+    const bool accessRevoked = CollectionMetadataHelper::applyRights(m_collection, imapRights, parentRights);
+    if (accessRevoked && !isNewCollection) {
         // write access revoked
         const QString collectionName = m_collection.displayName();
 
         showInformationDialog(i18n("<p>Your access rights to folder <b>%1</b> have been restricted, "
-                                   "it will no longer be possible to add messages to this folder.</p>",
-                                   collectionName),
-                              i18n("Access rights revoked"), QLatin1String("ShowRightsRevokedWarning"));
+                                    "it will no longer be possible to add messages to this folder.</p>",
+                                    collectionName),
+                            i18n("Access rights revoked"), QLatin1String("ShowRightsRevokedWarning"));
     }
 
-    if (newRights != m_collection.rights()) {
-        m_collection.setRights(newRights);
+    // Store the mailbox ACLs
+    Akonadi::ImapAclAttribute *aclAttribute
+        = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+    const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
+    if (oldRights != imapRights) {
+        aclAttribute->setMyRights(imapRights);
+    }
+
+    //The a right is required to list acl's
+    if (imapRights & KIMAP::Acl::Admin) {
+        KIMAP::GetAclJob *acl = new KIMAP::GetAclJob(m_session);
+        acl->setMailBox(mailBoxForCollection(m_collection));
+        connect(acl, SIGNAL(result(KJob*)), SLOT(onGetAclDone(KJob*)));
+        m_pendingMetaDataJobs++;
+        acl->start();
     }
 
     endTaskIfNeeded();
@@ -258,7 +233,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob *>(job);
+    KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob*>(job);
     const QString &mailBox = mailBoxForCollection(m_collection);
 
     QList<QByteArray> newRoots = quotaJob->roots();
@@ -287,8 +262,8 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     const QList< QMap<QByteArray, qint64> > oldUsages = imapQuotaAttribute->usages();
 
     if (oldRoots != newRoots
-            || oldLimits != newLimits
-            || oldUsages != newUsages) {
+        || oldLimits != newLimits
+        || oldUsages != newUsages) {
         imapQuotaAttribute->setQuotas(newRoots, newLimits, newUsages);
     }
 
@@ -299,7 +274,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     qint64 oldMax = quotaAttribute->maximumValue();
 
     if (oldCurrent != newCurrent
-            || oldMax != newMax) {
+        || oldMax != newMax) {
         quotaAttribute->setCurrentValue(newCurrent);
         quotaAttribute->setMaximumValue(newMax);
     }
@@ -310,10 +285,6 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
 void RetrieveCollectionMetadataTask::endTaskIfNeeded()
 {
     if (m_pendingMetaDataJobs <= 0) {
-        const uint currentTimestamp = QDateTime::currentDateTime().toTime_t();
-        TimestampAttribute *attr = m_collection.attribute<TimestampAttribute>(Akonadi::Collection::AddIfMissing);
-        attr->setTimestamp(currentTimestamp);
-
         collectionAttributesRetrieved(m_collection);
     }
 }

@@ -18,7 +18,7 @@ find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 
 # Libkolab
-find_package(KF5Kolab "1.0.0" QUIET CONFIG)
+find_package(Libkolab 1.0 QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 # Libkolabxml
@@ -64,7 +64,7 @@ add_subdirectory( contacts )
 add_subdirectory( dav )
 add_subdirectory( ical )
 add_subdirectory( imap )
-if (KF5Kolab_FOUND AND Libkolabxml_FOUND)
+if (Libkolab_FOUND AND Libkolabxml_FOUND)
     add_subdirectory( kolab )
 endif()
 

@@ -19,24 +19,37 @@
 
 #include "kolabresource.h"
 
+#include "setupserver.h"
 #include <resourcestateinterface.h>
 #include <resourcestate.h>
-#include <timestampattribute.h>
 #include <retrieveitemstask.h>
 #include <collectionannotationsattribute.h>
 #include <changecollectiontask.h>
+#include <akonadi/calendar/blockalarmsattribute.h>
 
+#include <KWindowSystem>
 #include <KLocalizedString>
-#include <AkonadiCore/CollectionFetchJob>
-#include <AkonadiCore/CollectionFetchScope>
+#include <KLocale>
 
-#include "kolabretrievecollectionstask.h"
+#include "kolabretrievetagstask.h"
 #include "kolabresourcestate.h"
 #include "kolabhelpers.h"
+#include "kolabsettings.h"
+#include "kolabaddtagtask.h"
+#include "kolabchangeitemstagstask.h"
+#include "kolabchangeitemsrelationstask.h"
+#include "kolabchangetagtask.h"
+#include "kolabremovetagtask.h"
+#include "kolabretrievecollectionstask.h"
+#include "kolabretrievetagstask.h"
+#include "tracer.h"
 
 KolabResource::KolabResource(const QString &id)
     : ImapResource(id)
 {
+    //Ensure we have up-to date metadata before attempting to sync folder
+    setScheduleAttributeSyncBeforeItemSync(true);
+    setKeepLocalCollectionChanges(QSet<QByteArray>() << "ENTITYDISPLAY" << Akonadi::BlockAlarmsAttribute().type());
 }
 
 KolabResource::~KolabResource()
@@ -44,9 +57,34 @@ KolabResource::~KolabResource()
 
 }
 
+Settings *KolabResource::settings() const
+{
+  if (m_settings == 0) {
+    m_settings = new KolabSettings;
+  }
+
+  return m_settings;
+}
+
+void KolabResource::delayedInit()
+{
+    ImapResource::delayedInit();
+    settings()->setRetrieveMetadataOnFolderListing(false);
+    Q_ASSERT(!settings()->retrieveMetadataOnFolderListing());
+}
+
 QString KolabResource::defaultName() const
 {
     return i18n("Kolab Resource");
+}
+
+QDialog *KolabResource::createConfigureDialog(WId windowId)
+{
+  SetupServer *dlg = new SetupServer( this, windowId );
+  KWindowSystem::setMainWindow( dlg, windowId );
+  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("kolab") ) );
+  connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+  return dlg;
 }
 
 ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArguments &args)
@@ -56,59 +94,17 @@ ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArgumen
 
 void KolabResource::retrieveCollections()
 {
+    Trace();
     emit status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
 
-    setKeepLocalCollectionChanges(QSet<QByteArray>() << "CONTENTMIMETYPES" << "AccessRights");
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
+    synchronizeTags();
+    synchronizeRelations();
 }
 
-void KolabResource::retrieveItems(const Akonadi::Collection &col)
+void KolabResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
 {
-    //The collection that we receive was fetched when the task was scheduled, it is therefore possible that it is outdated.
-    //We refetch the collection since we rely on up-to-date annotations.
-    //FIXME: because this is async and not part of the resourcetask, it can't be killed. ResourceBase should just provide an up-to date copy of the collection.
-    Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(col, Akonadi::CollectionFetchJob::Base, this);
-    fetchJob->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
-    fetchJob->fetchScope().setIncludeStatistics(true);
-    fetchJob->fetchScope().setIncludeUnsubscribed(true);
-    connect(fetchJob, &Akonadi::CollectionFetchJob::result, this, &KolabResource::onItemRetrievalCollectionFetchDone);
-}
-
-void KolabResource::onItemRetrievalCollectionFetchDone(KJob *job)
-{
-    if (job->error()) {
-        qWarning() << "Failed to retrieve collection before RetrieveItemsTask: " << job->errorString();
-        cancelTask(i18n("Failed to retrieve items."));
-        return;
-    }
-
-    Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob *>(job);
-    Q_ASSERT(fetchJob->collections().size() == 1);
-    const Akonadi::Collection col = fetchJob->collections().first();
-
-    //This is the only part that differs form the imap resource: We make sure the annotations are up-to date before synchronizing
-    //HACK avoid infinite recursions, the metadatatask should be scheduled at most once per retrieveItemsJob
-    static QSet<Akonadi::Collection::Id> updatedCollections;
-    if (!updatedCollections.contains(col.id()) &&
-            (!col.attribute<TimestampAttribute>() ||
-             col.attribute<TimestampAttribute>()->timestamp() < QDateTime::currentDateTime().addSecs(-60).toTime_t())) {
-        updatedCollections.insert(col.id());
-        synchronizeCollectionAttributes(col.id());
-        deferTask();
-        return;
-    }
-    updatedCollections.remove(col.id());
-
-    setItemStreamingEnabled(true);
-
-    RetrieveItemsTask *task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
-    connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-    connect(this, &KolabResource::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
-    startTask(task);
-}
-
-void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
-{
+    Trace() << item.id() << collection.id();
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
@@ -119,8 +115,9 @@ void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collecti
     ImapResource::itemAdded(imapItem, collection);
 }
 
-void KolabResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &parts)
+void KolabResource::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& parts)
 {
+    Trace() << item.id() << parts;
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
@@ -131,8 +128,9 @@ void KolabResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArra
     ImapResource::itemChanged(imapItem, parts);
 }
 
-void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source, const Akonadi::Collection &destination)
+void KolabResource::itemsMoved(const Akonadi::Item::List& items, const Akonadi::Collection& source, const Akonadi::Collection& destination)
 {
+    Trace() << items.size() << source.id() << destination.id();
     bool ok = true;
     const Akonadi::Item::List imapItems = KolabHelpers::translateToImap(items, ok);
     if (!ok) {
@@ -145,6 +143,7 @@ void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::
 
 static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collection)
 {
+    Trace() << collection.id();
     //Set the annotations on new folders
     const QByteArray kolabType = KolabHelpers::kolabTypeForMimeType(collection.contentMimeTypes());
     if (!kolabType.isEmpty()) {
@@ -158,8 +157,9 @@ static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collecti
     return collection;
 }
 
-void KolabResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
+void KolabResource::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
 {
+    Trace() << collection.id() << parent.id();
     //Set the annotations on new folders
     const Akonadi::Collection col = updateAnnotations(collection);
     //TODO we need to save the collections as well if the annotations have changed
@@ -167,15 +167,67 @@ void KolabResource::collectionAdded(const Akonadi::Collection &collection, const
     ImapResource::collectionAdded(col, parent);
 }
 
-void KolabResource::collectionChanged(const Akonadi::Collection &collection, const QSet< QByteArray > &parts)
+void KolabResource::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& parts)
 {
+    Trace() << collection.id() << parts;
     //Update annotations if necessary
     const Akonadi::Collection col = updateAnnotations(collection);
     //TODO we need to save the collections as well if the annotations have changed
-    emit status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
-    ChangeCollectionTask *task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, parts)), this);
+    emit status( AgentBase::Running, i18nc( "@info:status", "Updating folder '%1'", collection.name() ) );
+    ChangeCollectionTask *task = new ChangeCollectionTask( createResourceState(TaskArguments(collection, parts)), this );
     task->syncEnabledState(true);
     startTask(task);
 }
 
-AKONADI_RESOURCE_MAIN(KolabResource)
+void KolabResource::tagAdded(const Akonadi::Tag &tag)
+{
+    Trace() << tag.id();
+    KolabAddTagTask *task = new KolabAddTagTask(createResourceState(TaskArguments(tag)), this);
+    startTask(task);
+}
+
+void KolabResource::tagChanged(const Akonadi::Tag &tag)
+{
+    Trace() << tag.id();
+    KolabChangeTagTask *task = new KolabChangeTagTask(createResourceState(TaskArguments(tag)), QSharedPointer<TagConverter>(new TagConverter), this);
+    startTask(task);
+}
+
+void KolabResource::tagRemoved(const Akonadi::Tag &tag)
+{
+    Trace() << tag.id();
+    KolabRemoveTagTask *task = new KolabRemoveTagTask(createResourceState(TaskArguments(tag)), this);
+    startTask(task);
+}
+
+void KolabResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags)
+{
+    Trace() << items.size() << addedTags.size() << removedTags.size();
+    KolabChangeItemsTagsTask *task = new KolabChangeItemsTagsTask(createResourceState(TaskArguments(items, addedTags, removedTags)), QSharedPointer<TagConverter>(new TagConverter), this);
+    startTask(task);
+}
+
+void KolabResource::retrieveTags()
+{
+    Trace();
+    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveTags, this);
+    startTask(task);
+}
+
+void KolabResource::retrieveRelations()
+{
+    Trace();
+    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveRelations, this);
+    startTask(task);
+}
+
+void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
+                                          const Akonadi::Relation::List &addedRelations,
+                                          const Akonadi::Relation::List &removedRelations)
+{
+    Trace() << items.size() << addedRelations.size() << removedRelations.size();
+    KolabChangeItemsRelationsTask *task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
+    startTask(task);
+}
+
+AKONADI_RESOURCE_MAIN( KolabResource )

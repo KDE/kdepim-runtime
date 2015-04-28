@@ -33,27 +33,40 @@ public:
     explicit KolabResource(const QString &id);
     ~KolabResource();
 
+    QDialog *createConfigureDialog(WId windowId) Q_DECL_OVERRIDE;
+    Settings* settings() const Q_DECL_OVERRIDE;
+
 protected Q_SLOTS:
-    virtual void retrieveCollections();
-    virtual void retrieveItems(const Akonadi::Collection &col);
+    void retrieveCollections() Q_DECL_OVERRIDE;
+    void delayedInit();
 
 protected:
-    virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
+    ResourceStateInterface::Ptr createResourceState(const TaskArguments &) Q_DECL_OVERRIDE;
 
-    virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    virtual void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source,
-                            const Akonadi::Collection &destination);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source,
+                            const Akonadi::Collection &destination) Q_DECL_OVERRIDE;
     //itemsRemoved and itemsFlags changed do not require translation, because they don't use the payload
 
-    virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
-    virtual void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts);
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
+    void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
     //collectionRemoved & collectionMoved do not require adjustments since they don't change the annotations
 
-    virtual QString defaultName() const;
+    void tagAdded(const Akonadi::Tag &tag) Q_DECL_OVERRIDE;
+    void tagChanged(const Akonadi::Tag &tag) Q_DECL_OVERRIDE;
+    void tagRemoved(const Akonadi::Tag &tag) Q_DECL_OVERRIDE;
+    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) Q_DECL_OVERRIDE;
+
+    void itemsRelationsChanged(const Akonadi::Item::List &items,
+                               const Akonadi::Relation::List &addedRelations,
+                               const Akonadi::Relation::List &removedRelations) Q_DECL_OVERRIDE;
+
+    QString defaultName() const Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-    void onItemRetrievalCollectionFetchDone(KJob *job);
+    void retrieveTags();
+    void retrieveRelations();
 };
 
 #endif

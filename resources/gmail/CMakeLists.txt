@@ -36,7 +36,7 @@ ki18n_wrap_ui(gmailresource_SRCS gmailconfigdialog.ui)
 add_executable(akonadi_gmail_resource ${gmailresource_SRCS})
 target_link_libraries(akonadi_gmail_resource
     KF5::AkonadiCore
-    KF5::Imap
+    KF5::IMAP
     KF5::MailTransport
     KF5::KIOCore
     KF5::Mime

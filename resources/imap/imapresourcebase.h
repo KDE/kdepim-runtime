@@ -48,7 +48,7 @@ class SubscriptionDialog;
 class Settings;
 
 class ImapResourceBase : public Akonadi::ResourceBase,
-    public Akonadi::AgentBase::ObserverV3,
+    public Akonadi::AgentBase::ObserverV4,
     public Akonadi::AgentSearchInterface
 {
     Q_OBJECT
@@ -141,13 +141,14 @@ private Q_SLOTS:
 
     void onCollectionModifyDone(KJob *job);
 
-    void delayedInit();
-
 protected:
     //Starts and queues a task
     void startTask(ResourceTask *task);
     void queueTask(ResourceTask *task);
     SessionPool *m_pool;
+    mutable Settings *m_settings;
+
+    void delayedInit();
 
 private:
     friend class ResourceState;
@@ -162,7 +163,6 @@ private:
     ImapIdleManager *m_idle;
     QTimer *m_statusMessageTimer;
     QChar m_separatorCharacter;
-    mutable Settings *m_settings;
 };
 
 #endif

@@ -9,7 +9,7 @@ macro(_add_test _source)
   add_test( ${_name} ${_name} )
   ecm_mark_as_test(knotes-${_name})
   target_link_libraries(${_name} Qt5::Test   
-                        KF5::AkonadiCore KF5::Imap)
+                        KF5::AkonadiCore KF5::IMAP)
 endmacro()
 
 _add_test( collectionannotationattributetest.cpp )

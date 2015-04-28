@@ -26,7 +26,6 @@
 #include "sessionpool.h"
 #include "settings.h"
 #include "noselectattribute.h"
-#include "timestampattribute.h"
 
 #include <collectionmodifyjob.h>
 #include <agentsearchinterface.h>
@@ -53,6 +52,11 @@ QString ResourceState::userName() const
 QString ResourceState::resourceName() const
 {
     return m_resource->name();
+}
+
+QString ResourceState::resourceIdentifier() const
+{
+    return m_resource->identifier();
 }
 
 QStringList ResourceState::serverCapabilities() const
@@ -153,6 +157,31 @@ QSet<QByteArray> ResourceState::removedFlags() const
     return m_arguments.removedFlags;
 }
 
+Akonadi::Tag ResourceState::tag() const
+{
+    return m_arguments.tag;
+}
+
+QSet<Akonadi::Tag> ResourceState::addedTags() const
+{
+    return m_arguments.addedTags;
+}
+
+QSet<Akonadi::Tag> ResourceState::removedTags() const
+{
+    return m_arguments.removedTags;
+}
+
+Akonadi::Relation::List ResourceState::addedRelations() const
+{
+    return m_arguments.addedRelations;
+}
+
+Akonadi::Relation::List ResourceState::removedRelations() const
+{
+    return m_arguments.removedRelations;
+}
+
 QString ResourceState::rootRemoteId() const
 {
     return m_resource->settings()->rootRemoteId();
@@ -221,31 +250,17 @@ void ResourceState::itemsChangesCommitted(const Akonadi::Item::List &items)
 void ResourceState::collectionsRetrieved(const Akonadi::Collection::List &collections)
 {
     m_resource->collectionsRetrieved(collections);
-
-    if (m_resource->settings()->retrieveMetadataOnFolderListing()) {
-        QStringList oldMailBoxes = m_resource->settings()->knownMailBoxes();
-        QStringList newMailBoxes;
-
-        foreach (const Akonadi::Collection &c, collections) {
-            const QString mailBox = mailBoxForCollection(c);
-
-            if (!c.hasAttribute<NoSelectAttribute>()
-                    && !oldMailBoxes.contains(mailBox)) {
-                m_resource->synchronizeCollectionAttributes(c.id());
-            }
-
-            newMailBoxes << mailBox;
-        }
-
-        m_resource->settings()->setKnownMailBoxes(newMailBoxes);
-    }
-
     m_resource->startIdleIfNeeded();
 }
 
 void ResourceState::collectionChangeCommitted(const Akonadi::Collection &collection)
 {
     m_resource->changeCommitted(collection);
+}
+
+void ResourceState::tagChangeCommitted(const Akonadi::Tag &tag)
+{
+  m_resource->changeCommitted( tag );
 }
 
 void ResourceState::changeProcessed()
@@ -262,48 +277,6 @@ void ResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
 void ResourceState::cancelTask(const QString &errorString)
 {
     m_resource->cancelTask(errorString);
-
-    // We get here in case of some error during the task. In such a case that can have
-    // been provoked by the fact that some of the metadata we had was wrong (most notably
-    // ACL and we took a wrong decision.
-    // So reset the timestamp of all the collections involved in the task, and also
-    // remove them from the "known mailboxes" list so that we get a chance to refresh
-    // the metadata about them ASAP.
-
-    Akonadi::Collection::List collections;
-    collections << m_arguments.collection
-                << m_arguments.parentCollection
-                << m_arguments.sourceCollection
-                << m_arguments.targetCollection;
-
-    foreach (const Akonadi::Item &item, m_arguments.items) {
-        if (item.isValid() && item.parentCollection().isValid()) {
-            collections << item.parentCollection();
-        }
-    }
-
-    if (m_arguments.collection.isValid() && m_arguments.collection.parentCollection().isValid()) {
-        collections << m_arguments.collection.parentCollection();
-    }
-
-    const QStringList oldMailBoxes = m_resource->settings()->knownMailBoxes();
-    QStringList newMailBoxes = oldMailBoxes;
-
-    foreach (const Akonadi::Collection &collection, collections) {
-        if (collection.isValid()
-                && collection.hasAttribute<TimestampAttribute>()) {
-
-            Akonadi::Collection c = collection;
-            c.removeAttribute<TimestampAttribute>();
-
-            m_resource->modifyCollection(c);
-            newMailBoxes.removeAll(mailBoxForCollection(c));
-        }
-    }
-
-    if (oldMailBoxes.size() != newMailBoxes.size()) {
-        m_resource->settings()->setKnownMailBoxes(newMailBoxes);
-    }
 }
 
 void ResourceState::deferTask()
@@ -378,4 +351,14 @@ int ResourceState::batchSize() const
 MessageHelper::Ptr ResourceState::messageHelper() const
 {
     return MessageHelper::Ptr(new MessageHelper());
+}
+
+void ResourceState::tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &tagMembers)
+{
+    m_resource->tagsRetrieved(tags, tagMembers);
+}
+
+void ResourceState::relationsRetrieved(const Akonadi::Relation::List &relations)
+{
+    m_resource->relationsRetrieved(relations);
 }

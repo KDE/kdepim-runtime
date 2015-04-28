@@ -20,7 +20,7 @@
 #include "batchfetcher.h"
 
 #include "resource_imap_debug.h"
-#include <KImap/Session>
+#include <KIMAP/Session>
 #include "imapresource_debug.h"
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
                            const KIMAP::ImapSet &set,
@@ -196,7 +196,6 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
                                      const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
-    Q_ASSERT(fetch);
 
     Akonadi::Item::List addedItems;
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach

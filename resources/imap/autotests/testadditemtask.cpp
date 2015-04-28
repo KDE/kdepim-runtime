@@ -61,7 +61,7 @@ private slots:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\"  {55}\r\n" + message->encodedContent(true)
+                 << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
                  << "S: A000003 OK append done [ APPENDUID 1239890035 66 ]";
 
         callNames.clear();
@@ -79,7 +79,7 @@ private slots:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\"  {90}\r\n" + message->encodedContent(true)
+                 << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true)
                  << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
@@ -94,7 +94,7 @@ private slots:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\"  {90}\r\n" + message->encodedContent(true)
+                 << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true)
                  << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
@@ -115,7 +115,7 @@ private slots:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\"  {55}\r\n" + message->encodedContent(true)
+                 << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
                  << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"

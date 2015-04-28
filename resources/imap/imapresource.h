@@ -41,7 +41,7 @@ public:
     void cleanup() Q_DECL_OVERRIDE;
 
 protected:
-    QString defaultName() const Q_DECL_OVERRIDE;
+    virtual QString defaultName() const Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onConfigurationDone(int result);

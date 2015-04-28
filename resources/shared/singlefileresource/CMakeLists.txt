@@ -48,7 +48,7 @@ target_link_libraries(akonadi-singlefileresource
                       KF5::AkonadiCore
                       KF5::AkonadiAgentBase
                       KF5::KIOCore
-                      KF5::Imap
+                      KF5::IMAP
 )
 
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

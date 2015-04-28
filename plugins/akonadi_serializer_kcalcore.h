@@ -26,6 +26,7 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
 #include <KCalCore/ICalFormat>
+#include <KCalCore/ICalTimeZones>
 
 namespace Akonadi
 {
@@ -42,6 +43,7 @@ class SerializerPluginKCalCore : public QObject,
     Q_INTERFACES(Akonadi::GidExtractorInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKCalCore")
 public:
+    SerializerPluginKCalCore();
     bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) Q_DECL_OVERRIDE;
     void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) Q_DECL_OVERRIDE;
 
@@ -53,6 +55,7 @@ public:
 
 private:
     KCalCore::ICalFormat mFormat;
+    QSharedPointer<KCalCore::ICalTimeZones> mTimeZones;
 };
 
 }
