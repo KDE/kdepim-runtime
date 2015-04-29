@@ -139,7 +139,7 @@ void SingleFileResourceConfigDialogBase::validate()
   }
 
   const KUrl currentUrl = ui.kcfg_Path->url();
-  if ( currentUrl.isEmpty() ) {
+  if ( ui.kcfg_Path->text().trimmed().isEmpty() || currentUrl.isEmpty() ) {
     enableButton( Ok, false );
     return;
   }
