@@ -23,7 +23,7 @@
 #include <kolabdefinitions.h> //libkolab
 
 #include "kolabhelpers.h"
-#include <QDebug>
+#include "kolabresource_debug.h"
 
 KolabMessageHelper::KolabMessageHelper(const Akonadi::Collection &col)
     : mCollection(col)
@@ -46,7 +46,7 @@ Akonadi::Item KolabMessageHelper::createItemFromMessage(KMime::Message::Ptr mess
 {
     const Akonadi::Item item = MessageHelper::createItemFromMessage(message, uid, size, attrs, flags, scope, ok);
     if (!ok) {
-        qWarning() << "Failed to read imap message";
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to read imap message";
         return item;
     }
     Kolab::FolderType folderType = Kolab::MailType;

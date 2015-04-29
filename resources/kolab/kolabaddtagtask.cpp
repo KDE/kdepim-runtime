@@ -20,7 +20,7 @@
 */
 
 #include "kolabaddtagtask.h"
-
+#include "kolabresource_debug.h"
 #include "../imap/uidnextattribute.h"
 
 #include <kolabobject.h>
@@ -42,7 +42,7 @@ KolabAddTagTask::KolabAddTagTask(ResourceStateInterface::Ptr resource, QObject *
 
 void KolabAddTagTask::startRelationTask(KIMAP::Session *session)
 {
-    qDebug() << "converted tag";
+    qCDebug(KOLABRESOURCE_LOG) << "converted tag";
 
     const QLatin1String productId("Akonadi-Kolab-Resource");
     const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeTag(resourceState()->tag(), QStringList(), Kolab::KolabV3, productId);
@@ -65,7 +65,7 @@ void KolabAddTagTask::applyFoundUid(qint64 uid)
       tag.setRemoteId(QByteArray::number(uid));
     }
 
-    qDebug() << "comitting new tag";
+    qCDebug(KOLABRESOURCE_LOG) << "comitting new tag";
     changeCommitted(tag);
 
     Akonadi::Collection c = relationCollection();
@@ -132,13 +132,13 @@ void KolabAddTagTask::onAppendMessageDone(KJob *job)
     KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>(job);
 
     if (append->error()) {
-      qWarning() << append->errorString();
+      qCWarning(KOLABRESOURCE_LOG) << append->errorString();
       cancelTask(append->errorString());
       return;
     }
 
     qint64 uid = append->uid();
-    qDebug() << "appended message with uid: " << uid;
+    qCDebug(KOLABRESOURCE_LOG) << "appended message with uid: " << uid;
 
     if (uid > 0) {
       // We got it directly if UIDPLUS is supported...
@@ -167,7 +167,7 @@ void KolabAddTagTask::onAppendMessageDone(KJob *job)
 void KolabAddTagTask::onPreSearchSelectDone(KJob *job)
 {
     if ( job->error() ) {
-      qWarning() << job->errorString();
+      qCWarning(KOLABRESOURCE_LOG) << job->errorString();
       cancelTask(job->errorString());
     } else {
       KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
@@ -178,7 +178,7 @@ void KolabAddTagTask::onPreSearchSelectDone(KJob *job)
 void KolabAddTagTask::onSearchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
         return;
     }

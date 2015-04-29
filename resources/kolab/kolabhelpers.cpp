@@ -18,6 +18,7 @@
 */
 
 #include "kolabhelpers.h"
+#include "kolabresource_debug.h"
 #include <KMime/KMimeMessage>
 #include <KCalCore/Incidence>
 #include <AkonadiCore/Collection>
@@ -42,7 +43,7 @@ bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
         errorMsg.append(QLatin1String("\n"));
     }
 
-    qWarning() << "Error on item with id: " << item.id() << " remote id: " << item.remoteId() << ":\n" << errorMsg;
+    qCWarning(KOLABRESOURCE_LOG) << "Error on item with id: " << item.id() << " remote id: " << item.remoteId() << ":\n" << errorMsg;
     Kolab::ErrorHandler::instance().clear();
     return true;
 }
@@ -103,7 +104,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         case Kolab::MailType:
             //We don't convert mails, so that should never fail.
         default:
-            qWarning() << "unhandled folder type: " << folderType;
+            qCWarning(KOLABRESOURCE_LOG) << "unhandled folder type: " << folderType;
     }
     return item;
 }
@@ -121,7 +122,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return Akonadi::Item();
     }
     if (!imapItem.hasPayload<KMime::Message::Ptr>()) {
-        qWarning() << "Payload is not a MessagePtr!";
+        qCWarning(KOLABRESOURCE_LOG) << "Payload is not a MessagePtr!";
         Q_ASSERT(false);
         ok = false;
         return Akonadi::Item();
@@ -141,7 +142,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         {
             const KCalCore::Incidence::Ptr incidencePtr = reader.getIncidence();
             if (!incidencePtr) {
-                qWarning() << "Failed to read incidence.";
+                qCWarning(KOLABRESOURCE_LOG) << "Failed to read incidence.";
                 ok = false;
                 return Akonadi::Item();
             }
@@ -156,7 +157,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         {
             const KMime::Message::Ptr note = reader.getNote();
             if (!note) {
-                qWarning() << "Failed to read note.";
+                qCWarning(KOLABRESOURCE_LOG) << "Failed to read note.";
                 ok = false;
                 return Akonadi::Item();
             }
@@ -201,7 +202,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         }
         break;
         default:
-            qWarning() << "Object type not handled";
+            qCWarning(KOLABRESOURCE_LOG) << "Object type not handled";
             ok = false;
             break;
     }
@@ -279,7 +280,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
             case Kolab::TodoObject:
             case Kolab::JournalObject:
             {
-                qDebug() << "converted event";
+                qCDebug(KOLABRESOURCE_LOG) << "converted event";
                 const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeIncidence(
                     item.payload<KCalCore::Incidence::Ptr>(),
                     Kolab::KolabV3, productId, QLatin1String("UTC") );
@@ -288,7 +289,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
             break;
             case Kolab::NoteObject:
             {
-                qDebug() << "converted note";
+                qCDebug(KOLABRESOURCE_LOG) << "converted note";
                 const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeNote(
                     item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
                 imapItem.setPayload( message );
@@ -296,7 +297,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
             break;
             case Kolab::ContactObject:
             {
-                qDebug() << "converted contact";
+                qCDebug(KOLABRESOURCE_LOG) << "converted contact";
                 const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(
                     item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
                 imapItem.setPayload( message );
@@ -305,26 +306,26 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
             case Kolab::DistlistObject:
             {
                 const KContacts::ContactGroup contactGroup = convertToGidOnly(item.payload<KContacts::ContactGroup>());
-                qDebug() << "converted distlist";
+                qCDebug(KOLABRESOURCE_LOG) << "converted distlist";
                 const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(
                     contactGroup, Kolab::KolabV3, productId);
                 imapItem.setPayload( message );
             }
             break;
             default:
-                qWarning() << "object type not handled: " << item.id() << item.mimeType();
+                qCWarning(KOLABRESOURCE_LOG) << "object type not handled: " << item.id() << item.mimeType();
                 ok = false;
                 return Akonadi::Item();
 
         }
     } catch (Akonadi::PayloadException e) {
-        qWarning() << "The item contains the wrong or no payload: " << item.id() << item.mimeType();
-        qWarning() << e.what();
+        qCWarning(KOLABRESOURCE_LOG) << "The item contains the wrong or no payload: " << item.id() << item.mimeType();
+        qCWarning(KOLABRESOURCE_LOG) << e.what();
         return Akonadi::Item();
     }
 
     if (checkForErrors(item)) {
-        qWarning() << "an error occurred while trying to translate the item to the kolab format: " << item.id();
+        qCWarning(KOLABRESOURCE_LOG) << "an error occurred while trying to translate the item to the kolab format: " << item.id();
         ok = false;
         return Akonadi::Item();
     }
@@ -375,7 +376,7 @@ QString KolabHelpers::getMimeType(Kolab::FolderType type)
         case Kolab::ConfigurationType:
             return QLatin1String(KOLAB_TYPE_RELATION);
         default:
-            qDebug() << "unhandled folder type: " << type;
+            qCDebug(KOLABRESOURCE_LOG) << "unhandled folder type: " << type;
     }
     return QString();
 }
@@ -488,7 +489,7 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
     Kolab::RelationMember member;
     if (item.mimeType() == KMime::Message::mimeType()) {
         if (!item.hasPayload<KMime::Message::Ptr>()) {
-            qWarning() << "Email without payload, failed to add to tag: " << item.id() << item.remoteId();
+            qCWarning(KOLABRESOURCE_LOG) << "Email without payload, failed to add to tag: " << item.id() << item.remoteId();
             return QString();
         }
         KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
@@ -500,7 +501,7 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
         member.mailbox = ancestorChain(item.parentCollection());
     } else {
         if (item.gid().isEmpty()) {
-            qWarning() << "Groupware object without GID, failed to add to tag: " << item.id() << item.remoteId();
+            qCWarning(KOLABRESOURCE_LOG) << "Groupware object without GID, failed to add to tag: " << item.id() << item.remoteId();
             return QString();
         }
         member.gid = item.gid();

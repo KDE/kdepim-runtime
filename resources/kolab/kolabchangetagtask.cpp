@@ -20,7 +20,7 @@
 */
 
 #include "kolabchangetagtask.h"
-
+#include "kolabresource_debug.h"
 #include "tagchangehelper.h"
 
 #include <AkonadiCore/ItemFetchJob>
@@ -48,7 +48,7 @@ void KolabChangeTagTask::startRelationTask(KIMAP::Session *session)
 void KolabChangeTagTask::onItemsFetchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "ItemFetch failed: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "ItemFetch failed: " << job->errorString();
         cancelTask(job->errorString());
         return;
     }

@@ -33,6 +33,7 @@ set(kolabresource_SRCS
     kolabchangeitemsrelationstask.cpp
     kolabchangeitemstagstask.cpp
     updatemessagejob.cpp
+    kolabresource_debug.cpp
 )
 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)

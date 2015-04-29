@@ -20,7 +20,7 @@
 */
 
 #include "kolabremovetagtask.h"
-
+#include "kolabresource_debug.h"
 #include <imapflags.h>
 
 #include <kimap/selectjob.h>
@@ -42,7 +42,7 @@ void KolabRemoveTagTask::startRelationTask(KIMAP::Session *session)
     const QString mailBox = mailBoxForCollection(relationCollection());
 
     Trace() << mailBox;
-    qDebug() << "Deleting tag " << resourceState()->tag().name() << " from " << mailBox;
+    qCDebug(KOLABRESOURCE_LOG) << "Deleting tag " << resourceState()->tag().name() << " from " << mailBox;
 
     if (session->selectedMailBox() != mailBox) {
       KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
@@ -76,7 +76,7 @@ void KolabRemoveTagTask::triggerStoreJob(KIMAP::Session *session)
 void KolabRemoveTagTask::onSelectDone(KJob *job)
 {
     if (job->error()) {
-      qWarning() << "Failed to select mailbox: " << job->errorString();
+      qCWarning(KOLABRESOURCE_LOG) << "Failed to select mailbox: " << job->errorString();
       cancelTask(job->errorString());
     } else {
       KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
@@ -89,7 +89,7 @@ void KolabRemoveTagTask::onStoreFlagsDone(KJob *job)
     Trace();
     //TODO use UID EXPUNGE if available
     if (job->error()) {
-      qWarning() << "Failed to append flags: " << job->errorString();
+      qCWarning(KOLABRESOURCE_LOG) << "Failed to append flags: " << job->errorString();
       cancelTask(job->errorString());
     } else {
       changeProcessed();

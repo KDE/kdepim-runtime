@@ -19,6 +19,7 @@
 
 #include "kolabresource.h"
 
+#include "kolabresource_debug.h"
 #include "setupserver.h"
 #include <resourcestateinterface.h>
 #include <resourcestate.h>
@@ -108,7 +109,7 @@ void KolabResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collecti
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
-        qWarning() << "Failed to convert item";
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to convert item";
         cancelTask();
         return;
     }
@@ -121,7 +122,7 @@ void KolabResource::itemChanged(const Akonadi::Item& item, const QSet< QByteArra
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
-        qWarning() << "Failed to convert item";
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to convert item";
         cancelTask();
         return;
     }
@@ -134,7 +135,7 @@ void KolabResource::itemsMoved(const Akonadi::Item::List& items, const Akonadi::
     bool ok = true;
     const Akonadi::Item::List imapItems = KolabHelpers::translateToImap(items, ok);
     if (!ok) {
-        qWarning() << "Failed to convert item";
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to convert item";
         cancelTask();
         return;
     }

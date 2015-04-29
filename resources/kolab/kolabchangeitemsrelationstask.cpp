@@ -20,7 +20,7 @@
 */
 
 #include "kolabchangeitemsrelationstask.h"
-
+#include "kolabresource_debug.h"
 #include <imapflags.h>
 #include <kolabobject.h>
 
@@ -79,14 +79,14 @@ void KolabChangeItemsRelationsTask::onRelationFetchDone(KJob *job)
 {
     Trace();
     if (job->error()) {
-        qWarning() << "RelatonFetch failed: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "RelatonFetch failed: " << job->errorString();
         processNextRelation();
         return;
     }
 
     const Akonadi::Relation::List relations = static_cast<Akonadi::RelationFetchJob *>(job)->relations();
     if (relations.size() != 1) {
-        qWarning() << "Invalid number of relations retrieved: " << relations.size();
+        qCWarning(KOLABRESOURCE_LOG) << "Invalid number of relations retrieved: " << relations.size();
         processNextRelation();
         return;
     }
@@ -113,13 +113,13 @@ void KolabChangeItemsRelationsTask::addRelation(const Akonadi::Relation &relatio
 void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Failed to fetch items for relation: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to fetch items for relation: " << job->errorString();
         processNextRelation();
         return;
     }
     Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob*>(job);
     if (fetchJob->items().size() != 2) {
-        qWarning() << "Invalid number of items retrieved: " << fetchJob->items().size();
+        qCWarning(KOLABRESOURCE_LOG) << "Invalid number of items retrieved: " << fetchJob->items().size();
         processNextRelation();
         return;
     }
@@ -132,7 +132,7 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
     const QString left = KolabHelpers::createMemberUrl(leftItem, resourceState()->userName());
     const QString right =  KolabHelpers::createMemberUrl(rightItem, resourceState()->userName());
     if (left.isEmpty() || right.isEmpty()) {
-        qWarning() << "Failed to add relation, invalid member: " << left << " : " << right;
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to add relation, invalid member: " << left << " : " << right;
         processNextRelation();
         return;
     }
@@ -172,7 +172,7 @@ void KolabChangeItemsRelationsTask::removeRelation(const Akonadi::Relation &rela
 void KolabChangeItemsRelationsTask::onSelectDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Failed to select mailbox: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to select mailbox: " << job->errorString();
         cancelTask(job->errorString());
     } else {
         triggerStoreJob();
@@ -198,7 +198,7 @@ void KolabChangeItemsRelationsTask::triggerStoreJob()
 void KolabChangeItemsRelationsTask::onChangeCommitted(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Error while storing change";
+        qCWarning(KOLABRESOURCE_LOG) << "Error while storing change";
         cancelTask(job->errorString());
     } else {
         processNextRelation();

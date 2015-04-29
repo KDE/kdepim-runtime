@@ -23,6 +23,7 @@
 #include "kolabretrievecollectionstask.h"
 #include "kolabhelpers.h"
 #include "tracer.h"
+#include "kolabresource_debug.h"
 
 #include <noselectattribute.h>
 #include <noinferiorsattribute.h>
@@ -139,9 +140,9 @@ void RetrieveMetadataJob::onGetMetaDataDone( KJob *job )
     mJobs--;
     KIMAP::GetMetaDataJob *meta = static_cast<KIMAP::GetMetaDataJob*>( job );
     if ( job->error() ) {
-        kDebug() << "No metadata for for mailbox: " << meta->mailBox();
+        qCDebug(KOLABRESOURCE_LOG) << "No metadata for for mailbox: " << meta->mailBox();
         if (!isNamespaceFolder(meta->mailBox(), mSharedNamespace)) {
-            kWarning() << "Get metadata failed: " << job->errorString();
+            qCWarning(KOLABRESOURCE_LOG) << "Get metadata failed: " << job->errorString();
             //We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
         }
         checkDone();
@@ -160,9 +161,9 @@ void RetrieveMetadataJob::onRightsReceived( KJob *job )
     mJobs--;
     KIMAP::MyRightsJob *rights = static_cast<KIMAP::MyRightsJob*>(job);
     if ( job->error() ) {
-        kDebug() << "No rights for mailbox: " << rights->mailBox();
+        qCDebug(KOLABRESOURCE_LOG) << "No rights for mailbox: " << rights->mailBox();
         if (!isNamespaceFolder(rights->mailBox(), mSharedNamespace)) {
-            kWarning() << "MyRights failed: " << job->errorString();
+            qCWarning(KOLABRESOURCE_LOG) << "MyRights failed: " << job->errorString();
             //We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
         }
         checkDone();
@@ -178,7 +179,7 @@ void RetrieveMetadataJob::checkDone()
 {
     if (!mJobs) {
         Trace() << "done";
-        kDebug() << "done";
+        qCDebug(KOLABRESOURCE_LOG) << "done";
         emitResult();
     }
 }
@@ -206,7 +207,7 @@ KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
 void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 {
     Trace();
-    kDebug() << "Starting collection retrieval";
+    qCDebug(KOLABRESOURCE_LOG) << "Starting collection retrieval";
     mTime.start();
     mSession = session;
 
@@ -399,24 +400,24 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 
     // If this folder is a noinferiors folder, it is not allowed to create subfolders inside.
     if (currentFlags.contains("\\noinferiors")) {
-        //kDebug() << "Noinferiors: " << currentPath;
+        //qCDebug(KOLABRESOURCE_LOG) << "Noinferiors: " << currentPath;
         c.addAttribute(new NoInferiorsAttribute(true));
         c.setRights(c.rights() & ~Akonadi::Collection::CanCreateCollection);
     }
     c.setEnabled(isSubscribed);
 
-    // kDebug() << "creating collection " << mailbox << " with parent " << parentPath;
+    // qCDebug(KOLABRESOURCE_LOG) << "creating collection " << mailbox << " with parent " << parentPath;
     mMailCollections.insert(mailbox, c);
 }
 
 void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
 {
     Trace();
-    kDebug() << "All mailboxes received: " << mTime.elapsed();
-    kDebug() << "in total: " << mMailCollections.size();
+    qCDebug(KOLABRESOURCE_LOG) << "All mailboxes received: " << mTime.elapsed();
+    qCDebug(KOLABRESOURCE_LOG) << "in total: " << mMailCollections.size();
     mJobs--;
     if (job->error()) {
-        kWarning() << QLatin1String("Failed to retrieve mailboxes: ") + job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << QLatin1String("Failed to retrieve mailboxes: ") + job->errorString();
         cancelTask(QStringLiteral("Collection retrieval failed"));
     } else {
         QSet<QString> mailboxes;
@@ -438,7 +439,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob* job)
 
 void KolabRetrieveCollectionsTask::applyRights(QHash<QString, KIMAP::Acl::Rights> rights)
 {
-    // kDebug() << rights;
+    // qCDebug(KOLABRESOURCE_LOG) << rights;
     Q_FOREACH(const QString &mailbox, rights.keys()) {
         if (mMailCollections.contains(mailbox)) {
             const KIMAP::Acl::Rights imapRights = rights.value(mailbox);
@@ -451,7 +452,7 @@ void KolabRetrieveCollectionsTask::applyRights(QHash<QString, KIMAP::Acl::Rights
             if (!parentMailbox.isEmpty() && rights.contains(parentMailbox)) {
                 parentImapRights = rights.value(parentMailbox);
             }
-            // kDebug() << mailbox << parentMailbox << imapRights << parentImapRights;
+            // qCDebug(KOLABRESOURCE_LOG) << mailbox << parentMailbox << imapRights << parentImapRights;
 
             Akonadi::Collection &collection = mMailCollections[mailbox];
             CollectionMetadataHelper::applyRights(collection, imapRights, parentImapRights);
@@ -463,19 +464,19 @@ void KolabRetrieveCollectionsTask::applyRights(QHash<QString, KIMAP::Acl::Rights
                 aclAttribute->setMyRights( imapRights );
             }
         } else {
-            kWarning() << "Can't find mailbox " << mailbox;
+            qCWarning(KOLABRESOURCE_LOG) << "Can't find mailbox " << mailbox;
         }
     }
 }
 
 void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray, QByteArray> > metadataMap)
 {
-    // kDebug() << metadataMap;
+    // qCDebug(KOLABRESOURCE_LOG) << metadataMap;
     Q_FOREACH(const QString &mailbox, metadataMap.keys()) {
         const QMap<QByteArray, QByteArray> metadata  = metadataMap.value(mailbox);
         if (mMailCollections.contains(mailbox)) {
             Akonadi::Collection &collection = mMailCollections[mailbox];
-            // kDebug() << "setting metadata: " << mailbox << metadata;
+            // qCDebug(KOLABRESOURCE_LOG) << "setting metadata: " << mailbox << metadata;
             collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing)->setAnnotations(metadata);
             const QByteArray type = KolabHelpers::getFolderTypeAnnotation(metadata);
             const Kolab::FolderType folderType = KolabHelpers::folderTypeFromString(type);
@@ -490,10 +491,10 @@ void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray,
 void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
 {
     Trace();
-    kDebug() << mTime.elapsed();
+    qCDebug(KOLABRESOURCE_LOG) << mTime.elapsed();
     mJobs--;
     if (job->error()) {
-        kWarning() << "Error while retrieving metadata, aborting collection retrieval: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Error while retrieving metadata, aborting collection retrieval: " << job->errorString();
         cancelTask(QStringLiteral("Collection retrieval failed"));
     } else {
         RetrieveMetadataJob *metadata = static_cast<RetrieveMetadataJob*>(job);
@@ -508,7 +509,7 @@ void KolabRetrieveCollectionsTask::checkDone()
     if (!mJobs) {
         Trace() << "done " << mMailCollections.size();
         collectionsRetrieved(mMailCollections.values());
-        kDebug() << "done " <<  mTime.elapsed();
+        qCDebug(KOLABRESOURCE_LOG) << "done " <<  mTime.elapsed();
     }
 }
 
@@ -524,10 +525,10 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::M
 void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob* job)
 {
     Trace();
-    kDebug() << "received subscribed collections " <<  mTime.elapsed();
+    qCDebug(KOLABRESOURCE_LOG) << "received subscribed collections " <<  mTime.elapsed();
     mJobs--;
     if (job->error()) {
-        kWarning() << QLatin1String("Failed to retrieve subscribed collections: ") + job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << QLatin1String("Failed to retrieve subscribed collections: ") + job->errorString();
         cancelTask(QStringLiteral("Collection retrieval failed"));
     } else {
         checkDone();

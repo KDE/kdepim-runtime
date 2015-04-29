@@ -28,7 +28,7 @@
 #include <AkonadiCore/CachePolicy>
 #include <noselectattribute.h>
 #include <Akonadi/KMime/MessageParts>
-#include <QDebug>
+#include "kolabresource_debug.h"
 
 KolabResourceState::KolabResourceState(ImapResource *resource, const TaskArguments &arguments)
     : ResourceState(resource, arguments)
@@ -47,7 +47,7 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
 
         const QString icon = KolabHelpers::getIcon(folderType);
         if (!icon.isEmpty()) {
-            // qDebug() << " setting icon " << icon;
+            // qCDebug(KOLABRESOURCE_LOG) << " setting icon " << icon;
             Akonadi::EntityDisplayAttribute *attr = col.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
             attr->setIconName(icon);
         }

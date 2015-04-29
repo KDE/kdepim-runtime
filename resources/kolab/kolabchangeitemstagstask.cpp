@@ -20,7 +20,7 @@
 */
 
 #include "kolabchangeitemstagstask.h"
-
+#include "kolabresource_debug.h"
 #include "tagchangehelper.h"
 
 #include <AkonadiCore/ItemFetchJob>
@@ -46,7 +46,7 @@ void KolabChangeItemsTagsTask::startRelationTask(KIMAP::Session *session)
     Q_FOREACH (const Akonadi::Tag &tag, resourceState()->removedTags()) {
         mChangedTags.append(tag);
     }
-    qDebug() << mChangedTags;
+    qCDebug(KOLABRESOURCE_LOG) << mChangedTags;
 
     processNextTag();
 }
@@ -70,7 +70,7 @@ void KolabChangeItemsTagsTask::processNextTag()
 void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "TagFetch failed: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "TagFetch failed: " << job->errorString();
         // TODO: we could continue for the other tags?
         cancelTask(job->errorString());
         return;
@@ -78,7 +78,7 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
 
     const Akonadi::Tag::List tags = static_cast<Akonadi::TagFetchJob*>(job)->tags();
     if (tags.size() != 1) {
-        qWarning() << "Invalid number of tags retrieved: " << tags.size();
+        qCWarning(KOLABRESOURCE_LOG) << "Invalid number of tags retrieved: " << tags.size();
         // TODO: we could continue for the other tags?
         cancelTask(job->errorString());
         return;
@@ -96,14 +96,14 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
 void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "ItemFetch failed: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "ItemFetch failed: " << job->errorString();
         // TODO: we could continue for the other tags?
         cancelTask(job->errorString());
         return;
     }
 
     const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob*>(job)->items();
-    qDebug() << items.size();
+    qCDebug(KOLABRESOURCE_LOG) << items.size();
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
 
@@ -114,9 +114,9 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
 
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     {
-        qDebug() << "Writing " << tag.name() << " with " << items.size() << " members to the server: ";
+        qCDebug(KOLABRESOURCE_LOG) << "Writing " << tag.name() << " with " << items.size() << " members to the server: ";
         foreach (const Akonadi::Item &item, items) {
-            qDebug() << "member(localid, remoteid): " << item.id() << item.remoteId();
+            qCDebug(KOLABRESOURCE_LOG) << "member(localid, remoteid): " << item.id() << item.remoteId();
         }
     }
     Q_ASSERT(tag.isValid());

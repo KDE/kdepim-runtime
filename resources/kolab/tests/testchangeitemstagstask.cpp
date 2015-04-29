@@ -177,7 +177,7 @@ private slots:
             QVariant parameter = resourceState->calls().at(i).second;
 
             if (command == "cancelTask" && callNames[i] != "cancelTask") {
-                kDebug() << "Got a cancel:" << parameter.toString();
+                qCDebug(KOLABRESOURCE_LOG) << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);

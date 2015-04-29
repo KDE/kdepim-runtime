@@ -20,7 +20,7 @@
 */
 
 #include "kolabrelationresourcetask.h"
-
+#include "kolabresource_debug.h"
 #include "kolabhelpers.h"
 
 #include <AkonadiCore/CollectionFetchJob>
@@ -76,7 +76,7 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
         }
     }
 
-    qDebug() << "Couldn't find collection for relations, creating one.";
+    qCDebug(KOLABRESOURCE_LOG) << "Couldn't find collection for relations, creating one.";
 
     const QChar separator = separatorCharacter();
     mRelationCollection = Akonadi::Collection();
@@ -94,7 +94,7 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
 void KolabRelationResourceTask::onCreateDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Failed to create configuration folder: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to create configuration folder: " << job->errorString();
         cancelTask(i18n("Failed to create configuration folder on server"));
         return;
     }
@@ -115,7 +115,7 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
 void KolabRelationResourceTask::onSetMetaDataDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Failed to write annotations: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to write annotations: " << job->errorString();
         cancelTask(i18n("Failed to write some annotations for '%1' on the IMAP server. %2",
                         collection().name(), job->errorText()));
         return;
@@ -128,7 +128,7 @@ void KolabRelationResourceTask::onSetMetaDataDone(KJob *job)
 void KolabRelationResourceTask::onLocalCreateDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Failed to create local folder: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to create local folder: " << job->errorString();
         cancelTask(i18n("Failed to create configuration folder"));
         return;
     }

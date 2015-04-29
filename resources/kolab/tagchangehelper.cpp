@@ -20,7 +20,7 @@
 */
 
 #include "tagchangehelper.h"
-
+#include "kolabresource_debug.h"
 #include "kolabrelationresourcetask.h"
 #include "kolabhelpers.h"
 #include "updatemessagejob.h"
@@ -61,7 +61,7 @@ struct TagMerger : public Merger {
     virtual ~TagMerger() {}
     virtual KMime::Message::Ptr merge(KMime::Message::Ptr newMessage, QList<KMime::Message::Ptr> conflictingMessages) const
     {
-        qDebug() << "Got " << conflictingMessages.size() << " conflicting relation configuration objects. Overwriting with local version.";
+        qCDebug(KOLABRESOURCE_LOG) << "Got " << conflictingMessages.size() << " conflicting relation configuration objects. Overwriting with local version.";
         return newMessage;
     }
 };
@@ -78,7 +78,7 @@ void TagChangeHelper::start(const Akonadi::Tag &tag, const KMime::Message::Ptr &
     Q_ASSERT(tag.isValid());
     const QString mailBox = mTask->mailBoxForCollection(mTask->relationCollection());
     const qint64 oldUid = tag.remoteId().toLongLong();
-    qDebug() << mailBox << oldUid;
+    qCDebug(KOLABRESOURCE_LOG) << mailBox << oldUid;
 
     const qint64 uidNext = -1;
 
@@ -94,7 +94,7 @@ void TagChangeHelper::recordNewUid(qint64 newUid, Akonadi::Tag tag)
     Q_ASSERT(tag.isValid());
 
     const QByteArray remoteId =  QByteArray::number(newUid);
-    qDebug() << "Setting remote ID to " << remoteId << " on tag with local id: " << tag.id();
+    qCDebug(KOLABRESOURCE_LOG) << "Setting remote ID to " << remoteId << " on tag with local id: " << tag.id();
     //Make sure we only update the id and send nothing else
     Akonadi::Tag updateTag;
     updateTag.setId(tag.id());
@@ -106,7 +106,7 @@ void TagChangeHelper::recordNewUid(qint64 newUid, Akonadi::Tag tag)
 void TagChangeHelper::onReplaceDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Replace failed: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Replace failed: " << job->errorString();
     }
     UpdateMessageJob *replaceJob = static_cast<UpdateMessageJob*>(job);
     const qint64 newUid = replaceJob->newUid();
@@ -121,7 +121,7 @@ void TagChangeHelper::onReplaceDone(KJob *job)
 void TagChangeHelper::onModifyDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Modify failed: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Modify failed: " << job->errorString();
         emit cancelTask(job->errorString());
         return;
     }

@@ -85,7 +85,7 @@ private slots:
         QStringList members;
         members << QLatin1String("imap:///user/john.doe%40example.org/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200&subject=Re%3A+test");
         KMime::Message::Ptr msg = writer.writeTag(tag, members);
-        // kDebug() << msg->encodedContent();
+        // qCDebug(KOLABRESOURCE_LOG) << msg->encodedContent();
 
         const QByteArray &content = msg->encodedContent(true);
         scenario.clear();
@@ -143,7 +143,7 @@ private slots:
             QVariant parameter = state->calls().at(i).second;
 
             if (command == "cancelTask" && callNames[i] != "cancelTask") {
-                kDebug() << "Got a cancel:" << parameter.toString();
+                qCDebug(KOLABRESOURCE_LOG) << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);

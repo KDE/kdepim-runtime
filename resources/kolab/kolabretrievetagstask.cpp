@@ -18,7 +18,7 @@
 */
 
 #include "kolabretrievetagstask.h"
-
+#include "kolabresource_debug.h"
 #include "tagchangehelper.h"
 
 #include <kimap/selectjob.h>
@@ -49,7 +49,7 @@ void KolabRetrieveTagTask::startRelationTask(KIMAP::Session *session)
 void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
         return;
     }
@@ -133,7 +133,7 @@ Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &m
             return Akonadi::Item();
         }
         i.setRemoteId(QString::number(member.uid));
-        qDebug() << "got member: " << member.uid << member.mailbox;
+        qCDebug(KOLABRESOURCE_LOG) << "got member: " << member.uid << member.mailbox;
         Akonadi::Collection parent;
         {
             //The root collection is not part of the mailbox path
@@ -169,7 +169,7 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
         if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
             members << i;
         } else {
-            qWarning() << "Failed to parse member: " << memberUrl;
+            qCWarning(KOLABRESOURCE_LOG) << "Failed to parse member: " << memberUrl;
         }
     }
     mTagMembers.insert(QString::fromLatin1(tag.remoteId()), members);
@@ -185,11 +185,11 @@ void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reade
         if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
             members << i;
         } else {
-            qWarning() << "Failed to parse member: " << memberUrl;
+            qCWarning(KOLABRESOURCE_LOG) << "Failed to parse member: " << memberUrl;
         }
     }
     if (members.size() != 2) {
-        qWarning() << "Wrong numbers of members for a relation, expected 2: " << members.size();
+        qCWarning(KOLABRESOURCE_LOG) << "Wrong numbers of members for a relation, expected 2: " << members.size();
         return;
     }
 
@@ -204,7 +204,7 @@ void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reade
 void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Fetch job failed " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Fetch job failed " << job->errorString();
         cancelTask(job->errorString());
         return;
     }
@@ -215,10 +215,10 @@ void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
 void KolabRetrieveTagTask::taskComplete()
 {
     if (mRetrieveType == RetrieveTags) {
-        qDebug() << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
+        qCDebug(KOLABRESOURCE_LOG) << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
         resourceState()->tagsRetrieved(mTags, mTagMembers);
     } else if (mRetrieveType == RetrieveRelations) {
-        qDebug() << "Fetched relations:" << mRelations.size();
+        qCDebug(KOLABRESOURCE_LOG) << "Fetched relations:" << mRelations.size();
         resourceState()->relationsRetrieved(mRelations);
     }
 

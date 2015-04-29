@@ -25,7 +25,7 @@
 #include <KIMAP/StoreJob>
 #include <KIMAP/FetchJob>
 #include <KIMAP/ImapSet>
-#include <KDebug>
+#include "kolabresource_debug.h"
 #include <KMime/Message>
 #include <replacemessagejob.h>
 
@@ -99,10 +99,10 @@ void UpdateMessageJob::onHeadersReceived(QString,
 void UpdateMessageJob::onHeadersFetchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Failed to fetch message: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to fetch message: " << job->errorString();
     }
     if (mFoundUids.size() >= 1) {
-        qDebug() << "Fast-forward update, replacing message.";
+        qCDebug(KOLABRESOURCE_LOG) << "Fast-forward update, replacing message.";
         appendMessage();
     } else {
         if (mSession->selectedMailBox() != mMailbox) {
@@ -119,7 +119,7 @@ void UpdateMessageJob::onHeadersFetchDone(KJob *job)
 void UpdateMessageJob::onSelectDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
     } else {
@@ -141,7 +141,7 @@ void UpdateMessageJob::searchForLatestVersion()
 void UpdateMessageJob::onSearchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -180,7 +180,7 @@ void UpdateMessageJob::onSearchDone(KJob *job)
                 this, SLOT(onConflictingMessageFetchDone(KJob*)));
         fetchJob->start();
     } else {
-        qWarning() << "failed to find latest version of object";
+        qCWarning(KOLABRESOURCE_LOG) << "failed to find latest version of object";
         appendMessage();
     }
 }
@@ -202,7 +202,7 @@ void UpdateMessageJob::onConflictingMessagesReceived(QString,
 void UpdateMessageJob::onConflictingMessageFetchDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << "Failed to retrieve messages to merge: " << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to retrieve messages to merge: " << job->errorString();
     }
     mMessage = mMerger->merge(mMessage, mMessagesToMerge);
     appendMessage();
@@ -219,7 +219,7 @@ void UpdateMessageJob::appendMessage()
 void UpdateMessageJob::onReplaceDone(KJob *job)
 {
     if (job->error()) {
-        qWarning() << job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
