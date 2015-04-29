@@ -156,7 +156,7 @@ void SingleFileResourceConfigDialogBase::validate()
     }
 
     const QUrl currentUrl = ui.kcfg_Path->url();
-    if (currentUrl.isEmpty()) {
+    if (ui.kcfg_Path->text().trimmed().isEmpty() || currentUrl.isEmpty()) {
         mOkButton->setEnabled(false);
         return;
     }
