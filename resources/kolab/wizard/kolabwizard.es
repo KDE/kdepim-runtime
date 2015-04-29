@@ -186,7 +186,7 @@ function mail_text(text) {
 function freebusy_finished(stat) {
     ac_freebusy_stat = stat;
     if (stat) {
-        page2.widget().checkBoxFreebusyEdit.text = qsTr("Manuell Edit");
+        page2.widget().checkBoxFreebusyEdit.text = qsTr("Manual Edit");
     }
 }
 
@@ -197,7 +197,7 @@ function freebusy_text(text) {
 function ldap_finished(stat) {
     ac_ldap_stat = stat;
     if (stat) {
-        page2.widget().checkBoxLdapEdit.text = qsTr("Manuell Edit");
+        page2.widget().checkBoxLdapEdit.text = qsTr("Manual Edit");
     }
 }
 
