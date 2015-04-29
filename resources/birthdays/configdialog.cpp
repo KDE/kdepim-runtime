@@ -45,7 +45,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mainLayout->addWidget(mainWidget);
     mainLayout->addWidget(buttonBox);
     ui.setupUi(mainWidget);
-    setWindowIcon(QIcon::fromTheme(QLatin1String("view-calendar-birthday")));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
     mManager = new KConfigDialogManager(this, Settings::self());
     mManager->updateWidgets();
     ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));

@@ -46,7 +46,7 @@ GoogleResource::GoogleResource(const QString &id):
     AgentBase::ObserverV2(),
     m_isConfiguring(false)
 {
-    //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
+    //QT5 KLocalizedString::global()->insertCatalog( QStringLiteral("akonadi_google_resource") );
     connect(this, &GoogleResource::abortRequested, this, &GoogleResource::slotAbortRequested);
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
 
@@ -191,7 +191,7 @@ void GoogleResource::slotKAccountsCredentialsReceived(KJob *job)
 
     GetCredentialsJob *gc = qobject_cast<GetCredentialsJob *>(job);
     const QVariantMap data = gc->credentialsData();
-    const QString accessToken = data.value(QLatin1String("AccessToken")).toString();
+    const QString accessToken = data.value(QStringLiteral("AccessToken")).toString();
 
     // Createa temporary account that we use to fetch full user name
     KGAPI2::AccountPtr account(new KGAPI2::Account);

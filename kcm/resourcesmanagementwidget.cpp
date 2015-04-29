@@ -51,7 +51,7 @@ ResourcesManagementWidget::ResourcesManagementWidget(QWidget *parent,  const QSt
     d->wantedMimeTypes = args;
     d->ui.setupUi(this);
 
-    d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter(QLatin1String("Resource"));
+    d->ui.resourcesList->agentFilterProxyModel()->addCapabilityFilter(QStringLiteral("Resource"));
     foreach (const QString &type, d->wantedMimeTypes) {
         d->ui.resourcesList->agentFilterProxyModel()->addMimeTypeFilter(type);
     }
@@ -83,7 +83,7 @@ void ResourcesManagementWidget::updateButtonState()
         d->ui.removeButton->setEnabled(false);
     } else {
         const Akonadi::AgentInstance current = instanceList.first();
-        d->ui.editButton->setEnabled(!current.type().capabilities().contains(QLatin1String("NoConfig")));
+        d->ui.editButton->setEnabled(!current.type().capabilities().contains(QStringLiteral("NoConfig")));
         d->ui.removeButton->setEnabled(true);
     }
 }

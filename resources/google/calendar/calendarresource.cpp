@@ -75,7 +75,6 @@ CalendarResource::CalendarResource(const QString &id):
     GoogleResource(id)
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
-    //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_google_resource") );
     updateResourceName();
 }
 
@@ -91,7 +90,7 @@ GoogleSettings *CalendarResource::settings() const
 int CalendarResource::runConfigurationDialog(WId windowId)
 {
     QScopedPointer<SettingsDialog> settingsDialog(new SettingsDialog(accountManager(), windowId, this));
-    settingsDialog->setWindowIcon(QIcon::fromTheme(QLatin1String("im-google")));
+    settingsDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("im-google")));
 
     return settingsDialog->exec();
 }
@@ -417,7 +416,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
     attr->setDisplayName(fetchJob->account()->accountName());
-    attr->setIconName(QLatin1String("im-google"));
+    attr->setIconName(QStringLiteral("im-google"));
 
     m_collections[ ROOT_COLLECTION_REMOTEID ] = m_rootCollection;
 
@@ -479,7 +478,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
         attr->setDisplayName(taskList->title());
-        attr->setIconName(QLatin1String("view-pim-tasks"));
+        attr->setIconName(QStringLiteral("view-pim-tasks"));
 
         m_collections[ collection.remoteId() ] = collection;
     }

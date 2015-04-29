@@ -28,8 +28,8 @@ AkonadiConfigModule::AkonadiConfigModule(QWidget *parent, const QVariantList &ar
 {
     Q_UNUSED(args);
     setButtons(KCModule::Default | KCModule::Apply);
-    addModule(QLatin1String("kcm_akonadi_resources"));
-    addModule(QLatin1String("kcm_akonadi_server"));
+    addModule(QStringLiteral("kcm_akonadi_resources"));
+    addModule(QStringLiteral("kcm_akonadi_server"));
 }
 
 #include "akonadiconfigmodule.moc"

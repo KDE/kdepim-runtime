@@ -48,7 +48,7 @@ BirthdaysResource::BirthdaysResource(const QString &id) :
     ResourceBase(id)
 {
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
             Settings::self(), QDBusConnection::ExportAdaptors);
 
     setName(i18n("Birthdays & Anniversaries"));
@@ -86,13 +86,13 @@ void BirthdaysResource::retrieveCollections()
 {
     Collection c;
     c.setParentCollection(Collection::root());
-    c.setRemoteId(QLatin1String("akonadi_birthdays_resource"));
+    c.setRemoteId(QStringLiteral("akonadi_birthdays_resource"));
     c.setName(name());
-    c.setContentMimeTypes(QStringList() << QLatin1String("application/x-vnd.akonadi.calendar.event"));
+    c.setContentMimeTypes(QStringList() << QStringLiteral("application/x-vnd.akonadi.calendar.event"));
     c.setRights(Collection::ReadOnly);
 
     EntityDisplayAttribute *attribute = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-    attribute->setIconName(QLatin1String("view-calendar-birthday"));
+    attribute->setIconName(QStringLiteral("view-calendar-birthday"));
 
     Collection::List list;
     list << c;
@@ -249,9 +249,9 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item &cont
         const QString summary = i18n("%1's birthday", name);
 
         Event::Ptr ev = createEvent(birthdate);
-        ev->setUid(contact.uid() + QLatin1String("_KABC_Birthday"));
+        ev->setUid(contact.uid() + QStringLiteral("_KABC_Birthday"));
 
-        ev->setCustomProperty("KABC", "BIRTHDAY", QLatin1String("YES"));
+        ev->setCustomProperty("KABC", "BIRTHDAY", QStringLiteral("YES"));
         ev->setCustomProperty("KABC", "UID-1", contact.uid());
         ev->setCustomProperty("KABC", "NAME-1", name);
         ev->setCustomProperty("KABC", "EMAIL-1", contact.preferredEmail());
@@ -276,13 +276,13 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &c
         return KCalCore::Event::Ptr();
     }
 
-    const QString anniversary_string = contact.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Anniversary"));
+    const QString anniversary_string = contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"));
     if (anniversary_string.isEmpty()) {
         return KCalCore::Event::Ptr();
     }
     const QDate anniversary = QDate::fromString(anniversary_string, Qt::ISODate);
     if (anniversary.isValid()) {
-        const QString spouseName = contact.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-SpousesName"));
+        const QString spouseName = contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"));
 
         QString summary;
         if (!spouseName.isEmpty()) {
@@ -308,13 +308,13 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &c
         }
 
         Event::Ptr event = createEvent(anniversary);
-        event->setUid(contact.uid() + QLatin1String("_KABC_Anniversary"));
+        event->setUid(contact.uid() + QStringLiteral("_KABC_Anniversary"));
         event->setSummary(summary);
 
         event->setCustomProperty("KABC", "UID-1", contact.uid());
         event->setCustomProperty("KABC", "NAME-1", name);
         event->setCustomProperty("KABC", "EMAIL-1", contact.fullEmail());
-        event->setCustomProperty("KABC", "ANNIVERSARY", QLatin1String("YES"));
+        event->setCustomProperty("KABC", "ANNIVERSARY", QStringLiteral("YES"));
         // insert category
         checkForUnknownCategories(i18n("Anniversary"), event);
         return event;

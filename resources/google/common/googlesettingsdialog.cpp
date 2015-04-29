@@ -74,11 +74,11 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     accLayout->addWidget(m_accComboBox, 1);
     connect(m_accComboBox, static_cast<void (KComboBox::*)(const QString &)>(&KComboBox::currentIndexChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
-    m_addAccButton = new QPushButton(QIcon::fromTheme(QLatin1String("list-add-user")), i18n("&Add"), m_accGroupBox);
+    m_addAccButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add-user")), i18n("&Add"), m_accGroupBox);
     accLayout->addWidget(m_addAccButton);
     connect(m_addAccButton, &QPushButton::clicked, this, &GoogleSettingsDialog::slotAddAccountClicked);
 
-    m_removeAccButton = new QPushButton(QIcon::fromTheme(QLatin1String("list-remove-user")), i18n("&Remove"), m_accGroupBox);
+    m_removeAccButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove-user")), i18n("&Remove"), m_accGroupBox);
     accLayout->addWidget(m_removeAccButton);
     connect(m_removeAccButton, &QPushButton::clicked, this, &GoogleSettingsDialog::slotRemoveAccountClicked);
 

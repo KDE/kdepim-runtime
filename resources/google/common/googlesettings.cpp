@@ -25,12 +25,12 @@ GoogleSettings::GoogleSettings():
 
 QString GoogleSettings::clientId() const
 {
-    return QLatin1String("554041944266.apps.googleusercontent.com");
+    return QStringLiteral("554041944266.apps.googleusercontent.com");
 }
 
 QString GoogleSettings::clientSecret() const
 {
-    return QLatin1String("mdT1DjzohxN3npUUzkENT0gO");
+    return QStringLiteral("mdT1DjzohxN3npUUzkENT0gO");
 }
 
 void GoogleSettings::setWindowId(WId id)

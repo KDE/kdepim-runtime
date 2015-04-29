@@ -52,7 +52,7 @@ SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowI
     m_calendarsList = new QListWidget(m_calendarsBox);
     vbox->addWidget(m_calendarsList, 1);
 
-    m_reloadCalendarsBtn = new QPushButton(QIcon::fromTheme(QLatin1String("view-refresh")), i18n("Reload"), m_calendarsBox);
+    m_reloadCalendarsBtn = new QPushButton(QIcon::fromTheme(QStringLiteral("view-refresh")), i18n("Reload"), m_calendarsBox);
     vbox->addWidget(m_reloadCalendarsBtn);
     connect(m_reloadCalendarsBtn, &QPushButton::clicked, this, &SettingsDialog::slotReloadCalendars);
 
@@ -65,7 +65,7 @@ SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowI
     m_eventsLimitCombo = new KDateComboBox(this);
     m_eventsLimitLabel->setBuddy(m_eventsLimitCombo);
     m_eventsLimitCombo->setMaximumDate(QDate::currentDate());
-    m_eventsLimitCombo->setMinimumDate(QDate::fromString(QLatin1String("2000-01-01"), Qt::ISODate));
+    m_eventsLimitCombo->setMinimumDate(QDate::fromString(QStringLiteral("2000-01-01"), Qt::ISODate));
     m_eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate |
                                    KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
     if (Settings::self()->eventsSince().isEmpty()) {
@@ -84,7 +84,7 @@ SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowI
     m_taskListsList = new QListWidget(m_taskListsBox);
     vbox->addWidget(m_taskListsList, 1);
 
-    m_reloadTaskListsBtn = new QPushButton(QIcon::fromTheme(QLatin1String("view-refresh")), i18n("Reload"), m_taskListsBox);
+    m_reloadTaskListsBtn = new QPushButton(QIcon::fromTheme(QStringLiteral("view-refresh")), i18n("Reload"), m_taskListsBox);
     vbox->addWidget(m_reloadTaskListsBtn);
     connect(m_reloadTaskListsBtn, &QPushButton::clicked, this, &SettingsDialog::slotReloadTaskLists);
 }
