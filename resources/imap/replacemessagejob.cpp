@@ -24,7 +24,7 @@
 #include <KIMAP/SelectJob>
 #include <KIMAP/StoreJob>
 #include <KIMAP/ImapSet>
-#include <KDebug>
+#include "imapresource_debug.h"
 #include <KMime/Message>
 
 #include "imapflags.h"
@@ -56,7 +56,7 @@ void ReplaceMessageJob::onAppendMessageDone(KJob *job)
     KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>(job);
 
     if (append->error()) {
-        kWarning() << append->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << append->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -89,7 +89,7 @@ void ReplaceMessageJob::onAppendMessageDone(KJob *job)
 void ReplaceMessageJob::onSelectDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
     } else {
@@ -117,7 +117,7 @@ void ReplaceMessageJob::triggerSearchJob()
         search->addSearchCriteria(KIMAP::SearchJob::New);
 
         if (mUidNext < 0) {
-            kWarning() << "Could not determine the UID for the newly created message on the server";
+            qCWarning(IMAPRESOURCE_LOG) << "Could not determine the UID for the newly created message on the server";
             search->deleteLater();
             setError(KJob::UserDefinedError);
             emitResult();
@@ -135,7 +135,7 @@ void ReplaceMessageJob::triggerSearchJob()
 void ReplaceMessageJob::onSearchDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -146,7 +146,7 @@ void ReplaceMessageJob::onSearchDone(KJob *job)
     if (search->results().count() == 1) {
         mNewUid = search->results().first();
     } else {
-        kWarning() << "Failed to find uid for message. Got 0 or too many results: " << search->results().count();
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to find uid for message. Got 0 or too many results: " << search->results().count();
         setError(KJob::UserDefinedError);
         emitResult();
         return;
@@ -173,7 +173,7 @@ void ReplaceMessageJob::triggerDeleteJobIfNecessary()
 void ReplaceMessageJob::onDeleteDone(KJob *job)
 {
     if (job->error()) {
-        kWarning() << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
     }
     emitResult();
 }

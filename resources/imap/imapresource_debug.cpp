@@ -1,5 +1,5 @@
 /*  This file is part of the KDE project
-    Copyright (C) 2014 Laurent Montel <montel@kde.org>
+    Copyright (C) 2015 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -19,4 +19,5 @@
 
 #include "imapresource_debug.h"
 Q_LOGGING_CATEGORY(IMAPRESOURCE_LOG, "log_imapresource")
+
 

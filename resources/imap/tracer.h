@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QDebug>
+#include "imapresource_debug.h"
 
 QDebug debugStream(int line, const char* file, const char* function);
 

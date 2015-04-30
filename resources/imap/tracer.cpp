@@ -1,5 +1,5 @@
 #include "tracer.h"
-#include <kdebug.h>
+#include "imapresource_debug.h"
 
 #include <QString>
 #include <QIODevice>

@@ -122,12 +122,12 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
         Trace() << "Error on: " << metaObject()->className();
         switch ( m_actionIfNoSession ) {
             case CancelIfNoSession:
-                qDebug() << "Cancelling this request. Probably there is no more session available.";
+                qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no more session available.";
                 m_resource->cancelTask( i18n( "There is currently no session to the IMAP server available." ) );
                 break;
 
             case DeferIfNoSession:
-                qDebug() << "Defering this request. Probably there is no more session available.";
+                qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no more session available.";
                 m_resource->deferTask();
                 break;
         }
@@ -394,7 +394,7 @@ void ResourceTask::changeProcessed()
 
 void ResourceTask::cancelTask(const QString &errorString)
 {
-    qDebug() << "Cancel task: " << errorString;
+    qCDebug(IMAPRESOURCE_LOG) << "Cancel task: " << errorString;
     if (!mCancelled) {
         mCancelled = true;
         m_resource->cancelTask(errorString);
