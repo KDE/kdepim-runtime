@@ -18,6 +18,7 @@
 */
 
 #include "mboxresource.h"
+#include "mboxresource_debug.h"
 
 #include <QtCore/QtPlugin>
 
@@ -217,7 +218,7 @@ void MboxResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
 void MboxResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     if (parts.contains("PLD:RFC822")) {
-        qDebug() << itemOffset(item.remoteId());
+        qCDebug(MBOXRESOURCE_LOG) << itemOffset(item.remoteId());
         // Only complete messages can be stored in a MBox file. Because all messages
         // are stored in one single file we do an ItemDelete and an ItemCreate to
         // prevent that whole file must been rewritten.
@@ -254,7 +255,7 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
 
     if (mSettings->compactFrequency() == Settings::per_x_messages
             && mSettings->messageCount() == static_cast<uint>(attr->offsetCount() + 1)) {
-        qDebug() << "Compacting mbox file";
+        qCDebug(MBOXRESOURCE_LOG) << "Compacting mbox file";
         mMBox->purge(attr->deletedItemEntries() << KMBox::MBoxEntry(itemOffset(item.remoteId())));
         scheduleWrite();
         mboxCollection.removeAttribute<DeletedItemsAttribute>();
