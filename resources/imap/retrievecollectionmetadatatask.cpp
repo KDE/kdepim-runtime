@@ -58,7 +58,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
 
     // Prevent fetching metadata from noselect folders.
     if (collection().hasAttribute("noselect")) {
-        NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>(collection().attribute("noselect"));
+        NoSelectAttribute *noselect = static_cast<NoSelectAttribute *>(collection().attribute("noselect"));
         if (noselect->noSelect()) {
             qCDebug(IMAPRESOURCE_LOG) << "No Select folder";
             endTaskIfNeeded();
@@ -124,7 +124,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob*>(job);
+    KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob *>(job);
     QMap<QByteArray, QByteArray> rawAnnotations = meta->allMetaData();
 
     // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
@@ -175,7 +175,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob*>(job);
+    KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob *>(job);
 
     const KIMAP::Acl::Rights imapRights = rightsJob->rights();
 
@@ -199,9 +199,9 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
         const QString collectionName = m_collection.displayName();
 
         showInformationDialog(i18n("<p>Your access rights to folder <b>%1</b> have been restricted, "
-                                    "it will no longer be possible to add messages to this folder.</p>",
-                                    collectionName),
-                            i18n("Access rights revoked"), QLatin1String("ShowRightsRevokedWarning"));
+                                   "it will no longer be possible to add messages to this folder.</p>",
+                                   collectionName),
+                              i18n("Access rights revoked"), QLatin1String("ShowRightsRevokedWarning"));
     }
 
     // Store the mailbox ACLs
@@ -233,7 +233,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob*>(job);
+    KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob *>(job);
     const QString &mailBox = mailBoxForCollection(m_collection);
 
     QList<QByteArray> newRoots = quotaJob->roots();
@@ -262,8 +262,8 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     const QList< QMap<QByteArray, qint64> > oldUsages = imapQuotaAttribute->usages();
 
     if (oldRoots != newRoots
-        || oldLimits != newLimits
-        || oldUsages != newUsages) {
+            || oldLimits != newLimits
+            || oldUsages != newUsages) {
         imapQuotaAttribute->setQuotas(newRoots, newLimits, newUsages);
     }
 
@@ -274,7 +274,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     qint64 oldMax = quotaAttribute->maximumValue();
 
     if (oldCurrent != newCurrent
-        || oldMax != newMax) {
+            || oldMax != newMax) {
         quotaAttribute->setCurrentValue(newCurrent);
         quotaAttribute->setMaximumValue(newMax);
     }

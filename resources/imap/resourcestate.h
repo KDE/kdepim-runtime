@@ -115,7 +115,7 @@ public:
     void setTotalItems(int) Q_DECL_OVERRIDE;
 
     void itemChangeCommitted(const Akonadi::Item &item) Q_DECL_OVERRIDE;
-    void itemsChangesCommitted(const Akonadi::Item::List& items) Q_DECL_OVERRIDE;
+    void itemsChangesCommitted(const Akonadi::Item::List &items) Q_DECL_OVERRIDE;
 
     void collectionsRetrieved(const Akonadi::Collection::List &collections) Q_DECL_OVERRIDE;
 

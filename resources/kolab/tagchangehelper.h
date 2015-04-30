@@ -28,18 +28,19 @@
 
 #include <QObject>
 
-namespace KIMAP {
+namespace KIMAP
+{
 class Session;
 }
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Tag;
 }
 
 class KolabRelationResourceTask;
 
-struct TagConverter
-{
+struct TagConverter {
     KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username);
 };
 

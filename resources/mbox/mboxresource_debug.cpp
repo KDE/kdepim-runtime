@@ -20,4 +20,3 @@
 #include "mboxresource_debug.h"
 Q_LOGGING_CATEGORY(MBOXRESOURCE_LOG, "log_mboxresource")
 
-

@@ -51,12 +51,12 @@ QMap<QByteArray, KIMAP::Acl::Rights> ImapAclAttribute::oldRights() const
 
 void ImapAclAttribute::setMyRights(KIMAP::Acl::Rights rights)
 {
-  mMyRights = rights;
+    mMyRights = rights;
 }
 
 KIMAP::Acl::Rights ImapAclAttribute::myRights() const
 {
-  return mMyRights;
+    return mMyRights;
 }
 
 QByteArray ImapAclAttribute::type() const
@@ -104,8 +104,8 @@ QByteArray ImapAclAttribute::serialized() const
         result.chop(3);
     }
 
-    result+= " %% ";
-    result+= KIMAP::Acl::rightsToString(mMyRights);
+    result += " %% ";
+    result += KIMAP::Acl::rightsToString(mMyRights);
 
     return result;
 }
@@ -138,7 +138,7 @@ void ImapAclAttribute::deserialize(const QByteArray &data)
     int lastPos = 0;
     int pos;
     while ((pos = data.indexOf(" %% ", lastPos)) != -1) {
-        parts << data.mid(lastPos, pos-lastPos);
+        parts << data.mid(lastPos, pos - lastPos);
         lastPos = pos + 4;
     }
     parts << data.mid(lastPos);

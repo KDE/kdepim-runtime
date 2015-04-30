@@ -112,7 +112,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             }
 
             qCDebug(IMAPRESOURCE_LOG) << "imapRights:" << imapRights
-                                       << "newRights:" << newRights;
+                                      << "newRights:" << newRights;
 
             KIMAP::SetAclJob *job = new KIMAP::SetAclJob(session);
             job->setMailBox(mailBoxForCollection(collection()));

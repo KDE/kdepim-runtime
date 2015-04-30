@@ -34,7 +34,7 @@ public:
     ~KolabResource();
 
     QDialog *createConfigureDialog(WId windowId) Q_DECL_OVERRIDE;
-    Settings* settings() const Q_DECL_OVERRIDE;
+    Settings *settings() const Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
@@ -46,7 +46,7 @@ protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
     void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source,
-                            const Akonadi::Collection &destination) Q_DECL_OVERRIDE;
+                    const Akonadi::Collection &destination) Q_DECL_OVERRIDE;
     //itemsRemoved and itemsFlags changed do not require translation, because they don't use the payload
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;

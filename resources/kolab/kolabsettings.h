@@ -22,12 +22,11 @@
 
 #include "settings.h"
 
-
 class KolabSettings : public Settings
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-    explicit KolabSettings( WId = 0 );
+    explicit KolabSettings(WId = 0);
 
 protected:
     virtual void changeDefaults();

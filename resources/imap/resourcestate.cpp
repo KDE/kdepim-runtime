@@ -260,7 +260,7 @@ void ResourceState::collectionChangeCommitted(const Akonadi::Collection &collect
 
 void ResourceState::tagChangeCommitted(const Akonadi::Tag &tag)
 {
-  m_resource->changeCommitted( tag );
+    m_resource->changeCommitted(tag);
 }
 
 void ResourceState::changeProcessed()

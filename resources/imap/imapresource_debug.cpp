@@ -20,4 +20,3 @@
 #include "imapresource_debug.h"
 Q_LOGGING_CATEGORY(IMAPRESOURCE_LOG, "log_imapresource")
 
-

@@ -31,13 +31,13 @@
 
 ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext, KIMAP::ImapSet oldUids, QObject *parent)
     : KJob(parent),
-    mSession(session),
-    mMessage(msg),
-    mMailbox(mailbox),
-    mUidNext(uidNext),
-    mOldUids(oldUids),
-    mNewUid(-1),
-    mMessageId(msg->messageID()->asUnicodeString().toUtf8())
+      mSession(session),
+      mMessage(msg),
+      mMailbox(mailbox),
+      mUidNext(uidNext),
+      mOldUids(oldUids),
+      mNewUid(-1),
+      mMessageId(msg->messageID()->asUnicodeString().toUtf8())
 {
 }
 
@@ -53,7 +53,7 @@ void ReplaceMessageJob::start()
 
 void ReplaceMessageJob::onAppendMessageDone(KJob *job)
 {
-    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>(job);
+    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob *>(job);
 
     if (append->error()) {
         qCWarning(IMAPRESOURCE_LOG) << append->errorString();
@@ -141,7 +141,7 @@ void ReplaceMessageJob::onSearchDone(KJob *job)
         return;
     }
 
-    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>(job);
+    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
 
     if (search->results().count() == 1) {
         mNewUid = search->results().first();
@@ -177,7 +177,6 @@ void ReplaceMessageJob::onDeleteDone(KJob *job)
     }
     emitResult();
 }
-
 
 qint64 ReplaceMessageJob::newUid() const
 {

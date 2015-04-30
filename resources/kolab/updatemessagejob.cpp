@@ -36,22 +36,22 @@
 
 UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, QSharedPointer<Merger> merger, const QString &mailbox, qint64 uidNext, qint64 oldUid, QObject *parent)
     : KJob(parent),
-    mSession(session),
-    mMessage(msg),
-    mMailbox(mailbox),
-    mUidNext(uidNext),
-    mOldUid(oldUid),
-    mNewUid(-1),
-    mMessageId(msg->messageID()->asUnicodeString().toUtf8()),
-    mKolabUid(kolabUid),
-    mMerger(merger)
+      mSession(session),
+      mMessage(msg),
+      mMailbox(mailbox),
+      mUidNext(uidNext),
+      mOldUid(oldUid),
+      mNewUid(-1),
+      mMessageId(msg->messageID()->asUnicodeString().toUtf8()),
+      mKolabUid(kolabUid),
+      mMerger(merger)
 {
     mOldUids.add(oldUid);
 }
 
 void UpdateMessageJob::start()
 {
-    KIMAP::FetchJob * fetchJob = new KIMAP::FetchJob(mSession);
+    KIMAP::FetchJob *fetchJob = new KIMAP::FetchJob(mSession);
 
     fetchJob->setSequenceSet(KIMAP::ImapSet(mOldUid));
     fetchJob->setUidBased(true);
@@ -62,30 +62,29 @@ void UpdateMessageJob::start()
     fetchJob->setScope(scope);
 
     connect(fetchJob, SIGNAL(headersReceived(QString,
-                                          QMap<qint64,qint64>,
-                                          QMap<qint64,qint64>,
-                                          QMap<qint64,KIMAP::MessageAttribute>,
-                                          QMap<qint64,KIMAP::MessageFlags>,
-                                          QMap<qint64,KIMAP::MessagePtr>)),
+                             QMap<qint64, qint64>,
+                             QMap<qint64, qint64>,
+                             QMap<qint64, KIMAP::MessageAttribute>,
+                             QMap<qint64, KIMAP::MessageFlags>,
+                             QMap<qint64, KIMAP::MessagePtr>)),
             this, SLOT(onHeadersReceived(QString,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,KIMAP::MessageAttribute>,
-                                         QMap<qint64,KIMAP::MessageFlags>,
-                                         QMap<qint64,KIMAP::MessagePtr>)));
+                                         QMap<qint64, qint64>,
+                                         QMap<qint64, qint64>,
+                                         QMap<qint64, KIMAP::MessageAttribute>,
+                                         QMap<qint64, KIMAP::MessageFlags>,
+                                         QMap<qint64, KIMAP::MessagePtr>)));
     connect(fetchJob, SIGNAL(result(KJob*)),
             this, SLOT(onHeadersFetchDone(KJob*)));
     fetchJob->start();
 
-
 }
 
 void UpdateMessageJob::onHeadersReceived(QString,
-                                         QMap<qint64,qint64> uids,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,KIMAP::MessageAttribute>,
-                                         QMap<qint64,KIMAP::MessageFlags> flags,
-                                         QMap<qint64,KIMAP::MessagePtr>)
+        QMap<qint64, qint64> uids,
+        QMap<qint64, qint64>,
+        QMap<qint64, KIMAP::MessageAttribute>,
+        QMap<qint64, KIMAP::MessageFlags> flags,
+        QMap<qint64, KIMAP::MessagePtr>)
 {
     //Filter deleted messages
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
@@ -147,7 +146,7 @@ void UpdateMessageJob::onSearchDone(KJob *job)
         return;
     }
 
-    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>(job);
+    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
 
     if (search->results().count() >= 1) {
         mOldUids = KIMAP::ImapSet();
@@ -155,7 +154,7 @@ void UpdateMessageJob::onSearchDone(KJob *job)
             mOldUids.add(id);
         }
 
-        KIMAP::FetchJob * fetchJob = new KIMAP::FetchJob(mSession);
+        KIMAP::FetchJob *fetchJob = new KIMAP::FetchJob(mSession);
         fetchJob->setSequenceSet(mOldUids);
         fetchJob->setUidBased(true);
 
@@ -165,17 +164,17 @@ void UpdateMessageJob::onSearchDone(KJob *job)
         fetchJob->setScope(scope);
 
         connect(fetchJob, SIGNAL(headersReceived(QString,
-                                            QMap<qint64,qint64>,
-                                            QMap<qint64,qint64>,
-                                            QMap<qint64,KIMAP::MessageAttribute>,
-                                            QMap<qint64,KIMAP::MessageFlags>,
-                                            QMap<qint64,KIMAP::MessagePtr>)),
+                                 QMap<qint64, qint64>,
+                                 QMap<qint64, qint64>,
+                                 QMap<qint64, KIMAP::MessageAttribute>,
+                                 QMap<qint64, KIMAP::MessageFlags>,
+                                 QMap<qint64, KIMAP::MessagePtr>)),
                 this, SLOT(onConflictingMessagesReceived(QString,
-                                            QMap<qint64,qint64>,
-                                            QMap<qint64,qint64>,
-                                            QMap<qint64,KIMAP::MessageAttribute>,
-                                            QMap<qint64,KIMAP::MessageFlags>,
-                                            QMap<qint64,KIMAP::MessagePtr>)));
+                           QMap<qint64, qint64>,
+                           QMap<qint64, qint64>,
+                           QMap<qint64, KIMAP::MessageAttribute>,
+                           QMap<qint64, KIMAP::MessageFlags>,
+                           QMap<qint64, KIMAP::MessagePtr>)));
         connect(fetchJob, SIGNAL(result(KJob*)),
                 this, SLOT(onConflictingMessageFetchDone(KJob*)));
         fetchJob->start();
@@ -186,11 +185,11 @@ void UpdateMessageJob::onSearchDone(KJob *job)
 }
 
 void UpdateMessageJob::onConflictingMessagesReceived(QString,
-                                         QMap<qint64,qint64> uids,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,KIMAP::MessageAttribute>,
-                                         QMap<qint64,KIMAP::MessageFlags> flags,
-                                         QMap<qint64,KIMAP::MessagePtr> messages)
+        QMap<qint64, qint64> uids,
+        QMap<qint64, qint64>,
+        QMap<qint64, KIMAP::MessageAttribute>,
+        QMap<qint64, KIMAP::MessageFlags> flags,
+        QMap<qint64, KIMAP::MessagePtr> messages)
 {
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
         if (!flags[number].contains(ImapFlags::Deleted)) {
@@ -224,7 +223,7 @@ void UpdateMessageJob::onReplaceDone(KJob *job)
         emitResult();
         return;
     }
-    ReplaceMessageJob *replaceJob = static_cast<ReplaceMessageJob*>(job);
+    ReplaceMessageJob *replaceJob = static_cast<ReplaceMessageJob *>(job);
     mNewUid = replaceJob->newUid();
     emitResult();
 }

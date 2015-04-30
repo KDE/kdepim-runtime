@@ -15,8 +15,9 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-namespace Akonadi {
-    class Tag;
+namespace Akonadi
+{
+class Tag;
 };
 
 unsigned int qHash(const Akonadi::Tag &tag);
@@ -44,8 +45,7 @@ typedef QHash<QString, Akonadi::Item::List> Members;
 Q_DECLARE_METATYPE(TagListAndMembers);
 Q_DECLARE_METATYPE(Members);
 
-struct TestTagConverter : public TagConverter
-{
+struct TestTagConverter : public TagConverter {
     virtual KMime::Message::Ptr createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items)
     {
         return KMime::Message::Ptr(new KMime::Message());
@@ -125,8 +125,8 @@ private slots:
             const QByteArray &content = msg->encodedContent(true);
             QList<QByteArray> scenario;
             scenario << defaultPoolConnectionScenario()
-                    << "C: A000003 APPEND \"configuration\"  {"+ QByteArray::number(content.size()) + "}"
-                    << "S: A000003 OK append done [ APPENDUID 1239890035 65 ]";
+                     << "C: A000003 APPEND \"configuration\"  {" + QByteArray::number(content.size()) + "}"
+                     << "S: A000003 OK append done [ APPENDUID 1239890035 65 ]";
 
             QStringList callNames;
             callNames << "changeProcessed";
@@ -216,11 +216,11 @@ private slots:
     {
         TagConverter converter;
         Akonadi::Item item(KMime::Message::mimeType());
-        KMime::Message::Ptr msg= KMime::Message::Ptr(new KMime::Message());
+        KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message());
         msg->subject(true)->from7BitString("subject");
 
         msg->messageID(true)->from7BitString("<messageid@example.com>");
-        msg->date(true)->setDateTime(KDateTime(QDate(2014,12,10), QTime(9,8,7)));
+        msg->date(true)->setDateTime(KDateTime(QDate(2014, 12, 10), QTime(9, 8, 7)));
         item.setPayload<KMime::Message::Ptr>(msg);
         item.setRemoteId(QLatin1String("20"));
         item.setParentCollection(createCollectionChain("/INBOX"));

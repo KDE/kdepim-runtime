@@ -242,22 +242,22 @@ private slots:
         QTest::newRow("METADATA") << collection << capabilities << scenario
                                   << callNames << rights << expectedAnnotations;
 
-    collection = createCollectionChain( QLatin1String("/INBOX/Foo") );
-    collection.setRights( 0 );
+        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection.setRights(0);
 
-    capabilities.clear();
-    expectedAnnotations.clear();
+        capabilities.clear();
+        expectedAnnotations.clear();
 
-    callNames.clear();
-    callNames << "collectionAttributesRetrieved";
+        callNames.clear();
+        callNames << "collectionAttributesRetrieved";
 
-    rights = 0;
+        rights = 0;
 
-    scenario.clear();
-    scenario << defaultPoolConnectionScenario();
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario();
 
-    QTest::newRow( "no capabilities" ) << collection << capabilities << scenario
-                                       << callNames << rights << expectedAnnotations;
+        QTest::newRow("no capabilities") << collection << capabilities << scenario
+                                         << callNames << rights << expectedAnnotations;
     }
 
     void shouldCollectionRetrieveMetadata()

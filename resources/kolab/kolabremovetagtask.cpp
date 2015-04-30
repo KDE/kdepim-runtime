@@ -45,16 +45,16 @@ void KolabRemoveTagTask::startRelationTask(KIMAP::Session *session)
     qCDebug(KOLABRESOURCE_LOG) << "Deleting tag " << resourceState()->tag().name() << " from " << mailBox;
 
     if (session->selectedMailBox() != mailBox) {
-      KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
-      select->setMailBox(mailBox);
+        KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+        select->setMailBox(mailBox);
 
-      connect(select, SIGNAL(result(KJob*)),
-              this, SLOT(onSelectDone(KJob*)));
+        connect(select, SIGNAL(result(KJob*)),
+                this, SLOT(onSelectDone(KJob*)));
 
-      select->start();
+        select->start();
 
     } else {
-      triggerStoreJob(session);
+        triggerStoreJob(session);
     }
 }
 
@@ -76,11 +76,11 @@ void KolabRemoveTagTask::triggerStoreJob(KIMAP::Session *session)
 void KolabRemoveTagTask::onSelectDone(KJob *job)
 {
     if (job->error()) {
-      qCWarning(KOLABRESOURCE_LOG) << "Failed to select mailbox: " << job->errorString();
-      cancelTask(job->errorString());
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to select mailbox: " << job->errorString();
+        cancelTask(job->errorString());
     } else {
-      KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
-      triggerStoreJob(select->session());
+        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        triggerStoreJob(select->session());
     }
 }
 
@@ -89,9 +89,9 @@ void KolabRemoveTagTask::onStoreFlagsDone(KJob *job)
     Trace();
     //TODO use UID EXPUNGE if available
     if (job->error()) {
-      qCWarning(KOLABRESOURCE_LOG) << "Failed to append flags: " << job->errorString();
-      cancelTask(job->errorString());
+        qCWarning(KOLABRESOURCE_LOG) << "Failed to append flags: " << job->errorString();
+        cancelTask(job->errorString());
     } else {
-      changeProcessed();
+        changeProcessed();
     }
 }

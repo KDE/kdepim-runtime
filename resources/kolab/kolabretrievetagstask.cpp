@@ -41,8 +41,8 @@ void KolabRetrieveTagTask::startRelationTask(KIMAP::Session *session)
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
     select->setMailBox(mailBox);
-    connect( select, SIGNAL(result(KJob*)),
-            this, SLOT(onFinalSelectDone(KJob*)) );
+    connect(select, SIGNAL(result(KJob*)),
+            this, SLOT(onFinalSelectDone(KJob*)));
     select->start();
 }
 
@@ -54,7 +54,7 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
         return;
     }
 
-    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
+    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(select->session());
 
     if (select->messageCount() == 0) {
@@ -73,30 +73,30 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
     fetch->setScope(scope);
 
     connect(fetch, SIGNAL(headersReceived(QString,
-                                          QMap<qint64,qint64>,
-                                          QMap<qint64,qint64>,
-                                          QMap<qint64,KIMAP::MessageAttribute>,
-                                          QMap<qint64,KIMAP::MessageFlags>,
-                                          QMap<qint64,KIMAP::MessagePtr>)),
+                                          QMap<qint64, qint64>,
+                                          QMap<qint64, qint64>,
+                                          QMap<qint64, KIMAP::MessageAttribute>,
+                                          QMap<qint64, KIMAP::MessageFlags>,
+                                          QMap<qint64, KIMAP::MessagePtr>)),
             this, SLOT(onHeadersReceived(QString,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,qint64>,
-                                         QMap<qint64,KIMAP::MessageAttribute>,
-                                         QMap<qint64,KIMAP::MessageFlags>,
-                                         QMap<qint64,KIMAP::MessagePtr>)));
+                                         QMap<qint64, qint64>,
+                                         QMap<qint64, qint64>,
+                                         QMap<qint64, KIMAP::MessageAttribute>,
+                                         QMap<qint64, KIMAP::MessageFlags>,
+                                         QMap<qint64, KIMAP::MessagePtr>)));
     connect(fetch, SIGNAL(result(KJob*)),
             this, SLOT(onHeadersFetchDone(KJob*)));
     fetch->start();
 }
 
 void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
-                                     const QMap<qint64, qint64> &uids,
-                                     const QMap<qint64, qint64> &sizes,
-                                     const QMap<qint64, KIMAP::MessageAttribute> &attrs,
-                                     const QMap<qint64, KIMAP::MessageFlags> &flags,
-                                     const QMap<qint64, KIMAP::MessagePtr> &messages)
+        const QMap<qint64, qint64> &uids,
+        const QMap<qint64, qint64> &sizes,
+        const QMap<qint64, KIMAP::MessageAttribute> &attrs,
+        const QMap<qint64, KIMAP::MessageFlags> &flags,
+        const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
-    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob*>( sender() );
+    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch);
 
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
@@ -106,16 +106,16 @@ void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
         const KMime::Message::Ptr msg = messages[number];
         const Kolab::KolabObjectReader reader(msg);
         switch (reader.getType()) {
-            case Kolab::RelationConfigurationObject:
-                if (mRetrieveType == RetrieveTags && reader.isTag()) {
-                    extractTag(reader, uids[number]);
-                } else if (mRetrieveType == RetrieveRelations && reader.isRelation()) {
-                    extractRelation(reader, uids[number]);
-                }
-                break;
+        case Kolab::RelationConfigurationObject:
+            if (mRetrieveType == RetrieveTags && reader.isTag()) {
+                extractTag(reader, uids[number]);
+            } else if (mRetrieveType == RetrieveRelations && reader.isRelation()) {
+                extractRelation(reader, uids[number]);
+            }
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 }
@@ -142,7 +142,7 @@ Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &m
             col.setParentCollection(Akonadi::Collection::root());
             parent = col;
         }
-        Q_FOREACH(const QByteArray part, member.mailbox) {
+        Q_FOREACH (const QByteArray part, member.mailbox) {
             Akonadi::Collection col;
             col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
             col.setParentCollection(parent);

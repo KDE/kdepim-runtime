@@ -72,7 +72,6 @@ TagChangeHelper::TagChangeHelper(KolabRelationResourceTask *parent)
 {
 }
 
-
 void TagChangeHelper::start(const Akonadi::Tag &tag, const KMime::Message::Ptr &message, KIMAP::Session *session)
 {
     Q_ASSERT(tag.isValid());
@@ -108,7 +107,7 @@ void TagChangeHelper::onReplaceDone(KJob *job)
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << "Replace failed: " << job->errorString();
     }
-    UpdateMessageJob *replaceJob = static_cast<UpdateMessageJob*>(job);
+    UpdateMessageJob *replaceJob = static_cast<UpdateMessageJob *>(job);
     const qint64 newUid = replaceJob->newUid();
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     if (newUid > 0) {

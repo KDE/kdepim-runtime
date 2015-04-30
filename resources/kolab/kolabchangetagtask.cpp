@@ -53,7 +53,7 @@ void KolabChangeTagTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob*>(job)->items();
+    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob *>(job)->items();
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
 

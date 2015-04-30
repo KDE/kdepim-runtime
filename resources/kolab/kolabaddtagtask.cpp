@@ -62,7 +62,7 @@ void KolabAddTagTask::applyFoundUid(qint64 uid)
 
     //If we failed to get the remoteid the tag remains local only
     if (uid > 0) {
-      tag.setRemoteId(QByteArray::number(uid));
+        tag.setRemoteId(QByteArray::number(uid));
     }
 
     qCDebug(KOLABRESOURCE_LOG) << "comitting new tag";
@@ -74,8 +74,8 @@ void KolabAddTagTask::applyFoundUid(qint64 uid)
     UidNextAttribute *uidAttr = 0;
     int oldNextUid = 0;
     if (c.hasAttribute("uidnext")) {
-      uidAttr = static_cast<UidNextAttribute*>(c.attribute("uidnext"));
-      oldNextUid = uidAttr->uidNext();
+        uidAttr = static_cast<UidNextAttribute *>(c.attribute("uidnext"));
+        oldNextUid = uidAttr->uidNext();
     }
 
     // If the uid we just got back is the expected next one of the box
@@ -83,14 +83,14 @@ void KolabAddTagTask::applyFoundUid(qint64 uid)
     // If not something happened in our back, so we don't update and a refetch will
     // happen at some point.
     if (uid == oldNextUid) {
-      if (uidAttr == 0) {
-        uidAttr = new UidNextAttribute(uid + 1);
-        c.addAttribute(uidAttr);
-      } else {
-        uidAttr->setUidNext(uid + 1);
-      }
+        if (uidAttr == 0) {
+            uidAttr = new UidNextAttribute(uid + 1);
+            c.addAttribute(uidAttr);
+        } else {
+            uidAttr->setUidNext(uid + 1);
+        }
 
-      applyCollectionChanges(c);
+        applyCollectionChanges(c);
     }
 }
 
@@ -102,22 +102,22 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
     search->setSearchLogic(KIMAP::SearchJob::And);
 
     if (!mMessageId.isEmpty()) {
-      QByteArray header = "Message-ID ";
-      header += mMessageId;
+        QByteArray header = "Message-ID ";
+        header += mMessageId;
 
-      search->addSearchCriteria(KIMAP::SearchJob::Header, header);
+        search->addSearchCriteria(KIMAP::SearchJob::Header, header);
     } else {
-      search->addSearchCriteria(KIMAP::SearchJob::New);
+        search->addSearchCriteria(KIMAP::SearchJob::New);
 
-      UidNextAttribute *uidNext = relationCollection().attribute<UidNextAttribute>();
-      if (!uidNext) {
-        cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
-        search->deleteLater();
-        return;
-      }
-      KIMAP::ImapInterval interval(uidNext->uidNext());
+        UidNextAttribute *uidNext = relationCollection().attribute<UidNextAttribute>();
+        if (!uidNext) {
+            cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
+            search->deleteLater();
+            return;
+        }
+        KIMAP::ImapInterval interval(uidNext->uidNext());
 
-      search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
+        search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
     }
 
     connect(search, SIGNAL(result(KJob*)),
@@ -129,49 +129,49 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
 void KolabAddTagTask::onAppendMessageDone(KJob *job)
 
 {
-    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob*>(job);
+    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob *>(job);
 
     if (append->error()) {
-      qCWarning(KOLABRESOURCE_LOG) << append->errorString();
-      cancelTask(append->errorString());
-      return;
+        qCWarning(KOLABRESOURCE_LOG) << append->errorString();
+        cancelTask(append->errorString());
+        return;
     }
 
     qint64 uid = append->uid();
     qCDebug(KOLABRESOURCE_LOG) << "appended message with uid: " << uid;
 
     if (uid > 0) {
-      // We got it directly if UIDPLUS is supported...
-      applyFoundUid(uid);
+        // We got it directly if UIDPLUS is supported...
+        applyFoundUid(uid);
 
     } else {
-      // ... otherwise prepare searching for the message
-      KIMAP::Session *session = append->session();
-      const QString mailBox = append->mailBox();
+        // ... otherwise prepare searching for the message
+        KIMAP::Session *session = append->session();
+        const QString mailBox = append->mailBox();
 
-      if (session->selectedMailBox() != mailBox) {
-        KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
-        select->setMailBox(mailBox);
+        if (session->selectedMailBox() != mailBox) {
+            KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+            select->setMailBox(mailBox);
 
-        connect(select, SIGNAL(result(KJob*)),
-                this, SLOT(onPreSearchSelectDone(KJob*)));
+            connect(select, SIGNAL(result(KJob*)),
+                    this, SLOT(onPreSearchSelectDone(KJob*)));
 
-        select->start();
+            select->start();
 
-      } else {
-        triggerSearchJob(session);
-      }
+        } else {
+            triggerSearchJob(session);
+        }
     }
 }
 
 void KolabAddTagTask::onPreSearchSelectDone(KJob *job)
 {
-    if ( job->error() ) {
-      qCWarning(KOLABRESOURCE_LOG) << job->errorString();
-      cancelTask(job->errorString());
+    if (job->error()) {
+        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
     } else {
-      KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob*>(job);
-      triggerSearchJob(select->session());
+        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        triggerSearchJob(select->session());
     }
 }
 
@@ -183,11 +183,12 @@ void KolabAddTagTask::onSearchDone(KJob *job)
         return;
     }
 
-    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob*>(job);
+    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
 
     qint64 uid = 0;
-    if (search->results().count() == 1)
-      uid = search->results().first();
+    if (search->results().count() == 1) {
+        uid = search->results().first();
+    }
 
     applyFoundUid(uid);
 }

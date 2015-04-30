@@ -25,8 +25,8 @@
 
 namespace Kolab
 {
-    class KolabObjectReader;
-    class RelationMember;
+class KolabObjectReader;
+class RelationMember;
 } // namespace Kolab
 
 class KolabRetrieveTagTask : public KolabRelationResourceTask
@@ -53,11 +53,11 @@ private:
 private Q_SLOTS:
     void onFinalSelectDone(KJob *job);
     void onHeadersReceived(const QString &mailBox,
-                            const QMap<qint64, qint64> &uids,
-                            const QMap<qint64, qint64> &sizes,
-                            const QMap<qint64, KIMAP::MessageAttribute> &attrs,
-                            const QMap<qint64, KIMAP::MessageFlags> &flags,
-                            const QMap<qint64, KIMAP::MessagePtr> &messages);
+                           const QMap<qint64, qint64> &uids,
+                           const QMap<qint64, qint64> &sizes,
+                           const QMap<qint64, KIMAP::MessageAttribute> &attrs,
+                           const QMap<qint64, KIMAP::MessageFlags> &flags,
+                           const QMap<qint64, KIMAP::MessagePtr> &messages);
     void onHeadersFetchDone(KJob *job);
 
 private:

@@ -20,4 +20,3 @@
 #include "maildirresource_debug.h"
 Q_LOGGING_CATEGORY(MAILDIRRESOURCE_LOG, "log_maildirresource")
 
-

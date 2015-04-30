@@ -76,7 +76,7 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
         return;
     }
 
-    const Akonadi::Tag::List tags = static_cast<Akonadi::TagFetchJob*>(job)->tags();
+    const Akonadi::Tag::List tags = static_cast<Akonadi::TagFetchJob *>(job)->tags();
     if (tags.size() != 1) {
         qCWarning(KOLABRESOURCE_LOG) << "Invalid number of tags retrieved: " << tags.size();
         // TODO: we could continue for the other tags?
@@ -102,7 +102,7 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob*>(job)->items();
+    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob *>(job)->items();
     qCDebug(KOLABRESOURCE_LOG) << items.size();
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);

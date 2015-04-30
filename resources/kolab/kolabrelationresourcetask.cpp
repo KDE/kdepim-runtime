@@ -63,7 +63,7 @@ void KolabRelationResourceTask::doStart(KIMAP::Session *session)
 void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
 {
     if (job->error() == 0) {
-        Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob*>(job);
+        Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
         Q_ASSERT(fetchJob != 0);
 
         Q_FOREACH (const Akonadi::Collection &collection, fetchJob->collections()) {
@@ -132,7 +132,7 @@ void KolabRelationResourceTask::onLocalCreateDone(KJob *job)
         cancelTask(i18n("Failed to create configuration folder"));
         return;
     }
-    mRelationCollection = static_cast<Akonadi::CollectionCreateJob*>(job)->collection();
+    mRelationCollection = static_cast<Akonadi::CollectionCreateJob *>(job)->collection();
     startRelationTask(mImapSession);
 }
 

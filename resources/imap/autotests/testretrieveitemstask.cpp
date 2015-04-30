@@ -543,13 +543,13 @@ private slots:
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-                     "RFC822.SIZE 75 BODY[] {75}\r\n"
-                     "From: Foo <foo@kde.org>\r\n"
-                     "To: Bar <bar@kde.org>\r\n"
-                     "Subject: Test Mail\r\n"
-                     "\r\n"
-                     "Test\r\n"
-                     " )"
+                 "RFC822.SIZE 75 BODY[] {75}\r\n"
+                 "From: Foo <foo@kde.org>\r\n"
+                 "To: Bar <bar@kde.org>\r\n"
+                 "Subject: Test Mail\r\n"
+                 "\r\n"
+                 "Test\r\n"
+                 " )"
                  << "S: A000007 OK fetch done";
 
         callNames.clear();

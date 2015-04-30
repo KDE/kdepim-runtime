@@ -327,19 +327,19 @@ void DummyResourceState::collectionChangeCommitted(const Akonadi::Collection &co
     recordCall("collectionChangeCommitted", QVariant::fromValue(collection));
 }
 
-void DummyResourceState::tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &items )
+void DummyResourceState::tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &items)
 {
-    recordCall( "tagsRetrieved",  QVariant::fromValue( qMakePair(tags, items) ) );
+    recordCall("tagsRetrieved",  QVariant::fromValue(qMakePair(tags, items)));
 }
 
-void DummyResourceState::relationsRetrieved( const Akonadi::Relation::List &relations )
+void DummyResourceState::relationsRetrieved(const Akonadi::Relation::List &relations)
 {
-    recordCall( "relationsRetrieved",  QVariant::fromValue( relations ) );
+    recordCall("relationsRetrieved",  QVariant::fromValue(relations));
 }
 
 void DummyResourceState::tagChangeCommitted(const Akonadi::Tag &tag)
 {
-    recordCall( "tagChangeCommitted", QVariant::fromValue( tag ) );
+    recordCall("tagChangeCommitted", QVariant::fromValue(tag));
 }
 
 void DummyResourceState::changeProcessed()

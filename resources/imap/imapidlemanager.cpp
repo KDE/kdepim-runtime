@@ -155,7 +155,7 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
 {
     qCDebug(IMAPRESOURCE_LOG) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
     qCDebug(IMAPRESOURCE_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
-                               << m_lastMessageCount << m_lastRecentCount;
+                              << m_lastMessageCount << m_lastRecentCount;
 
     // It seems we're not in sync with the cache, resync is needed
     if (messageCount != m_lastMessageCount || recentCount != m_lastRecentCount) {

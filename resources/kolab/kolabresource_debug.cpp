@@ -20,4 +20,3 @@
 #include "kolabresource_debug.h"
 Q_LOGGING_CATEGORY(KOLABRESOURCE_LOG, "log_kolabresource")
 
-

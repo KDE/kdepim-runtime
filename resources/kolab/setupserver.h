@@ -52,62 +52,62 @@ class ImapResourceBase;
  */
 class SetupServer : public KDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  /**
-   * Constructor
-   * @param parentResource The resource this dialog belongs to
-   * @param parent Parent WId
-   */
-  SetupServer( ImapResourceBase *parentResource, WId parent );
+    /**
+     * Constructor
+     * @param parentResource The resource this dialog belongs to
+     * @param parent Parent WId
+     */
+    SetupServer(ImapResourceBase *parentResource, WId parent);
 
-  /**
-   * Destructor
-   */
-  ~SetupServer();
+    /**
+     * Destructor
+     */
+    ~SetupServer();
 
-  bool shouldClearCache() const;
+    bool shouldClearCache() const;
 
 private slots:
-  /**
-   * Call this if you want the settings saved from this page.
-   */
-  void applySettings();
-  void slotIdentityCheckboxChanged();
-  void slotMailCheckboxChanged();
-  void slotEncryptionRadioChanged();
-  void slotSubcriptionCheckboxChanged();
-  void slotShowServerInfo();
+    /**
+     * Call this if you want the settings saved from this page.
+     */
+    void applySettings();
+    void slotIdentityCheckboxChanged();
+    void slotMailCheckboxChanged();
+    void slotEncryptionRadioChanged();
+    void slotSubcriptionCheckboxChanged();
+    void slotShowServerInfo();
 private:
-  void readSettings();
-  void populateDefaultAuthenticationOptions();
+    void readSettings();
+    void populateDefaultAuthenticationOptions();
 
-  ImapResourceBase *m_parentResource;
-  Ui::SetupServerView *m_ui;
-  MailTransport::ServerTest *m_serverTest;
-  bool m_subscriptionsChanged;
-  bool m_shouldClearCache;
-  QString m_vacationFileName;
-  KPIMIdentities::IdentityManager *m_identityManager;
-  KPIMIdentities::IdentityCombo *m_identityCombobox;
-  QString m_oldResourceName;
-  QRegExpValidator mValidator;
-  Akonadi::Collection mOldTrash;
-  FolderArchiveSettingPage *m_folderArchiveSettingPage;
+    ImapResourceBase *m_parentResource;
+    Ui::SetupServerView *m_ui;
+    MailTransport::ServerTest *m_serverTest;
+    bool m_subscriptionsChanged;
+    bool m_shouldClearCache;
+    QString m_vacationFileName;
+    KPIMIdentities::IdentityManager *m_identityManager;
+    KPIMIdentities::IdentityCombo *m_identityCombobox;
+    QString m_oldResourceName;
+    QRegExpValidator mValidator;
+    Akonadi::Collection mOldTrash;
+    FolderArchiveSettingPage *m_folderArchiveSettingPage;
 
 private slots:
-  void slotTest();
-  void slotFinished(const QList<int> &testResult );
-  void slotCustomSieveChanged();
+    void slotTest();
+    void slotFinished(const QList<int> &testResult);
+    void slotCustomSieveChanged();
 
-  void slotTestChanged();
-  void slotComplete();
-  void slotSafetyChanged();
-  void slotManageSubscriptions();
-  void slotEnableWidgets();
-  void targetCollectionReceived(const Akonadi::Collection::List &collections );
-  void localFolderRequestJobFinished( KJob *job );
+    void slotTestChanged();
+    void slotComplete();
+    void slotSafetyChanged();
+    void slotManageSubscriptions();
+    void slotEnableWidgets();
+    void targetCollectionReceived(const Akonadi::Collection::List &collections);
+    void localFolderRequestJobFinished(KJob *job);
 };
 
 #endif

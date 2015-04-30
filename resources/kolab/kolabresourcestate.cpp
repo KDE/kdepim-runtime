@@ -78,7 +78,7 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
     return collection;
 }
 
-void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection& collection)
+void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection &collection)
 {
     if (!collection.isValid() && collection.remoteId().isEmpty()) {
         ResourceState::collectionAttributesRetrieved(collection);

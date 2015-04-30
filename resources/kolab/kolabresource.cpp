@@ -60,11 +60,11 @@ KolabResource::~KolabResource()
 
 Settings *KolabResource::settings() const
 {
-  if (m_settings == 0) {
-    m_settings = new KolabSettings;
-  }
+    if (m_settings == 0) {
+        m_settings = new KolabSettings;
+    }
 
-  return m_settings;
+    return m_settings;
 }
 
 void KolabResource::delayedInit()
@@ -81,11 +81,11 @@ QString KolabResource::defaultName() const
 
 QDialog *KolabResource::createConfigureDialog(WId windowId)
 {
-  SetupServer *dlg = new SetupServer( this, windowId );
-  KWindowSystem::setMainWindow( dlg, windowId );
-  dlg->setWindowIcon( QIcon::fromTheme( QLatin1String("kolab") ) );
-  connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
-  return dlg;
+    SetupServer *dlg = new SetupServer(this, windowId);
+    KWindowSystem::setMainWindow(dlg, windowId);
+    dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("kolab")));
+    connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+    return dlg;
 }
 
 ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArguments &args)
@@ -103,7 +103,7 @@ void KolabResource::retrieveCollections()
     synchronizeRelations();
 }
 
-void KolabResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collection& collection)
+void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     Trace() << item.id() << collection.id();
     bool ok = true;
@@ -116,7 +116,7 @@ void KolabResource::itemAdded(const Akonadi::Item& item, const Akonadi::Collecti
     ImapResource::itemAdded(imapItem, collection);
 }
 
-void KolabResource::itemChanged(const Akonadi::Item& item, const QSet< QByteArray >& parts)
+void KolabResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &parts)
 {
     Trace() << item.id() << parts;
     bool ok = true;
@@ -129,7 +129,7 @@ void KolabResource::itemChanged(const Akonadi::Item& item, const QSet< QByteArra
     ImapResource::itemChanged(imapItem, parts);
 }
 
-void KolabResource::itemsMoved(const Akonadi::Item::List& items, const Akonadi::Collection& source, const Akonadi::Collection& destination)
+void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source, const Akonadi::Collection &destination)
 {
     Trace() << items.size() << source.id() << destination.id();
     bool ok = true;
@@ -158,7 +158,7 @@ static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collecti
     return collection;
 }
 
-void KolabResource::collectionAdded(const Akonadi::Collection& collection, const Akonadi::Collection& parent)
+void KolabResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
     Trace() << collection.id() << parent.id();
     //Set the annotations on new folders
@@ -168,14 +168,14 @@ void KolabResource::collectionAdded(const Akonadi::Collection& collection, const
     ImapResource::collectionAdded(col, parent);
 }
 
-void KolabResource::collectionChanged(const Akonadi::Collection& collection, const QSet< QByteArray >& parts)
+void KolabResource::collectionChanged(const Akonadi::Collection &collection, const QSet< QByteArray > &parts)
 {
     Trace() << collection.id() << parts;
     //Update annotations if necessary
     const Akonadi::Collection col = updateAnnotations(collection);
     //TODO we need to save the collections as well if the annotations have changed
-    emit status( AgentBase::Running, i18nc( "@info:status", "Updating folder '%1'", collection.name() ) );
-    ChangeCollectionTask *task = new ChangeCollectionTask( createResourceState(TaskArguments(collection, parts)), this );
+    emit status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
+    ChangeCollectionTask *task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, parts)), this);
     task->syncEnabledState(true);
     startTask(task);
 }
@@ -223,12 +223,12 @@ void KolabResource::retrieveRelations()
 }
 
 void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
-                                          const Akonadi::Relation::List &addedRelations,
-                                          const Akonadi::Relation::List &removedRelations)
+        const Akonadi::Relation::List &addedRelations,
+        const Akonadi::Relation::List &removedRelations)
 {
     Trace() << items.size() << addedRelations.size() << removedRelations.size();
     KolabChangeItemsRelationsTask *task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
     startTask(task);
 }
 
-AKONADI_RESOURCE_MAIN( KolabResource )
+AKONADI_RESOURCE_MAIN(KolabResource)

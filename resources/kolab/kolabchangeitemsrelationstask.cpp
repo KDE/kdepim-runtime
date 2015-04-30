@@ -117,13 +117,12 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
         processNextRelation();
         return;
     }
-    Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob*>(job);
+    Akonadi::ItemFetchJob *fetchJob = static_cast<Akonadi::ItemFetchJob *>(job);
     if (fetchJob->items().size() != 2) {
         qCWarning(KOLABRESOURCE_LOG) << "Invalid number of items retrieved: " << fetchJob->items().size();
         processNextRelation();
         return;
     }
-
 
     const Akonadi::Item::List items = fetchJob->items();
     const Akonadi::Relation relation = job->property("relation").value<Akonadi::Relation>();

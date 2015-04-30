@@ -45,8 +45,7 @@ public:
     void startWork() Q_DECL_OVERRIDE
     {}
 
-    void abort() Q_DECL_OVERRIDE
-    {
+    void abort() Q_DECL_OVERRIDE {
         setMigrationState(Aborted);
     }
 
@@ -60,13 +59,11 @@ public:
         return mAutostart;
     }
 
-    void pause() Q_DECL_OVERRIDE
-    {
+    void pause() Q_DECL_OVERRIDE {
         setMigrationState(Paused);
     }
 
-    void resume() Q_DECL_OVERRIDE
-    {
+    void resume() Q_DECL_OVERRIDE {
         setMigrationState(InProgress);
     }
 
@@ -79,24 +76,20 @@ public:
     TestJobTracker() : mPercent(0)
     {}
 
-    void registerJob(KJob *job) Q_DECL_OVERRIDE
-    {
+    void registerJob(KJob *job) Q_DECL_OVERRIDE {
         KJobTrackerInterface::registerJob(job);
         mJobs << job;
     }
 
-    void unregisterJob(KJob *job) Q_DECL_OVERRIDE
-    {
+    void unregisterJob(KJob *job) Q_DECL_OVERRIDE {
         mJobs.removeAll(job);
     }
 
-    void finished(KJob *job) Q_DECL_OVERRIDE
-    {
+    void finished(KJob *job) Q_DECL_OVERRIDE {
         mJobs.removeAll(job);
     }
 
-    void percent(KJob *job, long unsigned int percent) Q_DECL_OVERRIDE
-    {
+    void percent(KJob *job, long unsigned int percent) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
         mPercent = percent;
     }

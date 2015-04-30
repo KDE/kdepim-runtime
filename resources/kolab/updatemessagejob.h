@@ -49,20 +49,20 @@ private:
 
 private Q_SLOTS:
     void onHeadersReceived(QString,
-                            QMap<qint64,qint64> uids,
-                            QMap<qint64,qint64>,
-                            QMap<qint64,KIMAP::MessageAttribute>,
-                            QMap<qint64,KIMAP::MessageFlags>,
-                            QMap<qint64,KIMAP::MessagePtr>);
+                           QMap<qint64, qint64> uids,
+                           QMap<qint64, qint64>,
+                           QMap<qint64, KIMAP::MessageAttribute>,
+                           QMap<qint64, KIMAP::MessageFlags>,
+                           QMap<qint64, KIMAP::MessagePtr>);
     void onHeadersFetchDone(KJob *job);
     void onSelectDone(KJob *job);
     void onSearchDone(KJob *job);
     void onConflictingMessagesReceived(QString,
-                                        QMap<qint64,qint64> uids,
-                                        QMap<qint64,qint64>,
-                                        QMap<qint64,KIMAP::MessageAttribute>,
-                                        QMap<qint64,KIMAP::MessageFlags>,
-                                        QMap<qint64,KIMAP::MessagePtr>);
+                                       QMap<qint64, qint64> uids,
+                                       QMap<qint64, qint64>,
+                                       QMap<qint64, KIMAP::MessageAttribute>,
+                                       QMap<qint64, KIMAP::MessageFlags>,
+                                       QMap<qint64, KIMAP::MessagePtr>);
     void onConflictingMessageFetchDone(KJob *job);
     void onReplaceDone(KJob *job);
 

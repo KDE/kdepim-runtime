@@ -23,5 +23,5 @@
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(KOLABRESOURCE_LOG)
 
-#endif 
+#endif
 

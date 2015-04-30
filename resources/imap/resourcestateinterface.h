@@ -71,7 +71,7 @@ public:
     virtual QSet<Akonadi::Tag> removedTags() const = 0;
 
     virtual QString rootRemoteId() const = 0;
-    static QString mailBoxForCollection( const Akonadi::Collection &collection, bool showWarnings = true );
+    static QString mailBoxForCollection(const Akonadi::Collection &collection, bool showWarnings = true);
 
     virtual void setIdleCollection(const Akonadi::Collection &collection) = 0;
     virtual void applyCollectionChanges(const Akonadi::Collection &collection) = 0;
@@ -85,15 +85,15 @@ public:
 
     virtual void setTotalItems(int) = 0;
 
-    virtual void itemChangeCommitted( const Akonadi::Item &item ) = 0;
-    virtual void itemsChangesCommitted( const Akonadi::Item::List &items ) = 0;
+    virtual void itemChangeCommitted(const Akonadi::Item &item) = 0;
+    virtual void itemsChangesCommitted(const Akonadi::Item::List &items) = 0;
 
     virtual void collectionsRetrieved(const Akonadi::Collection::List &collections) = 0;
     virtual void collectionAttributesRetrieved(const Akonadi::Collection &collection) = 0;
 
     virtual void collectionChangeCommitted(const Akonadi::Collection &collection) = 0;
 
-    virtual void tagChangeCommitted( const Akonadi::Tag &tag ) = 0;
+    virtual void tagChangeCommitted(const Akonadi::Tag &tag) = 0;
 
     virtual void changeProcessed() = 0;
 
@@ -120,8 +120,8 @@ public:
 
     virtual MessageHelper::Ptr messageHelper() const = 0;
 
-    virtual void tagsRetrieved( const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> & ) = 0;
-    virtual void relationsRetrieved( const Akonadi::Relation::List &tags) = 0;
+    virtual void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) = 0;
+    virtual void relationsRetrieved(const Akonadi::Relation::List &tags) = 0;
 
     virtual Akonadi::Relation::List addedRelations() const = 0;
     virtual Akonadi::Relation::List removedRelations() const = 0;

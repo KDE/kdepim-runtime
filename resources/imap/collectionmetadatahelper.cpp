@@ -28,28 +28,28 @@ Akonadi::Collection::Rights CollectionMetadataHelper::convertRights(const KIMAP:
     // We map renaming to CanChangeCollection here, which is not entirely correct, but we have no
     // CanRenameCollection flag.
     if (parentRights & KIMAP::Acl::CreateMailbox ||
-        parentRights & KIMAP::Acl::Create) {
-        newRights|= Akonadi::Collection::CanChangeCollection;
+            parentRights & KIMAP::Acl::Create) {
+        newRights |= Akonadi::Collection::CanChangeCollection;
     }
 
     if (imapRights & KIMAP::Acl::Write) {
-        newRights|= Akonadi::Collection::CanChangeItem;
+        newRights |= Akonadi::Collection::CanChangeItem;
     }
 
     if (imapRights & KIMAP::Acl::Insert) {
-        newRights|= Akonadi::Collection::CanCreateItem;
+        newRights |= Akonadi::Collection::CanCreateItem;
     }
 
     if (imapRights & (KIMAP::Acl::DeleteMessage | KIMAP::Acl::Delete)) {
-        newRights|= Akonadi::Collection::CanDeleteItem;
+        newRights |= Akonadi::Collection::CanDeleteItem;
     }
 
     if (imapRights & (KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create)) {
-        newRights|= Akonadi::Collection::CanCreateCollection;
+        newRights |= Akonadi::Collection::CanCreateCollection;
     }
 
     if (imapRights & (KIMAP::Acl::DeleteMailbox | KIMAP::Acl::Delete)) {
-        newRights|= Akonadi::Collection::CanDeleteCollection;
+        newRights |= Akonadi::Collection::CanDeleteCollection;
     }
     return newRights;
 }
@@ -70,7 +70,7 @@ bool CollectionMetadataHelper::applyRights(Akonadi::Collection &collection, cons
     //The caller needs to handles those.
     bool accessRevoked = false;
     if ((collection.rights() & Akonadi::Collection::CanCreateItem) &&
-        !(newRights & Akonadi::Collection::CanCreateItem)) {
+            !(newRights & Akonadi::Collection::CanCreateItem)) {
         // write access revoked
         accessRevoked = true;
     }

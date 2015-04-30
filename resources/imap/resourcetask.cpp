@@ -118,18 +118,18 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
 
     m_session = session;
 
-    if (errorCode!=SessionPool::NoError) {
+    if (errorCode != SessionPool::NoError) {
         Trace() << "Error on: " << metaObject()->className();
-        switch ( m_actionIfNoSession ) {
-            case CancelIfNoSession:
-                qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no more session available.";
-                m_resource->cancelTask( i18n( "There is currently no session to the IMAP server available." ) );
-                break;
+        switch (m_actionIfNoSession) {
+        case CancelIfNoSession:
+            qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no more session available.";
+            m_resource->cancelTask(i18n("There is currently no session to the IMAP server available."));
+            break;
 
-            case DeferIfNoSession:
-                qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no more session available.";
-                m_resource->deferTask();
-                break;
+        case DeferIfNoSession:
+            qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no more session available.";
+            m_resource->deferTask();
+            break;
         }
 
         deleteLater();
