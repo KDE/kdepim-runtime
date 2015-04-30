@@ -24,7 +24,7 @@
 KolabSettings::KolabSettings(WId winId) : Settings(winId)
 {
     changeDefaults();
-    readConfig();
+    load();
 }
 
 void KolabSettings::changeDefaults()
