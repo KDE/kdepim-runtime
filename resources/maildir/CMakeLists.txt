@@ -18,6 +18,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
 
 ########### next target ###############
 set( maildirresource_SRCS
+  maildirresource_debug.cpp
   main.cpp
   maildirresource.cpp
   configdialog.cpp

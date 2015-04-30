@@ -38,7 +38,7 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <kmime/kmime_message.h>
 
-#include <QDebug>
+#include "maildirresource_debug.h"
 #include <kdirwatch.h>
 #include <KLocalizedString>
 #include <kwindowsystem.h>
@@ -60,13 +60,13 @@ Maildir MaildirResource::maildirForCollection(const Collection &col)
     }
 
     if (col.remoteId().isEmpty()) {
-        qWarning() << "Got incomplete ancestor chain:" << col;
+        qCWarning(MAILDIRRESOURCE_LOG) << "Got incomplete ancestor chain:" << col;
         return Maildir();
     }
 
     if (col.parentCollection() == Collection::root()) {
         if (col.remoteId() != mSettings->path()) {
-            qWarning() << "RID mismatch, is " << col.remoteId() << " expected " << mSettings->path();
+            qCWarning(MAILDIRRESOURCE_LOG) << "RID mismatch, is " << col.remoteId() << " expected " << mSettings->path();
         }
         Maildir maildir(col.remoteId(), mSettings->topLevelIsContainer());
         mMaildirsForCollection.insert(path, maildir);
@@ -151,7 +151,7 @@ MaildirResource::MaildirResource(const QString &id)
 void MaildirResource::attemptConfigRestoring(KJob *job)
 {
     if (job->error()) {
-        qDebug() << job->errorString();
+        qCDebug(MAILDIRRESOURCE_LOG) << job->errorString();
         return;
     }
     // we cannot be sure that a config file is existing
@@ -160,20 +160,20 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
     // we test it again, to be sure
     if (configFile.isEmpty()) {
         // it is still empty, create it
-        qWarning() << "the resource is not properly configured:";
-        qWarning() << "there is no config file for the resource.";
-        qWarning() << "we create a new one.";
+        qCWarning(MAILDIRRESOURCE_LOG) << "the resource is not properly configured:";
+        qCWarning(MAILDIRRESOURCE_LOG) << "there is no config file for the resource.";
+        qCWarning(MAILDIRRESOURCE_LOG) << "we create a new one.";
         const Collection::List cols = qobject_cast<CollectionFetchJob *>(job)->collections();
         QString path;
         if (!cols.isEmpty()) {
-            qDebug() << "the collections list is not empty";
+            qCDebug(MAILDIRRESOURCE_LOG) << "the collections list is not empty";
             Collection col = cols.first();
             // get the path of the collection
             path = col.remoteId();
         }
         // test the path
         if (path.isEmpty()) {
-            qDebug() << "build a new path";
+            qCDebug(MAILDIRRESOURCE_LOG) << "build a new path";
             const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/');
             // we use "id" to get an unique path
             path = dataDir;
@@ -181,7 +181,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
                 path += defaultResourceType()  + QLatin1Char('/');
             }
             path += id;
-            qDebug() << "set the path" << path;
+            qCDebug(MAILDIRRESOURCE_LOG) << "set the path" << path;
             mSettings->setPath(path);
             // set the resource into container mode for its top level
             mSettings->setTopLevelIsContainer(true);
@@ -190,7 +190,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
             Maildir root(mSettings->path(), true);
             mSettings->setTopLevelIsContainer(root.isValid());
         }
-        qDebug() << "synchronize";
+        qCDebug(MAILDIRRESOURCE_LOG) << "synchronize";
         configurationChanged();
     }
 }
@@ -464,7 +464,7 @@ void MaildirResource::itemRemoved(const Akonadi::Item &item)
         }
         restartMaildirScan(dir);
     }
-    qDebug() << "Item removed" << item.id() << " in collection :" << item.parentCollection().id();
+    qCDebug(MAILDIRRESOURCE_LOG) << "Item removed" << item.id() << " in collection :" << item.parentCollection().id();
     changeProcessed();
 }
 
@@ -573,7 +573,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
     }
 
     Maildir md = maildirForCollection(parent);
-    qDebug() << md.subFolderList() << md.entryList();
+    qCDebug(MAILDIRRESOURCE_LOG) << md.subFolderList() << md.entryList();
     if (mSettings->readOnly() || !md.isValid()) {
         changeProcessed();
         return;
@@ -585,7 +585,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
             return;
         }
 
-        qDebug() << md.subFolderList() << md.entryList();
+        qCDebug(MAILDIRRESOURCE_LOG) << md.subFolderList() << md.entryList();
 
         Collection col = collection;
         col.setRemoteId(collectionName);
@@ -638,7 +638,7 @@ void MaildirResource::collectionChanged(const Collection &collection)
 
 void MaildirResource::collectionMoved(const Collection &collection, const Collection &source, const Collection &dest)
 {
-    qDebug() << collection << source << dest;
+    qCDebug(MAILDIRRESOURCE_LOG) << collection << source << dest;
 
     if (!ensureSaneConfiguration()) {
         emit error(i18n("Unusable configuration."));
@@ -753,7 +753,7 @@ void MaildirResource::slotDirChanged(const QString &dir)
 
     const Collection col = collectionForMaildir(md);
     if (col.remoteId().isEmpty()) {
-        qDebug() << "unable to find collection for path" << dir;
+        qCDebug(MAILDIRRESOURCE_LOG) << "unable to find collection for path" << dir;
         return;
     }
 
@@ -764,7 +764,7 @@ void MaildirResource::slotDirChanged(const QString &dir)
 void MaildirResource::fsWatchDirFetchResult(KJob *job)
 {
     if (job->error()) {
-        qDebug() << job->errorString();
+        qCDebug(MAILDIRRESOURCE_LOG) << job->errorString();
         return;
     }
     const Collection::List cols = qobject_cast<CollectionFetchJob *>(job)->collections();
@@ -797,7 +797,7 @@ void MaildirResource::slotFileChanged(const QFileInfo &fileInfo)
 
     const Collection col = collectionForMaildir(md);
     if (col.remoteId().isEmpty()) {
-        qDebug() << "unable to find collection for path" << fileInfo.path();
+        qCDebug(MAILDIRRESOURCE_LOG) << "unable to find collection for path" << fileInfo.path();
         return;
     }
 
@@ -814,7 +814,7 @@ void MaildirResource::slotFileChanged(const QFileInfo &fileInfo)
 void MaildirResource::fsWatchFileFetchResult(KJob *job)
 {
     if (job->error()) {
-        qDebug() << job->errorString();
+        qCDebug(MAILDIRRESOURCE_LOG) << job->errorString();
         return;
     }
     Item::List items = qobject_cast<ItemFetchJob *>(job)->items();
@@ -854,7 +854,7 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
 void MaildirResource::fsWatchFileModifyResult(KJob *job)
 {
     if (job->error()) {
-        qDebug() << job->errorString();
+        qCDebug(MAILDIRRESOURCE_LOG) << job->errorString();
         return;
     }
 }
