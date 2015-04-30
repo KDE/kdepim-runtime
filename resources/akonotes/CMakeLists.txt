@@ -16,6 +16,7 @@ set( akonotesresource_SRCS
   ../maildir/maildirresource.cpp
   ../maildir/configdialog.cpp
   ../maildir/retrieveitemsjob.cpp
+  ../maildir/maildirresource_debug.cpp
   akonotesresource.cpp
 )
 
