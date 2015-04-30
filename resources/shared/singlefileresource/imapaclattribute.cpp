@@ -152,3 +152,10 @@ void ImapAclAttribute::deserialize(const QByteArray &data)
         mMyRights = KIMAP::Acl::rightsFromString(parts.at(2));
     }
 }
+
+bool ImapAclAttribute::operator==(const ImapAclAttribute &other) const
+{
+    return (oldRights() == other.oldRights())
+        && (rights() == other.rights())
+        && (myRights() == other.myRights());
+}
