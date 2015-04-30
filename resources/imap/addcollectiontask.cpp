@@ -23,7 +23,7 @@
 
 #include "collectionannotationsattribute.h"
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
@@ -46,7 +46,7 @@ AddCollectionTask::~AddCollectionTask()
 void AddCollectionTask::doStart(KIMAP::Session *session)
 {
     if (parentCollection().remoteId().isEmpty()) {
-        qCWarning(RESOURCE_IMAP_LOG) << "Parent collection has no remote id, aborting." << collection().name() << parentCollection().name();
+        qCWarning(IMAPRESOURCE_LOG) << "Parent collection has no remote id, aborting." << collection().name() << parentCollection().name();
         emitError(i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.",
                        collection().name(),
                        parentCollection().name()));
@@ -69,7 +69,7 @@ void AddCollectionTask::doStart(KIMAP::Session *session)
 
     newMailBox += m_collection.name();
 
-    qCDebug(RESOURCE_IMAP_LOG) << "New folder: " << newMailBox;
+    qCDebug(IMAPRESOURCE_LOG) << "New folder: " << newMailBox;
 
     KIMAP::CreateJob *job = new KIMAP::CreateJob(session);
     job->setMailBox(newMailBox);
@@ -82,7 +82,7 @@ void AddCollectionTask::doStart(KIMAP::Session *session)
 void AddCollectionTask::onCreateDone(KJob *job)
 {
     if (job->error()) {
-        qCWarning(RESOURCE_IMAP_LOG) << "Failed to create folder on server: " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to create folder on server: " << job->errorString();
         emitError(i18n("Failed to create the folder '%1' on the IMAP server. ",
                        m_collection.name()));
         cancelTask(job->errorString());
@@ -102,7 +102,7 @@ void AddCollectionTask::onCreateDone(KJob *job)
 void AddCollectionTask::onSubscribeDone(KJob *job)
 {
     if (job->error() && isSubscriptionEnabled()) {
-        qCWarning(RESOURCE_IMAP_LOG) << "Failed to subscribe to the new folder: " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to subscribe to the new folder: " << job->errorString();
         emitWarning(i18n("Failed to subscribe to the folder '%1' on the IMAP server. "
                          "It will disappear on next sync. Use the subscription dialog to overcome that",
                          m_collection.name()));
@@ -145,7 +145,7 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
 void AddCollectionTask::onSetMetaDataDone(KJob *job)
 {
     if (job->error()) {
-        qCWarning(RESOURCE_IMAP_LOG) << "Failed to write annotations: " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to write annotations: " << job->errorString();
         emitWarning(i18n("Failed to write some annotations for '%1' on the IMAP server. %2",
                          collection().name(), job->errorText()));
     }

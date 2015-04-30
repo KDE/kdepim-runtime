@@ -38,10 +38,10 @@
 #include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiCore/session.h>
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 #include <KLocalizedString>
@@ -80,7 +80,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     if (collection().hasAttribute("noselect")) {
         NoSelectAttribute *noselect = static_cast<NoSelectAttribute *>(collection().attribute("noselect"));
         if (noselect->noSelect()) {
-            qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
+            qCDebug(IMAPRESOURCE_LOG) << "No Select folder";
             itemsRetrievalDone();
             return;
         }
@@ -145,7 +145,7 @@ void RetrieveItemsTask::onFetchItemsWithoutBodiesDone(const QList<qint64> &items
 void RetrieveItemsTask::startRetrievalTasks()
 {
     const QString mailBox = mailBoxForCollection(collection());
-    qCDebug(RESOURCE_IMAP_LOG) << "Starting retrieval for " << mailBox;
+    qCDebug(IMAPRESOURCE_LOG) << "Starting retrieval for " << mailBox;
     m_time.start();
 
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
@@ -336,10 +336,10 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 
     const qint64 realMessageCount = col.statistics().count();
 
-    qCDebug(RESOURCE_IMAP_LOG) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
-    qCDebug(RESOURCE_IMAP_LOG) << "MessageCount: " << messageCount << "Local message count: " << realMessageCount;
-    qCDebug(RESOURCE_IMAP_LOG) << "UidNext: " << nextUid << "Local UidNext: " << oldNextUid;
-    qCDebug(RESOURCE_IMAP_LOG) << "HighestModSeq: " << highestModSeq << "Local HighestModSeq: " << oldHighestModSeq;
+    qCDebug(IMAPRESOURCE_LOG) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
+    qCDebug(IMAPRESOURCE_LOG) << "MessageCount: " << messageCount << "Local message count: " << realMessageCount;
+    qCDebug(IMAPRESOURCE_LOG) << "UidNext: " << nextUid << "Local UidNext: " << oldNextUid;
+    qCDebug(IMAPRESOURCE_LOG) << "HighestModSeq: " << highestModSeq << "Local HighestModSeq: " << oldHighestModSeq;
 
     /*
     * A synchronization has 3 mandatory steps:
@@ -361,21 +361,21 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //If no messages are present on the server, clear local cash and finish
         m_incremental = false;
         if (realMessageCount > 0) {
-            qCDebug(RESOURCE_IMAP_LOG) << "No messages present so we are done, deleting local messages.";
+            qCDebug(IMAPRESOURCE_LOG) << "No messages present so we are done, deleting local messages.";
             itemsRetrieved(Akonadi::Item::List());
         } else {
-            qCDebug(RESOURCE_IMAP_LOG) << "No messages present so we are done";
+            qCDebug(IMAPRESOURCE_LOG) << "No messages present so we are done";
         }
         taskComplete();
     } else if (oldUidValidity != uidValidity || nextUid <= 0) {
         //If uidvalidity has changed our local cache is worthless and has to be refetched completely
         if (oldUidValidity != 0 && oldUidValidity != uidValidity) {
-            qCDebug(RESOURCE_IMAP_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|" << uidValidity << ")";
+            qCDebug(IMAPRESOURCE_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|" << uidValidity << ")";
         }
         if (nextUid <= 0) {
-            qCDebug(RESOURCE_IMAP_LOG) << "Invalid UIDNEXT";
+            qCDebug(IMAPRESOURCE_LOG) << "Invalid UIDNEXT";
         }
-        qCDebug(RESOURCE_IMAP_LOG) << "Fetching complete mailbox " << mailBox;
+        qCDebug(IMAPRESOURCE_LOG) << "Fetching complete mailbox " << mailBox;
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
     } else if (nextUid <= 0) {
@@ -408,7 +408,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //New messages are available, but we know no messages have been removed.
         //Fetch new messages, and then check for changed flags and removed messages
         //We can make an incremental update and use modseq.
-        qCDebug(RESOURCE_IMAP_LOG) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
+        qCDebug(IMAPRESOURCE_LOG) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
         setTotalItems(qMax(1ll, messageCount - realMessageCount));
         m_flagsChanged = !(highestModSeq == oldHighestModSeq);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
@@ -423,7 +423,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
     } else if (nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
-        qCDebug(RESOURCE_IMAP_LOG) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
+        qCDebug(IMAPRESOURCE_LOG) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
         setTotalItems(messageCount);
         retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
     } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
@@ -437,7 +437,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         //Instead we only sync flags when new messages are available or removed and skip this step.
         //WARNING: This sacrifices consistency as we will not detect flag changes until a new message enters the mailbox.
         if (m_incremental && !serverSupportsCondstore()) {
-            qCDebug(RESOURCE_IMAP_LOG) << "Avoiding flag sync due to missing CONDSTORE support";
+            qCDebug(IMAPRESOURCE_LOG) << "Avoiding flag sync due to missing CONDSTORE support";
             taskComplete();
             return;
         }
@@ -535,8 +535,8 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
 
 void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
 {
-    qCDebug(RESOURCE_IMAP_LOG) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
-    qCDebug(RESOURCE_IMAP_LOG) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
+    qCDebug(IMAPRESOURCE_LOG) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
+    qCDebug(IMAPRESOURCE_LOG) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
 
     KIMAP::FetchJob::FetchScope scope;
     scope.parts.clear();
@@ -546,7 +546,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
     if (m_incremental && serverSupportsCondstore()) {
         scope.changedSince = m_highestModseq;
         if (!m_flagsChanged) {
-            qCDebug(RESOURCE_IMAP_LOG)  << "No flag changes.";
+            qCDebug(IMAPRESOURCE_LOG)  << "No flag changes.";
             taskComplete();
             return;
         }
@@ -578,7 +578,7 @@ void RetrieveItemsTask::onFlagsFetchDone(KJob *job)
 void RetrieveItemsTask::taskComplete()
 {
     if (m_modifiedCollection.isValid()) {
-        qCDebug(RESOURCE_IMAP_LOG) << "Applying collection changes";
+        qCDebug(IMAPRESOURCE_LOG) << "Applying collection changes";
         applyCollectionChanges(m_modifiedCollection);
     }
     if (m_incremental) {
@@ -587,7 +587,7 @@ void RetrieveItemsTask::taskComplete()
         // Akonadi knows we did incremental fetch that came up with no changes
         itemsRetrievedIncremental(Akonadi::Item::List(), Akonadi::Item::List());
     }
-    qCDebug(RESOURCE_IMAP_LOG) << "Retrieval complete. Elapsed(ms): " << m_time.elapsed();
+    qCDebug(IMAPRESOURCE_LOG) << "Retrieval complete. Elapsed(ms): " << m_time.elapsed();
     itemsRetrievalDone();
 }
 

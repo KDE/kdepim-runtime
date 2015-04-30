@@ -22,7 +22,7 @@
 #include <kimap/session.h>
 #include <kimap/selectjob.h>
 #include <kimap/storejob.h>
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 ChangeItemsFlagsTask::ChangeItemsFlagsTask(ResourceStateInterface::Ptr resource, QObject *parent):
@@ -39,7 +39,7 @@ ChangeItemsFlagsTask::~ChangeItemsFlagsTask()
 void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
 {
     const QString mailBox = mailBoxForCollection(items().first().parentCollection());
-    qCDebug(RESOURCE_IMAP_LOG) << mailBox;
+    qCDebug(IMAPRESOURCE_LOG) << mailBox;
 
     if (session->selectedMailBox() != mailBox) {
         KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
@@ -56,7 +56,7 @@ void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
         } else if (!removedFlags().isEmpty()) {
             triggerRemoveFlagsJob(session);
         } else {
-            qCDebug(RESOURCE_IMAP_LOG) << "nothing to do";
+            qCDebug(IMAPRESOURCE_LOG) << "nothing to do";
             changeProcessed();
         }
     }
@@ -69,13 +69,13 @@ void ChangeItemsFlagsTask::onSelectDone(KJob *job)
         cancelTask(job->errorString());
     } else {
         KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
-        qCDebug(RESOURCE_IMAP_LOG) << addedFlags();
+        qCDebug(IMAPRESOURCE_LOG) << addedFlags();
         if (!addedFlags().isEmpty()) {
             triggerAppendFlagsJob(select->session());
         } else if (!removedFlags().isEmpty()) {
             triggerRemoveFlagsJob(select->session());
         } else {
-            qCDebug(RESOURCE_IMAP_LOG) << "nothing to do";
+            qCDebug(IMAPRESOURCE_LOG) << "nothing to do";
             changeProcessed();
         }
     }
@@ -131,7 +131,7 @@ void ChangeItemsFlagsTask::onAppendFlagsDone(KJob *job)
         } else if (removedFlags().isEmpty()) {
             changeProcessed();
         } else {
-            qCDebug(RESOURCE_IMAP_LOG) << removedFlags();
+            qCDebug(IMAPRESOURCE_LOG) << removedFlags();
             m_processedItems = 0;
             triggerRemoveFlagsJob(session);
         }

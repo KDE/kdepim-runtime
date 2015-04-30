@@ -21,7 +21,7 @@
 
 #include "changeitemtask.h"
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 #include <KLocalizedString>
@@ -53,7 +53,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
 
     const QString mailBox = mailBoxForCollection(item().parentCollection());
     m_oldUid = item().remoteId().toLongLong();
-    qCDebug(RESOURCE_IMAP_LOG) << mailBox << m_oldUid << parts();
+    qCDebug(IMAPRESOURCE_LOG) << mailBox << m_oldUid << parts();
 
     if (parts().contains("PLD:RFC822")) {
         if (!item().hasPayload<KMime::Message::Ptr>()) {
@@ -72,7 +72,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         job->setContent(msg->encodedContent(true));
         const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().toList(), item().parentCollection());
         job->setFlags(flags);
-        qCDebug(RESOURCE_IMAP_LOG) << "Appending new message: " << flags;
+        qCDebug(IMAPRESOURCE_LOG) << "Appending new message: " << flags;
 
         connect(job, &KIMAP::AppendJob::result, this, &ChangeItemTask::onAppendMessageDone);
 
@@ -93,7 +93,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         }
 
     } else {
-        qCDebug(RESOURCE_IMAP_LOG) << "Nothing to do";
+        qCDebug(IMAPRESOURCE_LOG) << "Nothing to do";
         changeProcessed();
     }
 }
@@ -111,7 +111,7 @@ void ChangeItemTask::onPreStoreSelectDone(KJob *job)
 void ChangeItemTask::triggerStoreJob()
 {
     QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().toList(), item().parentCollection());
-    qCDebug(RESOURCE_IMAP_LOG) << flags;
+    qCDebug(IMAPRESOURCE_LOG) << flags;
 
     KIMAP::StoreJob *store = new KIMAP::StoreJob(m_session);
 
@@ -289,7 +289,7 @@ void ChangeItemTask::recordNewUid()
     }
 
     const QString remoteId =  QString::number(m_newUid);
-    qCDebug(RESOURCE_IMAP_LOG) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
+    qCDebug(IMAPRESOURCE_LOG) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
     i.setRemoteId(remoteId);
 
     changeCommitted(i);

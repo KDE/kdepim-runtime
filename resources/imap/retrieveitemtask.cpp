@@ -22,7 +22,7 @@
 #include "retrieveitemtask.h"
 #include "messagehelper.h"
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 #include <KLocalizedString>
@@ -113,7 +113,7 @@ void RetrieveItemTask::onMessagesReceived(const QString &mailBox,
 
     Akonadi::Item i = item();
 
-    qCDebug(RESOURCE_IMAP_LOG) << "MESSAGE from Imap server" << item().remoteId();
+    qCDebug(IMAPRESOURCE_LOG) << "MESSAGE from Imap server" << item().remoteId();
     Q_ASSERT(item().isValid());
 
     const qint64 number = uids.keys().first();
@@ -130,7 +130,7 @@ void RetrieveItemTask::onMessagesReceived(const QString &mailBox,
         i.setFlag(flag);
     }
 
-    qCDebug(RESOURCE_IMAP_LOG) << "Has Payload: " << i.hasPayload();
+    qCDebug(IMAPRESOURCE_LOG) << "Has Payload: " << i.hasPayload();
 
     m_messageReceived = true;
     itemRetrieved(i);

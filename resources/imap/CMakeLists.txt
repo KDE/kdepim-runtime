@@ -36,7 +36,6 @@ set( imapresource_LIB_SRCS
   subscriptiondialog.cpp
   imapidlemanager.cpp
   resourcestate.cpp
-  resource_imap_debug.cpp
   collectionmetadatahelper.cpp
   replacemessagejob.cpp
   tracer.cpp

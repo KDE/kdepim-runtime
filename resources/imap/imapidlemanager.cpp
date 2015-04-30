@@ -25,7 +25,7 @@
 
 #include "imapidlemanager.h"
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 #include <kimap/idlejob.h>
@@ -139,10 +139,10 @@ void ImapIdleManager::onSelectDone(KJob *job)
 
 void ImapIdleManager::onIdleStopped()
 {
-    qCDebug(RESOURCE_IMAP_LOG) << "IDLE dropped maybe we should reconnect?";
+    qCDebug(IMAPRESOURCE_LOG) << "IDLE dropped maybe we should reconnect?";
     m_idle = Q_NULLPTR;
     if (m_session) {
-        qCDebug(RESOURCE_IMAP_LOG) << "Restarting the IDLE session!";
+        qCDebug(IMAPRESOURCE_LOG) << "Restarting the IDLE session!";
         m_idle = new KIMAP::IdleJob(m_session);
         connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
         connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
@@ -153,8 +153,8 @@ void ImapIdleManager::onIdleStopped()
 void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
                                       int messageCount, int recentCount)
 {
-    qCDebug(RESOURCE_IMAP_LOG) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
-    qCDebug(RESOURCE_IMAP_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
+    qCDebug(IMAPRESOURCE_LOG) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
+    qCDebug(IMAPRESOURCE_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
                                << m_lastMessageCount << m_lastRecentCount;
 
     // It seems we're not in sync with the cache, resync is needed
@@ -162,14 +162,14 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
         m_lastMessageCount = messageCount;
         m_lastRecentCount = recentCount;
 
-        qCDebug(RESOURCE_IMAP_LOG) << "Resync needed for" << mailBox << m_state->collection().id();
+        qCDebug(IMAPRESOURCE_LOG) << "Resync needed for" << mailBox << m_state->collection().id();
         m_resource->synchronizeCollection(m_state->collection().id());
     }
 }
 
 void ImapIdleManager::onFlagsChanged(KIMAP::IdleJob *job)
 {
-    qCDebug(RESOURCE_IMAP_LOG) << "IDLE flags changed in" << m_session->selectedMailBox();
+    qCDebug(IMAPRESOURCE_LOG) << "IDLE flags changed in" << m_session->selectedMailBox();
     m_resource->synchronizeCollection(m_state->collection().id());
 }
 

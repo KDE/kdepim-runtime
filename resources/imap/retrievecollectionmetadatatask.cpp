@@ -31,7 +31,7 @@
 #include <kimap/session.h>
 #include <KLocalizedString>
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 #include <collectionquotaattribute.h>
@@ -54,13 +54,13 @@ RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask()
 
 void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
 {
-    qCDebug(RESOURCE_IMAP_LOG) << collection().remoteId();
+    qCDebug(IMAPRESOURCE_LOG) << collection().remoteId();
 
     // Prevent fetching metadata from noselect folders.
     if (collection().hasAttribute("noselect")) {
         NoSelectAttribute* noselect = static_cast<NoSelectAttribute*>(collection().attribute("noselect"));
         if (noselect->noSelect()) {
-            qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
+            qCDebug(IMAPRESOURCE_LOG) << "No Select folder";
             endTaskIfNeeded();
             return;
         }
@@ -187,7 +187,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
         parentRights = myRights(collection().parentCollection());
     }
 
-//  qCDebug(RESOURCE_IMAP_LOG) << collection.remoteId()
+//  qCDebug(IMAPRESOURCE_LOG) << collection.remoteId()
 //                 << "imapRights:" << imapRights
 //                 << "newRights:" << newRights
 //                 << "oldRights:" << collection.rights();

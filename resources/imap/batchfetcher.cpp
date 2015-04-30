@@ -19,7 +19,7 @@
 
 #include "batchfetcher.h"
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include <KIMAP/Session>
 #include "imapresource_debug.h"
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
@@ -124,14 +124,14 @@ void BatchFetcher::fetchNextBatch()
     m_continuationRequested = false;
     Q_ASSERT(m_batchSize > 0);
     if (m_currentSet.isEmpty()) {
-        qCDebug(RESOURCE_IMAP_LOG) << "fetch complete";
+        qCDebug(IMAPRESOURCE_LOG) << "fetch complete";
         emitResult();
         return;
     }
 
     KIMAP::FetchJob *fetch = new KIMAP::FetchJob(m_session);
     if (m_scope.changedSince != 0) {
-        qCDebug(RESOURCE_IMAP_LOG) << "Fetching all messages in one batch.";
+        qCDebug(IMAPRESOURCE_LOG) << "Fetching all messages in one batch.";
         fetch->setSequenceSet(m_currentSet);
         m_currentSet = KIMAP::ImapSet();
     } else {
@@ -143,7 +143,7 @@ void BatchFetcher::fetchNextBatch()
         Q_FOREACH (const KIMAP::ImapInterval &interval, m_currentSet.intervals()) {
             if (!interval.hasDefinedEnd()) {
                 //If we get an interval without a defined end we simply fetch everything
-                qCDebug(RESOURCE_IMAP_LOG) << "Received interval without defined end, fetching everything in one batch";
+                qCDebug(IMAPRESOURCE_LOG) << "Received interval without defined end, fetching everything in one batch";
                 toFetch.add(interval);
                 newSet = KIMAP::ImapSet();
                 break;
@@ -162,7 +162,7 @@ void BatchFetcher::fetchNextBatch()
                 newSet.add(interval);
             }
         }
-        qCDebug(RESOURCE_IMAP_LOG) << "Fetching " << toFetch.intervals().size() << " intervals";
+        qCDebug(IMAPRESOURCE_LOG) << "Fetching " << toFetch.intervals().size() << " intervals";
         fetch->setSequenceSet(toFetch);
         m_currentSet = newSet;
     }

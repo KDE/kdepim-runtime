@@ -28,7 +28,7 @@
 #include <kimap/storejob.h>
 #include <kimap/closejob.h>
 #include <KLocalizedString>
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 Q_DECLARE_METATYPE(KIMAP::DeleteJob *)
@@ -129,7 +129,7 @@ void RemoveCollectionRecursiveTask::onCloseJobDone(KJob *job)
 {
     if (job->error()) {
         changeProcessed();
-        qCDebug(RESOURCE_IMAP_LOG) << "Failed to close the folder, resync the folder tree";
+        qCDebug(IMAPRESOURCE_LOG) << "Failed to close the folder, resync the folder tree";
         emitWarning(i18n("Failed to delete the folder, restoring folder list."));
         synchronizeCollectionTree();
     } else {
@@ -145,7 +145,7 @@ void RemoveCollectionRecursiveTask::onDeleteJobDone(KJob *job)
     if (job->error()) {
         changeProcessed();
 
-        qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
+        qCDebug(IMAPRESOURCE_LOG) << "Failed to delete the folder, resync the folder tree";
         emitWarning(i18n("Failed to delete the folder, restoring folder list."));
         synchronizeCollectionTree();
     } else {
@@ -158,12 +158,12 @@ void RemoveCollectionRecursiveTask::onJobDone(KJob *job)
     if (job->error()) {
         changeProcessed();
 
-        qCDebug(RESOURCE_IMAP_LOG) << "Failed to delete the folder, resync the folder tree";
+        qCDebug(IMAPRESOURCE_LOG) << "Failed to delete the folder, resync the folder tree";
         emitWarning(i18n("Failed to delete the folder, restoring folder list."));
         synchronizeCollectionTree();
     } else if (!mFolderFound) {
         changeProcessed();
-        qCDebug(RESOURCE_IMAP_LOG) << "Failed to find the folder to be deleted, resync the folder tree";
+        qCDebug(IMAPRESOURCE_LOG) << "Failed to find the folder to be deleted, resync the folder tree";
         emitWarning(i18n("Failed to find the folder to be deleted, restoring folder list."));
         synchronizeCollectionTree();
     }

@@ -23,7 +23,7 @@
 
 #include <QtCore/QUuid>
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
@@ -59,7 +59,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
         qCWarning(IMAPRESOURCE_LOG) << "Trying to append message to invalid mailbox, this will fail. Id: " << parentCollection().id();
     }
 
-    qCDebug(RESOURCE_IMAP_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
+    qCDebug(IMAPRESOURCE_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
 
     // save message to the server.
     KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
@@ -182,7 +182,7 @@ void AddItemTask::applyFoundUid(qint64 uid)
     } else {
         i.setRemoteId(QUuid::createUuid().toString());
     }
-    qCDebug(RESOURCE_IMAP_LOG) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
+    qCDebug(IMAPRESOURCE_LOG) << "Setting remote ID to " << i.remoteId() << " for item with local id " << i.id();
 
     changeCommitted(i);
 

@@ -21,7 +21,7 @@
 
 #include "expungecollectiontask.h"
 
-#include "resource_imap_debug.h"
+#include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
 #include <KLocalizedString>
@@ -48,7 +48,7 @@ void ExpungeCollectionTask::doStart(KIMAP::Session *session)
     if (collection().hasAttribute("noselect")) {
         NoSelectAttribute *noselect = static_cast<NoSelectAttribute *>(collection().attribute("noselect"));
         if (noselect->noSelect()) {
-            qCDebug(RESOURCE_IMAP_LOG) << "No Select folder";
+            qCDebug(IMAPRESOURCE_LOG) << "No Select folder";
             taskDone();
             return;
         }
