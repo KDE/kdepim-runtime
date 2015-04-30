@@ -9,6 +9,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_contacts_resource\")
 set( contactsresource_SRCS
   contactsresource.cpp
   settingsdialog.cpp
+  contacts_resources_debug.cpp
 )
 
 ki18n_wrap_ui(contactsresource_SRCS settingsdialog.ui)

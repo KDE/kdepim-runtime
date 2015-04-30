@@ -33,7 +33,7 @@
 #include <itemfetchscope.h>
 #include <kdbusconnectionpool.h>
 #include <agentfactory.h>
-#include <QDebug>
+#include "contacts_resources_debug.h"
 
 #include <KLocalizedString>
 
@@ -271,7 +271,7 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         newItem.setRemoteId(group.id() + QLatin1String(".ctg"));
 
     } else {
-        qWarning() << "got item without (usable) payload, ignoring it";
+        qCWarning(CONTACTSRESOURCES_LOG) << "got item without (usable) payload, ignoring it";
     }
 
     changeCommitted(newItem);
@@ -521,13 +521,13 @@ Collection::Rights ContactsResource::supportedRights(bool isResourceCollection) 
 QString ContactsResource::directoryForCollection(const Collection &collection) const
 {
     if (collection.remoteId().isEmpty()) {
-        qWarning() << "Got incomplete ancestor chain:" << collection;
+        qCWarning(CONTACTSRESOURCES_LOG) << "Got incomplete ancestor chain:" << collection;
         return QString();
     }
 
     if (collection.parentCollection() == Collection::root()) {
         if (collection.remoteId() != baseDirectoryPath())
-            qWarning() << "RID mismatch, is " << collection.remoteId()
+            qCWarning(CONTACTSRESOURCES_LOG) << "RID mismatch, is " << collection.remoteId()
                        << " expected " << baseDirectoryPath();
         return collection.remoteId();
     }

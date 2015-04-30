@@ -15,4 +15,4 @@ log_kalarmdirresource kalarm directory resource (kdepim-runtime)
 log_pop3resource pop3 resource (kdepim-runtime)
 log_akonadi_serializer_kalarm akonadi serializer plugins (kdepim-runtime)
 log_akonadi_serializer_mail akonadi mail plugins (kdepim-runtime)
-
+log_resources_contacts contacts resource (kdepim-runtime)
