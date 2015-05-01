@@ -38,4 +38,4 @@ endif ()
 
 
 install(TARGETS akonadi_invitations_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES invitationsagent.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
+install(FILES invitationsagent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

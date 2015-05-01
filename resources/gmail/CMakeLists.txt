@@ -47,5 +47,5 @@ target_link_libraries(akonadi_gmail_resource
     folderarchivesettings
 )
 
-install(FILES gmailresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
+install(FILES gmailresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(TARGETS akonadi_gmail_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

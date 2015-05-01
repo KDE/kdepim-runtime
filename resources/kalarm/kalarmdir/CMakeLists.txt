@@ -15,7 +15,7 @@ set(kalarmdirresource_SRCS
     ../shared/alarmtypewidget.cpp
 )
 
-install(FILES kalarmdirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
+install(FILES kalarmdirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
 ki18n_wrap_ui(kalarmdirresource_SRCS settingsdialog.ui ../shared/alarmtypewidget.ui)
 kconfig_add_kcfg_files(kalarmdirresource_SRCS settings.kcfgc)

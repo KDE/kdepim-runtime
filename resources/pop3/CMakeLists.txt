@@ -16,7 +16,7 @@ set( pop3resource_SRCS
 
 
 
-install( FILES pop3resource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
+install( FILES pop3resource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 ki18n_wrap_ui( pop3resource_SRCS popsettings.ui)
 kconfig_add_kcfg_files(pop3resource_SRCS settingsbase.kcfgc)

@@ -17,7 +17,7 @@ set( notesresource_SRCS
   notesresource.cpp
 )
 
-install( FILES notesresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
+install( FILES notesresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 kconfig_add_kcfg_files(notesresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/notesresource.kcfg org.kde.Akonadi.Notes.Settings)

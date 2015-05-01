@@ -12,7 +12,7 @@ set( mboxresource_SRCS
   mboxresource.cpp
 )
 
-install( FILES mboxresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
+install( FILES mboxresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 ki18n_wrap_ui(mboxresource_SRCS
   compactpage.ui

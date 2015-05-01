@@ -59,7 +59,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
     set(davgroupwareresource_SRCS ../../shared/singlefileresource/getcredentialsjob.cpp ${davgroupwareresource_SRCS})
   endif()
 
-  install( FILES davgroupwareresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
+  install( FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
   install( FILES davgroupwareprovider.desktop DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR} )
 
   file( GLOB providersFiles "../services/*.desktop" )

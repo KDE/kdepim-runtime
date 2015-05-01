@@ -66,5 +66,5 @@ install(TARGETS akonadi_googlecalendar_resource ${KDE_INSTALL_TARGETS_DEFAULT_AR
 
 install(
   FILES googlecalendarresource.desktop
-  DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents"
+  DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents"
 )
