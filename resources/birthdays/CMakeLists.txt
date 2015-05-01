@@ -36,4 +36,4 @@ target_link_libraries(akonadi_birthdays_resource
 )
 
 install( TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
-install( FILES birthdaysresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES birthdaysresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )

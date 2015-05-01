@@ -16,7 +16,7 @@ qt5_add_dbus_adaptor(icaldirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICalDirectory.Settings.xml settings.h Settings
 )
 
-install( FILES icaldirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES icaldirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 add_executable(akonadi_icaldir_resource ${icaldirresource_SRCS})
 

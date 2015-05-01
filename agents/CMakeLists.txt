@@ -48,4 +48,3 @@ add_subdirectory( invitations )
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
   feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 endif()
-

@@ -59,5 +59,5 @@ install(TARGETS akonadi_googlecontacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_AR
 
 install(
   FILES googlecontactsresource.desktop
-  DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents"
+  DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents"
 )

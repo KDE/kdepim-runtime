@@ -13,7 +13,7 @@ qt5_add_dbus_adaptor(vcarddirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCardDirectory.Settings.xml settings.h Settings
 )
 
-install( FILES vcarddirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES vcarddirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 add_executable(akonadi_vcarddir_resource ${vcarddirresource_SRCS})
 

@@ -73,7 +73,7 @@ set( akonadi_imap_resource_SRCS
   serverinfodialog.cpp
 )
 
-install( FILES imapresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES imapresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 if (KDEPIM_MOBILE_UI)
 ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_mobile.ui)

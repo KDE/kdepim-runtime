@@ -25,7 +25,7 @@ set( mixedmaildirresource_SRCS
   mixedmaildir_debug.cpp
 )
 
-install( FILES mixedmaildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES mixedmaildirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 ki18n_wrap_ui(mixedmaildirresource_SRCS settings.ui)
 

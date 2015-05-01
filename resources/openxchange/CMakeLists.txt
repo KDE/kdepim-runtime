@@ -39,7 +39,7 @@ set( openxchangeresource_SRCS
 
 ki18n_wrap_ui( openxchangeresource_SRCS configdialog.ui )
 
-install( FILES openxchangeresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES openxchangeresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 kconfig_add_kcfg_files(openxchangeresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/openxchangeresource.kcfg org.kde.Akonadi.OpenXchange.Settings)

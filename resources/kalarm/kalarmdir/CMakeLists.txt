@@ -15,7 +15,7 @@ set(kalarmdirresource_SRCS
     ../shared/alarmtypewidget.cpp
 )
 
-install(FILES kalarmdirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES kalarmdirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
 
 ki18n_wrap_ui(kalarmdirresource_SRCS settingsdialog.ui ../shared/alarmtypewidget.ui)
 kconfig_add_kcfg_files(kalarmdirresource_SRCS settings.kcfgc)

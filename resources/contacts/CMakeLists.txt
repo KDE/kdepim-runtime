@@ -19,7 +19,7 @@ qt5_add_dbus_adaptor(contactsresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Contacts.Settings.xml settings.h Akonadi_Contacts_Resource::ContactsResourceSettings contactsresourcesettingsadaptor ContactsResourceSettingsAdaptor
 )
 
-install( FILES contactsresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES contactsresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 add_executable(akonadi_contacts_resource ${contactsresource_SRCS})
 

@@ -12,7 +12,7 @@ set( mboxresource_SRCS
   mboxresource.cpp
 )
 
-install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES mboxresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 ki18n_wrap_ui(mboxresource_SRCS
   compactpage.ui
