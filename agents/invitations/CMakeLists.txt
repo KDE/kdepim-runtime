@@ -32,4 +32,4 @@ endif ()
 
 
 install(TARGETS akonadi_invitations_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES invitationsagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES invitationsagent.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")

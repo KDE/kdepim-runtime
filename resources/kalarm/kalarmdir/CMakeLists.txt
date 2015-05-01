@@ -16,7 +16,7 @@ set(kalarmdirresource_SRCS
     ../shared/alarmtypewidget.cpp
 )
 
-install(FILES kalarmdirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES kalarmdirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
 
 kde4_add_ui_files(kalarmdirresource_SRCS settingsdialog.ui ../shared/alarmtypewidget.ui)
 kde4_add_kcfg_files(kalarmdirresource_SRCS settings.kcfgc)

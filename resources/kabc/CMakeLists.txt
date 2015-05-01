@@ -25,7 +25,7 @@ set( kabcresource_SRCS
   kresourceassistant.cpp
 )
 
-install( FILES kabcresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES kabcresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 
 kde4_add_executable(akonadi_kabc_resource ${kabcresource_SRCS})

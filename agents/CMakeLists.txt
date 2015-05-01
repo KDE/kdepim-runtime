@@ -17,4 +17,4 @@ add_subdirectory( newmailnotifier )
 add_subdirectory( migration )
 add_subdirectory( invitations )
 
-install(FILES akonadinepomukfeederagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES akonadinepomukfeederagent.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")

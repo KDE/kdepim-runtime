@@ -6,7 +6,7 @@ set( mtdummyresource_SRCS
 # mailtransport debug area
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5324)
 
-install( FILES mtdummyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES mtdummyresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 kde4_add_ui_files(mtdummyresource_SRCS settings.ui)
 kde4_add_kcfg_files(mtdummyresource_SRCS settings.kcfgc)

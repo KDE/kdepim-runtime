@@ -62,7 +62,7 @@ if (QT_QTXMLPATTERNS_LIBRARY)
     set(davgroupwareresource_SRCS ../../shared/getcredentialsjob.cpp ${davgroupwareresource_SRCS})
   endif()
 
-  install( FILES davgroupwareresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+  install( FILES davgroupwareresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
   install( FILES davgroupwareprovider.desktop DESTINATION ${SERVICETYPES_INSTALL_DIR} )
 
   file( GLOB providersFiles "../services/*.desktop" )

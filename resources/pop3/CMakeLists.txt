@@ -35,7 +35,7 @@ set( pop3resource_SRCS
 
 add_definitions(-DKDE_DEFAULT_DEBUG_AREA=5266)
 
-install( FILES pop3resource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES pop3resource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 kde4_add_ui_files( pop3resource_SRCS popsettings.ui)
 kde4_add_kcfg_files(pop3resource_SRCS settingsbase.kcfgc)

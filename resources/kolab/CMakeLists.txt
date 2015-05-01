@@ -57,5 +57,5 @@ target_link_libraries(akonadi_kolab_resource
     ${KDEPIMLIBS_KCALCORE_LIBS}
 )
 
-install(FILES kolabresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES kolabresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${INSTALL_TARGETS_DEFAULT_ARGS})

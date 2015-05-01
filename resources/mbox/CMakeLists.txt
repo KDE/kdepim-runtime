@@ -18,7 +18,7 @@ set( mboxresource_SRCS
   mboxresource.cpp
 )
 
-install( FILES mboxresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES mboxresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 kde4_add_ui_files(mboxresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_UI}

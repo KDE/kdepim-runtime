@@ -52,7 +52,7 @@ endif ()
 install(TARGETS akonadi_newmailnotifier_agent ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
-install(FILES newmailnotifieragent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES newmailnotifieragent.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
 install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION "${DATA_INSTALL_DIR}/akonadi_newmailnotifier_agent" )
 
 add_subdirectory(kconf_update)

@@ -27,7 +27,7 @@ set( mixedmaildirresource_SRCS
   ../shared/createandsettagsjob.cpp
 )
 
-install( FILES mixedmaildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES mixedmaildirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 kde4_add_ui_files(mixedmaildirresource_SRCS settings.ui)
 

@@ -13,7 +13,7 @@ set( localbookmarksresource_SRCS
   localbookmarksresource.cpp
 )
 
-install( FILES localbookmarksresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES localbookmarksresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 
 kde4_add_kcfg_files(localbookmarksresource_SRCS settings.kcfgc)

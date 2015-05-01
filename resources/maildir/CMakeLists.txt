@@ -23,7 +23,7 @@ set( maildirresource_SRCS
   retrieveitemsjob.cpp
 )
 
-install( FILES maildirresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES maildirresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 kde4_add_ui_files(maildirresource_SRCS settings.ui)
 

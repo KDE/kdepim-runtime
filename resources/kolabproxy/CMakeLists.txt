@@ -42,7 +42,7 @@ set(kolabproxyresource_SRCS
 
 qt4_add_dbus_adaptor(kolabproxyresource_SRCS org.freedesktop.Akonadi.kolabproxy.xml  kolabproxyresource.h KolabProxyResource)
 
-install(FILES kolabproxyresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES kolabproxyresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
 
 kde4_add_kcfg_files(kolabproxyresource_SRCS settings.kcfgc)
 

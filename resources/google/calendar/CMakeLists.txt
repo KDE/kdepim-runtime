@@ -73,5 +73,5 @@ install(TARGETS akonadi_googlecalendar_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(
   FILES googlecalendarresource.desktop
-  DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents"
+  DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents"
 )

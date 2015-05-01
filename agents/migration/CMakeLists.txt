@@ -35,6 +35,6 @@ target_link_libraries(akonadi_migration_agent
 )
 
 install(TARGETS akonadi_migration_agent ${INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES migrationagent.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents")
+install(FILES migrationagent.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents")
 
 add_subdirectory(tests)

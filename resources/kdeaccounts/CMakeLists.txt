@@ -12,7 +12,7 @@ set( kdeaccountsresource_SRCS
   kdeaccountsresource.cpp
 )
 
-install( FILES kdeaccountsresource.desktop DESTINATION "${CMAKE_INSTALL_PREFIX}/share/akonadi/agents" )
+install( FILES kdeaccountsresource.desktop DESTINATION "${SHARE_INSTALL_PREFIX}/akonadi/agents" )
 
 kde4_add_ui_files(kdeaccountsresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI})
 kde4_add_kcfg_files(kdeaccountsresource_SRCS settings.kcfgc)
