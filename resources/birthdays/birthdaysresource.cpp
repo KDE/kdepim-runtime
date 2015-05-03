@@ -167,10 +167,10 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
 
     Event::Ptr event = createBirthday(item);
     if (event) {
-        addPendingEvent(event, QString::fromLatin1("b%1").arg(item.id()));
+        addPendingEvent(event, QStringLiteral("b%1").arg(item.id()));
     } else {
         Item i(KCalCore::Event::eventMimeType());
-        i.setRemoteId(QString::fromLatin1("b%1").arg(item.id()));
+        i.setRemoteId(QStringLiteral("b%1").arg(item.id()));
         mDeletedItems[ i.remoteId() ] = i;
     }
 
@@ -197,9 +197,9 @@ void BirthdaysResource::addPendingEvent(const KCalCore::Event::Ptr &event, const
 void BirthdaysResource::contactRemoved(const Akonadi::Item &item)
 {
     Item i(KCalCore::Event::eventMimeType());
-    i.setRemoteId(QString::fromLatin1("b%1").arg(item.id()));
+    i.setRemoteId(QStringLiteral("b%1").arg(item.id()));
     mDeletedItems[ i.remoteId() ] = i;
-    i.setRemoteId(QString::fromLatin1("a%1").arg(item.id()));
+    i.setRemoteId(QStringLiteral("a%1").arg(item.id()));
     mDeletedItems[ i.remoteId() ] = i;
     synchronize();
 }

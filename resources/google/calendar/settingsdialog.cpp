@@ -69,7 +69,7 @@ SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowI
     m_eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate |
                                    KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
     if (Settings::self()->eventsSince().isEmpty()) {
-        const QString ds = QString::fromLatin1("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
+        const QString ds = QStringLiteral("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
         m_eventsLimitCombo->setDate(QDate::fromString(ds, Qt::ISODate));
     } else {
         m_eventsLimitCombo->setDate(QDate::fromString(Settings::self()->eventsSince(), Qt::ISODate));

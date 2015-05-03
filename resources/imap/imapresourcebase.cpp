@@ -206,7 +206,7 @@ void ImapResourceBase::updateResourceName()
 
         const QSettings agentsrc(agentsrcFile, QSettings::IniFormat);
         const int instanceCounter = agentsrc.value(
-                                        QString::fromLatin1("InstanceCounters/%1/InstanceCounter").arg(agentType),
+                                        QStringLiteral("InstanceCounters/%1/InstanceCounter").arg(agentType),
                                         -1).toInt();
 
         if (instanceCounter > 0) {
