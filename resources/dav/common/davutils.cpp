@@ -213,7 +213,7 @@ DavUtils::Protocol DavUtils::protocolByName(const QString &name)
 
 DavUtils::Protocol DavUtils::protocolByTranslatedName(const QString &name)
 {
-    DavUtils::Protocol protocol;
+    DavUtils::Protocol protocol = DavUtils::CalDav;
 
     if (name == i18n("CalDav")) {
         protocol = DavUtils::CalDav;
