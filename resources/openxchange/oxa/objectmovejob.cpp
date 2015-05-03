@@ -85,7 +85,7 @@ void ObjectMoveJob::davJobFinished(KJob *job)
 
     QDomElement element = prop.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QStringLiteral("last_modified")) {
+        if (element.tagName() == QLatin1String("last_modified")) {
             mObject.setLastModified(OXUtils::readString(element.text()));
         }
 

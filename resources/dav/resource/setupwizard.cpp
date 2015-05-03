@@ -86,7 +86,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     }
     QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {
-        if (providerName == QStringLiteral("davical")) {
+        if (providerName == QLatin1String("davical")) {
             if (!localPath.endsWith(QLatin1Char('/'))) {
                 pathPattern.append(localPath + QLatin1Char('/'));
             } else {
@@ -190,11 +190,11 @@ SetupWizard::Url::List SetupWizard::urls() const
     foreach (const QString &protocol, supportedProtocols) {
         Url url;
 
-        if (protocol == QStringLiteral("CalDav")) {
+        if (protocol == QLatin1String("CalDav")) {
             url.protocol = DavUtils::CalDav;
-        } else if (protocol == QStringLiteral("CardDav")) {
+        } else if (protocol == QLatin1String("CardDav")) {
             url.protocol = DavUtils::CardDav;
-        } else if (protocol == QStringLiteral("GroupDav")) {
+        } else if (protocol == QLatin1String("GroupDav")) {
             url.protocol = DavUtils::GroupDav;
         } else {
             return urls;

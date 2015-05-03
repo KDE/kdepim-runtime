@@ -211,7 +211,7 @@ void ConfigDialog::onEditButtonClicked()
     dlg->setRemoteUrl(urlConfig->mUrl);
     dlg->setProtocol(DavUtils::Protocol(urlConfig->mProtocol));
 
-    if (urlConfig->mUser == QStringLiteral("$default$")) {
+    if (urlConfig->mUser == QLatin1String("$default$")) {
         dlg->setUseDefaultCredentials(true);
     } else {
         dlg->setUseDefaultCredentials(false);

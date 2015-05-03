@@ -106,9 +106,9 @@ void ObjectCreateJob::davJobFinished(KJob *job)
 
     QDomElement element = prop.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QStringLiteral("object_id")) {
+        if (element.tagName() == QLatin1String("object_id")) {
             mObject.setObjectId(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QStringLiteral("last_modified")) {
+        } else if (element.tagName() == QLatin1String("last_modified")) {
             mObject.setLastModified(OXUtils::readString(element.text()));
         }
 

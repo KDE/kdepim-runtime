@@ -350,15 +350,15 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes(const QDomEle
 
     while (!compElement.isNull()) {
         const QString type = compElement.attribute(QStringLiteral("name")).toLower();
-        if (type == QStringLiteral("vcalendar")) {
+        if (type == QLatin1String("vcalendar")) {
             contentTypes |= DavCollection::Calendar;
-        } else if (type == QStringLiteral("vevent")) {
+        } else if (type == QLatin1String("vevent")) {
             contentTypes |= DavCollection::Events;
-        } else if (type == QStringLiteral("vtodo")) {
+        } else if (type == QLatin1String("vtodo")) {
             contentTypes |= DavCollection::Todos;
-        } else if (type == QStringLiteral("vfreebusy")) {
+        } else if (type == QLatin1String("vfreebusy")) {
             contentTypes |= DavCollection::FreeBusy;
-        } else if (type == QStringLiteral("vjournal")) {
+        } else if (type == QLatin1String("vjournal")) {
             contentTypes |= DavCollection::Journal;
         }
 

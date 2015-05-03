@@ -311,11 +311,11 @@ QString Settings::username(DavUtils::Protocol proto, const QString &url) const
     QString key = url + QLatin1Char(',') + DavUtils::protocolName(proto);
 
     if (mUrls.contains(key))
-        if (mUrls[ key ]->mUser == QStringLiteral("$default$")) {
+        if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
             return defaultUsername();
         }
 #ifdef HAVE_ACCOUNTS
-        else if (mUrls[ key ]->mUser == QStringLiteral("$accounts$")) {
+        else if (mUrls[ key ]->mUser == QLatin1String("$accounts$")) {
             return accountsUsername();
         }
 #endif
@@ -332,7 +332,7 @@ QString Settings::password(DavUtils::Protocol proto, const QString &url)
     QString key = url + QLatin1Char(',') + DavUtils::protocolName(proto);
 
     if (mUrls.contains(key))
-        if (mUrls[ key ]->mUser == QStringLiteral("$default$")) {
+        if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
             return defaultPassword();
         } else {
             return mUrls[ key ]->mPassword;
@@ -506,11 +506,11 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     QString entry;
     QString pass;
 
-    if (user == QStringLiteral("$default$")) {
+    if (user == QLatin1String("$default$")) {
         entry = mResourceIdentifier + QLatin1Char(',') + user;
     }
 #ifdef HAVE_ACCOUNTS
-    else if (user == QStringLiteral("$accounts$")) {
+    else if (user == QLatin1String("$accounts$")) {
         return loadPasswordFromAccounts();
     }
 #endif
@@ -591,7 +591,7 @@ QString Settings::promptForPassword(const QString &user)
     QVBoxLayout *vLayout = new QVBoxLayout();
     mainWidget->setLayout(vLayout);
     QLabel *label = new QLabel(i18n("A password is required for user %1",
-                                    (user == QStringLiteral("$default$") ? defaultUsername() : user)),
+                                    (user == QLatin1String("$default$") ? defaultUsername() : user)),
                                mainWidget
                               );
     vLayout->addWidget(label);
