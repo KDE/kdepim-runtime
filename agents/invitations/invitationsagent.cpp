@@ -66,11 +66,11 @@ public:
     InvitationsCollectionRequestJob(SpecialCollections *collection, InvitationsAgent *agent)
         : SpecialCollectionsRequestJob(collection, agent)
     {
-        setDefaultResourceType(QLatin1String("akonadi_ical_resource"));
+        setDefaultResourceType(QStringLiteral("akonadi_ical_resource"));
 
         QVariantMap options;
-        options.insert(QLatin1String("Path"), QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("akonadi_invitations")));
-        options.insert(QLatin1String("Name"), i18n("Invitations"));
+        options.insert(QStringLiteral("Path"), QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QStringLiteral("akonadi_invitations")));
+        options.insert(QStringLiteral("Name"), i18n("Invitations"));
         setDefaultResourceOptions(options);
 
         QMap<QByteArray, QString> displayNameMap;
@@ -79,7 +79,7 @@ public:
         setNameForTypeMap(displayNameMap);
 
         QMap<QByteArray, QString> iconNameMap;
-        iconNameMap.insert("invitations", QLatin1String("folder"));
+        iconNameMap.insert("invitations", QStringLiteral("folder"));
         setIconForTypeMap(iconNameMap);
     }
 

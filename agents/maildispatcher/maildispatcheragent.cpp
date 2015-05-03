@@ -158,8 +158,8 @@ void MailDispatcherAgent::Private::dispatch()
                 Q_EMIT q->status(AgentBase::Idle, i18n("Finished sending messages."));
 
                 if (!errorOccurred) {
-                    KNotification *notify = new KNotification(QLatin1String("emailsent"));
-                    notify->setComponentName(QLatin1String("akonadi_maildispatcher_agent"));
+                    KNotification *notify = new KNotification(QStringLiteral("emailsent"));
+                    notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
                     notify->setTitle(i18nc("Notification title when email was sent", "E-Mail Successfully Sent"));
                     notify->setText(i18nc("Notification when the email was sent", "Your E-Mail has been sent successfully."));
                     notify->sendEvent();

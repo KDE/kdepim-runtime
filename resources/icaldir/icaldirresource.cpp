@@ -44,7 +44,7 @@ using namespace KCalCore;
 
 static Incidence::Ptr readFromFile(const QString &fileName, const QString &expectedIdentifier)
 {
-    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QLatin1String("UTC")));
+    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QStringLiteral("UTC")));
     FileStorage::Ptr fileStorage = FileStorage::Ptr(new FileStorage(calendar, fileName, new ICalFormat()));
 
     Incidence::Ptr incidence;
@@ -67,7 +67,7 @@ static bool writeToFile(const QString &fileName, Incidence::Ptr &incidence)
         return false;
     }
 
-    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QLatin1String("UTC")));
+    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QStringLiteral("UTC")));
     FileStorage::Ptr fileStorage = FileStorage::Ptr(new FileStorage(calendar, fileName, new ICalFormat()));
     calendar->addIncidence(incidence);
     Q_ASSERT(calendar->incidences().count() == 1);
@@ -85,7 +85,7 @@ ICalDirResource::ICalDirResource(const QString &id)
 {
     // setup the resource
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
             Settings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();

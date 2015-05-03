@@ -42,7 +42,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     setLayout(mainLayout);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
-    setWindowIcon(QIcon::fromTheme(QLatin1String("folder-remote")));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -119,7 +119,7 @@ void ConfigDialog::onAddButtonClicked()
 
             urlConfig->mUrl = dlg->remoteUrl();
             if (dlg->useDefaultCredentials()) {
-                urlConfig->mUser = QLatin1String("$default$");
+                urlConfig->mUser = QStringLiteral("$default$");
             } else {
                 urlConfig->mUser = dlg->username();
                 urlConfig->mPassword = dlg->password();
@@ -156,7 +156,7 @@ void ConfigDialog::onSearchButtonClicked()
 
                 urlConfig->mUrl = split.at(1);
                 if (dlg->useDefaultCredentials()) {
-                    urlConfig->mUser = QLatin1String("$default$");
+                    urlConfig->mUser = QStringLiteral("$default$");
                 } else {
                     urlConfig->mUser = dlg->username();
                     urlConfig->mPassword = dlg->password();
@@ -211,7 +211,7 @@ void ConfigDialog::onEditButtonClicked()
     dlg->setRemoteUrl(urlConfig->mUrl);
     dlg->setProtocol(DavUtils::Protocol(urlConfig->mProtocol));
 
-    if (urlConfig->mUser == QLatin1String("$default$")) {
+    if (urlConfig->mUser == QStringLiteral("$default$")) {
         dlg->setUseDefaultCredentials(true);
     } else {
         dlg->setUseDefaultCredentials(false);
@@ -228,7 +228,7 @@ void ConfigDialog::onEditButtonClicked()
         Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
         urlConfigAccepted->mUrl = dlg->remoteUrl();
         if (dlg->useDefaultCredentials()) {
-            urlConfigAccepted->mUser = QLatin1String("$default$");
+            urlConfigAccepted->mUser = QStringLiteral("$default$");
         } else {
             urlConfigAccepted->mUser = dlg->username();
             urlConfigAccepted->mPassword = dlg->password();

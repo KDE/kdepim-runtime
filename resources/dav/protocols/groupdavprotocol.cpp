@@ -26,15 +26,15 @@ GroupdavProtocol::GroupdavProtocol()
 {
     QDomDocument document;
 
-    QDomElement propfindElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("propfind"));
+    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
     document.appendChild(propfindElement);
 
-    QDomElement propElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("prop"));
+    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
     propfindElement.appendChild(propElement);
 
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("displayname")));
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("resourcetype")));
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("getetag")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
 
     mItemsQueries << document;
 }
@@ -58,21 +58,21 @@ QDomDocument GroupdavProtocol::collectionsQuery() const
 {
     QDomDocument document;
 
-    QDomElement propfindElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("propfind"));
+    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
     document.appendChild(propfindElement);
 
-    QDomElement propElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("prop"));
+    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
     propfindElement.appendChild(propElement);
 
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("displayname")));
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("resourcetype")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
 
     return document;
 }
 
 QString GroupdavProtocol::collectionsXQuery() const
 {
-    const QString query(QLatin1String("//*[(local-name()='vevent-collection' or local-name()='vtodo-collection' or local-name()='vcard-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']"));
+    const QString query(QStringLiteral("//*[(local-name()='vevent-collection' or local-name()='vtodo-collection' or local-name()='vcard-collection') and namespace-uri()='http://groupdav.org/']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']"));
 
     return query;
 }
@@ -105,20 +105,20 @@ DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes(const QDomE
      *  </propstat>
      */
 
-    const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QLatin1String("DAV:"), QLatin1String("prop"));
-    const QDomElement resourcetypeElement = DavUtils::firstChildElementNS(propElement, QLatin1String("DAV:"), QLatin1String("resourcetype"));
+    const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("prop"));
+    const QDomElement resourcetypeElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("resourcetype"));
 
     DavCollection::ContentTypes contentTypes;
 
-    if (!DavUtils::firstChildElementNS(resourcetypeElement, QLatin1String("http://groupdav.org/"), QLatin1String("vevent-collection")).isNull()) {
+    if (!DavUtils::firstChildElementNS(resourcetypeElement, QStringLiteral("http://groupdav.org/"), QStringLiteral("vevent-collection")).isNull()) {
         contentTypes |= DavCollection::Events;
     }
 
-    if (!DavUtils::firstChildElementNS(resourcetypeElement, QLatin1String("http://groupdav.org/"), QLatin1String("vtodo-collection")).isNull()) {
+    if (!DavUtils::firstChildElementNS(resourcetypeElement, QStringLiteral("http://groupdav.org/"), QStringLiteral("vtodo-collection")).isNull()) {
         contentTypes |= DavCollection::Todos;
     }
 
-    if (!DavUtils::firstChildElementNS(resourcetypeElement, QLatin1String("http://groupdav.org/"), QLatin1String("vcard-collection")).isNull()) {
+    if (!DavUtils::firstChildElementNS(resourcetypeElement, QStringLiteral("http://groupdav.org/"), QStringLiteral("vcard-collection")).isNull()) {
         contentTypes |= DavCollection::Contacts;
     }
 
@@ -127,5 +127,5 @@ DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes(const QDomE
 
 QString GroupdavProtocol::contactsMimeType() const
 {
-    return QLatin1String("text/x-vcard");
+    return QStringLiteral("text/x-vcard");
 }

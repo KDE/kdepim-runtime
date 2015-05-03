@@ -252,7 +252,7 @@ Akonadi::Relation::List DummyResourceState::removedRelations() const
 
 QString DummyResourceState::rootRemoteId() const
 {
-    return QLatin1String("root-id");
+    return QStringLiteral("root-id");
 }
 
 void DummyResourceState::setIdleCollection(const Akonadi::Collection &collection)

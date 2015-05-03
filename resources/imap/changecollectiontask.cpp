@@ -137,7 +137,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
 
             foreach (const QByteArray &entry, annotations.keys()) {   //krazy:exclude=foreach
                 KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob(session);
-                if (serverCapabilities().contains(QLatin1String("METADATA"))) {
+                if (serverCapabilities().contains(QStringLiteral("METADATA"))) {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
                 } else {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);

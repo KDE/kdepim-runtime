@@ -70,7 +70,7 @@ bool SerializerPluginKAlarm::deserialize(Item &item, const QByteArray &label, QI
     // Set additional event data contained in attributes
     if (mRegistered.isEmpty()) {
         AttributeFactory::registerAttribute<KAlarmCal::EventAttribute>();
-        mRegistered = QLatin1String("x");   // set to any non-null string
+        mRegistered = QStringLiteral("x");   // set to any non-null string
     }
     const EventAttribute dummy;
     if (item.hasAttribute(dummy.type())) {

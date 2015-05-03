@@ -35,10 +35,10 @@ using namespace Akonadi_VCard_Resource;
 VCardResource::VCardResource(const QString &id)
     : SingleFileResource<Settings>(id)
 {
-    setSupportedMimetypes(QStringList() << KContacts::Addressee::mimeType(), QLatin1String("office-address-book"));
+    setSupportedMimetypes(QStringList() << KContacts::Addressee::mimeType(), QStringLiteral("office-address-book"));
 
     new VCardSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
             mSettings, QDBusConnection::ExportAdaptors);
 }
 
@@ -71,8 +71,8 @@ void VCardResource::aboutToQuit()
 
 void VCardResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
 {
-    dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("text-directory")));
-    dlg->setFilter(QLatin1String("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File"));
+    dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("text-directory")));
+    dlg->setFilter(QStringLiteral("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File"));
     dlg->setWindowTitle(i18n("Select Address Book"));
 }
 

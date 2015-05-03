@@ -173,7 +173,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
         setRemoteUrl(remoteUrl() + QLatin1Char('/'));
     }
 
-    if (!remoteUrl().startsWith(QLatin1String("https://")) && !remoteUrl().startsWith(QLatin1String("http://"))) {
+    if (!remoteUrl().startsWith(QStringLiteral("https://")) && !remoteUrl().startsWith(QStringLiteral("http://"))) {
         setRemoteUrl(QString("https://") + remoteUrl());
     }
 
@@ -231,7 +231,7 @@ void UrlConfigurationDialog::onModelDataChanged(const QModelIndex &topLeft, cons
 
     DavUtils::DavUrl davUrl(fullUrl, protocol());
     DavCollectionModifyJob *job = new DavCollectionModifyJob(davUrl);
-    job->setProperty(QLatin1String("displayname"), newName);
+    job->setProperty(QStringLiteral("displayname"), newName);
     connect(job, &DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);
     job->start();
     mUi.discoveredUrls->setEnabled(false);

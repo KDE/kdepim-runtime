@@ -27,15 +27,15 @@ CarddavProtocol::CarddavProtocol()
 {
     QDomDocument document;
 
-    QDomElement propfindElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("propfind"));
+    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
     document.appendChild(propfindElement);
 
-    QDomElement propElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("prop"));
+    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
     propfindElement.appendChild(propElement);
 
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("displayname")));
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("resourcetype")));
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("getetag")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
 
     mItemsQueries << document;
     mItemsMimeTypes << KContacts::Addressee::mimeType();
@@ -58,33 +58,33 @@ bool CarddavProtocol::useMultiget() const
 
 QString CarddavProtocol::principalHomeSet() const
 {
-    return QLatin1String("addressbook-home-set");
+    return QStringLiteral("addressbook-home-set");
 }
 
 QString CarddavProtocol::principalHomeSetNS() const
 {
-    return QLatin1String("urn:ietf:params:xml:ns:carddav");
+    return QStringLiteral("urn:ietf:params:xml:ns:carddav");
 }
 
 QDomDocument CarddavProtocol::collectionsQuery() const
 {
     QDomDocument document;
 
-    QDomElement propfindElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("propfind"));
+    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
     document.appendChild(propfindElement);
 
-    QDomElement propElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("prop"));
+    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
     propfindElement.appendChild(propElement);
 
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("displayname")));
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("resourcetype")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
 
     return document;
 }
 
 QString CarddavProtocol::collectionsXQuery() const
 {
-    const QString query(QLatin1String("//*[local-name()='addressbook' and namespace-uri()='urn:ietf:params:xml:ns:carddav']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']"));
+    const QString query(QStringLiteral("//*[local-name()='addressbook' and namespace-uri()='urn:ietf:params:xml:ns:carddav']/ancestor::*[local-name()='response' and namespace-uri()='DAV:']"));
 
     return query;
 }
@@ -103,19 +103,19 @@ QDomDocument CarddavProtocol::itemsReportQuery(const QStringList &urls) const
 {
     QDomDocument document;
 
-    QDomElement multigetElement = document.createElementNS(QLatin1String("urn:ietf:params:xml:ns:carddav"), QLatin1String("addressbook-multiget"));
+    QDomElement multigetElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:carddav"), QStringLiteral("addressbook-multiget"));
     document.appendChild(multigetElement);
 
-    QDomElement propElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("prop"));
+    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
     multigetElement.appendChild(propElement);
 
-    propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("getetag")));
-    QDomElement addressDataElement = document.createElementNS(QLatin1String("urn:ietf:params:xml:ns:carddav"), QLatin1String("address-data"));
-    addressDataElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QLatin1String("allprop")));
+    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
+    QDomElement addressDataElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:carddav"), QStringLiteral("address-data"));
+    addressDataElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("allprop")));
     propElement.appendChild(addressDataElement);
 
     foreach (const QString &url, urls) {
-        QDomElement hrefElement = document.createElementNS(QLatin1String("DAV:"), QLatin1String("href"));
+        QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
         const KUrl pathUrl(url);
 
         const QDomText textNode = document.createTextNode(pathUrl.encodedPathAndQuery());
@@ -129,12 +129,12 @@ QDomDocument CarddavProtocol::itemsReportQuery(const QStringList &urls) const
 
 QString CarddavProtocol::responseNamespace() const
 {
-    return QLatin1String("urn:ietf:params:xml:ns:carddav");
+    return QStringLiteral("urn:ietf:params:xml:ns:carddav");
 }
 
 QString CarddavProtocol::dataTagName() const
 {
-    return QLatin1String("address-data");
+    return QStringLiteral("address-data");
 }
 
 DavCollection::ContentTypes CarddavProtocol::collectionContentTypes(const QDomElement &) const
@@ -144,5 +144,5 @@ DavCollection::ContentTypes CarddavProtocol::collectionContentTypes(const QDomEl
 
 QString CarddavProtocol::contactsMimeType() const
 {
-    return QLatin1String("text/vcard");
+    return QStringLiteral("text/vcard");
 }

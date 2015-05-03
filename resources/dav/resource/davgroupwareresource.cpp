@@ -82,7 +82,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     mDavCollectionRoot.setRights(Collection::CanCreateCollection | Collection::CanDeleteCollection | Collection::CanChangeCollection);
 
     EntityDisplayAttribute *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-    attribute->setIconName(QLatin1String("folder-remote"));
+    attribute->setIconName(QStringLiteral("folder-remote"));
 
     int refreshInterval = Settings::self()->refreshInterval();
     if (refreshInterval == 0) {
@@ -94,7 +94,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     cachePolicy.setSyncOnDemand(false);
     cachePolicy.setCacheTimeout(-1);
     cachePolicy.setIntervalCheckTime(refreshInterval);
-    cachePolicy.setLocalParts(QStringList() << QLatin1String("ALL"));
+    cachePolicy.setLocalParts(QStringList() << QStringLiteral("ALL"));
     mDavCollectionRoot.setCachePolicy(cachePolicy);
 
     changeRecorder()->fetchCollection(true);
@@ -195,7 +195,7 @@ void DavGroupwareResource::configure(WId windowId)
                 urlConfig->mUrl = url.url;
                 urlConfig->mProtocol = url.protocol;
                 urlConfig->mUser = url.userName;
-                urlConfig->mPassword = wizard.field(QLatin1String("credentialsPassword")).toString();
+                urlConfig->mPassword = wizard.field(QStringLiteral("credentialsPassword")).toString();
 
                 Settings::self()->newUrlConfiguration(urlConfig);
             }
@@ -204,10 +204,10 @@ void DavGroupwareResource::configure(WId windowId)
                 Settings::self()->setDisplayName(wizard.displayName());
             }
 
-            QString defaultUser = wizard.field(QLatin1String("credentialsUserName")).toString();
+            QString defaultUser = wizard.field(QStringLiteral("credentialsUserName")).toString();
             if (!defaultUser.isEmpty()) {
                 Settings::self()->setDefaultUsername(defaultUser);
-                Settings::self()->setDefaultPassword(wizard.field(QLatin1String("credentialsPassword")).toString());
+                Settings::self()->setDefaultPassword(wizard.field(QStringLiteral("credentialsPassword")).toString());
             }
         }
     }
@@ -300,7 +300,7 @@ bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QB
 
     DavItem davItem;
     davItem.setUrl(item.remoteId());
-    davItem.setContentType(QLatin1String("text/calendar"));
+    davItem.setContentType(QStringLiteral("text/calendar"));
     davItem.setEtag(item.remoteRevision());
 
     DavItemFetchJob *job = new DavItemFetchJob(davUrl, davItem);
@@ -626,7 +626,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 
         const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
         if (contentTypes & DavCollection::Calendar) {
-            mimeTypes << QLatin1String("text/calendar");
+            mimeTypes << QStringLiteral("text/calendar");
         }
 
         if (contentTypes & DavCollection::Events) {
@@ -1030,10 +1030,10 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
     const QStringList mimeTypes = collection.contentMimeTypes();
     if (mimeTypes.count() == 1) {
         QHash<QString, QString> mapping;
-        mapping.insert(KCalCore::Event::eventMimeType(), QLatin1String("view-calendar"));
-        mapping.insert(KCalCore::Todo::todoMimeType(), QLatin1String("view-calendar-tasks"));
-        mapping.insert(KCalCore::Journal::journalMimeType(), QLatin1String("view-pim-journal"));
-        mapping.insert(KContacts::Addressee::mimeType(), QLatin1String("view-pim-contacts"));
+        mapping.insert(KCalCore::Event::eventMimeType(), QStringLiteral("view-calendar"));
+        mapping.insert(KCalCore::Todo::todoMimeType(), QStringLiteral("view-calendar-tasks"));
+        mapping.insert(KCalCore::Journal::journalMimeType(), QStringLiteral("view-pim-journal"));
+        mapping.insert(KContacts::Addressee::mimeType(), QStringLiteral("view-pim-contacts"));
 
         if (mapping.contains(mimeTypes.first())) {
             EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);

@@ -148,12 +148,12 @@ void FolderArchiveSettingPage::writeSettings()
     mInfo->writeConfig(grp);
 
     //Update cache from KMail
-    const QString kmailInterface = QLatin1String("org.kde.kmail");
+    const QString kmailInterface = QStringLiteral("org.kde.kmail");
     QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(kmailInterface);
     if (!reply.isValid() || !reply.value()) {
         return;
     }
-    QDBusInterface kmail(kmailInterface, QLatin1String("/KMail"), QLatin1String("org.kde.kmail.kmail"));
-    kmail.asyncCall(QLatin1String("reloadFolderArchiveConfig"));
+    QDBusInterface kmail(kmailInterface, QStringLiteral("/KMail"), QStringLiteral("org.kde.kmail.kmail"));
+    kmail.asyncCall(QStringLiteral("reloadFolderArchiveConfig"));
 }
 

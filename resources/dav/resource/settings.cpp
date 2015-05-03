@@ -114,7 +114,7 @@ Settings::Settings()
     s_globalSettings->q = this;
 
     new SettingsAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"), this,
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
             QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 
     if (settingsVersion() == 1) {
@@ -153,12 +153,12 @@ void Settings::setResourceIdentifier(const QString &identifier)
 
 void Settings::setDefaultPassword(const QString &password)
 {
-    savePassword(mResourceIdentifier, QLatin1String("$default$"), password);
+    savePassword(mResourceIdentifier, QStringLiteral("$default$"), password);
 }
 
 QString Settings::defaultPassword()
 {
-    return loadPassword(mResourceIdentifier, QLatin1String("$default$"));
+    return loadPassword(mResourceIdentifier, QStringLiteral("$default$"));
 }
 
 DavUtils::DavUrl::List Settings::configuredDavUrls()
@@ -267,7 +267,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
     }
 
     mUrls[ key ] = urlConfig;
-    if (urlConfig->mUser != QLatin1String("$default$")) {
+    if (urlConfig->mUser != QStringLiteral("$default$")) {
         savePassword(key, urlConfig->mUser, urlConfig->mPassword);
     }
     updateRemoteUrls();
@@ -311,11 +311,11 @@ QString Settings::username(DavUtils::Protocol proto, const QString &url) const
     QString key = url + QLatin1Char(',') + DavUtils::protocolName(proto);
 
     if (mUrls.contains(key))
-        if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
+        if (mUrls[ key ]->mUser == QStringLiteral("$default$")) {
             return defaultUsername();
         }
 #ifdef HAVE_ACCOUNTS
-        else if (mUrls[ key ]->mUser == QLatin1String("$accounts$")) {
+        else if (mUrls[ key ]->mUser == QStringLiteral("$accounts$")) {
             return accountsUsername();
         }
 #endif
@@ -332,7 +332,7 @@ QString Settings::password(DavUtils::Protocol proto, const QString &url)
     QString key = url + QLatin1Char(',') + DavUtils::protocolName(proto);
 
     if (mUrls.contains(key))
-        if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
+        if (mUrls[ key ]->mUser == QStringLiteral("$default$")) {
             return defaultPassword();
         } else {
             return mUrls[ key ]->mPassword;
@@ -506,11 +506,11 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     QString entry;
     QString pass;
 
-    if (user == QLatin1String("$default$")) {
+    if (user == QStringLiteral("$default$")) {
         entry = mResourceIdentifier + QLatin1Char(',') + user;
     }
 #ifdef HAVE_ACCOUNTS
-    else if (user == QLatin1String("$accounts$")) {
+    else if (user == QStringLiteral("$accounts$")) {
         return loadPasswordFromAccounts();
     }
 #endif
@@ -591,7 +591,7 @@ QString Settings::promptForPassword(const QString &user)
     QVBoxLayout *vLayout = new QVBoxLayout();
     mainWidget->setLayout(vLayout);
     QLabel *label = new QLabel(i18n("A password is required for user %1",
-                                    (user == QLatin1String("$default$") ? defaultUsername() : user)),
+                                    (user == QStringLiteral("$default$") ? defaultUsername() : user)),
                                mainWidget
                               );
     vLayout->addWidget(label);
@@ -631,7 +631,7 @@ void Settings::updateToV2()
     QMutableStringListIterator it(urls);
     while (it.hasNext()) {
         it.next();
-        it.value().replace(regexp, QLatin1String("$default$"));
+        it.value().replace(regexp, QStringLiteral("$default$"));
     }
 
     setDefaultUsername(urlConfig.mUser);
@@ -655,7 +655,7 @@ void Settings::updateToV3()
         if (splitUrl.size() == 3) {
             DavUtils::Protocol protocol = DavUtils::protocolByTranslatedName(splitUrl.at(1));
             splitUrl[1] = DavUtils::protocolName(protocol);
-            updatedUrls << splitUrl.join(QLatin1String("|"));
+            updatedUrls << splitUrl.join(QStringLiteral("|"));
         }
     }
 

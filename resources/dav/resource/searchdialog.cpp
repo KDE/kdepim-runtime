@@ -202,9 +202,9 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
         item->setData(data, Qt::UserRole + 1);
         item->setToolTip(collection.url());
         if (collection.protocol() == DavUtils::CalDav) {
-            item->setIcon(QIcon::fromTheme(QLatin1String("view-calendar")));
+            item->setIcon(QIcon::fromTheme(QStringLiteral("view-calendar")));
         } else {
-            item->setIcon(QIcon::fromTheme(QLatin1String("view-pim-contacts")));
+            item->setIcon(QIcon::fromTheme(QStringLiteral("view-pim-contacts")));
         }
         mModel->appendRow(item);
     }

@@ -38,13 +38,13 @@ ObjectMoveJob::ObjectMoveJob(const Object &object, const Folder &destinationFold
 void ObjectMoveJob::start()
 {
     QDomDocument document;
-    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
-    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
-    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
-    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mObject.objectId()));
-    DAVUtils::addOxElement(document, prop, QLatin1String("folder_id"), OXUtils::writeNumber(mObject.folderId()));
-    DAVUtils::addOxElement(document, prop, QLatin1String("last_modified"), OXUtils::writeString(mObject.lastModified()));
-    DAVUtils::addOxElement(document, prop, QLatin1String("folder"), OXUtils::writeNumber(mDestinationFolder.objectId()));
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QStringLiteral("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QStringLiteral("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QStringLiteral("prop"));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("object_id"), OXUtils::writeNumber(mObject.objectId()));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("folder_id"), OXUtils::writeNumber(mObject.folderId()));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("last_modified"), OXUtils::writeString(mObject.lastModified()));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("folder"), OXUtils::writeNumber(mDestinationFolder.objectId()));
 
     const QString path = ObjectUtils::davPath(mObject.module());
 
@@ -79,13 +79,13 @@ void ObjectMoveJob::davJobFinished(KJob *job)
     }
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     const QDomNodeList props = response.elementsByTagName("prop");
     const QDomElement prop = props.at(0).toElement();
 
     QDomElement element = prop.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("last_modified")) {
+        if (element.tagName() == QStringLiteral("last_modified")) {
             mObject.setLastModified(OXUtils::readString(element.text()));
         }
 

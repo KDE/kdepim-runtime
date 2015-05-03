@@ -61,32 +61,32 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return QString();
     }
 
-    QStringList supportedProtocols = service->property(QLatin1String("X-DavGroupware-SupportedProtocols")).toStringList();
+    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
     if (!supportedProtocols.contains(protocol)) {
         return QString();
     }
 
     QString pathPattern;
 
-    QString pathPropertyName(QLatin1String("X-DavGroupware-") + protocol + QLatin1String("Path"));
+    QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
     if (service->property(pathPropertyName).isNull()) {
         return QString();
     }
 
     pathPattern.append(service->property(pathPropertyName).toString() + QLatin1Char('/'));
 
-    QString username = wizard->field(QLatin1String("credentialsUserName")).toString();
+    QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
-    localPart.remove(QRegExp(QLatin1String("@.*$")));
-    pathPattern.replace(QLatin1String("$user$"), username);
-    pathPattern.replace(QLatin1String("$localpart$"), localPart);
+    localPart.remove(QRegExp(QStringLiteral("@.*$")));
+    pathPattern.replace(QStringLiteral("$user$"), username);
+    pathPattern.replace(QStringLiteral("$localpart$"), localPart);
     QString providerName;
     if (!service->property("X-DavGroupware-Provider").isNull()) {
         providerName = service->property("X-DavGroupware-Provider").toString();
     }
-    QString localPath = wizard->field(QLatin1String("installationPath")).toString();
+    QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {
-        if (providerName == QLatin1String("davical")) {
+        if (providerName == QStringLiteral("davical")) {
             if (!localPath.endsWith(QLatin1Char('/'))) {
                 pathPattern.append(localPath + QLatin1Char('/'));
             } else {
@@ -103,13 +103,13 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     QUrl url;
 
     if (!wizard->property("usePredefinedProvider").isNull()) {
-        if (service->property(QLatin1String("X-DavGroupware-ProviderUsesSSL")).toBool()) {
-            url.setScheme(QLatin1String("https"));
+        if (service->property(QStringLiteral("X-DavGroupware-ProviderUsesSSL")).toBool()) {
+            url.setScheme(QStringLiteral("https"));
         } else {
-            url.setScheme(QLatin1String("http"));
+            url.setScheme(QStringLiteral("http"));
         }
 
-        QString hostPropertyName(QLatin1String("X-DavGroupware-") + protocol + QLatin1String("Host"));
+        QString hostPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Host"));
         if (service->property(hostPropertyName).isNull()) {
             return QString();
         }
@@ -117,13 +117,13 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         url.setHost(service->property(hostPropertyName).toString());
         url.setPath(pathPattern);
     } else {
-        if (wizard->field(QLatin1String("connectionUseSecureConnection")).toBool()) {
-            url.setScheme(QLatin1String("https"));
+        if (wizard->field(QStringLiteral("connectionUseSecureConnection")).toBool()) {
+            url.setScheme(QStringLiteral("https"));
         } else {
-            url.setScheme(QLatin1String("http"));
+            url.setScheme(QStringLiteral("http"));
         }
 
-        QString host = wizard->field(QLatin1String("connectionHost")).toString();
+        QString host = wizard->field(QStringLiteral("connectionHost")).toString();
         if (host.isEmpty()) {
             return QString();
         }
@@ -149,7 +149,7 @@ SetupWizard::SetupWizard(QWidget *parent)
     : QWizard(parent)
 {
     setWindowTitle(i18n("DAV groupware configuration wizard"));
-    setWindowIcon(QIcon::fromTheme(QLatin1String("folder-remote")));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
     setPage(W_CredentialsPage, new CredentialsPage);
     setPage(W_PredefinedProviderPage, new PredefinedProviderPage);
     setPage(W_ServerTypePage, new ServerTypePage);
@@ -186,15 +186,15 @@ SetupWizard::Url::List SetupWizard::urls() const
         return urls;
     }
 
-    QStringList supportedProtocols = service->property(QLatin1String("X-DavGroupware-SupportedProtocols")).toStringList();
+    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
     foreach (const QString &protocol, supportedProtocols) {
         Url url;
 
-        if (protocol == QLatin1String("CalDav")) {
+        if (protocol == QStringLiteral("CalDav")) {
             url.protocol = DavUtils::CalDav;
-        } else if (protocol == QLatin1String("CardDav")) {
+        } else if (protocol == QStringLiteral("CardDav")) {
             url.protocol = DavUtils::CardDav;
-        } else if (protocol == QLatin1String("GroupDav")) {
+        } else if (protocol == QStringLiteral("GroupDav")) {
             url.protocol = DavUtils::GroupDav;
         } else {
             return urls;
@@ -204,7 +204,7 @@ SetupWizard::Url::List SetupWizard::urls() const
 
         if (!urlStr.isEmpty()) {
             url.url = urlStr;
-            url.userName = QLatin1String("$default$");
+            url.userName = QStringLiteral("$default$");
             urls << url;
         }
     }
@@ -226,20 +226,20 @@ CredentialsPage::CredentialsPage(QWidget *parent)
 
     mUserName = new KLineEdit;
     layout->addRow(i18n("User"), mUserName);
-    registerField(QLatin1String("credentialsUserName*"), mUserName);
+    registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
     mPassword = new KLineEdit;
     mPassword->setPasswordMode(true);
     layout->addRow(i18n("Password"), mPassword);
-    registerField(QLatin1String("credentialsPassword*"), mPassword);
+    registerField(QStringLiteral("credentialsPassword*"), mPassword);
 }
 
 int CredentialsPage::nextId() const
 {
-    QString userName = field(QLatin1String("credentialsUserName")).toString();
-    if (userName.endsWith(QLatin1String("@yahoo.com"))) {
+    QString userName = field(QStringLiteral("credentialsUserName")).toString();
+    if (userName.endsWith(QStringLiteral("@yahoo.com"))) {
         KService::List offers;
-        offers = KServiceTypeTrader::self()->query(QLatin1String("DavGroupwareProvider"), QLatin1String("Name == 'Yahoo!'"));
+        offers = KServiceTypeTrader::self()->query(QStringLiteral("DavGroupwareProvider"), QStringLiteral("Name == 'Yahoo!'"));
         if (offers.isEmpty()) {
             return SetupWizard::W_ServerTypePage;
         }
@@ -319,7 +319,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mProvidersCombo = new QComboBox(this);
     KService::List providers;
     KServiceTypeTrader *trader = KServiceTypeTrader::self();
-    providers = trader->query(QLatin1String("DavGroupwareProvider"));
+    providers = trader->query(QStringLiteral("DavGroupwareProvider"));
     QList< QPair<QString, QString> > offers;
     foreach (const KService::Ptr &provider, providers) {
         offers.append(QPair<QString, QString>(provider->name(), provider->entryPath()));
@@ -330,7 +330,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
         QPair<QString, QString> p = it.next();
         mProvidersCombo->addItem(p.first, p.second);
     }
-    registerField(QLatin1String("provider"), mProvidersCombo, "currentText");
+    registerField(QStringLiteral("provider"), mProvidersCombo, "currentText");
 
     QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -341,7 +341,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
 
     QHBoxLayout *hLayout = new QHBoxLayout;
     button = new QRadioButton(i18n("Use one of those servers:"));
-    registerField(QLatin1String("templateConfiguration"), button);
+    registerField(QStringLiteral("templateConfiguration"), button);
     mServerGroup->addButton(button);
     mServerGroup->setId(button, 0);
     button->setChecked(true);
@@ -352,7 +352,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
 
     button = new QRadioButton(i18n("Configure the resource manually"));
     connect(button, &QRadioButton::toggled, this, &ServerTypePage::manualConfigToggled);
-    registerField(QLatin1String("manualConfiguration"), button);
+    registerField(QStringLiteral("manualConfiguration"), button);
     mServerGroup->addButton(button);
     mServerGroup->setId(button, 1);
     layout->addWidget(button);
@@ -389,19 +389,19 @@ ConnectionPage::ConnectionPage(QWidget *parent)
 
     mLayout = new QFormLayout;
     setLayout(mLayout);
-    QRegExp hostnameRegexp(QLatin1String("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$"));
+    QRegExp hostnameRegexp(QStringLiteral("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$"));
     mHost = new KLineEdit;
-    registerField(QLatin1String("connectionHost*"), mHost);
+    registerField(QStringLiteral("connectionHost*"), mHost);
     mHost->setValidator(new QRegExpValidator(hostnameRegexp, this));
     mLayout->addRow(i18n("Host"), mHost);
 
     mPath = new KLineEdit;
     mLayout->addRow(i18n("Installation path"), mPath);
-    registerField(QLatin1String("installationPath"), mPath);
+    registerField(QStringLiteral("installationPath"), mPath);
 
     mUseSecureConnection = new QCheckBox(i18n("Use secure connection"));
     mUseSecureConnection->setChecked(true);
-    registerField(QLatin1String("connectionUseSecureConnection"), mUseSecureConnection);
+    registerField(QStringLiteral("connectionUseSecureConnection"), mUseSecureConnection);
     mLayout->addRow(QString(), mUseSecureConnection);
 
     connect(mHost, &KLineEdit::textChanged, this, &ConnectionPage::urlElementChanged);
@@ -416,27 +416,27 @@ void ConnectionPage::initializePage()
         return;
     }
 
-    QString providerInstallationPath = service->property(QLatin1String("X-DavGroupware-InstallationPath")).toString();
+    QString providerInstallationPath = service->property(QStringLiteral("X-DavGroupware-InstallationPath")).toString();
     if (!providerInstallationPath.isEmpty()) {
         mPath->setText(providerInstallationPath);
     }
 
-    QStringList supportedProtocols = service->property(QLatin1String("X-DavGroupware-SupportedProtocols")).toStringList();
+    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
 
     mPreviewLayout = new QFormLayout;
     mLayout->addRow(mPreviewLayout);
 
-    if (supportedProtocols.contains(QLatin1String("CalDav"))) {
+    if (supportedProtocols.contains(QStringLiteral("CalDav"))) {
         mCalDavUrlLabel = new QLabel(i18n("Final URL (CalDav)"));
         mCalDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mCalDavUrlLabel, mCalDavUrlPreview);
     }
-    if (supportedProtocols.contains(QLatin1String("CardDav"))) {
+    if (supportedProtocols.contains(QStringLiteral("CardDav"))) {
         mCardDavUrlLabel = new QLabel(i18n("Final URL (CardDav)"));
         mCardDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mCardDavUrlLabel, mCardDavUrlPreview);
     }
-    if (supportedProtocols.contains(QLatin1String("GroupDav"))) {
+    if (supportedProtocols.contains(QStringLiteral("GroupDav"))) {
         mGroupDavUrlLabel = new QLabel(i18n("Final URL (GroupDav)"));
         mGroupDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mGroupDavUrlLabel, mGroupDavUrlPreview);
@@ -472,23 +472,23 @@ void ConnectionPage::urlElementChanged()
 {
     if (mHost->text().isEmpty()) {
         if (mCalDavUrlPreview) {
-            mCalDavUrlPreview->setText(QLatin1String("-"));
+            mCalDavUrlPreview->setText(QStringLiteral("-"));
         }
         if (mCardDavUrlPreview) {
-            mCardDavUrlPreview->setText(QLatin1String("-"));
+            mCardDavUrlPreview->setText(QStringLiteral("-"));
         }
         if (mGroupDavUrlPreview) {
-            mGroupDavUrlPreview->setText(QLatin1String("-"));
+            mGroupDavUrlPreview->setText(QStringLiteral("-"));
         }
     } else {
         if (mCalDavUrlPreview) {
-            mCalDavUrlPreview->setText(settingsToUrl(this->wizard(), QLatin1String("CalDav")));
+            mCalDavUrlPreview->setText(settingsToUrl(this->wizard(), QStringLiteral("CalDav")));
         }
         if (mCardDavUrlPreview) {
-            mCardDavUrlPreview->setText(settingsToUrl(this->wizard(), QLatin1String("CardDav")));
+            mCardDavUrlPreview->setText(settingsToUrl(this->wizard(), QStringLiteral("CardDav")));
         }
         if (mGroupDavUrlPreview) {
-            mGroupDavUrlPreview->setText(settingsToUrl(this->wizard(), QLatin1String("GroupDav")));
+            mGroupDavUrlPreview->setText(settingsToUrl(this->wizard(), QStringLiteral("GroupDav")));
         }
     }
 }
@@ -528,8 +528,8 @@ void CheckPage::checkConnection()
         davUrl.setProtocol(url.protocol);
 
         KUrl serverUrl(url.url);
-        serverUrl.setUser(wizard()->field(QLatin1String("credentialsUserName")).toString());
-        serverUrl.setPass(wizard()->field(QLatin1String("credentialsPassword")).toString());
+        serverUrl.setUser(wizard()->field(QStringLiteral("credentialsUserName")).toString());
+        serverUrl.setPass(wizard()->field(QStringLiteral("credentialsPassword")).toString());
         davUrl.setUrl(serverUrl);
 
         davUrls << davUrl;
@@ -548,13 +548,13 @@ void CheckPage::onFetchDone(KJob *job)
 
     if (job->error()) {
         msg = i18n("An error occurred: %1", job->errorText());
-        icon = QIcon::fromTheme(QLatin1String("dialog-close")).pixmap(16, 16);
+        icon = QIcon::fromTheme(QStringLiteral("dialog-close")).pixmap(16, 16);
     } else {
         msg = i18n("Connected successfully");
-        icon = QIcon::fromTheme(QLatin1String("dialog-ok-apply")).pixmap(16, 16);
+        icon = QIcon::fromTheme(QStringLiteral("dialog-ok-apply")).pixmap(16, 16);
     }
 
     mStatusLabel->setHtml(QStringLiteral("<html><body><img src=\"icon\"> %1</body></html>").arg(msg));
-    mStatusLabel->document()->addResource(QTextDocument::ImageResource, QUrl(QLatin1String("icon")), QVariant(icon));
+    mStatusLabel->document()->addResource(QTextDocument::ImageResource, QUrl(QStringLiteral("icon")), QVariant(icon));
 }
 

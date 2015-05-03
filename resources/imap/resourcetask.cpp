@@ -555,16 +555,16 @@ void ResourceTask::setSeparatorCharacter(const QChar &separator)
 
 bool ResourceTask::serverSupportsAnnotations() const
 {
-    return serverCapabilities().contains(QLatin1String("METADATA"))
-           || serverCapabilities().contains(QLatin1String("ANNOTATEMORE"));
+    return serverCapabilities().contains(QStringLiteral("METADATA"))
+           || serverCapabilities().contains(QStringLiteral("ANNOTATEMORE"));
 }
 
 bool ResourceTask::serverSupportsCondstore() const
 {
     // Don't enable CONDSTORE for GMail (X-GM-EXT-1 is a GMail-specific capability)
     // because it breaks changes synchronization when using labels.
-    return serverCapabilities().contains(QLatin1String("CONDSTORE")) &&
-           !serverCapabilities().contains(QLatin1String("X-GM-EXT-1"));
+    return serverCapabilities().contains(QStringLiteral("CONDSTORE")) &&
+           !serverCapabilities().contains(QStringLiteral("X-GM-EXT-1"));
 }
 
 int ResourceTask::batchSize() const

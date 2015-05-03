@@ -40,14 +40,14 @@ ObjectsRequestJob::ObjectsRequestJob(const Folder &folder, qulonglong lastSync, 
 void ObjectsRequestJob::start()
 {
     QDomDocument document;
-    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
-    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
-    DAVUtils::addOxElement(document, prop, QLatin1String("folder_id"), OXUtils::writeNumber(mFolder.objectId()));
-    DAVUtils::addOxElement(document, prop, QLatin1String("lastsync"), OXUtils::writeNumber(mLastSync));
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QStringLiteral("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QStringLiteral("prop"));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("folder_id"), OXUtils::writeNumber(mFolder.objectId()));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("lastsync"), OXUtils::writeNumber(mLastSync));
     if (mMode == Modified) {
-        DAVUtils::addOxElement(document, prop, QLatin1String("objectmode"), QLatin1String("MODIFIED"));
+        DAVUtils::addOxElement(document, prop, QStringLiteral("objectmode"), QStringLiteral("MODIFIED"));
     } else {
-        DAVUtils::addOxElement(document, prop, QLatin1String("objectmode"), QLatin1String("DELETED"));
+        DAVUtils::addOxElement(document, prop, QStringLiteral("objectmode"), QStringLiteral("DELETED"));
     }
 
     const QString path = ObjectUtils::davPath(mFolder.module());
@@ -83,7 +83,7 @@ void ObjectsRequestJob::davJobFinished(KJob *job)
     }
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     while (!response.isNull()) {
         const QDomNodeList props = response.elementsByTagName("prop");
         const QDomElement prop = props.at(0).toElement();

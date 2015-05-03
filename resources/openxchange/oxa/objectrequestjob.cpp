@@ -38,9 +38,9 @@ ObjectRequestJob::ObjectRequestJob(const Object &object, QObject *parent)
 void ObjectRequestJob::start()
 {
     QDomDocument document;
-    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
-    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
-    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mObject.objectId()));
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QStringLiteral("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QStringLiteral("prop"));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("object_id"), OXUtils::writeNumber(mObject.objectId()));
 
     const QString path = ObjectUtils::davPath(mObject.module());
 
@@ -75,7 +75,7 @@ void ObjectRequestJob::davJobFinished(KJob *job)
     }
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     const QDomNodeList props = response.elementsByTagName("prop");
     const QDomElement prop = props.at(0).toElement();
     mObject = ObjectUtils::parseObject(prop, mObject.module());

@@ -43,9 +43,9 @@ void ObjectCreateJob::start()
         job->start();
     } else {
         QDomDocument document;
-        QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
-        QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
-        QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
+        QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QStringLiteral("propertyupdate"));
+        QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QStringLiteral("set"));
+        QDomElement prop = DAVUtils::addDavElement(document, set, QStringLiteral("prop"));
 
         ObjectUtils::addObjectElements(document, prop, mObject);
 
@@ -66,9 +66,9 @@ void ObjectCreateJob::preloadingJobFinished(KJob *job)
     void *preloadedData = ObjectUtils::preloadData(mObject, job);
 
     QDomDocument document;
-    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
-    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
-    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QStringLiteral("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QStringLiteral("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QStringLiteral("prop"));
 
     ObjectUtils::addObjectElements(document, prop, mObject, preloadedData);
 
@@ -100,15 +100,15 @@ void ObjectCreateJob::davJobFinished(KJob *job)
     }
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     const QDomNodeList props = response.elementsByTagName("prop");
     const QDomElement prop = props.at(0).toElement();
 
     QDomElement element = prop.firstChildElement();
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("object_id")) {
+        if (element.tagName() == QStringLiteral("object_id")) {
             mObject.setObjectId(OXUtils::readNumber(element.text()));
-        } else if (element.tagName() == QLatin1String("last_modified")) {
+        } else if (element.tagName() == QStringLiteral("last_modified")) {
             mObject.setLastModified(OXUtils::readString(element.text()));
         }
 

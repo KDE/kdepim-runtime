@@ -42,15 +42,15 @@ extern "C" {
 int kdemain(int argc, char **argv)
 {
 
-    KAboutData aboutData(QLatin1String("kio_akonadi"), QString(), QLatin1String("0"));
+    KAboutData aboutData(QStringLiteral("kio_akonadi"), QString(), QStringLiteral("0"));
     QApplication app(argc, argv);
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
     parser.addVersionOption();
     parser.addHelpOption();
-    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+protocol"), i18n("Protocol name")));
-    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+pool"), i18n("Socket name")));
-    parser.addOption(QCommandLineOption(QStringList() <<  QLatin1String("+app"), i18n("Socket name")));
+    parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+protocol"), i18n("Protocol name")));
+    parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+pool"), i18n("Socket name")));
+    parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+app"), i18n("Socket name")));
 
     aboutData.setupCommandLine(&parser);
     parser.process(app);
