@@ -102,7 +102,7 @@ public: // slots
 void RetrieveItemsJob::Private::itemCreateJobResult(KJob *job)
 {
     if (job->error()) {
-        qCritical() << "Error running ItemCreateJob: " << job->errorText();
+        qCCritical(MIXEDMAILDIR_LOG) << "Error running ItemCreateJob: " << job->errorText();
     }
 
     mNumItemCreateJobs--;
@@ -112,7 +112,7 @@ void RetrieveItemsJob::Private::itemCreateJobResult(KJob *job)
 void RetrieveItemsJob::Private::itemModifyJobResult(KJob *job)
 {
     if (job->error()) {
-        qCritical() << "Error running ItemModifyJob: " << job->errorText();
+        qCCritical(MIXEDMAILDIR_LOG) << "Error running ItemModifyJob: " << job->errorText();
     }
 
     mNumItemModifyJobs--;

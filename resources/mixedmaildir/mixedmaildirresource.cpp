@@ -150,7 +150,7 @@ void MixedMaildirResource::itemAdded(const Item &item, const Collection &collect
     /*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << item.id() << "col=" << collection.remoteId();*/
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -165,7 +165,7 @@ void MixedMaildirResource::itemChanged(const Item &item, const QSet<QByteArray> 
                << "parts=" << parts;*/
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -196,7 +196,7 @@ void MixedMaildirResource::itemMoved(const Item &item, const Collection &source,
 
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -218,14 +218,14 @@ void MixedMaildirResource::itemRemoved(const Item &item)
     Q_ASSERT(item.parentCollection().isValid());
     if (item.parentCollection().remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Item %1 belongs to invalid collection %2. Maybe it was deleted meanwhile?", item.id(), item.parentCollection().id());
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
 
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -240,7 +240,7 @@ void MixedMaildirResource::retrieveCollections()
 {
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -255,7 +255,7 @@ void MixedMaildirResource::retrieveItems(const Collection &col)
 {
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -287,7 +287,7 @@ void MixedMaildirResource::collectionAdded(const Collection &collection, const C
 {
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -300,7 +300,7 @@ void MixedMaildirResource::collectionChanged(const Collection &collection)
 {
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -327,7 +327,7 @@ void MixedMaildirResource::collectionChanged(const Collection &collection, const
 {
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -358,14 +358,14 @@ void MixedMaildirResource::collectionMoved(const Collection &collection, const C
 
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
 
     if (collection.parentCollection() == Collection::root()) {
         const QString message = i18nc("@info:status", "Cannot move root maildir folder '%1'." , collection.remoteId());
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -386,7 +386,7 @@ void MixedMaildirResource::collectionRemoved(const Collection &collection)
 {
     if (!ensureSaneConfiguration()) {
         const QString message = i18nc("@info:status", "Unusable configuration.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;
     }
@@ -407,7 +407,7 @@ bool MixedMaildirResource::ensureDirExists()
     if (!dir.exists()) {
         if (!dir.mkpath(Settings::self()->path())) {
             const QString message = i18nc("@info:status", "Unable to create maildir '%1'.", Settings::self()->path());
-            qCritical() << message;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
             status(Broken, message);
             return false;
         }
@@ -419,7 +419,7 @@ bool MixedMaildirResource::ensureSaneConfiguration()
 {
     if (Settings::self()->path().isEmpty()) {
         const QString message = i18nc("@info:status", "No usable storage location configured.");
-        qCritical() << message;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         status(NotConfigured, message);
         return false;
     }
@@ -465,7 +465,7 @@ void MixedMaildirResource::reapplyConfiguration()
 void MixedMaildirResource::retrieveCollectionsResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -488,7 +488,7 @@ void MixedMaildirResource::retrieveCollectionsResult(KJob *job)
 void MixedMaildirResource::retrieveItemsResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -555,7 +555,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
 void MixedMaildirResource::retrieveItemResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -571,7 +571,7 @@ void MixedMaildirResource::retrieveItemResult(KJob *job)
 void MixedMaildirResource::itemAddedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -589,7 +589,7 @@ void MixedMaildirResource::itemAddedResult(KJob *job)
 void MixedMaildirResource::itemChangedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -613,7 +613,7 @@ void MixedMaildirResource::itemChangedResult(KJob *job)
 void MixedMaildirResource::itemMovedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -639,7 +639,7 @@ void MixedMaildirResource::itemMovedResult(KJob *job)
 void MixedMaildirResource::itemRemovedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -669,7 +669,7 @@ void MixedMaildirResource::itemsDeleted(KJob *job)
 void MixedMaildirResource::collectionAddedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -684,7 +684,7 @@ void MixedMaildirResource::collectionAddedResult(KJob *job)
 void MixedMaildirResource::collectionChangedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -701,7 +701,7 @@ void MixedMaildirResource::collectionChangedResult(KJob *job)
 void MixedMaildirResource::collectionMovedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -718,7 +718,7 @@ void MixedMaildirResource::collectionMovedResult(KJob *job)
 void MixedMaildirResource::collectionRemovedResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -741,7 +741,7 @@ void MixedMaildirResource::compactStore(const QVariant &arg)
 void MixedMaildirResource::compactStoreResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
@@ -763,14 +763,14 @@ void MixedMaildirResource::compactStoreResult(KJob *job)
 void MixedMaildirResource::restoreTags(const QVariant &arg)
 {
     if (!arg.isValid()) {
-        qCritical() << "Given variant is not valid";
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Given variant is not valid";
         cancelTask();
         return;
     }
 
     const Collection collection = arg.value<Collection>();
     if (!collection.isValid()) {
-        qCritical() << "Given variant is not valid";
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Given variant is not valid";
         cancelTask();
         return;
     }
@@ -800,7 +800,7 @@ void MixedMaildirResource::processNextTagContext()
 void MixedMaildirResource::tagFetchJobResult(KJob *job)
 {
     if (job->error() != 0) {
-        qCritical() << job->errorString();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
         processNextTagContext();
         return;
     }

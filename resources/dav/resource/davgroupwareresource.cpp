@@ -271,7 +271,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
 
     if (!davUrl.url().isValid()) {
-        qCritical() << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
+        qCCritical(DAVRESOURCE_LOG) << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
         cancelTask(i18n("Asked to retrieve items for an unknown collection: %1", collection.remoteId()));
         //Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
         return;
@@ -322,14 +322,14 @@ void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::C
     }
 
     if (collection.remoteId().isEmpty()) {
-        qCritical() << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
+        qCCritical(DAVRESOURCE_LOG) << "Invalid remote id for collection " << collection.id() << " = " << collection.remoteId();
         cancelTask(i18n("Invalid collection for item %1.", item.id()));
         return;
     }
 
     DavItem davItem = DavUtils::createDavItem(item, collection);
     if (davItem.data().isEmpty()) {
-        qCritical() << "Item " << item.id() << " doesn't has a valid payload";
+        qCCritical(DAVRESOURCE_LOG) << "Item " << item.id() << " doesn't has a valid payload";
         cancelTask();
         return;
     }
@@ -390,7 +390,7 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
 {
     DavItem davItem = DavUtils::createDavItem(item, item.parentCollection(), dependentItems);
     if (davItem.data().isEmpty()) {
-        qCritical() << "Item " << item.id() << " doesn't has a valid payload";
+        qCCritical(DAVRESOURCE_LOG) << "Item " << item.id() << " doesn't has a valid payload";
         cancelTask();
         return;
     }
@@ -882,7 +882,7 @@ void DavGroupwareResource::onItemAddedFinished(KJob *job)
     item.setRemoteId(davItem.url());
 
     if (createJob->error()) {
-        qCritical() << "Error when uploading item:" << createJob->error() << createJob->errorString();
+        qCCritical(DAVRESOURCE_LOG) << "Error when uploading item:" << createJob->error() << createJob->errorString();
         if (createJob->canRetryLater()) {
             retryAfterFailure(createJob->errorString());
         } else {
@@ -916,7 +916,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
     bool isRemoval = modifyJob->property("isRemoval").isValid() && modifyJob->property("isRemoval").toBool();
 
     if (modifyJob->error()) {
-        qCritical() << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
+        qCCritical(DAVRESOURCE_LOG) << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
         if (modifyJob->canRetryLater()) {
             retryAfterFailure(modifyJob->errorString());
         } else {

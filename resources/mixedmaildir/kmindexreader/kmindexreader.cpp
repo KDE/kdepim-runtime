@@ -247,7 +247,7 @@ bool KMIndexReader::readHeader(int *version)
         return true;
     } else if (indexVersion == 1505) {
     } else if (indexVersion < INDEX_VERSION) {
-        qCritical() << "Index file" << mIndexFileName << "is out of date. What to do?";
+        qCCritical(MIXEDMAILDIR_LOG) << "Index file" << mIndexFileName << "is out of date. What to do?";
 //       createIndexFromContents();
         return false;
     } else if (indexVersion > INDEX_VERSION) {
