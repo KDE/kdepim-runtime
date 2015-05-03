@@ -97,9 +97,9 @@ using namespace Akonadi;
 ImapResourceBase::ImapResourceBase(const QString &id)
     : ResourceBase(id),
       m_pool(new SessionPool(2, this)),
+      m_settings(Q_NULLPTR),
       mSubscriptions(Q_NULLPTR),
-      m_idle(Q_NULLPTR),
-      m_settings(Q_NULLPTR)
+      m_idle(Q_NULLPTR)
 {
     QTimer::singleShot(0, this, SLOT(updateResourceName()));
 
