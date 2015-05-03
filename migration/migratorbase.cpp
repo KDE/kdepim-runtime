@@ -34,11 +34,11 @@
 static QString messageTypeToString(MigratorBase::MessageType type)
 {
     switch (type) {
-    case MigratorBase::Success: return QLatin1String("Success");
-    case MigratorBase::Skip:    return QLatin1String("Skipped");
-    case MigratorBase::Info:    return QLatin1String("Info   ");
-    case MigratorBase::Warning: return QLatin1String("WARNING");
-    case MigratorBase::Error:   return QLatin1String("ERROR  ");
+    case MigratorBase::Success: return QStringLiteral("Success");
+    case MigratorBase::Skip:    return QStringLiteral("Skipped");
+    case MigratorBase::Info:    return QStringLiteral("Info   ");
+    case MigratorBase::Warning: return QStringLiteral("WARNING");
+    case MigratorBase::Error:   return QStringLiteral("ERROR  ");
     }
     Q_ASSERT(false);
     return QString();
@@ -47,10 +47,10 @@ static QString messageTypeToString(MigratorBase::MessageType type)
 static QMap<QString, MigratorBase::MigrationState> fillMigrationStateMapping()
 {
     QMap<QString, MigratorBase::MigrationState> map;
-    map.insert(QLatin1String("Complete"), MigratorBase::Complete);
-    map.insert(QLatin1String("Aborted"), MigratorBase::Aborted);
-    map.insert(QLatin1String("InProgress"), MigratorBase::InProgress);
-    map.insert(QLatin1String("Failed"), MigratorBase::Failed);
+    map.insert(QStringLiteral("Complete"), MigratorBase::Complete);
+    map.insert(QStringLiteral("Aborted"), MigratorBase::Aborted);
+    map.insert(QStringLiteral("InProgress"), MigratorBase::InProgress);
+    map.insert(QStringLiteral("Failed"), MigratorBase::Failed);
     return map;
 }
 
@@ -72,9 +72,9 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
     :   QObject(parent),
         mIdentifier(identifier),
         mMigrationState(None),
-        mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QLatin1String("akonadi-migrationrc"))))
+        mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QStringLiteral("akonadi-migrationrc"))))
 {
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + KGlobal::mainComponent().componentName() + QLatin1String("/") + identifier + QLatin1String("migration.log");
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + KGlobal::mainComponent().componentName() + QStringLiteral("/") + identifier + QStringLiteral("migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
     setLogfile(logFileName);
@@ -182,8 +182,8 @@ void MigratorBase::abort()
 void MigratorBase::logMessage(MigratorBase::MessageType type, const QString &msg)
 {
     if (mLogFile) {
-        mLogFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QLatin1String("] ")
-                                + messageTypeToString(type) + QLatin1String(": ") + msg + QLatin1Char('\n')).toUtf8());
+        mLogFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QStringLiteral("] ")
+                                + messageTypeToString(type) + QStringLiteral(": ") + msg + QLatin1Char('\n')).toUtf8());
         mLogFile->flush();
     }
 }
@@ -232,12 +232,12 @@ MigratorBase::MigrationState MigratorBase::migrationState() const
 
 void MigratorBase::saveState()
 {
-    config().writeEntry(QLatin1String("MigrationState"), stateToIdentifier(mMigrationState));
+    config().writeEntry(QStringLiteral("MigrationState"), stateToIdentifier(mMigrationState));
 }
 
 void MigratorBase::loadState()
 {
-    const QString state = config().readEntry(QLatin1String("MigrationState"), QString());
+    const QString state = config().readEntry(QStringLiteral("MigrationState"), QString());
     if (!state.isEmpty()) {
         mMigrationState = identifierToState(state);
     }

@@ -42,7 +42,7 @@ int main(int argc, char **argv)
                          QStringLiteral("0.1"),
                          i18n("Migration of Akonadi Items to support GID"),
                          KAboutLicense::LGPL,
-                         i18n("(c) 2013 the Akonadi developers"),
+                         i18n("(c) 2013-2015 the Akonadi developers"),
                          QStringLiteral("http://pim.kde.org/akonadi/"));
     aboutData.addAuthor(i18n("Christian Mollekopf"),  i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
@@ -50,9 +50,9 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     parser.addVersionOption();
     parser.addHelpOption();
-    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive"), i18n("Show reporting dialog")));
-    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("interactive-on-change"), i18n("Show report only if changes were made")));
-    parser.addOption(QCommandLineOption(QStringList() << QLatin1String("mimetype"), i18n("MIME type to migrate")));
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive"), i18n("Show reporting dialog")));
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive-on-change"), i18n("Show report only if changes were made")));
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("mimetype"), i18n("MIME type to migrate")));
 
     aboutData.setupCommandLine(&parser);
     parser.process(app);
@@ -68,13 +68,13 @@ int main(int argc, char **argv)
     }
 
     InfoDialog *infoDialog = Q_NULLPTR;
-    if (parser.isSet(QLatin1String("interactive")) || parser.isSet(QLatin1String("interactive-on-change"))) {
-        infoDialog = new InfoDialog(parser.isSet(QLatin1String("interactive-on-change")));
+    if (parser.isSet(QStringLiteral("interactive")) || parser.isSet(QStringLiteral("interactive-on-change"))) {
+        infoDialog = new InfoDialog(parser.isSet(QStringLiteral("interactive-on-change")));
         Akonadi::Control::widgetNeedsAkonadi(infoDialog);
         infoDialog->show();
     }
 
-    const QString mimeType = parser.value(QLatin1String("mimetype"));
+    const QString mimeType = parser.value(QStringLiteral("mimetype"));
     if (mimeType.isEmpty()) {
         qWarning() << "set the mimetype to migrate";
         return 5;

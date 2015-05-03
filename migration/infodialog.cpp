@@ -110,24 +110,24 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString &msg)
     QListWidgetItem *item = new QListWidgetItem(msg, mList);
     switch (type) {
     case KMigratorBase::Success:
-        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok-apply")));
+        item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
         mChange = true;
         qDebug() << msg;
         break;
     case KMigratorBase::Skip:
-        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-ok")));
+        item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok")));
         qDebug() << msg;
         break;
     case KMigratorBase::Info:
-        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-information")));
+        item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-information")));
         qDebug() << msg;
         break;
     case KMigratorBase::Warning:
-        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-warning")));
+        item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-warning")));
         qDebug() << msg;
         break;
     case KMigratorBase::Error: {
-        item->setIcon(QIcon::fromTheme(QLatin1String("dialog-error")));
+        item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-error")));
         QFont currentFont = font();
         currentFont.setBold(true);
         item->setFont(currentFont);
@@ -177,13 +177,13 @@ void InfoDialog::status(const QString &msg)
 
 void InfoDialog::progress(int value)
 {
-    mProgressBar->setFormat(QLatin1String("%p%"));
+    mProgressBar->setFormat(QStringLiteral("%p%"));
     mProgressBar->setValue(value);
 }
 
 void InfoDialog::progress(int min, int max, int value)
 {
-    mProgressBar->setFormat(QLatin1String("%p%"));
+    mProgressBar->setFormat(QStringLiteral("%p%"));
     mProgressBar->setRange(min, max);
     mProgressBar->setValue(value);
 }
