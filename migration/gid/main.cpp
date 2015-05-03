@@ -26,6 +26,7 @@
 #include <KLocalizedString>
 
 #include <qdebug.h>
+#include <QIcon>
 #include <QApplication>
 #include <infodialog.h>
 #include <QCommandLineParser>
@@ -43,7 +44,6 @@ int main(int argc, char **argv)
                          KAboutLicense::LGPL,
                          i18n("(c) 2013 the Akonadi developers"),
                          QStringLiteral("http://pim.kde.org/akonadi/"));
-    aboutData.setProgramIconName(QLatin1String("akonadi"));
     aboutData.addAuthor(i18n("Christian Mollekopf"),  i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
     QCommandLineParser parser;
@@ -59,6 +59,7 @@ int main(int argc, char **argv)
     aboutData.processCommandLine(&parser);
 
     app.setQuitOnLastWindowClosed(false);
+    app.setWindowIcon(QIcon::fromTheme(QStringLiteral("akonadi")));
 
     KGlobal::setAllowQuit(true);
 
