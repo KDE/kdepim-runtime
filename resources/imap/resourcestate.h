@@ -120,7 +120,7 @@ public:
     void collectionsRetrieved(const Akonadi::Collection::List &collections) Q_DECL_OVERRIDE;
 
     void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) Q_DECL_OVERRIDE;
-    void relationsRetrieved(const Akonadi::Relation::List &tags);
+    void relationsRetrieved(const Akonadi::Relation::List &tags) Q_DECL_OVERRIDE;
 
     void collectionChangeCommitted(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
