@@ -46,7 +46,7 @@ class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel
 public:
     explicit SubscriptionFilterProxyModel(QObject *parent = Q_NULLPTR);
 
-public slots:
+public Q_SLOTS:
     void setSearchPattern(const QString &pattern);
     void setIncludeCheckedOnly(bool checkedOnly);
     void setIncludeCheckedOnly(int checkedOnlyState);
@@ -81,7 +81,7 @@ public:
     void setSubscriptionEnabled(bool enabled);
     bool subscriptionEnabled() const;
 
-private slots:
+private Q_SLOTS:
     void onLoginDone(KJob *job);
     void onReloadRequested();
     void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
@@ -97,7 +97,7 @@ private slots:
 protected:
     /* reimp */ void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
-protected slots:
+protected Q_SLOTS:
     void slotAccepted();
 private:
     void readConfig();

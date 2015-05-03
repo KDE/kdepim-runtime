@@ -30,7 +30,7 @@ class TestChangeItemTask : public ImapTestBase
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void shouldAppendMessage_data()
     {
         QTest::addColumn<Akonadi::Item>("item");

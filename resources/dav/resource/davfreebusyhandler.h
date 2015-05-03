@@ -57,7 +57,7 @@ public:
      */
     void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end);
 
-signals:
+Q_SIGNALS:
     /**
      * Emitted once we know if the free-busy info for @p email
      * can be handled or not.
@@ -69,7 +69,7 @@ signals:
      */
     void freeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText);
 
-private slots:
+private Q_SLOTS:
     void onPrincipalSearchJobFinished(KJob *job);
     void onRetrieveFreeBusyJobFinished(KJob *job);
 

@@ -32,7 +32,7 @@ public:
     explicit MoveCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~MoveCollectionTask();
 
-private slots:
+private Q_SLOTS:
     void onExamineDone(KJob *job);
     void onRenameDone(KJob *job);
     void onSubscribeDone(KJob *job);

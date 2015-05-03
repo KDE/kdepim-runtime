@@ -37,7 +37,7 @@ public:
     InfoDialog(bool closeWhenDone = true);
     ~InfoDialog();
 
-public slots:
+public Q_SLOTS:
     void message(KMigratorBase::MessageType type, const QString &msg);
     void message(MigratorBase::MessageType type, const QString &msg);
 
@@ -58,7 +58,7 @@ public slots:
     void progress(int value);
     void progress(int min, int max, int value);
 
-private slots:
+private Q_SLOTS:
     void scrollBarMoved(int value);
 
 private:

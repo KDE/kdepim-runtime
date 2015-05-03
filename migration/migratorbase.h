@@ -184,7 +184,7 @@ public:
      */
     QString status() const;
 
-signals:
+Q_SIGNALS:
     //Signal for state changes
     void stateChanged(MigratorBase::MigrationState);
 
@@ -207,7 +207,7 @@ protected:
 
     void setProgress(int);
 
-private slots:
+private Q_SLOTS:
     /**
      * Logs a message, that appears in the logfile and potentially in a log window.
      * Do not call this directly. Emit the message signal instead, which is connected to this slot.

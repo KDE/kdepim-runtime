@@ -57,10 +57,10 @@ public:
     // If there is a job, all slave errors will be forwared to that job
     void setCurrentJob(SlaveBaseJob *job);
 
-private slots:
+private Q_SLOTS:
     void slotSlaveError(KIO::Slave *slave , int, const QString &);
 
-signals:
+Q_SIGNALS:
 
     // An error occurred within the slave. If there is a current job, this
     // signal is not emitted, as the job deals with it.
@@ -85,7 +85,7 @@ public:
 
     virtual void slaveError(int errorCode, const QString &errorMessage);
 
-protected slots:
+protected Q_SLOTS:
     virtual void slotSlaveData(KIO::Job *job, const QByteArray &data);
     virtual void slotSlaveResult(KJob *job);
 
@@ -109,7 +109,7 @@ public:
 protected:
     QString errorString() const Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void slaveConnected(KIO::Slave *slave);
 
 private:
@@ -181,10 +181,10 @@ public:
     void setFetchIds(const QList<int> &ids, const QList<int> &sizes);
     void start() Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void slotInfoMessage(KJob *job, const QString &infoMessage, const QString &);
 
-signals:
+Q_SIGNALS:
     void messageFinished(int id, KMime::Message::Ptr message);
 
 private:

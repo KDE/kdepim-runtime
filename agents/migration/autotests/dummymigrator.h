@@ -42,7 +42,7 @@ public:
     void pause() Q_DECL_OVERRIDE;
 
     void abort() Q_DECL_OVERRIDE;
-private slots:
+private Q_SLOTS:
     void onTimerElapsed();
 };
 

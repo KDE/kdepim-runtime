@@ -33,7 +33,7 @@ class CompactPage : public QWidget
 public:
     explicit CompactPage(const QString &collectionId, QWidget *parent = Q_NULLPTR);
 
-private slots:
+private Q_SLOTS:
     void compact();
     void onCollectionFetchCheck(KJob *);
     void onCollectionFetchCompact(KJob *);

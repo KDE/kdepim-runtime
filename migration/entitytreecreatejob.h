@@ -33,7 +33,7 @@ public:
 
     /* reimp */ void doStart();
 
-private slots:
+private Q_SLOTS:
     void collectionCreateJobDone(KJob *);
 
 private:

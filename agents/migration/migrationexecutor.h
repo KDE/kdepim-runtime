@@ -46,7 +46,7 @@ protected:
     bool doResume() Q_DECL_OVERRIDE;
     bool doSuspend() Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void onStoppedProcessing();
     void executeNext();
 

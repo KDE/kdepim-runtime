@@ -32,7 +32,7 @@ public:
     explicit RetrieveCollectionMetadataTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~RetrieveCollectionMetadataTask();
 
-private slots:
+private Q_SLOTS:
     void onGetMetaDataDone(KJob *job);
     void onGetAclDone(KJob *job);
     void onRightsReceived(KJob *job);

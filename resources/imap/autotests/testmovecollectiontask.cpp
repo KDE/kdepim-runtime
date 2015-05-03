@@ -25,7 +25,7 @@ class TestMoveCollectionTask : public ImapTestBase
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void shouldRenameMailBox_data()
     {
         QTest::addColumn<Akonadi::Collection>("collection");

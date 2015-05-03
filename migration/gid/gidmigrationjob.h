@@ -51,7 +51,7 @@ public:
 
     void doStart() Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void collectionsReceived(const Akonadi::Collection::List &);
     void collectionsFetched(KJob *);
     void itemsUpdated(KJob *);
@@ -75,7 +75,7 @@ public:
     void doStart() Q_DECL_OVERRIDE;
     void slotResult(KJob *job) Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void itemsReceived(const Akonadi::Item::List &items);
 private:
     bool processNext();

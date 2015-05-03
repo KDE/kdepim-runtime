@@ -28,7 +28,7 @@ class TestIdxReader : public QObject
     Q_OBJECT
 public:
     TestIdxReader();
-private slots:
+private Q_SLOTS:
     void testError();
     void testReadHeader();
     void testRead();

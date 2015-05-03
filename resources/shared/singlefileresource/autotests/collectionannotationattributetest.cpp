@@ -29,7 +29,7 @@ using namespace Akonadi;
 class CollectionAnnotationAttributeTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void testSerializeDeserialize_data()
     {
         QTest::addColumn<Annotation>("annotation");

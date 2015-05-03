@@ -70,7 +70,7 @@ protected:
     void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &dest) Q_DECL_OVERRIDE;
     void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void configurationChanged();
     void slotItemsRetrievalResult(KJob *job);
     void slotDirChanged(const QString &dir);

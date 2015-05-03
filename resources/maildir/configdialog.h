@@ -37,7 +37,7 @@ public:
     explicit ConfigDialog(Akonadi_Maildir_Resource::MaildirSettings *settings, const QString &identifier, QWidget *parent = Q_NULLPTR);
     ~ConfigDialog();
 
-private slots:
+private Q_SLOTS:
     void checkPath();
     void save();
 

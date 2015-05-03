@@ -46,7 +46,7 @@ public:
     Private(QObject *parent) : QObject(parent) {}
     static Private *mInstance;
 
-private slots:
+private Q_SLOTS:
     void modifyCollectionJobDone(KJob *);
 };
 Private *Private::mInstance = Q_NULLPTR;

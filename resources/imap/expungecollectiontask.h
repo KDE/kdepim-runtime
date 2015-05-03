@@ -32,7 +32,7 @@ public:
     explicit ExpungeCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~ExpungeCollectionTask();
 
-private slots:
+private Q_SLOTS:
     void onSelectDone(KJob *job);
     void onExpungeDone(KJob *job);
 

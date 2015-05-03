@@ -55,7 +55,7 @@ protected:
 
     Akonadi::Collection createCollectionChain(const QString &remoteId) const;
 
-private slots:
+private Q_SLOTS:
     void setupTestCase();
 };
 

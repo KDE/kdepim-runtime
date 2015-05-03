@@ -137,7 +137,7 @@ public:
      */
     virtual bool validate() const = 0;
 
-signals:
+Q_SIGNALS:
     /**
      * Signal emitted when the widget's value changes in a way which
      * might affect the result of validate().

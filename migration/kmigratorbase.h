@@ -76,13 +76,13 @@ protected:
     virtual void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance
                                  = Akonadi::AgentInstance()) = 0;
 
-signals:
+Q_SIGNALS:
     void message(KMigratorBase::MessageType type, const QString &msg);
 
-protected slots:
+protected Q_SLOTS:
     virtual void migrate() = 0;
 
-private slots:
+private Q_SLOTS:
     void logMessage(KMigratorBase::MessageType type, const QString &msg);
 
 private:

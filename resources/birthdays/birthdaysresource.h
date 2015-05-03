@@ -53,7 +53,7 @@ private:
     KCalCore::Event::Ptr createAnniversary(const Akonadi::Item &contactItem);
     KCalCore::Event::Ptr createEvent(const QDate &date);
 
-private slots:
+private Q_SLOTS:
     void doFullSearch();
     void listContacts(const Akonadi::Collection::List &cols);
     void createEvents(const Akonadi::Item::List &items);

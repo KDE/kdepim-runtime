@@ -47,7 +47,7 @@ public:
     bool success;
     QString message;
 
-    // slots:
+    // Q_SLOTS:
     void fetchDone(KJob *job);
     void modifyDone(KJob *job);
 };

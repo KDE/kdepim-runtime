@@ -89,7 +89,7 @@ public:
     };
     QList<KIMAP::MailBoxDescriptor> serverNamespaces(Namespace) const;
 
-signals:
+Q_SIGNALS:
     void connectionLost(KIMAP::Session *session);
 
     void sessionRequestDone(qint64 requestNumber, KIMAP::Session *session,
@@ -97,7 +97,7 @@ signals:
     void connectDone(int errorCode = NoError, const QString &errorString = QString());
     void disconnectDone();
 
-private slots:
+private Q_SLOTS:
     void processPendingRequests();
 
     void onPasswordRequestDone(int resultType, const QString &password);

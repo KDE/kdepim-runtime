@@ -34,7 +34,7 @@ public:
     explicit MoveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~MoveItemsTask();
 
-private slots:
+private Q_SLOTS:
     void onSelectDone(KJob *job);
     void onCopyDone(KJob *job);
     void onStoreFlagsDone(KJob *job);

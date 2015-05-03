@@ -27,7 +27,7 @@ class TestAddCollectionTask : public ImapTestBase
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void shouldCreateAndSubscribe_data()
     {
         QTest::addColumn<Akonadi::Collection>("parentCollection");

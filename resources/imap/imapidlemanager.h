@@ -55,7 +55,7 @@ public:
 
     KIMAP::Session *session() const;
 
-private slots:
+private Q_SLOTS:
     void onConnectionLost(KIMAP::Session *session);
     void onPoolDisconnect();
 

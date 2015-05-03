@@ -36,7 +36,7 @@ class MigratorModel;
 class LogModel : public QStandardItemModel
 {
     Q_OBJECT
-public slots:
+public Q_SLOTS:
     void message(MigratorBase::MessageType type, const QString &msg);
 };
 
@@ -51,7 +51,7 @@ public:
 
     bool operator==(const Row &other) const;
 
-private slots:
+private Q_SLOTS:
     void stateChanged(MigratorBase::MigrationState);
     void progress(int);
 };

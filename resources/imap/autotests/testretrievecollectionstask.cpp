@@ -37,7 +37,7 @@ public:
     {
     }
 
-private slots:
+private Q_SLOTS:
     void shouldListCollections_data()
     {
         QTest::addColumn<Akonadi::Collection::List>("expectedCollections");

@@ -50,7 +50,7 @@ private:
     void entriesProcessed();
     Akonadi::TransactionSequence *transaction();
 
-private slots:
+private Q_SLOTS:
     void localListDone(KJob *job);
     void transactionDone(KJob *job);
     void processEntry();

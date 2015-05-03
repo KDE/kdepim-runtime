@@ -39,7 +39,7 @@ public:
 
 protected:
     virtual void startWork();
-private slots:
+private Q_SLOTS:
     void migrationFinished(KJob *);
 private:
     QString mMimeType;

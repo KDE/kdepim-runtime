@@ -50,7 +50,7 @@ public:
                                  const QString &serverError = QString()) = 0;
     virtual void cancelPasswordRequests();
 
-signals:
+Q_SIGNALS:
     void done(int resultType, const QString &password = QString());
 };
 

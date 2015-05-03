@@ -92,7 +92,7 @@ public:
      */
     QList<Result> results() const;
 
-private slots:
+private Q_SLOTS:
     void principalCollectionSetSearchFinished(KJob *job);
     void principalPropertySearchFinished(KJob *job);
 

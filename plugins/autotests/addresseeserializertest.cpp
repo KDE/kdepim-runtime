@@ -27,7 +27,7 @@ using namespace Akonadi;
 class AddresseeSerializerTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void testGid()
     {
         const QString uid(QLatin1String("uid"));

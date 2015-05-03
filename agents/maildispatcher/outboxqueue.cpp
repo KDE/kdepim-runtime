@@ -94,7 +94,7 @@ public:
     void initQueue();
     void addIfComplete(const Item &item);
 
-    // slots:
+    // Q_SLOTS:
     void checkFuture();
     void collectionFetched(KJob *job);
     void itemFetched(KJob *job);

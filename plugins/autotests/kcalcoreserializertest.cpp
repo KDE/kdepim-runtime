@@ -28,7 +28,7 @@ using namespace KCalCore;
 class KCalCoreSerializerTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void testEventSerialize_data()
     {
         QTest::addColumn<QString>("mimeType");

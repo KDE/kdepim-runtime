@@ -33,7 +33,7 @@ class ConfigDialog : public QDialog
 public:
     explicit ConfigDialog(QWidget *parent = Q_NULLPTR);
 
-private slots:
+private Q_SLOTS:
     void checkPath();
     void save();
 

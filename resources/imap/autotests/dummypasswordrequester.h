@@ -39,7 +39,7 @@ public:
     virtual void requestPassword(RequestType request = StandardRequest,
                                  const QString &serverError = QString());
 
-private slots:
+private Q_SLOTS:
     void emitResult();
 
 private:

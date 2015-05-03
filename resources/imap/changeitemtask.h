@@ -32,7 +32,7 @@ public:
     explicit ChangeItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~ChangeItemTask();
 
-private slots:
+private Q_SLOTS:
     void onAppendMessageDone(KJob *job);
 
     void onPreStoreSelectDone(KJob *job);

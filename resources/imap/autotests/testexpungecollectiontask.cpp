@@ -25,7 +25,7 @@ class TestExpungeCollectionTask : public ImapTestBase
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void shouldDeleteMailBox_data()
     {
         QTest::addColumn<Akonadi::Collection>("collection");

@@ -45,7 +45,7 @@ public:
     AccountDialog(POP3Resource *parentResource, WId parentWindow);
     virtual ~AccountDialog();
 
-private slots:
+private Q_SLOTS:
     void slotEnablePopInterval(bool state);
     void slotFontChanged();
     void slotLeaveOnServerClicked();

@@ -43,7 +43,7 @@ class TestResourceTask : public ImapTestBase
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void shouldRequestSession_data()
     {
         QTest::addColumn<DummyResourceState::Ptr>("state");

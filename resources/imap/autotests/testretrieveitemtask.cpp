@@ -25,7 +25,7 @@ class TestRetrieveItemTask : public ImapTestBase
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void shouldFetchMessage_data()
     {
         QTest::addColumn<Akonadi::Item>("item");

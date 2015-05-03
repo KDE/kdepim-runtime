@@ -69,7 +69,7 @@ public:
 
     bool shouldClearCache() const;
 
-private slots:
+private Q_SLOTS:
     /**
      * Call this if you want the settings saved from this page.
      */
@@ -97,7 +97,7 @@ private:
     FolderArchiveSettingPage *m_folderArchiveSettingPage;
     QPushButton *mOkButton;
 
-private slots:
+private Q_SLOTS:
     void slotTest();
     void slotFinished(const QList<int> &testResult);
     void slotCustomSieveChanged();

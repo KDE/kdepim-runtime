@@ -39,7 +39,7 @@ public:
                                  const QString &serverError = QString()) Q_DECL_OVERRIDE;
     void cancelPasswordRequests() Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void askUserInput(const QString &serverError);
     void onPasswordRequestCompleted(const QString &password, bool userRejected);
     void onDialogDestroyed();

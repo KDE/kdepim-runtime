@@ -101,7 +101,7 @@ public:
 
     bool validatePage() Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void manualConfigToggled(bool toggled);
 
 private:
@@ -119,7 +119,7 @@ public:
     void initializePage() Q_DECL_OVERRIDE;
     void cleanupPage() Q_DECL_OVERRIDE;
 
-private slots:
+private Q_SLOTS:
     void urlElementChanged();
 
 private:

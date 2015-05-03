@@ -32,7 +32,7 @@ class TestRetrieveItemsTask : public ImapTestBase
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void shouldIntrospectCollection_data()
     {
         QTest::addColumn<Akonadi::Collection>("collection");

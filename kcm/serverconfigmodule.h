@@ -40,7 +40,7 @@ public:
     void save();
     void defaults();
 
-private slots:
+private Q_SLOTS:
     void updateStatus();
     void startStopClicked();
     void restartClicked();

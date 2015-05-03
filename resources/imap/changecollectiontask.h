@@ -34,7 +34,7 @@ public:
 
     void syncEnabledState(bool);
 
-private slots:
+private Q_SLOTS:
     void onRenameDone(KJob *job);
     void onSubscribeDone(KJob *job);
     void onSetAclDone(KJob *job);

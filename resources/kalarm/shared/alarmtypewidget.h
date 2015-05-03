@@ -36,7 +36,7 @@ public:
     void setAlarmTypes(CalEvent::Types);
     CalEvent::Types alarmTypes() const;
 
-signals:
+Q_SIGNALS:
     void changed();
 
 private:

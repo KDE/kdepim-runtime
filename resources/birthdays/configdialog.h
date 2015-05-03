@@ -34,7 +34,7 @@ public:
     ConfigDialog(QWidget *parent = Q_NULLPTR);
     ~ConfigDialog();
 
-private slots:
+private Q_SLOTS:
     void save();
 
 private:

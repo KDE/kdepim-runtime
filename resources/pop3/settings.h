@@ -37,7 +37,7 @@ public:
     void setResourceId(const QString &resourceIdentifier);
     static Settings *self();
 
-public slots:
+public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
 private:
     WId mWinId;

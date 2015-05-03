@@ -86,7 +86,7 @@ public:
     qulonglong sentItemsSize;
     SentActionHandler *sentActionHandler;
 
-    // slots:
+    // Q_SLOTS:
     void abort();
     void dispatch();
     void itemFetched(const Item &item);

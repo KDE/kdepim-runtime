@@ -34,7 +34,7 @@ public:
     explicit RetrieveItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~RetrieveItemTask();
 
-private slots:
+private Q_SLOTS:
     void onSelectDone(KJob *job);
     void onMessagesReceived(const QString &mailBox,
                             const QMap<qint64, qint64> &uids,

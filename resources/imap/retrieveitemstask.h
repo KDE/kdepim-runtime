@@ -42,11 +42,11 @@ public:
     virtual ~RetrieveItemsTask();
     void setFetchMissingItemBodies(bool enabled);
 
-public slots:
+public Q_SLOTS:
     void onFetchItemsWithoutBodiesDone(const QList<qint64> &items);
     void onReadyForNextBatch(int size);
 
-private slots:
+private Q_SLOTS:
     void fetchItemsWithoutBodiesDone(KJob *job);
     void onPreExpungeSelectDone(KJob *job);
     void onExpungeDone(KJob *job);

@@ -32,7 +32,7 @@ public:
     explicit AddItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~AddItemTask();
 
-private slots:
+private Q_SLOTS:
     void onAppendMessageDone(KJob *job);
     void onPreSearchSelectDone(KJob *job);
     void onSearchDone(KJob *job);

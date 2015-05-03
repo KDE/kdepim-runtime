@@ -50,16 +50,16 @@ public:
     virtual void clearCachedPassword();
     virtual void cleanup();
 
-signals:
+Q_SIGNALS:
     void passwordRequestCompleted(const QString &password, bool userRejected);
 
-public slots:
+public Q_SLOTS:
     Q_SCRIPTABLE virtual QString password(bool *userRejected = Q_NULLPTR) const;
     Q_SCRIPTABLE virtual void setPassword(const QString &password);
     Q_SCRIPTABLE virtual void setSieveCustomPassword(const QString &password);
     Q_SCRIPTABLE virtual QString sieveCustomPassword(bool *userRejected = Q_NULLPTR) const;
 
-protected slots:
+protected Q_SLOTS:
     virtual void onWalletOpened(bool success);
     virtual void onDialogFinished(int result);
 
