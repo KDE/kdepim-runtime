@@ -31,6 +31,7 @@ public:
     ~CalendarResource();
 
 public:
+    using GoogleResource::collectionChanged; // So we don't trigger -Woverloaded-virtual
     GoogleSettings *settings() const Q_DECL_OVERRIDE;
     QList< QUrl > scopes() const Q_DECL_OVERRIDE;
 
