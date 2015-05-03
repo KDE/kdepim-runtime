@@ -33,6 +33,9 @@
 #include "newmailnotifier_debug.h"
 
 #include <QTextDocument>
+#ifdef HAVE_SPEECH
+#include <QTextToSpeech>
+#endif
 
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),
@@ -145,15 +148,12 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
-#if 0
-//PORT QT5: Use QtSpeech
-            if (QDBusConnection::sessionBus().interface()->isServiceRegistered(QStringLiteral("org.kde.kttsd"))) {
-                QDBusInterface ktts(QStringLiteral("org.kde.kttsd"), QStringLiteral("/KSpeech"), QStringLiteral("org.kde.KSpeech"));
-                QString message = NewMailNotifierAgentSettings::textToSpeak();
-                message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
-                message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
-                ktts.asyncCall(QStringLiteral("say"), message, 0);
-            }
+#ifdef HAVE_SPEECH
+            QTextToSpeech *speech = new QTextToSpeech(this);
+            QString message = NewMailNotifierAgentSettings::textToSpeak();
+            message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
+            message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
+            speech->say(message);
 #endif
         }
     }

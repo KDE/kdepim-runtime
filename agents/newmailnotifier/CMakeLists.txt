@@ -36,6 +36,10 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiAgentBase
 )
 
+if (Qt5TextToSpeech_FOUND)
+    target_link_libraries(akonadi_newmailnotifier_agent
+        Qt5::TextToSpeech)
+endif()
 
 if( APPLE )
   set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/Info.plist.template)

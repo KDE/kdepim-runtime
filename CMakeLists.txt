@@ -91,6 +91,12 @@ find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Widgets Test Declarative
 # QT5 package
 find_package(Qt5WebKitWidgets ${QT_REQUIRED_VERSION} REQUIRED NO_MODULE)
 
+find_package(Qt5 OPTIONAL_COMPONENTS TextToSpeech)
+if (NOT Qt5TextToSpeech_FOUND)
+    message(STATUS "Qt5TextToSpeech not found, speech feature will be disabled")
+else()
+    add_definitions(-DHAVE_SPEECH)
+endif()
 
 
 set(KF5AkonadiServer_MIN_VERSION "5.0.41")
