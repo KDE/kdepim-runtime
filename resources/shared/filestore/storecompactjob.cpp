@@ -67,12 +67,12 @@ Collection::List FileStore::StoreCompactJob::changedCollections() const
 void FileStore::StoreCompactJob::handleCollectionsChanged(const Collection::List &collections)
 {
     d->mCollections << collections;
-    emit collectionsChanged(collections);
+    Q_EMIT collectionsChanged(collections);
 }
 
 void FileStore::StoreCompactJob::handleItemsChanged(const Item::List &items)
 {
     d->mItems << items;
-    emit itemsChanged(items);
+    Q_EMIT itemsChanged(items);
 }
 

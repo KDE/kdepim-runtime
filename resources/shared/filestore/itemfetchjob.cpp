@@ -100,6 +100,6 @@ void FileStore::ItemFetchJob::handleItemsReceived(const Item::List &items)
 {
     d->mItems << items;
 
-    emit itemsReceived(items);
+    Q_EMIT itemsReceived(items);
 }
 

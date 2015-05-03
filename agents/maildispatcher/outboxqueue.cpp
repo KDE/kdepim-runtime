@@ -202,7 +202,7 @@ void OutboxQueue::Private::addIfComplete(const Item &item)
     Q_ASSERT(!queue.contains(item));
     totalSize += item.size();
     queue.append(item);
-    emit q->newItems();
+    Q_EMIT q->newItems();
 }
 
 void OutboxQueue::Private::checkFuture()
@@ -273,7 +273,7 @@ void OutboxQueue::Private::itemFetched(KJob *job)
     }
 
     if (!fetchJob->items().isEmpty()) {
-        emit q->itemReady(fetchJob->items().first());
+        Q_EMIT q->itemReady(fetchJob->items().first());
     }
 }
 
@@ -334,7 +334,7 @@ void OutboxQueue::Private::localFoldersRequestResult(KJob *job)
             QTimer::singleShot(timeout, q, SLOT(localFoldersChanged()));
         } else {
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up."; ;
-            emit q->error(i18n("Could not access the outbox folder (%1).", job->errorString()));
+            Q_EMIT q->error(i18n("Could not access the outbox folder (%1).", job->errorString()));
         }
         return;
     }

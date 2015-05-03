@@ -62,7 +62,7 @@ GoogleResource::GoogleResource(const QString &id):
     connect(m_accountMgr, &GoogleAccountManager::accountRemoved, this, &GoogleResource::slotAccountRemoved);
     connect(m_accountMgr, &GoogleAccountManager::managerReady, this, &GoogleResource::slotAccountManagerReady);
 
-    emit status(NotConfigured, i18n("Waiting for KWallet..."));
+    Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
 }
 
 GoogleResource::~GoogleResource()
@@ -102,7 +102,7 @@ void GoogleResource::slotAbortRequested()
 void GoogleResource::configure(WId windowId)
 {
     if (!m_accountMgr->isReady() || m_isConfiguring) {
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
         return;
     }
 
@@ -110,21 +110,21 @@ void GoogleResource::configure(WId windowId)
     if (runConfigurationDialog(windowId) == QDialog::Accepted) {
         updateResourceName();
 
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
 
         m_account = accountManager()->findAccount(settings()->account());
         if (m_account.isNull()) {
-            emit status(NotConfigured, i18n("Configured account does not exist"));
+            Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
             m_isConfiguring = false;
             return;
         }
 
-        emit status(Idle, i18nc("@info:status", "Ready"));
+        Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
         synchronize();
     } else {
         updateResourceName();
 
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
     m_isConfiguring = false;
 }
@@ -146,20 +146,20 @@ void GoogleResource::reloadConfig()
 
     if (accountId() > 0) {
         if (!configureKAccounts(accountId())) {
-            emit status(Broken);
+            Q_EMIT status(Broken);
             return;
         }
     } else if (!accountName.isEmpty()) {
         if (!configureKGAPIAccount(m_accountMgr->findAccount(accountName))) {
-            emit status(NotConfigured, i18n("Configured account does not exist"));
+            Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
             return;
         }
     } else {
-        emit status(NotConfigured);
+        Q_EMIT status(NotConfigured);
         return;
     }
 
-    emit status(Idle, i18nc("@info:status", "Ready"));
+    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
 
 bool GoogleResource::configureKAccounts(int accountId, KGAPI2::Job *restartJob)
@@ -184,7 +184,7 @@ bool GoogleResource::configureKAccounts(int accountId, KGAPI2::Job *restartJob)
 void GoogleResource::slotKAccountsCredentialsReceived(KJob *job)
 {
     if (job->error()) {
-        emit status(Broken);
+        Q_EMIT status(Broken);
         // FIXME: Fallback to KGAPI account?
         return;
     }
@@ -221,7 +221,7 @@ void GoogleResource::slotKAccountsCredentialsReceived(KJob *job)
 void GoogleResource::slotKAccountsAccountInfoReceived(KGAPI2::Job *job)
 {
     if (!handleError(job)) {
-        emit error(job->errorString());
+        Q_EMIT error(job->errorString());
         cancelTask(i18n("Failed to refresh tokens"));
         return;
     }
@@ -234,7 +234,7 @@ void GoogleResource::slotKAccountsAccountInfoReceived(KGAPI2::Job *job)
 
     if (aiJob->items().count() != 1) {
         qWarning() << "AccountInfoFetchJob returned unexpected amount of results";
-        emit error(i18n("Invalid reply"));
+        Q_EMIT error(i18n("Invalid reply"));
         cancelTask(i18n("Failed to refresh tokens"));
         return;
     }
@@ -256,7 +256,7 @@ void GoogleResource::slotKAccountsAccountInfoReceived(KGAPI2::Job *job)
 void GoogleResource::finishKAccountsAuthentication(KGAPI2::Job *job)
 {
     updateResourceName();
-    emit status(Idle, i18nc("@info:status", "Ready"));
+    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 
     if (job) {
         job->setAccount(m_account);
@@ -282,23 +282,23 @@ void GoogleResource::slotAccountManagerReady(bool ready)
 
     qDebug() << ready;
     if (!ready) {
-        emit status(Broken, i18n("Can't access KWallet"));
+        Q_EMIT status(Broken, i18n("Can't access KWallet"));
         return;
     }
 
     const QString accountName = settings()->account();
     if (accountName.isEmpty()) {
-        emit status(NotConfigured);
+        Q_EMIT status(NotConfigured);
         return;
     }
 
     m_account = m_accountMgr->findAccount(accountName);
     if (m_account.isNull()) {
-        emit status(NotConfigured, i18n("Configured account does not exist"));
+        Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
         return;
     }
 
-    emit status(Idle, i18nc("@info:status", "Ready"));
+    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
     synchronize();
 }
 
@@ -323,7 +323,7 @@ void GoogleResource::slotAccountRemoved(const QString &accountName)
         return;
     }
 
-    emit status(NotConfigured, i18n("Configured account has been removed"));
+    Q_EMIT status(NotConfigured, i18n("Configured account has been removed"));
     m_account.clear();
     settings()->setAccount(QString());
 }
@@ -357,7 +357,7 @@ bool GoogleResource::canPerformTask()
 {
     if (!m_account && accountId() == 0) {
         cancelTask(i18nc("@info:status", "Resource is not configured"));
-        emit status(NotConfigured, i18nc("@info:status", "Resource is not configured"));
+        Q_EMIT status(NotConfigured, i18nc("@info:status", "Resource is not configured"));
         return false;
     }
 
@@ -404,7 +404,7 @@ void GoogleResource::slotGenericJobFinished(KGAPI2::Job *job)
         taskDone();
     }
 
-    emit status(Idle, i18nc("@info:status", "Ready"));
+    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 
     job->deleteLater();
 }
@@ -413,7 +413,7 @@ void GoogleResource::emitPercent(KGAPI2::Job *job, int processedItems, int total
 {
     Q_UNUSED(job);
 
-    emit percent(((float) processedItems / (float) totalItems) * 100);
+    Q_EMIT percent(((float) processedItems / (float) totalItems) * 100);
 }
 
 bool GoogleResource::retrieveItem(const Item &item, const QSet< QByteArray > &parts)

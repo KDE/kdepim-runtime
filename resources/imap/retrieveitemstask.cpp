@@ -501,8 +501,8 @@ void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
     if (m_fetchedMissingBodies != -1) {
         const QString mailBox = mailBoxForCollection(collection());
         m_fetchedMissingBodies += addedItems.count();
-        emit status(Akonadi::AgentBase::Running,
-                    i18nc("@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
+        Q_EMIT status(Akonadi::AgentBase::Running,
+                      i18nc("@info:status", "Fetching missing mail bodies in %3: %1/%2", m_fetchedMissingBodies, m_messageUidsMissingBody.count(), mailBox));
     }
 }
 

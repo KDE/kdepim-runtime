@@ -69,9 +69,9 @@ void VCardDirResource::configure(WId windowId)
 
         synchronize();
 
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 }
 
@@ -98,7 +98,7 @@ bool VCardDirResource::loadAddressees()
         }
     }
 
-    emit status(Idle);
+    Q_EMIT status(Idle);
 
     return true;
 }
@@ -107,7 +107,7 @@ bool VCardDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
 {
     const QString remoteId = item.remoteId();
     if (!mAddressees.contains(remoteId)) {
-        emit error(i18n("Contact with uid '%1' not found.", remoteId));
+        Q_EMIT error(i18n("Contact with uid '%1' not found.", remoteId));
         return false;
     }
 
@@ -121,7 +121,7 @@ bool VCardDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
 void VCardDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)
 {
     if (Settings::self()->readOnly()) {
-        emit error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
+        Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
         cancelTask();
         return;
     }
@@ -156,7 +156,7 @@ void VCardDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
 void VCardDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
     if (Settings::self()->readOnly()) {
-        emit error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
+        Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
         cancelTask();
         return;
     }
@@ -193,7 +193,7 @@ void VCardDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
 void VCardDirResource::itemRemoved(const Akonadi::Item &item)
 {
     if (Settings::self()->readOnly()) {
-        emit error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
+        Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
         cancelTask();
         return;
     }

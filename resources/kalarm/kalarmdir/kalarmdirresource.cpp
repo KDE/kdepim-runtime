@@ -198,7 +198,7 @@ void KAlarmDirResource::configure(WId windowId)
             synchronizeCollectionTree();
         } else if (mSettings->path() != path) {
             // Directory path change is not allowed for existing resources
-            emit configurationDialogRejected();
+            Q_EMIT configurationDialogRejected();
             return;
         } else {
             bool modify = false;
@@ -225,9 +225,9 @@ void KAlarmDirResource::configure(WId windowId)
                 connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
             }
         }
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 }
 
@@ -431,7 +431,7 @@ bool KAlarmDirResource::loadFiles(bool sync)
         synchronize();
     }
 
-    emit status(Idle);
+    Q_EMIT status(Idle);
     return true;
 }
 
@@ -517,7 +517,7 @@ bool KAlarmDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByte
     QHash<QString, EventFile>::ConstIterator it = mEvents.constFind(rid);
     if (it == mEvents.constEnd()) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "Event not found:" << rid;
-        emit error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
+        Q_EMIT error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
         return false;
     }
 
@@ -658,14 +658,14 @@ void KAlarmDirResource::removeEvent(const QString &eventId, bool deleteFile)
 }
 
 /******************************************************************************
-* If the resource is read-only, cancel the task and emit an error.
+* If the resource is read-only, cancel the task andQ_EMIT an error.
 * Reply = true if cancelled.
 */
 bool KAlarmDirResource::cancelIfReadOnly()
 {
     if (mSettings->readOnly()) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "Calendar is read-only:" << directoryName();
-        emit error(i18nc("@info", "Trying to write to a read-only calendar: '%1'", directoryName()));
+        Q_EMIT error(i18nc("@info", "Trying to write to a read-only calendar: '%1'", directoryName()));
         cancelTask();
         return true;
     }
@@ -683,7 +683,7 @@ bool KAlarmDirResource::writeToFile(const KAEvent &event)
     KACalendar::setKAlarmVersion(calendar);   // set the KAlarm custom property
     if (!calendar->addIncidence(kcalEvent)) {
         qCritical() << "Error adding event with id" << event.id();
-        emit error(errorMessage(KAlarmResourceCommon::CalendarAdd, event.id()));
+        Q_EMIT error(errorMessage(KAlarmResourceCommon::CalendarAdd, event.id()));
         cancelTask();
         return false;
     }
@@ -694,7 +694,7 @@ bool KAlarmDirResource::writeToFile(const KAEvent &event)
     qCDebug(KALARMDIRRESOURCE_LOG) << event.id() << " File:" << path;
     FileStorage::Ptr fileStorage(new FileStorage(calendar, path, new ICalFormat()));
     if (!fileStorage->save()) {
-        emit error(i18nc("@info", "Failed to save event file: %1", path));
+        Q_EMIT error(i18nc("@info", "Failed to save event file: %1", path));
         cancelTask();
         return false;
     }

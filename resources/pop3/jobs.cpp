@@ -61,7 +61,7 @@ void POPSession::slotSlaveError(KIO::Slave *slave , int errorCode,
     }
 
     if (!mCurrentJob) {
-        emit slaveError(errorCode, errorMessage);
+        Q_EMIT slaveError(errorCode, errorMessage);
     } else {
         // Let the job deal with the problem
         mCurrentJob->slaveError(errorCode, errorMessage);
@@ -495,6 +495,6 @@ void FetchJob::slotInfoMessage(KJob *job, const QString &infoMessage, const QStr
 
     mCurrentMessage.clear();
     const int idOfCurrentMessage = mIdsPendingDownload.takeFirst();
-    emit messageFinished(idOfCurrentMessage, msg);
+    Q_EMIT messageFinished(idOfCurrentMessage, msg);
 }
 

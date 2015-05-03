@@ -270,10 +270,10 @@ void InvitationsAgent::initStart()
     m_invitations = Akonadi::Collection();
     AgentInstance resource = AgentManager::self()->instance( m_resourceId );
     if ( resource.isValid() ) {
-      emit status( AgentBase::Running, i18n( "Reading..." ) );
+     Q_EMIT status( AgentBase::Running, i18n( "Reading..." ) );
       QMetaObject::invokeMethod( this, "createAgentResult", Qt::QueuedConnection );
     } else {
-      emit status( AgentBase::Running, i18n( "Creating..." ) );
+     Q_EMIT status( AgentBase::Running, i18n( "Creating..." ) );
       AgentType type = AgentManager::self()->type( QLatin1String( "akonadi_ical_resource" ) );
       AgentInstanceCreateJob *job = new AgentInstanceCreateJob( type, this );
       connect(job, &InvitationsCollectionRequestJob::result, this, &InvitationsAgent::createAgentResult);
@@ -294,7 +294,7 @@ void InvitationsAgent::initDone(KJob *job)
     }
 
     Q_ASSERT(m_invitationsCollection->defaultCollection().isValid());
-    emit status(AgentBase::Idle, i18n("Ready to dispatch invitations"));
+    Q_EMIT status(AgentBase::Idle, i18n("Ready to dispatch invitations"));
 }
 
 Collection InvitationsAgent::collection()
@@ -333,7 +333,7 @@ void InvitationsAgent::createAgentResult(KJob *job)
     if (job) {
         if (job->error()) {
             qWarning() << job->errorString();
-            emit status(AgentBase::Broken, i18n("Failed to create resource: %1", job->errorString()));
+            Q_EMIT status(AgentBase::Broken, i18n("Failed to create resource: %1", job->errorString()));
             return;
         }
 
@@ -350,7 +350,7 @@ void InvitationsAgent::createAgentResult(KJob *job)
 
         if (!reply.isValid()) {
             qWarning() << "dbus call failed, m_resourceId=" << m_resourceId;
-            emit status(AgentBase::Broken, i18n("Failed to set the directory for invitations via D-Bus"));
+            Q_EMIT status(AgentBase::Broken, i18n("Failed to set the directory for invitations via D-Bus"));
             AgentManager::self()->removeInstance(agent);
             return;
         }
@@ -376,7 +376,7 @@ void InvitationsAgent::resourceSyncResult(KJob *job)
     qDebug();
     if (job->error()) {
         qWarning() << job->errorString();
-        emit status(AgentBase::Broken, i18n("Failed to synchronize collection: %1", job->errorString()));
+        Q_EMIT status(AgentBase::Broken, i18n("Failed to synchronize collection: %1", job->errorString()));
         if (newAgentCreated) {
             AgentManager::self()->removeInstance(AgentManager::self()->instance(m_resourceId));
         }
@@ -395,7 +395,7 @@ void InvitationsAgent::collectionFetchResult(KJob *job)
 
     if (job->error()) {
         qWarning() << job->errorString();
-        emit status(AgentBase::Broken, i18n("Failed to fetch collection: %1", job->errorString()));
+        Q_EMIT status(AgentBase::Broken, i18n("Failed to fetch collection: %1", job->errorString()));
         if (newAgentCreated) {
             AgentManager::self()->removeInstance(AgentManager::self()->instance(m_resourceId));
         }
@@ -452,7 +452,7 @@ void InvitationsAgent::collectionCreateResult(KJob *job)
     qDebug();
     if (job->error()) {
         qWarning() << job->errorString();
-        emit status(AgentBase::Broken, i18n("Failed to create collection: %1", job->errorString()));
+        Q_EMIT status(AgentBase::Broken, i18n("Failed to create collection: %1", job->errorString()));
         if (newAgentCreated) {
             AgentManager::self()->removeInstance(AgentManager::self()->instance(m_resourceId));
         }

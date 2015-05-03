@@ -105,7 +105,7 @@ void Settings::requestPassword()
 {
     if (!m_password.isEmpty() ||
             (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
-        emit passwordRequestCompleted(m_password, false);
+        Q_EMIT passwordRequestCompleted(m_password, false);
     } else {
         Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
         if (wallet) {
@@ -120,7 +120,7 @@ void Settings::requestPassword()
 void Settings::onWalletOpened(bool success)
 {
     if (!success) {
-        emit passwordRequestCompleted(QString(), true);
+        Q_EMIT passwordRequestCompleted(QString(), true);
     } else {
         Wallet *wallet = qobject_cast<Wallet *>(sender());
         bool passwordNotStoredInWallet = true;
@@ -132,7 +132,7 @@ void Settings::onWalletOpened(bool success)
         if (passwordNotStoredInWallet || m_password.isEmpty()) {
             requestManualAuth();
         } else {
-            emit passwordRequestCompleted(m_password, passwordNotStoredInWallet);
+            Q_EMIT passwordRequestCompleted(m_password, passwordNotStoredInWallet);
         }
 
         if (wallet) {
@@ -157,9 +157,9 @@ void Settings::onDialogFinished(int result)
     if (result == QDialog::Accepted) {
         KPasswordDialog *dlg = qobject_cast<KPasswordDialog *>(sender());
         setPassword(dlg->password());
-        emit passwordRequestCompleted(dlg->password(), false);
+        Q_EMIT passwordRequestCompleted(dlg->password(), false);
     } else {
-        emit passwordRequestCompleted(QString(), true);
+        Q_EMIT passwordRequestCompleted(QString(), true);
     }
 }
 

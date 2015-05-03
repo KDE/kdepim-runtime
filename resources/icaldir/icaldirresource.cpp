@@ -110,9 +110,9 @@ void ICalDirResource::configure(WId windowId)
 
         synchronize();
 
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 }
 
@@ -131,7 +131,7 @@ bool ICalDirResource::loadIncidences()
         }
     }
 
-    emit status(Idle);
+    Q_EMIT status(Idle);
     return true;
 }
 
@@ -139,7 +139,7 @@ bool ICalDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteAr
 {
     const QString remoteId = item.remoteId();
     if (!mIncidences.contains(remoteId)) {
-        emit error(i18n("Incidence with uid '%1' not found.", remoteId));
+        Q_EMIT error(i18n("Incidence with uid '%1' not found.", remoteId));
         return false;
     }
 
@@ -153,7 +153,7 @@ bool ICalDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteAr
 void ICalDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)
 {
     if (Settings::self()->readOnly()) {
-        emit error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
+        Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
         cancelTask();
         return;
     }
@@ -186,7 +186,7 @@ void ICalDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
 void ICalDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
     if (Settings::self()->readOnly()) {
-        emit error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
+        Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
         cancelTask();
         return;
     }
@@ -218,7 +218,7 @@ void ICalDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 void ICalDirResource::itemRemoved(const Akonadi::Item &item)
 {
     if (Settings::self()->readOnly()) {
-        emit error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
+        Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
         cancelTask();
         return;
     }

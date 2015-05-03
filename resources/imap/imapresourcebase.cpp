@@ -222,10 +222,10 @@ void ImapResourceBase::updateResourceName()
 void ImapResourceBase::configure(WId windowId)
 {
     if (createConfigureDialog(windowId)->exec() == QDialog::Accepted) {
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
         reconnect();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 }
 
@@ -235,7 +235,7 @@ void ImapResourceBase::startConnect(const QVariant &)
 {
     if (settings()->imapServer().isEmpty()) {
         setOnline(false);
-        emit status(NotConfigured, i18n("No server configured yet."));
+        Q_EMIT status(NotConfigured, i18n("No server configured yet."));
         taskDone();
         return;
     }
@@ -279,7 +279,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
     if (mSubscriptions->exec()) {
         settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
         settings()->save();
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
         reconnect();
     }
     delete mSubscriptions;
@@ -293,7 +293,7 @@ void ImapResourceBase::onConnectDone(int errorCode, const QString &errorString)
     case SessionPool::NoError:
         setOnline(true);
         taskDone();
-        emit status(Idle, i18n("Connection established."));
+        Q_EMIT status(Idle, i18n("Connection established."));
 
         synchronizeCollectionTree();
         break;
@@ -304,12 +304,12 @@ void ImapResourceBase::onConnectDone(int errorCode, const QString &errorString)
     case SessionPool::CapabilitiesTestError:
     case SessionPool::IncompatibleServerError:
         setOnline(false);
-        emit status(Broken, errorString);
+        Q_EMIT status(Broken, errorString);
         cancelTask();
         return;
 
     case SessionPool::CouldNotConnectError:
-        emit status(Idle, i18n("Server is not available."));
+        Q_EMIT status(Idle, i18n("Server is not available."));
         deferTask();
         setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
         return;
@@ -363,14 +363,14 @@ bool ImapResourceBase::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
 
 void ImapResourceBase::itemAdded(const Item &item, const Collection &collection)
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Adding item in '%1'", collection.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Adding item in '%1'", collection.name()));
 
     startTask(new AddItemTask(createResourceState(TaskArguments(item, collection)), this));
 }
 
 void ImapResourceBase::itemChanged(const Item &item, const QSet<QByteArray> &parts)
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Updating item in '%1'", item.parentCollection().name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating item in '%1'", item.parentCollection().name()));
 
     startTask(new ChangeItemTask(createResourceState(TaskArguments(item, parts)), this));
 }
@@ -378,7 +378,7 @@ void ImapResourceBase::itemChanged(const Item &item, const QSet<QByteArray> &par
 void ImapResourceBase::itemsFlagsChanged(const Item::List &items, const QSet< QByteArray > &addedFlags,
         const QSet< QByteArray > &removedFlags)
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Updating items"));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating items"));
 
     startTask(new ChangeItemsFlagsTask(createResourceState(TaskArguments(items, addedFlags, removedFlags)), this));
 }
@@ -392,7 +392,7 @@ void ImapResourceBase::itemsRemoved(const Akonadi::Item::List &items)
         return;
     }
 
-    emit status(AgentBase::Running, i18nc("@info:status", "Removing items"));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing items"));
 
     startTask(new ChangeItemsFlagsTask(createResourceState(TaskArguments(items, QSet<QByteArray>() << ImapFlags::Deleted, QSet<QByteArray>())), this));
 }
@@ -410,7 +410,7 @@ void ImapResourceBase::itemsMoved(const Akonadi::Item::List &items, const Akonad
         return;
     }
 
-    emit status(AgentBase::Running, i18nc("@info:status", "Moving items from '%1' to '%2'", source.name(), destination.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving items from '%1' to '%2'", source.name(), destination.name()));
 
     startTask(new MoveItemsTask(createResourceState(TaskArguments(items, source, destination)), this));
 }
@@ -419,14 +419,14 @@ void ImapResourceBase::itemsMoved(const Akonadi::Item::List &items, const Akonad
 
 void ImapResourceBase::retrieveCollections()
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
 
     startTask(new RetrieveCollectionsTask(createResourceState(TaskArguments()), this));
 }
 
 void ImapResourceBase::retrieveCollectionAttributes(const Akonadi::Collection &col)
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Retrieving extra folder information for '%1'", col.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving extra folder information for '%1'", col.name()));
     startTask(new RetrieveCollectionMetadataTask(createResourceState(TaskArguments(col)), this));
 }
 
@@ -445,13 +445,13 @@ void ImapResourceBase::retrieveItems(const Collection &col)
 
 void ImapResourceBase::collectionAdded(const Collection &collection, const Collection &parent)
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Creating folder '%1'", collection.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Creating folder '%1'", collection.name()));
     startTask(new AddCollectionTask(createResourceState(TaskArguments(collection, parent)), this));
 }
 
 void ImapResourceBase::collectionChanged(const Collection &collection, const QSet<QByteArray> &parts)
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
     startTask(new ChangeCollectionTask(createResourceState(TaskArguments(collection, parts)), this));
 }
 
@@ -464,7 +464,7 @@ void ImapResourceBase::collectionRemoved(const Collection &collection)
         changeProcessed();
         return;
     }
-    emit status(AgentBase::Running, i18nc("@info:status", "Removing folder '%1'", collection.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing folder '%1'", collection.name()));
 
     startTask(new RemoveCollectionRecursiveTask(createResourceState(TaskArguments(collection)), this));
 }
@@ -472,8 +472,8 @@ void ImapResourceBase::collectionRemoved(const Collection &collection)
 void ImapResourceBase::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source,
                                        const Akonadi::Collection &destination)
 {
-    emit status(AgentBase::Running, i18nc("@info:status", "Moving folder '%1' from '%2' to '%3'",
-                                          collection.name(), source.name(), destination.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving folder '%1' from '%2' to '%3'",
+                                            collection.name(), source.name(), destination.name()));
     startTask(new MoveCollectionTask(createResourceState(TaskArguments(collection, source, destination)), this));
 }
 
@@ -499,7 +499,7 @@ void ImapResourceBase::doSearch(const QVariant &arg)
     const QString query = map[QLatin1String("query")].toString();
     const Collection collection = map[QLatin1String("collection")].value<Collection>();
 
-    emit status(AgentBase::Running, i18nc("@info:status", "Searching..."));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Searching..."));
     startTask(new SearchTask(createResourceState(TaskArguments(collection)), query, this));
 }
 
@@ -731,13 +731,13 @@ QString ImapResourceBase::dumpResourceToString() const
 
 void ImapResourceBase::showError(const QString &message)
 {
-    emit status(Akonadi::AgentBase::Idle, message);
+    Q_EMIT status(Akonadi::AgentBase::Idle, message);
     m_statusMessageTimer->start(1000 * 10);
 }
 
 void ImapResourceBase::clearStatusMessage()
 {
-    emit status(Akonadi::AgentBase::Idle, QString());
+    Q_EMIT status(Akonadi::AgentBase::Idle, QString());
 }
 
 void ImapResourceBase::modifyCollection(const Collection &col)

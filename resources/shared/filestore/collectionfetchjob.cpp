@@ -96,6 +96,6 @@ void FileStore::CollectionFetchJob::handleCollectionsReceived(const Collection::
 {
     d->mCollections << collections;
 
-    emit collectionsReceived(collections);
+    Q_EMIT collectionsReceived(collections);
 }
 

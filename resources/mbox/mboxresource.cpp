@@ -101,7 +101,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
         return;
     }
     if (mMBox->fileName().isEmpty()) {
-        emit status(NotConfigured, i18nc("@info:status", "MBox not configured."));
+        Q_EMIT status(NotConfigured, i18nc("@info:status", "MBox not configured."));
         return;
     }
 
@@ -137,7 +137,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
         item.setSize(entry.messageSize());
         item.setPayload(KMime::Message::Ptr(mail));
         Akonadi::MessageFlags::copyMessageFlags(*mail, item);
-        emit percent(count++ / entryListSize);
+        Q_EMIT percent(count++ / entryListSize);
         items << item;
     }
 
@@ -151,11 +151,11 @@ bool MboxResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray
     Q_UNUSED(parts);
 
     if (!mMBox) {
-        emit error(i18n("MBox not loaded."));
+        Q_EMIT error(i18n("MBox not loaded."));
         return false;
     }
     if (mMBox->fileName().isEmpty()) {
-        emit status(NotConfigured, i18nc("@info:status", "MBox not configured."));
+        Q_EMIT status(NotConfigured, i18nc("@info:status", "MBox not configured."));
         return false;
     }
 
@@ -163,7 +163,7 @@ bool MboxResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray
     const quint64 offset = itemOffset(rid);
     KMime::Message *mail = mMBox->readMessage(KMBox::MBoxEntry(offset));
     if (!mail) {
-        emit error(i18n("Failed to read message with uid '%1'.", rid));
+        Q_EMIT error(i18n("Failed to read message with uid '%1'.", rid));
         return false;
     }
 
@@ -189,7 +189,7 @@ void MboxResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
         return;
     }
     if (mMBox->fileName().isEmpty()) {
-        emit status(NotConfigured, i18nc("@info:status", "MBox not configured."));
+        Q_EMIT status(NotConfigured, i18nc("@info:status", "MBox not configured."));
         return;
     }
 
@@ -274,11 +274,11 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
 
 void MboxResource::handleHashChange()
 {
-    emit warning(i18n("The MBox file was changed by another program. "
-                      "A copy of the new file was made and pending changes "
-                      "are appended to that copy. To prevent this from happening "
-                      "use locking and make sure that all programs accessing the mbox "
-                      "use the same locking method."));
+    Q_EMIT warning(i18n("The MBox file was changed by another program. "
+                        "A copy of the new file was made and pending changes "
+                        "are appended to that copy. To prevent this from happening "
+                        "use locking and make sure that all programs accessing the mbox "
+                        "use the same locking method."));
 }
 
 bool MboxResource::readFromFile(const QString &fileName)
@@ -305,7 +305,7 @@ bool MboxResource::readFromFile(const QString &fileName)
 bool MboxResource::writeToFile(const QString &fileName)
 {
     if (!mMBox->save(fileName)) {
-        emit error(i18n("Failed to save mbox file to %1", fileName));
+        Q_EMIT error(i18n("Failed to save mbox file to %1", fileName));
         return false;
     }
 

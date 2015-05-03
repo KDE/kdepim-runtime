@@ -139,7 +139,7 @@ public:
             QList<FileStore::Job *> jobs;
             jobs << job;
 
-            emit mParent->jobsReady(jobs);
+            Q_EMIT mParent->jobsReady(jobs);
         } else {
             /*        qDebug() << "Queue now empty";*/
             mJobRunTimer.stop();

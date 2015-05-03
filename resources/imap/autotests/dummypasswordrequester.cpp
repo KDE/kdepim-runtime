@@ -75,9 +75,9 @@ void DummyPasswordRequester::emitResult()
     ResultType result = m_results.takeFirst();
 
     if (result == PasswordRetrieved) {
-        emit done(result, m_password);
+        Q_EMIT done(result, m_password);
     } else {
-        emit done(result);
+        Q_EMIT done(result);
     }
 }
 

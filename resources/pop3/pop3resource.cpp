@@ -118,9 +118,9 @@ void POP3Resource::configure(WId windowId)
     QPointer<AccountDialog> accountDialog(new AccountDialog(this, windowId));
     if (accountDialog->exec() == QDialog::Accepted) {
         updateIntervalTimer();
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 
     delete accountDialog;
@@ -242,7 +242,7 @@ void POP3Resource::doStateStep()
     }
     case FetchTargetCollection: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state FetchTargetCollection ==========";
-        emit status(Running, i18n("Preparing transmission from \"%1\".", name()));
+        Q_EMIT status(Running, i18n("Preparing transmission from \"%1\".", name()));
         Collection targetCollection(Settings::self()->targetCollection());
         if (!targetCollection.isValid()) {
             // No target collection set in the config? Try requesting a default inbox
@@ -264,7 +264,7 @@ void POP3Resource::doStateStep()
             PrecommandJob *precommandJob = new PrecommandJob(Settings::self()->precommand(), this);
             connect(precommandJob, &PrecommandJob::result, this, &POP3Resource::precommandResult);
             precommandJob->start();
-            emit status(Running, i18n("Executing precommand."));
+            Q_EMIT status(Running, i18n("Executing precommand."));
         } else {
             advanceState(RequestPassword);
         }
@@ -325,7 +325,7 @@ void POP3Resource::doStateStep()
     }
     case List: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state List ===========================";
-        emit status(Running, i18n("Fetching mail listing."));
+        Q_EMIT status(Running, i18n("Fetching mail listing."));
         ListJob *listJob = new ListJob(mPopSession);
         connect(listJob, &ListJob::result, this, &POP3Resource::listJobResult);
         listJob->start();
@@ -378,7 +378,7 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Save ===========================";
         qCDebug(POP3RESOURCE_LOG) << mPendingCreateJobs.size() << "item create jobs are pending";
         if (mPendingCreateJobs.size() > 0) {
-            emit status(Running, i18n("Saving downloaded messages."));
+            Q_EMIT status(Running, i18n("Saving downloaded messages."));
         }
 
         // It can happen that the create job map is empty, for example if there was no
@@ -393,7 +393,7 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Delete =========================";
         QList<int> idsToKill = idsToDelete();
         if (!idsToKill.isEmpty()) {
-            emit status(Running, i18n("Deleting messages from the server."));
+            Q_EMIT status(Running, i18n("Deleting messages from the server."));
             DeleteJob *deleteJob = new DeleteJob(mPopSession);
             deleteJob->setDeleteIds(idsToKill);
             connect(deleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
@@ -416,7 +416,7 @@ void POP3Resource::doStateStep()
             finish();
         } else {
             qCDebug(POP3RESOURCE_LOG) << "Writing password back to the wallet.";
-            emit status(Running, i18n("Saving password to the wallet."));
+            Q_EMIT status(Running, i18n("Saving password to the wallet."));
             mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winIdForDialogs(),
                                          Wallet::Asynchronous);
             if (mWallet) {
@@ -621,8 +621,8 @@ void POP3Resource::messageDownloadProgress(KJob *job, KJob::Unit unit, qulonglon
                              job->processedAmount(KJob::Bytes) / 1024,
                              job->totalAmount(KJob::Bytes) / 1024, name());
     }
-    emit status(Running, statusMessage);
-    emit percent(job->percent());
+    Q_EMIT status(Running, statusMessage);
+    Q_EMIT percent(job->percent());
 }
 
 void POP3Resource::itemCreateJobResult(KJob *job)
@@ -810,11 +810,11 @@ void POP3Resource::finish()
         collectionsRetrieved(Akonadi::Collection::List());
     }
     if (mDownloadedIDs.isEmpty()) {
-        emit status(Idle, i18n("Finished mail check, no message downloaded."));
+        Q_EMIT status(Idle, i18n("Finished mail check, no message downloaded."));
     } else
-        emit status(Idle, i18np("Finished mail check, 1 message downloaded.",
-                                "Finished mail check, %1 messages downloaded.",
-                                mDownloadedIDs.size()));
+        Q_EMIT status(Idle, i18np("Finished mail check, 1 message downloaded.",
+                                  "Finished mail check, %1 messages downloaded.",
+                                  mDownloadedIDs.size()));
 
     resetState();
 }
@@ -947,7 +947,7 @@ void POP3Resource::startMailCheck()
 {
     resetState();
     mIntervalTimer->stop();
-    emit percent(0);   // Otherwise the value from the last sync is taken
+    Q_EMIT percent(0);   // Otherwise the value from the last sync is taken
     advanceState(FetchTargetCollection);
 }
 
@@ -980,12 +980,12 @@ void POP3Resource::doSetOnline(bool online)
 {
     ResourceBase::doSetOnline(online);
     if (online) {
-        emit status(Idle, i18n("Ready"));
+        Q_EMIT status(Idle, i18n("Ready"));
     } else {
         if (mState != Idle) {
             cancelSync(i18n("Mail check aborted after going offline."), false /* no error */);
         }
-        emit status(Idle, i18n("Offline"));
+        Q_EMIT status(Idle, i18n("Offline"));
         delete mWallet;
         mWallet = Q_NULLPTR;
         clearCachedPassword();

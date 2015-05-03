@@ -355,7 +355,7 @@ void OpenXchangeResource::configure(WId windowId)
         connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onUpdateUsersJobFinished);
         job->start();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 }
 
@@ -606,7 +606,7 @@ void OpenXchangeResource::onUpdateUsersJobFinished(KJob *job)
 {
     if (job->error()) {
         // This might be an indication that we can not connect to the server...
-        emit status(Broken, i18n("Unable to connect to server"));
+        Q_EMIT status(Broken, i18n("Unable to connect to server"));
         return;
     }
 
@@ -616,7 +616,7 @@ void OpenXchangeResource::onUpdateUsersJobFinished(KJob *job)
 
     // now we have all user information, so continue synchronization
     synchronize();
-    emit configurationDialogAccepted();
+    Q_EMIT configurationDialogAccepted();
 }
 
 void OpenXchangeResource::onObjectsRequestJobFinished(KJob *job)

@@ -201,7 +201,7 @@ void SingleFileResourceBase::reloadFile()
 
 void SingleFileResourceBase::handleProgress(KJob *, unsigned long pct)
 {
-    emit percent(pct);
+    Q_EMIT percent(pct);
 }
 
 void SingleFileResourceBase::fileChanged(const QString &fileName)
@@ -240,7 +240,7 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         const QString message = i18n("The file '%1' was changed on disk. "
                                      "As a precaution, a backup of its previous contents has been created at '%2'.",
                                      prevUrl.toDisplayString(), QUrl::fromLocalFile(lostFoundFileName).toDisplayString());
-        emit warning(message);
+        Q_EMIT warning(message);
     }
 
     readFile();
@@ -262,7 +262,7 @@ void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
     if (job->error() && job->error() != KIO::ERR_DOES_NOT_EXIST) {
         const QString message = i18n("Could not load file '%1'.", mCurrentUrl.toDisplayString());
         qWarning() << message;
-        emit status(Broken, message);
+        Q_EMIT status(Broken, message);
     } else {
         readLocalFile(QUrl::fromLocalFile(cacheFile()).toLocalFile());
     }
@@ -270,7 +270,7 @@ void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
     mDownloadJob = Q_NULLPTR;
     KGlobal::deref();
 
-    emit status(Idle, i18nc("@info:status", "Ready"));
+    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
 
 void SingleFileResourceBase::slotUploadJobResult(KJob *job)
@@ -278,12 +278,12 @@ void SingleFileResourceBase::slotUploadJobResult(KJob *job)
     if (job->error()) {
         const QString message = i18n("Could not save file '%1'.", mCurrentUrl.toDisplayString());
         qWarning() << message;
-        emit status(Broken, message);
+        Q_EMIT status(Broken, message);
     }
 
     mUploadJob = Q_NULLPTR;
     KGlobal::deref();
 
-    emit status(Idle, i18nc("@info:status", "Ready"));
+    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
 

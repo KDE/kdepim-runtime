@@ -172,7 +172,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
             KNotification::beep();
         }
     } else {
-        emit displayNotification(pixmap, result.join(QLatin1String("\n")));
+        Q_EMIT displayNotification(pixmap, result.join(QLatin1String("\n")));
         deleteLater();
     }
 }

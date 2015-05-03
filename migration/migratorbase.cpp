@@ -139,7 +139,7 @@ QString MigratorBase::logfile() const
 bool MigratorBase::canStart()
 {
     if (mIdentifier.isEmpty()) {
-        emit message(Error, i18n("Missing Identifier"));
+        Q_EMIT message(Error, i18n("Missing Identifier"));
         return false;
     }
     return true;
@@ -152,13 +152,13 @@ void MigratorBase::start()
         return;
     }
     if (!canStart()) {
-        emit message(Error, i18n("Failed to start migration because migrator is not ready"));
-        emit stoppedProcessing();
+        Q_EMIT message(Error, i18n("Failed to start migration because migrator is not ready"));
+        Q_EMIT stoppedProcessing();
         return;
     }
     //TODO acquire dbus lock
     logMessage(Info, displayName());
-    emit message(Info, i18n("Starting migration..."));
+    Q_EMIT message(Info, i18n("Starting migration..."));
     setMigrationState(InProgress);
     setProgress(0);
     startWork();
@@ -199,22 +199,22 @@ void MigratorBase::setMigrationState(MigratorBase::MigrationState state)
     switch (state) {
     case Complete:
         setProgress(100);
-        emit message(Success, i18n("Migration complete"));
-        emit stoppedProcessing();
+        Q_EMIT message(Success, i18n("Migration complete"));
+        Q_EMIT stoppedProcessing();
         break;
     case Aborted:
-        emit message(Skip, i18n("Migration aborted"));
-        emit stoppedProcessing();
+        Q_EMIT message(Skip, i18n("Migration aborted"));
+        Q_EMIT stoppedProcessing();
         break;
     case InProgress:
         break;
     case Failed:
-        emit message(Error, i18n("Migration failed"));
-        emit stoppedProcessing();
+        Q_EMIT message(Error, i18n("Migration failed"));
+        Q_EMIT stoppedProcessing();
         break;
     case Paused:
-        emit message(Info, i18n("Migration paused"));
-        emit stateChanged(mMigrationState);
+        Q_EMIT message(Info, i18n("Migration paused"));
+        Q_EMIT stateChanged(mMigrationState);
         return;
     default:
         qWarning() << "invalid state " << state;
@@ -222,7 +222,7 @@ void MigratorBase::setMigrationState(MigratorBase::MigrationState state)
         return;
     }
     saveState();
-    emit stateChanged(mMigrationState);
+    Q_EMIT stateChanged(mMigrationState);
 }
 
 MigratorBase::MigrationState MigratorBase::migrationState() const
@@ -243,7 +243,7 @@ void MigratorBase::loadState()
     }
 
     if (mMigrationState == InProgress) {
-        emit message(Warning, i18n("This migration has already been started once but was aborted"));
+        Q_EMIT message(Warning, i18n("This migration has already been started once but was aborted"));
         mMigrationState = NeedsUpdate;
     }
     switch (mMigrationState) {
@@ -272,7 +272,7 @@ void MigratorBase::setProgress(int prog)
 {
     if (mProgress != prog) {
         mProgress = prog;
-        emit progress(prog);
+        Q_EMIT progress(prog);
     }
 }
 

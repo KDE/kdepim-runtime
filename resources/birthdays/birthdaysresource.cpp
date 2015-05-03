@@ -74,9 +74,9 @@ void BirthdaysResource::configure(WId windowId)
         KWindowSystem::setMainWindow(&dlg, windowId);
     }
     if (dlg.exec()) {
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
     doFullSearch();
     synchronizeCollectionTree();
@@ -121,7 +121,7 @@ void BirthdaysResource::contactRetrieved(KJob *job)
 {
     ItemFetchJob *fj = static_cast<ItemFetchJob *>(job);
     if (job->error()) {
-        emit error(job->errorText());
+        Q_EMIT error(job->errorText());
         cancelTask();
     } else if (fj->items().count() != 1) {
         cancelTask();

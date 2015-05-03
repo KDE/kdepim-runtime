@@ -267,13 +267,13 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteA
     const KCalCore::Event::Ptr kcalEvent = calendar()->event(rid);
     if (!kcalEvent) {
         qCWarning(KALARMRESOURCE_LOG) << "Event not found:" << rid;
-        emit error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
+        Q_EMIT error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
         return false;
     }
 
     if (kcalEvent->alarms().isEmpty()) {
         qCWarning(KALARMRESOURCE_LOG) << "KCalCore::Event has no alarms:" << rid;
-        emit error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
+        Q_EMIT error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
         return false;
     }
 
@@ -281,7 +281,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteA
     const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty()) {
         qCWarning(KALARMRESOURCE_LOG) << "KAEvent has no alarms:" << rid;
-        emit error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
+        Q_EMIT error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
         return false;
     }
     event.setCompatibility(mCompatibility);

@@ -229,9 +229,9 @@ void DavGroupwareResource::configure(WId windowId)
         Settings::self()->setSettingsVersion(3);
         Settings::self()->save();
         synchronize();
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 }
 
@@ -244,7 +244,7 @@ void DavGroupwareResource::retrieveCollections()
         return;
     }
 
-    emit status(Running, i18n("Fetching collections"));
+    Q_EMIT status(Running, i18n("Fetching collections"));
 
     DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
     connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
@@ -991,7 +991,7 @@ void DavGroupwareResource::onEtagChanged(const QString &itemUrl, const QString &
 bool DavGroupwareResource::configurationIsValid()
 {
     if (Settings::self()->configuredDavUrls().empty()) {
-        emit status(NotConfigured, i18n("The resource is not configured yet"));
+        Q_EMIT status(NotConfigured, i18n("The resource is not configured yet"));
         cancelTask(i18n("The resource is not configured yet"));
         return false;
     }
@@ -1019,7 +1019,7 @@ bool DavGroupwareResource::configurationIsValid()
 
 void DavGroupwareResource::retryAfterFailure(const QString &errorMessage)
 {
-    emit status(Broken, errorMessage);
+    Q_EMIT status(Broken, errorMessage);
     deferTask();
     setTemporaryOffline(Settings::self()->refreshInterval() <= 0 ? 300 : Settings::self()->refreshInterval() * 60);
 }

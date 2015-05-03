@@ -131,9 +131,9 @@ void MixedMaildirResource::configure(WId windowId)
         if (changeName) {
             setName(mStore->topLevelCollection().name());
         }
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 
     if (ensureDirExists()) {
@@ -392,7 +392,7 @@ void MixedMaildirResource::collectionRemoved(const Collection &collection)
     }
 
     if (collection.parentCollection() == Collection::root()) {
-        emit error(i18n("Cannot delete top-level maildir folder '%1'.", Settings::self()->path()));
+        Q_EMIT error(i18n("Cannot delete top-level maildir folder '%1'.", Settings::self()->path()));
         changeProcessed();
         return;
     }

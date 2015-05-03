@@ -134,11 +134,11 @@ void MailDispatcherAgent::Private::dispatch()
         if (!sentAnything) {
             sentAnything = true;
             sentItemsSize = 0;
-            emit q->percent(0);
+            Q_EMIT q->percent(0);
         }
-        emit q->status(AgentBase::Running,
-                       i18np("Sending messages (1 item in queue)...",
-                             "Sending messages (%1 items in queue)...", queue->count()));
+        Q_EMIT q->status(AgentBase::Running,
+                         i18np("Sending messages (1 item in queue)...",
+                               "Sending messages (%1 items in queue)...", queue->count()));
         qCDebug(MAILDISPATCHER_LOG) << "Attempting to dispatch the next message.";
         sendingInProgress = true;
         queue->fetchOne(); // will trigger itemFetched
@@ -148,14 +148,14 @@ void MailDispatcherAgent::Private::dispatch()
             // Finished marking messages as 'aborted'.
             aborting = false;
             sentAnything = false;
-            emit q->status(AgentBase::Idle, i18n("Sending canceled."));
+            Q_EMIT q->status(AgentBase::Idle, i18n("Sending canceled."));
             QTimer::singleShot(3000, q, SLOT(emitStatusReady()));
         } else {
             if (sentAnything) {
                 // Finished sending messages in queue.
                 sentAnything = false;
-                emit q->percent(100);
-                emit q->status(AgentBase::Idle, i18n("Finished sending messages."));
+                Q_EMIT q->percent(100);
+                Q_EMIT q->status(AgentBase::Idle, i18n("Finished sending messages."));
 
                 if (!errorOccurred) {
                     KNotification *notify = new KNotification(QLatin1String("emailsent"));
@@ -166,7 +166,7 @@ void MailDispatcherAgent::Private::dispatch()
                 }
             } else {
                 // Empty queue.
-                emit q->status(AgentBase::Idle, i18n("No items in queue."));
+                Q_EMIT q->status(AgentBase::Idle, i18n("No items in queue."));
             }
             QTimer::singleShot(3000, q, SLOT(emitStatusReady()));
         }
@@ -231,11 +231,11 @@ void MailDispatcherAgent::doSetOnline(bool online)
     Q_ASSERT(d->queue);
     if (online) {
         qCDebug(MAILDISPATCHER_LOG) << "Online. Dispatching messages.";
-        emit status(AgentBase::Idle, i18n("Online, sending messages in queue."));
+        Q_EMIT status(AgentBase::Idle, i18n("Online, sending messages in queue."));
         QTimer::singleShot(0, this, SLOT(dispatch()));
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Offline.";
-        emit status(AgentBase::Idle, i18n("Offline, message sending suspended."));
+        Q_EMIT status(AgentBase::Idle, i18n("Offline, message sending suspended."));
 
         // TODO: This way, the OutboxQueue will continue to react to changes in
         // the outbox, but the MDA will just not send anything.  Is this what we
@@ -252,7 +252,7 @@ void MailDispatcherAgent::Private::itemFetched(const Item &item)
     Q_ASSERT(!currentItem.isValid());
     currentItem = item;
     Q_ASSERT(currentJob == 0);
-    emit q->itemDispatchStarted();
+    Q_EMIT q->itemDispatchStarted();
 
     currentJob = new SendJob(item, q);
     if (aborting) {
@@ -272,7 +272,7 @@ void MailDispatcherAgent::Private::itemFetched(const Item &item)
 
 void MailDispatcherAgent::Private::queueError(const QString &message)
 {
-    emit q->error(message);
+    Q_EMIT q->error(message);
     errorOccurred = true;
     // FIXME figure out why this does not set the status to Broken, etc.
 }
@@ -299,13 +299,13 @@ void MailDispatcherAgent::Private::sendPercent(KJob *job, unsigned long)
 
     if (percent != q->progress()) {
         // The progress can decrease too, if messages got added to the queue.
-        emit q->percent(percent);
+        Q_EMIT q->percent(percent);
     }
 
     // It is possible that the number of queued messages has changed.
-    emit q->status(AgentBase::Running,
-                   i18np("Sending messages (1 item in queue)...",
-                         "Sending messages (%1 items in queue)...", 1 + queue->count()));
+    Q_EMIT q->status(AgentBase::Running,
+                     i18np("Sending messages (1 item in queue)...",
+                           "Sending messages (%1 items in queue)...", 1 + queue->count()));
 }
 
 void MailDispatcherAgent::Private::sendResult(KJob *job)
@@ -317,7 +317,7 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
 
     Q_ASSERT(currentItem.isValid());
     sentItemsSize += currentItem.size();
-    emit q->itemProcessed(currentItem, !job->error());
+    Q_EMIT q->itemProcessed(currentItem, !job->error());
 
     const Akonadi::Item sentItem = currentItem;
     currentItem = Item();
@@ -355,7 +355,7 @@ void MailDispatcherAgent::Private::emitStatusReady()
 {
     if (q->status() == AgentBase::Idle) {
         // If still idle after aborting, clear 'aborted' status.
-        emit q->status(AgentBase::Idle, i18n("Ready to dispatch messages."));
+        Q_EMIT q->status(AgentBase::Idle, i18n("Ready to dispatch messages."));
     }
 }
 

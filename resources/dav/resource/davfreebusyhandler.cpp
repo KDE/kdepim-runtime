@@ -54,8 +54,8 @@ void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
 void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end)
 {
     if (!mPrincipalScheduleOutbox.contains(email)) {
-        emit freeBusyRetrieved(email, QString(), false,
-                               i18n("No schedule-outbox found for %1", email));
+        Q_EMIT freeBusyRetrieved(email, QString(), false,
+                                 i18n("No schedule-outbox found for %1", email));
         return;
     }
 
@@ -87,7 +87,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
 
     if (job->error()) {
         if (handlingJobCount == 0 && !mRequestsTracker[email].handlingJobSuccessful) {
-            emit handlesFreeBusy(email, false);
+            Q_EMIT handlesFreeBusy(email, false);
         }
         return;
     }
@@ -97,7 +97,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
 
     if (results.isEmpty()) {
         if (handlingJobCount == 0 && !mRequestsTracker[email].handlingJobSuccessful) {
-            emit handlesFreeBusy(email, false);
+            Q_EMIT handlesFreeBusy(email, false);
         }
         return;
     }
@@ -122,7 +122,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
     }
 
     if (handlingJobCount == 0) {
-        emit handlesFreeBusy(email, true);
+        Q_EMIT handlesFreeBusy(email, true);
     }
 }
 
@@ -224,6 +224,6 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     if (retrievalJobCount == 0) {
         QString fbStr = format.createScheduleMessage(mRequestsTracker[email].resultingFreeBusy[requestId],
                         KCalCore::iTIPRequest);
-        emit freeBusyRetrieved(email, fbStr, true, QString());
+        Q_EMIT freeBusyRetrieved(email, fbStr, true, QString());
     }
 }

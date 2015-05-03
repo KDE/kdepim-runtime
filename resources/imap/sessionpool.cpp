@@ -126,7 +126,7 @@ void SessionPool::disconnect(SessionTermination termination)
     m_capabilities.clear();
 
     m_initialConnectDone = false;
-    emit disconnectDone();
+    Q_EMIT disconnectDone();
 }
 
 qint64 SessionPool::requestSession()
@@ -229,7 +229,7 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
 
     if (!m_initialConnectDone) {
         m_initialConnectDone = true;
-        emit connectDone();
+        Q_EMIT connectDone();
     }
 
     m_connectingPool.removeAll(session);
@@ -238,7 +238,7 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
         m_unusedPool << session;
     } else {
         m_reservedPool << session;
-        emit sessionRequestDone(m_pendingRequests.takeFirst(), session);
+        Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(), session);
 
         if (!m_pendingRequests.isEmpty()) {
             QTimer::singleShot(0, this, SLOT(processPendingRequests()));
@@ -265,14 +265,14 @@ void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode,
     } else {
         killSession(session, LogoutSession);
         if (!m_pendingRequests.isEmpty()) {
-            emit sessionRequestDone(m_pendingRequests.takeFirst(), Q_NULLPTR, errorCode, errorMessage);
+            Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(), Q_NULLPTR, errorCode, errorMessage);
             if (!m_pendingRequests.isEmpty()) {
                 QTimer::singleShot(0, this, SLOT(processPendingRequests()));
             }
         }
     }
-    //Always emit this at the end. This can call SessionPool::disconnect via ImapResource.
-    emit connectDone(errorCode, msg);
+    //AlwaysQ_EMIT this at the end. This can call SessionPool::disconnect via ImapResource.
+    Q_EMIT connectDone(errorCode, msg);
 }
 
 void SessionPool::processPendingRequests()
@@ -282,7 +282,7 @@ void SessionPool::processPendingRequests()
         KIMAP::Session *session = m_unusedPool.takeFirst();
         m_reservedPool << session;
         if (!m_pendingRequests.isEmpty()) {
-            emit sessionRequestDone(m_pendingRequests.takeFirst(), session);
+            Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(), session);
             if (!m_pendingRequests.isEmpty()) {
                 QTimer::singleShot(0, this, SLOT(processPendingRequests()));
             }
@@ -294,7 +294,7 @@ void SessionPool::processPendingRequests()
     } else {
         // No session available, and max pool size reached
         if (!m_pendingRequests.isEmpty()) {
-            emit sessionRequestDone(
+            Q_EMIT sessionRequestDone(
                 m_pendingRequests.takeFirst(), Q_NULLPTR, NoAvailableSessionError,
                 i18n("Could not create another extra connection to the IMAP-server %1.",
                      m_account->server()));
@@ -313,8 +313,8 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         // it looks like the connection was lost while we were waiting
         // for the password, we should fail all the pending requests and stop there
         foreach (int request, m_pendingRequests) {
-            emit sessionRequestDone(request, Q_NULLPTR,
-                                    LoginFailError, i18n("Disconnected from server during login."));
+            Q_EMIT sessionRequestDone(request, Q_NULLPTR,
+                                      LoginFailError, i18n("Disconnected from server during login."));
         }
         return;
     }
@@ -332,7 +332,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         if (m_pendingInitialSession) {
             cancelSessionCreation(m_pendingInitialSession, LoginFailError, errorMessage);
         } else {
-            emit connectDone(PasswordRequestError, errorMessage);
+            Q_EMIT connectDone(PasswordRequestError, errorMessage);
         }
         return;
     case PasswordRequesterInterface::EmptyPasswordEntered:
@@ -340,16 +340,16 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         if (m_pendingInitialSession) {
             cancelSessionCreation(m_pendingInitialSession, LoginFailError, errorMessage);
         } else {
-            emit connectDone(PasswordRequestError, errorMessage);
+            Q_EMIT connectDone(PasswordRequestError, errorMessage);
         }
         return;
     }
 
     if (m_account->encryptionMode() != KIMAP::LoginJob::Unencrypted && !QSslSocket::supportsSsl()) {
         qCWarning(IMAPRESOURCE_LOG) << "Crypto not supported!";
-        emit connectDone(EncryptionError,
-                         i18n("You requested TLS/SSL to connect to %1, but your "
-                              "system does not seem to be set up for that.", m_account->server()));
+        Q_EMIT connectDone(EncryptionError,
+                           i18n("You requested TLS/SSL to connect to %1, but your "
+                                "system does not seem to be set up for that.", m_account->server()));
         disconnect();
         return;
     }
@@ -384,7 +384,7 @@ void SessionPool::onLoginDone(KJob *job)
     KIMAP::LoginJob *login = static_cast<KIMAP::LoginJob *>(job);
     //Can happen if we disonnected meanwhile
     if (!m_connectingPool.contains(login->session())) {
-        emit connectDone(CancelledError, i18n("Disconnected from server during login."));
+        Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
         return;
     }
 
@@ -425,7 +425,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
     KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob *>(job);
     //Can happen if we disonnected meanwhile
     if (!m_connectingPool.contains(capJob->session())) {
-        emit connectDone(CancelledError, i18n("Disconnected from server during login."));
+        Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
         return;
     }
 
@@ -484,7 +484,7 @@ void SessionPool::onNamespacesTestDone(KJob *job)
     KIMAP::NamespaceJob *nsJob = qobject_cast<KIMAP::NamespaceJob *>(job);
     // Can happen if we disconnect meanwhile
     if (!m_connectingPool.contains(nsJob->session())) {
-        emit connectDone(CancelledError, i18n("Disconnected from server during login."));
+        Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
         return;
     }
 
@@ -532,7 +532,7 @@ void SessionPool::onConnectionLost()
         m_initialConnectDone = false;
     }
 
-    emit connectionLost(session);
+    Q_EMIT connectionLost(session);
 
     session->deleteLater();
     if (session == m_pendingInitialSession) {

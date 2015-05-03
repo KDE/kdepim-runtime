@@ -299,7 +299,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
 
                 qDebug() << url.prettyUrl() << "PRIVS: " << collection.privileges();
                 mCollections << collection;
-                emit collectionDiscovered(mUrl.protocol(), url.prettyUrl(), jobUrl);
+                Q_EMIT collectionDiscovered(mUrl.protocol(), url.prettyUrl(), jobUrl);
 
                 responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
             }

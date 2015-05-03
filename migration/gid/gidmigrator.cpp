@@ -62,7 +62,7 @@ void GidMigrator::startWork()
 void GidMigrator::migrationFinished(KJob *job)
 {
     if (job->error()) {
-        emit message(Error, i18n("Migration failed: %1", job->errorString()));
+        Q_EMIT message(Error, i18n("Migration failed: %1", job->errorString()));
         setMigrationState(Failed);
     } else {
         setMigrationState(Complete);

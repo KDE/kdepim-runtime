@@ -135,7 +135,7 @@ void ContactsResource::retrieveContactsPhotos(const QVariant &arguments)
     itemFetchJob->setProperty("modifiedItems", map[ QStringLiteral("modifiedItems") ]);
     itemFetchJob->fetchScope().fetchFullPayload(true);
     connect(itemFetchJob, &ItemFetchJob::finished, this, &ContactsResource::slotUpdatePhotosItemsRetrieved);
-    emit status(Running, i18nc("@info:status", "Retrieving photos"));
+    Q_EMIT status(Running, i18nc("@info:status", "Retrieving photos"));
 }
 
 void ContactsResource::retrieveCollections()
@@ -237,7 +237,7 @@ void ContactsResource::itemRemoved(const Item &item)
     connect(deleteJob, &ContactDeleteJob::progress, this, &ContactsResource::emitPercent);
     connect(deleteJob, &ContactDeleteJob::finished, this, &ContactsResource::slotGenericJobFinished);
 
-    emit status(Running, i18nc("@info:status", "Removing contact"));
+    Q_EMIT status(Running, i18nc("@info:status", "Removing contact"));
 }
 
 void ContactsResource::itemLinked(const Item &item, const Collection &collection)

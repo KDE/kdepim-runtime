@@ -139,7 +139,7 @@ MaildirResource::MaildirResource(const QString &id)
 
     connect(mFsWatcher, &KDirWatch::dirty, this, &MaildirResource::slotDirChanged);
     if (!ensureSaneConfiguration()) {
-        emit error(i18n("Unusable configuration."));
+        Q_EMIT error(i18n("Unusable configuration."));
     } else {
         synchronizeCollectionTree();
     }
@@ -234,7 +234,7 @@ void MaildirResource::configurationChanged()
     bool configValid = ensureSaneConfiguration();
     configValid &= ensureDirExists();
     if (configValid) {
-        emit status(Idle);
+        Q_EMIT status(Idle);
         setOnline(true);
     }
 }
@@ -266,9 +266,9 @@ void MaildirResource::configure(WId windowId)
             Maildir md(mSettings->path());
             setName(md.name());
         }
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 
     configurationChanged();
@@ -398,7 +398,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 
         changeCommitted(newItem);
     } else {
-        emit changeProcessed();
+        Q_EMIT changeProcessed();
     }
 }
 
@@ -460,7 +460,7 @@ void MaildirResource::itemRemoved(const Akonadi::Item &item)
         // so we don't care at all as that one will be recursive anyway
         stopMaildirScan(dir);
         if (dir.isValid() && !dir.removeEntry(item.remoteId())) {
-            emit error(i18n("Failed to delete message: %1", item.remoteId()));
+            Q_EMIT error(i18n("Failed to delete message: %1", item.remoteId()));
         }
         restartMaildirScan(dir);
     }
@@ -503,7 +503,7 @@ void MaildirResource::retrieveCollections()
 {
     Maildir dir(mSettings->path(), mSettings->topLevelIsContainer());
     if (!dir.isValid()) {
-        emit error(dir.lastError());
+        Q_EMIT error(dir.lastError());
         collectionsRetrieved(Collection::List());
         return;
     }
@@ -567,7 +567,7 @@ void MaildirResource::slotItemsRetrievalResult(KJob *job)
 void MaildirResource::collectionAdded(const Collection &collection, const Collection &parent)
 {
     if (!ensureSaneConfiguration()) {
-        emit error(i18n("Unusable configuration."));
+        Q_EMIT error(i18n("Unusable configuration."));
         changeProcessed();
         return;
     }
@@ -598,7 +598,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
 void MaildirResource::collectionChanged(const Collection &collection)
 {
     if (!ensureSaneConfiguration()) {
-        emit error(i18n("Unusable configuration."));
+        Q_EMIT error(i18n("Unusable configuration."));
         changeProcessed();
         return;
     }
@@ -626,7 +626,7 @@ void MaildirResource::collectionChanged(const Collection &collection)
 
     const QString collectionName(collection.name().replace(QDir::separator(), QString()));
     if (!md.rename(collectionName)) {
-        emit error(i18n("Unable to rename maildir folder '%1'.", collection.name()));
+        Q_EMIT error(i18n("Unable to rename maildir folder '%1'.", collection.name()));
         changeProcessed();
         return;
     }
@@ -641,13 +641,13 @@ void MaildirResource::collectionMoved(const Collection &collection, const Collec
     qCDebug(MAILDIRRESOURCE_LOG) << collection << source << dest;
 
     if (!ensureSaneConfiguration()) {
-        emit error(i18n("Unusable configuration."));
+        Q_EMIT error(i18n("Unusable configuration."));
         changeProcessed();
         return;
     }
 
     if (collection.parentCollection() == Collection::root()) {
-        emit error(i18n("Cannot move root maildir folder '%1'." , collection.remoteId()));
+        Q_EMIT error(i18n("Cannot move root maildir folder '%1'." , collection.remoteId()));
         changeProcessed();
         return;
     }
@@ -662,7 +662,7 @@ void MaildirResource::collectionMoved(const Collection &collection, const Collec
     Maildir md = maildirForCollection(c);
     Maildir destMd = maildirForCollection(dest);
     if (!md.moveTo(destMd)) {
-        emit error(i18n("Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId()));
+        Q_EMIT error(i18n("Unable to move maildir folder '%1' from '%2' to '%3'.", collection.remoteId(), source.remoteId(), dest.remoteId()));
         changeProcessed();
     } else {
         const QString path = maildirPathForCollection(c);
@@ -674,13 +674,13 @@ void MaildirResource::collectionMoved(const Collection &collection, const Collec
 void MaildirResource::collectionRemoved(const Akonadi::Collection &collection)
 {
     if (!ensureSaneConfiguration()) {
-        emit error(i18n("Unusable configuration."));
+        Q_EMIT error(i18n("Unusable configuration."));
         changeProcessed();
         return;
     }
 
     if (collection.parentCollection() == Collection::root()) {
-        emit error(i18n("Cannot delete top-level maildir folder '%1'.", mSettings->path()));
+        Q_EMIT error(i18n("Cannot delete top-level maildir folder '%1'.", mSettings->path()));
         changeProcessed();
         return;
     }
@@ -689,7 +689,7 @@ void MaildirResource::collectionRemoved(const Akonadi::Collection &collection)
     // !md.isValid() means that our parent folder has been deleted already,
     // so we don't care at all as that one will be recursive anyway
     if (md.isValid() && !md.removeSubFolder(collection.remoteId())) {
-        emit error(i18n("Failed to delete sub-folder '%1'.", collection.remoteId()));
+        Q_EMIT error(i18n("Failed to delete sub-folder '%1'.", collection.remoteId()));
     }
 
     const QString path = maildirPathForCollection(collection);
@@ -703,7 +703,7 @@ bool MaildirResource::ensureDirExists()
     Maildir root(mSettings->path());
     if (!root.isValid(false) && !mSettings->topLevelIsContainer()) {
         if (!root.create()) {
-            emit status(Broken, i18n("Unable to create maildir '%1'.", mSettings->path()));
+            Q_EMIT status(Broken, i18n("Unable to create maildir '%1'.", mSettings->path()));
         }
         return false;
     }
@@ -713,7 +713,7 @@ bool MaildirResource::ensureDirExists()
 bool MaildirResource::ensureSaneConfiguration()
 {
     if (mSettings->path().isEmpty()) {
-        emit status(NotConfigured, i18n("No usable storage location configured."));
+        Q_EMIT status(NotConfigured, i18n("No usable storage location configured."));
         setOnline(false);
         return false;
     }

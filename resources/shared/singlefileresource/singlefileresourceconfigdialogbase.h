@@ -122,7 +122,7 @@ private:
  * Base class for widgets added to SingleFileResourceConfigDialogBase
  * using its appendWidget() method.
  *
- * Derived classes must implement validate() and emit changed() when
+ * Derived classes must implement validate() andQ_EMIT changed() when
  * appropriate.
  */
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileValidatingWidget : public QWidget

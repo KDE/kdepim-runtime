@@ -34,7 +34,7 @@ MigrationExecutor::MigrationExecutor()
 void MigrationExecutor::start()
 {
     setPercent(0);
-    emit description(this, i18nc("User visible name of ongoing Akonadi migration jobs", "PIM Maintenance"));
+    Q_EMIT description(this, i18nc("User visible name of ongoing Akonadi migration jobs", "PIM Maintenance"));
 }
 
 void MigrationExecutor::add(const QSharedPointer<MigratorBase> &migrator)
@@ -55,13 +55,13 @@ void MigrationExecutor::executeNext()
         migrator = mCurrentMigrator.toStrongRef();
     }
     if (migrator) {
-        emit infoMessage(this, i18nc("PIM-Maintenance is in progress.", "In progress..."));
+        Q_EMIT infoMessage(this, i18nc("PIM-Maintenance is in progress.", "In progress..."));
         connect(migrator.data(), SIGNAL(stoppedProcessing()), this, SLOT(onStoppedProcessing()));
         migrator->start();
     } else {
         // Reset the notification status, otherwise we get notification "In progress...[finished]"
         // without any description that it's related to PIM-Maintenance
-        emit infoMessage(this, i18n("PIM Maintenance"));
+        Q_EMIT infoMessage(this, i18n("PIM Maintenance"));
         emitResult();
     }
 }
@@ -86,7 +86,7 @@ bool MigrationExecutor::doSuspend()
             mCurrentMigrator.clear();
         }
     }
-    emit infoMessage(this, i18nc("PIM-Maintenance is paused.", "Paused."));
+    Q_EMIT infoMessage(this, i18nc("PIM-Maintenance is paused.", "Paused."));
     mSuspended = true;
     return true;
 }

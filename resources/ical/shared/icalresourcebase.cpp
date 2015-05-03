@@ -60,7 +60,7 @@ bool ICalResourceBase::retrieveItem(const Akonadi::Item &item,
 
     if (!mCalendar) {
         qCritical() << "akonadi_ical_resource: Calendar not loaded";
-        emit error(i18n("Calendar not loaded."));
+        Q_EMIT error(i18n("Calendar not loaded."));
         return false;
     }
 
@@ -149,7 +149,7 @@ bool ICalResourceBase::writeToFile(const QString &fileName)
     bool success = true;
     if (!fileStorage->save()) {
         qCritical() << QLatin1String("akonadi_ical_resource: Failed to save calendar to file ") + fileName;
-        emit error(i18n("Failed to save calendar file to %1", fileName));
+        Q_EMIT error(i18n("Failed to save calendar file to %1", fileName));
         success = false;
     }
 

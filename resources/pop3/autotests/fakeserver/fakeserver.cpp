@@ -197,7 +197,7 @@ void FakeServer::slotDisconnected()
     Q_ASSERT(mAllowedRetrieves.isEmpty());
     Q_ASSERT(mReadData.isEmpty());
     Q_ASSERT(mWriteData.isEmpty());
-    emit disconnected();
+    Q_EMIT disconnected();
 }
 
 void FakeServer::setAllowedDeletions(const QString &deleteIds)

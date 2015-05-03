@@ -91,9 +91,9 @@ void ContactsResource::configure(WId windowId)
 
         synchronize();
 
-        emit configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
     } else {
-        emit configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
     delete dlg;
 }
@@ -528,7 +528,7 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
     if (collection.parentCollection() == Collection::root()) {
         if (collection.remoteId() != baseDirectoryPath())
             qCWarning(CONTACTSRESOURCES_LOG) << "RID mismatch, is " << collection.remoteId()
-                       << " expected " << baseDirectoryPath();
+                                             << " expected " << baseDirectoryPath();
         return collection.remoteId();
     }
 

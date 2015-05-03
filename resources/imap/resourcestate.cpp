@@ -300,17 +300,17 @@ void ResourceState::taskDone()
 
 void ResourceState::emitError(const QString &message)
 {
-    emit m_resource->error(message);
+    Q_EMIT m_resource->error(message);
 }
 
 void ResourceState::emitWarning(const QString &message)
 {
-    emit m_resource->warning(message);
+    Q_EMIT m_resource->warning(message);
 }
 
 void ResourceState::emitPercent(int percent)
 {
-    emit m_resource->percent(percent);
+    Q_EMIT m_resource->percent(percent);
 }
 
 void ResourceState::synchronizeCollection(Akonadi::Entity::Id id)

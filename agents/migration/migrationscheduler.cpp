@@ -108,7 +108,7 @@ void MigratorModel::columnChanged(const Row &row, int col)
     Q_ASSERT(p >= 0);
     if (p >= 0) {
         const QModelIndex idx = index(p, col);
-        emit dataChanged(idx, idx);
+        Q_EMIT dataChanged(idx, idx);
     }
 }
 

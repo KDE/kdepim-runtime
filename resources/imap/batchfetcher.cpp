@@ -209,7 +209,7 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
     }
 //     qCDebug(IMAPRESOURCE_LOG) << addedItems.size();
     if (!addedItems.isEmpty()) {
-        emit itemsRetrieved(addedItems);
+        Q_EMIT itemsRetrieved(addedItems);
     }
 }
 

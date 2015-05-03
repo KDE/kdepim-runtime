@@ -20,4 +20,3 @@
 #include "contacts_resources_debug.h"
 Q_LOGGING_CATEGORY(CONTACTSRESOURCES_LOG, "log_resources_contacts")
 
-

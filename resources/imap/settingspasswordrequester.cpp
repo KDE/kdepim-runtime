@@ -119,7 +119,7 @@ void SettingsPasswordRequester::slotYesClicked()
 
 void SettingsPasswordRequester::slotCancelClicked()
 {
-    emit done(UserRejected);
+    Q_EMIT done(UserRejected);
     m_requestDialog = Q_NULLPTR;
 }
 
@@ -127,9 +127,9 @@ void SettingsPasswordRequester::onSettingsDialogFinished(int result)
 {
     m_settingsDialog = Q_NULLPTR;
     if (result == QDialog::Accepted) {
-        emit done(ReconnectNeeded);
+        Q_EMIT done(ReconnectNeeded);
     } else {
-        emit done(UserRejected);
+        Q_EMIT done(UserRejected);
     }
 }
 
@@ -148,10 +148,10 @@ void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &passwo
                this, &SettingsPasswordRequester::onPasswordRequestCompleted);
 
     if (userRejected) {
-        emit done(UserRejected);
+        Q_EMIT done(UserRejected);
     } else if (password.isEmpty() && (m_resource->settings()->authentication() != MailTransport::Transport::EnumAuthenticationType::GSSAPI)) {
-        emit done(EmptyPasswordEntered);
+        Q_EMIT done(EmptyPasswordEntered);
     } else {
-        emit done(PasswordRetrieved, password);
+        Q_EMIT done(PasswordRetrieved, password);
     }
 }
