@@ -39,21 +39,21 @@ void NewMailNotifierShowMessageJob::start()
         Q_EMIT emitResult();
         return;
     }
-    const QString kmailInterface = QLatin1String("org.kde.kmail");
+    const QString kmailInterface = QStringLiteral("org.kde.kmail");
     QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(kmailInterface);
     if (!reply.isValid() || !reply.value()) {
         // Program is not already running, so start it
         QString errmsg;
-        if (KToolInvocation::startServiceByDesktopName(QLatin1String("kmail2"), QString(), &errmsg)) {
+        if (KToolInvocation::startServiceByDesktopName(QStringLiteral("kmail2"), QString(), &errmsg)) {
             qCDebug(NEWMAILNOTIFIER_LOG) << " Can not start kmail" << errmsg;
             setError(UserDefinedError);
             Q_EMIT emitResult();
             return;
         }
     }
-    QDBusInterface kmail(kmailInterface, QLatin1String("/KMail"), QLatin1String("org.kde.kmail.kmail"));
+    QDBusInterface kmail(kmailInterface, QStringLiteral("/KMail"), QStringLiteral("org.kde.kmail.kmail"));
     if (kmail.isValid()) {
-        kmail.call(QLatin1String("showMail"), mId);
+        kmail.call(QStringLiteral("showMail"), mId);
     }
     Q_EMIT emitResult();
 }

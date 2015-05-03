@@ -58,8 +58,8 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
 {
-    Kdelibs4ConfigMigrator migrate(QLatin1String("newmailnotifieragent"));
-    migrate.setConfigFiles(QStringList() << QLatin1String("akonadi_newmailnotifier_agentrc") << QLatin1String("akonadi_newmailnotifier_agent.notifyrc"));
+    Kdelibs4ConfigMigrator migrate(QStringLiteral("newmailnotifieragent"));
+    migrate.setConfigFiles(QStringList() << QStringLiteral("akonadi_newmailnotifier_agentrc") << QStringLiteral("akonadi_newmailnotifier_agent.notifyrc"));
     migrate.migrate();
 
     KLocalizedString::setApplicationDomain("akonadi_newmailnotifier_agent");
@@ -69,11 +69,11 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     mIdentityManager = new KIdentityManagement::IdentityManager(false, this);
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
-    mDefaultPixmap = QIcon::fromTheme(QLatin1String("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
+    mDefaultPixmap = QIcon::fromTheme(QStringLiteral("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
 
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/NewMailNotifierAgent"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/NewMailNotifierAgent"),
             this, QDBusConnection::ExportAdaptors);
-    KDBusConnectionPool::threadConnection().registerService(QLatin1String("org.freedesktop.Akonadi.NewMailNotifierAgent"));
+    KDBusConnectionPool::threadConnection().registerService(QStringLiteral("org.freedesktop.Akonadi.NewMailNotifierAgent"));
 
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceStatusChanged, this, &NewMailNotifierAgent::slotInstanceStatusChanged);
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceRemoved, this, &NewMailNotifierAgent::slotInstanceRemoved);
@@ -92,15 +92,15 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     connect(&mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()));
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
-        if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
+        if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QStringLiteral("org.kde.kttsd"))) {
             QString error;
-            if (KToolInvocation::startServiceByDesktopName(QLatin1String("kttsd"), QStringList(), &error)) {
-                KNotification::event(QLatin1String("text-to-speak-not-found"),
+            if (KToolInvocation::startServiceByDesktopName(QStringLiteral("kttsd"), QStringList(), &error)) {
+                KNotification::event(QStringLiteral("text-to-speak-not-found"),
                                      i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
                                      mDefaultPixmap,
                                      Q_NULLPTR,
                                      KNotification::CloseOnTimeout,
-                                     QLatin1String("akonadi_newmailnotifier_agent"));
+                                     QStringLiteral("akonadi_newmailnotifier_agent"));
             }
         }
     }
@@ -485,7 +485,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             mNewMails.clear();
             return;
         } else {
-            message = texts.join(QLatin1String("<br>"));
+            message = texts.join(QStringLiteral("<br>"));
         }
     } else {
         message = i18n("New mail arrived");
@@ -500,12 +500,12 @@ void NewMailNotifierAgent::slotShowNotifications()
 
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
-    KNotification::event(QLatin1String("new-email"),
+    KNotification::event(QStringLiteral("new-email"),
                          message,
                          pixmap,
                          Q_NULLPTR,
                          KNotification::CloseOnTimeout,
-                         QLatin1String("akonadi_newmailnotifier_agent"));
+                         QStringLiteral("akonadi_newmailnotifier_agent"));
 
     if (NewMailNotifierAgentSettings::beepOnNewMails()) {
         KNotification::beep();
@@ -558,9 +558,9 @@ bool NewMailNotifierAgent::excludeAgentType(const Akonadi::AgentInstance &instan
 {
     if (instance.type().mimeTypes().contains(KMime::Message::mimeType())) {
         const QStringList capabilities(instance.type().capabilities());
-        if (capabilities.contains(QLatin1String("Resource")) &&
-                !capabilities.contains(QLatin1String("Virtual")) &&
-                !capabilities.contains(QLatin1String("MailTransport"))) {
+        if (capabilities.contains(QStringLiteral("Resource")) &&
+                !capabilities.contains(QStringLiteral("Virtual")) &&
+                !capabilities.contains(QStringLiteral("MailTransport"))) {
             return false;
         } else {
             return true;

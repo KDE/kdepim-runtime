@@ -135,7 +135,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         QString subject = mSubject.simplified();
         if (subject.length() > 80) {
             subject.truncate(80);
-            subject += QLatin1String("...");
+            subject += QStringLiteral("...");
         }
         result << i18n("Subject: %1", subject.toHtmlEscaped());
     }
@@ -147,20 +147,20 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
 #if 0
 //PORT QT5: Use QtSpeech
-            if (QDBusConnection::sessionBus().interface()->isServiceRegistered(QLatin1String("org.kde.kttsd"))) {
-                QDBusInterface ktts(QLatin1String("org.kde.kttsd"), QLatin1String("/KSpeech"), QLatin1String("org.kde.KSpeech"));
+            if (QDBusConnection::sessionBus().interface()->isServiceRegistered(QStringLiteral("org.kde.kttsd"))) {
+                QDBusInterface ktts(QStringLiteral("org.kde.kttsd"), QStringLiteral("/KSpeech"), QStringLiteral("org.kde.KSpeech"));
                 QString message = NewMailNotifierAgentSettings::textToSpeak();
-                message.replace(QLatin1String("%s"), mSubject.toHtmlEscaped());
-                message.replace(QLatin1String("%f"), mFrom.toHtmlEscaped());
-                ktts.asyncCall(QLatin1String("say"), message, 0);
+                message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
+                message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
+                ktts.asyncCall(QStringLiteral("say"), message, 0);
             }
 #endif
         }
     }
 
     if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
-        KNotification *notification = new KNotification(QLatin1String("new-email"), Q_NULLPTR, KNotification::CloseOnTimeout);
-        notification->setText(result.join(QLatin1String("\n")));
+        KNotification *notification = new KNotification(QStringLiteral("new-email"), Q_NULLPTR, KNotification::CloseOnTimeout);
+        notification->setText(result.join(QStringLiteral("\n")));
         notification->setPixmap(pixmap);
         notification->setActions(QStringList() << i18n("Show mail..."));
 
@@ -172,7 +172,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
             KNotification::beep();
         }
     } else {
-        Q_EMIT displayNotification(pixmap, result.join(QLatin1String("\n")));
+        Q_EMIT displayNotification(pixmap, result.join(QStringLiteral("\n")));
         deleteLater();
     }
 }

@@ -64,7 +64,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     : QDialog(parent)
 {
     setWindowTitle(i18n("New Mail Notifier settings"));
-    setWindowIcon(QIcon::fromTheme(QLatin1String("kmail")));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("kmail")));
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -147,14 +147,14 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     connect(mTextToSpeak, &QCheckBox::toggled, mTextToSpeakSetting, &QLineEdit::setEnabled);
 
     mNotify = new KNotifyConfigWidget(this);
-    mNotify->setApplication(QLatin1String("akonadi_newmailnotifier_agent"));
+    mNotify->setApplication(QStringLiteral("akonadi_newmailnotifier_agent"));
     tab->addTab(mNotify, i18n("Notify"));
 
     mSelectCollection = new NewMailNotifierSelectCollectionWidget;
     tab->addTab(mSelectCollection, i18n("Folders"));
 
     KAboutData aboutData = KAboutData(
-                               QLatin1String("newmailnotifieragent"),
+                               QStringLiteral("newmailnotifieragent"),
                                i18n("New Mail Notifier Agent"),
                                QLatin1String(KDEPIM_RUNTIME_VERSION),
                                i18n("Notifies about new mail."),
@@ -162,15 +162,14 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
                                i18n("Copyright (C) 2013-2015 Laurent Montel"));
 
     aboutData.addAuthor(i18n("Laurent Montel"),
-                        i18n("Maintainer"), QLatin1String("montel@kde.org"));
-    aboutData.setProgramIconName(QLatin1String("kmail"));
+                        i18n("Maintainer"), QStringLiteral("montel@kde.org"));
     aboutData.setTranslator(i18nc("NAME OF TRANSLATORS", "Your names"),
                             i18nc("EMAIL OF TRANSLATORS", "Your emails"));
 
     KHelpMenu *helpMenu = new KHelpMenu(this, aboutData, true);
     //Initialize menu
     QMenu *menu = helpMenu->menu();
-    helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(QIcon::fromTheme(QLatin1String("kmail")));
+    helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(QIcon::fromTheme(QStringLiteral("kmail")));
     buttonBox->button(QDialogButtonBox::Help)->setMenu(menu);
     readConfig();
 }
