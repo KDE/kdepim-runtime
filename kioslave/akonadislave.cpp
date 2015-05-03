@@ -41,9 +41,8 @@ extern "C" {
 
 int kdemain(int argc, char **argv)
 {
-
-    KAboutData aboutData(QStringLiteral("kio_akonadi"), QString(), QStringLiteral("0"));
     QApplication app(argc, argv);
+    KAboutData aboutData(QStringLiteral("kio_akonadi"), QString(), QStringLiteral("0"));
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
     parser.addVersionOption();
