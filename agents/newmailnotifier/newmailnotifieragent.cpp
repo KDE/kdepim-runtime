@@ -89,7 +89,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
     mTimer.setInterval(5 * 1000);
-    connect(&mTimer, SIGNAL(timeout()), SLOT(slotShowNotifications()));
+    connect(&mTimer, &QTimer::timeout, this, &NewMailNotifierAgent::slotShowNotifications);
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QStringLiteral("org.kde.kttsd"))) {
