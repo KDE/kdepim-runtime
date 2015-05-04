@@ -79,7 +79,7 @@ QDialog *GmailResource::createConfigureDialog(WId windowId)
     GmailConfigDialog *dlg = new GmailConfigDialog(this, windowId);
     KWindowSystem::setMainWindow(dlg, windowId);
     dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
-    connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
+    connect(dlg, &QDialog::finished, this, &GmailResource::onConfigurationDone);;
     return dlg;
 }
 
@@ -131,8 +131,8 @@ void GmailResource::updateTrashFolder()
 {
     Akonadi::CollectionFetchJob *fetch
         = new Akonadi::CollectionFetchJob(rootCollection(), Akonadi::CollectionFetchJob::FirstLevel, this);
-    connect(fetch, SIGNAL(finished(KJob*)),
-            this, SLOT(onUpdateTrashFolderCollectionsRetrieved(KJob*)));
+    connect(fetch, &KJob::finished,
+            this, &GmailResource::onUpdateTrashFolderCollectionsRetrieved);
 }
 
 void GmailResource::onUpdateTrashFolderCollectionsRetrieved(KJob *job)

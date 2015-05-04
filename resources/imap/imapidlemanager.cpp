@@ -43,7 +43,7 @@ ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state,
       m_idle(Q_NULLPTR), m_resource(parent), m_state(state),
       m_lastMessageCount(-1), m_lastRecentCount(-1)
 {
-    connect(pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)), this, SLOT(onSessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+    connect(pool, &SessionPool::sessionRequestDone, this, &ImapIdleManager::onSessionRequestDone);
     m_sessionRequestId = m_pool->requestSession();
 }
 

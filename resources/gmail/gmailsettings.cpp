@@ -107,8 +107,8 @@ void GmailSettings::requestAccount(bool authenticate)
         }
 
         KGAPI2::AuthJob *authJob = new KGAPI2::AuthJob(mAccount, apiKey(), secretKey(), this);
-        connect(authJob, SIGNAL(finished(KGAPI2::Job*)),
-                this, SLOT(onAuthFinished(KGAPI2::Job*)));
+        connect(authJob, &KGAPI2::Job::finished,
+                this, &GmailSettings::onAuthFinished);
         mActiveAuthJob = authJob;
     } else {
         if (mAccount) {
