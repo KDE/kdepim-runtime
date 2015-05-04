@@ -51,10 +51,8 @@ InfoDialog::InfoDialog(bool closeWhenDone) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     mButtonBox = new QDialogButtonBox(QDialogButtonBox::Close);
-    QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
-    mainLayout->addWidget(mainWidget);
     connect(mButtonBox, &QDialogButtonBox::accepted, this, &InfoDialog::accept);
     connect(mButtonBox, &QDialogButtonBox::rejected, this, &InfoDialog::reject);
     mButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
