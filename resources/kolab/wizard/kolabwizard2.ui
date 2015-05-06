@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="imapLabel">
      <property name="text">
-      <string>Imap:</string>
+      <string>IMAP:</string>
      </property>
     </widget>
    </item>
@@ -39,7 +39,7 @@
      <item>
       <widget class="QLabel" name="lineEditImapLabel">
        <property name="text">
-        <string>Imap Servername:</string>
+        <string>IMAP Server Name:</string>
        </property>
       </widget>
      </item>
@@ -98,7 +98,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="labelSmtp">
      <property name="text">
-      <string>Smtp:</string>
+      <string>SMTP:</string>
      </property>
     </widget>
    </item>
@@ -120,7 +120,7 @@
      <item>
       <widget class="QLabel" name="lineEditSmtpLabel">
        <property name="text">
-        <string>Smtp Servername:</string>
+        <string>SMTP Server Name:</string>
        </property>
       </widget>
      </item>
@@ -169,7 +169,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="labelLdap">
      <property name="text">
-      <string>Ldap:</string>
+      <string>LDAP:</string>
      </property>
     </widget>
    </item>

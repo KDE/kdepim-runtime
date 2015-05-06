@@ -86,7 +86,7 @@ function testOk( arg )
         // start imap test
         servertest_mode = 3;
         if (page2.widget().lineEditImap.text) {
-            SetupManager.setupInfo(qsTr("Probing Imap server..."));
+            SetupManager.setupInfo(qsTr("Probing IMAP server..."));
             ServerTest.test(page2.widget().lineEditImap.text, "imap");
         } else {
             SetupManager.execute();
@@ -223,7 +223,7 @@ function setup()
         smtp.setUsername(page.widget().emailEdit.text);
         smtp.setAuthenticationType("plain");
 
-        SetupManager.setupInfo(qsTr("Probing Smtp server..."));
+        SetupManager.setupInfo(qsTr("Probing SMTP server..."));
         ServerTest.test( serverAddress, "submission" );   //probe port and encryption
     }
 
