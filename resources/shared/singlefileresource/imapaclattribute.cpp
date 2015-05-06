@@ -65,7 +65,7 @@ QByteArray ImapAclAttribute::type() const
     return sType;
 }
 
-Akonadi::Attribute *ImapAclAttribute::clone() const
+ImapAclAttribute *ImapAclAttribute::clone() const
 {
     ImapAclAttribute *attr = new ImapAclAttribute(mRights, mOldRights);
     attr->setMyRights(mMyRights);
@@ -104,8 +104,10 @@ QByteArray ImapAclAttribute::serialized() const
         result.chop(3);
     }
 
-    result += " %% ";
-    result += KIMAP::Acl::rightsToString(mMyRights);
+    if (mMyRights) {
+        result += " %% ";
+        result += KIMAP::Acl::rightsToString(mMyRights);
+    }
 
     return result;
 }
