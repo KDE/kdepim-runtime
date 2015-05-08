@@ -325,14 +325,14 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &c
 KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
 {
     Event::Ptr event(new Event());
-    event->setDtStart(KDateTime(date, KDateTime::ClockTime));
-    event->setDtEnd(KDateTime(date, KDateTime::ClockTime));
+    event->setDtStart(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
+    event->setDtEnd(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
     event->setAllDay(true);
     event->setTransparency(Event::Transparent);
 
     // Set the recurrence
     Recurrence *recurrence = event->recurrence();
-    recurrence->setStartDateTime(KDateTime(date, KDateTime::ClockTime));
+    recurrence->setStartDateTime(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
     recurrence->setYearly(1);
     if (date.month() == 2 && date.day() == 29) {
         recurrence->addYearlyDay(60);
@@ -344,7 +344,7 @@ KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
         Alarm::Ptr alarm = event->newAlarm();
         alarm->setType(Alarm::Display);
         alarm->setText(event->summary());
-        alarm->setTime(KDateTime(date, KDateTime::ClockTime));
+        alarm->setTime(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
         // N days before
         alarm->setStartOffset(Duration(-Settings::self()->alarmDays(), Duration::Days));
         alarm->setEnabled(true);
