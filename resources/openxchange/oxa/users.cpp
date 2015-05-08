@@ -23,6 +23,7 @@
 
 #include <QtCore/QFile>
 #include <QStandardPaths>
+#include <QDataStream>
 
 using namespace OXA;
 

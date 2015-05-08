@@ -20,6 +20,7 @@
 #define ETAGCACHE_H
 
 #include <QtCore/QMap>
+#include <QtCore/QObject>
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
 
