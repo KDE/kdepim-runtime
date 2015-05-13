@@ -528,7 +528,7 @@ void ContactsResource::slotCreateJobFinished(KGAPI2::Job *job)
     if (item.isValid()) {
         ContactCreateJob *createJob = qobject_cast<ContactCreateJob *>(job);
         Q_ASSERT(createJob->items().count() == 1);
-        ContactPtr contact = createJob->items().first().dynamicCast<Contact>();
+        ContactPtr contact = createJob->items().at(0).dynamicCast<Contact>();
 
         item.setRemoteId(contact->uid());
         item.setRemoteRevision(contact->etag());
@@ -536,7 +536,7 @@ void ContactsResource::slotCreateJobFinished(KGAPI2::Job *job)
     } else if (collection.isValid()) {
         ContactsGroupCreateJob *createJob = qobject_cast<ContactsGroupCreateJob *>(job);
         Q_ASSERT(createJob->items().count() == 1);
-        ContactsGroupPtr group = createJob->items().first().dynamicCast<ContactsGroup>();
+        ContactsGroupPtr group = createJob->items().at(0).dynamicCast<ContactsGroup>();
 
         collection.setRemoteId(group->id());
         collection.setContentMimeTypes(QStringList() << KContacts::Addressee::mimeType());

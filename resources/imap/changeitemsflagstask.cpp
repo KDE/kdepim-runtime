@@ -38,7 +38,7 @@ ChangeItemsFlagsTask::~ChangeItemsFlagsTask()
 
 void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
 {
-    const QString mailBox = mailBoxForCollection(items().first().parentCollection());
+    const QString mailBox = mailBoxForCollection(items().at(0).parentCollection());
     qCDebug(IMAPRESOURCE_LOG) << mailBox;
 
     if (session->selectedMailBox() != mailBox) {
@@ -104,7 +104,7 @@ KIMAP::StoreJob *ChangeItemsFlagsTask::prepareJob(KIMAP::Session *session)
 void ChangeItemsFlagsTask::triggerAppendFlagsJob(KIMAP::Session *session)
 {
     KIMAP::StoreJob *store = prepareJob(session);
-    store->setFlags(fromAkonadiToSupportedImapFlags(addedFlags().toList(), items().first().parentCollection()));
+    store->setFlags(fromAkonadiToSupportedImapFlags(addedFlags().toList(), items().at(0).parentCollection()));
     store->setMode(KIMAP::StoreJob::AppendFlags);
     connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onAppendFlagsDone);
     store->start();
@@ -113,7 +113,7 @@ void ChangeItemsFlagsTask::triggerAppendFlagsJob(KIMAP::Session *session)
 void ChangeItemsFlagsTask::triggerRemoveFlagsJob(KIMAP::Session *session)
 {
     KIMAP::StoreJob *store = prepareJob(session);
-    store->setFlags(fromAkonadiToSupportedImapFlags(removedFlags().toList(), items().first().parentCollection()));
+    store->setFlags(fromAkonadiToSupportedImapFlags(removedFlags().toList(), items().at(0).parentCollection()));
     store->setMode(KIMAP::StoreJob::RemoveFlags);
     connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onRemoveFlagsDone);
     store->start();

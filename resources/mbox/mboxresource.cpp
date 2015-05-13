@@ -249,7 +249,7 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
     }
 
     Q_ASSERT(fetchJob->collections().size() == 1);
-    Collection mboxCollection = fetchJob->collections().first();
+    Collection mboxCollection = fetchJob->collections().at(0);
     DeletedItemsAttribute *attr
         = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Entity::AddIfMissing);
 
@@ -344,7 +344,7 @@ void MboxResource::onCollectionFetch(KJob *job)
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
-    Collection mboxCollection = fetchJob->collections().first();
+    Collection mboxCollection = fetchJob->collections().at(0);
     DeletedItemsAttribute *attr
         = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Entity::AddIfMissing);
     attr->addDeletedItemOffset(itemOffset(item.remoteId()));

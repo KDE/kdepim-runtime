@@ -273,7 +273,7 @@ void OutboxQueue::Private::itemFetched(KJob *job)
     }
 
     if (!fetchJob->items().isEmpty()) {
-        Q_EMIT q->itemReady(fetchJob->items().first());
+        Q_EMIT q->itemReady(fetchJob->items().at(0));
     }
 }
 

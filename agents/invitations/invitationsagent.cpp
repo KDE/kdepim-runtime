@@ -209,7 +209,7 @@ void InvitationsAgentItem::fetchItemDone(KJob *job)
     ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob->items().count() == 1);
 
-    Item modifiedItem = fetchJob->items().first();
+    Item modifiedItem = fetchJob->items().at(0);
     Q_ASSERT(modifiedItem.isValid());
 
     modifiedItem.setFlag(Akonadi::MessageFlags::HasInvitation);
@@ -408,7 +408,7 @@ void InvitationsAgent::collectionFetchResult(KJob *job)
         // if the agent was just created then there is exactly one collection already
         // and we just use that one.
         Q_ASSERT(fj->collections().count() == 1);
-        m_invitations = fj->collections().first();
+        m_invitations = fj->collections().at(0);
         initDone();
         return;
     }

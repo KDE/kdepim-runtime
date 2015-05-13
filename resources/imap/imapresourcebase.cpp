@@ -627,7 +627,7 @@ void ImapResourceBase::onIdleCollectionFetchDone(KJob *job)
     Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
     //Can be empty if collection is not subscribed locally
     if (!fetch->collections().isEmpty()) {
-        m_idle = new ImapIdleManager(createResourceState(TaskArguments(fetch->collections().first())), m_pool, this);
+        m_idle = new ImapIdleManager(createResourceState(TaskArguments(fetch->collections().at(0))), m_pool, this);
     }
 }
 
@@ -658,7 +658,7 @@ void ImapResourceBase::onExpungeCollectionFetchDone(KJob *job)
 {
     if (job->error() == 0) {
         Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
-        Akonadi::Collection collection = fetch->collections().first();
+        Akonadi::Collection collection = fetch->collections().at(0);
 
         scheduleCustomTask(this, "triggerCollectionExpunge",
                            QVariant::fromValue(collection));

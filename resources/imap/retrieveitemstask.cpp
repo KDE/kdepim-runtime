@@ -473,7 +473,7 @@ void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet &set, const KIMAP::Fe
     if (m_uidBasedFetch && set.intervals().size() == 1) {
         m_batchFetcher->setSearchUids(set.intervals().front());
     }
-    m_batchFetcher->setProperty("alreadyFetched", set.intervals().first().begin());
+    m_batchFetcher->setProperty("alreadyFetched", set.intervals().at(0).begin());
     connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
             this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
     connect(m_batchFetcher, SIGNAL(result(KJob*)),
@@ -535,7 +535,7 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
 
 void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
 {
-    qCDebug(IMAPRESOURCE_LOG) << "Listing flags " << set.intervals().first().begin() << set.intervals().first().end();
+    qCDebug(IMAPRESOURCE_LOG) << "Listing flags " << set.intervals().at(0).begin() << set.intervals().at(0).end();
     qCDebug(IMAPRESOURCE_LOG) << "Starting flag retrieval. Elapsed(ms): " << m_time.elapsed();
 
     KIMAP::FetchJob::FetchScope scope;

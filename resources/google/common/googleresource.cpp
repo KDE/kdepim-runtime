@@ -239,7 +239,7 @@ void GoogleResource::slotKAccountsAccountInfoReceived(KGAPI2::Job *job)
         return;
     }
 
-    AccountInfoPtr info = aiJob->items().first().dynamicCast<AccountInfo>();
+    AccountInfoPtr info = aiJob->items().at(0).dynamicCast<AccountInfo>();
     settings()->setAccountName(info->email());
     m_account = AccountPtr(new Account(info->email(),
                                        aiJob->property(ACCESS_TOKEN_PROPERTY).toString()));

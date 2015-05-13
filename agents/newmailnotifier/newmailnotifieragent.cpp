@@ -452,7 +452,7 @@ void NewMailNotifierAgent::slotShowNotifications()
                     //You can have an unique folder with 0 message
                     return;
                 } else if (it.value().count() == 1) {
-                    item = it.value().first();
+                    item = it.value().at(0);
                     currentPath = displayName;
                     break;
                 } else {

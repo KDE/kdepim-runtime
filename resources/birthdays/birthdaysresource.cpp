@@ -128,9 +128,9 @@ void BirthdaysResource::contactRetrieved(KJob *job)
     } else {
         KCalCore::Incidence::Ptr ev;
         if (currentItem().remoteId().startsWith(QLatin1Char('b'))) {
-            ev = createBirthday(fj->items().first());
+            ev = createBirthday(fj->items().at(0));
         } else if (currentItem().remoteId().startsWith(QLatin1Char('a'))) {
-            ev = createAnniversary(fj->items().first());
+            ev = createAnniversary(fj->items().at(0));
         }
         if (!ev) {
             cancelTask();

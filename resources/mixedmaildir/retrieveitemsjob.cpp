@@ -247,7 +247,7 @@ void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
         return;
     }
 
-    const Item item = fetchJob->items().first();
+    const Item item = fetchJob->items().at(0);
     const QDateTime modTime = item.modificationTime();
     if (modTime.isValid()) {
         mHighestModTime = qMax(modTime.toMSecsSinceEpoch(), mHighestModTime);
@@ -304,7 +304,7 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
         return;
     }
 
-    const Item item = fetchJob->items().first();
+    const Item item = fetchJob->items().at(0);
     const QDateTime modTime = item.modificationTime();
     if (modTime.isValid()) {
         mHighestModTime = qMax(modTime.toMSecsSinceEpoch(), mHighestModTime);

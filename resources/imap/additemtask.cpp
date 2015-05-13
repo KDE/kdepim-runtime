@@ -165,7 +165,7 @@ void AddItemTask::onSearchDone(KJob *job)
 
     qint64 uid = 0;
     if (search->results().count() == 1) {
-        uid = search->results().first();
+        uid = search->results().at(0);
     }
 
     applyFoundUid(uid);

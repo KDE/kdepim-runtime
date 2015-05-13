@@ -88,7 +88,7 @@ void AkonadiSlave::get(const QUrl &url)
     if (job->items().count() != 1) {
         error(KIO::ERR_DOES_NOT_EXIST, i18n("No such item."));
     } else {
-        const Item item = job->items().first();
+        const Item item = job->items().at(0);
         QByteArray tmp = item.payloadData();
         data(tmp);
         data(QByteArray());
@@ -119,7 +119,7 @@ void AkonadiSlave::stat(const QUrl &url)
                 return;
             }
 
-            collection = job->collections().first();
+            collection = job->collections().at(0);
         }
 
         statEntry(entryForCollection(collection));
@@ -139,7 +139,7 @@ void AkonadiSlave::stat(const QUrl &url)
             return;
         }
 
-        const Item item = job->items().first();
+        const Item item = job->items().at(0);
         statEntry(entryForItem(item));
         finished();
     }

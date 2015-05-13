@@ -172,7 +172,7 @@ void AbortTest::testAbort()
     fjob->fetchScope().fetchAllAttributes();
     AKVERIFYEXEC(fjob);
     QCOMPARE(fjob->items().count(), 1);
-    Item item = fjob->items().first();
+    Item item = fjob->items().at(0);
     QVERIFY(item.hasAttribute<ErrorAttribute>());
     ErrorAttribute *eA = item.attribute<ErrorAttribute>();
     qDebug() << "Stored error:" << eA->message();

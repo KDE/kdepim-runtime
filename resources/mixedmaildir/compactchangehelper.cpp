@@ -122,7 +122,7 @@ void CompactChangeHelper::Private::itemFetchResult(KJob *job)
         return;
     }
 
-    const Item item = fetchJob->items().first();
+    const Item item = fetchJob->items().at(0);
 
     Item updatedItem(item);
     updatedItem.setRemoteId(newRemoteId);

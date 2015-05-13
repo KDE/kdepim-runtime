@@ -203,7 +203,7 @@ void GmailResource::onRetrieveItemsCollectionRetrieved(KJob *job)
         return;
     }
 
-    synchronizeCollection(fetch->collections().first().id());
+    synchronizeCollection(fetch->collections().at(0).id());
 
     itemsRetrievalDone();
 }

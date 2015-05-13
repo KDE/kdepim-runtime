@@ -144,7 +144,7 @@ void ReplaceMessageJob::onSearchDone(KJob *job)
     KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
 
     if (search->results().count() == 1) {
-        mNewUid = search->results().first();
+        mNewUid = search->results().at(0);
     } else {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to find uid for message. Got 0 or too many results: " << search->results().count();
         setError(KJob::UserDefinedError);

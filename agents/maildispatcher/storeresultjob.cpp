@@ -71,7 +71,7 @@ void StoreResultJob::Private::fetchDone(KJob *job)
     }
 
     // Store result in item.
-    Item item = fetchJob->items().first();
+    Item item = fetchJob->items().at(0);
     if (success) {
         item.clearFlag(Akonadi::MessageFlags::Queued);
         item.setFlag(Akonadi::MessageFlags::Sent);

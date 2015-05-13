@@ -242,7 +242,7 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
             if (items.count() != 1) {
                 continue;
             }
-            const KContacts::Addressee addressee = job->items().first().payload<KContacts::Addressee>();
+            const KContacts::Addressee addressee = job->items().at(0).payload<KContacts::Addressee>();
             gid = addressee.uid();
         }
         KContacts::ContactGroup::ContactReference ref;

@@ -359,7 +359,7 @@ void SendJob::Private::slotSentMailCollectionFetched(KJob *job)
     if (!job->error()) {
         const CollectionFetchJob *const fetchJob = qobject_cast<CollectionFetchJob *>(job);
         if (!fetchJob->collections().isEmpty()) {
-            fetchCol = fetchJob->collections().first();
+            fetchCol = fetchJob->collections().at(0);
             ok = true;
         }
     }

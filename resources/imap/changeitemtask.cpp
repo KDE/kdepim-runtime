@@ -235,7 +235,7 @@ void ChangeItemTask::onSearchDone(KJob *job)
         return;
     }
 
-    m_newUid = search->results().first();
+    m_newUid = search->results().at(0);
     triggerDeleteJob();
 }
 

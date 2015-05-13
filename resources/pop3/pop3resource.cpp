@@ -475,7 +475,7 @@ void POP3Resource::targetCollectionFetchJobFinished(KJob *job)
         cancelSync(i18n("Could not find folder for incoming mail, aborting mail check."));
         return;
     } else {
-        mTargetCollection = fetchJob->collections().first();
+        mTargetCollection = fetchJob->collections().at(0);
         advanceState(Precommand);
     }
 }

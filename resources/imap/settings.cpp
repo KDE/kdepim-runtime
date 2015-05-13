@@ -329,7 +329,7 @@ void Settings::onRootCollectionFetched(KJob *job)
     Q_ASSERT(!newName.isEmpty());
     Akonadi::CollectionFetchJob *fetchJob = static_cast<Akonadi::CollectionFetchJob *>(job);
     if (fetchJob->collections().size() == 1) {
-        Akonadi::Collection rootCollection = fetchJob->collections().first();
+        Akonadi::Collection rootCollection = fetchJob->collections().at(0);
         rootCollection.setName(newName);
         new Akonadi::CollectionModifyJob(rootCollection);
         // We don't care about the result here, nothing we can/should do if the renaming fails

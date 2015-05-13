@@ -57,7 +57,7 @@ void SentActionHandler::itemFetchResult(KJob *job)
         return;
     }
 
-    Akonadi::Item item = fetchJob->items().first();
+    Akonadi::Item item = fetchJob->items().at(0);
 
     const SentActionAttribute::Action::Type type = static_cast<SentActionAttribute::Action::Type>(job->property("type").toInt());
     if (type == SentActionAttribute::Action::MarkAsReplied) {
