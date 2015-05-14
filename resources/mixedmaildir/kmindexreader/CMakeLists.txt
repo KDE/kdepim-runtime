@@ -15,6 +15,7 @@ generate_export_header(kmindexreader BASE_NAME kmindexreader)
 
 target_link_libraries(kmindexreader
     KF5::AkonadiMime
+    KF5::KDELibs4Support
 )
 
 set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

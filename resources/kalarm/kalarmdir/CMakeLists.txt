@@ -38,6 +38,7 @@ target_link_libraries(akonadi_kalarm_dir_resource
                       KF5::CalendarCore
                       KF5::KIOCore
                       KF5::AkonadiAgentBase 
+                      KF5::DBusAddons
                      )
 
 install(TARGETS akonadi_kalarm_dir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

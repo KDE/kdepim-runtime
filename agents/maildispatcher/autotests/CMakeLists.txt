@@ -18,6 +18,10 @@ macro(add_akonadi_isolated_test _source)
     KF5::AkonadiMime
     KF5::MailTransport
     KF5::Mime
+    KF5::I18n
+    KF5::ConfigGui
+    Qt5::DBus
+    Qt5::Widgets
   )
 
   # based on kde4_add_unit_test

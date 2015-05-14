@@ -29,6 +29,9 @@ macro(add_akonadi_isolated_test _source)
     Qt5::Test
     KF5::AkonadiCore
     KF5::Mime
+    Qt5::Network
+    Qt5::Widgets
+    Qt5::DBus
   )
 
   # based on kde4_add_unit_test

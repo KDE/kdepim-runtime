@@ -26,8 +26,11 @@ add_library(akonadi-filestore  ${akonadi-filestore_SRCS} )
 generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
 
 target_link_libraries(akonadi-filestore
+  PUBLIC
                       KF5::AkonadiCore
                       KF5::KIOCore
+  PRIVATE
+                      KF5::I18n
 )
 
 set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

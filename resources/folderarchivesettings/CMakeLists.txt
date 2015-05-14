@@ -17,6 +17,7 @@ target_link_libraries(folderarchivesettings
                       KF5::Mime
                       KF5::AkonadiCore
                       KF5::AkonadiWidgets
+                      KF5::ConfigCore
 )
 
 set_target_properties(folderarchivesettings PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

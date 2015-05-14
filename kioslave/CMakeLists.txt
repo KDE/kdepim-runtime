@@ -33,6 +33,7 @@ add_library(kio_akonadi MODULE ${kio_akonadi_SRCS})
 target_link_libraries(kio_akonadi  
                       KF5::KIOCore 
                       KF5::AkonadiCore 
+                      KF5::I18n
                       Qt5::DBus
                       Qt5::Widgets
                       )

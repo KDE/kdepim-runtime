@@ -34,6 +34,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::IdentityManagement
   KF5::NotifyConfig
   KF5::AkonadiAgentBase
+  KF5::DBusAddons
 )
 
 if (Qt5TextToSpeech_FOUND)
