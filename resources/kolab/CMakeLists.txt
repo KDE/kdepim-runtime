@@ -66,6 +66,8 @@ target_link_libraries(akonadi_kolab_resource
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+ecm_install_icons(ICONS 64-apps-kolab.png
+                  DESTINATION share/icons)
 
 if (BUILD_TESTING)
     #add_subdirectory(autotests)
