@@ -35,7 +35,7 @@ if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
     set(KDEPIM_RUNTIME_DEV_VERSION "pre")
 endif()
 
-set(KDEPIM_RUNTIME_VERSION_NUMBER "4.74")
+set(KDEPIM_RUNTIME_VERSION_NUMBER "4.75")
 set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV_VERSION}")
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
@@ -97,7 +97,6 @@ if (NOT Qt5TextToSpeech_FOUND)
 else()
     add_definitions(-DHAVE_SPEECH)
 endif()
-
 
 set(KF5AkonadiServer_MIN_VERSION "5.0.41")
 find_package(KF5AkonadiServer ${KF5AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
