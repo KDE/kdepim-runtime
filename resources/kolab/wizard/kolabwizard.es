@@ -266,7 +266,7 @@ function setup()
         if (!servertest_running) {
             servertest_mode = 2;
             servertest_running = true;
-            SetupManager.setupInfo(qsTr("Probing Imap server..."));
+            SetupManager.setupInfo(qsTr("Probing IMAP server..."));
             ServerTest.test(serverAddress, "imap");
         }       kolabRes.setOption("Authentication", 7);
     }
