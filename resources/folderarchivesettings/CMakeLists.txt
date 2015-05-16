@@ -14,6 +14,7 @@ add_library(folderarchivesettings  ${folderarchivesettings_SRCS} )
 generate_export_header(folderarchivesettings BASE_NAME folderarchivesettings)
 
 target_link_libraries(folderarchivesettings
+PRIVATE
                       KF5::Mime
                       KF5::AkonadiCore
                       KF5::AkonadiWidgets
