@@ -10,7 +10,7 @@ set(maildir_LIB_SRCS keycache.cpp maildir.cpp libmaildir_debug.cpp)
 add_library(maildir  ${maildir_LIB_SRCS})
 generate_export_header(maildir BASE_NAME maildir)
 
-target_link_libraries(maildir PUBLIC KF5::AkonadiMime KF5::AkonadiCore PRIVATE KF5::KDELibs4Support KF5::I18n Qt5::Network)
+target_link_libraries(maildir PUBLIC KF5::AkonadiMime PRIVATE KF5::KDELibs4Support KF5::I18n Qt5::Network)
 
 set_target_properties(maildir PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
