@@ -67,6 +67,7 @@ Comment[sv]=Läser in kontakter från en vCard-katalog
 Comment[uk]=Завантажує дані запису контакту із каталогу vCard
 Comment[x-test]=xxLoads contact from VCard Directoryxx
 Comment[zh_CN]=从 VCard 目录载入联系人
+Comment[zh_TW]=從 vCard 目錄載入聯絡人
 
 [Wizard]
 Type=text/vcard
