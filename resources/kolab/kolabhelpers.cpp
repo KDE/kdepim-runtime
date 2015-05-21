@@ -406,13 +406,18 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
 
 Kolab::FolderType KolabHelpers::folderTypeFromString(const QByteArray &folderTypeName)
 {
-    return Kolab::folderTypeFromString(std::string(folderTypeName.data(), folderTypeName.size()));
+    const QByteArray stripped = folderTypeName.split('.').first();
+    return Kolab::folderTypeFromString(std::string(stripped.data(), stripped.size()));
 }
 
 QByteArray KolabHelpers::getFolderTypeAnnotation(const QMap< QByteArray, QByteArray > &annotations)
 {
-    if (annotations.contains("/shared" KOLAB_FOLDER_TYPE_ANNOTATION)) {
+    if (annotations.contains("/shared" KOLAB_FOLDER_TYPE_ANNOTATION)
+        && !annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
         return annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION);
+    } else if (annotations.contains("/private" KOLAB_FOLDER_TYPE_ANNOTATION)
+               && !annotations.value("/private" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
+        return annotations.value("/private" KOLAB_FOLDER_TYPE_ANNOTATION);
     }
     return annotations.value(KOLAB_FOLDER_TYPE_ANNOTATION);
 }

@@ -474,7 +474,7 @@ void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray,
         const QMap<QByteArray, QByteArray> metadata  = metadataMap.value(mailbox);
         if (mMailCollections.contains(mailbox)) {
             Akonadi::Collection &collection = mMailCollections[mailbox];
-            // qCDebug(KOLABRESOURCE_LOG) << "setting metadata: " << mailbox << metadata;
+            // qCDebug(KOLABRESOURCE_LOG) << mailbox << metadata << type << folderType << KolabHelpers::getContentMimeTypes(folderType);
             collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing)->setAnnotations(metadata);
             const QByteArray type = KolabHelpers::getFolderTypeAnnotation(metadata);
             const Kolab::FolderType folderType = KolabHelpers::folderTypeFromString(type);
