@@ -20,7 +20,6 @@ find_package(ECM 5.9.0 CONFIG REQUIRED)
 
  find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 endif()
 
 set(kio_akonadi_SRCS akonadislave.cpp akonadislave_debug.cpp)

@@ -17,7 +17,7 @@
 
 #include "deleteitemsattributetest.h"
 #include "../deleteditemsattribute.h"
-#include <qtest_kde.h>
+#include <qtest.h>
 
 DeleteItemsAttributeTest::DeleteItemsAttributeTest(QObject *parent)
     : QObject(parent)
@@ -80,4 +80,4 @@ void DeleteItemsAttributeTest::shouldHaveTypeName()
     QCOMPARE(attr.type(), QByteArray("DeletedMboxItems"));
 }
 
-QTEST_KDEMAIN(DeleteItemsAttributeTest, NoGUI)
+QTEST_MAIN(DeleteItemsAttributeTest)
