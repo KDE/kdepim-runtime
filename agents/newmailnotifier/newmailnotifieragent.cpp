@@ -51,7 +51,6 @@
 #include <KToolInvocation>
 #include <QIcon>
 #include <KIconLoader>
-#include <KGlobal>
 
 using namespace Akonadi;
 
