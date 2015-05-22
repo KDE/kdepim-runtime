@@ -21,7 +21,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
   set(QT_REQUIRED_VERSION "5.4.0")
   # KF5 package
   find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
-  find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
   find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
 
   # KdepimLibs package
