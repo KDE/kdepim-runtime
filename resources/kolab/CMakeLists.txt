@@ -54,6 +54,7 @@ target_link_libraries(akonadi_kolab_resource
     KF5::Mime
     KF5::AkonadiMime
     KF5::AkonadiCalendar
+    KF5::AkonadiWidgets
     KF5::IdentityManagement
     imapresource
     folderarchivesettings
