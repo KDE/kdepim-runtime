@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Gmail
+Name[bg]=Gmail
 Name[ca]=Gmail
 Name[da]=Gmail
 Name[de]=Gmail
@@ -33,6 +34,7 @@ Name[x-test]=xxGmailxx
 Name[zh_CN]=Gmail
 Name[zh_TW]=Gmail
 Comment=Connects to your Gmail account
+Comment[bg]=Свързване към вашата сметка в Google
 Comment[ca]=Connecta amb el vostre compte de Gmail
 Comment[da]=Forbinder til din Gmail-konto
 Comment[de]=Verbindet mit Ihrem Gmail-Konto

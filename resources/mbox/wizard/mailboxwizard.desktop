@@ -49,6 +49,7 @@ Name[zh_CN]=MailBox
 Name[zh_TW]=信箱格式（Mailbox）
 Icon=message-rfc822
 Comment=Mailbox account
+Comment[bg]=Сметка mailbox
 Comment[bs]=Mailbox nalog
 Comment[ca]=Compte de bústia
 Comment[ca@valencia]=Compte de bústia

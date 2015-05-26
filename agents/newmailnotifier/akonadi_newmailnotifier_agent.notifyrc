@@ -1,6 +1,7 @@
 [Global]
 IconName=kmail
 Comment=New email notify
+Comment[bg]=Уведомяване за нова поща
 Comment[bs]=Obavijest o novoj pošti
 Comment[ca]=Notificador de correu electrònic nou
 Comment[ca@valencia]=Notificador de correu electrònic nou
@@ -43,6 +44,7 @@ Comment[x-test]=xxNew email notifyxx
 Comment[zh_CN]=新邮件提醒
 Comment[zh_TW]=新郵件通知
 Name=New email notify
+Name[bg]=Уведомяване за нова поща
 Name[bs]=Obavijest o novoj pošti
 Name[ca]=Notificador de correu electrònic nou
 Name[ca@valencia]=Notificador de correu electrònic nou
@@ -88,6 +90,7 @@ Name[zh_TW]=新郵件通知
 
 [Event/new-email]
 Name=New email arrived
+Name[bg]=Пристигна нова поща
 Name[bs]=Nova pošta stigla
 Name[ca]=Ha arribat correu electrònic nou
 Name[ca@valencia]=Ha arribat correu electrònic nou

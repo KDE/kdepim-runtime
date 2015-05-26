@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=vCard Directory
+Name[bg]=Папка с vCard
 Name[bs]=VCard direktorij
 Name[ca]=Directori vCard
 Name[ca@valencia]=Directori vCard
@@ -41,6 +42,7 @@ Name[zh_CN]=vCard 目录
 Name[zh_TW]=vCard 目錄
 Icon=text-directory
 Comment=Loads contact from VCard Directory
+Comment[bg]=Зареждане на контакти от папка с vCard
 Comment[ca]=Carrega els contactes des d'un directori VCard
 Comment[cs]=Načítá data z adresáře vizitek
 Comment[de]=Lädt Kontakte aus einem vCard-Ordner
@@ -64,6 +66,7 @@ Comment[sr@ijekavian]=Учитава контакт из в‑кард фасц�
 Comment[sr@ijekavianlatin]=Učitava kontakt iz vCard fascikle
 Comment[sr@latin]=Učitava kontakt iz vCard fascikle
 Comment[sv]=Läser in kontakter från en vCard-katalog
+Comment[tr]=vCard Dizininden bağlantıyı yükler
 Comment[uk]=Завантажує дані запису контакту із каталогу vCard
 Comment[x-test]=xxLoads contact from VCard Directoryxx
 Comment[zh_CN]=从 VCard 目录载入联系人

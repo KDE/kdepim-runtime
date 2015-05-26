@@ -98,6 +98,7 @@ Name[zh_TW]=KDE 郵件軟體
 
 [Event/emailsent]
 Name=E-mail successfully sent
+Name[bg]=Е-пощата е изпратена успешно
 Name[bs]=E-mail uspješno poslan
 Name[ca]=Correu electrònic enviat correctament
 Name[ca@valencia]=Correu electrònic enviat correctament
@@ -147,6 +148,7 @@ IconName=mail-folder-outbox
 
 [Event/sendingfailed]
 Name=E-mail sending failed
+Name[bg]=Грешка при изпращане на е-пощата
 Name[bs]=Slanje elektronske pošte neuspjelo
 Name[ca]=Ha fallat en enviar el correu electrònic
 Name[ca@valencia]=Ha fallat en enviar el correu electrònic
