@@ -94,6 +94,6 @@ Comment[zh_TW]=聯絡人群組物件的 Akonadi 序列器外掛程式
 
 [Plugin]
 Type=application/x-vnd.kde.contactgroup
-X-Akonadi-Class=legacy;default;KABC::ContactGroup;
+X-Akonadi-Class=legacy;default;KContacts::ContactGroup;
 X-KDE-Library=akonadi_serializer_contactgroup
 X-KDE-ClassName=Akonadi::SerializerPluginContactGroup
