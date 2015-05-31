@@ -90,19 +90,6 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     mTimer.setInterval(5 * 1000);
     connect(&mTimer, &QTimer::timeout, this, &NewMailNotifierAgent::slotShowNotifications);
 
-    if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
-        if (!QDBusConnection::sessionBus().interface()->isServiceRegistered(QStringLiteral("org.kde.kttsd"))) {
-            QString error;
-            if (KToolInvocation::startServiceByDesktopName(QStringLiteral("kttsd"), QStringList(), &error)) {
-                KNotification::event(QStringLiteral("text-to-speak-not-found"),
-                                     i18n("Starting Jovie Text-to-Speech Service Failed %1", error),
-                                     mDefaultPixmap,
-                                     Q_NULLPTR,
-                                     KNotification::CloseOnTimeout,
-                                     QStringLiteral("akonadi_newmailnotifier_agent"));
-            }
-        }
-    }
     if (isActive()) {
         mTimer.setSingleShot(true);
     }
