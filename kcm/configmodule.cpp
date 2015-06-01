@@ -25,14 +25,14 @@
 #include <kpluginfactory.h>
 #include <kpluginloader.h>
 #include <qboxlayout.h>
-#include <AkonadiCore/control.h>
+#include <AkonadiWidgets/controlgui.h>
 
 K_PLUGIN_FACTORY(ResourcesConfigFactory, registerPlugin<ConfigModule>();)
 
 ConfigModule::ConfigModule(QWidget *parent, const QVariantList &args) :
     KCModule(parent, args)
 {
-    Akonadi::Control::widgetNeedsAkonadi(this);
+    Akonadi::ControlGui::widgetNeedsAkonadi(this);
     setButtons(KCModule::Default | KCModule::Apply);
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setMargin(0);

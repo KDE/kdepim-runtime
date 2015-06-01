@@ -23,7 +23,7 @@ ki18n_wrap_ui(akonadi_server_kcm_srcs serverconfigmodule.ui
                                           serverpsqlstorage.ui
                                           serverstoragedriver.ui)
 add_library(kcm_akonadi_server MODULE ${akonadi_server_kcm_srcs})
-target_link_libraries(kcm_akonadi_server  KF5::KIOCore KF5::AkonadiCore KF5::KCMUtils KF5::I18n KF5::Completion KF5::KIOWidgets KF5::AkonadiPrivate)
+target_link_libraries(kcm_akonadi_server  KF5::KIOCore KF5::AkonadiWidgets KF5::KCMUtils KF5::I18n KF5::Completion KF5::KIOWidgets KF5::AkonadiPrivate)
 
 
 set(akonadi_kcm_srcs akonadiconfigmodule.cpp)

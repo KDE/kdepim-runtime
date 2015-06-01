@@ -27,7 +27,7 @@
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
-#include <AkonadiCore/control.h>
+#include <AkonadiWidgets/controlgui.h>
 #include <AkonadiCore/servermanager.h>
 #include <akonadi/private/xdgbasedirs_p.h>
 #include <KLocalizedString>
@@ -209,15 +209,15 @@ void ServerConfigModule::updateStatus()
 void ServerConfigModule::startStopClicked()
 {
     if (ServerManager::isRunning()) {
-        Control::stop(this);
+        ControlGui::stop(this);
     } else {
-        Control::start(this);
+        ControlGui::start(this);
     }
 }
 
 void ServerConfigModule::restartClicked()
 {
-    Control::restart(this);
+    ControlGui::restart(this);
 }
 
 void ServerConfigModule::selfTestClicked()

@@ -17,7 +17,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include <AkonadiCore/Control>
+#include <AkonadiWidgets/ControlGui>
 #include <kaboutdata.h>
 
 #include <kconfig.h>
@@ -63,14 +63,14 @@ int main(int argc, char **argv)
 
     KGlobal::setAllowQuit(true);
 
-    if (!Akonadi::Control::start(0)) {
+    if (!Akonadi::ControlGui::start(0)) {
         return 2;
     }
 
     InfoDialog *infoDialog = Q_NULLPTR;
     if (parser.isSet(QStringLiteral("interactive")) || parser.isSet(QStringLiteral("interactive-on-change"))) {
         infoDialog = new InfoDialog(parser.isSet(QStringLiteral("interactive-on-change")));
-        Akonadi::Control::widgetNeedsAkonadi(infoDialog);
+        Akonadi::ControlGui::widgetNeedsAkonadi(infoDialog);
         infoDialog->show();
     }
 

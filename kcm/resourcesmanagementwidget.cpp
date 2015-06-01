@@ -28,7 +28,7 @@
 #include <AkonadiCore/agentinstancecreatejob.h>
 #include <AkonadiCore/agentfilterproxymodel.h>
 #include <AkonadiWidgets/agenttypedialog.h>
-#include <AkonadiCore/control.h>
+#include <AkonadiWidgets/controlgui.h>
 
 #include <kwindowsystem.h>
 
@@ -67,7 +67,7 @@ ResourcesManagementWidget::ResourcesManagementWidget(QWidget *parent,  const QSt
     //QT5 d->ui.mFilterAccount->lineEdit()->setTrapReturnKey( true );
 
     updateButtonState();
-    Akonadi::Control::widgetNeedsAkonadi(this);
+    Akonadi::ControlGui::widgetNeedsAkonadi(this);
 }
 
 ResourcesManagementWidget::~ResourcesManagementWidget()
