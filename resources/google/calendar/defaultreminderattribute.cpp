@@ -94,7 +94,7 @@ QByteArray DefaultReminderAttribute::serialized() const
 KCalCore::Alarm::List DefaultReminderAttribute::alarms(KCalCore::Incidence *incidence) const
 {
     KCalCore::Alarm::List alarms;
-
+    alarms.reserve(m_reminders.count());
     Q_FOREACH (const ReminderPtr &reminder, m_reminders) {
         KCalCore::Alarm::Ptr alarm(new KCalCore::Alarm(incidence));
 

@@ -55,7 +55,7 @@ QSet<quint64> DeletedItemsAttribute::deletedItemOffsets() const
 KMBox::MBoxEntry::List DeletedItemsAttribute::deletedItemEntries() const
 {
     KMBox::MBoxEntry::List entries;
-
+    entries.reserve(mDeletedItemOffsets.count());
     foreach (quint64 offset, mDeletedItemOffsets) {
         entries << KMBox::MBoxEntry(offset);
     }

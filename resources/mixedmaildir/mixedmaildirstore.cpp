@@ -178,6 +178,7 @@ public:
         const int deleteCount = mDeletedOffsets.count();
 
         KMBox::MBoxEntry::List deletedEntries;
+        deletedEntries.reserve(deleteCount);
         Q_FOREACH (quint64 offset, mDeletedOffsets) {
             deletedEntries << KMBox::MBoxEntry(offset);
         }
