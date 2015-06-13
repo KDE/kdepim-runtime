@@ -73,6 +73,7 @@ void DefaultReminderAttribute::deserialize(const QByteArray &data)
 QByteArray DefaultReminderAttribute::serialized() const
 {
     QVariantList list;
+    list.reserve(m_reminders.count());
 
     Q_FOREACH (const ReminderPtr &rem, m_reminders) {
         QVariantMap reminder;

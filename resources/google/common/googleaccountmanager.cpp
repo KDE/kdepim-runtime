@@ -172,6 +172,7 @@ AccountPtr GoogleAccountManager::findAccountInWallet(const QString &accountName)
 
     const QStringList scopes = map[QLatin1String("scopes")].split(QLatin1Char(','), QString::SkipEmptyParts);
     QList<QUrl> scopeUrls;
+    scopeUrls.reserve(scopes.count());
     Q_FOREACH (const QString &scope, scopes) {
         scopeUrls << QUrl(scope);
     }
@@ -192,6 +193,7 @@ bool GoogleAccountManager::storeAccount(const AccountPtr &account)
 
     QStringList scopes;
     const QList<QUrl> urlScopes = account->scopes();
+    scopes.reserve(urlScopes.count());
     Q_FOREACH (const QUrl &url, urlScopes) {
         scopes << url.toString();
     }

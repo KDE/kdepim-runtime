@@ -153,6 +153,7 @@ public:
     void save()
     {
         QStringList pairs;
+        pairs.reserve(mObjectsMap.count());
 
         QMapIterator<qlonglong, qulonglong> it(mObjectsMap);
         while (it.hasNext()) {
@@ -721,6 +722,7 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished(KJob *job)
     Item::List removedItems;
 
     const OXA::Object::List deletedObjects = requestJob->deletedObjects();
+    removedItems.reserve(deletedObjects.count());
     foreach (const OXA::Object &object, deletedObjects) {
         Item item;
 
@@ -995,6 +997,7 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
 
     // add the deleted folders from the server
     OXA::Folder::List deletedFolders = requestJob->deletedFolders();
+    removedCollections.reserve(deletedFolders.count());
     foreach (const OXA::Folder &folder, deletedFolders) {
         Collection collection;
         collection.setRemoteId(QString::number(folder.objectId()));

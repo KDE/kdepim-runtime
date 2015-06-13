@@ -129,6 +129,7 @@ void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
     Q_UNUSED(col);
     Incidence::List incidences = calendar()->incidences();
     Item::List items;
+    items.reserve(incidences.count());
     foreach (const Incidence::Ptr &incidence, incidences) {
         Item item(incidence->mimeType());
         item.setRemoteId(incidence->instanceIdentifier());

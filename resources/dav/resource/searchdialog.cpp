@@ -94,6 +94,7 @@ QStringList SearchDialog::selection() const
 {
     QModelIndexList indexes = mUi.searchResults->selectionModel()->selectedIndexes();
     QStringList ret;
+    ret.reserve(indexes.count());
     foreach (const QModelIndex &index, indexes) {
         qCritical() << "SELECTED DATA: " << index.data(Qt::UserRole + 1).toString();
         ret << index.data(Qt::UserRole + 1).toString();

@@ -361,6 +361,7 @@ void POP3Resource::doStateStep()
         // For proper progress, the job needs to know the sizes of the messages, so
         // put them into a list here
         QList<int> sizesOfMessagesToDownload;
+        sizesOfMessagesToDownload.reserve(idsToDownload.count());
         foreach (int id, idsToDownload) {
             sizesOfMessagesToDownload.append(mIdsToSizeMap.value(id));
         }
@@ -718,6 +719,7 @@ QList<int> POP3Resource::idsToDelete() const
         // be reduced in the following number-limited leave rule and size-limited
         // leave rule checks
         else {
+            idsToSave.reserve(idsToDeleteFromServer.count());
             foreach (int idToDelete, idsToDeleteFromServer) {
                 idsToSave.append(idToDelete);
             }

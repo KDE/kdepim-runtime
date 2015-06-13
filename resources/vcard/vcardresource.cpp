@@ -133,6 +133,7 @@ void VCardResource::retrieveItems(const Akonadi::Collection &col)
     Q_UNUSED(col);
 
     Item::List items;
+    items.reserve(mAddressees.count());
 
     // FIXME: Check if the KIO::Job is done and was successful, if so send the
     // items, otherwise set a bool and in the result slot of the job send the

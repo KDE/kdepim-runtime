@@ -167,6 +167,7 @@ DavUtils::DavUrl::List Settings::configuredDavUrls()
         buildUrlsList();
     }
     DavUtils::DavUrl::List davUrls;
+    davUrls.reserve(mUrls.count());
     QMapIterator<QString, UrlConfiguration *> it(mUrls);
 
     while (it.hasNext()) {
@@ -470,6 +471,7 @@ void Settings::loadMappings()
 void Settings::updateRemoteUrls()
 {
     QStringList newUrls;
+    newUrls.reserve(mUrls.count());
 
     QMapIterator<QString, UrlConfiguration *> it(mUrls);
     while (it.hasNext()) {

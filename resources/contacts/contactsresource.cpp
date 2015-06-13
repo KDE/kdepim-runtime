@@ -105,6 +105,7 @@ Collection::List ContactsResource::createCollectionsForDirectory(const QDir &par
     QDir dir(parentDirectory);
     dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
     const QFileInfoList entries = dir.entryInfoList();
+    collections.reserve(entries.count() * 2);
 
     foreach (const QFileInfo &entry, entries) {
         QDir subdir(entry.absoluteFilePath());

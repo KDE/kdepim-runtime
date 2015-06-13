@@ -256,6 +256,7 @@ static void parseRecurrence(const QDomElement &element,
             yearly2Month = text.toInt() + 1;
         } else if ((tagName == QLatin1String("deleteexceptions")) || (tagName == QLatin1String("changeexceptions"))) {
             const QStringList exceptionDates = text.split(QLatin1String(","));
+            deleteExceptions.reserve(exceptionDates.count());
             foreach (const QString &date, exceptionDates) {
                 deleteExceptions.append(OXUtils::readDate(date));
             }
@@ -498,6 +499,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
     const KCalCore::DateList exceptionList = recurrence->exDates();
 
     QStringList dates;
+    dates.reserve(exceptionList.count());
     foreach (const QDate &date, exceptionList) {
         dates.append(OXUtils::writeDate(date));
     }

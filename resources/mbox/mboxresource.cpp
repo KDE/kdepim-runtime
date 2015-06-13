@@ -123,6 +123,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     QString colRid = col.remoteId();
     double count = 1;
     const int entryListSize(entryList.size());
+    items.reserve(entryListSize);
     foreach (const KMBox::MBoxEntry &entry, entryList) {
         // TODO: Use cache policy to see what actually has to been set as payload.
         //       Currently most views need a minimal amount of information so the

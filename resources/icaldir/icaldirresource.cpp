@@ -269,6 +269,7 @@ void ICalDirResource::retrieveItems(const Akonadi::Collection &)
 {
     loadIncidences();
     Item::List items;
+    items.reserve(mIncidences.count());
 
     foreach (const KCalCore::Incidence::Ptr &incidence, mIncidences) {
         Item item;

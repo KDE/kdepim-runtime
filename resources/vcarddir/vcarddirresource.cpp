@@ -241,6 +241,7 @@ void VCardDirResource::retrieveCollections()
 void VCardDirResource::retrieveItems(const Akonadi::Collection &)
 {
     Item::List items;
+    items.reserve(mAddressees.count());
 
     foreach (const KContacts::Addressee &addressee, mAddressees) {
         Item item;

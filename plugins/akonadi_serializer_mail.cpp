@@ -172,8 +172,10 @@ template <typename T> static QByteArray buildAddrStruct(T const *hdr)
 {
     QList<QByteArray> addrList;
     KMime::Types::Mailbox::List mb = hdr->mailboxes();
+    addrList.reserve(mb.count());
     foreach (const KMime::Types::Mailbox &mbox, mb) {
         QList<QByteArray> addrStruct;
+        addrStruct.reserve(4);
         addrStruct << quoteImapListEntry(mbox.name().toUtf8());
         addrStruct << quoteImapListEntry(QByteArray());
         addrStruct << quoteImapListEntry(mbox.addrSpec().localPart.toUtf8());
@@ -192,6 +194,7 @@ void SerializerPluginMail::serialize(const Item &item, const QByteArray &label, 
         data.write(m->encodedContent());
     } else if (label == MessagePart::Envelope) {
         QList<QByteArray> env;
+        env.reserve(11);
         env << quoteImapListEntry(m->date()->as7BitString(false));
         env << quoteImapListEntry(m->subject()->as7BitString(false));
         env << buildAddrStruct(m->from());

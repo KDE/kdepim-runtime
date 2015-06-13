@@ -321,6 +321,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     KServiceTypeTrader *trader = KServiceTypeTrader::self();
     providers = trader->query(QStringLiteral("DavGroupwareProvider"));
     QList< QPair<QString, QString> > offers;
+    offers.reserve(providers.count());
     foreach (const KService::Ptr &provider, providers) {
         offers.append(QPair<QString, QString>(provider->name(), provider->entryPath()));
     }

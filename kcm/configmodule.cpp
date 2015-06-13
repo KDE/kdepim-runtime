@@ -38,6 +38,7 @@ ConfigModule::ConfigModule(QWidget *parent, const QVariantList &args) :
     l->setMargin(0);
 
     QStringList args2;
+    args2.reserve(args.count());
     foreach (const QVariant &item, args) {
         args2 << item.toString();
     }

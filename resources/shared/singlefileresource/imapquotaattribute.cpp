@@ -156,6 +156,7 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
         QMap<QByteArray, qint64> limitsMap;
         QStringList strLines = limits.split(QLatin1String("%%"));
         QList<QByteArray> lines;
+        lines.reserve(strLines.count());
         foreach (const QString &strLine, strLines) {
             lines << strLine.trimmed().toUtf8();
         }
@@ -172,11 +173,13 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
     }
 
     QStringList allUsages = members[2].trimmed().split(QLatin1String("%%%"));
+    mUsages.reserve(allUsages.count());
 
     foreach (const QString &usages, allUsages) {
         QMap<QByteArray, qint64> usagesMap;
         QStringList strLines = usages.split(QLatin1String("%%"));
         QList<QByteArray> lines;
+        lines.reserve(strLines.count());
         foreach (const QString &strLine, strLines) {
             lines << strLine.trimmed().toUtf8();
         }
