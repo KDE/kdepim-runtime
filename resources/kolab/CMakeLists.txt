@@ -71,5 +71,5 @@ ecm_install_icons(ICONS 64-apps-kolab.png
                   DESTINATION share/icons)
 
 if (BUILD_TESTING)
-    #add_subdirectory(autotests)
+    #add_subdirectory(tests)
 endif()

@@ -31,9 +31,9 @@ unsigned int qHash(const Akonadi::Tag &tag);
 #include <AkonadiCore/qtest_akonadi.h>
 #include <AkonadiCore/servermanager.h>
 #include <AkonadiCore/collectioncreatejob.h>
-#include <AkonadiCore/virtualresource.h>
+//#include <AkonadiCore/virtualresource.h>
 #include <AkonadiCore/tagcreatejob.h>
-#include <kolab/kolabobject.h>
+#include <kolabobject.h>
 
 #include "kolabchangeitemstagstask.h"
 #include "kolabhelpers.h"
@@ -230,6 +230,6 @@ private slots:
     }
 };
 
-QTEST_AKONADIMAIN(TestChangeItemsTagsTask, NoGUI)
+QTEST_AKONADIMAIN(TestChangeItemsTagsTask)
 
 #include "testchangeitemstagstask.moc"
