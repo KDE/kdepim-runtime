@@ -26,7 +26,6 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_birthdays_resource
-  KF5::KIOCore
   KF5::AkonadiCore
   KF5::CalendarCore
   KF5::Codecs
