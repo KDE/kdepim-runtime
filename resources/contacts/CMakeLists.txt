@@ -27,7 +27,6 @@ target_link_libraries(akonadi_contacts_resource
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
   KF5::Contacts
-  KF5::KIOCore
   KF5::DBusAddons
 )
 

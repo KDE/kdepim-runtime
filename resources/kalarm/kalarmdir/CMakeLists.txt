@@ -36,7 +36,6 @@ target_link_libraries(akonadi_kalarm_dir_resource
                       KF5::AlarmCalendar
                       KF5::AkonadiCore
                       KF5::CalendarCore
-                      KF5::KIOCore
                       KF5::AkonadiAgentBase 
                       KF5::DBusAddons
                      )
