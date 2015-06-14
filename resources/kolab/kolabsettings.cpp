@@ -19,7 +19,6 @@
 
 #include "kolabsettings.h"
 
-#include <klocale.h>
 
 KolabSettings::KolabSettings(WId winId) : Settings(winId)
 {

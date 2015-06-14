@@ -30,7 +30,6 @@
 
 #include <KWindowSystem>
 #include <KLocalizedString>
-#include <KLocale>
 
 #include "kolabretrievetagstask.h"
 #include "kolabresourcestate.h"

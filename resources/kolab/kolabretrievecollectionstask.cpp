@@ -40,9 +40,7 @@
 #include <akonadi/calendar/blockalarmsattribute.h>
 
 #include <kmime/kmime_message.h>
-
-#include <KDE/KDebug>
-#include <KDE/KLocale>
+#include <KLocalizedString>
 
 static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool matchCompletePath = false)
 {
