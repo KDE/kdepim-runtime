@@ -46,8 +46,7 @@
 #include <akonadi/entitydisplayattribute.h>
 #include <Akonadi/CollectionModifyJob>
 #include <kemailsettings.h>
-#include <klocale.h>
-#include <kpushbutton.h>
+#include <qpushbutton.h>
 #include <kmessagebox.h>
 #include <kuser.h>
 #ifndef IMAPRESOURCE_NO_SOLID
@@ -56,6 +55,8 @@
 
 #include <kpimidentities/identitymanager.h>
 #include <kpimidentities/identitycombo.h>
+#include <KConfigGroup>
+#include <QVBoxLayout>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
@@ -121,11 +122,23 @@ static void addAuthenticationItem(QComboBox *authCombo, MailTransport::Transport
 }
 
 SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
-    : KDialog(), m_parentResource(parentResource), m_ui(new Ui::SetupServerView), m_serverTest(0),
+    : QDialog(), m_parentResource(parentResource), m_ui(new Ui::SetupServerView), m_serverTest(0),
       m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator(this)
 {
     m_parentResource->settings()->setWinId(parent);
-    m_ui->setupUi(mainWidget());
+    setupUiQWidget *mainWidget = new QWidget(this);
+    setupUiQVBoxLayout *mainLayout = new QVBoxLayout;
+    m_ui->setupUisetLayout(mainLayout);
+    setupUimainLayout->addWidget(mainWidget);
+    setupUi(mainWidget);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
+    mOkButton->setDefault(true);
+    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(applySettings()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    mainLayout->addWidget(buttonBox);
+
 
     //kolabresource always use disconnected mode
     m_ui->disconnectedModeEnabled->setVisible(false);
@@ -194,10 +207,6 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
             SIGNAL(statusChanged(Solid::Networking::Status)),
             SLOT(slotTestChanged()));
 #endif
-    connect(this, SIGNAL(applyClicked()),
-            SLOT(applySettings()));
-    connect(this, SIGNAL(okClicked()),
-            SLOT(applySettings()));
 }
 
 SetupServer::~SetupServer()
@@ -337,6 +346,7 @@ void SetupServer::applySettings()
     if (m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty()) {
         m_parentResource->settings()->renameRootCollection(m_ui->accountName->text());
     }
+    accept();
 }
 
 void SetupServer::readSettings()
@@ -484,7 +494,7 @@ void SetupServer::slotTest()
     m_serverTest->setProgressBar(m_ui->testProgress);
     connect(m_serverTest, SIGNAL(finished(QList<int>)),
             SLOT(slotFinished(QList<int>)));
-    enableButtonOk(false);
+    mOkButton->setEnabled(false);
     m_serverTest->start();
 }
 
@@ -495,7 +505,7 @@ void SetupServer::slotFinished(const QList<int> &testResult)
 #ifndef QT_NO_CURSOR
     qApp->restoreOverrideCursor();
 #endif
-    enableButtonOk(true);
+    mOkButton->setEnabled(true);
 
     using namespace MailTransport;
 
@@ -557,7 +567,7 @@ void SetupServer::slotEnableWidgets()
 void SetupServer::slotComplete()
 {
     const bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
-    button(KDialog::Ok)->setEnabled(ok);
+    mOkButton->setEnabled(ok);
 }
 
 void SetupServer::slotSafetyChanged()
@@ -621,7 +631,7 @@ void SetupServer::slotManageSubscriptions()
     account.setAuthenticationMode(Settings::mapTransportAuthToKimap(getCurrentAuthMode(m_ui->authenticationCombo)));
 
     QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog(this);
-    subscriptions->setCaption(i18n("Serverside Subscription"));
+    subscriptions->setWindowTitle(i18n("Serverside Subscription"));
     subscriptions->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
     subscriptions->connectAccount(account, m_ui->password->text());
     m_subscriptionsChanged = subscriptions->isSubscriptionChanged();

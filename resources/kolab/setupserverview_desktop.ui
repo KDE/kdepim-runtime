@@ -226,7 +226,7 @@
           </widget>
          </item>
          <item>
-          <widget class="KIntSpinBox" name="sievePortSpin">
+          <widget class="QSpinBox" name="sievePortSpin">
            <property name="maximum">
             <number>65535</number>
            </property>
@@ -640,11 +640,6 @@ p, li { white-space: pre-wrap; }
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KIntSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>knuminput.h</header>
   </customwidget>
   <customwidget>
    <class>KIntNumInput</class>

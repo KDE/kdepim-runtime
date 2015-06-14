@@ -95,7 +95,7 @@
         </widget>
        </item>
        <item>
-        <widget class="KPushButton" name="testButton">
+        <widget class="QPushButton" name="testButton">
          <property name="text">
           <string>Auto Detect</string>
          </property>
@@ -320,7 +320,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="KPushButton" name="subscriptionButton">
+        <widget class="QPushButton" name="subscriptionButton">
          <property name="enabled">
           <bool>false</bool>
          </property>
@@ -465,11 +465,6 @@ p, li { white-space: pre-wrap; }
    <class>KIntSpinBox</class>
    <extends>QSpinBox</extends>
    <header>knuminput.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
   </customwidget>
   <customwidget>
    <class>KLineEdit</class>

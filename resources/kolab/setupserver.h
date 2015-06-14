@@ -22,7 +22,7 @@
 #define SETUPSERVER_H
 
 #include <KLineEdit>
-#include <KDialog>
+#include <QDialog>
 #include <collection.h>
 #include <KJob>
 
@@ -44,13 +44,13 @@ class IdentityManager;
 }
 class FolderArchiveSettingPage;
 class ImapResourceBase;
-
+class QPushButton;
 /**
  * @class SetupServer
  * These contain the account settings
  * @author Tom Albers <tomalbers@kde.nl>
  */
-class SetupServer : public KDialog
+class SetupServer : public QDialog
 {
     Q_OBJECT
 
@@ -95,6 +95,7 @@ private:
     QRegExpValidator mValidator;
     Akonadi::Collection mOldTrash;
     FolderArchiveSettingPage *m_folderArchiveSettingPage;
+    QPushButton *mOkButton;
 
 private slots:
     void slotTest();
