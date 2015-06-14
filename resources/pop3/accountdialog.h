@@ -47,7 +47,6 @@ public:
 
 private Q_SLOTS:
     void slotEnablePopInterval(bool state);
-    void slotFontChanged();
     void slotLeaveOnServerClicked();
     void slotEnableLeaveOnServerDays(bool state);
     void slotEnableLeaveOnServerCount(bool state);

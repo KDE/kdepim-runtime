@@ -155,7 +155,6 @@ void AccountDialog::setupWidgets()
 
     connect(usePipeliningCheck, &QCheckBox::clicked, this, &AccountDialog::slotPipeliningClicked);
 
-    connect(KGlobalSettings::self(), &KGlobalSettings::kdisplayFontChanged, this, &AccountDialog::slotFontChanged);
 
     // FIXME: Hide widgets which are not supported yet
     filterOnServerCheck->hide();
@@ -649,13 +648,6 @@ void AccountDialog::slotEnablePopInterval(bool state)
 {
     intervalSpin->setEnabled(state);
     intervalLabel->setEnabled(state);
-}
-
-void AccountDialog::slotFontChanged(void)
-{
-    QFont titleFont(titleLabel->font());
-    titleFont.setBold(true);
-    titleLabel->setFont(titleFont);
 }
 
 void AccountDialog::targetCollectionReceived(Akonadi::Collection::List collections)
