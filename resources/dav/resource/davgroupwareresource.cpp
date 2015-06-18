@@ -917,7 +917,10 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
 
     if (modifyJob->error()) {
         qCCritical(DAVRESOURCE_LOG) << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
-        if (modifyJob->canRetryLater()) {
+        if ( modifyJob->hasConflict() ) {
+            handleConflict( item, dependentItems, modifyJob->freshItem(), isRemoval, modifyJob->freshResponseCode() );
+        }
+        else if (modifyJob->canRetryLater()) {
             retryAfterFailure(modifyJob->errorString());
         } else {
             cancelTask(i18n("Unable to change item: %1", modifyJob->errorString()));
@@ -959,21 +962,55 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
     }
 }
 
-void DavGroupwareResource::onItemRemovedFinished(KJob *job)
+void DavGroupwareResource::onDeletedItemRecreated(KJob* job)
 {
-    if (job->error()) {
-        const DavItemDeleteJob *deleteJob = qobject_cast<DavItemDeleteJob *>(job);
+    const DavItemCreateJob *createJob = qobject_cast<DavItemCreateJob*>( job );
+    const DavItem davItem = createJob->item();
+    Akonadi::Item item = createJob->property( "item" ).value<Akonadi::Item>();
+    Akonadi::Item::List dependentItems = createJob->property( "dependentItems" ).value<Akonadi::Item::List>();
+  
+    if ( davItem.etag().isEmpty() ) {
+        const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( item.parentCollection().remoteId(), item.remoteId() );
+        DavItemFetchJob *fetchJob = new DavItemFetchJob( davUrl, davItem );
+        fetchJob->setProperty( "item", QVariant::fromValue( item ) );
+        fetchJob->setProperty( "dependentItems", QVariant::fromValue( dependentItems ) );
+        connect( fetchJob, &DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed );
+        fetchJob->start();
+    } else {
+        item.setRemoteRevision( davItem.etag() );
+        mEtagCache.setEtag( davItem.url(), davItem.etag() );
+        changeCommitted( item );
+    
+        if ( !dependentItems.isEmpty() ) {
+            for ( int i = 0; i < dependentItems.size(); ++i ) {
+                dependentItems[i].setRemoteRevision( davItem.etag() );
+                mEtagCache.setEtag( dependentItems.at( i ).remoteId(), davItem.etag() );
+            }
+      
+            Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob( dependentItems );
+            j->setIgnorePayload( true );
+        }
+    }
+}
 
-        if (deleteJob->canRetryLater()) {
+void DavGroupwareResource::onItemRemovedFinished( KJob *job )
+{
+    if ( job->error() ) {
+        const DavItemDeleteJob *deleteJob = qobject_cast<DavItemDeleteJob*>( job );
+    
+        if ( deleteJob->hasConflict() ) {
+            // Use a shortcut here as we don't show a conflict dialog to the user.
+            handleConflict( Akonadi::Item(), Akonadi::Item::List(), deleteJob->freshItem(), true, 0 );
+        } else if ( deleteJob->canRetryLater() ) {
             retryAfterFailure(job->errorString());
         } else {
-            cancelTask(i18n("Unable to remove item: %1", job->errorString()));
+            cancelTask( i18n( "Unable to remove item: %1", job->errorString() ) );
         }
     } else {
-        Akonadi::Item item = job->property("item").value<Akonadi::Item>();
-        Akonadi::Collection collection = job->property("collection").value<Akonadi::Collection>();
-        mItemsRidCache[collection.remoteId()].remove(item.remoteId());
-        mEtagCache.removeEtag(item.remoteId());
+        Akonadi::Item item = job->property( "item" ).value<Akonadi::Item>();
+        Akonadi::Collection collection = job->property( "collection" ).value<Akonadi::Collection>();
+        mItemsRidCache[collection.remoteId()].remove( item.remoteId() );
+        mEtagCache.removeEtag( item.remoteId() );
         changeProcessed();
     }
 }
@@ -986,6 +1023,129 @@ void DavGroupwareResource::onCollectionDiscovered(int protocol, const QString &c
 void DavGroupwareResource::onEtagChanged(const QString &itemUrl, const QString &etag)
 {
     mEtagCache.setEtag(itemUrl, etag);
+}
+
+void DavGroupwareResource::handleConflict( const Item& lI, const Item::List& localDependentItems, const DavItem& rI, bool isLocalRemoval, int responseCode )
+{
+  Akonadi::Item localItem( lI );
+  Akonadi::Item remoteItem, tmpRemoteItem;                           // The tmp* vars are here to store the result of the parseDavData() call
+  Akonadi::Item::List remoteDependentItems, tmpRemoteDependentItems; // as we have no idea which item triggered the conflict.
+  qCDebug(DAVRESOURCE_LOG) << "Fresh response code is" << responseCode;
+  bool isRemoteRemoval = ( responseCode == 404 || responseCode == 410 );
+
+  if ( !isRemoteRemoval ) {
+    if ( !DavUtils::parseDavData( rI, tmpRemoteItem, tmpRemoteDependentItems ) ) {
+      // TODO: set a more correct error message here
+      cancelTask( i18n( "Unable to change item: %1", QLatin1String( "conflict resolution failed" ) ) );
+      return;
+      // TODO: we can end up here if the remote item was deleted
+    }
+
+    // Now try to find the item that really triggered the conflict
+    Akonadi::Item::List allRemoteItems; allRemoteItems << tmpRemoteItem << tmpRemoteDependentItems;
+    foreach ( const Akonadi::Item &tmpItem, allRemoteItems ) {
+      if ( tmpItem.payloadData() != localItem.payloadData() ) {
+        if ( remoteItem.isValid() ) {
+          // Oops, we can only manage one changed item at this stage, sorry...
+          // TODO: make this translatable
+          cancelTask( i18n( "Unable to change item: %1", QLatin1String( "more than one item was changed in the backend" ) ) );
+          return;
+        }
+        remoteItem = tmpItem;
+      } else {
+        remoteDependentItems << tmpItem;
+      }
+    }
+  }
+
+  if ( isLocalRemoval ) {
+    // TODO: implement with the configurable strategy
+    /*
+     * Here by default we don't delete an event that was modified in the backend, and
+     * instead we just abort the current task.
+     * Also, trigger an immediate sync to refresh the item.
+     */
+    qCDebug(DAVRESOURCE_LOG) << "Local removal conflict";
+    // TODO: make this translatable
+    cancelTask( i18n( "Unable to remove item: %1", QLatin1String( "it was changed in the backend in the meantime" ) ) );
+    synchronize();
+  } else if ( isRemoteRemoval ) {
+    // TODO: implement with the configurable strategy
+    /*
+     * Here also it is a bit tricky to clear the item in the local cache as the resource
+     * will not get notified if the user chooses to delete the item and abandon the local
+     * modification. For the time being let's just re-upload the changed item.
+     */
+    qCDebug(DAVRESOURCE_LOG) << "Remote removal conflict";
+    Akonadi::Collection collection = localItem.parentCollection();
+    DavItem davItem = DavUtils::createDavItem( localItem, collection, localDependentItems );
+
+    QString urlStr = localItem.remoteId();
+    if ( urlStr.contains( QChar( '#' ) ) )
+      urlStr.truncate( urlStr.indexOf( QChar( '#' ) ) );
+    davItem.setUrl( urlStr );
+    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl( collection.remoteId(), urlStr );
+
+    DavItemCreateJob *job = new DavItemCreateJob( davUrl, davItem );
+    job->setProperty( "item", QVariant::fromValue( localItem ) );
+    job->setProperty( "dependentItems", QVariant::fromValue( localDependentItems ) );
+    connect( job, SIGNAL(result(KJob*)), SLOT(onDeletedItemRecreated(KJob*)) );
+    job->start();
+  } else {
+    const QString remoteEtag = rI.etag();
+
+    localItem.setRemoteRevision( remoteEtag );
+    changeCommitted( localItem );
+
+    // Update the ETag cache in all cases as the new ETag will have to be used
+    // later for any update or deletion
+    mEtagCache.setEtag( rI.url(), remoteEtag );
+
+    // The first step is to fire a first modify job that will replace the item currently
+    // in the local cache with the one that was found in the backend.
+    Akonadi::Item updatedItem( localItem );
+    updatedItem.setPayloadFromData( remoteItem.payloadData() );
+    updatedItem.setRemoteRevision( remoteEtag );
+    Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob( updatedItem );
+    j->setIgnorePayload( false );
+    j->start();
+
+    // So now we have in the cache what's in the backend but the user is not aware
+    // that behind the scenes something terrible is happening. Well, nearly...
+    // To notify him of this, and due to the way the conflict handler works, we have
+    // to re-attempt a modification to revert the modify job that was just fired.
+    // So yes, we are effectively re-submitting the client-provided content, but
+    // with a revision that will trigger the conflict dialog.
+    // The only problem is that the user will see that we update the item before
+    // the conflict dialog has time to display (if it's not behind the application
+    // window).
+    localItem.setRevision( 0 );
+    j = new Akonadi::ItemModifyJob( localItem );
+    j->setIgnorePayload( false );
+    connect( j, SIGNAL(result(KJob*)), this, SLOT(onConflictModifyJobFinished(KJob*)) );
+    j->start();
+
+    // Hopefully for the dependent items everything will be fine. Right?
+    // Not so sure in fact.
+    if ( !remoteDependentItems.isEmpty() ) {
+      for ( int i = 0; i < remoteDependentItems.size(); ++i ) {
+        remoteDependentItems[i].setRemoteRevision( remoteEtag );
+        mEtagCache.setEtag( remoteDependentItems.at( i ).remoteId(), remoteEtag );
+      }
+
+      Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob( remoteDependentItems );
+      j->setIgnorePayload( true );
+    }
+  }
+}
+
+void DavGroupwareResource::onConflictModifyJobFinished( KJob *job )
+{
+  Akonadi::ItemModifyJob *j = qobject_cast<Akonadi::ItemModifyJob*>( job );
+  if ( j->error() ) {
+    qCCritical(DAVRESOURCE_LOG) << "Conflict update failed: " << job->errorText();
+    // TODO: what do we do now? We just committed an item that's in a weird state...
+  }
 }
 
 bool DavGroupwareResource::configurationIsValid()

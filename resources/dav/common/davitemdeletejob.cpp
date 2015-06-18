@@ -18,6 +18,7 @@
 
 #include "davitemdeletejob.h"
 
+#include "davitemfetchjob.h"
 #include "davmanager.h"
 
 #include <kio/deletejob.h>
@@ -64,6 +65,35 @@ void DavItemDeleteJob::davJobFinished(KJob *job)
         }
     }
 
+    if ( hasConflict() ) {
+        DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
+        connect( fetchJob, &DavItemFetchJob::result, this, &DavItemDeleteJob::conflictingItemFetched );
+        fetchJob->start();
+        return;
+    }
+
+    emitResult();
+}
+
+DavItem DavItemDeleteJob::freshItem() const
+{
+    return mFreshItem;
+}
+
+int DavItemDeleteJob::freshResponseCode() const
+{
+    return mFreshResponseCode;
+}
+
+void DavItemDeleteJob::conflictingItemFetched( KJob *job )
+{
+    DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
+    mFreshResponseCode = fetchJob->latestResponseCode();
+  
+    if ( !job->error() ) {
+        mFreshItem = fetchJob->item();
+    }
+  
     emitResult();
 }
 

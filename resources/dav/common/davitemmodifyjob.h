@@ -50,13 +50,26 @@ public:
      */
     DavItem item() const;
 
+    /**
+     * Returns the item that triggered the conflict, if any.
+     */
+    DavItem freshItem() const;
+
+    /**
+     * Returns the response code we got when fetching the fresh item.
+     */
+    int freshResponseCode() const;
+
 private Q_SLOTS:
-    void davJobFinished(KJob *);
-    void itemRefreshed(KJob *);
+    void davJobFinished( KJob* );
+    void itemRefreshed( KJob* );
+    void conflictingItemFetched( KJob* );
 
 private:
     DavUtils::DavUrl mUrl;
     DavItem mItem;
+    DavItem mFreshItem;
+    int mFreshResponseCode;
 };
 
 #endif

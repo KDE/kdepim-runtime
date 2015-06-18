@@ -60,6 +60,11 @@ public:
      */
     bool canRetryLater() const;
 
+    /**
+     * Check if the job failed because of a conflict
+     */
+    bool hasConflict() const;
+
 protected:
     /**
      * Sets the latest response code received.

@@ -45,12 +45,25 @@ public:
      */
     void start() Q_DECL_OVERRIDE;
 
+    /**
+     * Returns the item that triggered the conflict, if any.
+     */
+    DavItem freshItem() const;
+
+    /**
+     * Returns the response code we got when fetching the fresh item.
+     */
+    int freshResponseCode() const;
+
 private Q_SLOTS:
-    void davJobFinished(KJob *);
+    void davJobFinished( KJob* );
+    void conflictingItemFetched( KJob* );
 
 private:
     DavUtils::DavUrl mUrl;
     DavItem mItem;
+    DavItem mFreshItem;
+    int mFreshResponseCode;
 };
 
 #endif

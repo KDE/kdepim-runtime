@@ -20,14 +20,13 @@
 #define DAVITEMFETCHJOB_H
 
 #include "davitem.h"
+#include "davjobbase.h"
 #include "davutils.h"
-
-#include <kjob.h>
 
 /**
  * @short A job that fetches a DAV item from the DAV server.
  */
-class DavItemFetchJob : public KJob
+class DavItemFetchJob : public DavJobBase
 {
     Q_OBJECT
 
