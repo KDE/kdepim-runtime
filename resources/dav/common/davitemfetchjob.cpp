@@ -41,7 +41,7 @@ static QString etagFromHeaders( const QString &headers )
 
 
 DavItemFetchJob::DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : KJob( parent ), mUrl( url ), mItem( item )
+  : DavJobBase( parent ), mUrl( url ), mItem( item )
 {
 }
 
@@ -67,11 +67,12 @@ DavItem DavItemFetchJob::item() const
 void DavItemFetchJob::davJobFinished( KJob *job )
 {
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
+  const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
+                            0 :
+                            storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
+  setLatestResponseCode( responseCode );
 
   if ( storedJob->error() ) {
-    const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                              0 :
-                              storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
 
     QString err;
     if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )

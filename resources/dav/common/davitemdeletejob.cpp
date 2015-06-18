@@ -18,6 +18,7 @@
 
 #include "davitemdeletejob.h"
 
+#include "davitemfetchjob.h"
 #include "davmanager.h"
 
 #include <kio/deletejob.h>
@@ -37,6 +38,16 @@ void DavItemDeleteJob::start()
   job->addMetaData( QLatin1String("no-auth-prompt"), QLatin1String("true") );
 
   connect( job, SIGNAL(result(KJob*)), this, SLOT(davJobFinished(KJob*)) );
+}
+
+DavItem DavItemDeleteJob::freshItem() const
+{
+  return mFreshItem;
+}
+
+int DavItemDeleteJob::freshResponseCode() const
+{
+  return mFreshResponseCode;
 }
 
 void DavItemDeleteJob::davJobFinished( KJob *job )
@@ -60,6 +71,25 @@ void DavItemDeleteJob::davJobFinished( KJob *job )
       setErrorText( i18n( "There was a problem with the request. The item has not been deleted from the server.\n"
                           "%1 (%2).", err, responseCode ) );
     }
+
+    if ( hasConflict() ) {
+      DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
+      connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(conflictingItemFetched(KJob*)) );
+      fetchJob->start();
+      return;
+    }
+  }
+
+  emitResult();
+}
+
+void DavItemDeleteJob::conflictingItemFetched( KJob *job )
+{
+  DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
+  mFreshResponseCode = fetchJob->latestResponseCode();
+
+  if ( !job->error() ) {
+    mFreshItem = fetchJob->item();
   }
 
   emitResult();

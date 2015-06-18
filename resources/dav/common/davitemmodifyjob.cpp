@@ -25,7 +25,7 @@
 #include <klocale.h>
 
 DavItemModifyJob::DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : DavJobBase( parent ), mUrl( url ), mItem( item )
+  : DavJobBase( parent ), mUrl( url ), mItem( item ), mFreshResponseCode( 0 )
 {
 }
 
@@ -50,6 +50,16 @@ DavItem DavItemModifyJob::item() const
   return mItem;
 }
 
+DavItem DavItemModifyJob::freshItem() const
+{
+  return mFreshItem;
+}
+
+int DavItemModifyJob::freshResponseCode() const
+{
+  return mFreshResponseCode;
+}
+
 void DavItemModifyJob::davJobFinished( KJob *job )
 {
   KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
@@ -70,7 +80,15 @@ void DavItemModifyJob::davJobFinished( KJob *job )
     setErrorText( i18n( "There was a problem with the request. The item was not modified on the server.\n"
                         "%1 (%2).", err, responseCode ) );
 
-    emitResult();
+    if ( hasConflict() ) {
+      DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
+      connect( fetchJob, SIGNAL(result(KJob*)), this, SLOT(conflictingItemFetched(KJob*)) );
+      fetchJob->start();
+    }
+    else {
+      emitResult();
+    }
+
     return;
   }
 
@@ -108,6 +126,18 @@ void DavItemModifyJob::itemRefreshed( KJob *job )
   else {
     mItem.setEtag( QString() );
   }
+  emitResult();
+}
+
+void DavItemModifyJob::conflictingItemFetched( KJob *job )
+{
+  DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
+  mFreshResponseCode = fetchJob->latestResponseCode();
+
+  if ( !job->error() ) {
+    mFreshItem = fetchJob->item();
+  }
+
   emitResult();
 }
 
