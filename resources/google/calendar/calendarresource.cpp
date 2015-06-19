@@ -532,7 +532,7 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
 
             if (event->useDefaultReminders() && attr) {
                 KCalCore::Alarm::List alarms = attr->alarms(event.data());
-                Q_FOREACH (KCalCore::Alarm::Ptr alarm, alarms) {
+                Q_FOREACH (const KCalCore::Alarm::Ptr &alarm, alarms) {
                     event->addAlarm(alarm);
                 }
             }
@@ -552,7 +552,7 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
         }
 
         /* Step 3: Now process the recurrent events */
-        Q_FOREACH (const EventPtr &event, recurrentEvents.values()) {
+        Q_FOREACH (const EventPtr &event, recurrentEvents) {
 
             Item item;
             item.setRemoteId(event->uid());
