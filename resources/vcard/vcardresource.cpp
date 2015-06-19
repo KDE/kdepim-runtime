@@ -180,7 +180,12 @@ bool VCardResource::writeToFile(const QString &fileName)
         return false;
     }
 
-    const QByteArray data = mConverter.createVCards(mAddressees.values().toVector());
+    QVector<KContacts::Addressee> v;
+    v.reserve(mAddressees.size());
+    foreach (const KContacts::Addressee &addressee, mAddressees)
+        v.push_back(addressee);
+
+    const QByteArray data = mConverter.createVCards(v);
 
     file.write(data);
     file.close();
