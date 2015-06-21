@@ -71,6 +71,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 
     connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
     connect(mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(checkConfiguredUrlsButtonsState()));
+    connect(mUi.configuredUrls, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onEditButtonClicked()));
 
     connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
     connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
