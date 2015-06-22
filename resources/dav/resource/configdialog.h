@@ -53,6 +53,8 @@ private Q_SLOTS:
     void onCancelClicked();
 
 private:
+    void readConfig();
+    void writeConfig();
     void addModelRow(const QString &protocol, const QString &url);
     void insertModelRow(int index, const QString &protocol, const QString &url);
 

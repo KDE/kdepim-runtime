@@ -82,11 +82,30 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &ConfigDialog::onCancelClicked);
 
     checkUserInput();
+    readConfig();
 }
 
 ConfigDialog::~ConfigDialog()
 {
+    writeConfig();
 }
+
+void ConfigDialog::readConfig()
+{
+    KConfigGroup grp(KSharedConfig::openConfig(), "ConfigDialog");
+    const QSize size = grp.readEntry("Size", QSize(300, 200));
+    if (size.isValid()) {
+        resize(size);
+    }
+}
+
+void ConfigDialog::writeConfig()
+{
+    KConfigGroup grp(KSharedConfig::openConfig(), "ConfigDialog");
+    grp.writeEntry("Size", size());
+    grp.sync();
+}
+
 
 void ConfigDialog::setPassword(const QString &password)
 {
