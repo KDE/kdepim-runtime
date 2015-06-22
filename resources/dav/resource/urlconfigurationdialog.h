@@ -68,6 +68,8 @@ private:
     void initModel();
     bool checkUserAuthInput();
     void addModelRow(const QString &displayName, const QString &url);
+    void writeConfig();
+    void readConfig();
 
     Ui::UrlConfigurationDialog mUi;
     QStandardItemModel *mModel;

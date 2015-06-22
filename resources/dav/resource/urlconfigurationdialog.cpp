@@ -26,6 +26,7 @@
 #include <kmessagebox.h>
 #include <KLocalizedString>
 
+#include <KSharedConfigPtr>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
@@ -65,11 +66,30 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     connect(mOkButton, &QPushButton::clicked, this, &UrlConfigurationDialog::onOkButtonClicked);
 
     checkUserInput();
+    readConfig();
 }
 
 UrlConfigurationDialog::~UrlConfigurationDialog()
 {
+    writeConfig();
 }
+
+void UrlConfigurationDialog::readConfig()
+{
+    KConfigGroup grp(KSharedConfig::openConfig(), "UrlConfigurationDialog");
+    const QSize size = grp.readEntry("Size", QSize(300, 200));
+    if (size.isValid()) {
+        resize(size);
+    }
+}
+
+void UrlConfigurationDialog::writeConfig()
+{
+    KConfigGroup grp(KSharedConfig::openConfig(), "UrlConfigurationDialog");
+    grp.writeEntry("Size", size());
+    grp.sync();
+}
+
 
 DavUtils::Protocol UrlConfigurationDialog::protocol() const
 {
