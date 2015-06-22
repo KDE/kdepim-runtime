@@ -49,6 +49,9 @@
             <property name="locale">
              <locale language="English" country="UnitedStates"/>
             </property>
+            <property name="specialValueText">
+             <string>Never</string>
+            </property>
             <property name="value">
              <number>5</number>
             </property>
