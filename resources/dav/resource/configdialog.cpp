@@ -116,7 +116,7 @@ void ConfigDialog::checkUserInput()
 {
     checkConfiguredUrlsButtonsState();
 
-    if (!mUi.kcfg_displayName->text().isEmpty() && !(mModel->invisibleRootItem()->rowCount() == 0)) {
+    if (!mUi.kcfg_displayName->text().trimmed().isEmpty() && !(mModel->invisibleRootItem()->rowCount() == 0)) {
         mOkButton->setEnabled(true);
     } else {
         mOkButton->setEnabled(false);
