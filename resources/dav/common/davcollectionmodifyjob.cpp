@@ -68,14 +68,14 @@ void DavCollectionModifyJob::start()
     }
 
     QDomDocument mQuery;
-    QDomElement propertyUpdateElement = mQuery.createElementNS(QLatin1String("DAV:"), QLatin1String("propertyupdate"));
+    QDomElement propertyUpdateElement = mQuery.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propertyupdate"));
     mQuery.appendChild(propertyUpdateElement);
 
     if (!mSetProperties.isEmpty()) {
-        QDomElement setElement = mQuery.createElementNS(QLatin1String("DAV:"), QLatin1String("set"));
+        QDomElement setElement = mQuery.createElementNS(QStringLiteral("DAV:"), QStringLiteral("set"));
         propertyUpdateElement.appendChild(setElement);
 
-        QDomElement propElement = mQuery.createElementNS(QLatin1String("DAV:"), QLatin1String("prop"));
+        QDomElement propElement = mQuery.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
         setElement.appendChild(propElement);
 
         foreach (const QDomElement &element, mSetProperties) {
@@ -84,10 +84,10 @@ void DavCollectionModifyJob::start()
     }
 
     if (!mRemoveProperties.isEmpty()) {
-        QDomElement removeElement = mQuery.createElementNS(QLatin1String("DAV:"), QLatin1String("remove"));
+        QDomElement removeElement = mQuery.createElementNS(QStringLiteral("DAV:"), QStringLiteral("remove"));
         propertyUpdateElement.appendChild(removeElement);
 
-        QDomElement propElement = mQuery.createElementNS(QLatin1String("DAV:"), QLatin1String("prop"));
+        QDomElement propElement = mQuery.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
         removeElement.appendChild(propElement);
 
         foreach (const QDomElement &element, mSetProperties) {
@@ -96,7 +96,7 @@ void DavCollectionModifyJob::start()
     }
 
     KIO::DavJob *job = DavManager::self()->createPropPatchJob(mUrl.url(), mQuery);
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
     connect(job, &KIO::DavJob::result, this, &DavCollectionModifyJob::davJobFinished);
 }
 
@@ -132,7 +132,7 @@ void DavCollectionModifyJob::davJobFinished(KJob *job)
 
     // parse all propstats answers to get the eventual errors
     const QDomNodeList propstats = responseElement.elementsByTagNameNS(QLatin1String("DAV:"), QLatin1String("propstat"));
-    for (uint i = 0; i < propstats.length(); ++i) {
+    for (int i = 0; i < propstats.length(); ++i) {
         const QDomElement propstatElement = propstats.item(i).toElement();
         const QDomElement statusElement = DavUtils::firstChildElementNS(propstatElement, QLatin1String("DAV:"), QLatin1String("status"));
 

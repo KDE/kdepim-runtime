@@ -1036,7 +1036,7 @@ void DavGroupwareResource::handleConflict( const Item& lI, const Item::List& loc
   if ( !isRemoteRemoval ) {
     if ( !DavUtils::parseDavData( rI, tmpRemoteItem, tmpRemoteDependentItems ) ) {
       // TODO: set a more correct error message here
-      cancelTask( i18n( "Unable to change item: %1", QLatin1String( "conflict resolution failed" ) ) );
+      cancelTask( i18n( "Unable to change item: %1", QStringLiteral( "conflict resolution failed" ) ) );
       return;
       // TODO: we can end up here if the remote item was deleted
     }
@@ -1048,7 +1048,7 @@ void DavGroupwareResource::handleConflict( const Item& lI, const Item::List& loc
         if ( remoteItem.isValid() ) {
           // Oops, we can only manage one changed item at this stage, sorry...
           // TODO: make this translatable
-          cancelTask( i18n( "Unable to change item: %1", QLatin1String( "more than one item was changed in the backend" ) ) );
+          cancelTask( i18n( "Unable to change item: %1", QStringLiteral( "more than one item was changed in the backend" ) ) );
           return;
         }
         remoteItem = tmpItem;
@@ -1067,7 +1067,7 @@ void DavGroupwareResource::handleConflict( const Item& lI, const Item::List& loc
      */
     qCDebug(DAVRESOURCE_LOG) << "Local removal conflict";
     // TODO: make this translatable
-    cancelTask( i18n( "Unable to remove item: %1", QLatin1String( "it was changed in the backend in the meantime" ) ) );
+    cancelTask( i18n( "Unable to remove item: %1", QStringLiteral( "it was changed in the backend in the meantime" ) ) );
     synchronize();
   } else if ( isRemoteRemoval ) {
     // TODO: implement with the configurable strategy

@@ -53,14 +53,14 @@ void DavItemsListJob::start()
             ++mSubJobCount;
             if (protocol->useReport()) {
                 KIO::DavJob *job = DavManager::self()->createReportJob(mUrl.url(), props);
-                job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
-                job->setProperty("davType", QLatin1String("report"));
+                job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
+                job->setProperty("davType", QStringLiteral("report"));
                 job->setProperty("itemsMimeType", mimeType);
                 connect(job, &KIO::DavJob::result, this, &DavItemsListJob::davJobFinished);
             } else {
                 KIO::DavJob *job = DavManager::self()->createPropFindJob(mUrl.url(), props);
-                job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
-                job->setProperty("davType", QLatin1String("propFind"));
+                job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
+                job->setProperty("davType", QStringLiteral("propFind"));
                 job->setProperty("itemsMimeType", mimeType);
                 connect(job, &KIO::DavJob::result, this, &DavItemsListJob::davJobFinished);
             }
@@ -78,9 +78,9 @@ DavItem::List DavItemsListJob::items() const
 void DavItemsListJob::davJobFinished(KJob *job)
 {
     KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
-    const int responseCode = davJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+    const int responseCode = davJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                              0 :
-                             davJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                             davJob->queryMetaData(QStringLiteral("responsecode")).toInt();
 
     // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
     if (davJob->error() || (responseCode >= 400 && responseCode < 600)) {
@@ -124,36 +124,36 @@ void DavItemsListJob::davJobFinished(KJob *job)
         const QDomDocument document = davJob->response();
         const QDomElement documentElement = document.documentElement();
 
-        QDomElement responseElement = DavUtils::firstChildElementNS(documentElement, QLatin1String("DAV:"), QLatin1String("response"));
+        QDomElement responseElement = DavUtils::firstChildElementNS(documentElement, QStringLiteral("DAV:"), QStringLiteral("response"));
         while (!responseElement.isNull()) {
 
             QDomElement propstatElement;
 
             // check for the valid propstat, without giving up on first error
             {
-                const QDomNodeList propstats = responseElement.elementsByTagNameNS(QLatin1String("DAV:"), QLatin1String("propstat"));
-                for (uint i = 0; i < propstats.length(); ++i) {
+                const QDomNodeList propstats = responseElement.elementsByTagNameNS(QStringLiteral("DAV:"), QStringLiteral("propstat"));
+                for (int i = 0; i < propstats.length(); ++i) {
                     const QDomElement propstatCandidate = propstats.item(i).toElement();
-                    const QDomElement statusElement = DavUtils::firstChildElementNS(propstatCandidate, QLatin1String("DAV:"), QLatin1String("status"));
-                    if (statusElement.text().contains(QLatin1String("200"))) {
+                    const QDomElement statusElement = DavUtils::firstChildElementNS(propstatCandidate, QStringLiteral("DAV:"), QStringLiteral("status"));
+                    if (statusElement.text().contains(QStringLiteral("200"))) {
                         propstatElement = propstatCandidate;
                     }
                 }
             }
 
             if (propstatElement.isNull()) {
-                responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+                responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
                 continue;
             }
 
-            const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QLatin1String("DAV:"), QLatin1String("prop"));
+            const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("prop"));
 
             // check whether it is a dav collection ...
-            const QDomElement resourcetypeElement = DavUtils::firstChildElementNS(propElement, QLatin1String("DAV:"), QLatin1String("resourcetype"));
+            const QDomElement resourcetypeElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("resourcetype"));
             if (!responseElement.isNull()) {
-                const QDomElement collectionElement = DavUtils::firstChildElementNS(resourcetypeElement, QLatin1String("DAV:"), QLatin1String("collection"));
+                const QDomElement collectionElement = DavUtils::firstChildElementNS(resourcetypeElement, QStringLiteral("DAV:"), QStringLiteral("collection"));
                 if (!collectionElement.isNull()) {
-                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
                     continue;
                 }
             }
@@ -163,7 +163,7 @@ void DavItemsListJob::davJobFinished(KJob *job)
             item.setContentType(itemsMimeType);
 
             // extract path
-            const QDomElement hrefElement = DavUtils::firstChildElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("href"));
+            const QDomElement hrefElement = DavUtils::firstChildElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("href"));
             const QString href = hrefElement.text();
 
             KUrl url = davJob->url();
@@ -179,7 +179,7 @@ void DavItemsListJob::davJobFinished(KJob *job)
 
             QString itemUrl = url.prettyUrl();
             if (mSeenUrls.contains(itemUrl)) {
-                responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+                responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
                 continue;
             }
 
@@ -187,13 +187,13 @@ void DavItemsListJob::davJobFinished(KJob *job)
             item.setUrl(itemUrl);
 
             // extract etag
-            const QDomElement getetagElement = DavUtils::firstChildElementNS(propElement, QLatin1String("DAV:"), QLatin1String("getetag"));
+            const QDomElement getetagElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("getetag"));
 
             item.setEtag(getetagElement.text());
 
             mItems << item;
 
-            responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+            responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
         }
     }
 

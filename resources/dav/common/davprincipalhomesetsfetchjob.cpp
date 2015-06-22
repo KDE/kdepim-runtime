@@ -146,7 +146,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished(KJob *job)
         // check for the valid propstat, without giving up on first error
         {
             const QDomNodeList propstats = responseElement.elementsByTagNameNS(QLatin1String("DAV:"), QLatin1String("propstat"));
-            for (uint i = 0; i < propstats.length(); ++i) {
+            for (int i = 0; i < propstats.length(); ++i) {
                 const QDomElement propstatCandidate = propstats.item(i).toElement();
                 const QDomElement statusElement = DavUtils::firstChildElementNS(propstatCandidate, QLatin1String("DAV:"), QLatin1String("status"));
                 if (statusElement.text().contains(QLatin1String("200"))) {

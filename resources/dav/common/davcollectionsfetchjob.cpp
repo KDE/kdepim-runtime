@@ -65,7 +65,7 @@ void DavCollectionsFetchJob::doCollectionsFetch(const KUrl &url)
 
     KIO::DavJob *job = DavManager::self()->createPropFindJob(url, collectionQuery);
     connect(job, &DavPrincipalHomeSetsFetchJob::result, this, &DavCollectionsFetchJob::collectionsFetchFinished);
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
 }
 
 void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
@@ -111,9 +111,9 @@ void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
 void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
 {
     KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
-    const int responseCode = davJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+    const int responseCode = davJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                              0 :
-                             davJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                             davJob->queryMetaData(QStringLiteral("responsecode")).toInt();
 
     // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
     if (davJob->error() || (responseCode >= 400 && responseCode < 600)) {
@@ -162,8 +162,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
 
         QString responsesStr;
         xquery.evaluateTo(&responsesStr);
-        responsesStr.prepend(QLatin1String("<responses>"));
-        responsesStr.append(QLatin1String("</responses>"));
+        responsesStr.prepend(QStringLiteral("<responses>"));
+        responsesStr.append(QStringLiteral("</responses>"));
 
         QDomDocument document;
         if (!document.setContent(responsesStr, true)) {
@@ -207,32 +207,32 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
 
             const QDomElement responsesElement = document.documentElement();
 
-            QDomElement responseElement = DavUtils::firstChildElementNS(responsesElement, QLatin1String("DAV:"), QLatin1String("response"));
+            QDomElement responseElement = DavUtils::firstChildElementNS(responsesElement, QStringLiteral("DAV:"), QStringLiteral("response"));
             while (!responseElement.isNull()) {
 
                 QDomElement propstatElement;
 
                 // check for the valid propstat, without giving up on first error
                 {
-                    const QDomNodeList propstats = responseElement.elementsByTagNameNS(QLatin1String("DAV:"), QLatin1String("propstat"));
-                    for (uint i = 0; i < propstats.length(); ++i) {
+                    const QDomNodeList propstats = responseElement.elementsByTagNameNS(QStringLiteral("DAV:"), QStringLiteral("propstat"));
+                    for (int i = 0; i < propstats.length(); ++i) {
                         const QDomElement propstatCandidate = propstats.item(i).toElement();
-                        const QDomElement statusElement = DavUtils::firstChildElementNS(propstatCandidate, QLatin1String("DAV:"), QLatin1String("status"));
-                        if (statusElement.text().contains(QLatin1String("200"))) {
+                        const QDomElement statusElement = DavUtils::firstChildElementNS(propstatCandidate, QStringLiteral("DAV:"), QStringLiteral("status"));
+                        if (statusElement.text().contains(QStringLiteral("200"))) {
                             propstatElement = propstatCandidate;
                         }
                     }
                 }
 
                 if (propstatElement.isNull()) {
-                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
                     continue;
                 }
 
                 // extract url
-                const QDomElement hrefElement = DavUtils::firstChildElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("href"));
+                const QDomElement hrefElement = DavUtils::firstChildElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("href"));
                 if (hrefElement.isNull()) {
-                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
                     continue;
                 }
 
@@ -260,17 +260,17 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                     }
                 }
                 if (alreadySeen) {
-                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+                    responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
                     continue;
                 }
 
                 // extract display name
-                const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QLatin1String("DAV:"), QLatin1String("prop"));
-                const QDomElement displaynameElement = DavUtils::firstChildElementNS(propElement, QLatin1String("DAV:"), QLatin1String("displayname"));
+                const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("prop"));
+                const QDomElement displaynameElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("displayname"));
                 const QString displayName = displaynameElement.text();
 
                 // extract calendar color if provided
-                const QDomElement colorElement = DavUtils::firstChildElementNS(propElement, QLatin1String("http://apple.com/ns/ical/"), QLatin1String("calendar-color"));
+                const QDomElement colorElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("http://apple.com/ns/ical/"), QStringLiteral("calendar-color"));
                 QColor color;
                 if (!colorElement.isNull()) {
                     QString colorValue = colorElement.text();
@@ -288,7 +288,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                 }
 
                 // extract privileges
-                const QDomElement currentPrivsElement = DavUtils::firstChildElementNS(propElement, QLatin1String("DAV:"), QLatin1String("current-user-privilege-set"));
+                const QDomElement currentPrivsElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("current-user-privilege-set"));
                 if (currentPrivsElement.isNull()) {
                     // Assume that we have all privileges
                     collection.setPrivileges(DavUtils::All);
@@ -301,7 +301,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                 mCollections << collection;
                 Q_EMIT collectionDiscovered(mUrl.protocol(), url.prettyUrl(), jobUrl);
 
-                responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+                responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
             }
         }
     }
