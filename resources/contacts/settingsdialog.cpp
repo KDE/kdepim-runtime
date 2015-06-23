@@ -42,7 +42,7 @@ SettingsDialog::SettingsDialog(ContactsResourceSettings *settings, WId windowId)
     setLayout(mainLayout);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
-    setWindowIcon(QIcon::fromTheme(QLatin1String("text-directory")));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("text-directory")));
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);

@@ -62,7 +62,7 @@ void VCardDirResource::aboutToQuit()
 void VCardDirResource::configure(WId windowId)
 {
     SettingsDialog dlg(windowId);
-    dlg.setWindowIcon(QIcon::fromTheme(QLatin1String("text-directory")));
+    dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("text-directory")));
     if (dlg.exec()) {
         initializeVCardDirectory();
         loadAddressees();

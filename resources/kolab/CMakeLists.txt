@@ -72,3 +72,4 @@ ecm_install_icons(ICONS 64-apps-kolab.png
 if (BUILD_TESTING)
     #add_subdirectory(tests)
 endif()
+add_subdirectory(wizard)

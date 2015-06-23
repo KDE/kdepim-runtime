@@ -614,7 +614,7 @@ void SetupServer::slotManageSubscriptions()
 
     QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog(this);
     subscriptions->setWindowTitle(i18n("Serverside Subscription"));
-    subscriptions->setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
+    subscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
     subscriptions->connectAccount(account, m_ui->password->text());
     m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 

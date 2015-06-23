@@ -82,7 +82,7 @@ AccountDialog::AccountDialog(POP3Resource *parentResource, WId parentWindow)
       mWallet(Q_NULLPTR)
 {
     KWindowSystem::setMainWindow(this, parentWindow);
-    setWindowIcon(QIcon::fromTheme(QLatin1String("network-server")));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
     setWindowTitle(i18n("POP3 Account Settings"));
     mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
 

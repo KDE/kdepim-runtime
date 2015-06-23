@@ -83,7 +83,7 @@ QDialog *KolabResource::createConfigureDialog(WId windowId)
 {
     SetupServer *dlg = new SetupServer(this, windowId);
     KWindowSystem::setMainWindow(dlg, windowId);
-    dlg->setWindowIcon(QIcon::fromTheme(QLatin1String("kolab")));
+    dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("kolab")));
     connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));;
     return dlg;
 }

@@ -41,15 +41,15 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
         KToolBar *toolbar = new KToolBar(QLatin1String("MigrationControlToolbar"), this);
 
         QAction *start = toolbar->addAction(QLatin1String("Start"));
-        start->setIcon(QIcon::fromTheme(QLatin1String("media-playback-start")));
+        start->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
         connect(start, &QAction::triggered, this, &MigrationStatusWidget::startSelected);
 
         QAction *pause = toolbar->addAction(QLatin1String("Pause"));
-        pause->setIcon(QIcon::fromTheme(QLatin1String("media-playback-pause")));
+        pause->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")));
         connect(pause, &QAction::triggered, this, &MigrationStatusWidget::pauseSelected);
 
         QAction *abort = toolbar->addAction(QLatin1String("Abort"));
-        abort->setIcon(QIcon::fromTheme(QLatin1String("media-playback-stop")));
+        abort->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-stop")));
         connect(abort, &QAction::triggered, this, &MigrationStatusWidget::abortSelected);
 
         vboxLayout->addWidget(toolbar);
