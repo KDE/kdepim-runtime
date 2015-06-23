@@ -173,7 +173,7 @@ void UrlConfigurationDialog::onConfigChanged()
 
 void UrlConfigurationDialog::checkUserInput()
 {
-    if (!mUi.remoteUrl->text().isEmpty() && checkUserAuthInput()) {
+    if (!mUi.remoteUrl->text().trimmed().isEmpty() && checkUserAuthInput()) {
         mUi.fetchButton->setEnabled(true);
         if (mModel->rowCount() > 0) {
             mOkButton->setEnabled(true);
