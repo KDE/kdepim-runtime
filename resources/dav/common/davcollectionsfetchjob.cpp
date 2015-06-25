@@ -141,7 +141,14 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     _jobUrl.setUser( QString() );
     const QString jobUrl = _jobUrl.prettyUrl();
 
-    //kDebug() << davJob->response().toString();
+    // Validate that we got a valid PROPFIND response
+    QDomElement rootElement = davJob->response().documentElement();
+    if ( rootElement.tagName().compare( QLatin1String( "multistatus" ), Qt::CaseInsensitive ) != 0 ) {
+      setError( UserDefinedError );
+      setErrorText( i18n( "Invalid responses from backend" ) );
+      subjobFinished();
+      return;
+    }
 
     QByteArray resp( davJob->response().toByteArray() );
     QBuffer buffer( &resp );
@@ -151,12 +158,16 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     if ( !xquery.setFocus( &buffer ) ) {
       setError( UserDefinedError );
       setErrorText( i18n( "Error setting focus for XQuery" ) );
+      subjobFinished();
+      return;
     }
 
     xquery.setQuery( DavManager::self()->davProtocol( mUrl.protocol() )->collectionsXQuery() );
     if ( !xquery.isValid() ) {
       setError( UserDefinedError );
       setErrorText( i18n( "Invalid XQuery submitted by DAV implementation" ) );
+      subjobFinished();
+      return;
     }
 
     QString responsesStr;
@@ -168,6 +179,8 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     if ( !document.setContent( responsesStr, true ) ) {
       setError( UserDefinedError );
       setErrorText( i18n( "Invalid responses from backend" ) );
+      subjobFinished();
+      return;
     }
 
     if ( !error() ) {
@@ -301,6 +314,11 @@ void DavCollectionsFetchJob::collectionsFetchFinished( KJob *job )
     }
   }
 
+  subjobFinished();
+}
+
+void DavCollectionsFetchJob::subjobFinished()
+{
   if ( --mSubJobCount == 0 )
     emitResult();
 }

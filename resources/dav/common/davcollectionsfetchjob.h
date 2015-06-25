@@ -73,6 +73,7 @@ class DavCollectionsFetchJob : public KJob
 
   private:
     void doCollectionsFetch( const KUrl &url );
+    void subjobFinished();
 
     DavUtils::DavUrl mUrl;
     DavCollection::List mCollections;
