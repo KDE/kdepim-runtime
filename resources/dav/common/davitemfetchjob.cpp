@@ -40,8 +40,8 @@ static QString etagFromHeaders(const QString &headers)
     return etag;
 }
 
-DavItemFetchJob::DavItemFetchJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-  : DavJobBase( parent ), mUrl( url ), mItem( item )
+DavItemFetchJob::DavItemFetchJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent)
+    : DavJobBase(parent), mUrl(url), mItem(item)
 {
 }
 
@@ -66,28 +66,29 @@ DavItem DavItemFetchJob::item() const
 
 void DavItemFetchJob::davJobFinished(KJob *job)
 {
-    KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
-    const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                              0 :
-                              storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
-    setLatestResponseCode( responseCode );
-  
-    if ( storedJob->error() ) {
+    KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
+    const int responseCode = storedJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+                             0 :
+                             storedJob->queryMetaData(QLatin1String("responsecode")).toInt();
+    setLatestResponseCode(responseCode);
+
+    if (storedJob->error()) {
         QString err;
-        if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
-            err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
-        else
+        if (storedJob->error() != KIO::ERR_SLAVE_DEFINED) {
+            err = KIO::buildErrorString(storedJob->error(), storedJob->errorText());
+        } else {
             err = storedJob->errorText();
-  
-        setError( UserDefinedError + responseCode );
-        setErrorText( i18n( "There was a problem with the request.\n"
-                            "%1 (%2).", err, responseCode ) );
+        }
+
+        setError(UserDefinedError + responseCode);
+        setErrorText(i18n("There was a problem with the request.\n"
+                          "%1 (%2).", err, responseCode));
     } else {
-        mItem.setData( storedJob->data() );
-        mItem.setContentType( storedJob->queryMetaData( QLatin1String("content-type") ) );
-        mItem.setEtag( etagFromHeaders( storedJob->queryMetaData( QLatin1String("HTTP-Headers") ) ) );
+        mItem.setData(storedJob->data());
+        mItem.setContentType(storedJob->queryMetaData(QLatin1String("content-type")));
+        mItem.setEtag(etagFromHeaders(storedJob->queryMetaData(QLatin1String("HTTP-Headers"))));
     }
-  
+
     emitResult();
 }
 

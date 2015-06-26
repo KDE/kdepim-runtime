@@ -99,19 +99,19 @@ private Q_SLOTS:
     void onItemRemovalPrepared(KJob *);
     void onItemRemovedFinished(KJob *);
 
-    void onCollectionDiscovered( int protocol, const QString &collectionUrl, const QString &configuredUrl );
-    void onEtagChanged( const QString &itemUrl, const QString &etag );
-    void onConflictModifyJobFinished( KJob *job );
-    void onDeletedItemRecreated( KJob *job );
+    void onCollectionDiscovered(int protocol, const QString &collectionUrl, const QString &configuredUrl);
+    void onEtagChanged(const QString &itemUrl, const QString &etag);
+    void onConflictModifyJobFinished(KJob *job);
+    void onDeletedItemRecreated(KJob *job);
 
 private:
-    void doItemChange( const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List() );
-    void doItemRemoval( const Akonadi::Item &item );
-    void handleConflict( const Akonadi::Item &localItem,
-                         const Akonadi::Item::List &localDependentItems,
-                         const DavItem &remoteItem,
-                         bool isLocalRemoval,
-                         int responseCode
+    void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
+    void doItemRemoval(const Akonadi::Item &item);
+    void handleConflict(const Akonadi::Item &localItem,
+                        const Akonadi::Item::List &localDependentItems,
+                        const DavItem &remoteItem,
+                        bool isLocalRemoval,
+                        int responseCode
                        );
 
     bool configurationIsValid();

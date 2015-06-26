@@ -24,8 +24,8 @@
 #include <kio/job.h>
 #include <KLocalizedString>
 
-DavItemModifyJob::DavItemModifyJob( const DavUtils::DavUrl &url, const DavItem &item, QObject *parent )
-    : DavJobBase( parent ), mUrl( url ), mItem( item ), mFreshResponseCode( 0 )
+DavItemModifyJob::DavItemModifyJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent)
+    : DavJobBase(parent), mUrl(url), mItem(item), mFreshResponseCode(0)
 {
 }
 
@@ -52,7 +52,7 @@ DavItem DavItemModifyJob::item() const
 
 DavItem DavItemModifyJob::freshItem() const
 {
-  return mFreshItem;
+    return mFreshItem;
 }
 
 int DavItemModifyJob::freshResponseCode() const
@@ -60,84 +60,85 @@ int DavItemModifyJob::freshResponseCode() const
     return mFreshResponseCode;
 }
 
-void DavItemModifyJob::davJobFinished( KJob *job )
+void DavItemModifyJob::davJobFinished(KJob *job)
 {
-    KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob*>( job );
-  
-    if ( storedJob->error() ) {
-        const int responseCode = storedJob->queryMetaData( QLatin1String("responsecode") ).isEmpty() ?
-                                  0 :
-                                  storedJob->queryMetaData( QLatin1String("responsecode") ).toInt();
-  
+    KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
+
+    if (storedJob->error()) {
+        const int responseCode = storedJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+                                 0 :
+                                 storedJob->queryMetaData(QLatin1String("responsecode")).toInt();
+
         QString err;
-        if ( storedJob->error() != KIO::ERR_SLAVE_DEFINED )
-            err = KIO::buildErrorString( storedJob->error(), storedJob->errorText() );
-        else
+        if (storedJob->error() != KIO::ERR_SLAVE_DEFINED) {
+            err = KIO::buildErrorString(storedJob->error(), storedJob->errorText());
+        } else {
             err = storedJob->errorText();
-  
-        setLatestResponseCode( responseCode );
-        setError( UserDefinedError + responseCode );
-        setErrorText( i18n( "There was a problem with the request. The item was not modified on the server.\n"
-                            "%1 (%2).", err, responseCode ) );
-  
-        if ( hasConflict() ) {
-            DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
-            connect( fetchJob, &DavItemFetchJob::result, this, &DavItemModifyJob::conflictingItemFetched );
-            fetchJob->start();
         }
-        else {
+
+        setLatestResponseCode(responseCode);
+        setError(UserDefinedError + responseCode);
+        setErrorText(i18n("There was a problem with the request. The item was not modified on the server.\n"
+                          "%1 (%2).", err, responseCode));
+
+        if (hasConflict()) {
+            DavItemFetchJob *fetchJob = new DavItemFetchJob(mUrl, mItem);
+            connect(fetchJob, &DavItemFetchJob::result, this, &DavItemModifyJob::conflictingItemFetched);
+            fetchJob->start();
+        } else {
             emitResult();
         }
-  
+
         return;
     }
-  
+
     // The 'Location:' HTTP header is used to indicate the new URL
-    const QStringList allHeaders = storedJob->queryMetaData( QLatin1String("HTTP-Headers") ).split( QLatin1Char('\n') );
+    const QStringList allHeaders = storedJob->queryMetaData(QLatin1String("HTTP-Headers")).split(QLatin1Char('\n'));
     QString location;
-    foreach ( const QString &header, allHeaders ) {
-        if ( header.startsWith( QLatin1String( "location:" ), Qt::CaseInsensitive  ) )
-            location = header.section( QLatin1Char(' '), 1 );
+    foreach (const QString &header, allHeaders) {
+        if (header.startsWith(QLatin1String("location:"), Qt::CaseInsensitive)) {
+            location = header.section(QLatin1Char(' '), 1);
+        }
     }
-  
+
     KUrl url;
-    if ( location.isEmpty() )
+    if (location.isEmpty()) {
         url = storedJob->url();
-    else if ( location.startsWith( QLatin1Char('/') ) ) {
+    } else if (location.startsWith(QLatin1Char('/'))) {
         url = storedJob->url();
-        url.setEncodedPath( location.toLatin1() );
-    } else
+        url.setEncodedPath(location.toLatin1());
+    } else {
         url = location;
-  
-    url.setUser( QString() );
-    mItem.setUrl( url.prettyUrl() );
-  
-    DavItemFetchJob *fetchJob = new DavItemFetchJob( mUrl, mItem );
-    connect( fetchJob, &DavItemFetchJob::result, this, &DavItemModifyJob::itemRefreshed );
+    }
+
+    url.setUser(QString());
+    mItem.setUrl(url.prettyUrl());
+
+    DavItemFetchJob *fetchJob = new DavItemFetchJob(mUrl, mItem);
+    connect(fetchJob, &DavItemFetchJob::result, this, &DavItemModifyJob::itemRefreshed);
     fetchJob->start();
 }
 
-void DavItemModifyJob::itemRefreshed( KJob *job )
+void DavItemModifyJob::itemRefreshed(KJob *job)
 {
-  if ( !job->error() ) {
-    DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
-    mItem.setEtag( fetchJob->item().etag() );
-  }
-  else {
-    mItem.setEtag( QString() );
-  }
-  emitResult();
+    if (!job->error()) {
+        DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob *>(job);
+        mItem.setEtag(fetchJob->item().etag());
+    } else {
+        mItem.setEtag(QString());
+    }
+    emitResult();
 }
 
-void DavItemModifyJob::conflictingItemFetched( KJob *job )
+void DavItemModifyJob::conflictingItemFetched(KJob *job)
 {
-  DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
-  mFreshResponseCode = fetchJob->latestResponseCode();
+    DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob *>(job);
+    mFreshResponseCode = fetchJob->latestResponseCode();
 
-  if ( !job->error() ) {
-    mFreshItem = fetchJob->item();
-  }
+    if (!job->error()) {
+        mFreshItem = fetchJob->item();
+    }
 
-  emitResult();
+    emitResult();
 }
 

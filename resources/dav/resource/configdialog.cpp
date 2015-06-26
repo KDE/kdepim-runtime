@@ -106,7 +106,6 @@ void ConfigDialog::writeConfig()
     grp.sync();
 }
 
-
 void ConfigDialog::setPassword(const QString &password)
 {
     mUi.password->setText(password);

@@ -71,10 +71,10 @@ bool DavJobBase::canRetryLater() const
 
 bool DavJobBase::hasConflict() const
 {
-  return latestResponseCode() == 412;
+    return latestResponseCode() == 412;
 }
 
-void DavJobBase::setLatestResponseCode( unsigned int code )
+void DavJobBase::setLatestResponseCode(unsigned int code)
 {
     mLatestResponseCode = code;
 }

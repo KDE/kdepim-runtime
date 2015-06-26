@@ -61,9 +61,9 @@ public:
     int freshResponseCode() const;
 
 private Q_SLOTS:
-    void davJobFinished( KJob* );
-    void itemRefreshed( KJob* );
-    void conflictingItemFetched( KJob* );
+    void davJobFinished(KJob *);
+    void itemRefreshed(KJob *);
+    void conflictingItemFetched(KJob *);
 
 private:
     DavUtils::DavUrl mUrl;

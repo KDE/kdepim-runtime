@@ -90,7 +90,6 @@ void UrlConfigurationDialog::writeConfig()
     grp.sync();
 }
 
-
 DavUtils::Protocol UrlConfigurationDialog::protocol() const
 {
     return DavUtils::Protocol(mUi.remoteProtocol->selected());
