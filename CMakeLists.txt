@@ -96,7 +96,7 @@ else()
     add_definitions(-DHAVE_SPEECH)
 endif()
 
-set(KF5AkonadiServer_MIN_VERSION "5.0.41")
+set(KF5AkonadiServer_MIN_VERSION "5.0.50")
 find_package(KF5AkonadiServer ${KF5AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
 
 # KF5 package
