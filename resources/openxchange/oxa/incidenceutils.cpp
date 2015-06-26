@@ -323,7 +323,7 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
     if (incidence->attendeeCount() > 0) {
         QDomElement members = DAVUtils::addOxElement(document, parent, QStringLiteral("participants"));
         const KCalCore::Attendee::List attendees = incidence->attendees();
-        foreach (const KCalCore::Attendee::Ptr attendee, attendees) {
+        foreach (const KCalCore::Attendee::Ptr &attendee, attendees) {
             const User user = Users::self()->lookupEmail(attendee->email());
 
             if (!user.isValid()) {
