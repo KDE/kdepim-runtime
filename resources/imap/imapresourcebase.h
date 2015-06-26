@@ -117,6 +117,9 @@ protected:
     virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
     virtual QString defaultName() const = 0;
 
+protected Q_SLOTS:
+    void delayedInit();
+
 private Q_SLOTS:
     void doSearch(const QVariant &arg);
 
@@ -147,8 +150,6 @@ protected:
     void queueTask(ResourceTask *task);
     SessionPool *m_pool;
     mutable Settings *m_settings;
-
-    void delayedInit();
 
 private:
     friend class ResourceState;
