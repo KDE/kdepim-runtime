@@ -70,13 +70,13 @@ Object OXA::ObjectUtils::parseObject(const QDomElement &propElement, Folder::Mod
 void OXA::ObjectUtils::addObjectElements(QDomDocument &document, QDomElement &propElement, const Object &object, void *preloadedData)
 {
     if (object.objectId() != -1) {
-        DAVUtils::addOxElement(document, propElement, QLatin1String("object_id"), OXUtils::writeNumber(object.objectId()));
+        DAVUtils::addOxElement(document, propElement, QStringLiteral("object_id"), OXUtils::writeNumber(object.objectId()));
     }
     if (object.folderId() != -1) {
-        DAVUtils::addOxElement(document, propElement, QLatin1String("folder_id"), OXUtils::writeNumber(object.folderId()));
+        DAVUtils::addOxElement(document, propElement, QStringLiteral("folder_id"), OXUtils::writeNumber(object.folderId()));
     }
     if (!object.lastModified().isEmpty()) {
-        DAVUtils::addOxElement(document, propElement, QLatin1String("last_modified"), OXUtils::writeString(object.lastModified()));
+        DAVUtils::addOxElement(document, propElement, QStringLiteral("last_modified"), OXUtils::writeString(object.lastModified()));
     }
 
     switch (object.module()) {

@@ -111,8 +111,8 @@ void ItemMoveTest::testExpectedFail()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -120,7 +120,7 @@ void ItemMoveTest::testExpectedFail()
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
     QCOMPARE((int)entrySet1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
@@ -243,9 +243,9 @@ void ItemMoveTest::testMaildirItem()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection5")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -253,7 +253,7 @@ void ItemMoveTest::testMaildirItem()
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
     QCOMPARE((int)entrySet1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
@@ -264,7 +264,7 @@ void ItemMoveTest::testMaildirItem()
     QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
     QCOMPARE((int)entrySet3.count(), 0);
 
-    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFileInfo fileInfo4(topDir.path(), QStringLiteral("collection4"));
     QFile file4(fileInfo4.absoluteFilePath());
     QVERIFY(file4.open(QIODevice::WriteOnly));
     file4.close();
@@ -433,11 +433,11 @@ void ItemMoveTest::testMBoxItem()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection5")));
 
-    QFileInfo fileInfo1(topDir.path(), QLatin1String("collection1"));
+    QFileInfo fileInfo1(topDir.path(), QStringLiteral("collection1"));
     MBox mbox1;
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     MBoxEntry::List entryList1 = mbox1.entries();
@@ -454,7 +454,7 @@ void ItemMoveTest::testMBoxItem()
     QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
     QCOMPARE((int)entrySet3.count(), 0);
 
-    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFileInfo fileInfo4(topDir.path(), QStringLiteral("collection4"));
     QFile file4(fileInfo4.absoluteFilePath());
     QVERIFY(file4.open(QIODevice::WriteOnly));
     file4.close();
@@ -465,7 +465,7 @@ void ItemMoveTest::testMBoxItem()
     MBoxEntry::List entryList4 = mbox4.entries();
     QCOMPARE((int)entryList4.count(), 0);
 
-    QFileInfo fileInfo5(topDir.path(), QLatin1String("collection5"));
+    QFileInfo fileInfo5(topDir.path(), QStringLiteral("collection5"));
     MBox mbox5;
     QVERIFY(mbox5.load(fileInfo5.absoluteFilePath()));
     MBoxEntry::List entryList5 = mbox5.entries();

@@ -37,13 +37,13 @@ FolderModifyJob::FolderModifyJob(const Folder &folder, QObject *parent)
 void FolderModifyJob::start()
 {
     QDomDocument document;
-    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
-    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
-    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
-    DAVUtils::addOxElement(document, prop, QLatin1String("title"), OXUtils::writeString(mFolder.title()));
-    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mFolder.objectId()));
-    DAVUtils::addOxElement(document, prop, QLatin1String("folder_id"), OXUtils::writeNumber(mFolder.folderId()));
-    DAVUtils::addOxElement(document, prop, QLatin1String("last_modified"), OXUtils::writeString(mFolder.lastModified()));
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QStringLiteral("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QStringLiteral("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QStringLiteral("prop"));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("title"), OXUtils::writeString(mFolder.title()));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("object_id"), OXUtils::writeNumber(mFolder.objectId()));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("folder_id"), OXUtils::writeNumber(mFolder.folderId()));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("last_modified"), OXUtils::writeString(mFolder.lastModified()));
 
     const QString path = QLatin1String("/servlet/webdav.folders");
 

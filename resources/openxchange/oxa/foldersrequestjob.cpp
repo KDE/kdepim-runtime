@@ -40,13 +40,13 @@ FoldersRequestJob::FoldersRequestJob(qulonglong lastSync, Mode mode, QObject *pa
 void FoldersRequestJob::start()
 {
     QDomDocument document;
-    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
-    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
-    DAVUtils::addOxElement(document, prop, QLatin1String("lastsync"), OXUtils::writeNumber(mLastSync));
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QStringLiteral("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QStringLiteral("prop"));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("lastsync"), OXUtils::writeNumber(mLastSync));
     if (mMode == Modified) {
-        DAVUtils::addOxElement(document, prop, QLatin1String("objectmode"), QLatin1String("MODIFIED"));
+        DAVUtils::addOxElement(document, prop, QStringLiteral("objectmode"), QStringLiteral("MODIFIED"));
     } else {
-        DAVUtils::addOxElement(document, prop, QLatin1String("objectmode"), QLatin1String("DELETED"));
+        DAVUtils::addOxElement(document, prop, QStringLiteral("objectmode"), QStringLiteral("DELETED"));
     }
 
     const QString path = QLatin1String("/servlet/webdav.folders");

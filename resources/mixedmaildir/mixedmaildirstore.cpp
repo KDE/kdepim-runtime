@@ -461,8 +461,8 @@ void MaildirContext::readIndexData()
     }
 
     const QDir maildirBaseDir(maildirFileInfo.absoluteFilePath());
-    const QFileInfo curDirFileInfo(maildirBaseDir, QLatin1String("cur"));
-    const QFileInfo newDirFileInfo(maildirBaseDir, QLatin1String("new"));
+    const QFileInfo curDirFileInfo(maildirBaseDir, QStringLiteral("cur"));
+    const QFileInfo newDirFileInfo(maildirBaseDir, QStringLiteral("new"));
 
     if (curDirFileInfo.lastModified() > indexFileInfo.lastModified()) {
         qCDebug(MIXEDMAILDIR_LOG) << "Maildir " << maildirFileInfo.absoluteFilePath()

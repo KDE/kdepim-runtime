@@ -136,9 +136,9 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
     switch (type) {
     case MaildirFolder: {
         const QString subPathPattern = QLatin1String("%1/%2");
-        if (!installDir.mkpath(subPathPattern.arg(folderName, QLatin1String("new"))) ||
-                !installDir.mkpath(subPathPattern.arg(folderName, QLatin1String("cur"))) ||
-                !installDir.mkpath(subPathPattern.arg(folderName, QLatin1String("tmp")))) {
+        if (!installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("new"))) ||
+                !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("cur"))) ||
+                !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("tmp")))) {
             qCritical() << "Couldn't create maildir directory structure";
             return false;
         }

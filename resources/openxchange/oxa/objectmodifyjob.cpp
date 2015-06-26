@@ -43,9 +43,9 @@ void ObjectModifyJob::start()
         job->start();
     } else {
         QDomDocument document;
-        QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
-        QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
-        QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
+        QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QStringLiteral("propertyupdate"));
+        QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QStringLiteral("set"));
+        QDomElement prop = DAVUtils::addDavElement(document, set, QStringLiteral("prop"));
 
         ObjectUtils::addObjectElements(document, prop, mObject);
 
@@ -66,9 +66,9 @@ void ObjectModifyJob::preloadingJobFinished(KJob *job)
     void *preloadedData = ObjectUtils::preloadData(mObject, job);
 
     QDomDocument document;
-    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QLatin1String("propertyupdate"));
-    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QLatin1String("set"));
-    QDomElement prop = DAVUtils::addDavElement(document, set, QLatin1String("prop"));
+    QDomElement propertyupdate = DAVUtils::addDavElement(document, document, QStringLiteral("propertyupdate"));
+    QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QStringLiteral("set"));
+    QDomElement prop = DAVUtils::addDavElement(document, set, QStringLiteral("prop"));
 
     ObjectUtils::addObjectElements(document, prop, mObject, preloadedData);
 

@@ -77,7 +77,7 @@ KIO::MetaData POPSession::slaveConfig() const
 {
     KIO::MetaData m;
 
-    m.insert(QLatin1String("progress"), QLatin1String("off"));
+    m.insert(QLatin1String("progress"), QStringLiteral("off"));
     m.insert(QLatin1String("tls"), Settings::self()->useTLS() ? QLatin1String("on") : QLatin1String("off"));
     m.insert(QLatin1String("pipelining"), (Settings::self()->pipelining()) ? QLatin1String("on") : QLatin1String("off"));
     int type = Settings::self()->authenticationMethod();
@@ -88,11 +88,11 @@ KIO::MetaData POPSession::slaveConfig() const
     case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
     case MailTransport::Transport::EnumAuthenticationType::NTLM:
     case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-        m.insert(QLatin1String("auth"), QLatin1String("SASL"));
+        m.insert(QLatin1String("auth"), QStringLiteral("SASL"));
         m.insert(QLatin1String("sasl"), authenticationToString(type));
         break;
     case MailTransport::Transport::EnumAuthenticationType::CLEAR:
-        m.insert(QLatin1String("auth"), QLatin1String("USER"));
+        m.insert(QLatin1String("auth"), QStringLiteral("USER"));
         break;
     default:
         m.insert(QLatin1String("auth"), authenticationToString(type));

@@ -90,12 +90,12 @@ void ConfigDialog::save()
 
 void ConfigDialog::showAboutDialog()
 {
-    KAboutData aboutData(QLatin1String("ox"), i18n("Open-Xchange"), QLatin1String("0.1"),
+    KAboutData aboutData(QLatin1String("ox"), i18n("Open-Xchange"), QStringLiteral("0.1"),
                          i18n("Akonadi Open-Xchange Resource"),
                          KAboutLicense::LGPL,
                          i18n("(c) 2009 by Tobias Koenig (credativ GmbH)"));
-    aboutData.addAuthor(i18n("Tobias Koenig"), i18n("Current maintainer"), QLatin1String("tokoe@kde.org"));
-    aboutData.addCredit(i18n("credativ GmbH"), i18n("Funded and supported"), QLatin1String("http://www.credativ.com"));
+    aboutData.addAuthor(i18n("Tobias Koenig"), i18n("Current maintainer"), QStringLiteral("tokoe@kde.org"));
+    aboutData.addCredit(i18n("credativ GmbH"), i18n("Funded and supported"), QStringLiteral("http://www.credativ.com"));
 
     KAboutApplicationDialog dlg(aboutData, this);
     dlg.exec();

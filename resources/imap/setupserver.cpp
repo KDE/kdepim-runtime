@@ -384,7 +384,7 @@ void SetupServer::readSettings()
                                  "activate it. If you do not "
                                  "want to use KWallet, check the box below, but note that you will be "
                                  "prompted for your password when needed."),
-                                 i18n("Do not use KWallet"), QLatin1String("warning_kwallet_disabled"));
+                                 i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
     } else {
         m_ui->password->insert(password);
     }

@@ -65,7 +65,7 @@ private Q_SLOTS:
                  << "S: A000003 OK append done [ APPENDUID 1239890035 66 ]";
 
         callNames.clear();
-        callNames << QLatin1String("itemChangeCommitted");
+        callNames << QStringLiteral("itemChangeCommitted");
 
         QTest::newRow("trivial case") << item << collection << scenario << callNames;
 
@@ -88,7 +88,7 @@ private Q_SLOTS:
                  << "S: A000005 OK search done";
 
         callNames.clear();
-        callNames << QLatin1String("itemChangeCommitted");
+        callNames << QStringLiteral("itemChangeCommitted");
 
         QTest::newRow("no APPENDUID, message contained Message-ID") << item << collection << scenario << callNames;
 
@@ -102,7 +102,7 @@ private Q_SLOTS:
                  << "S: * SEARCH 65 66"
                  << "S: A000005 OK search done";
         callNames.clear();
-        callNames << QLatin1String("itemChangeCommitted");
+        callNames << QStringLiteral("itemChangeCommitted");
         QTest::newRow("no APPENDUID, message contained non-unique Message-ID") << item << collection << scenario << callNames;
 
         message = KMime::Message::Ptr(new KMime::Message);
@@ -124,7 +124,7 @@ private Q_SLOTS:
                  << "S: A000005 OK search done";
 
         callNames.clear();
-        callNames << QLatin1String("itemChangeCommitted");
+        callNames << QStringLiteral("itemChangeCommitted");
 
         QTest::newRow("no APPENDUID, message didn't contain Message-ID") << item << collection << scenario << callNames;
     }

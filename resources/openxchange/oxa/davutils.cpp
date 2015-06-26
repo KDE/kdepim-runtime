@@ -25,7 +25,7 @@ using namespace OXA;
 
 QDomElement DAVUtils::addDavElement(QDomDocument &document, QDomNode &parentNode, const QString &tag)
 {
-    const QDomElement element = document.createElementNS(QLatin1String("DAV:"), QLatin1String("D:") + tag);
+    const QDomElement element = document.createElementNS(QLatin1String("DAV:"), QStringLiteral("D:") + tag);
     parentNode.appendChild(element);
 
     return element;
@@ -33,7 +33,7 @@ QDomElement DAVUtils::addDavElement(QDomDocument &document, QDomNode &parentNode
 
 QDomElement DAVUtils::addOxElement(QDomDocument &document, QDomNode &parentNode, const QString &tag, const QString &text)
 {
-    QDomElement element = document.createElementNS(QLatin1String("http://www.open-xchange.org"), QLatin1String("ox:") + tag);
+    QDomElement element = document.createElementNS(QLatin1String("http://www.open-xchange.org"), QStringLiteral("ox:") + tag);
 
     if (!text.isEmpty()) {
         const QDomText textNode = document.createTextNode(text);
@@ -47,7 +47,7 @@ QDomElement DAVUtils::addOxElement(QDomDocument &document, QDomNode &parentNode,
 
 void DAVUtils::setOxAttribute(QDomElement &element, const QString &name, const QString &value)
 {
-    element.setAttributeNS(QLatin1String("http://www.open-xchange.org"), QLatin1String("ox:") + name, value);
+    element.setAttributeNS(QLatin1String("http://www.open-xchange.org"), QStringLiteral("ox:") + name, value);
 }
 
 bool DAVUtils::davErrorOccurred(const QDomDocument &document, QString &errorText, QString &errorStatus)

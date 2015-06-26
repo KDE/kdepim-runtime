@@ -39,12 +39,12 @@ private Q_SLOTS:
 void TestDataTest::testResources()
 {
     const QStringList testDataNames = TestDataUtil::testDataNames();
-    QCOMPARE(testDataNames, QStringList() << QLatin1String("dimap")
-             << QLatin1String("maildir")
-             << QLatin1String("maildir-tagged")
-             << QLatin1String("mbox")
-             << QLatin1String("mbox-tagged")
-             << QLatin1String("mbox-unpurged"));
+    QCOMPARE(testDataNames, QStringList() << QStringLiteral("dimap")
+             << QStringLiteral("maildir")
+             << QStringLiteral("maildir-tagged")
+             << QStringLiteral("mbox")
+             << QStringLiteral("mbox-tagged")
+             << QStringLiteral("mbox-unpurged"));
 
     Q_FOREACH (const QString testDataName, testDataNames) {
         if (testDataName.startsWith(QLatin1String("mbox"))) {
@@ -65,15 +65,15 @@ void TestDataTest::testInstall()
 
     const QString indexFilePattern = QLatin1String(".%1.index");
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), dir.path(), QLatin1String("mbox1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), dir.path(), QStringLiteral("mbox1")));
     QVERIFY(installDir.exists(QLatin1String("mbox1")));
     QVERIFY(installDir.exists(indexFilePattern.arg(QLatin1String("mbox1"))));
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox-tagged"), dir.path(), QLatin1String("mbox2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox-tagged"), dir.path(), QStringLiteral("mbox2")));
     QVERIFY(installDir.exists(QLatin1String("mbox2")));
     QVERIFY(installDir.exists(indexFilePattern.arg(QLatin1String("mbox2"))));
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), dir.path(), QLatin1String("md1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), dir.path(), QStringLiteral("md1")));
     QVERIFY(installDir.exists(QLatin1String("md1")));
     QVERIFY(installDir.exists(QLatin1String("md1/new")));
     QVERIFY(installDir.exists(QLatin1String("md1/cur")));
@@ -86,7 +86,7 @@ void TestDataTest::testInstall()
     curDir.setFilter(QDir::Files);
     QCOMPARE((int)curDir.count(), 4);
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir-tagged"), dir.path(), QLatin1String("md2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir-tagged"), dir.path(), QStringLiteral("md2")));
     QVERIFY(installDir.exists(QLatin1String("md2")));
     QVERIFY(installDir.exists(QLatin1String("md2/new")));
     QVERIFY(installDir.exists(QLatin1String("md2/cur")));

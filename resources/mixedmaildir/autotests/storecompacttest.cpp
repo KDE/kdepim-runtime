@@ -139,30 +139,30 @@ void StoreCompactTest::testCompact()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection4")));
 
-    QFileInfo fileInfo1(topDir.path(), QLatin1String("collection1"));
+    QFileInfo fileInfo1(topDir.path(), QStringLiteral("collection1"));
     MBox mbox1;
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     MBoxEntry::List entryList1 = mbox1.entries();
     QCOMPARE((int)entryList1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
     QCOMPARE((int)entryList2.count(), 4);
 
-    QFileInfo fileInfo3(topDir.path(), QLatin1String("collection3"));
+    QFileInfo fileInfo3(topDir.path(), QStringLiteral("collection3"));
     MBox mbox3;
     QVERIFY(mbox3.load(fileInfo3.absoluteFilePath()));
     MBoxEntry::List entryList3 = mbox3.entries();
     QCOMPARE((int)entryList3.count(), 4);
 
-    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFileInfo fileInfo4(topDir.path(), QStringLiteral("collection4"));
     MBox mbox4;
     QVERIFY(mbox4.load(fileInfo4.absoluteFilePath()));
     MBoxEntry::List entryList4 = mbox4.entries();

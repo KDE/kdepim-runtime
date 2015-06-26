@@ -76,7 +76,7 @@ Settings::Settings(WId winId) : SettingsBase(), m_winId(winId)
     load();
 
     new SettingsAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"), this, QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this, QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
 void Settings::setWinId(WId winId)

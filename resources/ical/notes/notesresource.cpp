@@ -32,7 +32,7 @@ using namespace KCalCore;
 static const QLatin1String sNotesType("application/x-vnd.kde.notes");
 
 NotesResource::NotesResource(const QString &id)
-    : ICalResource(id, allMimeTypes(), QLatin1String("knotes"))
+    : ICalResource(id, allMimeTypes(), QStringLiteral("knotes"))
 {
     KConfigSkeleton::ItemPath *item = static_cast<KConfigSkeleton::ItemPath *>(mSettings->findItem(QLatin1String("Path")));
     if (item) {

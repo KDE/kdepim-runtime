@@ -84,14 +84,14 @@ void CollectionDeleteTest::testNonExisting()
     KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
 
     // simulate mbox
-    QFileInfo fileInfo1(mDir->path(), QLatin1String("collection3"));
+    QFileInfo fileInfo1(mDir->path(), QStringLiteral("collection3"));
     QFile file1(fileInfo1.absoluteFilePath());
     file1.open(QIODevice::WriteOnly);
     file1.close();
     QVERIFY(fileInfo1.exists());
 
     // simulate mbox with empty subtree
-    QFileInfo fileInfo2(mDir->path(), QLatin1String("collection4"));
+    QFileInfo fileInfo2(mDir->path(), QStringLiteral("collection4"));
     QFile file2(fileInfo2.absoluteFilePath());
     file2.open(QIODevice::WriteOnly);
     file2.close();
@@ -116,7 +116,7 @@ void CollectionDeleteTest::testNonExisting()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
     QVERIFY(fileInfo1.exists());
 
     // test fail of deleting second level collection in maildir leaf parent
@@ -135,7 +135,7 @@ void CollectionDeleteTest::testNonExisting()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
 
     // test fail of deleting second level collection in maildir parent with subtree
     Collection collection1;
@@ -153,8 +153,8 @@ void CollectionDeleteTest::testNonExisting()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2"));
-    QCOMPARE(md1.subFolderList(), QStringList() << QLatin1String("collection1_2"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
+    QCOMPARE(md1.subFolderList(), QStringList() << QStringLiteral("collection1_2"));
 
     // test fail of deleting second level collection in mbox leaf parent
     Collection collection3;
@@ -204,9 +204,9 @@ void CollectionDeleteTest::testNonExisting()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
     QVERIFY(fileInfo1.exists());
-    QCOMPARE(md1.subFolderList(), QStringList() << QLatin1String("collection1_2"));
+    QCOMPARE(md1.subFolderList(), QStringList() << QStringLiteral("collection1_2"));
 }
 
 void CollectionDeleteTest::testLeaves()
@@ -230,14 +230,14 @@ void CollectionDeleteTest::testLeaves()
     KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
 
     // simulate first level mbox
-    QFileInfo fileInfo3(mDir->path(), QLatin1String("collection3"));
+    QFileInfo fileInfo3(mDir->path(), QStringLiteral("collection3"));
     QFile file3(fileInfo3.absoluteFilePath());
     file3.open(QIODevice::WriteOnly);
     file3.close();
     QVERIFY(fileInfo3.exists());
 
     // simulate first level mbox with subtree
-    QFileInfo fileInfo4(mDir->path(), QLatin1String("collection4"));
+    QFileInfo fileInfo4(mDir->path(), QStringLiteral("collection4"));
     QFile file4(fileInfo4.absoluteFilePath());
     file4.open(QIODevice::WriteOnly);
     file4.close();
@@ -338,7 +338,7 @@ void CollectionDeleteTest::testLeaves()
     QCOMPARE(job->error(), 0);
 
     QVERIFY(!md2.isValid(false));
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1"));
 
     Collection collection3;
     collection3.setName(QLatin1String("collection3"));
@@ -400,7 +400,7 @@ void CollectionDeleteTest::testSubTrees()
     QVERIFY(fileInfo1_1.exists());
 
     // simulate first level mbox with subtree
-    QFileInfo fileInfo2(mDir->path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(mDir->path(), QStringLiteral("collection2"));
     QFile file2(fileInfo2.absoluteFilePath());
     file2.open(QIODevice::WriteOnly);
     file2.close();

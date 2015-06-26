@@ -45,7 +45,7 @@ void ICalResourceBase::initialise(const QStringList &mimeTypes, const QString &i
 {
     setSupportedMimetypes(mimeTypes, icon);
     new ICalSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
             mSettings, QDBusConnection::ExportAdaptors);
 }
 
@@ -148,7 +148,7 @@ bool ICalResourceBase::writeToFile(const QString &fileName)
 
     bool success = true;
     if (!fileStorage->save()) {
-        qCritical() << QLatin1String("akonadi_ical_resource: Failed to save calendar to file ") + fileName;
+        qCritical() << QStringLiteral("akonadi_ical_resource: Failed to save calendar to file ") + fileName;
         Q_EMIT error(i18n("Failed to save calendar file to %1", fileName));
         success = false;
     }

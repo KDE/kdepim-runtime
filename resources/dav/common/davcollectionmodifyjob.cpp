@@ -125,16 +125,16 @@ void DavCollectionModifyJob::davJobFinished(KJob *job)
     }
 
     const QDomDocument response = davJob->response();
-    QDomElement responseElement = DavUtils::firstChildElementNS(response.documentElement(), QLatin1String("DAV:"), QLatin1String("response"));
+    QDomElement responseElement = DavUtils::firstChildElementNS(response.documentElement(), QStringLiteral("DAV:"), QStringLiteral("response"));
 
     bool hasError = false;
     QString errorText;
 
     // parse all propstats answers to get the eventual errors
-    const QDomNodeList propstats = responseElement.elementsByTagNameNS(QLatin1String("DAV:"), QLatin1String("propstat"));
+    const QDomNodeList propstats = responseElement.elementsByTagNameNS(QLatin1String("DAV:"), QStringLiteral("propstat"));
     for (int i = 0; i < propstats.length(); ++i) {
         const QDomElement propstatElement = propstats.item(i).toElement();
-        const QDomElement statusElement = DavUtils::firstChildElementNS(propstatElement, QLatin1String("DAV:"), QLatin1String("status"));
+        const QDomElement statusElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("status"));
 
         const QString statusText = statusElement.text();
         if (statusText.contains(QLatin1String("200"))) {
@@ -149,7 +149,7 @@ void DavCollectionModifyJob::davJobFinished(KJob *job)
 
     if (hasError) {
         // Trying to get more information about the error
-        const QDomElement responseDescriptionElement = DavUtils::firstChildElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("responsedescription"));
+        const QDomElement responseDescriptionElement = DavUtils::firstChildElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("responsedescription"));
         if (!responseDescriptionElement.isNull()) {
             errorText.append(i18n("\nThe server returned more information:\n"));
             errorText.append(responseDescriptionElement.text());

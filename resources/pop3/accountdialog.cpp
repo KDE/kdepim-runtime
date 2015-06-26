@@ -149,7 +149,7 @@ void AccountDialog::setupWidgets()
     populateDefaultAuthenticationOptions();
 
     folderRequester->setMimeTypeFilter(
-        QStringList() << QLatin1String("message/rfc822"));
+        QStringList() << QStringLiteral("message/rfc822"));
     folderRequester->setAccessRightsFilter(Akonadi::Collection::CanCreateItem);
     folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
 

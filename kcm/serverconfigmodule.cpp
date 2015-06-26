@@ -111,7 +111,7 @@ void ServerConfigModule::load()
     settings.beginGroup(QLatin1String("QMYSQL"));
     ui_mysql.startServer->setChecked(settings.value(QLatin1String("StartServer"), true).toBool());
     ui_mysql.serverPath->setUrl(QUrl::fromLocalFile(settings.value(QLatin1String("ServerPath"), QString()).toString()));
-    ui_mysql.name->setText(settings.value(QLatin1String("Name"), QLatin1String("akonadi")).toString());
+    ui_mysql.name->setText(settings.value(QLatin1String("Name"), QStringLiteral("akonadi")).toString());
     ui_mysql.host->setText(settings.value(QLatin1String("Host"), QString()).toString());
     ui_mysql.username->setText(settings.value(QLatin1String("User"), QString()).toString());
     ui_mysql.password->setText(settings.value(QLatin1String("Password"), QString()).toString());
@@ -121,23 +121,23 @@ void ServerConfigModule::load()
     // postgresql group
     settings.beginGroup(QLatin1String("QPSQL"));
     ui_psql.startServer->setChecked(settings.value(QLatin1String("StartServer"), true).toBool());
-    ui_psql.name->setText(settings.value(QLatin1String("Name"), QLatin1String("akonadi")).toString());
+    ui_psql.name->setText(settings.value(QLatin1String("Name"), QStringLiteral("akonadi")).toString());
     ui_psql.host->setText(settings.value(QLatin1String("Host"), QString()).toString());
     ui_psql.username->setText(settings.value(QLatin1String("User"), QString()).toString());
     ui_psql.password->setText(settings.value(QLatin1String("Password"), QString()).toString());
-    ui_psql.port->setText(settings.value(QLatin1String("Port"), QLatin1String("5432")).toString());
+    ui_psql.port->setText(settings.value(QLatin1String("Port"), QStringLiteral("5432")).toString());
     ui_psql.messagewidget->setVisible(!ui_psql.startServer->isChecked());
     ui_psql.messagewidget->setCloseButtonVisible(false);
     ui_psql.messagewidget->setWordWrap(true);
     ui_psql.messagewidget->setMessageType(KMessageWidget::Information);
     ui_psql.messagewidget->setText(i18nc("@info: special setting to configure",
                                          "Make sure you have %1 in your server postgres.conf "
-                                         "file before starting Akonadi.", QLatin1String("<b>standard_conforming_strings = on</b>")));
+                                         "file before starting Akonadi.", QStringLiteral("<b>standard_conforming_strings = on</b>")));
     settings.endGroup();
 
     // selected driver
     settings.beginGroup(QLatin1String("GENERAL"));
-    ui_driver.driverBox->setCurrentIndex(ui_driver.driverBox->findData(settings.value(QLatin1String("Driver"), QLatin1String("QMYSQL"))));
+    ui_driver.driverBox->setCurrentIndex(ui_driver.driverBox->findData(settings.value(QLatin1String("Driver"), QStringLiteral("QMYSQL"))));
     driverChanged(ui_driver.driverBox->currentIndex());
     settings.endGroup();
 
@@ -172,7 +172,7 @@ void ServerConfigModule::save()
     // sqlite group
     settings.beginGroup(QLatin1String("SQLITE"));
     // TODO: make it configurable
-    settings.setValue(QLatin1String("Name"), QLatin1String("akonadi"));
+    settings.setValue(QLatin1String("Name"), QStringLiteral("akonadi"));
     settings.endGroup();
 
     // selected driver

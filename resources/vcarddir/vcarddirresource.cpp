@@ -42,7 +42,7 @@ VCardDirResource::VCardDirResource(const QString &id)
 {
     // setup the resource
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
             Settings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();

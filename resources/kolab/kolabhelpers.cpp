@@ -277,7 +277,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
             qCDebug(KOLABRESOURCE_LOG) << "converted event";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeIncidence(
                                                     item.payload<KCalCore::Incidence::Ptr>(),
-                                                    Kolab::KolabV3, productId, QLatin1String("UTC"));
+                                                    Kolab::KolabV3, productId, QStringLiteral("UTC"));
             imapItem.setPayload(message);
         }
         break;
@@ -390,7 +390,7 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
         contentTypes << KContacts::Addressee::mimeType() << KContacts::ContactGroup::mimeType();
         break;
     case Kolab::NoteType:
-        contentTypes << QLatin1String("text/x-vnd.akonadi.note") << QLatin1String("application/x-vnd.akonadi.note");
+        contentTypes << QStringLiteral("text/x-vnd.akonadi.note") << QStringLiteral("application/x-vnd.akonadi.note");
         break;
     case Kolab::MailType:
         contentTypes << KMime::Message::mimeType();

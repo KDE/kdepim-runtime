@@ -82,31 +82,31 @@ void CollectionMoveTest::testMoveToTopLevel()
     QDir topDir(mDir->path());
 
     // top level dir
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QFileInfo fileInfo1(topDir, QLatin1String("collection1"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
-    QFileInfo fileInfo2(topDir, QLatin1String("collection2"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QFileInfo fileInfo1(topDir, QStringLiteral("collection1"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QFileInfo fileInfo2(topDir, QStringLiteral("collection2"));
 
     // first level maildir parent
     QDir subDir1 = topDir;
     QVERIFY(subDir1.mkdir(QLatin1String(".collection1.directory")));
     QVERIFY(subDir1.cd(QLatin1String(".collection1.directory")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QLatin1String("collection1_1")));
-    QFileInfo fileInfo1_1(subDir1.path(), QLatin1String("collection1_1"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QStringLiteral("collection1_1")));
+    QFileInfo fileInfo1_1(subDir1.path(), QStringLiteral("collection1_1"));
     QVERIFY(fileInfo1_1.exists());
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QLatin1String("collection1_2")));
-    QFileInfo fileInfo1_2(subDir1.path(), QLatin1String("collection1_2"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QStringLiteral("collection1_2")));
+    QFileInfo fileInfo1_2(subDir1.path(), QStringLiteral("collection1_2"));
     QVERIFY(fileInfo1_2.exists());
 
     // first level mbox parent
     QDir subDir2 = topDir;
     QVERIFY(subDir2.mkdir(QLatin1String(".collection2.directory")));
     QVERIFY(subDir2.cd(QLatin1String(".collection2.directory")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir2.path(), QLatin1String("collection2_1")));
-    QFileInfo fileInfo2_1(subDir2.path(), QLatin1String("collection2_1"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir2.path(), QStringLiteral("collection2_1")));
+    QFileInfo fileInfo2_1(subDir2.path(), QStringLiteral("collection2_1"));
     QVERIFY(fileInfo2_1.exists());
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir2.path(), QLatin1String("collection2_2")));
-    QFileInfo fileInfo2_2(subDir2.path(), QLatin1String("collection2_2"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir2.path(), QStringLiteral("collection2_2")));
+    QFileInfo fileInfo2_2(subDir2.path(), QStringLiteral("collection2_2"));
     QVERIFY(fileInfo2_2.exists());
 
     mStore->setPath(topDir.path());
@@ -325,30 +325,30 @@ void CollectionMoveTest::testMoveToMaildir()
     QDir topDir(mDir->path());
 
     // top level dir
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QFileInfo fileInfo1(topDir, QLatin1String("collection1"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection2")));
-    QFileInfo fileInfo2(topDir, QLatin1String("collection2"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection3")));
-    QFileInfo fileInfo3(topDir, QLatin1String("collection3"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection4")));
-    QFileInfo fileInfo4(topDir, QLatin1String("collection4"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QFileInfo fileInfo1(topDir, QStringLiteral("collection1"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection2")));
+    QFileInfo fileInfo2(topDir, QStringLiteral("collection2"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection3")));
+    QFileInfo fileInfo3(topDir, QStringLiteral("collection3"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection4")));
+    QFileInfo fileInfo4(topDir, QStringLiteral("collection4"));
 
     // first level maildir parent
     QDir subDir1 = topDir;
     QVERIFY(subDir1.mkdir(QLatin1String(".collection1.directory")));
     QVERIFY(subDir1.cd(QLatin1String(".collection1.directory")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QLatin1String("collection1_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QLatin1String("collection1_2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QStringLiteral("collection1_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QStringLiteral("collection1_2")));
 
     // first level mbox parent
     QDir subDir4 = topDir;
     QVERIFY(subDir4.mkdir(QLatin1String(".collection4.directory")));
     QVERIFY(subDir4.cd(QLatin1String(".collection4.directory")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir4.path(), QLatin1String("collection4_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir4.path(), QLatin1String("collection4_2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir4.path(), QLatin1String("collection4_3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir4.path(), QLatin1String("collection4_4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir4.path(), QStringLiteral("collection4_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir4.path(), QStringLiteral("collection4_2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir4.path(), QStringLiteral("collection4_3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir4.path(), QStringLiteral("collection4_4")));
 
     // target maildir
     KPIM::Maildir topLevelMd(topDir.path(), true);
@@ -507,8 +507,8 @@ void CollectionMoveTest::testMoveToMaildir()
     QVERIFY(!subDir1.exists());
     subDir1 = subDirTarget;
     QVERIFY(subDir1.cd(QLatin1String(".collection1.directory")));
-    QCOMPARE(subDir1.entryList(QStringList() << QLatin1String("collection*")),
-             QStringList() << QLatin1String("collection1_1") << QLatin1String("collection1_2"));
+    QCOMPARE(subDir1.entryList(QStringList() << QStringLiteral("collection*")),
+             QStringList() << QStringLiteral("collection1_1") << QStringLiteral("collection1_2"));
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -613,9 +613,9 @@ void CollectionMoveTest::testMoveToMaildir()
     QVERIFY(!subDir4.exists());
     subDir4 = subDirTarget;
     QVERIFY(subDir4.cd(QLatin1String(".collection4.directory")));
-    QCOMPARE(subDir4.entryList(QStringList() << QLatin1String("collection*")),
-             QStringList() << QLatin1String("collection4_1") << QLatin1String("collection4_2")
-             << QLatin1String("collection4_3") << QLatin1String("collection4_4")
+    QCOMPARE(subDir4.entryList(QStringList() << QStringLiteral("collection*")),
+             QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2")
+             << QStringLiteral("collection4_3") << QStringLiteral("collection4_4")
             );
 
     // check for index preservation
@@ -1132,37 +1132,37 @@ void CollectionMoveTest::testMoveToMBox()
     QDir topDir(mDir->path());
 
     // top level dir
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QFileInfo fileInfo1(topDir, QLatin1String("collection1"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection2")));
-    QFileInfo fileInfo2(topDir, QLatin1String("collection2"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection3")));
-    QFileInfo fileInfo3(topDir, QLatin1String("collection3"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection4")));
-    QFileInfo fileInfo4(topDir, QLatin1String("collection4"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection5")));
-    QFileInfo fileInfo5(topDir, QLatin1String("collection5"));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection6")));
-    QFileInfo fileInfo6(topDir, QLatin1String("collection6"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QFileInfo fileInfo1(topDir, QStringLiteral("collection1"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection2")));
+    QFileInfo fileInfo2(topDir, QStringLiteral("collection2"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection3")));
+    QFileInfo fileInfo3(topDir, QStringLiteral("collection3"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection4")));
+    QFileInfo fileInfo4(topDir, QStringLiteral("collection4"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection5")));
+    QFileInfo fileInfo5(topDir, QStringLiteral("collection5"));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection6")));
+    QFileInfo fileInfo6(topDir, QStringLiteral("collection6"));
 
     // first level maildir parent
     QDir subDir1 = topDir;
     QVERIFY(subDir1.mkdir(QLatin1String(".collection1.directory")));
     QVERIFY(subDir1.cd(QLatin1String(".collection1.directory")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QLatin1String("collection1_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QLatin1String("collection1_2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QLatin1String("collection1_3")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QLatin1String("collection1_4")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QStringLiteral("collection1_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QStringLiteral("collection1_2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir1.path(), QStringLiteral("collection1_3")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir1.path(), QStringLiteral("collection1_4")));
 
     // first level mbox parent
     QDir subDir4 = topDir;
     QVERIFY(subDir4.mkdir(QLatin1String(".collection4.directory")));
     QVERIFY(subDir4.cd(QLatin1String(".collection4.directory")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir4.path(), QLatin1String("collection4_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir4.path(), QLatin1String("collection4_2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), subDir4.path(), QStringLiteral("collection4_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), subDir4.path(), QStringLiteral("collection4_2")));
 
     // target mbox
-    QFileInfo fileInfoTarget(topDir.path(), QLatin1String("target"));
+    QFileInfo fileInfoTarget(topDir.path(), QStringLiteral("target"));
     QFile fileTarget(fileInfoTarget.absoluteFilePath());
     QVERIFY(fileTarget.open(QIODevice::WriteOnly));
     fileTarget.close();
@@ -1375,9 +1375,9 @@ void CollectionMoveTest::testMoveToMBox()
     QVERIFY(!subDir1.exists());
     subDir1 = subDirTarget;
     QVERIFY(subDir1.cd(QLatin1String(".collection1.directory")));
-    QCOMPARE(subDir1.entryList(QStringList() << QLatin1String("collection*")),
-             QStringList() << QLatin1String("collection1_1") << QLatin1String("collection1_2")
-             << QLatin1String("collection1_3") << QLatin1String("collection1_4")
+    QCOMPARE(subDir1.entryList(QStringList() << QStringLiteral("collection*")),
+             QStringList() << QStringLiteral("collection1_1") << QStringLiteral("collection1_2")
+             << QStringLiteral("collection1_3") << QStringLiteral("collection1_4")
             );
 
     // check for index preservation
@@ -1483,8 +1483,8 @@ void CollectionMoveTest::testMoveToMBox()
     QVERIFY(!subDir4.exists());
     subDir4 = subDirTarget;
     QVERIFY(subDir4.cd(QLatin1String(".collection4.directory")));
-    QCOMPARE(subDir4.entryList(QStringList() << QLatin1String("collection*")),
-             QStringList() << QLatin1String("collection4_1") << QLatin1String("collection4_2")
+    QCOMPARE(subDir4.entryList(QStringList() << QStringLiteral("collection*")),
+             QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2")
             );
 
     // check for index preservation

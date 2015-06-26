@@ -180,7 +180,7 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
       d(new Private(this))
 {
     Kdelibs4ConfigMigrator migrate(QLatin1String("maildispatcheragent"));
-    migrate.setConfigFiles(QStringList() << QLatin1String("maildispatcheragentrc") << QLatin1String("akonadi_maildispatcher_agent.notifyrc"));
+    migrate.setConfigFiles(QStringList() << QStringLiteral("maildispatcheragentrc") << QStringLiteral("akonadi_maildispatcher_agent.notifyrc"));
     migrate.migrate();
 
     qCDebug(MAILDISPATCHER_LOG) << "maildispatcheragent: At your service, sir!";
@@ -191,10 +191,10 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     new SettingsAdaptor(Settings::self());
     new MailDispatcherAgentAdaptor(this);
 
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
             Settings::self(), QDBusConnection::ExportAdaptors);
 
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/MailDispatcherAgent"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/MailDispatcherAgent"),
             this, QDBusConnection::ExportAdaptors);
     KDBusConnectionPool::threadConnection().registerService(QLatin1String("org.freedesktop.Akonadi.MailDispatcherAgent"));
 

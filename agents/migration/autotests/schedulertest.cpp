@@ -135,7 +135,7 @@ private Q_SLOTS:
         MigrationScheduler scheduler;
         scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id"))));
         QAbstractItemModel &model(scheduler.model());
-        QCOMPARE(model.data(model.index(0, 0)).toString(), QLatin1String("name"));
+        QCOMPARE(model.data(model.index(0, 0)).toString(), QStringLiteral("name"));
     }
 
     void testStartStop()

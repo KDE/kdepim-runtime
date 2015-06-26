@@ -188,7 +188,7 @@ KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterfac
     , cImapAcl("imapacl")
     , cCollectionAnnotations("collectionannotations")
     , cDefaultKeepLocalChanges(QSet<QByteArray>() << cContentMimeTypes << cAccessRights << cImapAcl << cCollectionAnnotations)
-    , cDefaultMimeTypes(QStringList() << Akonadi::Collection::mimeType() << QLatin1String("application/x-kolab-objects"))
+    , cDefaultMimeTypes(QStringList() << Akonadi::Collection::mimeType() << QStringLiteral("application/x-kolab-objects"))
     , cCollectionOnlyContentMimeTypes(QStringList() << Akonadi::Collection::mimeType())
 {
     mRequestedMetadata << "/shared/vendor/kolab/folder-type";
@@ -413,7 +413,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
     qCDebug(KOLABRESOURCE_LOG) << "in total: " << mMailCollections.size();
     mJobs--;
     if (job->error()) {
-        qCWarning(KOLABRESOURCE_LOG) << QLatin1String("Failed to retrieve mailboxes: ") + job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << QStringLiteral("Failed to retrieve mailboxes: ") + job->errorString();
         cancelTask(QStringLiteral("Collection retrieval failed"));
     } else {
         QSet<QString> mailboxes;
@@ -524,7 +524,7 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
     qCDebug(KOLABRESOURCE_LOG) << "received subscribed collections " <<  mTime.elapsed();
     mJobs--;
     if (job->error()) {
-        qCWarning(KOLABRESOURCE_LOG) << QLatin1String("Failed to retrieve subscribed collections: ") + job->errorString();
+        qCWarning(KOLABRESOURCE_LOG) << QStringLiteral("Failed to retrieve subscribed collections: ") + job->errorString();
         cancelTask(QStringLiteral("Collection retrieval failed"));
     } else {
         checkDone();

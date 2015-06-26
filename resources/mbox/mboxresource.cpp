@@ -69,12 +69,12 @@ MboxResource::MboxResource(const QString &id)
     , mMBox(Q_NULLPTR)
 {
     new SettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
             mSettings, QDBusConnection::ExportAdaptors);
 
     QStringList mimeTypes;
-    mimeTypes << QLatin1String("message/rfc822");
-    setSupportedMimetypes(mimeTypes, QLatin1String("message-rfc822"));
+    mimeTypes << QStringLiteral("message/rfc822");
+    setSupportedMimetypes(mimeTypes, QStringLiteral("message-rfc822"));
 
     // Register the list of deleted items as an attribute of the collection.
     AttributeFactory::registerAttribute<DeletedItemsAttribute>();

@@ -70,7 +70,7 @@ KMigratorBase::KMigratorBase() : m_logFile(0)
         m_logFile = 0;
         qWarning() << "Unable to open log file: " << logFileName;
     }
-    logMessage(Info, QLatin1String("Starting migration..."));
+    logMessage(Info, QStringLiteral("Starting migration..."));
     connect(this, &KMigratorBase::message, this, &KMigratorBase::logMessage);
 
     // load the vtable before we continue
@@ -79,13 +79,13 @@ KMigratorBase::KMigratorBase() : m_logFile(0)
 
 KMigratorBase::~KMigratorBase()
 {
-    logMessage(Info, QLatin1String("Migration finished."));
+    logMessage(Info, QStringLiteral("Migration finished."));
     delete m_logFile;
 }
 
 KMigratorBase::MigrationState KMigratorBase::migrationState(const QString &identifier) const
 {
-    KConfigGroup cfg(KSharedConfig::openConfig(), QLatin1String("Resource ") + identifier);
+    KConfigGroup cfg(KSharedConfig::openConfig(), QStringLiteral("Resource ") + identifier);
     QMetaEnum e = metaObject()->enumerator(metaObject()->indexOfEnumerator("MigrationState"));
     const QString s = cfg.readEntry("MigrationState", e.valueToKey(None));
     MigrationState state = (MigrationState)e.keyToValue(s.toLatin1());
@@ -104,7 +104,7 @@ KMigratorBase::MigrationState KMigratorBase::migrationState(const QString &ident
 void KMigratorBase::setMigrationState(const QString &identifier, MigrationState state,
                                       const QString &resId, const QString &type)
 {
-    KConfigGroup cfg(KSharedConfig::openConfig(), QLatin1String("Resource ") + identifier);
+    KConfigGroup cfg(KSharedConfig::openConfig(), QStringLiteral("Resource ") + identifier);
     QMetaEnum e = metaObject()->enumerator(metaObject()->indexOfEnumerator("MigrationState"));
     const QString stateStr = QLatin1String(e.valueToKey(state));
     cfg.writeEntry("MigrationState", stateStr);

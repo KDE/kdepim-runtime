@@ -115,7 +115,7 @@ MaildirResource::MaildirResource(const QString &id)
         job->start();
     }
     new MaildirSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
             mSettings, QDBusConnection::ExportAdaptors);
     connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 

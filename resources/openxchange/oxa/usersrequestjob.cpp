@@ -37,9 +37,9 @@ UsersRequestJob::UsersRequestJob(QObject *parent)
 void UsersRequestJob::start()
 {
     QDomDocument document;
-    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
-    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
-    DAVUtils::addOxElement(document, prop, QLatin1String("user"), QLatin1String("*"));
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QStringLiteral("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QStringLiteral("prop"));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("user"), QStringLiteral("*"));
 
     const QString path = QLatin1String("/servlet/webdav.groupuser");
 

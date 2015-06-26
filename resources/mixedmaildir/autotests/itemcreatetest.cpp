@@ -85,7 +85,7 @@ void ItemCreateTest::testExpectedFail()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("data")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("data")));
     QDir dataDir = topDir;
     QVERIFY(dataDir.cd(QLatin1String("data")));
     KPIM::Maildir dataMd(dataDir.path(), false);
@@ -128,7 +128,7 @@ void ItemCreateTest::testMBox()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("data")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("data")));
     QDir dataDir = topDir;
     QVERIFY(dataDir.cd(QLatin1String("data")));
     KPIM::Maildir dataMd(dataDir.path(), false);
@@ -144,16 +144,16 @@ void ItemCreateTest::testMBox()
     QVERIFY(topDir.mkdir(QLatin1String("store")));
     QVERIFY(topDir.cd(QLatin1String("store")));
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection1")));
 
-    QFileInfo fileInfo1(topDir.path(), QLatin1String("collection1"));
+    QFileInfo fileInfo1(topDir.path(), QStringLiteral("collection1"));
     KMBox::MBox mbox1;
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     QCOMPARE((int)mbox1.entries().count(), 4);
     const int size1 = fileInfo1.size();
 
     // simulate empty mbox
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     QFile file2(fileInfo2.absoluteFilePath());
     QVERIFY(file2.open(QIODevice::WriteOnly));
     file2.close();
@@ -191,7 +191,7 @@ void ItemCreateTest::testMBox()
     Item item = job->item();
     QCOMPARE(item.id(), item1.id());
     QVERIFY(!item.remoteId().isEmpty());
-    QCOMPARE(item.remoteId(), QLatin1String("0"));
+    QCOMPARE(item.remoteId(), QStringLiteral("0"));
     QCOMPARE(item.parentCollection(), collection2);
 
     fileInfo2.refresh();
@@ -323,7 +323,7 @@ void ItemCreateTest::testMaildir()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("data")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("data")));
     QDir dataDir = topDir;
     QVERIFY(dataDir.cd(QLatin1String("data")));
     KPIM::Maildir dataMd(dataDir.path(), false);
@@ -339,7 +339,7 @@ void ItemCreateTest::testMaildir()
     QVERIFY(topDir.mkdir(QLatin1String("store")));
     QVERIFY(topDir.cd(QLatin1String("store")));
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
     KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));

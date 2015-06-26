@@ -67,7 +67,7 @@ QDomElement DavUtils::nextSiblingElementNS(const QDomElement &element, const QSt
 DavUtils::Privileges DavUtils::extractPrivileges(const QDomElement &element)
 {
     Privileges final = None;
-    QDomElement privElement = firstChildElementNS(element, QLatin1String("DAV:"), QLatin1String("privilege"));
+    QDomElement privElement = firstChildElementNS(element, QStringLiteral("DAV:"), QStringLiteral("privilege"));
 
     while (!privElement.isNull()) {
         QDomElement child = privElement.firstChildElement();
@@ -77,7 +77,7 @@ DavUtils::Privileges DavUtils::extractPrivileges(const QDomElement &element)
             child = child.nextSiblingElement();
         }
 
-        privElement = DavUtils::nextSiblingElementNS(privElement, QLatin1String("DAV:"), QLatin1String("privilege"));
+        privElement = DavUtils::nextSiblingElementNS(privElement, QStringLiteral("DAV:"), QStringLiteral("privilege"));
     }
 
     return final;

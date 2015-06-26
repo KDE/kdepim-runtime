@@ -82,7 +82,7 @@ KAlarmDirResource::KAlarmDirResource(const QString &id)
 
     // Set up the resource
     new KAlarmDirSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
             mSettings, QDBusConnection::ExportAdaptors);
     connect(mSettings, &Akonadi_KAlarm_Dir_Resource::Settings::configChanged, this, &KAlarmDirResource::settingsChanged);
 

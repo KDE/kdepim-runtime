@@ -52,7 +52,7 @@ Settings::Settings()
     s_globalSettings->q = this;
 
     new SettingsAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Settings"), this,
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
             QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 

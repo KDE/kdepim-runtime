@@ -101,7 +101,7 @@ void AbortTest::initTestCase()
     sink = Collection(resolver->collection());
     QVERIFY(sink.isValid());
     QDBusInterface conf(QLatin1String("org.freedesktop.Akonadi.Resource.") + rid,
-                        QLatin1String("/Settings"), QLatin1String("org.kde.Akonadi.MailTransportDummy.Settings"));
+                        QLatin1String("/Settings"), QStringLiteral("org.kde.Akonadi.MailTransportDummy.Settings"));
     QVERIFY(conf.isValid());
     QDBusReply<void> reply = conf.call(QLatin1String("setSink"), sink.id());
     QVERIFY(reply.isValid());
@@ -223,7 +223,7 @@ void AbortTest::testAbortWhileIdle()
     // default dispatch mode
     // default sent-mail collection
     qjob->addressAttribute().setFrom(QLatin1String("naiba"));
-    qjob->addressAttribute().setTo(QStringList() << QLatin1String("dracu"));
+    qjob->addressAttribute().setTo(QStringList() << QStringLiteral("dracu"));
     QCOMPARE(iface.dispatcherInstance().status(), AgentInstance::Idle);
     AKVERIFYEXEC(qjob);
 

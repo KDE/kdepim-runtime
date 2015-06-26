@@ -55,7 +55,7 @@ KAlarmResource::KAlarmResource(const QString &id)
 {
     qCDebug(KALARMRESOURCE_LOG) << id;
     KAlarmResourceCommon::initialise(this);
-    initialise(mSettings->alarmTypes(), QLatin1String("kalarm"));
+    initialise(mSettings->alarmTypes(), QStringLiteral("kalarm"));
     connect(mSettings, &Settings::configChanged, this, &KAlarmResource::settingsChanged);
 
     // Start a job to fetch the collection attributes

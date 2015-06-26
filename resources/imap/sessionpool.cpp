@@ -448,7 +448,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
 
     m_capabilities = capJob->capabilities();
     QStringList expected;
-    expected << QLatin1String("IMAP4REV1");
+    expected << QStringLiteral("IMAP4REV1");
 
     QStringList missing;
     foreach (const QString &capability, expected) {

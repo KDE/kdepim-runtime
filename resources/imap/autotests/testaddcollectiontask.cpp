@@ -55,7 +55,7 @@ private Q_SLOTS:
                  << "S: A000004 OK subscribe done";
 
         callNames.clear();
-        callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
+        callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
         QTest::newRow("trivial case") << parentCollection << collection << scenario << callNames
                                       << collection.name() << "/Bar";
@@ -73,7 +73,7 @@ private Q_SLOTS:
                  << "S: A000004 OK subscribe done";
 
         callNames.clear();
-        callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
+        callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
         QTest::newRow("folder with invalid separator") << parentCollection << collection << scenario
                 << callNames << "BarBaz" << "/BarBaz";
@@ -90,7 +90,7 @@ private Q_SLOTS:
                  << "C: A000004 SUBSCRIBE \"INBOX.Foo\""
                  << "S: A000004 OK subscribe done";
         callNames.clear();
-        callNames << QLatin1String("collectionChangeCommitted") << QLatin1String("synchronizeCollectionTree");
+        callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
         QTest::newRow("folder with non-standard separator") << parentCollection << collection << scenario
                 << callNames << "Foo" << ".Foo";
@@ -114,7 +114,7 @@ private Q_SLOTS:
                  << "S: A000005 OK SETMETADATA complete";
 
         callNames.clear();
-        callNames << QLatin1String("collectionChangeCommitted");
+        callNames << QStringLiteral("collectionChangeCommitted");
 
         QTest::newRow("folder with annotations") << parentCollection << collection << scenario << callNames
                 << collection.name() << "/Bar";

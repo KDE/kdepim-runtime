@@ -80,8 +80,8 @@ private Q_SLOTS:
         const Event::Ptr event = item.payload<Event::Ptr>();
         QVERIFY(event != 0);
 
-        QCOMPARE(event->summary(), QLatin1String("Test event"));
-        QCOMPARE(event->location(), QLatin1String("here"));
+        QCOMPARE(event->summary(), QStringLiteral("Test event"));
+        QCOMPARE(event->location(), QStringLiteral("here"));
 
         // serializing
         const QByteArray data = item.payloadData();

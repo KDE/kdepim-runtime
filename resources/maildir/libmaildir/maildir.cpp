@@ -671,19 +671,19 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     QStringList mailDirFlags;
     Q_FOREACH (const Akonadi::Item::Flag &flag, flags) {
         if (flag == Akonadi::MessageFlags::Forwarded) {
-            mailDirFlags << QLatin1String("P");
+            mailDirFlags << QStringLiteral("P");
         }
         if (flag == Akonadi::MessageFlags::Replied) {
-            mailDirFlags << QLatin1String("R");
+            mailDirFlags << QStringLiteral("R");
         }
         if (flag == Akonadi::MessageFlags::Seen) {
-            mailDirFlags << QLatin1String("S");
+            mailDirFlags << QStringLiteral("S");
         }
         if (flag == Akonadi::MessageFlags::Deleted) {
-            mailDirFlags << QLatin1String("T");
+            mailDirFlags << QStringLiteral("T");
         }
         if (flag == Akonadi::MessageFlags::Flagged) {
-            mailDirFlags << QLatin1String("F");
+            mailDirFlags << QStringLiteral("F");
         }
     }
     mailDirFlags.sort();

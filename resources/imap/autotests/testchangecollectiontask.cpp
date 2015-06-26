@@ -92,7 +92,7 @@ private Q_SLOTS:
                  << "S: A000009 OK mailbox subscribed";
 
         callNames.clear();
-        callNames << QLatin1String("collectionChangeCommitted");
+        callNames << QStringLiteral("collectionChangeCommitted");
 
         QTest::newRow("complete case") << collection << parts << scenario << callNames << collection.name() << caps;
 
@@ -125,7 +125,7 @@ private Q_SLOTS:
         parts.clear();
         parts << "NAME";
         callNames.clear();
-        callNames << QLatin1String("collectionChangeCommitted");
+        callNames << QStringLiteral("collectionChangeCommitted");
         QTest::newRow("rename with invalid separator") << collection << parts << scenario << callNames
                 << "BarBaz" << caps;
 

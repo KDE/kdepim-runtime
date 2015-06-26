@@ -42,8 +42,8 @@ void DavItemsFetchJob::start()
     }
 
     const QDomDocument report = protocol->itemsReportQuery(mUrls);
-    KIO::DavJob *job = DavManager::self()->createReportJob(mCollectionUrl.url(), report, QLatin1String("0"));
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    KIO::DavJob *job = DavManager::self()->createReportJob(mCollectionUrl.url(), report, QStringLiteral("0"));
+    job->addMetaData(QLatin1String("PropagateHttpHeader"), QStringLiteral("true"));
     connect(job, &KIO::DavJob::result, this, &DavItemsFetchJob::davJobFinished);
 }
 
@@ -87,29 +87,29 @@ void DavItemsFetchJob::davJobFinished(KJob *job)
     const QDomDocument document = davJob->response();
     const QDomElement documentElement = document.documentElement();
 
-    QDomElement responseElement = DavUtils::firstChildElementNS(documentElement, QLatin1String("DAV:"), QLatin1String("response"));
+    QDomElement responseElement = DavUtils::firstChildElementNS(documentElement, QStringLiteral("DAV:"), QStringLiteral("response"));
 
     while (!responseElement.isNull()) {
-        QDomElement propstatElement = DavUtils::firstChildElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("propstat"));
+        QDomElement propstatElement = DavUtils::firstChildElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("propstat"));
 
         if (propstatElement.isNull()) {
-            responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+            responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
             continue;
         }
 
         // Check for errors
-        const QDomElement statusElement = DavUtils::firstChildElementNS(propstatElement, QLatin1String("DAV:"), QLatin1String("status"));
+        const QDomElement statusElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("status"));
         if (!statusElement.text().contains(QLatin1String("200"))) {
-            responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+            responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
             continue;
         }
 
-        const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QLatin1String("DAV:"), QLatin1String("prop"));
+        const QDomElement propElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("prop"));
 
         DavItem item;
 
         // extract path
-        const QDomElement hrefElement = DavUtils::firstChildElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("href"));
+        const QDomElement hrefElement = DavUtils::firstChildElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("href"));
         const QString href = hrefElement.text();
 
         KUrl url = davJob->url();
@@ -126,7 +126,7 @@ void DavItemsFetchJob::davJobFinished(KJob *job)
         item.setUrl(url.prettyUrl());
 
         // extract etag
-        const QDomElement getetagElement = DavUtils::firstChildElementNS(propElement, QLatin1String("DAV:"), QLatin1String("getetag"));
+        const QDomElement getetagElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("getetag"));
         item.setEtag(getetagElement.text());
 
         // extract content
@@ -135,20 +135,20 @@ void DavItemsFetchJob::davJobFinished(KJob *job)
                                         protocol->dataTagName());
 
         if (dataElement.isNull()) {
-            responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+            responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
             continue;
         }
 
         const QByteArray data = dataElement.firstChild().toText().data().toUtf8();
         if (data.isEmpty()) {
-            responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+            responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
             continue;
         }
 
         item.setData(data);
 
         mItems.insert(item.url(), item);
-        responseElement = DavUtils::nextSiblingElementNS(responseElement, QLatin1String("DAV:"), QLatin1String("response"));
+        responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
     }
 
     emitResult();

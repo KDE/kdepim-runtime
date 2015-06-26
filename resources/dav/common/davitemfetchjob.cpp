@@ -48,13 +48,13 @@ DavItemFetchJob::DavItemFetchJob(const DavUtils::DavUrl &url, const DavItem &ite
 void DavItemFetchJob::start()
 {
     KIO::StoredTransferJob *job = KIO::storedGet(mUrl.url(), KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags);
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QLatin1String("true"));
+    job->addMetaData(QLatin1String("PropagateHttpHeader"), QStringLiteral("true"));
     // Work around a strange bug in Zimbra (seen at least on CE 5.0.18) : if the user-agent
     // contains "Mozilla", some strange debug data is displayed in the shared calendars.
     // This kinda mess up the events parsing...
-    job->addMetaData(QLatin1String("UserAgent"), QLatin1String("KDE DAV groupware client"));
-    job->addMetaData(QLatin1String("cookies"), QLatin1String("none"));
-    job->addMetaData(QLatin1String("no-auth-prompt"), QLatin1String("true"));
+    job->addMetaData(QLatin1String("UserAgent"), QStringLiteral("KDE DAV groupware client"));
+    job->addMetaData(QLatin1String("cookies"), QStringLiteral("none"));
+    job->addMetaData(QLatin1String("no-auth-prompt"), QStringLiteral("true"));
 
     connect(job, &KIO::StoredTransferJob::result, this, &DavItemFetchJob::davJobFinished);
 }

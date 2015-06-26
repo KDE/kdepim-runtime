@@ -33,9 +33,9 @@ ICalResource::ICalResource(const QString &id)
     : ICalResourceBase(id)
 {
     QStringList mimeTypes;
-    mimeTypes << QLatin1String("text/calendar");
+    mimeTypes << QStringLiteral("text/calendar");
     mimeTypes += allMimeTypes();
-    initialise(mimeTypes, QLatin1String("office-calendar"));
+    initialise(mimeTypes, QStringLiteral("office-calendar"));
 }
 
 ICalResource::ICalResource(const QString &id, const QStringList &mimeTypes, const QString &icon)

@@ -143,7 +143,7 @@ void SendJob::Private::doAkonadiTransport()
 
     interface = new QDBusInterface(
         QLatin1String("org.freedesktop.Akonadi.Resource.") + resourceId,
-        QLatin1String("/Transport"), QLatin1String("org.freedesktop.Akonadi.Resource.Transport"),
+        QLatin1String("/Transport"), QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
         KDBusConnectionPool::threadConnection(), q);
 
     if (!interface->isValid()) {
@@ -328,7 +328,7 @@ bool SendJob::Private::filterItem(int filterset)
     // TODO: create on stack
     mailfilterInterface = new QDBusInterface(
         QLatin1String("org.freedesktop.Akonadi.MailFilterAgent"),
-        QLatin1String("/MailFilterAgent"), QLatin1String("org.freedesktop.Akonadi.MailFilterAgent"),
+        QLatin1String("/MailFilterAgent"), QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
         KDBusConnectionPool::threadConnection(), q);
 
     if (!mailfilterInterface->isValid()) {

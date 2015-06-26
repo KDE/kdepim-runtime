@@ -46,7 +46,7 @@ ContactsResource::ContactsResource(const QString &id)
 {
     // setup the resource
     new ContactsResourceSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QLatin1String("/Settings"),
+    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
             mSettings, QDBusConnection::ExportAdaptors);
 
     changeRecorder()->fetchCollection(true);

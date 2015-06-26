@@ -38,9 +38,9 @@ FolderRequestJob::FolderRequestJob(const Folder &folder, QObject *parent)
 void FolderRequestJob::start()
 {
     QDomDocument document;
-    QDomElement multistatus = DAVUtils::addDavElement(document, document, QLatin1String("multistatus"));
-    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QLatin1String("prop"));
-    DAVUtils::addOxElement(document, prop, QLatin1String("object_id"), OXUtils::writeNumber(mFolder.objectId()));
+    QDomElement multistatus = DAVUtils::addDavElement(document, document, QStringLiteral("multistatus"));
+    QDomElement prop = DAVUtils::addDavElement(document, multistatus, QStringLiteral("prop"));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("object_id"), OXUtils::writeNumber(mFolder.objectId()));
 
     const QString path = QLatin1String("/servlet/webdav.folders");
 

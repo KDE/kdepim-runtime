@@ -100,14 +100,14 @@ void CollectionModifyTest::testRename()
     KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
 
     // simulate first level mbox
-    QFileInfo fileInfo3(topDir.path(), QLatin1String("collection3"));
+    QFileInfo fileInfo3(topDir.path(), QStringLiteral("collection3"));
     QFile file3(fileInfo3.absoluteFilePath());
     file3.open(QIODevice::WriteOnly);
     file3.close();
     QVERIFY(fileInfo3.exists());
 
     // simulate first level mbox with subtree
-    QFileInfo fileInfo4(topDir.path(), QLatin1String("collection4"));
+    QFileInfo fileInfo4(topDir.path(), QStringLiteral("collection4"));
     QFile file4(fileInfo4.absoluteFilePath());
     file4.open(QIODevice::WriteOnly);
     file4.close();
@@ -173,10 +173,10 @@ void CollectionModifyTest::testRename()
 
     md2 = topLevelMd.subFolder("collection2");
 
-    fileInfo3 = QFileInfo(topDir.path(), QLatin1String("collection3"));
+    fileInfo3 = QFileInfo(topDir.path(), QStringLiteral("collection3"));
     QVERIFY(fileInfo3.exists());
 
-    fileInfo4 = QFileInfo(topDir.path(), QLatin1String("collection4"));
+    fileInfo4 = QFileInfo(topDir.path(), QStringLiteral("collection4"));
     QVERIFY(fileInfo4.exists());
 
     subDirInfo4 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(fileInfo4.absoluteFilePath()));
@@ -190,7 +190,7 @@ void CollectionModifyTest::testRename()
                             QLatin1String("collection4_2"));
     QVERIFY(fileInfo4_2.exists());
 
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
 
     // test rename first level maildir leaf
     Collection collection2;
@@ -205,7 +205,7 @@ void CollectionModifyTest::testRename()
     collection = job->collection();
     QCOMPARE(collection.remoteId(), collection.name());
     QCOMPARE(collection, collection2);
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2_renamed"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2_renamed"));
     QVERIFY(!md2.isValid(false));
     md2 = topLevelMd.subFolder(collection.remoteId());
     QVERIFY(md2.isValid(false));
@@ -214,7 +214,7 @@ void CollectionModifyTest::testRename()
     job = mStore->modifyCollection(collection2);
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1") << QLatin1String("collection2_renamed"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2_renamed"));
     QVERIFY(md2.isValid(false));
 
     // test renaming of first level mbox leaf
@@ -261,7 +261,7 @@ void CollectionModifyTest::testRename()
     collection = job->collection();
     QCOMPARE(collection.remoteId(), collection.name());
     QCOMPARE(collection, collection4_1);
-    QCOMPARE(md4.subFolderList(), QStringList() << QLatin1String("collection4_1_renamed"));
+    QCOMPARE(md4.subFolderList(), QStringList() << QStringLiteral("collection4_1_renamed"));
     QVERIFY(!md4_1.isValid(false));
     md4_1 = md4.subFolder(collection.remoteId());
     QVERIFY(md4_1.isValid(false));
@@ -270,7 +270,7 @@ void CollectionModifyTest::testRename()
     job = mStore->modifyCollection(collection4_1);
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
-    QCOMPARE(md4.subFolderList(), QStringList() << QLatin1String("collection4_1_renamed"));
+    QCOMPARE(md4.subFolderList(), QStringList() << QStringLiteral("collection4_1_renamed"));
     QVERIFY(md4_1.isValid(false));
 
     // test renaming of second level mbox in mbox parent
@@ -312,7 +312,7 @@ void CollectionModifyTest::testRename()
     collection = job->collection();
     QCOMPARE(collection.remoteId(), collection.name());
     QCOMPARE(collection, collection1);
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1_renamed") << QLatin1String("collection2_renamed"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1_renamed") << QStringLiteral("collection2_renamed"));
     QVERIFY(!md1.isValid(false));
     md1 = topLevelMd.subFolder(collection.remoteId());
     QVERIFY(md1.isValid(false));
@@ -329,7 +329,7 @@ void CollectionModifyTest::testRename()
     job = mStore->modifyCollection(collection1);
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
-    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QLatin1String("collection1_renamed") << QLatin1String("collection2_renamed"));
+    QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1_renamed") << QStringLiteral("collection2_renamed"));
     QVERIFY(md2.isValid(false));
     QVERIFY(fileInfo1_1.exists());
     QVERIFY(md1_2.isValid(false));
@@ -355,7 +355,7 @@ void CollectionModifyTest::testRename()
     QVERIFY(!fileInfo4_2.exists());
     md4_1 = md4.subFolder(QLatin1String("collection4_1_renamed"));
     QVERIFY(md4_1.isValid(false));
-    fileInfo4_2 = QFileInfo(md4.path(), QLatin1String("collection4_2_renamed"));
+    fileInfo4_2 = QFileInfo(md4.path(), QStringLiteral("collection4_2_renamed"));
     QVERIFY(fileInfo4_2.exists());
 
     // test failure of renaming again
@@ -368,8 +368,8 @@ void CollectionModifyTest::testRename()
 
 void CollectionModifyTest::testIndexPreservation()
 {
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), mDir->path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), mDir->path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), mDir->path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), mDir->path(), QStringLiteral("collection2")));
 
     mStore->setPath(mDir->path());
 
@@ -400,7 +400,7 @@ void CollectionModifyTest::testIndexPreservation()
     QCOMPARE((int)collections.count(), 1);
     QCOMPARE(collections.first(), collection1);
 
-    const QFileInfo indexFileInfo1(mDir->path(), QLatin1String(".collection1_renamed.index"));
+    const QFileInfo indexFileInfo1(mDir->path(), QStringLiteral(".collection1_renamed.index"));
     QVERIFY(!indexFileInfo1.exists());
 
     // get the items and check the flags (see data/README)
@@ -438,7 +438,7 @@ void CollectionModifyTest::testIndexPreservation()
     QCOMPARE((int)collections.count(), 1);
     QCOMPARE(collections.first(), collection2);
 
-    const QFileInfo indexFileInfo2(mDir->path(), QLatin1String(".collection2_renamed.index"));
+    const QFileInfo indexFileInfo2(mDir->path(), QStringLiteral(".collection2_renamed.index"));
     QVERIFY(!indexFileInfo2.exists());
 
     // get the items and check the flags (see data/README)
@@ -469,19 +469,19 @@ void CollectionModifyTest::testIndexCacheUpdate()
     KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
 
     // simulate first level mbox
-    QFileInfo fileInfo2(mDir->path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(mDir->path(), QStringLiteral("collection2"));
     QFile file2(fileInfo2.absoluteFilePath());
     file2.open(QIODevice::WriteOnly);
     file2.close();
     QVERIFY(fileInfo2.exists());
 
     const QString colSubDir1 = KPIM::Maildir::subDirPathForFolderPath(md1.path());
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir1, QLatin1String("collection1_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir1, QLatin1String("collection1_2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir1, QStringLiteral("collection1_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir1, QStringLiteral("collection1_2")));
 
     const QString colSubDir2 = KPIM::Maildir::subDirPathForFolderPath(fileInfo2.absoluteFilePath());
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir2, QLatin1String("collection2_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir2, QLatin1String("collection2_2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir2, QStringLiteral("collection2_1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir2, QStringLiteral("collection2_2")));
 
     mStore->setPath(mDir->path());
 

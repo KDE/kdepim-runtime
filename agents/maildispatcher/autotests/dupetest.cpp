@@ -71,7 +71,7 @@ void DupeTest::initTestCase()
     sink = Collection(resolver->collection());
     QVERIFY(sink.isValid());
     QDBusInterface conf(QLatin1String("org.freedesktop.Akonadi.Resource.") + rid,
-                        QLatin1String("/Settings"), QLatin1String("org.kde.Akonadi.MailTransportDummy.Settings"));
+                        QLatin1String("/Settings"), QStringLiteral("org.kde.Akonadi.MailTransportDummy.Settings"));
     QVERIFY(conf.isValid());
     QDBusReply<void> reply = conf.call(QLatin1String("setSink"), sink.id());
     QVERIFY(reply.isValid());
@@ -153,7 +153,7 @@ void DupeTest::testDupes()
         // default dispatch mode
         // default sent-mail collection
         job->addressAttribute().setFrom(QLatin1String("naiba"));
-        job->addressAttribute().setTo(QStringList() << QLatin1String("dracu"));
+        job->addressAttribute().setTo(QStringList() << QStringLiteral("dracu"));
         //AKVERIFYEXEC( job );
         job->start();
         QTest::qWait(delay);

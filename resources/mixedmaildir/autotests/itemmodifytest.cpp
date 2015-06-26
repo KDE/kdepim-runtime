@@ -103,8 +103,8 @@ void ItemModifyTest::testExpectedFail()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -112,7 +112,7 @@ void ItemModifyTest::testExpectedFail()
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
     QCOMPARE((int)entrySet1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
@@ -186,8 +186,8 @@ void ItemModifyTest::testIgnorePayload()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -195,7 +195,7 @@ void ItemModifyTest::testIgnorePayload()
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
@@ -262,8 +262,8 @@ void ItemModifyTest::testModifyPayload()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -271,7 +271,7 @@ void ItemModifyTest::testModifyPayload()
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
@@ -390,8 +390,8 @@ void ItemModifyTest::testModifyFlags()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -399,7 +399,7 @@ void ItemModifyTest::testModifyFlags()
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();
@@ -556,8 +556,8 @@ void ItemModifyTest::testModifyFlagsAndPayload()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QLatin1String("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QLatin1String("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
@@ -565,7 +565,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
-    QFileInfo fileInfo2(topDir.path(), QLatin1String("collection2"));
+    QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     MBoxEntry::List entryList2 = mbox2.entries();

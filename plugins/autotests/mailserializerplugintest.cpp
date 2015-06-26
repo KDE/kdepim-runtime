@@ -51,7 +51,7 @@ void MailSerializerPluginTest::testMailPlugin()
     KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
     QVERIFY(msg != 0);
 
-    QCOMPARE(msg->to()->asUnicodeString(), QLatin1String("receiver@test.org"));
+    QCOMPARE(msg->to()->asUnicodeString(), QStringLiteral("receiver@test.org"));
     QCOMPARE(msg->body(), QByteArray("Body data."));
 
     // serializing
