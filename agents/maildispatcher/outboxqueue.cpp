@@ -27,7 +27,6 @@
 #include <KLocalizedString>
 
 #include <Attribute>
-#include <Item>
 #include <ItemFetchJob>
 #include <ItemFetchScope>
 #include <Monitor>

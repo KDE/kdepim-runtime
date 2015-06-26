@@ -20,10 +20,10 @@
 #ifndef OUTBOXQUEUE_H
 #define OUTBOXQUEUE_H
 
-#include <QObject>
-
 #include <Collection>
 #include <Item>
+
+#include <QObject>
 
 class KJob;
 
