@@ -41,7 +41,17 @@ void DavItemDeleteJob::start()
     connect(job, &KIO::DeleteJob::result, this, &DavItemDeleteJob::davJobFinished);
 }
 
-void DavItemDeleteJob::davJobFinished(KJob *job)
+DavItem DavItemDeleteJob::freshItem() const
+{
+  return mFreshItem;
+}
+
+int DavItemDeleteJob::freshResponseCode() const
+{
+  return mFreshResponseCode;
+}
+
+void DavItemDeleteJob::davJobFinished( KJob *job )
 {
     KIO::DeleteJob *deleteJob = qobject_cast<KIO::DeleteJob *>(job);
 
@@ -62,7 +72,6 @@ void DavItemDeleteJob::davJobFinished(KJob *job)
             setError(UserDefinedError + responseCode);
             setErrorText(i18n("There was a problem with the request. The item has not been deleted from the server.\n"
                               "%1 (%2).", err, responseCode));
-        }
     }
 
     if ( hasConflict() ) {
@@ -71,18 +80,9 @@ void DavItemDeleteJob::davJobFinished(KJob *job)
         fetchJob->start();
         return;
     }
+  }
 
-    emitResult();
-}
-
-DavItem DavItemDeleteJob::freshItem() const
-{
-    return mFreshItem;
-}
-
-int DavItemDeleteJob::freshResponseCode() const
-{
-    return mFreshResponseCode;
+  emitResult();
 }
 
 void DavItemDeleteJob::conflictingItemFetched( KJob *job )

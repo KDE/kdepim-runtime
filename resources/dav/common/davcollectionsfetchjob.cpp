@@ -84,28 +84,28 @@ void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
     qDebug() << "Found " << homeSets.size() << " homesets";
     qDebug() << homeSets;
 
-    if (homeSets.isEmpty()) {
-        // Same as above, retry as if it were a calendar URL.
-        doCollectionsFetch(mUrl.url());
-        return;
+  if ( homeSets.isEmpty() ) {
+    // Same as above, retry as if it were a calendar URL.
+    doCollectionsFetch( mUrl.url() );
+    return;
+  }
+
+  foreach ( const QString &homeSet, homeSets ) {
+    KUrl url = mUrl.url();
+
+    if ( homeSet.startsWith( QLatin1Char('/') ) ) {
+      // homeSet is only a path, use request url to complete
+      url.setEncodedPath( homeSet.toLatin1() );
+    } else {
+      // homeSet is a complete url
+      KUrl tmpUrl( homeSet );
+      tmpUrl.setUser( url.user() );
+      tmpUrl.setPass( url.pass() );
+      url = tmpUrl;
     }
 
-    foreach (const QString &homeSet, homeSets) {
-        KUrl url = mUrl.url();
-
-        if (homeSet.startsWith(QLatin1Char('/'))) {
-            // homeSet is only a path, use request url to complete
-            url.setEncodedPath(homeSet.toLatin1());
-        } else {
-            // homeSet is a complete url
-            KUrl tmpUrl(homeSet);
-            tmpUrl.setUser(url.user());
-            tmpUrl.setPass(url.pass());
-            url = tmpUrl;
-        }
-
-        doCollectionsFetch(url);
-    }
+    doCollectionsFetch( url );
+  }
 }
 
 void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
@@ -319,12 +319,12 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
         }
     }
 
-    subjobFinished();
+  subjobFinished();
 }
 
 void DavCollectionsFetchJob::subjobFinished()
 {
-    if ( --mSubJobCount == 0 )
-        emitResult();
+  if ( --mSubJobCount == 0 )
+    emitResult();
 }
 

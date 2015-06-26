@@ -52,7 +52,7 @@ DavItem DavItemModifyJob::item() const
 
 DavItem DavItemModifyJob::freshItem() const
 {
-    return mFreshItem;
+  return mFreshItem;
 }
 
 int DavItemModifyJob::freshResponseCode() const
@@ -117,15 +117,16 @@ void DavItemModifyJob::davJobFinished( KJob *job )
     fetchJob->start();
 }
 
-void DavItemModifyJob::itemRefreshed(KJob *job)
+void DavItemModifyJob::itemRefreshed( KJob *job )
 {
-    if (!job->error()) {
-        DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob *>(job);
-        mItem.setEtag(fetchJob->item().etag());
-    } else {
-        mItem.setEtag(QString());
-    }
-    emitResult();
+  if ( !job->error() ) {
+    DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob*>( job );
+    mItem.setEtag( fetchJob->item().etag() );
+  }
+  else {
+    mItem.setEtag( QString() );
+  }
+  emitResult();
 }
 
 void DavItemModifyJob::conflictingItemFetched( KJob *job )
