@@ -29,7 +29,7 @@ DummyMigrator::DummyMigrator(const QString &identifier)
 
 QString DummyMigrator::displayName() const
 {
-    return QLatin1String("dummymigrator");
+    return QStringLiteral("dummymigrator");
 }
 
 void DummyMigrator::startWork()

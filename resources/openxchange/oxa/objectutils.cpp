@@ -123,9 +123,9 @@ void *OXA::ObjectUtils::preloadData(const Object &object, KJob *job)
 QString OXA::ObjectUtils::davPath(Folder::Module module)
 {
     switch (module) {
-    case Folder::Contacts: return QLatin1String("/servlet/webdav.contacts"); break;
-    case Folder::Calendar: return QLatin1String("/servlet/webdav.calendar"); break;
-    case Folder::Tasks: return QLatin1String("/servlet/webdav.tasks"); break;
+    case Folder::Contacts: return QStringLiteral("/servlet/webdav.contacts"); break;
+    case Folder::Calendar: return QStringLiteral("/servlet/webdav.calendar"); break;
+    case Folder::Tasks: return QStringLiteral("/servlet/webdav.tasks"); break;
     case Folder::Unbound: Q_ASSERT(false); return QString(); break;
     }
 

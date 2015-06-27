@@ -182,8 +182,9 @@ bool VCardResource::writeToFile(const QString &fileName)
 
     QVector<KContacts::Addressee> v;
     v.reserve(mAddressees.size());
-    foreach (const KContacts::Addressee &addressee, mAddressees)
+    foreach (const KContacts::Addressee &addressee, mAddressees) {
         v.push_back(addressee);
+    }
 
     const QByteArray data = mConverter.createVCards(v);
 

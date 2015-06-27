@@ -45,11 +45,11 @@ namespace
 QString messageTypeToString(KMigratorBase::MessageType type)
 {
     switch (type) {
-    case KMigratorBase::Success: return QLatin1String("Success");
-    case KMigratorBase::Skip:    return QLatin1String("Skipped");
-    case KMigratorBase::Info:    return QLatin1String("Info   ");
-    case KMigratorBase::Warning: return QLatin1String("WARNING");
-    case KMigratorBase::Error:   return QLatin1String("ERROR  ");
+    case KMigratorBase::Success: return QStringLiteral("Success");
+    case KMigratorBase::Skip:    return QStringLiteral("Skipped");
+    case KMigratorBase::Info:    return QStringLiteral("Info   ");
+    case KMigratorBase::Warning: return QStringLiteral("WARNING");
+    case KMigratorBase::Error:   return QStringLiteral("ERROR  ");
     }
     Q_ASSERT(false);
     return QString();

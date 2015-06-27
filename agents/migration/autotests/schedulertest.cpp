@@ -39,7 +39,7 @@ public:
 
     QString displayName() const Q_DECL_OVERRIDE
     {
-        return QLatin1String("name");
+        return QStringLiteral("name");
     }
 
     void startWork() Q_DECL_OVERRIDE

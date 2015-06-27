@@ -32,7 +32,7 @@ AkonotesResource::~AkonotesResource()
 
 QString AkonotesResource::itemMimeType() const
 {
-    return QLatin1String("text/x-vnd.akonadi.note");
+    return QStringLiteral("text/x-vnd.akonadi.note");
 }
 
 void AkonotesResource::configure(WId windowId)
@@ -43,7 +43,7 @@ void AkonotesResource::configure(WId windowId)
 
 QString AkonotesResource::defaultResourceType()
 {
-    return QLatin1String("notes");
+    return QStringLiteral("notes");
 }
 
 AKONADI_RESOURCE_MAIN(AkonotesResource)

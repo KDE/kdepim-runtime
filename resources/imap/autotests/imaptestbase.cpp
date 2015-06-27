@@ -29,12 +29,12 @@ ImapTestBase::ImapTestBase(QObject *parent)
 
 QString ImapTestBase::defaultUserName() const
 {
-    return QLatin1String("test@kdab.com");
+    return QStringLiteral("test@kdab.com");
 }
 
 QString ImapTestBase::defaultPassword() const
 {
-    return QLatin1String("foobar");
+    return QStringLiteral("foobar");
 }
 
 ImapAccount *ImapTestBase::createDefaultAccount() const

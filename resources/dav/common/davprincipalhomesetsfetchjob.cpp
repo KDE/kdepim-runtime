@@ -39,10 +39,10 @@ void DavPrincipalHomeSetsFetchJob::fetchHomeSets(bool homeSetsOnly)
 {
     QDomDocument document;
 
-    QDomElement propfindElement = document.createElementNS(QLatin1String("DAV:"), QStringLiteral("propfind"));
+    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
     document.appendChild(propfindElement);
 
-    QDomElement propElement = document.createElementNS(QLatin1String("DAV:"), QStringLiteral("prop"));
+    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
     propfindElement.appendChild(propElement);
 
     const QString homeSet = DavManager::self()->davProtocol(mUrl.protocol())->principalHomeSet();
@@ -50,8 +50,8 @@ void DavPrincipalHomeSetsFetchJob::fetchHomeSets(bool homeSetsOnly)
     propElement.appendChild(document.createElementNS(homeSetNS, homeSet));
 
     if (!homeSetsOnly) {
-        propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QStringLiteral("current-user-principal")));
-        propElement.appendChild(document.createElementNS(QLatin1String("DAV:"), QStringLiteral("principal-URL")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("current-user-principal")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("principal-URL")));
     }
 
     KIO::DavJob *job = DavManager::self()->createPropFindJob(mUrl.url(), document, QStringLiteral("0"));

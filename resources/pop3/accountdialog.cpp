@@ -155,7 +155,6 @@ void AccountDialog::setupWidgets()
 
     connect(usePipeliningCheck, &QCheckBox::clicked, this, &AccountDialog::slotPipeliningClicked);
 
-
     // FIXME: Hide widgets which are not supported yet
     filterOnServerCheck->hide();
     filterOnServerSizeSpin->hide();

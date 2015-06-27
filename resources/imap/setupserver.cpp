@@ -72,17 +72,17 @@ static QString authenticationModeString(MailTransport::Transport::EnumAuthentica
 {
     switch (mode) {
     case  MailTransport::Transport::EnumAuthenticationType::LOGIN:
-        return QLatin1String("LOGIN");
+        return QStringLiteral("LOGIN");
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-        return QLatin1String("PLAIN");
+        return QStringLiteral("PLAIN");
     case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-        return QLatin1String("CRAM-MD5");
+        return QStringLiteral("CRAM-MD5");
     case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-        return QLatin1String("DIGEST-MD5");
+        return QStringLiteral("DIGEST-MD5");
     case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-        return QLatin1String("GSSAPI");
+        return QStringLiteral("GSSAPI");
     case MailTransport::Transport::EnumAuthenticationType::NTLM:
-        return QLatin1String("NTLM");
+        return QStringLiteral("NTLM");
     case MailTransport::Transport::EnumAuthenticationType::CLEAR:
         return i18nc("Authentication method", "Clear text");
     case MailTransport::Transport::EnumAuthenticationType::ANONYMOUS:

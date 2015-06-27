@@ -41,7 +41,6 @@ private Q_SLOTS:
         QVERIFY(!attr.myRights());
     }
 
-
     void shouldBuildAttribute()
     {
         QMap<QByteArray, KIMAP::Acl::Rights> right;
@@ -197,7 +196,7 @@ private Q_SLOTS:
                                      << QByteArray("testme@host l %% otheruser@host lr % user@host lr");
 
         QTest::newRow("myrights") << acl << KIMAP::Acl::rightsFromString("lrswipckxtdaen") << QByteArray("otheruser@host lr % user@host lr %%  %% lrswipckxtdaen")
-                                     << QByteArray("testme@host l %% otheruser@host lr % user@host lr %% lrswipckxtdaen");
+                                  << QByteArray("testme@host l %% otheruser@host lr % user@host lr %% lrswipckxtdaen");
     }
 
     void testSerializeDeserialize()

@@ -428,11 +428,11 @@ QString KolabHelpers::getIcon(Kolab::FolderType type)
     case Kolab::EventType:
     case Kolab::TaskType:
     case Kolab::JournalType:
-        return QLatin1String("view-calendar");
+        return QStringLiteral("view-calendar");
     case Kolab::ContactType:
-        return QLatin1String("view-pim-contacts");
+        return QStringLiteral("view-pim-contacts");
     case Kolab::NoteType:
-        return QLatin1String("view-pim-notes");
+        return QStringLiteral("view-pim-notes");
     case Kolab::MailType:
     case Kolab::ConfigurationType:
     case Kolab::FreebusyType:
