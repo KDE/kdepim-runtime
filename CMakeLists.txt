@@ -40,7 +40,7 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-find_package(ECM 5.11.0 REQUIRED NO_MODULE)
+find_package(ECM 5.12.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
 include(ECMPackageConfigHelpers)
@@ -51,10 +51,10 @@ include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
 include(ECMInstallIcons)
 
-set(KF5_VERSION "5.11.0")
+set(KF5_VERSION "5.12.0")
 set(QT_REQUIRED_VERSION "5.4.0")
 
-set(KDEPIMLIBS_LIB_VERSION "4.83.0")
+set(KDEPIMLIBS_LIB_VERSION "4.84.0")
 
 set(KDEPIMRUNTIME_LIB_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}.0")
 set(KDEPIMRUNTIME_LIB_SOVERSION "5")
