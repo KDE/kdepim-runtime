@@ -219,9 +219,9 @@ void VCardDirResource::retrieveCollections()
     mimeTypes << KContacts::Addressee::mimeType();
     c.setContentMimeTypes(mimeTypes);
     if (Settings::self()->readOnly()) {
-        c.setRights(Collection::CanChangeCollection);
+        c.setRights(Collection::ReadOnly);
     } else {
-        Collection::Rights rights = Collection::ReadOnly;
+        Collection::Rights rights;
         rights |= Collection::CanChangeItem;
         rights |= Collection::CanCreateItem;
         rights |= Collection::CanDeleteItem;
