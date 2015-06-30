@@ -28,76 +28,208 @@
 
 QTEST_MAIN(MailSerializerTest)
 
+void MailSerializerTest::testEnvelopeDeserialize_data()
+{
+    QTest::addColumn<int>("version");
+    QTest::addColumn<QByteArray>("data");
+    QTest::addColumn<QDateTime>("date");
+    QTest::addColumn<QString>("subject");
+    QTest::addColumn<QString>("from");
+    QTest::addColumn<QString>("sender");
+    QTest::addColumn<QString>("replyTo");
+    QTest::addColumn<QString>("to");
+    QTest::addColumn<QString>("cc");
+    QTest::addColumn<QString>("bcc");
+    QTest::addColumn<QString>("inReplyTo");
+    QTest::addColumn<QString>("messageId");
+    QTest::addColumn<QString>("references");
+
+    QTest::newRow("v1 - no references")
+            << 1
+            << QByteArray("(\"Wed, 1 Feb 2006 13:37:19 UT\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL <{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>)")
+            << QDateTime(QDate(2006, 2, 1), QTime(13, 37, 19), Qt::UTC)
+            << QString::fromUtf8("IMPORTANT: Akonadi Test")
+            << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+            << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+            << QString()
+            << QString::fromUtf8("Ingo Kloecker <kloecker@kde.org>")
+            << QString() << QString() << QString()
+            << QString::fromUtf8("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>")
+            << QString();
+
+    QTest::newRow("v1 - with references")
+            << 1
+            << QByteArray("(\"Wed, 1 Feb 2006 13:37:19 UT\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL <{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org> \"<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org> <{9999927e-77f4-489d-bf18-e805be96718c}@server.kde.org>\")")
+            << QDateTime(QDate(2006, 2, 1), QTime(13, 37, 19), Qt::UTC)
+            << QString::fromUtf8("IMPORTANT: Akonadi Test")
+            << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+            << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+            << QString()
+            << QString::fromUtf8("Ingo Kloecker <kloecker@kde.org>")
+            << QString()
+            << QString()
+            << QString()
+            << QString::fromUtf8("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>")
+            << QString::fromUtf8("<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org> <{9999927e-77f4-489d-bf18-e805be96718c}@server.kde.org>");
+
+    QBuffer buffer;
+    buffer.open(QIODevice::WriteOnly);
+    QDataStream stream(&buffer);
+    stream << QDateTime(QDate(2015, 6, 29), QTime(23, 50, 10), Qt::UTC)
+           << QString::fromUtf8("Důležité: Testování Akonadi")
+           << QString::fromUtf8("<1234567.icameup@withthis>")
+           << QString::fromUtf8("<2849719.IhmDc3qecs@thor>")
+           << QString::fromUtf8("<1234567.icameup@withthis> <7654321.icameupwith@thistoo>")
+           << 1 << QString::fromUtf8("Daniel Vrátil") << QString::fromUtf8("dvratil") << QString::fromUtf8("kde.org")
+           << 1 << QString::fromUtf8("Daniel Vrátil") << QString::fromUtf8("dvratil") << QString::fromUtf8("kde.org")
+           << 0
+           << 1 << QString::fromUtf8("Volker Krause") << QString::fromUtf8("vkrause") << QString::fromUtf8("kde.org")
+           << 0
+           << 0;
+
+    QTest::newRow("v2")
+            << 2
+            << buffer.data()
+            << QDateTime(QDate(2015, 6, 29), QTime(23, 50, 10), Qt::UTC)
+            << QString::fromUtf8("Důležité: Testování Akonadi")
+            << QString::fromUtf8("Daniel Vrátil <dvratil@kde.org>")
+            << QString::fromUtf8("Daniel Vrátil <dvratil@kde.org>")
+            << QString() // reply to
+            << QString::fromUtf8("Volker Krause <vkrause@kde.org>")
+            << QString() // cc
+            << QString() // bcc
+            << QString::fromUtf8("<1234567.icameup@withthis>")
+            << QString::fromUtf8("<2849719.IhmDc3qecs@thor>")
+            << QString::fromUtf8("<1234567.icameup@withthis> <7654321.icameupwith@thistoo>");
+}
+
+
 void MailSerializerTest::testEnvelopeDeserialize()
 {
+    QFETCH(int, version);
+    QFETCH(QByteArray, data);
+    QFETCH(QDateTime, date);
+    QFETCH(QString, subject);
+    QFETCH(QString, from);
+    QFETCH(QString, sender);
+    QFETCH(QString, replyTo);
+    QFETCH(QString, to);
+    QFETCH(QString, cc);
+    QFETCH(QString, bcc);
+    QFETCH(QString, inReplyTo);
+    QFETCH(QString, messageId);
+    QFETCH(QString, references);
+
     Item i;
     i.setMimeType(QStringLiteral("message/rfc822"));
 
     SerializerPluginMail *serializer = new SerializerPluginMail();
 
     // envelope
-    QByteArray env("(\"Wed, 1 Feb 2006 13:37:19 UT\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL <{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>)");
     QBuffer buffer;
-    buffer.setData(env);
+    buffer.setData(data);
     buffer.open(QIODevice::ReadOnly);
-    buffer.seek(0);
     QBENCHMARK {
-        serializer->deserialize(i, MessagePart::Envelope, buffer, 0);
+        buffer.seek(0);
+        serializer->deserialize(i, MessagePart::Envelope, buffer, version);
     }
     QVERIFY(i.hasPayload<KMime::Message::Ptr>());
 
     KMime::Message::Ptr msg = i.payload<KMime::Message::Ptr>();
-    QCOMPARE(msg->subject()->asUnicodeString(), QString::fromUtf8("IMPORTANT: Akonadi Test"));
-    QCOMPARE(msg->from()->asUnicodeString(), QString::fromUtf8("Tobias Koenig <tokoe@kde.org>"));
-    QCOMPARE(msg->to()->asUnicodeString(), QString::fromUtf8("Ingo Kloecker <kloecker@kde.org>"));
+    QCOMPARE(msg->date()->dateTime(), date);
+    QCOMPARE(msg->subject()->asUnicodeString(), subject);
+    QCOMPARE(msg->from()->asUnicodeString(), from);
+    QCOMPARE(msg->sender()->asUnicodeString(), sender);
+    QCOMPARE(msg->replyTo()->asUnicodeString(), replyTo);
+    QCOMPARE(msg->to()->asUnicodeString(), to);
+    QCOMPARE(msg->cc()->asUnicodeString(), cc);
+    QCOMPARE(msg->bcc()->asUnicodeString(), bcc);
+    QCOMPARE(msg->inReplyTo()->asUnicodeString(), inReplyTo);
+    QCOMPARE(msg->messageID()->asUnicodeString(), messageId);
+    QCOMPARE(msg->references()->asUnicodeString(), references);
 
     delete serializer;
 }
 
-void MailSerializerTest::testEnvelopeDeserializeWithReferencesHeader()
+void MailSerializerTest::testEnvelopeSerialize_data()
 {
-    Item i;
-    i.setMimeType(QStringLiteral("message/rfc822"));
+    QTest::addColumn<QDateTime>("date");
+    QTest::addColumn<QString>("subject");
+    QTest::addColumn<QString>("from");
+    QTest::addColumn<QString>("sender");
+    QTest::addColumn<QString>("replyTo");
+    QTest::addColumn<QString>("to");
+    QTest::addColumn<QString>("cc");
+    QTest::addColumn<QString>("bcc");
+    QTest::addColumn<QString>("inReplyTo");
+    QTest::addColumn<QString>("messageId");
+    QTest::addColumn<QString>("references");
+    QTest::addColumn<QByteArray>("data");
 
-    SerializerPluginMail *serializer = new SerializerPluginMail();
-
-    // envelope
-    QByteArray env("(\"Wed, 1 Feb 2006 13:37:19 UT\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL <{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org> \"<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org> <{9999927e-77f4-489d-bf18-e805be96718c}@server.kde.org>\")");
     QBuffer buffer;
-    buffer.setData(env);
-    buffer.open(QIODevice::ReadOnly);
-    buffer.seek(0);
-    QBENCHMARK {
-        serializer->deserialize(i, MessagePart::Envelope, buffer, 1);
-    }
-    QVERIFY(i.hasPayload<KMime::Message::Ptr>());
-
-    KMime::Message::Ptr msg = i.payload<KMime::Message::Ptr>();
-    QCOMPARE(msg->subject()->asUnicodeString(), QString::fromUtf8("IMPORTANT: Akonadi Test"));
-    QCOMPARE(msg->from()->asUnicodeString(), QString::fromUtf8("Tobias Koenig <tokoe@kde.org>"));
-    QCOMPARE(msg->to()->asUnicodeString(), QString::fromUtf8("Ingo Kloecker <kloecker@kde.org>"));
-    QCOMPARE(msg->references()->asUnicodeString(), QString::fromUtf8("<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org> <{9999927e-77f4-489d-bf18-e805be96718c}@server.kde.org>"));
-
-    delete serializer;
+    buffer.open(QIODevice::WriteOnly);
+    QDataStream stream(&buffer);
+    stream << QDateTime(QDate(2006, 2, 1), QTime(13, 37, 19), Qt::UTC)
+           << QString::fromUtf8("IMPORTANT: Akonadi Test")
+           << QString::fromUtf8("")
+           << QString::fromUtf8("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>")
+           << QString::fromUtf8("")
+           << 1 << QString::fromUtf8("Tobias Koenig") << QString::fromUtf8("tokoe") << QString::fromUtf8("kde.org")
+           << 1 << QString::fromUtf8("Tobias Koenig") << QString::fromUtf8("tokoe") << QString::fromUtf8("kde.org")
+           << 0
+           << 1 << QString::fromUtf8("Ingo Kloecker") << QString::fromUtf8("kloecker") << QString::fromUtf8("kde.org")
+           << 0
+           << 0;
+    QTest::newRow("")
+        << QDateTime(QDate(2006, 2, 1), QTime(13, 37, 19), Qt::UTC)
+        << QString::fromUtf8("IMPORTANT: Akonadi Test")
+        << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+        << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+        << QString()
+        << QString::fromUtf8("Ingo Kloecker <kloecker@kde.org>")
+        << QString()
+        << QString()
+        << QString()
+        << QString::fromUtf8("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>")
+        << QString()
+        << buffer.data();
 }
+
 
 void MailSerializerTest::testEnvelopeSerialize()
 {
+    QFETCH(QDateTime, date);
+    QFETCH(QString, subject);
+    QFETCH(QString, from);
+    QFETCH(QString, sender);
+    QFETCH(QString, replyTo);
+    QFETCH(QString, to);
+    QFETCH(QString, cc);
+    QFETCH(QString, bcc);
+    QFETCH(QString, inReplyTo);
+    QFETCH(QString, messageId);
+    QFETCH(QString, references);
+    QFETCH(QByteArray, data);
+
     Item i;
     i.setMimeType(QStringLiteral("message/rfc822"));
     Message *msg = new Message();
-    msg->date()->from7BitString("Wed, 1 Feb 2006 13:37:19 UT");
-    msg->subject()->from7BitString("IMPORTANT: Akonadi Test");
-    msg->from()->from7BitString("Tobias Koenig <tokoe@kde.org>");
-    msg->sender()->from7BitString("Tobias Koenig <tokoe@kde.org>");
-    msg->to()->from7BitString("Ingo Kloecker <kloecker@kde.org>");
-    msg->messageID()->from7BitString("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>");
+    msg->date()->setDateTime(date);
+    msg->subject()->fromUnicodeString(subject, "UTF-8");
+    msg->from()->fromUnicodeString(from, "UTF-8");
+    msg->sender()->fromUnicodeString(sender, "UTF-8");
+    msg->replyTo()->fromUnicodeString(replyTo, "UTF-8");
+    msg->to()->fromUnicodeString(to, "UTF-8");
+    msg->cc()->fromUnicodeString(cc, "UTF-8");
+    msg->bcc()->fromUnicodeString(bcc, "UTF-8");
+    msg->inReplyTo()->fromUnicodeString(inReplyTo, "UTF-8");
+    msg->messageID()->fromUnicodeString(messageId, "UTF-8");
+    msg->references()->fromUnicodeString(references, "UTF-8");
     i.setPayload(KMime::Message::Ptr(msg));
 
     SerializerPluginMail *serializer = new SerializerPluginMail();
 
     // envelope
-    QByteArray expEnv("(\"Wed, 01 Feb 2006 13:37:19 +0000\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL \"<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>\" NIL)");
     QByteArray env;
     QBuffer buffer;
     buffer.setBuffer(&env);
@@ -107,27 +239,7 @@ void MailSerializerTest::testEnvelopeSerialize()
         buffer.seek(0);
         serializer->serialize(i, MessagePart::Envelope, buffer, version);
     }
-    QCOMPARE(env, expEnv);
-
-    // envelop with references header
-    msg->references()->from7BitString("<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org>");
-    expEnv = QByteArray("(\"Wed, 01 Feb 2006 13:37:19 +0000\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL \"<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>\" \"<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org>\")");
-
-    buffer.close();
-    buffer.open(QIODevice::ReadWrite);
-    buffer.seek(0);
-    serializer->serialize(i, MessagePart::Envelope, buffer, version);
-    QCOMPARE(env, expEnv);
-
-    // envelop with references header with multiple entries
-    msg->references()->from7BitString("<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org> <{9999927e-77f4-489d-bf18-e805be96718c}@server.kde.org>");
-    expEnv = QByteArray("(\"Wed, 01 Feb 2006 13:37:19 +0000\" \"IMPORTANT: Akonadi Test\" ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) ((\"Tobias Koenig\" NIL \"tokoe\" \"kde.org\")) NIL ((\"Ingo Kloecker\" NIL \"kloecker\" \"kde.org\")) NIL NIL NIL \"<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>\" \"<{8888827e-77f4-489d-bf18-e805be96718c}@server.kde.org> <{9999927e-77f4-489d-bf18-e805be96718c}@server.kde.org>\")");
-
-    buffer.close();
-    buffer.open(QIODevice::ReadWrite);
-    buffer.seek(0);
-    serializer->serialize(i, MessagePart::Envelope, buffer, version);
-    QCOMPARE(env, expEnv);
+    QCOMPARE(env, data);
 
     delete serializer;
 }

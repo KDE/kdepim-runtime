@@ -26,9 +26,12 @@ class MailSerializerTest : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
+    void testEnvelopeDeserialize_data();
     void testEnvelopeDeserialize();
-    void testEnvelopeDeserializeWithReferencesHeader();
+
+    void testEnvelopeSerialize_data();
     void testEnvelopeSerialize();
+
     void testParts();
     void testHeaderFetch();
     void testMultiDeserialize();
