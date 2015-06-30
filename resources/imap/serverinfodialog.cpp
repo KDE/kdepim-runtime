@@ -37,13 +37,14 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
+    QWidget *w = new QWidget;
+    mainLayout->addWidget(w);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ServerInfoDialog::reject);
     setAttribute(Qt::WA_DeleteOnClose);
 
     mServerInfoWidget = new Ui::ServerInfo();
-    mServerInfoWidget->setupUi(this);
-    mainLayout->addWidget(mServerInfoWidget->serverInfo);
+    mServerInfoWidget->setupUi(w);
     mainLayout->addWidget(buttonBox);
     mServerInfoWidget->serverInfo->setPlainText(
         parentResource->serverCapabilities().join(QLatin1String("\n")));
