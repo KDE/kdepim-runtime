@@ -627,6 +627,9 @@ void ImapResourceBase::onIdleCollectionFetchDone(KJob *job)
     Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
     //Can be empty if collection is not subscribed locally
     if (!fetch->collections().isEmpty()) {
+        if (m_idle) {
+            delete m_idle;
+        }
         m_idle = new ImapIdleManager(createResourceState(TaskArguments(fetch->collections().at(0))), m_pool, this);
     }
 }
