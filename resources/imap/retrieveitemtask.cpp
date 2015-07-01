@@ -116,7 +116,7 @@ void RetrieveItemTask::onMessagesReceived(const QString &mailBox,
     qCDebug(IMAPRESOURCE_LOG) << "MESSAGE from Imap server" << item().remoteId();
     Q_ASSERT(item().isValid());
 
-    const qint64 number = uids.keys().first();
+    const qint64 number = uids.cbegin().key();
     bool ok;
     const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(messages[number], uids[number], 0, attrs.values(number), QList<QByteArray>(), fetch->scope(), ok);
     if (!ok) {
