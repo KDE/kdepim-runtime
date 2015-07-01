@@ -215,7 +215,7 @@ void KolabRetrieveTagTask::onHeadersFetchDone(KJob *job)
 void KolabRetrieveTagTask::taskComplete()
 {
     if (mRetrieveType == RetrieveTags) {
-        qCDebug(KOLABRESOURCE_LOG) << "Fetched tags: " << mTags.size() << mTagMembers.keys().size();
+        qCDebug(KOLABRESOURCE_LOG) << "Fetched tags: " << mTags.size() << mTagMembers.size();
         resourceState()->tagsRetrieved(mTags, mTagMembers);
     } else if (mRetrieveType == RetrieveRelations) {
         qCDebug(KOLABRESOURCE_LOG) << "Fetched relations:" << mRelations.size();
