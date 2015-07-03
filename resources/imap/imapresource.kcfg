@@ -98,6 +98,10 @@
     <entry name="SieveAlternateUrl" type="String">
       <label>Define alternate URL</label>
     </entry>
+    <entry name="AlternateAuthentication" type="Int">
+      <label>Defines the authentication type to use for alternate server</label>
+      <default>1</default>
+    </entry>
     <entry name="SieveVacationFilename" type="String">
       <label>Define default sieve vacation filename</label>
       <default>kmail-vacation.siv</default>

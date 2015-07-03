@@ -28,6 +28,7 @@
 
 #include <QRegExpValidator>
 class QPushButton;
+class QComboBox;
 namespace Ui
 {
 class SetupServerView;
@@ -109,6 +110,7 @@ private Q_SLOTS:
     void slotEnableWidgets();
     void targetCollectionReceived(const Akonadi::Collection::List &collections);
     void localFolderRequestJobFinished(KJob *job);
+    void populateDefaultAuthenticationOptions(QComboBox *combo);
 };
 
 #endif

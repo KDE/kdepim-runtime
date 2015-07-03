@@ -286,6 +286,9 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setIntervalCheckTime(m_ui->checkInterval->value());
     m_parentResource->settings()->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
 
+    MailTransport::Transport::EnumAuthenticationType::type alternateAuthtype = getCurrentAuthMode(m_ui->authenticationAlternateCombo);
+    qCDebug(IMAPRESOURCE_LOG) << "saving Alternate server sieve auth mode: " << authenticationModeString(alternateAuthtype);
+    m_parentResource->settings()->setAlternateAuthentication(alternateAuthtype);
     m_parentResource->settings()->setSieveSupport(m_ui->managesieveCheck->isChecked());
     m_parentResource->settings()->setSieveReuseConfig(m_ui->sameConfigCheck->isChecked());
     m_parentResource->settings()->setSievePort(m_ui->sievePortSpin->value());
@@ -374,6 +377,9 @@ void SetupServer::readSettings()
     i = m_parentResource->settings()->authentication();
     qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type) i);
     setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i);
+
+    i = m_parentResource->settings()->alternateAuthentication();
+    setCurrentAuthMode(m_ui->authenticationAlternateCombo, (MailTransport::Transport::EnumAuthenticationType::type) i);
 
     bool rejected = false;
     const QString password = m_parentResource->settings()->password(&rejected);
@@ -541,7 +547,7 @@ void SetupServer::slotEnableWidgets()
     const bool reuseConfig = m_ui->sameConfigCheck->isChecked();
 
     m_ui->sameConfigCheck->setEnabled(haveSieve);
-    m_ui->sievePortSpin->setEnabled(haveSieve && reuseConfig);
+    m_ui->sievePortSpin->setEnabled(haveSieve);
     m_ui->alternateURL->setEnabled(haveSieve && !reuseConfig);
     m_ui->authentification->setEnabled(haveSieve && !reuseConfig);
 }
@@ -648,14 +654,19 @@ void SetupServer::localFolderRequestJobFinished(KJob *job)
 
 void SetupServer::populateDefaultAuthenticationOptions()
 {
-    m_ui->authenticationCombo->clear();
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CLEAR);
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::LOGIN);
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::PLAIN);
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CRAM_MD5);
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5);
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::NTLM);
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::GSSAPI);
-    addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::ANONYMOUS);
+    populateDefaultAuthenticationOptions(m_ui->authenticationCombo);
+    populateDefaultAuthenticationOptions(m_ui->authenticationAlternateCombo);
 }
 
+void SetupServer::populateDefaultAuthenticationOptions(QComboBox *combo)
+{
+    combo->clear();
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::CLEAR);
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::LOGIN);
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::PLAIN);
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::CRAM_MD5);
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5);
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::NTLM);
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::GSSAPI);
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::ANONYMOUS);
+}
