@@ -1,6 +1,0 @@
-# Migrate kmail's notifier setting to Akonadi new mail notifier
-Id=initial-newmailnotifier-migration
-File=kmail2rc,akonadi_newmailnotifier_agentrc
-Group=General,General
-Key=beep-on-mail,beepOnNewMails
-Key=VerboseNewMailNotification,verboseNotification
