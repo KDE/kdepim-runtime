@@ -77,7 +77,7 @@ ResourcesManagementWidget::~ResourcesManagementWidget()
 
 void ResourcesManagementWidget::updateButtonState()
 {
-    const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
+    const Akonadi::AgentInstance::List instanceList = d->ui.resourcesList->selectedAgentInstances();
     if (instanceList.isEmpty()) {
         d->ui.editButton->setEnabled(false);
         d->ui.removeButton->setEnabled(false);
@@ -108,7 +108,7 @@ void ResourcesManagementWidget::addClicked()
 
 void ResourcesManagementWidget::editClicked()
 {
-    const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
+    const Akonadi::AgentInstance::List instanceList = d->ui.resourcesList->selectedAgentInstances();
     if (!instanceList.isEmpty() && instanceList.first().isValid()) {
         KWindowSystem::allowExternalProcessWindowActivation();
         Akonadi::AgentInstance instance = instanceList.first();
@@ -118,7 +118,7 @@ void ResourcesManagementWidget::editClicked()
 
 void ResourcesManagementWidget::removeClicked()
 {
-    const QList<Akonadi::AgentInstance> instanceList = d->ui.resourcesList->selectedAgentInstances();
+    const Akonadi::AgentInstance::List instanceList = d->ui.resourcesList->selectedAgentInstances();
     if (!instanceList.isEmpty()) {
         if (KMessageBox::questionYesNo(this,
                                        i18np("Do you really want to delete the selected agent instance?",
