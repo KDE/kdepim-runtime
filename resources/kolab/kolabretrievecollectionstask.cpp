@@ -504,7 +504,7 @@ void KolabRetrieveCollectionsTask::checkDone()
 {
     if (!mJobs) {
         Trace() << "done " << mMailCollections.size();
-        collectionsRetrieved(mMailCollections.values());
+        collectionsRetrieved(mMailCollections.values().toVector());
         qCDebug(KOLABRESOURCE_LOG) << "done " <<  mTime.elapsed();
     }
 }

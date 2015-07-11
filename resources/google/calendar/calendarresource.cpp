@@ -483,7 +483,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         m_collections[ collection.remoteId() ] = collection;
     }
 
-    collectionsRetrieved(m_collections.values());
+    collectionsRetrieved(m_collections.values().toVector());
 
     job->deleteLater();
 }

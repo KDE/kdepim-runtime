@@ -930,7 +930,7 @@ void OpenXchangeResource::onFoldersRequestJobFinished(KJob *job)
     Collection::List collections;
 
     // add the standard collections
-    collections << mStandardCollectionsMap.values();
+    collections << mStandardCollectionsMap.values().toVector();
 
     QMap<qlonglong, Collection> remoteIdMap(mStandardCollectionsMap);
 
@@ -968,7 +968,7 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
     Collection::List changedCollections;
 
     // add the standard collections
-    changedCollections << mStandardCollectionsMap.values();
+    changedCollections << mStandardCollectionsMap.values().toVector();
 
     qulonglong foldersLastSync = Settings::self()->foldersLastSync();
 

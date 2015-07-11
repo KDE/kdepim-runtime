@@ -212,7 +212,7 @@ void RetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
     if (job->error()) {
         cancelTask(job->errorString());
     } else {
-        collectionsRetrieved(m_reportedCollections.values());
+        collectionsRetrieved(m_reportedCollections.values().toVector());
     }
 }
 

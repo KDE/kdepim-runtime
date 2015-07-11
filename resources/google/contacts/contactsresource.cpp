@@ -407,7 +407,7 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     attr->setIconName(QStringLiteral("view-pim-contacts"));
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
-    collectionsRetrieved(m_collections.values());
+    collectionsRetrieved(m_collections.values().toVector());
     job->deleteLater();
 }
 
