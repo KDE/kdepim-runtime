@@ -30,7 +30,7 @@ namespace Akonadi
 class Collection;
 class Item;
 
-typedef QList<Item> ItemList;
+typedef QVector<Item> ItemList;
 }
 
 class CompactChangeHelper : public QObject

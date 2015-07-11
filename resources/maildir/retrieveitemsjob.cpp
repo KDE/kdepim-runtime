@@ -149,7 +149,7 @@ void RetrieveItemsJob::entriesProcessed()
     delete m_entryIterator;
     m_entryIterator = Q_NULLPTR;
     if (!m_localItems.isEmpty()) {
-        Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(m_localItems.values(), transaction());
+        Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(m_localItems.values().toVector(), transaction());
         m_maildir.removeCachedKeys(m_localItems.keys());
         transaction()->setIgnoreJobFailure(job);
     }

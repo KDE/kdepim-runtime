@@ -102,7 +102,7 @@ void BirthdaysResource::retrieveCollections()
 void BirthdaysResource::retrieveItems(const Akonadi::Collection &collection)
 {
     Q_UNUSED(collection);
-    itemsRetrievedIncremental(mPendingItems.values(), mDeletedItems.values());
+    itemsRetrievedIncremental(mPendingItems.values().toVector(), mDeletedItems.values().toVector());
     mPendingItems.clear();
     mDeletedItems.clear();
 }
