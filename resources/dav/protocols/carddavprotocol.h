@@ -32,7 +32,7 @@ public:
     QString principalHomeSetNS() const Q_DECL_OVERRIDE;
     QDomDocument collectionsQuery() const Q_DECL_OVERRIDE;
     QString collectionsXQuery() const Q_DECL_OVERRIDE;
-    QList<QDomDocument> itemsQueries() const Q_DECL_OVERRIDE;
+    QVector<QDomDocument> itemsQueries() const Q_DECL_OVERRIDE;
     QString mimeTypeForQuery(int index) const Q_DECL_OVERRIDE;
     QDomDocument itemsReportQuery(const QStringList &urls) const Q_DECL_OVERRIDE;
     QString responseNamespace() const Q_DECL_OVERRIDE;
@@ -42,7 +42,7 @@ public:
     QString contactsMimeType() const Q_DECL_OVERRIDE;
 
 private:
-    QList<QDomDocument> mItemsQueries;
+    QVector<QDomDocument> mItemsQueries;
     QStringList mItemsMimeTypes;
 };
 

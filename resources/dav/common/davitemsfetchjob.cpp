@@ -20,7 +20,7 @@
 #include "davitemsfetchjob.h"
 #include "davmanager.h"
 #include "davmultigetprotocol.h"
-
+#include <AkonadiCore/VectorHelper>
 #include <kio/davjob.h>
 #include <kio/job.h>
 #include <KLocalizedString>
@@ -49,7 +49,7 @@ void DavItemsFetchJob::start()
 
 DavItem::List DavItemsFetchJob::items() const
 {
-    return mItems.values();
+    return Akonadi::valuesToVector(mItems);
 }
 
 DavItem DavItemsFetchJob::item(const QString &url) const

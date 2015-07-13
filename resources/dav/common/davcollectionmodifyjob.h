@@ -73,8 +73,8 @@ private:
     DavUtils::DavUrl mUrl;
     QDomDocument mQuery;
 
-    QList<QDomElement> mSetProperties;
-    QList<QDomElement> mRemoveProperties;
+    QVector<QDomElement> mSetProperties;
+    QVector<QDomElement> mRemoveProperties;
 };
 
 #endif

@@ -42,7 +42,7 @@ void DavItemsListJob::start()
 {
     const DavProtocolBase *protocol = DavManager::self()->davProtocol(mUrl.protocol());
     Q_ASSERT(protocol);
-    QListIterator<QDomDocument> it(protocol->itemsQueries());
+    QVectorIterator<QDomDocument> it(protocol->itemsQueries());
     int queryIndex = 0;
 
     while (it.hasNext()) {

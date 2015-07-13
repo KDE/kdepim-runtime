@@ -97,7 +97,7 @@ public:
      * Returns a list of XML documents that represent DAV queries to
      * list all available DAV resources inside a specific DAV collection.
      */
-    virtual QList<QDomDocument> itemsQueries() const = 0;
+    virtual QVector<QDomDocument> itemsQueries() const = 0;
 
     /**
      * Returns the mime type of items fetched by query at index @p index

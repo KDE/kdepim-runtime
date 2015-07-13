@@ -77,7 +77,7 @@ QString GroupdavProtocol::collectionsXQuery() const
     return query;
 }
 
-QList<QDomDocument> GroupdavProtocol::itemsQueries() const
+QVector<QDomDocument> GroupdavProtocol::itemsQueries() const
 {
     return mItemsQueries;
 }

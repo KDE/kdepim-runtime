@@ -22,7 +22,7 @@
 #include "davutils.h"
 
 #include <QColor>
-#include <QtCore/QList>
+#include <QtCore/QVector>
 #include <QtCore/QString>
 
 /**
@@ -37,7 +37,7 @@ public:
     /**
      * Defines a list of DAV collection objects.
      */
-    typedef QList<DavCollection> List;
+    typedef QVector<DavCollection> List;
 
     /**
      * Describes the possible content type of the DAV collection.
@@ -138,5 +138,5 @@ private:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(DavCollection::ContentTypes)
-
+Q_DECLARE_TYPEINFO(DavCollection, Q_MOVABLE_TYPE );
 #endif

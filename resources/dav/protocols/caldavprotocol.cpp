@@ -257,7 +257,7 @@ QString CaldavProtocol::collectionsXQuery() const
     return query;
 }
 
-QList<QDomDocument> CaldavProtocol::itemsQueries() const
+QVector<QDomDocument> CaldavProtocol::itemsQueries() const
 {
     return mItemsQueries;
 }

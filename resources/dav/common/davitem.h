@@ -39,7 +39,7 @@ public:
     /**
      * Defines a list of DAV item objects.
      */
-    typedef QList<DavItem> List;
+    typedef QVector<DavItem> List;
 
     /**
      * Creates an empty DAV item.
@@ -105,5 +105,5 @@ private:
 
 QDataStream &operator<<(QDataStream &out, const DavItem &item);
 QDataStream &operator>>(QDataStream &in, DavItem &item);
-
+Q_DECLARE_TYPEINFO(DavItem, Q_MOVABLE_TYPE );
 #endif

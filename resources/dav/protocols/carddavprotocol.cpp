@@ -89,7 +89,7 @@ QString CarddavProtocol::collectionsXQuery() const
     return query;
 }
 
-QList<QDomDocument> CarddavProtocol::itemsQueries() const
+QVector<QDomDocument> CarddavProtocol::itemsQueries() const
 {
     return mItemsQueries;
 }
