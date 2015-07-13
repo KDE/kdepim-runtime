@@ -11,7 +11,10 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_ical_resource\")
 
 add_subdirectory( wizard )
 add_subdirectory( notes )
-add_subdirectory( autotests )
+
+if(BUILD_TESTING)
+    add_subdirectory( autotests )
+endif()
 
 ########### next target ###############
 add_definitions( -DSETTINGS_NAMESPACE=Akonadi_ICal_Resource )

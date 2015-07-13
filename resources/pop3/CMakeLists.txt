@@ -45,7 +45,10 @@ target_link_libraries( akonadi_pop3_resource
   KF5::AkonadiWidgets
 )
 
-add_subdirectory( autotests )
+if(BUILD_TESTING)
+    add_subdirectory( autotests )
+endif()
+
 add_subdirectory( wizard )
 
 install(TARGETS akonadi_pop3_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

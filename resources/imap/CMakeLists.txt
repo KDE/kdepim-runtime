@@ -103,7 +103,8 @@ endif ()
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )
-if (BUILD_TESTING)
-   add_subdirectory( autotests )
+
+if(BUILD_TESTING)
+    add_subdirectory( autotests )
+    add_subdirectory( tests )
 endif()
-add_subdirectory( tests )

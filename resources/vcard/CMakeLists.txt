@@ -1,6 +1,8 @@
 
 
-add_subdirectory( autotests )
+if(BUILD_TESTING)
+    add_subdirectory( autotests )
+endif()
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_vcard_resource\")
 
