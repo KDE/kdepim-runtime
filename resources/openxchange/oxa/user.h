@@ -22,7 +22,7 @@
 #ifndef OXA_USER_H
 #define OXA_USER_H
 
-#include <QtCore/QList>
+#include <QtCore/QVector>
 #include <QtCore/QString>
 
 namespace OXA
@@ -31,7 +31,7 @@ namespace OXA
 class User
 {
 public:
-    typedef QList<User> List;
+    typedef QVector<User> List;
 
     User();
 
@@ -54,4 +54,5 @@ private:
 
 }
 
+Q_DECLARE_TYPEINFO( OXA::User, Q_MOVABLE_TYPE );
 #endif

@@ -22,7 +22,7 @@
 #ifndef OXA_FOLDER_H
 #define OXA_FOLDER_H
 
-#include <QtCore/QList>
+#include <QtCore/QVector>
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
@@ -40,7 +40,7 @@ public:
     /**
      * Describes a list of folders.
      */
-    typedef QList<Folder> List;
+    typedef QVector<Folder> List;
 
     /**
      * Describes the status of the folder.
@@ -194,5 +194,6 @@ private:
 };
 
 }
+Q_DECLARE_TYPEINFO( OXA::Folder, Q_MOVABLE_TYPE );
 
 #endif

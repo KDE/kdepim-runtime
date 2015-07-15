@@ -28,7 +28,7 @@
 #include <kcontacts/contactgroup.h>
 #include <KCalCore/Incidence>
 
-#include <QtCore/QList>
+#include <QtCore/QVector>
 #include <QtCore/QString>
 
 namespace OXA
@@ -40,7 +40,7 @@ public:
     /**
      * Describes a list of objects.
      */
-    typedef QList<Object> List;
+    typedef QVector<Object> List;
 
     /**
      * Describes the status of the object.
@@ -90,7 +90,8 @@ private:
     KCalCore::Incidence::Ptr mEvent;
     KCalCore::Incidence::Ptr mTask;
 };
-
 }
+
+Q_DECLARE_TYPEINFO( OXA::Object, Q_MOVABLE_TYPE );
 
 #endif
