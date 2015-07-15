@@ -48,13 +48,13 @@ DavItemFetchJob::DavItemFetchJob(const DavUtils::DavUrl &url, const DavItem &ite
 void DavItemFetchJob::start()
 {
     KIO::StoredTransferJob *job = KIO::storedGet(mUrl.url(), KIO::Reload, KIO::HideProgressInfo | KIO::DefaultFlags);
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
     // Work around a strange bug in Zimbra (seen at least on CE 5.0.18) : if the user-agent
     // contains "Mozilla", some strange debug data is displayed in the shared calendars.
     // This kinda mess up the events parsing...
-    job->addMetaData(QLatin1String("UserAgent"), QStringLiteral("KDE DAV groupware client"));
-    job->addMetaData(QLatin1String("cookies"), QStringLiteral("none"));
-    job->addMetaData(QLatin1String("no-auth-prompt"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("UserAgent"), QStringLiteral("KDE DAV groupware client"));
+    job->addMetaData(QStringLiteral("cookies"), QStringLiteral("none"));
+    job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
 
     connect(job, &KIO::StoredTransferJob::result, this, &DavItemFetchJob::davJobFinished);
 }
@@ -67,9 +67,9 @@ DavItem DavItemFetchJob::item() const
 void DavItemFetchJob::davJobFinished(KJob *job)
 {
     KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
-    const int responseCode = storedJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+    const int responseCode = storedJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                              0 :
-                             storedJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                             storedJob->queryMetaData(QStringLiteral("responsecode")).toInt();
     setLatestResponseCode(responseCode);
 
     if (storedJob->error()) {
@@ -85,8 +85,8 @@ void DavItemFetchJob::davJobFinished(KJob *job)
                           "%1 (%2).", err, responseCode));
     } else {
         mItem.setData(storedJob->data());
-        mItem.setContentType(storedJob->queryMetaData(QLatin1String("content-type")));
-        mItem.setEtag(etagFromHeaders(storedJob->queryMetaData(QLatin1String("HTTP-Headers"))));
+        mItem.setContentType(storedJob->queryMetaData(QStringLiteral("content-type")));
+        mItem.setEtag(etagFromHeaders(storedJob->queryMetaData(QStringLiteral("HTTP-Headers"))));
     }
 
     emitResult();

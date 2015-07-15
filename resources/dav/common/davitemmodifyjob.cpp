@@ -37,10 +37,10 @@ void DavItemModifyJob::start()
     headers += QLatin1String("If-Match: ") + mItem.etag();
 
     KIO::StoredTransferJob *job = KIO::storedPut(mItem.data(), mUrl.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags);
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QStringLiteral("true"));
-    job->addMetaData(QLatin1String("customHTTPHeader"), headers);
-    job->addMetaData(QLatin1String("cookies"), QStringLiteral("none"));
-    job->addMetaData(QLatin1String("no-auth-prompt"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("customHTTPHeader"), headers);
+    job->addMetaData(QStringLiteral("cookies"), QStringLiteral("none"));
+    job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
 
     connect(job, &KIO::StoredTransferJob::result, this, &DavItemModifyJob::davJobFinished);
 }

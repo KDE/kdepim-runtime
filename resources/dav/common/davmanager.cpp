@@ -57,9 +57,9 @@ KIO::DavJob *DavManager::createPropFindJob(const KUrl &url, const QDomDocument &
 
     // workaround needed, Depth: header doesn't seem to be correctly added
     const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
-    job->addMetaData(QLatin1String("customHTTPHeader"), header);
-    job->addMetaData(QLatin1String("cookies"), QStringLiteral("none"));
-    job->addMetaData(QLatin1String("no-auth-prompt"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("customHTTPHeader"), header);
+    job->addMetaData(QStringLiteral("cookies"), QStringLiteral("none"));
+    job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
     job->setProperty("extraDavDepth", QVariant::fromValue(depth));
 
     return job;
@@ -71,9 +71,9 @@ KIO::DavJob *DavManager::createReportJob(const KUrl &url, const QDomDocument &do
 
     // workaround needed, Depth: header doesn't seem to be correctly added
     const QString header = QLatin1String("Content-Type: text/xml\r\nDepth: ") + depth;
-    job->addMetaData(QLatin1String("customHTTPHeader"), header);
-    job->addMetaData(QLatin1String("cookies"), QStringLiteral("none"));
-    job->addMetaData(QLatin1String("no-auth-prompt"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("customHTTPHeader"), header);
+    job->addMetaData(QStringLiteral("cookies"), QStringLiteral("none"));
+    job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
     job->setProperty("extraDavDepth", QVariant::fromValue(depth));
 
     return job;
@@ -83,9 +83,9 @@ KIO::DavJob *DavManager::createPropPatchJob(const KUrl &url, const QDomDocument 
 {
     KIO::DavJob *job = KIO::davPropPatch(url, document, KIO::HideProgressInfo | KIO::DefaultFlags);
     const QString header = QLatin1String("Content-Type: text/xml");
-    job->addMetaData(QLatin1String("customHTTPHeader"), header);
-    job->addMetaData(QLatin1String("cookies"), QStringLiteral("none"));
-    job->addMetaData(QLatin1String("no-auth-prompt"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("customHTTPHeader"), header);
+    job->addMetaData(QStringLiteral("cookies"), QStringLiteral("none"));
+    job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
     return job;
 }
 

@@ -43,7 +43,7 @@ void DavItemsFetchJob::start()
 
     const QDomDocument report = protocol->itemsReportQuery(mUrls);
     KIO::DavJob *job = DavManager::self()->createReportJob(mCollectionUrl.url(), report, QStringLiteral("0"));
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
     connect(job, &KIO::DavJob::result, this, &DavItemsFetchJob::davJobFinished);
 }
 
@@ -60,9 +60,9 @@ DavItem DavItemsFetchJob::item(const QString &url) const
 void DavItemsFetchJob::davJobFinished(KJob *job)
 {
     KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
-    const int responseCode = davJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+    const int responseCode = davJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                              0 :
-                             davJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                             davJob->queryMetaData(QStringLiteral("responsecode")).toInt();
 
     // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
     if (davJob->error() || (responseCode >= 400 && responseCode < 600)) {

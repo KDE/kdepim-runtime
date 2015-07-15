@@ -40,10 +40,10 @@ void DavItemCreateJob::start()
     headers += QLatin1String("If-None-Match: *");
 
     KIO::StoredTransferJob *job = KIO::storedPut(mItem.data(), mUrl.url(), -1, KIO::HideProgressInfo | KIO::DefaultFlags);
-    job->addMetaData(QLatin1String("PropagateHttpHeader"), QStringLiteral("true"));
-    job->addMetaData(QLatin1String("customHTTPHeader"), headers);
-    job->addMetaData(QLatin1String("cookies"), QStringLiteral("none"));
-    job->addMetaData(QLatin1String("no-auth-prompt"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
+    job->addMetaData(QStringLiteral("customHTTPHeader"), headers);
+    job->addMetaData(QStringLiteral("cookies"), QStringLiteral("none"));
+    job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
     job->setRedirectionHandlingEnabled(false);
 
     connect(job, &KIO::StoredTransferJob::result, this, &DavItemCreateJob::davJobFinished);
@@ -57,9 +57,9 @@ DavItem DavItemCreateJob::item() const
 void DavItemCreateJob::davJobFinished(KJob *job)
 {
     KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
-    const int responseCode = storedJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+    const int responseCode = storedJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                              0 :
-                             storedJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                             storedJob->queryMetaData(QStringLiteral("responsecode")).toInt();
 
     if (storedJob->error()) {
         QString err;

@@ -48,8 +48,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::onCancelClicked);
     mainLayout->addWidget(buttonBox);
 
     mModel = new QStandardItemModel();
@@ -79,7 +78,6 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     connect(mUi.editButton, &QPushButton::clicked, this, &ConfigDialog::onEditButtonClicked);
 
     connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::onOkClicked);
-    connect(buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &ConfigDialog::onCancelClicked);
 
     checkUserInput();
     readConfig();
@@ -270,6 +268,7 @@ void ConfigDialog::onOkClicked()
 
     mManager->updateSettings();
     Settings::self()->setDefaultPassword(mUi.password->text());
+    accept();
 }
 
 void ConfigDialog::onCancelClicked()
@@ -280,6 +279,7 @@ void ConfigDialog::onCancelClicked()
     foreach (const UrlPair &url, mAddedUrls) {
         Settings::self()->removeUrlConfiguration(url.second, url.first);
     }
+    reject();
 }
 
 void ConfigDialog::checkConfiguredUrlsButtonsState()

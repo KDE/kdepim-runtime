@@ -103,9 +103,9 @@ void DavCollectionModifyJob::start()
 void DavCollectionModifyJob::davJobFinished(KJob *job)
 {
     KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
-    const int responseCode = davJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+    const int responseCode = davJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                              0 :
-                             davJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                             davJob->queryMetaData(QStringLiteral("responsecode")).toInt();
 
     // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
     if (davJob->error() || (responseCode >= 400 && responseCode < 600)) {
@@ -137,7 +137,7 @@ void DavCollectionModifyJob::davJobFinished(KJob *job)
         const QDomElement statusElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("status"));
 
         const QString statusText = statusElement.text();
-        if (statusText.contains(QLatin1String("200"))) {
+        if (statusText.contains(QStringLiteral("200"))) {
             // Nothing special to do here, this indicates the success of the whole request
             break;
         } else {
