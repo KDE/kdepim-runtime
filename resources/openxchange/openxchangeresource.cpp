@@ -117,10 +117,17 @@ public:
     {
         QString module;
         switch (mModule) {
-        case OXA::Folder::Calendar: module = QLatin1String("calendar"); break;
-        case OXA::Folder::Contacts: module = QLatin1String("contacts"); break;
-        case OXA::Folder::Tasks: module = QLatin1String("tasks"); break;
-        case OXA::Folder::Unbound: break;
+        case OXA::Folder::Calendar:
+            module = QStringLiteral("calendar");
+            break;
+        case OXA::Folder::Contacts:
+            module = QStringLiteral("contacts");
+            break;
+        case OXA::Folder::Tasks:
+            module = QStringLiteral("tasks");
+            break;
+        case OXA::Folder::Unbound:
+            break;
         }
 
         QStringList parts;
