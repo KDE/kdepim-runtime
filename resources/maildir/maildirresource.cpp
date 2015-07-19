@@ -389,7 +389,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
                 mChangedCleanerTimer->start(CLEANER_TIMEOUT);
             } else {
                 restartMaildirScan(dir);
-                cancelTask(i18n("Maildir resource got a non-mail content!"));
+                cancelTask(i18n("Maildir resource got a non-mail content."));
                 return;
             }
         }
