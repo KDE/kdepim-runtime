@@ -228,42 +228,42 @@ p, li { white-space: pre-wrap; }
            <widget class="QComboBox" name="authenticationCombo">
             <item>
              <property name="text">
-              <string>Clear text</string>
+              <string comment="Authentication method">Clear text</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>LOGIN</string>
+              <string comment="Authentication method">LOGIN</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>PLAIN</string>
+              <string comment="Authentication method">PLAIN</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>CRAM-MD5</string>
+              <string comment="Authentication method">CRAM-MD5</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>DIGEST-MD5</string>
+              <string comment="Authentication method">DIGEST-MD5</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>NTLM</string>
+              <string comment="Authentication method">NTLM</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>GSSAPI</string>
+              <string comment="Authentication method">GSSAPI</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Anonymous</string>
+              <string comment="Authentication method">Anonymous</string>
              </property>
             </item>
            </widget>
