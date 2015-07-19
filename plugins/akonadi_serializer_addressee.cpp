@@ -264,7 +264,7 @@ void SerializerPluginAddressee::compare(Akonadi::AbstractDifferencesReporter *re
 
     if (leftContact.url() != rightContact.url())
         reporter->addProperty(AbstractDifferencesReporter::ConflictMode, KContacts::Addressee::urlLabel(),
-                              leftContact.url().toDisplayString(), rightContact.url().toDisplayString());
+                              leftContact.url().url().toDisplayString(), rightContact.url().url().toDisplayString());
 
     compareList(reporter, i18n("Emails"), leftContact.emails(), rightContact.emails());
     compareVector(reporter, i18n("Phone Numbers"), leftContact.phoneNumbers(), rightContact.phoneNumbers());

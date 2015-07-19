@@ -169,7 +169,9 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             } else if (tagName == QLatin1String("note")) {
                 contact.setNote(text);
             } else if (tagName == QLatin1String("url")) {
-                contact.setUrl(QUrl(text));
+                KContacts::ResourceLocatorUrl url;
+                url.setUrl(QUrl(text));
+                contact.setUrl(url);
             } else if (tagName == QLatin1String("image1")) {
                 const QByteArray data = text.toUtf8();
                 contact.setPhoto(KContacts::Picture(QImage::fromData(QByteArray::fromBase64(data))));
@@ -322,7 +324,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
 
         // further information
         DAVUtils::addOxElement(document, propElement, QStringLiteral("note"), OXUtils::writeString(contact.note()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("url"), OXUtils::writeString(contact.url().url()));
+        DAVUtils::addOxElement(document, propElement, QStringLiteral("url"), OXUtils::writeString(contact.url().url().url()));
 
         // image
         const KContacts::Picture photo = contact.photo();
