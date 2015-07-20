@@ -459,7 +459,9 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
             const int numberOfEmails(it.value().count());
             if (numberOfEmails > 0) {
-                texts.append(i18np("One new email in %2 from \"%3\"", "%1 new emails in %2 from \"%3\"", numberOfEmails, displayName,
+                texts.append(i18ncp("%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as user named it)",
+                                    "One new email in %2 from \"%3\"",
+                                    "%1 new emails in %2 from \"%3\"", numberOfEmails, displayName,
                                    resourceName));
             }
         }
