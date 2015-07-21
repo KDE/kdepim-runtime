@@ -93,10 +93,10 @@ QByteArray ImapQuotaAttribute::serialized() const
     // Then the limit maps list
     for (int i = 0; i < mRoots.size(); ++i) {
         const QMap<QByteArray, qint64> limits = mLimits[i];
-        foreach (const QByteArray &key, limits.keys()) {
-            result += key;
+        for (auto it = limits.cbegin(), end = limits.cend(); it != end; ++it) {
+            result += it.key();
             result += " % "; // We use this separator as '%' is not allowed in keys or values
-            result += QByteArray::number(limits[key]);
+            result += QByteArray::number(it.value());
             result += " %% "; // Pairs separator
         }
         result.chop(4);
@@ -109,10 +109,10 @@ QByteArray ImapQuotaAttribute::serialized() const
     // Then the usage maps list
     for (int i = 0; i < mRoots.size(); ++i) {
         const QMap<QByteArray, qint64> usages = mUsages[i];
-        foreach (const QByteArray &key, usages.keys()) {
-            result += key;
+        for (auto it = usages.cbegin(), end = usages.cend(); it != end; ++it) {
+            result += it.key();
             result += " % "; // We use this separator as '%' is not allowed in keys or values
-            result += QByteArray::number(usages[key]);
+            result += QByteArray::number(it.value());
             result += " %% "; // Pairs separator
         }
         result.chop(4);
