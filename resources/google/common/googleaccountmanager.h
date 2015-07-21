@@ -25,6 +25,7 @@
 #include <QtCore/QMap>
 
 #include <KGAPI/Types>
+#include <KGAPI/Account>
 
 namespace KWallet
 {
