@@ -80,7 +80,6 @@ Akonadi::Attribute *ImapQuotaAttribute::clone() const
 
 QByteArray ImapQuotaAttribute::serialized() const
 {
-    typedef QMap<QByteArray, qint64> QuotaMap;
     QByteArray result = "";
 
     // First the roots list
