@@ -35,6 +35,7 @@ class ContactsResource: public GoogleResource
     Q_OBJECT
 
 public:
+    using GoogleResource::collectionChanged; // So we don't trigger -Woverloaded-virtual
     explicit ContactsResource(const QString &id);
 
     ~ContactsResource();
