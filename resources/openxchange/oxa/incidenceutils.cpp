@@ -181,7 +181,7 @@ static void parseTodoAttribute(const QDomElement &element,
         if (priorityNumber < 1 || priorityNumber > 3) {
             qDebug() << "Unknown priority:" << text;
         } else {
-            int priority;
+            int priority = 0;
             switch (priorityNumber) {
             case 1:
                 priority = 9;
