@@ -451,7 +451,7 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!uidHash.value(items[ 3 ].remoteId()).toString().toInt(&ok) >= 0 && ok);
 
     // test listing maildir with index but newer modification date than index's one
-    const QByteArray data5 = md5.readEntry(entrySet5.values().first());
+    const QByteArray data5 = md5.readEntry(*entrySet5.cbegin());
     QVERIFY(!data5.isEmpty());
 
     QTest::qSleep(1000);

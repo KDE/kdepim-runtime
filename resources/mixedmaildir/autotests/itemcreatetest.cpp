@@ -398,7 +398,7 @@ void ItemCreateTest::testMaildir()
     newIdSet = entrySet.subtract(entrySet2);
     QCOMPARE((int)newIdSet.count(), 1);
 
-    newId = newIdSet.values().first();
+    newId = *newIdSet.cbegin();
     QCOMPARE(item.remoteId(), newId);
     entrySet2 << newId;
     QCOMPARE((int)entrySet2.count(), 1);
@@ -424,7 +424,7 @@ void ItemCreateTest::testMaildir()
     newIdSet = entrySet.subtract(entrySet2);
     QCOMPARE((int)newIdSet.count(), 1);
 
-    newId = newIdSet.values().first();
+    newId = *newIdSet.cbegin();
     QCOMPARE(item.remoteId(), newId);
     entrySet2 << newId;
     QCOMPARE((int)entrySet2.count(), 2);
@@ -451,7 +451,7 @@ void ItemCreateTest::testMaildir()
     newIdSet = entrySet.subtract(entrySet1);
     QCOMPARE((int)newIdSet.count(), 1);
 
-    newId = newIdSet.values().first();
+    newId = *newIdSet.cbegin();
     QCOMPARE(item.remoteId(), newId);
     entrySet1 << newId;
     QCOMPARE((int)entrySet1.count(), 5);
@@ -499,7 +499,7 @@ void ItemCreateTest::testMaildir()
     newIdSet = entrySet.subtract(entrySet1);
     QCOMPARE((int)newIdSet.count(), 1);
 
-    newId = newIdSet.values().first();
+    newId = *newIdSet.cbegin();
     QCOMPARE(item.remoteId(), newId);
     entrySet1 << newId;
     QCOMPARE((int)entrySet1.count(), 6);

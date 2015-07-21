@@ -158,7 +158,7 @@ void ItemDeleteTest::testMaildir()
     Item item1;
     item1.setMimeType(KMime::Message::mimeType());
     item1.setId(KRandom::random());
-    item1.setRemoteId(entrySet1.values().first());
+    item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
     job = mStore->deleteItem(item1);
@@ -175,8 +175,8 @@ void ItemDeleteTest::testMaildir()
     delIdSet = entrySet1.subtract(entrySet);
     QCOMPARE((int)delIdSet.count(), 1);
 
-    delId = delIdSet.values().first();
-    QCOMPARE(delId, entrySet1.values().first());
+    delId = *delIdSet.cbegin();
+    QCOMPARE(delId, *entrySet1.cbegin());
     QCOMPARE(delId, item.remoteId());
 
     // test failure of deleting again
@@ -407,7 +407,7 @@ void ItemDeleteTest::testCachePreservation()
     Item item1;
     item1.setMimeType(KMime::Message::mimeType());
     item1.setId(KRandom::random());
-    item1.setRemoteId(entrySet1.values().first());
+    item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
     job = mStore->deleteItem(item1);
@@ -540,7 +540,7 @@ void ItemDeleteTest::testExpectedFailure()
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Item item1_1;
-    item1_1.setRemoteId(entrySet1.values().first());
+    item1_1.setRemoteId(*entrySet1.cbegin());
     item1_1.setParentCollection(collection1);
 
     job = mStore->deleteItem(item1_1);

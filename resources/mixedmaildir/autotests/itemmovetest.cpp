@@ -160,7 +160,7 @@ void ItemMoveTest::testExpectedFail()
     // test failure of moving from maildir to non-existent collection
     Item item1;
     item1.setId(KRandom::random());
-    item1.setRemoteId(entrySet1.values().first());
+    item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
     job = mStore->moveItem(item1, collection3);
@@ -303,7 +303,7 @@ void ItemMoveTest::testMaildirItem()
 
     Item item1;
     item1.setId(KRandom::random());
-    item1.setRemoteId(entrySet1.values().first());
+    item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
     job = mStore->moveItem(item1, collection3);
@@ -330,7 +330,7 @@ void ItemMoveTest::testMaildirItem()
     QCOMPARE(collections.first(), collection1);
 
     // test moving to a non empty maildir
-    item1.setRemoteId(entrySet1.values().first());
+    item1.setRemoteId(*entrySet1.cbegin());
 
     Collection collection5;
     collection5.setName(QLatin1String("collection5"));
@@ -366,7 +366,7 @@ void ItemMoveTest::testMaildirItem()
     collection4.setRemoteId(QLatin1String("collection4"));
     collection4.setParentCollection(mStore->topLevelCollection());
 
-    item1.setRemoteId(entrySet1.values().first());
+    item1.setRemoteId(*entrySet1.cbegin());
 
     job = mStore->moveItem(item1, collection4);
 
@@ -395,7 +395,7 @@ void ItemMoveTest::testMaildirItem()
     QCOMPARE(collections.first(), collection1);
 
     // test moving to a non empty mbox
-    item1.setRemoteId(entrySet1.values().first());
+    item1.setRemoteId(*entrySet1.cbegin());
 
     Collection collection2;
     collection2.setName(QLatin1String("collection2"));
