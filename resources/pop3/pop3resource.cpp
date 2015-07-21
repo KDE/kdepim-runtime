@@ -346,9 +346,8 @@ void POP3Resource::doStateStep()
         // currently on ther server, minus the ones we have already downloaded (we
         // remember which UIDs we have downloaded in the settings)
         QList<int> idsToDownload = mIdsToSizeMap.keys();
-        const QList<QString> UIDsOnServer = mIdsToUidsMap.values();
         const QList<QString> alreadyDownloadedUIDs = Settings::self()->seenUidList();
-        foreach (const QString &uidOnServer, UIDsOnServer) {
+        foreach (const QString &uidOnServer, mIdsToUidsMap) {
             if (alreadyDownloadedUIDs.contains(uidOnServer)) {
                 const int idOfUIDOnServer = mUidsToIdsMap.value(uidOnServer, -1);
                 Q_ASSERT(idOfUIDOnServer != -1);
