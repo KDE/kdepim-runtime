@@ -67,9 +67,9 @@ QStringList DavPrincipalHomeSetsFetchJob::homeSets() const
 void DavPrincipalHomeSetsFetchJob::davJobFinished(KJob *job)
 {
     KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
-    const int responseCode = davJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+    const int responseCode = davJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                              0 :
-                             davJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                             davJob->queryMetaData(QStringLiteral("responsecode")).toInt();
 
     // KIO::DavJob does not set error() even if the HTTP status code is a 4xx or a 5xx
     if (davJob->error() || (responseCode >= 400 && responseCode < 600)) {

@@ -131,7 +131,7 @@ void DavCollectionModifyJob::davJobFinished(KJob *job)
     QString errorText;
 
     // parse all propstats answers to get the eventual errors
-    const QDomNodeList propstats = responseElement.elementsByTagNameNS(QLatin1String("DAV:"), QStringLiteral("propstat"));
+    const QDomNodeList propstats = responseElement.elementsByTagNameNS(QStringLiteral("DAV:"), QStringLiteral("propstat"));
     for (int i = 0; i < propstats.length(); ++i) {
         const QDomElement propstatElement = propstats.item(i).toElement();
         const QDomElement statusElement = DavUtils::firstChildElementNS(propstatElement, QStringLiteral("DAV:"), QStringLiteral("status"));

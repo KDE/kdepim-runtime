@@ -34,7 +34,7 @@ DavItemCreateJob::DavItemCreateJob(const DavUtils::DavUrl &url, const DavItem &i
 
 void DavItemCreateJob::start()
 {
-    QString headers = QLatin1String("Content-Type: ");
+    QString headers = QStringLiteral("Content-Type: ");
     headers += mItem.contentType();
     headers += QLatin1String("\r\n");
     headers += QLatin1String("If-None-Match: *");
