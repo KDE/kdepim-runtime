@@ -68,12 +68,12 @@ void UsersRequestJob::davJobFinished(KJob *job)
     const QDomDocument document = davJob->response();
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
-    QDomElement propstat = response.firstChildElement(QLatin1String("propstat"));
-    QDomElement prop = propstat.firstChildElement(QLatin1String("prop"));
-    QDomElement users = prop.firstChildElement(QLatin1String("users"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
+    QDomElement propstat = response.firstChildElement(QStringLiteral("propstat"));
+    QDomElement prop = propstat.firstChildElement(QStringLiteral("prop"));
+    QDomElement users = prop.firstChildElement(QStringLiteral("users"));
 
-    QDomElement userElement = users.firstChildElement(QLatin1String("user"));
+    QDomElement userElement = users.firstChildElement(QStringLiteral("user"));
     while (!userElement.isNull()) {
         User user;
 
@@ -92,7 +92,7 @@ void UsersRequestJob::davJobFinished(KJob *job)
 
         mUsers.append(user);
 
-        userElement = userElement.nextSiblingElement(QLatin1String("user"));
+        userElement = userElement.nextSiblingElement(QStringLiteral("user"));
     }
 
     emitResult();

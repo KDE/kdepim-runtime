@@ -77,7 +77,7 @@ void FolderCreateJob::davJobFinished(KJob *job)
     }
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     const QDomNodeList props = response.elementsByTagName("prop");
     const QDomElement prop = props.at(0).toElement();
 

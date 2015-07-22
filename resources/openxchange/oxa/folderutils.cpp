@@ -83,20 +83,20 @@ static void parseFolderPermissions(const QDomElement &permissions, Folder &folde
     while (!element.isNull()) {
         if (element.tagName() == QLatin1String("user")) {
             Folder::Permissions permissions;
-            permissions.setFolderPermission((Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QLatin1String("folderpermission"), QStringLiteral("0"))));
-            permissions.setObjectReadPermission((Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QLatin1String("objectreadpermission"), QStringLiteral("0"))));
-            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(element.attribute(QLatin1String("objectwritepermission"), QStringLiteral("0"))));
-            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(element.attribute(QLatin1String("objectdeletepermission"), QStringLiteral("0"))));
-            permissions.setAdminFlag(OXUtils::readBoolean(element.attribute(QLatin1String("admin_flag"), QStringLiteral("false"))));
+            permissions.setFolderPermission((Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
+            permissions.setObjectReadPermission((Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectreadpermission"), QStringLiteral("0"))));
+            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectwritepermission"), QStringLiteral("0"))));
+            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectdeletepermission"), QStringLiteral("0"))));
+            permissions.setAdminFlag(OXUtils::readBoolean(element.attribute(QStringLiteral("admin_flag"), QStringLiteral("false"))));
 
             userPermissions.insert(OXUtils::readNumber(element.text()), permissions);
         } else if (element.tagName() == QLatin1String("group")) {
             Folder::Permissions permissions;
-            permissions.setFolderPermission((Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QLatin1String("folderpermission"), QStringLiteral("0"))));
-            permissions.setObjectReadPermission((Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QLatin1String("objectreadpermission"), QStringLiteral("0"))));
-            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(element.attribute(QLatin1String("objectwritepermission"), QStringLiteral("0"))));
-            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(element.attribute(QLatin1String("objectdeletepermission"), QStringLiteral("0"))));
-            permissions.setAdminFlag(OXUtils::readBoolean(element.attribute(QLatin1String("admin_flag"), QStringLiteral("false"))));
+            permissions.setFolderPermission((Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
+            permissions.setObjectReadPermission((Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectreadpermission"), QStringLiteral("0"))));
+            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectwritepermission"), QStringLiteral("0"))));
+            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectdeletepermission"), QStringLiteral("0"))));
+            permissions.setAdminFlag(OXUtils::readBoolean(element.attribute(QStringLiteral("admin_flag"), QStringLiteral("false"))));
 
             groupPermissions.insert(OXUtils::readNumber(element.text()), permissions);
         }

@@ -90,7 +90,7 @@ void ConfigDialog::save()
 
 void ConfigDialog::showAboutDialog()
 {
-    KAboutData aboutData(QLatin1String("ox"), i18n("Open-Xchange"), QStringLiteral("0.1"),
+    KAboutData aboutData(QStringLiteral("ox"), i18n("Open-Xchange"), QStringLiteral("0.1"),
                          i18n("Akonadi Open-Xchange Resource"),
                          KAboutLicense::LGPL,
                          i18n("(c) 2009 by Tobias Koenig (credativ GmbH)"));
