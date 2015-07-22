@@ -142,6 +142,15 @@ void Settings::setWinId(WId winId)
 
 void Settings::cleanup()
 {
+    KWallet::Wallet *wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), mWinId);
+    if (wallet && wallet->isOpen()) {
+        if (wallet->hasFolder(KWallet::Wallet::PasswordFolder())) {
+            wallet->setFolder(KWallet::Wallet::PasswordFolder());
+            const QString entry = mResourceIdentifier + QLatin1Char(',') + QStringLiteral("$default$");
+            wallet->removeEntry(entry);
+        }
+        delete wallet;
+    }
     QFile cacheFile(mCollectionsUrlsMappingCache);
     cacheFile.remove();
 }
