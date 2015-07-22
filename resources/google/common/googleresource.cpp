@@ -72,6 +72,7 @@ GoogleResource::~GoogleResource()
 void GoogleResource::cleanup()
 {
     accountManager()->cleanup(settings()->account());
+    Akonadi::AgentBase::cleanup();
 }
 
 AccountPtr GoogleResource::account() const

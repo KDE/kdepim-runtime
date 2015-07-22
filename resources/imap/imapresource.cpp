@@ -76,4 +76,5 @@ void ImapResource::onConfigurationDone(int result)
 void ImapResource::cleanup()
 {
     settings()->cleanup();
+    Akonadi::AgentBase::cleanup();
 }

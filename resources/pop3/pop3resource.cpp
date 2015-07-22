@@ -975,6 +975,7 @@ void POP3Resource::cleanup()
             mWallet->removeEntry(identifier());
         }
     }
+    Akonadi::AgentBase::cleanup();
 }
 
 void POP3Resource::doSetOnline(bool online)
