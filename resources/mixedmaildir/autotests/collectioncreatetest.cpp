@@ -84,7 +84,7 @@ void CollectionCreateTest::testCollectionProperties()
     FileStore::CollectionCreateJob *job = 0;
 
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
     QVERIFY(job != 0);
 
@@ -114,7 +114,7 @@ void CollectionCreateTest::testEmptyDir()
 
     // test creating first level collections
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
     QVERIFY(job != 0);
 
@@ -130,7 +130,7 @@ void CollectionCreateTest::testEmptyDir()
     QVERIFY(md1.isValid());
 
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
     job = mStore->createCollection(collection2, mStore->topLevelCollection());
     QVERIFY(job != 0);
 
@@ -147,7 +147,7 @@ void CollectionCreateTest::testEmptyDir()
 
     // test creating second level collections
     Collection collection1_1;
-    collection1_1.setName(QLatin1String("collection1_1"));
+    collection1_1.setName(QStringLiteral("collection1_1"));
     job = mStore->createCollection(collection1_1, collection1);
     QVERIFY(job != 0);
 
@@ -163,7 +163,7 @@ void CollectionCreateTest::testEmptyDir()
     QVERIFY(md1_1.isValid());
 
     Collection collection1_2;
-    collection1_2.setName(QLatin1String("collection1_2"));
+    collection1_2.setName(QStringLiteral("collection1_2"));
     job = mStore->createCollection(collection1_2, collection1);
     QVERIFY(job != 0);
 
@@ -196,7 +196,7 @@ void CollectionCreateTest::testMaildirTree()
 
     // test creating first level collections
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
     QVERIFY(job != 0);
 
@@ -208,7 +208,7 @@ void CollectionCreateTest::testMaildirTree()
     QVERIFY(collection1.parentCollection() == mStore->topLevelCollection());
 
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
     job = mStore->createCollection(collection2, mStore->topLevelCollection());
     QVERIFY(job != 0);
 
@@ -225,7 +225,7 @@ void CollectionCreateTest::testMaildirTree()
 
     // test creating second level collections
     Collection collection1_1;
-    collection1_1.setName(QLatin1String("collection1_1"));
+    collection1_1.setName(QStringLiteral("collection1_1"));
     job = mStore->createCollection(collection1_1, collection1);
     QVERIFY(job != 0);
 
@@ -241,7 +241,7 @@ void CollectionCreateTest::testMaildirTree()
     QVERIFY(md1_1.isValid());
 
     Collection collection1_2;
-    collection1_2.setName(QLatin1String("collection1_2"));
+    collection1_2.setName(QStringLiteral("collection1_2"));
     job = mStore->createCollection(collection1_2, collection1);
     QVERIFY(job != 0);
 
@@ -273,7 +273,7 @@ void CollectionCreateTest::testMixedTree()
 
     // test creating first level collections
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
     QVERIFY(job != 0);
 
@@ -283,11 +283,11 @@ void CollectionCreateTest::testMixedTree()
     collection1 = job->collection();
     QVERIFY(collection1.remoteId().isEmpty());
 
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
     job = mStore->createCollection(collection2, mStore->topLevelCollection());
     QVERIFY(job != 0);
 
@@ -305,7 +305,7 @@ void CollectionCreateTest::testMixedTree()
 
     // test creating second level collections inside mbox
     Collection collection1_1;
-    collection1_1.setName(QLatin1String("collection1_1"));
+    collection1_1.setName(QStringLiteral("collection1_1"));
     job = mStore->createCollection(collection1_1, collection1);
     QVERIFY(job != 0);
 

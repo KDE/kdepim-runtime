@@ -84,7 +84,7 @@ AccountDialog::AccountDialog(POP3Resource *parentResource, WId parentWindow)
     KWindowSystem::setMainWindow(this, parentWindow);
     setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
     setWindowTitle(i18n("POP3 Account Settings"));
-    mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
+    mValidator.setRegExp(QRegExp(QStringLiteral("[A-Za-z0-9-_:.]*")));
 
     setupWidgets();
     loadSettings();
@@ -246,9 +246,9 @@ void AccountDialog::walletOpenedForLoading(bool success)
             passwordEdit->setEnabled(true);
             passwordLabel->setEnabled(true);
         }
-        if (mWallet->isOpen() && mWallet->hasFolder(QLatin1String("pop3"))) {
+        if (mWallet->isOpen() && mWallet->hasFolder(QStringLiteral("pop3"))) {
             QString password;
-            mWallet->setFolder(QLatin1String("pop3"));
+            mWallet->setFolder(QStringLiteral("pop3"));
             mWallet->readPassword(mParentResource->identifier(), password);
             passwordEdit->setText(password);
             mInitalPassword = password;
@@ -271,17 +271,17 @@ void AccountDialog::walletOpenedForSaving(bool success)
         if (mWallet && mWallet->isOpen()) {
 
             // Remove the password from the wallet if the user doesn't want to store it
-            if (passwordEdit->text().isEmpty() && mWallet->hasFolder(QLatin1String("pop3"))) {
-                mWallet->setFolder(QLatin1String("pop3"));
+            if (passwordEdit->text().isEmpty() && mWallet->hasFolder(QStringLiteral("pop3"))) {
+                mWallet->setFolder(QStringLiteral("pop3"));
                 mWallet->removeEntry(mParentResource->identifier());
             }
 
             // Store the password in the wallet if the user wants that
             else if (!passwordEdit->text().isEmpty()) {
-                if (!mWallet->hasFolder(QLatin1String("pop3"))) {
-                    mWallet->createFolder(QLatin1String("pop3"));
+                if (!mWallet->hasFolder(QStringLiteral("pop3"))) {
+                    mWallet->createFolder(QStringLiteral("pop3"));
                 }
-                mWallet->setFolder(QLatin1String("pop3"));
+                mWallet->setFolder(QStringLiteral("pop3"));
                 mWallet->writePassword(mParentResource->identifier(), passwordEdit->text());
             }
 
@@ -363,7 +363,7 @@ void AccountDialog::slotPipeliningClicked()
                                       "if your server does not announce it, but you want more speed, then "
                                       "you should do some testing first by sending yourself a batch "
                                       "of mail and downloading it."), QString(),
-                                 QLatin1String("pipelining"));
+                                 QStringLiteral("pipelining"));
 }
 
 void AccountDialog::slotPopEncryptionChanged(int id)
@@ -399,7 +399,7 @@ void AccountDialog::slotCheckPopCapabilities()
     }
     mServerTest->setPort(encryptionType, portEdit->value());
     mServerTest->setServer(hostEdit->text());
-    mServerTest->setProtocol(QLatin1String("pop"));
+    mServerTest->setProtocol(QStringLiteral("pop"));
     connect(mServerTest, &MailTransport::ServerTest::finished, this, &AccountDialog::slotPopCapabilities);
     connect(mServerTest, &MailTransport::ServerTest::finished, busyCursorHelper, &BusyCursorHelper::deleteLater);
 

@@ -44,7 +44,7 @@ void MailSerializerPluginTest::testMailPlugin()
 
     // deserializing
     Item item;
-    item.setMimeType(QLatin1String("message/rfc822"));
+    item.setMimeType(QStringLiteral("message/rfc822"));
     item.setPayloadFromData(serialized);
 
     QVERIFY(item.hasPayload<KMime::Message::Ptr>());
@@ -75,7 +75,7 @@ void MailSerializerPluginTest::testMessageIntegrity()
 
     // Deserialize.
     Item item;
-    item.setMimeType(QLatin1String("message/rfc822"));
+    item.setMimeType(QStringLiteral("message/rfc822"));
     item.setPayloadFromData(serialized);
 
     QVERIFY(item.hasPayload<KMime::Message::Ptr>());

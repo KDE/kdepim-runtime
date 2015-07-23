@@ -146,8 +146,8 @@ void CollectionFetchTest::testEmptyDir()
 
     // test fail of base fetching non existent collection
     Collection collection;
-    collection.setName(QLatin1String("collection"));
-    collection.setRemoteId(QLatin1String("collection"));
+    collection.setName(QStringLiteral("collection"));
+    collection.setRemoteId(QStringLiteral("collection"));
     collection.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::Base);
@@ -202,7 +202,7 @@ void CollectionFetchTest::testMixedTree()
 
     // simulate second level mbox in maildir parent
     QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                          QLatin1String("collection1_1"));
+                          QStringLiteral("collection1_1"));
     QFile file1_1(fileInfo1_1.absoluteFilePath());
     file1_1.open(QIODevice::WriteOnly);
     file1_1.close();
@@ -244,7 +244,7 @@ void CollectionFetchTest::testMixedTree()
 
     // simulate second level mbox in mbox parent
     QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),
-                          QLatin1String("collection4_2"));
+                          QStringLiteral("collection4_2"));
     QFile file4_2(fileInfo4_2.absoluteFilePath());
     file4_2.open(QIODevice::WriteOnly);
     file4_2.close();

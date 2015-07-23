@@ -97,8 +97,8 @@ public:
     public:
         Settings()
         {
-            setCurrentGroup(QLatin1String("Invitations"));
-            addItemString(QLatin1String("DefaultResourceId"), m_id, QString());
+            setCurrentGroup(QStringLiteral("Invitations"));
+            addItemString(QStringLiteral("DefaultResourceId"), m_id, QString());
         }
 
         virtual ~Settings()
@@ -237,7 +237,7 @@ InvitationsAgent::InvitationsAgent(const QString &id)
 
     changeRecorder()->setChangeRecordingEnabled(false);   // behave like Monitor
     changeRecorder()->itemFetchScope().fetchFullPayload();
-    changeRecorder()->setMimeTypeMonitored(QLatin1String("message/rfc822"), true);
+    changeRecorder()->setMimeTypeMonitored(QStringLiteral("message/rfc822"), true);
     //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 
     connect(this, &InvitationsAgent::reloadConfiguration, this, &InvitationsAgent::initStart);

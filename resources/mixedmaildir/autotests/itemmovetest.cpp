@@ -111,12 +111,12 @@ void ItemMoveTest::testExpectedFail()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
     QCOMPARE((int)entrySet1.count(), 4);
 
@@ -138,17 +138,17 @@ void ItemMoveTest::testExpectedFail()
 
     // test failure of moving from a non-existent collection
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Collection collection3;
-    collection3.setName(QLatin1String("collection3"));
-    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setName(QStringLiteral("collection3"));
+    collection3.setRemoteId(QStringLiteral("collection3"));
     collection3.setParentCollection(mStore->topLevelCollection());
 
     Item item3;
-    item3.setRemoteId(QLatin1String("item3"));
+    item3.setRemoteId(QStringLiteral("item3"));
     item3.setParentCollection(collection3);
 
     job = mStore->moveItem(item3, collection1);
@@ -171,13 +171,13 @@ void ItemMoveTest::testExpectedFail()
 
     // test failure of moving from mbox to non-existent collection
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item2;
     item2.setId(KRandom::random());
-    item2.setRemoteId(QLatin1String("0"));
+    item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
 
     job = mStore->moveItem(item1, collection3);
@@ -243,13 +243,13 @@ void ItemMoveTest::testMaildirItem()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection5")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
     QCOMPARE((int)entrySet1.count(), 4);
 
@@ -259,7 +259,7 @@ void ItemMoveTest::testMaildirItem()
     MBoxEntry::List entryList2 = mbox2.entries();
     QCOMPARE((int)entryList2.count(), 4);
 
-    KPIM::Maildir md3(topLevelMd.addSubFolder(QLatin1String("collection3")), false);
+    KPIM::Maildir md3(topLevelMd.addSubFolder(QStringLiteral("collection3")), false);
     QVERIFY(md3.isValid());
     QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
     QCOMPARE((int)entrySet3.count(), 0);
@@ -275,7 +275,7 @@ void ItemMoveTest::testMaildirItem()
     MBoxEntry::List entryList4 = mbox4.entries();
     QCOMPARE((int)entryList4.count(), 0);
 
-    KPIM::Maildir md5 = topLevelMd.subFolder(QLatin1String("collection5"));
+    KPIM::Maildir md5 = topLevelMd.subFolder(QStringLiteral("collection5"));
     QSet<QString> entrySet5 = QSet<QString>::fromList(md5.entryList());
     QCOMPARE((int)entrySet5.count(), 4);
 
@@ -292,13 +292,13 @@ void ItemMoveTest::testMaildirItem()
 
     // test moving to an empty maildir
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Collection collection3;
-    collection3.setName(QLatin1String("collection3"));
-    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setName(QStringLiteral("collection3"));
+    collection3.setRemoteId(QStringLiteral("collection3"));
     collection3.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
@@ -333,8 +333,8 @@ void ItemMoveTest::testMaildirItem()
     item1.setRemoteId(*entrySet1.cbegin());
 
     Collection collection5;
-    collection5.setName(QLatin1String("collection5"));
-    collection5.setRemoteId(QLatin1String("collection5"));
+    collection5.setName(QStringLiteral("collection5"));
+    collection5.setRemoteId(QStringLiteral("collection5"));
     collection5.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->moveItem(item1, collection5);
@@ -362,8 +362,8 @@ void ItemMoveTest::testMaildirItem()
 
     // test moving to an empty mbox
     Collection collection4;
-    collection4.setName(QLatin1String("collection4"));
-    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setName(QStringLiteral("collection4"));
+    collection4.setRemoteId(QStringLiteral("collection4"));
     collection4.setParentCollection(mStore->topLevelCollection());
 
     item1.setRemoteId(*entrySet1.cbegin());
@@ -398,8 +398,8 @@ void ItemMoveTest::testMaildirItem()
     item1.setRemoteId(*entrySet1.cbegin());
 
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->moveItem(item1, collection2);
@@ -433,9 +433,9 @@ void ItemMoveTest::testMBoxItem()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection2")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection5")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection5")));
 
     QFileInfo fileInfo1(topDir.path(), QStringLiteral("collection1"));
     MBox mbox1;
@@ -445,11 +445,11 @@ void ItemMoveTest::testMBoxItem()
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md2 = topLevelMd.subFolder(QLatin1String("collection2"));
+    KPIM::Maildir md2 = topLevelMd.subFolder(QStringLiteral("collection2"));
     QSet<QString> entrySet2 = QSet<QString>::fromList(md2.entryList());
     QCOMPARE((int)entrySet2.count(), 4);
 
-    KPIM::Maildir md3(topLevelMd.addSubFolder(QLatin1String("collection3")), false);
+    KPIM::Maildir md3(topLevelMd.addSubFolder(QStringLiteral("collection3")), false);
     QVERIFY(md3.isValid());
     QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
     QCOMPARE((int)entrySet3.count(), 0);
@@ -486,13 +486,13 @@ void ItemMoveTest::testMBoxItem()
 
     // test moving to an empty maildir
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Collection collection3;
-    collection3.setName(QLatin1String("collection3"));
-    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setName(QStringLiteral("collection3"));
+    collection3.setRemoteId(QStringLiteral("collection3"));
     collection3.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
@@ -532,8 +532,8 @@ void ItemMoveTest::testMBoxItem()
 
     // test moving to a non empty mbox
     Collection collection5;
-    collection5.setName(QLatin1String("collection5"));
-    collection5.setRemoteId(QLatin1String("collection5"));
+    collection5.setName(QStringLiteral("collection5"));
+    collection5.setRemoteId(QStringLiteral("collection5"));
     collection5.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->moveItem(item1, collection5);
@@ -577,8 +577,8 @@ void ItemMoveTest::testMBoxItem()
 
     // test moving to an empty mbox
     Collection collection4;
-    collection4.setName(QLatin1String("collection4"));
-    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setName(QStringLiteral("collection4"));
+    collection4.setRemoteId(QStringLiteral("collection4"));
     collection4.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->moveItem(item1, collection4);
@@ -626,8 +626,8 @@ void ItemMoveTest::testMBoxItem()
 
     // test moving to a non empty maildir
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->moveItem(item1, collection2);

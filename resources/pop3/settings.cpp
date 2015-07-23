@@ -72,10 +72,10 @@ void Settings::setPassword(const QString &password)
     Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId,
                                         Wallet::Synchronous);
     if (wallet && wallet->isOpen()) {
-        if (!wallet->hasFolder(QLatin1String("pop3"))) {
-            wallet->createFolder(QLatin1String("pop3"));
+        if (!wallet->hasFolder(QStringLiteral("pop3"))) {
+            wallet->createFolder(QStringLiteral("pop3"));
         }
-        wallet->setFolder(QLatin1String("pop3"));
+        wallet->setFolder(QStringLiteral("pop3"));
         wallet->writePassword(mResourceId, password);
     } else {
         qCWarning(POP3RESOURCE_LOG) << "Unable to open wallet!";

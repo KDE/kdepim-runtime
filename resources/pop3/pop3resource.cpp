@@ -152,8 +152,8 @@ void POP3Resource::walletOpenedForLoading(bool success)
 {
     bool passwordLoaded = success;
     if (success) {
-        if (mWallet && mWallet->isOpen() && mWallet->hasFolder(QLatin1String("pop3"))) {
-            mWallet->setFolder(QLatin1String("pop3"));
+        if (mWallet && mWallet->isOpen() && mWallet->hasFolder(QStringLiteral("pop3"))) {
+            mWallet->setFolder(QStringLiteral("pop3"));
             if (mWallet->hasEntry(identifier())) {
                 mWallet->readPassword(identifier(), mPassword);
             } else {
@@ -179,10 +179,10 @@ void POP3Resource::walletOpenedForSaving(bool success)
 {
     if (success) {
         if (mWallet && mWallet->isOpen()) {
-            if (!mWallet->hasFolder(QLatin1String("pop3"))) {
-                mWallet->createFolder(QLatin1String("pop3"));
+            if (!mWallet->hasFolder(QStringLiteral("pop3"))) {
+                mWallet->createFolder(QStringLiteral("pop3"));
             }
-            mWallet->setFolder(QLatin1String("pop3"));
+            mWallet->setFolder(QStringLiteral("pop3"));
             mWallet->writePassword(identifier(), mPassword);
         }
     } else {
@@ -969,8 +969,8 @@ void POP3Resource::clearCachedPassword()
 
 void POP3Resource::cleanup()
 {
-    if (mWallet && mWallet->isOpen() && mWallet->hasFolder(QLatin1String("pop3"))) {
-        mWallet->setFolder(QLatin1String("pop3"));
+    if (mWallet && mWallet->isOpen() && mWallet->hasFolder(QStringLiteral("pop3"))) {
+        mWallet->setFolder(QStringLiteral("pop3"));
         if (mWallet->hasEntry(identifier())) {
             mWallet->removeEntry(identifier());
         }

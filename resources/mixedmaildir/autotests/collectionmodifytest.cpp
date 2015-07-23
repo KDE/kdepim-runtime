@@ -80,8 +80,8 @@ void CollectionModifyTest::cleanup()
 void CollectionModifyTest::testRename()
 {
     QDir topDir(mDir->path());
-    QVERIFY(topDir.mkdir(QLatin1String("topLevel")));
-    QVERIFY(topDir.cd(QLatin1String("topLevel")));
+    QVERIFY(topDir.mkdir(QStringLiteral("topLevel")));
+    QVERIFY(topDir.cd(QStringLiteral("topLevel")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
     QVERIFY(topLevelMd.isValid(false));
@@ -91,7 +91,7 @@ void CollectionModifyTest::testRename()
 
     // simulate second level mbox in maildir parent
     QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                          QLatin1String("collection1_1"));
+                          QStringLiteral("collection1_1"));
     QFile file1_1(fileInfo1_1.absoluteFilePath());
     file1_1.open(QIODevice::WriteOnly);
     file1_1.close();
@@ -121,7 +121,7 @@ void CollectionModifyTest::testRename()
 
     // simulate second level mbox in mbox parent
     QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),
-                          QLatin1String("collection4_2"));
+                          QStringLiteral("collection4_2"));
     QFile file4_2(fileInfo4_2.absoluteFilePath());
     file4_2.open(QIODevice::WriteOnly);
     file4_2.close();
@@ -134,18 +134,18 @@ void CollectionModifyTest::testRename()
 
     // test renaming top level collection
     topDir.cdUp();
-    QVERIFY(!topDir.exists(QLatin1String("newTopLevel")));
+    QVERIFY(!topDir.exists(QStringLiteral("newTopLevel")));
 
     Collection topLevelCollection = mStore->topLevelCollection();
-    topLevelCollection.setName(QLatin1String("newTopLevel"));
+    topLevelCollection.setName(QStringLiteral("newTopLevel"));
     job = mStore->modifyCollection(topLevelCollection);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
 
-    QVERIFY(topDir.exists(QLatin1String("newTopLevel")));
-    QVERIFY(!topDir.exists(QLatin1String("topLevel")));
-    QVERIFY(topDir.cd(QLatin1String("newTopLevel")));
+    QVERIFY(topDir.exists(QStringLiteral("newTopLevel")));
+    QVERIFY(!topDir.exists(QStringLiteral("topLevel")));
+    QVERIFY(topDir.cd(QStringLiteral("newTopLevel")));
     QCOMPARE(mStore->path(), topDir.path());
 
     collection = job->collection();
@@ -168,7 +168,7 @@ void CollectionModifyTest::testRename()
     md1_2 = md1.subFolder("collection1_2");
 
     fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                            QLatin1String("collection1_1"));
+                            QStringLiteral("collection1_1"));
     QVERIFY(fileInfo1_1.exists());
 
     md2 = topLevelMd.subFolder("collection2");
@@ -187,16 +187,16 @@ void CollectionModifyTest::testRename()
     md4_1 = md4.subFolder("collection4_1");
 
     fileInfo4_2 = QFileInfo(subDirInfo4.absoluteFilePath(),
-                            QLatin1String("collection4_2"));
+                            QStringLiteral("collection4_2"));
     QVERIFY(fileInfo4_2.exists());
 
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
 
     // test rename first level maildir leaf
     Collection collection2;
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
-    collection2.setName(QLatin1String("collection2_renamed"));
+    collection2.setName(QStringLiteral("collection2_renamed"));
 
     job = mStore->modifyCollection(collection2);
     QVERIFY(job->exec());
@@ -219,9 +219,9 @@ void CollectionModifyTest::testRename()
 
     // test renaming of first level mbox leaf
     Collection collection3;
-    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setRemoteId(QStringLiteral("collection3"));
     collection3.setParentCollection(mStore->topLevelCollection());
-    collection3.setName(QLatin1String("collection3_renamed"));
+    collection3.setName(QStringLiteral("collection3_renamed"));
 
     job = mStore->modifyCollection(collection3);
 
@@ -245,14 +245,14 @@ void CollectionModifyTest::testRename()
 
     // test renaming second level maildir in mbox parent
     Collection collection4;
-    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setRemoteId(QStringLiteral("collection4"));
     collection4.setParentCollection(mStore->topLevelCollection());
-    collection4.setName(QLatin1String("collection4"));
+    collection4.setName(QStringLiteral("collection4"));
 
     Collection collection4_1;
-    collection4_1.setRemoteId(QLatin1String("collection4_1"));
+    collection4_1.setRemoteId(QStringLiteral("collection4_1"));
     collection4_1.setParentCollection(collection4);
-    collection4_1.setName(QLatin1String("collection4_1_renamed"));
+    collection4_1.setName(QStringLiteral("collection4_1_renamed"));
 
     job = mStore->modifyCollection(collection4_1);
     QVERIFY(job->exec());
@@ -275,9 +275,9 @@ void CollectionModifyTest::testRename()
 
     // test renaming of second level mbox in mbox parent
     Collection collection4_2;
-    collection4_2.setRemoteId(QLatin1String("collection4_2"));
+    collection4_2.setRemoteId(QStringLiteral("collection4_2"));
     collection4_2.setParentCollection(collection4);
-    collection4_2.setName(QLatin1String("collection4_2_renamed"));
+    collection4_2.setName(QStringLiteral("collection4_2_renamed"));
 
     job = mStore->modifyCollection(collection4_2);
 
@@ -301,9 +301,9 @@ void CollectionModifyTest::testRename()
 
     // test renaming of maildir with subtree
     Collection collection1;
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
-    collection1.setName(QLatin1String("collection1_renamed"));
+    collection1.setName(QStringLiteral("collection1_renamed"));
 
     job = mStore->modifyCollection(collection1);
     QVERIFY(job->exec());
@@ -320,9 +320,9 @@ void CollectionModifyTest::testRename()
     QVERIFY(!fileInfo1_1.exists());
     QVERIFY(!md1_2.isValid(false));
     fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                            QLatin1String("collection1_1"));
+                            QStringLiteral("collection1_1"));
     QVERIFY(fileInfo1_1.exists());
-    md1_2 = md1.subFolder(QLatin1String("collection1_2"));
+    md1_2 = md1.subFolder(QStringLiteral("collection1_2"));
     QVERIFY(md1_2.isValid(false));
 
     // test failure of renaming again
@@ -335,7 +335,7 @@ void CollectionModifyTest::testRename()
     QVERIFY(md1_2.isValid(false));
 
     // test renaming of mbox with subtree
-    collection4.setName(QLatin1String("collection4_renamed"));
+    collection4.setName(QStringLiteral("collection4_renamed"));
     job = mStore->modifyCollection(collection4);
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -353,7 +353,7 @@ void CollectionModifyTest::testRename()
     QVERIFY(!md4_1.isValid(false));
     fileInfo4_2.refresh();
     QVERIFY(!fileInfo4_2.exists());
-    md4_1 = md4.subFolder(QLatin1String("collection4_1_renamed"));
+    md4_1 = md4.subFolder(QStringLiteral("collection4_1_renamed"));
     QVERIFY(md4_1.isValid(false));
     fileInfo4_2 = QFileInfo(md4.path(), QStringLiteral("collection4_2_renamed"));
     QVERIFY(fileInfo4_2.exists());
@@ -368,8 +368,8 @@ void CollectionModifyTest::testRename()
 
 void CollectionModifyTest::testIndexPreservation()
 {
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), mDir->path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), mDir->path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), mDir->path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), mDir->path(), QStringLiteral("collection2")));
 
     mStore->setPath(mDir->path());
 
@@ -384,9 +384,9 @@ void CollectionModifyTest::testIndexPreservation()
 
     // test renaming mbox
     Collection collection1;
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
-    collection1.setName(QLatin1String("collection1_renamed"));
+    collection1.setName(QStringLiteral("collection1_renamed"));
 
     job = mStore->modifyCollection(collection1);
     QVERIFY(job->exec());
@@ -422,9 +422,9 @@ void CollectionModifyTest::testIndexPreservation()
 
     // test renaming maildir
     Collection collection2;
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
-    collection2.setName(QLatin1String("collection2_renamed"));
+    collection2.setName(QStringLiteral("collection2_renamed"));
 
     job = mStore->modifyCollection(collection2);
     QVERIFY(job->exec());
@@ -476,12 +476,12 @@ void CollectionModifyTest::testIndexCacheUpdate()
     QVERIFY(fileInfo2.exists());
 
     const QString colSubDir1 = KPIM::Maildir::subDirPathForFolderPath(md1.path());
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir1, QStringLiteral("collection1_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir1, QStringLiteral("collection1_2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), colSubDir1, QStringLiteral("collection1_1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), colSubDir1, QStringLiteral("collection1_2")));
 
     const QString colSubDir2 = KPIM::Maildir::subDirPathForFolderPath(fileInfo2.absoluteFilePath());
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), colSubDir2, QStringLiteral("collection2_1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), colSubDir2, QStringLiteral("collection2_2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), colSubDir2, QStringLiteral("collection2_1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), colSubDir2, QStringLiteral("collection2_2")));
 
     mStore->setPath(mDir->path());
 
@@ -493,47 +493,47 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     // preparation: load all second level items to make sure respective index data is cached
     Collection collection1;
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
-    collection1.setName(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
 
     Collection collection1_1;
-    collection1_1.setRemoteId(QLatin1String("collection1_1"));
+    collection1_1.setRemoteId(QStringLiteral("collection1_1"));
     collection1_1.setParentCollection(collection1);
-    collection1_1.setName(QLatin1String("collection1_1"));
+    collection1_1.setName(QStringLiteral("collection1_1"));
 
     itemFetch = mStore->fetchItems(collection1_1);
     QVERIFY(itemFetch->exec());
 
     Collection collection1_2;
-    collection1_2.setRemoteId(QLatin1String("collection1_2"));
+    collection1_2.setRemoteId(QStringLiteral("collection1_2"));
     collection1_2.setParentCollection(collection1);
-    collection1_2.setName(QLatin1String("collection1_2"));
+    collection1_2.setName(QStringLiteral("collection1_2"));
 
     itemFetch = mStore->fetchItems(collection1_2);
     QVERIFY(itemFetch->exec());
     Collection collection2;
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
-    collection2.setName(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
 
     Collection collection2_1;
-    collection2_1.setRemoteId(QLatin1String("collection2_1"));
+    collection2_1.setRemoteId(QStringLiteral("collection2_1"));
     collection2_1.setParentCollection(collection2);
-    collection2_1.setName(QLatin1String("collection2_1"));
+    collection2_1.setName(QStringLiteral("collection2_1"));
 
     itemFetch = mStore->fetchItems(collection2_1);
     QVERIFY(itemFetch->exec());
     Collection collection2_2;
-    collection2_2.setRemoteId(QLatin1String("collection2_2"));
+    collection2_2.setRemoteId(QStringLiteral("collection2_2"));
     collection2_2.setParentCollection(collection2);
-    collection2_2.setName(QLatin1String("collection2_2"));
+    collection2_2.setName(QStringLiteral("collection2_2"));
 
     itemFetch = mStore->fetchItems(collection2_2);
     QVERIFY(itemFetch->exec());
 
     // test renaming the maildir parent
-    collection1.setName(QLatin1String("collection1_renamed"));
+    collection1.setName(QStringLiteral("collection1_renamed"));
 
     job = mStore->modifyCollection(collection1);
     QVERIFY(job->exec());
@@ -579,7 +579,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
     flagCounts.clear();
 
     // test renaming the mbox parent
-    collection2.setName(QLatin1String("collection2_renamed"));
+    collection2.setName(QStringLiteral("collection2_renamed"));
 
     job = mStore->modifyCollection(collection2);
     QVERIFY(job->exec());

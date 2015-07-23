@@ -98,7 +98,7 @@ private Q_SLOTS:
         const QDate currentDate = QDate::currentDate();
 
         Event::Ptr event = Event::Ptr(new Event());
-        event->setUid(QLatin1String("12345"));
+        event->setUid(QStringLiteral("12345"));
         event->setDtStart(KDateTime(currentDate));
         event->setDtEnd(KDateTime(currentDate.addDays(1)));
 

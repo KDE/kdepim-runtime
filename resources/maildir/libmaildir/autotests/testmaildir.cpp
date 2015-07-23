@@ -87,9 +87,9 @@ void MaildirTest::createSubFolders()
     d.cdUp();
     d.mkdir(subFolderPath);
     d.cd(subFolderPath);
-    d.mkdir(QLatin1String("foo"));
-    d.mkdir(QLatin1String("barbar"));
-    d.mkdir(QLatin1String("bazbaz"));
+    d.mkdir(QStringLiteral("foo"));
+    d.mkdir(QStringLiteral("barbar"));
+    d.mkdir(QStringLiteral("bazbaz"));
 }
 
 void MaildirTest::fillNewDirectory()

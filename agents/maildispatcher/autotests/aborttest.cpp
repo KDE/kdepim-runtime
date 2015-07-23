@@ -101,7 +101,7 @@ void AbortTest::initTestCase()
     sink = Collection(resolver->collection());
     QVERIFY(sink.isValid());
     QDBusInterface conf(QLatin1String("org.freedesktop.Akonadi.Resource.") + rid,
-                        QLatin1String("/Settings"), QStringLiteral("org.kde.Akonadi.MailTransportDummy.Settings"));
+                        QStringLiteral("/Settings"), QStringLiteral("org.kde.Akonadi.MailTransportDummy.Settings"));
     QVERIFY(conf.isValid());
     QDBusReply<void> reply = conf.call(QLatin1String("setSink"), sink.id());
     QVERIFY(reply.isValid());

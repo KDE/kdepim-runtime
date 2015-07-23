@@ -132,10 +132,10 @@ void ItemDeleteTest::testMaildir()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection1")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
@@ -151,8 +151,8 @@ void ItemDeleteTest::testMaildir()
 
     // test deleting one message
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
@@ -190,7 +190,7 @@ void ItemDeleteTest::testMBox()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection1")));
 
     QFileInfo fileInfo1(topDir.path(), QStringLiteral("collection1"));
     KMBox::MBox mbox1;
@@ -218,8 +218,8 @@ void ItemDeleteTest::testMBox()
     // test deleting last item in mbox
     // file stays untouched, message still accessible through MBox, but item gone
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Item item4;
@@ -370,11 +370,11 @@ void ItemDeleteTest::testCachePreservation()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
@@ -400,8 +400,8 @@ void ItemDeleteTest::testCachePreservation()
 
     // test deleting from maildir
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
@@ -450,8 +450,8 @@ void ItemDeleteTest::testCachePreservation()
 
     // test deleting from mbox
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item2;
@@ -510,11 +510,11 @@ void ItemDeleteTest::testExpectedFailure()
 {
     QDir topDir(mDir->path());
 
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), topDir.path(), QStringLiteral("collection2")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection1")));
+    QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection2")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
@@ -535,8 +535,8 @@ void ItemDeleteTest::testExpectedFailure()
 
     // test failure of fetching an item previously deleted from maildir
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Item item1_1;
@@ -560,8 +560,8 @@ void ItemDeleteTest::testExpectedFailure()
 
     // test failure of fetching an item previously deleted from mbox
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item2_1;
