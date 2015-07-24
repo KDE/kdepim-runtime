@@ -57,7 +57,7 @@
 class CheckableFilterProxyModel : public QSortFilterProxyModel
 {
 public:
-    CheckableFilterProxyModel(QObject *parent = Q_NULLPTR)
+    explicit CheckableFilterProxyModel(QObject *parent = Q_NULLPTR)
         : QSortFilterProxyModel(parent) { }
 
 protected:

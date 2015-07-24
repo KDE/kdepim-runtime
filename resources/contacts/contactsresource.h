@@ -38,7 +38,7 @@ class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
     Q_OBJECT
 
 public:
-    ContactsResource(const QString &id);
+    explicit ContactsResource(const QString &id);
     ~ContactsResource();
 
 public Q_SLOTS:

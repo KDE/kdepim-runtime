@@ -69,7 +69,7 @@ public:
 class PredefinedProviderPage : public QWizardPage
 {
 public:
-    PredefinedProviderPage(QWidget *parent = Q_NULLPTR);
+    explicit PredefinedProviderPage(QWidget *parent = Q_NULLPTR);
 
     void initializePage() Q_DECL_OVERRIDE;
     int nextId() const Q_DECL_OVERRIDE;
@@ -84,7 +84,7 @@ private:
 class CredentialsPage : public QWizardPage
 {
 public:
-    CredentialsPage(QWidget *parent = Q_NULLPTR);
+    explicit CredentialsPage(QWidget *parent = Q_NULLPTR);
     int nextId() const Q_DECL_OVERRIDE;
 
 private:
@@ -97,7 +97,7 @@ class ServerTypePage : public QWizardPage
     Q_OBJECT
 
 public:
-    ServerTypePage(QWidget *parent = Q_NULLPTR);
+    explicit ServerTypePage(QWidget *parent = Q_NULLPTR);
 
     bool validatePage() Q_DECL_OVERRIDE;
 
@@ -114,7 +114,7 @@ class ConnectionPage : public QWizardPage
     Q_OBJECT
 
 public:
-    ConnectionPage(QWidget *parent = Q_NULLPTR);
+    explicit ConnectionPage(QWidget *parent = Q_NULLPTR);
 
     void initializePage() Q_DECL_OVERRIDE;
     void cleanupPage() Q_DECL_OVERRIDE;
@@ -141,7 +141,7 @@ class CheckPage : public QWizardPage
     Q_OBJECT
 
 public:
-    CheckPage(QWidget *parent = Q_NULLPTR);
+    explicit CheckPage(QWidget *parent = Q_NULLPTR);
 
 private Q_SLOTS:
     void checkConnection();

@@ -122,7 +122,7 @@ void MoveItemsTask::triggerCopyJob(KIMAP::Session *session)
             }
 
             set.add(item.remoteId().toLong());
-        } catch (Akonadi::PayloadException e) {
+        } catch (const Akonadi::PayloadException &e) {
             qCWarning(IMAPRESOURCE_LOG) << "Copy failed, payload exception " << item.id() << item.remoteId();
             cancelTask(i18n("Failed to copy item, it has no message payload. Remote id: %1", item.remoteId()));
             return;

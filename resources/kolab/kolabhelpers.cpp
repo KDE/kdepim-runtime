@@ -309,7 +309,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
             return Akonadi::Item();
 
         }
-    } catch (Akonadi::PayloadException e) {
+    } catch (const Akonadi::PayloadException &e) {
         qCWarning(KOLABRESOURCE_LOG) << "The item contains the wrong or no payload: " << item.id() << item.mimeType();
         qCWarning(KOLABRESOURCE_LOG) << e.what();
         return Akonadi::Item();

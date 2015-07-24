@@ -43,7 +43,7 @@ public:
     };
 
 protected:
-    PasswordRequesterInterface(QObject *parent = Q_NULLPTR);
+    explicit PasswordRequesterInterface(QObject *parent = Q_NULLPTR);
 
 public:
     virtual void requestPassword(RequestType request = StandardRequest,

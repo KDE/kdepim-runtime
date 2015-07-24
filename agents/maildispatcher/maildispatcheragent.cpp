@@ -43,10 +43,6 @@
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusConnection>
 
-#ifdef KDEPIM_STATIC_LIBS
-extern bool ___MailTransport____INIT();
-#endif
-
 #ifdef MAIL_SERIALIZER_PLUGIN_STATIC
 
 Q_IMPORT_PLUGIN(akonadi_serializer_mail)

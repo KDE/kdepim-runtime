@@ -34,7 +34,7 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
     Q_OBJECT
 
 public:
-    BirthdaysResource(const QString &id);
+    explicit BirthdaysResource(const QString &id);
     ~BirthdaysResource();
 
 public Q_SLOTS:
