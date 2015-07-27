@@ -303,7 +303,7 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
 void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path)
 {
 
-    CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+    Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
     attr->setIdentifier(path.toLatin1());
 
     // If the folder is a other users folder block all alarms from default
@@ -321,7 +321,7 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
 
     //Mark user folders for searching
     if (pathParts.size() >= 2 && isNamespaceFolder(path, resourceState()->userNamespaces())) {
-        CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+        Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         if (pathParts.size() == 2) {
             attr->setCollectionNamespace("usertoplevel");
         } else {
@@ -338,7 +338,7 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
 
     //Mark shared folders for searching
     if (pathParts.size() >= 2 && isNamespaceFolder(path, resourceState()->sharedNamespaces())) {
-        CollectionIdentificationAttribute *attr = c.attribute<CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+        Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setCollectionNamespace("shared");
     }
 
