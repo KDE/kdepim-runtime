@@ -19,6 +19,8 @@ PRIVATE
                       KF5::AkonadiCore
                       KF5::AkonadiWidgets
                       KF5::ConfigCore
+                      KF5::I18n
+                      Qt5::DBus
 )
 
 set_target_properties(folderarchivesettings PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

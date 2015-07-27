@@ -43,6 +43,7 @@ target_link_libraries( akonadi_pop3_resource
   KF5::MailTransport
   KF5::AkonadiAgentBase
   KF5::AkonadiWidgets
+  KF5::KDELibs4Support
 )
 
 if(BUILD_TESTING)

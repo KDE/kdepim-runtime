@@ -14,7 +14,12 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcm_akonadi\")
 set(akonadi_resources_kcm_srcs configmodule.cpp resourcesmanagementwidget.cpp)
 ki18n_wrap_ui(akonadi_resources_kcm_srcs resourcesmanagementwidget.ui )
 add_library(kcm_akonadi_resources MODULE ${akonadi_resources_kcm_srcs})
-target_link_libraries(kcm_akonadi_resources  KF5::AkonadiCore KF5::AkonadiWidgets Qt5::Widgets)
+target_link_libraries(kcm_akonadi_resources
+    KF5::AkonadiCore
+    KF5::AkonadiWidgets
+    Qt5::Widgets
+    KF5::KDELibs4Support
+)
 
 
 set(akonadi_server_kcm_srcs serverconfigmodule.cpp)
@@ -23,12 +28,25 @@ ki18n_wrap_ui(akonadi_server_kcm_srcs serverconfigmodule.ui
                                           serverpsqlstorage.ui
                                           serverstoragedriver.ui)
 add_library(kcm_akonadi_server MODULE ${akonadi_server_kcm_srcs})
-target_link_libraries(kcm_akonadi_server  KF5::KIOCore KF5::AkonadiWidgets KF5::KCMUtils KF5::I18n KF5::Completion KF5::KIOWidgets KF5::AkonadiPrivate)
-
+target_link_libraries(kcm_akonadi_server
+    KF5::KIOCore
+    KF5::AkonadiWidgets
+    KF5::KCMUtils
+    KF5::I18n 
+    KF5::Completion
+    KF5::KIOWidgets
+    KF5::AkonadiPrivate
+    KF5::ConfigWidgets
+)
 
 set(akonadi_kcm_srcs akonadiconfigmodule.cpp)
 add_library(kcm_akonadi MODULE ${akonadi_kcm_srcs})
-target_link_libraries(kcm_akonadi  KF5::KCMUtils KF5::AkonadiWidgets KF5::AkonadiCore)
+target_link_libraries(kcm_akonadi
+    KF5::KCMUtils
+    KF5::AkonadiWidgets
+    KF5::AkonadiCore
+    KF5::ConfigWidgets
+)
 
 
 install(TARGETS
