@@ -642,7 +642,7 @@ void ImapResourceBase::requestManualExpunge(qint64 collectionId)
         Akonadi::CollectionFetchScope scope;
         scope.setResource(identifier());
         scope.setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
-        scope.setIncludeUnsubscribed(true);
+        scope.setListFilter(CollectionFetchScope::NoFilter);
 
         Akonadi::CollectionFetchJob *fetch
             = new Akonadi::CollectionFetchJob(collection,
