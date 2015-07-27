@@ -23,7 +23,6 @@
 #include "singlefileresourceconfigdialog.h"
 
 #include <kdbusconnectionpool.h>
-#include <agentfactory.h>
 
 #include <KLocalizedString>
 

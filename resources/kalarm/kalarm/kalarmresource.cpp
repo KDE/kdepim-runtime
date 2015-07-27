@@ -27,7 +27,6 @@
 #include <kalarmcal/kacalendar.h>
 #include <kalarmcal/kaevent.h>
 
-#include <agentfactory.h>
 #include <attributefactory.h>
 #include <collectionfetchjob.h>
 #include <collectionfetchscope.h>

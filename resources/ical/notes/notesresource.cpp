@@ -19,8 +19,6 @@
 
 #include "notesresource.h"
 
-#include <agentfactory.h>
-
 #include <KCalCore/Incidence>
 
 #include <kconfigskeleton.h>

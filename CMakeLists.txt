@@ -54,7 +54,7 @@ include(ECMInstallIcons)
 set(KF5_VERSION "5.12.0")
 set(QT_REQUIRED_VERSION "5.4.0")
 
-set(KDEPIMLIBS_LIB_VERSION "4.88.0")
+set(KDEPIMLIBS_LIB_VERSION "5.1.40")
 
 set(KDEPIMRUNTIME_LIB_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}.0")
 set(KDEPIMRUNTIME_LIB_SOVERSION "5")
@@ -84,7 +84,7 @@ set( SHARED_MIME_INFO_MINIMUM_VERSION "0.40" )
 find_package( SharedMimeInfo REQUIRED )
 
 
-find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Widgets Test Declarative XmlPatterns)
+find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test Declarative XmlPatterns)
 
 # QT5 package
 find_package(Qt5WebKitWidgets ${QT_REQUIRED_VERSION} REQUIRED NO_MODULE)
@@ -106,9 +106,10 @@ find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Kross ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Codecs ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5WindowSystem ${KF5_VERSION} CONFIG REQUIRED)
+find_packagE(KF5TextWidgets ${KF5_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
 
 # KdepimLibs package
 find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)

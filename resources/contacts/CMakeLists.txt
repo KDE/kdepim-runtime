@@ -28,6 +28,10 @@ target_link_libraries(akonadi_contacts_resource
   KF5::AkonadiAgentBase
   KF5::Contacts
   KF5::DBusAddons
+  KF5::I18n
+  KF5::KIOWidgets
+  KF5::ConfigWidgets
+  KF5::WindowSystem
 )
 
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

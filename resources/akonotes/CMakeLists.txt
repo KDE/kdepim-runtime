@@ -35,7 +35,19 @@ install( FILES akonotesresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/
 
 add_executable(akonadi_akonotes_resource ${akonotesresource_SRCS})
 
-target_link_libraries(akonadi_akonotes_resource KF5::AkonadiCore KF5::AkonadiMime maildir  KF5::Mime folderarchivesettings KF5::AkonadiAgentBase KF5::DBusAddons)
+target_link_libraries(akonadi_akonotes_resource
+    KF5::AkonadiCore
+    KF5::AkonadiMime
+    KF5::Mime
+    KF5::AkonadiAgentBase
+    KF5::DBusAddons
+    KF5::I18n
+    KF5::KIOWidgets
+    KF5::WindowSystem
+    KF5::ConfigWidgets
+    maildir
+    folderarchivesettings
+)
 
 install(TARGETS akonadi_akonotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

@@ -27,7 +27,12 @@ endif ()
 target_link_libraries(akonadi_vcarddir_resource
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
-  KF5::Contacts  
+  KF5::Contacts
+  KF5::I18n
+  KF5::TextWidgets
+  KF5::KIOWidgets
+  KF5::ConfigWidgets
+  KF5::WindowSystem
 )
 
 add_subdirectory(wizard)

@@ -23,7 +23,6 @@
 #include <QtCore/QtPlugin>
 
 #include <attributefactory.h>
-#include <agentfactory.h>
 #include <changerecorder.h>
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>

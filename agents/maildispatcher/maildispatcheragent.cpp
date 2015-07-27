@@ -28,7 +28,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <agentfactory.h>
 #include <kdbusconnectionpool.h>
 #include <itemfetchscope.h>
 #include <mailtransport/sentactionattribute.h>

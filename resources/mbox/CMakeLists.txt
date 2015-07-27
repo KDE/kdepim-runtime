@@ -32,7 +32,16 @@ if( APPLE )
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi Mbox Resource")
 endif ()
 
-target_link_libraries(akonadi_mbox_resource KF5::Mbox KF5::AkonadiCore KF5::AkonadiMime  KF5::KIOCore KF5::Mime KF5::AkonadiAgentBase KF5::DBusAddons akonadi-singlefileresource)
+target_link_libraries(akonadi_mbox_resource
+    KF5::Mbox
+    KF5::AkonadiCore
+    KF5::AkonadiMime
+    KF5::KIOCore
+    KF5::Mime
+    KF5::AkonadiAgentBase
+    KF5::DBusAddons
+    akonadi-singlefileresource
+)
 
 install(TARGETS akonadi_mbox_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 if (BUILD_TESTING)

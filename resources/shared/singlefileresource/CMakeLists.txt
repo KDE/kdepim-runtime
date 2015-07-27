@@ -45,10 +45,11 @@ add_library(akonadi-singlefileresource  ${akonadi-singlefileresource_SRCS} )
 generate_export_header(akonadi-singlefileresource BASE_NAME akonadi-singlefileresource)
 
 target_link_libraries(akonadi-singlefileresource
-                      KF5::AkonadiCore
-                      KF5::AkonadiAgentBase
-                      KF5::KIOCore
-                      KF5::IMAP
+    KF5::AkonadiCore
+    KF5::AkonadiAgentBase
+    KF5::KIOCore
+    KF5::IMAP
+    KF5::KDELibs4Support
 )
 
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

@@ -32,7 +32,6 @@
 #include <KCalCore/FileStorage>
 #include <KCalCore/ICalFormat>
 #include <KCalCore/MemoryCalendar>
-#include <agentfactory.h>
 #include <changerecorder.h>
 #include <kdbusconnectionpool.h>
 #include <entitydisplayattribute.h>
@@ -71,7 +70,7 @@ static const char warningFile[] = "WARNING_README.txt";
 
 KAlarmDirResource::KAlarmDirResource(const QString &id)
     : ResourceBase(id),
-      mSettings(new Settings(componentData().config())),
+      mSettings(new Settings(config())),
       mCollectionId(-1),
       mCompatibility(KACalendar::Incompatible),
       mCollectionFetched(false),

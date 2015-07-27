@@ -31,7 +31,6 @@
 
 #include <kdbusconnectionpool.h>
 
-#include <agentfactory.h>
 #include <changerecorder.h>
 #include <entitydisplayattribute.h>
 #include <entityhiddenattribute.h>

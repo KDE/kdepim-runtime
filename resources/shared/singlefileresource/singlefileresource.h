@@ -50,7 +50,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileRe
 public:
     SingleFileResource(const QString &id)
         : SingleFileResourceBase(id)
-        , mSettings(new Settings(componentData().config()))
+        , mSettings(new Settings(config()))
     {
         // The resource needs network when the path refers to a non local file.
         setNeedsNetwork(!QUrl::fromLocalFile(mSettings->path()).isLocalFile());

@@ -99,7 +99,7 @@ Collection MaildirResource::collectionForMaildir(const Maildir &md) const
 
 MaildirResource::MaildirResource(const QString &id)
     : ResourceBase(id),
-      mSettings(new MaildirSettings(componentData().config())),
+      mSettings(new MaildirSettings(config())),
       mFsWatcher(new KDirWatch(this))
 {
     // we cannot be sure that a config file is existing

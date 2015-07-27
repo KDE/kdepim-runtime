@@ -32,7 +32,6 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 #include <kdbusconnectionpool.h>
-#include <agentfactory.h>
 #include "contacts_resources_debug.h"
 
 #include <KLocalizedString>
@@ -42,7 +41,7 @@ using namespace Akonadi_Contacts_Resource;
 
 ContactsResource::ContactsResource(const QString &id)
     : ResourceBase(id),
-      mSettings(new ContactsResourceSettings(componentData().config()))
+      mSettings(new ContactsResourceSettings(config()))
 {
     // setup the resource
     new ContactsResourceSettingsAdaptor(mSettings);
