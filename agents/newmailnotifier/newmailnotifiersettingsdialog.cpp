@@ -42,7 +42,6 @@
 #include <QAction>
 
 #include <AkonadiWidgets/CollectionView>
-#include <AkonadiCore/CollectionModel>
 #include <AkonadiCore/RecursiveCollectionFilterProxyModel>
 #include <AkonadiCore/CollectionFilterProxyModel>
 #include <AkonadiCore/CollectionModifyJob>
