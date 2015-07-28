@@ -26,7 +26,7 @@
 #include <QAction>
 #include <QListView>
 #include <QLabel>
-#include <KToolBar>
+#include <QToolBar>
 #include <QIcon>
 #include <QDialog>
 #include <KLocalizedString>
@@ -38,7 +38,7 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
 {
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     {
-        KToolBar *toolbar = new KToolBar(QLatin1String("MigrationControlToolbar"), this);
+        QToolBar *toolbar = new QToolBar(QLatin1String("MigrationControlToolbar"), this);
 
         QAction *start = toolbar->addAction(QLatin1String("Start"));
         start->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));

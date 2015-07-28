@@ -22,7 +22,6 @@
 
 #include <kconfig.h>
 #include <kconfiggroup.h>
-#include <kglobal.h>
 #include <KLocalizedString>
 
 #include <qdebug.h>
@@ -60,8 +59,6 @@ int main(int argc, char **argv)
 
     app.setQuitOnLastWindowClosed(false);
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("akonadi")));
-
-    KGlobal::setAllowQuit(true);
 
     if (!Akonadi::ControlGui::start(0)) {
         return 2;

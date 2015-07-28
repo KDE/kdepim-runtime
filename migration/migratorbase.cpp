@@ -21,15 +21,14 @@
 
 #include "migratorbase.h"
 #include <QDebug>
-#include <KComponentData>
 #include <KLocalizedString>
 #include <AkonadiCore/servermanager.h>
 #include <QFile>
 #include <QDateTime>
-#include <KGlobal>
 #include <QStandardPaths>
 #include <QFileInfo>
 #include <QDir>
+#include <QCoreApplication>
 
 static QString messageTypeToString(MigratorBase::MessageType type)
 {
@@ -74,7 +73,7 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
         mMigrationState(None),
         mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QStringLiteral("akonadi-migrationrc"))))
 {
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + KGlobal::mainComponent().componentName() + QStringLiteral("/") + identifier + QStringLiteral("migration.log");
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QStringLiteral("/") + identifier + QStringLiteral("migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
     setLogfile(logFileName);

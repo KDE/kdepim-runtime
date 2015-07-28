@@ -26,13 +26,11 @@
 #include <KSharedConfig>
 #include <KConfigGroup>
 #include <KLocalizedString>
-#include <KGlobal>
 #include <QDebug>
-
+#include <QCoreApplication>
 #include <QFile>
 #include <QMetaEnum>
 #include <QTimer>
-#include <kcomponentdata.h>
 #include <QStandardPaths>
 #include <QFileInfo>
 #include <QDir>
@@ -60,7 +58,7 @@ QString messageTypeToString(KMigratorBase::MessageType type)
 KMigratorBase::KMigratorBase() : m_logFile(0)
 {
 
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + KGlobal::mainComponent().componentName() + QLatin1String("/migration.log") ;
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1String("/migration.log") ;
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
 
