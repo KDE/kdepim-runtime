@@ -18,7 +18,11 @@ target_link_libraries(kcm_akonadi_resources
     KF5::AkonadiCore
     KF5::AkonadiWidgets
     Qt5::Widgets
-    KF5::KDELibs4Support
+    KF5::ConfigWidgets
+    KF5::I18n
+    KF5::ItemViews
+    KF5::WindowSystem
+    KF5::Completion
 )
 
 
