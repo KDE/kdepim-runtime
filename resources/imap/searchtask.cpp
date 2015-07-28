@@ -25,7 +25,6 @@
 #include <kimap/selectjob.h>
 #include <SearchQuery>
 #include <Akonadi/KMime/MessageFlags>
-#include <KDateTime>
 #include "imapresource_debug.h"
 
 Q_DECLARE_METATYPE(KIMAP::Session *)
