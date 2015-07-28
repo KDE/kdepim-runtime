@@ -41,7 +41,6 @@
 #include <KWindowSystem>
 #include <kwallet.h>
 #include "pop3resource_debug.h"
-#include <KGlobalSettings>
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QVBoxLayout>
