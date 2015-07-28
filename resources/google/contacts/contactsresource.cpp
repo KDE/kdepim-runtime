@@ -33,7 +33,6 @@
 #include <KContacts/Picture>
 
 #include <KLocalizedString>
-#include <KDateTime>
 #include <QDebug>
 #include <QIcon>
 
@@ -467,7 +466,10 @@ void ContactsResource::slotItemsRetrieved(KGAPI2::Job *job)
     map[QStringLiteral("modifiedItems")] = QVariant::fromValue(changedPhotos);
     scheduleCustomTask(this, "retrieveContactsPhotos", map);
 
-    collection.setRemoteRevision(QString::number(KDateTime::currentUtcDateTime().toTime_t()));
+    const QDateTime local(QDateTime::currentDateTime());
+    const QDateTime UTC(local.toUTC());
+ 
+    collection.setRemoteRevision(QString::number(UTC.toTime_t()));
     new CollectionModifyJob(collection, this);
 
     job->deleteLater();

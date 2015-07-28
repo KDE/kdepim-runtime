@@ -54,7 +54,6 @@ target_link_libraries(akonadi_googlecalendar_resource
   KF5::AkonadiAgentBase
   KF5::Wallet
   KF5::I18n
-  KF5::KDELibs4Support # KDateTime
 )
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})

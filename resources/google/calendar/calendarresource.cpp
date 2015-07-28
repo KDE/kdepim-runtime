@@ -592,8 +592,10 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
     } else {
         itemsRetrieved(changedItems);
     }
+    const QDateTime local(QDateTime::currentDateTime());
+    const QDateTime UTC(local.toUTC());
 
-    collection.setRemoteRevision(QString::number(KDateTime::currentUtcDateTime().toTime_t()));
+    collection.setRemoteRevision(QString::number(UTC.toTime_t()));
     new CollectionModifyJob(collection, this);
 
     job->deleteLater();
