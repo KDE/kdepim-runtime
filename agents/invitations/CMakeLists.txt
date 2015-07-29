@@ -7,27 +7,14 @@ set( invitationsagent_SRCS
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_invitations_agent\")
 
-#ki18n_wrap_ui(invitationsagent_SRCS settings.ui)
-#kconfig_add_kcfg_files(invitationsagent_SRCS settings.kcfgc)
-#kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/invitationsagent.kcfg org.kde.Akonadi.MailDispatcher.Settings)
-#qt5_add_dbus_adaptor(invitationsagent_SRCS
-#  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MailDispatcher.Settings.xml settings.h Settings
-#)
-## qt5_add_dbus_adaptor( invitationsagent_SRCS
-## ${KDE4_DBUS_INTERFACES_DIR}/org.kde.Akonadi.MailDispatcher.xml invitationsagent.h MailDispatcherAgent
-## )
-
 add_executable(akonadi_invitations_agent ${invitationsagent_SRCS})
 
 target_link_libraries(akonadi_invitations_agent
-  KF5::KIOCore
   KF5::AkonadiCore
   KF5::AkonadiMime
   KF5::Mime
-  KF5::MailTransport
   KF5::CalendarCore
   KF5::AkonadiAgentBase
-  KF5::IdentityManagement
 )
 
 if( APPLE )

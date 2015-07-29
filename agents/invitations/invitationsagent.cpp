@@ -49,7 +49,6 @@
 #include <KLocalizedString>
 #include <KMime/Content>
 #include <KMime/Message>
-#include <kidentitymanagement/identitymanager.h>
 #include <KSystemTimeZones>
 
 #include <QtCore/QFileInfo>
