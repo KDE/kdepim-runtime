@@ -42,7 +42,6 @@ target_link_libraries(akonadi_maildir_resource
     folderarchivesettings
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::KIOCore
     KF5::KIOWidgets
     KF5::Mime
     KF5::AkonadiAgentBase
