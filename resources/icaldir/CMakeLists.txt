@@ -31,7 +31,6 @@ target_link_libraries(akonadi_icaldir_resource
   KF5::AkonadiCore
   KF5::AkonadiAgentBase  
   KF5::CalendarCore
-  KF5::KIOCore
 )
 
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

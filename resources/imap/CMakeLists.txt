@@ -65,7 +65,6 @@ target_link_libraries(imapresource
     KF5::AkonadiCore
     KF5::IMAP
     KF5::MailTransport
-    KF5::KIOCore
     KF5::KIOWidgets
     KF5::Mime
     KF5::AkonadiMime
