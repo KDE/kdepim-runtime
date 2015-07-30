@@ -135,10 +135,6 @@ set(Boost_NO_BOOST_CMAKE TRUE)
 find_package(Boost 1.34.0)
 set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "http://www.boost.org" TYPE REQUIRED PURPOSE "Boost is required by Akonadi")
 
-option(KDEPIM_MOBILE_UI "Build UI for mobile devices instead of for desktops" FALSE)
-if (KDEPIM_MOBILE_UI)
-  add_definitions( -DKDEPIM_MOBILE_UI )
-endif ()
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 

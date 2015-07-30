@@ -60,11 +60,7 @@
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
 
-#ifdef KDEPIM_MOBILE_UI
-#include "ui_setupserverview_mobile.h"
-#else
 #include "ui_setupserverview_desktop.h"
-#endif
 #include "ui_serverinfo.h"
 
 /** static helper functions **/

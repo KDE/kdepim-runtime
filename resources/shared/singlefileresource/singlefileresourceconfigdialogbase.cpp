@@ -53,9 +53,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windo
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::File);
-#ifndef KDEPIM_MOBILE_UI
     ui.statusLabel->setText(QString());
-#endif
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -117,11 +115,7 @@ void SingleFileResourceConfigDialogBase::setFilter(const QString &filter)
 void SingleFileResourceConfigDialogBase::setMonitorEnabled(bool enable)
 {
     mMonitorEnabled = enable;
-#ifdef KDEPIM_MOBILE_UI
-    ui.kcfg_MonitorFile->setVisible(mMonitorEnabled);
-#else
     ui.groupBox_MonitorFile->setVisible(mMonitorEnabled);
-#endif
 }
 
 void SingleFileResourceConfigDialogBase::setUrl(const QUrl &url)
@@ -165,9 +159,7 @@ void SingleFileResourceConfigDialogBase::validate()
         if (mMonitorEnabled) {
             ui.kcfg_MonitorFile->setEnabled(true);
         }
-#ifndef KDEPIM_MOBILE_UI
         ui.statusLabel->setText(QString());
-#endif
 
         // The read-only checkbox used to be disabled if the file is read-only,
         // but it is then impossible to know at a later date if the file
@@ -183,9 +175,7 @@ void SingleFileResourceConfigDialogBase::validate()
         if (mMonitorEnabled) {
             ui.kcfg_MonitorFile->setEnabled(false);
         }
-#ifndef KDEPIM_MOBILE_UI
         ui.statusLabel->setText(i18nc("@info:status", "Checking file information..."));
-#endif
 
         if (mStatJob) {
             mStatJob->kill();
@@ -223,18 +213,14 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult(KJob *job)
     } else if (job->error()) {
         // It doesn't seem possible to read nor write from the location so leave the
         // ok button disabled
-#ifndef KDEPIM_MOBILE_UI
         ui.statusLabel->setText(QString());
-#endif
         mOkButton->setEnabled(false);
         mDirUrlChecked = false;
         mStatJob = Q_NULLPTR;
         return;
     }
 
-#ifndef KDEPIM_MOBILE_UI
     ui.statusLabel->setText(QString());
-#endif
     mOkButton->setEnabled(true);
 
     mDirUrlChecked = false;

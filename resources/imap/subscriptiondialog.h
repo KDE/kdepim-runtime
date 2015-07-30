@@ -107,11 +107,7 @@ private:
     KIMAP::Session *m_session;
     bool m_subscriptionChanged;
 
-#ifndef KDEPIM_MOBILE_UI
     QTreeView *m_treeView;
-#else
-    QListView *m_listView;
-#endif
 
     QLineEdit *m_lineEdit;
     QCheckBox *m_enableSubscription;

@@ -9,17 +9,10 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
   singlefileresourceconfigdialogbase.cpp
 )
 
-if (KDEPIM_MOBILE_UI)
-set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  singlefileresourceconfigdialog_mobile.ui
-  singlefileresourceconfigdialog.ui
-)
-else ()
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
   singlefileresourceconfigdialog_desktop.ui
   singlefileresourceconfigdialog.ui
 )
-endif ()
 
 set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
   collectionannotationsattribute.cpp

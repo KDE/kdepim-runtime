@@ -71,9 +71,6 @@ KAlarmResource::~KAlarmResource()
 void KAlarmResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
 {
     ICalResourceBase::customizeConfigDialog(dlg);
-#ifdef KDEPIM_MOBILE_UI
-    dlg->setFilter("*.ics");
-#endif
     mTypeSelector = new AlarmTypeRadioWidget(dlg);
     const QStringList types = mSettings->alarmTypes();
     CalEvent::Type alarmType = CalEvent::ACTIVE;

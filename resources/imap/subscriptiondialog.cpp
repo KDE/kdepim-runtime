@@ -44,31 +44,9 @@
 #include <QDialogButtonBox>
 #include <KConfigGroup>
 
-#ifndef KDEPIM_MOBILE_UI
 #include <QHeaderView>
 #include <QLabel>
 #include <QTreeView>
-#else
-#include <QListView>
-#include <QSortFilterProxyModel>
-#include <kdescendantsproxymodel.h>
-#include <QVBoxLayout>
-
-class CheckableFilterProxyModel : public QSortFilterProxyModel
-{
-public:
-    explicit CheckableFilterProxyModel(QObject *parent = Q_NULLPTR)
-        : QSortFilterProxyModel(parent) { }
-
-protected:
-    /*reimp*/ bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
-    {
-        QModelIndex sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
-        return sourceModel()->flags(sourceIndex) & Qt::ItemIsUserCheckable;
-    }
-};
-
-#endif
 
 SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option)
     : QDialog(parent),
@@ -107,10 +85,8 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     QHBoxLayout *filterBarLayout = new QHBoxLayout;
     mainLayout->addLayout(filterBarLayout);
 
-#ifndef KDEPIM_MOBILE_UI
     filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription",
                                           "Search:")));
-#endif
 
     m_lineEdit = new QLineEdit(mainWidget);
     m_lineEdit->setClearButtonEnabled(true);
@@ -118,7 +94,6 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     filterBarLayout->addWidget(m_lineEdit);
     m_lineEdit->setFocus();
 
-#ifndef KDEPIM_MOBILE_UI
     QCheckBox *checkBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), mainWidget);
     connect(checkBox, SIGNAL(stateChanged(int)),
             m_filter, SLOT(setIncludeCheckedOnly(int)));
@@ -130,37 +105,11 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     m_filter->setSourceModel(m_model);
     m_treeView->setModel(m_filter);
     mainLayout->addWidget(m_treeView);
-#else
-    m_lineEdit->hide();
-    connect(m_lineEdit, &QLineEdit::textChanged, this, &SubscriptionDialog::onMobileLineEditChanged);
-
-    m_listView = new QListView(mainWidget);
-
-    KDescendantsProxyModel *flatModel = new KDescendantsProxyModel(m_listView);
-    flatModel->setDisplayAncestorData(true);
-    flatModel->setAncestorSeparator(QStringLiteral("/"));
-    flatModel->setSourceModel(m_model);
-
-    CheckableFilterProxyModel *checkableModel = new CheckableFilterProxyModel(m_listView);
-    checkableModel->setSourceModel(flatModel);
-
-    m_filter->setSourceModel(checkableModel);
-
-    m_listView->setModel(m_filter);
-    mainLayout->addWidget(m_listView);
-
-    // We want to get all the keyboard input all the time
-    grabKeyboard();
-#endif
 
     connect(m_model, &QStandardItemModel::itemChanged, this, &SubscriptionDialog::onItemChanged);
 
     if (option & SubscriptionDialog::AllowToEnableSubscription) {
-#ifndef KDEPIM_MOBILE_UI
         connect(m_enableSubscription, &QCheckBox::clicked, m_treeView, &QTreeView::setEnabled);
-#else
-        connect(m_enableSubscription, &QCheckBox::clicked, m_listView, &QListView::setEnabled);
-#endif
     } else {
         m_enableSubscription->hide();
     }
@@ -174,9 +123,7 @@ SubscriptionDialog::~SubscriptionDialog()
 
 void SubscriptionDialog::slotSearchPattern(const QString &pattern)
 {
-#ifndef KDEPIM_MOBILE_UI
     m_treeView->expandAll();
-#endif
     m_filter->setSearchPattern(pattern);
 }
 
@@ -202,11 +149,7 @@ void SubscriptionDialog::writeConfig()
 void SubscriptionDialog::setSubscriptionEnabled(bool enabled)
 {
     m_enableSubscription->setChecked(enabled);
-#ifndef KDEPIM_MOBILE_UI
     m_treeView->setEnabled(enabled);
-#else
-    m_listView->setEnabled(enabled);
-#endif
 }
 
 bool SubscriptionDialog::subscriptionEnabled() const
@@ -448,20 +391,6 @@ void SubscriptionDialog::onMobileLineEditChanged(const QString &text)
 
 void SubscriptionDialog::keyPressEvent(QKeyEvent *event)
 {
-#ifndef KDEPIM_MOBILE_UI
     QDialog::keyPressEvent(event);
-#else
-    static bool isSendingEvent = false;
-
-    if (!isSendingEvent
-            && !event->text().isEmpty()
-            && !m_lineEdit->isVisible()) {
-        isSendingEvent = true;
-        QCoreApplication::sendEvent(m_lineEdit, event);
-        isSendingEvent = false;
-    } else {
-        QDialog::keyPressEvent(event);
-    }
-#endif
 }
 

@@ -87,11 +87,7 @@ set( akonadi_imap_resource_SRCS
 
 install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
-if (KDEPIM_MOBILE_UI)
-ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_mobile.ui)
-else ()
 ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
-endif ()
 ki18n_wrap_ui(akonadi_imap_resource_SRCS serverinfo.ui)
 
 if (RUNTIME_PLUGINS_STATIC)

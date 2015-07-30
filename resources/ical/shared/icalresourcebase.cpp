@@ -77,11 +77,7 @@ void ICalResourceBase::aboutToQuit()
 
 void ICalResourceBase::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
 {
-#ifndef KDEPIM_MOBILE_UI
     dlg->setFilter(QStringLiteral("text/calendar"));
-#else
-    dlg->setFilter(QStringLiteral("*.ics *.vcs"));
-#endif
     dlg->setWindowTitle(i18n("Select Calendar"));
 }
 

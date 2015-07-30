@@ -24,11 +24,7 @@
 
 #include "akonadi-singlefileresource_export.h"
 
-#ifdef KDEPIM_MOBILE_UI
-#include "ui_singlefileresourceconfigdialog_mobile.h"
-#else
 #include "ui_singlefileresourceconfigdialog_desktop.h"
-#endif
 
 #include <QDialog>
 #include <QUrl>
