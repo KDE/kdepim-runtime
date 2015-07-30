@@ -46,7 +46,7 @@ public:
 
     QString remoteRevision() const;
 
-public: /* reimpl */
+public:
     QByteArray type() const Q_DECL_OVERRIDE;
 
     EntityCompactChangeAttribute *clone() const Q_DECL_OVERRIDE;
