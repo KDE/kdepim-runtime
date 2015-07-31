@@ -181,17 +181,6 @@ bool NewMailNotifierAgent::verboseMailNotification() const
     return NewMailNotifierAgentSettings::verboseNotification();
 }
 
-void NewMailNotifierAgent::setBeepOnNewMails(bool beep)
-{
-    NewMailNotifierAgentSettings::setBeepOnNewMails(beep);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::beepOnNewMails() const
-{
-    return NewMailNotifierAgentSettings::beepOnNewMails();
-}
-
 void NewMailNotifierAgent::setTextToSpeakEnabled(bool enabled)
 {
     NewMailNotifierAgentSettings::setTextToSpeakEnabled(enabled);
@@ -494,9 +483,6 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
                          KNotification::CloseOnTimeout,
                          QStringLiteral("akonadi_newmailnotifier_agent"));
 
-    if (NewMailNotifierAgentSettings::beepOnNewMails()) {
-        KNotification::beep();
-    }
 }
 
 void NewMailNotifierAgent::slotInstanceNameChanged(const Akonadi::AgentInstance &instance)
@@ -577,8 +563,7 @@ void NewMailNotifierAgent::printDebug()
 {
     qCDebug(NEWMAILNOTIFIER_LOG) << "instance in progress: " << mInstanceNameInProgress
                                  << "\n notifier enabled : " << NewMailNotifierAgentSettings::enabled()
-                                 << "\n check in progress : " << !mInstanceNameInProgress.isEmpty()
-                                 << "\n beep on new mails: " << NewMailNotifierAgentSettings::beepOnNewMails();
+                                 << "\n check in progress : " << !mInstanceNameInProgress.isEmpty();
 }
 
 bool NewMailNotifierAgent::isActive() const

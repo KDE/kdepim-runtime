@@ -168,9 +168,6 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
 
         notification->sendEvent();
-        if (NewMailNotifierAgentSettings::beepOnNewMails()) {
-            KNotification::beep();
-        }
     } else {
         Q_EMIT displayNotification(pixmap, result.join(QStringLiteral("\n")));
         deleteLater();

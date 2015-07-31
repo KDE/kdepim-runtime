@@ -16,12 +16,6 @@
     <method name="verboseMailNotification" >
       <arg type="b" direction="out"/>
     </method>
-    <method name="setBeepOnNewMails" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="beepOnNewMails" >
-      <arg type="b" direction="out"/>
-    </method>
     <method name="setShowPhoto" >
       <arg type="b" direction="in"/>
     </method>
