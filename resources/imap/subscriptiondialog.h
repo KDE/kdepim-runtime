@@ -52,7 +52,7 @@ public Q_SLOTS:
     void setIncludeCheckedOnly(int checkedOnlyState);
 
 protected:
-    /*reimp*/ bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
+    bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
 
 private:
     QString m_pattern;
@@ -95,7 +95,7 @@ private Q_SLOTS:
 
     void slotSearchPattern(const QString &pattern);
 protected:
-    /* reimp */ void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void slotAccepted();

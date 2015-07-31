@@ -152,7 +152,7 @@ public:
     QTimer mJobRunTimer;
 
 protected:
-    virtual void enqueue(FileStore::Job *job, const char *className) Q_DECL_OVERRIDE {
+    void enqueue(FileStore::Job *job, const char *className) Q_DECL_OVERRIDE {
         Q_UNUSED(className);
         mJobQueue.enqueue(job);
 
