@@ -216,9 +216,9 @@ void SearchTask::onSearchDone(KJob *job)
     }
 
     KIMAP::SearchJob *searchJob = qobject_cast<KIMAP::SearchJob *>(job);
-    const QList<qint64> result = searchJob->results();
+    const QVector<qint64> result = searchJob->results();
     qCDebug(IMAPRESOURCE_LOG) << result.count() << "matches";
 
-    searchFinished(result.toVector());
+    searchFinished(result);
     taskDone();
 }

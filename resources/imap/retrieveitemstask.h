@@ -43,7 +43,7 @@ public:
     void setFetchMissingItemBodies(bool enabled);
 
 public Q_SLOTS:
-    void onFetchItemsWithoutBodiesDone(const QList<qint64> &items);
+    void onFetchItemsWithoutBodiesDone(const QVector<qint64> &items);
     void onReadyForNextBatch(int size);
 
 private Q_SLOTS:
@@ -72,7 +72,7 @@ private:
     void taskComplete();
 
     KIMAP::Session *m_session;
-    QList<qint64> m_messageUidsMissingBody;
+    QVector<qint64> m_messageUidsMissingBody;
     int m_fetchedMissingBodies;
     bool m_fetchMissingBodies;
     bool m_incremental;

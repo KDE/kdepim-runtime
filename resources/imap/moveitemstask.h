@@ -48,10 +48,10 @@ protected:
 private:
     void triggerCopyJob(KIMAP::Session *session);
     void recordNewUid();
-    QList<qint64> imapSetToList(const KIMAP::ImapSet &set);
+    QVector<qint64> imapSetToList(const KIMAP::ImapSet &set);
 
     KIMAP::ImapSet m_oldSet;
-    QList<qint64> m_newUids;
+    QVector<qint64> m_newUids;
     QMap<Akonadi::Entity::Id /* original ID */, QByteArray> m_messageIds;
 };
 

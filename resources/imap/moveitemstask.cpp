@@ -251,7 +251,7 @@ void MoveItemsTask::recordNewUid()
 {
     // Create the item resulting of the operation, since at that point
     // the first part of the move succeeded
-    QList<qint64> oldUids = imapSetToList(m_oldSet);
+    QVector<qint64> oldUids = imapSetToList(m_oldSet);
 
     Akonadi::Item::List newItems;
     for (int i = 0; i < oldUids.count(); ++i) {
@@ -304,9 +304,9 @@ void MoveItemsTask::recordNewUid()
     }
 }
 
-QList< qint64 > MoveItemsTask::imapSetToList(const KIMAP::ImapSet &set)
+QVector<qint64> MoveItemsTask::imapSetToList(const KIMAP::ImapSet &set)
 {
-    QList<qint64> list;
+    QVector<qint64> list;
     foreach (const KIMAP::ImapInterval &interval, set.intervals()) {
         for (qint64 i = interval.begin(); i <= interval.end(); ++i) {
             list << i;
