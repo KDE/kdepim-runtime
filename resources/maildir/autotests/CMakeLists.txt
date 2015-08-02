@@ -10,7 +10,6 @@ macro(add_akonadi_isolated_test _source)
   set(_srcList ${_source} )
 
   add_executable(${_targetName} ${_srcList})
-  add_test( ${_targetName} ${_targetName} )
   ecm_mark_as_test(${_targetName})
   target_link_libraries(${_targetName}
     Qt5::Test
