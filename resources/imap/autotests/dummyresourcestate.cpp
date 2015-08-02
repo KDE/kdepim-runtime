@@ -22,8 +22,8 @@
 #include "dummyresourcestate.h"
 Q_DECLARE_METATYPE(QList<qint64>)
 Q_DECLARE_METATYPE(QVector<qint64>)
-Q_DECLARE_METATYPE(QString);
-Q_DECLARE_METATYPE(TagListAndMembers);
+Q_DECLARE_METATYPE(QString)
+Q_DECLARE_METATYPE(TagListAndMembers)
 
 DummyResourceState::DummyResourceState()
     : m_automaticExpunge(true), m_subscriptionEnabled(true),
@@ -349,6 +349,7 @@ void DummyResourceState::changeProcessed()
 
 void DummyResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
 {
+    Q_UNUSED(isRid);
     recordCall("searchFinished", QVariant::fromValue(result));
 }
 
@@ -384,6 +385,7 @@ void DummyResourceState::emitWarning(const QString &message)
 
 void DummyResourceState::emitPercent(int percent)
 {
+    Q_UNUSED(percent);
     // FIXME: Many tests need to be updated for this to be uncommented out.
     // recordCall( "emitPercent", QVariant::fromValue(percent) );
 }
