@@ -32,8 +32,6 @@ using Akonadi::MessageStatus;
 #include <QtTest/QTest>
 #include <QDebug>
 
-#include <boost/shared_ptr.hpp>
-
 QTEST_MAIN(TestIdxReader)
 
 TestIdxReader::TestIdxReader()

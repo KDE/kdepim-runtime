@@ -270,7 +270,7 @@ private:
     bool mHasIndexData;
 };
 
-typedef boost::shared_ptr<MBoxContext> MBoxPtr;
+typedef QSharedPointer<MBoxContext> MBoxPtr;
 
 void MBoxContext::readIndexData()
 {
@@ -498,7 +498,7 @@ void MaildirContext::readIndexData()
                               << indexFileInfo.absoluteFilePath();
 }
 
-typedef boost::shared_ptr<MaildirContext> MaildirPtr;
+typedef QSharedPointer<MaildirContext> MaildirPtr;
 
 class MixedMaildirStore::Private : public FileStore::Job::Visitor
 {
