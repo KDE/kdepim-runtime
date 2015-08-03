@@ -47,8 +47,6 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
 
-#include <boost/shared_ptr.hpp>
-
 using namespace Akonadi;
 using namespace KMime;
 using namespace MailTransport;

@@ -23,12 +23,11 @@
 #include <AkonadiCore/Item>
 #include <KMime/Message>
 #include <kimap/FetchJob>
-#include <boost/shared_ptr.hpp>
 
 class MessageHelper
 {
 public:
-    typedef boost::shared_ptr<MessageHelper> Ptr;
+    typedef QSharedPointer<MessageHelper> Ptr;
 
     virtual ~MessageHelper();
     virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message,

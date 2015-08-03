@@ -3,19 +3,13 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 
-include_directories(
-        ${Boost_INCLUDE_DIR}
-)
-
-
-
-
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
 
  set(KDEPIMLIBS_LIB_VERSION "4.75.0")
+ set(KMIME_LIB_VERSION "4.83.0")
  find_package(Qt5DBus ${KF5_VERSION} CONFIG REQUIRED)
  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5AlarmCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
@@ -54,8 +48,6 @@ target_link_libraries(akonadi_serializer_kalarm
                       KF5::CalendarCore
                       KF5::CalendarUtils
                       KF5::AkonadiCore
-                      
-                      
                      )
 install(TARGETS akonadi_serializer_kalarm DESTINATION ${KDE_INSTALL_PLUGINDIR})
 

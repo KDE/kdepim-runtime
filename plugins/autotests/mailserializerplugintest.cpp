@@ -21,7 +21,6 @@
 
 #include <AkonadiCore/item.h>
 #include <kmime/kmime_message.h>
-#include <boost/shared_ptr.hpp>
 #include <QDebug>
 #include <qtest.h>
 

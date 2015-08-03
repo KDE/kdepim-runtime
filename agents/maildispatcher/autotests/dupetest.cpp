@@ -39,7 +39,6 @@
 #include <mailtransport/transportmanager.h>
 
 #include <kmime/kmime_message.h>
-#include <boost/shared_ptr.hpp>
 
 static const int TIMEOUT_SECONDS = 60;
 static const int MAXCOUNT = 99; // must be 2-digit!

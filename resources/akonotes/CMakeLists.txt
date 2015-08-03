@@ -3,7 +3,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../maildir
     ${CMAKE_CURRENT_BINARY_DIR}/../maildir
     ${CMAKE_CURRENT_SOURCE_DIR}/../maildir/libmaildir
-    ${Boost_INCLUDE_DIR}
 )
 
 
