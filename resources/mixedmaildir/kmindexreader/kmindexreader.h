@@ -30,15 +30,11 @@ using Akonadi::MessageStatus;
 #include <QStringList>
 #include <QFile>
 #include <QList>
+#include <QSharedPointer>
 
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-namespace boost
-{
-template <typename T> class shared_ptr;
-}
 
 class KMINDEXREADER_EXPORT KMIndexData
 {
@@ -61,7 +57,7 @@ private:
     friend class TestIdxReader;
 };
 
-typedef boost::shared_ptr<KMIndexData> KMIndexDataPtr;
+typedef QSharedPointer<KMIndexData> KMIndexDataPtr;
 
 /**
  * @short A class to read legacy kmail (< 4.5) index files

@@ -32,7 +32,7 @@ typedef QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List> > TagListA
 class DummyResourceState : public ResourceStateInterface
 {
 public:
-    typedef boost::shared_ptr<DummyResourceState> Ptr;
+    typedef QSharedPointer<DummyResourceState> Ptr;
 
     explicit DummyResourceState();
     ~DummyResourceState();

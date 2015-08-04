@@ -47,7 +47,6 @@
 #include <mailtransport/transportmanager.h>
 
 #include <kmime/kmime_message.h>
-#include <boost/shared_ptr.hpp>
 
 #include <QSignalSpy>
 

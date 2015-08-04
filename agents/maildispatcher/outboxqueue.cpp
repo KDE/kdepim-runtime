@@ -36,7 +36,6 @@
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 
 #include <kmime/kmime_message.h>
-#include <boost/shared_ptr.hpp>
 
 #include <mailtransport/dispatchmodeattribute.h>
 #include <mailtransport/sentbehaviourattribute.h>

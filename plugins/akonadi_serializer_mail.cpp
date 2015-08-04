@@ -24,7 +24,6 @@
 #include <QtCore/QDataStream>
 
 #include <kmime/kmime_message.h>
-#include <boost/shared_ptr.hpp>
 
 #include <AkonadiCore/item.h>
 #include <Akonadi/KMime/MessageParts>
@@ -232,7 +231,7 @@ void SerializerPluginMail::serialize(const Item &item, const QByteArray &label, 
 {
     version = 1;
 
-    boost::shared_ptr<Message> m = item.payload< boost::shared_ptr<Message> >();
+    KMime::Message::Ptr m = item.payload<KMime::Message::Ptr>();
     if (label == MessagePart::Body) {
         data.write(m->encodedContent());
     } else if (label == MessagePart::Envelope) {

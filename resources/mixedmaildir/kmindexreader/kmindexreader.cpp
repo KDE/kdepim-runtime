@@ -31,8 +31,6 @@
 using Akonadi::MessageStatus;
 #include <QFile>
 
-#include <boost/shared_ptr.hpp>
-
 //BEGIN: Magic definitions from old kmail code
 #ifdef HAVE_BYTESWAP_H
 #include <byteswap.h>

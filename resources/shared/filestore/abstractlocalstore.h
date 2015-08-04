@@ -49,31 +49,31 @@ public:
     virtual void setPath(const QString &path);
     QString path() const;
 
-    Collection topLevelCollection() const;
+    Collection topLevelCollection() const Q_DECL_OVERRIDE;
 
-    CollectionCreateJob *createCollection(const Collection &collection, const Collection &targetParent);
+    CollectionCreateJob *createCollection(const Collection &collection, const Collection &targetParent) Q_DECL_OVERRIDE;
 
-    CollectionFetchJob *fetchCollections(const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel) const;
+    CollectionFetchJob *fetchCollections(const Collection &collection, CollectionFetchJob::Type type = CollectionFetchJob::FirstLevel) const Q_DECL_OVERRIDE;
 
-    CollectionDeleteJob *deleteCollection(const Collection &collection);
+    CollectionDeleteJob *deleteCollection(const Collection &collection) Q_DECL_OVERRIDE;
 
-    CollectionModifyJob *modifyCollection(const Collection &collection);
+    CollectionModifyJob *modifyCollection(const Collection &collection) Q_DECL_OVERRIDE;
 
-    CollectionMoveJob *moveCollection(const Collection &collection, const Collection &targetParent);
+    CollectionMoveJob *moveCollection(const Collection &collection, const Collection &targetParent) Q_DECL_OVERRIDE;
 
-    ItemFetchJob *fetchItems(const Collection &collection) const;
+    ItemFetchJob *fetchItems(const Collection &collection) const Q_DECL_OVERRIDE;
 
-    ItemFetchJob *fetchItem(const Item &item) const;
+    ItemFetchJob *fetchItem(const Item &item) const Q_DECL_OVERRIDE;
 
-    ItemCreateJob *createItem(const Item &item, const Collection &collection);
+    ItemCreateJob *createItem(const Item &item, const Collection &collection) Q_DECL_OVERRIDE;
 
-    ItemModifyJob *modifyItem(const Item &item);
+    ItemModifyJob *modifyItem(const Item &item) Q_DECL_OVERRIDE;
 
-    ItemDeleteJob *deleteItem(const Item &item);
+    ItemDeleteJob *deleteItem(const Item &item) Q_DECL_OVERRIDE;
 
-    ItemMoveJob *moveItem(const Item &item, const Collection &targetParent);
+    ItemMoveJob *moveItem(const Item &item, const Collection &targetParent) Q_DECL_OVERRIDE;
 
-    StoreCompactJob *compactStore();
+    StoreCompactJob *compactStore() Q_DECL_OVERRIDE;
 
 protected: // job processing
     virtual void processJob(Job *job) = 0;
@@ -87,7 +87,7 @@ protected: // job processing
     void notifyItemsProcessed(const Item::List &items) const;
 
 protected: // template methods
-    void setTopLevelCollection(const Collection &collection);
+    void setTopLevelCollection(const Collection &collection) Q_DECL_OVERRIDE;
 
     virtual void checkCollectionCreate(CollectionCreateJob *job, int &errorCode, QString &errorText) const;
 

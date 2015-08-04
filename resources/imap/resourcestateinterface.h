@@ -23,19 +23,19 @@
 #define RESOURCESTATEINTERFACE_H
 
 #include <QtCore/QStringList>
+#include <QtCore/QSharedPointer>
 
 #include <Collection>
 #include <Item>
 
 #include <kimap/listjob.h>
 
-#include <boost/shared_ptr.hpp>
 #include "messagehelper.h"
 
 class ResourceStateInterface
 {
 public:
-    typedef boost::shared_ptr<ResourceStateInterface> Ptr;
+    typedef QSharedPointer<ResourceStateInterface> Ptr;
 
     virtual ~ResourceStateInterface();
 

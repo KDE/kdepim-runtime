@@ -284,7 +284,7 @@ public:
         }
     }
 
-    virtual void collectionChanged(const Collection &collection) Q_DECL_OVERRIDE {
+    void collectionChanged(const Collection &collection) Q_DECL_OVERRIDE {
         QString newName;
         if (collection.hasAttribute<EntityDisplayAttribute>())
         {
@@ -300,7 +300,7 @@ public:
         SingleFileResourceBase::collectionChanged(collection);
     }
 
-    virtual Collection rootCollection() const Q_DECL_OVERRIDE
+    Collection rootCollection() const Q_DECL_OVERRIDE
     {
         Collection c;
         c.setParentCollection(Collection::root());
