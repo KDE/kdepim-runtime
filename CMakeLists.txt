@@ -128,12 +128,6 @@ find_package(KF5IMAP ${KIMAP_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Syndication ${SYNDICATION_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiNotes ${AKONADINOTE_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiSocialUtils ${AKONADISOCIALUTIL_LIB_VERSION} CONFIG REQUIRED)
-#Boost
-# Don't use BoostConfig.cmake
-set(Boost_NO_BOOST_CMAKE TRUE)
-find_package(Boost 1.34.0)
-set_package_properties(Boost PROPERTIES DESCRIPTION "Boost C++ Libraries" URL "http://www.boost.org" TYPE REQUIRED PURPOSE "Boost is required by Akonadi")
-
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 

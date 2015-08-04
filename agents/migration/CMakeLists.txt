@@ -1,6 +1,5 @@
 
 include_directories(
-    ${Boost_INCLUDE_DIR}
     ${kdepim-runtime_SOURCE_DIR}/migration
     ${kdepim-runtime_SOURCE_DIR}
 )

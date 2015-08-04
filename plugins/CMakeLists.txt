@@ -3,13 +3,6 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 
-include_directories(
-        ${Boost_INCLUDE_DIR}
-)
-
-
-
-
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
 
  set(KDEPIMLIBS_LIB_VERSION "4.75.0")
