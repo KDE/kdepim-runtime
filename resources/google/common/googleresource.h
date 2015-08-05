@@ -63,7 +63,7 @@ public Q_SLOTS:
 protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet< QByteArray > &parts) Q_DECL_OVERRIDE;
 
-    bool handleError(KGAPI2::Job *job);
+    bool handleError(KGAPI2::Job *job, bool cancelTask = true);
 
     virtual void slotAuthJobFinished(KGAPI2::Job *job);
     virtual void slotGenericJobFinished(KGAPI2::Job *job);

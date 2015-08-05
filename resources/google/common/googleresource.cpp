@@ -329,7 +329,7 @@ void GoogleResource::slotAccountRemoved(const QString &accountName)
     settings()->setAccount(QString());
 }
 
-bool GoogleResource::handleError(KGAPI2::Job *job)
+bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
 {
     if ((job->error() == KGAPI2::NoError) || (job->error() == KGAPI2::OK)) {
         return true;
@@ -349,7 +349,9 @@ bool GoogleResource::handleError(KGAPI2::Job *job)
         return false;
     }
 
-    cancelTask(job->errorString());
+    if (_cancelTask) {
+        cancelTask(job->errorString());
+    }
     job->deleteLater();
     return false;
 }

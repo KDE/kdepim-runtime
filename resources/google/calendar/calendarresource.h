@@ -22,8 +22,10 @@
 
 #include <AkonadiCore/Item>
 #include <AkonadiCore/Collection>
+#include <Akonadi/Calendar/FreeBusyProviderBase>
 
 class CalendarResource : public GoogleResource
+                       , public Akonadi::FreeBusyProviderBase
 {
     Q_OBJECT
 public:
@@ -34,6 +36,12 @@ public:
     using GoogleResource::collectionChanged; // So we don't trigger -Woverloaded-virtual
     GoogleSettings *settings() const Q_DECL_OVERRIDE;
     QList< QUrl > scopes() const Q_DECL_OVERRIDE;
+
+protected:
+    // Freebusy
+    KDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
+    void canHandleFreeBusy(const QString &email) const Q_DECL_OVERRIDE;
+    void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
@@ -58,6 +66,9 @@ protected Q_SLOTS:
     void slotModifyTaskReparentFinished(KGAPI2::Job *job);
     void slotTaskAddedSearchFinished(KJob *);
     void slotCreateJobFinished(KGAPI2::Job *job);
+
+    void slotCanHandleFreeBusyJobFinished(KGAPI2::Job *job);
+    void slotRetrieveFreeBusyJobFinished(KGAPI2::Job *job);
 
 protected:
     int runConfigurationDialog(WId windowId) Q_DECL_OVERRIDE;

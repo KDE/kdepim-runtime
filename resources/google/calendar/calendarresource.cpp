@@ -32,6 +32,9 @@
 #include <AkonadiCore/VectorHelper>
 
 #include <KCalCore/Calendar>
+#include <KCalCore/Attendee>
+#include <KCalCore/ICalFormat>
+#include <KCalCore/FreeBusy>
 
 #include <KLocalizedString>
 #include <QDialog>
@@ -48,6 +51,7 @@
 #include <KGAPI/Calendar/EventFetchJob>
 #include <KGAPI/Calendar/EventModifyJob>
 #include <KGAPI/Calendar/EventMoveJob>
+#include <KGAPI/Calendar/FreeBusyQueryJob>
 #include <KGAPI/Tasks/Task>
 #include <KGAPI/Tasks/TaskCreateJob>
 #include <KGAPI/Tasks/TaskDeleteJob>
@@ -742,6 +746,79 @@ void CalendarResource::slotCreateJobFinished(KGAPI2::Job *job)
         item.setPayload<KCalCore::Todo::Ptr>(task.dynamicCast<KCalCore::Todo>());
         new ItemModifyJob(item, this);
     }
+}
+
+KDateTime CalendarResource::lastCacheUpdate() const
+{
+    return KDateTime();
+}
+
+void CalendarResource::canHandleFreeBusy(const QString &email) const
+{
+    if (!const_cast<CalendarResource *>(this)->canPerformTask()) {
+        handlesFreeBusy(email, false);
+        return;
+    }
+
+    auto job = new KGAPI2::FreeBusyQueryJob(email,
+                                            QDateTime::currentDateTimeUtc(),
+                                            QDateTime::currentDateTimeUtc().addSecs(3600),
+                                            const_cast<CalendarResource*>(this)->account(),
+                                            const_cast<CalendarResource*>(this));
+    connect(job, &KGAPI2::Job::finished,
+            this, &CalendarResource::slotCanHandleFreeBusyJobFinished);
+}
+
+void CalendarResource::slotCanHandleFreeBusyJobFinished(KGAPI2::Job *job)
+{
+    auto queryJob = qobject_cast<KGAPI2::FreeBusyQueryJob*>(job);
+
+    if (!handleError(job, false)) {
+        handlesFreeBusy(queryJob->id(), false);
+        return;
+    }
+
+    handlesFreeBusy(queryJob->id(), true);
+}
+
+void CalendarResource::retrieveFreeBusy(const QString &email, const KDateTime &start,
+                                        const KDateTime &end)
+{
+    if (!const_cast<CalendarResource*>(this)->canPerformTask()) {
+        freeBusyRetrieved(email, QString(), false, QString());
+        return;
+    }
+
+    auto job = new KGAPI2::FreeBusyQueryJob(email, start.dateTime(), end.dateTime(),
+                                           account(), this);
+    connect(job, &KGAPI2::Job::finished,
+            this, &CalendarResource::slotRetrieveFreeBusyJobFinished);
+}
+
+void CalendarResource::slotRetrieveFreeBusyJobFinished(KGAPI2::Job *job)
+{
+    auto queryJob = qobject_cast<KGAPI2::FreeBusyQueryJob*>(job);
+
+    if (!handleError(job, false)) {
+        freeBusyRetrieved(queryJob->id(), QString(), false, QString());
+        return;
+    }
+
+    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy);
+    fb->setUid(QStringLiteral("%1%2@google.com").arg(QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMddTHHmmssZ"))));
+    fb->setOrganizer(account()->accountName());
+    fb->addAttendee(KCalCore::Attendee::Ptr(new KCalCore::Attendee(QString(), queryJob->id())));
+    // FIXME: is it really sort?
+    fb->setDateTime(KDateTime::currentUtcDateTime(), KCalCore::IncidenceBase::RoleSort);
+
+    Q_FOREACH (const KGAPI2::FreeBusyQueryJob::BusyRange &range, queryJob->busy()) {
+        fb->addPeriod(KDateTime(range.busyStart), KDateTime(range.busyEnd));
+    }
+
+    KCalCore::ICalFormat format;
+    const QString fbStr = format.createScheduleMessage(fb, KCalCore::iTIPRequest);
+
+    freeBusyRetrieved(queryJob->id(), fbStr, true, QString());
 }
 
 AKONADI_RESOURCE_MAIN(CalendarResource)
