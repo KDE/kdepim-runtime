@@ -468,7 +468,7 @@ void ContactsResource::slotItemsRetrieved(KGAPI2::Job *job)
 
     const QDateTime local(QDateTime::currentDateTime());
     const QDateTime UTC(local.toUTC());
- 
+
     collection.setRemoteRevision(QString::number(UTC.toTime_t()));
     new CollectionModifyJob(collection, this);
 

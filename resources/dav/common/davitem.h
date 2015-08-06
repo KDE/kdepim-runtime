@@ -105,5 +105,5 @@ private:
 
 QDataStream &operator<<(QDataStream &out, const DavItem &item);
 QDataStream &operator>>(QDataStream &in, DavItem &item);
-Q_DECLARE_TYPEINFO(DavItem, Q_MOVABLE_TYPE );
+Q_DECLARE_TYPEINFO(DavItem, Q_MOVABLE_TYPE);
 #endif

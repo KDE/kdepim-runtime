@@ -763,15 +763,15 @@ void CalendarResource::canHandleFreeBusy(const QString &email) const
     auto job = new KGAPI2::FreeBusyQueryJob(email,
                                             QDateTime::currentDateTimeUtc(),
                                             QDateTime::currentDateTimeUtc().addSecs(3600),
-                                            const_cast<CalendarResource*>(this)->account(),
-                                            const_cast<CalendarResource*>(this));
+                                            const_cast<CalendarResource *>(this)->account(),
+                                            const_cast<CalendarResource *>(this));
     connect(job, &KGAPI2::Job::finished,
             this, &CalendarResource::slotCanHandleFreeBusyJobFinished);
 }
 
 void CalendarResource::slotCanHandleFreeBusyJobFinished(KGAPI2::Job *job)
 {
-    auto queryJob = qobject_cast<KGAPI2::FreeBusyQueryJob*>(job);
+    auto queryJob = qobject_cast<KGAPI2::FreeBusyQueryJob *>(job);
 
     if (!handleError(job, false)) {
         handlesFreeBusy(queryJob->id(), false);
@@ -784,20 +784,20 @@ void CalendarResource::slotCanHandleFreeBusyJobFinished(KGAPI2::Job *job)
 void CalendarResource::retrieveFreeBusy(const QString &email, const KDateTime &start,
                                         const KDateTime &end)
 {
-    if (!const_cast<CalendarResource*>(this)->canPerformTask()) {
+    if (!const_cast<CalendarResource *>(this)->canPerformTask()) {
         freeBusyRetrieved(email, QString(), false, QString());
         return;
     }
 
     auto job = new KGAPI2::FreeBusyQueryJob(email, start.dateTime(), end.dateTime(),
-                                           account(), this);
+                                            account(), this);
     connect(job, &KGAPI2::Job::finished,
             this, &CalendarResource::slotRetrieveFreeBusyJobFinished);
 }
 
 void CalendarResource::slotRetrieveFreeBusyJobFinished(KGAPI2::Job *job)
 {
-    auto queryJob = qobject_cast<KGAPI2::FreeBusyQueryJob*>(job);
+    auto queryJob = qobject_cast<KGAPI2::FreeBusyQueryJob *>(job);
 
     if (!handleError(job, false)) {
         freeBusyRetrieved(queryJob->id(), QString(), false, QString());

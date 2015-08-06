@@ -22,18 +22,16 @@ public:
     {
         return true;
     }
-    qint64 readData(char *, qint64) Q_DECL_OVERRIDE
-    {
+    qint64 readData(char *, qint64) Q_DECL_OVERRIDE {
         return 0; /* eof */
     }
-    qint64 readLineData(char *, qint64) Q_DECL_OVERRIDE
-    {
+    qint64 readLineData(char *, qint64) Q_DECL_OVERRIDE {
         return 0; /* eof */
     }
-    qint64 writeData(const char *data, qint64 len) Q_DECL_OVERRIDE
-    {
+    qint64 writeData(const char *data, qint64 len) Q_DECL_OVERRIDE {
         const QByteArray buf = QByteArray::fromRawData(data, len);
-        if (!qgetenv("IMAP_TRACE").isEmpty()) {
+        if (!qgetenv("IMAP_TRACE").isEmpty())
+        {
             // qt_message_output(QtDebugMsg, buf.trimmed().constData());
             std::cout << buf.trimmed().constData() << std::endl;
         }

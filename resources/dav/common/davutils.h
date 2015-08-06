@@ -176,5 +176,5 @@ DavItem createDavItem(const Akonadi::Item &item, const Akonadi::Collection &coll
  */
 bool parseDavData(const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems);
 }
-Q_DECLARE_TYPEINFO(DavUtils::DavUrl, Q_MOVABLE_TYPE );
+Q_DECLARE_TYPEINFO(DavUtils::DavUrl, Q_MOVABLE_TYPE);
 #endif

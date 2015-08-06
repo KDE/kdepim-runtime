@@ -450,7 +450,7 @@ void NewMailNotifierAgent::slotShowNotifications()
                 texts.append(i18ncp("%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as user named it)",
                                     "One new email in %2 from \"%3\"",
                                     "%1 new emails in %2 from \"%3\"", numberOfEmails, displayName,
-                                   resourceName));
+                                    resourceName));
             }
         }
         if (hasUniqMessage) {

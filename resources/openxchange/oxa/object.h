@@ -92,6 +92,6 @@ private:
 };
 }
 
-Q_DECLARE_TYPEINFO( OXA::Object, Q_MOVABLE_TYPE );
+Q_DECLARE_TYPEINFO(OXA::Object, Q_MOVABLE_TYPE);
 
 #endif

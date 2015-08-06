@@ -138,5 +138,5 @@ private:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(DavCollection::ContentTypes)
-Q_DECLARE_TYPEINFO(DavCollection, Q_MOVABLE_TYPE );
+Q_DECLARE_TYPEINFO(DavCollection, Q_MOVABLE_TYPE);
 #endif

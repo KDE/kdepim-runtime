@@ -103,7 +103,6 @@ void MailSerializerTest::testEnvelopeDeserialize_data()
             << QString::fromUtf8("<1234567.icameup@withthis> <7654321.icameupwith@thistoo>");
 }
 
-
 void MailSerializerTest::testEnvelopeDeserialize()
 {
     QFETCH(int, version);
@@ -181,20 +180,19 @@ void MailSerializerTest::testEnvelopeSerialize_data()
            << 0
            << 0;
     QTest::newRow("")
-        << QDateTime(QDate(2006, 2, 1), QTime(13, 37, 19), Qt::UTC)
-        << QString::fromUtf8("IMPORTANT: Akonadi Test")
-        << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
-        << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
-        << QString()
-        << QString::fromUtf8("Ingo Kloecker <kloecker@kde.org>")
-        << QString()
-        << QString()
-        << QString()
-        << QString::fromUtf8("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>")
-        << QString()
-        << buffer.data();
+            << QDateTime(QDate(2006, 2, 1), QTime(13, 37, 19), Qt::UTC)
+            << QString::fromUtf8("IMPORTANT: Akonadi Test")
+            << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+            << QString::fromUtf8("Tobias Koenig <tokoe@kde.org>")
+            << QString()
+            << QString::fromUtf8("Ingo Kloecker <kloecker@kde.org>")
+            << QString()
+            << QString()
+            << QString()
+            << QString::fromUtf8("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>")
+            << QString()
+            << buffer.data();
 }
-
 
 void MailSerializerTest::testEnvelopeSerialize()
 {

@@ -25,7 +25,7 @@
 #include <Akonadi/Calendar/FreeBusyProviderBase>
 
 class CalendarResource : public GoogleResource
-                       , public Akonadi::FreeBusyProviderBase
+    , public Akonadi::FreeBusyProviderBase
 {
     Q_OBJECT
 public:
