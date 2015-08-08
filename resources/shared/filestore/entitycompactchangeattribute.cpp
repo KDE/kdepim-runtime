@@ -26,13 +26,7 @@ using namespace Akonadi;
 
 class FileStore::EntityCompactChangeAttribute::Private
 {
-    FileStore::EntityCompactChangeAttribute *const q;
-
 public:
-    explicit Private(FileStore::EntityCompactChangeAttribute *parent) : q(parent)
-    {
-    }
-
     Private &operator=(const Private &other)
     {
         if (&other == this) {
@@ -50,7 +44,7 @@ public:
 };
 
 FileStore::EntityCompactChangeAttribute::EntityCompactChangeAttribute()
-    : Attribute(), d(new Private(this))
+    : Attribute(), d(new Private())
 {
 }
 

@@ -26,22 +26,17 @@ using namespace Akonadi;
 class FileStore::ItemModifyJob::Private
 {
 public:
-    explicit Private(FileStore::ItemModifyJob *parent)
-        : mIgnorePayload(false), mParent(parent)
+    Private() : mIgnorePayload(false)
     {
     }
 
-public:
     bool mIgnorePayload;
     Item mItem;
     QSet<QByteArray> mParts;
-
-private:
-    FileStore::ItemModifyJob *mParent;
 };
 
 FileStore::ItemModifyJob::ItemModifyJob(const Item &item, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session), d(new Private())
 {
     d->mItem = item;
 

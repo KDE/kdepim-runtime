@@ -26,21 +26,12 @@ using namespace Akonadi;
 class FileStore::ItemCreateJob::Private
 {
 public:
-    explicit Private(FileStore::ItemCreateJob *parent)
-        : mParent(parent)
-    {
-    }
-
-public:
     Item mItem;
     Collection mCollection;
-
-private:
-    FileStore::ItemCreateJob *mParent;
 };
 
 FileStore::ItemCreateJob::ItemCreateJob(const Item &item, const Collection &collection, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session), d(new Private())
 {
     d->mItem = item;
     d->mCollection = collection;

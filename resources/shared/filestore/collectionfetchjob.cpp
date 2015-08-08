@@ -28,26 +28,20 @@ using namespace Akonadi;
 class FileStore::CollectionFetchJob::Private
 {
 public:
-    explicit Private(FileStore::CollectionFetchJob *parent)
-        : mType(FileStore::CollectionFetchJob::Base),
-          mParent(parent)
+    Private() : mType(FileStore::CollectionFetchJob::Base)
     {
     }
 
-public:
     FileStore::CollectionFetchJob::Type mType;
     Collection mCollection;
 
     CollectionFetchScope mFetchScope;
 
     Collection::List mCollections;
-
-private:
-    FileStore::CollectionFetchJob *mParent;
 };
 
 FileStore::CollectionFetchJob::CollectionFetchJob(const Collection &collection, Type type, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session), d(new Private())
 {
     Q_ASSERT(session != 0);
 

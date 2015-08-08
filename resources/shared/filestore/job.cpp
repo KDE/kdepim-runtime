@@ -26,17 +26,10 @@ using namespace Akonadi;
 class FileStore::Job::Private
 {
 public:
-    explicit Private(FileStore::Job *parent)
-        : mParent(parent)
-    {
-    }
-
-private:
-    FileStore::Job *mParent;
 };
 
 FileStore::Job::Job(FileStore::AbstractJobSession *session)
-    : KJob(session), d(new Private(this))
+    : KJob(session), d(Q_NULLPTR/*new Private(this)*/) // nullptr until it's needed
 {
     setAutoDelete(true);
 }

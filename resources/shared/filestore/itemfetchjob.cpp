@@ -28,25 +28,16 @@ using namespace Akonadi;
 class FileStore::ItemFetchJob::Private
 {
 public:
-    explicit Private(FileStore::ItemFetchJob *parent)
-        : mParent(parent)
-    {
-    }
-
-public:
     ItemFetchScope mFetchScope;
 
     Item::List mItems;
 
     Collection mCollection;
     Item mItem;
-
-private:
-    FileStore::ItemFetchJob *mParent;
 };
 
 FileStore::ItemFetchJob::ItemFetchJob(const Collection &collection, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session), d(new Private())
 {
     d->mCollection = collection;
 
@@ -54,7 +45,7 @@ FileStore::ItemFetchJob::ItemFetchJob(const Collection &collection, FileStore::A
 }
 
 FileStore::ItemFetchJob::ItemFetchJob(const Item &item, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session), d(new Private())
 {
     d->mItem = item;
 

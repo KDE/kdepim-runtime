@@ -27,20 +27,11 @@ using namespace Akonadi;
 class FileStore::CollectionDeleteJob::Private
 {
 public:
-    explicit Private(FileStore::CollectionDeleteJob *parent)
-        : mParent(parent)
-    {
-    }
-
-public:
     Collection mCollection;
-
-private:
-    FileStore::CollectionDeleteJob *mParent;
 };
 
 FileStore::CollectionDeleteJob::CollectionDeleteJob(const Collection &collection, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session), d(new Private())
 {
     Q_ASSERT(session != 0);
 

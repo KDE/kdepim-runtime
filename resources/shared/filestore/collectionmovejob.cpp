@@ -27,21 +27,12 @@ using namespace Akonadi;
 class FileStore::CollectionMoveJob::Private
 {
 public:
-    explicit Private(FileStore::CollectionMoveJob *parent)
-        : mParent(parent)
-    {
-    }
-
-public:
     Collection mCollection;
     Collection mTargetParent;
-
-private:
-    FileStore::CollectionMoveJob *mParent;
 };
 
 FileStore::CollectionMoveJob::CollectionMoveJob(const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session), d(new Private())
 {
     Q_ASSERT(session != 0);
 
