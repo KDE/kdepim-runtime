@@ -48,7 +48,7 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
     changeRecorder()->itemFetchScope().fetchFullPayload();
     changeRecorder()->fetchCollection(true);
 
-    connect(changeRecorder(), SIGNAL(changesAdded()), SLOT(scheduleWrite()));
+    connect(changeRecorder(), &ChangeRecorder::changesAdded, this, &SingleFileResourceBase::scheduleWrite);
 
     connect(KDirWatch::self(), &KDirWatch::dirty, this, &SingleFileResourceBase::fileChanged);
     connect(KDirWatch::self(), &KDirWatch::created, this, &SingleFileResourceBase::fileChanged);
