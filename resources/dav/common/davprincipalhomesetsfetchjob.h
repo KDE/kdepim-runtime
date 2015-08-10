@@ -19,6 +19,7 @@
 #ifndef DAVPRINCIPALHOMESETSFETCHJOB_H
 #define DAVPRINCIPALHOMESETSFETCHJOB_H
 
+#include "davjobbase.h"
 #include "davutils.h"
 
 #include <kjob.h>
@@ -28,7 +29,7 @@
 /**
  * @short A job that fetches home sets for a principal.
  */
-class DavPrincipalHomeSetsFetchJob : public KJob
+class DavPrincipalHomeSetsFetchJob : public DavJobBase
 {
     Q_OBJECT
 
