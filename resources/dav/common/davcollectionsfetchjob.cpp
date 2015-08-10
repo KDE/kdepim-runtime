@@ -70,15 +70,22 @@ void DavCollectionsFetchJob::doCollectionsFetch(const KUrl &url)
 
 void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
 {
-    if (job->error()) {
-        // This may mean that the URL was not a principal URL.
-        // Retry as if it were a calendar URL.
-        qDebug() << job->errorText();
-        doCollectionsFetch(mUrl.url());
+    const DavPrincipalHomeSetsFetchJob *davJob = qobject_cast<DavPrincipalHomeSetsFetchJob *>(job);
+
+    if (davJob->error()) {
+        if ( davJob->latestResponseCode() ) {
+            // If we have a HTTP response code then this may mean that
+            // the URL was not a principal URL. Retry as if it were a calendar URL.
+            qDebug() << job->errorText();
+            doCollectionsFetch(mUrl.url());
+        }
+        else {
+            // Just give up here.
+            emitResult();
+        }
+
         return;
     }
-
-    const DavPrincipalHomeSetsFetchJob *davJob = qobject_cast<DavPrincipalHomeSetsFetchJob *>(job);
 
     const QStringList homeSets = davJob->homeSets();
     qDebug() << "Found " << homeSets.size() << " homesets";

@@ -26,7 +26,7 @@
 #include <KLocalizedString>
 
 DavPrincipalHomeSetsFetchJob::DavPrincipalHomeSetsFetchJob(const DavUtils::DavUrl &url, QObject *parent)
-    : KJob(parent), mUrl(url)
+    : DavJobBase(parent), mUrl(url)
 {
 }
 
@@ -80,6 +80,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished(KJob *job)
             err = davJob->errorText();
         }
 
+        setLatestResponseCode( responseCode );
         setError(UserDefinedError + responseCode);
         setErrorText(i18n("There was a problem with the request.\n"
                           "%1 (%2).", err, responseCode));
