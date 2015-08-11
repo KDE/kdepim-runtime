@@ -67,7 +67,7 @@ static bool fullEntryCompare(const KMBox::MBoxEntry &left, const KMBox::MBoxEntr
 
 static bool indexFileForFolder(const QFileInfo &folderDirInfo, QFileInfo &indexFileInfo)
 {
-    indexFileInfo = QFileInfo(folderDirInfo.dir(), QString::fromUtf8(".%1.index").arg(folderDirInfo.fileName()));
+    indexFileInfo = QFileInfo(folderDirInfo.dir(), QStringLiteral(".%1.index").arg(folderDirInfo.fileName()));
 
     if (!indexFileInfo.exists() || !indexFileInfo.isReadable()) {
         qCDebug(MIXEDMAILDIR_LOG) << "No index file" << indexFileInfo.absoluteFilePath() << "or not readable";
