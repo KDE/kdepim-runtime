@@ -204,17 +204,16 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished(KJob *job)
     if (!mHomeSets.isEmpty() || nextRoundHref.isEmpty()) {
         emitResult();
     } else {
-        KUrl nextRoundUrl(mUrl.url());
+        QUrl nextRoundUrl(mUrl.url());
 
         if (nextRoundHref.startsWith(QLatin1Char('/'))) {
             // nextRoundHref is only a path, use request url to complete
-            nextRoundUrl.setEncodedPath(nextRoundHref.toLatin1());
+            nextRoundUrl.setPath(nextRoundHref.toLatin1(), QUrl::TolerantMode);
         } else {
             // href is a complete url
-            KUrl tmpUrl(nextRoundHref);
-            nextRoundUrl = tmpUrl;
-            nextRoundUrl.setUser(mUrl.url().user());
-            nextRoundUrl.setPass(mUrl.url().pass());
+            nextRoundUrl = QUrl::fromUserInput(nextRoundHref);
+            nextRoundUrl.setUserName(mUrl.url().userName());
+            nextRoundUrl.setPassword(mUrl.url().password());
         }
 
         mUrl.setUrl(nextRoundUrl);

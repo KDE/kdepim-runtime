@@ -43,7 +43,7 @@ void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
             ++mRequestsTracker[email].handlingJobCount;
             DavPrincipalSearchJob *job = new DavPrincipalSearchJob(url, DavPrincipalSearchJob::EmailAddress, email);
             job->setProperty("email", QVariant::fromValue(email));
-            job->setProperty("url", QVariant::fromValue(url.url().url()));
+            job->setProperty("url", QVariant::fromValue(url.url().toString()));
             job->fetchProperty(QStringLiteral("schedule-inbox-URL"), QStringLiteral("urn:ietf:params:xml:ns:caldav"));
             connect(job, &DavPrincipalSearchJob::result, this, &DavFreeBusyHandler::onPrincipalSearchJobFinished);
             job->start();
@@ -70,7 +70,7 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const KDateTime 
         ++mRequestsTracker[email].retrievalJobCount;
         uint requestId = mNextRequestId++;
 
-        KUrl url(outbox);
+        QUrl url(outbox);
         KIO::StoredTransferJob *job = KIO::storedHttpPost(fbData, url);
         job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/calendar"));
         job->setProperty("email", QVariant::fromValue(email));
@@ -106,14 +106,13 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
 
     foreach (const DavPrincipalSearchJob::Result &result, results) {
         qCDebug(DAVRESOURCE_LOG) << result.value;
-        KUrl url(davJob->property("url").toString());
+        QUrl url(davJob->property("url").toString());
         if (result.value.startsWith(QLatin1Char('/'))) {
             // href is only a path, use request url to complete
-            url.setEncodedPath(result.value.toLatin1());
+            url.setPath(result.value.toLatin1(), QUrl::TolerantMode);
         } else {
             // href is a complete url
-            KUrl tmpUrl(result.value);
-            url = tmpUrl;
+            url = QUrl::fromUserInput(result.value);
         }
 
         if (!mPrincipalScheduleOutbox[email].contains(url.url())) {

@@ -60,9 +60,9 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mUi.configuredUrls->setRootIsDecorated(false);
 
     foreach (const DavUtils::DavUrl &url, Settings::self()->configuredDavUrls()) {
-        KUrl displayUrl = url.url();
-        displayUrl.setUser(QString());
-        addModelRow(DavUtils::translatedProtocolName(url.protocol()), displayUrl.prettyUrl());
+        QUrl displayUrl = url.url();
+        displayUrl.setUserInfo(QString());
+        addModelRow(DavUtils::translatedProtocolName(url.protocol()), displayUrl.toDisplayString());
     }
 
     mManager = new KConfigDialogManager(this, Settings::self());

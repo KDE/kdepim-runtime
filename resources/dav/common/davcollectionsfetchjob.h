@@ -72,7 +72,7 @@ private Q_SLOTS:
     void collectionsFetchFinished(KJob *);
 
 private:
-    void doCollectionsFetch(const KUrl &url);
+    void doCollectionsFetch(const QUrl &url);
     void subjobFinished();
 
     DavUtils::DavUrl mUrl;

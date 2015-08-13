@@ -196,12 +196,12 @@ void UrlConfigurationDialog::onFetchButtonClicked()
         setRemoteUrl(QString("https://") + remoteUrl());
     }
 
-    KUrl url(mUi.remoteUrl->text());
+    QUrl url(mUi.remoteUrl->text());
     if (mUi.useDefaultCreds->isChecked()) {
-        url.setUser(mDefaultUsername);
+        url.setUserName(mDefaultUsername);
         url.setPassword(mDefaultPassword);
     } else {
-        url.setUser(username());
+        url.setUserName(username());
         url.setPassword(password());
     }
 
@@ -244,9 +244,8 @@ void UrlConfigurationDialog::onModelDataChanged(const QModelIndex &topLeft, cons
     const QString newName = topLeft.data().toString();
     const QString url = topLeft.sibling(topLeft.row(), 1).data().toString();
 
-    KUrl fullUrl(url);
-    fullUrl.setUser(username());
-    fullUrl.setPassword(password());
+    QUrl fullUrl(url);
+    fullUrl.setUserInfo(QString());
 
     DavUtils::DavUrl davUrl(fullUrl, protocol());
     DavCollectionModifyJob *job = new DavCollectionModifyJob(davUrl);

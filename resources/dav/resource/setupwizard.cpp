@@ -528,9 +528,9 @@ void CheckPage::checkConnection()
         DavUtils::DavUrl davUrl;
         davUrl.setProtocol(url.protocol);
 
-        KUrl serverUrl(url.url);
-        serverUrl.setUser(wizard()->field(QStringLiteral("credentialsUserName")).toString());
-        serverUrl.setPass(wizard()->field(QStringLiteral("credentialsPassword")).toString());
+        QUrl serverUrl(url.url);
+        serverUrl.setUserName(wizard()->field(QStringLiteral("credentialsUserName")).toString());
+        serverUrl.setPassword(wizard()->field(QStringLiteral("credentialsPassword")).toString());
         davUrl.setUrl(serverUrl);
 
         davUrls << davUrl;

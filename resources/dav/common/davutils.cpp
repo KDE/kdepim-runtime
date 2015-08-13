@@ -131,17 +131,17 @@ DavUtils::DavUrl::DavUrl()
 {
 }
 
-DavUtils::DavUrl::DavUrl(const KUrl &url, DavUtils::Protocol protocol)
+DavUtils::DavUrl::DavUrl(const QUrl &url, DavUtils::Protocol protocol)
     : mUrl(url), mProtocol(protocol)
 {
 }
 
-void DavUtils::DavUrl::setUrl(const KUrl &url)
+void DavUtils::DavUrl::setUrl(const QUrl &url)
 {
     mUrl = url;
 }
 
-KUrl DavUtils::DavUrl::url() const
+QUrl DavUtils::DavUrl::url() const
 {
     return mUrl;
 }
@@ -239,7 +239,7 @@ DavItem DavUtils::createDavItem(const Akonadi::Item &item, const Akonadi::Collec
 {
     QByteArray rawData;
     QString mimeType;
-    KUrl url;
+    QUrl url;
     DavItem davItem;
     const QString basePath = collection.remoteId();
 
@@ -247,7 +247,7 @@ DavItem DavUtils::createDavItem(const Akonadi::Item &item, const Akonadi::Collec
         const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
         const QString fileName = createUniqueId();
 
-        url = KUrl(basePath + fileName + QLatin1String(".vcf"));
+        url = QUrl(basePath + fileName + QLatin1String(".vcf"));
 
         const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
         if (protoAttr) {
@@ -270,7 +270,7 @@ DavItem DavUtils::createDavItem(const Akonadi::Item &item, const Akonadi::Collec
 
         const QString fileName = createUniqueId();
 
-        url = KUrl(basePath + fileName + QLatin1String(".ics"));
+        url = QUrl(basePath + fileName + QLatin1String(".ics"));
         mimeType = QLatin1String("text/calendar");
 
         KCalCore::ICalFormat formatter;
@@ -279,7 +279,7 @@ DavItem DavUtils::createDavItem(const Akonadi::Item &item, const Akonadi::Collec
 
     davItem.setContentType(mimeType);
     davItem.setData(rawData);
-    davItem.setUrl(url.prettyUrl());
+    davItem.setUrl(url.toDisplayString());
     davItem.setEtag(item.remoteRevision());
 
     return davItem;

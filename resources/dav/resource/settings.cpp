@@ -38,6 +38,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QPointer>
 #include <QtCore/QRegExp>
+#include <QtCore/QUrl>
 #include <QtDBus/QDBusConnection>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -194,16 +195,16 @@ DavUtils::DavUrl Settings::configuredDavUrl(DavUtils::Protocol proto, const QStr
         buildUrlsList();
     }
 
-    KUrl fullUrl;
+    QUrl fullUrl;
 
     if (!finalUrl.isEmpty()) {
-        fullUrl = finalUrl;
+        fullUrl = QUrl::fromUserInput(finalUrl);
     } else {
-        fullUrl = searchUrl;
+        fullUrl = QUrl::fromUserInput(searchUrl);
     }
 
     const QString user = username(proto, searchUrl);
-    fullUrl.setUser(user);
+    fullUrl.setUserName(user);
     fullUrl.setPassword(password(proto, searchUrl));
 
     return DavUtils::DavUrl(fullUrl, proto);

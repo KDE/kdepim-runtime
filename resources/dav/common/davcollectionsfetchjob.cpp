@@ -57,7 +57,7 @@ DavUtils::DavUrl DavCollectionsFetchJob::davUrl() const
     return mUrl;
 }
 
-void DavCollectionsFetchJob::doCollectionsFetch(const KUrl &url)
+void DavCollectionsFetchJob::doCollectionsFetch(const QUrl &url)
 {
     ++mSubJobCount;
 
@@ -98,16 +98,16 @@ void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
     }
 
     foreach (const QString &homeSet, homeSets) {
-        KUrl url = mUrl.url();
+        QUrl url = mUrl.url();
 
         if (homeSet.startsWith(QLatin1Char('/'))) {
             // homeSet is only a path, use request url to complete
-            url.setEncodedPath(homeSet.toLatin1());
+            url.setPath(homeSet.toLatin1(), QUrl::TolerantMode);
         } else {
             // homeSet is a complete url
-            KUrl tmpUrl(homeSet);
-            tmpUrl.setUser(url.user());
-            tmpUrl.setPass(url.pass());
+            QUrl tmpUrl(homeSet);
+            tmpUrl.setUserName(url.userName());
+            tmpUrl.setPassword(url.password());
             url = tmpUrl;
         }
 
@@ -145,9 +145,9 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                           "%1 (%2).", err, responseCode));
     } else {
         // For use in the collectionDiscovered() signal
-        KUrl _jobUrl = mUrl.url();
-        _jobUrl.setUser(QString());
-        const QString jobUrl = _jobUrl.prettyUrl();
+        QUrl _jobUrl = mUrl.url();
+        _jobUrl.setUserInfo(QString());
+        const QString jobUrl = _jobUrl.toDisplayString();
 
         // Validate that we got a valid PROPFIND response
         QDomElement rootElement = davJob->response().documentElement();
@@ -261,21 +261,20 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                     href.append(QLatin1Char('/'));
                 }
 
-                KUrl url = davJob->url();
-                url.setUser(QString());
+                QUrl url = davJob->url();
+                url.setUserInfo(QString());
                 if (href.startsWith(QLatin1Char('/'))) {
                     // href is only a path, use request url to complete
-                    url.setEncodedPath(href.toLatin1());
+                    url.setPath(href.toLatin1(), QUrl::TolerantMode);
                 } else {
                     // href is a complete url
-                    KUrl tmpUrl(href);
-                    url = tmpUrl;
+                    url = QUrl::fromUserInput(href);
                 }
 
                 // don't add this resource if it has already been detected
                 bool alreadySeen = false;
                 foreach (const DavCollection &seen, mCollections) {
-                    if (seen.url() == url.prettyUrl()) {
+                    if (seen.url() == url.toDisplayString()) {
                         alreadySeen = true;
                     }
                 }
@@ -302,7 +301,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                 // extract allowed content types
                 const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol(mUrl.protocol())->collectionContentTypes(propstatElement);
 
-                DavCollection collection(mUrl.protocol(), url.prettyUrl(), displayName, contentTypes);
+                DavCollection collection(mUrl.protocol(), url.toDisplayString(), displayName, contentTypes);
                 if (color.isValid()) {
                     collection.setColor(color);
                 }
@@ -317,9 +316,9 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                     collection.setPrivileges(privileges);
                 }
 
-                qDebug() << url.prettyUrl() << "PRIVS: " << collection.privileges();
+                qDebug() << url.toDisplayString() << "PRIVS: " << collection.privileges();
                 mCollections << collection;
-                Q_EMIT collectionDiscovered(mUrl.protocol(), url.prettyUrl(), jobUrl);
+                Q_EMIT collectionDiscovered(mUrl.protocol(), url.toDisplayString(), jobUrl);
 
                 responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
             }

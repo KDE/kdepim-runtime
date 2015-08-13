@@ -24,6 +24,8 @@
 #include <kio/davjob.h>
 #include <KLocalizedString>
 
+#include <QtCore/QUrl>
+
 DavPrincipalSearchJob::DavPrincipalSearchJob(const DavUtils::DavUrl &url, DavPrincipalSearchJob::FilterType type,
         const QString &filter, QObject *parent)
     : KJob(parent), mUrl(url), mType(type), mFilter(filter), mPrincipalPropertySearchSubJobCount(0),
@@ -170,15 +172,15 @@ void DavPrincipalSearchJob::principalCollectionSetSearchFinished(KJob *job)
         QDomElement hrefElement = hrefNodes.at(i).toElement();
         QString href = hrefElement.text();
 
-        KUrl url = mUrl.url();
+        QUrl url = mUrl.url();
         if (href.startsWith(QLatin1Char('/'))) {
             // href is only a path, use request url to complete
-            url.setEncodedPath(href.toLatin1());
+            url.setPath(href.toLatin1(), QUrl::TolerantMode);
         } else {
             // href is a complete url
-            KUrl tmpUrl(href);
-            tmpUrl.setUser(url.user());
-            tmpUrl.setPass(url.pass());
+            QUrl tmpUrl(href);
+            tmpUrl.setUserName(url.userName());
+            tmpUrl.setPassword(url.password());
             url = tmpUrl;
         }
 

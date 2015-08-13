@@ -112,18 +112,17 @@ void DavItemsFetchJob::davJobFinished(KJob *job)
         const QDomElement hrefElement = DavUtils::firstChildElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("href"));
         const QString href = hrefElement.text();
 
-        KUrl url = davJob->url();
-        url.setUser(QString());
+        QUrl url = davJob->url();
+        url.setUserInfo(QString());
         if (href.startsWith(QLatin1Char('/'))) {
             // href is only a path, use request url to complete
-            url.setEncodedPath(href.toLatin1());
+            url.setPath(href.toLatin1(), QUrl::TolerantMode);
         } else {
             // href is a complete url
-            KUrl tmpUrl(href);
-            url = tmpUrl;
+            url = QUrl::fromUserInput(href);
         }
 
-        item.setUrl(url.prettyUrl());
+        item.setUrl(url.toDisplayString());
 
         // extract etag
         const QDomElement getetagElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("getetag"));

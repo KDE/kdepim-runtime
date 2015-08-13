@@ -19,13 +19,13 @@
 #include "caldavprotocol.h"
 #include "davutils.h"
 
-#include <kurl.h>
 #include <KCalCore/Event>
 #include <KCalCore/Journal>
 #include <KCalCore/Todo>
 
 #include <QtCore/QDateTime>
 #include <QtCore/QStringList>
+#include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
 
 CaldavProtocol::CaldavProtocol()
@@ -282,9 +282,12 @@ QDomDocument CaldavProtocol::itemsReportQuery(const QStringList &urls) const
 
     foreach (const QString &url, urls) {
         QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
-        const KUrl pathUrl(url);
+        const QUrl pathUrl(url);
+        const QString encodedUrl = pathUrl.path() + ( pathUrl.hasQuery() ?
+                                                        QLatin1String("?")+pathUrl.query() :
+                                                        QString("") );
 
-        const QDomText textNode = document.createTextNode(pathUrl.encodedPathAndQuery());
+        const QDomText textNode = document.createTextNode(encodedUrl);
         hrefElement.appendChild(textNode);
 
         multigetElement.appendChild(hrefElement);

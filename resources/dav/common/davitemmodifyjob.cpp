@@ -101,18 +101,18 @@ void DavItemModifyJob::davJobFinished(KJob *job)
         }
     }
 
-    KUrl url;
+    QUrl url;
     if (location.isEmpty()) {
         url = storedJob->url();
     } else if (location.startsWith(QLatin1Char('/'))) {
         url = storedJob->url();
-        url.setEncodedPath(location.toLatin1());
+        url.setPath(location.toLatin1(), QUrl::TolerantMode);
     } else {
-        url = location;
+        url = QUrl::fromUserInput(location);
     }
 
-    url.setUser(QString());
-    mItem.setUrl(url.prettyUrl());
+    url.setUserInfo(QString());
+    mItem.setUrl(url.toDisplayString());
 
     DavItemFetchJob *fetchJob = new DavItemFetchJob(mUrl, mItem);
     connect(fetchJob, &DavItemFetchJob::result, this, &DavItemModifyJob::itemRefreshed);

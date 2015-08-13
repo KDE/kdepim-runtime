@@ -87,14 +87,14 @@ void DavItemCreateJob::davJobFinished(KJob *job)
         }
     }
 
-    KUrl url;
+    QUrl url;
     if (location.isEmpty()) {
         url = storedJob->url();
     } else if (location.startsWith(QLatin1Char('/'))) {
         url = storedJob->url();
-        url.setEncodedPath(location.toLatin1());
+        url.setPath(location.toLatin1(), QUrl::TolerantMode);
     } else {
-        url = location;
+        url = QUrl::fromUserInput(location);
     }
 
     if (responseCode == 301 || responseCode == 302 || responseCode == 307 || responseCode == 308) {
@@ -103,8 +103,8 @@ void DavItemCreateJob::davJobFinished(KJob *job)
             setError(UserDefinedError + responseCode);
             emitResult();
         } else {
-            KUrl itemUrl(url);
-            itemUrl.setUser(mUrl.url().user());
+            QUrl itemUrl(url);
+            itemUrl.setUserName(mUrl.url().userName());
             itemUrl.setPassword(mUrl.url().password());
             mUrl.setUrl(itemUrl);
 
@@ -115,8 +115,8 @@ void DavItemCreateJob::davJobFinished(KJob *job)
         return;
     }
 
-    url.setUser(QString());
-    mItem.setUrl(url.prettyUrl());
+    url.setUserInfo(QString());
+    mItem.setUrl(url.toDisplayString());
 
     DavItemFetchJob *fetchJob = new DavItemFetchJob(mUrl, mItem);
     connect(fetchJob, &DavItemFetchJob::result, this, &DavItemCreateJob::itemRefreshed);

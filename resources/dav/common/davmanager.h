@@ -31,7 +31,7 @@ namespace KIO
 class DavJob;
 }
 
-class KUrl;
+class QUrl;
 
 class QDomDocument;
 
@@ -62,7 +62,7 @@ public:
      * @param document The query XML document.
      * @param depth The Depth: value to send in the HTTP request
      */
-    KIO::DavJob *createPropFindJob(const KUrl &url, const QDomDocument &document, const QString &depth = QLatin1String("1")) const;
+    KIO::DavJob *createPropFindJob(const QUrl &url, const QDomDocument &document, const QString &depth = QLatin1String("1")) const;
 
     /**
      * Returns a preconfigured DAV REPORT job.
@@ -71,7 +71,7 @@ public:
      * @param document The query XML document.
      * @param depth The Depth: value to send in the HTTP request
      */
-    KIO::DavJob *createReportJob(const KUrl &url, const QDomDocument &document, const QString &depth = QLatin1String("1")) const;
+    KIO::DavJob *createReportJob(const QUrl &url, const QDomDocument &document, const QString &depth = QLatin1String("1")) const;
 
     /**
      * Returns a preconfigured DAV PROPPATCH job.
@@ -79,7 +79,7 @@ public:
      * @param url The target url of the job.
      * @param document The query XML document.
      */
-    KIO::DavJob *createPropPatchJob(const KUrl &url, const QDomDocument &document) const;
+    KIO::DavJob *createPropPatchJob(const QUrl &url, const QDomDocument &document) const;
 
     /**
      * Returns the DAV protocol dialect object for the given DAV @p protocol.

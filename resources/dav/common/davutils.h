@@ -20,9 +20,8 @@
 #define DAVUTILS_H
 
 #include <QtCore/QList>
+#include <QtCore/QUrl>
 #include <QtXml/QDomElement>
-
-#include <KUrl>
 
 #include <AkonadiCore/Item>
 
@@ -111,17 +110,17 @@ public:
      * @param url The url that identifies the DAV object.
      * @param protocol The DAV protocol dialect that is used to retrieve the DAV object.
      */
-    DavUrl(const KUrl &url, Protocol protocol);
+    DavUrl(const QUrl &url, Protocol protocol);
 
     /**
      * Sets the @p url that identifies the DAV object.
      */
-    void setUrl(const KUrl &url);
+    void setUrl(const QUrl &url);
 
     /**
      * Returns the url that identifies the DAV object.
      */
-    KUrl url() const;
+    QUrl url() const;
 
     /**
      * Sets the DAV @p protocol dialect that is used to retrieve the DAV object.
@@ -134,7 +133,7 @@ public:
     Protocol protocol() const;
 
 private:
-    KUrl mUrl;
+    QUrl mUrl;
     Protocol mProtocol;
 };
 

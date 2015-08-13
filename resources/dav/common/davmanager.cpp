@@ -25,6 +25,7 @@
 #include <kio/davjob.h>
 #include <QDebug>
 
+#include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
 
 DavManager *DavManager::mSelf = Q_NULLPTR;
@@ -51,7 +52,7 @@ DavManager *DavManager::self()
     return mSelf;
 }
 
-KIO::DavJob *DavManager::createPropFindJob(const KUrl &url, const QDomDocument &document, const QString &depth) const
+KIO::DavJob *DavManager::createPropFindJob(const QUrl &url, const QDomDocument &document, const QString &depth) const
 {
     KIO::DavJob *job = KIO::davPropFind(url, document, depth, KIO::HideProgressInfo | KIO::DefaultFlags);
 
@@ -65,7 +66,7 @@ KIO::DavJob *DavManager::createPropFindJob(const KUrl &url, const QDomDocument &
     return job;
 }
 
-KIO::DavJob *DavManager::createReportJob(const KUrl &url, const QDomDocument &document, const QString &depth) const
+KIO::DavJob *DavManager::createReportJob(const QUrl &url, const QDomDocument &document, const QString &depth) const
 {
     KIO::DavJob *job = KIO::davReport(url, document.toString(), depth, KIO::HideProgressInfo | KIO::DefaultFlags);
 
@@ -79,7 +80,7 @@ KIO::DavJob *DavManager::createReportJob(const KUrl &url, const QDomDocument &do
     return job;
 }
 
-KIO::DavJob *DavManager::createPropPatchJob(const KUrl &url, const QDomDocument &document) const
+KIO::DavJob *DavManager::createPropPatchJob(const QUrl &url, const QDomDocument &document) const
 {
     KIO::DavJob *job = KIO::davPropPatch(url, document, KIO::HideProgressInfo | KIO::DefaultFlags);
     const QString header = QLatin1String("Content-Type: text/xml");

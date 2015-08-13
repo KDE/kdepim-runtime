@@ -27,9 +27,9 @@
 #include "davresource_debug.h"
 #include <QIcon>
 #include <KMessageBox>
-#include <KUrl>
 #include <KLocalizedString>
 
+#include <QtCore/QUrl>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
@@ -123,9 +123,8 @@ void SearchDialog::search()
         filter = DavPrincipalSearchJob::EmailAddress;
     }
 
-    KUrl url(mUi.searchUrl->text());
-    url.setUser(mUi.username->text());
-    url.setPassword(mUi.password->text());
+    QUrl url(mUi.searchUrl->text());
+    url.setUserInfo(QString());
     DavUtils::DavUrl davUrl;
     davUrl.setUrl(url);
 
@@ -153,15 +152,14 @@ void SearchDialog::onSearchJobFinished(KJob *job)
 
     const DavProtocolBase *caldav = DavManager::self()->davProtocol(DavUtils::CalDav);
     DavUtils::DavUrl davUrl = davJob->davUrl();
-    KUrl url = davUrl.url();
+    QUrl url = davUrl.url();
 
     foreach (const DavPrincipalSearchJob::Result &result, results) {
         if (result.value.startsWith(QLatin1Char('/'))) {
-            url.setPath(result.value);
+            url.setPath(result.value.toLatin1(), QUrl::TolerantMode);
         } else {
-            KUrl tmp(result.value);
-            tmp.setUser(url.user());
-            tmp.setPassword(url.password());
+            QUrl tmp(result.value);
+            tmp.setUserInfo(QString());
             url = tmp;
         }
         davUrl.setUrl(url);
