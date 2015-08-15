@@ -440,7 +440,7 @@ bool KAlarmDirResource::loadFiles(bool sync)
 KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
 {
     qCDebug(KALARMDIRRESOURCE_LOG) << path;
-    MemoryCalendar::Ptr calendar(new MemoryCalendar(QLatin1String("UTC")));
+    MemoryCalendar::Ptr calendar(new MemoryCalendar(QStringLiteral("UTC")));
     FileStorage::Ptr fileStorage(new FileStorage(calendar, path, new ICalFormat()));
     if (!fileStorage->load()) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "Error loading" << path;
@@ -678,7 +678,7 @@ bool KAlarmDirResource::writeToFile(const KAEvent &event)
 {
     Event::Ptr kcalEvent(new Event);
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
-    MemoryCalendar::Ptr calendar(new MemoryCalendar(QLatin1String("UTC")));
+    MemoryCalendar::Ptr calendar(new MemoryCalendar(QStringLiteral("UTC")));
     KACalendar::setKAlarmVersion(calendar);   // set the KAlarm custom property
     if (!calendar->addIncidence(kcalEvent)) {
         qCritical() << "Error adding event with id" << event.id();
@@ -739,7 +739,7 @@ void KAlarmDirResource::setNameRights(Collection &c)
     c.setName(display.isEmpty() ? name() : display);
     EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(name());
-    attr->setIconName(QLatin1String("kalarm"));
+    attr->setIconName(QStringLiteral("kalarm"));
     if (mSettings->readOnly()) {
         c.setRights(Collection::CanChangeCollection);
     } else {

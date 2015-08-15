@@ -49,7 +49,7 @@ void FoldersRequestJob::start()
         DAVUtils::addOxElement(document, prop, QStringLiteral("objectmode"), QStringLiteral("DELETED"));
     }
 
-    const QString path = QLatin1String("/servlet/webdav.folders");
+    const QString path = QStringLiteral("/servlet/webdav.folders");
 
     KIO::DavJob *job = DavManager::self()->createFindJob(path, document);
     connect(job, &KIO::DavJob::result, this, &FoldersRequestJob::davJobFinished);
@@ -82,7 +82,7 @@ void FoldersRequestJob::davJobFinished(KJob *job)
     }
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     while (!response.isNull()) {
         const QDomNodeList props = response.elementsByTagName("prop");
         const QDomElement prop = props.at(0).toElement();

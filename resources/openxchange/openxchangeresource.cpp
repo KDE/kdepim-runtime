@@ -105,7 +105,7 @@ public:
             }
         }
 
-        QString lastModified = QLatin1String("0");
+        QString lastModified = QStringLiteral("0");
         if (parts.count() > 1) {
             lastModified = parts.at(1);
         }
@@ -135,7 +135,7 @@ public:
         parts.append(mLastModified);
 
         entity.setRemoteId(QString::number(mObjectId));
-        entity.setRemoteRevision(parts.join(QLatin1String(":")));
+        entity.setRemoteRevision(parts.join(QStringLiteral(":")));
     }
 
 private:
@@ -169,7 +169,7 @@ public:
             pairs.append(QString::number(it.key()) + QLatin1Char('=') + QString::number(it.value()));
         }
 
-        Settings::self()->setObjectsLastSync(pairs.join(QLatin1String(":")));
+        Settings::self()->setObjectsLastSync(pairs.join(QStringLiteral(":")));
         Settings::self()->save();
     }
 
@@ -258,7 +258,7 @@ OpenXchangeResource::OpenXchangeResource(const QString &id)
     mResourceCollection.setContentMimeTypes(QStringList() << Collection::mimeType());
     mResourceCollection.setRights(Collection::ReadOnly);
     EntityDisplayAttribute *attribute = mResourceCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-    attribute->setIconName(QLatin1String("ox"));
+    attribute->setIconName(QStringLiteral("ox"));
 
     Collection privateFolder;
     privateFolder.setParentCollection(mResourceCollection);

@@ -47,7 +47,7 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     mServerInfoWidget->setupUi(w);
     mainLayout->addWidget(buttonBox);
     mServerInfoWidget->serverInfo->setPlainText(
-        parentResource->serverCapabilities().join(QLatin1String("\n")));
+        parentResource->serverCapabilities().join(QStringLiteral("\n")));
 }
 
 ServerInfoDialog::~ServerInfoDialog()

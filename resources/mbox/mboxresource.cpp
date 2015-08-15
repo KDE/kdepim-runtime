@@ -46,21 +46,21 @@ static Entity::Id collectionId(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
     Q_ASSERT(remoteItemId.split(QLatin1String("::")).size() == 3);
-    return remoteItemId.split(QLatin1String("::")).first().toLongLong();
+    return remoteItemId.split(QStringLiteral("::")).first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
     Q_ASSERT(remoteItemId.split(QLatin1String("::")).size() == 3);
-    return remoteItemId.split(QLatin1String("::")).at(1);
+    return remoteItemId.split(QStringLiteral("::")).at(1);
 }
 
 static quint64 itemOffset(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
     Q_ASSERT(remoteItemId.split(QLatin1String("::")).size() == 3);
-    return remoteItemId.split(QLatin1String("::")).last().toULongLong();
+    return remoteItemId.split(QStringLiteral("::")).last().toULongLong();
 }
 
 MboxResource::MboxResource(const QString &id)
@@ -133,7 +133,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
 
         Item item;
         item.setRemoteId(colId + QLatin1String("::") + colRid + QLatin1String("::") + QString::number(entry.messageOffset()));
-        item.setMimeType(QLatin1String("message/rfc822"));
+        item.setMimeType(QStringLiteral("message/rfc822"));
         item.setSize(entry.messageSize());
         item.setPayload(KMime::Message::Ptr(mail));
         Akonadi::MessageFlags::copyMessageFlags(*mail, item);

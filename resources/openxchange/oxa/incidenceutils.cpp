@@ -129,7 +129,7 @@ static void parseIncidenceAttribute(const QDomElement &element,
             incidence->setSecrecy(KCalCore::Incidence::SecrecyPublic);
         }
     } else if (tagName == QLatin1String("categories")) {
-        incidence->setCategories(text.split(QRegExp(QLatin1String(",\\s*"))));
+        incidence->setCategories(text.split(QRegExp(QStringLiteral(",\\s*"))));
     }
 }
 
@@ -255,7 +255,7 @@ static void parseRecurrence(const QDomElement &element,
             yearlyMonth = text.toInt() + 1; // starts at 0
             yearly2Month = text.toInt() + 1;
         } else if ((tagName == QLatin1String("deleteexceptions")) || (tagName == QLatin1String("changeexceptions"))) {
-            const QStringList exceptionDates = text.split(QLatin1String(","));
+            const QStringList exceptionDates = text.split(QStringLiteral(","));
             deleteExceptions.reserve(exceptionDates.count());
             foreach (const QString &date, exceptionDates) {
                 deleteExceptions.append(OXUtils::readDate(date));
@@ -267,10 +267,10 @@ static void parseRecurrence(const QDomElement &element,
     }
 
     if (daysSet && type == QLatin1String("monthly")) {
-        type = QLatin1String("monthly2");    // HACK: OX doesn't cleanly distinguish between monthly and monthly2
+        type = QStringLiteral("monthly2");    // HACK: OX doesn't cleanly distinguish between monthly and monthly2
     }
     if (daysSet && type == QLatin1String("yearly")) {
-        type = QLatin1String("yearly2");
+        type = QStringLiteral("yearly2");
     }
 
     KCalCore::Recurrence *recurrence = incidence->recurrence();
@@ -332,9 +332,9 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
 
             QString status;
             switch (attendee->status()) {
-            case KCalCore::Attendee::Accepted: status = QLatin1String("accept"); break;
-            case KCalCore::Attendee::Declined: status = QLatin1String("decline"); break;
-            default: status = QLatin1String("none"); break;
+            case KCalCore::Attendee::Accepted: status = QStringLiteral("accept"); break;
+            case KCalCore::Attendee::Declined: status = QStringLiteral("decline"); break;
+            default: status = QStringLiteral("none"); break;
             }
 
             QDomElement element = DAVUtils::addOxElement(document, members, QStringLiteral("user"), OXUtils::writeNumber(user.uid()));
@@ -359,7 +359,7 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
     }
 
     // categories
-    DAVUtils::addOxElement(document, parent, QStringLiteral("categories"), OXUtils::writeString(incidence->categories().join(QLatin1String(", "))));
+    DAVUtils::addOxElement(document, parent, QStringLiteral("categories"), OXUtils::writeString(incidence->categories().join(QStringLiteral(", "))));
 }
 
 static void createEventAttributes(QDomDocument &document, QDomElement &parent,
@@ -411,14 +411,14 @@ static void createTaskAttributes(QDomDocument &document, QDomElement &parent,
     switch (todo->priority()) {
     case 9:
     case 8:
-        priority = QLatin1String("1");
+        priority = QStringLiteral("1");
         break;
     case 2:
     case 1:
-        priority = QLatin1String("3");
+        priority = QStringLiteral("3");
         break;
     default:
-        priority = QLatin1String("2");
+        priority = QStringLiteral("2");
         break;
     }
     DAVUtils::addOxElement(document, parent, QStringLiteral("priority"), priority);
@@ -504,7 +504,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         dates.append(OXUtils::writeDate(date));
     }
 
-    DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(QLatin1String(",")));
+    DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(QStringLiteral(",")));
 
     //TODO: changeexceptions
 

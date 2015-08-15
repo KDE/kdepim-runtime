@@ -27,7 +27,7 @@ using namespace OXA;
 
 QString OXUtils::writeBoolean(bool value)
 {
-    return (value ? QLatin1String("true") : QLatin1String("false"));
+    return (value ? QStringLiteral("true") : QStringLiteral("false"));
 }
 
 QString OXUtils::writeNumber(qlonglong value)

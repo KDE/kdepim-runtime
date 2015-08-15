@@ -231,7 +231,7 @@ void VCardDirResource::retrieveCollections()
 
     EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(i18n("Contacts Folder"));
-    attr->setIconName(QLatin1String("x-office-address-book"));
+    attr->setIconName(QStringLiteral("x-office-address-book"));
 
     Collection::List list;
     list << c;

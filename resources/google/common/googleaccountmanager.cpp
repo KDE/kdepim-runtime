@@ -170,15 +170,15 @@ AccountPtr GoogleAccountManager::findAccountInWallet(const QString &accountName)
     QMap<QString, QString> map;
     m_wallet->readMap(accountName, map);
 
-    const QStringList scopes = map[QLatin1String("scopes")].split(QLatin1Char(','), QString::SkipEmptyParts);
+    const QStringList scopes = map[QStringLiteral("scopes")].split(QLatin1Char(','), QString::SkipEmptyParts);
     QList<QUrl> scopeUrls;
     scopeUrls.reserve(scopes.count());
     Q_FOREACH (const QString &scope, scopes) {
         scopeUrls << QUrl(scope);
     }
     AccountPtr account(new Account(accountName,
-                                   map[QLatin1String("accessToken")],
-                                   map[QLatin1String("refreshToken")],
+                                   map[QStringLiteral("accessToken")],
+                                   map[QStringLiteral("refreshToken")],
                                    scopeUrls));
 
     return account;
@@ -199,9 +199,9 @@ bool GoogleAccountManager::storeAccount(const AccountPtr &account)
     }
 
     QMap<QString, QString> map;
-    map[QLatin1String("accessToken")] = account->accessToken();
-    map[QLatin1String("refreshToken")] = account->refreshToken();
-    map[QLatin1String("scopes")] = scopes.join(QLatin1String(","));
+    map[QStringLiteral("accessToken")] = account->accessToken();
+    map[QStringLiteral("refreshToken")] = account->refreshToken();
+    map[QStringLiteral("scopes")] = scopes.join(QStringLiteral(","));
 
     if (m_wallet->writeMap(account->accountName(), map) == 0) {
         m_accounts[account->accountName()] = account;

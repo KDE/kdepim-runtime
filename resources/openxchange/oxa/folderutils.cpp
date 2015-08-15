@@ -170,14 +170,14 @@ void OXA::FolderUtils::addFolderElements(QDomDocument &document, QDomElement &pr
     DAVUtils::addOxElement(document, propElement, QStringLiteral("title"), OXUtils::writeString(folder.title()));
     DAVUtils::addOxElement(document, propElement, QStringLiteral("folder_id"), OXUtils::writeNumber(folder.folderId()));
 
-    const QString type = (folder.type() == Folder::Public ? QLatin1String("public") : QLatin1String("private"));
+    const QString type = (folder.type() == Folder::Public ? QStringLiteral("public") : QStringLiteral("private"));
     DAVUtils::addOxElement(document, propElement, QStringLiteral("type"), OXUtils::writeString(type));
 
     QString module;
     switch (folder.module()) {
-    case Folder::Calendar: module = QLatin1String("calendar"); break;
-    case Folder::Contacts: module = QLatin1String("contact"); break;
-    case Folder::Tasks: module = QLatin1String("task"); break;
+    case Folder::Calendar: module = QStringLiteral("calendar"); break;
+    case Folder::Contacts: module = QStringLiteral("contact"); break;
+    case Folder::Tasks: module = QStringLiteral("task"); break;
     default: break;
     }
     DAVUtils::addOxElement(document, propElement, QStringLiteral("module"), OXUtils::writeString(module));

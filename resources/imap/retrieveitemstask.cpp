@@ -150,7 +150,7 @@ void RetrieveItemsTask::startRetrievalTasks()
 
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
     // We assume that we can only expunge if we can delete items (correct would be to check for "e" ACL right).
-    if (isAutomaticExpungeEnabled() && (!serverCapabilities().contains(QLatin1String("ACL")) || (myRights(collection()) & KIMAP::Acl::Expunge))) {
+    if (isAutomaticExpungeEnabled() && (!serverCapabilities().contains(QStringLiteral("ACL")) || (myRights(collection()) & KIMAP::Acl::Expunge))) {
         if (m_session->selectedMailBox() != mailBox) {
             triggerPreExpungeSelect(mailBox);
         } else {

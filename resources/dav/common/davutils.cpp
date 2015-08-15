@@ -269,7 +269,7 @@ DavItem DavUtils::createDavItem(const Akonadi::Item &item, const Akonadi::Collec
         const QString fileName = createUniqueId();
 
         url = QUrl(basePath + fileName + QLatin1String(".ics"));
-        mimeType = QLatin1String("text/calendar");
+        mimeType = QStringLiteral("text/calendar");
 
         KCalCore::ICalFormat formatter;
         rawData = formatter.toString(calendar, QString()).toUtf8();

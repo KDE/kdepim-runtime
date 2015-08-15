@@ -577,7 +577,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
     //         << "with subject" << message->subject()->asUnicodeString();
 
     Akonadi::Item item;
-    item.setMimeType(QLatin1String("message/rfc822"));
+    item.setMimeType(QStringLiteral("message/rfc822"));
     item.setPayload<KMime::Message::Ptr>(message);
 
     Akonadi::Pop3ResourceAttribute *attr  = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Entity::AddIfMissing);

@@ -469,9 +469,9 @@ QStringList Maildir::subFolderList() const
     }
     dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
     QStringList entries = dir.entryList();
-    entries.removeAll(QLatin1String("cur"));
-    entries.removeAll(QLatin1String("new"));
-    entries.removeAll(QLatin1String("tmp"));
+    entries.removeAll(QStringLiteral("cur"));
+    entries.removeAll(QStringLiteral("new"));
+    entries.removeAll(QStringLiteral("tmp"));
     return entries;
 }
 

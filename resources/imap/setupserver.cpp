@@ -153,7 +153,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->checkInterval->setSingleStep(1);
 
     // regex for evaluating a valid server name/ip
-    mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
+    mValidator.setRegExp(QRegExp(QStringLiteral("[A-Za-z0-9-_:.]*")));
     m_ui->imapServer->setValidator(&mValidator);
 
     m_ui->folderRequester->setMimeTypeFilter(
@@ -262,13 +262,13 @@ void SetupServer::applySettings()
     QString encryption;
     switch (m_ui->safeImapGroup->checkedId()) {
     case KIMAP::LoginJob::Unencrypted :
-        encryption = QLatin1String("None");
+        encryption = QStringLiteral("None");
         break;
     case KIMAP::LoginJob::AnySslVersion:
-        encryption = QLatin1String("SSL");
+        encryption = QStringLiteral("SSL");
         break;
     case KIMAP::LoginJob::TlsV1:
-        encryption = QLatin1String("STARTTLS");
+        encryption = QStringLiteral("STARTTLS");
         break;
     default:
         qFatal("Shouldn't happen");
@@ -295,7 +295,7 @@ void SetupServer::applySettings()
     Akonadi::Collection trash = m_ui->folderRequester->collection();
     Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
     Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
-    attribute->setIconName(QLatin1String("user-trash"));
+    attribute->setIconName(QStringLiteral("user-trash"));
     new Akonadi::CollectionModifyJob(trash);
     if (mOldTrash != trash) {
         Akonadi::SpecialMailCollections::self()->unregisterCollection(mOldTrash);
@@ -318,11 +318,11 @@ void SetupServer::applySettings()
     QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
     if (checkedButton == m_ui->imapUserPassword) {
-        m_parentResource->settings()->setSieveCustomAuthentification(QLatin1String("ImapUserPassword"));
+        m_parentResource->settings()->setSieveCustomAuthentification(QStringLiteral("ImapUserPassword"));
     } else if (checkedButton == m_ui->noAuthentification) {
-        m_parentResource->settings()->setSieveCustomAuthentification(QLatin1String("NoAuthentification"));
+        m_parentResource->settings()->setSieveCustomAuthentification(QStringLiteral("NoAuthentification"));
     } else if (checkedButton == m_ui->customUserPassword) {
-        m_parentResource->settings()->setSieveCustomAuthentification(QLatin1String("CustomUserPassword"));
+        m_parentResource->settings()->setSieveCustomAuthentification(QStringLiteral("CustomUserPassword"));
     }
 
     m_parentResource->settings()->setSieveCustomPassword(m_ui->customPassword->text());
@@ -428,7 +428,7 @@ void SetupServer::readSettings()
     m_ui->autoExpungeCheck->setChecked(m_parentResource->settings()->automaticExpungeEnabled());
 
     if (m_vacationFileName.isEmpty()) {
-        m_vacationFileName = QLatin1String("kmail-vacation.siv");
+        m_vacationFileName = QStringLiteral("kmail-vacation.siv");
     }
 
     m_ui->customUsername->setText(m_parentResource->settings()->sieveCustomUsername());
@@ -475,7 +475,7 @@ void SetupServer::slotTest()
         m_serverTest->setPort(MailTransport::Transport::EnumEncryption::SSL, port);
     }
 
-    m_serverTest->setProtocol(QLatin1String("imap"));
+    m_serverTest->setProtocol(QStringLiteral("imap"));
     m_serverTest->setProgressBar(m_ui->testProgress);
     connect(m_serverTest, &MailTransport::ServerTest::finished, this, &SetupServer::slotFinished);
     mOkButton->setEnabled(false);

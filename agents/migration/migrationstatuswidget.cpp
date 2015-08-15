@@ -38,17 +38,17 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
 {
     QVBoxLayout *vboxLayout = new QVBoxLayout;
     {
-        QToolBar *toolbar = new QToolBar(QLatin1String("MigrationControlToolbar"), this);
+        QToolBar *toolbar = new QToolBar(QStringLiteral("MigrationControlToolbar"), this);
 
-        QAction *start = toolbar->addAction(QLatin1String("Start"));
+        QAction *start = toolbar->addAction(QStringLiteral("Start"));
         start->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
         connect(start, &QAction::triggered, this, &MigrationStatusWidget::startSelected);
 
-        QAction *pause = toolbar->addAction(QLatin1String("Pause"));
+        QAction *pause = toolbar->addAction(QStringLiteral("Pause"));
         pause->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")));
         connect(pause, &QAction::triggered, this, &MigrationStatusWidget::pauseSelected);
 
-        QAction *abort = toolbar->addAction(QLatin1String("Abort"));
+        QAction *abort = toolbar->addAction(QStringLiteral("Abort"));
         abort->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-stop")));
         connect(abort, &QAction::triggered, this, &MigrationStatusWidget::abortSelected);
 

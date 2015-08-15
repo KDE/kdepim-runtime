@@ -77,9 +77,9 @@ KIO::MetaData POPSession::slaveConfig() const
 {
     KIO::MetaData m;
 
-    m.insert(QLatin1String("progress"), QStringLiteral("off"));
-    m.insert(QLatin1String("tls"), Settings::self()->useTLS() ? QLatin1String("on") : QLatin1String("off"));
-    m.insert(QLatin1String("pipelining"), (Settings::self()->pipelining()) ? QLatin1String("on") : QLatin1String("off"));
+    m.insert(QStringLiteral("progress"), QStringLiteral("off"));
+    m.insert(QStringLiteral("tls"), Settings::self()->useTLS() ? QStringLiteral("on") : QStringLiteral("off"));
+    m.insert(QStringLiteral("pipelining"), (Settings::self()->pipelining()) ? QStringLiteral("on") : QStringLiteral("off"));
     int type = Settings::self()->authenticationMethod();
     switch (type) {
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
@@ -88,14 +88,14 @@ KIO::MetaData POPSession::slaveConfig() const
     case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
     case MailTransport::Transport::EnumAuthenticationType::NTLM:
     case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-        m.insert(QLatin1String("auth"), QStringLiteral("SASL"));
-        m.insert(QLatin1String("sasl"), authenticationToString(type));
+        m.insert(QStringLiteral("auth"), QStringLiteral("SASL"));
+        m.insert(QStringLiteral("sasl"), authenticationToString(type));
         break;
     case MailTransport::Transport::EnumAuthenticationType::CLEAR:
-        m.insert(QLatin1String("auth"), QStringLiteral("USER"));
+        m.insert(QStringLiteral("auth"), QStringLiteral("USER"));
         break;
     default:
-        m.insert(QLatin1String("auth"), authenticationToString(type));
+        m.insert(QStringLiteral("auth"), authenticationToString(type));
         break;
     }
     return m;
@@ -131,9 +131,9 @@ QUrl POPSession::getUrl() const
     QUrl url;
 
     if (Settings::self()->useSSL()) {
-        url.setScheme(QLatin1String("pop3s"));
+        url.setScheme(QStringLiteral("pop3s"));
     } else {
-        url.setScheme(QLatin1String("pop3"));
+        url.setScheme(QStringLiteral("pop3"));
     }
 
     url.setUserName(Settings::self()->login());
@@ -312,7 +312,7 @@ ListJob::ListJob(POPSession *popSession)
 
 void ListJob::start()
 {
-    startJob(QLatin1String("/index"));
+    startJob(QStringLiteral("/index"));
 }
 
 void ListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
@@ -361,7 +361,7 @@ UIDListJob::UIDListJob(POPSession *popSession)
 
 void UIDListJob::start()
 {
-    startJob(QLatin1String("/uidl"));
+    startJob(QStringLiteral("/uidl"));
 }
 
 void UIDListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
@@ -440,7 +440,7 @@ QuitJob::QuitJob(POPSession *popSession)
 
 void QuitJob::start()
 {
-    startJob(QLatin1String("/commit"));
+    startJob(QStringLiteral("/commit"));
 }
 
 FetchJob::FetchJob(POPSession *session)

@@ -480,7 +480,7 @@ Item InvitationsAgent::handleContent(const QString &vcal,
     Q_ASSERT(incidence);
 
     IncidenceAttribute *attr = new IncidenceAttribute;
-    attr->setStatus(QLatin1String("new"));   //TODO
+    attr->setStatus(QStringLiteral("new"));   //TODO
     //attr->setFrom( message->from()->asUnicodeString() );
     attr->setReference(item.id());
 

@@ -31,7 +31,7 @@ DavItemModifyJob::DavItemModifyJob(const DavUtils::DavUrl &url, const DavItem &i
 
 void DavItemModifyJob::start()
 {
-    QString headers = QLatin1String("Content-Type: ");
+    QString headers = QStringLiteral("Content-Type: ");
     headers += mItem.contentType();
     headers += QLatin1String("\r\n");
     headers += QLatin1String("If-Match: ") + mItem.etag();
@@ -65,9 +65,9 @@ void DavItemModifyJob::davJobFinished(KJob *job)
     KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
 
     if (storedJob->error()) {
-        const int responseCode = storedJob->queryMetaData(QLatin1String("responsecode")).isEmpty() ?
+        const int responseCode = storedJob->queryMetaData(QStringLiteral("responsecode")).isEmpty() ?
                                  0 :
-                                 storedJob->queryMetaData(QLatin1String("responsecode")).toInt();
+                                 storedJob->queryMetaData(QStringLiteral("responsecode")).toInt();
 
         QString err;
         if (storedJob->error() != KIO::ERR_SLAVE_DEFINED) {
@@ -93,7 +93,7 @@ void DavItemModifyJob::davJobFinished(KJob *job)
     }
 
     // The 'Location:' HTTP header is used to indicate the new URL
-    const QStringList allHeaders = storedJob->queryMetaData(QLatin1String("HTTP-Headers")).split(QLatin1Char('\n'));
+    const QStringList allHeaders = storedJob->queryMetaData(QStringLiteral("HTTP-Headers")).split(QLatin1Char('\n'));
     QString location;
     foreach (const QString &header, allHeaders) {
         if (header.startsWith(QLatin1String("location:"), Qt::CaseInsensitive)) {

@@ -41,7 +41,7 @@ void UsersRequestJob::start()
     QDomElement prop = DAVUtils::addDavElement(document, multistatus, QStringLiteral("prop"));
     DAVUtils::addOxElement(document, prop, QStringLiteral("user"), QStringLiteral("*"));
 
-    const QString path = QLatin1String("/servlet/webdav.groupuser");
+    const QString path = QStringLiteral("/servlet/webdav.groupuser");
 
     KIO::DavJob *job = DavManager::self()->createFindJob(path, document);
     connect(job, &KIO::DavJob::result, this, &UsersRequestJob::davJobFinished);

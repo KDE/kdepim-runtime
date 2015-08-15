@@ -59,17 +59,17 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                     const QString text = OXUtils::readString(emailElement.text());
 
                     if (tagName == QLatin1String("email")) {
-                        const int emailField = OXUtils::readNumber(emailElement.attribute(QLatin1String("emailfield")));
+                        const int emailField = OXUtils::readNumber(emailElement.attribute(QStringLiteral("emailfield")));
                         if (emailField == 0) {   // internal data
                             KContacts::ContactGroup::Data data;
-                            data.setName(OXUtils::readString(emailElement.attribute(QLatin1String("displayname"))));
+                            data.setName(OXUtils::readString(emailElement.attribute(QStringLiteral("displayname"))));
                             data.setEmail(text);
 
                             contactGroup.append(data);
                         } else { // external reference
                             // we convert them to internal data, seems like a more stable approach
                             KContacts::ContactGroup::Data data;
-                            const qlonglong uid = OXUtils::readNumber(emailElement.attribute(QLatin1String("id")));
+                            const qlonglong uid = OXUtils::readNumber(emailElement.attribute(QStringLiteral("id")));
 
                             const User user = Users::self()->lookupUid(uid);
                             if (user.isValid()) {
@@ -77,7 +77,7 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                                 data.setEmail(user.email());
                             } else {
                                 // fallback: use the data from the element
-                                data.setName(OXUtils::readString(emailElement.attribute(QLatin1String("displayname"))));
+                                data.setName(OXUtils::readString(emailElement.attribute(QStringLiteral("displayname"))));
                                 data.setEmail(text);
                             }
 
@@ -122,9 +122,9 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             } else if (tagName == QLatin1String("birthday")) {
                 contact.setBirthday(OXUtils::readDateTime(element.text()));
             } else if (tagName == QLatin1String("anniversary")) {
-                contact.insertCustom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-Anniversary"), OXUtils::readDateTime(element.text()).toString(Qt::ISODate));
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"), OXUtils::readDateTime(element.text()).toString(Qt::ISODate));
             } else if (tagName == QLatin1String("spouse_name")) {
-                contact.insertCustom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), text);
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), text);
                 // addresses
             } else if (tagName == QLatin1String("street")) {
                 homeAddress.setStreet(text);
@@ -181,15 +181,15 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             } else if (tagName == QLatin1String("department")) {
                 contact.setDepartment(text);
             } else if (tagName == QLatin1String("assistants_name")) {
-                contact.insertCustom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"), text);
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"), text);
             } else if (tagName == QLatin1String("managers_name")) {
-                contact.insertCustom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-ManagersName"), text);
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"), text);
             } else if (tagName == QLatin1String("position")) {
                 contact.setRole(text);
             } else if (tagName == QLatin1String("profession")) {
-                contact.insertCustom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-Profession"), text);
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession"), text);
             } else if (tagName == QLatin1String("room_number")) {
-                contact.insertCustom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-Office"), text);
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), text);
                 // communication
             } else if (tagName == QLatin1String("email1")) {
                 contact.insertEmail(text, true);
@@ -199,7 +199,7 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             } else if (tagName == QLatin1String("mobile1")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Cell));
             } else if (tagName == QLatin1String("instant_messenger")) {
-                contact.insertCustom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-IMAddress"), text);
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"), text);
             } else if (tagName.startsWith(QLatin1String("phone_"))) {
                 KContacts::PhoneNumber number;
                 number.setNumber(text);
@@ -288,13 +288,13 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
         }
 
         // since QDateTime::to/fromString() doesn't carry timezone information, we have to fake it here
-        const QDate anniversary = QDate::fromString(contact.custom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-Anniversary")), Qt::ISODate);
+        const QDate anniversary = QDate::fromString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary")), Qt::ISODate);
         if (anniversary.isValid()) {
             DAVUtils::addOxElement(document, propElement, QStringLiteral("anniversary"), OXUtils::writeDate(anniversary));
         } else {
             DAVUtils::addOxElement(document, propElement, QStringLiteral("anniversary"));
         }
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("spouse_name"), OXUtils::writeString(contact.custom(QLatin1String("KADDRESSBOOK"), QStringLiteral("X-SpousesName"))));
+        DAVUtils::addOxElement(document, propElement, QStringLiteral("spouse_name"), OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"))));
 
         // addresses
         const KContacts::Address homeAddress = contact.address(KContacts::Address::Home);
@@ -336,10 +336,10 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
             QString contentType;
             if (!photo.data().hasAlphaChannel()) {
                 photo.data().save(&buffer, "JPEG");
-                contentType = QLatin1String("image/jpg");
+                contentType = QStringLiteral("image/jpg");
             } else {
                 photo.data().save(&buffer, "PNG");
-                contentType = QLatin1String("image/png");
+                contentType = QStringLiteral("image/png");
             }
 
             buffer.close();
@@ -378,7 +378,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
 
         DAVUtils::addOxElement(document, propElement, QStringLiteral("pager"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Pager).number()));
 
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("categories"), OXUtils::writeString(contact.categories().join(QLatin1String(","))));
+        DAVUtils::addOxElement(document, propElement, QStringLiteral("categories"), OXUtils::writeString(contact.categories().join(QStringLiteral(","))));
     } else {
         // it is a distribution list payload
 

@@ -83,7 +83,7 @@ void ICalResourceBase::customizeConfigDialog(SingleFileResourceConfigDialog<Sett
 
 bool ICalResourceBase::readFromFile(const QString &fileName)
 {
-    mCalendar = KCalCore::MemoryCalendar::Ptr(new KCalCore::MemoryCalendar(QLatin1String("UTC")));
+    mCalendar = KCalCore::MemoryCalendar::Ptr(new KCalCore::MemoryCalendar(QStringLiteral("UTC")));
     mFileStorage = KCalCore::FileStorage::Ptr(new KCalCore::FileStorage(mCalendar, fileName,
                    new KCalCore::ICalFormat()));
     const bool result = mFileStorage->load();

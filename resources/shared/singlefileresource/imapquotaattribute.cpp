@@ -136,7 +136,7 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
 
     QString string = QString::fromUtf8(data); // QByteArray has no proper split, so we're forced to convert to QString...
 
-    QStringList members = string.split(QLatin1String("%%%%"));
+    QStringList members = string.split(QStringLiteral("%%%%"));
 
     // We expect exactly three members (roots, limits and usages), otherwise something is funky
     if (members.size() != 3) {
@@ -144,16 +144,16 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
         return;
     }
 
-    QStringList roots = members[0].trimmed().split(QLatin1String(" % "));
+    QStringList roots = members[0].trimmed().split(QStringLiteral(" % "));
     foreach (const QString &root, roots) {
         mRoots << root.trimmed().toUtf8();
     }
 
-    QStringList allLimits = members[1].trimmed().split(QLatin1String("%%%"));
+    QStringList allLimits = members[1].trimmed().split(QStringLiteral("%%%"));
 
     foreach (const QString &limits, allLimits) {
         QMap<QByteArray, qint64> limitsMap;
-        QStringList strLines = limits.split(QLatin1String("%%"));
+        QStringList strLines = limits.split(QStringLiteral("%%"));
         QList<QByteArray> lines;
         lines.reserve(strLines.count());
         foreach (const QString &strLine, strLines) {
@@ -171,12 +171,12 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
         mLimits << limitsMap;
     }
 
-    QStringList allUsages = members[2].trimmed().split(QLatin1String("%%%"));
+    QStringList allUsages = members[2].trimmed().split(QStringLiteral("%%%"));
     mUsages.reserve(allUsages.count());
 
     foreach (const QString &usages, allUsages) {
         QMap<QByteArray, qint64> usagesMap;
-        QStringList strLines = usages.split(QLatin1String("%%"));
+        QStringList strLines = usages.split(QStringLiteral("%%"));
         QList<QByteArray> lines;
         lines.reserve(strLines.count());
         foreach (const QString &strLine, strLines) {

@@ -141,7 +141,7 @@ void SendJob::Private::doAkonadiTransport()
 
     interface = new QDBusInterface(
         QLatin1String("org.freedesktop.Akonadi.Resource.") + resourceId,
-        QLatin1String("/Transport"), QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
+        QStringLiteral("/Transport"), QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
         KDBusConnectionPool::threadConnection(), q);
 
     if (!interface->isValid()) {
@@ -158,7 +158,7 @@ void SendJob::Private::doAkonadiTransport()
                      q, SLOT(resourceResult(qlonglong,int,QString)));
 
     // Start sending.
-    const QDBusReply<void> reply = interface->call(QLatin1String("send"), item.id());
+    const QDBusReply<void> reply = interface->call(QStringLiteral("send"), item.id());
     if (!reply.isValid()) {
         storeResult(false, i18n("Invalid D-Bus reply from resource %1.", resourceId));
         return;
@@ -325,8 +325,8 @@ bool SendJob::Private::filterItem(int filterset)
 
     // TODO: create on stack
     mailfilterInterface = new QDBusInterface(
-        QLatin1String("org.freedesktop.Akonadi.MailFilterAgent"),
-        QLatin1String("/MailFilterAgent"), QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
+        QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
+        QStringLiteral("/MailFilterAgent"), QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
         KDBusConnectionPool::threadConnection(), q);
 
     if (!mailfilterInterface->isValid()) {
@@ -337,7 +337,7 @@ bool SendJob::Private::filterItem(int filterset)
     }
 
     //Outbound = 0x2
-    const QDBusReply<void> reply = mailfilterInterface->call(QLatin1String("filterItem"), item.id(), filterset, QString());
+    const QDBusReply<void> reply = mailfilterInterface->call(QStringLiteral("filterItem"), item.id(), filterset, QString());
     if (!reply.isValid()) {
         storeResult(false, i18n("Invalid D-Bus reply from mailfilteragent"));
         delete mailfilterInterface;

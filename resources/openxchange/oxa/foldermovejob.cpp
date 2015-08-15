@@ -45,7 +45,7 @@ void FolderMoveJob::start()
     DAVUtils::addOxElement(document, prop, QStringLiteral("last_modified"), OXUtils::writeString(mFolder.lastModified()));
     DAVUtils::addOxElement(document, prop, QStringLiteral("folder"), OXUtils::writeNumber(mDestinationFolder.objectId()));
 
-    const QString path = QLatin1String("/servlet/webdav.folders");
+    const QString path = QStringLiteral("/servlet/webdav.folders");
 
     KIO::DavJob *job = DavManager::self()->createPatchJob(path, document);
     connect(job, &KIO::DavJob::result, this, &FolderMoveJob::davJobFinished);
@@ -78,7 +78,7 @@ void FolderMoveJob::davJobFinished(KJob *job)
     }
 
     QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QLatin1String("response"));
+    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     const QDomNodeList props = response.elementsByTagName("prop");
     const QDomElement prop = props.at(0).toElement();
 

@@ -44,7 +44,7 @@ void FolderCreateJob::start()
 
     FolderUtils::addFolderElements(document, prop, mFolder);
 
-    const QString path = QLatin1String("/servlet/webdav.folders");
+    const QString path = QStringLiteral("/servlet/webdav.folders");
 
     KIO::DavJob *job = DavManager::self()->createPatchJob(path, document);
     connect(job, &KIO::DavJob::result, this, &FolderCreateJob::davJobFinished);

@@ -322,8 +322,8 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
         // do anything.
         qCDebug(MAILDISPATCHER_LOG) << "Sending failed. error:" << job->errorString();
 
-        KNotification *notify = new KNotification(QLatin1String("sendingfailed"));
-        notify->setComponentName(QLatin1String("akonadi_maildispatcher_agent"));
+        KNotification *notify = new KNotification(QStringLiteral("sendingfailed"));
+        notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
         notify->setTitle(i18nc("Notification title when email sending failed", "E-Mail Sending Failed"));
         notify->setText(job->errorString());
         notify->sendEvent();

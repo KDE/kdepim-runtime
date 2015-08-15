@@ -469,7 +469,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
     }
 
     // If the extension is supported, grab the namespaces from the server
-    if (m_capabilities.contains(QLatin1String("NAMESPACE"))) {
+    if (m_capabilities.contains(QStringLiteral("NAMESPACE"))) {
         KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob(capJob->session());
         QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
         nsJob->start();

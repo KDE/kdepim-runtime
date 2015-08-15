@@ -449,7 +449,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
         attr->setDisplayName(calendar->title());
-        attr->setIconName(QLatin1String("view-calendar"));
+        attr->setIconName(QStringLiteral("view-calendar"));
 
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>(Entity::AddIfMissing);
         reminderAttr->setReminders(calendar->defaultReminders());

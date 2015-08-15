@@ -160,7 +160,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     KAboutData aboutData = KAboutData(
                                QStringLiteral("newmailnotifieragent"),
                                i18n("New Mail Notifier Agent"),
-                               QLatin1String(KDEPIM_RUNTIME_VERSION),
+                               QStringLiteral(KDEPIM_RUNTIME_VERSION),
                                i18n("Notifies about new mail."),
                                KAboutLicense::GPL_V2,
                                i18n("Copyright (C) 2013-2015 Laurent Montel"));

@@ -168,7 +168,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
             if (currentPath.compare(separator + QLatin1String("INBOX") , Qt::CaseInsensitive) == 0) {
                 Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Inbox"));
-                attr->setIconName(QLatin1String("mail-folder-inbox"));
+                attr->setIconName(QStringLiteral("mail-folder-inbox"));
                 setIdleCollection(c);
             }
 
@@ -176,7 +176,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
             if (currentPath == (separator + QLatin1String("user")) && currentFlags.contains("\\noselect")) {
                 Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Shared Folders"));
-                attr->setIconName(QLatin1String("x-mail-distribution-list"));
+                attr->setIconName(QStringLiteral("x-mail-distribution-list"));
             }
 
             // If this folder is a noselect folder, make some special settings.

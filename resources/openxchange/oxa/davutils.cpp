@@ -47,19 +47,19 @@ QDomElement DAVUtils::addOxElement(QDomDocument &document, QDomNode &parentNode,
 
 void DAVUtils::setOxAttribute(QDomElement &element, const QString &name, const QString &value)
 {
-    element.setAttributeNS(QLatin1String("http://www.open-xchange.org"), QStringLiteral("ox:") + name, value);
+    element.setAttributeNS(QStringLiteral("http://www.open-xchange.org"), QStringLiteral("ox:") + name, value);
 }
 
 bool DAVUtils::davErrorOccurred(const QDomDocument &document, QString &errorText, QString &errorStatus)
 {
     const QDomElement documentElement = document.documentElement();
-    const QDomNodeList propStats = documentElement.elementsByTagNameNS(QLatin1String("DAV:"),
-                                   QLatin1String("propstat"));
+    const QDomNodeList propStats = documentElement.elementsByTagNameNS(QStringLiteral("DAV:"),
+                                   QStringLiteral("propstat"));
 
     for (int i = 0; i < propStats.count(); ++i) {
         const QDomElement propStat = propStats.at(i).toElement();
-        const QDomElement status = propStat.firstChildElement(QLatin1String("status"));
-        const QDomElement description = propStat.firstChildElement(QLatin1String("responsedescription"));
+        const QDomElement status = propStat.firstChildElement(QStringLiteral("status"));
+        const QDomElement description = propStat.firstChildElement(QStringLiteral("responsedescription"));
 
         if (status.text() != QLatin1String("200")) {
             errorText = description.text();

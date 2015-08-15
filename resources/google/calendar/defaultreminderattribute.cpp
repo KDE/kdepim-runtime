@@ -57,13 +57,13 @@ void DefaultReminderAttribute::deserialize(const QByteArray &data)
 
         KGAPI2::ReminderPtr rem(new KGAPI2::Reminder);
 
-        if (reminder[QLatin1String("type")].toString() == QLatin1String("display")) {
+        if (reminder[QStringLiteral("type")].toString() == QLatin1String("display")) {
             rem->setType(KCalCore::Alarm::Display);
-        } else if (reminder[QLatin1String("type")].toString() == QLatin1String("email")) {
+        } else if (reminder[QStringLiteral("type")].toString() == QLatin1String("email")) {
             rem->setType(KCalCore::Alarm::Email);
         }
 
-        KCalCore::Duration offset(reminder[QLatin1String("time")].toInt(), KCalCore::Duration::Seconds);
+        KCalCore::Duration offset(reminder[QStringLiteral("time")].toInt(), KCalCore::Duration::Seconds);
         rem->setStartOffset(offset);
 
         m_reminders << rem;
@@ -79,12 +79,12 @@ QByteArray DefaultReminderAttribute::serialized() const
         QVariantMap reminder;
 
         if (rem->type() == KCalCore::Alarm::Display) {
-            reminder[QLatin1String("type")] = QLatin1String("display");
+            reminder[QStringLiteral("type")] = QLatin1String("display");
         } else if (rem->type() == KCalCore::Alarm::Email) {
-            reminder[QLatin1String("type")] = QLatin1String("email");
+            reminder[QStringLiteral("type")] = QLatin1String("email");
         }
 
-        reminder[QLatin1String("time")] = rem->startOffset().asSeconds();
+        reminder[QStringLiteral("time")] = rem->startOffset().asSeconds();
 
         list << reminder;
     }

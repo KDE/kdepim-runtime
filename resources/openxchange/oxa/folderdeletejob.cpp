@@ -43,10 +43,10 @@ void FolderDeleteJob::start()
     QDomElement set = DAVUtils::addDavElement(document, propertyupdate, QStringLiteral("set"));
     QDomElement prop = DAVUtils::addDavElement(document, set, QStringLiteral("prop"));
     DAVUtils::addOxElement(document, prop, QStringLiteral("object_id"), OXUtils::writeNumber(mFolder.objectId()));
-    DAVUtils::addOxElement(document, prop, QStringLiteral("method"), OXUtils::writeString(QLatin1String("DELETE")));
+    DAVUtils::addOxElement(document, prop, QStringLiteral("method"), OXUtils::writeString(QStringLiteral("DELETE")));
     DAVUtils::addOxElement(document, prop, QStringLiteral("last_modified"), OXUtils::writeString(mFolder.lastModified()));
 
-    const QString path = QLatin1String("/servlet/webdav.folders");
+    const QString path = QStringLiteral("/servlet/webdav.folders");
 
     KIO::DavJob *job = DavManager::self()->createPatchJob(path, document);
     connect(job, &KIO::DavJob::result, this, &FolderDeleteJob::davJobFinished);

@@ -488,16 +488,16 @@ void ImapResourceBase::removeSearch(const Collection &resultCollection)
 void ImapResourceBase::search(const QString &query, const Collection &collection)
 {
     QVariantMap arg;
-    arg[QLatin1String("query")] = query;
-    arg[QLatin1String("collection")] = QVariant::fromValue(collection);
+    arg[QStringLiteral("query")] = query;
+    arg[QStringLiteral("collection")] = QVariant::fromValue(collection);
     scheduleCustomTask(this, "doSearch", arg);
 }
 
 void ImapResourceBase::doSearch(const QVariant &arg)
 {
     const QVariantMap map = arg.toMap();
-    const QString query = map[QLatin1String("query")].toString();
-    const Collection collection = map[QLatin1String("collection")].value<Collection>();
+    const QString query = map[QStringLiteral("query")].toString();
+    const Collection collection = map[QStringLiteral("collection")].value<Collection>();
 
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Searching..."));
     startTask(new SearchTask(createResourceState(TaskArguments(collection)), query, this));
@@ -581,7 +581,7 @@ void ImapResourceBase::startIdle()
     delete m_idle;
     m_idle = Q_NULLPTR;
 
-    if (!m_pool->serverCapabilities().contains(QLatin1String("IDLE"))) {
+    if (!m_pool->serverCapabilities().contains(QStringLiteral("IDLE"))) {
         return;
     }
 

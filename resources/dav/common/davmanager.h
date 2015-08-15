@@ -62,7 +62,7 @@ public:
      * @param document The query XML document.
      * @param depth The Depth: value to send in the HTTP request
      */
-    KIO::DavJob *createPropFindJob(const QUrl &url, const QDomDocument &document, const QString &depth = QLatin1String("1")) const;
+    KIO::DavJob *createPropFindJob(const QUrl &url, const QDomDocument &document, const QString &depth = QStringLiteral("1")) const;
 
     /**
      * Returns a preconfigured DAV REPORT job.
@@ -71,7 +71,7 @@ public:
      * @param document The query XML document.
      * @param depth The Depth: value to send in the HTTP request
      */
-    KIO::DavJob *createReportJob(const QUrl &url, const QDomDocument &document, const QString &depth = QLatin1String("1")) const;
+    KIO::DavJob *createReportJob(const QUrl &url, const QDomDocument &document, const QString &depth = QStringLiteral("1")) const;
 
     /**
      * Returns a preconfigured DAV PROPPATCH job.

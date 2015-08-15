@@ -217,7 +217,7 @@ QString KAEventFormatter::value(Parameter param) const
         }
         break;
     case TemplateName:      return mEvent.templateName();
-    case CreatedTime:       return mEvent.createdDateTime().toUtc().toString(QLatin1String("%Y-%m-%d %H:%M:%SZ"));
+    case CreatedTime:       return mEvent.createdDateTime().toUtc().toString(QStringLiteral("%Y-%m-%d %H:%M:%SZ"));
     case StartTime:         return dateTime(mEvent.startDateTime().kDateTime());
     case TemplateAfterTime: return (mEvent.templateAfterTime() >= 0) ? number(mEvent.templateAfterTime()) : trueFalse(false);
     case Recurs:            return trueFalse(mEvent.recurs());
@@ -291,10 +291,10 @@ QString KAEventFormatter::value(Parameter param) const
 
     case EmailSubject:      return mEvent.emailSubject();
     case EmailFromId:       return (mEvent.actionSubType() == KAEvent::EMAIL) ? number(mEvent.emailFromId()) : QString();
-    case EmailTo:           return mEvent.emailAddresses(QLatin1String(", "));
+    case EmailTo:           return mEvent.emailAddresses(QStringLiteral(", "));
     case EmailBcc:          return trueFalse(mEvent.emailBcc());
     case EmailBody:         return mEvent.emailMessage();
-    case EmailAttachments:  return mEvent.emailAttachments(QLatin1String(", "));
+    case EmailAttachments:  return mEvent.emailAttachments(QStringLiteral(", "));
     }
     return i18nc("@info Error indication", "error!");
 }
@@ -321,9 +321,9 @@ QString minutes(int n)
 QString dateTime(const KDateTime &dt)
 {
     if (dt.isDateOnly()) {
-        return dt.toString(QLatin1String("%Y-%m-%d %:Z"));
+        return dt.toString(QStringLiteral("%Y-%m-%d %:Z"));
     } else {
-        return dt.toString(QLatin1String("%Y-%m-%d %H:%M %:Z"));
+        return dt.toString(QStringLiteral("%Y-%m-%d %H:%M %:Z"));
     }
 }
 
