@@ -1,39 +1,24 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 048c174..6fda8e1 100644
+index f9ce7df..3bec3f1 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -68,12 +68,13 @@ if (Qt5_POSITION_INDEPENDENT_CODE)
+@@ -68,11 +68,13 @@ if (Qt5_POSITION_INDEPENDENT_CODE)
  endif()
  
  set(KDEPIMLIBS_LIB_VERSION "4.71.0")
-+set(KMIME_LIB_VERSION "4.85.0")
++set(KMIME_LIB_VERSION "4.84.0")
++find_package(KF5CoreAddons CONFIG REQUIRED)
  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 -find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5AkonadiNotes ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
 +find_package(KF5Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5AkonadiNotes ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  
  find_package(SWIG)
- 
-diff --git a/conversion/kabcconversion.cpp b/conversion/kabcconversion.cpp
-index b7d7235..baf8196 100644
---- a/conversion/kabcconversion.cpp
-+++ b/conversion/kabcconversion.cpp
-@@ -664,8 +664,8 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
-     }
-     
-     std::vector<Kolab::Url> urls;
--    if (!addressee.url().isEmpty()) {
--        urls.push_back(Kolab::Url(toStdString(addressee.url().url())));
-+    if (!addressee.url().url().isEmpty()) {
-+        urls.push_back(Kolab::Url(toStdString(addressee.url().url().url())));
-     }   
-     const QString &blogUrl = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("BlogFeed"));
-     if (!blogUrl.isEmpty()) {
 diff --git a/icalendar/imip.cpp b/icalendar/imip.cpp
-index f4dca36..d5dfa45 100644
+index f4dca36..3241568 100644
 --- a/icalendar/imip.cpp
 +++ b/icalendar/imip.cpp
 @@ -84,7 +84,7 @@ KMime::Message::Ptr createMessage( const QString &from, const QString &_to,
@@ -41,7 +26,7 @@ index f4dca36..d5dfa45 100644
      if ( !attachment.isEmpty() ) {
        KMime::Headers::ContentDisposition *disposition =
 -        new KMime::Headers::ContentDisposition( message.get() );
-+        new KMime::Headers::ContentDisposition;
++        new KMime::Headers::ContentDisposition();
        disposition->setDisposition( KMime::Headers::CDinline );
        message->setHeader( disposition );
        message->contentTransferEncoding()->setEncoding( KMime::Headers::CEquPr );
@@ -50,7 +35,7 @@ index f4dca36..d5dfa45 100644
      KMime::Content *bodyMessage = new KMime::Content;
      KMime::Headers::ContentDisposition *bodyDisposition =
 -      new KMime::Headers::ContentDisposition( bodyMessage );
-+      new KMime::Headers::ContentDisposition;
++      new KMime::Headers::ContentDisposition();
      bodyDisposition->setDisposition( KMime::Headers::CDinline );
      bodyMessage->contentType()->setMimeType( "text/plain" );
      bodyMessage->contentType()->setCharset( "utf-8" );
@@ -59,15 +44,23 @@ index f4dca36..d5dfa45 100644
        KMime::Content *attachMessage = new KMime::Content;
        KMime::Headers::ContentDisposition *attachDisposition =
 -        new KMime::Headers::ContentDisposition( attachMessage );
-+        new KMime::Headers::ContentDisposition;
++        new KMime::Headers::ContentDisposition();
        attachDisposition->setDisposition( KMime::Headers::CDattachment );
        attachMessage->contentType()->setMimeType( "text/calendar" );
        attachMessage->contentType()->setCharset( "utf-8" );
 diff --git a/kolabformat/mimeobject.cpp b/kolabformat/mimeobject.cpp
-index d5b21e1..0498f0e 100644
+index d5b21e1..d2eadf1 100644
 --- a/kolabformat/mimeobject.cpp
 +++ b/kolabformat/mimeobject.cpp
-@@ -373,7 +373,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
+@@ -29,6 +29,7 @@
+ #include "libkolab-version.h"
+ #include <QString>
+ #include <QtGlobal>
++#include <KRandom>
+ #include <boost/algorithm/string/predicate.hpp>
+ 
+ 
+@@ -373,7 +374,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
      }
      Kolab::ObjectType objectType = InvalidObject;
      if (mOverrideObjectType == InvalidObject) {
@@ -76,7 +69,7 @@ index d5b21e1..0498f0e 100644
              objectType = getObjectType(xKolabHeader->asUnicodeString().trimmed().toStdString());
          } else {
              Warning() << "could not find the X-Kolab-Type Header, trying autodetection" ;
-@@ -390,10 +390,10 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
+@@ -390,10 +391,10 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
      }
  
      if (!mDoOverrideVersion) {
@@ -89,89 +82,37 @@ index d5b21e1..0498f0e 100644
          }
          if (!xKolabVersion || xKolabVersion->asUnicodeString() == KOLAB_VERSION_V2) {
              mVersion = KolabV2;
-@@ -438,9 +438,37 @@ void MIMEObject::setVersion(Version version)
-     d->mDoOverrideVersion = true;
- }
+@@ -440,7 +441,7 @@ void MIMEObject::setVersion(Version version)
  
-+static QByteArray uniqueString()
-+{
-+    static const char chars[] = "0123456789abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-+    time_t now;
-+    char p[11];
-+    int pos, ran;
-+    unsigned int timeval;
-+
-+    p[10] = '\0';
-+    now = time(0);
-+    ran = 1 + (int)(1000.0 * rand() / (RAND_MAX + 1.0));
-+    timeval = (now / ran) + getpid();
-+
-+    for (int i = 0; i < 10; i++) {
-+        pos = (int)(61.0 * rand() / (RAND_MAX + 1.0));
-+        //qDebug() << pos;
-+        p[i] = chars[pos];
-+    }
-+
-+    QByteArray ret;
-+    ret.setNum(timeval);
-+    ret += '.';
-+    ret += p;
-+
-+    return ret;
-+}
-+
-+
  static std::string createCid()
  {
 -    return QString::fromLatin1("cid:%1@%2").arg(QString::fromLatin1(KMime::uniqueString())).arg("kolab.resource.akonadi").toStdString();
-+    return QString::fromLatin1("cid:%1@%2").arg(QString::fromLatin1(uniqueString())).arg("kolab.resource.akonadi").toStdString();
++    return QString::fromLatin1("cid:%1@%2").arg(KRandom::randomString(16)).arg("kolab.resource.akonadi").toStdString();
  }
  
  std::vector<Kolab::Attachment> convertToReferences(const std::vector<Kolab::Attachment> &attachments, std::vector<std::string> &attachmentCids)
-diff --git a/kolabformatV2/contact.cpp b/kolabformatV2/contact.cpp
-index d125bd1..7f2fd13 100644
---- a/kolabformatV2/contact.cpp
-+++ b/kolabformatV2/contact.cpp
-@@ -947,7 +947,7 @@ void Contact::setFields( const KContacts::Addressee* addressee )
-   setPrefix( addressee->prefix() );
-   setSuffix( addressee->suffix() );
-   setOrganization( addressee->organization() );
--  setWebPage( addressee->url().url() );
-+  setWebPage( addressee->url().url().url() );
-   setIMAddress( addressee->custom( "KADDRESSBOOK", "X-IMAddress" ) );
-   setDepartment( addressee->department());
-   setOfficeLocation( addressee->custom( "KADDRESSBOOK", "X-Office" ) );
 diff --git a/mime/mimeutils.cpp b/mime/mimeutils.cpp
-index 640d3e5..285f292 100644
+index 640d3e5..17a0aa3 100644
 --- a/mime/mimeutils.cpp
 +++ b/mime/mimeutils.cpp
-@@ -28,6 +28,7 @@
- namespace Kolab {
-     namespace Mime {
- 
-+
- KMime::Content* findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
- {
-     if (type.isEmpty()) {
-@@ -153,9 +154,14 @@ KMime::Message::Ptr createMessage(const QByteArray& xKolabType, bool v3, const Q
+@@ -153,9 +153,13 @@ KMime::Message::Ptr createMessage(const QByteArray& xKolabType, bool v3, const Q
  {
      KMime::Message::Ptr message(new KMime::Message);
      message->date()->setDateTime(KDateTime::currentUtcDateTime().dateTime());
 -    message->appendHeader(new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER, message.get(), xKolabType, "utf-8"));
-+    KMime::Headers::Generic *header = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
-+    header->fromUnicodeString(xKolabType, "utf-8");
-+
-+    message->appendHeader(header);
++    KMime::Headers::Generic* h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
++    h->fromUnicodeString(xKolabType, "utf-8");
++    message->appendHeader(h);
      if (v3) {
 -        message->appendHeader(new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER, message.get(), KOLAB_VERSION_V3, "utf-8"));
-+        KMime::Headers::Generic *headerV3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
-+        headerV3->fromUnicodeString(KOLAB_VERSION_V3, "utf-8");
-+        message->appendHeader(headerV3);
++        KMime::Headers::Generic* hv3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
++        hv3->fromUnicodeString(KOLAB_VERSION_V3, "utf-8");
++        message->appendHeader(hv3);
      }
      message->userAgent()->from7BitString(prodid);
      message->contentType()->setMimeType("multipart/mixed");
 diff --git a/tests/formattest.cpp b/tests/formattest.cpp
-index a3edc0e..15b9c40 100644
+index a3edc0e..98ab826 100644
 --- a/tests/formattest.cpp
 +++ b/tests/formattest.cpp
 @@ -385,12 +385,12 @@ void FormatTest::testNote()
@@ -190,7 +131,7 @@ index a3edc0e..15b9c40 100644
      QString expected = realNote->encodedContent();
      normalizeMimemessage(expected);
 @@ -402,8 +402,8 @@ void FormatTest::testNote()
-     
+ 
      //Write
      const KMime::Message::Ptr &convertedMime = Kolab::KolabObjectWriter::writeNote(realNote, version);
 -    QVERIFY(convertedMime.get());
