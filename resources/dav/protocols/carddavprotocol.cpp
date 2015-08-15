@@ -23,22 +23,102 @@
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
 
+class CarddavCollectionQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QDomDocument document;
+
+        QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
+        document.appendChild(propfindElement);
+
+        QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
+        propfindElement.appendChild(propElement);
+
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
+
+        return document;
+    }
+
+    virtual QString mimeType() const
+    {
+        return QString();
+    }
+};
+
+class CarddavListItemsQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QDomDocument document;
+
+        QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
+        document.appendChild(propfindElement);
+
+        QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
+        propfindElement.appendChild(propElement);
+
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
+
+        return document;
+    }
+
+    virtual QString mimeType() const
+    {
+        return KContacts::Addressee::mimeType();
+    }
+};
+
+class CarddavMultigetQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QDomDocument document;
+        QStringList urls = parameter(QStringLiteral("urls")).toStringList();
+        if (urls.isEmpty())
+            return document;
+
+        QDomElement multigetElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:carddav"), QStringLiteral("addressbook-multiget"));
+        document.appendChild(multigetElement);
+
+        QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
+        multigetElement.appendChild(propElement);
+
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
+        QDomElement addressDataElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:carddav"), QStringLiteral("address-data"));
+        addressDataElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("allprop")));
+        propElement.appendChild(addressDataElement);
+
+        foreach (const QString &url, urls) {
+            QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
+            const QUrl pathUrl(url);
+            const QString encodedUrl = pathUrl.path() + ( pathUrl.hasQuery() ?
+                                                            QLatin1String("?")+pathUrl.query() :
+                                                            QString("") );
+
+            const QDomText textNode = document.createTextNode(encodedUrl);
+            hrefElement.appendChild(textNode);
+
+            multigetElement.appendChild(hrefElement);
+        }
+
+        return document;
+    }
+
+    virtual QString mimeType() const
+    {
+        return QString();
+    }
+};
+
 CarddavProtocol::CarddavProtocol()
 {
-    QDomDocument document;
-
-    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
-    document.appendChild(propfindElement);
-
-    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
-    propfindElement.appendChild(propElement);
-
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
-
-    mItemsQueries << document;
-    mItemsMimeTypes << KContacts::Addressee::mimeType();
 }
 
 bool CarddavProtocol::supportsPrincipals() const
@@ -66,20 +146,9 @@ QString CarddavProtocol::principalHomeSetNS() const
     return QStringLiteral("urn:ietf:params:xml:ns:carddav");
 }
 
-QDomDocument CarddavProtocol::collectionsQuery() const
+XMLQueryBuilder::Ptr CarddavProtocol::collectionsQuery() const
 {
-    QDomDocument document;
-
-    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
-    document.appendChild(propfindElement);
-
-    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
-    propfindElement.appendChild(propElement);
-
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
-
-    return document;
+    return XMLQueryBuilder::Ptr(new CarddavCollectionQueryBuilder());
 }
 
 QString CarddavProtocol::collectionsXQuery() const
@@ -89,45 +158,18 @@ QString CarddavProtocol::collectionsXQuery() const
     return query;
 }
 
-QVector<QDomDocument> CarddavProtocol::itemsQueries() const
+QVector<XMLQueryBuilder::Ptr> CarddavProtocol::itemsQueries() const
 {
-    return mItemsQueries;
+    QVector<XMLQueryBuilder::Ptr> ret;
+    ret << XMLQueryBuilder::Ptr(new CarddavListItemsQueryBuilder());
+    return ret;
 }
 
-QString CarddavProtocol::mimeTypeForQuery(int index) const
+XMLQueryBuilder::Ptr CarddavProtocol::itemsReportQuery(const QStringList &urls) const
 {
-    return mItemsMimeTypes.at(index);
-}
-
-QDomDocument CarddavProtocol::itemsReportQuery(const QStringList &urls) const
-{
-    QDomDocument document;
-
-    QDomElement multigetElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:carddav"), QStringLiteral("addressbook-multiget"));
-    document.appendChild(multigetElement);
-
-    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
-    multigetElement.appendChild(propElement);
-
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
-    QDomElement addressDataElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:carddav"), QStringLiteral("address-data"));
-    addressDataElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("allprop")));
-    propElement.appendChild(addressDataElement);
-
-    foreach (const QString &url, urls) {
-        QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
-        const QUrl pathUrl(url);
-        const QString encodedUrl = pathUrl.path() + ( pathUrl.hasQuery() ?
-                                                        QLatin1String("?")+pathUrl.query() :
-                                                        QString("") );
-
-        const QDomText textNode = document.createTextNode(encodedUrl);
-        hrefElement.appendChild(textNode);
-
-        multigetElement.appendChild(hrefElement);
-    }
-
-    return document;
+    XMLQueryBuilder::Ptr ret(new CarddavMultigetQueryBuilder());
+    ret->setParameter(QStringLiteral("urls"), urls);
+    return ret;
 }
 
 QString CarddavProtocol::responseNamespace() const

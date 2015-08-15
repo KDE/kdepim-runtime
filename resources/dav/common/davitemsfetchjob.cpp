@@ -41,7 +41,7 @@ void DavItemsFetchJob::start()
         return;
     }
 
-    const QDomDocument report = protocol->itemsReportQuery(mUrls);
+    const QDomDocument report = protocol->itemsReportQuery(mUrls)->buildQuery();
     KIO::DavJob *job = DavManager::self()->createReportJob(mCollectionUrl.url(), report, QStringLiteral("0"));
     job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
     connect(job, &KIO::DavJob::result, this, &DavItemsFetchJob::davJobFinished);

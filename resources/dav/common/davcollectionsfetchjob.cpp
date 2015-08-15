@@ -61,7 +61,7 @@ void DavCollectionsFetchJob::doCollectionsFetch(const QUrl &url)
 {
     ++mSubJobCount;
 
-    const QDomDocument collectionQuery = DavManager::self()->davProtocol(mUrl.protocol())->collectionsQuery();
+    const QDomDocument collectionQuery = DavManager::self()->davProtocol(mUrl.protocol())->collectionsQuery()->buildQuery();
 
     KIO::DavJob *job = DavManager::self()->createPropFindJob(url, collectionQuery);
     connect(job, &DavPrincipalHomeSetsFetchJob::result, this, &DavCollectionsFetchJob::collectionsFetchFinished);

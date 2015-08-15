@@ -28,27 +28,41 @@
 #include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
 
-CaldavProtocol::CaldavProtocol()
+class CaldavCollectionQueryBuilder : public XMLQueryBuilder
 {
-    // Only fetch items for the last 3 months
-    QString startTime = QDateTime::currentDateTimeUtc().addMonths(-3).toString("yyyyMMddTHHMMssZ");
-
-    /*
-     * Create a document like the following:
-     *
-     * <calendar-query>
-     *   <prop>
-     *     <getetag/>
-     *     <resourcetype/>
-     *   </prop>
-     *   <filter>
-     *     <comp-filter name="VCALENDAR">
-     *       <comp-filter name="VEVENT">
-     *     </comp-filter>
-     *   </filter>
-     * </calendar-query>
-     */
+public:
+    virtual QDomDocument buildQuery() const
     {
+        QDomDocument document;
+
+        QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
+        document.appendChild(propfindElement);
+
+        QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
+        propfindElement.appendChild(propElement);
+
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("http://apple.com/ns/ical/"), QStringLiteral("calendar-color")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("supported-calendar-component-set")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("current-user-privilege-set")));
+
+        return document;
+    }
+
+    virtual QString mimeType() const
+    {
+        return QString();
+    }
+};
+
+class CaldavListEventQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QString startTime = parameter("start").toString();
+        QString endTime = parameter("end").toString();
         QDomDocument document;
 
         QDomElement queryElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-query"));
@@ -78,34 +92,42 @@ CaldavProtocol::CaldavProtocol()
         nameAttribute.setValue(QStringLiteral("VEVENT"));
         subcompfilterElement.setAttributeNode(nameAttribute);
 
-        QDomElement timeRangeElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("time-range"));
-        QDomAttr startAttribute = document.createAttribute(QStringLiteral("start"));
-        startAttribute.setValue(startTime);
-        timeRangeElement.setAttributeNode(startAttribute);
-        subcompfilterElement.appendChild(timeRangeElement);
+        if (!startTime.isEmpty() || !endTime.isEmpty()) {
+            QDomElement timeRangeElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("time-range"));
+
+            if (!startTime.isEmpty()) {
+                QDomAttr startAttribute = document.createAttribute(QStringLiteral("start"));
+                startAttribute.setValue(startTime);
+                timeRangeElement.setAttributeNode(startAttribute);
+            }
+
+            if (!endTime.isEmpty()) {
+                QDomAttr endAttribute = document.createAttribute(QStringLiteral("end"));
+                endAttribute.setValue(startTime);
+                timeRangeElement.setAttributeNode(endAttribute);
+            }
+
+            subcompfilterElement.appendChild(timeRangeElement);
+        }
 
         compfilterElement.appendChild(subcompfilterElement);
 
-        mItemsQueries << document;
-        mItemsMimeTypes << KCalCore::Event::eventMimeType();
+        return document;
     }
 
-    /*
-     * Create a document like the following:
-     *
-     * <calendar-query>
-     *   <prop>
-     *     <getetag/>
-     *     <resourcetype/>
-     *   </prop>
-     *   <filter>
-     *     <comp-filter name="VCALENDAR">
-     *       <comp-filter name="VTODO">
-     *     </comp-filter>
-     *   </filter>
-     * </calendar-query>
-     */
+    virtual QString mimeType() const
     {
+        return KCalCore::Event::eventMimeType();
+    }
+};
+
+class CaldavListTodoQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QString startTime = parameter("start").toString();
+        QString endTime = parameter("end").toString();
         QDomDocument document;
 
         QDomElement queryElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-query"));
@@ -135,34 +157,42 @@ CaldavProtocol::CaldavProtocol()
         nameAttribute.setValue(QStringLiteral("VTODO"));
         subcompfilterElement.setAttributeNode(nameAttribute);
 
-        QDomElement timeRangeElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("time-range"));
-        QDomAttr startAttribute = document.createAttribute(QStringLiteral("start"));
-        startAttribute.setValue(startTime);
-        timeRangeElement.setAttributeNode(startAttribute);
-        subcompfilterElement.appendChild(timeRangeElement);
+        if (!startTime.isEmpty() || !endTime.isEmpty()) {
+            QDomElement timeRangeElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("time-range"));
+
+            if (!startTime.isEmpty()) {
+                QDomAttr startAttribute = document.createAttribute(QStringLiteral("start"));
+                startAttribute.setValue(startTime);
+                timeRangeElement.setAttributeNode(startAttribute);
+            }
+
+            if (!endTime.isEmpty()) {
+                QDomAttr endAttribute = document.createAttribute(QStringLiteral("end"));
+                endAttribute.setValue(startTime);
+                timeRangeElement.setAttributeNode(endAttribute);
+            }
+
+            subcompfilterElement.appendChild(timeRangeElement);
+        }
 
         compfilterElement.appendChild(subcompfilterElement);
 
-        mItemsQueries << document;
-        mItemsMimeTypes << KCalCore::Todo::todoMimeType();
+        return document;
     }
 
-    /*
-     * Create a document like the following:
-     *
-     * <calendar-query>
-     *   <prop>
-     *     <getetag/>
-     *     <resourcetype/>
-     *   </prop>
-     *   <filter>
-     *     <comp-filter name="VCALENDAR">
-     *       <comp-filter name="VJOURNAL">
-     *     </comp-filter>
-     *   </filter>
-     * </calendar-query>
-     */
+    virtual QString mimeType() const
     {
+        return KCalCore::Todo::todoMimeType();
+    }
+};
+
+class CaldavListJournalQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QString startTime = parameter("start").toString();
+        QString endTime = parameter("end").toString();
         QDomDocument document;
 
         QDomElement queryElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-query"));
@@ -192,17 +222,78 @@ CaldavProtocol::CaldavProtocol()
         nameAttribute.setValue(QStringLiteral("VJOURNAL"));
         subcompfilterElement.setAttributeNode(nameAttribute);
 
-        QDomElement timeRangeElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("time-range"));
-        QDomAttr startAttribute = document.createAttribute(QStringLiteral("start"));
-        startAttribute.setValue(startTime);
-        timeRangeElement.setAttributeNode(startAttribute);
-        subcompfilterElement.appendChild(timeRangeElement);
+        if (!startTime.isEmpty() || !endTime.isEmpty()) {
+            QDomElement timeRangeElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("time-range"));
+
+            if (!startTime.isEmpty()) {
+                QDomAttr startAttribute = document.createAttribute(QStringLiteral("start"));
+                startAttribute.setValue(startTime);
+                timeRangeElement.setAttributeNode(startAttribute);
+            }
+
+            if (!endTime.isEmpty()) {
+                QDomAttr endAttribute = document.createAttribute(QStringLiteral("end"));
+                endAttribute.setValue(startTime);
+                timeRangeElement.setAttributeNode(endAttribute);
+            }
+
+            subcompfilterElement.appendChild(timeRangeElement);
+        }
 
         compfilterElement.appendChild(subcompfilterElement);
 
-        mItemsQueries << document;
-        mItemsMimeTypes << KCalCore::Journal::journalMimeType();
+        return document;
     }
+
+    virtual QString mimeType() const
+    {
+        return KCalCore::Journal::journalMimeType();
+    }
+};
+
+class CaldavMultigetQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QDomDocument document;
+        QStringList urls = parameter(QStringLiteral("urls")).toStringList();
+        if (urls.isEmpty())
+            return document;
+
+        QDomElement multigetElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-multiget"));
+        document.appendChild(multigetElement);
+
+        QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
+        multigetElement.appendChild(propElement);
+
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data")));
+
+        foreach (const QString &url, urls) {
+            QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
+            const QUrl pathUrl(url);
+            const QString encodedUrl = pathUrl.path() + ( pathUrl.hasQuery() ?
+                                                            QLatin1String("?")+pathUrl.query() :
+                                                            QString("") );
+
+            const QDomText textNode = document.createTextNode(encodedUrl);
+            hrefElement.appendChild(textNode);
+
+            multigetElement.appendChild(hrefElement);
+        }
+
+        return document;
+    }
+
+    virtual QString mimeType() const
+    {
+        return QString();
+    }
+};
+
+CaldavProtocol::CaldavProtocol()
+{
 }
 
 bool CaldavProtocol::supportsPrincipals() const
@@ -230,23 +321,9 @@ QString CaldavProtocol::principalHomeSetNS() const
     return QStringLiteral("urn:ietf:params:xml:ns:caldav");
 }
 
-QDomDocument CaldavProtocol::collectionsQuery() const
+XMLQueryBuilder::Ptr CaldavProtocol::collectionsQuery() const
 {
-    QDomDocument document;
-
-    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
-    document.appendChild(propfindElement);
-
-    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
-    propfindElement.appendChild(propElement);
-
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("http://apple.com/ns/ical/"), QStringLiteral("calendar-color")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("supported-calendar-component-set")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("current-user-privilege-set")));
-
-    return document;
+    return XMLQueryBuilder::Ptr(new CaldavCollectionQueryBuilder());
 }
 
 QString CaldavProtocol::collectionsXQuery() const
@@ -257,43 +334,20 @@ QString CaldavProtocol::collectionsXQuery() const
     return query;
 }
 
-QVector<QDomDocument> CaldavProtocol::itemsQueries() const
+QVector<XMLQueryBuilder::Ptr> CaldavProtocol::itemsQueries() const
 {
-    return mItemsQueries;
+    QVector<XMLQueryBuilder::Ptr> ret;
+    ret << XMLQueryBuilder::Ptr( new CaldavListEventQueryBuilder() );
+    ret << XMLQueryBuilder::Ptr( new CaldavListTodoQueryBuilder() );
+    ret << XMLQueryBuilder::Ptr( new CaldavListJournalQueryBuilder() );
+    return ret;
 }
 
-QString CaldavProtocol::mimeTypeForQuery(int index) const
+XMLQueryBuilder::Ptr CaldavProtocol::itemsReportQuery(const QStringList &urls) const
 {
-    return mItemsMimeTypes.at(index);
-}
-
-QDomDocument CaldavProtocol::itemsReportQuery(const QStringList &urls) const
-{
-    QDomDocument document;
-
-    QDomElement multigetElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-multiget"));
-    document.appendChild(multigetElement);
-
-    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
-    multigetElement.appendChild(propElement);
-
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data")));
-
-    foreach (const QString &url, urls) {
-        QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
-        const QUrl pathUrl(url);
-        const QString encodedUrl = pathUrl.path() + ( pathUrl.hasQuery() ?
-                                                        QLatin1String("?")+pathUrl.query() :
-                                                        QString("") );
-
-        const QDomText textNode = document.createTextNode(encodedUrl);
-        hrefElement.appendChild(textNode);
-
-        multigetElement.appendChild(hrefElement);
-    }
-
-    return document;
+    XMLQueryBuilder::Ptr ret(new CaldavMultigetQueryBuilder());
+    ret->setParameter(QStringLiteral("urls"), urls);
+    return ret;
 }
 
 QString CaldavProtocol::responseNamespace() const

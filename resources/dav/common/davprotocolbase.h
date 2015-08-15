@@ -22,7 +22,28 @@
 #include "davcollection.h"
 
 #include <QtCore/QList>
+#include <QtCore/QMap>
 #include <QtXml/QDomDocument>
+
+/**
+ * @short Base class for XML query builders
+ */
+class XMLQueryBuilder
+{
+public:
+    typedef QSharedPointer<XMLQueryBuilder> Ptr;
+
+    virtual ~XMLQueryBuilder();
+
+    virtual QDomDocument buildQuery() const = 0;
+    virtual QString mimeType() const = 0;
+
+    void setParameter(const QString &key, const QVariant &value);
+    QVariant parameter(const QString &key) const;
+
+private:
+    QMap<QString, QVariant> mParameters;
+};
 
 /**
  * @short Base class for various DAV groupware dialects.
@@ -85,7 +106,7 @@ public:
      * Returns the XML document that represents the DAV query to
      * list all available DAV collections.
      */
-    virtual QDomDocument collectionsQuery() const = 0;
+    virtual XMLQueryBuilder::Ptr collectionsQuery() const = 0;
 
     /**
      * Returns the XQuery string that filters out the relevant XML elements
@@ -97,13 +118,7 @@ public:
      * Returns a list of XML documents that represent DAV queries to
      * list all available DAV resources inside a specific DAV collection.
      */
-    virtual QVector<QDomDocument> itemsQueries() const = 0;
-
-    /**
-     * Returns the mime type of items fetched by query at index @p index
-     * in the list return by @ref itemsQueries().
-     */
-    virtual QString mimeTypeForQuery(int index) const = 0;
+    virtual QVector<XMLQueryBuilder::Ptr> itemsQueries() const = 0;
 
     /**
      * Returns the possible content types for the collection that

@@ -18,6 +18,23 @@
 
 #include "davprotocolbase.h"
 
+XMLQueryBuilder::~XMLQueryBuilder()
+{
+}
+
+void XMLQueryBuilder::setParameter(const QString& key, const QVariant& value)
+{
+    mParameters[key] = value;
+}
+
+QVariant XMLQueryBuilder::parameter(const QString& key) const
+{
+    QVariant ret;
+    if (mParameters.contains(key))
+        ret = mParameters.value(key);
+    return ret;
+}
+
 DavProtocolBase::~DavProtocolBase()
 {
 }

@@ -22,21 +22,59 @@
 
 #include <QtXml/QDomDocument>
 
+class GroupdavCollectionQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QDomDocument document;
+
+        QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
+        document.appendChild(propfindElement);
+
+        QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
+        propfindElement.appendChild(propElement);
+
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
+
+        return document;
+    }
+
+    virtual QString mimeType() const
+    {
+        return QString();
+    }
+};
+
+class GroupdavItemQueryBuilder : public XMLQueryBuilder
+{
+public:
+    virtual QDomDocument buildQuery() const
+    {
+        QDomDocument document;
+
+        QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
+        document.appendChild(propfindElement);
+
+        QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
+        propfindElement.appendChild(propElement);
+
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
+        propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
+
+        return document;
+    }
+
+    virtual QString mimeType() const
+    {
+        return QString();
+    }
+};
+
 GroupdavProtocol::GroupdavProtocol()
 {
-    QDomDocument document;
-
-    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
-    document.appendChild(propfindElement);
-
-    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
-    propfindElement.appendChild(propElement);
-
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
-
-    mItemsQueries << document;
 }
 
 bool GroupdavProtocol::supportsPrincipals() const
@@ -54,20 +92,9 @@ bool GroupdavProtocol::useMultiget() const
     return false;
 }
 
-QDomDocument GroupdavProtocol::collectionsQuery() const
+XMLQueryBuilder::Ptr GroupdavProtocol::collectionsQuery() const
 {
-    QDomDocument document;
-
-    QDomElement propfindElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("propfind"));
-    document.appendChild(propfindElement);
-
-    QDomElement propElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("prop"));
-    propfindElement.appendChild(propElement);
-
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("displayname")));
-    propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("resourcetype")));
-
-    return document;
+    return XMLQueryBuilder::Ptr(new GroupdavCollectionQueryBuilder());
 }
 
 QString GroupdavProtocol::collectionsXQuery() const
@@ -77,14 +104,11 @@ QString GroupdavProtocol::collectionsXQuery() const
     return query;
 }
 
-QVector<QDomDocument> GroupdavProtocol::itemsQueries() const
+QVector<XMLQueryBuilder::Ptr> GroupdavProtocol::itemsQueries() const
 {
-    return mItemsQueries;
-}
-
-QString GroupdavProtocol::mimeTypeForQuery(int index) const
-{
-    return QString();
+    QVector<XMLQueryBuilder::Ptr> ret;
+    ret << XMLQueryBuilder::Ptr(new GroupdavItemQueryBuilder());
+    return ret;
 }
 
 DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes(const QDomElement &propstatElement) const

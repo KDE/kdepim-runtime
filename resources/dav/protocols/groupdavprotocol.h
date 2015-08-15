@@ -28,15 +28,11 @@ public:
     bool supportsPrincipals() const Q_DECL_OVERRIDE;
     bool useReport() const Q_DECL_OVERRIDE;
     bool useMultiget() const Q_DECL_OVERRIDE;
-    QDomDocument collectionsQuery() const Q_DECL_OVERRIDE;
+    XMLQueryBuilder::Ptr collectionsQuery() const Q_DECL_OVERRIDE;
     QString collectionsXQuery() const Q_DECL_OVERRIDE;
-    QVector<QDomDocument> itemsQueries() const Q_DECL_OVERRIDE;
-    QString mimeTypeForQuery(int index) const Q_DECL_OVERRIDE;
+    QVector<XMLQueryBuilder::Ptr> itemsQueries() const Q_DECL_OVERRIDE;
 
     DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const Q_DECL_OVERRIDE;
-
-private:
-    QVector<QDomDocument> mItemsQueries;
 };
 
 #endif

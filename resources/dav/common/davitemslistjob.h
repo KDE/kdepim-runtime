@@ -53,6 +53,14 @@ public:
     void setContentMimeTypes(const QStringList &types);
 
     /**
+     * Sets the start and end time to list items for.
+     *
+     * @param start The range start, in format "date with UTC time"
+     * @param end The range end, in format "date with UTC time"
+     */
+    void setTimeRange(const QString &start, const QString &end);
+
+    /**
      * Starts the job.
      */
     void start() Q_DECL_OVERRIDE;
@@ -68,6 +76,8 @@ private Q_SLOTS:
 private:
     DavUtils::DavUrl mUrl;
     QStringList mMimeTypes;
+    QString mRangeStart;
+    QString mRangeEnd;
     DavItem::List mItems;
     QSet<QString> mSeenUrls; // to prevent events duplication with some servers
     uint mSubJobCount;

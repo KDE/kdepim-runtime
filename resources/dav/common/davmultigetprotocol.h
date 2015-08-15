@@ -36,7 +36,7 @@ public:
      * Returns the XML document that represents a MULTIGET DAV query to
      * list all DAV resources with the given @p urls.
      */
-    virtual QDomDocument itemsReportQuery(const QStringList &urls) const = 0;
+    virtual XMLQueryBuilder::Ptr itemsReportQuery(const QStringList &urls) const = 0;
 
     /**
      * Returns the namespace used by protocol-specific elements found in responses.

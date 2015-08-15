@@ -30,19 +30,14 @@ public:
     bool useMultiget() const Q_DECL_OVERRIDE;
     QString principalHomeSet() const Q_DECL_OVERRIDE;
     QString principalHomeSetNS() const Q_DECL_OVERRIDE;
-    QDomDocument collectionsQuery() const Q_DECL_OVERRIDE;
+    XMLQueryBuilder::Ptr collectionsQuery() const Q_DECL_OVERRIDE;
     QString collectionsXQuery() const Q_DECL_OVERRIDE;
-    QVector<QDomDocument> itemsQueries() const Q_DECL_OVERRIDE;
-    QString mimeTypeForQuery(int index) const Q_DECL_OVERRIDE;
-    QDomDocument itemsReportQuery(const QStringList &urls) const Q_DECL_OVERRIDE;
+    QVector<XMLQueryBuilder::Ptr> itemsQueries() const Q_DECL_OVERRIDE;
+    XMLQueryBuilder::Ptr itemsReportQuery(const QStringList &urls) const Q_DECL_OVERRIDE;
     QString responseNamespace() const Q_DECL_OVERRIDE;
     QString dataTagName() const Q_DECL_OVERRIDE;
 
     DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const Q_DECL_OVERRIDE;
-
-private:
-    QVector<QDomDocument> mItemsQueries;
-    QStringList mItemsMimeTypes;
 };
 
 #endif

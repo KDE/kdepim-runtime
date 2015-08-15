@@ -38,16 +38,27 @@ void DavItemsListJob::setContentMimeTypes(const QStringList &types)
     mMimeTypes = types;
 }
 
+void DavItemsListJob::setTimeRange(const QString& start, const QString& end)
+{
+    mRangeStart = start;
+    mRangeEnd = end;
+}
+
 void DavItemsListJob::start()
 {
     const DavProtocolBase *protocol = DavManager::self()->davProtocol(mUrl.protocol());
     Q_ASSERT(protocol);
-    QVectorIterator<QDomDocument> it(protocol->itemsQueries());
-    int queryIndex = 0;
+    QVectorIterator<XMLQueryBuilder::Ptr> it(protocol->itemsQueries());
 
     while (it.hasNext()) {
-        const QDomDocument props = it.next();
-        const QString mimeType = protocol->mimeTypeForQuery(queryIndex);
+        XMLQueryBuilder::Ptr builder = it.next();
+        if (!mRangeStart.isEmpty())
+            builder->setParameter("start", mRangeStart);
+        if (!mRangeEnd.isEmpty())
+            builder->setParameter("end",mRangeEnd);
+
+        const QDomDocument props = builder->buildQuery();
+        const QString mimeType = builder->mimeType();
 
         if (mMimeTypes.isEmpty() || mMimeTypes.contains(mimeType)) {
             ++mSubJobCount;
@@ -65,8 +76,6 @@ void DavItemsListJob::start()
                 connect(job, &KIO::DavJob::result, this, &DavItemsListJob::davJobFinished);
             }
         }
-
-        ++queryIndex;
     }
 }
 

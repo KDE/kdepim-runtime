@@ -278,6 +278,9 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     }
 
     DavItemsListJob *job = new DavItemsListJob(davUrl);
+    // Only fetch events for the last 3 months
+    QString startTime = QDateTime::currentDateTimeUtc().addMonths(-3).toString("yyyyMMddTHHMMssZ");
+    job->setTimeRange(startTime, QString());
     job->setProperty("collection", QVariant::fromValue(collection));
     job->setContentMimeTypes(collection.contentMimeTypes());
     connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
