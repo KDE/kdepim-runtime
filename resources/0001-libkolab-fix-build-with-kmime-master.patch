@@ -1,0 +1,112 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5b04587..fcc7d36 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -68,12 +68,13 @@ if (Qt5_POSITION_INDEPENDENT_CODE)
+ endif()
+ 
+ set(KDEPIMLIBS_LIB_VERSION "4.71.0")
++set(KMIME_LIB_VERSION "4.83.0")
+ find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+-find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+ find_package(KF5AkonadiNotes ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
++find_package(KF5Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
+ 
+ find_package(SWIG)
+ 
+diff --git a/icalendar/imip.cpp b/icalendar/imip.cpp
+index f4dca36..25f9273 100644
+--- a/icalendar/imip.cpp
++++ b/icalendar/imip.cpp
+@@ -84,7 +84,7 @@ KMime::Message::Ptr createMessage( const QString &from, const QString &_to,
+ 
+     if ( !attachment.isEmpty() ) {
+       KMime::Headers::ContentDisposition *disposition =
+-        new KMime::Headers::ContentDisposition( message.get() );
++        new KMime::Headers::ContentDisposition( message.data() );
+       disposition->setDisposition( KMime::Headers::CDinline );
+       message->setHeader( disposition );
+       message->contentTransferEncoding()->setEncoding( KMime::Headers::CEquPr );
+diff --git a/kolabformat/mimeobject.cpp b/kolabformat/mimeobject.cpp
+index d5b21e1..9e45b16 100644
+--- a/kolabformat/mimeobject.cpp
++++ b/kolabformat/mimeobject.cpp
+@@ -373,7 +373,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
+     }
+     Kolab::ObjectType objectType = InvalidObject;
+     if (mOverrideObjectType == InvalidObject) {
+-        if (KMime::Headers::Base *xKolabHeader = msg->getHeaderByType(X_KOLAB_TYPE_HEADER)) {
++        if (KMime::Headers::Base *xKolabHeader = msg->headerByType(X_KOLAB_TYPE_HEADER)) {
+             objectType = getObjectType(xKolabHeader->asUnicodeString().trimmed().toStdString());
+         } else {
+             Warning() << "could not find the X-Kolab-Type Header, trying autodetection" ;
+@@ -390,10 +390,10 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
+     }
+ 
+     if (!mDoOverrideVersion) {
+-        KMime::Headers::Base *xKolabVersion = msg->getHeaderByType(X_KOLAB_MIME_VERSION_HEADER);
++        KMime::Headers::Base *xKolabVersion = msg->headerByType(X_KOLAB_MIME_VERSION_HEADER);
+         if (!xKolabVersion) {
+             //For backwards compatibility to development versions, can be removed in future versions
+-            xKolabVersion = msg->getHeaderByType(X_KOLAB_MIME_VERSION_HEADER_COMPAT);
++            xKolabVersion = msg->headerByType(X_KOLAB_MIME_VERSION_HEADER_COMPAT);
+         }
+         if (!xKolabVersion || xKolabVersion->asUnicodeString() == KOLAB_VERSION_V2) {
+             mVersion = KolabV2;
+diff --git a/mime/mimeutils.cpp b/mime/mimeutils.cpp
+index 640d3e5..19039c8 100644
+--- a/mime/mimeutils.cpp
++++ b/mime/mimeutils.cpp
+@@ -28,6 +28,7 @@
+ namespace Kolab {
+     namespace Mime {
+ 
++
+ KMime::Content* findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
+ {
+     if (type.isEmpty()) {
+@@ -153,9 +154,9 @@ KMime::Message::Ptr createMessage(const QByteArray& xKolabType, bool v3, const Q
+ {
+     KMime::Message::Ptr message(new KMime::Message);
+     message->date()->setDateTime(KDateTime::currentUtcDateTime().dateTime());
+-    message->appendHeader(new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER, message.get(), xKolabType, "utf-8"));
++    message->appendHeader(new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER, message.data(), xKolabType, "utf-8"));
+     if (v3) {
+-        message->appendHeader(new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER, message.get(), KOLAB_VERSION_V3, "utf-8"));
++        message->appendHeader(new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER, message.data(), KOLAB_VERSION_V3, "utf-8"));
+     }
+     message->userAgent()->from7BitString(prodid);
+     message->contentType()->setMimeType("multipart/mixed");
+diff --git a/tests/formattest.cpp b/tests/formattest.cpp
+index a3edc0e..15b9c40 100644
+--- a/tests/formattest.cpp
++++ b/tests/formattest.cpp
+@@ -385,12 +385,12 @@ void FormatTest::testNote()
+     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
+ 
+     KMime::Message::Ptr convertedNote = reader.getNote();
+-    QVERIFY(convertedNote.get());
++    QVERIFY(convertedNote.data());
+ 
+     //Parse note
+     const KMime::Message::Ptr &realNote = readMimeFile( noteFileName, ok );
+     QVERIFY(ok);
+-    QVERIFY(realNote.get());
++    QVERIFY(realNote.data());
+ 
+     QString expected = realNote->encodedContent();
+     normalizeMimemessage(expected);
+@@ -402,8 +402,8 @@ void FormatTest::testNote()
+     
+     //Write
+     const KMime::Message::Ptr &convertedMime = Kolab::KolabObjectWriter::writeNote(realNote, version);
+-    QVERIFY(convertedMime.get());
+-    QVERIFY(msg.get());
++    QVERIFY(convertedMime.data());
++    QVERIFY(msg.data());
+ 
+     QString expected2 = msg->encodedContent();
+     normalizeMimemessage(expected2);
