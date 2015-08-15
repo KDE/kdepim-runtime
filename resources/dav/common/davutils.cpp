@@ -251,9 +251,7 @@ DavItem DavUtils::createDavItem(const Akonadi::Item &item, const Akonadi::Collec
 
         const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
         if (protoAttr) {
-            mimeType =
-                DavManager::self()->davProtocol(
-                    DavUtils::Protocol(protoAttr->davProtocol()))->contactsMimeType();
+            mimeType = DavUtils::contactsMimeType(DavUtils::Protocol(protoAttr->davProtocol()));
         } else {
             mimeType = KContacts::Addressee::mimeType();
         }
@@ -365,4 +363,17 @@ bool DavUtils::parseDavData(const DavItem &source, Akonadi::Item &target, Akonad
     }
 
     return true;
+}
+
+QString DavUtils::contactsMimeType(DavUtils::Protocol protocol)
+{
+    QString ret;
+
+    if (protocol == DavUtils::CardDav) {
+        ret = QStringLiteral("text/vcard");
+    } else if (protocol == DavUtils::GroupDav) {
+        ret = QStringLiteral("text/x-vcard");
+    }
+
+    return ret;
 }

@@ -370,8 +370,3 @@ DavCollection::ContentTypes CaldavProtocol::collectionContentTypes(const QDomEle
 
     return contentTypes;
 }
-
-QString CaldavProtocol::contactsMimeType() const
-{
-    return QString(); // will never be called for this protocol
-}

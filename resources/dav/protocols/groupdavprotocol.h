@@ -34,7 +34,6 @@ public:
     QString mimeTypeForQuery(int index) const Q_DECL_OVERRIDE;
 
     DavCollection::ContentTypes collectionContentTypes(const QDomElement &propstat) const Q_DECL_OVERRIDE;
-    QString contactsMimeType() const Q_DECL_OVERRIDE;
 
 private:
     QVector<QDomDocument> mItemsQueries;

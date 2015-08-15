@@ -144,8 +144,3 @@ DavCollection::ContentTypes CarddavProtocol::collectionContentTypes(const QDomEl
 {
     return DavCollection::Contacts;
 }
-
-QString CarddavProtocol::contactsMimeType() const
-{
-    return QStringLiteral("text/vcard");
-}

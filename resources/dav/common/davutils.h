@@ -174,6 +174,12 @@ DavItem createDavItem(const Akonadi::Item &item, const Akonadi::Collection &coll
  * Parses the DAV data contained in @p source and puts it in @p target and @extraItems.
  */
 bool parseDavData(const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems);
+
+/**
+ * Returns the mimetype that shall be used for contact DAV resources using @p protocol.
+ */
+QString contactsMimeType(Protocol protocol);
 }
+
 Q_DECLARE_TYPEINFO(DavUtils::DavUrl, Q_MOVABLE_TYPE);
 #endif

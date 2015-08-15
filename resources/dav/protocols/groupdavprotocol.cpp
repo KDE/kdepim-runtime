@@ -124,8 +124,3 @@ DavCollection::ContentTypes GroupdavProtocol::collectionContentTypes(const QDomE
 
     return contentTypes;
 }
-
-QString GroupdavProtocol::contactsMimeType() const
-{
-    return QStringLiteral("text/x-vcard");
-}
