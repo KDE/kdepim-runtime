@@ -6,7 +6,7 @@ index f9ce7df..3bec3f1 100644
  endif()
  
  set(KDEPIMLIBS_LIB_VERSION "4.71.0")
-+set(KMIME_LIB_VERSION "4.84.0")
++set(KMIME_LIB_VERSION "4.85.0")
 +find_package(KF5CoreAddons CONFIG REQUIRED)
  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
  find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
