@@ -73,14 +73,14 @@ bool KeyCache::isNewKey(const QString &dir, const QString &key) const
 
 QSet< QString > KeyCache::listNew(const QString &dir) const
 {
-    QDir d(dir + QString::fromLatin1("/new"));
+    QDir d(dir + QLatin1String("/new"));
     d.setSorting(QDir::NoSort);
     return d.entryList(QDir::Files).toSet();
 }
 
 QSet< QString > KeyCache::listCurrent(const QString &dir) const
 {
-    QDir d(dir + QString::fromLatin1("/cur"));
+    QDir d(dir + QLatin1String("/cur"));
     d.setSorting(QDir::NoSort);
     return d.entryList(QDir::Files).toSet();
 }

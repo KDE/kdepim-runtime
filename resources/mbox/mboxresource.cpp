@@ -45,21 +45,21 @@ using namespace Akonadi;
 static Entity::Id collectionId(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
-    Q_ASSERT(remoteItemId.split(QLatin1String("::")).size() == 3);
+    Q_ASSERT(remoteItemId.split(QStringLiteral("::")).size() == 3);
     return remoteItemId.split(QStringLiteral("::")).first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
-    Q_ASSERT(remoteItemId.split(QLatin1String("::")).size() == 3);
+    Q_ASSERT(remoteItemId.split(QStringLiteral("::")).size() == 3);
     return remoteItemId.split(QStringLiteral("::")).at(1);
 }
 
 static quint64 itemOffset(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
-    Q_ASSERT(remoteItemId.split(QLatin1String("::")).size() == 3);
+    Q_ASSERT(remoteItemId.split(QStringLiteral("::")).size() == 3);
     return remoteItemId.split(QStringLiteral("::")).last().toULongLong();
 }
 

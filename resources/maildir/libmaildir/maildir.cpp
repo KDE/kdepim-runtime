@@ -96,22 +96,22 @@ public:
     QStringList subPaths() const
     {
         QStringList paths;
-        paths << path + QString::fromLatin1("/cur");
-        paths << path + QString::fromLatin1("/new");
-        paths << path + QString::fromLatin1("/tmp");
+        paths << path + QLatin1String("/cur");
+        paths << path + QLatin1String("/new");
+        paths << path + QLatin1String("/tmp");
         return paths;
     }
 
     QStringList listNew() const
     {
-        QDir d(path + QString::fromLatin1("/new"));
+        QDir d(path + QLatin1String("/new"));
         d.setSorting(QDir::NoSort);
         return d.entryList(QDir::Files);
     }
 
     QStringList listCurrent() const
     {
-        QDir d(path + QString::fromLatin1("/cur"));
+        QDir d(path + QLatin1String("/cur"));
         d.setSorting(QDir::NoSort);
         return d.entryList(QDir::Files);
     }
@@ -125,7 +125,7 @@ public:
                 qCDebug(LIBMAILDIR_LOG) << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/new/") + key;
             }
 #endif
-            return path + QString::fromLatin1("/new/") + key;
+            return path + QLatin1String("/new/") + key;
         }
         if (keyCache->isCurKey(path, key)) {
 #ifdef DEBUG_KEYCACHE_CONSITENCY
@@ -133,15 +133,15 @@ public:
                 qCDebug(LIBMAILDIR_LOG) << "WARNING: key is in cache, but the file is gone: " << path + QString::fromLatin1("/cur/") + key;
             }
 #endif
-            return path + QString::fromLatin1("/cur/") + key;
+            return path + QLatin1String("/cur/") + key;
         }
-        QString realKey = path + QString::fromLatin1("/new/") + key;
+        QString realKey = path + QLatin1String("/new/") + key;
 
         QFile f(realKey);
         if (f.exists()) {
             keyCache->addNewKey(path, key);
         } else  { //not in "new", search in "cur"
-            realKey = path + QString::fromLatin1("/cur/") + key;
+            realKey = path + QLatin1String("/cur/") + key;
             QFile f2(realKey);
             if (f2.exists()) {
                 keyCache->addCurKey(path, key);
@@ -155,7 +155,7 @@ public:
 
     static QString subDirNameForFolderName(const QString &folderName)
     {
-        return QString::fromLatin1(".%1.directory").arg(folderName);
+        return QStringLiteral(".%1.directory").arg(folderName);
     }
 
     QString subDirPath() const
@@ -435,7 +435,7 @@ QStringList Maildir::listNew() const
 QString Maildir::pathToNew() const
 {
     if (isValid()) {
-        return d->path + QString::fromLatin1("/new");
+        return d->path + QLatin1String("/new");
     }
     return QString();
 }
@@ -443,7 +443,7 @@ QString Maildir::pathToNew() const
 QString Maildir::pathToCurrent() const
 {
     if (isValid()) {
-        return d->path + QString::fromLatin1("/cur");
+        return d->path + QLatin1String("/cur");
     }
     return QString();
 }
@@ -696,7 +696,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     }
 
     QString newUniqueKey = finalKey; //key without path
-    finalKey.prepend(d->path + QString::fromLatin1("/cur/"));
+    finalKey.prepend(d->path + QLatin1String("/cur/"));
 
     if (realKey == finalKey) {
         // Somehow it already is named this way (e.g. migration bug -> wrong status in akonadi)
@@ -720,11 +720,11 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
         if (destContent != sourceContent) {
             QString newFinalKey = QLatin1String("1-") + newUniqueKey;
             int i = 1;
-            while (QFile::exists(d->path + QString::fromLatin1("/cur/") + newFinalKey)) {
+            while (QFile::exists(d->path + QLatin1String("/cur/") + newFinalKey)) {
                 i++;
                 newFinalKey = QString::number(i) + QLatin1Char('-') + newUniqueKey;
             }
-            finalKey = d->path + QString::fromLatin1("/cur/") + newFinalKey;
+            finalKey = d->path + QLatin1String("/cur/") + newFinalKey;
         } else {
             QFile::remove(finalKey);   //they are the same
         }

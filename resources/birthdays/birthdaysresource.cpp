@@ -177,7 +177,7 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
 
     event = createAnniversary(item);
     if (event) {
-        addPendingEvent(event, QString::fromLatin1("a%1").arg(item.id()));
+        addPendingEvent(event, QStringLiteral("a%1").arg(item.id()));
     } else {
         Item i(KCalCore::Event::eventMimeType());
         i.setRemoteId(QStringLiteral("a%1").arg(item.id()));

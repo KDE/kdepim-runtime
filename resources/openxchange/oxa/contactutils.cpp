@@ -362,7 +362,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
         // communication
         const QStringList emails = contact.emails();
         for (int i = 0; i < 3 && i < emails.count(); ++i) {
-            DAVUtils::addOxElement(document, propElement, QString::fromLatin1("email%1").arg(i + 1), OXUtils::writeString(emails.at(i)));
+            DAVUtils::addOxElement(document, propElement, QStringLiteral("email%1").arg(i + 1), OXUtils::writeString(emails.at(i)));
         }
 
         DAVUtils::addOxElement(document, propElement, QStringLiteral("mobile1"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Cell).number()));

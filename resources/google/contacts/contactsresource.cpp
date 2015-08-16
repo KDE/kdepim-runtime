@@ -160,7 +160,7 @@ void ContactsResource::itemAdded(const Item &item, const Collection &collection)
 
     /* If the contact has been moved into My Contacts group then modify the membership */
     if (collection.remoteId() == MYCONTACTS_REMOTEID) {
-        contact->addGroup(QString::fromLatin1("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
+        contact->addGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
     }
 
     /* If the contact has been moved to Other Contacts then remove all groups */
@@ -186,7 +186,7 @@ void ContactsResource::itemChanged(const Item &item, const QSet< QByteArray > &p
     ContactPtr contact(new Contact(addressee));
 
     if (item.parentCollection().remoteId() == MYCONTACTS_REMOTEID) {
-        contact->addGroup(QString::fromLatin1("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
+        contact->addGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
     }
 
     ContactModifyJob *modifyJob = new ContactModifyJob(contact, account(), this);
@@ -208,12 +208,12 @@ void ContactsResource::itemMoved(const Item &item, const Collection &collectionS
     // MyContacts -> OtherContacts
     if (collectionSource.remoteId() == MYCONTACTS_REMOTEID &&
             collectionDestination.remoteId() == OTHERCONTACTS_REMOTEID) {
-        contact->removeGroup(QString::fromLatin1("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
+        contact->removeGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
 
         // OtherContacts -> MyContacts
     } else if (collectionSource.remoteId() == OTHERCONTACTS_REMOTEID &&
                collectionDestination.remoteId() == MYCONTACTS_REMOTEID) {
-        contact->addGroup(QString::fromLatin1("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
+        contact->addGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
 
     } else {
         cancelTask(i18n("Invalid source or destination collection"));

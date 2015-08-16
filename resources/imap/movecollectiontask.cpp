@@ -76,7 +76,7 @@ void MoveCollectionTask::doStart(KIMAP::Session *session)
     // a non-existent mailbox. We don't use CLOSE in order not to trigger EXPUNGE
     KIMAP::SelectJob *examine = new KIMAP::SelectJob(session);
     examine->setOpenReadOnly(true);   // use EXAMINE instead of SELECT
-    examine->setMailBox(QString::fromLatin1("IMAP Resource non existing folder %1").arg(QUuid::createUuid().toString()));
+    examine->setMailBox(QStringLiteral("IMAP Resource non existing folder %1").arg(QUuid::createUuid().toString()));
     connect(examine, &KIMAP::SelectJob::result, this, &MoveCollectionTask::onExamineDone);
     examine->start();
 }
