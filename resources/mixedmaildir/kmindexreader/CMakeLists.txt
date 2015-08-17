@@ -20,4 +20,4 @@ target_link_libraries(kmindexreader
 
 set_target_properties(kmindexreader PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
-install(TARGETS kmindexreader ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS kmindexreader ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)

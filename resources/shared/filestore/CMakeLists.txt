@@ -34,7 +34,7 @@ target_link_libraries(akonadi-filestore
 
 set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
 
-install(TARGETS akonadi-filestore ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS akonadi-filestore ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
 
 if (BUILD_TESTING)
   add_subdirectory( autotests )
