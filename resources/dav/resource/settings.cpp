@@ -352,6 +352,22 @@ QString Settings::password(DavUtils::Protocol proto, const QString &url)
         return QString();
     }
 }
+
+QDateTime Settings::getSyncRangeStart() const
+{
+    QDateTime start;
+    const int delta = - syncRangeStartNumber().toUInt();
+
+    if (syncRangeStartType() == QStringLiteral("D"))
+        start = QDateTime::currentDateTimeUtc().addDays(delta);
+    else if (syncRangeStartType() == QStringLiteral("M"))
+        start = QDateTime::currentDateTimeUtc().addMonths(delta);
+    else if (syncRangeStartType() == QStringLiteral("Y"))
+        start = QDateTime::currentDateTimeUtc().addYears(delta);
+
+    return start;
+}
+
 #ifdef HAVE_ACCOUNTS
 void Settings::importFromAccounts()
 {

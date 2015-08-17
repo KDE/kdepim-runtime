@@ -43,6 +43,7 @@ public:
     void setPassword(const QString &password);
 
 private Q_SLOTS:
+    void onSyncRangeStartTypeChanged();
     void checkUserInput();
     void onAddButtonClicked();
     void onSearchButtonClicked();

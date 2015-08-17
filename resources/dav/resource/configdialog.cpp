@@ -65,13 +65,21 @@ ConfigDialog::ConfigDialog(QWidget *parent)
         addModelRow(DavUtils::translatedProtocolName(url.protocol()), displayUrl.toDisplayString());
     }
 
+    mUi.syncRangeStartType->addItem(i18n("Days"), QVariant(QLatin1String("D")));
+    mUi.syncRangeStartType->addItem(i18n("Months"), QVariant(QLatin1String("M")));
+    mUi.syncRangeStartType->addItem(i18n("Years"), QVariant(QLatin1String("Y")));
+
     mManager = new KConfigDialogManager(this, Settings::self());
     mManager->updateWidgets();
+
+    const int typeIndex = mUi.syncRangeStartType->findData(QVariant(Settings::self()->syncRangeStartType()));
+    mUi.syncRangeStartType->setCurrentIndex(typeIndex);
 
     connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
     connect(mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(checkConfiguredUrlsButtonsState()));
     connect(mUi.configuredUrls, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onEditButtonClicked()));
 
+    connect(mUi.syncRangeStartType, SIGNAL(currentIndexChanged(int)), this, SLOT(onSyncRangeStartTypeChanged()));
     connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
     connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
     connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigDialog::onRemoveButtonClicked);
@@ -107,6 +115,11 @@ void ConfigDialog::writeConfig()
 void ConfigDialog::setPassword(const QString &password)
 {
     mUi.password->setText(password);
+}
+
+void ConfigDialog::onSyncRangeStartTypeChanged()
+{
+    Settings::self()->setSyncRangeStartType(mUi.syncRangeStartType->currentData().toString());
 }
 
 void ConfigDialog::checkUserInput()

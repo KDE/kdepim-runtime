@@ -116,6 +116,7 @@ public:
     //DavUtils::Protocol protocol( const QString &url ) const;
     QString username(DavUtils::Protocol protocol, const QString &url) const;
     QString password(DavUtils::Protocol protocol, const QString &url);
+    QDateTime getSyncRangeStart() const;
 
 private:
 #ifdef HAVE_ACCOUNTS

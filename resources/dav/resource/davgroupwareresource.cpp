@@ -278,9 +278,13 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     }
 
     DavItemsListJob *job = new DavItemsListJob(davUrl);
-    // Only fetch events for the last 3 months
-    QString startTime = QDateTime::currentDateTimeUtc().addMonths(-3).toString("yyyyMMddTHHMMssZ");
-    job->setTimeRange(startTime, QString());
+    if (Settings::self()->limitSyncRange()) {
+        QDateTime start = Settings::self()->getSyncRangeStart();
+        qCCritical(DAVRESOURCE_LOG) << Settings::self()->syncRangeStartNumber() << Settings::self()->syncRangeStartType() << start;
+        if (start.isValid()) {
+            job->setTimeRange(start.toString("yyyyMMddTHHMMssZ"), QString());
+        }
+    }
     job->setProperty("collection", QVariant::fromValue(collection));
     job->setContentMimeTypes(collection.contentMimeTypes());
     connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);

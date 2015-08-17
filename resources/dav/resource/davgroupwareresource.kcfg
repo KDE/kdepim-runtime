@@ -26,6 +26,18 @@
       <label>User name</label>
       <default></default>
     </entry>
+    <entry name="limitSyncRange" type="Bool">
+      <label>Limit the events retrieval to the specified time range</label>
+      <default>true</default>
+    </entry>
+    <entry name="syncRangeStartNumber" type="String">
+      <label>Period for which to retrieve events, quantity</label>
+      <default>3</default>
+    </entry>
+    <entry name="syncRangeStartType" type="String">
+      <label>Period for which to retrieve events, type</label>
+      <default>M</default>
+    </entry>
     <entry name="collectionsUrlsMappings" type="String">
       <label>String representation of the mappings between discovered collections and configured URLs</label>
       <default></default>
