@@ -37,6 +37,16 @@ DavUtils::Protocol DavCollection::protocol() const
     return mProtocol;
 }
 
+void DavCollection::setCTag(const QString& ctag)
+{
+    mCTag = ctag;
+}
+
+QString DavCollection::CTag() const
+{
+    return mCTag;
+}
+
 void DavCollection::setUrl(const QString &url)
 {
     mUrl = url;

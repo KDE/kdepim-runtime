@@ -78,6 +78,17 @@ public:
     DavUtils::Protocol protocol() const;
 
     /**
+     * Sets this collection CTag.
+     */
+    void setCTag(const QString &ctag);
+
+    /**
+     * Returns this collection CTag. The returned value will be empty
+     * if no CTag was found.
+     */
+    QString CTag() const;
+
+    /**
      * Sets the @p url that identifies the collection.
      */
     void setUrl(const QString &url);
@@ -130,6 +141,7 @@ public:
 
 private:
     DavUtils::Protocol mProtocol;
+    QString mCTag;
     QString mUrl;
     QString mDisplayName;
     QColor mColor;

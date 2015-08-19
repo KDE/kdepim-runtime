@@ -64,7 +64,7 @@ void DavCollectionsFetchJob::doCollectionsFetch(const QUrl &url)
     const QDomDocument collectionQuery = DavManager::self()->davProtocol(mUrl.protocol())->collectionsQuery()->buildQuery();
 
     KIO::DavJob *job = DavManager::self()->createPropFindJob(url, collectionQuery);
-    connect(job, &DavPrincipalHomeSetsFetchJob::result, this, &DavCollectionsFetchJob::collectionsFetchFinished);
+    connect(job, &KIO::DavJob::result, this, &DavCollectionsFetchJob::collectionsFetchFinished);
     job->addMetaData(QStringLiteral("PropagateHttpHeader"), QStringLiteral("true"));
 }
 
@@ -218,6 +218,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
              *             <read xmlns="DAV:"/>
              *           </privilege>
              *         </current-user-privilege-set>
+             *         <getctag xmlns="http://calendarserver.org/ns/">12345</getctag>
              *       </prop>
              *       <status xmlns="DAV:">HTTP/1.1 200 OK</status>
              *     </propstat>
@@ -288,6 +289,12 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                 const QDomElement displaynameElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("DAV:"), QStringLiteral("displayname"));
                 const QString displayName = displaynameElement.text();
 
+                // Extract CTag
+                const QDomElement CTagElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("http://calendarserver.org/ns/"), QStringLiteral("getctag"));
+                QString CTag;
+                if (!CTagElement.isNull())
+                    CTag = CTagElement.text();
+
                 // extract calendar color if provided
                 const QDomElement colorElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("http://apple.com/ns/ical/"), QStringLiteral("calendar-color"));
                 QColor color;
@@ -302,6 +309,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                 const DavCollection::ContentTypes contentTypes = DavManager::self()->davProtocol(mUrl.protocol())->collectionContentTypes(propstatElement);
 
                 DavCollection collection(mUrl.protocol(), url.toDisplayString(), displayName, contentTypes);
+                collection.setCTag(CTag);
                 if (color.isValid()) {
                     collection.setColor(color);
                 }

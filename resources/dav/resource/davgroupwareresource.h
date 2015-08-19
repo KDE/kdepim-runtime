@@ -124,6 +124,7 @@ private:
 
     Akonadi::Collection mDavCollectionRoot;
     EtagCache mEtagCache;
+    QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *mFreeBusyHandler;
     QMap< QString, QSet<QString> > mItemsRidCache;
     bool mSyncErrorNotified;
