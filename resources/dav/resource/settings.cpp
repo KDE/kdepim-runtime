@@ -355,15 +355,18 @@ QString Settings::password(DavUtils::Protocol proto, const QString &url)
 
 QDateTime Settings::getSyncRangeStart() const
 {
-    QDateTime start;
+    QDateTime start = QDateTime::currentDateTimeUtc();
+    start.setTime(QTime());
     const int delta = - syncRangeStartNumber().toUInt();
 
     if (syncRangeStartType() == QStringLiteral("D"))
-        start = QDateTime::currentDateTimeUtc().addDays(delta);
+        start = start.addDays(delta);
     else if (syncRangeStartType() == QStringLiteral("M"))
-        start = QDateTime::currentDateTimeUtc().addMonths(delta);
+        start = start.addMonths(delta);
     else if (syncRangeStartType() == QStringLiteral("Y"))
-        start = QDateTime::currentDateTimeUtc().addYears(delta);
+        start = start.addYears(delta);
+    else
+        start = QDateTime();
 
     return start;
 }

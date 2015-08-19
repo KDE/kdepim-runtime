@@ -292,6 +292,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     DavItemsListJob *job = new DavItemsListJob(davUrl);
     if (Settings::self()->limitSyncRange()) {
         QDateTime start = Settings::self()->getSyncRangeStart();
+        qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
         if (start.isValid()) {
             job->setTimeRange(start.toString("yyyyMMddTHHMMssZ"), QString());
         }
