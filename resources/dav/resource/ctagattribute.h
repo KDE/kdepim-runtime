@@ -19,7 +19,7 @@
 #ifndef CTAGATTRIBUTE_H
 #define CTAGATTRIBUTE_H
 
-#include <akonadi/attribute.h>
+#include <AkonadiCore/attribute.h>
 
 #include <QtCore/QString>
 
