@@ -203,11 +203,11 @@ void AccountDialog::loadSettings()
     encryptionTLS->setChecked(Settings::self()->useTLS());
 
     slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled() ?
-                                Settings::self()->leaveOnServerDays() >= 1 : 0);
+                                Settings::self()->leaveOnServerDays() >= 1 : false);
     slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled() ?
-                                 Settings::self()->leaveOnServerCount() >= 1 : 0);
+                                 Settings::self()->leaveOnServerCount() >= 1 : false);
     slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled() ?
-                                Settings::self()->leaveOnServerSize() >= 1 : 0);
+                                Settings::self()->leaveOnServerSize() >= 1 : false);
 
     // We need to fetch the collection, as the CollectionRequester needs the name
     // of it to work correctly
