@@ -103,6 +103,7 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_imap_resource
+    KF5::KDELibs4Support
     KF5::AkonadiCore
     KF5::AkonadiWidgets
     KF5::IMAP

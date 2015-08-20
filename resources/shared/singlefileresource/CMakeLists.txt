@@ -38,6 +38,9 @@ add_library(akonadi-singlefileresource  ${akonadi-singlefileresource_SRCS} )
 generate_export_header(akonadi-singlefileresource BASE_NAME akonadi-singlefileresource)
 
 target_link_libraries(akonadi-singlefileresource
+PUBLIC
+    KF5::I18n
+PRIVATE
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
     KF5::KIOCore
