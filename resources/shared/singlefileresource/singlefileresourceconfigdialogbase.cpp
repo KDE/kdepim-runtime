@@ -67,7 +67,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windo
         KWindowSystem::setMainWindow(this, windowId);
     }
 
-    ui.ktabwidget->tabBar()->hide();
+    ui.tabWidget->tabBar()->hide();
 
     connect(mOkButton, &QPushButton::clicked, this, &SingleFileResourceConfigDialogBase::save);
 
@@ -101,8 +101,8 @@ void SingleFileResourceConfigDialogBase::readConfig()
 
 void SingleFileResourceConfigDialogBase::addPage(const QString &title, QWidget *page)
 {
-    ui.ktabwidget->tabBar()->show();
-    ui.ktabwidget->addTab(page, title);
+    ui.tabWidget->tabBar()->show();
+    ui.tabWidget->addTab(page, title);
     mManager->addWidget(page);
     mManager->updateWidgets();
 }
