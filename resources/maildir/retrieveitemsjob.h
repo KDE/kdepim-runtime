@@ -62,6 +62,7 @@ private:
     QHash<QString, Akonadi::Item> m_localItems;
     QString m_mimeType;
     Akonadi::TransactionSequence *m_transaction;
+    int m_transactionSize;
     QDirIterator *m_entryIterator;
     qint64 m_previousMtime;
     qint64 m_highestMtime;

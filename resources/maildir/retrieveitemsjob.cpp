@@ -35,6 +35,7 @@ RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, const 
     m_maildir(md),
     m_mimeType(KMime::Message::mimeType()),
     m_transaction(Q_NULLPTR),
+    m_transactionSize(0),
     m_entryIterator(Q_NULLPTR),
     m_previousMtime(0),
     m_highestMtime(0)
@@ -159,7 +160,10 @@ void RetrieveItemsJob::entriesProcessed()
     if (!m_localItems.isEmpty()) {
         Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(Akonadi::valuesToVector(m_localItems), transaction());
         m_maildir.removeCachedKeys(m_localItems.keys());
-        transaction()->setIgnoreJobFailure(job);
+        // We ensure m_transaction is valid by calling transaction() above,
+        // however calling it again here could cause it to give us another transaction
+        // object (see transaction() comment for details)
+        m_transaction->setIgnoreJobFailure(job);
     }
 
     // update mtime
@@ -167,7 +171,7 @@ void RetrieveItemsJob::entriesProcessed()
         Akonadi::Collection newCol(m_collection);
         newCol.setRemoteRevision(QString::number(m_highestMtime));
         Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob(newCol, transaction());
-        transaction()->setIgnoreJobFailure(job);
+        m_transaction->setIgnoreJobFailure(job);
     }
 
     if (!m_transaction) { // no jobs created here -> done
@@ -179,6 +183,16 @@ void RetrieveItemsJob::entriesProcessed()
 
 Akonadi::TransactionSequence *RetrieveItemsJob::transaction()
 {
+    // Commit transaction every 100 items, otherwise we are forcing server to
+    // hold the database transaction opened for potentially massive amount of
+    // operations, which slowly overloads the database journal causing simple
+    // INSERT to take several seconds
+    if (++m_transactionSize >= 100) {
+        m_transaction->commit();
+        m_transaction = Q_NULLPTR;
+        m_transactionSize = 0;
+    }
+
     if (!m_transaction) {
         m_transaction = new Akonadi::TransactionSequence(this);
         m_transaction->setAutomaticCommittingEnabled(false);
