@@ -573,7 +573,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
     }
 
     Maildir md = maildirForCollection(parent);
-    qCDebug(MAILDIRRESOURCE_LOG) << md.subFolderList() << md.entryList();
+    qCDebug(MAILDIRRESOURCE_LOG) << md.subFolderList();
     if (mSettings->readOnly() || !md.isValid()) {
         changeProcessed();
         return;
@@ -585,7 +585,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
             return;
         }
 
-        qCDebug(MAILDIRRESOURCE_LOG) << md.subFolderList() << md.entryList();
+        qCDebug(MAILDIRRESOURCE_LOG) << md.subFolderList();
 
         Collection col = collection;
         col.setRemoteId(collectionName);
