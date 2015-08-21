@@ -51,7 +51,7 @@
 #include <kmessagebox.h>
 #include <kuser.h>
 #include "imapresource_debug.h"
-#include <solid/networking.h>
+#include <QNetworkConfigurationManager>
 
 #include <kidentitymanagement/identitymanager.h>
 #include <kidentitymanagement/identitycombo.h>
@@ -120,6 +120,8 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     : QDialog(), m_parentResource(parentResource), m_ui(new Ui::SetupServerView), m_serverTest(Q_NULLPTR),
       m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator(this)
 {
+    QNetworkConfigurationManager *networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
+
     m_parentResource->settings()->setWinId(parent);
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -187,9 +189,9 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     slotTestChanged();
     slotComplete();
     slotCustomSieveChanged();
-    connect(Solid::Networking::notifier(),
-            SIGNAL(statusChanged(Solid::Networking::Status)),
-            SLOT(slotTestChanged()));
+    connect(networkConfigMgr, &QNetworkConfigurationManager::onlineStateChanged,
+            this, &SetupServer::slotTestChanged);
+ 
     connect(mOkButton, &QPushButton::clicked, this, &SetupServer::applySettings);
 }
 
