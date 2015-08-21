@@ -5,12 +5,13 @@ add_subdirectory(wizard)
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mbox_resource\")
 
 set( mboxresource_SRCS
-  mboxresource_debug.cpp
   compactpage.cpp
   lockmethodpage.cpp
   deleteditemsattribute.cpp
   mboxresource.cpp
 )
+
+ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h IDENTIFIER MBOXRESOURCE_LOG CATEGORY_NAME log_mboxresource)
 
 install( FILES mboxresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 

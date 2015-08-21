@@ -3,7 +3,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 ########### next target ###############
 
 set( imapresource_LIB_SRCS
-  imapresource_debug.cpp
   addcollectiontask.cpp
   additemtask.cpp
   batchfetcher.cpp
@@ -43,8 +42,7 @@ set( imapresource_LIB_SRCS
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
-
-
+ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.h IDENTIFIER IMAPRESOURCE_LOG CATEGORY_NAME log_imapresource)
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
 
