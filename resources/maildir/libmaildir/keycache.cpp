@@ -17,8 +17,7 @@
 */
 
 #include "keycache.h"
-
-#include <QDir>
+#include <QDirIterator>
 
 KeyCache *KeyCache::mSelf = Q_NULLPTR;
 
@@ -71,17 +70,23 @@ bool KeyCache::isNewKey(const QString &dir, const QString &key) const
     return mNewKeys.value(dir).contains(key);
 }
 
-QSet< QString > KeyCache::listNew(const QString &dir) const
+QSet<QString> KeyCache::listNew(const QString &dir) const
 {
-    QDir d(dir + QLatin1String("/new"));
-    d.setSorting(QDir::NoSort);
-    return d.entryList(QDir::Files).toSet();
+    QSet<QString> keys;
+    QDirIterator d(dir + QLatin1String("/new"), QDir::Files);
+    while (d.hasNext()) {
+        keys.insert(d.fileName());
+    }
+    return keys;
 }
 
-QSet< QString > KeyCache::listCurrent(const QString &dir) const
+QSet<QString> KeyCache::listCurrent(const QString &dir) const
 {
-    QDir d(dir + QLatin1String("/cur"));
-    d.setSorting(QDir::NoSort);
-    return d.entryList(QDir::Files).toSet();
+    QSet<QString> keys;
+    QDirIterator d(dir + QLatin1String("/cur"), QDir::Files);
+    while (d.hasNext()) {
+        keys.insert(d.fileName());
+    }
+    return keys;
 }
 
