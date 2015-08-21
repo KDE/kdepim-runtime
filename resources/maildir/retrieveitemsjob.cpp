@@ -63,7 +63,7 @@ void RetrieveItemsJob::localListDone(KJob *job)
 
     const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob *>(job)->items();
     m_localItems.reserve(items.size());
-    foreach (const Akonadi::Item &item, items) {
+    Q_FOREACH (const Akonadi::Item &item, items) {
         if (!item.remoteId().isEmpty()) {
             m_localItems.insert(item.remoteId(), item);
         }
@@ -102,14 +102,20 @@ void RetrieveItemsJob::processEntry()
         entryInfo = m_entryIterator->fileInfo();
         const qint64 currentMtime = entryInfo.lastModified().toMSecsSinceEpoch();
         m_highestMtime = qMax(m_highestMtime, currentMtime);
-        if (currentMtime <= m_previousMtime && m_localItems.contains(fileName)) {     // old, we got this one already
-            m_localItems.remove(fileName);
-            filePath = m_entryIterator->next();
-            fileName = m_entryIterator->fileName();
+        if (currentMtime <= m_previousMtime) {
+            auto localItemIter = m_localItems.find(fileName);
+            if (localItemIter != m_localItems.end()) {  // old, we got this one already
+                m_localItems.erase(localItemIter);
+                filePath = m_entryIterator->next();
+                fileName = m_entryIterator->fileName();
+            } else {
+                newItemFound = true;
+            }
         } else {
             newItemFound = true;
         }
     }
+
     Akonadi::Item item;
     item.setRemoteId(fileName);
     item.setMimeType(m_mimeType);
@@ -130,12 +136,13 @@ void RetrieveItemsJob::processEntry()
     item.setPayload(KMime::Message::Ptr(msg));
     Akonadi::MessageFlags::copyMessageFlags(*msg, item);
     KJob *job = Q_NULLPTR;
-    if (m_localItems.contains(fileName)) {     // modification
-        item.setId(m_localItems.value(fileName).id());
-        job = new Akonadi::ItemModifyJob(item, transaction());
-        m_localItems.remove(fileName);
-    } else { // new item
+    auto localItemIter = m_localItems.find(fileName);
+    if (localItemIter == m_localItems.end()) { // new item
         job = new Akonadi::ItemCreateJob(item, m_collection, transaction());
+    } else { // modification
+        item.setId((*localItemIter).id());
+        job = new Akonadi::ItemModifyJob(item, transaction());
+        m_localItems.erase(localItemIter);
     }
     connect(job, &Akonadi::ItemCreateJob::result, this, &RetrieveItemsJob::processEntryDone);
 }
