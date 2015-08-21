@@ -12,7 +12,6 @@ add_definitions(-DSETTINGS_NAMESPACE=Akonadi_KAlarm_Resource)
 set(kalarmresource_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared/icalresourcebase.cpp
     kalarmresource.cpp
-    kalarmresource_debug.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtyperadiowidget.cpp
 )
@@ -24,6 +23,9 @@ kconfig_add_kcfg_files(kalarmresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmresource.kcfg org.kde.Akonadi.KAlarm.Settings)
 qt5_add_dbus_adaptor(kalarmresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
+
+ecm_qt_declare_logging_category(kalarmresource_SRCS HEADER kalarmresource_debug.h IDENTIFIER KALARMRESOURCE_LOG CATEGORY_NAME log_kalarmresource)
+
 add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml)
 
 add_executable(akonadi_kalarm_resource ${kalarmresource_SRCS})

@@ -9,7 +9,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_contacts_resource\")
 set( contactsresource_SRCS
   contactsresource.cpp
   settingsdialog.cpp
-  contacts_resources_debug.cpp
 )
 
 ki18n_wrap_ui(contactsresource_SRCS settingsdialog.ui)
@@ -18,6 +17,8 @@ kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/contactsresource.kcfg o
 qt5_add_dbus_adaptor(contactsresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Contacts.Settings.xml settings.h Akonadi_Contacts_Resource::ContactsResourceSettings contactsresourcesettingsadaptor ContactsResourceSettingsAdaptor
 )
+
+ecm_qt_declare_logging_category(contactsresource_SRCS HEADER contacts_resources_debug.h IDENTIFIER CONTACTSRESOURCES_LOG CATEGORY_NAME log_resources_contacts)
 
 install( FILES contactsresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
