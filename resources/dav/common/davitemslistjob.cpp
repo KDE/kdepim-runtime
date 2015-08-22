@@ -179,7 +179,7 @@ void DavItemsListJob::davJobFinished(KJob *job)
             url.setUserInfo(QString());
             if (href.startsWith(QLatin1Char('/'))) {
                 // href is only a path, use request url to complete
-                url.setPath(href.toLatin1(), QUrl::TolerantMode);
+                url.setPath(href, QUrl::TolerantMode);
             } else {
                 // href is a complete url
                 url = QUrl::fromUserInput(href);

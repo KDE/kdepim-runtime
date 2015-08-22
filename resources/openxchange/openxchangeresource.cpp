@@ -894,7 +894,7 @@ static Collection folderToCollection(const OXA::Folder &folder, const Collection
     remoteInformation.store(collection);
 
     // set a unique name to make Akonadi happy
-    collection.setName(folder.title() + '_' + QUuid::createUuid().toString());
+    collection.setName(folder.title() + QLatin1Char('_') + QUuid::createUuid().toString());
 
     EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attribute->setDisplayName(folder.title());

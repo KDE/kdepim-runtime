@@ -56,7 +56,7 @@ static void parseMembersAttribute(const QDomElement &element,
                 }
 
                 name = uid;
-                email = uid + '@' + DavManager::self()->baseUrl().host();
+                email = uid + QLatin1Char('@') + DavManager::self()->baseUrl().host();
             } else {
                 name = user.name();
                 email = user.email();

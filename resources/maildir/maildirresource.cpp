@@ -105,7 +105,7 @@ MaildirResource::MaildirResource(const QString &id)
     // we cannot be sure that a config file is existing
     // the MaildirResource will always be build
     // look for a resource of this name
-    QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc");
+    QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + QLatin1String("rc"));
     // if not present, create it
     if (configFile.isEmpty()) {
         // check if the resource was used before
@@ -156,7 +156,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
     }
     // we cannot be sure that a config file is existing
     const QString id = identifier();
-    const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + "rc");
+    const QString configFile = QStandardPaths::locate(QStandardPaths::ConfigLocation, id + QLatin1String("rc"));
     // we test it again, to be sure
     if (configFile.isEmpty()) {
         // it is still empty, create it
@@ -526,7 +526,7 @@ void MaildirResource::retrieveCollections()
     CachePolicy policy;
     policy.setInheritFromParent(false);
     policy.setSyncOnDemand(true);
-    policy.setLocalParts(QStringList() << MessagePart::Envelope);
+    policy.setLocalParts(QStringList() << QLatin1String(MessagePart::Envelope));
     policy.setCacheTimeout(1);
     policy.setIntervalCheckTime(-1);
     root.setCachePolicy(policy);

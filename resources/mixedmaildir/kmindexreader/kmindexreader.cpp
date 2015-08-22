@@ -155,7 +155,7 @@ MessageStatus &KMIndexData::status()
 
 QStringList KMIndexData::tagList() const
 {
-    return mCachedStringParts[KMIndexReader::MsgTagPart].split(',', QString::SkipEmptyParts);
+    return mCachedStringParts[KMIndexReader::MsgTagPart].split(QLatin1Char(','), QString::SkipEmptyParts);
 }
 
 quint64 KMIndexData::uid() const
@@ -452,7 +452,7 @@ bool KMIndexReader::fromOldIndexString(KMIndexData *msg, const QByteArray &str, 
 //   }
 //   msg->replyToIdMD5 = str.mid(240, 22).trimmed();
 //   msg->msgIdMD5 = str.mid(263, 22).trimmed();
-    msg->mStatus.setStatusFromStr(str);
+    msg->mStatus.setStatusFromStr(QString::fromUtf8(str));
     return true;
 }
 

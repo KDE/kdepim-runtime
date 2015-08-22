@@ -37,11 +37,11 @@ QString OXUtils::writeNumber(qlonglong value)
 
 QString OXUtils::writeString(const QString &value)
 {
-    QStringList lines = value.split('\n');
+    QStringList lines = value.split(QLatin1Char('\n'));
 
     for (int i = 0; i < lines.count(); ++i) {
-        lines[i].replace('\\', QStringLiteral("\\\\"));
-        lines[i].replace('"', QStringLiteral("\\\""));
+        lines[i].replace(QLatin1Char('\\'), QStringLiteral("\\\\"));
+        lines[i].replace(QLatin1Char('"'), QStringLiteral("\\\""));
     }
 
     return lines.join(QStringLiteral("\n"));

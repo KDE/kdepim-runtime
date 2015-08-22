@@ -156,7 +156,7 @@ void SearchDialog::onSearchJobFinished(KJob *job)
 
     foreach (const DavPrincipalSearchJob::Result &result, results) {
         if (result.value.startsWith(QLatin1Char('/'))) {
-            url.setPath(result.value.toLatin1(), QUrl::TolerantMode);
+            url.setPath(result.value, QUrl::TolerantMode);
         } else {
             QUrl tmp(result.value);
             tmp.setUserInfo(QString());

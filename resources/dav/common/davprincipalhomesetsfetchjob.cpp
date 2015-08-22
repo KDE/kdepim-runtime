@@ -208,7 +208,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished(KJob *job)
 
         if (nextRoundHref.startsWith(QLatin1Char('/'))) {
             // nextRoundHref is only a path, use request url to complete
-            nextRoundUrl.setPath(nextRoundHref.toLatin1(), QUrl::TolerantMode);
+            nextRoundUrl.setPath(nextRoundHref, QUrl::TolerantMode);
         } else {
             // href is a complete url
             nextRoundUrl = QUrl::fromUserInput(nextRoundHref);

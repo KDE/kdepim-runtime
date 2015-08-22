@@ -74,7 +74,7 @@ static bool writeToFile(const QString &fileName, Incidence::Ptr &incidence)
 
     const bool success = fileStorage->save();
     if (!success) {
-        qCritical() << "Failed to save calendar to file " + fileName;
+        qCritical() << QStringLiteral("Failed to save calendar to file ") + fileName;
     }
 
     return success;
@@ -301,7 +301,7 @@ void ICalDirResource::initializeICalDirectory() const
     }
 
     // check whether warning file is in place...
-    QFile file(dir.absolutePath() + QDir::separator() + "WARNING_README.txt");
+    QFile file(dir.absolutePath() + QDir::separator() + QStringLiteral("WARNING_README.txt"));
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);

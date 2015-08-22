@@ -381,8 +381,8 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
     }
 
     QString ridBase = item.remoteId();
-    if (ridBase.contains(QChar('#'))) {
-        ridBase.truncate(ridBase.indexOf(QChar('#')));
+    if (ridBase.contains(QLatin1Char('#'))) {
+        ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
     }
 
     EtagCache *cache = mEtagCaches.value(collection.remoteId());
@@ -423,8 +423,8 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
     }
 
     QString url = item.remoteId();
-    if (url.contains(QChar('#'))) {
-        url.truncate(url.indexOf(QChar('#')));
+    if (url.contains(QLatin1Char('#'))) {
+        url.truncate(url.indexOf(QLatin1Char('#')));
     }
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), url);
 
@@ -454,10 +454,10 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
     }
 
     QString ridBase = item.remoteId();
-    if (ridBase.contains(QChar('#'))) {
+    if (ridBase.contains(QLatin1Char('#'))) {
         // A bit tricky: we must remove an incidence contained in a resource
         // containing multiple ones.
-        ridBase.truncate(ridBase.indexOf(QChar('#')));
+        ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
 
         EtagCache *cache = mEtagCaches.value(collection.remoteId());
         Akonadi::Item::List extraItems;
@@ -499,7 +499,7 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
         Akonadi::Item mainItem;
         Akonadi::Item::List extraItems;
         QString ridBase = item.remoteId();
-        ridBase.truncate(ridBase.indexOf(QChar('#')));
+        ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
 
         foreach (const Akonadi::Item &kept, keptItems) {
             if (kept.remoteId() == ridBase && extraItems.isEmpty()) {
@@ -1144,8 +1144,8 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         DavItem davItem = DavUtils::createDavItem(localItem, collection, localDependentItems);
 
         QString urlStr = localItem.remoteId();
-        if (urlStr.contains(QChar('#'))) {
-            urlStr.truncate(urlStr.indexOf(QChar('#')));
+        if (urlStr.contains(QLatin1Char('#'))) {
+            urlStr.truncate(urlStr.indexOf(QLatin1Char('#')));
         }
         davItem.setUrl(urlStr);
         const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), urlStr);

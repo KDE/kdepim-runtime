@@ -336,16 +336,16 @@ void MaildirTest::testMaildirMoveTo()
 void MaildirTest::testMaildirFlagsReading()
 {
     QFile file;
-    const QStringList markers = QStringList() << "P" << "R" << "S" << "F" << "FPRS";
-    QDir::setCurrent(m_temp->path() + QLatin1Char('/') + "cur");
+    const QStringList markers = QStringList() << QStringLiteral("P") << QStringLiteral("R") << QStringLiteral("S") << QStringLiteral("F") << QStringLiteral("FPRS");
+    QDir::setCurrent(m_temp->path() + QLatin1Char('/') + QStringLiteral("cur"));
     for (int i = 0; i < 6 ; i++) {
         QString fileName = QLatin1String("testmail-") + QString::number(i);
         if (i < 5) {
             fileName +=
 #ifdef Q_OS_WIN
-                "!2,"
+                QLatin1String("!2,")
 #else
-                ":2,"
+                QLatin1String(":2,")
 #endif
                 + markers[i];
         }
@@ -423,7 +423,7 @@ void MaildirTest::testMaildirFlagsWriting()
     const QString newKey = d.changeEntryFlags(entries[0], Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen);
     // make sure the new key exists
     QCOMPARE(newKey, d.entryList()[0]);
-    QVERIFY(QFile::exists("cur/" + newKey));
+    QVERIFY(QFile::exists(QStringLiteral("cur/") + newKey));
     // and it's the right file
     QCOMPARE(d.readEntry(newKey), QByteArray(testString));
     // now check the file name
@@ -432,5 +432,5 @@ void MaildirTest::testMaildirFlagsWriting()
     const QString newKey2 = d.changeEntryFlags(newKey, Akonadi::Item::Flags() << Akonadi::MessageFlags::Seen << Akonadi::MessageFlags::Replied);
     // check the file name, and the sorting of markers
     QVERIFY(newKey2.endsWith(QLatin1String("2,RS")));
-    QVERIFY(QFile::exists("cur/" + newKey2));
+    QVERIFY(QFile::exists(QStringLiteral("cur/") + newKey2));
 }

@@ -43,13 +43,13 @@ void SyncTest::initTestCase()
 
 void SyncTest::testSync()
 {
-    AgentInstance instance = AgentManager::self()->instance("akonadi_maildir_resource_0");
+    AgentInstance instance = AgentManager::self()->instance(QStringLiteral("akonadi_maildir_resource_0"));
     QVERIFY(instance.isValid());
 
     for (int i = 0; i < 100; i++) {
         QDBusInterface *interface = new QDBusInterface(
             QString::fromLatin1("org.freedesktop.Akonadi.Resource.%1").arg(instance.identifier()),
-            "/", "org.freedesktop.Akonadi.Resource", QDBusConnection::sessionBus(), this);
+            QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
         QVERIFY(interface->isValid());
         QTime t;
         t.start();
