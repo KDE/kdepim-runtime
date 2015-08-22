@@ -248,6 +248,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
          <widget class="QLabel" name="label_5">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="locale">
            <locale language="English" country="UnitedStates"/>
           </property>
@@ -258,6 +261,9 @@
         </item>
         <item>
          <widget class="QSpinBox" name="kcfg_syncRangeStartNumber">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="locale">
            <locale language="English" country="UnitedStates"/>
           </property>
@@ -268,6 +274,9 @@
         </item>
         <item>
          <widget class="QComboBox" name="syncRangeStartType">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="locale">
            <locale language="English" country="UnitedStates"/>
           </property>
@@ -301,5 +310,54 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>kcfg_limitSyncRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_5</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>30</x>
+     <y>485</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>512</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kcfg_limitSyncRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_syncRangeStartNumber</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>264</x>
+     <y>488</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>267</x>
+     <y>516</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kcfg_limitSyncRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>syncRangeStartType</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>489</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>331</x>
+     <y>510</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
