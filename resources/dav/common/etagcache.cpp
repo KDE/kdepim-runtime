@@ -24,11 +24,8 @@
 #include <itemfetchscope.h>
 #include <kjob.h>
 
-EtagCache::EtagCache()
-{
-}
-
-void EtagCache::sync(const Akonadi::Collection &collection)
+EtagCache::EtagCache(const Akonadi::Collection &collection, QObject *parent)
+    : QObject(parent)
 {
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection);
     job->fetchScope().fetchFullPayload(false);   // We only need the remote id and the revision
@@ -71,7 +68,7 @@ void EtagCache::removeEtag(const QString &remoteId)
     mCache.remove(remoteId);
 }
 
-QStringList EtagCache::etags() const
+QStringList EtagCache::urls() const
 {
     return mCache.keys();
 }

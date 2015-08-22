@@ -35,7 +35,7 @@ class KJob;
  * @short A helper class to cache etags.
  *
  * The EtagCache caches the remote ids and etags of all items
- * that are known to the resource. This cache is needed to find
+ * in a given collection. This cache is needed to find
  * out which items have been changed in the backend and have to
  * be refetched on the next call of ResourceBase::retrieveItems()
  */
@@ -45,14 +45,10 @@ class EtagCache : public QObject
 
 public:
     /**
-     * Creates a new etag cache.
+     * Creates a new etag cache and populates it with the ETags
+     * of items found in @p collection.
      */
-    EtagCache();
-
-    /**
-     * Populates the cache with the items found in @p collection.
-     */
-    void sync(const Akonadi::Collection &collection);
+    explicit EtagCache(const Akonadi::Collection &collection, QObject *parent = 0);
 
     /**
      * Sets the ETag for the remote ID. If the remote ID is marked as
@@ -67,8 +63,7 @@ public:
     bool contains(const QString &remoteId);
 
     /**
-     * Check if the known ETag for the remote ID is equal to @p refEtag and, if not,
-     * mark it as changed.
+     * Check if the known ETag for the remote ID is equal to @p refEtag.
      */
     bool etagChanged(const QString &remoteId, const QString &refEtag);
 
@@ -89,13 +84,13 @@ public:
     void removeEtag(const QString &remoteId);
 
     /**
-     * Returns the list of all etags.
+     * Returns the list of all items URLs.
      */
-    QStringList etags() const;
+    QStringList urls() const;
 
     /**
      * Returns the list of remote ids of items that have been changed
-     * in the backend but not been refetched.
+     * in the backend.
      */
     QStringList changedRemoteIds() const;
 

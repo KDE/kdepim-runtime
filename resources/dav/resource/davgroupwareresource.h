@@ -100,7 +100,6 @@ private Q_SLOTS:
     void onItemRemovedFinished(KJob *);
 
     void onCollectionDiscovered(int protocol, const QString &collectionUrl, const QString &configuredUrl);
-    void onEtagChanged(const QString &itemUrl, const QString &etag);
     void onConflictModifyJobFinished(KJob *job);
     void onDeletedItemRecreated(KJob *job);
 
@@ -123,10 +122,9 @@ private:
     static void setCollectionIcon(Akonadi::Collection &collection);
 
     Akonadi::Collection mDavCollectionRoot;
-    EtagCache mEtagCache;
+    QMap<QString, EtagCache*> mEtagCaches;
     QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *mFreeBusyHandler;
-    QMap< QString, QSet<QString> > mItemsRidCache;
     bool mSyncErrorNotified;
 };
 
