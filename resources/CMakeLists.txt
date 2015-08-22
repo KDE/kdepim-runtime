@@ -1,5 +1,4 @@
 project(resources)
-cmake_minimum_required(VERSION 2.8.12)
 
 set(AKONADICALENDAR_LIB_VERSION "4.78.0")
 set(KMBOX_LIB_VERSION "4.78.0")
@@ -85,7 +84,4 @@ add_subdirectory( icaldir )
 add_subdirectory( vcard )
 add_subdirectory( folderarchivesettings )
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${resources_SOURCE_DIR}")
-  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
-endif()
 

@@ -1,31 +1,6 @@
 project(migration)
 
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${migration_SOURCE_DIR}")
-  find_package(ECM 5.9.0 CONFIG REQUIRED)
-  set(CMAKE_MODULE_PATH ${migration_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
-
-  include(ECMPackageConfigHelpers)
-  include(ECMSetupVersion)
-  include(FeatureSummary)
-  include(KDEInstallDirs)
-  include(KDECMakeSettings)
-  include(KDEFrameworkCompilerSettings)
-  set(KDEPIMLIBS_LIB_VERSION "4.75.0")
-  set(KF5_VERSION "5.9.0")
-  set(QT_REQUIRED_VERSION "5.4.0")
-
-  find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
-  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5Mbox ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5PimTextEdit ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5IMAP ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-endif()
-
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 #REMOVE IT
@@ -49,8 +24,4 @@ set( MIGRATION_AKONADI_SHARED_SOURCES
 
 
 add_subdirectory( gid )
-
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${migration_SOURCE_DIR}")
-  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
-endif()
 

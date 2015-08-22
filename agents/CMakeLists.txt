@@ -4,46 +4,8 @@ cmake_minimum_required(VERSION 2.8.12)
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
-
-  find_package(ECM 5.9.0 CONFIG REQUIRED)
-  set(CMAKE_MODULE_PATH ${agents_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
-
-  include(ECMPackageConfigHelpers)
-  include(ECMSetupVersion)
-  include(FeatureSummary)
-  include(KDEInstallDirs)
-  include(KDECMakeSettings)
-  include(KDEFrameworkCompilerSettings)
-
-  set(KDEPIMLIBS_LIB_VERSION "4.75.0")
-  set(KF5_VERSION "5.9.0")
-  set(QT_REQUIRED_VERSION "5.4.0")
-  # KF5 package
-  find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
-  find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
-
-  # KdepimLibs package
-  find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5Mime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5MailTransport ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5IdentityManagement ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-  find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-
-
-  # Xsltproc
-  find_package(Xsltproc)
-  set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
-
-endif()
-
 add_subdirectory( maildispatcher )
 add_subdirectory( newmailnotifier )
 add_subdirectory( migration )
 add_subdirectory( invitations )
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${agents_SOURCE_DIR}")
-  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
-endif()

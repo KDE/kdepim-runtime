@@ -3,21 +3,6 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${plugins_SOURCE_DIR}")
-
- set(KDEPIMLIBS_LIB_VERSION "4.75.0")
- set(KMIME_LIB_VERSION "4.83.0")
- find_package(Qt5DBus ${KF5_VERSION} CONFIG REQUIRED)
- find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5Contacts ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5AlarmCalendar ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5CalendarCore ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5CalendarUtils ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5AkonadiContact ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
- find_package(KF5AkonadiMime ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
-endif()
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_serializer_plugins\")
 
 
@@ -63,9 +48,5 @@ DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/plugins/serializer)
 
 if (BUILD_TESTING)
    add_subdirectory( autotests ) 
-endif()
-
-if ("${CMAKE_BINARY_DIR}" STREQUAL "${plugins_BINARY_DIR}")
-  feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 endif()
 
