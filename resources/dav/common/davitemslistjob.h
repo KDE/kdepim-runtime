@@ -27,6 +27,8 @@
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
 
+class EtagCache;
+
 /**
  * @short A job that lists all DAV items inside a DAV collection.
  */
@@ -41,7 +43,7 @@ public:
      * @param url The url of the DAV collection.
      * @param parent The parent object.
      */
-    explicit DavItemsListJob(const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR);
+    DavItemsListJob(const DavUtils::DavUrl &url, const EtagCache *cache, QObject *parent = Q_NULLPTR);
 
     /**
      * Limits the mime types of the items requested.
@@ -66,20 +68,34 @@ public:
     void start() Q_DECL_OVERRIDE;
 
     /**
-     * Returns the list of items including identifier url and etag information.
+     * Returns the list of items seen including identifier url and etag information.
      */
     DavItem::List items() const;
+
+    /**
+     * Returns the list of items that were changed on the server.
+     */
+    DavItem::List changedItems() const;
+
+    /**
+     * Returns the list of items URLs that were not seen in the backend.
+     * As this is based on the etag cache this may contain dependent items.
+     */
+    QStringList deletedItems() const;
 
 private Q_SLOTS:
     void davJobFinished(KJob *);
 
 private:
     DavUtils::DavUrl mUrl;
+    const EtagCache *mEtagCache;
     QStringList mMimeTypes;
     QString mRangeStart;
     QString mRangeEnd;
     DavItem::List mItems;
     QSet<QString> mSeenUrls; // to prevent events duplication with some servers
+    DavItem::List mChangedItems;
+    QStringList mDeletedItems;
     uint mSubJobCount;
 };
 

@@ -65,7 +65,7 @@ public:
     /**
      * Check if the known ETag for the remote ID is equal to @p refEtag.
      */
-    bool etagChanged(const QString &remoteId, const QString &refEtag);
+    bool etagChanged(const QString &remoteId, const QString &refEtag) const;
 
     /**
      * Mark an item as changed in the backend.

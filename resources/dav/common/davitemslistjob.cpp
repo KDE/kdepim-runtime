@@ -21,6 +21,7 @@
 #include "davmanager.h"
 #include "davprotocolbase.h"
 #include "davutils.h"
+#include "etagcache.h"
 
 #include <kio/davjob.h>
 #include <kio/job.h>
@@ -28,8 +29,8 @@
 
 #include <QtCore/QBuffer>
 
-DavItemsListJob::DavItemsListJob(const DavUtils::DavUrl &url, QObject *parent)
-    : KJob(parent), mUrl(url), mSubJobCount(0)
+DavItemsListJob::DavItemsListJob(const DavUtils::DavUrl &url, const EtagCache *cache, QObject *parent)
+    : KJob(parent), mUrl(url), mEtagCache(cache), mSubJobCount(0)
 {
 }
 
@@ -82,6 +83,16 @@ void DavItemsListJob::start()
 DavItem::List DavItemsListJob::items() const
 {
     return mItems;
+}
+
+DavItem::List DavItemsListJob::changedItems() const
+{
+    return mChangedItems;
+}
+
+QStringList DavItemsListJob::deletedItems() const
+{
+    return mDeletedItems;
 }
 
 void DavItemsListJob::davJobFinished(KJob *job)
@@ -201,9 +212,17 @@ void DavItemsListJob::davJobFinished(KJob *job)
 
             mItems << item;
 
+            if (mEtagCache->etagChanged(itemUrl, item.etag())) {
+                mChangedItems << item;
+            }
+
             responseElement = DavUtils::nextSiblingElementNS(responseElement, QStringLiteral("DAV:"), QStringLiteral("response"));
         }
     }
+
+    QSet<QString> removed = mEtagCache->urls().toSet();
+    removed.subtract(mSeenUrls);
+    mDeletedItems = removed.toList();
 
     if (--mSubJobCount == 0) {
         emitResult();

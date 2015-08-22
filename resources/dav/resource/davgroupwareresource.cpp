@@ -271,6 +271,11 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
+    if (!mEtagCaches.contains(collection.remoteId())) {
+        itemsRetrievalDone();
+        return;
+    }
+
     // Only continue if the collection has changed or if
     // it's the first time we see it
     CTagAttribute *CTagAttr = collection.attribute<CTagAttribute>();
@@ -289,7 +294,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    DavItemsListJob *job = new DavItemsListJob(davUrl);
+    DavItemsListJob *job = new DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId()));
     if (Settings::self()->limitSyncRange()) {
         QDateTime start = Settings::self()->getSyncRangeStart();
         qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
@@ -761,8 +766,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     QSet<QString> seenRids;
     QStringList changedRids;
 
-    const DavItem::List davItems = listJob->items();
-    foreach (const DavItem &davItem, davItems) {
+    foreach (const DavItem &davItem, listJob->changedItems()) {
         seenRids.insert(davItem.url());
 
         Akonadi::Item item;
@@ -771,24 +775,27 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         item.setMimeType(davItem.contentType());
         item.setRemoteRevision(davItem.etag());
 
-        if (cache->etagChanged(item.remoteId(), davItem.etag())) {
-            cache->markAsChanged(item.remoteId());
-            changedRids << item.remoteId();
-            changedItems << item;
+        cache->markAsChanged(item.remoteId());
+        changedRids << item.remoteId();
+        changedItems << item;
 
-            // Only clear the payload (and therefor trigger a refetch from the backend) if we
-            // do not use multiget, because in this case we fetch the complete payload
-            // some lines below already.
-            if (!protocolSupportsMultiget) {
-                qCDebug(DAVRESOURCE_LOG) << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
-                item.clearPayload();
-            }
+        // Only clear the payload (and therefor trigger a refetch from the backend) if we
+        // do not use multiget, because in this case we fetch the complete payload
+        // some lines below already.
+        if (!protocolSupportsMultiget) {
+            qCDebug(DAVRESOURCE_LOG) << "Outdated item " << item.remoteId() << " (etag = " << davItem.etag() << ")";
+            item.clearPayload();
         }
     }
 
-    QSet<QString> removedRids = mEtagCaches[collection.remoteId()]->urls().toSet();
-    removedRids.subtract(seenRids);
-    foreach (const QString &rmd, removedRids) {
+    foreach (const QString &rmd, listJob->deletedItems()) {
+        // We don't want to delete dependent items if the main item was seen
+        if (rmd.contains(QChar('#'))) {
+            const QString base = rmd.left(rmd.indexOf(QChar('#')));
+            if (seenRids.contains(base))
+                continue;
+        }
+
         Akonadi::Item item;
         item.setParentCollection(collection);
         item.setRemoteId(rmd);
