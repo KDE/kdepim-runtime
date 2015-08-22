@@ -272,6 +272,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     }
 
     if (!mEtagCaches.contains(collection.remoteId())) {
+        qCDebug(DAVRESOURCE_LOG) << "Asked to retrieve items for a collection we don't have in the cache";
         itemsRetrievalDone();
         return;
     }
@@ -318,6 +319,7 @@ bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QB
 
     const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
     if (!davUrl.url().isValid()) {
+        qCDebug(DAVRESOURCE_LOG) << "Failed to get a valid DavUrl. Parent collection remote ID is" << item.parentCollection().remoteId();
         cancelTask();
         return false;
     }
@@ -380,6 +382,7 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
 
     const Akonadi::Collection collection = item.parentCollection();
     if (!mEtagCaches.contains(collection.remoteId())) {
+        qCDebug(DAVRESOURCE_LOG) << "Changed item is in a collection we don't have in the cache";
         // TODO: display an error
         cancelTask();
         return;
@@ -447,12 +450,15 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
 
 void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
 {
+    qCDebug(DAVRESOURCE_LOG) << "Received notification for removed item. Remote id = " << item.remoteId();
+
     if (!configurationIsValid()) {
         return;
     }
 
     const Akonadi::Collection collection = item.parentCollection();
     if (!mEtagCaches.contains(collection.remoteId())) {
+        qCDebug(DAVRESOURCE_LOG) << "Removed item is in a collection we don't have in the cache";
         // TODO: display an error
         cancelTask();
         return;
@@ -577,16 +583,20 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
     foreach (const Akonadi::Item &item, fetchJob->items()) {
         const QString rid = item.remoteId();
         if (rid.isEmpty()) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onCreateInitialCacheReady: Found an item without remote ID. " << item.id();
             continue;
         }
 
         const Akonadi::Collection collection = item.parentCollection();
         if (collection.remoteId().isEmpty()) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onCreateInitialCacheReady: Found an item in a collection without remote ID. "
+                                     << item.remoteId();
             continue;
         }
 
         const QString etag = item.remoteRevision();
         if (etag.isEmpty()) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onCreateInitialCacheReady: Found an item without ETag. " << item.remoteId();
             continue;
         }
 
@@ -643,6 +653,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 
     foreach (const DavCollection &davCollection, davCollections) {
         if (seenCollectionsUrls.contains(davCollection.url())) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. " << davCollection.url();
             continue;
         } else {
             seenCollectionsUrls.insert(davCollection.url());
@@ -735,6 +746,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 
     foreach (const QString &rid, mEtagCaches.keys()) {
         if (!seenCollectionsUrls.contains(rid)) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Collection disappeared. " << rid;
             mEtagCaches[rid]->deleteLater();
             mEtagCaches.remove(rid);
         }
@@ -796,6 +808,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
                 continue;
         }
 
+        qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveItemsFinished: Item disappeared. " << rmd;
         Akonadi::Item item;
         item.setParentCollection(collection);
         item.setRemoteId(rmd);
@@ -856,7 +869,9 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
 
         // No data was retrieved for this item, maybe because it is not out of date
         if (davItem.data().isEmpty()) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onMultigetFinished: Empty item returned. " << item.remoteId();
             if (!cache->isOutOfDate(item.remoteId())) {
+                qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onMultigetFinished: Item is not changed, including it. " << item.remoteId();
                 items << item;
             }
             continue;
@@ -864,6 +879,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
 
         Akonadi::Item::List extraItems;
         if (!DavUtils::parseDavData(davItem, item, extraItems)) {
+            qCWarning(DAVRESOURCE_LOG) << "DavGroupwareResource::onMultigetFinished: Failed to parse item data. " << item.remoteId();
             continue;
         }
 
@@ -925,6 +941,7 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
 
     Akonadi::Item::List extraItems;
     if (!DavUtils::parseDavData(davItem, item, extraItems)) {
+        qCWarning(DAVRESOURCE_LOG) << "DavGroupwareResource::onItemFetched: Failed to parse item data. " << item.remoteId();
         return;
     }
 
