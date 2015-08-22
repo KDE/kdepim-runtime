@@ -103,7 +103,7 @@ void ICalDirResource::aboutToQuit()
 void ICalDirResource::configure(WId windowId)
 {
     SettingsDialog dlg(windowId);
-    dlg.setWindowIcon(QIcon::fromTheme("text-calendar"));
+    dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("text-calendar")));
     if (dlg.exec()) {
         initializeICalDirectory();
         loadIncidences();
@@ -123,7 +123,7 @@ bool ICalDirResource::loadIncidences()
     QDirIterator it(iCalDirectoryName());
     while (it.hasNext()) {
         it.next();
-        if (it.fileName() != "." && it.fileName() != ".." && it.fileName() != "WARNING_README.txt") {
+        if (it.fileName() != QLatin1String(".") && it.fileName() != QLatin1String("..") && it.fileName() != QLatin1String("WARNING_README.txt")) {
             const KCalCore::Incidence::Ptr incidence = readFromFile(it.filePath(), it.fileName());
             if (incidence) {
                 mIncidences.insert(incidence->instanceIdentifier(), incidence);
@@ -242,7 +242,7 @@ void ICalDirResource::retrieveCollections()
     c.setName(name());
 
     QStringList mimetypes;
-    mimetypes << KCalCore::Event::eventMimeType() << KCalCore::Todo::todoMimeType() << KCalCore::Journal::journalMimeType() << "text/calendar";
+    mimetypes << KCalCore::Event::eventMimeType() << KCalCore::Todo::todoMimeType() << KCalCore::Journal::journalMimeType() << QStringLiteral("text/calendar");
     c.setContentMimeTypes(mimetypes);
 
     if (Settings::self()->readOnly()) {
@@ -258,7 +258,7 @@ void ICalDirResource::retrieveCollections()
 
     EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(i18n("Calendar Folder"));
-    attr->setIconName("office-calendar");
+    attr->setIconName(QStringLiteral("office-calendar"));
 
     Collection::List list;
     list << c;

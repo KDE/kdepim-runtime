@@ -81,8 +81,8 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     pathPattern.replace(QStringLiteral("$user$"), username);
     pathPattern.replace(QStringLiteral("$localpart$"), localPart);
     QString providerName;
-    if (!service->property("X-DavGroupware-Provider").isNull()) {
-        providerName = service->property("X-DavGroupware-Provider").toString();
+    if (!service->property(QStringLiteral("X-DavGroupware-Provider")).isNull()) {
+        providerName = service->property(QStringLiteral("X-DavGroupware-Provider")).toString();
     }
     QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {

@@ -193,7 +193,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
     }
 
     if (!remoteUrl().startsWith(QStringLiteral("https://")) && !remoteUrl().startsWith(QStringLiteral("http://"))) {
-        setRemoteUrl(QString("https://") + remoteUrl());
+        setRemoteUrl(QStringLiteral("https://") + remoteUrl());
     }
 
     QUrl url(mUi.remoteUrl->text());

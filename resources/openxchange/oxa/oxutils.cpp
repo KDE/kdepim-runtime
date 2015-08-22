@@ -40,11 +40,11 @@ QString OXUtils::writeString(const QString &value)
     QStringList lines = value.split('\n');
 
     for (int i = 0; i < lines.count(); ++i) {
-        lines[i].replace('\\', "\\\\");
-        lines[i].replace('"', "\\\"");
+        lines[i].replace('\\', QStringLiteral("\\\\"));
+        lines[i].replace('"', QStringLiteral("\\\""));
     }
 
-    return lines.join("\n");
+    return lines.join(QStringLiteral("\n"));
 }
 
 QString OXUtils::writeName(const QString &value)
@@ -99,8 +99,8 @@ qlonglong OXUtils::readNumber(const QString &text)
 QString OXUtils::readString(const QString &text)
 {
     QString value(text);
-    value.replace("\\\"", "\"");
-    value.replace("\\\\", "\\");
+    value.replace(QStringLiteral("\\\""), QStringLiteral("\""));
+    value.replace(QStringLiteral("\\\\"), QStringLiteral("\\"));
 
     return value;
 }

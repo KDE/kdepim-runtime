@@ -290,7 +290,7 @@ void ResourceState::restartItemRetrieval(Akonadi::Collection::Id col)
     //The task will be appended
     //TODO: deferTask should rerun the collectionfetchjob
     m_resource->synchronizeCollection(col);
-    cancelTask("Restarting item retrieval.");
+    cancelTask(QStringLiteral("Restarting item retrieval."));
 }
 
 void ResourceState::taskDone()

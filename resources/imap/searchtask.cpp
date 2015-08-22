@@ -195,7 +195,7 @@ void SearchTask::doSearch(KIMAP::Session *session)
     if (term.isNull()) {
         qCWarning(IMAPRESOURCE_LOG) << "failed to translate query " << m_query;
         searchFinished(QVector<qint64>());
-        cancelTask("Invalid search");
+        cancelTask(QStringLiteral("Invalid search"));
         return;
     }
     searchJob->setTerm(term);

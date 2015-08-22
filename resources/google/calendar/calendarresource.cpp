@@ -66,7 +66,7 @@
 
 #include <KGAPI/Account>
 
-#define ROOT_COLLECTION_REMOTEID QLatin1String("RootCollection")
+#define ROOT_COLLECTION_REMOTEID QStringLiteral("RootCollection")
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
 #define TASK_PROPERTY "_KGAPI2::TaskPtr"
 

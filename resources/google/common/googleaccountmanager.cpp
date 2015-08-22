@@ -27,7 +27,7 @@
 
 #include <KGAPI/Account>
 
-#define WALLET_FOLDER QLatin1String("Akonadi Google")
+#define WALLET_FOLDER QStringLiteral("Akonadi Google")
 
 using namespace KGAPI2;
 

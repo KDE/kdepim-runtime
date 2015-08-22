@@ -210,7 +210,7 @@ void ImapResourceBase::updateResourceName()
                                         -1).toInt();
 
         if (instanceCounter > 0) {
-            setName(QString("%1 %2").arg(defaultName()).arg(instanceCounter));
+            setName(QStringLiteral("%1 %2").arg(defaultName()).arg(instanceCounter));
         } else {
             setName(defaultName());
         }

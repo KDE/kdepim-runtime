@@ -294,7 +294,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         QDateTime start = Settings::self()->getSyncRangeStart();
         qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
         if (start.isValid()) {
-            job->setTimeRange(start.toString("yyyyMMddTHHMMssZ"), QString());
+            job->setTimeRange(start.toString(QStringLiteral("yyyyMMddTHHMMssZ")), QString());
         }
     }
     job->setProperty("collection", QVariant::fromValue(collection));

@@ -60,7 +60,11 @@ static void initRandomSeed()
 
 using namespace KPIM;
 
-Q_GLOBAL_STATIC_WITH_ARGS(QRegExp, statusSeparatorRx, (":|!"))
+static QRegExp statusSeparatorRx()
+{
+    static const QRegExp expr(QStringLiteral(":|!"));
+    return expr;
+}
 
 class Maildir::Private
 {
@@ -665,7 +669,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
         return QString();
     }
 
-    const QRegExp rx = *(statusSeparatorRx());
+    const QRegExp rx = statusSeparatorRx();
     QString finalKey = key.left(key.indexOf(rx));
 
     QStringList mailDirFlags;
@@ -747,7 +751,7 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString &key) const
 {
     Akonadi::Item::Flags flags;
 
-    const QRegExp rx = *(statusSeparatorRx());
+    const QRegExp rx = statusSeparatorRx();
     const int index = key.indexOf(rx);
     if (index != -1) {
         const QString mailDirFlags = key.mid(index + 3);   // after "(:|!)2,"

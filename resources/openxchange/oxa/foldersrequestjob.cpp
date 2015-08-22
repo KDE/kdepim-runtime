@@ -84,7 +84,7 @@ void FoldersRequestJob::davJobFinished(KJob *job)
     QDomElement multistatus = document.documentElement();
     QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     while (!response.isNull()) {
-        const QDomNodeList props = response.elementsByTagName("prop");
+        const QDomNodeList props = response.elementsByTagName(QStringLiteral("prop"));
         const QDomElement prop = props.at(0).toElement();
         mFolders.append(FolderUtils::parseFolder(prop));
         response = response.nextSiblingElement();

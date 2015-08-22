@@ -53,9 +53,9 @@ void DavItemsListJob::start()
     while (it.hasNext()) {
         XMLQueryBuilder::Ptr builder = it.next();
         if (!mRangeStart.isEmpty())
-            builder->setParameter("start", mRangeStart);
+            builder->setParameter(QStringLiteral("start"), mRangeStart);
         if (!mRangeEnd.isEmpty())
-            builder->setParameter("end",mRangeEnd);
+            builder->setParameter(QStringLiteral("end"),mRangeEnd);
 
         const QDomDocument props = builder->buildQuery();
         const QString mimeType = builder->mimeType();

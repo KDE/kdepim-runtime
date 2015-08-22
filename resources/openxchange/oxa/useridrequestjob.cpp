@@ -70,7 +70,7 @@ void UserIdRequestJob::davJobFinished(KJob *job)
 
     if (mUserId == -1) {
         setError(UserDefinedError);
-        setErrorText("No private folder found");
+        setErrorText(QStringLiteral("No private folder found"));
     }
 
     emitResult();

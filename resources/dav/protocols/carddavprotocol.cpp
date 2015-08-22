@@ -101,7 +101,7 @@ public:
             const QUrl pathUrl(url);
             const QString encodedUrl = pathUrl.path() + ( pathUrl.hasQuery() ?
                                                             QLatin1String("?")+pathUrl.query() :
-                                                            QString("") );
+                                                            QString() );
 
             const QDomText textNode = document.createTextNode(encodedUrl);
             hrefElement.appendChild(textNode);

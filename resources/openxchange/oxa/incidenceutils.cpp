@@ -71,7 +71,7 @@ static void parseMembersAttribute(const QDomElement &element,
                 incidence->addAttendee(attendee);
             }
 
-            const QString status = child.attribute("confirm");
+            const QString status = child.attribute(QStringLiteral("confirm"));
             if (!status.isEmpty()) {
                 if (status == QLatin1String("accept")) {
                     attendee->setStatus(KCalCore::Attendee::Accepted);
@@ -338,7 +338,7 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
             }
 
             QDomElement element = DAVUtils::addOxElement(document, members, QStringLiteral("user"), OXUtils::writeNumber(user.uid()));
-            DAVUtils::setOxAttribute(element, "confirm", status);
+            DAVUtils::setOxAttribute(element, QStringLiteral("confirm"), status);
         }
     }
 
@@ -514,12 +514,12 @@ void OXA::IncidenceUtils::parseEvent(const QDomElement &propElement, Object &obj
 {
     KCalCore::Event::Ptr event(new KCalCore::Event);
 
-    const QDomElement fullTimeElement = propElement.firstChildElement("full_time");
+    const QDomElement fullTimeElement = propElement.firstChildElement(QStringLiteral("full_time"));
     if (!fullTimeElement.isNull()) {
         event->setAllDay(OXUtils::readBoolean(fullTimeElement.text()));
     }
 
-    const QDomElement ShowAsElement = propElement.firstChildElement("shown_as");
+    const QDomElement ShowAsElement = propElement.firstChildElement(QStringLiteral("shown_as"));
     if (!ShowAsElement.isNull()) {
         int showAs = OXUtils::readNumber(ShowAsElement.text());
         switch (showAs) {
@@ -530,7 +530,7 @@ void OXA::IncidenceUtils::parseEvent(const QDomElement &propElement, Object &obj
     }
 
     bool doesRecur = false;
-    const QDomElement recurrenceTypeElement = propElement.firstChildElement("recurrence_type");
+    const QDomElement recurrenceTypeElement = propElement.firstChildElement(QStringLiteral("recurrence_type"));
     if (!recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1String("none")) {
         doesRecur = true;
     }
@@ -558,7 +558,7 @@ void OXA::IncidenceUtils::parseTask(const QDomElement &propElement, Object &obje
     todo->setSecrecy(KCalCore::Incidence::SecrecyPrivate);
 
     bool doesRecur = false;
-    const QDomElement recurrenceTypeElement = propElement.firstChildElement("recurrence_type");
+    const QDomElement recurrenceTypeElement = propElement.firstChildElement(QStringLiteral("recurrence_type"));
     if (!recurrenceTypeElement.isNull() && recurrenceTypeElement.text() != QLatin1String("none")) {
         doesRecur = true;
     }

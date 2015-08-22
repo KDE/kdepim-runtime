@@ -62,8 +62,8 @@ class CaldavListEventQueryBuilder : public XMLQueryBuilder
 public:
     virtual QDomDocument buildQuery() const
     {
-        QString startTime = parameter("start").toString();
-        QString endTime = parameter("end").toString();
+        QString startTime = parameter(QStringLiteral("start")).toString();
+        QString endTime = parameter(QStringLiteral("end")).toString();
         QDomDocument document;
 
         QDomElement queryElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-query"));
@@ -127,8 +127,8 @@ class CaldavListTodoQueryBuilder : public XMLQueryBuilder
 public:
     virtual QDomDocument buildQuery() const
     {
-        QString startTime = parameter("start").toString();
-        QString endTime = parameter("end").toString();
+        QString startTime = parameter(QStringLiteral("start")).toString();
+        QString endTime = parameter(QStringLiteral("end")).toString();
         QDomDocument document;
 
         QDomElement queryElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-query"));
@@ -192,8 +192,8 @@ class CaldavListJournalQueryBuilder : public XMLQueryBuilder
 public:
     virtual QDomDocument buildQuery() const
     {
-        QString startTime = parameter("start").toString();
-        QString endTime = parameter("end").toString();
+        QString startTime = parameter(QStringLiteral("start")).toString();
+        QString endTime = parameter(QStringLiteral("end")).toString();
         QDomDocument document;
 
         QDomElement queryElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-query"));
@@ -275,8 +275,7 @@ public:
             QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
             const QUrl pathUrl(url);
             const QString encodedUrl = pathUrl.path() + ( pathUrl.hasQuery() ?
-                                                            QLatin1String("?")+pathUrl.query() :
-                                                            QString("") );
+                                                            QLatin1String("?")+pathUrl.query() : QString() );
 
             const QDomText textNode = document.createTextNode(encodedUrl);
             hrefElement.appendChild(textNode);
