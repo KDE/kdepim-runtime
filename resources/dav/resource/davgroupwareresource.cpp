@@ -802,8 +802,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
 
     foreach (const QString &rmd, listJob->deletedItems()) {
         // We don't want to delete dependent items if the main item was seen
-        if (rmd.contains(QChar('#'))) {
-            const QString base = rmd.left(rmd.indexOf(QChar('#')));
+        if (rmd.contains(QLatin1Char('#'))) {
+            const QString base = rmd.left(rmd.indexOf(QLatin1Char('#')));
             if (seenRids.contains(base))
                 continue;
         }
