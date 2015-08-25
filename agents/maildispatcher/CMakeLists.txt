@@ -6,13 +6,14 @@ endif()
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildispatcher_agent\")
 
 set( maildispatcheragent_SRCS
-  maildispatcher_debug.cpp
   maildispatcheragent.cpp
   outboxqueue.cpp
   sendjob.cpp
   sentactionhandler.cpp
   storeresultjob.cpp
 )
+
+ecm_qt_declare_logging_category(maildispatcheragent_SRCS HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME log_maildispatcher)
 
 ki18n_wrap_ui(maildispatcheragent_SRCS settings.ui)
 kconfig_add_kcfg_files(maildispatcheragent_SRCS settings.kcfgc)

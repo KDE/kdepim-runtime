@@ -42,7 +42,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
     ../protocols/caldavprotocol.cpp
     ../protocols/carddavprotocol.cpp
     ../protocols/groupdavprotocol.cpp
-    davresource_debug.cpp
     configdialog.cpp
     ctagattribute.cpp
     davfreebusyhandler.cpp
@@ -53,6 +52,8 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
     settings.cpp
     urlconfigurationdialog.cpp
   )
+
+ ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME log_davresource)
 
   if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
     include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})

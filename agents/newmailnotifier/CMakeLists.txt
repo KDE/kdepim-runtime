@@ -6,13 +6,14 @@ add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
 set(newmailnotifieragent_SRCS
-  newmailnotifier_debug.cpp
   newmailnotifiersettingsdialog.cpp
   newmailnotifieragent.cpp
   specialnotifierjob.cpp
   newmailnotifierselectcollectionwidget.cpp
   newmailnotifiershowmessagejob.cpp
 )
+
+ecm_qt_declare_logging_category(newmailnotifieragent_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME log_newmailnotifier)
 
 kconfig_add_kcfg_files(newmailnotifieragent_SRCS
     newmailnotifieragentsettings.kcfgc
