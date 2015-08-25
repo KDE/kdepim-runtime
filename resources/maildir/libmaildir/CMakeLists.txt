@@ -5,7 +5,8 @@ endif()
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
 
-set(maildir_LIB_SRCS keycache.cpp maildir.cpp libmaildir_debug.cpp)
+set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
+ecm_qt_declare_logging_category(maildir_LIB_SRCS HEADER libmaildir_debug.h IDENTIFIER LIBMAILDIR_LOG CATEGORY_NAME log_libmaildir)
 
 add_library(maildir  ${maildir_LIB_SRCS})
 generate_export_header(maildir BASE_NAME maildir)

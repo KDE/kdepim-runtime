@@ -18,12 +18,12 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
 
 ########### next target ###############
 set( maildirresource_SRCS
-  maildirresource_debug.cpp
   main.cpp
   maildirresource.cpp
   configdialog.cpp
   retrieveitemsjob.cpp
 )
+ecm_qt_declare_logging_category(maildirresource_SRCS HEADER maildirresource_debug.h IDENTIFIER MAILDIRRESOURCE_LOG CATEGORY_NAME log_maildirresource)
 
 ki18n_wrap_ui(maildirresource_SRCS settings.ui)
 

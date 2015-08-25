@@ -1,8 +1,7 @@
 project(kioslave)
-cmake_minimum_required(VERSION 2.8.12)
 
-set(kio_akonadi_SRCS akonadislave.cpp akonadislave_debug.cpp)
-
+set(kio_akonadi_SRCS akonadislave.cpp)
+ecm_qt_declare_logging_category(kio_akonadi_SRCS HEADER akonadislave_debug.h IDENTIFIER AKONADISLAVE_LOG CATEGORY_NAME log_akonadislave)
 
 add_library(kio_akonadi MODULE ${kio_akonadi_SRCS})
 
