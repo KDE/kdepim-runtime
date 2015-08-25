@@ -169,7 +169,7 @@ public:
 
             if (!endTime.isEmpty()) {
                 QDomAttr endAttribute = document.createAttribute(QStringLiteral("end"));
-                endAttribute.setValue(startTime);
+                endAttribute.setValue(endTime);
                 timeRangeElement.setAttributeNode(endAttribute);
             }
 
@@ -234,7 +234,7 @@ public:
 
             if (!endTime.isEmpty()) {
                 QDomAttr endAttribute = document.createAttribute(QStringLiteral("end"));
-                endAttribute.setValue(startTime);
+                endAttribute.setValue(endTime);
                 timeRangeElement.setAttributeNode(endAttribute);
             }
 
