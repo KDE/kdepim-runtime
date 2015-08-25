@@ -26,7 +26,7 @@
 #include <KLocalizedString>
 
 DavItemDeleteJob::DavItemDeleteJob(const DavUtils::DavUrl &url, const DavItem &item, QObject *parent)
-    : DavJobBase(parent), mUrl(url), mItem(item)
+    : DavJobBase(parent), mUrl(url), mItem(item), mFreshResponseCode(-1)
 {
 }
 

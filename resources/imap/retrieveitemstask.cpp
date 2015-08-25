@@ -57,6 +57,8 @@ RetrieveItemsTask::RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObje
       m_session(Q_NULLPTR),
       m_fetchedMissingBodies(-1),
       m_fetchMissingBodies(false),
+      m_incremental(true),
+      m_highestModseq(-1),
       m_batchFetcher(Q_NULLPTR),
       m_uidBasedFetch(true),
       m_flagsChanged(false)
