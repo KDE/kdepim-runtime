@@ -473,6 +473,8 @@ void Settings::buildUrlsList()
         if (!pass.isNull()) {
             urlConfig->mPassword = pass;
             mUrls[ key ] = urlConfig;
+        } else {
+            delete urlConfig;
         }
     }
 }
