@@ -54,7 +54,6 @@ target_link_libraries(akonadi_kolab_resource
     KF5::IdentityManagement
     imapresource
     folderarchivesettings
-    ${Libkolabxml_LIBRARIES}
     ${Libkolab_LIBRARIES}
     KF5::Contacts
     KF5::CalendarCore
@@ -63,8 +62,7 @@ target_link_libraries(akonadi_kolab_resource
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-ecm_install_icons(ICONS 64-apps-kolab.png
-                  DESTINATION share/icons)
+ecm_install_icons(ICONS 64-apps-kolab.png DESTINATION ${KDE_INSTALL_ICONDIR} THEME oxygen)
 
 if (BUILD_TESTING)
     #add_subdirectory(tests)

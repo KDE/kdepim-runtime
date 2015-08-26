@@ -102,17 +102,16 @@ endif ()
 
 target_link_libraries(akonadi_imap_resource
     KF5::AkonadiCore
-    KF5::AkonadiWidgets
     KF5::IMAP
+    akonadi-singlefileresource
+    KF5::AkonadiWidgets
     KF5::MailTransport
-    KF5::KIOCore
     KF5::Mime
     KF5::AkonadiMime
     KF5::IdentityManagement
     KF5::I18n
     imapresource
-    folderarchivesettings
-    akonadi-singlefileresource)
+    folderarchivesettings)
 
 if (RUNTIME_PLUGINS_STATIC)
   target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)
