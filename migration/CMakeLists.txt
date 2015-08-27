@@ -6,6 +6,12 @@ add_definitions( -DQT_NO_CAST_TO_ASCII )
 #REMOVE IT
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/
+)
+
+
+
 # Xsltproc
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
