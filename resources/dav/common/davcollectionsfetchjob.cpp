@@ -81,6 +81,8 @@ void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
         }
         else {
             // Just give up here.
+            setError(davJob->error());
+            setErrorText(davJob->errorText());
             emitResult();
         }
 
