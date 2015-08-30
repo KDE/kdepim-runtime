@@ -104,7 +104,7 @@ void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
 
         if (homeSet.startsWith(QLatin1Char('/'))) {
             // homeSet is only a path, use request url to complete
-            url.setEncodedPath(homeSet.toLatin1());
+            url.setPath(QUrl::fromPercentEncoding(homeSet.toLatin1()));
         } else {
             // homeSet is a complete url
             KUrl tmpUrl(homeSet);
@@ -267,7 +267,7 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                 url.setUser(QString());
                 if (href.startsWith(QLatin1Char('/'))) {
                     // href is only a path, use request url to complete
-                    url.setEncodedPath(href.toLatin1());
+                    url.setPath(QUrl::fromPercentEncoding(href.toLatin1()));
                 } else {
                     // href is a complete url
                     KUrl tmpUrl(href);

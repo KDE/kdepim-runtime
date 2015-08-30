@@ -109,7 +109,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
         KUrl url(davJob->property("url").toString());
         if (result.value.startsWith(QLatin1Char('/'))) {
             // href is only a path, use request url to complete
-            url.setEncodedPath(result.value.toLatin1());
+            url.setPath(QUrl::fromPercentEncoding(result.value.toLatin1()));
         } else {
             // href is a complete url
             KUrl tmpUrl(result.value);
