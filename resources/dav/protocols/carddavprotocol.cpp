@@ -116,9 +116,14 @@ QDomDocument CarddavProtocol::itemsReportQuery(const QStringList &urls) const
 
     foreach (const QString &url, urls) {
         QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
-        const KUrl pathUrl(url);
+         const QUrl pathUrl = QUrl::fromUserInput(url);
+         QString encodedUrl = QString::fromAscii(pathUrl.encodedPath());
+         if ( pathUrl.hasQuery() ) {
+             encodedUrl.append(QStringLiteral("?"));
+             encodedUrl.append(QString::fromAscii(pathUrl.encodedQuery()));
+         }
 
-        const QDomText textNode = document.createTextNode(pathUrl.encodedPathAndQuery());
+        const QDomText textNode = document.createTextNode(encodedUrl);
         hrefElement.appendChild(textNode);
 
         multigetElement.appendChild(hrefElement);
