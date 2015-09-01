@@ -220,7 +220,7 @@ private slots:
         msg->subject(true)->from7BitString("subject");
 
         msg->messageID(true)->from7BitString("<messageid@example.com>");
-        msg->date(true)->setDateTime(KDateTime(QDate(2014, 12, 10), QTime(9, 8, 7)));
+        msg->date(true)->setDateTime(QDateTime(QDate(2014, 12, 10), QTime(9, 8, 7)));
         item.setPayload<KMime::Message::Ptr>(msg);
         item.setRemoteId(QLatin1String("20"));
         item.setParentCollection(createCollectionChain("/INBOX"));
