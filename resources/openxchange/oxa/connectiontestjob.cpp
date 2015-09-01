@@ -22,7 +22,7 @@
 #include "connectiontestjob.h"
 
 #include <kio/job.h>
-#include <kurl.h>
+#include <QUrl>
 
 using namespace OXA;
 
