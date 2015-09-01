@@ -137,7 +137,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 
     m_ui->setupUi(mainWidget);
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
-    m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
+    m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Archive Folder"));
     m_ui->safeImapGroup->setId(m_ui->noRadio, KIMAP::LoginJob::Unencrypted);
     m_ui->safeImapGroup->setId(m_ui->sslRadio, KIMAP::LoginJob::AnySslVersion);
     m_ui->safeImapGroup->setId(m_ui->tlsRadio, KIMAP::LoginJob::TlsV1);

@@ -45,7 +45,7 @@ ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier,
     ui.setupUi(mainWidget);
     mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier);
     mFolderArchiveSettingPage->loadSettings();
-    ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Folder Archive"));
+    ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Archive Folder"));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);

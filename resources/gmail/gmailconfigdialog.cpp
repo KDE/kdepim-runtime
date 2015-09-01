@@ -58,7 +58,7 @@ GmailConfigDialog::GmailConfigDialog(GmailResource *resource, WId parent)
     mainLayout->addWidget(mainWidget);
     m_ui->setupUi(mainWidget);
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(resource->identifier());
-    m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Folder Archive"));
+    m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Archive Folder"));
 
     m_ui->checkInterval->setSuffix(ki18np(" minute", " minutes"));
     m_ui->checkInterval->setRange(Akonadi::ResourceSettings::self()->minimumCheckInterval(), 10000);
