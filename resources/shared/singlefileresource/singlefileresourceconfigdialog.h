@@ -42,7 +42,7 @@ public:
         : SingleFileResourceConfigDialogBase(windowId)
         , mSettings(settings)
     {
-        ui.kcfg_Path->setUrl(QUrl::fromLocalFile(mSettings->path()));
+        ui.kcfg_Path->setUrl(QUrl::fromUserInput(mSettings->path()));
         mManager = new KConfigDialogManager(this, mSettings);
         mManager->updateWidgets();
     }
@@ -50,7 +50,7 @@ public:
 protected:
     void save() Q_DECL_OVERRIDE {
         mManager->updateSettings();
-        mSettings->setPath(ui.kcfg_Path->url().toLocalFile());
+        mSettings->setPath(ui.kcfg_Path->url().toString());
         mSettings->save();
     }
 };
