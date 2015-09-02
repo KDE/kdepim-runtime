@@ -51,6 +51,29 @@ UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Sessio
 
 void UpdateMessageJob::start()
 {
+    if (mSession->selectedMailBox() != mMailbox) {
+        KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
+        select->setMailBox(mMailbox);
+        connect(select, SIGNAL(result(KJob*)), this, SLOT(onSelectDone(KJob*)));
+        select->start();
+    } else {
+        fetchHeaders();
+    }
+}
+
+void UpdateMessageJob::onSelectDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
+        setError(KJob::UserDefinedError);
+        emitResult();
+    } else {
+        fetchHeaders();
+    }
+}
+
+void UpdateMessageJob::fetchHeaders()
+{
     KIMAP::FetchJob *fetchJob = new KIMAP::FetchJob(mSession);
 
     fetchJob->setSequenceSet(KIMAP::ImapSet(mOldUid));
@@ -103,24 +126,6 @@ void UpdateMessageJob::onHeadersFetchDone(KJob *job)
     if (mFoundUids.size() >= 1) {
         qCDebug(KOLABRESOURCE_LOG) << "Fast-forward update, replacing message.";
         appendMessage();
-    } else {
-        if (mSession->selectedMailBox() != mMailbox) {
-            KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
-            select->setMailBox(mMailbox);
-            connect(select, &KJob::result, this, &UpdateMessageJob::onSelectDone);
-            select->start();
-        } else {
-            searchForLatestVersion();
-        }
-    }
-}
-
-void UpdateMessageJob::onSelectDone(KJob *job)
-{
-    if (job->error()) {
-        qCWarning(KOLABRESOURCE_LOG) << job->errorString();
-        setError(KJob::UserDefinedError);
-        emitResult();
     } else {
         searchForLatestVersion();
     }

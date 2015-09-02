@@ -44,6 +44,7 @@ public:
     void start();
 
 private:
+    void fetchHeaders();
     void searchForLatestVersion();
     void appendMessage();
 
