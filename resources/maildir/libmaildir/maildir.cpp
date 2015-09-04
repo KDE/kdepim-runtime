@@ -30,9 +30,10 @@
 #include <KLocalizedString>
 #include <Akonadi/KMime/MessageFlags>
 
-#include <kde_file.h>
 #include <time.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 //Define it to get more debug output to expense of operating speed
 // #define DEBUG_KEYCACHE_CONSITENCY
@@ -43,7 +44,7 @@ static void initRandomSeed()
     if (!init) {
         unsigned int seed;
         init = true;
-        int fd = KDE_open("/dev/urandom", O_RDONLY);
+        int fd = ::open("/dev/urandom", O_RDONLY);
         if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed)) {
             // No /dev/urandom... try something else.
             srand(getpid());
