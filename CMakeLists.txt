@@ -52,7 +52,7 @@ include(KDEFrameworkCompilerSettings)
 include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
 
-set(KF5_VERSION "5.12.0")
+set(KF5_VERSION "5.14.0")
 set(QT_REQUIRED_VERSION "5.4.0")
 
 set(KDEPIMLIBS_LIB_VERSION "5.0.40")
