@@ -80,7 +80,7 @@ void DavPrincipalHomeSetsFetchJob::davJobFinished(KJob *job)
             err = davJob->errorText();
         }
 
-        setLatestResponseCode( responseCode );
+        setLatestResponseCode(responseCode);
         setError(UserDefinedError + responseCode);
         setErrorText(i18n("There was a problem with the request.\n"
                           "%1 (%2).", err, responseCode));

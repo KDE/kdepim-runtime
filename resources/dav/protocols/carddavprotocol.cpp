@@ -82,8 +82,9 @@ public:
     {
         QDomDocument document;
         QStringList urls = parameter(QStringLiteral("urls")).toStringList();
-        if (urls.isEmpty())
+        if (urls.isEmpty()) {
             return document;
+        }
 
         QDomElement multigetElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:carddav"), QStringLiteral("addressbook-multiget"));
         document.appendChild(multigetElement);
@@ -100,7 +101,7 @@ public:
             QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
             const QUrl pathUrl = QUrl::fromUserInput(url);
             QString encodedUrl = QString::fromAscii(pathUrl.encodedPath());
-            if ( pathUrl.hasQuery() ) {
+            if (pathUrl.hasQuery()) {
                 encodedUrl.append(QStringLiteral("?"));
                 encodedUrl.append(QString::fromAscii(pathUrl.encodedQuery()));
             }

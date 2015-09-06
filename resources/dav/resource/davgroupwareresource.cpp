@@ -709,8 +709,9 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
          * is called. We leave it untouched in the collection attribute
          * and will only update it there after sucessfull sync.
          */
-        if (!davCollection.CTag().isEmpty())
+        if (!davCollection.CTag().isEmpty()) {
             mCTagCache.insert(davCollection.url(), davCollection.CTag());
+        }
 
         DavUtils::Privileges privileges = davCollection.privileges();
         Akonadi::Collection::Rights rights;
@@ -804,8 +805,9 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         // We don't want to delete dependent items if the main item was seen
         if (rmd.contains(QLatin1Char('#'))) {
             const QString base = rmd.left(rmd.indexOf(QLatin1Char('#')));
-            if (seenRids.contains(base))
+            if (seenRids.contains(base)) {
                 continue;
+            }
         }
 
         qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveItemsFinished: Item disappeared. " << rmd;

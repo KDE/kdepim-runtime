@@ -18,12 +18,12 @@
 
 #include "ctagattribute.h"
 
-CTagAttribute::CTagAttribute(const QString& ctag)
+CTagAttribute::CTagAttribute(const QString &ctag)
     : mCTag(ctag)
 {
 }
 
-void CTagAttribute::setCTag(const QString& ctag)
+void CTagAttribute::setCTag(const QString &ctag)
 {
     mCTag = ctag;
 }
@@ -53,3 +53,4 @@ void CTagAttribute::deserialize(const QByteArray &data)
 {
     mCTag = QString::fromUtf8(data);
 }
+

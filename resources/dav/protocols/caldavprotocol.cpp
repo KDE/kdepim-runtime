@@ -259,8 +259,9 @@ public:
     {
         QDomDocument document;
         QStringList urls = parameter(QStringLiteral("urls")).toStringList();
-        if (urls.isEmpty())
+        if (urls.isEmpty()) {
             return document;
+        }
 
         QDomElement multigetElement = document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-multiget"));
         document.appendChild(multigetElement);
@@ -275,7 +276,7 @@ public:
             QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
             const QUrl pathUrl = QUrl::fromUserInput(url);
             QString encodedUrl = QString::fromAscii(pathUrl.encodedPath());
-            if ( pathUrl.hasQuery() ) {
+            if (pathUrl.hasQuery()) {
                 encodedUrl.append(QStringLiteral("?"));
                 encodedUrl.append(QString::fromAscii(pathUrl.encodedQuery()));
             }
@@ -340,9 +341,9 @@ QString CaldavProtocol::collectionsXQuery() const
 QVector<XMLQueryBuilder::Ptr> CaldavProtocol::itemsQueries() const
 {
     QVector<XMLQueryBuilder::Ptr> ret;
-    ret << XMLQueryBuilder::Ptr( new CaldavListEventQueryBuilder() );
-    ret << XMLQueryBuilder::Ptr( new CaldavListTodoQueryBuilder() );
-    ret << XMLQueryBuilder::Ptr( new CaldavListJournalQueryBuilder() );
+    ret << XMLQueryBuilder::Ptr(new CaldavListEventQueryBuilder());
+    ret << XMLQueryBuilder::Ptr(new CaldavListTodoQueryBuilder());
+    ret << XMLQueryBuilder::Ptr(new CaldavListJournalQueryBuilder());
     return ret;
 }
 

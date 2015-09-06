@@ -191,7 +191,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     slotCustomSieveChanged();
     connect(networkConfigMgr, &QNetworkConfigurationManager::onlineStateChanged,
             this, &SetupServer::slotTestChanged);
- 
+
     connect(mOkButton, &QPushButton::clicked, this, &SetupServer::applySettings);
 }
 

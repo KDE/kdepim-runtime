@@ -73,13 +73,12 @@ void DavCollectionsFetchJob::principalFetchFinished(KJob *job)
     const DavPrincipalHomeSetsFetchJob *davJob = qobject_cast<DavPrincipalHomeSetsFetchJob *>(job);
 
     if (davJob->error()) {
-        if ( davJob->latestResponseCode() ) {
+        if (davJob->latestResponseCode()) {
             // If we have a HTTP response code then this may mean that
             // the URL was not a principal URL. Retry as if it were a calendar URL.
             qDebug() << job->errorText();
             doCollectionsFetch(mUrl.url());
-        }
-        else {
+        } else {
             // Just give up here.
             setError(davJob->error());
             setErrorText(davJob->errorText());
@@ -294,8 +293,9 @@ void DavCollectionsFetchJob::collectionsFetchFinished(KJob *job)
                 // Extract CTag
                 const QDomElement CTagElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("http://calendarserver.org/ns/"), QStringLiteral("getctag"));
                 QString CTag;
-                if (!CTagElement.isNull())
+                if (!CTagElement.isNull()) {
                     CTag = CTagElement.text();
+                }
 
                 // extract calendar color if provided
                 const QDomElement colorElement = DavUtils::firstChildElementNS(propElement, QStringLiteral("http://apple.com/ns/ical/"), QStringLiteral("calendar-color"));

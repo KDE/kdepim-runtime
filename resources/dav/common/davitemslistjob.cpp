@@ -39,7 +39,7 @@ void DavItemsListJob::setContentMimeTypes(const QStringList &types)
     mMimeTypes = types;
 }
 
-void DavItemsListJob::setTimeRange(const QString& start, const QString& end)
+void DavItemsListJob::setTimeRange(const QString &start, const QString &end)
 {
     mRangeStart = start;
     mRangeEnd = end;
@@ -53,10 +53,12 @@ void DavItemsListJob::start()
 
     while (it.hasNext()) {
         XMLQueryBuilder::Ptr builder = it.next();
-        if (!mRangeStart.isEmpty())
+        if (!mRangeStart.isEmpty()) {
             builder->setParameter(QStringLiteral("start"), mRangeStart);
-        if (!mRangeEnd.isEmpty())
-            builder->setParameter(QStringLiteral("end"),mRangeEnd);
+        }
+        if (!mRangeEnd.isEmpty()) {
+            builder->setParameter(QStringLiteral("end"), mRangeEnd);
+        }
 
         const QDomDocument props = builder->buildQuery();
         const QString mimeType = builder->mimeType();

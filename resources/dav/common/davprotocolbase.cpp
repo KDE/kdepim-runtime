@@ -22,16 +22,17 @@ XMLQueryBuilder::~XMLQueryBuilder()
 {
 }
 
-void XMLQueryBuilder::setParameter(const QString& key, const QVariant& value)
+void XMLQueryBuilder::setParameter(const QString &key, const QVariant &value)
 {
     mParameters[key] = value;
 }
 
-QVariant XMLQueryBuilder::parameter(const QString& key) const
+QVariant XMLQueryBuilder::parameter(const QString &key) const
 {
     QVariant ret;
-    if (mParameters.contains(key))
+    if (mParameters.contains(key)) {
         ret = mParameters.value(key);
+    }
     return ret;
 }
 

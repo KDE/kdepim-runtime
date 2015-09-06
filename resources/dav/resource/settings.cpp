@@ -359,14 +359,15 @@ QDateTime Settings::getSyncRangeStart() const
     start.setTime(QTime());
     const int delta = - syncRangeStartNumber().toUInt();
 
-    if (syncRangeStartType() == QStringLiteral("D"))
+    if (syncRangeStartType() == QStringLiteral("D")) {
         start = start.addDays(delta);
-    else if (syncRangeStartType() == QStringLiteral("M"))
+    } else if (syncRangeStartType() == QStringLiteral("M")) {
         start = start.addMonths(delta);
-    else if (syncRangeStartType() == QStringLiteral("Y"))
+    } else if (syncRangeStartType() == QStringLiteral("Y")) {
         start = start.addYears(delta);
-    else
+    } else {
         start = QDateTime();
+    }
 
     return start;
 }

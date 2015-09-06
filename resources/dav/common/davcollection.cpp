@@ -37,7 +37,7 @@ DavUtils::Protocol DavCollection::protocol() const
     return mProtocol;
 }
 
-void DavCollection::setCTag(const QString& ctag)
+void DavCollection::setCTag(const QString &ctag)
 {
     mCTag = ctag;
 }

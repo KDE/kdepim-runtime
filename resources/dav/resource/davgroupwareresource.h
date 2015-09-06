@@ -122,7 +122,7 @@ private:
     static void setCollectionIcon(Akonadi::Collection &collection);
 
     Akonadi::Collection mDavCollectionRoot;
-    QMap<QString, EtagCache*> mEtagCaches;
+    QMap<QString, EtagCache *> mEtagCaches;
     QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *mFreeBusyHandler;
     bool mSyncErrorNotified;
