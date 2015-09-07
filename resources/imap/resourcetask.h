@@ -140,6 +140,7 @@ protected:
     virtual bool serverSupportsCondstore() const;
 
     int batchSize() const;
+    void setItemMergingMode(Akonadi::ItemSync::MergeMode mode);
 
     ResourceStateInterface::Ptr resourceState();
 

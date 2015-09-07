@@ -26,6 +26,7 @@
 
 #include <Collection>
 #include <Item>
+#include <ItemSync>
 
 #include <kimap/listjob.h>
 
@@ -125,6 +126,8 @@ public:
 
     virtual Akonadi::Relation::List addedRelations() const = 0;
     virtual Akonadi::Relation::List removedRelations() const = 0;
+
+    virtual void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) = 0;
 };
 
 #endif

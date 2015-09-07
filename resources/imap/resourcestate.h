@@ -153,6 +153,8 @@ public:
 
     MessageHelper::Ptr messageHelper() const Q_DECL_OVERRIDE;
 
+  void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode);
+
 private:
     ImapResourceBase *m_resource;
     const TaskArguments m_arguments;

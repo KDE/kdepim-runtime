@@ -362,3 +362,8 @@ void ResourceState::relationsRetrieved(const Akonadi::Relation::List &relations)
 {
     m_resource->relationsRetrieved(relations);
 }
+
+void ResourceState::setItemMergingMode(Akonadi::ItemSync::MergeMode mode)
+{
+    m_resource->setItemMergingMode(mode);
+}
