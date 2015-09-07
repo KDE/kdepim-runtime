@@ -537,3 +537,8 @@ ResourceStateInterface::Ptr ResourceTask::resourceState()
 {
     return m_resource;
 }
+
+void ResourceTask::setItemMergingMode(Akonadi::ItemSync::MergeMode mode)
+{
+    m_resource->setItemMergingMode(mode);
+}

@@ -123,6 +123,8 @@ public:
 
   virtual int batchSize() const;
 
+  virtual void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode);
+
   virtual MessageHelper::Ptr messageHelper() const;
 
   QList< QPair<QByteArray, QVariant> > calls() const;
@@ -140,6 +142,8 @@ private:
   bool m_disconnectedMode;
   int m_intervalCheckTime;
   QChar m_separator;
+
+  Akonadi::ItemSync::MergeMode m_mergeMode;
 
   Akonadi::Collection m_collection;
   Akonadi::Item::List m_items;

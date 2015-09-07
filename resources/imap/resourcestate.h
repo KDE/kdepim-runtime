@@ -129,6 +129,8 @@ public:
 
   virtual MessageHelper::Ptr messageHelper() const;
 
+  void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode);
+
 private:
   ImapResourceBase *m_resource;
   const TaskArguments m_arguments;

@@ -26,6 +26,7 @@
 
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
+#include <Akonadi/ItemSync>
 
 #include <kimap/listjob.h>
 
@@ -110,6 +111,7 @@ public:
 
   virtual MessageHelper::Ptr messageHelper() const = 0;
 
+  virtual void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) = 0;
 };
 
 #endif

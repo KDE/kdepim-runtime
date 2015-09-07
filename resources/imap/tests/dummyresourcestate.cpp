@@ -26,7 +26,8 @@ Q_DECLARE_METATYPE(QVector<qint64>)
 
 DummyResourceState::DummyResourceState()
   : m_automaticExpunge( true ), m_subscriptionEnabled( true ),
-    m_disconnectedMode( true ), m_intervalCheckTime( -1 )
+    m_disconnectedMode( true ), m_intervalCheckTime( -1 ),
+    m_mergeMode( Akonadi::ItemSync::RIDMerge )
 {
   qRegisterMetaType<QList<qint64> >();
   qRegisterMetaType<QVector<qint64> >();
@@ -344,6 +345,11 @@ void DummyResourceState::recordCall( const QByteArray callName, const QVariant &
 int DummyResourceState::batchSize() const
 {
   return 10;
+}
+
+void DummyResourceState::setItemMergingMode( Akonadi::ItemSync::MergeMode mergeMode )
+{
+  m_mergeMode = mergeMode;
 }
 
 MessageHelper::Ptr DummyResourceState::messageHelper() const

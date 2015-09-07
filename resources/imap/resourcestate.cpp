@@ -362,3 +362,8 @@ MessageHelper::Ptr ResourceState::messageHelper() const
 {
   return MessageHelper::Ptr(new MessageHelper());
 }
+
+void ResourceState::setItemMergingMode(Akonadi::ItemSync::MergeMode mode)
+{
+    m_resource->setItemMergingMode(mode);
+}

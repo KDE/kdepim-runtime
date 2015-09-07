@@ -138,6 +138,8 @@ protected:
 
   int batchSize() const;
 
+  void setItemMergingMode(Akonadi::ItemSync::MergeMode mode);
+
   ResourceStateInterface::Ptr resourceState();
 
 private:
