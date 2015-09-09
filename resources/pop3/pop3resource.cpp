@@ -340,7 +340,6 @@ void POP3Resource::doStateStep()
     break;
     case Download: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Download =======================";
-        FetchJob *fetchJob = new FetchJob(mPopSession);
 
         // Determine which mails we want to download. Those are all mails which are
         // currently on ther server, minus the ones we have already downloaded (we
@@ -365,13 +364,18 @@ void POP3Resource::doStateStep()
             sizesOfMessagesToDownload.append(mIdsToSizeMap.value(id));
         }
 
-        fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
-        connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
-        connect(fetchJob, &FetchJob::messageFinished, this, &POP3Resource::messageFinished);
-        connect(fetchJob, SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
-                this, SLOT(messageDownloadProgress(KJob*,KJob::Unit,qulonglong)));
+        if (!mIdsToDownload.empty()) {
+            FetchJob *fetchJob = new FetchJob(mPopSession);
+            fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
+            connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
+            connect(fetchJob, &FetchJob::messageFinished, this, &POP3Resource::messageFinished);
+            connect(fetchJob, SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
+                    this, SLOT(messageDownloadProgress(KJob*,KJob::Unit,qulonglong)));
 
-        fetchJob->start();
+            fetchJob->start();
+        } else {
+            advanceState(Save);
+        }
     }
     break;
     case Save: {
