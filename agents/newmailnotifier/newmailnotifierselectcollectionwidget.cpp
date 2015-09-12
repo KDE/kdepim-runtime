@@ -116,7 +116,7 @@ void NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched()
 {
     if (!mNeedUpdate) {
         mNeedUpdate = true;
-        QTimer::singleShot(1000, this, SLOT(slotUpdateCollectionStatus()));
+        QTimer::singleShot(1000, this, &NewMailNotifierSelectCollectionWidget::slotUpdateCollectionStatus);
     }
     mFolderView->expandAll();
 }

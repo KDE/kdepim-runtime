@@ -77,7 +77,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     connect(ui.kcfg_ReadOnly, &QCheckBox::clicked, this, &SettingsDialog::readOnlyClicked);
     connect(mTypeSelector, &AlarmTypeWidget::changed, this, &SettingsDialog::validate);
 
-    QTimer::singleShot(0, this, SLOT(validate()));
+    QTimer::singleShot(0, this, &SettingsDialog::validate);
 }
 
 void SettingsDialog::save()

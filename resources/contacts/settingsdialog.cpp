@@ -62,7 +62,7 @@ SettingsDialog::SettingsDialog(ContactsResourceSettings *settings, WId windowId)
     connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
-    QTimer::singleShot(0, this, SLOT(validate()));
+    QTimer::singleShot(0, this, &SettingsDialog::validate);
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(mSettings->path()));
     mManager = new KConfigDialogManager(this, mSettings);

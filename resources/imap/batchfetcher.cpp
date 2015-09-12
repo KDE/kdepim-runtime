@@ -182,8 +182,8 @@ void BatchFetcher::fetchNextBatch()
                                          QMap<qint64, KIMAP::MessageAttribute>,
                                          QMap<qint64, KIMAP::MessageFlags>,
                                          QMap<qint64, KIMAP::MessagePtr>)));
-    connect(fetch, SIGNAL(result(KJob*)),
-            this, SLOT(onHeadersFetchDone(KJob*)));
+    connect(fetch, &KJob::result,
+            this, &BatchFetcher::onHeadersFetchDone);
     m_fetchInProgress = true;
     fetch->start();
 }

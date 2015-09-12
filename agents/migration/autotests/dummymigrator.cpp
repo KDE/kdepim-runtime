@@ -35,7 +35,7 @@ QString DummyMigrator::displayName() const
 void DummyMigrator::startWork()
 {
     qDebug();
-    QTimer::singleShot(10000, this, SLOT(onTimerElapsed()));
+    QTimer::singleShot(10000, this, &DummyMigrator::onTimerElapsed);
 }
 
 void DummyMigrator::onTimerElapsed()

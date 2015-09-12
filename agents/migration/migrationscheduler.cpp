@@ -71,7 +71,7 @@ Row::Row(const QSharedPointer<MigratorBase> &migrator, MigratorModel &model)
         mMigrator(migrator),
         mModel(model)
 {
-    connect(migrator.data(), SIGNAL(stateChanged(MigratorBase::MigrationState)), this, SLOT(stateChanged(MigratorBase::MigrationState)));
+    connect(migrator.data(), &MigratorBase::stateChanged, this, &Row::stateChanged);
     connect(migrator.data(), SIGNAL(progress(int)), this, SLOT(progress(int)));
 }
 
@@ -235,7 +235,7 @@ void MigrationScheduler::addMigrator(const QSharedPointer<MigratorBase> &migrato
 {
     if (mModel->addMigrator(migrator)) {
         QSharedPointer<LogModel> logModel(new LogModel);
-        connect(migrator.data(), SIGNAL(message(MigratorBase::MessageType,QString)), logModel.data(), SLOT(message(MigratorBase::MessageType,QString)));
+        connect(migrator.data(), &MigratorBase::message, logModel.data(), &LogModel::message);
         mLogModel.insert(migrator->identifier(), logModel);
         if (migrator->shouldAutostart()) {
             checkForAutostart(migrator);

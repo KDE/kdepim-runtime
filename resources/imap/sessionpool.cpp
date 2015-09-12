@@ -62,8 +62,8 @@ void SessionPool::setPasswordRequester(PasswordRequesterInterface *requester)
 
     m_passwordRequester = requester;
     m_passwordRequester->setParent(this);
-    QObject::connect(m_passwordRequester, SIGNAL(done(int,QString)),
-                     this, SLOT(onPasswordRequestDone(int,QString)));
+    QObject::connect(m_passwordRequester, &PasswordRequesterInterface::done,
+                     this, &SessionPool::onPasswordRequestDone);
 }
 
 void SessionPool::cancelPasswordRequests()
@@ -139,7 +139,7 @@ qint64 SessionPool::requestSession()
 
     // The queue was empty, so trigger the processing
     if (m_pendingRequests.isEmpty()) {
-        QTimer::singleShot(0, this, SLOT(processPendingRequests()));
+        QTimer::singleShot(0, this, &SessionPool::processPendingRequests);
     }
 
     m_pendingRequests << requestNumber;
@@ -199,8 +199,8 @@ void SessionPool::killSession(KIMAP::Session *session, SessionTermination termin
         Q_ASSERT(false);
         return;
     }
-    QObject::disconnect(session, SIGNAL(stateChanged(KIMAP::Session::State,KIMAP::Session::State)),
-                        this, SLOT(onSessionStateChanged(KIMAP::Session::State,KIMAP::Session::State)));
+    QObject::disconnect(session, &KIMAP::Session::stateChanged,
+                        this, &SessionPool::onSessionStateChanged);
     m_unusedPool.removeAll(session);
     m_reservedPool.removeAll(session);
     m_connectingPool.removeAll(session);
@@ -241,7 +241,7 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
         Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(), session);
 
         if (!m_pendingRequests.isEmpty()) {
-            QTimer::singleShot(0, this, SLOT(processPendingRequests()));
+            QTimer::singleShot(0, this, &SessionPool::processPendingRequests);
         }
     }
 }
@@ -267,7 +267,7 @@ void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode,
         if (!m_pendingRequests.isEmpty()) {
             Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(), Q_NULLPTR, errorCode, errorMessage);
             if (!m_pendingRequests.isEmpty()) {
-                QTimer::singleShot(0, this, SLOT(processPendingRequests()));
+                QTimer::singleShot(0, this, &SessionPool::processPendingRequests);
             }
         }
     }
@@ -284,7 +284,7 @@ void SessionPool::processPendingRequests()
         if (!m_pendingRequests.isEmpty()) {
             Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(), session);
             if (!m_pendingRequests.isEmpty()) {
-                QTimer::singleShot(0, this, SLOT(processPendingRequests()));
+                QTimer::singleShot(0, this, &SessionPool::processPendingRequests);
             }
         }
     } else if (m_unusedPool.size() + m_reservedPool.size() < m_maxPoolSize) {
@@ -299,7 +299,7 @@ void SessionPool::processPendingRequests()
                 i18n("Could not create another extra connection to the IMAP-server %1.",
                      m_account->server()));
             if (!m_pendingRequests.isEmpty()) {
-                QTimer::singleShot(0, this, SLOT(processPendingRequests()));
+                QTimer::singleShot(0, this, &SessionPool::processPendingRequests);
             }
         }
     }
@@ -359,14 +359,14 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         session = m_pendingInitialSession;
     } else {
         session = new KIMAP::Session(m_account->server(), m_account->port(), this);
-        QObject::connect(session, SIGNAL(destroyed(QObject*)), this, SLOT(onSessionDestroyed(QObject*)));
+        QObject::connect(session, &QObject::destroyed, this, &SessionPool::onSessionDestroyed);
         session->setUiProxy(m_sessionUiProxy);
         session->setTimeout(m_account->timeout());
         m_connectingPool << session;
     }
 
-    QObject::connect(session, SIGNAL(stateChanged(KIMAP::Session::State,KIMAP::Session::State)),
-                     this, SLOT(onSessionStateChanged(KIMAP::Session::State,KIMAP::Session::State)));
+    QObject::connect(session, &KIMAP::Session::stateChanged,
+                     this, &SessionPool::onSessionStateChanged);
 
     KIMAP::LoginJob *loginJob = new KIMAP::LoginJob(session);
     loginJob->setUserName(m_account->userName());
@@ -374,8 +374,8 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     loginJob->setEncryptionMode(m_account->encryptionMode());
     loginJob->setAuthenticationMode(m_account->authenticationMode());
 
-    QObject::connect(loginJob, SIGNAL(result(KJob*)),
-                     this, SLOT(onLoginDone(KJob*)));
+    QObject::connect(loginJob, &KJob::result,
+                     this, &SessionPool::onLoginDone);
     loginJob->start();
 }
 

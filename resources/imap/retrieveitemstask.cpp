@@ -476,10 +476,10 @@ void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet &set, const KIMAP::Fe
         m_batchFetcher->setSearchUids(set.intervals().front());
     }
     m_batchFetcher->setProperty("alreadyFetched", set.intervals().at(0).begin());
-    connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
-            this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
-    connect(m_batchFetcher, SIGNAL(result(KJob*)),
-            this, SLOT(onRetrievalDone(KJob*)));
+    connect(m_batchFetcher, &BatchFetcher::itemsRetrieved,
+            this, &RetrieveItemsTask::onItemsRetrieved);
+    connect(m_batchFetcher, &KJob::result,
+            this, &RetrieveItemsTask::onRetrievalDone);
     m_batchFetcher->start();
 }
 
@@ -559,10 +559,10 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
     if (m_uidBasedFetch && scope.changedSince == 0 && set.intervals().size() == 1) {
         m_batchFetcher->setSearchUids(set.intervals().front());
     }
-    connect(m_batchFetcher, SIGNAL(itemsRetrieved(Akonadi::Item::List)),
-            this, SLOT(onItemsRetrieved(Akonadi::Item::List)));
-    connect(m_batchFetcher, SIGNAL(result(KJob*)),
-            this, SLOT(onFlagsFetchDone(KJob*)));
+    connect(m_batchFetcher, &BatchFetcher::itemsRetrieved,
+            this, &RetrieveItemsTask::onItemsRetrieved);
+    connect(m_batchFetcher, &KJob::result,
+            this, &RetrieveItemsTask::onFlagsFetchDone);
     m_batchFetcher->start();
 }
 

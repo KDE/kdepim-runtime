@@ -508,7 +508,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
 
     if (deleteJob != Q_NULLPTR) {
         // last item delete triggers mbox purge, i.e. store compact
-        const bool connected = connect(deleteJob, SIGNAL(result(KJob*)), this, SLOT(itemsDeleted(KJob*)));
+        const bool connected = connect(deleteJob, &KJob::result, this, &MixedMaildirResource::itemsDeleted);
         Q_ASSERT(connected);
         Q_UNUSED(connected);
     }

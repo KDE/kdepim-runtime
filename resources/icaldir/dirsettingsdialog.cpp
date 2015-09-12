@@ -59,7 +59,7 @@ SettingsDialog::SettingsDialog(WId windowId)
     connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
-    QTimer::singleShot(0, this, SLOT(validate()));
+    QTimer::singleShot(0, this, &SettingsDialog::validate);
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(Settings::self()->path()));
     ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));

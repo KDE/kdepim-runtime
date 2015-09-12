@@ -47,7 +47,7 @@ void ReplaceMessageJob::start()
     job->setMailBox(mMailbox);
     job->setContent(mMessage->encodedContent(true));
     job->setInternalDate(mMessage->date()->dateTime());
-    connect(job, SIGNAL(result(KJob*)), SLOT(onAppendMessageDone(KJob*)));
+    connect(job, &KJob::result, this, &ReplaceMessageJob::onAppendMessageDone);
     job->start();
 }
 
@@ -75,7 +75,7 @@ void ReplaceMessageJob::onAppendMessageDone(KJob *job)
         //For search and delete we need to select the right mailbox first
         KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mMailbox);
-        connect(select, SIGNAL(result(KJob*)), this, SLOT(onSelectDone(KJob*)));
+        connect(select, &KJob::result, this, &ReplaceMessageJob::onSelectDone);
         select->start();
     } else {
         if (mNewUid > 0) {
@@ -126,8 +126,8 @@ void ReplaceMessageJob::triggerSearchJob()
         search->addSearchCriteria(KIMAP::SearchJob::Uid, KIMAP::ImapInterval(mUidNext).toImapSequence());
     }
 
-    connect(search, SIGNAL(result(KJob*)),
-            this, SLOT(onSearchDone(KJob*)));
+    connect(search, &KJob::result,
+            this, &ReplaceMessageJob::onSearchDone);
 
     search->start();
 }
@@ -165,7 +165,7 @@ void ReplaceMessageJob::triggerDeleteJobIfNecessary()
         store->setSequenceSet(mOldUids);
         store->setFlags(QList<QByteArray>() << ImapFlags::Deleted);
         store->setMode(KIMAP::StoreJob::AppendFlags);
-        connect(store, SIGNAL(result(KJob*)), this, SLOT(onDeleteDone(KJob*)));
+        connect(store, &KJob::result, this, &ReplaceMessageJob::onDeleteDone);
         store->start();
     }
 }

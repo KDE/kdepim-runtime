@@ -45,8 +45,8 @@ void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
         KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
         select->setMailBox(mailBox);
 
-        connect(select, SIGNAL(result(KJob*)),
-                this, SLOT(onSelectDone(KJob*)));
+        connect(select, &KJob::result,
+                this, &ChangeItemsFlagsTask::onSelectDone);
 
         select->start();
 

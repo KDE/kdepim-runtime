@@ -57,8 +57,8 @@ void RetrieveItemTask::doStart(KIMAP::Session *session)
     if (session->selectedMailBox() != mailBox) {
         KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
         select->setMailBox(mailBox);
-        connect(select, SIGNAL(result(KJob*)),
-                this, SLOT(onSelectDone(KJob*)));
+        connect(select, &KJob::result,
+                this, &RetrieveItemTask::onSelectDone);
         select->start();
     } else {
         triggerFetchJob();
@@ -94,8 +94,8 @@ void RetrieveItemTask::triggerFetchJob()
     //TODO: Handle parts retrieval
     //connect( fetch, SIGNAL(partsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)),
     //         this, SLOT(onPartsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)) );
-    connect(fetch, SIGNAL(result(KJob*)),
-            this, SLOT(onContentFetchDone(KJob*)));
+    connect(fetch, &KJob::result,
+            this, &RetrieveItemTask::onContentFetchDone);
     fetch->start();
 }
 

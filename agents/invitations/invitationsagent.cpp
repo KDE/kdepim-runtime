@@ -240,7 +240,7 @@ InvitationsAgent::InvitationsAgent(const QString &id)
     //changeRecorder()->setCollectionMonitored( Collection::root(), true );
 
     connect(this, &InvitationsAgent::reloadConfiguration, this, &InvitationsAgent::initStart);
-    QTimer::singleShot(0, this, SLOT(initStart()));
+    QTimer::singleShot(0, this, &InvitationsAgent::initStart);
 }
 
 InvitationsAgent::~InvitationsAgent()

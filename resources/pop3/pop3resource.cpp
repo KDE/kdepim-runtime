@@ -60,8 +60,8 @@ POP3Resource::POP3Resource(const QString &id)
     resetState();
 
     connect(this, &POP3Resource::abortRequested, this, &POP3Resource::slotAbortRequested);
-    connect(mIntervalTimer, SIGNAL(timeout()),
-            this, SLOT(intervalCheckTriggered()));
+    connect(mIntervalTimer, &QTimer::timeout,
+            this, &POP3Resource::intervalCheckTriggered);
     connect(this, &POP3Resource::reloadConfiguration, this, &POP3Resource::configurationChanged);
 }
 

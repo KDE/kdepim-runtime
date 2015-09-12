@@ -53,7 +53,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
 
     connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
-    connect(ui.kcfg_Path->lineEdit(), SIGNAL(textChanged(QString)), SLOT(checkPath()));
+    connect(ui.kcfg_Path->lineEdit(), &QLineEdit::textChanged, this, &ConfigDialog::checkPath);
     ui.kcfg_Path->lineEdit()->setFocus();
     checkPath();
 }

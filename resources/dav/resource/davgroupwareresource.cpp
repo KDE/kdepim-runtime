@@ -1179,7 +1179,7 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         DavItemCreateJob *job = new DavItemCreateJob(davUrl, davItem);
         job->setProperty("item", QVariant::fromValue(localItem));
         job->setProperty("dependentItems", QVariant::fromValue(localDependentItems));
-        connect(job, SIGNAL(result(KJob*)), SLOT(onDeletedItemRecreated(KJob*)));
+        connect(job, &KJob::result, this, &DavGroupwareResource::onDeletedItemRecreated);
         job->start();
     } else {
         const QString remoteEtag = rI.etag();
@@ -1213,7 +1213,7 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         localItem.setRevision(0);
         j = new Akonadi::ItemModifyJob(localItem);
         j->setIgnorePayload(false);
-        connect(j, SIGNAL(result(KJob*)), this, SLOT(onConflictModifyJobFinished(KJob*)));
+        connect(j, &KJob::result, this, &DavGroupwareResource::onConflictModifyJobFinished);
         j->start();
 
         // Hopefully for the dependent items everything will be fine. Right?

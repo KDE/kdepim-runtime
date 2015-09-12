@@ -72,7 +72,7 @@ KMigratorBase::KMigratorBase() : m_logFile(0)
     connect(this, &KMigratorBase::message, this, &KMigratorBase::logMessage);
 
     // load the vtable before we continue
-    QTimer::singleShot(0, this, SLOT(migrate()));
+    QTimer::singleShot(0, this, &KMigratorBase::migrate);
 }
 
 KMigratorBase::~KMigratorBase()

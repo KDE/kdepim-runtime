@@ -101,12 +101,12 @@ ImapResourceBase::ImapResourceBase(const QString &id)
       mSubscriptions(Q_NULLPTR),
       m_idle(Q_NULLPTR)
 {
-    QTimer::singleShot(0, this, SLOT(updateResourceName()));
+    QTimer::singleShot(0, this, &ImapResourceBase::updateResourceName);
 
-    connect(m_pool, SIGNAL(connectDone(int,QString)),
-            this, SLOT(onConnectDone(int,QString)));
-    connect(m_pool, SIGNAL(connectionLost(KIMAP::Session*)),
-            this, SLOT(onConnectionLost(KIMAP::Session*)));
+    connect(m_pool, &SessionPool::connectDone,
+            this, &ImapResourceBase::onConnectDone);
+    connect(m_pool, &SessionPool::connectionLost,
+            this, &ImapResourceBase::onConnectionLost);
 
     Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
     Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -139,12 +139,12 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     setDisableAutomaticItemDeliveryDone(true);
     setItemSyncBatchSize(100);
 
-    connect(this, SIGNAL(reloadConfiguration()), SLOT(reconnect()));
+    connect(this, &AgentBase::reloadConfiguration, this, &ImapResourceBase::reconnect);
 
     m_statusMessageTimer = new QTimer(this);
     m_statusMessageTimer->setSingleShot(true);
-    connect(m_statusMessageTimer, SIGNAL(timeout()), SLOT(clearStatusMessage()));
-    connect(this, SIGNAL(error(QString)), SLOT(showError(QString)));
+    connect(m_statusMessageTimer, &QTimer::timeout, this, &ImapResourceBase::clearStatusMessage);
+    connect(this, &AgentBase::error, this, &ImapResourceBase::showError);
 
     QMetaObject::invokeMethod(this, "delayedInit", Qt::QueuedConnection);
 }
@@ -438,7 +438,7 @@ void ImapResourceBase::retrieveItems(const Collection &col)
 
     RetrieveItemsTask *task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
     connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-    connect(this, SIGNAL(retrieveNextItemSyncBatch(int)), task, SLOT(onReadyForNextBatch(int)));
+    connect(this, &ResourceBase::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
 
 }
@@ -612,8 +612,8 @@ void ImapResourceBase::startIdle()
         = new Akonadi::CollectionFetchJob(c, Akonadi::CollectionFetchJob::Base, this);
     fetch->setFetchScope(scope);
 
-    connect(fetch, SIGNAL(result(KJob*)),
-            this, SLOT(onIdleCollectionFetchDone(KJob*)));
+    connect(fetch, &KJob::result,
+            this, &ImapResourceBase::onIdleCollectionFetchDone);
 }
 
 void ImapResourceBase::onIdleCollectionFetchDone(KJob *job)

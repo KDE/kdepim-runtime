@@ -74,7 +74,7 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windo
     connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SingleFileResourceConfigDialogBase::validate);
     connect(ui.kcfg_MonitorFile, &QCheckBox::toggled, this, &SingleFileResourceConfigDialogBase::validate);
     ui.kcfg_Path->setFocus();
-    QTimer::singleShot(0, this, SLOT(validate()));
+    QTimer::singleShot(0, this, &SingleFileResourceConfigDialogBase::validate);
     setMinimumSize(600, 540);
     readConfig();
 }

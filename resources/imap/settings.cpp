@@ -109,8 +109,8 @@ void Settings::requestPassword()
     } else {
         Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
         if (wallet) {
-            connect(wallet, SIGNAL(walletOpened(bool)),
-                    this, SLOT(onWalletOpened(bool)));
+            connect(wallet, &KWallet::Wallet::walletOpened,
+                    this, &Settings::onWalletOpened);
         } else {
             QMetaObject::invokeMethod(this, "onWalletOpened", Qt::QueuedConnection, Q_ARG(bool, true));
         }

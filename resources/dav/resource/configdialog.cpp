@@ -76,8 +76,8 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mUi.syncRangeStartType->setCurrentIndex(typeIndex);
 
     connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
-    connect(mUi.configuredUrls->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(checkConfiguredUrlsButtonsState()));
-    connect(mUi.configuredUrls, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(onEditButtonClicked()));
+    connect(mUi.configuredUrls->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ConfigDialog::checkConfiguredUrlsButtonsState);
+    connect(mUi.configuredUrls, &QAbstractItemView::doubleClicked, this, &ConfigDialog::onEditButtonClicked);
 
     connect(mUi.syncRangeStartType, SIGNAL(currentIndexChanged(int)), this, SLOT(onSyncRangeStartTypeChanged()));
     connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);

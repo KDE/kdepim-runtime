@@ -99,8 +99,8 @@ void AddItemTask::onAppendMessageDone(KJob *job)
             KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
-            connect(select, SIGNAL(result(KJob*)),
-                    this, SLOT(onPreSearchSelectDone(KJob*)));
+            connect(select, &KJob::result,
+                    this, &AddItemTask::onPreSearchSelectDone);
 
             select->start();
 
@@ -147,8 +147,8 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
         search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
     }
 
-    connect(search, SIGNAL(result(KJob*)),
-            this, SLOT(onSearchDone(KJob*)));
+    connect(search, &KJob::result,
+            this, &AddItemTask::onSearchDone);
 
     search->start();
 }

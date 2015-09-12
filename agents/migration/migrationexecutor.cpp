@@ -56,7 +56,7 @@ void MigrationExecutor::executeNext()
     }
     if (migrator) {
         Q_EMIT infoMessage(this, i18nc("PIM-Maintenance is in progress.", "In progress..."));
-        connect(migrator.data(), SIGNAL(stoppedProcessing()), this, SLOT(onStoppedProcessing()));
+        connect(migrator.data(), &MigratorBase::stoppedProcessing, this, &MigrationExecutor::onStoppedProcessing);
         migrator->start();
     } else {
         // Reset the notification status, otherwise we get notification "In progress...[finished]"
