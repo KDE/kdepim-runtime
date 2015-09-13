@@ -91,6 +91,16 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     m_session = session;
 
     const Akonadi::Collection col = collection();
+    // Only with emails we can be sure that RID is persistent and thus we can use
+    // it for merging. For other potential content types (like Kolab events etc.)
+    // use GID instead.
+    QStringList cts = col.contentMimeTypes();
+    cts.removeOne(Akonadi::Collection::mimeType());
+    cts.removeOne(KMime::Message::mimeType());
+    if (!cts.isEmpty()) {
+        setItemMergingMode(Akonadi::ItemSync::GIDMerge);
+    }
+
     if (m_fetchMissingBodies && col.cachePolicy()
             .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {  //disconnected mode, make sure we really have the body cached
 
