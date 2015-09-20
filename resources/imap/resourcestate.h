@@ -153,7 +153,7 @@ public:
 
     MessageHelper::Ptr messageHelper() const Q_DECL_OVERRIDE;
 
-  void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode);
+    void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) Q_DECL_OVERRIDE;
 
 private:
     ImapResourceBase *m_resource;
