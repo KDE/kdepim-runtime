@@ -2250,7 +2250,7 @@ bool MixedMaildirStore::Private::visit(FileStore::StoreCompactJob *job)
                 const QString remoteRevision = QString::number(revision);
 
                 Collection collection = mbox->mCollection;
-                collection.attribute<FileStore::EntityCompactChangeAttribute>(Entity::AddIfMissing)->setRemoteRevision(remoteRevision);
+                collection.attribute<FileStore::EntityCompactChangeAttribute>(Collection::AddIfMissing)->setRemoteRevision(remoteRevision);
 
                 q->notifyCollectionsProcessed(Collection::List() << collection);
 
@@ -2267,7 +2267,7 @@ bool MixedMaildirStore::Private::visit(FileStore::StoreCompactJob *job)
                 Item item;
                 item.setRemoteId(oldRemoteId);
                 item.setParentCollection(mbox->mCollection);
-                item.attribute<FileStore::EntityCompactChangeAttribute>(Entity::AddIfMissing)->setRemoteId(newRemoteId);
+                item.attribute<FileStore::EntityCompactChangeAttribute>(Item::AddIfMissing)->setRemoteId(newRemoteId);
 
                 items << item;
             }

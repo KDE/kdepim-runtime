@@ -313,7 +313,7 @@ void ResourceState::emitPercent(int percent)
     Q_EMIT m_resource->percent(percent);
 }
 
-void ResourceState::synchronizeCollection(Akonadi::Entity::Id id)
+void ResourceState::synchronizeCollection(Akonadi::Collection::Id id)
 {
     m_resource->synchronizeCollection(id);
 }

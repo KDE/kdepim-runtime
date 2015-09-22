@@ -87,7 +87,29 @@ public:
         mLastModified = lastModified;
     }
 
-    static RemoteInformation load(const Entity &entity)
+    static RemoteInformation load(const Item &item)
+    {
+        return loadImpl(item);
+    }
+
+    static RemoteInformation load(const Collection &collection)
+    {
+        return loadImpl(collection);
+    }
+
+    void store(Item &item) const
+    {
+        storeImpl(item);
+    }
+
+    void store(Collection &collection) const
+    {
+        storeImpl(collection);
+    }
+
+private:
+    template<typename T>
+    static inline RemoteInformation loadImpl(const T &entity)
     {
         const QStringList parts = entity.remoteRevision().split(QLatin1Char(':'), QString::KeepEmptyParts);
 
@@ -113,7 +135,8 @@ public:
         return RemoteInformation(entity.remoteId().toLongLong(), module, lastModified);
     }
 
-    void store(Entity &entity) const
+    template<typename T>
+    inline void storeImpl(T &entity) const
     {
         QString module;
         switch (mModule) {
@@ -138,7 +161,6 @@ public:
         entity.setRemoteRevision(parts.join(QStringLiteral(":")));
     }
 
-private:
     qlonglong mObjectId;
     OXA::Folder::Module mModule;
     QString mLastModified;

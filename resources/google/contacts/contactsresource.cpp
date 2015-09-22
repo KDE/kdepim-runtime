@@ -343,7 +343,7 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
                                Collection::CanChangeItem |
                                Collection::CanDeleteItem);
 
-    EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
+    EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(fetchJob->account()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
 
@@ -386,7 +386,7 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         collection.setRemoteId(group->id());
         collection.setVirtual(true);
 
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
+        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setDisplayName(realName);
         attr->setIconName(QStringLiteral("view-pim-contacts"));
 
@@ -402,7 +402,7 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
                               Collection::CanDeleteItem);
     otherCollection.setRemoteId(OTHERCONTACTS_REMOTEID);
 
-    attr = otherCollection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
+    attr = otherCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(i18n("Other Contacts"));
     attr->setIconName(QStringLiteral("view-pim-contacts"));
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
@@ -544,7 +544,7 @@ void ContactsResource::slotCreateJobFinished(KGAPI2::Job *job)
         collection.setRemoteId(group->id());
         collection.setContentMimeTypes(QStringList() << KContacts::Addressee::mimeType());
 
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
+        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setDisplayName(group->title());
         attr->setIconName(QStringLiteral("view-pim-contacts"));
 

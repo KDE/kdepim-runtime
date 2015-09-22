@@ -411,7 +411,7 @@ void ResourceTask::deferTask()
     deleteLater();
 }
 
-void ResourceTask::restartItemRetrieval(Akonadi::Entity::Id col)
+void ResourceTask::restartItemRetrieval(Akonadi::Collection::Id col)
 {
     if (!mCancelled) {
         m_resource->restartItemRetrieval(col);

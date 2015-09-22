@@ -52,7 +52,7 @@ private:
 
     KIMAP::ImapSet m_oldSet;
     QVector<qint64> m_newUids;
-    QMap<Akonadi::Entity::Id /* original ID */, QByteArray> m_messageIds;
+    QMap<Akonadi::Item::Id /* original ID */, QByteArray> m_messageIds;
 };
 
 #endif

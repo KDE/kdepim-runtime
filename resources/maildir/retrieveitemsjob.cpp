@@ -75,77 +75,73 @@ void RetrieveItemsJob::localListDone(KJob *job)
     m_entryIterator = new QDirIterator(m_maildir.pathToNew(), QDir::Files);
     m_previousMtime = m_collection.remoteRevision().toLongLong();
     m_highestMtime = 0;
-    processEntry();
+    QMetaObject::invokeMethod(this, "processEntry", Qt::QueuedConnection);
 }
 
 void RetrieveItemsJob::processEntry()
 {
-    QFileInfo entryInfo;
+    Akonadi::TransactionSequence *lastTrx = Q_NULLPTR;
 
-    QString filePath = m_entryIterator->next();
-
-    QString fileName = m_entryIterator->fileName();
-
-    bool newItemFound = false;
-    while (!newItemFound) {
-        if (filePath.isEmpty()) {
-            if (m_listingPath.endsWith(QLatin1String("/new/"))) {
-                m_listingPath = m_maildir.path() + QLatin1String("/cur/");
-                delete m_entryIterator;
-                m_entryIterator = new QDirIterator(m_maildir.pathToCurrent(), QDir::Files);
-                processEntry();
-            } else {
-                entriesProcessed();
+    while (m_entryIterator->hasNext() || m_listingPath.endsWith(QLatin1String("/new/"))) {
+        if (!m_entryIterator->hasNext()) {
+            m_listingPath = m_maildir.path() + QLatin1String("/cur/");
+            delete m_entryIterator;
+            m_entryIterator = new QDirIterator(m_maildir.pathToCurrent(), QDir::Files);
+            if (!m_entryIterator->hasNext()) {
+                break;
             }
-            return;
         }
+        m_entryIterator->next();
 
-        entryInfo = m_entryIterator->fileInfo();
+        const QFileInfo entryInfo = m_entryIterator->fileInfo();
+        const QString fileName = entryInfo.fileName();
         const qint64 currentMtime = entryInfo.lastModified().toMSecsSinceEpoch();
         m_highestMtime = qMax(m_highestMtime, currentMtime);
         if (currentMtime <= m_previousMtime) {
             auto localItemIter = m_localItems.find(fileName);
             if (localItemIter != m_localItems.end()) {  // old, we got this one already
                 m_localItems.erase(localItemIter);
-                filePath = m_entryIterator->next();
-                fileName = m_entryIterator->fileName();
-            } else {
-                newItemFound = true;
+                continue;
             }
-        } else {
-            newItemFound = true;
+        }
+
+        Akonadi::Item item;
+        item.setRemoteId(fileName);
+        item.setMimeType(m_mimeType);
+        const qint64 entrySize = entryInfo.size();
+        if (entrySize >= 0) {
+            item.setSize(entrySize);
+        }
+
+        KMime::Message *msg = new KMime::Message;
+        msg->setHead(KMime::CRLFtoLF(m_maildir.readEntryHeadersFromFile(m_listingPath + fileName)));
+        msg->parse();
+
+        Akonadi::Item::Flags flags = m_maildir.readEntryFlags(fileName);
+        Q_FOREACH (const Akonadi::Item::Flag &flag, flags) {
+            item.setFlag(flag);
+        }
+
+        item.setPayload(KMime::Message::Ptr(msg));
+        Akonadi::MessageFlags::copyMessageFlags(*msg, item);
+        auto localItemIter = m_localItems.find(fileName);
+        Akonadi::TransactionSequence *trx = transaction();
+        if (localItemIter == m_localItems.end()) { // new item
+            new Akonadi::ItemCreateJob(item, m_collection, trx);
+        } else { // modification
+            item.setId((*localItemIter).id());
+            new Akonadi::ItemModifyJob(item, trx);
+            m_localItems.erase(localItemIter);
+        }
+        if (trx != lastTrx) {
+            lastTrx = trx;
+            QMetaObject::invokeMethod(this, "processEntry", Qt::QueuedConnection);
+            return;
         }
     }
 
-    Akonadi::Item item;
-    item.setRemoteId(fileName);
-    item.setMimeType(m_mimeType);
-    const qint64 entrySize = entryInfo.size();
-    if (entrySize >= 0) {
-        item.setSize(entrySize);
-    }
-
-    KMime::Message *msg = new KMime::Message;
-    msg->setHead(KMime::CRLFtoLF(m_maildir.readEntryHeadersFromFile(m_listingPath + fileName)));
-    msg->parse();
-
-    Akonadi::Item::Flags flags = m_maildir.readEntryFlags(fileName);
-    Q_FOREACH (const Akonadi::Item::Flag &flag, flags) {
-        item.setFlag(flag);
-    }
-
-    item.setPayload(KMime::Message::Ptr(msg));
-    Akonadi::MessageFlags::copyMessageFlags(*msg, item);
-    KJob *job = Q_NULLPTR;
-    auto localItemIter = m_localItems.find(fileName);
-    if (localItemIter == m_localItems.end()) { // new item
-        job = new Akonadi::ItemCreateJob(item, m_collection, transaction());
-    } else { // modification
-        item.setId((*localItemIter).id());
-        job = new Akonadi::ItemModifyJob(item, transaction());
-        m_localItems.erase(localItemIter);
-    }
-    connect(job, &Akonadi::ItemCreateJob::result, this, &RetrieveItemsJob::processEntryDone);
+    entriesProcessed();
+    //connect(job, &Akonadi::ItemCreateJob::result, this, &RetrieveItemsJob::processEntryDone);
 }
 
 void RetrieveItemsJob::processEntryDone(KJob *)
@@ -190,6 +186,7 @@ Akonadi::TransactionSequence *RetrieveItemsJob::transaction()
     // operations, which slowly overloads the database journal causing simple
     // INSERT to take several seconds
     if (++m_transactionSize >= 100) {
+        qDebug() << "Commit!";
         m_transaction->commit();
         m_transaction = Q_NULLPTR;
         m_transactionSize = 0;

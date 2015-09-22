@@ -71,7 +71,7 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
         }
         if (!KolabHelpers::isHandledType(folderType)) {
             //If we don't handle the folder, make sure we don't download the messages
-            col.attribute<NoSelectAttribute>(Akonadi::Entity::AddIfMissing);
+            col.attribute<NoSelectAttribute>(Akonadi::Collection::AddIfMissing);
         }
         return col;
     }

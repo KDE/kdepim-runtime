@@ -296,7 +296,7 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setTrashCollection(m_ui->folderRequester->collection().id());
     Akonadi::Collection trash = m_ui->folderRequester->collection();
     Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
-    Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
+    Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
     attribute->setIconName(QStringLiteral("user-trash"));
     new Akonadi::CollectionModifyJob(trash);
     if (mOldTrash != trash) {

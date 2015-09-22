@@ -584,7 +584,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
     item.setMimeType(QStringLiteral("message/rfc822"));
     item.setPayload<KMime::Message::Ptr>(message);
 
-    Akonadi::Pop3ResourceAttribute *attr  = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Entity::AddIfMissing);
+    Akonadi::Pop3ResourceAttribute *attr  = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Item::AddIfMissing);
     attr->setPop3AccountName(identifier());
     Akonadi::MessageFlags::copyMessageFlags(*message, item);
     ItemCreateJob *itemCreateJob = new ItemCreateJob(item, mTargetCollection);

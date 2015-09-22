@@ -419,7 +419,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     m_rootCollection.setRights(Collection::CanCreateCollection);
     m_rootCollection.setCachePolicy(cachePolicy);
 
-    EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
+    EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(fetchJob->account()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
 
@@ -447,15 +447,15 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
             collection.setRights(Q_NULLPTR);
         }
 
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
+        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setDisplayName(calendar->title());
         attr->setIconName(QStringLiteral("view-calendar"));
 
-        DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>(Entity::AddIfMissing);
+        DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>(Collection::AddIfMissing);
         reminderAttr->setReminders(calendar->defaultReminders());
 
         // Block email reminders, since Google sends them for us
-        BlockAlarmsAttribute *blockAlarms = collection.attribute<BlockAlarmsAttribute>(Entity::AddIfMissing);
+        BlockAlarmsAttribute *blockAlarms = collection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
         blockAlarms->blockAlarmType(KCalCore::Alarm::Audio, false);
         blockAlarms->blockAlarmType(KCalCore::Alarm::Display, false);
         blockAlarms->blockAlarmType(KCalCore::Alarm::Procedure, false);
@@ -481,7 +481,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
                              Collection::CanChangeItem |
                              Collection::CanDeleteItem);
 
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Entity::AddIfMissing);
+        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setDisplayName(taskList->title());
         attr->setIconName(QStringLiteral("view-pim-tasks"));
 

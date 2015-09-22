@@ -44,7 +44,7 @@ private Q_SLOTS:
         QStringList callNames;
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -86,7 +86,7 @@ private Q_SLOTS:
                              << Akonadi::MessagePart::Body);
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
 
         scenario.clear();
@@ -126,7 +126,7 @@ private Q_SLOTS:
         stats.setCount(1);
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
         collection.setCachePolicy(policy);
         collection.setStatistics(stats);
@@ -159,7 +159,7 @@ private Q_SLOTS:
 //     QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         stats.setCount(1);
         collection.setStatistics(stats);
@@ -186,7 +186,7 @@ private Q_SLOTS:
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(8);
         stats.setCount(4);
         collection.setStatistics(stats);
-        collection.attribute<HighestModSeqAttribute>(Akonadi::Entity::AddIfMissing)->setHighestModSeq(123456788);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456788);
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 SELECT \"INBOX/Foo\""
@@ -286,10 +286,10 @@ private Q_SLOTS:
         QTest::newRow("uidnext changed, fetch new messages and list flags") << collection << scenario << callNames;
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
-        collection.attribute<HighestModSeqAttribute>(Akonadi::Entity::AddIfMissing)->setHighestModSeq(123456789);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
@@ -314,10 +314,10 @@ private Q_SLOTS:
         QTest::newRow("highestmodseq test") << collection << scenario << callNames;
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
-        collection.attribute<HighestModSeqAttribute>(Akonadi::Entity::AddIfMissing)->setHighestModSeq(123456788);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456788);
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
@@ -346,9 +346,9 @@ private Q_SLOTS:
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
         collection.setCachePolicy(policy);
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
-        collection.attribute<HighestModSeqAttribute>(Akonadi::Entity::AddIfMissing)->setHighestModSeq(123456788);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456788);
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
@@ -383,7 +383,7 @@ private Q_SLOTS:
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(3);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(3);
         collection.setCachePolicy(policy);
         stats.setCount(1);
         collection.setStatistics(stats);
@@ -423,7 +423,7 @@ private Q_SLOTS:
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(105);
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         stats.setCount(104);
         collection.setStatistics(stats);
@@ -482,10 +482,10 @@ private Q_SLOTS:
         QTest::newRow("test batch processing") << collection << scenario << callNames;
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
-        collection.attribute<HighestModSeqAttribute>(Akonadi::Entity::AddIfMissing)->setHighestModSeq(123456789);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
@@ -519,10 +519,10 @@ private Q_SLOTS:
         QTest::newRow("remote message deleted") << collection << scenario << callNames;
 
         collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.attribute<UidValidityAttribute>(Akonadi::Entity::AddIfMissing)->setUidValidity(1149151135);
+        collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(-1);
-        collection.attribute<HighestModSeqAttribute>(Akonadi::Entity::AddIfMissing)->setHighestModSeq(123456789);
+        collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456789);
         stats.setCount(0);
         collection.setStatistics(stats);
         scenario.clear();

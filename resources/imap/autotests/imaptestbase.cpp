@@ -119,7 +119,7 @@ Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId)
     Akonadi::Collection parent(1);
     parent.setRemoteId(QLatin1String("root-id"));
     parent.setParentCollection(Akonadi::Collection::root());
-    Akonadi::Entity::Id id = 2;
+    Akonadi::Collection::Id id = 2;
 
     Akonadi::Collection collection = parent;
 

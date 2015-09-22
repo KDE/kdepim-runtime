@@ -42,7 +42,7 @@
 
 using namespace Akonadi;
 
-static Entity::Id collectionId(const QString &remoteItemId)
+static Collection::Id collectionId(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
     Q_ASSERT(remoteItemId.split(QStringLiteral("::")).size() == 3);
@@ -251,7 +251,7 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
     Q_ASSERT(fetchJob->collections().size() == 1);
     Collection mboxCollection = fetchJob->collections().at(0);
     DeletedItemsAttribute *attr
-        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Entity::AddIfMissing);
+        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     if (mSettings->compactFrequency() == Settings::per_x_messages
             && mSettings->messageCount() == static_cast<uint>(attr->offsetCount() + 1)) {
@@ -346,7 +346,7 @@ void MboxResource::onCollectionFetch(KJob *job)
 
     Collection mboxCollection = fetchJob->collections().at(0);
     DeletedItemsAttribute *attr
-        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Entity::AddIfMissing);
+        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
     attr->addDeletedItemOffset(itemOffset(item.remoteId()));
 
     CollectionModifyJob *modifyJob = new CollectionModifyJob(mboxCollection);
