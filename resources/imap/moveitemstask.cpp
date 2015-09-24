@@ -217,7 +217,8 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         search->setSearchLogic(KIMAP::SearchJob::And);
         search->addSearchCriteria(KIMAP::SearchJob::New);
 
-        UidNextAttribute *uidNext = targetCollection().attribute<UidNextAttribute>();
+        Akonadi::Collection c = targetCollection();
+        UidNextAttribute *uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
             search->deleteLater();
