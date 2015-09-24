@@ -136,7 +136,8 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
     } else {
         search->addSearchCriteria(KIMAP::SearchJob::New);
 
-        UidNextAttribute *uidNext = collection().attribute<UidNextAttribute>();
+        Akonadi::Collection c = collection();
+        UidNextAttribute *uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
             search->deleteLater();
