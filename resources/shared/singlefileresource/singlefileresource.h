@@ -80,7 +80,7 @@ public:
             return;
         }
 
-        mCurrentUrl = QUrl::fromLocalFile(mSettings->path());
+        mCurrentUrl = QUrl(mSettings->path()); // path already has scheme
         if (mCurrentHash.isEmpty())
         {
             // First call to readFile() lets see if there is a hash stored in a
