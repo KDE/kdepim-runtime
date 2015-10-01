@@ -227,7 +227,11 @@ void NewMailNotifierAgent::setShowButtonToDisplayMail(bool b)
 
 void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
 {
-    configure(windowId);
+#ifndef Q_OS_WIN
+    configure(static_cast<WId>(windowId));
+#else
+    configure(reinterpret_cast<WId>(windowId));
+#endif
 }
 
 void NewMailNotifierAgent::configure(WId windowId)
