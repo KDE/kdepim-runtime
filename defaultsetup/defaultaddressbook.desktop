@@ -53,4 +53,4 @@ Name[zh_TW]=個人聯絡人
 
 [Settings]
 IsConfigured=true
-Path[$e]=$HOME/.local/share/contacts/
+Path[$e]=$QT_DATA_HOME/contacts/

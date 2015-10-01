@@ -76,4 +76,4 @@ Name[zh_CN]=便笺
 Name[zh_TW]=備忘錄
 
 [Settings]
-Path[$e]=$HOME/.local/share/notes/
+Path[$e]=$QT_DATA_HOME/notes/

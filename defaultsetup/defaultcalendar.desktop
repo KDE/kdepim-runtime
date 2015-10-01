@@ -48,5 +48,5 @@ Name[zh_CN]=个人日历
 Name[zh_TW]=個人行事曆
 
 [Settings]
-Path[$e]=$HOME/.local/share/apps/korganizer/std.ics
+Path[$e]=$QT_DATA_HOME/apps/korganizer/std.ics
 
