@@ -53,7 +53,7 @@ public:
         , mSettings(new Settings(componentData().config()))
     {
         // The resource needs network when the path refers to a non local file.
-        setNeedsNetwork(!QUrl::fromLocalFile(mSettings->path()).isLocalFile());
+        setNeedsNetwork(!QUrl(mSettings->path()).isLocalFile());
     }
     ~SingleFileResource()
     {
