@@ -387,7 +387,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         }
         qCDebug(IMAPRESOURCE_LOG) << "Fetching complete mailbox " << mailBox;
         setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
+        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
     } else if (nextUid <= 0) {
         //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
@@ -430,7 +430,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: " << realMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
         setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, 0), scope, false, true);
+        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
     } else if (nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
         qCDebug(IMAPRESOURCE_LOG) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
