@@ -114,10 +114,10 @@ void MaildirTest::testMaildirInstantiation()
     QCOMPARE(d.path(), QString(QLatin1String("/foo/bar/Mail")));
     QCOMPARE(d.name(), QString(QLatin1String("Mail")));
 
-    QVERIFY(!d.isValid());
+    QVERIFY(!d.isValid(false));
 
     Maildir good(m_temp->path());
-    QVERIFY(good.isValid());
+    QVERIFY(good.isValid(false));
 
     QDir temp(m_temp->path());
     temp.rmdir(QLatin1String("new"));
@@ -203,7 +203,7 @@ void MaildirTest::testMaildirCreation()
     Maildir d(temp->path() + p);
     QVERIFY(!d.isValid(false));
     d.create();
-    QVERIFY(d.isValid());
+    QVERIFY(d.isValid(false));
 }
 
 void MaildirTest::testMaildirRemoveEntry()
@@ -244,13 +244,13 @@ void MaildirTest::testMaildirCreateSubfolder()
     QVERIFY(!entries.isEmpty());
     QCOMPARE(entries.count(), 1);
     Maildir child = d.subFolder(entries.first());
-    QVERIFY(child.isValid());
+    QVERIFY(child.isValid(false));
 }
 
 void MaildirTest::testMaildirRemoveSubfolder()
 {
     Maildir d(m_temp->path());
-    QVERIFY(d.isValid());
+    QVERIFY(d.isValid(false));
 
     QString folderPath = d.addSubFolder(QLatin1String("subFolderTest"));
     QVERIFY(!folderPath.isEmpty());
@@ -262,13 +262,13 @@ void MaildirTest::testMaildirRemoveSubfolder()
 void MaildirTest::testMaildirRename()
 {
     Maildir d(m_temp->path());
-    QVERIFY(d.isValid());
+    QVERIFY(d.isValid(false));
 
     QString folderPath = d.addSubFolder(QLatin1String("rename me!"));
     QVERIFY(!folderPath.isEmpty());
 
     Maildir d2(folderPath);
-    QVERIFY(d2.isValid());
+    QVERIFY(d2.isValid(false));
     QVERIFY(d2.rename(QLatin1String("renamed")));
     QCOMPARE(d2.name(), QString(QLatin1String("renamed")));
 
@@ -284,13 +284,13 @@ void MaildirTest::testMaildirRename()
 void MaildirTest::testMaildirMoveTo()
 {
     Maildir d(m_temp->path());
-    QVERIFY(d.isValid());
+    QVERIFY(d.isValid(false));
 
     QString folderPath1 = d.addSubFolder(QLatin1String("child1"));
     QVERIFY(!folderPath1.isEmpty());
 
     Maildir d2(folderPath1);
-    QVERIFY(d2.isValid());
+    QVERIFY(d2.isValid(false));
 
     QDir d2Dir(d2.path());
     QVERIFY(d2Dir.exists());
@@ -298,7 +298,7 @@ void MaildirTest::testMaildirMoveTo()
     QString folderPath11 = d2.addSubFolder(QLatin1String("grandchild1"));
 
     Maildir d21(folderPath11);
-    QVERIFY(d21.isValid());
+    QVERIFY(d21.isValid(false));
 
     QDir d2SubDir(Maildir::subDirPathForFolderPath(d2.path()));
     QVERIFY(d2SubDir.exists());
@@ -307,13 +307,13 @@ void MaildirTest::testMaildirMoveTo()
     QVERIFY(!folderPath2.isEmpty());
 
     Maildir d3(folderPath2);
-    QVERIFY(d3.isValid());
+    QVERIFY(d3.isValid(false));
 
     // move child1 to child2
     QVERIFY(d2.moveTo(d3));
 
     Maildir d31 = d3.subFolder(QLatin1String("child1"));
-    QVERIFY(d31.isValid());
+    QVERIFY(d31.isValid(false));
 
     QVERIFY(!d2Dir.exists());
     QVERIFY(!d2SubDir.exists());
@@ -325,7 +325,7 @@ void MaildirTest::testMaildirMoveTo()
     QVERIFY(d31SubDir.exists());
 
     Maildir d311 = d31.subFolder(QLatin1String("grandchild1"));
-    QVERIFY(d311.isValid());
+    QVERIFY(d311.isValid(false));
 
     // try moving again
     d2 = Maildir(folderPath1);
