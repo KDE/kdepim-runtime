@@ -248,7 +248,8 @@ QString KAEventFormatter::value(Parameter param) const
             return QString();
         }
         QString value;
-        for (QMap<QByteArray, QString>::ConstIterator it = mEvent.customProperties().constBegin();  it != mEvent.customProperties().constEnd();  ++it) {
+        const auto customProperties = mEvent.customProperties();
+        for (auto it = customProperties.cbegin(), end = customProperties.cend(); it != end; ++it) {
             value += QString::fromLatin1(it.key()) + QLatin1String(":") + it.value() + QLatin1String("<nl/>");
         }
         return i18nc("@info", "%1", value);
