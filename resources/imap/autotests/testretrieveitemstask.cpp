@@ -402,7 +402,7 @@ private Q_SLOTS:
                  << "S: * OK [ UIDVALIDITY 1149151135  ]"
                  << "S: * OK [ UIDNEXT 9  ]"
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH UID 1:4294967295"
+                 << "C: A000006 UID SEARCH UID 1:9"
                  << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
