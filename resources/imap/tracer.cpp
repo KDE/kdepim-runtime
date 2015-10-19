@@ -30,7 +30,7 @@ public:
     }
     qint64 writeData(const char *data, qint64 len) Q_DECL_OVERRIDE {
         const QByteArray buf = QByteArray::fromRawData(data, len);
-        if (!qgetenv("IMAP_TRACE").isEmpty())
+        if (!qEnvironmentVariableIsEmpty("IMAP_TRACE"))
         {
             // qt_message_output(QtDebugMsg, buf.trimmed().constData());
             std::cout << buf.trimmed().constData() << std::endl;
