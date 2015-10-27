@@ -41,8 +41,8 @@ void KolabRetrieveTagTask::startRelationTask(KIMAP::Session *session)
 
     KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
     select->setMailBox(mailBox);
-    connect(select, SIGNAL(result(KJob*)),
-            this, SLOT(onFinalSelectDone(KJob*)));
+    connect(select, &KJob::result,
+            this, &KolabRetrieveTagTask::onFinalSelectDone);
     select->start();
 }
 
@@ -84,8 +84,8 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
                                          QMap<qint64, KIMAP::MessageAttribute>,
                                          QMap<qint64, KIMAP::MessageFlags>,
                                          QMap<qint64, KIMAP::MessagePtr>)));
-    connect(fetch, SIGNAL(result(KJob*)),
-            this, SLOT(onHeadersFetchDone(KJob*)));
+    connect(fetch, &KJob::result,
+            this, &KolabRetrieveTagTask::onHeadersFetchDone);
     fetch->start();
 }
 

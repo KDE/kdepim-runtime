@@ -64,7 +64,7 @@ void KolabChangeItemsTagsTask::processNextTag()
     //We have to fetch it again in case it changed since the notification was emitted (which is likely)
     //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
     Akonadi::TagFetchJob *fetch = new Akonadi::TagFetchJob(tag);
-    connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onTagFetchDone(KJob*)));
+    connect(fetch, &KJob::result, this, &KolabChangeItemsTagsTask::onTagFetchDone);
 }
 
 void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
@@ -90,7 +90,7 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
     fetch->fetchScope().setFetchGid(true);
     fetch->fetchScope().fetchFullPayload(true);
     fetch->setProperty("tag", QVariant::fromValue(tags.first()));
-    connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onItemsFetchDone(KJob*)));
+    connect(fetch, &KJob::result, this, &KolabChangeItemsTagsTask::onItemsFetchDone);
 }
 
 void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
@@ -107,10 +107,10 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
 
-    connect(changeHelper, SIGNAL(applyCollectionChanges(Akonadi::Collection)),
-            this, SLOT(onApplyCollectionChanged(Akonadi::Collection)));
-    connect(changeHelper, SIGNAL(cancelTask(QString)), this, SLOT(onCancelTask(QString)));
-    connect(changeHelper, SIGNAL(changeCommitted()), this, SLOT(onChangeCommitted()));
+    connect(changeHelper, &TagChangeHelper::applyCollectionChanges,
+            this, &KolabChangeItemsTagsTask::onApplyCollectionChanged);
+    connect(changeHelper, &TagChangeHelper::cancelTask, this, &KolabChangeItemsTagsTask::onCancelTask);
+    connect(changeHelper, &TagChangeHelper::changeCommitted, this, &KolabChangeItemsTagsTask::onChangeCommitted);
 
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     {

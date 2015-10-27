@@ -42,7 +42,7 @@ void KolabChangeTagTask::startRelationTask(KIMAP::Session *session)
     fetch->fetchScope().setFetchGid(true);
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetch->fetchScope().fetchFullPayload(true);
-    connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onItemsFetchDone(KJob*)));
+    connect(fetch, &KJob::result, this, &KolabChangeTagTask::onItemsFetchDone);
 }
 
 void KolabChangeTagTask::onItemsFetchDone(KJob *job)
@@ -57,10 +57,10 @@ void KolabChangeTagTask::onItemsFetchDone(KJob *job)
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
 
-    connect(changeHelper, SIGNAL(applyCollectionChanges(Akonadi::Collection)),
-            this, SLOT(onApplyCollectionChanged(Akonadi::Collection)));
-    connect(changeHelper, SIGNAL(cancelTask(QString)), this, SLOT(onCancelTask(QString)));
-    connect(changeHelper, SIGNAL(changeCommitted()), this, SLOT(onChangeCommitted()));
+    connect(changeHelper, &TagChangeHelper::applyCollectionChanges,
+            this, &KolabChangeTagTask::onApplyCollectionChanged);
+    connect(changeHelper, &TagChangeHelper::cancelTask, this, &KolabChangeTagTask::onCancelTask);
+    connect(changeHelper, &TagChangeHelper::changeCommitted, this, &KolabChangeTagTask::onChangeCommitted);
 
     changeHelper->start(resourceState()->tag(), mTagConverter->createMessage(resourceState()->tag(), items, resourceState()->userName()), mSession);
 }

@@ -72,7 +72,7 @@ void KolabChangeItemsRelationsTask::processNextRelation()
     //We have to fetch it again in case it changed since the notification was emitted (which is likely)
     //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
     Akonadi::RelationFetchJob *fetch = new Akonadi::RelationFetchJob(relation);
-    connect(fetch, SIGNAL(result(KJob*)), this, SLOT(onRelationFetchDone(KJob*)));
+    connect(fetch, &KJob::result, this, &KolabChangeItemsRelationsTask::onRelationFetchDone);
 }
 
 void KolabChangeItemsRelationsTask::onRelationFetchDone(KJob *job)
@@ -107,7 +107,7 @@ void KolabChangeItemsRelationsTask::addRelation(const Akonadi::Relation &relatio
     fetchJob->fetchScope().setFetchGid(true);
     fetchJob->fetchScope().fetchFullPayload(true);
     fetchJob->setProperty("relation", QVariant::fromValue(relation));
-    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onItemsFetched(KJob*)));
+    connect(fetchJob, &KJob::result, this, &KolabChangeItemsRelationsTask::onItemsFetched);
 }
 
 void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
@@ -146,7 +146,7 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
     appendJob->setMailBox(mailBoxForCollection(relationCollection()));
     appendJob->setContent(message->encodedContent(true));
     appendJob->setInternalDate(message->date()->dateTime());
-    connect(appendJob, SIGNAL(result(KJob*)), SLOT(onChangeCommitted(KJob*)));
+    connect(appendJob, &KJob::result, this, &KolabChangeItemsRelationsTask::onChangeCommitted);
     appendJob->start();
 }
 
@@ -160,7 +160,7 @@ void KolabChangeItemsRelationsTask::removeRelation(const Akonadi::Relation &rela
         KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mailBox);
 
-        connect(select, SIGNAL(result(KJob*)), this, SLOT(onSelectDone(KJob*)));
+        connect(select, &KJob::result, this, &KolabChangeItemsRelationsTask::onSelectDone);
 
         select->start();
     } else {
@@ -190,7 +190,7 @@ void KolabChangeItemsRelationsTask::triggerStoreJob()
     store->setSequenceSet(set);
     store->setFlags(QList<QByteArray>() << ImapFlags::Deleted);
     store->setMode(KIMAP::StoreJob::AppendFlags);
-    connect(store, SIGNAL(result(KJob*)), SLOT(onChangeCommitted(KJob*)));
+    connect(store, &KJob::result, this, &KolabChangeItemsRelationsTask::onChangeCommitted);
     store->start();
 }
 

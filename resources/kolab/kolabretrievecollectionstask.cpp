@@ -107,7 +107,7 @@ void RetrieveMetadataJob::start()
                 Q_FOREACH (const QByteArray &requestedEntry, mRequestedMetadata) {
                     meta->addRequestedEntry(requestedEntry);
                 }
-                connect(meta, SIGNAL(result(KJob*)), SLOT(onGetMetaDataDone(KJob*)));
+                connect(meta, &KJob::result, this, &RetrieveMetadataJob::onGetMetaDataDone);
                 mJobs++;
                 meta->start();
             }
@@ -124,7 +124,7 @@ void RetrieveMetadataJob::start()
             }
             KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob(mSession);
             rights->setMailBox(mailbox);
-            connect(rights, SIGNAL(result(KJob*)), SLOT(onRightsReceived(KJob*)));
+            connect(rights, &KJob::result, this, &RetrieveMetadataJob::onRightsReceived);
             mJobs++;
             rights->start();
         }
@@ -247,9 +247,9 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
         KIMAP::ListJob *fullListJob = new KIMAP::ListJob(session);
         fullListJob->setOption(KIMAP::ListJob::NoOption);
         fullListJob->setQueriedNamespaces(serverNamespaces());
-        connect(fullListJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-                this, SLOT(onFullMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)));
-        connect(fullListJob, SIGNAL(result(KJob*)), SLOT(onFullMailBoxesReceiveDone(KJob*)));
+        connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
+                this, &KolabRetrieveCollectionsTask::onFullMailBoxesReceived);
+        connect(fullListJob, &KJob::result, this, &KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone);
         mJobs++;
         fullListJob->start();
     }
@@ -257,9 +257,9 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
     listJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
-    connect(listJob, SIGNAL(mailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)),
-            this, SLOT(onMailBoxesReceived(QList<KIMAP::MailBoxDescriptor>,QList<QList<QByteArray> >)));
-    connect(listJob, SIGNAL(result(KJob*)), SLOT(onMailBoxesReceiveDone(KJob*)));
+    connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
+            this, &KolabRetrieveCollectionsTask::onMailBoxesReceived);
+    connect(listJob, &KJob::result, this, &KolabRetrieveCollectionsTask::onMailBoxesReceiveDone);
     mJobs++;
     listJob->start();
 }
@@ -429,7 +429,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
         const QStringList metadataMailboxes = mailboxes.unite(mSubscribedMailboxes.toList().toSet()).toList();
 
         RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, metadataMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(), resourceState()->sharedNamespaces(), resourceState()->userNamespaces(), this);
-        connect(metadata, SIGNAL(result(KJob*)), this, SLOT(onMetadataRetrieved(KJob*)));
+        connect(metadata, &KJob::result, this, &KolabRetrieveCollectionsTask::onMetadataRetrieved);
         mJobs++;
         metadata->start();
     }

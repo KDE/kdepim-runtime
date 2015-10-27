@@ -52,7 +52,7 @@ void KolabAddTagTask::startRelationTask(KIMAP::Session *session)
     job->setMailBox(mailBoxForCollection(relationCollection()));
     job->setContent(message->encodedContent(true));
     job->setInternalDate(message->date()->dateTime());
-    connect(job, SIGNAL(result(KJob*)), SLOT(onAppendMessageDone(KJob*)));
+    connect(job, &KJob::result, this, &KolabAddTagTask::onAppendMessageDone);
     job->start();
 }
 
@@ -120,8 +120,8 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
         search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
     }
 
-    connect(search, SIGNAL(result(KJob*)),
-            this, SLOT(onSearchDone(KJob*)));
+    connect(search, &KJob::result,
+            this, &KolabAddTagTask::onSearchDone);
 
     search->start();
 }
@@ -153,8 +153,8 @@ void KolabAddTagTask::onAppendMessageDone(KJob *job)
             KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
-            connect(select, SIGNAL(result(KJob*)),
-                    this, SLOT(onPreSearchSelectDone(KJob*)));
+            connect(select, &KJob::result,
+                    this, &KolabAddTagTask::onPreSearchSelectDone);
 
             select->start();
 

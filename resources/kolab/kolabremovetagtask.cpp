@@ -48,8 +48,8 @@ void KolabRemoveTagTask::startRelationTask(KIMAP::Session *session)
         KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
         select->setMailBox(mailBox);
 
-        connect(select, SIGNAL(result(KJob*)),
-                this, SLOT(onSelectDone(KJob*)));
+        connect(select, &KJob::result,
+                this, &KolabRemoveTagTask::onSelectDone);
 
         select->start();
 
@@ -69,7 +69,7 @@ void KolabRemoveTagTask::triggerStoreJob(KIMAP::Session *session)
     store->setSequenceSet(set);
     store->setFlags(QList<QByteArray>() << ImapFlags::Deleted);
     store->setMode(KIMAP::StoreJob::AppendFlags);
-    connect(store, SIGNAL(result(KJob*)), SLOT(onStoreFlagsDone(KJob*)));
+    connect(store, &KJob::result, this, &KolabRemoveTagTask::onStoreFlagsDone);
     store->start();
 }
 

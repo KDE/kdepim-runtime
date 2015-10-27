@@ -73,8 +73,8 @@ void UpdateMessageJob::start()
                                          QMap<qint64, KIMAP::MessageAttribute>,
                                          QMap<qint64, KIMAP::MessageFlags>,
                                          QMap<qint64, KIMAP::MessagePtr>)));
-    connect(fetchJob, SIGNAL(result(KJob*)),
-            this, SLOT(onHeadersFetchDone(KJob*)));
+    connect(fetchJob, &KJob::result,
+            this, &UpdateMessageJob::onHeadersFetchDone);
     fetchJob->start();
 
 }
@@ -107,7 +107,7 @@ void UpdateMessageJob::onHeadersFetchDone(KJob *job)
         if (mSession->selectedMailBox() != mMailbox) {
             KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
             select->setMailBox(mMailbox);
-            connect(select, SIGNAL(result(KJob*)), this, SLOT(onSelectDone(KJob*)));
+            connect(select, &KJob::result, this, &UpdateMessageJob::onSelectDone);
             select->start();
         } else {
             searchForLatestVersion();
@@ -132,8 +132,8 @@ void UpdateMessageJob::searchForLatestVersion()
     search->setUidBased(true);
     search->setSearchLogic(KIMAP::SearchJob::And);
     search->addSearchCriteria(KIMAP::SearchJob::Header, "Subject " + mKolabUid);
-    connect(search, SIGNAL(result(KJob*)),
-            this, SLOT(onSearchDone(KJob*)));
+    connect(search, &KJob::result,
+            this, &UpdateMessageJob::onSearchDone);
     search->start();
 }
 
@@ -175,8 +175,8 @@ void UpdateMessageJob::onSearchDone(KJob *job)
                            QMap<qint64, KIMAP::MessageAttribute>,
                            QMap<qint64, KIMAP::MessageFlags>,
                            QMap<qint64, KIMAP::MessagePtr>)));
-        connect(fetchJob, SIGNAL(result(KJob*)),
-                this, SLOT(onConflictingMessageFetchDone(KJob*)));
+        connect(fetchJob, &KJob::result,
+                this, &UpdateMessageJob::onConflictingMessageFetchDone);
         fetchJob->start();
     } else {
         qCWarning(KOLABRESOURCE_LOG) << "failed to find latest version of object";
@@ -211,7 +211,7 @@ void UpdateMessageJob::appendMessage()
 {
     const qint64 uidNext = -1;
     ReplaceMessageJob *replace = new ReplaceMessageJob(mMessage, mSession, mMailbox, uidNext, mOldUids, this);
-    connect(replace, SIGNAL(result(KJob*)), this, SLOT(onReplaceDone(KJob*)));
+    connect(replace, &KJob::result, this, &UpdateMessageJob::onReplaceDone);
     replace->start();
 }
 

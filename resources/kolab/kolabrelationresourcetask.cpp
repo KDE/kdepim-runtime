@@ -57,7 +57,7 @@ void KolabRelationResourceTask::doStart(KIMAP::Session *session)
     fetchJob->fetchScope().setContentMimeTypes(QStringList() << KolabHelpers::getMimeType(Kolab::ConfigurationType));
     fetchJob->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     fetchJob->fetchScope().setListFilter(Akonadi::CollectionFetchScope::NoFilter);
-    connect(fetchJob, SIGNAL(result(KJob*)), this, SLOT(onCollectionFetchResult(KJob*)));
+    connect(fetchJob, &KJob::result, this, &KolabRelationResourceTask::onCollectionFetchResult);
 }
 
 void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
@@ -86,8 +86,8 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
     const QString newMailBox = QStringLiteral("Configuration");
     KIMAP::CreateJob *imapCreateJob = new KIMAP::CreateJob(mImapSession);
     imapCreateJob->setMailBox(newMailBox);
-    connect(imapCreateJob, SIGNAL(result(KJob*)),
-            this, SLOT(onCreateDone(KJob*)));
+    connect(imapCreateJob, &KJob::result,
+            this, &KolabRelationResourceTask::onCreateDone);
     imapCreateJob->start();
 }
 
@@ -107,8 +107,8 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
     }
     setMetadataJob->setMailBox(QStringLiteral("Configuration"));
     setMetadataJob->addMetaData("/shared/vendor/kolab/folder-type", "configuration.default");
-    connect(setMetadataJob, SIGNAL(result(KJob*)),
-            this, SLOT(onSetMetaDataDone(KJob*)));
+    connect(setMetadataJob, &KJob::result,
+            this, &KolabRelationResourceTask::onSetMetaDataDone);
     setMetadataJob->start();
 }
 
@@ -122,7 +122,7 @@ void KolabRelationResourceTask::onSetMetaDataDone(KJob *job)
     }
 
     Akonadi::CollectionCreateJob *createJob = new Akonadi::CollectionCreateJob(mRelationCollection, this);
-    connect(createJob, SIGNAL(result(KJob*)), this, SLOT(onLocalCreateDone(KJob*)));
+    connect(createJob, &KJob::result, this, &KolabRelationResourceTask::onLocalCreateDone);
 }
 
 void KolabRelationResourceTask::onLocalCreateDone(KJob *job)

@@ -67,7 +67,7 @@ void DummyPasswordRequester::requestPassword(RequestType request,
         delay = m_delays.takeFirst();
     }
 
-    QTimer::singleShot(delay, this, SLOT(emitResult()));
+    QTimer::singleShot(delay, this, &DummyPasswordRequester::emitResult);
 }
 
 void DummyPasswordRequester::emitResult()
