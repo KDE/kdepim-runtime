@@ -41,7 +41,7 @@ ImapAccount *ImapTestBase::createDefaultAccount() const
 {
     ImapAccount *account = new ImapAccount;
 
-    account->setServer(QLatin1String("127.0.0.1"));
+    account->setServer(QStringLiteral("127.0.0.1"));
     account->setPort(5989);
     account->setUserName(defaultUserName());
     account->setSubscriptionEnabled(true);
@@ -117,7 +117,7 @@ Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId)
     QChar separator = remoteId.length() > 0 ? remoteId.at(0) : QLatin1Char('/');
 
     Akonadi::Collection parent(1);
-    parent.setRemoteId(QLatin1String("root-id"));
+    parent.setRemoteId(QStringLiteral("root-id"));
     parent.setParentCollection(Akonadi::Collection::root());
     Akonadi::Collection::Id id = 2;
 

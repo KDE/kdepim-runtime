@@ -95,14 +95,14 @@ void AbortTest::initTestCase()
     const QString rid = t->host();
     const AgentInstance agent = AgentManager::self()->instance(rid);
     QVERIFY(agent.isValid());
-    CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("sink"), this);
+    CollectionPathResolver *resolver = new CollectionPathResolver(QStringLiteral("sink"), this);
     QVERIFY(resolver->exec());
     sink = Collection(resolver->collection());
     QVERIFY(sink.isValid());
     QDBusInterface conf(QLatin1String("org.freedesktop.Akonadi.Resource.") + rid,
                         QStringLiteral("/Settings"), QStringLiteral("org.kde.Akonadi.MailTransportDummy.Settings"));
     QVERIFY(conf.isValid());
-    QDBusReply<void> reply = conf.call(QLatin1String("setSink"), sink.id());
+    QDBusReply<void> reply = conf.call(QStringLiteral("setSink"), sink.id());
     QVERIFY(reply.isValid());
     agent.reconfigure();
 
@@ -137,8 +137,8 @@ void AbortTest::testAbort()
     qjob->transportAttribute().setTransportId(smtpTid);
     // default dispatch mode
     // default sent-mail collection
-    qjob->addressAttribute().setFrom(QLatin1String("naiba"));
-    qjob->addressAttribute().setTo(QStringList() << QLatin1String(SPAM_ADDRESS));
+    qjob->addressAttribute().setFrom(QStringLiteral("naiba"));
+    qjob->addressAttribute().setTo(QStringList() << QStringLiteral(SPAM_ADDRESS));
     QCOMPARE(iface.dispatcherInstance().status(), AgentInstance::Idle);
     AKVERIFYEXEC(qjob);
 
@@ -221,7 +221,7 @@ void AbortTest::testAbortWhileIdle()
     qjob->transportAttribute().setTransportId(akoTid);
     // default dispatch mode
     // default sent-mail collection
-    qjob->addressAttribute().setFrom(QLatin1String("naiba"));
+    qjob->addressAttribute().setFrom(QStringLiteral("naiba"));
     qjob->addressAttribute().setTo(QStringList() << QStringLiteral("dracu"));
     QCOMPARE(iface.dispatcherInstance().status(), AgentInstance::Idle);
     AKVERIFYEXEC(qjob);

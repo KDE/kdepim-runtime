@@ -43,7 +43,7 @@ private Q_SLOTS:
         QList<QByteArray> scenario;
         QStringList callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         UidNextAttribute *uidNext = new UidNextAttribute;
         uidNext->setUidNext(63);
         collection.addAttribute(uidNext);
@@ -53,7 +53,7 @@ private Q_SLOTS:
 
         KMime::Message::Ptr message(new KMime::Message);
 
-        messageContent = QLatin1String("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
+        messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
         message->setContent(messageContent.toUtf8());
         message->parse();
@@ -71,7 +71,7 @@ private Q_SLOTS:
 
         message = KMime::Message::Ptr(new KMime::Message);
 
-        messageContent = QLatin1String("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
+        messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
 
         message->setContent(messageContent.toUtf8());
         message->parse();
@@ -107,7 +107,7 @@ private Q_SLOTS:
 
         message = KMime::Message::Ptr(new KMime::Message);
 
-        messageContent = QLatin1String("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
+        messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
         message->setContent(messageContent.toUtf8());
         message->parse();

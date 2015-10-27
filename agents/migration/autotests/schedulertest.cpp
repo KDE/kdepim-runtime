@@ -118,14 +118,14 @@ private Q_SLOTS:
         QSignalSpy rowsInsertedSpy(&model, SIGNAL(rowsInserted(QModelIndex,int,int)));
         QVERIFY(rowsInsertedSpy.isValid());
 
-        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id"))));
+        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QStringLiteral("id"))));
         QCOMPARE(model.rowCount(), 1);
         QCOMPARE(rowsInsertedSpy.count(), 1);
 
         QVERIFY(model.index(0, 0).isValid());
         QVERIFY(!model.index(1, 0).isValid());
 
-        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id2"))));
+        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QStringLiteral("id2"))));
         QCOMPARE(model.rowCount(), 2);
         QCOMPARE(rowsInsertedSpy.count(), 2);
     }
@@ -133,7 +133,7 @@ private Q_SLOTS:
     void testDisplayName()
     {
         MigrationScheduler scheduler;
-        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id"))));
+        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QStringLiteral("id"))));
         QAbstractItemModel &model(scheduler.model());
         QCOMPARE(model.data(model.index(0, 0)).toString(), QStringLiteral("name"));
     }
@@ -141,7 +141,7 @@ private Q_SLOTS:
     void testStartStop()
     {
         MigrationScheduler scheduler;
-        QSharedPointer<Testmigrator> migrator(new Testmigrator(QLatin1String("id")));
+        QSharedPointer<Testmigrator> migrator(new Testmigrator(QStringLiteral("id")));
         scheduler.addMigrator(migrator);
 
         scheduler.start(migrator->identifier());
@@ -154,8 +154,8 @@ private Q_SLOTS:
     void testNoDuplicates()
     {
         MigrationScheduler scheduler;
-        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id"))));
-        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id"))));
+        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QStringLiteral("id"))));
+        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QStringLiteral("id"))));
         QAbstractItemModel &model(scheduler.model());
         QCOMPARE(model.rowCount(), 1);
     }
@@ -163,10 +163,10 @@ private Q_SLOTS:
     void testMigrationStateChanged()
     {
         MigrationScheduler scheduler;
-        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id1"))));
-        QSharedPointer<Testmigrator> migrator(new Testmigrator(QLatin1String("id2")));
+        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QStringLiteral("id1"))));
+        QSharedPointer<Testmigrator> migrator(new Testmigrator(QStringLiteral("id2")));
         scheduler.addMigrator(migrator);
-        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QLatin1String("id3"))));
+        scheduler.addMigrator(QSharedPointer<Testmigrator>(new Testmigrator(QStringLiteral("id3"))));
         QAbstractItemModel &model(scheduler.model());
 
         QSignalSpy spy(&model, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
@@ -183,10 +183,10 @@ private Q_SLOTS:
     {
         MigrationScheduler scheduler;
 
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
         scheduler.addMigrator(m1);
 
-        QSharedPointer<Testmigrator> m2(new Testmigrator(QLatin1String("id2")));
+        QSharedPointer<Testmigrator> m2(new Testmigrator(QStringLiteral("id2")));
         scheduler.addMigrator(m2);
 
         scheduler.start(m1->identifier());
@@ -200,11 +200,11 @@ private Q_SLOTS:
     {
         MigrationScheduler scheduler;
 
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
         m1->mAutostart = true;
         scheduler.addMigrator(m1);
 
-        QSharedPointer<Testmigrator> m2(new Testmigrator(QLatin1String("id2")));
+        QSharedPointer<Testmigrator> m2(new Testmigrator(QStringLiteral("id2")));
         m2->mAutostart = true;
         scheduler.addMigrator(m2);
 
@@ -220,7 +220,7 @@ private Q_SLOTS:
     {
         TestJobTracker jobTracker;
         MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
         m1->mAutostart = true;
         scheduler.addMigrator(m1);
 
@@ -238,7 +238,7 @@ private Q_SLOTS:
     {
         TestJobTracker jobTracker;
         MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
         m1->mAutostart = true;
         scheduler.addMigrator(m1);
         jobTracker.mJobs.first()->suspend();
@@ -254,10 +254,10 @@ private Q_SLOTS:
     {
         TestJobTracker jobTracker;
         MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
         m1->mAutostart = true;
         scheduler.addMigrator(m1);
-        QSharedPointer<Testmigrator> m2(new Testmigrator(QLatin1String("id2")));
+        QSharedPointer<Testmigrator> m2(new Testmigrator(QStringLiteral("id2")));
         m2->mAutostart = true;
         scheduler.addMigrator(m2);
         jobTracker.mJobs.first()->suspend();
@@ -271,7 +271,7 @@ private Q_SLOTS:
     {
         TestJobTracker jobTracker;
         MigrationScheduler scheduler(&jobTracker);
-        QSharedPointer<Testmigrator> m1(new Testmigrator(QLatin1String("id1")));
+        QSharedPointer<Testmigrator> m1(new Testmigrator(QStringLiteral("id1")));
         m1->mAutostart = true;
         scheduler.addMigrator(m1);
         QCOMPARE(jobTracker.mPercent, 0);

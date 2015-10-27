@@ -114,8 +114,8 @@ void ItemCreateTest::testExpectedFail()
 
     // test failure of adding item to non existent collection
     Collection collection;
-    collection.setName(QLatin1String("collection"));
-    collection.setRemoteId(QLatin1String("collection"));
+    collection.setName(QStringLiteral("collection"));
+    collection.setRemoteId(QStringLiteral("collection"));
     collection.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->createItem(item, collection);
@@ -174,8 +174,8 @@ void ItemCreateTest::testMBox()
 
     // test adding to empty mbox
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
@@ -226,8 +226,8 @@ void ItemCreateTest::testMBox()
 
     // test adding to non-empty mbox
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->createItem(item1, collection1);
@@ -342,14 +342,14 @@ void ItemCreateTest::testMaildir()
     QVERIFY(TestDataUtil::installFolder(QLatin1String("maildir"), topDir.path(), QStringLiteral("collection1")));
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
     QCOMPARE((int)entrySet1.count(), 4);
 
     // simulate empty maildir
-    KPIM::Maildir md2(topLevelMd.addSubFolder(QLatin1String("collection2")), false);
+    KPIM::Maildir md2(topLevelMd.addSubFolder(QStringLiteral("collection2")), false);
     QVERIFY(md2.isValid());
 
     QSet<QString> entrySet2 = QSet<QString>::fromList(md2.entryList());
@@ -373,8 +373,8 @@ void ItemCreateTest::testMaildir()
 
     // test adding to empty maildir
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
@@ -431,8 +431,8 @@ void ItemCreateTest::testMaildir()
 
     // test adding to non-empty maildir
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     job = mStore->createItem(item1, collection1);

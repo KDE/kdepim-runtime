@@ -77,7 +77,7 @@ void RetrieveMetadataJob::start()
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
 
-    if (mServerCapabilities.contains(QLatin1String("METADATA")) || mServerCapabilities.contains(QLatin1String("ANNOTATEMORE"))) {
+    if (mServerCapabilities.contains(QStringLiteral("METADATA")) || mServerCapabilities.contains(QStringLiteral("ANNOTATEMORE"))) {
         QSet<QString> toplevelMailboxes;
         Q_FOREACH (const QString &mailbox, mMailboxes) {
             const QStringList parts = mailbox.split(mSeparator);
@@ -98,7 +98,7 @@ void RetrieveMetadataJob::start()
             {
                 KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(mSession);
                 meta->setMailBox(mailbox + QLatin1String("*"));
-                if (mServerCapabilities.contains(QLatin1String("METADATA"))) {
+                if (mServerCapabilities.contains(QStringLiteral("METADATA"))) {
                     meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
                 } else {
                     meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
@@ -115,7 +115,7 @@ void RetrieveMetadataJob::start()
     }
 
     // Get the ACLs from the mailbox if it's supported
-    if (mServerCapabilities.contains(QLatin1String("ACL"))) {
+    if (mServerCapabilities.contains(QStringLiteral("ACL"))) {
 
         Q_FOREACH (const QString &mailbox, mMailboxes) {
             // "Shared Folders" is not a valid mailbox, so we have to skip the ACL request for this folder
@@ -215,7 +215,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     root.setContentMimeTypes(QStringList(Akonadi::Collection::mimeType()));
     root.setParentCollection(Akonadi::Collection::root());
     root.addAttribute(new NoSelectAttribute(true));
-    root.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing)->setIconName(QLatin1String("kolab"));
+    root.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing)->setIconName(QStringLiteral("kolab"));
 
     Akonadi::CachePolicy policy;
     policy.setInheritFromParent(false);
@@ -316,7 +316,7 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
     if (pathParts.size() == 1 && isNamespaceFolder(path, resourceState()->userNamespaces())) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Other Users"));
-        attr->setIconName(QLatin1String("x-mail-distribution-list"));
+        attr->setIconName(QStringLiteral("x-mail-distribution-list"));
     }
 
     //Mark user folders for searching
@@ -333,7 +333,7 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
     if (pathParts.size() == 1 && isNamespaceFolder(path, resourceState()->sharedNamespaces())) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Shared Folders"));
-        attr->setIconName(QLatin1String("x-mail-distribution-list"));
+        attr->setIconName(QStringLiteral("x-mail-distribution-list"));
     }
 
     //Mark shared folders for searching
@@ -370,7 +370,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     c.setKeepLocalChanges(cDefaultKeepLocalChanges);
 
     //assume LRS, until myrights is executed
-    if (serverCapabilities().contains(QLatin1String("ACL"))) {
+    if (serverCapabilities().contains(QStringLiteral("ACL"))) {
         c.setRights(Akonadi::Collection::ReadOnly);
     } else {
         c.setRights(Akonadi::Collection::AllRights);
@@ -382,7 +382,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     if (pathParts.size() == 1 && pathPart.compare(QLatin1String("inbox") , Qt::CaseInsensitive) == 0) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Inbox"));
-        attr->setIconName(QLatin1String("mail-folder-inbox"));
+        attr->setIconName(QStringLiteral("mail-folder-inbox"));
         setIdleCollection(c);
     }
 

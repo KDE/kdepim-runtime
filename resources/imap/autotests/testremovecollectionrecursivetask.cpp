@@ -35,7 +35,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
         QList<QByteArray> scenario;
         QStringList callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/test1"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/test1"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -107,7 +107,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
         callNames << "changeProcessed" << "emitWarning" << "synchronizeCollectionTree";
         QTest::newRow("invalid collection") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String(".INBOX.test1"));
+        collection = createCollectionChain(QStringLiteral(".INBOX.test1"));
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 LSUB \"\" *"
@@ -164,7 +164,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
         callNames << "changeProcessed";
         QTest::newRow("non-standard separator") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String(".INBOX.test1"));
+        collection = createCollectionChain(QStringLiteral(".INBOX.test1"));
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 LSUB \"\" *"

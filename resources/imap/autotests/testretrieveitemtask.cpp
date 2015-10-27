@@ -38,7 +38,7 @@ private Q_SLOTS:
         QString message;
         QList<QByteArray> scenario;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
         item.setRemoteId("42");

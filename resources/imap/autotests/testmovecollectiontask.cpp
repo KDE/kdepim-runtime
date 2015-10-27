@@ -43,18 +43,18 @@ private Q_SLOTS:
         QStringList callNames;
 
         root = createCollectionChain(QString());
-        inbox = createCollectionChain(QLatin1String("/INBOX"));
+        inbox = createCollectionChain(QStringLiteral("/INBOX"));
 
         source = Akonadi::Collection(3);
-        source.setRemoteId(QLatin1String("/Foo"));
+        source.setRemoteId(QStringLiteral("/Foo"));
         source.setParentCollection(inbox);
 
         collection = Akonadi::Collection(10);
-        collection.setRemoteId(QLatin1String("/Baz"));
+        collection.setRemoteId(QStringLiteral("/Baz"));
         collection.setParentCollection(source);
 
         target = Akonadi::Collection(4);
-        target.setRemoteId(QLatin1String("/Bar"));
+        target.setRemoteId(QStringLiteral("/Bar"));
         target.setParentCollection(inbox);
 
         scenario.clear();
@@ -70,7 +70,7 @@ private Q_SLOTS:
         QTest::newRow("moving mailbox") << collection << source << target << scenario << callNames;
 
         {
-            const Akonadi::Collection toplevel = createCollectionChain(QLatin1String("/Bar"));
+            const Akonadi::Collection toplevel = createCollectionChain(QStringLiteral("/Bar"));
 
             scenario.clear();
             scenario << defaultPoolConnectionScenario()
@@ -86,7 +86,7 @@ private Q_SLOTS:
         }
 
         {
-            const Akonadi::Collection toplevel = createCollectionChain(QLatin1String("/INBOX/Bar"));
+            const Akonadi::Collection toplevel = createCollectionChain(QStringLiteral("/INBOX/Bar"));
 
             scenario.clear();
             scenario << defaultPoolConnectionScenario()
@@ -116,18 +116,18 @@ private Q_SLOTS:
 
         QTest::newRow("moving mailbox, subscribe fails") << collection << source << target << scenario << callNames;
 
-        inbox = createCollectionChain(QLatin1String(".INBOX"));
+        inbox = createCollectionChain(QStringLiteral(".INBOX"));
 
         source = Akonadi::Collection(3);
-        source.setRemoteId(QLatin1String(".Foo"));
+        source.setRemoteId(QStringLiteral(".Foo"));
         source.setParentCollection(inbox);
 
         collection = Akonadi::Collection(10);
-        collection.setRemoteId(QLatin1String(".Baz"));
+        collection.setRemoteId(QStringLiteral(".Baz"));
         collection.setParentCollection(source);
 
         target = Akonadi::Collection(4);
-        target.setRemoteId(QLatin1String(".Bar"));
+        target.setRemoteId(QStringLiteral(".Bar"));
         target.setParentCollection(inbox);
 
         scenario.clear();

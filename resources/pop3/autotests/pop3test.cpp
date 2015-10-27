@@ -54,12 +54,12 @@ void Pop3Test::initTestCase()
     //
     // Create the maildir and pop3 resources
     //
-    AgentType maildirType = AgentManager::self()->type(QLatin1String("akonadi_maildir_resource"));
+    AgentType maildirType = AgentManager::self()->type(QStringLiteral("akonadi_maildir_resource"));
     AgentInstanceCreateJob *agentCreateJob = new AgentInstanceCreateJob(maildirType);
     QVERIFY(agentCreateJob->exec());
     mMaildirIdentifier = agentCreateJob->instance().identifier();
 
-    AgentType popType = AgentManager::self()->type(QLatin1String("akonadi_pop3_resource"));
+    AgentType popType = AgentManager::self()->type(QStringLiteral("akonadi_pop3_resource"));
     agentCreateJob = new AgentInstanceCreateJob(popType);
     QVERIFY(agentCreateJob->exec());
     mPop3Identifier = agentCreateJob->instance().identifier();
@@ -71,7 +71,7 @@ void Pop3Test::initTestCase()
     mMaildirPath = maildirRootPath + QLatin1String("/new");
     mMaildirSettingsInterface = new OrgKdeAkonadiMaildirSettingsInterface(
         QLatin1String("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier,
-        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
+        QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this);
     QDBusReply<void> setPathReply = mMaildirSettingsInterface->setPath(maildirRootPath);
     QVERIFY(setPathReply.isValid());
     AgentManager::self()->instance(mMaildirIdentifier).reconfigure();
@@ -113,7 +113,7 @@ void Pop3Test::initTestCase()
     //
     mPOP3SettingsInterface = new OrgKdeAkonadiPOP3SettingsInterface(
         QLatin1String("org.freedesktop.Akonadi.Resource.") + mPop3Identifier,
-        QLatin1String("/Settings"), QDBusConnection::sessionBus(), this);
+        QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this);
 
     QDBusReply<uint> reply0 = mPOP3SettingsInterface->port();
     QVERIFY(reply0.isValid());
@@ -125,18 +125,18 @@ void Pop3Test::initTestCase()
     QVERIFY(reply.isValid());
     QVERIFY(reply.value() == 5989);
 
-    mPOP3SettingsInterface->setHost(QLatin1String("localhost"));
+    mPOP3SettingsInterface->setHost(QStringLiteral("localhost"));
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply2 = mPOP3SettingsInterface->host();
     QVERIFY(reply2.isValid());
     QVERIFY(reply2.value() == QLatin1String("localhost"));
-    mPOP3SettingsInterface->setLogin(QLatin1String("HansWurst"));
+    mPOP3SettingsInterface->setLogin(QStringLiteral("HansWurst"));
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply3 = mPOP3SettingsInterface->login();
     QVERIFY(reply3.isValid());
     QVERIFY(reply3.value() == QLatin1String("HansWurst"));
 
-    mPOP3SettingsInterface->setUnitTestPassword(QLatin1String("Geheim"));
+    mPOP3SettingsInterface->setUnitTestPassword(QStringLiteral("Geheim"));
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply4 = mPOP3SettingsInterface->unitTestPassword();
     QVERIFY(reply4.isValid());
@@ -349,7 +349,7 @@ void Pop3Test::syncAndWaitForFinish()
 QString Pop3Test::loginSequence() const
 {
     return
-        QLatin1String("C: USER HansWurst\r\n"
+        QStringLiteral("C: USER HansWurst\r\n"
                       "S: +OK May I have your password, please?\r\n"
                       "C: PASS Geheim\r\n"
                       "S: +OK Mailbox locked and ready\r\n");
@@ -385,13 +385,13 @@ QString Pop3Test::deleteSequence(int numToDelete) const
 QString Pop3Test::quitSequence() const
 {
     return
-        QLatin1String("C: QUIT\r\n"
+        QStringLiteral("C: QUIT\r\n"
                       "S: +OK Have a nice day.\r\n");
 }
 
 QString Pop3Test::listSequence(const QList<QByteArray> &mails) const
 {
-    QString result = QLatin1String("C: LIST\r\n"
+    QString result = QStringLiteral("C: LIST\r\n"
                                    "S: +OK You got new spam\r\n");
     for (int i = 1; i <= mails.size(); i++) {
         result += QString::fromLatin1("%1 %MAILSIZE%\r\n").arg(i);
@@ -402,7 +402,7 @@ QString Pop3Test::listSequence(const QList<QByteArray> &mails) const
 
 QString Pop3Test::uidSequence(const QStringList &uids) const
 {
-    QString result = QLatin1String("C: UIDL\r\n"
+    QString result = QStringLiteral("C: UIDL\r\n"
                                    "S: +OK\r\n");
     for (int i = 1; i <= uids.size(); i++) {
         result += QString::fromLatin1("%1 %2\r\n").arg(i).arg(uids[i - 1]);
@@ -437,8 +437,8 @@ void Pop3Test::testSimpleDownload()
     mails << simpleMail1 << simpleMail2 << simpleMail3;
     QStringList uids;
     uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
-    mFakeServerThread->server()->setAllowedDeletions(QLatin1String("1,2,3"));
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("1,2,3"));
+    mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,2,3"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
@@ -498,7 +498,7 @@ void Pop3Test::testSeenUIDCleanup()
     QStringList uids;
     uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
     mFakeServerThread->server()->setAllowedDeletions(QString());
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("1,2,3"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
@@ -551,7 +551,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     QStringList uids;
     uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
     mFakeServerThread->server()->setMails(mails);
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("1,2,3"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         listSequence(mails) +
@@ -585,7 +585,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     QList<int> idsToNotDownload;
     idsToNotDownload << 1 << 2 << 3;
     mFakeServerThread->server()->setMails(newMails);
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("4"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("4"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         listSequence(newMails) +
@@ -608,7 +608,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     //
     mPOP3SettingsInterface->setLeaveOnServer(false);
 
-    mFakeServerThread->server()->setAllowedDeletions(QLatin1String("1,2,3,4"));
+    mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,2,3,4"));
     mFakeServerThread->server()->setAllowedRetrieves(QString());
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
@@ -640,7 +640,7 @@ void Pop3Test::testTimeBasedLeaveRule()
     QStringList uids;
     uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
     mFakeServerThread->server()->setMails(mails);
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("1,2,3"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         listSequence(mails) +
@@ -661,11 +661,11 @@ void Pop3Test::testTimeBasedLeaveRule()
     // Now, modify the seenUidTimeList on the server for UID2 to pretend it
     // was downloaded 3 days ago, which means it should be deleted.
     //
-    lowerTimeOfSeenMail(QLatin1String("UID2"), 60 * 60 * 24 * 3);
+    lowerTimeOfSeenMail(QStringLiteral("UID2"), 60 * 60 * 24 * 3);
 
     QList<int> idsToNotDownload;
     idsToNotDownload << 1 << 3;
-    mFakeServerThread->server()->setAllowedDeletions(QLatin1String("2"));
+    mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("2"));
     mFakeServerThread->server()->setAllowedRetrieves(QString());
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
@@ -680,7 +680,7 @@ void Pop3Test::testTimeBasedLeaveRule()
     checkMailsInMaildir(mails);
     cleanupMaildir(items);
 
-    uids.removeAll(QLatin1String("UID2"));
+    uids.removeAll(QStringLiteral("UID2"));
     QVERIFY(sortedEqual(uids, mPOP3SettingsInterface->seenUidList().value()));
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() ==
             mPOP3SettingsInterface->seenUidList().value().size());
@@ -707,7 +707,7 @@ void Pop3Test::testCountBasedLeaveRule()
     QStringList uids;
     uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
     mFakeServerThread->server()->setMails(mails);
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("1,2,3"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         listSequence(mails) +
@@ -721,9 +721,9 @@ void Pop3Test::testCountBasedLeaveRule()
     checkMailsInMaildir(mails);
 
     // Make the 3 just downloaded mails appear older than they are
-    lowerTimeOfSeenMail(QLatin1String("UID1"), 60 * 60 * 24 * 2);
-    lowerTimeOfSeenMail(QLatin1String("UID2"), 60 * 60 * 24 * 1);
-    lowerTimeOfSeenMail(QLatin1String("UID3"), 60 * 60 * 24 * 3);
+    lowerTimeOfSeenMail(QStringLiteral("UID1"), 60 * 60 * 24 * 2);
+    lowerTimeOfSeenMail(QStringLiteral("UID2"), 60 * 60 * 24 * 1);
+    lowerTimeOfSeenMail(QStringLiteral("UID3"), 60 * 60 * 24 * 3);
 
     //
     // Now, download 2 more mails. Since only 3 mails are allowed to be left
@@ -734,8 +734,8 @@ void Pop3Test::testCountBasedLeaveRule()
     QStringList moreUids;
     moreUids << QStringLiteral("UID4") << QStringLiteral("UID5");
     mFakeServerThread->server()->setMails(mails + moreMails);
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("4,5"));
-    mFakeServerThread->server()->setAllowedDeletions(QLatin1String("1,3"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("4,5"));
+    mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,3"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         listSequence(mails + moreMails) +
@@ -776,7 +776,7 @@ void Pop3Test::testSizeBasedLeaveRule()
     QStringList uids;
     uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
     mFakeServerThread->server()->setMails(mails);
-    mFakeServerThread->server()->setAllowedRetrieves(QLatin1String("1,2,3"));
+    mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         listSequence(mails) +
@@ -790,9 +790,9 @@ void Pop3Test::testSizeBasedLeaveRule()
     checkMailsInMaildir(mails);
 
     // Make the 3 just downloaded mails appear older than they are
-    lowerTimeOfSeenMail(QLatin1String("UID1"), 60 * 60 * 24 * 2);
-    lowerTimeOfSeenMail(QLatin1String("UID2"), 60 * 60 * 24 * 1);
-    lowerTimeOfSeenMail(QLatin1String("UID3"), 60 * 60 * 24 * 3);
+    lowerTimeOfSeenMail(QStringLiteral("UID1"), 60 * 60 * 24 * 2);
+    lowerTimeOfSeenMail(QStringLiteral("UID2"), 60 * 60 * 24 * 1);
+    lowerTimeOfSeenMail(QStringLiteral("UID3"), 60 * 60 * 24 * 3);
 
     // Now, do another mail check, but with no new mails on the server.
     // Instead we let the server pretend that the mails have a fake size,
@@ -800,7 +800,7 @@ void Pop3Test::testSizeBasedLeaveRule()
     // mail size is over 10 MB with them.
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setAllowedRetrieves(QString());
-    mFakeServerThread->server()->setAllowedDeletions(QLatin1String("1,3"));
+    mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,3"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         QLatin1String("C: LIST\r\n"
@@ -882,7 +882,7 @@ void Pop3Test::testMixedLeaveRules()
     // Above are the UIDs that should be deleted.
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setAllowedRetrieves(QString());
-    mFakeServerThread->server()->setAllowedDeletions(QLatin1String("4,5,6,7,8,9,10"));
+    mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("4,5,6,7,8,9,10"));
     mFakeServerThread->server()->setNextConversation(
         loginSequence() +
         QLatin1String("C: LIST\r\n"

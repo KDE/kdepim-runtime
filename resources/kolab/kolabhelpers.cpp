@@ -158,7 +158,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
             ok = false;
             return Akonadi::Item();
         }
-        Akonadi::Item newItem(QLatin1String("text/x-vnd.akonadi.note"));
+        Akonadi::Item newItem(QStringLiteral("text/x-vnd.akonadi.note"));
         newItem.setPayload(note);
         newItem.setRemoteId(imapItem.remoteId());
         const Akonadi::NoteUtils::NoteMessageWrapper wrapper(note);
@@ -268,7 +268,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
     const QLatin1String productId("Akonadi-Kolab-Resource");
     //Everthing stays the same, except mime type and payload
     Akonadi::Item imapItem = item;
-    imapItem.setMimeType(QLatin1String("message/rfc822"));
+    imapItem.setMimeType(QStringLiteral("message/rfc822"));
     try {
         switch (getKolabTypeFromMimeType(item.mimeType())) {
         case Kolab::EventObject:
@@ -333,8 +333,8 @@ QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeType
         return "task";
     } else if (contentMimeTypes.contains(KCalCore::Journal::journalMimeType())) {
         return "journal";
-    } else if (contentMimeTypes.contains(QLatin1String("application/x-vnd.akonadi.note")) ||
-               contentMimeTypes.contains(QLatin1String("text/x-vnd.akonadi.note"))) {
+    } else if (contentMimeTypes.contains(QStringLiteral("application/x-vnd.akonadi.note")) ||
+               contentMimeTypes.contains(QStringLiteral("text/x-vnd.akonadi.note"))) {
         return "note";
     }
     return QByteArray();
@@ -365,7 +365,7 @@ QString KolabHelpers::getMimeType(Kolab::FolderType type)
     case Kolab::MailType:
         return KMime::Message::mimeType();
     case Kolab::ConfigurationType:
-        return QLatin1String(KOLAB_TYPE_RELATION);
+        return QStringLiteral(KOLAB_TYPE_RELATION);
     default:
         qCDebug(KOLABRESOURCE_LOG) << "unhandled folder type: " << type;
     }
@@ -396,7 +396,7 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
         contentTypes << KMime::Message::mimeType();
         break;
     case Kolab::ConfigurationType:
-        contentTypes << QLatin1String(KOLAB_TYPE_RELATION);
+        contentTypes << QStringLiteral(KOLAB_TYPE_RELATION);
         break;
     default:
         break;

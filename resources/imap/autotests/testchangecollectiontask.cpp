@@ -46,8 +46,8 @@ private Q_SLOTS:
         QStringList callNames;
         QStringList caps;
 
-        collection = createCollectionChain(QLatin1String("/Foo"));
-        collection.setName(QLatin1String("Bar"));
+        collection = createCollectionChain(QStringLiteral("/Foo"));
+        collection.setName(QStringLiteral("Bar"));
         collection.setRights(Akonadi::Collection::AllRights);
 
         Akonadi::ImapAclAttribute *acls = new Akonadi::ImapAclAttribute;
@@ -112,8 +112,8 @@ private Q_SLOTS:
                  << "S: A000007 OK mailbox subscribed";
         QTest::newRow("no ANNOTATEMORE support") << collection << parts << scenario << callNames << collection.name() << caps;
 
-        collection = createCollectionChain(QLatin1String("/Foo"));
-        collection.setName(QLatin1String("Bar/Baz"));
+        collection = createCollectionChain(QStringLiteral("/Foo"));
+        collection.setName(QStringLiteral("Bar/Baz"));
         caps.clear();
         caps << "ACL" << "ANNOTATEMORE";
         scenario.clear();
@@ -129,8 +129,8 @@ private Q_SLOTS:
         QTest::newRow("rename with invalid separator") << collection << parts << scenario << callNames
                 << "BarBaz" << caps;
 
-        collection = createCollectionChain(QLatin1String(".INBOX.Foo"));
-        collection.setName(QLatin1String("Bar"));
+        collection = createCollectionChain(QStringLiteral(".INBOX.Foo"));
+        collection.setName(QStringLiteral("Bar"));
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 RENAME \"INBOX.Foo\" \"INBOX.Bar\""
@@ -140,8 +140,8 @@ private Q_SLOTS:
         QTest::newRow("rename with non-standard separator") << collection << parts << scenario << callNames
                 << "Bar" << caps;
 
-        collection = createCollectionChain(QLatin1String("/Foo"));
-        collection.setName(QLatin1String("Bar"));
+        collection = createCollectionChain(QStringLiteral("/Foo"));
+        collection.setName(QStringLiteral("Bar"));
         collection.setRights(Akonadi::Collection::AllRights);
 
         acls = new Akonadi::ImapAclAttribute;

@@ -38,7 +38,7 @@ private Q_SLOTS:
         QList<QByteArray> scenario;
         QStringList callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()

@@ -43,7 +43,7 @@ private Q_SLOTS:
         QList<QByteArray> scenario;
         QStringList callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
 
         scenario.clear();
@@ -85,7 +85,7 @@ private Q_SLOTS:
                              << Akonadi::MessagePart::Header
                              << Akonadi::MessagePart::Body);
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
 
@@ -125,7 +125,7 @@ private Q_SLOTS:
         Akonadi::CollectionStatistics stats;
         stats.setCount(1);
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
         collection.setCachePolicy(policy);
@@ -158,7 +158,7 @@ private Q_SLOTS:
         //Disabled test since the flag sync is disabled if CONDSTORE is not supported
 //     QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         stats.setCount(1);
@@ -285,7 +285,7 @@ private Q_SLOTS:
         //A new message has been added and an old one removed, we can't do an incremental update
         QTest::newRow("uidnext changed, fetch new messages and list flags") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
@@ -313,7 +313,7 @@ private Q_SLOTS:
         //No flags have changed
         QTest::newRow("highestmodseq test") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
@@ -344,7 +344,7 @@ private Q_SLOTS:
         //fetch only changed flags
         QTest::newRow("changedsince test") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setCachePolicy(policy);
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
@@ -381,7 +381,7 @@ private Q_SLOTS:
         //Don't rely on yahoos highestmodseq implementation
         QTest::newRow("yahoo highestmodseq test") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(3);
         collection.setCachePolicy(policy);
@@ -421,7 +421,7 @@ private Q_SLOTS:
 
         QTest::newRow("uidvalidity changed") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(105);
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
@@ -481,7 +481,7 @@ private Q_SLOTS:
 
         QTest::newRow("test batch processing") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(9);
@@ -518,7 +518,7 @@ private Q_SLOTS:
         //fetch only changed flags
         QTest::newRow("remote message deleted") << collection << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
         collection.setCachePolicy(policy);
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(-1);

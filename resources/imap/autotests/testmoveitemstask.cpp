@@ -57,7 +57,7 @@ private Q_SLOTS:
         message->parse();
         item.setPayload(message);
 
-        inbox = createCollectionChain(QLatin1String("/INBOX"));
+        inbox = createCollectionChain(QStringLiteral("/INBOX"));
         source = Akonadi::Collection(3);
         source.setRemoteId("/Foo");
         source.setParentCollection(inbox);

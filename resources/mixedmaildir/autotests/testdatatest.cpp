@@ -63,7 +63,7 @@ void TestDataTest::testInstall()
     QDir installDir(dir.path());
     QDir curDir;
 
-    const QString indexFilePattern = QLatin1String(".%1.index");
+    const QString indexFilePattern = QStringLiteral(".%1.index");
 
     QVERIFY(TestDataUtil::installFolder(QLatin1String("mbox"), dir.path(), QStringLiteral("mbox1")));
     QVERIFY(installDir.exists(QLatin1String("mbox1")));
@@ -81,8 +81,8 @@ void TestDataTest::testInstall()
     QVERIFY(installDir.exists(indexFilePattern.arg(QLatin1String("md1"))));
 
     curDir = installDir;
-    curDir.cd(QLatin1String("md1"));
-    curDir.cd(QLatin1String("cur"));
+    curDir.cd(QStringLiteral("md1"));
+    curDir.cd(QStringLiteral("cur"));
     curDir.setFilter(QDir::Files);
     QCOMPARE((int)curDir.count(), 4);
 
@@ -94,8 +94,8 @@ void TestDataTest::testInstall()
     QVERIFY(installDir.exists(indexFilePattern.arg(QLatin1String("md2"))));
 
     curDir = installDir;
-    curDir.cd(QLatin1String("md2"));
-    curDir.cd(QLatin1String("cur"));
+    curDir.cd(QStringLiteral("md2"));
+    curDir.cd(QStringLiteral("cur"));
     curDir.setFilter(QDir::Files);
     QCOMPARE((int)curDir.count(), 4);
 }

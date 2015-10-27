@@ -190,8 +190,8 @@ void StoreCompactTest::testCompact()
 
     // test compact after delete from the end of an mbox
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
@@ -234,8 +234,8 @@ void StoreCompactTest::testCompact()
 
     // test compact after delete from before the end of an mbox
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item2;
@@ -302,8 +302,8 @@ void StoreCompactTest::testCompact()
 
     // test compact after delete from before the end of more than one mbox
     Collection collection3;
-    collection3.setName(QLatin1String("collection3"));
-    collection3.setRemoteId(QLatin1String("collection3"));
+    collection3.setName(QStringLiteral("collection3"));
+    collection3.setRemoteId(QStringLiteral("collection3"));
     collection3.setParentCollection(mStore->topLevelCollection());
 
     Item item3;
@@ -315,8 +315,8 @@ void StoreCompactTest::testCompact()
     QVERIFY(itemDelete->exec());
 
     Collection collection4;
-    collection4.setName(QLatin1String("collection4"));
-    collection4.setRemoteId(QLatin1String("collection4"));
+    collection4.setName(QStringLiteral("collection4"));
+    collection4.setRemoteId(QStringLiteral("collection4"));
     collection4.setParentCollection(mStore->topLevelCollection());
 
     Item item4;

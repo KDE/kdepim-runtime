@@ -246,7 +246,7 @@ void AbstractLocalStoreTest::testCreateCollection()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid collections
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->createCollection(Collection(), Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -258,7 +258,7 @@ void AbstractLocalStoreTest::testCreateCollection()
 
     // test with potentially valid collection (has remoteId), but invalid target parent
     Collection collection;
-    collection.setRemoteId(QLatin1String("/tmp/test/foo"));
+    collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->createCollection(collection, Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -270,7 +270,7 @@ void AbstractLocalStoreTest::testCreateCollection()
 
     // test with potentially valid collections
     Collection targetParent;
-    targetParent.setRemoteId(QLatin1String("/tmp/test2"));
+    targetParent.setRemoteId(QStringLiteral("/tmp/test2"));
     job = mStore->createCollection(collection, targetParent);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -312,7 +312,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid collection
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->deleteCollection(Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -324,7 +324,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
 
     // test with ivalid collection (has remoteId, but no parent collection remoteId)
     Collection collection;
-    collection.setRemoteId(QLatin1String("/tmp/test/foo"));
+    collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->deleteCollection(collection);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -336,7 +336,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
 
     // test with potentially valid collection (has remoteId and parent collection remoteId)
     Collection parentCollection;
-    parentCollection.setRemoteId(QLatin1String("/tmp/test"));
+    parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     collection.setParentCollection(parentCollection);
     job = mStore->deleteCollection(collection);
     QVERIFY(job != 0);
@@ -379,7 +379,7 @@ void AbstractLocalStoreTest::testFetchCollection()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid collection
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->fetchCollections(Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -391,7 +391,7 @@ void AbstractLocalStoreTest::testFetchCollection()
 
     // test with potentially valid collection (has remoteId)
     Collection collection;
-    collection.setRemoteId(QLatin1String("/tmp/test/foo"));
+    collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->fetchCollections(collection);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -446,7 +446,7 @@ void AbstractLocalStoreTest::testModifyCollection()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid item
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->modifyCollection(Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -458,7 +458,7 @@ void AbstractLocalStoreTest::testModifyCollection()
 
     // test with potentially valid collection (has remoteId, but no parent remoteId)
     Collection collection;
-    collection.setRemoteId(QLatin1String("/tmp/test/foo"));
+    collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->modifyCollection(collection);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -471,7 +471,7 @@ void AbstractLocalStoreTest::testModifyCollection()
 
     // test with potentially valid collection (has remoteId and parent remoteId)
     Collection parentCollection;
-    parentCollection.setRemoteId(QLatin1String("/tmp/test"));
+    parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     collection.setParentCollection(parentCollection);
     job = mStore->modifyCollection(collection);
     QVERIFY(job != 0);
@@ -512,7 +512,7 @@ void AbstractLocalStoreTest::testMoveCollection()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid collections
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->moveCollection(Collection(), Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -524,9 +524,9 @@ void AbstractLocalStoreTest::testMoveCollection()
 
     // test with potentially valid collection (has remoteId and parent remoteId), but invalid target parent
     Collection collection;
-    collection.setRemoteId(QLatin1String("/tmp/test/foo"));
+    collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     Collection parentCollection;
-    parentCollection.setRemoteId(QLatin1String("/tmp/test"));
+    parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     collection.setParentCollection(parentCollection);
     job = mStore->moveCollection(collection, Collection());
     QVERIFY(job != 0);
@@ -550,7 +550,7 @@ void AbstractLocalStoreTest::testMoveCollection()
 
     // test with potentially valid collections
     Collection targetParent;
-    targetParent.setRemoteId(QLatin1String("/tmp/test2"));
+    targetParent.setRemoteId(QStringLiteral("/tmp/test2"));
     collection.setParentCollection(parentCollection);
     job = mStore->moveCollection(collection, targetParent);
     QVERIFY(job != 0);
@@ -591,7 +591,7 @@ void AbstractLocalStoreTest::testFetchItems()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid collection
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->fetchItems(Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -603,7 +603,7 @@ void AbstractLocalStoreTest::testFetchItems()
 
     // test with potentially valid collection (has remoteId)
     Collection collection;
-    collection.setRemoteId(QLatin1String("/tmp/test/foo"));
+    collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->fetchItems(collection);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -645,7 +645,7 @@ void AbstractLocalStoreTest::testFetchItem()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid item
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->fetchItem(Item());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -657,7 +657,7 @@ void AbstractLocalStoreTest::testFetchItem()
 
     // test with potentially valid item (has remoteId)
     Item item;
-    item.setRemoteId(QLatin1String("/tmp/test/foo"));
+    item.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->fetchItem(item);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -699,7 +699,7 @@ void AbstractLocalStoreTest::testCreateItem()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid collection
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->createItem(Item(), Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -711,7 +711,7 @@ void AbstractLocalStoreTest::testCreateItem()
 
     // test with potentially valid collection (has remoteId)
     Collection collection;
-    collection.setRemoteId(QLatin1String("/tmp/test/foo"));
+    collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->createItem(Item(), collection);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -753,7 +753,7 @@ void AbstractLocalStoreTest::testDeleteItem()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid item
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->deleteItem(Item());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -765,7 +765,7 @@ void AbstractLocalStoreTest::testDeleteItem()
 
     // test with potentially valid item (has remoteId)
     Item item;
-    item.setRemoteId(QLatin1String("/tmp/test/foo"));
+    item.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->deleteItem(item);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -807,7 +807,7 @@ void AbstractLocalStoreTest::testModifyItem()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid item
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->modifyItem(Item());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -819,7 +819,7 @@ void AbstractLocalStoreTest::testModifyItem()
 
     // test with potentially valid item (has remoteId)
     Item item;
-    item.setRemoteId(QLatin1String("/tmp/test/foo"));
+    item.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->modifyItem(item);
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -859,7 +859,7 @@ void AbstractLocalStoreTest::testMoveItem()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path but with invalid item and collection
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->moveItem(Item(), Collection());
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -871,9 +871,9 @@ void AbstractLocalStoreTest::testMoveItem()
 
     // test with potentially valid item (has remoteId and parent remoteId), but invalid target parent
     Item item;
-    item.setRemoteId(QLatin1String("/tmp/test/foo"));
+    item.setRemoteId(QStringLiteral("/tmp/test/foo"));
     Collection parentCollection;
-    parentCollection.setRemoteId(QLatin1String("/tmp/test"));
+    parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     item.setParentCollection(parentCollection);
     job = mStore->moveItem(item, Collection());
     QVERIFY(job != 0);
@@ -897,7 +897,7 @@ void AbstractLocalStoreTest::testMoveItem()
 
     // test with potentially valid item and collections
     Collection targetParent;
-    targetParent.setRemoteId(QLatin1String("/tmp/test2"));
+    targetParent.setRemoteId(QStringLiteral("/tmp/test2"));
     item.setParentCollection(parentCollection);
     job = mStore->moveItem(item, targetParent);
     QVERIFY(job != 0);
@@ -938,7 +938,7 @@ void AbstractLocalStoreTest::testCompactStore()
     QVERIFY(mStore->mLastProcessedJob == 0);
 
     // test with path
-    mStore->setPath(QLatin1String("/tmp/test"));
+    mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->compactStore();
     QVERIFY(job != 0);
     QCOMPARE(mStore->mLastCheckedJob, job);

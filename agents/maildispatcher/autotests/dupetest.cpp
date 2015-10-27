@@ -65,14 +65,14 @@ void DupeTest::initTestCase()
     const QString rid = t->host();
     const AgentInstance agent = AgentManager::self()->instance(rid);
     QVERIFY(agent.isValid());
-    CollectionPathResolver *resolver = new CollectionPathResolver(QLatin1String("sink"), this);
+    CollectionPathResolver *resolver = new CollectionPathResolver(QStringLiteral("sink"), this);
     QVERIFY(resolver->exec());
     sink = Collection(resolver->collection());
     QVERIFY(sink.isValid());
     QDBusInterface conf(QLatin1String("org.freedesktop.Akonadi.Resource.") + rid,
-                        QLatin1String("/Settings"), QStringLiteral("org.kde.Akonadi.MailTransportDummy.Settings"));
+                        QStringLiteral("/Settings"), QStringLiteral("org.kde.Akonadi.MailTransportDummy.Settings"));
     QVERIFY(conf.isValid());
-    QDBusReply<void> reply = conf.call(QLatin1String("setSink"), sink.id());
+    QDBusReply<void> reply = conf.call(QStringLiteral("setSink"), sink.id());
     QVERIFY(reply.isValid());
     agent.reconfigure();
 
@@ -151,7 +151,7 @@ void DupeTest::testDupes()
         job->transportAttribute().setTransportId(TransportManager::self()->defaultTransportId());
         // default dispatch mode
         // default sent-mail collection
-        job->addressAttribute().setFrom(QLatin1String("naiba"));
+        job->addressAttribute().setFrom(QStringLiteral("naiba"));
         job->addressAttribute().setTo(QStringList() << QStringLiteral("dracu"));
         //AKVERIFYEXEC( job );
         job->start();

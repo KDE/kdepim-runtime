@@ -45,7 +45,7 @@ private Q_SLOTS:
         QList<QByteArray> scenario;
         QStringList callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.addAttribute(new UidNextAttribute(65));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
@@ -76,7 +76,7 @@ private Q_SLOTS:
 
         QTest::newRow("modifying mail content") << item << parts << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.addAttribute(new UidNextAttribute(65));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
@@ -110,7 +110,7 @@ private Q_SLOTS:
 
         QTest::newRow("modifying mail content, no APPENDUID, message has Message-ID") << item << parts << scenario << callNames;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.addAttribute(new UidNextAttribute(65));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);

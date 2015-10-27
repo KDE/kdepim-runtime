@@ -61,7 +61,7 @@ private Q_SLOTS:
         QStringList callNames;
         QMap<QByteArray, QByteArray> expectedAnnotations;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setRights(0);
 
         capabilities.clear();
@@ -97,7 +97,7 @@ private Q_SLOTS:
         // Test that if the parent collection doesn't allow renaming in its ACL, the child mailbox
         // can't be renamed, i.e. doesn't have the CanChangeCollection flag.
         //
-        Akonadi::Collection parentCollection = createCollectionChain(QLatin1String("/INBOX"));
+        Akonadi::Collection parentCollection = createCollectionChain(QStringLiteral("/INBOX"));
         QMap<QByteArray, KIMAP::Acl::Rights> rightsMap;
         rightsMap.insert("Hans", KIMAP::Acl::Lookup | KIMAP::Acl::Read | KIMAP::Acl::KeepSeen |
                          KIMAP::Acl::Write | KIMAP::Acl::Insert | KIMAP::Acl::Post |
@@ -115,7 +115,7 @@ private Q_SLOTS:
         // Test that if the parent collection is a noselect folder, the child mailbox will not have
         // rename (CanChangeCollection) permission.
         //
-        parentCollection = createCollectionChain(QLatin1String("/INBOX"));
+        parentCollection = createCollectionChain(QStringLiteral("/INBOX"));
         NoSelectAttribute *noSelectAttribute = new NoSelectAttribute();
         parentCollection.addAttribute(noSelectAttribute);
         collection.setParentCollection(parentCollection);
@@ -127,7 +127,7 @@ private Q_SLOTS:
         // Test that the rights are properly set on the resulting collection if the mailbox doesn't
         // have full rights.
         //
-        collection.setParentCollection(createCollectionChain(QLatin1String("/INBOX")));
+        collection.setParentCollection(createCollectionChain(QStringLiteral("/INBOX")));
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
@@ -148,8 +148,8 @@ private Q_SLOTS:
         //
         // Test that a warning is issued if the insert rights of a folder have been revoked on the server.
         //
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
-        collection.setParentCollection(createCollectionChain(QLatin1String("/INBOX")));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
+        collection.setParentCollection(createCollectionChain(QStringLiteral("/INBOX")));
         //We use the aclattribute to determine if a collection already has acl's or not
         collection.addAttribute(new Akonadi::ImapAclAttribute());
         collection.setRights(Akonadi::Collection::CanCreateItem);
@@ -181,7 +181,7 @@ private Q_SLOTS:
         //
         // Test that NoInferiors overrides acl rights and disallows creating new mailboxes
         //
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setParentCollection(createCollectionChain(QString()));
         collection.setRemoteId("/INBOX");
         collection.setRights(Akonadi::Collection::AllRights);
@@ -207,7 +207,7 @@ private Q_SLOTS:
         QTest::newRow("noinferiors") << collection << capabilities << scenario
                                      << callNames << rights << expectedAnnotations;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setRights(0);
 
         capabilities.clear();
@@ -242,7 +242,7 @@ private Q_SLOTS:
         QTest::newRow("METADATA") << collection << capabilities << scenario
                                   << callNames << rights << expectedAnnotations;
 
-        collection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setRights(0);
 
         capabilities.clear();

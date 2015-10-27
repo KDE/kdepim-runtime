@@ -108,7 +108,7 @@ void ItemModifyTest::testExpectedFail()
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
     QCOMPARE((int)entrySet1.count(), 4);
 
@@ -130,8 +130,8 @@ void ItemModifyTest::testExpectedFail()
 
     // test failure of modifying a non-existent maildir entry
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     QString remoteId1;
@@ -157,8 +157,8 @@ void ItemModifyTest::testExpectedFail()
 
     // test failure of modifying a non-existent mbox entry
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     qint64 remoteId2;
@@ -191,7 +191,7 @@ void ItemModifyTest::testIgnorePayload()
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
@@ -208,8 +208,8 @@ void ItemModifyTest::testIgnorePayload()
 
     // test failure of modifying a non-existent maildir entry
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     const QByteArray data1 = md1.readEntry(entryList1.first());
@@ -235,15 +235,15 @@ void ItemModifyTest::testIgnorePayload()
 
     // test failure of modifying a non-existent mbox entry
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     const QByteArray data2 = mbox2.readRawMessage(MBoxEntry(0));
 
     Item item2;
     item2.setMimeType(KMime::Message::mimeType());
-    item2.setRemoteId(QLatin1String("0"));
+    item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
     item2.setPayload<KMime::Message::Ptr>(msgPtr);
 
@@ -267,7 +267,7 @@ void ItemModifyTest::testModifyPayload()
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
@@ -288,8 +288,8 @@ void ItemModifyTest::testModifyPayload()
 
     // test modifying a maildir entry's header
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     const QByteArray data1 = md1.readEntry(entryList1.first());
@@ -329,8 +329,8 @@ void ItemModifyTest::testModifyPayload()
 
     // test modifying an mbox entry's header
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     const QByteArray data2 = mbox2.readRawMessage(MBoxEntry(0));
@@ -341,7 +341,7 @@ void ItemModifyTest::testModifyPayload()
 
     Item item2;
     item2.setMimeType(KMime::Message::mimeType());
-    item2.setRemoteId(QLatin1String("0"));
+    item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
     item2.setPayload<KMime::Message::Ptr>(msgPtr);
 
@@ -395,7 +395,7 @@ void ItemModifyTest::testModifyFlags()
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
@@ -428,8 +428,8 @@ void ItemModifyTest::testModifyFlags()
     // test modifying a flag of a maildir items changes the entry name but not the
     // message contents
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     // check that the \SEEN flag is not set yet
@@ -501,8 +501,8 @@ void ItemModifyTest::testModifyFlags()
     // test modifying flags of an mbox item "succeeds" (no error) but does not change
     // anything in store or on disk
     Collection collection2;
-    collection2.setName(QLatin1String("collection2"));
-    collection2.setRemoteId(QLatin1String("collection2"));
+    collection2.setName(QStringLiteral("collection2"));
+    collection2.setRemoteId(QStringLiteral("collection2"));
     collection2.setParentCollection(mStore->topLevelCollection());
 
     const QByteArray data2 = mbox2.readRawMessage(MBoxEntry(0));
@@ -513,7 +513,7 @@ void ItemModifyTest::testModifyFlags()
 
     Item item2;
     item2.setMimeType(KMime::Message::mimeType());
-    item2.setRemoteId(QLatin1String("0"));
+    item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
     item2.setPayload<KMime::Message::Ptr>(msgPtr);
     item2.setFlag("\\SEEN");
@@ -561,7 +561,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
 
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
-    KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
+    KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
@@ -584,8 +584,8 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     // test modifying a flag of a maildir items changes the entry name but not the
     // message contents
     Collection collection1;
-    collection1.setName(QLatin1String("collection1"));
-    collection1.setRemoteId(QLatin1String("collection1"));
+    collection1.setName(QStringLiteral("collection1"));
+    collection1.setRemoteId(QStringLiteral("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
     // check that the \SEEN flag is not set yet

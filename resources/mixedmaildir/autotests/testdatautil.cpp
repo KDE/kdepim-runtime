@@ -64,8 +64,8 @@ static bool copyFiles(const QDir &sourceDir, const QDir &targetDir)
 
 FolderType TestDataUtil::folderType(const QString &testDataName)
 {
-    const QDir dir(QLatin1String(":/data"));
-    const QString indexFilePattern = QLatin1String(".%1.index");
+    const QDir dir(QStringLiteral(":/data"));
+    const QString indexFilePattern = QStringLiteral(".%1.index");
 
     if (!dir.exists(testDataName) || !dir.exists(indexFilePattern.arg(testDataName))) {
         return InvalidFolder;
@@ -77,10 +77,10 @@ FolderType TestDataUtil::folderType(const QString &testDataName)
 
 QStringList TestDataUtil::testDataNames()
 {
-    const QDir dir(QLatin1String(":/data"));
+    const QDir dir(QStringLiteral(":/data"));
     const QFileInfoList dirEntries = dir.entryInfoList();
 
-    const QString indexFilePattern = QLatin1String(".%1.index");
+    const QString indexFilePattern = QStringLiteral(".%1.index");
 
     QStringList result;
     Q_FOREACH (const QFileInfo &fileInfo, dirEntries) {
@@ -131,11 +131,11 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
         }
     }
 
-    const QDir testDataDir(QLatin1String(":/data"));
+    const QDir testDataDir(QStringLiteral(":/data"));
 
     switch (type) {
     case MaildirFolder: {
-        const QString subPathPattern = QLatin1String("%1/%2");
+        const QString subPathPattern = QStringLiteral("%1/%2");
         if (!installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("new"))) ||
                 !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("cur"))) ||
                 !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("tmp")))) {
@@ -149,8 +149,8 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
         sourceDir.cd(testDataName);
         targetDir.cd(folderName);
 
-        if (sourceDir.cd(QLatin1String("new"))) {
-            targetDir.cd(QLatin1String("new"));
+        if (sourceDir.cd(QStringLiteral("new"))) {
+            targetDir.cd(QStringLiteral("new"));
             if (!copyFiles(sourceDir, targetDir)) {
                 return false;
             }
@@ -158,8 +158,8 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
             targetDir.cdUp();
         }
 
-        if (sourceDir.cd(QLatin1String("cur"))) {
-            targetDir.cd(QLatin1String("cur"));
+        if (sourceDir.cd(QStringLiteral("cur"))) {
+            targetDir.cd(QStringLiteral("cur"));
             if (!copyFiles(sourceDir, targetDir)) {
                 return false;
             }
@@ -167,8 +167,8 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
             targetDir.cdUp();
         }
 
-        if (sourceDir.cd(QLatin1String("tmp"))) {
-            targetDir.cd(QLatin1String("tmp"));
+        if (sourceDir.cd(QStringLiteral("tmp"))) {
+            targetDir.cd(QStringLiteral("tmp"));
             if (!copyFiles(sourceDir, targetDir)) {
                 return false;
             }
@@ -192,7 +192,7 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
         return false;
     }
 
-    const QString indexFilePattern = QLatin1String(".%1.index");
+    const QString indexFilePattern = QStringLiteral(".%1.index");
     const QFileInfo indexFileInfo(testDataDir, indexFilePattern.arg(testDataName));
     const QFileInfo indexInstallFileInfo(installDir, indexFilePattern.arg(folderName));
 

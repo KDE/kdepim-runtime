@@ -42,9 +42,9 @@ private Q_SLOTS:
         QList<QByteArray> scenario;
         QStringList callNames;
 
-        parentCollection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        parentCollection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection = Akonadi::Collection(4);
-        collection.setName(QLatin1String("Bar"));
+        collection.setName(QStringLiteral("Bar"));
         collection.setParentCollection(parentCollection);
 
         scenario.clear();
@@ -60,9 +60,9 @@ private Q_SLOTS:
         QTest::newRow("trivial case") << parentCollection << collection << scenario << callNames
                                       << collection.name() << "/Bar";
 
-        parentCollection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        parentCollection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection = Akonadi::Collection(4);
-        collection.setName(QLatin1String("Bar/Baz"));
+        collection.setName(QStringLiteral("Bar/Baz"));
         collection.setParentCollection(parentCollection);
 
         scenario.clear();
@@ -78,9 +78,9 @@ private Q_SLOTS:
         QTest::newRow("folder with invalid separator") << parentCollection << collection << scenario
                 << callNames << "BarBaz" << "/BarBaz";
 
-        parentCollection = createCollectionChain(QLatin1String(".INBOX"));
+        parentCollection = createCollectionChain(QStringLiteral(".INBOX"));
         collection = Akonadi::Collection(3);
-        collection.setName(QLatin1String("Foo"));
+        collection.setName(QStringLiteral("Foo"));
         collection.setParentCollection(parentCollection);
 
         scenario.clear();
@@ -95,9 +95,9 @@ private Q_SLOTS:
         QTest::newRow("folder with non-standard separator") << parentCollection << collection << scenario
                 << callNames << "Foo" << ".Foo";
 
-        parentCollection = createCollectionChain(QLatin1String("/INBOX/Foo"));
+        parentCollection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection = Akonadi::Collection(4);
-        collection.setName(QLatin1String("Bar"));
+        collection.setName(QStringLiteral("Bar"));
         collection.setParentCollection(parentCollection);
         Akonadi::CollectionAnnotationsAttribute *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
         QMap<QByteArray, QByteArray> annotations;

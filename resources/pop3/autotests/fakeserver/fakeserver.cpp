@@ -236,7 +236,7 @@ void FakeServer::setNextConversation(const QString &conversation,
     Q_ASSERT(!conversation.isEmpty());
 
     mGotDisconnected = false;
-    QStringList lines = conversation.split(QLatin1String("\r\n"), QString::SkipEmptyParts);
+    QStringList lines = conversation.split(QStringLiteral("\r\n"), QString::SkipEmptyParts);
     Q_ASSERT(lines.first().startsWith(QLatin1String("C:")));
 
     enum Mode { Client, Server };
