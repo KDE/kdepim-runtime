@@ -232,7 +232,7 @@ void KAlarmResource::setCompatibility(KJob *j)
     } else if (job->collections().isEmpty()) {
         qCDebug(KALARMRESOURCE_LOG) << "Error: resource's collection not found";
     } else {
-        KAlarmResourceCommon::setCollectionCompatibility(job->collections()[0], mCompatibility, mVersion);
+        KAlarmResourceCommon::setCollectionCompatibility(job->collections().at(0), mCompatibility, mVersion);
     }
 }
 
@@ -319,7 +319,7 @@ void KAlarmResource::updateFormat(KJob *j)
     } else if (job->collections().isEmpty()) {
         qCDebug(KALARMRESOURCE_LOG) << "Error: resource's collection not found";
     } else {
-        const Collection c(job->collections()[0]);
+        const Collection c(job->collections().at(0));
         if (c.hasAttribute<CompatibilityAttribute>()) {
             const CompatibilityAttribute *attr = c.attribute<CompatibilityAttribute>();
             if (attr->compatibility() != mCompatibility) {

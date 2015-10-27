@@ -565,7 +565,7 @@ void MixedMaildirResource::retrieveItemResult(KJob *job)
     Q_ASSERT(fetchJob != 0);
     Q_ASSERT(!fetchJob->items().isEmpty());
 
-    itemRetrieved(fetchJob->items()[ 0 ]);
+    itemRetrieved(fetchJob->items().at(0));
 }
 
 void MixedMaildirResource::itemAddedResult(KJob *job)
@@ -810,7 +810,7 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
 
     Q_ASSERT(!fetchJob->items().isEmpty());
 
-    const Item item = fetchJob->items()[ 0 ];
+    const Item item = fetchJob->items().at(0);
     const QStringList tagList = job->property("tagList").value<QStringList>();
     qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "Tagging item" << item.url() << "with" << tagList;
 

@@ -69,7 +69,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             emitWarning(i18n("ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL change",
                              collection().name()));
         } else {
-            KIMAP::Acl::Rights imapRights = aclAttribute->rights()[userName().toUtf8()];
+            KIMAP::Acl::Rights imapRights = aclAttribute->rights().value(userName().toUtf8());
             Akonadi::Collection::Rights newRights = collection().rights();
 
             if (newRights & Akonadi::Collection::CanChangeItem) {
