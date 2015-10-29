@@ -243,7 +243,7 @@ void KAlarmResource::setCompatibility(KJob *j)
 bool KAlarmResource::writeToFile(const QString &fileName)
 {
     qCDebug(KALARMRESOURCE_LOG) << fileName;
-    if (calendar()->incidences().isEmpty()) {
+    if (calendar() && calendar()->incidences().isEmpty()) {
         // It's an empty file. Set up the KAlarm custom property.
         KACalendar::setKAlarmVersion(calendar());
     }
