@@ -16,6 +16,7 @@ X-KDE-Weight=40
 
 Name=PIM Accounts and Resources
 Name[ca]=Comptes i recursos del PIM
+Name[ca@valencia]=Comptes i recursos del PIM
 Name[de]=PIM-Zugänge und Ressourcen
 Name[el]=Λογαριασμοί και πόροι PIM
 Name[en_GB]=PIM Accounts and Resources
@@ -47,6 +48,7 @@ Name[zh_CN]=个人信息账户和资源
 Name[zh_TW]=個人資訊管理帳號與資源
 Comment=Personal Information Management Resources (Akonadi)
 Comment[ca]=Recursos per a la gestió de la informació personal (Akonadi)
+Comment[ca@valencia]=Recursos per a la gestió de la informació personal (Akonadi)
 Comment[de]=Akonadi-Ressourcen für Persönliches Informationsmanagement
 Comment[el]=Πόροι διαχειριστή προσωπικών πληροφοριών (Akonadi)
 Comment[en_GB]=Personal Information Management Resources (Akonadi)
