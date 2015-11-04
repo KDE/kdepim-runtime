@@ -24,6 +24,10 @@
 #include <kolabdefinitions.h> //libkolab
 #include <formathelpers.h> //libkolab
 
+#define KOLAB_COLOR_ANNOTATION "/vendor/kolab/color"
+
+class QColor;
+
 class KolabHelpers
 {
 public:
@@ -34,6 +38,8 @@ public:
     static Kolab::FolderType folderTypeFromString(const QByteArray &folderTypeName);
     static QByteArray getFolderTypeAnnotation(const QMap<QByteArray, QByteArray> &annotations);
     static void setFolderTypeAnnotation(QMap<QByteArray, QByteArray> &annotations, const QByteArray &value);
+    static QColor getFolderColor(const QMap<QByteArray, QByteArray> &annotations);
+    static void setFolderColor(QMap<QByteArray, QByteArray> &annotations, const QColor &color);
     static Kolab::ObjectType getKolabTypeFromMimeType(const QString &type);
     static QByteArray kolabTypeForMimeType(const QStringList &contentMimeTypes);
     static QStringList getContentMimeTypes(Kolab::FolderType type);

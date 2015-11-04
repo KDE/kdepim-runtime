@@ -26,6 +26,8 @@
 #include <retrieveitemstask.h>
 #include <collectionannotationsattribute.h>
 #include <changecollectiontask.h>
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/CollectionColorAttribute>
 #include <akonadi/calendar/blockalarmsattribute.h>
 
 #include <KWindowSystem>
@@ -48,6 +50,7 @@
 KolabResource::KolabResource(const QString &id)
     : ImapResource(id)
 {
+    Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionColorAttribute>();
     //Ensure we have up-to date metadata before attempting to sync folder
     setScheduleAttributeSyncBeforeItemSync(true);
     setKeepLocalCollectionChanges(QSet<QByteArray>() << "ENTITYDISPLAY" << Akonadi::BlockAlarmsAttribute().type());
@@ -147,11 +150,26 @@ static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collecti
     Trace() << collection.id();
     //Set the annotations on new folders
     const QByteArray kolabType = KolabHelpers::kolabTypeForMimeType(collection.contentMimeTypes());
+    Akonadi::Collection col = collection;
+    Akonadi::CollectionAnnotationsAttribute *attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+    QMap<QByteArray, QByteArray> annotations = attr->annotations();
+
+    bool changed = false;
+    Akonadi::CollectionColorAttribute *colorAttribute = col.attribute<Akonadi::CollectionColorAttribute>();
+    if (colorAttribute) {
+        const QColor color = colorAttribute->color();
+        if (color.isValid()) {
+            KolabHelpers::setFolderColor(annotations, color);
+            changed = true;
+        }
+    }
+
     if (!kolabType.isEmpty()) {
-        Akonadi::Collection col = collection;
-        Akonadi::CollectionAnnotationsAttribute *attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
-        QMap<QByteArray, QByteArray> annotations = attr->annotations();
         KolabHelpers::setFolderTypeAnnotation(annotations, kolabType);
+        changed = true;
+    }
+
+    if (changed) {
         attr->setAnnotations(annotations);
         return col;
     }
@@ -171,11 +189,16 @@ void KolabResource::collectionAdded(const Akonadi::Collection &collection, const
 void KolabResource::collectionChanged(const Akonadi::Collection &collection, const QSet< QByteArray > &parts)
 {
     Trace() << collection.id() << parts;
+    QSet<QByteArray> p = parts;
     //Update annotations if necessary
     const Akonadi::Collection col = updateAnnotations(collection);
+    if(parts.contains(Akonadi::CollectionColorAttribute().type())) {
+        p << Akonadi::CollectionAnnotationsAttribute().type();
+    }
+
     //TODO we need to save the collections as well if the annotations have changed
     emit status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
-    ChangeCollectionTask *task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, parts)), this);
+    ChangeCollectionTask *task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, p)), this);
     task->syncEnabledState(true);
     startTask(task);
 }

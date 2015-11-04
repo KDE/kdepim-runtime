@@ -35,6 +35,7 @@
 
 #include <AkonadiCore/CachePolicy>
 #include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/CollectionColorAttribute>
 #include <akonadi/kmime/messageparts.h>
 #include <AkonadiCore/CollectionIdentificationAttribute>
 #include <akonadi/calendar/blockalarmsattribute.h>
@@ -42,6 +43,8 @@
 
 #include <kmime/kmime_message.h>
 #include <KLocalizedString>
+
+#include <QColor>
 
 static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool matchCompletePath = false)
 {
@@ -195,6 +198,8 @@ KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterfac
 {
     mRequestedMetadata << "/shared/vendor/kolab/folder-type";
     mRequestedMetadata << "/private/vendor/kolab/folder-type";
+    mRequestedMetadata << "/shared" KOLAB_COLOR_ANNOTATION
+                       << "/private" KOLAB_COLOR_ANNOTATION;
 }
 
 KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
@@ -479,6 +484,10 @@ void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray,
             const QByteArray type = KolabHelpers::getFolderTypeAnnotation(metadata);
             const Kolab::FolderType folderType = KolabHelpers::folderTypeFromString(type);
             collection.setContentMimeTypes(KolabHelpers::getContentMimeTypes(folderType));
+            const QColor color = KolabHelpers::getFolderColor(metadata);
+            if (color.isValid()) {
+                collection.attribute<Akonadi::CollectionColorAttribute>(Akonadi::Collection::AddIfMissing)->setColor(color);
+            }
             QSet<QByteArray> keepLocalChanges = collection.keepLocalChanges();
             keepLocalChanges.remove(cContentMimeTypes);
             collection.setKeepLocalChanges(keepLocalChanges);

@@ -28,6 +28,7 @@
 #include <kolabobject.h>
 #include <errorhandler.h>
 #include <KLocalizedString>
+#include <QColor>
 #include "tracer.h"
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
@@ -424,6 +425,23 @@ QByteArray KolabHelpers::getFolderTypeAnnotation(const QMap< QByteArray, QByteAr
 void KolabHelpers::setFolderTypeAnnotation(QMap< QByteArray, QByteArray > &annotations, const QByteArray &value)
 {
     annotations["/shared" KOLAB_FOLDER_TYPE_ANNOTATION] = value;
+}
+
+QColor KolabHelpers::getFolderColor(const QMap<QByteArray, QByteArray> &annotations)
+{
+    // kolab saves the color without a "#", so we need to add it to the rgb string to have a propper QColor
+    if (annotations.contains("/shared" KOLAB_COLOR_ANNOTATION) && !annotations.value("/shared" KOLAB_COLOR_ANNOTATION).isEmpty()) {
+        return QColor(QStringLiteral("#").append(QString::fromUtf8(annotations.value("/shared" KOLAB_COLOR_ANNOTATION))));
+    } else if (annotations.contains("/private" KOLAB_COLOR_ANNOTATION) && !annotations.value("/private" KOLAB_COLOR_ANNOTATION).isEmpty()) {
+        return QColor(QStringLiteral("#").append(QString::fromUtf8(annotations.value("/private" KOLAB_COLOR_ANNOTATION))));
+    }
+    return QColor();
+}
+
+void KolabHelpers::setFolderColor(QMap<QByteArray, QByteArray> &annotations, const QColor &color)
+{
+    // kolab saves the color without a "#", so we need to delete the prefix "#" if we save it to the annotations
+    annotations["/shared" KOLAB_COLOR_ANNOTATION] = color.name().toAscii().remove(0,1);
 }
 
 QString KolabHelpers::getIcon(Kolab::FolderType type)
