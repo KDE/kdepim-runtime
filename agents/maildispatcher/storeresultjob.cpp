@@ -76,6 +76,7 @@ void StoreResultJob::Private::fetchDone( KJob *job )
     item.clearFlag( Akonadi::MessageFlags::Queued );
     item.setFlag( Akonadi::MessageFlags::Sent );
     item.setFlag( Akonadi::MessageFlags::Seen );
+    item.removeAttribute<ErrorAttribute>();
   } else {
     item.setFlag( Akonadi::MessageFlags::HasError );
     ErrorAttribute *errorAttribute = new ErrorAttribute( message );
