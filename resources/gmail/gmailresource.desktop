@@ -2,6 +2,7 @@
 Name=Gmail
 Name[bg]=Gmail
 Name[ca]=Gmail
+Name[ca@valencia]=Gmail
 Name[da]=Gmail
 Name[de]=Gmail
 Name[el]=Gmail
@@ -37,6 +38,7 @@ Name[zh_TW]=Gmail
 Comment=Connects to your Gmail account
 Comment[bg]=Свързване към вашата сметка в Google
 Comment[ca]=Connecta amb el vostre compte de Gmail
+Comment[ca@valencia]=Connecta amb el vostre compte de Gmail
 Comment[da]=Forbinder til din Gmail-konto
 Comment[de]=Verbindet mit Ihrem Gmail-Konto
 Comment[el]=Σύνδεση με τον λογαριασμό σας στο Gmail
