@@ -129,7 +129,7 @@ static void parseIncidenceAttribute(const QDomElement &element,
             incidence->setSecrecy(KCalCore::Incidence::SecrecyPublic);
         }
     } else if (tagName == QLatin1String("categories")) {
-        incidence->setCategories(text.split(QRegExp(QStringLiteral(",\\s*"))));
+        incidence->setCategories(text.split(QRegExp(QLatin1String(",\\s*"))));
     }
 }
 

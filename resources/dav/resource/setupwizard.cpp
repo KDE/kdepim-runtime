@@ -77,7 +77,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 
     QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
-    localPart.remove(QRegExp(QStringLiteral("@.*$")));
+    localPart.remove(QRegExp(QLatin1String("@.*$")));
     pathPattern.replace(QStringLiteral("$user$"), username);
     pathPattern.replace(QStringLiteral("$localpart$"), localPart);
     QString providerName;
