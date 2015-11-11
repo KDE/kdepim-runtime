@@ -176,4 +176,6 @@ namespace DavUtils
   bool parseDavData( const DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems );
 }
 
+QDebug operator<<(QDebug dbg, const DavUtils::DavUrl& url);
+
 #endif

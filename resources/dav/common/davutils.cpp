@@ -363,3 +363,8 @@ bool DavUtils::parseDavData( const DavItem &source, Akonadi::Item &target, Akona
 
   return true;
 }
+
+QDebug operator<<(QDebug dbg, const DavUtils::DavUrl& url)
+{
+  return dbg << protocolName(url.protocol()) << url.url();
+}
