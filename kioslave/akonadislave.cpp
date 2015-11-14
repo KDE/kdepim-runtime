@@ -190,7 +190,7 @@ void AkonadiSlave::listDir(const QUrl &url)
 
     Collection::List collections = job->collections();
     foreach (const Collection &col, collections) {
-        listEntry(entryForCollection(col), false);
+        listEntry(entryForCollection(col));
     }
 
     // Fetching items
@@ -203,11 +203,10 @@ void AkonadiSlave::listDir(const QUrl &url)
         Item::List items = fjob->items();
         totalSize(collections.count() + items.count());
         foreach (const Item &item, items) {
-            listEntry(entryForItem(item), false);
+            listEntry(entryForItem(item));
         }
     }
 
-    listEntry(KIO::UDSEntry(), true);
     finished();
 }
 
