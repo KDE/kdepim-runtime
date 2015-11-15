@@ -32,10 +32,10 @@ project(kdepim-runtime)
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
+    set(KDEPIM_RUNTIME_DEV_VERSION "beta1")
 endif()
 
-set(KDEPIM_RUNTIME_VERSION_NUMBER "5.0.43")
+set(KDEPIM_RUNTIME_VERSION_NUMBER "5.0.80")
 set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV_VERSION}")
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
@@ -52,7 +52,7 @@ include(KDEFrameworkCompilerSettings)
 include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
 
-set(KF5_VERSION "5.14.0")
+set(KF5_VERSION "5.16.0")
 set(QT_REQUIRED_VERSION "5.4.0")
 
 set(KDEPIMLIBS_LIB_VERSION "5.0.43")
