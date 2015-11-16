@@ -2,6 +2,7 @@
 Id=defaultcalendar
 Type=akonadi_ical_resource
 Name=Personal Calendar
+Name[ast]=Calendariu personal
 Name[bg]=Личен календар
 Name[bs]=Lični kalendar
 Name[ca]=Calendari personal
