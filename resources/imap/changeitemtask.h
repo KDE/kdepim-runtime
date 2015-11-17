@@ -29,7 +29,7 @@ class ChangeItemTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit ChangeItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    explicit ChangeItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
     virtual ~ChangeItemTask();
 
 private Q_SLOTS:

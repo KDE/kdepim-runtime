@@ -34,7 +34,7 @@
 
 #include <collectiondeletejob.h>
 
-AddCollectionTask::AddCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent)
+AddCollectionTask::AddCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent), m_pendingJobs(0), m_session(Q_NULLPTR)
 {
 }

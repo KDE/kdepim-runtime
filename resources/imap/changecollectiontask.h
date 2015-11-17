@@ -29,7 +29,7 @@ class ChangeCollectionTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit ChangeCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    explicit ChangeCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
     virtual ~ChangeCollectionTask();
 
     void syncEnabledState(bool);

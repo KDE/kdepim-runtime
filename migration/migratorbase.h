@@ -35,7 +35,7 @@ public:
     NullableConfigGroup()
     {}
 
-    NullableConfigGroup(KConfigGroup grp): mConfigGroup(grp)
+    NullableConfigGroup(const KConfigGroup &grp): mConfigGroup(grp)
     {}
 
     KConfigGroup &configGroup()

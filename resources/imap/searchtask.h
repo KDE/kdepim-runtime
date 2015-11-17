@@ -28,7 +28,7 @@ class SearchTask : public ResourceTask
 {
     Q_OBJECT
 public:
-    SearchTask(ResourceStateInterface::Ptr state, const QString &query, QObject *parent);
+    SearchTask(const ResourceStateInterface::Ptr &state, const QString &query, QObject *parent);
     ~SearchTask();
 
 protected:

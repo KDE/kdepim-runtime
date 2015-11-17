@@ -22,7 +22,6 @@
 #include "changeitemtask.h"
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 
 #include <KLocalizedString>
 
@@ -37,7 +36,7 @@
 #include "imapflags.h"
 #include "uidnextattribute.h"
 
-ChangeItemTask::ChangeItemTask(ResourceStateInterface::Ptr resource, QObject *parent)
+ChangeItemTask::ChangeItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent), m_session(Q_NULLPTR), m_oldUid(0), m_newUid(0)
 {
 

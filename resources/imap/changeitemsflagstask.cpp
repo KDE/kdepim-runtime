@@ -25,7 +25,7 @@
 #include "imapresource_debug.h"
 #include "imapresource_debug.h"
 
-ChangeItemsFlagsTask::ChangeItemsFlagsTask(ResourceStateInterface::Ptr resource, QObject *parent):
+ChangeItemsFlagsTask::ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent):
     ResourceTask(ResourceTask::DeferIfNoSession, resource, parent),
     m_processedItems(0)
 {

@@ -37,7 +37,7 @@
 #include "imapflags.h"
 #include "uidnextattribute.h"
 
-MoveItemsTask::MoveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent)
+MoveItemsTask::MoveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {
 

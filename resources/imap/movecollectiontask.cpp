@@ -31,7 +31,7 @@
 
 #include <QtCore/QUuid>
 
-MoveCollectionTask::MoveCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent)
+MoveCollectionTask::MoveCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {
 

@@ -32,7 +32,6 @@
 #include <KLocalizedString>
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 
 #include <collectionquotaattribute.h>
 #include <entitydisplayattribute.h>
@@ -42,7 +41,7 @@
 #include "noselectattribute.h"
 #include "collectionmetadatahelper.h"
 
-RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(ResourceStateInterface::Ptr resource, QObject *parent)
+RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
       m_pendingMetaDataJobs(0)
 {
