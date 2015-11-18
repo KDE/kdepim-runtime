@@ -48,7 +48,7 @@ void SyncTest::testSync()
 
     for (int i = 0; i < 100; i++) {
         QDBusInterface *interface = new QDBusInterface(
-            QString::fromLatin1("org.freedesktop.Akonadi.Resource.%1").arg(instance.identifier()),
+            QStringLiteral("org.freedesktop.Akonadi.Resource.%1").arg(instance.identifier()),
             QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
         QVERIFY(interface->isValid());
         QTime t;

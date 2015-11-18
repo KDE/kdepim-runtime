@@ -72,7 +72,7 @@ private Q_SLOTS:
 
         parts << "NAME" << "AccessRights" << "imapacl" << "collectionannotations";
 
-        caps << "ACL" << "ANNOTATEMORE";
+        caps << QStringLiteral("ACL") << QStringLiteral("ANNOTATEMORE");
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -97,7 +97,7 @@ private Q_SLOTS:
         QTest::newRow("complete case") << collection << parts << scenario << callNames << collection.name() << caps;
 
         caps.clear();
-        caps << "ACL";
+        caps << QStringLiteral("ACL");
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
@@ -115,7 +115,7 @@ private Q_SLOTS:
         collection = createCollectionChain(QStringLiteral("/Foo"));
         collection.setName(QStringLiteral("Bar/Baz"));
         caps.clear();
-        caps << "ACL" << "ANNOTATEMORE";
+        caps << QStringLiteral("ACL") << QStringLiteral("ANNOTATEMORE");
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 RENAME \"Foo\" \"BarBaz\""
@@ -164,7 +164,7 @@ private Q_SLOTS:
 
         parts << "NAME" << "AccessRights" << "imapacl" << "collectionannotations";
 
-        caps << "ACL" << "METADATA";
+        caps << QStringLiteral("ACL") << QStringLiteral("METADATA");
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()

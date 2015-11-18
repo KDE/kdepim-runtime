@@ -59,10 +59,10 @@ private Q_SLOTS:
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
-                            << createCollection("/", "INBOX")
-                            << createCollection("/", "INBOX/Calendar")
-                            << createCollection("/", "INBOX/Calendar/Private")
-                            << createCollection("/", "INBOX/Archives");
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -74,7 +74,7 @@ private Q_SLOTS:
                  << "S: A000003 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = false;
@@ -86,10 +86,10 @@ private Q_SLOTS:
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5)
-                            << createCollection("/", "INBOX")
-                            << createCollection("/", "INBOX/Calendar")
-                            << createCollection("/", "INBOX/Calendar/Private")
-                            << createCollection("/", "INBOX/Archives");
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -101,7 +101,7 @@ private Q_SLOTS:
                  << "S: A000003 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = true;
@@ -113,8 +113,8 @@ private Q_SLOTS:
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5)
-                            << createCollection("/", "INBOX")
-                            << createCollection("/", "INBOX/Archives");
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -125,7 +125,7 @@ private Q_SLOTS:
                  << "S: A000003 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = true;
@@ -137,10 +137,10 @@ private Q_SLOTS:
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
-                            << createCollection("/", "INBOX")
-                            << createCollection("/", "INBOX/Calendar", true)
-                            << createCollection("/", "INBOX/Calendar/Private")
-                            << createCollection("/", "INBOX/Archives");
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"), true)
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -151,7 +151,7 @@ private Q_SLOTS:
                  << "S: A000003 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = false;
@@ -170,7 +170,7 @@ private Q_SLOTS:
                  << "S: A000003 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = false;
@@ -183,9 +183,9 @@ private Q_SLOTS:
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
-                            << createCollection("/", "INBOX")
-                            << createCollection("/", "INBOX/Calendar")
-                            << createCollection("/", "INBOX/Calendar/Private");
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"))
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -203,7 +203,7 @@ private Q_SLOTS:
                  << "S: A000004 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = true;
         isDisconnectedModeEnabled = false;
@@ -228,7 +228,7 @@ private Q_SLOTS:
                  << "S: A000004 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = true;
         isDisconnectedModeEnabled = false;
@@ -240,8 +240,8 @@ private Q_SLOTS:
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
-                            << createCollection("/", "INBOX", false, true)
-                            << createCollection("/", "Archive");
+                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"), false, true)
+                            << createCollection(QStringLiteral("/"), QStringLiteral("Archive"));
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -251,7 +251,7 @@ private Q_SLOTS:
                  << "S: A000003 OK list done";
 
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = false;
@@ -269,13 +269,13 @@ private Q_SLOTS:
                  << "S: * LIST ( ) . INBOX.Bar"
                  << "S: A000003 OK list done";
         callNames.clear();
-        callNames << "setIdleCollection" << "collectionsRetrieved";
+        callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
-                            << createCollection(".", "INBOX")
-                            << createCollection(".", "INBOX.Foo")
-                            << createCollection(".", "INBOX.Bar");
+                            << createCollection(QStringLiteral("."), QStringLiteral("INBOX"))
+                            << createCollection(QStringLiteral("."), QStringLiteral("INBOX.Foo"))
+                            << createCollection(QStringLiteral("."), QStringLiteral("INBOX.Bar"));
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
@@ -306,7 +306,7 @@ private Q_SLOTS:
         QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
-        state->setResourceName("resource");
+        state->setResourceName(QStringLiteral("resource"));
         state->setSubscriptionEnabled(isSubscriptionEnabled);
         state->setDisconnectedModeEnabled(isDisconnectedModeEnabled);
         state->setIntervalCheckTime(intervalCheckTime);
@@ -321,15 +321,15 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == "cancelTask") {
+            if (command == QLatin1String("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
-            } else if (command == "collectionsRetrieved") {
+            } else if (command == QLatin1String("collectionsRetrieved")) {
                 collections += parameter.value<Akonadi::Collection::List>();
             }
         }
@@ -349,8 +349,8 @@ private:
     {
         // Root
         Akonadi::Collection collection = Akonadi::Collection(m_nextCollectionId++);
-        collection.setName("resource");
-        collection.setRemoteId("root-id");
+        collection.setName(QStringLiteral("resource"));
+        collection.setRemoteId(QStringLiteral("root-id"));
         collection.setContentMimeTypes(QStringList(Akonadi::Collection::mimeType()));
         collection.setParentCollection(Akonadi::Collection::root());
         collection.addAttribute(new NoSelectAttribute(true));
@@ -398,13 +398,13 @@ private:
         collection.setRemoteId(separator + pathPart);
 
         collection.setParentCollection(parentCollection);
-        collection.setContentMimeTypes(QStringList() << "message/rfc822" << Akonadi::Collection::mimeType());
+        collection.setContentMimeTypes(QStringList() << QStringLiteral("message/rfc822") << Akonadi::Collection::mimeType());
 
         // If the folder is the Inbox, make some special settings.
         if (pathPart.compare(QLatin1String("INBOX") , Qt::CaseInsensitive) == 0) {
             Akonadi::EntityDisplayAttribute *attr = new Akonadi::EntityDisplayAttribute;
             attr->setDisplayName(i18n("Inbox"));
-            attr->setIconName("mail-folder-inbox");
+            attr->setIconName(QStringLiteral("mail-folder-inbox"));
             collection.addAttribute(attr);
         }
 
@@ -412,7 +412,7 @@ private:
         if ((pathPart.compare(QLatin1String("user") , Qt::CaseInsensitive) == 0) && isNoSelect) {
             Akonadi::EntityDisplayAttribute *attr = new Akonadi::EntityDisplayAttribute;
             attr->setDisplayName(i18n("Shared Folders"));
-            attr->setIconName("x-mail-distribution-list");
+            attr->setIconName(QStringLiteral("x-mail-distribution-list"));
             collection.addAttribute(attr);
         }
 

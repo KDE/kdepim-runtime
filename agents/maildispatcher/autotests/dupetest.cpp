@@ -144,7 +144,7 @@ void DupeTest::testDupes()
         //qDebug() << "Queuing message" << i + 1 << "of" << count;
 
         Message::Ptr msg = Message::Ptr(new Message);
-        msg->setContent(QString::fromLatin1("%1-msg%2\n").arg(message).arg(i + 1, 2, 10, QLatin1Char('0')).toLatin1());
+        msg->setContent(QStringLiteral("%1-msg%2\n").arg(message).arg(i + 1, 2, 10, QLatin1Char('0')).toLatin1());
 
         MessageQueueJob *job = new MessageQueueJob(this);
         job->setMessage(msg);

@@ -77,7 +77,7 @@ QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData,
 {
     // Only called from parseResponse(), which is already thread-safe
 
-    const QByteArray deleteMark = QString::fromLatin1("%DELE%").toUtf8();
+    const QByteArray deleteMark = QStringLiteral("%DELE%").toUtf8();
     if (expectedData.contains(deleteMark)) {
         Q_ASSERT(!mAllowedDeletions.isEmpty());
         for (int i = 0; i < mAllowedDeletions.size(); i++) {
@@ -102,7 +102,7 @@ QByteArray FakeServer::parseRetrMark(const QByteArray &expectedData,
 {
     // Only called from parseResponse(), which is already thread-safe
 
-    const QByteArray retrMark = QString::fromLatin1("%RETR%").toUtf8();
+    const QByteArray retrMark = QStringLiteral("%RETR%").toUtf8();
     if (expectedData.contains(retrMark)) {
         Q_ASSERT(!mAllowedRetrieves.isEmpty());
         for (int i = 0; i < mAllowedRetrieves.size(); i++) {
@@ -242,8 +242,8 @@ void FakeServer::setNextConversation(const QString &conversation,
     enum Mode { Client, Server };
     Mode mode = Client;
 
-    const QByteArray mailSizeMarker = QString::fromLatin1("%MAILSIZE%").toLatin1();
-    const QByteArray mailMarker = QString::fromLatin1("%MAIL%").toLatin1();
+    const QByteArray mailSizeMarker = QStringLiteral("%MAILSIZE%").toLatin1();
+    const QByteArray mailMarker = QStringLiteral("%MAIL%").toLatin1();
     int sizeIndex = 0;
     int mailIndex = 0;
 

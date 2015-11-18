@@ -143,7 +143,7 @@ private Q_SLOTS:
         state->setParentCollection(parentCollection);
         state->setCollection(collection);
         if (collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>()) {
-            state->setServerCapabilities(QStringList() << "METADATA");
+            state->setServerCapabilities(QStringList() << QStringLiteral("METADATA"));
         }
         AddCollectionTask *task = new AddCollectionTask(state);
         task->start(&pool);

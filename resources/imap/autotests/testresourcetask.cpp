@@ -35,7 +35,7 @@ public:
 
     void doStart(KIMAP::Session */*session*/)
     {
-        cancelTask("Dummy task");
+        cancelTask(QStringLiteral("Dummy task"));
     }
 };
 
@@ -67,7 +67,7 @@ private Q_SLOTS:
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                  << "S: A000002 OK Completed";
         callNames.clear();
-        callNames << "cancelTask";
+        callNames << QStringLiteral("cancelTask");
         QTest::newRow("normal case") << state << scenario
                                      << true << false
                                      << ResourceTask::DeferIfNoSession
@@ -75,7 +75,7 @@ private Q_SLOTS:
 
         state = DummyResourceState::Ptr(new DummyResourceState);
         callNames.clear();
-        callNames << "deferTask";
+        callNames << QStringLiteral("deferTask");
         QTest::newRow("all sessions allocated (defer)") << state << scenario
                 << true << true
                 << ResourceTask::DeferIfNoSession
@@ -83,7 +83,7 @@ private Q_SLOTS:
 
         state = DummyResourceState::Ptr(new DummyResourceState);
         callNames.clear();
-        callNames << "cancelTask";
+        callNames << QStringLiteral("cancelTask");
         QTest::newRow("all sessions allocated (cancel)") << state << scenario
                 << true << true
                 << ResourceTask::CancelIfNoSession
@@ -92,7 +92,7 @@ private Q_SLOTS:
         state = DummyResourceState::Ptr(new DummyResourceState);
         scenario.clear();
         callNames.clear();
-        callNames << "deferTask" << "scheduleConnectionAttempt";
+        callNames << QStringLiteral("deferTask") << QStringLiteral("scheduleConnectionAttempt");
         QTest::newRow("disconnected pool (defer)") << state << scenario
                 << false << false
                 << ResourceTask::DeferIfNoSession
@@ -101,7 +101,7 @@ private Q_SLOTS:
         state = DummyResourceState::Ptr(new DummyResourceState);
         scenario.clear();
         callNames.clear();
-        callNames << "cancelTask" << "scheduleConnectionAttempt";
+        callNames << QStringLiteral("cancelTask") << QStringLiteral("scheduleConnectionAttempt");
         QTest::newRow("disconnected pool (cancel)") << state << scenario
                 << false << false
                 << ResourceTask::CancelIfNoSession
@@ -158,7 +158,7 @@ private Q_SLOTS:
             QCOMPARE(command, callNames[i]);
         }
 
-        if (firstCallParameter.toString() == "Dummy task") {
+        if (firstCallParameter.toString() == QLatin1String("Dummy task")) {
             QCOMPARE(state->calls().first().second, firstCallParameter);
         }
 

@@ -76,7 +76,7 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone" ;
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone") ;
 
         QTest::newRow("first listing, connected IMAP") << collection << scenario << callNames;
 
@@ -118,7 +118,7 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("first listing, disconnected IMAP") << collection << scenario << callNames;
 
@@ -153,7 +153,7 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         //Disabled test since the flag sync is disabled if CONDSTORE is not supported
 //     QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
@@ -179,7 +179,7 @@ private Q_SLOTS:
                  << "S: A000005 OK select done";
 
         callNames.clear();
-        callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("third listing, full sync, empty folder") << collection << scenario << callNames;
 
@@ -226,7 +226,7 @@ private Q_SLOTS:
                  << "S: A000009 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         //We know no messages have been removed, so we can do an incremental update
         QTest::newRow("uidnext changed, fetch new messages incrementally") << collection << scenario << callNames;
@@ -280,7 +280,7 @@ private Q_SLOTS:
                  << "S: A000009 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         //A new message has been added and an old one removed, we can't do an incremental update
         QTest::newRow("uidnext changed, fetch new messages and list flags") << collection << scenario << callNames;
@@ -308,7 +308,7 @@ private Q_SLOTS:
                  << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
                  << "S: A000005 OK select done";
         callNames.clear();
-        callNames << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+        callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         //No flags have changed
         QTest::newRow("highestmodseq test") << collection << scenario << callNames;
@@ -339,7 +339,7 @@ private Q_SLOTS:
                  << "S: * 5 FETCH ( UID 8 FLAGS () )"
                  << "S: A000006 OK fetch done";
         callNames.clear();
-        callNames << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         //fetch only changed flags
         QTest::newRow("changedsince test") << collection << scenario << callNames;
@@ -376,7 +376,7 @@ private Q_SLOTS:
         callNames.clear();
 
         //Disabled since the flag sync is disabled if CONDSTORE is not supported
-        callNames << /*"itemsRetrievedIncremental" << */"applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+        callNames << /*"itemsRetrievedIncremental" << */QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         //Don't rely on yahoos highestmodseq implementation
         QTest::newRow("yahoo highestmodseq test") << collection << scenario << callNames;
@@ -417,7 +417,7 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("uidvalidity changed") << collection << scenario << callNames;
 
@@ -477,7 +477,7 @@ private Q_SLOTS:
                  << "S: A000010 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "itemsRetrievedIncremental" << "applyCollectionChanges" << "itemsRetrievedIncremental" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("test batch processing") << collection << scenario << callNames;
 
@@ -513,7 +513,7 @@ private Q_SLOTS:
                  << "S: * 4 FETCH ( FLAGS (\\Seen) UID 4 )"
                  << "S: A000007 OK fetch done";
         callNames.clear();
-        callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone";
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         //fetch only changed flags
         QTest::newRow("remote message deleted") << collection << scenario << callNames;
@@ -553,7 +553,7 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << "itemsRetrieved" << "applyCollectionChanges" << "itemsRetrievalDone" ;
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone") ;
 
         QTest::newRow("missing uidnext") << collection << scenario << callNames;
 
@@ -589,13 +589,13 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == "cancelTask") {
+            if (command == QLatin1String("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
             }
         }

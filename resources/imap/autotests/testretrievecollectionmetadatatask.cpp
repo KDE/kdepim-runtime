@@ -65,7 +65,7 @@ private Q_SLOTS:
         collection.setRights(0);
 
         capabilities.clear();
-        capabilities << "ANNOTATEMORE" << "ACL" << "QUOTA";
+        capabilities << QStringLiteral("ANNOTATEMORE") << QStringLiteral("ACL") << QStringLiteral("QUOTA");
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -84,7 +84,7 @@ private Q_SLOTS:
                  << "S: A000006 OK acl retrieved";
 
         callNames.clear();
-        callNames << "collectionAttributesRetrieved";
+        callNames << QStringLiteral("collectionAttributesRetrieved");
 
         expectedAnnotations.clear();
         expectedAnnotations.insert("/shared/vendor/kolab/folder-test", "true");
@@ -155,7 +155,7 @@ private Q_SLOTS:
         collection.setRights(Akonadi::Collection::CanCreateItem);
 
         capabilities.clear();
-        capabilities << "ANNOTATEMORE" << "ACL" << "QUOTA";
+        capabilities << QStringLiteral("ANNOTATEMORE") << QStringLiteral("ACL") << QStringLiteral("QUOTA");
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -171,8 +171,8 @@ private Q_SLOTS:
                  << "S: A000005 OK quota retrieved";
 
         callNames.clear();
-        callNames << "showInformationDialog";
-        callNames << "collectionAttributesRetrieved";
+        callNames << QStringLiteral("showInformationDialog");
+        callNames << QStringLiteral("collectionAttributesRetrieved");
 
         rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
         QTest::newRow("revoked rights") << collection << capabilities << scenario
@@ -183,7 +183,7 @@ private Q_SLOTS:
         //
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setParentCollection(createCollectionChain(QString()));
-        collection.setRemoteId("/INBOX");
+        collection.setRemoteId(QStringLiteral("/INBOX"));
         collection.setRights(Akonadi::Collection::AllRights);
         collection.addAttribute(new NoInferiorsAttribute(true));
         scenario.clear();
@@ -200,7 +200,7 @@ private Q_SLOTS:
                  << "S: A000005 OK quota retrieved";
 
         callNames.clear();
-        callNames << "collectionAttributesRetrieved";
+        callNames << QStringLiteral("collectionAttributesRetrieved");
 
         rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
 
@@ -211,7 +211,7 @@ private Q_SLOTS:
         collection.setRights(0);
 
         capabilities.clear();
-        capabilities << "METADATA" << "ACL" << "QUOTA";
+        capabilities << QStringLiteral("METADATA") << QStringLiteral("ACL") << QStringLiteral("QUOTA");
 
         expectedAnnotations.clear();
         expectedAnnotations.insert("/shared/vendor/kolab/folder-test", "true");
@@ -236,7 +236,7 @@ private Q_SLOTS:
                  << "S: A000006 OK acl retrieved";
 
         callNames.clear();
-        callNames << "collectionAttributesRetrieved";
+        callNames << QStringLiteral("collectionAttributesRetrieved");
 
         rights = Akonadi::Collection::AllRights;
         QTest::newRow("METADATA") << collection << capabilities << scenario
@@ -249,7 +249,7 @@ private Q_SLOTS:
         expectedAnnotations.clear();
 
         callNames.clear();
-        callNames << "collectionAttributesRetrieved";
+        callNames << QStringLiteral("collectionAttributesRetrieved");
 
         rights = 0;
 
@@ -282,7 +282,7 @@ private Q_SLOTS:
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);
         state->setServerCapabilities(capabilities);
-        state->setUserName("Hans");
+        state->setUserName(QStringLiteral("Hans"));
         RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask(state);
 
         task->start(&pool);
@@ -292,17 +292,17 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == "cancelTask") {
+            if (command == QLatin1String("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
             }
 
-            if (command == "collectionAttributesRetrieved") {
+            if (command == QLatin1String("collectionAttributesRetrieved")) {
                 Akonadi::Collection collection = parameter.value<Akonadi::Collection>();
                 QCOMPARE(collection.rights(), expectedRights);
 

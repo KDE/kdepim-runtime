@@ -60,7 +60,7 @@ void MaildirTest::cleanup()
 {
     m_temp->remove();
     QDir d(m_temp->path());
-    const QString subFolderPath(QString::fromLatin1(".%1.directory").arg(d.dirName()));
+    const QString subFolderPath(QStringLiteral(".%1.directory").arg(d.dirName()));
     QDir((subFolderPath)).removeRecursively();
 
     delete m_temp;
@@ -83,7 +83,7 @@ void MaildirTest::fillDirectory(const QString &name, int limit)
 void MaildirTest::createSubFolders()
 {
     QDir d(m_temp->path());
-    const QString subFolderPath(QString::fromLatin1(".%1.directory").arg(d.dirName()));
+    const QString subFolderPath(QStringLiteral(".%1.directory").arg(d.dirName()));
     d.cdUp();
     d.mkdir(subFolderPath);
     d.cd(subFolderPath);

@@ -53,10 +53,10 @@ private Q_SLOTS:
                  << "C: A000003 NAMESPACE"
                  << "S: * NAMESPACE ( (\"INBOX/\" \"/\") ) ( (\"user/\" \"/\") ) ( (\"\" \"/\") )"
                  << "S: A000003 OK Completed";
-        password = "foobar";
+        password = QStringLiteral("foobar");
         int errorCode = SessionPool::NoError;
         capabilities.clear();
-        capabilities << "IMAP4" << "IMAP4REV1" << "NAMESPACE" << "UIDPLUS" << "IDLE";
+        capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("NAMESPACE") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
         QTest::newRow("normal case") << account << requester << scenario
                                      << password << errorCode << capabilities;
 
@@ -69,10 +69,10 @@ private Q_SLOTS:
                  << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                  << "S: A000002 OK Completed";
-        password = "foobar";
+        password = QStringLiteral("foobar");
         errorCode = SessionPool::NoError;
         capabilities.clear();
-        capabilities << "IMAP4" << "IMAP4REV1" << "UIDPLUS" << "IDLE";
+        capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
         QTest::newRow("no NAMESPACE support") << account << requester << scenario
                                               << password << errorCode << capabilities;
 
@@ -86,7 +86,7 @@ private Q_SLOTS:
                  << "S: * CAPABILITY IMAP4 IDLE"
                  << "S: A000002 OK Completed"
                  << "C: A000003 LOGOUT";
-        password = "foobar";
+        password = QStringLiteral("foobar");
         errorCode = SessionPool::IncompatibleServerError;
         capabilities.clear();
         QTest::newRow("incompatible server") << account << requester << scenario
@@ -107,7 +107,7 @@ private Q_SLOTS:
                  << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                  << "S: A000001 NO Login failed"
                  << "C: A000002 LOGOUT";
-        password = "foobar";
+        password = QStringLiteral("foobar");
         errorCode = SessionPool::LoginFailError;
         capabilities.clear();
         QTest::newRow("login fail, user reject password entry") << account << requester << scenario
@@ -129,10 +129,10 @@ private Q_SLOTS:
                  << "C: A000003 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                  << "S: A000003 OK Completed";
-        password = "foobar";
+        password = QStringLiteral("foobar");
         errorCode = SessionPool::NoError;
         capabilities.clear();
-        capabilities << "IMAP4" << "IMAP4REV1" << "UIDPLUS" << "IDLE";
+        capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
         QTest::newRow("login fail, user provide new password") << account << requester << scenario
                 << password << errorCode << capabilities;
 
@@ -148,7 +148,7 @@ private Q_SLOTS:
                  << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                  << "S: A000001 NO Login failed"
                  << "C: A000002 LOGOUT";
-        password = "foobar";
+        password = QStringLiteral("foobar");
         errorCode = SessionPool::LoginFailError;
         capabilities.clear();
         QTest::newRow("login fail, user provided empty password") << account << requester << scenario
@@ -166,7 +166,7 @@ private Q_SLOTS:
                  << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                  << "S: A000001 NO Login failed"
                  << "C: A000002 LOGOUT";
-        password = "foobar";
+        password = QStringLiteral("foobar");
         errorCode = SessionPool::ReconnectNeededError;
         capabilities.clear();
         QTest::newRow("login fail, user change the settings") << account << requester << scenario
@@ -750,7 +750,7 @@ private Q_SLOTS:
         // This tests what happens when we can't connect to the server, e.g. due to being offline.
         // In this test we just use 0.0.0.0 as an invalid server IP, instead.
         ImapAccount *account = createDefaultAccount();
-        account->setServer("0.0.0.0");   // so that the connexion fails
+        account->setServer(QStringLiteral("0.0.0.0"));   // so that the connexion fails
         DummyPasswordRequester *requester = createDefaultRequester();
         QList<DummyPasswordRequester::RequestType> requests;
         QList<DummyPasswordRequester::ResultType> results;

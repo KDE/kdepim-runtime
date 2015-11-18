@@ -394,7 +394,7 @@ QString Pop3Test::listSequence(const QList<QByteArray> &mails) const
     QString result = QStringLiteral("C: LIST\r\n"
                                    "S: +OK You got new spam\r\n");
     for (int i = 1; i <= mails.size(); i++) {
-        result += QString::fromLatin1("%1 %MAILSIZE%\r\n").arg(i);
+        result += QStringLiteral("%1 %MAILSIZE%\r\n").arg(i);
     }
     result += QLatin1String(".\r\n");
     return result;
@@ -405,7 +405,7 @@ QString Pop3Test::uidSequence(const QStringList &uids) const
     QString result = QStringLiteral("C: UIDL\r\n"
                                    "S: +OK\r\n");
     for (int i = 1; i <= uids.size(); i++) {
-        result += QString::fromLatin1("%1 %2\r\n").arg(i).arg(uids[i - 1]);
+        result += QStringLiteral("%1 %2\r\n").arg(i).arg(uids[i - 1]);
     }
     result += QLatin1String(".\r\n");
     return result;
@@ -464,7 +464,7 @@ void Pop3Test::testBigFetch()
         QByteArray newMail = simpleMail1;
         newMail.append(QString::number(i + 1).toLatin1());
         mails << newMail;
-        uids << QString::fromLatin1("UID%1").arg(i + 1);
+        uids << QStringLiteral("UID%1").arg(i + 1);
         allowedRetrs += QString::number(i + 1) + QLatin1Char(',');
     }
     allowedRetrs.chop(1);
@@ -846,7 +846,7 @@ void Pop3Test::testMixedLeaveRules()
         QByteArray newMail = simpleMail1;
         newMail.append(QString::number(i + 1).toLatin1());
         mails << newMail;
-        uids << QString::fromLatin1("UID%1").arg(i + 1);
+        uids << QStringLiteral("UID%1").arg(i + 1);
         allowedRetrs += QString::number(i + 1) + QLatin1Char(',');
     }
     allowedRetrs.chop(1);
@@ -870,7 +870,7 @@ void Pop3Test::testMixedLeaveRules()
 
     // Fake the time of the messages, UID1 is one day old, UID2 is two days old, etc
     for (int i = 1; i <= 10; i++) {
-        lowerTimeOfSeenMail(QString::fromLatin1("UID%1").arg(i), 60 * 60 * 24 * i);
+        lowerTimeOfSeenMail(QStringLiteral("UID%1").arg(i), 60 * 60 * 24 * i);
     }
 
     mPOP3SettingsInterface->setLeaveOnServer(true);

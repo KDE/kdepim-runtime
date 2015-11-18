@@ -49,11 +49,11 @@ private Q_SLOTS:
         collection.addAttribute(new UidNextAttribute(65));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
-        item.setRemoteId("5");
+        item.setRemoteId(QStringLiteral("5"));
 
         KMime::Message::Ptr message(new KMime::Message);
 
-        messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
+        messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
         message->setContent(messageContent.toUtf8());
         message->parse();
@@ -72,7 +72,7 @@ private Q_SLOTS:
                  << "S: A000005 OK store done";
 
         callNames.clear();
-        callNames << "applyCollectionChanges" << "itemChangeCommitted";
+        callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemChangeCommitted");
 
         QTest::newRow("modifying mail content") << item << parts << scenario << callNames;
 
@@ -80,11 +80,11 @@ private Q_SLOTS:
         collection.addAttribute(new UidNextAttribute(65));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
-        item.setRemoteId("5");
+        item.setRemoteId(QStringLiteral("5"));
 
         message = KMime::Message::Ptr(new KMime::Message);
 
-        messageContent = "From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...";
+        messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\nMessage-ID: <42.4242.foo@bar.org>\n\nSpeechless...");
 
         message->setContent(messageContent.toUtf8());
         message->parse();
@@ -106,7 +106,7 @@ private Q_SLOTS:
                  << "S: A000006 OK store done";
 
         callNames.clear();
-        callNames << "applyCollectionChanges" << "itemChangeCommitted";
+        callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemChangeCommitted");
 
         QTest::newRow("modifying mail content, no APPENDUID, message has Message-ID") << item << parts << scenario << callNames;
 
@@ -114,11 +114,11 @@ private Q_SLOTS:
         collection.addAttribute(new UidNextAttribute(65));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
-        item.setRemoteId("5");
+        item.setRemoteId(QStringLiteral("5"));
 
         message = KMime::Message::Ptr(new KMime::Message);
 
-        messageContent = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
+        messageContent = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
         message->setContent(messageContent.toUtf8());
         message->parse();
@@ -140,7 +140,7 @@ private Q_SLOTS:
                  << "S: A000006 OK store done";
 
         callNames.clear();
-        callNames << "applyCollectionChanges" << "itemChangeCommitted";
+        callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemChangeCommitted");
 
         QTest::newRow("modifying mail content, no APPENDUID, message has no Message-ID") << item << parts << scenario << callNames;
 
@@ -159,7 +159,7 @@ private Q_SLOTS:
                  << "S: A000004 OK store done";
 
         callNames.clear();
-        callNames << "changeProcessed";
+        callNames << QStringLiteral("changeProcessed");
 
         QTest::newRow("modifying mail flags") << item << parts << scenario << callNames;
     }
@@ -192,13 +192,13 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == "cancelTask") {
+            if (command == QLatin1String("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
             }
         }

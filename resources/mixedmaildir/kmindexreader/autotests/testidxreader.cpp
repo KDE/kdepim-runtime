@@ -40,7 +40,7 @@ TestIdxReader::TestIdxReader()
 
 void TestIdxReader::testError()
 {
-    KMIndexReader reader("IDoNotExist");
+    KMIndexReader reader(QStringLiteral("IDoNotExist"));
 
     QVERIFY(reader.error() == true);
 }

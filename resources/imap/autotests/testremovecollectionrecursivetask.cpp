@@ -90,7 +90,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
                  << "S: * 0 RECENT"
                  << "S: A000013 OK Completed";
         callNames.clear();
-        callNames << "changeProcessed";
+        callNames << QStringLiteral("changeProcessed");
 
         QTest::newRow("normal case") << collection << scenario << callNames;
 
@@ -101,10 +101,10 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
                  << "S: * LSUB ( \\HasChildren ) / INBOX/test1"
                  << "S: * LSUB ( ) / INBOX/test1/test2"
                  << "S: A000003 OK Completed ( 0.000 secs 26 calls )";
-        collection.setRemoteId("/test1");
+        collection.setRemoteId(QStringLiteral("/test1"));
         collection.setParentCollection(Akonadi::Collection::root());
         callNames.clear();
-        callNames << "changeProcessed" << "emitWarning" << "synchronizeCollectionTree";
+        callNames << QStringLiteral("changeProcessed") << QStringLiteral("emitWarning") << QStringLiteral("synchronizeCollectionTree");
         QTest::newRow("invalid collection") << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral(".INBOX.test1"));
@@ -161,7 +161,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
                  << "S: * 0 RECENT"
                  << "S: A000013 OK Completed";
         callNames.clear();
-        callNames << "changeProcessed";
+        callNames << QStringLiteral("changeProcessed");
         QTest::newRow("non-standard separator") << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral(".INBOX.test1"));
@@ -192,7 +192,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
                  << "C: A000007 CLOSE"
                  << "S: A000007 NO Close failed";
         callNames.clear();
-        callNames << "changeProcessed" << "emitWarning" << "synchronizeCollectionTree";
+        callNames << QStringLiteral("changeProcessed") << QStringLiteral("emitWarning") << QStringLiteral("synchronizeCollectionTree");
         QTest::newRow("close failed") << collection << scenario << callNames;
     }
 
@@ -225,13 +225,13 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == "cancelTask") {
+            if (command == QLatin1String("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
             }
         }

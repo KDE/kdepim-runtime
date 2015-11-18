@@ -142,7 +142,7 @@ void TemplateMethodsTest::testMoveCollection()
     // test moving into itself
     Collection collection(KRandom::random());
     collection.setParentCollection(mStore->topLevelCollection());
-    collection.setRemoteId("collection");
+    collection.setRemoteId(QStringLiteral("collection"));
     job = mStore->moveCollection(collection, collection);
     QVERIFY(job != 0);
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
@@ -156,7 +156,7 @@ void TemplateMethodsTest::testMoveCollection()
     // test moving into child
     Collection childCollection(collection.id() + 1);
     childCollection.setParentCollection(collection);
-    childCollection.setRemoteId("child");
+    childCollection.setRemoteId(QStringLiteral("child"));
     job = mStore->moveCollection(collection, childCollection);
     QVERIFY(job != 0);
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
@@ -170,7 +170,7 @@ void TemplateMethodsTest::testMoveCollection()
     // test moving into grand child child
     Collection grandChildCollection(collection.id() + 2);
     grandChildCollection.setParentCollection(childCollection);
-    grandChildCollection.setRemoteId("grandchild");
+    grandChildCollection.setRemoteId(QStringLiteral("grandchild"));
     job = mStore->moveCollection(collection, grandChildCollection);
     QVERIFY(job != 0);
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
@@ -184,7 +184,7 @@ void TemplateMethodsTest::testMoveCollection()
     // test moving into unrelated collection
     Collection otherCollection(collection.id() + KRandom::random());
     otherCollection.setParentCollection(mStore->topLevelCollection());
-    otherCollection.setRemoteId("other");
+    otherCollection.setRemoteId(QStringLiteral("other"));
     job = mStore->moveCollection(collection, otherCollection);
     QVERIFY(job != 0);
     QCOMPARE(job->error(), 0);
@@ -201,7 +201,7 @@ void TemplateMethodsTest::testCreateItem()
 
     Collection collection(KRandom::random());
     collection.setParentCollection(mStore->topLevelCollection());
-    collection.setRemoteId("collection");
+    collection.setRemoteId(QStringLiteral("collection"));
 
     FileStore::ItemCreateJob *job = 0;
 

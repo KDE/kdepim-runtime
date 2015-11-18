@@ -186,9 +186,9 @@ void CollectionCreateTest::testMaildirTree()
     KPIM::Maildir topLevelMd(mDir->path(), true);
     QVERIFY(topLevelMd.isValid());
 
-    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
+    KPIM::Maildir md1(topLevelMd.addSubFolder(QStringLiteral("collection1")), false);
 
-    KPIM::Maildir md1_2(md1.addSubFolder("collection1_2"), false);
+    KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
     mStore->setPath(mDir->path());
 

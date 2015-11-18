@@ -41,9 +41,9 @@ private Q_SLOTS:
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         item = Akonadi::Item(2);
         item.setParentCollection(collection);
-        item.setRemoteId("42");
+        item.setRemoteId(QStringLiteral("42"));
 
-        message = "From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...";
+        message = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -94,14 +94,14 @@ private Q_SLOTS:
         QTRY_COMPARE(state->calls().count(), 1);
 
         QString command = QString::fromUtf8(state->calls().first().first);
-        if (command == "cancelTask" && callName != "cancelTask") {
+        if (command == QLatin1String("cancelTask") && callName != QLatin1String("cancelTask")) {
             qDebug() << "Got a cancel:" << state->calls().first().second.toString();
         }
         QCOMPARE(command, callName);
 
         QVariant parameter = state->calls().first().second;
 
-        if (callName == "itemRetrieved") {
+        if (callName == QLatin1String("itemRetrieved")) {
             QCOMPARE(parameter.value<Akonadi::Item>().id(), item.id());
             QCOMPARE(parameter.value<Akonadi::Item>().remoteId(), item.remoteId());
 
@@ -109,7 +109,7 @@ private Q_SLOTS:
 
             QCOMPARE(payload, message);
 
-        } else if (callName == "cancelTask") {
+        } else if (callName == QLatin1String("cancelTask")) {
             QVERIFY(!parameter.toString().isEmpty());
         } else {
             QFAIL(QString("Unexpected call type: %1").arg(callName).toUtf8().constData());

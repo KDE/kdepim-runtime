@@ -86,8 +86,8 @@ void CollectionModifyTest::testRename()
     KPIM::Maildir topLevelMd(topDir.path(), true);
     QVERIFY(topLevelMd.isValid(false));
 
-    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
-    KPIM::Maildir md1_2(md1.addSubFolder("collection1_2"), false);
+    KPIM::Maildir md1(topLevelMd.addSubFolder(QStringLiteral("collection1")), false);
+    KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
     // simulate second level mbox in maildir parent
     QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
@@ -97,7 +97,7 @@ void CollectionModifyTest::testRename()
     file1_1.close();
     QVERIFY(fileInfo1_1.exists());
 
-    KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
+    KPIM::Maildir md2(topLevelMd.addSubFolder(QStringLiteral("collection2")), false);
 
     // simulate first level mbox
     QFileInfo fileInfo3(topDir.path(), QStringLiteral("collection3"));
@@ -117,7 +117,7 @@ void CollectionModifyTest::testRename()
     QVERIFY(topDir.mkpath(subDirInfo4.absoluteFilePath()));
 
     KPIM::Maildir md4(subDirInfo4.absoluteFilePath(), true);
-    KPIM::Maildir md4_1(md4.addSubFolder("collection4_1"), false);
+    KPIM::Maildir md4_1(md4.addSubFolder(QStringLiteral("collection4_1")), false);
 
     // simulate second level mbox in mbox parent
     QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),
@@ -163,15 +163,15 @@ void CollectionModifyTest::testRename()
     topLevelMd = KPIM::Maildir(topDir.path(), true);
     QVERIFY(topLevelMd.isValid(false));
 
-    md1 = topLevelMd.subFolder("collection1");
+    md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid(false));
-    md1_2 = md1.subFolder("collection1_2");
+    md1_2 = md1.subFolder(QStringLiteral("collection1_2"));
 
     fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
                             QStringLiteral("collection1_1"));
     QVERIFY(fileInfo1_1.exists());
 
-    md2 = topLevelMd.subFolder("collection2");
+    md2 = topLevelMd.subFolder(QStringLiteral("collection2"));
 
     fileInfo3 = QFileInfo(topDir.path(), QStringLiteral("collection3"));
     QVERIFY(fileInfo3.exists());
@@ -184,7 +184,7 @@ void CollectionModifyTest::testRename()
 
     md4 = KPIM::Maildir(subDirInfo4.absoluteFilePath(), true);
     QVERIFY(md4.isValid(false));
-    md4_1 = md4.subFolder("collection4_1");
+    md4_1 = md4.subFolder(QStringLiteral("collection4_1"));
 
     fileInfo4_2 = QFileInfo(subDirInfo4.absoluteFilePath(),
                             QStringLiteral("collection4_2"));
@@ -466,7 +466,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
     KPIM::Maildir topLevelMd(mDir->path(), true);
     QVERIFY(topLevelMd.isValid(false));
 
-    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
+    KPIM::Maildir md1(topLevelMd.addSubFolder(QStringLiteral("collection1")), false);
 
     // simulate first level mbox
     QFileInfo fileInfo2(mDir->path(), QStringLiteral("collection2"));

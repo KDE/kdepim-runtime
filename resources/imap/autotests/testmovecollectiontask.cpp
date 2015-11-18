@@ -65,7 +65,7 @@ private Q_SLOTS:
                  << "S: A000004 OK subscribe done";
 
         callNames.clear();
-        callNames << "collectionChangeCommitted";
+        callNames << QStringLiteral("collectionChangeCommitted");
 
         QTest::newRow("moving mailbox") << collection << source << target << scenario << callNames;
 
@@ -80,7 +80,7 @@ private Q_SLOTS:
                      << "S: A000004 OK subscribe done";
 
             callNames.clear();
-            callNames << "collectionChangeCommitted";
+            callNames << QStringLiteral("collectionChangeCommitted");
 
             QTest::newRow("move mailbox from toplevel") << toplevel << root << inbox << scenario << callNames;
         }
@@ -96,7 +96,7 @@ private Q_SLOTS:
                      << "S: A000004 OK subscribe done";
 
             callNames.clear();
-            callNames << "collectionChangeCommitted";
+            callNames << QStringLiteral("collectionChangeCommitted");
 
             QTest::newRow("move mailbox to toplevel") << toplevel << inbox << root << scenario << callNames;
         }
@@ -112,7 +112,7 @@ private Q_SLOTS:
                  << "S: A000004 NO subscribe failed";
 
         callNames.clear();
-        callNames << "emitWarning" << "collectionChangeCommitted";
+        callNames << QStringLiteral("emitWarning") << QStringLiteral("collectionChangeCommitted");
 
         QTest::newRow("moving mailbox, subscribe fails") << collection << source << target << scenario << callNames;
 
@@ -138,7 +138,7 @@ private Q_SLOTS:
                  << "S: A000004 OK subscribe done";
 
         callNames.clear();
-        callNames << "collectionChangeCommitted";
+        callNames << QStringLiteral("collectionChangeCommitted");
 
         QTest::newRow("moving mailbox with non-standard separators") << collection << source << target << scenario << callNames;
     }
@@ -173,13 +173,13 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == "cancelTask") {
+            if (command == QLatin1String("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
             }
         }

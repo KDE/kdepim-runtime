@@ -78,10 +78,10 @@ void CollectionDeleteTest::testNonExisting()
     KPIM::Maildir topLevelMd(mDir->path(), true);
     QVERIFY(topLevelMd.isValid(false));
 
-    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
-    KPIM::Maildir md1_2(md1.addSubFolder("collection1_2"), false);
+    KPIM::Maildir md1(topLevelMd.addSubFolder(QStringLiteral("collection1")), false);
+    KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
-    KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
+    KPIM::Maildir md2(topLevelMd.addSubFolder(QStringLiteral("collection2")), false);
 
     // simulate mbox
     QFileInfo fileInfo1(mDir->path(), QStringLiteral("collection3"));
@@ -216,8 +216,8 @@ void CollectionDeleteTest::testLeaves()
 
     QDir topDir(mDir->path());
 
-    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
-    KPIM::Maildir md1_2(md1.addSubFolder("collection1_2"), false);
+    KPIM::Maildir md1(topLevelMd.addSubFolder(QStringLiteral("collection1")), false);
+    KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
     // simulate second level mbox in maildir parent
     QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
@@ -227,7 +227,7 @@ void CollectionDeleteTest::testLeaves()
     file1_1.close();
     QVERIFY(fileInfo1_1.exists());
 
-    KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
+    KPIM::Maildir md2(topLevelMd.addSubFolder(QStringLiteral("collection2")), false);
 
     // simulate first level mbox
     QFileInfo fileInfo3(mDir->path(), QStringLiteral("collection3"));
@@ -247,7 +247,7 @@ void CollectionDeleteTest::testLeaves()
     QVERIFY(topDir.mkpath(subDirInfo4.absoluteFilePath()));
 
     KPIM::Maildir md4(subDirInfo4.absoluteFilePath(), true);
-    KPIM::Maildir md4_1(md4.addSubFolder("collection4_1"), false);
+    KPIM::Maildir md4_1(md4.addSubFolder(QStringLiteral("collection4_1")), false);
 
     // simulate second level mbox in mbox parent
     QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),
@@ -388,8 +388,8 @@ void CollectionDeleteTest::testSubTrees()
 
     QDir topDir(mDir->path());
 
-    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
-    KPIM::Maildir md1_2(md1.addSubFolder("collection1_2"), false);
+    KPIM::Maildir md1(topLevelMd.addSubFolder(QStringLiteral("collection1")), false);
+    KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
     // simulate second level mbox in maildir parent
     QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
@@ -410,7 +410,7 @@ void CollectionDeleteTest::testSubTrees()
     QVERIFY(topDir.mkpath(subDirInfo2.absoluteFilePath()));
 
     KPIM::Maildir md2(subDirInfo2.absoluteFilePath(), true);
-    KPIM::Maildir md2_1(md2.addSubFolder("collection2_1"), false);
+    KPIM::Maildir md2_1(md2.addSubFolder(QStringLiteral("collection2_1")), false);
 
     // simulate second level mbox in mbox parent
     QFileInfo fileInfo2_2(subDirInfo2.absoluteFilePath(),

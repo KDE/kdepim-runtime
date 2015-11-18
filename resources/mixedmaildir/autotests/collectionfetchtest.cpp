@@ -196,9 +196,9 @@ void CollectionFetchTest::testMixedTree()
     KPIM::Maildir topLevelMd(mDir->path(), true);
     QVERIFY(topLevelMd.isValid());
 
-    KPIM::Maildir md1(topLevelMd.addSubFolder("collection1"), false);
-    KPIM::Maildir md1_2(md1.addSubFolder("collection1_2"), false);
-    KPIM::Maildir md1_2_1(md1_2.addSubFolder("collection1_2_1"), false);
+    KPIM::Maildir md1(topLevelMd.addSubFolder(QStringLiteral("collection1")), false);
+    KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
+    KPIM::Maildir md1_2_1(md1_2.addSubFolder(QStringLiteral("collection1_2_1")), false);
 
     // simulate second level mbox in maildir parent
     QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
@@ -211,7 +211,7 @@ void CollectionFetchTest::testMixedTree()
     QFileInfo subDirInfo1_1(KPIM::Maildir::subDirPathForFolderPath(fileInfo1_1.absoluteFilePath()));
     QVERIFY(topDir.mkpath(subDirInfo1_1.absoluteFilePath()));
     KPIM::Maildir md1_1(subDirInfo1_1.absoluteFilePath(), true);
-    KPIM::Maildir md1_1_1(md1_1.addSubFolder("collection1_1_1"), false);
+    KPIM::Maildir md1_1_1(md1_1.addSubFolder(QStringLiteral("collection1_1_1")), false);
 
     // simulate third level mbox in mbox parent
     QFileInfo fileInfo1_1_2(md1_1.path(), QStringLiteral("collection1_1_2"));
@@ -220,7 +220,7 @@ void CollectionFetchTest::testMixedTree()
     file1_1_2.close();
     QVERIFY(fileInfo1_1_2.exists());
 
-    KPIM::Maildir md2(topLevelMd.addSubFolder("collection2"), false);
+    KPIM::Maildir md2(topLevelMd.addSubFolder(QStringLiteral("collection2")), false);
 
     // simulate first level mbox
     QFileInfo fileInfo3(mDir->path(), QStringLiteral("collection3"));
@@ -240,7 +240,7 @@ void CollectionFetchTest::testMixedTree()
     QVERIFY(topDir.mkpath(subDirInfo4.absoluteFilePath()));
 
     KPIM::Maildir md4(subDirInfo4.absoluteFilePath(), true);
-    KPIM::Maildir md4_1(md4.addSubFolder("collection4_1"), false);
+    KPIM::Maildir md4_1(md4.addSubFolder(QStringLiteral("collection4_1")), false);
 
     // simulate second level mbox in mbox parent
     QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),

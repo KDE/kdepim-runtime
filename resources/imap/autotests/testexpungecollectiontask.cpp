@@ -48,7 +48,7 @@ private Q_SLOTS:
                  << "S: A000004 OK expunge done";
 
         callNames.clear();
-        callNames << "taskDone";
+        callNames << QStringLiteral("taskDone");
 
         QTest::newRow("normal case") << collection << scenario << callNames;
 
@@ -60,7 +60,7 @@ private Q_SLOTS:
                  << "S: A000003 NO select failed";
 
         callNames.clear();
-        callNames << "cancelTask";
+        callNames << QStringLiteral("cancelTask");
 
         QTest::newRow("select failed") << collection << scenario << callNames;
 
@@ -74,7 +74,7 @@ private Q_SLOTS:
                  << "S: A000004 NO expunge failed";
 
         callNames.clear();
-        callNames << "cancelTask";
+        callNames << QStringLiteral("cancelTask");
 
         QTest::newRow("expunge failed") << collection << scenario << callNames;
     }
@@ -105,13 +105,13 @@ private Q_SLOTS:
             QString command = QString::fromUtf8(state->calls().at(i).first);
             QVariant parameter = state->calls().at(i).second;
 
-            if (command == "cancelTask" && callNames[i] != "cancelTask") {
+            if (command == QLatin1String("cancelTask") && callNames[i] != QLatin1String("cancelTask")) {
                 qDebug() << "Got a cancel:" << parameter.toString();
             }
 
             QCOMPARE(command, callNames[i]);
 
-            if (command == "cancelTask") {
+            if (command == QLatin1String("cancelTask")) {
                 QVERIFY(!parameter.toString().isEmpty());
             }
         }
