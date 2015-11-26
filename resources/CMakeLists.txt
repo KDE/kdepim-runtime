@@ -21,7 +21,7 @@ find_package(Libkolab 1.0 QUIET CONFIG)
 set_package_properties(Libkolab PROPERTIES DESCRIPTION "libkolab" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab Format libraries are required to build the Kolab Groupware Resource")
 
 # Libkolabxml
-find_package(Libkolabxml 1.2 QUIET CONFIG)
+find_package(Libkolabxml 1.1 QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
 include_directories(
