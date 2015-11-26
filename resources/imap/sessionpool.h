@@ -71,6 +71,8 @@ public:
     KIMAP::SessionUiProxy::Ptr sessionUiProxy() const;
     void setSessionUiProxy(KIMAP::SessionUiProxy::Ptr proxy);
 
+    void setClientId(const QByteArray &clientId);
+
     bool isConnected() const;
     bool connect(ImapAccount *account);
     void disconnect(SessionTermination termination = LogoutSession);
@@ -104,6 +106,7 @@ private Q_SLOTS:
     void onLoginDone(KJob *job);
     void onCapabilitiesTestDone(KJob *job);
     void onNamespacesTestDone(KJob *job);
+    void onIdDone(KJob *job);
 
     void onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState);
     void onSessionDestroyed(QObject *);
@@ -134,6 +137,7 @@ private:
     QList<KIMAP::MailBoxDescriptor> m_personalNamespaces;
     QList<KIMAP::MailBoxDescriptor> m_userNamespaces;
     QList<KIMAP::MailBoxDescriptor> m_sharedNamespaces;
+    QByteArray m_clientId;
 };
 
 #endif

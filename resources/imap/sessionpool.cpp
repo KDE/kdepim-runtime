@@ -30,6 +30,7 @@
 #include <kimap/capabilitiesjob.h>
 #include <kimap/logoutjob.h>
 #include <kimap/namespacejob.h>
+#include <kimap/idjob.h>
 
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"
@@ -474,9 +475,20 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
         QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
         nsJob->start();
         return;
+    } else if (m_capabilities.contains(QLatin1String("ID"))) {
+        KIMAP::IdJob *idJob = new KIMAP::IdJob(capJob->session());
+        idJob->setField("name", m_clientId);
+        QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
+        idJob->start();
+        return;
     } else {
         declareSessionReady(capJob->session());
     }
+}
+
+void SessionPool::setClientId( const QByteArray &clientId )
+{
+    m_clientId = clientId;
 }
 
 void SessionPool::onNamespacesTestDone(KJob *job)
@@ -504,7 +516,26 @@ void SessionPool::onNamespacesTestDone(KJob *job)
                        nsJob->sharedNamespaces();
     }
 
-    declareSessionReady(nsJob->session());
+    if (m_capabilities.contains(QStringLiteral("ID"))) {
+        KIMAP::IdJob *idJob = new KIMAP::IdJob(nsJob->session());
+        idJob->setField("name", m_clientId);
+        QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
+        idJob->start();
+        return;
+    } else {
+        declareSessionReady(nsJob->session());
+    }
+}
+
+void SessionPool::onIdDone( KJob *job )
+{
+    KIMAP::IdJob *idJob = qobject_cast<KIMAP::IdJob*>(job);
+    //Can happen if we disonnected meanwhile
+    if (!m_connectingPool.contains(idJob->session())) {
+        emit connectDone(CancelledError, i18n("Disconnected during login."));
+        return;
+    }
+    declareSessionReady(idJob->session());
 }
 
 void SessionPool::onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState)

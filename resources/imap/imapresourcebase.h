@@ -116,6 +116,7 @@ protected:
 
     virtual ResourceStateInterface::Ptr createResourceState(const TaskArguments &);
     virtual QString defaultName() const = 0;
+    virtual QByteArray clientId() const = 0;
 
 protected Q_SLOTS:
     void delayedInit();

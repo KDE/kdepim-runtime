@@ -41,6 +41,7 @@ ImapResource::ImapResource(const QString &id)
 {
     m_pool->setPasswordRequester(new SettingsPasswordRequester(this, m_pool));
     m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
+    m_pool->setClientId(clientId());
 }
 
 ImapResource::~ImapResource()
@@ -52,6 +53,11 @@ QString ImapResource::defaultName() const
     return i18n("IMAP Account");
 }
 
+QByteArray ImapResource::clientId() const
+{
+    return "Kontact IMAP Resource";
+}
+ 
 QDialog *ImapResource::createConfigureDialog(WId windowId)
 {
     SetupServer *dlg = new SetupServer(this, windowId);

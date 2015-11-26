@@ -42,6 +42,7 @@ public:
 
 protected:
     QString defaultName() const Q_DECL_OVERRIDE;
+    QByteArray clientId() const Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onConfigurationDone(int result);
