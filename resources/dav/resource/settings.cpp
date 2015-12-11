@@ -359,11 +359,11 @@ QDateTime Settings::getSyncRangeStart() const
     start.setTime(QTime());
     const int delta = - syncRangeStartNumber().toUInt();
 
-    if (syncRangeStartType() == QStringLiteral("D")) {
+    if (syncRangeStartType() == QLatin1String("D")) {
         start = start.addDays(delta);
-    } else if (syncRangeStartType() == QStringLiteral("M")) {
+    } else if (syncRangeStartType() == QLatin1String("M")) {
         start = start.addMonths(delta);
-    } else if (syncRangeStartType() == QStringLiteral("Y")) {
+    } else if (syncRangeStartType() == QLatin1String("Y")) {
         start = start.addYears(delta);
     } else {
         start = QDateTime();
@@ -413,16 +413,16 @@ void Settings::removeAccountsDisabledServices()
     qCDebug(DAVRESOURCE_LOG);
     QStringList urls = remoteUrls();
     for (int i = 0; i < urls.size(); ++i) {
-        if (!urls.at(i).startsWith("$accounts$")) {
+        if (!urls.at(i).startsWith(QStringLiteral("$accounts$"))) {
             continue;
         }
 
-        if (urls.at(i).contains("carddav")
-                && accountServices().contains("dav-contacts")) {
+        if (urls.at(i).contains(QStringLiteral("carddav"))
+                && accountServices().contains(QStringLiteral("dav-contacts"))) {
             continue;
         }
-        if (urls.at(i).contains("caldav")
-                && accountServices().contains("dav-calendar")) {
+        if (urls.at(i).contains(QStringLiteral("caldav"))
+                && accountServices().contains(QStringLiteral("dav-calendar"))) {
             continue;
         }
 
@@ -437,17 +437,17 @@ void Settings::configureAccountService(Accounts::Account *acc, const Accounts::S
     qCDebug(DAVRESOURCE_LOG) << "Configuring service: " << service.name();
 
     acc->selectService();
-    QString domain = acc->valueAsString("dav/scheme") + "://" + acc->valueAsString("dav/host");
+    QString domain = acc->valueAsString(QStringLiteral("dav/scheme")) + QStringLiteral("://") + acc->valueAsString(QStringLiteral("dav/host"));
     acc->selectService(service);
 
     QString type;
-    if (service.serviceType() == "dav-contacts") {
-        type = "CardDav";
+    if (service.serviceType() == QLatin1String("dav-contacts")) {
+        type = QStringLiteral("CardDav");
     } else {
-        type = "CalDav";
+        type = QStringLiteral("CalDav");
     }
 
-    QString url = "$accounts$|" + type + "|" + domain + acc->valueAsString("dav/path");
+    QString url = QStringLiteral("$accounts$|") + type + QLatin1Char('|') + domain + acc->valueAsString(QStringLiteral("dav/path"));
     qCDebug(DAVRESOURCE_LOG) << url;
     acc->selectService();
 
@@ -590,7 +590,7 @@ QString Settings::loadPasswordFromAccounts()
     GetCredentialsJob *job = new GetCredentialsJob(accountId());
     job->exec();
 
-    return job->credentialsData().value("Secret").toString();
+    return job->credentialsData().value(QLatin1String("Secret")).toString();
 }
 
 QString Settings::accountsUsername() const
@@ -601,7 +601,7 @@ QString Settings::accountsUsername() const
 
     qCDebug(DAVRESOURCE_LOG) << "Got some: " << job->credentialsData();
 
-    return job->credentialsData().value("UserName").toString();
+    return job->credentialsData().value(QLatin1String("UserName")).toString();
 }
 #endif
 
