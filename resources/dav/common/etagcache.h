@@ -48,10 +48,10 @@ public:
      * Creates a new etag cache and populates it with the ETags
      * of items found in @p collection.
      */
-    explicit EtagCache(const Akonadi::Collection &collection, QObject *parent = 0);
+    explicit EtagCache(const Akonadi::Collection &collection, QObject *parent = Q_NULLPTR);
 
     /**
-     * Sets the ETag for the remote ID. If the remote ID is marked as
+     * Sets the ETag for the remote ID. If the remote ID is marked as
      * changed (is contained in the return of changedRemoteIds), remove
      * it from the changed list.
      */

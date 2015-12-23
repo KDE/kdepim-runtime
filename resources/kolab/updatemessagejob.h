@@ -37,7 +37,7 @@ class UpdateMessageJob : public KJob
 {
     Q_OBJECT
 public:
-    UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, QSharedPointer<Merger> merger, const QString &mailbox, qint64 uidNext = -1, qint64 oldUid = -1, QObject *parent = 0);
+    UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, QSharedPointer<Merger> merger, const QString &mailbox, qint64 uidNext = -1, qint64 oldUid = -1, QObject *parent = Q_NULLPTR);
 
     qint64 newUid() const;
 

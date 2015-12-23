@@ -38,7 +38,7 @@ public:
         RetrieveRelations
     };
 
-    explicit KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, RetrieveType type, QObject *parent = 0);
+    explicit KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, RetrieveType type, QObject *parent = Q_NULLPTR);
 
 protected:
     virtual void startRelationTask(KIMAP::Session *session);

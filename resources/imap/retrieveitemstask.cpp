@@ -309,7 +309,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         }
     }
 
-    quint64 oldHighestModSeq = 0;
+    qint64 oldHighestModSeq = 0;
     if (serverSupportsCondstore() && highestModSeq > 0) {
         if (!col.hasAttribute("highestmodseq")) {
             HighestModSeqAttribute *attr = new HighestModSeqAttribute(highestModSeq);

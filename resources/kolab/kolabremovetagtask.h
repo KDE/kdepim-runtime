@@ -28,7 +28,7 @@ class KolabRemoveTagTask : public KolabRelationResourceTask
 {
     Q_OBJECT
 public:
-    explicit KolabRemoveTagTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
+    explicit KolabRemoveTagTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
 
 protected:
     virtual void startRelationTask(KIMAP::Session *session);
