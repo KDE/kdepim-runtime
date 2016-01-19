@@ -59,7 +59,7 @@ set(KDEPIMLIBS_LIB_VERSION "5.1.40")
 
 set(KDEPIMRUNTIME_LIB_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}")
 set(KDEPIMRUNTIME_LIB_SOVERSION "5")
-
+set(AKONADI_VERSION "5.1.52")
 
 set(KCONTACTS_LIB_VERSION "5.1.40")
 set(KCALENDARCORE_LIB_VERSION "5.1.40")
@@ -97,8 +97,6 @@ else()
     add_definitions(-DHAVE_SPEECH)
 endif()
 
-set(KF5AkonadiServer_MIN_VERSION "5.0.50")
-find_package(KF5AkonadiServer ${KF5AkonadiServer_MIN_VERSION} CONFIG REQUIRED)
 
 # KF5 package
 find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
@@ -113,7 +111,7 @@ find_package(KF5WindowSystem ${KF5_VERSION} CONFIG REQUIRED)
 find_packagE(KF5TextWidgets ${KF5_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
 
 # KdepimLibs package
-find_package(KF5Akonadi ${KDEPIMLIBS_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)
 find_package(KF5Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiMime ${AKONADIMIME_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransport ${KMAILTRANSPORT_LIB_VERSION} CONFIG REQUIRED)
