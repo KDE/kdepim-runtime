@@ -47,6 +47,7 @@ target_link_libraries( akonadi_pop3_resource
   KF5::Completion
   KF5::WidgetsAddons
   KF5::WindowSystem
+  Qt5::DBus
 )
 
 if(BUILD_TESTING)

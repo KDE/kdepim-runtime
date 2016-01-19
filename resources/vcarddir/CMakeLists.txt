@@ -33,6 +33,7 @@ target_link_libraries(akonadi_vcarddir_resource
   KF5::KIOWidgets
   KF5::ConfigWidgets
   KF5::WindowSystem
+  Qt5::DBus
 )
 
 add_subdirectory(wizard)

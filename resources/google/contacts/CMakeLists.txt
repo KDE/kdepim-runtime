@@ -51,6 +51,7 @@ target_link_libraries(akonadi_googlecontacts_resource
   KF5::Completion
   KF5::WidgetsAddons
   KF5::TextWidgets
+  Qt5::DBus
 )
 
 if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
