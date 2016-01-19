@@ -85,7 +85,7 @@ set( SHARED_MIME_INFO_MINIMUM_VERSION "0.40" )
 find_package( SharedMimeInfo REQUIRED )
 
 
-find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns)
+find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus)
 
 # QT5 package
 find_package(Qt5WebKitWidgets ${QT_REQUIRED_VERSION} REQUIRED NO_MODULE)
