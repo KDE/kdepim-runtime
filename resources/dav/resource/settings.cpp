@@ -36,6 +36,7 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QDataStream>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QPointer>
 #include <QtCore/QRegExp>
 #include <QtCore/QUrl>
@@ -240,6 +241,11 @@ void Settings::addCollectionUrlMapping(DavUtils::Protocol proto, const QString &
 
     // Update the cache now
     //QMap<QString, QString> tmp( mCollectionsUrlsMapping );
+    QFileInfo cacheFileInfo = QFileInfo(mCollectionsUrlsMappingCache);
+    if (!cacheFileInfo.dir().exists()) {
+        QDir::root().mkpath(cacheFileInfo.dir().absolutePath());
+    }
+
     QFile cacheFile(mCollectionsUrlsMappingCache);
     if (cacheFile.open(QIODevice::WriteOnly)) {
         QDataStream cache(&cacheFile);
