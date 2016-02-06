@@ -114,7 +114,8 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
 
     connect(this, &DavGroupwareResource::reloadConfiguration, this, &DavGroupwareResource::onReloadConfig);
 
-    scheduleCustomTask(this, "createInitialCache", QVariant(), ResourceBase::AfterChangeReplay);
+    scheduleCustomTask(this, "retrieveCollections", QVariant(), ResourceBase::Prepend);
+    scheduleCustomTask(this, "createInitialCache", QVariant(), ResourceBase::Prepend);
 }
 
 DavGroupwareResource::~DavGroupwareResource()
