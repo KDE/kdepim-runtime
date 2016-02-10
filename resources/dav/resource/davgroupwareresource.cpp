@@ -258,6 +258,11 @@ void DavGroupwareResource::retrieveCollections()
 
 void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
 {
+    if (!collection.isValid()) {
+        itemsRetrievalDone();
+        return;
+    }
+
     qCDebug(DAVRESOURCE_LOG) << "Retrieving items for collection " << collection.remoteId();
 
     if (!configurationIsValid()) {
