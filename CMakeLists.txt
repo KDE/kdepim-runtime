@@ -35,12 +35,12 @@ if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
     set(KDEPIM_RUNTIME_DEV_VERSION "pre")
 endif()
 
-set(KDEPIM_RUNTIME_VERSION_NUMBER "5.1.40")
+set(KDEPIM_RUNTIME_VERSION_NUMBER "5.1.41")
 set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV_VERSION}")
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-find_package(ECM 5.17 REQUIRED NO_MODULE)
+find_package(ECM 5.19 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
 include(ECMPackageConfigHelpers)
@@ -53,7 +53,7 @@ include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
 
 set(KF5_VERSION "5.17")
-set(QT_REQUIRED_VERSION "5.4.0")
+set(QT_REQUIRED_VERSION "5.5.0")
 
 set(KDEPIMLIBS_LIB_VERSION "5.1.40")
 
