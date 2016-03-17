@@ -51,7 +51,7 @@ bool VCardResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArra
     Q_UNUSED(parts);
     const QString rid = item.remoteId();
     if (!mAddressees.contains(rid)) {
-        Q_EMIT error(i18n("Contact with uid '%1' not found." , rid));
+        Q_EMIT error(i18n("Contact with uid '%1' not found.", rid));
         return false;
     }
     Item i(item);

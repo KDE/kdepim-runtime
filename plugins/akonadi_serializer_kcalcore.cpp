@@ -189,13 +189,13 @@ static void compareList(AbstractDifferencesReporter *reporter,
                         const C &left,
                         const C &right)
 {
-    for (typename C::const_iterator it = left.begin(), end = left.end() ; it != end ; ++it) {
+    for (typename C::const_iterator it = left.begin(), end = left.end(); it != end; ++it) {
         if (!right.contains(*it)) {
             reporter->addProperty(AbstractDifferencesReporter::AdditionalLeftMode, id, toString(*it), QString());
         }
     }
 
-    for (typename C::const_iterator it = right.begin(), end = right.end() ; it != end ; ++it) {
+    for (typename C::const_iterator it = right.begin(), end = right.end(); it != end; ++it) {
         if (!left.contains(*it)) {
             reporter->addProperty(AbstractDifferencesReporter::AdditionalRightMode, id, QString(), toString(*it));
         }
@@ -345,8 +345,8 @@ void SerializerPluginKCalCore::compare(Akonadi::AbstractDifferencesReporter *rep
     compareIncidenceBase(reporter, leftIncidencePtr, rightIncidencePtr);
     compareIncidence(reporter, leftIncidencePtr, rightIncidencePtr);
 
-    const Event::Ptr leftEvent = leftIncidencePtr.dynamicCast<Event>() ;
-    const Event::Ptr rightEvent = rightIncidencePtr.dynamicCast<Event>() ;
+    const Event::Ptr leftEvent = leftIncidencePtr.dynamicCast<Event>();
+    const Event::Ptr rightEvent = rightIncidencePtr.dynamicCast<Event>();
     if (leftEvent && rightEvent) {
         compareEvent(reporter, leftEvent, rightEvent);
     } else {

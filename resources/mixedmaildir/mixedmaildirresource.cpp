@@ -364,7 +364,7 @@ void MixedMaildirResource::collectionMoved(const Collection &collection, const C
     }
 
     if (collection.parentCollection() == Collection::root()) {
-        const QString message = i18nc("@info:status", "Cannot move root maildir folder '%1'." , collection.remoteId());
+        const QString message = i18nc("@info:status", "Cannot move root maildir folder '%1'.", collection.remoteId());
         qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
         cancelTask(message);
         return;

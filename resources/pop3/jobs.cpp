@@ -40,7 +40,7 @@ POPSession::~POPSession()
     closeSession();
 }
 
-void POPSession::slotSlaveError(KIO::Slave *slave , int errorCode,
+void POPSession::slotSlaveError(KIO::Slave *slave, int errorCode,
                                 const QString &errorMessage)
 {
     Q_UNUSED(slave);

@@ -53,62 +53,62 @@ public:
 public: // Job::Visitor interface implementation
     bool visit(FileStore::Job *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
     bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE {
         Q_UNUSED(job);
-        return false ;
+        return false;
     }
 
 protected:

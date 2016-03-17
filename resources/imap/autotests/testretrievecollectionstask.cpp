@@ -401,7 +401,7 @@ private:
         collection.setContentMimeTypes(QStringList() << QStringLiteral("message/rfc822") << Akonadi::Collection::mimeType());
 
         // If the folder is the Inbox, make some special settings.
-        if (pathPart.compare(QLatin1String("INBOX") , Qt::CaseInsensitive) == 0) {
+        if (pathPart.compare(QLatin1String("INBOX"), Qt::CaseInsensitive) == 0) {
             Akonadi::EntityDisplayAttribute *attr = new Akonadi::EntityDisplayAttribute;
             attr->setDisplayName(i18n("Inbox"));
             attr->setIconName(QStringLiteral("mail-folder-inbox"));
@@ -409,7 +409,7 @@ private:
         }
 
         // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
-        if ((pathPart.compare(QLatin1String("user") , Qt::CaseInsensitive) == 0) && isNoSelect) {
+        if ((pathPart.compare(QLatin1String("user"), Qt::CaseInsensitive) == 0) && isNoSelect) {
             Akonadi::EntityDisplayAttribute *attr = new Akonadi::EntityDisplayAttribute;
             attr->setDisplayName(i18n("Shared Folders"));
             attr->setIconName(QStringLiteral("x-mail-distribution-list"));

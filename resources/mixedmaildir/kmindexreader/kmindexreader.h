@@ -43,7 +43,7 @@ public:
     KMIndexData();
     /** Status object of the message. */
     MessageStatus &status();
-    QStringList  tagList() const ;
+    QStringList  tagList() const;
     quint64 uid() const;
     bool isEmpty() const;
 

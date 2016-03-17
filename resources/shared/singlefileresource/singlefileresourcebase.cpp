@@ -113,7 +113,7 @@ void SingleFileResourceBase::setLocalFileName(const QString &fileName)
 
 QString SingleFileResourceBase::cacheFile() const
 {
-    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/") + identifier() ;
+    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/") + identifier();
 }
 
 QByteArray SingleFileResourceBase::calculateHash(const QString &fileName) const
@@ -224,7 +224,7 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         const QUrl prevUrl = mCurrentUrl;
         int i = 0;
         do {
-            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-') + QString::number(++i) ;
+            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-') + QString::number(++i);
         } while (QFile(lostFoundFileName).exists());
 
         // create the directory if it doesn't exist yet

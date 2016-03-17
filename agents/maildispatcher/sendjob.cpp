@@ -303,7 +303,7 @@ void SendJob::Private::doPostJob(bool transportSuccess, const QString &transport
         } else {
             if (attribute->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection) {
                 if (SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::SentMail)) {
-                    currentJob = new ItemMoveJob(item, SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::SentMail) , q);
+                    currentJob = new ItemMoveJob(item, SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::SentMail), q);
                     QObject::connect(currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)));
                 } else {
                     abortPostJob();

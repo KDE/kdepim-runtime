@@ -125,7 +125,7 @@ void SettingsDialog::validate()
                 // Specified directory doesn't already exist.
                 // Find the first level of parent directory which exists,
                 // and check that it is writable.
-                for (; ;) {
+                for (;;) {
                     file.setFile(file.dir().absolutePath());   // get parent dir's file info
                     if (file.exists()) {
                         if (file.isDir()  &&  file.isWritable()) {

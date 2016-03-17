@@ -134,7 +134,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
     qCDebug(MIXEDMAILDIR_LOG) << "Akonadi fetch got" << items.count() << "items";
 
     mServerItemsByRemoteId.reserve(items.size());
-    for (int i = 0 ; i < items.count() ; ++i) {
+    for (int i = 0; i < items.count(); ++i) {
         Item &item = items[i];
         // items without remoteId have not been written to the resource yet
         if (!item.remoteId().isEmpty()) {

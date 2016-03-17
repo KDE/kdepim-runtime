@@ -451,7 +451,7 @@ void AccountDialog::enablePopFeatures()
 
     authCombo->clear();
     foreach (int prot, supportedAuths) {
-        authCombo->addItem(Transport::authenticationTypeString(prot) , prot);
+        authCombo->addItem(Transport::authenticationTypeString(prot), prot);
     }
 
     if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Pipelining) &&

@@ -153,13 +153,13 @@ private slots:
                 Akonadi::Tag::List tags = pair.first;
                 QHash<QString, Akonadi::Item::List> members = pair.second;
                 QCOMPARE(tags.size(), expectedTags.size());
-                for (int i = 0 ; i < tags.size(); i++) {
+                for (int i = 0; i < tags.size(); i++) {
                     QCOMPARE(tags[i].name(), expectedTags[i].name());
                     QCOMPARE(tags[i].remoteId(), expectedTags[i].remoteId());
                     const Akonadi::Item::List memberlist = members.value(tags[i].remoteId());
                     const Akonadi::Item::List expectedMemberlist = expectedMembers.value(tags[i].remoteId());
                     QCOMPARE(memberlist.size(), expectedMemberlist.size());
-                    for (int i = 0 ; i < expectedMemberlist.size(); i++) {
+                    for (int i = 0; i < expectedMemberlist.size(); i++) {
                         QCOMPARE(memberlist[i].remoteId(), expectedMemberlist[i].remoteId());
                         Akonadi::Collection parent = memberlist[i].parentCollection();
                         Akonadi::Collection expectedParent = expectedMemberlist[i].parentCollection();

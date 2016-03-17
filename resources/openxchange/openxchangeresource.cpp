@@ -344,7 +344,7 @@ void OpenXchangeResource::cleanup()
     // be nice and remove cache file when resource is removed
     QFile::remove(OXA::Users::self()->cacheFilePath());
 
-    QFile::remove(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1Char('/') + Settings::self()->config()->name()) ;
+    QFile::remove(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QLatin1Char('/') + Settings::self()->config()->name());
 
     ResourceBase::cleanup();
 }
@@ -832,7 +832,7 @@ void OpenXchangeResource::onObjectCreateJobFinished(KJob *job)
             case OXA::OXErrors::AppointmentConflicts : errorText = i18n("An appointment conflict detected.\nPlease check if there are other appointments in conflict with this one."); break;
             case OXA::OXErrors::InternalServerError : errorText = i18n("Internal server error. Please contact your administrator."); break;
             case OXA::OXErrors::EditErrorUndefined :
-            default : ;
+            default :;
             }
         }
         cancelTask(errorText);

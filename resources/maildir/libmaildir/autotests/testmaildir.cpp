@@ -71,7 +71,7 @@ void MaildirTest::fillDirectory(const QString &name, int limit)
 {
     QFile file;
     QDir::setCurrent(m_temp->path() + QLatin1Char('/') + name);
-    for (int i = 0; i < limit ; i++) {
+    for (int i = 0; i < limit; i++) {
         file.setFileName(QLatin1String("testmail-") + QString::number(i));
         file.open(QIODevice::WriteOnly);
         file.write(testString);
@@ -338,7 +338,7 @@ void MaildirTest::testMaildirFlagsReading()
     QFile file;
     const QStringList markers = QStringList() << QStringLiteral("P") << QStringLiteral("R") << QStringLiteral("S") << QStringLiteral("F") << QStringLiteral("FPRS");
     QDir::setCurrent(m_temp->path() + QLatin1Char('/') + QStringLiteral("cur"));
-    for (int i = 0; i < 6 ; i++) {
+    for (int i = 0; i < 6; i++) {
         QString fileName = QLatin1String("testmail-") + QString::number(i);
         if (i < 5) {
             fileName +=

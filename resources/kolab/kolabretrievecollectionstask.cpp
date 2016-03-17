@@ -379,7 +379,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     setAttributes(c, pathParts, mailbox);
 
     // If the folder is the Inbox, make some special settings.
-    if (pathParts.size() == 1 && pathPart.compare(QLatin1String("inbox") , Qt::CaseInsensitive) == 0) {
+    if (pathParts.size() == 1 && pathPart.compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Inbox"));
         attr->setIconName(QStringLiteral("mail-folder-inbox"));

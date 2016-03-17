@@ -56,7 +56,7 @@ public:
     void setCurrentJob(SlaveBaseJob *job);
 
 private Q_SLOTS:
-    void slotSlaveError(KIO::Slave *slave , int, const QString &);
+    void slotSlaveError(KIO::Slave *slave, int, const QString &);
 
 Q_SIGNALS:
 

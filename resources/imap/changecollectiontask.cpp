@@ -136,7 +136,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
             qCDebug(IMAPRESOURCE_LOG) << "All annotations: " << annotations;
 
-            foreach (const QByteArray &entry, annotations.keys()) {   //krazy:exclude=foreach
+            foreach (const QByteArray & entry, annotations.keys()) {  //krazy:exclude=foreach
                 KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob(session);
                 if (serverCapabilities().contains(QStringLiteral("METADATA"))) {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);

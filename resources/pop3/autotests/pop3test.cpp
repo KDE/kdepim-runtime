@@ -216,7 +216,7 @@ void Pop3Test::cleanupMaildir(Akonadi::Item::List items)
     time.start();
     int lastCount = -1;
     forever {
-    qApp->processEvents();
+        qApp->processEvents();
         QTest::qWait(500);
         QDir maildir(mMaildirPath);
         maildir.refresh();
@@ -224,14 +224,12 @@ void Pop3Test::cleanupMaildir(Akonadi::Item::List items)
 
         // Restart the timer when a mail arrives, as it shows that the maildir resource is
         // still alive and kicking.
-        if (curCount != lastCount)
-        {
+        if (curCount != lastCount) {
             time.restart();
             lastCount = curCount;
         }
 
-        if (curCount == 0)
-        {
+        if (curCount == 0) {
             break;
         }
 
@@ -247,7 +245,7 @@ void Pop3Test::checkMailsInMaildir(const QList<QByteArray> &mails)
     time.start();
     int lastCount = -1;
     forever {
-    qApp->processEvents();
+        qApp->processEvents();
         QTest::qWait(500);
         QDir maildir(mMaildirPath);
         maildir.refresh();
@@ -255,14 +253,12 @@ void Pop3Test::checkMailsInMaildir(const QList<QByteArray> &mails)
 
         // Restart the timer when a mail arrives, as it shows that the maildir resource is
         // still alive and kicking.
-        if (curCount != lastCount)
-        {
+        if (curCount != lastCount) {
             time.start();
             lastCount = curCount;
         }
 
-        if (curCount == mails.count())
-        {
+        if (curCount == mails.count()) {
             break;
         }
         QVERIFY(static_cast<int>(maildir.entryList(QDir::NoDotAndDotDot).count()) <= mails.count());
@@ -320,26 +316,23 @@ void Pop3Test::syncAndWaitForFinish()
     time.start();
     int lastProgress = -1;
     forever {
-    qApp->processEvents();
+        qApp->processEvents();
 
         // Finish correctly when the connection got closed
-        if (mFakeServerThread->server()->gotDisconnected())
-        {
+        if (mFakeServerThread->server()->gotDisconnected()) {
             break;
         }
 
         // Reset the timeout when the server is working
         const int newProgress = mFakeServerThread->server()->progress();
-        if (newProgress != lastProgress)
-        {
+        if (newProgress != lastProgress) {
             time.restart();
             lastProgress = newProgress;
         }
 
         // Assert when nothing happens for a certain timeout, that indicates something went
         // wrong and is stuck somewhere
-        if (time.elapsed() >= 60000)
-        {
+        if (time.elapsed() >= 60000) {
             Q_ASSERT_X(false, "poptest", "FakeServer timed out.");
             break;
         }
@@ -350,9 +343,9 @@ QString Pop3Test::loginSequence() const
 {
     return
         QStringLiteral("C: USER HansWurst\r\n"
-                      "S: +OK May I have your password, please?\r\n"
-                      "C: PASS Geheim\r\n"
-                      "S: +OK Mailbox locked and ready\r\n");
+                       "S: +OK May I have your password, please?\r\n"
+                       "C: PASS Geheim\r\n"
+                       "S: +OK Mailbox locked and ready\r\n");
 }
 
 QString Pop3Test::retrieveSequence(const QList<QByteArray> &mails,
@@ -386,13 +379,13 @@ QString Pop3Test::quitSequence() const
 {
     return
         QStringLiteral("C: QUIT\r\n"
-                      "S: +OK Have a nice day.\r\n");
+                       "S: +OK Have a nice day.\r\n");
 }
 
 QString Pop3Test::listSequence(const QList<QByteArray> &mails) const
 {
     QString result = QStringLiteral("C: LIST\r\n"
-                                   "S: +OK You got new spam\r\n");
+                                    "S: +OK You got new spam\r\n");
     for (int i = 1; i <= mails.size(); i++) {
         result += QStringLiteral("%1 %MAILSIZE%\r\n").arg(i);
     }
@@ -403,7 +396,7 @@ QString Pop3Test::listSequence(const QList<QByteArray> &mails) const
 QString Pop3Test::uidSequence(const QStringList &uids) const
 {
     QString result = QStringLiteral("C: UIDL\r\n"
-                                   "S: +OK\r\n");
+                                    "S: +OK\r\n");
     for (int i = 1; i <= uids.size(); i++) {
         result += QStringLiteral("%1 %2\r\n").arg(i).arg(uids[i - 1]);
     }

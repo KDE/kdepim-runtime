@@ -165,7 +165,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
             c.setContentMimeTypes(contentTypes);
 
             // If the folder is the Inbox, make some special settings.
-            if (currentPath.compare(separator + QLatin1String("INBOX") , Qt::CaseInsensitive) == 0) {
+            if (currentPath.compare(separator + QLatin1String("INBOX"), Qt::CaseInsensitive) == 0) {
                 Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Inbox"));
                 attr->setIconName(QStringLiteral("mail-folder-inbox"));

@@ -76,7 +76,7 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone") ;
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("first listing, connected IMAP") << collection << scenario << callNames;
 
@@ -553,7 +553,7 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone") ;
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("missing uidnext") << collection << scenario << callNames;
 

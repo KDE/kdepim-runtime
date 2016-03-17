@@ -127,7 +127,7 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
             attr->setDisplayName(pathPart);
 
             // If the folder is the Inbox, make some special settings.
-            if (currentPath.compare(separatorCharacter() + QLatin1String("INBOX") , Qt::CaseInsensitive) == 0) {
+            if (currentPath.compare(separatorCharacter() + QLatin1String("INBOX"), Qt::CaseInsensitive) == 0) {
                 Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Inbox"));
                 attr->setIconName(QLatin1String("mail-folder-inbox"));

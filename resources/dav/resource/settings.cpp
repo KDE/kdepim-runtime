@@ -489,7 +489,7 @@ void Settings::buildUrlsList()
 void Settings::loadMappings()
 {
     QString collectionsMappingCacheBase = QStringLiteral("akonadi-davgroupware/%1_c2u.dat").arg(KApplication::applicationName());
-    mCollectionsUrlsMappingCache = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + collectionsMappingCacheBase ;
+    mCollectionsUrlsMappingCache = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + collectionsMappingCacheBase;
     QFile collectionsMappingsCache(mCollectionsUrlsMappingCache);
 
     if (collectionsMappingsCache.exists()) {

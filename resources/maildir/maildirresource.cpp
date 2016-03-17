@@ -647,7 +647,7 @@ void MaildirResource::collectionMoved(const Collection &collection, const Collec
     }
 
     if (collection.parentCollection() == Collection::root()) {
-        Q_EMIT error(i18n("Cannot move root maildir folder '%1'." , collection.remoteId()));
+        Q_EMIT error(i18n("Cannot move root maildir folder '%1'.", collection.remoteId()));
         changeProcessed();
         return;
     }
