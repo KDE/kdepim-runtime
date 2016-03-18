@@ -72,6 +72,7 @@ void DeleteItemsAttributeTest::shouldCloneAttribute()
     attr.addDeletedItemOffset(225);
     DeletedItemsAttribute *result = attr.clone();
     QVERIFY(*result == attr);
+    delete result;
 }
 
 void DeleteItemsAttributeTest::shouldHaveTypeName()
