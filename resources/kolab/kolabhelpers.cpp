@@ -115,16 +115,15 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return imapItem;
     }
 
-    //No payload, so it's a flag change. We ignore flag changes on groupware data.
+    //No payload, probably a flag change or alike, we just pass it through
     if (!imapItem.hasPayload()) {
-        ok = false;
-        return Akonadi::Item();
+        return imapItem;
     }
     if (!imapItem.hasPayload<KMime::Message::Ptr>()) {
         qCWarning(KOLABRESOURCE_LOG) << "Payload is not a MessagePtr!";
         Q_ASSERT(false);
         ok = false;
-        return Akonadi::Item();
+        return imapItem;
     }
 
     const KMime::Message::Ptr payload = imapItem.payload<KMime::Message::Ptr>();
