@@ -51,6 +51,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/searchjob.h>
+#include <kimap/statusjob.h>
 
 RetrieveItemsTask::RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
@@ -58,10 +59,14 @@ RetrieveItemsTask::RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObje
       m_fetchedMissingBodies(-1),
       m_fetchMissingBodies(false),
       m_incremental(true),
-      m_highestModseq(-1),
+      m_localHighestModSeq(-1),
       m_batchFetcher(Q_NULLPTR),
       m_uidBasedFetch(true),
-      m_flagsChanged(false)
+      m_flagsChanged(false),
+      m_messageCount(-1),
+      m_uidValidity(-1),
+      m_nextUid(-1),
+      m_highestModSeq(-1)
 {
 
 }
@@ -242,23 +247,58 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 
     KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob *>(job);
 
-    const QString mailBox = select->mailBox();
-    const int messageCount = select->messageCount();
-    const qint64 uidValidity = select->uidValidity();
-    qint64 nextUid = select->nextUid();
-    quint64 highestModSeq = select->highestModSequence();
-    const QList<QByteArray> flags = select->permanentFlags();
+    m_mailBox = select->mailBox();
+    m_messageCount = select->messageCount();
+    m_uidValidity = select->uidValidity();
+    m_nextUid = select->nextUid();
+    m_highestModSeq = select->highestModSequence();
+    m_flags = select->permanentFlags();
 
-    //This is known to happen with Courier IMAP. A better solution would be to issue STATUS in case UIDNEXT is not delivered on select,
-    //but that would have to be implemented in KIMAP first. See Bug 338186.
-    if (nextUid < 0) {
-        qCWarning(IMAPRESOURCE_LOG) << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value. This is a known problem with Courier IMAP.";
-        nextUid = 0;
+    //This is known to happen with Courier IMAP.
+    if (m_nextUid < 0) {
+        KIMAP::StatusJob *status = new KIMAP::StatusJob(m_session);
+        status->setMailBox(m_mailBox);
+        status->setDataItems({ "UIDNEXT" });
+        connect(status, &KJob::result,
+                this, &RetrieveItemsTask::onStatusDone);
+        status->start();
+    } else {
+        prepareRetrieval();
+    }
+}
+
+void RetrieveItemsTask::onStatusDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    }
+
+    KIMAP::StatusJob *status = qobject_cast<KIMAP::StatusJob*>(job);
+    QList<QPair<QByteArray, qint64>> results = status->status();
+    Q_FOREACH (const auto &val, results) {
+        if (val.first == "UIDNEXT") {
+            m_nextUid = val.second;
+            break;
+        }
+    }
+
+    prepareRetrieval();
+}
+
+void RetrieveItemsTask::prepareRetrieval()
+{
+
+    // Handle invalid UIDNEXT in case even STATUS is not able to retrieve it
+    if (m_nextUid < 0) {
+        qCWarning(IMAPRESOURCE_LOG) << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value.";
+        m_nextUid = 0;
     }
 
     //The select job retrieves highestmodseq whenever it's available, but in case of no CONDSTORE support we ignore it
     if (!serverSupportsCondstore()) {
-        highestModSeq = 0;
+        m_localHighestModSeq = 0;
     }
 
     Akonadi::Collection col = collection();
@@ -267,72 +307,72 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     // Get the current uid validity value and store it
     int oldUidValidity = 0;
     if (!col.hasAttribute("uidvalidity")) {
-        UidValidityAttribute *currentUidValidity  = new UidValidityAttribute(uidValidity);
+        UidValidityAttribute *currentUidValidity  = new UidValidityAttribute(m_uidValidity);
         col.addAttribute(currentUidValidity);
         modifyNeeded = true;
     } else {
         UidValidityAttribute *currentUidValidity =
             static_cast<UidValidityAttribute *>(col.attribute("uidvalidity"));
         oldUidValidity = currentUidValidity->uidValidity();
-        if (oldUidValidity != uidValidity) {
-            currentUidValidity->setUidValidity(uidValidity);
+        if (oldUidValidity != m_uidValidity) {
+            currentUidValidity->setUidValidity(m_uidValidity);
             modifyNeeded = true;
         }
     }
 
     // Get the current uid next value and store it
     int oldNextUid = 0;
-    if (nextUid > 0) { //this can fail with faulty servers that don't deliver uidnext
+    if (m_nextUid > 0) { //this can fail with faulty servers that don't deliver uidnext
         if (UidNextAttribute *currentNextUid = col.attribute<UidNextAttribute>()) {
             oldNextUid = currentNextUid->uidNext();
-            if (oldNextUid != nextUid) {
-                currentNextUid->setUidNext(nextUid);
+            if (oldNextUid != m_nextUid) {
+                currentNextUid->setUidNext(m_nextUid);
                 modifyNeeded = true;
             }
         } else {
-            col.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(nextUid);
+            col.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(m_nextUid);
             modifyNeeded = true;
         }
     }
 
     // Store the mailbox flags
     if (!col.hasAttribute("collectionflags")) {
-        Akonadi::CollectionFlagsAttribute *flagsAttribute  = new Akonadi::CollectionFlagsAttribute(flags);
+        Akonadi::CollectionFlagsAttribute *flagsAttribute  = new Akonadi::CollectionFlagsAttribute(m_flags);
         col.addAttribute(flagsAttribute);
         modifyNeeded = true;
     } else {
         Akonadi::CollectionFlagsAttribute *flagsAttribute =
             static_cast<Akonadi::CollectionFlagsAttribute *>(col.attribute("collectionflags"));
         const QList<QByteArray> oldFlags = flagsAttribute->flags();
-        if (oldFlags != flags) {
-            flagsAttribute->setFlags(flags);
+        if (oldFlags != m_flags) {
+            flagsAttribute->setFlags(m_flags);
             modifyNeeded = true;
         }
     }
 
     qint64 oldHighestModSeq = 0;
-    if (serverSupportsCondstore() && highestModSeq > 0) {
+    if (serverSupportsCondstore() && m_highestModSeq > 0) {
         if (!col.hasAttribute("highestmodseq")) {
-            HighestModSeqAttribute *attr = new HighestModSeqAttribute(highestModSeq);
+            HighestModSeqAttribute *attr = new HighestModSeqAttribute(m_highestModSeq);
             col.addAttribute(attr);
             modifyNeeded = true;
         } else {
             HighestModSeqAttribute *attr = col.attribute<HighestModSeqAttribute>();
-            if (attr->highestModSequence() < highestModSeq) {
+            if (attr->highestModSequence() < m_highestModSeq) {
                 oldHighestModSeq = attr->highestModSequence();
-                attr->setHighestModSeq(highestModSeq);
+                attr->setHighestModSeq(m_highestModSeq);
                 modifyNeeded = true;
-            } else if (attr->highestModSequence() == highestModSeq) {
+            } else if (attr->highestModSequence() == m_highestModSeq) {
                 oldHighestModSeq = attr->highestModSequence();
-            } else if (attr->highestModSequence() > highestModSeq) {
+            } else if (attr->highestModSequence() > m_highestModSeq) {
                 // This situation should not happen. If it does, update the highestModSeq
                 // attribute, but rather do a full sync
-                attr->setHighestModSeq(highestModSeq);
+                attr->setHighestModSeq(m_highestModSeq);
                 modifyNeeded = true;
             }
         }
     }
-    m_highestModseq = oldHighestModSeq;
+    m_localHighestModSeq = oldHighestModSeq;
 
     if (modifyNeeded) {
         m_modifiedCollection = col;
@@ -350,9 +390,9 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     const qint64 realMessageCount = col.statistics().count();
 
     qCDebug(IMAPRESOURCE_LOG) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
-    qCDebug(IMAPRESOURCE_LOG) << "MessageCount: " << messageCount << "Local message count: " << realMessageCount;
-    qCDebug(IMAPRESOURCE_LOG) << "UidNext: " << nextUid << "Local UidNext: " << oldNextUid;
-    qCDebug(IMAPRESOURCE_LOG) << "HighestModSeq: " << highestModSeq << "Local HighestModSeq: " << oldHighestModSeq;
+    qCDebug(IMAPRESOURCE_LOG) << "MessageCount: " << m_messageCount << "Local message count: " << realMessageCount;
+    qCDebug(IMAPRESOURCE_LOG) << "UidNext: " << m_nextUid << "Local UidNext: " << oldNextUid;
+    qCDebug(IMAPRESOURCE_LOG) << "HighestModSeq: " << m_highestModSeq << "Local HighestModSeq: " << oldHighestModSeq;
 
     /*
     * A synchronization has 3 mandatory steps:
@@ -369,7 +409,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
     * to determine whether messages have been removed.
     */
 
-    if (messageCount == 0) {
+    if (m_messageCount == 0) {
         //Shortcut:
         //If no messages are present on the server, clear local cash and finish
         m_incremental = false;
@@ -380,34 +420,34 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
             qCDebug(IMAPRESOURCE_LOG) << "No messages present so we are done";
         }
         taskComplete();
-    } else if (oldUidValidity != uidValidity || nextUid <= 0) {
+    } else if (oldUidValidity != m_uidValidity || m_nextUid <= 0) {
         //If uidvalidity has changed our local cache is worthless and has to be refetched completely
-        if (oldUidValidity != 0 && oldUidValidity != uidValidity) {
-            qCDebug(IMAPRESOURCE_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|" << uidValidity << ")";
+        if (oldUidValidity != 0 && oldUidValidity != m_uidValidity) {
+            qCDebug(IMAPRESOURCE_LOG) << "UIDVALIDITY check failed (" << oldUidValidity << "|" << m_uidValidity << ")";
         }
-        if (nextUid <= 0) {
+        if (m_nextUid <= 0) {
             qCDebug(IMAPRESOURCE_LOG) << "Invalid UIDNEXT";
         }
-        qCDebug(IMAPRESOURCE_LOG) << "Fetching complete mailbox " << mailBox;
-        setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
-    } else if (nextUid <= 0) {
+        qCDebug(IMAPRESOURCE_LOG) << "Fetching complete mailbox " << m_mailBox;
+        setTotalItems(m_messageCount);
+        retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
+    } else if (m_nextUid <= 0) {
         //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
         //qCDebug(IMAPRESOURCE_LOG) << "Running courier imap compatibility codepath";
-        if (messageCount > realMessageCount) {
+        if (m_messageCount > realMessageCount) {
             //Get new messages
-            retrieveItems(KIMAP::ImapSet(realMessageCount + 1, messageCount), scope, false, false);
-        } else if (messageCount == realMessageCount) {
+            retrieveItems(KIMAP::ImapSet(realMessageCount + 1, m_messageCount), scope, false, false);
+        } else if (m_messageCount == realMessageCount) {
             m_uidBasedFetch = false;
             m_incremental = true;
-            setTotalItems(messageCount);
-            listFlagsForImapSet(KIMAP::ImapSet(1, messageCount));
+            setTotalItems(m_messageCount);
+            listFlagsForImapSet(KIMAP::ImapSet(1, m_messageCount));
         } else {
             m_uidBasedFetch = false;
             m_incremental = false;
-            setTotalItems(messageCount);
-            listFlagsForImapSet(KIMAP::ImapSet(1, messageCount));
+            setTotalItems(m_messageCount);
+            listFlagsForImapSet(KIMAP::ImapSet(1, m_messageCount));
         }
     } else if (!m_messageUidsMissingBody.isEmpty()) {
         //fetch missing uids
@@ -416,36 +456,36 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
         KIMAP::ImapSet imapSet;
         imapSet.add(m_messageUidsMissingBody);
         retrieveItems(imapSet, scope, true, true);
-    } else if (nextUid > oldNextUid && ((realMessageCount + nextUid - oldNextUid) == messageCount) && realMessageCount > 0) {
+    } else if (m_nextUid > oldNextUid && ((realMessageCount + m_nextUid - oldNextUid) == m_messageCount) && realMessageCount > 0) {
         //Optimization:
         //New messages are available, but we know no messages have been removed.
         //Fetch new messages, and then check for changed flags and removed messages
         //We can make an incremental update and use modseq.
-        qCDebug(IMAPRESOURCE_LOG) << "Incrementally fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid << " message count " << messageCount << realMessageCount;
-        setTotalItems(qMax(1ll, messageCount - realMessageCount));
-        m_flagsChanged = !(highestModSeq == oldHighestModSeq);
-        retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, true, true);
-    } else if (nextUid > oldNextUid && messageCount > (realMessageCount + nextUid - oldNextUid) && realMessageCount > 0) {
+        qCDebug(IMAPRESOURCE_LOG) << "Incrementally fetching new messages: UidNext: " << m_nextUid << " Old UidNext: " << oldNextUid << " message count " << m_messageCount << realMessageCount;
+        setTotalItems(qMax(1ll, m_messageCount - realMessageCount));
+        m_flagsChanged = !(m_highestModSeq == oldHighestModSeq);
+        retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), m_nextUid), scope, true, true);
+    } else if (m_nextUid > oldNextUid && m_messageCount > (realMessageCount + m_nextUid - oldNextUid) && realMessageCount > 0) {
         //Error recovery:
         //New messages are available, but not enough to justify the difference between the local and remote message count.
         //This can be triggered if we i.e. clear the local cache, but the keep the annotations.
         //If we didn't catch this case, we end up inserting flags only for every missing message.
-        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: " << realMessageCount;
+        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount << " Local: " << realMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
-        setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
-    } else if (nextUid > oldNextUid) {
+        setTotalItems(m_messageCount);
+        retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
+    } else if (m_nextUid > oldNextUid) {
         //New messages are available. Fetch new messages, and then check for changed flags and removed messages
-        qCDebug(IMAPRESOURCE_LOG) << "Fetching new messages: UidNext: " << nextUid << " Old UidNext: " << oldNextUid;
-        setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), nextUid), scope, false, true);
-    } else if (messageCount == realMessageCount && oldNextUid == nextUid) {
+        qCDebug(IMAPRESOURCE_LOG) << "Fetching new messages: UidNext: " << m_nextUid << " Old UidNext: " << oldNextUid;
+        setTotalItems(m_messageCount);
+        retrieveItems(KIMAP::ImapSet(qMax(1, oldNextUid), m_nextUid), scope, false, true);
+    } else if (m_messageCount == realMessageCount && oldNextUid == m_nextUid) {
         //Optimization:
         //We know no messages were added or removed (if the message count and uidnext is still the same)
         //We only check the flags incrementally and can make use of modseq
         m_uidBasedFetch = true;
         m_incremental = true;
-        m_flagsChanged = !(highestModSeq == oldHighestModSeq);
+        m_flagsChanged = !(m_highestModSeq == oldHighestModSeq);
         //Workaround: If the server doesn't support CONDSTORE we would end up syncing all flags during every sync.
         //Instead we only sync flags when new messages are available or removed and skip this step.
         //WARNING: This sacrifices consistency as we will not detect flag changes until a new message enters the mailbox.
@@ -454,23 +494,23 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
             taskComplete();
             return;
         }
-        setTotalItems(messageCount);
-        listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
-    } else if (messageCount > realMessageCount) {
+        setTotalItems(m_messageCount);
+        listFlagsForImapSet(KIMAP::ImapSet(1, m_nextUid));
+    } else if (m_messageCount > realMessageCount) {
         //Error recovery:
         //We didn't detect any new messages based on the uid, but according to the message count there are new ones.
         //Our local cache is invalid and has to be refetched.
-        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << messageCount << " Local: " << realMessageCount;
+        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount << " Local: " << realMessageCount;
         qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
-        setTotalItems(messageCount);
-        retrieveItems(KIMAP::ImapSet(1, nextUid), scope, false, true);
+        setTotalItems(m_messageCount);
+        retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
     } else {
         //Shortcut:
         //No new messages are available. Directly check for changed flags and removed messages.
         m_uidBasedFetch = true;
         m_incremental = false;
-        setTotalItems(messageCount);
-        listFlagsForImapSet(KIMAP::ImapSet(1, nextUid));
+        setTotalItems(m_messageCount);
+        listFlagsForImapSet(KIMAP::ImapSet(1, m_nextUid));
     }
 }
 
@@ -557,7 +597,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
     // Only use changeSince when doing incremental listings,
     // otherwise we would overwrite our local data with an incomplete dataset
     if (m_incremental && serverSupportsCondstore()) {
-        scope.changedSince = m_highestModseq;
+        scope.changedSince = m_localHighestModSeq;
         if (!m_flagsChanged) {
             qCDebug(IMAPRESOURCE_LOG)  << "No flag changes.";
             taskComplete();

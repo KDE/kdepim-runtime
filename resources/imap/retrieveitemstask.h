@@ -51,6 +51,7 @@ private Q_SLOTS:
     void onPreExpungeSelectDone(KJob *job);
     void onExpungeDone(KJob *job);
     void onFinalSelectDone(KJob *job);
+    void onStatusDone(KJob *job);
     void onItemsRetrieved(const Akonadi::Item::List &addedItems);
     void onRetrievalDone(KJob *job);
     void onFlagsFetchDone(KJob *job);
@@ -63,6 +64,7 @@ protected:
             KIMAP::Session *session);
 
 private:
+    void prepareRetrieval();
     void startRetrievalTasks();
     void triggerPreExpungeSelect(const QString &mailBox);
     void triggerExpunge(const QString &mailBox);
@@ -76,12 +78,20 @@ private:
     int m_fetchedMissingBodies;
     bool m_fetchMissingBodies;
     bool m_incremental;
-    qint64 m_highestModseq;
+    qint64 m_localHighestModSeq;
     BatchFetcher *m_batchFetcher;
     Akonadi::Collection m_modifiedCollection;
     bool m_uidBasedFetch;
     bool m_flagsChanged;
     QTime m_time;
+
+    // Results of SELECT
+    QString m_mailBox;
+    int m_messageCount;
+    int m_uidValidity;
+    qint64 m_nextUid;
+    qint64 m_highestModSeq;
+    QList<QByteArray> m_flags;
 };
 
 #endif
