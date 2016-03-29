@@ -52,7 +52,8 @@ POP3Resource::POP3Resource(const QString &id)
       mAskAgain(false),
       mIntervalTimer(new QTimer(this)),
       mTestLocalInbox(false),
-      mWallet(Q_NULLPTR)
+      mWallet(Q_NULLPTR),
+      mDeleteJob(Q_NULLPTR)
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
     setNeedsNetwork(true);
@@ -385,24 +386,7 @@ void POP3Resource::doStateStep()
             Q_EMIT status(Running, i18n("Saving downloaded messages."));
         }
 
-        // It can happen that the create job map is empty, for example if there was no
-        // mail to download or if all ItemCreateJob's finished before reaching this
-        // stage
-        if (mPendingCreateJobs.isEmpty()) {
-            advanceState(Delete);
-        }
-    }
-    break;
-    case Delete: {
-        qCDebug(POP3RESOURCE_LOG) << "================ Starting state Delete =========================";
-        QList<int> idsToKill = idsToDelete();
-        if (!idsToKill.isEmpty()) {
-            Q_EMIT status(Running, i18n("Deleting messages from the server."));
-            DeleteJob *deleteJob = new DeleteJob(mPopSession);
-            deleteJob->setDeleteIds(idsToKill);
-            connect(deleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
-            deleteJob->start();
-        } else {
+        if (shouldAdvanceToQuitState()) {
             advanceState(Quit);
         }
     }
@@ -653,9 +637,20 @@ void POP3Resource::itemCreateJobResult(KJob *job)
     //qCDebug(POP3RESOURCE_LOG) << "Just stored message with ID" << idOfMessageJustCreated
     //         << "on the Akonadi server";
 
+    if (shouldDeleteId(idOfMessageJustCreated)) {
+        mIdsWaitingToDelete << idOfMessageJustCreated;
+        if (!mDeleteJob) {
+            mDeleteJob = new DeleteJob(mPopSession);
+            mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
+            mIdsWaitingToDelete.clear();
+            connect(mDeleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
+            mDeleteJob->start();
+        }
+    }
+
     // Have all create jobs finished? Go to the next state, then
-    if (mState == Save && mPendingCreateJobs.isEmpty()) {
-        advanceState(Delete);
+    if (shouldAdvanceToQuitState()) {
+        advanceState(Quit);
     }
 }
 
@@ -674,7 +669,7 @@ int POP3Resource::idToTime(int id) const
     return time(Q_NULLPTR);
 }
 
-int POP3Resource::idOfOldestMessage(QList<int> &idList) const
+int POP3Resource::idOfOldestMessage(const QSet<int> &idList) const
 {
     int timeOfOldestMessage = time(Q_NULLPTR) + 999;
     int idOfOldestMessage = -1;
@@ -689,29 +684,23 @@ int POP3Resource::idOfOldestMessage(QList<int> &idList) const
     return idOfOldestMessage;
 }
 
-QList<int> POP3Resource::idsToDelete() const
+bool POP3Resource::shouldDeleteId(int downloadedId) const
 {
-    QList<int> idsToDeleteFromServer = mIdsToSizeMap.keys();
-    QList<int> idsToSave;
-
-    // Don't attempt to delete messages that weren't downloaded correctly
-    foreach (int idNotDownloaded, mIdsToDownload) {
-        idsToDeleteFromServer.removeAll(idNotDownloaded);
-    }
-
     // By default, we delete all messages. But if we have "leave on server"
     // rules, we can save some messages.
-    if (Settings::self()->leaveOnServer() && !idsToDeleteFromServer.isEmpty()) {
+    if (Settings::self()->leaveOnServer()) {
+        const QSet<int> idsOnServer = QSet<int>::fromList(mIdsToSizeMap.keys());
+        QSet<int> idsToSave;
 
         // If the time-limited leave rule is checked, add the newer messages to
         // the list of messages to keep
         if (Settings::self()->leaveOnServerDays() > 0) {
             const int secondsPerDay = 86400;
             time_t timeLimit = time(Q_NULLPTR) - (secondsPerDay * Settings::self()->leaveOnServerDays());
-            foreach (int idToDelete, idsToDeleteFromServer) {
+            foreach (int idToDelete, idsOnServer) {
                 const int msgTime = idToTime(idToDelete);
                 if (msgTime >= timeLimit) {
-                    idsToSave.append(idToDelete);
+                    idsToSave << idToDelete;
                 } else {
                     qCDebug(POP3RESOURCE_LOG) << "Message" << idToDelete << "is too old and will be deleted.";
                 }
@@ -722,10 +711,7 @@ QList<int> POP3Resource::idsToDelete() const
         // be reduced in the following number-limited leave rule and size-limited
         // leave rule checks
         else {
-            idsToSave.reserve(idsToDeleteFromServer.count());
-            foreach (int idToDelete, idsToDeleteFromServer) {
-                idsToSave.append(idToDelete);
-            }
+            idsToSave = idsOnServer;
         }
 
         //
@@ -736,7 +722,7 @@ QList<int> POP3Resource::idsToDelete() const
             if (numToDelete > 0 && numToDelete < idsToSave.count()) {
                 // Get rid of the first numToDelete messages
                 for (int i = 0; i < numToDelete; i++) {
-                    idsToSave.removeAll(idOfOldestMessage(idsToSave));
+                    idsToSave.remove(idOfOldestMessage(idsToSave));
                 }
             } else if (numToDelete >= idsToSave.count()) {
                 idsToSave.clear();
@@ -754,21 +740,15 @@ QList<int> POP3Resource::idsToDelete() const
             }
             while (sizeOnServerAfterDeletion > limitInBytes) {
                 int oldestId = idOfOldestMessage(idsToSave);
-                idsToSave.removeAll(oldestId);
+                idsToSave.remove(oldestId);
                 sizeOnServerAfterDeletion -= mIdsToSizeMap.value(oldestId);
             }
         }
 
-        //
-        // Now save the messages from deletion
-        //
-        foreach (int idToSave, idsToSave) {
-            idsToDeleteFromServer.removeAll(idToSave);
-        }
+        return !idsToSave.contains(downloadedId);
     }
 
-    qCDebug(POP3RESOURCE_LOG) << "Going to delete" << idsToDeleteFromServer.size() << idsToDeleteFromServer;
-    return idsToDeleteFromServer;
+    return true;
 }
 
 void POP3Resource::deleteJobResult(KJob *job)
@@ -779,9 +759,10 @@ void POP3Resource::deleteJobResult(KJob *job)
         return;
     }
 
-    DeleteJob *deleteJob = dynamic_cast<DeleteJob *>(job);
-    Q_ASSERT(deleteJob);
-    mDeletedIDs = deleteJob->deletedIDs();
+    DeleteJob *finishedDeleteJob = dynamic_cast<DeleteJob *>(job);
+    Q_ASSERT(finishedDeleteJob);
+    Q_ASSERT(finishedDeleteJob == mDeleteJob);
+    mDeletedIDs = finishedDeleteJob->deletedIDs();
 
     // Remove all deleted messages from the list of already downloaded messages,
     // as it is no longer necessary to store them (they just waste space)
@@ -802,9 +783,20 @@ void POP3Resource::deleteJobResult(KJob *job)
     }
     Settings::self()->setSeenUidList(seenUIDs);
     Settings::self()->setSeenUidTimeList(timeOfSeenUids);
-    Settings::self()->save(),
+    Settings::self()->save();
 
+    mDeleteJob = Q_NULLPTR;
+    if (!mIdsWaitingToDelete.isEmpty()) {
+        mDeleteJob = new DeleteJob(mPopSession);
+        mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
+        mIdsWaitingToDelete.clear();
+        connect(mDeleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
+        mDeleteJob->start();
+    }
+
+    if (shouldAdvanceToQuitState()) {
              advanceState(Quit);
+    }
 }
 
 void POP3Resource::finish()
@@ -822,6 +814,11 @@ void POP3Resource::finish()
                                   mDownloadedIDs.size()));
 
     resetState();
+}
+
+bool POP3Resource::shouldAdvanceToQuitState() const
+{
+    return mState == Save && mPendingCreateJobs.isEmpty() && mIdsWaitingToDelete.isEmpty() && !mDeleteJob;
 }
 
 void POP3Resource::quitJobResult(KJob *job)
@@ -931,6 +928,11 @@ void POP3Resource::resetState()
     mPendingCreateJobs.clear();
     mIDsStored.clear();
     mDeletedIDs.clear();
+    mIdsWaitingToDelete.clear();
+    if (mDeleteJob) {
+        mDeleteJob->deleteLater();
+        mDeleteJob = Q_NULLPTR;
+    }
     mUidListValid = false;
     mIntervalCheckInProgress = false;
     mSavePassword = false;
