@@ -22,6 +22,9 @@
 #include <ResourceBase>
 #include <KMime/Message>
 #include <KJob>
+#include <QSet>
+
+class DeleteJob;
 
 namespace Akonadi
 {
@@ -119,7 +122,6 @@ private:
         UIDList,
         Download,
         Save,
-        Delete,
         Quit,
         SavePassword
     };
@@ -129,14 +131,16 @@ private:
     void advanceState(State nextState);
     void cancelSync(const QString &errorMessage, bool error = true);
     void saveSeenUIDList();
-    QList<int> idsToDelete() const;
+    bool shouldDeleteId(int downloadedId) const;
     int idToTime(int id) const;
-    int idOfOldestMessage(QList<int> &idList) const;
+    int idOfOldestMessage(const QSet<int> &idList) const;
     void startMailCheck();
     void updateIntervalTimer();
     void showPasswordDialog(const QString &queryText);
     QString buildLabelForPasswordDialog(const QString &detailedError) const;
     void finish();
+
+    bool shouldAdvanceToQuitState() const;
 
     State mState;
     Akonadi::Collection mTargetCollection;
@@ -185,6 +189,11 @@ private:
     // List of message IDs that were successfully deleted
     QList<int> mDeletedIDs;
 
+    // List of message IDs that we want to delete with the next delete job
+    QList<int> mIdsWaitingToDelete;
+
+    // Current deletion job in process
+    DeleteJob *mDeleteJob;
 };
 
 #endif
