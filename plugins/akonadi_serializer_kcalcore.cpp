@@ -39,7 +39,6 @@ using namespace KCalUtils;
 using namespace Akonadi;
 
 SerializerPluginKCalCore::SerializerPluginKCalCore()
-    : mTimeZones(new ICalTimeZones)
 {
 }
 
@@ -86,7 +85,7 @@ bool SerializerPluginKCalCore::deserialize(Item &item, const QByteArray &label,
         incidence = base.staticCast<KCalCore::Incidence>();
     } else {
         // Use the old format
-        incidence = mFormat.readIncidence(data.readAll(), mTimeZones.data());
+        incidence = mFormat.readIncidence(data.readAll());
     }
 
     if (!incidence) {

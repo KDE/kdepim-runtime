@@ -26,7 +26,6 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
 #include <KCalCore/ICalFormat>
-#include <KCalCore/ICalTimeZones>
 
 namespace Akonadi
 {
@@ -55,7 +54,6 @@ public:
 
 private:
     KCalCore::ICalFormat mFormat;
-    QSharedPointer<KCalCore::ICalTimeZones> mTimeZones;
 };
 
 }
