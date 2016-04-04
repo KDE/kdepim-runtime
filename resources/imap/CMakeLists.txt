@@ -114,6 +114,7 @@ target_link_libraries(akonadi_imap_resource
     KF5::IdentityManagement
     KF5::I18n
     imapresource
+    KF5::TextWidgets
     folderarchivesettings)
 
 if (RUNTIME_PLUGINS_STATIC)

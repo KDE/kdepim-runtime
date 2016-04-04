@@ -42,6 +42,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::Completion
   KF5::Service
   KF5::IconThemes
+  KF5::I18n
 )
 
 if (Qt5TextToSpeech_FOUND)
