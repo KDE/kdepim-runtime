@@ -129,9 +129,17 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
+find_package(Sasl2)
+set_package_properties(Sasl2 PROPERTIES
+                             DESCRIPTION "The Cyrus-sasl library"
+                             URL "http://www.cyrussasl.org"
+                             TYPE OPTIONAL
+)
+
+
 add_subdirectory(resources)
 add_subdirectory(agents)
-#add_subdirectory(plugins)
+add_subdirectory(plugins)
 add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(migration)

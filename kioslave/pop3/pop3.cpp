@@ -26,7 +26,7 @@
  *
  */
 #include "pop3.h"
-#include "../common.h"
+#include "common.h"
 
 extern "C" {
 #include <sasl/sasl.h>
