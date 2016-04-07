@@ -413,7 +413,7 @@ Kolab::FolderType KolabHelpers::folderTypeFromString(const QByteArray &folderTyp
 QByteArray KolabHelpers::getFolderTypeAnnotation(const QMap< QByteArray, QByteArray > &annotations)
 {
     if (annotations.contains("/shared" KOLAB_FOLDER_TYPE_ANNOTATION)
-        && !annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
+            && !annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
         return annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION);
     } else if (annotations.contains("/private" KOLAB_FOLDER_TYPE_ANNOTATION)
                && !annotations.value("/private" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
@@ -441,7 +441,7 @@ QColor KolabHelpers::getFolderColor(const QMap<QByteArray, QByteArray> &annotati
 void KolabHelpers::setFolderColor(QMap<QByteArray, QByteArray> &annotations, const QColor &color)
 {
     // kolab saves the color without a "#", so we need to delete the prefix "#" if we save it to the annotations
-    annotations["/shared" KOLAB_COLOR_ANNOTATION] = color.name().toAscii().remove(0,1);
+    annotations["/shared" KOLAB_COLOR_ANNOTATION] = color.name().toAscii().remove(0, 1);
 }
 
 QString KolabHelpers::getIcon(Kolab::FolderType type)

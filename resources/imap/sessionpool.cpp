@@ -486,7 +486,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
     }
 }
 
-void SessionPool::setClientId( const QByteArray &clientId )
+void SessionPool::setClientId(const QByteArray &clientId)
 {
     m_clientId = clientId;
 }
@@ -527,9 +527,9 @@ void SessionPool::onNamespacesTestDone(KJob *job)
     }
 }
 
-void SessionPool::onIdDone( KJob *job )
+void SessionPool::onIdDone(KJob *job)
 {
-    KIMAP::IdJob *idJob = qobject_cast<KIMAP::IdJob*>(job);
+    KIMAP::IdJob *idJob = qobject_cast<KIMAP::IdJob *>(job);
     //Can happen if we disonnected meanwhile
     if (!m_connectingPool.contains(idJob->session())) {
         emit connectDone(CancelledError, i18n("Disconnected during login."));

@@ -198,7 +198,7 @@ void KolabResource::collectionChanged(const Akonadi::Collection &collection, con
     QSet<QByteArray> p = parts;
     //Update annotations if necessary
     const Akonadi::Collection col = updateAnnotations(collection);
-    if(parts.contains(Akonadi::CollectionColorAttribute().type())) {
+    if (parts.contains(Akonadi::CollectionColorAttribute().type())) {
         p << Akonadi::CollectionAnnotationsAttribute().type();
     }
 

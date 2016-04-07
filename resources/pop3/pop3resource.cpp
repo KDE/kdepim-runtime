@@ -795,7 +795,7 @@ void POP3Resource::deleteJobResult(KJob *job)
     }
 
     if (shouldAdvanceToQuitState()) {
-             advanceState(Quit);
+        advanceState(Quit);
     }
 }
 

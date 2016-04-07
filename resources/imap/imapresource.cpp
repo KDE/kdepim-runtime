@@ -57,7 +57,7 @@ QByteArray ImapResource::clientId() const
 {
     return "Kontact IMAP Resource";
 }
- 
+
 QDialog *ImapResource::createConfigureDialog(WId windowId)
 {
     SetupServer *dlg = new SetupServer(this, windowId);
