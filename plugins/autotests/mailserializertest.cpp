@@ -170,9 +170,9 @@ void MailSerializerTest::testEnvelopeSerialize_data()
     QDataStream stream(&buffer);
     stream << QDateTime(QDate(2006, 2, 1), QTime(13, 37, 19), Qt::UTC)
            << QString::fromUtf8("IMPORTANT: Akonadi Test")
-           << QString::fromUtf8("")
+           << QString()
            << QString::fromUtf8("<{7b55527e-77f4-489d-bf18-e805be96718c}@server.kde.org>")
-           << QString::fromUtf8("")
+           << QString()
            << 1 << QString::fromUtf8("Tobias Koenig") << QString::fromUtf8("tokoe") << QString::fromUtf8("kde.org")
            << 1 << QString::fromUtf8("Tobias Koenig") << QString::fromUtf8("tokoe") << QString::fromUtf8("kde.org")
            << 0
