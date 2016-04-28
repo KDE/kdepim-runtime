@@ -955,11 +955,12 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
 
     // update etag
     item.setRemoteRevision(davItem.etag());
-    mEtagCaches[collection.remoteId()]->setEtag(item.remoteId(), davItem.etag());
+    EtagCache *etag = mEtagCaches[collection.remoteId()];
+    etag->setEtag(item.remoteId(), davItem.etag());
 
     if (!extraItems.isEmpty()) {
         for (int i = 0; i < extraItems.size(); ++i) {
-            mEtagCaches[collection.remoteId()]->setEtag(extraItems.at(i).remoteId(), davItem.etag());
+            etag->setEtag(extraItems.at(i).remoteId(), davItem.etag());
         }
 
         Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob(extraItems);
@@ -1079,13 +1080,14 @@ void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
         fetchJob->start();
     } else {
         item.setRemoteRevision(davItem.etag());
-        mEtagCaches[collection.remoteId()]->setEtag(davItem.url(), davItem.etag());
+        EtagCache *etag = mEtagCaches[collection.remoteId()];
+        etag->setEtag(davItem.url(), davItem.etag());
         changeCommitted(item);
 
         if (!dependentItems.isEmpty()) {
             for (int i = 0; i < dependentItems.size(); ++i) {
                 dependentItems[i].setRemoteRevision(davItem.etag());
-                mEtagCaches[collection.remoteId()]->setEtag(dependentItems.at(i).remoteId(), davItem.etag());
+                etag->setEtag(dependentItems.at(i).remoteId(), davItem.etag());
             }
 
             Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob(dependentItems);
@@ -1225,9 +1227,10 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         // Hopefully for the dependent items everything will be fine. Right?
         // Not so sure in fact.
         if (!remoteDependentItems.isEmpty()) {
+            EtagCache *etag = mEtagCaches[collection.remoteId()];
             for (int i = 0; i < remoteDependentItems.size(); ++i) {
                 remoteDependentItems[i].setRemoteRevision(remoteEtag);
-                mEtagCaches[collection.remoteId()]->setEtag(remoteDependentItems.at(i).remoteId(), remoteEtag);
+                etag->setEtag(remoteDependentItems.at(i).remoteId(), remoteEtag);
             }
 
             Akonadi::ItemModifyJob *j = new Akonadi::ItemModifyJob(remoteDependentItems);
