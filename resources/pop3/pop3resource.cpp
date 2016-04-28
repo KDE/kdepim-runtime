@@ -53,6 +53,7 @@ POP3Resource::POP3Resource(const QString &id)
       mIntervalTimer(new QTimer(this)),
       mTestLocalInbox(false),
       mWallet(Q_NULLPTR),
+      idsToSaveValid(false),
       mDeleteJob(Q_NULLPTR)
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
@@ -502,6 +503,7 @@ void POP3Resource::listJobResult(KJob *job)
         ListJob *listJob = dynamic_cast<ListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToSizeMap = listJob->idList();
+        idsToSaveValid = false;
         qCDebug(POP3RESOURCE_LOG) << "IdsToSizeMap:" << mIdsToSizeMap;
         advanceState(UIDList);
     }
@@ -689,59 +691,63 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
     // By default, we delete all messages. But if we have "leave on server"
     // rules, we can save some messages.
     if (Settings::self()->leaveOnServer()) {
-        const QSet<int> idsOnServer = QSet<int>::fromList(mIdsToSizeMap.keys());
-        QSet<int> idsToSave;
+        if (!idsToSaveValid) {
+            idsToSaveValid = true;
+            idsToSave = QSet<int>();
 
-        // If the time-limited leave rule is checked, add the newer messages to
-        // the list of messages to keep
-        if (Settings::self()->leaveOnServerDays() > 0) {
-            const int secondsPerDay = 86400;
-            time_t timeLimit = time(Q_NULLPTR) - (secondsPerDay * Settings::self()->leaveOnServerDays());
-            foreach (int idToDelete, idsOnServer) {
-                const int msgTime = idToTime(idToDelete);
-                if (msgTime >= timeLimit) {
-                    idsToSave << idToDelete;
-                } else {
-                    qCDebug(POP3RESOURCE_LOG) << "Message" << idToDelete << "is too old and will be deleted.";
+            const QSet<int> idsOnServer = QSet<int>::fromList(mIdsToSizeMap.keys());
+
+            // If the time-limited leave rule is checked, add the newer messages to
+            // the list of messages to keep
+            if (Settings::self()->leaveOnServerDays() > 0) {
+                const int secondsPerDay = 86400;
+                time_t timeLimit = time(Q_NULLPTR) - (secondsPerDay * Settings::self()->leaveOnServerDays());
+                foreach (int idToDelete, idsOnServer) {
+                    const int msgTime = idToTime(idToDelete);
+                    if (msgTime >= timeLimit) {
+                        idsToSave << idToDelete;
+                    } else {
+                        qCDebug(POP3RESOURCE_LOG) << "Message" << idToDelete << "is too old and will be deleted.";
+                    }
                 }
             }
-        }
 
-        // Otherwise, add all messages to the list of messages to keep - this may
-        // be reduced in the following number-limited leave rule and size-limited
-        // leave rule checks
-        else {
-            idsToSave = idsOnServer;
-        }
+            // Otherwise, add all messages to the list of messages to keep - this may
+            // be reduced in the following number-limited leave rule and size-limited
+            // leave rule checks
+            else {
+                idsToSave = idsOnServer;
+            }
 
-        //
-        // Delete more old messages if there are more than mLeaveOnServerCount
-        //
-        if (Settings::self()->leaveOnServerCount() > 0) {
-            const int numToDelete = idsToSave.count() - Settings::self()->leaveOnServerCount();
-            if (numToDelete > 0 && numToDelete < idsToSave.count()) {
-                // Get rid of the first numToDelete messages
-                for (int i = 0; i < numToDelete; i++) {
-                    idsToSave.remove(idOfOldestMessage(idsToSave));
+            //
+            // Delete more old messages if there are more than mLeaveOnServerCount
+            //
+            if (Settings::self()->leaveOnServerCount() > 0) {
+                const int numToDelete = idsToSave.count() - Settings::self()->leaveOnServerCount();
+                if (numToDelete > 0 && numToDelete < idsToSave.count()) {
+                    // Get rid of the first numToDelete messages
+                    for (int i = 0; i < numToDelete; i++) {
+                        idsToSave.remove(idOfOldestMessage(idsToSave));
+                    }
+                } else if (numToDelete >= idsToSave.count()) {
+                    idsToSave.clear();
                 }
-            } else if (numToDelete >= idsToSave.count()) {
-                idsToSave.clear();
             }
-        }
 
-        //
-        // Delete more old messages until we're under mLeaveOnServerSize MBs
-        //
-        if (Settings::self()->leaveOnServerSize() > 0) {
-            const qint64 limitInBytes = Settings::self()->leaveOnServerSize() * (1024 * 1024);
-            qint64 sizeOnServerAfterDeletion = 0;
-            foreach (int id, idsToSave) {
-                sizeOnServerAfterDeletion += mIdsToSizeMap.value(id);
-            }
-            while (sizeOnServerAfterDeletion > limitInBytes) {
-                int oldestId = idOfOldestMessage(idsToSave);
-                idsToSave.remove(oldestId);
-                sizeOnServerAfterDeletion -= mIdsToSizeMap.value(oldestId);
+            //
+            // Delete more old messages until we're under mLeaveOnServerSize MBs
+            //
+            if (Settings::self()->leaveOnServerSize() > 0) {
+                const qint64 limitInBytes = Settings::self()->leaveOnServerSize() * (1024 * 1024);
+                qint64 sizeOnServerAfterDeletion = 0;
+                foreach (int id, idsToSave) {
+                    sizeOnServerAfterDeletion += mIdsToSizeMap.value(id);
+                }
+                while (sizeOnServerAfterDeletion > limitInBytes) {
+                    int oldestId = idOfOldestMessage(idsToSave);
+                    idsToSave.remove(oldestId);
+                    sizeOnServerAfterDeletion -= mIdsToSizeMap.value(oldestId);
+                }
             }
         }
 

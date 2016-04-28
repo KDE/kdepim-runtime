@@ -192,6 +192,10 @@ private:
     // List of message IDs that we want to delete with the next delete job
     QList<int> mIdsWaitingToDelete;
 
+    // List of message IDs that we want to keep on the server
+    mutable QSet<int> idsToSave;
+    mutable bool idsToSaveValid;
+
     // Current deletion job in process
     DeleteJob *mDeleteJob;
 };
