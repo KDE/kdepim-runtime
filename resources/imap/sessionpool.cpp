@@ -532,7 +532,7 @@ void SessionPool::onIdDone(KJob *job)
     KIMAP::IdJob *idJob = qobject_cast<KIMAP::IdJob *>(job);
     //Can happen if we disonnected meanwhile
     if (!m_connectingPool.contains(idJob->session())) {
-        emit connectDone(CancelledError, i18n("Disconnected during login."));
+        Q_EMIT connectDone(CancelledError, i18n("Disconnected during login."));
         return;
     }
     declareSessionReady(idJob->session());

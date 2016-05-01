@@ -353,7 +353,7 @@ Settings *ImapResourceBase::settings() const
 bool ImapResourceBase::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     // The collection name is empty here...
-    //emit status( AgentBase::Running, i18nc( "@info:status", "Retrieving item in '%1'", item.parentCollection().name() ) );
+    //Q_EMIT status( AgentBase::Running, i18nc( "@info:status", "Retrieving item in '%1'", item.parentCollection().name() ) );
 
     RetrieveItemTask *task = new RetrieveItemTask(createResourceState(TaskArguments(item, parts)), this);
     task->start(m_pool);

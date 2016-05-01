@@ -105,7 +105,7 @@ ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArgumen
 void KolabResource::retrieveCollections()
 {
     Trace();
-    emit status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
 
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
     synchronizeTags();
@@ -203,7 +203,7 @@ void KolabResource::collectionChanged(const Akonadi::Collection &collection, con
     }
 
     //TODO we need to save the collections as well if the annotations have changed
-    emit status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
     ChangeCollectionTask *task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, p)), this);
     task->syncEnabledState(true);
     startTask(task);

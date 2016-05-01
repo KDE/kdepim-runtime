@@ -113,7 +113,7 @@ void TagChangeHelper::onReplaceDone(KJob *job)
     if (newUid > 0) {
         recordNewUid(newUid, tag);
     } else {
-        emit cancelTask(job->errorString());
+        Q_EMIT cancelTask(job->errorString());
     }
 }
 
@@ -121,9 +121,9 @@ void TagChangeHelper::onModifyDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << "Modify failed: " << job->errorString();
-        emit cancelTask(job->errorString());
+        Q_EMIT cancelTask(job->errorString());
         return;
     }
-    emit changeCommitted();
+    Q_EMIT changeCommitted();
 }
 
