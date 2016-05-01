@@ -131,8 +131,9 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
         QString parentPath;
         QString currentPath;
 
-        for (int j = 0; j < pathParts.size(); ++j) {
-            const bool isDummy = j != pathParts.size() - 1;
+        const int pathPartsSize(pathParts.size());
+        for (int j = 0; j < pathPartsSize; ++j) {
+            const bool isDummy = j != pathPartsSize - 1;
             const QString pathPart = pathParts.at(j);
             currentPath += separator + pathPart;
 
