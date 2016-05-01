@@ -23,7 +23,6 @@
 #include "messagehelper.h"
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 
 #include <KLocalizedString>
 

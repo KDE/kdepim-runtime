@@ -24,7 +24,6 @@
 #include "collectionannotationsattribute.h"
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 #include <KLocalizedString>
 
 #include <kimap/createjob.h>

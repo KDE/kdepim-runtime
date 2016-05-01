@@ -24,7 +24,6 @@
 #include <QtCore/QUuid>
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 #include <KLocalizedString>
 
 #include <kimap/appendjob.h>

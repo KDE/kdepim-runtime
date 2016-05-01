@@ -34,7 +34,6 @@
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>
-#include "imapresource_debug.h"
 
 ChangeCollectionTask::ChangeCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent), m_pendingJobs(0), m_syncEnabledState(true)

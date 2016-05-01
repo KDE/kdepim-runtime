@@ -19,7 +19,6 @@
 
 #include "batchfetcher.h"
 
-#include "imapresource_debug.h"
 #include <KIMAP/Session>
 #include "imapresource_debug.h"
 BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,

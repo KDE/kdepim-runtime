@@ -39,10 +39,6 @@
 #include <AkonadiCore/session.h>
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
-
-#include "imapresource_debug.h"
-#include "imapresource_debug.h"
 
 #include <KLocalizedString>
 

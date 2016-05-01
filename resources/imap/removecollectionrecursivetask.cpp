@@ -29,7 +29,6 @@
 #include <kimap/closejob.h>
 #include <KLocalizedString>
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 
 Q_DECLARE_METATYPE(KIMAP::DeleteJob *)
 

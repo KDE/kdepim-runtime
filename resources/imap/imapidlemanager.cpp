@@ -26,7 +26,6 @@
 #include "imapidlemanager.h"
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 
 #include <kimap/idlejob.h>
 #include <kimap/selectjob.h>

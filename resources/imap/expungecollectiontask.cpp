@@ -22,7 +22,6 @@
 #include "expungecollectiontask.h"
 
 #include "imapresource_debug.h"
-#include "imapresource_debug.h"
 
 #include <KLocalizedString>
 
