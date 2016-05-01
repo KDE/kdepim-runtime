@@ -45,22 +45,25 @@ using namespace Akonadi;
 static Collection::Id collectionId(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
-    Q_ASSERT(remoteItemId.split(QStringLiteral("::")).size() == 3);
-    return remoteItemId.split(QStringLiteral("::")).first().toLongLong();
+    const QStringList lst = remoteItemId.split(QStringLiteral("::"));
+    Q_ASSERT(lst.size() == 3);
+    return lst.first().toLongLong();
 }
 
 static QString mboxFile(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
-    Q_ASSERT(remoteItemId.split(QStringLiteral("::")).size() == 3);
-    return remoteItemId.split(QStringLiteral("::")).at(1);
+    const QStringList lst = remoteItemId.split(QStringLiteral("::"));
+    Q_ASSERT(lst.size() == 3);
+    return lst.at(1);
 }
 
 static quint64 itemOffset(const QString &remoteItemId)
 {
     // [CollectionId]::[RemoteCollectionId]::[Offset]
-    Q_ASSERT(remoteItemId.split(QStringLiteral("::")).size() == 3);
-    return remoteItemId.split(QStringLiteral("::")).last().toULongLong();
+    const QStringList lst = remoteItemId.split(QStringLiteral("::"));
+    Q_ASSERT(lst.size() == 3);
+    return lst.last().toULongLong();
 }
 
 MboxResource::MboxResource(const QString &id)
