@@ -7,10 +7,22 @@
     <x>0</x>
     <y>0</y>
     <width>451</width>
-    <height>557</height>
+    <height>636</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="titleLabel">
      <property name="font">
@@ -86,14 +98,14 @@
             </item>
             <item>
              <widget class="KPluralHandlingSpinBox" name="intervalSpin">
-              <property name="value">
-               <number>5</number>
-              </property>
               <property name="minimum">
                <number>1</number>
               </property>
               <property name="maximum">
                <number>10000000</number>
+              </property>
+              <property name="value">
+               <number>5</number>
               </property>
              </widget>
             </item>
@@ -132,15 +144,15 @@
             <property name="whatsThis">
              <string>Account name: This defines the name displayed in the account list.</string>
             </property>
-              <property name="trapReturnKey">
-               <bool>true</bool>
-              </property>
+            <property name="trapReturnKey" stdset="0">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Incoming mail &amp;server:</string>
+             <string>Incoming &amp;mail server:</string>
             </property>
             <property name="buddy">
              <cstring>hostEdit</cstring>
@@ -155,15 +167,15 @@
             <property name="whatsThis">
              <string>The address of the POP3 server, e.g. pop3.yourprovider.org. You should get this address from your mail provider.</string>
             </property>
-              <property name="trapReturnKey">
-               <bool>true</bool>
-              </property>
+            <property name="trapReturnKey" stdset="0">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Username:</string>
+             <string>Use&amp;rname:</string>
             </property>
             <property name="buddy">
              <cstring>loginEdit</cstring>
@@ -178,9 +190,9 @@
             <property name="whatsThis">
              <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
             </property>
-              <property name="trapReturnKey">
-               <bool>true</bool>
-              </property>
+            <property name="trapReturnKey" stdset="0">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="3" column="0">
@@ -204,9 +216,9 @@
             <property name="echoMode">
              <enum>QLineEdit::Password</enum>
             </property>
-              <property name="trapReturnKey">
-               <bool>true</bool>
-              </property>
+            <property name="trapReturnKey" stdset="0">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -259,14 +271,14 @@
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="value">
-             <number>1</number>
-            </property>
             <property name="minimum">
              <number>0</number>
             </property>
             <property name="maximum">
              <number>365</number>
+            </property>
+            <property name="value">
+             <number>1</number>
             </property>
            </widget>
           </item>
@@ -288,14 +300,14 @@
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="value">
-             <number>100</number>
-            </property>
             <property name="minimum">
              <number>0</number>
             </property>
             <property name="maximum">
              <number>999999</number>
+            </property>
+            <property name="value">
+             <number>99</number>
             </property>
            </widget>
           </item>
@@ -317,8 +329,8 @@
             <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="value">
-             <number>10</number>
+            <property name="suffix">
+             <string> MB</string>
             </property>
             <property name="minimum">
              <number>1</number>
@@ -326,8 +338,8 @@
             <property name="maximum">
              <number>999999</number>
             </property>
-            <property name="suffix">
-             <string> MB</string>
+            <property name="value">
+             <number>10</number>
             </property>
            </widget>
           </item>
@@ -349,14 +361,14 @@
             <property name="whatsThis">
              <string>If you select this option, POP Filters will be used to decide what to do with messages. You can then select to download, delete or keep them on the server.</string>
             </property>
-            <property name="value">
-             <number>50000</number>
-            </property>
             <property name="minimum">
              <number>1</number>
             </property>
             <property name="maximum">
              <number>10000000</number>
+            </property>
+            <property name="value">
+             <number>99</number>
             </property>
            </widget>
           </item>
@@ -406,14 +418,13 @@
               <property name="showClearButton" stdset="0">
                <bool>true</bool>
               </property>
-              <property name="trapReturnKey">
+              <property name="trapReturnKey" stdset="0">
                <bool>true</bool>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Akonadi::CollectionRequester" name="folderRequester">
-             </widget>
+             <widget class="Akonadi::CollectionRequester" name="folderRequester"/>
             </item>
            </layout>
           </item>
@@ -498,7 +509,7 @@ p, li { white-space: pre-wrap; }
               <item>
                <widget class="QRadioButton" name="encryptionTLS">
                 <property name="text">
-                 <string>STARTTLS</string>
+                 <string>STA&amp;RTTLS</string>
                 </property>
                </widget>
               </item>
@@ -560,21 +571,21 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>KSeparator</class>
    <extends>QFrame</extends>
    <header>kseparator.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>KPluralHandlingSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>KPluralHandlingSpinBox</header>
+   <header>kpluralhandlingspinbox.h</header>
   </customwidget>
   <customwidget>
    <class>Akonadi::CollectionRequester</class>

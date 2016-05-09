@@ -7,10 +7,22 @@
     <x>0</x>
     <y>0</y>
     <width>467</width>
-    <height>540</height>
+    <height>582</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_6">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -67,7 +79,7 @@
              <string>The username.</string>
             </property>
             <property name="text">
-             <string>&amp;Username:</string>
+             <string>Use&amp;rname:</string>
             </property>
             <property name="buddy">
              <cstring>userName</cstring>
@@ -677,7 +689,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>Akonadi::CollectionRequester</class>
    <extends>QFrame</extends>
-   <header>AkonadiWidgets/CollectionRequester</header>
+   <header>CollectionRequester</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
