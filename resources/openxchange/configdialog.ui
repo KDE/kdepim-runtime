@@ -7,13 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>410</width>
-    <height>200</height>
+    <height>202</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Open-Xchange Configuration</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -136,6 +148,7 @@
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>
    <header>klineedit.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
