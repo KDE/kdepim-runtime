@@ -46,7 +46,7 @@ void SyncTest::testSync()
     AgentInstance instance = AgentManager::self()->instance(QStringLiteral("akonadi_maildir_resource_0"));
     QVERIFY(instance.isValid());
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < TIMES; ++i) {
         QDBusInterface *interface = new QDBusInterface(
             QStringLiteral("org.freedesktop.Akonadi.Resource.%1").arg(instance.identifier()),
             QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
@@ -57,6 +57,7 @@ void SyncTest::testSync()
         QSignalSpy spy(interface, SIGNAL(synchronized()));
         QVERIFY(spy.wait(TIMEOUT * 1000));
         qDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
+        delete interface;
     }
 }
 
