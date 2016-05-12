@@ -25,6 +25,7 @@
 #include <QFileInfo>
 #include <QHostInfo>
 #include <QUuid>
+#include <QRegularExpression>
 
 #include "libmaildir_debug.h"
 #include <KLocalizedString>
@@ -61,9 +62,9 @@ static void initRandomSeed()
 
 using namespace KPIM;
 
-static QRegExp statusSeparatorRx()
+static QRegularExpression statusSeparatorRx()
 {
-    static const QRegExp expr(QStringLiteral(":|!"));
+    static const QRegularExpression expr(QStringLiteral(":|!"));
     return expr;
 }
 
@@ -669,7 +670,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
         return QString();
     }
 
-    const QRegExp rx = statusSeparatorRx();
+    const QRegularExpression rx = statusSeparatorRx();
     QString finalKey = key.left(key.indexOf(rx));
 
     QStringList mailDirFlags;
@@ -751,7 +752,7 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString &key) const
 {
     Akonadi::Item::Flags flags;
 
-    const QRegExp rx = statusSeparatorRx();
+    const QRegularExpression rx = statusSeparatorRx();
     const int index = key.indexOf(rx);
     if (index != -1) {
         const QString mailDirFlags = key.mid(index + 3);   // after "(:|!)2,"
