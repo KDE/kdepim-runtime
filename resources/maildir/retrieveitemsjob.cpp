@@ -18,6 +18,7 @@
 */
 
 #include "retrieveitemsjob.h"
+#include "maildirresource_debug.h"
 #include <itemfetchjob.h>
 #include <itemmodifyjob.h>
 #include <itemdeletejob.h>
@@ -186,7 +187,7 @@ Akonadi::TransactionSequence *RetrieveItemsJob::transaction()
     // operations, which slowly overloads the database journal causing simple
     // INSERT to take several seconds
     if (++m_transactionSize >= 100) {
-        qDebug() << "Commit!";
+        qCDebug(MAILDIRRESOURCE_LOG) << "Commit!";
         m_transaction->commit();
         m_transaction = Q_NULLPTR;
         m_transactionSize = 0;
@@ -202,6 +203,7 @@ Akonadi::TransactionSequence *RetrieveItemsJob::transaction()
 void RetrieveItemsJob::transactionDone(KJob *job)
 {
     if (job->error()) {
+        qCDebug(MAILDIRRESOURCE_LOG) << "Error during transaction " << job->errorString();
         return;    // handled by base class
     }
     emitResult();
