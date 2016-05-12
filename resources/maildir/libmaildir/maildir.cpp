@@ -215,7 +215,6 @@ void Maildir::swap(const Maildir &rhs)
 
 Maildir::Maildir(const Maildir &rhs)
     : d(new Private(*rhs.d))
-
 {
 }
 
@@ -576,9 +575,9 @@ QByteArray Maildir::readEntryHeaders(const QString &key) const
 
 static QString createUniqueFileName()
 {
-    qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
-    int r = qrand() % 1000;
-    QString identifier = QLatin1String("R") + QString::number(r);
+    const qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
+    const int r = qrand() % 1000;
+    const QString identifier = QLatin1String("R") + QString::number(r);
 
     QString fileName = QString::number(time) + QLatin1Char('.') + identifier + QLatin1Char('.');
 
@@ -696,7 +695,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
 #endif
     }
 
-    QString newUniqueKey = finalKey; //key without path
+    const QString newUniqueKey = finalKey; //key without path
     finalKey.prepend(d->path + QLatin1String("/cur/"));
 
     if (realKey == finalKey) {
