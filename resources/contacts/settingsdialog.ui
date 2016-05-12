@@ -11,6 +11,18 @@
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
@@ -22,7 +34,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>&amp;Directory:</string>
+           <string>Di&amp;rectory:</string>
           </property>
           <property name="buddy">
            <cstring>kcfg_Path</cstring>
@@ -80,6 +92,7 @@
    <class>KUrlRequester</class>
    <extends>QFrame</extends>
    <header>kurlrequester.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

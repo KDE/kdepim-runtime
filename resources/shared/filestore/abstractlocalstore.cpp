@@ -367,7 +367,7 @@ void FileStore::AbstractLocalStore::setPath(const QString &path)
     collection.setName(d->mPathFileInfo.fileName());
 
     EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>();
-    if (attribute != Q_NULLPTR) {
+    if (attribute) {
         attribute->setDisplayName(d->mPathFileInfo.fileName());
     }
 

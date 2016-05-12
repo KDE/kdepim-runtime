@@ -1,6 +1,7 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>SettingsDialog</class>
- <widget class="QWidget" name="SettingsDialog" >
+ <widget class="QWidget" name="SettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,46 +16,58 @@
     <height>10</height>
    </size>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QTabWidget" name="ktabwidget" >
-     <property name="currentIndex" >
+    <widget class="QTabWidget" name="ktabwidget">
+     <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab" >
-      <attribute name="title" >
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
        <string>Directory</string>
       </attribute>
-      <layout class="QVBoxLayout" name="tabLayout" >
+      <layout class="QVBoxLayout" name="tabLayout">
        <item>
-        <widget class="QGroupBox" name="groupBox_2" >
-         <property name="title" >
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
           <string>Directory Name</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3" >
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout" >
+           <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <widget class="QLabel" name="label" >
-              <property name="text" >
-               <string>&amp;Directory:</string>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Director&amp;y:</string>
               </property>
-              <property name="buddy" >
+              <property name="buddy">
                <cstring>kcfg_Path</cstring>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="KUrlRequester" name="kcfg_Path" />
+             <widget class="KUrlRequester" name="kcfg_Path"/>
             </item>
            </layout>
           </item>
           <item>
-           <widget class="QLabel" name="label_3" >
-            <property name="text" >
+           <widget class="QLabel" name="label_3">
+            <property name="text">
              <string>Select the directory whose contents should be represented by this resource. If the directory does not exist, it will be created.</string>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
@@ -99,24 +112,24 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox" >
-         <property name="title" >
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
           <string>Access Rights</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2" >
+         <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QCheckBox" name="kcfg_ReadOnly" >
-            <property name="text" >
+           <widget class="QCheckBox" name="kcfg_ReadOnly">
+            <property name="text">
              <string>Read only</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_2" >
-            <property name="text" >
+           <widget class="QLabel" name="label_2">
+            <property name="text">
              <string>If read-only mode is enabled, no changes will be written to the directory selected above. Read-only mode will be automatically enabled if you do not have write access to the directory.</string>
             </property>
-            <property name="wordWrap" >
+            <property name="wordWrap">
              <bool>true</bool>
             </property>
            </widget>
@@ -132,15 +145,18 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-  </customwidget>
-  <customwidget>
    <class>KUrlRequester</class>
    <extends>QFrame</extends>
    <header>kurlrequester.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
+ <connections/>
 </ui>
