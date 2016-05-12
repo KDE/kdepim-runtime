@@ -160,9 +160,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
     // we test it again, to be sure
     if (configFile.isEmpty()) {
         // it is still empty, create it
-        qCWarning(MAILDIRRESOURCE_LOG) << "the resource is not properly configured:";
-        qCWarning(MAILDIRRESOURCE_LOG) << "there is no config file for the resource.";
-        qCWarning(MAILDIRRESOURCE_LOG) << "we create a new one.";
+        qCWarning(MAILDIRRESOURCE_LOG) << "the resource is not properly configured: there is no config file for the resource. We create a new one.";
         const Collection::List cols = qobject_cast<CollectionFetchJob *>(job)->collections();
         QString path;
         if (!cols.isEmpty()) {
