@@ -721,11 +721,12 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
         if (destContent != sourceContent) {
             QString newFinalKey = QLatin1String("1-") + newUniqueKey;
             int i = 1;
-            while (QFile::exists(d->path + QLatin1String("/cur/") + newFinalKey)) {
+            const QString currentPath = d->path + QLatin1String("/cur/");
+            while (QFile::exists(currentPath + newFinalKey)) {
                 i++;
                 newFinalKey = QString::number(i) + QLatin1Char('-') + newUniqueKey;
             }
-            finalKey = d->path + QLatin1String("/cur/") + newFinalKey;
+            finalKey = currentPath + newFinalKey;
         } else {
             QFile::remove(finalKey);   //they are the same
         }
@@ -754,13 +755,14 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString &key) const
         const QString mailDirFlags = key.mid(index + 3);   // after "(:|!)2,"
         const int flagSize(mailDirFlags.size());
         for (int i = 0; i < flagSize; ++i) {
-            if (mailDirFlags[i] == QLatin1Char('P')) {
+            const QChar flag = mailDirFlags.at(i);
+            if (flag == QLatin1Char('P')) {
                 flags << Akonadi::MessageFlags::Forwarded;
-            } else if (mailDirFlags[i] == QLatin1Char('R')) {
+            } else if (flag == QLatin1Char('R')) {
                 flags << Akonadi::MessageFlags::Replied;
-            } else if (mailDirFlags[i] == QLatin1Char('S')) {
+            } else if (flag == QLatin1Char('S')) {
                 flags << Akonadi::MessageFlags::Seen;
-            } else if (mailDirFlags[i] == QLatin1Char('F')) {
+            } else if (flag == QLatin1Char('F')) {
                 flags << Akonadi::MessageFlags::Flagged;
             }
         }
