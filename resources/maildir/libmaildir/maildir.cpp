@@ -677,17 +677,13 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     Q_FOREACH (const Akonadi::Item::Flag &flag, flags) {
         if (flag == Akonadi::MessageFlags::Forwarded) {
             mailDirFlags << QStringLiteral("P");
-        }
-        if (flag == Akonadi::MessageFlags::Replied) {
+        } else if (flag == Akonadi::MessageFlags::Replied) {
             mailDirFlags << QStringLiteral("R");
-        }
-        if (flag == Akonadi::MessageFlags::Seen) {
+        } else if (flag == Akonadi::MessageFlags::Seen) {
             mailDirFlags << QStringLiteral("S");
-        }
-        if (flag == Akonadi::MessageFlags::Deleted) {
+        } else if (flag == Akonadi::MessageFlags::Deleted) {
             mailDirFlags << QStringLiteral("T");
-        }
-        if (flag == Akonadi::MessageFlags::Flagged) {
+        } else if (flag == Akonadi::MessageFlags::Flagged) {
             mailDirFlags << QStringLiteral("F");
         }
     }
