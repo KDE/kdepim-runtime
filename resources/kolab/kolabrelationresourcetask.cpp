@@ -106,7 +106,7 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
         setMetadataJob->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
     }
     setMetadataJob->setMailBox(QStringLiteral("Configuration"));
-    setMetadataJob->addMetaData("/shared/vendor/kolab/folder-type", "configuration.default");
+    setMetadataJob->addMetaData(QByteArrayLiteral("/shared/vendor/kolab/folder-type"), QByteArrayLiteral("configuration.default"));
     connect(setMetadataJob, &KJob::result,
             this, &KolabRelationResourceTask::onSetMetaDataDone);
     setMetadataJob->start();

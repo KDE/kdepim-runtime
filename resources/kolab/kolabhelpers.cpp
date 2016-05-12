@@ -326,16 +326,16 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
 QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeTypes)
 {
     if (contentMimeTypes.contains(KContacts::Addressee::mimeType())) {
-        return "contact";
+        return QByteArrayLiteral("contact");
     } else if (contentMimeTypes.contains(KCalCore::Event::eventMimeType())) {
-        return "event";
+        return QByteArrayLiteral("event");
     } else if (contentMimeTypes.contains(KCalCore::Todo::todoMimeType())) {
-        return "task";
+        return QByteArrayLiteral("task");
     } else if (contentMimeTypes.contains(KCalCore::Journal::journalMimeType())) {
-        return "journal";
+        return QByteArrayLiteral("journal");
     } else if (contentMimeTypes.contains(QStringLiteral("application/x-vnd.akonadi.note")) ||
                contentMimeTypes.contains(QStringLiteral("text/x-vnd.akonadi.note"))) {
-        return "note";
+        return QByteArrayLiteral("note");
     }
     return QByteArray();
 }
@@ -459,8 +459,8 @@ QString KolabHelpers::getIcon(Kolab::FolderType type)
     case Kolab::ConfigurationType:
     case Kolab::FreebusyType:
     case Kolab::FileType:
-    default:
-        break;
+    case Kolab::LastType:
+        return QString();
     }
     return QString();
 }
@@ -478,8 +478,8 @@ bool KolabHelpers::isHandledType(Kolab::FolderType type)
     case Kolab::ConfigurationType:
     case Kolab::FreebusyType:
     case Kolab::FileType:
-    default:
-        break;
+    case Kolab::LastType:
+        return false;
     }
     return false;
 }

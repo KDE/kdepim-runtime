@@ -60,6 +60,7 @@ void RetrieveItemsJob::doStart()
 void RetrieveItemsJob::localListDone(KJob *job)
 {
     if (job->error()) {
+        qCDebug(MAILDIRRESOURCE_LOG) << "Error during RetrieveItemsJob::localListDone " << job->errorString();
         return;    // handled by base class
     }
 

@@ -825,19 +825,18 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
 
     const Maildir md(path);
 
-    QString entry = fileName;
     Item item(items.at(0));
-    const qint64 entrySize = md.size(entry);
+    const qint64 entrySize = md.size(fileName);
     if (entrySize >= 0) {
         item.setSize(entrySize);
     }
 
-    Item::Flags flags = md.readEntryFlags(entry);
+    Item::Flags flags = md.readEntryFlags(fileName);
     Q_FOREACH (const Item::Flag &flag, flags) {
         item.setFlag(flag);
     }
 
-    const QByteArray data = md.readEntry(entry);
+    const QByteArray data = md.readEntry(fileName);
     KMime::Message *mail = new KMime::Message();
     mail->setContent(KMime::CRLFtoLF(data));
     mail->parse();
@@ -852,7 +851,7 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
 void MaildirResource::fsWatchFileModifyResult(KJob *job)
 {
     if (job->error()) {
-        qCDebug(MAILDIRRESOURCE_LOG) << job->errorString();
+        qCDebug(MAILDIRRESOURCE_LOG) << " MaildirResource::fsWatchFileModifyResult error: "<< job->errorString();
         return;
     }
 }

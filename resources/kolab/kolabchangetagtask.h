@@ -29,7 +29,7 @@ class KolabChangeTagTask : public KolabRelationResourceTask
 {
     Q_OBJECT
 public:
-    explicit KolabChangeTagTask(ResourceStateInterface::Ptr resource, QSharedPointer<TagConverter> tagConverter, QObject *parent = Q_NULLPTR);
+    explicit KolabChangeTagTask(ResourceStateInterface::Ptr resource, const QSharedPointer<TagConverter> &tagConverter, QObject *parent = Q_NULLPTR);
 
 protected:
     virtual void startRelationTask(KIMAP::Session *session);
