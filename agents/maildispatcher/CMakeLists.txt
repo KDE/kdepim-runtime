@@ -15,7 +15,6 @@ set( maildispatcheragent_SRCS
 
 ecm_qt_declare_logging_category(maildispatcheragent_SRCS HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME log_maildispatcher)
 
-ki18n_wrap_ui(maildispatcheragent_SRCS settings.ui)
 kconfig_add_kcfg_files(maildispatcheragent_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildispatcheragent.kcfg org.kde.Akonadi.MailDispatcher.Settings)
 qt5_add_dbus_adaptor(maildispatcheragent_SRCS
