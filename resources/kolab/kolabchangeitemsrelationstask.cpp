@@ -37,7 +37,7 @@
 #include "tracer.h"
 #include "kolabhelpers.h"
 
-KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(ResourceStateInterface::Ptr resource, QObject *parent)
+KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
 {
 }

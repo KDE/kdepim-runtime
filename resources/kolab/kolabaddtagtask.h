@@ -28,7 +28,7 @@ class KolabAddTagTask : public KolabRelationResourceTask
 {
     Q_OBJECT
 public:
-    explicit KolabAddTagTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    explicit KolabAddTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
 
 protected:
     virtual void startRelationTask(KIMAP::Session *session);

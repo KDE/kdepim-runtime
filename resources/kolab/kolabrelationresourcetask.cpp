@@ -31,7 +31,7 @@
 
 #include <KDE/KLocalizedString>
 
-KolabRelationResourceTask::KolabRelationResourceTask(ResourceStateInterface::Ptr resource, QObject *parent)
+KolabRelationResourceTask::KolabRelationResourceTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
     , mImapSession(0)
 {

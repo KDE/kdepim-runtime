@@ -35,7 +35,7 @@
 
 #include <QUuid>
 
-KolabAddTagTask::KolabAddTagTask(ResourceStateInterface::Ptr resource, QObject *parent)
+KolabAddTagTask::KolabAddTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
 {
 }

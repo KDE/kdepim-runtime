@@ -27,7 +27,7 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/TagFetchJob>
 
-KolabChangeItemsTagsTask::KolabChangeItemsTagsTask(ResourceStateInterface::Ptr resource, QSharedPointer<TagConverter> tagConverter, QObject *parent)
+KolabChangeItemsTagsTask::KolabChangeItemsTagsTask(const ResourceStateInterface::Ptr &resource, const QSharedPointer<TagConverter> &tagConverter, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
     , mTagConverter(tagConverter)
 {

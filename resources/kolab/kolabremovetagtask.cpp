@@ -28,7 +28,7 @@
 #include <kimap/storejob.h>
 #include "tracer.h"
 
-KolabRemoveTagTask::KolabRemoveTagTask(ResourceStateInterface::Ptr resource, QObject *parent)
+KolabRemoveTagTask::KolabRemoveTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
 {
 }

@@ -184,7 +184,7 @@ void RetrieveMetadataJob::checkDone()
     }
 }
 
-KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent)
+KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
     , mJobs(0)
     , mSession(Q_NULLPTR)

@@ -34,7 +34,7 @@ class KolabRetrieveCollectionsTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit KolabRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
+    explicit KolabRetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
     virtual ~KolabRetrieveCollectionsTask();
 
 private slots:

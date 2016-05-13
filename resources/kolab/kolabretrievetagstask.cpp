@@ -27,7 +27,7 @@
 #include <kolabobject.h>
 #include "tracer.h"
 
-KolabRetrieveTagTask::KolabRetrieveTagTask(ResourceStateInterface::Ptr resource, RetrieveType type, QObject *parent)
+KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
     , mSession(0)
     , mRetrieveType(type)
