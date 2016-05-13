@@ -33,7 +33,7 @@ public:
 
     }
 
-    void doStart(KIMAP::Session */*session*/)
+    void doStart(KIMAP::Session */*session*/) Q_DECL_OVERRIDE
     {
         cancelTask(QStringLiteral("Dummy task"));
     }

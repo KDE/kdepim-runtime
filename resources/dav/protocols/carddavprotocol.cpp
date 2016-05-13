@@ -26,7 +26,7 @@
 class CarddavCollectionQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QDomDocument document;
 
@@ -43,7 +43,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return QString();
     }
@@ -52,7 +52,7 @@ public:
 class CarddavListItemsQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QDomDocument document;
 
@@ -69,7 +69,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return KContacts::Addressee::mimeType();
     }
@@ -78,7 +78,7 @@ public:
 class CarddavMultigetQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QDomDocument document;
         QStringList urls = parameter(QStringLiteral("urls")).toStringList();
@@ -115,7 +115,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return QString();
     }

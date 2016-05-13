@@ -38,114 +38,114 @@ public:
     ~DummyResourceState();
 
     void setUserName(const QString &name);
-    virtual QString userName() const;
+    QString userName() const Q_DECL_OVERRIDE;
 
     void setResourceName(const QString &name);
-    virtual QString resourceName() const;
+    QString resourceName() const Q_DECL_OVERRIDE;
 
     void setResourceIdentifier(const QString &identifier);
-    virtual QString resourceIdentifier() const;
+    QString resourceIdentifier() const Q_DECL_OVERRIDE;
 
     void setServerCapabilities(const QStringList &capabilities);
-    virtual QStringList serverCapabilities() const;
+    QStringList serverCapabilities() const Q_DECL_OVERRIDE;
 
     void setServerNamespaces(const QList<KIMAP::MailBoxDescriptor> &namespaces);
-    virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
-    virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const;
-    virtual QList<KIMAP::MailBoxDescriptor> userNamespaces() const;
-    virtual QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const;
+    QList<KIMAP::MailBoxDescriptor> serverNamespaces() const Q_DECL_OVERRIDE;
+    QList<KIMAP::MailBoxDescriptor> personalNamespaces() const Q_DECL_OVERRIDE;
+    QList<KIMAP::MailBoxDescriptor> userNamespaces() const Q_DECL_OVERRIDE;
+    QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const Q_DECL_OVERRIDE;
 
     void setAutomaticExpungeEnagled(bool enabled);
-    virtual bool isAutomaticExpungeEnabled() const;
+    bool isAutomaticExpungeEnabled() const Q_DECL_OVERRIDE;
 
     void setSubscriptionEnabled(bool enabled);
-    virtual bool isSubscriptionEnabled() const;
+    bool isSubscriptionEnabled() const Q_DECL_OVERRIDE;
     void setDisconnectedModeEnabled(bool enabled);
-    virtual bool isDisconnectedModeEnabled() const;
+    bool isDisconnectedModeEnabled() const Q_DECL_OVERRIDE;
     void setIntervalCheckTime(int interval);
-    virtual int intervalCheckTime() const;
+    int intervalCheckTime() const Q_DECL_OVERRIDE;
 
     void setCollection(const Akonadi::Collection &collection);
-    virtual Akonadi::Collection collection() const;
+    Akonadi::Collection collection() const Q_DECL_OVERRIDE;
     void setItem(const Akonadi::Item &item);
-    virtual Akonadi::Item item() const;
-    virtual Akonadi::Item::List items() const;
+    Akonadi::Item item() const Q_DECL_OVERRIDE;
+    Akonadi::Item::List items() const Q_DECL_OVERRIDE;
 
     void setParentCollection(const Akonadi::Collection &collection);
-    virtual Akonadi::Collection parentCollection() const;
+    Akonadi::Collection parentCollection() const Q_DECL_OVERRIDE;
 
     void setSourceCollection(const Akonadi::Collection &collection);
-    virtual Akonadi::Collection sourceCollection() const;
+    Akonadi::Collection sourceCollection() const Q_DECL_OVERRIDE;
     void setTargetCollection(const Akonadi::Collection &collection);
-    virtual Akonadi::Collection targetCollection() const;
+    Akonadi::Collection targetCollection() const Q_DECL_OVERRIDE;
 
     void setParts(const QSet<QByteArray> &parts);
-    virtual QSet<QByteArray> parts() const;
+    QSet<QByteArray> parts() const Q_DECL_OVERRIDE;
 
     void setTag(const Akonadi::Tag &tag);
-    virtual Akonadi::Tag tag() const;
+    Akonadi::Tag tag() const Q_DECL_OVERRIDE;
     void setAddedTags(const QSet<Akonadi::Tag> &addedTags);
-    virtual QSet<Akonadi::Tag> addedTags() const;
+    QSet<Akonadi::Tag> addedTags() const Q_DECL_OVERRIDE;
     void setRemovedTags(const QSet<Akonadi::Tag> &removedTags);
-    virtual QSet<Akonadi::Tag> removedTags() const;
+    QSet<Akonadi::Tag> removedTags() const Q_DECL_OVERRIDE;
 
-    virtual Akonadi::Relation::List addedRelations() const;
-    virtual Akonadi::Relation::List removedRelations() const;
+    Akonadi::Relation::List addedRelations() const Q_DECL_OVERRIDE;
+    Akonadi::Relation::List removedRelations() const Q_DECL_OVERRIDE;
 
-    virtual QString rootRemoteId() const;
+    QString rootRemoteId() const Q_DECL_OVERRIDE;
 
-    virtual void setIdleCollection(const Akonadi::Collection &collection);
-    virtual void applyCollectionChanges(const Akonadi::Collection &collection);
+    void setIdleCollection(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void applyCollectionChanges(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-    virtual void collectionAttributesRetrieved(const Akonadi::Collection &collection);
+    void collectionAttributesRetrieved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-    virtual void itemRetrieved(const Akonadi::Item &item);
+    void itemRetrieved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
-    virtual void itemsRetrieved(const Akonadi::Item::List &items);
-    virtual void itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed);
-    virtual void itemsRetrievalDone();
+    void itemsRetrieved(const Akonadi::Item::List &items) Q_DECL_OVERRIDE;
+    void itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed) Q_DECL_OVERRIDE;
+    void itemsRetrievalDone() Q_DECL_OVERRIDE;
 
-    virtual void setTotalItems(int);
+    void setTotalItems(int) Q_DECL_OVERRIDE;
 
-    virtual QSet< QByteArray > addedFlags() const;
-    virtual QSet< QByteArray > removedFlags() const;
+    QSet< QByteArray > addedFlags() const Q_DECL_OVERRIDE;
+    QSet< QByteArray > removedFlags() const Q_DECL_OVERRIDE;
 
-    virtual void itemChangeCommitted(const Akonadi::Item &item);
-    virtual void itemsChangesCommitted(const Akonadi::Item::List &items);
+    void itemChangeCommitted(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemsChangesCommitted(const Akonadi::Item::List &items) Q_DECL_OVERRIDE;
 
-    virtual void collectionsRetrieved(const Akonadi::Collection::List &collections);
+    void collectionsRetrieved(const Akonadi::Collection::List &collections) Q_DECL_OVERRIDE;
 
-    virtual void collectionChangeCommitted(const Akonadi::Collection &collection);
+    void collectionChangeCommitted(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
 
-    virtual void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &);
-    virtual void relationsRetrieved(const Akonadi::Relation::List &tags);
-    virtual void tagChangeCommitted(const Akonadi::Tag &tag);
+    void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) Q_DECL_OVERRIDE;
+    void relationsRetrieved(const Akonadi::Relation::List &tags) Q_DECL_OVERRIDE;
+    void tagChangeCommitted(const Akonadi::Tag &tag) Q_DECL_OVERRIDE;
 
-    virtual void searchFinished(const QVector<qint64> &result, bool isRid = true);
+    void searchFinished(const QVector<qint64> &result, bool isRid = true) Q_DECL_OVERRIDE;
 
-    virtual void changeProcessed();
+    void changeProcessed() Q_DECL_OVERRIDE;
 
-    virtual void cancelTask(const QString &errorString);
-    virtual void deferTask();
-    virtual void restartItemRetrieval(Akonadi::Collection::Id col);
-    virtual void taskDone();
+    void cancelTask(const QString &errorString) Q_DECL_OVERRIDE;
+    void deferTask() Q_DECL_OVERRIDE;
+    void restartItemRetrieval(Akonadi::Collection::Id col) Q_DECL_OVERRIDE;
+    void taskDone() Q_DECL_OVERRIDE;
 
-    virtual void emitError(const QString &message);
-    virtual void emitWarning(const QString &message);
-    virtual void emitPercent(int percent);
+    void emitError(const QString &message) Q_DECL_OVERRIDE;
+    void emitWarning(const QString &message) Q_DECL_OVERRIDE;
+    void emitPercent(int percent) Q_DECL_OVERRIDE;
 
-    virtual void synchronizeCollectionTree();
-    virtual void scheduleConnectionAttempt();
+    void synchronizeCollectionTree() Q_DECL_OVERRIDE;
+    void scheduleConnectionAttempt() Q_DECL_OVERRIDE;
 
-    virtual QChar separatorCharacter() const;
-    virtual void setSeparatorCharacter(const QChar &separator);
+    QChar separatorCharacter() const Q_DECL_OVERRIDE;
+    void setSeparatorCharacter(const QChar &separator) Q_DECL_OVERRIDE;
 
-    virtual void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName);
+    void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName) Q_DECL_OVERRIDE;
 
-    virtual int batchSize() const;
-    virtual void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode);
+    int batchSize() const Q_DECL_OVERRIDE;
+    void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) Q_DECL_OVERRIDE;
 
-    virtual MessageHelper::Ptr messageHelper() const;
+    MessageHelper::Ptr messageHelper() const Q_DECL_OVERRIDE;
 
     QList< QPair<QByteArray, QVariant> > calls() const;
 

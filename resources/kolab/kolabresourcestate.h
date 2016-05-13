@@ -30,9 +30,9 @@ public:
     explicit KolabResourceState(ImapResource *resource, const TaskArguments &arguments);
 
 private:
-    virtual void collectionAttributesRetrieved(const Akonadi::Collection &collection);
-    virtual void collectionsRetrieved(const Akonadi::Collection::List &collections);
-    virtual MessageHelper::Ptr messageHelper() const;
+    void collectionAttributesRetrieved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionsRetrieved(const Akonadi::Collection::List &collections) Q_DECL_OVERRIDE;
+    MessageHelper::Ptr messageHelper() const Q_DECL_OVERRIDE;
 };
 
 #endif

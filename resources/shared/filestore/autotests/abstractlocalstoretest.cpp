@@ -57,10 +57,10 @@ public:
     QString mErrorText;
 
 protected:
-    void processJob(Akonadi::FileStore::Job *job);
+    void processJob(Akonadi::FileStore::Job *job) Q_DECL_OVERRIDE;
 
 protected:
-    void setTopLevelCollection(const Collection &collection)
+    void setTopLevelCollection(const Collection &collection) Q_DECL_OVERRIDE
     {
         mTopLevelCollection = collection;
 
@@ -70,77 +70,77 @@ protected:
         AbstractLocalStore::setTopLevelCollection(modifiedCollection);
     }
 
-    void checkCollectionCreate(Akonadi::FileStore::CollectionCreateJob *job, int &errorCode, QString &errorText) const
+    void checkCollectionCreate(Akonadi::FileStore::CollectionCreateJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkCollectionDelete(Akonadi::FileStore::CollectionDeleteJob *job, int &errorCode, QString &errorText) const
+    void checkCollectionDelete(Akonadi::FileStore::CollectionDeleteJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkCollectionFetch(Akonadi::FileStore::CollectionFetchJob *job, int &errorCode, QString &errorText) const
+    void checkCollectionFetch(Akonadi::FileStore::CollectionFetchJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkCollectionModify(Akonadi::FileStore::CollectionModifyJob *job, int &errorCode, QString &errorText) const
+    void checkCollectionModify(Akonadi::FileStore::CollectionModifyJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkCollectionMove(Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const
+    void checkCollectionMove(Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkItemCreate(Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const
+    void checkItemCreate(Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkItemDelete(Akonadi::FileStore::ItemDeleteJob *job, int &errorCode, QString &errorText) const
+    void checkItemDelete(Akonadi::FileStore::ItemDeleteJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkItemFetch(Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const
+    void checkItemFetch(Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkItemModify(Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText) const
+    void checkItemModify(Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkItemMove(Akonadi::FileStore::ItemMoveJob *job, int &errorCode, QString &errorText) const
+    void checkItemMove(Akonadi::FileStore::ItemMoveJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;
         errorText = mErrorText;
     }
 
-    void checkStoreCompact(Akonadi::FileStore::StoreCompactJob *job, int &errorCode, QString &errorText) const
+    void checkStoreCompact(Akonadi::FileStore::StoreCompactJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         mLastCheckedJob = job;
         errorCode = mErrorCode;

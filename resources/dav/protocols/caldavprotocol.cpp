@@ -31,7 +31,7 @@
 class CaldavCollectionQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QDomDocument document;
 
@@ -51,7 +51,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return QString();
     }
@@ -60,7 +60,7 @@ public:
 class CaldavListEventQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QString startTime = parameter(QStringLiteral("start")).toString();
         QString endTime = parameter(QStringLiteral("end")).toString();
@@ -116,7 +116,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return KCalCore::Event::eventMimeType();
     }
@@ -125,7 +125,7 @@ public:
 class CaldavListTodoQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QString startTime = parameter(QStringLiteral("start")).toString();
         QString endTime = parameter(QStringLiteral("end")).toString();
@@ -181,7 +181,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return KCalCore::Todo::todoMimeType();
     }
@@ -190,7 +190,7 @@ public:
 class CaldavListJournalQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QString startTime = parameter(QStringLiteral("start")).toString();
         QString endTime = parameter(QStringLiteral("end")).toString();
@@ -246,7 +246,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return KCalCore::Journal::journalMimeType();
     }
@@ -255,7 +255,7 @@ public:
 class CaldavMultigetQueryBuilder : public XMLQueryBuilder
 {
 public:
-    virtual QDomDocument buildQuery() const
+    QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QDomDocument document;
         QStringList urls = parameter(QStringLiteral("urls")).toStringList();
@@ -290,7 +290,7 @@ public:
         return document;
     }
 
-    virtual QString mimeType() const
+    QString mimeType() const Q_DECL_OVERRIDE
     {
         return QString();
     }

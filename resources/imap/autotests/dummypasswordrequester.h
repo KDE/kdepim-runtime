@@ -36,8 +36,8 @@ public:
     void setDelays(const QList<int> &delays);
 
 public:
-    virtual void requestPassword(RequestType request = StandardRequest,
-                                 const QString &serverError = QString());
+    void requestPassword(RequestType request = StandardRequest,
+                                 const QString &serverError = QString()) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void emitResult();

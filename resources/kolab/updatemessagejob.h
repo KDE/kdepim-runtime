@@ -41,7 +41,7 @@ public:
 
     qint64 newUid() const;
 
-    void start();
+    void start() Q_DECL_OVERRIDE;
 
 private:
     void fetchHeaders();

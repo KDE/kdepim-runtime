@@ -60,12 +60,12 @@ public:
     mutable QString mErrorText;
 
 protected:
-    void setTopLevelCollection(const Collection &collection)
+    void setTopLevelCollection(const Collection &collection) Q_DECL_OVERRIDE
     {
         MixedMaildirStore::setTopLevelCollection(collection);
     }
 
-    void checkCollectionMove(FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const
+    void checkCollectionMove(FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         MixedMaildirStore::checkCollectionMove(job, errorCode, errorText);
 
@@ -74,7 +74,7 @@ protected:
         mErrorText = errorText;
     }
 
-    void checkItemCreate(FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const
+    void checkItemCreate(FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE
     {
         MixedMaildirStore::checkItemCreate(job, errorCode, errorText);
 

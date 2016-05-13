@@ -66,8 +66,8 @@ protected:
     QByteArray clientId() const Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-    void retrieveTags();
-    void retrieveRelations();
+    void retrieveTags() Q_DECL_OVERRIDE;
+    void retrieveRelations() Q_DECL_OVERRIDE;
 };
 
 #endif
