@@ -31,7 +31,7 @@ public:
     explicit KolabAddTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
 
 protected:
-    virtual void startRelationTask(KIMAP::Session *session);
+    void startRelationTask(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
     QByteArray mMessageId;

@@ -41,7 +41,7 @@ public:
     explicit KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent = Q_NULLPTR);
 
 protected:
-    virtual void startRelationTask(KIMAP::Session *session);
+    void startRelationTask(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
     KIMAP::Session *mSession;

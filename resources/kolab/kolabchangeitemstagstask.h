@@ -32,7 +32,7 @@ public:
     explicit KolabChangeItemsTagsTask(const ResourceStateInterface::Ptr &resource, const QSharedPointer<TagConverter> &tagConverter, QObject *parent = Q_NULLPTR);
 
 protected:
-    virtual void startRelationTask(KIMAP::Session *session);
+    void startRelationTask(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
     KIMAP::Session *mSession;
