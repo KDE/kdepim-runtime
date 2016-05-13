@@ -28,13 +28,13 @@ class KolabMessageHelper : public MessageHelper
 public:
     explicit KolabMessageHelper(const Akonadi::Collection &collection);
     virtual ~KolabMessageHelper();
-    virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message,
+    Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message,
             const qint64 uid,
             const qint64 size,
             const QList<KIMAP::MessageAttribute> &attrs,
             const QList<QByteArray> &flags,
             const KIMAP::FetchJob::FetchScope &scope,
-            bool &ok) const;
+            bool &ok) const Q_DECL_OVERRIDE;
 
 private:
     Akonadi::Collection mCollection;

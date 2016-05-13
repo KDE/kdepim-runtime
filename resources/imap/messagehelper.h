@@ -30,7 +30,7 @@ public:
     typedef QSharedPointer<MessageHelper> Ptr;
 
     virtual ~MessageHelper();
-    virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message,
+    virtual Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message,
             const qint64 uid,
             const qint64 size,
             const QList<KIMAP::MessageAttribute> &attrs,

@@ -36,7 +36,7 @@ KolabMessageHelper::~KolabMessageHelper()
 
 }
 
-Akonadi::Item KolabMessageHelper::createItemFromMessage(KMime::Message::Ptr message,
+Akonadi::Item KolabMessageHelper::createItemFromMessage(const KMime::Message::Ptr &message,
         const qint64 uid,
         const qint64 size,
         const QList<KIMAP::MessageAttribute> &attrs,

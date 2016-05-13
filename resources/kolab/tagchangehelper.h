@@ -48,7 +48,7 @@ class TagChangeHelper : public QObject
 {
     Q_OBJECT
 public:
-    explicit TagChangeHelper(KolabRelationResourceTask *parent = 0);
+    explicit TagChangeHelper(KolabRelationResourceTask *parent = Q_NULLPTR);
 
     void start(const Akonadi::Tag &tag, const KMime::Message::Ptr &message, KIMAP::Session *session);
 
