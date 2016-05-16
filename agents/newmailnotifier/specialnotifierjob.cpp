@@ -33,7 +33,7 @@
 #include "newmailnotifier_debug.h"
 
 #include <QTextDocument>
-#ifdef HAVE_SPEECH
+#ifdef HAVE_TEXTTOSPEECH
 #include <QTextToSpeech>
 #endif
 
@@ -148,7 +148,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
-#ifdef HAVE_SPEECH
+#ifdef HAVE_TEXTTOSPEECH
             QTextToSpeech *speech = new QTextToSpeech(this);
             QString message = NewMailNotifierAgentSettings::textToSpeak();
             message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());

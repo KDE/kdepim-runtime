@@ -117,7 +117,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
-#ifdef HAVE_SPEECH
+#ifdef HAVE_TEXTTOSPEECH
     QWidget *textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
@@ -219,7 +219,7 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setShowSubject(mShowSubject->isChecked());
     NewMailNotifierAgentSettings::setShowFolder(mShowFolders->isChecked());
     NewMailNotifierAgentSettings::setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
-#ifdef HAVE_SPEECH
+#ifdef HAVE_TEXTTOSPEECH
     NewMailNotifierAgentSettings::setTextToSpeakEnabled(mTextToSpeak->isChecked());
     NewMailNotifierAgentSettings::setTextToSpeak(mTextToSpeakSetting->text());
 #endif

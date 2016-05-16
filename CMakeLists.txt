@@ -91,7 +91,7 @@ find_package(Qt5 OPTIONAL_COMPONENTS TextToSpeech)
 if (NOT Qt5TextToSpeech_FOUND)
     message(STATUS "Qt5TextToSpeech not found, speech feature will be disabled")
 else()
-    add_definitions(-DHAVE_SPEECH)
+    add_definitions(-DHAVE_TEXTTOSPEECH)
 endif()
 
 
