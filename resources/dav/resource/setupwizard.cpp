@@ -325,7 +325,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     foreach (const KService::Ptr &provider, providers) {
         offers.append(QPair<QString, QString>(provider->name(), provider->entryPath()));
     }
-    qSort(offers.begin(), offers.end(), compareServiceOffers);
+    std::sort(offers.begin(), offers.end(), compareServiceOffers);
     QListIterator< QPair<QString, QString> > it(offers);
     while (it.hasNext()) {
         QPair<QString, QString> p = it.next();
