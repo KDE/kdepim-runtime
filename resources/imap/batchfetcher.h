@@ -44,7 +44,7 @@ public:
     void start() Q_DECL_OVERRIDE;
     void fetchNextBatch();
     void setUidBased(bool);
-    void setSearchUids(const KIMAP::ImapInterval &);
+    void setSearchUids(const KIMAP::ImapInterval &interval);
     void setGmailExtensionsEnabled(bool enable);
 
 Q_SIGNALS:

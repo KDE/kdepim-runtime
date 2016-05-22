@@ -425,7 +425,7 @@ bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
 #define SASLERROR  closeConnection(); \
     error(ERR_COULD_NOT_AUTHENTICATE, i18n("An error occurred during authentication: %1",  \
                                            QString::fromUtf8( sasl_errdetail( conn ) ))); \
-     
+
 int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
 {
     char buf[512];
@@ -1047,6 +1047,8 @@ void POP3Protocol::get(const QUrl &url)
 
 void POP3Protocol::listDir(const QUrl &url)
 {
+    Q_UNUSED(url);
+
     bool isINT;
     int num_messages = 0;
     QByteArray q_buf(MAX_RESPONSE_LEN, 0);

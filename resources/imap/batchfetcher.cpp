@@ -50,9 +50,9 @@ void BatchFetcher::setUidBased(bool uidBased)
     m_uidBased = uidBased;
 }
 
-void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &intervall)
+void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &interval)
 {
-    m_searchUidInterval = intervall;
+    m_searchUidInterval = interval;
 
     //We look up the UIDs ourselves
     m_currentSet = KIMAP::ImapSet();
@@ -194,6 +194,7 @@ void BatchFetcher::onHeadersReceived(const QString &mailBox,
                                      const QMap<qint64, KIMAP::MessageFlags> &flags,
                                      const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
+    Q_UNUSED(mailBox);
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
 
     Akonadi::Item::List addedItems;
@@ -239,4 +240,3 @@ void BatchFetcher::onHeadersFetchDone(KJob *job)
         }
     }
 }
-

@@ -55,6 +55,8 @@ QDebug debugStream(int line, const char *file, const char *function)
         }
     }
 
+    Q_UNUSED(line);
+    Q_UNUSED(file);
     debug << QStringLiteral("Trace:%1(%2) %3:").arg(QString::fromLatin1(programName)).arg(unsigned(getpid())).arg(QLatin1String(function)) /* << file << ":" << line */;
 
     return debug;

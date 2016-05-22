@@ -96,6 +96,10 @@ void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
         const QMap<qint64, KIMAP::MessageFlags> &flags,
         const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
+    Q_UNUSED(mailBox);
+    Q_UNUSED(sizes);
+    Q_UNUSED(attrs);
+
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch);
 
@@ -224,4 +228,3 @@ void KolabRetrieveTagTask::taskComplete()
 
     deleteLater();
 }
-

@@ -199,6 +199,7 @@ void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
 
 void RetrieveItemsTask::triggerExpunge(const QString &mailBox)
 {
+    Q_UNUSED(mailBox);
     KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob(m_session);
     connect(expunge, &KJob::result,
             this, &RetrieveItemsTask::onExpungeDone);
@@ -428,7 +429,7 @@ void RetrieveItemsTask::prepareRetrieval()
         setTotalItems(m_messageCount);
         retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
     } else if (m_nextUid <= 0) {
-        //This is a compatibilty codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
+        //This is a compatibility codepath for Courier IMAP. It probably introduces problems, but at least it syncs.
         //Since we don't have uidnext available, we simply use the messagecount. This will miss simultaneously added/removed messages.
         //qCDebug(IMAPRESOURCE_LOG) << "Running courier imap compatibility codepath";
         if (m_messageCount > realMessageCount) {
@@ -639,4 +640,3 @@ void RetrieveItemsTask::taskComplete()
     qCDebug(IMAPRESOURCE_LOG) << "Retrieval complete. Elapsed(ms): " << m_time.elapsed();
     itemsRetrievalDone();
 }
-

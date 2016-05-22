@@ -31,7 +31,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
-#include <QtCore/QTimer>
+#include <QTimer>
 
 #include "imapresource.h"
 #include "sessionpool.h"
@@ -168,7 +168,7 @@ void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBo
 
 void ImapIdleManager::onFlagsChanged(KIMAP::IdleJob *job)
 {
+    Q_UNUSED(job);
     qCDebug(IMAPRESOURCE_LOG) << "IDLE flags changed in" << m_session->selectedMailBox();
     m_resource->synchronizeCollection(m_state->collection().id());
 }
-
