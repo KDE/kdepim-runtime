@@ -411,7 +411,7 @@ static bool sortedEqual(const QStringList &list1, const QStringList &list2)
     QStringList sorted2 = list2;
     sorted2.sort();
 
-    return qEqual(sorted1.begin(), sorted1.end(), sorted2.begin());
+    return std::equal(sorted1.begin(), sorted1.end(), sorted2.begin());
 }
 
 void Pop3Test::lowerTimeOfSeenMail(const QString &uidOfMail, int secondsToLower)
