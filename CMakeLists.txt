@@ -143,7 +143,7 @@ add_subdirectory(plugins)
 add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(migration)
-
+add_subdirectory(doc)
 
 ## install the MIME type spec file for KDEPIM specific MIME types
 install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
