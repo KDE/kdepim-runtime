@@ -44,6 +44,7 @@ Icon=text-directory
 Comment=Loads contact from vCard Directory
 Comment[ca]=Carrega els contactes des d'un directori vCard
 Comment[ca@valencia]=Carrega els contactes des d'un directori vCard
+Comment[de]=Lädt Kontakt aus einem vCard-Ordner
 Comment[nl]=Laadt contactpersoon uit een vCard-map
 Comment[pt]=Carrega um contacto de uma pasta de ficheiros vCard
 Comment[sv]=Laddar kontakter från en vCard-katalog
