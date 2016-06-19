@@ -45,8 +45,11 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &_data, int role) Q_DECL_OVERRIDE;
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
+
+    QHash<Akonadi::Collection, bool> notificationCollection() const;
+
 private:
-    QHash<Akonadi::Collection, bool> subscriptions;
+    QHash<Akonadi::Collection, bool> mNotificationCollection;
 };
 
 class NewMailNotifierSelectCollectionWidget : public QWidget
