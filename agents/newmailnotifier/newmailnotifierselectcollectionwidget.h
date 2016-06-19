@@ -32,7 +32,6 @@ class EntityTreeModel;
 class ChangeRecorder;
 }
 class QTreeView;
-class KCheckableProxyModel;
 class KJob;
 
 class NewMailNotifierSelectCollectionWidget : public QWidget
@@ -48,19 +47,16 @@ private Q_SLOTS:
     void slotSelectAllCollections();
     void slotUnselectAllCollections();
     void slotModifyJobDone(KJob *job);
-    void slotUpdateCollectionStatus();
     void slotSetCollectionFilter(const QString &);
 
     void slotCollectionTreeFetched();
 
 private:
-    void updateStatus(const QModelIndex &parent);
     void forceStatus(const QModelIndex &parent, bool status);
     QTreeView *mFolderView;
     QItemSelectionModel *mSelectionModel;
     Akonadi::EntityTreeModel *mModel;
     Akonadi::ChangeRecorder *mChangeRecorder;
-    KCheckableProxyModel *mCheckProxy;
     KRecursiveFilterProxyModel *mCollectionFilter;
     bool mNeedUpdate;
 };
