@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <Collection>
 #include <QModelIndex>
+#include <QIdentityProxyModel>
 
 class QItemSelectionModel;
 class KRecursiveFilterProxyModel;
@@ -33,6 +34,20 @@ class ChangeRecorder;
 }
 class QTreeView;
 class KJob;
+
+
+class NewMailNotifierCollectionProxyModel : public QIdentityProxyModel
+{
+public:
+    explicit NewMailNotifierCollectionProxyModel(QObject *parent = Q_NULLPTR);
+
+    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+
+    bool setData(const QModelIndex &index, const QVariant &_data, int role) Q_DECL_OVERRIDE;
+    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
+private:
+    QHash<Akonadi::Collection, bool> subscriptions;
+};
 
 class NewMailNotifierSelectCollectionWidget : public QWidget
 {
@@ -58,6 +73,7 @@ private:
     Akonadi::EntityTreeModel *mModel;
     Akonadi::ChangeRecorder *mChangeRecorder;
     KRecursiveFilterProxyModel *mCollectionFilter;
+    NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel;
     bool mNeedUpdate;
 };
 

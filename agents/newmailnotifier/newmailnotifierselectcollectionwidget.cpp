@@ -43,61 +43,6 @@
 #include <QTimer>
 
 
-class SearchCollectionProxyModel : public QIdentityProxyModel
-{
-public:
-    explicit SearchCollectionProxyModel(QObject *parent = Q_NULLPTR)
-        : QIdentityProxyModel(parent)
-    {
-    }
-
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE
-    {
-        if (role == Qt::CheckStateRole) {
-            if (index.isValid()) {
-                const Akonadi::Collection collection =
-                    data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-                if (subscriptions.contains(collection)) {
-                    return subscriptions.value(collection);
-                } else {
-                    Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
-                    if (!attr || !attr->ignoreNewMail()) {
-                        return Qt::Checked;
-                    }
-                    return Qt::Unchecked;
-                }
-            }
-        }
-        return QIdentityProxyModel::data(index, role);
-    }
-
-    bool setData(const QModelIndex &index, const QVariant &_data, int role) Q_DECL_OVERRIDE {
-        if (role == Qt::CheckStateRole)
-        {
-            if (index.isValid()) {
-                const Akonadi::Collection collection =
-                    data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-                subscriptions[collection] = _data.value<Qt::CheckState>();
-                return true;
-            }
-        }
-
-        return QIdentityProxyModel::setData(index, _data, role);
-    }
-
-    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE
-    {
-        if (index.isValid()) {
-            return QIdentityProxyModel::flags(index) | Qt::ItemIsUserCheckable;
-        } else {
-            return QIdentityProxyModel::flags(index);
-        }
-    }
-private:
-    QHash<Akonadi::Collection, bool> subscriptions;
-};
-
-
 NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWidget *parent)
     : QWidget(parent),
       mNeedUpdate(false)
@@ -125,11 +70,11 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mimeTypeProxy->setSourceModel(mModel);
 
 
-    SearchCollectionProxyModel *proxy = new SearchCollectionProxyModel(this);
-    proxy->setSourceModel(mimeTypeProxy);
+    mNewMailNotifierProxyModel = new NewMailNotifierCollectionProxyModel(this);
+    mNewMailNotifierProxyModel->setSourceModel(mimeTypeProxy);
 
     mCollectionFilter = new KRecursiveFilterProxyModel(this);
-    mCollectionFilter->setSourceModel(proxy);
+    mCollectionFilter->setSourceModel(mNewMailNotifierProxyModel);
     mCollectionFilter->setDynamicSortFilter(true);
     mCollectionFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 
@@ -190,14 +135,12 @@ void NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections()
 
 void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &parent, bool status)
 {
-#if 0
-    const int nbCol = mCheckProxy->rowCount(parent);
+    const int nbCol = mNewMailNotifierProxyModel->rowCount(parent);
     for (int i = 0; i < nbCol; ++i) {
-        const QModelIndex child = mCheckProxy->index(i, 0, parent);
-        mCheckProxy->setData(child, status ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
+        const QModelIndex child = mNewMailNotifierProxyModel->index(i, 0, parent);
+        mNewMailNotifierProxyModel->setData(child, status ? Qt::Checked : Qt::Unchecked, Qt::CheckStateRole);
         forceStatus(child, status);
     }
-#endif
 }
 
 void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QModelIndex &parent)
@@ -248,3 +191,54 @@ void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
     }
 }
 
+
+
+NewMailNotifierCollectionProxyModel::NewMailNotifierCollectionProxyModel(QObject *parent)
+    : QIdentityProxyModel(parent)
+{
+}
+
+QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int role) const
+{
+    if (role == Qt::CheckStateRole)
+    {
+        if (index.isValid()) {
+            const Akonadi::Collection collection =
+                    data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            if (subscriptions.contains(collection)) {
+                return subscriptions.value(collection);
+            } else {
+                Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
+                if (!attr || !attr->ignoreNewMail()) {
+                    return Qt::Checked;
+                }
+                return Qt::Unchecked;
+            }
+        }
+    }
+    return QIdentityProxyModel::data(index, role);
+}
+
+bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, const QVariant &_data, int role)
+{
+    if (role == Qt::CheckStateRole)
+    {
+        if (index.isValid()) {
+            const Akonadi::Collection collection =
+                data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            subscriptions[collection] = _data.value<Qt::CheckState>();
+            return true;
+        }
+    }
+
+    return QIdentityProxyModel::setData(index, _data, role);
+}
+
+Qt::ItemFlags NewMailNotifierCollectionProxyModel::flags(const QModelIndex &index) const
+{
+    if (index.isValid()) {
+        return QIdentityProxyModel::flags(index) | Qt::ItemIsUserCheckable;
+    } else {
+        return QIdentityProxyModel::flags(index);
+    }
+}
