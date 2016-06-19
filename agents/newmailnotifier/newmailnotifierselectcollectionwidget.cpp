@@ -199,19 +199,15 @@ void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &paren
     }
 }
 
-void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QModelIndex &parent)
+void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
 {
-#if 0
-    const int nbCol = mCheckProxy->rowCount(parent);
-    for (int i = 0; i < nbCol; ++i) {
-        const QModelIndex child = mCheckProxy->index(i, 0, parent);
-
-        Akonadi::Collection collection =
-            mNewMailNotifierProxyModel->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-
+    QHashIterator<Akonadi::Collection, bool> i(mNewMailNotifierProxyModel->notificationCollection());
+    while (i.hasNext()) {
+        i.next();
+        Akonadi::Collection collection = i.key();
         Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
         Akonadi::CollectionModifyJob *modifyJob = Q_NULLPTR;
-        const bool selected = (mCheckProxy->data(child, Qt::CheckStateRole).value<int>() != 0);
+        const bool selected = i.value();
         if (selected && attr && attr->ignoreNewMail()) {
             collection.removeAttribute<Akonadi::NewMailNotifierAttribute>();
             modifyJob = new Akonadi::CollectionModifyJob(collection);
@@ -226,9 +222,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QMo
         if (modifyJob) {
             connect(modifyJob, &Akonadi::CollectionModifyJob::finished, this, &NewMailNotifierSelectCollectionWidget::slotModifyJobDone);
         }
-        updateCollectionsRecursive(child);
     }
-#endif
 }
 
 void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)

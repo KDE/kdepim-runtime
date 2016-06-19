@@ -212,7 +212,7 @@ void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
 
 void NewMailNotifierSettingsDialog::slotOkClicked()
 {
-    mSelectCollection->updateCollectionsRecursive(QModelIndex());
+    mSelectCollection->updateCollectionsRecursive();
 
     NewMailNotifierAgentSettings::setShowPhoto(mShowPhoto->isChecked());
     NewMailNotifierAgentSettings::setShowFrom(mShowFrom->isChecked());

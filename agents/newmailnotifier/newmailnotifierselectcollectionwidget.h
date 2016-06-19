@@ -59,7 +59,7 @@ public:
     explicit NewMailNotifierSelectCollectionWidget(QWidget *parent = Q_NULLPTR);
     ~NewMailNotifierSelectCollectionWidget();
 
-    void updateCollectionsRecursive(const QModelIndex &parent);
+    void updateCollectionsRecursive();
 
 private Q_SLOTS:
     void slotSelectAllCollections();
