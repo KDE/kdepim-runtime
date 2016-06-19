@@ -25,7 +25,6 @@
 #include <QModelIndex>
 #include <QIdentityProxyModel>
 
-class QItemSelectionModel;
 class KRecursiveFilterProxyModel;
 namespace Akonadi
 {
@@ -72,7 +71,6 @@ private Q_SLOTS:
 private:
     void forceStatus(const QModelIndex &parent, bool status);
     QTreeView *mFolderView;
-    QItemSelectionModel *mSelectionModel;
     Akonadi::EntityTreeModel *mModel;
     Akonadi::ChangeRecorder *mChangeRecorder;
     KRecursiveFilterProxyModel *mCollectionFilter;
