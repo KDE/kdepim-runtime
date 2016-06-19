@@ -55,6 +55,9 @@ if( APPLE )
   set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE New Mail Notifier")
 endif ()
 
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
 install(TARGETS akonadi_newmailnotifier_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 
 
