@@ -42,6 +42,57 @@
 #include <QLabel>
 #include <QTimer>
 
+NewMailNotifierCollectionProxyModel::NewMailNotifierCollectionProxyModel(QObject *parent)
+    : QIdentityProxyModel(parent)
+{
+}
+
+QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int role) const
+{
+    if (role == Qt::CheckStateRole)
+    {
+        if (index.isValid()) {
+            const Akonadi::Collection collection =
+                    data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            if (subscriptions.contains(collection)) {
+                return subscriptions.value(collection) ? Qt::Checked : Qt::Unchecked;
+            } else {
+                Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
+                if (!attr || !attr->ignoreNewMail()) {
+                    return Qt::Checked;
+                }
+                return Qt::Unchecked;
+            }
+        }
+    }
+    return QIdentityProxyModel::data(index, role);
+}
+
+bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, const QVariant &_data, int role)
+{
+    if (role == Qt::CheckStateRole)
+    {
+        if (index.isValid()) {
+            const Akonadi::Collection collection =
+                data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            subscriptions[collection] = _data.value<Qt::CheckState>() ? Qt::Checked : Qt::Unchecked;
+            emit dataChanged(index, index);
+            return true;
+        }
+    }
+
+    return QIdentityProxyModel::setData(index, _data, role);
+}
+
+Qt::ItemFlags NewMailNotifierCollectionProxyModel::flags(const QModelIndex &index) const
+{
+    if (index.isValid()) {
+        return QIdentityProxyModel::flags(index) | Qt::ItemIsUserCheckable;
+    } else {
+        return QIdentityProxyModel::flags(index);
+    }
+}
+
 
 NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWidget *parent)
     : QWidget(parent),
@@ -135,6 +186,7 @@ void NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections()
 
 void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &parent, bool status)
 {
+    qDebug()<<" void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &parent, bool status)"<<status;
     const int nbCol = mNewMailNotifierProxyModel->rowCount(parent);
     for (int i = 0; i < nbCol; ++i) {
         const QModelIndex child = mNewMailNotifierProxyModel->index(i, 0, parent);
@@ -193,52 +245,3 @@ void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
 
 
 
-NewMailNotifierCollectionProxyModel::NewMailNotifierCollectionProxyModel(QObject *parent)
-    : QIdentityProxyModel(parent)
-{
-}
-
-QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int role) const
-{
-    if (role == Qt::CheckStateRole)
-    {
-        if (index.isValid()) {
-            const Akonadi::Collection collection =
-                    data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-            if (subscriptions.contains(collection)) {
-                return subscriptions.value(collection);
-            } else {
-                Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
-                if (!attr || !attr->ignoreNewMail()) {
-                    return Qt::Checked;
-                }
-                return Qt::Unchecked;
-            }
-        }
-    }
-    return QIdentityProxyModel::data(index, role);
-}
-
-bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, const QVariant &_data, int role)
-{
-    if (role == Qt::CheckStateRole)
-    {
-        if (index.isValid()) {
-            const Akonadi::Collection collection =
-                data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-            subscriptions[collection] = _data.value<Qt::CheckState>();
-            return true;
-        }
-    }
-
-    return QIdentityProxyModel::setData(index, _data, role);
-}
-
-Qt::ItemFlags NewMailNotifierCollectionProxyModel::flags(const QModelIndex &index) const
-{
-    if (index.isValid()) {
-        return QIdentityProxyModel::flags(index) | Qt::ItemIsUserCheckable;
-    } else {
-        return QIdentityProxyModel::flags(index);
-    }
-}
