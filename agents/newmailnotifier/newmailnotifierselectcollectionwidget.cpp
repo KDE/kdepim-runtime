@@ -54,8 +54,8 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
         if (index.isValid()) {
             const Akonadi::Collection collection =
                     data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-            if (subscriptions.contains(collection)) {
-                return subscriptions.value(collection) ? Qt::Checked : Qt::Unchecked;
+            if (mNotificationCollection.contains(collection)) {
+                return mNotificationCollection.value(collection) ? Qt::Checked : Qt::Unchecked;
             } else {
                 Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
                 if (!attr || !attr->ignoreNewMail()) {
@@ -75,7 +75,7 @@ bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, cons
         if (index.isValid()) {
             const Akonadi::Collection collection =
                 data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-            subscriptions[collection] = (value == Qt::Checked);
+            mNotificationCollection[collection] = (value == Qt::Checked);
             emit dataChanged(index, index);
             return true;
         }
@@ -91,6 +91,11 @@ Qt::ItemFlags NewMailNotifierCollectionProxyModel::flags(const QModelIndex &inde
     } else {
         return QIdentityProxyModel::flags(index);
     }
+}
+
+QHash<Akonadi::Collection, bool> NewMailNotifierCollectionProxyModel::notificationCollection() const
+{
+    return mNotificationCollection;
 }
 
 
@@ -202,7 +207,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive(const QMo
         const QModelIndex child = mCheckProxy->index(i, 0, parent);
 
         Akonadi::Collection collection =
-            mCheckProxy->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            mNewMailNotifierProxyModel->data(child, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
 
         Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
         Akonadi::CollectionModifyJob *modifyJob = Q_NULLPTR;
