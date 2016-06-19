@@ -186,7 +186,6 @@ void NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections()
 
 void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &parent, bool status)
 {
-    qDebug()<<" void NewMailNotifierSelectCollectionWidget::forceStatus(const QModelIndex &parent, bool status)"<<status;
     const int nbCol = mNewMailNotifierProxyModel->rowCount(parent);
     for (int i = 0; i < nbCol; ++i) {
         const QModelIndex child = mNewMailNotifierProxyModel->index(i, 0, parent);
