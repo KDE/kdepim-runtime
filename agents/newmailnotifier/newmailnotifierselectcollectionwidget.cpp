@@ -68,20 +68,20 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
     return QIdentityProxyModel::data(index, role);
 }
 
-bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, const QVariant &_data, int role)
+bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (role == Qt::CheckStateRole)
     {
         if (index.isValid()) {
             const Akonadi::Collection collection =
                 data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
-            subscriptions[collection] = _data.value<Qt::CheckState>() ? Qt::Checked : Qt::Unchecked;
+            subscriptions[collection] = (value == Qt::Checked);
             emit dataChanged(index, index);
             return true;
         }
     }
 
-    return QIdentityProxyModel::setData(index, _data, role);
+    return QIdentityProxyModel::setData(index, value, role);
 }
 
 Qt::ItemFlags NewMailNotifierCollectionProxyModel::flags(const QModelIndex &index) const
