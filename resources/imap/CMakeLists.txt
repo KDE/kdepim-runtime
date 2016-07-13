@@ -88,7 +88,6 @@ set( akonadi_imap_resource_SRCS
 install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
-ki18n_wrap_ui(akonadi_imap_resource_SRCS serverinfo.ui)
 
 if (RUNTIME_PLUGINS_STATIC)
     add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)

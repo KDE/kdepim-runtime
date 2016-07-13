@@ -24,11 +24,7 @@
 #include <QDialog>
 
 class ImapResourceBase;
-namespace Ui
-{
-class ServerInfo;
-}
-
+class QTextBrowser;
 class ServerInfoDialog : public QDialog
 {
     Q_OBJECT
@@ -36,7 +32,7 @@ public:
     explicit ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent);
     ~ServerInfoDialog();
 private:
-    Ui::ServerInfo *mServerInfoWidget;
+    QTextBrowser *mTextBrowser;
 };
 
 #endif // SERVERINFODIALOG_H

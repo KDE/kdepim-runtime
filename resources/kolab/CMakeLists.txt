@@ -40,7 +40,6 @@ ecm_qt_declare_logging_category(kolabresource_SRCS HEADER kolabresource_debug.h 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)
 
 ki18n_wrap_ui(kolabresource_SRCS ../imap/setupserverview_desktop.ui)
-ki18n_wrap_ui(kolabresource_SRCS ../imap/serverinfo.ui)
 add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 
 target_link_libraries(akonadi_kolab_resource
