@@ -61,7 +61,6 @@
 #include "subscriptiondialog.h"
 
 #include "ui_setupserverview_desktop.h"
-#include "ui_serverinfo.h"
 
 /** static helper functions **/
 static QString authenticationModeString(MailTransport::Transport::EnumAuthenticationType::type mode)

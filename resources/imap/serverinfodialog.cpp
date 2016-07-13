@@ -20,7 +20,6 @@
 
 #include "serverinfodialog.h"
 #include "imapresource.h"
-#include "ui_serverinfo.h"
 
 #include <KLocalizedString>
 #include <QDialogButtonBox>
