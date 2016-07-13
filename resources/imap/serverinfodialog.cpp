@@ -27,6 +27,7 @@
 #include <KConfigGroup>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QPainter>
 
 ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent)
     : QDialog(parent)
@@ -41,7 +42,7 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ServerInfoDialog::reject);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    mTextBrowser = new QTextBrowser(this);
+    mTextBrowser = new ServerInfoTextBrowser(this);
     mainLayout->addWidget(mTextBrowser);
     mainLayout->addWidget(buttonBox);
     mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QStringLiteral("\n")));
@@ -49,5 +50,36 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
 
 ServerInfoDialog::~ServerInfoDialog()
 {
+}
+
+
+ServerInfoTextBrowser::ServerInfoTextBrowser(QWidget *parent)
+    : QTextBrowser(parent)
+{
+}
+
+ServerInfoTextBrowser::~ServerInfoTextBrowser()
+{
+
+}
+
+void ServerInfoTextBrowser::paintEvent(QPaintEvent *event)
+{
+    if (toPlainText().isEmpty()) {
+        QPainter p(viewport());
+
+        QFont font = p.font();
+        font.setItalic(true);
+        p.setFont(font);
+
+        const QPalette palette = viewport()->palette();
+        QColor color = palette.text().color();
+        color.setAlpha(128);
+        p.setPen(color);
+
+        p.drawText(QRect(0, 0, width(), height()), Qt::AlignCenter, i18n("Resource not synchronized yet."));
+    } else {
+        QTextBrowser::paintEvent(event);
+    }
 }
 

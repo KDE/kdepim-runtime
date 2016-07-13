@@ -22,9 +22,20 @@
 #define SERVERINFODIALOG_H
 
 #include <QDialog>
-
+#include <QTextBrowser>
 class ImapResourceBase;
-class QTextBrowser;
+
+
+class ServerInfoTextBrowser : public QTextBrowser
+{
+    Q_OBJECT
+public:
+    explicit ServerInfoTextBrowser(QWidget *parent = Q_NULLPTR);
+    ~ServerInfoTextBrowser();
+protected:
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+};
+
 class ServerInfoDialog : public QDialog
 {
     Q_OBJECT
@@ -32,7 +43,7 @@ public:
     explicit ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent);
     ~ServerInfoDialog();
 private:
-    QTextBrowser *mTextBrowser;
+    ServerInfoTextBrowser *mTextBrowser;
 };
 
 #endif // SERVERINFODIALOG_H
