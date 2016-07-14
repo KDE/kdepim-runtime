@@ -83,5 +83,4 @@ add_subdirectory( vcarddir )
 add_subdirectory( icaldir )
 add_subdirectory( vcard )
 add_subdirectory( folderarchivesettings )
-
-
+add_subdirectory( tomboynotes )
