@@ -1,3 +1,4 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_tomboynotes_resource\")
 remove_definitions(-DQT_NO_URL_CAST_FROM_STRING
                    -DQT_NO_CAST_FROM_BYTEARRAY
                    -DQT_NO_CAST_FROM_ASCII
