@@ -79,5 +79,5 @@ target_link_libraries(akonadi_tomboynotes_resource
 install(TARGETS akonadi_tomboynotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES tomboynotesresource.desktop
-        DESTINATION "${KDE_INSTALL_DATAROOTDIR}/share/akonadi/agents"
+        DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents"
 )
