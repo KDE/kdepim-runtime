@@ -42,12 +42,12 @@ void TomboyCollectionsDownloadJob::start()
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyCollectionsDownloadJob::onRequestFinished);
-    qCDebug(log_tomboynotesresource) << "TomboyCollectionsDownloadJob: Start network request";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: Start network request";
 }
 
 void TomboyCollectionsDownloadJob::onRequestFinished()
 {
-    qCDebug(log_tomboynotesresource) << "TomboyCollectionsDownloadJob: Network request finished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: Network request finished";
     checkReplyError();
     if (error() != TomboyJobError::NoError) {
         setErrorText(mReply->errorString());
@@ -59,16 +59,16 @@ void TomboyCollectionsDownloadJob::onRequestFinished()
     const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), Q_NULLPTR);
 
     const QJsonObject jo = document.object();
-    qCDebug(log_tomboynotesresource) << "TomboyCollectionsDownloadJob: " << jo;
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: " << jo;
     const QJsonValue collectionRevision = jo[QLatin1String("latest-sync-revision")];
-    qCDebug(log_tomboynotesresource) << "TomboyCollectionsDownloadJob: " << collectionRevision;
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: " << collectionRevision;
 
     Akonadi::Collection c;
     c.setParentCollection(Akonadi::Collection::root());
     c.setRemoteId(mContentURL);
     c.setName(mCollectionName);
     c.setRemoteRevision(QString::number(collectionRevision.toInt()));
-    qCDebug(log_tomboynotesresource) << "TomboyCollectionsDownloadJob: Sync revision " << collectionRevision.toString();
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: Sync revision " << collectionRevision.toString();
 
     c.setContentMimeTypes({ Akonadi::NoteUtils::noteMimeType() });
 

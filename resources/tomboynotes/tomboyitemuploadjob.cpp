@@ -87,7 +87,7 @@ void TomboyItemUploadJob::start()
     request.setHeader(QNetworkRequest::ContentLengthHeader, postData.toJson().length());
     mReply = mRequestor->put(request, QList<O0RequestParameter>(), postData.toJson());
     connect(mReply, &QNetworkReply::finished, this, &TomboyItemUploadJob::onRequestFinished);
-    qCDebug(log_tomboynotesresource) << "TomboyItemUploadJob: Start network request";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemUploadJob: Start network request";
 }
 
 void TomboyItemUploadJob::onRequestFinished()
@@ -98,7 +98,7 @@ void TomboyItemUploadJob::onRequestFinished()
         emitResult();
         return;
     }
-    qCDebug(log_tomboynotesresource) << "TomboyItemUploadJob: Network request finished. No error occured";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemUploadJob: Network request finished. No error occured";
 
     // Parse received data as JSON
     const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), Q_NULLPTR);

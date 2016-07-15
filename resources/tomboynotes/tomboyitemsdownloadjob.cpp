@@ -42,12 +42,12 @@ void TomboyItemsDownloadJob::start()
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyItemsDownloadJob::onRequestFinished);
-    qCDebug(log_tomboynotesresource) << "TomboyItemsDownloadJob: Start network request";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemsDownloadJob: Start network request";
 }
 
 void TomboyItemsDownloadJob::onRequestFinished()
 {
-    qCDebug(log_tomboynotesresource) << "TomboyItemsDownloadJob: Network request finished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemsDownloadJob: Network request finished";
     checkReplyError();
     if (error() != TomboyJobError::NoError) {
         setErrorText(mReply->errorString());
@@ -65,7 +65,7 @@ void TomboyItemsDownloadJob::onRequestFinished()
         Akonadi::Item item(Akonadi::NoteUtils::noteMimeType());
         item.setRemoteId(note.toObject()[QLatin1String("guid")].toString());
         mResultItems << item;
-        qCDebug(log_tomboynotesresource) << "TomboyItemsDownloadJob: Retriving note with id" << item.remoteId();
+        qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemsDownloadJob: Retriving note with id" << item.remoteId();
     }
 
     setError(TomboyJobError::NoError);

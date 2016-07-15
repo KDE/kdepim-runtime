@@ -43,7 +43,7 @@ void TomboyItemDownloadJob::start()
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyItemDownloadJob::onRequestFinished);
-    qCDebug(log_tomboynotesresource) << "TomboyItemDownloadJob: Start network request";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemDownloadJob: Start network request";
 }
 
 void TomboyItemDownloadJob::onRequestFinished()
@@ -54,17 +54,17 @@ void TomboyItemDownloadJob::onRequestFinished()
         emitResult();
         return;
     }
-    qCDebug(log_tomboynotesresource) << "TomboyItemDownloadJob: Network request finished. No error occured";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemDownloadJob: Network request finished. No error occured";
 
     // Parse received data as JSON
     const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), Q_NULLPTR);
 
     const QJsonObject jsonNote = document.object();
 
-    qCDebug(log_tomboynotesresource) << "TomboyItemDownloadJob: JSON note: " << jsonNote;
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemDownloadJob: JSON note: " << jsonNote;
 
     mResultItem.setRemoteRevision(QString::number(jsonNote[QLatin1String("last-sync-revision")].toInt()));
-    qCDebug(log_tomboynotesresource) << "TomboyItemDownloadJob: Sync revision " << mResultItem.remoteRevision();
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemDownloadJob: Sync revision " << mResultItem.remoteRevision();
 
     // Set timestamp
     const QString timeStampJson = jsonNote[QLatin1String("last-change-date")].toString();

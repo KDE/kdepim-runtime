@@ -78,7 +78,7 @@ void TomboyServerAuthenticateJob::onLinkingSucceeded()
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyServerAuthenticateJob::onApiRequestFinished);
-    qCDebug(log_tomboynotesresource) << "TomboyServerAuthenticateJob: Start network request";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyServerAuthenticateJob: Start network request";
 }
 
 void TomboyServerAuthenticateJob::onOpenBrowser(const QUrl &url)
@@ -105,7 +105,7 @@ void TomboyServerAuthenticateJob::onApiRequestFinished()
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyServerAuthenticateJob::onUserRequestFinished);
-    qCDebug(log_tomboynotesresource) << "TomboyServerAuthenticateJob: Start network request";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyServerAuthenticateJob: Start network request";
 }
 
 void TomboyServerAuthenticateJob::onUserRequestFinished()

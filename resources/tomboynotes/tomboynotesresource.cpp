@@ -61,7 +61,7 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
     mManager = new KIO::AccessManager(this);
     connect(mManager, &KIO::AccessManager::sslErrors, this, &TomboyNotesResource::onSslError);
 
-    qCDebug(log_tomboynotesresource) << "Resource started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Resource started";
 }
 
 TomboyNotesResource::~TomboyNotesResource()
@@ -70,7 +70,7 @@ TomboyNotesResource::~TomboyNotesResource()
 
 void TomboyNotesResource::retrieveCollections()
 {
-    qCDebug(log_tomboynotesresource) << "Retrieving collections started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retrieving collections started";
 
     if (configurationNotValid()) {
         cancelTask(i18n("Resource configuration is not valid"));
@@ -83,7 +83,7 @@ void TomboyNotesResource::retrieveCollections()
     // connect to its result() signal
     connect(job, &KJob::result, this, &TomboyNotesResource::onCollectionsRetrieved);
     job->start();
-    qCDebug(log_tomboynotesresource) << "Retriving collections job started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving collections job started";
 }
 
 void TomboyNotesResource::retrieveItems(const Akonadi::Collection &collection)
@@ -100,7 +100,7 @@ void TomboyNotesResource::retrieveItems(const Akonadi::Collection &collection)
     // connect to its result() signal
     connect(job, &KJob::result, this, &TomboyNotesResource::onItemsRetrieved);
     job->start();
-    qCDebug(log_tomboynotesresource) << "Retriving items job started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving items job started";
 }
 
 bool TomboyNotesResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
@@ -119,7 +119,7 @@ bool TomboyNotesResource::retrieveItem(const Akonadi::Item &item, const QSet<QBy
     // connect to its result() signal
     connect(job, &KJob::result, this, &TomboyNotesResource::onItemRetrieved);
     job->start();
-    qCDebug(log_tomboynotesresource) << "Retriving item data job started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving item data job started";
 
     return true;
 }
@@ -127,7 +127,7 @@ bool TomboyNotesResource::retrieveItem(const Akonadi::Item &item, const QSet<QBy
 void TomboyNotesResource::onAuthorizationFinished(KJob *kjob)
 {
     // Saves the received client authentication data in the settings
-    qCDebug(log_tomboynotesresource) << "Authorization job finished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Authorization job finished";
     auto job = qobject_cast<TomboyServerAuthenticateJob*>(kjob);
     if (job->error() == TomboyJobError::NoError) {
         Settings::setRequestToken(job->getRequestToken());
@@ -185,7 +185,7 @@ void TomboyNotesResource::onItemRetrieved(KJob *kjob)
     }
 
     itemRetrieved(job->item());
-    qCDebug(log_tomboynotesresource) << "Retriving item data job with remoteId " << job->item().remoteId() << " finished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving item data job with remoteId " << job->item().remoteId() << " finished";
 }
 
 void TomboyNotesResource::onItemsRetrieved(KJob *kjob)
@@ -198,7 +198,7 @@ void TomboyNotesResource::onItemsRetrieved(KJob *kjob)
     }
 
     itemsRetrieved(job->items());
-    qCDebug(log_tomboynotesresource) << "Retriving items job finished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving items job finished";
 }
 
 void TomboyNotesResource::onSslError(QNetworkReply *reply, const QList<QSslError> &errors)
@@ -217,7 +217,7 @@ void TomboyNotesResource::aboutToQuit()
 
 void TomboyNotesResource::configure(WId windowId)
 {
-    qCDebug(log_tomboynotesresource) << "Resource configuration started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Resource configuration started";
 
     ConfigDialog dialog(Settings::self());
 
@@ -238,7 +238,7 @@ void TomboyNotesResource::configure(WId windowId)
         job->setServerURL(Settings::serverURL(), QString());
         connect(job, &KJob::result, this, &TomboyNotesResource::onAuthorizationFinished);
         job->start();
-        qCDebug(log_tomboynotesresource) << "Authorization job started";
+        qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Authorization job started";
     } else {
         synchronize();
     }

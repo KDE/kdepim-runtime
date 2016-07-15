@@ -35,7 +35,7 @@ set(tomboynotesresource_SRCS
 
 ecm_qt_declare_logging_category(tomboynotesresource_SRCS
     HEADER debug.h
-    IDENTIFIER log_tomboynotesresource
+    IDENTIFIER TOMBOYNOTESRESOURCE_LOG
     CATEGORY_NAME log_tomboynotesresource
 )
 
