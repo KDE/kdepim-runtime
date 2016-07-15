@@ -203,6 +203,7 @@ void TomboyNotesResource::onItemsRetrieved(KJob *kjob)
 
 void TomboyNotesResource::onSslError(QNetworkReply *reply, const QList<QSslError> &errors)
 {
+    Q_UNUSED(errors);
     if (Settings::ignoreSslErrors()) {
         reply->ignoreSslErrors();
     }
