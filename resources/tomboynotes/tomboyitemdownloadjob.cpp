@@ -39,7 +39,7 @@ void TomboyItemDownloadJob::start()
 {
     // Get the speicific note
     mContentURL.chop(1);
-    QNetworkRequest request(mContentURL + QLatin1String("/") + mResultItem.remoteId());
+    QNetworkRequest request(QString(mContentURL + QLatin1String("/") + mResultItem.remoteId()));
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyItemDownloadJob::onRequestFinished);
