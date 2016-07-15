@@ -28,8 +28,8 @@ void O1Tomboy::setBaseURL(const QString &value)
     setRequestTokenUrl(QUrl(value + QStringLiteral("/oauth/request_token")));
     setAuthorizeUrl(QUrl(value + QStringLiteral("/oauth/authorize")));
     setAccessTokenUrl(QUrl(value + QStringLiteral("/oauth/access_token")));
-    setClientId("anyone");
-    setClientSecret("anyone");
+    setClientId(QStringLiteral("anyone"));
+    setClientSecret(QStringLiteral("anyone"));
 }
 
 QString O1Tomboy::getRequestToken() const
