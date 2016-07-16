@@ -22,6 +22,7 @@
 #include "settings.h"
 #include <kconfigdialogmanager.h>
 #include <klocalizedstring.h>
+#include <QDialogButtonBox>
 
 ConfigDialog::ConfigDialog(Settings *settings, QWidget *parent) :
     QDialog(parent),
@@ -40,9 +41,11 @@ ConfigDialog::ConfigDialog(Settings *settings, QWidget *parent) :
     mManager = new KConfigDialogManager(this, settings);
     mManager->updateWidgets();
 
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok| QDialogButtonBox::Cancel, this);
+    mainLayout->addWidget(buttonBox);
     // Set the button actions
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
 
     // Load config dialog window size settings
     KConfigGroup group(KSharedConfig::openConfig(), "ConfigDialog");
