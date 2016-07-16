@@ -116,13 +116,13 @@ void TomboyItemUploadJob::onRequestFinished()
     }
     if (mJobType == JobType::DeleteItem && found) {
         setError(TomboyJobError::PermanentError);
-        setErrorText(i18n("Sync error. Server status not as expected!"));
+        setErrorText(i18n("Sync error. Server status not as expected."));
         emitResult();
         return;
     }
     if (mJobType != JobType::DeleteItem && !found) {
         setError(TomboyJobError::PermanentError);
-        setErrorText(i18n("Sync error. Server status not as expected!"));
+        setErrorText(i18n("Sync error. Server status not as expected."));
         emitResult();
         return;
     }

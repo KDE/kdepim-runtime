@@ -11,23 +11,23 @@
       <default></default>
     </entry>
     <entry name="ServerURL" type="String">
-      <label>The URL to the tomboy sync server</label>
+      <label>The URL to the Tomboy sync server</label>
       <default>http://localhost/owncloud/index.php/apps/grauphel</default>
     </entry>
     <entry name="contentURL" type="String">
-      <label>The URL to the notes on the tomboy sync server</label>
+      <label>The URL to the notes on the Tomboy sync server</label>
       <default></default>
     </entry>
     <entry name="userURL" type="String">
-      <label>The URL to the user data on the tomboy sync server</label>
+      <label>The URL to the user data on the Tomboy sync server</label>
       <default></default>
     </entry>
     <entry name="requestToken" type="String">
-      <label>The request token to the tomboy sync server</label>
+      <label>The request token to the Tomboy sync server</label>
       <default></default>
     </entry>
     <entry name="requestTokenSecret" type="String">
-      <label>The request token secret to the tomboy sync server</label>
+      <label>The request token secret to the Tomboy sync server</label>
       <default></default>
     </entry>
     <entry name="ConflictHandling" type="String">

@@ -67,7 +67,7 @@ QString TomboyServerAuthenticateJob::getUserURL() const
 void TomboyServerAuthenticateJob::onLinkingFailed()
 {
     setError(TomboyJobError::PermanentError);
-    setErrorText(i18n("Authorization has failed! It could be an SSL error!"));
+    setErrorText(i18n("Authorization failed. It could be an SSL error."));
     emitResult();
 }
 
