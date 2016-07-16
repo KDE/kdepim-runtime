@@ -1,5 +1,4 @@
 #include <QCryptographicHash>
-#include <QByteArray>
 
 #include "o2/o0settingsstore.h"
 

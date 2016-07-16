@@ -4,8 +4,6 @@
 #include <QDateTime>
 #include <QByteArray>
 #include <QDebug>
-#include <QDataStream>
-#include <QStringList>
 
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>

@@ -20,7 +20,6 @@
 #include "tomboyitemdownloadjob.h"
 #include "debug.h"
 #include <KMime/Message>
-#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 

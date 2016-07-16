@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QDateTime>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>

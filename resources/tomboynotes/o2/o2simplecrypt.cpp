@@ -26,12 +26,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "o2/o0simplecrypt.h"
 #include <QByteArray>
-#include <QtDebug>
-#include <QtGlobal>
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QDataStream>
-
+#include <QDebug>
 O0SimpleCrypt::O0SimpleCrypt():
     m_key(0),
     m_compressionMode(CompressionAuto),

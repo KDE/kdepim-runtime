@@ -29,7 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define SIMPLECRYPT_H
 #include <QString>
 #include <QVector>
-#include <QFlags>
 
 /**
   @short Simple encryption and decryption of strings and byte arrays

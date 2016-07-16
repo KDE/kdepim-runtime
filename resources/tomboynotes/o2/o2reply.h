@@ -3,10 +3,7 @@
 
 #include <QList>
 #include <QTimer>
-#include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QNetworkAccessManager>
-#include <QByteArray>
 
 /// A network request/reply pair that can time out.
 class O2Reply: public QTimer

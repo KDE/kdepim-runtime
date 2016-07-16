@@ -4,7 +4,6 @@
 #include <QString>
 #include <QMap>
 #include <QPair>
-#include <QStringList>
 #include <QUrl>
 #include <QDebug>
 #if QT_VERSION >= 0x050000

@@ -20,7 +20,6 @@
 #include "tomboyserverauthenticatejob.h"
 #include "debug.h"
 #include <klocalizedstring.h>
-#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 

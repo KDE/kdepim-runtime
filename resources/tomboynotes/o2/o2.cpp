@@ -1,20 +1,17 @@
 #include <QList>
 #include <QPair>
 #include <QDebug>
-#include <QTcpServer>
 #include <QMap>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QDateTime>
 #include <QCryptographicHash>
-#include <QTimer>
 #include <QVariantMap>
-
+#include <QJsonObject>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #include <QJsonDocument>
-#include <QJsonObject>
 #else
 #include <QScriptEngine>
 #include <QScriptValueIterator>

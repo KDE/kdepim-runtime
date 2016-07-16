@@ -2,9 +2,7 @@
 #define O2_H
 
 #include <QNetworkAccessManager>
-#include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QPair>
 
 #include "o0baseauth.h"
 #include "o2reply.h"

@@ -3,7 +3,6 @@
 
 #include <QByteArray>
 #include <QObject>
-#include <QMap>
 #include <QString>
 #include <QUrl>
 #include <QVariantMap>
