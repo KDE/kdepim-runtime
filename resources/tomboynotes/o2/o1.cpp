@@ -98,8 +98,8 @@ void O1::unlink()
 {
     qDebug() << "O1::unlink";
     setLinked(false);
-    setToken("");
-    setTokenSecret("");
+    setToken(QString());
+    setTokenSecret(QString());
     setExtraTokens(QVariantMap());
     Q_EMIT linkingSucceeded();
 }
@@ -133,11 +133,11 @@ static QByteArray hmacSha1(QByteArray key, QByteArray baseString)
 static QString getOperationName(QNetworkAccessManager::Operation op)
 {
     switch (op) {
-    case QNetworkAccessManager::GetOperation: return "GET";
-    case QNetworkAccessManager::PostOperation: return "POST";
-    case QNetworkAccessManager::PutOperation: return "PUT";
-    case QNetworkAccessManager::DeleteOperation: return "DEL";
-    default: return "";
+    case QNetworkAccessManager::GetOperation: return QStringLiteral("GET");
+    case QNetworkAccessManager::PostOperation: return QStringLiteral("POST");
+    case QNetworkAccessManager::PutOperation: return QStringLiteral("PUT");
+    case QNetworkAccessManager::DeleteOperation: return QStringLiteral("DEL");
+    default: return QString();
     }
 }
 
@@ -217,8 +217,8 @@ void O1::link()
     }
 
     setLinked(false);
-    setToken("");
-    setTokenSecret("");
+    setToken(QString());
+    setTokenSecret(QString());
     setExtraTokens(QVariantMap());
 
     // Start reply server
@@ -280,14 +280,14 @@ void O1::onTokenRequestFinished()
     // Get request token and secret
     QByteArray data = reply->readAll();
     QMap<QString, QString> response = parseResponse(data);
-    requestToken_ = response.value(O2_OAUTH_TOKEN, "");
-    requestTokenSecret_ = response.value(O2_OAUTH_TOKEN_SECRET, "");
+    requestToken_ = response.value(O2_OAUTH_TOKEN, QString());
+    requestTokenSecret_ = response.value(O2_OAUTH_TOKEN_SECRET, QString());
     setToken(requestToken_);
     setTokenSecret(requestTokenSecret_);
 
     // Checking for "oauth_callback_confirmed" is present and set to true
-    QString oAuthCbConfirmed = response.value(O2_OAUTH_CALLBACK_CONFIRMED, "false");
-    if (requestToken_.isEmpty() || requestTokenSecret_.isEmpty() || (oAuthCbConfirmed == "false")) {
+    QString oAuthCbConfirmed = response.value(O2_OAUTH_CALLBACK_CONFIRMED, QStringLiteral("false"));
+    if (requestToken_.isEmpty() || requestTokenSecret_.isEmpty() || (oAuthCbConfirmed == QLatin1String("false"))) {
         qWarning() << "O1::onTokenRequestFinished: No oauth_token, oauth_token_secret or oauth_callback_confirmed in response :" << data;
         Q_EMIT linkingFailed();
         return;
@@ -311,7 +311,7 @@ void O1::onVerificationReceived(QMap<QString, QString> params)
 {
     qDebug() << "O1::onVerificationReceived";
     Q_EMIT closeBrowser();
-    verifier_ = params.value(O2_OAUTH_VERFIER, "");
+    verifier_ = params.value(O2_OAUTH_VERFIER, QString());
     if (params.value(O2_OAUTH_TOKEN) == requestToken_) {
         // Exchange request token for access token
         exchangeToken();
