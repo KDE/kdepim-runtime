@@ -1,6 +1,18 @@
 [Desktop Entry]
 Name=Akonadi TomboyNotes Resource
+Name[ca]=Recurs TomboyNotes per a l'Akonadi
+Name[pl]=Zasób notatek Tomboy Akonadi
+Name[pt]=Recurso de Notas do Tomboy do Akonadi
+Name[sv]=Akonadi TomboyNotes-resurs
+Name[uk]=Ресурс нотаток Tomboy Akonadi
+Name[x-test]=xxAkonadi TomboyNotes Resourcexx
 Comment=Resource for Tomboy compatible notes server
+Comment[ca]=Recurs per a Tomboy compatible amb el servidor de notes
+Comment[pl]=Zasób dla zgodnego serwera notatek Tomboy
+Comment[pt]=Recurso para um servidor de notas compatível com o Tomboy
+Comment[sv]=Resurs för anteckningsserver kompatibel med Tomboy
+Comment[uk]=Ресурс сервера нотаток, сумісного із Tomboy
+Comment[x-test]=xxResource for Tomboy compatible notes serverxx
 Type=AkonadiResource
 Exec=akonadi_tomboynotes_resource
 Icon=view-pim-notes
