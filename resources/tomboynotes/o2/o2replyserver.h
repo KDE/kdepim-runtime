@@ -12,7 +12,7 @@ class O2ReplyServer: public QTcpServer
     Q_OBJECT
 
 public:
-    explicit O2ReplyServer(QObject *parent = 0);
+    explicit O2ReplyServer(QObject *parent = Q_NULLPTR);
 
     /// Page content on local host after successful oauth - in case you do not want to close the browser, but display something
     Q_PROPERTY(QByteArray replyContent READ replyContent WRITE setReplyContent)

@@ -6,6 +6,7 @@
 #include <QPair>
 #include <QUrl>
 #include <QDebug>
+#include "debug.h"
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
@@ -27,7 +28,7 @@ void O2ReplyServer::onIncomingConnection()
 
 void O2ReplyServer::onBytesReady()
 {
-    qDebug() << "O2ReplyServer::onBytesReady";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2ReplyServer::onBytesReady";
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
     if (!socket) {
         return;
@@ -48,7 +49,7 @@ void O2ReplyServer::onBytesReady()
 
 QMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data)
 {
-    qDebug() << "O2ReplyServer::parseQueryParams";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2ReplyServer::parseQueryParams";
 
     QString splitGetLine = QString(*data).split("\r\n").first();
     splitGetLine.remove("GET ");

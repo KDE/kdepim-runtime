@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QByteArray>
 #include <QDebug>
+#include "debug.h"
 
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -88,13 +89,13 @@ QString O1::signatureMethod()
 
 void O1::setSignatureMethod(const QString &value)
 {
-    qDebug() << "O1::setSignatureMethod: " << value;
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::setSignatureMethod: " << value;
     signatureMethod_ = value;
 }
 
 void O1::unlink()
 {
-    qDebug() << "O1::unlink";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::unlink";
     setLinked(false);
     setToken(QString());
     setTokenSecret(QString());
@@ -207,9 +208,9 @@ QByteArray O1::generateSignature(const QList<O0RequestParameter> headers, const 
 
 void O1::link()
 {
-    qDebug() << "O1::link";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::link";
     if (linked()) {
-        qDebug() << "O1::link: Linked already";
+        qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::link: Linked already";
         Q_EMIT linkingSucceeded();
         return;
     }
@@ -267,7 +268,7 @@ void O1::onTokenRequestError(QNetworkReply::NetworkError error)
 
 void O1::onTokenRequestFinished()
 {
-    qDebug() << "O1::onTokenRequestFinished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished";
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
@@ -307,7 +308,7 @@ void O1::onTokenRequestFinished()
 
 void O1::onVerificationReceived(QMap<QString, QString> params)
 {
-    qDebug() << "O1::onVerificationReceived";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::onVerificationReceived";
     Q_EMIT closeBrowser();
     verifier_ = params.value(O2_OAUTH_VERFIER, QString());
     if (params.value(O2_OAUTH_TOKEN) == requestToken_) {
@@ -321,7 +322,7 @@ void O1::onVerificationReceived(QMap<QString, QString> params)
 
 void O1::exchangeToken()
 {
-    qDebug() << "O1::exchangeToken";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::exchangeToken";
 
     // Create token exchange request
     QNetworkRequest request(accessTokenUrl());
@@ -352,7 +353,7 @@ void O1::onTokenExchangeError(QNetworkReply::NetworkError error)
 
 void O1::onTokenExchangeFinished()
 {
-    qDebug() << "O1::onTokenExchangeFinished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeFinished";
 
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
