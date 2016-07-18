@@ -1,5 +1,6 @@
 #include <QDataStream>
 #include <QDebug>
+#include "debug.h"
 
 #include "o2/o0baseauth.h"
 #include "o2/o0globals.h"
@@ -31,13 +32,13 @@ bool O0BaseAuth::linked()
 {
     QString key = QString::fromLatin1(O2_KEY_LINKED).arg(clientId_);
     bool result = !store_->value(key).isEmpty();
-    qDebug() << "O0BaseAuth::linked:" << (result ? "Yes" : "No");
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O0BaseAuth::linked:" << (result ? "Yes" : "No");
     return result;
 }
 
 void O0BaseAuth::setLinked(bool v)
 {
-    qDebug() << "O0BaseAuth::setLinked:" << (v ? "true" : "false");
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O0BaseAuth::setLinked:" << (v ? "true" : "false");
     bool oldValue = linked();
     QString key = QString::fromLatin1(O2_KEY_LINKED).arg(clientId_);
     store_->setValue(key, v ? QStringLiteral("1") : QString());
@@ -101,7 +102,7 @@ int O0BaseAuth::localPort()
 
 void O0BaseAuth::setLocalPort(int value)
 {
-    qDebug() << "O0BaseAuth::setLocalPort:" << value;
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O0BaseAuth::setLocalPort:" << value;
     localPort_ = value;
     Q_EMIT localPortChanged();
 }
