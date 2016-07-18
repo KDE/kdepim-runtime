@@ -16,7 +16,7 @@ class O0BaseAuth : public QObject
     Q_OBJECT
 
 public:
-    explicit O0BaseAuth(QObject *parent = 0);
+    explicit O0BaseAuth(QObject *parent = Q_NULLPTR);
 
 public:
     /// Are we authenticated?
