@@ -60,15 +60,13 @@ public:
 
     void updateCollectionsRecursive();
 
-private Q_SLOTS:
+private:
     void slotSelectAllCollections();
     void slotUnselectAllCollections();
     void slotModifyJobDone(KJob *job);
     void slotSetCollectionFilter(const QString &);
 
     void slotCollectionTreeFetched();
-
-private:
     void forceStatus(const QModelIndex &parent, bool status);
     QTreeView *mFolderView;
     Akonadi::EntityTreeModel *mModel;

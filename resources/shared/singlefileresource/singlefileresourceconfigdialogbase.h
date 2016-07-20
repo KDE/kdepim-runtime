@@ -99,11 +99,9 @@ protected:
     Ui::SingleFileResourceConfigDialog ui;
     KConfigDialogManager *mManager;
 
-private Q_SLOTS:
+private:
     void validate();
     void slotStatJobResult(KJob *);
-
-private:
     void writeConfig();
     void readConfig();
     KIO::StatJob *mStatJob;

@@ -40,11 +40,9 @@ public:
     explicit SettingsDialog(Akonadi_Contacts_Resource::ContactsResourceSettings *settings, WId windowId);
     ~SettingsDialog();
 
-private Q_SLOTS:
+private:
     void save();
     void validate();
-
-private:
     void readConfig();
     void writeConfig();
     Ui::SettingsDialog ui;

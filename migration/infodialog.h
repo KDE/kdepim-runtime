@@ -58,10 +58,8 @@ public Q_SLOTS:
     void progress(int value);
     void progress(int min, int max, int value);
 
-private Q_SLOTS:
-    void scrollBarMoved(int value);
-
 private:
+    void scrollBarMoved(int value);
     QEventLoopLocker eventLoopLocker;
     QDialogButtonBox *mButtonBox;
     QListWidget *mList;

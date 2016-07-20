@@ -34,10 +34,8 @@ public:
     explicit ConfigDialog(QWidget *parent = Q_NULLPTR);
     ~ConfigDialog();
 
-private Q_SLOTS:
-    void save();
-
 private:
+    void save();
     void loadTags();
     void readConfig();
     void writeConfig();
