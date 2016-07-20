@@ -258,9 +258,9 @@ void SessionPool::processPendingRequests()
 {
   if ( !m_unusedPool.isEmpty() ) {
     // We have a session ready to give out
-    KIMAP::Session *session = m_unusedPool.takeFirst();
-    m_reservedPool << session;
     if ( !m_pendingRequests.isEmpty() ) {
+      KIMAP::Session *session = m_unusedPool.takeFirst();
+      m_reservedPool << session;
       emit sessionRequestDone( m_pendingRequests.takeFirst(), session );
       if ( !m_pendingRequests.isEmpty() ) {
         QTimer::singleShot( 0, this, SLOT(processPendingRequests()) );
