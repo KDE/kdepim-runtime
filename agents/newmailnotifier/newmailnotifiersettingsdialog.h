@@ -34,11 +34,9 @@ public:
     explicit NewMailNotifierSettingsDialog(QWidget *parent = Q_NULLPTR);
     ~NewMailNotifierSettingsDialog();
 
-private Q_SLOTS:
+private:
     void slotOkClicked();
     void slotHelpLinkClicked(const QString &);
-
-private:
     void writeConfig();
     void readConfig();
     QCheckBox *mShowPhoto;

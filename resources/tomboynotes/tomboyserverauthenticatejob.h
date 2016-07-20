@@ -39,15 +39,13 @@ public:
 
     void start() Q_DECL_OVERRIDE;
 
-private Q_SLOTS:
+private:
     void onLinkingFailed();
     void onLinkingSucceeded();
     void onOpenBrowser(const QUrl &url);
 
     void onApiRequestFinished();
     void onUserRequestFinished();
-
-private:
     QString mUserURL;
 
     QWebEngineView *mWebView;
