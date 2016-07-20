@@ -51,6 +51,7 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemMoveJob>
 #include <Akonadi/Session>
+#include <Akonadi/AgentManager>
 
 #include <KLocalizedString>
 #include <KWindowSystem>
@@ -209,15 +210,17 @@ void KolabProxyResource::retrieveCollectionsTreeDone( KJob *job )
 
 void KolabProxyResource::retrieveItems( const Akonadi::Collection &collection )
 {
-  const Akonadi::Collection imapCollection = kolabToImap( collection );
+  Akonadi::Collection imapCollection = kolabToImap( collection );
   if ( !mHandlerManager->isMonitored( imapCollection.id() ) ) {
     //This should never happen
     kWarning() << "received a retrieveItems request for a collection without imap counterpart" << collection.id();
     cancelTask();
     return;
   }
-  
+  imapCollection.setResource( imapResourceForCollection( imapCollection.id() ) );
+
   Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob( imapCollection );
+  job->setProperty("imapCollection", QVariant::fromValue( imapCollection ));
   job->fetchScope().fetchFullPayload();
   job->fetchScope().setIgnoreRetrievalErrors( true );
 
@@ -245,6 +248,11 @@ void KolabProxyResource::retrieveItemsFetchDone( KJob *job )
   const Akonadi::Item::List newItems = handler->resolveConflicts( handler->translateItems( items ) );
 
   itemsRetrieved( newItems );
+
+  // Now trigger sync of the IMAP collection, it will fetch new/update existing/remove old
+  // emails and notify us about that through imapItem*() signals.
+  const Akonadi::Collection imapCollection = job->property("imapCollection").value<Akonadi::Collection>();
+  Akonadi::AgentManager::self()->synchronizeCollection(imapCollection, false);
 }
 
 bool KolabProxyResource::retrieveItem( const Akonadi::Item &item, const QSet<QByteArray> &parts )
