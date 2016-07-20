@@ -19,8 +19,8 @@
 #include "imapitemaddedjob.h"
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemCreateJob>
+#include <Akonadi/ItemDeleteJob>
 #include <Akonadi/CollectionFetchJob>
 
 ImapItemAddedJob::ImapItemAddedJob(const Akonadi::Item &imapItem, const Akonadi::Collection &imapCollection, KolabHandler &handler, QObject* parent)
@@ -106,13 +106,13 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
         if (!conflictingItems.isEmpty()) {
             //This is a conflict
             const Akonadi::Item conflictingKolabItem = conflictingItems.first();
-            mTranslatedItem.setId(conflictingKolabItem.id());
             imapToKolab(mImapItem, mTranslatedItem);
-            //TODO ensure the modifyjob doesn't collide with a removejob due to the original imap item vanishing.
-            kDebug() << "conflict, modifying existing item: " << conflictingKolabItem.id();
-            Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mTranslatedItem, this);
-            modJob->disableRevisionCheck();
-            connect(modJob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
+
+            // Create a new item
+            Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
+            connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreateDone(KJob*)));
+            // Delete the conflicting one
+            new Akonadi::ItemDeleteJob(conflictingKolabItem);
         } else {
             kDebug() << "creating new item";
             Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
