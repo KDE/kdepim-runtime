@@ -150,7 +150,9 @@ void RetrieveCollectionMetadataTask::onGetAclDone( KJob *job )
 {
   m_pendingMetaDataJobs--;
   if ( job->error() ) {
-    kWarning() << "GetACL failed: " << job->errorString();
+    //Don't warn about NO Permission denied. reduces noise
+    //TODO KIMAP::SetMetaDataJob::handleResponse() should set special error code and string
+    //kWarning() << "GetACL failed: " << job->errorString();
     endTaskIfNeeded();
     return; // Well, no metadata for us then...
   }

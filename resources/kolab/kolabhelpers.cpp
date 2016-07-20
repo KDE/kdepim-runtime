@@ -203,7 +203,12 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
     ok = true;
     //imap messages don't need to be translated
     if (item.mimeType() == KMime::Message::mimeType()) {
-        Q_ASSERT(item.hasPayload<KMime::Message::Ptr>());
+        //HOTFIX recommended by dvratil on 02 Feb 2016
+        if (!item.hasPayload<KMime::Message::Ptr>()) {
+            ok = false;
+            return Akonadi::Item();
+        }
+        //Q_ASSERT(item.hasPayload<KMime::Message::Ptr>());
         return item;
     }
     const QLatin1String productId("Akonadi-Kolab-Resource");
@@ -384,4 +389,3 @@ bool KolabHelpers::isHandledType(Kolab::FolderType type)
     }
     return false;
 }
-
