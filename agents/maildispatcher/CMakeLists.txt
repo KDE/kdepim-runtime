@@ -24,15 +24,8 @@ qt5_add_dbus_adaptor( maildispatcheragent_SRCS
   org.freedesktop.Akonadi.MailDispatcherAgent.xml maildispatcheragent.h MailDispatcherAgent
 )
 
-if (RUNTIME_PLUGINS_STATIC)
-  add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
-endif ()
-
 add_executable(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
 
-if (RUNTIME_PLUGINS_STATIC)
-  target_link_libraries(akonadi_maildispatcher_agent akonadi_serializer_mail)
-endif ()
 
 if( APPLE )
   set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)

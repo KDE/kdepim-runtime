@@ -89,9 +89,6 @@ install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akon
 
 ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 
-if (RUNTIME_PLUGINS_STATIC)
-    add_definitions(-DMAIL_SERIALIZER_PLUGIN_STATIC)
-endif ()
 
 add_executable(akonadi_imap_resource ${akonadi_imap_resource_SRCS})
 
@@ -115,10 +112,6 @@ target_link_libraries(akonadi_imap_resource
     imapresource
     KF5::TextWidgets
     folderarchivesettings)
-
-if (RUNTIME_PLUGINS_STATIC)
-  target_link_libraries(akonadi_imap_resource akonadi_serializer_mail)
-endif ()
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
