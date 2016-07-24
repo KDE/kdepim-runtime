@@ -128,6 +128,7 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
+add_definitions( -DQT_NO_URL_CAST_FROM_STRING )
 
 find_package(Sasl2)
 set_package_properties(Sasl2 PROPERTIES
