@@ -33,7 +33,7 @@
 
 using namespace Akonadi;
 
-SettingsDialog::SettingsDialog(WId windowId)
+SettingsDialog::SettingsDialog(const QString &resourceName, WId windowId)
     : QDialog()
 {
     QWidget *mainWidget = new QWidget(this);
@@ -56,11 +56,13 @@ SettingsDialog::SettingsDialog(WId windowId)
 
     connect(mOkButton, &QPushButton::clicked, this, &SettingsDialog::save);
 
+    connect(ui.kcfg_Name, &QLineEdit::textChanged, this, &SettingsDialog::validate);
     connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SettingsDialog::validate);
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
     QTimer::singleShot(0, this, &SettingsDialog::validate);
 
+    ui.kcfg_Name->setText(resourceName);
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(Settings::self()->path()));
     ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
     mManager = new KConfigDialogManager(this, Settings::self());
@@ -77,7 +79,8 @@ void SettingsDialog::save()
 void SettingsDialog::validate()
 {
     const QUrl currentUrl = ui.kcfg_Path->url();
-    if (currentUrl.isEmpty()) {
+    const QString name = ui.kcfg_Name->text();
+    if (currentUrl.isEmpty() || name.isEmpty()) {
         mOkButton->setEnabled(false);
         return;
     }
@@ -90,4 +93,9 @@ void SettingsDialog::validate()
         ui.kcfg_ReadOnly->setEnabled(true);
     }
     mOkButton->setEnabled(true);
+}
+
+QString SettingsDialog::resourceName() const
+{
+    return ui.kcfg_Name->text();
 }
