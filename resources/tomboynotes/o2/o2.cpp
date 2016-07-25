@@ -128,7 +128,7 @@ QString O2::requestUrl()
 
 void O2::setRequestUrl(const QString &value)
 {
-    requestUrl_ = value;
+    requestUrl_ = QUrl(value);
     Q_EMIT requestUrlChanged();
 }
 
@@ -139,7 +139,7 @@ QString O2::tokenUrl()
 
 void O2::setTokenUrl(const QString &value)
 {
-    tokenUrl_ = value;
+    tokenUrl_ = QUrl(value);
     Q_EMIT tokenUrlChanged();
 }
 
@@ -150,7 +150,7 @@ QString O2::refreshTokenUrl()
 
 void O2::setRefreshTokenUrl(const QString &value)
 {
-    refreshTokenUrl_ = value;
+    refreshTokenUrl_ = QUrl(value);
     Q_EMIT refreshTokenUrlChanged();
 }
 

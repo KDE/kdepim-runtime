@@ -38,7 +38,7 @@ Akonadi::Item::List TomboyItemsDownloadJob::items() const
 void TomboyItemsDownloadJob::start()
 {
     // Get all notes
-    QNetworkRequest request(mContentURL);
+    QNetworkRequest request = QNetworkRequest(QUrl(mContentURL));
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyItemsDownloadJob::onRequestFinished);

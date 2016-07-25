@@ -73,7 +73,7 @@ void TomboyServerAuthenticateJob::onLinkingFailed()
 
 void TomboyServerAuthenticateJob::onLinkingSucceeded()
 {
-    QNetworkRequest request(mApiURL);
+    QNetworkRequest request = QNetworkRequest(QUrl(mApiURL));
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyServerAuthenticateJob::onApiRequestFinished);
@@ -100,7 +100,7 @@ void TomboyServerAuthenticateJob::onApiRequestFinished()
     const QJsonObject jo = document.object();
     mUserURL = jo[QLatin1String("user-ref")].toObject()[QLatin1String("api-ref")].toString();
 
-    QNetworkRequest request(mUserURL);
+    QNetworkRequest request = QNetworkRequest(QUrl(mUserURL));
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 
     connect(mReply, &QNetworkReply::finished, this, &TomboyServerAuthenticateJob::onUserRequestFinished);

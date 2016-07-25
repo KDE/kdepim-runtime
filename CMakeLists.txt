@@ -32,7 +32,7 @@ project(kdepim-runtime)
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "pre")
+    set(KDEPIM_RUNTIME_DEV_VERSION "beta1")
 endif()
 
 set(KDEPIM_RUNTIME_VERSION_NUMBER "5.3.40")
@@ -128,6 +128,7 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
+add_definitions( -DQT_NO_URL_CAST_FROM_STRING )
 
 find_package(Sasl2)
 set_package_properties(Sasl2 PROPERTIES
