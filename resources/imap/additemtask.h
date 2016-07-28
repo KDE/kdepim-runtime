@@ -32,15 +32,14 @@ public:
     explicit AddItemTask(ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR);
     virtual ~AddItemTask();
 
-private Q_SLOTS:
-    void onAppendMessageDone(KJob *job);
-    void onPreSearchSelectDone(KJob *job);
-    void onSearchDone(KJob *job);
-
 protected:
+
     void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
+    void onAppendMessageDone(KJob *job);
+    void onPreSearchSelectDone(KJob *job);
+    void onSearchDone(KJob *job);
     void triggerSearchJob(KIMAP::Session *session);
     void applyFoundUid(qint64 uid);
 

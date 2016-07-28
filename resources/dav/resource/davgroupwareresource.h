@@ -69,7 +69,6 @@ private:
         ItemUpdateChange
     };
 
-private Q_SLOTS:
     void createInitialCache();
     void onCreateInitialCacheReady(KJob *);
 
@@ -103,7 +102,6 @@ private Q_SLOTS:
     void onConflictModifyJobFinished(KJob *job);
     void onDeletedItemRecreated(KJob *job);
 
-private:
     void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
     void doItemRemoval(const Akonadi::Item &item);
     void handleConflict(const Akonadi::Item &localItem,

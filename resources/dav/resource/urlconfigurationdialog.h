@@ -55,7 +55,7 @@ public:
     void setDefaultPassword(const QString &password);
     void setPassword(const QString &password);
 
-private Q_SLOTS:
+private:
     void onConfigChanged();
     void checkUserInput();
     void onFetchButtonClicked();
@@ -63,8 +63,6 @@ private Q_SLOTS:
     void onCollectionsFetchDone(KJob *job);
     void onModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
     void onChangeDisplayNameFinished(KJob *job);
-
-private:
     void initModel();
     bool checkUserAuthInput();
     void addModelRow(const QString &displayName, const QString &url);

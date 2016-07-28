@@ -38,11 +38,9 @@ public:
 
     QString resourceName() const;
 
-private Q_SLOTS:
+private:
     void save();
     void validate();
-
-private:
     Ui::SettingsDialog ui;
     KConfigDialogManager *mManager;
     QPushButton *mOkButton;

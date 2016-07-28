@@ -37,15 +37,13 @@ public:
     explicit AddCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
     virtual ~AddCollectionTask();
 
-private Q_SLOTS:
-    void onCreateDone(KJob *job);
-    void onSubscribeDone(KJob *job);
-    void onSetMetaDataDone(KJob *job);
-
 protected:
     void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
+    void onCreateDone(KJob *job);
+    void onSubscribeDone(KJob *job);
+    void onSetMetaDataDone(KJob *job);
     Akonadi::Collection m_collection;
     uint m_pendingJobs;
     KIMAP::Session *m_session;

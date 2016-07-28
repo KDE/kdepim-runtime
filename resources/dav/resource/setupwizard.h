@@ -101,10 +101,8 @@ public:
 
     bool validatePage() Q_DECL_OVERRIDE;
 
-private Q_SLOTS:
-    void manualConfigToggled(bool toggled);
-
 private:
+    void manualConfigToggled(bool toggled);
     QButtonGroup *mServerGroup;
     QComboBox *mProvidersCombo;
 };
@@ -119,10 +117,8 @@ public:
     void initializePage() Q_DECL_OVERRIDE;
     void cleanupPage() Q_DECL_OVERRIDE;
 
-private Q_SLOTS:
-    void urlElementChanged();
-
 private:
+    void urlElementChanged();
     QFormLayout *mLayout;
     KLineEdit *mHost;
     KLineEdit *mPath;
@@ -143,11 +139,9 @@ class CheckPage : public QWizardPage
 public:
     explicit CheckPage(QWidget *parent = Q_NULLPTR);
 
-private Q_SLOTS:
+private:
     void checkConnection();
     void onFetchDone(KJob *);
-
-private:
     QTextBrowser *mStatusLabel;
 };
 

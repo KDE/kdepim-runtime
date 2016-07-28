@@ -69,11 +69,9 @@ Q_SIGNALS:
      */
     void freeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText);
 
-private Q_SLOTS:
+private:
     void onPrincipalSearchJobFinished(KJob *job);
     void onRetrieveFreeBusyJobFinished(KJob *job);
-
-private:
     /**
      * Simple struct to track the state of requests
      */

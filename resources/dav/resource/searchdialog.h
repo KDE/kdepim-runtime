@@ -44,13 +44,12 @@ public:
 
     QStringList selection() const;
 
-private Q_SLOTS:
+private:
     void checkUserInput();
     void search();
     void onSearchJobFinished(KJob *job);
     void onCollectionsFetchJobFinished(KJob *job);
 
-private:
     Ui::SearchDialog mUi;
     QStandardItemModel *mModel;
     int mSubJobCount;

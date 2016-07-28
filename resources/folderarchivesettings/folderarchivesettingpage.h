@@ -56,10 +56,8 @@ public:
     void loadSettings();
     void writeSettings();
 
-private Q_SLOTS:
-    void slotEnableChanged(bool enabled);
-
 private:
+    void slotEnableChanged(bool enabled);
     QString mInstanceName;
     QCheckBox *mEnabled;
     FolderArchiveComboBox *mArchiveNamed;
