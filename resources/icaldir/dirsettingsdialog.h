@@ -34,9 +34,7 @@ class SettingsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit SettingsDialog(const QString &resourceName, WId windowId);
-
-    QString resourceName() const;
+    explicit SettingsDialog(WId windowId);
 
 private Q_SLOTS:
     void save();

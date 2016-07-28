@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>414</width>
-    <height>410</height>
+    <width>547</width>
+    <height>386</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -34,20 +34,6 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Calendar Name:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="kcfg_Name"/>
-         </item>
-        </layout>
-       </item>
-       <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
           <string>Directory Name</string>
@@ -58,7 +44,7 @@
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>Directory:</string>
+               <string>Di&amp;rectory:</string>
               </property>
               <property name="buddy">
                <cstring>kcfg_Path</cstring>
@@ -194,15 +180,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KPluralHandlingSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>kpluralhandlingspinbox.h</header>
-  </customwidget>
-  <customwidget>
    <class>KUrlRequester</class>
-   <extends>QWidget</extends>
+   <extends>QFrame</extends>
    <header>kurlrequester.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KPluralHandlingSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>KPluralHandlingSpinBox</header>
   </customwidget>
  </customwidgets>
  <resources/>
