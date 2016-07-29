@@ -46,7 +46,6 @@ SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     mTypeSelector = new AlarmTypeWidget(ui.tab, ui.tabLayout);
-    ui.ktabwidget->tabBar()->hide();
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
