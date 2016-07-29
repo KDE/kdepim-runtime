@@ -102,10 +102,9 @@ void ICalDirResource::aboutToQuit()
 
 void ICalDirResource::configure(WId windowId)
 {
-    SettingsDialog dlg(name(), windowId);
+    SettingsDialog dlg(windowId);
     dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("text-calendar")));
     if (dlg.exec()) {
-        setName(dlg.resourceName());
         initializeICalDirectory();
         loadIncidences();
 
