@@ -20,6 +20,18 @@
    <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="KButtonGroup" name="remoteProtocol">
      <property name="locale">
@@ -35,7 +47,7 @@
       <item>
        <widget class="QRadioButton" name="caldav">
         <property name="text">
-         <string>CalDAV</string>
+         <string>CalDA&amp;V</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -74,7 +86,7 @@
       <item row="1" column="0" colspan="2">
        <widget class="QRadioButton" name="useDefaultCreds">
         <property name="text">
-         <string>Use global credentials</string>
+         <string>Use global creden&amp;tials</string>
         </property>
         <property name="checked">
          <bool>true</bool>
