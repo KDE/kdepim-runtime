@@ -317,6 +317,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     setSubTitle(i18n("Select the groupware server the resource shall be configured for"));
 
     mProvidersCombo = new QComboBox(this);
+    mProvidersCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     KService::List providers;
     KServiceTypeTrader *trader = KServiceTypeTrader::self();
     providers = trader->query(QStringLiteral("DavGroupwareProvider"));
@@ -348,7 +349,6 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     button->setChecked(true);
     hLayout->addWidget(button);
     hLayout->addWidget(mProvidersCombo);
-    hLayout->addStretch(1);
     layout->addLayout(hLayout);
 
     button = new QRadioButton(i18n("Configure the resource manually"));

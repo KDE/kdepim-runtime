@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=ownCloud (> 5.0 and < 9.0)
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-CalDavPath=/remote.php/caldav
+X-DavGroupware-CardDavPath=/remote.php/carddav
