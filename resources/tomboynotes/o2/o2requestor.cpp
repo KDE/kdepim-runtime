@@ -71,10 +71,10 @@ void O2Requestor::onRefreshFinished(QNetworkReply::NetworkError error)
         return;
     }
     if (QNetworkReply::NoError == error) {
-        QTimer::singleShot(100, this, SLOT(retry()));
+        QTimer::singleShot(100, this, &O2Requestor::retry);
     } else {
         error_ = error;
-        QTimer::singleShot(10, this, SLOT(finish()));
+        QTimer::singleShot(10, this, &O2Requestor::finish);
     }
 }
 
@@ -89,7 +89,7 @@ void O2Requestor::onRequestFinished()
         return;
     }
     if (error == QNetworkReply::NoError) {
-        QTimer::singleShot(10, this, SLOT(finish()));
+        QTimer::singleShot(10, this, &O2Requestor::finish);
     }
 }
 
@@ -113,7 +113,7 @@ void O2Requestor::onRequestError(QNetworkReply::NetworkError error)
         qCritical() << "O2Requestor::onRequestError: Invoking remote refresh failed";
     }
     error_ = error;
-    QTimer::singleShot(10, this, SLOT(finish()));
+    QTimer::singleShot(10, this, &O2Requestor::finish);
 }
 
 void O2Requestor::onUploadProgress(qint64 uploaded, qint64 total)
@@ -201,6 +201,6 @@ void O2Requestor::retry()
     }
     timedReplies_.add(reply_);
     connect(reply_, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onRequestError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
-    connect(reply_, SIGNAL(finished()), this, SLOT(onRequestFinished()), Qt::QueuedConnection);
-    connect(reply_, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(onUploadProgress(qint64,qint64)));
+    connect(reply_, &QNetworkReply::finished, this, &O2Requestor::onRequestFinished, Qt::QueuedConnection);
+    connect(reply_, &QNetworkReply::uploadProgress, this, &O2Requestor::onUploadProgress);
 }
