@@ -64,7 +64,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor(this);
 
-    mIdentityManager = new KIdentityManagement::IdentityManager(false, this);
+    mIdentityManager = new KIdentityManagement::IdentityManager(true, this);
     connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
     slotIdentitiesChanged();
     mDefaultPixmap = QIcon::fromTheme(QStringLiteral("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
