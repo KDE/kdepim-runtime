@@ -77,6 +77,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mainLayout->addWidget(w);
     mainLayout->addWidget(buttonBox);
     QVBoxLayout *lay = new QVBoxLayout;
+    lay->setMargin(0);
     w->setLayout(lay);
     QTabWidget *tab = new QTabWidget;
     lay->addWidget(tab);
