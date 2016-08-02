@@ -262,7 +262,7 @@ void O1::link()
 void O1::onTokenRequestError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-    qWarning() << "O1::onTokenRequestError:" << (int)error << reply->errorString() << reply->readAll();
+    qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestError:" << (int)error << reply->errorString() << reply->readAll();
     Q_EMIT linkingFailed();
 }
 
@@ -272,7 +272,7 @@ void O1::onTokenRequestFinished()
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
-        qWarning() << "O1::onTokenRequestFinished: " << reply->errorString();
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished: " << reply->errorString();
         return;
     }
 
@@ -287,7 +287,7 @@ void O1::onTokenRequestFinished()
     // Checking for "oauth_callback_confirmed" is present and set to true
     QString oAuthCbConfirmed = response.value(O2_OAUTH_CALLBACK_CONFIRMED, QStringLiteral("false"));
     if (requestToken_.isEmpty() || requestTokenSecret_.isEmpty() || (oAuthCbConfirmed == QLatin1String("false"))) {
-        qWarning() << "O1::onTokenRequestFinished: No oauth_token, oauth_token_secret or oauth_callback_confirmed in response :" << data;
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished: No oauth_token, oauth_token_secret or oauth_callback_confirmed in response :" << data;
         Q_EMIT linkingFailed();
         return;
     }
@@ -315,7 +315,7 @@ void O1::onVerificationReceived(QMap<QString, QString> params)
         // Exchange request token for access token
         exchangeToken();
     } else {
-        qWarning() << "O1::onVerificationReceived: oauth_token missing or doesn't match";
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onVerificationReceived: oauth_token missing or doesn't match";
         Q_EMIT linkingFailed();
     }
 }
@@ -347,7 +347,7 @@ void O1::exchangeToken()
 void O1::onTokenExchangeError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-    qWarning() << "O1::onTokenExchangeError:" << (int)error << reply->errorString() << reply->readAll();
+    qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeError:" << (int)error << reply->errorString() << reply->readAll();
     Q_EMIT linkingFailed();
 }
 
@@ -358,7 +358,7 @@ void O1::onTokenExchangeFinished()
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
-        qWarning() << "O1::onTokenExchangeFinished: " << reply->errorString();
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeFinished: " << reply->errorString();
         return;
     }
 
@@ -379,7 +379,7 @@ void O1::onTokenExchangeFinished()
         setLinked(true);
         Q_EMIT linkingSucceeded();
     } else {
-        qWarning() << "O1::onTokenExchangeFinished: oauth_token or oauth_token_secret missing from response" << data;
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeFinished: oauth_token or oauth_token_secret missing from response" << data;
         Q_EMIT linkingFailed();
     }
 }

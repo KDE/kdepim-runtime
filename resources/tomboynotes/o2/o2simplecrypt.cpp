@@ -25,6 +25,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "o2/o0simplecrypt.h"
+#include "debug.h"
 #include <QByteArray>
 #include <QDateTime>
 #include <QCryptographicHash>
@@ -78,7 +79,7 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QString &plaintext)
 QByteArray O0SimpleCrypt::encryptToByteArray(QByteArray plaintext)
 {
     if (m_keyParts.isEmpty()) {
-        qWarning() << "No key set.";
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "No key set.";
         m_lastError = ErrorNoKeySet;
         return QByteArray();
     }
@@ -177,7 +178,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QString &cyphertext)
 QByteArray O0SimpleCrypt::decryptToByteArray(QByteArray cypher)
 {
     if (m_keyParts.isEmpty()) {
-        qWarning() << "No key set.";
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "No key set.";
         m_lastError = ErrorNoKeySet;
         return QByteArray();
     }
@@ -193,7 +194,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(QByteArray cypher)
 
     if (version != 3) { //we only work with version 3
         m_lastError = ErrorUnknownVersion;
-        qWarning() << "Invalid version or not a cyphertext.";
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "Invalid version or not a cyphertext.";
         return QByteArray();
     }
 
