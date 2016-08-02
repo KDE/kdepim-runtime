@@ -1,3 +1,4 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_invitations_agent\")
 
 
 set( invitationsagent_SRCS
@@ -5,7 +6,7 @@ set( invitationsagent_SRCS
   incidenceattribute.cpp
 )
 
-add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_invitations_agent\")
+ecm_qt_declare_logging_category(invitationsagent_SRCS HEADER invitationagent_debug.h IDENTIFIER INVITATIONAGENT_LOG CATEGORY_NAME log_invitationagent)
 
 add_executable(akonadi_invitations_agent ${invitationsagent_SRCS})
 

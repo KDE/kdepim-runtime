@@ -86,8 +86,7 @@ Exec=akonadi_invitations_agent
 Icon=mail-folder-outbox
 
 X-Akonadi-Identifier=akonadi_invitations_agent
-#X-Akonadi-Capabilities=Unique,Autostart,NoConfig
-X-Akonadi-Capabilities=NoConfig
+X-Akonadi-Capabilities=Unique,NoConfig
 
 #X-Akonadi-MimeTypes=message/rfc822
 #X-Akonadi-MimeTypes=text/calendar

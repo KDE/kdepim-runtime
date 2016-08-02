@@ -62,7 +62,7 @@ public:
     explicit InvitationsAgent(const QString &id);
     virtual ~InvitationsAgent();
 
-    Akonadi::Collection collection();
+    Akonadi::Collection collection() const;
 
 public Q_SLOTS:
     void configure(WId windowId) Q_DECL_OVERRIDE;
@@ -77,20 +77,6 @@ private:
                                 const Akonadi::Item &item);
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-
-    /*
-    virtual void itemChanged( const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers );
-    virtual void itemRemoved( const Akonadi::Item &item );
-    virtual void collectionAdded( const Akonadi::Collection &collection, const Akonadi::Collection &parent );
-    virtual void collectionChanged( const Akonadi::Collection &collection );
-    virtual void collectionRemoved( const Akonadi::Collection &collection );
-
-    virtual void itemMoved( const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
-    virtual void itemLinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void itemUnlinked( const Akonadi::Item &item, const Akonadi::Collection &collection );
-    virtual void collectionMoved( const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination );
-    virtual void collectionChanged( const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes );
-    */
 
 private:
     QString m_resourceId;
