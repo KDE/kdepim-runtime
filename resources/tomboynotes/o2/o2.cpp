@@ -30,12 +30,12 @@ static QVariantMap parseTokenResponse(const QByteArray &data)
     QJsonParseError err;
     QJsonDocument doc = QJsonDocument::fromJson(data, &err);
     if (err.error != QJsonParseError::NoError) {
-        qWarning() << "parseTokenResponse: Failed to parse token response due to err:" << err.errorString();
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "parseTokenResponse: Failed to parse token response due to err:" << err.errorString();
         return QVariantMap();
     }
 
     if (!doc.isObject()) {
-        qWarning() << "parseTokenResponse: Token response is not an object";
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "parseTokenResponse: Token response is not an object";
         return QVariantMap();
     }
 
@@ -230,7 +230,7 @@ void O2::onVerificationReceived(const QMap<QString, QString> response)
     Q_EMIT closeBrowser();
 
     if (response.contains("error")) {
-        qWarning() << "O2::onVerificationReceived: Verification failed: " << response;
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onVerificationReceived: Verification failed: " << response;
         Q_EMIT linkingFailed();
         return;
     }
@@ -298,7 +298,7 @@ void O2::onTokenReplyFinished()
             setLinked(true);
             Q_EMIT linkingSucceeded();
         } else {
-            qWarning() << "O2::onTokenReplyFinished: oauth_token missing from response" << replyData;
+            qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onTokenReplyFinished: oauth_token missing from response" << replyData;
             Q_EMIT linkingFailed();
         }
     }
@@ -308,7 +308,7 @@ void O2::onTokenReplyFinished()
 void O2::onTokenReplyError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *tokenReply = qobject_cast<QNetworkReply *>(sender());
-    qWarning() << "O2::onTokenReplyError: " << error << ": " << tokenReply->errorString();
+    qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onTokenReplyError: " << error << ": " << tokenReply->errorString();
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onTokenReplyError: " << tokenReply->readAll();
     setToken(QString());
     setRefreshToken(QString());
@@ -362,12 +362,12 @@ void O2::refresh()
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::refresh: Token: ..." << refreshToken().right(7);
 
     if (refreshToken().isEmpty()) {
-        qWarning() << "O2::refresh: No refresh token";
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::refresh: No refresh token";
         onRefreshError(QNetworkReply::AuthenticationRequiredError);
         return;
     }
     if (refreshTokenUrl_.isEmpty()) {
-        qWarning() << "O2::refresh: Refresh token URL not set";
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::refresh: Refresh token URL not set";
         onRefreshError(QNetworkReply::AuthenticationRequiredError);
         return;
     }
@@ -409,7 +409,7 @@ void O2::onRefreshFinished()
 void O2::onRefreshError(QNetworkReply::NetworkError error)
 {
     QNetworkReply *refreshReply = qobject_cast<QNetworkReply *>(sender());
-    qWarning() << "O2::onRefreshError: " << error;
+    qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onRefreshError: " << error;
     unlink();
     timedReplies_.remove(refreshReply);
     Q_EMIT refreshFinished(error);
