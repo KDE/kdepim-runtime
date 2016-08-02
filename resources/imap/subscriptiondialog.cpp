@@ -56,10 +56,10 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
       m_filter(new SubscriptionFilterProxyModel(this)),
       m_model(new QStandardItemModel(this))
 {
+    QVBoxLayout *topLayout = new QVBoxLayout(this);
     setModal(true);
+
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-    QVBoxLayout *topLayout = new QVBoxLayout;
-    setLayout(topLayout);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -74,6 +74,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
 
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->setMargin(0);
     mainWidget->setLayout(mainLayout);
     topLayout->addWidget(mainWidget);
     topLayout->addWidget(buttonBox);
