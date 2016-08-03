@@ -51,6 +51,10 @@ public:
 public Q_SLOTS:
     void configure(WId windowId) Q_DECL_OVERRIDE;
 
+private Q_SLOTS:
+    void createInitialCache();
+    void onCreateInitialCacheReady(KJob *);
+
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
     void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
@@ -69,8 +73,6 @@ private:
         ItemUpdateChange
     };
 
-    void createInitialCache();
-    void onCreateInitialCacheReady(KJob *);
 
     void onReloadConfig();
     void onCollectionRemovedFinished(KJob *);
