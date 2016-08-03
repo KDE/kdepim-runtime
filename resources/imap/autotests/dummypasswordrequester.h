@@ -37,7 +37,7 @@ public:
 
 public:
     void requestPassword(RequestType request = StandardRequest,
-                                 const QString &serverError = QString()) Q_DECL_OVERRIDE;
+                         const QString &serverError = QString()) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void emitResult();

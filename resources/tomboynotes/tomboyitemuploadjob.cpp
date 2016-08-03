@@ -64,7 +64,7 @@ void TomboyItemUploadJob::start()
         break;
     case JobType::AddItem:
         jsonNote[QLatin1String("create-date")] = getCurrentISOTime();
-        // Missing break is intended
+    // Missing break is intended
     case JobType::ModifyItem:
         jsonNote[QLatin1String("title")] = mNoteContent->headerByType("subject")->asUnicodeString();
         jsonNote[QLatin1String("note-content")] = mNoteContent->mainBodyPart()->decodedText();

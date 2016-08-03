@@ -49,11 +49,10 @@ NewMailNotifierCollectionProxyModel::NewMailNotifierCollectionProxyModel(QObject
 
 QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int role) const
 {
-    if (role == Qt::CheckStateRole)
-    {
+    if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
             const Akonadi::Collection collection =
-                    data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+                data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             if (mNotificationCollection.contains(collection)) {
                 return mNotificationCollection.value(collection) ? Qt::Checked : Qt::Unchecked;
             } else {
@@ -70,8 +69,7 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
 
 bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (role == Qt::CheckStateRole)
-    {
+    if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
             const Akonadi::Collection collection =
                 data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
@@ -98,7 +96,6 @@ QHash<Akonadi::Collection, bool> NewMailNotifierCollectionProxyModel::notificati
     return mNotificationCollection;
 }
 
-
 NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWidget *parent)
     : QWidget(parent),
       mNeedUpdate(false)
@@ -124,7 +121,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mimeTypeProxy->setExcludeVirtualCollections(true);
     mimeTypeProxy->addMimeTypeFilters(QStringList() << KMime::Message::mimeType());
     mimeTypeProxy->setSourceModel(mModel);
-
 
     mNewMailNotifierProxyModel = new NewMailNotifierCollectionProxyModel(this);
     mNewMailNotifierProxyModel->setSourceModel(mimeTypeProxy);
@@ -240,6 +236,4 @@ void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
         }
     }
 }
-
-
 

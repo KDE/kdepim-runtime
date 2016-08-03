@@ -34,7 +34,6 @@ class ChangeRecorder;
 class QTreeView;
 class KJob;
 
-
 class NewMailNotifierCollectionProxyModel : public QIdentityProxyModel
 {
 public:

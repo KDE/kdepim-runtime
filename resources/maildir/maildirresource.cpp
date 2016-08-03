@@ -851,7 +851,7 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
 void MaildirResource::fsWatchFileModifyResult(KJob *job)
 {
     if (job->error()) {
-        qCDebug(MAILDIRRESOURCE_LOG) << " MaildirResource::fsWatchFileModifyResult error: "<< job->errorString();
+        qCDebug(MAILDIRRESOURCE_LOG) << " MaildirResource::fsWatchFileModifyResult error: " << job->errorString();
         return;
     }
 }

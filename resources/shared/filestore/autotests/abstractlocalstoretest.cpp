@@ -60,8 +60,7 @@ protected:
     void processJob(Akonadi::FileStore::Job *job) Q_DECL_OVERRIDE;
 
 protected:
-    void setTopLevelCollection(const Collection &collection) Q_DECL_OVERRIDE
-    {
+    void setTopLevelCollection(const Collection &collection) Q_DECL_OVERRIDE {
         mTopLevelCollection = collection;
 
         Collection modifiedCollection = collection;

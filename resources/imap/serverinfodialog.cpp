@@ -51,7 +51,6 @@ ServerInfoDialog::~ServerInfoDialog()
 {
 }
 
-
 ServerInfoTextBrowser::ServerInfoTextBrowser(QWidget *parent)
     : QTextBrowser(parent)
 {
