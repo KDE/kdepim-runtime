@@ -51,7 +51,6 @@
 #include <KMime/Message>
 #include <KSystemTimeZones>
 
-#include <QtCore/QFileInfo>
 #include <QtCore/QTimer>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
@@ -232,8 +231,6 @@ InvitationsAgent::InvitationsAgent(const QString &id)
     : AgentBase(id), AgentBase::ObserverV2()
     , m_invitationsCollection(new InvitationsCollection(this))
 {
-
-
     changeRecorder()->setChangeRecordingEnabled(false);   // behave like Monitor
     changeRecorder()->itemFetchScope().fetchFullPayload();
     changeRecorder()->setMimeTypeMonitored(QStringLiteral("message/rfc822"), true);
@@ -250,8 +247,6 @@ InvitationsAgent::~InvitationsAgent()
 
 void InvitationsAgent::initStart()
 {
-
-
     m_invitationsCollection->clear();
     if (m_invitationsCollection->hasDefaultCollection()) {
         initDone();
@@ -490,8 +485,9 @@ void InvitationsAgent::itemAdded(const Item &item, const Collection &collection)
 
             KMime::Headers::ContentType *ct = content->contentType();
             Q_ASSERT(ct);
-            qCDebug(INVITATIONAGENT_LOG) << "Mimetype of the body part is " << ct->mimeType();
-            if (ct->mimeType() != "text/calendar") {
+            const QByteArray mimeType = ct->mimeType();
+            qCDebug(INVITATIONAGENT_LOG) << "Mimetype of the body part is " << mimeType;
+            if (mimeType != QByteArrayLiteral("text/calendar")) {
                 continue;
             }
 
@@ -512,8 +508,9 @@ void InvitationsAgent::itemAdded(const Item &item, const Collection &collection)
 
         KMime::Headers::ContentType *ct = message->contentType();
         Q_ASSERT(ct);
-        qCDebug(INVITATIONAGENT_LOG) << "Mimetype of the body is " << ct->mimeType();
-        if (ct->mimeType() != "text/calendar") {
+        const QByteArray mimeType = ct->mimeType();
+        qCDebug(INVITATIONAGENT_LOG) << "Mimetype of the body is " << mimeType;
+        if (mimeType != QByteArrayLiteral("text/calendar")) {
             return;
         }
 
