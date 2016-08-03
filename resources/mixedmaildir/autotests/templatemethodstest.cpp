@@ -60,8 +60,7 @@ public:
     mutable QString mErrorText;
 
 protected:
-    void setTopLevelCollection(const Collection &collection) Q_DECL_OVERRIDE
-    {
+    void setTopLevelCollection(const Collection &collection) Q_DECL_OVERRIDE {
         MixedMaildirStore::setTopLevelCollection(collection);
     }
 

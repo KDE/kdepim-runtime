@@ -277,7 +277,6 @@ Collection InvitationsAgent::collection() const
     return m_invitationsCollection->defaultCollection();
 }
 
-
 void InvitationsAgent::configure(WId windowId)
 {
     qCDebug(INVITATIONAGENT_LOG) << windowId;
@@ -350,7 +349,6 @@ void InvitationsAgent::resourceSyncResult(KJob *job)
 
 void InvitationsAgent::collectionFetchResult(KJob *job)
 {
-
 
     if (job->error()) {
         qCWarning(INVITATIONAGENT_LOG) << job->errorString();

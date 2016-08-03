@@ -162,13 +162,13 @@ public:
       a cyphertext the result. The result is a base64 encoded version of the binary array that is the
       actual result of the string, so it can be stored easily in a text format.
       */
-    QString encryptToString(const QString &plaintext) ;
+    QString encryptToString(const QString &plaintext);
     /**
       Encrypts the @arg plaintext QByteArray with the key the class was initialized with, and returns
       a cyphertext the result. The result is a base64 encoded version of the binary array that is the
       actual result of the encryption, so it can be stored easily in a text format.
       */
-    QString encryptToString(QByteArray plaintext) ;
+    QString encryptToString(QByteArray plaintext);
     /**
       Encrypts the @arg plaintext string with the key the class was initialized with, and returns
       a binary cyphertext in a QByteArray the result.
@@ -176,7 +176,7 @@ public:
       This method returns a byte array, that is useable for storing a binary format. If you need
       a string you can store in a text file, use encryptToString() instead.
       */
-    QByteArray encryptToByteArray(const QString &plaintext) ;
+    QByteArray encryptToByteArray(const QString &plaintext);
     /**
       Encrypts the @arg plaintext QByteArray with the key the class was initialized with, and returns
       a binary cyphertext in a QByteArray the result.
@@ -184,7 +184,7 @@ public:
       This method returns a byte array, that is useable for storing a binary format. If you need
       a string you can store in a text file, use encryptToString() instead.
       */
-    QByteArray encryptToByteArray(QByteArray plaintext) ;
+    QByteArray encryptToByteArray(QByteArray plaintext);
 
     /**
       Decrypts a cyphertext string encrypted with this class with the set key back to the
@@ -193,7 +193,7 @@ public:
       If an error occured, such as non-matching keys between encryption and decryption,
       an empty string or a string containing nonsense may be returned.
       */
-    QString decryptToString(const QString &cyphertext) ;
+    QString decryptToString(const QString &cyphertext);
     /**
       Decrypts a cyphertext string encrypted with this class with the set key back to the
       plain text version.
@@ -201,7 +201,7 @@ public:
       If an error occured, such as non-matching keys between encryption and decryption,
       an empty string or a string containing nonsense may be returned.
       */
-    QByteArray decryptToByteArray(const QString &cyphertext) ;
+    QByteArray decryptToByteArray(const QString &cyphertext);
     /**
       Decrypts a cyphertext binary encrypted with this class with the set key back to the
       plain text version.
@@ -209,7 +209,7 @@ public:
       If an error occured, such as non-matching keys between encryption and decryption,
       an empty string or a string containing nonsense may be returned.
       */
-    QString decryptToString(QByteArray cypher) ;
+    QString decryptToString(QByteArray cypher);
     /**
       Decrypts a cyphertext binary encrypted with this class with the set key back to the
       plain text version.
@@ -217,7 +217,7 @@ public:
       If an error occured, such as non-matching keys between encryption and decryption,
       an empty string or a string containing nonsense may be returned.
       */
-    QByteArray decryptToByteArray(QByteArray cypher) ;
+    QByteArray decryptToByteArray(QByteArray cypher);
 
     //enum to describe options that have been used for the encryption. Currently only one, but
     //that only leaves room for future extensions like adding a cryptographic hash...
