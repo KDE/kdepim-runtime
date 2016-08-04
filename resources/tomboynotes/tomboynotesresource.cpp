@@ -227,6 +227,7 @@ void TomboyNotesResource::configure(WId windowId)
 
     // Run the configuration dialog an save settings if accepted
     if (dialog.exec() != QDialog::Accepted) {
+        Q_EMIT configurationDialogRejected();
         return;
     }
 
@@ -242,6 +243,7 @@ void TomboyNotesResource::configure(WId windowId)
     } else {
         synchronize();
     }
+    Q_EMIT configurationDialogAccepted();
 }
 
 void TomboyNotesResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
