@@ -32,10 +32,10 @@ project(kdepim-runtime)
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "beta1")
+    set(KDEPIM_RUNTIME_DEV_VERSION "")
 endif()
 
-set(KDEPIM_RUNTIME_VERSION_NUMBER "5.2.90")
+set(KDEPIM_RUNTIME_VERSION_NUMBER "5.3.0")
 set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV_VERSION}")
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
