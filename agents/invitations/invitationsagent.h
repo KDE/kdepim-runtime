@@ -54,7 +54,7 @@ private:
     QList<Akonadi::ItemCreateJob *> m_jobs;
 };
 
-class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV2
+class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::ObserverV3
 {
     Q_OBJECT
 
