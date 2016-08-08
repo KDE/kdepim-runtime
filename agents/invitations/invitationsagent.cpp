@@ -225,7 +225,7 @@ void InvitationsAgentItem::modifyItemDone(KJob *job)
 }
 
 InvitationsAgent::InvitationsAgent(const QString &id)
-    : AgentBase(id), AgentBase::ObserverV2()
+    : AgentBase(id), AgentBase::ObserverV3()
     , m_invitationsCollection(new InvitationsCollection(this))
 {
     changeRecorder()->setChangeRecordingEnabled(false);   // behave like Monitor
