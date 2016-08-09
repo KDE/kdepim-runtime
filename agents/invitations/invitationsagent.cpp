@@ -22,18 +22,16 @@
 #include "incidenceattribute.h"
 #include "invitationagent_debug.h"
 
-#include <AgentInstance>
-#include <AgentInstanceCreateJob>
 #include <AgentManager>
 #include <ChangeRecorder>
 #include <Collection>
-#include <CollectionCreateJob>
 #include <CollectionFetchJob>
 #include <CollectionFetchScope>
 #include <ItemFetchJob>
 #include <ItemFetchScope>
 #include <ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>
+#include <AkonadiCore/Session>
 #include <resourcesynchronizationjob.h>
 #include <specialcollections.h>
 #include <specialcollectionsrequestjob.h>
@@ -225,13 +223,19 @@ void InvitationsAgentItem::modifyItemDone(KJob *job)
 }
 
 InvitationsAgent::InvitationsAgent(const QString &id)
-    : AgentBase(id), AgentBase::ObserverV3()
-    , m_invitationsCollection(new InvitationsCollection(this))
+    : AgentBase(id),
+      AgentBase::ObserverV3(),
+      m_invitationsCollection(new InvitationsCollection(this))
 {
-    changeRecorder()->setChangeRecordingEnabled(false);   // behave like Monitor
+    changeRecorder()->setMimeTypeMonitored(KMime::Message::mimeType());
+    changeRecorder()->itemFetchScope().setCacheOnly(true);
+    changeRecorder()->itemFetchScope().setFetchModificationTime(false);
     changeRecorder()->itemFetchScope().fetchFullPayload();
-    changeRecorder()->setMimeTypeMonitored(QStringLiteral("message/rfc822"), true);
-    //changeRecorder()->setCollectionMonitored( Collection::root(), true );
+
+    changeRecorder()->fetchCollection(true);
+    changeRecorder()->setChangeRecordingEnabled(false);
+    changeRecorder()->ignoreSession(Akonadi::Session::defaultSession());
+    changeRecorder()->setCollectionMonitored(Collection::root(), true);
 
     connect(this, &InvitationsAgent::reloadConfiguration, this, &InvitationsAgent::initStart);
     QTimer::singleShot(0, this, &InvitationsAgent::initStart);
