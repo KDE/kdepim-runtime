@@ -35,6 +35,7 @@
 
 int main(int argc, char **argv)
 {
+    QApplication app(argc, argv);
     KLocalizedString::setApplicationDomain("gid-migrator");
     KAboutData aboutData(QStringLiteral("gid-migrator"),
                          i18n("GID Migration Tool"),
@@ -46,7 +47,6 @@ int main(int argc, char **argv)
     aboutData.addAuthor(i18n("Christian Mollekopf"),  i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
     QCommandLineParser parser;
-    QApplication app(argc, argv);
     parser.addVersionOption();
     parser.addHelpOption();
     parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive"), i18n("Show reporting dialog")));
