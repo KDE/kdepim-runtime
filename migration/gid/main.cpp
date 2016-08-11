@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     parser.addHelpOption();
     parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive"), i18n("Show reporting dialog")));
     parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive-on-change"), i18n("Show report only if changes were made")));
-    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("mimetype"), i18n("MIME type to migrate")));
+    parser.addOption(QCommandLineOption(QStringLiteral("mimetype"), i18n("MIME type to migrate"), QStringLiteral("mimetype")));
 
     aboutData.setupCommandLine(&parser);
     parser.process(app);
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
         QObject::connect(migrator, &QObject::destroyed, infoDialog, &InfoDialog::migratorDone);
         QObject::connect(migrator, SIGNAL(progress(int)), infoDialog, SLOT(progress(int)));
     }
-    QObject::connect(migrator, SIGNAL(stoppedProcessing()), &app, SLOT(quit));
+    QObject::connect(migrator, SIGNAL(stoppedProcessing()), &app, SLOT(quit()));
     migrator->start();
     const int result = app.exec();
     if (InfoDialog::hasError() || migrator->migrationState() == MigratorBase::Failed) {
