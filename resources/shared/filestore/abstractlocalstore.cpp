@@ -563,22 +563,25 @@ FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems(const Collect
     return job;
 }
 
-FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItem(const Item &item) const
+FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems(const Item::List &items) const
 {
-    FileStore::ItemFetchJob *job = new FileStore::ItemFetchJob(item, d->mSession);
+    FileStore::ItemFetchJob *job = new FileStore::ItemFetchJob(items, d->mSession);
 
-    if (d->mTopLevelCollection.remoteId().isEmpty()) {
-        const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
-                    << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-        d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
-    } else if (item.remoteId().isEmpty()) {
-        const QString message = i18nc("@info:status", "Given item identifier is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
-                    << ", parentCollection=" << item.parentCollection().remoteId() << ")";
-        d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
+    if (items.size() == 1) {
+        const Akonadi::Item &item = items[0];
+        if (d->mTopLevelCollection.remoteId().isEmpty()) {
+            const QString message = i18nc("@info:status", "Configured storage location is empty");
+            qCritical() << message;
+            qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+                        << ", parentCollection=" << item.parentCollection().remoteId() << ")";
+            d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
+        } else if (item.remoteId().isEmpty()) {
+            const QString message = i18nc("@info:status", "Given item identifier is empty");
+            qCritical() << message;
+            qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+                        << ", parentCollection=" << item.parentCollection().remoteId() << ")";
+            d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
+        }
     }
 
     int errorCode = 0;
@@ -589,6 +592,11 @@ FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItem(const Item &it
     }
 
     return job;
+}
+
+FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItem(const Item &item) const
+{
+    return fetchItems({ item });
 }
 
 FileStore::ItemCreateJob *FileStore::AbstractLocalStore::createItem(const Item &item, const Collection &collection)

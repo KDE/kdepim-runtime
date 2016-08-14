@@ -149,7 +149,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     itemsRetrieved(items);
 }
 
-bool MboxResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
+bool MboxResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts);
 
@@ -162,18 +162,23 @@ bool MboxResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray
         return false;
     }
 
-    const QString rid = item.remoteId();
-    const quint64 offset = itemOffset(rid);
-    KMime::Message *mail = mMBox->readMessage(KMBox::MBoxEntry(offset));
-    if (!mail) {
-        Q_EMIT error(i18n("Failed to read message with uid '%1'.", rid));
-        return false;
-    }
+    Akonadi::Item::List rv;
+    rv.reserve(items.count());
+    for (const auto &item : items) {
+        const QString rid = item.remoteId();
+        const quint64 offset = itemOffset(rid);
+        KMime::Message *mail = mMBox->readMessage(KMBox::MBoxEntry(offset));
+        if (!mail) {
+            Q_EMIT error(i18n("Failed to read message with uid '%1'.", rid));
+            return false;
+        }
 
-    Item i(item);
-    i.setPayload(KMime::Message::Ptr(mail));
-    Akonadi::MessageFlags::copyMessageFlags(*mail, i);
-    itemRetrieved(i);
+        Item i(item);
+        i.setPayload(KMime::Message::Ptr(mail));
+        Akonadi::MessageFlags::copyMessageFlags(*mail, i);
+        rv.push_back(i);
+    }
+    itemsRetrieved(rv);
     return true;
 }
 

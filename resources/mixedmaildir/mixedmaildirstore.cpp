@@ -1660,7 +1660,10 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
                                 scope.payloadParts().contains(MessagePart::Envelope);
 
     const bool fetchSingleItem = job->collection().remoteId().isEmpty();
-    const Collection collection = fetchSingleItem ? job->item().parentCollection() : job->collection();
+    const bool fetchItemsBatch = !job->items().isEmpty() && !job->item().isValid();
+    const Collection collection = fetchSingleItem ? job->item().parentCollection() :
+                                  fetchItemsBatch ? job->items().at(0).parentCollection() :
+                                  job->collection();
 
     QString path;
     QString errorText;
@@ -1675,7 +1678,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
 
     if (folderType == MBoxFolder) {
         MBoxHash::iterator findIt = mMBoxes.find(path);
-        if (findIt == mMBoxes.end() || !fetchSingleItem) {
+        if (findIt == mMBoxes.end() || (!fetchSingleItem || !fetchItemsBatch)) {
             MBoxPtr mbox = findIt != mMBoxes.end() ? findIt.value() : MBoxPtr(new MBoxContext);
             if (!mbox->load(path)) {
                 errorText = i18nc("@info:status", "Failed to load MBox folder %1", path);
@@ -1695,6 +1698,8 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
         Item::List items;
         if (fetchSingleItem) {
             items << job->item();
+        } else if (fetchItemsBatch) {
+            items = job->items();
         } else {
             listCollection(job, findIt.value(), collection, items);
         }
@@ -1734,6 +1739,8 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
         Item::List items;
         if (fetchSingleItem) {
             items << job->item();
+        } else if (fetchItemsBatch) {
+            items = job->items();
         } else {
             listCollection(job, mdPtr, collection, items);
         }

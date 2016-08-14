@@ -52,6 +52,15 @@ FileStore::ItemFetchJob::ItemFetchJob(const Item &item, FileStore::AbstractJobSe
     session->addJob(this);
 }
 
+FileStore::ItemFetchJob::ItemFetchJob(const Item::List &items, FileStore::AbstractJobSession *session)
+    : FileStore::Job(session), d(new Private())
+{
+    d->mItems = items;
+
+    session->addJob(this);
+}
+
+
 FileStore::ItemFetchJob::~ItemFetchJob()
 {
     delete d;

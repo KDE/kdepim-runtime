@@ -50,7 +50,7 @@ public Q_SLOTS:
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
     void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
 
 protected:
     virtual QString itemMimeType() const;

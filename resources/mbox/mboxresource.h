@@ -37,7 +37,7 @@ public:
     ~MboxResource();
 
 protected Q_SLOTS:
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
     void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
 
 protected:

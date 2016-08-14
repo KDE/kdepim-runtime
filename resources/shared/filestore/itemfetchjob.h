@@ -46,6 +46,8 @@ public:
 
     explicit ItemFetchJob(const Item &item, AbstractJobSession *session = Q_NULLPTR);
 
+    explicit ItemFetchJob(const Item::List &items, AbstractJobSession *session = Q_NULLPTR);
+
     virtual ~ItemFetchJob();
 
     Collection collection() const;

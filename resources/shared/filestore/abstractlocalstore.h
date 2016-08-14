@@ -63,6 +63,8 @@ public:
 
     ItemFetchJob *fetchItems(const Collection &collection) const Q_DECL_OVERRIDE;
 
+    ItemFetchJob *fetchItems(const Item::List &items) const Q_DECL_OVERRIDE;
+
     ItemFetchJob *fetchItem(const Item &item) const Q_DECL_OVERRIDE;
 
     ItemCreateJob *createItem(const Item &item, const Collection &collection) Q_DECL_OVERRIDE;

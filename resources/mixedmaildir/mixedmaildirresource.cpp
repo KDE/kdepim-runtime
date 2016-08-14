@@ -266,11 +266,11 @@ void MixedMaildirResource::retrieveItems(const Collection &col)
     status(Running, i18nc("@info:status", "Synchronizing email folder %1", col.name()));
 }
 
-bool MixedMaildirResource::retrieveItem(const Item &item, const QSet<QByteArray> &parts)
+bool MixedMaildirResource::retrieveItems(const Item::List &items, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts);
 
-    FileStore::ItemFetchJob *job = mStore->fetchItem(item);
+    FileStore::ItemFetchJob *job = mStore->fetchItems(items);
     if (parts.contains(Item::FullPayload)) {
         job->fetchScope().fetchFullPayload(true);
     } else {
@@ -565,7 +565,7 @@ void MixedMaildirResource::retrieveItemResult(KJob *job)
     Q_ASSERT(fetchJob != 0);
     Q_ASSERT(!fetchJob->items().isEmpty());
 
-    itemRetrieved(fetchJob->items().at(0));
+    itemsRetrieved(fetchJob->items());
 }
 
 void MixedMaildirResource::itemAddedResult(KJob *job)

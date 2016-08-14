@@ -198,26 +198,32 @@ MaildirResource::~ MaildirResource()
     delete mSettings;
 }
 
-bool MaildirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
+bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts);
 
-    const Maildir md = maildirForCollection(item.parentCollection());
+    const Maildir md = maildirForCollection(items.at(0).parentCollection());
     if (!md.isValid()) {
         cancelTask(i18n("Unable to fetch item: The maildir folder \"%1\" is not valid.",
                         md.path()));
         return false;
     }
 
-    const QByteArray data = md.readEntry(item.remoteId());
-    KMime::Message *mail = new KMime::Message();
-    mail->setContent(KMime::CRLFtoLF(data));
-    mail->parse();
+    Akonadi::Item::List rv;
+    rv.reserve(items.count());
+    for (const Akonadi::Item &item : items) {
+        const QByteArray data = md.readEntry(item.remoteId());
+        KMime::Message *mail = new KMime::Message();
+        mail->setContent(KMime::CRLFtoLF(data));
+        mail->parse();
 
-    Item i(item);
-    i.setPayload(KMime::Message::Ptr(mail));
-    Akonadi::MessageFlags::copyMessageFlags(*mail, i);
-    itemRetrieved(i);
+        Item i(item);
+        i.setPayload(KMime::Message::Ptr(mail));
+        Akonadi::MessageFlags::copyMessageFlags(*mail, i);
+        rv.push_back(i);
+    }
+
+    itemsRetrieved(rv);
     return true;
 }
 
