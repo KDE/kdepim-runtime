@@ -152,10 +152,15 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
 #ifdef HAVE_TEXTTOSPEECH
             QTextToSpeech *speech = new QTextToSpeech(this);
-            QString message = NewMailNotifierAgentSettings::textToSpeak();
-            message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
-            message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
-            speech->say(message);
+            if (!speech->availableEngines().isEmpty()) {
+                QString message = NewMailNotifierAgentSettings::textToSpeak();
+                message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
+                message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
+                speech->say(message);
+            } else {
+                qCWarning(NEWMAILNOTIFIER_LOG) << "No texttospeech engine available";
+                delete speech;
+            }
 #endif
         }
     }
