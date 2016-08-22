@@ -40,7 +40,7 @@ private:
     void applyFoundUid(qint64 uid);
     void triggerSearchJob(KIMAP::Session *session);
 
-private slots:
+private Q_SLOTS:
     void onAppendMessageDone(KJob *job);
     void onPreSearchSelectDone(KJob *job);
     void onSearchDone(KJob *job);
