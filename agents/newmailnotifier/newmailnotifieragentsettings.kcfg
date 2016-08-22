@@ -30,7 +30,7 @@
    <default>false</default>
  </entry>
  <entry name="textToSpeak" key="textToSpeak" type="String">
-   <default code="true">i18nc("%s is a variable for agent. Do not change it", "A message was received from %s")</default>
+   <default code="true">i18nc("%f is a variable for agent. Do not change it", "A message was received from %f")</default>
  </entry>
 
  <entry name="showButtonToDisplayMail" key="showButtonToDisplayMail" type="Bool">
