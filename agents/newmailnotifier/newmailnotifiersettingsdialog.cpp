@@ -64,54 +64,48 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 {
     setWindowTitle(i18n("New Mail Notifier settings"));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("kmail")));
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &NewMailNotifierSettingsDialog::slotOkClicked);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &NewMailNotifierSettingsDialog::reject);
 
-    QWidget *w = new QWidget;
-    mainLayout->addWidget(w);
-    mainLayout->addWidget(buttonBox);
-    QVBoxLayout *lay = new QVBoxLayout;
-    lay->setMargin(0);
-    w->setLayout(lay);
     QTabWidget *tab = new QTabWidget;
-    lay->addWidget(tab);
+    mainLayout->addWidget(tab);
 
     QWidget *settings = new QWidget;
     QVBoxLayout *vbox = new QVBoxLayout;
     settings->setLayout(vbox);
 
-    QGroupBox *grp = new QGroupBox(i18n("Choose which fields to show:"));
+    QGroupBox *grp = new QGroupBox(i18n("Choose which fields to show:"), this);
     vbox->addWidget(grp);
     QVBoxLayout *groupboxLayout = new QVBoxLayout;
     grp->setLayout(groupboxLayout);
 
-    mShowPhoto = new QCheckBox(i18n("Show Photo"));
+    mShowPhoto = new QCheckBox(i18n("Show Photo"), this);
     mShowPhoto->setChecked(NewMailNotifierAgentSettings::showPhoto());
     groupboxLayout->addWidget(mShowPhoto);
 
-    mShowFrom = new QCheckBox(i18n("Show From"));
+    mShowFrom = new QCheckBox(i18n("Show From"), this);
     mShowFrom->setChecked(NewMailNotifierAgentSettings::showFrom());
     groupboxLayout->addWidget(mShowFrom);
 
-    mShowSubject = new QCheckBox(i18n("Show Subject"));
+    mShowSubject = new QCheckBox(i18n("Show Subject"), this);
     mShowSubject->setChecked(NewMailNotifierAgentSettings::showSubject());
     groupboxLayout->addWidget(mShowSubject);
 
-    mShowFolders = new QCheckBox(i18n("Show Folders"));
+    mShowFolders = new QCheckBox(i18n("Show Folders"), this);
     mShowFolders->setChecked(NewMailNotifierAgentSettings::showFolder());
     groupboxLayout->addWidget(mShowFolders);
 
-    mExcludeMySelf = new QCheckBox(i18n("Do not notify when email was sent by me"));
+    mExcludeMySelf = new QCheckBox(i18n("Do not notify when email was sent by me"), this);
     mExcludeMySelf->setChecked(NewMailNotifierAgentSettings::excludeEmailsFromMe());
     vbox->addWidget(mExcludeMySelf);
 
-    mAllowToShowMail = new QCheckBox(i18n("Show button to display mail"));
+    mAllowToShowMail = new QCheckBox(i18n("Show button to display mail"), this);
     mAllowToShowMail->setChecked(NewMailNotifierAgentSettings::showButtonToDisplayMail());
     vbox->addWidget(mAllowToShowMail);
 
@@ -122,11 +116,11 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QWidget *textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
-    mTextToSpeak = new QCheckBox(i18n("Enabled"));
+    mTextToSpeak = new QCheckBox(i18n("Enabled"), this);
     mTextToSpeak->setChecked(NewMailNotifierAgentSettings::textToSpeakEnabled());
     vbox->addWidget(mTextToSpeak);
 
-    QLabel *howIsItWork = new QLabel(i18n("<a href=\"whatsthis\">How does this work?</a>"));
+    QLabel *howIsItWork = new QLabel(i18n("<a href=\"whatsthis\">How does this work?</a>"), this);
     howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     howIsItWork->setContextMenuPolicy(Qt::NoContextMenu);
     vbox->addWidget(howIsItWork);
@@ -134,7 +128,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 
     QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setMargin(0);
-    QLabel *lab = new QLabel(i18n("Message:"));
+    QLabel *lab = new QLabel(i18n("Message:"), this);
     textToSpeakLayout->addWidget(lab);
     mTextToSpeakSetting = new QLineEdit;
     mTextToSpeakSetting->setClearButtonEnabled(true);
@@ -155,7 +149,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mNotify->setApplication(QStringLiteral("akonadi_newmailnotifier_agent"));
     tab->addTab(mNotify, i18n("Notify"));
 
-    mSelectCollection = new NewMailNotifierSelectCollectionWidget;
+    mSelectCollection = new NewMailNotifierSelectCollectionWidget(this);
     tab->addTab(mSelectCollection, i18n("Folders"));
 
     KAboutData aboutData = KAboutData(
@@ -176,6 +170,8 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QMenu *menu = helpMenu->menu();
     helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(QIcon::fromTheme(QStringLiteral("kmail")));
     buttonBox->button(QDialogButtonBox::Help)->setMenu(menu);
+
+    mainLayout->addWidget(buttonBox);
     readConfig();
 }
 
