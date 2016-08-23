@@ -28,6 +28,10 @@
 #include <QTimer>
 #include <QStringList>
 #include <QPixmap>
+#ifdef HAVE_TEXTTOSPEECH
+class QTextToSpeech;
+#endif
+
 namespace Akonadi
 {
 class AgentInstance;
@@ -97,7 +101,8 @@ private Q_SLOTS:
     void slotInstanceAdded(const Akonadi::AgentInstance &instance);
     void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
     void slotIdentitiesChanged();
-    void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
+    void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);    
+    void slotSay(const QString &message);
 
 private:
     bool excludeAgentType(const Akonadi::AgentInstance &instance);
@@ -112,6 +117,9 @@ private:
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
     KIdentityManagement::IdentityManager *mIdentityManager;
+#ifdef HAVE_TEXTTOSPEECH
+    QTextToSpeech *mTextToSpeech;
+#endif
 };
 
 #endif

@@ -37,6 +37,7 @@ public:
 
 Q_SIGNALS:
     void displayNotification(const QPixmap &pixmap, const QString &message);
+    void say(const QString &message);
 
 private Q_SLOTS:
     void slotSearchJobFinished(KJob *job);
