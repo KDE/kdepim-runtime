@@ -50,11 +50,17 @@
 #include <KToolInvocation>
 #include <QIcon>
 #include <KIconLoader>
+#ifdef HAVE_TEXTTOSPEECH
+#include <QTextToSpeech>
+#endif
 
 using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
+    #ifdef HAVE_TEXTTOSPEECH
+    , mTextToSpeech(Q_NULLPTR)
+    #endif
 {
     Kdelibs4ConfigMigrator migrate(QStringLiteral("newmailnotifieragent"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("akonadi_newmailnotifier_agentrc") << QStringLiteral("akonadi_newmailnotifier_agent.notifyrc"));
@@ -463,7 +469,9 @@ void NewMailNotifierAgent::slotShowNotifications()
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
             job->setDefaultPixmap(mDefaultPixmap);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
-
+#ifdef HAVE_TEXTTOSPEECH
+            connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
+#endif
             mNewMails.clear();
             return;
         } else {
@@ -575,6 +583,20 @@ void NewMailNotifierAgent::printDebug()
 bool NewMailNotifierAgent::isActive() const
 {
     return isOnline() && NewMailNotifierAgentSettings::enabled();
+}
+
+void NewMailNotifierAgent::slotSay(const QString &message)
+{
+#ifdef HAVE_TEXTTOSPEECH
+    if (!mTextToSpeech) {
+        mTextToSpeech = new QTextToSpeech(this);
+    }
+    if (mTextToSpeech->availableEngines().isEmpty()) {
+        qCWarning(NEWMAILNOTIFIER_LOG) << "No texttospeech engine available";
+    } else {
+        mTextToSpeech->say(message);
+    }
+#endif
 }
 
 AKONADI_AGENT_MAIN(NewMailNotifierAgent)

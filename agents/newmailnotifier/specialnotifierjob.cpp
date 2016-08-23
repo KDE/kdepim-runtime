@@ -35,9 +35,6 @@
 #include "newmailnotifier_debug.h"
 
 #include <QTextDocument>
-#ifdef HAVE_TEXTTOSPEECH
-#include <QTextToSpeech>
-#endif
 
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),
@@ -150,18 +147,10 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
-#ifdef HAVE_TEXTTOSPEECH
-            QTextToSpeech *speech = new QTextToSpeech(this);
-            if (!speech->availableEngines().isEmpty()) {
-                QString message = NewMailNotifierAgentSettings::textToSpeak();
-                message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
-                message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
-                speech->say(message);
-            } else {
-                qCWarning(NEWMAILNOTIFIER_LOG) << "No texttospeech engine available";
-                delete speech;
-            }
-#endif
+            QString message = NewMailNotifierAgentSettings::textToSpeak();
+            message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
+            message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
+            Q_EMIT say(message);
         }
     }
 
