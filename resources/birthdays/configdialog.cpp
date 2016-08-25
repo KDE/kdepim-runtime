@@ -38,7 +38,6 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-    okButton->setDefault(true);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
