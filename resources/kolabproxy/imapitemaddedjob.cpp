@@ -110,7 +110,7 @@ void ImapItemAddedJob::onCollectionFetchDone( KJob *job )
 
             // Create a new item
             Akonadi::ItemCreateJob *cjob = new Akonadi::ItemCreateJob(mTranslatedItem, mKolabCollection, this);
-            connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreateDone(KJob*)));
+            connect(cjob, SIGNAL(result(KJob*)), this, SLOT(itemCreatedDone(KJob*)));
             // Delete the conflicting one
             new Akonadi::ItemDeleteJob(conflictingKolabItem);
         } else {
