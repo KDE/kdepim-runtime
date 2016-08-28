@@ -35,8 +35,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
 {
     setWindowTitle(i18n("Select a KMail Mail folder"));
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     mManager = new KConfigDialogManager(this, Settings::self());
@@ -44,7 +43,7 @@ ConfigDialog::ConfigDialog(QWidget *parent) :
     ui.kcfg_Path->setMode(KFile::Directory | KFile::ExistingOnly);
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(Settings::self()->path()));
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mainLayout->addWidget(buttonBox);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);

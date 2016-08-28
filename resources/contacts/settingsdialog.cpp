@@ -38,9 +38,9 @@ SettingsDialog::SettingsDialog(ContactsResourceSettings *settings, WId windowId)
       mSettings(settings)
 {
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
+
     ui.setupUi(mainWidget);
     setWindowIcon(QIcon::fromTheme(QStringLiteral("text-directory")));
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);

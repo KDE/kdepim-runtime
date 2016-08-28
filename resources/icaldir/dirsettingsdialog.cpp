@@ -37,8 +37,7 @@ SettingsDialog::SettingsDialog(WId windowId)
     : QDialog()
 {
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);

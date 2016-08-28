@@ -30,21 +30,21 @@
 ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
 {
-    QWidget *mainWidget = new QWidget(this);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
-    mainLayout->addWidget(mainWidget);
-    mainLayout->addWidget(buttonBox);
+    QWidget *mainWidget = new QWidget(this);
     ui.setupUi(mainWidget);
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
+    mainLayout->addWidget(mainWidget);
+
+    mainLayout->addWidget(buttonBox);
+
     mManager = new KConfigDialogManager(this, Settings::self());
     mManager->updateWidgets();
     ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));

@@ -37,12 +37,11 @@
 ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
 {
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -52,8 +51,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mainLayout->addWidget(buttonBox);
 
     mModel = new QStandardItemModel();
-    QStringList headers;
-    headers << i18n("Protocol") << i18n("URL");
+    const QStringList headers = { i18n("Protocol"), i18n("URL") };
     mModel->setHorizontalHeaderLabels(headers);
 
     mUi.configuredUrls->setModel(mModel);

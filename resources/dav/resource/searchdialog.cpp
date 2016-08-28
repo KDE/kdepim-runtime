@@ -38,14 +38,13 @@ SearchDialog::SearchDialog(QWidget *parent)
     : QDialog(parent), mModel(new QStandardItemModel(this)), mSubJobCount(0)
 {
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
     mUi.credentialsGroup->setVisible(false);
     mUi.searchResults->setModel(mModel);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
