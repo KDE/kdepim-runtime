@@ -388,8 +388,7 @@ ConnectionPage::ConnectionPage(QWidget *parent)
     setTitle(i18n("Connection"));
     setSubTitle(i18n("Enter the connection information for the groupware server"));
 
-    mLayout = new QFormLayout;
-    setLayout(mLayout);
+    mLayout = new QFormLayout(this);
     QRegExp hostnameRegexp(QStringLiteral("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$"));
     mHost = new KLineEdit;
     registerField(QStringLiteral("connectionHost*"), mHost);
