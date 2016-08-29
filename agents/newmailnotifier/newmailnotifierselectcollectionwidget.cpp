@@ -101,7 +101,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
       mNeedUpdate(false)
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
-    QVBoxLayout *vbox = new QVBoxLayout;
+    QVBoxLayout *vbox = new QVBoxLayout(this);
 
     QLabel *label = new QLabel(i18n("Select which folders to monitor for new message notifications:"));
     vbox->addWidget(label);
@@ -156,7 +156,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     connect(button, &QPushButton::clicked, this, &NewMailNotifierSelectCollectionWidget::slotUnselectAllCollections);
     hbox->addWidget(button);
     hbox->addStretch(1);
-    setLayout(vbox);
 }
 
 NewMailNotifierSelectCollectionWidget::~NewMailNotifierSelectCollectionWidget()

@@ -77,7 +77,7 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
       mInstanceName(instanceName),
       mInfo(Q_NULLPTR)
 {
-    QVBoxLayout *lay = new QVBoxLayout;
+    QVBoxLayout *lay = new QVBoxLayout(this);
     mEnabled = new QCheckBox(i18n("Enable"));
     connect(mEnabled, &QCheckBox::toggled, this, &FolderArchiveSettingPage::slotEnableChanged);
     lay->addWidget(mEnabled);
@@ -101,8 +101,6 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
     lay->addLayout(hbox);
 
     lay->addStretch();
-
-    setLayout(lay);
 }
 
 FolderArchiveSettingPage::~FolderArchiveSettingPage()
