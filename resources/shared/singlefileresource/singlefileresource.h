@@ -271,8 +271,8 @@ public:
             KGlobal::ref();
             // Start a job to upload the locally cached file to the remote location.
             mUploadJob = KIO::file_copy(QUrl::fromLocalFile(cacheFile()), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
-            connect(mUploadJob, SIGNAL(result(KJob *)),
-                    SLOT(slotUploadJobResult(KJob *)));
+            connect(mUploadJob, &KJob::result,
+                    this, &SingleFileResourceBase::slotUploadJobResult);
             connect(mUploadJob, SIGNAL(percent(KJob *, ulong)),
                     SLOT(handleProgress(KJob *, ulong)));
 
