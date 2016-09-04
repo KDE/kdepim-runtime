@@ -60,7 +60,6 @@ FileStore::ItemFetchJob::ItemFetchJob(const Item::List &items, FileStore::Abstra
     session->addJob(this);
 }
 
-
 FileStore::ItemFetchJob::~ItemFetchJob()
 {
     delete d;

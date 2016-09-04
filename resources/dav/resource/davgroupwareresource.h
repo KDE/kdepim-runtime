@@ -73,7 +73,6 @@ private:
         ItemUpdateChange
     };
 
-
     void onReloadConfig();
     void onCollectionRemovedFinished(KJob *);
 
