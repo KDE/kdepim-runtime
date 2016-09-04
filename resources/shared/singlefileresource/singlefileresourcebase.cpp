@@ -52,8 +52,6 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
 
     connect(KDirWatch::self(), &KDirWatch::dirty, this, &SingleFileResourceBase::fileChanged);
     connect(KDirWatch::self(), &KDirWatch::created, this, &SingleFileResourceBase::fileChanged);
-
-    //QT5 KLocalizedString::global()->insertCatalog( QLatin1String("akonadi_singlefile_resource") );
 }
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
@@ -113,7 +111,9 @@ void SingleFileResourceBase::setLocalFileName(const QString &fileName)
 
 QString SingleFileResourceBase::cacheFile() const
 {
-    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/") + identifier();
+    const QString currentDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir().mkpath(currentDir);
+    return currentDir + QLatin1String("/") + identifier();
 }
 
 QByteArray SingleFileResourceBase::calculateHash(const QString &fileName) const
