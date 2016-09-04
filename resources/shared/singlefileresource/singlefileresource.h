@@ -122,7 +122,7 @@ public:
 
             // Cache, because readLocalFile will clear mCurrentUrl on failure.
             const QString localFileName = mCurrentUrl.toLocalFile();
-            if (!readLocalFile(mCurrentUrl.toLocalFile())) {
+            if (!readLocalFile(localFileName)) {
                 const QString message = i18n("Could not read file '%1'", localFileName);
                 qWarning() << message;
                 emit status(Broken, message);
@@ -133,7 +133,7 @@ public:
             }
 
             if (mSettings->monitorFile()) {
-                KDirWatch::self()->addFile(mCurrentUrl.toLocalFile());
+                KDirWatch::self()->addFile(localFileName);
             }
 
             emit status(Idle, i18nc("@info:status", "Ready"));
@@ -164,8 +164,8 @@ public:
 
             // NOTE: Test what happens with remotefile -> save, close before save is finished.
             mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
-            connect(mDownloadJob, SIGNAL(result(KJob *)),
-                    SLOT(slotDownloadJobResult(KJob *)));
+            connect(mDownloadJob, &KJob::result,
+                    this, &SingleFileResourceBase::slotDownloadJobResult);
             connect(mDownloadJob, SIGNAL(percent(KJob *, ulong)),
                     SLOT(handleProgress(KJob *, ulong)));
 
