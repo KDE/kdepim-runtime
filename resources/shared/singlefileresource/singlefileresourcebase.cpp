@@ -111,7 +111,9 @@ void SingleFileResourceBase::setLocalFileName(const QString &fileName)
 
 QString SingleFileResourceBase::cacheFile() const
 {
-    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QLatin1String("/") + identifier();
+    const QString currentDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir().mkpath(currentDir);
+    return currentDir + QLatin1String("/") + identifier();
 }
 
 QByteArray SingleFileResourceBase::calculateHash(const QString &fileName) const
