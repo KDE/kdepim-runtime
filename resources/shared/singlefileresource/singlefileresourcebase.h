@@ -176,8 +176,6 @@ protected:
 
 protected Q_SLOTS:
     void scheduleWrite(); /// Called when changes are added to the ChangeRecorder.
-
-private Q_SLOTS:
     void handleProgress(KJob *, unsigned long);
     void fileChanged(const QString &fileName);
     void slotDownloadJobResult(KJob *);

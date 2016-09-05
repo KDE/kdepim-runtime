@@ -165,7 +165,7 @@ public:
             // NOTE: Test what happens with remotefile -> save, close before save is finished.
             mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
             connect(mDownloadJob, &KJob::result,
-                    this, &SingleFileResourceBase::slotDownloadJobResult);
+                    this, &SingleFileResource<Settings>::slotDownloadJobResult);
             connect(mDownloadJob, SIGNAL(percent(KJob *, ulong)),
                     SLOT(handleProgress(KJob *, ulong)));
 
@@ -272,7 +272,7 @@ public:
             // Start a job to upload the locally cached file to the remote location.
             mUploadJob = KIO::file_copy(QUrl::fromLocalFile(cacheFile()), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
             connect(mUploadJob, &KJob::result,
-                    this, &SingleFileResourceBase::slotUploadJobResult);
+                    this, &SingleFileResource<Settings>::slotUploadJobResult);
             connect(mUploadJob, SIGNAL(percent(KJob *, ulong)),
                     SLOT(handleProgress(KJob *, ulong)));
 
