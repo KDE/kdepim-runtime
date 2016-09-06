@@ -67,6 +67,10 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
         Q_ASSERT(fetchJob != 0);
 
         Q_FOREACH (const Akonadi::Collection &collection, fetchJob->collections()) {
+            if (!collection.contentMimeTypes().contains(KolabHelpers::getMimeType(Kolab::ConfigurationType))) {
+                // Skip parents of the actual Configuration folder
+                continue;
+            }
             const QString mailBox = mailBoxForCollection(collection);
             if (!mailBox.isEmpty()) {
                 mRelationCollection = collection;
