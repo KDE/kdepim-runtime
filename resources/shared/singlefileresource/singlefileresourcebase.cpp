@@ -30,12 +30,13 @@
 #include <KDirWatch>
 #include <KLocalizedString>
 
-#include <KGlobal>
 #include <KConfigGroup>
 
 #include <QtCore/QDir>
 #include <QtCore/QCryptographicHash>
 #include <QStandardPaths>
+
+Q_DECLARE_METATYPE(QEventLoopLocker*)
 
 using namespace Akonadi;
 
@@ -268,7 +269,10 @@ void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
     }
 
     mDownloadJob = Q_NULLPTR;
-    KGlobal::deref();
+    auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker*>();
+    if (ref) {
+        delete ref;
+    }
 
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
@@ -282,7 +286,10 @@ void SingleFileResourceBase::slotUploadJobResult(KJob *job)
     }
 
     mUploadJob = Q_NULLPTR;
-    KGlobal::deref();
+    auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker*>();
+    if (ref) {
+        delete ref;
+    }
 
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }

@@ -45,7 +45,10 @@ PRIVATE
     KF5::AkonadiAgentBase
     KF5::KIOCore
     KF5::IMAP
-    KF5::KDELibs4Support
+    KF5::Completion
+    KF5::KIOWidgets
+    KF5::ConfigWidgets
+    KF5::WindowSystem
 )
 
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

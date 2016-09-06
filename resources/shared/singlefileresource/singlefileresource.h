@@ -31,12 +31,14 @@
 #include <kio/job.h>
 #include <KDirWatch>
 #include <KLocalizedString>
-#include <KGlobal>
 
 #include <QFile>
 #include <QDir>
 #include <QPointer>
 #include <QDebug>
+#include <QEventLoopLocker>
+
+Q_DECLARE_METATYPE(QEventLoopLocker*)
 
 namespace Akonadi
 {
@@ -160,10 +162,11 @@ public:
                 return;
             }
 
-            KGlobal::ref();
-
+            auto ref = new QEventLoopLocker();
             // NOTE: Test what happens with remotefile -> save, close before save is finished.
-            mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
+            mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite |
+            KIO::DefaultFlags | KIO::HideProgressInfo);
+            mDownloadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mDownloadJob, &KJob::result,
                     this, &SingleFileResource<Settings>::slotDownloadJobResult);
             connect(mDownloadJob, SIGNAL(percent(KJob *, ulong)),
@@ -268,9 +271,10 @@ public:
             mCurrentHash = calculateHash(cacheFile());
             saveHash(mCurrentHash);
 
-            KGlobal::ref();
+            auto ref = new QEventLoopLocker();
             // Start a job to upload the locally cached file to the remote location.
             mUploadJob = KIO::file_copy(QUrl::fromLocalFile(cacheFile()), mCurrentUrl, -1, KIO::Overwrite | KIO::DefaultFlags | KIO::HideProgressInfo);
+            mUploadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mUploadJob, &KJob::result,
                     this, &SingleFileResource<Settings>::slotUploadJobResult);
             connect(mUploadJob, SIGNAL(percent(KJob *, ulong)),
