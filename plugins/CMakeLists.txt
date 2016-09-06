@@ -25,7 +25,7 @@ install(TARGETS akonadi_serializer_kcalcore DESTINATION ${KDE_INSTALL_PLUGINDIR}
 
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
-target_link_libraries(akonadi_serializer_contactgroup  KF5::Contacts KF5::AkonadiCore KF5::I18n)
+target_link_libraries(akonadi_serializer_contactgroup  KF5::Contacts KF5::AkonadiCore KF5::I18n KF5::AkonadiContact)
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp)
