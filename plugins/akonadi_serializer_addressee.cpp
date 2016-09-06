@@ -21,7 +21,6 @@
 
 #include <AkonadiCore/abstractdifferencesreporter.h>
 #include <AkonadiCore/item.h>
-#include <Akonadi/Contact/ContactParts>
 
 #include <kcontacts/addressee.h>
 #include <KLocalizedString>
@@ -32,6 +31,14 @@ using namespace Akonadi;
 
 //// ItemSerializerPlugin interface
 
+// FIXME: these values map to Akonadi::ContactParts::Standard and
+// Akonadi::ContactParts::Lookup from AkonadiContact library. We don't use those
+// symbols here, because AkonadiContact library links to Qt5WebEngine, which when
+// loaded tries to initialize OpenGL. When this plugin gets loaded by Akonadi
+// from KRunner, it happens in a non-GUI thread, leading to a crash in Qt5WebEngine.
+#define CONTACTPART_STANDARD "CONTACT_STANDARD"
+#define CONTACTPART_LOOKUP "CONTACT_LOOKUP"
+
 bool SerializerPluginAddressee::deserialize(Item &item, const QByteArray &label, QIODevice &data, int version)
 {
     Q_UNUSED(version);
@@ -39,14 +46,14 @@ bool SerializerPluginAddressee::deserialize(Item &item, const QByteArray &label,
     KContacts::Addressee addr;
     if (label == Item::FullPayload) {
         addr = m_converter.parseVCard(data.readAll());
-    } else if (label == Akonadi::ContactPart::Standard) {
+    } else if (label == CONTACTPART_STANDARD) {
         addr = m_converter.parseVCard(data.readAll());
 
         // remove pictures and sound
         addr.setPhoto(KContacts::Picture());
         addr.setLogo(KContacts::Picture());
         addr.setSound(KContacts::Sound());
-    } else if (label == Akonadi::ContactPart::Lookup) {
+    } else if (label == CONTACTPART_LOOKUP) {
         const KContacts::Addressee temp = m_converter.parseVCard(data.readAll());
 
         // copy only uid, name and email addresses
@@ -74,7 +81,7 @@ void SerializerPluginAddressee::serialize(const Item &item, const QByteArray &la
 {
     Q_UNUSED(version);
 
-    if (label != Item::FullPayload && label != Akonadi::ContactPart::Standard && label != Akonadi::ContactPart::Lookup) {
+    if (label != Item::FullPayload && label != CONTACTPART_STANDARD && label != CONTACTPART_LOOKUP) {
         return;
     }
 
@@ -88,14 +95,14 @@ void SerializerPluginAddressee::serialize(const Item &item, const QByteArray &la
 
     if (label == Item::FullPayload) {
         addr = temp;
-    } else if (label == Akonadi::ContactPart::Standard) {
+    } else if (label == CONTACTPART_STANDARD) {
         addr = temp;
 
         // remove pictures and sound
         addr.setPhoto(KContacts::Picture());
         addr.setLogo(KContacts::Picture());
         addr.setSound(KContacts::Sound());
-    } else if (label == Akonadi::ContactPart::Lookup) {
+    } else if (label == CONTACTPART_LOOKUP) {
         // copy only uid, name and email addresses
         addr.setUid(temp.uid());
         addr.setPrefix(temp.prefix());
