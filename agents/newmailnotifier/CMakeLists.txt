@@ -13,7 +13,7 @@ set(newmailnotifieragent_SRCS
   newmailnotifiershowmessagejob.cpp
 )
 
-ecm_qt_declare_logging_category(newmailnotifieragent_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME log_newmailnotifier)
+ecm_qt_declare_logging_category(newmailnotifieragent_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME org.kde.pim.newmailnotifier)
 
 kconfig_add_kcfg_files(newmailnotifieragent_SRCS
     newmailnotifieragentsettings.kcfgc

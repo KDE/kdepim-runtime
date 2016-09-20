@@ -13,7 +13,7 @@ set( pop3resource_SRCS
   settings.cpp
 )
 
-ecm_qt_declare_logging_category(pop3resource_SRCS HEADER pop3resource_debug.h IDENTIFIER POP3RESOURCE_LOG CATEGORY_NAME log_pop3resource)
+ecm_qt_declare_logging_category(pop3resource_SRCS HEADER pop3resource_debug.h IDENTIFIER POP3RESOURCE_LOG CATEGORY_NAME org.kde.pim.pop3resource)
 
 install( FILES pop3resource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 

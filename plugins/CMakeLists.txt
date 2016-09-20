@@ -12,7 +12,7 @@ target_link_libraries(akonadi_serializer_addressee  KF5::Contacts KF5::AkonadiCo
 install(TARGETS akonadi_serializer_addressee DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp)
-ecm_qt_declare_logging_category(akonadi_serializer_mail_PART_SRCS HEADER akonadi_serializer_mail_debug.h IDENTIFIER AKONADI_SERIALIZER_MAIL_LOG CATEGORY_NAME log_akonadi_serializer_mail)
+ecm_qt_declare_logging_category(akonadi_serializer_mail_PART_SRCS HEADER akonadi_serializer_mail_debug.h IDENTIFIER AKONADI_SERIALIZER_MAIL_LOG CATEGORY_NAME org.kde.pim.akonadi_serializer_mail)
 
 add_library(akonadi_serializer_mail MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_mail_PART_SRCS})
 target_link_libraries(akonadi_serializer_mail  KF5::Mime KF5::AkonadiCore KF5::AkonadiMime KF5::AkonadiPrivate Qt5::DBus )
@@ -29,7 +29,7 @@ target_link_libraries(akonadi_serializer_contactgroup  KF5::Contacts KF5::Akonad
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp)
-ecm_qt_declare_logging_category(akonadi_serializer_kalarm_SRCS HEADER akonadi_serializer_kalarm_debug.h IDENTIFIER AKONADI_SERIALIZER_KALARM_LOG CATEGORY_NAME log_akonadi_serializer_kalarm)
+ecm_qt_declare_logging_category(akonadi_serializer_kalarm_SRCS HEADER akonadi_serializer_kalarm_debug.h IDENTIFIER AKONADI_SERIALIZER_KALARM_LOG CATEGORY_NAME org.kde.pim.akonadi_serializer_kalarm)
 
 add_library(akonadi_serializer_kalarm MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
 target_link_libraries(akonadi_serializer_kalarm

@@ -35,7 +35,7 @@ set(kolabresource_SRCS
     updatemessagejob.cpp
 )
 
-ecm_qt_declare_logging_category(kolabresource_SRCS HEADER kolabresource_debug.h IDENTIFIER KOLABRESOURCE_LOG CATEGORY_NAME log_kolabresource)
+ecm_qt_declare_logging_category(kolabresource_SRCS HEADER kolabresource_debug.h IDENTIFIER KOLABRESOURCE_LOG CATEGORY_NAME org.kde.pim.kolabresource)
 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)
 

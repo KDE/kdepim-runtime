@@ -20,7 +20,7 @@ include_directories(  ${pop3_optional_includes}  )
 
 set(kio_pop3_PART_SRCS pop3.cpp pop3_debug.cpp )
 
-ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME log_pop3)
+ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME org.kde.pim.pop3)
 
 add_library(kio_pop3 MODULE ${kio_pop3_PART_SRCS})
 

@@ -34,7 +34,7 @@ set(tomboynotesresource_SRCS
 ecm_qt_declare_logging_category(tomboynotesresource_SRCS
     HEADER debug.h
     IDENTIFIER TOMBOYNOTESRESOURCE_LOG
-    CATEGORY_NAME log_tomboynotesresource
+    CATEGORY_NAME org.kde.pim.tomboynotesresource
 )
 
 ki18n_wrap_ui(tomboynotesresource_SRCS configdialog.ui)

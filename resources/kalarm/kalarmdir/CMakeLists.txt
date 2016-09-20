@@ -22,7 +22,7 @@ kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmdirresource.kcfg 
 qt5_add_dbus_adaptor(kalarmdirresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml settings.h Akonadi_KAlarm_Dir_Resource::Settings kalarmdirsettingsadaptor KAlarmDirSettingsAdaptor)
 
-ecm_qt_declare_logging_category(kalarmdirresource_SRCS HEADER kalarmdirresource_debug.h IDENTIFIER KALARMDIRRESOURCE_LOG CATEGORY_NAME log_kalarmdirresource)
+ecm_qt_declare_logging_category(kalarmdirresource_SRCS HEADER kalarmdirresource_debug.h IDENTIFIER KALARMDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.kalarmdirresource)
 
 add_custom_target(kalarmdir_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml)
 

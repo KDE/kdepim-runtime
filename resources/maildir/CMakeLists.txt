@@ -23,7 +23,7 @@ set( maildirresource_SRCS
   configdialog.cpp
   retrieveitemsjob.cpp
 )
-ecm_qt_declare_logging_category(maildirresource_SRCS HEADER maildirresource_debug.h IDENTIFIER MAILDIRRESOURCE_LOG CATEGORY_NAME log_maildirresource)
+ecm_qt_declare_logging_category(maildirresource_SRCS HEADER maildirresource_debug.h IDENTIFIER MAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.maildirresource)
 
 ki18n_wrap_ui(maildirresource_SRCS settings.ui)
 

@@ -14,7 +14,7 @@ qt5_add_dbus_adaptor(birthdayresource_srcs
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Birthdays.Settings.xml settings.h Settings
 )
 
-ecm_qt_declare_logging_category(birthdayresource_srcs HEADER birthdays_debug.h IDENTIFIER BIRTHDAYS_LOG CATEGORY_NAME log_birthdays)
+ecm_qt_declare_logging_category(birthdayresource_srcs HEADER birthdays_debug.h IDENTIFIER BIRTHDAYS_LOG CATEGORY_NAME org.kde.pim.birthdays)
 
 add_executable(akonadi_birthdays_resource ${birthdayresource_srcs})
 

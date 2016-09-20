@@ -148,7 +148,7 @@ install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
 update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
 
 
-install( FILES kdepim-runtime.categories DESTINATION ${KDE_INSTALL_CONFDIR} )
+install( FILES kdepim-runtime.renamecategories kdepim-runtime.categories DESTINATION ${KDE_INSTALL_CONFDIR} )
 
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
