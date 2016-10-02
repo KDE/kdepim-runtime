@@ -914,6 +914,7 @@ void POP3Resource::cancelSync(const QString &errorMessage, bool error)
         cancelTask(errorMessage);
         qCWarning(POP3RESOURCE_LOG) << "============== ERROR DURING POP3 SYNC ==========================";
         qCWarning(POP3RESOURCE_LOG) << errorMessage;
+        KMessageBox::error(Q_NULLPTR, errorMessage);
     } else {
         qCDebug(POP3RESOURCE_LOG) << "Canceled the sync, but no error.";
         cancelTask();
