@@ -106,16 +106,10 @@ void ReplaceMessageJob::triggerSearchJob()
     KIMAP::SearchJob *search = new KIMAP::SearchJob(mSession);
 
     search->setUidBased(true);
-    search->setSearchLogic(KIMAP::SearchJob::And);
 
     if (!mMessageId.isEmpty()) {
-        QByteArray header = "Message-ID ";
-        header += mMessageId;
-
-        search->addSearchCriteria(KIMAP::SearchJob::Header, header);
+        search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(mMessageId)));
     } else {
-        search->addSearchCriteria(KIMAP::SearchJob::New);
-
         if (mUidNext < 0) {
             qCWarning(IMAPRESOURCE_LOG) << "Could not determine the UID for the newly created message on the server";
             search->deleteLater();
@@ -123,7 +117,11 @@ void ReplaceMessageJob::triggerSearchJob()
             emitResult();
             return;
         }
-        search->addSearchCriteria(KIMAP::SearchJob::Uid, KIMAP::ImapInterval(mUidNext).toImapSequence());
+        search->setTerm(KIMAP::Term(KIMAP::Term::And,
+                                    { KIMAP::Term(KIMAP::Term::New),
+                                      KIMAP::Term(KIMAP::Term::Uid,
+                                                  KIMAP::ImapSet(mUidNext, 0))
+                                    }));
     }
 
     connect(search, &KJob::result,

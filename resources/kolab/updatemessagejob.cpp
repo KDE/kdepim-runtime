@@ -135,8 +135,7 @@ void UpdateMessageJob::searchForLatestVersion()
 {
     KIMAP::SearchJob *search = new KIMAP::SearchJob(mSession);
     search->setUidBased(true);
-    search->setSearchLogic(KIMAP::SearchJob::And);
-    search->addSearchCriteria(KIMAP::SearchJob::Header, "Subject " + mKolabUid);
+    search->setTerm(KIMAP::Term(KIMAP::Term::Subject, QString::fromLatin1(mKolabUid)));
     connect(search, &KJob::result,
             this, &UpdateMessageJob::onSearchDone);
     search->start();

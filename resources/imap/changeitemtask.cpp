@@ -191,16 +191,10 @@ void ChangeItemTask::triggerSearchJob()
     KIMAP::SearchJob *search = new KIMAP::SearchJob(m_session);
 
     search->setUidBased(true);
-    search->setSearchLogic(KIMAP::SearchJob::And);
 
     if (!m_messageId.isEmpty()) {
-        QByteArray header = "Message-ID ";
-        header += m_messageId;
-
-        search->addSearchCriteria(KIMAP::SearchJob::Header, header);
+        search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(m_messageId)));
     } else {
-        search->addSearchCriteria(KIMAP::SearchJob::New);
-
         UidNextAttribute *uidNext = item().parentCollection().attribute<UidNextAttribute>();
         if (!uidNext) {
             qCWarning(IMAPRESOURCE_LOG) << "Failed to determine new uid.";
@@ -208,9 +202,11 @@ void ChangeItemTask::triggerSearchJob()
             search->deleteLater();
             return;
         }
-        KIMAP::ImapInterval interval(uidNext->uidNext());
-
-        search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
+        search->setTerm(KIMAP::Term(KIMAP::Term::And,
+                                    { KIMAP::Term(KIMAP::Term::New),
+                                      KIMAP::Term(KIMAP::Term::Uid,
+                                                  KIMAP::ImapSet(uidNext->uidNext(), 0))
+                                    }));
     }
 
     connect(search, &KIMAP::SearchJob::result, this, &ChangeItemTask::onSearchDone);

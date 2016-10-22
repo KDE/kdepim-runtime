@@ -83,7 +83,7 @@ private Q_SLOTS:
                  << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
-                 << "C: A000005 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+                 << "C: A000005 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
                  << "S: * SEARCH 66"
                  << "S: A000005 OK search done";
 
@@ -98,7 +98,7 @@ private Q_SLOTS:
                  << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
-                 << "C: A000005 UID SEARCH HEADER Message-ID <42.4242.foo@bar.org>"
+                 << "C: A000005 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
                  << "S: * SEARCH 65 66"
                  << "S: A000005 OK search done";
         callNames.clear();

@@ -237,17 +237,15 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
     search->setUidBased(true);
 
     if (!m_messageIds.isEmpty()) {
-        search->setSearchLogic(KIMAP::SearchJob::Or);
-
+        QVector<KIMAP::Term> subterms;
+        subterms.reserve(m_messageIds.size());
         foreach (const QByteArray &messageId, m_messageIds) {
             QByteArray header = "Message-ID ";
             header += messageId;
-            search->addSearchCriteria(KIMAP::SearchJob::Header, header);
+            subterms << KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(messageId));
         }
+        search->setTerm(KIMAP::Term(KIMAP::Term::Or, subterms));
     } else {
-        search->setSearchLogic(KIMAP::SearchJob::And);
-        search->addSearchCriteria(KIMAP::SearchJob::New);
-
         Akonadi::Collection c = targetCollection();
         UidNextAttribute *uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
@@ -255,9 +253,11 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
             search->deleteLater();
             return;
         }
-        KIMAP::ImapInterval interval(uidNext->uidNext());
-
-        search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
+        search->setTerm(KIMAP::Term(KIMAP::Term::And,
+                                    { KIMAP::Term(KIMAP::Term::New),
+                                      KIMAP::Term(KIMAP::Term::Uid,
+                                                  KIMAP::ImapSet(uidNext->uidNext(), 0))
+                                    }));
     }
 
     connect(search, &KIMAP::SearchJob::result, this, &MoveItemsTask::onSearchDone);

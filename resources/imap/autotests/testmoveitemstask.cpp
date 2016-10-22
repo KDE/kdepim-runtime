@@ -126,7 +126,7 @@ private Q_SLOTS:
                  << "S: A000005 OK store done"
                  << "C: A000006 SELECT \"INBOX/Bar\""
                  << "S: A000006 OK select done"
-                 << "C: A000007 UID SEARCH (HEADER Message-ID <42.4242.foo@bar.org>)"
+                 << "C: A000007 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
                  << "S: * SEARCH 65"
                  << "S: A000007 OK search done";
 
@@ -192,7 +192,7 @@ private Q_SLOTS:
                  << "S: A000005 OK store done"
                  << "C: A000006 SELECT \"INBOX/Bar\""
                  << "S: A000006 OK select done"
-                 << "C: A000007 UID SEARCH (HEADER Message-ID <42.4242.foo@bar.org>)"
+                 << "C: A000007 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
                  << "S: * SEARCH 61 65"
                  << "S: A000007 OK search done";
 
@@ -323,7 +323,7 @@ private Q_SLOTS:
                  << "S: A000004 OK MOVE done"
                  << "C: A000005 SELECT \"INBOX/Bar\""
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH (HEADER Message-ID <42.4242.foo@bar.org>)"
+                 << "C: A000006 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
                  << "S: * SEARCH 65"
                  << "S: A000006 OK search done";
 
@@ -385,7 +385,7 @@ private Q_SLOTS:
                  << "S: A000004 OK MOVE done"
                  << "C: A000005 SELECT \"INBOX/Bar\""
                  << "S: A000005 OK select done"
-                 << "C: A000006 UID SEARCH (HEADER Message-ID <42.4242.foo@bar.org>)"
+                 << "C: A000006 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
                  << "S: * SEARCH 61 65"
                  << "S: A000006 OK search done";
 

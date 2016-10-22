@@ -125,16 +125,10 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
     KIMAP::SearchJob *search = new KIMAP::SearchJob(session);
 
     search->setUidBased(true);
-    search->setSearchLogic(KIMAP::SearchJob::And);
 
     if (!m_messageId.isEmpty()) {
-        QByteArray header = "Message-ID ";
-        header += m_messageId;
-
-        search->addSearchCriteria(KIMAP::SearchJob::Header, header);
+        search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(m_messageId)));
     } else {
-        search->addSearchCriteria(KIMAP::SearchJob::New);
-
         Akonadi::Collection c = collection();
         UidNextAttribute *uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
@@ -142,9 +136,11 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
             search->deleteLater();
             return;
         }
-        KIMAP::ImapInterval interval(uidNext->uidNext());
-
-        search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
+        search->setTerm(KIMAP::Term(KIMAP::Term::And,
+                                    { KIMAP::Term(KIMAP::Term::New),
+                                      KIMAP::Term(KIMAP::Term::Uid,
+                                                  KIMAP::ImapSet(uidNext->uidNext(), 0))
+                                    }));
     }
 
     connect(search, &KJob::result,

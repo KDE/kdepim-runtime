@@ -99,16 +99,10 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
     KIMAP::SearchJob *search = new KIMAP::SearchJob(session);
 
     search->setUidBased(true);
-    search->setSearchLogic(KIMAP::SearchJob::And);
 
     if (!mMessageId.isEmpty()) {
-        QByteArray header = "Message-ID ";
-        header += mMessageId;
-
-        search->addSearchCriteria(KIMAP::SearchJob::Header, header);
+        search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(mMessageId)));
     } else {
-        search->addSearchCriteria(KIMAP::SearchJob::New);
-
         UidNextAttribute *uidNext = relationCollection().attribute<UidNextAttribute>();
         if (!uidNext) {
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
@@ -117,7 +111,11 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
         }
         KIMAP::ImapInterval interval(uidNext->uidNext());
 
-        search->addSearchCriteria(KIMAP::SearchJob::Uid, interval.toImapSequence());
+        search->setTerm(KIMAP::Term(KIMAP::Term::And,
+                                    { KIMAP::Term(KIMAP::Term::New),
+                                      KIMAP::Term(KIMAP::Term::Uid,
+                                                  KIMAP::ImapSet(uidNext->uidNext(), 0))
+                                    }));
     }
 
     connect(search, &KJob::result,
