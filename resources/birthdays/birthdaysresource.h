@@ -41,6 +41,9 @@ public Q_SLOTS:
     void configure(WId windowId) Q_DECL_OVERRIDE;
 
 protected:
+    using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
+
+protected:
     void retrieveCollections() Q_DECL_OVERRIDE;
     void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;

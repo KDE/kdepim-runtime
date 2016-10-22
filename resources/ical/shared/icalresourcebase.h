@@ -35,6 +35,9 @@ public:
     explicit ICalResourceBase(const QString &id);
     ~ICalResourceBase();
 
+protected:
+    using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
+
 protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
     void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;

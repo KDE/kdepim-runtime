@@ -77,6 +77,9 @@ public Q_SLOTS:
     // pseudo-virtual called by ResourceBase
     QString dumpResourceToString() const Q_DECL_OVERRIDE;
 
+protected:
+    using ResourceBase::retrieveItems; // supress -Woverload-virtual
+
 protected Q_SLOTS:
     void startIdleIfNeeded();
     void startIdle();

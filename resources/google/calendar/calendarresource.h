@@ -43,6 +43,9 @@ protected:
     void canHandleFreeBusy(const QString &email) const Q_DECL_OVERRIDE;
     void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end) Q_DECL_OVERRIDE;
 
+protected:
+    using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
+
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
     void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;

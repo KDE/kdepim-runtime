@@ -55,6 +55,9 @@ private Q_SLOTS:
     void createInitialCache();
     void onCreateInitialCacheReady(KJob *);
 
+protected:
+    using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
+
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
     void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
