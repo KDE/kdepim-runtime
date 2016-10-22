@@ -38,6 +38,7 @@ private Q_SLOTS:
     void onSelectDone(KJob *job);
     void onCopyDone(KJob *job);
     void onStoreFlagsDone(KJob *job);
+    void onMoveDone(KJob *job);
 
     void onPreSearchSelectDone(KJob *job);
     void onSearchDone(KJob *job);
@@ -46,6 +47,8 @@ protected:
     void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
 
 private:
+    void startMove(KIMAP::Session *session);
+    void triggerMoveJob(KIMAP::Session *session);
     void triggerCopyJob(KIMAP::Session *session);
     void recordNewUid();
     QVector<qint64> imapSetToList(const KIMAP::ImapSet &set);

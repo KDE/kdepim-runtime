@@ -31,6 +31,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/storejob.h>
+#include <kimap/movejob.h>
 
 #include <kmime/kmime_message.h>
 
@@ -89,7 +90,7 @@ void MoveItemsTask::doStart(KIMAP::Session *session)
 
         select->start();
     } else {
-        triggerCopyJob(session);
+        startMove(session);
     }
 }
 
@@ -101,11 +102,11 @@ void MoveItemsTask::onSelectDone(KJob *job)
 
     } else {
         KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
-        triggerCopyJob(select->session());
+        startMove(select->session());
     }
 }
 
-void MoveItemsTask::triggerCopyJob(KIMAP::Session *session)
+void MoveItemsTask::startMove(KIMAP::Session *session)
 {
     const QString newMailBox = mailBoxForCollection(targetCollection());
 
@@ -123,22 +124,28 @@ void MoveItemsTask::triggerCopyJob(KIMAP::Session *session)
 
             set.add(item.remoteId().toLong());
         } catch (const Akonadi::PayloadException &e) {
-            qCWarning(IMAPRESOURCE_LOG) << "Copy failed, payload exception " << item.id() << item.remoteId();
-            cancelTask(i18n("Failed to copy item, it has no message payload. Remote id: %1", item.remoteId()));
+            qCWarning(IMAPRESOURCE_LOG) << "Move failed, payload exception " << item.id() << item.remoteId();
+            cancelTask(i18n("Failed to move item, it has no message payload. Remote id: %1", item.remoteId()));
             return;
         }
     }
 
-    KIMAP::CopyJob *copy = new KIMAP::CopyJob(session);
-
-    copy->setUidBased(true);
-    copy->setSequenceSet(set);
-    copy->setMailBox(newMailBox);
-
-    connect(copy, &KIMAP::CopyJob::result, this, &MoveItemsTask::onCopyDone);
-
-    copy->start();
-
+    const bool canMove = serverCapabilities().contains(QStringLiteral("MOVE"), Qt::CaseInsensitive);
+    if (canMove) {
+        auto job = new KIMAP::MoveJob(session);
+        job->setUidBased(true);
+        job->setSequenceSet(set);
+        job->setMailBox(newMailBox);
+        connect(job, &KIMAP::Job::result, this, &MoveItemsTask::onMoveDone);
+        job->start();
+    } else {
+        auto job = new KIMAP::CopyJob(session);
+        job->setUidBased(true);
+        job->setSequenceSet(set);
+        job->setMailBox(newMailBox);
+        connect(job, &KIMAP::Job ::result, this, &MoveItemsTask::onCopyDone);
+        job->start();
+    }
     m_oldSet = set;
 }
 
@@ -164,6 +171,30 @@ void MoveItemsTask::onCopyDone(KJob *job)
         connect(store, &KIMAP::StoreJob::result, this, &MoveItemsTask::onStoreFlagsDone);
 
         store->start();
+    }
+}
+
+void MoveItemsTask::onMoveDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
+        cancelTask(job->errorString());
+    } else {
+        KIMAP::MoveJob *move = static_cast<KIMAP::MoveJob *>(job);
+
+        m_newUids = imapSetToList(move->resultingUids());
+
+        if (!m_newUids.isEmpty()) {
+            recordNewUid();
+        } else {
+            // Let's go for a search to find a new UID :-)
+
+            // We did a move, so we're very likely not in the right mailbox
+            KIMAP::SelectJob *select = new KIMAP::SelectJob(move->session());
+            select->setMailBox(mailBoxForCollection(targetCollection()));
+            connect(select, &KIMAP::SelectJob::result, this, &MoveItemsTask::onPreSearchSelectDone);
+            select->start();
+        }
     }
 }
 
