@@ -433,7 +433,20 @@ void SetupServer::readSettings()
 
     m_ui->customUsername->setText(m_parentResource->settings()->sieveCustomUsername());
 
-    m_ui->customPassword->setText(m_parentResource->settings()->sieveCustomPassword());
+
+    rejected = false;
+    const QString customPassword = m_parentResource->settings()->sieveCustomPassword(&rejected);
+    if (rejected) {
+        m_ui->customPassword->setEnabled(false);
+        KMessageBox::information(Q_NULLPTR, i18n("Could not access KWallet. "
+                                 "If you want to store the password permanently then you have to "
+                                 "activate it. If you do not "
+                                 "want to use KWallet, check the box below, but note that you will be "
+                                 "prompted for your password when needed."),
+                                 i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
+    } else {
+        m_ui->customPassword->insert(customPassword);
+    }
 
     const QString sieverCustomAuth(m_parentResource->settings()->sieveCustomAuthentification());
     if (sieverCustomAuth == QLatin1String("ImapUserPassword")) {
