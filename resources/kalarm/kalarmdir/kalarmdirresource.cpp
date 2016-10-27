@@ -1,7 +1,7 @@
 /*
  *  kalarmdirresource.cpp  -  Akonadi directory resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2011-2014 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2011-2016 by David Jarvie <djarvie@kde.org>
  *  Copyright (c) 2008 Tobias Koenig <tokoe@kde.org>
  *  Copyright (c) 2008 Bertjan Broeksema <broeksema@kde.org>
  *
@@ -137,10 +137,10 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
                 if (!recreate) {
                     // Remote ID could be path or URL, depending on which version
                     // of Akonadi created it.
-                    QString rid = c.remoteId();
-                    QUrl url = QUrl::fromLocalFile(mSettings->path());
+                    const QString rid = c.remoteId();
+                    const QUrl url = QUrl::fromLocalFile(mSettings->path());
                     if (!url.isLocalFile()
-                            || (rid != url.toLocalFile() && rid != url.url() && rid != url.toDisplayString())) {
+                    ||  (rid != url.toLocalFile() && rid != url.url() && rid != url.toDisplayString())) {
                         qCritical() << "Collection remote ID does not match settings: changing settings";
                         recreate = true;
                     }
@@ -175,6 +175,8 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
     }
 }
 
+/******************************************************************************
+*/
 void KAlarmDirResource::configure(WId windowId)
 {
     qCDebug(KALARMDIRRESOURCE_LOG);
@@ -212,7 +214,7 @@ void KAlarmDirResource::configure(WId windowId)
                 modify = true;
             }
             if (mSettings->readOnly() != readOnly
-                    ||  mSettings->displayName() != name) {
+            ||  mSettings->displayName() != name) {
                 // Need to change the collection's rights or name
                 c.setRemoteId(directoryName());
                 setNameRights(c);
@@ -436,6 +438,8 @@ bool KAlarmDirResource::loadFiles(bool sync)
 
 /******************************************************************************
 * Load and parse data a single file in the directory.
+* 'path' is the full path of 'file'.
+* 'file' should not contain any directory component.
 */
 KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
 {
@@ -443,7 +447,11 @@ KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
     MemoryCalendar::Ptr calendar(new MemoryCalendar(QStringLiteral("UTC")));
     FileStorage::Ptr fileStorage(new FileStorage(calendar, path, new ICalFormat()));
     if (!fileStorage->load()) {
-        qCWarning(KALARMDIRRESOURCE_LOG) << "Error loading" << path;
+        // Don't output an error in the case of the creation of a temporary
+        // file which triggered fileChanged() but no longer exists.
+        if (QFile(path).exists()) {
+            qCWarning(KALARMDIRRESOURCE_LOG) << "Error loading" << path;
+        }
         return KAEvent();
     }
     const Event::List events = calendar->events();
@@ -629,7 +637,6 @@ void KAlarmDirResource::itemRemoved(const Akonadi::Item &item)
         return;
     }
 
-    QString nextFile;
     removeEvent(item.remoteId(), true);
     setCompatibility();
     changeProcessed();
@@ -872,9 +879,15 @@ void KAlarmDirResource::fileChanged(const QString &path)
                         mFileEventIds.erase(fit);
                     }
                 }
-            } else if (event.isValid()) {
-                // The file didn't contain an event before. Save details of the new event.
-                mFileEventIds.insert(file, event.id());
+            } else {
+                // The file didn't contain an event before.
+                if (event.isValid()) {
+                    // Save details of the new event.
+                    mFileEventIds.insert(file, event.id());
+                } else {
+                    // The file still doesn't contain a recognised event.
+                    return;
+                }
             }
             addEventFile(event, file);
 
@@ -1052,6 +1065,10 @@ QString KAlarmDirResource::directoryName() const
     return mSettings->path();
 }
 
+/******************************************************************************
+* Return the full path of an event file.
+* 'file' should not contain any directory component.
+*/
 QString KAlarmDirResource::filePath(const QString &file) const
 {
     return mSettings->path() + QDir::separator() + file;
@@ -1150,8 +1167,8 @@ QString KAlarmDirResource::removeEventFile(const QString &eventId, const QString
 bool isFileValid(const QString &file)
 {
     return !file.isEmpty()
-           &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
-           &&  file != QLatin1String(warningFile);
+       &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
+       &&  file != QLatin1String(warningFile);
 }
 
 AKONADI_RESOURCE_MAIN(KAlarmDirResource)
