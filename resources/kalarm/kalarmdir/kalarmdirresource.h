@@ -1,7 +1,7 @@
 /*
  *  kalarmdirresource.h  -  Akonadi directory resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2011-2012 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2011-2016 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -90,6 +90,7 @@ private:
     bool    createItem(const KAEvent &);
     bool    modifyItem(const KAEvent &);
     void    deleteItem(const KAEvent &);
+    bool    isFileValid(const QString &file) const;
 
     struct EventFile {  // data to be indexed by event ID
         EventFile() {}

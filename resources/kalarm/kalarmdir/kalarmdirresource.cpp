@@ -58,8 +58,6 @@ using namespace KCalCore;
 using namespace Akonadi_KAlarm_Dir_Resource;
 using KAlarmResourceCommon::errorMessage;
 
-static bool isFileValid(const QString &file);
-
 static const char warningFile[] = "WARNING_README.txt";
 
 #define DEBUG_DATA \
@@ -1164,11 +1162,12 @@ QString KAlarmDirResource::removeEventFile(const QString &eventId, const QString
 * Check whether a file is to be ignored.
 * Reply = false if file is to be ignored.
 */
-bool isFileValid(const QString &file)
+bool KAlarmDirResource::isFileValid(const QString &file) const
 {
     return !file.isEmpty()
        &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
-       &&  file != QLatin1String(warningFile);
+       &&  file != QLatin1String(warningFile)
+       &&  QFile(filePath(file)).exists();   // a temporary file may no longer exist
 }
 
 AKONADI_RESOURCE_MAIN(KAlarmDirResource)
