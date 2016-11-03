@@ -31,6 +31,7 @@
 #include <kdbusconnectionpool.h>
 #include <itemfetchscope.h>
 #include <mailtransport/sentactionattribute.h>
+#include <mailtransport/sentbehaviourattribute.h>
 
 #include <knotifyconfigwidget.h>
 #include "maildispatcher_debug.h"
@@ -60,6 +61,7 @@ public:
           sendingInProgress(false),
           sentAnything(false),
           errorOccurred(false),
+          showSentNotifcation(true),
           sentItemsSize(0),
           sentActionHandler(Q_NULLPTR)
     {
@@ -78,6 +80,7 @@ public:
     bool sendingInProgress;
     bool sentAnything;
     bool errorOccurred;
+    bool showSentNotifcation;
     qulonglong sentItemsSize;
     SentActionHandler *sentActionHandler;
 
@@ -152,13 +155,14 @@ void MailDispatcherAgent::Private::dispatch()
                 Q_EMIT q->percent(100);
                 Q_EMIT q->status(AgentBase::Idle, i18n("Finished sending messages."));
 
-                if (!errorOccurred) {
+                if (!errorOccurred && showSentNotifcation) {
                     KNotification *notify = new KNotification(QStringLiteral("emailsent"));
                     notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
                     notify->setTitle(i18nc("Notification title when email was sent", "E-Mail Successfully Sent"));
                     notify->setText(i18nc("Notification when the email was sent", "Your E-Mail has been sent successfully."));
                     notify->sendEvent();
                 }
+                showSentNotifcation = true;
             } else {
                 // Empty queue.
                 Q_EMIT q->status(AgentBase::Idle, i18n("No items in queue."));
@@ -338,6 +342,12 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
             foreach (const MailTransport::SentActionAttribute::Action &action, attribute->actions()) {
                 sentActionHandler->runAction(action);
             }
+        }
+        const auto bhAttribute = sentItem.attribute<MailTransport::SentBehaviourAttribute>();
+        if (bhAttribute) {
+            showSentNotifcation = !bhAttribute->sendSilently();
+        } else {
+            showSentNotifcation = true;
         }
     }
 
