@@ -61,7 +61,7 @@ public:
           sendingInProgress(false),
           sentAnything(false),
           errorOccurred(false),
-          showSentNotifcation(true),
+          showSentNotification(true),
           sentItemsSize(0),
           sentActionHandler(Q_NULLPTR)
     {
@@ -80,7 +80,7 @@ public:
     bool sendingInProgress;
     bool sentAnything;
     bool errorOccurred;
-    bool showSentNotifcation;
+    bool showSentNotification;
     qulonglong sentItemsSize;
     SentActionHandler *sentActionHandler;
 
@@ -155,14 +155,14 @@ void MailDispatcherAgent::Private::dispatch()
                 Q_EMIT q->percent(100);
                 Q_EMIT q->status(AgentBase::Idle, i18n("Finished sending messages."));
 
-                if (!errorOccurred && showSentNotifcation) {
+                if (!errorOccurred && showSentNotification) {
                     KNotification *notify = new KNotification(QStringLiteral("emailsent"));
                     notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
                     notify->setTitle(i18nc("Notification title when email was sent", "E-Mail Successfully Sent"));
                     notify->setText(i18nc("Notification when the email was sent", "Your E-Mail has been sent successfully."));
                     notify->sendEvent();
                 }
-                showSentNotifcation = true;
+                showSentNotification = true;
             } else {
                 // Empty queue.
                 Q_EMIT q->status(AgentBase::Idle, i18n("No items in queue."));
@@ -183,9 +183,6 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     migrate.migrate();
 
     qCDebug(MAILDISPATCHER_LOG) << "maildispatcheragent: At your service, sir!";
-#ifdef KDEPIM_STATIC_LIBS
-    ___MailTransport____INIT();
-#endif
 
     new SettingsAdaptor(Settings::self());
     new MailDispatcherAgentAdaptor(this);
@@ -345,9 +342,9 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
         }
         const auto bhAttribute = sentItem.attribute<MailTransport::SentBehaviourAttribute>();
         if (bhAttribute) {
-            showSentNotifcation = !bhAttribute->sendSilently();
+            showSentNotification = !bhAttribute->sendSilently();
         } else {
-            showSentNotifcation = true;
+            showSentNotification = true;
         }
     }
 
