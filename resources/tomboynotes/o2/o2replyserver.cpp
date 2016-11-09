@@ -15,15 +15,15 @@
 
 O2ReplyServer::O2ReplyServer(QObject *parent): QTcpServer(parent)
 {
-    connect(this, SIGNAL(newConnection()), this, SLOT(onIncomingConnection()));
+    connect(this, &QTcpServer::newConnection, this, &O2ReplyServer::onIncomingConnection);
     replyContent_ = "<HTML></HTML>";
 }
 
 void O2ReplyServer::onIncomingConnection()
 {
     QTcpSocket *socket = nextPendingConnection();
-    connect(socket, SIGNAL(readyRead()), this, SLOT(onBytesReady()), Qt::UniqueConnection);
-    connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
+    connect(socket, &QIODevice::readyRead, this, &O2ReplyServer::onBytesReady, Qt::UniqueConnection);
+    connect(socket, &QAbstractSocket::disconnected, socket, &QObject::deleteLater);
 }
 
 void O2ReplyServer::onBytesReady()

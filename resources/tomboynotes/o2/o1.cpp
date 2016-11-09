@@ -256,7 +256,7 @@ void O1::link()
     request.setHeader(QNetworkRequest::ContentTypeHeader, O2_MIME_TYPE_XFORM);
     QNetworkReply *reply = manager_->post(request, QByteArray());
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onTokenRequestError(QNetworkReply::NetworkError)));
-    connect(reply, SIGNAL(finished()), this, SLOT(onTokenRequestFinished()));
+    connect(reply, &QNetworkReply::finished, this, &O1::onTokenRequestFinished);
 }
 
 void O1::onTokenRequestError(QNetworkReply::NetworkError error)
@@ -341,7 +341,7 @@ void O1::exchangeToken()
     request.setHeader(QNetworkRequest::ContentTypeHeader, O2_MIME_TYPE_XFORM);
     QNetworkReply *reply = manager_->post(request, QByteArray());
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onTokenExchangeError(QNetworkReply::NetworkError)));
-    connect(reply, SIGNAL(finished()), this, SLOT(onTokenExchangeFinished()));
+    connect(reply, &QNetworkReply::finished, this, &O1::onTokenExchangeFinished);
 }
 
 void O1::onTokenExchangeError(QNetworkReply::NetworkError error)

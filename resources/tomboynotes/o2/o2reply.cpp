@@ -7,7 +7,7 @@ O2Reply::O2Reply(QNetworkReply *r, int timeOut, QObject *parent): QTimer(parent)
 {
     setSingleShot(true);
     connect(this, SIGNAL(error(QNetworkReply::NetworkError)), reply, SIGNAL(error(QNetworkReply::NetworkError)), Qt::QueuedConnection);
-    connect(this, SIGNAL(timeout()), this, SLOT(onTimeOut()), Qt::QueuedConnection);
+    connect(this, &QTimer::timeout, this, &O2Reply::onTimeOut, Qt::QueuedConnection);
     start(timeOut);
 }
 
