@@ -650,7 +650,7 @@ bool POP3Protocol::pop3_open()
         QString greeting = QLatin1String(greeting_buf);
         delete[] greeting_buf;
 
-        if (greeting.length() > 0) {
+        if (!greeting.isEmpty()) {
             greeting.truncate(greeting.length() - 2);
         }
 
