@@ -169,7 +169,7 @@ void POP3Resource::walletOpenedForLoading(bool success)
     mWallet = Q_NULLPTR;
 
     if (!passwordLoaded) {
-        QString queryText = buildLabelForPasswordDialog(
+        const QString queryText = buildLabelForPasswordDialog(
                                 i18n("You are asked here because the password could not be loaded from the wallet."));
         showPasswordDialog(queryText);
     } else {

@@ -174,7 +174,8 @@ static QByteArray cleanupListRespone(const QByteArray &response)
     QByteArray ret = response.simplified(); // Workaround for Maillennium POP3/UNIBOX
 
     // Get rid of the null terminating character, if it exists
-    if (ret.size() > 0 && ret.at(ret.size() - 1) == 0) {
+    int retSize = ret.size();
+    if (retSize > 0 && ret.at(retSize - 1) == 0) {
         ret.chop(1);
     }
     return ret;
