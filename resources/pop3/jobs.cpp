@@ -424,6 +424,7 @@ void DeleteJob::setDeleteIds(const QList<int> &ids)
 
 void DeleteJob::start()
 {
+    qCDebug(POP3RESOURCE_LOG) << "================= DeleteJob::start. =============================";
     startJob(QLatin1String("/remove/") + intListToString(mIdsToDelete));
 }
 
