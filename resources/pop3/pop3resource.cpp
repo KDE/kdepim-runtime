@@ -53,7 +53,7 @@ POP3Resource::POP3Resource(const QString &id)
       mIntervalTimer(new QTimer(this)),
       mTestLocalInbox(false),
       mWallet(Q_NULLPTR),
-      idsToSaveValid(false),
+      mIdsToSaveValid(false),
       mDeleteJob(Q_NULLPTR)
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
@@ -503,7 +503,7 @@ void POP3Resource::listJobResult(KJob *job)
         ListJob *listJob = dynamic_cast<ListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToSizeMap = listJob->idList();
-        idsToSaveValid = false;
+        mIdsToSaveValid = false;
         qCDebug(POP3RESOURCE_LOG) << "IdsToSizeMap:" << mIdsToSizeMap;
         advanceState(UIDList);
     }
@@ -691,9 +691,9 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
     // By default, we delete all messages. But if we have "leave on server"
     // rules, we can save some messages.
     if (Settings::self()->leaveOnServer()) {
-        if (!idsToSaveValid) {
-            idsToSaveValid = true;
-            idsToSave.clear();
+        if (!mIdsToSaveValid) {
+            mIdsToSaveValid = true;
+            mIdsToSave.clear();
 
             const QSet<int> idsOnServer = QSet<int>::fromList(mIdsToSizeMap.keys());
 
@@ -705,7 +705,7 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
                 foreach (int idToDelete, idsOnServer) {
                     const int msgTime = idToTime(idToDelete);
                     if (msgTime >= timeLimit) {
-                        idsToSave << idToDelete;
+                        mIdsToSave << idToDelete;
                     } else {
                         qCDebug(POP3RESOURCE_LOG) << "Message" << idToDelete << "is too old and will be deleted.";
                     }
@@ -716,21 +716,21 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
             // be reduced in the following number-limited leave rule and size-limited
             // leave rule checks
             else {
-                idsToSave = idsOnServer;
+                mIdsToSave = idsOnServer;
             }
 
             //
             // Delete more old messages if there are more than mLeaveOnServerCount
             //
             if (Settings::self()->leaveOnServerCount() > 0) {
-                const int numToDelete = idsToSave.count() - Settings::self()->leaveOnServerCount();
-                if (numToDelete > 0 && numToDelete < idsToSave.count()) {
+                const int numToDelete = mIdsToSave.count() - Settings::self()->leaveOnServerCount();
+                if (numToDelete > 0 && numToDelete < mIdsToSave.count()) {
                     // Get rid of the first numToDelete messages
                     for (int i = 0; i < numToDelete; i++) {
-                        idsToSave.remove(idOfOldestMessage(idsToSave));
+                        mIdsToSave.remove(idOfOldestMessage(mIdsToSave));
                     }
-                } else if (numToDelete >= idsToSave.count()) {
-                    idsToSave.clear();
+                } else if (numToDelete >= mIdsToSave.count()) {
+                    mIdsToSave.clear();
                 }
             }
 
@@ -740,18 +740,18 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
             if (Settings::self()->leaveOnServerSize() > 0) {
                 const qint64 limitInBytes = Settings::self()->leaveOnServerSize() * (1024 * 1024);
                 qint64 sizeOnServerAfterDeletion = 0;
-                foreach (int id, idsToSave) {
+                foreach (int id, mIdsToSave) {
                     sizeOnServerAfterDeletion += mIdsToSizeMap.value(id);
                 }
                 while (sizeOnServerAfterDeletion > limitInBytes) {
-                    int oldestId = idOfOldestMessage(idsToSave);
-                    idsToSave.remove(oldestId);
+                    int oldestId = idOfOldestMessage(mIdsToSave);
+                    mIdsToSave.remove(oldestId);
                     sizeOnServerAfterDeletion -= mIdsToSizeMap.value(oldestId);
                 }
             }
         }
 
-        return !idsToSave.contains(downloadedId);
+        return !mIdsToSave.contains(downloadedId);
     }
 
     return true;
