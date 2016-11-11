@@ -776,7 +776,7 @@ void POP3Resource::deleteJobResult(KJob *job)
     QList<int> timeOfSeenUids = Settings::self()->seenUidTimeList();
     Q_ASSERT(seenUIDs.size() == timeOfSeenUids.size());
     foreach (int deletedId, mDeletedIDs) {
-        QString deletedUID = mIdsToUidsMap.value(deletedId);
+        const QString deletedUID = mIdsToUidsMap.value(deletedId);
         if (!deletedUID.isEmpty()) {
             int index = seenUIDs.indexOf(deletedUID);
             if (index != -1) {
