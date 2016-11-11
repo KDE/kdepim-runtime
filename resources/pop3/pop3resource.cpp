@@ -869,7 +869,7 @@ void POP3Resource::saveSeenUIDList()
     foreach (const QString &uid, uidsOfMessagesDownloadedButNotDeleted) {
         if (!seenUIDs.contains(uid)) {
             seenUIDs.append(uid);
-            timeOfSeenUIDs.append(time(Q_NULLPTR));
+            timeOfSeenUIDs.append(time(0));
         }
     }
 
