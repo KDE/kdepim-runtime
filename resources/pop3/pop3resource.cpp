@@ -693,7 +693,7 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
     if (Settings::self()->leaveOnServer()) {
         if (!idsToSaveValid) {
             idsToSaveValid = true;
-            idsToSave = QSet<int>();
+            idsToSave.clear();
 
             const QSet<int> idsOnServer = QSet<int>::fromList(mIdsToSizeMap.keys());
 
