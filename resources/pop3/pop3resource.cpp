@@ -668,12 +668,12 @@ int POP3Resource::idToTime(int id) const
 
     // If we don't find any mail, either we have no UID, or it is not in the seen UID
     // list. In that case, we assume that the mail is new, i.e. from now
-    return time(Q_NULLPTR);
+    return time(0);
 }
 
 int POP3Resource::idOfOldestMessage(const QSet<int> &idList) const
 {
-    int timeOfOldestMessage = time(Q_NULLPTR) + 999;
+    int timeOfOldestMessage = time(0) + 999;
     int idOfOldestMessage = -1;
     foreach (int id, idList) {
         const int idTime = idToTime(id);
@@ -701,7 +701,7 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
             // the list of messages to keep
             if (Settings::self()->leaveOnServerDays() > 0) {
                 const int secondsPerDay = 86400;
-                time_t timeLimit = time(Q_NULLPTR) - (secondsPerDay * Settings::self()->leaveOnServerDays());
+                time_t timeLimit = time(0) - (secondsPerDay * Settings::self()->leaveOnServerDays());
                 foreach (int idToDelete, idsOnServer) {
                     const int msgTime = idToTime(idToDelete);
                     if (msgTime >= timeLimit) {
@@ -860,7 +860,7 @@ void POP3Resource::saveSeenUIDList()
     }
     QList<QString> uidsOfMessagesDownloadedButNotDeleted;
     foreach (int id, idsOfMessagesDownloadedButNotDeleted) {
-        QString uid = mIdsToUidsMap.value(id);
+        const QString uid = mIdsToUidsMap.value(id);
         if (!uid.isEmpty()) {
             uidsOfMessagesDownloadedButNotDeleted.append(uid);
         }
