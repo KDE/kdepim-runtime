@@ -383,7 +383,7 @@ void POP3Resource::doStateStep()
     case Save: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Save ===========================";
         qCDebug(POP3RESOURCE_LOG) << mPendingCreateJobs.size() << "item create jobs are pending";
-        if (mPendingCreateJobs.size() > 0) {
+        if (!mPendingCreateJobs.isEmpty()) {
             Q_EMIT status(Running, i18n("Saving downloaded messages."));
         }
 
@@ -639,8 +639,9 @@ void POP3Resource::itemCreateJobResult(KJob *job)
     //qCDebug(POP3RESOURCE_LOG) << "Just stored message with ID" << idOfMessageJustCreated
     //         << "on the Akonadi server";
 
-    if (shouldDeleteId(idOfMessageJustCreated)) {
-        mIdsWaitingToDelete << idOfMessageJustCreated;
+    const QList<int> idToDeleteMessage = shouldDeleteId(idOfMessageJustCreated);
+    if (!idToDeleteMessage.isEmpty()) {
+        mIdsWaitingToDelete << idToDeleteMessage;
         if (!mDeleteJob) {
             mDeleteJob = new DeleteJob(mPopSession);
             mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
@@ -686,16 +687,18 @@ int POP3Resource::idOfOldestMessage(const QSet<int> &idList) const
     return idOfOldestMessage;
 }
 
-bool POP3Resource::shouldDeleteId(int downloadedId) const
+QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
 {
+    QList<int> idsToDeleteFromServer;
     // By default, we delete all messages. But if we have "leave on server"
     // rules, we can save some messages.
     if (Settings::self()->leaveOnServer()) {
+        idsToDeleteFromServer = mIdsToSizeMap.keys();
         if (!mIdsToSaveValid) {
             mIdsToSaveValid = true;
             mIdsToSave.clear();
 
-            const QSet<int> idsOnServer = QSet<int>::fromList(mIdsToSizeMap.keys());
+            const QSet<int> idsOnServer = QSet<int>::fromList(idsToDeleteFromServer);
 
             // If the time-limited leave rule is checked, add the newer messages to
             // the list of messages to keep
@@ -750,11 +753,18 @@ bool POP3Resource::shouldDeleteId(int downloadedId) const
                 }
             }
         }
-
-        return !mIdsToSave.contains(downloadedId);
+        // Now save the messages from deletion
+        //
+        foreach (int idToSave, mIdsToSave) {
+            idsToDeleteFromServer.removeAll(idToSave);
+        }
+        if (!mIdsToSave.contains(downloadedId)) {
+            idsToDeleteFromServer << downloadedId;
+        }
+    } else {
+        idsToDeleteFromServer << downloadedId;
     }
-
-    return true;
+    return idsToDeleteFromServer;
 }
 
 void POP3Resource::deleteJobResult(KJob *job)

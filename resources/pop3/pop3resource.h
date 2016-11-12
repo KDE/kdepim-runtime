@@ -134,7 +134,7 @@ private:
     void advanceState(State nextState);
     void cancelSync(const QString &errorMessage, bool error = true);
     void saveSeenUIDList();
-    bool shouldDeleteId(int downloadedId) const;
+    QList<int> shouldDeleteId(int downloadedId) const;
     int idToTime(int id) const;
     int idOfOldestMessage(const QSet<int> &idList) const;
     void startMailCheck();
