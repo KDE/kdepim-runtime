@@ -63,7 +63,7 @@ KolabResource::~KolabResource()
 
 Settings *KolabResource::settings() const
 {
-    if (m_settings == 0) {
+    if (!m_settings) {
         m_settings = new KolabSettings;
     }
 
