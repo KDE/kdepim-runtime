@@ -142,6 +142,7 @@ private:
     void updateIntervalTimer();
     void showPasswordDialog(const QString &queryText);
     QString buildLabelForPasswordDialog(const QString &detailedError) const;
+    void checkRemovingMessageFromServer();
     void finish();
 
     bool shouldAdvanceToQuitState() const;

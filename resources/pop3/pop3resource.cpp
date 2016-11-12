@@ -376,7 +376,7 @@ void POP3Resource::doStateStep()
 
             fetchJob->start();
         } else {
-            advanceState(Save);
+            advanceState(CheckRemovingMessage);
         }
     }
     break;
@@ -417,9 +417,27 @@ void POP3Resource::doStateStep()
         break;
     }
     case CheckRemovingMessage: {
+        checkRemovingMessageFromServer();
         break;
     }
 
+    }
+}
+
+void POP3Resource::checkRemovingMessageFromServer()
+{
+    const QList<int> idToDeleteMessage = shouldDeleteId(-1);
+    if (!idToDeleteMessage.isEmpty()) {
+        mIdsWaitingToDelete << idToDeleteMessage;
+        if (!mDeleteJob) {
+            mDeleteJob = new DeleteJob(mPopSession);
+            mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
+            mIdsWaitingToDelete.clear();
+            connect(mDeleteJob, &DeleteJob::result, this, &POP3Resource::deleteJobResult);
+            mDeleteJob->start();
+        }
+    } else {
+        advanceState(Save);
     }
 }
 
@@ -762,11 +780,13 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
         foreach (int idToSave, mIdsToSave) {
             idsToDeleteFromServer.removeAll(idToSave);
         }
-        if (!mIdsToSave.contains(downloadedId)) {
+        if (downloadedId != -1 && !mIdsToSave.contains(downloadedId)) {
             idsToDeleteFromServer << downloadedId;
         }
     } else {
-        idsToDeleteFromServer << downloadedId;
+        if (downloadedId != -1) {
+            idsToDeleteFromServer << downloadedId;
+        }
     }
     return idsToDeleteFromServer;
 }
