@@ -126,7 +126,8 @@ private:
         Download,
         Save,
         Quit,
-        SavePassword
+        SavePassword,
+        CheckRemovingMessage
     };
 
     void resetState();

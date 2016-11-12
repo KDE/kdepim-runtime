@@ -416,6 +416,10 @@ void POP3Resource::doStateStep()
         }
         break;
     }
+    case CheckRemovingMessage: {
+        break;
+    }
+
     }
 }
 
