@@ -603,10 +603,10 @@ void SetupServer::slotSafetyChanged()
     foreach (int prot, protocols) {
         addAuthenticationItem(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) prot);
     }
-    if (protocols.size() > 0) {
-        setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) protocols.first());
-    } else {
+    if (protocols.isEmpty()) {
         qCDebug(IMAPRESOURCE_LOG) << "no authmodes found";
+    } else {
+        setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) protocols.first());
     }
 }
 
