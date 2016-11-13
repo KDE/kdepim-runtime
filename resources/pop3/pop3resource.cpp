@@ -144,9 +144,8 @@ bool POP3Resource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray
 
 QString POP3Resource::buildLabelForPasswordDialog(const QString &detailedError) const
 {
-    QString queryText = i18n("Please enter the username and password for account '%1'.",
-                             agentName());
-    queryText += QLatin1String("<br>") + detailedError;
+    const QString queryText = i18n("Please enter the username and password for account '%1'.",
+                             agentName()) + QLatin1String("<br>") + detailedError;
     return queryText;
 }
 
@@ -478,7 +477,7 @@ void POP3Resource::targetCollectionFetchJobFinished(KJob *job)
     }
     mTestLocalInbox = false;
     Akonadi::CollectionFetchJob *fetchJob =
-        dynamic_cast<Akonadi::CollectionFetchJob *>(job);
+        qobject_cast<Akonadi::CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() <= 1);
 
@@ -522,7 +521,7 @@ void POP3Resource::listJobResult(KJob *job)
         cancelSync(i18n("Error while getting the list of messages on the server.") +
                    QLatin1Char('\n') + job->errorString());
     } else {
-        ListJob *listJob = dynamic_cast<ListJob *>(job);
+        ListJob *listJob = qobject_cast<ListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToSizeMap = listJob->idList();
         mIdsToSaveValid = false;
@@ -537,7 +536,7 @@ void POP3Resource::uidListJobResult(KJob *job)
         cancelSync(i18n("Error while getting list of unique mail identifiers from the server.") +
                    QLatin1Char('\n') + job->errorString());
     } else {
-        UIDListJob *listJob = dynamic_cast<UIDListJob *>(job);
+        UIDListJob *listJob = qobject_cast<UIDListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToUidsMap = listJob->uidList();
         mUidsToIdsMap = listJob->idList();
