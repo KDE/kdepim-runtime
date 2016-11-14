@@ -421,11 +421,12 @@ bool OutboxQueue::isEmpty() const
 
 int OutboxQueue::count() const
 {
-    if (d->queue.count() == 0) {
+    const int numberOfElement(d->queue.count());
+    if (numberOfElement == 0) {
         // TODO Is this asking for too much?
         Q_ASSERT(d->totalSize == 0);
     }
-    return d->queue.count();
+    return numberOfElement;
 }
 
 qulonglong OutboxQueue::totalSize() const

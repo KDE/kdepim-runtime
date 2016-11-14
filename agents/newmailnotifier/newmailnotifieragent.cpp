@@ -434,10 +434,11 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
 
             if (hasUniqMessage) {
-                if (it.value().count() == 0) {
+                const int numberOfValue(it.value().count());
+                if (numberOfValue == 0) {
                     //You can have an unique folder with 0 message
                     return;
-                } else if (it.value().count() == 1) {
+                } else if (numberOfValue == 1) {
                     item = it.value().at(0);
                     currentPath = displayName;
                     break;
