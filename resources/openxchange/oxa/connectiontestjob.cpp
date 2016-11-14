@@ -36,7 +36,7 @@ void ConnectionTestJob::start()
     if (!mUrl.startsWith(QStringLiteral("https://"))) {
         mUrl = QStringLiteral("https://") + mUrl;
     }
-    const QUrl url(mUrl + QStringLiteral("/ajax/login?action=login&name=%1&password=%2").arg(mUser).arg(mPassword));
+    const QUrl url(mUrl + QStringLiteral("/ajax/login?action=login&name=%1&password=%2").arg(mUser, mPassword));
 
     KJob *job = KIO::storedGet(url, KIO::Reload, KIO::HideProgressInfo);
     connect(job, &KJob::result, this, &ConnectionTestJob::httpJobFinished);

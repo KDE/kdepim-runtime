@@ -145,7 +145,7 @@ public:
     void scheduleConnectionAttempt() Q_DECL_OVERRIDE;
 
     QChar separatorCharacter() const Q_DECL_OVERRIDE;
-    void setSeparatorCharacter(const QChar &separator) Q_DECL_OVERRIDE;
+    void setSeparatorCharacter(QChar separator) Q_DECL_OVERRIDE;
 
     void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName) Q_DECL_OVERRIDE;
 

@@ -548,7 +548,7 @@ const QChar ResourceTask::separatorCharacter() const
     }
 }
 
-void ResourceTask::setSeparatorCharacter(const QChar &separator)
+void ResourceTask::setSeparatorCharacter(QChar separator)
 {
     m_resource->setSeparatorCharacter(separator);
 }

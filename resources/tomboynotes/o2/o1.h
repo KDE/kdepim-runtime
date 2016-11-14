@@ -60,7 +60,7 @@ public:
     static QByteArray nonce();
 
     /// Generate signature string depending on signature method type
-    QByteArray generateSignature(const QList<O0RequestParameter> headers, const QNetworkRequest &req, const QList<O0RequestParameter> &signingParameters, QNetworkAccessManager::Operation operation);
+    QByteArray generateSignature(const QList<O0RequestParameter> &headers, const QNetworkRequest &req, const QList<O0RequestParameter> &signingParameters, QNetworkAccessManager::Operation operation);
 
     /// Calculate the HMAC-SHA1 signature of a request.
     /// @param  oauthParams     OAuth parameters.

@@ -36,6 +36,7 @@ class KJob;
 
 class NewMailNotifierCollectionProxyModel : public QIdentityProxyModel
 {
+    Q_OBJECT
 public:
     explicit NewMailNotifierCollectionProxyModel(QObject *parent = Q_NULLPTR);
 

@@ -600,7 +600,7 @@ void MixedMaildirResource::itemChangedResult(KJob *job)
 
     changeCommitted(itemJob->item());
 
-    const QString remoteId = itemJob->property("originalRemoteId").value<QString>();
+    const QString remoteId = itemJob->property("originalRemoteId").toString();
 
     const QVariant compactStoreVar = itemJob->property("compactStore");
     if (compactStoreVar.isValid() && compactStoreVar.toBool()) {
@@ -624,7 +624,7 @@ void MixedMaildirResource::itemMovedResult(KJob *job)
 
     changeCommitted(itemJob->item());
 
-    const QString remoteId = itemJob->property("originalRemoteId").value<QString>();
+    const QString remoteId = itemJob->property("originalRemoteId").toString();
 //   qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId()
 //            << "old remoteId=" << remoteId;
 
@@ -811,7 +811,7 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
     Q_ASSERT(!fetchJob->items().isEmpty());
 
     const Item item = fetchJob->items().at(0);
-    const QStringList tagList = job->property("tagList").value<QStringList>();
+    const QStringList tagList = job->property("tagList").toStringList();
     qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "Tagging item" << item.url() << "with" << tagList;
 
     Akonadi::Tag::List tags;

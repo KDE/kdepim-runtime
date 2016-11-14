@@ -63,6 +63,7 @@ private Q_SLOTS:
  */
 class MigratorModel: public QAbstractItemModel
 {
+    Q_OBJECT
 public:
     enum Roles {
         IdentifierRole = Qt::UserRole + 1,

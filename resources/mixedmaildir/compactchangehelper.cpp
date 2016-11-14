@@ -102,10 +102,10 @@ void CompactChangeHelper::Private::itemFetchResult(KJob *job)
     ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != 0);
 
-    const QString oldRemoteId = fetchJob->property("oldRemoteId").value<QString>();
+    const QString oldRemoteId = fetchJob->property("oldRemoteId").toString();
     Q_ASSERT(!oldRemoteId.isEmpty());
 
-    const QString newRemoteId = fetchJob->property("newRemoteId").value<QString>();
+    const QString newRemoteId = fetchJob->property("newRemoteId").toString();
     Q_ASSERT(!newRemoteId.isEmpty());
 
     if (fetchJob->error() != 0) {

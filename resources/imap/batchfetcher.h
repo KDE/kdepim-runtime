@@ -48,7 +48,7 @@ public:
     void setGmailExtensionsEnabled(bool enable);
 
 Q_SIGNALS:
-    void itemsRetrieved(Akonadi::Item::List);
+    void itemsRetrieved(const Akonadi::Item::List &);
 
 private Q_SLOTS:
     void onHeadersReceived(const QString &mailBox,

@@ -134,7 +134,7 @@ protected:
     void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName);
 
     const QChar separatorCharacter() const;
-    void setSeparatorCharacter(const QChar &separator);
+    void setSeparatorCharacter(QChar separator);
 
     virtual bool serverSupportsAnnotations() const;
     virtual bool serverSupportsCondstore() const;

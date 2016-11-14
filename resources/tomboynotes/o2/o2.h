@@ -123,7 +123,7 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
     /// Handle verification response.
-    virtual void onVerificationReceived(QMap<QString, QString>);
+    virtual void onVerificationReceived(const QMap<QString, QString>&);
 
     /// Handle completion of a token request.
     virtual void onTokenReplyFinished();

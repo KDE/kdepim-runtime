@@ -416,12 +416,12 @@ QChar DummyResourceState::separatorCharacter() const
     return m_separator;
 }
 
-void DummyResourceState::setSeparatorCharacter(const QChar &separator)
+void DummyResourceState::setSeparatorCharacter(QChar separator)
 {
     m_separator = separator;
 }
 
-void DummyResourceState::recordCall(const QByteArray callName, const QVariant &parameter)
+void DummyResourceState::recordCall(const QByteArray &callName, const QVariant &parameter)
 {
     m_calls << QPair<QByteArray, QVariant>(callName, parameter);
 }

@@ -27,7 +27,7 @@
 
 struct Merger {
     virtual ~Merger() {}
-    virtual KMime::Message::Ptr merge(KMime::Message::Ptr newMessage, QList<KMime::Message::Ptr> conflictingMessages) const = 0;
+    virtual KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const = 0;
 };
 
 /**
@@ -49,21 +49,21 @@ private:
     void appendMessage();
 
 private Q_SLOTS:
-    void onHeadersReceived(QString,
-                           QMap<qint64, qint64> uids,
-                           QMap<qint64, qint64>,
-                           QMap<qint64, KIMAP::MessageAttribute>,
-                           QMap<qint64, KIMAP::MessageFlags>,
-                           QMap<qint64, KIMAP::MessagePtr>);
+    void onHeadersReceived(const QString&,
+                           const QMap<qint64, qint64> &uids,
+                           const QMap<qint64, qint64>&,
+                           const QMap<qint64, KIMAP::MessageAttribute>&,
+                           const QMap<qint64, KIMAP::MessageFlags>&,
+                           const QMap<qint64, KIMAP::MessagePtr>&);
     void onHeadersFetchDone(KJob *job);
     void onSelectDone(KJob *job);
     void onSearchDone(KJob *job);
-    void onConflictingMessagesReceived(QString,
-                                       QMap<qint64, qint64> uids,
-                                       QMap<qint64, qint64>,
-                                       QMap<qint64, KIMAP::MessageAttribute>,
-                                       QMap<qint64, KIMAP::MessageFlags>,
-                                       QMap<qint64, KIMAP::MessagePtr>);
+    void onConflictingMessagesReceived(const QString &,
+                                       const QMap<qint64, qint64> &uids,
+                                       const QMap<qint64, qint64> &,
+                                       const QMap<qint64, KIMAP::MessageAttribute> &,
+                                       const QMap<qint64, KIMAP::MessageFlags> &,
+                                       const QMap<qint64, KIMAP::MessagePtr> &);
     void onConflictingMessageFetchDone(KJob *job);
     void onReplaceDone(KJob *job);
 

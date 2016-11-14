@@ -333,7 +333,7 @@ QChar ResourceState::separatorCharacter() const
     return m_resource->separatorCharacter();
 }
 
-void ResourceState::setSeparatorCharacter(const QChar &separator)
+void ResourceState::setSeparatorCharacter(QChar separator)
 {
     m_resource->setSeparatorCharacter(separator);
 }

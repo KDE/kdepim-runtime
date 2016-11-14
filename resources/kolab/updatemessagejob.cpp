@@ -102,12 +102,12 @@ void UpdateMessageJob::fetchHeaders()
 
 }
 
-void UpdateMessageJob::onHeadersReceived(QString,
-        QMap<qint64, qint64> uids,
-        QMap<qint64, qint64>,
-        QMap<qint64, KIMAP::MessageAttribute>,
-        QMap<qint64, KIMAP::MessageFlags> flags,
-        QMap<qint64, KIMAP::MessagePtr>)
+void UpdateMessageJob::onHeadersReceived(const QString&,
+        const QMap<qint64, qint64> &uids,
+        const QMap<qint64, qint64> &,
+        const QMap<qint64, KIMAP::MessageAttribute> &,
+        const QMap<qint64, KIMAP::MessageFlags> &flags,
+        const QMap<qint64, KIMAP::MessagePtr> &)
 {
     //Filter deleted messages
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
@@ -188,12 +188,12 @@ void UpdateMessageJob::onSearchDone(KJob *job)
     }
 }
 
-void UpdateMessageJob::onConflictingMessagesReceived(QString,
-        QMap<qint64, qint64> uids,
-        QMap<qint64, qint64>,
-        QMap<qint64, KIMAP::MessageAttribute>,
-        QMap<qint64, KIMAP::MessageFlags> flags,
-        QMap<qint64, KIMAP::MessagePtr> messages)
+void UpdateMessageJob::onConflictingMessagesReceived(const QString &,
+        const QMap<qint64, qint64> &uids,
+        const QMap<qint64, qint64> &,
+        const QMap<qint64, KIMAP::MessageAttribute> &,
+        const QMap<qint64, KIMAP::MessageFlags> &flags,
+        const QMap<qint64, KIMAP::MessagePtr> &messages)
 {
     foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
         if (!flags[number].contains(ImapFlags::Deleted)) {

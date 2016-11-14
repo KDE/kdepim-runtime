@@ -784,7 +784,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     Akonadi::Item::List changedItems;
     QSet<QString> seenRids;
     QStringList changedRids;
-
+    changedItems.reserve(listJob->changedItems().count());
     foreach (const DavItem &davItem, listJob->changedItems()) {
         seenRids.insert(davItem.url());
 

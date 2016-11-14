@@ -77,10 +77,13 @@ QByteArray ImapAclAttribute::serialized() const
     QByteArray result = "";
 
     bool added = false;
-    foreach (const QByteArray &id, mRights.keys()) {
-        result += id;
+
+    QMapIterator<QByteArray, KIMAP::Acl::Rights> i(mRights);
+    while (i.hasNext()) {
+        i.next();
+        result += i.key();
         result += ' ';
-        result += KIMAP::Acl::rightsToString(mRights[id]);
+        result += KIMAP::Acl::rightsToString(i.value());
         result += " % "; // We use this separator as '%' is not allowed in keys or values
         added = true;
     }
@@ -92,10 +95,12 @@ QByteArray ImapAclAttribute::serialized() const
     result += " %% ";
 
     added = false;
-    foreach (const QByteArray &id, mOldRights.keys()) {
-        result += id;
+    QMapIterator<QByteArray, KIMAP::Acl::Rights> i2(mOldRights);
+    while (i2.hasNext()) {
+        i2.next();
+        result += i2.key();
         result += ' ';
-        result += KIMAP::Acl::rightsToString(mOldRights[id]);
+        result += KIMAP::Acl::rightsToString(i2.value());
         result += " % "; // We use this separator as '%' is not allowed in keys or values
         added = true;
     }

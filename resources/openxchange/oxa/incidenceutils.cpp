@@ -461,7 +461,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->monthDays().first()));
         break;
     case KCalCore::Recurrence::rMonthlyPos: {
-        const KCalCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().first();
+        const KCalCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().constFirst();
 
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("monthly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
@@ -472,17 +472,17 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
     case KCalCore::Recurrence::rYearlyMonth:
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("yearly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), QStringLiteral("1"));
-        DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->yearDates().first()));
-        DAVUtils::addOxElement(document, parent, QStringLiteral("month"), OXUtils::writeNumber(recurrence->yearMonths().first() + monthOffset));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->yearDates().constFirst()));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("month"), OXUtils::writeNumber(recurrence->yearMonths().constFirst() + monthOffset));
         break;
     case KCalCore::Recurrence::rYearlyPos: {
-        const KCalCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().first();
+        const KCalCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().constFirst();
 
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("yearly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), QStringLiteral("1"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("days"), OXUtils::writeNumber(1 << wdp.day()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(wdp.pos()));
-        DAVUtils::addOxElement(document, parent, QStringLiteral("month"), OXUtils::writeNumber(recurrence->yearMonths().first() + monthOffset));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("month"), OXUtils::writeNumber(recurrence->yearMonths().constFirst() + monthOffset));
     }
     break;
     default:

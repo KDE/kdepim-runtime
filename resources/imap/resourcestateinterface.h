@@ -113,7 +113,7 @@ public:
     virtual void scheduleConnectionAttempt() = 0;
 
     virtual QChar separatorCharacter() const = 0;
-    virtual void setSeparatorCharacter(const QChar &separator) = 0;
+    virtual void setSeparatorCharacter(QChar separator) = 0;
 
     virtual void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName) = 0;
 

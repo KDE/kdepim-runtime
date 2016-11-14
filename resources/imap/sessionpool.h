@@ -31,7 +31,7 @@
 
 namespace KIMAP
 {
-class MailBoxDescriptor;
+struct MailBoxDescriptor;
 }
 
 class ImapAccount;
