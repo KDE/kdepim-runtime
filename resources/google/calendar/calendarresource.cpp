@@ -701,7 +701,7 @@ void CalendarResource::slotTaskAddedSearchFinished(KJob *job)
     KGAPI2::Job *newJob;
     // The parent is not known, so give up and just store the item in Google
     // without the information about parent.
-    if (items.count() == 0) {
+    if (items.isEmpty()) {
         task->setRelatedTo(QString(), KCalCore::Incidence::RelTypeParent);
         newJob = new TaskCreateJob(task, tasksListId, account(), this);
     } else {
