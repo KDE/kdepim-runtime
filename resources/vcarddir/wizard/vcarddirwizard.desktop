@@ -64,6 +64,7 @@ Comment[sr@latin]=Učitava kontakt iz vCard fascikle
 Comment[sv]=Laddar kontakter från en vCard-katalog
 Comment[uk]=Завантажує дані запису контакту із каталогу vCard
 Comment[x-test]=xxLoads contact from vCard Directoryxx
+Comment[zh_TW]=從 vCard 目錄載入聯絡人
 
 [Wizard]
 Type=text/vcard
