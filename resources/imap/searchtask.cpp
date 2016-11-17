@@ -26,7 +26,7 @@
 #include <SearchQuery>
 #include <Akonadi/KMime/MessageFlags>
 #include "imapresource_debug.h"
-
+#include <KLocalizedString>
 Q_DECLARE_METATYPE(KIMAP::Session *)
 
 SearchTask::SearchTask(const ResourceStateInterface::Ptr &state,  const QString &query, QObject *parent)
@@ -195,7 +195,7 @@ void SearchTask::doSearch(KIMAP::Session *session)
     if (term.isNull()) {
         qCWarning(IMAPRESOURCE_LOG) << "failed to translate query " << m_query;
         searchFinished(QVector<qint64>());
-        cancelTask(QStringLiteral("Invalid search"));
+        cancelTask(i18n("Invalid search"));
         return;
     }
     searchJob->setTerm(term);

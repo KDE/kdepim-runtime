@@ -421,7 +421,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
     mJobs--;
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << QStringLiteral("Failed to retrieve mailboxes: ") + job->errorString();
-        cancelTask(QStringLiteral("Collection retrieval failed"));
+        cancelTask(i18n("Collection retrieval failed"));
     } else {
         QSet<QString> mailboxes;
         Q_FOREACH (const QString &mailbox, mMailCollections.keys()) {
@@ -502,7 +502,7 @@ void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
     mJobs--;
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << "Error while retrieving metadata, aborting collection retrieval: " << job->errorString();
-        cancelTask(QStringLiteral("Collection retrieval failed"));
+        cancelTask(i18n("Collection retrieval failed"));
     } else {
         RetrieveMetadataJob *metadata = static_cast<RetrieveMetadataJob *>(job);
         applyRights(metadata->mRights);
@@ -536,7 +536,7 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
     mJobs--;
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << QStringLiteral("Failed to retrieve subscribed collections: ") + job->errorString();
-        cancelTask(QStringLiteral("Collection retrieval failed"));
+        cancelTask(i18n("Collection retrieval failed"));
     } else {
         checkDone();
     }
