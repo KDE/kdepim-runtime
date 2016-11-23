@@ -1,14 +1,14 @@
 project(resources)
 
-set(AKONADICALENDAR_LIB_VERSION "5.3.80")
-set(KMBOX_LIB_VERSION "5.3.80")
+set(AKONADICALENDAR_LIB_VERSION "5.3.90")
+set(KMBOX_LIB_VERSION "5.3.90")
 
 
 find_package(KF5AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Mbox ${KMBOX_LIB_VERSION} CONFIG REQUIRED)
 
 # Extra package
-find_package(KF5GAPI "5.1.0" CONFIG)
+find_package(KF5GAPI "5.3.1" CONFIG)
 
 
 
