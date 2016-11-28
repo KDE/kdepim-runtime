@@ -253,11 +253,11 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
             search->deleteLater();
             return;
         }
-        search->setTerm(KIMAP::Term(KIMAP::Term::And,
-                                    { KIMAP::Term(KIMAP::Term::New),
-                                      KIMAP::Term(KIMAP::Term::Uid,
-                                                  KIMAP::ImapSet(uidNext->uidNext(), 0))
-                                    }));
+        search->setTerm(KIMAP::Term(KIMAP::Term::And, {
+            KIMAP::Term(KIMAP::Term::New),
+            KIMAP::Term(KIMAP::Term::Uid,
+            KIMAP::ImapSet(uidNext->uidNext(), 0))
+        }));
     }
 
     connect(search, &KIMAP::SearchJob::result, this, &MoveItemsTask::onSearchDone);

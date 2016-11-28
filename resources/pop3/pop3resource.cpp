@@ -145,7 +145,7 @@ bool POP3Resource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray
 QString POP3Resource::buildLabelForPasswordDialog(const QString &detailedError) const
 {
     const QString queryText = i18n("Please enter the username and password for account '%1'.",
-                             agentName()) + QLatin1String("<br>") + detailedError;
+                                   agentName()) + QLatin1String("<br>") + detailedError;
     return queryText;
 }
 
@@ -169,7 +169,7 @@ void POP3Resource::walletOpenedForLoading(bool success)
 
     if (!passwordLoaded) {
         const QString queryText = buildLabelForPasswordDialog(
-                                i18n("You are asked here because the password could not be loaded from the wallet."));
+                                      i18n("You are asked here because the password could not be loaded from the wallet."));
         showPasswordDialog(queryText);
     } else {
         advanceState(Connect);

@@ -102,7 +102,7 @@ void UpdateMessageJob::fetchHeaders()
 
 }
 
-void UpdateMessageJob::onHeadersReceived(const QString&,
+void UpdateMessageJob::onHeadersReceived(const QString &,
         const QMap<qint64, qint64> &uids,
         const QMap<qint64, qint64> &,
         const QMap<qint64, KIMAP::MessageAttribute> &,

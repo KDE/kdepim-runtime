@@ -49,12 +49,12 @@ private:
     void appendMessage();
 
 private Q_SLOTS:
-    void onHeadersReceived(const QString&,
+    void onHeadersReceived(const QString &,
                            const QMap<qint64, qint64> &uids,
-                           const QMap<qint64, qint64>&,
-                           const QMap<qint64, KIMAP::MessageAttribute>&,
-                           const QMap<qint64, KIMAP::MessageFlags>&,
-                           const QMap<qint64, KIMAP::MessagePtr>&);
+                           const QMap<qint64, qint64> &,
+                           const QMap<qint64, KIMAP::MessageAttribute> &,
+                           const QMap<qint64, KIMAP::MessageFlags> &,
+                           const QMap<qint64, KIMAP::MessagePtr> &);
     void onHeadersFetchDone(KJob *job);
     void onSelectDone(KJob *job);
     void onSearchDone(KJob *job);

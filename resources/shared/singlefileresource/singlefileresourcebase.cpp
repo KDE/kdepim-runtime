@@ -36,7 +36,7 @@
 #include <QtCore/QCryptographicHash>
 #include <QStandardPaths>
 
-Q_DECLARE_METATYPE(QEventLoopLocker*)
+Q_DECLARE_METATYPE(QEventLoopLocker *)
 
 using namespace Akonadi;
 
@@ -269,7 +269,7 @@ void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
     }
 
     mDownloadJob = Q_NULLPTR;
-    auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker*>();
+    auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker *>();
     if (ref) {
         delete ref;
     }
@@ -286,7 +286,7 @@ void SingleFileResourceBase::slotUploadJobResult(KJob *job)
     }
 
     mUploadJob = Q_NULLPTR;
-    auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker*>();
+    auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker *>();
     if (ref) {
         delete ref;
     }

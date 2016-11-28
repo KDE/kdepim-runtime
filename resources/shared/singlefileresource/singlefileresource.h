@@ -38,7 +38,7 @@
 #include <QDebug>
 #include <QEventLoopLocker>
 
-Q_DECLARE_METATYPE(QEventLoopLocker*)
+Q_DECLARE_METATYPE(QEventLoopLocker *)
 
 namespace Akonadi
 {
@@ -165,7 +165,7 @@ public:
             auto ref = new QEventLoopLocker();
             // NOTE: Test what happens with remotefile -> save, close before save is finished.
             mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite |
-            KIO::DefaultFlags | KIO::HideProgressInfo);
+                                          KIO::DefaultFlags | KIO::HideProgressInfo);
             mDownloadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mDownloadJob, &KJob::result,
                     this, &SingleFileResource<Settings>::slotDownloadJobResult);

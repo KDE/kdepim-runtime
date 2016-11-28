@@ -101,7 +101,7 @@ private Q_SLOTS:
     void slotInstanceAdded(const Akonadi::AgentInstance &instance);
     void slotDisplayNotification(const QPixmap &pixmap, const QString &message);
     void slotIdentitiesChanged();
-    void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);    
+    void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
     void slotSay(const QString &message);
 
 private:

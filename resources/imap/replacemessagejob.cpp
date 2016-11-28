@@ -117,11 +117,11 @@ void ReplaceMessageJob::triggerSearchJob()
             emitResult();
             return;
         }
-        search->setTerm(KIMAP::Term(KIMAP::Term::And,
-                                    { KIMAP::Term(KIMAP::Term::New),
-                                      KIMAP::Term(KIMAP::Term::Uid,
-                                                  KIMAP::ImapSet(mUidNext, 0))
-                                    }));
+        search->setTerm(KIMAP::Term(KIMAP::Term::And, {
+            KIMAP::Term(KIMAP::Term::New),
+            KIMAP::Term(KIMAP::Term::Uid,
+            KIMAP::ImapSet(mUidNext, 0))
+        }));
     }
 
     connect(search, &KJob::result,

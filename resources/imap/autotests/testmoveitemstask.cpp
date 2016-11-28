@@ -294,7 +294,6 @@ private Q_SLOTS:
 
         QTest::newRow("moving mail") << item << source << target << scenario << callNames;
 
-
         item = Akonadi::Item(1);
         item.setRemoteId(QStringLiteral("5"));
 

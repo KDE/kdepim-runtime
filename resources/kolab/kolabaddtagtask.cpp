@@ -111,11 +111,11 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
         }
         KIMAP::ImapInterval interval(uidNext->uidNext());
 
-        search->setTerm(KIMAP::Term(KIMAP::Term::And,
-                                    { KIMAP::Term(KIMAP::Term::New),
-                                      KIMAP::Term(KIMAP::Term::Uid,
-                                                  KIMAP::ImapSet(uidNext->uidNext(), 0))
-                                    }));
+        search->setTerm(KIMAP::Term(KIMAP::Term::And, {
+            KIMAP::Term(KIMAP::Term::New),
+            KIMAP::Term(KIMAP::Term::Uid,
+            KIMAP::ImapSet(uidNext->uidNext(), 0))
+        }));
     }
 
     connect(search, &KJob::result,

@@ -433,7 +433,6 @@ void SetupServer::readSettings()
 
     m_ui->customUsername->setText(m_parentResource->settings()->sieveCustomUsername());
 
-
     rejected = false;
     const QString customPassword = m_parentResource->settings()->sieveCustomPassword(&rejected);
     if (rejected) {
