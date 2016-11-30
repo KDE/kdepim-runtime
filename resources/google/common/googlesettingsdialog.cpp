@@ -150,6 +150,7 @@ void GoogleSettingsDialog::reloadAccounts()
     disconnect(m_accComboBox, SIGNAL(currentIndexChanged(QString)),
                this, SIGNAL(currentAccountChanged(QString)));
 
+    m_removeAccButton->setEnabled(m_accComboBox->count() > 0);
     Q_EMIT currentAccountChanged(m_accComboBox->currentText());
 }
 
