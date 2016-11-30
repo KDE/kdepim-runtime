@@ -45,6 +45,9 @@ SettingsDialog::SettingsDialog(ContactsResourceSettings *settings, WId windowId)
     setWindowIcon(QIcon::fromTheme(QStringLiteral("text-directory")));
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
 
+    ui.label_3->setMinimumSize(ui.label_3->sizeHint());
+    ui.label_2->setMinimumSize(ui.label_2->sizeHint());
+
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);

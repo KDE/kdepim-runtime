@@ -55,7 +55,7 @@
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>Director&amp;y:</string>
+              <string>Directory:</string>
              </property>
             </widget>
            </item>
@@ -88,7 +88,7 @@
            <item>
             <widget class="QLabel" name="label_1">
              <property name="text">
-              <string>&amp;Name:</string>
+              <string>Name:</string>
              </property>
             </widget>
            </item>
@@ -143,15 +143,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>KUrlRequester</class>
    <extends>QWidget</extends>
    <header>kurlrequester.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

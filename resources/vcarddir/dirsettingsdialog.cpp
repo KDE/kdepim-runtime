@@ -59,7 +59,8 @@ SettingsDialog::SettingsDialog(WId windowId)
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &SettingsDialog::validate);
 
     QTimer::singleShot(0, this, &SettingsDialog::validate);
-
+    ui.label_2->setMinimumSize(ui.label_2->sizeHint());
+    ui.label_3->setMinimumSize(ui.label_3->sizeHint());
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(Settings::self()->path()));
     ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
     mManager = new KConfigDialogManager(this, Settings::self());
