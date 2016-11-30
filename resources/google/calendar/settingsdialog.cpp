@@ -136,6 +136,10 @@ void SettingsDialog::saveSettings()
 void SettingsDialog::slotCurrentAccountChanged(const QString &accountName)
 {
     if (accountName.isEmpty()) {
+        m_taskListsBox->setDisabled(true);
+        m_taskListsList->clear();
+        m_calendarsBox->setDisabled(true);
+        m_calendarsList->clear();
         return;
     }
 
