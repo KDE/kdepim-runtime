@@ -245,17 +245,17 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state FetchTargetCollection ==========";
         Q_EMIT status(Running, i18n("Preparing transmission from \"%1\".", name()));
         Collection targetCollection(Settings::self()->targetCollection());
-        if (!targetCollection.isValid()) {
+        if (targetCollection.isValid()) {
+            CollectionFetchJob *fetchJob = new CollectionFetchJob(targetCollection,
+                    CollectionFetchJob::Base);
+            fetchJob->start();
+            connect(fetchJob, &CollectionFetchJob::result, this, &POP3Resource::targetCollectionFetchJobFinished);
+        } else {
             // No target collection set in the config? Try requesting a default inbox
             SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob(this);
             requestJob->requestDefaultCollection(SpecialMailCollections::Inbox);
             requestJob->start();
             connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &POP3Resource::localFolderRequestJobFinished);
-        } else {
-            CollectionFetchJob *fetchJob = new CollectionFetchJob(targetCollection,
-                    CollectionFetchJob::Base);
-            fetchJob->start();
-            connect(fetchJob, &CollectionFetchJob::result, this, &POP3Resource::targetCollectionFetchJobFinished);
         }
         break;
     }
@@ -365,7 +365,9 @@ void POP3Resource::doStateStep()
             sizesOfMessagesToDownload.append(mIdsToSizeMap.value(id));
         }
 
-        if (!mIdsToDownload.empty()) {
+        if (mIdsToDownload.empty()) {
+            advanceState(CheckRemovingMessage);
+        } else {
             FetchJob *fetchJob = new FetchJob(mPopSession);
             fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
             connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
@@ -374,8 +376,6 @@ void POP3Resource::doStateStep()
                     this, SLOT(messageDownloadProgress(KJob*,KJob::Unit,qulonglong)));
 
             fetchJob->start();
-        } else {
-            advanceState(CheckRemovingMessage);
         }
     }
     break;
@@ -400,9 +400,7 @@ void POP3Resource::doStateStep()
     break;
     case SavePassword: {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state SavePassword ===================";
-        if (!mSavePassword) {
-            finish();
-        } else {
+        if (mSavePassword) {
             qCDebug(POP3RESOURCE_LOG) << "Writing password back to the wallet.";
             Q_EMIT status(Running, i18n("Saving password to the wallet."));
             mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winIdForDialogs(),
@@ -412,6 +410,8 @@ void POP3Resource::doStateStep()
             } else {
                 finish();
             }
+        } else {
+            finish();
         }
         break;
     }
