@@ -52,6 +52,8 @@ include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
+include(ECMCoverageOption)
+
 
 set(QT_REQUIRED_VERSION "5.6.0")
 
