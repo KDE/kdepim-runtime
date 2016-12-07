@@ -755,6 +755,10 @@ void KolabProxyResource::imapCollectionRemoved( const Akonadi::Collection &imapC
   } else if ( imapCollection.parentCollection() == Akonadi::Collection::root() ) {
     //we are not explicitly monitoring the top-level collection, but it should be removed anyways when the rest is gone
     removeFolder(imapCollection);
+  } else if (!imapCollection.contentMimeTypes().contains(QLatin1String("message/rfc822"))) {
+    // a non-main non-kolab collection disappeared, possibly a noselect parent
+    // collection of a shared kolab folder that has been unsubscribed
+    removeFolder(imapCollection);
   }
 }
 
