@@ -32,7 +32,7 @@ project(kdepim-runtime)
 #    3.2 alpha1
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "")
+    set(KDEPIM_RUNTIME_DEV_VERSION "alpha1")
 endif()
 
 set(KDEPIM_RUNTIME_VERSION_NUMBER "5.4.40")
