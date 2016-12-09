@@ -822,7 +822,7 @@ QString Maildir::moveEntryTo(const QString &key, const Maildir &destination)
     // ### is this safe regarding the maildir locking scheme?
     const QString targetKey = destination.path() + QDir::separator() + QLatin1String("new") + QDir::separator() + key;
     if (!f.rename(targetKey)) {
-        qCDebug(LIBMAILDIR_LOG) << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();;
+        qCDebug(LIBMAILDIR_LOG) << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();
         d->lastError = f.errorString();
         return QString();
     }

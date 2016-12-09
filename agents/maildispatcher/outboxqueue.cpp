@@ -331,7 +331,7 @@ void OutboxQueue::Private::localFoldersRequestResult(KJob *job)
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Retrying in: " << timeout;
             QTimer::singleShot(timeout, q, SLOT(localFoldersChanged()));
         } else {
-            qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up.";;
+            qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up.";
             Q_EMIT q->error(i18n("Could not access the outbox folder (%1).", job->errorString()));
         }
         return;
