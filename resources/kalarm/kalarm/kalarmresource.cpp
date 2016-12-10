@@ -197,7 +197,7 @@ bool KAlarmResource::readFromFile(const QString &fileName)
 void KAlarmResource::checkFileCompatibility(const Collection &collection, bool createAttribute)
 {
     if (collection.isValid()
-            &&  collection.hasAttribute<CompatibilityAttribute>()) {
+    &&  collection.hasAttribute<CompatibilityAttribute>()) {
         // Update our note of the calendar version and compatibility
         const CompatibilityAttribute *attr = collection.attribute<CompatibilityAttribute>();
         mCompatibility = attr->compatibility();
@@ -205,8 +205,8 @@ void KAlarmResource::checkFileCompatibility(const Collection &collection, bool c
         createAttribute = false;
     }
     if (mHaveReadFile
-            && (createAttribute
-                ||  mFileCompatibility != mCompatibility  ||  mFileVersion != mVersion)) {
+    && (createAttribute
+        ||  mFileCompatibility != mCompatibility  ||  mFileVersion != mVersion)) {
         // The actual file's version and compatibility are different from
         // those in the Akonadi database, so update the database attributes.
         mCompatibility = mFileCompatibility;

@@ -138,7 +138,7 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
                     const QString rid = c.remoteId();
                     const QUrl url = QUrl::fromLocalFile(mSettings->path());
                     if (!url.isLocalFile()
-                            || (rid != url.toLocalFile() && rid != url.url() && rid != url.toDisplayString())) {
+                    || (rid != url.toLocalFile() && rid != url.url() && rid != url.toDisplayString())) {
                         qCritical() << "Collection remote ID does not match settings: changing settings";
                         recreate = true;
                     }
@@ -212,7 +212,7 @@ void KAlarmDirResource::configure(WId windowId)
                 modify = true;
             }
             if (mSettings->readOnly() != readOnly
-                    ||  mSettings->displayName() != name) {
+            ||  mSettings->displayName() != name) {
                 // Need to change the collection's rights or name
                 c.setRemoteId(directoryName());
                 setNameRights(c);
@@ -1165,9 +1165,9 @@ QString KAlarmDirResource::removeEventFile(const QString &eventId, const QString
 bool KAlarmDirResource::isFileValid(const QString &file) const
 {
     return !file.isEmpty()
-           &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
-           &&  file != QLatin1String(warningFile)
-           &&  QFile(filePath(file)).exists();   // a temporary file may no longer exist
+       &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
+       &&  file != QLatin1String(warningFile)
+       &&  QFile(filePath(file)).exists();   // a temporary file may no longer exist
 }
 
 AKONADI_RESOURCE_MAIN(KAlarmDirResource)
