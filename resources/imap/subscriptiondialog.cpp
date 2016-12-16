@@ -377,21 +377,3 @@ bool SubscriptionFilterProxyModel::acceptRow(int sourceRow, const QModelIndex &s
         return true;
     }
 }
-
-void SubscriptionDialog::onMobileLineEditChanged(const QString &text)
-{
-    if (!text.isEmpty() && !m_lineEdit->isVisible()) {
-        m_lineEdit->show();
-        m_lineEdit->setFocus();
-        m_lineEdit->grabKeyboard(); // Now the line edit runs the show
-    } else if (text.isEmpty() && m_lineEdit->isVisible()) {
-        m_lineEdit->hide();
-        grabKeyboard(); // Line edit gone, so let's get all the events for us again
-    }
-}
-
-void SubscriptionDialog::keyPressEvent(QKeyEvent *event)
-{
-    QDialog::keyPressEvent(event);
-}
-

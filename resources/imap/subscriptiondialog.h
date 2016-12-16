@@ -91,11 +91,8 @@ private Q_SLOTS:
                                        const QList< QList<QByteArray> > &flags);
     void onReloadDone(KJob *job);
     void onItemChanged(QStandardItem *item);
-    void onMobileLineEditChanged(const QString &text);
 
     void slotSearchPattern(const QString &pattern);
-protected:
-    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void slotAccepted();
