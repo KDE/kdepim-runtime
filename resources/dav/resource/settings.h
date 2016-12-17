@@ -28,14 +28,6 @@
 
 #include <QtCore/QMap>
 
-#ifdef HAVE_ACCOUNTS
-namespace Accounts
-{
-class Service;
-class Account;
-class Manager;
-};
-#endif
 
 class Settings : public SettingsBase
 {
@@ -119,14 +111,6 @@ public:
     QDateTime getSyncRangeStart() const;
 
 private:
-#ifdef HAVE_ACCOUNTS
-    void addAccountsEnabledServices();
-    void removeAccountsDisabledServices();
-    void configureAccountService(Accounts::Account *acc, const Accounts::Service &service);
-    void importFromAccounts();
-    QString loadPasswordFromAccounts();
-    QString accountsUsername() const;
-#endif
     void buildUrlsList();
     void loadMappings();
     void updateRemoteUrls();
@@ -138,9 +122,6 @@ private:
     void updateToV3();
 
     WId mWinId;
-#ifdef HAVE_ACCOUNTS
-    Accounts::Manager *m_manager;
-#endif
     QString mResourceIdentifier;
     QMap<QString, UrlConfiguration *> mUrls;
     QMap<QString, QString> mPasswordsCache;

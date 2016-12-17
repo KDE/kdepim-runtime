@@ -55,13 +55,6 @@ target_link_libraries(akonadi_googlecalendar_resource
   KF5::I18n
 )
 
-if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
-  target_link_libraries(akonadi_googlecalendar_resource
-    ${ACCOUNTSQT_LIBRARIES}
-    ${SIGNONQT_LIBRARIES})
-endif()
-
-
 install(TARGETS akonadi_googlecalendar_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(

@@ -54,12 +54,6 @@ target_link_libraries(akonadi_googlecontacts_resource
   Qt5::DBus
 )
 
-if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
-  target_link_libraries(akonadi_googlecontacts_resource
-    ${ACCOUNTSQT_LIBRARIES}
-    ${SIGNONQT_LIBRARIES})
-endif()
-
 install(TARGETS akonadi_googlecontacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(

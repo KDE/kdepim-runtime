@@ -30,10 +30,6 @@
 #include <KGAPI/AccountInfo>
 #include <KGAPI/AuthJob>
 
-#ifdef HAVE_ACCOUNTS
-#include "../../shared/singlefileresource/getcredentialsjob.h"
-#endif
-
 #define ACCESS_TOKEN_PROPERTY "AccessToken"
 
 Q_DECLARE_METATYPE(KGAPI2::Job *)
@@ -167,105 +163,10 @@ bool GoogleResource::configureKAccounts(int accountId, KGAPI2::Job *restartJob)
     if (accountId == 0) {
         return false;
     }
-#ifdef HAVE_ACCOUNTS
-    GetCredentialsJob *gc = new GetCredentialsJob(accountId, this);
-    gc->setProperty(JOB_PROPERTY, QVariant::fromValue(restartJob));
-    connect(gc, &GetCredentialsJob::finished, this, &GoogleResource::slotKAccountsCredentialsReceived);
-    gc->start();
-    // SUCKS!
-    return true;
-#else
     Q_UNUSED(restartJob);
     return false;
-#endif
 }
 
-#ifdef HAVE_ACCOUNTS
-void GoogleResource::slotKAccountsCredentialsReceived(KJob *job)
-{
-    if (job->error()) {
-        Q_EMIT status(Broken);
-        // FIXME: Fallback to KGAPI account?
-        return;
-    }
-
-    GetCredentialsJob *gc = qobject_cast<GetCredentialsJob *>(job);
-    const QVariantMap data = gc->credentialsData();
-    const QString accessToken = data.value(QStringLiteral("AccessToken")).toString();
-
-    // Createa temporary account that we use to fetch full user name
-    KGAPI2::AccountPtr account(new KGAPI2::Account);
-    account->setAccessToken(accessToken);
-    account->setScopes(scopes());
-
-    KGAPI2::Job *otherJob = 0;
-    if (!job->property(JOB_PROPERTY).isNull()) {
-        otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
-    }
-
-    if (settings()->accountName().isEmpty()) {
-        account->setAccountName(i18n("Unknown Account"));
-        AccountInfoFetchJob *aiJob = new AccountInfoFetchJob(account, this);
-        aiJob->setProperty(ACCESS_TOKEN_PROPERTY, accessToken);
-        if (otherJob) {
-            aiJob->setProperty(JOB_PROPERTY, QVariant::fromValue(otherJob));
-        }
-        connect(aiJob, &AccountInfoFetchJob::finished, this, &GoogleResource::slotKAccountsAccountInfoReceived);
-    } else {
-        m_account = AccountPtr(new Account(settings()->accountName(),
-                                           accessToken));
-        finishKAccountsAuthentication(otherJob);
-    }
-}
-
-void GoogleResource::slotKAccountsAccountInfoReceived(KGAPI2::Job *job)
-{
-    if (!handleError(job)) {
-        Q_EMIT error(job->errorString());
-        cancelTask(i18n("Failed to refresh tokens"));
-        return;
-    }
-
-    AccountInfoFetchJob *aiJob = qobject_cast<AccountInfoFetchJob *>(job);
-    Q_ASSERT(aiJob);
-    aiJob->deleteLater();
-
-    const AccountPtr account = job->account();
-
-    if (aiJob->items().count() != 1) {
-        qWarning() << "AccountInfoFetchJob returned unexpected amount of results";
-        Q_EMIT error(i18n("Invalid reply"));
-        cancelTask(i18n("Failed to refresh tokens"));
-        return;
-    }
-
-    AccountInfoPtr info = aiJob->items().at(0).dynamicCast<AccountInfo>();
-    settings()->setAccountName(info->email());
-    m_account = AccountPtr(new Account(info->email(),
-                                       aiJob->property(ACCESS_TOKEN_PROPERTY).toString()));
-    settings()->writeConfig();
-
-    KGAPI2::Job *otherJob = 0;
-    if (job->property(JOB_PROPERTY).isNull()) {
-        otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
-    }
-
-    finishKAccountsAuthentication(otherJob);
-}
-
-void GoogleResource::finishKAccountsAuthentication(KGAPI2::Job *job)
-{
-    updateResourceName();
-    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
-
-    if (job) {
-        job->setAccount(m_account);
-        job->restart();
-    } else {
-        synchronize();
-    }
-}
-#endif // HAVE_ACCOUNTS
 
 bool GoogleResource::configureKGAPIAccount(const AccountPtr &account)
 {
@@ -430,9 +331,5 @@ bool GoogleResource::retrieveItem(const Item &item, const QSet< QByteArray > &pa
 
 int GoogleResource::accountId() const
 {
-#ifdef HAVE_ACCOUNTS
-    return settings()->accountId();
-#else
     return 0;
-#endif
 }

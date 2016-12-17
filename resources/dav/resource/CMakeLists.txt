@@ -55,12 +55,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
 
  ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME org.kde.pim.davresource)
 
-  if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
-    include_directories(${ACCOUNTSQT_INCLUDE_DIRS} ${SIGNONQT_INCLUDE_DIRS})
-    add_definitions(-DHAVE_ACCOUNTS)
-    set(davgroupwareresource_SRCS ../../shared/singlefileresource/getcredentialsjob.cpp ${davgroupwareresource_SRCS})
-  endif()
-
   install( FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
   install( FILES davgroupwareprovider.desktop DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR} )
 
@@ -92,11 +86,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
           KF5::Wallet
           KF5::CalendarCore)
 
-  if(${AccountsQt_FOUND} AND ${SignOnQt_FOUND})
-    target_link_libraries(akonadi_davgroupware_resource
-                        ${ACCOUNTSQT_LIBRARIES}
-                        ${SIGNONQT_LIBRARIES})
-  endif()
   install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 #else()
 #  add_feature_info("Davgroupware resource" QT_QTXMLPATTERNS_LIBRARY "The QtXmlPatterns library was not found. It is needed for building the davgroupware resource.")

@@ -22,9 +22,6 @@
 #include "settings.h"
 
 #include "settingsadaptor.h"
-#ifdef HAVE_ACCOUNTS
-#include "../../shared/singlefileresource/getcredentialsjob.h"
-#endif
 
 #include <kapplication.h>
 #include "davresource_debug.h"
@@ -47,12 +44,6 @@
 #include <QDialogButtonBox>
 #include <QDialog>
 #include <QPushButton>
-
-#ifdef HAVE_ACCOUNTS
-#include <Accounts/Account>
-#include <Accounts/Manager>
-#include <QStandardPaths>
-#endif
 
 class SettingsHelper
 {
@@ -109,9 +100,6 @@ Settings::Settings()
     : SettingsBase(), mWinId(0)
 {
 
-#ifdef HAVE_ACCOUNTS
-    m_manager = 0;
-#endif
     Q_ASSERT(!s_globalSettings->q);
     s_globalSettings->q = this;
 
@@ -267,9 +255,6 @@ QStringList Settings::mappedCollections(DavUtils::Protocol proto, const QString 
 
 void Settings::reloadConfig()
 {
-#ifdef HAVE_ACCOUNTS
-    importFromAccounts();
-#endif
     buildUrlsList();
     updateRemoteUrls();
     loadMappings();
@@ -331,11 +316,6 @@ QString Settings::username(DavUtils::Protocol proto, const QString &url) const
         if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
             return defaultUsername();
         }
-#ifdef HAVE_ACCOUNTS
-        else if (mUrls[ key ]->mUser == QLatin1String("$accounts$")) {
-            return accountsUsername();
-        }
-#endif
         else {
             return mUrls[ key ]->mUser;
         }
@@ -377,99 +357,6 @@ QDateTime Settings::getSyncRangeStart() const
 
     return start;
 }
-
-#ifdef HAVE_ACCOUNTS
-void Settings::importFromAccounts()
-{
-    qCDebug(DAVRESOURCE_LOG);
-    Accounts::AccountId id = accountId();
-    qCDebug(DAVRESOURCE_LOG) << "Account Id: " << id;
-
-    if (!m_manager) {
-        m_manager = new Accounts::Manager(this);
-    }
-
-    if (!m_manager->accountList().contains(id)) {
-        return;
-    }
-
-    removeAccountsDisabledServices();
-    addAccountsEnabledServices();
-
-    setSettingsVersion(3);
-    writeConfig();
-}
-
-void Settings::addAccountsEnabledServices()
-{
-    qCDebug(DAVRESOURCE_LOG);
-    Accounts::Account *acc = m_manager->account(accountId());
-    QStringList enabledServices = accountServices();
-    qCDebug(DAVRESOURCE_LOG) << "Enabled" << enabledServices;
-    foreach (QString serviceType, enabledServices) {
-        Accounts::ServiceList services = acc->services(serviceType);
-        foreach (const Accounts::Service &service, services) {
-            configureAccountService(acc, service);
-        }
-    }
-}
-
-void Settings::removeAccountsDisabledServices()
-{
-    qCDebug(DAVRESOURCE_LOG);
-    QStringList urls = remoteUrls();
-    for (int i = 0; i < urls.size(); ++i) {
-        if (!urls.at(i).startsWith(QStringLiteral("$accounts$"))) {
-            continue;
-        }
-
-        if (urls.at(i).contains(QStringLiteral("carddav"))
-                && accountServices().contains(QStringLiteral("dav-contacts"))) {
-            continue;
-        }
-        if (urls.at(i).contains(QStringLiteral("caldav"))
-                && accountServices().contains(QStringLiteral("dav-calendar"))) {
-            continue;
-        }
-
-        urls.removeAt(i);
-    }
-
-    setRemoteUrls(urls);
-}
-
-void Settings::configureAccountService(Accounts::Account *acc, const Accounts::Service &service)
-{
-    qCDebug(DAVRESOURCE_LOG) << "Configuring service: " << service.name();
-
-    acc->selectService();
-    QString domain = acc->valueAsString(QStringLiteral("dav/scheme")) + QStringLiteral("://") + acc->valueAsString(QStringLiteral("dav/host"));
-    acc->selectService(service);
-
-    QString type;
-    if (service.serviceType() == QLatin1String("dav-contacts")) {
-        type = QStringLiteral("CardDav");
-    } else {
-        type = QStringLiteral("CalDav");
-    }
-
-    QString url = QStringLiteral("$accounts$|") + type + QLatin1Char('|') + domain + acc->valueAsString(QStringLiteral("dav/path"));
-    qCDebug(DAVRESOURCE_LOG) << url;
-    acc->selectService();
-
-    QStringList urls = remoteUrls();
-    foreach (const QString &serializedUrl, urls) {
-        if (url == serializedUrl) {
-            qCDebug(DAVRESOURCE_LOG) << "Url already configured";
-            return;
-        }
-    }
-
-    qCDebug(DAVRESOURCE_LOG) << "Adding url";
-    urls.append(url);
-    setRemoteUrls(urls);
-}
-#endif
 
 void Settings::buildUrlsList()
 {
@@ -549,11 +436,6 @@ QString Settings::loadPassword(const QString &key, const QString &user)
     if (user == QLatin1String("$default$")) {
         entry = mResourceIdentifier + QLatin1Char(',') + user;
     }
-#ifdef HAVE_ACCOUNTS
-    else if (user == QLatin1String("$accounts$")) {
-        return loadPasswordFromAccounts();
-    }
-#endif
     else {
         entry = key + QLatin1Char(',') + user;
     }
@@ -588,28 +470,6 @@ QString Settings::loadPassword(const QString &key, const QString &user)
 
     return pass;
 }
-
-#ifdef HAVE_ACCOUNTS
-QString Settings::loadPasswordFromAccounts()
-{
-    qCDebug(DAVRESOURCE_LOG) << "Getting credentials for: " << accountId();
-    GetCredentialsJob *job = new GetCredentialsJob(accountId());
-    job->exec();
-
-    return job->credentialsData().value(QLatin1String("Secret")).toString();
-}
-
-QString Settings::accountsUsername() const
-{
-    qCDebug(DAVRESOURCE_LOG) << "Getting credentials for: " << accountId();
-    GetCredentialsJob *job = new GetCredentialsJob(accountId());
-    job->exec();
-
-    qCDebug(DAVRESOURCE_LOG) << "Got some: " << job->credentialsData();
-
-    return job->credentialsData().value(QLatin1String("UserName")).toString();
-}
-#endif
 
 QString Settings::promptForPassword(const QString &user)
 {

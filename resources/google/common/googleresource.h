@@ -75,12 +75,6 @@ protected Q_SLOTS:
     virtual void slotAccountChanged(const KGAPI2::AccountPtr &account);
     virtual void slotAccountRemoved(const QString &accountName);
 
-#ifdef HAVE_ACCOUNTS
-    void slotKAccountsCredentialsReceived(KJob *job);
-    void slotKAccountsAccountInfoReceived(KGAPI2::Job *job);
-    void finishKAccountsAuthentication(KGAPI2::Job *job);
-#endif // HAVE_ACCOUNTS
-
 protected:
     bool configureKAccounts(int accountId, KGAPI2::Job *restartJob = Q_NULLPTR);
     bool configureKGAPIAccount(const KGAPI2::AccountPtr &account);
