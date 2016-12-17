@@ -33,7 +33,7 @@
 
 KolabRelationResourceTask::KolabRelationResourceTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
-    , mImapSession(0)
+    , mImapSession(Q_NULLPTR)
 {
 }
 

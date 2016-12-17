@@ -38,7 +38,9 @@
 #include "kolabhelpers.h"
 
 KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : KolabRelationResourceTask(resource, parent)
+    : KolabRelationResourceTask(resource, parent),
+      mSession(Q_NULLPTR),
+      mAdding(false)
 {
 }
 
