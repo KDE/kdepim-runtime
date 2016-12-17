@@ -31,7 +31,7 @@
 
 #include "noselectattribute.h"
 
-ExpungeCollectionTask::ExpungeCollectionTask(ResourceStateInterface::Ptr resource, QObject *parent)
+ExpungeCollectionTask::ExpungeCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
 {
 

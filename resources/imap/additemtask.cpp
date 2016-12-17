@@ -36,7 +36,7 @@
 
 #include "uidnextattribute.h"
 
-AddItemTask::AddItemTask(ResourceStateInterface::Ptr resource, QObject *parent)
+AddItemTask::AddItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {
 

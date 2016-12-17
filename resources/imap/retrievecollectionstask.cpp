@@ -34,7 +34,7 @@
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
-RetrieveCollectionsTask::RetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent)
+RetrieveCollectionsTask::RetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
 {
 }

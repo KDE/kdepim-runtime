@@ -30,7 +30,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
-RetrieveItemTask::RetrieveItemTask(ResourceStateInterface::Ptr resource, QObject *parent)
+RetrieveItemTask::RetrieveItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent), m_session(Q_NULLPTR), m_uid(0), m_messageReceived(false)
 {
 

@@ -49,7 +49,7 @@
 #include <kimap/searchjob.h>
 #include <kimap/statusjob.h>
 
-RetrieveItemsTask::RetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent)
+RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
       m_session(Q_NULLPTR),
       m_fetchedMissingBodies(-1),
