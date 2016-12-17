@@ -127,9 +127,7 @@ void GoogleResource::configure(WId windowId)
 
 void GoogleResource::updateAccountToken(const AccountPtr &account, KGAPI2::Job *restartJob)
 {
-    if (accountId() > 0) {
-        configureKAccounts(accountId(), restartJob);
-    } else if (!settings()->account().isEmpty()) {
+    if (!settings()->account().isEmpty()) {
         AuthJob *authJob = new AuthJob(account, settings()->clientId(), settings()->clientSecret(), this);
         authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(restartJob));
         connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
@@ -140,12 +138,7 @@ void GoogleResource::reloadConfig()
 {
     const QString accountName = settings()->account();
 
-    if (accountId() > 0) {
-        if (!configureKAccounts(accountId())) {
-            Q_EMIT status(Broken);
-            return;
-        }
-    } else if (!accountName.isEmpty()) {
+    if (!accountName.isEmpty()) {
         if (!configureKGAPIAccount(m_accountMgr->findAccount(accountName))) {
             Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
             return;
@@ -156,15 +149,6 @@ void GoogleResource::reloadConfig()
     }
 
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
-}
-
-bool GoogleResource::configureKAccounts(int accountId, KGAPI2::Job *restartJob)
-{
-    if (accountId == 0) {
-        return false;
-    }
-    Q_UNUSED(restartJob);
-    return false;
 }
 
 

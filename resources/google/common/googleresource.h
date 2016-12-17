@@ -76,7 +76,6 @@ protected Q_SLOTS:
     virtual void slotAccountRemoved(const QString &accountName);
 
 protected:
-    bool configureKAccounts(int accountId, KGAPI2::Job *restartJob = Q_NULLPTR);
     bool configureKGAPIAccount(const KGAPI2::AccountPtr &account);
     void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = Q_NULLPTR);
 
