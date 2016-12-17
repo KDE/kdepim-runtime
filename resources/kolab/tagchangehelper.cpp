@@ -44,7 +44,7 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
 {
     QStringList itemRemoteIds;
     itemRemoteIds.reserve(items.count());
-    Q_FOREACH (const Akonadi::Item &item, items) {
+    for (const Akonadi::Item &item : items) {
         const QString memberUrl = KolabHelpers::createMemberUrl(item, username);
         if (!memberUrl.isEmpty()) {
             itemRemoteIds << memberUrl;

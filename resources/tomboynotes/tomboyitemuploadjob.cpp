@@ -108,7 +108,7 @@ void TomboyItemUploadJob::onRequestFinished()
 
     // Check if server status is as expected
     bool found = false;
-    Q_FOREACH (const auto note, notes) {
+    for (const auto &note : notes) {
         found = (note.toObject()[QLatin1String("guid")].toString() == mSourceItem.remoteId());
         if (found) {
             break;

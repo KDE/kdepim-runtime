@@ -49,7 +49,7 @@ static bool copyFile(const QString &sourceFileName, const QString &targetFileNam
 static bool copyFiles(const QDir &sourceDir, const QDir &targetDir)
 {
     const QStringList files = sourceDir.entryList(QStringList(), QDir::Files);
-    Q_FOREACH (const QString &file, files) {
+    for (const QString &file : files) {
         const QFileInfo sourceFileInfo(sourceDir, file);
         const QFileInfo targetFileInfo(targetDir, file);
         if (!copyFile(sourceFileInfo.absoluteFilePath(), targetFileInfo.absoluteFilePath())) {
@@ -83,7 +83,7 @@ QStringList TestDataUtil::testDataNames()
     const QString indexFilePattern = QStringLiteral(".%1.index");
 
     QStringList result;
-    Q_FOREACH (const QFileInfo &fileInfo, dirEntries) {
+    for (const QFileInfo &fileInfo : dirEntries) {
         if (dir.exists(indexFilePattern.arg(fileInfo.fileName()))) {
             result << fileInfo.fileName();
         }

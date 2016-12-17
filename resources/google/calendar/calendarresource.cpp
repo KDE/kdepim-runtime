@@ -426,7 +426,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     m_collections[ ROOT_COLLECTION_REMOTEID ] = m_rootCollection;
 
     const QStringList activeCalendars = Settings::self()->calendars();
-    Q_FOREACH (const ObjectPtr &object, calendars) {
+    for (const ObjectPtr &object : calendars) {
         const CalendarPtr &calendar = object.dynamicCast<Calendar>();
 
         if (!activeCalendars.contains(calendar->uid())) {
@@ -464,7 +464,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     }
 
     const QStringList activeTaskLists = Settings::self()->taskLists();
-    Q_FOREACH (const ObjectPtr &object, taskLists) {
+    for (const ObjectPtr &object : taskLists) {
         const TaskListPtr &taskList = object.dynamicCast<TaskList>();
 
         if (!activeTaskLists.contains(taskList->uid())) {

@@ -89,8 +89,8 @@ void GoogleAccountManager::slotWalletOpened(bool success)
     }
 
     // Populate the cache now
-    QStringList accountNames = m_wallet->entryList();
-    Q_FOREACH (const QString &accountName, accountNames) {
+    const QStringList accountNames = m_wallet->entryList();
+    for (const QString &accountName : accountNames) {
         m_accounts[accountName] = findAccountInWallet(accountName);
     }
 
@@ -173,7 +173,7 @@ AccountPtr GoogleAccountManager::findAccountInWallet(const QString &accountName)
     const QStringList scopes = map[QStringLiteral("scopes")].split(QLatin1Char(','), QString::SkipEmptyParts);
     QList<QUrl> scopeUrls;
     scopeUrls.reserve(scopes.count());
-    Q_FOREACH (const QString &scope, scopes) {
+    for (const QString &scope : scopes) {
         scopeUrls << QUrl(scope);
     }
     AccountPtr account(new Account(accountName,
@@ -194,7 +194,7 @@ bool GoogleAccountManager::storeAccount(const AccountPtr &account)
     QStringList scopes;
     const QList<QUrl> urlScopes = account->scopes();
     scopes.reserve(urlScopes.count());
-    Q_FOREACH (const QUrl &url, urlScopes) {
+    for (const QUrl &url : urlScopes) {
         scopes << url.toString();
     }
 

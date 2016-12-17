@@ -138,7 +138,7 @@ void GoogleSettingsDialog::reloadAccounts()
     m_accComboBox->clear();
 
     const AccountsList accounts = m_accountManager->listAccounts();
-    Q_FOREACH (const AccountPtr &account, accounts) {
+    for (const AccountPtr &account : accounts) {
         m_accComboBox->addItem(account->accountName());
     }
 
@@ -217,7 +217,7 @@ bool GoogleSettingsDialog::handleError(Job *job)
         qDebug() << job << job->errorString();
         const AccountPtr account = currentAccount();
         const QList<QUrl> resourceScopes = m_parentResource->scopes();
-        Q_FOREACH (const QUrl &scope, resourceScopes) {
+        for (const QUrl &scope : resourceScopes) {
             if (!account->scopes().contains(scope)) {
                 account->addScope(scope);
             }

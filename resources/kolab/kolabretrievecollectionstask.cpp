@@ -48,7 +48,7 @@
 
 static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool matchCompletePath = false)
 {
-    Q_FOREACH (const KIMAP::MailBoxDescriptor &desc, namespaces) {
+    for (const KIMAP::MailBoxDescriptor &desc : namespaces) {
         if (path.startsWith(desc.name.left(desc.name.size() - 1))) { //Namespace ends with path separator and pathPart doesn't
             if (!matchCompletePath || path.size() - desc.name.size() <= 1) {      //We want to match only for the complete path
                 return true;

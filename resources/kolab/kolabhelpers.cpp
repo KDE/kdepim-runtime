@@ -207,7 +207,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
 Akonadi::Item::List KolabHelpers::translateToImap(const Akonadi::Item::List &items, bool &ok)
 {
     Akonadi::Item::List imapItems;
-    Q_FOREACH (const Akonadi::Item &item, items) {
+    for (const Akonadi::Item &item : items) {
         bool translationOk = true;
         imapItems << translateToImap(item, translationOk);
         if (!translationOk) {

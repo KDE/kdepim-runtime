@@ -91,7 +91,7 @@ void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection
 void KolabResourceState::collectionsRetrieved(const Akonadi::Collection::List &collections)
 {
     Akonadi::Collection::List modifiedCollections;
-    Q_FOREACH (const Akonadi::Collection &col, collections) {
+    for (const Akonadi::Collection &col : collections) {
         modifiedCollections << processAnnotations(col);
     }
     ResourceState::collectionsRetrieved(modifiedCollections);

@@ -176,7 +176,7 @@ void RetrieveItemsJob::Private::storeListResult(KJob *job)
     const qint64 collectionTimestamp = mCollection.remoteRevision().toLongLong();
 
     const Item::List storedItems = storeList->items();
-    Q_FOREACH (const Item &item, storedItems) {
+    for (const Item &item : storedItems) {
         // messages marked as deleted have been deleted from mbox files but never got purged
         Akonadi::MessageStatus status;
         status.setStatusFromFlags(item.flags());

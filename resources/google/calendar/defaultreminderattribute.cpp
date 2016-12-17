@@ -49,10 +49,8 @@ void DefaultReminderAttribute::deserialize(const QByteArray &data)
     }
 
     QVariant var = json.toVariant();
-    QVariantList list;
-
-    list = var.toList();
-    Q_FOREACH (const QVariant &l, list) {
+    const QVariantList list = var.toList();
+    for (const QVariant &l : list) {
         QVariantMap reminder = l.toMap();
 
         KGAPI2::ReminderPtr rem(new KGAPI2::Reminder);

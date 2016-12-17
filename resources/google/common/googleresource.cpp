@@ -223,7 +223,7 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
         qDebug() << job << job->errorString();
 
         const QList<QUrl> resourceScopes = scopes();
-        Q_FOREACH (const QUrl &scope, resourceScopes) {
+        for (const QUrl &scope : resourceScopes) {
             if (!m_account->scopes().contains(scope)) {
                 m_account->addScope(scope);
             }

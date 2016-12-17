@@ -274,7 +274,7 @@ bool MixedMaildirResource::retrieveItems(const Item::List &items, const QSet<QBy
     if (parts.contains(Item::FullPayload)) {
         job->fetchScope().fetchFullPayload(true);
     } else {
-        Q_FOREACH (const QByteArray &part, parts) {
+        for (const QByteArray &part : parts) {
             job->fetchScope().fetchPayloadPart(part, true);
         }
     }
@@ -436,7 +436,7 @@ void MixedMaildirResource::checkForInvalidatedIndexCollections(KJob *job)
         qCDebug(MIXEDMAILDIR_LOG) << "On disk index of" << collections.count()
                                   << "collections invalidated after" << job->metaObject()->className();
 
-        Q_FOREACH (const Collection &collection, collections) {
+        for (const Collection &collection : collections) {
             const Collection::Id id = collection.id();
             if (!mSynchronizedCollections.contains(id) && !mPendingSynchronizeCollections.contains(id)) {
                 qCDebug(MIXEDMAILDIR_LOG) << "Requesting sync of collection" << collection.name()
@@ -524,7 +524,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
                                               << "items in collection" << retrieveJob->collection().remoteId() << "have tags";
 
             TagContextList taggedItems;
-            Q_FOREACH (const Item &item, items) {
+            for (const Item &item : items) {
                 const QVariant tagListVar = tagListHash[ item.remoteId() ];
                 if (tagListVar.isValid()) {
                     const QStringList tagList = tagListVar.value<QStringList>();
@@ -815,7 +815,7 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
     qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "Tagging item" << item.url() << "with" << tagList;
 
     Akonadi::Tag::List tags;
-    Q_FOREACH (const QString &tag, tagList) {
+    for (const QString &tag : tagList) {
         if (tag.isEmpty()) {
             qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "TagList for item" << item.url() << "contains an empty tag";
         } else {

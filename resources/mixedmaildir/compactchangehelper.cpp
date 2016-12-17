@@ -152,7 +152,7 @@ void CompactChangeHelper::addChangedItems(const Item::List &items)
                                       << "pendingUpdates.count=" << d->mPendingUpdates.count();
     UpdateBatch updateBatch;
 
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : items) {
         const Collection collection = item.parentCollection();
         const qint64 revision = collection.remoteRevision().toLongLong();
 

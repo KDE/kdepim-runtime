@@ -851,7 +851,7 @@ QString Maildir::subDirNameForFolderName(const QString &folderName)
 void Maildir::removeCachedKeys(const QStringList &keys)
 {
     KeyCache *keyCache = KeyCache::self();
-    Q_FOREACH (const QString &key, keys) {
+    for (const QString &key : keys) {
         keyCache->removeKey(d->path, key);
     }
 }

@@ -324,7 +324,7 @@ public:
 
 void FileStore::AbstractLocalStore::Private::processJobs(const QList<FileStore::Job *> &jobs)
 {
-    Q_FOREACH (FileStore::Job *job, jobs) {
+    for (FileStore::Job *job : jobs) {
         mCurrentJob = job;
 
         if (job->error() == 0) {

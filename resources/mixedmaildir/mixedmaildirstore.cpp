@@ -303,7 +303,7 @@ void MBoxContext::readIndexData()
     mHasIndexData = true;
 
     const KMBox::MBoxEntry::List entries = mMBox.entries();
-    Q_FOREACH (const KMBox::MBoxEntry &entry, entries) {
+    for (const KMBox::MBoxEntry &entry : entries) {
         const quint64 indexOffset = entry.messageOffset() + entry.separatorSize();
         const KMIndexDataPtr data = indexReader.dataByOffset(indexOffset);
         if (data != Q_NULLPTR) {
@@ -487,7 +487,7 @@ void MaildirContext::readIndexData()
     mHasIndexData = true;
 
     const QStringList entries = mMaildir.entryList();
-    Q_FOREACH (const QString &entry, entries) {
+    for (const QString &entry : entries) {
         const KMIndexDataPtr data = indexReader.dataByFileName(entry);
         if (data != Q_NULLPTR) {
             mIndexData.insert(entry, data);
@@ -694,7 +694,7 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails(const Maildir &md, const
     }
 
     const QStringList maildirSubFolders = md.subFolderList();
-    Q_FOREACH (const QString &subFolder, maildirSubFolders) {
+    for (const QString &subFolder : maildirSubFolders) {
         const Maildir subMd = md.subFolder(subFolder);
 
         if (!mMaildirs.contains(subMd.path())) {
@@ -716,7 +716,7 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails(const Maildir &md, const
 
     const QDir dir(md.isRoot() ? md.path() : Maildir::subDirPathForFolderPath(md.path()));
     const QFileInfoList fileInfos = dir.entryInfoList(QDir::Files);
-    Q_FOREACH (const QFileInfo &fileInfo, fileInfos) {
+    for (const QFileInfo &fileInfo : fileInfos) {
         if (fileInfo.isHidden() || !fileInfo.isReadable()) {
             continue;
         }
@@ -754,7 +754,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mb
     QHash<QString, QVariant> tagListHash;
 
     const KMBox::MBoxEntry::List entryList = mbox->entryList();
-    Q_FOREACH (const KMBox::MBoxEntry &entry, entryList) {
+    for (const KMBox::MBoxEntry &entry : entryList) {
         Item item;
         item.setMimeType(KMime::Message::mimeType());
         item.setRemoteId(QString::number(entry.messageOffset()));
@@ -813,7 +813,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MaildirPtr 
     QHash<QString, QVariant> tagListHash;
 
     const QStringList entryList = md->entryList();
-    Q_FOREACH (const QString &entry, entryList) {
+    for (const QString &entry : entryList) {
         Item item;
         item.setMimeType(KMime::Message::mimeType());
         item.setRemoteId(entry);
@@ -838,8 +838,8 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MaildirPtr 
                 }
             }
         }
-        Akonadi::Item::Flags flags = md->maildir().readEntryFlags(entry);
-        Q_FOREACH (const Akonadi::Item::Flag &flag, flags) {
+        const Akonadi::Item::Flags flags = md->maildir().readEntryFlags(entry);
+        for (const Akonadi::Item::Flag &flag : flags) {
             item.setFlag(flag);
         }
 
@@ -1770,7 +1770,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
     const QSet<QByteArray> parts = job->parts();
     bool payloadChanged = false;
     bool flagsChanged = false;
-    Q_FOREACH (const QByteArray &part, parts)  {
+    for (const QByteArray &part : parts)  {
         if (part.startsWith("PLD:")) {
             payloadChanged = true;
         }

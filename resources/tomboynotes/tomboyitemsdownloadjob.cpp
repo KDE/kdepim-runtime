@@ -61,7 +61,7 @@ void TomboyItemsDownloadJob::onRequestFinished()
     const QJsonObject jo = document.object();
     const QJsonArray notes = jo[QLatin1String("notes")].toArray();
 
-    Q_FOREACH (const auto &note, notes) {
+    for (const auto &note : notes) {
         Akonadi::Item item(Akonadi::NoteUtils::noteMimeType());
         item.setRemoteId(note.toObject()[QLatin1String("guid")].toString());
         mResultItems << item;

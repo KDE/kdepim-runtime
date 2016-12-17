@@ -327,7 +327,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
     bool bodyChanged = false;
     bool flagsChanged = false;
     bool headChanged = false;
-    Q_FOREACH (const QByteArray &part, parts)  {
+    for (const QByteArray &part : parts)  {
         if (part.startsWith("PLD:RFC822")) {
             bodyChanged = true;
         } else if (part.startsWith("PLD:HEAD")) {
@@ -837,8 +837,8 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
         item.setSize(entrySize);
     }
 
-    Item::Flags flags = md.readEntryFlags(fileName);
-    Q_FOREACH (const Item::Flag &flag, flags) {
+    const Item::Flags flags = md.readEntryFlags(fileName);
+    for (const Item::Flag &flag : flags) {
         item.setFlag(flag);
     }
 

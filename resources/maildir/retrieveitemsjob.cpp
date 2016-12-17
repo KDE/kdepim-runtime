@@ -66,7 +66,7 @@ void RetrieveItemsJob::localListDone(KJob *job)
 
     const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob *>(job)->items();
     m_localItems.reserve(items.size());
-    Q_FOREACH (const Akonadi::Item &item, items) {
+    for (const Akonadi::Item &item : items) {
         if (!item.remoteId().isEmpty()) {
             m_localItems.insert(item.remoteId(), item);
         }
@@ -119,8 +119,8 @@ void RetrieveItemsJob::processEntry()
         msg->setHead(KMime::CRLFtoLF(m_maildir.readEntryHeadersFromFile(m_listingPath + fileName)));
         msg->parse();
 
-        Akonadi::Item::Flags flags = m_maildir.readEntryFlags(fileName);
-        Q_FOREACH (const Akonadi::Item::Flag &flag, flags) {
+        const Akonadi::Item::Flags flags = m_maildir.readEntryFlags(fileName);
+        for (const Akonadi::Item::Flag &flag : flags) {
             item.setFlag(flag);
         }
 
