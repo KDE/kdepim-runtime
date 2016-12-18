@@ -86,7 +86,7 @@ protected:
             cancelTask(i18n("Invalid item payload."));
             return false;
         } else if (item.isValid() && mimeType != item.mimeType()) {
-            cancelTask(i18n("Invalid payload mimetype. Expected %1, found %2", mimeType, item.mimeType()));
+            cancelTask(i18n("Invalid payload MIME type. Expected %1, found %2", mimeType, item.mimeType()));
             return false;
         }
 
