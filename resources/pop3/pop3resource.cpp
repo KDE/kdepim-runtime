@@ -644,7 +644,7 @@ void POP3Resource::itemCreateJobResult(KJob *job)
         return;
     }
 
-    ItemCreateJob *createJob = dynamic_cast<ItemCreateJob *>(job);
+    ItemCreateJob *createJob = qobject_cast<ItemCreateJob *>(job);
     Q_ASSERT(createJob);
 
     if (job->error()) {
@@ -798,7 +798,7 @@ void POP3Resource::deleteJobResult(KJob *job)
         return;
     }
 
-    DeleteJob *finishedDeleteJob = dynamic_cast<DeleteJob *>(job);
+    DeleteJob *finishedDeleteJob = qobject_cast<DeleteJob *>(job);
     Q_ASSERT(finishedDeleteJob);
     Q_ASSERT(finishedDeleteJob == mDeleteJob);
     mDeletedIDs = finishedDeleteJob->deletedIDs();

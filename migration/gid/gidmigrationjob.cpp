@@ -62,7 +62,7 @@ void UpdateJob::slotResult(KJob *job)
     //This slot is automatically called for all subjobs by KCompositeJob
     //FIXME the fetch job emits result before itemsReceived, because itemsReceived is triggered using the result signal (which is wrong IMO). See ItemFetchJob::timeout
     //If result was emitted at the end we could avoid having to call processNext in itemsReceived and locking it.
-    ItemFetchJob *const fetchJob = dynamic_cast<ItemFetchJob *>(job);
+    ItemFetchJob *const fetchJob = qobject_cast<ItemFetchJob *>(job);
     const bool fetchReturnedNoItems = fetchJob && fetchJob->items().isEmpty();
     Job::slotResult(job);
     if (fetchReturnedNoItems) {
