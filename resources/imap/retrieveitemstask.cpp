@@ -273,8 +273,8 @@ void RetrieveItemsTask::onStatusDone(KJob *job)
     }
 
     KIMAP::StatusJob *status = qobject_cast<KIMAP::StatusJob *>(job);
-    QList<QPair<QByteArray, qint64>> results = status->status();
-    Q_FOREACH (const auto &val, results) {
+    const QList<QPair<QByteArray, qint64>> results = status->status();
+    for (const auto &val : results) {
         if (val.first == "UIDNEXT") {
             m_nextUid = val.second;
             break;
