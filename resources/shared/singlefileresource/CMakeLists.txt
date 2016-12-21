@@ -1,7 +1,4 @@
 
-project(akonadi-singlefileresource)
-
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_singlefile_resource\")
 
 set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES

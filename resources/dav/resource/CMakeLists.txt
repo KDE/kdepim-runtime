@@ -1,5 +1,3 @@
-project(davgroupware)
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
 
 #if (QT_QTXMLPATTERNS_LIBRARY)

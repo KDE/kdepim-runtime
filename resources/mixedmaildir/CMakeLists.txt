@@ -1,5 +1,3 @@
-project( mixedmaildirresource )
-
 include_directories(
     ${kdepim-runtime_SOURCE_DIR}
     ${kdepim-runtime_SOURCE_DIR}/resources/shared

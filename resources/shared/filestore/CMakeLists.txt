@@ -1,5 +1,3 @@
-project(akonadi-filestore)
-
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi-filestore\")
 

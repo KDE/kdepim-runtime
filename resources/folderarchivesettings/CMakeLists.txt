@@ -1,6 +1,3 @@
-project(folderarchivesettings)
-
-
 add_definitions(-DTRANSLATION_DOMAIN=\"libfolderarchivesettings\")
 
 

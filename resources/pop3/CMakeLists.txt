@@ -1,5 +1,3 @@
-project(pop3)
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_pop3_resource\")
 
 

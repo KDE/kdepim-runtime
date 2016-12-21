@@ -1,5 +1,3 @@
-project(resources)
-
 set(AKONADICALENDAR_LIB_VERSION "5.4.40")
 set(KMBOX_LIB_VERSION "5.4.40")
 
