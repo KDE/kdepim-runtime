@@ -200,7 +200,7 @@ void SubscriptionDialog::onReloadRequested()
     }
 
     KIMAP::ListJob *list = new KIMAP::ListJob(m_session);
-    list->setIncludeUnsubscribed(true);
+    list->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onMailBoxesReceived);
     connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onFullListingDone);
     list->start();
@@ -267,7 +267,7 @@ void SubscriptionDialog::onFullListingDone(KJob *job)
     }
 
     KIMAP::ListJob *list = new KIMAP::ListJob(m_session);
-    list->setIncludeUnsubscribed(false);
+    list->setOption(KIMAP::ListJob::NoOption);
     connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
     connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
     list->start();
