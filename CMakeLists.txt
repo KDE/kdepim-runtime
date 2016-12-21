@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 2.8.12)
 
 project(kdepim-runtime)
 
+if (POLICY CMP0053)
+    cmake_policy(SET CMP0053 NEW)
+endif()
+
 ############### KDEPIM-Runtime version ################
 # KDEPIM_RUNTIME_VERSION
 # Version scheme: "x.y.z build".
