@@ -153,6 +153,7 @@ KolabProxyResource::KolabProxyResource( const QString &id )
            SLOT(imapCollectionMoved(Akonadi::Collection,Akonadi::Collection,Akonadi::Collection)) );
 
   setName( i18n( "Kolab" ) );
+  setHierarchicalRemoteIdentifiersEnabled( true );
 
   // among other things, this ensures that m_root actually exists when a new imap folder is added
   synchronizeCollectionTree();
@@ -775,7 +776,25 @@ Akonadi::Collection KolabProxyResource::createCollection(
     policy.setLocalParts( QStringList() << QLatin1String( "ALL" ) );
     c.setCachePolicy( policy );
   } else {
-    c.parentCollection().setRemoteId( QString::number( imapCollection.parentCollection().id() ) );
+    Akonadi::Collection i = imapCollection;
+    Akonadi::Collection::List prids;
+    // This double-while is rather silly, but I'm having troubles buillding
+    // front-to-back ancestor chain for some reason...
+    while (i != Akonadi::Collection::root()) {
+        i = i.parentCollection();
+        if (i == Akonadi::Collection::root()) {
+            prids << Akonadi::Collection::root();
+        } else {
+            Akonadi::Collection prid;
+            prid.setRemoteId( QString::number( i.id() ) );
+            prids << prid;
+        }
+    }
+    while (prids.size() > 1) {
+        Akonadi::Collection prid = prids.takeLast();
+        prids.last().setParentCollection(prid);
+    }
+    c.setParentCollection(prids.at(0));
   }
   c.setName( imapCollection.name() );
   c.setRights( imapCollection.rights() );

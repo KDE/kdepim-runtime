@@ -63,7 +63,8 @@ Akonadi::Collection::List CollectionTreeBuilder::treeToList(
   const Akonadi::Collection &current )
 {
   Akonadi::Collection::List rv;
-  foreach ( const Akonadi::Collection &child, tree.value( current.id() ) ) {
+  foreach ( Akonadi::Collection child, tree.value( current.id() ) ) {
+    child.setParentCollection( current );
     rv += child;
     rv += treeToList( tree, child );
   }
