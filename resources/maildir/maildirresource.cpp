@@ -582,7 +582,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
         changeProcessed();
         return;
     } else {
-        const QString collectionName(collection.name().replace(QDir::separator(), QString()));
+        const QString collectionName(collection.name().remove(QDir::separator()));
         const QString newFolderPath = md.addSubFolder(collectionName);
         if (newFolderPath.isEmpty()) {
             changeProcessed();
@@ -628,7 +628,7 @@ void MaildirResource::collectionChanged(const Collection &collection)
         md.create();
     }
 
-    const QString collectionName(collection.name().replace(QDir::separator(), QString()));
+    const QString collectionName(collection.name().remove(QDir::separator()));
     if (!md.rename(collectionName)) {
         Q_EMIT error(i18n("Unable to rename maildir folder '%1'.", collection.name()));
         changeProcessed();

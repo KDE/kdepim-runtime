@@ -208,7 +208,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
     // we triggered to act on the wrong mailbox name
     if (parts().contains("NAME")) {
         const QChar separator = separatorCharacter();
-        m_collection.setName(m_collection.name().replace(separator, QString()));
+        m_collection.setName(m_collection.name().remove(separator));
         m_collection.setRemoteId(separator + m_collection.name());
 
         const QString oldMailBox = mailBoxForCollection(collection());

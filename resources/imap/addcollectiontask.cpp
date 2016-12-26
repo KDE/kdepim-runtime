@@ -57,7 +57,7 @@ void AddCollectionTask::doStart(KIMAP::Session *session)
     m_pendingJobs = 0;
     m_session = session;
     m_collection = collection();
-    m_collection.setName(m_collection.name().replace(separator, QString()));
+    m_collection.setName(m_collection.name().remove(separator));
     m_collection.setRemoteId(separator + m_collection.name());
 
     QString newMailBox = mailBoxForCollection(parentCollection());
