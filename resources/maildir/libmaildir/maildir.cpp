@@ -673,7 +673,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     QString finalKey = key.left(key.indexOf(rx));
 
     QStringList mailDirFlags;
-    Q_FOREACH (const Akonadi::Item::Flag &flag, flags) {
+    for (const Akonadi::Item::Flag &flag : flags) {
         if (flag == Akonadi::MessageFlags::Forwarded) {
             mailDirFlags << QStringLiteral("P");
         } else if (flag == Akonadi::MessageFlags::Replied) {
