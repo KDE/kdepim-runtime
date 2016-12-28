@@ -16,42 +16,40 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef DAVCOLLECTIONDELETEJOB_H
-#define DAVCOLLECTIONDELETEJOB_H
+#ifndef ETAGCACHE_AKONADI_H
+#define ETAGCACHE_AKONADI_H
 
-#include "davutils.h"
+#include <KDAV/EtagCache>
 
-#include <kjob.h>
+namespace Akonadi
+{
+class Collection;
+}
+
+class KJob;
 
 /**
- * @short A job that deletes a DAV collection.
+ * @short A helper class to cache etags.
  *
- * This job is used to delete a DAV collection at a certain URL.
+ * The KDAV::EtagCache caches the remote ids and etags of all items
+ * in a given collection. This cache is needed to find
+ * out which items have been changed in the backend and have to
+ * be refetched on the next call of ResourceBase::retrieveItems()
  */
-class DavCollectionDeleteJob : public KJob
+class AkonadiEtagCache : public KDAV::EtagCache
 {
     Q_OBJECT
 
 public:
     /**
-     * Creates a new DAV collection delete job.
-     *
-     * @param url The dav url of the collection to delete
-     * @param parent The parent object.
+     * Creates a new etag cache and populates it with the ETags
+     * of items found in @p collection.
      */
-    explicit DavCollectionDeleteJob(const DavUtils::DavUrl &url, QObject *parent = Q_NULLPTR);
-
-    /**
-     * Starts the job.
-     */
-    void start() Q_DECL_OVERRIDE;
+    explicit AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent = Q_NULLPTR);
 
 private Q_SLOTS:
-    void davJobFinished(KJob *);
+    void onItemFetchJobFinished(KJob *job);
 
-private:
-    DavUtils::DavUrl mUrl;
 };
 
 #endif
-

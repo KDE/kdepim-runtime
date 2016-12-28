@@ -21,7 +21,7 @@
 
 #include "ui_urlconfigurationdialog.h"
 
-#include "davutils.h"
+#include <KDAV/Utils>
 
 #include <QtCore/QString>
 #include <QDialog>
@@ -38,8 +38,8 @@ public:
     explicit UrlConfigurationDialog(QWidget *parent = nullptr);
     ~UrlConfigurationDialog();
 
-    DavUtils::Protocol protocol() const;
-    void setProtocol(DavUtils::Protocol protocol);
+    KDAV::Protocol protocol() const;
+    void setProtocol(KDAV::Protocol protocol);
 
     QString remoteUrl() const;
     void setRemoteUrl(const QString &url);

@@ -16,69 +16,26 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "etagcache.h"
+#include "akonadietagcache.h"
 
 #include <collection.h>
 #include <item.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
-#include <kjob.h>
+#include <KCoreAddons/KJob>
 
-EtagCache::EtagCache(const Akonadi::Collection &collection, QObject *parent)
-    : QObject(parent)
+using namespace KDAV;
+
+AkonadiEtagCache::AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent)
+    : KDAV::EtagCache(parent)
 {
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection);
     job->fetchScope().fetchFullPayload(false);   // We only need the remote id and the revision
-    connect(job, &Akonadi::ItemFetchJob::result, this, &EtagCache::onItemFetchJobFinished);
+    connect(job, &Akonadi::ItemFetchJob::result, this, &AkonadiEtagCache::onItemFetchJobFinished);
     job->start();
 }
 
-void EtagCache::setEtag(const QString &remoteId, const QString &etag)
-{
-    mCache[ remoteId ] = etag;
-
-    if (mChangedRemoteIds.contains(remoteId)) {
-        mChangedRemoteIds.remove(remoteId);
-    }
-}
-
-bool EtagCache::contains(const QString &remoteId)
-{
-    return mCache.contains(remoteId);
-}
-
-bool EtagCache::etagChanged(const QString &remoteId, const QString &refEtag) const
-{
-    return mCache.value(remoteId) != refEtag;
-}
-
-void EtagCache::markAsChanged(const QString &remoteId)
-{
-    mChangedRemoteIds.insert(remoteId);
-}
-
-bool EtagCache::isOutOfDate(const QString &remoteId) const
-{
-    return mChangedRemoteIds.contains(remoteId);
-}
-
-void EtagCache::removeEtag(const QString &remoteId)
-{
-    mChangedRemoteIds.remove(remoteId);
-    mCache.remove(remoteId);
-}
-
-QStringList EtagCache::urls() const
-{
-    return mCache.keys();
-}
-
-QStringList EtagCache::changedRemoteIds() const
-{
-    return mChangedRemoteIds.toList();
-}
-
-void EtagCache::onItemFetchJobFinished(KJob *job)
+void AkonadiEtagCache::onItemFetchJobFinished(KJob *job)
 {
     if (job->error()) {
         return;
@@ -88,8 +45,8 @@ void EtagCache::onItemFetchJobFinished(KJob *job)
     const Akonadi::Item::List items = fetchJob->items();
 
     for (const Akonadi::Item &item : items) {
-        if (!mCache.contains(item.remoteId())) {
-            mCache[item.remoteId()] = item.remoteRevision();
+        if (!contains(item.remoteId())) {
+            setEtagInternal(item.remoteId(), item.remoteRevision());
         }
     }
 }

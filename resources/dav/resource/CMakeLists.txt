@@ -16,39 +16,20 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
   ########### next target ###############
 
   set( davgroupwareresource_SRCS
-    ../common/davjobbase.cpp
-    ../common/davcollection.cpp
-    ../common/davcollectiondeletejob.cpp
-    ../common/davcollectionsfetchjob.cpp
-    ../common/davcollectionmodifyjob.cpp
-    ../common/davcollectionsmultifetchjob.cpp
-    ../common/davprotocolbase.cpp
-    ../common/davitem.cpp
-    ../common/davitemcreatejob.cpp
-    ../common/davitemdeletejob.cpp
-    ../common/davitemfetchjob.cpp
-    ../common/davitemmodifyjob.cpp
-    ../common/davitemsfetchjob.cpp
-    ../common/davitemslistjob.cpp
-    ../common/davmanager.cpp
-    ../common/davmultigetprotocol.cpp
-    ../common/davprincipalhomesetsfetchjob.cpp
-    ../common/davprincipalsearchjob.cpp
-    ../common/davutils.cpp
-    ../common/etagcache.cpp
 
-    ../protocols/caldavprotocol.cpp
-    ../protocols/carddavprotocol.cpp
-    ../protocols/groupdavprotocol.cpp
+    daverror-kdepim-runtime.cpp
+    akonadietagcache.cpp
+    utils.cpp
+
     configdialog.cpp
     ctagattribute.cpp
     davfreebusyhandler.cpp
-    davgroupwareresource.cpp
     davprotocolattribute.cpp
     searchdialog.cpp
     setupwizard.cpp
     settings.cpp
     urlconfigurationdialog.cpp
+    davgroupwareresource.cpp
   )
 
  ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME org.kde.pim.davresource)
@@ -77,12 +58,14 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
   target_link_libraries(akonadi_davgroupware_resource
           Qt5::XmlPatterns
           KF5::Contacts
-	  KF5::AkonadiCalendar
+          KF5::AkonadiCalendar
           KF5::KIOCore
-	  KF5::AkonadiAgentBase
+          KF5::AkonadiAgentBase
           KF5::AkonadiCore
           KF5::Wallet
-          KF5::CalendarCore)
+          KF5::CalendarCore
+          KPim::KDAV
+          )
 
   install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 #else()

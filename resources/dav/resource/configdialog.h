@@ -21,7 +21,7 @@
 
 #include "ui_configdialog.h"
 
-#include "davutils.h"
+#include <KDAV/Utils>
 
 #include <QDialog>
 
@@ -61,8 +61,8 @@ private:
 
     Ui::ConfigDialog mUi;
     KConfigDialogManager *mManager;
-    QList< QPair<QString, DavUtils::Protocol> > mAddedUrls;
-    QList< QPair<QString, DavUtils::Protocol> > mRemovedUrls;
+    QList< QPair<QString, KDAV::Protocol> > mAddedUrls;
+    QList< QPair<QString, KDAV::Protocol> > mRemovedUrls;
     QStandardItemModel *mModel;
     QPushButton *mOkButton;
 };

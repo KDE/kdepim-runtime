@@ -18,24 +18,29 @@
 
 #include "davgroupwareresource.h"
 
+#include "akonadietagcache.h"
 #include "configdialog.h"
 #include "ctagattribute.h"
-#include "davcollectiondeletejob.h"
-#include "davcollectionsfetchjob.h"
-#include "davcollectionsmultifetchjob.h"
 #include "davfreebusyhandler.h"
-#include "davitemcreatejob.h"
-#include "davitemdeletejob.h"
-#include "davitemfetchjob.h"
-#include "davitemmodifyjob.h"
-#include "davitemsfetchjob.h"
-#include "davitemslistjob.h"
-#include "davmanager.h"
 #include "davprotocolattribute.h"
-#include "davprotocolbase.h"
+#include "utils.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "setupwizard.h"
+
+#include <KDAV/DavCollection>
+#include <KDAV/DavCollectionDeleteJob>
+#include <KDAV/DavCollectionsFetchJob>
+#include <KDAV/DavCollectionsMultiFetchJob>
+#include <KDAV/DavItem>
+#include <KDAV/DavItemCreateJob>
+#include <KDAV/DavItemDeleteJob>
+#include <KDAV/DavItemFetchJob>
+#include <KDAV/DavItemModifyJob>
+#include <KDAV/DavItemsFetchJob>
+#include <KDAV/DavItemsListJob>
+#include <KDAV/DavManager>
+#include <KDAV/DavProtocolBase>
 
 #include <KCalCore/FreeBusy>
 #include <KCalCore/Incidence>
@@ -70,7 +75,9 @@ using namespace Akonadi;
 typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
-    : ResourceBase(id), FreeBusyProviderBase(), mSyncErrorNotified(false)
+    : ResourceBase(id)
+    , FreeBusyProviderBase()
+    , mSyncErrorNotified(false)
 {
     AttributeFactory::registerAttribute<EntityDisplayAttribute>();
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
@@ -131,11 +138,11 @@ void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collecti
         return;
     }
 
-    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
 
-    DavCollectionDeleteJob *job = new DavCollectionDeleteJob(davUrl);
+    KDAV::DavCollectionDeleteJob *job = new KDAV::DavCollectionDeleteJob(davUrl);
     job->setProperty("collection", QVariant::fromValue(collection));
-    connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onCollectionRemovedFinished);
+    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onCollectionRemovedFinished);
     job->start();
 }
 
@@ -250,9 +257,9 @@ void DavGroupwareResource::retrieveCollections()
 
     Q_EMIT status(Running, i18n("Fetching collections"));
 
-    DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
-    connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
-    connect(job, &DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
+    KDAV::DavCollectionsMultiFetchJob *job = new KDAV::DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
+    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
+    connect(job, & KDAV::DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
     job->start();
 }
 
@@ -292,7 +299,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
 
     if (!davUrl.url().isValid()) {
         qCCritical(DAVRESOURCE_LOG) << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
@@ -301,7 +308,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    DavItemsListJob *job = new DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId()));
+    KDAV::DavItemsListJob *job = new KDAV::DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId()));
     if (Settings::self()->limitSyncRange()) {
         QDateTime start = Settings::self()->getSyncRangeStart();
         qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
@@ -311,7 +318,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     }
     job->setProperty("collection", QVariant::fromValue(collection));
     job->setContentMimeTypes(collection.contentMimeTypes());
-    connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
+    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
     job->start();
 }
 
@@ -323,21 +330,20 @@ bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QB
         return false;
     }
 
-    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
     if (!davUrl.url().isValid()) {
         qCDebug(DAVRESOURCE_LOG) << "Failed to get a valid DavUrl. Parent collection remote ID is" << item.parentCollection().remoteId();
         cancelTask();
         return false;
     }
 
-    DavItem davItem;
-    davItem.setUrl(item.remoteId());
+    KDAV::DavItem davItem;
     davItem.setContentType(QStringLiteral("text/calendar"));
     davItem.setEtag(item.remoteRevision());
 
-    DavItemFetchJob *job = new DavItemFetchJob(davUrl, davItem);
+    KDAV::DavItemFetchJob *job = new KDAV::DavItemFetchJob(davItem);
     job->setProperty("item", QVariant::fromValue(item));
-    connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemFinished);
+    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemFinished);
     job->start();
 
     return true;
@@ -359,21 +365,21 @@ void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::C
         return;
     }
 
-    DavItem davItem = DavUtils::createDavItem(item, collection);
+    KDAV::DavItem davItem = Utils::createDavItem(item, collection);
     if (davItem.data().isEmpty()) {
         qCCritical(DAVRESOURCE_LOG) << "Item " << item.id() << " doesn't has a valid payload";
         cancelTask();
         return;
     }
 
-    QString urlStr = davItem.url();
-    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), urlStr);
-    qCDebug(DAVRESOURCE_LOG) << "Item " << item.id() << " will be put to " << urlStr;
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), davItem.url().toDisplayString());
+    qCDebug(DAVRESOURCE_LOG) << "Item " << item.id() << " will be put to " << davItem.url().toDisplayString();
+    davItem.setUrl(davUrl);
 
-    DavItemCreateJob *job = new DavItemCreateJob(davUrl, davItem);
+    KDAV::DavItemCreateJob *job = new KDAV::DavItemCreateJob(davItem);
     job->setProperty("collection", QVariant::fromValue(collection));
     job->setProperty("item", QVariant::fromValue(item));
-    connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemAddedFinished);
+    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemAddedFinished);
     job->start();
 }
 
@@ -399,7 +405,7 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
         ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
     }
 
-    EtagCache *cache = mEtagCaches.value(collection.remoteId());
+    auto cache = mEtagCaches.value(collection.remoteId());
     Akonadi::Item::List extraItems;
     foreach (const QString &rid, cache->urls()) {
         if (rid.startsWith(ridBase) && rid != item.remoteId()) {
@@ -429,7 +435,7 @@ void DavGroupwareResource::onItemChangePrepared(KJob *job)
 
 void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems)
 {
-    DavItem davItem = DavUtils::createDavItem(item, item.parentCollection(), dependentItems);
+    KDAV::DavItem davItem = Utils::createDavItem(item, item.parentCollection(), dependentItems);
     if (davItem.data().isEmpty()) {
         qCCritical(DAVRESOURCE_LOG) << "Item " << item.id() << " doesn't has a valid payload";
         cancelTask();
@@ -440,17 +446,17 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
     if (url.contains(QLatin1Char('#'))) {
         url.truncate(url.indexOf(QLatin1Char('#')));
     }
-    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), url);
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), url);
 
     // We have to re-set the URL as it's not necessarily valid after createDavItem()
-    davItem.setUrl(url);
+    davItem.setUrl(davUrl);
     davItem.setEtag(item.remoteRevision());
 
-    DavItemModifyJob *modJob = new DavItemModifyJob(davUrl, davItem);
+    KDAV::DavItemModifyJob *modJob = new KDAV::DavItemModifyJob(davItem);
     modJob->setProperty("collection", QVariant::fromValue(item.parentCollection()));
     modJob->setProperty("item", QVariant::fromValue(item));
     modJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
-    connect(modJob, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemChangedFinished);
+    connect(modJob, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemChangedFinished);
     modJob->start();
 }
 
@@ -476,7 +482,7 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
         // containing multiple ones.
         ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
 
-        EtagCache *cache = mEtagCaches.value(collection.remoteId());
+        auto cache = mEtagCaches.value(collection.remoteId());
         Akonadi::Item::List extraItems;
         foreach (const QString &rid, cache->urls()) {
             if (rid.startsWith(ridBase) && rid != item.remoteId()) {
@@ -530,35 +536,35 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
             mainItem = extraItems.takeFirst();
         }
 
-        const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), ridBase);
+        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), ridBase);
 
-        DavItem davItem = DavUtils::createDavItem(mainItem, mainItem.parentCollection(), extraItems);
-        davItem.setUrl(ridBase);
+        KDAV::DavItem davItem = Utils::createDavItem(mainItem, mainItem.parentCollection(), extraItems);
+        davItem.setUrl(davUrl);
         davItem.setEtag(item.remoteRevision());
 
-        DavItemModifyJob *modJob = new DavItemModifyJob(davUrl, davItem);
+        KDAV::DavItemModifyJob *modJob = new KDAV::DavItemModifyJob(davItem);
         modJob->setProperty("collection", QVariant::fromValue(mainItem.parentCollection()));
         modJob->setProperty("item", QVariant::fromValue(mainItem));
         modJob->setProperty("dependentItems", QVariant::fromValue(extraItems));
         modJob->setProperty("isRemoval", QVariant::fromValue(true));
         modJob->setProperty("removedItem", QVariant::fromValue(item));
-        connect(modJob, &DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
+        connect(modJob, & KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
         modJob->start();
     }
 }
 
 void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
 {
-    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
 
-    DavItem davItem;
-    davItem.setUrl(item.remoteId());
+    KDAV::DavItem davItem;
+    davItem.setUrl(davUrl);
     davItem.setEtag(item.remoteRevision());
 
-    DavItemDeleteJob *job = new DavItemDeleteJob(davUrl, davItem);
+    KDAV::DavItemDeleteJob *job = new KDAV::DavItemDeleteJob(davItem);
     job->setProperty("item", QVariant::fromValue(item));
     job->setProperty("collection", QVariant::fromValue(item.parentCollection()));
-    connect(job, &DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
+    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
     job->start();
 }
 
@@ -607,13 +613,12 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
         }
 
         if (!mEtagCaches.contains(collection.remoteId())) {
-            EtagCache *cache = new EtagCache(collection);
+            auto cache = std::shared_ptr<KDAV::EtagCache>(new AkonadiEtagCache(collection));
             mEtagCaches.insert(collection.remoteId(), cache);
         }
 
         mEtagCaches[collection.remoteId()]->setEtag(rid, etag);
     }
-
     taskDone();
 }
 
@@ -642,7 +647,7 @@ void DavGroupwareResource::onCollectionRemovedFinished(KJob *job)
 
 void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 {
-    const DavCollectionsMultiFetchJob *fetchJob = qobject_cast<DavCollectionsMultiFetchJob *>(job);
+    const KDAV::DavCollectionsMultiFetchJob *fetchJob = qobject_cast< KDAV::DavCollectionsMultiFetchJob *>(job);
 
     if (job->error()) {
         qCWarning(DAVRESOURCE_LOG) << "Unable to fetch collections" << job->error() << job->errorText();
@@ -655,19 +660,19 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
     collections << mDavCollectionRoot;
     QSet<QString> seenCollectionsUrls;
 
-    const DavCollection::List davCollections = fetchJob->collections();
+    const KDAV::DavCollection::List davCollections = fetchJob->collections();
 
-    foreach (const DavCollection &davCollection, davCollections) {
-        if (seenCollectionsUrls.contains(davCollection.url())) {
-            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. " << davCollection.url();
+    foreach (const KDAV::DavCollection &davCollection, davCollections) {
+        if (seenCollectionsUrls.contains(davCollection.url().toDisplayString())) {
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. " << davCollection.url().toDisplayString();
             continue;
         } else {
-            seenCollectionsUrls.insert(davCollection.url());
+            seenCollectionsUrls.insert(davCollection.url().toDisplayString());
         }
 
         Akonadi::Collection collection;
         collection.setParentCollection(mDavCollectionRoot);
-        collection.setRemoteId(davCollection.url());
+        collection.setRemoteId(davCollection.url().toDisplayString());
         collection.setName(collection.remoteId());
 
         if (!davCollection.displayName().isEmpty()) {
@@ -678,28 +683,28 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         QStringList mimeTypes;
         mimeTypes << Collection::mimeType();
 
-        const DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
-        if (contentTypes & DavCollection::Calendar) {
+        const KDAV::DavCollection::ContentTypes contentTypes = davCollection.contentTypes();
+        if (contentTypes & KDAV::DavCollection::Calendar) {
             mimeTypes << QStringLiteral("text/calendar");
         }
 
-        if (contentTypes & DavCollection::Events) {
+        if (contentTypes & KDAV::DavCollection::Events) {
             mimeTypes << KCalCore::Event::eventMimeType();
         }
 
-        if (contentTypes & DavCollection::Todos) {
+        if (contentTypes & KDAV::DavCollection::Todos) {
             mimeTypes << KCalCore::Todo::todoMimeType();
         }
 
-        if (contentTypes & DavCollection::Contacts) {
+        if (contentTypes & KDAV::DavCollection::Contacts) {
             mimeTypes << KContacts::Addressee::mimeType();
         }
 
-        if (contentTypes & DavCollection::FreeBusy) {
+        if (contentTypes & KDAV::DavCollection::FreeBusy) {
             mimeTypes << KCalCore::FreeBusy::freeBusyMimeType();
         }
 
-        if (contentTypes & DavCollection::Journal) {
+        if (contentTypes & KDAV::DavCollection::Journal) {
             mimeTypes << KCalCore::Journal::journalMimeType();
         }
 
@@ -707,7 +712,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         setCollectionIcon(collection /*by-ref*/);
 
         DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>(Collection::AddIfMissing);
-        protoAttr->setDavProtocol(davCollection.protocol());
+        protoAttr->setDavProtocol(davCollection.url().protocol());
 
         /*
          * We unfortunately have to update the CTag now in the cache
@@ -716,29 +721,29 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
          * and will only update it there after sucessfull sync.
          */
         if (!davCollection.CTag().isEmpty()) {
-            mCTagCache.insert(davCollection.url(), davCollection.CTag());
+            mCTagCache.insert(davCollection.url().toDisplayString(), davCollection.CTag());
         }
 
-        DavUtils::Privileges privileges = davCollection.privileges();
+        KDAV::Privileges privileges = davCollection.privileges();
         Akonadi::Collection::Rights rights;
 
-        if (privileges & DavUtils::All || privileges & DavUtils::Write) {
+        if (privileges & KDAV::All || privileges & KDAV::Write) {
             rights |= Akonadi::Collection::AllRights;
         }
 
-        if (privileges & DavUtils::WriteContent) {
+        if (privileges & KDAV::WriteContent) {
             rights |= Akonadi::Collection::CanChangeItem;
         }
 
-        if (privileges & DavUtils::Bind) {
+        if (privileges & KDAV::Bind) {
             rights |= Akonadi::Collection::CanCreateItem;
         }
 
-        if (privileges & DavUtils::Unbind) {
+        if (privileges & KDAV::Unbind) {
             rights |= Akonadi::Collection::CanDeleteItem;
         }
 
-        if (privileges == DavUtils::Read) {
+        if (privileges == KDAV::Read) {
             rights |= Akonadi::Collection::ReadOnly;
         }
 
@@ -746,7 +751,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         collections << collection;
 
         if (!mEtagCaches.contains(collection.remoteId())) {
-            EtagCache *cache = new EtagCache(collection);
+            auto cache = std::shared_ptr<KDAV::EtagCache>(new AkonadiEtagCache(collection));
             mEtagCaches.insert(collection.remoteId(), cache);
         }
     }
@@ -775,22 +780,22 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     }
 
     Collection collection = job->property("collection").value<Collection>();
-    const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
-    const bool protocolSupportsMultiget = DavManager::self()->davProtocol(davUrl.protocol())->useMultiget();
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+    const bool protocolSupportsMultiget = KDAV::DavManager::self()->davProtocol(davUrl.protocol())->useMultiget();
 
-    const DavItemsListJob *listJob = qobject_cast<DavItemsListJob *>(job);
-    EtagCache *cache = mEtagCaches.value(collection.remoteId());
+    const KDAV::DavItemsListJob *listJob = qobject_cast< KDAV::DavItemsListJob *>(job);
+    auto cache = mEtagCaches.value(collection.remoteId());
 
     Akonadi::Item::List changedItems;
     QSet<QString> seenRids;
     QStringList changedRids;
     changedItems.reserve(listJob->changedItems().count());
-    foreach (const DavItem &davItem, listJob->changedItems()) {
-        seenRids.insert(davItem.url());
+    foreach (const KDAV::DavItem &davItem, listJob->changedItems()) {
+        seenRids.insert(davItem.url().toDisplayString());
 
         Akonadi::Item item;
         item.setParentCollection(collection);
-        item.setRemoteId(davItem.url());
+        item.setRemoteId(davItem.url().toDisplayString());
         item.setMimeType(davItem.contentType());
         item.setRemoteRevision(davItem.etag());
 
@@ -834,8 +839,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     // This allows the resource to use the multiget query and let it be nice
     // to the remote server : only one request for n items instead of n requests.
     if (protocolSupportsMultiget && !changedRids.isEmpty()) {
-        DavItemsFetchJob *fetchJob = new DavItemsFetchJob(davUrl, changedRids);
-        connect(fetchJob, &DavItemsFetchJob::result, this, &DavGroupwareResource::onMultigetFinished);
+        KDAV::DavItemsFetchJob *fetchJob = new KDAV::DavItemsFetchJob(davUrl, changedRids);
+        connect(fetchJob, & KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onMultigetFinished);
         fetchJob->setProperty("collection", QVariant::fromValue(collection));
         fetchJob->setProperty("items", QVariant::fromValue(changedItems));
         fetchJob->start();
@@ -867,13 +872,13 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
     }
 
     Akonadi::Collection collection = job->property("collection").value<Akonadi::Collection>();
-    EtagCache *cache = mEtagCaches.value(collection.remoteId());
+    auto cache = mEtagCaches.value(collection.remoteId());
     const Akonadi::Item::List origItems = job->property("items").value<Akonadi::Item::List>();
-    const DavItemsFetchJob *davJob = qobject_cast<DavItemsFetchJob *>(job);
+    const KDAV::DavItemsFetchJob *davJob = qobject_cast< KDAV::DavItemsFetchJob *>(job);
 
     Akonadi::Item::List items;
     foreach (Akonadi::Item item, origItems) {   //krazy:exclude=foreach non-const is intended here
-        const DavItem davItem = davJob->item(item.remoteId());
+        const KDAV::DavItem davItem = davJob->item(item.remoteId());
 
         // No data was retrieved for this item, maybe because it is not out of date
         if (davItem.data().isEmpty()) {
@@ -886,7 +891,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         }
 
         Akonadi::Item::List extraItems;
-        if (!DavUtils::parseDavData(davItem, item, extraItems)) {
+        if (!Utils::parseDavData(davItem, item, extraItems)) {
             qCWarning(DAVRESOURCE_LOG) << "DavGroupwareResource::onMultigetFinished: Failed to parse item data. " << item.remoteId();
             continue;
         }
@@ -940,20 +945,20 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
         return;
     }
 
-    const DavItemFetchJob *fetchJob = qobject_cast<DavItemFetchJob *>(job);
-    const DavItem davItem = fetchJob->item();
+    const KDAV::DavItemFetchJob *fetchJob = qobject_cast< KDAV::DavItemFetchJob *>(job);
+    const KDAV::DavItem davItem = fetchJob->item();
     Akonadi::Item item = fetchJob->property("item").value<Akonadi::Item>();
     Akonadi::Collection collection = fetchJob->property("collection").value<Akonadi::Collection>();
 
     Akonadi::Item::List extraItems;
-    if (!DavUtils::parseDavData(davItem, item, extraItems)) {
+    if (!Utils::parseDavData(davItem, item, extraItems)) {
         qCWarning(DAVRESOURCE_LOG) << "DavGroupwareResource::onItemFetched: Failed to parse item data. " << item.remoteId();
         return;
     }
 
     // update etag
     item.setRemoteRevision(davItem.etag());
-    EtagCache *etag = mEtagCaches[collection.remoteId()];
+    auto etag = mEtagCaches[collection.remoteId()];
     etag->setEtag(item.remoteId(), davItem.etag());
 
     if (!extraItems.isEmpty()) {
@@ -974,10 +979,10 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
 
 void DavGroupwareResource::onItemAddedFinished(KJob *job)
 {
-    const DavItemCreateJob *createJob = qobject_cast<DavItemCreateJob *>(job);
-    const DavItem davItem = createJob->item();
+    const KDAV::DavItemCreateJob *createJob = qobject_cast< KDAV::DavItemCreateJob *>(job);
+    KDAV::DavItem davItem = createJob->item();
     Akonadi::Item item = createJob->property("item").value<Akonadi::Item>();
-    item.setRemoteId(davItem.url());
+    item.setRemoteId(davItem.url().toDisplayString());
 
     if (createJob->error()) {
         qCCritical(DAVRESOURCE_LOG) << "Error when uploading item:" << createJob->error() << createJob->errorString();
@@ -992,28 +997,29 @@ void DavGroupwareResource::onItemAddedFinished(KJob *job)
     Akonadi::Collection collection = createJob->property("collection").value<Akonadi::Collection>();
 
     if (davItem.etag().isEmpty()) {
-        const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), item.remoteId());
-        DavItemFetchJob *fetchJob = new DavItemFetchJob(davUrl, davItem);
+        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), item.remoteId());
+        davItem.setUrl(davUrl);
+        KDAV::DavItemFetchJob *fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
         fetchJob->setProperty("collection", QVariant::fromValue(collection));
-        connect(fetchJob, &DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
+        connect(fetchJob, & KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
         item.setRemoteRevision(davItem.etag());
-        mEtagCaches[collection.remoteId()]->setEtag(davItem.url(), davItem.etag());
+        mEtagCaches[collection.remoteId()]->setEtag(davItem.url().toDisplayString(), davItem.etag());
         changeCommitted(item);
     }
 }
 
 void DavGroupwareResource::onItemChangedFinished(KJob *job)
 {
-    const DavItemModifyJob *modifyJob = qobject_cast<DavItemModifyJob *>(job);
-    const DavItem davItem = modifyJob->item();
+    const KDAV::DavItemModifyJob *modifyJob = qobject_cast< KDAV::DavItemModifyJob *>(job);
+    KDAV::DavItem davItem = modifyJob->item();
     Akonadi::Collection collection = modifyJob->property("collection").value<Akonadi::Collection>();
     Akonadi::Item item = modifyJob->property("item").value<Akonadi::Item>();
     Akonadi::Item::List dependentItems = modifyJob->property("dependentItems").value<Akonadi::Item::List>();
     bool isRemoval = modifyJob->property("isRemoval").isValid() && modifyJob->property("isRemoval").toBool();
-    EtagCache *cache = mEtagCaches.value(collection.remoteId());
+    auto cache = mEtagCaches.value(collection.remoteId());
 
     if (modifyJob->error()) {
         qCCritical(DAVRESOURCE_LOG) << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
@@ -1034,18 +1040,19 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
     }
 
     if (davItem.etag().isEmpty()) {
-        const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
-        DavItemFetchJob *fetchJob = new DavItemFetchJob(davUrl, davItem);
+        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+        davItem.setUrl(davUrl);
+        KDAV::DavItemFetchJob *fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
         fetchJob->setProperty("collection", QVariant::fromValue(collection));
         fetchJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
         fetchJob->setProperty("isRemoval", QVariant::fromValue(isRemoval));
-        connect(fetchJob, &DavItemsFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
+        connect(fetchJob, & KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
         if (!isRemoval) {
             item.setRemoteRevision(davItem.etag());
-            cache->setEtag(davItem.url(), davItem.etag());
+            cache->setEtag(davItem.url().toDisplayString(), davItem.etag());
             changeCommitted(item);
         }
 
@@ -1063,23 +1070,24 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
 
 void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
 {
-    const DavItemCreateJob *createJob = qobject_cast<DavItemCreateJob *>(job);
-    const DavItem davItem = createJob->item();
+    const KDAV::DavItemCreateJob *createJob = qobject_cast< KDAV::DavItemCreateJob *>(job);
+    KDAV::DavItem davItem = createJob->item();
     Akonadi::Item item = createJob->property("item").value<Akonadi::Item>();
     Akonadi::Collection collection = item.parentCollection();
     Akonadi::Item::List dependentItems = createJob->property("dependentItems").value<Akonadi::Item::List>();
 
     if (davItem.etag().isEmpty()) {
-        const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
-        DavItemFetchJob *fetchJob = new DavItemFetchJob(davUrl, davItem);
+        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
+        davItem.setUrl(davUrl);
+        KDAV::DavItemFetchJob *fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
         fetchJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
-        connect(fetchJob, &DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
+        connect(fetchJob, & KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
         item.setRemoteRevision(davItem.etag());
-        EtagCache *etag = mEtagCaches[collection.remoteId()];
-        etag->setEtag(davItem.url(), davItem.etag());
+        auto etag = mEtagCaches[collection.remoteId()];
+        etag->setEtag(davItem.url().toDisplayString(), davItem.etag());
         changeCommitted(item);
 
         if (!dependentItems.isEmpty()) {
@@ -1097,7 +1105,7 @@ void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
 void DavGroupwareResource::onItemRemovedFinished(KJob *job)
 {
     if (job->error()) {
-        const DavItemDeleteJob *deleteJob = qobject_cast<DavItemDeleteJob *>(job);
+        const KDAV::DavItemDeleteJob *deleteJob = qobject_cast< KDAV::DavItemDeleteJob *>(job);
 
         if (deleteJob->hasConflict()) {
             // Use a shortcut here as we don't show a conflict dialog to the user.
@@ -1117,10 +1125,10 @@ void DavGroupwareResource::onItemRemovedFinished(KJob *job)
 
 void DavGroupwareResource::onCollectionDiscovered(int protocol, const QString &collection, const QString &config)
 {
-    Settings::self()->addCollectionUrlMapping(DavUtils::Protocol(protocol), collection, config);
+    Settings::self()->addCollectionUrlMapping(KDAV::Protocol(protocol), collection, config);
 }
 
-void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &localDependentItems, const DavItem &rI, bool isLocalRemoval, int responseCode)
+void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &localDependentItems, const KDAV::DavItem &rI, bool isLocalRemoval, int responseCode)
 {
     Akonadi::Item localItem(lI);
     Akonadi::Item remoteItem, tmpRemoteItem;                           // The tmp* vars are here to store the result of the parseDavData() call
@@ -1129,7 +1137,7 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
     bool isRemoteRemoval = (responseCode == 404 || responseCode == 410);
 
     if (!isRemoteRemoval) {
-        if (!DavUtils::parseDavData(rI, tmpRemoteItem, tmpRemoteDependentItems)) {
+        if (!Utils::parseDavData(rI, tmpRemoteItem, tmpRemoteDependentItems)) {
             // TODO: set a more correct error message here
             cancelTask(i18n("Unable to change item: %1", QStringLiteral("conflict resolution failed")));
             return;
@@ -1173,16 +1181,16 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
          */
         qCDebug(DAVRESOURCE_LOG) << "Remote removal conflict";
         Akonadi::Collection collection = localItem.parentCollection();
-        DavItem davItem = DavUtils::createDavItem(localItem, collection, localDependentItems);
+        KDAV::DavItem davItem = Utils::createDavItem(localItem, collection, localDependentItems);
 
         QString urlStr = localItem.remoteId();
         if (urlStr.contains(QLatin1Char('#'))) {
             urlStr.truncate(urlStr.indexOf(QLatin1Char('#')));
         }
-        davItem.setUrl(urlStr);
-        const DavUtils::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), urlStr);
+        const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), urlStr);
+        davItem.setUrl(davUrl);
 
-        DavItemCreateJob *job = new DavItemCreateJob(davUrl, davItem);
+        KDAV::DavItemCreateJob *job = new KDAV::DavItemCreateJob(davItem);
         job->setProperty("item", QVariant::fromValue(localItem));
         job->setProperty("dependentItems", QVariant::fromValue(localDependentItems));
         connect(job, &KJob::result, this, &DavGroupwareResource::onDeletedItemRecreated);
@@ -1196,7 +1204,7 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
 
         // Update the ETag cache in all cases as the new ETag will have to be used
         // later for any update or deletion
-        mEtagCaches[collection.remoteId()]->setEtag(rI.url(), remoteEtag);
+        mEtagCaches[collection.remoteId()]->setEtag(rI.url().toDisplayString(), remoteEtag);
 
         // The first step is to fire a first modify job that will replace the item currently
         // in the local cache with the one that was found in the backend.
@@ -1225,7 +1233,7 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         // Hopefully for the dependent items everything will be fine. Right?
         // Not so sure in fact.
         if (!remoteDependentItems.isEmpty()) {
-            EtagCache *etag = mEtagCaches[collection.remoteId()];
+            auto etag = mEtagCaches[collection.remoteId()];
             for (int i = 0; i < remoteDependentItems.size(); ++i) {
                 remoteDependentItems[i].setRemoteRevision(remoteEtag);
                 etag->setEtag(remoteDependentItems.at(i).remoteId(), remoteEtag);

@@ -19,7 +19,7 @@
 #ifndef SETUPWIZARD_H
 #define SETUPWIZARD_H
 
-#include "davutils.h"
+#include <KDAV/Utils>
 
 #include <QWizard>
 #include <QWizardPage>
@@ -56,7 +56,7 @@ public:
     public:
         typedef QList<Url> List;
 
-        DavUtils::Protocol protocol;
+        KDAV::Protocol protocol;
         QString url;
         QString userName;
         QString password;

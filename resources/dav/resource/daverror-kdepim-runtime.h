@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2010 Grégory Oestreicher <greg@kamago.net>
+    Copyright (c) 2016 Sandro Knauß <sknauss@kde.org>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,8 +16,11 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "davmultigetprotocol.h"
+#ifndef KDAV_DAVERROR_KDEPIM_RUNTIME_H
+#define KDAV_DAVERROR_KDEPIM_RUNTIME_H
 
-DavMultigetProtocol::~DavMultigetProtocol()
-{
-}
+#include <KDAV/DavError>
+
+QString translateErrorString(KDAV::Error error);
+
+#endif

@@ -18,10 +18,12 @@
 
 #include "davfreebusyhandler.h"
 
-#include "davcollectionsfetchjob.h"
-#include "davmanager.h"
-#include "davprincipalsearchjob.h"
 #include "settings.h"
+
+#include <KDAV/DavCollectionsFetchJob>
+#include <KDAV/DavPrincipalSearchJob>
+#include <KDAV/DavManager>
+#include <KDAV/Utils>
 
 #include <KCalCore/ICalFormat>
 #include <KDateTime>
@@ -37,15 +39,15 @@ DavFreeBusyHandler::DavFreeBusyHandler(QObject *parent)
 
 void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
 {
-    const DavUtils::DavUrl::List urls = Settings::self()->configuredDavUrls();
-    for (const DavUtils::DavUrl &url : urls) {
-        if (url.protocol() == DavUtils::CalDav) {
+    const KDAV::DavUrl::List urls = Settings::self()->configuredDavUrls();
+    for (const  KDAV::DavUrl &url : urls) {
+        if (url.protocol() == KDAV::CalDav) {
             ++mRequestsTracker[email].handlingJobCount;
-            DavPrincipalSearchJob *job = new DavPrincipalSearchJob(url, DavPrincipalSearchJob::EmailAddress, email);
+            KDAV::DavPrincipalSearchJob *job = new KDAV::DavPrincipalSearchJob(url, KDAV::DavPrincipalSearchJob::EmailAddress, email);
             job->setProperty("email", QVariant::fromValue(email));
             job->setProperty("url", QVariant::fromValue(url.url().toString()));
             job->fetchProperty(QStringLiteral("schedule-inbox-URL"), QStringLiteral("urn:ietf:params:xml:ns:caldav"));
-            connect(job, &DavPrincipalSearchJob::result, this, &DavFreeBusyHandler::onPrincipalSearchJobFinished);
+            connect(job, &KDAV::DavPrincipalSearchJob::result, this, &DavFreeBusyHandler::onPrincipalSearchJobFinished);
             job->start();
         }
     }
@@ -75,7 +77,7 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const KDateTime 
         job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/calendar"));
         job->setProperty("email", QVariant::fromValue(email));
         job->setProperty("request-id", QVariant::fromValue(requestId));
-        connect(job, &DavPrincipalSearchJob::result, this, &DavFreeBusyHandler::onRetrieveFreeBusyJobFinished);
+        connect(job, &KDAV::DavPrincipalSearchJob::result, this, &DavFreeBusyHandler::onRetrieveFreeBusyJobFinished);
         job->start();
     }
 }
@@ -92,8 +94,8 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
         return;
     }
 
-    DavPrincipalSearchJob *davJob = qobject_cast<DavPrincipalSearchJob *>(job);
-    QList<DavPrincipalSearchJob::Result> results = davJob->results();
+    KDAV::DavPrincipalSearchJob *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
+    QList<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
 
     if (results.isEmpty()) {
         if (handlingJobCount == 0 && !mRequestsTracker[email].handlingJobSuccessful) {
@@ -104,7 +106,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
 
     mRequestsTracker[email].handlingJobSuccessful = true;
 
-    foreach (const DavPrincipalSearchJob::Result &result, results) {
+    foreach (const KDAV::DavPrincipalSearchJob::Result &result, results) {
         qCDebug(DAVRESOURCE_LOG) << result.value;
         QUrl url(davJob->property("url").toString());
         if (result.value.startsWith(QLatin1Char('/'))) {
@@ -180,7 +182,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     QDomElement scheduleResponse = response.documentElement();
 
     // We are only expecting one response tag
-    QDomElement responseElement = DavUtils::firstChildElementNS(scheduleResponse, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("response"));
+    QDomElement responseElement = KDAV::Utils::firstChildElementNS(scheduleResponse, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("response"));
     if (responseElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
             Q_EMIT(freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
@@ -191,7 +193,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     // We can load directly the calendar-data and use its content to create
     // an incidence base that will give us everything we need to test
     // the success
-    QDomElement calendarDataElement = DavUtils::firstChildElementNS(responseElement, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data"));
+    QDomElement calendarDataElement = KDAV::Utils::firstChildElementNS(responseElement, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data"));
     if (calendarDataElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
             Q_EMIT(freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));

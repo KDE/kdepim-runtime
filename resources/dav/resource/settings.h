@@ -24,7 +24,7 @@
 
 #include "settingsbase.h"
 
-#include "davutils.h"
+#include <KDAV/DavUrl>
 
 #include <QtCore/QMap>
 
@@ -45,7 +45,7 @@ public:
          * The string is the concatenation of the fields separated by a "|" :
          * user|protocol|url
          * The "protocol" component is the symbolic name of the protocol,
-         * as returned by DavUtils::protocolName().
+         * as returned by Utils::protocolName().
          */
         QString serialize();
         QString mUrl;
@@ -64,13 +64,13 @@ public:
     void setDefaultPassword(const QString &password);
     QString defaultPassword();
 
-    DavUtils::DavUrl::List configuredDavUrls();
+    KDAV::DavUrl::List configuredDavUrls();
 
     /**
      * Creates and returns the DavUrl that corresponds to the configuration for searchUrl.
      * If finalUrl is supplied, then it will be used in the returned object instead of the searchUrl.
      */
-    DavUtils::DavUrl configuredDavUrl(DavUtils::Protocol protocol, const QString &searchUrl, const QString &finalUrl = QString());
+    KDAV::DavUrl configuredDavUrl(KDAV::Protocol protocol, const QString &searchUrl, const QString &finalUrl = QString());
 
     /**
      * Creates and return the DavUrl from the configured URL that has a mapping with @p collectionUrl.
@@ -78,19 +78,19 @@ public:
      * be used.
      * If no configured URL can be found the returned DavUrl will have an empty url().
      */
-    DavUtils::DavUrl davUrlFromCollectionUrl(const QString &collectionUrl, const QString &finalUrl = QString());
+    KDAV::DavUrl davUrlFromCollectionUrl(const QString &collectionUrl, const QString &finalUrl = QString());
 
     /**
      * Add a new mapping between the collection URL, as seen on the backend, and the
      * URL configured by the user. A mapping here means that the collectionUrl has
-     * been discovered by a DavCollectionsFetchJob on the configuredUrl.
+     * been discovered by a KDAV::DavCollectionsFetchJob on the configuredUrl.
      */
-    void addCollectionUrlMapping(DavUtils::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl);
+    void addCollectionUrlMapping(KDAV::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl);
 
     /**
      * Returns the collections URLs mapped behing @p configuredUrl and @p protocol.
      */
-    QStringList mappedCollections(DavUtils::Protocol protocol, const QString &configuredUrl);
+    QStringList mappedCollections(KDAV::Protocol protocol, const QString &configuredUrl);
 
     /**
      * Reloads the resource configuration taking into account any new modification
@@ -102,12 +102,12 @@ public:
     void reloadConfig();
 
     void newUrlConfiguration(UrlConfiguration *urlConfig);
-    void removeUrlConfiguration(DavUtils::Protocol protocol, const QString &url);
-    UrlConfiguration *urlConfiguration(DavUtils::Protocol protocol, const QString &url);
+    void removeUrlConfiguration(KDAV::Protocol protocol, const QString &url);
+    UrlConfiguration *urlConfiguration(KDAV::Protocol protocol, const QString &url);
 
-    //DavUtils::Protocol protocol( const QString &url ) const;
-    QString username(DavUtils::Protocol protocol, const QString &url) const;
-    QString password(DavUtils::Protocol protocol, const QString &url);
+    //KDAV::Protocol protocol( const QString &url ) const;
+    QString username(KDAV::Protocol protocol, const QString &url) const;
+    QString password(KDAV::Protocol protocol, const QString &url);
     QDateTime getSyncRangeStart() const;
 
 private:

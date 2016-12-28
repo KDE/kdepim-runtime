@@ -19,8 +19,10 @@
 #include "configdialog.h"
 #include "searchdialog.h"
 #include "settings.h"
+#include "utils.h"
 #include "urlconfigurationdialog.h"
 
+#include <KDAV/DavUrl>
 #include <kconfigdialogmanager.h>
 #include <kconfigskeleton.h>
 #include <KLocalizedString>
@@ -57,10 +59,10 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mUi.configuredUrls->setModel(mModel);
     mUi.configuredUrls->setRootIsDecorated(false);
 
-    foreach (const DavUtils::DavUrl &url, Settings::self()->configuredDavUrls()) {
+    foreach (const KDAV::DavUrl &url, Settings::self()->configuredDavUrls()) {
         QUrl displayUrl = url.url();
         displayUrl.setUserInfo(QString());
-        addModelRow(DavUtils::translatedProtocolName(url.protocol()), displayUrl.toDisplayString());
+        addModelRow(Utils::translatedProtocolName(url.protocol()), displayUrl.toDisplayString());
     }
 
     mUi.syncRangeStartType->addItem(i18n("Days"), QVariant(QLatin1String("D")));
@@ -139,7 +141,7 @@ void ConfigDialog::onAddButtonClicked()
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
-        if (Settings::self()->urlConfiguration(DavUtils::Protocol(dlg->protocol()), dlg->remoteUrl())) {
+        if (Settings::self()->urlConfiguration(KDAV::Protocol(dlg->protocol()), dlg->remoteUrl())) {
             KMessageBox::error(this, i18n("Another configuration entry already uses the same URL/protocol couple.\n"
                                           "Please use a different URL"));
         } else {
@@ -156,10 +158,10 @@ void ConfigDialog::onAddButtonClicked()
 
             Settings::self()->newUrlConfiguration(urlConfig);
 
-            const QString protocolName = DavUtils::translatedProtocolName(dlg->protocol());
+            const QString protocolName = Utils::translatedProtocolName(dlg->protocol());
 
             addModelRow(protocolName, dlg->remoteUrl());
-            mAddedUrls << QPair<QString, DavUtils::Protocol>(dlg->remoteUrl(), DavUtils::Protocol(dlg->protocol()));
+            mAddedUrls << QPair<QString, KDAV::Protocol>(dlg->remoteUrl(), KDAV::Protocol(dlg->protocol()));
             checkUserInput();
         }
     }
@@ -178,7 +180,7 @@ void ConfigDialog::onSearchButtonClicked()
         const QStringList results = dlg->selection();
         for (const QString &result : results) {
             const QStringList split = result.split(QLatin1Char('|'));
-            DavUtils::Protocol protocol = DavUtils::protocolByName(split.at(0));
+            KDAV::Protocol protocol = KDAV::Utils::protocolByName(split.at(0));
             if (!Settings::self()->urlConfiguration(protocol, split.at(1))) {
                 Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
@@ -193,8 +195,8 @@ void ConfigDialog::onSearchButtonClicked()
 
                 Settings::self()->newUrlConfiguration(urlConfig);
 
-                addModelRow(DavUtils::translatedProtocolName(protocol), split.at(1));
-                mAddedUrls << QPair<QString, DavUtils::Protocol>(split.at(1), protocol);
+                addModelRow(Utils::translatedProtocolName(protocol), split.at(1));
+                mAddedUrls << QPair<QString, KDAV::Protocol>(split.at(1), protocol);
                 checkUserInput();
             }
         }
@@ -213,7 +215,7 @@ void ConfigDialog::onRemoveButtonClicked()
     QString proto = mModel->index(indexes.at(0).row(), 0).data().toString();
     QString url = mModel->index(indexes.at(0).row(), 1).data().toString();
 
-    mRemovedUrls << QPair<QString, DavUtils::Protocol>(url, DavUtils::protocolByTranslatedName(proto));
+    mRemovedUrls << QPair<QString, KDAV::Protocol>(url, Utils::protocolByTranslatedName(proto));
     mModel->removeRow(indexes.at(0).row());
 
     checkUserInput();
@@ -230,14 +232,14 @@ void ConfigDialog::onEditButtonClicked()
     const QString proto = mModel->index(row, 0).data().toString();
     const QString url = mModel->index(row, 1).data().toString();
 
-    Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration(DavUtils::protocolByTranslatedName(proto), url);
+    Settings::UrlConfiguration *urlConfig = Settings::self()->urlConfiguration(Utils::protocolByTranslatedName(proto), url);
     if (!urlConfig) {
         return;
     }
 
     QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog(this);
     dlg->setRemoteUrl(urlConfig->mUrl);
-    dlg->setProtocol(DavUtils::Protocol(urlConfig->mProtocol));
+    dlg->setProtocol(KDAV::Protocol(urlConfig->mProtocol));
 
     if (urlConfig->mUser == QLatin1String("$default$")) {
         dlg->setUseDefaultCredentials(true);
@@ -252,7 +254,7 @@ void ConfigDialog::onEditButtonClicked()
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
-        Settings::self()->removeUrlConfiguration(DavUtils::protocolByTranslatedName(proto), url);
+        Settings::self()->removeUrlConfiguration(Utils::protocolByTranslatedName(proto), url);
         Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
         urlConfigAccepted->mUrl = dlg->remoteUrl();
         if (dlg->useDefaultCredentials()) {
@@ -265,14 +267,14 @@ void ConfigDialog::onEditButtonClicked()
         Settings::self()->newUrlConfiguration(urlConfigAccepted);
 
         mModel->removeRow(row);
-        insertModelRow(row, DavUtils::translatedProtocolName(dlg->protocol()), dlg->remoteUrl());
+        insertModelRow(row, Utils::translatedProtocolName(dlg->protocol()), dlg->remoteUrl());
     }
     delete dlg;
 }
 
 void ConfigDialog::onOkClicked()
 {
-    typedef QPair<QString, DavUtils::Protocol> UrlPair;
+    typedef QPair<QString, KDAV::Protocol> UrlPair;
     foreach (const UrlPair &url, mRemovedUrls) {
         Settings::self()->removeUrlConfiguration(url.second, url.first);
     }
@@ -286,7 +288,7 @@ void ConfigDialog::onCancelClicked()
 {
     mRemovedUrls.clear();
 
-    typedef QPair<QString, DavUtils::Protocol> UrlPair;
+    typedef QPair<QString, KDAV::Protocol> UrlPair;
     foreach (const UrlPair &url, mAddedUrls) {
         Settings::self()->removeUrlConfiguration(url.second, url.first);
     }

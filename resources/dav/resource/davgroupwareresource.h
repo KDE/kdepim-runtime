@@ -19,17 +19,23 @@
 #ifndef DAVGROUPWARERESOURCE_H
 #define DAVGROUPWARERESOURCE_H
 
-#include "etagcache.h"
+#include <KDAV/EtagCache>
+
+#include <memory>
 
 #include <resourcebase.h>
 #include <akonadi/calendar/freebusyproviderbase.h>
 
 class DavFreeBusyHandler;
-class DavItem;
 class KDateTime;
 
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
+
+namespace KDAV
+{
+    class DavItem;
+}
 
 class DavGroupwareResource : public Akonadi::ResourceBase,
     public Akonadi::AgentBase::Observer,
@@ -110,7 +116,7 @@ private:
     void doItemRemoval(const Akonadi::Item &item);
     void handleConflict(const Akonadi::Item &localItem,
                         const Akonadi::Item::List &localDependentItems,
-                        const DavItem &remoteItem,
+                        const KDAV::DavItem &remoteItem,
                         bool isLocalRemoval,
                         int responseCode
                        );
@@ -124,7 +130,7 @@ private:
     static void setCollectionIcon(Akonadi::Collection &collection);
 
     Akonadi::Collection mDavCollectionRoot;
-    QMap<QString, EtagCache *> mEtagCaches;
+    QMap<QString, std::shared_ptr<KDAV::EtagCache> > mEtagCaches;
     QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *mFreeBusyHandler;
     bool mSyncErrorNotified;

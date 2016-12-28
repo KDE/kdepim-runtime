@@ -18,7 +18,7 @@
 
 #include "setupwizard.h"
 
-#include "davcollectionsmultifetchjob.h"
+#include <KDAV/DavCollectionsMultiFetchJob>
 
 #include <qicon.h>
 #include <KLocalizedString>
@@ -191,11 +191,11 @@ SetupWizard::Url::List SetupWizard::urls() const
         Url url;
 
         if (protocol == QLatin1String("CalDav")) {
-            url.protocol = DavUtils::CalDav;
+            url.protocol =KDAV::CalDav;
         } else if (protocol == QLatin1String("CardDav")) {
-            url.protocol = DavUtils::CardDav;
+            url.protocol = KDAV::CardDav;
         } else if (protocol == QLatin1String("GroupDav")) {
-            url.protocol = DavUtils::GroupDav;
+            url.protocol = KDAV::GroupDav;
         } else {
             return urls;
         }
@@ -518,12 +518,12 @@ void CheckPage::checkConnection()
 {
     mStatusLabel->clear();
 
-    DavUtils::DavUrl::List davUrls;
+    KDAV::DavUrl::List davUrls;
 
-    // convert list of SetupWizard::Url to list of DavUtils::DavUrl
+    // convert list of SetupWizard::Url to list of KDAV::DavUrl
     const SetupWizard::Url::List urls = static_cast<SetupWizard *>(wizard())->urls();
     for (const SetupWizard::Url &url : urls) {
-        DavUtils::DavUrl davUrl;
+        KDAV::DavUrl davUrl;
         davUrl.setProtocol(url.protocol);
 
         QUrl serverUrl(url.url);
@@ -535,8 +535,8 @@ void CheckPage::checkConnection()
     }
 
     // start the dav collections fetch job to test connectivity
-    DavCollectionsMultiFetchJob *job = new DavCollectionsMultiFetchJob(davUrls, this);
-    connect(job, &DavCollectionsMultiFetchJob::result, this, &CheckPage::onFetchDone);
+    KDAV::DavCollectionsMultiFetchJob *job = new KDAV::DavCollectionsMultiFetchJob(davUrls, this);
+    connect(job, & KDAV::DavCollectionsMultiFetchJob::result, this, &CheckPage::onFetchDone);
     job->start();
 }
 

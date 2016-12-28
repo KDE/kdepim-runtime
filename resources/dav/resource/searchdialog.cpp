@@ -18,11 +18,11 @@
 
 #include "searchdialog.h"
 
-#include "davcollectionsfetchjob.h"
-#include "davmanager.h"
-#include "davprincipalsearchjob.h"
-#include "davprotocolbase.h"
-#include "davutils.h"
+#include <KDAV/DavCollectionsFetchJob>
+#include <KDAV/DavManager>
+#include <KDAV/DavPrincipalSearchJob>
+#include <KDAV/DavProtocolBase>
+#include <KDAV/Utils>
 
 #include "davresource_debug.h"
 #include <QIcon>
@@ -114,28 +114,28 @@ void SearchDialog::search()
 {
     mUi.searchResults->setEnabled(false);
     mModel->clear();
-    DavPrincipalSearchJob::FilterType filter;
+    KDAV::DavPrincipalSearchJob::FilterType filter;
 
     if (mUi.searchType->currentIndex() == 0) {
-        filter = DavPrincipalSearchJob::DisplayName;
+        filter = KDAV::DavPrincipalSearchJob::DisplayName;
     } else {
-        filter = DavPrincipalSearchJob::EmailAddress;
+        filter = KDAV::DavPrincipalSearchJob::EmailAddress;
     }
 
     QUrl url(mUi.searchUrl->text());
     url.setUserInfo(QString());
-    DavUtils::DavUrl davUrl;
+    KDAV::DavUrl davUrl;
     davUrl.setUrl(url);
 
-    DavPrincipalSearchJob *job = new DavPrincipalSearchJob(davUrl, filter, mUi.searchParam->text());
+    KDAV::DavPrincipalSearchJob *job = new KDAV::DavPrincipalSearchJob(davUrl, filter, mUi.searchParam->text());
 
-    const DavProtocolBase *proto = DavManager::self()->davProtocol(DavUtils::CalDav);
+    const KDAV::DavProtocolBase *proto = KDAV::DavManager::self()->davProtocol(KDAV::CalDav);
     job->fetchProperty(proto->principalHomeSet(), proto->principalHomeSetNS());
 
-    proto = DavManager::self()->davProtocol(DavUtils::CardDav);
+    proto = KDAV::DavManager::self()->davProtocol(KDAV::CardDav);
     job->fetchProperty(proto->principalHomeSet(), proto->principalHomeSetNS());
 
-    connect(job, &DavPrincipalSearchJob::result, this, &SearchDialog::onSearchJobFinished);
+    connect(job, &KDAV::DavPrincipalSearchJob::result, this, &SearchDialog::onSearchJobFinished);
     job->start();
 }
 
@@ -146,14 +146,14 @@ void SearchDialog::onSearchJobFinished(KJob *job)
         return;
     }
 
-    DavPrincipalSearchJob *davJob = qobject_cast<DavPrincipalSearchJob *>(job);
-    QList<DavPrincipalSearchJob::Result> results = davJob->results();
+    KDAV::DavPrincipalSearchJob *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
+    QList<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
 
-    const DavProtocolBase *caldav = DavManager::self()->davProtocol(DavUtils::CalDav);
-    DavUtils::DavUrl davUrl = davJob->davUrl();
+    const KDAV::DavProtocolBase *caldav = KDAV::DavManager::self()->davProtocol(KDAV::CalDav);
+    KDAV::DavUrl davUrl = davJob->davUrl();
     QUrl url = davUrl.url();
 
-    foreach (const DavPrincipalSearchJob::Result &result, results) {
+    foreach (const KDAV::DavPrincipalSearchJob::Result &result, results) {
         if (result.value.startsWith(QLatin1Char('/'))) {
             url.setPath(result.value, QUrl::TolerantMode);
         } else {
@@ -164,13 +164,13 @@ void SearchDialog::onSearchJobFinished(KJob *job)
         davUrl.setUrl(url);
 
         if (result.property == caldav->principalHomeSet()) {
-            davUrl.setProtocol(DavUtils::CalDav);
+            davUrl.setProtocol(KDAV::CalDav);
         } else {
-            davUrl.setProtocol(DavUtils::CardDav);
+            davUrl.setProtocol(KDAV::CardDav);
         }
 
-        DavCollectionsFetchJob *fetchJob = new DavCollectionsFetchJob(davUrl);
-        connect(fetchJob, &DavCollectionsFetchJob::result, this, &SearchDialog::onCollectionsFetchJobFinished);
+        KDAV::DavCollectionsFetchJob *fetchJob = new KDAV::DavCollectionsFetchJob(davUrl);
+        connect(fetchJob, & KDAV::DavCollectionsFetchJob::result, this, &SearchDialog::onCollectionsFetchJobFinished);
         fetchJob->start();
         ++mSubJobCount;
     }
@@ -191,15 +191,15 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
         return;
     }
 
-    DavCollectionsFetchJob *davJob = qobject_cast<DavCollectionsFetchJob *>(job);
-    const DavCollection::List collections = davJob->collections();
+    KDAV::DavCollectionsFetchJob *davJob = qobject_cast<KDAV::DavCollectionsFetchJob *>(job);
+    const KDAV::DavCollection::List collections = davJob->collections();
 
-    for (const DavCollection &collection : collections) {
+    for (const KDAV::DavCollection &collection : collections) {
         QStandardItem *item = new QStandardItem(collection.displayName());
-        QString data(DavUtils::protocolName(collection.protocol()) + QLatin1Char('|') + collection.url());
+        QString data(KDAV::Utils::protocolName(collection.url().protocol()) + QLatin1Char('|') + collection.url().toDisplayString());
         item->setData(data, Qt::UserRole + 1);
-        item->setToolTip(collection.url());
-        if (collection.protocol() == DavUtils::CalDav) {
+        item->setToolTip(collection.url().toDisplayString());
+        if (collection.url().protocol() == KDAV::CalDav) {
             item->setIcon(QIcon::fromTheme(QStringLiteral("view-calendar")));
         } else {
             item->setIcon(QIcon::fromTheme(QStringLiteral("view-pim-contacts")));

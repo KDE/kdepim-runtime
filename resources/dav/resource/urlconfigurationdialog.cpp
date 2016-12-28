@@ -18,9 +18,9 @@
 
 #include "urlconfigurationdialog.h"
 
-#include "davcollectionmodifyjob.h"
-#include "davcollectionsfetchjob.h"
-#include "davutils.h"
+#include <KDAV/DavCollectionModifyJob>
+#include <KDAV/DavCollectionsFetchJob>
+#include <KDAV/Utils>
 #include "settings.h"
 
 #include <kmessagebox.h>
@@ -89,12 +89,12 @@ void UrlConfigurationDialog::writeConfig()
     grp.sync();
 }
 
-DavUtils::Protocol UrlConfigurationDialog::protocol() const
+KDAV::Protocol UrlConfigurationDialog::protocol() const
 {
-    return DavUtils::Protocol(mUi.remoteProtocol->selected());
+    return KDAV::Protocol(mUi.remoteProtocol->selected());
 }
 
-void UrlConfigurationDialog::setProtocol(DavUtils::Protocol protocol)
+void UrlConfigurationDialog::setProtocol(KDAV::Protocol protocol)
 {
     mUi.remoteProtocol->setSelected(protocol);
 }
@@ -204,9 +204,9 @@ void UrlConfigurationDialog::onFetchButtonClicked()
         url.setPassword(password());
     }
 
-    DavUtils::DavUrl davUrl(url, protocol());
-    DavCollectionsFetchJob *job = new DavCollectionsFetchJob(davUrl);
-    connect(job, &DavCollectionsFetchJob::result, this, &UrlConfigurationDialog::onCollectionsFetchDone);
+    KDAV::DavUrl davUrl(url, protocol());
+    KDAV::DavCollectionsFetchJob *job = new KDAV::DavCollectionsFetchJob(davUrl);
+    connect(job, & KDAV::DavCollectionsFetchJob::result, this, &UrlConfigurationDialog::onCollectionsFetchDone);
     job->start();
 }
 
@@ -226,12 +226,12 @@ void UrlConfigurationDialog::onCollectionsFetchDone(KJob *job)
         return;
     }
 
-    DavCollectionsFetchJob *davJob = qobject_cast<DavCollectionsFetchJob *>(job);
+    KDAV::DavCollectionsFetchJob *davJob = qobject_cast< KDAV::DavCollectionsFetchJob *>(job);
 
-    const DavCollection::List collections = davJob->collections();
+    const KDAV::DavCollection::List collections = davJob->collections();
 
-    for (const DavCollection &collection : collections) {
-        addModelRow(collection.displayName(), collection.url());
+    for (const KDAV::DavCollection &collection : collections) {
+        addModelRow(collection.displayName(), collection.url().toDisplayString());
     }
 
     checkUserInput();
@@ -246,10 +246,10 @@ void UrlConfigurationDialog::onModelDataChanged(const QModelIndex &topLeft, cons
     QUrl fullUrl(url);
     fullUrl.setUserInfo(QString());
 
-    DavUtils::DavUrl davUrl(fullUrl, protocol());
-    DavCollectionModifyJob *job = new DavCollectionModifyJob(davUrl);
+    KDAV::DavUrl davUrl(fullUrl, protocol());
+    KDAV::DavCollectionModifyJob *job = new KDAV::DavCollectionModifyJob(davUrl);
     job->setProperty(QStringLiteral("displayname"), newName);
-    connect(job, &DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);
+    connect(job, & KDAV::DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);
     job->start();
     mUi.discoveredUrls->setEnabled(false);
 }
