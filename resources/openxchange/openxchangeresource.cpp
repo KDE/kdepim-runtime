@@ -173,7 +173,7 @@ public:
     {
         if (!Settings::self()->objectsLastSync().isEmpty()) {
             const QStringList pairs = Settings::self()->objectsLastSync().split(QLatin1Char(':'), QString::KeepEmptyParts);
-            foreach (const QString &pair, pairs) {
+            for (const QString &pair : pairs) {
                 const QStringList entry = pair.split(QLatin1Char('='), QString::KeepEmptyParts);
                 mObjectsMap.insert(entry.at(0).toLongLong(), entry.at(1).toULongLong());
             }
@@ -663,7 +663,7 @@ void OpenXchangeResource::onObjectsRequestJobFinished(KJob *job)
     Item::List items;
 
     const OXA::Object::List objects = requestJob->objects();
-    foreach (const OXA::Object &object, objects) {
+    for (const OXA::Object &object : objects) {
         Item item;
         switch (object.module()) {
         case OXA::Folder::Contacts:
@@ -753,7 +753,7 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished(KJob *job)
 
     const OXA::Object::List deletedObjects = requestJob->deletedObjects();
     removedItems.reserve(deletedObjects.count());
-    foreach (const OXA::Object &object, deletedObjects) {
+    for (const OXA::Object &object : deletedObjects) {
         Item item;
 
         const RemoteInformation remoteInformation(object.objectId(), object.module(), object.lastModified());
@@ -1169,7 +1169,7 @@ void OpenXchangeResource::onFetchResourceCollectionsFinished(KJob *job)
 
     // copy the remaining collections of the resource
     const Collection::List collections = fetchJob->collections();
-    foreach (const Collection &collection, collections) {
+    for (const Collection &collection : collections) {
         mCollectionsMap.insert(collection.remoteId().toULongLong(), collection);
     }
 }

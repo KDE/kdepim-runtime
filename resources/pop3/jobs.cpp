@@ -184,7 +184,7 @@ static QByteArray cleanupListRespone(const QByteArray &response)
 static QString intListToString(const QList<int> &intList)
 {
     QString idList;
-    foreach (int id, intList) {
+    for (int id : intList) {
         idList += QString::number(id) + QLatin1Char(',');
     }
     idList.chop(1);

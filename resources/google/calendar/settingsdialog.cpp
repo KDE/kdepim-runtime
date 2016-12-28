@@ -183,13 +183,13 @@ void SettingsDialog::slotCalendarsRetrieved(Job *job)
     }
 
     FetchJob *fetchJob = qobject_cast<FetchJob *>(job);
-    ObjectsList objects = fetchJob->items();
+    const ObjectsList objects = fetchJob->items();
 
     QStringList activeCalendars;
     if (currentAccount()->accountName() == Settings::self()->account()) {
         activeCalendars = Settings::self()->calendars();
     }
-    Q_FOREACH (const ObjectPtr &object, objects) {
+    for (const ObjectPtr &object : objects) {
         CalendarPtr calendar = object.dynamicCast<Calendar>();
 
         QListWidgetItem *item = new QListWidgetItem(calendar->title());
@@ -211,13 +211,13 @@ void SettingsDialog::slotTaskListsRetrieved(Job *job)
     }
 
     FetchJob *fetchJob = qobject_cast<FetchJob *>(job);
-    ObjectsList objects = fetchJob->items();
+    const ObjectsList objects = fetchJob->items();
 
     QStringList activeTaskLists;
     if (currentAccount()->accountName() == Settings::self()->account()) {
         activeTaskLists = Settings::self()->taskLists();
     }
-    Q_FOREACH (const ObjectPtr &object, objects) {
+    for (const ObjectPtr &object : objects) {
         TaskListPtr taskList = object.dynamicCast<TaskList>();
 
         QListWidgetItem *item = new QListWidgetItem(taskList->title());

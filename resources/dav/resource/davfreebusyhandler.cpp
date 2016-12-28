@@ -37,8 +37,8 @@ DavFreeBusyHandler::DavFreeBusyHandler(QObject *parent)
 
 void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
 {
-    DavUtils::DavUrl::List urls = Settings::self()->configuredDavUrls();
-    foreach (const DavUtils::DavUrl &url, urls) {
+    const DavUtils::DavUrl::List urls = Settings::self()->configuredDavUrls();
+    for (const DavUtils::DavUrl &url : urls) {
         if (url.protocol() == DavUtils::CalDav) {
             ++mRequestsTracker[email].handlingJobCount;
             DavPrincipalSearchJob *job = new DavPrincipalSearchJob(url, DavPrincipalSearchJob::EmailAddress, email);

@@ -65,10 +65,10 @@ KMBox::MBoxEntry::List DeletedItemsAttribute::deletedItemEntries() const
 
 void DeletedItemsAttribute::deserialize(const QByteArray &data)
 {
-    QList<QByteArray> offsets = data.split(',');
+    const QList<QByteArray> offsets = data.split(',');
     mDeletedItemOffsets.clear();
-
-    foreach (const QByteArray &offset, offsets) {
+    mDeletedItemOffsets.reserve(offsets.count());
+    for (const QByteArray &offset : offsets) {
         mDeletedItemOffsets.insert(offset.toULongLong());
     }
 }

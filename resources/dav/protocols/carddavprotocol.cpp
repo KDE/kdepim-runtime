@@ -81,7 +81,7 @@ public:
     QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QDomDocument document;
-        QStringList urls = parameter(QStringLiteral("urls")).toStringList();
+        const QStringList urls = parameter(QStringLiteral("urls")).toStringList();
         if (urls.isEmpty()) {
             return document;
         }
@@ -97,7 +97,7 @@ public:
         addressDataElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("allprop")));
         propElement.appendChild(addressDataElement);
 
-        foreach (const QString &url, urls) {
+        for (const QString &url : urls) {
             QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
             const QUrl pathUrl = QUrl::fromUserInput(url);
             QString encodedUrl = QString::fromAscii(pathUrl.encodedPath());

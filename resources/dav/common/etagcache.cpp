@@ -87,7 +87,7 @@ void EtagCache::onItemFetchJobFinished(KJob *job)
     const Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
     const Akonadi::Item::List items = fetchJob->items();
 
-    foreach (const Akonadi::Item &item, items) {
+    for (const Akonadi::Item &item : items) {
         if (!mCache.contains(item.remoteId())) {
             mCache[item.remoteId()] = item.remoteRevision();
         }

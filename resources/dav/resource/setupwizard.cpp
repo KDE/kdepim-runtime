@@ -186,8 +186,8 @@ SetupWizard::Url::List SetupWizard::urls() const
         return urls;
     }
 
-    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
-    foreach (const QString &protocol, supportedProtocols) {
+    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    for (const QString &protocol : supportedProtocols) {
         Url url;
 
         if (protocol == QLatin1String("CalDav")) {
@@ -318,12 +318,11 @@ ServerTypePage::ServerTypePage(QWidget *parent)
 
     mProvidersCombo = new QComboBox(this);
     mProvidersCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    KService::List providers;
     KServiceTypeTrader *trader = KServiceTypeTrader::self();
-    providers = trader->query(QStringLiteral("DavGroupwareProvider"));
+    const KService::List providers = trader->query(QStringLiteral("DavGroupwareProvider"));
     QList< QPair<QString, QString> > offers;
     offers.reserve(providers.count());
-    foreach (const KService::Ptr &provider, providers) {
+    for (const KService::Ptr &provider : providers) {
         offers.append(QPair<QString, QString>(provider->name(), provider->entryPath()));
     }
     std::sort(offers.begin(), offers.end(), compareServiceOffers);
@@ -523,7 +522,7 @@ void CheckPage::checkConnection()
 
     // convert list of SetupWizard::Url to list of DavUtils::DavUrl
     const SetupWizard::Url::List urls = static_cast<SetupWizard *>(wizard())->urls();
-    foreach (const SetupWizard::Url &url, urls) {
+    for (const SetupWizard::Url &url : urls) {
         DavUtils::DavUrl davUrl;
         davUrl.setProtocol(url.protocol);
 

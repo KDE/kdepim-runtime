@@ -475,7 +475,7 @@ QList<QByteArray> ResourceTask::fromAkonadiFlags(const QList<QByteArray> &flags)
 {
     QList<QByteArray> newFlags;
 
-    foreach (const QByteArray &oldFlag, flags) {
+    for (const QByteArray &oldFlag : flags) {
         if (oldFlag == Akonadi::MessageFlags::Seen) {
             newFlags.append(ImapFlags::Seen);
         } else if (oldFlag == Akonadi::MessageFlags::Deleted) {
@@ -496,7 +496,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags(const QList<QByteArray> &flags)
 {
     QList<QByteArray> newFlags;
 
-    foreach (const QByteArray &oldFlag, flags) {
+    for (const QByteArray &oldFlag : flags) {
         if (oldFlag == ImapFlags::Seen) {
             newFlags.append(Akonadi::MessageFlags::Seen);
         } else if (oldFlag == ImapFlags::Deleted) {

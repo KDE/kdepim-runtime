@@ -31,7 +31,7 @@ static QString etagFromHeaders(const QString &headers)
     const QStringList allHeaders = headers.split(QLatin1Char('\n'));
 
     QString etag;
-    foreach (const QString &header, allHeaders) {
+    for (const QString &header : allHeaders) {
         if (header.startsWith(QStringLiteral("etag:"), Qt::CaseInsensitive)) {
             etag = header.section(QLatin1Char(' '), 1);
         }

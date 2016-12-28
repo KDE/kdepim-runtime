@@ -127,10 +127,10 @@ void ICalResource::itemChanged(const Akonadi::Item &item,
 void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
 {
     Q_UNUSED(col);
-    Incidence::List incidences = calendar()->incidences();
+    const Incidence::List incidences = calendar()->incidences();
     Item::List items;
     items.reserve(incidences.count());
-    foreach (const Incidence::Ptr &incidence, incidences) {
+    for (const Incidence::Ptr &incidence : incidences) {
         Item item(incidence->mimeType());
         item.setRemoteId(incidence->instanceIdentifier());
         item.setPayload(Incidence::Ptr(incidence->clone()));

@@ -215,7 +215,7 @@ void BirthdaysResource::listContacts(const Akonadi::Collection::List &cols)
 {
     MimeTypeChecker contactFilter;
     contactFilter.addWantedMimeType(Addressee::mimeType());
-    foreach (const Collection &col, cols) {
+    for (const Collection &col : cols) {
         if (!contactFilter.isWantedCollection(col)) {
             continue;
         }
@@ -227,7 +227,7 @@ void BirthdaysResource::listContacts(const Akonadi::Collection::List &cols)
 
 void BirthdaysResource::createEvents(const Akonadi::Item::List &items)
 {
-    foreach (const Item &item, items) {
+    for (const Item &item : items) {
         contactChanged(item);
     }
 }

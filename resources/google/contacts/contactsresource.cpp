@@ -448,7 +448,7 @@ void ContactsResource::slotItemsRetrieved(KGAPI2::Job *job)
         }
 
         const QStringList groups = contact->groups();
-        foreach (const QString &group, groups) {
+        for (const QString &group : groups) {
             groupsMap[group] << item;
         }
     }

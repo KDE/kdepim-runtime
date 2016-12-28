@@ -188,8 +188,8 @@ void AkonadiSlave::listDir(const QUrl &url)
         return;
     }
 
-    Collection::List collections = job->collections();
-    foreach (const Collection &col, collections) {
+    const Collection::List collections = job->collections();
+    for (const Collection &col : collections) {
         listEntry(entryForCollection(col));
     }
 
@@ -200,9 +200,9 @@ void AkonadiSlave::listDir(const QUrl &url)
             error(KIO::ERR_INTERNAL, job->errorString());
             return;
         }
-        Item::List items = fjob->items();
+        const Item::List items = fjob->items();
         totalSize(collections.count() + items.count());
-        foreach (const Item &item, items) {
+        for (const Item &item : items) {
             listEntry(entryForItem(item));
         }
     }

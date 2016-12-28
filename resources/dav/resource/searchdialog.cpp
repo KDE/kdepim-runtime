@@ -91,10 +91,10 @@ QString SearchDialog::password() const
 
 QStringList SearchDialog::selection() const
 {
-    QModelIndexList indexes = mUi.searchResults->selectionModel()->selectedIndexes();
+    const QModelIndexList indexes = mUi.searchResults->selectionModel()->selectedIndexes();
     QStringList ret;
     ret.reserve(indexes.count());
-    foreach (const QModelIndex &index, indexes) {
+    for (const QModelIndex &index : indexes) {
         qCritical() << "SELECTED DATA: " << index.data(Qt::UserRole + 1).toString();
         ret << index.data(Qt::UserRole + 1).toString();
     }
@@ -192,9 +192,9 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
     }
 
     DavCollectionsFetchJob *davJob = qobject_cast<DavCollectionsFetchJob *>(job);
-    DavCollection::List collections = davJob->collections();
+    const DavCollection::List collections = davJob->collections();
 
-    foreach (const DavCollection &collection, collections) {
+    for (const DavCollection &collection : collections) {
         QStandardItem *item = new QStandardItem(collection.displayName());
         QString data(DavUtils::protocolName(collection.protocol()) + QLatin1Char('|') + collection.url());
         item->setData(data, Qt::UserRole + 1);

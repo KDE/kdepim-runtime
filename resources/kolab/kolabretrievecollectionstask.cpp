@@ -524,7 +524,7 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::M
         const QList< QList< QByteArray > > &flags)
 {
     Q_UNUSED(flags);
-    foreach (const KIMAP::MailBoxDescriptor &descriptor, descriptors) {
+    for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {
         mSubscribedMailboxes.insert(descriptor.name);
     }
 }

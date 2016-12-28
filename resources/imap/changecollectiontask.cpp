@@ -173,7 +173,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             const QList<QByteArray> ids = rights.keys();
 
             // remove all ACL entries that have been deleted
-            foreach (const QByteArray &oldId, oldIds) {
+            for (const QByteArray &oldId : oldIds) {
                 if (!ids.contains(oldId)) {
                     KIMAP::SetAclJob *job = new KIMAP::SetAclJob(session);
                     job->setMailBox(mailBoxForCollection(collection()));

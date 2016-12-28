@@ -230,7 +230,7 @@ void UrlConfigurationDialog::onCollectionsFetchDone(KJob *job)
 
     const DavCollection::List collections = davJob->collections();
 
-    foreach (const DavCollection &collection, collections) {
+    for (const DavCollection &collection : collections) {
         addModelRow(collection.displayName(), collection.url());
     }
 

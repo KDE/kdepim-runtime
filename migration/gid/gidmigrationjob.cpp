@@ -51,7 +51,7 @@ void UpdateJob::itemsReceived(const Akonadi::Item::List &items)
 {
     //We're queuing items rather than creating ItemModifyJobs directly due to memory concerns
     //I'm not sure if that would indeed be a problem (a ModifyJob shouldn't be much larger than the item) but we'd have to compare memory usage first when creating large amounts of ItemModifyJobs.
-    foreach (const Akonadi::Item &item, items) {
+    for (const Akonadi::Item &item : items) {
         mItemQueue.enqueue(item);
     }
     processNext();

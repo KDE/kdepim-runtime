@@ -193,7 +193,7 @@ void DavGroupwareResource::configure(WId windowId)
         const int result = wizard.exec();
         if (result == QDialog::Accepted) {
             const SetupWizard::Url::List urls = wizard.urls();
-            foreach (const SetupWizard::Url &url, urls) {
+            for (const SetupWizard::Url &url : urls) {
                 Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 
                 urlConfig->mUrl = url.url;

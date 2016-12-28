@@ -176,7 +176,7 @@ void ConfigDialog::onSearchButtonClicked()
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
         const QStringList results = dlg->selection();
-        foreach (const QString &result, results) {
+        for (const QString &result : results) {
             const QStringList split = result.split(QLatin1Char('|'));
             DavUtils::Protocol protocol = DavUtils::protocolByName(split.at(0));
             if (!Settings::self()->urlConfiguration(protocol, split.at(1))) {

@@ -258,7 +258,7 @@ public:
     QDomDocument buildQuery() const Q_DECL_OVERRIDE
     {
         QDomDocument document;
-        QStringList urls = parameter(QStringLiteral("urls")).toStringList();
+        const QStringList urls = parameter(QStringLiteral("urls")).toStringList();
         if (urls.isEmpty()) {
             return document;
         }
@@ -272,7 +272,7 @@ public:
         propElement.appendChild(document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("getetag")));
         propElement.appendChild(document.createElementNS(QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data")));
 
-        foreach (const QString &url, urls) {
+        for (const QString &url : urls) {
             QDomElement hrefElement = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("href"));
             const QUrl pathUrl = QUrl::fromUserInput(url);
             QString encodedUrl = QString::fromAscii(pathUrl.encodedPath());

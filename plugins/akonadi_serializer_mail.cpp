@@ -218,9 +218,9 @@ bool SerializerPluginMail::deserialize(Item &item, const QByteArray &label, QIOD
 template<typename T>
 static void serializeAddrList(QDataStream &stream, T *hdr)
 {
-    KMime::Types::Mailbox::List mb = hdr->mailboxes();
+    const KMime::Types::Mailbox::List mb = hdr->mailboxes();
     stream << mb.size();
-    foreach (const KMime::Types::Mailbox &mbox, mb) {
+    for (const KMime::Types::Mailbox &mbox : mb) {
         stream << mbox.name()
                << mbox.addrSpec().localPart
                << mbox.addrSpec().domain;

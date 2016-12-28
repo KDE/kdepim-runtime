@@ -222,7 +222,7 @@ void RetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBo
         const QList< QList< QByteArray > > &flags)
 {
     Q_UNUSED(flags);
-    foreach (const KIMAP::MailBoxDescriptor &descriptor, descriptors) {
+    for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {
         m_fullReportedCollections.insert(descriptor.name);
     }
 }

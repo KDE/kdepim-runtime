@@ -485,7 +485,8 @@ Collection::List MaildirResource::listRecursive(const Collection &root, const Ma
 
     Collection::List list;
     const QStringList mimeTypes = QStringList() << itemMimeType() << Collection::mimeType();
-    foreach (const QString &sub, dir.subFolderList()) {
+    const QStringList lstDir = dir.subFolderList();
+    for (const QString &sub : lstDir) {
         Collection c;
         c.setName(sub);
         c.setRemoteId(sub);

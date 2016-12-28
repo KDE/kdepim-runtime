@@ -93,8 +93,7 @@ void Users::setCurrentUserId(qlonglong id)
 void Users::setUsers(const User::List &users)
 {
     mUsers.clear();
-
-    foreach (const User &user, users) {
+    for (const User &user : users) {
         mUsers.insert(user.uid(), user);
     }
 

@@ -106,7 +106,7 @@ Collection::List ContactsResource::createCollectionsForDirectory(const QDir &par
     const QFileInfoList entries = dir.entryInfoList();
     collections.reserve(entries.count() * 2);
 
-    foreach (const QFileInfo &entry, entries) {
+    for (const QFileInfo &entry : entries) {
         QDir subdir(entry.absoluteFilePath());
 
         Collection collection;
@@ -155,7 +155,7 @@ void ContactsResource::retrieveItems(const Akonadi::Collection &collection)
 
     const QFileInfoList entries = directory.entryInfoList();
 
-    foreach (const QFileInfo &entry, entries) {
+    for (const QFileInfo &entry : entries) {
         if (entry.fileName() == QLatin1String("WARNING_README.txt")) {
             continue;
         }
@@ -414,7 +414,7 @@ static bool removeDirectory(const QDir &directory)
     const QFileInfoList infoList =
         directory.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
 
-    foreach (const QFileInfo &info, infoList) {
+    for (const QFileInfo &info : infoList) {
         if (info.isDir()) {
             if (!removeDirectory(QDir(info.absoluteFilePath()))) {
                 return false;
